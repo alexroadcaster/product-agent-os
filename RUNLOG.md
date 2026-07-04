@@ -150,7 +150,7 @@ These markers are retained as compact discovery anchors, not as full evidence:
 ## Current Batch 45 Handoff
 
 - `B45-A02/A05/S6`: 6-task pilot, V3 comments/advisory validator and M24-M27 no-go promotion evidence are closed; M25 remains non-blocking and M27 keeps advisory-only, no CI/blocker promotion.
-- `B45-S7`: M28-M34 fixture-local only. M34 scorecard keeps promotion blocked; no target/runtime/browser/provider/database/git/release/deploy/automation proof.
+- `B45-S7`: M28-M35 source-only. M35 keeps advisory-only/no-go; no target/runtime/browser/provider/db/git/release/deploy/automation proof.
 
 ## Verification Runbook
 

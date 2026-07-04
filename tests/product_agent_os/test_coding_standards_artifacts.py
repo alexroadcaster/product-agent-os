@@ -26,6 +26,7 @@ M26_PLAN = DOCS / "superpowers" / "specs" / "batch45-agent-behavior-eval-plan.js
 M27_DECISION = DOCS / "superpowers" / "specs" / "batch45-comment-policy-promotion-decision.json"
 M33_COMPARISON = DOCS / "superpowers" / "specs" / "batch45-real-project-refactor-comparison.json"
 M34_SCORECARD = DOCS / "superpowers" / "specs" / "batch45-real-project-scorecard.json"
+M35_DECISION = DOCS / "superpowers" / "specs" / "batch45-real-project-decision-packet.json"
 sys.path.insert(0, str(SCRIPTS))
 
 from product_agent_os.templates import required_templates, template_by_target  # noqa: E402
@@ -408,6 +409,77 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "target_behavior",
             "static_scorecard_proves_real_ai_agent_behavior_improvement",
             "m34_approves_ci_or_blocker_promotion",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, serialized)
+
+    def test_m35_real_project_decision_packet_rejects_promotion_without_runtime_proof(self):
+        packet = json.loads(M35_DECISION.read_text(encoding="utf-8"))
+        serialized = json.dumps(packet, sort_keys=True).lower()
+
+        self.assertEqual("batch45_real_project_decision_packet_v1", packet["schema_version"])
+        self.assertEqual("B45-PCA-M35", packet["task_id"])
+        self.assertEqual("B45-PCA-M35-A01", packet["evidence_id"])
+        self.assertEqual("docs_contract_ready_decision_no_go", packet["closure_level"])
+        self.assertEqual(
+            "keep_advisory_only_no_go_for_treatment_v2_promotion",
+            packet["decision"]["state"],
+        )
+        self.assertTrue(packet["decision"]["keep_advisory_only"])
+        self.assertEqual(
+            "allowed_as_source_only_future_design_not_implementation",
+            packet["decision"]["design_smaller_treatment_v2"],
+        )
+        self.assertEqual(
+            "approval_required_not_requested_or_executed",
+            packet["decision"]["request_disposable_runtime_browser_pilot"],
+        )
+        self.assertFalse(packet["decision"]["reject_further_promotion_permanently"])
+
+        evidence_ids = {item["task_id"] for item in packet["evidence_used"]}
+        for required in [
+            "B45-PCA-M27",
+            "B45-PCA-M28-A01",
+            "B45-PCA-M29-A01",
+            "B45-PCA-M30-A01",
+            "B45-PCA-M31-A01_A02",
+            "B45-PCA-M32-A01_A02",
+            "B45-PCA-M33-A01",
+            "B45-PCA-M34-A01",
+        ]:
+            with self.subTest(required=required):
+                self.assertIn(required, evidence_ids)
+
+        for item in packet["evidence_used"]:
+            with self.subTest(source=item["source"]):
+                self.assertTrue(ROOT.joinpath(item["source"]).exists())
+
+        self.assertEqual("rejected", packet["decision_matrix"]["promote_ci_or_blocker"]["decision"])
+        self.assertEqual(
+            "rejected",
+            packet["decision_matrix"]["claim_real_ai_agent_behavior_improvement"]["decision"],
+        )
+        self.assertEqual(
+            "approval_required",
+            packet["decision_matrix"]["request_disposable_runtime_browser_pilot"]["decision"],
+        )
+        self.assertEqual("B45-PCA-M36", packet["next_approval_boundary"]["next_task"])
+        self.assertEqual(
+            "optional_approval_required_not_executed",
+            packet["next_approval_boundary"]["status"],
+        )
+
+        for action, performed in packet["approval_boundary"].items():
+            with self.subTest(action=action):
+                self.assertFalse(performed)
+
+        for expected in [
+            "no-go decision only",
+            "do not promote ci workflow creation or blocker enforcement",
+            "m35_approves_target_apply",
+            "m35_approves_disposable_runtime_browser_pilot",
+            "m35_approves_ci_or_blocker_promotion",
+            "m35_proves_real_ai_agent_behavior_improvement",
         ]:
             with self.subTest(expected=expected):
                 self.assertIn(expected, serialized)
