@@ -1,0 +1,226 @@
+{
+  "schema_version": "batch45_postq4_t06_promotion_decision_v1",
+  "task_id": "B45-POSTQ4-T06-PROMOTION-DECISION",
+  "evidence_id": "B45-POSTQ4-T06-A01",
+  "status": "implemented_promotion_no_go_keep_advisory_only",
+  "created_at": "2026-07-04T21:10:00+03:00",
+  "source_status": "project-authored decision packet; no live/model/provider/runtime/browser/target action was performed for T06",
+  "decision_target": "Decide whether Batch 45 post-Q4 evidence supports promoting the coding-standard advisory to stronger advisory, CI, blocker enforcement, runtime/browser pilot, automation or release readiness.",
+  "source_evidence_used": [
+    {
+      "task_id": "B45-PCA-M26",
+      "source": "docs/superpowers/specs/batch45-agent-behavior-eval-results.json",
+      "summary": "Approved live held-out eval was no-go: baseline average 4.22, treatment average 3.88, warnings 29 -> 15, 15/16 completed, one timeout and independent reviewer no_go."
+    },
+    {
+      "task_id": "B45-PCA-M27",
+      "source": "docs/superpowers/specs/batch45-comment-policy-promotion-decision.json",
+      "summary": "Kept M25 local non-blocking advisory and rejected stronger advisory, CI workflow creation and blocker enforcement."
+    },
+    {
+      "task_id": "B45-PCA-M35",
+      "source": "docs/superpowers/specs/batch45-real-project-decision-packet.json",
+      "summary": "Kept advisory-only/no-go for treatment v2 promotion after fixture-local real-project scorecard; runtime/browser pilot remained approval_required."
+    },
+    {
+      "task_id": "B45-PCA-M37",
+      "source": "docs/superpowers/specs/batch45-review-remediation-summary.json",
+      "summary": "Hardened local advisory hook/validator and docs sync without changing no-go/advisory-only ceiling."
+    },
+    {
+      "task_id": "B45-POSTQ4-T01-T04",
+      "source": "docs/superpowers/specs/batch45-postq4-t01-t04-execution-summary.json",
+      "summary": "Copied-fixture static warning delta improved 14 -> 0; T04 remained approval-packet-only."
+    },
+    {
+      "task_id": "B45-POSTQ4-T05",
+      "source": "docs/superpowers/specs/batch45-postq4-t05-live-model-rerun-results.json",
+      "summary": "Exact-approved rerun stopped after one completed baseline and one baseline timeout; treatment and reviewer were not run."
+    },
+    {
+      "task_id": "B45-POSTQ4-T05B",
+      "source": "docs/superpowers/specs/batch45-postq4-t05b-rerun-approval-packet.json",
+      "summary": "Separate revised approval packet only; no live/model/provider call was performed and a new exact approval is required before any rerun."
+    }
+  ],
+  "decision": {
+    "state": "keep_advisory_only_no_go_after_static_delta_and_t05_timeout",
+    "keep_m25_local_non_blocking_advisory": true,
+    "promote_stronger_advisory": false,
+    "promote_ci_workflow": false,
+    "promote_blocker_enforcement": false,
+    "promote_active_automation": false,
+    "claim_real_ai_agent_behavior_improvement": false,
+    "claim_runtime_browser_or_target_readiness": false,
+    "reason": "The post-Q4 static warning delta is useful maintenance evidence, but it is not behavior proof. T05 did not produce a comparable baseline-vs-treatment result, T05B is packet-only, and M26/M27/M35/M37 no-go/advisory-only boundaries remain active."
+  },
+  "decision_matrix": {
+    "static_warning_delta": {
+      "evidence": "B45-POSTQ4-T01-T04 reduced copied-fixture advisory warnings 14 -> 0 with blocking=false.",
+      "decision": "accepted_as_local_static_quality_signal",
+      "promotion_effect": "cannot_promote"
+    },
+    "live_behavior_evidence": {
+      "evidence": "M26 remains no-go and T05 is stopped_on_timeout_inconclusive_no_go.",
+      "decision": "insufficient_for_behavior_improvement",
+      "promotion_effect": "blocks_promotion"
+    },
+    "t05b_rerun_option": {
+      "evidence": "T05B is a revised approval packet only.",
+      "decision": "optional_new_exact_approval_required",
+      "promotion_effect": "none_until_run_and_comparable"
+    },
+    "runtime_browser_target_evidence": {
+      "evidence": "No runtime/browser/target command or mutation proof exists for post-Q4.",
+      "decision": "not_claimed",
+      "promotion_effect": "blocks_runtime_or_product_readiness"
+    },
+    "ci_blocker_automation": {
+      "evidence": "M27 rejected CI/blocker promotion and no new comparable live eval reversed it.",
+      "decision": "rejected_for_current_batch_state",
+      "promotion_effect": "forbidden_without_new_approval_and_evidence"
+    }
+  },
+  "accepted_gaps_for_t06_only": [
+    {
+      "gap": "no_comparable_t05_baseline_treatment_result",
+      "accepted_for": "recording conservative no-go decision",
+      "not_accepted_for": "promotion, behavior-improvement claim or CI/blocker enforcement",
+      "residual_risk": "The post-Q4 static repair may help maintainability but measured AI-agent behavior remains unproven."
+    },
+    {
+      "gap": "no_runtime_browser_target_evidence",
+      "accepted_for": "no-go decision and optional future approval routing",
+      "not_accepted_for": "runtime readiness, target apply, product acceptance or release readiness",
+      "residual_risk": "Fixture-local changes may not preserve real target behavior."
+    },
+    {
+      "gap": "no_actual_usd_cost_from_cli",
+      "accepted_for": "no-go decision under call-count cap evidence",
+      "not_accepted_for": "future cost-sensitive live rerun without explicit owner cost cap or accepted gap",
+      "residual_risk": "Future T05B rerun cost remains uncertain unless the owner accepts the gap again."
+    }
+  ],
+  "next_routes": [
+    {
+      "task_id": "B45-POSTQ4-T05B-RERUN-PACKET-REVISION",
+      "status": "optional_new_exact_approval_required_before_any_run",
+      "when_to_choose": "Owner wants another live/model behavior proof attempt after T05 timeout."
+    },
+    {
+      "task_id": "B45-POSTQ4-T07-RUNTIME-BROWSER-PACKET",
+      "status": "optional_approval_packet_only",
+      "when_to_choose": "Owner wants disposable runtime/browser proof separate from live/model behavior proof."
+    },
+    {
+      "task_id": "B45-POSTQ4-CLOSURE",
+      "status": "recommended_if_no_new_approval",
+      "when_to_choose": "Owner accepts Batch 45 as advisory-only/no-go with local static quality improvements."
+    }
+  ],
+  "approval_required_before_future_actions": [
+    "Any T05B live/model/provider rerun.",
+    "Any runtime/live server or browser automation proof.",
+    "Any target workspace command or mutation.",
+    "Any database or production data access.",
+    "Any CI workflow, blocker enforcement or active automation creation.",
+    "Any git branch/stage/commit/push/PR, release, deploy, publish or external write."
+  ],
+  "sidecar_agent_reviews": [
+    {
+      "report": ".codex/product-agent-os/reviews/batch45/t06-agent-01-source-evidence.md",
+      "status": "completed",
+      "summary": "Recommended no-go/advisory-only; found no promotion evidence after T05 timeout and T05B packet-only state."
+    },
+    {
+      "report": ".codex/product-agent-os/reviews/batch45/t06-agent-02-test-eval-contract.md",
+      "status": "completed",
+      "summary": "Recommended focused assertions for the T06 packet, next-task update, control-plane markers and unsupported promotion claims."
+    },
+    {
+      "report": ".codex/product-agent-os/reviews/batch45/t06-agent-03-release-promotion-risk.md",
+      "status": "completed",
+      "summary": "Recommended no-go for release/promotion risk; CI, blocker, automation, runtime/browser, target, git and release actions remain approval-required."
+    },
+    {
+      "report": ".codex/product-agent-os/reviews/batch45/t06-agent-04-docs-control-plane.md",
+      "status": "completed",
+      "summary": "Recommended source packet plus compact PLAN/TEST/EVALS/registry/Track 11 pointers; RUNLOG remains handoff_required due budget."
+    },
+    {
+      "report": ".codex/product-agent-os/reviews/batch45/t06-agent-05-completion-skeptic.md",
+      "status": "completed",
+      "summary": "Verdict blocked_for_promotion_keep_advisory_only_no_go; T06 can close only as conservative decision gate, not promotion."
+    }
+  ],
+  "no_unapproved_actions": {
+    "live_model_or_provider_api_called": false,
+    "runtime_or_live_server_launched": false,
+    "browser_automation_run": false,
+    "target_workspace_command_run": false,
+    "target_workspace_mutated": false,
+    "database_accessed": false,
+    "ci_or_blocker_enforcement_created": false,
+    "git_branch_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation_created_or_enabled": false,
+    "external_write_performed": false
+  },
+  "unsupported_claims": [
+    "real_ai_agent_behavior_improvement",
+    "treatment_v2_promotion_readiness",
+    "runtime_behavior",
+    "browser_behavior",
+    "target_workspace_safety_after_mutation",
+    "provider_or_live_api_behavior",
+    "ci_workflow_readiness",
+    "blocker_enforcement_readiness",
+    "release_deploy_publish_readiness",
+    "active_automation_readiness",
+    "M26_no_go_reversed",
+    "M35_no_go_reversed"
+  ],
+  "control_plane_sync_decision": {
+    "REQUIREMENTS.md": "not_applicable_no_scope_or_acceptance_change",
+    "PLAN.md": "update_compact_post_q4_pointer",
+    "TEST.md": "update_compact_post_q4_marker",
+    "EVALS.md": "update_compact_post_q4_claim_ceiling",
+    "RUNLOG.md": "handoff_required_due_runlog_budget",
+    "prod_test.md": "not_applicable_batch39_surface",
+    "docs/sources/registry.md": "update_source_route",
+    "docs/sources/registry.en.md": "update_source_route",
+    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md": "update_track11_marker",
+    ".codex/product-agent-os/lifecycle-state.json": "update_current_marker"
+  },
+  "verification": {
+    "status": "repo_checks_passed_with_crlf_warnings",
+    "results": [
+      {
+        "command": "python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v",
+        "status": "passed",
+        "evidence": "Ran 29 tests; OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "status": "passed",
+        "evidence": "Ran 17 tests; OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "status": "passed",
+        "evidence": "Ran 99 tests; OK"
+      },
+      {
+        "command": "python tools\\check_docs.py",
+        "status": "passed",
+        "evidence": "OK: documentation structure checks passed"
+      },
+      {
+        "command": "git diff --check",
+        "status": "passed_with_crlf_warnings",
+        "evidence": "No whitespace errors. Git reported CRLF/LF normalization warnings for edited markdown files."
+      }
+    ],
+    "remaining_required_before_completion_claim": []
+  }
+}

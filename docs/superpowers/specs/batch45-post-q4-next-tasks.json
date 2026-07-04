@@ -200,7 +200,7 @@
       "task_id": "B45-POSTQ4-T06-PROMOTION-DECISION",
       "priority": "P1",
       "route": "decision_gate",
-      "status": "planned_after_static_delta_or_live_eval",
+      "status": "implemented_promotion_no_go_keep_advisory_only",
       "depends_on": [
         "B45-POSTQ4-T03-STATIC-DELTA-VERIFY",
         "B45-POSTQ4-T05-LIVE-MODEL-RERUN",
@@ -244,6 +244,99 @@
       "stop_conditions": [
         "Stop before runtime/browser/provider/target execution without exact owner approval."
       ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS",
+      "priority": "P0",
+      "route": "source_owned_architecture_analysis",
+      "status": "implemented_source_owned_architecture_next_actions_after_t06",
+      "depends_on": [
+        "B45-POSTQ4-T06-PROMOTION-DECISION"
+      ],
+      "scope": "Record the post-T06 technical and architectural analysis plus the next Batch 45 task routes.",
+      "acceptance": [
+        "Analysis separates static quality, behavior eval, runtime/browser proof and governance evidence classes.",
+        "Next tasks preserve advisory-only/no-go unless a new approval-gated evidence route proves otherwise.",
+        "No live/model/provider/runtime/browser/target/CI/git/release/deploy/automation action is performed."
+      ],
+      "verification_gates": [
+        "architecture next-actions packet assertions in focused tests",
+        "PLAN/TEST/EVALS/source registry sync",
+        "docs checks and diff hygiene"
+      ],
+      "stop_conditions": [
+        "Stop if analysis implies promotion from static-only evidence.",
+        "Stop if detailed history is added to RUNLOG.md instead of source-owned packets."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T09-CLOSURE-ADVISORY-ONLY",
+      "priority": "P0",
+      "route": "local_docs_closure_if_no_new_approval",
+      "status": "recommended_if_owner_accepts_no_go",
+      "depends_on": [
+        "B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS"
+      ],
+      "scope": "Close the post-Q4 Batch 45 branch as advisory-only/no-go with local static quality improvements and no promotion.",
+      "acceptance": [
+        "Closure packet names T01-T08 evidence and unsupported claims.",
+        "No new approval-gated action is performed.",
+        "Root control-plane files stay compact."
+      ],
+      "verification_gates": [
+        "focused coding-standards artifact tests",
+        "docs/control-plane checks",
+        "git diff --check"
+      ],
+      "stop_conditions": [
+        "Stop if closure wording implies production readiness or behavior improvement."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
+      "priority": "P1",
+      "route": "approval_packet_only",
+      "status": "recommended_before_any_new_t05b_run",
+      "depends_on": [
+        "B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS",
+        "B45-POSTQ4-T05B-RERUN-PACKET-REVISION"
+      ],
+      "scope": "Redesign the live eval approval packet so future runs can produce paired baseline/treatment evidence despite timeouts.",
+      "acceptance": [
+        "Packet separates strict stop-on-timeout, paired continue, retry-on-timeout and diagnostic-only routes.",
+        "Packet defines per-task pairing, timeout budget, reviewer timing, cost cap handling, temp-only raw retention and abort conditions.",
+        "No model/provider/API call is performed while preparing the packet."
+      ],
+      "verification_gates": [
+        "approval packet assertions",
+        "privacy/cost/retention review",
+        "no-unapproved-actions proof"
+      ],
+      "stop_conditions": [
+        "Stop before live/model/provider/API call without exact owner approval."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN",
+      "priority": "P2",
+      "route": "source_only_design",
+      "status": "optional_before_future_behavior_rerun",
+      "depends_on": [
+        "B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS"
+      ],
+      "scope": "Design a smaller treatment v3 that uses coding standards as planning/reviewer scaffolding instead of a noisy generation-time prompt overlay.",
+      "acceptance": [
+        "Design explains why M26 treatment underperformed and how v3 reduces prompt friction.",
+        "Design maps standards to concrete behaviors, negative examples and reviewer checks.",
+        "Design does not activate hooks, CI, blocker enforcement or live/model calls."
+      ],
+      "verification_gates": [
+        "source design review",
+        "future eval plan update before any run"
+      ],
+      "stop_conditions": [
+        "Stop if design is presented as proven behavior improvement."
+      ]
     }
   ],
   "execution_update": {
@@ -251,13 +344,17 @@
     "approval_packet": "docs/superpowers/specs/batch45-postq4-live-model-rerun-approval-packet.json",
     "latest_t05_evidence": "docs/superpowers/specs/batch45-postq4-t05-live-model-rerun-results.json",
     "latest_t05b_packet": "docs/superpowers/specs/batch45-postq4-t05b-rerun-approval-packet.json",
+    "latest_t06_decision": "docs/superpowers/specs/batch45-postq4-t06-promotion-decision.json",
+    "latest_t08_architecture_next_actions": "docs/superpowers/specs/batch45-postq4-architecture-next-actions.json",
     "executed_task_ids": [
       "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX",
       "B45-POSTQ4-T02-MP-CRM-STATIC-FIX",
       "B45-POSTQ4-T03-STATIC-DELTA-VERIFY",
       "B45-POSTQ4-T04-LIVE-MODEL-RERUN-PACKET",
       "B45-POSTQ4-T05-LIVE-MODEL-RERUN",
-      "B45-POSTQ4-T05B-RERUN-PACKET-REVISION"
+      "B45-POSTQ4-T05B-RERUN-PACKET-REVISION",
+      "B45-POSTQ4-T06-PROMOTION-DECISION",
+      "B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS"
     ],
     "status_by_task": {
       "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX": "implemented_minimal_fixture_copy_intent_comments",
@@ -265,7 +362,9 @@
       "B45-POSTQ4-T03-STATIC-DELTA-VERIFY": "implemented_local_static_delta_verify",
       "B45-POSTQ4-T04-LIVE-MODEL-RERUN-PACKET": "implemented_approval_packet_only_not_run",
       "B45-POSTQ4-T05-LIVE-MODEL-RERUN": "stopped_on_timeout_inconclusive_no_go",
-      "B45-POSTQ4-T05B-RERUN-PACKET-REVISION": "implemented_approval_packet_only_not_run"
+      "B45-POSTQ4-T05B-RERUN-PACKET-REVISION": "implemented_approval_packet_only_not_run",
+      "B45-POSTQ4-T06-PROMOTION-DECISION": "implemented_promotion_no_go_keep_advisory_only",
+      "B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS": "implemented_source_owned_architecture_next_actions_after_t06"
     },
     "warning_delta": {
       "q4_baseline_warning_count": 14,
@@ -289,7 +388,13 @@
       "approved_codex_exec_live_model_task_calls_timed_out": 1,
       "approved_process_stop_after_timeout": true
     },
-    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T04 and T05B are approval packets only. T05 performed an approved live/model rerun attempt but stopped on baseline timeout after 1 completed and 1 timed-out primary run, with no treatment or reviewer evidence. M26/M35 no-go remains active and no runtime/browser/target/CI/git/release/deploy/automation proof exists."
+    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T04 and T05B are approval packets only. T05 stopped on baseline timeout with no treatment/reviewer evidence. T06 keeps advisory-only/no-go. T08 records next routes. M26/M35 remain active and no runtime/browser/target/CI/git/release/deploy/automation proof exists.",
+    "post_t06_recommended_next_routes": [
+      "B45-POSTQ4-T09-CLOSURE-ADVISORY-ONLY",
+      "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
+      "B45-POSTQ4-T07-RUNTIME-BROWSER-PACKET",
+      "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN"
+    ]
   },
   "control_plane_sync_decision": {
     "REQUIREMENTS.md": "not_applicable_no_scope_or_acceptance_change",
@@ -327,7 +432,7 @@
       {
         "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
         "status": "passed",
-        "evidence": "Ran 16 tests; OK"
+        "evidence": "Ran 18 tests; OK"
       },
       {
         "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
@@ -346,11 +451,11 @@
       },
       {
         "command": "Get-Item PLAN.md, TEST.md, EVALS.md, RUNLOG.md | Select-Object Name, Length",
-        "status": "passed_with_existing_runlog_budget_gap",
+        "status": "passed",
         "evidence": {
-          "PLAN.md": 49717,
-          "TEST.md": 49900,
-          "EVALS.md": 49978,
+          "PLAN.md": 49697,
+          "TEST.md": 49908,
+          "EVALS.md": 49908,
           "RUNLOG.md": 51123
         }
       }
