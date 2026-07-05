@@ -59,6 +59,7 @@ POST_Q4_T14_APPROVAL = (
     / "specs"
     / "batch45-postq4-t14-strict-rerun-approval-packet.json"
 )
+POST_Q4_T14_RESULTS = DOCS / "superpowers" / "specs" / "batch45-postq4-t14-strict-rerun-results.json"
 sys.path.insert(0, str(SCRIPTS))
 
 from codex_runtime_runner.model_output import validate_paired_live_eval_result  # noqa: E402
@@ -1345,6 +1346,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN",
             "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
             "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET",
+            "B45-POSTQ4-T14-STRICT-RERUN",
         })
 
     def test_b45_postq4_t13_strict_output_schema_and_harness_hardening(self):
@@ -1401,9 +1403,12 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         self.assertIn(lifecycle["task_id"], {
             "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
             "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET",
+            "B45-POSTQ4-T14-STRICT-RERUN",
         })
         if lifecycle["task_id"] == "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING":
             self.assertEqual("synthetic_green_after_local_tests_only", lifecycle["closure_level"])
+        elif lifecycle["task_id"] == "B45-POSTQ4-T14-STRICT-RERUN":
+            self.assertEqual("live_dependency_aligned", lifecycle["closure_level"])
         else:
             self.assertEqual("approval_packet_only_not_run", lifecycle["closure_level"])
 
@@ -1426,11 +1431,34 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         self.assertEqual("batch45_postq4_t14_strict_rerun_approval_packet_v1", packet["schema_version"])
         self.assertEqual("B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET", packet["task_id"])
         self.assertEqual("B45-POSTQ4-T14-A01", packet["evidence_id"])
-        self.assertEqual("exact_approval_packet_draft_not_owner_confirmed_not_run", packet["status"])
+        self.assertEqual(
+            "exact_approval_packet_draft_revised_for_gpt55_high_not_owner_confirmed_not_run",
+            packet["status"],
+        )
         self.assertFalse(packet["approval_state"]["owner_confirmed"])
         self.assertFalse(packet["approval_state"]["run_authorized_by_this_artifact"])
         self.assertTrue(packet["approval_state"]["requires_next_user_message"])
         self.assertIn("Подтверждаю B45-POSTQ4-T14 exact approval:", packet["exact_approval_text_for_owner_confirmation"])
+        self.assertIn("model: gpt-5.5", packet["exact_approval_text_for_owner_confirmation"])
+        self.assertIn("model reasoning effort: high", packet["exact_approval_text_for_owner_confirmation"])
+        self.assertIn(
+            "result detail level: detailed run/pair/aggregate evidence with per-dimension rubric scores, failure taxonomy, changed-file metadata, static warning deltas, invalid-pair reasons, reviewer-ready summaries and unsupported-claim ledger",
+            packet["exact_approval_text_for_owner_confirmation"],
+        )
+        self.assertEqual("gpt-5.5", packet["approved_if_owner_confirms_exact_text"]["model"])
+        self.assertEqual("high", packet["approved_if_owner_confirms_exact_text"]["model_reasoning_effort"])
+        self.assertEqual("detailed", packet["approved_if_owner_confirms_exact_text"]["result_detail_level"])
+        self.assertEqual(
+            "current_best_quality_rerun_not_same_model_comparability",
+            packet["approved_if_owner_confirms_exact_text"]["comparison_mode"],
+        )
+        self.assertIn("model_change_effect", packet["approval_state"])
+        self.assertTrue(packet["promotion_gate"]["model_change_requires_decision_packet"])
+        self.assertIn("dimension_scores", packet["result_schema_contract"]["required_run_fields"])
+        self.assertIn("failure_taxonomy", packet["result_schema_contract"]["required_run_fields"])
+        self.assertIn("same_model_comparability_with_m26_t05_t12", packet["result_schema_contract"]["required_aggregate_fields"])
+        self.assertIn("model_change_interpretation_required", packet["result_schema_contract"]["required_aggregate_fields"])
+        self.assertGreaterEqual(len(packet["model_selection_source_matrix"]), 3)
         self.assertIn("plugins/product-agent-os/scripts/codex_runtime_runner/model_output.py", packet["basis"])
         self.assertEqual(
             "plugins/product-agent-os/scripts/codex_runtime_runner/model_output.py",
@@ -1449,9 +1477,12 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         )
         self.assertIn("B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET", next_tasks["execution_update"]["executed_task_ids"])
         self.assertEqual(
-            "exact_approval_packet_draft_not_owner_confirmed_not_run",
+            "exact_approval_packet_consumed_by_t14_run_gpt55_high",
             next_tasks["execution_update"]["status_by_task"]["B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET"],
         )
+        self.assertEqual("gpt-5.5", next_tasks["execution_update"]["t14_approval_packet_result"]["model"])
+        self.assertEqual("high", next_tasks["execution_update"]["t14_approval_packet_result"]["model_reasoning_effort"])
+        self.assertEqual("detailed", next_tasks["execution_update"]["t14_approval_packet_result"]["result_detail_level"])
 
         for registry in [registry_ru, registry_en]:
             self.assertIn("B45-POSTQ4-T14-A01", registry)
@@ -1460,8 +1491,70 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         for control_plane in [plan, evals, test_plan, track11]:
             self.assertIn("B45-POSTQ4-T14-A01", control_plane)
 
-        self.assertEqual("B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET", lifecycle["task_id"])
-        self.assertEqual("approval_packet_only_not_run", lifecycle["closure_level"])
+        self.assertIn(
+            lifecycle["task_id"],
+            {
+                "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET",
+                "B45-POSTQ4-T14-STRICT-RERUN",
+            },
+        )
+
+    def test_b45_postq4_t14_strict_rerun_results_preserve_model_change_no_promotion(self):
+        result = json.loads(POST_Q4_T14_RESULTS.read_text(encoding="utf-8"))
+        next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
+        registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
+        registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
+        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+
+        self.assertEqual("batch45_postq4_t14_strict_rerun_results_v1", result["schema_version"])
+        self.assertEqual("B45-POSTQ4-T14-STRICT-RERUN", result["task_id"])
+        self.assertEqual("B45-POSTQ4-T14-RUN-A01", result["evidence_id"])
+        self.assertEqual("executed_current_best_quality_rerun_no_promotion", result["status"])
+        self.assertTrue(result["approval_confirmation_observed"])
+        self.assertEqual("gpt-5.5", result["approval_used"]["model"])
+        self.assertEqual("high", result["approval_used"]["model_reasoning_effort"])
+        self.assertEqual("current_best_quality_rerun_not_same_model_comparability", result["approval_used"]["comparison_mode"])
+
+        summary = result["execution_summary"]
+        aggregate = result["aggregate_result"]
+        self.assertEqual(16, summary["approved_primary_task_model_calls_started"])
+        self.assertEqual(16, summary["completed_primary_task_runs"])
+        self.assertEqual(8, summary["valid_pair_count"])
+        self.assertEqual(0, summary["invalid_pair_count"])
+        self.assertEqual(0, summary["timeout_primary_task_runs"])
+        self.assertEqual(0, summary["no_op_primary_task_runs"])
+        self.assertEqual(0, summary["invalid_json_primary_task_runs"])
+        self.assertEqual("not_run_due_runner_contract_manual_gap", summary["reviewer_status"])
+        self.assertEqual(0, summary["reviewer_calls_started"])
+        self.assertEqual(8, aggregate["valid_pair_count"])
+        self.assertEqual(0, aggregate["invalid_pair_count"])
+        self.assertEqual(3.27, aggregate["average_score_delta_percent"])
+        self.assertEqual(6, aggregate["treatment_equal_or_better_count"])
+        self.assertFalse(aggregate["promotion_threshold_met"])
+        self.assertFalse(aggregate["m26_reversed"])
+        self.assertFalse(aggregate["m35_reversed"])
+        self.assertFalse(aggregate["same_model_comparability_with_m26_t05_t12"])
+        self.assertTrue(aggregate["model_change_interpretation_required"])
+        self.assertEqual([], validate_paired_live_eval_result(result))
+
+        self.assertEqual(
+            "docs/superpowers/specs/batch45-postq4-t14-strict-rerun-results.json",
+            next_tasks["execution_update"]["latest_t14_run_results"],
+        )
+        self.assertEqual(
+            "executed_current_best_quality_rerun_no_promotion",
+            next_tasks["execution_update"]["t14_live_eval_result"]["status"],
+        )
+        self.assertEqual(8, next_tasks["execution_update"]["t14_live_eval_result"]["valid_pair_count"])
+        self.assertEqual(0, next_tasks["execution_update"]["t14_live_eval_result"]["invalid_pair_count"])
+        self.assertEqual("not_run_due_runner_contract_manual_gap", next_tasks["execution_update"]["t14_live_eval_result"]["reviewer_status"])
+
+        for registry in [registry_ru, registry_en]:
+            self.assertIn("B45-POSTQ4-T14-RUN-A01", registry)
+            self.assertIn("docs/superpowers/specs/batch45-postq4-t14-strict-rerun-results.json", registry)
+
+        self.assertEqual("B45-POSTQ4-T14-STRICT-RERUN", lifecycle["task_id"])
+        self.assertEqual("live_dependency_aligned", lifecycle["closure_level"])
 
     def test_s5_learning_automation_packet_closes_m23_without_activation(self):
         packet = json.loads(S5_SUMMARY.read_text(encoding="utf-8"))

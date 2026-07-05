@@ -406,7 +406,7 @@
         "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
         "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN"
       ],
-      "scope": "Create the exact owner-confirmation packet for a future paired live/model rerun after T13 strict schema and no-op harness hardening.",
+      "scope": "Create the exact owner-confirmation packet for a future paired live/model rerun after T13 strict schema and no-op harness hardening, revised to use gpt-5.5 with high reasoning for stronger detailed testing evidence.",
       "owned_surfaces": [
         "docs/superpowers/specs/batch45-postq4-t14-strict-rerun-approval-packet.json",
         "docs/superpowers/specs/batch45-post-q4-next-tasks.json",
@@ -414,8 +414,10 @@
         "compact control-plane/source registry pointers"
       ],
       "acceptance": [
-        "Packet includes exact provider/surface/model/run-count/command/root/timeout/order/retention/reviewer fields.",
+        "Packet includes exact provider/surface/model/reasoning-effort/run-count/command/root/timeout/order/retention/reviewer fields.",
         "Packet requires T13 strict FINAL_JSON parser, run/pair/aggregate validator, no-op guard and sanitized rollup validation before reviewer or promotion interpretation.",
+        "Packet records that gpt-5.5 high is a current-best-quality rerun path, not strict same-model comparability with M26/T05/T12 gpt-5.3-codex-spark evidence.",
+        "Packet requires detailed run/pair/aggregate evidence: per-dimension rubric scores, failure taxonomy, changed-file metadata, unsupported claims and reviewer-ready summaries.",
         "Packet is not treated as owner approval or run evidence until the owner restates the exact approval text."
       ],
       "verification_gates": [
@@ -455,7 +457,8 @@
       "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN-EXACT-APPROVAL-PACKET",
       "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN",
       "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
-      "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET"
+      "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET",
+      "B45-POSTQ4-T14-STRICT-RERUN"
     ],
     "status_by_task": {
       "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX": "implemented_minimal_fixture_copy_intent_comments",
@@ -471,7 +474,8 @@
       "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN-EXACT-APPROVAL-PACKET": "exact_approval_packet_draft_not_owner_confirmed_not_run",
       "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN": "executed_paired_live_model_rerun_no_go_invalid_pair",
       "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING": "implemented_local_schema_no_op_hardening_no_live_calls",
-      "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET": "exact_approval_packet_draft_not_owner_confirmed_not_run"
+      "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET": "exact_approval_packet_consumed_by_t14_run_gpt55_high",
+      "B45-POSTQ4-T14-STRICT-RERUN": "executed_current_best_quality_rerun_no_promotion"
     },
     "warning_delta": {
       "q4_baseline_warning_count": 14,
@@ -498,9 +502,15 @@
       "approved_t12_codex_exec_primary_calls_completed": 14,
       "approved_t12_codex_exec_primary_calls_no_op": 1,
       "approved_t12_codex_exec_primary_calls_invalid_json": 1,
-      "approved_t12_reviewer_calls_started": 0
+      "approved_t12_reviewer_calls_started": 0,
+      "approved_t14_codex_exec_primary_calls_started": 16,
+      "approved_t14_codex_exec_primary_calls_completed": 16,
+      "approved_t14_codex_exec_primary_calls_timed_out": 0,
+      "approved_t14_codex_exec_primary_calls_no_op": 0,
+      "approved_t14_codex_exec_primary_calls_invalid_json": 0,
+      "approved_t14_reviewer_calls_started": 0
     },
-    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T05 stopped on baseline timeout. T12 produced valid_pair_count=6, invalid_json=1 and no_op=1; reviewer skipped. T13 adds local strict-output schema/no-op hardening. T14 is exact approval packet draft only, not owner confirmation or run evidence. M26/M35/T05/T06/T12 remain active and no runtime/browser/target/CI/git/release/deploy/automation proof exists.",
+    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T05 stopped on baseline timeout. T12 produced valid_pair_count=6, invalid_json=1 and no_op=1; reviewer skipped. T13 adds local strict-output schema/no-op hardening. T14 executed exact-approved gpt-5.5 high-reasoning current-best-quality rerun with valid_pair_count=8 and invalid_pair_count=0, but reviewer did not run and model-change interpretation is still required, so no promotion, no M26/M35 reversal and no runtime/browser/target/CI/git/release/deploy/automation proof exists.",
     "post_t06_recommended_next_routes": [
       "B45-POSTQ4-T09-CLOSURE-ADVISORY-ONLY",
       "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
@@ -536,13 +546,44 @@
     },
     "latest_t14_approval_packet": "docs/superpowers/specs/batch45-postq4-t14-strict-rerun-approval-packet.json",
     "t14_approval_packet_result": {
-      "status": "exact_approval_packet_draft_not_owner_confirmed_not_run",
-      "owner_confirmed": false,
-      "run_authorized_by_this_artifact": false,
-      "new_live_model_calls_started": 0,
+      "status": "exact_approval_packet_consumed_by_t14_run_gpt55_high",
+      "owner_confirmed": true,
+      "run_authorized_by_this_artifact": true,
+      "new_live_model_calls_started": 16,
       "reviewer_calls_started": 0,
-      "requires_next_user_message": true,
-      "decision": "approval_packet_only_not_run"
+      "requires_next_user_message": false,
+      "model": "gpt-5.5",
+      "model_reasoning_effort": "high",
+      "comparison_mode": "current_best_quality_rerun_not_same_model_comparability",
+      "result_detail_level": "detailed",
+      "decision": "approval_consumed_by_t14_run"
+    },
+    "latest_t14_run_results": "docs/superpowers/specs/batch45-postq4-t14-strict-rerun-results.json",
+    "t14_live_eval_result": {
+      "status": "executed_current_best_quality_rerun_no_promotion",
+      "evidence_id": "B45-POSTQ4-T14-RUN-A01",
+      "model": "gpt-5.5",
+      "model_reasoning_effort": "high",
+      "comparison_mode": "current_best_quality_rerun_not_same_model_comparability",
+      "result_detail_level": "detailed",
+      "approved_primary_task_model_calls_started": 16,
+      "completed_primary_task_runs": 16,
+      "valid_pair_count": 8,
+      "invalid_pair_count": 0,
+      "timeout_count": 0,
+      "no_op_count": 0,
+      "invalid_json_count": 0,
+      "average_baseline_score": 0.8775,
+      "average_treatment_score": 0.9062,
+      "average_score_delta_percent": 3.27,
+      "treatment_equal_or_better_count": 6,
+      "reviewer_calls_started": 0,
+      "reviewer_status": "not_run_due_runner_contract_manual_gap",
+      "promotion_threshold_met": false,
+      "m26_reversed": false,
+      "m35_reversed": false,
+      "model_change_interpretation_required": true,
+      "decision": "valid_pairs_no_promotion_model_change_decision_required"
     }
   },
   "control_plane_sync_decision": {
@@ -573,16 +614,16 @@
   },
   "verification": {
     "results": [
-      {
-        "command": "python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v",
-        "status": "passed",
-        "evidence": "Ran 29 tests; OK"
-      },
-      {
-        "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
-        "status": "passed",
-        "evidence": "Ran 22 tests; OK"
-      },
+            {
+                "command": "python -m unittest tests.product_agent_os.test_codex_runtime_runner_model_output -v",
+                "status": "passed",
+                "evidence": "Ran 8 tests; OK"
+            },
+            {
+                "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+                "status": "passed",
+                "evidence": "Ran 25 tests; OK"
+            },
       {
         "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
         "status": "passed",
@@ -602,12 +643,12 @@
         "command": "Get-Item PLAN.md, TEST.md, EVALS.md, RUNLOG.md | Select-Object Name, Length",
         "status": "passed",
         "evidence": {
-          "PLAN.md": 49760,
-          "TEST.md": 49995,
-          "EVALS.md": 49994,
-          "RUNLOG.md": 51123
-        }
-      }
+                    "PLAN.md": 49859,
+                    "TEST.md": 49891,
+                    "EVALS.md": 49996,
+                    "RUNLOG.md": 51123
+                }
+            }
     ],
     "remaining_required_before_completion_claim": []
   }

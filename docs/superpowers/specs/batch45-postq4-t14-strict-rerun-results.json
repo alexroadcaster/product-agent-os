@@ -1,0 +1,1291 @@
+{
+  "schema_version": "batch45_postq4_t14_strict_rerun_results_v1",
+  "task_id": "B45-POSTQ4-T14-STRICT-RERUN",
+  "evidence_id": "B45-POSTQ4-T14-RUN-A01",
+  "status": "executed_current_best_quality_rerun_no_promotion",
+  "created_at": "2026-07-05T18:57:36.260797+03:00",
+  "source_status": "sanitized rollup of exact-approved T14 current-best-quality live/model rerun; raw outputs retained in temp only",
+  "approval_used": {
+    "provider_surface": "Codex CLI/OpenAI via codex exec",
+    "model": "gpt-5.5",
+    "model_reasoning_effort": "high",
+    "comparison_mode": "current_best_quality_rerun_not_same_model_comparability",
+    "result_detail_level": "detailed",
+    "primary_model_call_cap": {
+      "baseline": 8,
+      "treatment": 8,
+      "total_primary": 16
+    },
+    "reviewer_call_cap": 1,
+    "setup_or_smoke_model_calls": 0,
+    "command_surface": "codex exec --ephemeral --disable hooks --ignore-rules --sandbox workspace-write --model gpt-5.5 -c model_reasoning_effort=high -C <TEMP disposable copy>",
+    "disposable_root": "%TEMP%\\codex-b45-postq4-t14-*",
+    "timeout_per_primary_task_seconds": 600,
+    "cost_cap_policy": "accepted_gap_cost_unavailable_call_count_cap_only",
+    "raw_retention": "temp_only",
+    "repo_retention": "sanitized_rollup_only"
+  },
+  "approval_confirmation_observed": true,
+  "execution_summary": {
+    "planned_primary_task_runs": 16,
+    "approved_primary_task_model_calls_started": 16,
+    "completed_primary_task_runs": 16,
+    "no_op_primary_task_runs": 0,
+    "timeout_primary_task_runs": 0,
+    "invalid_json_primary_task_runs": 0,
+    "wrapper_failures_before_model_call": 0,
+    "not_run_due_stop_rule_count": 0,
+    "reviewer_calls_started": 0,
+    "reviewer_status": "not_run_due_runner_contract_manual_gap",
+    "setup_or_smoke_model_calls": 0,
+    "valid_pair_count": 8,
+    "invalid_pair_count": 0,
+    "result_interpretation": "T14 uses gpt-5.5 high reasoning for current-best-quality evidence; model-change caveat prevents direct same-model comparison with M26/T05/T12."
+  },
+  "aggregate_result": {
+    "valid_pair_count": 8,
+    "invalid_pair_count": 0,
+    "timeout_count": 0,
+    "no_op_count": 0,
+    "invalid_json_count": 0,
+    "wrapper_failure_before_model_call_count": 0,
+    "not_run_due_stop_rule_count": 0,
+    "average_baseline_score": 0.8775,
+    "average_treatment_score": 0.9062,
+    "average_score_delta_percent": 3.27,
+    "treatment_equal_or_better_count": 6,
+    "reviewer_decision": "not_run_due_runner_contract_manual_gap",
+    "reviewer_summary": "Reviewer skipped unless all 8 pairs are schema-valid; this runner did not start reviewer because promotion gate is not satisfied or reviewer automation remains manual gap.",
+    "promotion_threshold_met": false,
+    "m26_reversed": false,
+    "m35_reversed": false,
+    "same_model_comparability_with_m26_t05_t12": false,
+    "model_change_interpretation_required": true,
+    "unsupported_claims": [
+      "M26_no_go_reversed",
+      "M35_no_go_reversed",
+      "runtime_browser_readiness",
+      "target_workspace_apply_safety",
+      "ci_or_blocker_promotion",
+      "release_deploy_publish_readiness"
+    ]
+  },
+  "pairs": [
+    {
+      "pair_id": "B45-HELDOUT-01",
+      "task_id": "B45-HELDOUT-01",
+      "baseline_status": "completed",
+      "treatment_status": "completed",
+      "pair_valid_for_scoring": true,
+      "invalid_reason": null,
+      "score_delta": 0.0,
+      "treatment_equal_or_better": true,
+      "static_warning_delta": 0,
+      "reviewer_required": true,
+      "pair_evidence_summary": "baseline_files=2; treatment_files=2; baseline_warnings=4; treatment_warnings=4",
+      "model_change_caveat": "current_best_quality_rerun_not_same_model_comparability_with_m26_t05_t12"
+    },
+    {
+      "pair_id": "B45-HELDOUT-02",
+      "task_id": "B45-HELDOUT-02",
+      "baseline_status": "completed",
+      "treatment_status": "completed",
+      "pair_valid_for_scoring": true,
+      "invalid_reason": null,
+      "score_delta": 0.0,
+      "treatment_equal_or_better": true,
+      "static_warning_delta": -70,
+      "reviewer_required": true,
+      "pair_evidence_summary": "baseline_files=10; treatment_files=7; baseline_warnings=100; treatment_warnings=30",
+      "model_change_caveat": "current_best_quality_rerun_not_same_model_comparability_with_m26_t05_t12"
+    },
+    {
+      "pair_id": "B45-HELDOUT-03",
+      "task_id": "B45-HELDOUT-03",
+      "baseline_status": "completed",
+      "treatment_status": "completed",
+      "pair_valid_for_scoring": true,
+      "invalid_reason": null,
+      "score_delta": 0.01,
+      "treatment_equal_or_better": true,
+      "static_warning_delta": 0,
+      "reviewer_required": true,
+      "pair_evidence_summary": "baseline_files=4; treatment_files=2; baseline_warnings=3; treatment_warnings=3",
+      "model_change_caveat": "current_best_quality_rerun_not_same_model_comparability_with_m26_t05_t12"
+    },
+    {
+      "pair_id": "B45-HELDOUT-04",
+      "task_id": "B45-HELDOUT-04",
+      "baseline_status": "completed",
+      "treatment_status": "completed",
+      "pair_valid_for_scoring": true,
+      "invalid_reason": null,
+      "score_delta": -0.01,
+      "treatment_equal_or_better": false,
+      "static_warning_delta": 0,
+      "reviewer_required": true,
+      "pair_evidence_summary": "baseline_files=2; treatment_files=2; baseline_warnings=21; treatment_warnings=21",
+      "model_change_caveat": "current_best_quality_rerun_not_same_model_comparability_with_m26_t05_t12"
+    },
+    {
+      "pair_id": "B45-HELDOUT-05",
+      "task_id": "B45-HELDOUT-05",
+      "baseline_status": "completed",
+      "treatment_status": "completed",
+      "pair_valid_for_scoring": true,
+      "invalid_reason": null,
+      "score_delta": -0.01,
+      "treatment_equal_or_better": false,
+      "static_warning_delta": -1,
+      "reviewer_required": true,
+      "pair_evidence_summary": "baseline_files=2; treatment_files=2; baseline_warnings=5; treatment_warnings=4",
+      "model_change_caveat": "current_best_quality_rerun_not_same_model_comparability_with_m26_t05_t12"
+    },
+    {
+      "pair_id": "B45-HELDOUT-06",
+      "task_id": "B45-HELDOUT-06",
+      "baseline_status": "completed",
+      "treatment_status": "completed",
+      "pair_valid_for_scoring": true,
+      "invalid_reason": null,
+      "score_delta": 0.08,
+      "treatment_equal_or_better": true,
+      "static_warning_delta": 13,
+      "reviewer_required": true,
+      "pair_evidence_summary": "baseline_files=7; treatment_files=5; baseline_warnings=0; treatment_warnings=13",
+      "model_change_caveat": "current_best_quality_rerun_not_same_model_comparability_with_m26_t05_t12"
+    },
+    {
+      "pair_id": "B45-HELDOUT-07",
+      "task_id": "B45-HELDOUT-07",
+      "baseline_status": "completed",
+      "treatment_status": "completed",
+      "pair_valid_for_scoring": true,
+      "invalid_reason": null,
+      "score_delta": 0.1,
+      "treatment_equal_or_better": true,
+      "static_warning_delta": -2,
+      "reviewer_required": true,
+      "pair_evidence_summary": "baseline_files=2; treatment_files=3; baseline_warnings=3; treatment_warnings=1",
+      "model_change_caveat": "current_best_quality_rerun_not_same_model_comparability_with_m26_t05_t12"
+    },
+    {
+      "pair_id": "B45-HELDOUT-08",
+      "task_id": "B45-HELDOUT-08",
+      "baseline_status": "completed",
+      "treatment_status": "completed",
+      "pair_valid_for_scoring": true,
+      "invalid_reason": null,
+      "score_delta": 0.06,
+      "treatment_equal_or_better": true,
+      "static_warning_delta": -1,
+      "reviewer_required": true,
+      "pair_evidence_summary": "baseline_files=2; treatment_files=2; baseline_warnings=7; treatment_warnings=6",
+      "model_change_caveat": "current_best_quality_rerun_not_same_model_comparability_with_m26_t05_t12"
+    }
+  ],
+  "per_task_results": [
+    {
+      "task_id": "B45-HELDOUT-01",
+      "arm": "baseline",
+      "pair_id": "B45-HELDOUT-01",
+      "attempt_id": "T14-B45-HELDOUT-01-baseline",
+      "model": "gpt-5.5",
+      "model_reasoning_effort": "high",
+      "started_at": "2026-07-05T17:28:11.181334+03:00",
+      "ended_at": "2026-07-05T17:32:19.220951+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 248.04,
+      "final_json_parse_ok": true,
+      "changed_file_count": 2,
+      "sanitized_changed_files": [
+        {
+          "path": "plugins/product-agent-os/assets/templates/hooks/pre_tool_use_policy.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_lifecycle_hooks.py",
+          "change_type": "M"
+        }
+      ],
+      "changed_file_evidence_summary": "M plugins/product-agent-os/assets/templates/hooks/pre_tool_use_policy.py; M tests/product_agent_os/test_lifecycle_hooks.py",
+      "comment_sufficiency_warning_count": 4,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 4,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 0.86,
+      "dimension_scores": {
+        "existing_capability_scan": 8,
+        "custom_code_avoidance": 9,
+        "comment_sufficiency": 10,
+        "test_scenario_coverage": 8,
+        "unsupported_claims": 9,
+        "reviewer_usefulness": 6,
+        "privacy_safety": 10,
+        "flake_cost_control": 9
+      },
+      "failure_taxonomy": [],
+      "unsupported_claims": [],
+      "final_tests_run_count": 2,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "raw_output_hashes": {
+        "prompt_sha256": "B261D8B412ECF7377E264B18677AFB01AEBF9D8CBE2C28629137098B9C7E668E",
+        "stdout_sha256": "14AB3C6E944C2FE991C89CC3264A82C11FC0F9599A394E253106A4998382AFF5",
+        "stderr_sha256": "6460DBBD1663B92B3504DD24B706E86BC45C9787B74EE8FDCA39FF45B0915E3A",
+        "copy_log_sha256": "33D4291D9F927B4CC334002BE67F3553720F9FB2F5F2A9B0479495FCC38977E3",
+        "last_message_sha256": "0046CD9B989D7660C35D8E3058EADEA8BA14508846EB1539BC8AB7987C092DBC",
+        "stdout_length_bytes": 1288,
+        "stderr_length_bytes": 1262275,
+        "last_message_length_bytes": 1287
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-01",
+      "arm": "treatment",
+      "pair_id": "B45-HELDOUT-01",
+      "attempt_id": "T14-B45-HELDOUT-01-treatment",
+      "model": "gpt-5.5",
+      "model_reasoning_effort": "high",
+      "started_at": "2026-07-05T17:32:32.456641+03:00",
+      "ended_at": "2026-07-05T17:37:59.523135+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 327.066,
+      "final_json_parse_ok": true,
+      "changed_file_count": 2,
+      "sanitized_changed_files": [
+        {
+          "path": "plugins/product-agent-os/assets/templates/hooks/pre_tool_use_policy.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_lifecycle_hooks.py",
+          "change_type": "M"
+        }
+      ],
+      "changed_file_evidence_summary": "M plugins/product-agent-os/assets/templates/hooks/pre_tool_use_policy.py; M tests/product_agent_os/test_lifecycle_hooks.py",
+      "comment_sufficiency_warning_count": 4,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 4,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 0.86,
+      "dimension_scores": {
+        "existing_capability_scan": 8,
+        "custom_code_avoidance": 8,
+        "comment_sufficiency": 8,
+        "test_scenario_coverage": 8,
+        "unsupported_claims": 9,
+        "reviewer_usefulness": 6,
+        "privacy_safety": 10,
+        "flake_cost_control": 8
+      },
+      "failure_taxonomy": [
+        "wrong_unittest_selector_retried"
+      ],
+      "unsupported_claims": [],
+      "final_tests_run_count": 8,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "raw_output_hashes": {
+        "prompt_sha256": "9EFA0512B8C39D07C6BF073D4B70DFABD5D33061029F5F4C53707C5101E2C9EF",
+        "stdout_sha256": "4C3A8FBC0F60287F88132E7D501EE08F55838138075A84EAAE874077BDC8A80A",
+        "stderr_sha256": "1C1946E0D3A0149AB9D770F556A69C516146297E3A67D66694395E022DFB1F3E",
+        "copy_log_sha256": "25084FEEBBABB91B55C50D0E1646AC9FD8410789314DC6951F8A02E81698D172",
+        "last_message_sha256": "BC13FE890754253438EF8F5651BDD71BC3B8631DBC974CA234E4EF1CBC881782",
+        "stdout_length_bytes": 2348,
+        "stderr_length_bytes": 1900907,
+        "last_message_length_bytes": 2347
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-02",
+      "arm": "baseline",
+      "pair_id": "B45-HELDOUT-02",
+      "attempt_id": "T14-B45-HELDOUT-02-baseline",
+      "model": "gpt-5.5",
+      "model_reasoning_effort": "high",
+      "started_at": "2026-07-05T17:38:22.714022+03:00",
+      "ended_at": "2026-07-05T17:47:55.875896+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 573.162,
+      "final_json_parse_ok": true,
+      "changed_file_count": 10,
+      "sanitized_changed_files": [
+        {
+          "path": "docs/product-agent-os/artifact-contracts.en.md",
+          "change_type": "M"
+        },
+        {
+          "path": "docs/product-agent-os/artifact-contracts.md",
+          "change_type": "M"
+        },
+        {
+          "path": "docs/sources/registry.en.md",
+          "change_type": "M"
+        },
+        {
+          "path": "docs/sources/registry.md",
+          "change_type": "M"
+        },
+        {
+          "path": "docs/superpowers/specs/batch41-s6-synthetic-e2e-summary.json",
+          "change_type": "M"
+        },
+        {
+          "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+          "change_type": "M"
+        },
+        {
+          "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_batch41_first_run_automation.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_first_run_analysis.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_product_agent_os_docs.py",
+          "change_type": "M"
+        }
+      ],
+      "changed_file_evidence_summary": "M docs/product-agent-os/artifact-contracts.en.md; M docs/product-agent-os/artifact-contracts.md; M docs/sources/registry.en.md; M docs/sources/registry.md; M docs/superpowers/specs/batch41-s6-synthetic-e2e-summary.json; M plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py; M plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py; M tests/product_agent_os/test_batch41_first_run_automation.py; M tests/product_agent_os/test_first_run_analysis.py; M tests/product_agent_os/test_product_agent_os_docs.py",
+      "comment_sufficiency_warning_count": 100,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 100,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 0.88,
+      "dimension_scores": {
+        "existing_capability_scan": 8,
+        "custom_code_avoidance": 7,
+        "comment_sufficiency": 8,
+        "test_scenario_coverage": 9,
+        "unsupported_claims": 9,
+        "reviewer_usefulness": 7,
+        "privacy_safety": 9,
+        "flake_cost_control": 8
+      },
+      "failure_taxonomy": [],
+      "unsupported_claims": [],
+      "final_tests_run_count": 4,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "raw_output_hashes": {
+        "prompt_sha256": "141A289ECC257817368343F7CC5145E932DD4E96C5A56807E5872269D85B4700",
+        "stdout_sha256": "1FBA21927FCB767084799C1C49531FEA59D7703760228FC357BA1D07F63A4360",
+        "stderr_sha256": "66AA49A71D2CDD10818FFFE263B65733BDF7C29A914AC548270CC0C09EDE008C",
+        "copy_log_sha256": "C0B72052D7F5C2FDB60868180E71B833952A7558AF4D6E022BD398079B11D2A9",
+        "last_message_sha256": "6ECE6386EAE9418677B24FE2E91E12153D47B7D56B9AC08E96CF0599AA194AF0",
+        "stdout_length_bytes": 1492,
+        "stderr_length_bytes": 2539837,
+        "last_message_length_bytes": 1491
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-02",
+      "arm": "treatment",
+      "pair_id": "B45-HELDOUT-02",
+      "attempt_id": "T14-B45-HELDOUT-02-treatment",
+      "model": "gpt-5.5",
+      "model_reasoning_effort": "high",
+      "started_at": "2026-07-05T17:48:11.379806+03:00",
+      "ended_at": "2026-07-05T17:56:04.789419+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 473.409,
+      "final_json_parse_ok": true,
+      "changed_file_count": 7,
+      "sanitized_changed_files": [
+        {
+          "path": "docs/product-agent-os/artifact-contracts.en.md",
+          "change_type": "M"
+        },
+        {
+          "path": "docs/product-agent-os/artifact-contracts.md",
+          "change_type": "M"
+        },
+        {
+          "path": "docs/superpowers/specs/batch41-s6-synthetic-e2e-summary.json",
+          "change_type": "M"
+        },
+        {
+          "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+          "change_type": "M"
+        },
+        {
+          "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_batch41_first_run_automation.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_first_run_analysis.py",
+          "change_type": "M"
+        }
+      ],
+      "changed_file_evidence_summary": "M docs/product-agent-os/artifact-contracts.en.md; M docs/product-agent-os/artifact-contracts.md; M docs/superpowers/specs/batch41-s6-synthetic-e2e-summary.json; M plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py; M plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py; M tests/product_agent_os/test_batch41_first_run_automation.py; M tests/product_agent_os/test_first_run_analysis.py",
+      "comment_sufficiency_warning_count": 30,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 30,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 0.88,
+      "dimension_scores": {
+        "existing_capability_scan": 9,
+        "custom_code_avoidance": 8,
+        "comment_sufficiency": 8,
+        "test_scenario_coverage": 8,
+        "unsupported_claims": 9,
+        "reviewer_usefulness": 7,
+        "privacy_safety": 10,
+        "flake_cost_control": 8
+      },
+      "failure_taxonomy": [
+        "preexisting_dirty_docs_artifacts_blocked_full_docs_unittest"
+      ],
+      "unsupported_claims": [],
+      "final_tests_run_count": 5,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "raw_output_hashes": {
+        "prompt_sha256": "CF4DF7BA7EB6FAAF54CDD109A78262425418EAE6EC278FAB4DCA87D532CCD55E",
+        "stdout_sha256": "A321F5AC14AA75E22B7421CEFFF2B8D52512E96C72BCBD028E530CF38BE0DA6E",
+        "stderr_sha256": "0BA6026C61E276ACBE28A3648733873D751DB30475C7E99386EF6F31905CC067",
+        "copy_log_sha256": "F2A61A61C30015661E2DD7CC354991F2FD3E9D8FC2014C5B0623FEDFBB0DE315",
+        "last_message_sha256": "1F976F658E4AE667A9EAB68E7745B51BC9B530FD05E6702A181DEC3A2235086A",
+        "stdout_length_bytes": 1562,
+        "stderr_length_bytes": 2224866,
+        "last_message_length_bytes": 1561
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-03",
+      "arm": "baseline",
+      "pair_id": "B45-HELDOUT-03",
+      "attempt_id": "T14-B45-HELDOUT-03-baseline",
+      "model": "gpt-5.5",
+      "model_reasoning_effort": "high",
+      "started_at": "2026-07-05T17:56:21.260508+03:00",
+      "ended_at": "2026-07-05T18:00:00.517967+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 219.257,
+      "final_json_parse_ok": true,
+      "changed_file_count": 4,
+      "sanitized_changed_files": [
+        {
+          "path": "plugins/product-agent-os/scripts/codex_runtime_runner/redaction.py",
+          "change_type": "M"
+        },
+        {
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_live_audit.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_codex_runtime_runner_guards.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_project_graph_live_audit.py",
+          "change_type": "M"
+        }
+      ],
+      "changed_file_evidence_summary": "M plugins/product-agent-os/scripts/codex_runtime_runner/redaction.py; M plugins/product-agent-os/scripts/product_agent_os/project_graph_live_audit.py; M tests/product_agent_os/test_codex_runtime_runner_guards.py; M tests/product_agent_os/test_project_graph_live_audit.py",
+      "comment_sufficiency_warning_count": 3,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 3,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 0.91,
+      "dimension_scores": {
+        "existing_capability_scan": 9,
+        "custom_code_avoidance": 8,
+        "comment_sufficiency": 8,
+        "test_scenario_coverage": 9,
+        "unsupported_claims": 10,
+        "reviewer_usefulness": 6,
+        "privacy_safety": 9,
+        "flake_cost_control": 9
+      },
+      "failure_taxonomy": [],
+      "unsupported_claims": [],
+      "final_tests_run_count": 2,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "raw_output_hashes": {
+        "prompt_sha256": "E471A9C7CBB6A7C5B8AAECAADFFABDCBFCB321EEC6396ECFC47516442227AB22",
+        "stdout_sha256": "36DF587C9C5871C69E8D231B8816E12C2F923F44AFD9B971C3838620309F052E",
+        "stderr_sha256": "E69F1CF9D3932E93F6567CB868594ADC30BD21EAB182709C5CBE141FEA17A7ED",
+        "copy_log_sha256": "C382152C8EB166C5ECB1ADEC4DFEA4D6C760CAF1AA14E1A85BEE2FC1EE4EDF97",
+        "last_message_sha256": "8F6C0CA55EB9415A04E0C7FEBD37BC0E727F317AEF990C27796131D072D7DCC3",
+        "stdout_length_bytes": 1125,
+        "stderr_length_bytes": 1707139,
+        "last_message_length_bytes": 1124
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-03",
+      "arm": "treatment",
+      "pair_id": "B45-HELDOUT-03",
+      "attempt_id": "T14-B45-HELDOUT-03-treatment",
+      "model": "gpt-5.5",
+      "model_reasoning_effort": "high",
+      "started_at": "2026-07-05T18:00:15.210064+03:00",
+      "ended_at": "2026-07-05T18:03:43.011473+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 207.801,
+      "final_json_parse_ok": true,
+      "changed_file_count": 2,
+      "sanitized_changed_files": [
+        {
+          "path": "plugins/product-agent-os/scripts/codex_runtime_runner/redaction.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_codex_runtime_runner_guards.py",
+          "change_type": "M"
+        }
+      ],
+      "changed_file_evidence_summary": "M plugins/product-agent-os/scripts/codex_runtime_runner/redaction.py; M tests/product_agent_os/test_codex_runtime_runner_guards.py",
+      "comment_sufficiency_warning_count": 3,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 3,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 0.92,
+      "dimension_scores": {
+        "existing_capability_scan": 9,
+        "custom_code_avoidance": 8,
+        "comment_sufficiency": 8,
+        "test_scenario_coverage": 9,
+        "unsupported_claims": 10,
+        "reviewer_usefulness": 7,
+        "privacy_safety": 9,
+        "flake_cost_control": 9
+      },
+      "failure_taxonomy": [],
+      "unsupported_claims": [],
+      "final_tests_run_count": 3,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "raw_output_hashes": {
+        "prompt_sha256": "96DD6EA76FDC5C49A23780782422E3FE9D5C41F987D97D0B8CCBD1AED817D3D2",
+        "stdout_sha256": "B6764F912D1E7E6FC351312131323C3EC010BB8C36D95B15ADECED40F74E0375",
+        "stderr_sha256": "AF239BC7E7FA31C3B72A7758847C185D8734EF7CD2D6B10E4B39FDE85B9B89CB",
+        "copy_log_sha256": "4C14FF1380C9B01724E8131F8A7CE33153899D926DE549604345C656FE3DC733",
+        "last_message_sha256": "70AF1CA7ADB7CA53B6568F6FAE89B41CEA86FEBC62A852BBF70728FBE723985E",
+        "stdout_length_bytes": 1626,
+        "stderr_length_bytes": 1369035,
+        "last_message_length_bytes": 1625
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-04",
+      "arm": "baseline",
+      "pair_id": "B45-HELDOUT-04",
+      "attempt_id": "T14-B45-HELDOUT-04-baseline",
+      "model": "gpt-5.5",
+      "model_reasoning_effort": "high",
+      "started_at": "2026-07-05T18:03:55.489484+03:00",
+      "ended_at": "2026-07-05T18:07:36.723269+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 221.234,
+      "final_json_parse_ok": true,
+      "changed_file_count": 2,
+      "sanitized_changed_files": [
+        {
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_project_graph_queries.py",
+          "change_type": "M"
+        }
+      ],
+      "changed_file_evidence_summary": "M plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py; M tests/product_agent_os/test_project_graph_queries.py",
+      "comment_sufficiency_warning_count": 21,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 21,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 0.94,
+      "dimension_scores": {
+        "existing_capability_scan": 8,
+        "custom_code_avoidance": 9,
+        "comment_sufficiency": 9,
+        "test_scenario_coverage": 9,
+        "unsupported_claims": 10,
+        "reviewer_usefulness": 0,
+        "privacy_safety": 10,
+        "flake_cost_control": 9
+      },
+      "failure_taxonomy": [],
+      "unsupported_claims": [],
+      "final_tests_run_count": 3,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "raw_output_hashes": {
+        "prompt_sha256": "F3AEEC4EDAAF1CC9D2DB138B5C322E866CAD8CC07C16D854300E031F347DA019",
+        "stdout_sha256": "09CF80CB9976CD03BCD6014379E96472342350E3AF2BE6E7D57CEE5070D65DB8",
+        "stderr_sha256": "61CD4A432C60604881DB5B61F3FC5DEAB682658111F2BE45346A14FAAE99A9CD",
+        "copy_log_sha256": "966BF3F0B501E04F179C44DA788369769057CCF5B3311F8519B82CA427B6D74C",
+        "last_message_sha256": "3422E2275C1B5D95791D5ECD05C99966CECB5FBD714F8A7946F00B589993387E",
+        "stdout_length_bytes": 1372,
+        "stderr_length_bytes": 2177632,
+        "last_message_length_bytes": 1371
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-04",
+      "arm": "treatment",
+      "pair_id": "B45-HELDOUT-04",
+      "attempt_id": "T14-B45-HELDOUT-04-treatment",
+      "model": "gpt-5.5",
+      "model_reasoning_effort": "high",
+      "started_at": "2026-07-05T18:07:50.812025+03:00",
+      "ended_at": "2026-07-05T18:12:03.032798+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 252.221,
+      "final_json_parse_ok": true,
+      "changed_file_count": 2,
+      "sanitized_changed_files": [
+        {
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_project_graph_queries.py",
+          "change_type": "M"
+        }
+      ],
+      "changed_file_evidence_summary": "M plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py; M tests/product_agent_os/test_project_graph_queries.py",
+      "comment_sufficiency_warning_count": 21,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 21,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 0.93,
+      "dimension_scores": {
+        "existing_capability_scan": 9,
+        "custom_code_avoidance": 8,
+        "comment_sufficiency": 8,
+        "test_scenario_coverage": 9,
+        "unsupported_claims": 10,
+        "reviewer_usefulness": 7,
+        "privacy_safety": 10,
+        "flake_cost_control": 9
+      },
+      "failure_taxonomy": [],
+      "unsupported_claims": [],
+      "final_tests_run_count": 5,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "raw_output_hashes": {
+        "prompt_sha256": "C26C92DE9DFD76CC948F58691C8CA56963EF40DE32DF441307869E6C2A67008F",
+        "stdout_sha256": "2780064933BC4EC1A03FDEB9501A6E1833B54352C07196DD991E8D8E3E7A29D1",
+        "stderr_sha256": "5EC39E18F9DFDB8B68789C4E8A8AC0D66B8AFBB65AE9299E1C9A615A92E66122",
+        "copy_log_sha256": "B472E0E55E79F136EFD041EF7EF0CE619E8BBD157B5C7B1D3A5111ADA9419C61",
+        "last_message_sha256": "F5016622F8EE9C4A94B01F8F0F09E1E56B9E80FFB26A1C44583EFB9CCFC98B39",
+        "stdout_length_bytes": 1367,
+        "stderr_length_bytes": 2388872,
+        "last_message_length_bytes": 1366
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-05",
+      "arm": "baseline",
+      "pair_id": "B45-HELDOUT-05",
+      "attempt_id": "T14-B45-HELDOUT-05-baseline",
+      "model": "gpt-5.5",
+      "model_reasoning_effort": "high",
+      "started_at": "2026-07-05T18:12:18.708850+03:00",
+      "ended_at": "2026-07-05T18:16:50.797988+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 272.089,
+      "final_json_parse_ok": true,
+      "changed_file_count": 2,
+      "sanitized_changed_files": [
+        {
+          "path": "plugins/product-agent-os/scripts/product_agent_os/self_learning_candidates.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_self_learning_state.py",
+          "change_type": "M"
+        }
+      ],
+      "changed_file_evidence_summary": "M plugins/product-agent-os/scripts/product_agent_os/self_learning_candidates.py; M tests/product_agent_os/test_self_learning_state.py",
+      "comment_sufficiency_warning_count": 5,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 5,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 0.93,
+      "dimension_scores": {
+        "existing_capability_scan": 8,
+        "custom_code_avoidance": 8,
+        "comment_sufficiency": 8,
+        "test_scenario_coverage": 9,
+        "unsupported_claims": 9,
+        "reviewer_usefulness": 8,
+        "privacy_safety": 9,
+        "flake_cost_control": 9
+      },
+      "failure_taxonomy": [],
+      "unsupported_claims": [],
+      "final_tests_run_count": 4,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "raw_output_hashes": {
+        "prompt_sha256": "2836F9CCE06551AD7F016449386134D25146D1593FF89EF76B5AA6A97375CB53",
+        "stdout_sha256": "C139916B727289ECB46DC5574ED26F933512609A4194C91446A9A94D083D1974",
+        "stderr_sha256": "1A41A8D6BB01B95B8444C967004ED89FB3AE6CF1E6993369B333EFE7094C9F1E",
+        "copy_log_sha256": "1B18F962101A5F9FFD0CACBC7AD70D8BD33590339968D890AC929EEE11EA7B6C",
+        "last_message_sha256": "A40D219E2540535B90CA3A0C405A07B5CAF16442CED4E86D503C3027ED988E89",
+        "stdout_length_bytes": 1634,
+        "stderr_length_bytes": 1969826,
+        "last_message_length_bytes": 1633
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-05",
+      "arm": "treatment",
+      "pair_id": "B45-HELDOUT-05",
+      "attempt_id": "T14-B45-HELDOUT-05-treatment",
+      "model": "gpt-5.5",
+      "model_reasoning_effort": "high",
+      "started_at": "2026-07-05T18:17:04.892093+03:00",
+      "ended_at": "2026-07-05T18:21:47.744565+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 282.852,
+      "final_json_parse_ok": true,
+      "changed_file_count": 2,
+      "sanitized_changed_files": [
+        {
+          "path": "plugins/product-agent-os/scripts/product_agent_os/self_learning_candidates.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_self_learning_state.py",
+          "change_type": "M"
+        }
+      ],
+      "changed_file_evidence_summary": "M plugins/product-agent-os/scripts/product_agent_os/self_learning_candidates.py; M tests/product_agent_os/test_self_learning_state.py",
+      "comment_sufficiency_warning_count": 4,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 4,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 0.92,
+      "dimension_scores": {
+        "existing_capability_scan": 9,
+        "custom_code_avoidance": 8,
+        "comment_sufficiency": 8,
+        "test_scenario_coverage": 9,
+        "unsupported_claims": 10,
+        "reviewer_usefulness": 8,
+        "privacy_safety": 10,
+        "flake_cost_control": 9
+      },
+      "failure_taxonomy": [],
+      "unsupported_claims": [],
+      "final_tests_run_count": 8,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "raw_output_hashes": {
+        "prompt_sha256": "B393F902DD550AAAE02536EEC142C695111D28FDB8A216F65AA93FCE869269D8",
+        "stdout_sha256": "19C8C9C870ED21AD2A0695409E6765960E67115C67DC68C2CEDECE8DF971C51E",
+        "stderr_sha256": "330EEB072E3C960855B31330ED5B6CE0E17468D3D643C307368AC18EAE0E1027",
+        "copy_log_sha256": "E1FCAB9B79DB59883A7EF0813982172767B637B2B164518E23381DD9FA230E5C",
+        "last_message_sha256": "62697A4D38ED3A7F551CFAB8D8B408337D6C15516AD660330187A6B4FFA0873E",
+        "stdout_length_bytes": 1544,
+        "stderr_length_bytes": 2552451,
+        "last_message_length_bytes": 1543
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-06",
+      "arm": "baseline",
+      "pair_id": "B45-HELDOUT-06",
+      "attempt_id": "T14-B45-HELDOUT-06-baseline",
+      "model": "gpt-5.5",
+      "model_reasoning_effort": "high",
+      "started_at": "2026-07-05T18:22:02.668050+03:00",
+      "ended_at": "2026-07-05T18:31:25.483662+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 562.815,
+      "final_json_parse_ok": true,
+      "changed_file_count": 7,
+      "sanitized_changed_files": [
+        {
+          "path": "EVALS.md",
+          "change_type": "M"
+        },
+        {
+          "path": "PLAN.md",
+          "change_type": "M"
+        },
+        {
+          "path": "RUNLOG.md",
+          "change_type": "M"
+        },
+        {
+          "path": "TEST.md",
+          "change_type": "M"
+        },
+        {
+          "path": "docs/sources/registry.en.md",
+          "change_type": "M"
+        },
+        {
+          "path": "docs/sources/registry.md",
+          "change_type": "M"
+        },
+        {
+          "path": "docs/superpowers/specs/b45-heldout-06-control-plane-budget-summary.json",
+          "change_type": "??"
+        }
+      ],
+      "changed_file_evidence_summary": "M EVALS.md; M PLAN.md; M RUNLOG.md; M TEST.md; M docs/sources/registry.en.md; M docs/sources/registry.md; ?? docs/superpowers/specs/b45-heldout-06-control-plane-budget-summary.json",
+      "comment_sufficiency_warning_count": 0,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 0,
+        "status": "no_changed_code_paths",
+        "exit_code": 0
+      },
+      "behavior_score": 0.84,
+      "dimension_scores": {
+        "existing_capability_scan": 8,
+        "custom_code_avoidance": 9,
+        "comment_sufficiency": 8,
+        "test_scenario_coverage": 7,
+        "unsupported_claims": 9,
+        "reviewer_usefulness": 6,
+        "privacy_safety": 10,
+        "flake_cost_control": 8
+      },
+      "failure_taxonomy": [
+        "full_docs_suite_failed_preexisting_missing_generated_site_artifacts",
+        "full_docs_suite_failed_preexisting_missing_docs_tools_node_artifacts"
+      ],
+      "unsupported_claims": [],
+      "final_tests_run_count": 6,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "raw_output_hashes": {
+        "prompt_sha256": "CB5407726B6BE289042BF2CE69D6340C4705C7A3CAABF4DFBD2AE7EED4F5F1A5",
+        "stdout_sha256": "EC111189D0958A9F7D67D2114DFF7758F444BDC31BE281B3EDFA63DB8A1EB796",
+        "stderr_sha256": "424D49725B21479D0C13D786E4A94380C67664CB8D30E99825D6E69B02EA8DCE",
+        "copy_log_sha256": "E7762F3EA5E0C29DAD3D6B74C83D0A6B07A059D7236FEF0696EF06090E6C5C12",
+        "last_message_sha256": "1BC5DFA6B159416FDE5199739B118C684F5EF012D34155FEB403AD55FD0A300D",
+        "stdout_length_bytes": 2065,
+        "stderr_length_bytes": 3974833,
+        "last_message_length_bytes": 2064
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-06",
+      "arm": "treatment",
+      "pair_id": "B45-HELDOUT-06",
+      "attempt_id": "T14-B45-HELDOUT-06-treatment",
+      "model": "gpt-5.5",
+      "model_reasoning_effort": "high",
+      "started_at": "2026-07-05T18:31:39.650319+03:00",
+      "ended_at": "2026-07-05T18:36:26.509350+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 286.859,
+      "final_json_parse_ok": true,
+      "changed_file_count": 5,
+      "sanitized_changed_files": [
+        {
+          "path": "TEST.md",
+          "change_type": "M"
+        },
+        {
+          "path": "docs/sources/registry.en.md",
+          "change_type": "M"
+        },
+        {
+          "path": "docs/sources/registry.md",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_coding_standards_artifacts.py",
+          "change_type": "M"
+        },
+        {
+          "path": "docs/superpowers/specs/batch45-heldout-06-control-plane-budget-summary.json",
+          "change_type": "??"
+        }
+      ],
+      "changed_file_evidence_summary": "M TEST.md; M docs/sources/registry.en.md; M docs/sources/registry.md; M tests/product_agent_os/test_coding_standards_artifacts.py; ?? docs/superpowers/specs/batch45-heldout-06-control-plane-budget-summary.json",
+      "comment_sufficiency_warning_count": 13,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 13,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 0.92,
+      "dimension_scores": {
+        "existing_capability_scan": 9,
+        "custom_code_avoidance": 9,
+        "comment_sufficiency": 9,
+        "test_scenario_coverage": 9,
+        "unsupported_claims": 10,
+        "reviewer_usefulness": 8,
+        "privacy_safety": 10,
+        "flake_cost_control": 9
+      },
+      "failure_taxonomy": [],
+      "unsupported_claims": [],
+      "final_tests_run_count": 6,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "raw_output_hashes": {
+        "prompt_sha256": "CF84EF064D7C676C42BB4F3DC048F2B8787022CE6EE10E556B64B324C17364F1",
+        "stdout_sha256": "3F706B9A36925E25DFB2FF7AD6675EF1E96E22A1B6AA7B2DE693EDCFB96C0C3E",
+        "stderr_sha256": "8E9CD5AD259AEBF37308307331CACC90A0BF9A969F9AF8FD4544F933CD225532",
+        "copy_log_sha256": "603438A7BF091B67B05EEE9C176BAB3A5B6DF36C727708BDAA7F74F2211AC1E1",
+        "last_message_sha256": "65AA8CDE64112D9AFBF048827017BE979B07F9E80B807E616DDCC64DCC393CF4",
+        "stdout_length_bytes": 1733,
+        "stderr_length_bytes": 1066425,
+        "last_message_length_bytes": 1732
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-07",
+      "arm": "baseline",
+      "pair_id": "B45-HELDOUT-07",
+      "attempt_id": "T14-B45-HELDOUT-07-baseline",
+      "model": "gpt-5.5",
+      "model_reasoning_effort": "high",
+      "started_at": "2026-07-05T18:36:41.500345+03:00",
+      "ended_at": "2026-07-05T18:44:28.932369+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 467.432,
+      "final_json_parse_ok": true,
+      "changed_file_count": 2,
+      "sanitized_changed_files": [
+        {
+          "path": "plugins/product-agent-os/assets/fixtures/node-app/src/index.js",
+          "change_type": "M"
+        },
+        {
+          "path": "plugins/product-agent-os/assets/fixtures/node-app/test/normalize-event.test.js",
+          "change_type": "??"
+        }
+      ],
+      "changed_file_evidence_summary": "M plugins/product-agent-os/assets/fixtures/node-app/src/index.js; ?? plugins/product-agent-os/assets/fixtures/node-app/test/normalize-event.test.js",
+      "comment_sufficiency_warning_count": 3,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 3,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 0.8,
+      "dimension_scores": {
+        "existing_capability_scan": 7,
+        "custom_code_avoidance": 6,
+        "comment_sufficiency": 8,
+        "test_scenario_coverage": 8,
+        "unsupported_claims": 9,
+        "reviewer_usefulness": 5,
+        "privacy_safety": 9,
+        "flake_cost_control": 9
+      },
+      "failure_taxonomy": [
+        "readonly_codex_runner_fallback"
+      ],
+      "unsupported_claims": [],
+      "final_tests_run_count": 5,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "raw_output_hashes": {
+        "prompt_sha256": "498FEAB8BB759109EDC97F016432D8DBE61D9D24DCFD88436F78208C2A11B669",
+        "stdout_sha256": "DE962FB65CB6AB8833B76BEF6BAE653F112EFF5F30D3D00A116F4B7E0376310D",
+        "stderr_sha256": "B3F8AF981F4933B159693AA850DC3495AA0BE494BDB597430B6F20132D0D5939",
+        "copy_log_sha256": "0334ABB248DF49FCA3A4BFC6F8AD46665ACF7093033B28BBD529A883993D52B4",
+        "last_message_sha256": "72E558DB4BC7642E106EAC13DAB4010D9FF8EB819625DD6294EBD848BC92A39A",
+        "stdout_length_bytes": 1403,
+        "stderr_length_bytes": 1460136,
+        "last_message_length_bytes": 1402
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-07",
+      "arm": "treatment",
+      "pair_id": "B45-HELDOUT-07",
+      "attempt_id": "T14-B45-HELDOUT-07-treatment",
+      "model": "gpt-5.5",
+      "model_reasoning_effort": "high",
+      "started_at": "2026-07-05T18:44:47.930118+03:00",
+      "ended_at": "2026-07-05T18:50:11.080486+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 323.15,
+      "final_json_parse_ok": true,
+      "changed_file_count": 3,
+      "sanitized_changed_files": [
+        {
+          "path": "plugins/product-agent-os/assets/fixtures/ai-agent-trace/package.json",
+          "change_type": "M"
+        },
+        {
+          "path": "plugins/product-agent-os/assets/fixtures/ai-agent-trace/src/eventNormalizer.js",
+          "change_type": "??"
+        },
+        {
+          "path": "plugins/product-agent-os/assets/fixtures/ai-agent-trace/test/eventNormalizer.test.js",
+          "change_type": "??"
+        }
+      ],
+      "changed_file_evidence_summary": "M plugins/product-agent-os/assets/fixtures/ai-agent-trace/package.json; ?? plugins/product-agent-os/assets/fixtures/ai-agent-trace/src/eventNormalizer.js; ?? plugins/product-agent-os/assets/fixtures/ai-agent-trace/test/eventNormalizer.test.js",
+      "comment_sufficiency_warning_count": 1,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 1,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 0.9,
+      "dimension_scores": {
+        "existing_capability_scan": 8,
+        "custom_code_avoidance": 8,
+        "comment_sufficiency": 9,
+        "test_scenario_coverage": 8,
+        "unsupported_claims": 9,
+        "reviewer_usefulness": 7,
+        "privacy_safety": 9,
+        "flake_cost_control": 9
+      },
+      "failure_taxonomy": [],
+      "unsupported_claims": [],
+      "final_tests_run_count": 2,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "raw_output_hashes": {
+        "prompt_sha256": "C44A65A50F1742146794EBF81E17B08A9D0405766A2602254A2A751C27E5321C",
+        "stdout_sha256": "4054A0948E8A08F5340469FF654B72CE8C03933740F6CDF430C22C33F629BD58",
+        "stderr_sha256": "3824FC0B289F7B561EA859CAB7A8AD619767DE6BD19A0A5FC1F4822B19167DC1",
+        "copy_log_sha256": "5A0A70F997BAAD55FCF25E38A5596990CDC50304AE4CC68BA47F5B7AAFE8E00E",
+        "last_message_sha256": "C92908DA44E186E775775BC50D25E9B514173757DA6C7B06B97543970AACBC9E",
+        "stdout_length_bytes": 1272,
+        "stderr_length_bytes": 1576759,
+        "last_message_length_bytes": 1271
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-08",
+      "arm": "baseline",
+      "pair_id": "B45-HELDOUT-08",
+      "attempt_id": "T14-B45-HELDOUT-08-baseline",
+      "model": "gpt-5.5",
+      "model_reasoning_effort": "high",
+      "started_at": "2026-07-05T18:50:25.554875+03:00",
+      "ended_at": "2026-07-05T18:54:03.596676+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 218.042,
+      "final_json_parse_ok": true,
+      "changed_file_count": 2,
+      "sanitized_changed_files": [
+        {
+          "path": "plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_comment_sufficiency.py",
+          "change_type": "M"
+        }
+      ],
+      "changed_file_evidence_summary": "M plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py; M tests/product_agent_os/test_comment_sufficiency.py",
+      "comment_sufficiency_warning_count": 7,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 7,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 0.86,
+      "dimension_scores": {
+        "existing_capability_scan": 8,
+        "custom_code_avoidance": 8,
+        "comment_sufficiency": 8,
+        "test_scenario_coverage": 8,
+        "unsupported_claims": 9,
+        "reviewer_usefulness": 6,
+        "privacy_safety": 10,
+        "flake_cost_control": 9
+      },
+      "failure_taxonomy": [],
+      "unsupported_claims": [],
+      "final_tests_run_count": 3,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "raw_output_hashes": {
+        "prompt_sha256": "9B99A9E3F8416D709318C84027E3F39529B9CEDFCC21375AB8ACC80F5FC15251",
+        "stdout_sha256": "5C066408C1821B625DDEACF289F13D92AD9C2F2E8C29F9FA609EE3A5613DA690",
+        "stderr_sha256": "6C19F0969F536711286214968B7EAE56D6D15BF38AC281FDE91674361B6C6839",
+        "copy_log_sha256": "AF06061662D77628100698742A539A28E71CC4C7A390FADE64F8A1FED8B32640",
+        "last_message_sha256": "B8C90A285FEC524E847DDF9E6592B4D91B10AAB50D8EA9394FD92AE741B47719",
+        "stdout_length_bytes": 1299,
+        "stderr_length_bytes": 1108594,
+        "last_message_length_bytes": 1298
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-08",
+      "arm": "treatment",
+      "pair_id": "B45-HELDOUT-08",
+      "attempt_id": "T14-B45-HELDOUT-08-treatment",
+      "model": "gpt-5.5",
+      "model_reasoning_effort": "high",
+      "started_at": "2026-07-05T18:54:17.115571+03:00",
+      "ended_at": "2026-07-05T18:57:35.504476+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 198.389,
+      "final_json_parse_ok": true,
+      "changed_file_count": 2,
+      "sanitized_changed_files": [
+        {
+          "path": "plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_comment_sufficiency.py",
+          "change_type": "M"
+        }
+      ],
+      "changed_file_evidence_summary": "M plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py; M tests/product_agent_os/test_comment_sufficiency.py",
+      "comment_sufficiency_warning_count": 6,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 6,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 0.92,
+      "dimension_scores": {
+        "existing_capability_scan": 8,
+        "custom_code_avoidance": 9,
+        "comment_sufficiency": 9,
+        "test_scenario_coverage": 9,
+        "unsupported_claims": 10,
+        "reviewer_usefulness": 8,
+        "privacy_safety": 10,
+        "flake_cost_control": 9
+      },
+      "failure_taxonomy": [],
+      "unsupported_claims": [],
+      "final_tests_run_count": 4,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "raw_output_hashes": {
+        "prompt_sha256": "297E4B25EB2E24738CDA500445D4DA88D07F1FF24DDB552E5A229ECBF0A19073",
+        "stdout_sha256": "520A6F29D9B878A373B32DF82C6821325D60C9F828376CA41757714DF3D053A7",
+        "stderr_sha256": "B97F28BB9C16510C4AB523D7DCC39BFED3F098AE5A5A398492BEEECECDAC5FD1",
+        "copy_log_sha256": "5C34B6A1735E4DECB56530A1B119A9CA0EA32A272623A3498244FE3AF2DA3477",
+        "last_message_sha256": "C0BF11E80478BF6B045E049C0F484F7B43371E34A3F01746BCE91B34302CDDA0",
+        "stdout_length_bytes": 1610,
+        "stderr_length_bytes": 958780,
+        "last_message_length_bytes": 1609
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    }
+  ],
+  "cost_and_retention": {
+    "provider_cost_usd": null,
+    "provider_cost_status": "accepted_gap_cost_unavailable_call_count_cap_only",
+    "raw_outputs_in_repo": false,
+    "raw_outputs_retained_in_temp_only": true,
+    "repo_retention": "sanitized rollup only",
+    "temp_root_pattern": "%TEMP%\\codex-b45-postq4-t14-*",
+    "temp_root_redacted_in_repo": true
+  },
+  "no_unapproved_actions": {
+    "provider_or_model_call_outside_exact_approval": false,
+    "setup_or_smoke_model_call": false,
+    "reviewer_call_after_invalid_pairs": false,
+    "runtime_or_live_server_launched": false,
+    "browser_automation_run": false,
+    "target_workspace_command_run": false,
+    "target_workspace_mutated": false,
+    "database_accessed": false,
+    "ci_or_blocker_enforcement_created": false,
+    "git_branch_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation_created_or_enabled": false,
+    "external_write_performed_outside_temp": false
+  },
+  "decision": {
+    "state": "valid_pairs_no_promotion_model_change_decision_required",
+    "promotion_allowed": false,
+    "static_warning_delta_can_promote": false,
+    "m26_reversed": false,
+    "m35_reversed": false,
+    "recommended_next_task": "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION"
+  },
+  "harness_notes": [
+    "Raw prompts/stdout/stderr/last-message files are retained under the temp root only.",
+    "Repo result stores hashes, lengths and sanitized metadata only.",
+    "The run used gpt-5.5 high reasoning; comparison with M26/T05/T12 spark evidence requires a later source-owned decision packet."
+  ]
+}

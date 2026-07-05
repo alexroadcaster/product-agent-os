@@ -2,10 +2,10 @@
   "schema_version": "batch45_postq4_t14_strict_rerun_approval_packet_v1",
   "task_id": "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET",
   "evidence_id": "B45-POSTQ4-T14-A01",
-  "status": "exact_approval_packet_draft_not_owner_confirmed_not_run",
+  "status": "exact_approval_packet_draft_revised_for_gpt55_high_not_owner_confirmed_not_run",
   "created_at": "2026-07-05T15:35:00+03:00",
   "route": "exact_approval_packet_only",
-  "source_status": "project-authored exact approval packet draft after T13 strict schema/harness hardening; no live/model/provider/runtime/browser/target/CI/git/release/deploy/automation action was performed",
+  "source_status": "project-authored exact approval packet draft after T13 strict schema/harness hardening; revised to use gpt-5.5 with high reasoning for stronger current-quality eval evidence; no live/model/provider/runtime/browser/target/CI/git/release/deploy/automation action was performed",
   "basis": [
     "docs/superpowers/specs/batch45-postq4-t10-live-eval-harness-redesign-packet.json",
     "docs/superpowers/specs/batch45-postq4-t11-treatment-v3-source-design.json",
@@ -25,20 +25,50 @@
       "B45-POSTQ4-T12 approval was consumed by the invalid-pair no-go run.",
       "This T14 packet is not approval until the owner restates the exact text in a later message."
     ],
-    "current_claim_ceiling": "approval_packet_only_not_run; does not reverse M26/M35/T05/T06/T12 no-go and does not prove treatment v3 behavior"
+    "current_claim_ceiling": "approval_packet_only_not_run; does not reverse M26/M35/T05/T06/T12 no-go and does not prove treatment v3 behavior",
+    "model_change_effect": "uses current higher-capability gpt-5.5 high-reasoning route for better detailed testing; no longer a strict same-model comparability rerun against M26/T05/T12 gpt-5.3-codex-spark evidence"
   },
+  "model_selection_source_matrix": [
+    {
+      "source": "https://developers.openai.com/codex/models",
+      "claim": "OpenAI Codex docs recommend starting most Codex tasks with gpt-5.5 and describe gpt-5.3-codex-spark as research preview for near-instant iteration.",
+      "relevance": "Supports selecting gpt-5.5 for a stricter quality-oriented rerun.",
+      "freshness": "checked_2026-07-05",
+      "confidence": "high",
+      "conflicts": "Switching models reduces direct comparability with M26/T05/T12 gpt-5.3-codex-spark results."
+    },
+    {
+      "source": "https://developers.openai.com/codex/config-basic",
+      "claim": "Codex model and reasoning effort are configured separately.",
+      "relevance": "Supports using model gpt-5.5 plus model_reasoning_effort=high rather than a combined model id.",
+      "freshness": "checked_2026-07-05",
+      "confidence": "high",
+      "conflicts": "None."
+    },
+    {
+      "source": "docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-results.json",
+      "claim": "The prior T12 run used gpt-5.3-codex-spark and ended no-go with invalid pairs.",
+      "relevance": "Shows why T14 needs stronger model settings and stricter detail capture.",
+      "freshness": "current_repo_source",
+      "confidence": "high",
+      "conflicts": "Historical result should not be rewritten or treated as comparable same-model evidence after this packet revision."
+    }
+  ],
   "exact_approval_text_for_owner_confirmation": [
     "Подтверждаю B45-POSTQ4-T14 exact approval:",
     "provider/surface: Codex CLI/OpenAI via codex exec",
-    "model: gpt-5.3-codex-spark",
+    "model: gpt-5.5",
+    "model reasoning effort: high",
     "run count: max 8 baseline + 8 treatment paired primary calls + max 1 reviewer, 0 setup/smoke model calls",
-    "command surface: codex exec --ephemeral --disable hooks --ignore-rules --sandbox workspace-write --model gpt-5.3-codex-spark -C <TEMP disposable copy>",
+    "command surface: codex exec --ephemeral --disable hooks --ignore-rules --sandbox workspace-write --model gpt-5.5 -c model_reasoning_effort=high -C <TEMP disposable copy>",
     "disposable root: %TEMP%\\codex-b45-postq4-t14-*",
     "task set: B45-HELDOUT-01..B45-HELDOUT-08 from docs/superpowers/specs/batch45-agent-behavior-eval-plan.json",
     "run order: paired_by_task; for each task run baseline then treatment before the next task",
     "timeout: 600s per primary task call",
     "timeout policy: paired_continue_with_invalid_pair_quarantine",
     "strict output schema: use T13 strict FINAL_JSON parser, run/pair/aggregate validator and no-op guard from plugins/product-agent-os/scripts/codex_runtime_runner/model_output.py before reviewer or promotion interpretation",
+    "result detail level: detailed run/pair/aggregate evidence with per-dimension rubric scores, failure taxonomy, changed-file metadata, static warning deltas, invalid-pair reasons, reviewer-ready summaries and unsupported-claim ledger",
+    "comparison mode: current_best_quality_rerun_not_same_model_comparability; historical M26/T05/T12 gpt-5.3-codex-spark no-go evidence remains active unless this run passes all gates and a later source-owned decision packet interprets the model-change caveat",
     "timeout/invalid/no-op effect: do not stop the whole rerun on a task timeout, invalid JSON or no-op; mark that pair invalid, kill scoped process tree when applicable, verify no lingering scoped process, then continue within the approved call cap",
     "reviewer route: independent Codex reviewer/subagent; max 1 reviewer call only after primary evidence is schema-valid, sanitized rollup validates, valid_pair_count=8, timeout_count=0, no_op_count=0 and invalid_json_count=0",
     "cost cap: accepted_gap_cost_unavailable_call_count_cap_only",
@@ -48,7 +78,11 @@
   ],
   "approved_if_owner_confirms_exact_text": {
     "provider_surface": "Codex CLI/OpenAI via codex exec",
-    "model": "gpt-5.3-codex-spark",
+    "model": "gpt-5.5",
+    "model_reasoning_effort": "high",
+    "model_selection_reason": "higher-capability current Codex model for quality-oriented testing; selected over gpt-5.3-codex-spark research-preview speed route",
+    "comparison_mode": "current_best_quality_rerun_not_same_model_comparability",
+    "result_detail_level": "detailed",
     "primary_model_call_cap": {
       "baseline": 8,
       "treatment": 8,
@@ -56,7 +90,7 @@
     },
     "reviewer_call_cap": 1,
     "setup_or_smoke_model_calls": 0,
-    "command_surface": "codex exec --ephemeral --disable hooks --ignore-rules --sandbox workspace-write --model gpt-5.3-codex-spark -C <TEMP disposable copy>",
+    "command_surface": "codex exec --ephemeral --disable hooks --ignore-rules --sandbox workspace-write --model gpt-5.5 -c model_reasoning_effort=high -C <TEMP disposable copy>",
     "disposable_root": "%TEMP%\\codex-b45-postq4-t14-*",
     "timeout_per_primary_task_seconds": 600,
     "cost_cap_policy": "accepted_gap_cost_unavailable_call_count_cap_only",
@@ -149,6 +183,8 @@
       "arm",
       "pair_id",
       "attempt_id",
+      "model",
+      "model_reasoning_effort",
       "started_at",
       "ended_at",
       "status",
@@ -158,8 +194,12 @@
       "final_json_parse_ok",
       "changed_file_count",
       "sanitized_changed_files",
+      "changed_file_evidence_summary",
       "comment_sufficiency_warning_count",
       "behavior_score",
+      "dimension_scores",
+      "failure_taxonomy",
+      "unsupported_claims",
       "raw_output_hashes",
       "retention_status"
     ],
@@ -173,7 +213,9 @@
       "score_delta",
       "treatment_equal_or_better",
       "static_warning_delta",
-      "reviewer_required"
+      "reviewer_required",
+      "pair_evidence_summary",
+      "model_change_caveat"
     ],
     "required_aggregate_fields": [
       "valid_pair_count",
@@ -186,9 +228,12 @@
       "average_score_delta_percent",
       "treatment_equal_or_better_count",
       "reviewer_decision",
+      "reviewer_summary",
       "promotion_threshold_met",
       "m26_reversed",
       "m35_reversed",
+      "same_model_comparability_with_m26_t05_t12",
+      "model_change_interpretation_required",
       "unsupported_claims"
     ]
   },
@@ -201,6 +246,7 @@
     "invalid_json_requirement": "zero invalid JSON runs",
     "reviewer_decision_must_not_be": "no_go",
     "static_warning_delta_can_promote": false,
+    "model_change_requires_decision_packet": true,
     "m26_reversed_only_if_all_thresholds_met": true,
     "m35_reversed_only_if_runtime_or_owner_decision_packet_later_allows": false
   },
@@ -230,7 +276,7 @@
   },
   "abort_conditions": [
     "The owner has not restated the exact approval text in a later message.",
-    "Provider, model, command surface, cost cap policy, disposable root, timeout policy, strict schema gate or retention policy differs from this packet.",
+    "Provider, model, model reasoning effort, command surface, cost cap policy, disposable root, timeout policy, strict schema gate, comparison mode or retention policy differs from this packet.",
     "Any source_freeze hash differs before the run starts unless a new packet is created.",
     "Disposable temp root write probe or cleanup safety is unsafe.",
     "Process-tree watchdog, timeout marker or lingering-process check is unavailable.",
@@ -308,6 +354,7 @@
     "promotion_allowed": false,
     "owner_can_confirm_by_pasting_exact_text": true,
     "next_state_if_owner_confirms": "approval_ready_for_execution_under_T14_contract",
-    "next_state_without_owner_confirmation": "approval_packet_only_not_run"
+    "next_state_without_owner_confirmation": "approval_packet_only_not_run",
+    "model_selection_decision": "revised_to_gpt55_high_for_quality_over_same_model_comparability"
   }
 }

@@ -204,10 +204,7 @@ python tools\check_docs.py
 git diff --check
 ```
 
-S6 warns stay non-blocking. M24-M27 evidence source-owned; M25 is local/
-reversible (`B45_COMMENT_ADVISORY_DISABLED=1`) and M27 remains
-`keep_advisory_only_no_go_for_blocker_or_ci`. CI/blocker promotion, provider,
-browser, target, plugin-cache and git remain approval-required.
+S6 warnings stay non-blocking; M24-M27 are source-owned, M25 is reversible via `B45_COMMENT_ADVISORY_DISABLED=1`, and CI/blocker promotion, provider, browser, target, plugin-cache and git remain approval-required.
 
 For `B45-PCA-M37-A01` local hardening/docs sync, run:
 
@@ -218,11 +215,9 @@ python tools\check_docs.py
 git diff --check
 ```
 
-M37 is local advisory hardening/docs sync: TS/TSX, fail-open, redacted paths,
-active/template parity. `B45-PCA-M36` remains reserved; no provider/
-target/git/release/deploy/automation or promotion beyond no-go.
+M37 is local advisory hardening/docs sync; `B45-PCA-M36` remains reserved; no provider/target/git/release/deploy/automation or promotion beyond no-go.
 
-For Batch 45 retest/post-Q4 (`B45-RETEST-Q0-Q2-A01`, `B45-RETEST-Q3-FIXTURE-STATIC-A01`, `B45-RETEST-Q4-PROJECT-SLICES-STATIC-A01`, `B45-POST-Q4-NEXT-TASKS-A01`, `B45-POSTQ4-T01-T04-A01`, `B45-POSTQ4-T05-A01`, `B45-POSTQ4-T05B-A01`, `B45-POSTQ4-T06-A01`, `B45-POSTQ4-T08-A01`, `B45-POSTQ4-T10-A01`, `B45-POSTQ4-T11-A01`, `B45-POSTQ4-T12-RUN-A01`, `B45-POSTQ4-T13-A01`, `B45-POSTQ4-T14-A01`), run:
+For Batch 45 retest/post-Q4 (`B45-RETEST-Q0-Q2-A01`, `B45-RETEST-Q3-FIXTURE-STATIC-A01`, `B45-RETEST-Q4-PROJECT-SLICES-STATIC-A01`, `B45-POST-Q4-NEXT-TASKS-A01`, `B45-POSTQ4-T01-T04-A01`, `B45-POSTQ4-T05-A01`, `B45-POSTQ4-T05B-A01`, `B45-POSTQ4-T06-A01`, `B45-POSTQ4-T08-A01`, `B45-POSTQ4-T10-A01`, `B45-POSTQ4-T11-A01`, `B45-POSTQ4-T12-RUN-A01`, `B45-POSTQ4-T13-A01`, `B45-POSTQ4-T14-A01`, `B45-POSTQ4-T14-RUN-A01`), run:
 
 ```powershell
 python -m unittest tests.product_agent_os.test_codex_runtime_runner_model_output -v
