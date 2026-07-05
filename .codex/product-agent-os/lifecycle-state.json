@@ -1,12 +1,12 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
-  "scope": "Implement local strict output schema, FINAL_JSON parser, no-op guard, invalid-pair quarantine and sanitized rollup validation after T12 no-go.",
-  "updated_at": "2026-07-05T14:45:00+03:00",
-  "approval_boundary": "T13 is local/source-owned hardening only. No live/model/provider/reviewer call, runtime/live server, browser automation, target workspace command or mutation, database access, CI/blocker creation, git branch/stage/commit/push/PR, release/deploy/publish, active automation or raw trace retention in repo is approved or performed.",
+  "task_id": "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET",
+  "scope": "Create an exact owner-confirmation packet for a future paired live/model rerun after T13 strict schema/no-op harness hardening; do not run the rerun.",
+  "updated_at": "2026-07-05T15:35:00+03:00",
+  "approval_boundary": "T14 is approval-packet-only. It does not authorize codex exec, provider/model calls, reviewer calls, runtime/live server, browser automation, target workspace command or mutation, database access, CI/blocker creation, git branch/stage/commit/push/PR, release/deploy/publish, active automation or raw trace retention in repo. A later owner message must restate the exact T14 approval text before execution.",
   "brief_schema_version": "task_start_brief_v1",
   "brief_format": "field_list",
-  "brief_digest": "sha256:b45postq4t13strictoutputschema0000000001",
+  "brief_digest": "sha256:b45postq4t14strictrerunapproval0000001",
   "brief_fields_present": [
     "Task ID",
     "Product value",
@@ -23,19 +23,18 @@
     "Next action"
   ],
   "completion_brief_shown": true,
-  "completion_status": "implemented_local_schema_no_op_hardening_no_live_calls",
-  "closure_level": "synthetic_green_after_local_tests_only",
+  "completion_status": "exact_approval_packet_draft_not_owner_confirmed_not_run",
+  "closure_level": "approval_packet_only_not_run",
   "completion_gaps": [
-    "T13 is local harness/schema evidence only and does not prove treatment v3 behavior in a live rerun.",
-    "T12 valid_pair_count remains 6 with invalid_json and no-op invalid pairs; reviewer was not run.",
-    "M26/M35/T05/T06 no-go boundaries remain active.",
-    "Future live/model rerun requires a fresh exact approval packet after T13."
+    "Owner has not restated the exact T14 approval text.",
+    "No live/model/provider/reviewer call was performed by T14.",
+    "T12 no-go remains active: valid_pair_count=6 with invalid_json and no-op invalid pairs.",
+    "M26/M35/T05/T06/T12 no-go boundaries remain active until a future approved rerun meets thresholds."
   ],
   "completion_evidence": [
-    "plugins/product-agent-os/scripts/codex_runtime_runner/model_output.py",
-    "tests/product_agent_os/test_codex_runtime_runner_model_output.py",
+    "docs/superpowers/specs/batch45-postq4-t14-strict-rerun-approval-packet.json",
     "docs/superpowers/specs/batch45-postq4-t13-strict-output-schema-and-harness-hardening.json",
     "docs/superpowers/specs/batch45-post-q4-next-tasks.json",
-    ".codex/product-agent-os/batch45/t13-agent-reviews/*.md"
+    "tests/product_agent_os/test_coding_standards_artifacts.py"
   ]
 }

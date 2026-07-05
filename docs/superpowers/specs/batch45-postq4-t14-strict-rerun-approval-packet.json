@@ -1,0 +1,313 @@
+{
+  "schema_version": "batch45_postq4_t14_strict_rerun_approval_packet_v1",
+  "task_id": "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET",
+  "evidence_id": "B45-POSTQ4-T14-A01",
+  "status": "exact_approval_packet_draft_not_owner_confirmed_not_run",
+  "created_at": "2026-07-05T15:35:00+03:00",
+  "route": "exact_approval_packet_only",
+  "source_status": "project-authored exact approval packet draft after T13 strict schema/harness hardening; no live/model/provider/runtime/browser/target/CI/git/release/deploy/automation action was performed",
+  "basis": [
+    "docs/superpowers/specs/batch45-postq4-t10-live-eval-harness-redesign-packet.json",
+    "docs/superpowers/specs/batch45-postq4-t11-treatment-v3-source-design.json",
+    "docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-results.json",
+    "docs/superpowers/specs/batch45-postq4-t13-strict-output-schema-and-harness-hardening.json",
+    "plugins/product-agent-os/scripts/codex_runtime_runner/model_output.py",
+    "docs/superpowers/specs/batch45-agent-behavior-eval-plan.json",
+    "docs/superpowers/specs/batch45-post-q4-next-tasks.json"
+  ],
+  "approval_state": {
+    "owner_confirmed": false,
+    "run_authorized_by_this_artifact": false,
+    "requires_next_user_message": true,
+    "next_user_message_must_restate_exact_packet": true,
+    "approval_reuse_forbidden": [
+      "B45-POSTQ4-T05 approval was consumed by the timeout attempt.",
+      "B45-POSTQ4-T12 approval was consumed by the invalid-pair no-go run.",
+      "This T14 packet is not approval until the owner restates the exact text in a later message."
+    ],
+    "current_claim_ceiling": "approval_packet_only_not_run; does not reverse M26/M35/T05/T06/T12 no-go and does not prove treatment v3 behavior"
+  },
+  "exact_approval_text_for_owner_confirmation": [
+    "Подтверждаю B45-POSTQ4-T14 exact approval:",
+    "provider/surface: Codex CLI/OpenAI via codex exec",
+    "model: gpt-5.3-codex-spark",
+    "run count: max 8 baseline + 8 treatment paired primary calls + max 1 reviewer, 0 setup/smoke model calls",
+    "command surface: codex exec --ephemeral --disable hooks --ignore-rules --sandbox workspace-write --model gpt-5.3-codex-spark -C <TEMP disposable copy>",
+    "disposable root: %TEMP%\\codex-b45-postq4-t14-*",
+    "task set: B45-HELDOUT-01..B45-HELDOUT-08 from docs/superpowers/specs/batch45-agent-behavior-eval-plan.json",
+    "run order: paired_by_task; for each task run baseline then treatment before the next task",
+    "timeout: 600s per primary task call",
+    "timeout policy: paired_continue_with_invalid_pair_quarantine",
+    "strict output schema: use T13 strict FINAL_JSON parser, run/pair/aggregate validator and no-op guard from plugins/product-agent-os/scripts/codex_runtime_runner/model_output.py before reviewer or promotion interpretation",
+    "timeout/invalid/no-op effect: do not stop the whole rerun on a task timeout, invalid JSON or no-op; mark that pair invalid, kill scoped process tree when applicable, verify no lingering scoped process, then continue within the approved call cap",
+    "reviewer route: independent Codex reviewer/subagent; max 1 reviewer call only after primary evidence is schema-valid, sanitized rollup validates, valid_pair_count=8, timeout_count=0, no_op_count=0 and invalid_json_count=0",
+    "cost cap: accepted_gap_cost_unavailable_call_count_cap_only",
+    "retention: raw outputs only in temp; repo stores sanitized rollup only",
+    "stop conditions: stop on approval ambiguity, source-freeze drift, unsafe temp root, missing watchdog/process kill, retention/privacy violation, T13 schema validation failure, target/runtime/browser/database/CI/git/release/deploy/automation requirement, or provider/model call outside this approval",
+    "claim ceiling: no promotion, M26/M35/T05/T06/T12 reversal, CI/blocker promotion or runtime/browser/target claim unless the run completes, T13 schema validation passes, valid_pair_count=8 and promotion thresholds are met in a later source-owned result packet"
+  ],
+  "approved_if_owner_confirms_exact_text": {
+    "provider_surface": "Codex CLI/OpenAI via codex exec",
+    "model": "gpt-5.3-codex-spark",
+    "primary_model_call_cap": {
+      "baseline": 8,
+      "treatment": 8,
+      "total_primary": 16
+    },
+    "reviewer_call_cap": 1,
+    "setup_or_smoke_model_calls": 0,
+    "command_surface": "codex exec --ephemeral --disable hooks --ignore-rules --sandbox workspace-write --model gpt-5.3-codex-spark -C <TEMP disposable copy>",
+    "disposable_root": "%TEMP%\\codex-b45-postq4-t14-*",
+    "timeout_per_primary_task_seconds": 600,
+    "cost_cap_policy": "accepted_gap_cost_unavailable_call_count_cap_only",
+    "raw_retention": "temp_only",
+    "repo_retention": "sanitized_rollup_only",
+    "reviewer_route": "independent Codex reviewer/subagent only after all T13 primary validation gates pass"
+  },
+  "source_freeze": {
+    "task_plan": {
+      "path": "docs/superpowers/specs/batch45-agent-behavior-eval-plan.json",
+      "sha256": "A902B39706BD3056CEC7608A2524EDD2D4BC957917D056EBF503A21F3F074C4E"
+    },
+    "t10_harness_contract": {
+      "path": "docs/superpowers/specs/batch45-postq4-t10-live-eval-harness-redesign-packet.json",
+      "sha256": "1DD5CE891B8674B4FC1BA4BF96235A554EF4169EA55F08B5B0FEED300EF102B8"
+    },
+    "t11_treatment_v3_source_design": {
+      "path": "docs/superpowers/specs/batch45-postq4-t11-treatment-v3-source-design.json",
+      "sha256": "FF17C9580B0A823D1F0BA4CEEE393231E13F6502819C122148376F87367E5787"
+    },
+    "t13_strict_hardening_packet": {
+      "path": "docs/superpowers/specs/batch45-postq4-t13-strict-output-schema-and-harness-hardening.json",
+      "sha256": "854BDCC9190E758D6F54E70AF75A0B54B6CF7134FF27CC5F158F279A6A3D6C32"
+    },
+    "t13_model_output_validator": {
+      "path": "plugins/product-agent-os/scripts/codex_runtime_runner/model_output.py",
+      "sha256": "095122FFD4ADA73C0728C2A74FFE5E8EA26DD0C8EF14F439B27AA7E761E3502D"
+    },
+    "treatment_workflow": {
+      "path": ".codex/workflows/coding-standards.md",
+      "sha256": "D32228CC2ED2752668F90C414165DF7A00B59CCD19D453FC5D838A86DBA490B8"
+    },
+    "treatment_checklist": {
+      "path": ".codex/artifact-templates/coding-standard-checklist.md",
+      "sha256": "E6D4881284A44C9FCB43ABD11D34BA5EAA856FE5869F0BC554EA2247535CBB48"
+    }
+  },
+  "run_design": {
+    "task_ids": [
+      "B45-HELDOUT-01",
+      "B45-HELDOUT-02",
+      "B45-HELDOUT-03",
+      "B45-HELDOUT-04",
+      "B45-HELDOUT-05",
+      "B45-HELDOUT-06",
+      "B45-HELDOUT-07",
+      "B45-HELDOUT-08"
+    ],
+    "run_order": "paired_by_task",
+    "per_task_order": "baseline_then_treatment",
+    "timeout_policy": "paired_continue_with_invalid_pair_quarantine",
+    "strict_output_validator": "plugins/product-agent-os/scripts/codex_runtime_runner/model_output.py",
+    "legacy_baseline_first_order": "forbidden_for_promotion",
+    "diagnostic_order": "not_selected"
+  },
+  "t13_harness_gate": {
+    "pre_reviewer_validation_required": true,
+    "strict_final_json_marker": "FINAL_JSON:",
+    "json_repair_allowed": false,
+    "no_op_guard_required": true,
+    "serialized_rollup_redaction_validation_required": true,
+    "pair_valid_requires": [
+      "baseline_status=completed",
+      "treatment_status=completed",
+      "final_json_parse_ok=true for both arms",
+      "material changed-file evidence when material change is required",
+      "retention_status=raw_temp_only_repo_sanitized_rollup"
+    ],
+    "reviewer_blocked_if": [
+      "valid_pair_count<8",
+      "timeout_count>0",
+      "no_op_count>0",
+      "invalid_json_count>0",
+      "schema validation error exists",
+      "privacy or retention validation fails"
+    ]
+  },
+  "result_schema_contract": {
+    "run_status_values": [
+      "completed",
+      "timeout",
+      "no_op",
+      "invalid_json",
+      "wrapper_failure_before_model_call",
+      "aborted_by_policy",
+      "not_run_due_stop_rule"
+    ],
+    "required_run_fields": [
+      "task_id",
+      "arm",
+      "pair_id",
+      "attempt_id",
+      "started_at",
+      "ended_at",
+      "status",
+      "exit_code",
+      "timed_out",
+      "elapsed_seconds",
+      "final_json_parse_ok",
+      "changed_file_count",
+      "sanitized_changed_files",
+      "comment_sufficiency_warning_count",
+      "behavior_score",
+      "raw_output_hashes",
+      "retention_status"
+    ],
+    "required_pair_fields": [
+      "pair_id",
+      "task_id",
+      "baseline_status",
+      "treatment_status",
+      "pair_valid_for_scoring",
+      "invalid_reason",
+      "score_delta",
+      "treatment_equal_or_better",
+      "static_warning_delta",
+      "reviewer_required"
+    ],
+    "required_aggregate_fields": [
+      "valid_pair_count",
+      "invalid_pair_count",
+      "timeout_count",
+      "no_op_count",
+      "invalid_json_count",
+      "average_baseline_score",
+      "average_treatment_score",
+      "average_score_delta_percent",
+      "treatment_equal_or_better_count",
+      "reviewer_decision",
+      "promotion_threshold_met",
+      "m26_reversed",
+      "m35_reversed",
+      "unsupported_claims"
+    ]
+  },
+  "promotion_gate": {
+    "minimum_valid_pairs": 8,
+    "minimum_behavior_quality_improvement": ">=20% average improvement over baseline on valid pairs",
+    "pairwise_quality": "treatment equal_or_better on at least 6 of 8 valid pairs",
+    "timeout_requirement": "zero timeouts",
+    "no_op_requirement": "zero no-op runs",
+    "invalid_json_requirement": "zero invalid JSON runs",
+    "reviewer_decision_must_not_be": "no_go",
+    "static_warning_delta_can_promote": false,
+    "m26_reversed_only_if_all_thresholds_met": true,
+    "m35_reversed_only_if_runtime_or_owner_decision_packet_later_allows": false
+  },
+  "privacy_and_retention": {
+    "raw_outputs_in_repo_allowed": false,
+    "raw_outputs_temp_only": true,
+    "repo_allowed": [
+      "sanitized scores",
+      "sanitized timeout/no-op/invalid-json markers",
+      "hashes of raw outputs",
+      "changed-file metadata",
+      "aggregate call counts",
+      "aggregate cost if available",
+      "reviewer decision summary"
+    ],
+    "repo_forbidden": [
+      "raw prompts",
+      "raw model traces",
+      "raw stdout/stderr bodies",
+      "provider payload bodies",
+      "private source bodies",
+      "secrets",
+      "credentials",
+      "private customer data",
+      "unredacted local absolute target paths"
+    ]
+  },
+  "abort_conditions": [
+    "The owner has not restated the exact approval text in a later message.",
+    "Provider, model, command surface, cost cap policy, disposable root, timeout policy, strict schema gate or retention policy differs from this packet.",
+    "Any source_freeze hash differs before the run starts unless a new packet is created.",
+    "Disposable temp root write probe or cleanup safety is unsafe.",
+    "Process-tree watchdog, timeout marker or lingering-process check is unavailable.",
+    "T13 strict output schema validation cannot be executed against the sanitized rollup.",
+    "Any run would require target workspace mutation, runtime/browser launch, database access, CI/blocker enforcement, git action, release/deploy/publish, active automation or external write outside this packet.",
+    "Raw outputs would be persisted in repo.",
+    "Result schema cannot distinguish completed, timeout, no_op, invalid_json, wrapper failure and aborted-by-policy states."
+  ],
+  "no_unapproved_actions": {
+    "live_model_or_provider_api_called": false,
+    "reviewer_model_call_started": false,
+    "runtime_or_live_server_started": false,
+    "browser_automation_started": false,
+    "target_workspace_command_or_mutation_performed": false,
+    "database_or_production_data_accessed": false,
+    "ci_or_blocker_enforcement_created": false,
+    "git_branch_stage_commit_push_pr_performed": false,
+    "release_deploy_publish_performed": false,
+    "active_automation_created": false,
+    "raw_outputs_written_to_repo": false
+  },
+  "control_plane_sync_decision": {
+    "source_packet_added": true,
+    "next_tasks_updated": true,
+    "registry_updated": true,
+    "plan_test_evals_track11_updated_compactly": true,
+    "runlog_update": "not_updated_due_budget_details_live_in_source_packet"
+  },
+  "verification": {
+    "local_checks_planned": [
+      "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t14-strict-rerun-approval-packet.json",
+      "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+      "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "python tools\\check_docs.py",
+      "git diff --check"
+    ],
+    "local_checks_completed_in_current_run": [
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t14-strict-rerun-approval-packet.json",
+        "status": "passed"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "status": "passed",
+        "result": "24 tests OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_codex_runtime_runner_model_output -v",
+        "status": "passed",
+        "result": "8 tests OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "status": "passed",
+        "result": "99 tests OK"
+      },
+      {
+        "command": "python tools\\check_docs.py",
+        "status": "passed",
+        "result": "documentation structure checks passed"
+      },
+      {
+        "command": "git diff --check",
+        "status": "passed_with_line_ending_warnings_only"
+      },
+      {
+        "command": "rg -n \"C:\\\\Users|AppData|raw_stdout|raw_stderr|raw_prompt|provider_payload\" docs\\superpowers\\specs\\batch45-postq4-t14-strict-rerun-approval-packet.json docs\\superpowers\\specs\\batch45-post-q4-next-tasks.json",
+        "status": "passed_no_matches",
+        "exit_code": 1
+      }
+    ]
+  },
+  "decision": {
+    "new_live_model_rerun_performed": false,
+    "promotion_allowed": false,
+    "owner_can_confirm_by_pasting_exact_text": true,
+    "next_state_if_owner_confirms": "approval_ready_for_execution_under_T14_contract",
+    "next_state_without_owner_confirmation": "approval_packet_only_not_run"
+  }
+}

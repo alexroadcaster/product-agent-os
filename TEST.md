@@ -222,7 +222,7 @@ M37 is local advisory hardening/docs sync: TS/TSX, fail-open, redacted paths,
 active/template parity. `B45-PCA-M36` remains reserved; no provider/
 target/git/release/deploy/automation or promotion beyond no-go.
 
-For Batch 45 retest/post-Q4 (`B45-RETEST-Q0-Q2-A01`, `B45-RETEST-Q3-FIXTURE-STATIC-A01`, `B45-RETEST-Q4-PROJECT-SLICES-STATIC-A01`, `B45-POST-Q4-NEXT-TASKS-A01`, `B45-POSTQ4-T01-T04-A01`, `B45-POSTQ4-T05-A01`, `B45-POSTQ4-T05B-A01`, `B45-POSTQ4-T06-A01`, `B45-POSTQ4-T08-A01`, `B45-POSTQ4-T10-A01`, `B45-POSTQ4-T11-A01`, `B45-POSTQ4-T12-RUN-A01`, `B45-POSTQ4-T13-A01`), run:
+For Batch 45 retest/post-Q4 (`B45-RETEST-Q0-Q2-A01`, `B45-RETEST-Q3-FIXTURE-STATIC-A01`, `B45-RETEST-Q4-PROJECT-SLICES-STATIC-A01`, `B45-POST-Q4-NEXT-TASKS-A01`, `B45-POSTQ4-T01-T04-A01`, `B45-POSTQ4-T05-A01`, `B45-POSTQ4-T05B-A01`, `B45-POSTQ4-T06-A01`, `B45-POSTQ4-T08-A01`, `B45-POSTQ4-T10-A01`, `B45-POSTQ4-T11-A01`, `B45-POSTQ4-T12-RUN-A01`, `B45-POSTQ4-T13-A01`, `B45-POSTQ4-T14-A01`), run:
 
 ```powershell
 python -m unittest tests.product_agent_os.test_codex_runtime_runner_model_output -v
@@ -231,8 +231,8 @@ python tools\check_docs.py
 git diff --check
 ```
 
-Q4 14; T01-T03 `14 -> 0`; T05 timeout; T06/T08/T12 no-go; T10 pkt; T11 src; T13 schema/no-op.
-No target/browser/CI/git/release/automation proof.
+Q4 14; T01-T03 `14 -> 0`; T05 timeout; T06/T08/T12 no-go; T10 pkt; T11 src; T13 schema; T14 pkt.
+No target proof.
 
 For `B45-S5` learning-loop and automation-candidate policy, run:
 

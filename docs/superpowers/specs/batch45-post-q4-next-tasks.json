@@ -395,6 +395,40 @@
         "Stop before runtime/browser/target workspace/CI/git/release/deploy/automation actions.",
         "Stop if raw prompts/stdout/stderr/provider payloads or concrete temp roots would be stored in repo."
       ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET",
+      "priority": "P1",
+      "route": "exact_approval_packet_only",
+      "status": "exact_approval_packet_draft_not_owner_confirmed_not_run",
+      "depends_on": [
+        "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
+        "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
+        "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN"
+      ],
+      "scope": "Create the exact owner-confirmation packet for a future paired live/model rerun after T13 strict schema and no-op harness hardening.",
+      "owned_surfaces": [
+        "docs/superpowers/specs/batch45-postq4-t14-strict-rerun-approval-packet.json",
+        "docs/superpowers/specs/batch45-post-q4-next-tasks.json",
+        "tests/product_agent_os/test_coding_standards_artifacts.py",
+        "compact control-plane/source registry pointers"
+      ],
+      "acceptance": [
+        "Packet includes exact provider/surface/model/run-count/command/root/timeout/order/retention/reviewer fields.",
+        "Packet requires T13 strict FINAL_JSON parser, run/pair/aggregate validator, no-op guard and sanitized rollup validation before reviewer or promotion interpretation.",
+        "Packet is not treated as owner approval or run evidence until the owner restates the exact approval text."
+      ],
+      "verification_gates": [
+        "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t14-strict-rerun-approval-packet.json",
+        "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "python tools\\check_docs.py",
+        "git diff --check"
+      ],
+      "stop_conditions": [
+        "Stop before any live/model/provider/reviewer call until the owner confirms the exact packet in a later message.",
+        "Stop before runtime/browser/target workspace/CI/git/release/deploy/automation actions.",
+        "Stop if approval wording can be read as reusing the consumed T05 or T12 approval."
+      ]
     }
   ],
   "execution_update": {
@@ -420,7 +454,8 @@
       "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN",
       "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN-EXACT-APPROVAL-PACKET",
       "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN",
-      "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING"
+      "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
+      "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET"
     ],
     "status_by_task": {
       "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX": "implemented_minimal_fixture_copy_intent_comments",
@@ -435,7 +470,8 @@
       "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN": "implemented_source_only_treatment_v3_design_not_run",
       "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN-EXACT-APPROVAL-PACKET": "exact_approval_packet_draft_not_owner_confirmed_not_run",
       "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN": "executed_paired_live_model_rerun_no_go_invalid_pair",
-      "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING": "implemented_local_schema_no_op_hardening_no_live_calls"
+      "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING": "implemented_local_schema_no_op_hardening_no_live_calls",
+      "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET": "exact_approval_packet_draft_not_owner_confirmed_not_run"
     },
     "warning_delta": {
       "q4_baseline_warning_count": 14,
@@ -464,13 +500,14 @@
       "approved_t12_codex_exec_primary_calls_invalid_json": 1,
       "approved_t12_reviewer_calls_started": 0
     },
-    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T05 stopped on baseline timeout. T12 ran 16 approved paired primary calls but produced valid_pair_count=6, invalid_json=1 and no_op=1; reviewer skipped by gate. T13 adds local strict-output schema/no-op harness hardening only. M26/M35/T05/T06 remain active and no runtime/browser/target/CI/git/release/deploy/automation proof exists.",
+    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T05 stopped on baseline timeout. T12 produced valid_pair_count=6, invalid_json=1 and no_op=1; reviewer skipped. T13 adds local strict-output schema/no-op hardening. T14 is exact approval packet draft only, not owner confirmation or run evidence. M26/M35/T05/T06/T12 remain active and no runtime/browser/target/CI/git/release/deploy/automation proof exists.",
     "post_t06_recommended_next_routes": [
       "B45-POSTQ4-T09-CLOSURE-ADVISORY-ONLY",
       "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
       "B45-POSTQ4-T07-RUNTIME-BROWSER-PACKET",
       "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN",
-      "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING"
+      "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
+      "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET"
     ],
     "latest_t12_run_results": "docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-results.json",
     "t12_live_eval_result": {
@@ -496,6 +533,16 @@
       "new_live_model_calls_started": 0,
       "reviewer_calls_started": 0,
       "decision": "local_harness_hardening_only_no_promotion"
+    },
+    "latest_t14_approval_packet": "docs/superpowers/specs/batch45-postq4-t14-strict-rerun-approval-packet.json",
+    "t14_approval_packet_result": {
+      "status": "exact_approval_packet_draft_not_owner_confirmed_not_run",
+      "owner_confirmed": false,
+      "run_authorized_by_this_artifact": false,
+      "new_live_model_calls_started": 0,
+      "reviewer_calls_started": 0,
+      "requires_next_user_message": true,
+      "decision": "approval_packet_only_not_run"
     }
   },
   "control_plane_sync_decision": {
