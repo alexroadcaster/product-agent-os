@@ -361,6 +361,40 @@
       "stop_conditions": [
         "Stop before live/model/provider/API call until the owner confirms the exact packet in a later message."
       ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
+      "priority": "P0",
+      "route": "local_schema_harness_hardening",
+      "status": "implemented_local_schema_no_op_hardening_no_live_calls",
+      "depends_on": [
+        "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
+        "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN",
+        "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN"
+      ],
+      "scope": "Implement a deterministic local strict-output schema, FINAL_JSON parser, no-op guard, invalid-pair quarantine and sanitized rollup validator after the T12 invalid_json/no_op no-go result.",
+      "owned_surfaces": [
+        "plugins/product-agent-os/scripts/codex_runtime_runner/model_output.py",
+        "tests/product_agent_os/test_codex_runtime_runner_model_output.py",
+        "docs/superpowers/specs/batch45-postq4-t13-strict-output-schema-and-harness-hardening.json",
+        ".codex/product-agent-os/batch45/t13-agent-reviews/*.md"
+      ],
+      "acceptance": [
+        "T12 invalid_json and no_op failure modes are represented as deterministic local fixture tests.",
+        "Invalid pairs block reviewer and promotion regardless of score averages or static warning deltas.",
+        "Repo artifacts keep sanitized rollups only and reject raw output bodies or concrete local temp roots."
+      ],
+      "verification_gates": [
+        "python -m unittest tests.product_agent_os.test_codex_runtime_runner_model_output -v",
+        "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "python tools\\check_docs.py",
+        "git diff --check"
+      ],
+      "stop_conditions": [
+        "Stop before any live/model/provider/reviewer call without fresh exact approval.",
+        "Stop before runtime/browser/target workspace/CI/git/release/deploy/automation actions.",
+        "Stop if raw prompts/stdout/stderr/provider payloads or concrete temp roots would be stored in repo."
+      ]
     }
   ],
   "execution_update": {
@@ -385,7 +419,8 @@
       "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
       "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN",
       "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN-EXACT-APPROVAL-PACKET",
-      "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN"
+      "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN",
+      "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING"
     ],
     "status_by_task": {
       "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX": "implemented_minimal_fixture_copy_intent_comments",
@@ -399,7 +434,8 @@
       "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET": "implemented_approval_packet_only_not_run",
       "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN": "implemented_source_only_treatment_v3_design_not_run",
       "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN-EXACT-APPROVAL-PACKET": "exact_approval_packet_draft_not_owner_confirmed_not_run",
-      "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN": "executed_paired_live_model_rerun_no_go_invalid_pair"
+      "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN": "executed_paired_live_model_rerun_no_go_invalid_pair",
+      "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING": "implemented_local_schema_no_op_hardening_no_live_calls"
     },
     "warning_delta": {
       "q4_baseline_warning_count": 14,
@@ -428,7 +464,7 @@
       "approved_t12_codex_exec_primary_calls_invalid_json": 1,
       "approved_t12_reviewer_calls_started": 0
     },
-    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T05 stopped on baseline timeout. T12 ran 16 approved paired primary calls but produced valid_pair_count=6, invalid_json=1 and no_op=1; reviewer skipped by gate. T06 keeps advisory-only/no-go. M26/M35 remain active and no runtime/browser/target/CI/git/release/deploy/automation proof exists.",
+    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T05 stopped on baseline timeout. T12 ran 16 approved paired primary calls but produced valid_pair_count=6, invalid_json=1 and no_op=1; reviewer skipped by gate. T13 adds local strict-output schema/no-op harness hardening only. M26/M35/T05/T06 remain active and no runtime/browser/target/CI/git/release/deploy/automation proof exists.",
     "post_t06_recommended_next_routes": [
       "B45-POSTQ4-T09-CLOSURE-ADVISORY-ONLY",
       "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
@@ -449,6 +485,17 @@
       "reviewer_calls_started": 0,
       "reviewer_status": "not_run_due_invalid_pair_count",
       "decision": "does_not_reverse_M26_M35_T05_T06_no_go"
+    },
+    "latest_t13_hardening": "docs/superpowers/specs/batch45-postq4-t13-strict-output-schema-and-harness-hardening.json",
+    "t13_hardening_result": {
+      "status": "implemented_local_schema_no_op_hardening_no_live_calls",
+      "strict_final_json_parser": "implemented",
+      "no_op_guard": "implemented",
+      "invalid_pair_quarantine": "implemented",
+      "validated_t12_rollup": true,
+      "new_live_model_calls_started": 0,
+      "reviewer_calls_started": 0,
+      "decision": "local_harness_hardening_only_no_promotion"
     }
   },
   "control_plane_sync_decision": {
@@ -506,8 +553,8 @@
       },
       {
         "command": "Get-Item PLAN.md, TEST.md, EVALS.md, RUNLOG.md | Select-Object Name, Length",
-          "status": "passed",
-          "evidence": {
+        "status": "passed",
+        "evidence": {
           "PLAN.md": 49760,
           "TEST.md": 49995,
           "EVALS.md": 49994,

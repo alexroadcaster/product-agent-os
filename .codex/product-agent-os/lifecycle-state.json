@@ -1,12 +1,12 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN",
-  "scope": "Run the owner-confirmed exact T12 paired live/model rerun under the T10 harness contract and store only sanitized rollup evidence in repo.",
-  "updated_at": "2026-07-05T13:47:00+03:00",
-  "approval_boundary": "Allowed by exact T12 approval: Codex CLI/OpenAI via codex exec primary model calls in disposable temp copies, max 8 baseline + 8 treatment + max 1 reviewer after valid_pair_count=8. Performed: 16 primary calls, 0 reviewer calls. Still forbidden: runtime/live server, browser automation, target workspace command or mutation, database access, CI/blocker creation, git branch/stage/commit/push/PR, release/deploy/publish, active automation and raw trace retention in repo.",
+  "task_id": "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
+  "scope": "Implement local strict output schema, FINAL_JSON parser, no-op guard, invalid-pair quarantine and sanitized rollup validation after T12 no-go.",
+  "updated_at": "2026-07-05T14:45:00+03:00",
+  "approval_boundary": "T13 is local/source-owned hardening only. No live/model/provider/reviewer call, runtime/live server, browser automation, target workspace command or mutation, database access, CI/blocker creation, git branch/stage/commit/push/PR, release/deploy/publish, active automation or raw trace retention in repo is approved or performed.",
   "brief_schema_version": "task_start_brief_v1",
   "brief_format": "field_list",
-  "brief_digest": "sha256:b45postq4t12pairedlivemodelrun0000000001",
+  "brief_digest": "sha256:b45postq4t13strictoutputschema0000000001",
   "brief_fields_present": [
     "Task ID",
     "Product value",
@@ -23,22 +23,19 @@
     "Next action"
   ],
   "completion_brief_shown": true,
-  "completion_status": "executed_paired_live_model_rerun_no_go_invalid_pair",
-  "closure_level": "live_dependency_aligned_no_promotion",
+  "completion_status": "implemented_local_schema_no_op_hardening_no_live_calls",
+  "closure_level": "synthetic_green_after_local_tests_only",
   "completion_gaps": [
-    "T12 valid_pair_count is 6, below the required 8 valid pairs for reviewer and promotion.",
-    "B45-HELDOUT-01 treatment returned invalid JSON and B45-HELDOUT-07 treatment was no-op after generated-file filtering.",
-    "Reviewer was not run by T12 gate because primary evidence did not reach valid_pair_count=8.",
+    "T13 is local harness/schema evidence only and does not prove treatment v3 behavior in a live rerun.",
+    "T12 valid_pair_count remains 6 with invalid_json and no-op invalid pairs; reviewer was not run.",
     "M26/M35/T05/T06 no-go boundaries remain active.",
-    "No runtime/browser/target/CI/git/release/deploy/automation proof exists."
+    "Future live/model rerun requires a fresh exact approval packet after T13."
   ],
   "completion_evidence": [
-    "docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-results.json",
-    "docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-exact-approval-packet.json",
+    "plugins/product-agent-os/scripts/codex_runtime_runner/model_output.py",
+    "tests/product_agent_os/test_codex_runtime_runner_model_output.py",
+    "docs/superpowers/specs/batch45-postq4-t13-strict-output-schema-and-harness-hardening.json",
     "docs/superpowers/specs/batch45-post-q4-next-tasks.json",
-    "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
-    "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
-    "python tools\\check_docs.py",
-    "git diff --check"
+    ".codex/product-agent-os/batch45/t13-agent-reviews/*.md"
   ]
 }

@@ -47,8 +47,15 @@ POST_Q4_T12_APPROVAL = (
     / "batch45-postq4-t12-paired-live-model-rerun-exact-approval-packet.json"
 )
 POST_Q4_T12_RESULTS = DOCS / "superpowers" / "specs" / "batch45-postq4-t12-paired-live-model-rerun-results.json"
+POST_Q4_T13_HARDENING = (
+    DOCS
+    / "superpowers"
+    / "specs"
+    / "batch45-postq4-t13-strict-output-schema-and-harness-hardening.json"
+)
 sys.path.insert(0, str(SCRIPTS))
 
+from codex_runtime_runner.model_output import validate_paired_live_eval_result  # noqa: E402
 from product_agent_os.templates import required_templates, template_by_target  # noqa: E402
 
 
@@ -551,9 +558,10 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
             "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN",
             "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN-EXACT-APPROVAL-PACKET",
+            "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
         }
         self.assertEqual(expected_tasks, {task["task_id"] for task in packet["task_queue"]})
-        self.assertEqual(13, len(packet["task_queue"]))
+        self.assertEqual(14, len(packet["task_queue"]))
 
         approval_required = {
             task["task_id"]: task["status"]
@@ -1325,8 +1333,64 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         for control_plane in [plan, evals, test_plan, track11]:
             self.assertIn("B45-POSTQ4-T12-RUN-A01", control_plane)
 
-        self.assertEqual("B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN", lifecycle["task_id"])
-        self.assertEqual("live_dependency_aligned_no_promotion", lifecycle["closure_level"])
+        self.assertIn(lifecycle["task_id"], {
+            "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN",
+            "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
+        })
+
+    def test_b45_postq4_t13_strict_output_schema_and_harness_hardening(self):
+        packet = json.loads(POST_Q4_T13_HARDENING.read_text(encoding="utf-8"))
+        t12_result = json.loads(POST_Q4_T12_RESULTS.read_text(encoding="utf-8"))
+        next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
+        registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
+        registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
+        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+        plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
+        evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
+        test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
+        track11 = (
+            DOCS
+            / "superpowers"
+            / "plans"
+            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+        ).read_text(encoding="utf-8")
+
+        self.assertEqual("batch45_postq4_t13_strict_output_schema_and_harness_hardening_v1", packet["schema_version"])
+        self.assertEqual("B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING", packet["task_id"])
+        self.assertEqual("B45-POSTQ4-T13-A01", packet["evidence_id"])
+        self.assertEqual("implemented_local_schema_no_op_hardening_no_live_calls", packet["status"])
+        self.assertEqual(6, packet["basis"]["t12_failure_classes"]["valid_pair_count"])
+        self.assertEqual(1, packet["basis"]["t12_failure_classes"]["invalid_json_primary_task_runs"])
+        self.assertEqual(1, packet["basis"]["t12_failure_classes"]["no_op_primary_task_runs"])
+        self.assertIn("plugins/product-agent-os/scripts/codex_runtime_runner/model_output.py", packet["implemented_hardening"]["module"])
+        self.assertIn("treatment_invalid_json", packet["implemented_hardening"]["pair_gate_contract"]["supported_t12_reasons"])
+        self.assertIn("treatment_no_op", packet["implemented_hardening"]["pair_gate_contract"]["supported_t12_reasons"])
+        self.assertFalse(packet["decision"]["promotion_allowed"])
+        self.assertTrue(packet["decision"]["next_rerun_requires_fresh_exact_approval"])
+        self.assertFalse(packet["no_unapproved_actions"]["live_model_or_provider_api_called_without_approval"])
+        self.assertFalse(packet["no_unapproved_actions"]["raw_outputs_written_to_repo"])
+
+        self.assertEqual([], validate_paired_live_eval_result(t12_result))
+        self.assertEqual(
+            "docs/superpowers/specs/batch45-postq4-t13-strict-output-schema-and-harness-hardening.json",
+            next_tasks["execution_update"]["latest_t13_hardening"],
+        )
+        self.assertIn("B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING", next_tasks["execution_update"]["executed_task_ids"])
+        self.assertEqual(
+            "implemented_local_schema_no_op_hardening_no_live_calls",
+            next_tasks["execution_update"]["status_by_task"]["B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING"],
+        )
+
+        for registry in [registry_ru, registry_en]:
+            self.assertIn("B45-POSTQ4-T13-A01", registry)
+            self.assertIn("docs/superpowers/specs/batch45-postq4-t13-strict-output-schema-and-harness-hardening.json", registry)
+            self.assertIn("local schema/no-op harness hardening", registry)
+
+        for control_plane in [plan, evals, test_plan, track11]:
+            self.assertIn("B45-POSTQ4-T13-A01", control_plane)
+
+        self.assertEqual("B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING", lifecycle["task_id"])
+        self.assertEqual("synthetic_green_after_local_tests_only", lifecycle["closure_level"])
 
     def test_s5_learning_automation_packet_closes_m23_without_activation(self):
         packet = json.loads(S5_SUMMARY.read_text(encoding="utf-8"))
