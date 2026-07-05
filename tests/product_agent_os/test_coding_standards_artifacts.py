@@ -38,6 +38,15 @@ POST_Q4_T05_RESULTS = DOCS / "superpowers" / "specs" / "batch45-postq4-t05-live-
 POST_Q4_T05B_APPROVAL = DOCS / "superpowers" / "specs" / "batch45-postq4-t05b-rerun-approval-packet.json"
 POST_Q4_T06_DECISION = DOCS / "superpowers" / "specs" / "batch45-postq4-t06-promotion-decision.json"
 POST_Q4_T08_ARCHITECTURE = DOCS / "superpowers" / "specs" / "batch45-postq4-architecture-next-actions.json"
+POST_Q4_T10_HARNESS = DOCS / "superpowers" / "specs" / "batch45-postq4-t10-live-eval-harness-redesign-packet.json"
+POST_Q4_T11_DESIGN = DOCS / "superpowers" / "specs" / "batch45-postq4-t11-treatment-v3-source-design.json"
+POST_Q4_T12_APPROVAL = (
+    DOCS
+    / "superpowers"
+    / "specs"
+    / "batch45-postq4-t12-paired-live-model-rerun-exact-approval-packet.json"
+)
+POST_Q4_T12_RESULTS = DOCS / "superpowers" / "specs" / "batch45-postq4-t12-paired-live-model-rerun-results.json"
 sys.path.insert(0, str(SCRIPTS))
 
 from product_agent_os.templates import required_templates, template_by_target  # noqa: E402
@@ -541,9 +550,10 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "B45-POSTQ4-T09-CLOSURE-ADVISORY-ONLY",
             "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
             "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN",
+            "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN-EXACT-APPROVAL-PACKET",
         }
         self.assertEqual(expected_tasks, {task["task_id"] for task in packet["task_queue"]})
-        self.assertEqual(12, len(packet["task_queue"]))
+        self.assertEqual(13, len(packet["task_queue"]))
 
         approval_required = {
             task["task_id"]: task["status"]
@@ -568,6 +578,18 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "docs/superpowers/specs/batch45-postq4-architecture-next-actions.json",
             packet["execution_update"]["latest_t08_architecture_next_actions"],
         )
+        self.assertEqual(
+            "docs/superpowers/specs/batch45-postq4-t10-live-eval-harness-redesign-packet.json",
+            packet["execution_update"]["latest_t10_harness_redesign"],
+        )
+        self.assertEqual(
+            "docs/superpowers/specs/batch45-postq4-t11-treatment-v3-source-design.json",
+            packet["execution_update"]["latest_t11_design"],
+        )
+        self.assertEqual(
+            "docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-exact-approval-packet.json",
+            packet["execution_update"]["latest_t12_exact_approval_packet"],
+        )
         self.assertEqual(0, packet["execution_update"]["warning_delta"]["post_t03_warning_count"])
         self.assertEqual(-14, packet["execution_update"]["warning_delta"]["delta"])
         self.assertEqual(
@@ -579,18 +601,35 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         self.assertEqual(14, packet["execution_update"]["t05_live_eval_result"]["not_run_due_stop_rule"])
         self.assertIn("B45-POSTQ4-T05-LIVE-MODEL-RERUN", packet["execution_update"]["executed_task_ids"])
         self.assertIn("B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS", packet["execution_update"]["executed_task_ids"])
+        self.assertIn("B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET", packet["execution_update"]["executed_task_ids"])
+        self.assertIn("B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN", packet["execution_update"]["executed_task_ids"])
+        self.assertIn(
+            "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN-EXACT-APPROVAL-PACKET",
+            packet["execution_update"]["executed_task_ids"],
+        )
+        self.assertIn(
+            "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN",
+            packet["execution_update"]["executed_task_ids"],
+        )
         self.assertEqual(
-            2,
+            18,
             packet["execution_update"]["approved_actions_performed"][
                 "approved_codex_exec_live_model_task_calls_started"
             ],
         )
+        self.assertEqual(
+            16,
+            packet["execution_update"]["approved_actions_performed"]["approved_t12_codex_exec_primary_calls_started"],
+        )
+        self.assertEqual(6, packet["execution_update"]["t12_live_eval_result"]["valid_pair_count"])
+        self.assertEqual("not_run_due_invalid_pair_count", packet["execution_update"]["t12_live_eval_result"]["reviewer_status"])
         self.assertEqual(
             {
                 "B45-POSTQ4-T09-CLOSURE-ADVISORY-ONLY",
                 "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
                 "B45-POSTQ4-T07-RUNTIME-BROWSER-PACKET",
                 "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN",
+                "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
             },
             set(packet["execution_update"]["post_t06_recommended_next_routes"]),
         )
@@ -634,7 +673,6 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             / "plans"
             / "2026-06-20-track-11-documentation-architecture-refresh.md"
         ).read_text(encoding="utf-8")
-        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
 
         self.assertEqual("batch45_postq4_t01_t04_execution_summary_v1", summary["schema_version"])
         self.assertEqual("B45-POSTQ4-T01-T04", summary["task_id"])
@@ -915,8 +953,380 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 self.assertIn("B45-POSTQ4-T08-A01", control_plane)
 
         self.assertIn("| `B45-POSTQ4-T08` |", track11)
-        self.assertEqual("B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS", lifecycle["task_id"])
-        self.assertEqual("docs_contract_ready_architecture_next_actions_no_go", lifecycle["closure_level"])
+
+    def test_b45_postq4_t10_live_eval_harness_redesign_is_approval_packet_only(self):
+        packet = json.loads(POST_Q4_T10_HARNESS.read_text(encoding="utf-8"))
+        next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
+        serialized = json.dumps(packet, sort_keys=True).lower()
+        registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
+        registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
+        plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
+        evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
+        test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
+        track11 = (
+            DOCS
+            / "superpowers"
+            / "plans"
+            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+        ).read_text(encoding="utf-8")
+
+        self.assertEqual("batch45_postq4_t10_live_eval_harness_redesign_packet_v1", packet["schema_version"])
+        self.assertEqual("B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET", packet["task_id"])
+        self.assertEqual("B45-POSTQ4-T10-A01", packet["evidence_id"])
+        self.assertEqual("implemented_approval_packet_only_not_run", packet["status"])
+        self.assertEqual("approval_packet_only", packet["route"])
+        self.assertEqual("paired_by_task", packet["redesign_contract"]["default_run_order"])
+        self.assertEqual(0, packet["redesign_contract"]["setup_or_smoke_model_calls"])
+        self.assertEqual(
+            {
+                "strict_stop_on_first_timeout",
+                "paired_continue_with_invalid_pair_quarantine",
+                "single_task_timeout_diagnostic",
+            },
+            {option["id"] for option in packet["timeout_policy_options"]},
+        )
+        self.assertIn("timeout", packet["result_schema_contract"]["run_status_values"])
+        self.assertIn("no_op", packet["result_schema_contract"]["run_status_values"])
+        self.assertIn("baseline_timeout", packet["result_schema_contract"]["pair_invalid_reasons"])
+        self.assertEqual("after_primary_pairs_complete_and_schema_valid", packet["reviewer_route"]["default_timing"])
+        self.assertTrue(packet["reviewer_route"]["reviewer_no_go_blocks_promotion"])
+        self.assertFalse(packet["promotion_gate_candidate"]["static_warning_delta_can_promote"])
+        self.assertTrue(packet["promotion_gate_candidate"]["m26_reversed_only_if_all_thresholds_met"])
+        self.assertFalse(packet["promotion_gate_candidate"]["m35_reversed_only_if_runtime_or_owner_decision_packet_later_allows"])
+        self.assertFalse(packet["privacy_and_retention"]["raw_outputs_in_repo_allowed"])
+        self.assertEqual("owner_fill_required", packet["required_exact_approval_packet_fields"]["provider_surface"])
+        self.assertEqual("owner_fill_required", packet["required_exact_approval_packet_fields"]["model"])
+        self.assertEqual(8, packet["required_exact_approval_packet_fields"]["run_count"]["baseline"])
+        self.assertEqual(8, packet["required_exact_approval_packet_fields"]["run_count"]["treatment"])
+        self.assertEqual(1, packet["required_exact_approval_packet_fields"]["run_count"]["reviewer"])
+        self.assertEqual(0, packet["required_exact_approval_packet_fields"]["run_count"]["setup_or_smoke_model_calls"])
+
+        self.assertEqual("approval_packet_ready_for_owner_review_not_run", packet["decision"]["state"])
+        for flag in [
+            "m26_reversed",
+            "m35_reversed",
+            "t05_timeout_reversed",
+            "t11_behavior_proven",
+            "promotion_allowed",
+            "live_model_rerun_allowed_without_new_approval",
+            "runtime_browser_or_target_claim_allowed",
+        ]:
+            with self.subTest(flag=flag):
+                self.assertFalse(packet["decision"][flag])
+
+        self.assertEqual(5, len(packet["sidecar_agent_reviews"]))
+        for review in packet["sidecar_agent_reviews"]:
+            with self.subTest(report=review["report"]):
+                self.assertEqual("completed", review["status"])
+                self.assertTrue(ROOT.joinpath(review["report"]).exists())
+
+        for action, performed in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(performed)
+
+        for expected in [
+            "M26_no_go_reversed".lower(),
+            "T05_timeout_reversed".lower(),
+            "provider_or_live_api_behavior",
+            "runtime_browser_readiness",
+            "ci_workflow_readiness",
+            "raw outputs only in temp",
+        ]:
+            self.assertIn(expected.lower(), serialized)
+
+        self.assertEqual(
+            "docs/superpowers/specs/batch45-postq4-t10-live-eval-harness-redesign-packet.json",
+            next_tasks["execution_update"]["latest_t10_harness_redesign"],
+        )
+        self.assertIn("B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET", next_tasks["execution_update"]["executed_task_ids"])
+        self.assertEqual(
+            "implemented_approval_packet_only_not_run",
+            next_tasks["execution_update"]["status_by_task"]["B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET"],
+        )
+
+        for registry in [registry_ru, registry_en]:
+            with self.subTest(registry="source_registry"):
+                self.assertIn("B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET", registry)
+                self.assertIn("B45-POSTQ4-T10-A01", registry)
+                self.assertIn("docs/superpowers/specs/batch45-postq4-t10-live-eval-harness-redesign-packet.json", registry)
+
+        for control_plane in [plan, evals, test_plan, track11]:
+            with self.subTest(control_plane="compact_pointer"):
+                self.assertIn("B45-POSTQ4-T10-A01", control_plane)
+
+        self.assertIn("| `B45-POSTQ4-T10` |", track11)
+
+    def test_b45_postq4_t11_treatment_v3_source_design_is_source_only(self):
+        packet = json.loads(POST_Q4_T11_DESIGN.read_text(encoding="utf-8"))
+        next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
+        serialized = json.dumps(packet, sort_keys=True).lower()
+        registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
+        registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
+        plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
+        evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
+        test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
+        track11 = (
+            DOCS
+            / "superpowers"
+            / "plans"
+            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+        ).read_text(encoding="utf-8")
+
+        self.assertEqual("batch45_postq4_t11_treatment_v3_source_design_v1", packet["schema_version"])
+        self.assertEqual("B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN", packet["task_id"])
+        self.assertEqual("B45-POSTQ4-T11-A01", packet["evidence_id"])
+        self.assertEqual("implemented_source_only_treatment_v3_design_not_run", packet["status"])
+        self.assertEqual("source_only_design", packet["route"])
+        self.assertEqual(
+            "source_design_ready_for_review_only_no_behavior_or_runtime_claim",
+            packet["decision"]["state"],
+        )
+        for flag in [
+            "m26_reversed",
+            "m35_reversed",
+            "t05_timeout_reversed",
+            "promotion_allowed",
+            "ci_blocker_automation_allowed",
+            "live_model_rerun_allowed_without_new_approval",
+            "runtime_browser_or_target_claim_allowed",
+        ]:
+            with self.subTest(flag=flag):
+                self.assertFalse(packet["decision"][flag])
+
+        self.assertTrue(packet["future_eval_update_required"]["required"])
+        self.assertEqual(
+            "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET before any approved rerun",
+            packet["future_eval_update_required"]["recommended_route"],
+        )
+        self.assertFalse(
+            packet["future_eval_update_required"]["promotion_threshold_candidate"][
+                "static_warning_delta_can_promote"
+            ]
+        )
+        self.assertEqual(
+            {
+                "enterprise_leverage_check",
+                "existing_capability_scan",
+                "one_line_candidate",
+                "negative_dependency_rule",
+                "deep_module_check",
+                "legacy_seam_check",
+                "comment_policy",
+                "cleverness_budget",
+            },
+            {item["standard"] for item in packet["standards_to_behaviors_map"]},
+        )
+        self.assertGreaterEqual(len(packet["negative_examples"]), 5)
+        self.assertEqual(5, len(packet["sidecar_agent_reviews"]))
+        for review in packet["sidecar_agent_reviews"]:
+            with self.subTest(report=review["report"]):
+                self.assertEqual("completed", review["status"])
+                self.assertTrue(ROOT.joinpath(review["report"]).exists())
+
+        for action, performed in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(performed)
+
+        for unsupported in [
+            "treatment_v3_behavior_proven",
+            "M26_no_go_reversed".lower(),
+            "M35_no_go_reversed".lower(),
+            "runtime_browser_readiness",
+            "ci_workflow_readiness",
+        ]:
+            self.assertIn(unsupported.lower(), serialized)
+
+        self.assertEqual(
+            "docs/superpowers/specs/batch45-postq4-t11-treatment-v3-source-design.json",
+            next_tasks["execution_update"]["latest_t11_design"],
+        )
+        self.assertIn("B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN", next_tasks["execution_update"]["executed_task_ids"])
+        self.assertEqual(
+            "implemented_source_only_treatment_v3_design_not_run",
+            next_tasks["execution_update"]["status_by_task"]["B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN"],
+        )
+
+        for registry in [registry_ru, registry_en]:
+            with self.subTest(registry="source_registry"):
+                self.assertIn("B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN", registry)
+                self.assertIn("B45-POSTQ4-T11-A01", registry)
+                self.assertIn("docs/superpowers/specs/batch45-postq4-t11-treatment-v3-source-design.json", registry)
+
+        for control_plane in [plan, evals, test_plan, track11]:
+            with self.subTest(control_plane="compact_pointer"):
+                self.assertIn("B45-POSTQ4-T11-A01", control_plane)
+
+        self.assertIn("| `B45-POSTQ4-T11` |", track11)
+
+    def test_b45_postq4_t12_exact_paired_rerun_packet_is_not_owner_confirmation(self):
+        packet = json.loads(POST_Q4_T12_APPROVAL.read_text(encoding="utf-8"))
+        next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
+        serialized = json.dumps(packet, sort_keys=True).lower()
+        registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
+        registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
+        plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
+        evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
+        test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
+        track11 = (
+            DOCS
+            / "superpowers"
+            / "plans"
+            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+        ).read_text(encoding="utf-8")
+
+        self.assertEqual("batch45_postq4_t12_paired_live_model_rerun_exact_approval_packet_v1", packet["schema_version"])
+        self.assertEqual("B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN-EXACT-APPROVAL-PACKET", packet["task_id"])
+        self.assertEqual("B45-POSTQ4-T12-A01", packet["evidence_id"])
+        self.assertEqual("exact_approval_packet_draft_not_owner_confirmed_not_run", packet["status"])
+        self.assertEqual("exact_approval_packet_only", packet["route"])
+        self.assertFalse(packet["approval_state"]["owner_confirmed"])
+        self.assertFalse(packet["approval_state"]["run_authorized_by_this_artifact"])
+        self.assertTrue(packet["approval_state"]["requires_next_user_message"])
+        self.assertEqual("Codex CLI/OpenAI via codex exec", packet["approved_if_owner_confirms_exact_text"]["provider_surface"])
+        self.assertEqual("gpt-5.3-codex-spark", packet["approved_if_owner_confirms_exact_text"]["model"])
+        self.assertEqual(8, packet["approved_if_owner_confirms_exact_text"]["primary_model_call_cap"]["baseline"])
+        self.assertEqual(8, packet["approved_if_owner_confirms_exact_text"]["primary_model_call_cap"]["treatment"])
+        self.assertEqual(1, packet["approved_if_owner_confirms_exact_text"]["reviewer_call_cap"])
+        self.assertEqual(0, packet["approved_if_owner_confirms_exact_text"]["setup_or_smoke_model_calls"])
+        self.assertEqual("paired_by_task", packet["run_design"]["run_order"])
+        self.assertEqual("paired_continue_with_invalid_pair_quarantine", packet["run_design"]["timeout_policy"])
+        self.assertTrue(packet["run_design"]["timeout_effect"]["continue_remaining_pairs"])
+        self.assertFalse(packet["run_design"]["timeout_effect"]["promotion_possible_after_any_timeout"])
+        self.assertEqual(8, packet["promotion_gate"]["minimum_valid_pairs"])
+        self.assertFalse(packet["promotion_gate"]["static_warning_delta_can_promote"])
+        self.assertFalse(packet["privacy_and_retention"]["raw_outputs_in_repo_allowed"])
+        self.assertTrue(packet["privacy_and_retention"]["raw_outputs_temp_only"])
+        self.assertEqual(
+            "1DD5CE891B8674B4FC1BA4BF96235A554EF4169EA55F08B5B0FEED300EF102B8",
+            packet["source_freeze"]["t10_harness_contract"]["sha256"],
+        )
+        self.assertEqual(
+            "FF17C9580B0A823D1F0BA4CEEE393231E13F6502819C122148376F87367E5787",
+            packet["source_freeze"]["t11_treatment_v3_source_design"]["sha256"],
+        )
+
+        confirmation_text = "\n".join(packet["exact_approval_text_for_owner_confirmation"])
+        for expected in [
+            "provider/surface: Codex CLI/OpenAI via codex exec",
+            "model: gpt-5.3-codex-spark",
+            "run count: max 8 baseline + 8 treatment paired primary calls + max 1 reviewer",
+            "timeout policy: paired_continue_with_invalid_pair_quarantine",
+            "retention: raw outputs only in temp; repo stores sanitized rollup only",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, confirmation_text)
+
+        self.assertEqual("exact_approval_packet_ready_for_owner_confirmation_not_run", packet["decision"]["state"])
+        for flag in [
+            "m26_reversed",
+            "m35_reversed",
+            "t05_timeout_reversed",
+            "t11_behavior_proven",
+            "promotion_allowed",
+            "live_model_rerun_allowed_without_next_owner_confirmation",
+            "runtime_browser_or_target_claim_allowed",
+        ]:
+            with self.subTest(flag=flag):
+                self.assertFalse(packet["decision"][flag])
+
+        for action, performed in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(performed)
+
+        for expected in [
+            "provider_or_live_api_behavior_from_this_packet",
+            "M26_no_go_reversed".lower(),
+            "owner has not restated the exact approval text",
+        ]:
+            self.assertIn(expected.lower(), serialized)
+
+        self.assertEqual(
+            "docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-exact-approval-packet.json",
+            next_tasks["execution_update"]["latest_t12_exact_approval_packet"],
+        )
+        self.assertIn("B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN-EXACT-APPROVAL-PACKET", next_tasks["execution_update"]["executed_task_ids"])
+        self.assertEqual(
+            "exact_approval_packet_draft_not_owner_confirmed_not_run",
+            next_tasks["execution_update"]["status_by_task"]["B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN-EXACT-APPROVAL-PACKET"],
+        )
+
+        for registry in [registry_ru, registry_en]:
+            with self.subTest(registry="source_registry"):
+                self.assertIn("B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN-EXACT-APPROVAL-PACKET", registry)
+                self.assertIn("B45-POSTQ4-T12-A01", registry)
+                self.assertIn("docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-exact-approval-packet.json", registry)
+
+        self.assertIn("| `B45-POSTQ4-T12` |", track11)
+        self.assertIn("batch45-postq4-t12-paired-live-model-rerun-exact-approval-packet.json", track11)
+
+    def test_b45_postq4_t12_paired_live_model_rerun_results_preserve_no_go(self):
+        result = json.loads(POST_Q4_T12_RESULTS.read_text(encoding="utf-8"))
+        next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
+        registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
+        registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
+        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+        plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
+        evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
+        test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
+        track11 = (
+            DOCS
+            / "superpowers"
+            / "plans"
+            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+        ).read_text(encoding="utf-8")
+
+        self.assertEqual("batch45_postq4_t12_paired_live_model_rerun_results_v1", result["schema_version"])
+        self.assertEqual("B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN", result["task_id"])
+        self.assertEqual("B45-POSTQ4-T12-RUN-A01", result["evidence_id"])
+        self.assertEqual("executed_paired_live_model_rerun_no_go_invalid_pair", result["status"])
+        self.assertTrue(result["approval_confirmation_observed"])
+        self.assertEqual(16, result["execution_summary"]["approved_primary_task_model_calls_started"])
+        self.assertEqual(14, result["execution_summary"]["completed_primary_task_runs"])
+        self.assertEqual(1, result["execution_summary"]["no_op_primary_task_runs"])
+        self.assertEqual(1, result["execution_summary"]["invalid_json_primary_task_runs"])
+        self.assertEqual(0, result["execution_summary"]["timeout_primary_task_runs"])
+        self.assertEqual(6, result["execution_summary"]["valid_pair_count"])
+        self.assertEqual(2, result["execution_summary"]["invalid_pair_count"])
+        self.assertEqual(0, result["execution_summary"]["reviewer_calls_started"])
+        self.assertEqual("not_run_due_invalid_pair_count", result["execution_summary"]["reviewer_status"])
+        self.assertFalse(result["aggregate_result"]["promotion_threshold_met"])
+        self.assertFalse(result["aggregate_result"]["m26_reversed"])
+        self.assertFalse(result["aggregate_result"]["m35_reversed"])
+        self.assertFalse(result["cost_and_retention"]["raw_outputs_in_repo"])
+        self.assertTrue(result["cost_and_retention"]["raw_outputs_retained_in_temp_only"])
+        self.assertEqual("%TEMP%\\codex-b45-postq4-t12-*", result["cost_and_retention"]["temp_root_pattern"])
+        self.assertTrue(result["cost_and_retention"]["temp_root_redacted_in_repo"])
+        self.assertNotIn("C:\\Users", json.dumps(result))
+
+        invalid_pairs = {pair["task_id"]: pair["invalid_reason"] for pair in result["pairs"] if not pair["pair_valid_for_scoring"]}
+        self.assertEqual("treatment_invalid_json", invalid_pairs["B45-HELDOUT-01"])
+        self.assertEqual("treatment_no_op", invalid_pairs["B45-HELDOUT-07"])
+        self.assertEqual(8, len(result["pairs"]))
+        self.assertEqual(16, len(result["per_task_results"]))
+
+        self.assertEqual(
+            "docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-results.json",
+            next_tasks["execution_update"]["latest_t12_run_results"],
+        )
+        self.assertIn("B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN", next_tasks["execution_update"]["executed_task_ids"])
+        self.assertEqual(
+            "executed_paired_live_model_rerun_no_go_invalid_pair",
+            next_tasks["execution_update"]["status_by_task"]["B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN"],
+        )
+        self.assertEqual(16, next_tasks["execution_update"]["t12_live_eval_result"]["approved_primary_task_model_calls_started"])
+        self.assertEqual(6, next_tasks["execution_update"]["t12_live_eval_result"]["valid_pair_count"])
+        self.assertEqual("not_run_due_invalid_pair_count", next_tasks["execution_update"]["t12_live_eval_result"]["reviewer_status"])
+
+        for registry in [registry_ru, registry_en]:
+            self.assertIn("B45-POSTQ4-T12-RUN-A01", registry)
+            self.assertIn("docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-results.json", registry)
+            self.assertIn("valid_pair_count=6", registry)
+
+        for control_plane in [plan, evals, test_plan, track11]:
+            self.assertIn("B45-POSTQ4-T12-RUN-A01", control_plane)
+
+        self.assertEqual("B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN", lifecycle["task_id"])
+        self.assertEqual("live_dependency_aligned_no_promotion", lifecycle["closure_level"])
 
     def test_s5_learning_automation_packet_closes_m23_without_activation(self):
         packet = json.loads(S5_SUMMARY.read_text(encoding="utf-8"))

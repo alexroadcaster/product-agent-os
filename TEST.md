@@ -226,7 +226,7 @@ For Batch 45 retest/post-Q4 (`B45-RETEST-Q0-Q2-A01`,
 `B45-RETEST-Q3-FIXTURE-STATIC-A01`, `B45-RETEST-Q4-PROJECT-SLICES-STATIC-A01`,
 `B45-POST-Q4-NEXT-TASKS-A01`, `B45-POSTQ4-T01-T04-A01`,
 `B45-POSTQ4-T05-A01`, `B45-POSTQ4-T05B-A01`, `B45-POSTQ4-T06-A01`,
-`B45-POSTQ4-T08-A01`), run:
+`B45-POSTQ4-T08-A01`, `B45-POSTQ4-T10-A01`, `B45-POSTQ4-T11-A01`, `B45-POSTQ4-T12-RUN-A01`), run:
 
 ```powershell
 python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v
@@ -235,7 +235,7 @@ python tools\check_docs.py
 git diff --check
 ```
 
-Q4 14; T01-T03 `14 -> 0`; T05 timeout; T06/T08 no-go/next routes.
+Q4 14; T01-T03 `14 -> 0`; T05 timeout; T06/T08 no-go; T10 pkt; T11 src; T12 no-go.
 No target/browser/CI/git/release/automation proof.
 
 For `B45-S5` learning-loop and automation-candidate policy, run:

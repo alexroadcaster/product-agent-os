@@ -296,7 +296,7 @@
       "task_id": "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
       "priority": "P1",
       "route": "approval_packet_only",
-      "status": "recommended_before_any_new_t05b_run",
+      "status": "implemented_approval_packet_only_not_run",
       "depends_on": [
         "B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS",
         "B45-POSTQ4-T05B-RERUN-PACKET-REVISION"
@@ -320,7 +320,7 @@
       "task_id": "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN",
       "priority": "P2",
       "route": "source_only_design",
-      "status": "optional_before_future_behavior_rerun",
+      "status": "implemented_source_only_treatment_v3_design_not_run",
       "depends_on": [
         "B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS"
       ],
@@ -337,6 +337,30 @@
       "stop_conditions": [
         "Stop if design is presented as proven behavior improvement."
       ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN-EXACT-APPROVAL-PACKET",
+      "priority": "P1",
+      "route": "exact_approval_packet_only",
+      "status": "exact_approval_packet_draft_not_owner_confirmed_not_run",
+      "depends_on": [
+        "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
+        "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN"
+      ],
+      "scope": "Create the exact owner-confirmation packet for a future paired live/model rerun using the T10 harness contract.",
+      "acceptance": [
+        "Packet has exact provider/surface/model/run-count/command/root/timeout/order/retention/reviewer fields.",
+        "Packet selects paired_continue_with_invalid_pair_quarantine and preserves valid-pair promotion thresholds.",
+        "Packet is not treated as owner approval or run evidence until the owner restates the exact approval text."
+      ],
+      "verification_gates": [
+        "exact approval packet assertions",
+        "source freeze hash assertions",
+        "no-unapproved-actions proof"
+      ],
+      "stop_conditions": [
+        "Stop before live/model/provider/API call until the owner confirms the exact packet in a later message."
+      ]
     }
   ],
   "execution_update": {
@@ -346,6 +370,9 @@
     "latest_t05b_packet": "docs/superpowers/specs/batch45-postq4-t05b-rerun-approval-packet.json",
     "latest_t06_decision": "docs/superpowers/specs/batch45-postq4-t06-promotion-decision.json",
     "latest_t08_architecture_next_actions": "docs/superpowers/specs/batch45-postq4-architecture-next-actions.json",
+    "latest_t10_harness_redesign": "docs/superpowers/specs/batch45-postq4-t10-live-eval-harness-redesign-packet.json",
+    "latest_t11_design": "docs/superpowers/specs/batch45-postq4-t11-treatment-v3-source-design.json",
+    "latest_t12_exact_approval_packet": "docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-exact-approval-packet.json",
     "executed_task_ids": [
       "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX",
       "B45-POSTQ4-T02-MP-CRM-STATIC-FIX",
@@ -354,7 +381,11 @@
       "B45-POSTQ4-T05-LIVE-MODEL-RERUN",
       "B45-POSTQ4-T05B-RERUN-PACKET-REVISION",
       "B45-POSTQ4-T06-PROMOTION-DECISION",
-      "B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS"
+      "B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS",
+      "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
+      "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN",
+      "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN-EXACT-APPROVAL-PACKET",
+      "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN"
     ],
     "status_by_task": {
       "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX": "implemented_minimal_fixture_copy_intent_comments",
@@ -364,7 +395,11 @@
       "B45-POSTQ4-T05-LIVE-MODEL-RERUN": "stopped_on_timeout_inconclusive_no_go",
       "B45-POSTQ4-T05B-RERUN-PACKET-REVISION": "implemented_approval_packet_only_not_run",
       "B45-POSTQ4-T06-PROMOTION-DECISION": "implemented_promotion_no_go_keep_advisory_only",
-      "B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS": "implemented_source_owned_architecture_next_actions_after_t06"
+      "B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS": "implemented_source_owned_architecture_next_actions_after_t06",
+      "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET": "implemented_approval_packet_only_not_run",
+      "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN": "implemented_source_only_treatment_v3_design_not_run",
+      "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN-EXACT-APPROVAL-PACKET": "exact_approval_packet_draft_not_owner_confirmed_not_run",
+      "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN": "executed_paired_live_model_rerun_no_go_invalid_pair"
     },
     "warning_delta": {
       "q4_baseline_warning_count": 14,
@@ -383,18 +418,38 @@
       "decision": "does_not_reverse_M26_or_M35_no_go"
     },
     "approved_actions_performed": {
-      "approved_codex_exec_live_model_task_calls_started": 2,
-      "approved_codex_exec_live_model_task_calls_completed": 1,
+      "approved_codex_exec_live_model_task_calls_started": 18,
+      "approved_codex_exec_live_model_task_calls_completed": 15,
       "approved_codex_exec_live_model_task_calls_timed_out": 1,
-      "approved_process_stop_after_timeout": true
+      "approved_process_stop_after_timeout": true,
+      "approved_t12_codex_exec_primary_calls_started": 16,
+      "approved_t12_codex_exec_primary_calls_completed": 14,
+      "approved_t12_codex_exec_primary_calls_no_op": 1,
+      "approved_t12_codex_exec_primary_calls_invalid_json": 1,
+      "approved_t12_reviewer_calls_started": 0
     },
-    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T04 and T05B are approval packets only. T05 stopped on baseline timeout with no treatment/reviewer evidence. T06 keeps advisory-only/no-go. T08 records next routes. M26/M35 remain active and no runtime/browser/target/CI/git/release/deploy/automation proof exists.",
+    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T05 stopped on baseline timeout. T12 ran 16 approved paired primary calls but produced valid_pair_count=6, invalid_json=1 and no_op=1; reviewer skipped by gate. T06 keeps advisory-only/no-go. M26/M35 remain active and no runtime/browser/target/CI/git/release/deploy/automation proof exists.",
     "post_t06_recommended_next_routes": [
       "B45-POSTQ4-T09-CLOSURE-ADVISORY-ONLY",
       "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
       "B45-POSTQ4-T07-RUNTIME-BROWSER-PACKET",
-      "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN"
-    ]
+      "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN",
+      "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING"
+    ],
+    "latest_t12_run_results": "docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-results.json",
+    "t12_live_eval_result": {
+      "status": "executed_paired_live_model_rerun_no_go_invalid_pair",
+      "approved_primary_task_model_calls_started": 16,
+      "completed_primary_task_runs": 14,
+      "no_op_primary_task_runs": 1,
+      "timeout_primary_task_runs": 0,
+      "invalid_json_primary_task_runs": 1,
+      "valid_pair_count": 6,
+      "invalid_pair_count": 2,
+      "reviewer_calls_started": 0,
+      "reviewer_status": "not_run_due_invalid_pair_count",
+      "decision": "does_not_reverse_M26_M35_T05_T06_no_go"
+    }
   },
   "control_plane_sync_decision": {
     "REQUIREMENTS.md": "not_applicable_no_scope_or_acceptance_change",
@@ -432,7 +487,7 @@
       {
         "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
         "status": "passed",
-        "evidence": "Ran 18 tests; OK"
+        "evidence": "Ran 22 tests; OK"
       },
       {
         "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
@@ -451,11 +506,11 @@
       },
       {
         "command": "Get-Item PLAN.md, TEST.md, EVALS.md, RUNLOG.md | Select-Object Name, Length",
-        "status": "passed",
-        "evidence": {
-          "PLAN.md": 49697,
-          "TEST.md": 49908,
-          "EVALS.md": 49908,
+          "status": "passed",
+          "evidence": {
+          "PLAN.md": 49760,
+          "TEST.md": 49995,
+          "EVALS.md": 49994,
           "RUNLOG.md": 51123
         }
       }

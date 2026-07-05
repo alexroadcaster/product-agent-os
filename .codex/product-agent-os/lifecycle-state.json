@@ -1,12 +1,12 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS",
-  "scope": "Update Batch 45 post-Q4 tasks and record post-T06 architecture/next-actions analysis without running approval-gated actions.",
-  "updated_at": "2026-07-04T22:05:00+03:00",
-  "approval_boundary": "Allowed: local docs/spec/test/control-plane edits only. Forbidden until new exact owner approval: codex exec/model/provider calls, runtime/live server, browser automation, target workspace command or mutation, database access, CI/blocker creation, git branch/stage/commit/push/PR, release/deploy/publish, active automation and raw trace retention in repo.",
+  "task_id": "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN",
+  "scope": "Run the owner-confirmed exact T12 paired live/model rerun under the T10 harness contract and store only sanitized rollup evidence in repo.",
+  "updated_at": "2026-07-05T13:47:00+03:00",
+  "approval_boundary": "Allowed by exact T12 approval: Codex CLI/OpenAI via codex exec primary model calls in disposable temp copies, max 8 baseline + 8 treatment + max 1 reviewer after valid_pair_count=8. Performed: 16 primary calls, 0 reviewer calls. Still forbidden: runtime/live server, browser automation, target workspace command or mutation, database access, CI/blocker creation, git branch/stage/commit/push/PR, release/deploy/publish, active automation and raw trace retention in repo.",
   "brief_schema_version": "task_start_brief_v1",
   "brief_format": "field_list",
-  "brief_digest": "sha256:b45postq4t08architecturenextactions000000000001",
+  "brief_digest": "sha256:b45postq4t12pairedlivemodelrun0000000001",
   "brief_fields_present": [
     "Task ID",
     "Product value",
@@ -23,20 +23,19 @@
     "Next action"
   ],
   "completion_brief_shown": true,
-  "completion_status": "implemented_source_owned_architecture_next_actions_after_t06",
-  "closure_level": "docs_contract_ready_architecture_next_actions_no_go",
+  "completion_status": "executed_paired_live_model_rerun_no_go_invalid_pair",
+  "closure_level": "live_dependency_aligned_no_promotion",
   "completion_gaps": [
-    "T08 is source-owned analysis and next routing, not promotion.",
-    "T05 has no treatment/reviewer comparison because the approved rerun stopped on baseline timeout.",
-    "T09/T10/T07/T11 are recommended next routes and are not executed by T08.",
-    "Live/model/provider/runtime/browser/target/CI/git/release/deploy/automation actions still need fresh exact approval where applicable."
+    "T12 valid_pair_count is 6, below the required 8 valid pairs for reviewer and promotion.",
+    "B45-HELDOUT-01 treatment returned invalid JSON and B45-HELDOUT-07 treatment was no-op after generated-file filtering.",
+    "Reviewer was not run by T12 gate because primary evidence did not reach valid_pair_count=8.",
+    "M26/M35/T05/T06 no-go boundaries remain active.",
+    "No runtime/browser/target/CI/git/release/deploy/automation proof exists."
   ],
   "completion_evidence": [
-    "docs/superpowers/specs/batch45-postq4-architecture-next-actions.json",
+    "docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-results.json",
+    "docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-exact-approval-packet.json",
     "docs/superpowers/specs/batch45-post-q4-next-tasks.json",
-    "docs/superpowers/specs/batch45-postq4-t06-promotion-decision.json",
-    "docs/superpowers/specs/batch45-postq4-t05b-rerun-approval-packet.json",
-    "docs/superpowers/specs/batch45-postq4-t05-live-model-rerun-results.json",
     "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
     "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
     "python tools\\check_docs.py",

@@ -1,0 +1,990 @@
+{
+  "schema_version": "batch45_postq4_t12_paired_live_model_rerun_results_v1",
+  "task_id": "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN",
+  "evidence_id": "B45-POSTQ4-T12-RUN-A01",
+  "status": "executed_paired_live_model_rerun_no_go_invalid_pair",
+  "created_at": "2026-07-05T14:04:31+03:00",
+  "source_status": "sanitized rollup of exact-approved T12 paired live/model rerun; raw outputs retained in temp only",
+  "approval_used": {
+    "provider_surface": "Codex CLI/OpenAI via codex exec",
+    "model": "gpt-5.3-codex-spark",
+    "primary_model_call_cap": {
+      "baseline": 8,
+      "treatment": 8,
+      "total_primary": 16
+    },
+    "reviewer_call_cap": 1,
+    "setup_or_smoke_model_calls": 0,
+    "command_surface": "codex exec --ephemeral --disable hooks --ignore-rules --sandbox workspace-write --model gpt-5.3-codex-spark -C <TEMP disposable copy>",
+    "disposable_root": "%TEMP%\\codex-b45-postq4-t12-*",
+    "timeout_per_primary_task_seconds": 600,
+    "cost_cap_policy": "accepted_gap_cost_unavailable_call_count_cap_only",
+    "raw_retention": "temp_only",
+    "repo_retention": "sanitized_rollup_only"
+  },
+  "approval_confirmation_observed": true,
+  "source_freeze": {
+    "task_plan": {
+      "path": "docs/superpowers/specs/batch45-agent-behavior-eval-plan.json",
+      "sha256": "A902B39706BD3056CEC7608A2524EDD2D4BC957917D056EBF503A21F3F074C4E"
+    },
+    "t10_harness_contract": {
+      "path": "docs/superpowers/specs/batch45-postq4-t10-live-eval-harness-redesign-packet.json",
+      "sha256": "1DD5CE891B8674B4FC1BA4BF96235A554EF4169EA55F08B5B0FEED300EF102B8"
+    },
+    "t11_treatment_v3_source_design": {
+      "path": "docs/superpowers/specs/batch45-postq4-t11-treatment-v3-source-design.json",
+      "sha256": "FF17C9580B0A823D1F0BA4CEEE393231E13F6502819C122148376F87367E5787"
+    },
+    "treatment_workflow": {
+      "path": ".codex/workflows/coding-standards.md",
+      "sha256": "D32228CC2ED2752668F90C414165DF7A00B59CCD19D453FC5D838A86DBA490B8"
+    },
+    "treatment_checklist": {
+      "path": ".codex/artifact-templates/coding-standard-checklist.md",
+      "sha256": "E6D4881284A44C9FCB43ABD11D34BA5EAA856FE5869F0BC554EA2247535CBB48"
+    }
+  },
+  "execution_summary": {
+    "planned_primary_task_runs": 16,
+    "approved_primary_task_model_calls_started": 16,
+    "completed_primary_task_runs": 14,
+    "no_op_primary_task_runs": 1,
+    "timeout_primary_task_runs": 0,
+    "invalid_json_primary_task_runs": 1,
+    "wrapper_failures_before_model_call": 0,
+    "reviewer_calls_started": 0,
+    "reviewer_status": "not_run_due_invalid_pair_count",
+    "setup_or_smoke_model_calls": 0,
+    "valid_pair_count": 6,
+    "invalid_pair_count": 2,
+    "result_interpretation": "Six comparable pairs were produced, but the required valid_pair_count=8 was not met because B45-HELDOUT-01 treatment returned invalid JSON and B45-HELDOUT-07 treatment was no-op. The rerun cannot promote treatment v3 or reverse M26/M35/T05/T06."
+  },
+  "aggregate_result": {
+    "valid_pair_count": 6,
+    "invalid_pair_count": 2,
+    "timeout_count": 0,
+    "no_op_count": 1,
+    "invalid_json_count": 1,
+    "average_baseline_score": 0.875,
+    "average_treatment_score": 1.0,
+    "average_score_delta_percent": 14.29,
+    "treatment_equal_or_better_count": 6,
+    "reviewer_decision": "not_run_due_invalid_pair_count",
+    "promotion_threshold_met": false,
+    "m26_reversed": false,
+    "m35_reversed": false,
+    "unsupported_claims": [
+      "treatment_v3_behavior_proven",
+      "M26_no_go_reversed",
+      "M35_no_go_reversed",
+      "T05_timeout_reversed",
+      "runtime_browser_readiness",
+      "target_workspace_apply_safety",
+      "ci_or_blocker_promotion",
+      "release_deploy_publish_readiness"
+    ]
+  },
+  "pairs": [
+    {
+      "pair_id": "B45-HELDOUT-01",
+      "task_id": "B45-HELDOUT-01",
+      "baseline_status": "completed",
+      "treatment_status": "invalid_json",
+      "pair_valid_for_scoring": false,
+      "invalid_reason": "treatment_invalid_json",
+      "score_delta": null,
+      "treatment_equal_or_better": false,
+      "static_warning_delta": 1,
+      "reviewer_required": false
+    },
+    {
+      "pair_id": "B45-HELDOUT-02",
+      "task_id": "B45-HELDOUT-02",
+      "baseline_status": "completed",
+      "treatment_status": "completed",
+      "pair_valid_for_scoring": true,
+      "invalid_reason": null,
+      "score_delta": 0.0,
+      "treatment_equal_or_better": true,
+      "static_warning_delta": 5,
+      "reviewer_required": true
+    },
+    {
+      "pair_id": "B45-HELDOUT-03",
+      "task_id": "B45-HELDOUT-03",
+      "baseline_status": "completed",
+      "treatment_status": "completed",
+      "pair_valid_for_scoring": true,
+      "invalid_reason": null,
+      "score_delta": 0.0,
+      "treatment_equal_or_better": true,
+      "static_warning_delta": 0,
+      "reviewer_required": true
+    },
+    {
+      "pair_id": "B45-HELDOUT-04",
+      "task_id": "B45-HELDOUT-04",
+      "baseline_status": "completed",
+      "treatment_status": "completed",
+      "pair_valid_for_scoring": true,
+      "invalid_reason": null,
+      "score_delta": 0.0,
+      "treatment_equal_or_better": true,
+      "static_warning_delta": 0,
+      "reviewer_required": true
+    },
+    {
+      "pair_id": "B45-HELDOUT-05",
+      "task_id": "B45-HELDOUT-05",
+      "baseline_status": "completed",
+      "treatment_status": "completed",
+      "pair_valid_for_scoring": true,
+      "invalid_reason": null,
+      "score_delta": 0.0,
+      "treatment_equal_or_better": true,
+      "static_warning_delta": -1,
+      "reviewer_required": true
+    },
+    {
+      "pair_id": "B45-HELDOUT-06",
+      "task_id": "B45-HELDOUT-06",
+      "baseline_status": "completed",
+      "treatment_status": "completed",
+      "pair_valid_for_scoring": true,
+      "invalid_reason": null,
+      "score_delta": 0.0,
+      "treatment_equal_or_better": true,
+      "static_warning_delta": 0,
+      "reviewer_required": true
+    },
+    {
+      "pair_id": "B45-HELDOUT-07",
+      "task_id": "B45-HELDOUT-07",
+      "baseline_status": "completed",
+      "treatment_status": "no_op",
+      "pair_valid_for_scoring": false,
+      "invalid_reason": "treatment_no_op",
+      "score_delta": null,
+      "treatment_equal_or_better": false,
+      "static_warning_delta": 0,
+      "reviewer_required": false
+    },
+    {
+      "pair_id": "B45-HELDOUT-08",
+      "task_id": "B45-HELDOUT-08",
+      "baseline_status": "completed",
+      "treatment_status": "completed",
+      "pair_valid_for_scoring": true,
+      "invalid_reason": null,
+      "score_delta": 0.0,
+      "treatment_equal_or_better": true,
+      "static_warning_delta": 0,
+      "reviewer_required": true
+    }
+  ],
+  "per_task_results": [
+    {
+      "task_id": "B45-HELDOUT-01",
+      "arm": "baseline",
+      "pair_id": "B45-HELDOUT-01",
+      "attempt_id": "T12-B45-HELDOUT-01-baseline",
+      "started_at": "2026-07-05T12:20:07.2681298+03:00",
+      "ended_at": "2026-07-05T12:22:23.3288586+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 136.061,
+      "final_json_parse_ok": true,
+      "changed_file_count": 2,
+      "sanitized_changed_files": [
+        {
+          "path": "plugins/product-agent-os/assets/templates/hooks/pre_tool_use_policy.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_lifecycle_hooks.py",
+          "change_type": "M"
+        }
+      ],
+      "comment_sufficiency_warning_count": 4,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 4,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 1.0,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "final_tests_run_count": 3,
+      "raw_output_hashes": {
+        "prompt_sha256": "676E3CEEDDB94D8AE9C41AA63A408E0F2FB58BCE9F77F5353FAAC82661F75CA4",
+        "stdout_sha256": "5E3A6EC6FBC962570B3039A72F53B194041B9EAD21B311BD1681CB928F67456F",
+        "stderr_sha256": "97A3514FDD4D54F8B76FB03675E45E672E338F39EC89C933CD16DD4E2750B433",
+        "copy_log_sha256": "094C53AAFF612EDBD314EB9657F25DAA7FAC4A027F31DEC6862DBC56B8C8557C",
+        "stdout_length_bytes": 5604,
+        "stderr_length_bytes": 2767896
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-01",
+      "arm": "treatment",
+      "pair_id": "B45-HELDOUT-01",
+      "attempt_id": "T12-B45-HELDOUT-01-treatment",
+      "started_at": "2026-07-05T12:23:54.1441429+03:00",
+      "ended_at": "2026-07-05T12:25:58.6987130+03:00",
+      "status": "invalid_json",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 124.555,
+      "final_json_parse_ok": false,
+      "changed_file_count": 2,
+      "sanitized_changed_files": [
+        {
+          "path": "plugins/product-agent-os/assets/templates/hooks/pre_tool_use_policy.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_lifecycle_hooks.py",
+          "change_type": "M"
+        }
+      ],
+      "comment_sufficiency_warning_count": 5,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 5,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": null,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "final_tests_run_count": 0,
+      "raw_output_hashes": {
+        "prompt_sha256": "306DD24776CC25D52E394FE66D472AA722F58824D3732F9A4C58DD3A9E52AD42",
+        "stdout_sha256": "3E871EA3181A2FF8B692FE43F425E3551483C7B3AC9134BBC893403FD1F2ABFF",
+        "stderr_sha256": "0C9B934AFD4B59FD1E8A19A80090EB4D0B6F5E8E19D5018DC22CE54255D2DFB7",
+        "copy_log_sha256": "B4E9F5FC3AEAB0496AA2D3A2137B66368FC4CDBAEB6596B1A4C37FA1BF09577D",
+        "stdout_length_bytes": 6596,
+        "stderr_length_bytes": 2743368
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-02",
+      "arm": "baseline",
+      "pair_id": "B45-HELDOUT-02",
+      "attempt_id": "T12-B45-HELDOUT-02-baseline",
+      "started_at": "2026-07-05T12:27:26.7604957+03:00",
+      "ended_at": "2026-07-05T12:36:31.9349912+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 545.174,
+      "final_json_parse_ok": true,
+      "changed_file_count": 4,
+      "sanitized_changed_files": [
+        {
+          "path": "docs/product-agent-os/artifact-contracts.md",
+          "change_type": "M"
+        },
+        {
+          "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_batch41_first_run_automation.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_first_run_analysis.py",
+          "change_type": "M"
+        }
+      ],
+      "comment_sufficiency_warning_count": 5,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 5,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 1.0,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "final_tests_run_count": 2,
+      "raw_output_hashes": {
+        "prompt_sha256": "2684301B85E23E6E4E40E1B19BE3B3A496EB025B648E79A59C543DF75DE0F208",
+        "stdout_sha256": "BCB70DE3E2407064A1F5776335F6262CEBB192515D09BFE85625CDD6D973DC31",
+        "stderr_sha256": "B0F73F2493AB93EE519F9497F57FECD09750039D65D5535BB2784855E9B40CEE",
+        "copy_log_sha256": "BE3A3D7900C8B55EAFED1AEFE919AF599C25B68651B37A4C50ECA701CD4969E1",
+        "stdout_length_bytes": 3808,
+        "stderr_length_bytes": 11536758
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-02",
+      "arm": "treatment",
+      "pair_id": "B45-HELDOUT-02",
+      "attempt_id": "T12-B45-HELDOUT-02-treatment",
+      "started_at": "2026-07-05T12:37:31.8850330+03:00",
+      "ended_at": "2026-07-05T12:46:36.4163320+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 544.531,
+      "final_json_parse_ok": true,
+      "changed_file_count": 5,
+      "sanitized_changed_files": [
+        {
+          "path": "docs/superpowers/specs/batch41-s6-synthetic-e2e-summary.json",
+          "change_type": "M"
+        },
+        {
+          "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+          "change_type": "M"
+        },
+        {
+          "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_batch41_first_run_automation.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_first_run_analysis.py",
+          "change_type": "M"
+        }
+      ],
+      "comment_sufficiency_warning_count": 10,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 10,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 1.0,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "final_tests_run_count": 3,
+      "raw_output_hashes": {
+        "prompt_sha256": "5006BD2F889B5A31D59D3E0F0CA72FEC92570400C4F4519E24CD474A3B027D7C",
+        "stdout_sha256": "96F4CB0974CC21D2907A0A31A73C85A6C8C68FF45AFC492E646B2879FE1F0BB9",
+        "stderr_sha256": "B7382F6FDF7E911DD7F358BEB265EDC51EAA2F4498FF9E92750A6F26592B1518",
+        "copy_log_sha256": "631C24ABB69D5E700A5E3B8E301D462D0BAC0BD760A76089009878A9BA5FF673",
+        "stdout_length_bytes": 3712,
+        "stderr_length_bytes": 10864852
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-03",
+      "arm": "baseline",
+      "pair_id": "B45-HELDOUT-03",
+      "attempt_id": "T12-B45-HELDOUT-03-baseline",
+      "started_at": "2026-07-05T12:47:27.8913799+03:00",
+      "ended_at": "2026-07-05T12:49:33.5323314+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 125.641,
+      "final_json_parse_ok": true,
+      "changed_file_count": 2,
+      "sanitized_changed_files": [
+        {
+          "path": "plugins/product-agent-os/scripts/codex_runtime_runner/redaction.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_codex_runtime_runner_guards.py",
+          "change_type": "M"
+        }
+      ],
+      "comment_sufficiency_warning_count": 2,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 2,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 1.0,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "final_tests_run_count": 3,
+      "raw_output_hashes": {
+        "prompt_sha256": "D5E50CD588587EA2C1651ECF3196DBF0CB893454C749F6A47182D5BE78A8E4BB",
+        "stdout_sha256": "60BE998E3D7C100A6513A4857764DE3B8631EF4FE2D9D22B2B9E12FA86216041",
+        "stderr_sha256": "D9A3C46DE0B80BB36AE0AB840BEFBB25750CD1CE6DE55504ECADCAF7CB91217E",
+        "copy_log_sha256": "6ED23C18A3E515572CE3547E6B18E5387E57CF39CFEE78BAF6F0E03AFCC822A3",
+        "stdout_length_bytes": 4084,
+        "stderr_length_bytes": 6720216
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-03",
+      "arm": "treatment",
+      "pair_id": "B45-HELDOUT-03",
+      "attempt_id": "T12-B45-HELDOUT-03-treatment",
+      "started_at": "2026-07-05T12:50:10.4353557+03:00",
+      "ended_at": "2026-07-05T12:52:27.0101081+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 136.575,
+      "final_json_parse_ok": true,
+      "changed_file_count": 2,
+      "sanitized_changed_files": [
+        {
+          "path": "plugins/product-agent-os/scripts/codex_runtime_runner/redaction.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_codex_runtime_runner_guards.py",
+          "change_type": "M"
+        }
+      ],
+      "comment_sufficiency_warning_count": 2,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 2,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 1.0,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "final_tests_run_count": 1,
+      "raw_output_hashes": {
+        "prompt_sha256": "2C8F00A19FDC58A6C66A26DF0F7277ADD860798A357B93057046DA0A914CC287",
+        "stdout_sha256": "22DCB1632CF6D32E8C4064B1F150B5F81C6FFB66F91D2010671B072B83ED8E4B",
+        "stderr_sha256": "BFFF8C83CD85B22683F6AF363FEDBE1B4152018970EABCE73519F10AB5B7AB59",
+        "copy_log_sha256": "C79FD357203C52D6B0BC968C8666D6C8BE8532200AB2690D318DB812E6E4D59E",
+        "stdout_length_bytes": 2962,
+        "stderr_length_bytes": 6124934
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-04",
+      "arm": "baseline",
+      "pair_id": "B45-HELDOUT-04",
+      "attempt_id": "T12-B45-HELDOUT-04-baseline",
+      "started_at": "2026-07-05T12:53:09.8742577+03:00",
+      "ended_at": "2026-07-05T12:59:27.9790705+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 378.105,
+      "final_json_parse_ok": true,
+      "changed_file_count": 2,
+      "sanitized_changed_files": [
+        {
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_project_graph_queries.py",
+          "change_type": "M"
+        }
+      ],
+      "comment_sufficiency_warning_count": 5,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 5,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 1.0,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "final_tests_run_count": 2,
+      "raw_output_hashes": {
+        "prompt_sha256": "6179453D6CDF231064C4049A1F5AAADA04E9FA8C8A1902E564A6CB6B21FCD5A6",
+        "stdout_sha256": "2EE87BB3111E1D0E909AA67796754D426BF3B1C260EED111F6E05FE18EBA4C09",
+        "stderr_sha256": "24EF46AD4293E15A97DA21DDAC61D265AC2CD077A0AF93050CB9EF58E794ED5A",
+        "copy_log_sha256": "B3EF94F3E5CE23DB5C1EDC7D40DDCA9FEB6461FDCCD86D6B03385FCD34A6A554",
+        "stdout_length_bytes": 3712,
+        "stderr_length_bytes": 4952916
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-04",
+      "arm": "treatment",
+      "pair_id": "B45-HELDOUT-04",
+      "attempt_id": "T12-B45-HELDOUT-04-treatment",
+      "started_at": "2026-07-05T13:00:54.9230958+03:00",
+      "ended_at": "2026-07-05T13:04:04.3534394+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 189.43,
+      "final_json_parse_ok": true,
+      "changed_file_count": 2,
+      "sanitized_changed_files": [
+        {
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_project_graph_queries.py",
+          "change_type": "M"
+        }
+      ],
+      "comment_sufficiency_warning_count": 5,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 5,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 1.0,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "final_tests_run_count": 1,
+      "raw_output_hashes": {
+        "prompt_sha256": "937398F749B8E6D30BAC9353FB023ECC54B7E503FA47FA7AE2D773534A270AAF",
+        "stdout_sha256": "DC76055589F02C1BB9D8535E05E31735F1D237BE68BD41B51E3670C8881CFCD8",
+        "stderr_sha256": "88C36FF56C015913EC6D0552102C18CB7C21EBB1314ABCA48A820D4BE9E18197",
+        "copy_log_sha256": "4DC8E07A0E9B4A53A1A0C8257DD6AD28D17E6AA9888BDB85E745A8E6FB5FD164",
+        "stdout_length_bytes": 3220,
+        "stderr_length_bytes": 5223728
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-05",
+      "arm": "baseline",
+      "pair_id": "B45-HELDOUT-05",
+      "attempt_id": "T12-B45-HELDOUT-05-baseline",
+      "started_at": "2026-07-05T13:07:58.4592363+03:00",
+      "ended_at": "2026-07-05T13:11:10.8432966+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 192.384,
+      "final_json_parse_ok": true,
+      "changed_file_count": 3,
+      "sanitized_changed_files": [
+        {
+          "path": "plugins/product-agent-os/scripts/product_agent_os/self_learning_state.py",
+          "change_type": "M"
+        },
+        {
+          "path": "plugins/product-agent-os/scripts/run_self_learning_loop.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_self_learning_extensions.py",
+          "change_type": "M"
+        }
+      ],
+      "comment_sufficiency_warning_count": 4,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 4,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 1.0,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "final_tests_run_count": 2,
+      "raw_output_hashes": {
+        "prompt_sha256": "99FBA6F5FA7341896F55F9358445556758DB287330319974408FC8A6FB69F34C",
+        "stdout_sha256": "772A629B0184963F919B37F7940DE5776939D0847D845F516727D8A1C0B12E55",
+        "stderr_sha256": "0C39284AD3D4973252BE9975D9E1E9919B5AAE0EA77C6FE8B0A9BF32B7F84FB0",
+        "copy_log_sha256": "EAFB7CCD5A64E7F6ED03F673CC3D99A88591606BC42EAB219441C2345A9546D5",
+        "stdout_length_bytes": 4974,
+        "stderr_length_bytes": 4159310
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-05",
+      "arm": "treatment",
+      "pair_id": "B45-HELDOUT-05",
+      "attempt_id": "T12-B45-HELDOUT-05-treatment",
+      "started_at": "2026-07-05T13:11:48.7800759+03:00",
+      "ended_at": "2026-07-05T13:16:37.6019664+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 288.822,
+      "final_json_parse_ok": true,
+      "changed_file_count": 3,
+      "sanitized_changed_files": [
+        {
+          "path": "plugins/product-agent-os/scripts/product_agent_os/self_learning_state.py",
+          "change_type": "M"
+        },
+        {
+          "path": "plugins/product-agent-os/scripts/run_self_learning_loop.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_self_learning_state.py",
+          "change_type": "M"
+        }
+      ],
+      "comment_sufficiency_warning_count": 3,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 3,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 1.0,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "final_tests_run_count": 1,
+      "raw_output_hashes": {
+        "prompt_sha256": "BCFC878995A4B3B619AF3709B921282BBC0D4A5E4CD5607349831F421BCBBD66",
+        "stdout_sha256": "955BE00D038BE08A51B76DFCDD6611DDAE45E454728BF265C4CF7063F99918AE",
+        "stderr_sha256": "D89070E760B78A5E126D41C0BA550F23917CAF033486A6CCAD72CB873AD1E84F",
+        "copy_log_sha256": "82A40E1BBFD011230D5D1C5159F9EFEABA7DC55E13F0EDACA5869B124D7FE37E",
+        "stdout_length_bytes": 3912,
+        "stderr_length_bytes": 4965848
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-06",
+      "arm": "baseline",
+      "pair_id": "B45-HELDOUT-06",
+      "attempt_id": "T12-B45-HELDOUT-06-baseline",
+      "started_at": "2026-07-05T13:17:21.2881044+03:00",
+      "ended_at": "2026-07-05T13:19:40.7092710+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 139.421,
+      "final_json_parse_ok": true,
+      "changed_file_count": 2,
+      "sanitized_changed_files": [
+        {
+          "path": "docs/sources/registry.en.md",
+          "change_type": "M"
+        },
+        {
+          "path": "docs/sources/registry.md",
+          "change_type": "M"
+        }
+      ],
+      "comment_sufficiency_warning_count": 0,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 0,
+        "status": "no_changed_code_paths",
+        "exit_code": 0
+      },
+      "behavior_score": 1.0,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "final_tests_run_count": 3,
+      "raw_output_hashes": {
+        "prompt_sha256": "726915AC9C058DE1F15F0736F3C68386B357EA10DA832A036ABFA386A4D5237E",
+        "stdout_sha256": "C98F5EF90BD9B435FDE6AED012ED3D596D74C841CCA7932014ACC348B5D5B442",
+        "stderr_sha256": "5F30F68A21ECC5141F892589FAF000E051A9FA43680A66E6C60E9F8697CC28F2",
+        "copy_log_sha256": "84AF8DBA7C412523099C4E713BF723B94E03D578F9E36009503B757DA763C045",
+        "stdout_length_bytes": 3334,
+        "stderr_length_bytes": 2888998
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-06",
+      "arm": "treatment",
+      "pair_id": "B45-HELDOUT-06",
+      "attempt_id": "T12-B45-HELDOUT-06-treatment",
+      "started_at": "2026-07-05T13:20:07.2874789+03:00",
+      "ended_at": "2026-07-05T13:22:36.2352254+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 148.948,
+      "final_json_parse_ok": true,
+      "changed_file_count": 2,
+      "sanitized_changed_files": [
+        {
+          "path": "docs/sources/registry.en.md",
+          "change_type": "M"
+        },
+        {
+          "path": "docs/sources/registry.md",
+          "change_type": "M"
+        }
+      ],
+      "comment_sufficiency_warning_count": 0,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 0,
+        "status": "no_changed_code_paths",
+        "exit_code": 0
+      },
+      "behavior_score": 1.0,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "final_tests_run_count": 3,
+      "raw_output_hashes": {
+        "prompt_sha256": "ACB9CB8F9B4C01FDC60AB5387E7D67F5AC46A593BF1940CCD387C55A1D88BE9A",
+        "stdout_sha256": "45EA6A427B000758B75BB9054959713C8B3B473B9B83FA84F1B31F88EDDAA3AB",
+        "stderr_sha256": "4DF6157E7E233D414DF2774F32ABFD1E498BC628896B6C7683C686611E3E37BB",
+        "copy_log_sha256": "37157F28470BE59F58FEF816A20AC90A61CC00B5AEA6E3310A88956521CAEC09",
+        "stdout_length_bytes": 3648,
+        "stderr_length_bytes": 1447696
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-07",
+      "arm": "baseline",
+      "pair_id": "B45-HELDOUT-07",
+      "attempt_id": "T12-B45-HELDOUT-07-baseline",
+      "started_at": "2026-07-05T13:36:52.9712959+03:00",
+      "ended_at": "2026-07-05T13:41:54.8861473+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 301.915,
+      "final_json_parse_ok": true,
+      "changed_file_count": 1,
+      "sanitized_changed_files": [
+        {
+          "path": "tmp_root_write_check.txt",
+          "change_type": "A"
+        }
+      ],
+      "comment_sufficiency_warning_count": 0,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 0,
+        "status": "no_changed_code_paths",
+        "exit_code": 0
+      },
+      "behavior_score": 0.0,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "final_tests_run_count": 2,
+      "raw_output_hashes": {
+        "prompt_sha256": "A1D29B6DA1723543E3C1EBCDD9282CC2655465C2ABCF4B224DBF62418DA161C9",
+        "stdout_sha256": "0F01AE3DBB16CDCF2BEB3FF833242295AAFFE99B2AAA3EE6EED9F3E76C55C4A6",
+        "stderr_sha256": "5BABB71C96E77B7FDF491240348D75406B445A0914C0307C1A59D8CA0C3FB63F",
+        "copy_log_sha256": "4EDF369BC1B3DD5D751F91D9286899C7C9F36CBB604EB3B7D3B6445BC42DC12B",
+        "stdout_length_bytes": 4002,
+        "stderr_length_bytes": 5203316
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-07",
+      "arm": "treatment",
+      "pair_id": "B45-HELDOUT-07",
+      "attempt_id": "T12-B45-HELDOUT-07-treatment",
+      "started_at": "2026-07-05T13:42:24.2201012+03:00",
+      "ended_at": "2026-07-05T13:47:25.9099838+03:00",
+      "status": "no_op",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 301.69,
+      "final_json_parse_ok": true,
+      "changed_file_count": 0,
+      "sanitized_changed_files": [],
+      "comment_sufficiency_warning_count": 0,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 0,
+        "status": "no_changed_code_paths",
+        "exit_code": 0
+      },
+      "behavior_score": 0.0,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "final_tests_run_count": 2,
+      "raw_output_hashes": {
+        "prompt_sha256": "08D7B251E32645FABB90C4A20FEA536E204B40253CD876A279C219FDFCC48B0E",
+        "stdout_sha256": "3EBD0CA97DBD97BA17F248F49C195A69C0DB65AD56AF69EA164C0E29DFF6D5A1",
+        "stderr_sha256": "605EDD747E5E15FAD6F134F9D9EA38C15E3532798B592D3B2B38B80DF1091DF4",
+        "copy_log_sha256": "3E0B86C5BEEA1AF142FD4A5325CBC28CC34D6E0E3CCA21CE7AC1743352EE787A",
+        "stdout_length_bytes": 3932,
+        "stderr_length_bytes": 11062388
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-08",
+      "arm": "baseline",
+      "pair_id": "B45-HELDOUT-08",
+      "attempt_id": "T12-B45-HELDOUT-08-baseline",
+      "started_at": "2026-07-05T13:48:01.2553447+03:00",
+      "ended_at": "2026-07-05T13:50:49.1998915+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 167.945,
+      "final_json_parse_ok": true,
+      "changed_file_count": 2,
+      "sanitized_changed_files": [
+        {
+          "path": "plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_comment_sufficiency.py",
+          "change_type": "M"
+        }
+      ],
+      "comment_sufficiency_warning_count": 5,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 5,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 1.0,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "final_tests_run_count": 2,
+      "raw_output_hashes": {
+        "prompt_sha256": "5A7CCB433C848FF24A65AD2F278674C94D46E59EF1CCCBADACFCBBA87FCCD3DB",
+        "stdout_sha256": "AF824BBBAEE044211A13F8E13FC507E15AFF77442D7A7C8CF3E6AA0AFB25A403",
+        "stderr_sha256": "C27F9D6CFDF320E89FFDBABA35659AA1E955FAD34DEAAF95A9C4CB7594EDB999",
+        "copy_log_sha256": "7FA639C2A81DCAFBE964865DE05EF0079CE65B2A3BD5E49AA2A0CEC0F06D676E",
+        "stdout_length_bytes": 4004,
+        "stderr_length_bytes": 3527146
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    },
+    {
+      "task_id": "B45-HELDOUT-08",
+      "arm": "treatment",
+      "pair_id": "B45-HELDOUT-08",
+      "attempt_id": "T12-B45-HELDOUT-08-treatment",
+      "started_at": "2026-07-05T13:51:37.6564130+03:00",
+      "ended_at": "2026-07-05T13:53:17.3666077+03:00",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 99.71,
+      "final_json_parse_ok": true,
+      "changed_file_count": 2,
+      "sanitized_changed_files": [
+        {
+          "path": "plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py",
+          "change_type": "M"
+        },
+        {
+          "path": "tests/product_agent_os/test_comment_sufficiency.py",
+          "change_type": "M"
+        }
+      ],
+      "comment_sufficiency_warning_count": 5,
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 5,
+        "status": "advisory_complete",
+        "exit_code": 0
+      },
+      "behavior_score": 1.0,
+      "final_summary_retention": "not_persisted_in_repo_raw_or_mojibake_risk",
+      "final_tests_run_count": 1,
+      "raw_output_hashes": {
+        "prompt_sha256": "D950FB33B2BAA3B4F39E42D28C9BAFA3B81303D770A5E020CA155B325CF67905",
+        "stdout_sha256": "ECBA08E914DEFBED5FF66AEE51C8E1C04DB996519FF759D380C88D3CF2F57F64",
+        "stderr_sha256": "DC18D663262EE1707ECD3D6A0ADEBE0C44E4519CC0A4FAD80046201146EDB836",
+        "copy_log_sha256": "C792A14DABD18FD443A615B7626A9D3F956AE9B9B8A85D4EB5A03EEF2F6AB21C",
+        "stdout_length_bytes": 3608,
+        "stderr_length_bytes": 1758446
+      },
+      "retention_status": "raw_temp_only_repo_sanitized_rollup"
+    }
+  ],
+  "comparison_to_previous": {
+    "m26": {
+      "status": "executed_live_eval_no_go",
+      "baseline_average_local_score": 4.22,
+      "treatment_average_local_score": 3.88,
+      "completed_runs": 15,
+      "timeout_runs": 1,
+      "reviewer_decision": "no_go"
+    },
+    "t05": {
+      "status": "stopped_on_timeout_inconclusive_no_go",
+      "approved_primary_task_model_calls_started": 2,
+      "completed_primary_task_runs": 1,
+      "timeout_primary_task_runs": 1,
+      "reviewer_calls_started": 0
+    },
+    "t12": {
+      "approved_primary_task_model_calls_started": 16,
+      "completed_primary_task_runs": 14,
+      "no_op_primary_task_runs": 1,
+      "timeout_primary_task_runs": 0,
+      "valid_pair_count": 6,
+      "reviewer_calls_started": 0,
+      "reviewer_decision": "not_run_due_invalid_pair_count"
+    }
+  },
+  "harness_notes": [
+    "A pre-run copy attempt in an earlier temp root timed out before stdout/stderr prompt files or codex exec model call evidence existed; it is recorded as harness setup failure, not as a primary model call.",
+    "The first parser version misclassified B45-HELDOUT-01 treatment because the regex stopped at nested JSON inside a string; marker-substring reparse still found invalid JSON because the model emitted unescaped nested quotes inside a JSON string.",
+    "Changed files were recomputed against the current source snapshot rather than dirty git status inside disposable copies; generated __pycache__ and .pyc files are excluded from repo metadata.",
+    "Raw stdout files are retained in temp only and may use UTF-16LE PowerShell redirection encoding; repo stores hashes and sanitized fields only."
+  ],
+  "cost_and_retention": {
+    "provider_cost_usd": null,
+    "provider_cost_status": "accepted_gap_cost_unavailable_call_count_cap_only",
+    "raw_outputs_in_repo": false,
+    "raw_outputs_retained_in_temp_only": true,
+    "repo_retention": "sanitized rollup only",
+    "temp_root_pattern": "%TEMP%\\codex-b45-postq4-t12-*",
+    "temp_root_redacted_in_repo": true
+  },
+  "no_unapproved_actions": {
+    "provider_or_model_call_outside_exact_approval": false,
+    "setup_or_smoke_model_call": false,
+    "reviewer_call_after_invalid_pairs": false,
+    "runtime_or_live_server_launched": false,
+    "browser_automation_run": false,
+    "target_workspace_command_run": false,
+    "target_workspace_mutated": false,
+    "database_accessed": false,
+    "ci_or_blocker_enforcement_created": false,
+    "git_branch_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation_created_or_enabled": false,
+    "external_write_performed_outside_temp": false
+  },
+  "decision": {
+    "state": "no_go_invalid_pair_count",
+    "promotion_allowed": false,
+    "static_warning_delta_can_promote": false,
+    "m26_reversed": false,
+    "m35_reversed": false,
+    "recommended_next_task": "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING"
+  },
+  "verification": {
+    "status": "repo_sync_verified_with_no_promotion",
+    "results": [
+      {
+        "command": "Get-CimInstance Win32_Process filtered by redacted %TEMP%\\\\codex-b45-postq4-t12-* scoped root and excluding powershell.exe/pwsh.exe",
+        "status": "passed",
+        "evidence": "No lingering non-PowerShell scoped temp-root processes returned."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "status": "passed",
+        "evidence": "Ran 22 tests; OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v",
+        "status": "passed",
+        "evidence": "Ran 29 tests; OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "status": "passed",
+        "evidence": "Ran 99 tests; OK after compact TEST.md size sync."
+      },
+      {
+        "command": "python tools\\check_docs.py",
+        "status": "passed",
+        "evidence": "OK: documentation structure checks passed"
+      },
+      {
+        "command": "git diff --check",
+        "status": "passed_with_crlf_warnings",
+        "evidence": "No whitespace errors. Git reported CRLF/LF normalization warnings for edited files."
+      }
+    ]
+  }
+}
