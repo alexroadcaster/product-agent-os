@@ -1,0 +1,339 @@
+{
+  "schema_version": "batch45_postq4_t10_live_eval_harness_redesign_packet_v1",
+  "task_id": "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
+  "evidence_id": "B45-POSTQ4-T10-A01",
+  "status": "implemented_approval_packet_only_not_run",
+  "created_at": "2026-07-05T01:12:00+03:00",
+  "route": "approval_packet_only",
+  "source_status": "project-authored source-only live-eval harness redesign packet; no live/model/provider/runtime/browser/target/CI/git/release/deploy/automation action was performed",
+  "basis": [
+    "docs/superpowers/specs/batch45-agent-behavior-eval-results.json",
+    "docs/superpowers/specs/batch45-postq4-t05-live-model-rerun-results.json",
+    "docs/superpowers/specs/batch45-postq4-t05b-rerun-approval-packet.json",
+    "docs/superpowers/specs/batch45-postq4-t06-promotion-decision.json",
+    "docs/superpowers/specs/batch45-postq4-architecture-next-actions.json",
+    "docs/superpowers/specs/batch45-postq4-t11-treatment-v3-source-design.json",
+    "docs/superpowers/specs/batch45-post-q4-next-tasks.json"
+  ],
+  "sidecar_agent_reviews": [
+    {
+      "role": "architect",
+      "report": ".codex/product-agent-os/reviews/batch45/t10-agent-01-eval-architecture.md",
+      "status": "completed"
+    },
+    {
+      "role": "tester",
+      "report": ".codex/product-agent-os/reviews/batch45/t10-agent-02-timeout-pairing.md",
+      "status": "completed"
+    },
+    {
+      "role": "security-privacy-supply-chain-reviewer",
+      "report": ".codex/product-agent-os/reviews/batch45/t10-agent-03-approval-privacy.md",
+      "status": "completed"
+    },
+    {
+      "role": "docs-maintainer",
+      "report": ".codex/product-agent-os/reviews/batch45/t10-agent-04-docs-control-plane.md",
+      "status": "completed"
+    },
+    {
+      "role": "completion-skeptic",
+      "report": ".codex/product-agent-os/reviews/batch45/t10-agent-05-completion-skeptic.md",
+      "status": "completed"
+    }
+  ],
+  "problem_statement": {
+    "m26_result": "M26 is the last comparable live eval and remains no-go: baseline average 4.22, treatment average 3.88, treatment worse on 4 of 8 tasks, 1 timeout, reviewer no_go.",
+    "t05_result": "T05 consumed exact approval but stopped during baseline collection after one completed run and one timeout; treatment and reviewer did not run.",
+    "t05b_gap": "T05B is an approval-packet-only revision, not a run.",
+    "t11_dependency": "T11 designs treatment v3 source-only; T10 must make any future run comparable before treatment v3 can be evaluated.",
+    "design_goal": "Prevent another approval-gated rerun from producing an unusable non-comparable baseline-only timeout result."
+  },
+  "redesign_contract": {
+    "summary": "Future live/model reruns must be paired, timeout-aware and schema-valid before any promotion interpretation.",
+    "required_before_any_future_run": [
+      "new exact owner approval packet",
+      "source freeze for task set, baseline prompt, treatment prompt, scoring rubric and result schema",
+      "task feasibility table for writeability, expected command surface, timeout risk, no-op risk and reviewer risk",
+      "owner-selected timeout policy",
+      "cost cap or accepted call-count-only cost gap",
+      "temp-only raw-output retention policy",
+      "process-tree watchdog and lingering-process check",
+      "invalid-pair quarantine rules",
+      "reviewer route and reviewer timing",
+      "no-unapproved-actions proof"
+    ],
+    "default_run_order": "paired_by_task",
+    "paired_by_task_order": "For each held-out task, run baseline then treatment before moving to the next task.",
+    "legacy_baseline_first_order": "forbidden_for_promotion_unless_owner_accepts_t05_comparability_risk",
+    "diagnostic_order": "allowed_only_as_diagnostic_not_promotion_evidence",
+    "setup_or_smoke_model_calls": 0
+  },
+  "timeout_policy_options": [
+    {
+      "id": "strict_stop_on_first_timeout",
+      "claim_effect": "inconclusive_no_go",
+      "promotion_allowed": false,
+      "when_to_choose": "Cost safety and fast failure."
+    },
+    {
+      "id": "paired_continue_with_invalid_pair_quarantine",
+      "claim_effect": "valid completed pairs can be scored; timed-out pair is quarantined",
+      "promotion_allowed": "only if the valid-pair threshold and reviewer threshold are met",
+      "when_to_choose": "Behavior comparison matters more than early stop, and owner accepts higher cost."
+    },
+    {
+      "id": "single_task_timeout_diagnostic",
+      "claim_effect": "timeout root-cause evidence only",
+      "promotion_allowed": false,
+      "when_to_choose": "Debug B45-HELDOUT-02-style timeout risk without claiming behavior improvement."
+    }
+  ],
+  "result_schema_contract": {
+    "run_fields": [
+      "task_id",
+      "arm",
+      "pair_id",
+      "attempt_id",
+      "started_at",
+      "ended_at",
+      "status",
+      "exit_code",
+      "timed_out",
+      "elapsed_seconds",
+      "final_json_parse_ok",
+      "changed_file_count",
+      "sanitized_changed_files",
+      "comment_sufficiency_warning_count",
+      "behavior_score",
+      "raw_output_hashes",
+      "retention_status"
+    ],
+    "pair_fields": [
+      "pair_id",
+      "task_id",
+      "baseline_status",
+      "treatment_status",
+      "pair_valid_for_scoring",
+      "invalid_reason",
+      "score_delta",
+      "treatment_equal_or_better",
+      "static_warning_delta",
+      "reviewer_required"
+    ],
+    "run_status_values": [
+      "completed",
+      "timeout",
+      "no_op",
+      "invalid_json",
+      "wrapper_failure_before_model_call",
+      "aborted_by_policy",
+      "not_run_due_stop_rule"
+    ],
+    "pair_invalid_reasons": [
+      "baseline_timeout",
+      "treatment_timeout",
+      "baseline_no_op",
+      "treatment_no_op",
+      "invalid_json",
+      "wrapper_failure",
+      "approval_stop_rule",
+      "privacy_or_retention_violation"
+    ],
+    "aggregate_fields": [
+      "valid_pair_count",
+      "invalid_pair_count",
+      "timeout_count",
+      "no_op_count",
+      "average_baseline_score",
+      "average_treatment_score",
+      "average_score_delta_percent",
+      "treatment_equal_or_better_count",
+      "reviewer_decision",
+      "promotion_threshold_met",
+      "static_warning_delta",
+      "m26_reversed",
+      "m35_reversed",
+      "unsupported_claims"
+    ]
+  },
+  "reviewer_route": {
+    "default_timing": "after_primary_pairs_complete_and_schema_valid",
+    "forbidden_timing": "reviewer_after_timeout_without_comparable_pairs",
+    "reviewer_input": "sanitized rollup only; no raw prompts, raw traces, private source bodies or provider payload bodies",
+    "reviewer_decisions": [
+      "go",
+      "conditional_go",
+      "no_go",
+      "not_run_due_stop_rule",
+      "not_run_due_invalid_pair_count"
+    ],
+    "reviewer_no_go_blocks_promotion": true
+  },
+  "promotion_gate_candidate": {
+    "minimum_valid_pairs": 8,
+    "minimum_behavior_quality_improvement": ">=20% average improvement over baseline on valid pairs",
+    "pairwise_quality": "treatment equal_or_better on at least 6 of 8 valid pairs",
+    "timeout_requirement": "zero promotion-counted timeouts",
+    "no_op_requirement": "zero promotion-counted no-op runs",
+    "reviewer_decision_must_not_be": "no_go",
+    "static_warning_delta_can_promote": false,
+    "m26_reversed_only_if_all_thresholds_met": true,
+    "m35_reversed_only_if_runtime_or_owner_decision_packet_later_allows": false
+  },
+  "required_exact_approval_packet_fields": {
+    "provider_surface": "owner_fill_required",
+    "model": "owner_fill_required",
+    "run_count": {
+      "baseline": 8,
+      "treatment": 8,
+      "reviewer": 1,
+      "setup_or_smoke_model_calls": 0
+    },
+    "command_surface": "codex exec --ephemeral --disable hooks --ignore-rules --sandbox workspace-write --model <MODEL> -C <TEMP disposable copy>",
+    "disposable_root": "%TEMP%\\codex-b45-postq4-t10-*",
+    "timeout_per_task_seconds": 600,
+    "overall_wall_clock_policy": "owner must choose strict_stop_on_first_timeout, paired_continue_with_invalid_pair_quarantine or single_task_timeout_diagnostic",
+    "cost_cap": "<USD cap> or accepted_gap_cost_unavailable_call_count_cap_only",
+    "retention": "raw outputs only in temp; repo stores sanitized rollup only",
+    "reviewer_route": "independent Codex reviewer/subagent after schema-valid primary evidence"
+  },
+  "privacy_and_retention": {
+    "raw_outputs_in_repo_allowed": false,
+    "raw_outputs_temp_only": true,
+    "repo_allowed": [
+      "sanitized scores",
+      "sanitized timeout markers",
+      "hashes of raw outputs",
+      "changed-file metadata",
+      "aggregate call/cost counts if available",
+      "reviewer decision summary"
+    ],
+    "repo_forbidden": [
+      "raw prompts",
+      "raw model traces",
+      "provider payload bodies",
+      "private source bodies",
+      "secrets",
+      "credentials",
+      "private customer data",
+      "unredacted local absolute target paths"
+    ]
+  },
+  "abort_conditions": [
+    "No new exact owner approval for a run.",
+    "Provider/model/surface/cost cap/timeout policy is ambiguous.",
+    "Task source freeze is missing or drifted after approval.",
+    "Disposable temp root write probe or cleanup safety is unsafe.",
+    "Process-tree watchdog or lingering-process check is unavailable.",
+    "Any task would require target workspace mutation, runtime/browser launch, database access, provider call outside approval or raw private data retention.",
+    "Result schema cannot distinguish timeout, no-op, invalid JSON, wrapper failure and completed runs.",
+    "Raw outputs would be persisted in repo."
+  ],
+  "decision": {
+    "state": "approval_packet_ready_for_owner_review_not_run",
+    "m26_reversed": false,
+    "m35_reversed": false,
+    "t05_timeout_reversed": false,
+    "t11_behavior_proven": false,
+    "promotion_allowed": false,
+    "live_model_rerun_allowed_without_new_approval": false,
+    "runtime_browser_or_target_claim_allowed": false,
+    "recommended_next_routes": [
+      "owner review of B45-POSTQ4-T10-A01",
+      "optional new exact approval packet for paired live/model rerun",
+      "keep advisory-only/no-go if no approval is issued"
+    ]
+  },
+  "unsupported_claims": [
+    "real_ai_agent_behavior_improvement",
+    "treatment_v3_behavior_proven",
+    "M26_no_go_reversed",
+    "M35_no_go_reversed",
+    "T05_timeout_reversed",
+    "provider_or_live_api_behavior",
+    "runtime_browser_readiness",
+    "target_workspace_apply_safety",
+    "ci_workflow_readiness",
+    "blocker_enforcement_readiness",
+    "active_automation_readiness",
+    "release_deploy_publish_readiness"
+  ],
+  "control_plane_sync_decision": {
+    "REQUIREMENTS.md": "not_applicable_no_scope_or_acceptance_change",
+    "PLAN.md": "update_compact_post_q4_pointer",
+    "TEST.md": "update_compact_post_q4_marker",
+    "EVALS.md": "update_compact_post_q4_claim_ceiling",
+    "RUNLOG.md": "handoff_required_due_runlog_budget",
+    "docs/sources/registry.md": "update_source_route",
+    "docs/sources/registry.en.md": "update_source_route",
+    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md": "update_track11_marker",
+    ".codex/product-agent-os/lifecycle-state.json": "update_current_marker"
+  },
+  "no_unapproved_actions": {
+    "live_model_or_provider_api_called": false,
+    "runtime_or_live_server_launched": false,
+    "browser_automation_run": false,
+    "target_workspace_command_run": false,
+    "target_workspace_mutated": false,
+    "database_accessed": false,
+    "ci_or_blocker_enforcement_created": false,
+    "git_branch_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation_created_or_enabled": false,
+    "external_write_performed": false
+  },
+  "verification": {
+    "status": "passed_current_run",
+    "results": [
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t10-live-eval-harness-redesign-packet.json",
+        "status": "passed"
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-post-q4-next-tasks.json",
+        "status": "passed"
+      },
+      {
+        "command": "python -m json.tool .codex\\product-agent-os\\lifecycle-state.json",
+        "status": "passed"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v",
+        "status": "passed",
+        "evidence": "Ran 29 tests; OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "status": "passed",
+        "evidence": "Ran 20 tests; OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "status": "passed",
+        "evidence": "Ran 99 tests; OK"
+      },
+      {
+        "command": "python tools\\check_docs.py",
+        "status": "passed",
+        "evidence": "OK: documentation structure checks passed"
+      },
+      {
+        "command": "git diff --check",
+        "status": "passed_with_crlf_warnings",
+        "evidence": "No whitespace errors. Git reported CRLF/LF normalization warnings for edited markdown files."
+      },
+      {
+        "command": "Get-Item PLAN.md, TEST.md, EVALS.md, RUNLOG.md | Select-Object Name, Length",
+        "status": "passed",
+        "evidence": {
+          "PLAN.md": 49759,
+          "TEST.md": 49976,
+          "EVALS.md": 49984,
+          "RUNLOG.md": 51123
+        }
+      }
+    ],
+    "remaining_required_before_completion_claim": []
+  }
+}

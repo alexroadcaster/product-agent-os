@@ -1292,6 +1292,12 @@
 
 
 
+
+
+
+
+
+
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
 
 
@@ -1324,6 +1330,27 @@
             Product-Agent OS Plugin
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="control-plane-current-state.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Current Control-Plane State
+  </span>
+
+
+      </a>
+    </li>
+
 
 
 
@@ -1465,6 +1492,27 @@
 
   <span class="md-ellipsis">
     Agent-Skill Modernization Loop
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="self-learning-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Self-Learning Loop
   </span>
 
 
@@ -1775,6 +1823,27 @@
 
 
     <li class="md-nav__item">
+      <a href="coding-standards.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Professional Code Authoring
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
       <a href="methodology-intelligence.html" class="md-nav__link">
 
 
@@ -1929,6 +1998,15 @@
   <a href="#self-verification-metrics-loop" class="md-nav__link">
     <span class="md-ellipsis">
       Self-Verification Metrics Loop
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#self-learning-loop-docscontracts-closure-eval" class="md-nav__link">
+    <span class="md-ellipsis">
+      Self-Learning Loop docs/contracts closure eval
     </span>
   </a>
 
@@ -3482,6 +3560,15 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#self-learning-loop-docscontracts-closure-eval" class="md-nav__link">
+    <span class="md-ellipsis">
+      Self-Learning Loop docs/contracts closure eval
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#expected-behavior" class="md-nav__link">
     <span class="md-ellipsis">
       Expected Behavior
@@ -3684,6 +3771,12 @@
 <td>Implemented.</td>
 <td><code>agent_skill_metrics_loop_contract_present</code>.</td>
 </tr>
+<tr>
+<td>Professional Code Authoring eval</td>
+<td>Rejects shortcut coding behavior: 50-line custom helper before reuse, needless dependency, missing existing-capability scan, shallow wrapper, noisy comments and unsupported rewrite claims.</td>
+<td>Implemented as local deterministic coverage.</td>
+<td><code>professional-code-authoring-*</code> cases, <code>professional_code_authoring</code> readiness/route/status visibility and <a href="coding-standards.html">Professional Code Authoring Standards</a>.</td>
+</tr>
 </tbody>
 </table>
 <h2 id="guided-questions-and-dashboard">Guided Questions And Dashboard<a class="headerlink" href="#guided-questions-and-dashboard" title="Permanent link">&para;</a></h2>
@@ -3695,6 +3788,17 @@
 <h2 id="self-verification-metrics-loop">Self-Verification Metrics Loop<a class="headerlink" href="#self-verification-metrics-loop" title="Permanent link">&para;</a></h2>
 <p><code>agent_skill_metrics_loop</code> is a staged self-verification metrics loop for agents, skills, prompt/policy packs, router/tool policy and harness-version review. Expected behavior starts with a read-only target registry, trace intake, dataset quality blockers, local grader outputs, grader/judge calibration, cadence recommendation levels <code>L0</code>, <code>L1</code>, <code>L2</code> and <code>L3</code>, scorecard ledger, <code>agent-skill-evaluation-report.html</code> and modernization candidates with evidence, rollback and owner-review state.</p>
 <p>Forbidden behavior includes headline-metric-only approval, raw trace leakage, uncalibrated judge approval, self-applied updates, missing rollback target, live eval/model/API calls, active schedules and modernization candidates that cross approval boundary without explicit owner review.</p>
+<h2 id="self-learning-loop-docscontracts-closure-eval">Self-Learning Loop docs/contracts closure eval<a class="headerlink" href="#self-learning-loop-docscontracts-closure-eval" title="Permanent link">&para;</a></h2>
+<p><code>self_learning_loop_docs_contracts_closure</code> checks that docs name implemented
+versus planned surfaces, artifact contracts expose
+<code>self_learning_docs_contracts_closure_v1</code>, automation promotion remains candidate_only,
+and the promotion packet requires three manual successful runs, owner approval,
+rollback/disable path, false-positive audit, flake replay and cost check.</p>
+<p>Forbidden behavior: no real Codex App session export import, no hidden telemetry,
+no raw transcript storage, no live eval/model/provider calls, no
+target mutation, no active schedule, no hook activation, no GitHub Action or
+Codex App automation creation, no git/release/deploy/publish/external write and
+no auto-apply.</p>
 <h2 id="expected-behavior">Expected Behavior<a class="headerlink" href="#expected-behavior" title="Permanent link">&para;</a></h2>
 <p>Each case should name behavior, not only a file name.</p>
 <ul>
@@ -3719,6 +3823,7 @@
 <li><code>cross_domain_synthesis_contract_present</code>: Cross-domain synthesis gates require <code>methodology_synthesis</code>, <code>recommendation_groups</code>, owner domains, consumer domains, <code>source_artifact_ledger</code>, semantic evidence sufficiency, risk-aware safe next action and source artifact alias/deferred decisions.</li>
 <li><code>question_queue_contract_present</code>: guided question protocol exposes <code>next_blocking_question</code>, <code>question_counts</code> and <code>question_summary</code> while preserving the full typed packet outside the first response.</li>
 <li><code>status_dashboard_present</code>: status dashboard generation stages <code>.codex/product-agent-os/status.html</code> and <code>.codex/product-agent-os/status.json</code> from a <code>status_snapshot</code>; dashboard is a generated view and not source of truth.</li>
+<li><code>professional_code_authoring</code>: non-mechanical code tasks name existing capability scan, one-line/native candidate, dependency decision, deep module or legacy seam evidence before code-quality claims.</li>
 <li><code>false-positive fixtures</code>: backend/native work does not force FSD, simple CRUD <code>src/domain/*</code> does not force DDD, docs-light does not force a docs portal, hosted docs and DB introspection stay approval-required.</li>
 </ul>
 <h2 id="forbidden-behavior">Forbidden Behavior<a class="headerlink" href="#forbidden-behavior" title="Permanent link">&para;</a></h2>
@@ -3735,6 +3840,7 @@
 <li>methodology recommendation that writes target files, enables hooks, creates automation or mutates external systems before approval;</li>
 <li>Codex workflow recommendation that treats memory as source of truth, subagents as automatically faster, MCP as safe by default, hooks as harmless, Agents SDK as the Codex runtime layer or repeated workflows as immediately automation-ready;</li>
 <li>source-backed OpenAI/Codex claim without Source status or registry support;</li>
+<li>professional code authoring completion from a 50-line custom helper, needless dependency, shallow wrapper, noisy comments, rewrite claim or "senior/clean/simple" label without checklist evidence;</li>
 <li>external write, remote CI mutation, publish, tag, upload or package-registry action without approval;</li>
 <li>full question queue dump in first response, broad methodology interview, dashboard as source of truth or ready/completed/success claim from stale evidence.</li>
 </ul>
@@ -3779,7 +3885,7 @@
 <li>Transcript/session eval runner is deterministic and local; it catches missing terms, forbidden shortcuts and unsafe transcript content, but it is not an LLM semantic judge.</li>
 <li>LLM-as-judge evals need calibration and failure examples before they can be trusted for release claims.</li>
 </ul>
-<p>Next artifact: use <a href="scenarios.html">Scenarios</a> to choose the route and <a href="codex-compatibility.html">Codex compatibility</a> to confirm package scope.</p>
+<p>Next artifact: use <a href="scenarios.html">Scenarios</a> to choose the route, <a href="coding-standards.html">Professional Code Authoring Standards</a> to inspect code-writing gates and <a href="codex-compatibility.html">Codex compatibility</a> to confirm package scope.</p>
 
 
 

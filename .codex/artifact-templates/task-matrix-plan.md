@@ -55,7 +55,7 @@ Completion-skeptic evidence: when a task claims completion, readiness, release, 
 - History moves to docs/sources/*backlog*.md when a cycle closes and the detail is no longer needed in the active concrete task file.
 - Source-backed claims enter docs/sources/registry*.md when documentation adds or changes source-backed factual claims.
 - No secrets, raw chat, customer data, credentials, tokens or private keys belong in task plans, evidence packets or examples.
-- Avoid root PLAN.md bloat; keep durable sequencing compact and move detailed history to the owning evidence artifact.
+- Avoid root PLAN.md bloat, but never skip required PLAN/TEST/EVALS/RUNLOG updates because of size. When root files approach budget, move detailed history to the owning evidence artifact first, then keep root control-plane files compact and current.
 - No automatic deletion of task files, evidence rows or historical records.
 - No destructive cleanup without explicit owner approval and rollback notes.
 

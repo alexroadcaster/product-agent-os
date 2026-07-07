@@ -1,0 +1,456 @@
+{
+  "schema_version": "batch45_professional_code_authoring_summary_v1",
+  "evidence_id": "B45-S0-M01-M20-A01",
+  "batch": "Batch 45",
+  "slice": "B45-S0",
+  "rows_implemented": [
+    "B45-PCA-M01"
+  ],
+  "generated_at": "2026-06-29",
+  "source_status": "local_research_and_plan_evidence",
+  "closure_level": "docs_contract_ready",
+  "claim_ceiling": [
+    "This packet implements the Batch 45 synthesis ledger only.",
+    "It does not implement template registration, workflow enforcement, agent prompt changes, eval cases, runtime routing, HTML rendering, hook activation, automation, provider calls, browser proof, target mutation, installed plugin cache refresh, git actions, release, deploy or publication.",
+    "Professional code authoring behavior remains planned until the owned Batch 45 implementation rows execute with current verification evidence."
+  ],
+  "skills_used": [
+    {
+      "name": "implementation-planner",
+      "role": "slice decomposition, verification gates, rollback and ownership boundaries",
+      "status": "used_as_staged_planning_skill"
+    },
+    {
+      "name": "agent-team-designer",
+      "role": "agent role map, fresh-context handoff fields and stop conditions",
+      "status": "used_as_staged_team_design_skill_no_auto_dispatch"
+    },
+    {
+      "name": "docs-maintainer",
+      "role": "source registry, documentation packet and unsupported-claim boundary",
+      "status": "used_as_staged_docs_alignment_skill"
+    }
+  ],
+  "agent_team_design_packet": {
+    "mode": "staged_agent_roles_no_auto_dispatch",
+    "reason": "B45-S0 needs agent ownership and handoff design, but Product-Agent OS policy forbids automatic subagent launch or external runner activation without a separate approval and fresh-context packet.",
+    "roles": [
+      {
+        "role": "Architect",
+        "owns": [
+          "deep_module_check",
+          "dependency_boundary",
+          "architecture_and_legacy_seam_decisions"
+        ],
+        "handoff_output": [
+          "selected_leverage_path",
+          "rejected_options",
+          "abstraction_depth_rationale"
+        ]
+      },
+      {
+        "role": "Builder",
+        "owns": [
+          "existing_capability_scan",
+          "one_line_candidate",
+          "smallest_change_path"
+        ],
+        "handoff_output": [
+          "files_inspected",
+          "project_helpers_or_framework_apis_considered",
+          "dependency_delta"
+        ]
+      },
+      {
+        "role": "Tester",
+        "owns": [
+          "test_first_or_gap",
+          "characterization_test_route",
+          "regression_and_eval_evidence"
+        ],
+        "handoff_output": [
+          "deterministic_checks",
+          "negative_cases",
+          "unsupported_quality_claims"
+        ]
+      },
+      {
+        "role": "Reviewer",
+        "owns": [
+          "defect_first_review",
+          "custom_code_bloat_findings",
+          "dependency_and_legacy_risk_findings"
+        ],
+        "handoff_output": [
+          "findings_by_severity",
+          "unnecessary_custom_logic",
+          "missing_evidence"
+        ]
+      },
+      {
+        "role": "Docs Maintainer",
+        "owns": [
+          "source_status",
+          "public_docs_boundary",
+          "registry_and_plan_sync"
+        ],
+        "handoff_output": [
+          "docs_changed",
+          "registry_updates",
+          "claim_ceiling"
+        ]
+      }
+    ],
+    "parallelism_policy": {
+      "default": "sequential_until_files_are_disjoint",
+      "parallel_allowed_when": [
+        "fresh-context packet exists",
+        "owned files are disjoint",
+        "expected evidence and stop conditions are explicit",
+        "no raw chat history is used as worker context"
+      ],
+      "stop_conditions": [
+        "overlapping ownership without handoff",
+        "missing existing-capability scan",
+        "new dependency without lifecycle-risk record",
+        "legacy rewrite without characterization evidence",
+        "hook or automation activation without explicit approval"
+      ]
+    }
+  },
+  "source_packets": [
+    {
+      "path": "plugins/product-agent-os/assets/research/ai-agent-coding-standards-research.md",
+      "declared_count": 135,
+      "source_status": "official + primary methodology + local implementation audit",
+      "used_for": [
+        "style guide dispatch",
+        "refactoring safety",
+        "comments and docs policy",
+        "testing and review gates",
+        "security, supply-chain and observability boundaries",
+        "existing Product-Agent OS entity audit"
+      ]
+    },
+    {
+      "path": "plugins/product-agent-os/assets/research/ai-agent-coding-literature-research.md",
+      "declared_count": 60,
+      "source_status": "book literature + local implementation audit",
+      "used_for": [
+        "senior leverage ladder",
+        "one-line-before-fifty-lines rule",
+        "deep modules",
+        "data-structure-first discipline",
+        "negative dependency rule",
+        "legacy seam discipline",
+        "operational code cost"
+      ]
+    },
+    {
+      "path": "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md",
+      "declared_scope": "Batch 45 two-loop synthesis, entity audit, activation mechanism audit, task matrix and acceptance ceiling",
+      "used_for": [
+        "B45-PCA-M01",
+        "B45-PCA-M20",
+        "slice sequencing",
+        "unsupported claims"
+      ]
+    }
+  ],
+  "senior_leverage_ladder": [
+    {
+      "rank": 1,
+      "path": "delete_or_do_not_add",
+      "agent_question": "Can the requirement be removed, narrowed, satisfied by existing behavior, or solved by deleting duplicate code?",
+      "evidence_required": "delete_or_reuse_decision",
+      "batch_gate": "enterprise_leverage_check"
+    },
+    {
+      "rank": 2,
+      "path": "configure_or_use_product_setting",
+      "agent_question": "Can configuration, feature flags, schema options, database constraints or platform primitives solve it without code?",
+      "evidence_required": "configuration_or_platform_option_checked",
+      "batch_gate": "existing_capability_scan"
+    },
+    {
+      "rank": 3,
+      "path": "standard_library_or_language_construct",
+      "agent_question": "Is there a direct stdlib, built-in data structure, language construct, SQL primitive or shell/platform primitive?",
+      "evidence_required": "one_line_candidate",
+      "batch_gate": "one_line_candidate_rule"
+    },
+    {
+      "rank": 4,
+      "path": "framework_or_current_dependency",
+      "agent_question": "Does the framework, ORM, router, validator, serializer, UI kit, test runner or current dependency already provide this behavior?",
+      "evidence_required": "framework_or_current_dependency_option_checked",
+      "batch_gate": "negative_dependency_rule"
+    },
+    {
+      "rank": 5,
+      "path": "project_helper_or_existing_abstraction",
+      "agent_question": "Is there a project-owned helper, service method, adapter, domain object or contract that should be reused instead of duplicated?",
+      "evidence_required": "project_pattern_or_helper_inspected",
+      "batch_gate": "existing_capability_scan"
+    },
+    {
+      "rank": 6,
+      "path": "tiny_adapter_or_deep_module",
+      "agent_question": "If a wrapper is needed, does it hide real complexity behind a stable interface instead of creating a shallow rename layer?",
+      "evidence_required": "deep_module_check",
+      "batch_gate": "deep_module_over_shallow_module"
+    },
+    {
+      "rank": 7,
+      "path": "small_custom_code",
+      "agent_question": "If custom code is still required, is it the smallest behavior-preserving change with tests, naming clarity and rollback notes?",
+      "evidence_required": "smallest_custom_code_rationale",
+      "batch_gate": "cleverness_budget"
+    },
+    {
+      "rank": 8,
+      "path": "new_dependency",
+      "agent_question": "Does a new dependency reduce total lifecycle risk after stdlib, framework, current dependency and small custom code options are rejected?",
+      "evidence_required": "new_dependency_justification_and_supply_chain_boundary",
+      "batch_gate": "negative_dependency_rule"
+    }
+  ],
+  "professional_code_principles": [
+    {
+      "id": "existing_capability_first",
+      "standard": "Read the local source, project helpers, framework docs and available dependencies before writing custom logic.",
+      "unrepresented_before_b45": true
+    },
+    {
+      "id": "one_line_before_fifty_lines",
+      "standard": "For small behavior, name the shortest direct expression or framework call before proposing a multi-line helper.",
+      "unrepresented_before_b45": true
+    },
+    {
+      "id": "delete_or_reuse_before_add",
+      "standard": "Prefer deleting duplication, reusing current behavior or composing project abstractions before adding code.",
+      "unrepresented_before_b45": true
+    },
+    {
+      "id": "negative_dependency_rule",
+      "standard": "Do not treat 'do not reinvent the wheel' as permission to install a package for every small task.",
+      "unrepresented_before_b45": true
+    },
+    {
+      "id": "refactor_with_behavior_proof",
+      "standard": "Refactoring is behavior-preserving and should use small named moves with regression or characterization evidence.",
+      "unrepresented_before_b45": false
+    },
+    {
+      "id": "oop_without_ceremony",
+      "standard": "Use OOP and patterns to protect invariants and dependencies, not to create classes or interfaces by reflex.",
+      "unrepresented_before_b45": true
+    },
+    {
+      "id": "comments_explain_why",
+      "standard": "Comments explain intent, invariants, tradeoffs and hazards; they do not narrate obvious statements.",
+      "unrepresented_before_b45": false
+    },
+    {
+      "id": "data_structure_first",
+      "standard": "Choose the right data shape, index, set, map, aggregate or query primitive before procedural code.",
+      "unrepresented_before_b45": true
+    },
+    {
+      "id": "legacy_seam_before_rewrite",
+      "standard": "Legacy and spaghetti-code work starts with a source map, seam, characterization evidence and narrow change path.",
+      "unrepresented_before_b45": true
+    },
+    {
+      "id": "operational_code_cost",
+      "standard": "Runtime-facing code must account for timeout, retry, idempotency, rollback, observability and safe failure when applicable.",
+      "unrepresented_before_b45": false
+    }
+  ],
+  "existing_entity_gap_matrix": [
+    {
+      "entity": "plugins/product-agent-os/assets/templates/workflows/development-standards.md",
+      "current_coverage": "General standards, source boundaries, evidence and lifecycle discipline.",
+      "missing_b45_gate": "senior leverage ladder and existing-capability scan before custom code",
+      "planned_rows": [
+        "B45-PCA-M05"
+      ],
+      "priority": "P1"
+    },
+    {
+      "entity": "plugins/product-agent-os/assets/templates/workflows/build-slice.md",
+      "current_coverage": "Approved build-slice workflow for implementation.",
+      "missing_b45_gate": "pre-edit one-line candidate, framework/helper search and dependency refusal",
+      "planned_rows": [
+        "B45-PCA-M06"
+      ],
+      "priority": "P1"
+    },
+    {
+      "entity": "plugins/product-agent-os/assets/templates/workflows/review-slice.md",
+      "current_coverage": "Two-stage spec and quality review.",
+      "missing_b45_gate": "findings for unnecessary custom logic, shallow abstraction, weak comments and missing characterization tests",
+      "planned_rows": [
+        "B45-PCA-M07"
+      ],
+      "priority": "P1"
+    },
+    {
+      "entity": "plugins/product-agent-os/assets/templates/workflows/legacy-onboarding.md",
+      "current_coverage": "Read-only legacy orientation.",
+      "missing_b45_gate": "legacy seam inventory, characterization test route and no-big-rewrite guardrail",
+      "planned_rows": [
+        "B45-PCA-M08"
+      ],
+      "priority": "P1"
+    },
+    {
+      "entity": "plugins/product-agent-os/assets/templates/artifact-templates/agent-task-packet.md",
+      "current_coverage": "Fresh context and methodology packet handoff.",
+      "missing_b45_gate": "professional code authoring contract for subagents and code-owning roles",
+      "planned_rows": [
+        "B45-PCA-M04"
+      ],
+      "priority": "P0"
+    },
+    {
+      "entity": "plugins/product-agent-os/assets/templates/artifact-templates/subagent-context-packet.md and subagent-result-packet.md",
+      "current_coverage": "Delegation context and result packets.",
+      "missing_b45_gate": "files inspected, leverage path selected, rejected options, dependency decision and unsupported claims",
+      "planned_rows": [
+        "B45-PCA-M15"
+      ],
+      "priority": "P0"
+    },
+    {
+      "entity": "plugins/product-agent-os/assets/templates/agents/builder.toml, reviewer.toml, architect.toml, tester.toml",
+      "current_coverage": "Durable role profiles and approval boundaries.",
+      "missing_b45_gate": "role-specific code authoring responsibilities and handoff evidence",
+      "planned_rows": [
+        "B45-PCA-M15"
+      ],
+      "priority": "P0"
+    },
+    {
+      "entity": "plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json",
+      "current_coverage": "Workflow, approval and evidence shortcut fixtures.",
+      "missing_b45_gate": "custom-code bloat, unnecessary dependency, missing leverage scan and legacy rewrite negative cases",
+      "planned_rows": [
+        "B45-PCA-M10"
+      ],
+      "priority": "P0"
+    },
+    {
+      "entity": "plugins/product-agent-os/assets/templates/evals/agent-context-contract.json and handoff-completeness.json",
+      "current_coverage": "Context and handoff completeness checks.",
+      "missing_b45_gate": "coding-standard context and result fields for non-mechanical code work",
+      "planned_rows": [
+        "B45-PCA-M11",
+        "B45-PCA-M15"
+      ],
+      "priority": "P0"
+    },
+    {
+      "entity": "plugins/product-agent-os/scripts/product_agent_os/templates.py",
+      "current_coverage": "Canonical template registry for workflows, artifact templates, agents, hooks, evals and config.",
+      "missing_b45_gate": "registration for coding-standard workflow and checklist after artifacts exist",
+      "planned_rows": [
+        "B45-PCA-M02",
+        "B45-PCA-M03"
+      ],
+      "priority": "P0"
+    },
+    {
+      "entity": "plugins/product-agent-os/scripts/product_agent_os/discovery.py and methodology_synthesis.py",
+      "current_coverage": "Methodology signals, applicability and present_unverified readiness.",
+      "missing_b45_gate": "professional code authoring overlay and detection without activation claims",
+      "planned_rows": [
+        "B45-PCA-M18",
+        "B45-PCA-M22"
+      ],
+      "priority": "P1"
+    },
+    {
+      "entity": "plugins/product-agent-os/scripts/codex_runtime_runner/routes.py and contracts.py",
+      "current_coverage": "Codex runtime route packets, methodology packet and detection-not-completion contract.",
+      "missing_b45_gate": "coding-standard recommendation path and evidence ceiling in first_response_contract",
+      "planned_rows": [
+        "B45-PCA-M18",
+        "B45-PCA-M20",
+        "B45-PCA-M22"
+      ],
+      "priority": "P1"
+    },
+    {
+      "entity": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py and status_dashboard.py",
+      "current_coverage": "Generated HTML/cockpit orientation views with orientation_only_not_proof policy.",
+      "missing_b45_gate": "coding standard availability, applicability, gaps and next action in methodology, runtime-route, quality-evals, risks, recommendations and code-flow views",
+      "planned_rows": [
+        "B45-PCA-M22"
+      ],
+      "priority": "P1"
+    },
+    {
+      "entity": "Batch 44 Self-Learning Loop candidate surfaces",
+      "current_coverage": "Manual, staged-only metrics and candidate generation boundaries.",
+      "missing_b45_gate": "future coding-standard improvement candidates without auto-apply",
+      "planned_rows": [
+        "B45-PCA-M23"
+      ],
+      "priority": "P2"
+    }
+  ],
+  "stale_or_requires_update": [
+    {
+      "item": "research packet draft path plugins/product-agent-os/assets/templates/artifacts/coding-standard-checklist.md",
+      "current_truth": "Product-Agent OS uses plugins/product-agent-os/assets/templates/artifact-templates/",
+      "required_update": "B45-PCA-M02 must use artifact-templates and templates.py registry."
+    },
+    {
+      "item": "plan-only Batch 45 status",
+      "current_truth": "B45-S0 now has local docs/spec evidence for M01 and M20.",
+      "required_update": "Track 11 current-status marker must no longer say fully plan-only."
+    },
+    {
+      "item": "hook readiness assumptions",
+      "current_truth": "Hooks are installed locally for lifecycle guardrails, but coding-standard hooks are not implemented or approved.",
+      "required_update": "B45-PCA-M21 must separate reminder, blocking guardrail and proof."
+    },
+    {
+      "item": "HTML artifact assumptions",
+      "current_truth": "Generated HTML is orientation evidence only.",
+      "required_update": "B45-PCA-M22 must show coding-standard state without claiming enforcement or runtime proof."
+    }
+  ],
+  "acceptance_for_B45_PCA_M01": {
+    "two_loop_synthesis_names_senior_leverage_ladder": true,
+    "existing_entity_gaps_named": true,
+    "update_candidates_named": true,
+    "unsupported_claims_named": true,
+    "source_packets_present": true,
+    "accepted_ceiling": "docs_contract_ready"
+  },
+  "next_rows": [
+    "B45-PCA-M02",
+    "B45-PCA-M03",
+    "B45-PCA-M04",
+    "B45-PCA-M05",
+    "B45-PCA-M06",
+    "B45-PCA-M07",
+    "B45-PCA-M08",
+    "B45-PCA-M09",
+    "B45-PCA-M10",
+    "B45-PCA-M11",
+    "B45-PCA-M12",
+    "B45-PCA-M13",
+    "B45-PCA-M15",
+    "B45-PCA-M16",
+    "B45-PCA-M17",
+    "B45-PCA-M18",
+    "B45-PCA-M19",
+    "B45-PCA-M21",
+    "B45-PCA-M22",
+    "B45-PCA-M23",
+    "B45-PCA-M14"
+  ]
+}

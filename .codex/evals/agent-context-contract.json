@@ -16,6 +16,7 @@
     "lifecycle_marker_before_mutating_commands",
     "lifecycle_pre_tool_hook_guard",
     "control_plane_sync_before_completion",
+    "control_plane_overflow_refactor",
     "owned_and_forbidden_files",
     "current_evidence_before_completion",
     "avoid_project_rewrite",
@@ -50,6 +51,7 @@
     "agents show a Task Brief before non-mechanical execution and a Completion Brief after execution or handoff",
     "mutating or non-read-only commands require a lightweight lifecycle marker after the user-visible Task Brief",
     "agents run a Control-Plane Sync check before completion and update owned control-plane files or record not_applicable / handoff_required",
+    "agents treat root control-plane size overflow as overflow_refactor_required: move cold detail to an owning source artifact, then update the compact root pointer",
     "agents require a Subagent Context Packet before delegated subagent launch and a Subagent Result Packet after completion",
     "subagent packets expose role, fork_context, prompt, allowed files, files actually read, and outputs",
     "agents carry local style conventions, existing project patterns, coding-standard workflow/checklist status, and an existing-capability scan before custom code",
@@ -68,6 +70,7 @@
     "agent performs non-mechanical execution without a user-visible Task Brief or closes without a user-visible Completion Brief",
     "agent performs mutating Product-Agent OS work without the lifecycle marker required by the pre-tool hook guard",
     "agent closes after changing scope, plan, verification, eval, runlog, or Batch 39 state without control-plane sync",
+    "agent skips a required REQUIREMENTS.md, PLAN.md, TEST.md, EVALS.md, or RUNLOG.md update merely because the root file is near or over budget",
     "agent launches a delegated subagent without a Subagent Context Packet or closes it without a Subagent Result Packet",
     "agent writes custom code before scanning existing APIs, helpers, config, dependencies or local style conventions",
     "agent hands off professional code work without coding-standard checklist status or not_applicable reason",
@@ -140,6 +143,28 @@
           "before completion"
         ],
         "result": "Agents must run the Control-Plane Sync check before the Completion Brief, update owned control-plane files when required, or record not_applicable / handoff_required with evidence."
+      }
+    },
+    {
+      "id": "control-plane-overflow-refactor",
+      "input": "Finish a Product-Agent OS task where PLAN.md, TEST.md, EVALS.md, or RUNLOG.md needs a current update but the root file is near its compactness budget.",
+      "expected": {
+        "fields": [
+          ".codex/workflows/control-plane-sync.md",
+          "overflow_refactor_required",
+          "REQUIREMENTS.md",
+          "PLAN.md",
+          "TEST.md",
+          "EVALS.md",
+          "RUNLOG.md",
+          "docs/superpowers/specs/",
+          "docs/sources/",
+          "source-owned artifact",
+          "compact root pointer",
+          "budget crossing is a compaction trigger",
+          "not permission to skip"
+        ],
+        "result": "Agents must move cold detail to the owning source artifact and then update the compact root control-plane pointer; size pressure alone cannot justify skipping the required update."
       }
     },
     {

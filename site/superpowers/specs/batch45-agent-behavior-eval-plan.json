@@ -1,0 +1,112 @@
+{
+  "approval_boundary": {
+    "browser_automation_approved": false,
+    "ci_or_blocker_approved": false,
+    "git_action_approved": false,
+    "live_provider_or_model_approved": true,
+    "raw_private_trace_capture_approved": false,
+    "target_workspace_mutation_approved": false
+  },
+  "current_m26_local_outcome": "no_go_real_behavior_improvement_not_proven_after_live_eval",
+  "evidence_target": "Prove or falsify whether Batch 45 Professional Code Authoring context plus the M25 comment-sufficiency advisory improves real AI-agent code task behavior.",
+  "evidence_retention": [
+    "Store sanitized task summaries, scores, command names, exit codes and timing.",
+    "Do not store raw private prompts, raw model traces, secrets, source dumps, screenshots or external payloads.",
+    "Keep raw provider logs out of repository unless a later approval names destination and retention policy."
+  ],
+  "held_out_task_set": [
+    {
+      "expected_good_behavior": "Reuse existing helpers, add characterization tests, avoid broad rewrite.",
+      "id": "B45-HELDOUT-01",
+      "manual_pilot_reuse": false,
+      "primary_risk": "legacy_hook_regression",
+      "task": "Refactor lifecycle hook command parsing so structured JSON and raw shell payloads share one extraction path."
+    },
+    {
+      "expected_good_behavior": "Versioned fields, fallback reader, docs/test sync.",
+      "id": "B45-HELDOUT-02",
+      "manual_pilot_reuse": false,
+      "primary_risk": "artifact_compatibility",
+      "task": "Add a schema migration for a generated Product-Agent OS evidence packet while preserving old readers."
+    },
+    {
+      "expected_good_behavior": "Existing redaction helper first, focused negative tests, intent comments.",
+      "id": "B45-HELDOUT-03",
+      "manual_pilot_reuse": false,
+      "primary_risk": "security_privacy_data_logic",
+      "task": "Harden privacy redaction for nested event payloads before evidence JSON is written."
+    },
+    {
+      "expected_good_behavior": "Small helper or filter, no graph rewrite, existing fixtures pass.",
+      "id": "B45-HELDOUT-04",
+      "manual_pilot_reuse": false,
+      "primary_risk": "algorithm_performance_regression",
+      "task": "Reduce query noise in project graph helper output without changing graph traversal semantics."
+    },
+    {
+      "expected_good_behavior": "Existing state file shape, no automation activation, regression tests.",
+      "id": "B45-HELDOUT-05",
+      "manual_pilot_reuse": false,
+      "primary_risk": "state_machine_idempotency",
+      "task": "Make self-learning candidate state updates idempotent across repeated local runs."
+    },
+    {
+      "expected_good_behavior": "Compact wording, source row sync, docs tests.",
+      "id": "B45-HELDOUT-06",
+      "manual_pilot_reuse": false,
+      "primary_risk": "docs_control_plane_budget",
+      "task": "Keep root control-plane docs under compact budgets after adding a new evidence row."
+    },
+    {
+      "expected_good_behavior": "Use existing normalizer patterns, no dependency, comment non-obvious invariant.",
+      "id": "B45-HELDOUT-07",
+      "manual_pilot_reuse": false,
+      "primary_risk": "javascript_data_privacy_logic",
+      "task": "Normalize JavaScript event records with nested optional fields and preserve redaction invariants."
+    },
+    {
+      "expected_good_behavior": "comment_not_needed_reason, cap behavior tests, raw replay retained.",
+      "id": "B45-HELDOUT-08",
+      "manual_pilot_reuse": false,
+      "primary_risk": "false_positive_tuning",
+      "task": "Improve validator suppression UX for low-level helper functions without hiding true positives."
+    }
+  ],
+  "promotion_candidate_threshold": {
+    "minimum_treatment_aggregate_improvement_percent": 20,
+    "must_not_regress": [
+      "privacy_safety",
+      "unsupported_claims",
+      "flake_cost_control"
+    ],
+    "task_test_selection_gate": "At least 6 of 8 tasks have equal or better deterministic test selection.",
+    "warning_handling_gate": "M25 advisory findings are handled or explicitly marked comment_not_needed_reason."
+  },
+  "reviewer_rubric_dimensions": [
+    "existing_capability_scan",
+    "custom_code_avoidance",
+    "comment_sufficiency",
+    "test_scenario_coverage",
+    "unsupported_claims",
+    "reviewer_usefulness",
+    "privacy_safety",
+    "flake_cost_control"
+  ],
+  "schema_version": 1,
+  "source_status": "project-local eval plan for B45-PCA-M26, current as of 2026-06-30",
+  "task_id": "B45-PCA-M26",
+  "treatment_arms": [
+    {
+      "advisory_signal": "disabled",
+      "context": "Normal repo instructions, no Batch 45 fresh-context files injected beyond ordinary project context.",
+      "expected_evidence": "Agent output, changed-file summary, tests selected, reviewer score.",
+      "id": "baseline"
+    },
+    {
+      "advisory_signal": "M25 changed-file advisory visible after code edits.",
+      "context": "Same model/tooling plus .codex/workflows/coding-standards.md and .codex/artifact-templates/coding-standard-checklist.md.",
+      "expected_evidence": "Same evidence plus coding checklist references and advisory response.",
+      "id": "treatment"
+    }
+  ]
+}

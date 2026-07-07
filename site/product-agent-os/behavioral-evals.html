@@ -1292,6 +1292,12 @@
 
 
 
+
+
+
+
+
+
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
 
 
@@ -1324,6 +1330,27 @@
             Product-Agent OS plugin
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="control-plane-current-state.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Текущий control-plane state
+  </span>
+
+
+      </a>
+    </li>
+
 
 
 
@@ -1465,6 +1492,27 @@
 
   <span class="md-ellipsis">
     Agent-Skill Modernization Loop
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="self-learning-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Self-Learning Loop
   </span>
 
 
@@ -1775,6 +1823,27 @@
 
 
     <li class="md-nav__item">
+      <a href="coding-standards.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Professional Code Authoring
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
       <a href="methodology-intelligence.html" class="md-nav__link">
 
 
@@ -1929,6 +1998,15 @@
   <a href="#self-verification-metrics-loop" class="md-nav__link">
     <span class="md-ellipsis">
       Self-verification metrics loop
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#self-learning-loop-eval" class="md-nav__link">
+    <span class="md-ellipsis">
+      Self-Learning Loop eval
     </span>
   </a>
 
@@ -3482,6 +3560,15 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#self-learning-loop-eval" class="md-nav__link">
+    <span class="md-ellipsis">
+      Self-Learning Loop eval
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       Ожидаемое поведение
@@ -3727,6 +3814,18 @@
 <td>Implemented.</td>
 <td><code>agent_skill_metrics_loop_contract_present</code>, <code>metrics_report_redacted</code>, <code>trace_normalization_contract_present</code>, <code>judge_calibration_gate_present</code>, <code>scorecard_ledger_contract_present</code>, <code>metrics_loop_runtime_route_contract_present</code>, <code>metrics_loop_lifecycle_contract_present</code>.</td>
 </tr>
+<tr>
+<td>Self-Learning Loop eval</td>
+<td>State initializer, due-check, redacted feedback, metrics summary, candidate-only summary, failure taxonomy, Promptfoo export, HALO-style packet и staged repair worker contract.</td>
+<td>Local deterministic coverage плюс B44-S7 manual pilot evidence.</td>
+<td><code>python -m unittest tests.product_agent_os.test_self_learning_extensions -v</code>, <code>python -m unittest tests.product_agent_os.test_self_learning_state -v</code>.</td>
+</tr>
+<tr>
+<td>Professional Code Authoring eval</td>
+<td>Отклоняет shortcut coding: 50-строчный helper до reuse, лишнюю dependency, отсутствующий existing-capability scan, shallow wrapper, шумные comments и неподтвержденные rewrite claims.</td>
+<td>Локальное deterministic покрытие.</td>
+<td>Cases <code>professional-code-authoring-*</code>, видимость <code>professional_code_authoring</code> в readiness/route/status и <a href="coding-standards.html">Professional Code Authoring standards</a>.</td>
+</tr>
 </tbody>
 </table>
 <h2 id="guided-questions-and-dashboard">Guided Questions And Dashboard<a class="headerlink" href="#guided-questions-and-dashboard" title="Permanent link">&para;</a></h2>
@@ -3741,6 +3840,9 @@
 <p><code>agent_skill_metrics_loop</code> является staged self-verification metrics loop для agents, skills, prompt/policy packs, router/tool policy и harness-version review. Ожидаемое поведение начинается с read-only target registry, trace intake, dataset quality blockers, local grader outputs, grader/judge calibration, cadence recommendation levels <code>L0</code>, <code>L1</code>, <code>L2</code> и <code>L3</code>, scorecard ledger, <code>agent-skill-evaluation-report.html</code> и modernization candidates с evidence, rollback и owner-review state.</p>
 <p>Политика канонического источника является частью eval contract: control-plane artifacts, запуск records, trace/eval packets и accepted gaps являются allowed evidence; generated dashboard/report HTML, memory, raw chat logs и unsupported community claims не являются evidence. Every metrics report является staged evidence only, и report является не является каноническим источником.</p>
 <p>Запрещенное поведение включает headline-metric-only approval, raw trace leakage, uncalibrated judge approval, нет self-applied updates, missing rollback target, нет live eval/model/API calls, нет active schedules и modernization candidates который cross approval boundary без explicit owner review.</p>
+<h2 id="self-learning-loop-eval">Self-Learning Loop eval<a class="headerlink" href="#self-learning-loop-eval" title="Permanent link">&para;</a></h2>
+<p><a href="self-learning-loop.html">Self-Learning Loop</a> имеет отдельные eval cases и failure taxonomy для recurring failures. Coverage проверяет, что missing state routes к stage-only initializer, completion claims без evidence становятся gaps, wrong skill/surface use становится candidate-only signal, forbidden approval-boundary actions блокируются, docs/source registry drift требует sync, weak evals требуют baseline/holdout, raw private context rejected, а staged repair worker не меняет files outside allowlist.</p>
+<p>Адаптер <code>Promptfoo</code> является export-only: <code>promptfooconfig.yaml</code> и <code>promptfoo-export.json</code> могут быть staged, но <code>provider_calls</code> остаются <code>not_performed</code>. Пакет в стиле <code>HALO</code> является local recommendation surface; вызов сервиса <code>HALO</code> и owner approval claim отсутствуют. B44-S7 manual pilot зафиксирован в <code>docs/superpowers/specs/batch44-self-learning-loop-approved-manual-pilot-summary.json</code>.</p>
 <h2 id="_3">Ожидаемое поведение<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <p>Каждая case следует name behavior, не только file name.</p>
 <ul>
@@ -3765,6 +3867,7 @@
 <li><code>cross_domain_synthesis_contract_present</code>: Cross-domain synthesis gates требуют <code>methodology_synthesis</code>, <code>recommendation_groups</code>, owner domains, consumer domains, <code>source_artifact_ledger</code>, semantic evidence sufficiency, risk-aware safe следующий action и source artifact alias/deferred decisions.</li>
 <li><code>question_queue_contract_present</code>: guided question protocol exposes <code>next_blocking_question</code>, <code>question_counts</code> и <code>question_summary</code> while preserving full typed packet outside first response.</li>
 <li><code>status_dashboard_present</code>: status dashboard generation stages <code>.codex/product-agent-os/status.html</code> и <code>.codex/product-agent-os/status.json</code> из <code>status_snapshot</code>; dashboard является generated view и не является каноническим источником.</li>
+<li><code>professional_code_authoring</code>: не механические задачи с кодом называют existing capability scan, one-line/native candidate, dependency decision, deep module или legacy seam evidence до claims о качестве кода.</li>
 <li><code>false-positive fixtures</code>: backend/native work не force FSD, simple CRUD <code>src/domain/*</code> не force DDD, docs-light не force docs portal, hosted docs и DB introspection stay approval-required.</li>
 </ul>
 <h2 id="_4">Запрещенное поведение<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
@@ -3786,6 +3889,7 @@
 <li>AI/RAG completion из prompt inspection, stale eval output, citations-only grounding, schema-only tool safety, automatic model-upgrade quality claims или missing текущий baseline/current eval evidence;</li>
 <li>security/privacy/compliance completion из after-the-fact review, no-secrets-in-code, ASVS/OWASP name-dropping, one-time SBOM, implied Codex Security scan, OAuth-only security notes, universal privacy compliance, docs-only security article или compliance certification claim без legal/compliance owner;</li>
 <li>delivery/release/operations completion из CI green, local test evidence alone, generated changelog, feature flag file, GitOps file, deploy manifest или repeatable script без release evidence, artifact manifest, rollout, rollback, owner review, approval boundary и automation manual stability evidence где applicable;</li>
+<li>professional code authoring completion из 50-line custom helper, needless dependency, shallow wrapper, noisy comments, rewrite claim или <code>senior/clean/simple</code> label без checklist evidence;</li>
 <li>source-backed OpenAI/Codex claim без Source status или registry support;</li>
 <li>external write, remote CI mutation, publish, tag, upload или package-registry action без approval;</li>
 <li>full question queue dump в first response, broad methodology interview, dashboard как канонический источник или ready/completed/success claim из stale evidence.</li>
@@ -3831,7 +3935,7 @@
 <li>Transcript/session eval runner является deterministic и local; это catches missing terms, forbidden shortcuts и unsafe transcript content, но это является не LLM semantic judge.</li>
 <li>LLM-as-judge evals нужны calibration и failure examples до they может быть trusted для release claims.</li>
 </ul>
-<p>Следующий artifact: используйте <a href="scenarios.html">Scenarios</a> к choose route и <a href="codex-compatibility.html">Codex compatibility</a> к confirm package scope.</p>
+<p>Следующий artifact: используйте <a href="scenarios.html">Scenarios</a> к choose route, <a href="coding-standards.html">Professional Code Authoring standards</a> к inspect code-writing gates и <a href="codex-compatibility.html">Codex compatibility</a> к confirm package scope.</p>
 
 
 

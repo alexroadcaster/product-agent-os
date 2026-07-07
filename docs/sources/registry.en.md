@@ -390,6 +390,7 @@ verification_status: "Current compaction preserves test-visible markers; full ev
 - Product-Agent OS root AGENTS compaction and durable-rule ownership (checked_at=2026-06-07, trust=high)
 - Product-Agent OS root EVALS compaction and eval ownership (checked_at=2026-06-07, trust=high)
 - Product-Agent OS root README compaction and product-entrypoint ownership (checked_at=2026-06-07, trust=high)
+- Product-Agent OS root control-plane current-state owner page, route `docs/product-agent-os/control-plane-current-state.md`, with `PLAN.md`, `RUNLOG.md`, `TEST.md` and `EVALS.md` compacted under the root routing contract and cold batch ledgers moved to source-owned docs/spec/backlog artifacts (checked_at=2026-07-07, trust=high for local docs/control-plane source routing; no runtime/browser/provider/target/git/release/deploy/automation claim)
 - Product-Agent OS system file hygiene audit (checked_at=2026-06-07, trust=high)
 - Product-Agent OS Batch 40 S5 Doubt verifier pilot metrics and closure (checked_at=2026-06-10, trust=high)
 
@@ -1475,6 +1476,7 @@ These markers preserve source-owned test routing after registry compaction. Full
 - root control-plane system files synced for G1.1 implementation route
 - Product-Agent OS Track 11 DOC-M25 root site freshness packet
 - documentation_refresh_DOC-M25-A01
+- documentation_refresh_DOC-M25-A02
 - docs/superpowers/specs/documentation-refresh-doc-m25-site-freshness-summary.json
 - tools/fix_site_i18n_links.ps1
 - site/
@@ -1482,6 +1484,7 @@ These markers preserve source-owned test routing after registry compaction. Full
 - site/sitemap.xml
 - implemented_root_site_search_sitemap_freshness
 - former DOC_M25_PENDING_SITE_PAGES rendered in RU/EN HTML, search index and sitemap after owner-approved root MkDocs build
+- 2026-07-07 refresh includes Batch 45 T15 source docs/control-plane markers in generated root site/search/sitemap after local MkDocs build and i18n link repair
 - browser proof, broad scans, dependency remediation, raw report retention, publication, release, deploy and git actions remain out of scope
 - Product-Agent OS Track 11 Batch 44 Self-Learning Loop activation, Product-Agent OS project scope, agent/skill metrics and HTML progress matrix; `B44-S0` research/gap/scope detector evidence, `B44-S1` state/due-check/trigger UX evidence and `B44-S2` manual runner/progress artifact evidence implemented, remaining activation slices planned-only
 - batch44_self_learning_loop_S0_S1_implemented_rest_planned

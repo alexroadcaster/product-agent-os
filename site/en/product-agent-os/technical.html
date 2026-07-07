@@ -1292,6 +1292,12 @@
 
 
 
+
+
+
+
+
+
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
 
 
@@ -1324,6 +1330,27 @@
             Product-Agent OS Plugin
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="control-plane-current-state.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Current Control-Plane State
+  </span>
+
+
+      </a>
+    </li>
+
 
 
 
@@ -1465,6 +1492,27 @@
 
   <span class="md-ellipsis">
     Agent-Skill Modernization Loop
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="self-learning-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Self-Learning Loop
   </span>
 
 
@@ -1952,6 +2000,27 @@
 
   <span class="md-ellipsis">
     Engineering Standards Layer
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="coding-standards.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Professional Code Authoring
   </span>
 
 
@@ -3669,6 +3738,11 @@ Sources: <a href="https://developers.openai.com/codex/plugins">Codex plugins</a>
 <td>Approval-bound.</td>
 <td>Disabled until a specific owner-approved packet exists.</td>
 </tr>
+<tr>
+<td>Professional Code Authoring</td>
+<td>Source contract.</td>
+<td>Uses <a href="coding-standards.html">Professional Code Authoring Standards</a>; does not prove real agent behavior or runtime enforcement.</td>
+</tr>
 </tbody>
 </table>
 <p>The cockpit surface groups graph data into reader-facing views: <code>Project Map</code>, <code>Code Intelligence</code>, <code>Contracts</code>, <code>Quality &amp; Metrics</code>, <code>Operations &amp; Risk</code> and <code>Proposal Ledger</code>. The recommended path is graph, guided read order, source files, then tests/evidence. The cockpit and query packets do not prove runtime behavior, browser behavior, source freshness, contract correctness, test pass status or release readiness.</p>
@@ -3720,6 +3794,7 @@ Sources: <a href="https://developers.openai.com/codex/plugins">Codex plugins</a>
 <li><code>.codex/artifact-templates/system-file-hygiene-report.md</code>;</li>
 <li><code>.codex/automation-candidates/system-file-hygiene-audit.md</code>.</li>
 </ul>
+<p>Professional Code Authoring infrastructure includes <code>.codex/workflows/coding-standards.md</code> and <code>.codex/artifact-templates/coding-standard-checklist.md</code>. The public map lives in <a href="coding-standards.html">Professional Code Authoring Standards</a>; the artifacts remain source contracts until a later approved runtime or owner-pilot batch supplies stronger evidence.</p>
 <h2 id="local-commands">Local commands<a class="headerlink" href="#local-commands" title="Permanent link">&para;</a></h2>
 <p>Common local checks:</p>
 <div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">tools</span><span class="p">\</span><span class="n">check_docs</span><span class="p">.</span><span class="n">py</span>

@@ -1,0 +1,210 @@
+{
+  "schema_version": "batch45_postq4_t01_t04_execution_summary_v1",
+  "task_id": "B45-POSTQ4-T01-T04",
+  "evidence_id": "B45-POSTQ4-T01-T04-A01",
+  "status": "implemented_local_static_delta_and_approval_packet_with_gaps",
+  "created_at": "2026-07-04T20:40:00+03:00",
+  "source_status": "project-authored execution evidence for B45-POSTQ4-T01..T04",
+  "parent_packets": [
+    "docs/superpowers/specs/batch45-post-q4-next-tasks.json",
+    "docs/superpowers/specs/batch45-quality-retest-project-slices-static-summary.json"
+  ],
+  "sidecar_agents": [
+    {
+      "agent_id": "019f2dc1-7bfd-7b41-87c9-ec4fd7fc85f4",
+      "nickname": "Anvil",
+      "role": "SOL static classification",
+      "status": "completed_read_only_classification",
+      "key_result": "Classified all 11 SOL role execute warnings as minimal fixture-copy intent-comment fixes."
+    },
+    {
+      "agent_id": "019f2dc1-bcd5-7cf1-bfb1-7e4c3dfa5913",
+      "nickname": "Forge",
+      "role": "myPartners CRM static repair",
+      "status": "completed_fixture_copy_fix",
+      "key_result": "Reduced the three myPartners CRM advisory warnings to zero with behavior-neutral comments/docstring and syntax-only py_compile evidence."
+    },
+    {
+      "agent_id": "019f2dc2-1510-7e02-b62b-5f111da9445c",
+      "nickname": "Gate",
+      "role": "live/model approval packet designer",
+      "status": "completed_inspection_only_packet_design",
+      "key_result": "Designed the approval-only live/model rerun packet without provider/model/API calls."
+    }
+  ],
+  "implemented_tasks": {
+    "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX": {
+      "status": "implemented_minimal_fixture_copy_intent_comments",
+      "warning_count_before": 11,
+      "warning_count_after": 0,
+      "files_changed": 11,
+      "accepted_static_gaps": 0,
+      "false_positive_candidates": 0,
+      "claim_ceiling": "static fixture-copy warning reduction only; no npm/tsc/runtime/browser/provider behavior proof"
+    },
+    "B45-POSTQ4-T02-MP-CRM-STATIC-FIX": {
+      "status": "implemented_minimal_fixture_copy_comments",
+      "warning_count_before": 3,
+      "warning_count_after": 0,
+      "files_changed": 2,
+      "accepted_static_gaps": 0,
+      "false_positive_candidates": 0,
+      "claim_ceiling": "static fixture-copy warning reduction plus Python syntax-only proof; no API/database/browser/runtime proof"
+    },
+    "B45-POSTQ4-T03-STATIC-DELTA-VERIFY": {
+      "status": "implemented_local_static_delta_verify",
+      "q4_baseline_warning_count": 14,
+      "post_fix_warning_count": 0,
+      "warning_delta": -14,
+      "blocking": false,
+      "suppressed_warning_count": 0,
+      "slice_warning_count_after": {
+        "Q4-SOL-01-BOOTSTRAP": 0,
+        "Q4-SOL-02-ORCHESTRATION-CORE": 0,
+        "Q4-SOL-03-AGENT-ROLES-TOOLS": 0,
+        "Q4-MP-01-SERVER-CRM-CORE": 0,
+        "Q4-MP-02-FRONTEND-CRM-TESTS": 0
+      },
+      "py_compile_status": "passed",
+      "post_cleanup_pycache_status": "no_generated_pycache_directories_remain",
+      "secret_pattern_matches": 0,
+      "diff_numstat": {
+        "files_changed": 13,
+        "lines_added": 15,
+        "lines_deleted": 0
+      }
+    },
+    "B45-POSTQ4-T04-LIVE-MODEL-RERUN-PACKET": {
+      "status": "implemented_approval_packet_only_not_run",
+      "packet": "docs/superpowers/specs/batch45-postq4-live-model-rerun-approval-packet.json",
+      "live_model_or_provider_api_called": false,
+      "claim_ceiling": "approval packet only; M26/M35 no-go remains active until a future exact-approved live eval proves otherwise"
+    }
+  },
+  "files_changed_by_static_repairs": [
+    "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/architect-agent.ts",
+    "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/ba-agent.ts",
+    "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/data-analyst-agent.ts",
+    "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/designer-agent.ts",
+    "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/developer-agent.ts",
+    "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/marketer-agent.ts",
+    "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/optimizer-agent.ts",
+    "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/product-owner-agent.ts",
+    "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/qa-agent.ts",
+    "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/router-agent.ts",
+    "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/security-agent.ts",
+    "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/src/server/app/api/contacts_routes.py",
+    "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/tests/frontend/tests/e2e/crm.spec.ts"
+  ],
+  "corrected_command_notes": [
+    "Two first replay attempts passed literal PowerShell wildcards into Python and failed with OSError; both were rerun with PowerShell-expanded file arrays and passed."
+  ],
+  "verification": {
+    "results": [
+      {
+        "command": "comment_sufficiency.py Q4-SOL-01",
+        "status": "passed",
+        "observed": "warning_count=0; blocking=false; suppressed_warning_count=0"
+      },
+      {
+        "command": "comment_sufficiency.py Q4-SOL-02",
+        "status": "passed",
+        "observed": "warning_count=0; blocking=false; suppressed_warning_count=0"
+      },
+      {
+        "command": "comment_sufficiency.py Q4-SOL-03 with PowerShell-expanded agent paths",
+        "status": "passed",
+        "observed": "warning_count=0; blocking=false; suppressed_warning_count=0"
+      },
+      {
+        "command": "comment_sufficiency.py Q4-MP-01 with PowerShell-expanded test paths",
+        "status": "passed",
+        "observed": "warning_count=0; blocking=false; suppressed_warning_count=0"
+      },
+      {
+        "command": "comment_sufficiency.py Q4-MP-02",
+        "status": "passed",
+        "observed": "warning_count=0; blocking=false; suppressed_warning_count=0"
+      },
+      {
+        "command": "python -B -m py_compile <copied myPartners fixture .py files>",
+        "status": "passed",
+        "observed": "exit_code=0; generated __pycache__ directories cleaned after path-boundary check"
+      },
+      {
+        "command": "Get-ChildItem <copied myPartners fixture root> -Recurse -Directory -Filter __pycache__",
+        "status": "passed",
+        "observed": "no output after cleanup"
+      },
+      {
+        "command": "rg secret-pattern scan over changed copied fixture files",
+        "status": "passed",
+        "observed": "exit_code=1; no matches"
+      },
+      {
+        "command": "git diff --numstat -- <changed copied fixture files>",
+        "status": "passed",
+        "observed": "13 files changed, 15 additions, 0 deletions"
+      },
+      {
+        "command": "git diff --check",
+        "status": "passed_with_crlf_warnings",
+        "observed": "no whitespace errors; Git reported CRLF/LF normalization warnings only"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "status": "passed",
+        "observed": "Ran 16 tests; OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "status": "passed",
+        "observed": "Ran 99 tests; OK"
+      },
+      {
+        "command": "python tools\\check_docs.py",
+        "status": "passed",
+        "observed": "OK: documentation structure checks passed"
+      },
+      {
+        "command": "Get-Item PLAN.md, TEST.md, EVALS.md, RUNLOG.md | Select-Object Name, Length",
+        "status": "passed_with_existing_runlog_budget_gap",
+        "observed": {
+          "PLAN.md": 49208,
+          "TEST.md": 49905,
+          "EVALS.md": 49938,
+          "RUNLOG.md": 51123
+        }
+      }
+    ],
+    "remaining_required_before_completion_claim": []
+  },
+  "unsupported_claims": [
+    "real_ai_agent_behavior_improvement",
+    "treatment_v2_promotion_readiness",
+    "target_runtime_behavior",
+    "browser_behavior",
+    "provider_or_live_api_behavior",
+    "target_workspace_safety_after_mutation",
+    "database_or_production_data_safety",
+    "release_deploy_publish_readiness",
+    "active_automation_readiness",
+    "M26_no_go_reversed",
+    "M35_no_go_reversed",
+    "SOL_TypeScript_runtime_validated",
+    "myPartners_CRM_behavior_validated"
+  ],
+  "no_unapproved_actions": {
+    "live_model_or_provider_api_called": false,
+    "runtime_or_live_server_launched": false,
+    "browser_automation_run": false,
+    "target_workspace_command_run": false,
+    "target_workspace_mutated": false,
+    "database_accessed": false,
+    "ci_or_blocker_enforcement_created": false,
+    "git_branch_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation_created_or_enabled": false,
+    "external_write_performed": false
+  }
+}

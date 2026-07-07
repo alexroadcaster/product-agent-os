@@ -1290,6 +1290,12 @@
 
 
 
+
+
+
+
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -1324,6 +1330,27 @@
             Product-Agent OS Plugin
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/control-plane-current-state.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Current Control-Plane State
+  </span>
+
+
+      </a>
+    </li>
+
 
 
 
@@ -1465,6 +1492,27 @@
 
   <span class="md-ellipsis">
     Agent-Skill Modernization Loop
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/self-learning-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Self-Learning Loop
   </span>
 
 
@@ -1759,6 +1807,27 @@
 
   <span class="md-ellipsis">
     Engineering Standards Layer
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/coding-standards.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Professional Code Authoring
   </span>
 
 
@@ -3407,7 +3476,7 @@ Sources: <a href="https://developers.openai.com/codex/learn/best-practices">Code
 <ul>
 <li><code>SessionStart</code> reports control-plane and lifecycle file presence;</li>
 <li><code>PreToolUse</code> allows read-only discovery but blocks mutating or non-read-only commands without <code>.codex/product-agent-os/lifecycle-state.json</code>;</li>
-<li>the marker must be written only after a user-visible start brief and must contain <code>task_start_brief_shown</code>, <code>task_id</code>, <code>scope</code>, <code>updated_at</code>, and <code>approval_boundary</code>;</li>
+<li>the marker must be written only after a user-visible full field-list start brief and must contain <code>task_start_brief_shown</code>, <code>task_id</code>, <code>scope</code>, <code>updated_at</code>, <code>approval_boundary</code>, <code>brief_schema_version: task_start_brief_v1</code>, <code>brief_format: field_list</code>, <code>brief_digest</code>, and <code>brief_fields_present</code> with every required start brief field;</li>
 <li><code>PostToolUse</code> and <code>Stop</code> remind the agent to record evidence, update <code>RUNLOG.md</code>, run control-plane sync, and show a user-visible completion brief.</li>
 </ul>
 <p>The marker is not a transcript store: do not put raw chat, secrets, private source bodies, private customer data, or credentials in it. Hook activation remains a separate approval boundary.</p>

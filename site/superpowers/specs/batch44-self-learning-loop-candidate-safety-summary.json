@@ -1,0 +1,95 @@
+{
+  "schema_version": "batch44_self_learning_loop_candidate_safety_summary_v1",
+  "evidence_id": "B44-SLL-M13-M14-A01",
+  "recorded_at": "2026-06-24",
+  "source_status": "local_implementation_evidence",
+  "status": "implemented",
+  "slice": "B44-S5-Candidate-Generation-And-Safety",
+  "implemented_markers": [
+    "B44-SLL-M13",
+    "B44-SLL-M14"
+  ],
+  "summary": "Self-Learning Loop now has local schema and fixture evidence for candidate-only modernization proposals and synthetic forbidden-action safety checks. Candidate packets can be generated from local metrics and owner-feedback summaries, but they cannot apply changes, activate automation, call providers, mutate targets or perform git/release/deploy/publish actions.",
+  "changed_surfaces": [
+    "plugins/product-agent-os/scripts/product_agent_os/self_learning_candidates.py",
+    "plugins/product-agent-os/scripts/product_agent_os/self_learning_progress.py",
+    "tests/product_agent_os/test_self_learning_state.py",
+    "docs/superpowers/specs/batch44-self-learning-loop-candidate-safety-summary.json",
+    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md",
+    "REQUIREMENTS.md",
+    "PLAN.md",
+    "TEST.md",
+    "EVALS.md",
+    "RUNLOG.md"
+  ],
+  "candidate_contract": {
+    "schema_version": "self_learning_candidate_packet_v1",
+    "candidate_policy": "candidate_only",
+    "apply_policy": "cannot_apply",
+    "auto_apply": "disabled",
+    "provider_calls": "not_performed",
+    "live_eval_services": "not_performed",
+    "target_workspace_writes": "not_performed",
+    "external_write_action": "none",
+    "approval_required_before_apply": true,
+    "required_candidate_fields": [
+      "candidate_id",
+      "component",
+      "target_id",
+      "evidence_refs",
+      "metric_deltas",
+      "feedback_refs",
+      "expected_impact",
+      "risk",
+      "approval_state",
+      "rollback_target",
+      "tests_required",
+      "external_write_action",
+      "auto_apply"
+    ]
+  },
+  "forbidden_action_contract": {
+    "schema_version": "self_learning_forbidden_action_report_v1",
+    "fixture_execution_policy": "synthetic_only_no_side_effects",
+    "blocked_action_catalog": [
+      "active_schedule_creation",
+      "hook_activation",
+      "raw_transcript_storage",
+      "provider_call",
+      "global_config_mutation",
+      "git_action",
+      "target_mutation",
+      "release_deploy_publish",
+      "auto_apply",
+      "external_write",
+      "hidden_telemetry"
+    ],
+    "promotion_status_when_blocked": "blocked"
+  },
+  "runner_integration": {
+    "run_packet_field": "candidate_summary",
+    "summary_schema_version": "self_learning_candidate_summary_v1",
+    "candidate_source": "local_metrics_and_feedback_summaries",
+    "existing_packet_path": ".codex/product-agent-os/self-learning-candidates.json",
+    "auto_apply": "disabled",
+    "apply_policy": "cannot_apply"
+  },
+  "unsupported_claims": [
+    "No candidate was applied to a prompt, skill, route, memory file, config, hook or automation.",
+    "No active schedule, hook, Codex App automation, MCP server, GitHub Action or external workflow was created.",
+    "No live eval service, provider/model call, hidden telemetry, raw transcript ingestion or raw private chat storage was performed.",
+    "No target workspace mutation, global config mutation, git action, release, deploy, publish, package registry write or external write was performed.",
+    "Candidate packets are review inputs only and do not prove real-world improvement or automation readiness."
+  ],
+  "verification": {
+    "red_test_observed": "tests first failed with ModuleNotFoundError for product_agent_os.self_learning_candidates, then runner integration failed with missing candidate_summary schema_version before self_learning_progress integration",
+    "focused_tests": [
+      "python -m unittest tests.product_agent_os.test_self_learning_state -v"
+    ],
+    "latest_status": "passed_focused_tests_self_learning_state_22_of_22",
+    "docs_unittest": "passed_98_of_98",
+    "check_docs": "passed",
+    "diff_check": "passed_with_crlf_warnings_only"
+  },
+  "next_action": "Continue with B44-S6-Docs-Contracts-And-Closure for B44-SLL-M15 and B44-SLL-M16."
+}

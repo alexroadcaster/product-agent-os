@@ -60,6 +60,8 @@ class TaskPlanLifecycleTest(unittest.TestCase):
             "user_visible_task_brief_before_execution",
             "user_visible_completion_brief_after_execution",
             "control_plane_sync_before_completion",
+            "control_plane_overflow_refactor",
+            "overflow_refactor_required",
             "Task Brief",
             "Completion Brief",
             "Control-Plane Sync",
@@ -79,6 +81,9 @@ class TaskPlanLifecycleTest(unittest.TestCase):
             "update_required",
             "not_applicable",
             "handoff_required",
+            "overflow_refactor_required",
+            "budget crossing is a compaction trigger",
+            "not permission to skip",
             "before the Completion Brief",
         ]:
             with self.subTest(control_plane_sync=expected):

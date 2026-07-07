@@ -14,7 +14,7 @@
         <link rel="prev" href="technical.html">
 
 
-        <link rel="next" href="methodology-intelligence.html">
+        <link rel="next" href="coding-standards.html">
 
 
       <link rel="icon" href="../assets/images/favicon.png">
@@ -1292,6 +1292,12 @@
 
 
 
+
+
+
+
+
+
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
 
 
@@ -1324,6 +1330,27 @@
             Product-Agent OS plugin
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="control-plane-current-state.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Текущий control-plane state
+  </span>
+
+
+      </a>
+    </li>
+
 
 
 
@@ -1465,6 +1492,27 @@
 
   <span class="md-ellipsis">
     Agent-Skill Modernization Loop
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="self-learning-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Self-Learning Loop
   </span>
 
 
@@ -1836,6 +1884,15 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Профессиональное написание кода
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#domain-specific-gates" class="md-nav__link">
     <span class="md-ellipsis">
       Domain-Specific Gates
@@ -1863,7 +1920,7 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       Проверка
     </span>
@@ -1884,6 +1941,27 @@
 
 </nav>
 
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="coding-standards.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Professional Code Authoring
+  </span>
+
+
+      </a>
     </li>
 
 
@@ -3410,6 +3488,15 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Профессиональное написание кода
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#domain-specific-gates" class="md-nav__link">
     <span class="md-ellipsis">
       Domain-Specific Gates
@@ -3437,7 +3524,7 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       Проверка
     </span>
@@ -3471,7 +3558,7 @@
 
 <h1 id="product-agent-os-development-standards">Product-Agent OS development standards<a class="headerlink" href="#product-agent-os-development-standards" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + verified methodology + experiment</code></p>
-<p>Источники: <a href="architecture.html">Product-Agent OS architecture</a>, <a href="scenarios.html">Product-Agent OS scenarios</a>, <a href="behavioral-evals.html">Behavioral evals</a>, <a href="https://developers.openai.com/codex/agent-approvals-security">Agent approvals and security</a>, <a href="https://developers.openai.com/codex/workflows">Codex workflows</a>.</p>
+<p>Источники: <a href="architecture.html">Product-Agent OS architecture</a>, <a href="scenarios.html">Product-Agent OS scenarios</a>, <a href="behavioral-evals.html">Behavioral evals</a>, <a href="coding-standards.html">Professional Code Authoring standards</a>, <a href="https://developers.openai.com/codex/agent-approvals-security">Agent approvals and security</a>, <a href="https://developers.openai.com/codex/workflows">Codex workflows</a>.</p>
 <p>Development standards turn methodology в concrete reviewable artifacts. Они define how Product-Agent OS handles product hypothesis, architecture, tests, evals, docs, security, release и post-release learning без forcing heavy ceremony onto simple work.</p>
 <p>Red-Green-Refactor evidence является required где behavior или shared logic changes. Docs-only и inspection-only work может record explicit gap. Этот no-forced-ceremony rule остается active: mechanical edits может быть not_applicable, docs-light work может avoid heavy portals, backend/native work не force FSD, simple CRUD не force DDD, и high-risk work требует <code>owner_reviewed_evidence_sufficient_for_real_project_risk</code> или <code>explicit_gap_accepted</code>.</p>
 <h2 id="core-contract">Core Contract<a class="headerlink" href="#core-contract" title="Permanent link">&para;</a></h2>
@@ -3562,6 +3649,14 @@
 <td><code>.codex/artifact-templates/governance-proposal.md</code></td>
 <td>Staged governance proposal для CODEOWNERS status и GitHub Actions least privilege без external activation.</td>
 </tr>
+<tr>
+<td><code>.codex/workflows/coding-standards.md</code></td>
+<td>Рабочий процесс для задач с кодом: сначала использовать существующие возможности проекта, платформы и фреймворка, а самописный код добавлять только после проверки альтернатив.</td>
+</tr>
+<tr>
+<td><code>.codex/artifact-templates/coding-standard-checklist.md</code></td>
+<td>Чеклист доказательств для <code>enterprise_leverage_check</code>, <code>one_line_candidate</code>, решений о зависимостях, глубоких модулей и устаревших seams.</td>
+</tr>
 </tbody>
 </table>
 <h2 id="discovery-signals">Discovery Signals<a class="headerlink" href="#discovery-signals" title="Permanent link">&para;</a></h2>
@@ -3591,6 +3686,10 @@
 <li>spec-compliance review до quality/risk review для risky public-contract, migration, security, data, release или parallel work.</li>
 </ul>
 <p>Subagents являются useful только когда ownership является clear. A handoff без source context, files, ожидаемые доказательства и stop condition является не enough.</p>
+<h2 id="_1">Профессиональное написание кода<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>Для не механических задач с кодом Product-Agent OS ожидает, что до правок загружены <code>workflow</code> стандарта кодирования и чеклист. Базовая лестница решений: удалить лишний код, настроить уже существующее поведение, использовать стандартную библиотеку или возможность платформы, применить <code>API</code> фреймворка, использовать текущую зависимость, применить проектный <code>helper</code>, и только затем добавить маленький <code>adapter</code> или самописный код, если предыдущие варианты недостаточны.</p>
+<p>Чеклист фиксирует <code>enterprise_leverage_check</code>, <code>existing_capability_scan</code>, <code>one_line_candidate</code>, выбранный путь повторного использования, отклоненные альтернативы, <code>negative_dependency_rule</code>, <code>deep_module_check</code>, <code>legacy_seam_check</code>, <code>cleverness_budget</code>, доказательства тестов/<code>evals</code> и неподтвержденные утверждения о качестве кода. Механические, <code>docs-only</code> или <code>generated-file sync</code> задачи могут отметить <code>gate</code> как <code>not_applicable</code> с причиной.</p>
+<p>Наличие шаблонов не является <code>runtime enforcement</code>. Эти артефакты сами по себе не активируют <code>hooks</code>, <code>automation</code>, <code>subagents</code>, <code>HTML reporting</code> или <code>plugin-cache behavior</code>; они дают агентам компактный <code>source-of-truth contract</code> только когда <code>workflow</code>, <code>skill</code> или <code>role profile</code> явно загружены.</p>
 <h2 id="domain-specific-gates">Domain-Specific Gates<a class="headerlink" href="#domain-specific-gates" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3666,7 +3765,7 @@
 <li>owner-reviewed evidence sufficiency или accepted gap.</li>
 </ul>
 <p>Automation candidates also нужны manual success evidence, stable inputs/outputs, owner, cadence, verification, failure modes, value evidence и rollback/disable path. Product-Agent OS может stage candidate; это должен не create active automation без explicit approval.</p>
-<h2 id="_1">Проверка<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<h2 id="_2">Проверка<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <p>Запустите focused checks после changing docs standards:</p>
 <div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">tools</span><span class="p">\</span><span class="n">check_docs</span><span class="p">.</span><span class="n">py</span>
 <span class="n">python</span> <span class="n">-m</span> <span class="n">unittest</span> <span class="n">tests</span><span class="p">.</span><span class="n">product_agent_os</span><span class="p">.</span><span class="n">test_product_agent_os_docs</span> <span class="n">-v</span>
@@ -3685,7 +3784,7 @@
 <li>High-risk work требует explicit owner-reviewed evidence sufficiency или accepted gap.</li>
 <li>Product-Agent OS должен preserve staged-first behavior, политика источников, sandbox и approvals even когда recommendation является confident.</li>
 </ul>
-<p>Следующий artifact: используйте <a href="methodology-intelligence.html">Methodology intelligence</a> к decide который gates apply и <a href="behavioral-evals.html">Behavioral evals</a> к check shortcut resistance.</p>
+<p>Следующий artifact: используйте <a href="methodology-intelligence.html">Methodology intelligence</a> к decide который gates apply, <a href="coding-standards.html">Professional Code Authoring standards</a> к inspect code-writing gates и <a href="behavioral-evals.html">Behavioral evals</a> к check shortcut resistance.</p>
 
 
 

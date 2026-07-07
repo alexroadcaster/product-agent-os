@@ -1,0 +1,228 @@
+{
+  "schema_version": "batch45_postq4_t13_strict_output_schema_and_harness_hardening_v1",
+  "task_id": "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
+  "evidence_id": "B45-POSTQ4-T13-A01",
+  "status": "implemented_local_schema_no_op_hardening_no_live_calls",
+  "created_at": "2026-07-05T14:45:00+03:00",
+  "source_status": "project-authored local harness/schema hardening evidence after T12 no-go",
+  "basis": {
+    "t10_harness_redesign": "docs/superpowers/specs/batch45-postq4-t10-live-eval-harness-redesign-packet.json",
+    "t11_treatment_v3_source_design": "docs/superpowers/specs/batch45-postq4-t11-treatment-v3-source-design.json",
+    "t12_paired_live_model_rerun_results": "docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-results.json",
+    "t12_status": "executed_paired_live_model_rerun_no_go_invalid_pair",
+    "t12_failure_classes": {
+      "valid_pair_count": 6,
+      "invalid_pair_count": 2,
+      "invalid_json_primary_task_runs": 1,
+      "no_op_primary_task_runs": 1,
+      "reviewer_status": "not_run_due_invalid_pair_count",
+      "invalid_pairs": [
+        {
+          "task_id": "B45-HELDOUT-01",
+          "arm": "treatment",
+          "reason": "treatment_invalid_json"
+        },
+        {
+          "task_id": "B45-HELDOUT-07",
+          "arm": "treatment",
+          "reason": "treatment_no_op"
+        }
+      ]
+    }
+  },
+  "scope": [
+    "Add a local deterministic model-output harness contract for strict final JSON extraction, run schema validation, no-op classification, pair quarantine and sanitized rollup validation.",
+    "Add focused unittest coverage for the T12 invalid_json and no_op failure modes, reviewer blocking and retention/redaction gates.",
+    "Sync Batch 45 source/control-plane pointers without running a new live/model rerun."
+  ],
+  "non_goals": [
+    "No codex exec provider/model call.",
+    "No reviewer model call.",
+    "No runtime/live server, browser automation, target workspace command or mutation.",
+    "No database, CI/blocker, git branch/stage/commit/push/PR, release/deploy/publish or active automation action.",
+    "No raw prompt/stdout/stderr/provider payload retention in repo."
+  ],
+  "implemented_hardening": {
+    "module": "plugins/product-agent-os/scripts/codex_runtime_runner/model_output.py",
+    "tests": "tests/product_agent_os/test_codex_runtime_runner_model_output.py",
+    "strict_final_json_parser": {
+      "marker": "FINAL_JSON:",
+      "method": "json.JSONDecoder().raw_decode after a single explicit marker",
+      "rejects": [
+        "missing marker",
+        "multiple markers",
+        "invalid JSON including unescaped nested quotes",
+        "trailing non-whitespace content",
+        "non-object final payload"
+      ],
+      "repair_policy": "no repair or best-effort JSON reconstruction"
+    },
+    "run_schema_contract": {
+      "allowed_statuses": [
+        "completed",
+        "timeout",
+        "no_op",
+        "invalid_json",
+        "wrapper_failure_before_model_call",
+        "aborted_by_policy",
+        "not_run_due_stop_rule"
+      ],
+      "required_fields": [
+        "task_id",
+        "arm",
+        "pair_id",
+        "attempt_id",
+        "status",
+        "timed_out",
+        "final_json_parse_ok",
+        "changed_file_count",
+        "sanitized_changed_files",
+        "behavior_score",
+        "raw_output_hashes",
+        "retention_status"
+      ],
+      "raw_retention_required": "raw_temp_only_repo_sanitized_rollup"
+    },
+    "no_op_guard": {
+      "completed_requires_material_change_when_material_change_required": true,
+      "ignored_change_evidence": [
+        "__pycache__",
+        ".pyc",
+        "tmp_root_write_check.txt",
+        "copy/setup/watchdog/process probe logs"
+      ],
+      "no_op_runs_are_invalid_for_pair_scoring": true
+    },
+    "pair_gate_contract": {
+      "valid_pair_requires_baseline_completed_and_treatment_completed": true,
+      "invalid_reason_style": "arm_specific_status_reason",
+      "supported_t12_reasons": [
+        "treatment_invalid_json",
+        "treatment_no_op"
+      ],
+      "invalid_pairs_enter_scoring": false
+    },
+    "aggregate_gate_contract": {
+      "valid_pair_count_required_for_reviewer": 8,
+      "reviewer_status_when_invalid_pairs_exist": "not_run_due_invalid_pair_count",
+      "promotion_threshold_met_when_invalid_pairs_exist": false,
+      "m26_reversed_when_invalid_pairs_exist": false,
+      "m35_reversed_when_invalid_pairs_exist": false
+    },
+    "privacy_retention_contract": {
+      "validate_serialized_rollup_redaction": true,
+      "forbid_sensitive_dict_keys": true,
+      "forbid_raw_output_body_fields": true,
+      "allow_hashes_and_lengths_only": true,
+      "concrete_temp_root_in_repo_allowed": false
+    }
+  },
+  "sidecar_agent_reviews": [
+    ".codex/product-agent-os/batch45/t13-agent-reviews/architect.md",
+    ".codex/product-agent-os/batch45/t13-agent-reviews/plugin-runtime-builder.md",
+    ".codex/product-agent-os/batch45/t13-agent-reviews/security-privacy.md",
+    ".codex/product-agent-os/batch45/t13-agent-reviews/docs-maintainer.md",
+    ".codex/product-agent-os/batch45/t13-agent-reviews/tester.md",
+    ".codex/product-agent-os/batch45/t13-agent-reviews/completion-skeptic.md"
+  ],
+  "verification": {
+    "local_checks_planned": [
+      "python -m unittest tests.product_agent_os.test_codex_runtime_runner_model_output -v",
+      "python -m unittest tests.product_agent_os.test_codex_runtime_runner_contracts tests.product_agent_os.test_codex_runtime_runner_cli tests.product_agent_os.test_codex_runtime_runner_guards -v",
+      "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+      "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "python tools\\check_docs.py",
+      "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t13-strict-output-schema-and-harness-hardening.json",
+      "git diff --check"
+    ],
+    "local_checks_completed_in_current_run": [
+      {
+        "command": "python -m unittest tests.product_agent_os.test_codex_runtime_runner_model_output -v",
+        "status": "passed",
+        "evidence": "Ran 8 tests; OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_codex_runtime_runner_contracts tests.product_agent_os.test_codex_runtime_runner_cli tests.product_agent_os.test_codex_runtime_runner_guards -v",
+        "status": "passed",
+        "evidence": "Ran 38 tests; OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "status": "passed",
+        "evidence": "Ran 23 tests; OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v",
+        "status": "passed",
+        "evidence": "Ran 29 tests; OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "status": "passed",
+        "evidence": "Ran 99 tests; OK"
+      },
+      {
+        "command": "python tools\\check_docs.py",
+        "status": "passed",
+        "evidence": "OK: documentation structure checks passed"
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t13-strict-output-schema-and-harness-hardening.json",
+        "status": "passed",
+        "evidence": "JSON parsed"
+      },
+      {
+        "command": "git diff --check",
+        "status": "passed_with_crlf_warnings",
+        "evidence": "No whitespace errors; Git reported CRLF/LF normalization warnings for edited files."
+      }
+    ]
+  },
+  "claim_ceiling": {
+    "allowed_claims": [
+      "strict_output_schema_contract_ready",
+      "offline_harness_schema_no_op_guard_locally_tested_after_verification",
+      "future_rerun_prerequisite_hardening_ready_after_verification"
+    ],
+    "unsupported_claims": [
+      "treatment_v3_behavior_proven",
+      "real_ai_agent_behavior_improvement",
+      "M26_no_go_reversed",
+      "M35_no_go_reversed",
+      "T05_timeout_reversed",
+      "T06_no_go_reversed",
+      "runtime_browser_readiness",
+      "target_workspace_apply_safety",
+      "ci_or_blocker_promotion",
+      "release_deploy_publish_readiness",
+      "active_automation_ready"
+    ],
+    "closure_level": "synthetic_green_after_local_tests_only"
+  },
+  "decision": {
+    "promotion_allowed": false,
+    "new_live_model_rerun_performed": false,
+    "next_rerun_requires_fresh_exact_approval": true,
+    "recommended_next_route": "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-AFTER-T13"
+  },
+  "no_unapproved_actions": {
+    "live_model_or_provider_api_called_without_approval": false,
+    "reviewer_model_call_started": false,
+    "runtime_or_live_server_started": false,
+    "browser_automation_started": false,
+    "target_workspace_command_or_mutation_performed": false,
+    "database_or_production_data_accessed": false,
+    "ci_or_blocker_enforcement_created": false,
+    "git_branch_stage_commit_push_pr_performed": false,
+    "release_deploy_publish_performed": false,
+    "active_automation_created": false,
+    "raw_outputs_written_to_repo": false
+  },
+  "control_plane_sync_decision": {
+    "source_packet_added": true,
+    "next_tasks_updated": true,
+    "registry_updated": true,
+    "plan_test_evals_track11_updated_compactly": true,
+    "runlog_update": "not_updated_due_budget_details_live_in_source_packet"
+  }
+}

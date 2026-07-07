@@ -25,7 +25,7 @@ Final `DOC-M25` может rebuild root `site` только после отде�
 
 ## DOC-M25 Closure Update
 
-`DOC-M25` закрыт через `documentation_refresh_DOC-M25-A01` со статусом `implemented_root_site_search_sitemap_freshness`. Root `site`, search index и sitemap теперь включают former `DOC_M25_PENDING_SITE_PAGES`; browser proof, broad scans, dependency remediation, raw report retention, publication, release, deploy и git actions остаются вне этого closure.
+`DOC-M25` закрыт через `documentation_refresh_DOC-M25-A01` со статусом `implemented_root_site_search_sitemap_freshness`; `documentation_refresh_DOC-M25-A02` обновляет generated root `site`, search index и sitemap после T15 source docs/control-plane sync. Root `site`, search index и sitemap включают former `DOC_M25_PENDING_SITE_PAGES`; browser proof, broad scans, dependency remediation, raw report retention, publication, release, deploy и git actions остаются вне этого closure.
 
 ## Closure Rule
 

@@ -79,7 +79,7 @@ Use these routes when the question is not about new plugin behavior, but about t
 | `graph_intelligence_contract` | Graph packets, ontology, rejected links, freshness or query packets are used. | Orientation summary, stale/rejected-link handling, source-read-before-edit reminder. | Graph packets do not replace source reads or authorize mutation. |
 | `privacy_supply_chain_retention` | Cache/session evidence, SBOM, vulnerability audit, remediation or raw reports are discussed. | Redaction and retention boundary, approval gates, unsupported claims. | Broad scans, remediation and raw report retention require separate approval. |
 | `local_html_interaction_boundary` | Generated HTML includes tabs, search, filters or diagrams. | Local-only interaction rules, no-network policy, fallback and browser-proof packet fields. | Static checks are not browser proof. |
-| `residual_follow_up_site_freshness` | G1.1 residuals or final `DOC-M25` need closure. | Residual routing table, private-target redaction policy, site freshness gate. | Root `site`, search and sitemap are current after `documentation_refresh_DOC-M25-A01`; browser proof remains separate. |
+| `residual_follow_up_site_freshness` | G1.1 residuals or final `DOC-M25` need closure. | Residual routing table, private-target redaction policy, site freshness gate. | Root `site`, search and sitemap are current after `documentation_refresh_DOC-M25-A01`; `documentation_refresh_DOC-M25-A02` refreshes them after T15 source sync; browser proof remains separate. |
 
 ## Scenario Matrix
 

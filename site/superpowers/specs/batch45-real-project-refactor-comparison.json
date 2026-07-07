@@ -1,0 +1,264 @@
+{
+  "schema_version": "batch45_real_project_refactor_comparison_v1",
+  "task_id": "B45-PCA-M33",
+  "evidence_id": "B45-PCA-M33-A01",
+  "generated_at": "2026-06-30",
+  "source_status": "fixture_local_refactor_comparison_only",
+  "closure_level": "synthetic_green_fixture_local_with_accepted_gaps",
+  "baseline_source": "docs/superpowers/specs/batch45-real-project-baseline-results.json",
+  "scenario_count": 2,
+  "scenario_ids": [
+    "SOL-AGENT-ORCH-01",
+    "MP-CRM-CHAT-OPEN-01"
+  ],
+  "claim_ceiling": [
+    "M33 creates and compares fixture-local arms inside codex_docs only.",
+    "M33 does not mutate SOL 0.6 or myPartners target workspaces.",
+    "M33 does not run target commands, launch runtime/browser, call providers/live APIs, access production/local databases, stage/commit/push/PR, deploy, publish or activate automation.",
+    "M33 can compare maintainability signals, churn, dependency deltas and static/advisory checks, but it cannot prove target behavior, production safety, release readiness or real AI-agent behavior improvement."
+  ],
+  "accepted_gap_policy": {
+    "owner_signal": "owner requested execution of B45-PCA-M33 and approved necessary local actions/checks in the current thread",
+    "accepted_for": "fixture-local comparison only",
+    "not_accepted_for": [
+      "target apply",
+      "target command execution",
+      "runtime/browser proof",
+      "provider/live API behavior",
+      "database safety",
+      "git/release/deploy/publish",
+      "automation activation",
+      "promotion beyond advisory/no-go decision"
+    ]
+  },
+  "source_artifacts": [
+    "research/b45-real-project-scenarios/refactors/README.md",
+    "research/b45-real-project-scenarios/refactors/mypartners/MP-CRM-CHAT-OPEN-01/README.md",
+    "research/b45-real-project-scenarios/refactors/mypartners/MP-CRM-CHAT-OPEN-01/manifest.json",
+    "research/b45-real-project-scenarios/refactors/sol/SOL-AGENT-ORCH-01/original/README.md",
+    "research/b45-real-project-scenarios/refactors/sol/SOL-AGENT-ORCH-01/checklist-guided/README.md",
+    "research/b45-real-project-scenarios/refactors/sol/SOL-AGENT-ORCH-01/advisory-guided/README.md"
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SOL-AGENT-ORCH-01",
+      "target_id": "sol_0_6",
+      "target_label": "SOL 0.6",
+      "baseline_result": "baseline_static_complete_with_gaps",
+      "fixture_root": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01",
+      "blockers_reviewed": [
+        "No runnable SOL-focused test evidence inside the fixture.",
+        "TypeScript source is outside current comment-sufficiency validator coverage.",
+        "Provider/vector dependencies require approval-bound runtime/data handling before behavioral claims."
+      ],
+      "accepted_gaps": [
+        {
+          "gap": "no_runnable_typescript_fixture_test",
+          "accepted_for": "no-code comparison arm only",
+          "residual_risk": "No TypeScript refactor can be promoted from this M33 evidence."
+        },
+        {
+          "gap": "typescript_comment_advisory_coverage_missing",
+          "accepted_for": "recording advisory arm as no-code",
+          "residual_risk": "Zero warnings in M32 did not inspect SOL TypeScript source."
+        }
+      ],
+      "arms": [
+        {
+          "arm_id": "original",
+          "artifact": "research/b45-real-project-scenarios/refactors/sol/SOL-AGENT-ORCH-01/original/README.md",
+          "variant_type": "baseline_reference",
+          "code_change": "none",
+          "diff_added_lines": 0,
+          "diff_deleted_lines": 0,
+          "new_dependencies": [],
+          "checks": [
+            {
+              "check": "baseline packet review",
+              "status": "passed_inspection_only"
+            }
+          ]
+        },
+        {
+          "arm_id": "checklist-guided",
+          "artifact": "research/b45-real-project-scenarios/refactors/sol/SOL-AGENT-ORCH-01/checklist-guided/README.md",
+          "variant_type": "refactor_rejected_no_code_change",
+          "code_change": "none",
+          "diff_added_lines": 0,
+          "diff_deleted_lines": 0,
+          "new_dependencies": [],
+          "decision": "reject_broad_role_agent_or_orchestrator_rewrite_until_fixture_local_ts_static_test_route_exists"
+        },
+        {
+          "arm_id": "advisory-guided",
+          "artifact": "research/b45-real-project-scenarios/refactors/sol/SOL-AGENT-ORCH-01/advisory-guided/README.md",
+          "variant_type": "advisory_coverage_gap_no_code_change",
+          "code_change": "none",
+          "diff_added_lines": 0,
+          "diff_deleted_lines": 0,
+          "new_dependencies": [],
+          "decision": "do_not_add_decorative_comments_when_active_advisory_does_not_measure_typescript"
+        }
+      ],
+      "comparison_result": "Professional Code Authoring recorded SOL churn prevention in M33. A later SOL treatment needs either a fixture-local TypeScript/static test route or a separately approved disposable runtime/browser/provider boundary."
+    },
+    {
+      "scenario_id": "MP-CRM-CHAT-OPEN-01",
+      "target_id": "mypartners",
+      "target_label": "myPartners",
+      "baseline_result": "baseline_static_complete_with_gaps",
+      "fixture_root": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01",
+      "arm_manifest": "research/b45-real-project-scenarios/refactors/mypartners/MP-CRM-CHAT-OPEN-01/manifest.json",
+      "arms": [
+        {
+          "arm_id": "original",
+          "artifact": "research/b45-real-project-scenarios/refactors/mypartners/MP-CRM-CHAT-OPEN-01/original/src/server/app/api/contacts_routes.py",
+          "variant_type": "baseline_reference",
+          "sha256": "cecde02f484a49021531fe625980fbeb9e6739587699f8eac672839b46c0d75e",
+          "bytes": 71924,
+          "diff_added_lines": 0,
+          "diff_deleted_lines": 0,
+          "new_dependencies": [],
+          "comment_warning_count": 2,
+          "checks": [
+            {
+              "check": "comment_sufficiency advisory replay",
+              "status": "passed_non_blocking",
+              "warning_count": 2
+            }
+          ]
+        },
+        {
+          "arm_id": "checklist-guided",
+          "artifact": "research/b45-real-project-scenarios/refactors/mypartners/MP-CRM-CHAT-OPEN-01/checklist-guided/src/server/app/api/contacts_routes.py",
+          "variant_type": "small_structure_refactor",
+          "sha256": "1c771a50eafb9acc0fc1d2ec948d3280fa4f0fd694e718e451f1952de87db89f",
+          "bytes": 72156,
+          "diff_added_lines": 9,
+          "diff_deleted_lines": 4,
+          "deleted_code_signal": "two inline self-contact guardrail branches moved into _ensure_relationship_patch_allowed",
+          "reused_apis": [
+            "HTTPException",
+            "Contact",
+            "ensure_relationship_state"
+          ],
+          "new_dependencies": [],
+          "comment_warning_count": 1,
+          "checks": [
+            {
+              "check": "AST syntax parse over copied source arm",
+              "status": "passed"
+            },
+            {
+              "check": "comment_sufficiency advisory replay",
+              "status": "passed_non_blocking",
+              "warning_count": 1
+            }
+          ]
+        },
+        {
+          "arm_id": "advisory-guided",
+          "artifact": "research/b45-real-project-scenarios/refactors/mypartners/MP-CRM-CHAT-OPEN-01/advisory-guided/src/server/app/api/contacts_routes.py",
+          "variant_type": "intent_docstring_refactor",
+          "sha256": "70183ee5dca8c55e9cab6048943b592e64797820d234a6c82bc67362f1273065",
+          "bytes": 72109,
+          "diff_added_lines": 2,
+          "diff_deleted_lines": 0,
+          "deleted_code_signal": "none",
+          "reused_apis": [],
+          "new_dependencies": [],
+          "comment_warning_count": 0,
+          "checks": [
+            {
+              "check": "AST syntax parse over copied source arm",
+              "status": "passed"
+            },
+            {
+              "check": "comment_sufficiency advisory replay",
+              "status": "passed_non_blocking",
+              "warning_count": 0
+            }
+          ]
+        }
+      ],
+      "comparison_result": "The advisory-guided arm has the lowest churn and removes both current Python advisory warnings. The checklist-guided arm improves one route boundary but still leaves the source-context warning and needs real characterization/runtime approval before target application."
+    }
+  ],
+  "overall_comparison": {
+    "status": "m33_fixture_local_comparison_complete_with_gaps",
+    "best_current_low_churn_arm": "MP-CRM-CHAT-OPEN-01 advisory-guided",
+    "best_current_structure_candidate": "MP-CRM-CHAT-OPEN-01 checklist-guided, but not target-applicable without characterization/runtime evidence",
+    "refactor_prevented": "SOL-AGENT-ORCH-01 checklist/advisory arms intentionally remain no-code because baseline blockers are unresolved outside fixture-local accepted gaps.",
+    "m34_inputs": [
+      "Score MP advisory-guided higher on comment sufficiency and churn control, but lower on structural leverage.",
+      "Score MP checklist-guided as a possible structure refactor with missing behavior proof.",
+      "Score SOL no-code arms as useful churn prevention, not a failed implementation.",
+      "Keep promotion blocked until representative runtime/browser/provider-safe evidence or owner-accepted static-only policy exists."
+    ]
+  },
+  "verification": [
+    {
+      "command": "python -c \"import ast,pathlib; ... ast.parse(...)\"",
+      "status": "passed",
+      "scope": "MP original/checklist/advisory contacts_routes.py arms",
+      "claim": "syntax_only_ast_parse"
+    },
+    {
+      "command": "python plugins\\product-agent-os\\scripts\\product_agent_os\\comment_sufficiency.py <arm> --root . --include-tests --no-default-excludes --max-warnings-per-file -1 --max-warnings -1",
+      "status": "passed_non_blocking",
+      "scope": "MP original/checklist/advisory arms",
+      "results": {
+        "original": 2,
+        "checklist_guided": 1,
+        "advisory_guided": 0
+      },
+      "claim": "comment_advisory_replay_only"
+    },
+    {
+      "command": "git diff --no-index --numstat <original> <variant>",
+      "status": "passed_with_expected_difference_exit_normalized",
+      "scope": "MP checklist/advisory arms",
+      "results": {
+        "checklist_guided": {
+          "added": 9,
+          "deleted": 4
+        },
+        "advisory_guided": {
+          "added": 2,
+          "deleted": 0
+        }
+      },
+      "claim": "diff_size_only"
+    }
+  ],
+  "approval_boundary": {
+    "target_workspace_mutation": false,
+    "target_command_execution": false,
+    "runtime_launch": false,
+    "browser_automation": false,
+    "provider_or_live_api_call": false,
+    "database_access": false,
+    "git_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "automation_activation": false
+  },
+  "control_plane_sync_decision": {
+    "requirements_md": "not_applicable_no_scope_change",
+    "plan_md": "update_required_s7_pointer_and_task_matrix_status",
+    "test_md": "not_applicable_no_new_verification_route",
+    "evals_md": "update_required_new_eval_ceiling_for_s7_m33",
+    "runlog_md": "update_required_compact_handoff_only_due_50kb_budget",
+    "source_registry": "update_required_new_M33_evidence_entry"
+  },
+  "unsupported_claims": [
+    "target_behavior",
+    "runtime_behavior",
+    "browser_behavior",
+    "provider_or_live_api_behavior",
+    "production_data_safety",
+    "release_readiness",
+    "fixture_local_ast_parse_proves_import_runtime_behavior",
+    "static_refactor_comparison_proves_real_ai_agent_behavior_improvement",
+    "M33_approves_CI_or_blocker_promotion"
+  ]
+}

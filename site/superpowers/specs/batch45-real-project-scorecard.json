@@ -1,0 +1,314 @@
+{
+  "schema_version": "batch45_real_project_scorecard_v1",
+  "task_id": "B45-PCA-M34",
+  "evidence_id": "B45-PCA-M34-A01",
+  "generated_at": "2026-06-30",
+  "source_status": "fixture_local_scorecard_only",
+  "closure_level": "synthetic_green_scorecard_with_promotion_blocked",
+  "input_sources": [
+    "docs/superpowers/specs/batch45-real-project-baseline-results.json",
+    "docs/superpowers/specs/batch45-real-project-refactor-comparison.json",
+    "research/b45-real-project-scenarios/results/SOL-AGENT-ORCH-01-baseline.json",
+    "research/b45-real-project-scenarios/results/MP-CRM-CHAT-OPEN-01-baseline.json",
+    "research/b45-real-project-scenarios/refactors/"
+  ],
+  "reviewer_notes": "research/b45-real-project-scenarios/results/B45-PCA-M34-scorecard-review.md",
+  "scenario_count": 2,
+  "scenario_ids": [
+    "SOL-AGENT-ORCH-01",
+    "MP-CRM-CHAT-OPEN-01"
+  ],
+  "claim_ceiling": [
+    "M34 scores fixture-local baseline and refactor comparison evidence only.",
+    "M34 does not mutate SOL 0.6 or myPartners target workspaces.",
+    "M34 does not run target commands, launch runtime/browser, call providers/live APIs, access production/local databases, stage/commit/push/PR, deploy, publish or activate automation.",
+    "M34 calibrates promotion risk; it cannot prove target behavior, production safety, release readiness or real AI-agent behavior improvement."
+  ],
+  "rubric": {
+    "scoring_scale": {
+      "min": 0,
+      "max": 10,
+      "interpretation": "10 is strongest fixture-local evidence for the dimension; 0 is no usable evidence."
+    },
+    "dimension_order": [
+      "existing_capability_reuse",
+      "custom_code_reduction",
+      "dependency_avoidance",
+      "comment_sufficiency",
+      "tests",
+      "unsupported_claims",
+      "privacy_safety",
+      "reviewer_usefulness",
+      "runtime_gap",
+      "flake_cost"
+    ],
+    "dimensions": {
+      "existing_capability_reuse": {
+        "weight": 10,
+        "question": "Did the treatment reuse local APIs and patterns before adding code?"
+      },
+      "custom_code_reduction": {
+        "weight": 10,
+        "question": "Did the treatment reduce or avoid unnecessary custom code?"
+      },
+      "dependency_avoidance": {
+        "weight": 10,
+        "question": "Did the treatment avoid new dependencies and protocol inventions?"
+      },
+      "comment_sufficiency": {
+        "weight": 10,
+        "question": "Did comments explain intent without decorative noise?"
+      },
+      "tests": {
+        "weight": 10,
+        "question": "Did runnable or syntax/static checks cover the changed behavior?"
+      },
+      "unsupported_claims": {
+        "weight": 10,
+        "question": "Did the packet avoid claiming behavior beyond evidence?"
+      },
+      "privacy_safety": {
+        "weight": 10,
+        "question": "Did the packet stay within sanitized fixture and metadata-safe boundaries?"
+      },
+      "reviewer_usefulness": {
+        "weight": 10,
+        "question": "Would a reviewer know what changed, what was rejected and why?"
+      },
+      "runtime_gap": {
+        "weight": 10,
+        "question": "How much runtime/browser/provider evidence is still missing? Higher means smaller gap."
+      },
+      "flake_cost": {
+        "weight": 10,
+        "question": "Is the evidence cheap, deterministic and replayable?"
+      }
+    },
+    "aggregate_score_is_not_promotion_gate": true,
+    "critical_blockers_override_average": true,
+    "minimum_promotion_conditions": [
+      "representative runtime/browser/provider-safe evidence for the selected treatment",
+      "or owner-accepted static-only policy that explicitly forbids behavior/readiness claims",
+      "independent reviewer or owner agreement that the score weights match real project risk",
+      "no unresolved privacy gap or unsupported runtime claim"
+    ]
+  },
+  "score_summary": {
+    "best_current_low_churn_arm": "MP-CRM-CHAT-OPEN-01 advisory-guided",
+    "best_current_structure_candidate": "MP-CRM-CHAT-OPEN-01 checklist-guided",
+    "churn_prevention_result": "SOL-AGENT-ORCH-01 checklist/advisory arms stayed no-code because fixture-local TypeScript/test/advisory blockers remain unresolved.",
+    "promotion_state": "blocked_static_fixture_only",
+    "averages": {
+      "SOL-AGENT-ORCH-01 no-code checklist/advisory": 6.2,
+      "MP-CRM-CHAT-OPEN-01 checklist-guided": 6.8,
+      "MP-CRM-CHAT-OPEN-01 advisory-guided": 7.4
+    }
+  },
+  "scored_outcomes": [
+    {
+      "scenario_id": "SOL-AGENT-ORCH-01",
+      "target_id": "sol_0_6",
+      "target_label": "SOL 0.6",
+      "selected_outcome": "no-code checklist/advisory",
+      "scores": {
+        "existing_capability_reuse": 6,
+        "custom_code_reduction": 9,
+        "dependency_avoidance": 10,
+        "comment_sufficiency": 2,
+        "tests": 1,
+        "unsupported_claims": 9,
+        "privacy_safety": 9,
+        "reviewer_usefulness": 7,
+        "runtime_gap": 1,
+        "flake_cost": 8
+      },
+      "average_score": 6.2,
+      "where_standard_helps": [
+        "Prevented broad role-agent or orchestrator rewrites when no fixture-local TypeScript/static test route existed.",
+        "Kept dependency and provider/vector behavior claims out of the comparison."
+      ],
+      "where_standard_hurts": [
+        "The current Python/JS advisory validator leaves TypeScript comment sufficiency mostly unmeasured.",
+        "No-code outcome is useful as risk control but does not produce a candidate implementation."
+      ],
+      "insufficient_evidence": [
+        "No runnable SOL-focused fixture test.",
+        "No target runtime/browser/provider-safe proof.",
+        "No TypeScript comment advisory coverage."
+      ],
+      "promotion_result": "blocked"
+    },
+    {
+      "scenario_id": "MP-CRM-CHAT-OPEN-01",
+      "target_id": "mypartners",
+      "target_label": "myPartners",
+      "selected_outcome": "checklist-guided",
+      "scores": {
+        "existing_capability_reuse": 7,
+        "custom_code_reduction": 6,
+        "dependency_avoidance": 10,
+        "comment_sufficiency": 6,
+        "tests": 4,
+        "unsupported_claims": 9,
+        "privacy_safety": 9,
+        "reviewer_usefulness": 7,
+        "runtime_gap": 2,
+        "flake_cost": 8
+      },
+      "average_score": 6.8,
+      "where_standard_helps": [
+        "Extracted duplicated self-contact guardrail behavior into a small helper using existing FastAPI and contact-route patterns.",
+        "Reduced advisory warnings from 2 to 1 without adding dependencies."
+      ],
+      "where_standard_hurts": [
+        "The structural refactor adds churn before characterization/runtime evidence proves target behavior.",
+        "A higher structural score would hide that only AST syntax and advisory replay ran."
+      ],
+      "insufficient_evidence": [
+        "No target characterization test.",
+        "No FastAPI import/runtime route proof.",
+        "No browser or CRM chat-open behavior proof."
+      ],
+      "promotion_result": "blocked_until_characterization_or_runtime_evidence"
+    },
+    {
+      "scenario_id": "MP-CRM-CHAT-OPEN-01",
+      "target_id": "mypartners",
+      "target_label": "myPartners",
+      "selected_outcome": "advisory-guided",
+      "scores": {
+        "existing_capability_reuse": 6,
+        "custom_code_reduction": 8,
+        "dependency_avoidance": 10,
+        "comment_sufficiency": 10,
+        "tests": 4,
+        "unsupported_claims": 9,
+        "privacy_safety": 9,
+        "reviewer_usefulness": 8,
+        "runtime_gap": 2,
+        "flake_cost": 8
+      },
+      "average_score": 7.4,
+      "where_standard_helps": [
+        "Lowest-churn arm removes both current Python advisory warnings with a two-line intent docstring.",
+        "No new dependency, broad rewrite or target-apply claim is introduced."
+      ],
+      "where_standard_hurts": [
+        "It improves review intent more than behavior structure.",
+        "Comment-only treatment can look better in aggregate than a structural refactor while still lacking runtime evidence."
+      ],
+      "insufficient_evidence": [
+        "No proof that the route behavior is safer or more correct.",
+        "No target runtime/browser evidence.",
+        "No evidence that the advisory signal improves future agent behavior."
+      ],
+      "promotion_result": "best_low_churn_static_arm_but_not_promotable"
+    }
+  ],
+  "calibration_findings": {
+    "where_standard_helps": [
+      "The standard is most useful as a churn limiter and unsupported-claim brake.",
+      "The standard makes dependency avoidance and privacy boundaries visible enough for reviewer use.",
+      "The standard distinguishes low-churn advisory cleanup from structural refactor candidates."
+    ],
+    "where_standard_hurts": [
+      "Equal-weight averages make comment-only cleanup look close to promotion-ready unless runtime and test blockers override the score.",
+      "Language coverage gaps can turn a useful no-code decision into weak implementation evidence."
+    ],
+    "insufficient_evidence": [
+      "No representative target runtime/browser/provider-safe evidence.",
+      "No independent owner/reviewer agreement on the final weights yet.",
+      "No proof that the treatment improves real AI-agent behavior after the prior M26 live no-go result."
+    ],
+    "critical_blockers": [
+      "runtime_gap",
+      "tests_gap",
+      "type_script_advisory_gap_for_SOL",
+      "owner_or_reviewer_weight_judgment_pending",
+      "real_ai_agent_behavior_improvement_unproven"
+    ],
+    "do_not_average_over": [
+      "privacy gaps",
+      "unsupported runtime claims",
+      "missing target behavior proof",
+      "reviewer disagreement",
+      "CI/blocker promotion after M27 no-go"
+    ],
+    "reviewer_judgment_status": "internal_static_calibration_only_owner_review_pending"
+  },
+  "promotion_recommendation": {
+    "state": "no_go_for_promotion_keep_fixture_local_static_only",
+    "next_task": "B45-PCA-M35",
+    "recommended_next_decision": "record whether to keep advisory-only, design a smaller treatment v2, run more fixture pilots, or request a separately approved disposable runtime/browser pilot.",
+    "allowed_without_fresh_approval": [
+      "source-doc decision packet",
+      "fixture-local scoring edits",
+      "docs/control-plane checks"
+    ],
+    "forbidden_without_fresh_approval": [
+      "target command execution",
+      "target workspace mutation",
+      "runtime launch",
+      "browser automation",
+      "provider/live API call",
+      "database access",
+      "git stage/commit/push/PR",
+      "release/deploy/publish",
+      "CI or blocker enforcement",
+      "automation activation"
+    ]
+  },
+  "approval_boundary": {
+    "target_workspace_mutation": false,
+    "target_command_execution": false,
+    "runtime_launch": false,
+    "browser_automation": false,
+    "provider_or_live_api_call": false,
+    "database_access": false,
+    "git_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "ci_or_blocker_enforcement": false,
+    "automation_activation": false
+  },
+  "verification": [
+    {
+      "check": "scorecard schema/text review",
+      "status": "passed_current_run",
+      "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v"
+    },
+    {
+      "check": "docs/control-plane docs tests",
+      "status": "passed_current_run",
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v"
+    },
+    {
+      "check": "source docs policy check",
+      "status": "passed_current_run",
+      "command": "python tools\\check_docs.py"
+    },
+    {
+      "check": "diff hygiene",
+      "status": "passed_current_run",
+      "command": "git diff --check"
+    }
+  ],
+  "control_plane_sync_decision": {
+    "requirements_md": "not_applicable_no_scope_change",
+    "plan_md": "update_required_s7_status_and_next_action",
+    "test_md": "not_applicable_no_new_verification_route",
+    "evals_md": "update_required_new_s7_scorecard_ceiling",
+    "runlog_md": "update_required_compact_handoff_only_due_50kb_budget",
+    "source_registry": "update_required_new_M34_evidence_entry"
+  },
+  "unsupported_claims": [
+    "target_behavior",
+    "runtime_behavior",
+    "browser_behavior",
+    "provider_or_live_api_behavior",
+    "database_safety",
+    "release_readiness",
+    "fixture_local_scorecard_proves_target_correctness",
+    "static_scorecard_proves_real_ai_agent_behavior_improvement",
+    "M34_approves_CI_or_blocker_promotion"
+  ]
+}

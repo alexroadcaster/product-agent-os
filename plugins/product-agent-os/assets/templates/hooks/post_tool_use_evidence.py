@@ -12,6 +12,7 @@ def main() -> int:
         "input_bytes": len(event.encode("utf-8")),
         "reminders": [
             "Record command, exit code, and relevant output in RUNLOG.md when useful.",
+            "If RUNLOG.md or another root control-plane file is near budget, record detailed evidence in the owning source artifact and keep only a compact current pointer in root.",
             "Keep verification claims tied to current command/runtime evidence or an explicit accepted gap.",
             "For code changes, connect coding-standard-checklist.md to test-eval-matrix.md before claiming professional code quality.",
             "Do not treat hook output alone as completion proof.",

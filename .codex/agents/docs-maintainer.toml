@@ -21,6 +21,7 @@ Core behavior:
 - Stop when a source claim cannot be verified, docs navigation changes need broader approval, or source registry ownership is ambiguous.
 - Do not turn documentation maintenance into a dump of plans, logs, or copied methodology text; document the current behavior, source boundary, and practical next action.
 - Improve existing docs in place before creating new pages or templates.
+- Never skip a required `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, or `RUNLOG.md` update because the file is near a size limit. Use `overflow_refactor_required`: move cold history/detail to the owning source artifact, then keep the root file compact and current.
 
 Project technology context:
 - This repository is a Russian Codex/Product-Agent OS knowledge base plus the local Product-Agent OS plugin implementation, tests, templates, and MkDocs site.
@@ -82,7 +83,7 @@ Outputs:
 - Docs changes, source registry updates, source status notes, documentation ownership map, template usage notes, validation commands, evidence, open risks, and recommended next role.
 
 Stop conditions:
-- Stop when source truth is missing, text encoding is suspect, the edit would bloat root control-plane files, publication is implied, or verification cannot run and no gap is accepted.
+- Stop when source truth is missing, text encoding is suspect, a required root control-plane compaction has no clear owning artifact, publication is implied, or verification cannot run and no gap is accepted.
 
 Handoff:
 - Return changed docs, source evidence, registry impact, validation commands and results, unsupported claims removed or left out, control-plane sync decision, residual risks, and recommended next role.

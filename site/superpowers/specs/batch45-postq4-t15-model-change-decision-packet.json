@@ -1,0 +1,241 @@
+{
+  "schema_version": "batch45_postq4_t15_model_change_decision_packet_v1",
+  "task_id": "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION",
+  "evidence_id": "B45-POSTQ4-T15-A01",
+  "status": "implemented_model_change_interpretation_keep_advisory_only_no_go",
+  "created_at": "2026-07-05T19:30:00+03:00",
+  "source_status": "project-authored decision packet; no new live/model/provider/reviewer/runtime/browser/target/CI/git/release/deploy/automation action was performed for T15",
+  "decision_target": "Interpret the exact-approved T14 gpt-5.5 high-reasoning rerun without treating it as strict same-model comparability against prior gpt-5.3-codex-spark evidence.",
+  "sidecar_agent_use": {
+    "agents_used": [
+      {
+        "role": "architect",
+        "scope": "read-only decision logic review",
+        "model_or_provider_eval_calls_authorized": false,
+        "file_writes_authorized": false
+      },
+      {
+        "role": "docs-maintainer",
+        "scope": "read-only docs/control-plane sync review",
+        "model_or_provider_eval_calls_authorized": false,
+        "file_writes_authorized": false
+      }
+    ],
+    "agent_outputs_are_supporting_review_only": true,
+    "source_artifacts_remain_authoritative": true
+  },
+  "source_evidence_used": [
+    {
+      "task_id": "B45-PCA-M26",
+      "source": "docs/superpowers/specs/batch45-agent-behavior-eval-results.json",
+      "summary": "Approved gpt-5.3-codex-spark live eval was no-go: baseline average 4.22, treatment average 3.88, 15/16 completed, one timeout, warnings 29 -> 15 and independent reviewer no_go."
+    },
+    {
+      "task_id": "B45-PCA-M35",
+      "source": "docs/superpowers/specs/batch45-real-project-decision-packet.json",
+      "summary": "Kept advisory-only/no-go for treatment v2 promotion after fixture-local real-project scorecard; runtime/browser pilot remained approval_required."
+    },
+    {
+      "task_id": "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN",
+      "source": "docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-results.json",
+      "summary": "Approved gpt-5.3-codex-spark paired rerun ended no-go with valid_pair_count=6, one no-op, one invalid JSON and reviewer skipped."
+    },
+    {
+      "task_id": "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
+      "source": "docs/superpowers/specs/batch45-postq4-t13-strict-output-schema-and-harness-hardening.json",
+      "summary": "Local strict FINAL_JSON parser, run/pair/aggregate validator, no-op guard and invalid-pair quarantine were implemented without live/model/provider calls."
+    },
+    {
+      "task_id": "B45-POSTQ4-T14-STRICT-RERUN",
+      "source": "docs/superpowers/specs/batch45-postq4-t14-strict-rerun-results.json",
+      "summary": "Exact-approved gpt-5.5 high-reasoning rerun completed 16/16 primary calls with valid_pair_count=8, invalid_pair_count=0, timeout/no-op/invalid_json=0, average score delta +3.27%, treatment_equal_or_better_count=6 and reviewer_calls_started=0."
+    }
+  ],
+  "decision": {
+    "state": "keep_advisory_only_no_go_after_model_change_rerun",
+    "t14_is_useful_quality_signal": true,
+    "t14_can_reverse_m26": false,
+    "t14_can_reverse_m35": false,
+    "promotion_allowed": false,
+    "claim_real_ai_agent_behavior_improvement": false,
+    "claim_runtime_browser_or_target_readiness": false,
+    "selected_route": "record_t14_as_current_best_quality_signal_and_require_future_gate_for_promotion",
+    "reason": "T14 removes the T12 invalid-pair failure mode and shows a positive current-best-quality signal, but it changes the model from gpt-5.3-codex-spark to gpt-5.5/high, reaches only +3.27% average score delta against the T14 >=20% promotion gate, and did not run the reviewer gate. Therefore it is not strict same-model comparability evidence and cannot by itself reverse M26/M35 or promote advisory behavior."
+  },
+  "interpretation_matrix": {
+    "schema_validity": {
+      "evidence": "T14 valid_pair_count=8, invalid_pair_count=0 and T13 validator returned no errors.",
+      "decision": "accepted_as_clean_primary_rollup",
+      "promotion_effect": "necessary_but_not_sufficient"
+    },
+    "score_delta": {
+      "evidence": "T14 average baseline score 0.8775, treatment 0.9062 and average_score_delta_percent=3.27.",
+      "decision": "accepted_as_positive_current_model_signal",
+      "promotion_effect": "cannot_promote_because_below_20_percent_gate_and_without_model_comparability_or_reviewer"
+    },
+    "promotion_threshold": {
+      "evidence": "T14 approval packet requires >=20% average improvement over baseline on valid pairs; T14 measured +3.27%.",
+      "decision": "not_satisfied",
+      "promotion_effect": "blocks_promotion"
+    },
+    "model_change": {
+      "evidence": "M26/T12 used gpt-5.3-codex-spark; T14 used gpt-5.5 with high reasoning.",
+      "decision": "blocks_direct_same_model_comparison",
+      "promotion_effect": "blocks_m26_m35_reversal"
+    },
+    "reviewer_gate": {
+      "evidence": "T14 reviewer_calls_started=0 and reviewer_status=not_run_due_runner_contract_manual_gap.",
+      "decision": "not_satisfied",
+      "promotion_effect": "blocks_promotion"
+    },
+    "runtime_browser_target_evidence": {
+      "evidence": "No runtime server, browser automation, target workspace command or target mutation was performed by T14 or T15.",
+      "decision": "not_claimed",
+      "promotion_effect": "blocks_product_runtime_readiness"
+    }
+  },
+  "accepted_gaps_for_t15_only": [
+    {
+      "gap": "model_changed_from_spark_to_gpt55_high",
+      "accepted_for": "recording T14 as a current-best-quality signal",
+      "not_accepted_for": "same-model comparability, M26/M35 reversal or promotion",
+      "residual_risk": "The measured improvement may reflect model capability rather than treatment design quality."
+    },
+    {
+      "gap": "reviewer_not_run",
+      "accepted_for": "conservative no-promotion decision",
+      "not_accepted_for": "promotion, behavior-improvement claim or CI/blocker enforcement",
+      "residual_risk": "Primary-score improvements are not independently judged under the reviewer rubric."
+    },
+    {
+      "gap": "provider_cost_unavailable",
+      "accepted_for": "T15 docs-only decision under already recorded call-count cap",
+      "not_accepted_for": "future cost-sensitive rerun without owner-accepted cap or cost evidence",
+      "residual_risk": "Future approval packets still need explicit cost boundaries."
+    }
+  ],
+  "next_routes": [
+    {
+      "task_id": "B45-POSTQ4-T16-REVIEWER-OR-COMPARABILITY-PACKET",
+      "status": "optional_approval_packet_required",
+      "when_to_choose": "Owner wants to convert the T14 signal into promotion-grade evidence by choosing either reviewer-only interpretation of T14 artifacts or a new comparable rerun route."
+    },
+    {
+      "task_id": "B45-POSTQ4-T09-CLOSURE-ADVISORY-ONLY",
+      "status": "recommended_if_owner_accepts_no_promotion",
+      "when_to_choose": "Owner accepts T14 as useful quality signal but keeps Batch 45 advisory-only/no-go."
+    },
+    {
+      "task_id": "B45-POSTQ4-T07-RUNTIME-BROWSER-PACKET",
+      "status": "optional_approval_packet_only",
+      "when_to_choose": "Owner wants disposable runtime/browser proof separate from live/model behavior proof."
+    }
+  ],
+  "promotion_gate_after_t15": {
+    "promotion_allowed_now": false,
+    "minimum_future_evidence_before_promotion": [
+      "source-owned owner decision selecting reviewer-only interpretation or same-model/current-model comparable rerun route",
+      "exact approval before any new reviewer/model/provider call",
+      "reviewer decision not no_go for the selected evidence set",
+      "explicit model-comparability handling",
+      "runtime/browser/target proof if claiming product/runtime readiness",
+      "updated no-unapproved-actions proof"
+    ],
+    "static_warning_delta_can_promote": false,
+    "t14_primary_scores_alone_can_promote": false,
+    "minimum_behavior_quality_improvement_required": ">=20% average improvement over baseline on valid pairs",
+    "t14_average_score_delta_percent": 3.27,
+    "minimum_behavior_quality_improvement_met": false
+  },
+  "approval_required_before_future_actions": [
+    "Any reviewer/model/provider call.",
+    "Any live/model/provider rerun for same-model or current-model comparability.",
+    "Any runtime/live server or browser automation proof.",
+    "Any target workspace command or mutation.",
+    "Any database or production data access.",
+    "Any CI workflow, blocker enforcement or active automation creation.",
+    "Any git branch/stage/commit/push/PR, release, deploy, publish or external write."
+  ],
+  "no_unapproved_actions": {
+    "new_live_model_or_provider_api_called": false,
+    "reviewer_model_call_started": false,
+    "runtime_or_live_server_launched": false,
+    "browser_automation_run": false,
+    "target_workspace_command_run": false,
+    "target_workspace_mutated": false,
+    "database_accessed": false,
+    "ci_or_blocker_enforcement_created": false,
+    "git_branch_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation_created_or_enabled": false,
+    "external_write_performed": false
+  },
+  "unsupported_claims": [
+    "M26_no_go_reversed",
+    "M35_no_go_reversed",
+    "strict_same_model_comparability_with_spark_runs",
+    "promotion_ready",
+    "real_ai_agent_behavior_improvement_proven",
+    "runtime_browser_readiness",
+    "target_workspace_apply_safety",
+    "ci_or_blocker_promotion",
+    "release_deploy_publish_readiness"
+  ],
+  "control_plane_sync_decision": {
+    "REQUIREMENTS.md": "not_applicable_no_scope_or_acceptance_change",
+    "PLAN.md": "updated_compact_post_q4_t15_pointer",
+    "TEST.md": "updated_compact_post_q4_t15_route_pointer",
+    "EVALS.md": "updated_compact_t15_claim_ceiling",
+    "RUNLOG.md": "handoff_required_due_runlog_budget",
+    "prod_test.md": "not_applicable_batch39_surface",
+    "docs/sources/registry.md": "updated_source_route",
+    "docs/sources/registry.en.md": "updated_source_route",
+    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md": "updated_track11_marker",
+    ".codex/product-agent-os/lifecycle-state.json": "updated_current_marker"
+  },
+  "verification": {
+    "status": "passed_current_run",
+    "results": [
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t15-model-change-decision-packet.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-post-q4-next-tasks.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "status": "passed",
+        "evidence": "Ran 26 tests; OK."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "status": "passed",
+        "evidence": "Ran 99 tests; OK."
+      },
+      {
+        "command": "python tools\\check_docs.py",
+        "status": "passed",
+        "evidence": "OK: documentation structure checks passed."
+      },
+      {
+        "command": "git diff --check",
+        "status": "passed_with_crlf_warnings",
+        "evidence": "No whitespace errors. Git reported CRLF/LF normalization warnings for edited files."
+      },
+      {
+        "command": "Get-Item PLAN.md,TEST.md,EVALS.md,RUNLOG.md | Select-Object Name,Length",
+        "status": "passed_with_pre_existing_runlog_budget_gap",
+        "evidence": {
+          "PLAN.md": 49864,
+          "TEST.md": 49913,
+          "EVALS.md": 49998,
+          "RUNLOG.md": 51123
+        }
+      }
+    ]
+  }
+}

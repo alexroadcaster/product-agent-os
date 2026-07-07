@@ -1,0 +1,280 @@
+{
+  "schema_version": "batch45_postq4_t11_treatment_v3_source_design_v1",
+  "task_id": "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN",
+  "evidence_id": "B45-POSTQ4-T11-A01",
+  "status": "implemented_source_only_treatment_v3_design_not_run",
+  "created_at": "2026-07-05T00:24:00+03:00",
+  "route": "source_only_design",
+  "source_status": "project-authored source-only treatment v3 design; no live/model/provider/runtime/browser/target/CI/git/release/deploy/automation action was performed",
+  "basis": [
+    "docs/superpowers/specs/batch45-postq4-architecture-next-actions.json",
+    "docs/superpowers/specs/batch45-post-q4-next-tasks.json",
+    "docs/superpowers/specs/batch45-agent-behavior-eval-results.json",
+    "docs/superpowers/specs/batch45-postq4-t05-live-model-rerun-results.json",
+    "docs/superpowers/specs/batch45-postq4-t05b-rerun-approval-packet.json",
+    "docs/superpowers/specs/batch45-postq4-t06-promotion-decision.json",
+    "docs/superpowers/specs/batch45-comment-policy-promotion-decision.json",
+    "docs/superpowers/specs/batch45-real-project-decision-packet.json",
+    "docs/product-agent-os/coding-standards.md"
+  ],
+  "sidecar_agent_reviews": [
+    {
+      "role": "architect",
+      "report": ".codex/product-agent-os/reviews/batch45/t11-agent-01-architecture.md",
+      "status": "completed"
+    },
+    {
+      "role": "tester",
+      "report": ".codex/product-agent-os/reviews/batch45/t11-agent-02-eval-design.md",
+      "status": "completed"
+    },
+    {
+      "role": "product-manager",
+      "report": ".codex/product-agent-os/reviews/batch45/t11-agent-03-product-requirements.md",
+      "status": "completed"
+    },
+    {
+      "role": "docs-maintainer",
+      "report": ".codex/product-agent-os/reviews/batch45/t11-agent-04-docs-control-plane.md",
+      "status": "completed"
+    },
+    {
+      "role": "completion-skeptic",
+      "report": ".codex/product-agent-os/reviews/batch45/t11-agent-05-completion-skeptic.md",
+      "status": "completed"
+    }
+  ],
+  "problem_diagnosis": {
+    "m26_result": "Treatment reduced advisory warnings 29 -> 15 but scored lower than baseline, 3.88 vs 4.22, was worse on 4 of 8 tasks, timed out once and received reviewer no_go.",
+    "t05_result": "Post-Q4 rerun stopped during baseline collection after one completed run and one timeout; treatment and reviewer did not run.",
+    "inferred_failure_mode": "The prior treatment likely over-weighted generation-time policy prose and comment-warning hygiene while increasing prompt friction, timeout risk and measurement noise.",
+    "claim_ceiling": "source_design_only_no_behavior_or_runtime_proof"
+  },
+  "design_principles": [
+    "Keep generation-time guidance short and task-local.",
+    "Ask for the smallest leverage path before custom code.",
+    "Move fuller standards pressure to reviewer/evidence checks.",
+    "Use concrete negative examples instead of broad policy prose.",
+    "Separate behavior score, static warning count, reviewer decision, timeout/no-op status and runtime/target proof.",
+    "Preserve advisory-only/no-go until a future approved paired eval proves otherwise."
+  ],
+  "treatment_v3_contract": {
+    "summary": "A compact two-stage Professional Code Authoring scaffold: a pre-edit leverage card plus a post-edit reviewer/evidence card.",
+    "replaces": "broad generation-time standards overlay used by prior treatment attempts",
+    "fallback": "no treatment prompt; keep M25 local non-blocking advisory and reviewer-only standards checks",
+    "pre_edit_card": [
+      "Existing path checked",
+      "Smallest viable leverage path: delete, configure, standard library, framework/current dependency, project helper, tiny adapter, custom code, or dependency approval required",
+      "One-line/native candidate",
+      "Why custom code remains needed, or why it is avoided",
+      "Dependency decision",
+      "Shared, legacy or public-contract risk",
+      "Evidence gate",
+      "Unsupported claims"
+    ],
+    "post_edit_card": [
+      "Selected path and files touched",
+      "Rejected broader/custom/dependency options",
+      "Tests, evals or accepted gap",
+      "Runtime, activation and fallback claim status",
+      "Reviewer concerns",
+      "Rollback path"
+    ],
+    "prompt_context_boundaries": [
+      "Do not paste the full coding standards document into every generation prompt.",
+      "Do not optimize primarily for advisory warning count.",
+      "Do not replace Task Brief, Completion Brief, control-plane sync, human review, security/privacy review or release gates.",
+      "Reviewer context may include the richer checklist mapping; generation context gets only the compact card.",
+      "Any dependency, runtime, target, provider, CI, blocker, hook, automation, git, release or deploy action remains approval-required."
+    ]
+  },
+  "standards_to_behaviors_map": [
+    {
+      "standard": "enterprise_leverage_check",
+      "expected_behavior": "Name the smallest existing path checked before writing code.",
+      "reviewer_check": "Reject generic claims that do not name a concrete standard library, framework, dependency, config or helper path.",
+      "failure_mode": "Writing custom code first."
+    },
+    {
+      "standard": "existing_capability_scan",
+      "expected_behavior": "Record a task-relevant reuse/delete/configuration option or why it is not applicable.",
+      "reviewer_check": "Confirm the scan is scoped to the task rather than broad repo archaeology.",
+      "failure_mode": "Vague 'checked existing code' statement."
+    },
+    {
+      "standard": "one_line_candidate",
+      "expected_behavior": "Try a direct/native expression before a helper or module when the change is small.",
+      "reviewer_check": "Confirm the native/direct option was accepted or rejected with a reason.",
+      "failure_mode": "Multi-line abstraction for simple behavior."
+    },
+    {
+      "standard": "negative_dependency_rule",
+      "expected_behavior": "Treat new dependencies as forbidden unless the task has exact approval and rollback/removal rationale.",
+      "reviewer_check": "Verify no dependency was added silently.",
+      "failure_mode": "Adding a package for local logic."
+    },
+    {
+      "standard": "deep_module_check",
+      "expected_behavior": "Add abstraction only when it hides real complexity behind a stable interface.",
+      "reviewer_check": "Compare the abstraction against a simpler direct path.",
+      "failure_mode": "Shallow wrapper."
+    },
+    {
+      "standard": "legacy_seam_check",
+      "expected_behavior": "Use characterization, seam strategy or rollback when touching fragile legacy behavior.",
+      "reviewer_check": "Verify no broad rewrite happened without evidence.",
+      "failure_mode": "Refactor from first principles without preserving behavior."
+    },
+    {
+      "standard": "comment_policy",
+      "expected_behavior": "Add comments only for non-obvious invariants, hazards or trade-offs.",
+      "reviewer_check": "Confirm comments explain why, not what, and warning count is secondary.",
+      "failure_mode": "Noisy comments to satisfy static warning checks."
+    },
+    {
+      "standard": "cleverness_budget",
+      "expected_behavior": "Prefer direct readable code unless complexity has a measurable payoff.",
+      "reviewer_check": "Ask what simpler option was rejected and why.",
+      "failure_mode": "Clever indirection without payoff."
+    }
+  ],
+  "negative_examples": [
+    "Adding a helper before checking an existing project helper.",
+    "Adding a dependency for simple local parsing or formatting.",
+    "Adding comments that restate code instead of documenting an invariant or hazard.",
+    "Claiming runtime/browser readiness from static or source-only evidence.",
+    "Counting timeout, no-op or null-score pairs as behavior success.",
+    "Using static warning reduction as a promotion threshold.",
+    "Running a live/model/provider rerun without a new exact approval packet."
+  ],
+  "future_eval_update_required": {
+    "required": true,
+    "recommended_route": "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET before any approved rerun",
+    "source_only_gates_before_rerun": [
+      "source freeze for eval plan, treatment v3 contract, scoring rubric and approval packet",
+      "treatment v3 differs materially from prior broad prompt overlay",
+      "held-out task feasibility table includes writeability, command surface, timeout risk and no-op risk",
+      "paired baseline/treatment schedule is defined before any run",
+      "result schema quarantines timeout, no-op and null-score pairs",
+      "static warning count cannot promote or override reviewer no_go",
+      "privacy, retention, cost and process-kill boundaries are exact"
+    ],
+    "promotion_threshold_candidate": {
+      "minimum_behavior_quality_improvement": ">=20% average improvement on valid comparable pairs",
+      "pairwise_quality": "treatment equal_or_better on at least 6 of 8 valid pairs",
+      "timeout_requirement": "zero promotion-counted timeouts; invalid pairs are quarantined",
+      "reviewer_decision_must_not_be": "no_go",
+      "static_warning_delta_can_promote": false
+    }
+  },
+  "decision": {
+    "state": "source_design_ready_for_review_only_no_behavior_or_runtime_claim",
+    "m26_reversed": false,
+    "m35_reversed": false,
+    "t05_timeout_reversed": false,
+    "promotion_allowed": false,
+    "ci_blocker_automation_allowed": false,
+    "live_model_rerun_allowed_without_new_approval": false,
+    "runtime_browser_or_target_claim_allowed": false,
+    "recommended_next_routes": [
+      "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
+      "future exact approval for paired live/model rerun after T10",
+      "B45-POSTQ4-T07-RUNTIME-BROWSER-PACKET if runtime/product proof is needed"
+    ]
+  },
+  "unsupported_claims": [
+    "real_ai_agent_behavior_improvement",
+    "treatment_v3_behavior_proven",
+    "M26_no_go_reversed",
+    "M35_no_go_reversed",
+    "T05_timeout_reversed",
+    "provider_or_live_api_behavior",
+    "runtime_browser_readiness",
+    "target_workspace_apply_safety",
+    "ci_workflow_readiness",
+    "blocker_enforcement_readiness",
+    "active_automation_readiness",
+    "release_deploy_publish_readiness",
+    "replacement_of_human_review"
+  ],
+  "control_plane_sync_decision": {
+    "REQUIREMENTS.md": "not_applicable_no_scope_or_acceptance_change",
+    "PLAN.md": "update_compact_post_q4_pointer",
+    "TEST.md": "update_compact_post_q4_marker",
+    "EVALS.md": "update_compact_post_q4_claim_ceiling",
+    "RUNLOG.md": "handoff_required_due_runlog_budget",
+    "docs/sources/registry.md": "update_source_route",
+    "docs/sources/registry.en.md": "update_source_route",
+    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md": "update_track11_marker",
+    ".codex/product-agent-os/lifecycle-state.json": "update_current_marker"
+  },
+  "no_unapproved_actions": {
+    "live_model_or_provider_api_called": false,
+    "runtime_or_live_server_launched": false,
+    "browser_automation_run": false,
+    "target_workspace_command_run": false,
+    "target_workspace_mutated": false,
+    "database_accessed": false,
+    "ci_or_blocker_enforcement_created": false,
+    "git_branch_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation_created_or_enabled": false,
+    "external_write_performed": false
+  },
+  "verification": {
+    "status": "passed_current_repo_checks",
+    "results": [
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t11-treatment-v3-source-design.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-post-q4-next-tasks.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool .codex\\product-agent-os\\lifecycle-state.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v",
+        "status": "passed",
+        "evidence": "Ran 29 tests; OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "status": "passed",
+        "evidence": "Ran 19 tests; OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "status": "passed",
+        "evidence": "Ran 99 tests; OK"
+      },
+      {
+        "command": "python tools\\check_docs.py",
+        "status": "passed",
+        "evidence": "OK: documentation structure checks passed"
+      },
+      {
+        "command": "git diff --check",
+        "status": "passed_with_crlf_warnings",
+        "evidence": "Exit 0; Git reported CRLF/LF normalization warnings for edited Markdown files."
+      },
+      {
+        "command": "Get-Item PLAN.md, TEST.md, EVALS.md, RUNLOG.md | Select-Object Name, Length",
+        "status": "passed",
+        "evidence": {
+          "PLAN.md": 49695,
+          "TEST.md": 49935,
+          "EVALS.md": 49926,
+          "RUNLOG.md": 51123
+        }
+      }
+    ],
+    "remaining_required_before_completion_claim": []
+  }
+}

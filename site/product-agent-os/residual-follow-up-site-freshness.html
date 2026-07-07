@@ -1292,6 +1292,12 @@
 
 
 
+
+
+
+
+
+
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
 
 
@@ -1324,6 +1330,27 @@
             Product-Agent OS plugin
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="control-plane-current-state.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Текущий control-plane state
+  </span>
+
+
+      </a>
+    </li>
+
 
 
 
@@ -1465,6 +1492,27 @@
 
   <span class="md-ellipsis">
     Agent-Skill Modernization Loop
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="self-learning-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Self-Learning Loop
   </span>
 
 
@@ -1844,6 +1892,27 @@
 
   <span class="md-ellipsis">
     Engineering standards layer
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="coding-standards.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Professional Code Authoring
   </span>
 
 
@@ -3447,7 +3516,7 @@
 <h2 id="final-doc-m25">Final <code>DOC-M25</code><a class="headerlink" href="#final-doc-m25" title="Permanent link">&para;</a></h2>
 <p>Final <code>DOC-M25</code> может rebuild root <code>site</code> только после отдельного approval. До этого source docs могут быть current, а generated <code>site</code>, search index и sitemap остаются stale/unsupported для новых G2-G5 pages.</p>
 <h2 id="doc-m25-closure-update">DOC-M25 Closure Update<a class="headerlink" href="#doc-m25-closure-update" title="Permanent link">&para;</a></h2>
-<p><code>DOC-M25</code> закрыт через <code>documentation_refresh_DOC-M25-A01</code> со статусом <code>implemented_root_site_search_sitemap_freshness</code>. Root <code>site</code>, search index и sitemap теперь включают former <code>DOC_M25_PENDING_SITE_PAGES</code>; browser proof, broad scans, dependency remediation, raw report retention, publication, release, deploy и git actions остаются вне этого closure.</p>
+<p><code>DOC-M25</code> закрыт через <code>documentation_refresh_DOC-M25-A01</code> со статусом <code>implemented_root_site_search_sitemap_freshness</code>; <code>documentation_refresh_DOC-M25-A02</code> обновляет generated root <code>site</code>, search index и sitemap после T15 source docs/control-plane sync. Root <code>site</code>, search index и sitemap включают former <code>DOC_M25_PENDING_SITE_PAGES</code>; browser proof, broad scans, dependency remediation, raw report retention, publication, release, deploy и git actions остаются вне этого closure.</p>
 <h2 id="closure-rule">Closure Rule<a class="headerlink" href="#closure-rule" title="Permanent link">&para;</a></h2>
 <p>G5 может закрыть source docs, nav, tests, registry и control-plane sync без root <code>site</code> freshness claim. Полная generated-site freshness требует current strict MkDocs build to root <code>site</code>, search/sitemap evidence и <code>git diff --check</code> в том же approved slice.</p>
 

@@ -1,0 +1,272 @@
+{
+  "schema_version": "batch45_postq4_architecture_next_actions_v1",
+  "task_id": "B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS",
+  "evidence_id": "B45-POSTQ4-T08-A01",
+  "status": "implemented_source_owned_architecture_next_actions_after_t06",
+  "created_at": "2026-07-04T22:05:00+03:00",
+  "source_status": "project-authored post-T06 architecture and next-task packet; no live/model/provider/runtime/browser/target action was performed",
+  "basis": [
+    "docs/superpowers/specs/batch45-postq4-t06-promotion-decision.json",
+    "docs/superpowers/specs/batch45-postq4-t05-live-model-rerun-results.json",
+    "docs/superpowers/specs/batch45-postq4-t05b-rerun-approval-packet.json",
+    "docs/superpowers/specs/batch45-postq4-t01-t04-execution-summary.json",
+    "docs/superpowers/specs/batch45-quality-retest-project-slices-static-summary.json",
+    "docs/superpowers/specs/batch45-agent-behavior-eval-results.json",
+    "docs/superpowers/specs/batch45-comment-policy-promotion-decision.json",
+    "docs/superpowers/specs/batch45-real-project-decision-packet.json"
+  ],
+  "current_state_summary": {
+    "static_quality": "Q4 found 14 advisory warnings; T01-T03 reduced copied-fixture static warnings 14 -> 0 with blocking=false.",
+    "behavior_quality": "M26 remains no-go and T05 stopped on baseline timeout before treatment/reviewer comparison.",
+    "runtime_quality": "No runtime/browser/target command, target mutation, database access or product behavior proof exists for post-Q4.",
+    "governance": "M25 remains local non-blocking advisory; T06 rejects stronger advisory, CI/blocker and active automation promotion.",
+    "claim_ceiling": "advisory_only_no_go_with_local_static_quality_improvement"
+  },
+  "technical_architecture_analysis": {
+    "advisory_layer": {
+      "state": "mechanically healthier after M37 and T01-T03",
+      "strengths": [
+        "TS/TSX and modern JavaScript scanning are covered by local tests.",
+        "Hook path is fail-open and redacts unsafe paths.",
+        "Static warning delta is now reproducible in source-owned packets."
+      ],
+      "limits": [
+        "The advisory remains a post-tool/reviewer signal, not a proven generation-quality controller.",
+        "Static warning absence does not prove correct behavior, maintainability in real targets or better agent decisions."
+      ]
+    },
+    "eval_layer": {
+      "state": "blocked_for_promotion",
+      "strengths": [
+        "M26 and T05 packets preserve baseline/treatment separation, reviewer boundary and no-promotion decision.",
+        "T05B records a cleaner approval packet after timeout."
+      ],
+      "limits": [
+        "The live rerun design is too brittle if one timeout aborts all comparative evidence.",
+        "There is no completed post-static-fix treatment-vs-baseline comparison."
+      ]
+    },
+    "runtime_layer": {
+      "state": "approval_required_not_run",
+      "strengths": [
+        "Target mutation and runtime/browser proof are explicitly separated from static fixtures.",
+        "B45-PCA-M36/T07 remains reserved instead of being silently consumed."
+      ],
+      "limits": [
+        "No product-runtime evidence exists for SOL or myPartners after fixture changes.",
+        "Fixture-local edits may not preserve real target behavior."
+      ]
+    },
+    "control_plane_layer": {
+      "state": "source_owned_and_budget_constrained",
+      "strengths": [
+        "Detailed evidence lives in specs and review packets.",
+        "Root control-plane files carry compact pointers and no-go boundaries."
+      ],
+      "limits": [
+        "PLAN.md, TEST.md, EVALS.md and RUNLOG.md are near compactness limits.",
+        "Future Batch 45 detail should continue to avoid RUNLOG.md expansion."
+      ]
+    }
+  },
+  "architecture_decisions": [
+    {
+      "decision_id": "B45-POSTQ4-AD-01",
+      "decision": "Do not promote M25 advisory to CI, blocker or active automation from current evidence.",
+      "rationale": "The only positive delta is static and copied-fixture-local; live behavior remains no-go/inconclusive.",
+      "status": "accepted_for_current_batch_state"
+    },
+    {
+      "decision_id": "B45-POSTQ4-AD-02",
+      "decision": "Keep future behavior proof and runtime/browser proof on separate approval tracks.",
+      "rationale": "Live/model quality and product-runtime safety are different evidence classes and should not substitute for each other.",
+      "status": "accepted_for_next_queue"
+    },
+    {
+      "decision_id": "B45-POSTQ4-AD-03",
+      "decision": "Prefer source-owned next-task packets over root RUNLOG expansion.",
+      "rationale": "Root control-plane files are compact routing surfaces, not detailed Batch 45 ledgers.",
+      "status": "accepted_for_control_plane"
+    }
+  ],
+  "recommended_next_tasks": [
+    {
+      "task_id": "B45-POSTQ4-T09-CLOSURE-ADVISORY-ONLY",
+      "priority": "P0",
+      "route": "local_docs_closure_if_no_new_approval",
+      "status": "recommended_if_owner_accepts_no_go",
+      "scope": "Close the post-Q4 Batch 45 branch as advisory-only/no-go with local static quality improvements and no promotion.",
+      "acceptance": [
+        "Closure packet names all completed T01-T08 evidence and unsupported claims.",
+        "No new live/model/runtime/browser/target/CI/git/release/deploy/automation action is performed.",
+        "Root control-plane files stay under compactness budgets."
+      ],
+      "verification_gates": [
+        "focused coding-standards artifact tests",
+        "docs/control-plane checks",
+        "git diff --check"
+      ],
+      "stop_conditions": [
+        "Stop if closure wording implies production readiness or behavior improvement.",
+        "Stop if RUNLOG.md expansion is needed for detailed history."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
+      "priority": "P1",
+      "route": "approval_packet_only",
+      "status": "recommended_before_any_new_t05b_run",
+      "scope": "Redesign the live eval approval packet so future runs can produce paired baseline/treatment evidence despite timeouts.",
+      "acceptance": [
+        "Packet separates strict stop-on-timeout, paired continue, retry-on-timeout and diagnostic-only routes.",
+        "Packet defines per-task pairing, timeout budget, reviewer timing, cost cap handling, temp-only raw retention and abort conditions.",
+        "No model/provider/API call is performed while preparing the packet."
+      ],
+      "verification_gates": [
+        "approval packet assertions",
+        "privacy/cost/retention review",
+        "no-unapproved-actions proof"
+      ],
+      "stop_conditions": [
+        "Stop before live/model/provider/API call without exact owner approval.",
+        "Stop if raw outputs would be retained in repo."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T07-RUNTIME-BROWSER-PACKET",
+      "priority": "P1",
+      "route": "approval_packet_only",
+      "status": "optional_if_product_runtime_risk_matters",
+      "scope": "Prepare the optional B45-PCA-M36 disposable runtime/browser proof route, separate from live/model behavior proof.",
+      "acceptance": [
+        "Packet names disposable target, commands, rollback, browser/runtime evidence, data boundary and stop conditions.",
+        "No runtime/live server, browser automation, target command or target mutation is performed by planning alone."
+      ],
+      "verification_gates": [
+        "approval packet review",
+        "no-unapproved-actions proof"
+      ],
+      "stop_conditions": [
+        "Stop before runtime/browser/provider/target execution without exact owner approval."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN",
+      "priority": "P2",
+      "route": "source_only_design",
+      "status": "optional_before_future_behavior_rerun",
+      "scope": "Design a smaller treatment v3 that uses coding standards as planning/reviewer scaffolding instead of a noisy generation-time prompt overlay.",
+      "acceptance": [
+        "Design explains why M26 treatment underperformed and how v3 reduces prompt friction.",
+        "Design maps standards to concrete behaviors, negative examples and reviewer checks.",
+        "Design does not activate hooks, CI, blocker enforcement or live/model calls."
+      ],
+      "verification_gates": [
+        "source design review",
+        "future eval plan update before any run"
+      ],
+      "stop_conditions": [
+        "Stop if design is presented as proven behavior improvement.",
+        "Stop if implementation starts without a fresh task and acceptance packet."
+      ]
+    }
+  ],
+  "recommended_sequence": [
+    "If no new approval is desired: run B45-POSTQ4-T09-CLOSURE-ADVISORY-ONLY.",
+    "If behavior proof is desired: run B45-POSTQ4-T10 first, then request exact approval for a new T05B live/model rerun.",
+    "If product/runtime safety is the concern: run B45-POSTQ4-T07 approval-packet route before any runtime/browser action.",
+    "If treatment quality should improve before another live run: run B45-POSTQ4-T11 source-only treatment v3 design."
+  ],
+  "unsupported_claims": [
+    "real_ai_agent_behavior_improvement",
+    "production_readiness",
+    "runtime_browser_readiness",
+    "target_workspace_apply_safety",
+    "ci_workflow_readiness",
+    "blocker_enforcement_readiness",
+    "active_automation_readiness",
+    "release_deploy_publish_readiness",
+    "M26_no_go_reversed",
+    "T05_timeout_reversed"
+  ],
+  "control_plane_sync_decision": {
+    "REQUIREMENTS.md": "not_applicable_no_scope_or_acceptance_change",
+    "PLAN.md": "update_compact_post_q4_pointer",
+    "TEST.md": "update_compact_post_q4_marker",
+    "EVALS.md": "update_compact_post_q4_claim_ceiling",
+    "RUNLOG.md": "handoff_required_due_runlog_budget",
+    "docs/sources/registry.md": "update_source_route",
+    "docs/sources/registry.en.md": "update_source_route",
+    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md": "update_track11_marker",
+    ".codex/product-agent-os/lifecycle-state.json": "update_current_marker"
+  },
+  "no_unapproved_actions": {
+    "live_model_or_provider_api_called": false,
+    "runtime_or_live_server_launched": false,
+    "browser_automation_run": false,
+    "target_workspace_command_run": false,
+    "target_workspace_mutated": false,
+    "database_accessed": false,
+    "ci_or_blocker_enforcement_created": false,
+    "git_branch_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation_created_or_enabled": false,
+    "external_write_performed": false
+  },
+  "verification": {
+    "status": "passed_with_crlf_warnings",
+    "results": [
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-architecture-next-actions.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully"
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-post-q4-next-tasks.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully"
+      },
+      {
+        "command": "python -m json.tool .codex\\product-agent-os\\lifecycle-state.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v",
+        "status": "passed",
+        "evidence": "Ran 29 tests; OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "status": "passed",
+        "evidence": "Ran 18 tests; OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "status": "passed",
+        "evidence": "Ran 99 tests; OK"
+      },
+      {
+        "command": "python tools\\check_docs.py",
+        "status": "passed",
+        "evidence": "OK: documentation structure checks passed"
+      },
+      {
+        "command": "git diff --check",
+        "status": "passed_with_crlf_warnings",
+        "evidence": "No whitespace errors. Git reported CRLF/LF normalization warnings for edited markdown files."
+      },
+      {
+        "command": "Get-Item PLAN.md, TEST.md, EVALS.md, RUNLOG.md | Select-Object Name, Length",
+        "status": "passed",
+        "evidence": {
+          "PLAN.md": 49697,
+          "TEST.md": 49908,
+          "EVALS.md": 49908,
+          "RUNLOG.md": 51123
+        }
+      }
+    ],
+    "remaining_required_before_completion_claim": []
+  }
+}

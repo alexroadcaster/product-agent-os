@@ -59,6 +59,7 @@ def main() -> int:
             "Show a user-visible Completion Brief after execution, verification, or blocked handoff.",
             "If the Task Start Brief was compact or incomplete, record the accepted gap instead of treating the marker as proof.",
             "Run control-plane sync before the Completion Brief when Product-Agent OS scope, plan, tests, evals, runlog, or evidence state changed.",
+            "If a root control-plane file is near or over budget, move cold detail to an owning source artifact, then update the compact root pointer.",
         ],
     }
     print(json.dumps(payload, sort_keys=True))

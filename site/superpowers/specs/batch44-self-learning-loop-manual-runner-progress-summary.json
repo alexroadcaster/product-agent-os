@@ -1,0 +1,83 @@
+{
+  "schema_version": "batch44_self_learning_loop_manual_runner_progress_summary_v1",
+  "evidence_id": "B44-SLL-M05-M23-M24-A01",
+  "recorded_at": "2026-06-24",
+  "source_status": "local_implementation_evidence",
+  "status": "implemented",
+  "slice": "B44-S2-Manual-Runner-And-Project-Progress",
+  "implemented_markers": [
+    "B44-SLL-M05",
+    "B44-SLL-M23",
+    "B44-SLL-M24"
+  ],
+  "summary": "Self-Learning Loop now has a manual-only staged runner, resumable progress events and an offline HTML progress artifact. The runner starts with Product-Agent OS scope detection, refuses unrelated projects, and writes only to an explicit stage root when --stage is used.",
+  "changed_surfaces": [
+    "plugins/product-agent-os/scripts/run_self_learning_loop.py",
+    "plugins/product-agent-os/scripts/product_agent_os/self_learning_progress.py",
+    "plugins/product-agent-os/scripts/check_self_learning_due.py",
+    "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+    "tests/product_agent_os/test_self_learning_state.py",
+    "tests/product_agent_os/test_batch41_first_run_automation.py",
+    "docs/product-agent-os/cli-reference.md",
+    "docs/product-agent-os/cli-reference.en.md",
+    "docs/product-agent-os/artifact-contracts.md",
+    "docs/product-agent-os/artifact-contracts.en.md"
+  ],
+  "runner_contract": {
+    "command_dry_run": "python plugins/product-agent-os/scripts/run_self_learning_loop.py <workspace> --dry-run",
+    "command_stage": "python plugins/product-agent-os/scripts/run_self_learning_loop.py <workspace> --stage <dir>",
+    "schema_version": "self_learning_run_packet_v1",
+    "write_policy": "read_only_or_staged_only",
+    "analysis_executed": false,
+    "state_written": false,
+    "auto_apply_status": "not_enabled",
+    "schedule_status": "not_created",
+    "provider_calls": "not_performed",
+    "target_workspace_writes": "not_performed"
+  },
+  "progress_contract": {
+    "schema_version": "self_learning_progress_v1",
+    "targets": [
+      ".codex/product-agent-os/self-learning/progress.jsonl",
+      ".codex/product-agent-os/self-learning/self-learning-progress.json",
+      ".codex/product-agent-os/self-learning/self-learning-progress.html",
+      ".codex/product-agent-os/self-learning/runs/<run_id>/progress.json",
+      ".codex/product-agent-os/self-learning/runs/<run_id>/self-learning-run-packet.json",
+      ".codex/product-agent-os/self-learning/runs/<run_id>/self-learning-progress.html"
+    ],
+    "phases": [
+      "scope_check",
+      "due_check",
+      "evidence_collect",
+      "metrics_eval",
+      "feedback_eval",
+      "candidate_generation",
+      "reporting",
+      "owner_review",
+      "blocked",
+      "completed"
+    ],
+    "html_policy": "generated review view only; not source of truth and cannot approve, apply or prove work complete",
+    "stage_manifest_policy": "redacted self_learning_stage_manifest_v1 with workspace_ref and stage_root_ref hashes only"
+  },
+  "scope_boundary": {
+    "eligible_projects_only": true,
+    "out_of_scope_status": "blocked",
+    "raw_workspace_path_included": false,
+    "raw_private_transcripts_ingested": false
+  },
+  "unsupported_claims": [
+    "No active scheduler, Codex App automation, hook trigger or recurring job was created.",
+    "No provider/model call, hidden session ingestion, raw private transcript storage, target mutation, git action, release, deployment or publication was performed.",
+    "The staged HTML progress artifact is orientation evidence only and cannot prove quality improvement or owner satisfaction.",
+    "Feedback import, satisfaction evaluator, preference memory, metric deltas and modernization candidates remain future Batch 44 slices."
+  ],
+  "verification": {
+    "red_test_observed": "run_self_learning_loop.py and S2 progress artifact contract were missing before implementation",
+    "focused_tests": [
+      "python -m unittest tests.product_agent_os.test_self_learning_state -v",
+      "python -m unittest tests.product_agent_os.test_self_learning_state tests.product_agent_os.test_batch41_first_run_automation -v"
+    ],
+    "latest_status": "passed_focused_tests"
+  }
+}

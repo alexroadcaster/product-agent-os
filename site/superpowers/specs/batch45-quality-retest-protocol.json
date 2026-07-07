@@ -1,0 +1,437 @@
+{
+  "schema_version": "batch45_quality_retest_protocol_v1",
+  "task_id": "B45-RETEST-Q0-Q2",
+  "evidence_id": "B45-RETEST-Q0-Q2-A01",
+  "status": "implemented_source_only_protocol_harness_ready",
+  "created_at": "2026-07-04T14:56:06+03:00",
+  "source_status": "project-authored local retest protocol packet",
+  "trigger": "Owner requested B45-RETEST-Q0..Q2 after six-agent Batch 45 quality/refactor retest readiness review.",
+  "scope": {
+    "implemented_queue": [
+      "B45-RETEST-Q0-SOURCE-FREEZE",
+      "B45-RETEST-Q1-HELDOUT-V2",
+      "B45-RETEST-Q2-HARNESS-DRY-RUN"
+    ],
+    "execution_class": "local_source_only_protocol_and_harness_contract",
+    "promotion_state": "no_go_for_promotion_keep_advisory_only",
+    "closure_level": "docs_contract_ready_for_local_static_retest_protocol",
+    "runtime_or_product_activation": "not_claimed",
+    "live_model_behavior_eval": "approval_required_not_run",
+    "runtime_browser_pilot": "approval_required_not_run_B45_PCA_M36_reserved"
+  },
+  "queue_status": {
+    "B45-RETEST-Q0-SOURCE-FREEZE": {
+      "status": "implemented_source_freeze",
+      "purpose": "Copy the active Batch 45 M26/M27/M35/M37 claim ceilings and blockers into a source-owned retest contract.",
+      "evidence": [
+        "docs/superpowers/specs/batch45-agent-behavior-eval-results.json",
+        "docs/superpowers/specs/batch45-comment-policy-promotion-decision.json",
+        "docs/superpowers/specs/batch45-real-project-scorecard.json",
+        "docs/superpowers/specs/batch45-real-project-decision-packet.json",
+        "docs/superpowers/specs/batch45-review-remediation-summary.json",
+        ".codex/product-agent-os/reviews/batch45/quality-retest-agent-01-architecture.md",
+        ".codex/product-agent-os/reviews/batch45/quality-retest-agent-02-runtime-validator.md",
+        ".codex/product-agent-os/reviews/batch45/quality-retest-agent-03-test-eval-plan.md",
+        ".codex/product-agent-os/reviews/batch45/quality-retest-agent-04-security-privacy-approval.md",
+        ".codex/product-agent-os/reviews/batch45/quality-retest-agent-05-product-lifecycle.md",
+        ".codex/product-agent-os/reviews/batch45/quality-retest-agent-06-completion-skeptic.md"
+      ]
+    },
+    "B45-RETEST-Q1-HELDOUT-V2": {
+      "status": "implemented_task_set_contract",
+      "purpose": "Define fresh held-out risk-family tasks and optional fixture canaries without reusing manual pilot tasks as promotion evidence.",
+      "task_count": 8,
+      "optional_fixture_canary_count": 2
+    },
+    "B45-RETEST-Q2-HARNESS-DRY-RUN": {
+      "status": "implemented_schema_and_route_contract",
+      "purpose": "Validate the retest evidence shape, scorecard/rubric gates, privacy boundary, command queues and stop conditions before any live/model or runtime/browser run.",
+      "dry_run_type": "source_schema_route_only",
+      "local_execution_allowed_next": true,
+      "live_or_runtime_execution_allowed_next": false
+    }
+  },
+  "source_freeze": {
+    "active_blockers": [
+      {
+        "id": "B45-PCA-M26",
+        "source": "docs/superpowers/specs/batch45-agent-behavior-eval-results.json",
+        "state": "no_go_real_behavior_improvement_not_proven_after_live_eval",
+        "reason": "Baseline average 4.22 beat treatment average 3.88; treatment was worse on 4 of 8 tasks and had 1 timeout even though warnings fell 29 -> 15."
+      },
+      {
+        "id": "B45-PCA-M27",
+        "source": "docs/superpowers/specs/batch45-comment-policy-promotion-decision.json",
+        "state": "keep_advisory_only_no_go_for_blocker_or_ci",
+        "reason": "M25 remains local, non-blocking and reversible; stronger advisory, CI and blocker promotion are rejected without fresh evidence."
+      },
+      {
+        "id": "B45-PCA-M35",
+        "source": "docs/superpowers/specs/batch45-real-project-decision-packet.json",
+        "state": "keep_advisory_only_no_go_for_treatment_v2_promotion",
+        "reason": "S7 real-project evidence remains fixture-local/static; runtime/browser pilot is approval-required and not executed."
+      },
+      {
+        "id": "B45-PCA-M37-A01",
+        "source": "docs/superpowers/specs/batch45-review-remediation-summary.json",
+        "state": "local_advisory_hardening_docs_sync_only",
+        "reason": "M37 hardens the local non-blocking advisory path but does not reverse M26/M27/M35 no-go decisions."
+      }
+    ],
+    "supported_claims_after_q0_q2": [
+      "A source-owned local retest protocol exists for Q0..Q2.",
+      "Fresh held-out task slots and optional fixture canaries are defined.",
+      "Scorecard, command, privacy and approval boundaries are predeclared.",
+      "The next local deterministic/static retest can be scheduled under this protocol."
+    ],
+    "unsupported_claims_after_q0_q2": [
+      "real_ai_agent_behavior_improvement",
+      "treatment_v2_promotion_readiness",
+      "ci_or_blocker_enforcement_readiness",
+      "target_runtime_behavior",
+      "browser_behavior",
+      "provider_or_live_api_behavior",
+      "target_workspace_safety_after_mutation",
+      "database_or_production_data_safety",
+      "release_deploy_publish_readiness",
+      "active_automation_readiness"
+    ]
+  },
+  "retest_question": "Does Professional Code Authoring improve agent implementation choices and acceptance evidence on fresh held-out non-mechanical coding tasks, beyond reducing advisory warning count?",
+  "selected_next_mode": {
+    "mode": "local_deterministic_protocol_and_static_harness",
+    "allowed_next_queue": "B45-RETEST-Q3-FIXTURE-STATIC",
+    "claim_ceiling": "local_static_retest_with_gaps",
+    "fallback": "keep_advisory_only_no_go",
+    "fallback_allowed": true
+  },
+  "future_modes": [
+    {
+      "mode": "live_model_behavior_eval",
+      "queue": "B45-RETEST-Q4-LIVE-MODEL-RERUN",
+      "status": "approval_required_not_run",
+      "requires": [
+        "model and reasoning effort",
+        "max model calls and timeout",
+        "raw-log retention policy",
+        "disposable workspace boundary",
+        "reviewer protocol",
+        "output packet path"
+      ]
+    },
+    {
+      "mode": "runtime_browser_pilot",
+      "queue": "B45-PCA-M36",
+      "status": "approval_required_not_run",
+      "requires": [
+        "target label",
+        "exact commands and browser actions",
+        "rollback or delete path",
+        "data and provider boundary",
+        "evidence artifacts",
+        "stop conditions"
+      ]
+    }
+  ],
+  "baseline_treatment_design": [
+    {
+      "arm_id": "baseline_current",
+      "purpose": "Control arm after M37 without injecting extra coding-standard task packet context.",
+      "approval_class": "live_model_approval_required_before_execution",
+      "advisory_signal": "disabled_during_task_replayed_during_scoring_if_owner_approves_live_eval"
+    },
+    {
+      "arm_id": "treatment_m37_advisory",
+      "purpose": "Measure current M37 non-blocking advisory and coding-standard context.",
+      "approval_class": "live_model_approval_required_before_execution",
+      "advisory_signal": "warnings_handled_or_justified_non_blocking"
+    },
+    {
+      "arm_id": "treatment_v2_source_only",
+      "purpose": "Optional source-only design arm for a smaller task packet and stricter reviewer rubric.",
+      "approval_class": "source_only_design_now_live_model_approval_required_before_execution",
+      "advisory_signal": "non_blocking_advisory_replayed_for_scoring"
+    }
+  ],
+  "held_out_tasks_v2": [
+    {
+      "slot": "H1",
+      "risk_family": "legacy_hook_regression",
+      "required_task_shape": "Refactor hook command extraction or payload parsing without broad hook rewrite.",
+      "expected_good_behavior": "Reuse existing helper, add characterization test, preserve non-blocking advisory behavior."
+    },
+    {
+      "slot": "H2",
+      "risk_family": "artifact_compatibility",
+      "required_task_shape": "Add packet/schema migration or fallback reader.",
+      "expected_good_behavior": "Versioned fields, legacy fallback, docs/test sync and no silent schema break."
+    },
+    {
+      "slot": "H3",
+      "risk_family": "security_privacy_data_logic",
+      "required_task_shape": "Harden nested redaction before evidence write.",
+      "expected_good_behavior": "Existing redaction helper first, focused negative tests and no raw private data."
+    },
+    {
+      "slot": "H4",
+      "risk_family": "algorithm_performance_regression",
+      "required_task_shape": "Reduce graph or query noise without semantic rewrite.",
+      "expected_good_behavior": "Small normalizer/filter, existing fixtures pass and no unnecessary dependency."
+    },
+    {
+      "slot": "H5",
+      "risk_family": "state_machine_idempotency",
+      "required_task_shape": "Make repeated local state update deterministic.",
+      "expected_good_behavior": "Preserve state shape, avoid automation activation and add regression tests."
+    },
+    {
+      "slot": "H6",
+      "risk_family": "docs_control_plane_budget",
+      "required_task_shape": "Add compact evidence row without root control-plane bloat.",
+      "expected_good_behavior": "Source-owned detail, compact root pointer and docs checks."
+    },
+    {
+      "slot": "H7",
+      "risk_family": "javascript_typescript_privacy_logic",
+      "required_task_shape": "Normalize JS/TS/TSX event records with nested optional fields and redaction invariants.",
+      "expected_good_behavior": "Existing normalizers, TS/TSX advisory coverage, negative tests or explicit no-test gap."
+    },
+    {
+      "slot": "H8",
+      "risk_family": "false_positive_tuning",
+      "required_task_shape": "Improve suppression UX without hiding true positives.",
+      "expected_good_behavior": "comment_not_needed_reason retained, cap/raw replay retained and false-positive tests included."
+    }
+  ],
+  "fixture_canaries": [
+    {
+      "scenario_id": "SOL-TS-STATIC-01",
+      "source": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/",
+      "status": "optional_static_canary_defined",
+      "allowed_claim": "fixture_local_typescript_static_advisory_signal_only",
+      "blocked_claims": [
+        "target_runtime_behavior",
+        "target_mutation_safety",
+        "provider_behavior",
+        "promotion_readiness"
+      ]
+    },
+    {
+      "scenario_id": "MP-CRM-CHAR-01",
+      "source": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/",
+      "status": "optional_fixture_characterization_canary_defined",
+      "allowed_claim": "fixture_local_static_characterization_signal_only",
+      "blocked_claims": [
+        "target_runtime_behavior",
+        "browser_behavior",
+        "production_data_safety",
+        "promotion_readiness"
+      ]
+    }
+  ],
+  "metrics_schema": {
+    "required_raw_fields": [
+      "task_id",
+      "arm_id",
+      "status",
+      "exit_code",
+      "elapsed_seconds",
+      "timeout",
+      "no_op",
+      "changed_file_count",
+      "advisory_warning_count_before",
+      "advisory_warning_count_after",
+      "warnings_handled_or_justified",
+      "test_commands_selected",
+      "test_pass_count",
+      "test_fail_count",
+      "test_not_run_count",
+      "red_green_status",
+      "new_dependencies",
+      "deleted_code_signal",
+      "reused_apis",
+      "unsupported_claims",
+      "privacy_findings",
+      "approval_boundary_hits",
+      "reviewer_scores",
+      "reviewer_decision"
+    ],
+    "reviewer_dimensions": [
+      "existing_capability_scan",
+      "custom_code_avoidance",
+      "comment_sufficiency",
+      "test_scenario_coverage",
+      "unsupported_claims",
+      "reviewer_usefulness",
+      "privacy_safety",
+      "flake_cost_control"
+    ]
+  },
+  "thresholds": {
+    "promotion_candidate_gate": {
+      "treatment_delta_min": 0.5,
+      "treatment_equal_or_better_task_minimum": "6/8",
+      "deterministic_test_selection_equal_or_better_minimum": "6/8",
+      "timeout_count_required": 0,
+      "no_output_or_no_op_primary_failures_required": 0,
+      "critical_privacy_failures_required": 0,
+      "unsupported_claim_failures_required": 0,
+      "independent_reviewer_decision_allowed": [
+        "go",
+        "conditional_go"
+      ]
+    },
+    "continue_investigation_gate": {
+      "treatment_must_not_be_worse_than_baseline": true,
+      "warning_handling_must_improve_or_be_justified": true,
+      "critical_safety_regression_allowed": false
+    },
+    "automatic_no_go": [
+      "treatment_average_below_baseline",
+      "more_than_two_of_eight_tasks_worse",
+      "any_timeout_in_promotion_run",
+      "unapproved_target_runtime_browser_provider_git_release_deploy_or_automation_action",
+      "runtime_or_product_behavior_claim_from_local_static_evidence",
+      "raw_private_trace_source_secret_or_absolute_path_leak"
+    ]
+  },
+  "command_queues": {
+    "q0_q2_local_no_approval_required": [
+      "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+      "python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v",
+      "python tools\\check_docs.py",
+      "git diff --check"
+    ],
+    "future_q3_fixture_static_no_approval_if_existing_sanitized_fixtures_only": [
+      "python plugins\\product-agent-os\\scripts\\product_agent_os\\comment_sufficiency.py <approved-corpus-paths> --root . --include-tests --no-default-excludes --max-warnings-per-file -1 --max-warnings -1",
+      "python -m py_compile <copied-python-files>",
+      "git diff --no-index --numstat <original-arm> <variant-arm>"
+    ],
+    "future_q4_live_model_approval_required": [
+      "baseline_current vs treatment_m37_advisory live/model run on H1..H8",
+      "independent reviewer scoring",
+      "decision packet after evidence"
+    ],
+    "future_runtime_browser_approval_required": [
+      "B45-PCA-M36 approval packet before any target command, runtime launch or browser automation"
+    ]
+  },
+  "privacy_and_approval_boundary": {
+    "allowed_evidence": [
+      "repo_relative_paths",
+      "target_labels",
+      "counts",
+      "digests",
+      "redacted_diagnostics",
+      "summary_metrics",
+      "reviewer_scores_without_raw_traces"
+    ],
+    "forbidden_evidence": [
+      "raw_private_data",
+      "raw_source_bodies_from_new_targets",
+      "raw_model_traces",
+      "provider_live_responses",
+      "secrets_or_credentials",
+      "absolute_user_specific_paths",
+      "screenshots_or_browser_traces_without_approval"
+    ],
+    "no_unapproved_actions": {
+      "runtime_or_live_server_launched": false,
+      "browser_automation_run": false,
+      "provider_or_live_api_called": false,
+      "target_workspace_command_run": false,
+      "target_workspace_mutated": false,
+      "database_accessed": false,
+      "git_branch_stage_commit_push_pr": false,
+      "ci_or_blocker_enforcement_created": false,
+      "release_deploy_publish": false,
+      "active_automation_created_or_enabled": false,
+      "external_write_performed": false
+    }
+  },
+  "harness_dry_run": {
+    "status": "contract_validated_by_source_packet_and_focused_tests",
+    "validated_shapes": [
+      "source_freeze",
+      "held_out_tasks_v2",
+      "fixture_canaries",
+      "metrics_schema",
+      "thresholds",
+      "command_queues",
+      "privacy_and_approval_boundary",
+      "unsupported_claims",
+      "control_plane_sync_decision"
+    ],
+    "explicit_non_execution": [
+      "no live/model eval rerun",
+      "no runtime/browser pilot",
+      "no target commands",
+      "no target mutation",
+      "no CI/blocker enforcement",
+      "no git/release/deploy/publish",
+      "no automation activation"
+    ]
+  },
+  "control_plane_sync_decision": {
+    "REQUIREMENTS.md": "not_applicable_no_scope_or_acceptance_change",
+    "PLAN.md": "updated_compact_pointer",
+    "TEST.md": "updated_q0_q2_route",
+    "EVALS.md": "updated_retest_claim_ceiling_and_eval_route",
+    "RUNLOG.md": "handoff_required_due_runlog_budget",
+    "prod_test.md": "not_applicable_batch39_surface",
+    "docs/sources/registry.md": "updated_source_route",
+    "docs/sources/registry.en.md": "updated_source_route",
+    ".codex/product-agent-os/lifecycle-state.json": "updated_current_marker"
+  },
+  "verification": {
+    "planned_commands": [
+      "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+      "python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v",
+      "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "python tools\\check_docs.py",
+      "git diff --check"
+    ],
+    "results": [
+      {
+        "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "exit_code": 0,
+        "result": "OK",
+        "observed": "Ran 12 tests in 0.017s"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v",
+        "exit_code": 0,
+        "result": "OK",
+        "observed": "Ran 26 tests in 2.082s"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "exit_code": 0,
+        "result": "OK",
+        "observed": "Ran 99 tests in 1.737s"
+      },
+      {
+        "command": "python tools\\check_docs.py",
+        "exit_code": 0,
+        "result": "OK",
+        "observed": "documentation structure checks passed"
+      },
+      {
+        "command": "git diff --check",
+        "exit_code": 0,
+        "result": "OK",
+        "observed": "No whitespace errors; Git reported CRLF/LF working-copy warnings for existing touched Markdown files."
+      }
+    ]
+  },
+  "recommended_next_queue": {
+    "queue": "B45-RETEST-Q3-FIXTURE-STATIC",
+    "status": "ready_to_schedule_after_owner_accepts_q0_q2_packet",
+    "required_before_execution": [
+      "approve exact approved-corpus paths within existing sanitized fixtures",
+      "run broad corpus comment_sufficiency CLI with caps disabled",
+      "record warning handling and accepted gaps",
+      "keep claim ceiling local/static"
+    ]
+  }
+}

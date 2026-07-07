@@ -1,0 +1,104 @@
+{
+  "schema_version": "batch44_self_learning_loop_state_trigger_ux_summary_v1",
+  "evidence_id": "B44-SLL-M03-M04-M06-A01",
+  "recorded_at": "2026-06-24",
+  "source_status": "local_implementation_evidence",
+  "status": "implemented",
+  "slice": "B44-S1-State-And-Trigger-UX",
+  "implemented_markers": [
+    "B44-SLL-M03",
+    "B44-SLL-M04",
+    "B44-SLL-M06"
+  ],
+  "summary": "Self-Learning Loop now has a local state schema, read-only due-check CLI, structured trigger/cadence policy and first-run disclosure UX. The default remains manual_only; weekly is a due-check recommendation, not an active schedule.",
+  "changed_surfaces": [
+    "plugins/product-agent-os/scripts/product_agent_os/self_learning_state.py",
+    "plugins/product-agent-os/scripts/check_self_learning_due.py",
+    "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+    "tests/product_agent_os/test_self_learning_state.py",
+    "tests/product_agent_os/test_batch41_first_run_automation.py",
+    "docs/product-agent-os/cli-reference.md",
+    "docs/product-agent-os/cli-reference.en.md",
+    "docs/product-agent-os/artifact-contracts.md",
+    "docs/product-agent-os/artifact-contracts.en.md"
+  ],
+  "state_contract": {
+    "path": ".codex/product-agent-os/self-learning-state.json",
+    "schema_version": "self_learning_state_v1",
+    "fields": [
+      "schema_version",
+      "plugin_id",
+      "plugin_version",
+      "installed_at",
+      "last_analysis_at",
+      "last_success_at",
+      "last_failure_at",
+      "next_due_at",
+      "cadence_level",
+      "last_report_id",
+      "last_metrics_digest",
+      "approval_state",
+      "disable_reason"
+    ],
+    "default_cadence_level": "manual_only",
+    "default_approval_state": "manual_only"
+  },
+  "due_check_contract": {
+    "command": "python plugins/product-agent-os/scripts/check_self_learning_due.py <workspace> --dry-run",
+    "statuses": [
+      "due",
+      "not_due",
+      "disabled",
+      "state_invalid"
+    ],
+    "analysis_executed": false,
+    "state_written": false,
+    "raw_workspace_path_included": false
+  },
+  "trigger_policy": {
+    "schema_version": "self_learning_trigger_policy_v1",
+    "schedule_status": "not_created",
+    "automation_status": "not_created",
+    "auto_apply_status": "not_enabled",
+    "trigger_classes": [
+      "manual_now",
+      "weekly_due_check",
+      "on_change",
+      "post_failure_review",
+      "post_owner_feedback_review",
+      "release_readiness_review"
+    ]
+  },
+  "first_run_ux_contract": {
+    "schema_version": "self_learning_loop_disclosure_v1",
+    "default_approval_state": "manual_only",
+    "schedule_status": "not_created",
+    "auto_apply_status": "not_enabled",
+    "manual_commands": [
+      "check_self_learning_due.py",
+      "run_self_learning_loop.py"
+    ],
+    "manual_runner": {
+      "status": "available_manual_only_after_B44_S2",
+      "dry_run_command": "run_self_learning_loop.py",
+      "stage_command": "run_self_learning_loop.py --stage <dir>"
+    }
+  },
+  "unsupported_claims": [
+    "No active scheduler, Codex App automation, hook trigger or recurring job was created.",
+    "No Self-Learning Loop analysis runner was executed by the due-check CLI.",
+    "No provider/model call, hidden session ingestion, raw private transcript storage, target mutation, git action, release, deployment or publication was performed.",
+    "The run_self_learning_loop.py command is implemented by B44-S2 as a manual-only staged runner; B44-S1 itself only implemented due-check and disclosure UX."
+  ],
+  "verification": {
+    "red_test_observed": "self_learning_state module, check_self_learning_due.py and structured first-run disclosure were missing before implementation",
+    "focused_tests": [
+      "python -m unittest tests.product_agent_os.test_self_learning_state tests.product_agent_os.test_batch41_first_run_automation -v",
+        "python -m unittest tests.product_agent_os.test_first_run_analysis -v",
+        "invalid --now returns bounded JSON with now:invalid_datetime and no traceback",
+        "on_change cadence returns not_due without a Product-Agent OS change trigger",
+        "first-run help exposes run_now only after B44-S2 and keeps it manual-only/staged-only"
+    ],
+    "latest_status": "passed_after_review_fixes"
+  }
+}

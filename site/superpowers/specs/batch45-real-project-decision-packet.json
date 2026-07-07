@@ -1,0 +1,211 @@
+{
+  "schema_version": "batch45_real_project_decision_packet_v1",
+  "task_id": "B45-PCA-M35",
+  "evidence_id": "B45-PCA-M35-A01",
+  "generated_at": "2026-06-30",
+  "source_status": "source_owned_decision_packet_only",
+  "closure_level": "docs_contract_ready_decision_no_go",
+  "decision_target": "Record the post-real-project Professional Code Authoring decision after B45-PCA-M28..M34.",
+  "owner_input": {
+    "current_thread_request": "owner requested execution of B45-PCA-M35",
+    "approval_scope": "local docs/control-plane/spec/test edits and checks only",
+    "not_approved_by_current_request": [
+      "target workspace mutation",
+      "target command execution",
+      "runtime launch",
+      "browser automation",
+      "provider/live API call",
+      "database access",
+      "git stage/commit/push/PR",
+      "release/deploy/publish",
+      "CI or blocker enforcement",
+      "automation activation"
+    ]
+  },
+  "decision": {
+    "state": "keep_advisory_only_no_go_for_treatment_v2_promotion",
+    "selected_route": "do_not_promote_after_m34_keep_fixture_local_static_only",
+    "keep_advisory_only": true,
+    "design_smaller_treatment_v2": "allowed_as_source_only_future_design_not_implementation",
+    "run_more_fixture_pilots": "deferred_until_owner_selects_new_fixture_or_treatment_question",
+    "request_disposable_runtime_browser_pilot": "approval_required_not_requested_or_executed",
+    "reject_further_promotion_permanently": false,
+    "reason": "M27 already rejected CI/blocker promotion after the live behavior eval no-go, and M34 keeps real-project promotion blocked because runtime, test, TypeScript-advisory, reviewer-judgment and real AI-agent behavior-improvement evidence remain insufficient.",
+    "current_recommendation": "Keep the M25 advisory local, non-blocking and reversible; use M35 as a no-go promotion decision and only consider a source-only smaller treatment-v2 design or an approval-gated disposable runtime/browser pilot in later work."
+  },
+  "evidence_used": [
+    {
+      "task_id": "B45-PCA-M27",
+      "source": "docs/superpowers/specs/batch45-comment-policy-promotion-decision.json",
+      "summary": "S6 decision kept the M25 advisory local/non-blocking and rejected stronger advisory, CI workflow creation and blocker enforcement after M26 live no-go behavior evidence."
+    },
+    {
+      "task_id": "B45-PCA-M28-A01",
+      "source": "research/batch45-professional-code-authoring-architecture-v2.md",
+      "summary": "Architecture v2 atlas defined the real-project scenario harness and promotion-governor boundaries without target execution."
+    },
+    {
+      "task_id": "B45-PCA-M29-A01",
+      "source": "research/b45-real-project-scenarios/scenario-candidates.json",
+      "summary": "Read-only inventory selected SOL and myPartners scenarios with approval boundaries and no source-body copy."
+    },
+    {
+      "task_id": "B45-PCA-M30-A01",
+      "source": "research/b45-real-project-scenarios/source-policy.md",
+      "summary": "Fixture/source policy established allowed file classes, forbidden data, redaction, deletion and evidence-retention rules."
+    },
+    {
+      "task_id": "B45-PCA-M31-A01_A02",
+      "source": "research/b45-real-project-scenarios/fixtures/",
+      "summary": "Two analysis-only sanitized fixture packs were created for SOL and myPartners while target workspaces remained read-only."
+    },
+    {
+      "task_id": "B45-PCA-M32-A01_A02",
+      "source": "docs/superpowers/specs/batch45-real-project-baseline-results.json",
+      "summary": "Baseline analysis was fixture-local/static with explicit SOL test/TypeScript gaps and myPartners syntax/advisory-only evidence."
+    },
+    {
+      "task_id": "B45-PCA-M33-A01",
+      "source": "docs/superpowers/specs/batch45-real-project-refactor-comparison.json",
+      "summary": "Refactor comparison kept SOL as no-code churn prevention and compared myPartners checklist/advisory arms with no new dependencies and static/advisory proof only."
+    },
+    {
+      "task_id": "B45-PCA-M34-A01",
+      "source": "docs/superpowers/specs/batch45-real-project-scorecard.json",
+      "summary": "Scorecard ranked MP advisory-guided as best low-churn static arm, MP checklist-guided as blocked structure candidate and SOL no-code arms as churn prevention; critical gaps override averages."
+    }
+  ],
+  "decision_matrix": {
+    "keep_advisory_only": {
+      "decision": "selected",
+      "why": "Supported by M27 no-go and M34 promotion-blocking scorecard."
+    },
+    "design_smaller_treatment_v2": {
+      "decision": "source_only_future_option",
+      "why": "May be useful only if scoped to one narrow treatment question and kept out of target/runtime execution until approved."
+    },
+    "run_more_fixture_pilots": {
+      "decision": "deferred",
+      "why": "More fixture pilots need a specific new scenario, treatment question and reviewer rubric."
+    },
+    "request_disposable_runtime_browser_pilot": {
+      "decision": "approval_required",
+      "why": "Runtime/browser proof is the main missing evidence, but no target, command, rollback or browser/provider boundary was approved in M35."
+    },
+    "promote_ci_or_blocker": {
+      "decision": "rejected",
+      "why": "M27 rejected blocker/CI promotion and M34 does not reverse that evidence."
+    },
+    "claim_real_ai_agent_behavior_improvement": {
+      "decision": "rejected",
+      "why": "M26 live eval was no-go and M34 was static fixture-local only."
+    }
+  },
+  "accepted_gaps": [
+    {
+      "gap": "no_runtime_browser_provider_safe_evidence",
+      "accepted_for": "no-go decision only",
+      "not_accepted_for": "promotion, target apply, product readiness or behavior improvement claims",
+      "residual_risk": "The best static arm may not preserve target behavior."
+    },
+    {
+      "gap": "no_independent_owner_reviewer_weight_agreement_after_m34",
+      "accepted_for": "blocking promotion and routing M35 to conservative no-go",
+      "not_accepted_for": "final product acceptance of treatment v2 weights",
+      "residual_risk": "Weights may need owner/reviewer calibration before any future treatment design."
+    },
+    {
+      "gap": "typescript_advisory_coverage_missing_for_SOL",
+      "accepted_for": "recording SOL no-code churn prevention",
+      "not_accepted_for": "SOL TypeScript implementation recommendation",
+      "residual_risk": "SOL comment/maintainability findings remain under-measured."
+    }
+  ],
+  "current_no_go_conditions": [
+    "Do not promote CI workflow creation or blocker enforcement.",
+    "Do not claim real AI-agent behavior improvement.",
+    "Do not apply MP checklist/advisory arms to target myPartners.",
+    "Do not implement SOL TypeScript treatment from the current fixture evidence.",
+    "Do not claim runtime/browser/provider/database/release/deploy/publication readiness."
+  ],
+  "future_go_conditions": [
+    "Owner chooses a specific next route: treatment v2 design, more fixture pilots or disposable runtime/browser pilot.",
+    "Any treatment v2 starts as source-only design with explicit accepted gaps and no target apply.",
+    "Any runtime/browser pilot names the target, commands, rollback/delete path, data boundary, browser/provider boundary and evidence artifacts before execution.",
+    "Any stronger advisory, CI or blocker route reruns behavior eval and false-positive/flake/cost checks for the exact promoted surface.",
+    "A future promotion packet shows treatment evidence above baseline without critical regressions or unsupported runtime claims."
+  ],
+  "rollback_or_delete_path": [
+    "To roll back M35 only: delete docs/superpowers/specs/batch45-real-project-decision-packet.json and remove B45-PCA-M35 rows from Track 11, PLAN, EVALS, RUNLOG, registry RU/EN and focused tests.",
+    "To retire S7 fixture evidence later: use the M30 source-policy deletion path and remove only the owned fixture/refactor/result directories after a separate cleanup decision.",
+    "Do not delete M28-M34 source artifacts as part of M35 rollback unless the owner explicitly requests S7 evidence retirement."
+  ],
+  "next_approval_boundary": {
+    "next_task": "B45-PCA-M36",
+    "status": "optional_approval_required_not_executed",
+    "requires": [
+      "target label and disposable boundary",
+      "exact commands or browser actions",
+      "rollback/delete path",
+      "data/privacy boundary",
+      "provider/live API boundary",
+      "expected evidence artifacts",
+      "stop conditions"
+    ]
+  },
+  "approval_boundary": {
+    "target_workspace_mutation": false,
+    "target_command_execution": false,
+    "runtime_launch": false,
+    "browser_automation": false,
+    "provider_or_live_api_call": false,
+    "database_access": false,
+    "git_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "ci_or_blocker_enforcement": false,
+    "automation_activation": false
+  },
+  "verification": [
+    {
+      "check": "decision packet schema/text review",
+      "status": "passed_current_run",
+      "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v"
+    },
+    {
+      "check": "docs/control-plane docs tests",
+      "status": "passed_current_run",
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v"
+    },
+    {
+      "check": "source docs policy check",
+      "status": "passed_current_run",
+      "command": "python tools\\check_docs.py"
+    },
+    {
+      "check": "diff hygiene",
+      "status": "passed_current_run",
+      "command": "git diff --check"
+    }
+  ],
+  "control_plane_sync_decision": {
+    "requirements_md": "not_applicable_no_scope_change",
+    "plan_md": "update_required_s7_status_and_next_action",
+    "test_md": "not_applicable_no_new_verification_route",
+    "evals_md": "update_required_new_s7_decision_ceiling",
+    "runlog_md": "update_required_compact_handoff_only_due_50kb_budget",
+    "source_registry": "update_required_new_M35_evidence_entry"
+  },
+  "unsupported_claims": [
+    "target_behavior",
+    "runtime_behavior",
+    "browser_behavior",
+    "provider_or_live_api_behavior",
+    "database_safety",
+    "release_readiness",
+    "static_decision_packet_proves_treatment_v2_is_ready",
+    "M35_approves_target_apply",
+    "M35_approves_disposable_runtime_browser_pilot",
+    "M35_approves_CI_or_blocker_promotion",
+    "M35_proves_real_ai_agent_behavior_improvement"
+  ]
+}

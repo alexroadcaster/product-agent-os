@@ -1,0 +1,164 @@
+{
+  "schema_version": "batch45_postq4_t05b_rerun_approval_packet_v1",
+  "task_id": "B45-POSTQ4-T05B-RERUN-PACKET-REVISION",
+  "evidence_id": "B45-POSTQ4-T05B-A01",
+  "status": "approval_packet_only_not_run",
+  "created_at": "2026-07-04T20:21:41+03:00",
+  "source_status": "project-authored revised approval packet only; no live/model/provider call was made for T05B",
+  "basis": {
+    "t05_result": "docs/superpowers/specs/batch45-postq4-t05-live-model-rerun-results.json",
+    "t05_result_status": "stopped_on_timeout_inconclusive_no_go",
+    "t04_original_packet": "docs/superpowers/specs/batch45-postq4-live-model-rerun-approval-packet.json",
+    "post_q4_queue": "docs/superpowers/specs/batch45-post-q4-next-tasks.json",
+    "reason_for_revision": "T05 consumed the exact approval and stopped on a baseline timeout before treatment or reviewer comparison, so any rerun needs a new explicit packet and approval."
+  },
+  "decision_target": {
+    "question": "Whether the owner wants a new approved live/model rerun after T05 timeout.",
+    "default_without_new_approval": "do_not_run; proceed only to no-go/promotion decision using existing evidence ceiling",
+    "claim_ceiling_until_run": "approval_packet_only; does not reverse M26/M27/M35/M37, does not prove behavior improvement and does not justify CI/blocker promotion"
+  },
+  "required_exact_approval_before_any_run": {
+    "provider_surface": "Codex CLI/OpenAI via codex exec or owner-specified replacement",
+    "model": "owner must restate exact model, for example gpt-5.3-codex-spark",
+    "run_count": {
+      "recommended_primary_runs": "8 baseline + 8 treatment",
+      "reviewer_runs": 1,
+      "setup_or_smoke_model_calls": 0,
+      "note": "Any smaller diagnostic run must be approved as a separate exact scope."
+    },
+    "command_surface": "codex exec --ephemeral --disable hooks --ignore-rules --sandbox workspace-write --model <MODEL> -C <TEMP disposable copy>",
+    "disposable_root": "%TEMP%\\codex-b45-postq4-t05b-*",
+    "timeout_per_task_seconds": 600,
+    "overall_wall_clock_policy": "owner must choose: strict stop on first timeout, paired continue after timeout, or single-task diagnostic",
+    "cost_cap": "<USD cap> or accepted_gap_cost_unavailable_call_count_cap_only",
+    "retention": "raw outputs only in temp; repo stores sanitized rollup only",
+    "reviewer_route": "independent Codex reviewer/subagent only after primary runs satisfy the selected timeout policy"
+  },
+  "recommended_run_design": {
+    "task_order": "paired_order_recommended",
+    "paired_order": "For each held-out task, run baseline then treatment before moving to the next task, so an early timeout does not erase the entire treatment arm.",
+    "legacy_order": "baseline_first_legacy is allowed only if owner accepts the same early-stop comparability risk seen in T05.",
+    "diagnostic_order": "single_timeout_reproduction can target B45-HELDOUT-02 first, but it cannot support promotion."
+  },
+  "timeout_handling_options": [
+    {
+      "id": "strict_stop_on_first_timeout",
+      "recommended_for": "cost safety and clean no-go behavior",
+      "effect": "Any timeout stops the rerun and records inconclusive/no-go."
+    },
+    {
+      "id": "paired_continue_after_timeout",
+      "recommended_for": "variance reduction if owner accepts higher cost",
+      "effect": "Timed-out task pair is marked invalid, remaining pairs continue until cap; promotion requires enough valid pairs and zero treatment regressions on completed pairs."
+    },
+    {
+      "id": "single_task_diagnostic",
+      "recommended_for": "debugging timeout root cause only",
+      "effect": "Does not count as behavior proof or promotion evidence."
+    }
+  ],
+  "watchdog_contract": {
+    "outer_non_model_watchdog_required": true,
+    "process_tree_kill_on_timeout": true,
+    "timeout_marker_required": true,
+    "lingering_process_check_required": true,
+    "wrapper_preflight_without_model_calls_allowed_only_if_approved": true,
+    "forbidden": [
+      "silent timeout retries",
+      "raw output retention in repo",
+      "target workspace mutation",
+      "provider/model call outside exact owner-approved count"
+    ]
+  },
+  "retention_policy": {
+    "raw_outputs_in_repo_allowed": false,
+    "raw_outputs_temp_only": true,
+    "repo_allowed": [
+      "sanitized scores",
+      "sanitized timeout markers",
+      "hashes of raw outputs",
+      "changed-file metadata",
+      "aggregate token/cost/call counts if available"
+    ],
+    "repo_forbidden": [
+      "raw prompts",
+      "raw model traces",
+      "provider payload bodies",
+      "private source bodies",
+      "secrets or credentials"
+    ]
+  },
+  "result_schema_requirements": [
+    "task_id, arm, started_at, ended_at, status and timeout flag per run",
+    "sanitized changed-file list and diff numstat per completed run",
+    "advisory warning_count reported separately from behavior score",
+    "baseline-vs-treatment comparable score table only for valid completed pairs",
+    "reviewer decision separated from primary task output",
+    "cost/call cap ledger and no-unapproved-actions proof",
+    "unsupported claims list and M26/M35 comparison"
+  ],
+  "promotion_threshold": {
+    "minimum_treatment_improvement": ">=20% average behavior-quality improvement over baseline on valid comparable pairs",
+    "pairwise_quality": "treatment equal_or_better on at least 6 of 8 valid pairs unless owner approves a smaller diagnostic-only scope",
+    "timeout_requirement": "timeout_count=0 for promotion under strict policy; paired_continue must explicitly mark invalid pairs and cannot promote on weak sample size",
+    "reviewer_decision_must_not_be": "no_go",
+    "static_warning_delta_can_promote": false
+  },
+  "abort_conditions": [
+    "No new exact owner approval for T05B.",
+    "Model/provider/surface/cost cap is ambiguous.",
+    "Disposable temp root write probe or cleanup safety is unsafe.",
+    "Watchdog cannot kill the process tree or verify no lingering scoped process.",
+    "Any task would require target workspace mutation, runtime/browser launch, database access, provider call outside approval or raw private data retention.",
+    "Raw outputs would be persisted in repo."
+  ],
+  "no_unapproved_actions": {
+    "live_model_or_provider_api_called": false,
+    "setup_or_smoke_model_call": false,
+    "runtime_or_live_server_launched": false,
+    "browser_automation_run": false,
+    "target_workspace_command_run": false,
+    "target_workspace_mutated": false,
+    "database_accessed": false,
+    "ci_or_blocker_enforcement_created": false,
+    "git_branch_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation_created_or_enabled": false,
+    "external_write_performed": false
+  },
+  "verification": {
+    "status": "repo_checks_passed_with_crlf_warnings",
+    "current_run_evidence": [
+      "T05B packet created as source-owned approval-only artifact.",
+      "No codex exec, provider/model call, runtime/browser launch or target command was performed for T05B.",
+      "Focused Batch 45 artifact tests assert the packet-only boundary, new exact approval requirement, watchdog contract and retention policy."
+    ],
+    "repo_checks": [
+      {
+        "command": "python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v",
+        "status": "passed",
+        "evidence": "Ran 29 tests; OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "status": "passed",
+        "evidence": "Ran 16 tests; OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "status": "passed",
+        "evidence": "Ran 99 tests; OK"
+      },
+      {
+        "command": "python tools\\check_docs.py",
+        "status": "passed",
+        "evidence": "OK: documentation structure checks passed"
+      },
+      {
+        "command": "git diff --check",
+        "status": "passed_with_crlf_warnings",
+        "evidence": "No whitespace errors; Git reported CRLF/LF normalization warnings for edited files."
+      }
+    ]
+  }
+}

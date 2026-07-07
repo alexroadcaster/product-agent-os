@@ -83,7 +83,7 @@ Guided question protocol использует typed `question_queue` packets so 
 | `graph_intelligence_contract` | Используются graph packets, ontology, rejected links, freshness или query packets. | Orientation summary, stale/rejected-link handling, source-read-before-edit reminder. | Graph packet не заменяет source read и не разрешает mutation. |
 | `privacy_supply_chain_retention` | Обсуждаются cache/session evidence, SBOM, vulnerability audit, remediation или raw reports. | Redaction and retention boundary, approval gates, unsupported claims. | Broad scans, remediation и raw report retention требуют отдельного approval. |
 | `local_html_interaction_boundary` | Generated HTML содержит tabs, search, filters или diagrams. | Local-only interaction rules, no-network policy, fallback и browser-proof packet fields. | Static check не равен browser proof. |
-| `residual_follow_up_site_freshness` | Нужно закрыть G1.1 residuals или понять final `DOC-M25`. | Residual routing table, private-target redaction policy, site freshness gate. | Root `site`, search и sitemap теперь свежие после `documentation_refresh_DOC-M25-A01`; browser proof отдельно. |
+| `residual_follow_up_site_freshness` | Нужно закрыть G1.1 residuals или понять final `DOC-M25`. | Residual routing table, private-target redaction policy, site freshness gate. | Root `site`, search и sitemap свежие после `documentation_refresh_DOC-M25-A01`; `documentation_refresh_DOC-M25-A02` обновляет их после T15 source sync; browser proof отдельно. |
 
 ## Scenario Matrix
 

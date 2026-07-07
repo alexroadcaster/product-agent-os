@@ -2,11 +2,32 @@
   "schema_version": "documentation_refresh_doc_m25_site_freshness_v1",
   "evidence_id": "documentation_refresh_DOC-M25-A01",
   "status": "implemented_root_site_search_sitemap_freshness",
-  "checked_at": "2026-06-22",
+  "checked_at": "2026-07-07",
   "track": "Track 11",
   "group": "G5",
   "title": "Product-Agent OS Track 11 DOC-M25 root site freshness packet",
-  "summary": "DOC-M25 performs the owner-approved final root site rebuild after G2-G5 source updates. The former DOC_M25_PENDING_SITE_PAGES set is promoted into root site/search/sitemap parity while browser proof, broad scans, dependency remediation, raw report retention, publication and release actions remain out of scope.",
+  "summary": "DOC-M25 performs the owner-approved final root site rebuild after G2-G5 source updates. The former DOC_M25_PENDING_SITE_PAGES set is promoted into root site/search/sitemap parity. A 2026-07-07 refresh updates the generated site/search/sitemap after Batch 45 T15 source docs and control-plane sync while browser proof, broad scans, dependency remediation, raw report retention, publication and release actions remain out of scope.",
+  "latest_refresh": {
+    "evidence_id": "documentation_refresh_DOC-M25-A02",
+    "checked_at": "2026-07-07T18:42:41+03:00",
+    "reason": "Refresh root site/search/sitemap after Batch 45 T15 model-change source docs and control-plane updates.",
+    "included_source_updates": [
+      "docs/superpowers/specs/batch45-postq4-t15-model-change-decision-packet.json",
+      "docs/superpowers/specs/batch45-post-q4-next-tasks.json",
+      "docs/sources/registry.md",
+      "docs/sources/registry.en.md",
+      "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md",
+      "PLAN.md",
+      "TEST.md",
+      "EVALS.md"
+    ],
+    "generated_outputs": [
+      "site/",
+      "site/search/search_index.json",
+      "site/sitemap.xml"
+    ],
+    "claim_ceiling": "Generated root site/search/sitemap freshness only; no browser/runtime/publication/release/provider/target/git proof."
+  },
   "agent_team": {
     "mode": "main_integrator_with_read_only_subagents",
     "main_owner": "Codex main integrator",
@@ -98,6 +119,7 @@
   },
   "supported_claims_after_verification": [
     "The root site build is current for the G2-G5 source pages listed in this packet.",
+    "The 2026-07-07 root site/search/sitemap refresh includes Batch 45 T15 source documentation markers after the local MkDocs build and i18n link repair.",
     "The former DOC_M25_PENDING_SITE_PAGES set has RU/EN rendered HTML outputs.",
     "The root search index contains RU/EN locations for the former pending pages.",
     "The root sitemap contains RU/EN locations for the former pending pages."

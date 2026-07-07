@@ -1290,6 +1290,12 @@
 
 
 
+
+
+
+
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -1324,6 +1330,27 @@
             Product-Agent OS plugin
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/control-plane-current-state.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Текущий control-plane state
+  </span>
+
+
+      </a>
+    </li>
+
 
 
 
@@ -1465,6 +1492,27 @@
 
   <span class="md-ellipsis">
     Agent-Skill Modernization Loop
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/self-learning-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Self-Learning Loop
   </span>
 
 
@@ -1759,6 +1807,27 @@
 
   <span class="md-ellipsis">
     Engineering standards layer
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/coding-standards.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Professional Code Authoring
   </span>
 
 
@@ -3425,7 +3494,7 @@
 <ul>
 <li><code>SessionStart</code> показывает наличие control-plane и lifecycle файлов;</li>
 <li><code>PreToolUse</code> пропускает read-only discovery, но блокирует mutating/non-read-only команды без <code>.codex/product-agent-os/lifecycle-state.json</code>;</li>
-<li>marker должен появиться только после видимого пользователю стартового брифа и содержать <code>task_start_brief_shown</code>, <code>task_id</code>, <code>scope</code>, <code>updated_at</code>, <code>approval_boundary</code>;</li>
+<li>marker должен появиться только после видимого пользователю полного стартового брифа в формате списка полей и содержать <code>task_start_brief_shown</code>, <code>task_id</code>, <code>scope</code>, <code>updated_at</code>, <code>approval_boundary</code>, <code>brief_schema_version: task_start_brief_v1</code>, <code>brief_format: field_list</code>, <code>brief_digest</code> и <code>brief_fields_present</code> со всеми обязательными полями стартового брифа;</li>
 <li><code>PostToolUse</code> и <code>Stop</code> напоминают про evidence, <code>RUNLOG.md</code>, control-plane sync и user-visible <code>Completion Brief</code>.</li>
 </ul>
 <p>Marker не является transcript store: в него нельзя помещать raw chat, secrets, private source bodies, private customer data или credentials. Activation hooks остаётся отдельным approval boundary.</p>

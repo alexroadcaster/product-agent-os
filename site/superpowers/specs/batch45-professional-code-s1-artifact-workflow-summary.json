@@ -1,0 +1,141 @@
+{
+  "schema_version": "batch45_professional_code_s1_artifact_workflow_summary_v1",
+  "evidence_id": "B45-S1-M02-M04-A01",
+  "created_at": "2026-06-29",
+  "source_contract": "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md#batch-45-task-matrix",
+  "closure_level": "docs_contract_ready",
+  "rows_implemented": [
+    "B45-PCA-M02",
+    "B45-PCA-M03",
+    "B45-PCA-M04"
+  ],
+  "skills_used": [
+    {
+      "skill": "product-agent-os:implementation-planner",
+      "use": "bounded the S1 slice to template/workflow/handoff contracts and verification gates"
+    },
+    {
+      "skill": "product-agent-os:agent-team-designer",
+      "use": "kept agent/subagent behavior in fresh-context packet fields instead of auto-dispatch"
+    },
+    {
+      "skill": "product-agent-os:docs-maintainer",
+      "use": "kept Track 11 plan and source registry aligned with the implementation evidence"
+    },
+    {
+      "skill": "python-code-style",
+      "use": "kept Python registry/test changes small, explicit and pattern-consistent"
+    }
+  ],
+  "artifacts_added": [
+    {
+      "row": "B45-PCA-M02",
+      "source_path": "plugins/product-agent-os/assets/templates/artifact-templates/coding-standard-checklist.md",
+      "registered_key": "artifact-coding-standard-checklist",
+      "staged_target": ".codex/artifact-templates/coding-standard-checklist.md",
+      "acceptance": "defines enterprise_leverage_check, existing_capability_scan, one_line_candidate, negative_dependency_rule, deep_module_check, legacy_seam_check, comment_policy, cleverness_budget, tests/evals and unsupported claims"
+    },
+    {
+      "row": "B45-PCA-M03",
+      "source_path": "plugins/product-agent-os/assets/templates/workflows/coding-standards.md",
+      "registered_key": "workflow-coding-standards",
+      "staged_target": ".codex/workflows/coding-standards.md",
+      "acceptance": "routes non-mechanical code tasks to the checklist and records that template staging is not runtime activation proof"
+    }
+  ],
+  "artifacts_updated": [
+    {
+      "row": "B45-PCA-M04",
+      "source_path": "plugins/product-agent-os/assets/templates/artifact-templates/agent-task-packet.md",
+      "change": "adds Professional Code Authoring Contract fields for fresh-context handoffs without raw research bodies or raw conversation history"
+    },
+    {
+      "source_path": "plugins/product-agent-os/scripts/product_agent_os/templates.py",
+      "change": "registers the workflow and artifact template under canonical .codex staging targets"
+    },
+    {
+      "source_path": "tests/product_agent_os/test_infrastructure_templates.py",
+      "change": "adds the two canonical staged targets to required template coverage"
+    },
+    {
+      "source_path": "tests/product_agent_os/test_batch45_coding_standards.py",
+      "change": "adds focused assertions for registration, required fields, stale path rejection and activation-proof ceiling"
+    }
+  ],
+  "agent_activation_boundary": {
+    "implemented": "fresh-context handoff fields and staged templates",
+    "not_implemented": [
+      "agent role profile retrofit",
+      "subagent context/result packet retrofit",
+      "behavioral eval enforcement",
+      "runtime route or HTML visibility",
+      "hook reminder or hook enforcement",
+      "automation or learning-loop candidate application"
+    ],
+    "subagent_auto_dispatch": "not_authorized",
+    "fallback_policy": "sequential/manual use of workflow and checklist only until later rows add skills/evals/routes"
+  },
+  "stale_path_policy": {
+    "stale_path": "assets/templates/artifacts/coding-standard-checklist.md",
+    "canonical_path": "assets/templates/artifact-templates/coding-standard-checklist.md",
+    "status": "canonical_path_used"
+  },
+  "unsupported_claims": [
+    "S1 does not prove AI agents automatically follow the coding standard.",
+    "S1 does not activate hooks, automations, MCP, Agents SDK runners, provider calls, browser proof or runtime routes.",
+    "S1 does not refresh installed plugin cache or mutate target projects.",
+    "S1 does not add public docs navigation or claim release readiness."
+  ],
+  "verification_plan": [
+    "python -m unittest tests.product_agent_os.test_batch45_coding_standards tests.product_agent_os.test_infrastructure_templates -v",
+    "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+    "python tools\\check_docs.py",
+    "JSON parse for docs/superpowers/specs/batch45-professional-code-s1-artifact-workflow-summary.json",
+    "git diff --check"
+  ],
+  "verification_results": {
+    "status": "passed_after_inventory_allowlist_repair",
+    "commands": [
+      {
+        "command": "python -m unittest tests.product_agent_os.test_batch45_coding_standards tests.product_agent_os.test_infrastructure_templates -v",
+        "exit_code": 1,
+        "result": "initial expected-inventory failure before adding coding-standards.md and coding-standard-checklist.md to existing allowlists"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_batch45_coding_standards tests.product_agent_os.test_infrastructure_templates -v",
+        "exit_code": 0,
+        "result": "98 tests OK"
+      },
+      {
+        "command": "python -c \"import json, pathlib; json.load(open('docs/superpowers/specs/batch45-professional-code-s1-artifact-workflow-summary.json', encoding='utf-8')); print('json-ok')\"",
+        "exit_code": 0,
+        "result": "json-ok before final verification-result update"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_infrastructure_renderer -v",
+        "exit_code": 0,
+        "result": "27 tests OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "exit_code": 0,
+        "result": "99 tests OK"
+      },
+      {
+        "command": "python tools\\check_docs.py",
+        "exit_code": 0,
+        "result": "OK: documentation structure checks passed"
+      },
+      {
+        "command": "python -c \"import json; json.load(open('docs/superpowers/specs/batch45-professional-code-s1-artifact-workflow-summary.json', encoding='utf-8')); print('json-ok')\"",
+        "exit_code": 0,
+        "result": "json-ok after final verification-result update"
+      },
+      {
+        "command": "git diff --check",
+        "exit_code": 0,
+        "result": "no whitespace errors; CRLF normalization warnings only for existing docs files"
+      }
+    ]
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "schema_version": "batch45_real_project_baseline_results_v1",
+  "task_id": "B45-PCA-M32",
+  "evidence_id": "B45-PCA-M32-A01_A02",
+  "generated_at": "2026-06-30",
+  "source_status": "fixture_local_analysis_only",
+  "closure_level": "synthetic_green_static_baseline_with_gaps",
+  "scenario_count": 2,
+  "scenario_ids": [
+    "SOL-AGENT-ORCH-01",
+    "MP-CRM-CHAT-OPEN-01"
+  ],
+  "source_artifacts": [
+    "research/b45-real-project-scenarios/results/SOL-AGENT-ORCH-01-baseline.json",
+    "research/b45-real-project-scenarios/results/MP-CRM-CHAT-OPEN-01-baseline.json"
+  ],
+  "input_fixture_packs": [
+    "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01",
+    "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01"
+  ],
+  "claim_ceiling": [
+    "M32 baseline applies B45-PCA professional-code checks to sanitized copied fixtures inside codex_docs only.",
+    "M32 does not run target commands, mutate targets, launch runtime/browser, call providers/live APIs, stage/commit/push, deploy, publish, activate automation or prove release readiness.",
+    "Static/syntax/advisory evidence can guide M33 refactor arms, but cannot prove target behavior or production safety."
+  ],
+  "verification_summary": {
+    "comment_sufficiency_advisory": [
+      {
+        "scenario_id": "SOL-AGENT-ORCH-01",
+        "warning_count": 0,
+        "blocking": false
+      },
+      {
+        "scenario_id": "MP-CRM-CHAT-OPEN-01",
+        "warning_count": 2,
+        "blocking": false
+      }
+    ],
+    "python_py_compile": "passed_for_MP_copied_py_files_syntax_only; not_applicable_for_SOL_TypeScript_fixture",
+    "target_commands_run": [],
+    "runtime_browser_provider_actions": []
+  },
+  "scenario_rollup": [
+    {
+      "scenario_id": "SOL-AGENT-ORCH-01",
+      "status": "baseline_static_complete_with_gaps",
+      "closure_level": "synthetic_green_static_baseline_with_gaps",
+      "fixture_files": 21,
+      "code_files": 19,
+      "comment_warning_count": 0,
+      "blocker_count": 3,
+      "accepted_gap_count": 2,
+      "safe_next_action": "Before any M33 refactor arm, create fixture-local TS/static test route or record owner-accepted no-test gap; prioritize role-agent duplication/configuration scan over broad orchestrator rewrite."
+    },
+    {
+      "scenario_id": "MP-CRM-CHAT-OPEN-01",
+      "status": "baseline_static_complete_with_gaps",
+      "closure_level": "synthetic_green_static_baseline_with_gaps",
+      "fixture_files": 21,
+      "code_files": 18,
+      "comment_warning_count": 2,
+      "blocker_count": 3,
+      "accepted_gap_count": 3,
+      "safe_next_action": "For M33, prefer a small fixture-local route-helper or comment/structure refactor around the two advisory symbols; avoid broad CRM route rewrites until pytest/browser approval exists."
+    }
+  ],
+  "baseline_decision": {
+    "overall_status": "baseline_complete_static_with_refactor_gates",
+    "m33_allowed_scope": "fixture_local_refactor_arms_only_after resolving or explicitly accepting per-scenario blockers",
+    "must_not_do_in_m33_without_new_approval": [
+      "target workspace mutation",
+      "target test/build command execution",
+      "runtime launch",
+      "browser automation",
+      "provider/live API call",
+      "production/local database access",
+      "git stage/commit/push/PR",
+      "release/deploy/publish/automation activation"
+    ]
+  },
+  "control_plane_sync_decision": {
+    "requirements_md": "not_applicable_no_scope_change",
+    "plan_md": "updated_track11_task_status_marker_and_root_plan_s7_pointer",
+    "test_md": "not_applicable_no_new_command_route",
+    "evals_md": "not_applicable_eval_details_source_owned_in_specs_packet",
+    "runlog_md": "not_updated_runlog_size_budget_too_tight; detailed evidence remains source_owned",
+    "source_registry": "updated_new_M32_evidence_entry"
+  }
+}

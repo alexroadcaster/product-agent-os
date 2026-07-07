@@ -14,7 +14,7 @@
         <link rel="prev" href="technical.html">
 
 
-        <link rel="next" href="methodology-intelligence.html">
+        <link rel="next" href="coding-standards.html">
 
 
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -1292,6 +1292,12 @@
 
 
 
+
+
+
+
+
+
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
 
 
@@ -1324,6 +1330,27 @@
             Product-Agent OS Plugin
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="control-plane-current-state.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Current Control-Plane State
+  </span>
+
+
+      </a>
+    </li>
+
 
 
 
@@ -1465,6 +1492,27 @@
 
   <span class="md-ellipsis">
     Agent-Skill Modernization Loop
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="self-learning-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Self-Learning Loop
   </span>
 
 
@@ -1836,6 +1884,15 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#professional-code-authoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Professional Code Authoring
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#domain-specific-gates" class="md-nav__link">
     <span class="md-ellipsis">
       Domain-Specific Gates
@@ -1911,6 +1968,27 @@
 
 </nav>
 
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="coding-standards.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Professional Code Authoring
+  </span>
+
+
+      </a>
     </li>
 
 
@@ -3437,6 +3515,15 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#professional-code-authoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Professional Code Authoring
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#domain-specific-gates" class="md-nav__link">
     <span class="md-ellipsis">
       Domain-Specific Gates
@@ -3525,7 +3612,7 @@
 
 <h1 id="product-agent-os-development-standards">Product-Agent OS development standards<a class="headerlink" href="#product-agent-os-development-standards" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + verified methodology + experiment</code></p>
-<p>Sources: <a href="architecture.html">Product-Agent OS architecture</a>, <a href="scenarios.html">Product-Agent OS scenarios</a>, <a href="behavioral-evals.html">Behavioral evals</a>, <a href="https://developers.openai.com/codex/agent-approvals-security">Agent approvals and security</a>, <a href="https://developers.openai.com/codex/workflows">Codex workflows</a>.</p>
+<p>Sources: <a href="architecture.html">Product-Agent OS architecture</a>, <a href="scenarios.html">Product-Agent OS scenarios</a>, <a href="behavioral-evals.html">Behavioral evals</a>, <a href="coding-standards.html">Professional Code Authoring Standards</a>, <a href="https://developers.openai.com/codex/agent-approvals-security">Agent approvals and security</a>, <a href="https://developers.openai.com/codex/workflows">Codex workflows</a>.</p>
 <p>Development standards turn methodology into concrete reviewable artifacts. They define how Product-Agent OS handles product hypothesis, architecture, tests, evals, docs, security, release and post-release learning without forcing heavy ceremony onto simple work.</p>
 <p>Red-Green-Refactor evidence is required where behavior or shared logic changes. Docs-only and inspection-only work can record an explicit gap. The no-forced-ceremony rule remains active: mechanical edits can be not_applicable, docs-light work can avoid heavy portals, backend/native work does not force FSD, simple CRUD does not force DDD, and high-risk work needs <code>owner_reviewed_evidence_sufficient_for_real_project_risk</code> or <code>explicit_gap_accepted</code>.</p>
 <h2 id="core-contract">Core Contract<a class="headerlink" href="#core-contract" title="Permanent link">&para;</a></h2>
@@ -3616,6 +3703,14 @@
 <td><code>.codex/artifact-templates/governance-proposal.md</code></td>
 <td>Staged governance proposal for CODEOWNERS status and GitHub Actions least privilege without external activation.</td>
 </tr>
+<tr>
+<td><code>.codex/workflows/coding-standards.md</code></td>
+<td>Professional code authoring workflow for non-mechanical code work: leverage existing capabilities before custom code.</td>
+</tr>
+<tr>
+<td><code>.codex/artifact-templates/coding-standard-checklist.md</code></td>
+<td>Evidence checklist for <code>enterprise_leverage_check</code>, <code>one_line_candidate</code>, dependency decisions, deep-module checks and legacy seams.</td>
+</tr>
 </tbody>
 </table>
 <h2 id="discovery-signals">Discovery Signals<a class="headerlink" href="#discovery-signals" title="Permanent link">&para;</a></h2>
@@ -3645,6 +3740,10 @@
 <li>spec-compliance review before quality/risk review for risky public-contract, migration, security, data, release or parallel work.</li>
 </ul>
 <p>Subagents are useful only when ownership is clear. A handoff without source context, files, expected evidence and stop condition is not enough.</p>
+<h2 id="professional-code-authoring">Professional Code Authoring<a class="headerlink" href="#professional-code-authoring" title="Permanent link">&para;</a></h2>
+<p>For non-mechanical code work, Product-Agent OS expects the coding-standard workflow and checklist to be loaded before edits. The default ladder is: delete unnecessary code, configure existing behavior, use standard library or platform capability, use framework API, use an existing dependency, use a project helper, then add a tiny adapter or custom code only when the earlier options are insufficient.</p>
+<p>The checklist records <code>enterprise_leverage_check</code>, <code>existing_capability_scan</code>, <code>one_line_candidate</code>, selected leverage path, rejected alternatives, <code>negative_dependency_rule</code>, <code>deep_module_check</code>, <code>legacy_seam_check</code>, <code>cleverness_budget</code>, test/eval evidence and unsupported code-quality claims. Mechanical, docs-only or generated-file sync work can mark the gate <code>not_applicable</code> with a reason.</p>
+<p>Template availability is not runtime enforcement. These artifacts do not activate hooks, automation, subagents, HTML reporting or plugin-cache behavior by themselves; they give agents a compact source-of-truth contract when the workflow, skill or role profile is explicitly loaded.</p>
 <h2 id="domain-specific-gates">Domain-Specific Gates<a class="headerlink" href="#domain-specific-gates" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3739,7 +3838,7 @@
 <li>High-risk work needs explicit owner-reviewed evidence sufficiency or accepted gap.</li>
 <li>Product-Agent OS must preserve staged-first behavior, source policy, sandbox and approvals even when a recommendation is confident.</li>
 </ul>
-<p>Next artifact: use <a href="methodology-intelligence.html">Methodology intelligence</a> to decide which gates apply and <a href="behavioral-evals.html">Behavioral evals</a> to check shortcut resistance.</p>
+<p>Next artifact: use <a href="methodology-intelligence.html">Methodology intelligence</a> to decide which gates apply, <a href="coding-standards.html">Professional Code Authoring Standards</a> to inspect code-writing gates and <a href="behavioral-evals.html">Behavioral evals</a> to check shortcut resistance.</p>
 <h2 id="inputs">Inputs<a class="headerlink" href="#inputs" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Product scope, source evidence, risk classification and methodology signals.</li>

@@ -1292,6 +1292,12 @@
 
 
 
+
+
+
+
+
+
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
 
 
@@ -1324,6 +1330,27 @@
             Product-Agent OS plugin
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="control-plane-current-state.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Текущий control-plane state
+  </span>
+
+
+      </a>
+    </li>
+
 
 
 
@@ -1465,6 +1492,27 @@
 
   <span class="md-ellipsis">
     Agent-Skill Modernization Loop
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="self-learning-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Self-Learning Loop
   </span>
 
 
@@ -1743,6 +1791,24 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#self-learning-loop-due-check-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      Self-Learning Loop Due-Check CLI
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#self-learning-loop-manual-runner-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      Self-Learning Loop Manual Runner CLI
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#project-graph-cli" class="md-nav__link">
     <span class="md-ellipsis">
       Project Graph CLI
@@ -1880,6 +1946,27 @@
 
   <span class="md-ellipsis">
     Engineering standards layer
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="coding-standards.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Professional Code Authoring
   </span>
 
 
@@ -3401,6 +3488,24 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#self-learning-loop-due-check-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      Self-Learning Loop Due-Check CLI
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#self-learning-loop-manual-runner-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      Self-Learning Loop Manual Runner CLI
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#project-graph-cli" class="md-nav__link">
     <span class="md-ellipsis">
       Project Graph CLI
@@ -3615,6 +3720,52 @@
 <span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">scan_project_code_graph</span><span class="p">.</span><span class="n">py</span> <span class="p">&lt;</span><span class="n">workspace</span><span class="p">&gt;</span> <span class="p">-</span><span class="n">-stage</span> <span class="n">C</span><span class="p">:\</span><span class="n">tmp</span><span class="p">\</span><span class="n">product-agent-os-graph-stage</span>
 </code></pre></div>
 <p>Эти examples не являются <code>broad command matrix</code>. Полная <code>command-policy</code> матрица, <code>docs tooling smokes</code>, <code>install/runtime variations</code> и <code>approval-state coverage</code> принадлежат <code>DOC-M26</code>. <code>CLI docs</code> дают только безопасные pointers и не расширяют разрешение на <code>live server</code>, <code>browser automation</code>, <code>provider/API calls</code>, <code>canonical mutation</code>, <code>git actions</code> или root <code>site</code> rebuild.</p>
+<h2 id="self-learning-loop-due-check-cli">Self-Learning Loop Due-Check CLI<a class="headerlink" href="#self-learning-loop-due-check-cli" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Команда</th>
+<th>Назначение</th>
+<th>Входы</th>
+<th>Вывод / граница</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>python plugins\product-agent-os\scripts\check_self_learning_due.py &lt;workspace&gt; --dry-run</code></td>
+<td>Проверяет, пора ли предложить ручной запуск Self-Learning Loop.</td>
+<td>Product-Agent OS workspace с <code>.codex/product-agent-os/self-learning-state.json</code>.</td>
+<td>Печатает <code>due</code>, <code>not_due</code>, <code>disabled</code> или <code>state_invalid</code>; не запускает анализ, не пишет state, не создает schedule и не включает auto-apply.</td>
+</tr>
+</tbody>
+</table>
+<p><code>weekly</code> в этом контракте означает due-check basis, а не active schedule. Ручной запуск loop доступен через отдельную manual-only/staged-only команду ниже и не включает auto-apply.</p>
+<h2 id="self-learning-loop-manual-runner-cli">Self-Learning Loop Manual Runner CLI<a class="headerlink" href="#self-learning-loop-manual-runner-cli" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Команда</th>
+<th>Назначение</th>
+<th>Входы</th>
+<th>Вывод / граница</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>python plugins\product-agent-os\scripts\run_self_learning_loop.py &lt;workspace&gt; --dry-run</code></td>
+<td>Собирает Self-Learning Loop run packet без записи файлов.</td>
+<td>Product-Agent OS workspace с explicit marker и self-learning state.</td>
+<td>Печатает <code>self_learning_run_packet_v1</code>, progress events и planned artifact targets; не пишет workspace и не делает auto-apply.</td>
+</tr>
+<tr>
+<td><code>python plugins\product-agent-os\scripts\run_self_learning_loop.py &lt;workspace&gt; --stage &lt;dir&gt;</code></td>
+<td>Генерирует staged progress state и offline HTML artifact.</td>
+<td>Product-Agent OS workspace, stage directory outside target workspace.</td>
+<td>Пишет только в <code>stage root</code>: <code>progress.jsonl</code>, run <code>progress.json</code>, <code>self-learning-run-packet.json</code> и <code>self-learning-progress.html</code>. Target workspace не меняется.</td>
+</tr>
+</tbody>
+</table>
+<p><code>Manual runner</code> сначала вызывает <code>Product-Agent OS scope detector</code> и останавливается по принципу <code>fail-closed</code> для <code>out_of_scope</code>, <code>missing_marker</code> и <code>needs_owner_review</code>. Он не создает расписания, не включает <code>hooks</code> или <code>Codex App automation</code>, не импортирует сырые пользовательские сессии, не вызывает провайдеров и не выполняет действия <code>git</code>, release, deploy или publish.</p>
 <h2 id="project-graph-cli">Project Graph CLI<a class="headerlink" href="#project-graph-cli" title="Permanent link">&para;</a></h2>
 <p><code>scan_project_code_graph.py</code> использует exactly-one-mode semantics: выбирайте один mode за запуск.</p>
 <table>

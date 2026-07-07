@@ -1,0 +1,711 @@
+{
+  "schema_version": "batch45_post_q4_next_tasks_v1",
+  "task_id": "B45-POST-Q4-NEXT-TASKS",
+  "evidence_id": "B45-POST-Q4-NEXT-TASKS-A01",
+  "status": "planned_source_owned_next_tasks_after_q4",
+  "created_at": "2026-07-04T18:35:00+03:00",
+  "source_status": "project-authored Batch 45 post-Q4 task list",
+  "basis": {
+    "q3_packet": "docs/superpowers/specs/batch45-quality-retest-fixture-static-summary.json",
+    "q4_packet": "docs/superpowers/specs/batch45-quality-retest-project-slices-static-summary.json",
+    "q3_warning_count": 14,
+    "q4_warning_count": 14,
+    "q4_slice_count": 5,
+    "q4_blocking_slices": 0,
+    "stable_signal": true,
+    "main_static_hotspot": "Q4-SOL-03-AGENT-ROLES-TOOLS",
+    "secondary_static_hotspots": [
+      "Q4-MP-01-SERVER-CRM-CORE",
+      "Q4-MP-02-FRONTEND-CRM-TESTS"
+    ],
+    "decision_basis": "Q4 localized the same 14 advisory warnings already seen in Q3. Another broad static replay would add little new information; next work should either repair targeted static hotspots or move to approval-gated behavior/runtime proof."
+  },
+  "planning_decision": {
+    "status": "continue_investigation_keep_advisory_only_no_go",
+    "primary_local_route": "targeted_static_repair_then_delta_verify",
+    "proof_route": "approval_required_live_model_or_runtime_browser",
+    "do_not_repeat_generic_static_replay": true,
+    "promotion_state": "keep_advisory_only_no_go",
+    "carried_forward_blockers": [
+      "B45-PCA-M26 no_go_real_behavior_improvement_not_proven_after_live_eval",
+      "B45-PCA-M27 keep_advisory_only_no_go_for_blocker_or_ci",
+      "B45-PCA-M35 keep_advisory_only_no_go_for_treatment_v2_promotion",
+      "B45-PCA-M37-A01 local_advisory_hardening_docs_sync_only"
+    ]
+  },
+  "task_queue": [
+    {
+      "task_id": "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX",
+      "priority": "P0",
+      "route": "local_static_targeted_repair",
+      "status": "planned",
+      "depends_on": [
+        "B45-RETEST-Q4-PROJECT-SLICES-STATIC-A01"
+      ],
+      "scope": "Analyze and stage a minimal static repair plan for the 11 SOL role-agent execute-method advisory warnings in Q4-SOL-03-AGENT-ROLES-TOOLS.",
+      "owned_surfaces": [
+        "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/*.ts",
+        "future copied-fixture/refactor artifacts only unless a separate approval names a target workspace mutation"
+      ],
+      "acceptance": [
+        "Every SOL role-agent warning is classified as fix, accepted static gap, or false-positive candidate.",
+        "No target SOL workspace command or mutation is performed.",
+        "No npm, tsc, runtime, browser or provider call is performed."
+      ],
+      "verification_gates": [
+        "comment_sufficiency replay over Q4-SOL-03 paths",
+        "diff review limited to copied fixture/refactor artifacts if edits are later approved",
+        "privacy aggregate remains 0 secret literals"
+      ],
+      "stop_conditions": [
+        "Stop before target workspace mutation.",
+        "Stop if a fix would require runtime/provider/browser proof.",
+        "Stop if static repair broadens outside Q4-SOL-03 without a new packet."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T02-MP-CRM-STATIC-FIX",
+      "priority": "P0",
+      "route": "local_static_targeted_repair",
+      "status": "planned",
+      "depends_on": [
+        "B45-RETEST-Q4-PROJECT-SLICES-STATIC-A01"
+      ],
+      "scope": "Analyze and stage minimal static repair for the three myPartners CRM warnings: two backend contacts_routes.py symbols and one frontend crm.spec.ts helper.",
+      "owned_surfaces": [
+        "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/src/server/app/api/contacts_routes.py",
+        "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/tests/frontend/tests/e2e/crm.spec.ts",
+        "future copied-fixture/refactor artifacts only unless a separate approval names a target workspace mutation"
+      ],
+      "acceptance": [
+        "All three myPartners advisory warnings are classified as fix, accepted static gap, or false-positive candidate.",
+        "Python syntax-only check remains green for copied fixture files.",
+        "No myPartners target command, database access, browser run or mutation is performed."
+      ],
+      "verification_gates": [
+        "comment_sufficiency replay over Q4-MP-01 and Q4-MP-02 paths",
+        "python -B -m py_compile over copied myPartners fixture .py files",
+        "post-check no generated __pycache__ directories remain"
+      ],
+      "stop_conditions": [
+        "Stop before target workspace mutation.",
+        "Stop if production/local database access would be needed.",
+        "Stop if browser/runtime proof is needed without B45-PCA-M36 approval."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T03-STATIC-DELTA-VERIFY",
+      "priority": "P0",
+      "route": "local_static_delta_verification",
+      "status": "planned_after_T01_T02",
+      "depends_on": [
+        "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX",
+        "B45-POSTQ4-T02-MP-CRM-STATIC-FIX"
+      ],
+      "scope": "Rerun the Q4 slice matrix after targeted static repairs or accepted-gap classification.",
+      "acceptance": [
+        "Warning delta is recorded slice-by-slice against Q4 baseline 14.",
+        "Target outcome is <=3 unresolved advisory warnings or a source-owned accepted-gap ledger for the remainder.",
+        "blocking remains false and suppressed_warning_count remains 0 unless a future policy explicitly changes warning behavior."
+      ],
+      "verification_gates": [
+        "comment_sufficiency replay over all five Q4 slices",
+        "python -B -m py_compile copied myPartners fixture .py files",
+        "git diff --no-index --numstat copied fixture/refactor arms when edits exist",
+        "privacy aggregate scan",
+        "focused coding-standards artifact test",
+        "docs/control-plane tests and diff hygiene"
+      ],
+      "stop_conditions": [
+        "Stop if static warning reduction is used as live behavior proof.",
+        "Stop if broad static rerun is attempted without targeted delta rationale."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T04-LIVE-MODEL-RERUN-PACKET",
+      "priority": "P1",
+      "route": "approval_packet_only",
+      "status": "approval_required_not_run",
+      "depends_on": [
+        "B45-RETEST-Q4-PROJECT-SLICES-STATIC-A01"
+      ],
+      "scope": "Prepare the owner approval packet for a fresh live/model baseline-vs-treatment rerun if real AI-agent behavior improvement must be proven.",
+      "acceptance": [
+        "Packet names provider/model placeholder policy, owner-fill-required approval fields, task set, baseline/treatment prompt sources, cost/timeout budget, privacy boundary, rollback/abort condition and result schema.",
+        "No provider/model/API call is performed while preparing the packet.",
+        "M26 no-go remains active until a new approved live eval proves otherwise."
+      ],
+      "verification_gates": [
+        "approval packet review",
+        "privacy and cost boundary review",
+        "no-unapproved-actions proof"
+      ],
+      "stop_conditions": [
+        "Stop before any live/model/provider/API call.",
+        "Stop if task data would include secrets, private data or raw private logs."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T05-LIVE-MODEL-RERUN",
+      "priority": "P1",
+      "route": "approval_required_live_eval",
+      "status": "attempted_approved_live_eval_stopped_on_timeout_no_go",
+      "depends_on": [
+        "B45-POSTQ4-T04-LIVE-MODEL-RERUN-PACKET"
+      ],
+      "scope": "Run a fresh approved live/model baseline-vs-treatment eval only after exact approval.",
+      "acceptance": [
+        "Treatment beats baseline by the packet threshold, with timeout_count=0 or explicitly accepted timeout handling.",
+        "Independent reviewer decision is not no_go.",
+        "Warning reduction is reported separately from behavior quality and cannot substitute for behavior improvement."
+      ],
+      "verification_gates": [
+        "approved live eval command/output",
+        "scorecard and reviewer packet",
+        "cost/timeout/privacy ledger",
+        "source-owned decision packet update"
+      ],
+      "stop_conditions": [
+        "Stop without exact owner approval.",
+        "Stop on provider/model/API uncertainty.",
+        "Stop if private data or raw traces would be retained."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T05B-RERUN-PACKET-REVISION",
+      "priority": "P1",
+      "route": "approval_packet_only",
+      "status": "implemented_approval_packet_only_not_run",
+      "depends_on": [
+        "B45-POSTQ4-T05-LIVE-MODEL-RERUN"
+      ],
+      "scope": "Create a separate revised approval packet for any optional T05 rerun after the timeout/no-go attempt.",
+      "acceptance": [
+        "Packet states that T05 approval was consumed and a new exact owner approval is required before any rerun.",
+        "Packet separates strict stop-on-timeout, paired continue and diagnostic-only options.",
+        "Packet preserves raw-temp-only retention, watchdog/process-tree kill, no-unapproved-actions and no-promotion ceiling."
+      ],
+      "verification_gates": [
+        "approval packet assertions in focused tests",
+        "PLAN/TEST/EVALS/source registry sync",
+        "docs checks and diff hygiene"
+      ],
+      "stop_conditions": [
+        "Stop before any live/model/provider/API call.",
+        "Stop before runtime/browser/target/git/release/deploy/automation actions.",
+        "Stop if approval wording could be read as reusing the consumed T05 approval."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T06-PROMOTION-DECISION",
+      "priority": "P1",
+      "route": "decision_gate",
+      "status": "implemented_promotion_no_go_keep_advisory_only",
+      "depends_on": [
+        "B45-POSTQ4-T03-STATIC-DELTA-VERIFY",
+        "B45-POSTQ4-T05-LIVE-MODEL-RERUN",
+        "B45-POSTQ4-T05B-RERUN-PACKET-REVISION"
+      ],
+      "dependency_mode": "static_delta_or_t05_timeout_can_preserve_no_go; promotion_requires_live_eval_evidence from completed comparable runs; T05B is approval-packet-only unless separately approved and run",
+      "scope": "Decide whether to keep advisory-only, run more pilots, or request a new approval for CI/blocker promotion.",
+      "acceptance": [
+        "Decision separates static warning delta, live behavior evidence, runtime/browser evidence and owner risk tolerance.",
+        "CI/blocker promotion remains rejected unless live behavior and runtime/rollback evidence support it.",
+        "No active automation or CI workflow is created by this decision packet."
+      ],
+      "verification_gates": [
+        "decision packet assertions in focused tests",
+        "PLAN/TEST/EVALS/source registry sync",
+        "docs checks and diff hygiene"
+      ],
+      "stop_conditions": [
+        "Stop if promotion is inferred from static-only evidence.",
+        "Stop before creating CI/blocker/automation without exact approval."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T07-RUNTIME-BROWSER-PACKET",
+      "priority": "P2",
+      "route": "approval_packet_only",
+      "status": "optional_approval_required_not_run",
+      "depends_on": [
+        "B45-PCA-M36"
+      ],
+      "scope": "Keep the optional B45-PCA-M36 disposable runtime/browser packet available for runtime or UI proof, separate from static quality and live/model behavior proof.",
+      "acceptance": [
+        "Packet names disposable target, commands, rollback, data boundary, browser/runtime evidence and stop conditions.",
+        "No runtime/live server, browser automation, target command, target mutation or provider/API call is performed by planning alone."
+      ],
+      "verification_gates": [
+        "approval packet review",
+        "no-unapproved-actions proof",
+        "runtime/browser evidence only after approval"
+      ],
+      "stop_conditions": [
+        "Stop before runtime/browser/provider/target execution without exact owner approval."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS",
+      "priority": "P0",
+      "route": "source_owned_architecture_analysis",
+      "status": "implemented_source_owned_architecture_next_actions_after_t06",
+      "depends_on": [
+        "B45-POSTQ4-T06-PROMOTION-DECISION"
+      ],
+      "scope": "Record the post-T06 technical and architectural analysis plus the next Batch 45 task routes.",
+      "acceptance": [
+        "Analysis separates static quality, behavior eval, runtime/browser proof and governance evidence classes.",
+        "Next tasks preserve advisory-only/no-go unless a new approval-gated evidence route proves otherwise.",
+        "No live/model/provider/runtime/browser/target/CI/git/release/deploy/automation action is performed."
+      ],
+      "verification_gates": [
+        "architecture next-actions packet assertions in focused tests",
+        "PLAN/TEST/EVALS/source registry sync",
+        "docs checks and diff hygiene"
+      ],
+      "stop_conditions": [
+        "Stop if analysis implies promotion from static-only evidence.",
+        "Stop if detailed history is added to RUNLOG.md instead of source-owned packets."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T09-CLOSURE-ADVISORY-ONLY",
+      "priority": "P0",
+      "route": "local_docs_closure_if_no_new_approval",
+      "status": "recommended_if_owner_accepts_no_go",
+      "depends_on": [
+        "B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS"
+      ],
+      "scope": "Close the post-Q4 Batch 45 branch as advisory-only/no-go with local static quality improvements and no promotion.",
+      "acceptance": [
+        "Closure packet names T01-T08 evidence and unsupported claims.",
+        "No new approval-gated action is performed.",
+        "Root control-plane files stay compact."
+      ],
+      "verification_gates": [
+        "focused coding-standards artifact tests",
+        "docs/control-plane checks",
+        "git diff --check"
+      ],
+      "stop_conditions": [
+        "Stop if closure wording implies production readiness or behavior improvement."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
+      "priority": "P1",
+      "route": "approval_packet_only",
+      "status": "implemented_approval_packet_only_not_run",
+      "depends_on": [
+        "B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS",
+        "B45-POSTQ4-T05B-RERUN-PACKET-REVISION"
+      ],
+      "scope": "Redesign the live eval approval packet so future runs can produce paired baseline/treatment evidence despite timeouts.",
+      "acceptance": [
+        "Packet separates strict stop-on-timeout, paired continue, retry-on-timeout and diagnostic-only routes.",
+        "Packet defines per-task pairing, timeout budget, reviewer timing, cost cap handling, temp-only raw retention and abort conditions.",
+        "No model/provider/API call is performed while preparing the packet."
+      ],
+      "verification_gates": [
+        "approval packet assertions",
+        "privacy/cost/retention review",
+        "no-unapproved-actions proof"
+      ],
+      "stop_conditions": [
+        "Stop before live/model/provider/API call without exact owner approval."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN",
+      "priority": "P2",
+      "route": "source_only_design",
+      "status": "implemented_source_only_treatment_v3_design_not_run",
+      "depends_on": [
+        "B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS"
+      ],
+      "scope": "Design a smaller treatment v3 that uses coding standards as planning/reviewer scaffolding instead of a noisy generation-time prompt overlay.",
+      "acceptance": [
+        "Design explains why M26 treatment underperformed and how v3 reduces prompt friction.",
+        "Design maps standards to concrete behaviors, negative examples and reviewer checks.",
+        "Design does not activate hooks, CI, blocker enforcement or live/model calls."
+      ],
+      "verification_gates": [
+        "source design review",
+        "future eval plan update before any run"
+      ],
+      "stop_conditions": [
+        "Stop if design is presented as proven behavior improvement."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN-EXACT-APPROVAL-PACKET",
+      "priority": "P1",
+      "route": "exact_approval_packet_only",
+      "status": "exact_approval_packet_draft_not_owner_confirmed_not_run",
+      "depends_on": [
+        "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
+        "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN"
+      ],
+      "scope": "Create the exact owner-confirmation packet for a future paired live/model rerun using the T10 harness contract.",
+      "acceptance": [
+        "Packet has exact provider/surface/model/run-count/command/root/timeout/order/retention/reviewer fields.",
+        "Packet selects paired_continue_with_invalid_pair_quarantine and preserves valid-pair promotion thresholds.",
+        "Packet is not treated as owner approval or run evidence until the owner restates the exact approval text."
+      ],
+      "verification_gates": [
+        "exact approval packet assertions",
+        "source freeze hash assertions",
+        "no-unapproved-actions proof"
+      ],
+      "stop_conditions": [
+        "Stop before live/model/provider/API call until the owner confirms the exact packet in a later message."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
+      "priority": "P0",
+      "route": "local_schema_harness_hardening",
+      "status": "implemented_local_schema_no_op_hardening_no_live_calls",
+      "depends_on": [
+        "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
+        "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN",
+        "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN"
+      ],
+      "scope": "Implement a deterministic local strict-output schema, FINAL_JSON parser, no-op guard, invalid-pair quarantine and sanitized rollup validator after the T12 invalid_json/no_op no-go result.",
+      "owned_surfaces": [
+        "plugins/product-agent-os/scripts/codex_runtime_runner/model_output.py",
+        "tests/product_agent_os/test_codex_runtime_runner_model_output.py",
+        "docs/superpowers/specs/batch45-postq4-t13-strict-output-schema-and-harness-hardening.json",
+        ".codex/product-agent-os/batch45/t13-agent-reviews/*.md"
+      ],
+      "acceptance": [
+        "T12 invalid_json and no_op failure modes are represented as deterministic local fixture tests.",
+        "Invalid pairs block reviewer and promotion regardless of score averages or static warning deltas.",
+        "Repo artifacts keep sanitized rollups only and reject raw output bodies or concrete local temp roots."
+      ],
+      "verification_gates": [
+        "python -m unittest tests.product_agent_os.test_codex_runtime_runner_model_output -v",
+        "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "python tools\\check_docs.py",
+        "git diff --check"
+      ],
+      "stop_conditions": [
+        "Stop before any live/model/provider/reviewer call without fresh exact approval.",
+        "Stop before runtime/browser/target workspace/CI/git/release/deploy/automation actions.",
+        "Stop if raw prompts/stdout/stderr/provider payloads or concrete temp roots would be stored in repo."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET",
+      "priority": "P1",
+      "route": "exact_approval_packet_only",
+      "status": "exact_approval_packet_draft_not_owner_confirmed_not_run",
+      "depends_on": [
+        "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
+        "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
+        "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN"
+      ],
+      "scope": "Create the exact owner-confirmation packet for a future paired live/model rerun after T13 strict schema and no-op harness hardening, revised to use gpt-5.5 with high reasoning for stronger detailed testing evidence.",
+      "owned_surfaces": [
+        "docs/superpowers/specs/batch45-postq4-t14-strict-rerun-approval-packet.json",
+        "docs/superpowers/specs/batch45-post-q4-next-tasks.json",
+        "tests/product_agent_os/test_coding_standards_artifacts.py",
+        "compact control-plane/source registry pointers"
+      ],
+      "acceptance": [
+        "Packet includes exact provider/surface/model/reasoning-effort/run-count/command/root/timeout/order/retention/reviewer fields.",
+        "Packet requires T13 strict FINAL_JSON parser, run/pair/aggregate validator, no-op guard and sanitized rollup validation before reviewer or promotion interpretation.",
+        "Packet records that gpt-5.5 high is a current-best-quality rerun path, not strict same-model comparability with M26/T05/T12 gpt-5.3-codex-spark evidence.",
+        "Packet requires detailed run/pair/aggregate evidence: per-dimension rubric scores, failure taxonomy, changed-file metadata, unsupported claims and reviewer-ready summaries.",
+        "Packet is not treated as owner approval or run evidence until the owner restates the exact approval text."
+      ],
+      "verification_gates": [
+        "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t14-strict-rerun-approval-packet.json",
+        "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "python tools\\check_docs.py",
+        "git diff --check"
+      ],
+      "stop_conditions": [
+        "Stop before any live/model/provider/reviewer call until the owner confirms the exact packet in a later message.",
+        "Stop before runtime/browser/target workspace/CI/git/release/deploy/automation actions.",
+        "Stop if approval wording can be read as reusing the consumed T05 or T12 approval."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION",
+      "priority": "P0",
+      "route": "source_owned_decision_gate",
+      "status": "implemented_model_change_interpretation_keep_advisory_only_no_go",
+      "depends_on": [
+        "B45-POSTQ4-T14-STRICT-RERUN",
+        "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
+        "B45-PCA-M26",
+        "B45-PCA-M35"
+      ],
+      "scope": "Interpret the T14 gpt-5.5 high-reasoning rerun without treating it as strict same-model comparability against prior gpt-5.3-codex-spark evidence.",
+      "owned_surfaces": [
+        "docs/superpowers/specs/batch45-postq4-t15-model-change-decision-packet.json",
+        "docs/superpowers/specs/batch45-post-q4-next-tasks.json",
+        "tests/product_agent_os/test_coding_standards_artifacts.py",
+        "compact control-plane/source registry pointers"
+      ],
+      "acceptance": [
+        "Decision records T14 as a positive current-best-quality signal but not M26/M35 reversal.",
+        "Decision preserves no promotion while reviewer_calls_started=0 and same-model comparability is false.",
+        "Decision names future approval-required routes before any reviewer/model/runtime/browser/target/CI/git/release/deploy/automation action."
+      ],
+      "verification_gates": [
+        "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t15-model-change-decision-packet.json",
+        "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "python tools\\check_docs.py",
+        "git diff --check"
+      ],
+      "stop_conditions": [
+        "Stop before any live/model/provider/reviewer call.",
+        "Stop before runtime/browser/target workspace/CI/git/release/deploy/automation actions.",
+        "Stop if T15 wording implies promotion, M26/M35 reversal or same-model comparability."
+      ]
+    }
+  ],
+  "execution_update": {
+    "latest_evidence": "docs/superpowers/specs/batch45-postq4-t01-t04-execution-summary.json",
+    "approval_packet": "docs/superpowers/specs/batch45-postq4-live-model-rerun-approval-packet.json",
+    "latest_t05_evidence": "docs/superpowers/specs/batch45-postq4-t05-live-model-rerun-results.json",
+    "latest_t05b_packet": "docs/superpowers/specs/batch45-postq4-t05b-rerun-approval-packet.json",
+    "latest_t06_decision": "docs/superpowers/specs/batch45-postq4-t06-promotion-decision.json",
+    "latest_t08_architecture_next_actions": "docs/superpowers/specs/batch45-postq4-architecture-next-actions.json",
+    "latest_t10_harness_redesign": "docs/superpowers/specs/batch45-postq4-t10-live-eval-harness-redesign-packet.json",
+    "latest_t11_design": "docs/superpowers/specs/batch45-postq4-t11-treatment-v3-source-design.json",
+    "latest_t12_exact_approval_packet": "docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-exact-approval-packet.json",
+    "executed_task_ids": [
+      "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX",
+      "B45-POSTQ4-T02-MP-CRM-STATIC-FIX",
+      "B45-POSTQ4-T03-STATIC-DELTA-VERIFY",
+      "B45-POSTQ4-T04-LIVE-MODEL-RERUN-PACKET",
+      "B45-POSTQ4-T05-LIVE-MODEL-RERUN",
+      "B45-POSTQ4-T05B-RERUN-PACKET-REVISION",
+      "B45-POSTQ4-T06-PROMOTION-DECISION",
+      "B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS",
+      "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
+      "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN",
+      "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN-EXACT-APPROVAL-PACKET",
+      "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN",
+      "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
+      "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET",
+      "B45-POSTQ4-T14-STRICT-RERUN",
+      "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION"
+    ],
+    "status_by_task": {
+      "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX": "implemented_minimal_fixture_copy_intent_comments",
+      "B45-POSTQ4-T02-MP-CRM-STATIC-FIX": "implemented_minimal_fixture_copy_comments",
+      "B45-POSTQ4-T03-STATIC-DELTA-VERIFY": "implemented_local_static_delta_verify",
+      "B45-POSTQ4-T04-LIVE-MODEL-RERUN-PACKET": "implemented_approval_packet_only_not_run",
+      "B45-POSTQ4-T05-LIVE-MODEL-RERUN": "stopped_on_timeout_inconclusive_no_go",
+      "B45-POSTQ4-T05B-RERUN-PACKET-REVISION": "implemented_approval_packet_only_not_run",
+      "B45-POSTQ4-T06-PROMOTION-DECISION": "implemented_promotion_no_go_keep_advisory_only",
+      "B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS": "implemented_source_owned_architecture_next_actions_after_t06",
+      "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET": "implemented_approval_packet_only_not_run",
+      "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN": "implemented_source_only_treatment_v3_design_not_run",
+      "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN-EXACT-APPROVAL-PACKET": "exact_approval_packet_draft_not_owner_confirmed_not_run",
+      "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN": "executed_paired_live_model_rerun_no_go_invalid_pair",
+      "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING": "implemented_local_schema_no_op_hardening_no_live_calls",
+      "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET": "exact_approval_packet_consumed_by_t14_run_gpt55_high",
+      "B45-POSTQ4-T14-STRICT-RERUN": "executed_current_best_quality_rerun_no_promotion",
+      "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION": "implemented_model_change_interpretation_keep_advisory_only_no_go"
+    },
+    "warning_delta": {
+      "q4_baseline_warning_count": 14,
+      "post_t03_warning_count": 0,
+      "delta": -14,
+      "unresolved_advisory_warnings": 0,
+      "blocking": false,
+      "suppressed_warning_count": 0
+    },
+    "t05_live_eval_result": {
+      "status": "stopped_on_timeout_inconclusive_no_go",
+      "completed_primary_task_runs": 1,
+      "timeout_primary_task_runs": 1,
+      "not_run_due_stop_rule": 14,
+      "reviewer_calls_started": 0,
+      "decision": "does_not_reverse_M26_or_M35_no_go"
+    },
+    "approved_actions_performed": {
+      "approved_codex_exec_live_model_task_calls_started": 18,
+      "approved_codex_exec_live_model_task_calls_completed": 15,
+      "approved_codex_exec_live_model_task_calls_timed_out": 1,
+      "approved_process_stop_after_timeout": true,
+      "approved_t12_codex_exec_primary_calls_started": 16,
+      "approved_t12_codex_exec_primary_calls_completed": 14,
+      "approved_t12_codex_exec_primary_calls_no_op": 1,
+      "approved_t12_codex_exec_primary_calls_invalid_json": 1,
+      "approved_t12_reviewer_calls_started": 0,
+      "approved_t14_codex_exec_primary_calls_started": 16,
+      "approved_t14_codex_exec_primary_calls_completed": 16,
+      "approved_t14_codex_exec_primary_calls_timed_out": 0,
+      "approved_t14_codex_exec_primary_calls_no_op": 0,
+      "approved_t14_codex_exec_primary_calls_invalid_json": 0,
+      "approved_t14_reviewer_calls_started": 0
+    },
+    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T05 stopped on baseline timeout. T12 produced valid_pair_count=6, invalid_json=1 and no_op=1; reviewer skipped. T13 adds local strict-output schema/no-op hardening. T14 executed exact-approved gpt-5.5 high-reasoning current-best-quality rerun with valid_pair_count=8 and invalid_pair_count=0. T15 interprets T14 as a positive current-best-quality signal only: reviewer did not run, same-model comparability with spark evidence is false, no promotion, no M26/M35 reversal and no runtime/browser/target/CI/git/release/deploy/automation proof exists.",
+    "post_t06_recommended_next_routes": [
+      "B45-POSTQ4-T09-CLOSURE-ADVISORY-ONLY",
+      "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
+      "B45-POSTQ4-T07-RUNTIME-BROWSER-PACKET",
+      "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN",
+      "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
+      "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET"
+    ],
+    "latest_t12_run_results": "docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-results.json",
+    "t12_live_eval_result": {
+      "status": "executed_paired_live_model_rerun_no_go_invalid_pair",
+      "approved_primary_task_model_calls_started": 16,
+      "completed_primary_task_runs": 14,
+      "no_op_primary_task_runs": 1,
+      "timeout_primary_task_runs": 0,
+      "invalid_json_primary_task_runs": 1,
+      "valid_pair_count": 6,
+      "invalid_pair_count": 2,
+      "reviewer_calls_started": 0,
+      "reviewer_status": "not_run_due_invalid_pair_count",
+      "decision": "does_not_reverse_M26_M35_T05_T06_no_go"
+    },
+    "latest_t13_hardening": "docs/superpowers/specs/batch45-postq4-t13-strict-output-schema-and-harness-hardening.json",
+    "t13_hardening_result": {
+      "status": "implemented_local_schema_no_op_hardening_no_live_calls",
+      "strict_final_json_parser": "implemented",
+      "no_op_guard": "implemented",
+      "invalid_pair_quarantine": "implemented",
+      "validated_t12_rollup": true,
+      "new_live_model_calls_started": 0,
+      "reviewer_calls_started": 0,
+      "decision": "local_harness_hardening_only_no_promotion"
+    },
+    "latest_t14_approval_packet": "docs/superpowers/specs/batch45-postq4-t14-strict-rerun-approval-packet.json",
+    "t14_approval_packet_result": {
+      "status": "exact_approval_packet_consumed_by_t14_run_gpt55_high",
+      "owner_confirmed": true,
+      "run_authorized_by_this_artifact": true,
+      "new_live_model_calls_started": 16,
+      "reviewer_calls_started": 0,
+      "requires_next_user_message": false,
+      "model": "gpt-5.5",
+      "model_reasoning_effort": "high",
+      "comparison_mode": "current_best_quality_rerun_not_same_model_comparability",
+      "result_detail_level": "detailed",
+      "decision": "approval_consumed_by_t14_run"
+    },
+    "latest_t14_run_results": "docs/superpowers/specs/batch45-postq4-t14-strict-rerun-results.json",
+    "t14_live_eval_result": {
+      "status": "executed_current_best_quality_rerun_no_promotion",
+      "evidence_id": "B45-POSTQ4-T14-RUN-A01",
+      "model": "gpt-5.5",
+      "model_reasoning_effort": "high",
+      "comparison_mode": "current_best_quality_rerun_not_same_model_comparability",
+      "result_detail_level": "detailed",
+      "approved_primary_task_model_calls_started": 16,
+      "completed_primary_task_runs": 16,
+      "valid_pair_count": 8,
+      "invalid_pair_count": 0,
+      "timeout_count": 0,
+      "no_op_count": 0,
+      "invalid_json_count": 0,
+      "average_baseline_score": 0.8775,
+      "average_treatment_score": 0.9062,
+      "average_score_delta_percent": 3.27,
+      "treatment_equal_or_better_count": 6,
+      "reviewer_calls_started": 0,
+      "reviewer_status": "not_run_due_runner_contract_manual_gap",
+      "promotion_threshold_met": false,
+      "m26_reversed": false,
+      "m35_reversed": false,
+      "model_change_interpretation_required": true,
+      "decision": "valid_pairs_no_promotion_model_change_decision_required"
+    },
+    "latest_t15_model_change_decision": "docs/superpowers/specs/batch45-postq4-t15-model-change-decision-packet.json",
+    "t15_model_change_decision": {
+      "status": "implemented_model_change_interpretation_keep_advisory_only_no_go",
+      "evidence_id": "B45-POSTQ4-T15-A01",
+      "t14_is_useful_quality_signal": true,
+      "t14_can_reverse_m26": false,
+      "t14_can_reverse_m35": false,
+      "promotion_allowed": false,
+      "same_model_comparability_with_m26_t05_t12": false,
+      "reviewer_gap_blocks_promotion": true,
+      "next_recommended_route": "B45-POSTQ4-T16-REVIEWER-OR-COMPARABILITY-PACKET",
+      "minimum_behavior_quality_improvement_met": false,
+      "decision": "keep_advisory_only_no_go_after_model_change_rerun"
+    }
+  },
+  "control_plane_sync_decision": {
+    "REQUIREMENTS.md": "not_applicable_no_scope_or_acceptance_change",
+    "PLAN.md": "updated_compact_next_queue_pointer",
+    "TEST.md": "updated_compact_post_q4_route_pointer",
+    "EVALS.md": "updated_compact_post_q4_claim_ceiling",
+    "RUNLOG.md": "handoff_required_due_runlog_budget",
+    "prod_test.md": "not_applicable_batch39_surface",
+    "docs/sources/registry.md": "updated_source_route",
+    "docs/sources/registry.en.md": "updated_source_route",
+    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md": "updated_track11_marker",
+    ".codex/product-agent-os/lifecycle-state.json": "updated_current_marker"
+  },
+  "no_unapproved_actions_note": "T05 approved Codex CLI/OpenAI calls are recorded under execution_update.approved_actions_performed. The booleans below mean no unapproved action occurred.",
+  "no_unapproved_actions": {
+    "live_model_or_provider_api_called_without_approval": false,
+    "runtime_or_live_server_launched": false,
+    "browser_automation_run": false,
+    "target_workspace_command_run": false,
+    "target_workspace_mutated": false,
+    "database_accessed": false,
+    "ci_or_blocker_enforcement_created": false,
+    "git_branch_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation_created_or_enabled": false,
+    "external_write_performed": false
+  },
+  "verification": {
+    "results": [
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t15-model-change-decision-packet.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-post-q4-next-tasks.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "status": "passed",
+        "evidence": "Ran 26 tests; OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "status": "passed",
+        "evidence": "Ran 99 tests; OK"
+      },
+      {
+        "command": "python tools\\check_docs.py",
+        "status": "passed",
+        "evidence": "OK: documentation structure checks passed"
+      },
+      {
+        "command": "git diff --check",
+        "status": "passed_with_crlf_warnings",
+        "evidence": "No whitespace errors. Git reported CRLF/LF normalization warnings for edited markdown files."
+      },
+      {
+        "command": "Get-Item PLAN.md, TEST.md, EVALS.md, RUNLOG.md | Select-Object Name, Length",
+        "status": "passed_with_pre_existing_runlog_budget_gap",
+        "evidence": {
+          "PLAN.md": 49864,
+          "TEST.md": 49913,
+          "EVALS.md": 49998,
+          "RUNLOG.md": 51123
+        }
+      }
+    ],
+    "remaining_required_before_completion_claim": []
+  }
+}

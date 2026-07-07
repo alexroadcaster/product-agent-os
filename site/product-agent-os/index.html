@@ -14,7 +14,7 @@
         <link rel="prev" href="../product-agent/product-agent-os-plugin-spec.html">
 
 
-        <link rel="next" href="artifact-gallery.html">
+        <link rel="next" href="control-plane-current-state.html">
 
 
       <link rel="icon" href="../assets/images/favicon.png">
@@ -1292,6 +1292,12 @@
 
 
 
+
+
+
+
+
+
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
 
 
@@ -1324,6 +1330,27 @@
             Product-Agent OS plugin
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="control-plane-current-state.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Текущий control-plane state
+  </span>
+
+
+      </a>
+    </li>
+
 
 
 
@@ -1465,6 +1492,27 @@
 
   <span class="md-ellipsis">
     Agent-Skill Modernization Loop
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="self-learning-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Self-Learning Loop
   </span>
 
 
@@ -1759,6 +1807,27 @@
 
   <span class="md-ellipsis">
     Engineering standards layer
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="coding-standards.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Professional Code Authoring
   </span>
 
 
@@ -3439,6 +3508,10 @@
 <td><a href="artifact-contracts.html">Artifact Contracts</a></td>
 </tr>
 <tr>
+<td>Как заставить agents писать меньше custom code и больше reuse</td>
+<td><a href="coding-standards.html">Professional Code Authoring standards</a></td>
+</tr>
+<tr>
 <td>Как готовить release packet и handoff</td>
 <td><a href="packaging-and-closure.html">Packaging And Closure</a></td>
 </tr>
@@ -3565,6 +3638,7 @@
 <li>Live/runtime/provider governance с approval packets, redaction, budget, fallback, audit и staged-only evidence.</li>
 <li>Scenario workflows для first-run intake, bug rescue, greenfield idea shaping, complex system acceleration, PR review readiness, legacy onboarding, API migration, AI/RAG eval regression, native/mobile work, desktop local-first work, data migration, security-sensitive change, CI stabilization и release packaging.</li>
 <li>Engineering standards layer с product hypothesis, architecture boundary, acceptance scenarios, test/eval-first gates, docs-as-code, metric hardening, evidence-before-completion и release measurement.</li>
+<li>Professional Code Authoring standards: existing-capability scan, one-line/native candidate, negative dependency rule, deep module check, legacy seam evidence и unsupported code-quality claim ledger.</li>
 <li>Transcript/session eval runner и fixture eval coverage для expected behavior, forbidden behavior, privacy checks и regression replay без external systems.</li>
 <li>Self-verification и modernization loop для agents и skills через self-verification metrics loop <code>agent_skill_metrics_loop</code>: target registry, trace intake, dataset quality, grader/judge calibration, scorecard ledger, staged modernization candidates, staged evidence only, нет live eval/model/API calls, нет active schedules и нет self-applied updates.</li>
 </ul>
@@ -3600,6 +3674,10 @@
 <tr>
 <td>Агент пишет код без инженерной методологии</td>
 <td>Добавляет product hypothesis, architecture boundary, test/eval-first path, влияние на docs и measurement</td>
+</tr>
+<tr>
+<td>Агент пишет 50 строк вместо reuse</td>
+<td>Требует Professional Code Authoring checklist: сначала standard library, framework, config, current dependency или project helper, затем custom code</td>
 </tr>
 <tr>
 <td>Проектные правила размазаны по memory</td>

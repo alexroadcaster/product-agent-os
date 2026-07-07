@@ -1,0 +1,195 @@
+{
+  "schema_version": "batch45_postq4_live_model_rerun_approval_packet_v1",
+  "task_id": "B45-POSTQ4-T04-LIVE-MODEL-RERUN-PACKET",
+  "evidence_id": "B45-POSTQ4-T04-A01",
+  "status": "approval_packet_only_not_run",
+  "created_at": "2026-07-04T20:35:00+03:00",
+  "source_status": "project-authored approval packet only",
+  "decision_target": "Prepare an exact owner approval gate for a future fresh live/model baseline-vs-treatment rerun that could test real AI-agent behavior improvement.",
+  "current_claim_ceiling": {
+    "m26_state": "no_go_real_behavior_improvement_not_proven_after_live_eval",
+    "m35_state": "keep_advisory_only_no_go_for_treatment_v2_promotion",
+    "promotion_allowed": false,
+    "static_warning_delta_can_promote": false
+  },
+  "source_files_used": [
+    "docs/superpowers/specs/batch45-post-q4-next-tasks.json",
+    "docs/superpowers/specs/batch45-agent-behavior-eval-plan.json",
+    "docs/superpowers/specs/batch45-agent-behavior-eval-results.json",
+    "docs/superpowers/specs/batch45-real-project-decision-packet.json"
+  ],
+  "approval_required_before_any_run": {
+    "provider": "owner_selected_provider_required",
+    "model": "owner_selected_model_required",
+    "model_availability_policy": "verify at approval time; do not reuse stale model names as approval",
+    "exact_command_surface": "required_before_run",
+    "max_cost_usd": "owner_fill_required",
+    "timeout_budget": {
+      "per_task_seconds": 600,
+      "total_wall_clock_minutes": 75
+    },
+    "allowed_run_count": {
+      "baseline_tasks": 8,
+      "treatment_tasks": 8,
+      "reviewer_calls": 1,
+      "setup_or_smoke_calls": "0 unless separately approved"
+    },
+    "disposable_workspace_root": "owner_fill_required",
+    "reviewer_route": "owner_fill_required"
+  },
+  "task_set": {
+    "source": "docs/superpowers/specs/batch45-agent-behavior-eval-plan.json",
+    "task_ids": [
+      "B45-HELDOUT-01",
+      "B45-HELDOUT-02",
+      "B45-HELDOUT-03",
+      "B45-HELDOUT-04",
+      "B45-HELDOUT-05",
+      "B45-HELDOUT-06",
+      "B45-HELDOUT-07",
+      "B45-HELDOUT-08"
+    ],
+    "drift_policy": "freeze task text and prompt sources by file hash before the first approved call"
+  },
+  "arms": {
+    "baseline": {
+      "prompt_source": "normal repo instructions only; no Batch 45 treatment context injected",
+      "advisory_signal": "disabled"
+    },
+    "treatment": {
+      "prompt_sources": [
+        ".codex/workflows/coding-standards.md",
+        ".codex/artifact-templates/coding-standard-checklist.md"
+      ],
+      "advisory_signal": "M25/comment-sufficiency advisory visible after code edits"
+    },
+    "fairness_policy": "same provider, model, timeout, sandbox, task order policy and scoring rubric for both arms"
+  },
+  "privacy_boundary": {
+    "retain_allowed": [
+      "sanitized task summaries",
+      "score dimensions",
+      "command names",
+      "exit codes",
+      "elapsed time",
+      "aggregate warning counts"
+    ],
+    "retain_forbidden": [
+      "raw private prompts",
+      "raw model traces",
+      "secrets or credentials",
+      "source dumps",
+      "private logs",
+      "screenshots",
+      "provider payloads"
+    ],
+    "workspace_policy": "disposable clones only; no target workspace mutation"
+  },
+  "result_schema": {
+    "baseline_run": [
+      "task_count",
+      "completed_runs",
+      "timeout_runs",
+      "elapsed_seconds",
+      "average_local_score"
+    ],
+    "treatment_run": [
+      "task_count",
+      "completed_runs",
+      "timeout_runs",
+      "elapsed_seconds",
+      "average_local_score"
+    ],
+    "per_task_result_fields": [
+      "task_id",
+      "baseline_status",
+      "treatment_status",
+      "delta_overall",
+      "reviewer_outcome",
+      "timeout",
+      "unsupported_claims"
+    ],
+    "quantitative_result": [
+      "average_delta",
+      "tasks_treatment_better",
+      "tasks_equal",
+      "tasks_treatment_worse",
+      "advisory_warning_delta",
+      "timeout_runs"
+    ],
+    "reviewer_judgment": {
+      "decision_values": [
+        "go",
+        "no_go",
+        "inconclusive"
+      ],
+      "dimensions": [
+        "existing_capability_scan",
+        "custom_code_avoidance",
+        "comment_sufficiency",
+        "test_scenario_coverage",
+        "unsupported_claims",
+        "reviewer_usefulness",
+        "privacy_safety",
+        "flake_cost_control"
+      ]
+    }
+  },
+  "promotion_threshold": {
+    "minimum_treatment_aggregate_improvement_percent": 20,
+    "must_not_regress": [
+      "privacy_safety",
+      "unsupported_claims",
+      "flake_cost_control"
+    ],
+    "deterministic_test_selection_gate": "at least 6 of 8 tasks equal_or_better",
+    "timeout_gate": "timeout_count must be 0 unless owner accepts gap after review"
+  },
+  "abort_conditions": [
+    "provider/model not exactly approved",
+    "cost cap unavailable or exceeded",
+    "timeout budget exceeded",
+    "raw private trace would be retained",
+    "task data includes secrets/private logs/source dumps",
+    "target workspace mutation is attempted",
+    "browser/runtime/CI/git/automation surface is invoked",
+    "treatment prompt sources drift after freeze",
+    "reviewer route cannot produce independent decision"
+  ],
+  "unresolved_approvals_and_gaps": [
+    "Exact provider/model is not approved.",
+    "Exact USD cap is missing.",
+    "Future run command, sandbox mode, disposable clone root and reviewer route need exact approval.",
+    "Owner must decide whether prior M26 deviations are allowed again: ignore_rules, hooks disabled or any setup/smoke calls.",
+    "No current evidence reverses M26/M35 no-go."
+  ],
+  "execution_follow_up": {
+    "status": "superseded_by_approved_t05_attempt",
+    "result_packet": "docs/superpowers/specs/batch45-postq4-t05-live-model-rerun-results.json",
+    "result_evidence_id": "B45-POSTQ4-T05-A01",
+    "result_status": "stopped_on_timeout_inconclusive_no_go",
+    "packet_status_remains": "approval_packet_only_not_run",
+    "decision_impact": "The later exact approval enabled T05, but the attempt stopped on baseline timeout and does not reverse M26/M35 no-go."
+  },
+  "no_unapproved_actions": {
+    "live_model_or_provider_api_called": false,
+    "runtime_or_live_server_launched": false,
+    "browser_automation_run": false,
+    "target_workspace_command_run": false,
+    "target_workspace_mutated": false,
+    "database_accessed": false,
+    "ci_or_blocker_enforcement_created": false,
+    "git_branch_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation_created_or_enabled": false,
+    "external_write_performed": false
+  },
+  "verification": {
+    "status": "inspection_only_packet_design",
+    "commands_run": [
+      "Get-Content source packets",
+      "Test-Path docs/superpowers/specs/batch45-real-project-decision-packet.json"
+    ],
+    "live_or_external_verification": "not_run_approval_required"
+  }
+}

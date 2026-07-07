@@ -56,6 +56,7 @@ class Batch45S3ProfessionalCodeAuthoringTest(unittest.TestCase):
             "coding_standard_checklist",
             "existing_capability_scan_before_custom_code",
             "professional_code_authoring_not_applicable_reason",
+            "control_plane_overflow_refactor",
             "no_raw_source_leakage",
         ]:
             self.assertIn(expected, agent_context["required_agent_context"])

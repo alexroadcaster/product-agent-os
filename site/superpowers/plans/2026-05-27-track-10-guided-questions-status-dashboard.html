@@ -1286,6 +1286,12 @@
 
 
 
+
+
+
+
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -1320,6 +1326,27 @@
             Product-Agent OS plugin
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/control-plane-current-state.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Текущий control-plane state
+  </span>
+
+
+      </a>
+    </li>
+
 
 
 
@@ -1461,6 +1488,27 @@
 
   <span class="md-ellipsis">
     Agent-Skill Modernization Loop
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/self-learning-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Self-Learning Loop
   </span>
 
 
@@ -1755,6 +1803,27 @@
 
   <span class="md-ellipsis">
     Engineering standards layer
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/coding-standards.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Professional Code Authoring
   </span>
 
 
@@ -3743,14 +3812,14 @@
 <tr>
 <td><code>B41-S1-M02</code></td>
 <td>P0</td>
-<td>Add no-args help and first-launch UX.</td>
+<td>Add no-args help, first-launch UX and welcome disclosure.</td>
 <td>UX-oriented implementer + Tester / <code>implementation-planner</code></td>
-<td>Help/intake output and example safe commands.</td>
-<td>CLI guides instead of returning only parser errors.</td>
-<td>First run feels like a product, not a script puzzle.</td>
-<td>No-args run prints help plus next safe command and exits non-destructively.</td>
-<td>CLI stdout snapshot; no-write proof.</td>
-<td>Help must not suggest unsafe writes or live actions.</td>
+<td>Help/intake output, Product-Agent OS explanation, Self-Learning Loop disclosure and example safe commands.</td>
+<td>CLI guides instead of returning only parser errors and exposes a versioned welcome contract.</td>
+<td>First run feels like a product, not a script puzzle; the user learns what Product-Agent OS and Self-Learning Loop are before any run.</td>
+<td>No-args run prints help plus next safe command, <code>first_response</code> carries <code>welcome_message</code>, generated HTML displays the welcome/help block and the command exits non-destructively.</td>
+<td>CLI stdout snapshot; first-response tests; HTML assertions; no-write proof.</td>
+<td>Help must not suggest unsafe writes, live actions, hidden telemetry, active automation or auto-apply.</td>
 <td>implemented</td>
 </tr>
 <tr>

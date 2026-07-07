@@ -1292,6 +1292,12 @@
 
 
 
+
+
+
+
+
+
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
 
 
@@ -1324,6 +1330,27 @@
             Product-Agent OS Plugin
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="control-plane-current-state.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Current Control-Plane State
+  </span>
+
+
+      </a>
+    </li>
+
 
 
 
@@ -1465,6 +1492,27 @@
 
   <span class="md-ellipsis">
     Agent-Skill Modernization Loop
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="self-learning-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Self-Learning Loop
   </span>
 
 
@@ -1743,6 +1791,24 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#self-learning-loop-due-check-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      Self-Learning Loop Due-Check CLI
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#self-learning-loop-manual-runner-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      Self-Learning Loop Manual Runner CLI
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#project-graph-cli" class="md-nav__link">
     <span class="md-ellipsis">
       Project Graph CLI
@@ -1889,6 +1955,27 @@
 
   <span class="md-ellipsis">
     Engineering Standards Layer
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="coding-standards.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Professional Code Authoring
   </span>
 
 
@@ -3410,6 +3497,24 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#self-learning-loop-due-check-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      Self-Learning Loop Due-Check CLI
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#self-learning-loop-manual-runner-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      Self-Learning Loop Manual Runner CLI
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#project-graph-cli" class="md-nav__link">
     <span class="md-ellipsis">
       Project Graph CLI
@@ -3633,6 +3738,52 @@
 <span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">scan_project_code_graph</span><span class="p">.</span><span class="n">py</span> <span class="p">&lt;</span><span class="n">workspace</span><span class="p">&gt;</span> <span class="p">-</span><span class="n">-stage</span> <span class="n">C</span><span class="p">:\</span><span class="n">tmp</span><span class="p">\</span><span class="n">product-agent-os-graph-stage</span>
 </code></pre></div>
 <p>These examples are not the broad command matrix. The full command-policy matrix, docs-tooling smokes, install/runtime variants and approval-state coverage belong to <code>DOC-M26</code>. CLI docs provide safe pointers only and do not expand permission for live servers, browser automation, provider/API calls, canonical mutation, git actions or root <code>site</code> rebuild.</p>
+<h2 id="self-learning-loop-due-check-cli">Self-Learning Loop Due-Check CLI<a class="headerlink" href="#self-learning-loop-due-check-cli" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+<th>Inputs</th>
+<th>Output / boundary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>python plugins\product-agent-os\scripts\check_self_learning_due.py &lt;workspace&gt; --dry-run</code></td>
+<td>Checks whether the owner should be offered a manual Self-Learning Loop run.</td>
+<td>Product-Agent OS workspace with <code>.codex/product-agent-os/self-learning-state.json</code>.</td>
+<td>Prints <code>due</code>, <code>not_due</code>, <code>disabled</code> or <code>state_invalid</code>; does not run analysis, write state, create a schedule or enable auto-apply.</td>
+</tr>
+</tbody>
+</table>
+<p>In this contract, <code>weekly</code> means a due-check basis, not an active schedule.</p>
+<h2 id="self-learning-loop-manual-runner-cli">Self-Learning Loop Manual Runner CLI<a class="headerlink" href="#self-learning-loop-manual-runner-cli" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+<th>Inputs</th>
+<th>Output / boundary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>python plugins\product-agent-os\scripts\run_self_learning_loop.py &lt;workspace&gt; --dry-run</code></td>
+<td>Builds a Self-Learning Loop run packet without writing files.</td>
+<td>Product-Agent OS workspace with an explicit marker and self-learning state.</td>
+<td>Prints <code>self_learning_run_packet_v1</code>, progress events and planned artifact targets; does not write the workspace or auto-apply anything.</td>
+</tr>
+<tr>
+<td><code>python plugins\product-agent-os\scripts\run_self_learning_loop.py &lt;workspace&gt; --stage &lt;dir&gt;</code></td>
+<td>Generates staged progress state and an offline HTML artifact.</td>
+<td>Product-Agent OS workspace, stage directory outside the target workspace.</td>
+<td>Writes only under the stage root: <code>progress.jsonl</code>, run <code>progress.json</code>, <code>self-learning-run-packet.json</code> and <code>self-learning-progress.html</code>. The target workspace is not changed.</td>
+</tr>
+</tbody>
+</table>
+<p>The manual runner starts with the Product-Agent OS scope detector and fails closed for <code>out_of_scope</code>, <code>missing_marker</code> and <code>needs_owner_review</code>. It does not create scheduler/hooks/Codex App automation, ingest raw sessions, call providers or perform git/release/deploy/publish actions.</p>
 <h2 id="project-graph-cli">Project Graph CLI<a class="headerlink" href="#project-graph-cli" title="Permanent link">&para;</a></h2>
 <p><code>scan_project_code_graph.py</code> has exactly-one-mode semantics. Choose one mode per invocation.</p>
 <table>

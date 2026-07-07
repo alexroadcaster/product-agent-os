@@ -100,6 +100,7 @@ plugins:
                 - Product-Agent OS Plugin Spec: product-agent/product-agent-os-plugin-spec.md
             - Product-Agent OS Plugin:
                 - Overview: product-agent-os/index.md
+                - Current Control-Plane State: product-agent-os/control-plane-current-state.md
                 - Artifact Gallery: product-agent-os/artifact-gallery.md
                 - First-Run Architecture Cockpit: product-agent-os/first-run-architecture-cockpit.md
                 - Project Code Graph: product-agent-os/project-code-graph.md
@@ -248,6 +249,7 @@ nav:
       - Product-Agent OS plugin spec: product-agent/product-agent-os-plugin-spec.md
   - Product-Agent OS plugin:
       - Обзор: product-agent-os/index.md
+      - Текущий control-plane state: product-agent-os/control-plane-current-state.md
       - Витрина результатов: product-agent-os/artifact-gallery.md
       - First-run Architecture Cockpit: product-agent-os/first-run-architecture-cockpit.md
       - Project Code Graph: product-agent-os/project-code-graph.md

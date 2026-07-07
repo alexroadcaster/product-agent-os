@@ -1290,6 +1290,12 @@
 
 
 
+
+
+
+
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -1324,6 +1330,27 @@
             Product-Agent OS Plugin
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/control-plane-current-state.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Current Control-Plane State
+  </span>
+
+
+      </a>
+    </li>
+
 
 
 
@@ -1465,6 +1492,27 @@
 
   <span class="md-ellipsis">
     Agent-Skill Modernization Loop
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/self-learning-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Self-Learning Loop
   </span>
 
 
@@ -1759,6 +1807,27 @@
 
   <span class="md-ellipsis">
     Engineering Standards Layer
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/coding-standards.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Professional Code Authoring
   </span>
 
 
@@ -2971,6 +3040,15 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#professional-coding-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      Professional Coding Review
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#parallel-review" class="md-nav__link">
     <span class="md-ellipsis">
       Parallel review
@@ -3347,6 +3425,15 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#professional-coding-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      Professional Coding Review
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#parallel-review" class="md-nav__link">
     <span class="md-ellipsis">
       Parallel review
@@ -3391,12 +3478,23 @@ Prioritize:
 1. Bugs and behavioral regressions.
 2. Security or data-safety risks.
 3. Missing tests for changed behavior.
-4. Maintainability issues only if they affect correctness.
+4. Professional coding failures that create real debt: unnecessary custom code, missing existing-capability scan, needless dependency, weak abstraction, brittle refactor or low-signal comments.
+5. Maintainability issues only if they affect correctness.
 
 Output findings first.
 Each finding must include file, line, severity, and why it matters.
 Do not rewrite code unless asked.
 </code></pre></div>
+<h2 id="professional-coding-review">Professional Coding Review<a class="headerlink" href="#professional-coding-review" title="Permanent link">&para;</a></h2>
+<p>For non-mechanical code changes, the reviewer checks <a href="../product-agent-os/coding-standards.html">Professional Code Authoring Standards</a>, <code>.codex/workflows/coding-standards.md</code> and <code>.codex/artifact-templates/coding-standard-checklist.md</code> when they are present in the task packet. Findings should call out:</p>
+<ul>
+<li>custom code where delete/configuration/standard library/framework/current dependency/project helper would solve the same need;</li>
+<li>new dependency without <code>negative_dependency_rule</code>, rejected alternatives, compatibility and rollback/removal evidence;</li>
+<li>refactor that changes legacy seams without characterization tests or explicit accepted gap;</li>
+<li>shallow wrapper, clever abstraction or comments that restate code instead of explaining intent, invariant, risk or trade-off;</li>
+<li>unsupported claims such as "clean", "simple", "senior", "safe" or "minimal" without evidence.</li>
+</ul>
+<p>Style-only preferences are not blockers unless they create behavioral, operational, security or maintainability risk.</p>
 <h2 id="parallel-review">Parallel review<a class="headerlink" href="#parallel-review" title="Permanent link">&para;</a></h2>
 <p>For larger PRs, you can explicitly ask for subagents:</p>
 <div class="highlight"><pre><span></span><code>Use one parallel subagent per review track:
@@ -3413,6 +3511,7 @@ Do not include duplicate findings.
 <li>Check that findings refer to real files and lines.</li>
 <li>Request a reproduction or failing test for every high-severity bug.</li>
 <li>Do not accept stylistic comments as blockers without behavioral risk.</li>
+<li>Treat missing professional-coding evidence as a review gap, not as proof that runtime behavior was exercised.</li>
 </ul>
 
 

@@ -1290,6 +1290,12 @@
 
 
 
+
+
+
+
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -1324,6 +1330,27 @@
             Product-Agent OS plugin
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/control-plane-current-state.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Текущий control-plane state
+  </span>
+
+
+      </a>
+    </li>
+
 
 
 
@@ -1465,6 +1492,27 @@
 
   <span class="md-ellipsis">
     Agent-Skill Modernization Loop
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/self-learning-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Self-Learning Loop
   </span>
 
 
@@ -1759,6 +1807,27 @@
 
   <span class="md-ellipsis">
     Engineering standards layer
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/coding-standards.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Professional Code Authoring
   </span>
 
 
@@ -2971,6 +3040,15 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#review" class="md-nav__link">
+    <span class="md-ellipsis">
+      Профессиональный review кода
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#parallel-review" class="md-nav__link">
     <span class="md-ellipsis">
       Parallel review
@@ -3347,6 +3425,15 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#review" class="md-nav__link">
+    <span class="md-ellipsis">
+      Профессиональный review кода
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#parallel-review" class="md-nav__link">
     <span class="md-ellipsis">
       Parallel review
@@ -3391,12 +3478,23 @@ Prioritize:
 1. Bugs and behavioral regressions.
 2. Security or data-safety risks.
 3. Missing tests for changed behavior.
-4. Maintainability issues only if they affect correctness.
+4. Professional coding failures that create real debt: unnecessary custom code, missing existing-capability scan, needless dependency, weak abstraction, brittle refactor or low-signal comments.
+5. Maintainability issues only if they affect correctness.
 
 Output findings first.
 Each finding must include file, line, severity, and why it matters.
 Do not rewrite code unless asked.
 </code></pre></div>
+<h2 id="review">Профессиональный review кода<a class="headerlink" href="#review" title="Permanent link">&para;</a></h2>
+<p>Для не механических изменений кода reviewer проверяет <a href="../product-agent-os/coding-standards.html">Professional Code Authoring standards</a>, <code>.codex/workflows/coding-standards.md</code> и <code>.codex/artifact-templates/coding-standard-checklist.md</code>, если они есть в пакете задачи. Замечания должны указывать:</p>
+<ul>
+<li>самописный код, где удаление, конфигурация, стандартная библиотека, фреймворк, текущая зависимость или проектный <code>helper</code> решают ту же задачу;</li>
+<li>новую зависимость без <code>negative_dependency_rule</code>, отклоненных альтернатив, совместимости и доказательств отката или удаления;</li>
+<li><code>refactor</code>, который меняет <code>legacy seams</code> без <code>characterization tests</code> или явного <code>accepted gap</code>;</li>
+<li>поверхностный <code>wrapper</code>, <code>clever abstraction</code> или комментарии, которые пересказывают код вместо объяснения намерения, <code>invariant</code>, риска или <code>trade-off</code>;</li>
+<li>неподтвержденные <code>claims</code> вроде <code>clean</code>, <code>simple</code>, <code>senior</code>, <code>safe</code> или <code>minimal</code> без доказательств.</li>
+</ul>
+<p>Предпочтения только по стилю не являются <code>blockers</code>, если они не создают <code>behavioral</code>, <code>operational</code>, <code>security</code> или <code>maintainability risk</code>.</p>
 <h2 id="parallel-review">Parallel review<a class="headerlink" href="#parallel-review" title="Permanent link">&para;</a></h2>
 <p>Для больших PR можно явно попросить subagents:</p>
 <div class="highlight"><pre><span></span><code>Use one parallel subagent per review track:
@@ -3413,6 +3511,7 @@ Do not include duplicate findings.
 <li>Проверить, что findings ссылаются на реальные файлы и строки.</li>
 <li>Запросить reproduction или failing test для каждого high-severity bug.</li>
 <li>Не принимать stylistic comments как blockers без behavioral risk.</li>
+<li>Отсутствие доказательств профессионального кодирования считать <code>review gap</code>, а не доказательством <code>runtime behavior</code>.</li>
 </ul>
 
 

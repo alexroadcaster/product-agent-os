@@ -56,6 +56,8 @@ Source status: template; report requires current read-only audit evidence.
 
 - Compaction candidates:
 - Ownership routing updates:
+- Overflow refactor required:
+- Root files updated after refactor:
 - Source registry updates:
 - Automation candidate updates:
 - Compaction decision:
