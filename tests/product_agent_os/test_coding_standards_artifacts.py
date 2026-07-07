@@ -67,6 +67,12 @@ POST_Q4_T16_T22_TASK_GROUP = (
     / "specs"
     / "batch45-postq4-t16-t22-promotion-grade-eval-task-group.json"
 )
+POST_Q4_T17_FROZEN_HELDOUT_CORPUS = (
+    DOCS
+    / "superpowers"
+    / "specs"
+    / "batch45-postq4-t17-frozen-heldout-corpus.json"
+)
 sys.path.insert(0, str(SCRIPTS))
 
 from codex_runtime_runner.model_output import validate_paired_live_eval_result  # noqa: E402
@@ -97,6 +103,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "m27 keeps the m25 advisory local/non-blocking",
             "m35 keeps s7 fixture-local/source-only",
             "m37 records local hook/validator hardening plus review remediation docs/control-plane sync only",
+            "t17 freezes the metadata-only held-out corpus manifest",
         ]:
             with self.subTest(expected=expected):
                 self.assertIn(expected, combined)
@@ -1363,6 +1370,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "B45-POSTQ4-T14-STRICT-RERUN",
             "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION",
             "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
+            "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
         })
 
     def test_b45_postq4_t13_strict_output_schema_and_harness_hardening(self):
@@ -1422,6 +1430,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "B45-POSTQ4-T14-STRICT-RERUN",
             "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION",
             "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
+            "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
         })
         if lifecycle["task_id"] == "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING":
             self.assertEqual("synthetic_green_after_local_tests_only", lifecycle["closure_level"])
@@ -1429,7 +1438,10 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             self.assertEqual("live_dependency_aligned", lifecycle["closure_level"])
         elif lifecycle["task_id"] == "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION":
             self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
-        elif lifecycle["task_id"] == "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP":
+        elif lifecycle["task_id"] in {
+            "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
+            "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
+        }:
             self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
         else:
             self.assertEqual("approval_packet_only_not_run", lifecycle["closure_level"])
@@ -1520,6 +1532,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T14-STRICT-RERUN",
                 "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION",
                 "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
+                "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
             },
         )
 
@@ -1583,6 +1596,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T14-STRICT-RERUN",
                 "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION",
                 "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
+                "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
             },
         )
         if lifecycle["task_id"] == "B45-POSTQ4-T14-STRICT-RERUN":
@@ -1667,7 +1681,13 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         for control_plane in [plan, evals, test_plan, track11]:
             self.assertIn("B45-POSTQ4-T15-A01", control_plane)
 
-        self.assertEqual("B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP", lifecycle["task_id"])
+        self.assertIn(
+            lifecycle["task_id"],
+            {
+                "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
+                "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
+            },
+        )
         self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
 
     def test_b45_postq4_t16_t22_promotion_grade_eval_task_group_is_design_only(self):
@@ -1759,9 +1779,176 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         for control_plane in [plan, runlog, evals, test_plan, current_state, track11]:
             self.assertIn("B45-POSTQ4-T16-T22-A01", control_plane)
 
-        self.assertEqual("B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP", lifecycle["task_id"])
-        self.assertEqual("B45-POSTQ4-T16-T22-A01", lifecycle["evidence_id"])
-        self.assertEqual("implemented_task_group_design_no_run", lifecycle["status"])
+        self.assertIn(
+            lifecycle["task_id"],
+            {
+                "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
+                "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
+            },
+        )
+        self.assertIn(lifecycle["evidence_id"], {"B45-POSTQ4-T16-T22-A01", "B45-POSTQ4-T17-A01"})
+        self.assertIn(
+            lifecycle["status"],
+            {
+                "implemented_task_group_design_no_run",
+                "implemented_frozen_heldout_corpus_manifest_no_run",
+            },
+        )
+        self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
+
+    def test_b45_postq4_t17_frozen_heldout_corpus_manifest_is_no_run(self):
+        packet = json.loads(POST_Q4_T17_FROZEN_HELDOUT_CORPUS.read_text(encoding="utf-8"))
+        parent = json.loads(POST_Q4_T16_T22_TASK_GROUP.read_text(encoding="utf-8"))
+        next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
+        registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
+        registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
+        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+        plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
+        runlog = (ROOT / "RUNLOG.md").read_text(encoding="utf-8")
+        evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
+        test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
+        current_state = (DOCS / "product-agent-os" / "control-plane-current-state.md").read_text(encoding="utf-8")
+        coding_ru = (DOCS / "product-agent-os" / "coding-standards.md").read_text(encoding="utf-8")
+        coding_en = (DOCS / "product-agent-os" / "coding-standards.en.md").read_text(encoding="utf-8")
+        behavioral_ru = (DOCS / "product-agent-os" / "behavioral-evals.md").read_text(encoding="utf-8")
+        behavioral_en = (DOCS / "product-agent-os" / "behavioral-evals.en.md").read_text(encoding="utf-8")
+        track11 = (
+            DOCS
+            / "superpowers"
+            / "plans"
+            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+        ).read_text(encoding="utf-8")
+
+        serialized = json.dumps(packet, sort_keys=True)
+        self.assertEqual("batch45_postq4_t17_frozen_heldout_corpus_v1", packet["schema_version"])
+        self.assertEqual("B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS", packet["task_id"])
+        self.assertEqual("B45-POSTQ4-T17-A01", packet["evidence_id"])
+        self.assertEqual("implemented_frozen_heldout_corpus_manifest_no_run", packet["status"])
+        self.assertEqual("docs_contract_ready", packet["closure_level"])
+
+        corpus = packet["corpus"]
+        self.assertEqual("B45-POSTQ4-FROZEN-HELDOUT-CORPUS-V1", corpus["corpus_id"])
+        self.assertEqual("v1", corpus["corpus_version"])
+        self.assertEqual("frozen_before_any_baseline_or_treatment_execution", corpus["status"])
+        self.assertEqual(8, corpus["task_count"])
+        self.assertEqual(8, len(corpus["task_ids"]))
+        self.assertEqual(8, len(set(corpus["task_ids"])))
+        self.assertEqual("sha256", corpus["hash_algorithm"])
+        self.assertTrue(corpus["corpus_manifest_hash"].startswith("sha256:"))
+        self.assertEqual(71, len(corpus["corpus_manifest_hash"]))
+
+        self.assertFalse(packet["change_control"]["baseline_started"])
+        self.assertFalse(packet["change_control"]["treatment_started"])
+        self.assertIn("new corpus_version", packet["change_control"]["edit_after_baseline_starts"])
+        self.assertEqual("stop_condition_forbidden", packet["change_control"]["tuning_after_result_inspection"])
+
+        entries = packet["entries"]
+        self.assertEqual(8, len(entries))
+        self.assertEqual(set(corpus["task_ids"]), {entry["task_id"] for entry in entries})
+        self.assertEqual({f"H{i}" for i in range(1, 9)}, {entry["slot"] for entry in entries})
+        for entry in entries:
+            with self.subTest(entry=entry["task_id"]):
+                self.assertIn(entry["difficulty"], {"low", "medium", "high"})
+                self.assertEqual(
+                    "project-authored task metadata from batch45-quality-retest-protocol held_out_tasks_v2",
+                    entry["source_class"],
+                )
+                self.assertEqual("metadata_only_no_raw_private_source", entry["privacy_class"])
+                self.assertTrue(entry["expected_evidence"])
+                self.assertTrue(entry["allowed_evidence"])
+                self.assertTrue(entry["blocked_claims"])
+                self.assertTrue(entry["source_refs"])
+                self.assertTrue(entry["metadata_hash"].startswith("sha256:"))
+                self.assertEqual(71, len(entry["metadata_hash"]))
+                for source_ref in entry["source_refs"]:
+                    self.assertFalse(source_ref.startswith("/"))
+                    self.assertNotIn("..", source_ref)
+                    self.assertNotIn("C:", source_ref)
+
+        self.assertEqual("metadata_only_passed_current_run", packet["privacy_review"]["result"])
+        self.assertIn("raw private source bodies", packet["privacy_review"]["forbidden_retained_data_classes"])
+        self.assertIn("secrets_or_credentials", packet["privacy_review"]["forbidden_retained_data_classes"])
+        self.assertFalse(packet["approval_and_execution_boundary"]["packet_authorizes_future_run"])
+        self.assertFalse(packet["approval_and_execution_boundary"]["baseline_or_treatment_run_started"])
+        self.assertFalse(packet["approval_and_execution_boundary"]["reviewer_gate_satisfied"])
+        self.assertEqual(
+            "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
+            packet["approval_and_execution_boundary"]["next_required_task"],
+        )
+
+        for action, performed in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(performed)
+
+        for unsupported in [
+            "promotion_grade_eval_result_exists",
+            "baseline_treatment_execution_started",
+            "reviewer_gate_satisfied",
+            "M26_no_go_reversed",
+            "M35_no_go_reversed",
+            "T15_no_go_reversed",
+            "promotion_ready",
+        ]:
+            self.assertIn(unsupported, packet["unsupported_claims"])
+
+        for forbidden_path_fragment in ["C:\\Users", "C:/Users", "\\Users\\"]:
+            self.assertNotIn(forbidden_path_fragment, serialized)
+
+        parent_rows = {task["task_id"]: task for task in parent["task_rows"]}
+        self.assertEqual(
+            "implemented_frozen_heldout_corpus_manifest_no_run",
+            parent_rows["B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS"]["status"],
+        )
+        self.assertEqual(
+            "docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json",
+            parent_rows["B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS"]["evidence_owner"],
+        )
+
+        self.assertEqual(
+            "docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json",
+            next_tasks["execution_update"]["latest_t17_frozen_heldout_corpus"],
+        )
+        self.assertIn("B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS", next_tasks["execution_update"]["executed_task_ids"])
+        self.assertEqual(
+            "implemented_frozen_heldout_corpus_manifest_no_run",
+            next_tasks["execution_update"]["status_by_task"]["B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS"],
+        )
+        self.assertFalse(next_tasks["execution_update"]["t17_frozen_heldout_corpus"]["promotion_allowed"])
+        self.assertFalse(next_tasks["execution_update"]["t17_frozen_heldout_corpus"]["baseline_started"])
+        self.assertFalse(next_tasks["execution_update"]["t17_frozen_heldout_corpus"]["treatment_started"])
+
+        for registry in [registry_ru, registry_en]:
+            self.assertIn("B45-POSTQ4-T17-A01", registry)
+            self.assertIn("docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json", registry)
+            self.assertIn("metadata-only frozen held-out corpus", registry)
+
+        for control_plane in [
+            plan,
+            runlog,
+            evals,
+            test_plan,
+            current_state,
+            coding_ru,
+            coding_en,
+            track11,
+        ]:
+            self.assertIn("B45-POSTQ4-T17-A01", control_plane)
+
+        for source_owner in [
+            plan,
+            test_plan,
+            current_state,
+            coding_ru,
+            coding_en,
+            behavioral_ru,
+            behavioral_en,
+            track11,
+        ]:
+            self.assertIn("batch45-postq4-t17-frozen-heldout-corpus.json", source_owner)
+
+        self.assertEqual("B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS", lifecycle["task_id"])
+        self.assertEqual("B45-POSTQ4-T17-A01", lifecycle["evidence_id"])
+        self.assertEqual("implemented_frozen_heldout_corpus_manifest_no_run", lifecycle["status"])
         self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
 
     def test_s5_learning_automation_packet_closes_m23_without_activation(self):

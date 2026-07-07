@@ -525,6 +525,7 @@
     "latest_t11_design": "docs/superpowers/specs/batch45-postq4-t11-treatment-v3-source-design.json",
     "latest_t12_exact_approval_packet": "docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-exact-approval-packet.json",
     "latest_t16_t22_promotion_grade_eval_task_group": "docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+    "latest_t17_frozen_heldout_corpus": "docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json",
     "executed_task_ids": [
       "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX",
       "B45-POSTQ4-T02-MP-CRM-STATIC-FIX",
@@ -542,7 +543,8 @@
       "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET",
       "B45-POSTQ4-T14-STRICT-RERUN",
       "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION",
-      "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP"
+      "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
+      "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS"
     ],
     "status_by_task": {
       "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX": "implemented_minimal_fixture_copy_intent_comments",
@@ -561,7 +563,8 @@
       "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET": "exact_approval_packet_consumed_by_t14_run_gpt55_high",
       "B45-POSTQ4-T14-STRICT-RERUN": "executed_current_best_quality_rerun_no_promotion",
       "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION": "implemented_model_change_interpretation_keep_advisory_only_no_go",
-      "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP": "implemented_task_group_design_no_run"
+      "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP": "implemented_task_group_design_no_run",
+      "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS": "implemented_frozen_heldout_corpus_manifest_no_run"
     },
     "warning_delta": {
       "q4_baseline_warning_count": 14,
@@ -596,7 +599,7 @@
       "approved_t14_codex_exec_primary_calls_invalid_json": 0,
       "approved_t14_reviewer_calls_started": 0
     },
-    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T05 stopped on baseline timeout. T12 produced valid_pair_count=6, invalid_json=1 and no_op=1; reviewer skipped. T13 adds local strict-output schema/no-op hardening. T14 executed exact-approved gpt-5.5 high-reasoning current-best-quality rerun with valid_pair_count=8 and invalid_pair_count=0. T15 interprets T14 as a positive current-best-quality signal only: reviewer did not run, same-model comparability with spark evidence is false, no promotion, no M26/M35 reversal and no runtime/browser/target/CI/git/release/deploy/automation proof exists. T16-T22 now define a promotion-grade eval task group only; no future corpus/model/reviewer run is authorized by this packet.",
+    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T05 stopped on baseline timeout. T12 produced valid_pair_count=6, invalid_json=1 and no_op=1; reviewer skipped. T13 adds local strict-output schema/no-op hardening. T14 executed exact-approved gpt-5.5 high-reasoning current-best-quality rerun with valid_pair_count=8 and invalid_pair_count=0. T15 interprets T14 as a positive current-best-quality signal only: reviewer did not run, same-model comparability with spark evidence is false, no promotion, no M26/M35 reversal and no runtime/browser/target/CI/git/release/deploy/automation proof exists. T16-T22 define a promotion-grade eval task group only. T17 freezes the metadata-only held-out corpus manifest; it does not authorize baseline/treatment, reviewer/model/provider or runtime/browser/target/CI/git/release/deploy/automation actions.",
     "post_t06_recommended_next_routes": [
       "B45-POSTQ4-T09-CLOSURE-ADVISORY-ONLY",
       "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
@@ -693,7 +696,7 @@
       "promotion_allowed": false,
       "future_exact_approval_required_before_run": true,
       "required_before_any_run": [
-        "frozen_held_out_corpus",
+        "frozen_held_out_corpus_manifest_ready",
         "same_model_or_explicit_current_model_comparison_choice",
         "strict_structured_output_schema",
         "reviewer_gate",
@@ -701,6 +704,19 @@
         "raw_temp_only_retention"
       ],
       "decision": "only_future_promotion_grade_eval_route_can_change_no_go_after_approval_and_result"
+    },
+    "t17_frozen_heldout_corpus": {
+      "status": "implemented_frozen_heldout_corpus_manifest_no_run",
+      "evidence_id": "B45-POSTQ4-T17-A01",
+      "corpus_id": "B45-POSTQ4-FROZEN-HELDOUT-CORPUS-V1",
+      "corpus_version": "v1",
+      "task_count": 8,
+      "baseline_started": false,
+      "treatment_started": false,
+      "promotion_allowed": false,
+      "future_exact_approval_required_before_run": true,
+      "next_required_task": "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
+      "decision": "metadata_only_frozen_corpus_manifest_ready_no_run"
     }
   },
   "control_plane_sync_decision": {

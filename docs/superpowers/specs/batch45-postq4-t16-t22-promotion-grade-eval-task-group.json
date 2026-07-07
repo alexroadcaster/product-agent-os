@@ -37,7 +37,7 @@
   },
   "task_group": {
     "group_id": "B45-S8-PROMOTION-GRADE-EVAL",
-    "group_status": "planned_after_t16_task_group_design",
+    "group_status": "t17_frozen_heldout_corpus_manifest_ready_next_t18",
     "promotion_allowed_now": false,
     "only_route_that_can_change_no_go_later": true,
     "execution_requires_later_exact_approval": true,
@@ -96,7 +96,7 @@
     {
       "task_id": "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
       "priority": "P0",
-      "status": "planned_not_started",
+      "status": "implemented_frozen_heldout_corpus_manifest_no_run",
       "owner_role": "tester + security/privacy reviewer",
       "scope": "Create a frozen held-out corpus manifest for the promotion-grade eval before any run.",
       "acceptance": [
@@ -104,7 +104,14 @@
         "Corpus is not edited after baseline starts; any change creates a new corpus version.",
         "No raw private source bodies, secrets, raw private chat logs or unredacted PII are retained in repo."
       ],
-      "evidence_owner": "future docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json",
+      "evidence_owner": "docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json",
+      "verification_gates": [
+        "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t17-frozen-heldout-corpus.json",
+        "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "python tools\\check_docs.py",
+        "git diff --check"
+      ],
       "stop_conditions": [
         "Stop if corpus data cannot be sanitized.",
         "Stop if the corpus is tuned after result inspection."
