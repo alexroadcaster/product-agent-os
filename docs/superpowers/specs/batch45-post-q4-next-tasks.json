@@ -431,6 +431,41 @@
         "Stop before runtime/browser/target workspace/CI/git/release/deploy/automation actions.",
         "Stop if approval wording can be read as reusing the consumed T05 or T12 approval."
       ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION",
+      "priority": "P0",
+      "route": "source_owned_decision_gate",
+      "status": "implemented_model_change_interpretation_keep_advisory_only_no_go",
+      "depends_on": [
+        "B45-POSTQ4-T14-STRICT-RERUN",
+        "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
+        "B45-PCA-M26",
+        "B45-PCA-M35"
+      ],
+      "scope": "Interpret the T14 gpt-5.5 high-reasoning rerun without treating it as strict same-model comparability against prior gpt-5.3-codex-spark evidence.",
+      "owned_surfaces": [
+        "docs/superpowers/specs/batch45-postq4-t15-model-change-decision-packet.json",
+        "docs/superpowers/specs/batch45-post-q4-next-tasks.json",
+        "tests/product_agent_os/test_coding_standards_artifacts.py",
+        "compact control-plane/source registry pointers"
+      ],
+      "acceptance": [
+        "Decision records T14 as a positive current-best-quality signal but not M26/M35 reversal.",
+        "Decision preserves no promotion while reviewer_calls_started=0 and same-model comparability is false.",
+        "Decision names future approval-required routes before any reviewer/model/runtime/browser/target/CI/git/release/deploy/automation action."
+      ],
+      "verification_gates": [
+        "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t15-model-change-decision-packet.json",
+        "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "python tools\\check_docs.py",
+        "git diff --check"
+      ],
+      "stop_conditions": [
+        "Stop before any live/model/provider/reviewer call.",
+        "Stop before runtime/browser/target workspace/CI/git/release/deploy/automation actions.",
+        "Stop if T15 wording implies promotion, M26/M35 reversal or same-model comparability."
+      ]
     }
   ],
   "execution_update": {
@@ -458,7 +493,8 @@
       "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN",
       "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
       "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET",
-      "B45-POSTQ4-T14-STRICT-RERUN"
+      "B45-POSTQ4-T14-STRICT-RERUN",
+      "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION"
     ],
     "status_by_task": {
       "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX": "implemented_minimal_fixture_copy_intent_comments",
@@ -475,7 +511,8 @@
       "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN": "executed_paired_live_model_rerun_no_go_invalid_pair",
       "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING": "implemented_local_schema_no_op_hardening_no_live_calls",
       "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET": "exact_approval_packet_consumed_by_t14_run_gpt55_high",
-      "B45-POSTQ4-T14-STRICT-RERUN": "executed_current_best_quality_rerun_no_promotion"
+      "B45-POSTQ4-T14-STRICT-RERUN": "executed_current_best_quality_rerun_no_promotion",
+      "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION": "implemented_model_change_interpretation_keep_advisory_only_no_go"
     },
     "warning_delta": {
       "q4_baseline_warning_count": 14,
@@ -510,7 +547,7 @@
       "approved_t14_codex_exec_primary_calls_invalid_json": 0,
       "approved_t14_reviewer_calls_started": 0
     },
-    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T05 stopped on baseline timeout. T12 produced valid_pair_count=6, invalid_json=1 and no_op=1; reviewer skipped. T13 adds local strict-output schema/no-op hardening. T14 executed exact-approved gpt-5.5 high-reasoning current-best-quality rerun with valid_pair_count=8 and invalid_pair_count=0, but reviewer did not run and model-change interpretation is still required, so no promotion, no M26/M35 reversal and no runtime/browser/target/CI/git/release/deploy/automation proof exists.",
+    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T05 stopped on baseline timeout. T12 produced valid_pair_count=6, invalid_json=1 and no_op=1; reviewer skipped. T13 adds local strict-output schema/no-op hardening. T14 executed exact-approved gpt-5.5 high-reasoning current-best-quality rerun with valid_pair_count=8 and invalid_pair_count=0. T15 interprets T14 as a positive current-best-quality signal only: reviewer did not run, same-model comparability with spark evidence is false, no promotion, no M26/M35 reversal and no runtime/browser/target/CI/git/release/deploy/automation proof exists.",
     "post_t06_recommended_next_routes": [
       "B45-POSTQ4-T09-CLOSURE-ADVISORY-ONLY",
       "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
@@ -584,6 +621,20 @@
       "m35_reversed": false,
       "model_change_interpretation_required": true,
       "decision": "valid_pairs_no_promotion_model_change_decision_required"
+    },
+    "latest_t15_model_change_decision": "docs/superpowers/specs/batch45-postq4-t15-model-change-decision-packet.json",
+    "t15_model_change_decision": {
+      "status": "implemented_model_change_interpretation_keep_advisory_only_no_go",
+      "evidence_id": "B45-POSTQ4-T15-A01",
+      "t14_is_useful_quality_signal": true,
+      "t14_can_reverse_m26": false,
+      "t14_can_reverse_m35": false,
+      "promotion_allowed": false,
+      "same_model_comparability_with_m26_t05_t12": false,
+      "reviewer_gap_blocks_promotion": true,
+      "next_recommended_route": "B45-POSTQ4-T16-REVIEWER-OR-COMPARABILITY-PACKET",
+      "minimum_behavior_quality_improvement_met": false,
+      "decision": "keep_advisory_only_no_go_after_model_change_rerun"
     }
   },
   "control_plane_sync_decision": {
@@ -614,16 +665,21 @@
   },
   "verification": {
     "results": [
-            {
-                "command": "python -m unittest tests.product_agent_os.test_codex_runtime_runner_model_output -v",
-                "status": "passed",
-                "evidence": "Ran 8 tests; OK"
-            },
-            {
-                "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
-                "status": "passed",
-                "evidence": "Ran 25 tests; OK"
-            },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t15-model-change-decision-packet.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-post-q4-next-tasks.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "status": "passed",
+        "evidence": "Ran 26 tests; OK"
+      },
       {
         "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
         "status": "passed",
@@ -641,14 +697,14 @@
       },
       {
         "command": "Get-Item PLAN.md, TEST.md, EVALS.md, RUNLOG.md | Select-Object Name, Length",
-        "status": "passed",
+        "status": "passed_with_pre_existing_runlog_budget_gap",
         "evidence": {
-                    "PLAN.md": 49859,
-                    "TEST.md": 49891,
-                    "EVALS.md": 49996,
-                    "RUNLOG.md": 51123
-                }
-            }
+          "PLAN.md": 49864,
+          "TEST.md": 49913,
+          "EVALS.md": 49998,
+          "RUNLOG.md": 51123
+        }
+      }
     ],
     "remaining_required_before_completion_claim": []
   }

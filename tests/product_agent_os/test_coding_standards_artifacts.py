@@ -60,6 +60,7 @@ POST_Q4_T14_APPROVAL = (
     / "batch45-postq4-t14-strict-rerun-approval-packet.json"
 )
 POST_Q4_T14_RESULTS = DOCS / "superpowers" / "specs" / "batch45-postq4-t14-strict-rerun-results.json"
+POST_Q4_T15_DECISION = DOCS / "superpowers" / "specs" / "batch45-postq4-t15-model-change-decision-packet.json"
 sys.path.insert(0, str(SCRIPTS))
 
 from codex_runtime_runner.model_output import validate_paired_live_eval_result  # noqa: E402
@@ -567,9 +568,10 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN-EXACT-APPROVAL-PACKET",
             "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
             "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET",
+            "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION",
         }
         self.assertEqual(expected_tasks, {task["task_id"] for task in packet["task_queue"]})
-        self.assertEqual(15, len(packet["task_queue"]))
+        self.assertEqual(16, len(packet["task_queue"]))
 
         approval_required = {
             task["task_id"]: task["status"]
@@ -625,6 +627,10 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         )
         self.assertIn(
             "B45-POSTQ4-T12-PAIRED-LIVE-MODEL-RERUN",
+            packet["execution_update"]["executed_task_ids"],
+        )
+        self.assertIn(
+            "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION",
             packet["execution_update"]["executed_task_ids"],
         )
         self.assertEqual(
@@ -1347,6 +1353,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
             "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET",
             "B45-POSTQ4-T14-STRICT-RERUN",
+            "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION",
         })
 
     def test_b45_postq4_t13_strict_output_schema_and_harness_hardening(self):
@@ -1404,11 +1411,14 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
             "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET",
             "B45-POSTQ4-T14-STRICT-RERUN",
+            "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION",
         })
         if lifecycle["task_id"] == "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING":
             self.assertEqual("synthetic_green_after_local_tests_only", lifecycle["closure_level"])
         elif lifecycle["task_id"] == "B45-POSTQ4-T14-STRICT-RERUN":
             self.assertEqual("live_dependency_aligned", lifecycle["closure_level"])
+        elif lifecycle["task_id"] == "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION":
+            self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
         else:
             self.assertEqual("approval_packet_only_not_run", lifecycle["closure_level"])
 
@@ -1496,6 +1506,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             {
                 "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET",
                 "B45-POSTQ4-T14-STRICT-RERUN",
+                "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION",
             },
         )
 
@@ -1553,8 +1564,97 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             self.assertIn("B45-POSTQ4-T14-RUN-A01", registry)
             self.assertIn("docs/superpowers/specs/batch45-postq4-t14-strict-rerun-results.json", registry)
 
-        self.assertEqual("B45-POSTQ4-T14-STRICT-RERUN", lifecycle["task_id"])
-        self.assertEqual("live_dependency_aligned", lifecycle["closure_level"])
+        self.assertIn(
+            lifecycle["task_id"],
+            {
+                "B45-POSTQ4-T14-STRICT-RERUN",
+                "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION",
+            },
+        )
+        if lifecycle["task_id"] == "B45-POSTQ4-T14-STRICT-RERUN":
+            self.assertEqual("live_dependency_aligned", lifecycle["closure_level"])
+        else:
+            self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
+
+    def test_b45_postq4_t15_model_change_decision_keeps_no_promotion(self):
+        packet = json.loads(POST_Q4_T15_DECISION.read_text(encoding="utf-8"))
+        t14_result = json.loads(POST_Q4_T14_RESULTS.read_text(encoding="utf-8"))
+        next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
+        registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
+        registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
+        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+        plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
+        evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
+        test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
+        track11 = (
+            DOCS
+            / "superpowers"
+            / "plans"
+            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+        ).read_text(encoding="utf-8")
+
+        self.assertEqual("batch45_postq4_t15_model_change_decision_packet_v1", packet["schema_version"])
+        self.assertEqual("B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION", packet["task_id"])
+        self.assertEqual("B45-POSTQ4-T15-A01", packet["evidence_id"])
+        self.assertEqual("implemented_model_change_interpretation_keep_advisory_only_no_go", packet["status"])
+        self.assertEqual(
+            "keep_advisory_only_no_go_after_model_change_rerun",
+            packet["decision"]["state"],
+        )
+        self.assertTrue(packet["decision"]["t14_is_useful_quality_signal"])
+        self.assertFalse(packet["decision"]["t14_can_reverse_m26"])
+        self.assertFalse(packet["decision"]["t14_can_reverse_m35"])
+        self.assertFalse(packet["decision"]["promotion_allowed"])
+        self.assertEqual(
+            "blocks_direct_same_model_comparison",
+            packet["interpretation_matrix"]["model_change"]["decision"],
+        )
+        self.assertEqual("not_satisfied", packet["interpretation_matrix"]["promotion_threshold"]["decision"])
+        self.assertEqual("not_satisfied", packet["interpretation_matrix"]["reviewer_gate"]["decision"])
+        self.assertFalse(packet["promotion_gate_after_t15"]["promotion_allowed_now"])
+        self.assertEqual(3.27, packet["promotion_gate_after_t15"]["t14_average_score_delta_percent"])
+        self.assertFalse(packet["promotion_gate_after_t15"]["minimum_behavior_quality_improvement_met"])
+        self.assertEqual(3.27, t14_result["aggregate_result"]["average_score_delta_percent"])
+        self.assertFalse(t14_result["aggregate_result"]["same_model_comparability_with_m26_t05_t12"])
+
+        for action, performed in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(performed)
+
+        for unsupported in [
+            "M26_no_go_reversed",
+            "M35_no_go_reversed",
+            "strict_same_model_comparability_with_spark_runs",
+            "promotion_ready",
+        ]:
+            self.assertIn(unsupported, packet["unsupported_claims"])
+
+        self.assertEqual(
+            "docs/superpowers/specs/batch45-postq4-t15-model-change-decision-packet.json",
+            next_tasks["execution_update"]["latest_t15_model_change_decision"],
+        )
+        self.assertEqual(
+            "implemented_model_change_interpretation_keep_advisory_only_no_go",
+            next_tasks["execution_update"]["status_by_task"][
+                "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION"
+            ],
+        )
+        self.assertEqual(
+            "keep_advisory_only_no_go_after_model_change_rerun",
+            next_tasks["execution_update"]["t15_model_change_decision"]["decision"],
+        )
+        self.assertFalse(next_tasks["execution_update"]["t15_model_change_decision"]["promotion_allowed"])
+
+        for registry in [registry_ru, registry_en]:
+            self.assertIn("B45-POSTQ4-T15-A01", registry)
+            self.assertIn("docs/superpowers/specs/batch45-postq4-t15-model-change-decision-packet.json", registry)
+            self.assertIn("same-model comparability=false", registry)
+
+        for control_plane in [plan, evals, test_plan, track11]:
+            self.assertIn("B45-POSTQ4-T15-A01", control_plane)
+
+        self.assertEqual("B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION", lifecycle["task_id"])
+        self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
 
     def test_s5_learning_automation_packet_closes_m23_without_activation(self):
         packet = json.loads(S5_SUMMARY.read_text(encoding="utf-8"))

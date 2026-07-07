@@ -1,9 +1,9 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "B45-POSTQ4-T14-STRICT-RERUN",
-  "scope": "Execute the exact-approved T14 paired live/model rerun after T13 strict schema/no-op harness hardening with gpt-5.5, high reasoning and detailed sanitized rollup evidence.",
-  "updated_at": "2026-07-05T16:20:00+03:00",
-  "approval_boundary": "T14 exact approval was consumed for Codex CLI/OpenAI codex exec with gpt-5.5 and model_reasoning_effort=high. The run stored only sanitized rollup evidence in repo; raw outputs remain temp-only. Reviewer did not run, promotion is blocked, model-change interpretation is required, and no runtime/browser/target/CI/git/release/deploy/automation proof exists.",
+  "task_id": "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION",
+  "scope": "Create a source-owned decision packet that interprets the T14 gpt-5.5 high-reasoning rerun without new model calls or external actions, then sync next-tasks, control-plane, registry and tests.",
+  "updated_at": "2026-07-05T20:05:00+03:00",
+  "approval_boundary": "T15 is docs/control-plane/test synchronization only. It does not authorize live/model/provider/reviewer calls, runtime/browser/target workspace commands or mutations, CI/blocker creation, git branch/stage/commit/push/PR, release/deploy/publish or automation. Subagents are read-only sidecars for source interpretation and docs sync review.",
   "brief_schema_version": "task_start_brief_v1",
   "brief_format": "field_list",
   "brief_digest": "sha256:b45postq4t14strictrerunapproval0000001",
@@ -23,24 +23,26 @@
     "Next action"
   ],
   "completion_brief_shown": true,
-  "completion_status": "executed_current_best_quality_rerun_no_promotion",
-  "closure_level": "live_dependency_aligned",
+  "completion_status": "implemented_model_change_interpretation_keep_advisory_only_no_go",
+  "closure_level": "docs_contract_ready",
   "completion_gaps": [
-    "Reviewer did not run; reviewer_calls_started=0.",
-    "T14 is a gpt-5.5 high-reasoning current-best-quality rerun, not strict same-model comparability with prior gpt-5.3-codex-spark evidence.",
-    "Model-change interpretation and decision packet are required before any promotion interpretation.",
-    "M26/M35/T05/T06/T12 no-go boundaries remain active: no promotion or reversal was made.",
-    "No runtime/browser/target/CI/git/release/deploy/automation proof exists."
+    "T15 is a docs/control-plane/test decision packet only; it did not perform new live/model/provider/reviewer calls.",
+    "T14 remains a positive current-best-quality signal only, not strict same-model comparability with Spark evidence.",
+    "Promotion, M26/M35 reversal, runtime/browser/target/CI/git/release/deploy/automation proof and release readiness remain unsupported."
   ],
   "completion_evidence": [
-    "docs/superpowers/specs/batch45-postq4-t14-strict-rerun-approval-packet.json",
-    "docs/superpowers/specs/batch45-postq4-t14-strict-rerun-results.json",
-    "docs/superpowers/specs/batch45-postq4-t13-strict-output-schema-and-harness-hardening.json",
+    "docs/superpowers/specs/batch45-postq4-t15-model-change-decision-packet.json",
     "docs/superpowers/specs/batch45-post-q4-next-tasks.json",
-    "tests/product_agent_os/test_coding_standards_artifacts.py"
+    "tests/product_agent_os/test_coding_standards_artifacts.py",
+    "docs/sources/registry.md",
+    "docs/sources/registry.en.md",
+    "PLAN.md",
+    "TEST.md",
+    "EVALS.md",
+    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md"
   ],
-  "evidence_id": "B45-POSTQ4-T14-RUN-A01",
-  "status": "executed_current_best_quality_rerun_no_promotion",
-  "latest_evidence": "docs/superpowers/specs/batch45-postq4-t14-strict-rerun-results.json",
-  "latest_summary": "T14 executed 16/16 approved primary model calls with valid_pair_count=8, invalid_pair_count=0, timeout/no-op/invalid_json=0, average score delta +3.27%, reviewer_calls_started=0, promotion_threshold_met=false, m26_reversed=false and m35_reversed=false."
+  "evidence_id": "B45-POSTQ4-T15-A01",
+  "status": "implemented_model_change_interpretation_keep_advisory_only_no_go",
+  "latest_evidence": "docs/superpowers/specs/batch45-postq4-t15-model-change-decision-packet.json",
+  "latest_summary": "T15 records T14 as a useful current-best-quality signal, but +3.27% is below the >=20% gate, reviewer_calls_started=0 and same-model comparability=false; no promotion or M26/M35 reversal."
 }
