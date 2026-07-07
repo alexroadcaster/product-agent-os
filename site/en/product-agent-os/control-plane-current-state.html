@@ -3654,8 +3654,8 @@ to skip a required control-plane update.</p>
 </tr>
 <tr>
 <td>Batch 45</td>
-<td>Professional Code Authoring remains advisory/no-go. <code>B45-POSTQ4-T15</code> records that T14 is a positive current-quality signal only: <code>gpt-5.5</code>, 16/16, <code>+3.27%</code>, reviewer <code>0</code>, below <code>&gt;=20%</code>, and same-model comparability is false. T15 does not promote or reverse M26/M35.</td>
-<td><code>docs/superpowers/specs/batch45-postq4-t15-model-change-decision-packet.json</code>.</td>
+<td>Professional Code Authoring remains advisory/no-go. <code>B45-POSTQ4-T15</code> records that T14 is a positive current-quality signal only: <code>gpt-5.5</code>, 16/16, <code>+3.27%</code>, reviewer <code>0</code>, below <code>&gt;=20%</code>, and same-model comparability is false. <code>B45-POSTQ4-T16-T22-A01</code> adds the promotion-grade eval task group only; it does not run reviewer/model/provider calls or reverse M26/M35/T15.</td>
+<td><code>docs/superpowers/specs/batch45-postq4-t15-model-change-decision-packet.json</code>, <code>docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json</code>.</td>
 </tr>
 <tr>
 <td>Track 11 docs/site</td>
@@ -3668,8 +3668,10 @@ to skip a required control-plane update.</p>
 <ol>
 <li>Keep root control-plane files compact after every non-mechanical slice.</li>
 <li>For Batch 44, review S7 manual-pilot evidence before any S8 promotion decision.</li>
-<li>For Batch 45, keep advisory/no-go unless a future approved eval exceeds the
-   promotion threshold and reviewer gates.</li>
+<li>For Batch 45, execute the <code>B45-S8</code> promotion-grade eval route in order only:
+   frozen corpus -&gt; design/schema -&gt; cost/timeout/retention -&gt; exact approval
+   -&gt; approved run -&gt; reviewer decision. Until that route clears threshold and
+   reviewer gates, keep advisory/no-go.</li>
 <li>For Track 11, keep source docs, registry, generated site evidence, and
    approval-bound browser/broad-scan claims separate.</li>
 </ol>

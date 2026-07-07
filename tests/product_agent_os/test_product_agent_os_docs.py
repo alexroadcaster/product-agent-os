@@ -349,7 +349,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         self.assertIn("done_through_m40", runlog)
         self.assertIn("RUNLOG.md` is the compact current-cycle handoff layer", runlog)
         self.assertIn("Source-Owned History Map", runlog)
-        self.assertIn("B45-POSTQ4-T15-A01", runlog)
+        self.assertIn("B45-POSTQ4-T16-T22-A01", runlog)
         self.assertIn("T14 is positive current-best-quality signal only", runlog)
 
         for expected in [
@@ -389,7 +389,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         self.assertIn("owner_closed_no_op_git_release_pr", plan)
         self.assertIn("blocked_pending_explicit_cache_mutation_approval", plan)
         self.assertIn("B38-S2", plan)
-        self.assertIn("B45-POSTQ4-T15-A01", plan)
+        self.assertIn("B45-POSTQ4-T16-T22-A01", plan)
 
         for expected in [
             "REQUIREMENTS.md",
@@ -804,7 +804,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 self.assertIn("TEST.md", text)
                 self.assertIn("EVALS.md", text)
                 self.assertIn("B45-POSTQ4-T15", text)
+                self.assertIn("B45-POSTQ4-T16-T22", text)
                 self.assertIn("positive current-quality signal only", text)
+                self.assertIn("promotion-grade eval", text)
                 self.assertIn("Unsupported Claims", text)
 
         self.assertIn("product-agent-os/control-plane-current-state.md", nav)

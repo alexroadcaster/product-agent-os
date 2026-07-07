@@ -466,6 +466,52 @@
         "Stop before runtime/browser/target workspace/CI/git/release/deploy/automation actions.",
         "Stop if T15 wording implies promotion, M26/M35 reversal or same-model comparability."
       ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
+      "priority": "P0",
+      "route": "source_owned_promotion_grade_eval_design_before_approval",
+      "status": "implemented_task_group_design_no_run",
+      "depends_on": [
+        "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION",
+        "B45-POSTQ4-T14-STRICT-RERUN",
+        "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
+        "B45-PCA-M26",
+        "B45-PCA-M35"
+      ],
+      "scope": "Add the next Batch 45 promotion-grade eval implementation group: frozen held-out corpus, explicit comparability mode, strict structured output, reviewer gate, cost/timeout policy, raw-temp-only retention, exact approval before run and final decision gate.",
+      "owned_surfaces": [
+        "docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+        "docs/superpowers/specs/batch45-post-q4-next-tasks.json",
+        "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md",
+        "docs/product-agent-os/control-plane-current-state.md",
+        "PLAN.md",
+        "RUNLOG.md",
+        "TEST.md",
+        "EVALS.md",
+        "docs/sources/registry.md",
+        "docs/sources/registry.en.md",
+        "tests/product_agent_os/test_coding_standards_artifacts.py"
+      ],
+      "acceptance": [
+        "T16-T22 are source-owned as a task group before any run.",
+        "The route states that only a future approved promotion-grade eval can change no-go.",
+        "T17-T22 remain planned or approval_required and cannot start without later exact approval where applicable.",
+        "The packet preserves no promotion, no M26/M35/T15 reversal and no reviewer/model/provider/runtime/browser/target/CI/git/release/deploy/automation proof."
+      ],
+      "verification_gates": [
+        "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+        "python -m json.tool docs\\superpowers\\specs\\batch45-post-q4-next-tasks.json",
+        "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "python tools\\check_docs.py",
+        "git diff --check"
+      ],
+      "stop_conditions": [
+        "Stop before any reviewer/model/provider call.",
+        "Stop before runtime/browser/target workspace/CI/git/release/deploy/automation actions.",
+        "Stop if task-group wording implies promotion-grade result or approval to run."
+      ]
     }
   ],
   "execution_update": {
@@ -478,6 +524,7 @@
     "latest_t10_harness_redesign": "docs/superpowers/specs/batch45-postq4-t10-live-eval-harness-redesign-packet.json",
     "latest_t11_design": "docs/superpowers/specs/batch45-postq4-t11-treatment-v3-source-design.json",
     "latest_t12_exact_approval_packet": "docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-exact-approval-packet.json",
+    "latest_t16_t22_promotion_grade_eval_task_group": "docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
     "executed_task_ids": [
       "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX",
       "B45-POSTQ4-T02-MP-CRM-STATIC-FIX",
@@ -494,7 +541,8 @@
       "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
       "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET",
       "B45-POSTQ4-T14-STRICT-RERUN",
-      "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION"
+      "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION",
+      "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP"
     ],
     "status_by_task": {
       "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX": "implemented_minimal_fixture_copy_intent_comments",
@@ -512,7 +560,8 @@
       "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING": "implemented_local_schema_no_op_hardening_no_live_calls",
       "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET": "exact_approval_packet_consumed_by_t14_run_gpt55_high",
       "B45-POSTQ4-T14-STRICT-RERUN": "executed_current_best_quality_rerun_no_promotion",
-      "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION": "implemented_model_change_interpretation_keep_advisory_only_no_go"
+      "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION": "implemented_model_change_interpretation_keep_advisory_only_no_go",
+      "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP": "implemented_task_group_design_no_run"
     },
     "warning_delta": {
       "q4_baseline_warning_count": 14,
@@ -547,14 +596,15 @@
       "approved_t14_codex_exec_primary_calls_invalid_json": 0,
       "approved_t14_reviewer_calls_started": 0
     },
-    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T05 stopped on baseline timeout. T12 produced valid_pair_count=6, invalid_json=1 and no_op=1; reviewer skipped. T13 adds local strict-output schema/no-op hardening. T14 executed exact-approved gpt-5.5 high-reasoning current-best-quality rerun with valid_pair_count=8 and invalid_pair_count=0. T15 interprets T14 as a positive current-best-quality signal only: reviewer did not run, same-model comparability with spark evidence is false, no promotion, no M26/M35 reversal and no runtime/browser/target/CI/git/release/deploy/automation proof exists.",
+    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T05 stopped on baseline timeout. T12 produced valid_pair_count=6, invalid_json=1 and no_op=1; reviewer skipped. T13 adds local strict-output schema/no-op hardening. T14 executed exact-approved gpt-5.5 high-reasoning current-best-quality rerun with valid_pair_count=8 and invalid_pair_count=0. T15 interprets T14 as a positive current-best-quality signal only: reviewer did not run, same-model comparability with spark evidence is false, no promotion, no M26/M35 reversal and no runtime/browser/target/CI/git/release/deploy/automation proof exists. T16-T22 now define a promotion-grade eval task group only; no future corpus/model/reviewer run is authorized by this packet.",
     "post_t06_recommended_next_routes": [
       "B45-POSTQ4-T09-CLOSURE-ADVISORY-ONLY",
       "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
       "B45-POSTQ4-T07-RUNTIME-BROWSER-PACKET",
       "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN",
       "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
-      "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET"
+      "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET",
+      "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP"
     ],
     "latest_t12_run_results": "docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-results.json",
     "t12_live_eval_result": {
@@ -632,9 +682,25 @@
       "promotion_allowed": false,
       "same_model_comparability_with_m26_t05_t12": false,
       "reviewer_gap_blocks_promotion": true,
-      "next_recommended_route": "B45-POSTQ4-T16-REVIEWER-OR-COMPARABILITY-PACKET",
+      "next_recommended_route": "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
       "minimum_behavior_quality_improvement_met": false,
       "decision": "keep_advisory_only_no_go_after_model_change_rerun"
+    },
+    "t16_t22_promotion_grade_eval_task_group": {
+      "status": "implemented_task_group_design_no_run",
+      "evidence_id": "B45-POSTQ4-T16-T22-A01",
+      "group_id": "B45-S8-PROMOTION-GRADE-EVAL",
+      "promotion_allowed": false,
+      "future_exact_approval_required_before_run": true,
+      "required_before_any_run": [
+        "frozen_held_out_corpus",
+        "same_model_or_explicit_current_model_comparison_choice",
+        "strict_structured_output_schema",
+        "reviewer_gate",
+        "cost_timeout_policy",
+        "raw_temp_only_retention"
+      ],
+      "decision": "only_future_promotion_grade_eval_route_can_change_no_go_after_approval_and_result"
     }
   },
   "control_plane_sync_decision": {
@@ -678,12 +744,12 @@
       {
         "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
         "status": "passed",
-        "evidence": "Ran 26 tests; OK"
+        "evidence": "Ran 27 tests; OK"
       },
       {
         "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
         "status": "passed",
-        "evidence": "Ran 99 tests; OK"
+        "evidence": "Ran 100 tests; OK"
       },
       {
         "command": "python tools\\check_docs.py",
@@ -696,13 +762,23 @@
         "evidence": "No whitespace errors. Git reported CRLF/LF normalization warnings for edited markdown files."
       },
       {
+        "command": ".venv-docs\\Scripts\\python.exe -m mkdocs build --strict",
+        "status": "passed",
+        "evidence": "Documentation built successfully for ru and en locales."
+      },
+      {
+        "command": "powershell -NoProfile -ExecutionPolicy Bypass -File tools\\fix_site_i18n_links.ps1 -SiteDir site",
+        "status": "passed",
+        "evidence": "updated_files=298"
+      },
+      {
         "command": "Get-Item PLAN.md, TEST.md, EVALS.md, RUNLOG.md | Select-Object Name, Length",
-        "status": "passed_with_pre_existing_runlog_budget_gap",
+        "status": "passed",
         "evidence": {
-          "PLAN.md": 49864,
-          "TEST.md": 49913,
-          "EVALS.md": 49998,
-          "RUNLOG.md": 51123
+          "PLAN.md": 9427,
+          "TEST.md": 9660,
+          "EVALS.md": 11885,
+          "RUNLOG.md": 6212
         }
       }
     ],

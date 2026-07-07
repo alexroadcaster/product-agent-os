@@ -5998,6 +5998,19 @@
 <td>Stop before reviewer/model/provider calls, approval-gated actions or RUNLOG expansion.</td>
 <td><code>implemented_B45_POSTQ4_T15_model_change_decision: B45-POSTQ4-T15-A01</code>; <code>keep_advisory_only_no_go</code>; <code>next_T16_optional_reviewer_or_comparability_packet</code></td>
 </tr>
+<tr>
+<td><code>B45-POSTQ4-T16-T22</code></td>
+<td>P0</td>
+<td><code>B45-S8</code></td>
+<td>Add the promotion-grade eval implementation task group before any future run.</td>
+<td><code>docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json</code>; <code>docs/superpowers/specs/batch45-post-q4-next-tasks.json</code>; Track 11 plan; registry/control-plane sync; focused tests.</td>
+<td>T16 records the read-only scan and task group; T17 freezes the held-out corpus; T18 defines comparison mode, strict schema and rubric; T19 defines cost/timeout/raw-temp-only retention; T20 stages exact approval; T21 is the approval-required run; T22 is reviewer gate plus promotion/no-go decision.</td>
+<td>Owner requested a new Batch 45 group for promotion-grade eval implementation after T15.</td>
+<td>Only this route can later change no-go, but this row is design/no-run only: no future corpus/model/reviewer run is authorized yet and current advisory-only/no-go remains active.</td>
+<td><code>python -m json.tool</code> for T16-T22 and next-tasks packets; Batch 45 artifact tests; docs tests; <code>python tools\check_docs.py</code>; <code>git diff --check</code>.</td>
+<td>Stop before reviewer/model/provider calls, runtime/browser/target/CI/git/release/deploy/automation actions, raw-output repo retention or promotion wording.</td>
+<td><code>implemented_B45_POSTQ4_T16_T22_task_group: B45-POSTQ4-T16-T22-A01</code>; <code>B45-S8_promotion_grade_eval_design_no_run</code>; <code>future_exact_approval_required</code></td>
+</tr>
 </tbody>
 </table>
 <h3 id="batch-45-execution-slices">Batch 45 Execution Slices<a class="headerlink" href="#batch-45-execution-slices" title="Permanent link">&para;</a></h3>
@@ -6010,10 +6023,12 @@
 <li><code>B45-S5 Learning And Automation Candidates</code>: execute <code>B45-PCA-M23</code> as candidate-only learning-loop/automation policy, then finalize <code>B45-PCA-M14</code> source closure. Future promotion needs owner approval, at least three successful manual pilot runs, rollback, false-positive audit, flake replay and cost evidence.</li>
 <li><code>B45-S6 Advisory Validation And Behavior Proof</code>: execute <code>B45-PCA-M24..M27</code> to measure broad false positives, wire approved non-blocking local advisory signal, prove or falsify real AI-agent behavior improvement and record the promotion/no-go decision.</li>
 <li><code>B45-S7 Architecture V2 And Real-Project Scenario Harness</code>: execute <code>B45-PCA-M28..M36</code> to deepen the architecture, inventory real target scenarios, define sanitized fixture policy, build approved fixture packs, run baseline/refactor comparisons, calibrate scorecards and decide whether a smaller treatment v2 or disposable runtime/browser pilot is worth a later approval.</li>
+<li><code>B45-S8 Promotion-Grade Eval</code>: execute T16-T22 as a staged route only. T16 adds the task group, T17-T20 prepare frozen corpus/design/cost-retention/approval packets, T21 is blocked until exact approval for a future model/provider run, and T22 can change no-go only after threshold and reviewer gates are satisfied.</li>
 </ul>
 <h3 id="batch-45-acceptance-ceiling">Batch 45 Acceptance Ceiling<a class="headerlink" href="#batch-45-acceptance-ceiling" title="Permanent link">&para;</a></h3>
 <p>Batch 45 can claim planned or implemented Product-Agent OS professional code authoring standards only after the relevant rows execute with current verification evidence. <code>B45-S6</code> closes only as advisory/no-go decision evidence after M24-M27 produced current audit, advisory-wiring, before/after behavior-eval and decision evidence. It can now claim only the approved local non-blocking M25 advisory hook plus the M27 <code>keep_advisory_only_no_go_for_blocker_or_ci</code> decision; it cannot claim that AI agents now write enterprise-quality code in real projects, enforce all language standards, replace human review, audit all dependencies, activate CI or blocker hooks, mutate target workspaces, call providers, run browser automation, refresh the installed plugin cache, publish docs, route live behavior beyond the local hook replay, change readiness outcomes beyond source artifacts, auto-apply Self-Learning Loop recommendations, or prove runtime behavior without a later approval-gated batch.</p>
 <p><code>B45-S7</code> may add architecture, read-only inventory, sanitized-fixture and fixture-local comparison evidence only after each row executes with current evidence. It does not by itself approve copying source files, target mutation, live target runtime, browser automation, provider/API calls, git writes, CI/blocker enforcement, release, deploy, publication, installed plugin cache refresh, active automation or production-readiness claims.</p>
+<p><code>B45-S8</code> may design promotion-grade eval evidence only. It cannot claim a promotion-grade result, reviewer approval, M26/M35/T15 reversal, runtime/browser/target readiness, CI/blocker promotion, release readiness or production readiness until a later exact-approved run and reviewer decision packet exist.</p>
 <h2 id="verification-plan">Verification Plan<a class="headerlink" href="#verification-plan" title="Permanent link">&para;</a></h2>
 <p>Minimum verification when this plan file alone changes:</p>
 <div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">-m</span> <span class="n">unittest</span> <span class="n">tests</span><span class="p">.</span><span class="n">product_agent_os</span><span class="p">.</span><span class="n">test_product_agent_os_docs</span> <span class="n">-v</span>

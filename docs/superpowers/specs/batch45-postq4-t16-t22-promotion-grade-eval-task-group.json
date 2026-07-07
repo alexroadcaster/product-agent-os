@@ -1,0 +1,306 @@
+{
+  "schema_version": "batch45_postq4_t16_t22_promotion_grade_eval_task_group_v1",
+  "task_id": "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
+  "evidence_id": "B45-POSTQ4-T16-T22-A01",
+  "status": "implemented_task_group_design_no_run",
+  "created_at": "2026-07-07T20:15:00+03:00",
+  "source_status": "project-authored implementation task group after read-only agent scan; no live/model/provider/reviewer/runtime/browser/target/CI/git/release/deploy/automation action was performed",
+  "goal": "Add the only Batch 45 route that can honestly change advisory-only/no-go later: a promotion-grade eval with frozen held-out corpus, explicit comparability mode, strict structured output, reviewer gate, cost/timeout policy and raw-temp-only retention before any approved run.",
+  "basis": {
+    "current_boundary": "B45-POSTQ4-T15-A01 keeps advisory-only/no-go after T14 model-change interpretation.",
+    "t14_signal": "T14 is positive current-best-quality evidence only: gpt-5.5/high, 16/16 completed, valid_pair_count=8, average_score_delta_percent=3.27, reviewer_calls_started=0, promotion_threshold_met=false and same_model_comparability_with_m26_t05_t12=false.",
+    "why_new_group": "Previous post-Q4 routes improved strict output hygiene and current-model signal quality, but no route yet freezes a promotion-grade corpus and approval packet before a future run."
+  },
+  "sidecar_agent_scan": {
+    "agents_used": [
+      {
+        "role": "explorer",
+        "scope": "read-only Batch 45 eval/harness/source packet scan",
+        "edits_authorized": false,
+        "provider_or_model_calls_authorized": false
+      },
+      {
+        "role": "tester",
+        "scope": "read-only Batch 45 tests and verification gate scan",
+        "edits_authorized": false,
+        "provider_or_model_calls_authorized": false
+      },
+      {
+        "role": "docs-maintainer",
+        "scope": "read-only docs/registry/control-plane routing scan",
+        "edits_authorized": false,
+        "provider_or_model_calls_authorized": false
+      }
+    ],
+    "agent_outputs_are_supporting_review_only": true,
+    "source_artifacts_remain_authoritative": true
+  },
+  "task_group": {
+    "group_id": "B45-S8-PROMOTION-GRADE-EVAL",
+    "group_status": "planned_after_t16_task_group_design",
+    "promotion_allowed_now": false,
+    "only_route_that_can_change_no_go_later": true,
+    "execution_requires_later_exact_approval": true,
+    "default_closure_level": "docs_contract_ready",
+    "claim_ceiling": "This packet designs the implementation route only. It does not prove behavior improvement, reviewer approval, M26/M35 reversal, runtime/browser/target readiness, CI/blocker promotion, release readiness or production readiness."
+  },
+  "comparability_policy": {
+    "allowed_modes": [
+      "same_model_baseline_treatment",
+      "explicit_current_model_comparison"
+    ],
+    "preferred_mode": "same_model_baseline_treatment",
+    "current_model_comparison_rule": "Allowed only if the approval packet states that the result is current-model quality evidence and not strict historical same-model comparability.",
+    "disallowed_modes": [
+      "implicit_model_change",
+      "baseline_and_treatment_on_different_models_without_owner_accepted_gap",
+      "promotion_from_static_warning_delta_only",
+      "promotion_from_primary_scores_without_reviewer_gate"
+    ]
+  },
+  "promotion_gate": {
+    "minimum_primary_improvement": ">=20% average improvement over baseline on valid pairs unless a later owner-approved packet changes the threshold before any run",
+    "valid_pair_requirement": "all frozen corpus tasks must produce schema-valid baseline and treatment outputs, or invalid pairs are quarantined and cannot support promotion",
+    "reviewer_gate_required": true,
+    "reviewer_no_go_blocks_promotion": true,
+    "cost_timeout_policy_required": true,
+    "raw_temp_only_retention_required": true,
+    "no_unapproved_actions_proof_required": true
+  },
+  "task_rows": [
+    {
+      "task_id": "B45-POSTQ4-T16-PROMOTION-GRADE-EVAL-TASK-GROUP",
+      "priority": "P0",
+      "status": "implemented_task_group_design_no_run",
+      "owner_role": "implementation-planner + docs-maintainer + tester",
+      "scope": "Scan current Batch 45 implementation and add the S8 promotion-grade eval task group to source packets, Track 11, registry, compact control-plane and tests.",
+      "acceptance": [
+        "New source-owned task-group packet exists.",
+        "Track 11 names T16-T22 and the no-run approval boundary.",
+        "Registry, current-state docs and compact root files point to the new packet.",
+        "Regression tests assert no promotion and no unapproved actions."
+      ],
+      "verification_gates": [
+        "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+        "python -m json.tool docs\\superpowers\\specs\\batch45-post-q4-next-tasks.json",
+        "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "python tools\\check_docs.py",
+        "git diff --check"
+      ],
+      "stop_conditions": [
+        "Stop before any reviewer/model/provider call.",
+        "Stop before runtime/browser/target/CI/git/release/deploy/automation action."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
+      "priority": "P0",
+      "status": "planned_not_started",
+      "owner_role": "tester + security/privacy reviewer",
+      "scope": "Create a frozen held-out corpus manifest for the promotion-grade eval before any run.",
+      "acceptance": [
+        "Corpus task IDs, source class, privacy class, difficulty, expected evidence and hashes are frozen before baseline/treatment execution.",
+        "Corpus is not edited after baseline starts; any change creates a new corpus version.",
+        "No raw private source bodies, secrets, raw private chat logs or unredacted PII are retained in repo."
+      ],
+      "evidence_owner": "future docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json",
+      "stop_conditions": [
+        "Stop if corpus data cannot be sanitized.",
+        "Stop if the corpus is tuned after result inspection."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
+      "priority": "P0",
+      "status": "planned_not_started",
+      "owner_role": "implementation-planner + tester",
+      "scope": "Define the promotion-grade eval design packet: comparison mode, model policy, strict structured output schema, scoring rubric, invalid-output handling, thresholds, reviewer rubric and result contract.",
+      "acceptance": [
+        "Design chooses either same-model baseline/treatment or explicit current-model comparison.",
+        "Strict structured output schema is named and failure handling is deterministic.",
+        "Reviewer gate, promotion threshold and unsupported-claim ceiling are explicit."
+      ],
+      "evidence_owner": "future docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
+      "stop_conditions": [
+        "Stop if comparability mode is ambiguous.",
+        "Stop if reviewer gate is optional for promotion."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
+      "priority": "P0",
+      "status": "planned_not_started",
+      "owner_role": "tester + release-operator + security/privacy reviewer",
+      "scope": "Define run caps, timeout policy, retry policy, abort policy, raw-temp-only retention and sanitized rollup rules before any approval packet is executable.",
+      "acceptance": [
+        "Max calls, max retries, timeout per call, total budget and stop-on-timeout behavior are explicit.",
+        "Raw outputs remain temp-only and are not retained in repo.",
+        "Sanitized rollup fields are enough for reviewer and decision gates without raw trace storage."
+      ],
+      "evidence_owner": "future docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json",
+      "stop_conditions": [
+        "Stop if budget/caps are missing.",
+        "Stop if raw output retention would enter repo."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
+      "priority": "P0",
+      "status": "approval_packet_planned_not_started",
+      "owner_role": "implementation-planner + docs-maintainer",
+      "scope": "Prepare exact owner approval text for the future promotion-grade eval run after T17-T19 are source-ready.",
+      "acceptance": [
+        "Approval text names model, reasoning effort, comparison mode, corpus version, max calls, timeout, cost cap, reviewer policy, retention policy and stop conditions.",
+        "Packet states that it does not run anything by itself.",
+        "Approval cannot be reused after a consumed or aborted run."
+      ],
+      "evidence_owner": "future docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+      "stop_conditions": [
+        "Stop before any model/provider/reviewer call.",
+        "Stop if owner approval text is incomplete."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN",
+      "priority": "P1",
+      "status": "approval_required_not_started",
+      "owner_role": "tester",
+      "scope": "Run the promotion-grade eval only after exact owner approval.",
+      "acceptance": [
+        "Baseline and treatment execute under the approved comparison mode and frozen corpus.",
+        "Every run passes strict schema or is quarantined according to T18.",
+        "Sanitized result packet records aggregate, per-task, invalid-pair, timeout, cost and no-unapproved-actions evidence."
+      ],
+      "evidence_owner": "future docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-results.json",
+      "stop_conditions": [
+        "Stop without exact approval.",
+        "Stop on timeout/cost/corpus/privacy policy breach.",
+        "Stop before target/runtime/browser/CI/git/release/deploy/automation actions."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION",
+      "priority": "P0",
+      "status": "blocked_until_t21_result",
+      "owner_role": "reviewer + completion-skeptic + docs-maintainer",
+      "scope": "Run or record the reviewer gate and produce the final promotion/no-go decision after T21 evidence exists.",
+      "acceptance": [
+        "Reviewer verdict is not no_go before any promotion claim.",
+        "Decision separates behavior quality, static warning deltas, runtime/browser/target readiness and CI/blocker/governance readiness.",
+        "Control-plane and registry sync preserve unsupported claims and exact approval boundaries."
+      ],
+      "evidence_owner": "future docs/superpowers/specs/batch45-postq4-t22-promotion-grade-decision-packet.json",
+      "stop_conditions": [
+        "Stop if reviewer is not run or returns no_go.",
+        "Stop if the result is below threshold.",
+        "Stop if promotion wording implies runtime/browser/target/CI/release readiness without separate proof."
+      ]
+    }
+  ],
+  "control_plane_sync_decision": {
+    "REQUIREMENTS.md": "not_applicable_no_scope_or_acceptance_change",
+    "PLAN.md": "updated_compact_s8_route_pointer",
+    "TEST.md": "updated_compact_promotion_grade_eval_route",
+    "EVALS.md": "updated_compact_promotion_grade_claim_ceiling",
+    "RUNLOG.md": "updated_compact_handoff_pointer",
+    "docs/sources/registry.md": "updated_source_route",
+    "docs/sources/registry.en.md": "updated_source_route",
+    "docs/product-agent-os/control-plane-current-state.md": "updated_site_owner_current_state",
+    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md": "updated_track11_task_group",
+    ".codex/product-agent-os/lifecycle-state.json": "updated_current_marker"
+  },
+  "approval_required_before_future_actions": [
+    "Any reviewer/model/provider call.",
+    "Any live/model/provider rerun for same-model or current-model comparability.",
+    "Any runtime/live server or browser automation proof.",
+    "Any target workspace command or mutation.",
+    "Any database or production data access.",
+    "Any CI workflow, blocker enforcement or active automation creation.",
+    "Any git branch/stage/commit/push/PR, release, deploy, publish or external write."
+  ],
+  "no_unapproved_actions": {
+    "new_live_model_or_provider_api_called": false,
+    "reviewer_model_call_started": false,
+    "runtime_or_live_server_launched": false,
+    "browser_automation_run": false,
+    "target_workspace_command_run": false,
+    "target_workspace_mutated": false,
+    "database_accessed": false,
+    "ci_or_blocker_enforcement_created": false,
+    "git_branch_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation_created_or_enabled": false,
+    "external_write_performed": false
+  },
+  "unsupported_claims": [
+    "promotion_grade_eval_result_exists",
+    "M26_no_go_reversed",
+    "M35_no_go_reversed",
+    "T15_no_go_reversed",
+    "same_model_comparability_selected_for_future_run",
+    "current_model_comparison_approved_for_future_run",
+    "reviewer_gate_satisfied",
+    "promotion_ready",
+    "real_ai_agent_behavior_improvement_proven",
+    "runtime_browser_readiness",
+    "target_workspace_apply_safety",
+    "ci_or_blocker_promotion",
+    "release_deploy_publish_readiness"
+  ],
+  "verification": {
+    "status": "passed_current_run",
+    "results": [
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-post-q4-next-tasks.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "status": "passed",
+        "evidence": "Ran 27 tests; OK."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "status": "passed",
+        "evidence": "Ran 100 tests; OK."
+      },
+      {
+        "command": "python tools\\check_docs.py",
+        "status": "passed",
+        "evidence": "OK: documentation structure checks passed."
+      },
+      {
+        "command": ".venv-docs\\Scripts\\python.exe -m mkdocs build --strict",
+        "status": "passed",
+        "evidence": "Documentation built successfully for ru and en locales."
+      },
+      {
+        "command": "powershell -NoProfile -ExecutionPolicy Bypass -File tools\\fix_site_i18n_links.ps1 -SiteDir site",
+        "status": "passed",
+        "evidence": "updated_files=298"
+      },
+      {
+        "command": "git diff --check",
+        "status": "passed_with_crlf_warnings",
+        "evidence": "No whitespace errors. Git reported CRLF/LF normalization warnings for edited files."
+      },
+      {
+        "command": "Get-ChildItem -LiteralPath PLAN.md,RUNLOG.md,TEST.md,EVALS.md | Select-Object Name,Length",
+        "status": "passed",
+        "evidence": {
+          "PLAN.md": 9427,
+          "RUNLOG.md": 6212,
+          "TEST.md": 9660,
+          "EVALS.md": 11885
+        }
+      }
+    ]
+  }
+}

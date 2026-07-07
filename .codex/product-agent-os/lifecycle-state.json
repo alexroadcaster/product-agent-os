@@ -1,9 +1,9 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION",
-  "scope": "Create a source-owned decision packet that interprets the T14 gpt-5.5 high-reasoning rerun without new model calls or external actions, then sync next-tasks, control-plane, registry and tests.",
-  "updated_at": "2026-07-05T20:05:00+03:00",
-  "approval_boundary": "T15 is docs/control-plane/test synchronization only. It does not authorize live/model/provider/reviewer calls, runtime/browser/target workspace commands or mutations, CI/blocker creation, git branch/stage/commit/push/PR, release/deploy/publish or automation. Subagents are read-only sidecars for source interpretation and docs sync review.",
+  "task_id": "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
+  "scope": "Add a source-owned Batch 45 promotion-grade eval task group after T15, using read-only agent scans and docs/control-plane/test synchronization only.",
+  "updated_at": "2026-07-07T20:15:00+03:00",
+  "approval_boundary": "T16-T22 is docs/control-plane/test synchronization only. It does not authorize live/model/provider/reviewer calls, runtime/browser/target workspace commands or mutations, CI/blocker creation, git branch/stage/commit/push/PR, release/deploy/publish or automation. Subagents are read-only sidecars for current implementation, tests and docs routing scans.",
   "brief_schema_version": "task_start_brief_v1",
   "brief_format": "field_list",
   "brief_digest": "sha256:b45postq4t14strictrerunapproval0000001",
@@ -23,26 +23,28 @@
     "Next action"
   ],
   "completion_brief_shown": true,
-  "completion_status": "implemented_model_change_interpretation_keep_advisory_only_no_go",
+  "completion_status": "implemented_task_group_design_no_run",
   "closure_level": "docs_contract_ready",
   "completion_gaps": [
-    "T15 is a docs/control-plane/test decision packet only; it did not perform new live/model/provider/reviewer calls.",
-    "T14 remains a positive current-best-quality signal only, not strict same-model comparability with Spark evidence.",
-    "Promotion, M26/M35 reversal, runtime/browser/target/CI/git/release/deploy/automation proof and release readiness remain unsupported."
+    "T16-T22 is a docs/control-plane/test task-group packet only; it did not perform new live/model/provider/reviewer calls.",
+    "T17-T22 remain planned or approval_required until future exact approvals and evidence exist.",
+    "Promotion, M26/M35/T15 reversal, runtime/browser/target/CI/git/release/deploy/automation proof and release readiness remain unsupported."
   ],
   "completion_evidence": [
-    "docs/superpowers/specs/batch45-postq4-t15-model-change-decision-packet.json",
+    "docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
     "docs/superpowers/specs/batch45-post-q4-next-tasks.json",
     "tests/product_agent_os/test_coding_standards_artifacts.py",
     "docs/sources/registry.md",
     "docs/sources/registry.en.md",
     "PLAN.md",
+    "RUNLOG.md",
     "TEST.md",
     "EVALS.md",
+    "docs/product-agent-os/control-plane-current-state.md",
     "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md"
   ],
-  "evidence_id": "B45-POSTQ4-T15-A01",
-  "status": "implemented_model_change_interpretation_keep_advisory_only_no_go",
-  "latest_evidence": "docs/superpowers/specs/batch45-postq4-t15-model-change-decision-packet.json",
-  "latest_summary": "T15 records T14 as a useful current-best-quality signal, but +3.27% is below the >=20% gate, reviewer_calls_started=0 and same-model comparability=false; no promotion or M26/M35 reversal."
+  "evidence_id": "B45-POSTQ4-T16-T22-A01",
+  "status": "implemented_task_group_design_no_run",
+  "latest_evidence": "docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+  "latest_summary": "T16-T22 defines the only future route that can change Batch 45 no-go later: frozen corpus, explicit comparison mode, strict schema, reviewer gate, cost/timeout policy, raw-temp-only retention, exact approval before run and final decision; no run or promotion occurred."
 }

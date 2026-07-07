@@ -43,15 +43,17 @@ to skip a required control-plane update.
 | Batch 41 | First-run cockpit work through S9 is local/read-only/staged/generated-artifact evidence. It does not prove release readiness, target apply safety, automation promotion or Cosmos.gl/WebGL runtime execution. | `docs/superpowers/specs/batch41-s9-html-modernization-summary.json`. |
 | Batch 42 | Instruction/tool-use compliance remains planned-only until execution evidence exists. | `docs/superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json`. |
 | Batch 44 | Self-Learning Loop S0-S7 is local/schema/fixture/staged manual evidence. S8 remains the closure/promotion decision route; no active automation or auto-apply is proven. | `docs/superpowers/specs/batch44-self-learning-loop-approved-manual-pilot-summary.json`. |
-| Batch 45 | Professional Code Authoring remains advisory/no-go. `B45-POSTQ4-T15` records that T14 is a positive current-quality signal only: `gpt-5.5`, 16/16, `+3.27%`, reviewer `0`, below `>=20%`, and same-model comparability is false. T15 does not promote or reverse M26/M35. | `docs/superpowers/specs/batch45-postq4-t15-model-change-decision-packet.json`. |
+| Batch 45 | Professional Code Authoring remains advisory/no-go. `B45-POSTQ4-T15` records that T14 is a positive current-quality signal only: `gpt-5.5`, 16/16, `+3.27%`, reviewer `0`, below `>=20%`, and same-model comparability is false. `B45-POSTQ4-T16-T22-A01` adds the promotion-grade eval task group only; it does not run reviewer/model/provider calls or reverse M26/M35/T15. | `docs/superpowers/specs/batch45-postq4-t15-model-change-decision-packet.json`, `docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json`. |
 | Track 11 docs/site | DOC-M25 generated-site freshness packet records the approved root site/search/sitemap refresh; browser proof, broad scans, remediation, raw retention, publication, release/deploy and git actions remain separate. | `docs/superpowers/specs/documentation-refresh-doc-m25-site-freshness-summary.json`. |
 
 ## Current Queue
 
 1. Keep root control-plane files compact after every non-mechanical slice.
 2. For Batch 44, review S7 manual-pilot evidence before any S8 promotion decision.
-3. For Batch 45, keep advisory/no-go unless a future approved eval exceeds the
-   promotion threshold and reviewer gates.
+3. For Batch 45, execute the `B45-S8` promotion-grade eval route in order only:
+   frozen corpus -> design/schema -> cost/timeout/retention -> exact approval
+   -> approved run -> reviewer decision. Until that route clears threshold and
+   reviewer gates, keep advisory/no-go.
 4. For Track 11, keep source docs, registry, generated site evidence and
    approval-bound browser/broad-scan claims separate.
 
