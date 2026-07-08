@@ -97,6 +97,12 @@ POST_Q4_T21_PREFLIGHT = (
     / "specs"
     / "batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json"
 )
+POST_Q4_T22_DECISION = (
+    DOCS
+    / "superpowers"
+    / "specs"
+    / "batch45-postq4-t22-promotion-grade-decision-packet.json"
+)
 sys.path.insert(0, str(SCRIPTS))
 
 from codex_runtime_runner.model_output import (  # noqa: E402
@@ -1410,6 +1416,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
             "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
             "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN",
+            "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION",
         })
 
     def test_b45_postq4_t13_strict_output_schema_and_harness_hardening(self):
@@ -1474,6 +1481,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
             "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
             "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN",
+            "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION",
         })
         if lifecycle["task_id"] == "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING":
             self.assertEqual("synthetic_green_after_local_tests_only", lifecycle["closure_level"])
@@ -1491,7 +1499,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         else:
             self.assertIn(
                 lifecycle["closure_level"],
-                {"approval_packet_only_not_run", "blocked_before_execution_no_run"},
+                {"approval_packet_only_not_run", "blocked_before_execution_no_run", "blocked_before_reviewer_no_run"},
             )
 
     def test_b45_postq4_t14_strict_rerun_approval_packet_is_not_owner_confirmation(self):
@@ -1585,6 +1593,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
                 "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
                 "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN",
+                "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION",
             },
         )
 
@@ -1653,6 +1662,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
                 "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
                 "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN",
+                "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION",
             },
         )
         if lifecycle["task_id"] == "B45-POSTQ4-T14-STRICT-RERUN":
@@ -1661,6 +1671,8 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             self.assertEqual("approval_packet_only_not_run", lifecycle["closure_level"])
         elif lifecycle["task_id"] == "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN":
             self.assertEqual("blocked_before_execution_no_run", lifecycle["closure_level"])
+        elif lifecycle["task_id"] == "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION":
+            self.assertEqual("blocked_before_reviewer_no_run", lifecycle["closure_level"])
         else:
             self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
 
@@ -1750,12 +1762,15 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
                 "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
                 "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN",
+                "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION",
             },
         )
         if lifecycle["task_id"] == "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET":
             self.assertEqual("approval_packet_only_not_run", lifecycle["closure_level"])
         elif lifecycle["task_id"] == "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN":
             self.assertEqual("blocked_before_execution_no_run", lifecycle["closure_level"])
+        elif lifecycle["task_id"] == "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION":
+            self.assertEqual("blocked_before_reviewer_no_run", lifecycle["closure_level"])
         else:
             self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
 
@@ -1783,7 +1798,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         self.assertEqual("implemented_task_group_design_no_run", packet["status"])
         self.assertEqual("B45-S8-PROMOTION-GRADE-EVAL", packet["task_group"]["group_id"])
         self.assertEqual(
-            "t21_blocked_missing_exact_t20_owner_confirmation_not_run",
+            "t22_no_go_missing_t21_result_and_reviewer_gate_not_run",
             packet["task_group"]["group_status"],
         )
         self.assertFalse(packet["task_group"]["promotion_allowed_now"])
@@ -1817,7 +1832,10 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "blocked_missing_exact_t20_owner_confirmation_not_run",
             task_status["B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN"],
         )
-        self.assertEqual("blocked_until_t21_result", task_status["B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION"])
+        self.assertEqual(
+            "implemented_reviewer_gate_blocked_no_t21_result_no_promotion",
+            task_status["B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION"],
+        )
         self.assertEqual(
             "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
             task_owner["B45-POSTQ4-T20-EXACT-APPROVAL-PACKET"],
@@ -1825,6 +1843,10 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         self.assertEqual(
             "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
             task_owner["B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN"],
+        )
+        self.assertEqual(
+            "docs/superpowers/specs/batch45-postq4-t22-promotion-grade-decision-packet.json",
+            task_owner["B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION"],
         )
 
         for action, performed in packet["no_unapproved_actions"].items():
@@ -1879,6 +1901,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
                 "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
                 "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN",
+                "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION",
             },
         )
         self.assertIn(
@@ -1890,6 +1913,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T19-A01",
                 "B45-POSTQ4-T20-A01",
                 "B45-POSTQ4-T21-PREFLIGHT-A01",
+                "B45-POSTQ4-T22-A01",
             },
         )
         self.assertIn(
@@ -1901,12 +1925,15 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "implemented_cost_timeout_retention_policy_no_run",
                 "exact_approval_packet_ready_for_owner_confirmation_not_run",
                 "blocked_missing_exact_t20_owner_confirmation_not_run",
+                "implemented_reviewer_gate_blocked_no_t21_result_no_promotion",
             },
         )
         if lifecycle["task_id"] == "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET":
             self.assertEqual("approval_packet_only_not_run", lifecycle["closure_level"])
         elif lifecycle["task_id"] == "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN":
             self.assertEqual("blocked_before_execution_no_run", lifecycle["closure_level"])
+        elif lifecycle["task_id"] == "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION":
+            self.assertEqual("blocked_before_reviewer_no_run", lifecycle["closure_level"])
         else:
             self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
 
@@ -2068,6 +2095,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
                 "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
                 "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN",
+                "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION",
             },
         )
         self.assertIn(
@@ -2078,6 +2106,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T19-A01",
                 "B45-POSTQ4-T20-A01",
                 "B45-POSTQ4-T21-PREFLIGHT-A01",
+                "B45-POSTQ4-T22-A01",
             },
         )
         self.assertIn(
@@ -2088,12 +2117,15 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "implemented_cost_timeout_retention_policy_no_run",
                 "exact_approval_packet_ready_for_owner_confirmation_not_run",
                 "blocked_missing_exact_t20_owner_confirmation_not_run",
+                "implemented_reviewer_gate_blocked_no_t21_result_no_promotion",
             },
         )
         if lifecycle["task_id"] == "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET":
             self.assertEqual("approval_packet_only_not_run", lifecycle["closure_level"])
         elif lifecycle["task_id"] == "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN":
             self.assertEqual("blocked_before_execution_no_run", lifecycle["closure_level"])
+        elif lifecycle["task_id"] == "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION":
+            self.assertEqual("blocked_before_reviewer_no_run", lifecycle["closure_level"])
         else:
             self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
 
@@ -2302,6 +2334,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "t19_cost_timeout_retention_ready_next_t20",
                 "t20_exact_approval_packet_ready_owner_confirmation_required",
                 "t21_blocked_missing_exact_t20_owner_confirmation_not_run",
+                "t22_no_go_missing_t21_result_and_reviewer_gate_not_run",
             },
         )
 
@@ -2370,6 +2403,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
                 "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
                 "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN",
+                "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION",
             },
         )
         self.assertIn(
@@ -2379,6 +2413,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T19-A01",
                 "B45-POSTQ4-T20-A01",
                 "B45-POSTQ4-T21-PREFLIGHT-A01",
+                "B45-POSTQ4-T22-A01",
             },
         )
         self.assertIn(
@@ -2388,12 +2423,15 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "implemented_cost_timeout_retention_policy_no_run",
                 "exact_approval_packet_ready_for_owner_confirmation_not_run",
                 "blocked_missing_exact_t20_owner_confirmation_not_run",
+                "implemented_reviewer_gate_blocked_no_t21_result_no_promotion",
             },
         )
         if lifecycle["task_id"] == "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET":
             self.assertEqual("approval_packet_only_not_run", lifecycle["closure_level"])
         elif lifecycle["task_id"] == "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN":
             self.assertEqual("blocked_before_execution_no_run", lifecycle["closure_level"])
+        elif lifecycle["task_id"] == "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION":
+            self.assertEqual("blocked_before_reviewer_no_run", lifecycle["closure_level"])
         else:
             self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
 
@@ -2562,6 +2600,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "t19_cost_timeout_retention_ready_next_t20",
                 "t20_exact_approval_packet_ready_owner_confirmation_required",
                 "t21_blocked_missing_exact_t20_owner_confirmation_not_run",
+                "t22_no_go_missing_t21_result_and_reviewer_gate_not_run",
             },
         )
 
@@ -2625,11 +2664,12 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
                 "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
                 "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN",
+                "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION",
             },
         )
         self.assertIn(
             lifecycle["evidence_id"],
-            {"B45-POSTQ4-T19-A01", "B45-POSTQ4-T20-A01", "B45-POSTQ4-T21-PREFLIGHT-A01"},
+            {"B45-POSTQ4-T19-A01", "B45-POSTQ4-T20-A01", "B45-POSTQ4-T21-PREFLIGHT-A01", "B45-POSTQ4-T22-A01"},
         )
         self.assertIn(
             lifecycle["status"],
@@ -2637,12 +2677,15 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "implemented_cost_timeout_retention_policy_no_run",
                 "exact_approval_packet_ready_for_owner_confirmation_not_run",
                 "blocked_missing_exact_t20_owner_confirmation_not_run",
+                "implemented_reviewer_gate_blocked_no_t21_result_no_promotion",
             },
         )
         if lifecycle["task_id"] == "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET":
             self.assertEqual("approval_packet_only_not_run", lifecycle["closure_level"])
         elif lifecycle["task_id"] == "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN":
             self.assertEqual("blocked_before_execution_no_run", lifecycle["closure_level"])
+        elif lifecycle["task_id"] == "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION":
+            self.assertEqual("blocked_before_reviewer_no_run", lifecycle["closure_level"])
         else:
             self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
 
@@ -2860,7 +2903,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
 
         parent_rows = {task["task_id"]: task for task in parent["task_rows"]}
         self.assertEqual(
-            "t21_blocked_missing_exact_t20_owner_confirmation_not_run",
+            "t22_no_go_missing_t21_result_and_reviewer_gate_not_run",
             parent["task_group"]["group_status"],
         )
         self.assertEqual(
@@ -2943,20 +2986,24 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             {
                 "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
                 "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN",
+                "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION",
             },
         )
-        self.assertIn(lifecycle["evidence_id"], {"B45-POSTQ4-T20-A01", "B45-POSTQ4-T21-PREFLIGHT-A01"})
+        self.assertIn(lifecycle["evidence_id"], {"B45-POSTQ4-T20-A01", "B45-POSTQ4-T21-PREFLIGHT-A01", "B45-POSTQ4-T22-A01"})
         self.assertIn(
             lifecycle["status"],
             {
                 "exact_approval_packet_ready_for_owner_confirmation_not_run",
                 "blocked_missing_exact_t20_owner_confirmation_not_run",
+                "implemented_reviewer_gate_blocked_no_t21_result_no_promotion",
             },
         )
         if lifecycle["task_id"] == "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET":
             self.assertEqual("approval_packet_only_not_run", lifecycle["closure_level"])
-        else:
+        elif lifecycle["task_id"] == "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN":
             self.assertEqual("blocked_before_execution_no_run", lifecycle["closure_level"])
+        else:
+            self.assertEqual("blocked_before_reviewer_no_run", lifecycle["closure_level"])
 
     def test_b45_postq4_t21_approved_promotion_grade_eval_run_blocks_without_exact_approval(self):
         packet = json.loads(POST_Q4_T21_PREFLIGHT.read_text(encoding="utf-8"))
@@ -3117,7 +3164,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
 
         parent_rows = {task["task_id"]: task for task in parent["task_rows"]}
         self.assertEqual(
-            "t21_blocked_missing_exact_t20_owner_confirmation_not_run",
+            "t22_no_go_missing_t21_result_and_reviewer_gate_not_run",
             parent["task_group"]["group_status"],
         )
         self.assertEqual(
@@ -3196,10 +3243,201 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         self.assertNotIn("B45-POSTQ4-T21-PREFLIGHT-A01", behavioral_ru)
         self.assertNotIn("B45-POSTQ4-T21-PREFLIGHT-A01", behavioral_en)
 
-        self.assertEqual("B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN", lifecycle["task_id"])
-        self.assertEqual("B45-POSTQ4-T21-PREFLIGHT-A01", lifecycle["evidence_id"])
-        self.assertEqual("blocked_missing_exact_t20_owner_confirmation_not_run", lifecycle["status"])
-        self.assertEqual("blocked_before_execution_no_run", lifecycle["closure_level"])
+        self.assertIn(
+            lifecycle["task_id"],
+            {
+                "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN",
+                "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION",
+            },
+        )
+        self.assertIn(lifecycle["evidence_id"], {"B45-POSTQ4-T21-PREFLIGHT-A01", "B45-POSTQ4-T22-A01"})
+        self.assertIn(
+            lifecycle["status"],
+            {
+                "blocked_missing_exact_t20_owner_confirmation_not_run",
+                "implemented_reviewer_gate_blocked_no_t21_result_no_promotion",
+            },
+        )
+        if lifecycle["task_id"] == "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN":
+            self.assertEqual("blocked_before_execution_no_run", lifecycle["closure_level"])
+        else:
+            self.assertEqual("blocked_before_reviewer_no_run", lifecycle["closure_level"])
+
+    def test_b45_postq4_t22_reviewer_gate_and_decision_blocks_without_t21_result(self):
+        packet = json.loads(POST_Q4_T22_DECISION.read_text(encoding="utf-8"))
+        parent = json.loads(POST_Q4_T16_T22_TASK_GROUP.read_text(encoding="utf-8"))
+        next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
+        registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
+        registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
+        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+        plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
+        runlog = (ROOT / "RUNLOG.md").read_text(encoding="utf-8")
+        evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
+        test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
+        current_state = (DOCS / "product-agent-os" / "control-plane-current-state.md").read_text(encoding="utf-8")
+        current_state_en = (DOCS / "product-agent-os" / "control-plane-current-state.en.md").read_text(encoding="utf-8")
+        coding_ru = (DOCS / "product-agent-os" / "coding-standards.md").read_text(encoding="utf-8")
+        coding_en = (DOCS / "product-agent-os" / "coding-standards.en.md").read_text(encoding="utf-8")
+        behavioral_ru = (DOCS / "product-agent-os" / "behavioral-evals.md").read_text(encoding="utf-8")
+        behavioral_en = (DOCS / "product-agent-os" / "behavioral-evals.en.md").read_text(encoding="utf-8")
+        track11 = (
+            DOCS
+            / "superpowers"
+            / "plans"
+            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+        ).read_text(encoding="utf-8")
+
+        serialized = json.dumps(packet, sort_keys=True)
+        self.assertEqual("batch45_postq4_t22_promotion_grade_decision_packet_v1", packet["schema_version"])
+        self.assertEqual("B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION", packet["task_id"])
+        self.assertEqual("B45-POSTQ4-T22-A01", packet["evidence_id"])
+        self.assertEqual("implemented_reviewer_gate_blocked_no_t21_result_no_promotion", packet["status"])
+        self.assertEqual("blocked_before_reviewer_no_run", packet["closure_level"])
+        self.assertIn("no-go decision after a blocked preflight", packet["claim_ceiling"])
+
+        precondition = packet["precondition_check"]
+        self.assertFalse(precondition["t21_result_exists"])
+        self.assertFalse(precondition["t21_promotion_grade_eval_result_exists"])
+        self.assertEqual(0, precondition["t21_valid_pair_count"])
+        self.assertEqual(0, precondition["t21_actual_model_or_reviewer_calls_started"])
+        self.assertEqual("blocked_missing_t21_result", precondition["precondition_result"])
+
+        reviewer_gate = packet["reviewer_gate"]
+        self.assertEqual("not_run_due_missing_t21_result", reviewer_gate["status"])
+        self.assertFalse(reviewer_gate["reviewer_input_available"])
+        self.assertFalse(reviewer_gate["reviewer_model_call_authorized"])
+        self.assertFalse(reviewer_gate["reviewer_model_call_started"])
+        self.assertEqual(0, reviewer_gate["reviewer_calls_started"])
+        self.assertFalse(reviewer_gate["independent_reviewer_verdict_exists"])
+        self.assertEqual("not_applicable_no_t21_result", reviewer_gate["reviewer_verdict"])
+        self.assertFalse(reviewer_gate["gate_satisfied"])
+
+        decision = packet["decision"]
+        self.assertEqual("no_go_missing_t21_result_and_reviewer_gate", decision["status"])
+        self.assertFalse(decision["promotion_allowed"])
+        self.assertFalse(decision["m26_no_go_reversed"])
+        self.assertFalse(decision["m35_no_go_reversed"])
+        self.assertFalse(decision["t15_no_go_reversed"])
+        self.assertEqual(0, decision["valid_pair_count"])
+        self.assertFalse(decision["reviewer_gate_satisfied"])
+
+        cost = packet["cost_and_retention"]
+        self.assertEqual(0, cost["estimated_total_cost_usd"])
+        self.assertFalse(cost["usage_query_performed"])
+        self.assertFalse(cost["raw_outputs_created"])
+        self.assertFalse(cost["raw_outputs_written_to_repo"])
+        self.assertEqual(0, cost["repo_raw_retention_bytes"])
+        self.assertFalse(cost["temp_root_created"])
+
+        for action, performed in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(performed)
+
+        for unsupported in [
+            "t21_result_exists",
+            "reviewer_verdict_exists",
+            "reviewer_gate_satisfied",
+            "promotion_grade_eval_result_exists",
+            "behavior_improvement_proven",
+            "M26_no_go_reversed",
+            "M35_no_go_reversed",
+            "T15_no_go_reversed",
+            "promotion_ready",
+        ]:
+            self.assertIn(unsupported, packet["unsupported_claims"])
+
+        for forbidden_path_fragment in ["C:\\Users", "C:/Users", "\\Users\\", "/Users/", "/home/"]:
+            self.assertNotIn(forbidden_path_fragment, serialized)
+
+        sources = {entry["source"] for entry in packet["source_matrix"]}
+        self.assertIn("https://developers.openai.com/api/docs/guides/evals", sources)
+        self.assertIn("https://developers.openai.com/api/docs/api-reference/usage", sources)
+
+        agent_results = {agent["role"]: agent["result"] for agent in packet["sidecar_agent_use"]["agents_used"]}
+        self.assertEqual(
+            "completed_supported_blocked_no_go_decision_and_docs_sync_route",
+            agent_results["docs-maintainer"],
+        )
+        self.assertIn("completed_high_finding_t22_cannot_run_without_t21_result", agent_results["reviewer"])
+        self.assertTrue(packet["sidecar_agent_use"]["agent_outputs_are_supporting_review_only"])
+        self.assertTrue(packet["sidecar_agent_use"]["source_artifacts_remain_authoritative"])
+
+        parent_rows = {task["task_id"]: task for task in parent["task_rows"]}
+        self.assertEqual(
+            "t22_no_go_missing_t21_result_and_reviewer_gate_not_run",
+            parent["task_group"]["group_status"],
+        )
+        self.assertEqual(
+            "implemented_reviewer_gate_blocked_no_t21_result_no_promotion",
+            parent_rows["B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION"]["status"],
+        )
+        self.assertEqual(
+            "docs/superpowers/specs/batch45-postq4-t22-promotion-grade-decision-packet.json",
+            parent_rows["B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION"]["evidence_owner"],
+        )
+
+        update = next_tasks["execution_update"]
+        self.assertEqual(
+            "docs/superpowers/specs/batch45-postq4-t22-promotion-grade-decision-packet.json",
+            update["latest_t22_decision_packet"],
+        )
+        self.assertIn("B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION", update["executed_task_ids"])
+        self.assertEqual(
+            "implemented_reviewer_gate_blocked_no_t21_result_no_promotion",
+            update["status_by_task"]["B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION"],
+        )
+        t22_rollup = update["t22_reviewer_gate_decision"]
+        self.assertEqual("B45-POSTQ4-T22-A01", t22_rollup["evidence_id"])
+        self.assertFalse(t22_rollup["t21_result_exists"])
+        self.assertEqual("not_run_due_missing_t21_result", t22_rollup["reviewer_gate_status"])
+        self.assertEqual(0, t22_rollup["reviewer_calls_started"])
+        self.assertEqual("not_applicable_no_t21_result", t22_rollup["reviewer_verdict"])
+        self.assertFalse(t22_rollup["promotion_allowed"])
+        self.assertEqual(0, t22_rollup["estimated_total_cost_usd"])
+        self.assertEqual(0, t22_rollup["repo_raw_retention_bytes"])
+
+        for registry in [registry_ru, registry_en]:
+            self.assertIn("B45-POSTQ4-T22-A01", registry)
+            self.assertIn(
+                "docs/superpowers/specs/batch45-postq4-t22-promotion-grade-decision-packet.json",
+                registry,
+            )
+            self.assertIn("reviewer_gate_status=not_run_due_missing_t21_result", registry)
+            self.assertIn("promotion_allowed=false", registry)
+
+        for control_plane in [
+            plan,
+            runlog,
+            evals,
+            test_plan,
+            current_state,
+            current_state_en,
+            coding_ru,
+            coding_en,
+            track11,
+        ]:
+            self.assertIn("B45-POSTQ4-T22-A01", control_plane)
+
+        for source_owner in [
+            plan,
+            test_plan,
+            current_state,
+            current_state_en,
+            coding_ru,
+            coding_en,
+            behavioral_ru,
+            behavioral_en,
+            track11,
+        ]:
+            self.assertIn("batch45-postq4-t22-promotion-grade-decision-packet.json", source_owner)
+
+        self.assertNotIn("B45-POSTQ4-T22-A01", behavioral_ru)
+        self.assertNotIn("B45-POSTQ4-T22-A01", behavioral_en)
+
+        self.assertEqual("B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION", lifecycle["task_id"])
+        self.assertEqual("B45-POSTQ4-T22-A01", lifecycle["evidence_id"])
+        self.assertEqual("implemented_reviewer_gate_blocked_no_t21_result_no_promotion", lifecycle["status"])
+        self.assertEqual("blocked_before_reviewer_no_run", lifecycle["closure_level"])
 
     def test_s5_learning_automation_packet_closes_m23_without_activation(self):
         packet = json.loads(S5_SUMMARY.read_text(encoding="utf-8"))

@@ -37,7 +37,7 @@
   },
   "task_group": {
     "group_id": "B45-S8-PROMOTION-GRADE-EVAL",
-    "group_status": "t21_blocked_missing_exact_t20_owner_confirmation_not_run",
+    "group_status": "t22_no_go_missing_t21_result_and_reviewer_gate_not_run",
     "promotion_allowed_now": false,
     "only_route_that_can_change_no_go_later": true,
     "execution_requires_later_exact_approval": true,
@@ -219,7 +219,7 @@
     {
       "task_id": "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION",
       "priority": "P0",
-      "status": "blocked_until_t21_result",
+      "status": "implemented_reviewer_gate_blocked_no_t21_result_no_promotion",
       "owner_role": "reviewer + completion-skeptic + docs-maintainer",
       "scope": "Run or record the reviewer gate and produce the final promotion/no-go decision after T21 evidence exists.",
       "acceptance": [
@@ -227,7 +227,15 @@
         "Decision separates behavior quality, static warning deltas, runtime/browser/target readiness and CI/blocker/governance readiness.",
         "Control-plane and registry sync preserve unsupported claims and exact approval boundaries."
       ],
-      "evidence_owner": "future docs/superpowers/specs/batch45-postq4-t22-promotion-grade-decision-packet.json",
+      "evidence_owner": "docs/superpowers/specs/batch45-postq4-t22-promotion-grade-decision-packet.json",
+      "future_result_owner_after_exact_approval_and_t21_result": "future docs/superpowers/specs/batch45-postq4-t22-promotion-grade-decision-packet.json",
+      "verification_gates": [
+        "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t22-promotion-grade-decision-packet.json",
+        "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "python tools\\check_docs.py",
+        "git diff --check"
+      ],
       "stop_conditions": [
         "Stop if reviewer is not run or returns no_go.",
         "Stop if the result is below threshold.",
@@ -289,6 +297,11 @@
     "status": "passed_current_run",
     "results": [
       {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t22-promotion-grade-decision-packet.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
         "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
         "status": "passed",
         "evidence": "JSON parsed successfully after verification-block sync."
@@ -316,7 +329,7 @@
       {
         "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
         "status": "passed",
-        "evidence": "Ran 32 tests; OK."
+        "evidence": "Ran 33 tests; OK."
       },
       {
         "command": "python -m unittest tests.product_agent_os.test_codex_runtime_runner_model_output -v",
