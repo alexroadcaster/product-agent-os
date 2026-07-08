@@ -2,26 +2,37 @@
   "schema_version": "batch45_postq4_t22_promotion_grade_decision_packet_v1",
   "task_id": "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION",
   "evidence_id": "B45-POSTQ4-T22-A01",
-  "status": "implemented_reviewer_gate_blocked_no_t21_result_no_promotion",
+  "status": "implemented_reviewer_gate_blocked_t21_cost_unknown_abort_no_promotion",
   "closure_level": "blocked_before_reviewer_no_run",
-  "route": "reviewer_gate_and_decision_after_blocked_t21",
+  "route": "reviewer_gate_and_decision_after_t21_cost_unknown_abort",
   "created_at": "2026-07-08T16:23:58+03:00",
-  "source_status": "source-owned T22 reviewer-gate decision packet; T21 did not produce a promotion-grade eval result, so no reviewer/model/provider call was started and promotion remains blocked",
-  "goal": "Record the Batch 45 reviewer-gate and decision outcome after T21 blocked before the first model/reviewer call.",
+  "source_status": "source-owned T22 reviewer-gate decision packet; T21 aborted before the first primary call on cost_unknown and did not produce a promotion-grade eval result, so no reviewer/model/provider call was started and promotion remains blocked",
+  "goal": "Record the Batch 45 reviewer-gate and decision outcome after T21 exact approval matched but aborted before the first model/reviewer call on cost_unknown.",
   "claim_ceiling": "This artifact is a no-go decision after a blocked preflight. It does not contain a reviewer verdict, promotion-grade eval result, behavior improvement evidence, M26/M35/T15 reversal, runtime/browser/target/CI/git/release/deploy/automation readiness, or release readiness.",
   "basis": {
     "task_group": "docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
-    "t21_preflight_block": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
+    "t21_preflight_block": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-cost-unknown.json",
+    "previous_t21_timeout_mismatch_preflight_block": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-timeout-mismatch.json",
+    "previous_t21_preflight_block": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
     "eval_design": "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
     "cost_timeout_retention_policy": "docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json",
-    "exact_approval_packet": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+    "exact_approval_packet": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet-1000s.json",
+    "previous_exact_approval_packet": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
     "context7_library_id": "/websites/developers_openai_api",
-    "current_boundary": "B45-POSTQ4-T21-PREFLIGHT-A01 has no promotion-grade eval result and no reviewer input, so T22 cannot promote."
+    "current_boundary": "The owner restated B45-POSTQ4-T20-A02 exactly, but B45-POSTQ4-T21-PREFLIGHT-A03 aborted before first call because cost was unknown before the next call. T21 still has no promotion-grade eval result or reviewer input, so T22 cannot promote."
   },
   "source_matrix": [
     {
-      "source": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
-      "claim": "T21 blocked before first call: promotion_grade_eval_result_exists=false, valid_pair_count=0, reviewer_gate_satisfied=false and actual_model_or_reviewer_calls_started=0.",
+      "source": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet-1000s.json",
+      "claim": "T20-A02 was restated exactly by the owner for T21, but approval reuse is forbidden after the T21 cost_unknown abort.",
+      "relevance": "Explains why a future T21 rerun needs a new exact approval even though exact text matched this time.",
+      "freshness": "current_repo_2026-07-08",
+      "confidence": "high",
+      "conflicts": []
+    },
+    {
+      "source": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-cost-unknown.json",
+      "claim": "T21 aborted before first call because cost was unknown before the next model call: promotion_grade_eval_result_exists=false, valid_pair_count=0, reviewer_gate_satisfied=false and actual_model_or_reviewer_calls_started=0.",
       "relevance": "Direct prerequisite check for T22 reviewer gate.",
       "freshness": "current_repo_2026-07-08",
       "confidence": "high",
@@ -66,21 +77,36 @@
     "requested_product_docs_update": true,
     "requested_context7": true,
     "requested_after_t21_blocked_preflight": true,
-    "exact_t20_approval_text_restated": false
+    "approval_like_block_present": true,
+    "exact_t20_approval_text_restated": true,
+    "mismatch_reason": "not_applicable_exact_t20_a02_text_matched",
+    "required_timeout_seconds": 1000,
+    "observed_timeout_seconds": 1000,
+    "latest_t20_revision_exists": true,
+    "latest_t20_revision_evidence_id": "B45-POSTQ4-T20-A02",
+    "latest_t20_revision_requires_exact_owner_restatement": false,
+    "t21_abort_gate_triggered": "cost_unknown_before_first_call",
+    "new_exact_approval_required_after_t21_abort": true
   },
   "precondition_check": {
     "required_t21_result_owner": "future docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-results.json",
     "t21_result_exists": false,
-    "t21_blocked_preflight_evidence": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
-    "t21_blocked_preflight_sha256": "05AC7614E13256E4D9FC7753256DD5C476BEAD7B46A7A952D026BC57F426DD8E",
-    "t21_status": "blocked_missing_exact_t20_owner_confirmation_not_run",
+    "latest_t20_exact_approval_packet": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet-1000s.json",
+    "latest_t20_evidence_id": "B45-POSTQ4-T20-A02",
+    "latest_t20_owner_confirmed": true,
+    "latest_t20_run_authorized_by_this_artifact": false,
+    "t21_blocked_preflight_evidence": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-cost-unknown.json",
+    "previous_t21_timeout_mismatch_preflight_evidence": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-timeout-mismatch.json",
+    "previous_t21_blocked_preflight_evidence": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
+    "t21_blocked_preflight_sha256": "9EFD67E14950C0519D06849C21C44F445ED971406BE61EF8EAC61A8AC57570A7",
+    "t21_status": "aborted_before_first_call_cost_unknown_not_run",
     "t21_promotion_grade_eval_result_exists": false,
     "t21_valid_pair_count": 0,
     "t21_invalid_pair_count": 0,
     "t21_review_input_available": false,
     "t21_reviewer_gate_satisfied": false,
     "t21_actual_model_or_reviewer_calls_started": 0,
-    "precondition_result": "blocked_missing_t21_result"
+    "precondition_result": "blocked_missing_t21_result_after_cost_unknown_abort"
   },
   "reviewer_gate": {
     "status": "not_run_due_missing_t21_result",
@@ -93,10 +119,10 @@
     "reviewer_verdict": "not_applicable_no_t21_result",
     "reviewer_no_go_blocks_promotion": true,
     "gate_satisfied": false,
-    "block_reason": "no_t21_promotion_grade_eval_result_to_review"
+    "block_reason": "no_t21_promotion_grade_eval_result_to_review_after_cost_unknown_abort"
   },
   "decision": {
-    "status": "no_go_missing_t21_result_and_reviewer_gate",
+    "status": "no_go_t21_cost_unknown_abort_missing_result_and_reviewer_gate",
     "promotion_allowed": false,
     "promotion_state": "keep_advisory_only_no_go",
     "m26_no_go_reversed": false,
@@ -108,10 +134,10 @@
     "valid_pair_count_required": 8,
     "reviewer_gate_satisfied": false,
     "runtime_browser_target_ci_release_readiness": false,
-    "decision_basis": "T21 blocked before first call and produced no result, so T22 can only record no-go and preserve the approval boundary."
+    "decision_basis": "T21 exact approval matched but the cost-known abort gate stopped execution before the first call and produced no result, so T22 can only record no-go and preserve the approval boundary."
   },
   "cost_and_retention": {
-    "estimated_total_cost_usd": 0,
+    "estimated_total_cost_usd": null,
     "cost_cap_consumed": false,
     "pricing_recheck_required_before_future_execution": true,
     "usage_query_performed": false,
@@ -198,6 +224,16 @@
         "evidence": "JSON parsed successfully."
       },
       {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-cost-unknown.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-timeout-mismatch.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
         "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
         "status": "passed",
         "evidence": "JSON parsed successfully."
@@ -215,7 +251,7 @@
       {
         "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
         "status": "passed",
-        "evidence": "Ran 33 tests; OK."
+        "evidence": "Ran 36 tests; OK."
       },
       {
         "command": "python -m unittest tests.product_agent_os.test_codex_runtime_runner_model_output -v",
@@ -251,7 +287,7 @@
     "remaining_required_before_completion_claim": []
   },
   "next_required_action": {
-    "to_change_no_go": "The owner must first restate the exact T20 approval text, then T21 must produce a valid promotion-grade result, then T22 can run a real reviewer gate.",
-    "current_next_state": "blocked_missing_t21_result_and_reviewer_gate_not_run"
+    "to_change_no_go": "A new exact approval must first resolve the cost-known abort gate, then T21 must produce a valid promotion-grade result, then T22 can run a real reviewer gate.",
+    "current_next_state": "blocked_t21_cost_unknown_abort_missing_result_and_reviewer_gate_not_run"
   }
 }

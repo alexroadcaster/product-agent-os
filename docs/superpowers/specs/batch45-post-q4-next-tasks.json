@@ -528,8 +528,11 @@
     "latest_t17_frozen_heldout_corpus": "docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json",
     "latest_t18_eval_design": "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
     "latest_t19_cost_timeout_retention_policy": "docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json",
-    "latest_t20_exact_approval_packet": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
-    "latest_t21_preflight_block": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
+    "latest_t20_exact_approval_packet": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet-1000s.json",
+    "previous_t20_exact_approval_packet": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+    "latest_t21_preflight_block": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-cost-unknown.json",
+    "previous_t21_preflight_timeout_mismatch": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-timeout-mismatch.json",
+    "previous_t21_preflight_missing_restatement": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
     "latest_t22_decision_packet": "docs/superpowers/specs/batch45-postq4-t22-promotion-grade-decision-packet.json",
     "executed_task_ids": [
       "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX",
@@ -579,9 +582,9 @@
       "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS": "implemented_frozen_heldout_corpus_manifest_no_run",
       "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA": "implemented_eval_design_strict_schema_no_run",
       "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY": "implemented_cost_timeout_retention_policy_no_run",
-      "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET": "exact_approval_packet_ready_for_owner_confirmation_not_run",
-      "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN": "blocked_missing_exact_t20_owner_confirmation_not_run",
-      "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION": "implemented_reviewer_gate_blocked_no_t21_result_no_promotion"
+      "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET": "exact_approval_packet_revision_1000s_owner_confirmed_then_t21_aborted_cost_unknown",
+      "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN": "aborted_before_first_call_cost_unknown_not_run",
+      "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION": "implemented_reviewer_gate_blocked_t21_cost_unknown_abort_no_promotion"
     },
     "warning_delta": {
       "q4_baseline_warning_count": 14,
@@ -616,7 +619,7 @@
       "approved_t14_codex_exec_primary_calls_invalid_json": 0,
       "approved_t14_reviewer_calls_started": 0
     },
-    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T05 stopped on baseline timeout. T12 produced valid_pair_count=6, invalid_json=1 and no_op=1; reviewer skipped. T13 adds local strict-output schema/no-op hardening. T14 executed exact-approved gpt-5.5 high-reasoning current-best-quality rerun with valid_pair_count=8 and invalid_pair_count=0. T15 interprets T14 as a positive current-best-quality signal only: reviewer did not run, same-model comparability with spark evidence is false, no promotion, no M26/M35 reversal and no runtime/browser/target/CI/git/release/deploy/automation proof exists. T16-T22 define a promotion-grade eval task group. T17 freezes the metadata-only held-out corpus manifest. T18 defines same-model promotion-grade comparison, strict schema, deterministic quarantine, scoring/reviewer rubric and result contract only. T19 defines cost, timeout, retry, abort and raw-temp-only retention policy only. T20 stages exact owner approval text with current pricing/USD cap but owner_confirmed=false and run_authorized_by_this_artifact=false. T21 preflight is blocked because the owner did not restate the exact T20 approval text, so no baseline/treatment, reviewer/model/provider or runtime/browser/target/CI/git/release/deploy/automation action started. T22 records a no-go decision because the T21 result is absent and the reviewer gate is not run; it does not promote.",
+    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T05 stopped on baseline timeout. T12 produced valid_pair_count=6, invalid_json=1 and no_op=1; reviewer skipped. T13 adds local strict-output schema/no-op hardening. T14 executed exact-approved gpt-5.5 high-reasoning current-best-quality rerun with valid_pair_count=8 and invalid_pair_count=0. T15 interprets T14 as a positive current-best-quality signal only: reviewer did not run, same-model comparability with spark evidence is false, no promotion, no M26/M35 reversal and no runtime/browser/target/CI/git/release/deploy/automation proof exists. T16-T22 define a promotion-grade eval task group. T17 freezes the metadata-only held-out corpus manifest. T18 defines same-model promotion-grade comparison, strict schema, deterministic quarantine, scoring/reviewer rubric and result contract only. T19 defines cost, timeout, retry, abort and raw-temp-only retention policy only. T20-A02 staged owner-requested 1000s exact approval text with current pricing/USD cap. The owner later restated A02 exactly, but T21 aborted before the first primary call because cost was unknown before the next call, so no baseline/treatment, reviewer/model/provider or runtime/browser/target/CI/git/release/deploy/automation action started. T22 remains no-go because the T21 result is absent and the reviewer gate is not run; it does not promote.",
     "post_t06_recommended_next_routes": [
       "B45-POSTQ4-T09-CLOSURE-ADVISORY-ONLY",
       "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
@@ -776,8 +779,9 @@
       "decision": "cost_timeout_retention_policy_ready_no_run"
     },
     "t20_exact_approval_packet": {
-      "status": "exact_approval_packet_ready_for_owner_confirmation_not_run",
-      "evidence_id": "B45-POSTQ4-T20-A01",
+      "status": "exact_approval_packet_revision_1000s_owner_confirmed_then_t21_aborted_cost_unknown",
+      "evidence_id": "B45-POSTQ4-T20-A02",
+      "supersedes_evidence_id": "B45-POSTQ4-T20-A01",
       "model_id": "gpt-5.5",
       "model_reasoning_effort": "high",
       "comparison_mode": "same_model_baseline_treatment",
@@ -787,16 +791,19 @@
       "max_primary_model_calls": 16,
       "max_reviewer_calls_after_valid_pairs": 1,
       "max_total_retries": 0,
-      "per_primary_call_timeout_seconds": 600,
-      "per_reviewer_call_timeout_seconds": 600,
+      "per_primary_call_timeout_seconds": 1000,
+      "per_reviewer_call_timeout_seconds": 1000,
+      "previous_per_primary_call_timeout_seconds": 600,
+      "previous_per_reviewer_call_timeout_seconds": 600,
       "max_total_wall_clock_seconds": 12000,
       "usd_cost_cap": 25.0,
-      "usd_cost_cap_status": "proposed_by_packet_not_owner_confirmed",
-      "pricing_source_checked_at": "2026-07-08T14:40:00+03:00",
+      "usd_cost_cap_status": "owner_confirmed_by_t21_preflight",
+      "pricing_source_checked_at": "2026-07-08T18:31:08+03:00",
       "pricing_source": "https://developers.openai.com/api/docs/pricing",
-      "owner_confirmed": false,
+      "owner_confirmed": true,
+      "owner_confirmed_by_t21_preflight": true,
       "run_authorized_by_this_artifact": false,
-      "requires_next_user_message": true,
+      "requires_next_user_message": false,
       "approval_packet_cannot_run_by_itself": true,
       "approval_reuse_after_consumed_or_aborted_run_allowed": false,
       "raw_temp_only_retention_required": true,
@@ -805,33 +812,45 @@
       "baseline_started": false,
       "treatment_started": false,
       "reviewer_gate_satisfied": false,
-      "future_exact_approval_required_before_T21": true,
+      "future_exact_approval_required_before_T21": false,
+      "new_exact_approval_required_after_t21_abort": true,
       "next_required_task": "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN",
-      "decision": "exact_approval_packet_ready_owner_confirmation_required_no_run"
+      "decision": "exact_approval_packet_revision_1000s_was_owner_confirmed_but_t21_aborted_cost_unknown_before_first_call"
     },
     "t21_preflight_block": {
-      "status": "blocked_missing_exact_t20_owner_confirmation_not_run",
-      "evidence_id": "B45-POSTQ4-T21-PREFLIGHT-A01",
-      "approval_text_present_in_current_user_message": false,
-      "approval_text_exact_match": "not_evaluated_due_missing_restatement",
-      "owner_confirmed": false,
+      "status": "aborted_before_first_call_cost_unknown_not_run",
+      "evidence_id": "B45-POSTQ4-T21-PREFLIGHT-A03",
+      "previous_evidence_id": "B45-POSTQ4-T21-PREFLIGHT-A02",
+      "approval_text_present_in_current_user_message": true,
+      "approval_text_exact_match": true,
+      "mismatch_field": null,
+      "required_per_call_timeout_seconds": 1000,
+      "observed_per_call_timeout_seconds": 1000,
+      "current_required_per_call_timeout_seconds_after_t20_a02": 1000,
+      "current_required_approval_packet": "B45-POSTQ4-T20-A02",
+      "owner_confirmed": true,
+      "run_authorized_until_abort_gate": true,
       "run_authorized": false,
+      "abort_gate_triggered": "cost_unknown_before_first_call",
+      "approval_reuse_allowed": false,
       "baseline_started": false,
       "treatment_started": false,
       "reviewer_gate_satisfied": false,
       "actual_model_or_reviewer_calls_started": 0,
-      "estimated_total_cost_usd": 0,
+      "cost_known_before_first_call": false,
+      "estimated_total_cost_usd": null,
       "cost_cap_consumed": false,
+      "pricing_source_available": true,
       "pricing_recheck_required_before_future_execution": true,
       "raw_outputs_written_to_repo": false,
       "repo_raw_retention_bytes": 0,
       "temp_root_created": false,
       "promotion_allowed": false,
-      "next_required_action": "owner_must_restate_exact_T20_approval_text_before_any_T21_execution",
-      "decision": "blocked_before_first_call_no_run"
+      "next_required_action": "new_exact_approval_required_with_deterministic_cost_estimator_or_explicit_cost_gap_policy",
+      "decision": "aborted_before_first_call_cost_unknown_approval_not_reusable"
     },
     "t22_reviewer_gate_decision": {
-      "status": "implemented_reviewer_gate_blocked_no_t21_result_no_promotion",
+      "status": "implemented_reviewer_gate_blocked_t21_cost_unknown_abort_no_promotion",
       "evidence_id": "B45-POSTQ4-T22-A01",
       "t21_result_exists": false,
       "reviewer_gate_status": "not_run_due_missing_t21_result",
@@ -842,9 +861,9 @@
       "m26_no_go_reversed": false,
       "m35_no_go_reversed": false,
       "t15_no_go_reversed": false,
-      "estimated_total_cost_usd": 0,
+      "estimated_total_cost_usd": null,
       "repo_raw_retention_bytes": 0,
-      "next_required_action": "owner_must_restate_exact_T20_approval_text_then_T21_must_produce_valid_result_before_real_T22_reviewer_gate",
+      "next_required_action": "new_exact_approval_required_after_t21_cost_unknown_abort_then_T21_must_produce_valid_result_before_real_T22_reviewer_gate",
       "decision": "no_go_missing_t21_result_and_reviewer_gate_not_run"
     }
   },
@@ -882,6 +901,16 @@
         "evidence": "JSON parsed successfully."
       },
       {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-cost-unknown.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-timeout-mismatch.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
         "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
         "status": "passed",
         "evidence": "JSON parsed successfully after verification-block sync."
@@ -909,7 +938,7 @@
       {
         "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
         "status": "passed",
-        "evidence": "Ran 33 tests; OK"
+        "evidence": "Ran 36 tests; OK"
       },
       {
         "command": "python -m unittest tests.product_agent_os.test_codex_runtime_runner_model_output -v",

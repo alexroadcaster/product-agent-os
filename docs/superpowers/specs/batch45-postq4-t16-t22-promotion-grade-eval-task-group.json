@@ -37,7 +37,7 @@
   },
   "task_group": {
     "group_id": "B45-S8-PROMOTION-GRADE-EVAL",
-    "group_status": "t22_no_go_missing_t21_result_and_reviewer_gate_not_run",
+    "group_status": "t21_aborted_cost_unknown_no_result_reviewer_gate_not_run",
     "promotion_allowed_now": false,
     "only_route_that_can_change_no_go_later": true,
     "execution_requires_later_exact_approval": true,
@@ -168,16 +168,19 @@
     {
       "task_id": "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
       "priority": "P0",
-      "status": "exact_approval_packet_ready_for_owner_confirmation_not_run",
+      "status": "exact_approval_packet_revision_1000s_owner_confirmed_then_t21_aborted_cost_unknown",
       "owner_role": "implementation-planner + docs-maintainer",
-      "scope": "Prepare exact owner approval text for the future promotion-grade eval run after T17-T19 are source-ready.",
+      "scope": "Prepare the latest exact owner approval text for the future promotion-grade eval run after T17-T19 are source-ready, including the owner-requested 1000s timeout revision.",
       "acceptance": [
         "Approval text names model, reasoning effort, comparison mode, corpus version, max calls, timeout, cost cap, reviewer policy, retention policy and stop conditions.",
         "Packet states that it does not run anything by itself.",
-        "Approval cannot be reused after a consumed or aborted run."
+        "Approval cannot be reused after a consumed or aborted run.",
+        "A02 supersedes A01 as the current T20 approval text. The owner later restated A02 exactly for T21, but T21 aborted before first call on cost_unknown, so any rerun needs a new exact approval."
       ],
-      "evidence_owner": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+      "evidence_owner": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet-1000s.json",
+      "previous_evidence_owner": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
       "verification_gates": [
+        "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t20-promotion-grade-eval-approval-packet-1000s.json",
         "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
         "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
         "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
@@ -193,33 +196,42 @@
     {
       "task_id": "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN",
       "priority": "P1",
-      "status": "blocked_missing_exact_t20_owner_confirmation_not_run",
-      "owner_role": "tester",
-      "scope": "Attempt the approval preflight for the promotion-grade eval and stop before execution when exact owner approval is absent.",
-      "acceptance": [
-        "Preflight verifies that the owner restated the exact T20 approval text before any model/provider/reviewer call.",
-        "When the exact T20 approval text is missing, no baseline, treatment, reviewer, setup or smoke call starts.",
-        "Blocked preflight packet records zero calls, zero cost, no temp root, no raw repo retention and no-unapproved-actions evidence."
-      ],
-      "evidence_owner": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
-      "future_result_owner_after_exact_approval": "future docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-results.json",
-      "verification_gates": [
-        "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
-        "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "status": "aborted_before_first_call_cost_unknown_not_run",
+        "owner_role": "tester",
+        "scope": "Attempt the exact-approved promotion-grade eval preflight and stop before execution when T20-A02/T19 cost-known policy cannot be satisfied.",
+        "acceptance": [
+          "Preflight verifies that the owner restated the exact T20-A02 approval text before any model/provider/reviewer call.",
+          "Preflight verifies pricing, source hashes, model/reasoning surface and cost-known/cap gates before the first call.",
+          "When cost is unknown before the first call, no baseline, treatment, reviewer, setup or smoke call starts and approval reuse is forbidden.",
+          "Blocked preflight packet records zero calls, unknown estimated cost, no temp root, no raw repo retention and no-unapproved-actions evidence."
+        ],
+        "evidence_owner": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-cost-unknown.json",
+        "latest_blocked_preflight_owner": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-cost-unknown.json",
+        "previous_timeout_mismatch_preflight_owner": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-timeout-mismatch.json",
+        "previous_evidence_owner": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
+        "future_result_owner_after_exact_approval": "future docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-results.json",
+        "verification_gates": [
+          "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-cost-unknown.json",
+          "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t20-promotion-grade-eval-approval-packet-1000s.json",
+          "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-timeout-mismatch.json",
+          "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
+          "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
         "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
         "python tools\\check_docs.py",
         "git diff --check"
-      ],
-      "stop_conditions": [
-        "Stop without exact approval.",
-        "Stop on timeout/cost/corpus/privacy policy breach.",
-        "Stop before target/runtime/browser/CI/git/release/deploy/automation actions."
-      ]
+        ],
+        "stop_conditions": [
+          "Stop without exact A02 approval.",
+          "Stop if any approval line differs from the T20-A02 packet, including timeout.",
+          "Stop if cost is unknown or the estimated cost cap would be exceeded before the next call.",
+          "Stop on timeout/cost/corpus/privacy policy breach.",
+          "Stop before target/runtime/browser/CI/git/release/deploy/automation actions."
+        ]
     },
     {
       "task_id": "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION",
       "priority": "P0",
-      "status": "implemented_reviewer_gate_blocked_no_t21_result_no_promotion",
+      "status": "implemented_reviewer_gate_blocked_t21_cost_unknown_abort_no_promotion",
       "owner_role": "reviewer + completion-skeptic + docs-maintainer",
       "scope": "Run or record the reviewer gate and produce the final promotion/no-go decision after T21 evidence exists.",
       "acceptance": [
@@ -302,6 +314,16 @@
         "evidence": "JSON parsed successfully."
       },
       {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-cost-unknown.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-timeout-mismatch.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
         "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
         "status": "passed",
         "evidence": "JSON parsed successfully after verification-block sync."
@@ -329,7 +351,7 @@
       {
         "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
         "status": "passed",
-        "evidence": "Ran 33 tests; OK."
+        "evidence": "Ran 36 tests; OK."
       },
       {
         "command": "python -m unittest tests.product_agent_os.test_codex_runtime_runner_model_output -v",

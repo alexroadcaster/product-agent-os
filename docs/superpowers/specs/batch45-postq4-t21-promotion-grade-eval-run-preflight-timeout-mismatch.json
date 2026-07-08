@@ -1,0 +1,305 @@
+{
+  "schema_version": "batch45_postq4_t21_promotion_grade_eval_run_preflight_timeout_mismatch_v1",
+  "task_id": "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN",
+  "evidence_id": "B45-POSTQ4-T21-PREFLIGHT-A02",
+  "status": "blocked_exact_approval_timeout_mismatch_not_run",
+  "status_aliases": [
+    "blocked_preflight_approval_text_differs_from_packet",
+    "blocked_preflight_timeout_mismatch"
+  ],
+  "closure_level": "blocked_before_execution_no_run",
+  "route": "approval_required_preflight_block",
+  "created_at": "2026-07-08T17:32:00+03:00",
+  "source_status": "source-owned T21 preflight block after owner supplied an approval-like block whose timeout differs from the historical T20-A01 exact approval packet; T20-A02 now stages the requested 1000s text but still requires exact owner restatement, and no baseline/treatment run, reviewer/model/provider call, runtime/browser/target/CI/git/release/deploy/automation action was performed",
+  "goal": "Record the failed exact-approval preflight for the Batch 45 promotion-grade eval run without starting any provider/model/reviewer execution.",
+  "claim_ceiling": "This artifact is a blocked preflight only. It does not contain promotion-grade eval results, reviewer approval, behavior improvement evidence, M26/M35/T15 reversal, runtime/browser/target/CI/git/release/deploy/automation readiness, or release readiness.",
+  "basis": {
+    "task_group": "docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+    "previous_t21_missing_restatement_block": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
+    "frozen_corpus": "docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json",
+    "eval_design": "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
+    "cost_timeout_retention_policy": "docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json",
+    "exact_approval_packet": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+    "latest_t20_approval_packet_revision": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet-1000s.json",
+    "current_boundary": "B45-POSTQ4-T20-A01 explains the historical 600s-vs-1000s mismatch. B45-POSTQ4-T20-A02 now stages the 1000s approval text, but T21 remains blocked until the owner restates the exact A02 packet."
+  },
+  "source_matrix": [
+    {
+      "source": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+      "claim": "T20 exact approval text requires timeout: 600s per primary or reviewer call; max wall-clock 12000s.",
+      "relevance": "Direct exact-match approval gate for T21.",
+      "freshness": "current_repo_2026-07-08",
+      "confidence": "high",
+      "conflicts": [
+        "The owner message used timeout: 1000s per primary or reviewer call; max wall-clock 12000s."
+      ]
+    },
+    {
+      "source": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet-1000s.json",
+      "claim": "T20-A02 stages the owner-requested 1000s exact approval text but does not authorize T21 until the owner restates A02 exactly.",
+      "relevance": "Current next approval packet after this historical timeout-mismatch block.",
+      "freshness": "current_repo_2026-07-08",
+      "confidence": "high",
+      "conflicts": []
+    },
+    {
+      "source": "docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json",
+      "claim": "The cost/timeout policy fixes 600-second primary/reviewer timeouts and zero retries before any T20/T21 run.",
+      "relevance": "Explains why the 1000-second approval-like text cannot be treated as equivalent.",
+      "freshness": "current_repo_2026-07-08",
+      "confidence": "high",
+      "conflicts": [
+        "Owner may intentionally want a new 1000-second timeout, but that requires a revised packet before exact approval."
+      ]
+    },
+    {
+      "source": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
+      "claim": "The previous T21 preflight stopped before first call when the owner had not restated the exact T20 approval text.",
+      "relevance": "Preserves audit trail: A01 was missing restatement; A02 is a different exact-match mismatch.",
+      "freshness": "current_repo_2026-07-08",
+      "confidence": "high",
+      "conflicts": []
+    }
+  ],
+  "trigger_message_observed": {
+    "requested_task_id": "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN",
+    "approval_like_block_present": true,
+    "required_first_line_present": true,
+    "exact_t20_approval_text_restated": false,
+    "mismatch_reason": "timeout_line_differs_from_T20_exact_approval_packet",
+    "requested_timeout_seconds": 1000,
+    "required_timeout_seconds": 600
+  },
+  "approval_preflight": {
+    "required_packet": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+    "required_first_line": "Подтверждаю B45-POSTQ4-T20 exact approval:",
+    "block_reason": "approval_text_differs_from_packet",
+    "approval_text_present_in_current_user_message": true,
+    "approval_text_exact_match": false,
+    "owner_confirmed": false,
+    "run_authorized": false,
+    "requires_next_user_message": true,
+    "next_user_message_must_restate_exact_packet": true,
+    "approval_packet_cannot_run_by_itself": true,
+    "approval_reuse_allowed": false,
+    "preflight_result": "blocked_before_first_call",
+    "blocking_condition": "timeout_line_differs_from_exact_packet",
+    "mismatches": [
+      {
+        "field": "timeout",
+        "required_text": "timeout: 600s per primary or reviewer call; max wall-clock 12000s",
+        "observed_text": "timeout: 1000s per primary or reviewer call; max wall-clock 12000s",
+        "required_per_call_timeout_seconds": 600,
+        "observed_per_call_timeout_seconds": 1000,
+        "severity": "blocking"
+      }
+    ],
+    "allowed_next_paths": [
+      "Send the exact T20-A02 approval block with the 1000s timeout line unchanged.",
+      "Any further timeout, model, pricing, corpus, retention, reviewer-policy or command-surface change requires a new T20 revision before T21."
+    ]
+  },
+  "source_freeze_hashes_checked_read_only": {
+    "frozen_corpus": {
+      "path": "docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json",
+      "sha256": "5551436407260DB1042BE783B00C7AF732D55757A787E4FB2CA36FA092AF4CD4"
+    },
+    "eval_design": {
+      "path": "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
+      "sha256": "3030F8AFB5430CB31679B9552FF3B101659A1AE323934B4ABB681D1E1A05CE21"
+    },
+    "cost_timeout_retention_policy": {
+      "path": "docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json",
+      "sha256": "07139D68EF8AE2389FE0198BCBFF7E15C74F77F619A5AAF35DD5160671ABB08C"
+    },
+    "exact_approval_packet": {
+      "path": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+      "sha256": "4A38AB517799E1D10348EBC35ECF85E8938F09199B2426C275AC27C178C31164"
+    },
+    "previous_t21_preflight_block": {
+      "path": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
+      "sha256": "05AC7614E13256E4D9FC7753256DD5C476BEAD7B46A7A952D026BC57F426DD8E"
+    },
+    "hash_check_mode": "read_only_preflight"
+  },
+  "would_have_used_if_exactly_approved": {
+    "provider_surface": "Codex CLI/OpenAI via codex exec",
+    "model_id": "gpt-5.5",
+    "model_reasoning_effort": "high",
+    "comparison_mode": "same_model_baseline_treatment",
+    "corpus_id": "B45-POSTQ4-FROZEN-HELDOUT-CORPUS-V1",
+    "corpus_version": "v1",
+    "task_ids": [
+      "B45-HELDOUT-01",
+      "B45-HELDOUT-02",
+      "B45-HELDOUT-03",
+      "B45-HELDOUT-04",
+      "B45-HELDOUT-05",
+      "B45-HELDOUT-06",
+      "B45-HELDOUT-07",
+      "B45-HELDOUT-08"
+    ],
+    "max_total_model_or_reviewer_calls": 17,
+    "max_primary_model_calls": 16,
+    "max_reviewer_calls_after_valid_pairs": 1,
+    "max_total_retries": 0,
+    "per_primary_call_timeout_seconds": 600,
+    "per_reviewer_call_timeout_seconds": 600,
+    "observed_unapproved_per_call_timeout_seconds": 1000,
+    "max_total_wall_clock_seconds": 12000,
+    "usd_cost_cap": 25.0,
+    "raw_temp_only_retention_required": true,
+    "repo_raw_retention_bytes_allowed": 0
+  },
+  "calls_started": {
+    "baseline_model_calls": 0,
+    "treatment_model_calls": 0,
+    "reviewer_model_calls": 0,
+    "provider_api_calls": 0,
+    "setup_or_smoke_model_calls": 0,
+    "total_model_or_reviewer_calls": 0,
+    "actual_model_or_reviewer_calls_started": 0
+  },
+  "cost_preflight": {
+    "estimated_total_cost_usd": 0,
+    "cost_cap_consumed": false,
+    "pricing_recheck_required_before_future_execution": true
+  },
+  "result_contract_status": {
+    "promotion_grade_eval_result_exists": false,
+    "valid_pair_count": 0,
+    "invalid_pair_count": 0,
+    "timeout_count": 0,
+    "no_op_count": 0,
+    "invalid_json_count": 0,
+    "sanitized_rollup_created": false,
+    "reviewer_gate_satisfied": false,
+    "promotion_threshold_evaluated": false,
+    "promotion_allowed": false
+  },
+  "privacy_and_retention_boundary": {
+    "raw_outputs_created": false,
+    "raw_outputs_written_to_repo": false,
+    "raw_outputs_deleted": "not_applicable_no_run",
+    "temp_root_created": false,
+    "repo_raw_retention_bytes": 0,
+    "absolute_user_specific_paths_persisted": false
+  },
+  "no_unapproved_actions": {
+    "baseline_model_call_started": false,
+    "treatment_model_call_started": false,
+    "reviewer_model_call_started": false,
+    "provider_api_call_started": false,
+    "runtime_or_live_server_launched": false,
+    "browser_automation_run": false,
+    "target_workspace_command_run": false,
+    "target_workspace_mutated": false,
+    "database_accessed": false,
+    "ci_or_blocker_enforcement_created": false,
+    "git_branch_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation_created_or_enabled": false,
+    "external_write_performed": false
+  },
+  "unsupported_claims": [
+    "owner_confirmed",
+    "run_authorized",
+    "promotion_grade_eval_result_exists",
+    "baseline_treatment_execution_started",
+    "reviewer_gate_satisfied",
+    "behavior_improvement_proven",
+    "M26_no_go_reversed",
+    "M35_no_go_reversed",
+    "T15_no_go_reversed",
+    "promotion_ready",
+    "runtime_browser_target_ci_git_release_deploy_automation_ready"
+  ],
+  "control_plane_sync_decision": {
+    "REQUIREMENTS.md": "not_applicable_no_scope_or_acceptance_change",
+    "PLAN.md": "updated_compact_timeout_mismatch_pointer",
+    "TEST.md": "updated_compact_timeout_mismatch_check_route",
+    "EVALS.md": "updated_compact_timeout_mismatch_claim_ceiling",
+    "RUNLOG.md": "updated_compact_timeout_mismatch_handoff_pointer",
+    "docs/sources/registry.md": "updated_t21_timeout_mismatch_source_route",
+    "docs/sources/registry.en.md": "updated_t21_timeout_mismatch_source_route",
+    "docs/product-agent-os/control-plane-current-state.md": "updated_current_state_and_queue_pointer",
+    "docs/product-agent-os/control-plane-current-state.en.md": "updated_current_state_and_queue_pointer",
+    "docs/product-agent-os/coding-standards.md": "updated_evidence_ceiling",
+    "docs/product-agent-os/coding-standards.en.md": "updated_evidence_ceiling",
+    "docs/product-agent-os/behavioral-evals.md": "updated_eval_route_pointer_without_raw_batch_marker",
+    "docs/product-agent-os/behavioral-evals.en.md": "updated_eval_route_pointer_without_raw_batch_marker",
+    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md": "updated_t16_t22_row_and_s8_slice",
+    ".codex/product-agent-os/lifecycle-state.json": "updated_current_marker"
+  },
+  "verification": {
+    "status": "passed_current_run",
+    "results": [
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-timeout-mismatch.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t22-promotion-grade-decision-packet.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-post-q4-next-tasks.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool .codex\\product-agent-os\\lifecycle-state.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "status": "passed",
+        "evidence": "Ran 35 tests; OK."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_codex_runtime_runner_model_output -v",
+        "status": "passed",
+        "evidence": "Ran 8 tests; OK."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "status": "passed",
+        "evidence": "Ran 100 tests; OK."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_task_plan_lifecycle -v",
+        "status": "passed",
+        "evidence": "Ran 4 tests; OK."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_lifecycle_hooks -v",
+        "status": "passed",
+        "evidence": "Ran 17 tests; OK."
+      },
+      {
+        "command": "python tools\\check_docs.py",
+        "status": "passed",
+        "evidence": "OK: documentation structure checks passed."
+      },
+      {
+        "command": "git diff --check",
+        "status": "passed_with_crlf_warnings",
+        "evidence": "No whitespace errors. Git reported CRLF/LF normalization warnings for edited files."
+      }
+    ],
+    "remaining_required_before_completion_claim": []
+  },
+  "next_required_action": {
+    "to_run_with_latest_t20_packet": "Owner must restate the exact T20-A02 approval text with the 1000s timeout line unchanged.",
+    "to_change_timeout_model_cost_or_boundary_again": "Owner must request another T20 approval-packet revision before any T21 run.",
+    "current_next_state": "blocked_pending_exact_t20_a02_owner_confirmation_not_run"
+  }
+}

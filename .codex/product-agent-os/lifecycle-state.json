@@ -1,12 +1,12 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION",
-  "scope": "Record the T22 reviewer-gate decision as blocked/no-go because T21 produced no promotion-grade eval result.",
-  "updated_at": "2026-07-08T16:23:58+03:00",
-  "approval_boundary": "T22 cannot start reviewer/model/provider calls, runtime/browser/target workspace commands or mutations, CI/blocker creation, git branch/stage/commit/push/PR, release/deploy/publish or automation while T21 has no valid result. Future execution still requires exact T20 owner restatement, then a valid T21 result, then a separate reviewer gate.",
+  "task_id": "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN",
+  "scope": "Run the exact-approved Batch 45 promotion-grade eval only after strict preflight, and stop before the first call when a T20-A02 abort gate triggers.",
+  "updated_at": "2026-07-08T19:33:10+03:00",
+  "approval_boundary": "The owner restated the exact T20-A02 approval text, but T20-A02/T19 require cost to be known before the next model call. T21 aborted before the first primary call because codex exec did not provide a deterministic pre-call cost estimate. No baseline/treatment/model/provider/reviewer call, runtime/browser/target/CI/git/release/deploy/automation action was started.",
   "brief_schema_version": "task_start_brief_v1",
   "brief_format": "field_list",
-  "brief_digest": "sha256:b45postq4t22blockeddecision000001",
+  "brief_digest": "sha256:b45postq4t21costunknownpreflightabort000001",
   "brief_fields_present": [
     "Task ID",
     "Product value",
@@ -23,17 +23,19 @@
     "Next action"
   ],
   "completion_brief_shown": true,
-  "completion_status": "implemented_reviewer_gate_blocked_no_t21_result_no_promotion",
-  "closure_level": "blocked_before_reviewer_no_run",
+  "completion_status": "aborted_before_first_call_cost_unknown_not_run",
+  "closure_level": "blocked_before_execution_no_run",
   "completion_gaps": [
-    "T21 did not produce a promotion-grade eval result.",
-    "The reviewer gate was not run and has no review input.",
+    "T21 did not start any baseline, treatment, reviewer, model or provider call.",
+    "Cost was not known before the first primary call, so T20-A02/T19 required abort.",
+    "The exact T20-A02 approval cannot be reused after this aborted run; any rerun needs a new exact approval.",
     "Promotion, M26/M35/T15 reversal, runtime/browser/target/CI/git/release/deploy/automation proof and release readiness remain unsupported."
   ],
   "completion_evidence": [
-    "docs/superpowers/specs/batch45-postq4-t22-promotion-grade-decision-packet.json",
+    "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-cost-unknown.json",
+    "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet-1000s.json",
+    "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-timeout-mismatch.json",
     "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
-    "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
     "docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json",
     "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
     "docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json",
@@ -54,8 +56,8 @@
     "docs/product-agent-os/behavioral-evals.en.md",
     "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md"
   ],
-  "evidence_id": "B45-POSTQ4-T22-A01",
-  "status": "implemented_reviewer_gate_blocked_no_t21_result_no_promotion",
-  "latest_evidence": "docs/superpowers/specs/batch45-postq4-t22-promotion-grade-decision-packet.json",
-  "latest_summary": "T22 recorded a no-go decision because T21 has no promotion-grade eval result. reviewer_gate_status=not_run_due_missing_t21_result, reviewer_calls_started=0, reviewer_verdict=not_applicable_no_t21_result, promotion_allowed=false, estimated_total_cost_usd=0 and repo_raw_retention_bytes=0. No reviewer/model/provider, runtime/browser/target/CI/git/release/deploy/automation action occurred."
+  "evidence_id": "B45-POSTQ4-T21-PREFLIGHT-A03",
+  "status": "aborted_before_first_call_cost_unknown_not_run",
+  "latest_evidence": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-cost-unknown.json",
+  "latest_summary": "T21 exact approval text matched T20-A02 and source hashes/pricing were checked, but the approved codex exec surface did not expose a deterministic pre-call cost estimate. Because T19/T20 require abort_when_cost_unknown, baseline/treatment/reviewer calls stayed at 0, repo raw retention bytes stayed 0, and a new exact approval is required for any rerun."
 }
