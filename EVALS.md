@@ -27,7 +27,7 @@ Last compacted: 2026-07-07
 - Residual risk: must be carried into `RUNLOG.md` and the final response.
 - Unsupported claim: any quality, readiness, release, security, AI/RAG, runtime or product-success claim without current evidence must be rejected or labeled inspection-only.
 - Synthetic-only limitation: internal `codex_docs` fixtures cannot support broad real-project usefulness, product-success, release-readiness, automation promotion or mass-user readiness without representative real-project evidence or owner-reviewed accepted gap.
-- Batch 45 promotion: no promotion unless current approved comparable evidence clears the configured threshold and reviewer gates. T14 `+3.27%` with reviewer `0` is below `>=20%` and not same-model comparable. T18 defines the same-model promotion-grade comparison, strict schema, quarantine, scoring/reviewer rubric and result contract; T19 defines cost/timeout/retry/abort/raw-temp-only retention; T20 stages exact approval text with current pricing/USD cap but is not owner confirmation or eval evidence. T21 cannot run until the owner restates the T20 exact approval text.
+- Batch 45 promotion: no promotion unless current approved comparable evidence clears the configured threshold and reviewer gates. T14 `+3.27%` with reviewer `0` is below `>=20%` and not same-model comparable. T18 defines the same-model promotion-grade comparison, strict schema, quarantine, scoring/reviewer rubric and result contract; T19 defines cost/timeout/retry/abort/raw-temp-only retention; T20 stages exact approval text with current pricing/USD cap but is not owner confirmation or eval evidence. T21 preflight is blocked before first call until the owner restates the T20 exact approval text.
 
 ## Current Evaluation State
 
@@ -38,7 +38,7 @@ Last compacted: 2026-07-07
 | Batch 41 | S9 generated-artifact modernization and Neural_Flow comparison. | Generated-artifact acceptance evidence only; no release/target-apply/Cosmos.gl-WebGL runtime proof. |
 | Batch 42 | Planned-only instruction/tool-use matrix. | No fixed-auto-engagement claim. |
 | Batch 44 | S0-S7 local/staged/manual Self-Learning Loop evidence. | No active automation, hidden telemetry, real session import, provider/model call, target mutation or auto-apply proof. |
-| Batch 45 | M26/M27/M35/T12/T15 keep advisory-only/no-go; T14 is positive current-quality signal only; T20 stages the promotion-grade exact approval packet without owner confirmation or running it. | No promotion, blocker, CI, provider/model/reviewer, runtime/browser, target or release claim. |
+| Batch 45 | M26/M27/M35/T12/T15 keep advisory-only/no-go; T14 is positive current-quality signal only; T20 stages the promotion-grade exact approval packet without owner confirmation; T21 preflight blocked before first call with zero model/reviewer calls. | No promotion, blocker, CI, provider/model/reviewer, runtime/browser, target or release claim. |
 | Track 11 DOC-M25 | Generated root `site`, search and sitemap freshness packet exists. | No browser proof, broad scans, remediation, raw retention, publication/release/deploy/git claim. |
 | Lifecycle/control-plane sync | Config-routed Task Brief, lifecycle marker, control-plane sync and Completion Brief contract. | Hook output is reminder/evidence context only, not completion proof. |
 
@@ -89,7 +89,7 @@ Reject or downgrade these claim patterns unless current evidence exists:
 - Generated graph/dashboard/site output as source of truth.
 - Approval-bound live/provider/runtime/canonical-mutation/git action implied by a planning packet or generated artifact.
 - Methodology artifact presence as proof that a human owner accepted semantic correctness.
-- Batch 45 promotion from T14/T15/T16-T22/T17/T18/T19/T20; current result is below threshold, not same-model comparable and the S8 promotion-grade route is design/policy/approval-packet/no-run only.
+- Batch 45 promotion from T14/T15/T16-T22/T17/T18/T19/T20/T21 preflight; current result is below threshold, not same-model comparable and the S8 promotion-grade route is design/policy/approval-packet/blocked-preflight only.
 
 ## Historical Eval Evidence Owners
 
@@ -98,7 +98,7 @@ Reject or downgrade these claim patterns unless current evidence exists:
 - Track 10 evidence, including project graph, live-layer gates, Batch 34 docs/i18n/product-docs closure and Batch 35 real-testing execution: `docs/sources/product-agent-os-track-10-backlog.md` and `docs/sources/registry.md`.
 - Batch 35 approval-bound local runtime, browser automation, provider pilot, canonical mutation pilot and git preflight evidence: `docs/sources/product-agent-os-batch35-approval-packet-draft.md`.
 - Batch 39 production-test evidence: `prod_test.md` and B39 packets.
-- Batch 44/45 and Track 11 evidence: `docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md`, `docs/product-agent-os/control-plane-current-state.md` and `docs/superpowers/specs/*.json`. Batch 45 compact anchors: `B45-PCA-M37-A01`, `B45-RETEST-Q0-Q2-A01`, `B45-RETEST-Q3-FIXTURE-STATIC-A01`, `B45-RETEST-Q4-PROJECT-SLICES-STATIC-A01`, `B45-POST-Q4-NEXT-TASKS-A01`, `B45-POSTQ4-T01-T04-A01`, `B45-POSTQ4-T05-A01`, `B45-POSTQ4-T05B-A01`, `B45-POSTQ4-T06-A01`, `B45-POSTQ4-T08-A01`, `B45-POSTQ4-T10-A01`, `B45-POSTQ4-T11-A01`, `B45-POSTQ4-T12-RUN-A01`, `B45-POSTQ4-T13-A01`, `B45-POSTQ4-T14-A01`, `B45-POSTQ4-T14-RUN-A01`, `B45-POSTQ4-T15-A01`, `B45-POSTQ4-T16-T22-A01`, `B45-POSTQ4-T17-A01`, `B45-POSTQ4-T18-A01`, `B45-POSTQ4-T19-A01`, `B45-POSTQ4-T20-A01`.
+- Batch 44/45 and Track 11 evidence: `docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md`, `docs/product-agent-os/control-plane-current-state.md` and `docs/superpowers/specs/*.json`. Batch 45 compact anchors: `B45-PCA-M37-A01`, `B45-RETEST-Q0-Q2-A01`, `B45-RETEST-Q3-FIXTURE-STATIC-A01`, `B45-RETEST-Q4-PROJECT-SLICES-STATIC-A01`, `B45-POST-Q4-NEXT-TASKS-A01`, `B45-POSTQ4-T01-T04-A01`, `B45-POSTQ4-T05-A01`, `B45-POSTQ4-T05B-A01`, `B45-POSTQ4-T06-A01`, `B45-POSTQ4-T08-A01`, `B45-POSTQ4-T10-A01`, `B45-POSTQ4-T11-A01`, `B45-POSTQ4-T12-RUN-A01`, `B45-POSTQ4-T13-A01`, `B45-POSTQ4-T14-A01`, `B45-POSTQ4-T14-RUN-A01`, `B45-POSTQ4-T15-A01`, `B45-POSTQ4-T16-T22-A01`, `B45-POSTQ4-T17-A01`, `B45-POSTQ4-T18-A01`, `B45-POSTQ4-T19-A01`, `B45-POSTQ4-T20-A01`, `B45-POSTQ4-T21-PREFLIGHT-A01`.
 
 ## Verification For This EVALS Maintenance
 

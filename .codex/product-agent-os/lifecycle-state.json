@@ -1,12 +1,12 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
-  "scope": "Prepare the source-owned exact approval packet for the future Batch 45 promotion-grade eval without authorizing or running T21.",
-  "updated_at": "2026-07-08T14:45:00+03:00",
-  "approval_boundary": "T20 is docs/control-plane/test synchronization plus exact approval text only. It does not authorize baseline/treatment execution, live/model/provider/reviewer calls, runtime/browser/target workspace commands or mutations, CI/blocker creation, git branch/stage/commit/push/PR, release/deploy/publish or automation. Subagents are read-only sidecars for docs and approval/privacy scans.",
+  "task_id": "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN",
+  "scope": "Run the T21 approval preflight and record a blocked no-run artifact because the owner did not restate the exact T20 approval text.",
+  "updated_at": "2026-07-08T15:15:24+03:00",
+  "approval_boundary": "T21 cannot start baseline/treatment execution, live/model/provider/reviewer calls, runtime/browser/target workspace commands or mutations, CI/blocker creation, git branch/stage/commit/push/PR, release/deploy/publish or automation until the owner restates the exact T20 approval text in a future message. Subagents are read-only sidecars for docs and approval/privacy scans.",
   "brief_schema_version": "task_start_brief_v1",
   "brief_format": "field_list",
-  "brief_digest": "sha256:b45postq4t20exactapprovalpacket000001",
+  "brief_digest": "sha256:b45postq4t21blockedpreflight000001",
   "brief_fields_present": [
     "Task ID",
     "Product value",
@@ -23,14 +23,15 @@
     "Next action"
   ],
   "completion_brief_shown": true,
-  "completion_status": "exact_approval_packet_ready_for_owner_confirmation_not_run",
-  "closure_level": "approval_packet_only_not_run",
+  "completion_status": "blocked_missing_exact_t20_owner_confirmation_not_run",
+  "closure_level": "blocked_before_execution_no_run",
   "completion_gaps": [
-    "T20 is an approval packet draft; the owner has not restated the exact approval text.",
+    "The owner has not restated the exact T20 approval text beginning with 'Подтверждаю B45-POSTQ4-T20 exact approval:'.",
     "T21 baseline/treatment execution, model/provider/reviewer calls and T22 reviewer/decision gates remain blocked until future exact approval and evidence exist.",
     "Promotion, M26/M35/T15 reversal, runtime/browser/target/CI/git/release/deploy/automation proof and release readiness remain unsupported."
   ],
   "completion_evidence": [
+    "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
     "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
     "docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json",
     "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
@@ -52,8 +53,8 @@
     "docs/product-agent-os/behavioral-evals.en.md",
     "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md"
   ],
-  "evidence_id": "B45-POSTQ4-T20-A01",
-  "status": "exact_approval_packet_ready_for_owner_confirmation_not_run",
-  "latest_evidence": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
-  "latest_summary": "T20 names the future T21 promotion-grade eval contract: Codex CLI/OpenAI via codex exec, model_id gpt-5.5, model_reasoning_effort high, same-model baseline/treatment, frozen corpus v1, max 17 model/reviewer calls, zero retries, 600-second per-call timeout, 12000-second wall-clock cap, USD 25.00 proposed cap, reviewer policy, raw-temp-only retention and abort conditions. owner_confirmed=false and run_authorized_by_this_artifact=false; no baseline/treatment, reviewer/model/provider, promotion or runtime/browser/target/CI/git/release/deploy/automation action occurred."
+  "evidence_id": "B45-POSTQ4-T21-PREFLIGHT-A01",
+  "status": "blocked_missing_exact_t20_owner_confirmation_not_run",
+  "latest_evidence": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
+  "latest_summary": "T21 preflight checked the T20 exact approval boundary and stopped before the first call because the owner did not restate the exact T20 approval text. baseline_started=false, treatment_started=false, reviewer_gate_satisfied=false, actual_model_or_reviewer_calls_started=0, estimated_total_cost_usd=0, repo_raw_retention_bytes=0 and temp_root_created=false. No baseline/treatment, reviewer/model/provider, promotion or runtime/browser/target/CI/git/release/deploy/automation action occurred."
 }

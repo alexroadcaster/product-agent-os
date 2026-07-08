@@ -37,7 +37,7 @@
   },
   "task_group": {
     "group_id": "B45-S8-PROMOTION-GRADE-EVAL",
-    "group_status": "t20_exact_approval_packet_ready_owner_confirmation_required",
+    "group_status": "t21_blocked_missing_exact_t20_owner_confirmation_not_run",
     "promotion_allowed_now": false,
     "only_route_that_can_change_no_go_later": true,
     "execution_requires_later_exact_approval": true,
@@ -193,15 +193,23 @@
     {
       "task_id": "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN",
       "priority": "P1",
-      "status": "approval_required_not_started",
+      "status": "blocked_missing_exact_t20_owner_confirmation_not_run",
       "owner_role": "tester",
-      "scope": "Run the promotion-grade eval only after exact owner approval.",
+      "scope": "Attempt the approval preflight for the promotion-grade eval and stop before execution when exact owner approval is absent.",
       "acceptance": [
-        "Baseline and treatment execute under the approved comparison mode and frozen corpus.",
-        "Every run passes strict schema or is quarantined according to T18.",
-        "Sanitized result packet records aggregate, per-task, invalid-pair, timeout, cost and no-unapproved-actions evidence."
+        "Preflight verifies that the owner restated the exact T20 approval text before any model/provider/reviewer call.",
+        "When the exact T20 approval text is missing, no baseline, treatment, reviewer, setup or smoke call starts.",
+        "Blocked preflight packet records zero calls, zero cost, no temp root, no raw repo retention and no-unapproved-actions evidence."
       ],
-      "evidence_owner": "future docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-results.json",
+      "evidence_owner": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
+      "future_result_owner_after_exact_approval": "future docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-results.json",
+      "verification_gates": [
+        "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
+        "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "python tools\\check_docs.py",
+        "git diff --check"
+      ],
       "stop_conditions": [
         "Stop without exact approval.",
         "Stop on timeout/cost/corpus/privacy policy breach.",
@@ -281,6 +289,11 @@
     "status": "passed_current_run",
     "results": [
       {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully after verification-block sync."
+      },
+      {
         "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
         "status": "passed",
         "evidence": "JSON parsed successfully."
@@ -303,7 +316,7 @@
       {
         "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
         "status": "passed",
-        "evidence": "Ran 31 tests; OK."
+        "evidence": "Ran 32 tests; OK."
       },
       {
         "command": "python -m unittest tests.product_agent_os.test_codex_runtime_runner_model_output -v",

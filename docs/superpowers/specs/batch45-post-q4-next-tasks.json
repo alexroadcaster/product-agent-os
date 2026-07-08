@@ -529,6 +529,7 @@
     "latest_t18_eval_design": "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
     "latest_t19_cost_timeout_retention_policy": "docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json",
     "latest_t20_exact_approval_packet": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+    "latest_t21_preflight_block": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
     "executed_task_ids": [
       "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX",
       "B45-POSTQ4-T02-MP-CRM-STATIC-FIX",
@@ -552,6 +553,9 @@
       "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
       "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET"
     ],
+    "preflight_blocked_task_ids": [
+      "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN"
+    ],
     "status_by_task": {
       "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX": "implemented_minimal_fixture_copy_intent_comments",
       "B45-POSTQ4-T02-MP-CRM-STATIC-FIX": "implemented_minimal_fixture_copy_comments",
@@ -573,7 +577,8 @@
       "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS": "implemented_frozen_heldout_corpus_manifest_no_run",
       "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA": "implemented_eval_design_strict_schema_no_run",
       "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY": "implemented_cost_timeout_retention_policy_no_run",
-      "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET": "exact_approval_packet_ready_for_owner_confirmation_not_run"
+      "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET": "exact_approval_packet_ready_for_owner_confirmation_not_run",
+      "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN": "blocked_missing_exact_t20_owner_confirmation_not_run"
     },
     "warning_delta": {
       "q4_baseline_warning_count": 14,
@@ -608,7 +613,7 @@
       "approved_t14_codex_exec_primary_calls_invalid_json": 0,
       "approved_t14_reviewer_calls_started": 0
     },
-    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T05 stopped on baseline timeout. T12 produced valid_pair_count=6, invalid_json=1 and no_op=1; reviewer skipped. T13 adds local strict-output schema/no-op hardening. T14 executed exact-approved gpt-5.5 high-reasoning current-best-quality rerun with valid_pair_count=8 and invalid_pair_count=0. T15 interprets T14 as a positive current-best-quality signal only: reviewer did not run, same-model comparability with spark evidence is false, no promotion, no M26/M35 reversal and no runtime/browser/target/CI/git/release/deploy/automation proof exists. T16-T22 define a promotion-grade eval task group only. T17 freezes the metadata-only held-out corpus manifest. T18 defines same-model promotion-grade comparison, strict schema, deterministic quarantine, scoring/reviewer rubric and result contract only. T19 defines cost, timeout, retry, abort and raw-temp-only retention policy only. T20 stages exact owner approval text with current pricing/USD cap but owner_confirmed=false and run_authorized_by_this_artifact=false. None of T16-T20 authorizes baseline/treatment, reviewer/model/provider or runtime/browser/target/CI/git/release/deploy/automation actions.",
+    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T05 stopped on baseline timeout. T12 produced valid_pair_count=6, invalid_json=1 and no_op=1; reviewer skipped. T13 adds local strict-output schema/no-op hardening. T14 executed exact-approved gpt-5.5 high-reasoning current-best-quality rerun with valid_pair_count=8 and invalid_pair_count=0. T15 interprets T14 as a positive current-best-quality signal only: reviewer did not run, same-model comparability with spark evidence is false, no promotion, no M26/M35 reversal and no runtime/browser/target/CI/git/release/deploy/automation proof exists. T16-T22 define a promotion-grade eval task group only. T17 freezes the metadata-only held-out corpus manifest. T18 defines same-model promotion-grade comparison, strict schema, deterministic quarantine, scoring/reviewer rubric and result contract only. T19 defines cost, timeout, retry, abort and raw-temp-only retention policy only. T20 stages exact owner approval text with current pricing/USD cap but owner_confirmed=false and run_authorized_by_this_artifact=false. T21 preflight is blocked because the owner did not restate the exact T20 approval text, so no baseline/treatment, reviewer/model/provider or runtime/browser/target/CI/git/release/deploy/automation action started.",
     "post_t06_recommended_next_routes": [
       "B45-POSTQ4-T09-CLOSURE-ADVISORY-ONLY",
       "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
@@ -800,6 +805,27 @@
       "future_exact_approval_required_before_T21": true,
       "next_required_task": "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN",
       "decision": "exact_approval_packet_ready_owner_confirmation_required_no_run"
+    },
+    "t21_preflight_block": {
+      "status": "blocked_missing_exact_t20_owner_confirmation_not_run",
+      "evidence_id": "B45-POSTQ4-T21-PREFLIGHT-A01",
+      "approval_text_present_in_current_user_message": false,
+      "approval_text_exact_match": "not_evaluated_due_missing_restatement",
+      "owner_confirmed": false,
+      "run_authorized": false,
+      "baseline_started": false,
+      "treatment_started": false,
+      "reviewer_gate_satisfied": false,
+      "actual_model_or_reviewer_calls_started": 0,
+      "estimated_total_cost_usd": 0,
+      "cost_cap_consumed": false,
+      "pricing_recheck_required_before_future_execution": true,
+      "raw_outputs_written_to_repo": false,
+      "repo_raw_retention_bytes": 0,
+      "temp_root_created": false,
+      "promotion_allowed": false,
+      "next_required_action": "owner_must_restate_exact_T20_approval_text_before_any_T21_execution",
+      "decision": "blocked_before_first_call_no_run"
     }
   },
   "control_plane_sync_decision": {
@@ -807,7 +833,7 @@
     "PLAN.md": "updated_compact_next_queue_pointer",
     "TEST.md": "updated_compact_post_q4_route_pointer",
     "EVALS.md": "updated_compact_post_q4_claim_ceiling",
-    "RUNLOG.md": "handoff_required_due_runlog_budget",
+    "RUNLOG.md": "updated_compact_t21_handoff_pointer",
     "prod_test.md": "not_applicable_batch39_surface",
     "docs/sources/registry.md": "updated_source_route",
     "docs/sources/registry.en.md": "updated_source_route",
@@ -831,6 +857,11 @@
   "verification": {
     "results": [
       {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully after verification-block sync."
+      },
+      {
         "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
         "status": "passed",
         "evidence": "JSON parsed successfully."
@@ -853,7 +884,7 @@
       {
         "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
         "status": "passed",
-        "evidence": "Ran 31 tests; OK"
+        "evidence": "Ran 32 tests; OK"
       },
       {
         "command": "python -m unittest tests.product_agent_os.test_codex_runtime_runner_model_output -v",
