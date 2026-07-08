@@ -37,7 +37,7 @@
   },
   "task_group": {
     "group_id": "B45-S8-PROMOTION-GRADE-EVAL",
-    "group_status": "t19_cost_timeout_retention_ready_next_t20",
+    "group_status": "t20_exact_approval_packet_ready_owner_confirmation_required",
     "promotion_allowed_now": false,
     "only_route_that_can_change_no_go_later": true,
     "execution_requires_later_exact_approval": true,
@@ -168,7 +168,7 @@
     {
       "task_id": "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
       "priority": "P0",
-      "status": "approval_packet_planned_not_started",
+      "status": "exact_approval_packet_ready_for_owner_confirmation_not_run",
       "owner_role": "implementation-planner + docs-maintainer",
       "scope": "Prepare exact owner approval text for the future promotion-grade eval run after T17-T19 are source-ready.",
       "acceptance": [
@@ -176,10 +176,18 @@
         "Packet states that it does not run anything by itself.",
         "Approval cannot be reused after a consumed or aborted run."
       ],
-      "evidence_owner": "future docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+      "evidence_owner": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+      "verification_gates": [
+        "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+        "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "python tools\\check_docs.py",
+        "git diff --check"
+      ],
       "stop_conditions": [
         "Stop before any model/provider/reviewer call.",
-        "Stop if owner approval text is incomplete."
+        "Stop if owner approval text is incomplete.",
+        "Stop if current pricing source or concrete USD cap is missing."
       ]
     },
     {
@@ -273,7 +281,7 @@
     "status": "passed_current_run",
     "results": [
       {
-        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t19-cost-timeout-retention-policy.json",
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
         "status": "passed",
         "evidence": "JSON parsed successfully."
       },
@@ -288,9 +296,14 @@
         "evidence": "JSON parsed successfully."
       },
       {
+        "command": "python -m json.tool .codex\\product-agent-os\\lifecycle-state.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
         "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
         "status": "passed",
-        "evidence": "Ran 30 tests; OK."
+        "evidence": "Ran 31 tests; OK."
       },
       {
         "command": "python -m unittest tests.product_agent_os.test_codex_runtime_runner_model_output -v",

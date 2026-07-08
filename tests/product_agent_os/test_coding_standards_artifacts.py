@@ -85,6 +85,12 @@ POST_Q4_T19_POLICY = (
     / "specs"
     / "batch45-postq4-t19-cost-timeout-retention-policy.json"
 )
+POST_Q4_T20_APPROVAL = (
+    DOCS
+    / "superpowers"
+    / "specs"
+    / "batch45-postq4-t20-promotion-grade-eval-approval-packet.json"
+)
 sys.path.insert(0, str(SCRIPTS))
 
 from codex_runtime_runner.model_output import (  # noqa: E402
@@ -124,6 +130,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "t17 freezes the metadata-only held-out corpus manifest",
             "t18 defines the same-model promotion-grade eval design and strict schema",
             "t19 defines the cost/timeout/raw-temp-only retention policy",
+            "t20 stages the exact approval packet draft",
         ]:
             with self.subTest(expected=expected):
                 self.assertIn(expected, combined)
@@ -688,6 +695,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
                 "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET",
                 "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
+                "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
             },
             set(packet["execution_update"]["post_t06_recommended_next_routes"]),
         )
@@ -1393,6 +1401,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
             "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
             "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
+            "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
         })
 
     def test_b45_postq4_t13_strict_output_schema_and_harness_hardening(self):
@@ -1455,6 +1464,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
             "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
             "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
+            "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
         })
         if lifecycle["task_id"] == "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING":
             self.assertEqual("synthetic_green_after_local_tests_only", lifecycle["closure_level"])
@@ -1561,6 +1571,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
                 "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
                 "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
+                "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
             },
         )
 
@@ -1627,10 +1638,13 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
                 "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
                 "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
+                "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
             },
         )
         if lifecycle["task_id"] == "B45-POSTQ4-T14-STRICT-RERUN":
             self.assertEqual("live_dependency_aligned", lifecycle["closure_level"])
+        elif lifecycle["task_id"] == "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET":
+            self.assertEqual("approval_packet_only_not_run", lifecycle["closure_level"])
         else:
             self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
 
@@ -1718,9 +1732,13 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
                 "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
                 "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
+                "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
             },
         )
-        self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
+        if lifecycle["task_id"] == "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET":
+            self.assertEqual("approval_packet_only_not_run", lifecycle["closure_level"])
+        else:
+            self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
 
     def test_b45_postq4_t16_t22_promotion_grade_eval_task_group_is_design_only(self):
         packet = json.loads(POST_Q4_T16_T22_TASK_GROUP.read_text(encoding="utf-8"))
@@ -1745,6 +1763,10 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         self.assertEqual("B45-POSTQ4-T16-T22-A01", packet["evidence_id"])
         self.assertEqual("implemented_task_group_design_no_run", packet["status"])
         self.assertEqual("B45-S8-PROMOTION-GRADE-EVAL", packet["task_group"]["group_id"])
+        self.assertEqual(
+            "t20_exact_approval_packet_ready_owner_confirmation_required",
+            packet["task_group"]["group_status"],
+        )
         self.assertFalse(packet["task_group"]["promotion_allowed_now"])
         self.assertTrue(packet["task_group"]["execution_requires_later_exact_approval"])
         self.assertEqual("same_model_baseline_treatment", packet["comparability_policy"]["preferred_mode"])
@@ -1767,8 +1789,17 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 self.assertIn(required_task, task_ids)
 
         task_status = {task["task_id"]: task["status"] for task in packet["task_rows"]}
+        task_owner = {task["task_id"]: task.get("evidence_owner") for task in packet["task_rows"]}
+        self.assertEqual(
+            "exact_approval_packet_ready_for_owner_confirmation_not_run",
+            task_status["B45-POSTQ4-T20-EXACT-APPROVAL-PACKET"],
+        )
         self.assertEqual("approval_required_not_started", task_status["B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN"])
         self.assertEqual("blocked_until_t21_result", task_status["B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION"])
+        self.assertEqual(
+            "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+            task_owner["B45-POSTQ4-T20-EXACT-APPROVAL-PACKET"],
+        )
 
         for action, performed in packet["no_unapproved_actions"].items():
             with self.subTest(action=action):
@@ -1820,6 +1851,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
                 "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
                 "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
+                "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
             },
         )
         self.assertIn(
@@ -1829,6 +1861,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T17-A01",
                 "B45-POSTQ4-T18-A01",
                 "B45-POSTQ4-T19-A01",
+                "B45-POSTQ4-T20-A01",
             },
         )
         self.assertIn(
@@ -1838,9 +1871,13 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "implemented_frozen_heldout_corpus_manifest_no_run",
                 "implemented_eval_design_strict_schema_no_run",
                 "implemented_cost_timeout_retention_policy_no_run",
+                "exact_approval_packet_ready_for_owner_confirmation_not_run",
             },
         )
-        self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
+        if lifecycle["task_id"] == "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET":
+            self.assertEqual("approval_packet_only_not_run", lifecycle["closure_level"])
+        else:
+            self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
 
     def test_b45_postq4_t17_frozen_heldout_corpus_manifest_is_no_run(self):
         packet = json.loads(POST_Q4_T17_FROZEN_HELDOUT_CORPUS.read_text(encoding="utf-8"))
@@ -1998,18 +2035,26 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
                 "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
                 "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
+                "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
             },
         )
-        self.assertIn(lifecycle["evidence_id"], {"B45-POSTQ4-T17-A01", "B45-POSTQ4-T18-A01", "B45-POSTQ4-T19-A01"})
+        self.assertIn(
+            lifecycle["evidence_id"],
+            {"B45-POSTQ4-T17-A01", "B45-POSTQ4-T18-A01", "B45-POSTQ4-T19-A01", "B45-POSTQ4-T20-A01"},
+        )
         self.assertIn(
             lifecycle["status"],
             {
                 "implemented_frozen_heldout_corpus_manifest_no_run",
                 "implemented_eval_design_strict_schema_no_run",
                 "implemented_cost_timeout_retention_policy_no_run",
+                "exact_approval_packet_ready_for_owner_confirmation_not_run",
             },
         )
-        self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
+        if lifecycle["task_id"] == "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET":
+            self.assertEqual("approval_packet_only_not_run", lifecycle["closure_level"])
+        else:
+            self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
 
     def test_b45_postq4_t18_eval_design_and_strict_schema_is_no_run(self):
         packet = json.loads(POST_Q4_T18_EVAL_DESIGN.read_text(encoding="utf-8"))
@@ -2214,6 +2259,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             {
                 "t18_eval_design_strict_schema_ready_next_t19",
                 "t19_cost_timeout_retention_ready_next_t20",
+                "t20_exact_approval_packet_ready_owner_confirmation_required",
             },
         )
 
@@ -2280,17 +2326,22 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             {
                 "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
                 "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
+                "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
             },
         )
-        self.assertIn(lifecycle["evidence_id"], {"B45-POSTQ4-T18-A01", "B45-POSTQ4-T19-A01"})
+        self.assertIn(lifecycle["evidence_id"], {"B45-POSTQ4-T18-A01", "B45-POSTQ4-T19-A01", "B45-POSTQ4-T20-A01"})
         self.assertIn(
             lifecycle["status"],
             {
                 "implemented_eval_design_strict_schema_no_run",
                 "implemented_cost_timeout_retention_policy_no_run",
+                "exact_approval_packet_ready_for_owner_confirmation_not_run",
             },
         )
-        self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
+        if lifecycle["task_id"] == "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET":
+            self.assertEqual("approval_packet_only_not_run", lifecycle["closure_level"])
+        else:
+            self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
 
     def test_b45_postq4_t19_cost_timeout_retention_policy_is_no_run(self):
         packet = json.loads(POST_Q4_T19_POLICY.read_text(encoding="utf-8"))
@@ -2451,7 +2502,13 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json",
             parent_rows["B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY"]["evidence_owner"],
         )
-        self.assertEqual("t19_cost_timeout_retention_ready_next_t20", parent["task_group"]["group_status"])
+        self.assertIn(
+            parent["task_group"]["group_status"],
+            {
+                "t19_cost_timeout_retention_ready_next_t20",
+                "t20_exact_approval_packet_ready_owner_confirmation_required",
+            },
+        )
 
         update = next_tasks["execution_update"]
         self.assertEqual(
@@ -2507,10 +2564,322 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         self.assertNotIn("B45-POSTQ4-T19-A01", behavioral_ru)
         self.assertNotIn("B45-POSTQ4-T19-A01", behavioral_en)
 
-        self.assertEqual("B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY", lifecycle["task_id"])
-        self.assertEqual("B45-POSTQ4-T19-A01", lifecycle["evidence_id"])
-        self.assertEqual("implemented_cost_timeout_retention_policy_no_run", lifecycle["status"])
-        self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
+        self.assertIn(
+            lifecycle["task_id"],
+            {
+                "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
+                "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
+            },
+        )
+        self.assertIn(lifecycle["evidence_id"], {"B45-POSTQ4-T19-A01", "B45-POSTQ4-T20-A01"})
+        self.assertIn(
+            lifecycle["status"],
+            {
+                "implemented_cost_timeout_retention_policy_no_run",
+                "exact_approval_packet_ready_for_owner_confirmation_not_run",
+            },
+        )
+        if lifecycle["task_id"] == "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET":
+            self.assertEqual("approval_packet_only_not_run", lifecycle["closure_level"])
+        else:
+            self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
+
+    def test_b45_postq4_t20_exact_approval_packet_is_not_authorization(self):
+        packet = json.loads(POST_Q4_T20_APPROVAL.read_text(encoding="utf-8"))
+        parent = json.loads(POST_Q4_T16_T22_TASK_GROUP.read_text(encoding="utf-8"))
+        next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
+        registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
+        registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
+        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+        plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
+        runlog = (ROOT / "RUNLOG.md").read_text(encoding="utf-8")
+        evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
+        test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
+        current_state = (DOCS / "product-agent-os" / "control-plane-current-state.md").read_text(encoding="utf-8")
+        current_state_en = (DOCS / "product-agent-os" / "control-plane-current-state.en.md").read_text(encoding="utf-8")
+        coding_ru = (DOCS / "product-agent-os" / "coding-standards.md").read_text(encoding="utf-8")
+        coding_en = (DOCS / "product-agent-os" / "coding-standards.en.md").read_text(encoding="utf-8")
+        behavioral_ru = (DOCS / "product-agent-os" / "behavioral-evals.md").read_text(encoding="utf-8")
+        behavioral_en = (DOCS / "product-agent-os" / "behavioral-evals.en.md").read_text(encoding="utf-8")
+        track11 = (
+            DOCS
+            / "superpowers"
+            / "plans"
+            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+        ).read_text(encoding="utf-8")
+
+        serialized = json.dumps(packet, sort_keys=True)
+        exact_text = "\n".join(packet["exact_approval_text_for_owner_confirmation"])
+        self.assertEqual("batch45_postq4_t20_promotion_grade_eval_approval_packet_v1", packet["schema_version"])
+        self.assertEqual("B45-POSTQ4-T20-EXACT-APPROVAL-PACKET", packet["task_id"])
+        self.assertEqual("B45-POSTQ4-T20-A01", packet["evidence_id"])
+        self.assertEqual("exact_approval_packet_ready_for_owner_confirmation_not_run", packet["status"])
+        self.assertEqual("approval_packet_only_not_run", packet["closure_level"])
+        self.assertEqual("exact_approval_packet_only", packet["route"])
+
+        approval_state = packet["approval_state"]
+        self.assertFalse(approval_state["owner_confirmed"])
+        self.assertFalse(approval_state["run_authorized_by_this_artifact"])
+        self.assertTrue(approval_state["requires_next_user_message"])
+        self.assertTrue(approval_state["next_user_message_must_restate_exact_packet"])
+        self.assertTrue(approval_state["approval_packet_cannot_run_by_itself"])
+        self.assertFalse(approval_state["approval_reuse_after_consumed_or_aborted_run_allowed"])
+
+        for required_text in [
+            "Подтверждаю B45-POSTQ4-T20 exact approval:",
+            "provider/surface: Codex CLI/OpenAI via codex exec",
+            "model_id: gpt-5.5",
+            "model reasoning effort: high",
+            "comparison mode: same_model_baseline_treatment",
+            "corpus: B45-POSTQ4-FROZEN-HELDOUT-CORPUS-V1 v1",
+            "max calls: 8 baseline + 8 treatment + max 1 reviewer = 17 total",
+            "max retries: 0",
+            "timeout: 600s per primary or reviewer call; max wall-clock 12000s",
+            "usd cost cap: 25.00",
+            "pricing_source_checked_at: 2026-07-08T14:40:00+03:00",
+            "strict output schema: batch45_postq4_promotion_grade_primary_result_v1",
+            "reviewer policy: max 1 independent reviewer call only after valid_pair_count=8",
+            "retention: raw_temp_only; repo stores sanitized rollup only",
+            "abort conditions: stop before first call if approval text differs",
+            "no_unapproved_actions_boundary: no baseline/treatment/model/provider/reviewer call",
+            "approval reuse: forbidden after consumed or aborted run",
+            "claim ceiling: no promotion, M26/M35/T15 reversal",
+        ]:
+            with self.subTest(required_text=required_text):
+                self.assertIn(required_text, exact_text)
+
+        approved = packet["approved_if_owner_confirms_exact_text"]
+        self.assertEqual("gpt-5.5", approved["model_id"])
+        self.assertEqual("high", approved["model_reasoning_effort"])
+        self.assertEqual("same_model_baseline_treatment", approved["comparison_mode"])
+        self.assertEqual("B45-POSTQ4-FROZEN-HELDOUT-CORPUS-V1", approved["corpus_id"])
+        self.assertEqual("v1", approved["corpus_version"])
+        self.assertEqual([f"B45-HELDOUT-{index:02d}" for index in range(1, 9)], approved["task_ids"])
+        self.assertEqual(8, approved["primary_model_call_cap"]["baseline"])
+        self.assertEqual(8, approved["primary_model_call_cap"]["treatment"])
+        self.assertEqual(16, approved["primary_model_call_cap"]["total_primary"])
+        self.assertEqual(1, approved["reviewer_call_cap"])
+        self.assertEqual(0, approved["setup_or_smoke_model_calls"])
+        self.assertEqual(17, approved["max_total_model_or_reviewer_calls"])
+        self.assertEqual(0, approved["max_total_retries"])
+        self.assertEqual(600, approved["per_primary_call_timeout_seconds"])
+        self.assertEqual(600, approved["per_reviewer_call_timeout_seconds"])
+        self.assertEqual(12000, approved["max_total_wall_clock_seconds"])
+        self.assertEqual(25.0, approved["usd_cost_cap"])
+        self.assertEqual("proposed_by_packet_not_owner_confirmed", approved["usd_cost_cap_status"])
+        self.assertEqual("2026-07-08T14:40:00+03:00", approved["pricing_source_checked_at"])
+        self.assertEqual("https://developers.openai.com/api/docs/pricing", approved["pricing_source"])
+        self.assertEqual("1M tokens", approved["pricing_basis"]["prices_per"])
+        self.assertEqual("Standard", approved["pricing_basis"]["tier"])
+        self.assertEqual("gpt-5.5", approved["pricing_basis"]["model"])
+        self.assertEqual(5.0, approved["pricing_basis"]["short_context"]["input_usd_per_1m_tokens"])
+        self.assertEqual(0.5, approved["pricing_basis"]["short_context"]["cached_input_usd_per_1m_tokens"])
+        self.assertEqual(30.0, approved["pricing_basis"]["short_context"]["output_usd_per_1m_tokens"])
+        self.assertEqual(10.0, approved["pricing_basis"]["long_context"]["input_usd_per_1m_tokens"])
+        self.assertEqual(1.0, approved["pricing_basis"]["long_context"]["cached_input_usd_per_1m_tokens"])
+        self.assertEqual(45.0, approved["pricing_basis"]["long_context"]["output_usd_per_1m_tokens"])
+        self.assertEqual(10, approved["pricing_basis"]["regional_processing_uplift_percent_if_eligible"])
+        self.assertTrue(approved["cost_accounting_policy"]["cost_must_be_known_before_next_call"])
+        self.assertTrue(approved["cost_accounting_policy"]["abort_when_cost_unknown"])
+        self.assertTrue(approved["cost_accounting_policy"]["abort_before_next_call_when_estimated_cap_would_be_exceeded"])
+        self.assertTrue(approved["cost_accounting_policy"]["cost_cap_breach_blocks_promotion"])
+        self.assertTrue(approved["cost_accounting_policy"]["cost_cap_includes_primary_and_reviewer_calls"])
+        self.assertEqual("%TEMP%\\codex-b45-postq4-t20-*", approved["disposable_temp_root_placeholder"])
+        self.assertEqual("batch45_postq4_promotion_grade_primary_result_v1", approved["strict_output_schema_id"])
+        self.assertEqual(8, approved["reviewer_call_allowed_only_after"]["valid_pair_count"])
+        self.assertEqual(0, approved["reviewer_call_allowed_only_after"]["invalid_pair_count"])
+        self.assertEqual(0, approved["reviewer_call_allowed_only_after"]["timeout_count"])
+        self.assertEqual(0, approved["reviewer_call_allowed_only_after"]["no_op_count"])
+        self.assertEqual(0, approved["reviewer_call_allowed_only_after"]["invalid_json_count"])
+        self.assertTrue(approved["reviewer_call_allowed_only_after"]["sanitized_rollup_validates"])
+        self.assertTrue(approved["reviewer_call_allowed_only_after"]["raw_outputs_deleted"])
+        self.assertTrue(approved["retention"]["raw_outputs_temp_only"])
+        self.assertEqual("sanitized_rollup_only", approved["retention"]["repo_retention"])
+        self.assertEqual(0, approved["retention"]["repo_raw_retention_bytes_allowed"])
+        self.assertEqual(24, approved["retention"]["raw_retention_max_hours"])
+        self.assertTrue(approved["retention"]["delete_raw_on_success"])
+        self.assertTrue(approved["retention"]["delete_raw_on_abort"])
+        self.assertTrue(approved["retention"]["delete_raw_before_git_stage_or_commit"])
+        self.assertTrue(approved["t21_run_authorized_only_after_future_owner_confirmation"])
+        self.assertFalse(approved["approval_reuse_after_consumed_or_aborted_run_allowed"])
+
+        source_freeze = packet["source_freeze"]
+        self.assertEqual(
+            "5551436407260DB1042BE783B00C7AF732D55757A787E4FB2CA36FA092AF4CD4",
+            source_freeze["frozen_corpus"]["sha256"],
+        )
+        self.assertEqual(
+            "3030F8AFB5430CB31679B9552FF3B101659A1AE323934B4ABB681D1E1A05CE21",
+            source_freeze["eval_design"]["sha256"],
+        )
+        self.assertEqual(
+            "07139D68EF8AE2389FE0198BCBFF7E15C74F77F619A5AAF35DD5160671ABB08C",
+            source_freeze["cost_timeout_retention_policy"]["sha256"],
+        )
+        self.assertEqual(
+            "095122FFD4ADA73C0728C2A74FFE5E8EA26DD0C8EF14F439B27AA7E761E3502D",
+            source_freeze["strict_output_validator"]["sha256"],
+        )
+
+        promotion_gate = packet["promotion_gate_carried_forward"]
+        self.assertEqual(8, promotion_gate["minimum_valid_pairs"])
+        self.assertEqual(0, promotion_gate["invalid_pair_count_required"])
+        self.assertEqual(0, promotion_gate["timeout_count_required"])
+        self.assertEqual(0, promotion_gate["no_op_count_required"])
+        self.assertEqual(0, promotion_gate["invalid_json_count_required"])
+        self.assertEqual(20, promotion_gate["minimum_average_score_delta_percent"])
+        self.assertTrue(promotion_gate["reviewer_gate_required"])
+        self.assertEqual("promotion_go", promotion_gate["reviewer_decision_must_be"])
+        self.assertTrue(promotion_gate["same_model_comparability_required"])
+        self.assertFalse(promotion_gate["static_warning_delta_can_promote"])
+
+        for abort_condition in [
+            "owner_has_not_restated_exact_approval_text",
+            "pricing_source_stale_or_unavailable",
+            "cost_unknown_before_or_after_call",
+            "estimated_cost_cap_would_be_exceeded",
+            "source_freeze_hash_mismatch",
+            "model_id_or_reasoning_effort_mismatch_between_arms",
+            "first_primary_timeout",
+            "invalid_json",
+            "schema_validation_failed",
+            "no_op",
+            "raw_output_retention_violation",
+            "target_runtime_browser_database_ci_git_release_deploy_automation_or_external_write_requirement",
+        ]:
+            self.assertIn(abort_condition, packet["abort_conditions"])
+
+        boundary = packet["approval_and_execution_boundary"]
+        self.assertFalse(boundary["packet_authorizes_future_run"])
+        self.assertFalse(boundary["baseline_or_treatment_run_started"])
+        self.assertFalse(boundary["reviewer_gate_satisfied"])
+        self.assertFalse(boundary["owner_confirmed"])
+        self.assertFalse(boundary["run_authorized_by_this_artifact"])
+        self.assertTrue(boundary["future_approval_required_before_T21"])
+        self.assertEqual("B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN", boundary["next_required_task"])
+
+        retention = packet["privacy_and_retention_boundary"]
+        self.assertFalse(retention["raw_outputs_repo_retention_allowed"])
+        self.assertTrue(retention["raw_outputs_temp_only"])
+        self.assertEqual(0, retention["repo_raw_retention_bytes_allowed"])
+        self.assertTrue(retention["concrete_temp_root_in_repo_artifact_forbidden"])
+        self.assertTrue(retention["absolute_user_specific_paths_forbidden"])
+        self.assertIn("raw model outputs", retention["forbidden_repo_retention"])
+        self.assertIn("no-unapproved-actions booleans", retention["allowed_repo_retention"])
+
+        for action, performed in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(performed)
+        self.assertFalse(packet["no_unapproved_actions"]["raw_outputs_written_to_repo"])
+
+        for unsupported in [
+            "owner_confirmed",
+            "run_authorized_by_this_artifact",
+            "promotion_grade_eval_result_exists",
+            "baseline_treatment_execution_started",
+            "reviewer_gate_satisfied",
+            "behavior_improvement_proven",
+            "M26_no_go_reversed",
+            "M35_no_go_reversed",
+            "T15_no_go_reversed",
+            "promotion_ready",
+            "runtime_browser_target_ci_git_release_deploy_automation_ready",
+        ]:
+            self.assertIn(unsupported, packet["unsupported_claims"])
+
+        for forbidden_path_fragment in ["C:\\Users", "C:/Users", "\\Users\\", "/Users/", "/home/"]:
+            self.assertNotIn(forbidden_path_fragment, serialized)
+
+        sources = {entry["source"] for entry in packet["source_matrix"]}
+        self.assertIn("https://developers.openai.com/api/docs/pricing", sources)
+        self.assertIn("https://developers.openai.com/codex/models", sources)
+        self.assertIn("https://developers.openai.com/codex/config-basic", sources)
+        self.assertIn("Context7 /websites/developers_openai_api", sources)
+
+        parent_rows = {task["task_id"]: task for task in parent["task_rows"]}
+        self.assertEqual(
+            "t20_exact_approval_packet_ready_owner_confirmation_required",
+            parent["task_group"]["group_status"],
+        )
+        self.assertEqual(
+            "exact_approval_packet_ready_for_owner_confirmation_not_run",
+            parent_rows["B45-POSTQ4-T20-EXACT-APPROVAL-PACKET"]["status"],
+        )
+        self.assertEqual(
+            "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+            parent_rows["B45-POSTQ4-T20-EXACT-APPROVAL-PACKET"]["evidence_owner"],
+        )
+
+        update = next_tasks["execution_update"]
+        self.assertEqual(
+            "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+            update["latest_t20_exact_approval_packet"],
+        )
+        self.assertIn("B45-POSTQ4-T20-EXACT-APPROVAL-PACKET", update["executed_task_ids"])
+        self.assertEqual(
+            "exact_approval_packet_ready_for_owner_confirmation_not_run",
+            update["status_by_task"]["B45-POSTQ4-T20-EXACT-APPROVAL-PACKET"],
+        )
+        t20_rollup = update["t20_exact_approval_packet"]
+        self.assertEqual("B45-POSTQ4-T20-A01", t20_rollup["evidence_id"])
+        self.assertEqual("gpt-5.5", t20_rollup["model_id"])
+        self.assertEqual("high", t20_rollup["model_reasoning_effort"])
+        self.assertEqual("same_model_baseline_treatment", t20_rollup["comparison_mode"])
+        self.assertEqual(17, t20_rollup["max_total_model_or_reviewer_calls"])
+        self.assertEqual(0, t20_rollup["max_total_retries"])
+        self.assertEqual(25.0, t20_rollup["usd_cost_cap"])
+        self.assertFalse(t20_rollup["owner_confirmed"])
+        self.assertFalse(t20_rollup["run_authorized_by_this_artifact"])
+        self.assertTrue(t20_rollup["requires_next_user_message"])
+        self.assertTrue(t20_rollup["approval_packet_cannot_run_by_itself"])
+        self.assertFalse(t20_rollup["approval_reuse_after_consumed_or_aborted_run_allowed"])
+        self.assertTrue(t20_rollup["raw_temp_only_retention_required"])
+        self.assertEqual(0, t20_rollup["repo_raw_retention_bytes_allowed"])
+        self.assertFalse(t20_rollup["promotion_allowed"])
+        self.assertFalse(t20_rollup["baseline_started"])
+        self.assertFalse(t20_rollup["treatment_started"])
+        self.assertFalse(t20_rollup["reviewer_gate_satisfied"])
+        self.assertEqual("B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN", t20_rollup["next_required_task"])
+
+        for registry in [registry_ru, registry_en]:
+            self.assertIn("B45-POSTQ4-T20-A01", registry)
+            self.assertIn("docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json", registry)
+            self.assertIn("owner_confirmed=false", registry)
+            self.assertIn("run_authorized_by_this_artifact=false", registry)
+
+        for control_plane in [
+            plan,
+            runlog,
+            evals,
+            test_plan,
+            current_state,
+            current_state_en,
+            coding_ru,
+            coding_en,
+            track11,
+        ]:
+            self.assertIn("B45-POSTQ4-T20-A01", control_plane)
+
+        for source_owner in [
+            plan,
+            test_plan,
+            current_state,
+            current_state_en,
+            coding_ru,
+            coding_en,
+            behavioral_ru,
+            behavioral_en,
+            track11,
+        ]:
+            self.assertIn("batch45-postq4-t20-promotion-grade-eval-approval-packet.json", source_owner)
+
+        self.assertNotIn("B45-POSTQ4-T20-A01", behavioral_ru)
+        self.assertNotIn("B45-POSTQ4-T20-A01", behavioral_en)
+
+        self.assertEqual("B45-POSTQ4-T20-EXACT-APPROVAL-PACKET", lifecycle["task_id"])
+        self.assertEqual("B45-POSTQ4-T20-A01", lifecycle["evidence_id"])
+        self.assertEqual("exact_approval_packet_ready_for_owner_confirmation_not_run", lifecycle["status"])
+        self.assertEqual("approval_packet_only_not_run", lifecycle["closure_level"])
 
     def test_s5_learning_automation_packet_closes_m23_without_activation(self):
         packet = json.loads(S5_SUMMARY.read_text(encoding="utf-8"))
