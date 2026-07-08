@@ -1,0 +1,218 @@
+{
+  "schema_version": "batch45_postq4_t21_promotion_grade_eval_results_v1",
+  "task_id": "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN",
+  "evidence_id": "B45-POSTQ4-T21-COST-WAIVED-RUN-A01",
+  "status": "aborted_invalid_json_or_schema_B45_HELDOUT_01_baseline_test_check_status_invalid",
+  "created_at": "2026-07-08T20:42:23+03:00",
+  "approval_basis": {
+    "approval_kind": "exact_owner_approval_cost_waived",
+    "approval_text_sha256": "5BF1CCB943D4BED83AAF8CAAB55096E84F2519B5CE1B44A04FEDB297F40FEBF5",
+    "cost_policy": "owner_accepts_unknown_unbounded_actual_provider_cost_for_17_call_run",
+    "approval_reuse": "forbidden_after_consumed_or_aborted_run"
+  },
+  "corpus_binding": {
+    "corpus_id": "B45-POSTQ4-FROZEN-HELDOUT-CORPUS-V1",
+    "corpus_version": "v1",
+    "task_count": 8
+  },
+  "comparison_mode": "same_model_baseline_treatment",
+  "model_policy": {
+    "provider_surface": "Codex CLI/OpenAI via codex exec",
+    "model_id": "gpt-5.5",
+    "model_reasoning_effort": "high"
+  },
+  "source_freeze_hashes": {
+    "docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json": "5551436407260DB1042BE783B00C7AF732D55757A787E4FB2CA36FA092AF4CD4",
+    "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json": "3030F8AFB5430CB31679B9552FF3B101659A1AE323934B4ABB681D1E1A05CE21",
+    "docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json": "07139D68EF8AE2389FE0198BCBFF7E15C74F77F619A5AAF35DD5160671ABB08C",
+    "plugins/product-agent-os/scripts/codex_runtime_runner/model_output.py": "095122FFD4ADA73C0728C2A74FFE5E8EA26DD0C8EF14F439B27AA7E761E3502D"
+  },
+  "call_budget": {
+    "primary_calls_started": 1,
+    "reviewer_calls_started": 0,
+    "max_calls": 17,
+    "max_retries": 0,
+    "setup_or_smoke_model_calls": 0
+  },
+  "aggregate_scores": {
+    "valid_pair_count": 0,
+    "invalid_pair_count": 8,
+    "timeout_count": 0,
+    "no_op_count": 0,
+    "invalid_json_count": 0,
+    "treatment_equal_or_better_count": 0,
+    "average_baseline_behavior_score": null,
+    "average_treatment_behavior_score": null,
+    "average_score_delta": null,
+    "average_score_delta_percent": null,
+    "promotion_threshold_met": false,
+    "reviewer_decision": null,
+    "m26_reversed": false,
+    "m35_reversed": false,
+    "t15_reversed": false,
+    "schema_failure_count": 1
+  },
+  "per_task_pairs": [
+    {
+      "pair_id": "B45-HELDOUT-01-PAIR",
+      "task_alias": "B45-HELDOUT-01",
+      "task_id": "B45-POSTQ4-H1-LEGACY-HOOK-REGRESSION",
+      "baseline_status": "not_run_due_stop_rule",
+      "treatment_status": "not_run_due_stop_rule",
+      "pair_valid_for_scoring": false,
+      "invalid_reason": "missing_or_invalid_arm",
+      "baseline_behavior_score": null,
+      "treatment_behavior_score": null,
+      "score_delta": null,
+      "treatment_equal_or_better": null,
+      "reviewer_required": false
+    },
+    {
+      "pair_id": "B45-HELDOUT-02-PAIR",
+      "task_alias": "B45-HELDOUT-02",
+      "task_id": "B45-POSTQ4-H2-ARTIFACT-COMPATIBILITY",
+      "baseline_status": "not_run_due_stop_rule",
+      "treatment_status": "not_run_due_stop_rule",
+      "pair_valid_for_scoring": false,
+      "invalid_reason": "missing_or_invalid_arm",
+      "baseline_behavior_score": null,
+      "treatment_behavior_score": null,
+      "score_delta": null,
+      "treatment_equal_or_better": null,
+      "reviewer_required": false
+    },
+    {
+      "pair_id": "B45-HELDOUT-03-PAIR",
+      "task_alias": "B45-HELDOUT-03",
+      "task_id": "B45-POSTQ4-H3-SECURITY-PRIVACY-DATA-LOGIC",
+      "baseline_status": "not_run_due_stop_rule",
+      "treatment_status": "not_run_due_stop_rule",
+      "pair_valid_for_scoring": false,
+      "invalid_reason": "missing_or_invalid_arm",
+      "baseline_behavior_score": null,
+      "treatment_behavior_score": null,
+      "score_delta": null,
+      "treatment_equal_or_better": null,
+      "reviewer_required": false
+    },
+    {
+      "pair_id": "B45-HELDOUT-04-PAIR",
+      "task_alias": "B45-HELDOUT-04",
+      "task_id": "B45-POSTQ4-H4-ALGORITHM-PERFORMANCE-REGRESSION",
+      "baseline_status": "not_run_due_stop_rule",
+      "treatment_status": "not_run_due_stop_rule",
+      "pair_valid_for_scoring": false,
+      "invalid_reason": "missing_or_invalid_arm",
+      "baseline_behavior_score": null,
+      "treatment_behavior_score": null,
+      "score_delta": null,
+      "treatment_equal_or_better": null,
+      "reviewer_required": false
+    },
+    {
+      "pair_id": "B45-HELDOUT-05-PAIR",
+      "task_alias": "B45-HELDOUT-05",
+      "task_id": "B45-POSTQ4-H5-STATE-MACHINE-IDEMPOTENCY",
+      "baseline_status": "not_run_due_stop_rule",
+      "treatment_status": "not_run_due_stop_rule",
+      "pair_valid_for_scoring": false,
+      "invalid_reason": "missing_or_invalid_arm",
+      "baseline_behavior_score": null,
+      "treatment_behavior_score": null,
+      "score_delta": null,
+      "treatment_equal_or_better": null,
+      "reviewer_required": false
+    },
+    {
+      "pair_id": "B45-HELDOUT-06-PAIR",
+      "task_alias": "B45-HELDOUT-06",
+      "task_id": "B45-POSTQ4-H6-DOCS-CONTROL-PLANE-BUDGET",
+      "baseline_status": "not_run_due_stop_rule",
+      "treatment_status": "not_run_due_stop_rule",
+      "pair_valid_for_scoring": false,
+      "invalid_reason": "missing_or_invalid_arm",
+      "baseline_behavior_score": null,
+      "treatment_behavior_score": null,
+      "score_delta": null,
+      "treatment_equal_or_better": null,
+      "reviewer_required": false
+    },
+    {
+      "pair_id": "B45-HELDOUT-07-PAIR",
+      "task_alias": "B45-HELDOUT-07",
+      "task_id": "B45-POSTQ4-H7-JAVASCRIPT-TYPESCRIPT-PRIVACY-LOGIC",
+      "baseline_status": "not_run_due_stop_rule",
+      "treatment_status": "not_run_due_stop_rule",
+      "pair_valid_for_scoring": false,
+      "invalid_reason": "missing_or_invalid_arm",
+      "baseline_behavior_score": null,
+      "treatment_behavior_score": null,
+      "score_delta": null,
+      "treatment_equal_or_better": null,
+      "reviewer_required": false
+    },
+    {
+      "pair_id": "B45-HELDOUT-08-PAIR",
+      "task_alias": "B45-HELDOUT-08",
+      "task_id": "B45-POSTQ4-H8-FALSE-POSITIVE-TUNING",
+      "baseline_status": "not_run_due_stop_rule",
+      "treatment_status": "not_run_due_stop_rule",
+      "pair_valid_for_scoring": false,
+      "invalid_reason": "missing_or_invalid_arm",
+      "baseline_behavior_score": null,
+      "treatment_behavior_score": null,
+      "score_delta": null,
+      "treatment_equal_or_better": null,
+      "reviewer_required": false
+    }
+  ],
+  "primary_runs": [],
+  "invalid_output_summary": {
+    "abort_reason": "invalid_json_or_schema:B45-HELDOUT-01:baseline:test_check_status_invalid",
+    "valid_pair_count": 0,
+    "invalid_pair_count": 8,
+    "timeout_count": 0,
+    "no_op_count": 0,
+    "invalid_json_count": 0,
+    "schema_failure_count": 1,
+    "first_abort_class": "schema_validation_failed",
+    "first_abort_detail": "B45-HELDOUT-01 baseline FINAL_JSON failed tests_or_checks.status enum validation"
+  },
+  "reviewer_gate": {
+    "status": "not_run"
+  },
+  "cost_timeout_retention": {
+    "per_primary_or_reviewer_timeout_seconds": 1000,
+    "max_wall_clock_seconds": 12000,
+    "cost_policy": "cost_waived_by_owner_unknown_unbounded_actual_provider_cost_accepted",
+    "usage_or_cost_metadata_available": false,
+    "usage_or_cost_metadata_note": "codex exec output did not expose structured usage/cost metadata to the runner",
+    "raw_retention": "raw_temp_only_deleted_after_hash_parse_or_abort",
+    "repo_raw_retention_bytes_allowed": 0,
+    "raw_files_present_after_rollup": 0,
+    "raw_files_present_after_cleanup": 0
+  },
+  "no_unapproved_actions": {
+    "runtime_or_live_server_launched": false,
+    "browser_automation_run": false,
+    "target_workspace_command_run": false,
+    "target_workspace_mutated": false,
+    "database_accessed": false,
+    "ci_or_blocker_enforcement_created": false,
+    "git_branch_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation_created_or_enabled": false,
+    "external_write_performed_outside_approved_codex_exec_calls": false,
+    "raw_outputs_written_to_repo": false
+  },
+  "unsupported_claims": [
+    "runtime_browser_target_ci_release_readiness",
+    "raw_provider_usage_cost_known"
+  ],
+  "claim_ceiling": "T21 started one approved primary model call and aborted on strict schema validation before any valid pair or reviewer gate; no promotion or readiness claim is supported.",
+  "next_required_action": {
+    "rerun_requires_new_exact_approval": true,
+    "recommended_fix_before_rerun": "Harden primary prompt/schema adapter so tests_or_checks.status values are normalized to passed/failed/skipped/not_run_with_gap before any future approved run.",
+    "current_next_state": "blocked_t21_invalid_schema_abort_reviewer_gate_not_run"
+  }
+}
