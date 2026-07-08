@@ -37,7 +37,7 @@
   },
   "task_group": {
     "group_id": "B45-S8-PROMOTION-GRADE-EVAL",
-    "group_status": "t17_frozen_heldout_corpus_manifest_ready_next_t18",
+    "group_status": "t18_eval_design_strict_schema_ready_next_t19",
     "promotion_allowed_now": false,
     "only_route_that_can_change_no_go_later": true,
     "execution_requires_later_exact_approval": true,
@@ -120,7 +120,7 @@
     {
       "task_id": "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
       "priority": "P0",
-      "status": "planned_not_started",
+      "status": "implemented_eval_design_strict_schema_no_run",
       "owner_role": "implementation-planner + tester",
       "scope": "Define the promotion-grade eval design packet: comparison mode, model policy, strict structured output schema, scoring rubric, invalid-output handling, thresholds, reviewer rubric and result contract.",
       "acceptance": [
@@ -128,7 +128,14 @@
         "Strict structured output schema is named and failure handling is deterministic.",
         "Reviewer gate, promotion threshold and unsupported-claim ceiling are explicit."
       ],
-      "evidence_owner": "future docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
+      "evidence_owner": "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
+      "verification_gates": [
+        "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t18-promotion-grade-eval-design.json",
+        "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "python tools\\check_docs.py",
+        "git diff --check"
+      ],
       "stop_conditions": [
         "Stop if comparability mode is ambiguous.",
         "Stop if reviewer gate is optional for promotion."
@@ -245,7 +252,7 @@
     "M26_no_go_reversed",
     "M35_no_go_reversed",
     "T15_no_go_reversed",
-    "same_model_comparability_selected_for_future_run",
+    "same_model_promotion_run_evidence_exists",
     "current_model_comparison_approved_for_future_run",
     "reviewer_gate_satisfied",
     "promotion_ready",

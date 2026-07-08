@@ -1,9 +1,9 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
-  "scope": "Freeze the source-owned metadata-only held-out corpus manifest for the future Batch 45 promotion-grade eval before any baseline/treatment run.",
-  "updated_at": "2026-07-07T21:05:00+03:00",
-  "approval_boundary": "T17 is docs/control-plane/test synchronization only. It does not authorize live/model/provider/reviewer calls, runtime/browser/target workspace commands or mutations, CI/blocker creation, git branch/stage/commit/push/PR, release/deploy/publish or automation. Subagents are read-only sidecars for docs, tests and security/privacy scans.",
+  "task_id": "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
+  "scope": "Define the source-owned promotion-grade eval design, comparison mode, strict output schema, scoring rubric, invalid-output quarantine and reviewer gate before any future Batch 45 run.",
+  "updated_at": "2026-07-08T12:41:40+03:00",
+  "approval_boundary": "T18 is docs/control-plane/test synchronization only. It does not authorize baseline/treatment execution, live/model/provider/reviewer calls, runtime/browser/target workspace commands or mutations, CI/blocker creation, git branch/stage/commit/push/PR, release/deploy/publish or automation. Subagents are read-only sidecars for docs, tests and security/privacy scans.",
   "brief_schema_version": "task_start_brief_v1",
   "brief_format": "field_list",
   "brief_digest": "sha256:b45postq4t14strictrerunapproval0000001",
@@ -23,14 +23,15 @@
     "Next action"
   ],
   "completion_brief_shown": true,
-  "completion_status": "implemented_frozen_heldout_corpus_manifest_no_run",
+  "completion_status": "implemented_eval_design_strict_schema_no_run",
   "closure_level": "docs_contract_ready",
   "completion_gaps": [
-    "T17 is a metadata-only frozen corpus manifest; it did not perform baseline/treatment execution or new live/model/provider/reviewer calls.",
-    "T18-T22 remain planned or approval_required until future exact approvals and evidence exist.",
+    "T18 is a design/schema/rubric packet; it did not perform baseline/treatment execution or new live/model/provider/reviewer calls.",
+    "T19-T22 remain planned or approval_required until future exact approvals and evidence exist.",
     "Promotion, M26/M35/T15 reversal, runtime/browser/target/CI/git/release/deploy/automation proof and release readiness remain unsupported."
   ],
   "completion_evidence": [
+    "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
     "docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json",
     "docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
     "docs/superpowers/specs/batch45-post-q4-next-tasks.json",
@@ -44,8 +45,8 @@
     "docs/product-agent-os/control-plane-current-state.md",
     "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md"
   ],
-  "evidence_id": "B45-POSTQ4-T17-A01",
-  "status": "implemented_frozen_heldout_corpus_manifest_no_run",
-  "latest_evidence": "docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json",
-  "latest_summary": "T17 freezes the Batch 45 S8 metadata-only held-out corpus manifest with task IDs, source/privacy class, difficulty, expected evidence and hashes before any future run; no baseline/treatment, reviewer/model/provider, promotion or runtime/browser/target/CI/git/release/deploy/automation action occurred."
+  "evidence_id": "B45-POSTQ4-T18-A01",
+  "status": "implemented_eval_design_strict_schema_no_run",
+  "latest_evidence": "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
+  "latest_summary": "T18 defines same-model baseline/treatment as the promotion-grade comparison mode, strict JSON Schema output contract, deterministic quarantine, scoring rubric, reviewer rubric and result packet contract; no baseline/treatment, reviewer/model/provider, promotion or runtime/browser/target/CI/git/release/deploy/automation action occurred."
 }

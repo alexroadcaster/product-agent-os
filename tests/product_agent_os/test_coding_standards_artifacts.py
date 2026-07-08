@@ -73,9 +73,21 @@ POST_Q4_T17_FROZEN_HELDOUT_CORPUS = (
     / "specs"
     / "batch45-postq4-t17-frozen-heldout-corpus.json"
 )
+POST_Q4_T18_EVAL_DESIGN = (
+    DOCS
+    / "superpowers"
+    / "specs"
+    / "batch45-postq4-t18-promotion-grade-eval-design.json"
+)
 sys.path.insert(0, str(SCRIPTS))
 
-from codex_runtime_runner.model_output import validate_paired_live_eval_result  # noqa: E402
+from codex_runtime_runner.model_output import (  # noqa: E402
+    AGGREGATE_REQUIRED_FIELDS,
+    LIVE_RUN_REQUIRED_FIELDS,
+    LIVE_RUN_STATUS_VALUES,
+    PAIR_REQUIRED_FIELDS,
+    validate_paired_live_eval_result,
+)
 from product_agent_os.templates import required_templates, template_by_target  # noqa: E402
 
 
@@ -98,12 +110,13 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "minimum_manual_successful_runs: 3",
             "candidate-only learning-loop/automation policy",
             "orientation_only_not_proof",
-            "does not prove that ai agents now write enterprise-quality code in real projects",
+            "they do not prove that ai agents now write enterprise-quality code in real projects",
             "m26 records a live behavior-eval no-go",
             "m27 keeps the m25 advisory local/non-blocking",
             "m35 keeps s7 fixture-local/source-only",
             "m37 records local hook/validator hardening plus review remediation docs/control-plane sync only",
             "t17 freezes the metadata-only held-out corpus manifest",
+            "t18 defines the same-model promotion-grade eval design and strict schema",
         ]:
             with self.subTest(expected=expected):
                 self.assertIn(expected, combined)
@@ -1371,6 +1384,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION",
             "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
             "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
+            "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
         })
 
     def test_b45_postq4_t13_strict_output_schema_and_harness_hardening(self):
@@ -1431,6 +1445,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION",
             "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
             "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
+            "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
         })
         if lifecycle["task_id"] == "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING":
             self.assertEqual("synthetic_green_after_local_tests_only", lifecycle["closure_level"])
@@ -1441,6 +1456,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         elif lifecycle["task_id"] in {
             "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
             "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
+            "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
         }:
             self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
         else:
@@ -1533,6 +1549,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION",
                 "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
                 "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
+                "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
             },
         )
 
@@ -1597,6 +1614,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION",
                 "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
                 "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
+                "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
             },
         )
         if lifecycle["task_id"] == "B45-POSTQ4-T14-STRICT-RERUN":
@@ -1686,6 +1704,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             {
                 "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
                 "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
+                "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
             },
         )
         self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
@@ -1747,9 +1766,11 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "M26_no_go_reversed",
             "M35_no_go_reversed",
             "T15_no_go_reversed",
+            "same_model_promotion_run_evidence_exists",
             "promotion_ready",
         ]:
             self.assertIn(unsupported, packet["unsupported_claims"])
+        self.assertNotIn("same_model_comparability_selected_for_future_run", packet["unsupported_claims"])
 
         self.assertEqual(
             "docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
@@ -1784,14 +1805,19 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             {
                 "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
                 "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
+                "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
             },
         )
-        self.assertIn(lifecycle["evidence_id"], {"B45-POSTQ4-T16-T22-A01", "B45-POSTQ4-T17-A01"})
+        self.assertIn(
+            lifecycle["evidence_id"],
+            {"B45-POSTQ4-T16-T22-A01", "B45-POSTQ4-T17-A01", "B45-POSTQ4-T18-A01"},
+        )
         self.assertIn(
             lifecycle["status"],
             {
                 "implemented_task_group_design_no_run",
                 "implemented_frozen_heldout_corpus_manifest_no_run",
+                "implemented_eval_design_strict_schema_no_run",
             },
         )
         self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
@@ -1946,9 +1972,284 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         ]:
             self.assertIn("batch45-postq4-t17-frozen-heldout-corpus.json", source_owner)
 
-        self.assertEqual("B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS", lifecycle["task_id"])
-        self.assertEqual("B45-POSTQ4-T17-A01", lifecycle["evidence_id"])
-        self.assertEqual("implemented_frozen_heldout_corpus_manifest_no_run", lifecycle["status"])
+        self.assertIn(
+            lifecycle["task_id"],
+            {
+                "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
+                "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
+            },
+        )
+        self.assertIn(lifecycle["evidence_id"], {"B45-POSTQ4-T17-A01", "B45-POSTQ4-T18-A01"})
+        self.assertIn(
+            lifecycle["status"],
+            {
+                "implemented_frozen_heldout_corpus_manifest_no_run",
+                "implemented_eval_design_strict_schema_no_run",
+            },
+        )
+        self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
+
+    def test_b45_postq4_t18_eval_design_and_strict_schema_is_no_run(self):
+        packet = json.loads(POST_Q4_T18_EVAL_DESIGN.read_text(encoding="utf-8"))
+        parent = json.loads(POST_Q4_T16_T22_TASK_GROUP.read_text(encoding="utf-8"))
+        frozen = json.loads(POST_Q4_T17_FROZEN_HELDOUT_CORPUS.read_text(encoding="utf-8"))
+        next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
+        registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
+        registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
+        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+        plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
+        runlog = (ROOT / "RUNLOG.md").read_text(encoding="utf-8")
+        evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
+        test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
+        current_state = (DOCS / "product-agent-os" / "control-plane-current-state.md").read_text(encoding="utf-8")
+        coding_ru = (DOCS / "product-agent-os" / "coding-standards.md").read_text(encoding="utf-8")
+        coding_en = (DOCS / "product-agent-os" / "coding-standards.en.md").read_text(encoding="utf-8")
+        behavioral_ru = (DOCS / "product-agent-os" / "behavioral-evals.md").read_text(encoding="utf-8")
+        behavioral_en = (DOCS / "product-agent-os" / "behavioral-evals.en.md").read_text(encoding="utf-8")
+        track11 = (
+            DOCS
+            / "superpowers"
+            / "plans"
+            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+        ).read_text(encoding="utf-8")
+
+        serialized = json.dumps(packet, sort_keys=True)
+        self.assertEqual("batch45_postq4_t18_promotion_grade_eval_design_v1", packet["schema_version"])
+        self.assertEqual("B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA", packet["task_id"])
+        self.assertEqual("B45-POSTQ4-T18-A01", packet["evidence_id"])
+        self.assertEqual("implemented_eval_design_strict_schema_no_run", packet["status"])
+        self.assertEqual("docs_contract_ready", packet["closure_level"])
+        self.assertIn("Context7 /websites/json-schema_understanding-json-schema", packet["basis"]["json_schema_reference"])
+        self.assertTrue(packet["sidecar_agent_use"]["agent_outputs_are_supporting_review_only"])
+        self.assertTrue(packet["sidecar_agent_use"]["source_artifacts_remain_authoritative"])
+
+        comparison = packet["comparison_design"]
+        self.assertEqual("same_model_baseline_treatment", comparison["selected_promotion_grade_comparison_mode"])
+        self.assertTrue(comparison["promotion_grade_model_policy"]["same_model_required_for_baseline_and_treatment"])
+        self.assertTrue(comparison["promotion_grade_model_policy"]["same_reasoning_effort_required_for_baseline_and_treatment"])
+        self.assertTrue(comparison["promotion_grade_model_policy"]["same_tooling_and_runner_required_for_baseline_and_treatment"])
+        self.assertEqual(
+            "advisory_current_quality_signal_only_not_promotion_grade",
+            comparison["promotion_grade_model_policy"]["allowed_current_model_comparison"],
+        )
+        self.assertEqual(frozen["corpus"]["corpus_id"], comparison["corpus_binding"]["corpus_id"])
+        self.assertEqual(frozen["corpus"]["corpus_version"], comparison["corpus_binding"]["corpus_version"])
+        self.assertEqual(8, comparison["corpus_binding"]["task_count"])
+        self.assertTrue(comparison["corpus_binding"]["all_tasks_required_for_primary_promotion_decision"])
+
+        strict_schema = packet["strict_output_schema"]
+        self.assertEqual("batch45_postq4_promotion_grade_primary_result_v1", strict_schema["schema_id"])
+        self.assertEqual("https://json-schema.org/draft/2020-12/schema", strict_schema["json_schema_dialect"])
+        for keyword in ["type", "properties", "required", "enum", "minimum", "maximum", "items", "additionalProperties"]:
+            self.assertIn(keyword, strict_schema["context7_keywords_used"])
+
+        root_schema = strict_schema["root_schema"]
+        self.assertEqual("object", root_schema["type"])
+        self.assertFalse(root_schema["additionalProperties"])
+        for required in [
+            "schema_version",
+            "corpus_id",
+            "corpus_version",
+            "task_id",
+            "arm",
+            "model_id",
+            "model_reasoning_effort",
+            "result_class",
+            "changed_files",
+            "behavior_score",
+            "dimension_scores",
+            "evidence_summary",
+            "tests_or_checks",
+            "unsupported_claims",
+            "privacy_safety",
+            "final_summary_retention",
+        ]:
+            self.assertIn(required, root_schema["required"])
+        self.assertFalse(root_schema["properties"]["changed_files"]["items"]["additionalProperties"])
+        self.assertFalse(root_schema["properties"]["dimension_scores"]["additionalProperties"])
+        self.assertFalse(root_schema["properties"]["tests_or_checks"]["items"]["additionalProperties"])
+        self.assertFalse(root_schema["properties"]["privacy_safety"]["additionalProperties"])
+
+        runner_alignment = packet["runner_contract_alignment"]
+        self.assertEqual("plugins/product-agent-os/scripts/codex_runtime_runner/model_output.py", runner_alignment["source"])
+        self.assertEqual(LIVE_RUN_STATUS_VALUES, runner_alignment["live_run_status_values"])
+        self.assertEqual(LIVE_RUN_REQUIRED_FIELDS, runner_alignment["live_run_required_fields"])
+        self.assertEqual(PAIR_REQUIRED_FIELDS, runner_alignment["pair_required_fields"])
+        self.assertEqual(AGGREGATE_REQUIRED_FIELDS, runner_alignment["aggregate_required_fields"])
+        for forbidden_raw_field in [
+            "stdout",
+            "stderr",
+            "prompt",
+            "provider_payload",
+            "raw_output",
+            "raw_body",
+            "final_summary",
+        ]:
+            self.assertIn(
+                forbidden_raw_field,
+                runner_alignment["raw_output_like_fields_forbidden_unless_hash_or_length_metadata"],
+            )
+
+        invalid_handling = packet["invalid_output_handling"]
+        self.assertTrue(invalid_handling["deterministic_quarantine"])
+        self.assertIn("schema_validation_failed", invalid_handling["invalid_classes"])
+        self.assertTrue(invalid_handling["pair_policy"]["one_invalid_arm_invalidates_pair"])
+        self.assertTrue(invalid_handling["pair_policy"]["invalid_pair_count_must_be_zero_for_promotion"])
+        self.assertTrue(invalid_handling["pair_policy"]["reviewer_not_called_for_invalid_pairs"])
+
+        for negative_case in [
+            "missing_required_field",
+            "unknown_additional_property",
+            "invalid_status_enum",
+            "final_json_marker_missing",
+            "raw_output_like_field_present_without_hash_or_length_suffix",
+            "absolute_user_specific_path_present",
+            "reviewer_calls_started_with_invalid_pairs",
+            "promotion_threshold_met_with_invalid_pairs",
+        ]:
+            self.assertIn(negative_case, packet["strict_schema_negative_cases"])
+
+        threshold = packet["scoring_rubric"]["promotion_threshold"]
+        self.assertEqual(20, threshold["minimum_average_score_delta_percent"])
+        self.assertEqual(8, threshold["valid_pair_count_required"])
+        self.assertEqual(0, threshold["invalid_pair_count_required"])
+        self.assertEqual(0, threshold["timeout_count_required"])
+        self.assertTrue(threshold["reviewer_gate_required"])
+        self.assertTrue(threshold["same_model_comparability_required"])
+        self.assertFalse(threshold["critical_privacy_or_unsupported_claim_failures_allowed"])
+        self.assertEqual(8, len(packet["scoring_rubric"]["dimension_weights"]))
+
+        reviewer = packet["reviewer_rubric"]
+        self.assertTrue(reviewer["reviewer_gate_required_for_promotion"])
+        self.assertEqual(["promotion_go", "no_go", "needs_rerun"], reviewer["reviewer_decision_enum"])
+        self.assertEqual("promotion_go", reviewer["promotion_requires_reviewer_decision"])
+        self.assertIn("raw reviewer traces", reviewer["reviewer_inputs_forbidden_in_repo"])
+
+        privacy = packet["privacy_and_retention_design"]
+        for forbidden_class in [
+            "raw private source bodies",
+            "secrets_or_credentials",
+            "raw_model_outputs_or_provider_traces",
+            "raw reviewer traces",
+            "absolute_user_specific_paths",
+            "raw prompts",
+            "provider responses",
+            "customer_user_data",
+        ]:
+            self.assertIn(forbidden_class, privacy["repo_forbidden_data_classes"])
+        self.assertIn("hashes and byte lengths", privacy["repo_allowed_future_result_data"])
+
+        result_contract = packet["future_result_contract"]
+        self.assertEqual(
+            "future docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-results.json",
+            result_contract["result_packet_path"],
+        )
+        self.assertIn("no_unapproved_actions", result_contract["required_top_level_sections"])
+        self.assertTrue(result_contract["t21_result_cannot_self_promote"])
+
+        boundary = packet["approval_and_execution_boundary"]
+        self.assertFalse(boundary["packet_authorizes_future_run"])
+        self.assertFalse(boundary["baseline_or_treatment_run_started"])
+        self.assertFalse(boundary["reviewer_gate_satisfied"])
+        self.assertFalse(boundary["concrete_model_approved"])
+        self.assertFalse(boundary["cost_timeout_retention_policy_ready"])
+        self.assertEqual("B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY", boundary["next_required_task"])
+        self.assertTrue(boundary["future_approval_required_before_T21"])
+        self.assertIn("reviewer/model/provider calls", boundary["does_not_authorize"])
+
+        for action, performed in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(performed)
+        self.assertFalse(packet["no_unapproved_actions"]["raw_outputs_written_to_repo"])
+
+        for unsupported in [
+            "promotion_grade_eval_result_exists",
+            "baseline_treatment_execution_started",
+            "reviewer_gate_satisfied",
+            "concrete_model_or_provider_approved",
+            "cost_timeout_retention_policy_ready",
+            "M26_no_go_reversed",
+            "M35_no_go_reversed",
+            "T15_no_go_reversed",
+            "promotion_ready",
+        ]:
+            self.assertIn(unsupported, packet["unsupported_claims"])
+
+        for forbidden_path_fragment in ["C:\\Users", "C:/Users", "\\Users\\"]:
+            self.assertNotIn(forbidden_path_fragment, serialized)
+
+        parent_rows = {task["task_id"]: task for task in parent["task_rows"]}
+        self.assertEqual(
+            "implemented_eval_design_strict_schema_no_run",
+            parent_rows["B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA"]["status"],
+        )
+        self.assertEqual(
+            "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
+            parent_rows["B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA"]["evidence_owner"],
+        )
+        self.assertEqual("t18_eval_design_strict_schema_ready_next_t19", parent["task_group"]["group_status"])
+
+        update = next_tasks["execution_update"]
+        self.assertEqual(
+            "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
+            update["latest_t18_eval_design"],
+        )
+        self.assertIn("B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA", update["executed_task_ids"])
+        self.assertEqual(
+            "implemented_eval_design_strict_schema_no_run",
+            update["status_by_task"]["B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA"],
+        )
+        self.assertEqual("B45-POSTQ4-T18-A01", update["t18_eval_design"]["evidence_id"])
+        self.assertEqual(
+            "same_model_baseline_treatment",
+            update["t18_eval_design"]["selected_promotion_grade_comparison_mode"],
+        )
+        self.assertEqual("batch45_postq4_promotion_grade_primary_result_v1", update["t18_eval_design"]["schema_id"])
+        self.assertEqual(8, update["t18_eval_design"]["valid_pair_count_required"])
+        self.assertEqual(0, update["t18_eval_design"]["invalid_pair_count_required"])
+        self.assertEqual(20, update["t18_eval_design"]["minimum_average_score_delta_percent"])
+        self.assertTrue(update["t18_eval_design"]["reviewer_gate_required"])
+        self.assertFalse(update["t18_eval_design"]["promotion_allowed"])
+        self.assertFalse(update["t18_eval_design"]["baseline_started"])
+        self.assertFalse(update["t18_eval_design"]["treatment_started"])
+        self.assertEqual("B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY", update["t18_eval_design"]["next_required_task"])
+
+        for registry in [registry_ru, registry_en]:
+            self.assertIn("B45-POSTQ4-T18-A01", registry)
+            self.assertIn("docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json", registry)
+            self.assertIn("same-model baseline/treatment", registry)
+            self.assertIn("Context7 JSON Schema", registry)
+
+        for control_plane in [
+            plan,
+            runlog,
+            evals,
+            test_plan,
+            current_state,
+            coding_ru,
+            coding_en,
+            track11,
+        ]:
+            self.assertIn("B45-POSTQ4-T18-A01", control_plane)
+
+        for source_owner in [
+            plan,
+            test_plan,
+            current_state,
+            coding_ru,
+            coding_en,
+            behavioral_ru,
+            behavioral_en,
+            track11,
+        ]:
+            self.assertIn("batch45-postq4-t18-promotion-grade-eval-design.json", source_owner)
+
+        self.assertNotIn("B45-POSTQ4-T18-A01", behavioral_ru)
+        self.assertNotIn("B45-POSTQ4-T18-A01", behavioral_en)
+
+        self.assertEqual("B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA", lifecycle["task_id"])
+        self.assertEqual("B45-POSTQ4-T18-A01", lifecycle["evidence_id"])
+        self.assertEqual("implemented_eval_design_strict_schema_no_run", lifecycle["status"])
         self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
 
     def test_s5_learning_automation_packet_closes_m23_without_activation(self):
