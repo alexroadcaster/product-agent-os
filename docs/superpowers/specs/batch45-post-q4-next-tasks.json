@@ -527,6 +527,7 @@
     "latest_t16_t22_promotion_grade_eval_task_group": "docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
     "latest_t17_frozen_heldout_corpus": "docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json",
     "latest_t18_eval_design": "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
+    "latest_t19_cost_timeout_retention_policy": "docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json",
     "executed_task_ids": [
       "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX",
       "B45-POSTQ4-T02-MP-CRM-STATIC-FIX",
@@ -546,7 +547,8 @@
       "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION",
       "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
       "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
-      "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA"
+      "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
+      "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY"
     ],
     "status_by_task": {
       "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX": "implemented_minimal_fixture_copy_intent_comments",
@@ -567,7 +569,8 @@
       "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION": "implemented_model_change_interpretation_keep_advisory_only_no_go",
       "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP": "implemented_task_group_design_no_run",
       "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS": "implemented_frozen_heldout_corpus_manifest_no_run",
-      "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA": "implemented_eval_design_strict_schema_no_run"
+      "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA": "implemented_eval_design_strict_schema_no_run",
+      "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY": "implemented_cost_timeout_retention_policy_no_run"
     },
     "warning_delta": {
       "q4_baseline_warning_count": 14,
@@ -602,7 +605,7 @@
       "approved_t14_codex_exec_primary_calls_invalid_json": 0,
       "approved_t14_reviewer_calls_started": 0
     },
-    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T05 stopped on baseline timeout. T12 produced valid_pair_count=6, invalid_json=1 and no_op=1; reviewer skipped. T13 adds local strict-output schema/no-op hardening. T14 executed exact-approved gpt-5.5 high-reasoning current-best-quality rerun with valid_pair_count=8 and invalid_pair_count=0. T15 interprets T14 as a positive current-best-quality signal only: reviewer did not run, same-model comparability with spark evidence is false, no promotion, no M26/M35 reversal and no runtime/browser/target/CI/git/release/deploy/automation proof exists. T16-T22 define a promotion-grade eval task group only. T17 freezes the metadata-only held-out corpus manifest. T18 defines same-model promotion-grade comparison, strict schema, deterministic quarantine, scoring/reviewer rubric and result contract only; it does not authorize baseline/treatment, reviewer/model/provider or runtime/browser/target/CI/git/release/deploy/automation actions.",
+    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T05 stopped on baseline timeout. T12 produced valid_pair_count=6, invalid_json=1 and no_op=1; reviewer skipped. T13 adds local strict-output schema/no-op hardening. T14 executed exact-approved gpt-5.5 high-reasoning current-best-quality rerun with valid_pair_count=8 and invalid_pair_count=0. T15 interprets T14 as a positive current-best-quality signal only: reviewer did not run, same-model comparability with spark evidence is false, no promotion, no M26/M35 reversal and no runtime/browser/target/CI/git/release/deploy/automation proof exists. T16-T22 define a promotion-grade eval task group only. T17 freezes the metadata-only held-out corpus manifest. T18 defines same-model promotion-grade comparison, strict schema, deterministic quarantine, scoring/reviewer rubric and result contract only. T19 defines cost, timeout, retry, abort and raw-temp-only retention policy only. None of T16-T19 authorizes baseline/treatment, reviewer/model/provider or runtime/browser/target/CI/git/release/deploy/automation actions.",
     "post_t06_recommended_next_routes": [
       "B45-POSTQ4-T09-CLOSURE-ADVISORY-ONLY",
       "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
@@ -738,6 +741,27 @@
       "future_exact_approval_required_before_run": true,
       "next_required_task": "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
       "decision": "eval_design_strict_schema_ready_no_run"
+    },
+    "t19_cost_timeout_retention_policy": {
+      "status": "implemented_cost_timeout_retention_policy_no_run",
+      "evidence_id": "B45-POSTQ4-T19-A01",
+      "max_total_model_or_reviewer_calls": 17,
+      "max_primary_model_calls": 16,
+      "max_reviewer_calls_after_valid_pairs": 1,
+      "max_total_retries": 0,
+      "per_primary_call_timeout_seconds": 600,
+      "max_total_wall_clock_seconds": 12000,
+      "usd_cost_cap_status": "owner_fill_required_in_T20_exact_approval",
+      "raw_temp_only_retention_required": true,
+      "repo_raw_retention_bytes_allowed": 0,
+      "cost_timeout_retention_policy_ready": true,
+      "promotion_allowed": false,
+      "baseline_started": false,
+      "treatment_started": false,
+      "reviewer_gate_satisfied": false,
+      "future_exact_approval_required_before_run": true,
+      "next_required_task": "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
+      "decision": "cost_timeout_retention_policy_ready_no_run"
     }
   },
   "control_plane_sync_decision": {
@@ -769,7 +793,7 @@
   "verification": {
     "results": [
       {
-        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t15-model-change-decision-packet.json",
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t19-cost-timeout-retention-policy.json",
         "status": "passed",
         "evidence": "JSON parsed successfully."
       },
@@ -781,7 +805,12 @@
       {
         "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
         "status": "passed",
-        "evidence": "Ran 27 tests; OK"
+        "evidence": "Ran 30 tests; OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_codex_runtime_runner_model_output -v",
+        "status": "passed",
+        "evidence": "Ran 8 tests; OK"
       },
       {
         "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
@@ -794,29 +823,19 @@
         "evidence": "OK: documentation structure checks passed"
       },
       {
+        "command": "python -m unittest tests.product_agent_os.test_task_plan_lifecycle -v",
+        "status": "passed",
+        "evidence": "Ran 4 tests; OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_lifecycle_hooks -v",
+        "status": "passed",
+        "evidence": "Ran 17 tests; OK"
+      },
+      {
         "command": "git diff --check",
         "status": "passed_with_crlf_warnings",
-        "evidence": "No whitespace errors. Git reported CRLF/LF normalization warnings for edited markdown files."
-      },
-      {
-        "command": ".venv-docs\\Scripts\\python.exe -m mkdocs build --strict",
-        "status": "passed",
-        "evidence": "Documentation built successfully for ru and en locales."
-      },
-      {
-        "command": "powershell -NoProfile -ExecutionPolicy Bypass -File tools\\fix_site_i18n_links.ps1 -SiteDir site",
-        "status": "passed",
-        "evidence": "updated_files=298"
-      },
-      {
-        "command": "Get-Item PLAN.md, TEST.md, EVALS.md, RUNLOG.md | Select-Object Name, Length",
-        "status": "passed",
-        "evidence": {
-          "PLAN.md": 9427,
-          "TEST.md": 9660,
-          "EVALS.md": 11885,
-          "RUNLOG.md": 6212
-        }
+        "evidence": "No whitespace errors. Git reported CRLF/LF normalization warnings for edited files."
       }
     ],
     "remaining_required_before_completion_claim": []

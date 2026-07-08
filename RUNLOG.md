@@ -15,7 +15,7 @@ Last compacted: 2026-07-07
 - Batch 41: S9 modernization and Neural_Flow staged comparison are source-owned generated-artifact evidence. Next route is owner review or optional approved browser/Cosmos.gl/WebGL/target-apply proof.
 - Batch 42: instruction/tool-use compliance is planned-only; owner decision required before execution.
 - Batch 44: Self-Learning Loop S7 awaits owner review; no automation, auto-apply, provider/model, target mutation or git/release/deploy/publish action is approved.
-- Batch 45: current boundary is `B45-POSTQ4-T18-A01`: keep advisory-only/no-go. T14 is positive current-best-quality signal only (`gpt-5.5`, 16/16, `+3.27%`, reviewer `0`, below `>=20%`, not same-model comparable), `B45-POSTQ4-T17-A01` freezes the metadata-only held-out corpus, and T18 defines same-model promotion-grade comparison, strict schema, quarantine, scoring/reviewer rubric and result contract for the `B45-POSTQ4-T16-T22-A01` route, not a run.
+- Batch 45: current boundary is `B45-POSTQ4-T19-A01`: keep advisory-only/no-go. T14 is positive current-best-quality signal only (`gpt-5.5`, 16/16, `+3.27%`, reviewer `0`, below `>=20%`, not same-model comparable), `B45-POSTQ4-T17-A01` freezes the metadata-only held-out corpus, `B45-POSTQ4-T18-A01` defines same-model promotion-grade comparison/strict schema, and T19 defines cost/timeout/retry/abort/raw-temp-only retention for the `B45-POSTQ4-T16-T22-A01` route, not a run.
 - Track 11 DOC-M25: generated root `site`, search and sitemap freshness are source-owned by `documentation_refresh_DOC-M25-A01`; browser proof, broad scans, remediation, publication, release/deploy and git actions remain outside scope.
 
 ## Source-Owned History Map
@@ -41,7 +41,7 @@ Distribution map: `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `AGENTS.m
 | Batch 41 | Generated-artifact acceptance evidence through S9. | Release readiness, target apply safety, automation promotion and Cosmos.gl/WebGL runtime proof are not claimed. |
 | Batch 42 | Planned-only. | Execution needs owner route decision. |
 | Batch 44 | Staged/manual evidence through S7. | Promotion/automation decision remains pending. |
-| Batch 45 | Advisory-only/no-go after T18 eval design and strict schema packet. | Future baseline/treatment/model/reviewer runs or runtime/browser/target/CI routes need exact approval. |
+| Batch 45 | Advisory-only/no-go after T19 cost/timeout/raw-temp-only retention policy packet. | Future baseline/treatment/model/reviewer runs or runtime/browser/target/CI routes need exact approval. |
 | Control-plane files | Compact current pointers. | Size pressure triggers `overflow_refactor_required`, not skipped updates. |
 
 ## Verification Runbook
@@ -66,7 +66,7 @@ Strict MkDocs is required when navigation, Mermaid diagrams, Markdown extensions
 - Batch 40 completion-skeptic automation is still `manual_only` and `not_promoted`.
 - Batch 41 has generated-artifact proof, not release/target-apply safety; Cosmos.gl/WebGL runtime remains unresolved.
 - Batch 44 has no active automation, hidden telemetry, real session import, provider/model call, target mutation or auto-apply proof.
-- Batch 45 remains advisory-only/no-go; T14/T15/T16-T22/T17/T18 do not prove promotion, runtime/browser/provider/target/CI/git/release/deploy/automation readiness.
+- Batch 45 remains advisory-only/no-go; T14/T15/T16-T22/T17/T18/T19 do not prove promotion, runtime/browser/provider/target/CI/git/release/deploy/automation readiness.
 - Historical detail has been intentionally moved out of root control-plane files; broad historical claims must cite source backlogs, registry or evidence packets.
 
 <!-- product-agent-os:end runlog -->

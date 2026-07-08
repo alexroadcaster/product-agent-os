@@ -37,7 +37,7 @@
   },
   "task_group": {
     "group_id": "B45-S8-PROMOTION-GRADE-EVAL",
-    "group_status": "t18_eval_design_strict_schema_ready_next_t19",
+    "group_status": "t19_cost_timeout_retention_ready_next_t20",
     "promotion_allowed_now": false,
     "only_route_that_can_change_no_go_later": true,
     "execution_requires_later_exact_approval": true,
@@ -144,7 +144,7 @@
     {
       "task_id": "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
       "priority": "P0",
-      "status": "planned_not_started",
+      "status": "implemented_cost_timeout_retention_policy_no_run",
       "owner_role": "tester + release-operator + security/privacy reviewer",
       "scope": "Define run caps, timeout policy, retry policy, abort policy, raw-temp-only retention and sanitized rollup rules before any approval packet is executable.",
       "acceptance": [
@@ -152,7 +152,14 @@
         "Raw outputs remain temp-only and are not retained in repo.",
         "Sanitized rollup fields are enough for reviewer and decision gates without raw trace storage."
       ],
-      "evidence_owner": "future docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json",
+      "evidence_owner": "docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json",
+      "verification_gates": [
+        "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t19-cost-timeout-retention-policy.json",
+        "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "python tools\\check_docs.py",
+        "git diff --check"
+      ],
       "stop_conditions": [
         "Stop if budget/caps are missing.",
         "Stop if raw output retention would enter repo."
@@ -266,6 +273,11 @@
     "status": "passed_current_run",
     "results": [
       {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t19-cost-timeout-retention-policy.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
         "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
         "status": "passed",
         "evidence": "JSON parsed successfully."
@@ -278,7 +290,12 @@
       {
         "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
         "status": "passed",
-        "evidence": "Ran 27 tests; OK."
+        "evidence": "Ran 30 tests; OK."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_codex_runtime_runner_model_output -v",
+        "status": "passed",
+        "evidence": "Ran 8 tests; OK."
       },
       {
         "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
@@ -291,30 +308,21 @@
         "evidence": "OK: documentation structure checks passed."
       },
       {
-        "command": ".venv-docs\\Scripts\\python.exe -m mkdocs build --strict",
+        "command": "python -m unittest tests.product_agent_os.test_task_plan_lifecycle -v",
         "status": "passed",
-        "evidence": "Documentation built successfully for ru and en locales."
+        "evidence": "Ran 4 tests; OK."
       },
       {
-        "command": "powershell -NoProfile -ExecutionPolicy Bypass -File tools\\fix_site_i18n_links.ps1 -SiteDir site",
+        "command": "python -m unittest tests.product_agent_os.test_lifecycle_hooks -v",
         "status": "passed",
-        "evidence": "updated_files=298"
+        "evidence": "Ran 17 tests; OK."
       },
       {
         "command": "git diff --check",
         "status": "passed_with_crlf_warnings",
         "evidence": "No whitespace errors. Git reported CRLF/LF normalization warnings for edited files."
-      },
-      {
-        "command": "Get-ChildItem -LiteralPath PLAN.md,RUNLOG.md,TEST.md,EVALS.md | Select-Object Name,Length",
-        "status": "passed",
-        "evidence": {
-          "PLAN.md": 9427,
-          "RUNLOG.md": 6212,
-          "TEST.md": 9660,
-          "EVALS.md": 11885
-        }
       }
-    ]
+    ],
+    "remaining_required_before_completion_claim": []
   }
 }

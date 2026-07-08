@@ -1,12 +1,12 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
-  "scope": "Define the source-owned promotion-grade eval design, comparison mode, strict output schema, scoring rubric, invalid-output quarantine and reviewer gate before any future Batch 45 run.",
-  "updated_at": "2026-07-08T12:41:40+03:00",
-  "approval_boundary": "T18 is docs/control-plane/test synchronization only. It does not authorize baseline/treatment execution, live/model/provider/reviewer calls, runtime/browser/target workspace commands or mutations, CI/blocker creation, git branch/stage/commit/push/PR, release/deploy/publish or automation. Subagents are read-only sidecars for docs, tests and security/privacy scans.",
+  "task_id": "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
+  "scope": "Define the source-owned cost, timeout, retry, abort and raw-temp-only retention policy before any future Batch 45 promotion-grade eval run.",
+  "updated_at": "2026-07-08T14:30:00+03:00",
+  "approval_boundary": "T19 is docs/control-plane/test synchronization only. It does not authorize baseline/treatment execution, live/model/provider/reviewer calls, runtime/browser/target workspace commands or mutations, CI/blocker creation, git branch/stage/commit/push/PR, release/deploy/publish or automation. Subagents are read-only sidecars for docs, tests and policy scans.",
   "brief_schema_version": "task_start_brief_v1",
   "brief_format": "field_list",
-  "brief_digest": "sha256:b45postq4t14strictrerunapproval0000001",
+  "brief_digest": "sha256:b45postq4t19costtimeoutretention000001",
   "brief_fields_present": [
     "Task ID",
     "Product value",
@@ -23,14 +23,15 @@
     "Next action"
   ],
   "completion_brief_shown": true,
-  "completion_status": "implemented_eval_design_strict_schema_no_run",
+  "completion_status": "implemented_cost_timeout_retention_policy_no_run",
   "closure_level": "docs_contract_ready",
   "completion_gaps": [
-    "T18 is a design/schema/rubric packet; it did not perform baseline/treatment execution or new live/model/provider/reviewer calls.",
-    "T19-T22 remain planned or approval_required until future exact approvals and evidence exist.",
+    "T19 is a policy packet; it did not perform baseline/treatment execution or new live/model/provider/reviewer calls.",
+    "T20-T22 remain planned or approval_required until future exact approvals and evidence exist.",
     "Promotion, M26/M35/T15 reversal, runtime/browser/target/CI/git/release/deploy/automation proof and release readiness remain unsupported."
   ],
   "completion_evidence": [
+    "docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json",
     "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
     "docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json",
     "docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
@@ -43,10 +44,14 @@
     "TEST.md",
     "EVALS.md",
     "docs/product-agent-os/control-plane-current-state.md",
+    "docs/product-agent-os/coding-standards.md",
+    "docs/product-agent-os/coding-standards.en.md",
+    "docs/product-agent-os/behavioral-evals.md",
+    "docs/product-agent-os/behavioral-evals.en.md",
     "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md"
   ],
-  "evidence_id": "B45-POSTQ4-T18-A01",
-  "status": "implemented_eval_design_strict_schema_no_run",
-  "latest_evidence": "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
-  "latest_summary": "T18 defines same-model baseline/treatment as the promotion-grade comparison mode, strict JSON Schema output contract, deterministic quarantine, scoring rubric, reviewer rubric and result packet contract; no baseline/treatment, reviewer/model/provider, promotion or runtime/browser/target/CI/git/release/deploy/automation action occurred."
+  "evidence_id": "B45-POSTQ4-T19-A01",
+  "status": "implemented_cost_timeout_retention_policy_no_run",
+  "latest_evidence": "docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json",
+  "latest_summary": "T19 defines max 17 total model/reviewer calls, 600-second primary/reviewer timeout, zero automatic retries, abort conditions, owner-filled USD cost cap requirement, raw-temp-only retention and sanitized cost_timeout_retention rollup schema; no baseline/treatment, reviewer/model/provider, promotion or runtime/browser/target/CI/git/release/deploy/automation action occurred."
 }

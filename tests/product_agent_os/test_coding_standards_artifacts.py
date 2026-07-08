@@ -79,6 +79,12 @@ POST_Q4_T18_EVAL_DESIGN = (
     / "specs"
     / "batch45-postq4-t18-promotion-grade-eval-design.json"
 )
+POST_Q4_T19_POLICY = (
+    DOCS
+    / "superpowers"
+    / "specs"
+    / "batch45-postq4-t19-cost-timeout-retention-policy.json"
+)
 sys.path.insert(0, str(SCRIPTS))
 
 from codex_runtime_runner.model_output import (  # noqa: E402
@@ -117,6 +123,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "m37 records local hook/validator hardening plus review remediation docs/control-plane sync only",
             "t17 freezes the metadata-only held-out corpus manifest",
             "t18 defines the same-model promotion-grade eval design and strict schema",
+            "t19 defines the cost/timeout/raw-temp-only retention policy",
         ]:
             with self.subTest(expected=expected):
                 self.assertIn(expected, combined)
@@ -1385,6 +1392,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
             "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
             "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
+            "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
         })
 
     def test_b45_postq4_t13_strict_output_schema_and_harness_hardening(self):
@@ -1446,6 +1454,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
             "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
             "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
+            "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
         })
         if lifecycle["task_id"] == "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING":
             self.assertEqual("synthetic_green_after_local_tests_only", lifecycle["closure_level"])
@@ -1457,6 +1466,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
             "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
             "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
+            "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
         }:
             self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
         else:
@@ -1550,6 +1560,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
                 "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
                 "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
+                "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
             },
         )
 
@@ -1615,6 +1626,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
                 "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
                 "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
+                "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
             },
         )
         if lifecycle["task_id"] == "B45-POSTQ4-T14-STRICT-RERUN":
@@ -1705,6 +1717,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
                 "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
                 "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
+                "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
             },
         )
         self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
@@ -1806,11 +1819,17 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
                 "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
                 "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
+                "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
             },
         )
         self.assertIn(
             lifecycle["evidence_id"],
-            {"B45-POSTQ4-T16-T22-A01", "B45-POSTQ4-T17-A01", "B45-POSTQ4-T18-A01"},
+            {
+                "B45-POSTQ4-T16-T22-A01",
+                "B45-POSTQ4-T17-A01",
+                "B45-POSTQ4-T18-A01",
+                "B45-POSTQ4-T19-A01",
+            },
         )
         self.assertIn(
             lifecycle["status"],
@@ -1818,6 +1837,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 "implemented_task_group_design_no_run",
                 "implemented_frozen_heldout_corpus_manifest_no_run",
                 "implemented_eval_design_strict_schema_no_run",
+                "implemented_cost_timeout_retention_policy_no_run",
             },
         )
         self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
@@ -1977,14 +1997,16 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             {
                 "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
                 "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
+                "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
             },
         )
-        self.assertIn(lifecycle["evidence_id"], {"B45-POSTQ4-T17-A01", "B45-POSTQ4-T18-A01"})
+        self.assertIn(lifecycle["evidence_id"], {"B45-POSTQ4-T17-A01", "B45-POSTQ4-T18-A01", "B45-POSTQ4-T19-A01"})
         self.assertIn(
             lifecycle["status"],
             {
                 "implemented_frozen_heldout_corpus_manifest_no_run",
                 "implemented_eval_design_strict_schema_no_run",
+                "implemented_cost_timeout_retention_policy_no_run",
             },
         )
         self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
@@ -2187,7 +2209,13 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
             parent_rows["B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA"]["evidence_owner"],
         )
-        self.assertEqual("t18_eval_design_strict_schema_ready_next_t19", parent["task_group"]["group_status"])
+        self.assertIn(
+            parent["task_group"]["group_status"],
+            {
+                "t18_eval_design_strict_schema_ready_next_t19",
+                "t19_cost_timeout_retention_ready_next_t20",
+            },
+        )
 
         update = next_tasks["execution_update"]
         self.assertEqual(
@@ -2247,9 +2275,241 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         self.assertNotIn("B45-POSTQ4-T18-A01", behavioral_ru)
         self.assertNotIn("B45-POSTQ4-T18-A01", behavioral_en)
 
-        self.assertEqual("B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA", lifecycle["task_id"])
-        self.assertEqual("B45-POSTQ4-T18-A01", lifecycle["evidence_id"])
-        self.assertEqual("implemented_eval_design_strict_schema_no_run", lifecycle["status"])
+        self.assertIn(
+            lifecycle["task_id"],
+            {
+                "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
+                "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
+            },
+        )
+        self.assertIn(lifecycle["evidence_id"], {"B45-POSTQ4-T18-A01", "B45-POSTQ4-T19-A01"})
+        self.assertIn(
+            lifecycle["status"],
+            {
+                "implemented_eval_design_strict_schema_no_run",
+                "implemented_cost_timeout_retention_policy_no_run",
+            },
+        )
+        self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
+
+    def test_b45_postq4_t19_cost_timeout_retention_policy_is_no_run(self):
+        packet = json.loads(POST_Q4_T19_POLICY.read_text(encoding="utf-8"))
+        parent = json.loads(POST_Q4_T16_T22_TASK_GROUP.read_text(encoding="utf-8"))
+        next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
+        registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
+        registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
+        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+        plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
+        runlog = (ROOT / "RUNLOG.md").read_text(encoding="utf-8")
+        evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
+        test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
+        current_state = (DOCS / "product-agent-os" / "control-plane-current-state.md").read_text(encoding="utf-8")
+        coding_ru = (DOCS / "product-agent-os" / "coding-standards.md").read_text(encoding="utf-8")
+        coding_en = (DOCS / "product-agent-os" / "coding-standards.en.md").read_text(encoding="utf-8")
+        behavioral_ru = (DOCS / "product-agent-os" / "behavioral-evals.md").read_text(encoding="utf-8")
+        behavioral_en = (DOCS / "product-agent-os" / "behavioral-evals.en.md").read_text(encoding="utf-8")
+        track11 = (
+            DOCS
+            / "superpowers"
+            / "plans"
+            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+        ).read_text(encoding="utf-8")
+
+        serialized = json.dumps(packet, sort_keys=True)
+        self.assertEqual("batch45_postq4_t19_cost_timeout_retention_policy_v1", packet["schema_version"])
+        self.assertEqual("B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY", packet["task_id"])
+        self.assertEqual("B45-POSTQ4-T19-A01", packet["evidence_id"])
+        self.assertEqual("implemented_cost_timeout_retention_policy_no_run", packet["status"])
+        self.assertEqual("docs_contract_ready", packet["closure_level"])
+        self.assertIn("Context7 /websites/json-schema_understanding-json-schema", packet["basis"]["json_schema_reference"])
+        self.assertTrue(packet["sidecar_agent_use"]["agent_outputs_are_supporting_review_only"])
+        self.assertTrue(packet["sidecar_agent_use"]["source_artifacts_remain_authoritative"])
+
+        budget = packet["run_budget_policy"]
+        self.assertEqual(8, budget["max_baseline_primary_calls"])
+        self.assertEqual(8, budget["max_treatment_primary_calls"])
+        self.assertEqual(16, budget["max_primary_model_calls"])
+        self.assertEqual(1, budget["max_reviewer_calls_after_valid_pairs"])
+        self.assertEqual(17, budget["max_total_model_or_reviewer_calls"])
+        self.assertEqual(0, budget["max_setup_or_smoke_calls"])
+        self.assertEqual(0, budget["max_total_retries"])
+        self.assertTrue(budget["no_implicit_retry_budget"])
+
+        timeout = packet["timeout_policy"]
+        self.assertEqual(600, timeout["per_primary_call_timeout_seconds"])
+        self.assertEqual(600, timeout["per_reviewer_call_timeout_seconds"])
+        self.assertEqual(12000, timeout["max_total_wall_clock_seconds"])
+        self.assertTrue(timeout["stop_on_first_primary_timeout"])
+        self.assertEqual(0, timeout["timeout_count_required_for_promotion"])
+        self.assertFalse(timeout["timed_out_pair_valid_for_scoring"])
+
+        cost = packet["cost_policy"]
+        self.assertEqual("owner_fill_required_in_T20_exact_approval", cost["concrete_usd_cap_status"])
+        self.assertTrue(cost["approval_not_executable_without_usd_cap"])
+        self.assertTrue(cost["current_pricing_lookup_required_in_T20"])
+        self.assertTrue(cost["abort_when_cost_unknown"])
+        self.assertTrue(cost["cost_cap_breach_blocks_promotion"])
+
+        retry_abort = packet["retry_and_abort_policy"]
+        self.assertFalse(retry_abort["automatic_retries_allowed"])
+        self.assertTrue(retry_abort["manual_rerun_requires_new_exact_approval"])
+        self.assertEqual([], retry_abort["retryable_classes_under_this_policy"])
+        for abort_condition in [
+            "first_primary_timeout",
+            "cost_unknown_before_or_after_call",
+            "estimated_cost_cap_would_be_exceeded",
+            "raw_output_retention_violation",
+            "secret_or_unredacted_pii_detected",
+        ]:
+            self.assertIn(abort_condition, retry_abort["abort_conditions"])
+        self.assertTrue(retry_abort["aborted_run_cannot_support_promotion"])
+
+        retention = packet["raw_temp_only_retention_policy"]
+        self.assertFalse(retention["raw_outputs_repo_retention_allowed"])
+        self.assertTrue(retention["raw_outputs_temp_only"])
+        self.assertEqual(0, retention["repo_raw_retention_bytes_allowed"])
+        self.assertTrue(retention["concrete_temp_root_in_repo_artifact_forbidden"])
+        self.assertEqual(24, retention["raw_retention_max_hours"])
+        self.assertTrue(retention["delete_raw_on_success"])
+        self.assertTrue(retention["delete_raw_on_abort"])
+        for forbidden in [
+            "raw stdout",
+            "raw stderr",
+            "raw prompts",
+            "provider response bodies",
+            "raw model outputs",
+            "raw reviewer traces",
+            "absolute_user_specific_paths",
+        ]:
+            self.assertIn(forbidden, retention["forbidden_repo_retention"])
+        self.assertIn("hashes and byte lengths", retention["allowed_repo_retention"])
+
+        rollup = packet["sanitized_rollup_contract"]
+        self.assertIn("cost_timeout_retention", rollup["result_section_name"])
+        for required in [
+            "policy_evidence_id",
+            "call_budget",
+            "timeout_policy",
+            "cost_policy",
+            "retention_policy",
+        ]:
+            self.assertIn(required, rollup["strict_policy_schema"]["required"])
+        self.assertFalse(rollup["strict_policy_schema"]["additionalProperties"])
+        for forbidden_raw_field in ["stdout", "stderr", "prompt", "provider_payload", "raw_output", "raw_body"]:
+            self.assertIn(forbidden_raw_field, rollup["forbidden_raw_field_names"])
+
+        approval = packet["t20_exact_approval_requirements"]
+        self.assertEqual("B45-POSTQ4-T20-EXACT-APPROVAL-PACKET", approval["next_required_task"])
+        for required_approval_field in [
+            "model_id",
+            "model_reasoning_effort",
+            "usd_cost_cap",
+            "pricing_source_checked_at",
+            "raw_temp_only_retention_policy",
+            "abort_conditions",
+        ]:
+            self.assertIn(required_approval_field, approval["owner_confirmation_must_name"])
+        self.assertTrue(approval["approval_packet_cannot_run_by_itself"])
+        self.assertFalse(approval["approval_reuse_after_consumed_or_aborted_run_allowed"])
+
+        boundary = packet["approval_and_execution_boundary"]
+        self.assertFalse(boundary["packet_authorizes_future_run"])
+        self.assertFalse(boundary["baseline_or_treatment_run_started"])
+        self.assertFalse(boundary["reviewer_gate_satisfied"])
+        self.assertFalse(boundary["concrete_model_approved"])
+        self.assertFalse(boundary["concrete_usd_cost_cap_approved"])
+        self.assertTrue(boundary["cost_timeout_retention_policy_ready"])
+        self.assertEqual("B45-POSTQ4-T20-EXACT-APPROVAL-PACKET", boundary["next_required_task"])
+
+        for action, performed in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(performed)
+        self.assertFalse(packet["no_unapproved_actions"]["raw_outputs_written_to_repo"])
+
+        for unsupported in [
+            "promotion_grade_eval_result_exists",
+            "baseline_treatment_execution_started",
+            "reviewer_gate_satisfied",
+            "concrete_model_or_provider_approved",
+            "concrete_usd_cost_cap_approved",
+            "M26_no_go_reversed",
+            "M35_no_go_reversed",
+            "T15_no_go_reversed",
+            "promotion_ready",
+        ]:
+            self.assertIn(unsupported, packet["unsupported_claims"])
+
+        for forbidden_path_fragment in ["C:\\Users", "C:/Users", "\\Users\\"]:
+            self.assertNotIn(forbidden_path_fragment, serialized)
+
+        parent_rows = {task["task_id"]: task for task in parent["task_rows"]}
+        self.assertEqual(
+            "implemented_cost_timeout_retention_policy_no_run",
+            parent_rows["B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY"]["status"],
+        )
+        self.assertEqual(
+            "docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json",
+            parent_rows["B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY"]["evidence_owner"],
+        )
+        self.assertEqual("t19_cost_timeout_retention_ready_next_t20", parent["task_group"]["group_status"])
+
+        update = next_tasks["execution_update"]
+        self.assertEqual(
+            "docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json",
+            update["latest_t19_cost_timeout_retention_policy"],
+        )
+        self.assertIn("B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY", update["executed_task_ids"])
+        self.assertEqual(
+            "implemented_cost_timeout_retention_policy_no_run",
+            update["status_by_task"]["B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY"],
+        )
+        t19_rollup = update["t19_cost_timeout_retention_policy"]
+        self.assertEqual("B45-POSTQ4-T19-A01", t19_rollup["evidence_id"])
+        self.assertEqual(17, t19_rollup["max_total_model_or_reviewer_calls"])
+        self.assertEqual(0, t19_rollup["max_total_retries"])
+        self.assertEqual(600, t19_rollup["per_primary_call_timeout_seconds"])
+        self.assertTrue(t19_rollup["raw_temp_only_retention_required"])
+        self.assertTrue(t19_rollup["cost_timeout_retention_policy_ready"])
+        self.assertFalse(t19_rollup["promotion_allowed"])
+        self.assertFalse(t19_rollup["baseline_started"])
+        self.assertFalse(t19_rollup["treatment_started"])
+        self.assertEqual("B45-POSTQ4-T20-EXACT-APPROVAL-PACKET", t19_rollup["next_required_task"])
+
+        for registry in [registry_ru, registry_en]:
+            self.assertIn("B45-POSTQ4-T19-A01", registry)
+            self.assertIn("docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json", registry)
+            self.assertIn("raw-temp-only retention", registry)
+
+        for control_plane in [
+            plan,
+            runlog,
+            evals,
+            test_plan,
+            current_state,
+            coding_ru,
+            coding_en,
+            track11,
+        ]:
+            self.assertIn("B45-POSTQ4-T19-A01", control_plane)
+
+        for source_owner in [
+            plan,
+            test_plan,
+            current_state,
+            coding_ru,
+            coding_en,
+            behavioral_ru,
+            behavioral_en,
+            track11,
+        ]:
+            self.assertIn("batch45-postq4-t19-cost-timeout-retention-policy.json", source_owner)
+
+        self.assertNotIn("B45-POSTQ4-T19-A01", behavioral_ru)
+        self.assertNotIn("B45-POSTQ4-T19-A01", behavioral_en)
+
+        self.assertEqual("B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY", lifecycle["task_id"])
+        self.assertEqual("B45-POSTQ4-T19-A01", lifecycle["evidence_id"])
+        self.assertEqual("implemented_cost_timeout_retention_policy_no_run", lifecycle["status"])
         self.assertEqual("docs_contract_ready", lifecycle["closure_level"])
 
     def test_s5_learning_automation_packet_closes_m23_without_activation(self):

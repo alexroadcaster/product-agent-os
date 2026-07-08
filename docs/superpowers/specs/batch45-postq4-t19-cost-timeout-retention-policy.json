@@ -1,0 +1,425 @@
+{
+  "schema_version": "batch45_postq4_t19_cost_timeout_retention_policy_v1",
+  "task_id": "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
+  "evidence_id": "B45-POSTQ4-T19-A01",
+  "status": "implemented_cost_timeout_retention_policy_no_run",
+  "closure_level": "docs_contract_ready",
+  "created_at": "2026-07-08T14:30:00+03:00",
+  "source_status": "source-owned cost, timeout and raw-temp-only retention policy for a future Batch 45 promotion-grade eval; no baseline/treatment run, live/model/provider/reviewer call, runtime/browser/target/CI/git/release/deploy/automation action was performed",
+  "goal": "Make the T18 promotion-grade eval design executable only after fixed call caps, timeout behavior, retry/abort rules, cost-cap approval requirements, raw-temp-only retention and sanitized rollup fields are source-owned before the T20 exact approval packet.",
+  "claim_ceiling": "T19 defines policy only. It does not authorize or perform baseline/treatment execution, choose a concrete model/provider, satisfy reviewer gate, reverse M26/M35/T15 no-go, prove behavior improvement, or prove runtime/browser/target/CI/git/release/deploy/automation readiness.",
+  "basis": {
+    "task_group": "docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+    "frozen_corpus": "docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json",
+    "eval_design": "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
+    "timeout_retention_precedents": [
+      "docs/superpowers/specs/batch45-postq4-t10-live-eval-harness-redesign-packet.json",
+      "docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-results.json",
+      "docs/superpowers/specs/batch45-postq4-t14-strict-rerun-results.json"
+    ],
+    "json_schema_reference": "Context7 /websites/json-schema_understanding-json-schema",
+    "current_boundary": "B45-POSTQ4-T18-A01 defines design/schema only; B45-POSTQ4-T19-A01 adds budget/timeout/retention policy only."
+  },
+  "sidecar_agent_use": {
+    "agents_used": [
+      {
+        "role": "docs-maintainer",
+        "scope": "read-only product docs and registry route audit",
+        "file_writes_authorized": false,
+        "provider_model_reviewer_calls_authorized": false
+      },
+      {
+        "role": "tester",
+        "scope": "read-only T19 packet invariant and verification scan",
+        "file_writes_authorized": false,
+        "provider_model_reviewer_calls_authorized": false
+      }
+    ],
+    "agent_outputs_are_supporting_review_only": true,
+    "source_artifacts_remain_authoritative": true
+  },
+  "source_matrix": [
+    {
+      "source": "docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+      "claim": "T19 must define run caps, timeout policy, retry policy, abort policy, raw-temp-only retention and sanitized rollup rules before any approval packet is executable.",
+      "relevance": "Direct T19 acceptance contract.",
+      "freshness": "current_repo_2026-07-08",
+      "confidence": "high",
+      "conflicts": []
+    },
+    {
+      "source": "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
+      "claim": "The future result contract needs cost_timeout_retention fields, strict schema compatibility, deterministic quarantine and raw-output-free sanitized rollups.",
+      "relevance": "Binds T19 policy to T18 schema/result design.",
+      "freshness": "current_repo_2026-07-08",
+      "confidence": "high",
+      "conflicts": []
+    },
+    {
+      "source": "docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json",
+      "claim": "The future promotion-grade run covers 8 frozen tasks and must not mutate corpus content after execution starts.",
+      "relevance": "Determines the primary call budget: 8 baseline plus 8 treatment calls.",
+      "freshness": "current_repo_2026-07-08",
+      "confidence": "high",
+      "conflicts": []
+    },
+    {
+      "source": "Context7 /websites/json-schema_understanding-json-schema",
+      "claim": "Strict object contracts use required fields, enum values, numeric constraints and additionalProperties=false to reject unknown fields.",
+      "relevance": "External schema-shape sanity check only; local Batch 45 packets remain source truth.",
+      "freshness": "queried_2026-07-08",
+      "confidence": "medium",
+      "conflicts": []
+    }
+  ],
+  "run_budget_policy": {
+    "comparison_mode_source": "B45-POSTQ4-T18-A01 selected same_model_baseline_treatment for promotion-grade evidence.",
+    "frozen_corpus_task_count": 8,
+    "max_setup_or_smoke_calls": 0,
+    "max_baseline_primary_calls": 8,
+    "max_treatment_primary_calls": 8,
+    "max_primary_model_calls": 16,
+    "max_reviewer_calls_after_valid_pairs": 1,
+    "max_total_model_or_reviewer_calls": 17,
+    "max_attempts_per_task_arm": 1,
+    "max_primary_retries_per_task_arm": 0,
+    "max_reviewer_retries": 0,
+    "max_total_retries": 0,
+    "no_implicit_retry_budget": true,
+    "t20_exact_approval_may_lower_caps": true,
+    "t20_exact_approval_may_not_raise_caps_without_new_policy_packet": true
+  },
+  "timeout_policy": {
+    "per_primary_call_timeout_seconds": 600,
+    "per_reviewer_call_timeout_seconds": 600,
+    "process_cleanup_grace_seconds": 30,
+    "max_total_wall_clock_seconds": 12000,
+    "timeout_behavior": "stop_remaining_calls_and_quarantine_incomplete_pairs",
+    "stop_on_first_primary_timeout": true,
+    "stop_on_reviewer_timeout": true,
+    "timeout_count_required_for_promotion": 0,
+    "timed_out_pair_valid_for_scoring": false,
+    "timeout_cannot_be_converted_to_accepted_gap_for_promotion": true
+  },
+  "cost_policy": {
+    "concrete_usd_cap_status": "owner_fill_required_in_T20_exact_approval",
+    "approval_not_executable_without_usd_cap": true,
+    "current_pricing_lookup_required_in_T20": true,
+    "pricing_source_rule": "Use current official provider pricing at T20 approval time; T19 does not freeze model pricing.",
+    "cost_accounting_granularity": [
+      "per_call_estimated_cost",
+      "per_arm_total_estimated_cost",
+      "reviewer_estimated_cost",
+      "aggregate_estimated_cost",
+      "unknown_cost_call_count"
+    ],
+    "abort_when_cost_unknown": true,
+    "abort_before_next_call_when_estimated_cap_would_be_exceeded": true,
+    "no_implicit_extra_budget_for_retries": true,
+    "reviewer_call_uses_same_cost_cap": true,
+    "cost_cap_breach_blocks_promotion": true
+  },
+  "retry_and_abort_policy": {
+    "automatic_retries_allowed": false,
+    "manual_rerun_requires_new_exact_approval": true,
+    "retryable_classes_under_this_policy": [],
+    "non_retryable_classes": [
+      "timeout",
+      "invalid_json",
+      "schema_validation_failed",
+      "no_op",
+      "runner_error",
+      "cost_unknown",
+      "cost_cap_risk",
+      "privacy_retention_violation",
+      "corpus_hash_mismatch",
+      "model_or_reasoning_mismatch",
+      "raw_output_repo_write_attempt"
+    ],
+    "abort_conditions": [
+      "first_primary_timeout",
+      "reviewer_timeout",
+      "cost_unknown_before_or_after_call",
+      "estimated_cost_cap_would_be_exceeded",
+      "corpus_hash_mismatch",
+      "model_id_or_reasoning_effort_mismatch_between_arms",
+      "raw_output_retention_violation",
+      "secret_or_unredacted_pii_detected",
+      "unexpected_live_runtime_or_target_action_request",
+      "git_or_external_write_request"
+    ],
+    "abort_result_class": "not_run_due_stop_rule",
+    "aborted_run_cannot_support_promotion": true
+  },
+  "raw_temp_only_retention_policy": {
+    "raw_outputs_repo_retention_allowed": false,
+    "raw_outputs_temp_only": true,
+    "repo_raw_retention_bytes_allowed": 0,
+    "concrete_temp_root_in_repo_artifact_forbidden": true,
+    "temp_root_policy": "A future approved run must use a disposable temp root chosen at execution time, preferably outside source-owned docs or under ignored workspace-local .codex-tmp; source artifacts must never record concrete user-specific paths.",
+    "raw_retention_max_hours": 24,
+    "delete_raw_on_success": true,
+    "delete_raw_on_abort": true,
+    "delete_raw_before_git_stage_or_commit": true,
+    "allowed_repo_retention": [
+      "sanitized status labels",
+      "score aggregates",
+      "dimension scores",
+      "changed-file metadata without raw source bodies",
+      "hashes and byte lengths",
+      "call counts",
+      "timeout counts",
+      "cost estimates and cap status",
+      "reviewer verdict without raw reviewer trace",
+      "no-unapproved-actions booleans"
+    ],
+    "forbidden_repo_retention": [
+      "raw stdout",
+      "raw stderr",
+      "raw prompts",
+      "provider request payloads",
+      "provider response bodies",
+      "raw model outputs",
+      "raw reviewer traces",
+      "raw private source bodies",
+      "secrets_or_credentials",
+      "raw private chat logs",
+      "unredacted_pii",
+      "absolute_user_specific_paths",
+      "browser traces screenshots or videos",
+      "database or runtime state"
+    ]
+  },
+  "sanitized_rollup_contract": {
+    "result_section_name": "cost_timeout_retention",
+    "required_top_level_fields": [
+      "policy_evidence_id",
+      "call_budget",
+      "timeout_policy",
+      "cost_policy",
+      "retention_policy",
+      "per_call_records",
+      "aggregate_cost_timeout",
+      "raw_retention_deletion",
+      "unsupported_claims"
+    ],
+    "per_call_record_fields": [
+      "task_id",
+      "arm",
+      "attempt_id",
+      "status",
+      "timed_out",
+      "retry_count",
+      "duration_ms",
+      "estimated_cost_usd",
+      "cost_known",
+      "raw_output_hash",
+      "raw_output_byte_length",
+      "sanitized_changed_files"
+    ],
+    "aggregate_fields": [
+      "max_total_model_or_reviewer_calls",
+      "actual_model_or_reviewer_calls_started",
+      "actual_model_or_reviewer_calls_completed",
+      "timeout_count",
+      "retry_count",
+      "estimated_total_cost_usd",
+      "cost_cap_usd",
+      "cost_cap_status",
+      "raw_outputs_deleted",
+      "raw_outputs_written_to_repo"
+    ],
+    "forbidden_raw_field_names": [
+      "stdout",
+      "stderr",
+      "prompt",
+      "provider_payload",
+      "provider_response",
+      "raw_output",
+      "raw_body",
+      "final_summary"
+    ],
+    "strict_policy_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_evidence_id",
+        "call_budget",
+        "timeout_policy",
+        "cost_policy",
+        "retention_policy"
+      ],
+      "properties": {
+        "policy_evidence_id": {
+          "type": "string",
+          "enum": [
+            "B45-POSTQ4-T19-A01"
+          ]
+        },
+        "call_budget": {
+          "type": "object",
+          "additionalProperties": false
+        },
+        "timeout_policy": {
+          "type": "object",
+          "additionalProperties": false
+        },
+        "cost_policy": {
+          "type": "object",
+          "additionalProperties": false
+        },
+        "retention_policy": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      }
+    }
+  },
+  "t20_exact_approval_requirements": {
+    "next_required_task": "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
+    "owner_confirmation_must_name": [
+      "model_id",
+      "model_reasoning_effort",
+      "comparison_mode",
+      "corpus_id",
+      "corpus_version",
+      "max_total_model_or_reviewer_calls",
+      "max_total_retries",
+      "per_call_timeout_seconds",
+      "max_total_wall_clock_seconds",
+      "usd_cost_cap",
+      "pricing_source_checked_at",
+      "reviewer_policy",
+      "raw_temp_only_retention_policy",
+      "abort_conditions",
+      "no_unapproved_actions_boundary"
+    ],
+    "approval_packet_cannot_run_by_itself": true,
+    "approval_reuse_after_consumed_or_aborted_run_allowed": false
+  },
+  "approval_and_execution_boundary": {
+    "packet_authorizes_future_run": false,
+    "baseline_or_treatment_run_started": false,
+    "reviewer_gate_satisfied": false,
+    "concrete_model_approved": false,
+    "concrete_usd_cost_cap_approved": false,
+    "cost_timeout_retention_policy_ready": true,
+    "next_required_task": "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
+    "future_approval_required_before_T21": true,
+    "does_not_authorize": [
+      "reviewer/model/provider calls",
+      "live/model/provider rerun",
+      "runtime/live server or browser automation",
+      "target workspace command or mutation",
+      "database or production data access",
+      "CI/blocker enforcement or active automation",
+      "git branch/stage/commit/push/PR",
+      "release/deploy/publish/external write"
+    ]
+  },
+  "no_unapproved_actions": {
+    "live_model_or_provider_api_called_without_approval": false,
+    "reviewer_model_call_started": false,
+    "runtime_or_live_server_launched": false,
+    "browser_automation_run": false,
+    "target_workspace_command_run": false,
+    "target_workspace_mutated": false,
+    "database_accessed": false,
+    "ci_or_blocker_enforcement_created": false,
+    "git_branch_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation_created_or_enabled": false,
+    "external_write_performed": false,
+    "raw_outputs_written_to_repo": false
+  },
+  "unsupported_claims": [
+    "promotion_grade_eval_result_exists",
+    "baseline_treatment_execution_started",
+    "reviewer_gate_satisfied",
+    "concrete_model_or_provider_approved",
+    "concrete_usd_cost_cap_approved",
+    "behavior_improvement_proven",
+    "M26_no_go_reversed",
+    "M35_no_go_reversed",
+    "T15_no_go_reversed",
+    "promotion_ready",
+    "runtime_browser_target_ci_git_release_deploy_automation_ready"
+  ],
+  "control_plane_sync_decision": {
+    "REQUIREMENTS.md": "not_applicable_no_scope_or_acceptance_change",
+    "PLAN.md": "updated_compact_s8_route_pointer_with_t19",
+    "TEST.md": "updated_compact_t19_json_and_claim_boundary",
+    "EVALS.md": "updated_compact_t19_no_run_claim_ceiling",
+    "RUNLOG.md": "updated_compact_t19_handoff_pointer",
+    "docs/sources/registry.md": "updated_t19_source_route",
+    "docs/sources/registry.en.md": "updated_t19_source_route",
+    "docs/product-agent-os/control-plane-current-state.md": "updated_current_state_and_queue_pointer",
+    "docs/product-agent-os/coding-standards.md": "updated_evidence_ceiling",
+    "docs/product-agent-os/coding-standards.en.md": "updated_evidence_ceiling",
+    "docs/product-agent-os/behavioral-evals.md": "updated_professional_code_eval_route_without_raw_batch_marker",
+    "docs/product-agent-os/behavioral-evals.en.md": "updated_professional_code_eval_route_without_raw_batch_marker",
+    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md": "updated_t16_t22_row_and_s8_slice",
+    ".codex/product-agent-os/lifecycle-state.json": "updated_current_marker"
+  },
+  "verification": {
+    "status": "passed_current_run",
+    "results": [
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t19-cost-timeout-retention-policy.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-post-q4-next-tasks.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool .codex\\product-agent-os\\lifecycle-state.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "status": "passed",
+        "evidence": "Ran 30 tests; OK."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_codex_runtime_runner_model_output -v",
+        "status": "passed",
+        "evidence": "Ran 8 tests; OK."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "status": "passed",
+        "evidence": "Ran 100 tests; OK."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_task_plan_lifecycle -v",
+        "status": "passed",
+        "evidence": "Ran 4 tests; OK."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_lifecycle_hooks -v",
+        "status": "passed",
+        "evidence": "Ran 17 tests; OK."
+      },
+      {
+        "command": "python tools\\check_docs.py",
+        "status": "passed",
+        "evidence": "OK: documentation structure checks passed."
+      },
+      {
+        "command": "git diff --check",
+        "status": "passed_with_crlf_warnings",
+        "evidence": "No whitespace errors. Git reported CRLF/LF normalization warnings for edited files."
+      }
+    ],
+    "remaining_required_before_completion_claim": []
+  }
+}
