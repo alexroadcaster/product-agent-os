@@ -144,6 +144,18 @@ from codex_runtime_runner.model_output import (  # noqa: E402
 )
 from product_agent_os.templates import required_templates, template_by_target  # noqa: E402
 
+def _batch45_lifecycle_projection() -> dict[str, object]:
+    """Keep historical Batch 45 assertions independent from the mutable active task marker."""
+    active_path = ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json"
+    active = json.loads(active_path.read_text(encoding="utf-8"))
+    if str(active.get("task_id", "")).startswith("B45-POSTQ4-"):
+        return active
+    latest = json.loads(POST_Q4_T22_DECISION.read_text(encoding="utf-8"))
+    return {
+        key: latest[key]
+        for key in ("task_id", "evidence_id", "status", "closure_level")
+    }
+
 
 class CodingStandardsArtifactsTest(unittest.TestCase):
     def test_public_docs_are_source_bound_and_nav_registered(self):
@@ -994,7 +1006,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             / "plans"
             / "2026-06-20-track-11-documentation-architecture-refresh.md"
         ).read_text(encoding="utf-8")
-        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+        lifecycle = _batch45_lifecycle_projection()
 
         self.assertEqual("batch45_postq4_architecture_next_actions_v1", packet["schema_version"])
         self.assertEqual("B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS", packet["task_id"])
@@ -1376,7 +1388,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
         registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
         registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
-        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+        lifecycle = _batch45_lifecycle_projection()
         plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
         test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
@@ -1458,7 +1470,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
         registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
         registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
-        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+        lifecycle = _batch45_lifecycle_projection()
         plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
         test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
@@ -1540,7 +1552,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
         registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
         registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
-        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+        lifecycle = _batch45_lifecycle_projection()
         plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
         test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
@@ -1635,7 +1647,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
         registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
         registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
-        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+        lifecycle = _batch45_lifecycle_projection()
 
         self.assertEqual("batch45_postq4_t14_strict_rerun_results_v1", result["schema_version"])
         self.assertEqual("B45-POSTQ4-T14-STRICT-RERUN", result["task_id"])
@@ -1715,7 +1727,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
         registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
         registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
-        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+        lifecycle = _batch45_lifecycle_projection()
         plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
         test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
@@ -1812,7 +1824,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
         registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
         registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
-        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+        lifecycle = _batch45_lifecycle_projection()
         plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
         runlog = (ROOT / "RUNLOG.md").read_text(encoding="utf-8")
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
@@ -1990,7 +2002,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
         registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
         registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
-        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+        lifecycle = _batch45_lifecycle_projection()
         plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
         runlog = (ROOT / "RUNLOG.md").read_text(encoding="utf-8")
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
@@ -2197,7 +2209,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
         registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
         registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
-        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+        lifecycle = _batch45_lifecycle_projection()
         plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
         runlog = (ROOT / "RUNLOG.md").read_text(encoding="utf-8")
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
@@ -2518,7 +2530,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
         registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
         registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
-        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+        lifecycle = _batch45_lifecycle_projection()
         plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
         runlog = (ROOT / "RUNLOG.md").read_text(encoding="utf-8")
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
@@ -2793,7 +2805,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
         registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
         registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
-        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+        lifecycle = _batch45_lifecycle_projection()
         plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
         runlog = (ROOT / "RUNLOG.md").read_text(encoding="utf-8")
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
@@ -3130,7 +3142,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
         registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
         registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
-        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+        lifecycle = _batch45_lifecycle_projection()
         plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
         runlog = (ROOT / "RUNLOG.md").read_text(encoding="utf-8")
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
@@ -3460,7 +3472,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
         registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
         registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
-        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+        lifecycle = _batch45_lifecycle_projection()
         plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
         runlog = (ROOT / "RUNLOG.md").read_text(encoding="utf-8")
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
@@ -3752,7 +3764,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
         registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
         registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
-        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+        lifecycle = _batch45_lifecycle_projection()
         plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
         runlog = (ROOT / "RUNLOG.md").read_text(encoding="utf-8")
         current_state = (DOCS / "product-agent-os" / "control-plane-current-state.md").read_text(encoding="utf-8")
@@ -3900,7 +3912,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
         registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
         registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
-        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+        lifecycle = _batch45_lifecycle_projection()
         plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
         runlog = (ROOT / "RUNLOG.md").read_text(encoding="utf-8")
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
@@ -4073,7 +4085,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         next_tasks = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
         registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
         registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
-        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+        lifecycle = _batch45_lifecycle_projection()
         plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
         runlog = (ROOT / "RUNLOG.md").read_text(encoding="utf-8")
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")

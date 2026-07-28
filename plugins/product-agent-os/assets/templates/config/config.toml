@@ -1,5 +1,3 @@
-profile = "{profile_name}"
-project_name = "{project_name}"
 default_permissions = "product-agent-os-project"
 
 [permissions.product-agent-os-project]
@@ -20,32 +18,68 @@ extends = ":workspace"
 ".codex/eval-reports" = "write"
 
 [agents]
-default_profile = "{profile_name}"
-max_parallel = 2
-product_manager = ".codex/agents/product-manager.toml"
-architect = ".codex/agents/architect.toml"
-explorer = ".codex/agents/explorer.toml"
-builder = ".codex/agents/builder.toml"
-tester = ".codex/agents/tester.toml"
-reviewer = ".codex/agents/reviewer.toml"
-docs_maintainer = ".codex/agents/docs-maintainer.toml"
-release_operator = ".codex/agents/release-operator.toml"
+max_concurrent_threads_per_session = 2
 
-[agents.reasoning]
+[agents.product-manager]
+config_file = "./agents/product-manager.toml"
+
+[agents.architect]
+config_file = "./agents/architect.toml"
+
+[agents.explorer]
+config_file = "./agents/explorer.toml"
+
+[agents.builder]
+config_file = "./agents/builder.toml"
+
+[agents.tester]
+config_file = "./agents/tester.toml"
+
+[agents.reviewer]
+config_file = "./agents/reviewer.toml"
+
+[agents.docs-maintainer]
+config_file = "./agents/docs-maintainer.toml"
+
+[agents.release-operator]
+config_file = "./agents/release-operator.toml"
+
+[product_agent_os]
+project_name = "{project_name}"
+project_profile = "{profile_name}"
+control_plane = ["AGENTS.md", "REQUIREMENTS.md", "PLAN.md", "TEST.md", "EVALS.md", "RUNLOG.md"]
+workflow_dir = ".codex/workflows"
+runlog_archive_dir = ".codex/runlogs/archive"
+automation_candidate_dir = ".codex/automation-candidates"
+
+[product_agent_os.reasoning]
 planning = "high"
 building = "medium"
 review = "high"
 mechanical = "low"
 
-[sandbox]
-default_mode = "workspace-write"
-read_only_for = ["planning", "review", "release"]
+[product_agent_os.model_migration]
+family = "GPT-5.6"
+baseline_policy = "Preserve each role's current reasoning effort, then compare the same effort and one lower on representative tasks."
+role_policy = "Use Sol for complex judgment and Terra for everyday or read-heavy work; keep Luna candidate-only until a bounded eval passes."
+activation_status = "config_pinned_behavioral_promotion_pending"
+fresh_session_hook_verification_required = true
+quality_cost_latency_eval_required = true
 
-[approvals]
+[product_agent_os.sandbox_contract]
+default_mode = "workspace-write"
+read_only_roles = ["architect", "explorer", "reviewer", "release-operator"]
+workspace_write_roles = ["product-manager", "builder", "tester", "docs-maintainer"]
+
+[product_agent_os.approval_contract]
 external_writes = "explicit"
 network_access = "explicit"
+provider_or_model_calls = "explicit"
+browser_automation = "explicit"
+git_stage_commit_push_pr = "explicit"
+hooks_or_automation_activation = "explicit"
+deployment_or_publication = "explicit"
 permission_changes = "explicit"
-automation_activation = "explicit"
 global_config_changes = "forbidden"
 
 [product_agent_os.codex_agentic_workflow]
@@ -74,6 +108,17 @@ statuses = ["present_unverified", "explicit_gap_accepted", "approval_required"]
 memory_policy = "memory as recall only"
 activation_policy = "no silent activation"
 
+[product_agent_os.lifecycle_contract]
+task_plan_lifecycle = ".codex/workflows/task-plan-lifecycle.md"
+control_plane_sync = ".codex/workflows/control-plane-sync.md"
+agent_context_contract = ".codex/evals/agent-context-contract.json"
+lifecycle_state = ".codex/product-agent-os/lifecycle-state.json"
+hook_policy = ".codex/hooks.json"
+hook_template_mirror = ".codex/hooks/hooks.json"
+chat_visibility = "required"
+required_for = "non_mechanical_tasks"
+agent_instruction_policy = "reference_config_workflows_do_not_duplicate_contract"
+
 [workflows]
 source_context_pack = ".codex/workflows/source-context-pack.md"
 worktree_ownership = ".codex/workflows/worktree-ownership.md"
@@ -97,19 +142,3 @@ runlog_compaction = ".codex/workflows/runlog-compaction.md"
 
 [evals]
 agent_context_contract = ".codex/evals/agent-context-contract.json"
-
-[product_agent_os]
-control_plane = ["AGENTS.md", "REQUIREMENTS.md", "PLAN.md", "TEST.md", "EVALS.md", "RUNLOG.md"]
-workflow_dir = ".codex/workflows"
-runlog_archive_dir = ".codex/runlogs/archive"
-automation_candidate_dir = ".codex/automation-candidates"
-
-[product_agent_os.lifecycle_contract]
-task_plan_lifecycle = ".codex/workflows/task-plan-lifecycle.md"
-control_plane_sync = ".codex/workflows/control-plane-sync.md"
-agent_context_contract = ".codex/evals/agent-context-contract.json"
-lifecycle_state = ".codex/product-agent-os/lifecycle-state.json"
-hook_policy = ".codex/hooks/hooks.json"
-chat_visibility = "required"
-required_for = "non_mechanical_tasks"
-agent_instruction_policy = "reference_config_workflows_do_not_duplicate_contract"

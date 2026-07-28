@@ -121,7 +121,7 @@ class InfrastructureRendererTest(unittest.TestCase):
             pre_tool = staged_by_target[".codex/hooks/pre_tool_use_policy.py"].read_text(encoding="utf-8")
             stop = staged_by_target[".codex/hooks/stop_runlog_reminder.py"].read_text(encoding="utf-8")
             self.assertIn(".codex/product-agent-os/lifecycle-state.json", pre_tool)
-            self.assertIn("missing_lifecycle_marker", pre_tool)
+            self.assertIn("missing lifecycle marker", pre_tool)
             self.assertIn("task_start_brief_shown", pre_tool)
             self.assertIn("Completion Brief", stop)
 

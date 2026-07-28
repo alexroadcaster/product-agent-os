@@ -1,4 +1,3 @@
-project_name = "Codex Docs / Product-Agent OS"
 default_permissions = "product-agent-os-local-autonomy"
 
 [permissions.product-agent-os-local-autonomy]
@@ -18,9 +17,7 @@ description = "Local workspace autonomy for Product-Agent OS maintenance. Extern
 "docs" = "write"
 
 [agents]
-max_threads = 6
-max_depth = 1
-job_max_runtime_seconds = 3000
+max_concurrent_threads_per_session = 6
 
 [agents.explorer]
 config_file = "./agents/explorer.toml"
@@ -86,7 +83,6 @@ fresh_context_files = [
   ".codex/artifact-templates/coding-standard-checklist.md",
   ".codex/evals/agent-context-contract.json",
   ".codex/hooks.json",
-  ".codex/hooks/hooks.json",
   ".rules",
 ]
 
@@ -96,6 +92,7 @@ control_plane_sync = ".codex/workflows/control-plane-sync.md"
 agent_context_contract = ".codex/evals/agent-context-contract.json"
 lifecycle_state = ".codex/product-agent-os/lifecycle-state.json"
 hook_policy = ".codex/hooks.json"
+hook_template_mirror = ".codex/hooks/hooks.json"
 chat_visibility = "required"
 required_for = "non_mechanical_tasks"
 agent_instruction_policy = "reference_config_workflows_do_not_duplicate_contract"
@@ -111,12 +108,20 @@ review = "high"
 release = "high"
 mechanical = "low"
 
-[sandbox]
-default_mode = "workspace-write"
-read_only_roles = ["explorer", "reviewer", "release_operator", "completion_skeptic", "security_privacy_supply_chain_reviewer", "research_source_analyst"]
-workspace_write_roles = ["product_manager", "architect", "builder", "tester", "docs_maintainer", "lifecycle_orchestrator", "plugin_runtime_builder", "graph_cockpit_engineer", "learning_loop_engineer"]
+[product_agent_os.model_migration]
+family = "GPT-5.6"
+baseline_policy = "Preserve each role's current reasoning effort, then compare the same effort and one lower on representative tasks."
+role_policy = "Use Sol for complex judgment and Terra for everyday or read-heavy work; do not use Luna for broad project roles without a bounded eval."
+activation_status = "config_pinned_behavioral_promotion_pending"
+fresh_session_hook_verification_required = true
+quality_cost_latency_eval_required = true
 
-[approvals]
+[product_agent_os.sandbox_contract]
+default_mode = "workspace-write"
+read_only_roles = ["explorer", "reviewer", "release-operator", "completion-skeptic", "security-privacy-supply-chain-reviewer", "research-source-analyst"]
+workspace_write_roles = ["product-manager", "architect", "builder", "tester", "docs-maintainer", "lifecycle-orchestrator", "plugin-runtime-builder", "graph-cockpit-engineer", "learning-loop-engineer"]
+
+[product_agent_os.approval_contract]
 external_writes = "explicit"
 network_access = "explicit"
 provider_or_model_calls = "explicit"
@@ -143,18 +148,19 @@ review_slice = ".codex/workflows/review-slice.md"
 agent_context_contract = ".codex/evals/agent-context-contract.json"
 
 [product_agent_os]
+project_name = "Codex Docs / Product-Agent OS"
 project_profile = "python_docs_plugin"
-current_focus = "Codex Docs Product-Agent OS specialist agent-team expansion"
+current_focus = "Source-backed Product-Agent OS maintenance; active task routing is owned by PLAN.md and RUNLOG.md"
 source_policy = "source files and current command evidence outrank generated views"
 memory_policy = "memory is recall, not source truth"
 completion_policy = "no done, fixed, verified, ready, or release claim without current evidence or explicit accepted gap"
 
 [product_agent_os.agent_skill_routing]
 source = "find-skills search, installed local skills, Product-Agent OS project docs, and official Codex skills/subagents documentation"
-policy = "Agent TOML files own executable [[skills.config]] entries; this table records the audited top-5 skill routing for governance."
+policy = "Agent TOML files own executable [[skills.config]] entries; this table records focused role routing for governance. Exact skill count is not a quality gate."
 third_party_skill_policy = "Advisory only; project source files, current command evidence, and official OpenAI/Codex docs remain source truth."
 external_action_policy = "Skills that can publish, create issues, call providers, use browser automation, or mutate external systems must be used in local-synthesis-only mode unless exact approval is granted."
-installed_external_skill_status = "Installed to user-level .agents skills; Codex skill folders are present. PromptScript target may report unsupported global installation and is not used as Product-Agent OS evidence."
+installed_external_skill_status = "Validated on this host only. Absolute user-level paths are machine-local and require revalidation or vendoring before repository portability is claimed."
 installed_external_skills = [
   "adk-evals",
   "antv-g6-graph",
@@ -173,13 +179,13 @@ installed_external_skills = [
   "verification-before-completion",
   "writing-plans",
 ]
-installed_but_not_assigned = ["qa"]
+installed_but_not_assigned = ["qa", "to-prd", "find-skills"]
 
 [product_agent_os.agent_skill_routing.explorer]
 top_skills = ["workspace-discovery-auditor", "improve-codebase-architecture", "documentation-and-adrs", "handoff", "graphify"]
 
 [product_agent_os.agent_skill_routing.product-manager]
-top_skills = ["requirements-author", "to-prd", "writing-plans", "documentation-and-adrs", "handoff"]
+top_skills = ["requirements-author", "implementation-planner", "writing-plans", "documentation-and-adrs", "handoff"]
 
 [product_agent_os.agent_skill_routing.architect]
 top_skills = ["implementation-planner", "improve-codebase-architecture", "documentation-and-adrs", "python-design-patterns", "writing-plans"]
@@ -218,4 +224,4 @@ top_skills = ["completion-skeptic", "risk-reviewer", "verification-before-comple
 top_skills = ["risk-reviewer", "security-best-practices", "security-review", "verification-before-completion", "openai-docs"]
 
 [product_agent_os.agent_skill_routing.research-source-analyst]
-top_skills = ["openai-docs", "docs-maintainer", "documentation-writer", "documentation-and-adrs", "find-skills"]
+top_skills = ["openai-docs", "docs-maintainer", "documentation-writer", "documentation-and-adrs", "verification-before-completion"]

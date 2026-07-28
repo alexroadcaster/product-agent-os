@@ -194,8 +194,12 @@ class Batch45S3ProfessionalCodeAuthoringTest(unittest.TestCase):
         stop_hook = (TEMPLATE_ROOT / "hooks" / "stop_runlog_reminder.py").read_text(encoding="utf-8")
         self.assertIn("Candidate-only status", hook_governance)
         self.assertIn("Approval required before turning a professional-code reminder into an active blocking hook", hook_governance)
-        self.assertIn("coding-standards.md", pre_hook)
-        self.assertIn("professional_code_authoring_not_applicable_reason", stop_hook)
+        self.assertIn(".codex/workflows/coding-standards.md", hook_governance)
+        self.assertNotIn("coding-standards.md", pre_hook)
+        self.assertIn("LIFECYCLE_STATE_REL", pre_hook)
+        self.assertIn('"permissionDecision": "deny"', pre_hook)
+        self.assertNotIn("professional_code_authoring_not_applicable_reason", stop_hook)
+        self.assertIn("Completion Brief", stop_hook)
 
     def test_empty_professional_code_authoring_summary_uses_not_applicable_status(self):
         packet = build_first_run_analysis_packet(

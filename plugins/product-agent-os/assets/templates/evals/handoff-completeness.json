@@ -19,7 +19,7 @@
           "Subagent Context Packet",
           "Subagent Result Packet",
           "role",
-          "fork_context",
+          "fork_turns",
           "prompt",
           "allowed files",
           "files actually read",

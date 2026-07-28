@@ -58,6 +58,7 @@ Use `timeout_ms: 1200000` for full Product-Agent OS unittest runs.
 | Batch 44 | Self-Learning Loop S0-S7 are local/staged/manual evidence. | Run focused state/extensions/docs tests before S8 decision; no automation claim without owner approval and activation proof. |
 | Batch 45 | T21 cost-waived run records one approved primary call followed by strict-schema abort; T22-A02 records no-go because T21 has no valid pairs and reviewer gate was not run; advisory-only/no-go remains active and T14 positive signal remains below threshold. | Run focused coding-standards/comment-sufficiency/docs checks for local changes; any future baseline/treatment/model/reviewer run requires strict output/schema normalization, a new exact approval and a valid T21 result before T22 reviewer gate. |
 | Track 11 DOC-M25 | Root `site`, search and sitemap freshness are source-owned by DOC-M25 packet. | Root site freshness checks prove generated site/search/sitemap only; browser proof and broad scans remain separate. |
+| GPT-5.6 `.codex` remediation | Active schema/model/hook/template contracts were updated; current-run evidence includes 7/7 equal mirrors, 15 valid agents, 31/31 unique skill paths present, full discovery `1191` tests `OK (skipped=1)`, docs suite 100, fixture/transcript/compatibility checks green. Source report: `research/2026-07-23-codex-gpt-5p6-system-files-audit.md`. | Separately restart Codex for fresh `SessionStart` proof and run same-effort/one-lower-effort behavioral quality/cost/latency comparisons before promotion. |
 
 ## Batch-Specific Check Routes
 

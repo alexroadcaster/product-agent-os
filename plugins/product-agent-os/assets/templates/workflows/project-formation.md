@@ -37,7 +37,7 @@ Use this workflow on first use of Product-Agent OS in a real project. It keeps p
 
 6. Handoff and retest
    - Produce a fresh-context handoff for the next role.
-   - Record retest requirements in `prod_test.md` when Batch 39 production hardening is active.
+   - Record retest requirements in the project-specific production evidence ledger when one is active.
    - Do not claim ready, done, fixed, works, release-ready, or safe to hand off without current command evidence, owner evidence, or an owner-reviewed accepted gap.
 
 ## Outputs

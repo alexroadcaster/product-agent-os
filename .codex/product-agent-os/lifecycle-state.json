@@ -1,12 +1,12 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION",
-  "scope": "Record the no-go reviewer-gate decision after the cost-waived T21 run aborted on strict schema validation.",
-  "updated_at": "2026-07-08T20:47:25+03:00",
-  "approval_boundary": "T20-A03 cost-waived exact approval was consumed by one approved T21 primary model call. T21 aborted on strict schema validation before valid pairs; reviewer/model follow-up, runtime/browser/target/CI/git/release/deploy/automation remain unapproved.",
+  "task_id": "CODEX-GPT56-SYSTEM-AUDIT-REMEDIATION-20260723",
+  "scope": "Save the source-backed .codex system-file audit and remediate active agent, hook, config, workflow, eval, and template contracts for the GPT-5.6 model family.",
+  "updated_at": "2026-07-23T19:03:05.4475647+03:00",
+  "approval_boundary": "Local workspace edits and local verification only. Historical Batch 45 evidence, provider/model calls, browser/runtime pilots, external writes, permission changes, live servers, git stage/commit/push/PR, release, deploy, publication, and automation activation are out of scope.",
   "brief_schema_version": "task_start_brief_v1",
   "brief_format": "field_list",
-  "brief_digest": "sha256:b45postq4t21costunknownpreflightabort000001",
+  "brief_digest": "sha256:318cb5f363a79a10323b1f30f9aec15b9616addd72a53b909db370fbce2f4299",
   "brief_fields_present": [
     "Task ID",
     "Product value",
@@ -23,21 +23,22 @@
     "Next action"
   ],
   "completion_brief_shown": true,
-  "completion_status": "implemented_reviewer_gate_blocked_t21_invalid_schema_abort_no_promotion",
-  "closure_level": "blocked_before_reviewer_no_run",
+  "completion_status": "implemented_with_gaps",
+  "closure_level": "active_config_and_contracts_updated_fresh_session_and_behavioral_promotion_pending",
   "completion_gaps": [
-    "T21 produced zero valid pairs and one strict schema failure.",
-    "Reviewer gate did not run because T21 reviewer preconditions were not satisfied.",
-    "T20-A03 approval is consumed and cannot be reused; any rerun needs new exact approval.",
-    "Promotion, M26/M35/T15 reversal and readiness claims remain unsupported."
+    "fresh_session_hook_activation_proof_not_run",
+    "gpt56_same_and_lower_effort_behavioral_quality_cost_latency_eval_not_run",
+    "absolute_user_level_skill_paths_remain_host_local",
+    "reviewer_gap_no_delegated_reviewer_authorized"
   ],
   "completion_evidence": [
-    "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet-cost-waived.json",
-    "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-results.json",
-    "docs/superpowers/specs/batch45-postq4-t22-promotion-grade-decision-packet.json"
+    "research/2026-07-23-codex-gpt-5p6-system-files-audit.md",
+    "15 agent profiles valid; 7/7 mirrors equal; 92/92 audit ledger reconciled",
+    "1191 unittest discovery tests OK with one expected skip; docs suite 100/100",
+    "check_docs.py exit 0; git diff --check exit 0"
   ],
-  "evidence_id": "B45-POSTQ4-T22-A02",
-  "status": "implemented_reviewer_gate_blocked_t21_invalid_schema_abort_no_promotion",
-  "latest_evidence": "docs/superpowers/specs/batch45-postq4-t22-promotion-grade-decision-packet.json",
-  "latest_summary": "T21 cost-waived run started one approved primary call and aborted on strict schema validation (`tests_or_checks.status` enum). Raw outputs were deleted, reviewer calls stayed at 0, and T22 keeps advisory-only/no-go."
+  "evidence_id": "CODEX-GPT56-SYSTEM-AUDIT-REMEDIATION-A01",
+  "status": "completed",
+  "latest_evidence": "research/2026-07-23-codex-gpt-5p6-system-files-audit.md",
+  "latest_summary": "GPT-5.6 system-file remediation and source-backed audit are implemented with explicit fresh-session, behavioral-eval, portability, and reviewer gaps."
 }

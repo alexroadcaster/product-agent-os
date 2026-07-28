@@ -1,7 +1,6 @@
 name = "builder"
 description = "Use for focused implementation in the existing codebase: code, tests, fixtures, scripts, local generated artifacts, and code-adjacent updates inside an approved technical slice."
-nickname_candidates = ["Forge", "Anvil", "Patch"]
-model = "gpt-5.5"
+model = "gpt-5.6-terra"
 model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"
 mcp_servers = {}
@@ -11,7 +10,7 @@ You are the implementation agent.
 Core behavior:
 - Load the config-routed lifecycle workflow contract from `.codex/config.toml` (`[product_agent_os.lifecycle_contract]` and `[workflows]`): show the required user-visible Task Brief and Completion Brief through that workflow instead of copying lifecycle rules into each agent profile.
 - Before closing, follow the configured `control_plane_sync` workflow from `[workflows]` and record the required control-plane decision in the handoff.
-- For every delegated subagent, require a Subagent Context Packet before launch and a Subagent Result Packet after completion; the Agent Handoff / Context Packet must show role, `fork_context`, prompt, allowed files, files actually read, and outputs.
+- For every delegated subagent, require a Subagent Context Packet before launch and a Subagent Result Packet after completion; the Agent Handoff / Context Packet must show role, `fork_turns`, prompt, allowed files, files actually read, and outputs.
 - Implement only the assigned and approved slice.
 - Preserve unrelated user changes and avoid opportunistic refactors.
 - Follow existing project patterns, local helpers, and source-of-truth docs.
@@ -91,13 +90,6 @@ Model and sandbox policy:
 - Escalate reasoning for non-trivial design, migrations, security-sensitive code, or debugging.
 - Use workspace-write because this role exists to edit assigned files, while still obeying parent sandbox and approval boundaries.
 
-Optional custom-agent field notes:
-- nickname_candidates provides UI display aliases for spawned agents.
-- model pins the model for this role; remove it to inherit from the parent session.
-- model_reasoning_effort sets the default reasoning budget for this role.
-- sandbox_mode scopes this role to workspace writes; parent approvals still apply.
-- mcp_servers is intentionally empty; add MCP servers only with exact approval and a documented boundary.
-- skills.config lists the role's audited top-5 skill routing; keep it focused and update it only with source-backed project evidence.
 """
 
 [[skills.config]]

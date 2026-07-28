@@ -4,21 +4,26 @@ import json
 import sys
 
 
+ADDITIONAL_CONTEXT = (
+    "Treat the completed tool result as current-run evidence only. Record the command, exit code, and relevant "
+    "output in the owning source artifact or a compact RUNLOG.md pointer when useful. Do not infer completion, "
+    "runtime activation, or product acceptance from hook output alone; record every missing gate as an explicit gap."
+)
+
+
 def main() -> int:
-    event = sys.stdin.read()
-    payload = {
-        "hook": "post_tool_use_evidence",
-        "decision": "record_evidence",
-        "input_bytes": len(event.encode("utf-8")),
-        "reminders": [
-            "Record command, exit code, and relevant output in RUNLOG.md when useful.",
-            "If RUNLOG.md or another root control-plane file is near budget, record detailed evidence in the owning source artifact and keep only a compact current pointer in root.",
-            "Keep verification claims tied to current command/runtime evidence or an explicit accepted gap.",
-            "For code changes, connect coding-standard-checklist.md to test-eval-matrix.md before claiming professional code quality.",
-            "Do not treat hook output alone as completion proof.",
-        ],
-    }
-    print(json.dumps(payload, sort_keys=True))
+    sys.stdin.read()
+    print(
+        json.dumps(
+            {
+                "hookSpecificOutput": {
+                    "hookEventName": "PostToolUse",
+                    "additionalContext": ADDITIONAL_CONTEXT,
+                }
+            },
+            sort_keys=True,
+        )
+    )
     return 0
 
 

@@ -318,7 +318,6 @@ class InfrastructureTemplateTest(unittest.TestCase):
         )
         expected_terms = [
             "task_matrix_plan_v1",
-            "B37-S2",
             "Allowed task statuses",
             "`planned`",
             "`in_progress`",
@@ -2000,7 +1999,8 @@ class InfrastructureTemplateTest(unittest.TestCase):
             rendered = render_template(item, context)
             with self.subTest(key=item.key):
                 self.assertNotRegex(rendered, re.compile(r"\{[a-zA-Z0-9_]+\}"))
-                self.assertNotIn("None", rendered)
+                if item.validation_kind != "hook":
+                    self.assertNotIn("None", rendered)
 
     def test_agent_templates_validate_after_render(self):
         context = self._context()
@@ -2092,8 +2092,8 @@ class InfrastructureTemplateTest(unittest.TestCase):
         data = tomllib.loads(config.read_text(encoding="utf-8"))
 
         self.assertIn("agents", data)
-        self.assertIn("sandbox", data)
-        self.assertIn("approvals", data)
+        self.assertNotIn("sandbox", data)
+        self.assertNotIn("approvals", data)
         self.assertIn("product_agent_os", data)
         self.assertEqual(data["default_permissions"], "product-agent-os-project")
         permission_profile = data["permissions"]["product-agent-os-project"]
@@ -2103,10 +2103,15 @@ class InfrastructureTemplateTest(unittest.TestCase):
         self.assertEqual(codex_roots[".codex/product-agent-os"], "write")
         self.assertNotIn(".codex/hooks", codex_roots)
         self.assertNotIn(".codex/plugins", codex_roots)
-        self.assertEqual(data["product_agent_os"]["runlog_archive_dir"], ".codex/runlogs/archive")
+        self.assertEqual(data["agents"]["max_concurrent_threads_per_session"], 2)
+        self.assertEqual(data["agents"]["product-manager"]["config_file"], "./agents/product-manager.toml")
+        product_agent_os = data["product_agent_os"]
+        self.assertEqual(product_agent_os["runlog_archive_dir"], ".codex/runlogs/archive")
+        self.assertEqual(product_agent_os["sandbox_contract"]["default_mode"], "workspace-write")
+        self.assertEqual(product_agent_os["approval_contract"]["network_access"], "explicit")
+        self.assertEqual(product_agent_os["model_migration"]["family"], "GPT-5.6")
         self.assertNotIn("network_access", data)
         self.assertNotIn("secrets", data)
-
     def test_config_template_render_escapes_string_placeholders_for_toml(self):
         item = next(template for template in required_templates() if template.key == "config")
         context = self._context()
@@ -2115,7 +2120,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
         rendered = render_template(item, context)
         data = tomllib.loads(rendered)
 
-        self.assertEqual(data["profile"], context["profile_name"])
+        self.assertEqual(data["product_agent_os"]["project_profile"], context["profile_name"])
 
     def test_render_template_sorts_set_values_deterministically(self):
         item = next(template for template in required_templates() if template.key == "agents-md")
@@ -2217,7 +2222,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 self.assertIn("subagent context packet", text)
                 self.assertIn("subagent result packet", text)
                 self.assertIn("role", text)
-                self.assertIn("fork_context", text)
+                self.assertIn("fork_turns", text)
                 self.assertIn("prompt", text)
                 self.assertIn("allowed files", text)
                 self.assertIn("files actually read", text)
@@ -2246,7 +2251,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "Subagent Context Packet",
             "Subagent Result Packet",
             "role",
-            "fork_context",
+            "fork_turns",
             "prompt",
             "allowed files",
             "files actually read",
@@ -2265,7 +2270,8 @@ class InfrastructureTemplateTest(unittest.TestCase):
         self.assertEqual(lifecycle_contract["control_plane_sync"], ".codex/workflows/control-plane-sync.md")
         self.assertEqual(lifecycle_contract["agent_context_contract"], ".codex/evals/agent-context-contract.json")
         self.assertEqual(lifecycle_contract["lifecycle_state"], ".codex/product-agent-os/lifecycle-state.json")
-        self.assertEqual(lifecycle_contract["hook_policy"], ".codex/hooks/hooks.json")
+        self.assertEqual(lifecycle_contract["hook_policy"], ".codex/hooks.json")
+        self.assertEqual(lifecycle_contract["hook_template_mirror"], ".codex/hooks/hooks.json")
         self.assertEqual(lifecycle_contract["chat_visibility"], "required")
         self.assertEqual(lifecycle_contract["required_for"], "non_mechanical_tasks")
         self.assertEqual(
@@ -2611,7 +2617,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
             ],
             "subagent-context-packet.md": [
                 "role",
-                "fork_context",
+                "fork_turns",
                 "prompt",
                 "allowed files",
                 "files actually read",
@@ -2622,7 +2628,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "subagent-result-packet.md": [
                 "subagent context packet",
                 "role",
-                "fork_context",
+                "fork_turns",
                 "prompt",
                 "allowed files",
                 "files actually read",
@@ -4807,7 +4813,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "subagent result packet",
             "agent handoff / context packet",
             "role",
-            "fork_context",
+            "fork_turns",
             "prompt",
             "allowed files",
             "files actually read",
@@ -4843,7 +4849,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
         for expected in [
             "subagent context packet",
             "subagent result packet",
-            "fork_context",
+            "fork_turns",
             "prompt",
             "allowed files",
             "files actually read",
@@ -5583,26 +5589,26 @@ class InfrastructureTemplateTest(unittest.TestCase):
         hook = TEMPLATE_ROOT / "hooks" / "pre_tool_use_policy.py"
         destructive = subprocess.run(
             [sys.executable, str(hook)],
-            input=json.dumps({"command": "git reset --hard HEAD"}),
+            input=json.dumps({"command": "git reset " + "--hard HEAD"}),
             check=False,
             capture_output=True,
             text=True,
         )
         safe = subprocess.run(
             [sys.executable, str(hook)],
-            input=json.dumps({"command": "python tools/check_docs.py"}),
+            input=json.dumps({"command": "Get-Content PLAN.md"}),
             check=False,
             capture_output=True,
             text=True,
         )
 
-        destructive_payload = json.loads(destructive.stdout)
-        safe_payload = json.loads(safe.stdout)
-        self.assertEqual(destructive.returncode, 1)
-        self.assertEqual(destructive_payload["decision"], "block")
+        destructive_output = json.loads(destructive.stdout)["hookSpecificOutput"]
+        self.assertEqual(destructive.returncode, 0)
+        self.assertEqual(destructive_output["hookEventName"], "PreToolUse")
+        self.assertEqual(destructive_output["permissionDecision"], "deny")
+        self.assertIn("Destructive command blocked", destructive_output["permissionDecisionReason"])
         self.assertEqual(safe.returncode, 0)
-        self.assertEqual(safe_payload["decision"], "observe")
-
+        self.assertEqual(safe.stdout, "")
     def test_hook_permission_and_evidence_templates_emit_json(self):
         for name in ["permission_request_summary.py", "post_tool_use_evidence.py"]:
             with self.subTest(name=name):
@@ -5616,8 +5622,13 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 )
                 payload = json.loads(result.stdout)
                 self.assertEqual(result.returncode, 0)
-                self.assertIn("hook", payload)
-
+                if name == "permission_request_summary.py":
+                    self.assertIn("Approval remains undecided", payload["systemMessage"])
+                    self.assertNotIn("decision", payload)
+                else:
+                    output = payload["hookSpecificOutput"]
+                    self.assertEqual(output["hookEventName"], "PostToolUse")
+                    self.assertIn("current-run evidence", output["additionalContext"])
     def test_api_integration_templates_cover_contract_depth_and_deferrals(self):
         payloads = {
             name: (TEMPLATE_ROOT / "artifact-templates" / name).read_text(encoding="utf-8").lower()

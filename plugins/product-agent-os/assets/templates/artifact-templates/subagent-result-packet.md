@@ -18,7 +18,7 @@ Use this after completion, timeout, cancellation, or close for every Codex subag
 ## Actual Context Used
 
 - Prompt received:
-- `fork_context`:
+- `fork_turns`:
 - Allowed files:
 - Files actually read:
 - Commands run:

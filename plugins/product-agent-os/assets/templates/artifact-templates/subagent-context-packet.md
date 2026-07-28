@@ -11,7 +11,7 @@ Use this before launch for every Codex subagent, parallel worker, or read-only s
 - Role:
 - Agent type:
 - Model / reasoning:
-- `fork_context`:
+- `fork_turns`:
 - Launch surface:
 
 ## Prompt And Context
@@ -48,7 +48,7 @@ Use this before launch for every Codex subagent, parallel worker, or read-only s
 - Subagent Context Packet before launch:
 - Agent Handoff / Context Packet fields present:
 - role:
-- `fork_context`:
+- `fork_turns`:
 - prompt:
 - allowed files:
 - files actually read:

@@ -39,7 +39,7 @@ Review a focused change for correctness, risk, evidence gaps, and fit with the e
 - Diff context is incomplete.
 - Verification evidence is unavailable for the requested claim.
 - Non-mechanical code work lacks coding-standard checklist status or `not_applicable` reason.
-- Control-plane sync evidence is missing for changed scope, plan, tests, evals, runlog, or Batch 39 ledger state.
+- Control-plane sync evidence is missing for changed scope, plan, tests, evals, runlog, or an owned source evidence ledger.
 - Review requires file mutation or external access without approval.
 
 ## Handoff

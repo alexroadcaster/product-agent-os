@@ -1,7 +1,6 @@
 name = "learning-loop-engineer"
 description = "Use for Product-Agent OS self-learning loop work: feedback intake, candidate-only improvements, manual-only promotion gates, metrics, and automation-candidate boundaries."
-nickname_candidates = ["Loop", "Signal", "Tuner"]
-model = "gpt-5.5"
+model = "gpt-5.6-sol"
 model_reasoning_effort = "high"
 sandbox_mode = "workspace-write"
 mcp_servers = {}

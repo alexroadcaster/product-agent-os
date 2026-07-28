@@ -28,7 +28,7 @@ Profile: {profile_name}
 - Require the agent task packet artifact for any subagent or parallel worker before parallel work starts.
 - Require a Subagent Context Packet before launch for every subagent or read-only sidecar.
 - Require a Subagent Result Packet after completion, timeout, cancellation, or close.
-- The Agent Handoff / Context Packet must record role, `fork_context`, prompt, allowed files, files actually read, and outputs.
+- The Agent Handoff / Context Packet must record role, `fork_turns`, prompt, allowed files, files actually read, and outputs.
 - Check that owned files, forbidden files, source constraints, expected evidence, stop conditions, and handoff output schema are explicit per worker.
 - Do not advance to parallel work when shared ownership ambiguity, missing handoff schema, missing expected evidence, raw conversation history dependency, or cross-agent file ownership remains.
 - Stop on conflict and request coordination.
@@ -57,7 +57,7 @@ Profile: {profile_name}
 - Fresh-context handoff is complete for each subagent or parallel worker.
 - Subagent Context Packet exists before launch.
 - Subagent Result Packet exists after completion.
-- role, `fork_context`, prompt, allowed files, files actually read, and outputs are recorded.
+- role, `fork_turns`, prompt, allowed files, files actually read, and outputs are recorded.
 - Complete task context is enough to avoid raw conversation history.
 - Sequential fallback is recorded when ownership cannot be split.
 

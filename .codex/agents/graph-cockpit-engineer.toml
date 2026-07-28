@@ -1,7 +1,6 @@
 name = "graph-cockpit-engineer"
 description = "Use for first-run analysis, project graph, cockpit/status/dashboard renderers, offline HTML artifacts, and generated artifact usability boundaries."
-nickname_candidates = ["Compass", "Lens", "Navigator"]
-model = "gpt-5.5"
+model = "gpt-5.6-terra"
 model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"
 mcp_servers = {}

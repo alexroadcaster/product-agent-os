@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 from pathlib import Path
 
@@ -12,9 +13,9 @@ LIFECYCLE_FILES = [
     ".codex/workflows/control-plane-sync.md",
     ".codex/evals/agent-context-contract.json",
     ".codex/hooks.json",
-    ".codex/hooks/hooks.json",
 ]
 LIFECYCLE_STATE = ".codex/product-agent-os/lifecycle-state.json"
+WORKSPACE_ROOT_ENV = "CODEX_HOOK_WORKSPACE_ROOT"
 TASK_BRIEF_REQUIRED_FIELDS = [
     "Task ID",
     "Product value",
@@ -33,6 +34,10 @@ TASK_BRIEF_REQUIRED_FIELDS = [
 
 
 def _workspace_root() -> Path:
+    """Resolve the project root for relative presence checks only."""
+    override = os.environ.get(WORKSPACE_ROOT_ENV)
+    if override:
+        return Path(override).resolve()
     try:
         result = subprocess.run(
             ["git", "rev-parse", "--show-toplevel"],
@@ -41,7 +46,7 @@ def _workspace_root() -> Path:
             text=True,
         )
     except OSError:
-        result = ""
+        result = None
     if result and result.returncode == 0 and result.stdout.strip():
         return Path(result.stdout.strip())
     current = Path.cwd()
@@ -61,29 +66,36 @@ def _missing(root: Path, files: list[str]) -> list[str]:
 
 def main() -> int:
     root = _workspace_root()
-    payload = {
-        "hook": "session_start_context",
-        "workspace": str(root),
-        "control_plane": {
-            "present": _present(root, CONTROL_PLANE_FILES),
-            "missing": _missing(root, CONTROL_PLANE_FILES),
-        },
-        "lifecycle": {
-            "present": _present(root, LIFECYCLE_FILES),
-            "missing": _missing(root, LIFECYCLE_FILES),
-            "state_marker": LIFECYCLE_STATE,
-            "task_start_brief_required_for": "non_mechanical_tasks",
-            "task_start_brief_schema_version": "task_start_brief_v1",
-            "task_start_brief_required_fields": TASK_BRIEF_REQUIRED_FIELDS,
-            "completion_brief_required": True,
-        },
-        "reminders": [
-            "Show a user-visible full field-list Task Brief before non-mechanical execution.",
-            "Record the lifecycle marker after the full Task Brief and before mutating commands.",
-            "Run control-plane sync before the Completion Brief when scope, plan, tests, evals, runlog, or evidence state changes.",
-        ],
-    }
-    print(json.dumps(payload, sort_keys=True))
+    present_control = _present(root, CONTROL_PLANE_FILES)
+    missing_control = _missing(root, CONTROL_PLANE_FILES)
+    present_lifecycle = _present(root, LIFECYCLE_FILES)
+    missing_lifecycle = _missing(root, LIFECYCLE_FILES)
+    context = (
+        "Product-Agent OS startup context: control-plane present="
+        + ", ".join(present_control)
+        + ("; missing=" + ", ".join(missing_control) if missing_control else "; missing=none")
+        + ". Lifecycle contracts present="
+        + ", ".join(present_lifecycle)
+        + ("; missing=" + ", ".join(missing_lifecycle) if missing_lifecycle else "; missing=none")
+        + ". State marker="
+        + LIFECYCLE_STATE
+        + ". For non-mechanical work, show a user-visible task_start_brief_v1 "
+        + "Task Brief with fields: "
+        + ", ".join(TASK_BRIEF_REQUIRED_FIELDS)
+        + ". Record the marker before mutations, run control-plane sync when owned state changes, and show a "
+        + "Completion Brief before closure."
+    )
+    print(
+        json.dumps(
+            {
+                "hookSpecificOutput": {
+                    "hookEventName": "SessionStart",
+                    "additionalContext": context,
+                }
+            },
+            sort_keys=True,
+        )
+    )
     return 0
 
 

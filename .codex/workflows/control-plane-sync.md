@@ -15,7 +15,7 @@ This is not an active hook or automation. It is a mandatory agent checklist that
 - `TEST.md`: current verification commands, escalation rules, and latest maintenance evidence.
 - `EVALS.md`: current eval rubrics, thresholds, subjective gates, unsupported-claim policy, and accepted-gap policy.
 - `RUNLOG.md`: current-cycle decisions, latest completed slice, evidence summary, residual risks, and handoff state.
-- `prod_test.md`: Batch 39 attempt, failure, fix, retest, and overlay ledger.
+- `prod_test.md`: historical Batch 39 production-test ledger; update it only when the current task explicitly changes that evidence family.
 
 ## Process
 
@@ -37,7 +37,7 @@ This is not an active hook or automation. It is a mandatory agent checklist that
 - `TEST.md`: verification command, required check, escalation rule, or test ownership changed.
 - `EVALS.md`: eval rubric, threshold, failure class, accepted-gap policy, or evidence standard changed.
 - `RUNLOG.md`: current-cycle handoff, latest completed slice, residual risk, or next route changed.
-- `prod_test.md`: any Batch 39 test attempt, failure, fix, retest, overlay, counter, mutation proof, or no-unapproved-actions evidence changed.
+- `prod_test.md`: the current task explicitly changed Batch 39 attempt, failure, fix, retest, overlay, counter, mutation-proof, or no-unapproved-actions evidence.
 
 ## Outputs
 
@@ -52,7 +52,7 @@ This is not an active hook or automation. It is a mandatory agent checklist that
 ## Stop Conditions
 
 - A required control-plane update is missing.
-- The task would close with only code/artifact changes while scope, plan, tests, evals, runlog, or `prod_test.md` changed.
+- The task would close with only code/artifact changes while scope, plan, tests, evals, runlog, or an owned source evidence ledger changed.
 - A needed update is skipped because a root control-plane file is near or over budget.
 - `overflow_refactor_required` is needed but no redistribution decision names the owning files or source artifacts that received the detailed information.
 - Ownership is unclear and no handoff is recorded.

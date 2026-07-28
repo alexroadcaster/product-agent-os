@@ -1,14 +1,37 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import subprocess
 import sys
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
 
 LIFECYCLE_STATE_REL = Path(".codex/product-agent-os/lifecycle-state.json")
+WORKSPACE_ROOT_ENV = "CODEX_HOOK_WORKSPACE_ROOT"
+TASK_BRIEF_SCHEMA_VERSION = "task_start_brief_v1"
+MARKER_MAX_AGE = timedelta(hours=48)
+MARKER_FUTURE_SKEW = timedelta(minutes=5)
+TASK_BRIEF_REQUIRED_FIELDS = [
+    "Task ID",
+    "Product value",
+    "Technical value",
+    "Source / trigger",
+    "Scope",
+    "Non-goals",
+    "Agents and skills",
+    "Files / artifacts expected",
+    "Verification gate",
+    "Approval boundary / risks",
+    "Complexity",
+    "Estimated execution time",
+    "Next action",
+]
+BRIEF_DIGEST_RE = re.compile(r"^sha256:[0-9a-f]+$")
+SENSITIVE_KEY_RE = re.compile(r"(?i)(?:api[_-]?key|password|secret|token|private[_-]?key|credential)")
 
 DESTRUCTIVE_PATTERNS = [
     re.compile(r"(?i)\brm\s+-(?:[a-z]*r[a-z]*f|[a-z]*f[a-z]*r)\b"),
@@ -32,7 +55,7 @@ SENSITIVE_WRITE_PATTERNS = [
 ]
 MUTATING_PATTERNS = [
     re.compile(r"(?i)\b(apply_patch|set-content|add-content|out-file|new-item|copy-item|move-item|remove-item|rename-item)\b"),
-    re.compile(r"(?i)\b(git\s+(?:add|commit|push|checkout|switch|branch|merge|rebase|tag)|npm\s+install|pip\s+install)\b"),
+    re.compile(r"(?i)\b(git\s+(?:add|apply|commit|push|checkout|switch|branch|merge|rebase|tag)|npm\s+install|pip\s+install)\b"),
     re.compile(r"(?i)\bpython\b.*\b(?:--stage|complete|apply|merge|write|update)\b"),
     re.compile(r"(?i)(?:^|\s)>+\s*[^\s]+"),
 ]
@@ -43,26 +66,13 @@ LIFECYCLE_MARKER_WRITE_PATTERNS = [
     re.compile(r"(?i)\.codex[/\\]product-agent-os[/\\]lifecycle-state\.json"),
     re.compile(r"(?i)task_start_brief_shown"),
 ]
-TASK_BRIEF_SCHEMA_VERSION = "task_start_brief_v1"
-TASK_BRIEF_REQUIRED_FIELDS = [
-    "Task ID",
-    "Product value",
-    "Technical value",
-    "Source / trigger",
-    "Scope",
-    "Non-goals",
-    "Agents and skills",
-    "Files / artifacts expected",
-    "Verification gate",
-    "Approval boundary / risks",
-    "Complexity",
-    "Estimated execution time",
-    "Next action",
-]
-BRIEF_DIGEST_RE = re.compile(r"^sha256:[0-9a-f]{16,64}$")
 
 
 def _workspace_root() -> Path:
+    """Resolve the project root without exposing it in hook output."""
+    override = os.environ.get(WORKSPACE_ROOT_ENV)
+    if override:
+        return Path(override).resolve()
     try:
         result = subprocess.run(
             ["git", "rev-parse", "--show-toplevel"],
@@ -71,7 +81,7 @@ def _workspace_root() -> Path:
             text=True,
         )
     except OSError:
-        result = ""
+        result = None
     if result and result.returncode == 0 and result.stdout.strip():
         return Path(result.stdout.strip())
     current = Path.cwd()
@@ -89,24 +99,16 @@ def _read_payload() -> tuple[dict[str, Any], str]:
         data = json.loads(raw)
     except json.JSONDecodeError:
         return {}, raw
-    if isinstance(data, dict):
-        return data, raw
-    return {}, raw
+    return (data, raw) if isinstance(data, dict) else ({}, raw)
 
 
 def _strings_from(value: Any) -> list[str]:
     if isinstance(value, str):
         return [value]
     if isinstance(value, dict):
-        result: list[str] = []
-        for nested in value.values():
-            result.extend(_strings_from(nested))
-        return result
+        return [item for nested in value.values() for item in _strings_from(nested)]
     if isinstance(value, list):
-        result = []
-        for item in value:
-            result.extend(_strings_from(item))
-        return result
+        return [item for nested in value for item in _strings_from(nested)]
     return []
 
 
@@ -126,29 +128,46 @@ def _tool_name(payload: dict[str, Any]) -> str:
     return ""
 
 
-def _matches(patterns: list[re.Pattern[str]], text: str) -> list[str]:
-    return [pattern.pattern for pattern in patterns if pattern.search(text)]
+def _matches(patterns: list[re.Pattern[str]], text: str) -> bool:
+    return any(pattern.search(text) for pattern in patterns)
 
 
 def _is_read_only(command: str) -> bool:
-    return bool(command.strip()) and bool(_matches(READ_ONLY_PATTERNS, command.strip()))
+    return bool(command.strip()) and _matches(READ_ONLY_PATTERNS, command.strip())
 
 
 def _is_lifecycle_marker_write(command: str) -> bool:
-    matches = _matches(LIFECYCLE_MARKER_WRITE_PATTERNS, command)
-    return len(matches) == len(LIFECYCLE_MARKER_WRITE_PATTERNS)
+    return all(pattern.search(command) for pattern in LIFECYCLE_MARKER_WRITE_PATTERNS)
 
 
 def _is_mutating(tool: str, command: str) -> bool:
-    lowered_tool = tool.lower()
-    if "apply_patch" in lowered_tool:
+    if "apply_patch" in tool.lower():
         return True
     if _is_read_only(command):
         return False
-    return bool(_matches(MUTATING_PATTERNS, command))
+    return _matches(MUTATING_PATTERNS, command)
 
 
-def _lifecycle_marker_ok(path: Path) -> tuple[bool, str]:
+def _contains_sensitive_key(value: Any) -> bool:
+    if isinstance(value, dict):
+        return any(SENSITIVE_KEY_RE.search(str(key)) or _contains_sensitive_key(item) for key, item in value.items())
+    if isinstance(value, list):
+        return any(_contains_sensitive_key(item) for item in value)
+    return False
+
+
+def _parse_updated_at(value: str) -> datetime | None:
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        return None
+    return parsed.astimezone(timezone.utc)
+
+
+def _lifecycle_marker_ok(path: Path, *, now: datetime | None = None) -> tuple[bool, str]:
+    """Validate that a Task Brief marker is current and still authorizes this task."""
     if not path.exists():
         return False, "missing lifecycle marker"
     try:
@@ -159,6 +178,10 @@ def _lifecycle_marker_ok(path: Path) -> tuple[bool, str]:
         return False, "lifecycle marker must be a JSON object"
     if payload.get("task_start_brief_shown") is not True:
         return False, "task_start_brief_shown must be true"
+    if payload.get("completion_brief_shown") is True:
+        return False, "lifecycle marker belongs to a completed task"
+    if payload.get("status") != "in_progress":
+        return False, "lifecycle marker status must be in_progress"
     for key in ("task_id", "scope", "updated_at", "approval_boundary"):
         value = payload.get(key)
         if not isinstance(value, str) or not value.strip():
@@ -168,79 +191,74 @@ def _lifecycle_marker_ok(path: Path) -> tuple[bool, str]:
     if payload.get("brief_format") != "field_list":
         return False, "brief_format must be field_list"
     brief_digest = payload.get("brief_digest")
-    if not isinstance(brief_digest, str) or not BRIEF_DIGEST_RE.match(brief_digest):
-        return False, "brief_digest must match sha256:<hex>"
+    if (
+        not isinstance(brief_digest, str)
+        or len(brief_digest) != len("sha256:") + 64
+        or not BRIEF_DIGEST_RE.fullmatch(brief_digest)
+    ):
+        return False, "brief_digest must match sha256:<64 lowercase hex characters>"
     fields = payload.get("brief_fields_present")
     if not isinstance(fields, list) or not all(isinstance(item, str) for item in fields):
         return False, "brief_fields_present must list Task Brief fields"
     missing_fields = [field for field in TASK_BRIEF_REQUIRED_FIELDS if field not in fields]
     if missing_fields:
         return False, "brief_fields_present missing: " + ", ".join(missing_fields)
-    raw = json.dumps(payload, sort_keys=True).lower()
-    if any(secret_word in raw for secret_word in ("api_key", "password", "secret", "token", "private_key")):
-        return False, "lifecycle marker must not contain secrets"
+    updated_at = _parse_updated_at(payload["updated_at"])
+    if updated_at is None:
+        return False, "updated_at must be an ISO-8601 timestamp with timezone"
+    current = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
+    age = current - updated_at
+    if age < -MARKER_FUTURE_SKEW:
+        return False, "lifecycle marker updated_at is too far in the future"
+    if age > MARKER_MAX_AGE:
+        return False, "lifecycle marker is stale; refresh updated_at after showing current task state"
+    if _contains_sensitive_key(payload):
+        return False, "lifecycle marker contains a sensitive-looking field name"
     return True, "ok"
 
 
-def _finding(kind: str, severity: str, blocking: bool, message: str) -> dict[str, Any]:
-    return {"kind": kind, "severity": severity, "blocking": blocking, "message": message}
+def _deny(reason: str) -> None:
+    print(
+        json.dumps(
+            {
+                "hookSpecificOutput": {
+                    "hookEventName": "PreToolUse",
+                    "permissionDecision": "deny",
+                    "permissionDecisionReason": reason,
+                }
+            },
+            sort_keys=True,
+        )
+    )
 
 
 def main() -> int:
+    """Deny unsafe or unbriefed mutations through the official PreToolUse wire contract."""
     payload, raw = _read_payload()
     command = _command_text(payload, raw)
     tool = _tool_name(payload)
-    findings: list[dict[str, Any]] = []
-    blocking = False
+    reasons: list[str] = []
 
     if _matches(DESTRUCTIVE_PATTERNS, command):
-        blocking = True
-        findings.append(_finding("destructive_command", "high", True, "Command appears destructive; require explicit approval and scoped target review."))
+        reasons.append("Destructive command blocked; require explicit approval and scoped target review.")
     if _matches(FORBIDDEN_PATH_PATTERNS, command):
-        blocking = True
-        findings.append(_finding("forbidden_path", "high", True, "Command references a path outside normal project ownership."))
+        reasons.append("Command references a path outside normal project ownership.")
     if _matches(SENSITIVE_WRITE_PATTERNS, command):
-        blocking = True
-        findings.append(_finding("secret_risk_write", "medium", True, "Command may write sensitive material; avoid storing credentials in project artifacts."))
+        reasons.append("Command may write sensitive material; credentials must not enter project artifacts.")
 
     mutating = _is_mutating(tool, command)
     marker_write = _is_lifecycle_marker_write(command)
-    lifecycle_state = _workspace_root() / LIFECYCLE_STATE_REL
-    marker_ok, marker_reason = _lifecycle_marker_ok(lifecycle_state)
+    marker_ok, marker_reason = _lifecycle_marker_ok(_workspace_root() / LIFECYCLE_STATE_REL)
     if mutating and not marker_write and not marker_ok:
-        blocking = True
-        findings.append(
-            _finding(
-                "missing_lifecycle_marker",
-                "medium",
-                True,
-                "Mutating Product-Agent OS work requires a user-visible Task Brief and .codex/product-agent-os/lifecycle-state.json before execution.",
-            )
+        reasons.append(
+            "Mutating Product-Agent OS work requires a current user-visible Task Brief and active lifecycle marker: "
+            + marker_reason
+            + "."
         )
 
-    output = {
-        "hook": "pre_tool_use_policy",
-        "decision": "block" if blocking else "observe",
-        "input_bytes": len(raw.encode("utf-8")),
-        "tool": tool,
-        "mutating_command_detected": mutating,
-        "lifecycle_marker": {
-            "path": str(LIFECYCLE_STATE_REL),
-            "ok": marker_ok,
-            "reason": marker_reason,
-            "marker_write_allowed": marker_write,
-            "brief_schema_version": TASK_BRIEF_SCHEMA_VERSION if marker_ok else "",
-            "required_brief_fields": TASK_BRIEF_REQUIRED_FIELDS,
-        },
-        "findings": findings,
-        "notes": [
-            "Read-only discovery remains allowed.",
-            "For non-mechanical execution, show the full field-list Task Brief in chat before creating the lifecycle marker.",
-            "The lifecycle marker is a guardrail, not a raw transcript store.",
-        ],
-    }
-    print(json.dumps(output, sort_keys=True))
-    return 1 if blocking else 0
+    if reasons:
+        _deny(" ".join(dict.fromkeys(reasons)))
+    return 0
 
 
 if __name__ == "__main__":

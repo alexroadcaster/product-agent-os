@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import hashlib
 import json
 import os
 import subprocess
@@ -10,18 +9,24 @@ from typing import Any, Iterable
 
 
 SUPPORTED_SUFFIXES = {".py", ".js", ".mjs", ".cjs", ".ts", ".tsx"}
-DISABLE_ENV = "B45_COMMENT_ADVISORY_DISABLED"
-ROOT_ENV = "B45_COMMENT_ADVISORY_ROOT"
+DISABLE_ENV = "CODEX_COMMENT_ADVISORY_DISABLED"
+ROOT_ENV = "CODEX_COMMENT_ADVISORY_ROOT"
+LEGACY_DISABLE_ENV = "B45_COMMENT_ADVISORY_DISABLED"
+LEGACY_ROOT_ENV = "B45_COMMENT_ADVISORY_ROOT"
 MAX_CHANGED_FILES = 20
+
+
+def _env_value(primary: str, legacy: str) -> str | None:
+    return os.environ.get(primary) or os.environ.get(legacy)
 
 
 def _workspace_root() -> tuple[Path | None, str | None]:
     """Resolve the target workspace while keeping the hook reusable in temp test repos."""
-    env_root = os.environ.get(ROOT_ENV)
+    env_root = _env_value(ROOT_ENV, LEGACY_ROOT_ENV)
     if env_root:
         candidate = Path(env_root).resolve()
         if not candidate.exists() or not candidate.is_dir():
-            return None, "env_root_missing_or_not_directory"
+            return None, "configured root is missing or is not a directory"
         return candidate, None
     try:
         result = subprocess.run(
@@ -51,7 +56,7 @@ def _script_repo_root() -> Path:
     return script_path.parents[2]
 
 
-def _load_validator(repo_root: Path) -> tuple[Any | None, Any | None, str]:
+def _load_validator(repo_root: Path) -> tuple[Any | None, str]:
     """Load the local validator if available, otherwise fail open with a diagnostic."""
     candidates = [
         ("workspace_plugin", repo_root / "plugins" / "product-agent-os" / "scripts"),
@@ -63,9 +68,9 @@ def _load_validator(repo_root: Path) -> tuple[Any | None, Any | None, str]:
             continue
         sys.path.insert(0, str(scripts_dir))
         try:
-            from product_agent_os.comment_sufficiency import advisory_payload, analyze_paths
+            from product_agent_os.comment_sufficiency import analyze_paths
 
-            return analyze_paths, advisory_payload, source_ref
+            return analyze_paths, source_ref
         except Exception:
             continue
         finally:
@@ -73,7 +78,7 @@ def _load_validator(repo_root: Path) -> tuple[Any | None, Any | None, str]:
                 sys.path.remove(str(scripts_dir))
             except ValueError:
                 pass
-    return None, None, "comment_sufficiency_validator_not_found"
+    return None, "comment_sufficiency_validator_not_found"
 
 
 def _git_lines(root: Path, args: list[str]) -> list[str]:
@@ -116,122 +121,82 @@ def _display_paths(paths: Iterable[Path], root: Path) -> list[str]:
     return result
 
 
-def _workspace_ref(root: Path | None) -> str:
-    if root is None:
-        return "unresolved"
-    digest = hashlib.sha256(str(root).encode("utf-8")).hexdigest()[:12]
-    return f"{root.name}:{digest}"
+def _emit_additional_context(message: str) -> None:
+    print(
+        json.dumps(
+            {
+                "hookSpecificOutput": {
+                    "hookEventName": "PostToolUse",
+                    "additionalContext": message,
+                }
+            },
+            sort_keys=True,
+        )
+    )
 
 
-def _redact_message(message: str, root: Path) -> str:
-    redacted = message.replace(str(root), "<workspace>")
-    user_profile = os.environ.get("USERPROFILE")
-    if user_profile:
-        redacted = redacted.replace(user_profile, "<userprofile>")
-    return redacted
+def _emit_system_message(message: str) -> None:
+    print(json.dumps({"systemMessage": message}, sort_keys=True))
 
 
 def main() -> int:
     """Run changed-file comment-sufficiency checks as a non-blocking PostToolUse signal."""
-    event = sys.stdin.read()
-    root, root_error = _workspace_root()
-    disabled = os.environ.get(DISABLE_ENV, "").lower() in {"1", "true", "yes"}
-    base_payload: dict[str, object] = {
-        "hook": "comment_sufficiency_advisory",
-        "decision": "observe",
-        "blocking": False,
-        "input_bytes": len(event.encode("utf-8")),
-        "mode": "changed_files_tuned_default",
-        "workspace_ref": _workspace_ref(root),
-        "raw_workspace_path_included": False,
-        "disable_env": DISABLE_ENV,
-    }
+    sys.stdin.read()
+    disabled = (_env_value(DISABLE_ENV, LEGACY_DISABLE_ENV) or "").lower() in {"1", "true", "yes"}
     if disabled:
-        print(json.dumps({**base_payload, "status": "disabled"}, sort_keys=True))
         return 0
+
+    root, root_error = _workspace_root()
     if root is None:
-        print(
-            json.dumps(
-                {
-                    **base_payload,
-                    "status": "invalid_workspace_root_fail_open",
-                    "root_error": root_error,
-                    "notes": ["Advisory hook failed open; comment sufficiency is not enforced."],
-                },
-                sort_keys=True,
-            )
+        _emit_system_message(
+            "Comment sufficiency advisory failed open because the configured workspace root is invalid ("
+            + str(root_error)
+            + "). It did not block the tool result."
         )
         return 0
 
-    analyze_paths, advisory_payload, validator_source_ref = _load_validator(root)
-    if analyze_paths is None or advisory_payload is None:
-        print(
-            json.dumps(
-                {
-                    **base_payload,
-                    "status": "validator_unavailable",
-                    "validator_source_ref": validator_source_ref,
-                    "notes": ["Advisory hook failed open; comment sufficiency is not enforced."],
-                },
-                sort_keys=True,
-            )
+    analyze_paths, validator_source_ref = _load_validator(root)
+    if analyze_paths is None:
+        _emit_system_message(
+            "Comment sufficiency advisory failed open because its validator is unavailable ("
+            + validator_source_ref
+            + "). It did not block the tool result."
         )
         return 0
 
     changed = _changed_paths(root)
     if len(changed) > MAX_CHANGED_FILES:
-        print(
-            json.dumps(
-                {
-                    **base_payload,
-                    "status": "skipped_too_many_changed_files",
-                    "changed_file_count": len(changed),
-                    "max_changed_files": MAX_CHANGED_FILES,
-                    "notes": ["Run the comment_sufficiency.py CLI manually for broad audits."],
-                },
-                sort_keys=True,
-            )
+        _emit_system_message(
+            f"Comment sufficiency advisory skipped {len(changed)} changed source files because the automatic cap "
+            f"is {MAX_CHANGED_FILES}. Run the comment_sufficiency.py CLI manually for this broad audit."
         )
         return 0
 
     try:
         warnings = analyze_paths(changed, root=root)
-        payload = advisory_payload(warnings)
     except Exception as exc:
-        print(
-            json.dumps(
-                {
-                    **base_payload,
-                    "status": "validator_error_fail_open",
-                    "changed_file_count": len(changed),
-                    "scanned_paths": _display_paths(changed, root),
-                    "validator_source_ref": validator_source_ref,
-                    "error_type": type(exc).__name__,
-                    "error_message": _redact_message(str(exc), root),
-                    "notes": ["Advisory hook failed open; comment sufficiency is not enforced."],
-                },
-                sort_keys=True,
-            )
+        _emit_system_message(
+            "Comment sufficiency advisory failed open with "
+            + type(exc).__name__
+            + ". It did not block the tool result and did not expose workspace paths."
         )
         return 0
-    print(
-        json.dumps(
-            {
-                **base_payload,
-                "status": "advisory_complete",
-                "changed_file_count": len(changed),
-                "scanned_paths": _display_paths(changed, root),
-                "validator_source_ref": validator_source_ref,
-                "validator": payload,
-                "notes": [
-                    "Warnings are reviewer signals only.",
-                    "The hook exits 0 and must not be used as blocker proof.",
-                    "Use raw CLI replay for broad false-positive audits.",
-                ],
-            },
-            sort_keys=True,
-        )
+
+    if not warnings:
+        return 0
+
+    warning_refs = [f"{warning.path}:{warning.line} ({warning.symbol})" for warning in warnings]
+    message = (
+        f"Comment sufficiency advisory found {len(warnings)} reviewer-only warning(s) in "
+        + ", ".join(_display_paths(changed, root))
+        + ": "
+        + "; ".join(warning_refs)
+        + ". Review intent comments/docstrings where the warning is valid. This advisory is non-blocking and is not "
+        + "completion proof. Validator source="
+        + validator_source_ref
+        + "."
     )
+    _emit_additional_context(message)
     return 0
 
 

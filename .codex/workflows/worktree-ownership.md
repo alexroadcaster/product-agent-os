@@ -25,7 +25,7 @@ Keep autonomous agents from editing overlapping files or treating generated surf
 4. Require a fresh context handoff before any parallel write.
 5. Require a Subagent Context Packet before launch for every subagent or read-only sidecar.
 6. Require a Subagent Result Packet after completion, timeout, cancellation, or close.
-7. The Agent Handoff / Context Packet must record role, `fork_context`, prompt, allowed files, files actually read, and outputs.
+7. The Agent Handoff / Context Packet must record role, `fork_turns`, prompt, allowed files, files actually read, and outputs.
 8. Preserve unrelated dirty changes.
 
 ## Outputs
@@ -39,7 +39,7 @@ Keep autonomous agents from editing overlapping files or treating generated surf
 - Subagent Result Packet after completion:
 - Agent Handoff / Context Packet:
 - Role:
-- `fork_context`:
+- `fork_turns`:
 - Prompt:
 - Allowed files:
 - Files actually read:
@@ -53,7 +53,7 @@ Keep autonomous agents from editing overlapping files or treating generated surf
 - Parallel work depends on raw conversation history instead of a fresh context handoff.
 - Subagent launch is missing a Subagent Context Packet.
 - Subagent completion is missing a Subagent Result Packet.
-- role, `fork_context`, prompt, allowed files, files actually read, or outputs are missing.
+- role, `fork_turns`, prompt, allowed files, files actually read, or outputs are missing.
 
 ## Handoff
 

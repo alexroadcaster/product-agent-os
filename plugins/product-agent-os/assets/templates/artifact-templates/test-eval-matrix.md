@@ -8,22 +8,28 @@ Owner: tester or test-eval designer
 
 Use this artifact for `quality_testing_evals` traceability. Map requirement, scenario, risk and claim to the smallest useful check, eval, runtime/manual evidence or `explicit_gap_accepted`.
 
+## Current Evidence
+
+- Evidence freshness:
+- Environment and command:
+- Model/effort/settings fingerprint when applicable:
+
 ## Matrix
 
-| Requirement or claim | Risk | Scenario | Check/eval/manual evidence | Current Evidence | Owner | Status |
-| --- | --- | --- | --- | --- | --- | --- |
-| TBD | TBD | TBD | TBD | current command/eval/runtime/manual evidence | TBD | `present_unverified` |
+| Requirement or claim | Risk | Scenario | Model | Reasoning effort | Prompt/tools/settings fingerprint | Check/eval/manual evidence | Quality result | Latency | Tokens/cost | Current evidence | Owner | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| TBD | TBD | TBD | exact model ID or `not_applicable` | exact value or `not_applicable` | stable comparison reference | smallest valid gate | score/verdict | measured or gap | measured or gap | current command/eval/runtime/manual evidence | TBD | `present_unverified` |
 
-## Professional Code Authoring Mapping
+## GPT-5.6 Migration Comparison
 
-Map each non-mechanical code claim to the smallest useful check or accepted gap.
+For each migrated role or workflow, keep the task, prompt, tools, skills, sandbox, approvals, fixtures, and output rubric fixed. Run at least:
 
-| Code authoring claim | Risk | Required coding-standard evidence | Check/eval/manual evidence | Current Evidence | Owner | Status |
-| --- | --- | --- | --- | --- | --- | --- |
-| Existing capability preferred over custom code | custom-code bloat / wheel reinvention | `existing_capability_scan`, `one_line_candidate`, `selected_leverage_path`, `rejected_alternatives` | focused unit/contract/eval check or review evidence | current command/eval evidence or `explicit_gap_accepted` | builder/reviewer | `present_unverified` |
-| Dependency is justified or rejected | supply-chain debt / legacy burden | `dependency_decision`, standard-library/existing-dependency scan, supply-chain review when changed | dependency diff/test/security check | current command/eval evidence or `approval_required` | builder/security owner | `present_unverified` |
-| Refactor or abstraction is necessary | shallow wrapper / unnecessary indirection | abstraction justification, ownership boundary, complexity removed or duplication reduced | regression test, architecture review or accepted gap | current command/eval evidence | architect/reviewer | `present_unverified` |
-| Bugfix avoids broad legacy rewrite | hidden behavior change / rollback risk | reproduction evidence, root cause, smallest proven change, rewrite separated | failing-then-passing test or bug-rescue report | current command/eval evidence | builder/tester | `present_unverified` |
+| Candidate | Required comparison | Promotion rule |
+| --- | --- | --- |
+| `gpt-5.6-sol` or `gpt-5.6-terra` at preserved effort | baseline migration run | no regression in correctness, instruction following, tool completion, safety, or unsupported claims |
+| same model at one lower supported effort | cost/latency candidate | promote only if quality is non-inferior and declared latency/cost thresholds pass |
+
+Record fresh-session evidence separately from config parsing. A valid config or green synthetic test proves the contract, not model-quality promotion.
 
 ## Backend Check Mapping
 
@@ -48,7 +54,8 @@ Backend behavior should map service boundary, runtime behavior, dependency failu
 - `test_data_privacy_present`
 - `bug_reproduction_evidence_present`
 - `regression_impact_present`
-- `professional_code_authoring_evidence_present`
+- `model_effort_comparison_present`
+- `quality_cost_latency_tradeoff_recorded`
 
 Coverage is a signal, not proof.
 
@@ -58,15 +65,15 @@ Record owner, reason, downstream risk, review date and follow-up condition.
 
 ## Residual Risk
 
-Unmapped acceptance criteria, contracts or regression impact can leave quality claims unsupported.
+Unmapped acceptance criteria, contracts, regression impact, model/effort settings, or freshness can leave quality claims unsupported.
 
 ## Approval Boundary
 
-`approval_required` before external CI writes, production data use, remote reruns or publishing claims outside the workspace.
+`approval_required` before external CI writes, production data use, provider/model calls, remote reruns, or publishing claims outside the workspace.
 
 ## Verification
 
-Record command, expected result, actual result, exit code or eval score, environment and freshness.
+Record command, expected result, actual result, exit code or eval score, environment, model ID, reasoning effort, settings fingerprint, and freshness.
 
 ## Rollback
 
@@ -74,4 +81,4 @@ Record rollback path or no-rollback rationale for risky verification gaps.
 
 ## Test Data Privacy
 
-test data privacy: use synthetic or sanitized fixtures. No Secrets, credentials, raw private chats or private customer data.
+test data privacy: use synthetic or sanitized fixtures. No Secrets, credentials, raw private chats, private customer data, or raw provider payloads.

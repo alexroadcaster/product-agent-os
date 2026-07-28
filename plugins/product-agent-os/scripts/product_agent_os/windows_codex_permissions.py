@@ -31,6 +31,7 @@ SENSITIVE_CODEX_PATHS: tuple[str, ...] = (
 )
 
 _SID_RE = re.compile(r"\bS-\d(?:-\d+){2,}\b")
+_ICACLS_TEXT_ENCODING = "mbcs" if os.name == "nt" else "utf-8"
 
 
 def suggested_config_entries() -> dict[str, str]:
@@ -72,6 +73,7 @@ def check_permissions(workspace: str | Path) -> dict[str, Any]:
 
 
 def apply_permissions(workspace: str | Path) -> dict[str, Any]:
+    """Apply only the scoped project ACL plan without opening sensitive parent paths."""
     root = Path(workspace).resolve()
     result = check_permissions(root)
     result["status"] = "unsupported" if os.name != "nt" else "applied"
@@ -123,6 +125,7 @@ def _dir_state(root: Path, rel: str) -> dict[str, Any]:
 
 
 def _deny_sids(path: Path) -> list[str]:
+    """Read DENY SIDs from localized icacls output using the platform code page."""
     if not path.exists():
         return []
     completed = subprocess.run(
@@ -130,6 +133,8 @@ def _deny_sids(path: Path) -> list[str]:
         check=False,
         capture_output=True,
         text=True,
+        encoding=_ICACLS_TEXT_ENCODING,
+        errors="replace",
     )
     if completed.returncode != 0:
         return []
@@ -147,4 +152,6 @@ def _run_icacls(path: Path, *args: str) -> None:
         check=True,
         capture_output=True,
         text=True,
+        encoding=_ICACLS_TEXT_ENCODING,
+        errors="replace",
     )

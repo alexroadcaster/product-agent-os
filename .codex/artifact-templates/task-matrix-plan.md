@@ -4,7 +4,6 @@ Source status: staged artifact template
 
 ## Scope
 
-- Template batch marker: B37-S2
 - Schema version: task_matrix_plan_v1
 - Generated at: {generated_at}
 - Project: {project_name}

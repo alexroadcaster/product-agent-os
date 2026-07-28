@@ -53,8 +53,8 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 6. Require fresh-context handoff for any subagent or parallel worker, not only complex acceleration.
 7. Build each fresh-context handoff from `agent-task-packet.md`, `subagent-context-packet.md`, `subagent-result-packet.md`, `handoff-contract.md`, and `worktree-ownership.md`; include complete task context, source constraints, allowed sources, inputs used, owned files, forbidden files, expected evidence, handoff output schema, stop conditions, and accepted gaps.
 8. For code-owning roles, include professional code authoring fields in the handoff: checklist status, existing-capability scan, selected leverage path, dependency decision, code-quality evidence, unsupported code-quality claims, and `not_applicable` reason when appropriate.
-9. Require a Subagent Context Packet before launch with role, `fork_context`, prompt, allowed files, owned files, forbidden files, allowed sources, source constraints, expected outputs, handoff output schema, coding-standard fields, and stop conditions.
-10. Require a Subagent Result Packet after completion, timeout, cancellation, or close with role, context packet reference, `fork_context`, prompt reference, files actually read, files touched, files proposed, outputs, commands run, verification evidence, coding-standard evidence, unsupported claims, risks, stop reason, and recommended next role.
+9. Require a Subagent Context Packet before launch with role, `fork_turns`, prompt, allowed files, owned files, forbidden files, allowed sources, source constraints, expected outputs, handoff output schema, coding-standard fields, and stop conditions.
+10. Require a Subagent Result Packet after completion, timeout, cancellation, or close with role, context packet reference, `fork_turns`, prompt reference, files actually read, files touched, files proposed, outputs, commands run, verification evidence, coding-standard evidence, unsupported claims, risks, stop reason, and recommended next role.
 11. Define scenario handoff packet fields: sources/context used, assumptions, files touched, files proposed, verification evidence, open risks, stop reason, and recommended next role.
 12. Define model/reasoning policy with escalation and downgrade rules tied to risk, ambiguity, cost, and latency.
 13. Define stop conditions for missing evidence, overlapping ownership, approvals, secrets exposure, failed verification gates, shared ownership ambiguity, missing handoff schema, missing coding-standard fields for code-owning work, missing Subagent Context Packet, missing Subagent Result Packet, or raw conversation history as context.
@@ -102,7 +102,7 @@ agent_team_design_packet:
     sequential_fallback: ""
   subagent_context_packet:
     role: ""
-    fork_context: ""
+    fork_turns: ""
     prompt: ""
     allowed_files: []
     expected_outputs: []

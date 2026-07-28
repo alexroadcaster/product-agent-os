@@ -1,7 +1,6 @@
 name = "completion-skeptic"
 description = "Use for independent claim verification before saying done, fixed, ready, verified, release-ready, promoted, or production-ready."
-nickname_candidates = ["Doubt", "Anvil", "Verifier"]
-model = "gpt-5.5"
+model = "gpt-5.6-sol"
 model_reasoning_effort = "high"
 sandbox_mode = "read-only"
 mcp_servers = {}

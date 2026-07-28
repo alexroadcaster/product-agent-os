@@ -40,6 +40,7 @@ Last compacted: 2026-07-07
 | Batch 44 | S0-S7 local/staged/manual Self-Learning Loop evidence. | No active automation, hidden telemetry, real session import, provider/model call, target mutation or auto-apply proof. |
 | Batch 45 | M26/M27/M35/T12/T15 keep advisory-only/no-go; T14 is positive current-quality signal only; T20-A03 was consumed by T21; T21 started one approved primary call and aborted on strict schema validation with zero valid pairs; T22-A02 reviewer gate is not run because T21 result is invalid for scoring. | No promotion, blocker, CI, runtime/browser, target or release claim; no further provider/model/reviewer call without new exact approval. |
 | Track 11 DOC-M25 | Generated root `site`, search and sitemap freshness packet exists. | No browser proof, broad scans, remediation, raw retention, publication/release/deploy/git claim. |
+| GPT-5.6 model/config migration | Role-aware Sol/Terra pins and same-effort plus one-lower-effort comparison contract are implemented; Luna remains an unevaluated high-volume candidate. | No quality, cost, latency, fresh-session hook, broad agent-behavior or promotion claim until bounded comparative eval evidence exists. |
 | Lifecycle/control-plane sync | Config-routed Task Brief, lifecycle marker, control-plane sync and Completion Brief contract. | Hook output is reminder/evidence context only, not completion proof. |
 
 ## Active Eval Routes

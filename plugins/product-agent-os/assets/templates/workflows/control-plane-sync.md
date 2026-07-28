@@ -16,7 +16,7 @@ This is not an active hook or automation. It is a mandatory agent checklist that
 - `TEST.md`: current verification commands, escalation rules, and latest maintenance evidence.
 - `EVALS.md`: current eval rubrics, thresholds, subjective gates, unsupported-claim policy, and accepted-gap policy.
 - `RUNLOG.md`: current-cycle decisions, latest completed slice, evidence summary, residual risks, and handoff state.
-- `prod_test.md`: Batch 39 attempt, failure, fix, retest, and overlay ledger when Batch 39 exists in the project.
+- `prod_test.md`: optional project-specific production-test ledger; update it only when the current task explicitly changes that evidence family.
 
 ## Process
 
@@ -38,7 +38,7 @@ This is not an active hook or automation. It is a mandatory agent checklist that
 - `TEST.md`: verification command, required check, escalation rule, or test ownership changed.
 - `EVALS.md`: eval rubric, threshold, failure class, accepted-gap policy, or evidence standard changed.
 - `RUNLOG.md`: current-cycle handoff, latest completed slice, residual risk, or next route changed.
-- `prod_test.md`: any Batch 39 test attempt, failure, fix, retest, overlay, counter, mutation proof, or no-unapproved-actions evidence changed.
+- `prod_test.md`: the current task explicitly changed the project-specific production-test evidence ledger.
 
 ## Outputs
 

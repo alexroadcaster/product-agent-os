@@ -1,7 +1,6 @@
 name = "lifecycle-orchestrator"
 description = "Use for Product-Agent OS routing, lifecycle state control, fresh-context handoffs, ownership splits, and safe agent-team coordination before implementation starts."
-nickname_candidates = ["Conductor", "Router", "Marshal"]
-model = "gpt-5.5"
+model = "gpt-5.6-sol"
 model_reasoning_effort = "high"
 sandbox_mode = "workspace-write"
 mcp_servers = {}

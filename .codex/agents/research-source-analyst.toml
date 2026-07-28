@@ -1,7 +1,6 @@
 name = "research-source-analyst"
 description = "Use for official OpenAI/Codex documentation research, source matrices, drift-sensitive claim checks, and community-vs-source separation."
-nickname_candidates = ["Index", "Source", "Beacon"]
-model = "gpt-5.5"
+model = "gpt-5.6-sol"
 model_reasoning_effort = "medium"
 sandbox_mode = "read-only"
 mcp_servers = {}
@@ -94,5 +93,5 @@ path = "C:/Users/user/.agents/skills/documentation-and-adrs/SKILL.md"
 enabled = true
 
 [[skills.config]]
-path = "C:/Users/user/.agents/skills/find-skills/SKILL.md"
+path = "C:/Users/user/.agents/skills/verification-before-completion/SKILL.md"
 enabled = true

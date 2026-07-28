@@ -54,7 +54,7 @@ Subagent transparency packet fields:
 - Subagent Result Packet
 - Agent Handoff / Context Packet
 - role
-- `fork_context`
+- `fork_turns`
 - prompt
 - allowed files
 - files actually read
