@@ -9,6 +9,10 @@ Source status: current repository evidence plus official OpenAI documentation; c
 - Статус: `implemented_with_gaps`.
 - Closure level: `active_config_and_contracts_updated_fresh_session_and_behavioral_promotion_pending`.
 
+## Follow-up remediation 2026-08-05
+
+`GPT56-R1-R6-REMEDIATION-2026-08-05` supersedes the earlier permission-profile decision: active `.codex/config.toml` and the Product-Agent OS config template now use the native `sandbox_mode = "workspace-write"` contract without composing it with `default_permissions`. The follow-up also adds generic `gpt-5.6-terra`/`medium` subagent defaults, explicit skill write-authority markers, OpenAI Docs MCP routing for source roles, semantic validator coverage, phase-neutral/prompt-budget checks and durable prompt compaction. These are static/local contract improvements; fresh-session MCP/hook activation and behavioral quality, latency, token and cost evidence remain unverified.
+
 ## Итог
 
 Аудит выявил три P1-дефекта, семь P2-дефектов и два P3-дефекта. Все P1 устранены. Из P2 остаётся один осознанный portability gap: user-level skills по-прежнему заданы абсолютными host-local путями, потому что официальная схема допускает `skills.config.path`, текущие 31 уникальный путь существуют, а перенос или vendoring чужих skills не входил в разрешённый scope. Три `.pyc` классифицированы как производный cache, а не source truth; они не изменялись и не использовались как доказательство.
@@ -224,7 +228,7 @@ Source status: current repository evidence plus official OpenAI documentation; c
 
 | Lines | Проверка | Решение |
 | --- | --- | --- |
-| 1-18 | Permission profile | Сохранён как Codex App/managed workspace extension; write roots остаются локальными, external actions отдельно approval-bound |
+| 1 | Native sandbox | Follow-up 2026-08-05: `sandbox_mode = "workspace-write"`; конфликтующая композиция с `default_permissions` удалена из active config и source template |
 | 20 | Agent concurrency | `max_concurrent_threads_per_session = 6`; legacy/unsupported siblings удалены |
 | 22-65 | Agent registry | 15 hyphenated IDs, каждый через `config_file`; имена совпадают с `name` field |
 | 67-107 | Autonomy/lifecycle/reasoning | Project-only metadata находится в `[product_agent_os.*]`; canonical hook и mirror разделены |

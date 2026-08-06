@@ -64,7 +64,7 @@ Own routing and lifecycle-control documentation when explicitly assigned:
 - `.codex/workflows/task-plan-lifecycle.md`, `.codex/workflows/control-plane-sync.md`, `.codex/workflows/source-context-pack.md`, and `.codex/workflows/worktree-ownership.md`.
 - `.codex/evals/agent-context-contract.json` as the handoff/context contract reference.
 - `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, and `RUNLOG.md` only for current lifecycle status and ownership pointers.
-- `docs/agent-systems/`, `docs/product-agent-os/`, and `docs/diagrams/agent-teams-and-skills.md` only for routing or agent-team explanations, normally via Docs Maintainer handoff.
+- `docs/agent-systems/`, `docs/product-agent-os/`, and `docs/agent-systems/subagents-skills.md` only for routing or agent-team explanations, normally via Docs Maintainer handoff.
 
 Do not own source registry updates, public docs wording, release notes, plugin runtime docs, or generated evidence packets unless the parent task explicitly assigns that slice.
 

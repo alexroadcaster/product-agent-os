@@ -11,7 +11,7 @@ Use this skill when an implementation plan exists and the project needs agent ro
 
 ## Boundaries
 
-This is a Track 2 skill. Produce a staged team design packet only.
+Default output is a staged packet. `workspace_apply: forbidden` keeps this skill read-only or proposal-only even when another role has workspace-write.
 
 Guided question protocol: ask the smallest blocking question only; enforce one blocking question maximum; optional questions stay in the packet; route answers into artifacts or accepted gaps; guided questions are not workspace evidence. Do not use guided questions as a substitute for workspace evidence.
 
@@ -140,7 +140,7 @@ Use Solution Architecture routing when a slice touches architecture boundary, pu
 
 Stage or request `.codex/artifact-templates/architecture-overview.md`, `.codex/artifact-templates/adr.md`, `.codex/artifact-templates/architecture-review-record.md`, `.codex/artifact-templates/architecture-fitness-functions.md`, `.codex/artifact-templates/trust-boundary-map.md`, and `.codex/artifact-templates/architecture-docs-tooling-decision.md` when the corresponding gate applies. C4/arc42 only when applicable; architecture-as-code is conditional; Well-Architected review is conditional. Use `not_applicable` or `explicit_gap_accepted` with owner, reason, residual risk and follow-up condition rather than forcing diagrams, cloud review or docs tooling.
 
-## Track 9 Codex Agentic Workflow
+## Codex Agentic Workflow
 
 Use `codex_agentic_workflow` when Codex App, CLI, IDE extension, subagents, skills, MCP, hooks, plugins, automation, worktrees, external writes, approval boundaries, memory policy, or Agents SDK orchestration applies. Stage or request `model-reasoning-policy.md`, `mcp-permission-review.md`, `hook-governance.md`, `skill-promotion-record.md`, and `agent-eval-workflow.md` when the corresponding gate applies.
 
@@ -176,6 +176,6 @@ For planning control governance, check hard gates in validator/tests/skills rath
 ## Final Response Contract
 
 Return status, lifecycle state, `agent_team_design_packet`, files proposed, ownership overlaps, verification evidence, unsupported claims, approval requirements, risks, and the next recommended skill.
-## Track 9 Cross-Domain Synthesis
+## Cross-Domain Synthesis
 
 Consume `methodology_synthesis` and `recommendation_groups` as grouped recommendations; do not dump every methodology gate. Preserve owner domains, consumer domains, semantic evidence sufficiency, source artifact ledger, alias/deferred artifact ledger and risk-aware safe next action. Do not scaffold before approval, and remember that detection is not verification.

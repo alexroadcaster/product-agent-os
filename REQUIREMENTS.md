@@ -12,7 +12,8 @@ Last compacted: 2026-06-11
 
 ## Current Scope
 
-- Maintain Codex Docs as a Russian knowledge base for OpenAI Codex, advanced agentic workflows, multi-agent systems, memory, skills, subagents, prompt/context engineering, Codex runtime automation and Product-Agent OS work.
+- Maintain this repository as the implementation, verification and evidence workspace for Product-Agent OS. The Russian Codex knowledge base, source registry and operator docs are supporting product surfaces rather than the repository's sole purpose.
+- Audit target projects and relevant in-scope Codex control surfaces, then route ideas, features and defects through staged requirements, architecture, implementation, verification, review, release evidence and learning without claiming unsupported automation or production readiness.
 - Keep Product-Agent OS plugin work routed through skills, staged artifacts, explicit verification and approval boundaries.
 - Preserve the closed Track 10 and Batch 38/B40 evidence as source-backed context without expanding root control-plane files into historical ledgers.
 - Prepare Batch 39 (`B39-TEST-M01..M54`) for real-project testing. `prod_test.md` is the required attempt/failure/fix/retest ledger before execution begins.
@@ -48,6 +49,8 @@ Last compacted: 2026-06-11
 ## Users And Actors
 
 - Owner/user: approves scope, external actions, target workspace mutations, git/release actions and promotion decisions.
+- Vibe-coder: receives structured requirements, acceptance behavior, bounded implementation slices, bug-rescue evidence and clear next actions without needing to design the engineering control plane alone.
+- AI Engineer / product engineer: receives source-backed architecture, AI/RAG, data, security, eval, operational and release contracts that can be implemented and verified against the target project.
 - Codex: performs read-only discovery, staged planning, focused edits, verification and evidence summaries inside the active sandbox and approval model.
 - Product-Agent OS skills: provide repeatable routing for requirements, planning, test/eval design, docs maintenance, risk review, completion skepticism and automation promotion.
 - Target project maintainers: own any real-project source policy, control-plane artifacts and mutation approval.

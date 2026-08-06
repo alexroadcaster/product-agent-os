@@ -11,7 +11,7 @@ Use this skill when Product-Agent OS work is review-ready and needs a PR packet,
 
 ## Boundaries
 
-This is a Track 2 skill. Produce a staged `pr_release_packet` only.
+Default output is a staged packet. `workspace_apply: forbidden` keeps this skill read-only or proposal-only even when another role has workspace-write.
 
 Guided question protocol: ask the smallest blocking question only; enforce one blocking question maximum; optional questions stay in the packet; route answers into artifacts or accepted gaps; guided questions are not workspace evidence. Do not use guided questions as a substitute for workspace evidence.
 
@@ -98,13 +98,13 @@ pr_release_packet:
 
 Use `standards_trigger_policy` in the staged release packet when architecture, API, release, ownership, or CI governance changed. Verify ADR trigger policy, C4, arc42, OpenAPI source of truth, Swagger UI as optional tooling, AsyncAPI, SemVer impact, and Keep a Changelog before release text. When CODEOWNERS status or GitHub Actions are affected, reference `governance-proposal.md`, least privilege, workflow names, commands, permissions, triggers, owners, `proposal_staged`, `approval_required`, no external activation without approval, and no forced external activation.
 
-## Track 9 Codex Agentic Workflow
+## Codex Agentic Workflow
 
 Use `codex_agentic_workflow` when Codex App, CLI, IDE extension, subagents, skills, MCP, hooks, plugins, automation, worktrees, external writes, approval boundaries, memory policy, or Agents SDK orchestration applies. Stage or request `model-reasoning-policy.md`, `mcp-permission-review.md`, `hook-governance.md`, `skill-promotion-record.md`, and `agent-eval-workflow.md` when the corresponding gate applies.
 
 Track `agentic_scope_classified`, `control_plane_present`, `source_of_truth_present`, `read_only_discovery_complete`, `model_reasoning_policy_present`, `fresh_context_handoff_present`, `ownership_split_present`, `subagent_parallelism_safe`, `approval_boundary_present`, `mcp_permission_review_present`, `hook_activation_approval_present`, `plugin_boundary_present`, `skill_promotion_evidence_present`, `automation_manual_stability_present`, `agent_eval_workflow_present`, `memory_policy_present`, and `agentic_evidence_before_completion`. Use memory as recall only. Use `present_unverified` for detected assets until evidence exists. No silent activation: MCP, hooks, automation, external writes, plugin packaging, GitHub Actions, and Agents SDK app orchestration require `approval_required` or explicit owner-approved gap.
 
-## Track 9 Frontend Methodology
+## Frontend Methodology
 
 When frontend work applies, route it through `frontend` methodology before UI completion claims.
 
@@ -118,7 +118,7 @@ Public UI defaults to WCAG 2.2 AA unless owner records an accepted exception. UI
 
 Status remains `present_unverified` until current evidence exists. Use `approval_required` before external visual services, hosted browser services, production-data screenshots, or publication.
 
-## Track 9 Backend Methodology
+## Backend Methodology
 
 When backend work applies, route it through `backend` methodology before backend completion or readiness claims.
 
@@ -138,7 +138,7 @@ Use `quality_testing_evals` when quality, test, eval, runtime, manual QA, visual
 
 Track `quality_strategy_present`, `risk_based_scope_present`, `test_first_or_gap_present`, `acceptance_traceability_present`, `contract_check_present`, `runtime_evidence_present`, `manual_qa_evidence_present`, `visual_a11y_evidence_present`, `eval_spec_present`, `eval_rerun_evidence_present`, `current_evidence_before_completion`, `ci_quality_gate_present`, `flaky_test_policy_present`, `coverage_policy_present`, `test_data_privacy_present`, `bug_reproduction_evidence_present`, and `regression_impact_present`. Coverage is a signal, not proof. Do not force TDD, do not force E2E, do not force coverage, and do not force AI evals when not applicable; use `not_applicable`, `present_unverified`, `explicit_gap_accepted`, or `approval_required` with owner, reason, residual risk and follow-up condition.
 
-## Track 9 API & Integrations Methodology
+## API & Integrations Methodology
 
 Use `api-integrations` when OpenAPI, AsyncAPI, GraphQL, gRPC/protobuf, JSON Schema, Pact, webhook/event, generated SDK, external provider, auth/scope/token, rate-limit, sensitive field or external write signals appear. Record all signals as `present_unverified`; Swagger UI is not source of truth and rendered docs alone do not prove a contract.
 
@@ -148,7 +148,7 @@ Required gates: `api_contract_source_present`, `api_consumer_map_present`, `api_
 
 Contract drift blocks completion claims. External writes are approval_required. Use `explicit_gap_accepted` only with owner, reason, review date, downstream risk and follow-up. No universal GraphQL/gRPC/event default; style/tool choices remain project-specific.
 
-## Track 9 Delivery, Release & Operations
+## Delivery, Release & Operations
 
 Use `delivery_release_operations` for planning-first delivery classification when release, deploy, publish, package, version, changelog, artifact, rollout, rollback, CI/CD governance, operations, incident, post-release, DORA, GitOps, feature flag, deployment, or automation promotion signals appear.
 
@@ -175,6 +175,6 @@ For product behavior changes, check that `metric_hardening_when_product_behavior
 ## Final Response Contract
 
 Return status, lifecycle state, `pr_release_packet`, files proposed, verification evidence, unsupported claims, approval requirements, residual risks, and the next recommended skill.
-## Track 9 Cross-Domain Synthesis
+## Cross-Domain Synthesis
 
 Consume `methodology_synthesis` and `recommendation_groups` as grouped recommendations; do not dump every methodology gate. Preserve owner domains, consumer domains, semantic evidence sufficiency, source artifact ledger, alias/deferred artifact ledger and risk-aware safe next action. Do not scaffold before approval, and remember that detection is not verification.

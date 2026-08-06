@@ -1,23 +1,9 @@
-default_permissions = "product-agent-os-local-autonomy"
-
-[permissions.product-agent-os-local-autonomy]
-extends = ":workspace"
-description = "Local workspace autonomy for Product-Agent OS maintenance. External, git, provider, browser, hook, automation, deploy, and permission-change surfaces remain approval-bound."
-
-[permissions.product-agent-os-local-autonomy.filesystem.":workspace_roots"]
-"." = "write"
-".codex" = "write"
-".codex/agents" = "write"
-".codex/workflows" = "write"
-".codex/artifact-templates" = "write"
-".codex/evals" = "write"
-".codex/product-agent-os" = "write"
-"plugins/product-agent-os" = "write"
-"tests/product_agent_os" = "write"
-"docs" = "write"
+sandbox_mode = "workspace-write"
 
 [agents]
 max_concurrent_threads_per_session = 6
+default_subagent_model = "gpt-5.6-terra"
+default_subagent_reasoning_effort = "medium"
 
 [agents.explorer]
 config_file = "./agents/explorer.toml"

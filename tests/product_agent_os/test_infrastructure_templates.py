@@ -2095,14 +2095,9 @@ class InfrastructureTemplateTest(unittest.TestCase):
         self.assertNotIn("sandbox", data)
         self.assertNotIn("approvals", data)
         self.assertIn("product_agent_os", data)
-        self.assertEqual(data["default_permissions"], "product-agent-os-project")
-        permission_profile = data["permissions"]["product-agent-os-project"]
-        codex_roots = permission_profile["filesystem"][":workspace_roots"]
-        self.assertEqual(codex_roots[".codex"], "read")
-        self.assertEqual(codex_roots[".codex/agents"], "write")
-        self.assertEqual(codex_roots[".codex/product-agent-os"], "write")
-        self.assertNotIn(".codex/hooks", codex_roots)
-        self.assertNotIn(".codex/plugins", codex_roots)
+        self.assertEqual(data["sandbox_mode"], "workspace-write")
+        self.assertNotIn("default_permissions", data)
+        self.assertNotIn("permissions", data)
         self.assertEqual(data["agents"]["max_concurrent_threads_per_session"], 2)
         self.assertEqual(data["agents"]["product-manager"]["config_file"], "./agents/product-manager.toml")
         product_agent_os = data["product_agent_os"]

@@ -13,6 +13,7 @@ sys.path.insert(0, str(SCRIPTS))
 
 from product_agent_os.validators import (  # noqa: E402
     validate_agent_file,
+    validate_agent_project_config,
     validate_control_plane,
     validate_doubt_verification_packet_file,
     validate_hook_file,
@@ -40,6 +41,111 @@ class ValidatorsTest(unittest.TestCase):
                 encoding="utf-8",
             )
             self.assertEqual(validate_agent_file(path), [])
+
+    def test_agent_file_rejects_unsupported_runtime_policy_and_prompt_debt(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "reviewer.toml"
+            path.write_text(
+                'name = "reviewer"\n'
+                'description = "Reviews changes."\n'
+                'model = "gpt-5.5"\n'
+                'model_reasoning_effort = "extreme"\n'
+                'sandbox_mode = "danger-full-access"\n'
+                'developer_instructions = "Ownership: review. Inputs: diff. Outputs: findings. '
+                'Stop conditions: missing evidence. Handoff: risks. Track 9 routing."\n',
+                encoding="utf-8",
+            )
+
+            errors = validate_agent_file(path)
+
+        self.assertIn("unsupported agent model: gpt-5.5", errors)
+        self.assertIn("unsupported model_reasoning_effort: extreme", errors)
+        self.assertIn("unsupported sandbox_mode: danger-full-access", errors)
+        self.assertIn("developer_instructions contain volatile phase identifier", errors)
+
+    def test_agent_file_rejects_missing_skill_and_openai_docs_without_mcp(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            openai_docs = root / "openai-docs" / "SKILL.md"
+            openai_docs.parent.mkdir(parents=True)
+            openai_docs.write_text("# OpenAI Docs\n", encoding="utf-8")
+            path = root / "research.toml"
+            path.write_text(
+                'name = "research"\n'
+                'description = "Researches official sources."\n'
+                'sandbox_mode = "read-only"\n'
+                'mcp_servers = {}\n'
+                'developer_instructions = "Ownership: sources. Inputs: question. Outputs: matrix. '
+                'Stop conditions: missing source. Handoff: citations."\n'
+                '[[skills.config]]\n'
+                f'path = "{openai_docs.as_posix()}"\n'
+                'enabled = true\n'
+                '[[skills.config]]\n'
+                f'path = "{(root / "missing" / "SKILL.md").as_posix()}"\n'
+                'enabled = true\n',
+                encoding="utf-8",
+            )
+
+            errors = validate_agent_file(path)
+
+        self.assertIn("openai-docs skill requires openaiDeveloperDocs MCP server", errors)
+        self.assertTrue(any(error.startswith("skill path does not exist:") for error in errors))
+
+    def test_agent_file_rejects_workspace_write_without_skill_authority_and_missing_prompt_path(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            agents = root / ".codex" / "agents"
+            skill = root / "plugins" / "product-agent-os" / "skills" / "staged" / "SKILL.md"
+            agents.mkdir(parents=True)
+            skill.parent.mkdir(parents=True)
+            (root / "AGENTS.md").write_text("# Test project\n", encoding="utf-8")
+            skill.write_text("Default output only. workspace_apply: forbidden\n", encoding="utf-8")
+            path = agents / "builder.toml"
+            path.write_text(
+                'name = "builder"\n'
+                'description = "Builds focused changes."\n'
+                'model = "gpt-5.6-terra"\n'
+                'model_reasoning_effort = "medium"\n'
+                'sandbox_mode = "workspace-write"\n'
+                'mcp_servers = {}\n'
+                'developer_instructions = "Ownership: assigned files. Inputs: plan. Outputs: patch. '
+                'Stop conditions: unsafe scope. Handoff: evidence. Read `docs/missing.md`."\n'
+                '[[skills.config]]\n'
+                f'path = "{skill.as_posix()}"\n'
+                'enabled = true\n',
+                encoding="utf-8",
+            )
+
+            errors = validate_agent_file(path)
+            staged_errors = validate_agent_file(
+                path,
+                available_prompt_paths={"docs/missing.md"},
+            )
+
+        self.assertIn("workspace-write agent has no project skill with explicit task write authority", errors)
+        self.assertIn("referenced prompt path does not exist: docs/missing.md", errors)
+        self.assertNotIn("referenced prompt path does not exist: docs/missing.md", staged_errors)
+
+    def test_project_config_rejects_permission_profile_sandbox_composition(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            config = root / "config.toml"
+            agent = root / "builder.toml"
+            config.write_text(
+                'default_permissions = "workspace"\n'
+                '[permissions.workspace]\n'
+                'extends = ":workspace"\n'
+                '[agents]\n'
+                'default_subagent_model = "gpt-5.6-terra"\n'
+                'default_subagent_reasoning_effort = "medium"\n',
+                encoding="utf-8",
+            )
+            agent.write_text('sandbox_mode = "workspace-write"\n', encoding="utf-8")
+
+            errors = validate_agent_project_config(config, [agent])
+
+        self.assertIn("permission profiles and legacy sandbox_mode must not be composed", errors)
+        self.assertIn("project config must set sandbox_mode = workspace-write", errors)
 
     def test_hook_file_rejects_secret_literal(self):
         with tempfile.TemporaryDirectory() as tmp:

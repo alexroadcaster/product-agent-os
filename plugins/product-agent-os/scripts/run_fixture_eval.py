@@ -886,7 +886,7 @@ BACKEND_TERMS = (
     "owner reviewed test/eval/runtime evidence sufficiency",
     "real project risk",
     "t9-s",
-    "track 9 backend methodology",
+    "backend methodology",
     "microservices conditional",
     "modular monolith is the default",
     "independent deploy/scale/team/ownership evidence",

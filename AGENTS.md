@@ -1,8 +1,57 @@
 # AGENTS.md
 
-## Project Purpose
+## Project Identity And Mission
 
-This repository is a Russian knowledge base for researching OpenAI Codex, advanced agentic workflows, multi-agent systems, memory, skills, subagents, prompt/context engineering, Codex runtime automation and product-agent workflows.
+This repository is the implementation, verification and evidence workspace for
+Product-Agent OS: a local, governed engineering operating system for Codex App,
+CLI and IDE extension. It is not merely a documentation collection.
+
+Product-Agent OS audits a target workspace and the relevant Codex control
+surfaces available in scope, determines project state and risk, stages the
+required control plane, agents, skills, workflows and engineering artifacts,
+selects applicable methodologies, and routes work from idea or defect through
+requirements, planning, implementation, verification, review, release evidence
+and learning.
+
+The intended outcome is that a user ranging from a vibe-coder to an AI Engineer
+receives reviewable specifications, bounded implementation slices, reproducible
+bug fixes, verification evidence and explicit next actions instead of relying on
+an unstructured chat history. Codex performs the engineering work; Product-Agent
+OS controls order, evidence, ownership, approvals and claim boundaries.
+
+The Russian Codex knowledge base, source registry and operator documentation are
+supporting product surfaces: they explain, source and verify the system, but do
+not define the repository as documentation-only.
+
+## System Responsibilities
+
+- Discover the target project's stack, structure, existing instructions, Codex
+  assets, source boundaries, risks and missing evidence without mutating it by
+  default.
+- Establish or stage a durable project control plane: `AGENTS.md`,
+  `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md` and `RUNLOG.md`.
+- Route greenfield ideas, existing features, bugs, legacy onboarding, AI/RAG,
+  frontend, backend, API, data, security, release and maintenance work through
+  only the methodologies and evidence gates that apply.
+- Define agent ownership, skill use, handoffs, stop conditions, model/reasoning
+  policy and approval boundaries before concurrent or high-risk implementation.
+- Produce staged infrastructure, specifications, implementation plans, tests,
+  evals, review packets, rollback evidence and safe merge proposals; apply local
+  changes only through an authorized route that preserves user-authored files.
+- Keep generated graphs, cockpits, dashboards and reports as orientation
+  evidence; source files, current checks and owner decisions remain authoritative.
+
+## Current Implementation And Claim Ceiling
+
+| Surface | Current repository status | Claim ceiling |
+| --- | --- | --- |
+| Core plugin | Checked-in local plugin package with deterministic Python tooling, lifecycle skills, workflow and artifact templates, validators and eval fixtures. | Implemented local package; not an autonomous hosted delivery platform. |
+| Workspace discovery and Architecture Intelligence | Read-only discovery, project graph, first-run analysis, cockpit/status/dashboard and evidence routing are implemented as local or staged surfaces. | Generated views help orientation and do not prove source truth, runtime behavior or readiness. |
+| Project infrastructure | Dry-run/staging, manifest, approval-aware merge planning/apply, rollback and user-file preservation contracts are implemented. | Target mutation still requires the applicable explicit authority, preview and verification. |
+| Product delivery routes | Requirements, architecture, implementation, bug rescue, test/eval, review, release-packet and learning routes exist with local contract and fixture evidence. | Every target project still needs current source reads, project-specific checks and owner decisions. |
+| Agents and skills | Project-maintenance agents and packaged lifecycle skills cover discovery, product, architecture, implementation, verification, security, docs, release and learning responsibilities. | Role presence does not prove correct routing or task success; use current task evidence. |
+| Self-learning and automation | Manual learning-loop and candidate-only automation governance are implemented. | `manual_only` / candidate-only until promotion gates and explicit owner approval are satisfied. |
+| Product release and production use | The system can guide work toward production evidence and release readiness. | Broad Product-Agent OS release-readiness, autonomous production delivery and mass-project usefulness are not currently proven or promoted. |
 
 ## Control-Plane Role
 
@@ -10,7 +59,7 @@ This repository is a Russian knowledge base for researching OpenAI Codex, advanc
 
 | Information class | Owning file |
 | --- | --- |
-| Durable project rules, safety boundaries and current operating status | `AGENTS.md` |
+| Durable project identity, rules, safety boundaries and claim ceiling | `AGENTS.md` |
 | Current scope, acceptance and constraints | `REQUIREMENTS.md` |
 | Current sequencing, queue, rollback and planning pointers | `PLAN.md` |
 | Current verification commands, escalation rules and latest maintenance evidence | `TEST.md` |
@@ -50,7 +99,7 @@ This repository is a Russian knowledge base for researching OpenAI Codex, advanc
 ## Product-Agent Operating Model
 
 - Use `AGENTS.md` for durable rules only. Use `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md` and `RUNLOG.md` for active long-running product work.
-- Before closing any non-mechanical Product-Agent OS task, run the local `.codex/workflows/control-plane-sync.md` checklist: update owned control-plane files when scope, sequencing, verification, evals, handoff state or Batch 39 ledger state changed, or record `not_applicable` / `handoff_required`.
+- Before closing any non-mechanical Product-Agent OS task, run the local `.codex/workflows/control-plane-sync.md` checklist: update owned control-plane files when scope, sequencing, verification, evals, handoff state or an explicitly in-scope historical evidence ledger changed, or record `not_applicable` / `handoff_required`.
 - Task Brief / Completion Brief lifecycle is config-routed: agents must load `.codex/config.toml` `[product_agent_os.lifecycle_contract]` and `[workflows]` instead of relying on duplicated lifecycle prose in each agent profile.
 - Do not create or switch to a branch or worktree unless the user explicitly asks for it.
 - Do not stage, commit, push, open a PR, launch live servers, run browser automation, call providers/live external model/API endpoints, mutate canonical graph sources or create external automations without exact approval for that action.
@@ -62,13 +111,32 @@ This repository is a Russian knowledge base for researching OpenAI Codex, advanc
 - Use stronger reasoning for planning, architecture, review, debugging, eval judging, security and ambiguous multi-step work; use lower reasoning for bounded collection, mechanical edits and deterministic checks.
 - For Python implementation work, use `python-design-patterns` and `python-code-style` as advisory guidance while preserving existing project patterns.
 - Use eval-driven loops for subjective or long-horizon tasks: baseline, one focused change, rerun eval, inspect artifacts and stop only at threshold.
-- Future Product-Agent OS production tests should include real-project target evidence when project shape, workflow, source policy or runtime signals matter. Keep `codex_docs` as the control-plane and evidence workspace; keep target projects read-only unless an exact approval names the mutation/runtime/browser/provider/git/external surface, owner, rollback and verification evidence.
-- Current Product-Agent OS status: Tracks 1-8, Track 9 and Track 10 history is source-owned by the detailed backlogs and registry. Task 26 Batch 35 is closed through `T10-LIVE-M41` as `owner_closed_no_op_git_release_pr`: no branch, stage, commit, push or PR was performed, and future git writes require fresh preflight and exact approval. B38-S1 records package-source freeze and metadata-audit evidence: M01 owner-closed no-op, M02 implemented, M03 owner-confirmed `local-only/internal R&D` distribution with public/team trust fields out of current scope. B38-S2 records M04 full verification as implemented and M05 as implemented after owner-run local cache refresh from the prepared stage: historical `blocked_pending_explicit_cache_mutation_approval` and `blocked_sandbox_cache_write_denied_after_backup_stage` are preserved, while current cache evidence is `plugin_cache_refresh_final_status: completed_local_cache_refresh_from_prepared_stage`, `target_cache_files_after_refresh: 586`, `target_cache_skill_count_after_refresh: 11` and `docs-maintainer` present. B38-S3 records `B38-PROD-M06..M09` real-project pilot design as implemented with `no_real_project_execution_performed`; B38-S4 records `B38-PROD-M10..M11` safety and rollback as current with M10 `reviewed_gap_recorded` and M11 `implemented`. The first target-specific docs-only pilot addendum `B38-PILOT-NF01` ran read-only against `Neural_Flow`: discovery/status/dashboard/project-graph/static checks produced staged evidence, runtime routing is `legacy_onboarding`, and target apply remains blocked on `source_policy_status: blocked` plus missing target control-plane/source registry artifacts. Batch 39 is executing through `prod_test.md`: `B39-S1` foundational local contracts `B39-TEST-M01..M10` have current local evidence, `B39-TEST-M11` has current approved `Neural_Flow` read-only target fixture evidence, `B39-TEST-M12` has current synthetic docs-only happy-path pilot evidence, `B39-TEST-M13` has current expected source-policy block evidence for `Neural_Flow`, `B39-TEST-M14` has current synthetic web/frontend contract evidence with browser/runtime UI claims explicitly unsupported, `B39-TEST-M15` has current synthetic backend/API contract plus approval-guardrail evidence with live runtime/security/integration claims explicitly unsupported, `B39-TEST-M16` has current synthetic AI/RAG contract plus approval-guardrail evidence with live model/provider/vector/eval/grounding claims explicitly unsupported, `B39-TEST-M17` has current synthetic data/migration contract plus approval-guardrail evidence with live DB/migration/production-data/backup-restore/rollback/performance claims explicitly unsupported, `B39-TEST-M18` has current synthetic PR/review contract plus approval-guardrail evidence with real PR/GitHub/CI/merge/git/release claims explicitly unsupported, `B39-TEST-M19` has current synthetic automation/release contract plus approval-guardrail evidence with real release/deploy/publish/tag/GitHub Release/package registry/marketplace/external-write/active-automation claims explicitly unsupported, `B39-FRIA-M20.1..M20.10` have current first-run schema, CLI, adapter, renderer, manifest-diff, guardrail, status/rollup, scorecard, docs/registry and accepted-risk verification packet evidence, `B39-TEST-M21-A01..A03` has current synthetic plugin/skill, `Neural Flow` expected-block and `SOL` read-only first-run usefulness evidence, `B39-TEST-M22-A01..A03` has current route accuracy evidence for generated first-run artifacts, methodology audit, CLI route output, PR/native false-positive filters and read-only `Neural Flow` / `SOL 0.6` retests, `B39-TEST-M23..M33` closes `B39-S3` functional regression/repeatability with methodology applicability, runtime approval-boundary, infrastructure, merge/rollback, source policy, hygiene, graph, metrics, eval, repeatability and full verification evidence, `B39-REAL-RET-S4-A01` records post-S3 read-only `Neural Flow` / `SOL 0.6` retest blocker discovery, and `B39-S4-blocker-fix-retest` fixes/retests graph scope, intent-hint tokenization, CLI evidence normalization and methodology first-safe-action volume. `B39-S4` remaining hardening gates are executed through `B39-S4-REMAINING-GATES-A01` as local/read-only/contract evidence with expected blockers; `B39-S5` closes go/no-go through `B39-S5-CLOSURE-A01` with release `no_go`, owner-feedback testing `conditional_go` and runtime/browser pilot `approval_required`. No release/readiness claim follows until owner feedback and any approval-gated runtime/browser evidence exist. B40-S2/S3/S4/S5 implement the local Doubt / verifier loop foundation, eval hardening, docs/site/source-transfer, synthetic-local pilot ledger, scorecard calibration and go/no-go closure for `completion-skeptic`; B40-S5 closes pilots, scorecard calibration and go/no-go closure as `manual_only` and `not_promoted`. No target workspace mutation, live/provider/browser/canonical/git/GitHub/release/deploy/publish/automation/external action was performed.
-- Current B39-S4 graph-depth partial evidence: `B39-S4-GRAPH-DEPTH-S0-S2-A01` records local code/test evidence for stdlib TS/JS entity overlay, reverse `max_depth` traversal and unsafe query budget validation, `B39-S4-GD-S0-A01` records the ontology/parser decision artifact, `B39-S4-GD-S1-A01` records mixed fixture evidence, `B39-S4-GD-S3-A01` records conservative linker/rejected-link evidence, `B39-S4-GD-S3-A02` records framework semantics metadata evidence, `B39-S4-GD-S4-A01` records coverage/freshness evidence, `B39-S4-GD-S6-A01` records agent reading packet evidence, `B39-S4-GD-S6-SCORECARD-A01` records local scorecard/threshold evidence, `B39-S4-GD-S10-S13-S15-A01` records artifact/status/HTML integration evidence and `B39-S4-GRAPH-DEPTH-03-A01` records read-only SOL real-target graph-depth comparison evidence; these do not close broader `B39-S4` or support readiness/promotion.
-- Current B39-S4 docs/offline/CLI partial evidence: `B39-S4-M37-M39-A01` records local hardening evidence for `B39-TEST-M37..M39` in `docs/superpowers/specs/batch39-s4-m37-m39-hardening-summary.json`; first-run generated pages are internal/generated orientation evidence with public readiness `not_claimed`, first-run HTML has a no-external-URL/no-script audit, and first-run CLI mode/unsafe-packet cases are matrixed. This does not close full public docs/site acceptance, full offline/dependency readiness, all-script CLI coverage, runtime/browser/provider behavior, target mutation safety, release readiness, promotion or automation readiness.
-- Current B39-S4 full hardening evidence: `B39-S4-FULL-HARDENING-A01` records read-only SOL 0.6 / Neural_Flow static dependency readiness, all-script `--help` CLI matrix and runtime/browser harness blockers in `docs/superpowers/specs/batch39-s4-all-script-cli-matrix.json`, `docs/superpowers/specs/batch39-s4-full-hardening-sol_0_6-summary.json`, `docs/superpowers/specs/batch39-s4-full-hardening-neural_flow-summary.json` and `docs/superpowers/specs/batch39-s4-full-hardening-comparison.json`; SOL static dependency inventory is partial-pass with runtime/browser blocked by target write risk, provider-sensitive backend surfaces and unavailable Playwright, while Neural_Flow is docs/research-only with no runtime manifests. No install, target mutation, live server, browser automation, provider/API, git, release, deploy, publish or automation action was performed.
-- Current B39-S4/S5 closure evidence: `B39-S4-REMAINING-GATES-A01` records `B39-TEST-M41..M54` plus reopened M37/M39 status in `docs/superpowers/specs/batch39-s4-remaining-gates-summary.json` and `docs/superpowers/specs/batch39-s4-closure-readiness-matrix.json`; all-script CLI help is now 32/32 with zero gaps. `B39-S5-CLOSURE-A01` records source-doc sync, go/no-go and final no-unapproved-actions proof in `docs/superpowers/specs/batch39-s5-closure-summary.json`, `docs/superpowers/specs/batch39-s5-go-no-go-decision-packet.json`, `docs/superpowers/specs/batch39-s5-no-unapproved-actions-proof.json` and `docs/superpowers/specs/batch39-s5-owner-feedback-test-plan.json`. Batch 39 is closed for manual owner-feedback testing only: release/distribution is `no_go`, runtime/browser proof needs exact disposable target approval, MCP/Context7 live calls require approval and promotion remains `manual_only_not_promoted`.
-- Future M41 git-write fields: release branch or push target, commit message, PR base branch, PR title and intent, plus explicit branch creation/current-branch push policy.
+- Current Product-Agent OS execution status and historical batch evidence are source-owned by `PLAN.md`, `RUNLOG.md`, `prod_test.md`, the detailed backlogs, and the source registry; `AGENTS.md` does not carry batch ledgers.
+- Real-project target evidence remains read-only unless an exact approval names the mutation, runtime, browser, provider, Git, or external surface, owner, rollback, and verification evidence.
+
+## Agent File Contract
+
+- Treat `.codex/agents/*.toml` as the active role profiles for maintaining this
+  repository and executing approved Product-Agent OS slices. Treat
+  `plugins/product-agent-os/assets/templates/agents/*.toml` as staged proposals
+  for target workspaces; they are not the active team for this repository.
+- Keep agent profiles role-based and phase-neutral. Store current task routing,
+  batch state and completion evidence in `PLAN.md`, `RUNLOG.md` and their owning
+  artifacts instead of durable `developer_instructions`.
+- Route discovery and independent assurance through read-only roles such as
+  `explorer`, `research-source-analyst`, `reviewer`,
+  `security-privacy-supply-chain-reviewer`, `completion-skeptic` and
+  `release-operator` unless a separately authorized task requires writes.
+- Route approved workspace edits through ownership-specific roles such as
+  `product-manager`, `architect`, `builder`, `plugin-runtime-builder`,
+  `graph-cockpit-engineer`, `tester`, `docs-maintainer`,
+  `learning-loop-engineer` and `lifecycle-orchestrator`.
+- A writable agent may edit only its assigned files and responsibility slice.
+  It must preserve unrelated dirty work, current control-plane authority and the
+  approval boundary for target, provider, browser, Git, release or external actions.
+- Validate active and generated agent profiles after changes. Agent description,
+  model, reasoning effort, sandbox mode, skills and MCP access must match the
+  actual responsibility and must not imply unsupported runtime or production proof.
 
 ## Windows Codex Shell Guard
 

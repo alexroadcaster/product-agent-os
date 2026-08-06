@@ -116,6 +116,7 @@ English-original plan files excluded from localized sibling parity:
 Post-Batch34E English-original plan additions are not part of the historical M35-M49 counts above, but they follow the same planning-artifact parity boundary:
 
 - `superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md`
+- `superpowers/plans/2026-08-05-gpt56-r1-r6-remediation.md`
 
 ## B34E-I18N-M44 EN Editorial Quality Sweep
 

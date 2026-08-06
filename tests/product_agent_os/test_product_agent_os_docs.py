@@ -96,7 +96,7 @@ PLAN_FILE = ROOT / "PLAN.md"
 TEST_FILE = ROOT / "TEST.md"
 EVALS_FILE = ROOT / "EVALS.md"
 RUNLOG_FILE = ROOT / "RUNLOG.md"
-AGENTS = ROOT / "AGENTS.md"
+AGENTS_FILE = ROOT / "AGENTS.md"
 CONTROL_PLANE_CURRENT_STATE = PRODUCT_AGENT_OS / "control-plane-current-state.md"
 CONTROL_PLANE_SYNC = ROOT / ".codex" / "workflows" / "control-plane-sync.md"
 CONTROL_PLANE_SIZE_BUDGET_BYTES = 50 * 1024
@@ -110,6 +110,7 @@ ENGLISH_ORIGINAL_SUPERPOWERS_PLAN_PAGES = {
     DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md",
     DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md",
     DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md",
+    DOCS / "superpowers" / "plans" / "2026-08-05-gpt56-r1-r6-remediation.md",
 }
 DOC_M25_HISTORICAL_PENDING_SITE_PAGES = {
     DOCS / "product-agent-os" / "first-run-architecture-cockpit.md",
@@ -132,10 +133,10 @@ DOC_M25_PENDING_SITE_PAGES = {
     DOCS / "product-agent-os" / "coding-standards.md",
     DOCS / "product-agent-os" / "self-learning-loop.md",
 }
-BUILDABLE_MARKDOWN_PAGE_COUNT = 151
+BUILDABLE_MARKDOWN_PAGE_COUNT = 152
 LOCALIZED_MARKDOWN_PAGE_COUNT = 143
 SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT = 141
-ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT = 8
+ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT = 9
 
 
 class SourceRoutedControlPlanePath:
@@ -208,6 +209,7 @@ PLAN = SourceRoutedControlPlanePath(PLAN_FILE)
 TEST = SourceRoutedControlPlanePath(TEST_FILE)
 EVALS = SourceRoutedControlPlanePath(EVALS_FILE)
 RUNLOG = SourceRoutedControlPlanePath(RUNLOG_FILE)
+AGENTS = SourceRoutedControlPlanePath(AGENTS_FILE)
 
 
 class ProductAgentOsDocsTest(unittest.TestCase):
@@ -698,9 +700,17 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         self.assertIn("Product-Agent OS Batch 37 S5 docs, projection, hygiene, lifecycle and closure", registry)
 
     def test_root_agents_is_compact_durable_rule_contract(self):
-        agents = AGENTS.read_text(encoding="utf-8")
+        agents = AGENTS_FILE.read_text(encoding="utf-8")
 
         self.assertLess(len(agents), 50000)
+        self.assertIn("Project Identity And Mission", agents)
+        self.assertIn("implementation, verification and evidence workspace", agents)
+        self.assertIn("It is not merely a documentation collection", agents)
+        self.assertIn("System Responsibilities", agents)
+        self.assertIn("Current Implementation And Claim Ceiling", agents)
+        self.assertIn("Agent File Contract", agents)
+        self.assertIn("vibe-coder to an AI Engineer", agents)
+        self.assertNotIn("This repository is a Russian knowledge base", agents)
         self.assertIn("AGENTS.md` is the durable project instruction layer", agents)
         self.assertIn("Control-Plane Role", agents)
         self.assertIn("Documentation Rules", agents)
@@ -710,10 +720,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         self.assertIn("Product-Agent OS Plugin Rules", agents)
         self.assertIn("Source And Insight Policy", agents)
         self.assertIn("Verification", agents)
-        self.assertIn("T10-LIVE-M41", agents)
-        self.assertIn("owner_closed_no_op_git_release_pr", agents)
-        self.assertIn("blocked_pending_explicit_cache_mutation_approval", agents)
-        self.assertIn("B38-S2", agents)
+        self.assertIn("Current Product-Agent OS execution status", agents)
+        self.assertIn("historical batch evidence are source-owned", agents)
+        self.assertIn("AGENTS.md` does not carry batch ledgers", agents)
 
         for expected in [
             "REQUIREMENTS.md",
@@ -5572,6 +5581,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md",
             DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md",
             DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md",
+            DOCS / "superpowers" / "plans" / "2026-08-05-gpt56-r1-r6-remediation.md",
         ]
         base_pages = sorted(
             path
@@ -7067,7 +7077,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "track10_plan": TRACK10_PLAN.read_text(encoding="utf-8"),
             "runlog": RUNLOG.read_text(encoding="utf-8"),
             "test_plan": TEST.read_text(encoding="utf-8"),
-            "agents": AGENTS.read_text(encoding="utf-8"),
         }
 
         expected_terms = {
@@ -7209,10 +7218,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "B40-S4 implements Doubt / verifier loop docs/site/source-transfer",
                 "strict MkDocs",
             ],
-            "agents": [
-                "B40-S2/S3/S4/S5 implement",
-                "B40-S5 closes pilots",
-            ],
         }
 
         for document, terms in expected_terms.items():
@@ -7234,7 +7239,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "track10_plan": TRACK10_PLAN.read_text(encoding="utf-8"),
             "runlog": RUNLOG.read_text(encoding="utf-8"),
             "test_plan": TEST.read_text(encoding="utf-8"),
-            "agents": AGENTS.read_text(encoding="utf-8"),
         }
 
         expected_terms = {
@@ -7309,11 +7313,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "B40-S5 implements Doubt / verifier loop pilot metrics and closure",
                 "completion_skeptic_manual_pilot_ledger",
                 "completion_skeptic_go_no_go_closure",
-            ],
-            "agents": [
-                "B40-S2/S3/S4/S5 implement",
-                "manual_only",
-                "B40-S5 closes pilots, scorecard calibration and go/no-go closure",
             ],
         }
 

@@ -11,7 +11,7 @@ Use this skill when a recurring or repeated Product-Agent OS workflow may be pro
 
 ## Boundaries
 
-This is a Track 2 skill. Produce a staged `automation_candidate` packet only. Readiness is `candidate_only`.
+Default output is a staged packet. `workspace_apply: forbidden` keeps this skill read-only or proposal-only even when another role has workspace-write.
 
 Guided question protocol: ask the smallest blocking question only; enforce one blocking question maximum; optional questions stay in the packet; route answers into artifacts or accepted gaps; guided questions are not workspace evidence. Do not use guided questions as a substitute for workspace evidence.
 
@@ -117,7 +117,7 @@ automation_candidate:
   next_lifecycle_state: "maintenance"
 ```
 
-## Track 9 Codex Agentic Workflow
+## Codex Agentic Workflow
 
 Use `codex_agentic_workflow` when Codex App, CLI, IDE extension, subagents, skills, MCP, hooks, plugins, automation, worktrees, external writes, approval boundaries, memory policy, or Agents SDK orchestration applies. Stage or request `model-reasoning-policy.md`, `mcp-permission-review.md`, `hook-governance.md`, `skill-promotion-record.md`, and `agent-eval-workflow.md` when the corresponding gate applies.
 
@@ -127,7 +127,7 @@ Track `agentic_scope_classified`, `control_plane_present`, `source_of_truth_pres
 
 Evidence-before-completion (`evidence_before_completion`): do not make a ready claim, completed claim, fixed claim, works claim, or release claim without current command evidence, current eval evidence, current runtime evidence, owner evidence, or an explicit test gap. If only inspection happened, label the result `inspection-only` and list every unsupported completion claim. Treat completion claim without current evidence as blocked.
 
-## Track 9 Delivery, Release & Operations
+## Delivery, Release & Operations
 
 Use `delivery_release_operations` for planning-first delivery classification when release, deploy, publish, package, version, changelog, artifact, rollout, rollback, CI/CD governance, operations, incident, post-release, DORA, GitOps, feature flag, deployment, or automation promotion signals appear.
 
@@ -157,6 +157,6 @@ Check that manual stability evidence is present, owner is named, required inputs
 ## Final Response Contract
 
 Return status, lifecycle state, `automation_candidate`, readiness, blockers, evidence used, unsupported claims, approval requirements, residual risks, and the next recommended skill.
-## Track 9 Cross-Domain Synthesis
+## Cross-Domain Synthesis
 
 Consume `methodology_synthesis` and `recommendation_groups` as grouped recommendations; do not dump every methodology gate. Preserve owner domains, consumer domains, semantic evidence sufficiency, source artifact ledger, alias/deferred artifact ledger and risk-aware safe next action. Do not scaffold before approval, and remember that detection is not verification.

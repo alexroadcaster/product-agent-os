@@ -1077,7 +1077,7 @@ class LifecycleSkillsTest(unittest.TestCase):
 
     def test_lifecycle_skills_route_backend_methodology(self):
         shared_terms = [
-            "track 9 backend methodology",
+            "backend methodology",
             "backend",
             "backend-service-overview.md",
             "backend-runtime-behavior.md",
@@ -1143,7 +1143,7 @@ class LifecycleSkillsTest(unittest.TestCase):
 
     def test_lifecycle_skills_route_api_integrations_methodology(self):
         shared_terms = [
-            "track 9 api & integrations methodology",
+            "api & integrations methodology",
             "api-integrations",
             "api-inventory.md",
             "api-contract-review.md",
@@ -1820,12 +1820,14 @@ class LifecycleSkillsTest(unittest.TestCase):
         ]:
             self.assertIn(expected, planner)
 
-    def test_skills_state_track_two_boundaries(self):
+    def test_skills_use_phase_neutral_write_boundaries(self):
         for name in SKILL_NAMES:
             text = self._skill_text(name).lower()
             with self.subTest(name=name):
-                self.assertIn("track 2", text)
                 self.assertIn("staged", text)
+                self.assertIn("workspace_apply:", text)
+                self.assertNotIn("this is a track 2 skill", text)
+                self.assertNotRegex(text, r"(?m)^## track 9 ")
                 self._assert_negative_boundary(
                     name, text, SECRET_BOUNDARY_PATTERNS, "secret storage"
                 )

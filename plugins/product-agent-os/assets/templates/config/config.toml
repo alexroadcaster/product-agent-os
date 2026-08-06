@@ -1,24 +1,9 @@
-default_permissions = "product-agent-os-project"
-
-[permissions.product-agent-os-project]
-extends = ":workspace"
-
-[permissions.product-agent-os-project.filesystem.":workspace_roots"]
-"." = "write"
-".codex" = "read"
-".codex/agents" = "write"
-".codex/skills" = "write"
-".codex/workflows" = "write"
-".codex/artifact-templates" = "write"
-".codex/evals" = "write"
-".codex/runlogs" = "write"
-".codex/automation-candidates" = "write"
-".codex/pr" = "write"
-".codex/product-agent-os" = "write"
-".codex/eval-reports" = "write"
+sandbox_mode = "workspace-write"
 
 [agents]
 max_concurrent_threads_per_session = 2
+default_subagent_model = "gpt-5.6-terra"
+default_subagent_reasoning_effort = "medium"
 
 [agents.product-manager]
 config_file = "./agents/product-manager.toml"

@@ -1,12 +1,12 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "CODEX-GPT56-SYSTEM-AUDIT-REMEDIATION-20260723",
-  "scope": "Save the source-backed .codex system-file audit and remediate active agent, hook, config, workflow, eval, and template contracts for the GPT-5.6 model family.",
-  "updated_at": "2026-07-23T19:03:05.4475647+03:00",
-  "approval_boundary": "Local workspace edits and local verification only. Historical Batch 45 evidence, provider/model calls, browser/runtime pilots, external writes, permission changes, live servers, git stage/commit/push/PR, release, deploy, publication, and automation activation are out of scope.",
+  "task_id": "GPT56-R1-R6-REMEDIATION-2026-08-05",
+  "scope": "Apply project-local R1-R6 remediation for GPT-5.6 configuration, agents, skills, validation, and context hygiene.",
+  "updated_at": "2026-08-06T03:51:18.9234693+03:00",
+  "approval_boundary": "Local workspace edits and local verification only; no global config, hooks activation, external/provider/browser calls, git writes, release, deploy, publication, or automation activation.",
   "brief_schema_version": "task_start_brief_v1",
   "brief_format": "field_list",
-  "brief_digest": "sha256:318cb5f363a79a10323b1f30f9aec15b9616addd72a53b909db370fbce2f4299",
+  "brief_digest": "sha256:d53d2458e9d41fb518370ea6b8e28c033658cf38da2aecede8c0dac335e16c29",
   "brief_fields_present": [
     "Task ID",
     "Product value",
@@ -24,21 +24,5 @@
   ],
   "completion_brief_shown": true,
   "completion_status": "implemented_with_gaps",
-  "closure_level": "active_config_and_contracts_updated_fresh_session_and_behavioral_promotion_pending",
-  "completion_gaps": [
-    "fresh_session_hook_activation_proof_not_run",
-    "gpt56_same_and_lower_effort_behavioral_quality_cost_latency_eval_not_run",
-    "absolute_user_level_skill_paths_remain_host_local",
-    "reviewer_gap_no_delegated_reviewer_authorized"
-  ],
-  "completion_evidence": [
-    "research/2026-07-23-codex-gpt-5p6-system-files-audit.md",
-    "15 agent profiles valid; 7/7 mirrors equal; 92/92 audit ledger reconciled",
-    "1191 unittest discovery tests OK with one expected skip; docs suite 100/100",
-    "check_docs.py exit 0; git diff --check exit 0"
-  ],
-  "evidence_id": "CODEX-GPT56-SYSTEM-AUDIT-REMEDIATION-A01",
-  "status": "completed",
-  "latest_evidence": "research/2026-07-23-codex-gpt-5p6-system-files-audit.md",
-  "latest_summary": "GPT-5.6 system-file remediation and source-backed audit are implemented with explicit fresh-session, behavioral-eval, portability, and reviewer gaps."
+  "status": "completed"
 }

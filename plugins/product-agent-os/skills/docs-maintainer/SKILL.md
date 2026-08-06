@@ -11,7 +11,7 @@ Use this skill when a requirements packet, methodology packet, implementation pl
 
 ## Boundaries
 
-This is a Track 2 skill. Produce a staged documentation packet only.
+Default output is a staged packet. `workspace_apply: explicit_task_authority` permits direct local edits only when the current user request or parent task explicitly authorizes workspace writes, the host agent has `workspace-write`, and the exact owned files are named. It never authorizes external, destructive, global-config, permission, provider, browser, Git, release, deployment, publication, hook, or automation actions.
 
 Guided question protocol: ask the smallest blocking question only; enforce one blocking question maximum; optional questions stay in the packet; route answers into artifacts or accepted gaps; guided questions are not workspace evidence. Do not use guided questions as a substitute for workspace evidence.
 
@@ -21,10 +21,10 @@ Project code graph: generated graph is not source of truth; use it as orientatio
 
 Do not store secrets, tokens, credentials, private keys, private customer data, or raw private chat logs.
 Do not create active automation, recurring automation, hooks, workflow files, project templates, MCP servers, or an Agents SDK runner.
-Do not mutate global config. Do not modify config. Do not edit project config.
-Do not write docs directly, edit code, run destructive commands, install external dependencies, use network access, write user-level memory, or connect to external systems.
+Do not mutate global config. Change project config or code only when the current task explicitly owns that file.
+Write assigned local docs and registry files under explicit task authority; otherwise return staged proposals. Do not run destructive commands, install dependencies, use network access, write user-level memory, or connect to external systems.
 Do not claim documentation readiness, source support, traceability, or verification results without evidence from the current run.
-Ask for approval before any write, external action, navigation change, expanded scope, or irreversible publication decision.
+Ask for approval for external actions, broad navigation changes, expanded scope, or irreversible publication decisions.
 
 Read shared references when needed: [Lifecycle states](../references/lifecycle-states.md), [Handoff contract](../references/handoff-contract.md), [Source policy](../references/source-policy.md), and [Complexity routing](../references/complexity-routing.md).
 
@@ -106,13 +106,13 @@ Use Solution Architecture routing when a slice touches architecture boundary, pu
 
 Stage or request `.codex/artifact-templates/architecture-overview.md`, `.codex/artifact-templates/adr.md`, `.codex/artifact-templates/architecture-review-record.md`, `.codex/artifact-templates/architecture-fitness-functions.md`, `.codex/artifact-templates/trust-boundary-map.md`, and `.codex/artifact-templates/architecture-docs-tooling-decision.md` when the corresponding gate applies. C4/arc42 only when applicable; architecture-as-code is conditional; Well-Architected review is conditional. Use `not_applicable` or `explicit_gap_accepted` with owner, reason, residual risk and follow-up condition rather than forcing diagrams, cloud review or docs tooling.
 
-## Track 9 Codex Agentic Workflow
+## Codex Agentic Workflow
 
 Use `codex_agentic_workflow` when Codex App, CLI, IDE extension, subagents, skills, MCP, hooks, plugins, automation, worktrees, external writes, approval boundaries, memory policy, or Agents SDK orchestration applies. Stage or request `model-reasoning-policy.md`, `mcp-permission-review.md`, `hook-governance.md`, `skill-promotion-record.md`, and `agent-eval-workflow.md` when the corresponding gate applies.
 
 Track `agentic_scope_classified`, `control_plane_present`, `source_of_truth_present`, `read_only_discovery_complete`, `model_reasoning_policy_present`, `fresh_context_handoff_present`, `ownership_split_present`, `subagent_parallelism_safe`, `approval_boundary_present`, `mcp_permission_review_present`, `hook_activation_approval_present`, `plugin_boundary_present`, `skill_promotion_evidence_present`, `automation_manual_stability_present`, `agent_eval_workflow_present`, `memory_policy_present`, and `agentic_evidence_before_completion`. Use memory as recall only. Use `present_unverified` for detected assets until evidence exists. No silent activation: MCP, hooks, automation, external writes, plugin packaging, GitHub Actions, and Agents SDK app orchestration require `approval_required` or explicit owner-approved gap.
 
-## Track 9 LLM / AI / RAG Methodology
+## LLM / AI / RAG Methodology
 
 Maintain `llm_ai_rag` docs when AI behavior, prompt/model changes, structured outputs, AI tools, MCP/function calling, RAG retrieval, grounding, datasets, agent traces, safety, latency or cost are documented.
 
@@ -120,7 +120,7 @@ Docs must preserve AI behavior promise, baseline eval, eval rerun evidence, app-
 
 Do not force one eval runner, do not force multi-agent architecture, and do not run live model calls from docs maintenance. Use `approval_required` before live model/API calls, external writes, risky tools, data exposure or irreversible side effects.
 
-## Track 9 Frontend Methodology
+## Frontend Methodology
 
 When frontend work applies, route it through `frontend` methodology before UI completion claims.
 
@@ -134,7 +134,7 @@ Public UI defaults to WCAG 2.2 AA unless owner records an accepted exception. UI
 
 Status remains `present_unverified` until current evidence exists. Use `approval_required` before external visual services, hosted browser services, production-data screenshots, or publication.
 
-## Track 9 Backend Methodology
+## Backend Methodology
 
 When backend work applies, route it through `backend` methodology before backend completion or readiness claims.
 
@@ -154,7 +154,7 @@ Use `quality_testing_evals` when quality, test, eval, runtime, manual QA, visual
 
 Track `quality_strategy_present`, `risk_based_scope_present`, `test_first_or_gap_present`, `acceptance_traceability_present`, `contract_check_present`, `runtime_evidence_present`, `manual_qa_evidence_present`, `visual_a11y_evidence_present`, `eval_spec_present`, `eval_rerun_evidence_present`, `current_evidence_before_completion`, `ci_quality_gate_present`, `flaky_test_policy_present`, `coverage_policy_present`, `test_data_privacy_present`, `bug_reproduction_evidence_present`, and `regression_impact_present`. Coverage is a signal, not proof. Do not force TDD, do not force E2E, do not force coverage, and do not force AI evals when not applicable; use `not_applicable`, `present_unverified`, `explicit_gap_accepted`, or `approval_required` with owner, reason, residual risk and follow-up condition.
 
-## Track 9 API & Integrations Methodology
+## API & Integrations Methodology
 
 Use `api-integrations` when OpenAPI, AsyncAPI, GraphQL, gRPC/protobuf, JSON Schema, Pact, webhook/event, generated SDK, external provider, auth/scope/token, rate-limit, sensitive field or external write signals appear. Record all signals as `present_unverified`; Swagger UI is not source of truth and rendered docs alone do not prove a contract.
 
@@ -164,7 +164,7 @@ Required gates: `api_contract_source_present`, `api_consumer_map_present`, `api_
 
 Contract drift blocks completion claims. External writes are approval_required. Use `explicit_gap_accepted` only with owner, reason, review date, downstream risk and follow-up. No universal GraphQL/gRPC/event default; style/tool choices remain project-specific.
 
-## Track 9 Security, Privacy & Compliance Methodology
+## Security, Privacy & Compliance Methodology
 
 Use `security_privacy_compliance` when authn/authz, permissions, secrets, PII, sensitive data, payment/billing, abuse controls, audit logging, supply chain, SBOM/provenance, CI permissions, AI/tool security, external writes, production data, policy changes, regulated, contractual or compliance overlays appear. Record `security_sensitive_classification_present` and all detected signals as `present_unverified` until owner-reviewed evidence exists.
 
@@ -189,6 +189,6 @@ Check that staged docs reference current requirement IDs, source registry entrie
 ## Final Response Contract
 
 Return status, lifecycle state, `docs_packet`, files proposed, sources used, verification evidence, unsupported claims, accepted gaps, approval requirements, risks, and the next recommended skill.
-## Track 9 Cross-Domain Synthesis
+## Cross-Domain Synthesis
 
 Consume `methodology_synthesis` and `recommendation_groups` as grouped recommendations; do not dump every methodology gate. Preserve owner domains, consumer domains, semantic evidence sufficiency, source artifact ledger, alias/deferred artifact ledger and risk-aware safe next action. Do not scaffold before approval, and remember that detection is not verification.

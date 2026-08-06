@@ -29,6 +29,20 @@ AGENT_FORBIDDEN_TOP_LEVEL_FIELDS = {
     "model_policy",
     "handoff_requirements",
 }
+AGENT_ALLOWED_MODELS = {"gpt-5.6-sol", "gpt-5.6-terra"}
+AGENT_ALLOWED_REASONING_EFFORTS = {"low", "medium", "high", "xhigh", "max"}
+AGENT_ALLOWED_SANDBOX_MODES = {"read-only", "workspace-write"}
+AGENT_MAX_INSTRUCTION_CHARS = 7000
+AGENT_PHASE_IDENTIFIER_PATTERN = re.compile(
+    r"(?i)\b(?:Batch\s+\d+|B\d+-S\d+|Track\s+\d+)\b"
+)
+AGENT_PROMPT_PATH_PATTERN = re.compile(
+    r"`(?P<path>(?:\.codex|docs|plugins|tests)/[A-Za-z0-9_./*-]+|"
+    r"(?:AGENTS|REQUIREMENTS|PLAN|TEST|EVALS|RUNLOG|prod_test)\.md)`"
+)
+OPENAI_DOCS_SKILL_SUFFIX = "/openai-docs/skill.md"
+PROJECT_SKILL_PATH_FRAGMENT = "/plugins/product-agent-os/skills/"
+WORKSPACE_APPLY_AUTHORITY = "workspace_apply: explicit_task_authority"
 TASK_MATRIX_SCHEMA_VERSION = "task_matrix_plan_v1"
 TASK_MATRIX_ALLOWED_STATUSES = {"planned", "in_progress", "implemented", "blocked", "accepted_gap"}
 TASK_MATRIX_REQUIRED_FIELDS = [
@@ -136,7 +150,11 @@ def validate_control_plane(root: Path) -> dict[str, Any]:
     }
 
 
-def validate_agent_file(path: Path) -> list[str]:
+def validate_agent_file(
+    path: Path,
+    *,
+    available_prompt_paths: set[str] | None = None,
+) -> list[str]:
     text, error = read_utf8_text(path)
     if error:
         return [error]
@@ -158,6 +176,142 @@ def validate_agent_file(path: Path) -> list[str]:
         for expected in ["ownership", "inputs", "outputs", "stop conditions", "handoff"]:
             if expected not in lowered:
                 errors.append(f"developer_instructions missing agent contract term: {expected}")
+        if len(instructions) > AGENT_MAX_INSTRUCTION_CHARS:
+            errors.append(
+                "developer_instructions exceed prompt budget: "
+                f"{len(instructions)} > {AGENT_MAX_INSTRUCTION_CHARS} characters"
+            )
+        if AGENT_PHASE_IDENTIFIER_PATTERN.search(instructions):
+            errors.append("developer_instructions contain volatile phase identifier")
+        errors.extend(
+            _validate_agent_prompt_paths(
+                path,
+                instructions,
+                available_prompt_paths=available_prompt_paths,
+            )
+        )
+    model = data.get("model")
+    if model is not None and model not in AGENT_ALLOWED_MODELS:
+        errors.append(f"unsupported agent model: {model}")
+    effort = data.get("model_reasoning_effort")
+    if effort is not None and effort not in AGENT_ALLOWED_REASONING_EFFORTS:
+        errors.append(f"unsupported model_reasoning_effort: {effort}")
+    sandbox_mode = data.get("sandbox_mode")
+    if sandbox_mode is not None and sandbox_mode not in AGENT_ALLOWED_SANDBOX_MODES:
+        errors.append(f"unsupported sandbox_mode: {sandbox_mode}")
+    errors.extend(_validate_agent_skills_and_mcp(data))
+    return errors
+
+
+def _project_root_for_agent(path: Path) -> Path | None:
+    if path.parent.name == "agents" and path.parent.parent.name == ".codex":
+        project_root = path.parent.parent.parent
+        has_project_contract = (project_root / "AGENTS.md").exists() or (
+            project_root / ".codex" / "config.toml"
+        ).exists()
+        if has_project_contract:
+            return project_root
+    return None
+
+
+def _validate_agent_prompt_paths(
+    path: Path,
+    instructions: str,
+    *,
+    available_prompt_paths: set[str] | None = None,
+) -> list[str]:
+    project_root = _project_root_for_agent(path)
+    if project_root is None:
+        return []
+    errors: list[str] = []
+    for match in AGENT_PROMPT_PATH_PATTERN.finditer(instructions):
+        relative = match.group("path")
+        if "*" in relative:
+            continue
+        if available_prompt_paths is not None and relative in available_prompt_paths:
+            continue
+        if not (project_root / relative).exists():
+            errors.append(f"referenced prompt path does not exist: {relative}")
+    return sorted(set(errors))
+
+
+def _agent_skill_configs(data: dict[str, Any]) -> list[dict[str, Any]]:
+    skills = data.get("skills")
+    if not isinstance(skills, dict):
+        return []
+    configs = skills.get("config")
+    if not isinstance(configs, list):
+        return []
+    return [item for item in configs if isinstance(item, dict) and item.get("enabled", True)]
+
+
+def _validate_agent_skills_and_mcp(data: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    project_skill_texts: list[str] = []
+    has_openai_docs = False
+    for config in _agent_skill_configs(data):
+        raw_path = config.get("path")
+        if not isinstance(raw_path, str) or not raw_path.strip():
+            errors.append("skill config path must be a non-empty string")
+            continue
+        normalized = raw_path.replace("\\", "/").lower()
+        has_openai_docs = has_openai_docs or normalized.endswith(OPENAI_DOCS_SKILL_SUFFIX)
+        skill_path = Path(raw_path)
+        if not skill_path.is_file():
+            errors.append(f"skill path does not exist: {raw_path}")
+            continue
+        if PROJECT_SKILL_PATH_FRAGMENT in normalized:
+            text, error = read_utf8_text(skill_path)
+            if error:
+                errors.append(f"unable to inspect project skill: {raw_path}")
+            else:
+                project_skill_texts.append(text.lower())
+    mcp_servers = data.get("mcp_servers")
+    if has_openai_docs:
+        if not isinstance(mcp_servers, dict) or not isinstance(
+            mcp_servers.get("openaiDeveloperDocs"),
+            dict,
+        ):
+            errors.append("openai-docs skill requires openaiDeveloperDocs MCP server")
+    if data.get("sandbox_mode") == "workspace-write" and project_skill_texts:
+        if not any(WORKSPACE_APPLY_AUTHORITY in text for text in project_skill_texts):
+            errors.append(
+                "workspace-write agent has no project skill with explicit task write authority"
+            )
+    return errors
+
+
+def validate_agent_project_config(config_path: Path, agent_files: list[Path] | None = None) -> list[str]:
+    text, error = read_utf8_text(config_path)
+    if error:
+        return [error]
+    try:
+        data = tomllib.loads(text)
+    except tomllib.TOMLDecodeError as exc:
+        return [f"invalid toml: {exc}"]
+    errors: list[str] = []
+    agent_files = agent_files or []
+    uses_agent_sandbox = False
+    for agent_path in agent_files:
+        agent_text, agent_error = read_utf8_text(agent_path)
+        if agent_error:
+            continue
+        try:
+            uses_agent_sandbox = uses_agent_sandbox or "sandbox_mode" in tomllib.loads(agent_text)
+        except tomllib.TOMLDecodeError:
+            continue
+    if "default_permissions" in data and ("sandbox_mode" in data or uses_agent_sandbox):
+        errors.append("permission profiles and legacy sandbox_mode must not be composed")
+    if data.get("sandbox_mode") != "workspace-write":
+        errors.append("project config must set sandbox_mode = workspace-write")
+    agents = data.get("agents")
+    if not isinstance(agents, dict):
+        errors.append("project config missing [agents] table")
+        return errors
+    if agents.get("default_subagent_model") != "gpt-5.6-terra":
+        errors.append("generic subagents must default to gpt-5.6-terra")
+    if agents.get("default_subagent_reasoning_effort") != "medium":
+        errors.append("generic subagents must default to medium reasoning")
     return errors
 
 
@@ -422,13 +576,21 @@ def main_agents(argv: list[str]) -> int:
     files = sorted(root.glob("*.toml"))
     file_errors = {str(path): validate_agent_file(path) for path in files}
     errors = ["no agent TOML files found"] if not files else []
-    ok = bool(files) and all(not item for item in file_errors.values())
+    config_path = root.parent / "config.toml"
+    config_errors = validate_agent_project_config(config_path, files) if config_path.exists() else []
+    ok = (
+        bool(files)
+        and not errors
+        and not config_errors
+        and all(not item for item in file_errors.values())
+    )
     return print_json(
         {
             "ok": ok,
             "root": str(root),
             "files": [str(path) for path in files],
             "errors": errors,
+            "config_errors": config_errors,
             "file_errors": file_errors,
         }
     )

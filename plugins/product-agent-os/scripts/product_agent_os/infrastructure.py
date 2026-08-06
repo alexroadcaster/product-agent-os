@@ -431,6 +431,7 @@ def _validate_generated_files(
 ) -> dict[str, list[str]]:
     errors: dict[str, list[str]] = {}
     specs = {item.target_path: item for item in required_templates()}
+    available_prompt_paths = set(specs)
     with tempfile.TemporaryDirectory(prefix="product-agent-os-render-") as tmp:
         tmp_root = Path(tmp)
         for file in files:
@@ -444,7 +445,11 @@ def _validate_generated_files(
             elif stage_root is not None and not path.resolve().is_relative_to(stage_root.resolve()):
                 errors[spec.target_path] = ["staged path escapes output directory"]
                 continue
-            file_errors = _validate_file(spec, path)
+            file_errors = _validate_file(
+                spec,
+                path,
+                available_prompt_paths=available_prompt_paths,
+            )
             if file_errors:
                 errors[spec.target_path] = file_errors
     return errors
@@ -465,13 +470,21 @@ def _validation_context() -> dict[str, Any]:
     }
 
 
-def _validate_file(spec: TemplateSpec, path: Path) -> list[str]:
+def _validate_file(
+    spec: TemplateSpec,
+    path: Path,
+    *,
+    available_prompt_paths: set[str] | None = None,
+) -> list[str]:
     text = _read_validation_text(path)
     if text is None:
         return ["unable to read rendered file"]
     marker_errors = _unresolved_marker_errors(text)
     if spec.validation_kind == "agent":
-        return marker_errors + validate_agent_file(path)
+        return marker_errors + validate_agent_file(
+            path,
+            available_prompt_paths=available_prompt_paths,
+        )
     if spec.validation_kind == "hook":
         return marker_errors + validate_hook_file(path)
     if spec.validation_kind == "hook_json":

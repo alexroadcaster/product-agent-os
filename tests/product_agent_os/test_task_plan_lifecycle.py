@@ -92,9 +92,7 @@ class TaskPlanLifecycleTest(unittest.TestCase):
         for path in (ROOT / ".codex" / "agents").glob("*.toml"):
             text = path.read_text(encoding="utf-8")
             with self.subTest(agent=path.name):
-                self.assertIn("config-routed lifecycle workflow contract", text)
-                self.assertIn("[product_agent_os.lifecycle_contract]", text)
-                self.assertIn("[workflows]", text)
+                self.assertIn(".codex/config.toml", text)
                 self.assertIn("Task Brief", text)
                 self.assertIn("Completion Brief", text)
 

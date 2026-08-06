@@ -404,7 +404,7 @@ verification_status: "Current compaction preserves test-visible markers; full ev
 - Product-Agent OS root README compaction and product-entrypoint ownership (checked_at=2026-06-07, trust=high)
 - Product-Agent OS root control-plane current-state owner page, route `docs/product-agent-os/control-plane-current-state.md`, with `PLAN.md`, `RUNLOG.md`, `TEST.md` and `EVALS.md` compacted under the root routing contract and cold batch ledgers moved to source-owned docs/spec/backlog artifacts (checked_at=2026-07-07, trust=high for local docs/control-plane source routing; no runtime/browser/provider/target/git/release/deploy/automation claim)
 - Product-Agent OS system file hygiene audit (checked_at=2026-06-07, trust=high)
-- Codex Docs GPT-5.6 system-file audit and active control-plane remediation, source report `research/2026-07-23-codex-gpt-5p6-system-files-audit.md` (checked_at=2026-07-23, trust=high for current repository/config/contract-test evidence; fresh-session `SessionStart` and behavioral quality/cost/latency promotion remain unverified)
+- Codex Docs GPT-5.6 system-file audit and R1-R6 follow-up remediation, source report `research/2026-07-23-codex-gpt-5p6-system-files-audit.md` (checked_at=2026-08-06, trust=high for current repository/config/contract-test evidence; fresh-session MCP/`SessionStart` and behavioral quality/cost/latency promotion remain unverified)
 - Product-Agent OS Batch 40 S5 Doubt verifier pilot metrics and closure (checked_at=2026-06-10, trust=high)
 
 ## Compact verification marker appendix
