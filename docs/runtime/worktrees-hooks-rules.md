@@ -1,7 +1,7 @@
 ﻿# Worktrees, hooks, rules
 
 Source status: `official + experiment`  
-Источники: [Codex best practices](https://developers.openai.com/codex/learn/best-practices), [Codex worktrees](https://developers.openai.com/codex/app/worktrees), [Codex hooks](https://developers.openai.com/codex/config/hooks), [Codex rules](https://developers.openai.com/codex/config/rules), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security).
+Источники: [Codex best practices](https://developers.openai.com/codex/learn/best-practices), [Codex worktrees](https://developers.openai.com/codex/app/worktrees), [Codex hooks](https://developers.openai.com/codex/hooks), [Codex rules](https://developers.openai.com/codex/config/rules), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security).
 
 ## Worktree strategy
 
@@ -33,9 +33,11 @@ Product-Agent OS поставляет staged hooks через `plugins/product-a
 Lifecycle guard устроен так:
 
 - `SessionStart` показывает наличие control-plane и lifecycle файлов;
-- `PreToolUse` пропускает read-only discovery, но блокирует mutating/non-read-only команды без `.codex/product-agent-os/lifecycle-state.json`;
+- `PreToolUse` пропускает read-only discovery по fast path без чтения marker, но блокирует mutating/non-read-only команды без `.codex/product-agent-os/lifecycle-state.json`;
 - marker должен появиться только после видимого пользователю полного стартового брифа в формате списка полей и содержать `task_start_brief_shown`, `task_id`, `scope`, `updated_at`, `approval_boundary`, `brief_schema_version: task_start_brief_v1`, `brief_format: field_list`, `brief_digest` и `brief_fields_present` со всеми обязательными полями стартового брифа;
-- `PostToolUse` и `Stop` напоминают про evidence, `RUNLOG.md`, control-plane sync и user-visible `Completion Brief`.
+- per-write `PostToolUse` проверяет comment sufficiency только для путей текущего patch, а не повторно для всего dirty worktree;
+- после всех записей, проверок и control-plane sync marker переходит в `ready_for_completion_brief`; дальнейшие mutations блокируются;
+- `Stop` принимает один terminal `Completion Brief` с полным набором полей без continuation, а при неполном Brief запрашивает не более одной корректирующей continuation. После валидного Brief tool calls запрещены.
 
 Marker не является transcript store: в него нельзя помещать raw chat, secrets, private source bodies, private customer data или credentials. Activation hooks остаётся отдельным approval boundary.
 

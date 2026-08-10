@@ -1,0 +1,690 @@
+{
+  "schema_version": "batch45_code_quality_runtime_recovery_agent_team_v1",
+  "team_design_id": "B45-CQRR-TEAM",
+  "evidence_id": "B45-CQRR-A02",
+  "parent_task_group_id": "B45-CODE-QUALITY-RUNTIME-RECOVERY",
+  "handoff_artifact": "docs/superpowers/specs/batch45-s9-0-fresh-context-handoffs.json",
+  "handoff_evidence_id": "B45-CQRR-A03",
+  "status": "team_handoffs_ready_no_dispatch",
+  "checked_at": "2026-08-10",
+  "source_status": "Source-owned agent, skill, write-scope and handoff plan for B45-S9. B45-CQRR-A03 provides complete local fresh-context handoffs and resolves test-write ownership; this proves handoff readiness only and does not dispatch agents, start T23-T34 implementation, authorize external calls or prove implementation quality.",
+  "lifecycle_state": "team_handoffs_ready_no_task_dispatch",
+  "coordination": {
+    "role": "lifecycle-orchestrator",
+    "skills": [
+      "project-lifecycle-orchestrator",
+      "agent-team-designer"
+    ],
+    "before_first_task": [
+      "Load the completed B45-S9-0 Task Brief and the task-specific B45-CQRR-A03 fresh-context handoff before starting a task.",
+      "Confirm the handoff's dependency, ownership, commands, approval boundary and stop conditions still match current source state.",
+      "Keep provider_call_allowed=false and external_call_performed=false through T33."
+    ],
+    "parallel_execution_skill": "dispatching-parallel-agents",
+    "parallel_execution_allowed_only_for": [
+      "B45-CQRR-T30",
+      "B45-CQRR-T31"
+    ],
+    "parallel_execution_preconditions": [
+      "T29 is complete with current evidence.",
+      "T30 and T31 have separate fresh-context handoffs and disjoint write scopes.",
+      "Neither worker writes shared control-plane, registry or release files.",
+      "Sequential fallback is used on any ownership or schema ambiguity."
+    ]
+  },
+  "ownership_semantics": {
+    "accountable_role": "Owns the task decision and acceptance boundary; this does not imply permission to edit every proposed file.",
+    "writer_roles": "May edit only the files listed in write_scope_by_role after a fresh-context handoff.",
+    "verification_roles": "Own current command evidence and may write only assigned tests, fixtures or result packets.",
+    "independent_review_roles": "Remain read-only and do not edit the implementation or evidence they judge.",
+    "claim_gate_role": "Accepts or rejects readiness and completion language from current evidence; does not implement fixes.",
+    "docs_owner_role": "Serially updates source registry, plan pointers and reader-facing documentation after the task or group gate closes."
+  },
+  "role_registry": {
+    "lifecycle-orchestrator": {
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "sandbox_mode": "workspace-write",
+      "skills": [
+        "project-lifecycle-orchestrator",
+        "agent-team-designer"
+      ]
+    },
+    "architect": {
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "sandbox_mode": "workspace-write",
+      "skills": [
+        "implementation-planner",
+        "documentation-and-adrs",
+        "python-design-patterns"
+      ]
+    },
+    "plugin-runtime-builder": {
+      "model": "gpt-5.6-terra",
+      "reasoning_effort": "medium",
+      "sandbox_mode": "workspace-write",
+      "skills": [
+        "python-code-style",
+        "python-design-patterns",
+        "tdd",
+        "executing-plans"
+      ]
+    },
+    "tester": {
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "sandbox_mode": "workspace-write",
+      "skills": [
+        "test-eval-designer",
+        "tdd",
+        "verification-before-completion"
+      ]
+    },
+    "reviewer": {
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "sandbox_mode": "read-only",
+      "skills": [
+        "risk-reviewer",
+        "verification-before-completion"
+      ]
+    },
+    "completion-skeptic": {
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "sandbox_mode": "read-only",
+      "skills": [
+        "completion-skeptic",
+        "verification-before-completion",
+        "handoff"
+      ]
+    },
+    "security-privacy-supply-chain-reviewer": {
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "sandbox_mode": "read-only",
+      "skills": [
+        "risk-reviewer",
+        "security-review",
+        "verification-before-completion"
+      ]
+    },
+    "docs-maintainer": {
+      "model": "gpt-5.6-terra",
+      "reasoning_effort": "medium",
+      "sandbox_mode": "workspace-write",
+      "skills": [
+        "docs-maintainer",
+        "documentation-and-adrs"
+      ]
+    },
+    "release-operator": {
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "sandbox_mode": "read-only",
+      "skills": [
+        "pr-release-operator",
+        "risk-reviewer",
+        "verification-before-completion"
+      ]
+    }
+  },
+  "execution_groups": [
+    {
+      "group_id": "B45-S9-0",
+      "title": "Team readiness and fresh-context handoffs",
+      "tasks": [],
+      "mode": "sequential_precondition",
+      "owner": "lifecycle-orchestrator",
+      "exit_evidence": "Task-scoped lifecycle brief plus complete disjoint handoffs for T23-T34; no agent dispatch is implied by this plan."
+    },
+    {
+      "group_id": "B45-S9-A",
+      "title": "Durable contract recovery",
+      "tasks": [
+        "B45-CQRR-T23",
+        "B45-CQRR-T24"
+      ],
+      "mode": "coupled_red_green_sequential",
+      "micro_order": [
+        "T23 architecture contract freeze",
+        "T24 failing T21 regression fixture",
+        "T23 runtime implementation",
+        "T24 green plus seeded-corruption proof",
+        "Independent read-only review"
+      ]
+    },
+    {
+      "group_id": "B45-S9-B",
+      "title": "Compact authoring runtime",
+      "tasks": [
+        "B45-CQRR-T25",
+        "B45-CQRR-T26",
+        "B45-CQRR-T27"
+      ],
+      "mode": "strictly_sequential"
+    },
+    {
+      "group_id": "B45-S9-C",
+      "title": "Test and metric repair",
+      "tasks": [
+        "B45-CQRR-T28",
+        "B45-CQRR-T29"
+      ],
+      "mode": "strictly_sequential"
+    },
+    {
+      "group_id": "B45-S9-D",
+      "title": "Independent eval design",
+      "tasks": [
+        "B45-CQRR-T30",
+        "B45-CQRR-T31",
+        "B45-CQRR-T32"
+      ],
+      "mode": "T30_and_T31_parallel_then_T32_sequential_join"
+    },
+    {
+      "group_id": "B45-S9-E",
+      "title": "Readiness and approval-bound decision",
+      "tasks": [
+        "B45-CQRR-T33",
+        "B45-CQRR-T34"
+      ],
+      "mode": "T33_local_then_stop_for_exact_approval_before_T34"
+    }
+  ],
+  "task_assignments": [
+    {
+      "task_id": "B45-CQRR-T23",
+      "accountable_role": "plugin-runtime-builder",
+      "design_authority_role": "architect",
+      "writer_roles": [
+        "plugin-runtime-builder"
+      ],
+      "verification_roles": [
+        "tester"
+      ],
+      "independent_review_roles": [
+        "reviewer"
+      ],
+      "claim_gate_role": "completion-skeptic",
+      "docs_owner_role": "docs-maintainer",
+      "required_skill_sets": [
+        "architect",
+        "plugin-runtime-builder",
+        "tester",
+        "reviewer",
+        "completion-skeptic",
+        "docs-maintainer"
+      ],
+      "write_scope_by_role": {
+        "plugin-runtime-builder": [
+          "plugins/product-agent-os/scripts/codex_runtime_runner/promotion_contract.py",
+          "plugins/product-agent-os/scripts/codex_runtime_runner/model_output.py"
+        ]
+      },
+      "handoff_sequence": [
+        "architect -> tester: versioned contract fields and T21 regression expectation",
+        "tester -> plugin-runtime-builder: failing regression evidence",
+        "plugin-runtime-builder -> tester: implementation diff and focused commands",
+        "tester -> reviewer -> completion-skeptic -> docs-maintainer"
+      ]
+    },
+    {
+      "task_id": "B45-CQRR-T24",
+      "accountable_role": "tester",
+      "writer_roles": [
+        "tester"
+      ],
+      "verification_roles": [
+        "tester"
+      ],
+      "independent_review_roles": [
+        "reviewer"
+      ],
+      "claim_gate_role": "completion-skeptic",
+      "docs_owner_role": "docs-maintainer",
+      "required_skill_sets": [
+        "tester",
+        "reviewer",
+        "completion-skeptic",
+        "docs-maintainer"
+      ],
+      "write_scope_by_role": {
+        "tester": [
+          "tests/product_agent_os/test_codex_runtime_runner_promotion_contract.py",
+          "tests/fixtures/product_agent_os/batch45/promotion-contract/"
+        ]
+      },
+      "handoff_sequence": [
+        "tester red fixture -> T23 writer",
+        "T23 writer -> tester green and seeded corruption",
+        "tester -> reviewer -> completion-skeptic -> docs-maintainer"
+      ]
+    },
+    {
+      "task_id": "B45-CQRR-T25",
+      "accountable_role": "architect",
+      "writer_roles": [
+        "plugin-runtime-builder",
+        "tester"
+      ],
+      "verification_roles": [
+        "tester"
+      ],
+      "independent_review_roles": [
+        "reviewer"
+      ],
+      "claim_gate_role": "completion-skeptic",
+      "docs_owner_role": "docs-maintainer",
+      "required_skill_sets": [
+        "architect",
+        "plugin-runtime-builder",
+        "tester",
+        "reviewer",
+        "completion-skeptic",
+        "docs-maintainer"
+      ],
+      "write_scope_by_role": {
+        "plugin-runtime-builder": [
+          "plugins/product-agent-os/assets/templates/artifact-templates/code-change-contract.md",
+          "plugins/product-agent-os/assets/templates/workflows/coding-standards.md",
+          "plugins/product-agent-os/assets/templates/artifact-templates/coding-standard-checklist.md"
+        ],
+        "tester": [
+          "tests/product_agent_os/test_batch45_coding_standards.py"
+        ]
+      },
+      "handoff_sequence": [
+        "architect compact-contract decision -> plugin-runtime-builder",
+        "plugin-runtime-builder -> tester context-size and contract checks",
+        "tester -> reviewer -> completion-skeptic -> docs-maintainer"
+      ]
+    },
+    {
+      "task_id": "B45-CQRR-T26",
+      "accountable_role": "plugin-runtime-builder",
+      "design_authority_role": "architect",
+      "writer_roles": [
+        "plugin-runtime-builder",
+        "tester"
+      ],
+      "verification_roles": [
+        "tester"
+      ],
+      "independent_review_roles": [
+        "reviewer"
+      ],
+      "claim_gate_role": "completion-skeptic",
+      "docs_owner_role": "docs-maintainer",
+      "required_skill_sets": [
+        "architect",
+        "plugin-runtime-builder",
+        "tester",
+        "reviewer",
+        "completion-skeptic",
+        "docs-maintainer"
+      ],
+      "write_scope_by_role": {
+        "plugin-runtime-builder": [
+          "plugins/product-agent-os/scripts/product_agent_os/code_quality_selector.py",
+          "plugins/product-agent-os/assets/templates/artifact-templates/code-quality-profile.md"
+        ],
+        "tester": [
+          "tests/product_agent_os/test_batch45_code_quality_behavior.py"
+        ]
+      },
+      "handoff_sequence": [
+        "architect stack/risk boundary -> plugin-runtime-builder",
+        "plugin-runtime-builder -> tester synthetic stack and not-applicable cases",
+        "tester -> reviewer -> completion-skeptic -> docs-maintainer"
+      ]
+    },
+    {
+      "task_id": "B45-CQRR-T27",
+      "accountable_role": "tester",
+      "design_authority_role": "architect",
+      "writer_roles": [
+        "plugin-runtime-builder",
+        "tester"
+      ],
+      "verification_roles": [
+        "tester"
+      ],
+      "independent_review_roles": [
+        "reviewer"
+      ],
+      "claim_gate_role": "completion-skeptic",
+      "docs_owner_role": "docs-maintainer",
+      "required_skill_sets": [
+        "architect",
+        "plugin-runtime-builder",
+        "tester",
+        "reviewer",
+        "completion-skeptic",
+        "docs-maintainer"
+      ],
+      "write_scope_by_role": {
+        "plugin-runtime-builder": [
+          "plugins/product-agent-os/scripts/product_agent_os/test_strategy_selector.py",
+          "plugins/product-agent-os/assets/templates/artifact-templates/quality-strategy.md"
+        ],
+        "tester": [
+          "tests/product_agent_os/test_batch45_code_quality_behavior.py"
+        ]
+      },
+      "handoff_sequence": [
+        "architect risk semantics plus tester acceptance matrix -> plugin-runtime-builder",
+        "plugin-runtime-builder -> tester parameterized and negative routing cases",
+        "tester -> reviewer -> completion-skeptic -> docs-maintainer"
+      ]
+    },
+    {
+      "task_id": "B45-CQRR-T28",
+      "accountable_role": "tester",
+      "writer_roles": [
+        "tester"
+      ],
+      "verification_roles": [
+        "tester"
+      ],
+      "independent_review_roles": [
+        "reviewer"
+      ],
+      "claim_gate_role": "completion-skeptic",
+      "docs_owner_role": "docs-maintainer",
+      "required_skill_sets": [
+        "tester",
+        "reviewer",
+        "completion-skeptic",
+        "docs-maintainer"
+      ],
+      "write_scope_by_role": {
+        "tester": [
+          "tests/product_agent_os/test_coding_standards_artifacts.py",
+          "tests/product_agent_os/test_batch45_packet_contracts.py",
+          "tests/product_agent_os/test_batch45_code_quality_behavior.py"
+        ]
+      },
+      "handoff_sequence": [
+        "tester baseline inventory and seeded faults -> tester refactor",
+        "tester current evidence -> reviewer",
+        "reviewer -> completion-skeptic -> docs-maintainer"
+      ]
+    },
+    {
+      "task_id": "B45-CQRR-T29",
+      "accountable_role": "architect",
+      "writer_roles": [
+        "plugin-runtime-builder",
+        "tester"
+      ],
+      "verification_roles": [
+        "tester"
+      ],
+      "independent_review_roles": [
+        "reviewer"
+      ],
+      "claim_gate_role": "completion-skeptic",
+      "docs_owner_role": "docs-maintainer",
+      "required_skill_sets": [
+        "architect",
+        "plugin-runtime-builder",
+        "tester",
+        "reviewer",
+        "completion-skeptic",
+        "docs-maintainer"
+      ],
+      "write_scope_by_role": {
+        "plugin-runtime-builder": [
+          "plugins/product-agent-os/scripts/product_agent_os/code_quality_metrics.py",
+          "plugins/product-agent-os/assets/templates/evals/code-quality-metrics.json"
+        ],
+        "tester": [
+          "tests/product_agent_os/test_batch45_code_quality_metrics.py"
+        ]
+      },
+      "handoff_sequence": [
+        "architect metric semantics -> plugin-runtime-builder",
+        "plugin-runtime-builder -> tester deterministic aggregation and mutation cases",
+        "tester -> reviewer -> completion-skeptic -> docs-maintainer"
+      ]
+    },
+    {
+      "task_id": "B45-CQRR-T30",
+      "accountable_role": "architect",
+      "writer_roles": [
+        "plugin-runtime-builder",
+        "tester"
+      ],
+      "verification_roles": [
+        "tester"
+      ],
+      "independent_review_roles": [
+        "reviewer"
+      ],
+      "claim_gate_role": "completion-skeptic",
+      "docs_owner_role": "docs-maintainer",
+      "required_skill_sets": [
+        "architect",
+        "plugin-runtime-builder",
+        "tester",
+        "reviewer",
+        "completion-skeptic",
+        "docs-maintainer"
+      ],
+      "write_scope_by_role": {
+        "plugin-runtime-builder": [
+          "plugins/product-agent-os/assets/templates/evals/code-quality-reviewer-rubric.json",
+          "plugins/product-agent-os/scripts/codex_runtime_runner/reviewer_contract.py"
+        ],
+        "tester": [
+          "tests/product_agent_os/test_batch45_code_quality_reviewer.py"
+        ]
+      },
+      "handoff_sequence": [
+        "architect and tester blinded-contract acceptance -> plugin-runtime-builder",
+        "plugin-runtime-builder -> tester synthetic blinding checks",
+        "tester -> independent reviewer -> completion-skeptic -> docs-maintainer"
+      ],
+      "independence_rule": "The reviewer never authors or edits the rubric, reviewer runtime or evidence it later judges."
+    },
+    {
+      "task_id": "B45-CQRR-T31",
+      "accountable_role": "tester",
+      "writer_roles": [
+        "tester"
+      ],
+      "verification_roles": [
+        "tester"
+      ],
+      "independent_review_roles": [
+        "reviewer",
+        "security-privacy-supply-chain-reviewer"
+      ],
+      "claim_gate_role": "completion-skeptic",
+      "docs_owner_role": "docs-maintainer",
+      "required_skill_sets": [
+        "tester",
+        "reviewer",
+        "security-privacy-supply-chain-reviewer",
+        "completion-skeptic",
+        "docs-maintainer"
+      ],
+      "write_scope_by_role": {
+        "tester": [
+          "tests/fixtures/product_agent_os/batch45/code-quality-corpus/",
+          "docs/superpowers/specs/batch45-code-quality-heldout-corpus.json",
+          "tests/product_agent_os/test_batch45_code_quality_corpus.py"
+        ]
+      },
+      "handoff_sequence": [
+        "tester corpus design and hash freeze -> security/privacy review",
+        "security/privacy reviewer -> reviewer difficulty/risk review",
+        "reviewer -> completion-skeptic -> docs-maintainer"
+      ]
+    },
+    {
+      "task_id": "B45-CQRR-T32",
+      "accountable_role": "architect",
+      "writer_roles": [
+        "architect",
+        "tester"
+      ],
+      "verification_roles": [
+        "tester"
+      ],
+      "independent_review_roles": [
+        "reviewer"
+      ],
+      "claim_gate_role": "completion-skeptic",
+      "docs_owner_role": "docs-maintainer",
+      "required_skill_sets": [
+        "architect",
+        "tester",
+        "reviewer",
+        "completion-skeptic",
+        "docs-maintainer"
+      ],
+      "write_scope_by_role": {
+        "architect": [
+          "plugins/product-agent-os/assets/templates/evals/code-quality-baseline-prompt.md",
+          "plugins/product-agent-os/assets/templates/evals/code-quality-treatment-prompt.md",
+          "docs/superpowers/specs/batch45-code-quality-eval-design.json"
+        ],
+        "tester": [
+          "tests/product_agent_os/test_batch45_code_quality_eval_design.py"
+        ]
+      },
+      "handoff_sequence": [
+        "T30 and T31 evidence -> architect isolated treatment",
+        "architect -> tester digest and one-variable checks",
+        "tester -> reviewer -> completion-skeptic -> docs-maintainer"
+      ]
+    },
+    {
+      "task_id": "B45-CQRR-T33",
+      "accountable_role": "completion-skeptic",
+      "writer_roles": [
+        "tester"
+      ],
+      "verification_roles": [
+        "tester",
+        "completion-skeptic"
+      ],
+      "independent_review_roles": [
+        "reviewer"
+      ],
+      "claim_gate_role": "completion-skeptic",
+      "docs_owner_role": "docs-maintainer",
+      "required_skill_sets": [
+        "tester",
+        "reviewer",
+        "completion-skeptic",
+        "docs-maintainer"
+      ],
+      "write_scope_by_role": {
+        "tester": [
+          "docs/superpowers/specs/batch45-code-quality-local-readiness.json"
+        ]
+      },
+      "handoff_sequence": [
+        "tester current local evidence -> completion-skeptic verdict",
+        "completion-skeptic -> reviewer claim/risk review",
+        "reviewer -> tester factual packet finalization -> docs-maintainer"
+      ],
+      "provider_call_allowed": false
+    },
+    {
+      "task_id": "B45-CQRR-T34",
+      "accountable_role": "release-operator",
+      "writer_roles": [
+        "docs-maintainer",
+        "tester"
+      ],
+      "verification_roles": [
+        "tester"
+      ],
+      "independent_review_roles": [
+        "reviewer",
+        "security-privacy-supply-chain-reviewer"
+      ],
+      "claim_gate_role": "completion-skeptic",
+      "docs_owner_role": "docs-maintainer",
+      "required_skill_sets": [
+        "release-operator",
+        "tester",
+        "reviewer",
+        "security-privacy-supply-chain-reviewer",
+        "completion-skeptic",
+        "docs-maintainer"
+      ],
+      "write_scope_by_role": {
+        "docs-maintainer": [
+          "docs/superpowers/specs/batch45-code-quality-eval-approval-packet.json",
+          "docs/superpowers/specs/batch45-code-quality-promotion-decision.json"
+        ],
+        "tester": [
+          "docs/superpowers/specs/batch45-code-quality-eval-results.json"
+        ]
+      },
+      "handoff_sequence": [
+        "release-operator draft recommendation -> docs-maintainer approval packet",
+        "stop for new exact owner approval",
+        "approved eval runner under tester evidence ownership -> tester sanitized result packet",
+        "tester -> security/privacy reviewer -> independent blinded reviewer",
+        "reviewer -> completion-skeptic -> release-operator go/no-go -> docs-maintainer decision packet"
+      ],
+      "provider_call_allowed": false,
+      "provider_call_activation_condition": "T33 is green and a separate exact unconsumed owner approval names model, effort, call cap, timeout, cost, retention and reviewer policy."
+    }
+  ],
+  "global_handoff_contract": {
+    "required_fields": [
+      "task_row_id",
+      "complete_task_context",
+      "source_constraints",
+      "allowed_sources",
+      "inputs_used",
+      "owned_files",
+      "forbidden_files",
+      "dependency_status",
+      "expected_evidence",
+      "handoff_output_schema",
+      "stop_conditions",
+      "docs_update_path_assigned",
+      "sequential_fallback"
+    ],
+    "handoff_output_schema": [
+      "files_touched",
+      "files_proposed",
+      "commands_run",
+      "verification_evidence",
+      "unsupported_claims",
+      "risks",
+      "stop_reason",
+      "next_agent_task"
+    ],
+    "forbidden_context": [
+      "Raw conversation history as the worker task packet",
+      "Secrets, credentials, private source bodies, customer data or raw private chats",
+      "Generated dashboards or historical logs as completion proof"
+    ]
+  },
+  "global_stop_conditions": [
+    "Stop on overlapping write scope or a missing fresh-context handoff.",
+    "Stop when a read-only reviewer is asked to edit implementation or result evidence.",
+    "Stop when a task changes files outside its write_scope_by_role.",
+    "Stop before hooks, automation, MCP, Agents SDK runner, external writes or provider calls without a separate exact approval.",
+    "Stop and keep Batch 45 advisory-only/no-go when current evidence is invalid, incomplete or contradictory."
+  ],
+  "does_not_authorize": [
+    "Agent dispatch or parallel execution",
+    "Code, template, test, fixture or evidence implementation",
+    "Provider, model or reviewer calls",
+    "Git operations, release, deployment or publication",
+    "Promotion or production-readiness claims"
+  ],
+  "next_lifecycle_state": "team_ready_after_task_scoped_lifecycle_brief_and_fresh_context_handoffs"
+}

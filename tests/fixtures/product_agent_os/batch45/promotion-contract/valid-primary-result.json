@@ -1,0 +1,41 @@
+{
+  "schema_version": "batch45_postq4_promotion_grade_primary_result_v1",
+  "corpus_id": "B45-POSTQ4-FROZEN-HELDOUT-CORPUS-V1",
+  "corpus_version": "v1",
+  "task_id": "B45-POSTQ4-H1-LEGACY-HOOK-REGRESSION",
+  "arm": "baseline",
+  "model_id": "synthetic-model",
+  "model_reasoning_effort": "medium",
+  "result_class": "valid_result",
+  "changed_files": [
+    {
+      "path": "src/synthetic_example.py",
+      "change_type": "M"
+    }
+  ],
+  "behavior_score": 0.75,
+  "dimension_scores": {
+    "existing_capability_scan": 8,
+    "custom_code_avoidance": 8,
+    "comment_sufficiency": 7,
+    "test_scenario_coverage": 8,
+    "unsupported_claims": 9,
+    "reviewer_usefulness": 7,
+    "privacy_safety": 10,
+    "flake_cost_control": 8
+  },
+  "evidence_summary": "Synthetic contract fixture with no private or live output.",
+  "tests_or_checks": [
+    {
+      "name": "synthetic focused check",
+      "status": "passed"
+    }
+  ],
+  "unsupported_claims": [],
+  "privacy_safety": {
+    "raw_private_source_body_retained": false,
+    "secret_or_unredacted_pii_retained": false,
+    "raw_private_chat_retained": false
+  },
+  "final_summary_retention": "repo_sanitized_rollup_only"
+}

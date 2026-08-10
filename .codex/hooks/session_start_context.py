@@ -82,8 +82,8 @@ def main() -> int:
         + ". For non-mechanical work, show a user-visible task_start_brief_v1 "
         + "Task Brief with fields: "
         + ", ".join(TASK_BRIEF_REQUIRED_FIELDS)
-        + ". Record the marker before mutations, run control-plane sync when owned state changes, and show a "
-        + "Completion Brief before closure."
+        + ". Record the marker before mutations, finish control-plane sync and all checks, set "
+        + "ready_for_completion_brief, and show one terminal final Completion Brief with no later tool calls."
     )
     print(
         json.dumps(

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -14,13 +15,15 @@ ROOT_ENV = "CODEX_COMMENT_ADVISORY_ROOT"
 LEGACY_DISABLE_ENV = "B45_COMMENT_ADVISORY_DISABLED"
 LEGACY_ROOT_ENV = "B45_COMMENT_ADVISORY_ROOT"
 MAX_CHANGED_FILES = 20
+PATCH_PATH_RE = re.compile(r"^\*\*\* (?:Add|Delete|Update) File: (.+)$", re.MULTILINE)
+PATH_KEYS = {"file", "file_path", "path"}
 
 
 def _env_value(primary: str, legacy: str) -> str | None:
     return os.environ.get(primary) or os.environ.get(legacy)
 
 
-def _workspace_root() -> tuple[Path | None, str | None]:
+def _workspace_root(payload: dict[str, Any]) -> tuple[Path | None, str | None]:
     """Resolve the target workspace while keeping the hook reusable in temp test repos."""
     env_root = _env_value(ROOT_ENV, LEGACY_ROOT_ENV)
     if env_root:
@@ -28,6 +31,12 @@ def _workspace_root() -> tuple[Path | None, str | None]:
         if not candidate.exists() or not candidate.is_dir():
             return None, "configured root is missing or is not a directory"
         return candidate, None
+    payload_cwd = payload.get("cwd")
+    if isinstance(payload_cwd, str) and payload_cwd.strip():
+        current = Path(payload_cwd).resolve()
+        for candidate in [current, *current.parents]:
+            if (candidate / ".codex").exists():
+                return candidate, None
     try:
         result = subprocess.run(
             ["git", "rev-parse", "--show-toplevel"],
@@ -111,6 +120,36 @@ def _changed_paths(root: Path) -> list[Path]:
     return sorted(seen, key=lambda item: item.as_posix())
 
 
+def _payload_path_strings(value: Any) -> list[str]:
+    """Extract file paths from the current tool payload without scanning the dirty worktree."""
+    if isinstance(value, dict):
+        paths: list[str] = []
+        for key, item in value.items():
+            if key in PATH_KEYS and isinstance(item, str):
+                paths.append(item)
+            paths.extend(_payload_path_strings(item))
+        return paths
+    if isinstance(value, list):
+        return [path for item in value for path in _payload_path_strings(item)]
+    if isinstance(value, str):
+        return PATCH_PATH_RE.findall(value)
+    return []
+
+
+def _resolve_payload_paths(root: Path, payload: dict[str, Any]) -> list[Path]:
+    paths: set[Path] = set()
+    for raw_path in _payload_path_strings(payload):
+        candidate = Path(raw_path)
+        path = candidate.resolve() if candidate.is_absolute() else (root / candidate).resolve()
+        try:
+            path.relative_to(root)
+        except ValueError:
+            continue
+        if path.exists() and path.suffix in SUPPORTED_SUFFIXES:
+            paths.add(path)
+    return sorted(paths, key=lambda item: item.as_posix())
+
+
 def _display_paths(paths: Iterable[Path], root: Path) -> list[str]:
     result: list[str] = []
     for path in paths:
@@ -141,12 +180,17 @@ def _emit_system_message(message: str) -> None:
 
 def main() -> int:
     """Run changed-file comment-sufficiency checks as a non-blocking PostToolUse signal."""
-    sys.stdin.read()
+    raw_payload = sys.stdin.read()
+    try:
+        parsed_payload = json.loads(raw_payload) if raw_payload.strip() else {}
+    except json.JSONDecodeError:
+        parsed_payload = {}
+    payload = parsed_payload if isinstance(parsed_payload, dict) else {}
     disabled = (_env_value(DISABLE_ENV, LEGACY_DISABLE_ENV) or "").lower() in {"1", "true", "yes"}
     if disabled:
         return 0
 
-    root, root_error = _workspace_root()
+    root, root_error = _workspace_root(payload)
     if root is None:
         _emit_system_message(
             "Comment sufficiency advisory failed open because the configured workspace root is invalid ("
@@ -164,7 +208,8 @@ def main() -> int:
         )
         return 0
 
-    changed = _changed_paths(root)
+    payload_paths = _resolve_payload_paths(root, payload)
+    changed = payload_paths if _payload_path_strings(payload) else _changed_paths(root)
     if len(changed) > MAX_CHANGED_FILES:
         _emit_system_message(
             f"Comment sufficiency advisory skipped {len(changed)} changed source files because the automatic cap "

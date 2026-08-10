@@ -68,11 +68,17 @@ LIFECYCLE_MARKER_WRITE_PATTERNS = [
 ]
 
 
-def _workspace_root() -> Path:
+def _workspace_root(payload: dict[str, Any] | None = None) -> Path:
     """Resolve the project root without exposing it in hook output."""
     override = os.environ.get(WORKSPACE_ROOT_ENV)
     if override:
         return Path(override).resolve()
+    payload_cwd = payload.get("cwd") if payload else None
+    if isinstance(payload_cwd, str) and payload_cwd.strip():
+        current = Path(payload_cwd).resolve()
+        for candidate in [current, *current.parents]:
+            if (candidate / ".codex").exists():
+                return candidate
     try:
         result = subprocess.run(
             ["git", "rev-parse", "--show-toplevel"],
@@ -248,13 +254,14 @@ def main() -> int:
 
     mutating = _is_mutating(tool, command)
     marker_write = _is_lifecycle_marker_write(command)
-    marker_ok, marker_reason = _lifecycle_marker_ok(_workspace_root() / LIFECYCLE_STATE_REL)
-    if mutating and not marker_write and not marker_ok:
-        reasons.append(
-            "Mutating Product-Agent OS work requires a current user-visible Task Brief and active lifecycle marker: "
-            + marker_reason
-            + "."
-        )
+    if mutating and not marker_write:
+        marker_ok, marker_reason = _lifecycle_marker_ok(_workspace_root(payload) / LIFECYCLE_STATE_REL)
+        if not marker_ok:
+            reasons.append(
+                "Mutating Product-Agent OS work requires a current user-visible Task Brief and active lifecycle marker: "
+                + marker_reason
+                + "."
+            )
 
     if reasons:
         _deny(" ".join(dict.fromkeys(reasons)))

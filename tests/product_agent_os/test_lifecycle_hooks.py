@@ -1,4 +1,6 @@
 import json
+import importlib.util
+import io
 import os
 import subprocess
 import sys
@@ -6,6 +8,7 @@ import tempfile
 import unittest
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -72,6 +75,15 @@ def write_marker(root: Path, marker: dict[str, object]) -> None:
     state.write_text(json.dumps(marker), encoding="utf-8")
 
 
+def load_hook_module(script: Path):
+    spec = importlib.util.spec_from_file_location(f"test_{script.stem}", script)
+    if spec is None or spec.loader is None:
+        raise AssertionError(f"Unable to load hook module: {script.name}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 class LifecycleHooksTest(unittest.TestCase):
     def test_project_local_hooks_use_official_codex_shape_and_match_packaged_template(self):
         active = json.loads(ACTIVE_HOOKS_JSON.read_text(encoding="utf-8"))
@@ -90,10 +102,12 @@ class LifecycleHooksTest(unittest.TestCase):
                         self.assertIn("/.codex/hooks/", handler["command"])
                         self.assertEqual(handler["command"], handler["commandWindows"])
                         self.assertGreater(handler["timeout"], 0)
+                        self.assertLessEqual(handler["timeout"], 5)
                         self.assertIn("statusMessage", handler)
 
         self.assertEqual("startup|resume|clear|compact", hooks["SessionStart"][0]["matcher"])
         self.assertIn("apply_patch", hooks["PreToolUse"][0]["matcher"])
+        self.assertNotIn("Bash", hooks["PostToolUse"][0]["matcher"])
         self.assertNotIn("matcher", hooks["Stop"][0])
 
     def test_project_local_hook_scripts_match_packaged_templates(self):
@@ -153,7 +167,10 @@ class LifecycleHooksTest(unittest.TestCase):
             env["CODEX_COMMENT_ADVISORY_ROOT"] = str(root)
             result = run_hook(
                 LOCAL_HOOKS / "comment_sufficiency_advisory.py",
-                {"tool_name": "apply_patch"},
+                {
+                    "tool_name": "apply_patch",
+                    "tool_input": {"command": "*** Update File: complex_case.py"},
+                },
                 ROOT,
                 env,
             )
@@ -166,6 +183,44 @@ class LifecycleHooksTest(unittest.TestCase):
         self.assertIn("complex_case.py", output["additionalContext"])
         self.assertNotIn(str(root), result.stdout)
         self.assertNotIn("decision", result.stdout)
+
+    def test_comment_sufficiency_advisory_scans_only_current_patch_paths(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            subprocess.run(["git", "init"], cwd=root, check=True, capture_output=True, text=True)
+            (root / "simple.py").write_text("def simple():\n    return 1\n", encoding="utf-8")
+            (root / "unrelated_complex.py").write_text(
+                "def unrelated_complex(value):\n"
+                "    total = 0\n"
+                "    for item in value:\n"
+                "        if item:\n"
+                "            total += 1\n"
+                "        elif item == 0:\n"
+                "            total -= 1\n"
+                "    try:\n"
+                "        if total > 10 and value:\n"
+                "            return total\n"
+                "    except TypeError:\n"
+                "        return -1\n"
+                "    while total < 0:\n"
+                "        total += 1\n"
+                "    return total\n",
+                encoding="utf-8",
+            )
+            env = os.environ.copy()
+            env["CODEX_COMMENT_ADVISORY_ROOT"] = str(root)
+            result = run_hook(
+                LOCAL_HOOKS / "comment_sufficiency_advisory.py",
+                {
+                    "tool_name": "apply_patch",
+                    "tool_input": {"command": "*** Update File: simple.py"},
+                },
+                ROOT,
+                env,
+            )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual("", result.stdout)
 
     def test_comment_sufficiency_advisory_scans_typescript_files(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -270,6 +325,23 @@ class LifecycleHooksTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual("", result.stdout)
 
+    def test_pre_tool_use_read_only_fast_path_skips_workspace_resolution(self):
+        module = load_hook_module(LOCAL_HOOKS / "pre_tool_use_policy.py")
+        payload = {
+            "tool_name": "Bash",
+            "tool_input": {"command": "Get-Content PLAN.md | Select-Object -First 20"},
+        }
+        stdout = io.StringIO()
+        with (
+            mock.patch.object(module, "_workspace_root", side_effect=AssertionError("workspace lookup is not needed")),
+            mock.patch("sys.stdin", io.StringIO(json.dumps(payload))),
+            mock.patch("sys.stdout", stdout),
+        ):
+            result = module.main()
+
+        self.assertEqual(0, result)
+        self.assertEqual("", stdout.getvalue())
+
     def test_pre_tool_use_denies_mutation_without_marker_using_official_shape(self):
         with tempfile.TemporaryDirectory() as tmp:
             result = run_hook(
@@ -370,15 +442,69 @@ class LifecycleHooksTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual("", result.stdout)
 
-    def test_stop_hook_uses_common_system_message_without_forcing_continuation(self):
-        result = run_hook(HOOKS / "stop_runlog_reminder.py")
+    def test_stop_hook_accepts_terminal_completion_brief_without_continuation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            marker = valid_marker(
+                status="ready_for_completion_brief",
+                completion_status="implemented",
+                completion_ready=True,
+            )
+            write_marker(root, marker)
+            env = os.environ.copy()
+            env["CODEX_HOOK_WORKSPACE_ROOT"] = str(root)
+            result = run_hook(
+                HOOKS / "stop_runlog_reminder.py",
+                {
+                    "stop_hook_active": False,
+                    "last_assistant_message": (
+                        "Completion Brief\nTask ID: B45-S9-H01\nResult status: implemented\n"
+                        "What was done: hooks optimized\nFiles / artifacts changed: hooks and workflow\n"
+                        "Verification evidence: focused tests passed\nResidual risks / accepted gaps: trust review pending\n"
+                        "Follow-up: review hooks in a fresh session"
+                    ),
+                },
+                ROOT,
+                env,
+            )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual("", result.stdout)
+
+    def test_stop_hook_requests_one_continuation_for_incomplete_ready_brief(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            write_marker(root, valid_marker(status="ready_for_completion_brief", completion_ready=True))
+            env = os.environ.copy()
+            env["CODEX_HOOK_WORKSPACE_ROOT"] = str(root)
+            result = run_hook(
+                HOOKS / "stop_runlog_reminder.py",
+                {"stop_hook_active": False, "last_assistant_message": "Work finished."},
+                ROOT,
+                env,
+            )
 
         self.assertEqual(result.returncode, 0, result.stderr)
         payload = json.loads(result.stdout)
-        message = payload["systemMessage"]
-        self.assertIn("Completion Brief", message)
-        self.assertIn("control-plane sync", message)
-        self.assertIn("does not force continuation", message)
+        self.assertEqual("block", payload["decision"])
+        self.assertIn("terminal Completion Brief", payload["reason"])
+
+    def test_stop_hook_does_not_loop_after_continuation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            write_marker(root, valid_marker(status="ready_for_completion_brief", completion_ready=True))
+            env = os.environ.copy()
+            env["CODEX_HOOK_WORKSPACE_ROOT"] = str(root)
+            result = run_hook(
+                HOOKS / "stop_runlog_reminder.py",
+                {"stop_hook_active": True, "last_assistant_message": "Still incomplete."},
+                ROOT,
+                env,
+            )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        payload = json.loads(result.stdout)
+        self.assertIn("systemMessage", payload)
         self.assertNotIn("decision", payload)
 
 

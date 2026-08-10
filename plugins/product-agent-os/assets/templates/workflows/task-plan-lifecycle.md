@@ -16,7 +16,7 @@ Project-local lifecycle hooks are configured in `.codex/hooks.json`; scripts and
 This workflow also defines the user-visible contract:
 
 - Show the Task Brief in chat before execution starts.
-- Show the Completion Brief in chat after execution or handoff.
+- Show the Completion Brief once, as the terminal `final` response, after execution or handoff and after every write and verification command.
 - Do not hide the brief only in a file, `prod_test.md` row, runlog, or generated artifact.
 
 ## Before Execution
@@ -41,12 +41,14 @@ python plugins\product-agent-os\scripts\create_task_plan.py new --output <plan-f
 
 ## After Execution
 
-0. Show the Completion Brief to the user after execution, verification, or a blocked handoff.
 1. Update the same task block, not only a summary table.
 2. Change status to `implemented` only when current evidence exists or an accepted gap is recorded.
 3. Replace `pending_execution_timestamp` with actual `DD-MM-YYYY HH:mm` time in `Europe/Moscow`.
 4. Fill the Completion Report: what was done, files touched / work locations, technical value delivered, product value delivered, verification evidence, residual risks, and follow-up.
-5. Validate the plan file again.
+5. Validate the plan file again and run the configured Control-Plane Sync plus every required final check.
+6. Before the user-visible brief, update the lifecycle marker with `completion_ready: true`, `status: ready_for_completion_brief`, the final result status, compact completion summary, and verification summary. Keep `completion_brief_shown: false` or omit it; a file marker cannot prove that chat content was displayed.
+7. Re-read the request, inspect the final diff and prepare exact artifact references. Complete all tool calls at this step.
+8. Show the Completion Brief once as the terminal `final` response after execution, verification, or a blocked handoff. No tool calls are allowed after the Completion Brief. Its delivery is chat/transcript evidence, not a post-response file mutation.
 
 Optional generator:
 
@@ -91,6 +93,9 @@ python plugins\product-agent-os\scripts\create_task_plan.py complete --path <pla
 - `brief_format`: `field_list`.
 - `brief_digest`: `sha256:<hex>` digest or stable short digest for the visible brief content.
 - `brief_fields_present`: list containing every field from `Task Brief Fields`.
+- `completion_ready`: `true` only after implementation or handoff, task-plan update, control-plane sync, final verification and exact artifact references are complete.
+- `status`: `in_progress` while mutations are allowed; `ready_for_completion_brief` immediately before the terminal Completion Brief. Both `ready_for_completion_brief` and legacy `completed` markers deny further mutations.
+- `completion_brief_shown`: legacy compatibility field only. It cannot prove chat delivery and must not require a post-Brief write.
 
 A legacy marker with only `task_start_brief_shown`, `task_id`, `scope`, `updated_at`, and `approval_boundary` is not sufficient for non-mechanical execution.
 
@@ -104,6 +109,8 @@ A legacy marker with only `task_start_brief_shown`, `task_id`, `scope`, `updated
 - Residual risks / accepted gaps:
 - Follow-up:
 
+The headings above are the Stop-hook validation contract. Put them in the terminal `final` response; do not emit a block titled `Completion Brief` in intermediate commentary.
+
 ## Stop Conditions
 
 - The work is small and mechanical and a lightweight exception is explicitly recorded.
@@ -112,3 +119,4 @@ A legacy marker with only `task_start_brief_shown`, `task_id`, `scope`, `updated
 - Exact files, verification gates, evidence owner, or approval boundaries are unknown.
 - Current evidence is missing for an `implemented`, `fixed`, `verified`, `ready`, or `release-ready` claim.
 - The task would require external writes, provider calls, browser automation, git mutation, deployment, hooks, automation, or permission changes without approval.
+- A tool call, file update, validation command, reference lookup, or lifecycle-marker write remains after the Completion Brief.

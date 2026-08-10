@@ -111,6 +111,7 @@ ENGLISH_ORIGINAL_SUPERPOWERS_PLAN_PAGES = {
     DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md",
     DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md",
     DOCS / "superpowers" / "plans" / "2026-08-05-gpt56-r1-r6-remediation.md",
+    DOCS / "superpowers" / "plans" / "2026-08-10-batch45-s9-0-team-readiness.md",
 }
 DOC_M25_HISTORICAL_PENDING_SITE_PAGES = {
     DOCS / "product-agent-os" / "first-run-architecture-cockpit.md",
@@ -132,11 +133,12 @@ DOC_M25_HISTORICAL_PENDING_SITE_PAGES = {
 DOC_M25_PENDING_SITE_PAGES = {
     DOCS / "product-agent-os" / "coding-standards.md",
     DOCS / "product-agent-os" / "self-learning-loop.md",
+    DOCS / "superpowers" / "plans" / "2026-08-10-batch45-s9-a-durable-contract-recovery.md",
 }
-BUILDABLE_MARKDOWN_PAGE_COUNT = 152
-LOCALIZED_MARKDOWN_PAGE_COUNT = 143
+BUILDABLE_MARKDOWN_PAGE_COUNT = 154
+LOCALIZED_MARKDOWN_PAGE_COUNT = 144
 SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT = 141
-ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT = 9
+ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT = 10
 
 
 class SourceRoutedControlPlanePath:
@@ -4837,7 +4839,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         for path in localized_ru_pages:
             hits = []
             in_code = False
-            for line_no, line in enumerate(path.read_text(encoding="utf-8-sig").splitlines(), 1):
+            text = path.read_text(encoding="utf-8-sig")
+            is_task_matrix_plan = "Schema version: task_matrix_plan_v1" in text
+            for line_no, line in enumerate(text.splitlines(), 1):
                 stripped = line.strip().lstrip("\ufeff")
                 if stripped.startswith("```"):
                     in_code = not in_code
@@ -4846,6 +4850,8 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                     continue
                 cleaned = re.sub(r"https?://\S+", " ", stripped)
                 cleaned = re.sub(r"`[^`]*`", " ", cleaned)
+                if is_task_matrix_plan and stripped.startswith("- Acceptance criteria:"):
+                    cleaned = cleaned.replace("Acceptance criteria", "", 1)
                 phrase_hit = next(
                     (phrase for phrase in forbidden_phrases if phrase in cleaned), None
                 )
@@ -5582,6 +5588,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md",
             DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md",
             DOCS / "superpowers" / "plans" / "2026-08-05-gpt56-r1-r6-remediation.md",
+            DOCS / "superpowers" / "plans" / "2026-08-10-batch45-s9-0-team-readiness.md",
         ]
         base_pages = sorted(
             path
@@ -9380,6 +9387,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             [
                 "docs/product-agent-os/coding-standards.md",
                 "docs/product-agent-os/self-learning-loop.md",
+                "docs/superpowers/plans/2026-08-10-batch45-s9-a-durable-contract-recovery.md",
             ],
             sorted(f"docs/{path.relative_to(DOCS).as_posix()}" for path in DOC_M25_PENDING_SITE_PAGES),
         )

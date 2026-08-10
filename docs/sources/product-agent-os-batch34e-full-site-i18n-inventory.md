@@ -14,6 +14,10 @@ Batch 34C локализовал только promoted public-ready page set. Ba
 
 Он не запускает live server, не выполняет browser automation, не вызывает providers или live external model/API endpoints, не мутирует canonical graph, не публикует plugin и не выполняет git stage/commit/push/PR.
 
+## Current English-Original Plan Addendum
+
+Исторические M34-M49 числа ниже сохраняются как evidence того закрытого среза. Текущий buildable corpus отдельно регистрирует English-original планы, добавленные позднее; они не требуют искусственного `.en.md` дубля. На 2026-08-10 к этому allowlist относится `superpowers/plans/2026-08-10-batch45-s9-0-team-readiness.md`; текущие счетчики в docs contract: `BUILDABLE_MARKDOWN_PAGE_COUNT=153`, `LOCALIZED_MARKDOWN_PAGE_COUNT=143`, `ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT=10`.
+
 ## B34E-I18N-M34 Corrective Scope Reset
 
 Status: `done_through_m34`.

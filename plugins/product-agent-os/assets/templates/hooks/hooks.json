@@ -8,7 +8,7 @@
             "type": "command",
             "command": "python \"$(git rev-parse --show-toplevel)/.codex/hooks/session_start_context.py\"",
             "commandWindows": "python \"$(git rev-parse --show-toplevel)/.codex/hooks/session_start_context.py\"",
-            "timeout": 30,
+            "timeout": 5,
             "statusMessage": "Loading Product-Agent OS lifecycle context"
           }
         ]
@@ -22,7 +22,7 @@
             "type": "command",
             "command": "python \"$(git rev-parse --show-toplevel)/.codex/hooks/pre_tool_use_policy.py\"",
             "commandWindows": "python \"$(git rev-parse --show-toplevel)/.codex/hooks/pre_tool_use_policy.py\"",
-            "timeout": 30,
+            "timeout": 5,
             "statusMessage": "Checking Product-Agent OS Task Brief marker"
           }
         ]
@@ -36,7 +36,7 @@
             "type": "command",
             "command": "python \"$(git rev-parse --show-toplevel)/.codex/hooks/permission_request_summary.py\"",
             "commandWindows": "python \"$(git rev-parse --show-toplevel)/.codex/hooks/permission_request_summary.py\"",
-            "timeout": 30,
+            "timeout": 5,
             "statusMessage": "Summarizing approval boundary"
           }
         ]
@@ -44,13 +44,13 @@
     ],
     "PostToolUse": [
       {
-        "matcher": "Bash|apply_patch|Edit|Write",
+        "matcher": "apply_patch|Edit|Write",
         "hooks": [
           {
             "type": "command",
             "command": "python \"$(git rev-parse --show-toplevel)/.codex/hooks/post_tool_use_evidence.py\"",
             "commandWindows": "python \"$(git rev-parse --show-toplevel)/.codex/hooks/post_tool_use_evidence.py\"",
-            "timeout": 30,
+            "timeout": 5,
             "statusMessage": "Recording evidence reminder"
           }
         ]
@@ -62,7 +62,7 @@
             "type": "command",
             "command": "python \"$(git rev-parse --show-toplevel)/.codex/hooks/comment_sufficiency_advisory.py\"",
             "commandWindows": "python \"$(git rev-parse --show-toplevel)/.codex/hooks/comment_sufficiency_advisory.py\"",
-            "timeout": 30,
+            "timeout": 5,
             "statusMessage": "Running comment sufficiency advisory"
           }
         ]
@@ -75,7 +75,7 @@
             "type": "command",
             "command": "python \"$(git rev-parse --show-toplevel)/.codex/hooks/stop_runlog_reminder.py\"",
             "commandWindows": "python \"$(git rev-parse --show-toplevel)/.codex/hooks/stop_runlog_reminder.py\"",
-            "timeout": 30,
+            "timeout": 5,
             "statusMessage": "Preparing Completion Brief reminder"
           }
         ]

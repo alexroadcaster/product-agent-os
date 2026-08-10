@@ -52,6 +52,15 @@ class TaskPlanLifecycleTest(unittest.TestCase):
             with self.subTest(workflow=expected):
                 self.assertIn(expected, workflow)
 
+        after_execution = workflow.split("## After Execution", 1)[1]
+        self.assertLess(
+            after_execution.index("Update the same task block"),
+            after_execution.index("Show the Completion Brief"),
+        )
+        self.assertIn("terminal `final` response", workflow)
+        self.assertIn("No tool calls are allowed after the Completion Brief", workflow)
+        self.assertIn("ready_for_completion_brief", workflow)
+
         for expected in [
             "config_routed_task_plan_lifecycle",
             "config_routed_control_plane_sync",

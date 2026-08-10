@@ -27,7 +27,7 @@ Last compacted: 2026-07-07
 - Residual risk: must be carried into `RUNLOG.md` and the final response.
 - Unsupported claim: any quality, readiness, release, security, AI/RAG, runtime or product-success claim without current evidence must be rejected or labeled inspection-only.
 - Synthetic-only limitation: internal `codex_docs` fixtures cannot support broad real-project usefulness, product-success, release-readiness, automation promotion or mass-user readiness without representative real-project evidence or owner-reviewed accepted gap.
-- Batch 45 promotion: no promotion unless current approved comparable evidence clears the configured threshold and reviewer gates. T14 `+3.27%` with reviewer `0` is below `>=20%` and not same-model comparable. T18 defines the same-model promotion-grade comparison, strict schema, quarantine, scoring/reviewer rubric and result contract; T19 defines cost/timeout/retry/abort/raw-temp-only retention; T20-A03 records the owner-confirmed cost-waived approval consumed by T21; T21 started one approved primary call and aborted on strict schema validation with `valid_pair_count=0`; T22-A02 records no-go because T21 produced no valid pairs and the reviewer gate was not run.
+- Batch 45 promotion: no promotion unless current approved comparable evidence clears deterministic correctness/regression gates and an independent blinded reviewer gate. T14 `+3.27%` with reviewer `0` remains non-promotional; T21 aborted with `valid_pair_count=0`; T22-A02 remains no-go. `B45-CQRR-A01` adds the planned T23-T34 recovery route: primary-model self-scores, warning reduction, coverage, test count and patch/test LOC are diagnostic only; local executable-schema, seeded-fault, deterministic-metric, blinded-review and frozen multi-stack evidence must pass before a new exact approval can be prepared.
 
 ## Current Evaluation State
 
@@ -38,7 +38,7 @@ Last compacted: 2026-07-07
 | Batch 41 | S9 generated-artifact modernization and Neural_Flow comparison. | Generated-artifact acceptance evidence only; no release/target-apply/Cosmos.gl-WebGL runtime proof. |
 | Batch 42 | Planned-only instruction/tool-use matrix. | No fixed-auto-engagement claim. |
 | Batch 44 | S0-S7 local/staged/manual Self-Learning Loop evidence. | No active automation, hidden telemetry, real session import, provider/model call, target mutation or auto-apply proof. |
-| Batch 45 | M26/M27/M35/T12/T15 keep advisory-only/no-go; T14 is positive current-quality signal only; T20-A03 was consumed by T21; T21 started one approved primary call and aborted on strict schema validation with zero valid pairs; T22-A02 reviewer gate is not run because T21 result is invalid for scoring. | No promotion, blocker, CI, runtime/browser, target or release claim; no further provider/model/reviewer call without new exact approval. |
+| Batch 45 | M26/M27/M35/T12/T15 keep advisory-only/no-go; T21 aborted with zero valid pairs and T22-A02 reviewer gate did not run. `B45-CQRR-A01` is corrective planning only. | No promotion, blocker, CI, runtime/browser, target or release claim. T23-T33 require local evidence; T34 requires a new exact approval and may still end no-go. |
 | Track 11 DOC-M25 | Generated root `site`, search and sitemap freshness packet exists. | No browser proof, broad scans, remediation, raw retention, publication/release/deploy/git claim. |
 | GPT-5.6 model/config migration | Role-aware Sol/Terra pins remain; R1-R6 requires one native permission model, generic Terra/medium defaults, explicit write-skill authority, Docs MCP on source roles, resolvable paths, phase-neutral prompts and a 7000-character developer-prompt budget. Luna remains an unevaluated high-volume candidate. | Static contract evidence may support configuration consistency only. No quality, cost, latency, fresh-session MCP/hook, broad agent-behavior or promotion claim until bounded comparative/runtime evidence exists. |
 | Lifecycle/control-plane sync | Config-routed Task Brief, lifecycle marker, control-plane sync and Completion Brief contract. | Hook output is reminder/evidence context only, not completion proof. |
@@ -67,7 +67,7 @@ Last compacted: 2026-07-07
 | Track 10 live layer | `T10-LIVE-M01..M41`, approval-bound live/runtime/provider/mutation/git gates | Track 10 backlog, registry and Batch 35 packet |
 | Batch 39 | `B39-S1..S5`, `B39-TEST-M01..M54`, generated-view-only, source-policy and no-unapproved-actions gates | `prod_test.md`, B39 packets |
 | Batch 44 | Self-Learning Loop state, due-check, manual pilot, Promptfoo export, HALO-style packet and candidate-only repair routing | B44 packets and `docs/product-agent-os/self-learning-loop.md` |
-| Batch 45 | Professional Code Authoring checklist, advisory validator, behavior eval, retest protocol, post-Q4 decision gates and S8 promotion-grade eval design route | B45 packets and `docs/product-agent-os/coding-standards.md` |
+| Batch 45 | Professional Code Authoring checklist, advisory validator, historical behavior eval/no-go, S8 failed promotion route and S9 code-quality runtime recovery plan with deterministic evidence and blinded review gates | B45 packets, `B45-CQRR-A01` and `docs/product-agent-os/coding-standards.md` |
 | Track 11 docs/site | G1.1 docs-toolchain, G2-G5 source docs, DOC-M25 site freshness | Track 11 plan, registry and documentation-refresh packets |
 
 ## Unsupported Claims
@@ -90,7 +90,7 @@ Reject or downgrade these claim patterns unless current evidence exists:
 - Generated graph/dashboard/site output as source of truth.
 - Approval-bound live/provider/runtime/canonical-mutation/git action implied by a planning packet or generated artifact.
 - Methodology artifact presence as proof that a human owner accepted semantic correctness.
-- Batch 45 promotion from T14/T15/T16-T22/T17/T18/T19/T20/T21/T22; current result has no valid pair set and the reviewer gate did not run. `B45-POSTQ4-T20-A03` was consumed/aborted by `B45-POSTQ4-T21-COST-WAIVED-RUN-A01`; any rerun needs strict output/schema normalization plus a new exact approval before another provider/model/reviewer call.
+- Batch 45 promotion from T14/T15/T16-T22/T17/T18/T19/T20/T21/T22 or the planned T23-T34 route; current result has no valid pair set and the reviewer gate did not run. `B45-CQRR-T23..T33` must first close the local executable-contract, fault-detection, deterministic-evidence, blinding and corpus/prompt-freeze gates; T34 then still needs a new exact approval before any provider/model/reviewer call.
 
 ## Historical Eval Evidence Owners
 
