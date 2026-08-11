@@ -8,7 +8,10 @@ Detected stack: {detected_stack_text}
 
 Use this workflow for non-mechanical code authoring, refactoring, defect fixes, dependency changes, generated-code edits, and AI-agent handoffs where code-quality, maintainability, dependency, or legacy risk matters.
 
-The workflow turns the professional code authoring standard into a compact task gate. It routes evidence to `.codex/artifact-templates/coding-standard-checklist.md` and can be referenced from `.codex/artifact-templates/agent-task-packet.md`.
+The workflow routes the professional code authoring standard. Its default generation
+context is `.codex/artifact-templates/code-change-contract.md`; use the retained
+checklist only as reviewer/reference material and reference this workflow from
+`.codex/artifact-templates/agent-task-packet.md` when needed.
 
 ## Applicability
 
@@ -25,9 +28,11 @@ The workflow turns the professional code authoring standard into a compact task 
 - Forbidden files:
 - Existing local patterns:
 - Existing test/eval path:
-- Checklist artifact: `.codex/artifact-templates/coding-standard-checklist.md`
+- Default generation context: `.codex/artifact-templates/code-change-contract.md`
 - Agent task packet:
 - Approval requirements:
+
+For reviewer/reference detail, use `.codex/artifact-templates/coding-standard-checklist.md`.
 
 ## Process
 
@@ -54,7 +59,8 @@ The workflow turns the professional code authoring standard into a compact task 
 
 ## Outputs
 
-- Completed coding-standard checklist or `not_applicable` reason.
+- Completed compact code-change contract or `not_applicable` reason.
+- Reviewer/reference checklist when the task needs its additional detail.
 - Selected leverage path and rejected alternatives.
 - Dependency decision and approval status.
 - Module, public-contract, and legacy risk notes.

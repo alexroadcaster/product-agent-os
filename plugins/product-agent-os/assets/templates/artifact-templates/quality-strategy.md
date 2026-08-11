@@ -4,6 +4,50 @@ Source status: `template`
 
 Owner: tester or implementation planner
 
+## Risk-Based Code Strategy
+
+- `schema_version`: `quality_strategy_v1`
+- `profile_schema_version`: `code_quality_profile_v1`
+
+### Test-First Decision
+
+| status | risk_ids | reason |
+| --- | --- | --- |
+| TBD | TBD | TBD |
+
+### Risk-To-Test Decisions
+
+| test_kind | status | risk_ids | protected_invariants | rationale |
+| --- | --- | --- | --- | --- |
+| TBD | TBD | TBD | TBD | TBD |
+
+### Coverage Decision
+
+- status: `not_applicable`
+- reason: coverage is telemetry, not a correctness target
+
+### Comment Decision
+
+| status | risk_ids | reasons | rationale |
+| --- | --- | --- | --- |
+| TBD | TBD | TBD | TBD |
+
+### Performance Decision
+
+| status | risk_ids | rationale |
+| --- | --- | --- |
+| TBD | TBD | TBD |
+
+### Strategy Gaps
+
+- gaps: TBD
+
+### Selection Evidence Ceiling
+
+- evidence_ceiling: strategy selection only; tests, comments and benchmarks not executed or verified
+- tests_executed: false
+- benchmarks_executed: false
+
 ## Scope
 
 Use this artifact for `quality_testing_evals` strategy, risk based scope and accepted gaps before completion, readiness, release or quality claims.

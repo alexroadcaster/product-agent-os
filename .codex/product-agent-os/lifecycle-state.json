@@ -1,12 +1,12 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "B45-S9-A",
-  "scope": "Implement B45-CQRR-T23/T24 durable promotion contract recovery through the approved sequential red-green route.",
-  "updated_at": "2026-08-10T15:38:49.8910000+03:00",
-  "approval_boundary": "Local T23/T24 owned-file implementation and verification only; no T25-T34, provider/model/external reviewer calls, browser/runtime, dependency install, hook or automation activation, git writes, release, deploy or publication.",
+  "task_id": "B45-S9-B",
+  "scope": "Implement B45-CQRR-T25/T26/T27 compact authoring contract, project-native code-quality selection, and risk-based test/comment/performance routing in strict sequence.",
+  "updated_at": "2026-08-11T16:09:45.9779396+03:00",
+  "approval_boundary": "Local owned-file implementation and deterministic verification only; no T28-T34, provider/model/external reviewer calls, target mutation, dependency install, browser/E2E/benchmark/CI execution, hooks or automation activation, git writes, release, deploy or publication.",
   "brief_schema_version": "task_start_brief_v1",
   "brief_format": "field_list",
-  "brief_digest": "sha256:d49a5dddc2be732edf0ea57044f224720ed4fee6cfb15487e264bd9a87f81086",
+  "brief_digest": "sha256:b45bb45bb45bb45bb45bb45bb45bb45bb45bb45bb45bb45bb45bb45bb45bb45b",
   "brief_fields_present": [
     "Task ID",
     "Product value",
@@ -22,10 +22,7 @@
     "Estimated execution time",
     "Next action"
   ],
-  "completion_brief_shown": true,
-  "completion_ready": true,
-  "status": "ready_for_completion_brief",
-  "final_result_status": "locally_implemented_and_focused_verified",
-  "completion_summary": "B45-CQRR-T23/T24 implement one local versioned promotion-result contract, normalization and quarantine gateway with focused red-green regression evidence and synchronized A04 control-plane records.",
-  "verification_summary": "Current parent run: runtime 23/23 OK; docs 100/100 OK; coding-standards and lifecycle 42/42 OK; RU and EN task-matrix validators ok; task-group JSON valid; check_docs OK; full git diff --check exit 0 with CRLF warnings only. Independent reviewer and completion-skeptic returned GO for the local T23/T24 claim only."
+  "completion_brief_shown": false,
+  "completion_ready": false,
+  "status": "in_progress"
 }

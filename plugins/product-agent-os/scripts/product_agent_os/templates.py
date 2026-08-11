@@ -560,6 +560,12 @@ _TEMPLATES: tuple[TemplateSpec, ...] = (
         ".codex/artifact-templates/agent-task-packet.md",
     ),
     _spec(
+        "artifact-code-change-contract",
+        "artifact-templates",
+        "artifact-templates/code-change-contract.md",
+        ".codex/artifact-templates/code-change-contract.md",
+    ),
+    _spec(
         "artifact-coding-standard-checklist",
         "artifact-templates",
         "artifact-templates/coding-standard-checklist.md",

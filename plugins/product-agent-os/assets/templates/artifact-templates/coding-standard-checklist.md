@@ -10,6 +10,12 @@ Use this checklist for non-mechanical code authoring, refactoring, defect fixes,
 
 This artifact is the task-level evidence packet for `.codex/workflows/coding-standards.md`. It does not replace `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`, or review evidence.
 
+## Compatibility
+
+This retained checklist is reviewer/reference-only. The default pre-edit generation
+context is the compact `.codex/artifact-templates/code-change-contract.md`;
+existing filled checklist artifacts remain valid.
+
 ## Applicability
 
 - Task row id:

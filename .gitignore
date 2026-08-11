@@ -45,6 +45,12 @@ tmp/
 .DS_Store
 Thumbs.db
 
+# Repository-publication exclusions (local/generated workspaces)
+/.superpowers/
+/.tmp/
+/artifacts/research/
+/output/
+
 # Local secrets and machine-specific environment files
 .env
 .env.*
