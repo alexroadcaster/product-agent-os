@@ -19,9 +19,20 @@ This workflow also defines the user-visible contract:
 - Show the Completion Brief once, as the terminal `final` response, after execution or handoff and after every write and verification command.
 - Do not hide the brief only in a file, `prod_test.md` row, runlog, or generated artifact.
 
+The lifecycle is root-owned. A delegated agent reads this workflow only for constraints: it must not create or update the lifecycle marker, show a nested Task Brief or Completion Brief, or run the shared Control-Plane Sync. It returns one compact Subagent Result Packet to the root agent.
+
+## State Ownership
+
+- Source-owned task-group JSON owns machine task status and dependencies.
+- The concrete task-matrix plan owns task detail, acceptance and completion report.
+- `.codex/product-agent-os/lifecycle-state.json` owns only the current root run; it is not durable task history.
+- `RUNLOG.md` owns current execution evidence and handoff.
+- `TEST.md` owns verification routes and the evidence ceiling.
+- Projection conflict is a stop condition: repair the owning source first, then update projections once.
+
 ## Before Execution
 
-0. Show the Task Brief to the user before editing or running non-read-only execution commands.
+0. The root agent shows the Task Brief to the user before editing or running non-read-only execution commands. Delegated agents do not repeat it.
 1. Create a detailed task block with `task_matrix_plan_v1`.
 2. Keep status `planned`.
 3. Use `pending_execution_timestamp` for date and time of task implementation.
@@ -46,7 +57,7 @@ python plugins\product-agent-os\scripts\create_task_plan.py new --output <plan-f
 3. Replace `pending_execution_timestamp` with actual `DD-MM-YYYY HH:mm` time in `Europe/Moscow`.
 4. Fill the Completion Report: what was done, files touched / work locations, technical value delivered, product value delivered, verification evidence, residual risks, and follow-up.
 5. Validate the plan file again and run the configured Control-Plane Sync plus every required final check.
-6. Before the user-visible brief, update the lifecycle marker with `completion_ready: true`, `status: ready_for_completion_brief`, the final result status, compact completion summary, and verification summary. Keep `completion_brief_shown: false` or omit it; a file marker cannot prove that chat content was displayed.
+6. Before the user-visible brief, update the lifecycle marker with `completion_ready: true` and terminal `status: ready_for_completion_brief`, `blocked`, or `stopped_repair_required`; include the final result status, compact completion summary, verification summary and next action. Keep `completion_brief_shown: false` or omit it; a file marker cannot prove that chat content was displayed.
 7. Re-read the request, inspect the final diff and prepare exact artifact references. Complete all tool calls at this step.
 8. Show the Completion Brief once as the terminal `final` response after execution, verification, or a blocked handoff. No tool calls are allowed after the Completion Brief. Its delivery is chat/transcript evidence, not a post-response file mutation.
 
@@ -94,7 +105,7 @@ python plugins\product-agent-os\scripts\create_task_plan.py complete --path <pla
 - `brief_digest`: `sha256:<hex>` digest or stable short digest for the visible brief content.
 - `brief_fields_present`: list containing every field from `Task Brief Fields`.
 - `completion_ready`: `true` only after implementation or handoff, task-plan update, control-plane sync, final verification and exact artifact references are complete.
-- `status`: `in_progress` while mutations are allowed; `ready_for_completion_brief` immediately before the terminal Completion Brief. Both `ready_for_completion_brief` and legacy `completed` markers deny further mutations.
+- `status`: `in_progress` while mutations are allowed; `ready_for_completion_brief`, `blocked`, or `stopped_repair_required` immediately before the terminal Completion Brief. Every terminal status and legacy `completed` deny further mutations.
 - `completion_brief_shown`: legacy compatibility field only. It cannot prove chat delivery and must not require a post-Brief write.
 
 A legacy marker with only `task_start_brief_shown`, `task_id`, `scope`, `updated_at`, and `approval_boundary` is not sufficient for non-mechanical execution.
@@ -120,3 +131,5 @@ The headings above are the Stop-hook validation contract. Put them in the termin
 - Current evidence is missing for an `implemented`, `fixed`, `verified`, `ready`, or `release-ready` claim.
 - The task would require external writes, provider calls, browser automation, git mutation, deployment, hooks, automation, or permission changes without approval.
 - A tool call, file update, validation command, reference lookup, or lifecycle-marker write remains after the Completion Brief.
+- A delegated agent attempts to own the root lifecycle, user-facing briefs, or shared Control-Plane Sync.
+- Machine state, task-plan detail, lifecycle state, RUNLOG evidence or TEST evidence ceiling contradict their owning source.

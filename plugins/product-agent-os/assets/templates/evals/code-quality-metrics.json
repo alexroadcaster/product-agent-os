@@ -1,0 +1,47 @@
+{
+  "name": "code-quality-metrics",
+  "schema_version": "product_agent_os_code_quality_metrics_v1",
+  "source_status": "deterministic local evidence contract; not runtime activation or promotion proof",
+  "required_gates": [
+    "acceptance",
+    "regression",
+    "seeded_faults",
+    "reviewer",
+    "dependency"
+  ],
+  "conditional_gates": {
+    "performance": "required when applicable; otherwise status must be not_applicable",
+    "cost_latency": "required when applicable; otherwise status must be not_applicable"
+  },
+  "statuses": [
+    "passed",
+    "failed",
+    "missing",
+    "not_applicable"
+  ],
+  "decision_rules": [
+    "missing required evidence blocks promotion and is never converted to zero or success",
+    "model self-scores are diagnostic only and cannot affect promotion_allowed",
+    "reviewer verdict is a separate required gate",
+    "patch size and test churn are anomaly warnings, not optimization targets",
+    "performance and cost/latency evidence are required only when applicable"
+  ],
+  "cases": [
+    {
+      "id": "all-required-evidence-passed",
+      "expected": "promotion_evidence_ready"
+    },
+    {
+      "id": "missing-seeded-fault-evidence",
+      "expected": "blocked_by_evidence"
+    },
+    {
+      "id": "high-self-score-with-regression",
+      "expected": "blocked_by_evidence"
+    },
+    {
+      "id": "performance-not-applicable",
+      "expected": "promotion_evidence_ready"
+    }
+  ]
+}

@@ -1335,6 +1335,240 @@ class Batch45CodeQualitySelectorTracerTest(unittest.TestCase):
             )
             assert_conservative(installer_profile)
 
+    def test_selector_preserves_tool_utility_and_nested_manifest_evidence(self):
+        def stack(profile, family):
+            return next(item for item in profile.stack_profiles if item.family == family)
+
+        mismatches = []
+        known_tool_only = select_code_quality_profile(
+            ProjectInventory(
+                paths=(),
+                declared_tools=(DeclaredToolSignal("ruff", "quality.toml"),),
+                project_commands=(),
+            )
+        )
+        python_stack = stack(known_tool_only, "python")
+        if known_tool_only.inventory_status != "present_unverified":
+            mismatches.append(
+                f"known_tool_only: inventory_status={known_tool_only.inventory_status!r}"
+            )
+        if python_stack.status != "present_unverified":
+            mismatches.append(f"known_tool_only: status={python_stack.status!r}")
+        if python_stack.languages != ("python",):
+            mismatches.append(
+                f"known_tool_only: languages={python_stack.languages!r}"
+            )
+        known_tools = tuple(
+            tool.name for category in python_stack.categories for tool in category.tools
+        )
+        if "ruff" not in known_tools:
+            mismatches.append(f"known_tool_only: tools={known_tools!r}")
+
+        utility_only = select_code_quality_profile(
+            ProjectInventory(
+                paths=(),
+                declared_tools=(),
+                project_commands=(
+                    ProjectCommandSignal(
+                        "repo_check",
+                        "python tools/check_repo.py",
+                        "README.md",
+                    ),
+                ),
+            )
+        )
+        if utility_only.inventory_status != "present_unverified":
+            mismatches.append(
+                f"utility_only: status={utility_only.inventory_status!r}"
+            )
+        utility_names = tuple(
+            utility.name for utility in utility_only.project_utilities
+        )
+        if utility_names != ("repo_check",):
+            mismatches.append(f"utility_only: utilities={utility_names!r}")
+        non_inert_stacks = tuple(
+            stack_profile.family
+            for stack_profile in utility_only.stack_profiles
+            if stack_profile.status != "not_applicable"
+        )
+        if non_inert_stacks:
+            mismatches.append(
+                f"utility_only: non_not_applicable_stacks={non_inert_stacks!r}"
+            )
+
+        nested_monorepo = select_code_quality_profile(
+            ProjectInventory(
+                paths=("services/api/pyproject.toml", "apps/web/package.json"),
+                declared_tools=(),
+                project_commands=(),
+            )
+        )
+        nested_expectations = (
+            ("python", "services/api/pyproject.toml"),
+            ("javascript_typescript", "apps/web/package.json"),
+        )
+        for family, marker in nested_expectations:
+            family_profile = stack(nested_monorepo, family)
+            if family_profile.status != "present_unverified":
+                mismatches.append(
+                    f"nested_monorepo:{family}: status={family_profile.status!r}"
+                )
+            if family_profile.marker_evidence != (marker,):
+                mismatches.append(
+                    f"nested_monorepo:{family}: markers={family_profile.marker_evidence!r}"
+                )
+
+        self.assertEqual(mismatches, [])
+
+    def test_profiles_report_actual_language_subsets_and_strategy_missing_gaps(self):
+        from product_agent_os.test_strategy_selector import (
+            ChangeRisk,
+            TestStrategyRequest,
+            select_test_strategy,
+        )
+
+        cases = (
+            ("javascript", "package.json", "javascript_typescript", "typescript"),
+            ("typescript", "tsconfig.json", "javascript_typescript", "javascript"),
+            ("go", "go.mod", "compiled_systems", "rust"),
+            ("rust", "Cargo.toml", "compiled_systems", "go"),
+            ("java", "pom.xml", "enterprise_oop", "csharp"),
+            ("csharp", "src/App/App.csproj", "enterprise_oop", "java"),
+        )
+        mismatches = []
+        for language, marker, family, missing_language in cases:
+            profile = select_code_quality_profile(
+                ProjectInventory((marker,), (), ())
+            )
+            family_profile = next(
+                item for item in profile.stack_profiles if item.family == family
+            )
+            if family_profile.languages != (language,):
+                mismatches.append(
+                    f"{marker}: languages={family_profile.languages!r}, expected={(language,)!r}"
+                )
+
+            risk_id = f"risk-{language}-must-not-imply-{missing_language}"
+            strategy = select_test_strategy(
+                TestStrategyRequest(
+                    profile=profile,
+                    change_mode="configuration",
+                    executable_test_seam=True,
+                    test_seam_reason="",
+                    risks=(
+                        ChangeRisk(
+                            risk_id=risk_id,
+                            kind="pure_logic",
+                            description="a sibling language must not be inferred",
+                            protected_invariants=("language evidence stays factual",),
+                            languages=(missing_language,),
+                        ),
+                    ),
+                    comment_signals=(),
+                )
+            )
+            expected_gap = (
+                f"profile_language_missing:{risk_id}:{missing_language}"
+            )
+            if expected_gap not in strategy.gaps:
+                mismatches.append(f"{marker}: missing gap {expected_gap}")
+
+        self.assertEqual(mismatches, [])
+
+    def test_strategy_rejects_every_non_string_public_field_before_serialization(self):
+        from product_agent_os.test_strategy_selector import (
+            ChangeRisk,
+            CommentSignal,
+            TestStrategyRequest,
+            quality_strategy_as_dict,
+            select_test_strategy,
+        )
+
+        profile = select_code_quality_profile(ProjectInventory(("pyproject.toml",), (), ()))
+        risk = ChangeRisk(
+            risk_id="risk-valid",
+            kind="pure_logic",
+            description="selection can change",
+            protected_invariants=("selection remains deterministic",),
+            languages=("python",),
+        )
+        comment = CommentSignal(
+            risk_id=risk.risk_id,
+            reason="invariant",
+            detail="document the invariant boundary",
+        )
+
+        def request(*, mode="refactor", seam=True, seam_reason="", risks=(risk,), comments=()):
+            return TestStrategyRequest(
+                profile=profile,
+                change_mode=mode,
+                executable_test_seam=seam,
+                test_seam_reason=seam_reason,
+                risks=risks,
+                comment_signals=comments,
+            )
+
+        invalid_cases = (
+            ("change_mode", request(mode=1)),
+            ("test_seam_reason", request(seam=False, seam_reason=1)),
+            ("risk_id", request(risks=(replace(risk, risk_id=1),))),
+            ("risk_kind", request(risks=(replace(risk, kind=1),))),
+            ("risk_description", request(risks=(replace(risk, description=1),))),
+            (
+                "protected_invariant",
+                request(risks=(replace(risk, protected_invariants=(1,)),)),
+            ),
+            ("risk_language", request(risks=(replace(risk, languages=(1,)),))),
+            (
+                "comment_risk_id",
+                request(comments=(replace(comment, risk_id=1),)),
+            ),
+            (
+                "comment_reason",
+                request(comments=(replace(comment, reason=1),)),
+            ),
+            (
+                "comment_detail",
+                request(comments=(replace(comment, detail=1),)),
+            ),
+        )
+        mismatches = []
+        for field_name, invalid_request in invalid_cases:
+            try:
+                result = select_test_strategy(invalid_request)
+            except TypeError:
+                continue
+            except Exception as exc:  # exact public exception class is the contract
+                mismatches.append(
+                    f"{field_name}: {type(exc).__name__}, expected TypeError"
+                )
+            else:
+                payload = quality_strategy_as_dict(result)
+                mismatches.append(
+                    f"{field_name}: accepted and serialized {payload!r}"
+                )
+
+        self.assertEqual(mismatches, [])
+
+        valid_payload = quality_strategy_as_dict(
+            select_test_strategy(request(comments=(comment,)))
+        )
+        serialized_reason_and_id_values = [
+            valid_payload["test_first_decision"]["reason"],
+            *valid_payload["test_first_decision"]["risk_ids"],
+            *(
+                risk_id
+                for decision in valid_payload["test_decisions"]
+                for risk_id in decision["risk_ids"]
+            ),
+            *valid_payload["comment_decision"]["risk_ids"],
+            *valid_payload["comment_decision"]["reasons"],
+            *valid_payload["performance_decision"]["risk_ids"],
+        ]
+        self.assertTrue(
+            all(isinstance(value, str) for value in serialized_reason_and_id_values)
+        )
+
     def test_public_code_quality_profile_is_conservative_and_side_effect_free(self):
         profile_path = TEMPLATE_ROOT / "artifact-templates" / "code-quality-profile.md"
         self.assertTrue(

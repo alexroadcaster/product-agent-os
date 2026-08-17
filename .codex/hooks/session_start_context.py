@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import subprocess
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 
@@ -15,6 +17,8 @@ LIFECYCLE_FILES = [
     ".codex/hooks.json",
 ]
 LIFECYCLE_STATE = ".codex/product-agent-os/lifecycle-state.json"
+CANONICAL_SKILL_ROOT = Path("plugins/product-agent-os/skills")
+STALE_AFTER = timedelta(hours=48)
 WORKSPACE_ROOT_ENV = "CODEX_HOOK_WORKSPACE_ROOT"
 TASK_BRIEF_REQUIRED_FIELDS = [
     "Task ID",
@@ -64,6 +68,53 @@ def _missing(root: Path, files: list[str]) -> list[str]:
     return [name for name in files if not (root / name).exists()]
 
 
+def _skill_provenance(root: Path) -> str:
+    """Return a stable repository-local skill digest without exposing host paths."""
+    skill_root = root / CANONICAL_SKILL_ROOT
+    skill_files = sorted(skill_root.glob("*/SKILL.md")) if skill_root.exists() else []
+    if not skill_files:
+        return "canonical_skill_source=" + CANONICAL_SKILL_ROOT.as_posix() + "; status=missing"
+    digest = hashlib.sha256()
+    for path in skill_files:
+        digest.update(path.relative_to(root).as_posix().encode("utf-8"))
+        digest.update(b"\\0")
+        digest.update(path.read_bytes())
+    return (
+        "canonical_skill_source="
+        + CANONICAL_SKILL_ROOT.as_posix()
+        + "; skill_count="
+        + str(len(skill_files))
+        + "; sha256="
+        + digest.hexdigest()
+        + "; mixed_source=forbidden"
+    )
+
+
+def _lifecycle_state_summary(root: Path) -> str:
+    path = root / LIFECYCLE_STATE
+    try:
+        marker = json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        return "lifecycle_state=missing"
+    except (OSError, json.JSONDecodeError):
+        return "lifecycle_state=invalid; action=repair_before_mutation"
+    if not isinstance(marker, dict):
+        return "lifecycle_state=invalid; action=repair_before_mutation"
+    status = str(marker.get("status") or "missing")
+    task_id = str(marker.get("task_id") or "missing")
+    if status != "in_progress":
+        return "lifecycle_state=" + status + "; task_id=" + task_id + "; action=start_new_root_run"
+    try:
+        updated_at = datetime.fromisoformat(str(marker.get("updated_at", "")).replace("Z", "+00:00"))
+    except ValueError:
+        return "lifecycle_state=invalid_timestamp; task_id=" + task_id + "; action=repair_before_mutation"
+    if updated_at.tzinfo is None:
+        return "lifecycle_state=invalid_timestamp; task_id=" + task_id + "; action=repair_before_mutation"
+    if datetime.now(timezone.utc) - updated_at.astimezone(timezone.utc) > STALE_AFTER:
+        return "lifecycle_state=stale_in_progress; task_id=" + task_id + "; action=stop_and_recover_not_resume"
+    return "lifecycle_state=in_progress; task_id=" + task_id + "; action=resume_only_if_user_request_matches"
+
+
 def main() -> int:
     root = _workspace_root()
     present_control = _present(root, CONTROL_PLANE_FILES)
@@ -79,6 +130,10 @@ def main() -> int:
         + ("; missing=" + ", ".join(missing_lifecycle) if missing_lifecycle else "; missing=none")
         + ". State marker="
         + LIFECYCLE_STATE
+        + "; "
+        + _lifecycle_state_summary(root)
+        + ". Skill provenance: "
+        + _skill_provenance(root)
         + ". For non-mechanical work, show a user-visible task_start_brief_v1 "
         + "Task Brief with fields: "
         + ", ".join(TASK_BRIEF_REQUIRED_FIELDS)

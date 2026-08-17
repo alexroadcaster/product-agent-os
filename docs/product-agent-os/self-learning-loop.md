@@ -243,3 +243,6 @@ git diff --check
 ## Следующее Действие
 
 Используйте эту страницу, когда `Self-Learning Loop` должен восстановиться после отсутствующего state, упаковать redacted feedback, экспортировать eval cases или передать candidate в staged repair. Следующий безопасный артефакт после `ready_for_owner_review` - решение владельца: approve bounded staged repair, request more evidence или record a no-op.
+## Диагностика execution-loop
+
+Ручной контур дополнительно измеряет время до первого target diff, число агентов, review/repair cycles, повторы неизменившихся команд, записи control plane до acceptance, target/test churn, compaction, stale lifecycle marker, смешивание skill sources и projection conflicts. Превышение бюджета формирует `intervention_required` и рекомендацию остановить или сузить slice; оно не меняет prompts, skills, config, hooks или automation автоматически. Отсутствующие записи означают `insufficient_evidence`, а не успешный run.

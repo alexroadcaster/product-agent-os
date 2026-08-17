@@ -525,6 +525,15 @@
     "latest_t11_design": "docs/superpowers/specs/batch45-postq4-t11-treatment-v3-source-design.json",
     "latest_t12_exact_approval_packet": "docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-exact-approval-packet.json",
     "latest_t16_t22_promotion_grade_eval_task_group": "docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+    "latest_t17_frozen_heldout_corpus": "docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json",
+    "latest_t18_eval_design": "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
+    "latest_t19_cost_timeout_retention_policy": "docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json",
+    "latest_t20_exact_approval_packet": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet-cost-waived.json",
+    "previous_t20_exact_approval_packet": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+    "latest_t21_preflight_block": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-cost-unknown.json",
+    "previous_t21_preflight_timeout_mismatch": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-timeout-mismatch.json",
+    "previous_t21_preflight_missing_restatement": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
+    "latest_t22_decision_packet": "docs/superpowers/specs/batch45-postq4-t22-promotion-grade-decision-packet.json",
     "executed_task_ids": [
       "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX",
       "B45-POSTQ4-T02-MP-CRM-STATIC-FIX",
@@ -542,7 +551,15 @@
       "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET",
       "B45-POSTQ4-T14-STRICT-RERUN",
       "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION",
-      "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP"
+      "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
+      "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
+      "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
+      "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
+      "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
+      "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION"
+    ],
+    "preflight_blocked_task_ids": [
+      "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN"
     ],
     "status_by_task": {
       "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX": "implemented_minimal_fixture_copy_intent_comments",
@@ -561,7 +578,13 @@
       "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET": "exact_approval_packet_consumed_by_t14_run_gpt55_high",
       "B45-POSTQ4-T14-STRICT-RERUN": "executed_current_best_quality_rerun_no_promotion",
       "B45-POSTQ4-T15-DECISION-PACKET-MODEL-CHANGE-INTERPRETATION": "implemented_model_change_interpretation_keep_advisory_only_no_go",
-      "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP": "implemented_task_group_design_no_run"
+      "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP": "implemented_task_group_design_no_run",
+      "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS": "implemented_frozen_heldout_corpus_manifest_no_run",
+      "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA": "implemented_eval_design_strict_schema_no_run",
+      "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY": "implemented_cost_timeout_retention_policy_no_run",
+      "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET": "exact_approval_packet_cost_waived_owner_confirmed_consumed_by_t21_invalid_schema_abort",
+      "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN": "aborted_after_first_primary_call_invalid_schema_no_valid_pairs",
+      "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION": "implemented_reviewer_gate_blocked_t21_invalid_schema_abort_no_promotion"
     },
     "warning_delta": {
       "q4_baseline_warning_count": 14,
@@ -596,7 +619,7 @@
       "approved_t14_codex_exec_primary_calls_invalid_json": 0,
       "approved_t14_reviewer_calls_started": 0
     },
-    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T05 stopped on baseline timeout. T12 produced valid_pair_count=6, invalid_json=1 and no_op=1; reviewer skipped. T13 adds local strict-output schema/no-op hardening. T14 executed exact-approved gpt-5.5 high-reasoning current-best-quality rerun with valid_pair_count=8 and invalid_pair_count=0. T15 interprets T14 as a positive current-best-quality signal only: reviewer did not run, same-model comparability with spark evidence is false, no promotion, no M26/M35 reversal and no runtime/browser/target/CI/git/release/deploy/automation proof exists. T16-T22 now define a promotion-grade eval task group only; no future corpus/model/reviewer run is authorized by this packet.",
+    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T05 stopped on baseline timeout. T12 produced valid_pair_count=6, invalid_json=1 and no_op=1; reviewer skipped. T13 adds local strict-output schema/no-op hardening. T14 executed exact-approved gpt-5.5 high-reasoning current-best-quality rerun with valid_pair_count=8 and invalid_pair_count=0. T15 interprets T14 as a positive current-best-quality signal only: reviewer did not run, same-model comparability with spark evidence is false, no promotion, no M26/M35 reversal and no runtime/browser/target/CI/git/release/deploy/automation proof exists. T16-T22 define a promotion-grade eval task group. T17 freezes the metadata-only held-out corpus manifest. T18 defines same-model promotion-grade comparison, strict schema, deterministic quarantine, scoring/reviewer rubric and result contract only. T19 defines cost, timeout, retry, abort and raw-temp-only retention policy only. T20-A02 staged owner-requested 1000s exact approval text with current pricing/USD cap. The owner later supplied T20-A03 cost-waived exact approval; T21 started one approved primary call and aborted on strict schema validation before any valid pair. T22 remains no-go because reviewer preconditions were not met; it does not promote.",
     "post_t06_recommended_next_routes": [
       "B45-POSTQ4-T09-CLOSURE-ADVISORY-ONLY",
       "B45-POSTQ4-T10-LIVE-EVAL-HARNESS-REDESIGN-PACKET",
@@ -604,7 +627,8 @@
       "B45-POSTQ4-T11-TREATMENT-V3-SOURCE-DESIGN",
       "B45-POSTQ4-T13-STRICT_OUTPUT_SCHEMA_AND_HARNESS_HARDENING",
       "B45-POSTQ4-T14-STRICT-RERUN-APPROVAL-PACKET",
-      "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP"
+      "B45-POSTQ4-T16-T22-PROMOTION-GRADE-EVAL-TASK-GROUP",
+      "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET"
     ],
     "latest_t12_run_results": "docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-results.json",
     "t12_live_eval_result": {
@@ -693,14 +717,142 @@
       "promotion_allowed": false,
       "future_exact_approval_required_before_run": true,
       "required_before_any_run": [
-        "frozen_held_out_corpus",
-        "same_model_or_explicit_current_model_comparison_choice",
-        "strict_structured_output_schema",
-        "reviewer_gate",
+        "frozen_held_out_corpus_manifest_ready",
+        "same_model_baseline_treatment_selected_for_promotion_grade",
+        "strict_structured_output_schema_ready",
+        "reviewer_gate_required",
         "cost_timeout_policy",
         "raw_temp_only_retention"
       ],
       "decision": "only_future_promotion_grade_eval_route_can_change_no_go_after_approval_and_result"
+    },
+    "t17_frozen_heldout_corpus": {
+      "status": "implemented_frozen_heldout_corpus_manifest_no_run",
+      "evidence_id": "B45-POSTQ4-T17-A01",
+      "corpus_id": "B45-POSTQ4-FROZEN-HELDOUT-CORPUS-V1",
+      "corpus_version": "v1",
+      "task_count": 8,
+      "baseline_started": false,
+      "treatment_started": false,
+      "promotion_allowed": false,
+      "future_exact_approval_required_before_run": true,
+      "next_required_task": "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
+      "decision": "metadata_only_frozen_corpus_manifest_ready_no_run"
+    },
+    "t18_eval_design": {
+      "status": "implemented_eval_design_strict_schema_no_run",
+      "evidence_id": "B45-POSTQ4-T18-A01",
+      "selected_promotion_grade_comparison_mode": "same_model_baseline_treatment",
+      "schema_id": "batch45_postq4_promotion_grade_primary_result_v1",
+      "corpus_id": "B45-POSTQ4-FROZEN-HELDOUT-CORPUS-V1",
+      "corpus_version": "v1",
+      "valid_pair_count_required": 8,
+      "invalid_pair_count_required": 0,
+      "minimum_average_score_delta_percent": 20,
+      "reviewer_gate_required": true,
+      "promotion_allowed": false,
+      "baseline_started": false,
+      "treatment_started": false,
+      "future_exact_approval_required_before_run": true,
+      "next_required_task": "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
+      "decision": "eval_design_strict_schema_ready_no_run"
+    },
+    "t19_cost_timeout_retention_policy": {
+      "status": "implemented_cost_timeout_retention_policy_no_run",
+      "evidence_id": "B45-POSTQ4-T19-A01",
+      "max_total_model_or_reviewer_calls": 17,
+      "max_primary_model_calls": 16,
+      "max_reviewer_calls_after_valid_pairs": 1,
+      "max_total_retries": 0,
+      "per_primary_call_timeout_seconds": 600,
+      "max_total_wall_clock_seconds": 12000,
+      "usd_cost_cap_status": "owner_fill_required_in_T20_exact_approval",
+      "raw_temp_only_retention_required": true,
+      "repo_raw_retention_bytes_allowed": 0,
+      "cost_timeout_retention_policy_ready": true,
+      "promotion_allowed": false,
+      "baseline_started": false,
+      "treatment_started": false,
+      "reviewer_gate_satisfied": false,
+      "future_exact_approval_required_before_run": true,
+      "next_required_task": "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
+      "decision": "cost_timeout_retention_policy_ready_no_run"
+    },
+    "t20_exact_approval_packet": {
+      "status": "exact_approval_packet_cost_waived_owner_confirmed_consumed_by_t21_invalid_schema_abort",
+      "evidence_id": "B45-POSTQ4-T20-A03",
+      "supersedes_evidence_id": "B45-POSTQ4-T20-A02",
+      "model_id": "gpt-5.5",
+      "model_reasoning_effort": "high",
+      "comparison_mode": "same_model_baseline_treatment",
+      "max_total_model_or_reviewer_calls": 17,
+      "max_total_retries": 0,
+      "cost_policy": "owner_accepts_unknown_unbounded_actual_provider_cost_for_this_run",
+      "owner_confirmed": true,
+      "run_authorized_by_this_artifact": false,
+      "approval_reuse_after_consumed_or_aborted_run_allowed": false,
+      "new_exact_approval_required_after_t21_abort": true,
+      "next_required_task": "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN"
+    },
+    "t21_preflight_block": {
+      "historical": true,
+      "superseded_by_evidence_id": "B45-POSTQ4-T21-COST-WAIVED-RUN-A01",
+      "superseded_by": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-results.json",
+      "status": "aborted_before_first_call_cost_unknown_not_run",
+      "evidence_id": "B45-POSTQ4-T21-PREFLIGHT-A03",
+      "previous_evidence_id": "B45-POSTQ4-T21-PREFLIGHT-A02",
+      "approval_text_present_in_current_user_message": true,
+      "approval_text_exact_match": true,
+      "mismatch_field": null,
+      "required_per_call_timeout_seconds": 1000,
+      "observed_per_call_timeout_seconds": 1000,
+      "current_required_per_call_timeout_seconds_after_t20_a02": 1000,
+      "current_required_approval_packet": "B45-POSTQ4-T20-A02",
+      "owner_confirmed": true,
+      "run_authorized_until_abort_gate": true,
+      "run_authorized": false,
+      "abort_gate_triggered": "cost_unknown_before_first_call",
+      "approval_reuse_allowed": false,
+      "baseline_started": false,
+      "treatment_started": false,
+      "reviewer_gate_satisfied": false,
+      "actual_model_or_reviewer_calls_started": 0,
+      "cost_known_before_first_call": false,
+      "estimated_total_cost_usd": null,
+      "cost_cap_consumed": false,
+      "pricing_source_available": true,
+      "pricing_recheck_required_before_future_execution": true,
+      "raw_outputs_written_to_repo": false,
+      "repo_raw_retention_bytes": 0,
+      "temp_root_created": false,
+      "promotion_allowed": false,
+      "next_required_action": "superseded_by_cost_waived_t21_run_result",
+      "decision": "historical_cost_unknown_preflight_superseded_by_cost_waived_invalid_schema_abort"
+    },
+    "t22_reviewer_gate_decision": {
+      "status": "implemented_reviewer_gate_blocked_t21_invalid_schema_abort_no_promotion",
+      "evidence_id": "B45-POSTQ4-T22-A02",
+      "t21_result_exists": true,
+      "reviewer_gate_status": "not_run_due_t21_invalid_schema_abort",
+      "reviewer_calls_started": 0,
+      "reviewer_verdict": "not_applicable_invalid_t21_result",
+      "promotion_allowed": false,
+      "repo_raw_retention_bytes": 0,
+      "next_required_action": "new_exact_approval_required_after_t21_invalid_schema_abort"
+    },
+    "latest_t21_result_packet": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-results.json",
+    "t21_promotion_grade_eval_result": {
+      "status": "aborted_invalid_json_or_schema_B45_HELDOUT_01_baseline_test_check_status_invalid",
+      "evidence_id": "B45-POSTQ4-T21-COST-WAIVED-RUN-A01",
+      "approved_primary_calls_started": 1,
+      "reviewer_calls_started": 0,
+      "valid_pair_count": 0,
+      "invalid_pair_count": 8,
+      "schema_failure_count": 1,
+      "abort_reason": "invalid_json_or_schema:B45-HELDOUT-01:baseline:test_check_status_invalid",
+      "raw_files_present_after_cleanup": 0,
+      "promotion_allowed": false,
+      "approval_reuse_allowed": false
     }
   },
   "control_plane_sync_decision": {
@@ -708,7 +860,7 @@
     "PLAN.md": "updated_compact_next_queue_pointer",
     "TEST.md": "updated_compact_post_q4_route_pointer",
     "EVALS.md": "updated_compact_post_q4_claim_ceiling",
-    "RUNLOG.md": "handoff_required_due_runlog_budget",
+    "RUNLOG.md": "updated_compact_t22_handoff_pointer",
     "prod_test.md": "not_applicable_batch39_surface",
     "docs/sources/registry.md": "updated_source_route",
     "docs/sources/registry.en.md": "updated_source_route",
@@ -732,7 +884,32 @@
   "verification": {
     "results": [
       {
-        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t15-model-change-decision-packet.json",
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t22-promotion-grade-decision-packet.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-cost-unknown.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-timeout-mismatch.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully after verification-block sync."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
         "status": "passed",
         "evidence": "JSON parsed successfully."
       },
@@ -742,14 +919,24 @@
         "evidence": "JSON parsed successfully."
       },
       {
+        "command": "python -m json.tool .codex\\product-agent-os\\lifecycle-state.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
         "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
         "status": "passed",
-        "evidence": "Ran 26 tests; OK"
+        "evidence": "Ran 36 tests; OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_codex_runtime_runner_model_output -v",
+        "status": "passed",
+        "evidence": "Ran 8 tests; OK"
       },
       {
         "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
         "status": "passed",
-        "evidence": "Ran 99 tests; OK"
+        "evidence": "Ran 100 tests; OK"
       },
       {
         "command": "python tools\\check_docs.py",
@@ -757,19 +944,19 @@
         "evidence": "OK: documentation structure checks passed"
       },
       {
-        "command": "git diff --check",
-        "status": "passed_with_crlf_warnings",
-        "evidence": "No whitespace errors. Git reported CRLF/LF normalization warnings for edited markdown files."
+        "command": "python -m unittest tests.product_agent_os.test_task_plan_lifecycle -v",
+        "status": "passed",
+        "evidence": "Ran 4 tests; OK"
       },
       {
-        "command": "Get-Item PLAN.md, TEST.md, EVALS.md, RUNLOG.md | Select-Object Name, Length",
-        "status": "passed_with_pre_existing_runlog_budget_gap",
-        "evidence": {
-          "PLAN.md": 49864,
-          "TEST.md": 49913,
-          "EVALS.md": 49998,
-          "RUNLOG.md": 51123
-        }
+        "command": "python -m unittest tests.product_agent_os.test_lifecycle_hooks -v",
+        "status": "passed",
+        "evidence": "Ran 17 tests; OK"
+      },
+      {
+        "command": "git diff --check",
+        "status": "passed_with_crlf_warnings",
+        "evidence": "No whitespace errors. Git reported CRLF/LF normalization warnings for edited files."
       }
     ],
     "remaining_required_before_completion_claim": []

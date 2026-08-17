@@ -134,10 +134,11 @@ DOC_M25_PENDING_SITE_PAGES = {
     DOCS / "product-agent-os" / "coding-standards.md",
     DOCS / "product-agent-os" / "self-learning-loop.md",
     DOCS / "superpowers" / "plans" / "2026-08-10-batch45-s9-a-durable-contract-recovery.md",
+    DOCS / "superpowers" / "plans" / "2026-08-11-batch45-s9-b-compact-authoring-runtime.md",
 }
-BUILDABLE_MARKDOWN_PAGE_COUNT = 154
-LOCALIZED_MARKDOWN_PAGE_COUNT = 144
-SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT = 141
+BUILDABLE_MARKDOWN_PAGE_COUNT = 157
+LOCALIZED_MARKDOWN_PAGE_COUNT = 147
+SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT = 143
 ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT = 10
 
 
@@ -9388,6 +9389,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "docs/product-agent-os/coding-standards.md",
                 "docs/product-agent-os/self-learning-loop.md",
                 "docs/superpowers/plans/2026-08-10-batch45-s9-a-durable-contract-recovery.md",
+                "docs/superpowers/plans/2026-08-11-batch45-s9-b-compact-authoring-runtime.md",
             ],
             sorted(f"docs/{path.relative_to(DOCS).as_posix()}" for path in DOC_M25_PENDING_SITE_PAGES),
         )

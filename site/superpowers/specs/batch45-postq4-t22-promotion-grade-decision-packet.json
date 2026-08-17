@@ -1,0 +1,104 @@
+{
+  "schema_version": "batch45_postq4_t22_promotion_grade_decision_packet_v1",
+  "task_id": "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION",
+  "evidence_id": "B45-POSTQ4-T22-A02",
+  "supersedes_evidence_id": "B45-POSTQ4-T22-A01",
+  "status": "implemented_reviewer_gate_blocked_t21_invalid_schema_abort_no_promotion",
+  "closure_level": "blocked_before_reviewer_no_run",
+  "route": "reviewer_gate_and_decision_after_t21_invalid_schema_abort",
+  "created_at": "2026-07-08T20:47:25+03:00",
+  "source_status": "source-owned T22 reviewer-gate decision packet after cost-waived T21 run aborted on strict schema validation; reviewer was not run and promotion remains blocked",
+  "goal": "Record the Batch 45 reviewer-gate and no-go decision after the exact cost-waived T21 run started one approved primary call and aborted before any valid pair.",
+  "claim_ceiling": "This artifact is a no-go decision after a strict-schema abort. It does not contain a reviewer verdict, valid promotion-grade pair set, behavior improvement evidence, M26/M35/T15 reversal, runtime/browser/target/CI/git/release/deploy/automation readiness, or release readiness.",
+  "basis": {
+    "cost_waived_exact_approval": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet-cost-waived.json",
+    "t21_result": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-results.json",
+    "previous_t21_cost_unknown_preflight": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-cost-unknown.json",
+    "eval_design": "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
+    "strict_output_validator": "plugins/product-agent-os/scripts/codex_runtime_runner/model_output.py"
+  },
+  "precondition_check": {
+    "required_t21_result_owner": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-results.json",
+    "t21_result_exists": true,
+    "t21_status": "aborted_invalid_json_or_schema_B45_HELDOUT_01_baseline_test_check_status_invalid",
+    "t21_valid_pair_count": 0,
+    "t21_invalid_pair_count": 8,
+    "t21_schema_failure_count": 1,
+    "t21_primary_calls_started": 1,
+    "t21_reviewer_calls_started": 0,
+    "t21_promotion_grade_eval_result_exists": false,
+    "precondition_result": "blocked_t21_invalid_schema_abort_no_valid_pairs"
+  },
+  "reviewer_gate": {
+    "status": "not_run_due_t21_invalid_schema_abort",
+    "reviewer_required": true,
+    "reviewer_input_available": false,
+    "reviewer_model_call_authorized": false,
+    "reviewer_model_call_started": false,
+    "reviewer_calls_started": 0,
+    "independent_reviewer_verdict_exists": false,
+    "reviewer_verdict": "not_applicable_invalid_t21_result",
+    "gate_satisfied": false,
+    "block_reason": "t21 aborted on strict schema before valid_pair_count=8 and sanitized rollup reviewer preconditions"
+  },
+  "decision": {
+    "status": "no_go_t21_invalid_schema_abort_missing_valid_pairs_and_reviewer_gate",
+    "promotion_allowed": false,
+    "promotion_state": "keep_advisory_only_no_go",
+    "m26_no_go_reversed": false,
+    "m35_no_go_reversed": false,
+    "t15_no_go_reversed": false,
+    "minimum_average_score_delta_percent_required": 20,
+    "average_score_delta_percent": null,
+    "valid_pair_count": 0,
+    "valid_pair_count_required": 8,
+    "reviewer_gate_satisfied": false,
+    "runtime_browser_target_ci_release_readiness": false,
+    "decision_basis": "T21 consumed the cost-waived approval but failed strict schema on the first primary result; reviewer preconditions were not met."
+  },
+  "cost_and_retention": {
+    "cost_policy": "cost_waived_by_owner_unknown_unbounded_actual_provider_cost_accepted",
+    "usage_or_cost_metadata_available": false,
+    "usage_or_cost_metadata_note": "codex exec output did not expose structured usage/cost metadata to the runner",
+    "raw_outputs_created": true,
+    "raw_outputs_written_to_repo": false,
+    "repo_raw_retention_bytes": 0,
+    "raw_files_present_after_cleanup": 0,
+    "temp_root_created": true,
+    "absolute_user_specific_paths_persisted": false
+  },
+  "no_unapproved_actions": {
+    "runtime_or_live_server_launched": false,
+    "browser_automation_run": false,
+    "target_workspace_command_run": false,
+    "target_workspace_mutated": false,
+    "database_accessed": false,
+    "ci_or_blocker_enforcement_created": false,
+    "git_branch_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation_created_or_enabled": false,
+    "external_write_performed_outside_approved_codex_exec_calls": false,
+    "raw_outputs_written_to_repo": false
+  },
+  "approved_actions_performed": {
+    "approved_codex_exec_primary_calls_started": 1,
+    "approved_codex_exec_primary_calls_completed_with_invalid_schema": 1,
+    "approved_codex_exec_reviewer_calls_started": 0
+  },
+  "unsupported_claims": [
+    "reviewer_verdict_exists",
+    "reviewer_gate_satisfied",
+    "valid_pair_count_8",
+    "promotion_grade_eval_result_exists",
+    "behavior_improvement_proven",
+    "M26_no_go_reversed",
+    "M35_no_go_reversed",
+    "T15_no_go_reversed",
+    "promotion_ready",
+    "runtime_browser_target_ci_git_release_deploy_automation_ready"
+  ],
+  "next_required_action": {
+    "to_change_no_go": "Fix/normalize strict primary output schema handling, then obtain a new exact approval because T20-A03 was consumed by the aborted T21 run.",
+    "current_next_state": "blocked_t21_invalid_schema_abort_reviewer_gate_not_run"
+  }
+}

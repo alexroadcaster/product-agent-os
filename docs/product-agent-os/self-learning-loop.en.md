@@ -122,3 +122,6 @@ python -m unittest tests.product_agent_os.test_product_agent_os_docs -v
 python tools\check_docs.py
 git diff --check
 ```
+## Execution-loop diagnostics
+
+The manual loop also measures time to first target diff, agent count, review/repair cycles, unchanged command repeats, control-plane writes before acceptance, target/test churn, compaction, stale lifecycle markers, mixed skill sources and projection conflicts. A budget breach produces `intervention_required` and a stop-or-narrow recommendation; it never edits prompts, skills, config, hooks or automation automatically. Missing records mean `insufficient_evidence`, not a successful run.

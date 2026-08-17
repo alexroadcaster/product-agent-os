@@ -10,6 +10,10 @@
     "fresh_context_handoff",
     "subagent_context_packet_before_launch",
     "subagent_result_packet_after_completion",
+    "root_owned_lifecycle",
+    "bounded_review_repair_cycles",
+    "repeat_command_requires_changed_input",
+    "canonical_repository_skill_source",
     "config_routed_task_plan_lifecycle",
     "config_routed_control_plane_sync",
     "user_visible_task_brief_before_execution",
@@ -56,12 +60,14 @@
     "developer_instructions include ownership, inputs, outputs, stop conditions, and handoff",
     "agents mention local system files as context and not as default deliverables",
     "agents load the config-routed lifecycle workflow contract from .codex/config.toml instead of duplicating lifecycle rules in every profile",
-    "agents show a Task Brief before non-mechanical execution and one terminal final Completion Brief after every write, verification command and control-plane sync step",
+    "the root agent shows one Task Brief before non-mechanical execution and one terminal final Completion Brief after every write, verification command and the single control-plane sync; delegated agents never repeat either brief",
     "mutating or non-read-only commands require a lightweight lifecycle marker after the user-visible Task Brief",
-    "agents run a Control-Plane Sync check before completion and update owned control-plane files or record not_applicable / handoff_required",
+    "the root agent runs one Control-Plane Sync check before completion and updates owned control-plane files or records not_applicable / handoff_required",
     "agents treat root control-plane size overflow as overflow_refactor_required: move cold detail to an owning source artifact, then update the compact root pointer",
     "agents require a Subagent Context Packet before delegated subagent launch and a Subagent Result Packet after completion",
     "subagent packets expose role, fork_turns, prompt, allowed files, files actually read, and outputs",
+    "each slice has one writer, no more than two review-repair cycles, and no repeated unchanged command",
+    "repository-local Product-Agent OS skills are canonical within a run and SessionStart reports their relative path and sha256 provenance",
     "agents carry local style conventions, existing project patterns, coding-standard workflow/checklist status, and an existing-capability scan before custom code",
     "agents record professional_code_authoring_not_applicable_reason for docs-only, read-only, formatting-only, or tiny mechanical tasks",
     "agents prevent raw source, raw private logs, secrets, or private payloads from entering handoff, eval, memory or generated artifacts",
@@ -82,11 +88,14 @@
     "agent claims done, fixed, verified, ready, or release-ready without current evidence or accepted gap",
     "agent treats generated dashboard, template presence, or stale logs as proof",
     "agent profile duplicates field-level lifecycle rules instead of referencing [product_agent_os.lifecycle_contract] and [workflows] in .codex/config.toml",
-    "agent performs non-mechanical execution without a user-visible Task Brief, closes without a terminal final Completion Brief, or calls a tool after that brief",
+    "the root agent performs non-mechanical execution without a user-visible Task Brief, closes without a terminal final Completion Brief, or calls a tool after that brief",
     "agent performs mutating Product-Agent OS work without the lifecycle marker required by the pre-tool hook guard",
     "agent closes after changing scope, plan, verification, eval, runlog, or project ledger state without control-plane sync",
     "agent skips a required REQUIREMENTS.md, PLAN.md, TEST.md, EVALS.md, or RUNLOG.md update merely because the root file is near or over budget",
     "agent launches a delegated subagent without a Subagent Context Packet or closes it without a Subagent Result Packet",
+    "a delegated agent opens or closes a nested lifecycle, mutates the lifecycle marker, or runs the shared Control-Plane Sync",
+    "a slice exceeds two review-repair cycles or repeats the same check without a named changed input",
+    "a run mixes repository and cache copies of the same Product-Agent OS skill",
     "agent writes custom code before scanning existing APIs, helpers, config, dependencies or local style conventions",
     "agent hands off professional code work without coding-standard checklist status or not_applicable reason",
     "agent leaks raw source bodies, raw private conversation, secrets or private payloads into handoff/eval/generated artifacts",
@@ -120,7 +129,7 @@
           "gpt-5.6-sol",
           "gpt-5.6-terra"
         ],
-        "result": "Agents must follow the lifecycle workflow through config, then show the required user-visible Task Brief and Completion Brief."
+        "result": "The root agent must follow the lifecycle workflow through config and show the user-visible Task Brief and Completion Brief; delegated agents return only a compact Subagent Result Packet."
       }
     },
     {
@@ -231,8 +240,11 @@
           "outputs",
           "before launch",
           "after completion"
+          ,"root owns lifecycle"
+          ,"no nested Task Brief"
+          ,"no nested Completion Brief"
         ],
-        "result": "Agents must show a Subagent Context Packet before delegated launch and collect a Subagent Result Packet after completion, timeout, cancellation, or close."
+        "result": "The root agent provides a compact Subagent Context Packet and collects one Subagent Result Packet; delegated agents do not own lifecycle state or user-facing briefs."
       }
     },
     {

@@ -1,0 +1,329 @@
+{
+  "schema_version": "batch45_postq4_t21_promotion_grade_eval_run_preflight_blocked_v1",
+  "task_id": "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN",
+  "evidence_id": "B45-POSTQ4-T21-PREFLIGHT-A01",
+  "status": "blocked_missing_exact_t20_owner_confirmation_not_run",
+  "status_aliases": [
+    "blocked_preflight_missing_owner_restatement"
+  ],
+  "closure_level": "blocked_before_execution_no_run",
+  "route": "approval_required_preflight_block",
+  "created_at": "2026-07-08T15:15:24+03:00",
+  "source_status": "source-owned T21 preflight block; the owner requested T21 execution but did not restate the exact T20 approval text, so no baseline/treatment run, reviewer/model/provider call, runtime/browser/target/CI/git/release/deploy/automation action was performed",
+  "goal": "Record the failed approval preflight for the Batch 45 promotion-grade eval run without starting any provider/model/reviewer execution.",
+  "claim_ceiling": "This artifact is a blocked preflight only. It does not contain promotion-grade eval results, reviewer approval, behavior improvement evidence, M26/M35/T15 reversal, runtime/browser/target/CI/git/release/deploy/automation readiness, or release readiness.",
+  "basis": {
+    "task_group": "docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+    "frozen_corpus": "docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json",
+    "eval_design": "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
+    "cost_timeout_retention_policy": "docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json",
+    "exact_approval_packet": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+    "context7_library_id": "/websites/developers_openai_api",
+    "current_boundary": "B45-POSTQ4-T20-A01 requires a later owner message that restates the exact approval text before T21 can start."
+  },
+  "source_matrix": [
+    {
+      "source": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+      "claim": "T20 is an approval packet only: owner_confirmed=false, run_authorized_by_this_artifact=false, requires_next_user_message=true and next_user_message_must_restate_exact_packet=true.",
+      "relevance": "Direct approval gate for T21.",
+      "freshness": "current_repo_2026-07-08",
+      "confidence": "high",
+      "conflicts": []
+    },
+    {
+      "source": "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
+      "claim": "Promotion-grade evidence requires same-model baseline/treatment execution, strict schema, deterministic quarantine, all 8 valid pairs, reviewer gate and >=20% average score delta.",
+      "relevance": "Defines why a blocked preflight cannot support promotion claims.",
+      "freshness": "current_repo_2026-07-08",
+      "confidence": "high",
+      "conflicts": []
+    },
+    {
+      "source": "docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json",
+      "claim": "Future execution must obey call caps, timeout, zero retries, cost accounting, abort conditions and raw-temp-only retention.",
+      "relevance": "Defines the no-run safety boundary for the blocked attempt.",
+      "freshness": "current_repo_2026-07-08",
+      "confidence": "high",
+      "conflicts": []
+    },
+    {
+      "source": "https://developers.openai.com/api/docs/guides/evals",
+      "claim": "OpenAI eval runs are created through an API execution path with a configured model and data source.",
+      "relevance": "Supports treating T21 execution as provider/model work, not a documentation-only action.",
+      "freshness": "queried_via_Context7_2026-07-08",
+      "confidence": "high",
+      "conflicts": []
+    },
+    {
+      "source": "https://developers.openai.com/api/docs/guides/reasoning/advice-on-prompting",
+      "claim": "OpenAI Responses API examples configure both model and reasoning effort.",
+      "relevance": "Supports keeping model_id and reasoning effort in the exact approval contract.",
+      "freshness": "queried_via_Context7_2026-07-08",
+      "confidence": "high",
+      "conflicts": []
+    },
+    {
+      "source": "https://developers.openai.com/api/docs/api-reference/usage",
+      "claim": "OpenAI usage/cost endpoints expose aggregated organization cost and request usage details.",
+      "relevance": "Supports the cost-accounting and cap-aware nature of the future approved run.",
+      "freshness": "queried_via_Context7_2026-07-08",
+      "confidence": "medium",
+      "conflicts": []
+    }
+  ],
+  "trigger_message_observed": {
+    "requested_task_id": "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN",
+    "requested_agents_and_skills": true,
+    "requested_product_docs_update": true,
+    "requested_context7": true,
+    "exact_t20_approval_text_restated": false,
+    "mismatch_reason": "latest_user_message_names_T21_but_does_not_restate_T20_exact_approval_text"
+  },
+  "approval_preflight": {
+    "required_packet": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+    "required_first_line": "Подтверждаю B45-POSTQ4-T20 exact approval:",
+    "block_reason": "owner_has_not_restated_exact_approval_text",
+    "approval_text_present_in_current_user_message": false,
+    "approval_text_exact_match": "not_evaluated_due_missing_restatement",
+    "owner_confirmed": false,
+    "run_authorized": false,
+    "requires_next_user_message": true,
+    "next_user_message_must_restate_exact_packet": true,
+    "approval_packet_cannot_run_by_itself": true,
+    "approval_reuse_allowed": false,
+    "preflight_result": "blocked_before_first_call",
+    "blocking_condition": "owner_has_not_restated_exact_approval_text"
+  },
+  "source_freeze_hashes_checked_read_only": {
+    "frozen_corpus": {
+      "path": "docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json",
+      "sha256": "5551436407260DB1042BE783B00C7AF732D55757A787E4FB2CA36FA092AF4CD4"
+    },
+    "eval_design": {
+      "path": "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
+      "sha256": "3030F8AFB5430CB31679B9552FF3B101659A1AE323934B4ABB681D1E1A05CE21"
+    },
+    "cost_timeout_retention_policy": {
+      "path": "docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json",
+      "sha256": "07139D68EF8AE2389FE0198BCBFF7E15C74F77F619A5AAF35DD5160671ABB08C"
+    },
+    "exact_approval_packet": {
+      "path": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+      "sha256": "4A38AB517799E1D10348EBC35ECF85E8938F09199B2426C275AC27C178C31164"
+    },
+    "hash_check_mode": "read_only_preflight"
+  },
+  "would_have_used_if_approved": {
+    "provider_surface": "Codex CLI/OpenAI via codex exec",
+    "model_id": "gpt-5.5",
+    "model_reasoning_effort": "high",
+    "comparison_mode": "same_model_baseline_treatment",
+    "corpus_id": "B45-POSTQ4-FROZEN-HELDOUT-CORPUS-V1",
+    "corpus_version": "v1",
+    "task_ids": [
+      "B45-HELDOUT-01",
+      "B45-HELDOUT-02",
+      "B45-HELDOUT-03",
+      "B45-HELDOUT-04",
+      "B45-HELDOUT-05",
+      "B45-HELDOUT-06",
+      "B45-HELDOUT-07",
+      "B45-HELDOUT-08"
+    ],
+    "max_total_model_or_reviewer_calls": 17,
+    "max_primary_model_calls": 16,
+    "max_reviewer_calls_after_valid_pairs": 1,
+    "max_total_retries": 0,
+    "per_primary_call_timeout_seconds": 600,
+    "per_reviewer_call_timeout_seconds": 600,
+    "max_total_wall_clock_seconds": 12000,
+    "usd_cost_cap": 25.0,
+    "pricing_source_checked_at": "2026-07-08T14:40:00+03:00",
+    "pricing_source": "https://developers.openai.com/api/docs/pricing",
+    "raw_temp_only_retention_required": true,
+    "repo_raw_retention_bytes_allowed": 0
+  },
+  "calls_started": {
+    "baseline_model_calls": 0,
+    "treatment_model_calls": 0,
+    "reviewer_model_calls": 0,
+    "provider_api_calls": 0,
+    "setup_or_smoke_model_calls": 0,
+    "total_model_or_reviewer_calls": 0,
+    "actual_model_or_reviewer_calls_started": 0
+  },
+  "cost_preflight": {
+    "estimated_total_cost_usd": 0,
+    "cost_cap_consumed": false,
+    "pricing_recheck_required_before_future_execution": true,
+    "pricing_recheck_reason": "T20 pricing was checked at 2026-07-08T14:40:00+03:00 and any later actual run must re-check official pricing before first call."
+  },
+  "result_contract_status": {
+    "promotion_grade_eval_result_exists": false,
+    "valid_pair_count": 0,
+    "invalid_pair_count": 0,
+    "timeout_count": 0,
+    "no_op_count": 0,
+    "invalid_json_count": 0,
+    "sanitized_rollup_created": false,
+    "reviewer_gate_satisfied": false,
+    "promotion_threshold_evaluated": false,
+    "promotion_allowed": false
+  },
+  "privacy_and_retention_boundary": {
+    "raw_outputs_created": false,
+    "raw_outputs_written_to_repo": false,
+    "raw_outputs_deleted": "not_applicable_no_run",
+    "temp_root_created": false,
+    "raw_outputs_temp_only": true,
+    "repo_raw_retention_bytes_allowed": 0,
+    "repo_raw_retention_bytes": 0,
+    "secrets_or_unredacted_pii_detected": false,
+    "absolute_user_specific_paths_retained": false,
+    "absolute_user_specific_paths_persisted": false,
+    "allowed_repo_retention": [
+      "blocked status labels",
+      "approval preflight booleans",
+      "source artifact paths",
+      "Context7 source URLs",
+      "no-unapproved-actions booleans",
+      "verification command summaries"
+    ]
+  },
+  "no_unapproved_actions": {
+    "live_model_or_provider_api_called_without_approval": false,
+    "baseline_or_treatment_model_call_started": false,
+    "reviewer_model_call_started": false,
+    "runtime_or_live_server_launched": false,
+    "browser_automation_run": false,
+    "target_workspace_command_run": false,
+    "target_workspace_mutated": false,
+    "database_accessed": false,
+    "ci_or_blocker_enforcement_created": false,
+    "git_branch_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation_created_or_enabled": false,
+    "external_write_performed": false,
+    "raw_outputs_written_to_repo": false
+  },
+  "unsupported_claims": [
+    "owner_confirmed",
+    "run_authorized",
+    "promotion_grade_eval_result_exists",
+    "baseline_treatment_execution_started",
+    "reviewer_gate_satisfied",
+    "behavior_improvement_proven",
+    "M26_no_go_reversed",
+    "M35_no_go_reversed",
+    "T15_no_go_reversed",
+    "promotion_ready",
+    "runtime_browser_target_ci_git_release_deploy_automation_ready"
+  ],
+  "sidecar_agent_use": {
+    "agents_used": [
+      {
+        "role": "docs-maintainer",
+        "scope": "read-only approval boundary and docs/control-plane sync review",
+        "file_writes_authorized": false,
+        "provider_model_reviewer_calls_authorized": false,
+        "result": "confirmed T21 cannot start until exact T20 approval text is restated"
+      },
+      {
+        "role": "security-privacy-supply-chain-reviewer",
+        "scope": "read-only approval, privacy, raw-retention and no-unapproved-actions review",
+        "file_writes_authorized": false,
+        "provider_model_reviewer_calls_authorized": false,
+        "result": "confirmed no security/privacy bypass; recommended blocked preflight fields for zero calls, zero cost, no temp root and zero raw repo retention"
+      }
+    ],
+    "tester_agent_gap": "tester subagent spawn was unavailable because the agent thread limit was reached; main agent performed local test contract updates and verification",
+    "agent_outputs_are_supporting_review_only": true,
+    "source_artifacts_remain_authoritative": true
+  },
+  "control_plane_sync_decision": {
+    "REQUIREMENTS.md": "not_applicable_no_scope_or_acceptance_change",
+    "PLAN.md": "updated_compact_t21_blocked_preflight_pointer",
+    "TEST.md": "updated_compact_t21_no_run_check_route",
+    "EVALS.md": "updated_compact_t21_blocked_claim_ceiling",
+    "RUNLOG.md": "updated_compact_t21_handoff_pointer",
+    "docs/sources/registry.md": "updated_t21_blocked_preflight_source_route",
+    "docs/sources/registry.en.md": "updated_t21_blocked_preflight_source_route",
+    "docs/product-agent-os/control-plane-current-state.md": "updated_current_state_and_queue_pointer",
+    "docs/product-agent-os/control-plane-current-state.en.md": "updated_current_state_and_queue_pointer",
+    "docs/product-agent-os/coding-standards.md": "updated_evidence_ceiling",
+    "docs/product-agent-os/coding-standards.en.md": "updated_evidence_ceiling",
+    "docs/product-agent-os/behavioral-evals.md": "updated_professional_code_eval_route_without_raw_batch_marker",
+    "docs/product-agent-os/behavioral-evals.en.md": "updated_professional_code_eval_route_without_raw_batch_marker",
+    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md": "updated_t16_t22_row_and_s8_slice",
+    ".codex/product-agent-os/lifecycle-state.json": "updated_current_marker"
+  },
+  "verification": {
+    "status": "passed_current_run",
+    "results": [
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully after verification-block sync."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully after verification-block sync."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-post-q4-next-tasks.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully after verification-block sync."
+      },
+      {
+        "command": "python -m json.tool .codex\\product-agent-os\\lifecycle-state.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "status": "passed",
+        "evidence": "Ran 32 tests; OK."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_codex_runtime_runner_model_output -v",
+        "status": "passed",
+        "evidence": "Ran 8 tests; OK."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "status": "passed",
+        "evidence": "Ran 100 tests; OK."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_task_plan_lifecycle -v",
+        "status": "passed",
+        "evidence": "Ran 4 tests; OK."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_lifecycle_hooks -v",
+        "status": "passed",
+        "evidence": "Ran 17 tests; OK."
+      },
+      {
+        "command": "python tools\\check_docs.py",
+        "status": "passed",
+        "evidence": "OK: documentation structure checks passed."
+      },
+      {
+        "command": "git diff --check",
+        "status": "passed_with_crlf_warnings",
+        "evidence": "No whitespace errors. Git reported CRLF/LF normalization warnings for edited files."
+      }
+    ],
+    "remaining_required_before_completion_claim": []
+  },
+  "decision": {
+    "new_live_model_rerun_performed": false,
+    "promotion_allowed": false,
+    "t21_run_started": false,
+    "next_state_without_owner_confirmation": "blocked_missing_exact_t20_owner_confirmation_not_run",
+    "next_state_if_owner_restates_exact_t20_approval": "approval_ready_for_T21_execution_under_T20_contract",
+    "smallest_owner_action_to_unblock": "Paste the exact T20 approval block beginning with 'Подтверждаю B45-POSTQ4-T20 exact approval:' in a future message."
+  }
+}

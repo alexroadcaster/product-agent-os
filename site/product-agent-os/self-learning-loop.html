@@ -1679,6 +1679,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#execution-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Диагностика execution-loop
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3613,6 +3622,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#execution-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Диагностика execution-loop
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3930,6 +3948,8 @@
 </ul>
 <h2 id="_10">Следующее Действие<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h2>
 <p>Используйте эту страницу, когда <code>Self-Learning Loop</code> должен восстановиться после отсутствующего state, упаковать redacted feedback, экспортировать eval cases или передать candidate в staged repair. Следующий безопасный артефакт после <code>ready_for_owner_review</code> - решение владельца: approve bounded staged repair, request more evidence или record a no-op.</p>
+<h2 id="execution-loop">Диагностика execution-loop<a class="headerlink" href="#execution-loop" title="Permanent link">&para;</a></h2>
+<p>Ручной контур дополнительно измеряет время до первого target diff, число агентов, review/repair cycles, повторы неизменившихся команд, записи control plane до acceptance, target/test churn, compaction, stale lifecycle marker, смешивание skill sources и projection conflicts. Превышение бюджета формирует <code>intervention_required</code> и рекомендацию остановить или сузить slice; оно не меняет prompts, skills, config, hooks или automation автоматически. Отсутствующие записи означают <code>insufficient_evidence</code>, а не успешный run.</p>
 
 
 

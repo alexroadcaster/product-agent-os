@@ -14,13 +14,13 @@ not execute, install, or verify any tool or project utility.
 
 | family | languages | status | marker_evidence |
 | --- | --- | --- | --- |
-| `{family}` | `{languages}` | `present_unverified` | `{marker_evidence}` |
+| `<family>` | `<languages>` | `present_unverified` | `<marker_evidence>` |
 
 ## Existing Project-Native Tools
 
 | family | category | name | status | sources | proposed_commands_not_run |
 | --- | --- | --- | --- | --- | --- |
-| `{family}` | `{category}` | `{name}` | `present_unverified` | `{sources}` | `{proposed_commands_not_run}` |
+| `<family>` | `<category>` | `<name>` | `present_unverified` | `<sources>` | `<proposed_commands_not_run>` |
 
 Missing applicable categories remain `applicable_missing`; an empty tool row is
 not evidence that a tool is absent from the project.
@@ -29,14 +29,14 @@ not evidence that a tool is absent from the project.
 
 | name | status | source | proposed_command |
 | --- | --- | --- | --- |
-| `{name}` | `present_unverified` | `{source}` | `{proposed_command}` |
+| `<name>` | `present_unverified` | `<source>` | `<proposed_command>` |
 
 Project utilities are inert profile data. A listed command is not authorization
 to run it.
 
 ## Gaps
 
-- `applicable_missing`: `{family}:{category}`
+- `applicable_missing`: `<family>:<category>`
 - No declared inventory signal establishes operational behavior or correctness.
 
 ## Evidence Ceiling

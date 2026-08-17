@@ -290,6 +290,9 @@ class LifecycleHooksTest(unittest.TestCase):
         self.assertIn("task_start_brief_v1", context)
         self.assertIn("Product value", context)
         self.assertIn("control-plane sync", context)
+        self.assertIn("canonical_skill_source=plugins/product-agent-os/skills", context)
+        self.assertIn("mixed_source=forbidden", context)
+        self.assertIn("sha256=", context)
         self.assertNotIn(str(ROOT), result.stdout)
         self.assertNotIn(".codex/hooks/hooks.json", context)
 
@@ -412,6 +415,19 @@ class LifecycleHooksTest(unittest.TestCase):
         reason = json.loads(result.stdout)["hookSpecificOutput"]["permissionDecisionReason"]
         self.assertIn("stale", reason)
 
+    def test_session_start_marks_stale_in_progress_state_as_recovery_not_resume(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            write_marker(root, valid_marker(updated_at=(datetime.now(timezone.utc) - timedelta(hours=49)).isoformat()))
+            env = os.environ.copy()
+            env["CODEX_HOOK_WORKSPACE_ROOT"] = str(root)
+            result = run_hook(HOOKS / "session_start_context.py", cwd=ROOT, env=env)
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        context = json.loads(result.stdout)["hookSpecificOutput"]["additionalContext"]
+        self.assertIn("lifecycle_state=stale_in_progress", context)
+        self.assertIn("action=stop_and_recover_not_resume", context)
+
     def test_pre_tool_use_denies_completed_marker(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -488,6 +504,30 @@ class LifecycleHooksTest(unittest.TestCase):
         payload = json.loads(result.stdout)
         self.assertEqual("block", payload["decision"])
         self.assertIn("terminal Completion Brief", payload["reason"])
+
+    def test_stop_hook_accepts_blocked_terminal_brief_without_continuation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            write_marker(root, valid_marker(status="blocked", completion_ready=True))
+            env = os.environ.copy()
+            env["CODEX_HOOK_WORKSPACE_ROOT"] = str(root)
+            result = run_hook(
+                HOOKS / "stop_runlog_reminder.py",
+                {
+                    "stop_hook_active": False,
+                    "last_assistant_message": (
+                        "Completion Brief\nTask ID: blocked-case\nResult status: blocked\n"
+                        "What was done: stopped safely\nFiles / artifacts changed: none\n"
+                        "Verification evidence: blocker reproduced\nResidual risks / accepted gaps: unresolved input\n"
+                        "Follow-up: owner decision"
+                    ),
+                },
+                ROOT,
+                env,
+            )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual("", result.stdout)
 
     def test_stop_hook_does_not_loop_after_continuation(self):
         with tempfile.TemporaryDirectory() as tmp:

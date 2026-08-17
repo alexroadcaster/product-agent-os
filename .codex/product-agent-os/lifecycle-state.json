@@ -1,12 +1,12 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "B45-S9-B",
-  "scope": "Implement B45-CQRR-T25/T26/T27 compact authoring contract, project-native code-quality selection, and risk-based test/comment/performance routing in strict sequence.",
-  "updated_at": "2026-08-11T16:09:45.9779396+03:00",
-  "approval_boundary": "Local owned-file implementation and deterministic verification only; no T28-T34, provider/model/external reviewer calls, target mutation, dependency install, browser/E2E/benchmark/CI execution, hooks or automation activation, git writes, release, deploy or publication.",
+  "task_id": "PAOS-LOOP-REMEDIATION-2026-08-17",
+  "scope": "Repair stale execution state, bound Product-Agent OS orchestration, replace brittle T28 packet assertions, add deterministic T29 promotion metrics, and extend manual self-learning loop telemetry.",
+  "updated_at": "2026-08-17T07:00:26+03:00",
+  "approval_boundary": "Local project edits and deterministic verification only; no hooks or automation activation, provider/model/external calls, browser/live benchmark, git writes, release, deploy or publication.",
   "brief_schema_version": "task_start_brief_v1",
   "brief_format": "field_list",
-  "brief_digest": "sha256:b45bb45bb45bb45bb45bb45bb45bb45bb45bb45bb45bb45bb45bb45bb45bb45b",
+  "brief_digest": "sha256:8a40d61f1372035464a2362991b1229d081d439fd5565e6e3231e3a595ec311c",
   "brief_fields_present": [
     "Task ID",
     "Product value",
@@ -23,6 +23,14 @@
     "Next action"
   ],
   "completion_brief_shown": false,
-  "completion_ready": false,
-  "status": "in_progress"
+  "completion_ready": true,
+  "status": "ready_for_completion_brief",
+  "result_status": "implemented_not_runtime_verified",
+  "completion_summary": "R0-R4 implemented: truthful state recovery, bounded root-owned orchestration, semantic T28 contracts, deterministic T29 promotion metrics, and execution-loop self-learning telemetry.",
+  "verification_summary": "Product-Agent OS docs 100/100; affected-contract route 208/208; active agents 15/15; active/template hook validators, RU/EN task-matrix validators, task-state consistency, docs structure and diff hygiene all green; strict MkDocs exit 0 with 652 generated files.",
+  "residual_risks": "Hook trust and clean-session activation are not verified; no provider/model, live/browser, external reviewer, promotion, release or production evidence was produced.",
+  "next_action": "Review/trust hooks in the Codex UI, restart in a fresh task, verify loaded instruction precedence and canonical skill provenance, then collect sanitized execution-loop latency/token/cost records before any promotion claim.",
+  "source_task_id": "B45-S9-C",
+  "source_task_result_status": "t28_t29_locally_implemented_focused_verified",
+  "source_task_next_action": "Proceed to dependency T30 only under the bounded root-owned workflow; T34 remains exact-approval-blocked."
 }

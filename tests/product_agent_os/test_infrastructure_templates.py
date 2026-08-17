@@ -118,6 +118,8 @@ REQUIRED_TARGETS = {
     ".codex/artifact-templates/database-synthetic-fixtures-policy.md",
     ".codex/artifact-templates/database-production-access-approval.md",
     ".codex/artifact-templates/agent-task-packet.md",
+    ".codex/artifact-templates/code-change-contract.md",
+    ".codex/artifact-templates/code-quality-profile.md",
     ".codex/artifact-templates/coding-standard-checklist.md",
     ".codex/artifact-templates/subagent-context-packet.md",
     ".codex/artifact-templates/subagent-result-packet.md",
@@ -2098,13 +2100,17 @@ class InfrastructureTemplateTest(unittest.TestCase):
         self.assertEqual(data["sandbox_mode"], "workspace-write")
         self.assertNotIn("default_permissions", data)
         self.assertNotIn("permissions", data)
-        self.assertEqual(data["agents"]["max_concurrent_threads_per_session"], 2)
+        self.assertEqual(data["agents"]["max_concurrent_threads_per_session"], 3)
         self.assertEqual(data["agents"]["product-manager"]["config_file"], "./agents/product-manager.toml")
         product_agent_os = data["product_agent_os"]
         self.assertEqual(product_agent_os["runlog_archive_dir"], ".codex/runlogs/archive")
         self.assertEqual(product_agent_os["sandbox_contract"]["default_mode"], "workspace-write")
         self.assertEqual(product_agent_os["approval_contract"]["network_access"], "explicit")
         self.assertEqual(product_agent_os["model_migration"]["family"], "GPT-5.6")
+        self.assertEqual(product_agent_os["execution_budget"]["writer_concurrency"], 1)
+        self.assertEqual(product_agent_os["execution_budget"]["max_review_repair_cycles_per_slice"], 2)
+        self.assertEqual(product_agent_os["skill_source"]["mixed_source_policy"], "forbidden_within_run")
+        self.assertEqual(len(product_agent_os["autonomy"]["fresh_context_files"]), 4)
         self.assertNotIn("network_access", data)
         self.assertNotIn("secrets", data)
     def test_config_template_render_escapes_string_placeholders_for_toml(self):
@@ -2205,16 +2211,15 @@ class InfrastructureTemplateTest(unittest.TestCase):
         ]:
             self.assertIn(expected, text)
 
-    def test_agent_templates_require_user_visible_task_and_completion_briefs(self):
+    def test_agent_templates_delegate_user_visible_lifecycle_to_root(self):
         for path in (TEMPLATE_ROOT / "agents").glob("*.toml"):
             text = path.read_text(encoding="utf-8").lower()
             with self.subTest(agent_template=path.name):
-                self.assertIn("config-routed lifecycle workflow contract", text)
                 self.assertIn("[product_agent_os.lifecycle_contract]", text)
                 self.assertIn("[workflows]", text)
-                self.assertIn("task brief", text)
-                self.assertIn("completion brief", text)
-                self.assertIn("subagent context packet", text)
+                self.assertIn("root agent owns the user-visible task brief", text)
+                self.assertIn("never start or close a nested lifecycle", text)
+                self.assertIn("do not run the shared `control_plane_sync`", text)
                 self.assertIn("subagent result packet", text)
                 self.assertIn("role", text)
                 self.assertIn("fork_turns", text)
@@ -2271,7 +2276,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
         self.assertEqual(lifecycle_contract["required_for"], "non_mechanical_tasks")
         self.assertEqual(
             lifecycle_contract["agent_instruction_policy"],
-            "reference_config_workflows_do_not_duplicate_contract",
+            "root_only_lifecycle_subagents_return_result_packet",
         )
 
     def test_methodology_workflows_cover_development_and_documentation_standards(self):
@@ -2598,6 +2603,8 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "recommended next role",
                 "stop reason",
             ],
+            "code-change-contract.md": [],
+            "code-quality-profile.md": [],
             "coding-standard-checklist.md": [
                 "enterprise_leverage_check",
                 "existing_capability_scan",

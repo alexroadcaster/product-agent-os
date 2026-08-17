@@ -13,12 +13,12 @@ Source status: `active local implementation plan; no live/provider/runtime-activ
 ### Task `B45-S9-B`
 
 - Task: implement `B45-CQRR-T25`, `B45-CQRR-T26` and `B45-CQRR-T27` in strict sequence.
-- Status: in_progress
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: the user explicitly authorized implementation of `B45.S9-B` with agents and skills after local closure of `B45-S9-A`.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 14-08-2026 16:32
 - Depends on: `B45-CQRR-A03`; locally verified `B45-CQRR-A04`; `B45-CQRR-T23` for T25.
 - Blocks: `B45-S9-C` and T28 until the T27 green handoff.
 - Source: `docs/superpowers/specs/batch45-code-quality-runtime-recovery-task-group.json`; `docs/superpowers/specs/batch45-code-quality-runtime-recovery-agent-team.json`; `docs/superpowers/specs/batch45-s9-0-fresh-context-handoffs.json`; current templates, discovery helpers and tests.
@@ -36,19 +36,19 @@ Source status: `active local implementation plan; no live/provider/runtime-activ
 - Agents: `architect` freezes T25/T26/T27 semantics; `plugin-runtime-builder` writes owned templates/modules; `tester` owns focused tests in sequential windows; `reviewer` and `completion-skeptic` are read-only; `docs-maintainer` synchronizes evidence after the gate.
 - Skills: `implementation-planner`; `agent-team-designer`; `python-design-patterns`; `python-code-style`; `tdd`; project-local docs and control-plane sync.
 - Output artifacts: `code-change-contract.md`; updated `coding-standards.md` and `coding-standard-checklist.md`; canonical registration in `templates.py`; `code_quality_selector.py`; `code-quality-profile.md`; `test_strategy_selector.py`; updated `quality-strategy.md`; focused T25 test; shared T26/T27 behavior test; A05 evidence sync.
-- Next step: architect freeze for T25, then builder/tester red-green; T26 and T27 start only after the prior task's green handoff.
+- Next step: T28 in `B45-S9-C` after a separate Task Brief; T28-T34 are not started and T34 requires a new exact approval.
 
 #### Completion Report
 
-- status: in_progress
-- what was done: pending implementation
-- files touched / work locations: pending implementation
-- technical value delivered: pending implementation
-- product value delivered: pending implementation
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending current-run evidence
+- status: implemented
+- what was done: sequentially implemented T25 compact code-change contract with explicit compatibility, T26 pure stack/tool selector with `present_unverified` detection, and T27 minimum risk-to-test/comment/performance selector.
+- files touched / work locations: T25 templates and `templates.py`; T26 `code_quality_selector.py` and profile template; T27 `test_strategy_selector.py`, quality-strategy template and focused tests.
+- technical value delivered: normal generation context is separated from the reference checklist; project-native detection and risk-selected evidence stay deterministic and require no tool installation.
+- product value delivered: short project-native authoring recommendations are available without universal ceremony or unsupported quality claims.
+- actual implementation date and time: 14-08-2026 16:32
+- verification evidence: RED behavior `Ran 10, failures=3`; RED standards `Ran 6, failures=1`; final combined T25/T26/T27 command 54 OK exit 0 (focused 16/16, legacy 38/38); lifecycle/infrastructure integration 117/117; reviewer probe and reviewer `GO_local_code_gate`; completion-skeptic `GO_local_code_gate`; RU/EN task-matrix validators and JSON parse OK; docs 100/100, `python tools\check_docs.py` and `git diff --check` exit 0.
 - residual risks: T28-T34 and all live/provider/promotion/readiness claims remain out of scope.
-- follow-up: complete T25 -> T26 -> T27, independent gate and A05 sync.
+- follow-up: start T28 only through the separate `B45-S9-C` route; T29-T34 and all live/provider/promotion/readiness claims remain out of scope.
 
 ## Sequential ownership model
 
@@ -70,4 +70,4 @@ Source status: `active local implementation plan; no live/provider/runtime-activ
 - Domain model: `not_applicable`; local pure selectors do not create a new bounded context.
 - FSD/frontend/backend readiness: `not_applicable`; no UI, service runtime or deployment topology changes.
 - AI/RAG/live eval: `approval_required` and out of scope; local selectors do not prove model behavior.
-- Docs tooling: existing unittest/check_docs; no install and no MkDocs/site freshness claim.
+- Docs tooling: existing unittest/check_docs; no install. The RU S9-B plan is classified as pending root-site freshness in `DOC_M25_PENDING_SITE_PAGES`; no MkDocs rebuild or generated-site freshness claim follows.

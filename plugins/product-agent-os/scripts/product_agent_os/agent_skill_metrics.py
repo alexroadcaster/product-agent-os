@@ -2351,3 +2351,82 @@ def _redacted_dict(packet: dict[str, Any]) -> dict[str, Any]:
         return {"schema_version": 1, "write_policy": "read_only", "redaction_summary": report}
     redacted["redaction_summary"] = report
     return redacted
+
+
+EXECUTION_LOOP_LIMITS = {
+    "time_to_first_target_diff_seconds": 1800,
+    "agent_count": 3,
+    "review_cycles": 2,
+    "repeated_unchanged_commands": 0,
+    "control_plane_writes_before_acceptance": 1,
+    "compaction_count": 1,
+    "stale_lifecycle_markers": 0,
+    "mixed_skill_source_events": 0,
+    "projection_conflicts": 0,
+}
+
+
+def build_execution_loop_metrics(records: list[dict[str, Any]]) -> dict[str, Any]:
+    """Diagnose delivery loops from sanitized manual run summaries.
+
+    This function is diagnostic only: it never edits prompts, config, skills or
+    automation state and does not treat missing records as success.
+    """
+    if not isinstance(records, list):
+        raise ValueError("records:expected_array")
+    if not records:
+        return {
+            "schema_version": "product_agent_os_execution_loop_metrics_v1",
+            "status": "insufficient_evidence",
+            "metrics": {},
+            "stop_triggers": ["missing_execution_records"],
+            "recommendations": ["collect one sanitized manual run summary"],
+            "automation_allowed": False,
+            "evidence_ceiling": "manual_local_diagnostic_only",
+        }
+
+    fields = tuple(EXECUTION_LOOP_LIMITS) + ("target_churn_lines", "test_churn_lines")
+    totals = {field: 0 for field in fields}
+    maxima = {field: 0 for field in fields}
+    for index, record in enumerate(records):
+        if not isinstance(record, dict):
+            raise ValueError(f"records[{index}]:expected_object")
+        for field in fields:
+            value = record.get(field)
+            if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+                raise ValueError(f"records[{index}].{field}:expected_non_negative_integer")
+            totals[field] += value
+            maxima[field] = max(maxima[field], value)
+
+    triggers = [
+        f"{field}_budget_exceeded"
+        for field, limit in EXECUTION_LOOP_LIMITS.items()
+        if maxima[field] > limit
+    ]
+    if totals["target_churn_lines"] and totals["test_churn_lines"] > totals["target_churn_lines"] * 2:
+        triggers.append("test_churn_exceeds_2x_target_churn")
+
+    recommendations = []
+    if "time_to_first_target_diff_seconds_budget_exceeded" in triggers:
+        recommendations.append("stop discovery and freeze the smallest target slice")
+    if any(item in triggers for item in ("agent_count_budget_exceeded", "review_cycles_budget_exceeded")):
+        recommendations.append("return to one writer and at most two repair cycles")
+    if "repeated_unchanged_commands_budget_exceeded" in triggers:
+        recommendations.append("do not rerun a command until a named input changes")
+    if any("lifecycle" in item or "projection" in item or "skill_source" in item for item in triggers):
+        recommendations.append("repair canonical state or skill provenance before resuming")
+
+    return {
+        "schema_version": "product_agent_os_execution_loop_metrics_v1",
+        "status": "intervention_required" if triggers else "within_budget",
+        "metrics": {
+            "run_count": len(records),
+            "totals": totals,
+            "maxima": maxima,
+            "limits": dict(EXECUTION_LOOP_LIMITS),
+        },
+        "stop_triggers": triggers,
+        "recommendations": recommendations,
+        "automation_allowed": False,
+        "evidence_ceiling": "manual_local_diagnostic_only",
+    }

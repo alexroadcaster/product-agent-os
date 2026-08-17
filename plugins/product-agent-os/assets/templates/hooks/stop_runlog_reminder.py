@@ -8,6 +8,7 @@ from typing import Any
 
 
 LIFECYCLE_STATE_REL = Path(".codex/product-agent-os/lifecycle-state.json")
+TERMINAL_STATUSES = {"ready_for_completion_brief", "blocked", "stopped_repair_required"}
 WORKSPACE_ROOT_ENV = "CODEX_HOOK_WORKSPACE_ROOT"
 COMPLETION_BRIEF_FIELDS = [
     "Task ID:",
@@ -20,7 +21,7 @@ COMPLETION_BRIEF_FIELDS = [
 ]
 REMINDER = (
     "Before stopping, finish implementation, verification, task-plan update and control-plane sync. Then set the "
-    "lifecycle marker to ready_for_completion_brief and send one terminal Completion Brief as the final response."
+    "lifecycle marker to ready_for_completion_brief, blocked, or stopped_repair_required and send one terminal Completion Brief as the final response."
 )
 
 
@@ -53,7 +54,7 @@ def _completion_ready(root: Path) -> bool:
     return (
         isinstance(marker, dict)
         and marker.get("completion_ready") is True
-        and marker.get("status") == "ready_for_completion_brief"
+        and marker.get("status") in TERMINAL_STATUSES
     )
 
 

@@ -26,8 +26,9 @@ Profile: {profile_name}
 - Require worktrees or explicit ownership for write-heavy subagent tasks, shared generated files, contracts, migrations, public APIs, schemas, release files, or rollback-sensitive work.
 - Read-only research can use an agent task packet without a worktree when no writes, external actions, MCP activation, hooks, or automation are requested.
 - Require the agent task packet artifact for any subagent or parallel worker before parallel work starts.
+- The root owns the lifecycle marker, user-facing Task/Completion Briefs and the single shared Control-Plane Sync.
 - Require a Subagent Context Packet before launch for every subagent or read-only sidecar.
-- Require a Subagent Result Packet after completion, timeout, cancellation, or close.
+- Require one compact Subagent Result Packet after completion, timeout, cancellation, or close; the subagent must not open or close a nested lifecycle.
 - The Agent Handoff / Context Packet must record role, `fork_turns`, prompt, allowed files, files actually read, and outputs.
 - Check that owned files, forbidden files, source constraints, expected evidence, stop conditions, and handoff output schema are explicit per worker.
 - Do not advance to parallel work when shared ownership ambiguity, missing handoff schema, missing expected evidence, raw conversation history dependency, or cross-agent file ownership remains.
@@ -72,3 +73,4 @@ Profile: {profile_name}
 - Parallel work without task packet.
 - Workspace root is unclear.
 - Required file is outside the approved scope.
+- A delegated worker attempts to update the lifecycle marker, show user-facing lifecycle briefs, or run shared Control-Plane Sync.

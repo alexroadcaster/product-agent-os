@@ -130,6 +130,27 @@ class Batch45CodingStandardsTemplateTest(unittest.TestCase):
                 self.assertTrue(str(item.source_path).replace("\\", "/").endswith(source_suffix))
                 self.assertNotIn("assets/templates/artifacts", str(item.source_path).replace("\\", "/"))
 
+    def test_code_quality_profile_has_one_canonical_registration_and_dry_run_render(self):
+        target = ".codex/artifact-templates/code-quality-profile.md"
+        targets = [item.target_path for item in required_templates()]
+        self.assertEqual(targets.count(target), 1)
+
+        item = template_by_target(target)
+        self.assertEqual(item.key, "artifact-code-quality-profile")
+        self.assertEqual(item.category, "artifact-templates")
+        self.assertTrue(
+            str(item.source_path).replace("\\", "/").endswith(
+                "artifact-templates/code-quality-profile.md"
+            )
+        )
+
+        rendered = render_infrastructure_plan(FIXTURES / "empty-repo")
+        rendered_targets = [
+            artifact["target_path"]
+            for artifact in rendered["rendered_artifacts"]["files"]
+        ]
+        self.assertEqual(rendered_targets.count(target), 1)
+
     def test_coding_standard_checklist_carries_professional_authoring_gates(self):
         text = self._template_text("artifact-templates", "coding-standard-checklist.md")
         expected_terms = [

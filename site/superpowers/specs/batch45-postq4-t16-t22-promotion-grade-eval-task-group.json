@@ -37,7 +37,7 @@
   },
   "task_group": {
     "group_id": "B45-S8-PROMOTION-GRADE-EVAL",
-    "group_status": "planned_after_t16_task_group_design",
+    "group_status": "t21_aborted_invalid_schema_no_valid_pairs_reviewer_gate_not_run",
     "promotion_allowed_now": false,
     "only_route_that_can_change_no_go_later": true,
     "execution_requires_later_exact_approval": true,
@@ -96,7 +96,7 @@
     {
       "task_id": "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
       "priority": "P0",
-      "status": "planned_not_started",
+      "status": "implemented_frozen_heldout_corpus_manifest_no_run",
       "owner_role": "tester + security/privacy reviewer",
       "scope": "Create a frozen held-out corpus manifest for the promotion-grade eval before any run.",
       "acceptance": [
@@ -104,7 +104,14 @@
         "Corpus is not edited after baseline starts; any change creates a new corpus version.",
         "No raw private source bodies, secrets, raw private chat logs or unredacted PII are retained in repo."
       ],
-      "evidence_owner": "future docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json",
+      "evidence_owner": "docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json",
+      "verification_gates": [
+        "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t17-frozen-heldout-corpus.json",
+        "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "python tools\\check_docs.py",
+        "git diff --check"
+      ],
       "stop_conditions": [
         "Stop if corpus data cannot be sanitized.",
         "Stop if the corpus is tuned after result inspection."
@@ -113,7 +120,7 @@
     {
       "task_id": "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
       "priority": "P0",
-      "status": "planned_not_started",
+      "status": "implemented_eval_design_strict_schema_no_run",
       "owner_role": "implementation-planner + tester",
       "scope": "Define the promotion-grade eval design packet: comparison mode, model policy, strict structured output schema, scoring rubric, invalid-output handling, thresholds, reviewer rubric and result contract.",
       "acceptance": [
@@ -121,7 +128,14 @@
         "Strict structured output schema is named and failure handling is deterministic.",
         "Reviewer gate, promotion threshold and unsupported-claim ceiling are explicit."
       ],
-      "evidence_owner": "future docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
+      "evidence_owner": "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
+      "verification_gates": [
+        "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t18-promotion-grade-eval-design.json",
+        "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "python tools\\check_docs.py",
+        "git diff --check"
+      ],
       "stop_conditions": [
         "Stop if comparability mode is ambiguous.",
         "Stop if reviewer gate is optional for promotion."
@@ -130,7 +144,7 @@
     {
       "task_id": "B45-POSTQ4-T19-COST-TIMEOUT-RETENTION-POLICY",
       "priority": "P0",
-      "status": "planned_not_started",
+      "status": "implemented_cost_timeout_retention_policy_no_run",
       "owner_role": "tester + release-operator + security/privacy reviewer",
       "scope": "Define run caps, timeout policy, retry policy, abort policy, raw-temp-only retention and sanitized rollup rules before any approval packet is executable.",
       "acceptance": [
@@ -138,7 +152,14 @@
         "Raw outputs remain temp-only and are not retained in repo.",
         "Sanitized rollup fields are enough for reviewer and decision gates without raw trace storage."
       ],
-      "evidence_owner": "future docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json",
+      "evidence_owner": "docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json",
+      "verification_gates": [
+        "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t19-cost-timeout-retention-policy.json",
+        "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "python tools\\check_docs.py",
+        "git diff --check"
+      ],
       "stop_conditions": [
         "Stop if budget/caps are missing.",
         "Stop if raw output retention would enter repo."
@@ -147,50 +168,84 @@
     {
       "task_id": "B45-POSTQ4-T20-EXACT-APPROVAL-PACKET",
       "priority": "P0",
-      "status": "approval_packet_planned_not_started",
+      "status": "exact_approval_packet_cost_waived_owner_confirmed_consumed_by_t21_invalid_schema_abort",
       "owner_role": "implementation-planner + docs-maintainer",
-      "scope": "Prepare exact owner approval text for the future promotion-grade eval run after T17-T19 are source-ready.",
+      "scope": "Prepare the latest exact owner approval text for the future promotion-grade eval run after T17-T19 are source-ready, including the owner-requested 1000s timeout revision.",
       "acceptance": [
-        "Approval text names model, reasoning effort, comparison mode, corpus version, max calls, timeout, cost cap, reviewer policy, retention policy and stop conditions.",
-        "Packet states that it does not run anything by itself.",
-        "Approval cannot be reused after a consumed or aborted run."
+        "Cost-waived exact approval text is source-owned and linked to the consumed T21 run.",
+        "Approval reuse is forbidden after the T21 invalid-schema abort.",
+        "T19/T20-A02 cost-known policy remains historical; T20-A03 records the owner-accepted cost gap for one run only."
       ],
-      "evidence_owner": "future docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+      "evidence_owner": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet-cost-waived.json",
+      "previous_evidence_owner": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+      "verification_gates": [
+        "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t20-promotion-grade-eval-approval-packet-1000s.json",
+        "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+        "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "python tools\\check_docs.py",
+        "git diff --check"
+      ],
       "stop_conditions": [
         "Stop before any model/provider/reviewer call.",
-        "Stop if owner approval text is incomplete."
+        "Stop if owner approval text is incomplete.",
+        "Stop if current pricing source or concrete USD cap is missing."
       ]
     },
     {
       "task_id": "B45-POSTQ4-T21-APPROVED-PROMOTION-GRADE-EVAL-RUN",
       "priority": "P1",
-      "status": "approval_required_not_started",
+      "status": "aborted_after_first_primary_call_invalid_schema_no_valid_pairs",
       "owner_role": "tester",
-      "scope": "Run the promotion-grade eval only after exact owner approval.",
+      "scope": "Run the cost-waived exact-approved promotion-grade eval and abort on the first strict schema failure.",
       "acceptance": [
-        "Baseline and treatment execute under the approved comparison mode and frozen corpus.",
-        "Every run passes strict schema or is quarantined according to T18.",
-        "Sanitized result packet records aggregate, per-task, invalid-pair, timeout, cost and no-unapproved-actions evidence."
+        "Cost-waived exact approval is recorded before execution.",
+        "Runner starts no more than the approved call budget and stops on strict schema/no-op/timeout/privacy failures.",
+        "Sanitized rollup records one approved primary call, strict schema failure, zero valid pairs, zero reviewer calls and raw cleanup."
       ],
-      "evidence_owner": "future docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-results.json",
+      "evidence_owner": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-results.json",
+      "latest_blocked_preflight_owner": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-cost-unknown.json",
+      "previous_timeout_mismatch_preflight_owner": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-timeout-mismatch.json",
+      "previous_evidence_owner": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
+      "future_result_owner_after_exact_approval": "future docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-results.json",
+      "verification_gates": [
+        "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-cost-unknown.json",
+        "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t20-promotion-grade-eval-approval-packet-1000s.json",
+        "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-timeout-mismatch.json",
+        "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
+        "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "python tools\\check_docs.py",
+        "git diff --check"
+      ],
       "stop_conditions": [
-        "Stop without exact approval.",
+        "Stop without exact A02 approval.",
+        "Stop if any approval line differs from the T20-A02 packet, including timeout.",
+        "Stop if cost is unknown or the estimated cost cap would be exceeded before the next call.",
         "Stop on timeout/cost/corpus/privacy policy breach.",
         "Stop before target/runtime/browser/CI/git/release/deploy/automation actions."
-      ]
+      ],
+      "latest_result_owner": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-results.json"
     },
     {
       "task_id": "B45-POSTQ4-T22-REVIEWER-GATE-AND-DECISION",
       "priority": "P0",
-      "status": "blocked_until_t21_result",
+      "status": "implemented_reviewer_gate_blocked_t21_invalid_schema_abort_no_promotion",
       "owner_role": "reviewer + completion-skeptic + docs-maintainer",
       "scope": "Run or record the reviewer gate and produce the final promotion/no-go decision after T21 evidence exists.",
       "acceptance": [
-        "Reviewer verdict is not no_go before any promotion claim.",
-        "Decision separates behavior quality, static warning deltas, runtime/browser/target readiness and CI/blocker/governance readiness.",
-        "Control-plane and registry sync preserve unsupported claims and exact approval boundaries."
+        "Reviewer gate is not run because T21 failed strict schema before valid pairs.",
+        "Decision preserves advisory-only/no-go and records new exact approval required for any rerun."
       ],
-      "evidence_owner": "future docs/superpowers/specs/batch45-postq4-t22-promotion-grade-decision-packet.json",
+      "evidence_owner": "docs/superpowers/specs/batch45-postq4-t22-promotion-grade-decision-packet.json",
+      "future_result_owner_after_exact_approval_and_t21_result": "future docs/superpowers/specs/batch45-postq4-t22-promotion-grade-decision-packet.json",
+      "verification_gates": [
+        "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t22-promotion-grade-decision-packet.json",
+        "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "python tools\\check_docs.py",
+        "git diff --check"
+      ],
       "stop_conditions": [
         "Stop if reviewer is not run or returns no_go.",
         "Stop if the result is below threshold.",
@@ -238,7 +293,7 @@
     "M26_no_go_reversed",
     "M35_no_go_reversed",
     "T15_no_go_reversed",
-    "same_model_comparability_selected_for_future_run",
+    "same_model_promotion_run_evidence_exists",
     "current_model_comparison_approved_for_future_run",
     "reviewer_gate_satisfied",
     "promotion_ready",
@@ -249,14 +304,84 @@
     "release_deploy_publish_readiness"
   ],
   "verification": {
-    "status": "pending_current_run",
-    "commands": [
-      "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
-      "python -m json.tool docs\\superpowers\\specs\\batch45-post-q4-next-tasks.json",
-      "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
-      "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
-      "python tools\\check_docs.py",
-      "git diff --check"
-    ]
+    "status": "passed_current_run",
+    "results": [
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t22-promotion-grade-decision-packet.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-cost-unknown.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-timeout-mismatch.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully after verification-block sync."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-post-q4-next-tasks.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m json.tool .codex\\product-agent-os\\lifecycle-state.json",
+        "status": "passed",
+        "evidence": "JSON parsed successfully."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "status": "passed",
+        "evidence": "Ran 36 tests; OK."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_codex_runtime_runner_model_output -v",
+        "status": "passed",
+        "evidence": "Ran 8 tests; OK."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "status": "passed",
+        "evidence": "Ran 100 tests; OK."
+      },
+      {
+        "command": "python tools\\check_docs.py",
+        "status": "passed",
+        "evidence": "OK: documentation structure checks passed."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_task_plan_lifecycle -v",
+        "status": "passed",
+        "evidence": "Ran 4 tests; OK."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_lifecycle_hooks -v",
+        "status": "passed",
+        "evidence": "Ran 17 tests; OK."
+      },
+      {
+        "command": "git diff --check",
+        "status": "passed_with_crlf_warnings",
+        "evidence": "No whitespace errors. Git reported CRLF/LF normalization warnings for edited files."
+      }
+    ],
+    "remaining_required_before_completion_claim": []
   }
 }

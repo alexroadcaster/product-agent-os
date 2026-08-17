@@ -1,7 +1,7 @@
 sandbox_mode = "workspace-write"
 
 [agents]
-max_concurrent_threads_per_session = 2
+max_concurrent_threads_per_session = 3
 default_subagent_model = "gpt-5.6-terra"
 default_subagent_reasoning_effort = "medium"
 
@@ -36,6 +36,38 @@ control_plane = ["AGENTS.md", "REQUIREMENTS.md", "PLAN.md", "TEST.md", "EVALS.md
 workflow_dir = ".codex/workflows"
 runlog_archive_dir = ".codex/runlogs/archive"
 automation_candidate_dir = ".codex/automation-candidates"
+
+[product_agent_os.autonomy]
+fresh_context_files = [
+  ".codex/workflows/source-context-pack.md",
+  ".codex/workflows/worktree-ownership.md",
+  ".codex/workflows/task-plan-lifecycle.md",
+  ".codex/workflows/control-plane-sync.md",
+]
+
+[product_agent_os.execution_budget]
+writer_concurrency = 1
+max_review_repair_cycles_per_slice = 2
+independent_reviewer_windows_per_slice = 1
+completion_skeptic_passes = 1
+control_plane_sync_passes = 1
+no_target_diff_timeout_minutes = 30
+repeat_command_requires_changed_input = true
+unchanged_check_result_policy = "do_not_repeat"
+root_owns_lifecycle = true
+
+[product_agent_os.skill_source]
+canonical_root = "plugins/product-agent-os/skills"
+cache_policy = "reference_only_never_mixed_with_repository_skill_of_same_name"
+mixed_source_policy = "forbidden_within_run"
+session_start_provenance = "canonical_path_and_sha256"
+
+[product_agent_os.task_state_ownership]
+machine_state = "source-owned task-group JSON"
+task_detail = "concrete task-matrix plan"
+current_session = ".codex/product-agent-os/lifecycle-state.json"
+execution_evidence = "RUNLOG.md"
+verification_ceiling = "TEST.md"
 
 [product_agent_os.reasoning]
 planning = "high"
@@ -102,7 +134,7 @@ hook_policy = ".codex/hooks.json"
 hook_template_mirror = ".codex/hooks/hooks.json"
 chat_visibility = "required"
 required_for = "non_mechanical_tasks"
-agent_instruction_policy = "reference_config_workflows_do_not_duplicate_contract"
+agent_instruction_policy = "root_only_lifecycle_subagents_return_result_packet"
 
 [workflows]
 source_context_pack = ".codex/workflows/source-context-pack.md"

@@ -21,10 +21,29 @@ from codex_runtime_runner.promotion_contract import (  # noqa: E402
     normalize_primary_result,
     parse_primary_result,
     validate_primary_result,
+    evaluate_deterministic_promotion,
 )
 
 
 class CodexRuntimeRunnerPromotionContractTest(unittest.TestCase):
+    def test_promotion_contract_routes_through_deterministic_evidence(self):
+        evidence = {
+            "acceptance": {"status": "passed"},
+            "regression": {"status": "failed"},
+            "seeded_faults": {"status": "passed"},
+            "reviewer": {"status": "passed", "verdict": "approve"},
+            "dependency": {"status": "passed"},
+            "performance": {"applicable": False, "status": "not_applicable"},
+            "cost_latency": {"applicable": False, "status": "not_applicable"},
+            "patch": {"changed_lines": 1, "test_changed_lines": 1, "dependency_delta_count": 0},
+            "diagnostic_self_scores": {"behavior_score": 1.0},
+        }
+
+        result = evaluate_deterministic_promotion(evidence)
+
+        self.assertFalse(result["promotion_allowed"])
+        self.assertIn("regression:failed", result["blockers"])
+
     def test_runtime_schema_and_valid_fixture_match_t18_public_contract(self):
         design = json.loads(T18_DESIGN.read_text(encoding="utf-8"))
         payload = self._fixture("valid-primary-result.json")

@@ -21,6 +21,15 @@ FAMILY_MARKERS = {
     "compiled_systems": (("cargo.toml", "go.mod"), ("go", "rust")),
     "enterprise_oop": (("pom.xml", ".csproj"), ("java", "csharp")),
 }
+FAMILY_MARKER_LANGUAGES = {
+    "python": (("pyproject.toml", "python"),),
+    "javascript_typescript": (
+        ("package.json", "javascript"),
+        ("tsconfig.json", "typescript"),
+    ),
+    "compiled_systems": (("cargo.toml", "rust"), ("go.mod", "go")),
+    "enterprise_oop": (("pom.xml", "java"), (".csproj", "csharp")),
+}
 TOOL_TRACERS = {
     "black": ("python", "formatter"),
     "ruff": ("python", "linter"),
@@ -54,6 +63,12 @@ TOOL_TRACERS = {
     "dotnet build": ("enterprise_oop", "build_tool"),
 }
 TOOL_LANGUAGES = {
+    "black": "python",
+    "ruff": "python",
+    "mypy": "python",
+    "pytest": "python",
+    "hatch": "python",
+    "typescript": "typescript",
     "gofmt": "go",
     "golangci-lint": "go",
     "go vet": "go",
@@ -171,31 +186,31 @@ def select_code_quality_profile(inventory: ProjectInventory) -> CodeQualityProfi
         )
     paths = {_normalize_path(path) for path in inventory.paths}
     declared_tools = _normalized_tools(inventory.declared_tools)
-    has_marker = any(_marker_evidence(family, paths) for family in FAMILY_ORDER)
-    has_known_tool = any(tool.name in TOOL_TRACERS for tool in declared_tools)
-    if not has_marker and not has_known_tool:
+    active_families = {
+        family
+        for family in FAMILY_ORDER
+        if _marker_evidence(family, paths)
+        or any(
+            TOOL_TRACERS.get(tool.name, (None, None))[0] == family
+            for tool in declared_tools
+        )
+    }
+    utilities = _project_utilities(inventory.project_commands)
+    if not active_families:
+        inventory_status = PRESENT_UNVERIFIED if utilities else APPLICABLE_MISSING
         return CodeQualityProfile(
             schema_version="code_quality_profile_v1",
-            inventory_status=APPLICABLE_MISSING,
+            inventory_status=inventory_status,
             stack_profiles=tuple(_not_applicable_stack(family) for family in FAMILY_ORDER),
-            project_utilities=(),
+            project_utilities=utilities,
             gaps=_unknown_gaps(paths, declared_tools),
             evidence_ceiling="declared inventory only; no tool execution or verification",
         )
     stack_profiles = tuple(
         _stack_profile(family, paths, declared_tools)
-        if _marker_evidence(family, paths)
+        if family in active_families
         else _not_applicable_stack(family)
         for family in FAMILY_ORDER
-    )
-    utilities = tuple(
-        ProjectUtilityProfile(
-            name=command.name.strip().lower(),
-            status=PRESENT_UNVERIFIED,
-            source=command.source.strip(),
-            proposed_command=command.command.strip(),
-        )
-        for command in _normalized_commands(inventory.project_commands)
     )
     gaps = tuple(
         f"{stack.family}:{category.category}"
@@ -265,14 +280,13 @@ def _stack_profile(
     paths: set[str],
     declared_tools: tuple[DeclaredToolSignal, ...],
 ) -> StackProfile:
-    markers, languages = FAMILY_MARKERS[family]
     marker_evidence = _marker_evidence(family, paths)
     categories = tuple(
         _category_profile(family, category, declared_tools) for category in CATEGORY_ORDER
     )
     return StackProfile(
         family=family,
-        languages=languages,
+        languages=_detected_languages(family, marker_evidence, declared_tools),
         status=PRESENT_UNVERIFIED,
         marker_evidence=marker_evidence,
         categories=categories,
@@ -318,7 +332,49 @@ def _marker_evidence(family: str, paths: set[str]) -> tuple[str, ...]:
     return tuple(
         path
         for path in sorted(paths)
-        if any(path == marker or marker.startswith(".") and path.endswith(marker) for marker in markers)
+        if any(_matches_marker(path, marker) for marker in markers)
+    )
+
+
+def _matches_marker(path: str, marker: str) -> bool:
+    """Match a marker as a filename, allowing only the declared suffix markers."""
+    basename = path.rsplit("/", 1)[-1]
+    return basename.endswith(marker) if marker.startswith(".") else basename == marker
+
+
+def _detected_languages(
+    family: str,
+    marker_evidence: tuple[str, ...],
+    declared_tools: tuple[DeclaredToolSignal, ...],
+) -> tuple[str, ...]:
+    """Return only languages supported by concrete marker or tool evidence."""
+    _, languages = FAMILY_MARKERS[family]
+    detected = {
+        language
+        for marker, language in FAMILY_MARKER_LANGUAGES[family]
+        if any(_matches_marker(path, marker) for path in marker_evidence)
+    }
+    detected.update(
+        TOOL_LANGUAGES[tool.name]
+        for tool in declared_tools
+        if TOOL_TRACERS.get(tool.name, (None, None))[0] == family
+        and tool.name in TOOL_LANGUAGES
+    )
+    return tuple(language for language in languages if language in detected)
+
+
+def _project_utilities(
+    commands: tuple[ProjectCommandSignal, ...]
+) -> tuple[ProjectUtilityProfile, ...]:
+    """Keep declared project utilities even when no stack can be classified."""
+    return tuple(
+        ProjectUtilityProfile(
+            name=command.name.strip().lower(),
+            status=PRESENT_UNVERIFIED,
+            source=command.source.strip(),
+            proposed_command=command.command.strip(),
+        )
+        for command in _normalized_commands(commands)
     )
 
 
@@ -431,10 +487,8 @@ def _compiled_language_gaps(
     paths: set[str], declared_tools: tuple[DeclaredToolSignal, ...]
 ) -> tuple[str, ...]:
     """Report missing categories for each detected Go or Rust language."""
-    active_languages = tuple(
-        language
-        for language, marker in (("go", "go.mod"), ("rust", "cargo.toml"))
-        if marker in paths
+    active_languages = _detected_languages(
+        "compiled_systems", _marker_evidence("compiled_systems", paths), declared_tools
     )
     return tuple(
         f"compiled_systems:{language}:{category}"
@@ -452,10 +506,8 @@ def _enterprise_language_gaps(
     paths: set[str], declared_tools: tuple[DeclaredToolSignal, ...]
 ) -> tuple[str, ...]:
     """Report missing categories for each detected Java or C# language."""
-    active_languages = tuple(
-        language
-        for language, marker in (("java", "pom.xml"), ("csharp", ".csproj"))
-        if any(path == marker or marker.startswith(".") and path.endswith(marker) for path in paths)
+    active_languages = _detected_languages(
+        "enterprise_oop", _marker_evidence("enterprise_oop", paths), declared_tools
     )
     return tuple(
         f"enterprise_oop:{language}:{category}"

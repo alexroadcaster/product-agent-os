@@ -268,6 +268,7 @@ def _render_html(packet: dict[str, Any], json_for_html: str) -> str:
             _summary_section(packet),
             _targets_section(packet),
             _metrics_section(packet),
+            _execution_loop_section(packet),
             _version_section(packet),
             _candidates_section(packet),
             _appendix_section(packet),
@@ -407,6 +408,23 @@ def _version_section(packet: dict[str, Any]) -> str:
         "      <table><tbody>\n"
         + "\n".join(rows)
         + "\n      </tbody></table>\n"
+        "    </section>"
+    )
+
+
+def _execution_loop_section(packet: dict[str, Any]) -> str:
+    loop = _dict(packet.get("execution_loop_metrics"))
+    triggers = loop.get("stop_triggers") if isinstance(loop.get("stop_triggers"), list) else []
+    recommendations = loop.get("recommendations") if isinstance(loop.get("recommendations"), list) else []
+    trigger_items = "".join(f"<li><code>{escape_html(item)}</code></li>" for item in triggers)
+    recommendation_items = "".join(f"<li>{escape_html(item)}</li>" for item in recommendations)
+    return (
+        '    <section id="execution-loop-metrics">\n'
+        "      <h2>Execution Loop Diagnostics</h2>\n"
+        f"      <p>Status: <code>{escape_html(loop.get('status', 'not_collected'))}</code></p>\n"
+        f"      <p>Evidence ceiling: <code>{escape_html(loop.get('evidence_ceiling', 'manual_local_diagnostic_only'))}</code></p>\n"
+        f"      <ul>{trigger_items}</ul>\n"
+        f"      <ol>{recommendation_items}</ol>\n"
         "    </section>"
     )
 

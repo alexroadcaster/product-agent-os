@@ -3468,7 +3468,7 @@
 
 <h1 id="worktrees-hooks-rules">Worktrees, hooks, rules<a class="headerlink" href="#worktrees-hooks-rules" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + experiment</code><br />
-Источники: <a href="https://developers.openai.com/codex/learn/best-practices">Codex best practices</a>, <a href="https://developers.openai.com/codex/app/worktrees">Codex worktrees</a>, <a href="https://developers.openai.com/codex/config/hooks">Codex hooks</a>, <a href="https://developers.openai.com/codex/config/rules">Codex rules</a>, <a href="https://developers.openai.com/codex/agent-approvals-security">Agent approvals and security</a>.</p>
+Источники: <a href="https://developers.openai.com/codex/learn/best-practices">Codex best practices</a>, <a href="https://developers.openai.com/codex/app/worktrees">Codex worktrees</a>, <a href="https://developers.openai.com/codex/hooks">Codex hooks</a>, <a href="https://developers.openai.com/codex/config/rules">Codex rules</a>, <a href="https://developers.openai.com/codex/agent-approvals-security">Agent approvals and security</a>.</p>
 <h2 id="worktree-strategy">Worktree strategy<a class="headerlink" href="#worktree-strategy" title="Permanent link">&para;</a></h2>
 <p>Используйте worktrees, когда:</p>
 <ul>
@@ -3493,9 +3493,11 @@
 <p>Lifecycle guard устроен так:</p>
 <ul>
 <li><code>SessionStart</code> показывает наличие control-plane и lifecycle файлов;</li>
-<li><code>PreToolUse</code> пропускает read-only discovery, но блокирует mutating/non-read-only команды без <code>.codex/product-agent-os/lifecycle-state.json</code>;</li>
+<li><code>PreToolUse</code> пропускает read-only discovery по fast path без чтения marker, но блокирует mutating/non-read-only команды без <code>.codex/product-agent-os/lifecycle-state.json</code>;</li>
 <li>marker должен появиться только после видимого пользователю полного стартового брифа в формате списка полей и содержать <code>task_start_brief_shown</code>, <code>task_id</code>, <code>scope</code>, <code>updated_at</code>, <code>approval_boundary</code>, <code>brief_schema_version: task_start_brief_v1</code>, <code>brief_format: field_list</code>, <code>brief_digest</code> и <code>brief_fields_present</code> со всеми обязательными полями стартового брифа;</li>
-<li><code>PostToolUse</code> и <code>Stop</code> напоминают про evidence, <code>RUNLOG.md</code>, control-plane sync и user-visible <code>Completion Brief</code>.</li>
+<li>per-write <code>PostToolUse</code> проверяет comment sufficiency только для путей текущего patch, а не повторно для всего dirty worktree;</li>
+<li>после всех записей, проверок и control-plane sync marker переходит в <code>ready_for_completion_brief</code>; дальнейшие mutations блокируются;</li>
+<li><code>Stop</code> принимает один terminal <code>Completion Brief</code> с полным набором полей без continuation, а при неполном Brief запрашивает не более одной корректирующей continuation. После валидного Brief tool calls запрещены.</li>
 </ul>
 <p>Marker не является transcript store: в него нельзя помещать raw chat, secrets, private source bodies, private customer data или credentials. Activation hooks остаётся отдельным approval boundary.</p>
 <h2 id="rules">Rules<a class="headerlink" href="#rules" title="Permanent link">&para;</a></h2>

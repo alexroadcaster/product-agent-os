@@ -13,12 +13,12 @@ Source status: `активный план локальной реализаци�
 ### Task `B45-S9-B`
 
 - Task: реализовать `B45-CQRR-T25`, `B45-CQRR-T26` и `B45-CQRR-T27` строго последовательно.
-- Status: in_progress
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: пользователь явно авторизовал реализацию группы `B45.S9-B` с агентами и skills после локального закрытия `B45-S9-A`.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 14-08-2026 16:32
 - Depends on: `B45-CQRR-A03`; локально verified `B45-CQRR-A04`; `B45-CQRR-T23` для T25.
 - Blocks: `B45-S9-C` и T28 до зелёного T27 handoff.
 - Source: `docs/superpowers/specs/batch45-code-quality-runtime-recovery-task-group.json`; `docs/superpowers/specs/batch45-code-quality-runtime-recovery-agent-team.json`; `docs/superpowers/specs/batch45-s9-0-fresh-context-handoffs.json`; текущие templates, discovery helpers и tests.
@@ -36,19 +36,19 @@ Source status: `активный план локальной реализаци�
 - Agents: `architect` замораживает T25/T26/T27 semantics; `plugin-runtime-builder` пишет owned templates/modules; `tester` владеет focused tests в последовательных окнах; `reviewer` и `completion-skeptic` read-only; `docs-maintainer` синхронизирует evidence после gate.
 - Skills: `implementation-planner`; `agent-team-designer`; `python-design-patterns`; `python-code-style`; `tdd`; project-local docs и control-plane sync.
 - Output artifacts: `code-change-contract.md`; обновлённые `coding-standards.md` и `coding-standard-checklist.md`; canonical registration в `templates.py`; `code_quality_selector.py`; `code-quality-profile.md`; `test_strategy_selector.py`; обновлённый `quality-strategy.md`; focused T25 test; shared T26/T27 behavior test; A05 evidence sync.
-- Next step: architect freeze для T25, затем builder/tester red-green; T26 и T27 стартуют только после зелёного handoff предыдущей задачи.
+- Next step: T28 в `B45-S9-C` после отдельного Task Brief; T28-T34 не начаты, а T34 требует нового exact approval.
 
 #### Completion Report
 
-- status: in_progress
-- what was done: pending implementation
-- files touched / work locations: pending implementation
-- technical value delivered: pending implementation
-- product value delivered: pending implementation
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending current-run evidence
+- status: implemented
+- what was done: последовательно реализованы T25 compact code-change contract с explicit compatibility, T26 pure stack/tool selector с `present_unverified` detection и T27 минимальный risk-to-test/comment/performance selector.
+- files touched / work locations: T25 templates и `templates.py`; T26 `code_quality_selector.py` и profile template; T27 `test_strategy_selector.py`, quality-strategy template и focused tests.
+- technical value delivered: normal generation context отделён от reference checklist; project-native detection и risk-selected evidence остаются детерминированными и не требуют установки tools.
+- product value delivered: доступны короткие проектно-нативные authoring-рекомендации без универсальной церемонии и неподтверждённых quality claims.
+- actual implementation date and time: 14-08-2026 16:32
+- verification evidence: RED behavior `Ran 10, failures=3`; RED standards `Ran 6, failures=1`; final combined T25/T26/T27 command 54 OK exit 0 (focused 16/16, legacy 38/38); lifecycle/infrastructure integration 117/117; reviewer probe и reviewer `GO_local_code_gate`; completion-skeptic `GO_local_code_gate`; RU/EN task-matrix validators and JSON parse OK; docs 100/100, `python tools\check_docs.py` and `git diff --check` exit 0.
 - residual risks: T28-T34 и все live/provider/promotion/readiness claims остаются вне scope.
-- follow-up: завершить T25 -> T26 -> T27, independent gate и A05 sync.
+- follow-up: начать T28 только отдельным маршрутом `B45-S9-C`; T29-T34 и все live/provider/promotion/readiness claims остаются вне scope.
 
 ## Последовательная ownership-модель
 
@@ -70,4 +70,4 @@ Source status: `активный план локальной реализаци�
 - Domain model: `not_applicable`; локальные pure selectors не создают новый bounded context.
 - FSD/frontend/backend readiness: `not_applicable`; UI, service runtime и deployment topology не меняются.
 - AI/RAG/live eval: `approval_required` и вне scope; локальные selectors не доказывают model behavior.
-- Docs tooling: существующие unittest/check_docs; no install, no MkDocs/site freshness claim.
+- Docs tooling: existing unittest/check_docs; no install. The RU S9-B plan is classified as pending root-site freshness in `DOC_M25_PENDING_SITE_PAGES`; no MkDocs rebuild or generated-site freshness claim follows.

@@ -264,10 +264,14 @@ def _validate_request(request: TestStrategyRequest) -> None:
         raise TypeError("request must be a TestStrategyRequest")
     if not isinstance(request.profile, CodeQualityProfile):
         raise TypeError("request profile must be a CodeQualityProfile")
+    if not isinstance(request.change_mode, str):
+        raise TypeError("change mode must be a string")
     if not isinstance(request.risks, tuple) or not isinstance(request.comment_signals, tuple):
         raise TypeError("risks and comment signals must be tuples")
     if not isinstance(request.executable_test_seam, bool):
         raise TypeError("executable test seam must be a bool")
+    if not isinstance(request.test_seam_reason, str):
+        raise TypeError("test seam reason must be a string")
     if not all(isinstance(risk, ChangeRisk) for risk in request.risks):
         raise TypeError("risks must contain ChangeRisk values")
     if not all(isinstance(signal, CommentSignal) for signal in request.comment_signals):
@@ -300,6 +304,19 @@ def _validate_risks(risks: tuple[ChangeRisk, ...]) -> None:
     """Validate risk identifiers, mappings, invariant text, and language scope."""
     identifiers: set[str] = set()
     for risk in risks:
+        if not all(
+            isinstance(value, str)
+            for value in (risk.risk_id, risk.kind, risk.description)
+        ):
+            raise TypeError("risk text fields must be strings")
+        if not isinstance(risk.protected_invariants, tuple) or not isinstance(
+            risk.languages, tuple
+        ):
+            raise TypeError("risk invariants and languages must be tuples")
+        if not all(isinstance(value, str) for value in risk.protected_invariants):
+            raise TypeError("protected invariants must contain strings")
+        if not all(isinstance(value, str) for value in risk.languages):
+            raise TypeError("risk languages must contain strings")
         if risk.kind not in RISK_TO_TEST:
             raise ValueError("unsupported risk kind")
         _require_text(risk.risk_id, "risk id")
@@ -325,6 +342,11 @@ def _validate_comment_signals(
     risk_ids = {risk.risk_id for risk in risks}
     details: dict[tuple[str, str], str] = {}
     for signal in signals:
+        if not all(
+            isinstance(value, str)
+            for value in (signal.risk_id, signal.reason, signal.detail)
+        ):
+            raise TypeError("comment signal fields must be strings")
         if signal.risk_id not in risk_ids:
             raise ValueError("comment signal references an unknown risk")
         if signal.reason not in COMMENT_REASONS:

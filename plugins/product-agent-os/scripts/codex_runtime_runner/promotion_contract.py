@@ -5,6 +5,8 @@ from dataclasses import dataclass
 import math
 from typing import Any
 
+from product_agent_os.code_quality_metrics import evaluate_code_quality_metrics
+
 
 PROMOTION_CONTRACT_VERSION = "batch45_postq4_promotion_grade_primary_result_v1"
 
@@ -138,6 +140,11 @@ _STATUS_ALIASES = {
     "not_run": "not_run_with_gap",
     "not_run_with_gap": "not_run_with_gap",
 }
+
+
+def evaluate_deterministic_promotion(evidence: dict[str, Any]) -> dict[str, Any]:
+    """Evaluate promotion gates without using primary-model self-scores."""
+    return evaluate_code_quality_metrics(evidence)
 
 
 @dataclass(frozen=True)

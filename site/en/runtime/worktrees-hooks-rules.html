@@ -3468,16 +3468,18 @@
 
 <h1 id="worktrees-hooks-and-rules">Worktrees, hooks and rules<a class="headerlink" href="#worktrees-hooks-and-rules" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + experiment</code><br />
-Sources: <a href="https://developers.openai.com/codex/learn/best-practices">Codex best practices</a>, <a href="https://developers.openai.com/codex/app/worktrees">Codex worktrees</a>, <a href="https://developers.openai.com/codex/config/hooks">Codex hooks</a>, <a href="https://developers.openai.com/codex/config/rules">Codex rules</a>, <a href="https://developers.openai.com/codex/agent-approvals-security">Agent approvals and security</a>.</p>
+Sources: <a href="https://developers.openai.com/codex/learn/best-practices">Codex best practices</a>, <a href="https://developers.openai.com/codex/app/worktrees">Codex worktrees</a>, <a href="https://developers.openai.com/codex/hooks">Codex hooks</a>, <a href="https://developers.openai.com/codex/config/rules">Codex rules</a>, <a href="https://developers.openai.com/codex/agent-approvals-security">Agent approvals and security</a>.</p>
 <p>Worktrees isolate larger changes. Hooks and rules can guide or block unsafe actions, but they should remain explicit, reviewable and aligned with sandbox and approvals.</p>
 <h2 id="product-agent-os-lifecycle-hooks">Product-Agent OS lifecycle hooks<a class="headerlink" href="#product-agent-os-lifecycle-hooks" title="Permanent link">&para;</a></h2>
 <p>Product-Agent OS ships staged hooks through <code>plugins/product-agent-os/assets/templates/hooks/</code> and <code>render_infrastructure.py --stage</code>. For an end project they land under <code>.codex/hooks/</code> as proposed/staged assets, not as silently activated automation.</p>
 <p>The lifecycle guard works as follows:</p>
 <ul>
 <li><code>SessionStart</code> reports control-plane and lifecycle file presence;</li>
-<li><code>PreToolUse</code> allows read-only discovery but blocks mutating or non-read-only commands without <code>.codex/product-agent-os/lifecycle-state.json</code>;</li>
+<li><code>PreToolUse</code> allows read-only discovery through a fast path that does not read the marker, but blocks mutating or non-read-only commands without <code>.codex/product-agent-os/lifecycle-state.json</code>;</li>
 <li>the marker must be written only after a user-visible full field-list start brief and must contain <code>task_start_brief_shown</code>, <code>task_id</code>, <code>scope</code>, <code>updated_at</code>, <code>approval_boundary</code>, <code>brief_schema_version: task_start_brief_v1</code>, <code>brief_format: field_list</code>, <code>brief_digest</code>, and <code>brief_fields_present</code> with every required start brief field;</li>
-<li><code>PostToolUse</code> and <code>Stop</code> remind the agent to record evidence, update <code>RUNLOG.md</code>, run control-plane sync, and show a user-visible completion brief.</li>
+<li>the per-write <code>PostToolUse</code> comment-sufficiency advisory checks only paths from the current patch instead of rescanning the entire dirty worktree;</li>
+<li>after all writes, checks, and control-plane sync, the marker moves to <code>ready_for_completion_brief</code> and further mutations are denied;</li>
+<li><code>Stop</code> accepts one complete terminal Completion Brief without continuation, and requests at most one corrective continuation for an incomplete brief. No tool calls are allowed after a valid brief.</li>
 </ul>
 <p>The marker is not a transcript store: do not put raw chat, secrets, private source bodies, private customer data, or credentials in it. Hook activation remains a separate approval boundary.</p>
 <h2 id="inputs">Inputs<a class="headerlink" href="#inputs" title="Permanent link">&para;</a></h2>

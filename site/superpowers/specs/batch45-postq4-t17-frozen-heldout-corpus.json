@@ -1,0 +1,527 @@
+{
+  "schema_version": "batch45_postq4_t17_frozen_heldout_corpus_v1",
+  "task_id": "B45-POSTQ4-T17-FROZEN-HELDOUT-CORPUS",
+  "evidence_id": "B45-POSTQ4-T17-A01",
+  "status": "implemented_frozen_heldout_corpus_manifest_no_run",
+  "closure_level": "docs_contract_ready",
+  "created_at": "2026-07-07T21:05:00+03:00",
+  "source_status": "source-owned sanitized metadata-only frozen held-out corpus manifest; no live/model/provider/reviewer/runtime/browser/target/CI/git/release/deploy/automation action was performed",
+  "goal": "Freeze the held-out task manifest for the future Batch 45 promotion-grade eval before any baseline/treatment execution.",
+  "claim_ceiling": "T17 freezes corpus metadata only. It does not run baseline or treatment, call reviewer/model/provider, choose final comparison mode, satisfy reviewer gate, reverse M26/M35/T15 no-go, prove behavior improvement, or prove runtime/browser/target/CI/git/release/deploy/automation readiness.",
+  "basis": {
+    "task_group": "docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+    "task_source": "docs/superpowers/specs/batch45-quality-retest-protocol.json",
+    "task_source_field": "held_out_tasks_v2",
+    "source_policy": "research/b45-real-project-scenarios/source-policy.md",
+    "current_boundary": "B45-POSTQ4-T15-A01 keeps advisory-only/no-go; B45-POSTQ4-T16-T22-A01 defines the future route only."
+  },
+  "source_matrix": [
+    {
+      "source": "docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+      "claim": "T17 must freeze task IDs, source class, privacy class, difficulty, expected evidence and hashes before any baseline/treatment execution.",
+      "relevance": "Direct T17 acceptance contract.",
+      "freshness": "current_repo_2026-07-07",
+      "confidence": "high",
+      "conflicts": []
+    },
+    {
+      "source": "docs/superpowers/specs/batch45-quality-retest-protocol.json",
+      "claim": "The prior source-owned held_out_tasks_v2 corpus defines eight task slots H1-H8.",
+      "relevance": "Provides the frozen task metadata without inventing a new corpus.",
+      "freshness": "existing_source_packet",
+      "confidence": "high",
+      "conflicts": []
+    },
+    {
+      "source": "research/b45-real-project-scenarios/source-policy.md",
+      "claim": "Evidence must remain sanitized and repo-retained artifacts must avoid raw private bodies, secrets, raw chats and unredacted PII.",
+      "relevance": "Defines source/privacy retention limits for the corpus manifest.",
+      "freshness": "existing_source_policy",
+      "confidence": "high",
+      "conflicts": []
+    }
+  ],
+  "corpus": {
+    "corpus_id": "B45-POSTQ4-FROZEN-HELDOUT-CORPUS-V1",
+    "corpus_version": "v1",
+    "status": "frozen_before_any_baseline_or_treatment_execution",
+    "frozen_at": "2026-07-07T21:05:00+03:00",
+    "task_count": 8,
+    "task_ids": [
+      "B45-POSTQ4-H1-LEGACY-HOOK-REGRESSION",
+      "B45-POSTQ4-H2-ARTIFACT-COMPATIBILITY",
+      "B45-POSTQ4-H3-SECURITY-PRIVACY-DATA-LOGIC",
+      "B45-POSTQ4-H4-ALGORITHM-PERFORMANCE-REGRESSION",
+      "B45-POSTQ4-H5-STATE-MACHINE-IDEMPOTENCY",
+      "B45-POSTQ4-H6-DOCS-CONTROL-PLANE-BUDGET",
+      "B45-POSTQ4-H7-JAVASCRIPT-TYPESCRIPT-PRIVACY-LOGIC",
+      "B45-POSTQ4-H8-FALSE-POSITIVE-TUNING"
+    ],
+    "hash_algorithm": "sha256",
+    "manifest_canonical_hash_input": "B45-POSTQ4-FROZEN-HELDOUT-CORPUS-V1|v1|H1,H2,H3,H4,H5,H6,H7,H8|source_class,privacy_class,difficulty,expected_evidence,allowed_evidence,blocked_claims,source_refs|frozen_at=2026-07-07T21:05:00+03:00",
+    "corpus_manifest_hash": "sha256:86cd85aab0be4dafbac34dccbdb0f3fa9b577760ae1f05eae6fdc423d4aa355f",
+    "hash_scope": "sanitized metadata fields only; no raw private source bodies, raw private chats, secrets, unredacted PII, raw model outputs or provider traces are hashed or retained"
+  },
+  "change_control": {
+    "baseline_started": false,
+    "treatment_started": false,
+    "edit_after_baseline_starts": "forbidden; any corpus entry or metadata change creates a new corpus_version and invalidates comparability with prior runs unless a later owner-approved decision packet accepts the gap before execution",
+    "tuning_after_result_inspection": "stop_condition_forbidden",
+    "next_edit_policy": "new frozen corpus packet with new evidence_id and corpus_version",
+    "future_execution_selector": "future T20 approval packet plus T21 runner must name corpus_id and corpus_version exactly"
+  },
+  "privacy_review": {
+    "owner_role": "security/privacy reviewer",
+    "result": "metadata_only_passed_current_run",
+    "review_scope": "manifest fields, source refs, allowed evidence, forbidden retained classes and approval boundary",
+    "retained_data_classes": [
+      "sanitized task metadata",
+      "repo-relative source references",
+      "metadata hashes",
+      "allowed evidence class labels",
+      "blocked claim labels"
+    ],
+    "forbidden_retained_data_classes": [
+      "raw private source bodies",
+      "secrets_or_credentials",
+      "raw private chat logs",
+      "unredacted_pii",
+      "raw_model_outputs_or_provider_traces",
+      "database_or_runtime_state",
+      "browser_traces_screenshots_or_videos",
+      "absolute_user_specific_paths",
+      "target_workspace_private_payloads"
+    ],
+    "residual_risk": "Future T20/T21 execution must re-check raw-temp-only retention and redaction before any approved run."
+  },
+  "retention_policy": {
+    "repo_retained": [
+      "this metadata-only corpus manifest",
+      "sanitized aggregate rollups from future approved runs",
+      "reviewer scores without raw traces if later approved"
+    ],
+    "temp_only_if_later_run_exists": [
+      "raw model outputs",
+      "provider responses",
+      "raw reviewer traces",
+      "raw execution logs"
+    ],
+    "repo_forbidden": [
+      "raw private source bodies",
+      "secrets_or_credentials",
+      "raw private chat logs",
+      "unredacted_pii",
+      "database_or_runtime_state",
+      "browser traces, videos or screenshots without exact approval"
+    ]
+  },
+  "entries": [
+    {
+      "task_id": "B45-POSTQ4-H1-LEGACY-HOOK-REGRESSION",
+      "slot": "H1",
+      "risk_family": "legacy_hook_regression",
+      "source_class": "project-authored task metadata from batch45-quality-retest-protocol held_out_tasks_v2",
+      "privacy_class": "metadata_only_no_raw_private_source",
+      "difficulty": "medium",
+      "required_task_shape": "Refactor hook command extraction or payload parsing without broad hook rewrite.",
+      "expected_good_behavior": "Reuse existing helper, add characterization test, preserve non-blocking advisory behavior.",
+      "expected_evidence": [
+        "existing helper or native API reuse named",
+        "focused characterization or regression test evidence",
+        "non-blocking advisory behavior preserved",
+        "unsupported runtime/provider/target claims absent"
+      ],
+      "allowed_evidence": [
+        "repo-relative paths",
+        "sanitized command summaries",
+        "test names and pass/fail counts",
+        "metadata hashes",
+        "reviewer scores without raw traces"
+      ],
+      "blocked_claims": [
+        "hook_activation_changed",
+        "target_runtime_behavior_proven",
+        "provider_behavior_proven",
+        "promotion_ready"
+      ],
+      "source_refs": [
+        "docs/superpowers/specs/batch45-quality-retest-protocol.json#held_out_tasks_v2.H1"
+      ],
+      "metadata_hash": "sha256:1f5a66221ddd2786a07a5c448924f35138d6ca1961971069f16d845191ab6335"
+    },
+    {
+      "task_id": "B45-POSTQ4-H2-ARTIFACT-COMPATIBILITY",
+      "slot": "H2",
+      "risk_family": "artifact_compatibility",
+      "source_class": "project-authored task metadata from batch45-quality-retest-protocol held_out_tasks_v2",
+      "privacy_class": "metadata_only_no_raw_private_source",
+      "difficulty": "medium",
+      "required_task_shape": "Add packet/schema migration or fallback reader.",
+      "expected_good_behavior": "Versioned fields, legacy fallback, docs/test sync and no silent schema break.",
+      "expected_evidence": [
+        "versioned field or fallback contract named",
+        "legacy compatibility behavior tested or explicitly gapped",
+        "docs and test sync recorded",
+        "no silent schema break claim"
+      ],
+      "allowed_evidence": [
+        "repo-relative paths",
+        "schema field names",
+        "test names and pass/fail counts",
+        "metadata hashes",
+        "sanitized compatibility notes"
+      ],
+      "blocked_claims": [
+        "all_legacy_artifacts_migrated_without_evidence",
+        "runtime_compatibility_proven",
+        "release_ready",
+        "promotion_ready"
+      ],
+      "source_refs": [
+        "docs/superpowers/specs/batch45-quality-retest-protocol.json#held_out_tasks_v2.H2"
+      ],
+      "metadata_hash": "sha256:006ca5004b545337ac10facab34b10fd9dfe4b44be2a3cd6cf5a54d5ec11d2af"
+    },
+    {
+      "task_id": "B45-POSTQ4-H3-SECURITY-PRIVACY-DATA-LOGIC",
+      "slot": "H3",
+      "risk_family": "security_privacy_data_logic",
+      "source_class": "project-authored task metadata from batch45-quality-retest-protocol held_out_tasks_v2",
+      "privacy_class": "metadata_only_no_raw_private_source",
+      "difficulty": "high",
+      "required_task_shape": "Harden nested redaction before evidence write.",
+      "expected_good_behavior": "Existing redaction helper first, focused negative tests and no raw private data.",
+      "expected_evidence": [
+        "existing redaction helper reuse named",
+        "negative privacy test or explicit no-test gap",
+        "forbidden retained data classes absent",
+        "sanitized evidence write path named"
+      ],
+      "allowed_evidence": [
+        "repo-relative paths",
+        "redaction rule names",
+        "replacement token classes",
+        "negative test names and pass/fail counts",
+        "metadata hashes"
+      ],
+      "blocked_claims": [
+        "raw_private_data_retained",
+        "secret_value_logged",
+        "privacy_safe_without_negative_test_or_gap",
+        "promotion_ready"
+      ],
+      "source_refs": [
+        "docs/superpowers/specs/batch45-quality-retest-protocol.json#held_out_tasks_v2.H3",
+        "research/b45-real-project-scenarios/source-policy.md"
+      ],
+      "metadata_hash": "sha256:4873096de09319a78dff30c416743f6e72e744cf32700b403afdb37e7f269742"
+    },
+    {
+      "task_id": "B45-POSTQ4-H4-ALGORITHM-PERFORMANCE-REGRESSION",
+      "slot": "H4",
+      "risk_family": "algorithm_performance_regression",
+      "source_class": "project-authored task metadata from batch45-quality-retest-protocol held_out_tasks_v2",
+      "privacy_class": "metadata_only_no_raw_private_source",
+      "difficulty": "medium",
+      "required_task_shape": "Reduce graph or query noise without semantic rewrite.",
+      "expected_good_behavior": "Small normalizer/filter, existing fixtures pass and no unnecessary dependency.",
+      "expected_evidence": [
+        "minimal normalizer/filter scope named",
+        "existing fixtures or deterministic checks selected",
+        "dependency decision recorded",
+        "semantic rewrite avoided or justified"
+      ],
+      "allowed_evidence": [
+        "repo-relative paths",
+        "fixture names and counts",
+        "dependency decision labels",
+        "test names and pass/fail counts",
+        "metadata hashes"
+      ],
+      "blocked_claims": [
+        "performance_proven_without_runtime_measurement",
+        "semantic_rewrite_safe_without_review",
+        "new_dependency_unjustified",
+        "promotion_ready"
+      ],
+      "source_refs": [
+        "docs/superpowers/specs/batch45-quality-retest-protocol.json#held_out_tasks_v2.H4"
+      ],
+      "metadata_hash": "sha256:6e450e8996499f9b1c6f5566991d37294b96fc5d6f726c6b58af54865376b7e9"
+    },
+    {
+      "task_id": "B45-POSTQ4-H5-STATE-MACHINE-IDEMPOTENCY",
+      "slot": "H5",
+      "risk_family": "state_machine_idempotency",
+      "source_class": "project-authored task metadata from batch45-quality-retest-protocol held_out_tasks_v2",
+      "privacy_class": "metadata_only_no_raw_private_source",
+      "difficulty": "medium",
+      "required_task_shape": "Make repeated local state update deterministic.",
+      "expected_good_behavior": "Preserve state shape, avoid automation activation and add regression tests.",
+      "expected_evidence": [
+        "state shape preservation named",
+        "idempotency or repeatability test evidence",
+        "automation activation remains false",
+        "rollback or compatibility note"
+      ],
+      "allowed_evidence": [
+        "repo-relative paths",
+        "state key names",
+        "repeatability test names and pass/fail counts",
+        "metadata hashes",
+        "sanitized state summaries"
+      ],
+      "blocked_claims": [
+        "automation_activation_performed",
+        "state_migration_safe_without_test_or_gap",
+        "production_state_accessed",
+        "promotion_ready"
+      ],
+      "source_refs": [
+        "docs/superpowers/specs/batch45-quality-retest-protocol.json#held_out_tasks_v2.H5"
+      ],
+      "metadata_hash": "sha256:7971a0e856db6175868a2b6733cf150af5510c56c077243e2adf30f6f0307df3"
+    },
+    {
+      "task_id": "B45-POSTQ4-H6-DOCS-CONTROL-PLANE-BUDGET",
+      "slot": "H6",
+      "risk_family": "docs_control_plane_budget",
+      "source_class": "project-authored task metadata from batch45-quality-retest-protocol held_out_tasks_v2",
+      "privacy_class": "metadata_only_no_raw_private_source",
+      "difficulty": "low",
+      "required_task_shape": "Add compact evidence row without root control-plane bloat.",
+      "expected_good_behavior": "Source-owned detail, compact root pointer and docs checks.",
+      "expected_evidence": [
+        "source-owned detail artifact path",
+        "compact root pointer updated",
+        "docs/source registry checks selected",
+        "no root control-plane bloat"
+      ],
+      "allowed_evidence": [
+        "repo-relative paths",
+        "control-plane anchor IDs",
+        "docs check output summaries",
+        "diff hygiene summaries",
+        "metadata hashes"
+      ],
+      "blocked_claims": [
+        "generated_dashboard_as_source_truth",
+        "root_control_plane_full_ledger_added",
+        "docs_freshness_without_check",
+        "promotion_ready"
+      ],
+      "source_refs": [
+        "docs/superpowers/specs/batch45-quality-retest-protocol.json#held_out_tasks_v2.H6"
+      ],
+      "metadata_hash": "sha256:9b44fccc9697bfd4056668cac317b462a5bccd97513855db019681df78f5afcd"
+    },
+    {
+      "task_id": "B45-POSTQ4-H7-JAVASCRIPT-TYPESCRIPT-PRIVACY-LOGIC",
+      "slot": "H7",
+      "risk_family": "javascript_typescript_privacy_logic",
+      "source_class": "project-authored task metadata from batch45-quality-retest-protocol held_out_tasks_v2",
+      "privacy_class": "metadata_only_no_raw_private_source",
+      "difficulty": "high",
+      "required_task_shape": "Normalize JS/TS/TSX event records with nested optional fields and redaction invariants.",
+      "expected_good_behavior": "Existing normalizers, TS/TSX advisory coverage, negative tests or explicit no-test gap.",
+      "expected_evidence": [
+        "existing normalizer reuse named",
+        "TS/TSX advisory coverage evidence",
+        "nested optional field behavior named",
+        "negative redaction test or explicit no-test gap"
+      ],
+      "allowed_evidence": [
+        "repo-relative paths",
+        "normalizer names",
+        "coverage labels",
+        "negative test names and pass/fail counts",
+        "metadata hashes"
+      ],
+      "blocked_claims": [
+        "raw_event_payload_retained",
+        "privacy_safe_without_redaction_invariant",
+        "frontend_runtime_behavior_proven",
+        "promotion_ready"
+      ],
+      "source_refs": [
+        "docs/superpowers/specs/batch45-quality-retest-protocol.json#held_out_tasks_v2.H7",
+        "research/b45-real-project-scenarios/source-policy.md"
+      ],
+      "metadata_hash": "sha256:560c7bb35a1d616ef38f71b9c3cd8b8b6a33173acc6b2274b538601b477d1f5e"
+    },
+    {
+      "task_id": "B45-POSTQ4-H8-FALSE-POSITIVE-TUNING",
+      "slot": "H8",
+      "risk_family": "false_positive_tuning",
+      "source_class": "project-authored task metadata from batch45-quality-retest-protocol held_out_tasks_v2",
+      "privacy_class": "metadata_only_no_raw_private_source",
+      "difficulty": "medium",
+      "required_task_shape": "Improve suppression UX without hiding true positives.",
+      "expected_good_behavior": "comment_not_needed_reason retained, cap/raw replay retained and false-positive tests included.",
+      "expected_evidence": [
+        "comment_not_needed_reason or equivalent rationale retained",
+        "cap/raw replay policy preserved",
+        "false-positive test names and pass/fail counts",
+        "true-positive hiding risk addressed"
+      ],
+      "allowed_evidence": [
+        "repo-relative paths",
+        "suppression reason labels",
+        "test names and pass/fail counts",
+        "metadata hashes",
+        "sanitized warning-count deltas"
+      ],
+      "blocked_claims": [
+        "true_positives_hidden_without_review",
+        "warning_reduction_as_behavior_improvement",
+        "blocker_or_ci_promotion_ready",
+        "promotion_ready"
+      ],
+      "source_refs": [
+        "docs/superpowers/specs/batch45-quality-retest-protocol.json#held_out_tasks_v2.H8"
+      ],
+      "metadata_hash": "sha256:7bd88a1f9c286a7b5395f055f65704f1cd859a97c8af51b7cc00870e1ecb4bf1"
+    }
+  ],
+  "approval_and_execution_boundary": {
+    "packet_authorizes_future_run": false,
+    "baseline_or_treatment_run_started": false,
+    "reviewer_gate_satisfied": false,
+    "comparison_mode_finalized": false,
+    "intended_comparison_mode_for_later_design": "deferred_to_T18; T16 preferred same_model_baseline_treatment and allows explicit_current_model_comparison only with owner-accepted current-quality framing",
+    "next_required_task": "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
+    "future_approval_required_before_T21": true,
+    "does_not_authorize": [
+      "reviewer/model/provider calls",
+      "live/model/provider rerun",
+      "runtime/live server or browser automation",
+      "target workspace command or mutation",
+      "database or production data access",
+      "CI/blocker enforcement or active automation",
+      "git branch/stage/commit/push/PR",
+      "release/deploy/publish/external write"
+    ]
+  },
+  "no_unapproved_actions": {
+    "live_model_or_provider_api_called_without_approval": false,
+    "reviewer_model_call_started": false,
+    "runtime_or_live_server_launched": false,
+    "browser_automation_run": false,
+    "target_workspace_command_run": false,
+    "target_workspace_mutated": false,
+    "database_accessed": false,
+    "ci_or_blocker_enforcement_created": false,
+    "git_branch_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation_created_or_enabled": false,
+    "external_write_performed": false,
+    "raw_private_source_body_retained": false,
+    "secret_or_unredacted_pii_retained": false
+  },
+  "unsupported_claims": [
+    "promotion_grade_eval_result_exists",
+    "baseline_treatment_execution_started",
+    "reviewer_gate_satisfied",
+    "comparison_mode_finalized",
+    "behavior_improvement_proven",
+    "M26_no_go_reversed",
+    "M35_no_go_reversed",
+    "T15_no_go_reversed",
+    "promotion_ready",
+    "runtime_browser_target_ci_git_release_deploy_automation_ready"
+  ],
+  "control_plane_sync_decision": {
+    "REQUIREMENTS.md": "not_applicable_no_scope_or_acceptance_change",
+    "PLAN.md": "updated_compact_s8_route_pointer_with_t17",
+    "TEST.md": "updated_compact_t17_json_and_claim_boundary",
+    "EVALS.md": "updated_compact_t17_no_run_claim_ceiling",
+    "RUNLOG.md": "updated_compact_t17_handoff_pointer",
+    "docs/sources/registry.md": "updated_t17_source_route",
+    "docs/sources/registry.en.md": "updated_t17_source_route",
+    "docs/product-agent-os/control-plane-current-state.md": "updated_current_state_and_queue_pointer",
+    "docs/product-agent-os/coding-standards.md": "updated_evidence_ceiling",
+    "docs/product-agent-os/coding-standards.en.md": "updated_evidence_ceiling",
+    "docs/product-agent-os/behavioral-evals.md": "updated_professional_code_eval_route",
+    "docs/product-agent-os/behavioral-evals.en.md": "updated_professional_code_eval_route",
+    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md": "updated_t16_t22_row_and_s8_slice",
+    ".codex/product-agent-os/lifecycle-state.json": "updated_current_marker"
+  },
+  "verification": {
+    "planned_commands": [
+      "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t17-frozen-heldout-corpus.json",
+      "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+      "python -m json.tool docs\\superpowers\\specs\\batch45-post-q4-next-tasks.json",
+      "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+      "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "python -m unittest tests.product_agent_os.test_task_plan_lifecycle -v",
+      "python -m unittest tests.product_agent_os.test_lifecycle_hooks -v",
+      "python -m unittest tests.product_agent_os.test_infrastructure_templates -v",
+      "python tools\\check_docs.py",
+      "git diff --check"
+    ],
+    "results": [
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t17-frozen-heldout-corpus.json",
+        "status": "passed_current_run",
+        "evidence": "JSON parsed successfully after T17 manifest and verification-ledger edits."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+        "status": "passed_current_run",
+        "evidence": "JSON parsed successfully with T17 row status and evidence owner."
+      },
+      {
+        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-post-q4-next-tasks.json",
+        "status": "passed_current_run",
+        "evidence": "JSON parsed successfully with T17 execution_update pointers."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "status": "passed_current_run",
+        "evidence": "Ran 28 tests; OK."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "status": "passed_current_run",
+        "evidence": "Ran 100 tests; OK."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_task_plan_lifecycle -v",
+        "status": "passed_current_run",
+        "evidence": "Ran 4 tests; OK."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_lifecycle_hooks -v",
+        "status": "passed_current_run",
+        "evidence": "Ran 17 tests; OK."
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_infrastructure_templates -v",
+        "status": "passed_current_run",
+        "evidence": "Ran 94 tests; OK."
+      },
+      {
+        "command": "python tools\\check_docs.py",
+        "status": "passed_current_run",
+        "evidence": "Documentation structure checks passed."
+      },
+      {
+        "command": "git diff --check",
+        "status": "passed_current_run",
+        "evidence": "No whitespace errors reported."
+      }
+    ]
+  },
+  "recommended_next_queue": {
+    "queue": "B45-POSTQ4-T18-EVAL-DESIGN-AND-STRICT-SCHEMA",
+    "status": "ready_to_prepare_design_packet_after_t17_manifest",
+    "required_before_execution": [
+      "final comparison mode",
+      "strict structured output schema",
+      "scoring rubric and invalid-output quarantine",
+      "reviewer rubric",
+      "cost/timeout/raw-temp-only retention from T19",
+      "exact owner approval packet from T20"
+    ]
+  }
+}

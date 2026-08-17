@@ -20,6 +20,15 @@ from product_agent_os.validators import validate_task_matrix_text  # noqa: E402
 
 
 class TaskPlanLifecycleTest(unittest.TestCase):
+    def test_current_task_state_projections_are_consistent(self):
+        result = subprocess.run(
+            [sys.executable, str(SCRIPTS / "validate_task_state_consistency.py"), str(ROOT)],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+
     def test_current_project_system_files_require_user_visible_briefs(self):
         config = tomllib.loads((ROOT / ".codex" / "config.toml").read_text(encoding="utf-8"))
         workflow = (ROOT / ".codex" / "workflows" / "task-plan-lifecycle.md").read_text(encoding="utf-8")
@@ -36,10 +45,16 @@ class TaskPlanLifecycleTest(unittest.TestCase):
         self.assertEqual(lifecycle_contract["agent_context_contract"], ".codex/evals/agent-context-contract.json")
         self.assertEqual(lifecycle_contract["chat_visibility"], "required")
         self.assertEqual(lifecycle_contract["required_for"], "non_mechanical_tasks")
-        self.assertEqual(lifecycle_contract["agent_instruction_policy"], "reference_config_workflows_do_not_duplicate_contract")
-        self.assertIn(".codex/workflows/task-plan-lifecycle.md", fresh_context_files)
-        self.assertIn(".codex/workflows/control-plane-sync.md", fresh_context_files)
-        self.assertIn(".codex/evals/agent-context-contract.json", fresh_context_files)
+        self.assertEqual(lifecycle_contract["agent_instruction_policy"], "root_only_lifecycle_subagents_return_result_packet")
+        self.assertEqual(
+            fresh_context_files,
+            [
+                ".codex/workflows/source-context-pack.md",
+                ".codex/workflows/worktree-ownership.md",
+                ".codex/workflows/task-plan-lifecycle.md",
+                ".codex/workflows/control-plane-sync.md",
+            ],
+        )
 
         for expected in [
             "Task Brief",
@@ -60,6 +75,9 @@ class TaskPlanLifecycleTest(unittest.TestCase):
         self.assertIn("terminal `final` response", workflow)
         self.assertIn("No tool calls are allowed after the Completion Brief", workflow)
         self.assertIn("ready_for_completion_brief", workflow)
+        self.assertIn("stopped_repair_required", workflow)
+        self.assertIn("The lifecycle is root-owned", workflow)
+        self.assertIn("Subagent Result Packet", workflow)
 
         for expected in [
             "config_routed_task_plan_lifecycle",
@@ -102,8 +120,10 @@ class TaskPlanLifecycleTest(unittest.TestCase):
             text = path.read_text(encoding="utf-8")
             with self.subTest(agent=path.name):
                 self.assertIn(".codex/config.toml", text)
-                self.assertIn("Task Brief", text)
-                self.assertIn("Completion Brief", text)
+                self.assertIn("root agent owns the user-visible Task Brief", text)
+                self.assertIn("Subagent Result Packet", text)
+                self.assertIn("never start or close a nested lifecycle", text)
+                self.assertNotIn("show the required Task Brief and Completion Brief", text)
 
     def test_build_planned_task_matrix_creates_valid_pre_execution_block(self):
         text = build_planned_task_matrix(

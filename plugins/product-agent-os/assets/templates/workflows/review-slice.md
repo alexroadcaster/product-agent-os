@@ -40,6 +40,8 @@ Profile: {profile_name}
 
 ## Process
 
+Execution budget: one reviewer window per slice and at most two repair cycles. A third review cycle stops the slice for replan. The same verification command must not run again unless a named code, config, fixture, input or environment change can affect its result.
+
 - Use findings-first review ordered by severity.
 - Check behavior against acceptance criteria.
 - Check source constraints and public contract before judging implementation quality.
@@ -49,6 +51,7 @@ Profile: {profile_name}
 - Treat maintainability findings as blockers only when they affect correctness, risk, evidence, ownership, dependency debt, legacy safety, or future change cost.
 - Check `.codex/workflows/control-plane-sync.md`: identify missing updates or missing `not_applicable` / `handoff_required` decisions for control-plane files.
 - Record a verdict: approve, request changes, or block.
+- Count the review cycle and name the changed input that permits any repeated command.
 
 ## Outputs
 
@@ -66,6 +69,8 @@ Profile: {profile_name}
 - Missing evidence:
 - Control-plane sync gaps:
 - Verdict:
+- Review cycle: `1/2` or `2/2`:
+- Changed input before repeated command:
 
 ## Verification
 
@@ -86,3 +91,5 @@ Profile: {profile_name}
 - Review accepts new dependencies without dependency risk, rollback/removal path, and approval status.
 - Review finds missing required control-plane sync evidence.
 - Security or data handling issue blocks release.
+- Two repair cycles were consumed without acceptance.
+- A command would be repeated with unchanged relevant inputs.

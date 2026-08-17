@@ -3526,7 +3526,7 @@ the source registry, track backlogs, and evidence packets.</p>
 <td><code>PLAN.md</code></td>
 <td>The root plan stores current queue, rollback, and source pointers.</td>
 <td>Compacts to active routing.</td>
-<td>Current run, 2026-07-07.</td>
+<td>Current run, 2026-07-08.</td>
 <td>High.</td>
 <td>Historical batch matrices must leave root.</td>
 </tr>
@@ -3534,7 +3534,7 @@ the source registry, track backlogs, and evidence packets.</p>
 <td><code>RUNLOG.md</code></td>
 <td>The root runlog stores current handoff, latest evidence, and residual risks.</td>
 <td>Compacts to current-cycle summary.</td>
-<td>Current run, 2026-07-07.</td>
+<td>Current run, 2026-07-08.</td>
 <td>High.</td>
 <td>Long evidence ledgers must be source-owned.</td>
 </tr>
@@ -3542,7 +3542,7 @@ the source registry, track backlogs, and evidence packets.</p>
 <td><code>TEST.md</code></td>
 <td>The root test file stores check routing, not a batch command archive.</td>
 <td>Compacts to command classes and ownership.</td>
-<td>Current run, 2026-07-07.</td>
+<td>Current run, 2026-07-08.</td>
 <td>High.</td>
 <td>Batch-specific long suites live in packets/backlogs.</td>
 </tr>
@@ -3550,7 +3550,7 @@ the source registry, track backlogs, and evidence packets.</p>
 <td><code>EVALS.md</code></td>
 <td>The root evals file stores rubrics, thresholds, and active claim ceilings.</td>
 <td>Compacts to current eval routes.</td>
-<td>Current run, 2026-07-07.</td>
+<td>Current run, 2026-07-08.</td>
 <td>High.</td>
 <td>Historical eval state lives in source/spec artifacts.</td>
 </tr>
@@ -3654,8 +3654,8 @@ to skip a required control-plane update.</p>
 </tr>
 <tr>
 <td>Batch 45</td>
-<td>Professional Code Authoring remains advisory/no-go. <code>B45-POSTQ4-T15</code> records that T14 is a positive current-quality signal only: <code>gpt-5.5</code>, 16/16, <code>+3.27%</code>, reviewer <code>0</code>, below <code>&gt;=20%</code>, and same-model comparability is false. <code>B45-POSTQ4-T16-T22-A01</code> adds the promotion-grade eval task group only; it does not run reviewer/model/provider calls or reverse M26/M35/T15.</td>
-<td><code>docs/superpowers/specs/batch45-postq4-t15-model-change-decision-packet.json</code>, <code>docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json</code>.</td>
+<td>Professional Code Authoring remains advisory/no-go. <code>B45-POSTQ4-T15</code> records that T14 is a positive current-quality signal only: <code>gpt-5.5</code>, 16/16, <code>+3.27%</code>, reviewer <code>0</code>, below <code>&gt;=20%</code>, and same-model comparability is false. <code>B45-POSTQ4-T16-T22</code> owns the promotion-grade eval route design. <code>B45-POSTQ4-T20-A03</code> records the owner-confirmed cost-waived exact approval consumed by T21. <code>B45-POSTQ4-T21-COST-WAIVED-RUN-A01</code> started one approved primary Codex CLI/OpenAI call and aborted on strict schema validation with <code>valid_pair_count=0</code>, <code>invalid_pair_count=8</code>, <code>schema_failure_count=1</code>, reviewer <code>0</code> and repo raw retention <code>0</code>. <code>B45-POSTQ4-T21-PREFLIGHT-A01/A02/A03</code> remain historical preflight blocks. <code>B45-POSTQ4-T22-A02</code> records no-go because T21 produced no valid pairs and the reviewer gate was not run. No valid baseline/treatment pair set, reviewer call or M26/M35/T15 reversal is proven.</td>
+<td><code>docs/superpowers/specs/batch45-postq4-t15-model-change-decision-packet.json</code>, <code>docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json</code>, <code>docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json</code>, <code>docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json</code>, <code>docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json</code>, <code>docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json</code>, <code>docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet-1000s.json</code>, <code>docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet-cost-waived.json</code>, <code>docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json</code>, <code>docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-timeout-mismatch.json</code>, <code>docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-cost-unknown.json</code>, <code>docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-results.json</code>, <code>docs/superpowers/specs/batch45-postq4-t22-promotion-grade-decision-packet.json</code>.</td>
 </tr>
 <tr>
 <td>Track 11 docs/site</td>
@@ -3669,8 +3669,8 @@ to skip a required control-plane update.</p>
 <li>Keep root control-plane files compact after every non-mechanical slice.</li>
 <li>For Batch 44, review S7 manual-pilot evidence before any S8 promotion decision.</li>
 <li>For Batch 45, execute the <code>B45-S8</code> promotion-grade eval route in order only:
-   frozen corpus -&gt; design/schema -&gt; cost/timeout/retention -&gt; exact approval
-   -&gt; approved run -&gt; reviewer decision. Until that route clears threshold and
+   frozen corpus -&gt; design/schema -&gt; cost/timeout/retention -&gt; T20-A03 cost-waived approval consumed
+   -&gt; T21 strict-schema abort after one approved primary call -&gt; T22-A02 blocked/no-go decision -&gt; strict output/schema normalization -&gt; future newly approved T21 run -&gt; future real T22 reviewer decision. Until that route clears threshold and
    reviewer gates, keep advisory/no-go.</li>
 <li>For Track 11, keep source docs, registry, generated site evidence, and
    approval-bound browser/broad-scan claims separate.</li>

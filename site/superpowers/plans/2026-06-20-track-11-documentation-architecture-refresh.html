@@ -3487,6 +3487,15 @@
 </li>
 
           <li class="md-nav__item">
+  <a href="#b45-s9-agent-and-skill-ownership" class="md-nav__link">
+    <span class="md-ellipsis">
+      B45-S9 Agent And Skill Ownership
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
   <a href="#batch-45-acceptance-ceiling" class="md-nav__link">
     <span class="md-ellipsis">
       Batch 45 Acceptance Ceiling
@@ -6002,14 +6011,27 @@
 <td><code>B45-POSTQ4-T16-T22</code></td>
 <td>P0</td>
 <td><code>B45-S8</code></td>
-<td>Add the promotion-grade eval implementation task group before any future run.</td>
-<td><code>docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json</code>; <code>docs/superpowers/specs/batch45-post-q4-next-tasks.json</code>; Track 11 plan; registry/control-plane sync; focused tests.</td>
-<td>T16 records the read-only scan and task group; T17 freezes the held-out corpus; T18 defines comparison mode, strict schema and rubric; T19 defines cost/timeout/raw-temp-only retention; T20 stages exact approval; T21 is the approval-required run; T22 is reviewer gate plus promotion/no-go decision.</td>
-<td>Owner requested a new Batch 45 group for promotion-grade eval implementation after T15.</td>
-<td>Only this route can later change no-go, but this row is design/no-run only: no future corpus/model/reviewer run is authorized yet and current advisory-only/no-go remains active.</td>
-<td><code>python -m json.tool</code> for T16-T22 and next-tasks packets; Batch 45 artifact tests; docs tests; <code>python tools\check_docs.py</code>; <code>git diff --check</code>.</td>
-<td>Stop before reviewer/model/provider calls, runtime/browser/target/CI/git/release/deploy/automation actions, raw-output repo retention or promotion wording.</td>
-<td><code>implemented_B45_POSTQ4_T16_T22_task_group: B45-POSTQ4-T16-T22-A01</code>; <code>B45-S8_promotion_grade_eval_design_no_run</code>; <code>future_exact_approval_required</code></td>
+<td>Add the promotion-grade eval implementation task group before any future run, record T20 exact approval packet revisions and consumed approval, record T21 blocked preflights plus strict-schema abort result, and record T22 blocked/no-go reviewer decision when T21 has no valid pair set.</td>
+<td><code>docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json</code>; <code>docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json</code>; <code>docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json</code>; <code>docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json</code>; <code>docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json</code>; <code>docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet-1000s.json</code>; <code>docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet-cost-waived.json</code>; <code>docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json</code>; <code>docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-timeout-mismatch.json</code>; <code>docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-cost-unknown.json</code>; <code>docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-results.json</code>; <code>docs/superpowers/specs/batch45-postq4-t22-promotion-grade-decision-packet.json</code>; <code>docs/superpowers/specs/batch45-post-q4-next-tasks.json</code>; Track 11 plan; registry/control-plane sync; focused tests.</td>
+<td>T16 records the read-only scan and task group; T17 freezes the metadata-only held-out corpus manifest through <code>B45-POSTQ4-T17-A01</code>; T18 defines same-model comparison mode, strict schema, deterministic quarantine, scoring/reviewer rubric and result contract through <code>B45-POSTQ4-T18-A01</code>; T19 defines cost/timeout/retry/abort/raw-temp-only retention through <code>B45-POSTQ4-T19-A01</code>; T20 stages historical approval packets through <code>B45-POSTQ4-T20-A01/A02</code> and consumed cost-waived approval through <code>B45-POSTQ4-T20-A03</code>; T21 records <code>B45-POSTQ4-T21-PREFLIGHT-A01/A02/A03</code> as historical preflight blocks and <code>B45-POSTQ4-T21-COST-WAIVED-RUN-A01</code> as one approved primary call followed by strict schema abort with <code>valid_pair_count=0</code>, <code>invalid_pair_count=8</code> and <code>schema_failure_count=1</code>; T22 records <code>B45-POSTQ4-T22-A02</code> as no-go because T21 has no valid pairs and the reviewer gate was not run.</td>
+<td>T20-A03 was consumed by the aborted T21 run; approval reuse is forbidden and T21 has no valid promotion-grade result.</td>
+<td>Only this route can later change no-go, but current T22 is blocked/no-go: strict output/schema handling must be normalized and a new exact approval must authorize any future baseline/treatment/model/reviewer run.</td>
+<td><code>python -m json.tool</code> for T22, T21 A01/A02/A03/result, T20 A01/A02/A03, T19, T18, T17, T16-T22 and next-tasks packets; Batch 45 artifact tests; runtime model-output contract tests; docs tests; <code>python tools\check_docs.py</code>; <code>git diff --check</code>.</td>
+<td>Stop before reviewer/model/provider calls, runtime/browser/target/CI/git/release/deploy/automation actions, raw-output repo retention or promotion wording unless the later T21 route is newly approved and produces a valid result.</td>
+<td><code>implemented_B45_POSTQ4_T16_T22_task_group: B45-POSTQ4-T16-T22-A01</code>; <code>implemented_B45_POSTQ4_T17_frozen_heldout_corpus: B45-POSTQ4-T17-A01</code>; <code>implemented_B45_POSTQ4_T18_eval_design_strict_schema: B45-POSTQ4-T18-A01</code>; <code>implemented_B45_POSTQ4_T19_cost_timeout_retention_policy: B45-POSTQ4-T19-A01</code>; <code>implemented_B45_POSTQ4_T20_exact_approval_packet: B45-POSTQ4-T20-A01</code>; <code>implemented_B45_POSTQ4_T20_exact_approval_packet_1000s_revision: B45-POSTQ4-T20-A02</code>; <code>consumed_B45_POSTQ4_T20_cost_waived_approval: B45-POSTQ4-T20-A03</code>; <code>blocked_B45_POSTQ4_T21_preflight_missing_restatement: B45-POSTQ4-T21-PREFLIGHT-A01</code>; <code>blocked_B45_POSTQ4_T21_preflight_timeout_mismatch: B45-POSTQ4-T21-PREFLIGHT-A02</code>; <code>historical_B45_POSTQ4_T21_preflight_cost_unknown: B45-POSTQ4-T21-PREFLIGHT-A03</code>; <code>aborted_B45_POSTQ4_T21_invalid_schema: B45-POSTQ4-T21-COST-WAIVED-RUN-A01</code>; <code>blocked_B45_POSTQ4_T22_no_go_decision: B45-POSTQ4-T22-A02</code>; <code>new_exact_approval_required_for_future_T21_rerun</code></td>
+</tr>
+<tr>
+<td><code>B45-CODE-QUALITY-RUNTIME-RECOVERY</code></td>
+<td>P0</td>
+<td><code>B45-S9</code></td>
+<td>Convert the post-T22 audit into an implementation-ready corrective route for minimal code, risk-selected tests, meaningful comments, project-native tooling, deterministic quality metrics and independent review.</td>
+<td>S9-0/A03, S9-A/A04, S9-B/A05 plans; task-group/team/handoff packets; source registry; compact control-plane sync.</td>
+<td>T23-T24 repair the durable schema/runtime contract; T25-T27 locally implement compact context and stack/risk selectors; T28-T29 reduce artifact-test debt and replace self-score promotion with deterministic evidence; T30-T32 add blinded review, corpus and isolated prompt contract; T33 gates local readiness; T34 remains exact-approval-only.</td>
+<td>Owner explicitly started S9-0 and B45-S9-B.</td>
+<td>A03 handoff readiness, A04 T23/T24 and A05 T25-T27 are locally implemented/focused verified; T28-T34 remain unstarted.</td>
+<td>Current focused/legacy checks, task-matrix validator, JSON parsing, docs/lifecycle tests, <code>python tools\check_docs.py</code>, <code>git diff --check</code>.</td>
+<td>Stop before T28 without a new route; stop before T34 approval-gated actions; do not treat test count, coverage, warning reduction or model self-score as product-quality proof.</td>
+<td><code>implemented_B45_CQRR_A05_T25_T27_local_code_gate</code>; <code>next_B45_CQRR_T28</code>; <code>keep_advisory_only_no_go</code></td>
 </tr>
 </tbody>
 </table>
@@ -6023,12 +6045,78 @@
 <li><code>B45-S5 Learning And Automation Candidates</code>: execute <code>B45-PCA-M23</code> as candidate-only learning-loop/automation policy, then finalize <code>B45-PCA-M14</code> source closure. Future promotion needs owner approval, at least three successful manual pilot runs, rollback, false-positive audit, flake replay and cost evidence.</li>
 <li><code>B45-S6 Advisory Validation And Behavior Proof</code>: execute <code>B45-PCA-M24..M27</code> to measure broad false positives, wire approved non-blocking local advisory signal, prove or falsify real AI-agent behavior improvement and record the promotion/no-go decision.</li>
 <li><code>B45-S7 Architecture V2 And Real-Project Scenario Harness</code>: execute <code>B45-PCA-M28..M36</code> to deepen the architecture, inventory real target scenarios, define sanitized fixture policy, build approved fixture packs, run baseline/refactor comparisons, calibrate scorecards and decide whether a smaller treatment v2 or disposable runtime/browser pilot is worth a later approval.</li>
-<li><code>B45-S8 Promotion-Grade Eval</code>: execute T16-T22 as a staged route only. T16 adds the task group, T17-T20 prepare frozen corpus/design/cost-retention/approval packets, T21 is blocked until exact approval for a future model/provider run, and T22 can change no-go only after threshold and reviewer gates are satisfied.</li>
+<li><code>B45-S8 Promotion-Grade Eval</code>: execute T16-T22 as a staged route only. T16 adds the task group, T17 freezes the metadata-only held-out corpus manifest in <code>docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json</code>, T18 defines the same-model eval design and strict schema in <code>docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json</code>, T19 defines cost/timeout/retry/abort/raw-temp-only retention in <code>docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json</code>, T20 keeps historical approval packets plus the consumed cost-waived approval in <code>docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet-cost-waived.json</code>, T21 preflights are historical blocks in <code>docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json</code>, <code>docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-timeout-mismatch.json</code> and <code>docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-cost-unknown.json</code>, current T21 strict-schema abort is in <code>docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-results.json</code>, and current T22 records no-go in <code>docs/superpowers/specs/batch45-postq4-t22-promotion-grade-decision-packet.json</code> because T21 has no valid pair set. A future real T22 can change no-go only after strict output/schema handling is normalized and a newly approved T21 run produces valid threshold evidence and a reviewer gate is actually satisfied.</li>
+<li><code>B45-S9 Code Quality Runtime Recovery</code>: S9-0 is implemented through A03, A04 locally implements/focused-verifies T23/T24, and A05 locally implements/focused-verifies T25-T27: compact code-change contract, project-native <code>present_unverified</code> stack/tool selector and minimal risk-to-test/comment/performance selector. A05 final combined route is 54 OK (focused 16/16, legacy 38/38) with reviewer and completion-skeptic <code>GO_local_code_gate</code>; task-matrix validators, JSON parse, docs 100/100 and <code>check_docs</code> are green. The RU S9-B source plan remains in <code>DOC_M25_PENDING_SITE_PAGES</code>, so no generated-site freshness is claimed. Next is T28 / B45-S9-C; T28-T34 retain prior state. No CLI/live/provider/external-reviewer/promotion claim or T22 no-go reversal follows; T34 remains approval-required and may still end no-go.</li>
 </ul>
+<h3 id="b45-s9-agent-and-skill-ownership">B45-S9 Agent And Skill Ownership<a class="headerlink" href="#b45-s9-agent-and-skill-ownership" title="Permanent link">&para;</a></h3>
+<p><code>B45-CQRR-A02</code> is the operational ownership source and <code>B45-CQRR-A03</code> is the fresh-context execution-handoff source. <code>owner_role</code> in the task-group packet names functional accountability; the team packet separately owns write permission, verification, independent review, claim gate, docs sync and required skills. Read-only roles never write the implementation or evidence they judge.</p>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Tasks and order</th>
+<th>Accountable / writers</th>
+<th>Verification and independent gate</th>
+<th>Required skill sets</th>
+<th>Parallelism</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>B45-S9-0</code></td>
+<td>Implemented team/handoff readiness before T23</td>
+<td><code>lifecycle-orchestrator</code></td>
+<td>Task-matrix, twelve-packet, role/skill/ownership and parallel-boundary validation</td>
+<td><code>implementation-planner</code>, <code>agent-team-designer</code>, <code>docs-maintainer</code></td>
+<td>Sequential precondition complete; no dispatch from the plan</td>
+</tr>
+<tr>
+<td><code>B45-S9-A</code></td>
+<td>T23/T24 implemented and focused verified through <code>B45-CQRR-A04</code></td>
+<td>T23 <code>plugin-runtime-builder</code> with <code>architect</code> design authority; T24 <code>tester</code></td>
+<td>final 15/15 and 8/8, <code>schema_equal=True</code>, read-only reviewer and <code>completion-skeptic</code> <code>GO_local_code_gate</code></td>
+<td><code>implementation-planner</code>, <code>python-code-style</code>, <code>python-design-patterns</code>, <code>tdd</code>, <code>test-eval-designer</code>, <code>risk-reviewer</code>, <code>verification-before-completion</code></td>
+<td>Completed coupled red-green sequence; no live/promotion claim</td>
+</tr>
+<tr>
+<td><code>B45-S9-B</code></td>
+<td>T25 -&gt; T26 -&gt; T27 locally implemented and focused verified through <code>B45-CQRR-A05</code></td>
+<td><code>architect</code> / <code>plugin-runtime-builder</code> / <code>tester</code> with production writes owned only by <code>plugin-runtime-builder</code></td>
+<td>54 OK combined route; read-only <code>reviewer</code> and <code>completion-skeptic</code> <code>GO_local_code_gate</code></td>
+<td>Architecture, Python design/style, TDD, execution-plan, test/eval and risk-review skill sets</td>
+<td>Completed strictly sequential; no live/promotion claim</td>
+</tr>
+<tr>
+<td><code>B45-S9-C</code></td>
+<td>T28 -&gt; T29</td>
+<td>T28 <code>tester</code>; T29 <code>architect</code> with <code>plugin-runtime-builder</code> production writer</td>
+<td><code>tester</code> -&gt; read-only <code>reviewer</code> -&gt; <code>completion-skeptic</code></td>
+<td><code>test-eval-designer</code>, <code>tdd</code>, <code>implementation-planner</code>, Python design/style, <code>risk-reviewer</code>, <code>verification-before-completion</code></td>
+<td>Strictly sequential</td>
+</tr>
+<tr>
+<td><code>B45-S9-D</code></td>
+<td>T30 and T31 -&gt; T32</td>
+<td>T30 <code>architect</code> plus <code>plugin-runtime-builder</code>; T31 <code>tester</code>; T32 <code>architect</code></td>
+<td><code>tester</code>; read-only <code>reviewer</code>; security/privacy review for T31; <code>completion-skeptic</code></td>
+<td>Eval design, implementation planning, Python design/style, TDD, risk/security review and verification skill sets</td>
+<td>Only T30 and T31 may run in parallel with disjoint handoffs; T32 is the join</td>
+</tr>
+<tr>
+<td><code>B45-S9-E</code></td>
+<td>T33 -&gt; exact approval stop -&gt; T34</td>
+<td>T33 <code>completion-skeptic</code> with <code>tester</code> evidence writer; T34 <code>release-operator</code> with disjoint <code>tester</code> result and <code>docs-maintainer</code> packet writes</td>
+<td><code>tester</code>, read-only <code>reviewer</code>, security/privacy reviewer, <code>completion-skeptic</code>, <code>release-operator</code></td>
+<td>Completion, verification, risk/security review, docs maintenance and release-operator skill sets</td>
+<td>Sequential; T34 remains approval-required</td>
+</tr>
+</tbody>
+</table>
 <h3 id="batch-45-acceptance-ceiling">Batch 45 Acceptance Ceiling<a class="headerlink" href="#batch-45-acceptance-ceiling" title="Permanent link">&para;</a></h3>
 <p>Batch 45 can claim planned or implemented Product-Agent OS professional code authoring standards only after the relevant rows execute with current verification evidence. <code>B45-S6</code> closes only as advisory/no-go decision evidence after M24-M27 produced current audit, advisory-wiring, before/after behavior-eval and decision evidence. It can now claim only the approved local non-blocking M25 advisory hook plus the M27 <code>keep_advisory_only_no_go_for_blocker_or_ci</code> decision; it cannot claim that AI agents now write enterprise-quality code in real projects, enforce all language standards, replace human review, audit all dependencies, activate CI or blocker hooks, mutate target workspaces, call providers, run browser automation, refresh the installed plugin cache, publish docs, route live behavior beyond the local hook replay, change readiness outcomes beyond source artifacts, auto-apply Self-Learning Loop recommendations, or prove runtime behavior without a later approval-gated batch.</p>
 <p><code>B45-S7</code> may add architecture, read-only inventory, sanitized-fixture and fixture-local comparison evidence only after each row executes with current evidence. It does not by itself approve copying source files, target mutation, live target runtime, browser automation, provider/API calls, git writes, CI/blocker enforcement, release, deploy, publication, installed plugin cache refresh, active automation or production-readiness claims.</p>
-<p><code>B45-S8</code> may design promotion-grade eval evidence only. It cannot claim a promotion-grade result, reviewer approval, M26/M35/T15 reversal, runtime/browser/target readiness, CI/blocker promotion, release readiness or production readiness until a later exact-approved run and reviewer decision packet exist.</p>
+<p><code>B45-S8</code> may design and stage promotion-grade eval evidence only. <code>B45-POSTQ4-T17-A01</code> adds a metadata-only frozen held-out corpus manifest, <code>B45-POSTQ4-T18-A01</code> adds same-model comparison, strict schema, quarantine, scoring/reviewer rubric and result contract, <code>B45-POSTQ4-T19-A01</code> adds cost/timeout/retry/abort/raw-temp-only retention policy, <code>B45-POSTQ4-T20-A01/A02</code> stage historical exact approval text, <code>B45-POSTQ4-T20-A03</code> records the consumed cost-waived approval, <code>B45-POSTQ4-T21-PREFLIGHT-A01/A02/A03</code> record historical blocked preflights with zero model/reviewer calls, <code>B45-POSTQ4-T21-COST-WAIVED-RUN-A01</code> records one approved primary call followed by strict schema abort with no valid pair set, and <code>B45-POSTQ4-T22-A02</code> records no-go because <code>valid_pair_count=0</code> and the reviewer gate was not run; none is a promotion result packet. It cannot claim a promotion-grade result, reviewer approval, M26/M35/T15 reversal, runtime/browser/target readiness, CI/blocker promotion, release readiness or production readiness until a later exact-approved run and reviewer decision packet exist.</p>
+<p><code>B45-S9</code> has planning/ownership through A01/A02, handoff readiness through A03, T23/T24 local executable-contract evidence through A04, and T25-T27 local compact-context/risk-selection evidence through <code>B45-CQRR-A05</code>. T28-T33 must still produce fault-detection, deterministic-metric, blinded-review and corpus/prompt-freeze evidence in dependency order. T34 cannot start without T33 local readiness plus a new exact approval. Warning reduction, line coverage, test count, patch/test LOC ratios and primary-model self-scores remain diagnostic signals and cannot independently prove improvement or promotion.</p>
 <h2 id="verification-plan">Verification Plan<a class="headerlink" href="#verification-plan" title="Permanent link">&para;</a></h2>
 <p>Minimum verification when this plan file alone changes:</p>
 <div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">-m</span> <span class="n">unittest</span> <span class="n">tests</span><span class="p">.</span><span class="n">product_agent_os</span><span class="p">.</span><span class="n">test_product_agent_os_docs</span> <span class="n">-v</span>

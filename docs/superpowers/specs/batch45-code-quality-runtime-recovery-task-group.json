@@ -2,11 +2,11 @@
   "schema_version": "batch45_code_quality_runtime_recovery_task_group_v2",
   "task_group_id": "B45-CODE-QUALITY-RUNTIME-RECOVERY",
   "evidence_id": "B45-CQRR-A01",
-  "status": "partially_implemented_local_code_gate",
-  "checked_at": "2026-08-10T15:15:00+03:00",
-  "source_status": "Source-owned Batch 45 corrective task list. B45-CQRR-A04 is current local implementation and focused-test evidence for T23/T24 only; T25-T34 retain their prior status. It is not CLI/runtime activation, provider/model/reviewer behavior, promotion or production evidence.",
-  "latest_execution_evidence_id": "B45-CQRR-A04",
-  "latest_execution_pointer": "docs/superpowers/plans/2026-08-10-batch45-s9-a-durable-contract-recovery.md",
+  "status": "t28_t29_locally_implemented_focused_verified",
+  "checked_at": "2026-08-17T06:33:27+03:00",
+  "source_status": "Source-owned Batch 45 corrective task list. A04 covers T23/T24, A05 covers T25-T27 and A06 covers local T28/T29 implementation plus focused deterministic checks. T28 replaced the unaccepted 196-record manifest and legacy T18-T22 block with semantic packet cases; T29 added deterministic evidence aggregation integrated at the promotion contract. This is not CLI/runtime activation, live/provider/model or external reviewer behavior, promotion or production evidence.",
+  "latest_execution_evidence_id": "B45-CQRR-A06",
+  "latest_execution_pointer": "docs/superpowers/plans/2026-08-17-product-agent-os-loop-remediation.md",
   "goal": "Recover Batch 45 Professional Code Authoring around the user outcome: a non-programmer should receive the smallest safe, readable and performant patch, with risk-selected tests and intent-focused comments, without generating a second codebase of low-value tests or policy prose.",
   "user_outcome": {
     "primary_user": "mass user or vibe-coder who cannot independently design code, architecture and test strategy",
@@ -175,7 +175,7 @@
         "Stop if the compact contract recreates the 128-line checklist under a new name.",
         "Stop if compatibility behavior is not explicit."
       ],
-      "status": "planned_not_started"
+      "status": "locally_implemented_focused_verified"
     },
     {
       "task_id": "B45-CQRR-T26",
@@ -206,7 +206,7 @@
         "Stop before dependency installation, target mutation or external tool activation.",
         "Stop if detection is treated as verified runtime evidence."
       ],
-      "status": "planned_not_started"
+      "status": "locally_implemented_focused_verified"
     },
     {
       "task_id": "B45-CQRR-T27",
@@ -238,7 +238,7 @@
         "Stop if line coverage or test count becomes the correctness target.",
         "Stop if every task receives every test type."
       ],
-      "status": "planned_not_started"
+      "status": "locally_implemented_focused_verified"
     },
     {
       "task_id": "B45-CQRR-T28",
@@ -272,7 +272,10 @@
         "Stop if tests are deleted without proving that equivalent fault detection remains.",
         "Stop if history is rewritten or evidence IDs are changed."
       ],
-      "status": "planned_not_started"
+      "status": "locally_implemented_focused_verified",
+      "result_status": "accepted_local_semantic_repair",
+      "repair_route": "PAOS-R2-T28-SEMANTIC-TESTS",
+      "attempt_evidence": "Baseline repeated-family count 196 and combined test LOC 8130; repaired count 34, retained owned exceptions 3 and combined test LOC 5658. The 48-test T28 route passed, including seeded packet corruptions and retained legacy boundaries."
     },
     {
       "task_id": "B45-CQRR-T29",
@@ -288,7 +291,9 @@
       "proposed_files": [
         "plugins/product-agent-os/scripts/product_agent_os/code_quality_metrics.py",
         "plugins/product-agent-os/assets/templates/evals/code-quality-metrics.json",
-        "tests/product_agent_os/test_batch45_code_quality_metrics.py"
+        "tests/product_agent_os/test_batch45_code_quality_metrics.py",
+        "plugins/product-agent-os/scripts/codex_runtime_runner/promotion_contract.py",
+        "tests/product_agent_os/test_codex_runtime_runner_promotion_contract.py"
       ],
       "acceptance": [
         "Primary-model behavior_score and dimension_scores are diagnostic only.",
@@ -306,7 +311,10 @@
         "Stop if a warning count, coverage percentage or model self-score can independently promote the treatment.",
         "Stop if missing evidence is converted to zero or success."
       ],
-      "status": "planned_not_started"
+      "status": "locally_implemented_focused_verified",
+      "result_status": "accepted_local_deterministic_metrics",
+      "start_gate": "Satisfied by T28 semantic cases: repeated-family count 34, retained exceptions 3, combined test LOC reduced and 48 focused tests passed.",
+      "implementation_evidence": "23 focused metric and promotion-contract tests passed. Missing required evidence blocks; conditional performance/cost evidence is typed; self-scores remain diagnostic only."
     },
     {
       "task_id": "B45-CQRR-T30",
@@ -497,5 +505,5 @@
     "Each implementation task must remain revertible by removing only its new module/template/test files and restoring the previous advisory-only selector.",
     "A failed local or live gate returns Batch 45 to advisory-only/no-go without deleting evidence."
   ],
-  "claim_ceiling": "B45-CQRR-A04 proves local implementation and focused verification for T23/T24 only: the durable promotion-result contract, normalization/quarantine gateway and local regression coverage. It does not prove T25-T34 implementation, reduced test debt, multi-language enforcement, behavior improvement, CLI/runtime activation, live/provider/model/reviewer behavior, promotion, release readiness or production readiness."
+  "claim_ceiling": "A04 proves local T23/T24, A05 proves local T25-T27, and A06 proves local T28/T29 implementation with focused deterministic verification. A06 shows semantic test compaction and a deterministic promotion-evidence contract only; it does not prove T30-T34, multi-language runtime enforcement, model behavior improvement, CLI/runtime or hook activation, live/provider/model/external-reviewer behavior, promotion, release readiness or production readiness."
 }

@@ -61,6 +61,9 @@ class AgentSkillMetricsReportTest(unittest.TestCase):
         self.assertIn(GENERATED_VIEW_ONLY_TEXT, html)
         self.assertIn('id="target-skill-review-slice"', html)
         self.assertIn('id="metric-task_success_rate"', html)
+        self.assertIn('id="execution-loop-metrics"', html)
+        self.assertIn("intervention_required", html)
+        self.assertIn("repeated_unchanged_commands_budget_exceeded", html)
         self.assertIn("48 / 50", html)
         self.assertIn("Insufficient data", html)
         self.assertIn("summary-grid", html)
@@ -135,6 +138,12 @@ def _report_packet():
                     }
                 }
             }
+        },
+        "execution_loop_metrics": {
+            "status": "intervention_required",
+            "evidence_ceiling": "manual_local_diagnostic_only",
+            "stop_triggers": ["repeated_unchanged_commands_budget_exceeded"],
+            "recommendations": ["do not rerun a command until a named input changes"],
         },
         "version_comparison": {
             "baseline": {"skill:review-slice": "1.0.0"},
