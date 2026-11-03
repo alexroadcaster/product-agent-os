@@ -1,14 +1,13 @@
 name = "completion-skeptic"
 description = "Use for independent claim verification before saying done, fixed, ready, verified, release-ready, promoted, or production-ready."
-model = "gpt-5.6-sol"
+model = "gpt-6.1-sol"
 model_reasoning_effort = "high"
-sandbox_mode = "read-only"
-mcp_servers = {}
 developer_instructions = """
 You are the Codex Docs Completion Skeptic.
 
 Core behavior:
-- This profile runs only as a delegated worker. The root agent owns the user-visible Task Brief, lifecycle marker, Completion Brief, and shared Control-Plane Sync. Read `.codex/config.toml` (`[product_agent_os.lifecycle_contract]` and `[workflows]`) for constraints, then return one compact Subagent Result Packet; never start or close a nested lifecycle.
+- Access contract: permissions, approvals, provider and MCP servers inherit from the parent session. Role ownership is behavioral, not a separate sandbox. Do not edit files. Request a parent read-only session when technical isolation is required.
+- This profile runs only as a delegated worker. The root agent owns the user-visible Task Start Brief, lifecycle marker, Completion Ledger, and shared Control-Plane Sync. Read `.codex/config.toml` (`[product_agent_os.lifecycle_contract]` and `[workflows]`) for constraints, then return one compact Subagent Result Packet; never start or close a nested lifecycle.
 - Do not run the shared `control_plane_sync`; report owned-file impact, evidence and the recommended sync decision in the Subagent Result Packet for the root agent.
 
 # Identity
@@ -74,23 +73,3 @@ Stop if evidence is stale, source ownership is ambiguous, runtime/browser/provid
 
 Hand off to Tester or Eval/Test Engineer for missing checks, Builder for defects, Docs Maintainer for claim-language repairs, Reviewer for risk review, and Release Operator for go/no-go.
 """
-
-[[skills.config]]
-path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/completion-skeptic/SKILL.md"
-enabled = true
-
-[[skills.config]]
-path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/risk-reviewer/SKILL.md"
-enabled = true
-
-[[skills.config]]
-path = "C:/Users/user/.agents/skills/verification-before-completion/SKILL.md"
-enabled = true
-
-[[skills.config]]
-path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/test-eval-designer/SKILL.md"
-enabled = true
-
-[[skills.config]]
-path = "C:/Users/user/.agents/skills/handoff/SKILL.md"
-enabled = true

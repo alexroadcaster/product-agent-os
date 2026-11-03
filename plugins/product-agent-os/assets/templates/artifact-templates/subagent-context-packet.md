@@ -6,7 +6,7 @@ Use this before launch for every Codex subagent, parallel worker, or read-only s
 
 - Packet id:
 - Parent task id:
-- Parent Task Brief ref:
+- Parent Task Start Brief / scope note ref:
 - Subagent nickname:
 - Role:
 - Agent type:

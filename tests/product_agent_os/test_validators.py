@@ -23,6 +23,33 @@ from product_agent_os.validators import (  # noqa: E402
 
 
 class ValidatorsTest(unittest.TestCase):
+    def test_lifecycle_packet_contracts_validate_content_and_closure_limits(self):
+        from product_agent_os import validators
+        validate = getattr(validators, "validate_lifecycle_packet_text", None)
+        self.assertTrue(callable(validate), "lifecycle packet validation must be available")
+        start_fields = ["Request", "Goal", "Context", "Scope", "Value", "Execution", "Acceptance", "Risks / approvals", "Next step"]
+        start = "\n\n".join("**" + name + "**\nConcrete evidence and bounded task scope." for name in start_fields)
+        self.assertEqual(validate(start, "start"), [])
+        self.assertTrue(validate("# Task Start Brief", "start"))
+        self.assertTrue(validate(start.replace("**Goal**\nConcrete evidence and bounded task scope.", "**Goal**"), "start"))
+        self.assertTrue(validate("```text\n" + start + "\n```", "start"))
+        fields = ["Result", "Scope", "Evidence", "Review", "Limits", "Tech debt", "Activation / fallback", "Docs impact", "Context integrity", "Runtime metrics", "Closure", "Next step", "Execution time"]
+        values = {name: "N/A — no affected surface in this bounded task" for name in fields}
+        values.update(Review="context_mode = self_review; tester_verdict = closed_allowed", Closure="closure_level = docs_static_verified", **{"Docs impact": "updated; docs/example.md; docs check exit 0"})
+        ledger = "closure_contract: product-agent-os-completion-ledger-v2\n" + "\n".join("- " + name + ": " + values[name] for name in fields)
+        self.assertEqual(validate(ledger, "completion"), [])
+        bold = ledger
+        for name in fields:
+            bold = bold.replace("- " + name + ":", "- **" + name + ":**")
+        self.assertEqual(validate(bold, "completion"), [])
+        self.assertTrue(validate(bold.replace("closure_level = docs_static_verified", "docs_static_verified"), "completion"))
+        self.assertTrue(validate(bold.replace("closed_allowed", "partial_only"), "completion"))
+        self.assertTrue(validate(bold + "\n- Result: duplicate", "completion"))
+        for invalid in (ledger.replace("- Evidence:", "Evidence:"), ledger.replace(values["Execution time"], "not_available"), ledger.replace("closed_allowed", "not_reviewed"), ledger.replace("updated; docs/example.md; docs check exit 0", "accepted_gap; owner: docs; next: review")):
+            with self.subTest(invalid=invalid[:70]):
+                self.assertTrue(validate(invalid, "completion"))
+        self.assertTrue(validate(ledger.replace("product-agent-os-completion-ledger-v2", "trade-completion-ledger-v2"), "completion"))
+
     def test_control_plane_reports_missing_files(self):
         with tempfile.TemporaryDirectory() as tmp:
             result = validate_control_plane(Path(tmp))
@@ -60,7 +87,7 @@ class ValidatorsTest(unittest.TestCase):
 
         self.assertIn("unsupported agent model: gpt-5.5", errors)
         self.assertIn("unsupported model_reasoning_effort: extreme", errors)
-        self.assertIn("unsupported sandbox_mode: danger-full-access", errors)
+        self.assertIn("parent-only agent setting: sandbox_mode", errors)
         self.assertIn("developer_instructions contain volatile phase identifier", errors)
 
     def test_agent_file_rejects_missing_skill_and_openai_docs_without_mcp(self):
@@ -88,8 +115,8 @@ class ValidatorsTest(unittest.TestCase):
 
             errors = validate_agent_file(path)
 
-        self.assertIn("openai-docs skill requires openaiDeveloperDocs MCP server", errors)
-        self.assertTrue(any(error.startswith("skill path does not exist:") for error in errors))
+        self.assertIn("parent-only agent setting: mcp_servers", errors)
+        self.assertIn("custom agent skills.config may only disable inherited skills", errors)
 
     def test_agent_file_rejects_workspace_write_without_skill_authority_and_missing_prompt_path(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -122,7 +149,7 @@ class ValidatorsTest(unittest.TestCase):
                 available_prompt_paths={"docs/missing.md"},
             )
 
-        self.assertIn("workspace-write agent has no project skill with explicit task write authority", errors)
+        self.assertIn("parent-only agent setting: sandbox_mode", errors)
         self.assertIn("referenced prompt path does not exist: docs/missing.md", errors)
         self.assertNotIn("referenced prompt path does not exist: docs/missing.md", staged_errors)
 
@@ -132,7 +159,8 @@ class ValidatorsTest(unittest.TestCase):
             config = root / "config.toml"
             agent = root / "builder.toml"
             config.write_text(
-                'default_permissions = "workspace"\n'
+                'default_permissions = ":workspace"\n'
+                'sandbox_mode = "workspace-write"\n'
                 '[permissions.workspace]\n'
                 'extends = ":workspace"\n'
                 '[agents]\n'
@@ -145,7 +173,67 @@ class ValidatorsTest(unittest.TestCase):
             errors = validate_agent_project_config(config, [agent])
 
         self.assertIn("permission profiles and legacy sandbox_mode must not be composed", errors)
-        self.assertIn("project config must set sandbox_mode = workspace-write", errors)
+        self.assertIn("builder.toml: parent-only agent setting: sandbox_mode", errors)
+
+    def test_custom_agents_reject_parent_only_settings_even_empty_tables(self):
+        settings = {
+            "sandbox_mode": '"read-only"', "default_permissions": '":read-only"',
+            "permissions": '{}', "sandbox_workspace_write": '{}',
+            "approval_policy": '"never"', "approvals_reviewer": '"auto_review"',
+            "model_provider": '"openai"', "mcp_servers": '{}',
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "agent.toml"
+            for key, value in settings.items():
+                with self.subTest(key=key):
+                    path.write_text(f'{key} = {value}\n', encoding="utf-8")
+                    self.assertIn(f"parent-only agent setting: {key}", validate_agent_file(path))
+
+    def test_custom_agent_inherits_tools_and_accepts_gpt6_with_disabled_skill(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "reviewer.toml"
+            text = ('name = "reviewer"\ndescription = "Review"\n'
+                    'model = "gpt-6.1-sol"\nmodel_reasoning_effort = "high"\n'
+                    'developer_instructions = "Ownership: review. Inputs: diff. Outputs: findings. '
+                    'Stop conditions: missing evidence. Handoff: risks."\n'
+                    '[features]\napps = false\n'
+                    '[[skills.config]]\nname = "unused-skill"\nenabled = false\n')
+            path.write_text(text, encoding="utf-8")
+            self.assertEqual(validate_agent_file(path), [])
+            path.write_text(text.replace('apps = false', 'apps = true'), encoding="utf-8")
+            self.assertIn("custom agent feature must disable a supported capability: apps", validate_agent_file(path))
+
+    def test_project_contract_checks_inherited_mcp_and_parent_skill_authority(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skill = root / "plugins/product-agent-os/skills/docs-maintainer/SKILL.md"
+            skill.parent.mkdir(parents=True)
+            skill.write_text("workspace_apply: forbidden\n", encoding="utf-8")
+            docs = root / "openai-docs/SKILL.md"
+            docs.parent.mkdir()
+            docs.write_text("# Docs", encoding="utf-8")
+            config = root / "config.toml"
+            text = ('default_permissions = ":workspace"\n'
+                    '[agents]\ndefault_subagent_model = "gpt-6.1-sol"\n'
+                    'default_subagent_reasoning_effort = "medium"\n'
+                    f'[[skills.config]]\npath = "{skill.as_posix()}"\nenabled = true\n'
+                    f'[[skills.config]]\npath = "{docs.as_posix()}"\nenabled = true\n')
+            config.write_text(text, encoding="utf-8")
+            errors = validate_agent_project_config(config)
+            self.assertIn("parent openai-docs skill requires openaiDeveloperDocs MCP server", errors)
+            self.assertIn("parent workspace skills lack explicit task write authority", errors)
+            skill.write_text("workspace_apply: explicit_task_authority\n", encoding="utf-8")
+            text += '\n[mcp_servers.openaiDeveloperDocs]\nurl = "https://developers.openai.com/mcp"\n'
+            config.write_text(text, encoding="utf-8")
+            self.assertEqual(validate_agent_project_config(config), [])
+            skill.unlink()
+            self.assertTrue(any(e.startswith("skill path does not exist:") for e in validate_agent_project_config(config)))
+
+    def test_model_policy_rejects_unsupported_model_effort_pair(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "agent.toml"
+            path.write_text('model = "gpt-6.1-sol"\nmodel_reasoning_effort = "none"\n', encoding="utf-8")
+            self.assertIn("unsupported model_reasoning_effort for gpt-6.1-sol: none", validate_agent_file(path))
 
     def test_hook_file_rejects_secret_literal(self):
         with tempfile.TemporaryDirectory() as tmp:

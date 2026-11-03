@@ -4,6 +4,32 @@
 Project: Codex Docs / Product-Agent OS
 Last compacted: 2026-06-11
 
+## Current lifecycle repair — 2026-11-03
+
+`PAOS-LIFECYCLE-REPAIR-2026-11-03`: **implemented_locally_verified / verified_local_runtime**. Acceptance met for ACT-F1..F6: preserve protection, full/concise reporting, strict closure semantics, parent-owned skills and assigned product-manager scope. No new product scope or model switch.
+
+Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.repair`; [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). The earlier failed activation below is historical, superseded by this bounded retest.
+
+## Historical lifecycle activation check — 2026-11-03
+
+`PAOS-LIFECYCLE-ACTIVATION-2026-11-03`: verification completed with findings; **activation_failed**. Activation acceptance requires a real host denial for a terminal marker, proportional full/concise reporting and an explicit packet-validator contract matching accepted rendering. The current negative probe failed; no activation or readiness promotion is permitted.
+
+Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.activation_check`; [detailed plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). No trust/permissions/models/provider/Git changes.
+
+## Historical lifecycle parity — 2026-11-03
+
+`PAOS-TRADE-LIFECYCLE-PARITY-2026-11-03`: `implemented_locally_verified / activation_failed`. Acceptance: nine bold start labels, thirteen ledger list items, conditional full-packet scope, concise ordinary route, honest review/metrics, no format-driven Stop continuation, active/staged parity and preserved safety controls. Trade is read-only; models, permissions, external actions and trust activation are outside this slice.
+
+Evidence owner: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity`; detail: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md).
+
+## Current contract alignment — 2026-11-03
+
+`PAOS-CONTRACT-MODEL-ALIGNMENT-2026-11-03`: `implemented_locally_verified / behavioral_promotion_pending`. Parent permissions and MCP inheritance aligned; 23 active/staged profiles pinned to GPT-6.1 Sol/Terra with preserved effort; inherited skills moved to parent; validators and renderer reject unsupported contracts; lifecycle validator follows the explicit current plan.
+
+Current verification: Ran 1247 tests in 611.387s; OK (skipped=1); fixture/transcript eval, compatibility, 15 active agents, both hook validators, RU/EN task matrices, state consistency, docs checker and diff check exit 0. Detailed evidence, source receipts and rollback: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md) and [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json).
+
+Fresh-session effective permissions/MCP/model availability and quality/cost/latency comparison remain unverified. No provider calls, browser, hook activation, target mutation, Git publication or root site update.
+
 ## Goal
 
 - Develop Product-Agent OS from an agentic-workflow toolkit into a reproducible engineering operating system for Codex App, CLI and IDE extension.
@@ -145,3 +171,7 @@ These compact anchors preserve current test/source contracts without restoring t
 - Historical evidence is intentionally source-owned outside this file; use the registry/backlogs before making broad historical claims.
 
 <!-- product-agent-os:end requirements -->
+
+## Documentation refresh scope — 2026-11-03
+
+Owner-authorized task `PAOS-DOCS-REFRESH-2026-11-03` applies the 20-item documentation audit. Acceptance: current source-backed guidance, syntactically valid examples, semantic RU/EN parity, model/runtime applicability, explicit implementation gaps and passing applicable local checks. Scope includes the detailed plan pair, task-group status, guides, navigation, source registries and control-plane evidence. No model switch, permission/config/profile change, executable template/runtime/hook edit, provider/model call, browser, publication or Git action. Historical evidence and the pre-existing 17 dirty config/profile/eval files remain intact. Docs-inventory test metadata may change solely to account for the three new page pairs; assertions and historical site counters remain intact. Detailed acceptance: [refresh plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md).

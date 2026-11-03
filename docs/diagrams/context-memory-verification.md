@@ -1,4 +1,4 @@
-﻿# Цикл context, memory и verification
+# Цикл context, memory и verification
 
 Source status: `official + experiment`
 
@@ -72,3 +72,9 @@ Verification:
 - Если context недостаточен, агент должен запросить недостающий input или пометить claim как unsupported.
 - LLM-as-judge не заменяет deterministic checks.
 - Session summary не заменяет source registry и `RUNLOG.md`.
+
+## Полномочия и переходы контекста
+
+Граф показывает маршрутизацию evidence, а не приоритет инструкций. Текущий source проекта отвечает на вопросы реализации, текущие официальные docs — внешней платформы. Полномочия имеют только применимые загруженные инструкции; обычные Markdown, memory и generated views их не получают. Discovery и scope AGENTS — в [context engineering](../prompting/context-engineering.md).
+
+При уточнении пользователя сохраняйте задачу и ограничения до выбора steering, summary, compaction или новой сессии. Их state contracts различаются. `configuration_update` нельзя совмещать с automatic compaction/truncation; explicit compaction требует повторного задания измененных settings. До выбора маршрута читайте [session control](../agent-systems/session-control.md). Диаграмма не доказывает загрузку инструкций, сохранение state или runtime activation.

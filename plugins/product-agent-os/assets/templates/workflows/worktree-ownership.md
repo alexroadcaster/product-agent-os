@@ -26,7 +26,7 @@ Profile: {profile_name}
 - Require worktrees or explicit ownership for write-heavy subagent tasks, shared generated files, contracts, migrations, public APIs, schemas, release files, or rollback-sensitive work.
 - Read-only research can use an agent task packet without a worktree when no writes, external actions, MCP activation, hooks, or automation are requested.
 - Require the agent task packet artifact for any subagent or parallel worker before parallel work starts.
-- The root owns the lifecycle marker, user-facing Task/Completion Briefs and the single shared Control-Plane Sync.
+- The root owns the lifecycle marker, user-facing Task Start Brief / Completion Ledger and the single shared Control-Plane Sync.
 - Require a Subagent Context Packet before launch for every subagent or read-only sidecar.
 - Require one compact Subagent Result Packet after completion, timeout, cancellation, or close; the subagent must not open or close a nested lifecycle.
 - The Agent Handoff / Context Packet must record role, `fork_turns`, prompt, allowed files, files actually read, and outputs.

@@ -1,7 +1,7 @@
-﻿# Worktrees, hooks, rules
+# Worktrees, hooks, rules
 
 Source status: `official + experiment`  
-Источники: [Codex best practices](https://developers.openai.com/codex/learn/best-practices), [Codex worktrees](https://developers.openai.com/codex/app/worktrees), [Codex hooks](https://developers.openai.com/codex/hooks), [Codex rules](https://developers.openai.com/codex/config/rules), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security).
+Источники: [Codex best practices](https://developers.openai.com/codex/learn/best-practices), [Codex worktrees](https://developers.openai.com/codex/app/worktrees), [Codex hooks](https://learn.chatgpt.com/docs/hooks), [Codex rules](https://developers.openai.com/codex/config/rules), [Agent approvals and security](https://learn.chatgpt.com/docs/permissions).
 
 ## Worktree strategy
 
@@ -37,7 +37,7 @@ Lifecycle guard устроен так:
 - marker должен появиться только после видимого пользователю полного стартового брифа в формате списка полей и содержать `task_start_brief_shown`, `task_id`, `scope`, `updated_at`, `approval_boundary`, `brief_schema_version: task_start_brief_v1`, `brief_format: field_list`, `brief_digest` и `brief_fields_present` со всеми обязательными полями стартового брифа;
 - per-write `PostToolUse` проверяет comment sufficiency только для путей текущего patch, а не повторно для всего dirty worktree;
 - после всех записей, проверок и control-plane sync marker переходит в `ready_for_completion_brief`; дальнейшие mutations блокируются;
-- `Stop` принимает один terminal `Completion Brief` с полным набором полей без continuation, а при неполном Brief запрашивает не более одной корректирующей continuation. После валидного Brief tool calls запрещены.
+- Проектный `Stop` рекомендательный: он не проверяет формат чата и не запрашивает корректирующую continuation. Полный scope использует стартовый brief (9 полей) и Completion Ledger (13 пунктов); обычная работа — краткие результаты, проверки и ограничения. Все инструменты и control-plane sync завершаются до финального ответа. Явная локальная проверка пакета не доказывает активацию.
 
 Marker не является transcript store: в него нельзя помещать raw chat, secrets, private source bodies, private customer data или credentials. Activation hooks остаётся отдельным approval boundary.
 
@@ -59,3 +59,19 @@ Rules описывают policy, которую Codex должен учитыв�
 | Agent misses project conventions | `AGENTS.md` + nested instructions |
 | Long thread drifts | `/compact`, `/fork`, один thread per coherent task |
 | Automation запускается too early | Manual skill workflow first |
+
+## Текущий hook contract и диагностика активации
+
+Проверено 2026-11-03: [Hooks reference](https://learn.chatgpt.com/docs/hooks). Non-managed hooks требуют review/trust текущего hash; новые или измененные определения пропускаются до trust. Доверенный project layer и корректный JSON сами по себе не доказывают исполнение. Поддерживаются `command` и `mcp_tool`; `prompt`/`agent` handlers парсятся, но пропускаются. Несколько matching command hooks одного события могут выполняться параллельно: не рассчитывайте на порядок записи общего состояния.
+
+| Событие | Граница |
+| --- | --- |
+| `SessionStart` | Контекст старта; не приемка реализации |
+| `PreToolUse` | Поддерживаемый deny может предотвратить действие; ошибка callback не равна гарантированному запрету |
+| `PostToolUse` | Проверка после действия; не может отменить уже выполненный side effect |
+| `Stop` | Может запросить continuation; учитывать `stop_hook_active`, чтобы не создать цикл |
+| `SessionEnd`, `Interrupt` | Короткий best-effort lifecycle, не долгий gate |
+
+`timeout` задается в секундах: обычно по умолчанию 600, для `SessionEnd`/`Interrupt` — 1 и максимум 3. У MCP действует меньший hook/server timeout; ожидание elicitation имеет отдельную семантику. Покрытие зависит от tool/event и runtime. Cloud-orchestrated enterprise remote MCP hooks имеют отдельные ограничения; локальный command hook нельзя считать универсальным cloud guardrail. Перед использованием проверяйте точную строку покрытия в reference.
+
+Для доказательства активации нужны: client/runtime, загруженный источник, hash/trust, реально сработавший event/tool, разрешенный сценарий и наблюдаемый результат. Разбор JSON, unit tests и прямой запуск hook script — локальные evidence, не fresh-session proof. Реализация lifecycle parity меняет исходники hooks; trust не изменён, активация в новой сессии не подтверждена. Проектный `Stop` lifecycle выше остается правилом проекта, а не универсальной семантикой OpenAI.

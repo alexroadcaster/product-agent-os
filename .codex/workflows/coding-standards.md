@@ -6,7 +6,7 @@ Source status: project-local system workflow.
 
 Use this workflow for non-mechanical code authoring, refactoring, defect fixes, dependency changes, generated-code edits, and AI-agent handoffs where code-quality, maintainability, dependency, or legacy risk matters.
 
-This is a coding sub-gate. It does not replace Task Brief / Completion Brief lifecycle, planning control, review slice, control-plane sync, security approval, or release gates.
+This is a coding sub-gate. It does not replace Task Start Brief / Completion Ledger lifecycle, planning control, review slice, control-plane sync, security approval, or release gates.
 
 ## Applicability
 

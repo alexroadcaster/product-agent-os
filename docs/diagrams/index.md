@@ -1,4 +1,4 @@
-﻿# Diagram atlas
+# Diagram atlas
 
 Source status: `official + experiment`
 
@@ -55,3 +55,7 @@ flowchart LR
 ```
 
 Если после прохождения маршрута у проекта нет `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md` и `RUNLOG.md`, значит workflow еще не готов к автономной или полуавтономной агентной работе.
+
+## Обновление моделей и runtimes
+
+Используйте [матрицу моделей](../codex/models-and-reasoning.md) и [playbook миграции](../playbooks/model-migration.md) вместе с диаграммами команды/runtime. API-возможности и кандидатные модели описаны отдельно от текущей активации Product-Agent OS.

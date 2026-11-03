@@ -1,7 +1,7 @@
 # Agent team roles
 
 Source status: `official + experiment`  
-Sources: [A practical guide to building agents](https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/), [Codex with Agents SDK](https://developers.openai.com/codex/guides/agents-sdk), [Subagents](https://developers.openai.com/codex/subagents), [Codex models](https://developers.openai.com/codex/models), [Agents SDK models and providers](https://developers.openai.com/api/docs/guides/agents/models), [Reasoning best practices](https://developers.openai.com/api/docs/guides/reasoning-best-practices), [Build AI-native engineering teams](https://developers.openai.com/codex/guides/build-ai-native-engineering-team).
+Sources: [A practical guide to building agents](https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/), [Codex with Agents SDK](https://developers.openai.com/codex/guides/agents-sdk), [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents), [Codex models](https://learn.chatgpt.com/docs/models), [Agents SDK models and providers](https://developers.openai.com/api/docs/guides/agents/models), [Reasoning best practices](https://developers.openai.com/api/docs/guides/reasoning-best-practices), [Build AI-native engineering teams](https://developers.openai.com/codex/guides/build-ai-native-engineering-team).
 
 ## Role map
 
@@ -15,43 +15,21 @@ Sources: [A practical guide to building agents](https://openai.com/business/guid
 | Docs Maintainer | Diff, sources, decisions | Docs, release notes | Does not mix official and community claims |
 | Release Operator | Verification, PR body | PR, changelog, rollout notes | Does not skip failing checks |
 
-## Model and reasoning profile
+## Model and reasoning policy
 
-Every role needs an execution profile. This is especially important for programmable Agents SDK workflows and Codex custom agents, where the model and reasoning effort can be set explicitly.
+The [model matrix](../codex/models-and-reasoning.md) owns current product/auth/effort guidance. Role assignment below is a project design, not a benchmark or an active model change. The effective project/agent configuration owns selected models; PLAN records decisions and RUNLOG records evidence.
 
-| Role | Model policy | Reasoning effort | Escalation rule |
-| --- | --- | --- | --- |
-| Product Manager | `gpt-5.5` or project default | `medium` / `high` | Raise to `high` when requirements conflict or a tradeoff must be chosen |
-| Architect | `gpt-5.5` | `high` / `xhigh` | Use `xhigh` for multi-system architecture, migrations or deep debugging |
-| Builder | project default; `gpt-5.4-mini` for small scoped edits | `medium` / `high` | Use `high` when shared contracts or several modules change |
-| Explorer | `gpt-5.4-mini` or project default | `low` / `medium` | Use `medium` when discovered dependencies must be synthesized |
-| Tester | project default | `medium` | Use `high` when failure is non-deterministic or eval-driven |
-| Reviewer | `gpt-5.5` | `high` | Use `xhigh` when review touches security, data loss, concurrency or auth |
-| Docs Maintainer | project default | `low` / `medium` | Use `medium` when several official sources must be checked |
-| Release Operator | project default | `medium` | Use `high` when rollout is irreversible or approvals are ambiguous |
+| Work class | Candidate selection rule | Effort decision |
+| --- | --- | --- |
+| Architecture, review, complex debugging | Evaluate Sol; consider Astra for the hardest cases | Preserve supported baseline first; raise only for demonstrated benefit |
+| Focused implementation | Evaluate Sol against the existing baseline | Same task and tools; then compare a lower supported effort |
+| Documentation, visual work, computer use | Consider Terra for matching tasks | Verify sources, tool completion and output quality |
+| Narrow repeatable collection | Consider Luna after bounded evaluation | Optimize cost/latency only after quality passes |
+| Release, security and final assurance | Use an evaluated project choice | Approval boundaries and evidence remain mandatory |
 
-Minimal role card:
+No role is assigned a new model by this table. See the [migration playbook](../playbooks/model-migration.md). Role cards must name ownership, input/output artifacts, verification, escalation/downgrade triggers and cost/latency budgets. Resolve unspecified model/effort using the applicable Codex schema rather than assuming universal inheritance across runtimes.
 
-```yaml
-role: "Architect"
-owns: "Architecture, decomposition, risk analysis"
-model_policy:
-  model: "gpt-5.5"
-  reasoning_effort: "high"
-  cost_latency_budget: "quality-first"
-  inherit_from_parent_when_unspecified: true
-  override_allowed_by:
-    - "run-level workflow config"
-    - "human approval"
-  escalation_rules:
-    - "Use xhigh for multi-system migration or ambiguous architecture."
-    - "Use medium for bounded implementation planning."
-handoff:
-  inputs: "REQUIREMENTS.md, codebase map, constraints"
-  outputs: "PLAN.md, risks, open questions, verification strategy"
-```
-
-The project default should live in `PLAN.md` or a project-scoped agent config. Durable rules for when to raise reasoning effort can live in `AGENTS.md`; one-off runtime overrides are better recorded in `RUNLOG.md`.
+Read-only role instructions express intent. Codex custom agents inherit parent permissions, approvals, provider and MCP; they cannot create a separate sandbox by declaring a role-local override. Require runtime evidence for technical isolation and tool access.
 
 ## Manager pattern
 

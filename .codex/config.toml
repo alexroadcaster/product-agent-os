@@ -1,8 +1,8 @@
-sandbox_mode = "workspace-write"
+default_permissions = ":workspace"
 
 [agents]
 max_concurrent_threads_per_session = 3
-default_subagent_model = "gpt-5.6-terra"
+default_subagent_model = "gpt-6.1-sol"
 default_subagent_reasoning_effort = "medium"
 
 [agents.explorer]
@@ -90,6 +90,12 @@ execution_evidence = "RUNLOG.md"
 verification_ceiling = "TEST.md"
 
 [product_agent_os.lifecycle_contract]
+task_start_brief = ".codex/artifact-templates/task-start-brief.md"
+completion_ledger = ".codex/artifact-templates/completion-ledger.md"
+brief_schema = "task_start_brief_v2"
+closure_contract = "product-agent-os-completion-ledger-v2"
+ordinary_reporting = "concise_result_evidence_limits"
+stop_policy = "advisory_no_chat_validation"
 task_plan_lifecycle = ".codex/workflows/task-plan-lifecycle.md"
 control_plane_sync = ".codex/workflows/control-plane-sync.md"
 agent_context_contract = ".codex/evals/agent-context-contract.json"
@@ -97,7 +103,7 @@ lifecycle_state = ".codex/product-agent-os/lifecycle-state.json"
 hook_policy = ".codex/hooks.json"
 hook_template_mirror = ".codex/hooks/hooks.json"
 chat_visibility = "required"
-required_for = "non_mechanical_tasks"
+required_for = "large_high_risk_material_implementation_release_or_explicit_packet"
 agent_instruction_policy = "root_only_lifecycle_subagents_return_result_packet"
 
 [product_agent_os.reasoning]
@@ -112,17 +118,19 @@ release = "high"
 mechanical = "low"
 
 [product_agent_os.model_migration]
-family = "GPT-5.6"
+family = "GPT-6"
 baseline_policy = "Preserve each role's current reasoning effort, then compare the same effort and one lower on representative tasks."
-role_policy = "Use Sol for complex judgment and Terra for everyday or read-heavy work; do not use Luna for broad project roles without a bounded eval."
+role_policy = "Use GPT-6.1 Sol for engineering and complex decisions; GPT-6.1 Terra for docs and bounded exploration. Astra and Luna remain evaluation candidates."
 activation_status = "config_pinned_behavioral_promotion_pending"
 fresh_session_hook_verification_required = true
 quality_cost_latency_eval_required = true
 
-[product_agent_os.sandbox_contract]
-default_mode = "workspace-write"
+[product_agent_os.permission_contract]
+enforcement = "parent_session_inherited"
+role_restrictions = "behavioral_not_separate_sandbox"
+default_profile = ":workspace"
 read_only_roles = ["explorer", "reviewer", "release-operator", "completion-skeptic", "security-privacy-supply-chain-reviewer", "research-source-analyst"]
-workspace_write_roles = ["product-manager", "architect", "builder", "tester", "docs-maintainer", "lifecycle-orchestrator", "plugin-runtime-builder", "graph-cockpit-engineer", "learning-loop-engineer"]
+workspace_roles = ["product-manager", "architect", "builder", "tester", "docs-maintainer", "lifecycle-orchestrator", "plugin-runtime-builder", "graph-cockpit-engineer", "learning-loop-engineer"]
 
 [product_agent_os.approval_contract]
 external_writes = "explicit"
@@ -160,7 +168,7 @@ completion_policy = "no done, fixed, verified, ready, or release claim without c
 
 [product_agent_os.agent_skill_routing]
 source = "find-skills search, installed local skills, Product-Agent OS project docs, and official Codex skills/subagents documentation"
-policy = "Agent TOML files own executable [[skills.config]] entries; this table records focused role routing for governance. Exact skill count is not a quality gate."
+policy = "The parent config enables executable [[skills.config]] entries; custom agent TOML files may only disable inherited skills. This table records focused role routing for governance. Exact skill count is not a quality gate."
 third_party_skill_policy = "Advisory only; project source files, current command evidence, and official OpenAI/Codex docs remain source truth."
 external_action_policy = "Skills that can publish, create issues, call providers, use browser automation, or mutate external systems must be used in local-synthesis-only mode unless exact approval is granted."
 installed_external_skill_status = "Validated on this host only. Absolute user-level paths are machine-local and require revalidation or vendoring before repository portability is claimed."
@@ -228,3 +236,130 @@ top_skills = ["risk-reviewer", "security-best-practices", "security-review", "ve
 
 [product_agent_os.agent_skill_routing.research-source-analyst]
 top_skills = ["openai-docs", "docs-maintainer", "documentation-writer", "documentation-and-adrs", "verification-before-completion"]
+
+[mcp_servers.openaiDeveloperDocs]
+url = "https://developers.openai.com/mcp"
+
+[[skills.config]]
+path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/implementation-planner/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/improve-codebase-architecture/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/documentation-and-adrs/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/python-design-patterns/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/writing-plans/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/tdd/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/python-code-style/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/executing-plans/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/completion-skeptic/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/risk-reviewer/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/verification-before-completion/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/test-eval-designer/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/handoff/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/docs-maintainer/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/documentation-writer/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.codex/skills/.system/openai-docs/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/changelog-writer/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/workspace-discovery-auditor/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/graphify/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/antv-g6-graph/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/learning-loop-maintainer/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/automation-promoter/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/adk-evals/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/project-lifecycle-orchestrator/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/agent-team-designer/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/subagent-driven-development/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/dispatching-parallel-agents/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/requirements-author/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/pr-release-operator/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/security-review/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/security-best-practices/SKILL.md"
+enabled = true

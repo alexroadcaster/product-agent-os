@@ -1,4 +1,4 @@
-﻿# Non-interactive Codex и MCP
+# Non-interactive Codex и MCP
 
 Source status: `official + experiment`  
 Источники: [Codex CLI features](https://developers.openai.com/codex/cli/features), [Codex with Agents SDK](https://developers.openai.com/codex/guides/agents-sdk), [OpenAI Agents SDK Python](https://github.com/openai/openai-agents-python).
@@ -13,7 +13,7 @@ Source status: `official + experiment`
 Read AGENTS.md.
 Goal: ...
 Allowed changes: ...
-Out из scope: ...
+Вне scope: ...
 Verification: ...
 Output: changed files, commands run, result, risks.
 ```
@@ -45,3 +45,9 @@ Codex MCP делает Codex execution backend для Agents SDK. Полезны
 ## App server и remote TUI
 
 Remote app-server mode полезен, когда код и credentials живут на удаленной машине, а оператор хочет локальный terminal UI. Если listener выходит за localhost, нужны authentication и TLS controls.
+
+## MCP и API: разные границы
+
+В [custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents) MCP наследуется от родителя. Agent-local declaration не переопределяет parent MCP и не доказывает доступность tool. Проверяйте загруженную конфигурацию и результат обращения в разрешенном runtime; документационное изменение не активирует сервер.
+
+Command network policy не является политикой web search, connectors, MCP и browser. Для каждого инструмента нужны собственные controls и допустимый scope; см. [security](../codex/security.md). Не переносите API-параметры в CLI runner: [API compatibility](../agent-systems/sdk-patterns.md) относится к соответствующему endpoint. Текущий проектный runner не заменяется Responses или Agents API.

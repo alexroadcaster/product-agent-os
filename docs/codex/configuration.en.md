@@ -1,47 +1,67 @@
 # Codex Configuration and Extensibility
 
-Source status: `official`
-Sources: [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Create a skill](https://developers.openai.com/codex/skills/create-skill), [Subagents](https://developers.openai.com/codex/subagents), [Agents SDK with Codex](https://developers.openai.com/codex/guides/agents-sdk).
+Source status: `official + experiment`
+Sources: [Agent approvals and security](https://learn.chatgpt.com/docs/permissions), [Create a skill](https://developers.openai.com/codex/skills/create-skill), [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents), [Agents SDK with Codex](https://developers.openai.com/codex/guides/agents-sdk).
 
-## Approval policy as a managed interface
+## Approval policy and permission profiles
 
-For advanced work, approval policy is better described not as one global switch, but as a set of separate gates:
+Checked 2026-11-03 against [Configuration Reference](https://learn.chatgpt.com/docs/config-file/config-reference) and [Permissions](https://learn.chatgpt.com/docs/permissions). These are standalone examples, not changes to this repository's configuration. Effective settings also depend on client version, trusted project layers and managed policy.
+
+`on-request` allows eligible interactive approval prompts; `never` rejects requests that need approval. Neither grants extra filesystem access. `untrusted` is retired as an approval policy; project `trust_level` is a different setting. `approvals_reviewer` chooses the reviewer for eligible prompts, not sandbox permissions or review of already permitted actions.
+
+### Granular prompt categories
+
+This complete TOML example uses regular tables to remain compatible with the project's TOML parser. Do not combine it with a scalar `approval_policy` in the same configuration.
 
 ```toml
-approval_policy = { granular = {
-  sandbox_approval = true,
-  rules = true,
-  mcp_elicitations = true,
-  request_permissions = false,
-  skill_approval = false
-} }
+[approval_policy.granular]
+sandbox_approval = true
+rules = true
+mcp_elicitations = true
+request_permissions = false
+skill_approval = false
 ```
 
-Practical meaning:
+| Key | Meaning when true |
+| --- | --- |
+| `sandbox_approval` | Permit sandbox escalation approval prompts |
+| `rules` | Permit prompts triggered by rules |
+| `mcp_elicitations` | Permit MCP elicitation prompts |
+| `request_permissions` | Permit permission-expansion prompts |
+| `skill_approval` | Permit skill-script approval prompts; not general skill invocation |
 
-| Gate | What it controls | Recommendation |
-| --- | --- | --- |
-| `sandbox_approval` | A command crossing the sandbox boundary | Enable for local projects |
-| `rules` | Confirmation for rule-based actions | Enable when the access policy is complex |
-| `mcp_elicitations` | Confirmation requests from MCP tools | Enable for external systems |
-| `request_permissions` | Requests for expanded permissions | Disable by default, enable deliberately |
-| `skill_approval` | Permission for skill invocation | Enable if skills have side effects |
+False denies that prompt category; it does not silently approve the operation. Choose each flag for the authorized workflow rather than enabling all categories by habit.
 
-Baseline for analysis and review:
+### Permission profiles (beta)
 
-```toml
-approval_policy = "untrusted"
-sandbox_mode = "read-only"
-allow_login_shell = false
-```
-
-Baseline for controlled implementation:
+Independent parent-session example for analysis:
 
 ```toml
+default_permissions = ":read-only"
 approval_policy = "on-request"
-sandbox_mode = "workspace-write"
 allow_login_shell = false
 ```
+
+Independent parent-session example for authorized local editing:
+
+```toml
+default_permissions = ":workspace"
+approval_policy = "on-request"
+allow_login_shell = false
+```
+
+Profiles do not compose with `sandbox_mode` / `sandbox_workspace_write`. Check every loaded layer and CLI override: legacy settings can select the legacy route; managed profile requirements may reject that route. The legacy option remains supported where documented:
+
+```toml
+sandbox_mode = "workspace-write"
+approval_policy = "on-request"
+```
+
+Use this legacy example only instead of a permission-profile configuration. `:workspace` protects `.git`, `.agents`, `.codex` and `.aws` inside writable roots; inspect effective policy before claiming a path is writable. See [security boundaries](security.md) for command network versus MCP/web/browser controls.
+
+### Models and current project contract
+
+The [model matrix](models-and-reasoning.md) records applicability. Following authorized technical work on 2026-11-03, the repository uses GPT-6.1 Sol/Terra pins, parent `default_permissions = ":workspace"` and parent MCP. The validator follows these contracts. Effective permissions and model selection in a fresh session require separate evidence; see [technical follow-up](../product-agent-os/codex-compatibility.md).
 
 ## Skill metadata
 
@@ -90,6 +110,5 @@ For our knowledge base, this means:
 
 - Codex can be used not only as a standalone assistant, but also as an execution tool inside broader Agents SDK orchestration.
 - Project Manager must define source of truth documents: `REQUIREMENTS.md`, `AGENT_TASKS.md`, `TEST.md`.
-- Each worker-agent must have narrow deliverables and a sandbox/approval policy.
+- Each worker must have bounded deliverables; Codex subagents inherit the parent session sandbox and approvals. Separate runtimes need their own explicit execution policy.
 - Handoff back to Project Manager is mandatory so that the final assembly of decisions does not fall apart into independent results.
-

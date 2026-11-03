@@ -1,3 +1,4 @@
+import json
 import subprocess
 import sys
 import tempfile
@@ -17,9 +18,30 @@ from product_agent_os.task_plan_lifecycle import (  # noqa: E402
     mark_task_implemented,
 )
 from product_agent_os.validators import validate_task_matrix_text  # noqa: E402
+from validate_task_state_consistency import validate_workspace  # noqa: E402
 
 
 class TaskPlanLifecycleTest(unittest.TestCase):
+    def test_lifecycle_uses_explicit_plan_with_bounded_local_path(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            group = root / "docs/superpowers/specs/batch45-code-quality-runtime-recovery-task-group.json"
+            group.parent.mkdir(parents=True)
+            group.write_text(json.dumps({"tasks": [], "latest_execution_evidence_id": "B45-CQRR-A06"}), encoding="utf-8")
+            marker = root / ".codex/product-agent-os/lifecycle-state.json"
+            marker.parent.mkdir(parents=True)
+            plan = root / "current-plan.md"
+            plan.write_text("### Task `CURRENT`", encoding="utf-8")
+            for name in ("PLAN.md", "RUNLOG.md", "TEST.md"):
+                (root / name).write_text("A04-A06 locally implement/focused-verify T23-T29", encoding="utf-8")
+            marker.write_text(json.dumps({"task_id": "CURRENT", "plan_path": "current-plan.md"}), encoding="utf-8")
+            self.assertEqual(validate_workspace(root), [])
+            plan.write_text("Different task", encoding="utf-8")
+            self.assertIn("lifecycle_task_missing_from_active_plan", validate_workspace(root))
+            for invalid in ("../outside.md", str(root.parent / "outside.md"), 42):
+                marker.write_text(json.dumps({"task_id": "CURRENT", "plan_path": invalid}), encoding="utf-8")
+                self.assertIn("lifecycle_plan_path_invalid", validate_workspace(root))
+
     def test_current_task_state_projections_are_consistent(self):
         result = subprocess.run(
             [sys.executable, str(SCRIPTS / "validate_task_state_consistency.py"), str(ROOT)],
@@ -44,7 +66,7 @@ class TaskPlanLifecycleTest(unittest.TestCase):
         self.assertEqual(lifecycle_contract["control_plane_sync"], ".codex/workflows/control-plane-sync.md")
         self.assertEqual(lifecycle_contract["agent_context_contract"], ".codex/evals/agent-context-contract.json")
         self.assertEqual(lifecycle_contract["chat_visibility"], "required")
-        self.assertEqual(lifecycle_contract["required_for"], "non_mechanical_tasks")
+        self.assertEqual(lifecycle_contract["required_for"], "large_high_risk_material_implementation_release_or_explicit_packet")
         self.assertEqual(lifecycle_contract["agent_instruction_policy"], "root_only_lifecycle_subagents_return_result_packet")
         self.assertEqual(
             fresh_context_files,
@@ -57,10 +79,10 @@ class TaskPlanLifecycleTest(unittest.TestCase):
         )
 
         for expected in [
-            "Task Brief",
-            "Completion Brief",
-            "Show the Task Brief",
-            "Show the Completion Brief",
+            "Task Start Brief",
+            "Completion Ledger",
+            "Show the Task Start Brief",
+            "Show the Completion Ledger",
             "user-visible",
             "config-routed lifecycle workflow contract",
         ]:
@@ -70,13 +92,13 @@ class TaskPlanLifecycleTest(unittest.TestCase):
         after_execution = workflow.split("## After Execution", 1)[1]
         self.assertLess(
             after_execution.index("Update the same task block"),
-            after_execution.index("Show the Completion Brief"),
+            after_execution.index("Show the Completion Ledger"),
         )
-        self.assertIn("terminal `final` response", workflow)
-        self.assertIn("No tool calls are allowed after the Completion Brief", workflow)
+        self.assertIn("terminal final response", workflow)
+        self.assertIn("No tool calls are allowed after the Completion Ledger", workflow)
         self.assertIn("ready_for_completion_brief", workflow)
         self.assertIn("stopped_repair_required", workflow)
-        self.assertIn("The lifecycle is root-owned", workflow)
+        self.assertIn("The root owns", workflow)
         self.assertIn("Subagent Result Packet", workflow)
 
         for expected in [
@@ -84,13 +106,13 @@ class TaskPlanLifecycleTest(unittest.TestCase):
             "config_routed_control_plane_sync",
             ".codex/workflows/task-plan-lifecycle.md",
             ".codex/workflows/control-plane-sync.md",
-            "user_visible_task_brief_before_execution",
-            "user_visible_completion_brief_after_execution",
+            "scoped_task_start_brief_before_execution",
+            "scoped_completion_ledger_after_execution",
             "control_plane_sync_before_completion",
             "control_plane_overflow_refactor",
             "overflow_refactor_required",
-            "Task Brief",
-            "Completion Brief",
+            "Task Start Brief",
+            "Completion Ledger",
             "Control-Plane Sync",
             "not_applicable",
             "handoff_required",
@@ -111,7 +133,7 @@ class TaskPlanLifecycleTest(unittest.TestCase):
             "overflow_refactor_required",
             "budget crossing is a compaction trigger",
             "not permission to skip",
-            "before the Completion Brief",
+            "before the Completion Ledger",
         ]:
             with self.subTest(control_plane_sync=expected):
                 self.assertIn(expected, control_plane_sync)
@@ -120,10 +142,10 @@ class TaskPlanLifecycleTest(unittest.TestCase):
             text = path.read_text(encoding="utf-8")
             with self.subTest(agent=path.name):
                 self.assertIn(".codex/config.toml", text)
-                self.assertIn("root agent owns the user-visible Task Brief", text)
+                self.assertIn("root agent owns the user-visible Task Start Brief", text)
                 self.assertIn("Subagent Result Packet", text)
                 self.assertIn("never start or close a nested lifecycle", text)
-                self.assertNotIn("show the required Task Brief and Completion Brief", text)
+                self.assertNotIn("show the required Task Start Brief and Completion Ledger", text)
 
     def test_build_planned_task_matrix_creates_valid_pre_execution_block(self):
         text = build_planned_task_matrix(
@@ -153,16 +175,16 @@ class TaskPlanLifecycleTest(unittest.TestCase):
         )
 
         self.assertIn("### Task `B39-PLAN-M01`", text)
-        self.assertIn("## Task Brief", text)
-        self.assertIn("- User-visible moment: before execution", text)
-        self.assertIn("- Task ID: B39-PLAN-M01", text)
+        self.assertNotIn("## Task Brief", text)
+        self.assertNotIn("## Task Start Brief", text)
+        self.assertNotIn("- User-visible moment:", text)
         self.assertIn("- Product value: Users see what will be done before execution starts.", text)
         self.assertIn("- Technical value: Agents get a repeatable pre-execution task contract.", text)
         self.assertIn("- Complexity: medium", text)
         self.assertIn("- Estimated execution time: 30m", text)
         self.assertNotIn("- Goal:", text)
-        self.assertIn("- Verification: python -m unittest tests.product_agent_os.test_task_plan_lifecycle -v", text)
-        self.assertIn("- Approval boundary: Generated plan is not execution evidence.", text)
+        self.assertIn("- Verification gates: python -m unittest tests.product_agent_os.test_task_plan_lifecycle -v", text)
+        self.assertIn("- Risks / approval gates: Generated plan is not execution evidence.", text)
         self.assertIn("- Status: planned", text)
         self.assertIn("- Date and time of task implementation: pending_execution_timestamp", text)
         self.assertIn("- actual implementation date and time: pending_execution_timestamp", text)
@@ -209,10 +231,10 @@ class TaskPlanLifecycleTest(unittest.TestCase):
         )
 
         self.assertIn("- Status: implemented", updated)
-        self.assertIn("## Completion Brief", updated)
-        self.assertIn("- User-visible moment: after execution", updated)
-        self.assertIn("- Done: added lifecycle generator tests", updated)
-        self.assertIn("- Evidence: python -m unittest tests.product_agent_os.test_task_plan_lifecycle -v", updated)
+        self.assertNotIn("## Completion Brief", updated)
+        self.assertNotIn("## Completion Ledger", updated)
+        self.assertIn("- what was done: added lifecycle generator tests", updated)
+        self.assertIn("- verification evidence: python -m unittest tests.product_agent_os.test_task_plan_lifecycle -v", updated)
         self.assertIn("- Date and time of task implementation: 11-06-2026 14:20", updated)
         self.assertIn("- actual implementation date and time: 11-06-2026 14:20", updated)
         self.assertEqual(validate_task_matrix_text(updated), [])

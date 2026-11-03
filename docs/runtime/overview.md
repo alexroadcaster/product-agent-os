@@ -44,3 +44,9 @@ Every runtime следует leave evidence:
 - files changed;
 - checks/evals;
 - final decision или PR link.
+
+## Карта API runtimes и степень реализации
+
+[Agents API](https://developers.openai.com/api/docs/guides/agents) выполняет managed Codex harness на стороне OpenAI; Agents SDK запускает agent loop внутри приложения; Responses API дает прямой API-контракт с optional hosted orchestration. [Responses Multi-agent](https://developers.openai.com/api/docs/guides/responses-multi-agent) — отдельная beta-возможность, не синоним Codex subagents.
+
+Для выбора владельца state/tools/approvals используйте [таблицу SDK patterns](../agent-systems/sdk-patterns.md) и [диаграмму runtimes](../diagrams/runtime-decision-map.md). Product-Agent OS документирует эти маршруты, но данное обновление не реализует Agents API, async/steering или новый hosted runner. Статусы «документировано», «спроектировано», «реализовано», «проверено в runtime» требуют разных доказательств и не следуют друг из друга автоматически.

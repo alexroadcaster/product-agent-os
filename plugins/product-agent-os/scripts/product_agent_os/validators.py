@@ -29,9 +29,15 @@ AGENT_FORBIDDEN_TOP_LEVEL_FIELDS = {
     "model_policy",
     "handoff_requirements",
 }
-AGENT_ALLOWED_MODELS = {"gpt-5.6-sol", "gpt-5.6-terra"}
+# Repository policy, not a claim that other official models are unsupported.
+AGENT_ALLOWED_MODELS = {"gpt-6.1-sol", "gpt-6.1-terra"}
 AGENT_ALLOWED_REASONING_EFFORTS = {"low", "medium", "high", "xhigh", "max"}
-AGENT_ALLOWED_SANDBOX_MODES = {"read-only", "workspace-write"}
+AGENT_PARENT_ONLY_FIELDS = {
+    "sandbox_mode", "sandbox_workspace_write", "default_permissions", "permissions",
+    "approval_policy", "approvals_reviewer", "model_provider", "mcp_servers",
+    "service_tier",
+}
+AGENT_DISABLE_FEATURES = {"shell_tool", "apps", "plugins", "memories", "request_permissions_tool"}
 AGENT_MAX_INSTRUCTION_CHARS = 7000
 AGENT_PHASE_IDENTIFIER_PATTERN = re.compile(
     r"(?i)\b(?:Batch\s+\d+|B\d+-S\d+|Track\s+\d+)\b"
@@ -140,6 +146,73 @@ HOOK_JSON_REQUIRED_EVENTS = [
     "PostToolUse",
     "Stop",
 ]
+TASK_START_PACKET_FIELDS = [
+    "Request", "Goal", "Context", "Scope", "Value", "Execution", "Acceptance",
+    "Risks / approvals", "Next step",
+]
+COMPLETION_LEDGER_FIELDS = [
+    "Result", "Scope", "Evidence", "Review", "Limits", "Tech debt",
+    "Activation / fallback", "Docs impact", "Context integrity", "Runtime metrics",
+    "Closure", "Next step", "Execution time",
+]
+
+
+def validate_lifecycle_packet_text(text: str, kind: str) -> list[str]:
+    """Check reporting shape and explicit closure contradictions, not evidence truth.
+
+    This is an opt-in local validator. Stop hooks do not automatically inspect chat.
+    Fenced examples and quoted source text cannot satisfy visible packet fields.
+    """
+    if kind not in {"start", "completion"}:
+        return ["packet kind must be start or completion"]
+    visible = []
+    fence = None
+    for line in text.splitlines():
+        stripped = line.lstrip()
+        if stripped.startswith(("```", "~~~")):
+            marker = stripped[:3]
+            fence = None if fence == marker else marker if fence is None else fence
+            continue
+        if fence is None and not stripped.startswith(">"):
+            visible.append(line)
+    body = "\n".join(visible)
+    required = TASK_START_PACKET_FIELDS if kind == "start" else COMPLETION_LEDGER_FIELDS
+    pattern = (r"^\*\*([^*\n]+)\*\*[ \t]*$" if kind == "start" else
+               r"^- (?:\*\*(?P<bold>[^*:\n]+):\*\*|(?P<plain>[^*:\n]+):)[ \t]*")
+    matches = list(re.finditer(pattern, body, re.M))
+    errors: list[str] = []
+    fields: dict[str, str] = {}
+    for index, match in enumerate(matches):
+        name = match.group(1) if kind == "start" else (match.group("bold") or match.group("plain"))
+        end = matches[index + 1].start() if index + 1 < len(matches) else len(body)
+        value = body[match.end():end].strip()
+        if name in fields:
+            errors.append("duplicate packet field: " + name)
+        fields[name] = value
+        if name not in required:
+            errors.append("unexpected packet field: " + name)
+        if not value or value.casefold() in {"n/a", "not_available", "pending", "tbd"}:
+            errors.append("packet field needs content or a reason: " + name)
+    errors.extend("missing packet field: " + name for name in required if name not in fields)
+    if kind == "completion":
+        if not body.startswith("closure_contract: product-agent-os-completion-ledger-v2\n"):
+            errors.append("missing Product-Agent OS completion ledger contract marker")
+        review = fields.get("Review", "")
+        closure = fields.get("Closure", "")
+        if not re.search(r"\bcontext_mode\s*=\s*(self_review|separate_reused_context|separate_fresh_context|fresh_blind_review|not_available)\b", review):
+            errors.append("Review must identify observed context_mode")
+        verdict = re.search(r"\btester_verdict\s*=\s*(closed_allowed|partial_only|blocked|not_reviewed)\b", review)
+        if verdict is None:
+            errors.append("Review must identify tester_verdict")
+        level = re.search(r"\bclosure_level\s*=\s*([a-z_]+)\b", closure)
+        if level is None:
+            errors.append("Closure must identify closure_level")
+        elif level.group(1) in {"completed", "ready", "locally_verified", "docs_static_verified", "implemented_locally_verified"}:
+            if verdict is None or verdict.group(1) != "closed_allowed":
+                errors.append("unreviewed or partial work cannot claim parent closure")
+            if "accepted_gap" in fields.get("Docs impact", ""):
+                errors.append("accepted docs gap cannot close the parent")
+    return errors
 
 
 def validate_control_plane(root: Path) -> dict[str, Any]:
@@ -155,6 +228,7 @@ def validate_agent_file(
     *,
     available_prompt_paths: set[str] | None = None,
 ) -> list[str]:
+    """Check PAOS role policy and the supported custom-agent configuration surface."""
     text, error = read_utf8_text(path)
     if error:
         return [error]
@@ -170,6 +244,7 @@ def validate_agent_file(
     for field in sorted(AGENT_FORBIDDEN_TOP_LEVEL_FIELDS):
         if field in data:
             errors.append(f"unsupported top-level agent metadata field: {field}")
+    errors.extend(_parent_only_agent_errors(data))
     instructions = data.get("developer_instructions")
     if isinstance(instructions, str) and instructions.strip():
         lowered = instructions.lower()
@@ -196,10 +271,46 @@ def validate_agent_file(
     effort = data.get("model_reasoning_effort")
     if effort is not None and effort not in AGENT_ALLOWED_REASONING_EFFORTS:
         errors.append(f"unsupported model_reasoning_effort: {effort}")
-    sandbox_mode = data.get("sandbox_mode")
-    if sandbox_mode is not None and sandbox_mode not in AGENT_ALLOWED_SANDBOX_MODES:
-        errors.append(f"unsupported sandbox_mode: {sandbox_mode}")
-    errors.extend(_validate_agent_skills_and_mcp(data))
+        if model in AGENT_ALLOWED_MODELS:
+            errors.append(f"unsupported model_reasoning_effort for {model}: {effort}")
+    errors.extend(_validate_agent_capabilities(data))
+    return errors
+
+
+def _parent_only_agent_errors(data: dict[str, Any]) -> list[str]:
+    return [f"parent-only agent setting: {key}" for key in sorted(AGENT_PARENT_ONLY_FIELDS & data.keys())]
+
+
+def _validate_agent_capabilities(data: dict[str, Any]) -> list[str]:
+    """Custom agents may reduce inherited capabilities, never configure access."""
+    errors: list[str] = []
+    features = data.get("features", {})
+    if not isinstance(features, dict):
+        errors.append("custom agent features must be a table")
+    else:
+        for key, value in features.items():
+            if key not in AGENT_DISABLE_FEATURES or value is not False:
+                errors.append(f"custom agent feature must disable a supported capability: {key}")
+    skills = data.get("skills", {})
+    if not isinstance(skills, dict):
+        return errors + ["custom agent skills must be a table"]
+    configs = skills.get("config", [])
+    if not isinstance(configs, list):
+        return errors + ["custom agent skills.config must be an array"]
+    for config in configs:
+        if not isinstance(config, dict):
+            errors.append("custom agent skill config must be a table")
+            continue
+        if config.get("enabled") is not False:
+            errors.append("custom agent skills.config may only disable inherited skills")
+        if not any(isinstance(config.get(key), str) and config[key].strip() for key in ("path", "name")):
+            errors.append("custom agent skill config requires a non-empty path or name")
+    for key in skills.keys() - {"config", "bundled", "include_instructions"}:
+        errors.append(f"unsupported custom agent skills setting: {key}")
+    if "include_instructions" in skills and skills["include_instructions"] is not False:
+        errors.append("custom agent skills.include_instructions may only be false")
+    if "bundled" in skills and skills["bundled"] != {"enabled": False}:
+        errors.append("custom agent skills.bundled may only disable bundled skills")
     return errors
 
 
@@ -245,7 +356,8 @@ def _agent_skill_configs(data: dict[str, Any]) -> list[dict[str, Any]]:
     return [item for item in configs if isinstance(item, dict) and item.get("enabled", True)]
 
 
-def _validate_agent_skills_and_mcp(data: dict[str, Any]) -> list[str]:
+def _validate_parent_skills_and_mcp(data: dict[str, Any]) -> list[str]:
+    """Validate declared parent routes; this does not prove effective tool access."""
     errors: list[str] = []
     project_skill_texts: list[str] = []
     has_openai_docs = False
@@ -272,16 +384,19 @@ def _validate_agent_skills_and_mcp(data: dict[str, Any]) -> list[str]:
             mcp_servers.get("openaiDeveloperDocs"),
             dict,
         ):
-            errors.append("openai-docs skill requires openaiDeveloperDocs MCP server")
-    if data.get("sandbox_mode") == "workspace-write" and project_skill_texts:
+            errors.append("parent openai-docs skill requires openaiDeveloperDocs MCP server")
+        elif mcp_servers["openaiDeveloperDocs"].get("enabled") is False or mcp_servers["openaiDeveloperDocs"].get("url") != "https://developers.openai.com/mcp":
+            errors.append("parent openaiDeveloperDocs must enable the official documentation endpoint")
+    if data.get("default_permissions") == ":workspace" and project_skill_texts:
         if not any(WORKSPACE_APPLY_AUTHORITY in text for text in project_skill_texts):
             errors.append(
-                "workspace-write agent has no project skill with explicit task write authority"
+                "parent workspace skills lack explicit task write authority"
             )
     return errors
 
 
 def validate_agent_project_config(config_path: Path, agent_files: list[Path] | None = None) -> list[str]:
+    """Enforce the PAOS parent policy without claiming to resolve all config layers."""
     text, error = read_utf8_text(config_path)
     if error:
         return [error]
@@ -291,27 +406,34 @@ def validate_agent_project_config(config_path: Path, agent_files: list[Path] | N
         return [f"invalid toml: {exc}"]
     errors: list[str] = []
     agent_files = agent_files or []
-    uses_agent_sandbox = False
     for agent_path in agent_files:
         agent_text, agent_error = read_utf8_text(agent_path)
         if agent_error:
+            errors.append(f"{agent_path.name}: {agent_error}")
             continue
         try:
-            uses_agent_sandbox = uses_agent_sandbox or "sandbox_mode" in tomllib.loads(agent_text)
+            agent_data = tomllib.loads(agent_text)
         except tomllib.TOMLDecodeError:
+            errors.append(f"{agent_path.name}: invalid toml")
             continue
-    if "default_permissions" in data and ("sandbox_mode" in data or uses_agent_sandbox):
+        errors.extend(f"{agent_path.name}: {e}" for e in _parent_only_agent_errors(agent_data))
+    has_profiles = "default_permissions" in data or "permissions" in data
+    has_legacy = "sandbox_mode" in data or "sandbox_workspace_write" in data
+    if has_profiles and has_legacy:
         errors.append("permission profiles and legacy sandbox_mode must not be composed")
-    if data.get("sandbox_mode") != "workspace-write":
-        errors.append("project config must set sandbox_mode = workspace-write")
+    if has_legacy:
+        errors.append("PAOS parent config must not contain legacy sandbox settings")
+    if data.get("default_permissions") != ":workspace":
+        errors.append("PAOS parent config must set default_permissions = :workspace")
     agents = data.get("agents")
     if not isinstance(agents, dict):
         errors.append("project config missing [agents] table")
         return errors
-    if agents.get("default_subagent_model") != "gpt-5.6-terra":
-        errors.append("generic subagents must default to gpt-5.6-terra")
+    if agents.get("default_subagent_model") != "gpt-6.1-sol":
+        errors.append("generic subagents must default to gpt-6.1-sol")
     if agents.get("default_subagent_reasoning_effort") != "medium":
         errors.append("generic subagents must default to medium reasoning")
+    errors.extend(_validate_parent_skills_and_mcp(data))
     return errors
 
 

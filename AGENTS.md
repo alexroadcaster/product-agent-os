@@ -100,7 +100,7 @@ not define the repository as documentation-only.
 
 - Use `AGENTS.md` for durable rules only. Use `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md` and `RUNLOG.md` for active long-running product work.
 - Before closing any non-mechanical Product-Agent OS task, run the local `.codex/workflows/control-plane-sync.md` checklist: update owned control-plane files when scope, sequencing, verification, evals, handoff state or an explicitly in-scope historical evidence ledger changed, or record `not_applicable` / `handoff_required`.
-- Task Brief / Completion Brief lifecycle is config-routed: agents must load `.codex/config.toml` `[product_agent_os.lifecycle_contract]` and `[workflows]` instead of relying on duplicated lifecycle prose in each agent profile.
+- Task Start Brief / Completion Ledger lifecycle is config-routed: load `.codex/config.toml` `[product_agent_os.lifecycle_contract]` and `[workflows]`. The linked templates own the nine start fields and thirteen ledger items. Full packets apply to large/high-risk or financially material implementation, release/readiness closure, or an explicit packet request; ordinary fixes and read-only/partial/blocked work use concise results, evidence and gaps unless that scope applies. Do not invent metrics, review context or completion. Stop is an advisory reminder, not automatic chat validation.
 - Do not create or switch to a branch or worktree unless the user explicitly asks for it.
 - Do not stage, commit, push, open a PR, launch live servers, run browser automation, call providers/live external model/API endpoints, mutate canonical graph sources or create external automations without exact approval for that action.
 - Do not install documentation dependencies, vendor binaries/minified assets, activate documentation hooks/automation or claim generated `site/` freshness unless the current slice has explicit approval and records project-local smoke/build evidence.
@@ -134,9 +134,11 @@ not define the repository as documentation-only.
 - A writable agent may edit only its assigned files and responsibility slice.
   It must preserve unrelated dirty work, current control-plane authority and the
   approval boundary for target, provider, browser, Git, release or external actions.
-- Validate active and generated agent profiles after changes. Agent description,
-  model, reasoning effort, sandbox mode, skills and MCP access must match the
-  actual responsibility and must not imply unsupported runtime or production proof.
+- Validate active and generated agent profiles after changes. Model, reasoning
+  effort and behavioral ownership must match the responsibility. Permissions,
+  approvals, provider and MCP are inherited from the parent session; a read-only
+  role does not create a separate sandbox. Custom profiles may only reduce
+  supported capabilities. Do not imply runtime activation or production proof.
 
 ## Windows Codex Shell Guard
 
@@ -168,7 +170,7 @@ if (-not [string]::IsNullOrEmpty($pathValue)) {
 - Track 3 infrastructure generation is staged-first. Use `python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --dry-run` before staging infrastructure for a project.
 - Use `--stage <output-dir>` only with an output directory outside the target workspace unless a later approved merge workflow proves a safe write path.
 - Preserve user-authored files outside managed sections. Existing unmarked `AGENTS.md`, `.codex/config.toml`, hooks, workflows and automation files are user content and must be staged as companion proposals rather than overwritten.
-- Packaged hooks are staged target-project assets. The lifecycle `PreToolUse` hook may block mutating Product-Agent OS commands until a user-visible Task Brief is followed by `.codex/product-agent-os/lifecycle-state.json`; do not add plugin-root hook activation or enable target-project hooks without explicit approval.
+- Packaged hooks are staged target-project assets. The lifecycle `PreToolUse` hook may block mutating Product-Agent OS commands until the applicable full brief or concise scope note is followed by `.codex/product-agent-os/lifecycle-state.json`; command, path, secret, approval and sandbox protections remain separate. Do not add plugin-root hook activation or enable target-project hooks without explicit approval. A changed file does not prove fresh-session loading or trust.
 - Automation artifacts under `assets/templates/automations/` are candidate-only. Do not create schedules, recurring jobs, GitHub Actions, Codex App automations or external workflows from Track 3 templates.
 - Template files, fixtures and generated examples must remain synthetic and must not contain secrets, private customer data, raw private chat logs or absolute user-specific paths.
 

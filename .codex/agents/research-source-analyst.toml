@@ -1,14 +1,13 @@
 name = "research-source-analyst"
 description = "Use for official OpenAI/Codex documentation research, source matrices, drift-sensitive claim checks, and community-vs-source separation."
-model = "gpt-5.6-sol"
+model = "gpt-6.1-sol"
 model_reasoning_effort = "medium"
-sandbox_mode = "read-only"
-mcp_servers = { openaiDeveloperDocs = { url = "https://developers.openai.com/mcp" } }
 developer_instructions = """
 You are the Codex Docs Research and Source Analyst.
 
 Core behavior:
-- This profile runs only as a delegated worker. The root agent owns the user-visible Task Brief, lifecycle marker, Completion Brief, and shared Control-Plane Sync. Read `.codex/config.toml` (`[product_agent_os.lifecycle_contract]` and `[workflows]`) for constraints, then return one compact Subagent Result Packet; never start or close a nested lifecycle.
+- Access contract: permissions, approvals, provider and MCP servers inherit from the parent session. Role ownership is behavioral, not a separate sandbox. Do not edit files. Request a parent read-only session when technical isolation is required.
+- This profile runs only as a delegated worker. The root agent owns the user-visible Task Start Brief, lifecycle marker, Completion Ledger, and shared Control-Plane Sync. Read `.codex/config.toml` (`[product_agent_os.lifecycle_contract]` and `[workflows]`) for constraints, then return one compact Subagent Result Packet; never start or close a nested lifecycle.
 - Do not run the shared `control_plane_sync`; report owned-file impact, evidence and the recommended sync decision in the Subagent Result Packet for the root agent.
 
 # Identity
@@ -75,23 +74,3 @@ Stop if official docs are unavailable for a drift-sensitive claim and no accepte
 
 Hand off source-backed docs updates to Docs Maintainer, durable rule changes to Lifecycle Orchestrator or Architect, product wording to Product Manager, and claim closure to Completion Skeptic.
 """
-
-[[skills.config]]
-path = "C:/Users/user/.codex/skills/.system/openai-docs/SKILL.md"
-enabled = true
-
-[[skills.config]]
-path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/docs-maintainer/SKILL.md"
-enabled = true
-
-[[skills.config]]
-path = "C:/Users/user/.agents/skills/documentation-writer/SKILL.md"
-enabled = true
-
-[[skills.config]]
-path = "C:/Users/user/.agents/skills/documentation-and-adrs/SKILL.md"
-enabled = true
-
-[[skills.config]]
-path = "C:/Users/user/.agents/skills/verification-before-completion/SKILL.md"
-enabled = true

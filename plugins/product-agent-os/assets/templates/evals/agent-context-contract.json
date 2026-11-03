@@ -16,8 +16,8 @@
     "canonical_repository_skill_source",
     "config_routed_task_plan_lifecycle",
     "config_routed_control_plane_sync",
-    "user_visible_task_brief_before_execution",
-    "user_visible_completion_brief_after_execution",
+    "scoped_task_start_brief_before_execution",
+    "scoped_completion_ledger_after_execution",
     "lifecycle_marker_before_mutating_commands",
     "lifecycle_pre_tool_hook_guard",
     "control_plane_sync_before_completion",
@@ -34,9 +34,9 @@
     "no_raw_source_leakage",
     "official_hook_output_contract",
     "current_lifecycle_marker_freshness",
-    "gpt_5_6_role_routing_policy",
+    "gpt_6_role_routing_policy",
     "single_effective_permission_model",
-    "generic_subagent_terra_medium_default",
+    "generic_subagent_sol_medium_default",
     "source_role_openai_docs_mcp",
     "agent_skill_semantic_validation",
     "phase_neutral_prompt_budget"
@@ -60,8 +60,8 @@
     "developer_instructions include ownership, inputs, outputs, stop conditions, and handoff",
     "agents mention local system files as context and not as default deliverables",
     "agents load the config-routed lifecycle workflow contract from .codex/config.toml instead of duplicating lifecycle rules in every profile",
-    "the root agent shows one Task Brief before non-mechanical execution and one terminal final Completion Brief after every write, verification command and the single control-plane sync; delegated agents never repeat either brief",
-    "mutating or non-read-only commands require a lightweight lifecycle marker after the user-visible Task Brief",
+    "the root shows the nine-field Task Start Brief and thirteen-item Completion Ledger when scope requires full packets; ordinary work uses concise results, evidence and limits; delegated agents never repeat root packets",
+    "mutating or non-read-only commands require a fresh active lifecycle marker after scope-applicable user-visible reporting: Task Start Brief for full scopes, concise Scope/Evidence/Limits for ordinary authorized tasks",
     "the root agent runs one Control-Plane Sync check before completion and updates owned control-plane files or records not_applicable / handoff_required",
     "agents treat root control-plane size overflow as overflow_refactor_required: move cold detail to an owning source artifact, then update the compact root pointer",
     "agents require a Subagent Context Packet before delegated subagent launch and a Subagent Result Packet after completion",
@@ -76,9 +76,9 @@
     "PreToolUse denials use hookSpecificOutput with hookEventName PreToolUse, permissionDecision deny, and permissionDecisionReason",
     "SessionStart and PostToolUse guidance use hookSpecificOutput additionalContext; common reminders use systemMessage without custom decision fields",
     "mutating work requires a current in_progress lifecycle marker with completion_ready false, a timezone-aware timestamp, and a sha256 digest with 64 lowercase hex characters; ready_for_completion_brief denies further mutations",
-    "active agent model pins use role-aware GPT-5.6 Sol/Terra routing and preserve the existing reasoning-effort baseline until same-effort and one-lower-effort evals justify promotion",
-    "project config uses one effective workspace-write sandbox model and generic subagents default to GPT-5.6 Terra with medium reasoning",
-    "agents assigned openai-docs expose the openaiDeveloperDocs MCP route",
+    "active agent model pins use role-aware GPT-6.1 Sol/Terra routing and preserve the existing reasoning-effort baseline until same-effort and one-lower-effort evals justify promotion",
+    "project config uses one effective :workspace permission profile and generic subagents default to GPT-6.1 Sol with medium reasoning",
+    "parent configuration exposes openaiDeveloperDocs for inherited openai-docs; custom agents cannot override MCP or permissions",
     "agent validation checks model effort sandbox skill paths write authority MCP routing prompt paths prompt budget and volatile phase identifiers"
   ],
   "fail_conditions": [
@@ -88,7 +88,7 @@
     "agent claims done, fixed, verified, ready, or release-ready without current evidence or accepted gap",
     "agent treats generated dashboard, template presence, or stale logs as proof",
     "agent profile duplicates field-level lifecycle rules instead of referencing [product_agent_os.lifecycle_contract] and [workflows] in .codex/config.toml",
-    "the root agent performs non-mechanical execution without a user-visible Task Brief, closes without a terminal final Completion Brief, or calls a tool after that brief",
+    "the root omits a scope-required packet, invents metrics or review context, claims parent closure with required partial/blocked/unreviewed children, or calls a tool after its terminal result",
     "agent performs mutating Product-Agent OS work without the lifecycle marker required by the pre-tool hook guard",
     "agent closes after changing scope, plan, verification, eval, runlog, or project ledger state without control-plane sync",
     "agent skips a required REQUIREMENTS.md, PLAN.md, TEST.md, EVALS.md, or RUNLOG.md update merely because the root file is near or over budget",
@@ -102,10 +102,11 @@
     "hook scripts emit undocumented custom decision or blocking payloads that Codex does not consume",
     "a stale, completed, timezone-naive, or malformed lifecycle marker authorizes mutating work",
     "active agent profiles remain pinned to GPT-5.5 or earlier without an explicit compatibility exception",
-    "project config composes default_permissions with legacy sandbox_mode or omits Terra medium generic subagent defaults",
-    "a workspace-write agent has no project skill with explicit task write authority",
-    "an openai-docs agent lacks openaiDeveloperDocs MCP routing or a prompt references a missing path",
-    "durable agent prompts exceed the configured budget or contain volatile Track Batch or slice routing"
+    "project config composes default_permissions with legacy sandbox_mode or omits Sol medium generic subagent defaults",
+    "parent workspace skills lack explicit task write authority",
+    "parent openai-docs lacks inherited openaiDeveloperDocs MCP routing or a prompt references a missing path",
+    "durable agent prompts exceed the configured budget or contain volatile Track Batch or slice routing",
+    "custom agent attempts to override permissions, approvals, provider, service tier or MCP, or enables inherited capabilities instead of only disabling them"
   ],
   "cases": [
     {
@@ -126,10 +127,10 @@
           "chat_visibility",
           "required",
           "[product_agent_os.model_migration]",
-          "gpt-5.6-sol",
-          "gpt-5.6-terra"
+          "gpt-6.1-sol",
+          "gpt-6.1-terra"
         ],
-        "result": "The root agent must follow the lifecycle workflow through config and show the user-visible Task Brief and Completion Brief; delegated agents return only a compact Subagent Result Packet."
+        "result": "The root agent must follow the lifecycle workflow through config and show scope-applicable Task Start Brief and Completion Ledger or concise reporting; delegated agents return only a compact Subagent Result Packet."
       }
     },
     {
@@ -139,34 +140,24 @@
         "fields": [
           ".codex/hooks/pre_tool_use_policy.py",
           ".codex/product-agent-os/lifecycle-state.json",
-          "task_start_brief_shown",
-          "task_id",
-          "scope",
-          "updated_at",
-          "approval_boundary",
-          "brief_schema_version",
+          "lifecycle_scope",
+          "task_start_brief_v2",
+          "bold_fields",
+          "task_scope_note_v1",
+          "concise",
           "task_start_brief_v1",
-          "brief_format",
-          "field_list",
           "brief_digest",
           "brief_fields_present",
-          "Product value",
-          "Technical value",
-          "Verification gate",
-          "completion_brief_shown",
+          "updated_at",
+          "approval_boundary",
           "completion_ready",
-          "status",
           "in_progress",
-          "ready_for_completion_brief",
-          "sha256:<64 lowercase hex>",
-          "hookSpecificOutput",
-          "hookEventName",
+          "ready_for_completion_ledger",
           "PreToolUse",
           "permissionDecision",
-          "deny",
-          "permissionDecisionReason"
+          "deny"
         ],
-        "result": "Mutating work must be denied through the official PreToolUse wire contract until a current user-visible full field-list Task Brief and active lifecycle marker satisfy freshness, digest, and completion-state checks; a ready-for-brief marker must deny further mutations."
+        "result": "Deny mutations without a fresh active scoped marker: nine-field full packet for required scopes, concise Scope/Evidence/Limits for ordinary authorized fixes, legacy v1 compatibility for existing sessions. Read-only request classifications cannot authorize mutations. Terminal markers deny further writes; scope never grants permission."
       }
     },
     {
@@ -186,7 +177,7 @@
           "handoff_required",
           "before completion"
         ],
-        "result": "Agents must run the Control-Plane Sync check before the Completion Brief, update owned control-plane files when required, or record not_applicable / handoff_required with evidence."
+        "result": "Agents must run the Control-Plane Sync check before the Completion Ledger, update owned control-plane files when required, or record not_applicable / handoff_required with evidence."
       }
     },
     {
@@ -213,16 +204,17 @@
     },
     {
       "id": "user-visible-task-brief-lifecycle",
-      "input": "Inspect Product-Agent OS agent instructions and workflow context before a non-mechanical task.",
+      "input": "Inspect root and delegated lifecycle routing for large/high-risk work and ordinary bounded tasks.",
       "expected": {
         "fields": [
-          "Task Brief before execution",
-          "Completion Brief after execution",
-          "before execution",
-          "after execution",
+          "scope-applicable Task Start Brief before execution",
+          "Completion Ledger after execution when full scope applies",
+          "concise results, evidence and limits for ordinary tasks",
+          "root owns lifecycle",
+          "Subagent Result Packet",
           ".codex/workflows/task-plan-lifecycle.md"
         ],
-        "result": "Agents must show a user-visible Task Brief before non-mechanical execution and a Completion Brief after execution or handoff."
+        "result": "Only the root owns lifecycle reporting and markers. Full packets apply to large/high-risk or materially financial implementation, release/readiness and explicit packet requests. Ordinary fixes and read-only/partial/blocked work use concise results, evidence and limits unless full scope applies; delegated workers return a Subagent Result Packet."
       }
     },
     {
@@ -239,10 +231,10 @@
           "files actually read",
           "outputs",
           "before launch",
-          "after completion"
-          ,"root owns lifecycle"
-          ,"no nested Task Brief"
-          ,"no nested Completion Brief"
+          "after completion",
+          "root owns lifecycle",
+          "no nested Task Start Brief",
+          "no nested Completion Ledger"
         ],
         "result": "The root agent provides a compact Subagent Context Packet and collects one Subagent Result Packet; delegated agents do not own lifecycle state or user-facing briefs."
       }
@@ -290,12 +282,12 @@
       }
     },
     {
-      "id": "gpt-5p6-role-routing",
-      "input": "Review active custom-agent model pins after a GPT-5.6 migration.",
+      "id": "gpt-6-role-routing",
+      "input": "Review active custom-agent model pins after a GPT-6.1 migration.",
       "expected": {
         "fields": [
-          "gpt-5.6-sol",
-          "gpt-5.6-terra",
+          "gpt-6.1-sol",
+          "gpt-6.1-terra",
           "preserve reasoning effort",
           "same effort",
           "one lower effort",
@@ -304,8 +296,41 @@
           "latency",
           "fresh session"
         ],
-        "result": "Complex planning, review, security, release, and eval roles route to Sol; bounded building, docs, exploration, plugin, and graph roles route to Terra; behavioral promotion remains pending until a fresh-session same/lower-effort comparison passes."
+        "result": "Complex planning, review, security, release, and eval roles route to Sol; engineering, plugin, and graph roles route to Sol; docs and bounded exploration route to Terra; behavioral promotion remains pending until a fresh-session same/lower-effort comparison passes."
+      }
+    },
+    {
+      "id": "ordinary-scoped-fix",
+      "input": "A bounded low-risk local fix without a packet request.",
+      "expected": {
+        "result": "Use a concise scope/evidence/limits note and result; preserve approvals and current checks; do not force a full packet or duplicate plan row."
+      }
+    },
+    {
+      "id": "full-ledger-evidence-ceiling",
+      "input": "A high-risk implementation closes with a required unreviewed child and unavailable token metrics.",
+      "expected": {
+        "result": "Use all nine start fields and thirteen ledger fields; record the exact review context and not_available reason; keep parent partial or blocked."
+      }
+    },
+    {
+      "id": "stop-reporting-convention",
+      "input": "A terminal answer has the required fields but no literal Completion Brief heading.",
+      "expected": {
+        "result": "Stop never rejects or repeats the answer by format; optional packet validation and source evidence remain separate."
       }
     }
-  ]
+  ],
+  "lifecycle_reporting_contract": {
+    "brief_schema": "task_start_brief_v2",
+    "closure_contract": "product-agent-os-completion-ledger-v2",
+    "start_fields": 9,
+    "ledger_fields": 13,
+    "scope": "large/high-risk/material implementation, release/readiness or explicit request",
+    "ordinary": "concise result, evidence and limits",
+    "stop": "advisory; no automatic chat validation",
+    "metrics": "observed values or not_available with trace limitation",
+    "review": "honest context_mode and tester_verdict",
+    "docs_gap": "blocks parent closure when required"
+  }
 }

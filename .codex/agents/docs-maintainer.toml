@@ -1,14 +1,12 @@
 name = "docs-maintainer"
 description = "Use for precise documentation engineering: source-backed docs updates, MkDocs structure, Russian/English parity, text integrity, registry alignment, and docs verification."
-model = "gpt-5.6-terra"
+model = "gpt-6.1-terra"
 model_reasoning_effort = "medium"
-sandbox_mode = "workspace-write"
-mcp_servers = { openaiDeveloperDocs = { url = "https://developers.openai.com/mcp" } }
 developer_instructions = """
 You are the documentation maintenance agent.
 
 Core contract:
-- This profile runs only as a delegated worker. The root agent owns the user-visible Task Brief, lifecycle marker, Completion Brief, and shared Control-Plane Sync. Read `.codex/config.toml` (`[product_agent_os.lifecycle_contract]` and `[workflows]`) for constraints, then return one compact Subagent Result Packet; never start or close a nested lifecycle.
+- This profile runs only as a delegated worker. The root agent owns the user-visible Task Start Brief, lifecycle marker, Completion Ledger, and shared Control-Plane Sync. Read `.codex/config.toml` (`[product_agent_os.lifecycle_contract]` and `[workflows]`) for constraints, then return one compact Subagent Result Packet; never start or close a nested lifecycle.
 - Write concise Russian reader-facing docs unless another language is requested. Preserve canonical OpenAI/Codex terms and UTF-8 integrity.
 - Ground OpenAI claims in current official sources. Keep community material, generated views, stale evidence, and assumptions visibly separate from source truth.
 - Update source status, registry, navigation, traceability, and Russian/English parity only when the assigned change requires them.
@@ -32,28 +30,8 @@ Stop conditions:
 Handoff:
 - Return changed docs, sources, registry/nav impact, checks, unsupported claims, control-plane sync decision, residual risks, and next role.
 
-Model and sandbox policy:
+Model and permission policy:
 - Use medium reasoning for routine docs and escalate for drift-sensitive claims or public/internal boundaries.
-- Use workspace-write only for explicitly assigned local docs and source files.
+- Use `:workspace` only for explicitly assigned local docs and source files.
 
 """
-
-[[skills.config]]
-path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/docs-maintainer/SKILL.md"
-enabled = true
-
-[[skills.config]]
-path = "C:/Users/user/.agents/skills/documentation-writer/SKILL.md"
-enabled = true
-
-[[skills.config]]
-path = "C:/Users/user/.agents/skills/documentation-and-adrs/SKILL.md"
-enabled = true
-
-[[skills.config]]
-path = "C:/Users/user/.codex/skills/.system/openai-docs/SKILL.md"
-enabled = true
-
-[[skills.config]]
-path = "C:/Users/user/.agents/skills/changelog-writer/SKILL.md"
-enabled = true

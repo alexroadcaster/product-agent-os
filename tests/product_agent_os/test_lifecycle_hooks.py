@@ -71,7 +71,7 @@ def valid_marker(**overrides: object) -> dict[str, object]:
 
 def write_marker(root: Path, marker: dict[str, object]) -> None:
     state = root / ".codex" / "product-agent-os" / "lifecycle-state.json"
-    state.parent.mkdir(parents=True)
+    state.parent.mkdir(parents=True, exist_ok=True)
     state.write_text(json.dumps(marker), encoding="utf-8")
 
 
@@ -85,6 +85,52 @@ def load_hook_module(script: Path):
 
 
 class LifecycleHooksTest(unittest.TestCase):
+    def test_pre_tool_use_accepts_trade_shaped_start_and_scoped_concise_note(self):
+        module = load_hook_module(HOOKS / "pre_tool_use_policy.py")
+        scope = {"work_type": "implementation", "size": "large", "risk": "high",
+                 "financially_material": False, "release_or_readiness": False,
+                 "explicit_packet_request": False, "reason": "Material instruction migration"}
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            marker = valid_marker(brief_schema_version="task_start_brief_v2", brief_format="bold_fields",
+                                  brief_fields_present=["Request", "Goal", "Context", "Scope", "Value", "Execution", "Acceptance", "Risks / approvals", "Next step"],
+                                  lifecycle_scope=scope)
+            write_marker(root, marker)
+            self.assertEqual(module._lifecycle_marker_ok(root / module.LIFECYCLE_STATE_REL), (True, "ok"))
+            scope.update(work_type="fix", size="bounded", risk="low", reason="Small local correction")
+            marker.update(brief_schema_version="task_scope_note_v1", brief_format="concise",
+                          brief_fields_present=["Scope", "Evidence", "Limits"],
+                          task_start_brief_shown=False, scope_note_shown=True)
+            write_marker(root, marker)
+            self.assertEqual(module._lifecycle_marker_ok(root / module.LIFECYCLE_STATE_REL), (True, "ok"))
+            for key, value in (("risk", "high"), ("size", "large"), ("explicit_packet_request", True),
+                               ("financially_material", True), ("release_or_readiness", True),
+                               ("work_type", "review"), ("work_type", "research"), ("work_type", "planning")):
+                with self.subTest(key=key, value=value):
+                    unsafe = dict(scope, **{key: value})
+                    write_marker(root, dict(marker, lifecycle_scope=unsafe))
+                    self.assertFalse(module._lifecycle_marker_ok(root / module.LIFECYCLE_STATE_REL)[0])
+
+    def test_stop_does_not_reject_a_complete_answer_for_missing_legacy_heading(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            write_marker(root, valid_marker(status="ready_for_completion_brief", completion_ready=True))
+            env = dict(os.environ, CODEX_HOOK_WORKSPACE_ROOT=str(root))
+            result = run_hook(HOOKS / "stop_runlog_reminder.py", {"last_assistant_message": "Task ID: example\nResult status: partial\nWhat was done: inspected\nFiles / artifacts changed: none\nVerification evidence: source read\nResidual risks / accepted gaps: runtime unavailable\nFollow-up: bounded check"}, ROOT, env)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout, "")
+
+    def test_stop_is_advisory_for_ordinary_and_incomplete_reports(self):
+        for ready in (False, True):
+            with self.subTest(ready=ready), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                write_marker(root, valid_marker(status="ready_for_completion_brief" if ready else "in_progress", completion_ready=ready))
+                env = dict(os.environ, CODEX_HOOK_WORKSPACE_ROOT=str(root))
+                result = run_hook(HOOKS / "stop_runlog_reminder.py", {"last_assistant_message": "Concise result with evidence and limits."}, ROOT, env)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                payload = json.loads(result.stdout) if result.stdout else {}
+                self.assertNotIn("decision", payload)
+
     def test_project_local_hooks_use_official_codex_shape_and_match_packaged_template(self):
         active = json.loads(ACTIVE_HOOKS_JSON.read_text(encoding="utf-8"))
         self.assertEqual(active, json.loads(MIRROR_HOOKS_JSON.read_text(encoding="utf-8")))
@@ -287,8 +333,9 @@ class LifecycleHooksTest(unittest.TestCase):
         self.assertEqual("SessionStart", payload["hookEventName"])
         context = payload["additionalContext"]
         self.assertIn(".codex/product-agent-os/lifecycle-state.json", context)
-        self.assertIn("task_start_brief_v1", context)
-        self.assertIn("Product value", context)
+        self.assertIn("task_start_brief_v2", context)
+        self.assertIn("Risks / approvals", context)
+        self.assertIn("Stop is advisory", context)
         self.assertIn("control-plane sync", context)
         self.assertIn("canonical_skill_source=plugins/product-agent-os/skills", context)
         self.assertIn("mixed_source=forbidden", context)
@@ -458,6 +505,19 @@ class LifecycleHooksTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual("", result.stdout)
 
+    def test_concise_marker_bootstrap_and_terminal_flag(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            bootstrap = run_hook(HOOKS / "pre_tool_use_policy.py", {
+                "tool_name": "shell_command", "tool_input": {
+                    "command": 'Set-Content .codex/product-agent-os/lifecycle-state.json \'{"scope_note_shown": true}\''
+                }}, root)
+            self.assertEqual("", bootstrap.stdout)
+            write_marker(root, valid_marker(completion_ready=True))
+            result = run_hook(HOOKS / "pre_tool_use_policy.py", {
+                "tool_name": "shell_command", "tool_input": {"command": "Set-Content output.txt value"}}, root)
+            self.assertEqual("deny", json.loads(result.stdout)["hookSpecificOutput"]["permissionDecision"])
+
     def test_stop_hook_accepts_terminal_completion_brief_without_continuation(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -487,7 +547,7 @@ class LifecycleHooksTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual("", result.stdout)
 
-    def test_stop_hook_requests_one_continuation_for_incomplete_ready_brief(self):
+    def test_stop_hook_never_requests_format_correction_for_a_ready_marker(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             write_marker(root, valid_marker(status="ready_for_completion_brief", completion_ready=True))
@@ -501,9 +561,7 @@ class LifecycleHooksTest(unittest.TestCase):
             )
 
         self.assertEqual(result.returncode, 0, result.stderr)
-        payload = json.loads(result.stdout)
-        self.assertEqual("block", payload["decision"])
-        self.assertIn("terminal Completion Brief", payload["reason"])
+        self.assertEqual(result.stdout, "")
 
     def test_stop_hook_accepts_blocked_terminal_brief_without_continuation(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -543,9 +601,7 @@ class LifecycleHooksTest(unittest.TestCase):
             )
 
         self.assertEqual(result.returncode, 0, result.stderr)
-        payload = json.loads(result.stdout)
-        self.assertIn("systemMessage", payload)
-        self.assertNotIn("decision", payload)
+        self.assertEqual(result.stdout, "")
 
 
 if __name__ == "__main__":

@@ -23,7 +23,7 @@ Keep autonomous agents from editing overlapping files or treating generated surf
 2. Treat root control-plane files, `.codex` system files, generated status outputs, public contracts, release files, and source registries as shared-risk surfaces.
 3. Use sequential fallback when two agents need the same path or public contract.
 4. Require a fresh context handoff before any parallel write.
-5. The root owns the lifecycle marker, user-facing Task/Completion Briefs and the single shared Control-Plane Sync.
+5. The root owns the lifecycle marker, user-facing Task Start Brief / Completion Ledger and the single shared Control-Plane Sync.
 6. Require a compact Subagent Context Packet before launch for every subagent or read-only sidecar.
 7. Require one compact Subagent Result Packet after completion, timeout, cancellation, or close; the subagent must not open or close a nested lifecycle.
 8. The Agent Handoff / Context Packet must record role, `fork_turns`, prompt, allowed files, files actually read, and outputs.

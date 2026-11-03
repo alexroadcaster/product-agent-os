@@ -20,16 +20,18 @@ Use this artifact for `quality_testing_evals` traceability. Map requirement, sce
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | TBD | TBD | TBD | exact model ID or `not_applicable` | exact value or `not_applicable` | stable comparison reference | smallest valid gate | score/verdict | measured or gap | measured or gap | current command/eval/runtime/manual evidence | TBD | `present_unverified` |
 
-## GPT-5.6 Migration Comparison
+## GPT-6 Migration Comparison
 
 For each migrated role or workflow, keep the task, prompt, tools, skills, sandbox, approvals, fixtures, and output rubric fixed. Run at least:
 
 | Candidate | Required comparison | Promotion rule |
 | --- | --- | --- |
-| `gpt-5.6-sol` or `gpt-5.6-terra` at preserved effort | baseline migration run | no regression in correctness, instruction following, tool completion, safety, or unsupported claims |
+| `gpt-6.1-sol` or `gpt-6.1-terra` at preserved effort | compare with recorded prior model at the same effort | no regression in correctness, instruction following, tool completion, safety, or unsupported claims |
 | same model at one lower supported effort | cost/latency candidate | promote only if quality is non-inferior and declared latency/cost thresholds pass |
 
 Record fresh-session evidence separately from config parsing. A valid config or green synthetic test proves the contract, not model-quality promotion.
+
+Record control-surface repairs separately: parent permissions and inherited MCP must be held constant in a model-only comparison. Restoring a prior model pin does not authorize restoring unsupported agent-local access settings.
 
 ## Backend Check Mapping
 

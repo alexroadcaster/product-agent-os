@@ -90,9 +90,9 @@ Few-shot нужен, когда важно не только "что", но и "
 examples:
   - input: "Проверь claim: Codex сам запускает subagents."
     output:
-      status: "rejected"
-      reason: "Official docs require explicit user request for subagents."
-      source: "https://developers.openai.com/codex/subagents"
+      status: "qualified"
+      reason: "Local Codex delegation can be requested by the user or applicable AGENTS/skill instructions; project policy may be stricter. Work Ultra has a separate proactive workflow."
+      source: "https://learn.chatgpt.com/docs/agent-configuration/subagents"
   - input: "Проверь claim: Structured Outputs решают все hallucinations."
     output:
       status: "qualified"
@@ -109,3 +109,6 @@ examples:
 - Есть правило для uncertainty?
 - Есть критерий проверки?
 
+## Проверка prompt перед миграцией
+
+Перед изменением prompt проверьте: задан ли результат; можно ли продолжить полезную работу без ответа; где заканчивается уже разрешенный scope; какие проверки обязательны; что оправдывает повтор; кто решает promotion. Не требуйте private chain-of-thought: нужны краткие основания, допущения и evidence. Сначала сравните модель при фиксированном prompt, затем изменяйте prompt отдельно. См. [GPT-6 prompting](overview.md) и [migration playbook](../playbooks/model-migration.md).

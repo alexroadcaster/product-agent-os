@@ -1,47 +1,34 @@
-# Security, sandbox and approvals
+# Security, permissions and approvals
 
-Source status: `official`  
-Sources: [Sandbox](https://developers.openai.com/codex/concepts/sandboxing), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Codex cloud](https://developers.openai.com/codex/cloud).
+Source status: `official + experiment`
 
-## Baseline model
+Checked 2026-11-03: [Permissions](https://learn.chatgpt.com/docs/permissions), [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents), [Configuration Reference](https://learn.chatgpt.com/docs/config-file/config-reference).
 
-Sandbox is a technical boundary: which files Codex can modify, which commands it can run and whether network access is available. Approval policy is a governance boundary: when Codex must stop and ask for permission.
+Sandbox and permissions are technical controls on local command execution. Approval policy controls eligible prompts. A role description, source document or skill does not grant privileges. This repository requires separate authorization for external writes, provider/model calls, browser, Git and activation changes.
 
-A safe baseline for local work:
+## Choose one configuration scheme
 
-```text
-sandbox_mode = "workspace-write"
-approval_policy = "on-request"
-approvals_reviewer = "user"
-```
+Permission profiles are beta. Select either `default_permissions` / `[permissions]` or legacy `sandbox_mode` / `[sandbox_workspace_write]`, not both. Inspect all effective layers and managed policy; examples are in [configuration](configuration.md). `:workspace` protects `.git`, `.agents`, `.codex`, `.aws`; a project directory being writable does not make every child writable. Legacy `read-only`, `workspace-write` and `danger-full-access` remain distinct modes; the last removes local sandbox restrictions and is not a remedy for approval friction.
 
-This mode allows work inside the workspace, but requires approval for actions outside the boundary, network commands or other sensitive operations.
+Custom agents inherit parent permissions and approvals. A reviewer instructed to avoid edits is behaviorally read-only, not a separately enforced read-only sandbox. Agent-local sandbox/MCP settings do not override the parent. Actual isolation requires applicable execution controls and fresh-session evidence.
 
-## Sandbox modes
+## Network and tool surfaces
 
-| Mode | Meaning | Use for |
+| Surface | Control boundary | What not to infer |
 | --- | --- | --- |
-| `read-only` | Codex can read, but should not change files or run substantial commands without permission | Planning, review, audit |
-| `workspace-write` | Codex can read, modify the workspace and run routine commands within the project boundary | Most local tasks |
-| `danger-full-access` | Codex runs without sandbox restrictions | Only deliberately and for a short time |
+| Local commands | Effective filesystem/network policy and command sandbox | A writable workspace does not imply network access |
+| Command destination filtering | Active network proxy and domain rules | `network.enabled = true` alone does not activate domain filtering |
+| Web search | Product/tool policy | Not governed by the command proxy allowlist |
+| MCP | Parent MCP configuration, tool/server policy and approvals | Declaration is not connection or successful execution |
+| Apps/connectors | App/tool authorization and approval settings | Command network policy is not a connector policy |
+| Browser/computer tools | Tool-specific controls and task authorization | Local command sandbox is not universal browser isolation |
 
-## Network access
+Domain rules require `features.network_proxy = true` or an enabled managed proxy. An active proxy without allow entries blocks domain requests; deny rules take precedence. Local, cloud setup and cloud agent phases have different network controls: inspect the chosen surface rather than asserting a universal default.
 
-Under the official model, Codex should not freely access the network by default during agentic work. In cloud setup, network access may be available during environment preparation, while the agent phase usually requires a separate internet access decision.
+## Approval and data review
 
-Practical rule:
+Before a sensitive action, identify destination, data, side effects, existing authority and the narrowest usable permission. A public documentation lookup and an install/provider operation are different actions. Never include secrets or unnecessary private data in prompts, docs, memory or evidence. `approvals_reviewer` does not widen the sandbox or re-review already allowed actions.
 
-- documentation can be checked against official sources;
-- install and package manager commands require explicit understanding of what will be downloaded;
-- secrets must not end up in prompts, docs, memory or artifacts.
+## Verification boundary
 
-## Approval checklist
-
-Before approval, ask:
-
-- Does the command write outside the workspace?
-- Does the command use the network?
-- Can the command delete, overwrite or send data?
-- Is there a narrower way to grant access?
-- Can broad access be replaced with a command prefix rule?
-
+Static config parsing cannot prove effective runtime policy. Record client/version/auth, loaded configuration, parent permissions, selected tool and observed permitted/denied behavior before an activation claim. The current documentation refresh changes no permissions; unresolved project contracts are listed in [Codex compatibility](../product-agent-os/codex-compatibility.md).

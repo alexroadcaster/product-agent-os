@@ -51,3 +51,6 @@ Cloud fits background tasks, especially when work can proceed independently from
 - secrets availability only where needed;
 - expected PR or artifact.
 
+## Models and surface boundaries
+
+CLI version does not establish Codex App or IDE extension version. API-key and ChatGPT sign-in can have different availability/retirement conditions. Match client/auth/model/effort using the [shared reference](models-and-reasoning.md); account availability and runtime activation need their own evidence.

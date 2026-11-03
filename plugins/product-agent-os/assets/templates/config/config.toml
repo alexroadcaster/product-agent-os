@@ -1,8 +1,8 @@
-sandbox_mode = "workspace-write"
+default_permissions = ":workspace"
 
 [agents]
 max_concurrent_threads_per_session = 3
-default_subagent_model = "gpt-5.6-terra"
+default_subagent_model = "gpt-6.1-sol"
 default_subagent_reasoning_effort = "medium"
 
 [agents.product-manager]
@@ -76,17 +76,19 @@ review = "high"
 mechanical = "low"
 
 [product_agent_os.model_migration]
-family = "GPT-5.6"
+family = "GPT-6"
 baseline_policy = "Preserve each role's current reasoning effort, then compare the same effort and one lower on representative tasks."
-role_policy = "Use Sol for complex judgment and Terra for everyday or read-heavy work; keep Luna candidate-only until a bounded eval passes."
+role_policy = "Use GPT-6.1 Sol for engineering and complex decisions; GPT-6.1 Terra for docs and bounded exploration. Astra and Luna remain evaluation candidates."
 activation_status = "config_pinned_behavioral_promotion_pending"
 fresh_session_hook_verification_required = true
 quality_cost_latency_eval_required = true
 
-[product_agent_os.sandbox_contract]
-default_mode = "workspace-write"
+[product_agent_os.permission_contract]
+enforcement = "parent_session_inherited"
+role_restrictions = "behavioral_not_separate_sandbox"
+default_profile = ":workspace"
 read_only_roles = ["architect", "explorer", "reviewer", "release-operator"]
-workspace_write_roles = ["product-manager", "builder", "tester", "docs-maintainer"]
+workspace_roles = ["product-manager", "builder", "tester", "docs-maintainer"]
 
 [product_agent_os.approval_contract]
 external_writes = "explicit"
@@ -126,6 +128,12 @@ memory_policy = "memory as recall only"
 activation_policy = "no silent activation"
 
 [product_agent_os.lifecycle_contract]
+task_start_brief = ".codex/artifact-templates/task-start-brief.md"
+completion_ledger = ".codex/artifact-templates/completion-ledger.md"
+brief_schema = "task_start_brief_v2"
+closure_contract = "product-agent-os-completion-ledger-v2"
+ordinary_reporting = "concise_result_evidence_limits"
+stop_policy = "advisory_no_chat_validation"
 task_plan_lifecycle = ".codex/workflows/task-plan-lifecycle.md"
 control_plane_sync = ".codex/workflows/control-plane-sync.md"
 agent_context_contract = ".codex/evals/agent-context-contract.json"
@@ -133,7 +141,7 @@ lifecycle_state = ".codex/product-agent-os/lifecycle-state.json"
 hook_policy = ".codex/hooks.json"
 hook_template_mirror = ".codex/hooks/hooks.json"
 chat_visibility = "required"
-required_for = "non_mechanical_tasks"
+required_for = "large_high_risk_material_implementation_release_or_explicit_packet"
 agent_instruction_policy = "root_only_lifecycle_subagents_return_result_packet"
 
 [workflows]
@@ -159,3 +167,6 @@ runlog_compaction = ".codex/workflows/runlog-compaction.md"
 
 [evals]
 agent_context_contract = ".codex/evals/agent-context-contract.json"
+
+[mcp_servers.openaiDeveloperDocs]
+url = "https://developers.openai.com/mcp"

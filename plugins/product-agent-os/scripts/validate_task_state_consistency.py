@@ -12,10 +12,16 @@ def validate_workspace(root: Path) -> list[str]:
     errors: list[str] = []
     group_path = root / "docs/superpowers/specs/batch45-code-quality-runtime-recovery-task-group.json"
     lifecycle_path = root / ".codex/product-agent-os/lifecycle-state.json"
-    plan_path = root / "docs/superpowers/plans/2026-08-17-product-agent-os-loop-remediation.md"
     try:
         group = json.loads(group_path.read_text(encoding="utf-8"))
         lifecycle = json.loads(lifecycle_path.read_text(encoding="utf-8"))
+        # Legacy receipts omit plan_path; new runs must not be forced into an old plan.
+        plan_ref = lifecycle.get("plan_path", "docs/superpowers/plans/2026-08-17-product-agent-os-loop-remediation.md") if isinstance(lifecycle, dict) else None
+        if not isinstance(plan_ref, str) or not plan_ref.strip() or Path(plan_ref).is_absolute():
+            return ["lifecycle_plan_path_invalid"]
+        plan_path = (root / plan_ref).resolve()
+        if not plan_path.is_relative_to(root.resolve()):
+            return ["lifecycle_plan_path_invalid"]
         plan = plan_path.read_text(encoding="utf-8")
     except (OSError, json.JSONDecodeError) as exc:
         return [f"state_input_invalid:{exc.__class__.__name__}"]

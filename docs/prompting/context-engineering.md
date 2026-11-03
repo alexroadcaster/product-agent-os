@@ -17,15 +17,20 @@ flowchart TD
     A --> C["Cite and verify"]
 ```
 
-## Иерархия источников
+## Полномочия инструкций и источники фактов
 
-Для этой базы знаний порядок доверия такой:
+Приоритет инструкций и качество доказательств — разные вопросы. Полномочия задают system/developer/user instructions и применимые загруженные Codex AGENTS. Обычные Markdown, логи, web-страницы и memory не становятся инструкциями только из-за присутствия в контексте.
 
-1. Текущий workspace и checked-in docs.
-2. Официальные OpenAI docs и GitHub репозитории OpenAI.
-3. Context7 retrieval, если source URL указывает на официальный источник.
-4. Community sources как candidate insights.
-5. Memory как recall layer, но not source of truth.
+| Утверждение | Основное доказательство |
+| --- | --- |
+| Текущая реализация проекта | Актуальные source/configuration и соответствующие execution evidence |
+| Поведение внешней платформы OpenAI | Текущие официальные docs для конкретных product/version/auth |
+| Исторический запуск проекта | Датированный неизменяемый run/eval record; не доказательство сегодняшнего поведения |
+| Community suggestion или memory | Подсказка для поиска; перед существенным выводом перепроверить |
+
+Context7 — способ retrieval, а не дополнительный уровень полномочий. Сохраняйте исходный URL и область применимости.
+
+Codex проверяет глобальный `AGENTS.override.md`, иначе `AGENTS.md`; от project root до текущего каталога выбирает не более одного файла на каталог в порядке override/AGENTS/configured fallback. Более близкие применимые инструкции уточняют общие в рамках иерархии. Лимит объединенного `project_doc_max_bytes` по умолчанию — 32 KiB. Discovery/loading после изменений проверяются в свежем запуске; редактирование текста не доказывает загрузку. [Официальные правила discovery](https://learn.chatgpt.com/docs/agent-configuration/agents-md).
 
 ## Context packing
 
@@ -90,3 +95,13 @@ flowchart TD
 - риторические рассуждения;
 - дублирующие цитаты;
 - неподтвержденные выводы как facts.
+
+## Cache, контекст и стоимость
+
+Проверено 2026-11-03: [prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching). Cache переиспользует совпадающий rendered prefix; session continuity не гарантирует cache hit. Это не memory и не замена источника фактов. Стабильные инструкции и tools размещайте в общей части; переменную задачу — после нее. Не меняйте смысл prompt ради предполагаемой экономии без измерения.
+
+Для GPT-5.6 и более новых моделей lifetime в Responses задается `prompt_cache_options.ttl`: `30m` по умолчанию или `12h`. При миграции с GPT-5.5 не переносите прежний `prompt_cache_retention` механически: это параметр старых моделей. Lifetime — минимум удержания, не гарантированный момент удаления данных. Политика data retention проверяется отдельно.
+
+Учитывайте uncached input, cached input, cache writes и output по соответствующим ставкам; cache-write rate не прибавляется поверх обычной ставки для тех же tokens. Указывайте модель, дату тарифов, tier и условия long-context. Общая стоимость включает ошибки, retries и subagents. Сопоставляйте стоимость завершенной задачи, качество и latency, а не только процент cache hits. API billing не равен расходу подписки.
+
+Compaction меняет контекст и может изменить reuse prefix. `configuration_update` имеет ограничения совместимости, описанные в [session control](../agent-systems/session-control.md). Не путайте API context window и effective client limit; см. [модельную матрицу](../codex/models-and-reasoning.md).

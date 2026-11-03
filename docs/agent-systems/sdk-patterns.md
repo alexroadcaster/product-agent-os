@@ -93,6 +93,30 @@ Responses API подходит, когда нужен прямой API-level к�
 | Быстро выполнить локальную инженерную задачу | Codex App / CLI |
 | Повторяемый workflow без кода | Skill + `AGENTS.md` |
 | Параллельное исследование в текущей сессии | Codex subagents |
-| Production agent app | Agents SDK |
+| Agent application | Choose Agents API, Agents SDK or Responses by execution/state ownership; see the matrix below |
 | Полный контроль над wire contract | Responses API |
 
+## GPT-6 API compatibility
+
+Проверено 2026-11-03: [API migration](https://developers.openai.com/api/docs/guides/latest-model). Полная модельная таблица — [models and reasoning](../codex/models-and-reasoning.md).
+
+| Модель | Responses | Chat Completions |
+| --- | --- | --- |
+| Astra, 6.1 Sol, 6.1 Terra | Использовать для tool calling | Endpoint доступен, но tool calling требует Responses |
+| 6 Sol, 6 Luna | Использовать для reasoning с tools | Function calling только при `reasoning_effort: "none"` |
+
+В Responses effort задается `reasoning.effort`, в Chat Completions — `reasoning_effort`. При effort, отличном от `none`, уберите `temperature`, `top_p`, `top_logprobs`; для Chat Completions также `logprobs`, для Responses — `message.output_text.logprobs` из `include`. Не переносите параметры одного endpoint в другой. API capability не требует автоматически заменить существующий Codex CLI runner.
+
+## Владение agent runtime
+
+Проверено по [Agents](https://developers.openai.com/api/docs/guides/agents) и [Responses Multi-agent](https://developers.openai.com/api/docs/guides/responses-multi-agent).
+
+| Вариант | Кто управляет выполнением и состоянием | Граница Product-Agent OS |
+| --- | --- | --- |
+| Codex subagents | Codex parent session; дочерние роли наследуют ее controls | Документированная поверхность; успех конкретной задачи требует evidence |
+| Agents API | OpenAI managed Codex harness и managed progress/state | Описанная внешняя возможность, новая интеграция здесь не реализована |
+| Agents SDK | Runner в приложении; приложение владеет deployment, storage, approvals | Возможный отдельный app runtime, не скрытая зависимость плагина |
+| Responses API | Приложение управляет loop/state, с optional hosted orchestration | API contract, не автоматический переход CLI runner |
+| Responses Multi-agent | Hosted beta orchestration; приложение интегрирует tool results | Отдельная beta: на дату проверки 6.1 Sol и GPT-5.6, не все GPT-6 |
+
+Responses Multi-agent требует своего beta contract; root/subagents автоматически compact, standalone `/responses/compact` не поддерживается. Нельзя считать single-agent параметры универсальными: например, `reasoning.summary` и `max_tool_calls` не поддерживаются этим режимом. Async tools нельзя безусловно смешивать с parallel tool calls в Multi-agent; проверяйте выбранный режим. Agents API session, SDK session, Responses conversation и sandbox — разные ресурсы. Для состояния tools и steering см. [session control](session-control.md).

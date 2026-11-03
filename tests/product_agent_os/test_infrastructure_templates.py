@@ -35,6 +35,8 @@ REQUIRED_TARGETS = {
     "EVALS.md",
     "RUNLOG.md",
     ".codex/config.toml",
+    ".codex/artifact-templates/task-start-brief.md",
+    ".codex/artifact-templates/completion-ledger.md",
     ".codex/agents/product-manager.toml",
     ".codex/agents/architect.toml",
     ".codex/agents/explorer.toml",
@@ -265,6 +267,19 @@ SCENARIO_HANDOFF_TERMS = [
 
 
 class InfrastructureTemplateTest(unittest.TestCase):
+    def test_lifecycle_packets_and_routes_match_active_workspace(self):
+        active = tomllib.loads((ROOT / ".codex/config.toml").read_text(encoding="utf-8"))
+        staged = tomllib.loads((TEMPLATE_ROOT / "config/config.toml").read_text(encoding="utf-8"))
+        for key in ("task_start_brief", "completion_ledger", "brief_schema", "closure_contract", "ordinary_reporting", "stop_policy", "required_for"):
+            self.assertEqual(active["product_agent_os"]["lifecycle_contract"][key], staged["product_agent_os"]["lifecycle_contract"][key])
+        for name in ("task-start-brief.md", "completion-ledger.md"):
+            self.assertEqual((ROOT / ".codex/artifact-templates" / name).read_bytes(),
+                             (TEMPLATE_ROOT / "artifact-templates" / name).read_bytes())
+        start = (TEMPLATE_ROOT / "artifact-templates/task-start-brief.md").read_text(encoding="utf-8")
+        ledger = (TEMPLATE_ROOT / "artifact-templates/completion-ledger.md").read_text(encoding="utf-8")
+        self.assertEqual(9, len(re.findall(r"^\*\*[^*]+\*\*$", start, re.M)))
+        self.assertEqual(13, len(re.findall(r"^- [^:\n]+:", ledger, re.M)))
+
     def test_required_template_targets_are_registered_once(self):
         templates = required_templates()
         targets = [item.target_path for item in templates]
@@ -2097,16 +2112,18 @@ class InfrastructureTemplateTest(unittest.TestCase):
         self.assertNotIn("sandbox", data)
         self.assertNotIn("approvals", data)
         self.assertIn("product_agent_os", data)
-        self.assertEqual(data["sandbox_mode"], "workspace-write")
-        self.assertNotIn("default_permissions", data)
+        self.assertEqual(data["default_permissions"], ":workspace")
+        self.assertNotIn("sandbox_mode", data)
         self.assertNotIn("permissions", data)
         self.assertEqual(data["agents"]["max_concurrent_threads_per_session"], 3)
         self.assertEqual(data["agents"]["product-manager"]["config_file"], "./agents/product-manager.toml")
         product_agent_os = data["product_agent_os"]
         self.assertEqual(product_agent_os["runlog_archive_dir"], ".codex/runlogs/archive")
-        self.assertEqual(product_agent_os["sandbox_contract"]["default_mode"], "workspace-write")
+        self.assertEqual(product_agent_os["permission_contract"]["default_profile"], ":workspace")
+        self.assertEqual(product_agent_os["permission_contract"]["enforcement"], "parent_session_inherited")
+        self.assertEqual(data["mcp_servers"]["openaiDeveloperDocs"]["url"], "https://developers.openai.com/mcp")
         self.assertEqual(product_agent_os["approval_contract"]["network_access"], "explicit")
-        self.assertEqual(product_agent_os["model_migration"]["family"], "GPT-5.6")
+        self.assertEqual(product_agent_os["model_migration"]["family"], "GPT-6")
         self.assertEqual(product_agent_os["execution_budget"]["writer_concurrency"], 1)
         self.assertEqual(product_agent_os["execution_budget"]["max_review_repair_cycles_per_slice"], 2)
         self.assertEqual(product_agent_os["skill_source"]["mixed_source_policy"], "forbidden_within_run")
@@ -2188,15 +2205,15 @@ class InfrastructureTemplateTest(unittest.TestCase):
         text = (TEMPLATE_ROOT / "workflows" / "task-plan-lifecycle.md").read_text(encoding="utf-8").lower()
 
         for expected in [
-            "task brief",
-            "completion brief",
+            "task start brief",
+            "completion ledger",
             "user-visible",
-            "show the task brief",
-            "show the completion brief",
-            "product value",
-            "technical value",
-            "complexity",
-            "estimated execution time",
+            "show the task start brief",
+            "show the completion ledger",
+            "ordinary fixes",
+            "financially material",
+            "explicit packet request",
+            "stop is advisory",
             "task_matrix_plan_v1",
             "before execution",
             "after execution",
@@ -2217,7 +2234,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
             with self.subTest(agent_template=path.name):
                 self.assertIn("[product_agent_os.lifecycle_contract]", text)
                 self.assertIn("[workflows]", text)
-                self.assertIn("root agent owns the user-visible task brief", text)
+                self.assertIn("root agent owns the user-visible task start brief", text)
                 self.assertIn("never start or close a nested lifecycle", text)
                 self.assertIn("do not run the shared `control_plane_sync`", text)
                 self.assertIn("subagent result packet", text)
@@ -2236,8 +2253,8 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "config_routed_control_plane_sync",
             ".codex/workflows/task-plan-lifecycle.md",
             ".codex/workflows/control-plane-sync.md",
-            "Task Brief",
-            "Completion Brief",
+            "Task Start Brief",
+            "Completion Ledger",
             "Control-Plane Sync",
             "control_plane_sync_before_completion",
             "control_plane_overflow_refactor",
@@ -2273,7 +2290,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
         self.assertEqual(lifecycle_contract["hook_policy"], ".codex/hooks.json")
         self.assertEqual(lifecycle_contract["hook_template_mirror"], ".codex/hooks/hooks.json")
         self.assertEqual(lifecycle_contract["chat_visibility"], "required")
-        self.assertEqual(lifecycle_contract["required_for"], "non_mechanical_tasks")
+        self.assertEqual(lifecycle_contract["required_for"], "large_high_risk_material_implementation_release_or_explicit_packet")
         self.assertEqual(
             lifecycle_contract["agent_instruction_policy"],
             "root_only_lifecycle_subagents_return_result_packet",
@@ -2309,6 +2326,8 @@ class InfrastructureTemplateTest(unittest.TestCase):
         }
 
         expected_templates = {
+            "task-start-brief.md": ["source status:", "**request**", "**acceptance**", "**risks / approvals**", "ordinary fixes"],
+            "completion-ledger.md": ["source status:", "product-agent-os-completion-ledger-v2", "- review:", "- runtime metrics:", "- execution time:", "no hook validates"],
             "adr.md": [
                 "source status:",
                 "context",

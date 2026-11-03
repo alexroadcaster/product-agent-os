@@ -51,3 +51,7 @@ Each atlas page should have a practical diagram, usage guidance, related artifac
 - Decorative diagrams can hide missing implementation decisions.
 - Skipping the atlas can lead to runtime or agent choices that are not aligned with approvals and evidence.
 - Treating generated views, browser proof gaps or installed skill cache as source truth can create unsupported completion claims.
+
+## Model and runtime refresh
+
+Use the [model matrix](../codex/models-and-reasoning.md) and [migration playbook](../playbooks/model-migration.md) with the team/runtime diagrams. API capabilities and candidate models are documented separately from current Product-Agent OS activation.

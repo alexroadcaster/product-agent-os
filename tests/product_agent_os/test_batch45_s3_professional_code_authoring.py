@@ -199,7 +199,8 @@ class Batch45S3ProfessionalCodeAuthoringTest(unittest.TestCase):
         self.assertIn("LIFECYCLE_STATE_REL", pre_hook)
         self.assertIn('"permissionDecision": "deny"', pre_hook)
         self.assertNotIn("professional_code_authoring_not_applicable_reason", stop_hook)
-        self.assertIn("Completion Brief", stop_hook)
+        self.assertIn("Completion Ledger", stop_hook)
+        self.assertNotIn('"decision": "block"', stop_hook)
 
     def test_empty_professional_code_authoring_summary_uses_not_applicable_status(self):
         packet = build_first_run_analysis_packet(

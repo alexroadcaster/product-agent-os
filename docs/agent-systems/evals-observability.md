@@ -89,3 +89,18 @@ result: "accepted | needs_review | rejected"
 | Handoff loss | Worker теряет constraints | Ввести structured handoff schema |
 | Tool overreach | Agent просит слишком широкие permissions | Ужесточить approval policy |
 | Eval blind spot | Build проходит, но качество слабое | Добавить scenario eval |
+
+## Миграция модели: измеряемый контракт
+
+Следуйте [model migration playbook](../playbooks/model-migration.md): fixed baseline, одна переменная, независимая оценка, заранее выбранные пороги и бюджет. Новые модели остаются `documented_candidate_not_evaluated`, пока отсутствуют реальные результаты. Эта методика не разрешает model/provider calls.
+
+| Измерение | Запись в run packet |
+| --- | --- |
+| Воспроизводимость | Revision, corpus/input hashes, client/auth/runtime, model/effort, prompts, skills, tools и permissions |
+| Качество | Task success, correctness, regressions, unsupported claims; одинаковая рубрика для paired runs |
+| Поведение | Tool failures, лишние approvals, преждевременный финал, повторные проверки без новых оснований |
+| Время | End-to-end latency и распределение при достаточной выборке |
+| Стоимость | Input/output/reasoning tokens, cache read/write, retries/subagents, tier, дата ставок и cost per completed task |
+| Активация | Effective path, отсутствие masking fallback и evidence из свежей сессии |
+
+Числовые threshold/budget утверждаются до запуска; отсутствующее измерение не равно нулю. Безопасность и schema failures блокируют promotion независимо от среднего score. Сначала сравнивайте supported baseline effort; оптимизацию effort и prompt выполняйте отдельно. Unit/docs checks доказывают свой контракт, а не качество модели или runtime activation. Источник методики: [официальная миграция](https://developers.openai.com/api/docs/guides/latest-model).

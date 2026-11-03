@@ -1,47 +1,67 @@
 # Конфигурация и расширяемость Codex
 
-Source status: `official`
-Источники: [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Create a skill](https://developers.openai.com/codex/skills/create-skill), [Subagents](https://developers.openai.com/codex/subagents), [Agents SDK with Codex](https://developers.openai.com/codex/guides/agents-sdk).
+Source status: `official + experiment`
+Источники: [Agent approvals and security](https://learn.chatgpt.com/docs/permissions), [Create a skill](https://developers.openai.com/codex/skills/create-skill), [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents), [Agents SDK with Codex](https://developers.openai.com/codex/guides/agents-sdk).
 
-## Approval policy как управляемый интерфейс
+## Approval policy и permission profiles
 
-Для продвинутой работы approval policy лучше описывать не как один общий переключатель, а как набор отдельных gates:
+Проверено 2026-11-03 по [Configuration Reference](https://learn.chatgpt.com/docs/config-file/config-reference) и [Permissions](https://learn.chatgpt.com/docs/permissions). Ниже независимые примеры, а не изменения конфигурации репозитория. Effective settings зависят также от версии клиента, доверенных project layers и managed policy.
+
+`on-request` допускает соответствующие интерактивные approval prompts; `never` отклоняет запросы, требующие approval. Ни один вариант не расширяет filesystem permissions. `untrusted` больше не поддерживается как approval policy; project `trust_level` — другой параметр. `approvals_reviewer` выбирает проверяющего для допустимых запросов, но не изменяет sandbox и не проверяет уже разрешенные действия.
+
+### Категории granular prompts
+
+Полный TOML-пример использует обычные таблицы и совместим с парсером проекта. Не объединяйте его со скалярным `approval_policy` в одной конфигурации.
 
 ```toml
-approval_policy = { granular = {
-  sandbox_approval = true,
-  rules = true,
-  mcp_elicitations = true,
-  request_permissions = false,
-  skill_approval = false
-} }
+[approval_policy.granular]
+sandbox_approval = true
+rules = true
+mcp_elicitations = true
+request_permissions = false
+skill_approval = false
 ```
 
-Практический смысл:
+| Ключ | Значение true |
+| --- | --- |
+| `sandbox_approval` | Допускает approval prompts для sandbox escalation |
+| `rules` | Допускает запросы подтверждения по rules |
+| `mcp_elicitations` | Допускает MCP elicitation prompts |
+| `request_permissions` | Допускает запросы расширения permissions |
+| `skill_approval` | Допускает skill-script approval prompts, а не любой вызов skill |
 
-| Gate | Что контролирует | Рекомендация |
-| --- | --- | --- |
-| `sandbox_approval` | Выход команды за sandbox boundary | Включать для локальных проектов |
-| `rules` | Подтверждение rule-based действий | Включать при сложной политике доступа |
-| `mcp_elicitations` | Запросы подтверждений от MCP tools | Включать для внешних систем |
-| `request_permissions` | Запросы расширенных permissions | Отключать по умолчанию, включать осознанно |
-| `skill_approval` | Разрешение на skill invocation | Включать, если skills имеют side effects |
+False запрещает соответствующую категорию запросов; это не молчаливое разрешение операции. Флаги выбираются под разрешенный workflow, а не включаются все по умолчанию.
 
-Baseline для анализа и review:
+### Permission profiles (beta)
 
-```toml
-approval_policy = "untrusted"
-sandbox_mode = "read-only"
-allow_login_shell = false
-```
-
-Baseline для controlled implementation:
+Независимый пример родительской сессии для анализа:
 
 ```toml
+default_permissions = ":read-only"
 approval_policy = "on-request"
-sandbox_mode = "workspace-write"
 allow_login_shell = false
 ```
+
+Независимый пример родительской сессии для разрешенных локальных изменений:
+
+```toml
+default_permissions = ":workspace"
+approval_policy = "on-request"
+allow_login_shell = false
+```
+
+Profiles не объединяются с `sandbox_mode` / `sandbox_workspace_write`. Проверяйте все загруженные layers и CLI overrides: legacy settings могут выбрать старую схему, а managed profile requirements — отклонить ее. Legacy-вариант остается доступным в документированных условиях:
+
+```toml
+sandbox_mode = "workspace-write"
+approval_policy = "on-request"
+```
+
+Этот legacy-пример используется только вместо profile configuration. `:workspace` защищает `.git`, `.agents`, `.codex` и `.aws` внутри writable roots; перед заявлением о возможности записи проверяйте effective policy. Различия command network и MCP/web/browser — в [руководстве по безопасности](security.md).
+
+### Модели и текущий контракт проекта
+
+Применимость моделей указана в [матрице](models-and-reasoning.md). После разрешённого технического продолжения 2026-11-03 репозиторий использует GPT-6.1 Sol/Terra pins, parent `default_permissions = ":workspace"` и parent MCP. Валидатор согласован с этими контрактами. Эффективные permissions и модель в новой сессии требуют отдельного доказательства; см. [технические зависимости](../product-agent-os/codex-compatibility.md).
 
 ## Skill metadata
 
@@ -90,6 +110,5 @@ flowchart LR
 
 - Codex можно использовать не только как standalone assistant, но и как execution tool внутри более широкой Agents SDK orchestration.
 - Project Manager должен задавать source of truth documents: `REQUIREMENTS.md`, `AGENT_TASKS.md`, `TEST.md`.
-- Каждый worker-agent должен иметь narrow deliverables и sandbox/approval policy.
+- Каждый worker получает ограниченный результат; Codex subagents наследуют sandbox и approvals родителя. Для отдельных runtimes нужна собственная явно заданная политика исполнения.
 - Handoff обратно к Project Manager обязателен, чтобы финальная сборка решений не распалась на независимые результаты.
-

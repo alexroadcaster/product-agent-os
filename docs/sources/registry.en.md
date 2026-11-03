@@ -1681,3 +1681,52 @@ These markers preserve source-owned test routing after registry compaction. Full
 - B44-S7 manual pilot reached ready_for_owner_review using explicit staged state, one redacted feedback row, one metrics row and two review-only candidates
 - Promptfoo export staged 8 eval cases and failure taxonomy; HALO-style packet staged 6 local recommendations; no Promptfoo run, HALO service call, provider/model/API call, browser automation, target workspace mutation, active automation, git/release/deploy/publish or auto-apply was performed
 ```
+
+## GPT-6 documentation refresh — 2026-11-03
+
+These official pages were fetched through OpenAI Developer Docs for the 20-item refresh. Trust level: official/high; verification status: source-read and documentation comparison, not account availability or runtime proof. Candidate role mappings and the migration rubric are project proposals. Original historical cards/URLs remain unchanged in the archive.
+
+| Source | Findings | Checked at |
+| --- | --- | --- |
+| [Models / availability](https://learn.chatgpt.com/docs/models) | 3, 4, 12 | 2026-11-03 |
+| [API model catalog](https://developers.openai.com/api/docs/models) | 3, 12 | 2026-11-03 |
+| [GPT-6 migration / prompting](https://developers.openai.com/api/docs/guides/latest-model) | 4, 12-15 | 2026-11-03 |
+| [Astra](https://developers.openai.com/api/docs/models/gpt-6-astra) | 12, 16 | 2026-11-03 |
+| [Sol 6.1](https://developers.openai.com/api/docs/models/gpt-6.1-sol) | 12, 16 | 2026-11-03 |
+| [Terra 6.1](https://developers.openai.com/api/docs/models/gpt-6.1-terra) | 12, 16 | 2026-11-03 |
+| [Luna 6](https://developers.openai.com/api/docs/models/gpt-6-luna) | 12, 16 | 2026-11-03 |
+| [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents) | 1, 2, 9 | 2026-11-03 |
+| [Permissions](https://learn.chatgpt.com/docs/permissions) | 1, 7, 8 | 2026-11-03 |
+| [Configuration Reference](https://learn.chatgpt.com/docs/config-file/config-reference) | 5, 6, 7 | 2026-11-03 |
+| [AGENTS discovery](https://learn.chatgpt.com/docs/agent-configuration/agents-md) | 10 | 2026-11-03 |
+| [Skills](https://learn.chatgpt.com/docs/build-skills) | 2, 9 | 2026-11-03 |
+| [Caching](https://developers.openai.com/api/docs/guides/prompt-caching) | 16 | 2026-11-03 |
+| [Async tools](https://developers.openai.com/api/docs/guides/async-tool-calling) | 17 | 2026-11-03 |
+| [Steering](https://developers.openai.com/api/docs/guides/steering) | 17 | 2026-11-03 |
+| [Reasoning updates](https://developers.openai.com/api/docs/guides/reasoning) | 18 | 2026-11-03 |
+| [Compaction](https://developers.openai.com/api/docs/guides/compaction) | 18 | 2026-11-03 |
+| [Agent runtimes](https://developers.openai.com/api/docs/guides/agents) | 19 | 2026-11-03 |
+| [Responses Multi-agent](https://developers.openai.com/api/docs/guides/responses-multi-agent) | 19 | 2026-11-03 |
+| [Hooks](https://learn.chatgpt.com/docs/hooks) | 20 | 2026-11-03 |
+
+Canonical mapping: old Codex models/subagents/security links may redirect; this is not blanket broken-link evidence. Active changed guidance uses fetched canonical pages. Unchanged historical links remain dated evidence, not revalidated current claims. See the [refresh plan](../superpowers/plans/2026-11-03-gpt6-documentation-refresh.md) and [model matrix](../codex/models-and-reasoning.md).
+
+
+## Executable contract alignment — 2026-11-03
+
+Official contracts rechecked: [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents), [Permissions](https://learn.chatgpt.com/docs/permissions), [Models](https://learn.chatgpt.com/docs/models), [Migration quickstart](https://developers.openai.com/api/docs/guides/latest-model/gpt-6-astra.md#migration-quickstart). The parent owns permissions/MCP; custom agents may reduce supported capabilities. Fifteen active and eight staged profiles select Sol/Terra 6.1 with preserved effort. Validators enforce project policy, not the entire OpenAI model catalog. Actual activation, availability and quality remain unverified. Plan and evidence: [technical follow-up](../superpowers/plans/2026-11-03-gpt6-documentation-refresh.md).
+
+
+## 2026-11-03 — Trade lifecycle parity
+
+Project-local reference: Trade `AGENTS.md`, Task Start Brief, Completion Ledger, delivery/review workflows and control-plane cases (read-only SHA-256 receipts in the owning task group). Current template has 13 ledger items; an older eleven-field eval description is not authoritative. PAOS adapts nine start labels, thirteen ledger items and conditional scope without copying Trade deployment paths. Stop reporting is advisory; explicit packet validation is local evidence only. Official [Hooks](https://learn.chatgpt.com/docs/hooks) documents Stop continuation and exact-hash trust; changing source does not prove trusted fresh-session execution. Evidence/status: `docs/superpowers/specs/gpt6-documentation-refresh-task-group.json`, `lifecycle_parity`.
+
+
+## 2026-11-03 — Fresh-session lifecycle acceptance
+
+Source: authorized new desktop chat and compact receipts in `docs/superpowers/specs/gpt6-documentation-refresh-task-group.json`, `lifecycle_parity.activation_check`. Full 9/13 and ordinary concise reporting were observed; the strict ledger validator disagreed with output syntax. SessionStart/PostToolUse context delivery was observed, but terminal-marker PreToolUse enforcement failed for `functions.exec -> tools.apply_patch`: the sentinel was created. Direct script deny is separate synthetic evidence. Result: activation_failed, not runtime-ready. [Official Hooks](https://learn.chatgpt.com/docs/hooks) requires exact-definition trust for non-managed hooks; the actual trust/matcher/response-handling cause is not established. No trust or implementation change in this check.
+
+
+## 2026-11-03 — Lifecycle repair acceptance
+
+ACT-F1..F6 repaired. PreToolUse/Stop were skipped because cosmetic statusMessage changes made exact definitions modified. Restored the prior trusted definitions; commands, matchers, timeouts, policy scripts and trust records unchanged. Full 9/13 and concise cases passed; terminal-marker nested apply_patch was denied and sentinel is absent. Evidence: `lifecycle_parity.repair` in `docs/superpowers/specs/gpt6-documentation-refresh-task-group.json`. Local Codex Desktop acceptance for the tested routes only. Silent Stop execution is not independently traced; no correction loop or post-final tools observed. General mutation-channel completeness, hosted/production delivery and model benchmarking are not claimed. Legacy statusMessage wording is retained for exact-definition compatibility. [Official Hooks](https://learn.chatgpt.com/docs/hooks) describes exact-definition trust and skipping modified hooks. The previous failed acceptance remains historical evidence.

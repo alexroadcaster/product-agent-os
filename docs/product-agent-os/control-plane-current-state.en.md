@@ -8,6 +8,18 @@ or `EVALS.md`. The root control-plane files stay compact routers: they show the
 current route, verification gates, claim ceilings, and pointers to this page,
 the source registry, track backlogs, and evidence packets.
 
+## Lifecycle repair — 2026-11-03
+
+**verified_local_runtime; activation_pending=false.** ACT-F1..F6 repaired. PreToolUse/Stop were skipped because cosmetic statusMessage changes made exact definitions modified. Restored the prior trusted definitions; commands, matchers, timeouts, policy scripts and trust records unchanged. Full 9/13 and concise cases passed; terminal-marker nested apply_patch was denied and sentinel is absent. Evidence: `lifecycle_parity.repair` in `docs/superpowers/specs/gpt6-documentation-refresh-task-group.json`. Local Codex Desktop acceptance for the tested routes only. Silent Stop execution is not independently traced; no correction loop or post-final tools observed. General mutation-channel completeness, hosted/production delivery and model benchmarking are not claimed. Legacy statusMessage wording is retained for exact-definition compatibility.
+
+## Lifecycle reporting — 2026-11-03
+
+The current contract routes nine-field Task Start Brief and thirteen-item Completion Ledger through `.codex/config.toml`. Full packets apply to large/high-risk/material implementation, release/readiness or explicit requests; ordinary work uses concise results, evidence and limits. Stop is advisory without chat-format continuation. Legacy sessions remain compatible. Detailed verification and activation limits belong to `lifecycle_parity` in `docs/superpowers/specs/gpt6-documentation-refresh-task-group.json`. Older lifecycle descriptions below are historical receipts.
+
+## Historical fresh-session acceptance — 2026-11-03
+
+**activation_failed**: full/concise reporting and SessionStart/PostToolUse context were observed in a fresh desktop chat, but a terminal-marker nested apply_patch mutation was not denied. Strict ledger validation also disagrees with the displayed packet. See `lifecycle_parity.activation_check` in the November task-group JSON for six findings, exact turns and remaining trust/event gaps. Local unit success does not supersede this host result.
+
 ## Source Matrix
 
 | Source | Claim | Relevance | Freshness | Confidence | Conflicts |

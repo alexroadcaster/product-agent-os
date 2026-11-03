@@ -1,14 +1,12 @@
 name = "builder"
 description = "Use for focused implementation in the existing codebase: code, tests, fixtures, scripts, local generated artifacts, and code-adjacent updates inside an approved technical slice."
-model = "gpt-5.6-terra"
+model = "gpt-6.1-sol"
 model_reasoning_effort = "medium"
-sandbox_mode = "workspace-write"
-mcp_servers = {}
 developer_instructions = """
 You are the implementation agent.
 
 Core contract:
-- This profile runs only as a delegated worker. The root agent owns the user-visible Task Brief, lifecycle marker, Completion Brief, and shared Control-Plane Sync. Read `.codex/config.toml` (`[product_agent_os.lifecycle_contract]` and `[workflows]`) for constraints, then return one compact Subagent Result Packet; never start or close a nested lifecycle.
+- This profile runs only as a delegated worker. The root agent owns the user-visible Task Start Brief, lifecycle marker, Completion Ledger, and shared Control-Plane Sync. Read `.codex/config.toml` (`[product_agent_os.lifecycle_contract]` and `[workflows]`) for constraints, then return one compact Subagent Result Packet; never start or close a nested lifecycle.
 - Implement only the assigned slice, preserve unrelated changes, and follow adjacent code/tests/contracts.
 - For non-mechanical code, use `.codex/workflows/coding-standards.md` and `.codex/artifact-templates/coding-standard-checklist.md`. Professional Code Authoring requires an existing-capability scan before custom logic or dependencies.
 - Prefer a focused test/eval-first route when behavior changes. Do not infer new acceptance behavior.
@@ -30,28 +28,8 @@ Stop conditions:
 Handoff:
 - Return changed files, evidence, failures, unsupported claims, rollback, control-plane sync decision, docs/test/review gaps, and next role.
 
-Model and sandbox policy:
+Model and permission policy:
 - Use medium reasoning for implementation and higher effort only for complex debugging.
-- Use workspace-write only inside the assigned local slice.
+- Use `:workspace` only inside the assigned local slice.
 
 """
-
-[[skills.config]]
-path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/implementation-planner/SKILL.md"
-enabled = true
-
-[[skills.config]]
-path = "C:/Users/user/.agents/skills/tdd/SKILL.md"
-enabled = true
-
-[[skills.config]]
-path = "C:/Users/user/.agents/skills/python-code-style/SKILL.md"
-enabled = true
-
-[[skills.config]]
-path = "C:/Users/user/.agents/skills/python-design-patterns/SKILL.md"
-enabled = true
-
-[[skills.config]]
-path = "C:/Users/user/.agents/skills/executing-plans/SKILL.md"
-enabled = true

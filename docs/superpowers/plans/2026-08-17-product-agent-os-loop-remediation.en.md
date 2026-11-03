@@ -261,3 +261,7 @@ flowchart LR
 - Changes are separated by R0-R4 and do not require Git history operations.
 - On a focused failure, only the current slice returns to repair; the previous green slice remains unchanged.
 - Hook activation is outside this implementation, so runtime disable/rollback is not required.
+
+## Subsequent documentation handoff — 2026-11-03
+
+Current root task `PAOS-DOCS-REFRESH-2026-11-03` is owned by the [new documentation plan](2026-11-03-gpt6-documentation-refresh.md). This dated pointer lets the legacy state-consistency check locate the current task; it does not change any August implementation status, result or Batch 45 dependency. The validator still hardcodes this historical plan; generalizing that implementation is separate follow-up.

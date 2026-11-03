@@ -51,3 +51,6 @@ Cloud подходит для фоновых задач, особенно ког
 - secrets availability only where needed;
 - expected PR or artifact.
 
+## Модели и границы поверхности
+
+Версия CLI не доказывает версию Codex App или IDE extension. API-key и ChatGPT sign-in могут иметь разные availability/retirement условия. Сопоставляйте client/auth/model/effort по [единому справочнику](models-and-reasoning.md); account availability и runtime activation требуют собственного evidence.

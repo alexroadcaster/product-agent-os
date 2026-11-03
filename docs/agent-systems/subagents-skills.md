@@ -1,7 +1,7 @@
 # Subagents, Skills и AGENTS.md
 
 Source status: `official + experiment`
-Источники: [Subagent concepts](https://developers.openai.com/codex/concepts/subagents), [Subagents configuration](https://developers.openai.com/codex/subagents), [Agent Skills](https://developers.openai.com/codex/skills), [AGENTS.md](https://developers.openai.com/codex/guides/agents-md), [Product-Agent OS plugin](../product-agent-os/index.md).
+Источники: [Subagent concepts](https://learn.chatgpt.com/docs/agent-configuration/subagents), [Subagents configuration](https://learn.chatgpt.com/docs/agent-configuration/subagents), [Agent Skills](https://learn.chatgpt.com/docs/build-skills), [AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md), [Product-Agent OS plugin](../product-agent-os/index.md).
 
 ## Когда что использовать
 
@@ -14,7 +14,7 @@ Source status: `official + experiment`
 
 ## Subagents
 
-Официальная модель: Codex не должен запускать subagents автоматически. Нужно явно просить о параллельной делегации, например `spawn agents`, `delegate в parallel` или `use один agent per point`.
+Local Codex запускает subagents по явному запросу пользователя или применимым инструкциям AGENTS/skill. ChatGPT Work Ultra может делегировать проактивно. Более строгая политика проекта остается отдельной: здесь нужна независимая задача, явный ownership и разрешение применимых инструкций. Наличие инструмента само по себе не является основанием делегации.
 
 Хороший subagent prompt:
 
@@ -102,3 +102,15 @@ Automation blockers остаются явными: active hook, schedule, MCP se
 - Запустите python tools/check_docs.py после editing docs.
 - Запустите python -m mkdocs build --strict до claiming site builds.
 ```
+
+## Наследование и активация custom agents
+
+Проверено 2026-11-03: [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents). Custom agent file задает `name`, `description`, `developer_instructions`, поддерживаемые model/effort и ограничения capabilities. Permissions, approvals, provider и MCP наследуются от родителя; agent-local `sandbox_mode`, `approval_policy`, `model_provider`, `mcp_servers` не переопределяют их. Read-only роль — поведенческая обязанность, пока техническая изоляция не доказана отдельно.
+
+Явные spawn model/effort имеют приоритет над defaults, затем используются defaults/parent по официальным правилам. Смена model без effort может выбрать default новой модели; custom-file overrides имеют собственный порядок. Проверяйте resolved model/effort, не выводите их из одного имени роли.
+
+Skill `allow_implicit_invocation: false` отключает implicit selection, но не explicit invocation. Metadata dependencies не выдаёт permissions и не доказывает доступность MCP. Нужны эффективная конфигурация родителя и текущая проверка инструмента; в этом обновлении MCP не активируется.
+
+## Входы и выходы
+
+Входы: текущая цель, применимые инструкции, источники, ownership и требуемые доказательства. Выходы: ограниченный пакет работы, обоснованный результат и handoff с открытыми рисками. Проверяйте применимость, полномочия и наблюдаемые evidence. Основные риски: пересечение записей, устаревший контекст и выдача предложения за активированное поведение.

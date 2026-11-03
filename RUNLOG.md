@@ -4,9 +4,53 @@
 Project: Codex Docs / Product-Agent OS
 Last compacted: 2026-07-07
 
+## Current lifecycle repair — 2026-11-03
+
+`PAOS-LIFECYCLE-REPAIR-2026-11-03`: **implemented_locally_verified / verified_local_runtime**. ACT-F1..F6 repaired. PreToolUse/Stop were skipped because cosmetic statusMessage changes made exact definitions modified. Restored the prior trusted definitions; commands, matchers, timeouts, policy scripts and trust records unchanged. Full 9/13 and concise cases passed; terminal-marker nested apply_patch was denied and sentinel is absent. Local Codex Desktop acceptance for the tested routes only. Silent Stop execution is not independently traced; no correction loop or post-final tools observed. General mutation-channel completeness, hosted/production delivery and model benchmarking are not claimed. Legacy statusMessage wording is retained for exact-definition compatibility.
+
+Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.repair`; [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). The earlier failed activation below is historical, superseded by this bounded retest.
+
+Final evidence-update checks: 100 documentation tests passed after correcting one Cyrillic heading in the English plan (initial docs run: 3 locale/parity failures). check_docs.py, RU/EN task matrices and task-state consistency passed. Baseline-preservation and git diff --check passed; no unrelated edits or baseline deletions.
+
+## Historical lifecycle activation check — 2026-11-03
+
+`PAOS-LIFECYCLE-ACTIVATION-2026-11-03`: verification completed with findings; **activation_failed**. Fresh chat 01a1a250-2429-73b1-91de-3ab6b06c660b completed large and ordinary scenarios. SessionStart and PostToolUse contexts were delivered; large reporting showed 9/13 fields, ordinary reporting stayed concise. The terminal-marker nested apply_patch probe created its sentinel: ACT-F1 P1, activation_failed. Direct script denial does not repair the runtime result. Six findings are recorded; implementation and trust unchanged.
+
+Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.activation_check`; [detailed plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). No trust/permissions/models/provider/Git changes.
+
+Evidence-update checks in this run: 100 documentation tests OK; check_docs.py, both task-matrix validators, task-state consistency and git diff --check exit 0. Receipt/source-hash/size-budget checks passed. These successful checks do not change the failed host guard verdict.
+
+## Historical lifecycle parity — 2026-11-03
+
+`PAOS-TRADE-LIFECYCLE-PARITY-2026-11-03`: `implemented_locally_verified / activation_failed`. Local implementation and verification are complete; fresh-session acceptance failed the runtime guard probe; see the current activation receipt above. Root owns shared state and self-review; no delegation. Trade source hashes are preserved in the task group. Prior technical/model work remains a separate historical receipt.
+
+Evidence owner: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity`; detail: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md).
+
+Current verification receipt: Full discovery: Ran 1253 tests in 675.268s; FAILED (failures=2, skipped=1). Two obsolete Completion Brief assertions corrected; complete hook-governance (5 tests) and renderer (28 tests) modules passed. No implementation change was needed for these failures. All remaining integrated commands exit 0; final focused/docs/status gates are recorded separately.
+
+Final affected-contract gate: 298 tests passed (including 100 documentation tests); 91/91 fixtures and 26/26 synthetic transcripts passed; compatibility is compatible; 15 active agents, hook validators, RU/EN task matrices, task-state consistency, docs structure and diff checks passed. Initial full discovery remains recorded as 1253 tests with two obsolete-name assertion failures and one platform skip; both changed modules and the final 298-test set passed afterward. No live model or fresh-session activation claim.
+
+## Current contract alignment — 2026-11-03
+
+`PAOS-CONTRACT-MODEL-ALIGNMENT-2026-11-03`: `implemented_locally_verified / behavioral_promotion_pending`. Parent permissions and MCP inheritance aligned; 23 active/staged profiles pinned to GPT-6.1 Sol/Terra with preserved effort; inherited skills moved to parent; validators and renderer reject unsupported contracts; lifecycle validator follows the explicit current plan.
+
+Current verification: Ran 1247 tests in 611.387s; OK (skipped=1); fixture/transcript eval, compatibility, 15 active agents, both hook validators, RU/EN task matrices, state consistency, docs checker and diff check exit 0. Detailed evidence, source receipts and rollback: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md) and [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json).
+
+Fresh-session effective permissions/MCP/model availability and quality/cost/latency comparison remain unverified. No provider calls, browser, hook activation, target mutation, Git publication or root site update.
+
+Final documentation/status checks: 225 tests passed (100 docs, 94 infrastructure templates, 6 lifecycle, 25 hooks); strict MkDocs preview exit 0 (`.venv-docs/Scripts/python.exe -m mkdocs build --strict --site-dir .docs-tools/reports/gpt6-contract-preview`); both task-matrix validators, task-state consistency, docs checker, static preservation checks and `git diff --check` exit 0. This preview is local build evidence, not root-site publication. Exact receipts are in `technical_followup.final_checks` of the task-group JSON.
+
 ## Purpose
 
 `RUNLOG.md` is the compact current-cycle handoff layer. It records latest routing, current evidence summary, residual risks and pointers. Detailed historical ledgers and batch marker banks belong in `docs/product-agent-os/control-plane-current-state.md`, source backlogs, evidence packets, registry entries and `prod_test.md`.
+
+## Documentation refresh handoff — 2026-11-03
+
+Task `PAOS-DOCS-REFRESH-2026-11-03`: documentation_implemented_locally_verified (20/20). Owner authorized saving the detailed plan and applying all 20 documentation corrections, checks and status updates. RU/EN plan validators passed at creation (exit 0). Initial combined suite: 224 tests, 15 failures/33 errors, including TEMP permissions, new-page counters and lifecycle pointer hardcoded to the August plan; both hook validators and docs checker passed. Source pages were refreshed through OpenAI Developer Docs. Agent validator still fails on the pre-existing sandbox_mode/default_permissions mismatch. No runtime/config/model/profile change is authorized or performed. Detailed evidence and final status are recorded in the [owning plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). Control-plane sync: REQUIREMENTS/PLAN/TEST/EVALS/RUNLOG update_required and updated; prod_test.md not_applicable. No root-file overflow occurred.
+
+The stale upper Batch 45 planning pointer was reconciled with its existing A06/task-group evidence: T28/T29 locally complete, T30 next; no Batch 45 implementation was performed.
+
+Final documentation checks: docs 100/100, task-plan lifecycle 5/5, lifecycle hooks 25/25, infrastructure templates 94/94; both hook validators, docs checker, RU/EN plan validators, task-state consistency and diff check passed. Strict preview MkDocs exit 0. Hooks used isolated OS TEMP outside the repository after fixture/root discovery interference. Source review: 20 official pages; examples: 10 TOML/JSON blocks; 17 pre-existing dirty files preserved by hash. Only test inventory metadata was updated for three new pairs; no assertions weakened. Agent validator remains a known separate exit-1 diagnostic; no model/config/runtime promotion.
 
 ## Current Handoff
 

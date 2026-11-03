@@ -4,6 +4,34 @@
 Project: Codex Docs / Product-Agent OS
 Last compacted: 2026-07-07
 
+## Current lifecycle repair — 2026-11-03
+
+`PAOS-LIFECYCLE-REPAIR-2026-11-03`: **implemented_locally_verified / verified_local_runtime**. Bold/plain labels are equivalent presentation; explicit closure_level and honest review/partial/docs-gap checks remain mandatory. Full packet scope and concise ordinary routes are consistent across active/staged evals. Source text quoted by a read tool is never counted as a host denial.
+
+Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.repair`; [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). The earlier failed activation below is historical, superseded by this bounded retest.
+
+## Historical lifecycle activation check — 2026-11-03
+
+`PAOS-LIFECYCLE-ACTIVATION-2026-11-03`: verification completed with findings; **activation_failed**. A green fixture run cannot substitute for a negative host enforcement case. Require observation of marker state, exact tool route, expected denial and absent write. Distinguish silent Stop outcome from execution proof. Score the observed 13-item ledger separately from strict parser failure; do not normalize away a failing result or force ordinary tasks into full packets.
+
+Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.activation_check`; [detailed plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). No trust/permissions/models/provider/Git changes.
+
+## Historical lifecycle parity — 2026-11-03
+
+`PAOS-TRADE-LIFECYCLE-PARITY-2026-11-03`: `implemented_locally_verified / activation_failed`. Rubric: full packets only when scope requires; ordinary fixes remain concise; required partial/blocked/unreviewed children prevent parent completion; no invented metrics or review independence; docs-static closure never proves runtime activation. Explicit packet validator checks format and known contradictions only. Stop does not judge chat. Local fixture/transcript comparisons are not live model behavior evidence.
+
+Evidence owner: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity`; detail: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md).
+
+## Current contract alignment — 2026-11-03
+
+`PAOS-CONTRACT-MODEL-ALIGNMENT-2026-11-03`: `implemented_locally_verified / behavioral_promotion_pending`. Parent permissions and MCP inheritance aligned; 23 active/staged profiles pinned to GPT-6.1 Sol/Terra with preserved effort; inherited skills moved to parent; validators and renderer reject unsupported contracts; lifecycle validator follows the explicit current plan.
+
+Current verification: Ran 1247 tests in 611.387s; OK (skipped=1); fixture/transcript eval, compatibility, 15 active agents, both hook validators, RU/EN task matrices, state consistency, docs checker and diff check exit 0. Detailed evidence, source receipts and rollback: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md) and [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json).
+
+Fresh-session effective permissions/MCP/model availability and quality/cost/latency comparison remain unverified. No provider calls, browser, hook activation, target mutation, Git publication or root site update.
+
+Model-quality comparison must freeze parent permissions/MCP after contract repair, then compare old and new model at preserved effort before lowering effort. Synthetic evals do not close availability, activation, quality, cost or latency gates.
+
 ## Purpose
 
 `EVALS.md` is the compact evaluation routing layer for current Product-Agent OS work. It stores rubrics, thresholds, active eval routes and unsupported-claim rules. Historical eval narratives and batch evidence live in [current control-plane state](docs/product-agent-os/control-plane-current-state.md), source backlogs, registry entries and evidence packets.
@@ -117,3 +145,7 @@ git diff --check
 Full unittest, fixture eval, transcript eval and strict MkDocs are required only if the focused checks expose contract drift or the slice changes plugin/runtime behavior or MkDocs-sensitive site surfaces.
 
 <!-- product-agent-os:end evals -->
+
+## Candidate model migration rubric — 2026-11-03
+
+The [model migration playbook](docs/playbooks/model-migration.md) and [model matrix](docs/codex/models-and-reasoning.md) define candidate-only guidance. Freeze corpus/prompt/tools/skills/permissions and effective effort before a model comparison; separately tune effort and prompt. Predeclare quality thresholds, cost/time/token budgets, stop conditions and independent review. Track correctness, task completion, unsupported claims, tool failures, excess approvals/check loops, latency, cache read/write and cost per completed task, including failed attempts/subagents. Missing measurements are not zero. No model eval or promotion occurred in this documentation task; account availability and fresh-session activation remain unverified. Existing Batch 45 no-go and historical results are unchanged.

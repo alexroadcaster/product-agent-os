@@ -1,55 +1,48 @@
-﻿# Runtime Decision Map
+# Runtime decision map
 
 Source status: `official + experiment`
 
-Эта диаграмма помогает выбрать, где запускать задачу Codex: в App, CLI, Cloud, non-interactive mode, MCP, GitHub Action или scheduled automation.
-
-## Диаграмма
+Проверено 2026-11-03.
 
 ```mermaid
 flowchart TD
-    A["New task"] --> B{"Needs close human steering?"}
-    B -->|Yes| C["Codex App / IDE"]
-    B -->|No| D{"Runs из terminal contract?"}
-    D -->|Yes| E["Codex CLI"]
-    D -->|No| F{"Needs repeatable non-interactive execution?"}
-    F -->|Yes| G["codex exec"]
-    F -->|No| H{"Needs orchestration из agent app?"}
-    H -->|Yes| I["Codex MCP"]
-    H -->|No| J{"Triggered через PR или CI?"}
-    J -->|Yes| K["GitHub Action"]
-    J -->|No| L{"Runs на schedule?"}
-    L -->|Yes| M["Codex automation"]
-    L -->|No| N["Manual playbook run"]
-
-    C --> O["Используйте для ambiguous product work"]
-    E --> P["Используйте для local repo tasks"]
-    G --> Q["Используйте для scripted jobs и eval loops"]
-    I --> R["Используйте как execution backend для Agents SDK"]
-    K --> S["Используйте для review, CI, release checks"]
-    M --> T["Используйте только после workflow является stable"]
+    A["Work, authority and acceptance"] --> B{"Interactive repository work?"}
+    B -->|Yes| C["Codex App / IDE / CLI"]
+    C --> D["Subagents only when authorized and useful"]
+    B -->|No| E{"Stable command or trigger?"}
+    E -->|Yes| F["codex exec / CI / automation candidate"]
+    E -->|No| G{"Agent application: execution owner?"}
+    G -->|OpenAI managed harness| H["Agents API"]
+    G -->|Application agent loop| I["Agents SDK"]
+    G -->|Direct API contract| J["Responses API"]
+    J --> K["Optional Responses Multi-agent beta"]
+    I --> M["Optional Codex MCP tool boundary"]
+    D --> V["Verify selected surface and permissions"]
+    F --> V
+    H --> V
+    M --> V
+    K --> V
+    V --> W["Record actual implementation and runtime evidence"]
 ```
 
 ## Как применять
 
-Выбирайте runtime по уровню неопределенности и цене ошибки.
+Выбирайте по неопределенности, владельцу исполнения, сроку жизни state, tools, approval scope и цене ошибки. Интерактивная неоднозначность подходит App/IDE/CLI; стабильный самодостаточный контракт — `codex exec`. CI/GitHub Action и расписания требуют явного разрешения, минимальных permissions и понятной обработки failures. MCP задает tool boundary, но не устраняет отсутствующие требования.
 
-| Поверхность | Когда использовать | Что проверить |
-| --- | --- | --- |
-| Codex App / IDE | Нужно много steering, review, уточнений | Видны ли файлы, diff и результаты команд |
-| CLI | Локальная инженерная задача с понятным scope | Есть ли команды проверки и sandbox policy |
-| `codex exec` | Non-interactive job, повторяемый eval, batch update | Prompt должен быть самодостаточным |
-| Codex MCP | Agent app должна делегировать работу Codex | Нужны границы tools, logs и approvals |
-| GitHub Action | PR review, разбор CI и проверки release | Нужны permissions и предсказуемый output. |
-| Automation | Регулярная задача с устойчивым workflow | Нужны skill, schedule и failure policy. |
+Для agent application [Agents API](https://developers.openai.com/api/docs/guides/agents) предоставляет OpenAI-managed Codex harness; SDK работает в приложении; Responses предоставляет API-контракт с optional hosted orchestration. [Responses Multi-agent](https://developers.openai.com/api/docs/guides/responses-multi-agent) — отдельная beta с ограничениями моделей/режимов. Эти варианты не взаимозаменяемы автоматически с Codex subagents.
 
-## Правило выбора
+## Следующие artifacts и проверки
 
-Если задачу трудно описать как контракт, оставляйте ее в App/IDE. Если задачу можно описать как стабильный контракт с входами, выходами и проверкой, переносите ее в CLI, `codex exec`, MCP или automation.
+Зафиксируйте runtime/client/auth/model, владельцев state/tools, разрешенные действия, stop/rollback и требуемые evidence. Используйте [runtime overview](../runtime/overview.md), [SDK contracts](../agent-systems/sdk-patterns.md), [session control](../agent-systems/session-control.md) и [матрицу моделей](../codex/models-and-reasoning.md). Раздельно отмечайте documented, designed, implemented и runtime-verified. Обновление не активирует новый runtime.
 
-## Антипаттерны
+## Типичные ошибки
 
-- Запускать scheduled automation до появления eval criteria.
-- Использовать MCP как обходной путь вокруг неясного prompt contract.
-- Отправлять в non-interactive mode задачу, где нужен product judgment.
-- Делать GitHub Action, которая пишет большие изменения без review gate.
+- Считать session, conversation и sandbox одним ресурсом.
+- Переносить beta support одной модели на все семейство.
+- Использовать MCP/automation для обхода неясного scope.
+- Публиковать, запускать сервер или вызывать provider без отдельного разрешения.
+- Выдавать статическую диаграмму или docs build за runtime evidence.
+
+## Входы и выходы
+
+Входы: текущая цель, применимые инструкции, источники, ownership и требуемые доказательства. Выходы: ограниченный пакет работы, обоснованный результат и handoff с открытыми рисками. Проверяйте применимость, полномочия и наблюдаемые evidence. Основные риски: пересечение записей, устаревший контекст и выдача предложения за активированное поведение.

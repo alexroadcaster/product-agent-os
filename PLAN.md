@@ -4,9 +4,41 @@
 Project: Codex Docs / Product-Agent OS
 Last compacted: 2026-07-07
 
+## Current lifecycle repair — 2026-11-03
+
+`PAOS-LIFECYCLE-REPAIR-2026-11-03`: **implemented_locally_verified / verified_local_runtime**. The six repair findings are resolved; activation_pending=false, activation_status=verified_local_runtime for the tested desktop routes. Future definition changes require exact-hash trust review and a fresh negative probe.
+
+Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.repair`; [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). The earlier failed activation below is historical, superseded by this bounded retest.
+
+## Historical lifecycle activation check — 2026-11-03
+
+`PAOS-LIFECYCLE-ACTIVATION-2026-11-03`: verification completed with findings; **activation_failed**. Next: diagnose ACT-F1 host trust/matcher/response handling without bypass; reconcile ACT-F2 ledger format and ACT-F3..F6 source contradictions; then repeat the fresh large/ordinary and safe negative scenarios. Fixes require their own authorized slice; this task changed evidence only.
+
+Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.activation_check`; [detailed plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). No trust/permissions/models/provider/Git changes.
+
+## Historical lifecycle parity — 2026-11-03
+
+`PAOS-TRADE-LIFECYCLE-PARITY-2026-11-03`: `implemented_locally_verified / activation_failed`. Sequence: read-only Trade baseline -> RED/GREEN regressions -> active/staged contracts -> integrated checks -> status sync. Detailed task and rollback live in the existing November plan pair; fresh-session trust/activation is a separate gate.
+
+Evidence owner: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity`; detail: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md).
+
+## Current contract alignment — 2026-11-03
+
+`PAOS-CONTRACT-MODEL-ALIGNMENT-2026-11-03`: `implemented_locally_verified / behavioral_promotion_pending`. Parent permissions and MCP inheritance aligned; 23 active/staged profiles pinned to GPT-6.1 Sol/Terra with preserved effort; inherited skills moved to parent; validators and renderer reject unsupported contracts; lifecycle validator follows the explicit current plan.
+
+Current verification: Ran 1247 tests in 611.387s; OK (skipped=1); fixture/transcript eval, compatibility, 15 active agents, both hook validators, RU/EN task matrices, state consistency, docs checker and diff check exit 0. Detailed evidence, source receipts and rollback: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md) and [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json).
+
+Fresh-session effective permissions/MCP/model availability and quality/cost/latency comparison remain unverified. No provider calls, browser, hook activation, target mutation, Git publication or root site update.
+
+Local PERM/MCP/BASELINE repair is complete. MODEL pins are switched, promotion pending. OPEN-RUNTIME remains separately scoped; Batch 45 T30 remains next in its existing queue.
+
 ## Purpose
 
 `PLAN.md` is the compact sequencing and rollback layer for current Product-Agent OS work. It points to source-owned plans, backlogs, evidence packets and [current control-plane state](docs/product-agent-os/control-plane-current-state.md) for detailed history.
+
+## Documentation refresh queue — 2026-11-03
+
+`PAOS-DOCS-REFRESH-2026-11-03`: documentation_implemented_locally_verified (20/20). The [detailed RU/EN plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md) owns all 20 task blocks; [task-group JSON](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json) owns machine status. Completed E0 baseline -> E1 controls/instructions -> E2 models -> E3 migration/evals -> E4 API/runtime/hooks -> E5 parity/navigation -> E6 checks and status. No model/runtime promotion. The subsequent authorized contract-alignment task owns PERM/MCP/MODEL/BASELINE repair; runtime activation and new API paths remain separate. Batch 45 T30 remains the next implementation dependency; this documentation queue does not execute T30-T34. Rollback only this documentation slice, preserving historical evidence and unrelated dirty changes.
 
 ## Current Planning Contract
 
@@ -27,7 +59,7 @@ Last compacted: 2026-07-07
 | Batch 41 | First-run cockpit S9 modernization and Neural_Flow staged comparison are source-owned generated-artifact evidence. | Next decision is owner review or a separately approved browser/Cosmos.gl/WebGL/target-apply proof slice. |
 | Batch 42 | Instruction/tool-use compliance matrix is planned-only. | Owner must choose read-only audit, source implementation, cache/global policy path or staged combination before execution. |
 | Batch 44 | Self-Learning Loop S0-S7 are local/staged/manual evidence. | Continue with `B44-S8` closure/promotion decision only after owner review; no active automation or auto-apply. |
-| Batch 45 | Professional Code Authoring remains advisory-only/no-go. T21 aborted on strict schema validation with `valid_pair_count=0`, `invalid_pair_count=8`, reviewer `0` and repo raw retention `0`; `B45-POSTQ4-T22-A02` remains no-go. A04 locally implements/focused-verifies T23/T24; `B45-CQRR-A05` locally implements/focused-verifies T25-T27: compact contract, project-native `present_unverified` stack/tool selector and risk-selected quality strategy; final T25-T27 combined route is 54 OK with independent local reviewer and completion-skeptic `GO_local_code_gate`. | Next is `B45-S9-C` / T28. T28-T34 remain unstarted; T34 is exact-approval-only. A04/A05 are no CLI/live/provider/external-reviewer/promotion proof and do not reverse T22 no-go. |
+| Batch 45 | Professional Code Authoring remains advisory-only/no-go. T21 aborted on strict schema validation with `valid_pair_count=0`, `invalid_pair_count=8`, reviewer `0` and repo raw retention `0`; `B45-POSTQ4-T22-A02` remains no-go. A04 locally implements/focused-verifies T23/T24; `B45-CQRR-A05` locally implements/focused-verifies T25-T27: compact contract, project-native `present_unverified` stack/tool selector and risk-selected quality strategy; final T25-T27 combined route is 54 OK with independent local reviewer and completion-skeptic `GO_local_code_gate`. | A06 subsequently completed T28/T29 locally; current next dependency is T30. T30-T34 remain unstarted; T34 is exact-approval-only. The earlier A04/A05 evidence is historical. A04/A05 are no CLI/live/provider/external-reviewer/promotion proof and do not reverse T22 no-go. |
 | Track 11 DOC-M25 | Root `site`, search and sitemap freshness are source-owned by the DOC-M25 packet. | Browser proof, broad scans, remediation, raw retention, publication, release/deploy and git actions remain separate. |
 | GPT-5.6 system-file remediation | `GPT56-R1-R6-REMEDIATION-2026-08-05` is locally implemented and verified: active/generated config use one `workspace-write` permission model, generic defaults are Terra/medium, skill write authority and Docs MCP routing are explicit, semantic validation is active, and durable prompts are compact/phase-neutral. Plan: `docs/superpowers/plans/2026-08-05-gpt56-r1-r6-remediation.md`; audit: `research/2026-07-23-codex-gpt-5p6-system-files-audit.md`. | Fresh-session MCP/`SessionStart` activation and same-effort/one-lower-effort behavioral comparison remain separate gates before any quality, cost, latency or promotion claim. |
 | Lifecycle/control-plane sync | `B45-S9-H01` locally hardens the config-routed lifecycle: read-only `PreToolUse` takes a no-workspace fast path, comment advisory inspects current patch paths, hook timeouts are bounded to 5 seconds, and `Completion Brief` is a terminal-final contract after checks/sync with one bounded `Stop` correction only when the lifecycle marker is ready. | Before closing state-changing work, finish checks and control-plane sync, set `ready_for_completion_brief`, then emit one terminal `Completion Brief` with no later tool call. Hook hash trust review and fresh-session activation proof remain separate user actions. |

@@ -84,6 +84,7 @@ plugins:
                 - Overview: codex/overview.md
                 - Work Surfaces: codex/surfaces.md
                 - Configuration And Extensibility: codex/configuration.md
+                - Models And Reasoning: codex/models-and-reasoning.md
                 - Security And Approvals: codex/security.md
                 - Workflows: codex/workflows.md
                 - Deep Use-Case Analysis: codex/use-cases-deep-analysis.md
@@ -165,6 +166,7 @@ plugins:
                 - Workflow To Skill: playbooks/workflow-to-skill.md
                 - Use Case To Plugin: playbooks/use-case-to-plugin.md
                 - Eval-Driven Improvement: playbooks/eval-driven-improvement.md
+                - Model Migration: playbooks/model-migration.md
                 - Product-Ready PR: playbooks/product-ready-pr.md
                 - Agent Operating Docs: playbooks/maintain-agent-operating-docs.md
                 - Docs Update: playbooks/docs-update.md
@@ -233,6 +235,7 @@ nav:
       - Обзор: codex/overview.md
       - Поверхности работы: codex/surfaces.md
       - Конфигурация и расширяемость: codex/configuration.md
+      - Модели и reasoning: codex/models-and-reasoning.md
       - Безопасность и approvals: codex/security.md
       - Рабочие процессы: codex/workflows.md
       - Deep analysis of use cases: codex/use-cases-deep-analysis.md
@@ -314,6 +317,7 @@ nav:
       - Workflow to skill: playbooks/workflow-to-skill.md
       - Use case to plugin: playbooks/use-case-to-plugin.md
       - Eval-driven improvement: playbooks/eval-driven-improvement.md
+      - Миграция моделей: playbooks/model-migration.md
       - Product-ready PR: playbooks/product-ready-pr.md
       - Agent operating docs: playbooks/maintain-agent-operating-docs.md
       - Workspace readiness audit: playbooks/workspace-readiness-audit.md

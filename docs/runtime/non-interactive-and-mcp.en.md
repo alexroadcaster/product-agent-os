@@ -23,3 +23,9 @@ Run non-interactive jobs with explicit commands and inspect output before making
 
 - Non-interactive mode is a poor fit for ambiguous first-run work.
 - MCP and Agents SDK tools can cross trust boundaries unless permissions and approvals are explicit.
+
+## MCP and API: separate boundaries
+
+[Custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents) inherit parent MCP. An agent-local declaration neither overrides parent MCP nor proves tool availability. Inspect effective configuration and observed tool results in an authorized runtime; documentation changes activate no server.
+
+Command network policy is not a policy for web search, connectors, MCP or browser tools. Each needs its own controls and authorized scope; see [security](../codex/security.md). Do not transfer API parameters into the CLI runner: [API compatibility](../agent-systems/sdk-patterns.md) applies to the corresponding endpoint. The current runner is not replaced with Responses or Agents API.

@@ -15,7 +15,7 @@ from product_agent_os.status_dashboard import StatusDashboardError
 from product_agent_os.status_dashboard import render_status_dashboard_plan as _render_status_dashboard_plan
 from product_agent_os.status_dashboard import stage_status_dashboard as _stage_status_dashboard
 from product_agent_os.templates import TemplateSpec, render_template, required_templates
-from product_agent_os.validators import validate_agent_file, validate_hook_file
+from product_agent_os.validators import validate_agent_file, validate_agent_project_config, validate_hook_file
 
 
 OWNER = "product-agent-os"
@@ -510,6 +510,8 @@ def _validate_file(
             tomllib.loads(text)
         except tomllib.TOMLDecodeError as exc:
             return marker_errors + [f"invalid toml: {exc}"]
+        if spec.key == "config":
+            return marker_errors + validate_agent_project_config(path)
     return marker_errors
 
 

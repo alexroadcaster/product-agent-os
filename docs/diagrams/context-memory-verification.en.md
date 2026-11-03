@@ -33,3 +33,9 @@ Before a completion claim, run the command or inspect the current evidence that 
 
 - Treating memory or generated reports as source truth can preserve stale claims.
 - Long context without evidence can create confident but unsupported answers.
+
+## Authority and context transitions
+
+This graph routes evidence, not instruction precedence. Current project source answers implementation questions; current official docs answer external-platform questions. Only applicable loaded instructions carry instruction authority; ordinary Markdown, memory and generated views do not. See [context engineering](../prompting/context-engineering.md) for AGENTS discovery and scope.
+
+For a user refinement, preserve the task and constraints before choosing steering, summary, compaction or a new session. They have different state contracts. `configuration_update` must not be combined with automatic compaction/truncation; explicit compaction requires restating changed settings. See [session control](../agent-systems/session-control.md) before selecting a route. No diagram proves loaded instructions, retained state or runtime activation.

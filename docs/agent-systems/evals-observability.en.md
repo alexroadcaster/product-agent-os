@@ -89,3 +89,18 @@ Do not change several independent things in one iteration: otherwise you cannot 
 | Handoff loss | Worker loses constraints | Introduce structured handoff schema |
 | Tool overreach | Agent asks for overly broad permissions | Tighten approval policy |
 | Eval blind spot | Build passes, but quality is weak | Add scenario eval |
+
+## Model migration: measurable contract
+
+Follow the [model migration playbook](../playbooks/model-migration.md): fixed baseline, one variable, independent assessment, predefined thresholds and budget. New models remain `documented_candidate_not_evaluated` without real results. This method does not authorize model/provider calls.
+
+| Measurement | Run packet record |
+| --- | --- |
+| Reproducibility | Revision, corpus/input hashes, client/auth/runtime, model/effort, prompts, skills, tools and permissions |
+| Quality | Task success, correctness, regressions, unsupported claims; identical rubric for paired runs |
+| Behavior | Tool failures, unnecessary approvals, premature final, repeated checks without new evidence |
+| Time | End-to-end latency and distribution when the sample is adequate |
+| Cost | Input/output/reasoning tokens, cache reads/writes, retries/subagents, tier, pricing date and cost per completed task |
+| Activation | Effective path, no masking fallback and fresh-session evidence |
+
+Numerical thresholds/budgets are fixed before execution; missing measurements are not zero. Safety and schema failures block promotion regardless of average score. Compare the supported baseline effort first; optimize effort and prompt separately. Unit/docs checks prove their contracts, not model quality or runtime activation. Method source: [official migration guidance](https://developers.openai.com/api/docs/guides/latest-model).

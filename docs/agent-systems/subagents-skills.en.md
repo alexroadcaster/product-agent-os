@@ -2,31 +2,84 @@
 
 Source status: `official + experiment`
 
-Subagents handle bounded work with fresh context. Skills encode repeated methods. `AGENTS.md` stores durable project rules. Product-Agent OS keeps these separate so agents do not use memory or generated views as source truth.
+Sources: [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents), [Skills](https://learn.chatgpt.com/docs/build-skills), [AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md), [Product-Agent OS](../product-agent-os/index.md).
 
-## Completion-skeptic Promotion Path
+## Choosing a mechanism
 
-`completion-skeptic` follows the normal repeatable-method chain: manual -> playbook -> skill -> plugin -> automation candidate. Owner review, rollback notes, failure log, eval cases and candidate-only status are required before promotion. A generated handoff or dashboard is not enough.
+| Mechanism | Use | Example |
+| --- | --- | --- |
+| AGENTS.md | Durable project rule | Test commands, documentation and source policy |
+| Skill | Repeatable bounded method | Gather source, write card, verify claims |
+| Subagent | Independent authorized work | Separate source research and review |
+| Plugin | Distribute skills/tools/agents | A shared documented workflow package |
 
-For documentation and scorecards, owner review is the explicit approval checkpoint.
+## Subagents
 
-Automation blockers remain explicit: no active hook, schedule, MCP server, Agents SDK runner, provider call or external write is created until manual evidence, scorecard review and a separate approval packet exist.
+Local Codex can delegate on an explicit user request or applicable AGENTS/skill instructions. ChatGPT Work Ultra can delegate proactively. Stricter project policy remains separate: this project requires independent ownership and applicable authorization; tool availability alone is insufficient.
+
+A bounded prompt names each source family, owned files, forbidden actions and expected output: sources, verified claims, uncertainty and proposed updates. The primary agent waits for results and consolidates findings without copying raw logs. Security, correctness, concurrency or test review can be separate responsibilities when the task justifies them; do not require a fixed number of agents.
+
+## Fresh-context handoff contract
+
+Generated `agent-skill-handoff.json` helps routing but does not replace a task packet.
+
+| Field | Required content |
+| --- | --- |
+| Ownership | Owned files/subsystems, forbidden files, expected artifact |
+| Fresh context | Current request, applicable rules, current sources and assumptions |
+| Verification | Required commands, evals or an explicit evidence gap |
+| Stop conditions | Approval boundary, missing source, conflicting ownership, failed check, stale context |
+| Return packet | Sources, touched/proposed files, observed results, risks and next role |
+
+Use sequential work when ownership overlaps or evidence cannot be obtained. Community claims remain intake material until trust level and verification status are explicit.
+
+## Skills and promotion
+
+A skill should have one job, clear inputs/outputs and verification. Keep SKILL.md focused; load references on demand; use scripts for deterministic work or external tooling, with authority checked separately.
+
+`completion-skeptic` follows manual -> playbook -> skill -> plugin -> automation candidate. Owner review, rollback notes, failure log, eval cases and candidate-only status are required. Generated handoff/dashboard output is not promotion proof. Documentation/scorecard promotion includes owner review; it does not mean every routine authorized edit needs another approval.
+
+Automation blockers remain explicit: active hooks, schedules, MCP servers, Agents SDK runners, provider calls and external writes need the applicable manual evidence and separate approval packet.
+
+## Skill design rubric
+
+| Criterion | Check |
+| --- | --- |
+| One job | One repeated workflow |
+| Trigger | Description covers when to use and when not to use |
+| Inputs / outputs | Required input and result contract are explicit |
+| Progressive disclosure | References/scripts/assets loaded only when needed |
+| Determinism | Scripts have a justified deterministic/tooling role |
+| Evals | Trigger and non-trigger cases exist |
+
+Candidate methods include source-card-writer, claim-verifier, insight-intake, docs-refresh, product-spec-writer, implementation-planner, test-gap-finder, release-note-writer, eval-loop-runner and ui-visual-reviewer. Naming a candidate does not install or activate it.
+
+`agents/openai.yaml` can describe display metadata, invocation policy and tool dependencies. Explicit invocation may be a project choice for source-sensitive transfer; it is not a universal requirement for every skill.
+
+## AGENTS.md
+
+Keep durable applicable rules here, not task history: documentation language, official-source policy, community trust labels and required checks. Use the project-local docs runtime for strict builds. For discovery/override/size limits see [context engineering](../prompting/context-engineering.md); writing a file alone does not prove it was loaded.
+
+## Custom-agent inheritance and activation
+
+Checked 2026-11-03: [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents). A custom agent file defines `name`, `description`, `developer_instructions`, supported model/effort choices and capability restrictions. Permissions, approvals, provider and MCP inherit from the parent; agent-local `sandbox_mode`, `approval_policy`, `model_provider`, `mcp_servers` do not override them. A read-only role is a behavioral obligation until technical isolation is separately demonstrated.
+
+Explicit spawn model/effort precede defaults; defaults/parent then resolve according to the official rules. Changing model without effort can select the new model default; custom-file overrides have their own ordering. Verify resolved model/effort rather than inferring them from a role name.
+
+Skill `allow_implicit_invocation: false` disables implicit selection, not explicit invocation. Dependency metadata grants no permissions and does not prove MCP availability. Effective parent configuration and current tool evidence are needed; this refresh activates no MCP.
 
 ## Inputs
 
-- Current user request, project rules, source files and ownership map.
-- Candidate skill trigger, inputs, outputs, verification and failure modes.
+Current goal, applicable instructions, source context, ownership boundaries and required evidence.
 
 ## Outputs
 
-- Handoff packet for subagents or a skill candidate for a repeated method.
-- Durable rule updates only when evidence proves they should persist.
+A bounded work packet, source-backed result and explicit handoff with unresolved risks.
 
 ## Verification
 
-Each worker should return sources used, assumptions, files touched, verification evidence, open risks and recommended next role.
+Check applicability, authority, ownership and observed evidence before accepting a result.
 
 ## Risks
 
-- Subagents without fresh context can miss project constraints.
-- A skill with broad scope can over-trigger and perform unrelated work.
+Overlapping writes, stale context and treating a proposed capability as activated behavior.

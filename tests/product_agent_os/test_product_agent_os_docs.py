@@ -131,13 +131,17 @@ DOC_M25_HISTORICAL_PENDING_SITE_PAGES = {
     DOCS / "product-agent-os" / "residual-follow-up-site-freshness.md",
 }
 DOC_M25_PENDING_SITE_PAGES = {
+    # Current source additions are preview-built, not promoted to historical root site.
+    DOCS / "codex" / "models-and-reasoning.md",
+    DOCS / "playbooks" / "model-migration.md",
+    DOCS / "superpowers" / "plans" / "2026-11-03-gpt6-documentation-refresh.md",
     DOCS / "product-agent-os" / "coding-standards.md",
     DOCS / "product-agent-os" / "self-learning-loop.md",
     DOCS / "superpowers" / "plans" / "2026-08-10-batch45-s9-a-durable-contract-recovery.md",
     DOCS / "superpowers" / "plans" / "2026-08-11-batch45-s9-b-compact-authoring-runtime.md",
 }
-BUILDABLE_MARKDOWN_PAGE_COUNT = 157
-LOCALIZED_MARKDOWN_PAGE_COUNT = 147
+BUILDABLE_MARKDOWN_PAGE_COUNT = 160
+LOCALIZED_MARKDOWN_PAGE_COUNT = 150
 SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT = 143
 ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT = 10
 
@@ -9386,10 +9390,13 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         )
         self.assertEqual(
             [
+                "docs/codex/models-and-reasoning.md",
+                "docs/playbooks/model-migration.md",
                 "docs/product-agent-os/coding-standards.md",
                 "docs/product-agent-os/self-learning-loop.md",
                 "docs/superpowers/plans/2026-08-10-batch45-s9-a-durable-contract-recovery.md",
                 "docs/superpowers/plans/2026-08-11-batch45-s9-b-compact-authoring-runtime.md",
+                "docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md",
             ],
             sorted(f"docs/{path.relative_to(DOCS).as_posix()}" for path in DOC_M25_PENDING_SITE_PAGES),
         )

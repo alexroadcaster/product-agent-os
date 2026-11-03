@@ -70,3 +70,10 @@ Separate verified facts from assumptions.
 Return citations for every factual claim when sources are provided.
 ```
 
+## GPT-6: initiative and sufficient verification
+
+Checked 2026-11-03: [prompting guidance](https://developers.openai.com/api/docs/guides/latest-model). Specify outcome, scope, constraints, authorized actions, completion criteria and evidence. Start with a simple prompt; add examples for a measured recurring failure or product requirement, not for volume.
+
+An agent can continue already authorized work without repeated approvals. Before requesting permission for a separate external action, prepare a concrete reviewable result within the authorized scope. This does not extend permissions, costs or side effects. Clarify blocking ambiguity; use a justified assumption for reversible choices.
+
+Conflicting skills/AGENTS, unbounded repeated verification and universal delegation can degrade execution. Name applicable instructions, delegation triggers and the stop condition: after relevant mandatory checks, repetition needs a new change, failure or unresolved risk. This is prompt-design guidance; it does not edit active AGENTS/skills. Evaluate quality using the [migration playbook](../playbooks/model-migration.md).

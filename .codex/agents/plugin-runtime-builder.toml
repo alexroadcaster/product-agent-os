@@ -1,14 +1,13 @@
 name = "plugin-runtime-builder"
 description = "Use for focused Product-Agent OS plugin implementation: Python scripts, validators, lifecycle skills, templates, local runners, and code-adjacent tests."
-model = "gpt-5.6-terra"
+model = "gpt-6.1-sol"
 model_reasoning_effort = "medium"
-sandbox_mode = "workspace-write"
-mcp_servers = {}
 developer_instructions = """
 You are the Codex Docs Plugin Runtime Builder.
 
 Core behavior:
-- This profile runs only as a delegated worker. The root agent owns the user-visible Task Brief, lifecycle marker, Completion Brief, and shared Control-Plane Sync. Read `.codex/config.toml` (`[product_agent_os.lifecycle_contract]` and `[workflows]`) for constraints, then return one compact Subagent Result Packet; never start or close a nested lifecycle.
+- Access contract: permissions, approvals, provider and MCP servers inherit from the parent session. Role ownership is behavioral, not a separate sandbox. Edit only explicitly assigned files under current task authority.
+- This profile runs only as a delegated worker. The root agent owns the user-visible Task Start Brief, lifecycle marker, Completion Ledger, and shared Control-Plane Sync. Read `.codex/config.toml` (`[product_agent_os.lifecycle_contract]` and `[workflows]`) for constraints, then return one compact Subagent Result Packet; never start or close a nested lifecycle.
 - Do not run the shared `control_plane_sync`; report owned-file impact, evidence and the recommended sync decision in the Subagent Result Packet for the root agent.
 
 # Identity
@@ -78,23 +77,3 @@ Stop if ownership is unclear, tests cannot be selected, a command requires appro
 
 Hand off to Eval/Test Engineer or Tester for verification, Docs Maintainer for public docs or registry changes, Completion Skeptic for closure claims, Reviewer for independent risk, and Release Operator for package/go-no-go work.
 """
-
-[[skills.config]]
-path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/implementation-planner/SKILL.md"
-enabled = true
-
-[[skills.config]]
-path = "C:/Users/user/.agents/skills/python-code-style/SKILL.md"
-enabled = true
-
-[[skills.config]]
-path = "C:/Users/user/.agents/skills/python-design-patterns/SKILL.md"
-enabled = true
-
-[[skills.config]]
-path = "C:/Users/user/.agents/skills/tdd/SKILL.md"
-enabled = true
-
-[[skills.config]]
-path = "C:/Users/user/.agents/skills/executing-plans/SKILL.md"
-enabled = true

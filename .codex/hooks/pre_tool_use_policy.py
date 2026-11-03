@@ -31,6 +31,10 @@ TASK_BRIEF_REQUIRED_FIELDS = [
     "Next action",
 ]
 BRIEF_DIGEST_RE = re.compile(r"^sha256:[0-9a-f]+$")
+TASK_START_FIELDS = [
+    "Request", "Goal", "Context", "Scope", "Value", "Execution", "Acceptance",
+    "Risks / approvals", "Next step",
+]
 SENSITIVE_KEY_RE = re.compile(r"(?i)(?:api[_-]?key|password|secret|token|private[_-]?key|credential)")
 
 DESTRUCTIVE_PATTERNS = [
@@ -64,7 +68,7 @@ READ_ONLY_PATTERNS = [
 ]
 LIFECYCLE_MARKER_WRITE_PATTERNS = [
     re.compile(r"(?i)\.codex[/\\]product-agent-os[/\\]lifecycle-state\.json"),
-    re.compile(r"(?i)task_start_brief_shown"),
+    re.compile(r"(?i)(?:task_start_brief_shown|scope_note_shown)"),
 ]
 
 
@@ -173,7 +177,7 @@ def _parse_updated_at(value: str) -> datetime | None:
 
 
 def _lifecycle_marker_ok(path: Path, *, now: datetime | None = None) -> tuple[bool, str]:
-    """Validate that a Task Brief marker is current and still authorizes this task."""
+    """Validate current lifecycle scope; reporting never grants action authority."""
     if not path.exists():
         return False, "missing lifecycle marker"
     try:
@@ -182,20 +186,42 @@ def _lifecycle_marker_ok(path: Path, *, now: datetime | None = None) -> tuple[bo
         return False, "invalid lifecycle marker"
     if not isinstance(payload, dict):
         return False, "lifecycle marker must be a JSON object"
-    if payload.get("task_start_brief_shown") is not True:
+    schema = payload.get("brief_schema_version")
+    concise = schema == "task_scope_note_v1"
+    if concise and payload.get("scope_note_shown") is not True:
+        return False, "scope_note_shown must be true"
+    if not concise and payload.get("task_start_brief_shown") is not True:
         return False, "task_start_brief_shown must be true"
     if payload.get("completion_brief_shown") is True:
         return False, "lifecycle marker belongs to a completed task"
+    if payload.get("completion_ready") is True:
+        return False, "completion_ready marker cannot authorize further mutation"
     if payload.get("status") != "in_progress":
         return False, "lifecycle marker status must be in_progress"
     for key in ("task_id", "scope", "updated_at", "approval_boundary"):
         value = payload.get(key)
         if not isinstance(value, str) or not value.strip():
             return False, "missing lifecycle marker field: " + key
-    if payload.get("brief_schema_version") != TASK_BRIEF_SCHEMA_VERSION:
-        return False, "brief_schema_version must be " + TASK_BRIEF_SCHEMA_VERSION
-    if payload.get("brief_format") != "field_list":
-        return False, "brief_format must be field_list"
+    if schema not in {TASK_BRIEF_SCHEMA_VERSION, "task_start_brief_v2", "task_scope_note_v1"}:
+        return False, "unsupported brief_schema_version"
+    expected_format = "concise" if concise else "bold_fields" if schema == "task_start_brief_v2" else "field_list"
+    if payload.get("brief_format") != expected_format:
+        return False, "brief_format must be " + expected_format
+    if schema != TASK_BRIEF_SCHEMA_VERSION:
+        scope = payload.get("lifecycle_scope")
+        if not isinstance(scope, dict):
+            return False, "lifecycle_scope must classify packet applicability"
+        if scope.get("work_type") not in {"implementation", "fix", "review", "research", "planning"} or scope.get("size") not in {"bounded", "large"} or scope.get("risk") not in {"low", "medium", "high"}:
+            return False, "invalid lifecycle_scope classification"
+        flags = ("financially_material", "release_or_readiness", "explicit_packet_request")
+        if any(type(scope.get(key)) is not bool for key in flags) or not isinstance(scope.get("reason"), str) or not scope["reason"].strip():
+            return False, "lifecycle_scope requires boolean triggers and a reason"
+        # Reporting scope never grants mutation authority to a read-only request.
+        if scope["work_type"] in {"review", "research", "planning"}:
+            return False, "read-only lifecycle scope does not authorize mutation"
+        full_required = scope["size"] == "large" or scope["risk"] == "high" or any(scope[key] for key in flags)
+        if concise and full_required:
+            return False, "full Task Start Brief required for this scope"
     brief_digest = payload.get("brief_digest")
     if (
         not isinstance(brief_digest, str)
@@ -205,8 +231,9 @@ def _lifecycle_marker_ok(path: Path, *, now: datetime | None = None) -> tuple[bo
         return False, "brief_digest must match sha256:<64 lowercase hex characters>"
     fields = payload.get("brief_fields_present")
     if not isinstance(fields, list) or not all(isinstance(item, str) for item in fields):
-        return False, "brief_fields_present must list Task Brief fields"
-    missing_fields = [field for field in TASK_BRIEF_REQUIRED_FIELDS if field not in fields]
+        return False, "brief_fields_present must list applicable lifecycle fields"
+    required = ["Scope", "Evidence", "Limits"] if concise else TASK_START_FIELDS if schema == "task_start_brief_v2" else TASK_BRIEF_REQUIRED_FIELDS
+    missing_fields = [field for field in required if field not in fields]
     if missing_fields:
         return False, "brief_fields_present missing: " + ", ".join(missing_fields)
     updated_at = _parse_updated_at(payload["updated_at"])
@@ -258,7 +285,7 @@ def main() -> int:
         marker_ok, marker_reason = _lifecycle_marker_ok(_workspace_root(payload) / LIFECYCLE_STATE_REL)
         if not marker_ok:
             reasons.append(
-                "Mutating Product-Agent OS work requires a current user-visible Task Brief and active lifecycle marker: "
+                "Mutating Product-Agent OS work requires current scope-applicable reporting and an active lifecycle marker: "
                 + marker_reason
                 + "."
             )

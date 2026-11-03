@@ -166,6 +166,8 @@ _TEMPLATES: tuple[TemplateSpec, ...] = (
     _spec("evals", "control-plane", "control-plane/EVALS.md", "EVALS.md", managed_section="evals"),
     _spec("runlog", "control-plane", "control-plane/RUNLOG.md", "RUNLOG.md", managed_section="runlog"),
     _spec("config", "config", "config/config.toml", ".codex/config.toml", "toml"),
+    _spec("artifact-task-start-brief", "artifact-templates", "artifact-templates/task-start-brief.md", ".codex/artifact-templates/task-start-brief.md"),
+    _spec("artifact-completion-ledger", "artifact-templates", "artifact-templates/completion-ledger.md", ".codex/artifact-templates/completion-ledger.md"),
     _spec("agent-product-manager", "agents", "agents/product-manager.toml", ".codex/agents/product-manager.toml", "agent"),
     _spec("agent-architect", "agents", "agents/architect.toml", ".codex/agents/architect.toml", "agent"),
     _spec("agent-explorer", "agents", "agents/explorer.toml", ".codex/agents/explorer.toml", "agent"),

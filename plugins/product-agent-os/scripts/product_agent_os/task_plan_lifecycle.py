@@ -62,23 +62,6 @@ def build_planned_task_matrix(request: TaskPlanRequest) -> str:
         "",
         f"Source status: {request.source_status}",
         "",
-        "## Task Brief",
-        "",
-        "- User-visible moment: before execution",
-        f"- Task ID: {request.task_id}",
-        f"- Product value: {request.product_value}",
-        f"- Technical value: {request.technical_value}",
-        f"- Source: {request.source}",
-        f"- Scope: {request.scope}",
-        f"- Non-goals: {request.non_goals}",
-        f"- Agents and skills: {request.agents}; {request.skills}",
-        f"- Files / artifacts: {request.output_artifacts}",
-        f"- Verification: {request.verification_gates}",
-        f"- Approval boundary: {request.risks_approval_gates}",
-        f"- Complexity: {request.complexity}",
-        f"- Estimated execution time: {request.estimated_execution_time}",
-        f"- Next action: {request.next_step}",
-        "",
         TASK_HEADING_TEMPLATE.format(task_id=request.task_id),
         "",
         f"- Task: {request.task}",
@@ -150,7 +133,7 @@ def mark_task_implemented(text: str, task_id: str, completion: TaskCompletion) -
         block = _replace_field(block, field, value)
 
     updated = lines[:start] + block + lines[end:]
-    updated = _replace_or_append_completion_brief(updated, completion)
+    # Durable task evidence is not a copy or proof of a user-visible closing packet.
     return "\n".join(updated) + ("\n" if text.endswith("\n") else "")
 
 
@@ -308,31 +291,6 @@ def _replace_field(lines: list[str], field: str, value: str) -> list[str]:
             updated[index] = f"{prefix} {value}"
             return updated
     raise ValueError(f"task block missing field: {field}")
-
-
-def _replace_or_append_completion_brief(lines: list[str], completion: TaskCompletion) -> list[str]:
-    brief = [
-        "## Completion Brief",
-        "",
-        "- User-visible moment: after execution",
-        "- Result status: implemented",
-        f"- Done: {completion.what_was_done}",
-        f"- Files / artifacts: {completion.files_touched}",
-        f"- Technical value delivered: {completion.technical_value_delivered}",
-        f"- Product value delivered: {completion.product_value_delivered}",
-        f"- Evidence: {completion.verification_evidence}",
-        f"- Residual risk: {completion.residual_risks}",
-        f"- Next action: {completion.follow_up}",
-    ]
-    start = next((index for index, line in enumerate(lines) if line.strip() == "## Completion Brief"), None)
-    if start is None:
-        return lines + [""] + brief
-    end = len(lines)
-    for index in range(start + 1, len(lines)):
-        if lines[index].startswith("## ") or lines[index].startswith("### Task `"):
-            end = index
-            break
-    return lines[:start] + brief + lines[end:]
 
 
 def _require_values(values: dict[str, str], label: str) -> None:

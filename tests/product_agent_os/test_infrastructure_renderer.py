@@ -19,10 +19,21 @@ from product_agent_os.infrastructure import (  # noqa: E402
     stage_infrastructure,
 )
 from product_agent_os.stage_manifest import MANIFEST_NAME  # noqa: E402
-from product_agent_os.templates import TemplateSpec  # noqa: E402
+from product_agent_os.templates import TemplateSpec, required_templates, render_template  # noqa: E402
 
 
 class InfrastructureRendererTest(unittest.TestCase):
+    def test_config_render_validation_rejects_semantically_invalid_permissions(self):
+        spec = next(item for item in required_templates() if item.key == "config")
+        text = render_template(spec, {"project_name": "fixture", "profile_name": "guided-small"})
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "config.toml"
+            path.write_text('sandbox_mode = "workspace-write"\n' + text, encoding="utf-8")
+            self.assertIn(
+                "permission profiles and legacy sandbox_mode must not be composed",
+                infrastructure._validate_file(spec, path),
+            )
+
     def test_dry_run_returns_json_shape_without_writes(self):
         with tempfile.TemporaryDirectory() as tmp:
             workspace = Path(tmp) / "workspace"
@@ -123,7 +134,8 @@ class InfrastructureRendererTest(unittest.TestCase):
             self.assertIn(".codex/product-agent-os/lifecycle-state.json", pre_tool)
             self.assertIn("missing lifecycle marker", pre_tool)
             self.assertIn("task_start_brief_shown", pre_tool)
-            self.assertIn("Completion Brief", stop)
+            self.assertIn("Completion Ledger", stop)
+            self.assertNotIn('"decision": "block"', stop)
 
     def test_stage_mode_writes_only_inside_output_directory(self):
         with tempfile.TemporaryDirectory() as tmp:

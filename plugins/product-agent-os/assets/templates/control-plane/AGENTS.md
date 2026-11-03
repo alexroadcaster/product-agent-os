@@ -20,6 +20,10 @@ Generated at: {generated_at}
 - Existing Codex assets: {existing_codex_assets}
 - Initial risk note: {risk_text}
 
+## Lifecycle Reporting
+
+Load `[product_agent_os.lifecycle_contract]` and `[workflows]` from `.codex/config.toml`. The routed templates define scoped Task Start Brief / Completion Ledger reporting; ordinary work uses concise evidence and limits. The root owns shared state and completion. Reporting never grants mutation authority; hook trust and fresh-session activation require separate evidence.
+
 ## Verification Policy
 
 - Run the smallest relevant deterministic check after each meaningful change.

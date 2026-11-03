@@ -90,9 +90,9 @@ Few-shot is needed when not only "what", but also "what a good answer looks like
 examples:
   - input: "Check claim: Codex launches subagents by itself."
     output:
-      status: "rejected"
-      reason: "Official docs require explicit user request for subagents."
-      source: "https://developers.openai.com/codex/subagents"
+      status: "qualified"
+      reason: "Local Codex delegation can be requested by the user or applicable AGENTS/skill instructions; project policy may be stricter. Work Ultra has a separate proactive workflow."
+      source: "https://learn.chatgpt.com/docs/agent-configuration/subagents"
   - input: "Check claim: Structured Outputs solve all hallucinations."
     output:
       status: "qualified"
@@ -109,3 +109,6 @@ examples:
 - Is there a rule for uncertainty?
 - Is there a verification criterion?
 
+## Prompt review before migration
+
+Before changing a prompt, check the outcome, whether useful work can continue without an answer, the existing authorization boundary, required checks, justification for repetition and promotion owner. Do not request private chain-of-thought; ask for concise rationale, assumptions and evidence. Compare the model with a fixed prompt before changing the prompt separately. See [GPT-6 prompting](overview.md) and the [migration playbook](../playbooks/model-migration.md).

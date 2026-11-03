@@ -6,7 +6,7 @@ Source status: project-local system workflow.
 
 Use this workflow before closing any non-mechanical Product-Agent OS task to decide whether root control-plane files need updates.
 
-This is not an active hook or automation. It is a mandatory agent checklist that runs inside the parent task before the Completion Brief.
+This is not an active hook or automation. It is a mandatory agent checklist that runs inside the parent task before the Completion Ledger.
 
 ## Control-Plane Files
 
@@ -19,7 +19,7 @@ This is not an active hook or automation. It is a mandatory agent checklist that
 
 ## Process
 
-1. Run this check after implementation and verification, before the Completion Brief.
+1. Run this check after implementation and verification, before the Completion Ledger.
 2. For each control-plane file, decide `update_required`, `not_applicable`, `handoff_required`, or `overflow_refactor_required`.
 3. Update the file directly when the current task changed its owned information class and the file is in the task write scope.
 4. Use `handoff_required` only when the file is relevant but belongs to another owner or is outside the current write scope. Do not use `handoff_required` merely because the file is near a size limit.

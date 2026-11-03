@@ -20,21 +20,7 @@ LIFECYCLE_STATE = ".codex/product-agent-os/lifecycle-state.json"
 CANONICAL_SKILL_ROOT = Path("plugins/product-agent-os/skills")
 STALE_AFTER = timedelta(hours=48)
 WORKSPACE_ROOT_ENV = "CODEX_HOOK_WORKSPACE_ROOT"
-TASK_BRIEF_REQUIRED_FIELDS = [
-    "Task ID",
-    "Product value",
-    "Technical value",
-    "Source / trigger",
-    "Scope",
-    "Non-goals",
-    "Agents and skills",
-    "Files / artifacts expected",
-    "Verification gate",
-    "Approval boundary / risks",
-    "Complexity",
-    "Estimated execution time",
-    "Next action",
-]
+TASK_BRIEF_REQUIRED_FIELDS = ["Request", "Goal", "Context", "Scope", "Value", "Execution", "Acceptance", "Risks / approvals", "Next step"]
 
 
 def _workspace_root() -> Path:
@@ -134,11 +120,14 @@ def main() -> int:
         + _lifecycle_state_summary(root)
         + ". Skill provenance: "
         + _skill_provenance(root)
-        + ". For non-mechanical work, show a user-visible task_start_brief_v1 "
-        + "Task Brief with fields: "
+        + ". Load the config-routed task-start-brief.md and completion-ledger.md templates. "
+        + "Use task_start_brief_v2 with nine bold labels for large/high-risk or financially material "
+        + "implementation, release/readiness or an explicit packet request: "
         + ", ".join(TASK_BRIEF_REQUIRED_FIELDS)
-        + ". Record the marker before mutations, finish control-plane sync and all checks, set "
-        + "ready_for_completion_brief, and show one terminal final Completion Brief with no later tool calls."
+        + ". Ordinary fixes and read-only/partial/blocked work may use concise results, evidence and limits. "
+        + "Before authorized mutations record the applicable full or concise scope marker. Complete checks and "
+        + "control-plane sync before one terminal Completion Ledger (13 items) or concise result, with no later tools. "
+        + "Stop is advisory and does not validate chat. Preserve already-loaded legacy session contracts."
     )
     print(
         json.dumps(

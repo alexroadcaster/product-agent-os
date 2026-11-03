@@ -2,7 +2,7 @@
 
 Source status: `official + experiment`
 
-Sources: [Codex plugins](https://developers.openai.com/codex/plugins), [Build plugins](https://developers.openai.com/codex/plugins/build), [Agent Skills](https://developers.openai.com/codex/skills), [Subagents](https://developers.openai.com/codex/subagents), [AGENTS.md](https://developers.openai.com/codex/guides/agents-md), [Codex hooks](https://developers.openai.com/codex/hooks), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Codex with Agents SDK](https://developers.openai.com/codex/guides/agents-sdk), [Product-Agent OS architecture](architecture.md).
+Sources: [Codex plugins](https://developers.openai.com/codex/plugins), [Build plugins](https://developers.openai.com/codex/plugins/build), [Agent Skills](https://learn.chatgpt.com/docs/build-skills), [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents), [AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md), [Codex hooks](https://learn.chatgpt.com/docs/hooks), [Agent approvals and security](https://learn.chatgpt.com/docs/permissions), [Codex with Agents SDK](https://developers.openai.com/codex/guides/agents-sdk), [Product-Agent OS architecture](architecture.md).
 
 Compatibility means the package fits Codex surfaces. It does not approve live execution, provider calls, external writes, hosted docs, database access, automation activation or git actions.
 
@@ -104,3 +104,17 @@ Approvals are not bundled. Approval for one surface does not grant another.
 - Official Codex behavior can evolve; source-backed claims should be reviewed against current official docs when product surfaces change.
 
 Next artifact: use [Packaging And Closure](packaging-and-closure.md) for release evidence and [Approval-Bound Real Testing](approval-bound-real-testing.md) before any live execution.
+
+## Contract freshness: 2026-11-03
+
+The documentation audit does not promote package compatibility into proven operation on every current Codex surface. Acceptance records client/version/auth, selected model, effective permissions, parent MCP and scenario-specific evidence. Official sources: [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents), [Permissions](https://learn.chatgpt.com/docs/permissions), [Hooks](https://learn.chatgpt.com/docs/hooks).
+
+| Audit ID | Current state | Separate follow-up |
+| --- | --- | --- |
+| OPEN-PERM | Parent `:workspace`; role restrictions are behavioral; unsupported overrides removed | Fresh-session effective permissions evidence |
+| OPEN-MCP | MCP configured on parent; agents inherit it; validator no longer requires agent-local MCP | Fresh-session effective tool availability |
+| OPEN-MODEL | GPT-6.1 Sol/Terra pins selected; prior efforts preserved in 23 active/staged profiles | Authorized same-effort quality/cost/latency comparison |
+| OPEN-BASELINE | Legacy requirement repaired; parent and rendered config semantics validated | Local regression gates; no runtime claim |
+| OPEN-RUNTIME | New Agents API/Responses capabilities are documented | Separate implementation and runtime evidence if the route is selected |
+
+The owner authorized technical follow-up on 2026-11-03. Configuration, profiles, templates and validators are updated; activation and behavioral promotion remain open. Exact commands and results belong to the [plan](../superpowers/plans/2026-11-03-gpt6-documentation-refresh.md).

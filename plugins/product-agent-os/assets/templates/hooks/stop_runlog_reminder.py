@@ -8,20 +8,12 @@ from typing import Any
 
 
 LIFECYCLE_STATE_REL = Path(".codex/product-agent-os/lifecycle-state.json")
-TERMINAL_STATUSES = {"ready_for_completion_brief", "blocked", "stopped_repair_required"}
+TERMINAL_STATUSES = {"ready_for_completion_brief", "ready_for_completion_ledger", "blocked", "stopped_repair_required"}
 WORKSPACE_ROOT_ENV = "CODEX_HOOK_WORKSPACE_ROOT"
-COMPLETION_BRIEF_FIELDS = [
-    "Task ID:",
-    "Result status:",
-    "What was done:",
-    "Files / artifacts changed:",
-    "Verification evidence:",
-    "Residual risks / accepted gaps:",
-    "Follow-up:",
-]
 REMINDER = (
-    "Before stopping, finish implementation, verification, task-plan update and control-plane sync. Then set the "
-    "lifecycle marker to ready_for_completion_brief, blocked, or stopped_repair_required and send one terminal Completion Brief as the final response."
+    "Finish applicable verification and control-plane sync before closing. Use Task Start Brief / "
+    "Completion Ledger for the configured packet scope; ordinary work may use concise results, evidence "
+    "and limits. Report missing gates honestly. This reminder does not validate chat or prove completion."
 )
 
 
@@ -58,41 +50,14 @@ def _completion_ready(root: Path) -> bool:
     )
 
 
-def _brief_complete(message: Any) -> bool:
-    if not isinstance(message, str) or "Completion Brief" not in message:
-        return False
-    return all(field in message for field in COMPLETION_BRIEF_FIELDS)
-
-
 def main() -> int:
-    """Allow a valid terminal brief, or request at most one corrective continuation."""
+    """Remind about open work; never reject a closing answer by its format."""
     payload = _read_payload()
+    if payload.get("stop_hook_active") is True:
+        return 0
+    # The marker is workflow metadata, not proof that chat was delivered or reviewed.
     if not _completion_ready(_workspace_root(payload)):
         print(json.dumps({"systemMessage": REMINDER}, sort_keys=True))
-        return 0
-    if _brief_complete(payload.get("last_assistant_message")):
-        return 0
-    if payload.get("stop_hook_active") is True:
-        print(
-            json.dumps(
-                {"systemMessage": "Completion Brief is incomplete; continuation was already requested, so stop to avoid a loop."},
-                sort_keys=True,
-            )
-        )
-        return 0
-    print(
-        json.dumps(
-            {
-                "decision": "block",
-                "reason": (
-                    "Replace the draft with one terminal Completion Brief containing: "
-                    + ", ".join(COMPLETION_BRIEF_FIELDS)
-                    + " Do not call tools after that response."
-                ),
-            },
-            sort_keys=True,
-        )
-    )
     return 0
 
 

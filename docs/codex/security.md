@@ -1,47 +1,34 @@
-# Безопасность, sandbox и approvals
+# Безопасность, permissions и approvals
 
-Source status: `official`  
-Источники: [Sandbox](https://developers.openai.com/codex/concepts/sandboxing), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Codex cloud](https://developers.openai.com/codex/cloud).
+Source status: `official + experiment`
 
-## Базовая модель
+Проверено 2026-11-03: [Permissions](https://learn.chatgpt.com/docs/permissions), [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents), [Configuration Reference](https://learn.chatgpt.com/docs/config-file/config-reference).
 
-Sandbox - это техническая граница: какие файлы Codex может изменять, какие команды запускать и есть ли доступ к сети. Approval policy - управленческая граница: когда Codex должен остановиться и спросить разрешение.
+Sandbox и permissions технически ограничивают выполнение локальных команд. Approval policy управляет допустимыми запросами подтверждения. Описание роли, документ или skill не выдают привилегий. В этом проекте внешние записи, provider/model calls, browser, Git и изменение активации требуют отдельного разрешения.
 
-Для локальной работы безопасный baseline:
+## Выбрать одну схему конфигурации
 
-```text
-sandbox_mode = "workspace-write"
-approval_policy = "on-request"
-approvals_reviewer = "user"
-```
+Permission profiles имеют beta-статус. Используйте либо `default_permissions` / `[permissions]`, либо legacy `sandbox_mode` / `[sandbox_workspace_write]`, без смешивания. Проверяйте все effective layers и managed policy; примеры — в [конфигурации](configuration.md). `:workspace` защищает `.git`, `.agents`, `.codex`, `.aws`: разрешенная запись в каталог проекта не означает запись в любой дочерний путь. Legacy `read-only`, `workspace-write` и `danger-full-access` — разные режимы; последний снимает локальные sandbox-ограничения и не служит способом обхода неудобных approvals.
 
-Такой режим позволяет работать внутри workspace, но требует approval для действий за пределами границы, сетевых команд или иных чувствительных операций.
+Custom agents наследуют permissions и approvals родителя. Инструкция reviewer не редактировать файлы задает поведение, а не отдельный технический read-only sandbox. Agent-local sandbox/MCP settings не переопределяют родителя. Реальная изоляция требует применимых механизмов исполнения и доказательств из свежей сессии.
 
-## Режимы sandbox
+## Сеть и поверхности инструментов
 
-| Mode | Смысл | Использовать |
+| Поверхность | Механизм контроля | Какой вывод недопустим |
 | --- | --- | --- |
-| `read-only` | Codex может читать, но не должен менять файлы или выполнять существенные команды без разрешения | Планирование, review, аудит |
-| `workspace-write` | Codex может читать, менять workspace и запускать routine commands в границах проекта | Большинство локальных задач |
-| `danger-full-access` | Codex работает без sandbox-ограничений | Только осознанно и кратковременно |
+| Локальные команды | Effective filesystem/network policy и command sandbox | Writable workspace не означает доступ к сети |
+| Фильтрация адресатов команд | Активный network proxy и domain rules | Одного `network.enabled = true` недостаточно для фильтрации |
+| Web search | Product/tool policy | Command proxy allowlist не управляет этим поиском |
+| MCP | Конфигурация родителя, tool/server policy и approvals | Декларация не доказывает подключение или успешный вызов |
+| Apps/connectors | Авторизация и approvals приложения/инструмента | Command network policy не является политикой connector |
+| Browser/computer tools | Собственные controls и разрешенный scope задачи | Command sandbox не обеспечивает универсальную изоляцию browser |
 
-## Network access
+Domain rules требуют `features.network_proxy = true` или включенного managed proxy. Активный proxy без allow entries блокирует запросы доменов; deny имеет приоритет. Local, cloud setup и cloud agent phase имеют разные сетевые controls: проверяйте выбранную поверхность, не предполагая универсальный default.
 
-По официальной модели Codex по умолчанию не должен свободно ходить в сеть во время агентной работы. В cloud setup network может быть доступен на этапе подготовки окружения, а agent phase обычно требует отдельного решения по internet access.
+## Approval и данные
 
-Практическое правило:
+Перед чувствительным действием определите адресата, данные, side effects, уже имеющееся разрешение и минимальные необходимые права. Чтение публичной документации отличается от установки зависимостей или provider operation. Не помещайте secrets и лишние private data в prompts, docs, memory или evidence. `approvals_reviewer` не расширяет sandbox и не проверяет повторно уже разрешенные действия.
 
-- документацию можно сверять через официальные источники;
-- install и package manager команды требуют явного понимания, что будет загружено;
-- secrets не должны попадать в prompts, docs, memory или artifacts.
+## Граница проверки
 
-## Approval checklist
-
-Перед approval спросите:
-
-- Команда пишет за пределы workspace?
-- Команда использует сеть?
-- Команда может удалить, переписать или отправить данные?
-- Есть ли менее широкий способ дать доступ?
-- Можно ли заменить broad access на command prefix rule?
-
+Разбор конфигурации не доказывает effective runtime policy. Для заявления об активации нужны client/version/auth, загруженная конфигурация, permissions родителя, выбранный инструмент и наблюдаемое permitted/denied поведение. Обновление документации не меняет permissions; открытые контракты проекта перечислены в [Codex compatibility](../product-agent-os/codex-compatibility.md).
