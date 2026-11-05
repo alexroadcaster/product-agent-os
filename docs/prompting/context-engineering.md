@@ -105,3 +105,9 @@ Codex проверяет глобальный `AGENTS.override.md`, иначе `
 Учитывайте uncached input, cached input, cache writes и output по соответствующим ставкам; cache-write rate не прибавляется поверх обычной ставки для тех же tokens. Указывайте модель, дату тарифов, tier и условия long-context. Общая стоимость включает ошибки, retries и subagents. Сопоставляйте стоимость завершенной задачи, качество и latency, а не только процент cache hits. API billing не равен расходу подписки.
 
 Compaction меняет контекст и может изменить reuse prefix. `configuration_update` имеет ограничения совместимости, описанные в [session control](../agent-systems/session-control.md). Не путайте API context window и effective client limit; см. [модельную матрицу](../codex/models-and-reasoning.md).
+
+## Optional: explicit cache boundaries
+
+Проверено 05.11.2026 по [Prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching). Для подходящего Responses workflow можно выбрать `prompt_cache_options.mode: "explicit"` и `prompt_cache_breakpoint: { "mode": "explicit" }` на поддерживаемых content blocks. Без explicit breakpoints в этом режиме cache reads/writes не выполняются. После последнего breakpoint меняющийся контекст оплачивается как uncached input без cache-write charge.
+
+Это advanced optimization, не обязательный этап обычной задачи. Сначала сравните качество, total cost и latency на representative workload; учитывайте cache-write price, TTL, модель и дату тарифа. Automatic cache, local memory и session persistence — разные механизмы.

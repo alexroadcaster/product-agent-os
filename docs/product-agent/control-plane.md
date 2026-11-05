@@ -1,4 +1,4 @@
-﻿# Control-plane files
+# Control-plane files
 
 Source status: `official + experiment`  
 Источники: [Codex best practices](https://developers.openai.com/codex/learn/best-practices), [AGENTS.md docs](https://developers.openai.com/codex/guides/agents-md), [AGENTS.md open format](https://agents.md/), [Iterate на difficult problems](https://developers.openai.com/codex/use-cases/iterate-on-difficult-problems).
@@ -41,3 +41,7 @@ Source status: `official + experiment`
 ## Nested AGENTS.md
 
 Для monorepo используйте root `AGENTS.md` для общих правил и nested files для отдельных packages или services. Ближайшие инструкции должны уточнять, а не дублировать root policy.
+
+## Применимость и загрузка
+
+Для небольшой задачи переиспользуйте existing artifacts. `AGENTS.md` загружается по [discovery rules](https://learn.chatgpt.com/docs/agent-configuration/agents-md); остальные файлы читаются по task/reference, а не автоматически. Проверка свежей сессии нужна для claim о loading, не для каждой текстовой правки.

@@ -68,3 +68,7 @@ This page does not support claims that:
 ## Next Safe Action
 
 If an operator sees Product-Agent OS fail to engage for a relevant prompt, the first safe step is a read-only source/cache/session packet, followed by a route/eval packet. Cache refresh, global config writes, plugin sharing, hook trust changes and fresh-session proof remain separate approvals.
+
+## Current route and evidence
+
+Applicable full/concise lifecycle, trust and terminal markers are in the [hook guide](../runtime/worktrees-hooks-rules.md). The 2026-11-03 local receipt covers tested Desktop routes; completeness of all mutation channels and silent Stop tracing are not claimed.

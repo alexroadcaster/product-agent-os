@@ -1,4 +1,10 @@
-# GPT-6 documentation refresh: detailed plan and evidence
+---
+title: "Archive - GPT-6 documentation refresh: detailed plan and evidence"
+---
+
+# Archive - GPT-6 documentation refresh: detailed plan and evidence {#gpt-6-documentation-refresh-detailed-plan-and-evidence}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `official + experiment`
 

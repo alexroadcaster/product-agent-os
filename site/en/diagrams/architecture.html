@@ -76,7 +76,7 @@
     <div data-md-component="skip">
 
 
-        <a href="#project-architecture-diagram" class="md-skip">
+        <a href="#project-architecture" class="md-skip">
           Skip to content
         </a>
 
@@ -389,6 +389,69 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+
+        <li class="md-nav__item">
+  <a href="#knowledge-base-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Knowledge base pipeline
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#optional-agent-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optional agent workflow
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#runtime-ownership-choices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Runtime ownership choices
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#claim-verification-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Claim verification loop
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#product-agent-operating-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      Product-agent operating system
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#usage-and-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage and verification
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Failure modes
+    </span>
+  </a>
+
+</li>
 
         <li class="md-nav__item">
   <a href="#inputs" class="md-nav__link">
@@ -824,6 +887,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -905,6 +970,27 @@
 
   <span class="md-ellipsis">
     Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
   </span>
 
 
@@ -2766,6 +2852,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2952,6 +3040,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3398,6 +3507,69 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#knowledge-base-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Knowledge base pipeline
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#optional-agent-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optional agent workflow
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#runtime-ownership-choices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Runtime ownership choices
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#claim-verification-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Claim verification loop
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#product-agent-operating-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      Product-agent operating system
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#usage-and-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage and verification
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Failure modes
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#inputs" class="md-nav__link">
     <span class="md-ellipsis">
       Inputs
@@ -3448,36 +3620,92 @@
 
 
 
-<h1 id="project-architecture-diagram">Project architecture diagram<a class="headerlink" href="#project-architecture-diagram" title="Permanent link">&para;</a></h1>
+<h1 id="project-architecture">Project architecture<a class="headerlink" href="#project-architecture" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + experiment</code></p>
-<p>This page shows the high-level architecture for a Product-Agent OS project: product intent, source review, control-plane files, agent ownership, implementation, verification, review and learning.</p>
+<p>The map separates sources, execution and evidence. One agent can perform research, verification and synthesis sequentially for an ordinary task. The team sequence is a conditional example, not a mandatory runtime.</p>
+<h2 id="knowledge-base-pipeline">Knowledge base pipeline<a class="headerlink" href="#knowledge-base-pipeline" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart TD
-    A["User intent"] --&gt; B["Source review"]
-    B --&gt; C["REQUIREMENTS.md"]
-    C --&gt; D["PLAN.md"]
-    D --&gt; E["Owned build slice"]
-    E --&gt; F["TEST.md / EVALS.md"]
-    F --&gt; G{"Evidence current?"}
-    G --&gt;|No| H["Fix or record accepted gap"]
-    G --&gt;|Yes| I["Review and handoff"]
-    I --&gt; J["RUNLOG.md / AGENTS.md / skills"]</code></pre>
+    A["Official OpenAI docs"] --&gt; B["Source registry"]
+    C["Community sources"] --&gt; D["Insight intake"]
+    D --&gt; E{"Verified?"}
+    E --&gt;|No| F["docs/insights"]
+    E --&gt;|Yes| G["Playbook candidate"]
+    B --&gt; H["Codex docs"]
+    B --&gt; I["Agent systems docs"]
+    G --&gt; J["Playbooks"]
+    H --&gt; K["MkDocs build"]
+    I --&gt; K
+    J --&gt; K
+    F --&gt; K
+    K --&gt; L["HTML site"]</code></pre>
+<h2 id="optional-agent-workflow">Optional agent workflow<a class="headerlink" href="#optional-agent-workflow" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>sequenceDiagram
+    participant U as User
+    participant M as Main orchestrator
+    participant R as Research agent
+    participant V as Verification agent
+    participant S as Synthesis agent
+    participant KB as Knowledge base
+
+    U-&gt;&gt;M: Goal + constraints
+    M-&gt;&gt;R: Source discovery task
+    R--&gt;&gt;M: Source cards + claims
+    M-&gt;&gt;V: Verify claims
+    V--&gt;&gt;M: Verified / unsupported / conflicts
+    M-&gt;&gt;S: Draft learning material
+    S--&gt;&gt;M: Draft + source notes
+    M-&gt;&gt;KB: Apply authorized docs changes
+    M--&gt;&gt;U: Summary + verification evidence</code></pre>
+<h2 id="runtime-ownership-choices">Runtime ownership choices<a class="headerlink" href="#runtime-ownership-choices" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart TD
+    C["Codex App / CLI / IDE"] --&gt; P["Playbooks and AGENTS.md"]
+    P --&gt; S["Skills"]
+    S --&gt; SA["Optional Codex subagents"]
+    C --&gt; ASDK["Optional agent application"]
+    ASDK --&gt; CHOICE["Choose Agents API / SDK / Responses"]
+    CHOICE --&gt; RAPI["Responses API when applicable"]
+    ASDK --&gt; MCP["Codex MCP"]
+    RAPI --&gt; TOOLS["Tools and structured outputs"]
+    MCP --&gt; WS["Workspace execution"]
+    ASDK --&gt; TR["Tracing and evals"]</code></pre>
+<h2 id="claim-verification-loop">Claim verification loop<a class="headerlink" href="#claim-verification-loop" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart TD
+    Q["User question"] --&gt; PC["Prompt contract"]
+    SRC["Official sources"] --&gt; CTX["Packed context"]
+    MEM["Session / memory"] --&gt; CTX
+    CTX --&gt; PC
+    PC --&gt; MODEL["GPT model"]
+    MODEL --&gt; OUT["Structured answer"]
+    OUT --&gt; VER["Verifier / guardrail"]
+    VER --&gt;|pass| FINAL["Final answer"]
+    VER --&gt;|fail| FIX["Retrieve more / ask clarification / refuse"]
+    FIX --&gt; PC</code></pre>
+<h2 id="product-agent-operating-system">Product-agent operating system<a class="headerlink" href="#product-agent-operating-system" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart TD
+    REQ["REQUIREMENTS.md"] --&gt; PLAN["PLAN.md"]
+    AG["AGENTS.md"] --&gt; PLAN
+    PLAN --&gt; SK["Skills"]
+    SK --&gt; RUN["Codex runtime"]
+    RUN --&gt; DIFF["Code/docs diff"]
+    DIFF --&gt; TEST["TEST.md checks"]
+    DIFF --&gt; EVAL["EVALS.md"]
+    TEST --&gt; LOG["RUNLOG.md"]
+    EVAL --&gt; LOG
+    LOG --&gt; PR["Product-ready PR"]
+    PR --&gt; LEARN["Update AGENTS.md / skills / insights"]
+    LEARN --&gt; AG</code></pre>
+<h2 id="usage-and-verification">Usage and verification<a class="headerlink" href="#usage-and-verification" title="Permanent link">&para;</a></h2>
+<p>Choose a <a href="product-delivery-lifecycle.html">delivery route</a> by task size. Select an app runtime by <a href="../agent-systems/sdk-patterns.html">loop/state ownership</a>: Codex subagents do not require Agents SDK. JSON schemas, guardrails and a separate Verifier do not guarantee factual correctness. Check sources, observed results and applicable verification. Documents and diagrams do not activate hooks, providers, Git or deployment.</p>
+<h2 id="failure-modes">Failure modes<a class="headerlink" href="#failure-modes" title="Permanent link">&para;</a></h2>
+<p>Mandatory teams without independent tasks; confusing generated artifacts with source truth; verification loops without a budget/stop condition; publishing results without authority.</p>
 <h2 id="inputs">Inputs<a class="headerlink" href="#inputs" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Source docs, repository files, user constraints and approval policy.</li>
-<li>Product-Agent OS control-plane files and current verification commands.</li>
-</ul>
+<p>User goal, current sources, constraints, ownership and applicable approvals.</p>
 <h2 id="outputs">Outputs<a class="headerlink" href="#outputs" title="Permanent link">&para;</a></h2>
-<ul>
-<li>A route from intent to evidence-backed handoff.</li>
-<li>A shared architecture boundary for agents, skills, docs and runtime choices.</li>
-</ul>
+<p>A selected route, reviewable artifact and evidence with explicit limits.</p>
 <h2 id="verification">Verification<a class="headerlink" href="#verification" title="Permanent link">&para;</a></h2>
-<p>Check that every implementation route names source context, owned files, verification evidence, risks and the next artifact.</p>
+<p>Check the selected route against source files and observed task results; render the diagram after syntax changes.</p>
 <h2 id="risks">Risks<a class="headerlink" href="#risks" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Architecture diagrams can become stale if they are not updated with workflow changes.</li>
-<li>Implementation without ownership and verification can make parallel agent work unsafe.</li>
-</ul>
+<p>A diagram is orientation, not runtime activation or release evidence.</p>
 
 
 

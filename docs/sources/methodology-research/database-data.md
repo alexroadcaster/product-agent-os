@@ -1,4 +1,10 @@
-# Database & Data Methodology Research
+---
+title: "Архив — Database & Data Methodology Research"
+---
+
+# Архив — Database & Data Methodology Research {#database-data-methodology-research}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `official + expert reference + vendor documentation + tool-assisted`
 

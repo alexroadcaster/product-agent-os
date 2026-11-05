@@ -750,6 +750,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
 
 
@@ -893,6 +895,39 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Модели и границы поверхности
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#05112026" class="md-nav__link">
+    <span class="md-ellipsis">
+      Выбор поверхности: проверено 05.11.2026
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Выбор поверхности: проверено 05.11.2026">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#current-cloud-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Настроить current Cloud environment
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
     </ul>
 
 </nav>
@@ -914,6 +949,27 @@
 
   <span class="md-ellipsis">
     Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
   </span>
 
 
@@ -2775,6 +2831,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2961,6 +3019,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3451,6 +3530,39 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Модели и границы поверхности
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#05112026" class="md-nav__link">
+    <span class="md-ellipsis">
+      Выбор поверхности: проверено 05.11.2026
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Выбор поверхности: проверено 05.11.2026">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#current-cloud-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Настроить current Cloud environment
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3535,6 +3647,61 @@ Verification: запусти ...
 <li>secrets availability only where needed;</li>
 <li>expected PR or artifact.</li>
 </ul>
+<h2 id="_2">Модели и границы поверхности<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Версия CLI не доказывает версию Codex App или IDE extension. API-key и ChatGPT sign-in могут иметь разные availability/retirement условия. Сопоставляйте client/auth/model/effort по <a href="models-and-reasoning.html">единому справочнику</a>; account availability и runtime activation требуют собственного evidence.</p>
+<h2 id="05112026">Выбор поверхности: проверено 05.11.2026<a class="headerlink" href="#05112026" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Сценарий</th>
+<th>Поверхность</th>
+<th>Что проверить до работы</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Локальные файлы и команды</td>
+<td>Desktop Codex / CLI / IDE extension</td>
+<td>Workspace, effective permissions, project instructions</td>
+</tr>
+<tr>
+<td>Установить plugin</td>
+<td>Поддерживаемые Desktop/CLI, ChatGPT web/mobile</td>
+<td>Компоненты, auth и план; IDE не поддерживает native plugins</td>
+</tr>
+<tr>
+<td>Задача в подготовленном окружении</td>
+<td>Current Codex Cloud</td>
+<td>Published environment, network policy, variables/secrets</td>
+</tr>
+<tr>
+<td>Cloud orchestration с локальным доступом</td>
+<td>Work Cloud + local computer access</td>
+<td>Local execution и cloud orchestration controls отдельно</td>
+</tr>
+<tr>
+<td>Повторять проверенный workflow</td>
+<td>Scheduled tasks</td>
+<td>Local/cloud mode, machine availability, destination и authority</td>
+</tr>
+<tr>
+<td>Собственное agent application</td>
+<td>Agents API / Agents SDK / Responses</td>
+<td>Владение loop/state, deployment, tools, approvals</td>
+</tr>
+</tbody>
+</table>
+<p>Источники: <a href="https://learn.chatgpt.com/docs/plugins">Plugins</a>, <a href="https://learn.chatgpt.com/docs/extend/mcp">MCP</a>, <a href="https://learn.chatgpt.com/docs/environments/cloud-environments">Cloud</a>. Поддержка функции зависит от account, client, auth, rollout и managed policy. Desktop only означает, что обнаружение plugin в web не даёт возможности использовать его там.</p>
+<h3 id="current-cloud-environment">Настроить current Cloud environment<a class="headerlink" href="#current-cloud-environment" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Выберите <strong>Work in → Cloud → Create environment</strong> и разрешённые repositories.</li>
+<li>В диалоге уточните dependencies, versions и необходимые services. Codex готовит и проверяет setup; вручную писать install script не обязательно.</li>
+<li>Проверьте <strong>Install script</strong>, <strong>Start skill</strong>, network policy и configuration.</li>
+<li><strong>Save</strong> сохраняет настройки; <strong>Publish</strong> фиксирует подготовленную среду для новых tasks. После изменений используйте <strong>Republish</strong> и новый task; существующий task сохраняет своё состояние.</li>
+<li>Проверьте команду проекта в новом task и доступ только к разрешённым destinations.</li>
+</ol>
+<p>Environment variables передаются программам напрямую. Network secrets используют placeholders и proxy substitution для разрешённых HTTPS destinations (port 443), в setup и tasks. Не переносите legacy правило «secrets только во время setup» на current Cloud. Network policy, credential delivery и права сервиса — разные проверки. Если доступа не хватает, уточните нужный destination и identity; не расширяйте policy автоматически.</p>
+<p>Legacy Cloud имеет отдельные setup/maintenance/network правила. <a href="https://learn.chatgpt.com/docs/environments/cloud-environments">Current Cloud documentation</a> и <a href="https://learn.chatgpt.com/docs/cloud/internet-access">legacy internet settings</a> нельзя смешивать в одном рецепте.</p>
 
 
 

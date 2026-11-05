@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
   </span>
 
 
@@ -1668,6 +1691,15 @@
   <a href="#fresh-session-proof" class="md-nav__link">
     <span class="md-ellipsis">
       Fresh-session Proof
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#separate-state-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Separate state layers
     </span>
   </a>
 
@@ -2766,6 +2798,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2952,6 +2986,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3433,6 +3488,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#separate-state-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Separate state layers
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3554,6 +3618,8 @@
 <li>Residual risk if current session remains stale.</li>
 </ol>
 <p>Until this exists, use <code>present_unverified</code>, <code>planned-only</code> or <code>approval_required</code> instead of fixed/ready language.</p>
+<h2 id="separate-state-layers">Separate state layers<a class="headerlink" href="#separate-state-layers" title="Permanent link">&para;</a></h2>
+<p>A project source cache stores retrieval artifacts; API prompt caching reuses prefixes; local memory stores recall; sessions support continuity. Do not transfer TTL, retention or authority between these layers. See <a href="../prompting/context-engineering.html">context/cache</a> and <a href="../agent-systems/memory.html">memory controls</a>.</p>
 
 
 

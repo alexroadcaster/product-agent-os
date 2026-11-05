@@ -1,4 +1,10 @@
-# Codex / Agentic Workflow Methodology Research
+---
+title: "Archive - Codex / Agentic Workflow Methodology Research"
+---
+
+# Archive - Codex / Agentic Workflow Methodology Research {#codex-agentic-workflow-methodology-research}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `official OpenAI + verified methodology + local implementation evidence + tool-assisted`
 

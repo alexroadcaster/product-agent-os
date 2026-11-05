@@ -1,4 +1,10 @@
-# Delivery, Release & Operations Methodology Research
+---
+title: "Archive - Delivery, Release & Operations Methodology Research"
+---
+
+# Archive - Delivery, Release & Operations Methodology Research {#delivery-release-operations-methodology-research}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `official + verified methodology + vendor documentation + tool-assisted`
 

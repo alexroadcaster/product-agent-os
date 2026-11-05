@@ -686,6 +686,17 @@
 
 
 
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+
+
+  <span class="md-ellipsis">
+    Шаблон карточки источника
+  </span>
+
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+
       <a href="source-card-template.html" class="md-nav__link md-nav__link--active">
 
 
@@ -695,6 +706,34 @@
 
 
       </a>
+
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+
+
+
+
+
+
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Область утверждения
+    </span>
+  </a>
+
+</li>
+
+    </ul>
+
+</nav>
 
     </li>
 
@@ -726,6 +765,8 @@
         </nav>
 
     </li>
+
+
 
 
 
@@ -839,6 +880,27 @@
 
   <span class="md-ellipsis">
     Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
   </span>
 
 
@@ -2700,6 +2762,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2886,6 +2950,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3325,6 +3410,23 @@
 
 
 
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Область утверждения
+    </span>
+  </a>
+
+</li>
+
+    </ul>
+
 </nav>
                   </div>
                 </div>
@@ -3357,6 +3459,16 @@
 <li><code>experiment</code> должен иметь воспроизводимый сценарий проверки.</li>
 <li>Если источник противоречит официальной документации, фиксируйте конфликт и не переносите утверждение в основные инструкции.</li>
 </ul>
+<h2 id="_2">Область утверждения<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Для изменяемых product claims дополнительно заполняйте поля; <code>checked_at</code> не обновляется без чтения источника.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">product</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="nt">client_and_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="nt">auth_and_plan_scope</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="nt">claim</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="nt">current_or_legacy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="nt">evidence_kind</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;documentation</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">local_check</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">runtime&quot;</span>
+<span class="nt">limitations</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+</code></pre></div>
 
 
 

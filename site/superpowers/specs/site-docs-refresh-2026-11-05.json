@@ -1,0 +1,380 @@
+{
+  "task_id": "PAOS-SITE-DOCS-REFRESH-2026-11-05",
+  "status": "docs_static_verified",
+  "audit": ".docs-tools/reports/site-openai-audit-2026-11-05.md",
+  "plan": ".docs-tools/reports/site-docs-refresh-plan-2026-11-05.md",
+  "report": ".docs-tools/reports/site-docs-refresh-result-2026-11-05.md",
+  "findings": [
+    {
+      "id": "F01",
+      "status": "resolved_documentation",
+      "resolution": "Собран актуальный site; страницы models-and-reasoning и model-migration доступны в обоих языках.",
+      "path": "docs/codex/models-and-reasoning.md"
+    },
+    {
+      "id": "F02",
+      "status": "resolved_documentation",
+      "resolution": "Разведены portable plugin.json/mcp.json и legacy package; миграция реализации не выполнялась.",
+      "path": "docs/product-agent-os/technical.md"
+    },
+    {
+      "id": "F03",
+      "status": "resolved_documentation",
+      "resolution": "Согласованы full v2, concise scope и legacy session; исторические ACT receipts ограничены проверенными маршрутами.",
+      "path": "docs/runtime/worktrees-hooks-rules.md"
+    },
+    {
+      "id": "F04",
+      "status": "resolved_documentation",
+      "resolution": "Добавлена матрица surfaces, execution/orchestration, local/current Cloud/legacy.",
+      "path": "docs/codex/surfaces.md"
+    },
+    {
+      "id": "F05",
+      "status": "resolved_documentation",
+      "resolution": "Раскрыты Scheduled tasks, local/cloud, existing chat, владелец и проверка результата.",
+      "path": "docs/runtime/automations-github.md"
+    },
+    {
+      "id": "F06",
+      "status": "resolved_documentation",
+      "resolution": "Уточнены exact-definition trust, command/MCP failure semantics, permissions и fresh-session evidence.",
+      "path": "docs/runtime/worktrees-hooks-rules.md"
+    },
+    {
+      "id": "F07",
+      "status": "resolved_documentation",
+      "resolution": "Короткий маршрут ordinary; reuse artifacts; delegation, worktrees, evals по необходимости и полномочиям.",
+      "path": "docs/product-agent/lifecycle.md"
+    },
+    {
+      "id": "F08",
+      "status": "resolved_documentation",
+      "resolution": "Разведены discovery, exposure, invocation, загрузка и результат skill; добавлена диагностика.",
+      "path": "docs/agent-systems/subagents-skills.md"
+    },
+    {
+      "id": "F09",
+      "status": "resolved_documentation",
+      "resolution": "Четыре слоя memory; local/web store, use/generate, eligibility/reset; AGENTS отдельно от обычных docs.",
+      "path": "docs/agent-systems/memory.md"
+    },
+    {
+      "id": "F10",
+      "status": "resolved_documentation",
+      "resolution": "Добавлен current Cloud onboarding: install script/start skill, Save/Publish/Republish, network/direct secrets.",
+      "path": "docs/codex/surfaces.md"
+    },
+    {
+      "id": "F11",
+      "status": "resolved_documentation",
+      "resolution": "Дополнены runtime ownership и failure paths; сохранены уже свежие async/steering contracts.",
+      "path": "docs/agent-systems/sdk-patterns.md"
+    },
+    {
+      "id": "F12",
+      "status": "resolved_documentation",
+      "resolution": "Пользовательский вход к выбору модели; optional measured cache tuning, без активации и новых ценовых обещаний.",
+      "path": "docs/prompting/context-engineering.md"
+    },
+    {
+      "id": "F13",
+      "status": "resolved_documentation",
+      "resolution": "Согласованы текущие RU/EN claims/gates и схемы; сокращённая EN history явно обозначена.",
+      "path": "docs/product-agent-os/control-plane-current-state.en.md"
+    },
+    {
+      "id": "F14",
+      "status": "resolved_documentation",
+      "resolution": "Исправлены Mermaid identifiers/as, reserved Loop и planning anchor; 93 блока отрендерены.",
+      "path": "docs/diagrams/architecture.md"
+    },
+    {
+      "id": "F15",
+      "status": "resolved_documentation",
+      "resolution": "Текущая сводка отделена от history; 92 страницы подписаны как архив и сохранены в поиске.",
+      "path": "docs/product-agent-os/control-plane-current-state.md"
+    },
+    {
+      "id": "F16",
+      "status": "resolved_documentation",
+      "resolution": "Обновлён maintenance workflow: source/registry/RUEN, conditional build, routes/links/search/render.",
+      "path": "docs/playbooks/docs-update.md"
+    },
+    {
+      "id": "F17",
+      "status": "resolved_documentation",
+      "resolution": "IDE repo workflows отделены от native plugin installation; component/auth/new-session ограничения явны.",
+      "path": "docs/product-agent/product-agent-os-plugin-spec.md"
+    },
+    {
+      "id": "F18",
+      "status": "resolved_documentation",
+      "resolution": "Главная RU/EN получила три входа по задаче; отредактированы пользовательские инструкции.",
+      "path": "docs/index.md"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Model Context Protocol",
+      "url": "https://learn.chatgpt.com/docs/extend/mcp",
+      "scope": "local/cloud MCP and orchestration",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    },
+    {
+      "title": "Hooks",
+      "url": "https://learn.chatgpt.com/docs/hooks",
+      "scope": "trust, merge, concurrency, supported handlers and failure boundaries",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    },
+    {
+      "title": "Subagents",
+      "url": "https://learn.chatgpt.com/docs/agent-configuration/subagents",
+      "scope": "delegation and inherited controls",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    },
+    {
+      "title": "Approvals and security",
+      "url": "https://learn.chatgpt.com/docs/agent-approvals-security",
+      "scope": "retired approval policy and execution scope",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    },
+    {
+      "title": "Package your plugin",
+      "url": "https://developers.openai.com/plugins/build/plugins",
+      "scope": "portable and compatibility layouts",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    },
+    {
+      "title": "Developer settings",
+      "url": "https://learn.chatgpt.com/docs/developer-settings",
+      "scope": "effective configuration diagnostics",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    },
+    {
+      "title": "Scheduled tasks",
+      "url": "https://developers.openai.com/codex/app/automations",
+      "scope": "modes and execution prerequisites",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    },
+    {
+      "title": "Git worktrees",
+      "url": "https://learn.chatgpt.com/docs/environments/git-worktrees",
+      "scope": "Git isolation and Handoff",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    },
+    {
+      "title": "Build skills",
+      "url": "https://learn.chatgpt.com/docs/build-skills",
+      "scope": "instructions-first and exposure",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    },
+    {
+      "title": "Models",
+      "url": "https://learn.chatgpt.com/docs/models",
+      "scope": "client availability and model controls",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    },
+    {
+      "title": "Latest model",
+      "url": "https://developers.openai.com/api/docs/guides/latest-model",
+      "scope": "initiative, scoped verification and migration",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    },
+    {
+      "title": "Agents",
+      "url": "https://developers.openai.com/api/docs/guides/agents",
+      "scope": "runtime and state ownership",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    },
+    {
+      "title": "AGENTS.md",
+      "url": "https://learn.chatgpt.com/docs/agent-configuration/agents-md",
+      "scope": "discovery versus supporting docs",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    },
+    {
+      "title": "Memories",
+      "url": "https://developers.openai.com/codex/memories",
+      "scope": "local/web stores, use/generate and reset",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    },
+    {
+      "title": "Deployment checklist",
+      "url": "https://developers.openai.com/api/docs/guides/deployment-checklist",
+      "scope": "reference only; no deployment claim",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    },
+    {
+      "title": "Evaluation best practices",
+      "url": "https://developers.openai.com/api/docs/guides/evaluation-best-practices",
+      "scope": "single-agent baseline and evaluation",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    },
+    {
+      "title": "Plugins",
+      "url": "https://learn.chatgpt.com/docs/plugins",
+      "scope": "component/client support and installation",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    },
+    {
+      "title": "Cloud network scope",
+      "url": "https://learn.chatgpt.com/docs/enterprise/security-cookbook#configure-cloud-environment-networking-separately",
+      "scope": "current versus legacy networking",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    },
+    {
+      "title": "Cloud environments",
+      "url": "https://learn.chatgpt.com/docs/environments/cloud-environments",
+      "scope": "setup, publication and network secrets",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    },
+    {
+      "title": "Non-interactive",
+      "url": "https://developers.openai.com/codex/noninteractive",
+      "scope": "JSONL/final schema and approval failures",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    },
+    {
+      "title": "Prompt caching",
+      "url": "https://developers.openai.com/api/docs/guides/prompt-caching",
+      "scope": "explicit breakpoints and lifetime",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    },
+    {
+      "title": "Responses Multi-agent",
+      "url": "https://developers.openai.com/api/docs/guides/responses-multi-agent",
+      "scope": "beta ownership and compatibility",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    },
+    {
+      "title": "Async tool calling",
+      "url": "https://developers.openai.com/api/docs/guides/async-tool-calling",
+      "scope": "pending tools and call_id",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    },
+    {
+      "title": "Mid-turn steering",
+      "url": "https://developers.openai.com/api/docs/guides/steering",
+      "scope": "steering does not undo tools",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    },
+    {
+      "title": "Structured Outputs",
+      "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+      "scope": "output shape versus truth",
+      "checked_at": "2026-11-05",
+      "provenance": "Same-day official connector audit; plugin docs rechecked during implementation"
+    }
+  ],
+  "verification": {
+    "docs_tests": "100 passed",
+    "check_docs": "passed",
+    "strict_mkdocs": "passed",
+    "postprocessor": "tools/fix_site_i18n_links.ps1; 314 files",
+    "site_integrity": "368 HTML; 220 expected routes; zero missing routes/files/anchors/search routes; 92 archive search entries",
+    "mermaid": "93/93 current-navigation blocks parse/render; zero failures",
+    "browser": "RU/EN search 18/53 matches for модели/models; language links correct; delivery diagrams render; English mobile 390px scrollWidth=390",
+    "protected_hashes": "1017 unchanged",
+    "diff_check": "passed",
+    "full_site_search": "Material search requires HTTP; RU and EN observed via loopback; no hosted claim"
+  },
+  "evidence_dir": ".docs-tools/reports/site-refresh-20261105",
+  "diagram_evidence": "output/playwright/diagram-results.json",
+  "screenshots": [
+    "output/playwright/home-ru-desktop.png",
+    "output/playwright/home-en-mobile.png",
+    "output/playwright/delivery-ru-desktop.png",
+    "output/playwright/delivery-en-desktop.png"
+  ],
+  "review": {
+    "context_mode": "self_review",
+    "tester_verdict": "closed_allowed"
+  },
+  "limitations": [
+    "No publication, hosted check, provider call, plugin/model/hook activation or dependency installation.",
+    "External URL availability not exhaustively crawled; same-day official retrieval supports changed claims.",
+    "Mermaid coverage: 93 current-navigation blocks; historical off-navigation diagrams not re-certified.",
+    "Historical evidence preserved; explicitly abbreviated EN history is not a full ledger translation.",
+    "file:// pages/diagrams work; Material search requires HTTP. Loopback search verified; external Google Fonts blocked and fallback used."
+  ],
+  "control_plane_sync": {
+    "PLAN": "updated",
+    "TEST": "updated",
+    "RUNLOG": "updated",
+    "REQUIREMENTS": "not_applicable: no product behavior change",
+    "EVALS": "not_applicable: no eval change",
+    "prod_test": "not_applicable: no historical runtime evidence change"
+  },
+  "implementation_changed": false,
+  "published": false,
+  "activation": "not_applicable",
+  "checked_at": "2026-11-05T10:48:57.198801+00:00",
+  "command_results": [
+    {
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "exit_code": 0,
+      "output": "Ran 100 tests in 2.693s; OK"
+    },
+    {
+      "command": "python tools/check_docs.py",
+      "exit_code": 0,
+      "output": "OK: documentation structure checks passed"
+    },
+    {
+      "command": ".venv-docs/Scripts/python.exe -m mkdocs build --strict",
+      "exit_code": 0,
+      "output": "Strict build completed; see mkdocs-final.log"
+    },
+    {
+      "command": "tools/fix_site_i18n_links.ps1 -SiteDir site",
+      "exit_code": 0,
+      "output": "updated_files=314"
+    },
+    {
+      "command": "python .docs-tools/reports/site-refresh-20261105/check-site.py",
+      "exit_code": 0,
+      "output": "368 HTML; 220 routes; missing lists empty; 1017 protected files unchanged; 92 archive entries"
+    },
+    {
+      "command": "git -c core.safecrlf=false diff --check",
+      "exit_code": 0,
+      "output": "empty"
+    }
+  ],
+  "archive_body_preservation": {
+    "checked": 92,
+    "differences": 0,
+    "normalization": "Ignore only added archive front matter, title prefix, explicit preserved anchor and explanatory banner"
+  },
+  "diagram_source_alignment": {
+    "checked": 93,
+    "differences": 0
+  },
+  "temporary_services": "isolated browser and loopback server stopped",
+  "generated_receipt_sync": "Source JSON copied byte-for-byte after final closure metadata; generated HTML/search unchanged"
+}

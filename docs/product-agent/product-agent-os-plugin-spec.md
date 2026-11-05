@@ -24,7 +24,7 @@ Plugin не публикует себя, не устанавливает depende
 | --- | --- |
 | Codex App | Разбор неоднозначности, steering, review и локальная работа в workspace. |
 | CLI | Детерминированные checks, renderers, validators и staged artifact generation. |
-| IDE extension | Навигация, поддержка реализации и review context. |
+| IDE extension | Работа с repo files и review context; native plugin installation не поддерживается. |
 | skills | Повторяемые методы с inputs, outputs, verification и failure modes. |
 | subagents | Специализированная или параллельная работа при явном ownership. |
 | MCP | Объявленный integration context с approval boundaries. |
@@ -246,3 +246,7 @@ Product-Agent OS приемлем, когда:
 
 - Compatibility checks не являются publication approval.
 - Включение live actions в plugin contract может обойти explicit approval model.
+
+## Совместимость package
+
+В specification перечислен layout существующего пакета, а не единственный официальный формат. Portable `plugin.json` / `mcp.json`, legacy fallback, новая сессия, auth и trust описаны в [technical installation](../product-agent-os/technical.md). Поддержку продукта, компонента и конкретного account проверяйте отдельно по [Plugins](https://learn.chatgpt.com/docs/plugins).

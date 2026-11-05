@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
   </span>
 
 
@@ -2690,6 +2713,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2876,6 +2901,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3339,6 +3385,24 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#runtimes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обновление моделей и runtimes
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Выберите короткий или полный маршрут
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3360,7 +3424,7 @@
 <p>Используйте диаграммы не как иллюстрации, а как порядок действий:</p>
 <ol>
 <li>Начните с <a href="product-delivery-lifecycle.html">Product-Agent Delivery Lifecycle</a>, чтобы понять весь путь от идеи до release.</li>
-<li>Зафиксируйте <a href="../product-agent-os/architecture.html#архитектура-планов-и-задач">архитектуру планов и задач</a>, если проект требует матрицу задач, поэтапную поставку или отчет после реализации.</li>
+<li>Зафиксируйте <a href="../product-agent-os/architecture.html#planning-contract">архитектуру планов и задач</a>, если проект требует матрицу задач, поэтапную поставку или отчет после реализации.</li>
 <li>Перейдите к <a href="agent-team-and-skills.html">Команде агентов и skills</a>, чтобы разложить проект на роли, зоны владения и reusable methods.</li>
 <li>Используйте <a href="runtime-decision-map.html">Runtime decision map</a>, чтобы выбрать Codex App, CLI, Cloud, <code>codex exec</code>, MCP, GitHub Action или automation.</li>
 <li>Проверьте <a href="source-generated-trust-boundary.html">границу source и generated evidence</a>, если работа опирается на generated graph, cockpit HTML, reports или <code>site/</code>.</li>
@@ -3440,19 +3504,18 @@
 <h2 id="_1">Минимальный рабочий маршрут<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <p>Для нового проекта проходите страницы в таком порядке:</p>
 <pre class="mermaid"><code>flowchart LR
-    A["Идея проекта"] --&gt; B["Delivery lifecycle"]
-    B --&gt; B1["Архитектура планов"]
-    B1 --&gt; C["Команда агентов и skills"]
-    C --&gt; D["Runtime decision"]
-    D --&gt; E["Source/generated boundary"]
-    E --&gt; F["Architecture Intelligence maps"]
-    F --&gt; G["Implementation loop"]
-    G --&gt; H["Skill exposure boundary"]
-    H --&gt; I["Skill lifecycle"]
-    G --&gt; J["Context и verification"]
-    I --&gt; K["Reusable project methods"]
-    J --&gt; L["Product-ready output"]</code></pre>
-<p>Если после прохождения маршрута у проекта нет <code>REQUIREMENTS.md</code>, <code>PLAN.md</code>, <code>TEST.md</code>, <code>EVALS.md</code> и <code>RUNLOG.md</code>, значит workflow еще не готов к автономной или полуавтономной агентной работе.</p>
+    A["User task"] --&gt; B{"Scope and risk"}
+    B --&gt;|Ordinary| C["Scope, change, checks, result"]
+    B --&gt;|Large or high risk| D["Delivery lifecycle"]
+    D --&gt; E["Ownership and optional agents"]
+    E --&gt; F["Runtime and source boundaries"]
+    F --&gt; G["Implementation and evidence"]
+    G --&gt; H["Skill or automation candidate when justified"]</code></pre>
+<p>Для небольшой задачи достаточно короткого маршрута: scope → изменение → affected checks → результат. Пять control-plane files нужны по применимости; переиспользуйте имеющиеся artifacts.</p>
+<h2 id="runtimes">Обновление моделей и runtimes<a class="headerlink" href="#runtimes" title="Permanent link">&para;</a></h2>
+<p>Используйте <a href="../codex/models-and-reasoning.html">матрицу моделей</a> и <a href="../playbooks/model-migration.html">playbook миграции</a> вместе с диаграммами команды/runtime. API-возможности и кандидатные модели описаны отдельно от текущей активации Product-Agent OS.</p>
+<h2 id="_2">Выберите короткий или полный маршрут<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p><a href="product-delivery-lifecycle.html">Delivery lifecycle</a> начинается с размера и риска. Ordinary task не требует команды, worktree или нового набора файлов. Полный маршрут atlas используется, когда есть существенные зависимости, ownership или release/readiness. Следующая диаграмма должна отвечать на конкретный вопрос задачи.</p>
 
 
 

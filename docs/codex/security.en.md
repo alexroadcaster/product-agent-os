@@ -32,3 +32,7 @@ Before a sensitive action, identify destination, data, side effects, existing au
 ## Verification boundary
 
 Static config parsing cannot prove effective runtime policy. Record client/version/auth, loaded configuration, parent permissions, selected tool and observed permitted/denied behavior before an activation claim. The current documentation refresh changes no permissions; unresolved project contracts are listed in [Codex compatibility](../product-agent-os/codex-compatibility.md).
+
+## Cloud and hooks
+
+Current Cloud network secrets and direct variables use different delivery mechanisms; the legacy setup-only rule is not universal. See [Cloud setup](surfaces.md) and [hook trust/failure boundaries](../runtime/worktrees-hooks-rules.md). Check execution and orchestration separately.

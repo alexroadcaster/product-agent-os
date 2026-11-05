@@ -1,4 +1,10 @@
-﻿# Product-Agent OS Batch 40 S5 Doubt verifier pilot metrics and closure
+---
+title: "Archive - Product-Agent OS Batch 40 S5 Doubt verifier pilot metrics and closure"
+---
+
+# Archive - Product-Agent OS Batch 40 S5 Doubt verifier pilot metrics and closure {#product-agent-os-batch-40-s5-doubt-verifier-pilot-metrics-and-closure}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `project-authored implementation evidence`. This packet is source-owned evidence for Batch 40 S5 and is not generated `site/` output.
 

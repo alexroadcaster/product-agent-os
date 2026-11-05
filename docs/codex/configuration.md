@@ -112,3 +112,7 @@ flowchart LR
 - Project Manager должен задавать source of truth documents: `REQUIREMENTS.md`, `AGENT_TASKS.md`, `TEST.md`.
 - Каждый worker получает ограниченный результат; Codex subagents наследуют sandbox и approvals родителя. Для отдельных runtimes нужна собственная явно заданная политика исполнения.
 - Handoff обратно к Project Manager обязателен, чтобы финальная сборка решений не распалась на независимые результаты.
+
+## Проверка effective settings
+
+После изменения конфигурации проверьте client/version, workspace root и managed policy. `/status`, `/debug-config` и `--strict-config` помогают диагностике на поддерживаемом клиенте; файл не доказывает загрузку. Current Cloud настраивается отдельно от local config. [Developer settings](https://learn.chatgpt.com/docs/developer-settings).

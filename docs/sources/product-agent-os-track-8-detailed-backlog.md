@@ -1,4 +1,10 @@
-# Product-Agent OS Track 8: детальный backlog реализации
+---
+title: "Архив — Product-Agent OS Track 8: детальный backlog реализации"
+---
+
+# Архив — Product-Agent OS Track 8: детальный backlog реализации {#product-agent-os-track-8-backlog}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `official + verified methodology + implementation planning`
 

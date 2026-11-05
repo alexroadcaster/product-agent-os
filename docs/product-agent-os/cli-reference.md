@@ -1,8 +1,72 @@
-﻿# Product-Agent OS CLI reference
+# Product-Agent OS CLI reference
 
 Source status: `official + experiment`
 
 Эта страница фиксирует локальные поверхности `CLI`, которые уже есть в `plugins/product-agent-os/scripts/`. Команды рассматриваются как `stage/read-only tooling`: они не публикуют plugin, не запускают внешние системы и не выполняют `live provider/model/API calls` без отдельного `explicit approval`.
+
+## Ordinary route: ограниченная задача {#ordinary-route}
+
+Для существующего проекта передайте `--task-context task.json`. Путь JSON считается относительно target workspace и не может выходить за него. Вызов без этого аргумента сохраняет прежний маршрут, помеченный `routing_trace.mode=legacy`.
+
+```powershell
+python plugins/product-agent-os/scripts/run_codex_runtime_runner.py ./sample --contract --task-context task.json
+python plugins/product-agent-os/scripts/render_infrastructure.py ./sample --dry-run --task-context task.json
+```
+
+Пример для workspace `sample`: файл `TEST.md` должен уже содержать команду `python -m unittest test_calc -v`; `calc.py` и `test_calc.py` — проверяемый код и regression test. Создание этих файлов не выполняется runner автоматически.
+
+```json
+{
+  "schema_version": 1,
+  "task_id": "fix-addition",
+  "intent": "Fix addition",
+  "change_mode": "defect_fix",
+  "changed_paths": [
+    "calc.py"
+  ],
+  "verification_paths": [
+    "test_calc.py"
+  ],
+  "risk_level": "low",
+  "acceptance": [
+    "total(2, 3) equals 5"
+  ],
+  "risks": [
+    {
+      "risk_id": "sum",
+      "kind": "pure_logic",
+      "description": "Addition regression",
+      "protected_invariants": [
+        "addition"
+      ],
+      "languages": [
+        "python"
+      ]
+    }
+  ],
+  "executable_test_seam": true,
+  "checks": [
+    {
+      "command": "python -m unittest test_calc -v",
+      "source": "TEST.md",
+      "test_kinds": [
+        "unit"
+      ]
+    }
+  ]
+}
+```
+
+Выбор проходит через существующие T26/T27 selectors. `routing_trace` показывает `ordinary`, `full` или `needs_context`, вызванные selectors и отсутствие legacy fallback. `route_ready` означает готовый план действий: команды не исполнялись, исходники не менялись, task не завершён.
+
+- `docs_only` допускает Markdown/text изменения без behavioral risks; code-change contract неприменим. `no_op`, `reuse`, `configuration`, `deletion` допускают результат без нового кода.
+- `unknown` risk, отсутствующие checks или stale evidence дают явный gap. High-risk, boundary/critical-flow, sensitive paths/intent, financial/release и explicit-full context сохраняют full reporting и необходимые gates.
+- `checks` связывает команду из реального source с типами проверок. Известные command lines из `AGENTS.md`, `AGENTS.override.md`, `TEST.md` и вложенных инструкций сохраняются консервативно. Это не семантический parser правил: Codex обязан прочитать все применимые инструкции; они имеют приоритет над selection.
+- `state` необязателен: `value`, `source`, `sha256` должны соответствовать JSON с теми же `task_id` и `lifecycle_state`. Ни state, ни данные task context не дают write authority.
+- Неизвестные поля/version и выход paths за workspace дают exit 2. Корректный route — exit 0; `needs_context`, `needs_approval`, `blocked` — exit 1.
+- `--stage` также принимает task context, но требует отсутствия gaps и output directory вне target. Existing ordinary project обычно переиспользует документы и не генерирует новый пакет.
+
+Пример и входные поля относятся к локальному Product-Agent OS contract, а не к API OpenAI. Подробнее: [artifact contracts](artifact-contracts.md#ordinary-route-contract).
 
 ## Назначение
 
@@ -147,7 +211,7 @@ python -m mkdocs build --strict
 git diff --check
 ```
 
-Запустите минимальный релевантный набор для текущего slice. Закрывающий claim требует порядок: `source docs -> registry -> docs tests -> check_docs.py -> strict MkDocs -> optional full closure`.
+Запустите минимальный релевантный набор для текущей задачи: source docs → registry → docs tests → `check_docs.py`. Strict MkDocs и проверка site обязательны при изменении navigation, diagrams, search или generated site и наличии разрешения на сборку; остальные gates выбираются по затронутому поведению. [Процесс обновления документации](../playbooks/docs-update.md).
 
 ## Риски и сбои
 

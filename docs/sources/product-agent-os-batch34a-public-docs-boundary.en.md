@@ -1,4 +1,10 @@
-# Product-Agent OS Batch 34A public docs boundary and IA packet
+---
+title: "Archive - Product-Agent OS Batch 34A public docs boundary and IA packet"
+---
+
+# Archive - Product-Agent OS Batch 34A public docs boundary and IA packet {#product-agent-os-batch-34a-public-docs-boundary-and-ia-packet}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `internal`
 

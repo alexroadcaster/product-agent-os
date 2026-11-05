@@ -18,7 +18,7 @@
 
 
 
-        <title>Product-Agent OS: execution-loop remediation and delivery recovery - Product-Agent OS Documentation</title>
+        <title>Archive - Product-Agent OS: execution-loop remediation and delivery recovery - Product-Agent OS Documentation</title>
 
 
 
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
 
-              Product-Agent OS: execution-loop remediation and delivery recovery
+              Archive - Product-Agent OS: execution-loop remediation and delivery recovery
 
           </span>
         </div>
@@ -744,6 +744,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -825,6 +827,27 @@
 
   <span class="md-ellipsis">
     Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
   </span>
 
 
@@ -2686,6 +2709,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2872,6 +2897,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3471,9 +3517,27 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#final-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Final verification
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#rollback" class="md-nav__link">
     <span class="md-ellipsis">
       Rollback
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#subsequent-documentation-handoff-2026-11-03" class="md-nav__link">
+    <span class="md-ellipsis">
+      Subsequent documentation handoff — 2026-11-03
     </span>
   </a>
 
@@ -3494,7 +3558,10 @@
 
 
 
-<h1 id="product-agent-os-execution-loop-remediation-and-delivery-recovery">Product-Agent OS: execution-loop remediation and delivery recovery<a class="headerlink" href="#product-agent-os-execution-loop-remediation-and-delivery-recovery" title="Permanent link">&para;</a></h1>
+<h1 id="product-agent-os-execution-loop-remediation-and-delivery-recovery">Archive - Product-Agent OS: execution-loop remediation and delivery recovery<a class="headerlink" href="#product-agent-os-execution-loop-remediation-and-delivery-recovery" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.</p>
+</blockquote>
 <p>Source status: <code>active local implementation plan; hook/automation activation and external actions are not authorized</code></p>
 <h2 id="scope">Scope<a class="headerlink" href="#scope" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3802,12 +3869,25 @@
 <li>residual risks: clean-session activation remains a user acceptance gate; diagnostics need real sanitized run records.</li>
 <li>follow-up: restart the Codex task and verify the loaded instruction chain, provenance, hook behavior, latency/tokens/cost</li>
 </ul>
+<h2 id="final-verification">Final verification<a class="headerlink" href="#final-verification" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Product-Agent OS docs: 100/100.</li>
+<li>Combined affected-contract route excluding the already verified docs module: 208/208.</li>
+<li>Strict MkDocs through the project-local dependency target and Python 3.13: exit 0; generated <code>site/</code> restored to 652 files and file-safe i18n normalization passed.</li>
+<li>Task-matrix RU/EN and task-state consistency validators: green before the final static pass.</li>
+<li>Evidence ceiling: local/static verification only; hook trust/activation, fresh-task behavior, provider/model quality, latency/tokens/cost, external review, and promotion are not proven.</li>
+</ul>
 <h2 id="rollback">Rollback<a class="headerlink" href="#rollback" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Changes are separated by R0-R4 and do not require Git history operations.</li>
 <li>On a focused failure, only the current slice returns to repair; the previous green slice remains unchanged.</li>
 <li>Hook activation is outside this implementation, so runtime disable/rollback is not required.</li>
 </ul>
+<h2 id="subsequent-documentation-handoff-2026-11-03">Subsequent documentation handoff — 2026-11-03<a class="headerlink" href="#subsequent-documentation-handoff-2026-11-03" title="Permanent link">&para;</a></h2>
+<p>Current root task <code>PAOS-DOCS-REFRESH-2026-11-03</code> is owned by the <a href="2026-11-03-gpt6-documentation-refresh.html">new documentation plan</a>. This dated pointer lets the legacy state-consistency check locate the current task; it does not change any August implementation status, result or Batch 45 dependency. The validator still hardcodes this historical plan; generalizing that implementation is separate follow-up.</p>
+
+
+
 
 
 

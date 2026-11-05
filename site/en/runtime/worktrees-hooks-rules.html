@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
   </span>
 
 
@@ -2502,6 +2525,24 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#current-hook-contract-and-activation-diagnostics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current hook contract and activation diagnostics
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#trust-and-execution-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trust and execution boundaries
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -2775,6 +2816,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2961,6 +3004,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3451,6 +3515,24 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#current-hook-contract-and-activation-diagnostics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current hook contract and activation diagnostics
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#trust-and-execution-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trust and execution boundaries
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3468,7 +3550,7 @@
 
 <h1 id="worktrees-hooks-and-rules">Worktrees, hooks and rules<a class="headerlink" href="#worktrees-hooks-and-rules" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + experiment</code><br />
-Sources: <a href="https://developers.openai.com/codex/learn/best-practices">Codex best practices</a>, <a href="https://developers.openai.com/codex/app/worktrees">Codex worktrees</a>, <a href="https://developers.openai.com/codex/hooks">Codex hooks</a>, <a href="https://developers.openai.com/codex/config/rules">Codex rules</a>, <a href="https://developers.openai.com/codex/agent-approvals-security">Agent approvals and security</a>.</p>
+Sources: <a href="https://developers.openai.com/codex/learn/best-practices">Codex best practices</a>, <a href="https://developers.openai.com/codex/app/worktrees">Codex worktrees</a>, <a href="https://learn.chatgpt.com/docs/hooks">Codex hooks</a>, <a href="https://developers.openai.com/codex/config/rules">Codex rules</a>, <a href="https://learn.chatgpt.com/docs/permissions">Agent approvals and security</a>.</p>
 <p>Worktrees isolate larger changes. Hooks and rules can guide or block unsafe actions, but they should remain explicit, reviewable and aligned with sandbox and approvals.</p>
 <h2 id="product-agent-os-lifecycle-hooks">Product-Agent OS lifecycle hooks<a class="headerlink" href="#product-agent-os-lifecycle-hooks" title="Permanent link">&para;</a></h2>
 <p>Product-Agent OS ships staged hooks through <code>plugins/product-agent-os/assets/templates/hooks/</code> and <code>render_infrastructure.py --stage</code>. For an end project they land under <code>.codex/hooks/</code> as proposed/staged assets, not as silently activated automation.</p>
@@ -3476,10 +3558,10 @@ Sources: <a href="https://developers.openai.com/codex/learn/best-practices">Code
 <ul>
 <li><code>SessionStart</code> reports control-plane and lifecycle file presence;</li>
 <li><code>PreToolUse</code> allows read-only discovery through a fast path that does not read the marker, but blocks mutating or non-read-only commands without <code>.codex/product-agent-os/lifecycle-state.json</code>;</li>
-<li>the marker must be written only after a user-visible full field-list start brief and must contain <code>task_start_brief_shown</code>, <code>task_id</code>, <code>scope</code>, <code>updated_at</code>, <code>approval_boundary</code>, <code>brief_schema_version: task_start_brief_v1</code>, <code>brief_format: field_list</code>, <code>brief_digest</code>, and <code>brief_fields_present</code> with every required start brief field;</li>
+<li>Before mutation show the applicable scope: large/high-risk/material/release work uses <code>task_start_brief_v2</code>, <code>brief_format: bold_fields</code> and nine fields; ordinary work uses <code>task_scope_note_v1</code>, <code>brief_format: concise</code>, and Scope/Evidence/Limits. Then record task_id, scope, updated_at, approval_boundary, brief_digest and brief_fields_present in the marker; <code>task_start_brief_shown</code> applies only to the full route. <code>task_start_brief_v1</code> / <code>field_list</code> remains compatible with already-started legacy sessions.</li>
 <li>the per-write <code>PostToolUse</code> comment-sufficiency advisory checks only paths from the current patch instead of rescanning the entire dirty worktree;</li>
-<li>after all writes, checks, and control-plane sync, the marker moves to <code>ready_for_completion_brief</code> and further mutations are denied;</li>
-<li><code>Stop</code> accepts one complete terminal Completion Brief without continuation, and requests at most one corrective continuation for an incomplete brief. No tool calls are allowed after a valid brief.</li>
+<li>after all writes, checks, and control-plane sync, the marker moves to <code>ready_for_completion_ledger</code> (full) or <code>ready_for_completion_brief</code> (concise/legacy) and further mutations are denied;</li>
+<li>Project <code>Stop</code> is advisory: it does not validate chat format or request corrective continuation. Full scopes use start brief (9 fields) and Completion Ledger (13 items); ordinary work uses concise results, evidence and limits. Finish tools and control-plane sync before the terminal response. Explicit local packet validation does not prove activation.</li>
 </ul>
 <p>The marker is not a transcript store: do not put raw chat, secrets, private source bodies, private customer data, or credentials in it. Hook activation remains a separate approval boundary.</p>
 <h2 id="inputs">Inputs<a class="headerlink" href="#inputs" title="Permanent link">&para;</a></h2>
@@ -3499,6 +3581,44 @@ Sources: <a href="https://developers.openai.com/codex/learn/best-practices">Code
 <li>Creating branches or worktrees without owner approval can conflict with project rules.</li>
 <li>Hooks can block valid work or mutate state unexpectedly if they are too broad.</li>
 </ul>
+<h2 id="current-hook-contract-and-activation-diagnostics">Current hook contract and activation diagnostics<a class="headerlink" href="#current-hook-contract-and-activation-diagnostics" title="Permanent link">&para;</a></h2>
+<p>Checked 2026-11-03: <a href="https://learn.chatgpt.com/docs/hooks">Hooks reference</a>. Non-managed hooks require review/trust for their current hash; new or changed definitions are skipped until trusted. A trusted project layer and valid JSON alone do not prove execution. <code>command</code> and <code>mcp_tool</code> handlers are supported; <code>prompt</code>/<code>agent</code> handlers are parsed but skipped. Multiple matching command hooks for one event may run concurrently: do not assume an ordering for shared-state writes.</p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Boundary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SessionStart</code></td>
+<td>Startup context, not implementation acceptance</td>
+</tr>
+<tr>
+<td><code>PreToolUse</code></td>
+<td>A supported deny can prevent an action; callback failure is not guaranteed denial</td>
+</tr>
+<tr>
+<td><code>PostToolUse</code></td>
+<td>Post-action checking; cannot undo a completed side effect</td>
+</tr>
+<tr>
+<td><code>Stop</code></td>
+<td>Can request continuation; respect <code>stop_hook_active</code> to avoid loops</td>
+</tr>
+<tr>
+<td><code>SessionEnd</code>, <code>Interrupt</code></td>
+<td>Short best-effort lifecycle, not a long gate</td>
+</tr>
+</tbody>
+</table>
+<p><code>timeout</code> is in seconds: usually default 600; <code>SessionEnd</code>/<code>Interrupt</code> default 1 and maximum 3. MCP uses the shorter hook/server timeout; elicitation waiting has separate semantics. Coverage depends on tool/event and runtime. Cloud-orchestrated enterprise remote MCP hooks have separate limits; a local command hook is not a universal cloud guardrail. Check the exact reference coverage row before relying on it.</p>
+<p>Activation evidence needs client/runtime, loaded source, hash/trust, the actual event/tool, authorized scenario and observed outcome. JSON parsing, unit tests and direct script execution are local evidence, not fresh-session proof. The 2026-11-03 receipt records <code>verified_local_runtime</code> for the tested Desktop routes: large, ordinary and terminal-marker denial. ACT-F1..F6 are resolved in source-owned <code>lifecycle_parity.repair</code>; this is a dated run, not a new test of this page. Silent Stop execution and completeness across all mutation channels are not proven. <a href="../product-agent-os/control-plane-current-state.html">Current evidence boundary</a>. The project Stop lifecycle above remains project policy, not universal OpenAI semantics.</p>
+<h2 id="trust-and-execution-boundaries">Trust and execution boundaries<a class="headerlink" href="#trust-and-execution-boundaries" title="Permanent link">&para;</a></h2>
+<p>Checked 2026-11-05 against <a href="https://learn.chatgpt.com/docs/hooks">Hooks</a>. Applicable hook sources are merged; a nearer file does not replace all earlier hooks. Matching command hooks can start concurrently. Definition or bundled plugin script changes require another review; installed/enabled does not mean trusted/executed.</p>
+<p>An MCP hook uses an already available server: it does not start or reconnect MCP. A missing server/tool or MCP-hook error does not guarantee denial; verify fail-closed behavior separately. Cloud-orchestrated Work does not support local command/plugin hooks; supported admin-managed MCP hooks are configured separately.</p>
+<p>A worktree separates Git working files, not permissions. A small change usually fits the current workspace. Choose Git-only worktrees, setup and Handoff through the <a href="https://learn.chatgpt.com/docs/environments/git-worktrees">official route</a> and project authority. Verify loaded definition and trust, an allowed case, a denied case, and evidence for the specific tool/runtime.</p>
 
 
 

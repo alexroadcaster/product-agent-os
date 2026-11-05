@@ -50,3 +50,7 @@ Every runtime следует leave evidence:
 [Agents API](https://developers.openai.com/api/docs/guides/agents) выполняет managed Codex harness на стороне OpenAI; Agents SDK запускает agent loop внутри приложения; Responses API дает прямой API-контракт с optional hosted orchestration. [Responses Multi-agent](https://developers.openai.com/api/docs/guides/responses-multi-agent) — отдельная beta-возможность, не синоним Codex subagents.
 
 Для выбора владельца state/tools/approvals используйте [таблицу SDK patterns](../agent-systems/sdk-patterns.md) и [диаграмму runtimes](../diagrams/runtime-decision-map.md). Product-Agent OS документирует эти маршруты, но данное обновление не реализует Agents API, async/steering или новый hosted runner. Статусы «документировано», «спроектировано», «реализовано», «проверено в runtime» требуют разных доказательств и не следуют друг из друга автоматически.
+
+## Выбор по границам исполнения
+
+Сначала определите local/current Cloud/legacy, затем auth, tool controls и владельца state. [Surface matrix и Cloud setup](../codex/surfaces.md), [Agents API/SDK/Responses](../agent-systems/sdk-patterns.md), [Scheduled tasks](automations-github.md). Local tools не означают local orchestration.

@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
   </span>
 
 
@@ -1740,6 +1763,15 @@
   <a href="#verification" class="md-nav__link">
     <span class="md-ellipsis">
       Verification
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#current-retained-data-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current retained-data boundaries
     </span>
   </a>
 
@@ -2775,6 +2807,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2961,6 +2995,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3451,6 +3506,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#current-retained-data-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current retained-data boundaries
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3509,6 +3573,8 @@
 <p>If a report contains raw findings, local paths, dependency advisory details, or private target names, the default state is <code>not_retained</code>. Retaining a report needs an owner-approved retention window, redaction status, and cleanup path.</p>
 <h2 id="verification">Verification<a class="headerlink" href="#verification" title="Permanent link">&para;</a></h2>
 <p>This docs slice verifies only the documented boundary: docs unittest, <code>tools/check_docs.py</code>, JSON packet validation, strict MkDocs smoke, and <code>git diff --check</code>. It does not run vulnerability audit, SBOM completion, remediation, or external crawling.</p>
+<h2 id="current-retained-data-boundaries">Current retained-data boundaries<a class="headerlink" href="#current-retained-data-boundaries" title="Permanent link">&para;</a></h2>
+<p>Review after plugin script changes is a separate trust check. Local memory stores and cloud network secrets have different retention/delivery semantics; do not promise universal deletion or setup-only credential access. See <a href="../runtime/worktrees-hooks-rules.html">hooks</a>, <a href="../agent-systems/memory.html">memory</a>, <a href="../codex/surfaces.html">Cloud</a>.</p>
 
 
 

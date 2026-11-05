@@ -1,4 +1,4 @@
-﻿# Product-Agent Workflows
+# Product-Agent Workflows
 
 Source status: `official + experiment`  
 Источники: [How OpenAI uses Codex](https://openai.com/business/guides-and-resources/how-openai-uses-codex/), [Codex best practices](https://developers.openai.com/codex/learn/best-practices), [A practical guide to building agents](https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/), [Agent Skills](https://developers.openai.com/codex/skills#create-a-skill), [AGENTS.md](https://developers.openai.com/codex/guides/agents-md).
@@ -56,3 +56,7 @@ flowchart LR
 - ownership файлов или подсистем;
 - policy для sandbox, approvals, secrets и network;
 - критерий остановки.
+
+## Выбрать размер workflow
+
+[Lifecycle](lifecycle.md) разделяет ordinary и full scopes. Начинайте с одного агента и существующих artifacts; добавляйте координацию по независимому ownership и риску. Локальный пакет помогает подготовить результат, но не доказывает autonomous hosted delivery.

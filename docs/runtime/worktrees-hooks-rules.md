@@ -34,9 +34,9 @@ Lifecycle guard устроен так:
 
 - `SessionStart` показывает наличие control-plane и lifecycle файлов;
 - `PreToolUse` пропускает read-only discovery по fast path без чтения marker, но блокирует mutating/non-read-only команды без `.codex/product-agent-os/lifecycle-state.json`;
-- marker должен появиться только после видимого пользователю полного стартового брифа в формате списка полей и содержать `task_start_brief_shown`, `task_id`, `scope`, `updated_at`, `approval_boundary`, `brief_schema_version: task_start_brief_v1`, `brief_format: field_list`, `brief_digest` и `brief_fields_present` со всеми обязательными полями стартового брифа;
+- Перед mutation покажите применимый scope: для large/high-risk/material/release — `task_start_brief_v2`, `brief_format: bold_fields` и девять полей; для ordinary — `task_scope_note_v1`, `brief_format: concise`, поля Scope/Evidence/Limits. Затем запишите marker с task_id, scope, updated_at, approval_boundary, brief_digest и brief_fields_present; `task_start_brief_shown` относится только к full route. `task_start_brief_v1` / `field_list` сохраняется для уже начатых legacy sessions.
 - per-write `PostToolUse` проверяет comment sufficiency только для путей текущего patch, а не повторно для всего dirty worktree;
-- после всех записей, проверок и control-plane sync marker переходит в `ready_for_completion_brief`; дальнейшие mutations блокируются;
+- после всех записей, проверок и control-plane sync marker переходит в `ready_for_completion_ledger` (full) или `ready_for_completion_brief` (concise/legacy); дальнейшие mutations блокируются;
 - Проектный `Stop` рекомендательный: он не проверяет формат чата и не запрашивает корректирующую continuation. Полный scope использует стартовый brief (9 полей) и Completion Ledger (13 пунктов); обычная работа — краткие результаты, проверки и ограничения. Все инструменты и control-plane sync завершаются до финального ответа. Явная локальная проверка пакета не доказывает активацию.
 
 Marker не является transcript store: в него нельзя помещать raw chat, secrets, private source bodies, private customer data или credentials. Activation hooks остаётся отдельным approval boundary.
@@ -74,4 +74,12 @@ Rules описывают policy, которую Codex должен учитыв�
 
 `timeout` задается в секундах: обычно по умолчанию 600, для `SessionEnd`/`Interrupt` — 1 и максимум 3. У MCP действует меньший hook/server timeout; ожидание elicitation имеет отдельную семантику. Покрытие зависит от tool/event и runtime. Cloud-orchestrated enterprise remote MCP hooks имеют отдельные ограничения; локальный command hook нельзя считать универсальным cloud guardrail. Перед использованием проверяйте точную строку покрытия в reference.
 
-Для доказательства активации нужны: client/runtime, загруженный источник, hash/trust, реально сработавший event/tool, разрешенный сценарий и наблюдаемый результат. Разбор JSON, unit tests и прямой запуск hook script — локальные evidence, не fresh-session proof. Реализация lifecycle parity меняет исходники hooks; trust не изменён, активация в новой сессии не подтверждена. Проектный `Stop` lifecycle выше остается правилом проекта, а не универсальной семантикой OpenAI.
+Для доказательства активации нужны: client/runtime, загруженный источник, hash/trust, реально сработавший event/tool, разрешенный сценарий и наблюдаемый результат. Разбор JSON, unit tests и прямой запуск hook script — локальные evidence, не fresh-session proof. Receipt от 03.11.2026 фиксирует `verified_local_runtime` для проверенных Desktop маршрутов: large, ordinary и terminal-marker denial. ACT-F1..F6 закрыты в source-owned `lifecycle_parity.repair`; это исторически выполненный run, не новая проверка этой страницы. Silent Stop execution и полнота всех mutation channels не доказаны. [Текущая граница evidence](../product-agent-os/control-plane-current-state.md). Проектный `Stop` lifecycle выше остается правилом проекта, а не универсальной семантикой OpenAI.
+
+## Trust и границы исполнения
+
+Проверено 05.11.2026 по [Hooks](https://learn.chatgpt.com/docs/hooks). Определения hooks из применимых источников объединяются; более близкий файл не заменяет все предыдущие hooks. Matching command hooks могут стартовать параллельно. После изменения определения или bundled plugin script нужен повторный review; install/enabled не равны trusted/executed.
+
+MCP hook использует уже доступный сервер: он не запускает и не переподключает MCP. Недоступный сервер, tool или ошибка MCP hook не дают гарантированного запрета — fail-closed нужно проверять отдельно. В cloud-orchestrated Work локальные command/plugin hooks не поддерживаются; поддерживаемые admin-managed MCP hooks настраиваются отдельно.
+
+Worktree разделяет Git working files, но не создаёт отдельные permissions. Для одного небольшого изменения обычно достаточно текущего workspace. Git-only worktrees, setup и Handoff выбирайте по [официальному маршруту](https://learn.chatgpt.com/docs/environments/git-worktrees) и project authority. Проверка: загруженная definition и trust → allowed case → denied case → evidence конкретного tool/runtime.

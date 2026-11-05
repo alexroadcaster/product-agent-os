@@ -2,6 +2,18 @@
 
 Source status: `experiment`
 
+## Current user route — 2026-11-05
+
+Start with the [surface matrix](../codex/surfaces.md) and [ordinary/full lifecycle](../product-agent/lifecycle.md). The current package uses a supported legacy manifest; the portable format is documented separately. IDE has no native plugin support. After skill updates verify exposure, invocation and results.
+
+ACT-F1..F6 are resolved in the dated 2026-11-03 local runtime receipt for tested Desktop routes. It does not prove all mutation channels, silent Stop execution or hosted/production delivery. The new update changes docs/site only; current checks are in the source-owned receipt `docs/superpowers/specs/site-docs-refresh-2026-11-05.json`.
+
+The RU/EN section above has the same current claims and limits. Below are preserved historical records; EN history is an abridged overview, not a complete translation of every ledger. Use source-owned JSON for exact receipts. Historical pending/failure entries do not override later scoped retests.
+
+<details markdown="1">
+<summary>Dated history and detailed evidence</summary>
+
+
 This page is the site-facing owner artifact for cold history and detailed
 evidence that should no longer live in root `PLAN.md`, `RUNLOG.md`, `TEST.md`,
 or `EVALS.md`. The root control-plane files stay compact routers: they show the
@@ -108,3 +120,4 @@ This page does not prove runtime/browser/provider behavior, target mutation
 safety, active automation, hook execution in a fresh trusted session, release
 readiness, publication readiness, git release/PR action, production readiness,
 or public docs acceptance beyond the specific source packets cited above.
+</details>

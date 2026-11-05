@@ -32,3 +32,7 @@ Domain rules требуют `features.network_proxy = true` или включе�
 ## Граница проверки
 
 Разбор конфигурации не доказывает effective runtime policy. Для заявления об активации нужны client/version/auth, загруженная конфигурация, permissions родителя, выбранный инструмент и наблюдаемое permitted/denied поведение. Обновление документации не меняет permissions; открытые контракты проекта перечислены в [Codex compatibility](../product-agent-os/codex-compatibility.md).
+
+## Cloud и hooks
+
+Network secrets current Cloud и direct variables имеют разные способы доставки; legacy setup-only правило не универсально. См. [Cloud setup](surfaces.md) и [hook trust/failure boundaries](../runtime/worktrees-hooks-rules.md). Проверяйте execution и orchestration отдельно.

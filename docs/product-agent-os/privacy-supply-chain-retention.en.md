@@ -29,3 +29,6 @@ If a report contains raw findings, local paths, dependency advisory details, or 
 
 This docs slice verifies only the documented boundary: docs unittest, `tools/check_docs.py`, JSON packet validation, strict MkDocs smoke, and `git diff --check`. It does not run vulnerability audit, SBOM completion, remediation, or external crawling.
 
+## Current retained-data boundaries
+
+Review after plugin script changes is a separate trust check. Local memory stores and cloud network secrets have different retention/delivery semantics; do not promise universal deletion or setup-only credential access. See [hooks](../runtime/worktrees-hooks-rules.md), [memory](../agent-systems/memory.md), [Cloud](../codex/surfaces.md).

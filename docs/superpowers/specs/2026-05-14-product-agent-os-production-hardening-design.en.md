@@ -1,4 +1,10 @@
-# Product-Agent OS Production Hardening Design
+---
+title: "Archive - Product-Agent OS Production Hardening Design"
+---
+
+# Archive - Product-Agent OS Production Hardening Design {#product-agent-os-production-hardening-design}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `official + experiment`
 

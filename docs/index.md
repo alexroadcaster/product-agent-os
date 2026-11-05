@@ -1,64 +1,33 @@
-# База знаний OpenAI Codex
+# Product-Agent OS
 
-Эта база знаний предназначена для продвинутого пользователя, который изучает OpenAI Codex как среду для агентной разработки: Codex App, CLI, IDE extension, cloud tasks, subagents, skills, `AGENTS.md`, memory, approvals, sandboxing и повторяемые workflows.
+Source status: `official + experiment`
 
-Дата первичной сверки источников: **2026-05-14**.
+Документация помогает выполнить задачу с Codex, подключить существующий проект или спроектировать agent application. Проверка пользовательских маршрутов по официальной документации: **05.11.2026**. Доступность функций зависит от client, account, auth и managed policy.
 
-## Как читать
+## Начните со своей задачи
 
-1. Начните с [Diagram atlas](diagrams/index.md), чтобы увидеть полный маршрут реализации проекта через agents, skills, runtime и eval loops.
-2. Перейдите к [обзору Codex](codex/overview.md), чтобы зафиксировать модель продукта и границы официальной документации.
-3. Прочитайте [глубокий анализ Codex use cases](codex/use-cases-deep-analysis.md), чтобы переводить официальные use cases в playbooks, skills, plugins и automations.
-4. Перейдите к [поверхностям работы](codex/surfaces.md), чтобы выбрать App, CLI, IDE или cloud под конкретную задачу.
-5. Прочитайте [безопасность и approvals](codex/security.md) до запуска автономных или сетевых workflow.
-6. Изучите [архитектуру агентных систем](agent-systems/overview.md), если цель - проектировать multi-agent workflows.
-7. Пройдите [Prompt & Context Engineering](prompting/overview.md), чтобы формулировать вопросы, упаковывать контекст и снижать hallucinations.
-8. Перейдите к [Product-Agent Workflows](product-agent/overview.md), чтобы собрать знания в delivery loop для полноценных продуктов.
-9. Изучите [Product-Agent OS plugin](product-agent-os/index.md), если нужно применить этот delivery loop как локальный Codex plugin.
-10. Откройте [Methodologies для Large Projects](methodologies/index.md), если проекту нужна системная карта business, domain, architecture, frontend, backend, API, data, LLM, quality, security, delivery и Codex workflows.
-11. Изучите [Codex Automation & Runtime](runtime/overview.md), если workflow нужно запускать через CLI, MCP, GitHub или automations.
-12. Используйте playbooks как операционные инструкции, а insights - как слой гипотез и пользовательских трюков.
+| Нужно | Первый маршрут | Результат |
+| --- | --- | --- |
+| Выполнить или исправить одну задачу | [Поверхности](codex/surfaces.md) → [Workflows](codex/workflows.md) | Ограниченный scope, изменение, проверка и итог |
+| Подключить свой проект | [Product-Agent OS](product-agent-os/index.md) → [workspace audit](playbooks/workspace-readiness-audit.md) | Read-only discovery и проверяемый staged proposal |
+| Построить agent application | [Runtime choice](agent-systems/sdk-patterns.md) → [evals](agent-systems/evals-observability.md) | Явное владение state/tools и критерии качества |
 
-## Принцип доверия
+Для обычной правки не требуется новый набор документов или команда. Для сложной работы используйте [Diagram atlas](diagrams/index.md), [lifecycle](product-agent/lifecycle.md) и [model migration](playbooks/model-migration.md). Выбор модели и reasoning: [актуальная матрица](codex/models-and-reasoning.md).
 
-Официальные страницы OpenAI и OpenAI Agents SDK являются источником истины. Пользовательские приемы, GitHub issues, блоги и Reddit-записи не смешиваются с официальными инструкциями без явного статуса:
+## Что реализовано и что это доказывает
 
-- `official` - официальная документация или репозиторий OpenAI.
-- `community` - внешний пользовательский источник.
-- `experiment` - рабочая гипотеза, которую нужно проверить в локальном проекте.
+Product-Agent OS — локальный plugin package: lifecycle skills, staged infrastructure, validators, project graph/cockpit и eval fixtures. Он помогает готовить reviewable artifacts; наличие пакета не доказывает hosted delivery, успешную работу на любом проекте или production readiness.
+
+Исходные Markdown, current source/configuration, command/runtime evidence и owner decisions определяют факты. Generated `site/`, dashboards, graphs, cockpit и reports помогают навигации, но не заменяют эти доказательства.
+
+## Источники и история
+
+Официальные материалы OpenAI служат источником platform claims; проектные решения помечены отдельно. Community/experiment не становятся официальной инструкцией без проверки. [Registry](sources/registry.md) · [insights](insights/index.md) · [current state and dated history](product-agent-os/control-plane-current-state.md).
+
+Исторические plans и source receipts сохраняются с датами и не заменяют текущие руководства. Public guides объясняют цель, входы, действия, ожидаемый результат и ограничения.
+
+Внешние записи, Git publication, deployment, provider calls и активация hooks/schedules требуют применимого разрешения. Документация не активирует эти возможности.
 
 ## Граница public/internal документации
 
-Публичный маршрут этой базы знаний начинается с обзоров, diagram atlas, Product-Agent Workflows и [Product-Agent OS plugin](product-agent-os/index.md). Эти страницы объясняют продуктовую ценность, возможности, границы, результаты и ближайшее действие.
-
-`docs/sources/` является внутренним evidence/history layer. Он хранит source registry, packets, backlogs и verification records, но не заменяет публичные страницы и не должен быть первым маршрутом для нового пользователя.
-
-Сгенерированный `site/`, dashboard, graph, cockpit, reports и smoke evidence являются поверхностями проверки. Они помогают review, search и handoff, но источником истины остаются исходные Markdown-файлы, registry, current command/eval/runtime evidence, owner decisions и accepted gaps.
-
-## Карта проекта
-
-```mermaid
-flowchart LR
-    S["Official sources"] --> R["Source registry"]
-    C["Community insights"] --> I["Insights layer"]
-    R --> D["Codex docs"]
-    R --> A["Agent systems"]
-    R --> PE["Prompt engineering"]
-    R --> PW["Product-agent workflows"]
-    PW --> POS["Product-Agent OS plugin"]
-    R --> SD["SDK patterns"]
-    I --> P["Playbooks"]
-    D --> H["MkDocs HTML"]
-    A --> H
-    PE --> H
-    PW --> H
-    POS --> H
-    SD --> H
-    P --> H
-```
-
-## Текущий результат
-
-База знаний теперь содержит не только документационную основу, но и описание локального Product-Agent OS plugin: packaged skills, staged infrastructure, CLI contracts, generated project graph/cockpit, behavioral evals, compatibility checks и closure workflow.
-
-Live server launch, browser automation, provider/live external model/API calls, canonical graph mutation и git stage/commit/push/PR остаются approval-bound actions. Generated graph, dashboard, cockpit, reports и readiness packets являются evidence surfaces, not source of truth.
+Внутренние evidence pages сохраняют реестр источников, packets, backlogs и verification records. Источником истины остаются Markdown, текущие code/configuration, наблюдаемые checks и owner decisions. Исторические записи не заменяют актуальные руководства.

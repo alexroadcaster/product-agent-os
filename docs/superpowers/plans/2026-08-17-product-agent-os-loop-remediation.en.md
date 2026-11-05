@@ -1,4 +1,10 @@
-# Product-Agent OS: execution-loop remediation and delivery recovery
+---
+title: "Archive - Product-Agent OS: execution-loop remediation and delivery recovery"
+---
+
+# Archive - Product-Agent OS: execution-loop remediation and delivery recovery {#product-agent-os-execution-loop-remediation-and-delivery-recovery}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `active local implementation plan; hook/automation activation and external actions are not authorized`
 

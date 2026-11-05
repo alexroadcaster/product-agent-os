@@ -179,3 +179,7 @@ API & Integrations слой защищает public contracts, event contracts, 
 - Should API security gates be based on OWASP API Top 10, ASVS, SSDF or a combined project profile?
 - How should agentic API migrations handle generated clients across multiple repositories?
 - Which API test generators are mature enough for stack-specific default recommendations?
+
+## Async и steering contract
+
+В OpenAI async integration приложение владеет pending work, call_id, deadlines и idempotent application. Steering не отменяет начатый side effect. Проверьте late/duplicate/failed results по [session control](../agent-systems/session-control.md).

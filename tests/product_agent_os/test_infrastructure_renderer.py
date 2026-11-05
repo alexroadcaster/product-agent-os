@@ -23,6 +23,62 @@ from product_agent_os.templates import TemplateSpec, required_templates, render_
 
 
 class InfrastructureRendererTest(unittest.TestCase):
+    def test_ordinary_selection_reuses_existing_files_without_full_pack(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "AGENTS.md").write_text("User-owned instructions\n", encoding="utf-8")
+            (root / "README.md").write_text("Existing docs\n", encoding="utf-8")
+            (root / "TEST.md").write_text("`python check_docs.py`\n", encoding="utf-8")
+            scope = {"schema_version": 1, "task_id": "docs-fix", "intent": "Correct wording",
+                     "change_mode": "docs_only", "changed_paths": ["README.md"],
+                     "risk_level": "low", "risks": [], "acceptance": ["Correct wording"]}
+            before = {p.name: p.read_bytes() for p in root.iterdir()}
+            result = render_infrastructure_plan(root, task_context=scope)
+            self.assertEqual(result["rendered_artifacts"]["files"], [])
+            self.assertEqual(result["infrastructure_plan"]["template_selection"]["mode"], "ordinary")
+            self.assertEqual(before, {p.name: p.read_bytes() for p in root.iterdir()})
+
+    def test_scoped_full_stage_preserves_user_files_and_merge_boundary(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root, stage = Path(tmp) / "project", Path(tmp) / "stage"
+            root.mkdir()
+            (root / "AGENTS.md").write_text("User-authored instructions\n", encoding="utf-8")
+            (root / "README.md").write_text("# Text\n", encoding="utf-8")
+            (root / "TEST.md").write_text("`python check_docs.py`\n", encoding="utf-8")
+            (root / ".codex").mkdir()
+            (root / ".codex" / "config.toml").write_text('# User configuration\n', encoding="utf-8")
+            scope = {"schema_version": 1, "task_id": "full-docs", "intent": "Correct wording",
+                     "change_mode": "docs_only", "changed_paths": ["README.md"], "risk_level": "low",
+                     "risks": [], "acceptance": ["Correct wording"], "explicit_full_packet": True}
+            before = {p.relative_to(root).as_posix(): p.read_bytes() for p in root.rglob("*") if p.is_file()}
+            first = render_infrastructure_plan(root, task_context=scope)
+            second = render_infrastructure_plan(root, task_context=scope)
+            self.assertEqual(first, second)
+            result = stage_infrastructure(root, stage, task_context=scope)
+            self.assertTrue(result["rendered_artifacts"]["validation"]["ok"])
+            selected = result["infrastructure_plan"]["template_selection"]["selected"]
+            self.assertEqual(len(selected), 8)
+            self.assertFalse(any("hooks" in p or "automations" in p or "agents/" in p for p in selected))
+            self.assertEqual(before, {p.relative_to(root).as_posix(): p.read_bytes() for p in root.rglob("*") if p.is_file()})
+            self.assertEqual(result["infrastructure_plan"]["status"], "needs_approval")
+            self.assertTrue((stage / MANIFEST_NAME).is_file())
+            with self.assertRaises(InfrastructureError):
+                stage_infrastructure(root, root / "staged", task_context=scope)
+
+    def test_unknown_scope_can_be_inspected_but_cannot_stage(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "project"
+            root.mkdir()
+            scope = {"schema_version": 1, "task_id": "unknown", "intent": "Investigate",
+                     "change_mode": "configuration", "changed_paths": ["README.md"],
+                     "risk_level": "unknown", "risks": [], "acceptance": ["Clarify scope"]}
+            plan = render_infrastructure_plan(root, task_context=scope)
+            self.assertEqual(plan["infrastructure_plan"]["template_selection"]["mode"], "needs_context")
+            self.assertIn("REQUIREMENTS.md", plan["infrastructure_plan"]["template_selection"]["selected"])
+            with self.assertRaisesRegex(InfrastructureError, "gaps"):
+                stage_infrastructure(root, Path(tmp) / "stage", task_context=scope)
+            self.assertFalse((Path(tmp) / "stage").exists())
+
     def test_config_render_validation_rejects_semantically_invalid_permissions(self):
         spec = next(item for item in required_templates() if item.key == "config")
         text = render_template(spec, {"project_name": "fixture", "profile_name": "guided-small"})

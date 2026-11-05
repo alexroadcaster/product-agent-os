@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
   </span>
 
 
@@ -1052,6 +1075,15 @@
   <a href="#anti-hallucination-baseline" class="md-nav__link">
     <span class="md-ellipsis">
       Anti-hallucination baseline
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#gpt-6-initiative-and-sufficient-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      GPT-6: initiative and sufficient verification
     </span>
   </a>
 
@@ -2775,6 +2807,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2961,6 +2995,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3451,6 +3506,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#gpt-6-initiative-and-sufficient-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      GPT-6: initiative and sufficient verification
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3551,6 +3615,10 @@ Do not invent facts, citations, file paths, versions, prices, dates, or line num
 Separate verified facts from assumptions.
 Return citations for every factual claim when sources are provided.
 </code></pre></div>
+<h2 id="gpt-6-initiative-and-sufficient-verification">GPT-6: initiative and sufficient verification<a class="headerlink" href="#gpt-6-initiative-and-sufficient-verification" title="Permanent link">&para;</a></h2>
+<p>Checked 2026-11-03: <a href="https://developers.openai.com/api/docs/guides/latest-model">prompting guidance</a>. Specify outcome, scope, constraints, authorized actions, completion criteria and evidence. Start with a simple prompt; add examples for a measured recurring failure or product requirement, not for volume.</p>
+<p>An agent can continue already authorized work without repeated approvals. Before requesting permission for a separate external action, prepare a concrete reviewable result within the authorized scope. This does not extend permissions, costs or side effects. Clarify blocking ambiguity; use a justified assumption for reversible choices.</p>
+<p>Conflicting skills/AGENTS, unbounded repeated verification and universal delegation can degrade execution. Name applicable instructions, delegation triggers and the stop condition: after relevant mandatory checks, repetition needs a new change, failure or unresolved risk. This is prompt-design guidance; it does not edit active AGENTS/skills. Evaluate quality using the <a href="../playbooks/model-migration.html">migration playbook</a>.</p>
 
 
 

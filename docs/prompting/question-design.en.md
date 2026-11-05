@@ -112,3 +112,7 @@ examples:
 ## Prompt review before migration
 
 Before changing a prompt, check the outcome, whether useful work can continue without an answer, the existing authorization boundary, required checks, justification for repetition and promotion owner. Do not request private chain-of-thought; ask for concise rationale, assumptions and evidence. Compare the model with a fixed prompt before changing the prompt separately. See [GPT-6 prompting](overview.md) and the [migration playbook](../playbooks/model-migration.md).
+
+## When to clarify
+
+Ask when the answer changes scope, authority or a material outcome. State a reasonable assumption for reversible details. Continue independent authorized work; elapsed waiting time is not approval. [Model guidance](https://developers.openai.com/api/docs/guides/latest-model).

@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
   </span>
 
 
@@ -2711,6 +2734,24 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Миграция модели: измеряемый контракт
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#eval-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Завершение eval loop
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -2745,6 +2786,8 @@
         </nav>
 
     </li>
+
+
 
 
 
@@ -2979,6 +3022,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3487,6 +3551,24 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Миграция модели: измеряемый контракт
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#eval-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Завершение eval loop
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3680,6 +3762,45 @@
 </tr>
 </tbody>
 </table>
+<h2 id="_1">Миграция модели: измеряемый контракт<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>Следуйте <a href="../playbooks/model-migration.html">model migration playbook</a>: fixed baseline, одна переменная, независимая оценка, заранее выбранные пороги и бюджет. Новые модели остаются <code>documented_candidate_not_evaluated</code>, пока отсутствуют реальные результаты. Эта методика не разрешает model/provider calls.</p>
+<table>
+<thead>
+<tr>
+<th>Измерение</th>
+<th>Запись в run packet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Воспроизводимость</td>
+<td>Revision, corpus/input hashes, client/auth/runtime, model/effort, prompts, skills, tools и permissions</td>
+</tr>
+<tr>
+<td>Качество</td>
+<td>Task success, correctness, regressions, unsupported claims; одинаковая рубрика для paired runs</td>
+</tr>
+<tr>
+<td>Поведение</td>
+<td>Tool failures, лишние approvals, преждевременный финал, повторные проверки без новых оснований</td>
+</tr>
+<tr>
+<td>Время</td>
+<td>End-to-end latency и распределение при достаточной выборке</td>
+</tr>
+<tr>
+<td>Стоимость</td>
+<td>Input/output/reasoning tokens, cache read/write, retries/subagents, tier, дата ставок и cost per completed task</td>
+</tr>
+<tr>
+<td>Активация</td>
+<td>Effective path, отсутствие masking fallback и evidence из свежей сессии</td>
+</tr>
+</tbody>
+</table>
+<p>Числовые threshold/budget утверждаются до запуска; отсутствующее измерение не равно нулю. Безопасность и schema failures блокируют promotion независимо от среднего score. Сначала сравнивайте supported baseline effort; оптимизацию effort и prompt выполняйте отдельно. Unit/docs checks доказывают свой контракт, а не качество модели или runtime activation. Источник методики: <a href="https://developers.openai.com/api/docs/guides/latest-model">официальная миграция</a>.</p>
+<h2 id="eval-loop">Завершение eval loop<a class="headerlink" href="#eval-loop" title="Permanent link">&para;</a></h2>
+<p>До запуска выберите typical/edge/adversarial cases, threshold и budget. Калибруйте judge по human review; отдельная роль не гарантирует независимость. Для async/steering добавьте pending, late/duplicate results и changed-scope cases. После достаточных relevant checks остановитесь; новый pass оправдан новой правкой, failure или unresolved risk. <a href="https://developers.openai.com/api/docs/guides/evaluation-best-practices">Eval guidance</a>.</p>
 
 
 

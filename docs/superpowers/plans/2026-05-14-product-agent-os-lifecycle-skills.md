@@ -1,4 +1,10 @@
-# Product-Agent OS Lifecycle Skills Implementation Plan
+---
+title: "Archive - Product-Agent OS Lifecycle Skills Implementation Plan"
+---
+
+# Archive - Product-Agent OS Lifecycle Skills Implementation Plan {#product-agent-os-lifecycle-skills-implementation-plan}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `official + experiment`
 

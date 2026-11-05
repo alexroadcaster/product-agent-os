@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
   </span>
 
 
@@ -2672,6 +2695,33 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#gpt-6-api-compatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      GPT-6 API compatibility
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#agent-runtime-ownership" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agent runtime ownership
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#selection-example-and-failure-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      Selection example and failure path
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -2727,6 +2777,8 @@
         </nav>
 
     </li>
+
+
 
 
 
@@ -2961,6 +3013,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3451,6 +3524,33 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#gpt-6-api-compatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      GPT-6 API compatibility
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#agent-runtime-ownership" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agent runtime ownership
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#selection-example-and-failure-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      Selection example and failure path
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3531,7 +3631,7 @@ Sources: <a href="https://github.com/openai/openai-agents-python">OpenAI Agents 
     W --&gt; M
     Q --&gt; M
     M --&gt; O["Final answer / docs change"]</code></pre>
-<p>For this knowledge base, Manager pattern is the default.</p>
+<p>Manager pattern is conditional on independent subtasks. Start with one agent and add architecture complexity based on evals.</p>
 <h2 id="handoff-pattern">Handoff Pattern<a class="headerlink" href="#handoff-pattern" title="Permanent link">&para;</a></h2>
 <p>Handoff pattern: an agent transfers control to another specialized agent. This is closer to routing than to a tool call.</p>
 <p>Use it when:</p>
@@ -3591,8 +3691,8 @@ Sources: <a href="https://github.com/openai/openai-agents-python">OpenAI Agents 
 <td>Codex subagents</td>
 </tr>
 <tr>
-<td>Production agent app</td>
-<td>Agents SDK</td>
+<td>Agent application</td>
+<td>Choose Agents API, Agents SDK or Responses by execution/state ownership; see the matrix below</td>
 </tr>
 <tr>
 <td>Full control over the wire contract</td>
@@ -3600,6 +3700,73 @@ Sources: <a href="https://github.com/openai/openai-agents-python">OpenAI Agents 
 </tr>
 </tbody>
 </table>
+<h2 id="gpt-6-api-compatibility">GPT-6 API compatibility<a class="headerlink" href="#gpt-6-api-compatibility" title="Permanent link">&para;</a></h2>
+<p>Checked 2026-11-03: <a href="https://developers.openai.com/api/docs/guides/latest-model">API migration</a>. The full model table is in <a href="../codex/models-and-reasoning.html">models and reasoning</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Responses</th>
+<th>Chat Completions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Astra, 6.1 Sol, 6.1 Terra</td>
+<td>Use for tool calling</td>
+<td>Endpoint available, but tool calling requires Responses</td>
+</tr>
+<tr>
+<td>6 Sol, 6 Luna</td>
+<td>Use for reasoning with tools</td>
+<td>Function calling only with <code>reasoning_effort: "none"</code></td>
+</tr>
+</tbody>
+</table>
+<p>Responses uses <code>reasoning.effort</code>; Chat Completions uses <code>reasoning_effort</code>. With effort other than <code>none</code>, remove <code>temperature</code>, <code>top_p</code>, <code>top_logprobs</code>; also remove Chat Completions <code>logprobs</code>, or Responses <code>message.output_text.logprobs</code> from <code>include</code>. Do not transfer parameters between endpoints. API capability does not automatically require replacing the existing Codex CLI runner.</p>
+<h2 id="agent-runtime-ownership">Agent runtime ownership<a class="headerlink" href="#agent-runtime-ownership" title="Permanent link">&para;</a></h2>
+<p>Checked against <a href="https://developers.openai.com/api/docs/guides/agents">Agents</a> and <a href="https://developers.openai.com/api/docs/guides/responses-multi-agent">Responses Multi-agent</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Execution and state owner</th>
+<th>Product-Agent OS boundary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Codex subagents</td>
+<td>Codex parent session; child roles inherit its controls</td>
+<td>Documented surface; task success requires evidence</td>
+</tr>
+<tr>
+<td>Agents API</td>
+<td>OpenAI managed Codex harness and managed progress/state</td>
+<td>Documented external capability; no new integration implemented here</td>
+</tr>
+<tr>
+<td>Agents SDK</td>
+<td>Runner in the app; app owns deployment, storage, approvals</td>
+<td>Separate app-runtime option, not a hidden plugin dependency</td>
+</tr>
+<tr>
+<td>Responses API</td>
+<td>Application loop/state, with optional hosted orchestration</td>
+<td>API contract, not automatic CLI runner migration</td>
+</tr>
+<tr>
+<td>Responses Multi-agent</td>
+<td>Hosted beta orchestration; app integrates tool results</td>
+<td>Separate beta: 6.1 Sol and GPT-5.6 on the review date, not all GPT-6</td>
+</tr>
+</tbody>
+</table>
+<p>Responses Multi-agent has its own beta contract; root/subagents compact automatically and standalone <code>/responses/compact</code> is unsupported. Single-agent parameters are not universal: <code>reasoning.summary</code> and <code>max_tool_calls</code>, for example, are unsupported in this mode. Do not unconditionally combine async tools with parallel tool calls in Multi-agent; check the selected mode. An Agents API session, SDK session, Responses conversation and sandbox are different resources. See <a href="session-control.html">session control</a> for tool state and steering.</p>
+<h2 id="selection-example-and-failure-path">Selection example and failure path<a class="headerlink" href="#selection-example-and-failure-path" title="Permanent link">&para;</a></h2>
+<p>For “process documents and return a verifiable result”, first decide who owns state. Consider Agents API for a managed harness, Agents SDK when the application owns Runner/storage/approvals, or Responses for wire-level control and an application loop. This is an integration decision, not a switch of the current Codex runner.</p>
+<p>The JSON above is an output-schema fragment, not a complete request for every endpoint. For Responses use the current <code>text.format</code>/SDK parsing contract; handle refusals, incomplete output and factual errors separately. <a href="https://developers.openai.com/api/docs/guides/structured-outputs">Structured Outputs</a>.</p>
+<p>If an async tool finishes after steering, match call_id and check current scope and prior application before applying the result; do not repeat side effects. Return an explicit timeout and decide retries by idempotency/budget. <a href="session-control.html">Session control</a>.</p>
 
 
 

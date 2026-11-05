@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
   </span>
 
 
@@ -2472,6 +2495,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#scheduled-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scheduled tasks: выбрать режим
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -2766,6 +2798,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2952,6 +2986,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3433,6 +3488,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#scheduled-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scheduled tasks: выбрать режим
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3485,6 +3549,42 @@
 <p>System file hygiene automation должна начинаться как <code>.codex/automation-candidates/system-file-hygiene-audit.md</code>: weekly/monthly cadence, on-change trigger и size trigger остаются proposal, а не active schedule. До approval используйте только read-only команду:</p>
 <div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">validate_system_file_hygiene</span><span class="p">.</span><span class="n">py</span> <span class="p">&lt;</span><span class="n">workspace</span><span class="p">&gt;</span>
 </code></pre></div>
+<h2 id="scheduled-tasks">Scheduled tasks: выбрать режим<a class="headerlink" href="#scheduled-tasks" title="Permanent link">&para;</a></h2>
+<p>Проверено 05.11.2026 по <a href="https://developers.openai.com/codex/app/automations">Scheduled tasks</a>. Native schedule, GitHub Action и проектный automation candidate — разные объекты.</p>
+<table>
+<thead>
+<tr>
+<th>Режим</th>
+<th>Контекст и исполнение</th>
+<th>Условие</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Standalone schedule</td>
+<td>Новый chat для запуска</td>
+<td>Явные inputs, ожидаемый artifact и место результата</td>
+</tr>
+<tr>
+<td>Existing-chat schedule</td>
+<td>Контекст существующего chat</td>
+<td>Удалить устаревшие assumptions, проверить текущий scope</td>
+</tr>
+<tr>
+<td>Local project</td>
+<td>Local workspace либо Git worktree</td>
+<td>Компьютер включён, desktop app работает; dependencies доступны</td>
+</tr>
+<tr>
+<td>Cloud / team task</td>
+<td>Подготовленная cloud среда; team identity по доступной конфигурации</td>
+<td>Plan/workspace support, service identity и права проверены</td>
+</tr>
+</tbody>
+</table>
+<p>Начните с одного ручного запуска. Зафиксируйте prompt/skill, разрешённые чтения и записи, выбранную model, время/таймзону, output destination, failure owner и способ остановить schedule. В Git project выбирайте local или worktree по риску; non-Git project использует local route. Не рассчитывайте на retired model или неустановленные tools.</p>
+<p>После первого scheduled run проверьте actual result, execution environment и failures. Наличие расписания не доказывает выполненную задачу. Project automation остаётся candidate-only до отдельного разрешения; эта страница не активирует schedule.</p>
+<p>GitHub Action — путь CI: least privilege, read-only analysis и patch artifact отдельно от публикации PR. Ручной setup команды не должны получать model credentials. <a href="https://developers.openai.com/codex/noninteractive">Non-interactive mode</a>.</p>
 
 
 

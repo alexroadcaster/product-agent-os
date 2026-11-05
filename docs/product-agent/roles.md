@@ -66,3 +66,7 @@ flowchart TD
 - verification evidence;
 - open risks;
 - recommended next role.
+
+## Роль и отдельный агент
+
+Роль определяет ответственность; один агент может выполнять несколько ролей последовательно. Делегирование требует пользы, независимого ownership и применимой authority. Parent permissions/MCP наследуются; role prose не создаёт отдельный sandbox. [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents).

@@ -1,4 +1,10 @@
-# Batch 45 S9-C: test and deterministic metric repair
+---
+title: "Archive - Batch 45 S9-C: test and deterministic metric repair"
+---
+
+# Archive - Batch 45 S9-C: test and deterministic metric repair {#batch-45-s9-c-test-and-deterministic-metric-repair}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `locally implemented and focused-verified after bounded repair; no live/provider/runtime-activation evidence`
 

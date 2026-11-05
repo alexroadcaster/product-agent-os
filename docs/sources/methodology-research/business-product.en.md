@@ -1,4 +1,10 @@
-# Business & Product Methodology Research
+---
+title: "Archive - Business & Product Methodology Research"
+---
+
+# Archive - Business & Product Methodology Research {#business-product-methodology-research}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `official + verified methodology + local implementation evidence + tool-assisted`
 

@@ -216,3 +216,7 @@ Codex / Agentic Workflow слой описывает, как большой пр
 - Should MCP permission review be generated for every MCP config change or only side-effecting capabilities?
 - How should skill trigger tests and negative trigger tests be stored?
 - Which agent eval cases are enough before promoting a workflow to plugin or automation?
+
+## Актуальный пользовательский маршрут
+
+Используйте [ordinary/full lifecycle](../product-agent/lifecycle.md), [conditional delegation](../playbooks/ai-team-design.md) и [skill exposure](../agent-systems/subagents-skills.md). Методологии выбираются по задаче; detection не означает invocation или readiness.

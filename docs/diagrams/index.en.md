@@ -18,18 +18,13 @@ This section turns the knowledge base into an implementation map for building pr
 
 ```mermaid
 flowchart LR
-    A["Project idea"] --> B["Delivery lifecycle"]
-    B --> B1["Planning matrix architecture"]
-    B1 --> C["Agent team and skills"]
-    C --> D["Runtime decision"]
-    D --> E["Source/generated boundary"]
-    E --> F["Architecture Intelligence maps"]
-    F --> G["Implementation loop"]
-    G --> H["Skill exposure boundary"]
-    H --> I["Skill lifecycle"]
-    G --> J["Context and verification"]
-    I --> K["Reusable project methods"]
-    J --> L["Product-ready output"]
+    A["User task"] --> B{"Scope and risk"}
+    B -->|Ordinary| C["Scope, change, checks, result"]
+    B -->|Large or high risk| D["Delivery lifecycle"]
+    D --> E["Ownership and optional agents"]
+    E --> F["Runtime and source boundaries"]
+    F --> G["Implementation and evidence"]
+    G --> H["Skill or automation candidate when justified"]
 ```
 
 ## Inputs
@@ -55,3 +50,7 @@ Each atlas page should have a practical diagram, usage guidance, related artifac
 ## Model and runtime refresh
 
 Use the [model matrix](../codex/models-and-reasoning.md) and [migration playbook](../playbooks/model-migration.md) with the team/runtime diagrams. API capabilities and candidate models are documented separately from current Product-Agent OS activation.
+
+## Choose the short or full route
+
+[Delivery lifecycle](product-delivery-lifecycle.md) starts with size and risk. An ordinary task does not require a team, a worktree or a new file set. Use the full atlas for material dependencies, ownership or release/readiness. Each next diagram should answer a concrete task question.

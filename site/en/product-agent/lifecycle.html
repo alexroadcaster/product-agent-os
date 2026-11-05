@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
   </span>
 
 
@@ -1188,9 +1211,9 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#ask-mode-before-code-mode" class="md-nav__link">
+  <a href="#plan-before-implementation" class="md-nav__link">
     <span class="md-ellipsis">
-      Ask Mode before Code Mode
+      Plan before implementation
     </span>
   </a>
 
@@ -1245,6 +1268,15 @@
   <a href="#risks" class="md-nav__link">
     <span class="md-ellipsis">
       Risks
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#scope-size-determines-the-route" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scope size determines the route
     </span>
   </a>
 
@@ -2802,6 +2834,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2988,6 +3022,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3443,9 +3498,9 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#ask-mode-before-code-mode" class="md-nav__link">
+  <a href="#plan-before-implementation" class="md-nav__link">
     <span class="md-ellipsis">
-      Ask Mode before Code Mode
+      Plan before implementation
     </span>
   </a>
 
@@ -3500,6 +3555,15 @@
   <a href="#risks" class="md-nav__link">
     <span class="md-ellipsis">
       Risks
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#scope-size-determines-the-route" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scope size determines the route
     </span>
   </a>
 
@@ -3584,7 +3648,7 @@ Sources: <a href="https://openai.com/business/guides-and-resources/how-openai-us
 </tr>
 </tbody>
 </table>
-<h2 id="ask-mode-before-code-mode">Ask Mode before Code Mode<a class="headerlink" href="#ask-mode-before-code-mode" title="Permanent link">&para;</a></h2>
+<h2 id="plan-before-implementation">Plan before implementation<a class="headerlink" href="#plan-before-implementation" title="Permanent link">&para;</a></h2>
 <p>OpenAI Codex guidance recommends starting large changes with a plan before implementation. In this project, that means:</p>
 <div class="highlight"><pre><span></span><code>First produce PLAN.md from REQUIREMENTS.md.
 Do not edit product code until the plan names:
@@ -3630,6 +3694,10 @@ Do not edit product code until the plan names:
 <li>Moving to build before plan and ownership can create broad, unverifiable changes.</li>
 <li>Capturing learning without source evidence can turn stale memory into policy.</li>
 </ul>
+<h2 id="scope-size-determines-the-route">Scope size determines the route<a class="headerlink" href="#scope-size-determines-the-route" title="Permanent link">&para;</a></h2>
+<p>Checked 2026-11-05: <a href="https://developers.openai.com/api/docs/guides/latest-model">model guidance</a> and <a href="https://developers.openai.com/api/docs/guides/evaluation-best-practices">eval guidance</a>. For an ordinary fix use concise scope, the change, affected checks, results and limits. Reuse existing requirements/plan/test/runlog artifacts; do not create a new file set merely to name each phase. The full route above is for large, risky or financially material implementation and release/readiness.</p>
+<p>Product-Agent OS uses <code>task_start_brief_v2</code> (9 fields) and Completion Ledger (13 items) for full scopes; ordinary scopes use <code>task_scope_note_v1</code> and a concise result. Legacy v1 remains for previously started sessions only. Advisory <code>Stop</code> does not validate chat. The <a href="../runtime/worktrees-hooks-rules.html">lifecycle hooks guide</a> defines applicability and markers.</p>
+<p>Single-agent is a sufficient starting point. Delegate independent work with explicit ownership, a budget and demonstrated value. PR preparation does not authorize creating branches, publishing a PR or releasing. Repeat checks after a relevant change, failure or unresolved risk, not in an unbounded general-gate loop.</p>
 
 
 

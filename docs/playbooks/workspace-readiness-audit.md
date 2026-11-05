@@ -1,4 +1,4 @@
-﻿# Playbook: workspace readiness audit
+# Playbook: workspace readiness audit
 
 Source status: `official + experiment`  
 Источники: [Codex best practices](https://developers.openai.com/codex/learn/best-practices), [AGENTS.md docs](https://developers.openai.com/codex/guides/agents-md), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Codex automations](https://developers.openai.com/codex/app/automations).
@@ -44,3 +44,6 @@ Return:
 - first workflow к automate.
 ```
 
+## Inventory и readiness
+
+Наличие skills/plugins/config — `present_unverified`. Для runtime claim нужны effective settings, supported client/auth, skill exposure и observed result. Используйте [surface matrix](../codex/surfaces.md) и [skill diagnostics](../agent-systems/subagents-skills.md); audit не активирует найденные assets.

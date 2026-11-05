@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
   </span>
 
 
@@ -1209,9 +1232,9 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#model-and-reasoning-profile" class="md-nav__link">
+  <a href="#model-and-reasoning-policy" class="md-nav__link">
     <span class="md-ellipsis">
-      Model and reasoning profile
+      Model and reasoning policy
     </span>
   </a>
 
@@ -1257,6 +1280,15 @@
   <a href="#risks" class="md-nav__link">
     <span class="md-ellipsis">
       Risks
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#role-versus-separate-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Role versus separate agent
     </span>
   </a>
 
@@ -2793,6 +2825,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2979,6 +3013,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3434,9 +3489,9 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#model-and-reasoning-profile" class="md-nav__link">
+  <a href="#model-and-reasoning-policy" class="md-nav__link">
     <span class="md-ellipsis">
-      Model and reasoning profile
+      Model and reasoning policy
     </span>
   </a>
 
@@ -3487,6 +3542,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#role-versus-separate-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Role versus separate agent
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3504,7 +3568,7 @@
 
 <h1 id="agent-team-roles">Agent team roles<a class="headerlink" href="#agent-team-roles" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + experiment</code><br />
-Sources: <a href="https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/">A practical guide to building agents</a>, <a href="https://developers.openai.com/codex/guides/agents-sdk">Codex with Agents SDK</a>, <a href="https://developers.openai.com/codex/subagents">Subagents</a>, <a href="https://developers.openai.com/codex/models">Codex models</a>, <a href="https://developers.openai.com/api/docs/guides/agents/models">Agents SDK models and providers</a>, <a href="https://developers.openai.com/api/docs/guides/reasoning-best-practices">Reasoning best practices</a>, <a href="https://developers.openai.com/codex/guides/build-ai-native-engineering-team">Build AI-native engineering teams</a>.</p>
+Sources: <a href="https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/">A practical guide to building agents</a>, <a href="https://developers.openai.com/codex/guides/agents-sdk">Codex with Agents SDK</a>, <a href="https://learn.chatgpt.com/docs/agent-configuration/subagents">Subagents</a>, <a href="https://learn.chatgpt.com/docs/models">Codex models</a>, <a href="https://developers.openai.com/api/docs/guides/agents/models">Agents SDK models and providers</a>, <a href="https://developers.openai.com/api/docs/guides/reasoning-best-practices">Reasoning best practices</a>, <a href="https://developers.openai.com/codex/guides/build-ai-native-engineering-team">Build AI-native engineering teams</a>.</p>
 <h2 id="role-map">Role map<a class="headerlink" href="#role-map" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3560,87 +3624,46 @@ Sources: <a href="https://openai.com/business/guides-and-resources/a-practical-g
 </tr>
 </tbody>
 </table>
-<h2 id="model-and-reasoning-profile">Model and reasoning profile<a class="headerlink" href="#model-and-reasoning-profile" title="Permanent link">&para;</a></h2>
-<p>Every role needs an execution profile. This is especially important for programmable Agents SDK workflows and Codex custom agents, where the model and reasoning effort can be set explicitly.</p>
+<h2 id="model-and-reasoning-policy">Model and reasoning policy<a class="headerlink" href="#model-and-reasoning-policy" title="Permanent link">&para;</a></h2>
+<p>The <a href="../codex/models-and-reasoning.html">model matrix</a> owns current product/auth/effort guidance. Role assignment below is a project design, not a benchmark or an active model change. The effective project/agent configuration owns selected models; PLAN records decisions and RUNLOG records evidence.</p>
 <table>
 <thead>
 <tr>
-<th>Role</th>
-<th>Model policy</th>
-<th>Reasoning effort</th>
-<th>Escalation rule</th>
+<th>Work class</th>
+<th>Candidate selection rule</th>
+<th>Effort decision</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Product Manager</td>
-<td><code>gpt-5.5</code> or project default</td>
-<td><code>medium</code> / <code>high</code></td>
-<td>Raise to <code>high</code> when requirements conflict or a tradeoff must be chosen</td>
+<td>Architecture, review, complex debugging</td>
+<td>Evaluate Sol; consider Astra for the hardest cases</td>
+<td>Preserve supported baseline first; raise only for demonstrated benefit</td>
 </tr>
 <tr>
-<td>Architect</td>
-<td><code>gpt-5.5</code></td>
-<td><code>high</code> / <code>xhigh</code></td>
-<td>Use <code>xhigh</code> for multi-system architecture, migrations or deep debugging</td>
+<td>Focused implementation</td>
+<td>Evaluate Sol against the existing baseline</td>
+<td>Same task and tools; then compare a lower supported effort</td>
 </tr>
 <tr>
-<td>Builder</td>
-<td>project default; <code>gpt-5.4-mini</code> for small scoped edits</td>
-<td><code>medium</code> / <code>high</code></td>
-<td>Use <code>high</code> when shared contracts or several modules change</td>
+<td>Documentation, visual work, computer use</td>
+<td>Consider Terra for matching tasks</td>
+<td>Verify sources, tool completion and output quality</td>
 </tr>
 <tr>
-<td>Explorer</td>
-<td><code>gpt-5.4-mini</code> or project default</td>
-<td><code>low</code> / <code>medium</code></td>
-<td>Use <code>medium</code> when discovered dependencies must be synthesized</td>
+<td>Narrow repeatable collection</td>
+<td>Consider Luna after bounded evaluation</td>
+<td>Optimize cost/latency only after quality passes</td>
 </tr>
 <tr>
-<td>Tester</td>
-<td>project default</td>
-<td><code>medium</code></td>
-<td>Use <code>high</code> when failure is non-deterministic or eval-driven</td>
-</tr>
-<tr>
-<td>Reviewer</td>
-<td><code>gpt-5.5</code></td>
-<td><code>high</code></td>
-<td>Use <code>xhigh</code> when review touches security, data loss, concurrency or auth</td>
-</tr>
-<tr>
-<td>Docs Maintainer</td>
-<td>project default</td>
-<td><code>low</code> / <code>medium</code></td>
-<td>Use <code>medium</code> when several official sources must be checked</td>
-</tr>
-<tr>
-<td>Release Operator</td>
-<td>project default</td>
-<td><code>medium</code></td>
-<td>Use <code>high</code> when rollout is irreversible or approvals are ambiguous</td>
+<td>Release, security and final assurance</td>
+<td>Use an evaluated project choice</td>
+<td>Approval boundaries and evidence remain mandatory</td>
 </tr>
 </tbody>
 </table>
-<p>Minimal role card:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Architect&quot;</span>
-<span class="nt">owns</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Architecture,</span><span class="nv"> </span><span class="s">decomposition,</span><span class="nv"> </span><span class="s">risk</span><span class="nv"> </span><span class="s">analysis&quot;</span>
-<span class="nt">model_policy</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;gpt-5.5&quot;</span>
-<span class="w">  </span><span class="nt">reasoning_effort</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;high&quot;</span>
-<span class="w">  </span><span class="nt">cost_latency_budget</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;quality-first&quot;</span>
-<span class="w">  </span><span class="nt">inherit_from_parent_when_unspecified</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">override_allowed_by</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;run-level</span><span class="nv"> </span><span class="s">workflow</span><span class="nv"> </span><span class="s">config&quot;</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;human</span><span class="nv"> </span><span class="s">approval&quot;</span>
-<span class="w">  </span><span class="nt">escalation_rules</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Use</span><span class="nv"> </span><span class="s">xhigh</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">multi-system</span><span class="nv"> </span><span class="s">migration</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">ambiguous</span><span class="nv"> </span><span class="s">architecture.&quot;</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Use</span><span class="nv"> </span><span class="s">medium</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">bounded</span><span class="nv"> </span><span class="s">implementation</span><span class="nv"> </span><span class="s">planning.&quot;</span>
-<span class="nt">handoff</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">inputs</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;REQUIREMENTS.md,</span><span class="nv"> </span><span class="s">codebase</span><span class="nv"> </span><span class="s">map,</span><span class="nv"> </span><span class="s">constraints&quot;</span>
-<span class="w">  </span><span class="nt">outputs</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;PLAN.md,</span><span class="nv"> </span><span class="s">risks,</span><span class="nv"> </span><span class="s">open</span><span class="nv"> </span><span class="s">questions,</span><span class="nv"> </span><span class="s">verification</span><span class="nv"> </span><span class="s">strategy&quot;</span>
-</code></pre></div>
-<p>The project default should live in <code>PLAN.md</code> or a project-scoped agent config. Durable rules for when to raise reasoning effort can live in <code>AGENTS.md</code>; one-off runtime overrides are better recorded in <code>RUNLOG.md</code>.</p>
+<p>No role is assigned a new model by this table. See the <a href="../playbooks/model-migration.html">migration playbook</a>. Role cards must name ownership, input/output artifacts, verification, escalation/downgrade triggers and cost/latency budgets. Resolve unspecified model/effort using the applicable Codex schema rather than assuming universal inheritance across runtimes.</p>
+<p>Read-only role instructions express intent. Codex custom agents inherit parent permissions, approvals, provider and MCP; they cannot create a separate sandbox by declaring a role-local override. Require runtime evidence for technical isolation and tool access.</p>
 <h2 id="manager-pattern">Manager pattern<a class="headerlink" href="#manager-pattern" title="Permanent link">&para;</a></h2>
 <p>For product delivery, the default is the Manager pattern:</p>
 <ul>
@@ -3687,6 +3710,8 @@ Sources: <a href="https://openai.com/business/guides-and-resources/a-practical-g
 <li>Vague titles without file ownership create overlap and hidden gaps.</li>
 <li>Overusing high reasoning or large agent teams can add latency without improving evidence.</li>
 </ul>
+<h2 id="role-versus-separate-agent">Role versus separate agent<a class="headerlink" href="#role-versus-separate-agent" title="Permanent link">&para;</a></h2>
+<p>A role defines responsibility; one agent may perform several roles sequentially. Delegation needs value, independent ownership and applicable authority. Parent permissions/MCP are inherited; role prose does not create a separate sandbox. <a href="https://learn.chatgpt.com/docs/agent-configuration/subagents">Subagents</a>.</p>
 
 
 

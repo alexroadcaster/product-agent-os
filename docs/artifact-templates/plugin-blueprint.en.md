@@ -44,7 +44,7 @@ Source status: `official + experiment`
 
 | Role or skill | Default model | Reasoning effort | Escalate when | Downgrade when |
 | --- | --- | --- | --- | --- |
-| <planner/reviewer/builder> | <model> | <low/medium/high/xhigh> | <condition> | <condition> |
+| <planner/reviewer/builder> | <model> | <supported effort from current model matrix> | <condition> | <condition> |
 
 ## Permissions and write policy
 
@@ -135,3 +135,7 @@ community_sources:
   - "<url with trust level>"
 ```
 ````
+
+## Compatibility and installation
+
+Record in the completed blueprint: portable `plugin.json`/`mcp.json` or legacy layout, schema version, supported client/components/authentication, new-session requirement, MCP authentication and hook trust. IDE native plugin support: no. Select model/effort from the [current matrix](../codex/models-and-reasoning.md), not a fixed template enum. [Packaging](https://developers.openai.com/plugins/build/plugins).

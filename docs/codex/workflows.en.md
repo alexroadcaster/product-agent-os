@@ -79,3 +79,6 @@ Return:
 
 This workflow has been turned into a separate [playbook](../playbooks/docs-update.md).
 
+## Minimum sufficient process
+
+Ordinary task: scope → change → affected checks → result/limits. Use the [full lifecycle](../product-agent/lifecycle.md) for material multi-step work. A team, worktree and new artifact set are optional. Repeating a tested method uses the separate [Scheduled tasks](../runtime/automations-github.md) route.

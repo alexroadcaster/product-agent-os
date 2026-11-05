@@ -1,4 +1,10 @@
-# Product-Agent OS Codex Runtime Runner Design
+---
+title: "Archive - Product-Agent OS Codex Runtime Runner Design"
+---
+
+# Archive - Product-Agent OS Codex Runtime Runner Design {#product-agent-os-codex-runtime-runner-design}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `official + experiment`
 

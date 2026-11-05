@@ -40,7 +40,7 @@ flowchart TD
     M --> O["Final answer / docs change"]
 ```
 
-Для этой базы знаний Manager pattern является default.
+Manager pattern — условный выбор для независимых подзадач. Начните с одного агента и усложняйте архитектуру по результатам evals.
 
 ## Handoff pattern
 
@@ -120,3 +120,11 @@ Responses API подходит, когда нужен прямой API-level к�
 | Responses Multi-agent | Hosted beta orchestration; приложение интегрирует tool results | Отдельная beta: на дату проверки 6.1 Sol и GPT-5.6, не все GPT-6 |
 
 Responses Multi-agent требует своего beta contract; root/subagents автоматически compact, standalone `/responses/compact` не поддерживается. Нельзя считать single-agent параметры универсальными: например, `reasoning.summary` и `max_tool_calls` не поддерживаются этим режимом. Async tools нельзя безусловно смешивать с parallel tool calls в Multi-agent; проверяйте выбранный режим. Agents API session, SDK session, Responses conversation и sandbox — разные ресурсы. Для состояния tools и steering см. [session control](session-control.md).
+
+## Пример выбора и failure path
+
+Задача «обработать документы и вернуть проверяемый результат» сначала требует решения о владельце состояния. Если нужен managed harness — рассмотрите Agents API; если приложение владеет Runner, storage и approvals — Agents SDK; если нужен wire-level contract и свой loop — Responses. Это выбор интеграции, не переключение текущего Codex runner.
+
+JSON выше — fragment схемы результата, не полный request для любого endpoint. Для Responses используйте актуальный `text.format`/SDK parsing contract; refusal, incomplete output и фактические ошибки обрабатываются отдельно. [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs).
+
+Если async tool завершился после steering, сначала сопоставьте call_id, проверьте актуальный scope и prior application; не повторяйте side effect. При timeout верните явную ошибку и решите retry по idempotency/budget. [Session control](session-control.md).

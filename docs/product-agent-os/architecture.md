@@ -8,6 +8,20 @@ Product-Agent OS plugin строит управляемый lifecycle вокру
 
 Главное правило: generated surfaces помогают ориентироваться, но source files, owner decisions и текущий verification evidence остаются сильнее любого dashboard, graph, report или chat memory.
 
+## Сквозной ordinary route {#ordinary-route}
+
+| Граница | Что происходит | Что не следует из результата |
+| --- | --- | --- |
+| Discovery → adapter | Реальные paths/manifests и task context поступают в `task_routing.py` | Команды из файлов не исполняются |
+| Adapter → selectors | Переиспользуются `select_code_quality_profile` и `select_test_strategy` | Наличие tool не означает успешную проверку |
+| State resolver → route | Structural readiness, task-bound state и inferred recommendation отделены; RU/EN headings и builder.toml не управляют ordinary route | State provenance не даёт write authority |
+| Route → result | Compact contract, checks с reasons, gaps и trace | `route_ready` не означает выполненную задачу |
+| Renderer → stage | Подмножество templates или reuse существующих документов | Полный registry не становится обязательным пакетом |
+
+Вход через `--task-context` — opt-in. Без него сохранён явно обозначенный legacy fallback, включая прежнюю inference по control-plane headings. Схемы legacy lifecycle и runner ниже описывают этот совместимый путь. Новый scoped path дополняет его; high-risk/full сохраняет применимые gates, source policy и approval checks.
+
+Пустой или неоднозначный проект получает discovery/requirements gap, а не фиктивную build readiness. Указанный task state требует совпадающих task ID, lifecycle value и hash source record. Полезный локальный результат ORD-01–ORD-06 не означает fresh host activation, promotion, production readiness или автоматическое применение инфраструктуры.
+
 ## Layered Model
 
 | Layer | Purpose | Boundary |
@@ -43,7 +57,7 @@ flowchart LR
 
 Этот route является derived из artifacts, не из chat memory. User intent может steer следующий action, но политика источников, sandbox, approvals и текущий evidence по-прежнему определяют, что можно запускать.
 
-## Архитектура планов и задач
+## Архитектура планов и задач {#planning-contract}
 
 Эта схема фиксирует, как Product-Agent OS создает файлы-планы, ведет матрицу задач, очищает накопленную историю и возвращает пользователю отчет после реализации. Она применяется для работы, где есть методология разработки, несколько связанных задач, архитектурные решения, роли агентов, `skills`, `subagents`, approval boundaries или поэтапная поставка.
 

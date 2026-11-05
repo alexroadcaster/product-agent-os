@@ -11,9 +11,12 @@ from codex_runtime_runner.contracts import build_result, validate_runner_result
 from codex_runtime_runner.guards import validate_approval_boundary, validate_route_packet
 from codex_runtime_runner.redaction import redact_payload, validate_redaction
 from codex_runtime_runner.routes import apply_runner_status_to_route, plan_route
-from codex_runtime_runner.state import infer_lifecycle_state
+from codex_runtime_runner.state import infer_lifecycle_state, resolve_task_state
 from product_agent_os.discovery import analyze_workspace
 from product_agent_os.source_policy import validate_source_policy
+from product_agent_os.task_routing import (
+    TaskContextError, build_task_routing, load_task_context, validate_task_context,
+)
 
 
 def run_contract(
@@ -22,21 +25,40 @@ def run_contract(
     allow_subagents: bool = False,
     approval_status: str = "not_required",
     intent_hint: str = "",
+    task_context: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
+    if task_context is not None:
+        validate_task_context(Path(workspace).resolve(), task_context)
     context = load_control_plane_context(workspace)
     request = {
         "task": {"lifecycle_state": ""},
         "routing": {"allow_subagents": allow_subagents, "allow_workspace_writes": False},
         "approval": {"approval_status": approval_status},
     }
-    state = infer_lifecycle_state(context, request)
-    audit = analyze_workspace(workspace, intent_hint=intent_hint)
+    state = infer_lifecycle_state(context, request) if task_context is None else "maintenance"
+    audit = analyze_workspace(workspace, intent_hint=intent_hint or (task_context or {}).get("intent", ""))
+    task_routing = None
+    if task_context is not None:
+        effective_task = dict(task_context)
+        if intent_hint:
+            effective_task["intent"] = task_context["intent"] + "\n" + intent_hint
+        task_routing = build_task_routing(workspace, audit, effective_task)
+        state_resolution = resolve_task_state(context, task_context)
+        state = state_resolution["recommendation"]
+        task_routing["state_resolution"] = state_resolution
+        task_routing["gaps"].extend(state_resolution["gaps"])
+        if state in {"review_ready", "release_ready", "learning_ready"}:
+            task_routing["full_reasons"].append("release_or_review_state")
+            task_routing["mode"] = "full"
+        if task_routing["gaps"] and task_routing["mode"] == "ordinary":
+            task_routing["mode"] = "needs_context"
     route = plan_route(
         state,
         allow_subagents=allow_subagents,
         usage_mode=audit["usage_mode"],
         behavioral_route_inputs=audit["route_inputs"],
         methodology_intelligence=audit["methodology_intelligence"],
+        task_routing=task_routing,
     )
     errors: list[str] = []
     warnings: list[str] = []
@@ -86,18 +108,25 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--allow-subagents", action="store_true", help="Allow subagent route recommendations.")
     parser.add_argument("--approval-status", default="not_required")
     parser.add_argument("--intent-hint", default="", help="Optional prompt-like routing hint for contract mode.")
+    parser.add_argument("--task-context", help="Workspace-relative task context v1 JSON; opt in to task-scoped routing.")
     parser.add_argument("--output", help="Optional JSON output file.")
     args = parser.parse_args(argv)
     if not args.contract:
         print("error: choose --contract", file=sys.stderr)
         return 2
 
-    result = run_contract(
-        args.workspace,
-        allow_subagents=args.allow_subagents,
-        approval_status=args.approval_status,
-        intent_hint=args.intent_hint,
-    )
+    try:
+        task_context = load_task_context(args.workspace, args.task_context) if args.task_context else None
+        result = run_contract(
+            args.workspace,
+            allow_subagents=args.allow_subagents,
+            approval_status=args.approval_status,
+            intent_hint=args.intent_hint,
+            task_context=task_context,
+        )
+    except TaskContextError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
     text = json.dumps(result, indent=2)
     if args.output:
         Path(args.output).write_text(text + "\n", encoding="utf-8")
@@ -113,7 +142,11 @@ def _status_for(
 ) -> str:
     if errors:
         return "blocked"
-    if context["missing"] and route["lifecycle_state"] != "uninitialized":
+    scoped = route.get("task_routing")
+    if isinstance(scoped, dict) and scoped["gaps"]:
+        return "needs_context"
+    missing = [name for name in context["missing"] if name in route["required_inputs"]]
+    if missing and (scoped is not None or route["lifecycle_state"] != "uninitialized"):
         return "needs_context"
     if approval_errors:
         return "needs_approval"

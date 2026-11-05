@@ -1,4 +1,10 @@
-# Track 9 Methodology Intelligence Design
+---
+title: "Архив — Track 9 Methodology Intelligence Design"
+---
+
+# Архив — Track 9 Methodology Intelligence Design {#track-9-methodology-intelligence-design}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `local product design + methodology research synthesis`
 

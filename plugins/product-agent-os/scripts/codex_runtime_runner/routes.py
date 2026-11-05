@@ -43,6 +43,7 @@ def plan_route(
     agent_skill_metrics_loop: dict[str, Any] | None = None,
     project_graph_status: dict[str, Any] | None = None,
     completion_skeptic_recommendation: dict[str, Any] | None = None,
+    task_routing: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     skill, subagent, write_policy, action = ROUTES[lifecycle_state]
     if subagent and not allow_subagents:
@@ -175,7 +176,72 @@ def plan_route(
     route["first_response_contract"]["completion_skeptic_summary"] = completion_skeptic_first_response_summary(
         completion_skeptic_recommendation
     )
+    if task_routing is not None:
+        _apply_task_routing(route, task_routing)
+    else:
+        route["routing_trace"] = {"mode": "legacy", "legacy_fallback_used": True, "selectors": []}
     return route
+
+
+def _apply_task_routing(route: dict[str, Any], decision: dict[str, Any]) -> None:
+    """Replace broad defaults only for scoped tasks; retain approval and source guards."""
+    full = decision["mode"] == "full"
+    route["routing_trace"] = {
+        "schema_version": 1, "mode": decision["mode"], "legacy_fallback_used": False,
+        "selectors": decision["selectors"], "task_id": decision["task_id"],
+        "reasons": decision["full_reasons"] or ["explicit_task_context"],
+        "state_resolution": decision["state_resolution"],
+    }
+    route["task_routing"] = decision
+    route["reporting_scope"] = "full" if full else "concise"
+    route["code_quality_profile"] = decision["code_quality_profile"]
+    route["quality_strategy"] = decision["quality_strategy"]
+    route["verification_plan"] = decision["checks"]
+    route["project_instruction_sources"] = decision["required_sources"]
+    route["project_instructions_override_selection"] = True
+    commands = [item["command"] for item in decision["checks"] if item["status"] != "blocked"]
+    route["verification"] = list(dict.fromkeys((route["verification"] if full else []) + commands))
+    if not full:
+        route["required_inputs"] = decision["required_sources"]
+    docs_only = decision["change_mode"] == "docs_only"
+    compact = {} if docs_only else {
+        "existing_capability": "Reuse project inventory and helpers; inspect relevant sources before edits",
+        "smallest_safe_patch": "Use the smallest change satisfying the task acceptance, including reuse or no-op",
+        "invariants": decision["invariants"],
+        "dependency_decision": "no_new_dependency; detected tools are present_unverified",
+        "risk_selected_tests": [item for item in decision["quality_strategy"]["test_decisions"]
+                                if item["status"] == "required"],
+        "comment_decision": decision["quality_strategy"]["comment_decision"],
+        "performance_applicability": decision["quality_strategy"]["performance_decision"],
+        "evidence_and_gaps": {"status": "stop" if decision["gaps"] else "proceed",
+                              "gaps": decision["gaps"], "ceiling": decision["evidence_ceiling"]},
+    }
+    route["code_change_contract"] = compact
+    route["professional_code_authoring"] = {
+        "status": "not_applicable" if docs_only else "present_unverified",
+        "artifact": "code-change-contract", "reason": "docs_only" if docs_only else "compact_pre_edit_contract",
+    }
+    route["expected_outputs"] = ["codex_runner_result", "verification evidence and gaps"]
+    if not docs_only:
+        route["expected_outputs"].append("compact code-change contract")
+    if full:
+        route["expected_outputs"].append("full lifecycle packet and applicable risk gates")
+    if not full and not methodology_requires_approval(route["methodology_packet"]):
+        route["question_queue"] = build_question_queue(
+            usage_mode={"primary": "inspection_only"},
+            runtime_gaps=[{"category": "scope", "question": gap, "answer_type": "text",
+                           "source_key": f"task_gap_{i}", "priority": "blocking"}
+                          for i, gap in enumerate(decision["gaps"])],
+            runtime_status="needs_context" if decision["gaps"] else "route_ready",
+        )
+    first = route["first_response_contract"]
+    first.update(
+        minimum_artifacts=route["expected_outputs"][1:], evidence_gaps=decision["gaps"],
+        professional_code_authoring=route["professional_code_authoring"],
+        next_blocking_question=route["question_queue"].get("next_blocking_question"),
+        question_counts=route["question_queue"].get("summary", {}),
+        question_summary=_question_summary(route["question_queue"]),
+    )
 
 
 def apply_runner_status_to_route(route: dict[str, Any], status: str) -> dict[str, Any]:

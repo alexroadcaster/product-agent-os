@@ -615,6 +615,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#discovery-before-invocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Discovery before invocation
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -824,6 +833,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -905,6 +916,27 @@
 
   <span class="md-ellipsis">
     Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
   </span>
 
 
@@ -2766,6 +2798,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2952,6 +2986,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3433,6 +3488,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#discovery-before-invocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Discovery before invocation
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3451,18 +3515,18 @@
 <h1 id="skill-lifecycle">Skill lifecycle<a class="headerlink" href="#skill-lifecycle" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + experiment</code></p>
 <p>This diagram shows how a repeated workflow becomes a reusable skill and later an automation candidate only after evidence exists.</p>
-<pre class="mermaid"><code>flowchart LR
-    A["Manual workflow"] --&gt; B["Playbook"]
-    B --&gt; C["Skill candidate"]
-    C --&gt; D["Trigger, inputs, outputs"]
-    D --&gt; E["Eval cases"]
-    E --&gt; F["Failure log"]
-    F --&gt; G{"Reliable?"}
-    G --&gt;|No| H["Refine manually"]
-    G --&gt;|Yes| I["Reusable skill"]
-    I --&gt; J{"Stable cadence?"}
-    J --&gt;|No| K["Assisted runs"]
-    J --&gt;|Yes| L["Automation candidate"]</code></pre>
+<pre class="mermaid"><code>stateDiagram-v2
+    [*] --&gt; ManualWorkflow
+    ManualWorkflow --&gt; SkillDraft: repeated reliable need
+    SkillDraft --&gt; EvalCases: define representative cases
+    EvalCases --&gt; SkillDraft: failure
+    EvalCases --&gt; PackagedSkill: sufficient evidence
+    PackagedSkill --&gt; Exposure: check discovery and initial list
+    Exposure --&gt; ProjectUse: explicit or implicit invocation
+    ProjectUse --&gt; Maintenance: failure or source change
+    Maintenance --&gt; SkillDraft: revise and verify
+    ProjectUse --&gt; AutomationCandidate: stable cadence and owner review
+    AutomationCandidate --&gt; [*]</code></pre>
 <h2 id="inputs">Inputs<a class="headerlink" href="#inputs" title="Permanent link">&para;</a></h2>
 <ul>
 <li>A successful manual workflow, playbook, source policy and failure examples.</li>
@@ -3480,6 +3544,8 @@
 <li>A broad skill can hide unrelated behavior under one trigger.</li>
 <li>Automation without stable inputs, outputs and rollback can create repeated unsafe actions.</li>
 </ul>
+<h2 id="discovery-before-invocation">Discovery before invocation<a class="headerlink" href="#discovery-before-invocation" title="Permanent link">&para;</a></h2>
+<p>Start with an instructions-only skill. Check the file, initial skill list, explicit/implicit invocation and observed result. Shortened descriptions and omission from the initial list do not mean the skill was removed. <a href="../agent-systems/subagents-skills.html">Troubleshooting</a> · <a href="https://learn.chatgpt.com/docs/build-skills">Build skills</a>.</p>
 
 
 

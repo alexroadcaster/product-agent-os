@@ -1,8 +1,8 @@
-﻿# Архитектура проекта
+# Архитектура проекта
 
-Source status: `experiment`
+Source status: `official + experiment`
 
-Эта страница остается общей архитектурной картой базы знаний. Для реализации реальных проектов начинайте с [Diagram atlas](index.md), затем переходите к lifecycle, agent team, runtime, skill и verification схемам.
+Карта разделяет источники, выполняемую работу и evidence. Для обычной задачи один агент может последовательно выполнить research, verification и synthesis. Командный sequence — условный пример, не обязательный runtime.
 
 ## Knowledge base pipeline
 
@@ -23,44 +23,45 @@ flowchart TD
     K --> L["HTML site"]
 ```
 
-## Agent workflow pipeline
+## Optional agent workflow
 
 ```mermaid
 sequenceDiagram
-    participant U как User
-    participant M как Main orchestrator
-    participant R как Research agent
-    participant V как Verification agent
-    participant S как Synthesis agent
-    participant KB как Knowledge base
+    participant U as User
+    participant M as Main orchestrator
+    participant R as Research agent
+    participant V as Verification agent
+    participant S as Synthesis agent
+    participant KB as Knowledge base
 
     U->>M: Goal + constraints
     M->>R: Source discovery task
     R-->>M: Source cards + claims
     M->>V: Verify claims
     V-->>M: Verified / unsupported / conflicts
-    M->>S: Создайте learning material
+    M->>S: Draft learning material
     S-->>M: Draft + source notes
-    M->>KB: Применить approved docs changes
+    M->>KB: Apply authorized docs changes
     M-->>U: Summary + verification evidence
 ```
 
-## Runtime layer map
+## Runtime ownership choices
 
 ```mermaid
 flowchart TD
-    C["Codex App / CLI / IDE"] --> P["Playbooks и AGENTS.md"]
+    C["Codex App / CLI / IDE"] --> P["Playbooks and AGENTS.md"]
     P --> S["Skills"]
-    S --> SA["Subagents"]
-    SA --> ASDK["Agents SDK"]
-    ASDK --> RAPI["Responses API"]
+    S --> SA["Optional Codex subagents"]
+    C --> ASDK["Optional agent application"]
+    ASDK --> CHOICE["Choose Agents API / SDK / Responses"]
+    CHOICE --> RAPI["Responses API when applicable"]
     ASDK --> MCP["Codex MCP"]
-    RAPI --> TOOLS["Tools и structured outputs"]
+    RAPI --> TOOLS["Tools and structured outputs"]
     MCP --> WS["Workspace execution"]
-    ASDK --> TR["Tracing и evals"]
+    ASDK --> TR["Tracing and evals"]
 ```
 
-## Hallucination control loop
+## Claim verification loop
 
 ```mermaid
 flowchart TD
@@ -93,3 +94,27 @@ flowchart TD
     PR --> LEARN["Update AGENTS.md / skills / insights"]
     LEARN --> AG
 ```
+
+## Как использовать и проверить
+
+Выберите [delivery route](product-delivery-lifecycle.md) по размеру задачи. Runtime app выбирайте по [владению loop/state](../agent-systems/sdk-patterns.md): Codex subagents не требуют Agents SDK. JSON schema, guardrail и отдельный Verifier не гарантируют factual correctness. Проверяйте источники, наблюдаемый результат и применимые checks. Документы и схемы не активируют hooks, providers, Git или deployment.
+
+## Типовые ошибки
+
+Обязательная команда без независимых задач; смешение generated artifacts и source truth; рост verification loop без budget/stop condition; автоматическая публикация результата без authority.
+
+## Входы
+
+Цель пользователя, текущие источники, ограничения, ownership и применимые разрешения.
+
+## Выходы
+
+Выбранный маршрут, проверяемый artifact и evidence с явными ограничениями.
+
+## Проверка
+
+Сверьте маршрут с исходниками и наблюдаемым результатом; после изменения синтаксиса проверьте render.
+
+## Риски
+
+Диаграмма помогает навигации, но не доказывает runtime activation или release.

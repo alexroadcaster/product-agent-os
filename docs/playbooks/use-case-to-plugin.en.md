@@ -23,3 +23,7 @@ Keep the promotion order: manual workflow, playbook, skill, plugin, automation. 
 
 - Packaging too early can turn an unproven prompt into a reusable failure.
 - A plugin with unclear permissions can bypass the project approval boundary.
+
+## Skill or plugin
+
+One repeatable method can use a skill. Use a plugin for distribution or related integrations. Before packaging choose portable/compatibility layout, supported surfaces and authentication; see [technical installation](../product-agent-os/technical.md). IDE has no native plugin support.

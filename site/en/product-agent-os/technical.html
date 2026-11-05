@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
   </span>
 
 
@@ -1979,6 +2002,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#package-format-and-installation-checked-2026-11-05" class="md-nav__link">
+    <span class="md-ellipsis">
+      Package format and installation: checked 2026-11-05
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -2883,6 +2915,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -3069,6 +3103,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3667,6 +3722,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#package-format-and-installation-checked-2026-11-05" class="md-nav__link">
+    <span class="md-ellipsis">
+      Package format and installation: checked 2026-11-05
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3687,7 +3751,7 @@
 Sources: <a href="https://developers.openai.com/codex/plugins">Codex plugins</a>, <a href="https://developers.openai.com/codex/plugins/build">Build plugins</a>, <a href="https://developers.openai.com/codex/skills">Agent Skills</a>, <a href="https://developers.openai.com/codex/subagents">Subagents</a>, <a href="https://developers.openai.com/codex/mcp">Codex MCP</a>, <a href="https://developers.openai.com/codex/hooks">Codex hooks</a>, <a href="https://developers.openai.com/codex/guides/agents-md">AGENTS.md</a>, <a href="https://developers.openai.com/codex/guides/agents-sdk">Codex with Agents SDK</a>, <a href="architecture.html">Product-Agent OS architecture</a>.</p>
 <h2 id="quick-start">Quick start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
 <p>Product-Agent OS is a local Codex plugin package. Use it to stage control-plane artifacts, route product-agent workflows, run deterministic validators and package repeatable methods as skills. Installation does not grant permission to start live systems, call providers, mutate target repositories or publish anything.</p>
-<p>This quick-start page is not the full command-policy matrix. The broader list of docs-tooling commands, install/runtime variants and approval-state cases belongs to later <code>DOC-M26</code>; final root <code>site</code> freshness belongs to <code>DOC-M25</code> after G2-G5.</p>
+<p>Use the <a href="operator-command-matrix.html">operator command matrix</a> for command authority and <a href="residual-follow-up-site-freshness.html">site freshness</a> for current build evidence. Historical DOC-M26/DOC-M25 milestones are not the current installation procedure.</p>
 <h2 id="capability-status">Capability status<a class="headerlink" href="#capability-status" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3867,6 +3931,9 @@ Sources: <a href="https://developers.openai.com/codex/plugins">Codex plugins</a>
 <li>Plugin installation does not approve publication, live calls or target workspace writes.</li>
 <li>Generated graph and report output can become stale unless fingerprint and source boundaries are checked.</li>
 </ul>
+<h2 id="package-format-and-installation-checked-2026-11-05">Package format and installation: checked 2026-11-05<a class="headerlink" href="#package-format-and-installation-checked-2026-11-05" title="Permanent link">&para;</a></h2>
+<p><a href="https://developers.openai.com/plugins/build/plugins">Package your plugin</a> describes portable root <code>plugin.json</code>, <code>mcp.json</code> and OpenAI metadata in <code>extensions.com.openai</code>. Legacy <code>.codex-plugin/plugin.json</code> remains a compatibility fallback; Plugin Creator can generate that scaffold. Our existing package stays on the legacy layout. This guide does not migrate implementation: renaming <code>.mcp.json</code> alone is invalid because the transport schema differs.</p>
+<p><a href="https://learn.chatgpt.com/docs/plugins">Plugins</a> are available on supported desktop/CLI/web/mobile surfaces with component and authentication limits. The IDE extension does not support native plugins. Working with repository files in the IDE is a separate capability. Start a new chat/session for bundled skills after installation; verify MCP authentication and hook trust separately. See <a href="../codex/surfaces.html">surface matrix</a> and <a href="../agent-systems/subagents-skills.html">skill exposure</a>.</p>
 
 
 

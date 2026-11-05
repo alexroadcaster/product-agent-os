@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
   </span>
 
 
@@ -1209,9 +1232,9 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#model-reasoning-profile" class="md-nav__link">
+  <a href="#model-reasoning-policy" class="md-nav__link">
     <span class="md-ellipsis">
-      Model и reasoning profile
+      Model и reasoning policy
     </span>
   </a>
 
@@ -1230,6 +1253,15 @@
   <a href="#handoff-rule" class="md-nav__link">
     <span class="md-ellipsis">
       Handoff rule
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Роль и отдельный агент
     </span>
   </a>
 
@@ -2766,6 +2798,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2952,6 +2986,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3407,9 +3462,9 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#model-reasoning-profile" class="md-nav__link">
+  <a href="#model-reasoning-policy" class="md-nav__link">
     <span class="md-ellipsis">
-      Model и reasoning profile
+      Model и reasoning policy
     </span>
   </a>
 
@@ -3433,6 +3488,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Роль и отдельный агент
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3450,7 +3514,7 @@
 
 <h1 id="_1">Роли агентной команды<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + experiment</code><br />
-Источники: <a href="https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/">A practical guide to building agents</a>, <a href="https://developers.openai.com/codex/guides/agents-sdk">Codex with Agents SDK</a>, <a href="https://developers.openai.com/codex/subagents">Subagents</a>, <a href="https://developers.openai.com/codex/models">Codex models</a>, <a href="https://developers.openai.com/api/docs/guides/agents/models">Agents SDK models and providers</a>, <a href="https://developers.openai.com/api/docs/guides/reasoning-best-practices">Reasoning best practices</a>, <a href="https://developers.openai.com/codex/guides/build-ai-native-engineering-team">Build AI-native engineering teams</a>.</p>
+Источники: <a href="https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/">A practical guide to building agents</a>, <a href="https://developers.openai.com/codex/guides/agents-sdk">Codex with Agents SDK</a>, <a href="https://learn.chatgpt.com/docs/agent-configuration/subagents">Subagents</a>, <a href="https://learn.chatgpt.com/docs/models">Codex models</a>, <a href="https://developers.openai.com/api/docs/guides/agents/models">Agents SDK models and providers</a>, <a href="https://developers.openai.com/api/docs/guides/reasoning-best-practices">Reasoning best practices</a>, <a href="https://developers.openai.com/codex/guides/build-ai-native-engineering-team">Build AI-native engineering teams</a>.</p>
 <h2 id="role-map">Role map<a class="headerlink" href="#role-map" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3506,87 +3570,46 @@
 </tr>
 </tbody>
 </table>
-<h2 id="model-reasoning-profile">Model и reasoning profile<a class="headerlink" href="#model-reasoning-profile" title="Permanent link">&para;</a></h2>
-<p>Каждая роль должна иметь execution profile. Это особенно важно для programmable Agents SDK workflows и Codex custom agents, где модель и reasoning могут задаваться явно.</p>
+<h2 id="model-reasoning-policy">Model и reasoning policy<a class="headerlink" href="#model-reasoning-policy" title="Permanent link">&para;</a></h2>
+<p><a href="../codex/models-and-reasoning.html">Матрица моделей</a> владеет актуальными рекомендациями product/auth/effort. Таблица ниже — проектное предложение, а не benchmark и не изменение активных моделей. Выбранные модели определяет effective project/agent configuration; PLAN хранит решения, RUNLOG — доказательства.</p>
 <table>
 <thead>
 <tr>
-<th>Роль</th>
-<th>Model policy</th>
-<th>Reasoning effort</th>
-<th>Escalation rule</th>
+<th>Класс работы</th>
+<th>Правило выбора кандидата</th>
+<th>Решение об effort</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Product Manager</td>
-<td><code>gpt-5.5</code> или настройка проекта по умолчанию</td>
-<td><code>medium</code> / <code>high</code></td>
-<td>Поднять до <code>high</code>, если requirements конфликтуют или нужно выбрать tradeoff</td>
+<td>Архитектура, review, сложный debugging</td>
+<td>Оценить Sol; для наиболее сложных случаев рассмотреть Astra</td>
+<td>Сначала сохранить поддерживаемый baseline; повышать при доказанной пользе</td>
 </tr>
 <tr>
-<td>Architect</td>
-<td><code>gpt-5.5</code></td>
-<td><code>high</code> / <code>xhigh</code></td>
-<td><code>xhigh</code> для multi-system architecture, migrations, deep debugging</td>
+<td>Ограниченная реализация</td>
+<td>Сравнить Sol с действующим baseline</td>
+<td>Одинаковые задача и tools; затем сравнить меньший поддерживаемый effort</td>
 </tr>
 <tr>
-<td>Builder</td>
-<td>настройка проекта по умолчанию; <code>gpt-5.4-mini</code> для малых точечные правки</td>
-<td><code>medium</code> / <code>high</code></td>
-<td><code>high</code>, если меняются общие contracts или несколько модулей</td>
+<td>Документация, визуальные задачи, computer use</td>
+<td>Рассмотреть Terra для подходящих задач</td>
+<td>Проверить источники, завершение tools и качество результата</td>
 </tr>
 <tr>
-<td>Explorer</td>
-<td><code>gpt-5.4-mini</code> или настройка проекта по умолчанию</td>
-<td><code>low</code> / <code>medium</code></td>
-<td><code>medium</code>, если нужно синтезировать найденные зависимости</td>
+<td>Узкий повторяемый сбор данных</td>
+<td>Рассмотреть Luna после ограниченного eval</td>
+<td>Оптимизировать стоимость/latency только после quality gate</td>
 </tr>
 <tr>
-<td>Tester</td>
-<td>настройка проекта по умолчанию</td>
-<td><code>medium</code></td>
-<td><code>high</code>, если failure недетерминированный или eval-driven</td>
-</tr>
-<tr>
-<td>Reviewer</td>
-<td><code>gpt-5.5</code></td>
-<td><code>high</code></td>
-<td><code>xhigh</code>, если review затрагивает security, data loss, concurrency, auth</td>
-</tr>
-<tr>
-<td>Docs Maintainer</td>
-<td>настройка проекта по умолчанию</td>
-<td><code>low</code> / <code>medium</code></td>
-<td><code>medium</code>, если нужно сверять несколько официальные sources</td>
-</tr>
-<tr>
-<td>Release Operator</td>
-<td>настройка проекта по умолчанию</td>
-<td><code>medium</code></td>
-<td><code>high</code>, если rollout необратим или approvals неоднозначны</td>
+<td>Release, безопасность и итоговая проверка</td>
+<td>Использовать проверенный выбор проекта</td>
+<td>Approval boundaries и evidence остаются обязательными</td>
 </tr>
 </tbody>
 </table>
-<p>Минимальная role card:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Architect&quot;</span>
-<span class="nt">owns</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Architecture,</span><span class="nv"> </span><span class="s">decomposition,</span><span class="nv"> </span><span class="s">risk</span><span class="nv"> </span><span class="s">analysis&quot;</span>
-<span class="nt">model_policy</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;gpt-5.5&quot;</span>
-<span class="w">  </span><span class="nt">reasoning_effort</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;high&quot;</span>
-<span class="w">  </span><span class="nt">cost_latency_budget</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;quality-first&quot;</span>
-<span class="w">  </span><span class="nt">inherit_from_parent_when_unspecified</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">override_allowed_by</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;run-level</span><span class="nv"> </span><span class="s">workflow</span><span class="nv"> </span><span class="s">config&quot;</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;human</span><span class="nv"> </span><span class="s">approval&quot;</span>
-<span class="w">  </span><span class="nt">escalation_rules</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Используйте</span><span class="nv"> </span><span class="s">xhigh</span><span class="nv"> </span><span class="s">для</span><span class="nv"> </span><span class="s">multi-system</span><span class="nv"> </span><span class="s">migration</span><span class="nv"> </span><span class="s">или</span><span class="nv"> </span><span class="s">ambiguous</span><span class="nv"> </span><span class="s">architecture.&quot;</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Используйте</span><span class="nv"> </span><span class="s">medium</span><span class="nv"> </span><span class="s">для</span><span class="nv"> </span><span class="s">bounded</span><span class="nv"> </span><span class="s">implementation</span><span class="nv"> </span><span class="s">planning.&quot;</span>
-<span class="nt">handoff</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">inputs</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;REQUIREMENTS.md,</span><span class="nv"> </span><span class="s">codebase</span><span class="nv"> </span><span class="s">map,</span><span class="nv"> </span><span class="s">constraints&quot;</span>
-<span class="w">  </span><span class="nt">outputs</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;PLAN.md,</span><span class="nv"> </span><span class="s">risks,</span><span class="nv"> </span><span class="s">open</span><span class="nv"> </span><span class="s">questions,</span><span class="nv"> </span><span class="s">verification</span><span class="nv"> </span><span class="s">strategy&quot;</span>
-</code></pre></div>
-<p>Project default должен жить в <code>PLAN.md</code> или project-scoped agent config. Durable rules о повышении reasoning можно хранить в <code>AGENTS.md</code>; одноразовые runtime overrides лучше фиксировать в <code>RUNLOG.md</code>.</p>
+<p>Таблица не назначает новую модель ни одной роли. См. <a href="../playbooks/model-migration.html">playbook миграции</a>. Role card должна задавать ownership, входные/выходные artifacts, проверки, escalation/downgrade и budget. Неуказанные model/effort разрешаются по применимой схеме Codex, а не по универсальному предположению о наследовании во всех runtimes.</p>
+<p>Read-only инструкция роли выражает намерение. Codex custom agents наследуют permissions, approvals, provider и MCP родителя; локальный override роли не создает отдельный sandbox. Техническая изоляция и доступ к инструменту требуют runtime evidence.</p>
 <h2 id="manager-pattern">Manager pattern<a class="headerlink" href="#manager-pattern" title="Permanent link">&para;</a></h2>
 <p>Для product delivery default используется Manager pattern:</p>
 <ul>
@@ -3618,6 +3641,8 @@
 <li>open risks;</li>
 <li>recommended next role.</li>
 </ul>
+<h2 id="_2">Роль и отдельный агент<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Роль определяет ответственность; один агент может выполнять несколько ролей последовательно. Делегирование требует пользы, независимого ownership и применимой authority. Parent permissions/MCP наследуются; role prose не создаёт отдельный sandbox. <a href="https://learn.chatgpt.com/docs/agent-configuration/subagents">Subagents</a>.</p>
 
 
 

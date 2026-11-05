@@ -151,3 +151,7 @@ Packaging and closure work does not perform these actions without a separate exp
 ## Next Action
 
 After docs and packaging evidence are current, the next safe artifact is the approval packet draft. Real testing execution, provider/API calls, canonical mutation and git release/PR actions remain blocked until their separate approvals exist.
+
+## Current route and evidence
+
+Check package, installation, hook trust and runtime activation separately. Portable/legacy formats are in the [technical guide](technical.md); the current package has not been migrated. Documentation closure uses the [updated checklist](../playbooks/docs-update.md).

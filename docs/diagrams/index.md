@@ -7,7 +7,7 @@ Source status: `official + experiment`
 Используйте диаграммы не как иллюстрации, а как порядок действий:
 
 1. Начните с [Product-Agent Delivery Lifecycle](product-delivery-lifecycle.md), чтобы понять весь путь от идеи до release.
-2. Зафиксируйте [архитектуру планов и задач](../product-agent-os/architecture.md#архитектура-планов-и-задач), если проект требует матрицу задач, поэтапную поставку или отчет после реализации.
+2. Зафиксируйте [архитектуру планов и задач](../product-agent-os/architecture.md#planning-contract), если проект требует матрицу задач, поэтапную поставку или отчет после реализации.
 3. Перейдите к [Команде агентов и skills](agent-team-and-skills.md), чтобы разложить проект на роли, зоны владения и reusable methods.
 4. Используйте [Runtime decision map](runtime-decision-map.md), чтобы выбрать Codex App, CLI, Cloud, `codex exec`, MCP, GitHub Action или automation.
 5. Проверьте [границу source и generated evidence](source-generated-trust-boundary.md), если работа опирается на generated graph, cockpit HTML, reports или `site/`.
@@ -40,22 +40,21 @@ Source status: `official + experiment`
 
 ```mermaid
 flowchart LR
-    A["Идея проекта"] --> B["Delivery lifecycle"]
-    B --> B1["Архитектура планов"]
-    B1 --> C["Команда агентов и skills"]
-    C --> D["Runtime decision"]
-    D --> E["Source/generated boundary"]
-    E --> F["Architecture Intelligence maps"]
-    F --> G["Implementation loop"]
-    G --> H["Skill exposure boundary"]
-    H --> I["Skill lifecycle"]
-    G --> J["Context и verification"]
-    I --> K["Reusable project methods"]
-    J --> L["Product-ready output"]
+    A["User task"] --> B{"Scope and risk"}
+    B -->|Ordinary| C["Scope, change, checks, result"]
+    B -->|Large or high risk| D["Delivery lifecycle"]
+    D --> E["Ownership and optional agents"]
+    E --> F["Runtime and source boundaries"]
+    F --> G["Implementation and evidence"]
+    G --> H["Skill or automation candidate when justified"]
 ```
 
-Если после прохождения маршрута у проекта нет `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md` и `RUNLOG.md`, значит workflow еще не готов к автономной или полуавтономной агентной работе.
+Для небольшой задачи достаточно короткого маршрута: scope → изменение → affected checks → результат. Пять control-plane files нужны по применимости; переиспользуйте имеющиеся artifacts.
 
 ## Обновление моделей и runtimes
 
 Используйте [матрицу моделей](../codex/models-and-reasoning.md) и [playbook миграции](../playbooks/model-migration.md) вместе с диаграммами команды/runtime. API-возможности и кандидатные модели описаны отдельно от текущей активации Product-Agent OS.
+
+## Выберите короткий или полный маршрут
+
+[Delivery lifecycle](product-delivery-lifecycle.md) начинается с размера и риска. Ordinary task не требует команды, worktree или нового набора файлов. Полный маршрут atlas используется, когда есть существенные зависимости, ownership или release/readiness. Следующая диаграмма должна отвечать на конкретный вопрос задачи.

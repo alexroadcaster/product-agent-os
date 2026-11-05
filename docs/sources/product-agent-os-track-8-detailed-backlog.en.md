@@ -1,4 +1,10 @@
-# Product-Agent OS Track 8: detailed implementation backlog
+---
+title: "Archive - Product-Agent OS Track 8: detailed implementation backlog"
+---
+
+# Archive - Product-Agent OS Track 8: detailed implementation backlog {#product-agent-os-track-8-detailed-implementation-backlog}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `official + verified methodology + implementation planning`
 

@@ -14,7 +14,8 @@ from product_agent_os.stage_manifest import build_stage_manifest, write_stage_ma
 from product_agent_os.status_dashboard import StatusDashboardError
 from product_agent_os.status_dashboard import render_status_dashboard_plan as _render_status_dashboard_plan
 from product_agent_os.status_dashboard import stage_status_dashboard as _stage_status_dashboard
-from product_agent_os.templates import TemplateSpec, render_template, required_templates
+from product_agent_os.templates import TemplateSpec, render_template, required_templates, selected_templates
+from product_agent_os.task_routing import build_task_routing
 from product_agent_os.validators import validate_agent_file, validate_agent_project_config, validate_hook_file
 
 
@@ -42,10 +43,12 @@ class InfrastructureError(RuntimeError):
     pass
 
 
-def render_infrastructure_plan(workspace: str | Path) -> dict[str, Any]:
+def render_infrastructure_plan(
+    workspace: str | Path, *, task_context: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     workspace_path = _workspace_path(workspace)
     audit = _analyze(workspace_path)
-    return _build_result(workspace_path, audit, None, write_files=False)
+    return _build_result(workspace_path, audit, None, write_files=False, task_context=task_context)
 
 
 def render_infrastructure_from_audit(
@@ -53,6 +56,7 @@ def render_infrastructure_from_audit(
     audit: dict[str, Any],
     *,
     lifecycle_packets: dict[str, Any] | list[dict[str, Any]] | None = None,
+    task_context: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     workspace_path = _workspace_path(workspace)
     return _build_result(
@@ -61,10 +65,13 @@ def render_infrastructure_from_audit(
         None,
         write_files=False,
         lifecycle_packets=lifecycle_packets,
+        task_context=task_context,
     )
 
 
-def stage_infrastructure(workspace: str | Path, output_dir: str | Path) -> dict[str, Any]:
+def stage_infrastructure(
+    workspace: str | Path, output_dir: str | Path, *, task_context: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     workspace_path = _workspace_path(workspace)
     stage_root = Path(output_dir).resolve()
     if stage_root == workspace_path or stage_root.is_relative_to(workspace_path):
@@ -73,7 +80,7 @@ def stage_infrastructure(workspace: str | Path, output_dir: str | Path) -> dict[
         raise InfrastructureError(f"stage output path is not a directory: {stage_root}")
     audit = _analyze(workspace_path)
     try:
-        return _build_result(workspace_path, audit, stage_root, write_files=True)
+        return _build_result(workspace_path, audit, stage_root, write_files=True, task_context=task_context)
     except (OSError, ValueError) as exc:
         raise InfrastructureError(f"unable to write staged infrastructure: {exc}") from exc
 
@@ -125,6 +132,7 @@ def _build_result(
     *,
     write_files: bool,
     lifecycle_packets: dict[str, Any] | list[dict[str, Any]] | None = None,
+    task_context: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     context = _template_context(workspace, audit)
     warnings = _profile_warnings(workspace, audit)
@@ -140,7 +148,16 @@ def _build_result(
         "blocked": [],
     }
 
-    for item in required_templates():
+    selection = None
+    templates = required_templates()
+    if task_context is not None:
+        decision = build_task_routing(workspace, audit, task_context)
+        templates, selection = selected_templates(decision, set(audit.get("detected_files", [])))
+        # Inspection can show proposals while gaps remain, but no incomplete
+        # task context is allowed to produce a staged merge input.
+        if write_files and decision["gaps"]:
+            raise InfrastructureError("task context gaps must be resolved before staging")
+    for item in templates:
         _validate_template_target(item)
         rendered = render_template(item, context)
         target = workspace / item.target_path
@@ -210,6 +227,8 @@ def _build_result(
             },
         },
     }
+    if selection is not None:
+        result["infrastructure_plan"]["template_selection"] = selection
     if write_files and stage_root is not None:
         manifest = build_stage_manifest(
             workspace=workspace,

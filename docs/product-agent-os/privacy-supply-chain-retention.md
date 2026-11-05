@@ -29,3 +29,6 @@ Python vulnerability audit, complete repository SBOM, dependency remediation, `n
 
 Docs slice проверяет только documented boundary: docs unittest, `tools/check_docs.py`, JSON packet validation, strict MkDocs smoke и `git diff --check`. Он не выполняет vulnerability audit, SBOM completion, remediation или external crawl.
 
+## Актуальные retained-data границы
+
+Review после изменения plugin scripts — отдельная trust проверка. Local memory stores и cloud network secrets имеют разные retention/delivery semantics; не обещайте универсальное удаление или setup-only credential access. [Hooks](../runtime/worktrees-hooks-rules.md), [memory](../agent-systems/memory.md), [Cloud](../codex/surfaces.md).

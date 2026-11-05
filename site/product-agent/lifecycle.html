@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
   </span>
 
 
@@ -1188,9 +1211,9 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#ask-mode-code-mode" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Ask Mode до Code Mode
+      Планирование перед реализацией
     </span>
   </a>
 
@@ -1218,6 +1241,15 @@
   <a href="#learning-loop" class="md-nav__link">
     <span class="md-ellipsis">
       Learning loop
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Размер задачи определяет маршрут
     </span>
   </a>
 
@@ -2775,6 +2807,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2961,6 +2995,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3416,9 +3471,9 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#ask-mode-code-mode" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Ask Mode до Code Mode
+      Планирование перед реализацией
     </span>
   </a>
 
@@ -3446,6 +3501,15 @@
   <a href="#learning-loop" class="md-nav__link">
     <span class="md-ellipsis">
       Learning loop
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Размер задачи определяет маршрут
     </span>
   </a>
 
@@ -3530,7 +3594,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="ask-mode-code-mode">Ask Mode до Code Mode<a class="headerlink" href="#ask-mode-code-mode" title="Permanent link">&para;</a></h2>
+<h2 id="_1">Планирование перед реализацией<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <p>Рекомендации OpenAI Codex предлагают начинать крупные изменения с плана до реализации. В этом проекте это означает:</p>
 <div class="highlight"><pre><span></span><code>Сначала создай PLAN.md из REQUIREMENTS.md.
 Не редактируй product code, пока план не называет:
@@ -3561,6 +3625,10 @@
 <li>Какой source или architecture decision нужно задокументировать?</li>
 <li>Какая metric или пользователь feedback должна двигать следующую product iteration?</li>
 </ul>
+<h2 id="_2">Размер задачи определяет маршрут<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Проверено 05.11.2026: <a href="https://developers.openai.com/api/docs/guides/latest-model">model guidance</a> и <a href="https://developers.openai.com/api/docs/guides/evaluation-best-practices">eval guidance</a>. Для ordinary fix: краткий scope, изменение, affected checks, результат и ограничения. Переиспользуйте существующие requirements/plan/test/runlog; не создавайте новый набор файлов только ради названий этапов. Полный маршрут выше нужен для большой, рискованной или финансово значимой реализации и release/readiness.</p>
+<p>В Product-Agent OS full route — <code>task_start_brief_v2</code> (9 полей) и Completion Ledger (13 пунктов); ordinary route — <code>task_scope_note_v1</code> и краткий итог. Legacy v1 сохраняется только для ранее начатых sessions. <code>Stop</code> advisory не валидирует чат. Применимость и marker определяет <a href="../runtime/worktrees-hooks-rules.html">lifecycle hooks guide</a>.</p>
+<p>Single-agent — достаточная отправная точка. Делегирование оправдано независимыми задачами, явным ownership, бюджетом и измеримой пользой. PR preparation не даёт полномочий создавать branch, публиковать PR или release. Повторяйте проверки после релевантной правки, failure или неустранённого риска; не запускайте бесконечный общий gate.</p>
 
 
 

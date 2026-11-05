@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
   </span>
 
 
@@ -2565,9 +2588,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
-  <a href="#three-different-memory-layers" class="md-nav__link">
+  <a href="#four-different-context-layers" class="md-nav__link">
     <span class="md-ellipsis">
-      Three Different Memory Layers
+      Four different context layers
     </span>
   </a>
 
@@ -2604,6 +2627,15 @@
   <a href="#memory-vs-observability" class="md-nav__link">
     <span class="md-ellipsis">
       Memory vs Observability
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#manage-local-codex-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manage local Codex memory
     </span>
   </a>
 
@@ -2727,6 +2759,8 @@
         </nav>
 
     </li>
+
+
 
 
 
@@ -2961,6 +2995,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3407,9 +3462,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
-  <a href="#three-different-memory-layers" class="md-nav__link">
+  <a href="#four-different-context-layers" class="md-nav__link">
     <span class="md-ellipsis">
-      Three Different Memory Layers
+      Four different context layers
     </span>
   </a>
 
@@ -3451,6 +3506,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#manage-local-codex-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manage local Codex memory
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3469,7 +3533,7 @@
 <h1 id="memory-in-codex-and-agents-sdk">Memory In Codex And Agents SDK<a class="headerlink" href="#memory-in-codex-and-agents-sdk" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official</code><br />
 Sources: <a href="https://developers.openai.com/codex/memories">Codex memories</a>, <a href="https://openai.github.io/openai-agents-js/guides/sessions/">Agents SDK sessions</a>, <a href="https://openai.github.io/openai-agents-js/guides/sandbox-agents/memory/">Agents SDK sandbox agent memory</a>, <a href="https://developers.openai.com/codex/guides/agents-md">AGENTS.md</a>.</p>
-<h2 id="three-different-memory-layers">Three Different Memory Layers<a class="headerlink" href="#three-different-memory-layers" title="Permanent link">&para;</a></h2>
+<h2 id="four-different-context-layers">Four different context layers<a class="headerlink" href="#four-different-context-layers" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -3508,7 +3572,7 @@ Sources: <a href="https://developers.openai.com/codex/memories">Codex memories</
 </table>
 <h2 id="recommendations">Recommendations<a class="headerlink" href="#recommendations" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Put all mandatory rules in checked-in docs or <code>AGENTS.md</code>.</li>
+<li>Keep mandatory instructions in applicable <code>AGENTS.md</code>; load ordinary checked-in documentation explicitly through references or task context.</li>
 <li>Use Memories as a supporting recall layer.</li>
 <li>Use session memory for conversation continuity inside the application.</li>
 <li>Isolate sandbox memory with layouts when different agents should not share experience.</li>
@@ -3524,7 +3588,7 @@ Sources: <a href="https://developers.openai.com/codex/memories">Codex memories</
     Worker --&gt; KB</code></pre>
 <h2 id="update-policy">Update Policy<a class="headerlink" href="#update-policy" title="Permanent link">&para;</a></h2>
 <ol>
-<li>If a rule must always be followed, it goes into <code>AGENTS.md</code> or docs.</li>
+<li>Put a mandatory rule in applicable <code>AGENTS.md</code>; supporting docs require explicit loading.</li>
 <li>If it is a personal user preference, it may go into memory.</li>
 <li>If it is a conclusion from an experiment, it goes into <code>docs/insights/</code> with <code>experiment</code> status.</li>
 <li>If memory conflicts with the current repository or official docs, trust the current state and sources.</li>
@@ -3538,6 +3602,12 @@ Sources: <a href="https://developers.openai.com/codex/memories">Codex memories</
 <li>source registry stores the verifiable basis for claims.</li>
 </ul>
 <p>Do not replace tracing with memory: when a failure needs investigation, you need an event trail, not only a final note.</p>
+<h2 id="manage-local-codex-memory">Manage local Codex memory<a class="headerlink" href="#manage-local-codex-memory" title="Permanent link">&para;</a></h2>
+<p>Checked 2026-11-05: <a href="https://developers.openai.com/codex/memories">Memories</a>. ChatGPT web memory and local Codex memory use different stores and controls. In supported desktop/TUI surfaces use <code>/memories</code> to choose whether a chat may read existing memories and contribute to new ones. Chat-level choices do not change global settings.</p>
+<p>Desktop <strong>Settings → Personalization → Enable Codex memories</strong> controls the local feature. <strong>Allow memories from tool-assisted chats</strong> controls those chats' eligibility for generation. Configuration separates <code>memories.use_memories</code> and <code>memories.generate_memories</code>; external-context eligibility is separate. Generation is asynchronous: ending a chat does not imply an immediate write.</p>
+<p>Stores under <code>CODEX_HOME</code> include <code>memories/</code> and <code>memories_v2/</code>. Migration behavior depends on client and settings; an existing v1 store is not a failure. Troubleshoot both directories, client/version, use/generate and eligibility. Generated files are not the primary interface for editing mandatory rules.</p>
+<p><strong>Delete Codex memories</strong> resets the selected local store and can also clear Computer History on supported machines. This is a separately authorized action, not an automatic repair. Do not store secrets; review retained data before sharing artifacts.</p>
+<p><code>AGENTS.md</code> follows <a href="https://learn.chatgpt.com/docs/agent-configuration/agents-md">discovery rules</a>; an ordinary repository document does not become an instruction merely by existing. Sessions, sandbox memory and traces remain distinct application layers.</p>
 
 
 

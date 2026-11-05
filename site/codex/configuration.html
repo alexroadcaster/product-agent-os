@@ -14,7 +14,7 @@
         <link rel="prev" href="surfaces.html">
 
 
-        <link rel="next" href="security.html">
+        <link rel="next" href="models-and-reasoning.html">
 
 
       <link rel="icon" href="../assets/images/favicon.png">
@@ -750,6 +750,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
 
 
@@ -870,11 +872,44 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
-  <a href="#approval-policy" class="md-nav__link">
+  <a href="#approval-policy-permission-profiles" class="md-nav__link">
     <span class="md-ellipsis">
-      Approval policy как управляемый интерфейс
+      Approval policy и permission profiles
     </span>
   </a>
+
+    <nav class="md-nav" aria-label="Approval policy и permission profiles">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#granular-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Категории granular prompts
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#permission-profiles-beta" class="md-nav__link">
+    <span class="md-ellipsis">
+      Permission profiles (beta)
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Модели и текущий контракт проекта
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
 
 </li>
 
@@ -896,10 +931,40 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#effective-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проверка effective settings
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
 
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
+  </span>
+
+
+      </a>
     </li>
 
 
@@ -2757,6 +2822,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2943,6 +3010,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3389,11 +3477,44 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
-  <a href="#approval-policy" class="md-nav__link">
+  <a href="#approval-policy-permission-profiles" class="md-nav__link">
     <span class="md-ellipsis">
-      Approval policy как управляемый интерфейс
+      Approval policy и permission profiles
     </span>
   </a>
+
+    <nav class="md-nav" aria-label="Approval policy и permission profiles">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#granular-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Категории granular prompts
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#permission-profiles-beta" class="md-nav__link">
+    <span class="md-ellipsis">
+      Permission profiles (beta)
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Модели и текущий контракт проекта
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
 
 </li>
 
@@ -3415,6 +3536,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#effective-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проверка effective settings
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3431,65 +3561,69 @@
 
 
 <h1 id="codex">Конфигурация и расширяемость Codex<a class="headerlink" href="#codex" title="Permanent link">&para;</a></h1>
-<p>Source status: <code>official</code>
-Источники: <a href="https://developers.openai.com/codex/agent-approvals-security">Agent approvals and security</a>, <a href="https://developers.openai.com/codex/skills/create-skill">Create a skill</a>, <a href="https://developers.openai.com/codex/subagents">Subagents</a>, <a href="https://developers.openai.com/codex/guides/agents-sdk">Agents SDK with Codex</a>.</p>
-<h2 id="approval-policy">Approval policy как управляемый интерфейс<a class="headerlink" href="#approval-policy" title="Permanent link">&para;</a></h2>
-<p>Для продвинутой работы approval policy лучше описывать не как один общий переключатель, а как набор отдельных gates:</p>
-<div class="highlight"><pre><span></span><code><span class="n">approval_policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">granular</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">sandbox_approval</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">  </span><span class="n">rules</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">  </span><span class="n">mcp_elicitations</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">  </span><span class="n">request_permissions</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-<span class="w">  </span><span class="n">skill_approval</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">false</span>
-<span class="p">}</span><span class="w"> </span><span class="p">}</span>
+<p>Source status: <code>official + experiment</code>
+Источники: <a href="https://learn.chatgpt.com/docs/permissions">Agent approvals and security</a>, <a href="https://developers.openai.com/codex/skills/create-skill">Create a skill</a>, <a href="https://learn.chatgpt.com/docs/agent-configuration/subagents">Subagents</a>, <a href="https://developers.openai.com/codex/guides/agents-sdk">Agents SDK with Codex</a>.</p>
+<h2 id="approval-policy-permission-profiles">Approval policy и permission profiles<a class="headerlink" href="#approval-policy-permission-profiles" title="Permanent link">&para;</a></h2>
+<p>Проверено 2026-11-03 по <a href="https://learn.chatgpt.com/docs/config-file/config-reference">Configuration Reference</a> и <a href="https://learn.chatgpt.com/docs/permissions">Permissions</a>. Ниже независимые примеры, а не изменения конфигурации репозитория. Effective settings зависят также от версии клиента, доверенных project layers и managed policy.</p>
+<p><code>on-request</code> допускает соответствующие интерактивные approval prompts; <code>never</code> отклоняет запросы, требующие approval. Ни один вариант не расширяет filesystem permissions. <code>untrusted</code> больше не поддерживается как approval policy; project <code>trust_level</code> — другой параметр. <code>approvals_reviewer</code> выбирает проверяющего для допустимых запросов, но не изменяет sandbox и не проверяет уже разрешенные действия.</p>
+<h3 id="granular-prompts">Категории granular prompts<a class="headerlink" href="#granular-prompts" title="Permanent link">&para;</a></h3>
+<p>Полный TOML-пример использует обычные таблицы и совместим с парсером проекта. Не объединяйте его со скалярным <code>approval_policy</code> в одной конфигурации.</p>
+<div class="highlight"><pre><span></span><code><span class="k">[approval_policy.granular]</span>
+<span class="n">sandbox_approval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="n">rules</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="n">mcp_elicitations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="n">request_permissions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="n">skill_approval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
 </code></pre></div>
-<p>Практический смысл:</p>
 <table>
 <thead>
 <tr>
-<th>Gate</th>
-<th>Что контролирует</th>
-<th>Рекомендация</th>
+<th>Ключ</th>
+<th>Значение true</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>sandbox_approval</code></td>
-<td>Выход команды за sandbox boundary</td>
-<td>Включать для локальных проектов</td>
+<td>Допускает approval prompts для sandbox escalation</td>
 </tr>
 <tr>
 <td><code>rules</code></td>
-<td>Подтверждение rule-based действий</td>
-<td>Включать при сложной политике доступа</td>
+<td>Допускает запросы подтверждения по rules</td>
 </tr>
 <tr>
 <td><code>mcp_elicitations</code></td>
-<td>Запросы подтверждений от MCP tools</td>
-<td>Включать для внешних систем</td>
+<td>Допускает MCP elicitation prompts</td>
 </tr>
 <tr>
 <td><code>request_permissions</code></td>
-<td>Запросы расширенных permissions</td>
-<td>Отключать по умолчанию, включать осознанно</td>
+<td>Допускает запросы расширения permissions</td>
 </tr>
 <tr>
 <td><code>skill_approval</code></td>
-<td>Разрешение на skill invocation</td>
-<td>Включать, если skills имеют side effects</td>
+<td>Допускает skill-script approval prompts, а не любой вызов skill</td>
 </tr>
 </tbody>
 </table>
-<p>Baseline для анализа и review:</p>
-<div class="highlight"><pre><span></span><code><span class="n">approval_policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;untrusted&quot;</span>
-<span class="n">sandbox_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;read-only&quot;</span>
+<p>False запрещает соответствующую категорию запросов; это не молчаливое разрешение операции. Флаги выбираются под разрешенный workflow, а не включаются все по умолчанию.</p>
+<h3 id="permission-profiles-beta">Permission profiles (beta)<a class="headerlink" href="#permission-profiles-beta" title="Permanent link">&para;</a></h3>
+<p>Независимый пример родительской сессии для анализа:</p>
+<div class="highlight"><pre><span></span><code><span class="n">default_permissions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;:read-only&quot;</span>
+<span class="n">approval_policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;on-request&quot;</span>
 <span class="n">allow_login_shell</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
 </code></pre></div>
-<p>Baseline для controlled implementation:</p>
-<div class="highlight"><pre><span></span><code><span class="n">approval_policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;on-request&quot;</span>
-<span class="n">sandbox_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;workspace-write&quot;</span>
+<p>Независимый пример родительской сессии для разрешенных локальных изменений:</p>
+<div class="highlight"><pre><span></span><code><span class="n">default_permissions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;:workspace&quot;</span>
+<span class="n">approval_policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;on-request&quot;</span>
 <span class="n">allow_login_shell</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
 </code></pre></div>
+<p>Profiles не объединяются с <code>sandbox_mode</code> / <code>sandbox_workspace_write</code>. Проверяйте все загруженные layers и CLI overrides: legacy settings могут выбрать старую схему, а managed profile requirements — отклонить ее. Legacy-вариант остается доступным в документированных условиях:</p>
+<div class="highlight"><pre><span></span><code><span class="n">sandbox_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;workspace-write&quot;</span>
+<span class="n">approval_policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;on-request&quot;</span>
+</code></pre></div>
+<p>Этот legacy-пример используется только вместо profile configuration. <code>:workspace</code> защищает <code>.git</code>, <code>.agents</code>, <code>.codex</code> и <code>.aws</code> внутри writable roots; перед заявлением о возможности записи проверяйте effective policy. Различия command network и MCP/web/browser — в <a href="security.html">руководстве по безопасности</a>.</p>
+<h3 id="_1">Модели и текущий контракт проекта<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<p>Применимость моделей указана в <a href="models-and-reasoning.html">матрице</a>. После разрешённого технического продолжения 2026-11-03 репозиторий использует GPT-6.1 Sol/Terra pins, parent <code>default_permissions = ":workspace"</code> и parent MCP. Валидатор согласован с этими контрактами. Эффективные permissions и модель в новой сессии требуют отдельного доказательства; см. <a href="../product-agent-os/codex-compatibility.html">технические зависимости</a>.</p>
 <h2 id="skill-metadata">Skill metadata<a class="headerlink" href="#skill-metadata" title="Permanent link">&para;</a></h2>
 <p>Официальная структура skill может включать <code>agents/openai.yaml</code>, чтобы описать UI, invocation policy и tool dependencies:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">interface</span><span class="p">:</span>
@@ -3527,9 +3661,11 @@
 <ul>
 <li>Codex можно использовать не только как standalone assistant, но и как execution tool внутри более широкой Agents SDK orchestration.</li>
 <li>Project Manager должен задавать source of truth documents: <code>REQUIREMENTS.md</code>, <code>AGENT_TASKS.md</code>, <code>TEST.md</code>.</li>
-<li>Каждый worker-agent должен иметь narrow deliverables и sandbox/approval policy.</li>
+<li>Каждый worker получает ограниченный результат; Codex subagents наследуют sandbox и approvals родителя. Для отдельных runtimes нужна собственная явно заданная политика исполнения.</li>
 <li>Handoff обратно к Project Manager обязателен, чтобы финальная сборка решений не распалась на независимые результаты.</li>
 </ul>
+<h2 id="effective-settings">Проверка effective settings<a class="headerlink" href="#effective-settings" title="Permanent link">&para;</a></h2>
+<p>После изменения конфигурации проверьте client/version, workspace root и managed policy. <code>/status</code>, <code>/debug-config</code> и <code>--strict-config</code> помогают диагностике на поддерживаемом клиенте; файл не доказывает загрузку. Current Cloud настраивается отдельно от local config. <a href="https://learn.chatgpt.com/docs/developer-settings">Developer settings</a>.</p>
 
 
 

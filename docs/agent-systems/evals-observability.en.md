@@ -104,3 +104,7 @@ Follow the [model migration playbook](../playbooks/model-migration.md): fixed ba
 | Activation | Effective path, no masking fallback and fresh-session evidence |
 
 Numerical thresholds/budgets are fixed before execution; missing measurements are not zero. Safety and schema failures block promotion regardless of average score. Compare the supported baseline effort first; optimize effort and prompt separately. Unit/docs checks prove their contracts, not model quality or runtime activation. Method source: [official migration guidance](https://developers.openai.com/api/docs/guides/latest-model).
+
+## Finishing an eval loop
+
+Choose typical/edge/adversarial cases, thresholds and a budget before running. Calibrate judges against human review; a separate role does not guarantee independence. For async/steering include pending, late/duplicate results and changed-scope cases. Stop after sufficient relevant checks; rerun for a new change, failure or unresolved risk. [Eval guidance](https://developers.openai.com/api/docs/guides/evaluation-best-practices).

@@ -1,4 +1,10 @@
-# Gap Matrix: Source Claim -> Plugin Artifact -> Eval/Check -> Residual Risk
+---
+title: "Archive - Gap Matrix: Source Claim -> Plugin Artifact -> Eval/Check -> Residual Risk"
+---
+
+# Archive - Gap Matrix: Source Claim -> Plugin Artifact -> Eval/Check -> Residual Risk {#gap-matrix-source-claim-plugin-artifact-evalcheck-residual-risk}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `official + verified methodology + implementation audit`
 

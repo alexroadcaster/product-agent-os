@@ -4,6 +4,70 @@ Source status: `official + experiment`
 
 This page records the local Product-Agent OS CLI surfaces that already exist in `plugins/product-agent-os/scripts/`. It describes commands as stage/read-only tooling: they do not publish the plugin, start external systems or perform live provider/model/API calls without separate explicit approval.
 
+## Ordinary route: a bounded task {#ordinary-route}
+
+For an existing project, pass `--task-context task.json`. The JSON path is relative to the target workspace and must remain inside it. Omitting this argument preserves the previous route, marked `routing_trace.mode=legacy`.
+
+```powershell
+python plugins/product-agent-os/scripts/run_codex_runtime_runner.py ./sample --contract --task-context task.json
+python plugins/product-agent-os/scripts/render_infrastructure.py ./sample --dry-run --task-context task.json
+```
+
+For this `sample` workspace example, `TEST.md` must already contain `python -m unittest test_calc -v`; `calc.py` and `test_calc.py` are the source and regression test. The runner does not create these files automatically.
+
+```json
+{
+  "schema_version": 1,
+  "task_id": "fix-addition",
+  "intent": "Fix addition",
+  "change_mode": "defect_fix",
+  "changed_paths": [
+    "calc.py"
+  ],
+  "verification_paths": [
+    "test_calc.py"
+  ],
+  "risk_level": "low",
+  "acceptance": [
+    "total(2, 3) equals 5"
+  ],
+  "risks": [
+    {
+      "risk_id": "sum",
+      "kind": "pure_logic",
+      "description": "Addition regression",
+      "protected_invariants": [
+        "addition"
+      ],
+      "languages": [
+        "python"
+      ]
+    }
+  ],
+  "executable_test_seam": true,
+  "checks": [
+    {
+      "command": "python -m unittest test_calc -v",
+      "source": "TEST.md",
+      "test_kinds": [
+        "unit"
+      ]
+    }
+  ]
+}
+```
+
+Selection uses the existing T26/T27 selectors. `routing_trace` reports `ordinary`, `full` or `needs_context`, the invoked selectors and absence of legacy fallback. `route_ready` means an action plan is available: commands have not run, sources have not changed and the task is not completed.
+
+- `docs_only` accepts Markdown/text changes without behavioral risks; the code-change contract is not applicable. `no_op`, `reuse`, `configuration` and `deletion` support outcomes without new code.
+- Unknown risk, missing checks or stale evidence produce an explicit gap. High-risk, boundary/critical-flow, sensitive paths/intent, financial/release and explicit-full context retain full reporting and applicable gates.
+- `checks` maps a command from a real source to test kinds. Recognized command lines in `AGENTS.md`, `AGENTS.override.md`, `TEST.md` and nested instructions are retained conservatively. This is not a semantic policy parser: Codex must read all applicable instructions; they override selection.
+- Optional `state` contains `value`, `source` and `sha256`, matching a JSON record with the same `task_id` and `lifecycle_state`. Neither state nor task-context data grants write authority.
+- Unknown fields/versions and paths outside the workspace return exit 2. A ready route returns exit 0; `needs_context`, `needs_approval` and `blocked` return exit 1.
+- `--stage` also accepts task context, but requires resolved gaps and an output directory outside the target. Existing ordinary projects normally reuse documents without generating a new package.
+
+The example and fields are a local Product-Agent OS contract, not an OpenAI API. See [artifact contracts](artifact-contracts.en.md#ordinary-route-contract).
+
 ## Purpose
 
 The CLI layer supports a repeatable local evidence loop:
@@ -152,7 +216,7 @@ python -m mkdocs build --strict
 git diff --check
 ```
 
-Run the smallest relevant set for the current slice. A closure claim requires the full source docs -> registry -> docs tests -> `check_docs.py` -> strict MkDocs -> optional full closure order.
+Run the smallest relevant set for the current task: source docs → registry → docs tests → `check_docs.py`. Strict MkDocs and site checks are required for navigation, diagrams, search or generated-site changes when the build is authorized; select other gates by affected behavior. [Documentation update workflow](../playbooks/docs-update.md).
 
 ## Risks And Failure Modes
 

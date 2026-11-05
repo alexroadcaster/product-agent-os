@@ -60,3 +60,7 @@ Check that control-plane files match the current slice before claiming readiness
 
 - Storing transient logs or secrets in durable files can leak private data.
 - Letting memory replace checked-in rules can make future runs inconsistent.
+
+## Applicability and loading
+
+Reuse existing artifacts for a small task. `AGENTS.md` follows [discovery rules](https://learn.chatgpt.com/docs/agent-configuration/agents-md); other files are read through the task/reference, not automatically. A fresh session is needed for a loading claim, not every text edit.

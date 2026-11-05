@@ -1,4 +1,4 @@
-﻿# Product lifecycle
+# Product lifecycle
 
 Source status: `official + experiment`  
 Источники: [How OpenAI uses Codex](https://openai.com/business/guides-and-resources/how-openai-uses-codex/), [Codex best practices](https://developers.openai.com/codex/learn/best-practices), [Iterate на difficult problems](https://developers.openai.com/codex/use-cases/iterate-on-difficult-problems), [Codex workflows](https://developers.openai.com/codex/workflows).
@@ -16,7 +16,7 @@ Source status: `official + experiment`
 | PR | Подготовить branch, PR body, влияние на docs и заметки к release | PR / changelog | Доказательства проверки включено |
 | Learn | Зафиксировать reusable method | `AGENTS.md`, skill, insight | Следующий запуск становится лучше |
 
-## Ask Mode до Code Mode
+## Планирование перед реализацией
 
 Рекомендации OpenAI Codex предлагают начинать крупные изменения с плана до реализации. В этом проекте это означает:
 
@@ -55,3 +55,11 @@ Source status: `official + experiment`
 - Какой failure требует eval?
 - Какой source или architecture decision нужно задокументировать?
 - Какая metric или пользователь feedback должна двигать следующую product iteration?
+
+## Размер задачи определяет маршрут
+
+Проверено 05.11.2026: [model guidance](https://developers.openai.com/api/docs/guides/latest-model) и [eval guidance](https://developers.openai.com/api/docs/guides/evaluation-best-practices). Для ordinary fix: краткий scope, изменение, affected checks, результат и ограничения. Переиспользуйте существующие requirements/plan/test/runlog; не создавайте новый набор файлов только ради названий этапов. Полный маршрут выше нужен для большой, рискованной или финансово значимой реализации и release/readiness.
+
+В Product-Agent OS full route — `task_start_brief_v2` (9 полей) и Completion Ledger (13 пунктов); ordinary route — `task_scope_note_v1` и краткий итог. Legacy v1 сохраняется только для ранее начатых sessions. `Stop` advisory не валидирует чат. Применимость и marker определяет [lifecycle hooks guide](../runtime/worktrees-hooks-rules.md).
+
+Single-agent — достаточная отправная точка. Делегирование оправдано независимыми задачами, явным ownership, бюджетом и измеримой пользой. PR preparation не даёт полномочий создавать branch, публиковать PR или release. Повторяйте проверки после релевантной правки, failure или неустранённого риска; не запускайте бесконечный общий gate.

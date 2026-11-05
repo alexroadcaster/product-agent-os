@@ -184,3 +184,7 @@ Use strict MkDocs when docs navigation, Mermaid, Markdown extensions or MkDocs c
 - LLM-as-judge evals need calibration and failure examples before they can be trusted for release claims.
 
 Next artifact: use [Scenarios](scenarios.md) to choose the route, [Professional Code Authoring Standards](coding-standards.md) to inspect code-writing gates and [Codex compatibility](codex-compatibility.md) to confirm package scope.
+
+## Current route and evidence
+
+For relevant changes cover trust changes, skill omission, surface mismatch and changed-scope/pending-tool cases. Do not repeat closed probes without changed state or a new risk. See [skills](../agent-systems/subagents-skills.md) and [session control](../agent-systems/session-control.md).

@@ -151,3 +151,7 @@ Packaging и closure work не perform these actions без separate explicit ow
 ## Next Action
 
 After docs и packaging evidence являются current, next safe artifact является approval packet draft. Real testing execution, provider/API calls, canonical mutation и git release/PR actions остаются blocked пока their separate approvals exist.
+
+## Актуальный маршрут и evidence
+
+Package, install, hook trust и runtime activation проверяются отдельно. Portable/legacy formats описаны в [technical guide](technical.md); текущий пакет не мигрирован. Docs closure использует [обновлённый checklist](../playbooks/docs-update.md).

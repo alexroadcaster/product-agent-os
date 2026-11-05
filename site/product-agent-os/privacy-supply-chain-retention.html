@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
   </span>
 
 
@@ -1740,6 +1763,15 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       Проверка
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#retained-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Актуальные retained-data границы
     </span>
   </a>
 
@@ -2775,6 +2807,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2961,6 +2995,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3451,6 +3506,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#retained-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Актуальные retained-data границы
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3509,6 +3573,8 @@
 <p>Если report содержит raw findings, local paths, dependency advisory details или private target names, default state: <code>not_retained</code>. Чтобы сохранить report, нужен owner-approved retention window, redaction status и cleanup path.</p>
 <h2 id="_2">Проверка<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <p>Docs slice проверяет только documented boundary: docs unittest, <code>tools/check_docs.py</code>, JSON packet validation, strict MkDocs smoke и <code>git diff --check</code>. Он не выполняет vulnerability audit, SBOM completion, remediation или external crawl.</p>
+<h2 id="retained-data">Актуальные retained-data границы<a class="headerlink" href="#retained-data" title="Permanent link">&para;</a></h2>
+<p>Review после изменения plugin scripts — отдельная trust проверка. Local memory stores и cloud network secrets имеют разные retention/delivery semantics; не обещайте универсальное удаление или setup-only credential access. <a href="../runtime/worktrees-hooks-rules.html">Hooks</a>, <a href="../agent-systems/memory.html">memory</a>, <a href="../codex/surfaces.html">Cloud</a>.</p>
 
 
 

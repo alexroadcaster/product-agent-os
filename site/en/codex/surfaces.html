@@ -750,6 +750,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
 
 
@@ -893,6 +895,39 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#models-and-surface-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Models and surface boundaries
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#choose-a-surface-checked-2026-11-05" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choose a surface: checked 2026-11-05
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Choose a surface: checked 2026-11-05">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#set-up-a-current-cloud-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Set up a current Cloud environment
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
     </ul>
 
 </nav>
@@ -914,6 +949,27 @@
 
   <span class="md-ellipsis">
     Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
   </span>
 
 
@@ -2775,6 +2831,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2961,6 +3019,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3451,6 +3530,39 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#models-and-surface-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Models and surface boundaries
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#choose-a-surface-checked-2026-11-05" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choose a surface: checked 2026-11-05
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Choose a surface: checked 2026-11-05">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#set-up-a-current-cloud-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Set up a current Cloud environment
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3535,6 +3647,61 @@ Verification: run ...
 <li>secrets availability only where needed;</li>
 <li>expected PR or artifact.</li>
 </ul>
+<h2 id="models-and-surface-boundaries">Models and surface boundaries<a class="headerlink" href="#models-and-surface-boundaries" title="Permanent link">&para;</a></h2>
+<p>CLI version does not establish Codex App or IDE extension version. API-key and ChatGPT sign-in can have different availability/retirement conditions. Match client/auth/model/effort using the <a href="models-and-reasoning.html">shared reference</a>; account availability and runtime activation need their own evidence.</p>
+<h2 id="choose-a-surface-checked-2026-11-05">Choose a surface: checked 2026-11-05<a class="headerlink" href="#choose-a-surface-checked-2026-11-05" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Surface</th>
+<th>Check before work</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Local files and commands</td>
+<td>Desktop Codex / CLI / IDE extension</td>
+<td>Workspace, effective permissions, project instructions</td>
+</tr>
+<tr>
+<td>Install a plugin</td>
+<td>Supported Desktop/CLI, ChatGPT web/mobile</td>
+<td>Components, authentication and plan; IDE has no native plugins</td>
+</tr>
+<tr>
+<td>Work in a prepared environment</td>
+<td>Current Codex Cloud</td>
+<td>Published environment, network policy, variables/secrets</td>
+</tr>
+<tr>
+<td>Cloud orchestration with local access</td>
+<td>Work Cloud + local computer access</td>
+<td>Local execution and cloud orchestration controls separately</td>
+</tr>
+<tr>
+<td>Repeat a tested workflow</td>
+<td>Scheduled tasks</td>
+<td>Local/cloud mode, machine availability, destination and authority</td>
+</tr>
+<tr>
+<td>Build an agent application</td>
+<td>Agents API / Agents SDK / Responses</td>
+<td>Ownership of loop/state, deployment, tools and approvals</td>
+</tr>
+</tbody>
+</table>
+<p>Sources: <a href="https://learn.chatgpt.com/docs/plugins">Plugins</a>, <a href="https://learn.chatgpt.com/docs/extend/mcp">MCP</a>, <a href="https://learn.chatgpt.com/docs/environments/cloud-environments">Cloud</a>. Availability depends on account, client, authentication, rollout and managed policy. Discovering a Desktop only plugin on the web does not make it usable there.</p>
+<h3 id="set-up-a-current-cloud-environment">Set up a current Cloud environment<a class="headerlink" href="#set-up-a-current-cloud-environment" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Choose <strong>Work in → Cloud → Create environment</strong> and authorized repositories.</li>
+<li>Specify dependencies, versions and services in the conversation. Codex prepares and tests setup; writing an install script manually is optional.</li>
+<li>Review <strong>Install script</strong>, <strong>Start skill</strong>, network policy and configuration.</li>
+<li><strong>Save</strong> stores settings; <strong>Publish</strong> captures the prepared environment for new tasks. After changes use <strong>Republish</strong> and a new task; existing tasks retain their state.</li>
+<li>Check a project command in a new task and access only to authorized destinations.</li>
+</ol>
+<p>Environment variables reach programs directly. Network secrets use placeholders and proxy substitution for allowed HTTPS destinations (port 443), during setup and tasks. Do not apply the legacy setup-only secret rule to current Cloud. Network policy, credential delivery and service permissions are separate checks. When access is missing, identify the required destination and identity rather than broadening policy automatically.</p>
+<p>Legacy Cloud has separate setup/maintenance/network rules. Do not mix <a href="https://learn.chatgpt.com/docs/environments/cloud-environments">current Cloud documentation</a> and <a href="https://learn.chatgpt.com/docs/cloud/internet-access">legacy internet settings</a> in one recipe.</p>
 
 
 

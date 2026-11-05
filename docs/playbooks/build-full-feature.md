@@ -9,11 +9,11 @@ Source status: `official + experiment`
 
 ## Procedure
 
-1. Создать `REQUIREMENTS.md`.
+1. Уточнить требования и переиспользовать `REQUIREMENTS.md`, если файл уже есть.
 2. Попросить Codex подготовить `PLAN.md`, не меняя код.
 3. Разделить work по ownership: backend, frontend, tests, docs, release.
-4. Запустить builder tasks в отдельных worktrees или с непересекающимися write scopes.
-5. Запустить test/review agents.
+4. Выполнять focused slices одним агентом; независимые задачи делегировать только при пользе и authority. Worktrees создавать только при необходимости и разрешении.
+5. Выполнить test/review; отдельный агент нужен по риску или требованию независимости.
 6. Запустить evals или visual/manual QA.
 7. Подготовить PR body и release notes.
 8. Перенести повторяемый метод в skill или `AGENTS.md`.
@@ -28,7 +28,7 @@ Read:
 - REQUIREMENTS.md
 
 Before changing files:
-- produce PLAN.md;
+- reuse or update the existing plan; create PLAN.md for material multi-step work;
 - name ownership boundaries;
 - identify required tests and evals;
 - list risks and rollback.
@@ -54,3 +54,6 @@ Final output:
 - PR summary includes verification evidence.
 - Reusable lessons are captured.
 
+## Обычная правка
+
+Для небольшого исправления используйте scope → change → affected checks → result/limits. Полный feature workflow выше не является квотой на документы или агентов. Git/PR/release действия требуют применимого разрешения. [Lifecycle routing](../product-agent/lifecycle.md).

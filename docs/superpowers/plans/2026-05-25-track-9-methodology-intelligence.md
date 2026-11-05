@@ -1,4 +1,10 @@
-# Track 9 Methodology Intelligence Implementation Plan
+---
+title: "Archive - Track 9 Methodology Intelligence Implementation Plan"
+---
+
+# Archive - Track 9 Methodology Intelligence Implementation Plan {#track-9-methodology-intelligence-implementation-plan}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 

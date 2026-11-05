@@ -18,7 +18,7 @@
 
 
 
-        <title>Product-Agent OS: устранение execution-loop и восстановление delivery - Product-Agent OS</title>
+        <title>Архив — Product-Agent OS: устранение execution-loop и восстановление delivery - Product-Agent OS</title>
 
 
 
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
 
-              Product-Agent OS: устранение execution-loop и восстановление delivery
+              Архив — Product-Agent OS: устранение execution-loop и восстановление delivery
 
           </span>
         </div>
@@ -744,6 +744,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -825,6 +827,27 @@
 
   <span class="md-ellipsis">
     Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
   </span>
 
 
@@ -2686,6 +2709,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2872,6 +2897,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3471,9 +3517,27 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Итоговая проверка
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#rollback" class="md-nav__link">
     <span class="md-ellipsis">
       Rollback
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#documentation-handoff-2026-11-03" class="md-nav__link">
+    <span class="md-ellipsis">
+      Последующий documentation handoff — 2026-11-03
     </span>
   </a>
 
@@ -3494,7 +3558,10 @@
 
 
 
-<h1 id="product-agent-os-execution-loop-delivery">Product-Agent OS: устранение execution-loop и восстановление delivery<a class="headerlink" href="#product-agent-os-execution-loop-delivery" title="Permanent link">&para;</a></h1>
+<h1 id="product-agent-os-execution-loop-delivery">Архив — Product-Agent OS: устранение execution-loop и восстановление delivery<a class="headerlink" href="#product-agent-os-execution-loop-delivery" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.</p>
+</blockquote>
 <p>Source status: <code>активный локальный implementation plan; hooks/automation activation и внешние действия не авторизованы</code></p>
 <h2 id="_1">Область<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3802,12 +3869,25 @@
 <li>residual risks: clean-session activation remains user acceptance gate; diagnostics need real sanitized run records.</li>
 <li>follow-up: restart Codex task and verify loaded instruction chain, provenance, hook behavior, latency/tokens/cost</li>
 </ul>
+<h2 id="_4">Итоговая проверка<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Product-Agent OS docs: 100/100.</li>
+<li>Объединённый affected-contract route без повторного docs-модуля: 208/208.</li>
+<li>Strict MkDocs через project-local dependency target и Python 3.13: exit 0; generated <code>site/</code> восстановлен до 652 файлов и прошёл file-safe i18n normalization.</li>
+<li>Task-matrix RU/EN и task-state consistency validators: green до финального static pass.</li>
+<li>Evidence ceiling: local/static verification only; hook trust/activation, fresh-task behavior, provider/model quality, latency/tokens/cost, external reviewer и promotion не доказаны.</li>
+</ul>
 <h2 id="rollback">Rollback<a class="headerlink" href="#rollback" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Изменения разделены по R0-R4 и не требуют Git history operations.</li>
 <li>При focused failure возвращается на ремонт только текущий slice; предыдущий green slice остаётся неизменным.</li>
 <li>Hook activation не входит в реализацию, поэтому runtime disable/rollback не требуется.</li>
 </ul>
+<h2 id="documentation-handoff-2026-11-03">Последующий documentation handoff — 2026-11-03<a class="headerlink" href="#documentation-handoff-2026-11-03" title="Permanent link">&para;</a></h2>
+<p>Текущей задачей <code>PAOS-DOCS-REFRESH-2026-11-03</code> владеет <a href="2026-11-03-gpt6-documentation-refresh.html">новый документационный план</a>. Датированный указатель позволяет legacy state-consistency check найти текущую задачу; он не меняет августовские статусы, результаты или зависимости Batch 45. Валидатор по-прежнему жестко привязан к этому историческому плану; обобщение реализации — отдельная работа.</p>
+
+
+
 
 
 

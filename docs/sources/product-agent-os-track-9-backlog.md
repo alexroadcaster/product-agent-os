@@ -1,4 +1,10 @@
-# Product-Agent OS Track 9 Backlog
+---
+title: "Архив — Product-Agent OS Track 9 Backlog"
+---
+
+# Архив — Product-Agent OS Track 9 Backlog {#product-agent-os-track-9-backlog}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `local implementation planning`
 

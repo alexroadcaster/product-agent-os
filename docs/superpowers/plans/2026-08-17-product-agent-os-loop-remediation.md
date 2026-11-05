@@ -1,4 +1,10 @@
-# Product-Agent OS: устранение execution-loop и восстановление delivery
+---
+title: "Архив — Product-Agent OS: устранение execution-loop и восстановление delivery"
+---
+
+# Архив — Product-Agent OS: устранение execution-loop и восстановление delivery {#product-agent-os-execution-loop-delivery}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `активный локальный implementation plan; hooks/automation activation и внешние действия не авторизованы`
 

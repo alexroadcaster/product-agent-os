@@ -1,4 +1,10 @@
-# Product-Agent OS: final pre-development review
+---
+title: "Archive - Product-Agent OS: final pre-development review"
+---
+
+# Archive - Product-Agent OS: final pre-development review {#product-agent-os-final-pre-development-review}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `implementation planning + critical review`
 

@@ -1,4 +1,10 @@
-# Product-Agent OS Production Hardening Implementation Plan
+---
+title: "Archive - Product-Agent OS Production Hardening Implementation Plan"
+---
+
+# Archive - Product-Agent OS Production Hardening Implementation Plan {#product-agent-os-production-hardening-implementation-plan}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `official + experiment`
 

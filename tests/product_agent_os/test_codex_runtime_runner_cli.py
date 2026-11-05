@@ -1,3 +1,4 @@
+import hashlib
 import json
 import subprocess
 import sys
@@ -15,6 +16,8 @@ sys.path.insert(0, str(SCRIPTS))
 
 from codex_runtime_runner import cli as runtime_cli  # noqa: E402
 from codex_runtime_runner.contracts import build_result  # noqa: E402
+from codex_runtime_runner.contracts import validate_runner_result  # noqa: E402
+from codex_runtime_runner.guards import validate_route_packet  # noqa: E402
 
 
 class CodexRuntimeRunnerCliTest(unittest.TestCase):
@@ -340,6 +343,279 @@ class CodexRuntimeRunnerCliTest(unittest.TestCase):
                 ],
             },
         }
+
+
+class OrdinaryRouteCliTest(unittest.TestCase):
+    """Exercise the public opt-in path, without granting target write authority."""
+
+    def _workspace(self, root, *, language="en"):
+        (root / "AGENTS.md").write_text("# Rules\nPreserve existing behavior.\n", encoding="utf-8")
+        (root / "pyproject.toml").write_text('[project]\nname = "sample"\nversion = "0.1.0"\n', encoding="utf-8")
+        (root / "calc.py").write_text("def total(a, b):\n    return a - b\n", encoding="utf-8")
+        (root / "TEST.md").write_text(
+            ("# Проверки" if language == "ru" else "# Checks")
+            + "\n```sh\npython -m unittest test_calc -v\n```\n", encoding="utf-8",
+        )
+        return {
+            "schema_version": 1, "task_id": "ordinary-fix", "intent": "Fix addition",
+            "change_mode": "defect_fix", "changed_paths": ["calc.py"], "risk_level": "low",
+            "acceptance": ["total(2, 3) equals 5"],
+            "risks": [{"risk_id": "sum", "kind": "pure_logic", "description": "Addition regression",
+                       "protected_invariants": ["addition"], "languages": ["python"]}],
+            "executable_test_seam": True, "test_seam_reason": "test_calc regression",
+            "checks": [{"command": "python -m unittest test_calc -v", "source": "TEST.md",
+                        "test_kinds": ["unit"]}],
+        }
+
+    def _cli(self, root, context):
+        (root / "task.json").write_text(json.dumps(context), encoding="utf-8")
+        return subprocess.run(
+            [sys.executable, "-B", str(WRAPPER), str(root), "--contract", "--task-context", "task.json"],
+            capture_output=True, text=True, encoding="utf-8", check=False,
+        )
+
+    def test_ordinary_cli_selects_existing_helpers_without_full_fallback(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            context = self._workspace(root)
+            result = self._cli(root, context)
+        self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+        payload = json.loads(result.stdout)
+        route = payload["route_packet"]
+        self.assertEqual(payload["status"], "route_ready")
+        self.assertEqual(route["routing_trace"]["mode"], "ordinary")
+        self.assertFalse(route["routing_trace"]["legacy_fallback_used"])
+        self.assertEqual(route["routing_trace"]["selectors"],
+                         ["select_code_quality_profile", "select_test_strategy"])
+        self.assertNotIn("EVALS.md", route["required_inputs"])
+        self.assertEqual(route["verification"], ["python -m unittest test_calc -v"])
+        self.assertEqual(len(route["code_change_contract"]), 8)
+        self.assertEqual(payload["files_touched"], [])
+
+    def test_ru_and_en_single_agent_have_identical_route_decisions(self):
+        decisions = []
+        for language in ("ru", "en"):
+            with self.subTest(language=language), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                result = self._cli(root, self._workspace(root, language=language))
+                self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+                route = json.loads(result.stdout)["route_packet"]
+                decisions.append((route["routing_trace"]["mode"], route["verification"], route["required_inputs"]))
+        self.assertEqual(len(decisions), 2)
+        self.assertEqual(decisions[0], decisions[1])
+
+    def test_docs_only_and_no_op_do_not_force_behavior_tests(self):
+        for mode in ("docs_only", "no_op"):
+            with self.subTest(mode=mode), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                context = self._workspace(root)
+                (root / "README.md").write_text("# Wording\n", encoding="utf-8")
+                context.update(change_mode=mode, changed_paths=["README.md"] if mode == "docs_only" else [],
+                               risks=[], checks=[], intent="Review wording" if mode == "docs_only" else "Reuse existing result")
+                result = self._cli(root, context)
+                self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+                route = json.loads(result.stdout)["route_packet"]
+                # Explicit project instructions still win, even for docs/no-op.
+                self.assertEqual(route["verification"], ["python -m unittest test_calc -v"])
+                if mode == "docs_only":
+                    self.assertEqual(route["code_change_contract"], {})
+                    self.assertEqual(route["quality_strategy"]["status"], "not_applicable")
+                else:
+                    self.assertTrue(all(d["status"] == "not_applicable" for d in route["quality_strategy"]["test_decisions"]))
+
+    def test_high_risk_and_explicit_full_context_retain_full_gates(self):
+        for extra in ({"risk_level": "high"}, {"financially_material": True},
+                      {"explicit_full_packet": True}, {"changed_paths": ["auth.py"]}):
+            with self.subTest(extra=extra), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                context = self._workspace(root)
+                context.update(extra)
+                context["risks"][0]["kind"] = "high_risk_rule"
+                context["checks"][0]["test_kinds"] = ["mutation"]
+                result = self._cli(root, context)
+                payload = json.loads(result.stdout)
+                route = payload["route_packet"]
+                self.assertEqual(payload["status"], "needs_context")  # full control plane is missing
+                self.assertEqual(route["routing_trace"]["mode"], "full")
+                self.assertEqual(route["reporting_scope"], "full")
+                self.assertIn("EVALS.md", route["required_inputs"])
+                self.assertTrue(any(d["test_kind"] == "mutation" and d["status"] == "required"
+                                    for d in route["quality_strategy"]["test_decisions"]))
+
+    def test_sensitive_windows_paths_cannot_select_ordinary(self):
+        for name in (r".codex\config.toml", r"src\auth.py", "./.github/workflows/check.yml"):
+            with self.subTest(path=name), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                context = self._workspace(root)
+                context["changed_paths"] = [name]
+                payload = json.loads(self._cli(root, context).stdout)
+                self.assertEqual(payload["route_packet"]["routing_trace"]["mode"], "full")
+                self.assertIn("sensitive_changed_path", payload["route_packet"]["task_routing"]["full_reasons"])
+                self.assertEqual(payload["status"], "needs_context")
+
+    def test_reuse_configuration_and_deletion_keep_invariant_checks(self):
+        for mode in ("reuse", "configuration", "deletion"):
+            with self.subTest(mode=mode), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                context = self._workspace(root)
+                context["change_mode"] = mode
+                payload = json.loads(self._cli(root, context).stdout)
+                self.assertEqual(payload["status"], "route_ready")
+                self.assertEqual(payload["route_packet"]["task_routing"]["change_mode"], mode)
+                self.assertEqual(payload["route_packet"]["code_change_contract"]["invariants"], ["addition"])
+                self.assertEqual(payload["files_touched"], [])
+
+    def test_unknown_risk_and_missing_check_are_explicit_gaps(self):
+        for missing in ("risk", "check"):
+            with self.subTest(missing=missing), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                context = self._workspace(root)
+                if missing == "risk":
+                    context["risk_level"] = "unknown"
+                else:
+                    context["checks"] = []
+                    (root / "TEST.md").write_text("# Checks not yet selected\n", encoding="utf-8")
+                result = self._cli(root, context)
+                payload = json.loads(result.stdout)
+                self.assertEqual(payload["status"], "needs_context")
+                self.assertTrue(payload["route_packet"]["task_routing"]["gaps"])
+
+    def test_malformed_context_never_falls_back_or_grants_authority(self):
+        variants = [
+            {"schema_version": 2}, {"schema_version": True}, {"approval_status": "approved"},
+            {"changed_paths": ["../outside.py"]}, {"changed_paths": ["C:outside.py"]},
+            {"change_mode": []}, {"risk_level": {}}, {"risks": [{"kind": "pure_logic"}]},
+            {"financially_material": "false"}, {"change_mode": "docs_only"},
+        ]
+        for extra in variants:
+            with self.subTest(extra=extra), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                context = self._workspace(root)
+                context.update(extra)
+                result = self._cli(root, context)
+                self.assertEqual(result.returncode, 2, result.stderr)
+                self.assertIn("task_context:", result.stderr)
+                self.assertNotIn("Traceback", result.stderr)
+
+    def test_bound_task_state_requires_matching_id_hash_and_lifecycle_value(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            context = self._workspace(root)
+            raw = json.dumps({"task_id": context["task_id"], "lifecycle_state": "build_active"}).encode()
+            (root / "state.json").write_bytes(raw)
+            context["state"] = {"value": "build_active", "source": "state.json", "sha256": hashlib.sha256(raw).hexdigest()}
+            payload = json.loads(self._cli(root, context).stdout)
+            self.assertEqual(payload["status"], "needs_approval")
+            self.assertEqual(payload["route_packet"]["write_policy"], "approved_write")
+            (root / "state.json").write_text('{"task_id":"other","lifecycle_state":"release_ready"}', encoding="utf-8")
+            stale = json.loads(self._cli(root, context).stdout)
+            self.assertEqual(stale["status"], "needs_context")
+            self.assertIsNone(stale["route_packet"]["routing_trace"]["state_resolution"]["task_state"])
+
+    def test_unsafe_command_and_source_policy_do_not_allow_success(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            context = self._workspace(root)
+            unsafe = "python -m unittest test_calc; echo unsafe"
+            (root / "TEST.md").write_text(unsafe, encoding="utf-8")
+            context["checks"][0]["command"] = unsafe
+            payload = json.loads(self._cli(root, context).stdout)
+            self.assertIn(payload["status"], {"blocked", "needs_context"})
+            self.assertEqual(payload["route_packet"]["verification"], [])
+            self.assertEqual(payload["route_packet"]["verification_plan"][0]["status"], "blocked")
+            context = self._workspace(root)
+            (root / "docs").mkdir()
+            (root / "docs" / "guide.md").write_text("# Guide\nOpenAI Codex behavior claim.\n", encoding="utf-8")
+            payload = json.loads(self._cli(root, context).stdout)
+            self.assertEqual(payload["status"], "blocked")
+            self.assertIn("source_policy:blocked", payload["errors"])
+
+    def test_actual_regression_journey_and_stale_receipt_never_claim_completion(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            context = self._workspace(root)
+            (root / "test_calc.py").write_text(
+                "import unittest\nfrom calc import total\nclass SumTest(unittest.TestCase):\n"
+                "    def test_addition(self):\n        self.assertEqual(total(2, 3), 5)\n", encoding="utf-8",
+            )
+            before = json.loads(self._cli(root, context).stdout)
+            command = before["route_packet"]["verification"][0]
+            self.assertEqual(command, "python -m unittest test_calc -v")
+            # Execute only this test-owned known command, not arbitrary route text.
+            argv = [sys.executable, "-B", "-m", "unittest", "test_calc", "-v"]
+            red = subprocess.run(argv, cwd=root, capture_output=True, text=True)
+            self.assertNotEqual(red.returncode, 0)
+            self.assertIn("AssertionError", red.stderr)
+            (root / "calc.py").write_text("def total(a, b):\n    return a + b\n", encoding="utf-8")
+            green = subprocess.run(argv, cwd=root, capture_output=True, text=True)
+            self.assertEqual(green.returncode, 0, green.stderr)
+            current = json.loads(self._cli(root, context).stdout)
+            digest = current["route_packet"]["task_routing"]["input_digest"]
+            self.assertNotEqual(digest, before["route_packet"]["task_routing"]["input_digest"])
+            context["check_results"] = [{"command": command, "input_digest": digest,
+                                          "status": "passed", "exit_code": green.returncode}]
+            verified = json.loads(self._cli(root, context).stdout)
+            self.assertEqual(verified["status"], "route_ready")
+            receipt = verified["route_packet"]["task_routing"]["check_observations"][0]
+            self.assertEqual(receipt["freshness"], "current")
+            self.assertEqual(receipt["provenance"], "caller_reported_not_independently_verified")
+            (root / "calc.py").write_text("def total(a, b):\n    return 0\n", encoding="utf-8")
+            stale = json.loads(self._cli(root, context).stdout)
+            self.assertEqual(stale["status"], "needs_context")
+            self.assertEqual(stale["route_packet"]["task_routing"]["check_observations"][0]["freshness"], "stale")
+
+    def test_route_contract_rejects_forged_fallback_and_completion(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            payload = json.loads(self._cli(root, self._workspace(root)).stdout)
+        self.assertEqual(validate_route_packet(payload["route_packet"]), [])
+        payload["route_packet"]["routing_trace"]["legacy_fallback_used"] = True
+        self.assertIn("task_routing:legacy_fallback_conflict", validate_route_packet(payload["route_packet"]))
+        payload["route_packet"]["routing_trace"]["legacy_fallback_used"] = False
+        payload["status"] = "completed"
+        payload["verification_evidence"] = ["caller says success"]
+        self.assertIn("task_routing:contract_mode_not_completion", validate_runner_result(payload))
+
+    def test_adapter_uses_actual_multi_stack_manifests_and_project_commands(self):
+        cases = [
+            ("package.json", '{"devDependencies":{"vitest":"1.0.0"}}', "javascript", "javascript_typescript", "npm test"),
+            ("go.mod", "module example.test/sample\n", "go", "compiled_systems", "go test ./..."),
+            ("Cargo.toml", '[package]\nname="sample"\nversion="0.1.0"\n', "rust", "compiled_systems", "cargo test"),
+            ("pom.xml", "<project/>\n", "java", "enterprise_oop", "mvn test"),
+        ]
+        for manifest, content, language, family, command in cases:
+            with self.subTest(manifest=manifest), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                context = self._workspace(root)
+                (root / "pyproject.toml").unlink()
+                (root / manifest).write_text(content, encoding="utf-8")
+                (root / "TEST.md").write_text(command + "\n", encoding="utf-8")
+                context["risks"][0]["languages"] = [language]
+                context["checks"][0]["command"] = command
+                result = self._cli(root, context)
+                self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+                route = json.loads(result.stdout)["route_packet"]
+                profile = next(p for p in route["code_quality_profile"]["stack_profiles"] if p["family"] == family)
+                self.assertEqual(profile["status"], "present_unverified")
+                self.assertEqual(route["verification"], [command])
+
+    def test_nested_project_instructions_and_verification_file_changes_are_preserved(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            context = self._workspace(root)
+            (root / "src").mkdir()
+            (root / "src" / "AGENTS.md").write_text("Always run `python -m unittest test_extra`.\n", encoding="utf-8")
+            (root / "src" / "calc.py").write_text("value = 1\n", encoding="utf-8")
+            (root / "test_calc.py").write_text("# test definition\n", encoding="utf-8")
+            context.update(changed_paths=["src/calc.py"], verification_paths=["test_calc.py"])
+            payload = json.loads(self._cli(root, context).stdout)
+            self.assertEqual(payload["status"], "route_ready")
+            route = payload["route_packet"]
+            self.assertIn("src/AGENTS.md", route["required_inputs"])
+            self.assertIn("python -m unittest test_extra", route["verification"])
+            (root / "test_calc.py").write_text("# changed test definition\n", encoding="utf-8")
+            current = json.loads(self._cli(root, context).stdout)
+            self.assertNotEqual(route["task_routing"]["input_digest"], current["route_packet"]["task_routing"]["input_digest"])
 
 
 if __name__ == "__main__":

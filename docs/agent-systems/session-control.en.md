@@ -24,9 +24,9 @@ exit_criteria: []
 
 A refinement should preserve relevant state and constraints; use an explicit new-session boundary for an incompatible goal. See steering and compaction below.
 
-## Manager Pattern As Default
+## When to use Manager pattern
 
-To reduce hallucinations, use Manager pattern:
+Start with one agent. When independent subtasks justify coordination and evals show value, Manager pattern assigns responsibilities:
 
 - Manager holds the source policy and final answer.
 - Specialist agents perform bounded subtasks.
@@ -113,3 +113,5 @@ Sources: [Reasoning](https://developers.openai.com/api/docs/guides/reasoning), [
 | Server-side compaction | `context_management` and `compact_threshold`; opaque encrypted item, not an ordinary summary |
 
 A task refinement does not automatically require reset. Preserve goal, constraints, decisions and pending calls; start a new session for independent scope or fresh settings loading when needed. Compaction, manual summary and cross-session memory have different contracts. Preserve returned state items and required fields when managing history manually; do not request private chain-of-thought.
+
+A Verifier role does not guarantee independent review or eliminate hallucinations. Compare against a single-agent baseline; handoffs add nondeterministic boundaries. [Evaluation best practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices).

@@ -1,4 +1,10 @@
-# Database & Data Methodology Research
+---
+title: "Archive - Database & Data Methodology Research"
+---
+
+# Archive - Database & Data Methodology Research {#database-data-methodology-research}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `official + expert reference + vendor documentation + tool-assisted`
 

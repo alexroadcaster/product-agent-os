@@ -1,4 +1,10 @@
-# Product-Agent OS Batch 34D product docs QA and closure packet
+---
+title: "Архив — Product-Agent OS Batch 34D product docs QA and closure packet"
+---
+
+# Архив — Product-Agent OS Batch 34D product docs QA and closure packet {#product-agent-os-batch-34d-product-docs-qa-and-closure-packet}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `internal`
 

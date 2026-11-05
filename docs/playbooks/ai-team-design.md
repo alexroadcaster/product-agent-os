@@ -40,3 +40,6 @@ Source status: `official + experiment`
 - какие проверки доказывают качество.
 ```
 
+## Решение о делегировании
+
+Сначала проверьте, достаточно ли одного агента. Если делегирование оправдано, зафиксируйте independent ownership, handoff, budget, stop conditions и способ разрешить конфликт выводов. Runtime permissions наследуются, а не выдаются ролью. [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents).

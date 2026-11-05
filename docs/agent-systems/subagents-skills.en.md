@@ -83,3 +83,18 @@ Check applicability, authority, ownership and observed evidence before accepting
 ## Risks
 
 Overlapping writes, stale context and treating a proposed capability as activated behavior.
+
+## When an installed skill is not used
+
+Checked 2026-11-05: [Build skills](https://learn.chatgpt.com/docs/build-skills), [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents), [Plugins](https://learn.chatgpt.com/docs/plugins).
+
+1. Check a supported skill location and valid `SKILL.md`.
+2. Check discovery and the initial list: its budget is limited; large catalogs can shorten descriptions and omit skills.
+3. Use a short, distinct description and concrete trigger. Codex reads the full skill body after selecting it.
+4. Compare explicit invocation with implicit routing. `allow_implicit_invocation: false` disables automatic selection but retains explicit invocation.
+5. Start a new chat/session after plugin installation; check MCP authentication and tool availability separately.
+6. Verify the result on a representative task: source presence, exposure and invocation are different evidence.
+
+Start with an instructions-only skill. Scripts are for testable deterministic operations, not another agent loop. Agent roles, skills and plugins are separate components. Custom agents inherit parent permissions/MCP; a read-only role description does not create a sandbox.
+
+At most intelligence levels delegation is requested explicitly; supported Ultra can delegate proactively. Check client/account and active instructions. Available subagents do not make a team mandatory: independent ownership, a budget and result reconciliation are still needed.

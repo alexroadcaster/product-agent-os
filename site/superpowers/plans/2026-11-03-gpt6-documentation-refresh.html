@@ -1,0 +1,5499 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+
+        <meta name="description" content="Документация Product-Agent OS для рабочих процессов с агентами и skills.">
+
+
+
+
+
+
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+
+
+
+        <title>Архив — Обновление документации GPT-6: подробный план и доказательства - Product-Agent OS</title>
+
+
+
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a40c8224.min.css">
+
+
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+
+
+
+
+
+
+
+
+
+
+
+
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+
+
+
+      <link rel="stylesheet" href="../../assets/stylesheets/extra.css">
+
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+
+
+
+
+
+
+  </head>
+
+
+
+
+
+
+
+
+
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange">
+
+
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+
+
+        <a href="#gpt-6" class="md-skip">
+          Перейти к содержанию
+        </a>
+
+    </div>
+    <div data-md-component="announce">
+
+    </div>
+
+
+
+
+
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../../index.html" title="Product-Agent OS" class="md-header__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Product-Agent OS
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+
+              Архив — Обновление документации GPT-6: подробный план и доказательства
+
+          </span>
+        </div>
+      </div>
+    </div>
+
+
+        <form class="md-header__option" data-md-component="palette">
+
+
+
+
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+
+
+</form>
+
+
+
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+
+
+      <div class="md-header__option">
+  <div class="md-select">
+
+    <button class="md-header__button md-icon" aria-label="Выберите язык">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+
+          <li class="md-select__item">
+            <a href="2026-11-03-gpt6-documentation-refresh.html" hreflang="ru" class="md-select__link">
+              RU
+            </a>
+          </li>
+
+          <li class="md-select__item">
+            <a href="../../en/superpowers/plans/2026-11-03-gpt6-documentation-refresh.html" hreflang="en" class="md-select__link">
+              EN
+            </a>
+          </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+      <label class="md-header__button md-icon" for="__search">
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  </nav>
+
+</header>
+
+    <div class="md-container" data-md-component="container">
+
+
+
+
+
+
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+
+
+
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Product-Agent OS" class="md-nav__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Product-Agent OS
+  </label>
+
+  <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../index.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Главная
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../../diagrams/index.html" class="md-nav__link ">
+
+
+  <span class="md-ellipsis">
+    Диаграммы
+  </span>
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Диаграммы
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/architecture.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Архитектура проекта
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/source-generated-trust-boundary.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Граница source и generated evidence
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/first-run-cockpit-architecture.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Архитектура first-run cockpit
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/evidence-risk-lifecycle.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Цикл evidence и risk
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/skill-exposure-and-invocation.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Граница skill exposure и invocation
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/architecture-intelligence-diagram-atlas.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Architecture Intelligence diagram atlas
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/product-delivery-lifecycle.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Product-Agent Delivery Lifecycle
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/agent-team-and-skills.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Команда агентов и skills
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/runtime-decision-map.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Runtime decision map
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/skill-lifecycle.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Skill lifecycle
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/context-memory-verification.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Context, memory, verification
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+
+
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+
+
+  <span class="md-ellipsis">
+    Источники
+  </span>
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Источники
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../sources/registry.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Реестр источников
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../sources/context7-research.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Анализ Context7
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../sources/source-card-template.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Шаблон карточки источника
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../sources/product-agent-os-batch40-doubt-verifier-source-transfer.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Batch 40 Doubt verifier source transfer
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+
+
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+
+
+  <span class="md-ellipsis">
+    Codex
+  </span>
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Codex
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/overview.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Обзор
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/surfaces.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Поверхности работы
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/configuration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/security.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Безопасность и approvals
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/workflows.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Рабочие процессы
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/use-cases-deep-analysis.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Deep analysis of use cases
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+
+
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+
+
+  <span class="md-ellipsis">
+    Prompt & Context Engineering
+  </span>
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Prompt & Context Engineering
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../prompting/overview.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Обзор
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../prompting/question-design.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Проектирование вопросов
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../prompting/context-engineering.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Context engineering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../prompting/anti-hallucination.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Контроль галлюцинаций
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+
+
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+
+
+  <span class="md-ellipsis">
+    Product-Agent Workflows
+  </span>
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Product-Agent Workflows
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent/overview.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Обзор
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent/lifecycle.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Product lifecycle
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent/roles.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Роли агентной команды
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent/control-plane.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Control-plane files
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent/product-agent-os-plugin-spec.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Product-Agent OS plugin spec
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../../product-agent-os/index.html" class="md-nav__link ">
+
+
+  <span class="md-ellipsis">
+    Product-Agent OS plugin
+  </span>
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Product-Agent OS plugin
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/control-plane-current-state.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Текущий control-plane state
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/artifact-gallery.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Витрина результатов
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/first-run-architecture-cockpit.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    First-run Architecture Cockpit
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/project-code-graph.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Project Code Graph
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/live-runtime-governance.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Live Runtime Governance
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/approval-bound-real-testing.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Approval-Bound Real Testing
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/real-project-pilot.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Real-Project Pilot
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/agent-skill-modernization-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Agent-Skill Modernization Loop
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/self-learning-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Self-Learning Loop
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/instruction-tool-use-compliance.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Instruction And Tool-Use Compliance
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/operator-command-matrix.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Operator Command Matrix
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/guided-questions-answer-ledger.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Guided Questions And Answer Ledger
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/source-cache-session-state.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Source Cache And Active Session State
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/generated-artifact-ux-criteria.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Generated Artifact UX Criteria
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/graph-intelligence-contract.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Graph Intelligence Contract
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/privacy-supply-chain-retention.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Privacy Supply-Chain And Retention
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/local-html-interaction-boundary.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Local HTML Interaction Boundary
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/residual-follow-up-site-freshness.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Residual Follow-Up And Site Freshness
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/cli-reference.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    CLI Reference
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/artifact-contracts.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Artifact Contracts
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/packaging-and-closure.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Packaging And Closure
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/technical.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Технические особенности и установка
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/development-standards.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Engineering standards layer
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/coding-standards.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Professional Code Authoring
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/methodology-intelligence.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Methodology intelligence
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/scenarios.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Сценарии и usage modes
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/behavioral-evals.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Behavioral evals
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/codex-compatibility.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Codex compatibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/architecture.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Диаграммы и принципы работы
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../../methodologies/index.html" class="md-nav__link ">
+
+
+  <span class="md-ellipsis">
+    Methodologies for Large Projects
+  </span>
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Methodologies for Large Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/business-product.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Business & Product
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/requirements-domain.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Requirements & Domain
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/solution-architecture.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Solution Architecture
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/frontend.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Frontend
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/backend.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Backend
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/api-integrations.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    API & Integrations
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/database-data.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Database & Data
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/llm-ai-rag.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    LLM / AI / RAG
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/quality-testing-evals.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Quality, Testing & Evals
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/security-privacy-compliance.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Security, Privacy & Compliance
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/delivery-release-operations.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Delivery, Release & Operations
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/codex-agentic-workflow.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Codex / Agentic Workflow
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+
+
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+
+
+  <span class="md-ellipsis">
+    Codex Automation & Runtime
+  </span>
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Codex Automation & Runtime
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../runtime/overview.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Обзор runtime
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../runtime/non-interactive-and-mcp.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Non-interactive и MCP
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../runtime/automations-github.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Automations и GitHub
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../runtime/worktrees-hooks-rules.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Worktrees, hooks, rules
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10" >
+
+
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+
+
+  <span class="md-ellipsis">
+    Агентные системы
+  </span>
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Агентные системы
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/overview.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Архитектура
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/memory.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Память
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/session-control.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Контроль сессий
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/subagents-skills.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Subagents, Skills, AGENTS.md
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/sdk-patterns.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Agents SDK patterns
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/evals-observability.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Evals и observability
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/templates.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Шаблоны агентов
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_11" >
+
+
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+
+
+  <span class="md-ellipsis">
+    Playbooks
+  </span>
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            Playbooks
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/research-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Research loop
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/context7-deep-research.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Context7 deep research
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/grounded-answering.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Grounded answering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/doubt-verification-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Doubt verification loop
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/build-full-feature.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Build full feature
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/workflow-to-skill.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Workflow to skill
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/use-case-to-plugin.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Use case to plugin
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/eval-driven-improvement.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/product-ready-pr.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Product-ready PR
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/maintain-agent-operating-docs.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Agent operating docs
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/workspace-readiness-audit.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Workspace readiness audit
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/docs-update.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Обновление документации
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/code-review.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Code review
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/ai-team-design.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    AI-native команда
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_12" >
+
+
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+
+
+  <span class="md-ellipsis">
+    Templates
+  </span>
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            Templates
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../artifact-templates/prompt-packet.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Prompt template
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../artifact-templates/control-plane-files.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Control-plane templates
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../artifact-templates/runlog.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    RUNLOG template
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../artifact-templates/product-skill.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Skill template
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../artifact-templates/plugin-blueprint.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Plugin blueprint
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_13" >
+
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../../insights/index.html" class="md-nav__link ">
+
+
+  <span class="md-ellipsis">
+    Insights
+  </span>
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_13" id="__nav_13_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            Insights
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../insights/insight-card-template.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Шаблон карточки insight
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../insights/seed-insights.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Начальный backlog
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+
+
+
+
+
+
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+
+        <li class="md-nav__item">
+  <a href="#stages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stages / Этапы
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#verification-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verification commands / Команды проверки
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#ownership-rollback-and-exclusions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ownership, rollback and exclusions / Границы
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#technical-follow-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical follow-up / Технические зависимости
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Technical follow-up / Технические зависимости">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#task-doc6-01" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task DOC6-01
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Task DOC6-01">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion Report
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#task-doc6-02" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task DOC6-02
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Task DOC6-02">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-report_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion Report
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#task-doc6-03" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task DOC6-03
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Task DOC6-03">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-report_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion Report
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#task-doc6-04" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task DOC6-04
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Task DOC6-04">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-report_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion Report
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#task-doc6-05" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task DOC6-05
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Task DOC6-05">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-report_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion Report
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#task-doc6-06" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task DOC6-06
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Task DOC6-06">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-report_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion Report
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#task-doc6-07" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task DOC6-07
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Task DOC6-07">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-report_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion Report
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#task-doc6-08" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task DOC6-08
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Task DOC6-08">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-report_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion Report
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#task-doc6-09" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task DOC6-09
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Task DOC6-09">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-report_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion Report
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#task-doc6-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task DOC6-10
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Task DOC6-10">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-report_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion Report
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#task-doc6-11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task DOC6-11
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Task DOC6-11">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-report_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion Report
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#task-doc6-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task DOC6-12
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Task DOC6-12">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-report_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion Report
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#task-doc6-13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task DOC6-13
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Task DOC6-13">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-report_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion Report
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#task-doc6-14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task DOC6-14
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Task DOC6-14">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-report_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion Report
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#task-doc6-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task DOC6-15
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Task DOC6-15">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-report_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion Report
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#task-doc6-16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task DOC6-16
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Task DOC6-16">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-report_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion Report
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#task-doc6-17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task DOC6-17
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Task DOC6-17">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-report_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion Report
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#task-doc6-18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task DOC6-18
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Task DOC6-18">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-report_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion Report
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#task-doc6-19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task DOC6-19
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Task DOC6-19">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-report_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion Report
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#task-doc6-20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task DOC6-20
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Task DOC6-20">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-report_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion Report
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#completion-assurance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion assurance / Проверка завершения
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#2026-11-03" class="md-nav__link">
+    <span class="md-ellipsis">
+      Результаты проверки — 2026-11-03
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#2026-11-03_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Разрешённое техническое продолжение — 2026-11-03
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Разрешённое техническое продолжение — 2026-11-03">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#task-paos-contract-model-alignment-2026-11-03" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task PAOS-CONTRACT-MODEL-ALIGNMENT-2026-11-03
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Task PAOS-CONTRACT-MODEL-ALIGNMENT-2026-11-03">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-report_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion Report
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#technical-verification-receipt-2026-11-03t1844238837700300" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical verification receipt — 2026-11-03T18:44:23.883770+03:00
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#trade-lifecycle-parity-separately-authorized-follow-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trade lifecycle parity — separately authorized follow-up
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Trade lifecycle parity — separately authorized follow-up">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#task-paos-trade-lifecycle-parity-2026-11-03" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task PAOS-TRADE-LIFECYCLE-PARITY-2026-11-03
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Task PAOS-TRADE-LIFECYCLE-PARITY-2026-11-03">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-report_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion Report
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Решения lifecycle и границы доказательств
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#task-paos-lifecycle-activation-2026-11-03" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task PAOS-LIFECYCLE-ACTIVATION-2026-11-03
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Task PAOS-LIFECYCLE-ACTIVATION-2026-11-03">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-report_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion Report
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Приёмка активации в новой сессии
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#task-paos-lifecycle-repair-2026-11-03" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task PAOS-LIFECYCLE-REPAIR-2026-11-03
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Task PAOS-LIFECYCLE-REPAIR-2026-11-03">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-report_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion Report
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Приёмка исправления
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+    </ul>
+
+</nav>
+                  </div>
+                </div>
+              </div>
+
+
+
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+
+
+
+
+<h1 id="gpt-6">Архив — Обновление документации GPT-6: подробный план и доказательства<a class="headerlink" href="#gpt-6" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.</p>
+</blockquote>
+<p>Source status: <code>official + experiment</code></p>
+<p>Документационное выполнение 20 пунктов аудита от 3 ноября. Действующие model pins, permissions, агенты, hooks и реализация сохраняются. Пункты 1, 2 и 4 закрываются только на уровне документации; технические зависимости остаются открытыми.</p>
+<ul>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Root task: PAOS-DOCS-REFRESH-2026-11-03</li>
+<li>Machine status: <code>docs/superpowers/specs/gpt6-documentation-refresh-task-group.json</code></li>
+<li>Evidence owner: root documentation maintainer; one writer, no delegated agents.</li>
+<li>Skills: repository implementation-planner and docs-maintainer; openai-docs.</li>
+</ul>
+<h2 id="stages">Stages / Этапы<a class="headerlink" href="#stages" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Scope</th>
+<th>Depends on</th>
+<th>Gate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E0</td>
+<td>Baseline, sources, ownership and detailed plan</td>
+<td>none</td>
+<td>Baseline hashes, source review, valid task matrix</td>
+</tr>
+<tr>
+<td>E1</td>
+<td>1, 2, 5, 6, 7, 8, 9, 10</td>
+<td>E0</td>
+<td>Source agreement, TOML parsing, trust boundaries</td>
+</tr>
+<tr>
+<td>E2</td>
+<td>3, 4, 12</td>
+<td>E1</td>
+<td>One model matrix; no active model changes</td>
+</tr>
+<tr>
+<td>E3</td>
+<td>13, 14, 16</td>
+<td>E2</td>
+<td>Reproducible migration design; no live eval</td>
+</tr>
+<tr>
+<td>E4</td>
+<td>15, 17, 18, 19, 20</td>
+<td>E1-E3</td>
+<td>API/state/activation contracts and claim review</td>
+</tr>
+<tr>
+<td>E5</td>
+<td>11; semantic parity across all items</td>
+<td>E1-E4</td>
+<td>RU/EN, registry, navigation and links</td>
+</tr>
+<tr>
+<td>E6</td>
+<td>Acceptance, status and handoff</td>
+<td>E5</td>
+<td>Mandatory checks, strict build, protected-file hashes</td>
+</tr>
+</tbody>
+</table>
+<h2 id="verification-commands">Verification commands / Команды проверки<a class="headerlink" href="#verification-commands" title="Permanent link">&para;</a></h2>
+<p>Run from the repository root. Each command must exit 0; failures remain visible and are not waived. No provider, browser or live server is part of these checks.</p>
+<div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">validate_task_matrix</span><span class="p">.</span><span class="n">py</span> <span class="n">docs</span><span class="p">/</span><span class="n">superpowers</span><span class="p">/</span><span class="n">plans</span><span class="p">/</span><span class="n">2026</span><span class="p">-</span><span class="n">11</span><span class="p">-</span><span class="n">03-gpt6-documentation-refresh</span><span class="p">.</span><span class="nb">md</span>
+<span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">validate_task_matrix</span><span class="p">.</span><span class="n">py</span> <span class="n">docs</span><span class="p">/</span><span class="n">superpowers</span><span class="p">/</span><span class="n">plans</span><span class="p">/</span><span class="n">2026</span><span class="p">-</span><span class="n">11</span><span class="p">-</span><span class="n">03-gpt6-documentation-refresh</span><span class="p">.</span><span class="n">en</span><span class="p">.</span><span class="nb">md</span>
+<span class="n">python</span> <span class="n">-m</span> <span class="n">unittest</span> <span class="n">tests</span><span class="p">.</span><span class="n">product_agent_os</span><span class="p">.</span><span class="n">test_product_agent_os_docs</span> <span class="n">-v</span>
+<span class="n">python</span> <span class="n">-m</span> <span class="n">unittest</span> <span class="n">tests</span><span class="p">.</span><span class="n">product_agent_os</span><span class="p">.</span><span class="n">test_task_plan_lifecycle</span> <span class="n">-v</span>
+<span class="n">python</span> <span class="n">-m</span> <span class="n">unittest</span> <span class="n">tests</span><span class="p">.</span><span class="n">product_agent_os</span><span class="p">.</span><span class="n">test_lifecycle_hooks</span> <span class="n">-v</span>
+<span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">validate_hooks</span><span class="p">.</span><span class="n">py</span> <span class="p">.</span><span class="n">codex</span><span class="p">\</span><span class="n">hooks</span><span class="p">.</span><span class="n">json</span>
+<span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">validate_hooks</span><span class="p">.</span><span class="n">py</span> <span class="p">.</span><span class="n">codex</span><span class="p">\</span><span class="n">hooks</span>
+<span class="n">python</span> <span class="n">-m</span> <span class="n">unittest</span> <span class="n">tests</span><span class="p">.</span><span class="n">product_agent_os</span><span class="p">.</span><span class="n">test_infrastructure_templates</span> <span class="n">-v</span>
+<span class="n">python</span> <span class="n">tools</span><span class="p">\</span><span class="n">check_docs</span><span class="p">.</span><span class="n">py</span>
+<span class="n">git</span> <span class="nb">diff </span><span class="p">-</span><span class="n">-check</span>
+<span class="p">.</span><span class="n">venv-docs</span><span class="p">\</span><span class="n">Scripts</span><span class="p">\</span><span class="n">python</span><span class="p">.</span><span class="n">exe</span> <span class="n">-m</span> <span class="n">mkdocs</span> <span class="n">build</span> <span class="p">-</span><span class="n">-strict</span> <span class="p">-</span><span class="n">-site-dir</span> <span class="p">.</span><span class="n">docs-tools</span><span class="p">/</span><span class="n">reports</span><span class="p">/</span><span class="n">gpt6-docs-preview</span>
+</code></pre></div>
+<p>Additional checks: tomllib for complete TOML examples; JSON parsing; RU/EN claim parity; changed official links and anchors; all 20 IDs and acyclic dependencies; SHA-256 comparison of the 17 pre-existing dirty files and protected implementation/history/site files. Preview build proves local generation only.</p>
+<h2 id="ownership-rollback-and-exclusions">Ownership, rollback and exclusions / Границы<a class="headerlink" href="#ownership-rollback-and-exclusions" title="Permanent link">&para;</a></h2>
+<p>Owned: the page pairs named below, mkdocs.yml, this plan pair/task group, source registries, REQUIREMENTS.md, PLAN.md, TEST.md, EVALS.md, RUNLOG.md and the current lifecycle marker. Sources are rechecked before changing platform claims. Forbidden: implementation, validators, test logic (only page-inventory metadata is in scope), agent profiles, executable templates, active model/permission settings, hooks, frozen evidence, prod_test.md, root site output and Git publication. Rollback only this slice using the initial diff; preserve unrelated edits. No dependency installation.</p>
+<p>TDD, FSD and domain-model scaffolding: not_applicable to this documentation-only slice. No new persistent validator or artificial RED tests. Plan quality: exact files, per-item acceptance, dependencies, owner, checks and rollback below. No broad release, account availability or runtime activation claim.</p>
+<h2 id="technical-follow-up">Technical follow-up / Технические зависимости<a class="headerlink" href="#technical-follow-up" title="Permanent link">&para;</a></h2>
+<ul>
+<li>OPEN-PERM: .codex/config.toml, .codex/agents/*.toml and agent-context-contract.json versus inherited parent permissions; owner: runtime maintainer; separate authorized implementation and fresh-session proof.</li>
+<li>OPEN-MCP: plugins/product-agent-os/scripts/product_agent_os/validators.py requires agent-local MCP; owner: runtime maintainer; align parent MCP contract and focused tests in a separate task.</li>
+<li>OPEN-MODEL: model allowlist, active and packaged profiles, both model-reasoning-policy templates remain GPT-5.6; owner: model migration reviewer; no switch until availability, fixed baseline and authorized eval.</li>
+<li>OPEN-RUNTIME: documented API capabilities are not newly activated Product-Agent OS paths; owner: architect; separate implementation acceptance.</li>
+<li>OPEN-BASELINE: current agent validator requires sandbox_mode while dirty config uses default_permissions; record failure separately; do not weaken checks.</li>
+</ul>
+<h3 id="task-doc6-01">Task <code>DOC6-01</code><a class="headerlink" href="#task-doc6-01" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Task: DOC6-01 — Изоляция custom agents</li>
+<li>Status: implemented</li>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Plan trigger: Owner-approved documentation refresh following 20-item audit</li>
+<li>Validator target: detailed task blocks</li>
+<li>Date and time of task implementation: 03-11-2026 16:58</li>
+<li>Depends on: E0 baseline</li>
+<li>Blocks: E5/E6 documentation acceptance</li>
+<li>Source: https://learn.chatgpt.com/docs/agent-configuration/subagents</li>
+<li>Short description: Разделить поведенческий запрет записи и наследуемые технические permissions. Для заявления об изоляции требовать доказательство из свежей сессии.</li>
+<li>Technical value: Source-aligned contracts and reproducible examples; implementation remains unchanged</li>
+<li>Product value: Operators can select a supported route without false activation or permission claims</li>
+<li>Scope: E1; docs/agent-systems/subagents-skills.md, docs/agent-systems/subagents-skills.en.md, docs/product-agent/roles.md, docs/product-agent/roles.en.md, docs/codex/security.md, docs/codex/security.en.md, docs/product-agent-os/codex-compatibility.md, docs/product-agent-os/codex-compatibility.en.md</li>
+<li>Non-goals: No config/model/runtime/template/test logic changes, live calls, browser, Git or publication</li>
+<li>Expected result: Разделить поведенческий запрет записи и наследуемые технические permissions. Для заявления об изоляции требовать доказательство из свежей сессии.</li>
+<li>Acceptance criteria: Разделить поведенческий запрет записи и наследуемые технические permissions. Для заявления об изоляции требовать доказательство из свежей сессии. RU/EN agree; official source and applicability are visible; protected files unchanged.</li>
+<li>Verification gates: Official source comparison; changed example parsing; mandatory commands above exit 0; semantic RU/EN review; strict preview build for nav/diagram edits</li>
+<li>Risks / approval gates: Platform drift and existing implementation mismatch; no silent promotion; live verification remains separately approval-bound</li>
+<li>Complexity: medium</li>
+<li>Estimated execution time: 30-90 minutes; shared checks run once per changed package</li>
+<li>Agents: Root docs maintainer; sequential source and self-review responsibilities</li>
+<li>Skills: implementation-planner; docs-maintainer; openai-docs</li>
+<li>Output artifacts: docs/agent-systems/subagents-skills.md, docs/agent-systems/subagents-skills.en.md, docs/product-agent/roles.md, docs/product-agent/roles.en.md, docs/codex/security.md, docs/codex/security.en.md, docs/product-agent-os/codex-compatibility.md, docs/product-agent-os/codex-compatibility.en.md</li>
+<li>Next step: Review linked technical dependencies without changing runtime</li>
+</ul>
+<h4 id="completion-report">Completion Report<a class="headerlink" href="#completion-report" title="Permanent link">&para;</a></h4>
+<ul>
+<li>status: implemented</li>
+<li>what was done: Разделить поведенческий запрет записи и наследуемые технические permissions. Для заявления об изоляции требовать доказательство из свежей сессии.</li>
+<li>files touched / work locations: docs/agent-systems/subagents-skills.md, docs/agent-systems/subagents-skills.en.md, docs/product-agent/roles.md, docs/product-agent/roles.en.md, docs/codex/security.md, docs/codex/security.en.md, docs/product-agent-os/codex-compatibility.md, docs/product-agent-os/codex-compatibility.en.md</li>
+<li>technical value delivered: Documentation contracts reconciled; no implementation promotion</li>
+<li>product value delivered: Source-backed operator guidance</li>
+<li>actual implementation date and time: 03-11-2026 16:58</li>
+<li>verification evidence: Current run: docs 100/100; lifecycle plan 5/5; hooks 25/25 (isolated external TEMP); infrastructure templates 94/94; both hook validators, docs checker, RU/EN task matrices, state consistency and diff check exit 0; strict preview MkDocs exit 0; source review 20 official pages. See Verification receipt below. No runtime/model promotion.</li>
+<li>residual risks: OPEN-PERM, OPEN-MCP, OPEN-MODEL and OPEN-RUNTIME remain open; availability/runtime not tested</li>
+<li>follow-up: Separate technical implementation/eval decision; preserve historical evidence</li>
+</ul>
+<h3 id="task-doc6-02">Task <code>DOC6-02</code><a class="headerlink" href="#task-doc6-02" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Task: DOC6-02 — Наследование MCP</li>
+<li>Status: implemented</li>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Plan trigger: Owner-approved documentation refresh following 20-item audit</li>
+<li>Validator target: detailed task blocks</li>
+<li>Date and time of task implementation: 03-11-2026 16:58</li>
+<li>Depends on: DOC6-01</li>
+<li>Blocks: E5/E6 documentation acceptance</li>
+<li>Source: https://learn.chatgpt.com/docs/agent-configuration/subagents</li>
+<li>Short description: Описать наследование MCP родителя; декларация не доказывает доступность инструмента. Несоответствие валидатора оставить технической зависимостью.</li>
+<li>Technical value: Source-aligned contracts and reproducible examples; implementation remains unchanged</li>
+<li>Product value: Operators can select a supported route without false activation or permission claims</li>
+<li>Scope: E1; docs/agent-systems/subagents-skills.md, docs/agent-systems/subagents-skills.en.md, docs/runtime/non-interactive-and-mcp.md, docs/runtime/non-interactive-and-mcp.en.md, docs/product-agent-os/codex-compatibility.md, docs/product-agent-os/codex-compatibility.en.md</li>
+<li>Non-goals: No config/model/runtime/template/test logic changes, live calls, browser, Git or publication</li>
+<li>Expected result: Описать наследование MCP родителя; декларация не доказывает доступность инструмента. Несоответствие валидатора оставить технической зависимостью.</li>
+<li>Acceptance criteria: Описать наследование MCP родителя; декларация не доказывает доступность инструмента. Несоответствие валидатора оставить технической зависимостью. RU/EN agree; official source and applicability are visible; protected files unchanged.</li>
+<li>Verification gates: Official source comparison; changed example parsing; mandatory commands above exit 0; semantic RU/EN review; strict preview build for nav/diagram edits</li>
+<li>Risks / approval gates: Platform drift and existing implementation mismatch; no silent promotion; live verification remains separately approval-bound</li>
+<li>Complexity: medium</li>
+<li>Estimated execution time: 30-90 minutes; shared checks run once per changed package</li>
+<li>Agents: Root docs maintainer; sequential source and self-review responsibilities</li>
+<li>Skills: implementation-planner; docs-maintainer; openai-docs</li>
+<li>Output artifacts: docs/agent-systems/subagents-skills.md, docs/agent-systems/subagents-skills.en.md, docs/runtime/non-interactive-and-mcp.md, docs/runtime/non-interactive-and-mcp.en.md, docs/product-agent-os/codex-compatibility.md, docs/product-agent-os/codex-compatibility.en.md</li>
+<li>Next step: Review linked technical dependencies without changing runtime</li>
+</ul>
+<h4 id="completion-report_1">Completion Report<a class="headerlink" href="#completion-report_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li>status: implemented</li>
+<li>what was done: Описать наследование MCP родителя; декларация не доказывает доступность инструмента. Несоответствие валидатора оставить технической зависимостью.</li>
+<li>files touched / work locations: docs/agent-systems/subagents-skills.md, docs/agent-systems/subagents-skills.en.md, docs/runtime/non-interactive-and-mcp.md, docs/runtime/non-interactive-and-mcp.en.md, docs/product-agent-os/codex-compatibility.md, docs/product-agent-os/codex-compatibility.en.md</li>
+<li>technical value delivered: Documentation contracts reconciled; no implementation promotion</li>
+<li>product value delivered: Source-backed operator guidance</li>
+<li>actual implementation date and time: 03-11-2026 16:58</li>
+<li>verification evidence: Current run: docs 100/100; lifecycle plan 5/5; hooks 25/25 (isolated external TEMP); infrastructure templates 94/94; both hook validators, docs checker, RU/EN task matrices, state consistency and diff check exit 0; strict preview MkDocs exit 0; source review 20 official pages. See Verification receipt below. No runtime/model promotion.</li>
+<li>residual risks: OPEN-PERM, OPEN-MCP, OPEN-MODEL and OPEN-RUNTIME remain open; availability/runtime not tested</li>
+<li>follow-up: Separate technical implementation/eval decision; preserve historical evidence</li>
+</ul>
+<h3 id="task-doc6-03">Task <code>DOC6-03</code><a class="headerlink" href="#task-doc6-03" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Task: DOC6-03 — Актуальные рекомендации моделей</li>
+<li>Status: implemented</li>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Plan trigger: Owner-approved documentation refresh following 20-item audit</li>
+<li>Validator target: detailed task blocks</li>
+<li>Date and time of task implementation: 03-11-2026 16:58</li>
+<li>Depends on: DOC6-12</li>
+<li>Blocks: E5/E6 documentation acceptance</li>
+<li>Source: https://learn.chatgpt.com/docs/models</li>
+<li>Short description: Заменить устаревшие действующие рекомендации ссылкой на модельную матрицу; указать продукт и auth mode для retirement; сохранить исторические ID.</li>
+<li>Technical value: Source-aligned contracts and reproducible examples; implementation remains unchanged</li>
+<li>Product value: Operators can select a supported route without false activation or permission claims</li>
+<li>Scope: E2; docs/product-agent/roles.md, docs/product-agent/roles.en.md, docs/diagrams/agent-team-and-skills.md, docs/diagrams/agent-team-and-skills.en.md, docs/codex/models-and-reasoning.md, docs/codex/models-and-reasoning.en.md</li>
+<li>Non-goals: No config/model/runtime/template/test logic changes, live calls, browser, Git or publication</li>
+<li>Expected result: Заменить устаревшие действующие рекомендации ссылкой на модельную матрицу; указать продукт и auth mode для retirement; сохранить исторические ID.</li>
+<li>Acceptance criteria: Заменить устаревшие действующие рекомендации ссылкой на модельную матрицу; указать продукт и auth mode для retirement; сохранить исторические ID. RU/EN agree; official source and applicability are visible; protected files unchanged.</li>
+<li>Verification gates: Official source comparison; changed example parsing; mandatory commands above exit 0; semantic RU/EN review; strict preview build for nav/diagram edits</li>
+<li>Risks / approval gates: Platform drift and existing implementation mismatch; no silent promotion; live verification remains separately approval-bound</li>
+<li>Complexity: medium</li>
+<li>Estimated execution time: 30-90 minutes; shared checks run once per changed package</li>
+<li>Agents: Root docs maintainer; sequential source and self-review responsibilities</li>
+<li>Skills: implementation-planner; docs-maintainer; openai-docs</li>
+<li>Output artifacts: docs/product-agent/roles.md, docs/product-agent/roles.en.md, docs/diagrams/agent-team-and-skills.md, docs/diagrams/agent-team-and-skills.en.md, docs/codex/models-and-reasoning.md, docs/codex/models-and-reasoning.en.md</li>
+<li>Next step: Review linked technical dependencies without changing runtime</li>
+</ul>
+<h4 id="completion-report_2">Completion Report<a class="headerlink" href="#completion-report_2" title="Permanent link">&para;</a></h4>
+<ul>
+<li>status: implemented</li>
+<li>what was done: Заменить устаревшие действующие рекомендации ссылкой на модельную матрицу; указать продукт и auth mode для retirement; сохранить исторические ID.</li>
+<li>files touched / work locations: docs/product-agent/roles.md, docs/product-agent/roles.en.md, docs/diagrams/agent-team-and-skills.md, docs/diagrams/agent-team-and-skills.en.md, docs/codex/models-and-reasoning.md, docs/codex/models-and-reasoning.en.md</li>
+<li>technical value delivered: Documentation contracts reconciled; no implementation promotion</li>
+<li>product value delivered: Source-backed operator guidance</li>
+<li>actual implementation date and time: 03-11-2026 16:58</li>
+<li>verification evidence: Current run: docs 100/100; lifecycle plan 5/5; hooks 25/25 (isolated external TEMP); infrastructure templates 94/94; both hook validators, docs checker, RU/EN task matrices, state consistency and diff check exit 0; strict preview MkDocs exit 0; source review 20 official pages. See Verification receipt below. No runtime/model promotion.</li>
+<li>residual risks: OPEN-PERM, OPEN-MCP, OPEN-MODEL and OPEN-RUNTIME remain open; availability/runtime not tested</li>
+<li>follow-up: Separate technical implementation/eval decision; preserve historical evidence</li>
+</ul>
+<h3 id="task-doc6-04">Task <code>DOC6-04</code><a class="headerlink" href="#task-doc6-04" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Task: DOC6-04 — Действующая и кандидатная политика</li>
+<li>Status: implemented</li>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Plan trigger: Owner-approved documentation refresh following 20-item audit</li>
+<li>Validator target: detailed task blocks</li>
+<li>Date and time of task implementation: 03-11-2026 16:58</li>
+<li>Depends on: DOC6-12, DOC6-01, DOC6-02</li>
+<li>Blocks: E5/E6 documentation acceptance</li>
+<li>Source: https://developers.openai.com/api/docs/guides/latest-model</li>
+<li>Short description: Разделить действующие GPT-5.6 pins, кандидатов GPT-6 и подтвержденное promotion; перечислить config, templates и validators без их изменения.</li>
+<li>Technical value: Source-aligned contracts and reproducible examples; implementation remains unchanged</li>
+<li>Product value: Operators can select a supported route without false activation or permission claims</li>
+<li>Scope: E2; docs/codex/models-and-reasoning.md, docs/codex/models-and-reasoning.en.md, docs/product-agent-os/codex-compatibility.md, docs/product-agent-os/codex-compatibility.en.md</li>
+<li>Non-goals: No config/model/runtime/template/test logic changes, live calls, browser, Git or publication</li>
+<li>Expected result: Разделить действующие GPT-5.6 pins, кандидатов GPT-6 и подтвержденное promotion; перечислить config, templates и validators без их изменения.</li>
+<li>Acceptance criteria: Разделить действующие GPT-5.6 pins, кандидатов GPT-6 и подтвержденное promotion; перечислить config, templates и validators без их изменения. RU/EN agree; official source and applicability are visible; protected files unchanged.</li>
+<li>Verification gates: Official source comparison; changed example parsing; mandatory commands above exit 0; semantic RU/EN review; strict preview build for nav/diagram edits</li>
+<li>Risks / approval gates: Platform drift and existing implementation mismatch; no silent promotion; live verification remains separately approval-bound</li>
+<li>Complexity: medium</li>
+<li>Estimated execution time: 30-90 minutes; shared checks run once per changed package</li>
+<li>Agents: Root docs maintainer; sequential source and self-review responsibilities</li>
+<li>Skills: implementation-planner; docs-maintainer; openai-docs</li>
+<li>Output artifacts: docs/codex/models-and-reasoning.md, docs/codex/models-and-reasoning.en.md, docs/product-agent-os/codex-compatibility.md, docs/product-agent-os/codex-compatibility.en.md</li>
+<li>Next step: Review linked technical dependencies without changing runtime</li>
+</ul>
+<h4 id="completion-report_3">Completion Report<a class="headerlink" href="#completion-report_3" title="Permanent link">&para;</a></h4>
+<ul>
+<li>status: implemented</li>
+<li>what was done: Разделить действующие GPT-5.6 pins, кандидатов GPT-6 и подтвержденное promotion; перечислить config, templates и validators без их изменения.</li>
+<li>files touched / work locations: docs/codex/models-and-reasoning.md, docs/codex/models-and-reasoning.en.md, docs/product-agent-os/codex-compatibility.md, docs/product-agent-os/codex-compatibility.en.md</li>
+<li>technical value delivered: Documentation contracts reconciled; no implementation promotion</li>
+<li>product value delivered: Source-backed operator guidance</li>
+<li>actual implementation date and time: 03-11-2026 16:58</li>
+<li>verification evidence: Current run: docs 100/100; lifecycle plan 5/5; hooks 25/25 (isolated external TEMP); infrastructure templates 94/94; both hook validators, docs checker, RU/EN task matrices, state consistency and diff check exit 0; strict preview MkDocs exit 0; source review 20 official pages. See Verification receipt below. No runtime/model promotion.</li>
+<li>residual risks: OPEN-PERM, OPEN-MCP, OPEN-MODEL and OPEN-RUNTIME remain open; availability/runtime not tested</li>
+<li>follow-up: Separate technical implementation/eval decision; preserve historical evidence</li>
+</ul>
+<h3 id="task-doc6-05">Task <code>DOC6-05</code><a class="headerlink" href="#task-doc6-05" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Task: DOC6-05 — Значения approval policy</li>
+<li>Status: implemented</li>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Plan trigger: Owner-approved documentation refresh following 20-item audit</li>
+<li>Validator target: detailed task blocks</li>
+<li>Date and time of task implementation: 03-11-2026 16:58</li>
+<li>Depends on: DOC6-10</li>
+<li>Blocks: E5/E6 documentation acceptance</li>
+<li>Source: https://learn.chatgpt.com/docs/config-file/config-reference</li>
+<li>Short description: Убрать untrusted из действующих примеров; описать версионную границу и смысл on-request/never.</li>
+<li>Technical value: Source-aligned contracts and reproducible examples; implementation remains unchanged</li>
+<li>Product value: Operators can select a supported route without false activation or permission claims</li>
+<li>Scope: E1; docs/codex/configuration.md, docs/codex/configuration.en.md</li>
+<li>Non-goals: No config/model/runtime/template/test logic changes, live calls, browser, Git or publication</li>
+<li>Expected result: Убрать untrusted из действующих примеров; описать версионную границу и смысл on-request/never.</li>
+<li>Acceptance criteria: Убрать untrusted из действующих примеров; описать версионную границу и смысл on-request/never. RU/EN agree; official source and applicability are visible; protected files unchanged.</li>
+<li>Verification gates: Official source comparison; changed example parsing; mandatory commands above exit 0; semantic RU/EN review; strict preview build for nav/diagram edits</li>
+<li>Risks / approval gates: Platform drift and existing implementation mismatch; no silent promotion; live verification remains separately approval-bound</li>
+<li>Complexity: medium</li>
+<li>Estimated execution time: 30-90 minutes; shared checks run once per changed package</li>
+<li>Agents: Root docs maintainer; sequential source and self-review responsibilities</li>
+<li>Skills: implementation-planner; docs-maintainer; openai-docs</li>
+<li>Output artifacts: docs/codex/configuration.md, docs/codex/configuration.en.md</li>
+<li>Next step: Review linked technical dependencies without changing runtime</li>
+</ul>
+<h4 id="completion-report_4">Completion Report<a class="headerlink" href="#completion-report_4" title="Permanent link">&para;</a></h4>
+<ul>
+<li>status: implemented</li>
+<li>what was done: Убрать untrusted из действующих примеров; описать версионную границу и смысл on-request/never.</li>
+<li>files touched / work locations: docs/codex/configuration.md, docs/codex/configuration.en.md</li>
+<li>technical value delivered: Documentation contracts reconciled; no implementation promotion</li>
+<li>product value delivered: Source-backed operator guidance</li>
+<li>actual implementation date and time: 03-11-2026 16:58</li>
+<li>verification evidence: Current run: docs 100/100; lifecycle plan 5/5; hooks 25/25 (isolated external TEMP); infrastructure templates 94/94; both hook validators, docs checker, RU/EN task matrices, state consistency and diff check exit 0; strict preview MkDocs exit 0; source review 20 official pages. See Verification receipt below. No runtime/model promotion.</li>
+<li>residual risks: OPEN-PERM, OPEN-MCP, OPEN-MODEL and OPEN-RUNTIME remain open; availability/runtime not tested</li>
+<li>follow-up: Separate technical implementation/eval decision; preserve historical evidence</li>
+</ul>
+<h3 id="task-doc6-06">Task <code>DOC6-06</code><a class="headerlink" href="#task-doc6-06" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Task: DOC6-06 — Granular TOML и категории запросов</li>
+<li>Status: implemented</li>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Plan trigger: Owner-approved documentation refresh following 20-item audit</li>
+<li>Validator target: detailed task blocks</li>
+<li>Date and time of task implementation: 03-11-2026 16:58</li>
+<li>Depends on: DOC6-05</li>
+<li>Blocks: E5/E6 documentation acceptance</li>
+<li>Source: https://learn.chatgpt.com/docs/config-file/config-reference</li>
+<li>Short description: Обеспечить разбор полных TOML-примеров через tomllib; описать skill_approval как skill-script approval prompts, а не вызов skill.</li>
+<li>Technical value: Source-aligned contracts and reproducible examples; implementation remains unchanged</li>
+<li>Product value: Operators can select a supported route without false activation or permission claims</li>
+<li>Scope: E1; docs/codex/configuration.md, docs/codex/configuration.en.md</li>
+<li>Non-goals: No config/model/runtime/template/test logic changes, live calls, browser, Git or publication</li>
+<li>Expected result: Обеспечить разбор полных TOML-примеров через tomllib; описать skill_approval как skill-script approval prompts, а не вызов skill.</li>
+<li>Acceptance criteria: Обеспечить разбор полных TOML-примеров через tomllib; описать skill_approval как skill-script approval prompts, а не вызов skill. RU/EN agree; official source and applicability are visible; protected files unchanged.</li>
+<li>Verification gates: Official source comparison; changed example parsing; mandatory commands above exit 0; semantic RU/EN review; strict preview build for nav/diagram edits</li>
+<li>Risks / approval gates: Platform drift and existing implementation mismatch; no silent promotion; live verification remains separately approval-bound</li>
+<li>Complexity: medium</li>
+<li>Estimated execution time: 30-90 minutes; shared checks run once per changed package</li>
+<li>Agents: Root docs maintainer; sequential source and self-review responsibilities</li>
+<li>Skills: implementation-planner; docs-maintainer; openai-docs</li>
+<li>Output artifacts: docs/codex/configuration.md, docs/codex/configuration.en.md</li>
+<li>Next step: Review linked technical dependencies without changing runtime</li>
+</ul>
+<h4 id="completion-report_5">Completion Report<a class="headerlink" href="#completion-report_5" title="Permanent link">&para;</a></h4>
+<ul>
+<li>status: implemented</li>
+<li>what was done: Обеспечить разбор полных TOML-примеров через tomllib; описать skill_approval как skill-script approval prompts, а не вызов skill.</li>
+<li>files touched / work locations: docs/codex/configuration.md, docs/codex/configuration.en.md</li>
+<li>technical value delivered: Documentation contracts reconciled; no implementation promotion</li>
+<li>product value delivered: Source-backed operator guidance</li>
+<li>actual implementation date and time: 03-11-2026 16:58</li>
+<li>verification evidence: Current run: docs 100/100; lifecycle plan 5/5; hooks 25/25 (isolated external TEMP); infrastructure templates 94/94; both hook validators, docs checker, RU/EN task matrices, state consistency and diff check exit 0; strict preview MkDocs exit 0; source review 20 official pages. See Verification receipt below. No runtime/model promotion.</li>
+<li>residual risks: OPEN-PERM, OPEN-MCP, OPEN-MODEL and OPEN-RUNTIME remain open; availability/runtime not tested</li>
+<li>follow-up: Separate technical implementation/eval decision; preserve historical evidence</li>
+</ul>
+<h3 id="task-doc6-07">Task <code>DOC6-07</code><a class="headerlink" href="#task-doc6-07" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Task: DOC6-07 — Permission profiles</li>
+<li>Status: implemented</li>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Plan trigger: Owner-approved documentation refresh following 20-item audit</li>
+<li>Validator target: detailed task blocks</li>
+<li>Date and time of task implementation: 03-11-2026 16:58</li>
+<li>Depends on: DOC6-01, DOC6-05</li>
+<li>Blocks: E5/E6 documentation acceptance</li>
+<li>Source: https://learn.chatgpt.com/docs/permissions</li>
+<li>Short description: Описать beta profiles, legacy selection, защищенные пути и несовместимость смешивания; действующие настройки не менять.</li>
+<li>Technical value: Source-aligned contracts and reproducible examples; implementation remains unchanged</li>
+<li>Product value: Operators can select a supported route without false activation or permission claims</li>
+<li>Scope: E1; docs/codex/configuration.md, docs/codex/configuration.en.md, docs/codex/security.md, docs/codex/security.en.md, docs/product-agent-os/codex-compatibility.md, docs/product-agent-os/codex-compatibility.en.md</li>
+<li>Non-goals: No config/model/runtime/template/test logic changes, live calls, browser, Git or publication</li>
+<li>Expected result: Описать beta profiles, legacy selection, защищенные пути и несовместимость смешивания; действующие настройки не менять.</li>
+<li>Acceptance criteria: Описать beta profiles, legacy selection, защищенные пути и несовместимость смешивания; действующие настройки не менять. RU/EN agree; official source and applicability are visible; protected files unchanged.</li>
+<li>Verification gates: Official source comparison; changed example parsing; mandatory commands above exit 0; semantic RU/EN review; strict preview build for nav/diagram edits</li>
+<li>Risks / approval gates: Platform drift and existing implementation mismatch; no silent promotion; live verification remains separately approval-bound</li>
+<li>Complexity: medium</li>
+<li>Estimated execution time: 30-90 minutes; shared checks run once per changed package</li>
+<li>Agents: Root docs maintainer; sequential source and self-review responsibilities</li>
+<li>Skills: implementation-planner; docs-maintainer; openai-docs</li>
+<li>Output artifacts: docs/codex/configuration.md, docs/codex/configuration.en.md, docs/codex/security.md, docs/codex/security.en.md, docs/product-agent-os/codex-compatibility.md, docs/product-agent-os/codex-compatibility.en.md</li>
+<li>Next step: Review linked technical dependencies without changing runtime</li>
+</ul>
+<h4 id="completion-report_6">Completion Report<a class="headerlink" href="#completion-report_6" title="Permanent link">&para;</a></h4>
+<ul>
+<li>status: implemented</li>
+<li>what was done: Описать beta profiles, legacy selection, защищенные пути и несовместимость смешивания; действующие настройки не менять.</li>
+<li>files touched / work locations: docs/codex/configuration.md, docs/codex/configuration.en.md, docs/codex/security.md, docs/codex/security.en.md, docs/product-agent-os/codex-compatibility.md, docs/product-agent-os/codex-compatibility.en.md</li>
+<li>technical value delivered: Documentation contracts reconciled; no implementation promotion</li>
+<li>product value delivered: Source-backed operator guidance</li>
+<li>actual implementation date and time: 03-11-2026 16:58</li>
+<li>verification evidence: Current run: docs 100/100; lifecycle plan 5/5; hooks 25/25 (isolated external TEMP); infrastructure templates 94/94; both hook validators, docs checker, RU/EN task matrices, state consistency and diff check exit 0; strict preview MkDocs exit 0; source review 20 official pages. See Verification receipt below. No runtime/model promotion.</li>
+<li>residual risks: OPEN-PERM, OPEN-MCP, OPEN-MODEL and OPEN-RUNTIME remain open; availability/runtime not tested</li>
+<li>follow-up: Separate technical implementation/eval decision; preserve historical evidence</li>
+</ul>
+<h3 id="task-doc6-08">Task <code>DOC6-08</code><a class="headerlink" href="#task-doc6-08" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Task: DOC6-08 — Сетевые поверхности</li>
+<li>Status: implemented</li>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Plan trigger: Owner-approved documentation refresh following 20-item audit</li>
+<li>Validator target: detailed task blocks</li>
+<li>Date and time of task implementation: 03-11-2026 16:58</li>
+<li>Depends on: DOC6-07</li>
+<li>Blocks: E5/E6 documentation acceptance</li>
+<li>Source: https://learn.chatgpt.com/docs/permissions</li>
+<li>Short description: Отдельно описать локальные команды, web, MCP, connectors и browser; domain rules требуют активного command network proxy.</li>
+<li>Technical value: Source-aligned contracts and reproducible examples; implementation remains unchanged</li>
+<li>Product value: Operators can select a supported route without false activation or permission claims</li>
+<li>Scope: E1; docs/codex/security.md, docs/codex/security.en.md, docs/runtime/non-interactive-and-mcp.md, docs/runtime/non-interactive-and-mcp.en.md</li>
+<li>Non-goals: No config/model/runtime/template/test logic changes, live calls, browser, Git or publication</li>
+<li>Expected result: Отдельно описать локальные команды, web, MCP, connectors и browser; domain rules требуют активного command network proxy.</li>
+<li>Acceptance criteria: Отдельно описать локальные команды, web, MCP, connectors и browser; domain rules требуют активного command network proxy. RU/EN agree; official source and applicability are visible; protected files unchanged.</li>
+<li>Verification gates: Official source comparison; changed example parsing; mandatory commands above exit 0; semantic RU/EN review; strict preview build for nav/diagram edits</li>
+<li>Risks / approval gates: Platform drift and existing implementation mismatch; no silent promotion; live verification remains separately approval-bound</li>
+<li>Complexity: medium</li>
+<li>Estimated execution time: 30-90 minutes; shared checks run once per changed package</li>
+<li>Agents: Root docs maintainer; sequential source and self-review responsibilities</li>
+<li>Skills: implementation-planner; docs-maintainer; openai-docs</li>
+<li>Output artifacts: docs/codex/security.md, docs/codex/security.en.md, docs/runtime/non-interactive-and-mcp.md, docs/runtime/non-interactive-and-mcp.en.md</li>
+<li>Next step: Review linked technical dependencies without changing runtime</li>
+</ul>
+<h4 id="completion-report_7">Completion Report<a class="headerlink" href="#completion-report_7" title="Permanent link">&para;</a></h4>
+<ul>
+<li>status: implemented</li>
+<li>what was done: Отдельно описать локальные команды, web, MCP, connectors и browser; domain rules требуют активного command network proxy.</li>
+<li>files touched / work locations: docs/codex/security.md, docs/codex/security.en.md, docs/runtime/non-interactive-and-mcp.md, docs/runtime/non-interactive-and-mcp.en.md</li>
+<li>technical value delivered: Documentation contracts reconciled; no implementation promotion</li>
+<li>product value delivered: Source-backed operator guidance</li>
+<li>actual implementation date and time: 03-11-2026 16:58</li>
+<li>verification evidence: Current run: docs 100/100; lifecycle plan 5/5; hooks 25/25 (isolated external TEMP); infrastructure templates 94/94; both hook validators, docs checker, RU/EN task matrices, state consistency and diff check exit 0; strict preview MkDocs exit 0; source review 20 official pages. See Verification receipt below. No runtime/model promotion.</li>
+<li>residual risks: OPEN-PERM, OPEN-MCP, OPEN-MODEL and OPEN-RUNTIME remain open; availability/runtime not tested</li>
+<li>follow-up: Separate technical implementation/eval decision; preserve historical evidence</li>
+</ul>
+<h3 id="task-doc6-09">Task <code>DOC6-09</code><a class="headerlink" href="#task-doc6-09" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Task: DOC6-09 — Условия делегации</li>
+<li>Status: implemented</li>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Plan trigger: Owner-approved documentation refresh following 20-item audit</li>
+<li>Validator target: detailed task blocks</li>
+<li>Date and time of task implementation: 03-11-2026 16:58</li>
+<li>Depends on: DOC6-01, DOC6-10</li>
+<li>Blocks: E5/E6 documentation acceptance</li>
+<li>Source: https://learn.chatgpt.com/docs/agent-configuration/subagents</li>
+<li>Short description: Исправить few-shot и общее правило; разделить явный запрос/применимые инструкции, строгую политику проекта и Work Ultra.</li>
+<li>Technical value: Source-aligned contracts and reproducible examples; implementation remains unchanged</li>
+<li>Product value: Operators can select a supported route without false activation or permission claims</li>
+<li>Scope: E1; docs/agent-systems/subagents-skills.md, docs/agent-systems/subagents-skills.en.md, docs/prompting/question-design.md, docs/prompting/question-design.en.md, docs/diagrams/agent-team-and-skills.md, docs/diagrams/agent-team-and-skills.en.md</li>
+<li>Non-goals: No config/model/runtime/template/test logic changes, live calls, browser, Git or publication</li>
+<li>Expected result: Исправить few-shot и общее правило; разделить явный запрос/применимые инструкции, строгую политику проекта и Work Ultra.</li>
+<li>Acceptance criteria: Исправить few-shot и общее правило; разделить явный запрос/применимые инструкции, строгую политику проекта и Work Ultra. RU/EN agree; official source and applicability are visible; protected files unchanged.</li>
+<li>Verification gates: Official source comparison; changed example parsing; mandatory commands above exit 0; semantic RU/EN review; strict preview build for nav/diagram edits</li>
+<li>Risks / approval gates: Platform drift and existing implementation mismatch; no silent promotion; live verification remains separately approval-bound</li>
+<li>Complexity: medium</li>
+<li>Estimated execution time: 30-90 minutes; shared checks run once per changed package</li>
+<li>Agents: Root docs maintainer; sequential source and self-review responsibilities</li>
+<li>Skills: implementation-planner; docs-maintainer; openai-docs</li>
+<li>Output artifacts: docs/agent-systems/subagents-skills.md, docs/agent-systems/subagents-skills.en.md, docs/prompting/question-design.md, docs/prompting/question-design.en.md, docs/diagrams/agent-team-and-skills.md, docs/diagrams/agent-team-and-skills.en.md</li>
+<li>Next step: Review linked technical dependencies without changing runtime</li>
+</ul>
+<h4 id="completion-report_8">Completion Report<a class="headerlink" href="#completion-report_8" title="Permanent link">&para;</a></h4>
+<ul>
+<li>status: implemented</li>
+<li>what was done: Исправить few-shot и общее правило; разделить явный запрос/применимые инструкции, строгую политику проекта и Work Ultra.</li>
+<li>files touched / work locations: docs/agent-systems/subagents-skills.md, docs/agent-systems/subagents-skills.en.md, docs/prompting/question-design.md, docs/prompting/question-design.en.md, docs/diagrams/agent-team-and-skills.md, docs/diagrams/agent-team-and-skills.en.md</li>
+<li>technical value delivered: Documentation contracts reconciled; no implementation promotion</li>
+<li>product value delivered: Source-backed operator guidance</li>
+<li>actual implementation date and time: 03-11-2026 16:58</li>
+<li>verification evidence: Current run: docs 100/100; lifecycle plan 5/5; hooks 25/25 (isolated external TEMP); infrastructure templates 94/94; both hook validators, docs checker, RU/EN task matrices, state consistency and diff check exit 0; strict preview MkDocs exit 0; source review 20 official pages. See Verification receipt below. No runtime/model promotion.</li>
+<li>residual risks: OPEN-PERM, OPEN-MCP, OPEN-MODEL and OPEN-RUNTIME remain open; availability/runtime not tested</li>
+<li>follow-up: Separate technical implementation/eval decision; preserve historical evidence</li>
+</ul>
+<h3 id="task-doc6-10">Task <code>DOC6-10</code><a class="headerlink" href="#task-doc6-10" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Task: DOC6-10 — Инструкции и достоверность фактов</li>
+<li>Status: implemented</li>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Plan trigger: Owner-approved documentation refresh following 20-item audit</li>
+<li>Validator target: detailed task blocks</li>
+<li>Date and time of task implementation: 03-11-2026 16:58</li>
+<li>Depends on: E0 baseline</li>
+<li>Blocks: E5/E6 documentation acceptance</li>
+<li>Source: https://learn.chatgpt.com/docs/agent-configuration/agents-md</li>
+<li>Short description: Разделить полномочия инструкций и источники фактов; описать discovery AGENTS, override, scope и лимит 32 KiB по умолчанию.</li>
+<li>Technical value: Source-aligned contracts and reproducible examples; implementation remains unchanged</li>
+<li>Product value: Operators can select a supported route without false activation or permission claims</li>
+<li>Scope: E1; docs/prompting/context-engineering.md, docs/prompting/context-engineering.en.md, docs/diagrams/context-memory-verification.md, docs/diagrams/context-memory-verification.en.md</li>
+<li>Non-goals: No config/model/runtime/template/test logic changes, live calls, browser, Git or publication</li>
+<li>Expected result: Разделить полномочия инструкций и источники фактов; описать discovery AGENTS, override, scope и лимит 32 KiB по умолчанию.</li>
+<li>Acceptance criteria: Разделить полномочия инструкций и источники фактов; описать discovery AGENTS, override, scope и лимит 32 KiB по умолчанию. RU/EN agree; official source and applicability are visible; protected files unchanged.</li>
+<li>Verification gates: Official source comparison; changed example parsing; mandatory commands above exit 0; semantic RU/EN review; strict preview build for nav/diagram edits</li>
+<li>Risks / approval gates: Platform drift and existing implementation mismatch; no silent promotion; live verification remains separately approval-bound</li>
+<li>Complexity: medium</li>
+<li>Estimated execution time: 30-90 minutes; shared checks run once per changed package</li>
+<li>Agents: Root docs maintainer; sequential source and self-review responsibilities</li>
+<li>Skills: implementation-planner; docs-maintainer; openai-docs</li>
+<li>Output artifacts: docs/prompting/context-engineering.md, docs/prompting/context-engineering.en.md, docs/diagrams/context-memory-verification.md, docs/diagrams/context-memory-verification.en.md</li>
+<li>Next step: Review linked technical dependencies without changing runtime</li>
+</ul>
+<h4 id="completion-report_9">Completion Report<a class="headerlink" href="#completion-report_9" title="Permanent link">&para;</a></h4>
+<ul>
+<li>status: implemented</li>
+<li>what was done: Разделить полномочия инструкций и источники фактов; описать discovery AGENTS, override, scope и лимит 32 KiB по умолчанию.</li>
+<li>files touched / work locations: docs/prompting/context-engineering.md, docs/prompting/context-engineering.en.md, docs/diagrams/context-memory-verification.md, docs/diagrams/context-memory-verification.en.md</li>
+<li>technical value delivered: Documentation contracts reconciled; no implementation promotion</li>
+<li>product value delivered: Source-backed operator guidance</li>
+<li>actual implementation date and time: 03-11-2026 16:58</li>
+<li>verification evidence: Current run: docs 100/100; lifecycle plan 5/5; hooks 25/25 (isolated external TEMP); infrastructure templates 94/94; both hook validators, docs checker, RU/EN task matrices, state consistency and diff check exit 0; strict preview MkDocs exit 0; source review 20 official pages. See Verification receipt below. No runtime/model promotion.</li>
+<li>residual risks: OPEN-PERM, OPEN-MCP, OPEN-MODEL and OPEN-RUNTIME remain open; availability/runtime not tested</li>
+<li>follow-up: Separate technical implementation/eval decision; preserve historical evidence</li>
+</ul>
+<h3 id="task-doc6-11">Task <code>DOC6-11</code><a class="headerlink" href="#task-doc6-11" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Task: DOC6-11 — RU/EN, ссылки и навигация</li>
+<li>Status: implemented</li>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Plan trigger: Owner-approved documentation refresh following 20-item audit</li>
+<li>Validator target: detailed task blocks</li>
+<li>Date and time of task implementation: 03-11-2026 16:58</li>
+<li>Depends on: DOC6-01, DOC6-02, DOC6-03, DOC6-04, DOC6-05, DOC6-06, DOC6-07, DOC6-08, DOC6-09, DOC6-10, DOC6-12, DOC6-13, DOC6-14, DOC6-15, DOC6-16, DOC6-17, DOC6-18, DOC6-19, DOC6-20</li>
+<li>Blocks: E6 final acceptance</li>
+<li>Source: https://learn.chatgpt.com/docs/models</li>
+<li>Short description: Сверить смысловую RU/EN-парность и canonical source mapping; сохранить исторические ссылки; включить новые страницы в обе навигации; проверить strict build.</li>
+<li>Technical value: Source-aligned contracts and reproducible examples; implementation remains unchanged</li>
+<li>Product value: Operators can select a supported route without false activation or permission claims</li>
+<li>Scope: E5; docs/sources/registry.md, docs/sources/registry.en.md, docs/diagrams/index.md, docs/diagrams/index.en.md, docs/runtime/non-interactive-and-mcp.md, docs/runtime/non-interactive-and-mcp.en.md, mkdocs.yml</li>
+<li>Non-goals: No config/model/runtime/template/test logic changes, live calls, browser, Git or publication</li>
+<li>Expected result: Сверить смысловую RU/EN-парность и canonical source mapping; сохранить исторические ссылки; включить новые страницы в обе навигации; проверить strict build.</li>
+<li>Acceptance criteria: Сверить смысловую RU/EN-парность и canonical source mapping; сохранить исторические ссылки; включить новые страницы в обе навигации; проверить strict build. RU/EN agree; official source and applicability are visible; protected files unchanged.</li>
+<li>Verification gates: Official source comparison; changed example parsing; mandatory commands above exit 0; semantic RU/EN review; strict preview build for nav/diagram edits</li>
+<li>Risks / approval gates: Platform drift and existing implementation mismatch; no silent promotion; live verification remains separately approval-bound</li>
+<li>Complexity: high</li>
+<li>Estimated execution time: 30-90 minutes; shared checks run once per changed package</li>
+<li>Agents: Root docs maintainer; sequential source and self-review responsibilities</li>
+<li>Skills: implementation-planner; docs-maintainer; openai-docs</li>
+<li>Output artifacts: docs/sources/registry.md, docs/sources/registry.en.md, docs/diagrams/index.md, docs/diagrams/index.en.md, docs/runtime/non-interactive-and-mcp.md, docs/runtime/non-interactive-and-mcp.en.md, mkdocs.yml</li>
+<li>Next step: Review linked technical dependencies without changing runtime</li>
+</ul>
+<h4 id="completion-report_10">Completion Report<a class="headerlink" href="#completion-report_10" title="Permanent link">&para;</a></h4>
+<ul>
+<li>status: implemented</li>
+<li>what was done: Сверить смысловую RU/EN-парность и canonical source mapping; сохранить исторические ссылки; включить новые страницы в обе навигации; проверить strict build.</li>
+<li>files touched / work locations: docs/sources/registry.md, docs/sources/registry.en.md, docs/diagrams/index.md, docs/diagrams/index.en.md, docs/runtime/non-interactive-and-mcp.md, docs/runtime/non-interactive-and-mcp.en.md, mkdocs.yml</li>
+<li>technical value delivered: Documentation contracts reconciled; no implementation promotion</li>
+<li>product value delivered: Source-backed operator guidance</li>
+<li>actual implementation date and time: 03-11-2026 16:58</li>
+<li>verification evidence: Current run: docs 100/100; lifecycle plan 5/5; hooks 25/25 (isolated external TEMP); infrastructure templates 94/94; both hook validators, docs checker, RU/EN task matrices, state consistency and diff check exit 0; strict preview MkDocs exit 0; source review 20 official pages. See Verification receipt below. No runtime/model promotion.</li>
+<li>residual risks: OPEN-PERM, OPEN-MCP, OPEN-MODEL and OPEN-RUNTIME remain open; availability/runtime not tested</li>
+<li>follow-up: Separate technical implementation/eval decision; preserve historical evidence</li>
+</ul>
+<h3 id="task-doc6-12">Task <code>DOC6-12</code><a class="headerlink" href="#task-doc6-12" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Task: DOC6-12 — Матрица моделей и reasoning</li>
+<li>Status: implemented</li>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Plan trigger: Owner-approved documentation refresh following 20-item audit</li>
+<li>Validator target: detailed task blocks</li>
+<li>Date and time of task implementation: 03-11-2026 16:58</li>
+<li>Depends on: DOC6-07, DOC6-09</li>
+<li>Blocks: E5/E6 documentation acceptance</li>
+<li>Source: https://developers.openai.com/api/docs/guides/latest-model</li>
+<li>Short description: Создать единую матрицу model ID, surface/auth, условий клиента, effort, tools, context и непроверенной доступности аккаунту; не переносить Ultra в API effort.</li>
+<li>Technical value: Source-aligned contracts and reproducible examples; implementation remains unchanged</li>
+<li>Product value: Operators can select a supported route without false activation or permission claims</li>
+<li>Scope: E2; docs/codex/models-and-reasoning.md, docs/codex/models-and-reasoning.en.md, docs/codex/configuration.md, docs/codex/configuration.en.md, docs/codex/surfaces.md, docs/codex/surfaces.en.md</li>
+<li>Non-goals: No config/model/runtime/template/test logic changes, live calls, browser, Git or publication</li>
+<li>Expected result: Создать единую матрицу model ID, surface/auth, условий клиента, effort, tools, context и непроверенной доступности аккаунту; не переносить Ultra в API effort.</li>
+<li>Acceptance criteria: Создать единую матрицу model ID, surface/auth, условий клиента, effort, tools, context и непроверенной доступности аккаунту; не переносить Ultra в API effort. RU/EN agree; official source and applicability are visible; protected files unchanged.</li>
+<li>Verification gates: Official source comparison; changed example parsing; mandatory commands above exit 0; semantic RU/EN review; strict preview build for nav/diagram edits</li>
+<li>Risks / approval gates: Platform drift and existing implementation mismatch; no silent promotion; live verification remains separately approval-bound</li>
+<li>Complexity: high</li>
+<li>Estimated execution time: 30-90 minutes; shared checks run once per changed package</li>
+<li>Agents: Root docs maintainer; sequential source and self-review responsibilities</li>
+<li>Skills: implementation-planner; docs-maintainer; openai-docs</li>
+<li>Output artifacts: docs/codex/models-and-reasoning.md, docs/codex/models-and-reasoning.en.md, docs/codex/configuration.md, docs/codex/configuration.en.md, docs/codex/surfaces.md, docs/codex/surfaces.en.md</li>
+<li>Next step: Review linked technical dependencies without changing runtime</li>
+</ul>
+<h4 id="completion-report_11">Completion Report<a class="headerlink" href="#completion-report_11" title="Permanent link">&para;</a></h4>
+<ul>
+<li>status: implemented</li>
+<li>what was done: Создать единую матрицу model ID, surface/auth, условий клиента, effort, tools, context и непроверенной доступности аккаунту; не переносить Ultra в API effort.</li>
+<li>files touched / work locations: docs/codex/models-and-reasoning.md, docs/codex/models-and-reasoning.en.md, docs/codex/configuration.md, docs/codex/configuration.en.md, docs/codex/surfaces.md, docs/codex/surfaces.en.md</li>
+<li>technical value delivered: Documentation contracts reconciled; no implementation promotion</li>
+<li>product value delivered: Source-backed operator guidance</li>
+<li>actual implementation date and time: 03-11-2026 16:58</li>
+<li>verification evidence: Current run: docs 100/100; lifecycle plan 5/5; hooks 25/25 (isolated external TEMP); infrastructure templates 94/94; both hook validators, docs checker, RU/EN task matrices, state consistency and diff check exit 0; strict preview MkDocs exit 0; source review 20 official pages. See Verification receipt below. No runtime/model promotion.</li>
+<li>residual risks: OPEN-PERM, OPEN-MCP, OPEN-MODEL and OPEN-RUNTIME remain open; availability/runtime not tested</li>
+<li>follow-up: Separate technical implementation/eval decision; preserve historical evidence</li>
+</ul>
+<h3 id="task-doc6-13">Task <code>DOC6-13</code><a class="headerlink" href="#task-doc6-13" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Task: DOC6-13 — Миграция и оценка</li>
+<li>Status: implemented</li>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Plan trigger: Owner-approved documentation refresh following 20-item audit</li>
+<li>Validator target: detailed task blocks</li>
+<li>Date and time of task implementation: 03-11-2026 16:58</li>
+<li>Depends on: DOC6-04, DOC6-12</li>
+<li>Blocks: E5/E6 documentation acceptance</li>
+<li>Source: https://developers.openai.com/api/docs/guides/latest-model</li>
+<li>Short description: Определить frozen baseline, сравнения одной переменной, заранее выбранные пороги, corpus, stop/rollback и границу доказательств; без вызовов моделей.</li>
+<li>Technical value: Source-aligned contracts and reproducible examples; implementation remains unchanged</li>
+<li>Product value: Operators can select a supported route without false activation or permission claims</li>
+<li>Scope: E3; docs/playbooks/model-migration.md, docs/playbooks/model-migration.en.md, docs/agent-systems/evals-observability.md, docs/agent-systems/evals-observability.en.md, EVALS.md</li>
+<li>Non-goals: No config/model/runtime/template/test logic changes, live calls, browser, Git or publication</li>
+<li>Expected result: Определить frozen baseline, сравнения одной переменной, заранее выбранные пороги, corpus, stop/rollback и границу доказательств; без вызовов моделей.</li>
+<li>Acceptance criteria: Определить frozen baseline, сравнения одной переменной, заранее выбранные пороги, corpus, stop/rollback и границу доказательств; без вызовов моделей. RU/EN agree; official source and applicability are visible; protected files unchanged.</li>
+<li>Verification gates: Official source comparison; changed example parsing; mandatory commands above exit 0; semantic RU/EN review; strict preview build for nav/diagram edits</li>
+<li>Risks / approval gates: Platform drift and existing implementation mismatch; no silent promotion; live verification remains separately approval-bound</li>
+<li>Complexity: medium</li>
+<li>Estimated execution time: 30-90 minutes; shared checks run once per changed package</li>
+<li>Agents: Root docs maintainer; sequential source and self-review responsibilities</li>
+<li>Skills: implementation-planner; docs-maintainer; openai-docs</li>
+<li>Output artifacts: docs/playbooks/model-migration.md, docs/playbooks/model-migration.en.md, docs/agent-systems/evals-observability.md, docs/agent-systems/evals-observability.en.md, EVALS.md</li>
+<li>Next step: Review linked technical dependencies without changing runtime</li>
+</ul>
+<h4 id="completion-report_12">Completion Report<a class="headerlink" href="#completion-report_12" title="Permanent link">&para;</a></h4>
+<ul>
+<li>status: implemented</li>
+<li>what was done: Определить frozen baseline, сравнения одной переменной, заранее выбранные пороги, corpus, stop/rollback и границу доказательств; без вызовов моделей.</li>
+<li>files touched / work locations: docs/playbooks/model-migration.md, docs/playbooks/model-migration.en.md, docs/agent-systems/evals-observability.md, docs/agent-systems/evals-observability.en.md, EVALS.md</li>
+<li>technical value delivered: Documentation contracts reconciled; no implementation promotion</li>
+<li>product value delivered: Source-backed operator guidance</li>
+<li>actual implementation date and time: 03-11-2026 16:58</li>
+<li>verification evidence: Current run: docs 100/100; lifecycle plan 5/5; hooks 25/25 (isolated external TEMP); infrastructure templates 94/94; both hook validators, docs checker, RU/EN task matrices, state consistency and diff check exit 0; strict preview MkDocs exit 0; source review 20 official pages. See Verification receipt below. No runtime/model promotion.</li>
+<li>residual risks: OPEN-PERM, OPEN-MCP, OPEN-MODEL and OPEN-RUNTIME remain open; availability/runtime not tested</li>
+<li>follow-up: Separate technical implementation/eval decision; preserve historical evidence</li>
+</ul>
+<h3 id="task-doc6-14">Task <code>DOC6-14</code><a class="headerlink" href="#task-doc6-14" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Task: DOC6-14 — Prompting GPT-6</li>
+<li>Status: implemented</li>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Plan trigger: Owner-approved documentation refresh following 20-item audit</li>
+<li>Validator target: detailed task blocks</li>
+<li>Date and time of task implementation: 03-11-2026 16:58</li>
+<li>Depends on: DOC6-09, DOC6-10, DOC6-13</li>
+<li>Blocks: E5/E6 documentation acceptance</li>
+<li>Source: https://developers.openai.com/api/docs/guides/latest-model</li>
+<li>Short description: Описать инициативу в scope, подготовку до approval, конфликт инструкций и соразмерную проверку без изменения действующих prompts.</li>
+<li>Technical value: Source-aligned contracts and reproducible examples; implementation remains unchanged</li>
+<li>Product value: Operators can select a supported route without false activation or permission claims</li>
+<li>Scope: E3; docs/prompting/overview.md, docs/prompting/overview.en.md, docs/prompting/question-design.md, docs/prompting/question-design.en.md, docs/prompting/context-engineering.md, docs/prompting/context-engineering.en.md</li>
+<li>Non-goals: No config/model/runtime/template/test logic changes, live calls, browser, Git or publication</li>
+<li>Expected result: Описать инициативу в scope, подготовку до approval, конфликт инструкций и соразмерную проверку без изменения действующих prompts.</li>
+<li>Acceptance criteria: Описать инициативу в scope, подготовку до approval, конфликт инструкций и соразмерную проверку без изменения действующих prompts. RU/EN agree; official source and applicability are visible; protected files unchanged.</li>
+<li>Verification gates: Official source comparison; changed example parsing; mandatory commands above exit 0; semantic RU/EN review; strict preview build for nav/diagram edits</li>
+<li>Risks / approval gates: Platform drift and existing implementation mismatch; no silent promotion; live verification remains separately approval-bound</li>
+<li>Complexity: medium</li>
+<li>Estimated execution time: 30-90 minutes; shared checks run once per changed package</li>
+<li>Agents: Root docs maintainer; sequential source and self-review responsibilities</li>
+<li>Skills: implementation-planner; docs-maintainer; openai-docs</li>
+<li>Output artifacts: docs/prompting/overview.md, docs/prompting/overview.en.md, docs/prompting/question-design.md, docs/prompting/question-design.en.md, docs/prompting/context-engineering.md, docs/prompting/context-engineering.en.md</li>
+<li>Next step: Review linked technical dependencies without changing runtime</li>
+</ul>
+<h4 id="completion-report_13">Completion Report<a class="headerlink" href="#completion-report_13" title="Permanent link">&para;</a></h4>
+<ul>
+<li>status: implemented</li>
+<li>what was done: Описать инициативу в scope, подготовку до approval, конфликт инструкций и соразмерную проверку без изменения действующих prompts.</li>
+<li>files touched / work locations: docs/prompting/overview.md, docs/prompting/overview.en.md, docs/prompting/question-design.md, docs/prompting/question-design.en.md, docs/prompting/context-engineering.md, docs/prompting/context-engineering.en.md</li>
+<li>technical value delivered: Documentation contracts reconciled; no implementation promotion</li>
+<li>product value delivered: Source-backed operator guidance</li>
+<li>actual implementation date and time: 03-11-2026 16:58</li>
+<li>verification evidence: Current run: docs 100/100; lifecycle plan 5/5; hooks 25/25 (isolated external TEMP); infrastructure templates 94/94; both hook validators, docs checker, RU/EN task matrices, state consistency and diff check exit 0; strict preview MkDocs exit 0; source review 20 official pages. See Verification receipt below. No runtime/model promotion.</li>
+<li>residual risks: OPEN-PERM, OPEN-MCP, OPEN-MODEL and OPEN-RUNTIME remain open; availability/runtime not tested</li>
+<li>follow-up: Separate technical implementation/eval decision; preserve historical evidence</li>
+</ul>
+<h3 id="task-doc6-15">Task <code>DOC6-15</code><a class="headerlink" href="#task-doc6-15" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Task: DOC6-15 — API-совместимость</li>
+<li>Status: implemented</li>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Plan trigger: Owner-approved documentation refresh following 20-item audit</li>
+<li>Validator target: detailed task blocks</li>
+<li>Date and time of task implementation: 03-11-2026 16:58</li>
+<li>Depends on: DOC6-12, DOC6-19</li>
+<li>Blocks: E5/E6 documentation acceptance</li>
+<li>Source: https://developers.openai.com/api/docs/guides/latest-model</li>
+<li>Short description: Сопоставить model/endpoint/tools/reasoning/sampling; разделить ключи Responses и Chat Completions; не заменять CLI runner.</li>
+<li>Technical value: Source-aligned contracts and reproducible examples; implementation remains unchanged</li>
+<li>Product value: Operators can select a supported route without false activation or permission claims</li>
+<li>Scope: E4; docs/agent-systems/sdk-patterns.md, docs/agent-systems/sdk-patterns.en.md, docs/runtime/non-interactive-and-mcp.md, docs/runtime/non-interactive-and-mcp.en.md, docs/codex/models-and-reasoning.md, docs/codex/models-and-reasoning.en.md</li>
+<li>Non-goals: No config/model/runtime/template/test logic changes, live calls, browser, Git or publication</li>
+<li>Expected result: Сопоставить model/endpoint/tools/reasoning/sampling; разделить ключи Responses и Chat Completions; не заменять CLI runner.</li>
+<li>Acceptance criteria: Сопоставить model/endpoint/tools/reasoning/sampling; разделить ключи Responses и Chat Completions; не заменять CLI runner. RU/EN agree; official source and applicability are visible; protected files unchanged.</li>
+<li>Verification gates: Official source comparison; changed example parsing; mandatory commands above exit 0; semantic RU/EN review; strict preview build for nav/diagram edits</li>
+<li>Risks / approval gates: Platform drift and existing implementation mismatch; no silent promotion; live verification remains separately approval-bound</li>
+<li>Complexity: medium</li>
+<li>Estimated execution time: 30-90 minutes; shared checks run once per changed package</li>
+<li>Agents: Root docs maintainer; sequential source and self-review responsibilities</li>
+<li>Skills: implementation-planner; docs-maintainer; openai-docs</li>
+<li>Output artifacts: docs/agent-systems/sdk-patterns.md, docs/agent-systems/sdk-patterns.en.md, docs/runtime/non-interactive-and-mcp.md, docs/runtime/non-interactive-and-mcp.en.md, docs/codex/models-and-reasoning.md, docs/codex/models-and-reasoning.en.md</li>
+<li>Next step: Review linked technical dependencies without changing runtime</li>
+</ul>
+<h4 id="completion-report_14">Completion Report<a class="headerlink" href="#completion-report_14" title="Permanent link">&para;</a></h4>
+<ul>
+<li>status: implemented</li>
+<li>what was done: Сопоставить model/endpoint/tools/reasoning/sampling; разделить ключи Responses и Chat Completions; не заменять CLI runner.</li>
+<li>files touched / work locations: docs/agent-systems/sdk-patterns.md, docs/agent-systems/sdk-patterns.en.md, docs/runtime/non-interactive-and-mcp.md, docs/runtime/non-interactive-and-mcp.en.md, docs/codex/models-and-reasoning.md, docs/codex/models-and-reasoning.en.md</li>
+<li>technical value delivered: Documentation contracts reconciled; no implementation promotion</li>
+<li>product value delivered: Source-backed operator guidance</li>
+<li>actual implementation date and time: 03-11-2026 16:58</li>
+<li>verification evidence: Current run: docs 100/100; lifecycle plan 5/5; hooks 25/25 (isolated external TEMP); infrastructure templates 94/94; both hook validators, docs checker, RU/EN task matrices, state consistency and diff check exit 0; strict preview MkDocs exit 0; source review 20 official pages. See Verification receipt below. No runtime/model promotion.</li>
+<li>residual risks: OPEN-PERM, OPEN-MCP, OPEN-MODEL and OPEN-RUNTIME remain open; availability/runtime not tested</li>
+<li>follow-up: Separate technical implementation/eval decision; preserve historical evidence</li>
+</ul>
+<h3 id="task-doc6-16">Task <code>DOC6-16</code><a class="headerlink" href="#task-doc6-16" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Task: DOC6-16 — Стоимость, caching и контекст</li>
+<li>Status: implemented</li>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Plan trigger: Owner-approved documentation refresh following 20-item audit</li>
+<li>Validator target: detailed task blocks</li>
+<li>Date and time of task implementation: 03-11-2026 16:58</li>
+<li>Depends on: DOC6-12, DOC6-13</li>
+<li>Blocks: E5/E6 documentation acceptance</li>
+<li>Source: https://developers.openai.com/api/docs/guides/prompt-caching</li>
+<li>Short description: Описать cache reads/writes, retention, tiers, условия стоимости контекста и стоимость завершенной задачи; отделить API billing от подписки, cache от memory.</li>
+<li>Technical value: Source-aligned contracts and reproducible examples; implementation remains unchanged</li>
+<li>Product value: Operators can select a supported route without false activation or permission claims</li>
+<li>Scope: E3; docs/prompting/context-engineering.md, docs/prompting/context-engineering.en.md, docs/agent-systems/evals-observability.md, docs/agent-systems/evals-observability.en.md, docs/codex/models-and-reasoning.md, docs/codex/models-and-reasoning.en.md, docs/playbooks/model-migration.md, docs/playbooks/model-migration.en.md</li>
+<li>Non-goals: No config/model/runtime/template/test logic changes, live calls, browser, Git or publication</li>
+<li>Expected result: Описать cache reads/writes, retention, tiers, условия стоимости контекста и стоимость завершенной задачи; отделить API billing от подписки, cache от memory.</li>
+<li>Acceptance criteria: Описать cache reads/writes, retention, tiers, условия стоимости контекста и стоимость завершенной задачи; отделить API billing от подписки, cache от memory. RU/EN agree; official source and applicability are visible; protected files unchanged.</li>
+<li>Verification gates: Official source comparison; changed example parsing; mandatory commands above exit 0; semantic RU/EN review; strict preview build for nav/diagram edits</li>
+<li>Risks / approval gates: Platform drift and existing implementation mismatch; no silent promotion; live verification remains separately approval-bound</li>
+<li>Complexity: medium</li>
+<li>Estimated execution time: 30-90 minutes; shared checks run once per changed package</li>
+<li>Agents: Root docs maintainer; sequential source and self-review responsibilities</li>
+<li>Skills: implementation-planner; docs-maintainer; openai-docs</li>
+<li>Output artifacts: docs/prompting/context-engineering.md, docs/prompting/context-engineering.en.md, docs/agent-systems/evals-observability.md, docs/agent-systems/evals-observability.en.md, docs/codex/models-and-reasoning.md, docs/codex/models-and-reasoning.en.md, docs/playbooks/model-migration.md, docs/playbooks/model-migration.en.md</li>
+<li>Next step: Review linked technical dependencies without changing runtime</li>
+</ul>
+<h4 id="completion-report_15">Completion Report<a class="headerlink" href="#completion-report_15" title="Permanent link">&para;</a></h4>
+<ul>
+<li>status: implemented</li>
+<li>what was done: Описать cache reads/writes, retention, tiers, условия стоимости контекста и стоимость завершенной задачи; отделить API billing от подписки, cache от memory.</li>
+<li>files touched / work locations: docs/prompting/context-engineering.md, docs/prompting/context-engineering.en.md, docs/agent-systems/evals-observability.md, docs/agent-systems/evals-observability.en.md, docs/codex/models-and-reasoning.md, docs/codex/models-and-reasoning.en.md, docs/playbooks/model-migration.md, docs/playbooks/model-migration.en.md</li>
+<li>technical value delivered: Documentation contracts reconciled; no implementation promotion</li>
+<li>product value delivered: Source-backed operator guidance</li>
+<li>actual implementation date and time: 03-11-2026 16:58</li>
+<li>verification evidence: Current run: docs 100/100; lifecycle plan 5/5; hooks 25/25 (isolated external TEMP); infrastructure templates 94/94; both hook validators, docs checker, RU/EN task matrices, state consistency and diff check exit 0; strict preview MkDocs exit 0; source review 20 official pages. See Verification receipt below. No runtime/model promotion.</li>
+<li>residual risks: OPEN-PERM, OPEN-MCP, OPEN-MODEL and OPEN-RUNTIME remain open; availability/runtime not tested</li>
+<li>follow-up: Separate technical implementation/eval decision; preserve historical evidence</li>
+</ul>
+<h3 id="task-doc6-17">Task <code>DOC6-17</code><a class="headerlink" href="#task-doc6-17" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Task: DOC6-17 — Async tools и steering</li>
+<li>Status: implemented</li>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Plan trigger: Owner-approved documentation refresh following 20-item audit</li>
+<li>Validator target: detailed task blocks</li>
+<li>Date and time of task implementation: 03-11-2026 16:58</li>
+<li>Depends on: DOC6-15, DOC6-19</li>
+<li>Blocks: E5/E6 documentation acceptance</li>
+<li>Source: https://developers.openai.com/api/docs/guides/async-tool-calling</li>
+<li>Short description: Описать pending calls, call_id, deadlines, повторные/поздние результаты и accepted/applied steering; не обещать отмену или hosted tool execution.</li>
+<li>Technical value: Source-aligned contracts and reproducible examples; implementation remains unchanged</li>
+<li>Product value: Operators can select a supported route without false activation or permission claims</li>
+<li>Scope: E4; docs/agent-systems/session-control.md, docs/agent-systems/session-control.en.md, docs/agent-systems/sdk-patterns.md, docs/agent-systems/sdk-patterns.en.md</li>
+<li>Non-goals: No config/model/runtime/template/test logic changes, live calls, browser, Git or publication</li>
+<li>Expected result: Описать pending calls, call_id, deadlines, повторные/поздние результаты и accepted/applied steering; не обещать отмену или hosted tool execution.</li>
+<li>Acceptance criteria: Описать pending calls, call_id, deadlines, повторные/поздние результаты и accepted/applied steering; не обещать отмену или hosted tool execution. RU/EN agree; official source and applicability are visible; protected files unchanged.</li>
+<li>Verification gates: Official source comparison; changed example parsing; mandatory commands above exit 0; semantic RU/EN review; strict preview build for nav/diagram edits</li>
+<li>Risks / approval gates: Platform drift and existing implementation mismatch; no silent promotion; live verification remains separately approval-bound</li>
+<li>Complexity: medium</li>
+<li>Estimated execution time: 30-90 minutes; shared checks run once per changed package</li>
+<li>Agents: Root docs maintainer; sequential source and self-review responsibilities</li>
+<li>Skills: implementation-planner; docs-maintainer; openai-docs</li>
+<li>Output artifacts: docs/agent-systems/session-control.md, docs/agent-systems/session-control.en.md, docs/agent-systems/sdk-patterns.md, docs/agent-systems/sdk-patterns.en.md</li>
+<li>Next step: Review linked technical dependencies without changing runtime</li>
+</ul>
+<h4 id="completion-report_16">Completion Report<a class="headerlink" href="#completion-report_16" title="Permanent link">&para;</a></h4>
+<ul>
+<li>status: implemented</li>
+<li>what was done: Описать pending calls, call_id, deadlines, повторные/поздние результаты и accepted/applied steering; не обещать отмену или hosted tool execution.</li>
+<li>files touched / work locations: docs/agent-systems/session-control.md, docs/agent-systems/session-control.en.md, docs/agent-systems/sdk-patterns.md, docs/agent-systems/sdk-patterns.en.md</li>
+<li>technical value delivered: Documentation contracts reconciled; no implementation promotion</li>
+<li>product value delivered: Source-backed operator guidance</li>
+<li>actual implementation date and time: 03-11-2026 16:58</li>
+<li>verification evidence: Current run: docs 100/100; lifecycle plan 5/5; hooks 25/25 (isolated external TEMP); infrastructure templates 94/94; both hook validators, docs checker, RU/EN task matrices, state consistency and diff check exit 0; strict preview MkDocs exit 0; source review 20 official pages. See Verification receipt below. No runtime/model promotion.</li>
+<li>residual risks: OPEN-PERM, OPEN-MCP, OPEN-MODEL and OPEN-RUNTIME remain open; availability/runtime not tested</li>
+<li>follow-up: Separate technical implementation/eval decision; preserve historical evidence</li>
+</ul>
+<h3 id="task-doc6-18">Task <code>DOC6-18</code><a class="headerlink" href="#task-doc6-18" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Task: DOC6-18 — Reasoning updates и compaction</li>
+<li>Status: implemented</li>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Plan trigger: Owner-approved documentation refresh following 20-item audit</li>
+<li>Validator target: detailed task blocks</li>
+<li>Date and time of task implementation: 03-11-2026 16:58</li>
+<li>Depends on: DOC6-16, DOC6-17</li>
+<li>Blocks: E5/E6 documentation acceptance</li>
+<li>Source: https://developers.openai.com/api/docs/guides/reasoning</li>
+<li>Short description: Разделить steering, reset, summary, compaction и memory; описать совместимость configuration_update и восстановление после explicit compaction.</li>
+<li>Technical value: Source-aligned contracts and reproducible examples; implementation remains unchanged</li>
+<li>Product value: Operators can select a supported route without false activation or permission claims</li>
+<li>Scope: E4; docs/agent-systems/session-control.md, docs/agent-systems/session-control.en.md, docs/prompting/context-engineering.md, docs/prompting/context-engineering.en.md, docs/diagrams/context-memory-verification.md, docs/diagrams/context-memory-verification.en.md</li>
+<li>Non-goals: No config/model/runtime/template/test logic changes, live calls, browser, Git or publication</li>
+<li>Expected result: Разделить steering, reset, summary, compaction и memory; описать совместимость configuration_update и восстановление после explicit compaction.</li>
+<li>Acceptance criteria: Разделить steering, reset, summary, compaction и memory; описать совместимость configuration_update и восстановление после explicit compaction. RU/EN agree; official source and applicability are visible; protected files unchanged.</li>
+<li>Verification gates: Official source comparison; changed example parsing; mandatory commands above exit 0; semantic RU/EN review; strict preview build for nav/diagram edits</li>
+<li>Risks / approval gates: Platform drift and existing implementation mismatch; no silent promotion; live verification remains separately approval-bound</li>
+<li>Complexity: medium</li>
+<li>Estimated execution time: 30-90 minutes; shared checks run once per changed package</li>
+<li>Agents: Root docs maintainer; sequential source and self-review responsibilities</li>
+<li>Skills: implementation-planner; docs-maintainer; openai-docs</li>
+<li>Output artifacts: docs/agent-systems/session-control.md, docs/agent-systems/session-control.en.md, docs/prompting/context-engineering.md, docs/prompting/context-engineering.en.md, docs/diagrams/context-memory-verification.md, docs/diagrams/context-memory-verification.en.md</li>
+<li>Next step: Review linked technical dependencies without changing runtime</li>
+</ul>
+<h4 id="completion-report_17">Completion Report<a class="headerlink" href="#completion-report_17" title="Permanent link">&para;</a></h4>
+<ul>
+<li>status: implemented</li>
+<li>what was done: Разделить steering, reset, summary, compaction и memory; описать совместимость configuration_update и восстановление после explicit compaction.</li>
+<li>files touched / work locations: docs/agent-systems/session-control.md, docs/agent-systems/session-control.en.md, docs/prompting/context-engineering.md, docs/prompting/context-engineering.en.md, docs/diagrams/context-memory-verification.md, docs/diagrams/context-memory-verification.en.md</li>
+<li>technical value delivered: Documentation contracts reconciled; no implementation promotion</li>
+<li>product value delivered: Source-backed operator guidance</li>
+<li>actual implementation date and time: 03-11-2026 16:58</li>
+<li>verification evidence: Current run: docs 100/100; lifecycle plan 5/5; hooks 25/25 (isolated external TEMP); infrastructure templates 94/94; both hook validators, docs checker, RU/EN task matrices, state consistency and diff check exit 0; strict preview MkDocs exit 0; source review 20 official pages. See Verification receipt below. No runtime/model promotion.</li>
+<li>residual risks: OPEN-PERM, OPEN-MCP, OPEN-MODEL and OPEN-RUNTIME remain open; availability/runtime not tested</li>
+<li>follow-up: Separate technical implementation/eval decision; preserve historical evidence</li>
+</ul>
+<h3 id="task-doc6-19">Task <code>DOC6-19</code><a class="headerlink" href="#task-doc6-19" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Task: DOC6-19 — Карта agent runtimes</li>
+<li>Status: implemented</li>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Plan trigger: Owner-approved documentation refresh following 20-item audit</li>
+<li>Validator target: detailed task blocks</li>
+<li>Date and time of task implementation: 03-11-2026 16:58</li>
+<li>Depends on: DOC6-01, DOC6-02, DOC6-12, DOC6-13</li>
+<li>Blocks: E5/E6 documentation acceptance</li>
+<li>Source: https://developers.openai.com/api/docs/guides/agents</li>
+<li>Short description: Сравнить Agents API, SDK, Responses API/Multi-agent и Codex subagents по владению state/tools/execution; отметить beta и пробелы реализации проекта.</li>
+<li>Technical value: Source-aligned contracts and reproducible examples; implementation remains unchanged</li>
+<li>Product value: Operators can select a supported route without false activation or permission claims</li>
+<li>Scope: E4; docs/runtime/overview.md, docs/runtime/overview.en.md, docs/agent-systems/sdk-patterns.md, docs/agent-systems/sdk-patterns.en.md, docs/diagrams/runtime-decision-map.md, docs/diagrams/runtime-decision-map.en.md, docs/product-agent-os/codex-compatibility.md, docs/product-agent-os/codex-compatibility.en.md</li>
+<li>Non-goals: No config/model/runtime/template/test logic changes, live calls, browser, Git or publication</li>
+<li>Expected result: Сравнить Agents API, SDK, Responses API/Multi-agent и Codex subagents по владению state/tools/execution; отметить beta и пробелы реализации проекта.</li>
+<li>Acceptance criteria: Сравнить Agents API, SDK, Responses API/Multi-agent и Codex subagents по владению state/tools/execution; отметить beta и пробелы реализации проекта. RU/EN agree; official source and applicability are visible; protected files unchanged.</li>
+<li>Verification gates: Official source comparison; changed example parsing; mandatory commands above exit 0; semantic RU/EN review; strict preview build for nav/diagram edits</li>
+<li>Risks / approval gates: Platform drift and existing implementation mismatch; no silent promotion; live verification remains separately approval-bound</li>
+<li>Complexity: high</li>
+<li>Estimated execution time: 30-90 minutes; shared checks run once per changed package</li>
+<li>Agents: Root docs maintainer; sequential source and self-review responsibilities</li>
+<li>Skills: implementation-planner; docs-maintainer; openai-docs</li>
+<li>Output artifacts: docs/runtime/overview.md, docs/runtime/overview.en.md, docs/agent-systems/sdk-patterns.md, docs/agent-systems/sdk-patterns.en.md, docs/diagrams/runtime-decision-map.md, docs/diagrams/runtime-decision-map.en.md, docs/product-agent-os/codex-compatibility.md, docs/product-agent-os/codex-compatibility.en.md</li>
+<li>Next step: Review linked technical dependencies without changing runtime</li>
+</ul>
+<h4 id="completion-report_18">Completion Report<a class="headerlink" href="#completion-report_18" title="Permanent link">&para;</a></h4>
+<ul>
+<li>status: implemented</li>
+<li>what was done: Сравнить Agents API, SDK, Responses API/Multi-agent и Codex subagents по владению state/tools/execution; отметить beta и пробелы реализации проекта.</li>
+<li>files touched / work locations: docs/runtime/overview.md, docs/runtime/overview.en.md, docs/agent-systems/sdk-patterns.md, docs/agent-systems/sdk-patterns.en.md, docs/diagrams/runtime-decision-map.md, docs/diagrams/runtime-decision-map.en.md, docs/product-agent-os/codex-compatibility.md, docs/product-agent-os/codex-compatibility.en.md</li>
+<li>technical value delivered: Documentation contracts reconciled; no implementation promotion</li>
+<li>product value delivered: Source-backed operator guidance</li>
+<li>actual implementation date and time: 03-11-2026 16:58</li>
+<li>verification evidence: Current run: docs 100/100; lifecycle plan 5/5; hooks 25/25 (isolated external TEMP); infrastructure templates 94/94; both hook validators, docs checker, RU/EN task matrices, state consistency and diff check exit 0; strict preview MkDocs exit 0; source review 20 official pages. See Verification receipt below. No runtime/model promotion.</li>
+<li>residual risks: OPEN-PERM, OPEN-MCP, OPEN-MODEL and OPEN-RUNTIME remain open; availability/runtime not tested</li>
+<li>follow-up: Separate technical implementation/eval decision; preserve historical evidence</li>
+</ul>
+<h3 id="task-doc6-20">Task <code>DOC6-20</code><a class="headerlink" href="#task-doc6-20" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Task: DOC6-20 — Trust и активация hooks</li>
+<li>Status: implemented</li>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Plan trigger: Owner-approved documentation refresh following 20-item audit</li>
+<li>Validator target: detailed task blocks</li>
+<li>Date and time of task implementation: 03-11-2026 16:58</li>
+<li>Depends on: DOC6-01, DOC6-07</li>
+<li>Blocks: E5/E6 documentation acceptance</li>
+<li>Source: https://learn.chatgpt.com/docs/hooks</li>
+<li>Short description: Описать hash trust, events/handlers, timeouts и coverage; разделить static/script/fresh-session evidence и эффекты PreToolUse/PostToolUse/Stop.</li>
+<li>Technical value: Source-aligned contracts and reproducible examples; implementation remains unchanged</li>
+<li>Product value: Operators can select a supported route without false activation or permission claims</li>
+<li>Scope: E4; docs/runtime/worktrees-hooks-rules.md, docs/runtime/worktrees-hooks-rules.en.md, docs/product-agent-os/codex-compatibility.md, docs/product-agent-os/codex-compatibility.en.md, TEST.md</li>
+<li>Non-goals: No config/model/runtime/template/test logic changes, live calls, browser, Git or publication</li>
+<li>Expected result: Описать hash trust, events/handlers, timeouts и coverage; разделить static/script/fresh-session evidence и эффекты PreToolUse/PostToolUse/Stop.</li>
+<li>Acceptance criteria: Описать hash trust, events/handlers, timeouts и coverage; разделить static/script/fresh-session evidence и эффекты PreToolUse/PostToolUse/Stop. RU/EN agree; official source and applicability are visible; protected files unchanged.</li>
+<li>Verification gates: Official source comparison; changed example parsing; mandatory commands above exit 0; semantic RU/EN review; strict preview build for nav/diagram edits</li>
+<li>Risks / approval gates: Platform drift and existing implementation mismatch; no silent promotion; live verification remains separately approval-bound</li>
+<li>Complexity: medium</li>
+<li>Estimated execution time: 30-90 minutes; shared checks run once per changed package</li>
+<li>Agents: Root docs maintainer; sequential source and self-review responsibilities</li>
+<li>Skills: implementation-planner; docs-maintainer; openai-docs</li>
+<li>Output artifacts: docs/runtime/worktrees-hooks-rules.md, docs/runtime/worktrees-hooks-rules.en.md, docs/product-agent-os/codex-compatibility.md, docs/product-agent-os/codex-compatibility.en.md, TEST.md</li>
+<li>Next step: Review linked technical dependencies without changing runtime</li>
+</ul>
+<h4 id="completion-report_19">Completion Report<a class="headerlink" href="#completion-report_19" title="Permanent link">&para;</a></h4>
+<ul>
+<li>status: implemented</li>
+<li>what was done: Описать hash trust, events/handlers, timeouts и coverage; разделить static/script/fresh-session evidence и эффекты PreToolUse/PostToolUse/Stop.</li>
+<li>files touched / work locations: docs/runtime/worktrees-hooks-rules.md, docs/runtime/worktrees-hooks-rules.en.md, docs/product-agent-os/codex-compatibility.md, docs/product-agent-os/codex-compatibility.en.md, TEST.md</li>
+<li>technical value delivered: Documentation contracts reconciled; no implementation promotion</li>
+<li>product value delivered: Source-backed operator guidance</li>
+<li>actual implementation date and time: 03-11-2026 16:58</li>
+<li>verification evidence: Current run: docs 100/100; lifecycle plan 5/5; hooks 25/25 (isolated external TEMP); infrastructure templates 94/94; both hook validators, docs checker, RU/EN task matrices, state consistency and diff check exit 0; strict preview MkDocs exit 0; source review 20 official pages. See Verification receipt below. No runtime/model promotion.</li>
+<li>residual risks: OPEN-PERM, OPEN-MCP, OPEN-MODEL and OPEN-RUNTIME remain open; availability/runtime not tested</li>
+<li>follow-up: Separate technical implementation/eval decision; preserve historical evidence</li>
+</ul>
+<h2 id="completion-assurance">Completion assurance / Проверка завершения<a class="headerlink" href="#completion-assurance" title="Permanent link">&para;</a></h2>
+<p>Doubt packet: not_required as a separate artifact; explicit root self-review uses the 20-item acceptance matrix, current command receipts and protected-file comparison. Supported claim: documentation corrections only. Unsupported: model promotion, live isolation/MCP/hook activation, release readiness. No provider/model/browser/server/Git/external writes performed.</p>
+<h2 id="2026-11-03">Результаты проверки — 2026-11-03<a class="headerlink" href="#2026-11-03" title="Permanent link">&para;</a></h2>
+<p>Все 20 документационных пунктов выполнены. Этапы Э0–Э6 завершены в документационном scope; технические зависимости остаются открытыми. Ниже результаты текущего запуска, а не повторное использование исторических результатов. После записи статусов выполняется финальная проверка затронутых документов; результаты hooks/templates переиспользуются при неизменных исходниках.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Exit</th>
+<th>Observed result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>python -m unittest tests.product_agent_os.test_product_agent_os_docs -v</code></td>
+<td>0</td>
+<td>Ran 100 tests in 2.711s; OK</td>
+</tr>
+<tr>
+<td><code>python -m unittest tests.product_agent_os.test_task_plan_lifecycle -v</code></td>
+<td>0</td>
+<td>Ran 5 tests in 0.665s; OK</td>
+</tr>
+<tr>
+<td><code>python -m unittest tests.product_agent_os.test_lifecycle_hooks -v</code></td>
+<td>0</td>
+<td>Ran 25 tests in 3.245s; OK</td>
+</tr>
+<tr>
+<td><code>python plugins/product-agent-os/scripts/validate_hooks.py .codex/hooks.json</code></td>
+<td>0</td>
+<td>No errors reported</td>
+</tr>
+<tr>
+<td><code>python plugins/product-agent-os/scripts/validate_hooks.py .codex/hooks</code></td>
+<td>0</td>
+<td>No errors reported</td>
+</tr>
+<tr>
+<td><code>python -m unittest tests.product_agent_os.test_infrastructure_templates -v</code></td>
+<td>0</td>
+<td>Ran 94 tests in 1.846s; OK</td>
+</tr>
+<tr>
+<td><code>python tools/check_docs.py</code></td>
+<td>0</td>
+<td>OK: documentation structure checks passed</td>
+</tr>
+<tr>
+<td><code>python plugins/product-agent-os/scripts/validate_task_matrix.py docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md</code></td>
+<td>0</td>
+<td>No errors reported</td>
+</tr>
+<tr>
+<td><code>python plugins/product-agent-os/scripts/validate_task_matrix.py docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.en.md</code></td>
+<td>0</td>
+<td>No errors reported</td>
+</tr>
+<tr>
+<td><code>python plugins/product-agent-os/scripts/validate_task_state_consistency.py</code></td>
+<td>0</td>
+<td>No errors reported</td>
+</tr>
+<tr>
+<td><code>git diff --check</code></td>
+<td>0</td>
+<td>No errors reported</td>
+</tr>
+<tr>
+<td><code>.venv-docs\Scripts\python.exe -m mkdocs build --strict --site-dir .docs-tools/reports/gpt6-docs-preview</code></td>
+<td>0</td>
+<td>Documentation built in 25.42 seconds</td>
+</tr>
+</tbody>
+</table>
+<p>Статическая приемка: прочитаны 20 официальных источников; 48 измененных/новых Markdown-файлов прочитаны как UTF-8; разобраны 10 полных TOML/JSON-блоков; официальные URL совпадают в RU/EN-парах. Проверены все 20 строк приемки, границы source/runtime, сочетания параметров, примеры делегации и отсутствие promotion claims. Это явная самопроверка основного агента, не независимый reviewer run. Проверены Mermaid source и strict generation; browser rendering не запускался.</p>
+<p>Первая попытка после создания плана: 224 теста, 15 failures/33 errors. Причины включали права inherited TEMP, счетчики страниц, русские заголовки в EN-плане и legacy validator с привязкой к августовскому плану. Исправления сохранили assertions и реализацию. Pass1 выявил 10 редакционных failures, четыре ошибки hook-fixtures и две strict-link warnings. Тексты/ссылки исправлены; hooks прошли с изолированным OS TEMP вне репозитория. TEMP внутри Git-корня приводил к чтению реального marker вместо fixture; поведение hook ради тестов не менялось.</p>
+<p>Изменения тестовых метаданных: 160 buildable / 150 localized source pages; исторический site-promoted count остается 143. Три новые пары явно ожидают root-site promotion. Августовский план дополнен только датированным указателем для discovery текущей задачи. Эти ограниченные корректировки не меняют логику тестов или исторические результаты.</p>
+<p>Сверка SHA-256: сохранены все 17 исходных измененных config/profile/eval файлов и 1658 защищенных файлов implementation/tests/hooks/templates/root site; исключения — разрешенный lifecycle marker и явно указанный файл метаданных inventory. Не выполнялись переключение моделей, изменение permissions/config/profiles/hooks, live model/provider calls, browser automation, запуск сервера, операции с Git-историей проекта, публикация или deployment. Тесты могут создавать временные fixture repositories.</p>
+<p>Известная диагностика вне scope: <code>python plugins/product-agent-os/scripts/validate_agents.py .codex/agents</code> возвращает 1 и <code>project config must set sandbox_mode = workspace-write</code>. Прежнее расхождение реализации остается OPEN-BASELINE и не выдается за успешную проверку. OPEN-PERM, OPEN-MCP и OPEN-MODEL не решены. Завершение документации не означает общую compatibility, isolation, activation, promotion или release acceptance.</p>
+<p>Control-plane sync: REQUIREMENTS, PLAN, TEST, EVALS, RUNLOG обновлены; prod_test.md — not_applicable; overflow refactor не потребовался. Далее — отдельно разрешенная корректировка технических контрактов и оценка; очередь Batch 45 T30 сохранена. Откат касается только этого slice, без потери чужих изменений и исторических evidence.</p>
+<h2 id="2026-11-03_1">Разрешённое техническое продолжение — 2026-11-03<a class="headerlink" href="#2026-11-03_1" title="Permanent link">&para;</a></h2>
+<p>Предыдущие результаты документационного этапа сохраняются как история. Эта отдельно разрешённая задача меняет реализацию и конфигурацию.</p>
+<h3 id="task-paos-contract-model-alignment-2026-11-03">Task <code>PAOS-CONTRACT-MODEL-ALIGNMENT-2026-11-03</code><a class="headerlink" href="#task-paos-contract-model-alignment-2026-11-03" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Task: PAOS-CONTRACT-MODEL-ALIGNMENT-2026-11-03 — Согласование permissions, MCP, валидаторов и профилей моделей</li>
+<li>Status: implemented</li>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Plan trigger: Owner authorizes technical follow-up and model switches on 2026-11-03</li>
+<li>Validator target: detailed task blocks</li>
+<li>Date and time of task implementation: 03-11-2026 18:44</li>
+<li>Depends on: DOC6-01, DOC6-02, DOC6-04</li>
+<li>Blocks: fresh-session activation and behavioral promotion</li>
+<li>Source: https://learn.chatgpt.com/docs/agent-configuration/subagents; https://learn.chatgpt.com/docs/permissions; https://learn.chatgpt.com/docs/models</li>
+<li>Short description: Исправлены родительские permissions/MCP и контракты моделей в активных и staged-профилях.</li>
+<li>Technical value: Validators reject unsupported custom-agent overrides and validate inherited parent contracts.</li>
+<li>Product value: Оператор получает согласованные активные профили и безопасные staged-предложения.</li>
+<li>Scope: .codex/config.toml; .codex/agents; .codex/evals/agent-context-contract.json; model policy templates; plugin templates and validators; affected tests; docs and control-plane</li>
+<li>Non-goals: No provider calls, global settings, target mutations, hook activation, Git writes or deployment.</li>
+<li>Expected result: Parent permissions and MCP; preserved effort; role-aware GPT-6 pins; local verification.</li>
+<li>Acceptance criteria: Active and rendered agents validate; legacy composition and agent overrides fail; inherited MCP and disabled skills accepted; mandatory gates pass; runtime gaps explicit.</li>
+<li>Verification gates: RED/GREEN validators; infrastructure tests; full unittest; fixture/transcript evals; Codex compatibility; docs checker; task matrix; state consistency; git diff --check</li>
+<li>Risks / approval gates: Local pins do not prove account access, activation or model quality. Existing dirty work preserved.</li>
+<li>Complexity: high</li>
+<li>Estimated execution time: 45-90 minutes</li>
+<li>Agents: root only</li>
+<li>Skills: openai-docs; python-design-patterns; python-code-style</li>
+<li>Output artifacts: existing plan pair and task group; active/staged contracts; tests; REQUIREMENTS.md, PLAN.md, TEST.md, EVALS.md, RUNLOG.md</li>
+<li>Next step: Collect authorized fresh-session evidence; compare quality/cost/latency before behavioral promotion.</li>
+</ul>
+<h4 id="completion-report_20">Completion Report<a class="headerlink" href="#completion-report_20" title="Permanent link">&para;</a></h4>
+<ul>
+<li>status: implemented</li>
+<li>what was done: Согласованы родительские permissions и наследование MCP; 23 активных и staged-профиля переведены на GPT-6.1 Sol/Terra с сохранением effort. Skills перенесены к родителю. Валидаторы отклоняют неподдерживаемые overrides, renderer проверяет семантику конфигурации, lifecycle validator использует путь к текущему плану.</li>
+<li>files touched / work locations: AGENTS.md; .codex/config.toml, agents, eval contract, lifecycle workflow and two artifact templates; plugin config/agent/eval/workflow/artifact templates; validators.py, infrastructure.py, validate_task_state_consistency.py; five test modules; model/configuration/compatibility/source pages; five control-plane files</li>
+<li>technical value delivered: Supported parent-only controls and model policy enforced locally across active and rendered configurations.</li>
+<li>product value delivered: Consistent reusable profiles and explicit separation of role behavior from sandbox isolation.</li>
+<li>actual implementation date and time: 03-11-2026 18:44</li>
+<li>verification evidence: Ran 1247 tests in 611.387s; OK (skipped=1); fixture/transcript eval, compatibility, 15 active agents, both hook validators, RU/EN task matrices, state consistency, docs checker and diff check exit 0.</li>
+<li>residual risks: Эффективные permissions, MCP, доступность моделей и качество/стоимость/задержка в новой сессии не проверены. Provider-вызовы, browser, активация hooks, изменения целевых проектов, Git publication и обновление корневого site/ не выполнялись.</li>
+<li>follow-up: Authorized fresh-session activation receipt, then fixed-input same-effort comparison before promotion. Batch 45 T30 queue unchanged.</li>
+</ul>
+<h4 id="technical-verification-receipt-2026-11-03t1844238837700300">Technical verification receipt — 2026-11-03T18:44:23.883770+03:00<a class="headerlink" href="#technical-verification-receipt-2026-11-03t1844238837700300" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Exit</th>
+<th>Current evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>python -m unittest discover -s tests -p test_*.py -v</code></td>
+<td>0</td>
+<td>Ran 1247 tests in 611.387s; OK (skipped=1)</td>
+</tr>
+<tr>
+<td><code>python plugins/product-agent-os/scripts/run_fixture_eval.py</code></td>
+<td>0</td>
+<td>91 fixtures; all ok</td>
+</tr>
+<tr>
+<td><code>python plugins/product-agent-os/scripts/run_transcript_eval.py</code></td>
+<td>0</td>
+<td>26 synthetic transcripts; 26 passed; 0 failed</td>
+</tr>
+<tr>
+<td><code>python plugins/product-agent-os/scripts/validate_codex_compatibility.py</code></td>
+<td>0</td>
+<td>0.12 seconds; local log in .docs-tools/reports/contract-alignment</td>
+</tr>
+<tr>
+<td><code>python plugins/product-agent-os/scripts/validate_agents.py .codex/agents</code></td>
+<td>0</td>
+<td>0.14 seconds; local log in .docs-tools/reports/contract-alignment</td>
+</tr>
+<tr>
+<td><code>python plugins/product-agent-os/scripts/validate_hooks.py .codex/hooks.json</code></td>
+<td>0</td>
+<td>0.11 seconds; local log in .docs-tools/reports/contract-alignment</td>
+</tr>
+<tr>
+<td><code>python plugins/product-agent-os/scripts/validate_hooks.py .codex/hooks</code></td>
+<td>0</td>
+<td>0.16 seconds; local log in .docs-tools/reports/contract-alignment</td>
+</tr>
+<tr>
+<td><code>python plugins/product-agent-os/scripts/validate_task_matrix.py docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md</code></td>
+<td>0</td>
+<td>0.12 seconds; local log in .docs-tools/reports/contract-alignment</td>
+</tr>
+<tr>
+<td><code>python plugins/product-agent-os/scripts/validate_task_matrix.py docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.en.md</code></td>
+<td>0</td>
+<td>0.12 seconds; local log in .docs-tools/reports/contract-alignment</td>
+</tr>
+<tr>
+<td><code>python plugins/product-agent-os/scripts/validate_task_state_consistency.py</code></td>
+<td>0</td>
+<td>0.09 seconds; local log in .docs-tools/reports/contract-alignment</td>
+</tr>
+<tr>
+<td><code>python tools/check_docs.py</code></td>
+<td>0</td>
+<td>OK: documentation structure checks passed</td>
+</tr>
+<tr>
+<td><code>git diff --check</code></td>
+<td>0</td>
+<td>0.24 seconds; local log in .docs-tools/reports/contract-alignment</td>
+</tr>
+</tbody>
+</table>
+<p>RED/GREEN: validator suite initially reported 15 expected assertion failures across 34 tests, then 34/34 passed. The first RED shell wrapper returned 0 after printing the log tail; the unittest failure output is the RED evidence. Explicit-plan regression and rendered-config semantic regression each exited 1 before fixes, then the combined lifecycle/templates suite passed 100 tests and renderer/validators suite passed 62 tests.</p>
+<p>Static checks: 23 preserved effort baselines, 31 inherited skill paths retained, parent approval contract unchanged, active/staged model-policy and test/eval templates equal, no changes to hooks, original fixtures, historical review evidence, prod_test.md or site/. Python 3.13.5; Codex CLI 0.166.0. CLI startup emitted sandbox temp/PATH-alias warnings; no doctor/network probe or model execution was used.</p>
+<p>Initial full discovery: 1247 tests, one failure (obsolete renderer inventory expected 205, actual 207), one Windows-specific skip. The registry hash matched the task-start baseline and registered 207 templates before this task. The exact-count assertion was corrected to 207; the full suite was rerun. The platform skip is test_apply_is_rejected_on_non_windows, correctly skipped on Windows. Standalone fixture eval: 91/91; synthetic transcript eval: 26/26.</p>
+<p>Self-review: checked parent-vs-role authority, shared MCP, disabled capability contract, project-policy model allowlist, rendered config validation, explicit-plan containment, preserved baseline and negative tests. Existing APIs/validators reused; standard library only; no dependencies. Comment advisories were reviewed for changed functions; unrelated functions were not rewritten.</p>
+<p>Control-plane sync: REQUIREMENTS.md, PLAN.md, TEST.md, EVALS.md and RUNLOG.md updated; prod_test.md not_applicable; no handoff_required or overflow. Rollback only this slice against its captured baseline. Prior model/effort map is in the task-group technical_followup.model_changes; a model rollback also needs an explicit validator-policy exception and must not restore unsupported agent-local access fields.</p>
+<p>Evidence ceiling: Fresh-session effective permissions/MCP/model availability and quality/cost/latency comparison remain unverified. No provider calls, browser, hook activation, target mutation, Git publication or root site update.</p>
+<h2 id="trade-lifecycle-parity-separately-authorized-follow-up">Trade lifecycle parity — separately authorized follow-up<a class="headerlink" href="#trade-lifecycle-parity-separately-authorized-follow-up" title="Permanent link">&para;</a></h2>
+<h3 id="task-paos-trade-lifecycle-parity-2026-11-03">Task <code>PAOS-TRADE-LIFECYCLE-PARITY-2026-11-03</code><a class="headerlink" href="#task-paos-trade-lifecycle-parity-2026-11-03" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Task: PAOS-TRADE-LIFECYCLE-PARITY-2026-11-03 — Align Task Start Brief and Completion Ledger with Trade</li>
+<li>Status: implemented</li>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Plan trigger: User requests Trade lifecycle parity</li>
+<li>Validator target: detailed task blocks</li>
+<li>Date and time of task implementation: 03-11-2026 19:41</li>
+<li>Depends on: Current contract/model alignment completed</li>
+<li>Blocks: Fresh-session lifecycle activation acceptance</li>
+<li>Source: Trade AGENTS.md, task-start-brief.md, completion-ledger.md and delivery workflow; current PAOS hooks and tests</li>
+<li>Short description: Adopt nine-field start, thirteen-field ledger and conditional packet applicability.</li>
+<li>Technical value: One explicit reporting contract across active/staged workflows and checks.</li>
+<li>Product value: Consistent task communication without unnecessary packets for ordinary work.</li>
+<li>Scope: AGENTS.md; active and packaged lifecycle config/workflows/templates/hooks/evals; lifecycle generator; affected tests; existing docs, plan, task group and control-plane</li>
+<li>Non-goals: No Trade edits, model/permission changes, hook trust activation, providers or Git writes.</li>
+<li>Expected result: Full packets for large/high-risk/financially material implementation, release/readiness or explicit requests; concise ordinary work; legacy compatibility for current sessions.</li>
+<li>Acceptance criteria: Nine start fields; thirteen ledger items; scope classification; empty/missing fields fail; no repeated Stop loop; safety guards preserved; no invented metrics or review; Trade source hashes unchanged.</li>
+<li>Verification gates: Focused RED/GREEN lifecycle and renderer tests; mandatory docs tests and checker; final full unittest and offline evals; plan/state validators; diff check.</li>
+<li>Risks / approval gates: Changed hook and instruction files need fresh trusted-session evidence; local shape checks do not prove semantics or activation.</li>
+<li>Complexity: high</li>
+<li>Estimated execution time: 40-70 minutes</li>
+<li>Agents: root only; no delegation</li>
+<li>Skills: docs-maintainer; python-design-patterns; python-code-style</li>
+<li>Output artifacts: Existing plan pair/task group, lifecycle artifacts, tests and REQUIREMENTS/PLAN/TEST/EVALS/RUNLOG</li>
+<li>Next step: Baseline -&gt; regression tests -&gt; active/staged implementation -&gt; consolidated verification -&gt; status sync.</li>
+</ul>
+<h4 id="completion-report_21">Completion Report<a class="headerlink" href="#completion-report_21" title="Permanent link">&para;</a></h4>
+<ul>
+<li>status: implemented</li>
+<li>what was done: Aligned nine-field scoped Task Start Brief and thirteen-item Completion Ledger; concise ordinary route; advisory Stop; compatible legacy markers; explicit local packet validation; no generated chat duplicates.</li>
+<li>files touched / work locations: Active .codex and packaged lifecycle templates/config/workflows/hooks/evals/profiles; task_plan_lifecycle.py, templates.py, validators.py; affected tests; source registries, docs and five root control-plane files. Exact list: task-group lifecycle_parity.changed_files.</li>
+<li>technical value delivered: One active/staged reporting contract with scoped mutation metadata and terminal guards; no new dependency.</li>
+<li>product value delivered: Trade-style reporting proportional to task scope, without repeated final-answer correction.</li>
+<li>actual implementation date and time: 03-11-2026 19:41</li>
+<li>verification evidence: Final affected-contract gate: 298 tests passed (including 100 documentation tests); 91/91 fixtures and 26/26 synthetic transcripts passed; compatibility is compatible; 15 active agents, hook validators, RU/EN task matrices, task-state consistency, docs structure and diff checks passed. Initial full discovery remains recorded as 1253 tests with two obsolete-name assertion failures and one platform skip; both changed modules and the final 298-test set passed afterward. No live model or fresh-session activation claim.</li>
+<li>residual risks: Fresh trusted-session full/ordinary task behavior, live model compliance and latency remain not_verified; review is self_review. Local checks do not prove product readiness.</li>
+<li>follow-up: After applicable hook trust review, verify one full-scope task and one ordinary task in a fresh Codex session; do not change Trade or trust automatically.</li>
+</ul>
+<h4 id="lifecycle">Решения lifecycle и границы доказательств<a class="headerlink" href="#lifecycle" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Контракт</th>
+<th>Прежнее поведение PAOS</th>
+<th>Эталон Trade и реализованное поведение PAOS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Старт</td>
+<td>13 полей field-list для немеханической работы</td>
+<td>9 жирных labels с содержимым на следующей строке; условная применимость</td>
+</tr>
+<tr>
+<td>Завершение</td>
+<td>7 полей и буквальный заголовок Completion Brief</td>
+<td>13 отдельных пунктов ledger; namespace Product-Agent OS</td>
+</tr>
+<tr>
+<td>Обычная работа</td>
+<td>Полный пакет и marker</td>
+<td>Краткие Scope/Evidence/Limits и scoped marker перед разрешёнными изменениями</td>
+</tr>
+<tr>
+<td>Stop</td>
+<td>Отклонение формата чата и одна corrective continuation</td>
+<td>Только напоминание; явный валидатор пакета работает отдельно</td>
+</tr>
+<tr>
+<td>Планирование</td>
+<td>Генерация копий пакетов чата</td>
+<td>Только task detail и Completion Report; без выдуманных delivery, metrics и review</td>
+</tr>
+<tr>
+<td>Старые сессии</td>
+<td>Marker v1</td>
+<td>Совместимость v1; новые задачи используют scoped v2 или concise v1</td>
+</tr>
+<tr>
+<td>Защита</td>
+<td>Правила command/path/secret, sandbox и approvals</td>
+<td>Сохранены; completion_ready дополнительно запрещает дальнейшие изменения</td>
+</tr>
+</tbody>
+</table>
+<p>Trade изучен без изменений. Его актуальный ledger содержит 13 полей; старое описание eleven fields из eval не перенесено. По проверенным путям <code>.codex/hooks.json</code> / <code>.codex/hooks</code> файлов Trade hooks нет: переносится поведение отчётности, а не предполагаемая реализация hooks Trade. Официальная документация Hooks получена через OpenAI Developers 2026-11-03: https://learn.chatgpt.com/docs/hooks. Stop continuation и hash trust — возможности host; проект выбирает рекомендательную отчётность. Trust, permissions, выбор моделей, providers и Git publication в этом срезе не менялись.</p>
+<p>Регрессии: начальные full/concise и Stop tests падали на старом поведении; проверки packet validator и generator падали до реализации; concise bootstrap regression падала до исправления. Первая попытка bootstrap test использовала неверное имя класса и была ошибкой запуска, а не RED; после исправления адреса теста получен ожидаемый отказ missing marker. Последующие фокусные проверки прошли. Полный прогон и итоговые проверки записаны в <code>lifecycle_parity</code> существующего task group.</p>
+<p>Self-review: переиспользованы lifecycle generator, templates и validators; зависимости не добавлены. Чистый packet validator отделён от hook I/O. С baseline начала задачи сравнены active/staged parity, шесть хешей Trade, настройки 23 профилей, parent configuration вне lifecycle, команды hooks и защитные regex. Изменения только переводов строк восстановлены из baseline. Renderer inventory вырос с 207 до 209 только из-за двух новых packet templates. Canonical graph, корневой site, исходники fixtures, предыдущие receipts и production ledger вне этого среза.</p>
+<p>Control-plane sync: REQUIREMENTS — scope/acceptance; PLAN — последовательность и gate; TEST — команды и граница evidence; EVALS — критерии отчётности; RUNLOG — текущая передача результата. <code>prod_test.md</code>: not_applicable, поскольку Batch 39 evidence не менялись. Подробности находятся в этом плане и существующем task-group JSON. Отдельная копия пакета чата не сохраняется.</p>
+<p>Rollback: восстановить только файлы этого среза из baseline начала задачи с сохранением прежних dirty changes; два новых active/staged packet templates удалять лишь вместе с откатом регистрации и routing. Не использовать destructive Git reset и не менять trust. После отката проверить parity и focused lifecycle contracts. Отдельная приёмка в новой сессии: проверить применимый hash trust hooks, затем наблюдать одну full-scope и одну обычную задачу с реальными markers и финальным ответом. Static fixtures не доказывают соблюдение моделью, независимое review, host activation, latency или production readiness.</p>
+<h3 id="task-paos-lifecycle-activation-2026-11-03">Task <code>PAOS-LIFECYCLE-ACTIVATION-2026-11-03</code><a class="headerlink" href="#task-paos-lifecycle-activation-2026-11-03" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Task: PAOS-LIFECYCLE-ACTIVATION-2026-11-03 — Verify lifecycle activation in a fresh session</li>
+<li>Status: implemented</li>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Plan trigger: Explicit user request for fresh-session large and ordinary scenarios</li>
+<li>Validator target: detailed task blocks</li>
+<li>Date and time of task implementation: 03-11-2026 20:04</li>
+<li>Depends on: PAOS-TRADE-LIFECYCLE-PARITY-2026-11-03</li>
+<li>Blocks: Closure of activation_pending</li>
+<li>Source: Current lifecycle templates/config and observed Codex host events</li>
+<li>Short description: Observe full and concise reporting plus hook loading in one fresh local chat.</li>
+<li>Technical value: Distinguish host activation from static fixture evidence.</li>
+<li>Product value: Reliable proportionate start and completion reporting.</li>
+<li>Scope: One new local chat, two sequential scenarios, read-only scoped runtime evidence, existing plan/task group/control-plane status updates.</li>
+<li>Non-goals: No implementation, trust, model, permission, Trade, Git, provider or global configuration changes.</li>
+<li>Expected result: Evidence-qualified activation status with explicit failures or unavailable events.</li>
+<li>Acceptance criteria: Large scenario full start/ledger; ordinary concise reporting; host hook event evidence; no post-final tools or corrective format continuation.</li>
+<li>Verification gates: Observe fresh-thread turns and scoped host events; validate packet shape; docs unittest, docs checker, task matrices and diff check.</li>
+<li>Risks / approval gates: No trust bypass; unsupported event evidence remains unverified; one writer owns shared marker.</li>
+<li>Complexity: high</li>
+<li>Estimated execution time: 15-30 minutes</li>
+<li>Agents: root and one user-requested fresh chat, sequential; no subagents</li>
+<li>Skills: openai-docs</li>
+<li>Output artifacts: Existing November plan pair/task group and root control-plane; compact scenario receipts only, no raw transcripts.</li>
+<li>Next step: Fresh large scenario -&gt; ordinary scenario -&gt; inspect host evidence -&gt; status sync.</li>
+</ul>
+<h4 id="completion-report_22">Completion Report<a class="headerlink" href="#completion-report_22" title="Permanent link">&para;</a></h4>
+<ul>
+<li>status: implemented</li>
+<li>what was done: Executed requested fresh-session acceptance and recorded activation_failed; verification task completed, runtime enforcement not accepted.</li>
+<li>files touched / work locations: Existing November plan pair/task-group JSON, root REQUIREMENTS/PLAN/TEST/EVALS/RUNLOG, current-state docs and source registries; synthetic ignored evidence and lifecycle marker.</li>
+<li>technical value delivered: Separated actual injected hook context, displayed reporting, strict parser results and failed host enforcement.</li>
+<li>product value delivered: Prevents promoting activation from static checks while preserving working full/concise reporting.</li>
+<li>actual implementation date and time: 03-11-2026 20:04</li>
+<li>verification evidence: Fresh desktop chat 01a1a250-2429-73b1-91de-3ab6b06c660b: large 9-label start and 13-item ledger observed; strict ledger parser fails presentation/closure syntax; ordinary concise route passed. SessionStart and PostToolUse context observed. Terminal-marker apply_patch negative probe FAILED (sentinel created); direct hook script returns deny. Each scenario has one final, no corrective Stop prompt and no post-final tools. Implementation/trust/model settings unchanged.</li>
+<li>residual risks: ACT-F1 P1 runtime guard failure; ACT-F2 ledger syntax mismatch; four source-contract findings ACT-F3..F6. Exact trust state and silent Stop execution unverified.</li>
+<li>follow-up: Diagnose trust/matcher/response handling without bypass, reconcile contracts under authorized fix scope, rerun same fresh cases; no implementation changes in this verification task.</li>
+</ul>
+<h4 id="_1">Приёмка активации в новой сессии<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h4>
+<p>Fresh desktop chat 01a1a250-2429-73b1-91de-3ab6b06c660b: large 9-label start and 13-item ledger observed; strict ledger parser fails presentation/closure syntax; ordinary concise route passed. SessionStart and PostToolUse context observed. Terminal-marker apply_patch negative probe FAILED (sentinel created); direct hook script returns deny. Each scenario has one final, no corrective Stop prompt and no post-final tools. Implementation/trust/model settings unchanged.</p>
+<table>
+<thead>
+<tr>
+<th>Сценарий</th>
+<th>Результат</th>
+<th>Граница</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Крупный</td>
+<td>9 стартовых полей, 13 пунктов ledger, один финал</td>
+<td>Строгий validator отвергает bold labels и отсутствие literal closure_level</td>
+</tr>
+<tr>
+<td>Обычный</td>
+<td>Краткий старт/результат, task_scope_note_v1, точный текст артефакта</td>
+<td>Один наблюдаемый малорисковый сценарий</td>
+</tr>
+<tr>
+<td>Загрузка hooks</td>
+<td>Наблюдаются SessionStart и 3 PostToolUse contexts</td>
+<td>Exact trusted hashes не доступны</td>
+</tr>
+<tr>
+<td>Негативный PreToolUse</td>
+<td>FAILED: terminal marker не остановил nested apply_patch</td>
+<td>Прямой запуск скрипта выдаёт deny; причина в host не установлена</td>
+</tr>
+<tr>
+<td>Результат Stop</td>
+<td>Нет corrective loop и tools после финала</td>
+<td>Выполнение молчащего hook не доказано</td>
+</tr>
+</tbody>
+</table>
+<p>Общий результат activation_failed; прежние локальные проверки реализации остаются историческими evidence и не переименовываются. Findings ACT-F1..F6 и точные thread/turn receipts находятся в lifecycle_parity.activation_check. Повтор общего suite не применим: реализация не менялась. Обязательные проверки документов/статусов записываются туда после выполнения. При откате затрагивать только receipts этой проверки и её синтетические файлы; trust и чужие файлы не менять.</p>
+<h3 id="task-paos-lifecycle-repair-2026-11-03">Task <code>PAOS-LIFECYCLE-REPAIR-2026-11-03</code><a class="headerlink" href="#task-paos-lifecycle-repair-2026-11-03" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Task: PAOS-LIFECYCLE-REPAIR-2026-11-03 — Repair lifecycle guard and six activation findings</li>
+<li>Status: implemented</li>
+<li>Schema version: task_matrix_plan_v1</li>
+<li>Timezone: Europe/Moscow</li>
+<li>Plan trigger: Explicit user request to repair ACT-F1 through ACT-F6 without weakening protection</li>
+<li>Validator target: detailed task blocks</li>
+<li>Date and time of task implementation: 03-11-2026 20:52</li>
+<li>Depends on: PAOS-LIFECYCLE-ACTIVATION-2026-11-03 findings</li>
+<li>Blocks: Promotion of runtime lifecycle activation</li>
+<li>Source: Previous fresh-session activation_check and current official Hooks documentation</li>
+<li>Short description: Repair host mutation enforcement and reporting/profile/eval contracts, then repeat fresh-session acceptance.</li>
+<li>Technical value: Align host payload and denial behavior with tested guard semantics.</li>
+<li>Product value: Reliable full/concise reporting and terminal mutation protection.</li>
+<li>Scope: Active/packaged pre-tool hook, ledger validator/template, evals, product-manager profile, skill-routing prose, tests, existing docs/control-plane and fresh local acceptance chat.</li>
+<li>Non-goals: No sandbox/approval weakening, trust bypass, model changes, Trade writes, Git history, providers, deployments or unrelated cleanup.</li>
+<li>Expected result: ACT-F1..F6 repaired with actual host denial and absent sentinel; valid full/ordinary reporting.</li>
+<li>Acceptance criteria: RED/GREEN regressions; preserve safety patterns; full/concise markers; bold/plain ledger and explicit closure; parent-owned skills; Sol identifier; fresh negative probe denied without retries.</li>
+<li>Verification gates: Focused tests, required integrated unittest/fixtures/transcripts/compatibility, docs checks, profiles/hooks/task matrices/state/diff, fresh large/ordinary/negative cases.</li>
+<li>Risks / approval gates: Hook trust review may be required; do not bypass. Static success cannot promote runtime activation.</li>
+<li>Complexity: high</li>
+<li>Estimated execution time: 30-60 minutes</li>
+<li>Agents: root only plus user-requested fresh acceptance chat; no subagents</li>
+<li>Skills: openai-docs; python-design-patterns; python-code-style</li>
+<li>Output artifacts: Existing November plan pair and task group, implementation/tests, root control-plane and source registries.</li>
+<li>Next step: Baseline -&gt; reproduce -&gt; minimal fixes -&gt; local gates -&gt; fresh acceptance -&gt; status sync.</li>
+</ul>
+<h4 id="completion-report_23">Completion Report<a class="headerlink" href="#completion-report_23" title="Permanent link">&para;</a></h4>
+<ul>
+<li>status: implemented</li>
+<li>what was done: ACT-F1..F6 repaired. PreToolUse/Stop were skipped because cosmetic statusMessage changes made exact definitions modified. Restored the prior trusted definitions; commands, matchers, timeouts, policy scripts and trust records unchanged. Full 9/13 and concise cases passed; terminal-marker nested apply_patch was denied and sentinel is absent.</li>
+<li>files touched / work locations: Active/staged hooks definitions, ledger templates/validator/regression test, evals, staged product-manager, config routing; existing control plane, plan/spec and RU/EN source docs.</li>
+<li>technical value delivered: Actual guard restored without policy weakening; contracts agree.</li>
+<li>product value delivered: Large and ordinary tasks report at the appropriate scope and terminal writes are blocked.</li>
+<li>actual implementation date and time: 03-11-2026 20:52</li>
+<li>verification evidence: Ran 1253 tests in 772.501s; OK (skipped=1); focused 165 passed; fixture 91/91; transcript 26/26; compatibility/agents/hooks passed. Final docs/matrix/state/diff receipts are recorded in final_checks.</li>
+<li>residual risks: Local Codex Desktop acceptance for the tested routes only. Silent Stop execution is not independently traced; no correction loop or post-final tools observed. General mutation-channel completeness, hosted/production delivery and model benchmarking are not claimed. Legacy statusMessage wording is retained for exact-definition compatibility.</li>
+<li>follow-up: No remaining repair gate; later hook-definition changes require trust review and fresh acceptance.</li>
+</ul>
+<h4 id="_2">Приёмка исправления<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h4>
+<p>ACT-F1..F6 repaired. PreToolUse/Stop were skipped because cosmetic statusMessage changes made exact definitions modified. Restored the prior trusted definitions; commands, matchers, timeouts, policy scripts and trust records unchanged. Full 9/13 and concise cases passed; terminal-marker nested apply_patch was denied and sentinel is absent.</p>
+<p>Ran 1253 tests in 772.501s; OK (skipped=1); focused 165 passed; fixture 91/91; transcript 26/26; compatibility/agents/hooks passed. Final docs/matrix/state/diff receipts are recorded in final_checks.</p>
+<p>Local Codex Desktop acceptance for the tested routes only. Silent Stop execution is not independently traced; no correction loop or post-final tools observed. General mutation-channel completeness, hosted/production delivery and model benchmarking are not claimed. Legacy statusMessage wording is retained for exact-definition compatibility.</p>
+<p>Exact trust hashes, three turns, source hashes and six resolved findings: <code>lifecycle_parity.repair</code> in the existing November task-group JSON. Previous failed activation remains immutable historical evidence. An interactive CLI diagnostic was rejected by automatic review and stopped; bounded read-only initialize/hooks/list diagnostics were separately approved and succeeded. No trust-store edits or bypass flags.</p>
+<table>
+<thead>
+<tr>
+<th>Finding</th>
+<th>Status</th>
+<th>Resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ACT-F1</td>
+<td>resolved</td>
+<td>Restore only the two prior statusMessage strings; exact definitions trusted again; actual terminal denial observed.</td>
+</tr>
+<tr>
+<td>ACT-F2</td>
+<td>resolved</td>
+<td>Accept plain/bold ledger labels; retain required closure_level, review/partial/docs-gap checks; template spells out assignment.</td>
+</tr>
+<tr>
+<td>ACT-F3</td>
+<td>resolved</td>
+<td>Scope packaged full lifecycle case and both general eval pass conditions; resolve fresh-case REPAIR-LARGE-R1.</td>
+</tr>
+<tr>
+<td>ACT-F4</td>
+<td>resolved</td>
+<td>Staged product-manager may edit only parent-assigned requirements/acceptance files; permissions inherited.</td>
+</tr>
+<tr>
+<td>ACT-F5</td>
+<td>resolved</td>
+<td>Parent enables skills; custom agents may only disable inherited skills.</td>
+</tr>
+<tr>
+<td>ACT-F6</td>
+<td>resolved</td>
+<td>Both eval identifiers name generic_subagent_sol_medium_default; model pins unchanged.</td>
+</tr>
+</tbody>
+</table>
+<p>Final evidence-update checks: 100 documentation tests passed after correcting one Cyrillic heading in the English plan (initial docs run: 3 locale/parity failures). check_docs.py, RU/EN task matrices and task-state consistency passed. Baseline-preservation and git diff --check passed; no unrelated edits or baseline deletions.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </article>
+            </div>
+
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+
+      </main>
+
+        <footer class="md-footer">
+
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+
+
+</div>
+
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+
+
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}}</script>
+
+
+      <script src="../../assets/javascripts/bundle.60a45f97.min.js"></script>
+
+        <script src="../../assets/javascripts/local-file-i18n.js"></script>
+
+        <script src="../../assets/javascripts/vendor/mermaid-10.9.6.min.js"></script>
+
+
+  </body>
+</html>

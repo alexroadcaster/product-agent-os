@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
   </span>
 
 
@@ -2430,6 +2453,24 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#api-runtimes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Карта API runtimes и степень реализации
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Выбор по границам исполнения
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -2766,6 +2807,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2952,6 +2995,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3433,6 +3497,24 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#api-runtimes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Карта API runtimes и степень реализации
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Выбор по границам исполнения
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3560,6 +3642,11 @@
 <li>checks/evals;</li>
 <li>final decision или PR link.</li>
 </ul>
+<h2 id="api-runtimes">Карта API runtimes и степень реализации<a class="headerlink" href="#api-runtimes" title="Permanent link">&para;</a></h2>
+<p><a href="https://developers.openai.com/api/docs/guides/agents">Agents API</a> выполняет managed Codex harness на стороне OpenAI; Agents SDK запускает agent loop внутри приложения; Responses API дает прямой API-контракт с optional hosted orchestration. <a href="https://developers.openai.com/api/docs/guides/responses-multi-agent">Responses Multi-agent</a> — отдельная beta-возможность, не синоним Codex subagents.</p>
+<p>Для выбора владельца state/tools/approvals используйте <a href="../agent-systems/sdk-patterns.html">таблицу SDK patterns</a> и <a href="../diagrams/runtime-decision-map.html">диаграмму runtimes</a>. Product-Agent OS документирует эти маршруты, но данное обновление не реализует Agents API, async/steering или новый hosted runner. Статусы «документировано», «спроектировано», «реализовано», «проверено в runtime» требуют разных доказательств и не следуют друг из друга автоматически.</p>
+<h2 id="_1">Выбор по границам исполнения<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>Сначала определите local/current Cloud/legacy, затем auth, tool controls и владельца state. <a href="../codex/surfaces.html">Surface matrix и Cloud setup</a>, <a href="../agent-systems/sdk-patterns.html">Agents API/SDK/Responses</a>, <a href="automations-github.html">Scheduled tasks</a>. Local tools не означают local orchestration.</p>
 
 
 

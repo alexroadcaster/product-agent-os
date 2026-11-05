@@ -16,7 +16,7 @@ Sources: [How OpenAI uses Codex](https://openai.com/business/guides-and-resource
 | PR | Prepare branch, PR body, docs impact and release notes | PR / changelog | Verification evidence included |
 | Learn | Capture the reusable method | `AGENTS.md`, skill, insight | Next run improves |
 
-## Ask Mode before Code Mode
+## Plan before implementation
 
 OpenAI Codex guidance recommends starting large changes with a plan before implementation. In this project, that means:
 
@@ -70,3 +70,11 @@ Every finished product-agent workflow should answer:
 
 - Moving to build before plan and ownership can create broad, unverifiable changes.
 - Capturing learning without source evidence can turn stale memory into policy.
+
+## Scope size determines the route
+
+Checked 2026-11-05: [model guidance](https://developers.openai.com/api/docs/guides/latest-model) and [eval guidance](https://developers.openai.com/api/docs/guides/evaluation-best-practices). For an ordinary fix use concise scope, the change, affected checks, results and limits. Reuse existing requirements/plan/test/runlog artifacts; do not create a new file set merely to name each phase. The full route above is for large, risky or financially material implementation and release/readiness.
+
+Product-Agent OS uses `task_start_brief_v2` (9 fields) and Completion Ledger (13 items) for full scopes; ordinary scopes use `task_scope_note_v1` and a concise result. Legacy v1 remains for previously started sessions only. Advisory `Stop` does not validate chat. The [lifecycle hooks guide](../runtime/worktrees-hooks-rules.md) defines applicability and markers.
+
+Single-agent is a sufficient starting point. Delegate independent work with explicit ownership, a budget and demonstrated value. PR preparation does not authorize creating branches, publishing a PR or releasing. Repeat checks after a relevant change, failure or unresolved risk, not in an unbounded general-gate loop.

@@ -1,4 +1,10 @@
-# Product-Agent OS Generated Infrastructure Implementation Plan
+---
+title: "Archive - Product-Agent OS Generated Infrastructure Implementation Plan"
+---
+
+# Archive - Product-Agent OS Generated Infrastructure Implementation Plan {#product-agent-os-generated-infrastructure-implementation-plan}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `official + experiment`
 

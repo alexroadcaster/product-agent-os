@@ -112,3 +112,7 @@ For our knowledge base, this means:
 - Project Manager must define source of truth documents: `REQUIREMENTS.md`, `AGENT_TASKS.md`, `TEST.md`.
 - Each worker must have bounded deliverables; Codex subagents inherit the parent session sandbox and approvals. Separate runtimes need their own explicit execution policy.
 - Handoff back to Project Manager is mandatory so that the final assembly of decisions does not fall apart into independent results.
+
+## Check effective settings
+
+After configuration changes check client/version, workspace root and managed policy. `/status`, `/debug-config` and `--strict-config` help on supported clients; a file does not prove loading. Current Cloud configuration is separate from local configuration. [Developer settings](https://learn.chatgpt.com/docs/developer-settings).

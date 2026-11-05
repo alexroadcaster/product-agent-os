@@ -202,3 +202,7 @@ python tools\check_docs.py
 - LLM-as-judge evals нужны calibration и failure examples до they может быть trusted для release claims.
 
 Следующий artifact: используйте [Scenarios](scenarios.md) к choose route, [Professional Code Authoring standards](coding-standards.md) к inspect code-writing gates и [Codex compatibility](codex-compatibility.md) к confirm package scope.
+
+## Актуальный маршрут и evidence
+
+При релевантном изменении покрывайте trust changes, skill omission, surface mismatch и changed-scope/pending tool cases. Закрытые probes не повторяются без изменённого state или нового риска. [Skills](../agent-systems/subagents-skills.md), [session control](../agent-systems/session-control.md).

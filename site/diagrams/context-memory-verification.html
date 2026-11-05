@@ -636,6 +636,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Полномочия и переходы контекста
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -824,6 +833,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -905,6 +916,27 @@
 
   <span class="md-ellipsis">
     Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
   </span>
 
 
@@ -2766,6 +2798,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2952,6 +2986,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3433,6 +3488,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Полномочия и переходы контекста
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3539,6 +3603,9 @@ Verification:
 <li>LLM-as-judge не заменяет deterministic checks.</li>
 <li>Session summary не заменяет source registry и <code>RUNLOG.md</code>.</li>
 </ul>
+<h2 id="_4">Полномочия и переходы контекста<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>Граф показывает маршрутизацию evidence, а не приоритет инструкций. Текущий source проекта отвечает на вопросы реализации, текущие официальные docs — внешней платформы. Полномочия имеют только применимые загруженные инструкции; обычные Markdown, memory и generated views их не получают. Discovery и scope AGENTS — в <a href="../prompting/context-engineering.html">context engineering</a>.</p>
+<p>При уточнении пользователя сохраняйте задачу и ограничения до выбора steering, summary, compaction или новой сессии. Их state contracts различаются. <code>configuration_update</code> нельзя совмещать с automatic compaction/truncation; explicit compaction требует повторного задания измененных settings. До выбора маршрута читайте <a href="../agent-systems/session-control.html">session control</a>. Диаграмма не доказывает загрузку инструкций, сохранение state или runtime activation.</p>
 
 
 

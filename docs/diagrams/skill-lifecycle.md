@@ -1,4 +1,4 @@
-﻿# Skill Lifecycle
+# Skill Lifecycle
 
 Source status: `official + experiment`
 
@@ -8,17 +8,16 @@ Source status: `official + experiment`
 
 ```mermaid
 stateDiagram-v2
-    [*] --> PlaybookStep
-    PlaybookStep --> ManualRuns: repeated need
-    ManualRuns --> FailureLog: failures observed
-    FailureLog --> SkillDraft: method stabilizes
-    SkillDraft --> EvalCases: define examples и rubric
-    EvalCases --> ManualRuns: eval fails
-    EvalCases --> PackagedSkill: eval passes
-    PackagedSkill --> ProjectUse: использовался через agents
-    ProjectИспользуйте --> Maintenance: failures или docs change
-    Maintenance --> SkillDraft: update instructions
-    ProjectИспользуйте --> AutomationCandidate: stable cadence
+    [*] --> ManualWorkflow
+    ManualWorkflow --> SkillDraft: repeated reliable need
+    SkillDraft --> EvalCases: define representative cases
+    EvalCases --> SkillDraft: failure
+    EvalCases --> PackagedSkill: sufficient evidence
+    PackagedSkill --> Exposure: check discovery and initial list
+    Exposure --> ProjectUse: explicit or implicit invocation
+    ProjectUse --> Maintenance: failure or source change
+    Maintenance --> SkillDraft: revise and verify
+    ProjectUse --> AutomationCandidate: stable cadence and owner review
     AutomationCandidate --> [*]
 ```
 
@@ -63,3 +62,7 @@ stateDiagram-v2
 - политика источников неясна;
 - skill требует secrets;
 - результат нельзя проверить человеком или deterministic checks.
+
+## Discovery перед invocation
+
+Начните с instructions-only skill. Проверьте файл, initial skill list, explicit/implicit invocation и наблюдаемый результат. Сокращение descriptions и omission из initial list не равны удалению skill. [Troubleshooting](../agent-systems/subagents-skills.md) · [Build skills](https://learn.chatgpt.com/docs/build-skills).

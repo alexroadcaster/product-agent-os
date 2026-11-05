@@ -1,5 +1,14 @@
 # PLAN.md
 
+## Current ordinary route integration — 2026-11-05
+
+`PAOS-ORD-01-06-2026-11-05`: implemented_locally_verified; final integrated verification passed. Scope is only PAOS-ORD-01 through PAOS-ORD-06 in [the owning plan](research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md). The opt-in task context connects existing T26/T27 selectors to the public contract CLI, scoped infrastructure proposals and compact authoring. T23-T29 are reused unchanged; PAOS-GAP and T30-T34 remain unstarted. No publication, target apply, hook/cache activation or provider calls. Rollback only the ORD-owned changes against the recorded pre-slice baseline; preserve earlier docs/site work.
+
+## Current documentation refresh — 2026-11-05
+
+`PAOS-SITE-DOCS-REFRESH-2026-11-05`: user-authorized docs/site maintenance from F01-F18 audit. Scope: bilingual guides, registry, archive labels and local site rebuild/links/Mermaid checks; no implementation or publication. Plan: `.docs-tools/reports/site-docs-refresh-plan-2026-11-05.md`; evidence: `docs/superpowers/specs/site-docs-refresh-2026-11-05.json`. Completed: docs_static_verified. One writer; 100 docs tests, strict build, 220 routes, links/anchors/search and 93 Mermaid renders passed. No implementation changes or publication.
+
+
 <!-- product-agent-os:start plan -->
 Project: Codex Docs / Product-Agent OS
 Last compacted: 2026-07-07

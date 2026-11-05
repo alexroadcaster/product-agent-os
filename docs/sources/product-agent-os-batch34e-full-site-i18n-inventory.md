@@ -1,4 +1,10 @@
-﻿# Product-Agent OS Batch 34E: full-site i18n inventory and translation gate M34-M49
+---
+title: "Архив — Product-Agent OS Batch 34E: full-site i18n inventory and translation gate M34-M49"
+---
+
+# Архив — Product-Agent OS Batch 34E: full-site i18n inventory and translation gate M34-M49 {#product-agent-os-batch-34e-full-site-i18n-inventory-and-translation-gate-m34-m49}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `internal`
 

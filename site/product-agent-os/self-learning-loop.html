@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
   </span>
 
 
@@ -2865,6 +2888,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -3051,6 +3076,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3889,14 +3935,14 @@
 <p>Рекомендуемый поток:</p>
 <pre class="mermaid"><code>sequenceDiagram
     participant Owner
-    participant Loop as Self-Learning Loop
+    participant LearningCycle as Self-Learning LearningCycle
     participant Worker as Codex staged repair worker
     participant Review as Owner review
-    Owner-&gt;&gt;Loop: approves candidate review
-    Loop-&gt;&gt;Worker: staged repair task contract
+    Owner-&gt;&gt;LearningCycle: approves candidate review
+    LearningCycle-&gt;&gt;Worker: staged repair task contract
     Worker-&gt;&gt;Worker: local allowed-file patch proposal
     Worker-&gt;&gt;Review: staged repair result packet
-    Review--&gt;&gt;Loop: approve / reject / request changes</code></pre>
+    Review--&gt;&gt;LearningCycle: approve / reject / request changes</code></pre>
 <p>Repair contract может помочь будущему implementation slice, но сам никогда не сливает и не применяет изменения.</p>
 <h2 id="b44-s7">Доказательства <code>B44-S7</code><a class="headerlink" href="#b44-s7" title="Permanent link">&para;</a></h2>
 <p>Текущее доказательство approved manual pilot:</p>

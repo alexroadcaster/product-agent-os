@@ -74,7 +74,7 @@
     <div data-md-component="skip">
 
 
-        <a href="#openai-codex" class="md-skip">
+        <a href="#product-agent-os" class="md-skip">
           Перейти к содержанию
         </a>
 
@@ -291,7 +291,7 @@
         <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Как читать
+      Начните со своей задачи
     </span>
   </a>
 
@@ -300,7 +300,16 @@
         <li class="md-nav__item">
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      Принцип доверия
+      Что реализовано и что это доказывает
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Источники и история
     </span>
   </a>
 
@@ -310,24 +319,6 @@
   <a href="#publicinternal" class="md-nav__link">
     <span class="md-ellipsis">
       Граница public/internal документации
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      Карта проекта
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      Текущий результат
     </span>
   </a>
 
@@ -831,6 +822,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -912,6 +905,27 @@
 
   <span class="md-ellipsis">
     Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
   </span>
 
 
@@ -2773,6 +2787,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2959,6 +2975,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3407,7 +3444,7 @@
         <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Как читать
+      Начните со своей задачи
     </span>
   </a>
 
@@ -3416,7 +3453,16 @@
         <li class="md-nav__item">
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      Принцип доверия
+      Что реализовано и что это доказывает
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Источники и история
     </span>
   </a>
 
@@ -3426,24 +3472,6 @@
   <a href="#publicinternal" class="md-nav__link">
     <span class="md-ellipsis">
       Граница public/internal документации
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      Карта проекта
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      Текущий результат
     </span>
   </a>
 
@@ -3464,56 +3492,46 @@
 
 
 
-<h1 id="openai-codex">База знаний OpenAI Codex<a class="headerlink" href="#openai-codex" title="Permanent link">&para;</a></h1>
-<p>Эта база знаний предназначена для продвинутого пользователя, который изучает OpenAI Codex как среду для агентной разработки: Codex App, CLI, IDE extension, cloud tasks, subagents, skills, <code>AGENTS.md</code>, memory, approvals, sandboxing и повторяемые workflows.</p>
-<p>Дата первичной сверки источников: <strong>2026-05-14</strong>.</p>
-<h2 id="_1">Как читать<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<ol>
-<li>Начните с <a href="diagrams/index.html">Diagram atlas</a>, чтобы увидеть полный маршрут реализации проекта через agents, skills, runtime и eval loops.</li>
-<li>Перейдите к <a href="codex/overview.html">обзору Codex</a>, чтобы зафиксировать модель продукта и границы официальной документации.</li>
-<li>Прочитайте <a href="codex/use-cases-deep-analysis.html">глубокий анализ Codex use cases</a>, чтобы переводить официальные use cases в playbooks, skills, plugins и automations.</li>
-<li>Перейдите к <a href="codex/surfaces.html">поверхностям работы</a>, чтобы выбрать App, CLI, IDE или cloud под конкретную задачу.</li>
-<li>Прочитайте <a href="codex/security.html">безопасность и approvals</a> до запуска автономных или сетевых workflow.</li>
-<li>Изучите <a href="agent-systems/overview.html">архитектуру агентных систем</a>, если цель - проектировать multi-agent workflows.</li>
-<li>Пройдите <a href="prompting/overview.html">Prompt &amp; Context Engineering</a>, чтобы формулировать вопросы, упаковывать контекст и снижать hallucinations.</li>
-<li>Перейдите к <a href="product-agent/overview.html">Product-Agent Workflows</a>, чтобы собрать знания в delivery loop для полноценных продуктов.</li>
-<li>Изучите <a href="product-agent-os/index.html">Product-Agent OS plugin</a>, если нужно применить этот delivery loop как локальный Codex plugin.</li>
-<li>Откройте <a href="methodologies/index.html">Methodologies для Large Projects</a>, если проекту нужна системная карта business, domain, architecture, frontend, backend, API, data, LLM, quality, security, delivery и Codex workflows.</li>
-<li>Изучите <a href="runtime/overview.html">Codex Automation &amp; Runtime</a>, если workflow нужно запускать через CLI, MCP, GitHub или automations.</li>
-<li>Используйте playbooks как операционные инструкции, а insights - как слой гипотез и пользовательских трюков.</li>
-</ol>
-<h2 id="_2">Принцип доверия<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>Официальные страницы OpenAI и OpenAI Agents SDK являются источником истины. Пользовательские приемы, GitHub issues, блоги и Reddit-записи не смешиваются с официальными инструкциями без явного статуса:</p>
-<ul>
-<li><code>official</code> - официальная документация или репозиторий OpenAI.</li>
-<li><code>community</code> - внешний пользовательский источник.</li>
-<li><code>experiment</code> - рабочая гипотеза, которую нужно проверить в локальном проекте.</li>
-</ul>
+<h1 id="product-agent-os">Product-Agent OS<a class="headerlink" href="#product-agent-os" title="Permanent link">&para;</a></h1>
+<p>Source status: <code>official + experiment</code></p>
+<p>Документация помогает выполнить задачу с Codex, подключить существующий проект или спроектировать agent application. Проверка пользовательских маршрутов по официальной документации: <strong>05.11.2026</strong>. Доступность функций зависит от client, account, auth и managed policy.</p>
+<h2 id="_1">Начните со своей задачи<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Нужно</th>
+<th>Первый маршрут</th>
+<th>Результат</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Выполнить или исправить одну задачу</td>
+<td><a href="codex/surfaces.html">Поверхности</a> → <a href="codex/workflows.html">Workflows</a></td>
+<td>Ограниченный scope, изменение, проверка и итог</td>
+</tr>
+<tr>
+<td>Подключить свой проект</td>
+<td><a href="product-agent-os/index.html">Product-Agent OS</a> → <a href="playbooks/workspace-readiness-audit.html">workspace audit</a></td>
+<td>Read-only discovery и проверяемый staged proposal</td>
+</tr>
+<tr>
+<td>Построить agent application</td>
+<td><a href="agent-systems/sdk-patterns.html">Runtime choice</a> → <a href="agent-systems/evals-observability.html">evals</a></td>
+<td>Явное владение state/tools и критерии качества</td>
+</tr>
+</tbody>
+</table>
+<p>Для обычной правки не требуется новый набор документов или команда. Для сложной работы используйте <a href="diagrams/index.html">Diagram atlas</a>, <a href="product-agent/lifecycle.html">lifecycle</a> и <a href="playbooks/model-migration.html">model migration</a>. Выбор модели и reasoning: <a href="codex/models-and-reasoning.html">актуальная матрица</a>.</p>
+<h2 id="_2">Что реализовано и что это доказывает<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Product-Agent OS — локальный plugin package: lifecycle skills, staged infrastructure, validators, project graph/cockpit и eval fixtures. Он помогает готовить reviewable artifacts; наличие пакета не доказывает hosted delivery, успешную работу на любом проекте или production readiness.</p>
+<p>Исходные Markdown, current source/configuration, command/runtime evidence и owner decisions определяют факты. Generated <code>site/</code>, dashboards, graphs, cockpit и reports помогают навигации, но не заменяют эти доказательства.</p>
+<h2 id="_3">Источники и история<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>Официальные материалы OpenAI служат источником platform claims; проектные решения помечены отдельно. Community/experiment не становятся официальной инструкцией без проверки. <a href="sources/registry.html">Registry</a> · <a href="insights/index.html">insights</a> · <a href="product-agent-os/control-plane-current-state.html">current state and dated history</a>.</p>
+<p>Исторические plans и source receipts сохраняются с датами и не заменяют текущие руководства. Public guides объясняют цель, входы, действия, ожидаемый результат и ограничения.</p>
+<p>Внешние записи, Git publication, deployment, provider calls и активация hooks/schedules требуют применимого разрешения. Документация не активирует эти возможности.</p>
 <h2 id="publicinternal">Граница public/internal документации<a class="headerlink" href="#publicinternal" title="Permanent link">&para;</a></h2>
-<p>Публичный маршрут этой базы знаний начинается с обзоров, diagram atlas, Product-Agent Workflows и <a href="product-agent-os/index.html">Product-Agent OS plugin</a>. Эти страницы объясняют продуктовую ценность, возможности, границы, результаты и ближайшее действие.</p>
-<p><code>docs/sources/</code> является внутренним evidence/history layer. Он хранит source registry, packets, backlogs и verification records, но не заменяет публичные страницы и не должен быть первым маршрутом для нового пользователя.</p>
-<p>Сгенерированный <code>site/</code>, dashboard, graph, cockpit, reports и smoke evidence являются поверхностями проверки. Они помогают review, search и handoff, но источником истины остаются исходные Markdown-файлы, registry, current command/eval/runtime evidence, owner decisions и accepted gaps.</p>
-<h2 id="_3">Карта проекта<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<pre class="mermaid"><code>flowchart LR
-    S["Official sources"] --&gt; R["Source registry"]
-    C["Community insights"] --&gt; I["Insights layer"]
-    R --&gt; D["Codex docs"]
-    R --&gt; A["Agent systems"]
-    R --&gt; PE["Prompt engineering"]
-    R --&gt; PW["Product-agent workflows"]
-    PW --&gt; POS["Product-Agent OS plugin"]
-    R --&gt; SD["SDK patterns"]
-    I --&gt; P["Playbooks"]
-    D --&gt; H["MkDocs HTML"]
-    A --&gt; H
-    PE --&gt; H
-    PW --&gt; H
-    POS --&gt; H
-    SD --&gt; H
-    P --&gt; H</code></pre>
-<h2 id="_4">Текущий результат<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
-<p>База знаний теперь содержит не только документационную основу, но и описание локального Product-Agent OS plugin: packaged skills, staged infrastructure, CLI contracts, generated project graph/cockpit, behavioral evals, compatibility checks и closure workflow.</p>
-<p>Live server launch, browser automation, provider/live external model/API calls, canonical graph mutation и git stage/commit/push/PR остаются approval-bound actions. Generated graph, dashboard, cockpit, reports и readiness packets являются evidence surfaces, not source of truth.</p>
+<p>Внутренние evidence pages сохраняют реестр источников, packets, backlogs и verification records. Источником истины остаются Markdown, текущие code/configuration, наблюдаемые checks и owner decisions. Исторические записи не заменяют актуальные руководства.</p>
 
 
 

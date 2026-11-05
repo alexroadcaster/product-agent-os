@@ -1,4 +1,10 @@
-﻿# Track 10 Guided Questions And Status Dashboard Implementation Plan
+---
+title: "Archive - Track 10 Guided Questions And Status Dashboard Implementation Plan"
+---
+
+# Archive - Track 10 Guided Questions And Status Dashboard Implementation Plan {#track-10-guided-questions-and-status-dashboard-implementation-plan}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `local implementation planning`
 

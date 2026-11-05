@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
   </span>
 
 
@@ -1052,6 +1075,15 @@
   <a href="#anti-hallucination-baseline" class="md-nav__link">
     <span class="md-ellipsis">
       Anti-hallucination baseline
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#gpt-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      GPT-6: инициатива и достаточная проверка
     </span>
   </a>
 
@@ -2775,6 +2807,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2961,6 +2995,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3451,6 +3506,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#gpt-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      GPT-6: инициатива и достаточная проверка
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3551,6 +3615,10 @@ Do not invent facts, citations, file paths, versions, prices, dates, or line num
 Separate verified facts from assumptions.
 Return citations for every factual claim when sources are provided.
 </code></pre></div>
+<h2 id="gpt-6">GPT-6: инициатива и достаточная проверка<a class="headerlink" href="#gpt-6" title="Permanent link">&para;</a></h2>
+<p>Проверено 2026-11-03: <a href="https://developers.openai.com/api/docs/guides/latest-model">prompting guidance</a>. Формулируйте результат, scope, ограничения, разрешенные действия, критерии завершения и evidence. Начинайте с простого prompt; добавляйте примеры для устойчивого измеренного сбоя или требования продукта, а не для объема.</p>
+<p>Агент может продолжать уже разрешенную работу без повторных approvals. До запроса разрешения на отдельное внешнее действие подготовьте конкретный проверяемый результат внутри разрешенного scope. Не распространяйте это на новые permissions, расходы или side effects. Уточняйте блокирующую неоднозначность; для обратимых вариантов используйте обоснованное допущение.</p>
+<p>Конфликтующие skills/AGENTS, неограниченные «проверяй снова» и универсальная делегация могут ухудшать выполнение. Называйте применимые инструкции, условия делегации и stop condition: после релевантных обязательных checks повтор оправдан только новым изменением, failure или неустраненным риском. Это рекомендация для проектирования prompts; активные AGENTS/skills этим текстом не изменяются. Качество проверяется по <a href="../playbooks/model-migration.html">playbook миграции</a>.</p>
 
 
 

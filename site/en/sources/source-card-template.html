@@ -686,6 +686,17 @@
 
 
 
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+
+
+  <span class="md-ellipsis">
+    Source Card Template
+  </span>
+
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+
       <a href="source-card-template.html" class="md-nav__link md-nav__link--active">
 
 
@@ -695,6 +706,34 @@
 
 
       </a>
+
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+
+
+
+
+
+
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+
+        <li class="md-nav__item">
+  <a href="#claim-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      Claim scope
+    </span>
+  </a>
+
+</li>
+
+    </ul>
+
+</nav>
 
     </li>
 
@@ -726,6 +765,8 @@
         </nav>
 
     </li>
+
+
 
 
 
@@ -839,6 +880,27 @@
 
   <span class="md-ellipsis">
     Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
   </span>
 
 
@@ -2700,6 +2762,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2886,6 +2950,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3325,6 +3410,23 @@
 
 
 
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+
+        <li class="md-nav__item">
+  <a href="#claim-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      Claim scope
+    </span>
+  </a>
+
+</li>
+
+    </ul>
+
 </nav>
                   </div>
                 </div>
@@ -3357,6 +3459,16 @@
 <li><code>experiment</code> must include a reproducible verification scenario.</li>
 <li>If a source conflicts with official documentation, record the conflict and do not move the claim into core instructions.</li>
 </ul>
+<h2 id="claim-scope">Claim scope<a class="headerlink" href="#claim-scope" title="Permanent link">&para;</a></h2>
+<p>For drift-prone product claims also record these fields; do not update <code>checked_at</code> without reading the source.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">product</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="nt">client_and_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="nt">auth_and_plan_scope</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="nt">claim</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="nt">current_or_legacy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="nt">evidence_kind</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;documentation</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">local_check</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">runtime&quot;</span>
+<span class="nt">limitations</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+</code></pre></div>
 
 
 

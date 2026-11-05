@@ -636,6 +636,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#authority-and-context-transitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authority and context transitions
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -824,6 +833,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -905,6 +916,27 @@
 
   <span class="md-ellipsis">
     Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
   </span>
 
 
@@ -2766,6 +2798,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2952,6 +2986,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3433,6 +3488,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#authority-and-context-transitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authority and context transitions
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3476,6 +3540,9 @@
 <li>Treating memory or generated reports as source truth can preserve stale claims.</li>
 <li>Long context without evidence can create confident but unsupported answers.</li>
 </ul>
+<h2 id="authority-and-context-transitions">Authority and context transitions<a class="headerlink" href="#authority-and-context-transitions" title="Permanent link">&para;</a></h2>
+<p>This graph routes evidence, not instruction precedence. Current project source answers implementation questions; current official docs answer external-platform questions. Only applicable loaded instructions carry instruction authority; ordinary Markdown, memory and generated views do not. See <a href="../prompting/context-engineering.html">context engineering</a> for AGENTS discovery and scope.</p>
+<p>For a user refinement, preserve the task and constraints before choosing steering, summary, compaction or a new session. They have different state contracts. <code>configuration_update</code> must not be combined with automatic compaction/truncation; explicit compaction requires restating changed settings. See <a href="../agent-systems/session-control.html">session control</a> before selecting a route. No diagram proves loaded instructions, retained state or runtime activation.</p>
 
 
 

@@ -1,4 +1,10 @@
-# Product-Agent OS Agents SDK Runner Design
+---
+title: "Archive - Product-Agent OS Agents SDK Runner Design"
+---
+
+# Archive - Product-Agent OS Agents SDK Runner Design {#product-agent-os-agents-sdk-runner-design}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `official + experiment`
 

@@ -1,4 +1,10 @@
-# Product-Agent OS: pre-Track 8 implemented plans and specs inventory
+---
+title: "Архив — Product-Agent OS: pre-Track 8 implemented plans and specs inventory"
+---
+
+# Архив — Product-Agent OS: pre-Track 8 implemented plans and specs inventory {#product-agent-os-pre-track-8-implemented-plans-and-specs-inventory}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `internal project inventory + implementation-history index`
 

@@ -78,3 +78,7 @@ Verification command:
 ```
 
 Этот workflow превращен в отдельный [playbook](../playbooks/docs-update.md).
+
+## Минимальный достаточный процесс
+
+Обычная задача: scope → изменение → affected checks → результат/ограничения. Для material multi-step work используйте [полный lifecycle](../product-agent/lifecycle.md). Команда, worktree и новый набор artifacts не обязательны. Повторение проверенного метода — отдельный [Scheduled tasks](../runtime/automations-github.md) route.

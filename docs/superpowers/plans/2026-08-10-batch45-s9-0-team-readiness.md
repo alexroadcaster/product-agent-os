@@ -1,4 +1,10 @@
-# Batch 45 S9-0 Team Readiness
+---
+title: "Archive - Batch 45 S9-0 Team Readiness"
+---
+
+# Archive - Batch 45 S9-0 Team Readiness {#batch-45-s9-0-team-readiness}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `implemented local planning and handoff evidence; no agent dispatch or downstream task execution`
 

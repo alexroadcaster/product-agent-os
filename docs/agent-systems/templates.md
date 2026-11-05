@@ -80,6 +80,6 @@ Single-agent fallback:
 3. Identify changes.
 4. Update source cards.
 5. Update affected docs.
-6. Run docs checks and MkDocs build.
+6. Run required docs checks; build only for authorized site/nav/diagram scope.
 7. Report files changed and verification output.
 ```

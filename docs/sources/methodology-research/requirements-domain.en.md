@@ -1,4 +1,10 @@
-# Requirements & Domain Methodology Research
+---
+title: "Archive - Requirements & Domain Methodology Research"
+---
+
+# Archive - Requirements & Domain Methodology Research {#requirements-domain-methodology-research}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `official + verified methodology + local implementation evidence + tool-assisted`
 

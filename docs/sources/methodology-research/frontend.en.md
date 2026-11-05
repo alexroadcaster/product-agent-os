@@ -1,4 +1,10 @@
-# Frontend Methodology Research
+---
+title: "Archive - Frontend Methodology Research"
+---
+
+# Archive - Frontend Methodology Research {#frontend-methodology-research}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `official + verified methodology + tool-assisted`
 

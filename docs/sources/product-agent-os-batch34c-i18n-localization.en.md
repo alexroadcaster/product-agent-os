@@ -1,4 +1,10 @@
-# Product-Agent OS Batch 34C RU/EN I18N localization packet
+---
+title: "Archive - Product-Agent OS Batch 34C RU/EN I18N localization packet"
+---
+
+# Archive - Product-Agent OS Batch 34C RU/EN I18N localization packet {#product-agent-os-batch-34c-ruen-i18n-localization-packet}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `internal`
 

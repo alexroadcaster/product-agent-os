@@ -1,4 +1,10 @@
-# Product-Agent OS Batch 40 S5: пилотные метрики и закрытие Doubt verifier
+---
+title: "Архив — Product-Agent OS Batch 40 S5: пилотные метрики и закрытие Doubt verifier"
+---
+
+# Архив — Product-Agent OS Batch 40 S5: пилотные метрики и закрытие Doubt verifier {#product-agent-os-batch-40-s5-doubt-verifier}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `project-authored implementation evidence`. Этот пакет является source-owned evidence для Batch 40 S5 и не является generated `site/` output.
 

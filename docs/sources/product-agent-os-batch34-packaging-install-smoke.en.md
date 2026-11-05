@@ -1,4 +1,10 @@
-# Product-Agent OS Batch 34 packaging/install smoke packet
+---
+title: "Archive - Product-Agent OS Batch 34 packaging/install smoke packet"
+---
+
+# Archive - Product-Agent OS Batch 34 packaging/install smoke packet {#product-agent-os-batch-34-packaginginstall-smoke-packet}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `internal`
 

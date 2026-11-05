@@ -10,6 +10,7 @@ from codex_runtime_runner.contracts import (
     validate_methodology_packet,
     validate_project_graph_status_packet,
     validate_question_queue,
+    validate_task_routing_packet,
 )
 from product_agent_os.doubt_verification import validate_completion_skeptic_recommendation_packet
 from codex_runtime_runner.routes import ROUTES
@@ -19,7 +20,7 @@ ACTIVE_AUTOMATION_PATTERN = re.compile(r"(?i)\b(active|recurring|scheduled)\s+au
 
 
 def validate_route_packet(route: dict[str, Any]) -> list[str]:
-    errors: list[str] = []
+    errors: list[str] = validate_task_routing_packet(route)
     state = route.get("lifecycle_state")
     expected = ROUTES.get(str(state))
     if not expected:

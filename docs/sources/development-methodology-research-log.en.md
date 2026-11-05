@@ -1,4 +1,10 @@
-# Development And Documentation Methodology Research Plan
+---
+title: "Archive - Development And Documentation Methodology Research Plan"
+---
+
+# Archive - Development And Documentation Methodology Research Plan {#development-and-documentation-methodology-research-plan}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `official + verified methodology + tool-assisted research in progress`
 

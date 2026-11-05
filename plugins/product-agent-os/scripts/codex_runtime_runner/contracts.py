@@ -5,6 +5,7 @@ import re
 from typing import Any
 
 from codex_runtime_runner.redaction import validate_redaction
+from product_agent_os.contracts import CONTROL_PLANE_FILES
 from product_agent_os.question_protocol import (
     MAX_TOTAL_QUESTIONS,
     QUESTION_ANSWER_TYPES,
@@ -394,6 +395,9 @@ def validate_runner_result(payload: dict[str, Any]) -> list[str]:
         route_packet = {}
     else:
         route_packet = payload["route_packet"]
+        errors.extend(validate_task_routing_packet(route_packet))
+        if "task_routing" in route_packet and payload.get("status") == "completed":
+            errors.append("task_routing:contract_mode_not_completion")
         if "methodology_packet" in route_packet:
             errors.extend(validate_methodology_packet(route_packet["methodology_packet"]))
         if "finish_options" in route_packet:
@@ -443,6 +447,40 @@ def validate_runner_result(payload: dict[str, Any]) -> list[str]:
         methodology_packet = route_packet.get("methodology_packet")
         if isinstance(methodology_packet, dict) and methodology_packet.get("status") in DETECTION_ONLY_METHODOLOGY_STATUSES:
             errors.append("methodology_packet:detection_not_completion")
+    return errors
+
+
+def validate_task_routing_packet(route: dict[str, Any]) -> list[str]:
+    """Keep scoped guidance internally consistent; caller evidence cannot grant authority."""
+    if "task_routing" not in route:
+        return []
+    decision, trace = route.get("task_routing"), route.get("routing_trace")
+    if not isinstance(decision, dict) or not isinstance(trace, dict):
+        return ["task_routing:invalid_shape"]
+    errors = []
+    if decision.get("schema_version") != 1 or decision.get("mode") not in ("ordinary", "full", "needs_context"):
+        errors.append("task_routing:invalid_version_or_mode")
+    if trace.get("legacy_fallback_used") is not False:
+        errors.append("task_routing:legacy_fallback_conflict")
+    if trace.get("mode") != decision.get("mode") or trace.get("selectors") != decision.get("selectors"):
+        errors.append("task_routing:trace_conflict")
+    if route.get("reporting_scope") != ("full" if decision.get("mode") == "full" else "concise"):
+        errors.append("task_routing:reporting_scope_conflict")
+    if decision.get("full_reasons") and decision.get("mode") != "full":
+        errors.append("task_routing:high_risk_downgrade")
+    required = route.get("required_inputs")
+    if not isinstance(required, list) or any(not isinstance(name, str) for name in required):
+        errors.append("task_routing:required_inputs_shape")
+        required = []
+    if decision.get("mode") == "full" and not set(CONTROL_PLANE_FILES).issubset(required):
+        errors.append("task_routing:full_context_missing")
+    if route.get("project_instructions_override_selection") is not True:
+        errors.append("task_routing:project_instructions_required")
+    compact = route.get("code_change_contract")
+    if not isinstance(compact, dict) or (decision.get("change_mode") != "docs_only" and len(compact) != 8):
+        errors.append("task_routing:compact_contract_shape")
+    if not isinstance(decision.get("gaps"), list) or not isinstance(decision.get("checks"), list):
+        errors.append("task_routing:evidence_shape")
     return errors
 
 

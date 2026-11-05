@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
   </span>
 
 
@@ -1698,6 +1721,15 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       Проверка
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проверка полноты сайта
     </span>
   </a>
 
@@ -2775,6 +2807,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2961,6 +2995,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3451,6 +3506,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проверка полноты сайта
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3521,6 +3585,8 @@
 </ul>
 <h2 id="_2">Проверка<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <p>Минимальный gate для docs slice: docs unittest, <code>tools/check_docs.py</code>, strict MkDocs smoke в <code>.docs-tools/reports</code>, JSON packet validation и <code>git diff --check</code>. Browser proof, screenshots, broad Vale enforcement и Storybook остаются approval-required.</p>
+<h2 id="_3">Проверка полноты сайта<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>Сравните expected RU/EN routes с HTML, затем internal links/anchors, search и Mermaid render. Проверка существующих links не найдёт отсутствующую новую страницу, если nav тоже устарел. Build pass не является browser proof. <a href="../playbooks/docs-update.html">Docs update</a>.</p>
 
 
 

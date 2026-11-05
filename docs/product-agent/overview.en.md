@@ -75,3 +75,7 @@ Use control-plane files, current checks, evals and review findings before claimi
 
 - One long prompt can hide missing requirements, approvals and verification evidence.
 - Automation before manual stability can repeat failures at scale.
+
+## Choose workflow size
+
+[Lifecycle](lifecycle.md) distinguishes ordinary and full scopes. Start with one agent and existing artifacts; add coordination for independent ownership and risk. The local package helps prepare an outcome but does not prove autonomous hosted delivery.

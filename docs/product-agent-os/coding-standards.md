@@ -6,6 +6,14 @@ Source status: `project-authored + research-backed + experiment`
 
 Professional Code Authoring - это слой Product-Agent OS для не механических задач написания кода. Его цель проста: агент сначала ищет уже существующую возможность, стандартную библиотеку, фреймворк, конфигурацию или локальный helper, и только потом пишет новый код. Хороший результат может быть одной строкой, удалением лишнего кода или настройкой existing behavior, если это закрывает acceptance criteria с меньшим долгом.
 
+## Ordinary authoring и текущая интеграция {#ordinary-authoring}
+
+Для обычной правки default generation context — `.codex/artifact-templates/code-change-contract.md`: восемь полей T25, без повторного полного checklist. Активный workflow и packaged contract согласованы; `coding-standard-checklist.md` применяется как reviewer/reference material, когда нужны дополнительные детали.
+
+Opt-in [ordinary CLI route](cli-reference.md#ordinary-route) связывает discovery с существующими selectors T26/T27. Каждая выбранная проверка должна иметь risk/invariant и source; отсутствие инструмента не разрешает auto-install. Docs-only может иметь `not_applicable`, а reuse/deletion/no-op — быть правильным результатом. Project-mandated checks сохраняются.
+
+High-risk и full lifecycle reporting выбираются отдельно от длины coding contract. Локальные CLI/fixture проверки доказывают интеграцию; обновление активного файла не доказывает fresh-session loading. T23–T29 не переоткрываются, T30–T34 и behavioral promotion остаются отдельной очередью. Исторические Batch 45 receipts ниже сохраняют собственный evidence ceiling.
+
 ## Что включается
 
 | Gate | Что агент обязан записать | Когда можно пропустить |

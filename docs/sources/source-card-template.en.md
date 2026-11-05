@@ -21,3 +21,17 @@ Rules:
 - `community` cannot become an instruction without verification.
 - `experiment` must include a reproducible verification scenario.
 - If a source conflicts with official documentation, record the conflict and do not move the claim into core instructions.
+
+## Claim scope
+
+For drift-prone product claims also record these fields; do not update `checked_at` without reading the source.
+
+```yaml
+product: ""
+client_and_version: ""
+auth_and_plan_scope: ""
+claim: ""
+current_or_legacy: ""
+evidence_kind: "documentation | local_check | runtime"
+limitations: []
+```

@@ -134,3 +134,7 @@ candidates and creates no active scheduler.
 ## Next Action
 
 Use this page when agent/skill evidence needs to be interpreted or packaged for owner review. The next safe artifact is a staged scorecard ledger, daily report, weekly verification packet or update candidate. Applying any update remains a separate owner-approved implementation slice.
+
+## Current route and evidence
+
+After skill/plugin changes verify discovery, initial exposure, explicit/implicit invocation and results. Installation is not loading; bundled hook-script updates require review. Promotion remains candidate-only until an owner decision. See [skill diagnostics](../agent-systems/subagents-skills.md).

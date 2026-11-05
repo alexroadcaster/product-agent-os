@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
   </span>
 
 
@@ -2802,6 +2825,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2988,6 +3013,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3646,14 +3692,14 @@
 <p><code>self_learning_repair.py</code> defines a Codex staged repair worker contract without auto-apply. The task contract names candidate id, objective, allowed files, forbidden files, validation commands, rollback target and privacy boundary; the result packet names changed files, validation results, summary and unsupported claims. Validators block absolute paths, private refs, out-of-allowlist changes, <code>auto_apply</code>, provider calls and target workspace writes.</p>
 <pre class="mermaid"><code>sequenceDiagram
     participant Owner
-    participant Loop as Self-Learning Loop
+    participant LearningCycle as Self-Learning LearningCycle
     participant Worker as Codex staged repair worker
     participant Review as Owner review
-    Owner-&gt;&gt;Loop: approve candidate review
-    Loop-&gt;&gt;Worker: staged repair task contract
+    Owner-&gt;&gt;LearningCycle: approve candidate review
+    LearningCycle-&gt;&gt;Worker: staged repair task contract
     Worker-&gt;&gt;Worker: local allowed-file patch proposal
     Worker-&gt;&gt;Review: staged repair result packet
-    Review--&gt;&gt;Loop: approve / reject / request changes</code></pre>
+    Review--&gt;&gt;LearningCycle: approve / reject / request changes</code></pre>
 <h2 id="b44-s7-evidence">B44-S7 Evidence<a class="headerlink" href="#b44-s7-evidence" title="Permanent link">&para;</a></h2>
 <p><code>B44-S7-SELF-LEARNING-MANUAL-PILOT-A01</code> is recorded in <code>docs/superpowers/specs/batch44-self-learning-loop-approved-manual-pilot-summary.json</code>. It shows that the state initializer reached <code>ready_for_owner_review</code>, the runner used <code>state_source: explicit_state_file</code>, one redacted feedback row and one metrics row were consumed, two review-only candidates were produced, the Promptfoo export produced 8 eval cases, the taxonomy has 9 failure classes and the HALO-style packet has 6 local recommendations.</p>
 <p>Accepted gaps: this is one manual pilot, not promotion evidence; Promptfoo was exported but not executed; the HALO-style packet was generated locally, without a HALO service call; generated HTML and reports remain review evidence.</p>

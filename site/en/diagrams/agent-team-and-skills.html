@@ -76,7 +76,7 @@
     <div data-md-component="skip">
 
 
-        <a href="#agent-team-and-skills" class="md-skip">
+        <a href="#agent-team-and-skills-for-a-project" class="md-skip">
           Skip to content
         </a>
 
@@ -538,6 +538,42 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#how-to-apply" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to apply
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#delegation-and-execution-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      Delegation and execution profile
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#agent-versus-skill" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agent versus skill
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#verification-and-risks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verification and Risks
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#inputs" class="md-nav__link">
     <span class="md-ellipsis">
       Inputs
@@ -550,15 +586,6 @@
   <a href="#outputs" class="md-nav__link">
     <span class="md-ellipsis">
       Outputs
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#verification" class="md-nav__link">
-    <span class="md-ellipsis">
-      Verification
     </span>
   </a>
 
@@ -824,6 +851,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -905,6 +934,27 @@
 
   <span class="md-ellipsis">
     Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
   </span>
 
 
@@ -2766,6 +2816,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2952,6 +3004,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3398,6 +3471,42 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#how-to-apply" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to apply
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#delegation-and-execution-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      Delegation and execution profile
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#agent-versus-skill" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agent versus skill
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#verification-and-risks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verification and Risks
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#inputs" class="md-nav__link">
     <span class="md-ellipsis">
       Inputs
@@ -3410,15 +3519,6 @@
   <a href="#outputs" class="md-nav__link">
     <span class="md-ellipsis">
       Outputs
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#verification" class="md-nav__link">
-    <span class="md-ellipsis">
-      Verification
     </span>
   </a>
 
@@ -3448,40 +3548,78 @@
 
 
 
-<h1 id="agent-team-and-skills">Agent team and skills<a class="headerlink" href="#agent-team-and-skills" title="Permanent link">&para;</a></h1>
+<h1 id="agent-team-and-skills-for-a-project">Agent team and skills for a project<a class="headerlink" href="#agent-team-and-skills-for-a-project" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + experiment</code></p>
-<p>This page shows how to design an agent team around ownership, handoffs, model/reasoning policy, skills and stop conditions.</p>
+<p>Checked 2026-11-03: <a href="https://learn.chatgpt.com/docs/agent-configuration/subagents">Subagents</a>, <a href="https://learn.chatgpt.com/docs/models">Models</a>.</p>
 <pre class="mermaid"><code>flowchart TD
-    A["Work item"] --&gt; B["Read project rules"]
-    B --&gt; C["Define ownership"]
-    C --&gt; D["Choose roles"]
-    D --&gt; E["Assign files or subsystems"]
-    E --&gt; F["Define handoff artifacts"]
-    F --&gt; G["Run focused work"]
-    G --&gt; H{"Repeated method?"}
-    H --&gt;|No| I["Keep as playbook"]
-    H --&gt;|Yes| J["Skill candidate"]
-    J --&gt; K["Eval cases and failure log"]
-    K --&gt; L{"Reliable enough?"}
-    L --&gt;|No| M["Improve method"]
-    L --&gt;|Yes| N["Package as reusable skill"]</code></pre>
+    A["Project goal and constraints"] --&gt; B["Control plane and acceptance"]
+    B --&gt; C["Independent ownership boundaries"]
+    C --&gt; D{"Delegation authorized and useful?"}
+    D --&gt;|No| E["One agent, sequential work"]
+    D --&gt;|Yes| F["Bounded roles and fresh context"]
+    F --&gt; P["Parent permissions and MCP"]
+    F --&gt; M["Model matrix and evaluated policy"]
+    P --&gt; G["Work packets and stop conditions"]
+    M --&gt; G
+    E --&gt; H["Checks and handoff evidence"]
+    G --&gt; H
+    H --&gt; I{"Repeated reliable method?"}
+    I --&gt;|No| J["Keep manual playbook"]
+    I --&gt;|Yes| K["Skill candidate and eval"]
+    K --&gt; L["Owner review before promotion"]</code></pre>
+<h2 id="how-to-apply">How to apply<a class="headerlink" href="#how-to-apply" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Classify project type, current state and risk; identify requirements, plan, tests/evals and runlog owners.</li>
+<li>Split by independent files/subsystems. Prefer one agent when shared writes or sequential dependencies erase the benefit of delegation.</li>
+<li>Give each role inputs, owned and forbidden files, output artifact, checks, stop conditions, budget and handoff destination.</li>
+<li>Choose model/effort using the <a href="../codex/models-and-reasoning.html">single model matrix</a> and <a href="../product-agent/roles.html">role policy</a>. Current active profiles are pinned to GPT-6.1 Sol/Terra; behavioral promotion remains a separate gate. This guide does not change pins. Use the <a href="../playbooks/model-migration.html">migration playbook</a> before promotion.</li>
+<li>Return sources, assumptions, touched/proposed files, observed checks, residual risks and the next role. The primary agent reconciles conflicting findings.</li>
+<li>Promote manual workflow -&gt; playbook -&gt; skill -&gt; plugin -&gt; automation candidate only after representative evals, failure records, owner review and rollback design. Scheduling is a separate authorized action.</li>
+</ol>
+<h2 id="delegation-and-execution-profile">Delegation and execution profile<a class="headerlink" href="#delegation-and-execution-profile" title="Permanent link">&para;</a></h2>
+<p>Local Codex can delegate on an explicit user request or applicable AGENTS/skill instructions. ChatGPT Work Ultra is a different proactive route. Apply the stricter project policy where required; tool availability is not authorization.</p>
+<p>Role cards define ownership, model policy, baseline effort, escalation/downgrade triggers and latency/cost limits. Higher effort requires task need or measured benefit, not a maximum-for-every-role default. Model IDs, client/auth applicability and allowed efforts belong in the shared matrix rather than duplicate tables here.</p>
+<p>Custom agents inherit parent permissions, approvals, provider and MCP. Read-only role text does not create separate sandbox enforcement. Resolve model/effort using the current custom-agent schema; inspect the effective settings instead of assuming every unspecified value always inherits unchanged.</p>
+<h2 id="agent-versus-skill">Agent versus skill<a class="headerlink" href="#agent-versus-skill" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Artifact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>One bounded exploration</td>
+<td>Agent/subagent when authorized</td>
+</tr>
+<tr>
+<td>Repeatable method</td>
+<td>Skill with one job, inputs, outputs and verification</td>
+</tr>
+<tr>
+<td>Stable recurring work</td>
+<td>Automation candidate; no schedule without authority</td>
+</tr>
+<tr>
+<td>Durable project rule</td>
+<td>Applicable AGENTS guidance</td>
+</tr>
+<tr>
+<td>Current task evidence</td>
+<td>RUNLOG and owning plan</td>
+</tr>
+</tbody>
+</table>
+<p>Before packaging a skill, define triggers and non-triggers, representative eval cases, failure log, deterministic script needs and owner. Load references only when relevant. Memory cannot replace current source reads or applicable instructions.</p>
+<h2 id="verification-and-risks">Verification and Risks<a class="headerlink" href="#verification-and-risks" title="Permanent link">&para;</a></h2>
+<p>Verify disjoint ownership, inherited controls, model applicability and complete handoff evidence. Missing runtime isolation, MCP availability or model-quality evidence remains explicit. Avoid overlapping writes, unbounded fan-out, automatic model escalation and premature automation. This diagram describes a design process; it activates no team, model or skill.</p>
 <h2 id="inputs">Inputs<a class="headerlink" href="#inputs" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Implementation plan, source context, ownership boundaries and approval limits.</li>
-<li>Available skills, subagents and verification gates.</li>
-</ul>
+<p>Current goal, applicable instructions, source context, ownership boundaries and required evidence.</p>
 <h2 id="outputs">Outputs<a class="headerlink" href="#outputs" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Role cards with owned files, model policy, handoff schema and stop conditions.</li>
-<li>A safe route for skill promotion when a method repeats.</li>
-</ul>
-<h2 id="verification">Verification<a class="headerlink" href="#verification" title="Permanent link">&para;</a></h2>
-<p>Each handoff must include sources used, assumptions, files touched or proposed, verification evidence, open risks and recommended next role.</p>
+<p>A bounded work packet, source-backed result and explicit handoff with unresolved risks.</p>
 <h2 id="risks">Risks<a class="headerlink" href="#risks" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Parallel workers without disjoint ownership can overwrite each other.</li>
-<li>A skill created before manual success can encode a brittle method.</li>
-</ul>
+<p>Overlapping writes, stale context and treating a proposed capability as activated behavior.</p>
 
 
 

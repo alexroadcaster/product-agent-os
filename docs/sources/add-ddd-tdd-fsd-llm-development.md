@@ -1,4 +1,10 @@
-# ADD, DDD, TDD и FSD в разработке с LLM
+---
+title: "Архив — ADD, DDD, TDD и FSD в разработке с LLM"
+---
+
+# Архив — ADD, DDD, TDD и FSD в разработке с LLM {#add-ddd-tdd-fsd-llm}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `mixed source-backed draft`  
 Статус: входной исследовательский документ. Перед переносом claims в core guidance проверять первоисточники и явно отделять Data-Driven Development от Domain-Driven Design.

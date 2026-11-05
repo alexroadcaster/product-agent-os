@@ -1,5 +1,14 @@
 # TEST.md
 
+## Ordinary route integration — 2026-11-05
+
+`PAOS-ORD-01-06-2026-11-05`: verify public contract and infrastructure CLIs, malformed/unknown/stale task inputs, RU/EN/no-builder parity, sensitive Windows paths, mandatory project checks, approval/source-policy guards, isolated RED/GREEN behavior and target-file preservation. Commands and current receipts: [owning plan](research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md). Final integrated verification passed: 1272 tests, 753.848s, OK (skipped=1), exit 0; fixture 91, transcript 26/26, compatibility and docs gates passed. Run the full unittest suite, fixture/transcript evals, compatibility validator, docs tests, docs checker and diff check. This slice uses an isolated TEMP and `PYTHONDONTWRITEBYTECODE=1`; sandbox TEMP failures are setup failures, not behavior evidence. Strict MkDocs output is isolated under `.docs-tools/reports/ordinary-route-preview`; root `site/` remains the earlier documentation build. Host activation and provider/model comparisons are separate gates.
+
+## Documentation site refresh — 2026-11-05
+
+For `PAOS-SITE-DOCS-REFRESH-2026-11-05`, run docs unittest and check_docs.py, approved strict MkDocs, existing `tools/fix_site_i18n_links.ps1`, then route/link/anchor/search checks, offline Mermaid parse/render and git diff --check. Run site-dependent docs tests after the build and postprocessing, not concurrently. Preserve plugin/tools/tests/config hashes. Evidence: `docs/superpowers/specs/site-docs-refresh-2026-11-05.json`. Observed: 100 docs tests passed; check_docs.py, strict build, 220 routes, all internal links/anchors/search routes and 93 Mermaid renders passed. Local RU/EN search and representative desktop/mobile pages checked. No runtime or hosted activation claim.
+
+
 <!-- product-agent-os:start test -->
 Project: Codex Docs / Product-Agent OS
 Last compacted: 2026-07-07

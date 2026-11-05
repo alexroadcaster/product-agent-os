@@ -28,7 +28,7 @@ flowchart TD
 1. Определите тип проекта, состояние и риск; назначьте владельцев requirements, plan, tests/evals и runlog.
 2. Разделите независимые файлы/подсистемы. Если общие записи и последовательные зависимости убирают пользу делегации, используйте одного агента.
 3. Каждой роли задайте входы, разрешенные и запрещенные файлы, выходной artifact, проверки, stop conditions, бюджет и адресата handoff.
-4. Выбирайте model/effort по [единой матрице](../codex/models-and-reasoning.md) и [политике ролей](../product-agent/roles.md). Это кандидатные рекомендации; существующие GPT-5.6 pins сохраняются. До promotion используйте [playbook миграции](../playbooks/model-migration.md).
+4. Выбирайте model/effort по [единой матрице](../codex/models-and-reasoning.md) и [политике ролей](../product-agent/roles.md). Текущие active profiles закреплены на GPT-6.1 Sol/Terra; behavioral promotion остаётся отдельной проверкой. Этот guide не меняет pins. До promotion используйте [playbook миграции](../playbooks/model-migration.md).
 5. Возвращайте sources, assumptions, измененные/предложенные файлы, наблюдаемые проверки, остаточные риски и следующую роль. Основной агент согласует противоречащие выводы.
 6. Продвигайте manual workflow -> playbook -> skill -> plugin -> automation candidate после репрезентативных evals, учета failures, owner review и rollback. Создание расписания — отдельное разрешенное действие.
 

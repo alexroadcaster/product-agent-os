@@ -561,7 +561,16 @@
         <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Диаграмма
+      Как применять
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#artifacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Следующие artifacts и проверки
     </span>
   </a>
 
@@ -570,7 +579,7 @@
         <li class="md-nav__item">
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      Как применять
+      Типичные ошибки
     </span>
   </a>
 
@@ -579,16 +588,7 @@
         <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
-      Правило выбора
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      Антипаттерны
+      Входы и выходы
     </span>
   </a>
 
@@ -824,6 +824,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -905,6 +907,27 @@
 
   <span class="md-ellipsis">
     Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
   </span>
 
 
@@ -2766,6 +2789,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2952,6 +2977,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3400,7 +3446,16 @@
         <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Диаграмма
+      Как применять
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#artifacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Следующие artifacts и проверки
     </span>
   </a>
 
@@ -3409,7 +3464,7 @@
         <li class="md-nav__item">
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      Как применять
+      Типичные ошибки
     </span>
   </a>
 
@@ -3418,16 +3473,7 @@
         <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
-      Правило выбора
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      Антипаттерны
+      Входы и выходы
     </span>
   </a>
 
@@ -3448,83 +3494,42 @@
 
 
 
-<h1 id="runtime-decision-map">Runtime Decision Map<a class="headerlink" href="#runtime-decision-map" title="Permanent link">&para;</a></h1>
+<h1 id="runtime-decision-map">Runtime decision map<a class="headerlink" href="#runtime-decision-map" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + experiment</code></p>
-<p>Эта диаграмма помогает выбрать, где запускать задачу Codex: в App, CLI, Cloud, non-interactive mode, MCP, GitHub Action или scheduled automation.</p>
-<h2 id="_1">Диаграмма<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>Проверено 2026-11-03.</p>
 <pre class="mermaid"><code>flowchart TD
-    A["New task"] --&gt; B{"Needs close human steering?"}
-    B --&gt;|Yes| C["Codex App / IDE"]
-    B --&gt;|No| D{"Runs из terminal contract?"}
-    D --&gt;|Yes| E["Codex CLI"]
-    D --&gt;|No| F{"Needs repeatable non-interactive execution?"}
-    F --&gt;|Yes| G["codex exec"]
-    F --&gt;|No| H{"Needs orchestration из agent app?"}
-    H --&gt;|Yes| I["Codex MCP"]
-    H --&gt;|No| J{"Triggered через PR или CI?"}
-    J --&gt;|Yes| K["GitHub Action"]
-    J --&gt;|No| L{"Runs на schedule?"}
-    L --&gt;|Yes| M["Codex automation"]
-    L --&gt;|No| N["Manual playbook run"]
-
-    C --&gt; O["Используйте для ambiguous product work"]
-    E --&gt; P["Используйте для local repo tasks"]
-    G --&gt; Q["Используйте для scripted jobs и eval loops"]
-    I --&gt; R["Используйте как execution backend для Agents SDK"]
-    K --&gt; S["Используйте для review, CI, release checks"]
-    M --&gt; T["Используйте только после workflow является stable"]</code></pre>
-<h2 id="_2">Как применять<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>Выбирайте runtime по уровню неопределенности и цене ошибки.</p>
-<table>
-<thead>
-<tr>
-<th>Поверхность</th>
-<th>Когда использовать</th>
-<th>Что проверить</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Codex App / IDE</td>
-<td>Нужно много steering, review, уточнений</td>
-<td>Видны ли файлы, diff и результаты команд</td>
-</tr>
-<tr>
-<td>CLI</td>
-<td>Локальная инженерная задача с понятным scope</td>
-<td>Есть ли команды проверки и sandbox policy</td>
-</tr>
-<tr>
-<td><code>codex exec</code></td>
-<td>Non-interactive job, повторяемый eval, batch update</td>
-<td>Prompt должен быть самодостаточным</td>
-</tr>
-<tr>
-<td>Codex MCP</td>
-<td>Agent app должна делегировать работу Codex</td>
-<td>Нужны границы tools, logs и approvals</td>
-</tr>
-<tr>
-<td>GitHub Action</td>
-<td>PR review, разбор CI и проверки release</td>
-<td>Нужны permissions и предсказуемый output.</td>
-</tr>
-<tr>
-<td>Automation</td>
-<td>Регулярная задача с устойчивым workflow</td>
-<td>Нужны skill, schedule и failure policy.</td>
-</tr>
-</tbody>
-</table>
-<h2 id="_3">Правило выбора<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<p>Если задачу трудно описать как контракт, оставляйте ее в App/IDE. Если задачу можно описать как стабильный контракт с входами, выходами и проверкой, переносите ее в CLI, <code>codex exec</code>, MCP или automation.</p>
-<h2 id="_4">Антипаттерны<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+    A["Work, authority and acceptance"] --&gt; B{"Interactive repository work?"}
+    B --&gt;|Yes| C["Codex App / IDE / CLI"]
+    C --&gt; D["Subagents only when authorized and useful"]
+    B --&gt;|No| E{"Stable command or trigger?"}
+    E --&gt;|Yes| F["codex exec / CI / automation candidate"]
+    E --&gt;|No| G{"Agent application: execution owner?"}
+    G --&gt;|OpenAI managed harness| H["Agents API"]
+    G --&gt;|Application agent loop| I["Agents SDK"]
+    G --&gt;|Direct API contract| J["Responses API"]
+    J --&gt; K["Optional Responses Multi-agent beta"]
+    I --&gt; M["Optional Codex MCP tool boundary"]
+    D --&gt; V["Verify selected surface and permissions"]
+    F --&gt; V
+    H --&gt; V
+    M --&gt; V
+    K --&gt; V
+    V --&gt; W["Record actual implementation and runtime evidence"]</code></pre>
+<h2 id="_1">Как применять<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>Выбирайте по неопределенности, владельцу исполнения, сроку жизни state, tools, approval scope и цене ошибки. Интерактивная неоднозначность подходит App/IDE/CLI; стабильный самодостаточный контракт — <code>codex exec</code>. CI/GitHub Action и расписания требуют явного разрешения, минимальных permissions и понятной обработки failures. MCP задает tool boundary, но не устраняет отсутствующие требования.</p>
+<p>Для agent application <a href="https://developers.openai.com/api/docs/guides/agents">Agents API</a> предоставляет OpenAI-managed Codex harness; SDK работает в приложении; Responses предоставляет API-контракт с optional hosted orchestration. <a href="https://developers.openai.com/api/docs/guides/responses-multi-agent">Responses Multi-agent</a> — отдельная beta с ограничениями моделей/режимов. Эти варианты не взаимозаменяемы автоматически с Codex subagents.</p>
+<h2 id="artifacts">Следующие artifacts и проверки<a class="headerlink" href="#artifacts" title="Permanent link">&para;</a></h2>
+<p>Зафиксируйте runtime/client/auth/model, владельцев state/tools, разрешенные действия, stop/rollback и требуемые evidence. Используйте <a href="../runtime/overview.html">runtime overview</a>, <a href="../agent-systems/sdk-patterns.html">SDK contracts</a>, <a href="../agent-systems/session-control.html">session control</a> и <a href="../codex/models-and-reasoning.html">матрицу моделей</a>. Раздельно отмечайте documented, designed, implemented и runtime-verified. Обновление не активирует новый runtime.</p>
+<h2 id="_2">Типичные ошибки<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Запускать scheduled automation до появления eval criteria.</li>
-<li>Использовать MCP как обходной путь вокруг неясного prompt contract.</li>
-<li>Отправлять в non-interactive mode задачу, где нужен product judgment.</li>
-<li>Делать GitHub Action, которая пишет большие изменения без review gate.</li>
+<li>Считать session, conversation и sandbox одним ресурсом.</li>
+<li>Переносить beta support одной модели на все семейство.</li>
+<li>Использовать MCP/automation для обхода неясного scope.</li>
+<li>Публиковать, запускать сервер или вызывать provider без отдельного разрешения.</li>
+<li>Выдавать статическую диаграмму или docs build за runtime evidence.</li>
 </ul>
+<h2 id="_3">Входы и выходы<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>Входы: текущая цель, применимые инструкции, источники, ownership и требуемые доказательства. Выходы: ограниченный пакет работы, обоснованный результат и handoff с открытыми рисками. Проверяйте применимость, полномочия и наблюдаемые evidence. Основные риски: пересечение записей, устаревший контекст и выдача предложения за активированное поведение.</p>
 
 
 

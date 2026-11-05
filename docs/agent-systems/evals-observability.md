@@ -104,3 +104,7 @@ result: "accepted | needs_review | rejected"
 | Активация | Effective path, отсутствие masking fallback и evidence из свежей сессии |
 
 Числовые threshold/budget утверждаются до запуска; отсутствующее измерение не равно нулю. Безопасность и schema failures блокируют promotion независимо от среднего score. Сначала сравнивайте supported baseline effort; оптимизацию effort и prompt выполняйте отдельно. Unit/docs checks доказывают свой контракт, а не качество модели или runtime activation. Источник методики: [официальная миграция](https://developers.openai.com/api/docs/guides/latest-model).
+
+## Завершение eval loop
+
+До запуска выберите typical/edge/adversarial cases, threshold и budget. Калибруйте judge по human review; отдельная роль не гарантирует независимость. Для async/steering добавьте pending, late/duplicate results и changed-scope cases. После достаточных relevant checks остановитесь; новый pass оправдан новой правкой, failure или unresolved risk. [Eval guidance](https://developers.openai.com/api/docs/guides/evaluation-best-practices).

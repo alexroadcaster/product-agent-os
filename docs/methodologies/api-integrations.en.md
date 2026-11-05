@@ -185,3 +185,7 @@ It does not choose a universal API style for every project. The project should s
 - [Stoplight Open Source API Toolkit](https://stoplight.io/open-source)
 - [Google API Improvement Proposals](https://google.aip.dev/)
 - [Context7 research](../sources/context7-research.md)
+
+## Async and steering contract
+
+In an OpenAI async integration the application owns pending work, call_id, deadlines and idempotent application. Steering does not cancel a started side effect. Check late/duplicate/failed results against [session control](../agent-systems/session-control.md).

@@ -40,3 +40,6 @@ Return:
 - which checks prove quality.
 ```
 
+## Delegation decision
+
+First check whether one agent is sufficient. If delegation is justified, record independent ownership, handoffs, budget, stop conditions and how to reconcile conflicting findings. Runtime permissions are inherited, not granted by a role. [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents).

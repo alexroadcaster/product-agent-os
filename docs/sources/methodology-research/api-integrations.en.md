@@ -1,4 +1,10 @@
-# API & Integrations Methodology Research
+---
+title: "Archive - API & Integrations Methodology Research"
+---
+
+# Archive - API & Integrations Methodology Research {#api-integrations-methodology-research}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `official + verified methodology + tool-assisted`
 

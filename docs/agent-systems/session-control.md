@@ -24,9 +24,9 @@ exit_criteria: []
 
 При уточнении goal сохраните релевантный контекст и ограничения; для несовместимой новой цели явно определите границу сессии. См. steering и compaction ниже.
 
-## Manager pattern как default
+## Когда нужен Manager pattern
 
-Для уменьшения hallucinations используйте Manager pattern:
+Начните с одного агента. Если независимые подзадачи оправдывают координацию и evals показывают пользу, Manager pattern распределяет ответственность:
 
 - Manager держит source policy и final answer.
 - Specialist agents выполняют bounded subtasks.
@@ -113,3 +113,5 @@ next_agent_task: ""
 | Server-side compaction | `context_management` и `compact_threshold`; opaque encrypted item, не обычный summary |
 
 Уточнение задачи не требует автоматического reset. Сохраняйте цель, ограничения, решения и незавершенные calls; новую сессию выбирайте при необходимости независимого scope или свежей загрузки settings. Compaction, ручной summary и межсессионная memory имеют разные контракты. Для manual history сохраняйте возвращенные state items и требуемые поля; не запрашивайте private chain-of-thought.
+
+Роль Verifier не гарантирует независимую проверку или отсутствие hallucinations. Сравнивайте результат с single-agent baseline; handoffs добавляют точки недетерминизма. [Evaluation best practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices).

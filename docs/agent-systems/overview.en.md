@@ -69,3 +69,7 @@ changes_proposed: []
 risks: []
 next_step: ""
 ```
+
+## Single-agent baseline
+
+Start with one agent. Use multi-agent when representative evals demonstrate value beyond coordination/handoff costs. Then choose [runtime ownership](sdk-patterns.md). [Evaluation best practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices).

@@ -2,6 +2,18 @@
 
 Source status: `experiment`
 
+## Текущий пользовательский маршрут — 05.11.2026
+
+Начинайте с [surface matrix](../codex/surfaces.md) и [ordinary/full lifecycle](../product-agent/lifecycle.md). Текущий пакет использует поддерживаемый legacy manifest; portable format описан отдельно. IDE не поддерживает native plugins. При обновлении skills проверяйте exposure, invocation и результат.
+
+ACT-F1..F6 закрыты в dated local runtime receipt от 03.11 для проверенных Desktop маршрутов. Это не доказательство всех mutation channels, silent Stop execution или hosted/production delivery. Новое обновление касается только docs/site; текущие checks — в [receipt](../superpowers/specs/site-docs-refresh-2026-11-05.json).
+
+RU/EN раздел выше имеет одинаковые текущие claims и границы. Ниже — сохранённые исторические записи; EN history является сокращённым обзором, а не полным переводом всех ledgers. Для точных receipt используйте source-owned JSON. Исторический pending/failure не отменяет более поздний scoped retest.
+
+<details markdown="1">
+<summary>Датированная история и подробные evidence</summary>
+
+
 Эта страница является site-facing owner artifact для холодной истории и detailed
 evidence, которые больше не должны жить в root `PLAN.md`, `RUNLOG.md`,
 `TEST.md` и `EVALS.md`. Root control-plane files остаются компактными
@@ -1203,3 +1215,4 @@ Reject or downgrade these claim patterns unless current evidence exists:
 - Full unittest, fixture eval, transcript eval and strict MkDocs are not required for a docs/control-plane-only compaction unless the focused checks expose contract drift or MkDocs-sensitive files change.
 <!-- product-agent-os:end evals -->
 ```
+</details>

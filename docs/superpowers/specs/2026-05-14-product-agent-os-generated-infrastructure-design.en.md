@@ -1,4 +1,10 @@
-# Product-Agent OS Generated Infrastructure Design
+---
+title: "Archive - Product-Agent OS Generated Infrastructure Design"
+---
+
+# Archive - Product-Agent OS Generated Infrastructure Design {#product-agent-os-generated-infrastructure-design}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `official + experiment`
 

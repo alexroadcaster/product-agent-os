@@ -41,3 +41,7 @@ If context is insufficient, return:
 - clarifying_question
 - unsupported_claims
 ```
+
+## Template applicability
+
+Use the full prompt packet when complexity requires distinct fields. An ordinary task can state goal, scope, acceptance and limits concisely. Start zero-shot; add examples for a measured recurring failure or product requirement. [Prompt guidance](https://developers.openai.com/api/docs/guides/latest-model).

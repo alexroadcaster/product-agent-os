@@ -1,4 +1,10 @@
-# Product-Agent OS Batch 35 approval packet draft
+---
+title: "Archive - Product-Agent OS Batch 35 approval packet draft"
+---
+
+# Archive - Product-Agent OS Batch 35 approval packet draft {#product-agent-os-batch-35-approval-packet-draft}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `internal`
 

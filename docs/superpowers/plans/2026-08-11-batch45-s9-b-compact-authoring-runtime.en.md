@@ -1,4 +1,10 @@
-# Batch 45 S9-B: compact authoring runtime
+---
+title: "Archive - Batch 45 S9-B: compact authoring runtime"
+---
+
+# Archive - Batch 45 S9-B: compact authoring runtime {#batch-45-s9-b-compact-authoring-runtime}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `active local implementation plan; no live/provider/runtime-activation evidence`
 

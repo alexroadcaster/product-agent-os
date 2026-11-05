@@ -1,4 +1,4 @@
-﻿# Automations и GitHub
+# Automations и GitHub
 
 Source status: `official + experiment`  
 Источники: [Codex automations](https://developers.openai.com/codex/app/automations), [Codex best practices](https://developers.openai.com/codex/learn/best-practices), [Codex GitHub integration](https://developers.openai.com/codex/integrations/github), [Codex GitHub Action](https://developers.openai.com/codex/automation/github-action).
@@ -46,3 +46,20 @@ System file hygiene automation должна начинаться как `.codex/
 ```powershell
 python plugins\product-agent-os\scripts\validate_system_file_hygiene.py <workspace>
 ```
+
+## Scheduled tasks: выбрать режим
+
+Проверено 05.11.2026 по [Scheduled tasks](https://developers.openai.com/codex/app/automations). Native schedule, GitHub Action и проектный automation candidate — разные объекты.
+
+| Режим | Контекст и исполнение | Условие |
+| --- | --- | --- |
+| Standalone schedule | Новый chat для запуска | Явные inputs, ожидаемый artifact и место результата |
+| Existing-chat schedule | Контекст существующего chat | Удалить устаревшие assumptions, проверить текущий scope |
+| Local project | Local workspace либо Git worktree | Компьютер включён, desktop app работает; dependencies доступны |
+| Cloud / team task | Подготовленная cloud среда; team identity по доступной конфигурации | Plan/workspace support, service identity и права проверены |
+
+Начните с одного ручного запуска. Зафиксируйте prompt/skill, разрешённые чтения и записи, выбранную model, время/таймзону, output destination, failure owner и способ остановить schedule. В Git project выбирайте local или worktree по риску; non-Git project использует local route. Не рассчитывайте на retired model или неустановленные tools.
+
+После первого scheduled run проверьте actual result, execution environment и failures. Наличие расписания не доказывает выполненную задачу. Project automation остаётся candidate-only до отдельного разрешения; эта страница не активирует schedule.
+
+GitHub Action — путь CI: least privilege, read-only analysis и patch artifact отдельно от публикации PR. Ручной setup команды не должны получать model credentials. [Non-interactive mode](https://developers.openai.com/codex/noninteractive).

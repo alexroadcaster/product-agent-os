@@ -75,3 +75,7 @@ Source status: `official + experiment`
 
 ## Failure taxonomy
 ```
+
+## Minimum set
+
+These are applicable templates, not a requirement to create every file. Reuse project documents. Applicable `AGENTS.md` and task-loaded supporting docs have different loading semantics; see the [control-plane guide](../product-agent/control-plane.md).

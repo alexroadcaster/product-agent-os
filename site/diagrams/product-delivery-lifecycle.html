@@ -519,7 +519,7 @@
         <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Диаграмма
+      Как применять
     </span>
   </a>
 
@@ -528,7 +528,7 @@
         <li class="md-nav__item">
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      Как применять
+      Результат и проверка
     </span>
   </a>
 
@@ -537,7 +537,7 @@
         <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
-      Артефакты на выходе
+      Типовые ошибки
     </span>
   </a>
 
@@ -546,7 +546,34 @@
         <li class="md-nav__item">
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
-      Типовые ошибки
+      Входы
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Выходы
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проверка
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Риски
     </span>
   </a>
 
@@ -824,6 +851,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -905,6 +934,27 @@
 
   <span class="md-ellipsis">
     Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
   </span>
 
 
@@ -2766,6 +2816,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2952,6 +3004,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3400,7 +3473,7 @@
         <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Диаграмма
+      Как применять
     </span>
   </a>
 
@@ -3409,7 +3482,7 @@
         <li class="md-nav__item">
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      Как применять
+      Результат и проверка
     </span>
   </a>
 
@@ -3418,7 +3491,7 @@
         <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
-      Артефакты на выходе
+      Типовые ошибки
     </span>
   </a>
 
@@ -3427,7 +3500,34 @@
         <li class="md-nav__item">
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
-      Типовые ошибки
+      Входы
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Выходы
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проверка
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Риски
     </span>
   </a>
 
@@ -3450,90 +3550,40 @@
 
 <h1 id="product-agent-delivery-lifecycle">Product-Agent Delivery Lifecycle<a class="headerlink" href="#product-agent-delivery-lifecycle" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + experiment</code></p>
-<p>Эта диаграмма показывает полный рабочий процесс реализации проекта через Codex: от идеи до заметки к release и обновления agent operating docs.</p>
-<h2 id="_1">Диаграмма<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>Маршрут зависит от задачи и риска. Diagram описывает workflow, а не автоматически выдаёт полномочия.</p>
 <pre class="mermaid"><code>flowchart TD
-    A["Idea / пользователь request"] --&gt; B["REQUIREMENTS.md"]
-    B --&gt; B1["Product hypothesis / success metrics"]
-    B1 --&gt; C["Source review"]
-    C --&gt; D["PLAN.md"]
-    D --&gt; D1["Architecture boundary / ownership"]
-    D1 --&gt; E["Agent team design"]
-    E --&gt; F["Candidate skills"]
-    F --&gt; G["Runtime choice"]
-    G --&gt; H["Implementation worktree"]
-    H --&gt; I["Code / docs diff"]
-    I --&gt; J["TEST.md deterministic checks"]
-    I --&gt; K["EVALS.md quality checks"]
-    I --&gt; K1["Docs-as-code impact"]
-    J --&gt; L{"Pass?"}
-    K --&gt; L
-    K1 --&gt; L
-    L --&gt;|No| M["Focused fix loop"]
-    M --&gt; H
-    L --&gt;|Yes| N["Review и PR"]
-    N --&gt; O["Release notes"]
-    O --&gt; P["Update RUNLOG.md / measurement"]
-    P --&gt; Q["Update AGENTS.md / skills / insights"]
-    Q --&gt; R["Next project начинается smarter"]</code></pre>
-<h2 id="_2">Как применять<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>Используйте эту схему как checklist для любого проекта, который больше одной небольшой правки.</p>
-<ol>
-<li>Сначала зафиксируйте продуктовую цель, гипотезу и success metric в <code>REQUIREMENTS.md</code>.</li>
-<li>Перед планом проведите source review: официальные docs, существующий код, ограничения проекта.</li>
-<li>В <code>PLAN.md</code> пишите не размышления, а исполнимую последовательность работ с architecture boundary и влияние на docs.</li>
-<li>Агентов назначайте по зонам владения: architecture, build, review, test, docs, release.</li>
-<li>Skills создавайте только для повторяемых методов, а не для разовых идей.</li>
-<li>Evals добавляйте там, где качество нельзя проверить только тестом.</li>
-<li>Docs-as-code artifacts обновляйте вместе с поведением: architecture, API, UI, DB и release docs.</li>
-<li>После PR переносите устойчивые правила в <code>AGENTS.md</code>, а повторяемые методы в skills.</li>
-</ol>
-<h2 id="_3">Артефакты на выходе<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Этап</th>
-<th>Артефакт</th>
-<th>Зачем нужен</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Discovery</td>
-<td><code>REQUIREMENTS.md</code></td>
-<td>Удерживает цель, scope и constraints</td>
-</tr>
-<tr>
-<td>Planning</td>
-<td><code>PLAN.md</code></td>
-<td>Делает работу исполнимой по шагам</td>
-</tr>
-<tr>
-<td>Implementation</td>
-<td>Worktree / branch</td>
-<td>Изолирует изменения и ownership</td>
-</tr>
-<tr>
-<td>Проверка</td>
-<td><code>TEST.md</code>, <code>EVALS.md</code></td>
-<td>Разделяет deterministic checks и quality checks</td>
-</tr>
-<tr>
-<td>Learning</td>
-<td><code>RUNLOG.md</code>, <code>AGENTS.md</code>, skills</td>
-<td>Превращает опыт проекта в память системы</td>
-</tr>
-</tbody>
-</table>
-<p>Если этот lifecycle нужно упаковать в переносимый инструмент для проектов, используйте <a href="../product-agent-os/index.html">Product-Agent OS plugin</a> как пользовательский entrypoint для plugin, skills, custom agents, hooks, evals и automation promotion.</p>
-<h2 id="_4">Типовые ошибки<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Начинать с implementation без <code>REQUIREMENTS.md</code>.</li>
-<li>Создавать много агентов без явных handoff artifacts.</li>
-<li>Делать skill до того, как workflow был несколько раз выполнен вручную.</li>
-<li>Автоматизировать workflow без eval threshold и failure log.</li>
-<li>Смешивать community insight с official rule без статуса проверки.</li>
-</ul>
+    A["User goal and current sources"] --&gt; B{"Scope size and risk"}
+    B --&gt;|Ordinary| C["Concise scope; reuse artifacts"]
+    B --&gt;|Large or high risk| D["Requirements, plan and ownership"]
+    D --&gt; E{"Independent work benefits from delegation?"}
+    E --&gt;|No| F["One agent"]
+    E --&gt;|Yes and authorized| G["Bounded team with handoffs"]
+    C --&gt; F
+    F --&gt; H["Focused change in authorized workspace"]
+    G --&gt; H
+    H --&gt; I["Affected tests; eval or visual check when applicable"]
+    I --&gt; J{"Required checks pass?"}
+    J --&gt;|No| K["Repair or report blocker"]
+    K --&gt; H
+    J --&gt;|Yes| L["Review and evidence"]
+    L --&gt; M["Result and limits"]
+    M --&gt; N["PR or release only with separate authority"]</code></pre>
+<h2 id="_1">Как применять<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>Для обычной правки достаточно scope, изменения, релевантной проверки и результата. Существующие <code>REQUIREMENTS.md</code>, <code>PLAN.md</code>, <code>TEST.md</code>, <code>EVALS.md</code> и <code>RUNLOG.md</code> переиспользуйте; новые artifacts создавайте, когда они удерживают реальные требования, зависимости или evidence. Для большой работы сначала определите acceptance, ownership, risks и rollback. Worktree нужен для изоляции файлов при соответствующем Git authority, а не для каждой задачи.</p>
+<p>Одна роль может выполнять несколько этапов. Команду, skills и evals подключайте по применимости. После required checks повтор оправдан новой правкой, failure или неустранённым риском. PR draft не означает публикацию.</p>
+<h2 id="_2">Результат и проверка<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Проверяемый diff или artifact, выполненные checks, ограничения и следующий шаг. Runtime/model activation требует отдельного evidence; наличие плана или диаграммы этого не доказывает.</p>
+<h2 id="_3">Типовые ошибки<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>Обязательная команда без независимых задач; дублирующие control-plane files; бесконечный общий gate; публикация без authority.</p>
+<p>Связанные материалы: <a href="../product-agent/lifecycle.html">lifecycle</a>, <a href="../product-agent-os/index.html">Product-Agent OS plugin</a>, <a href="https://developers.openai.com/api/docs/guides/latest-model">model guidance</a>, <a href="https://developers.openai.com/api/docs/guides/evaluation-best-practices">eval guidance</a>.</p>
+<h2 id="_4">Входы<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>Цель пользователя, текущие источники, ограничения, ownership и применимые разрешения.</p>
+<h2 id="_5">Выходы<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>Выбранный маршрут, проверяемый artifact и evidence с явными ограничениями.</p>
+<h2 id="_6">Проверка<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<p>Сверьте маршрут с исходниками и наблюдаемым результатом; после изменения синтаксиса проверьте render.</p>
+<h2 id="_7">Риски<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<p>Диаграмма помогает навигации, но не доказывает runtime activation или release.</p>
 
 
 

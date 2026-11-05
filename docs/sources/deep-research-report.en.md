@@ -1,4 +1,10 @@
-# Project And Code Documentation For A New Engineering Team
+---
+title: "Archive - Project And Code Documentation For A New Engineering Team"
+---
+
+# Archive - Project And Code Documentation For A New Engineering Team {#project-and-code-documentation-for-a-new-engineering-team}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `mixed source-backed draft`  
 Status: incoming deep-research report. Claims are useful for Product-Agent OS design only after primary-source verification and stable source entries in `docs/sources/registry.md`.

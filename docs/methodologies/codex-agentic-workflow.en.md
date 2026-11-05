@@ -234,3 +234,7 @@ It does not create active hooks, MCP servers, automations, schedules, GitHub Act
 - [Agents SDK guardrails and human review](https://developers.openai.com/api/docs/guides/agents/guardrails-approvals)
 - [Evaluate agent workflows](https://developers.openai.com/api/docs/guides/agent-evals)
 - [Context7 research](../sources/context7-research.md)
+
+## Current user route
+
+Use [ordinary/full lifecycle](../product-agent/lifecycle.md), [conditional delegation](../playbooks/ai-team-design.md) and [skill exposure](../agent-systems/subagents-skills.md). Select methodologies by task; detection is not invocation or readiness.

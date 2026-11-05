@@ -216,3 +216,7 @@ Quality, Testing & Evals слой определяет, как проект до
 - Which mutation/property-based testing triggers should become readiness gates?
 - How should CI evidence distinguish local command evidence, remote job evidence, artifacts, logs and rerun commands?
 - Which eval failure labels should be standardized: data, prompt, model, retrieval, tool, grader, threshold or product expectation?
+
+## Достаточность проверки
+
+Сначала task-specific baseline и заранее выбранные thresholds/budget. Multi-agent сравнивайте с одним агентом; judge калибруйте по human review. Проверки выбирайте по affected behavior и риску. [Evaluation best practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices).

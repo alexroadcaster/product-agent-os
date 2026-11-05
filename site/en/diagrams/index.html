@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
   </span>
 
 
@@ -2690,6 +2713,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2876,6 +2901,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3366,6 +3412,24 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#model-and-runtime-refresh" class="md-nav__link">
+    <span class="md-ellipsis">
+      Model and runtime refresh
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#choose-the-short-or-full-route" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choose the short or full route
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3397,18 +3461,13 @@
 <li>Finish with <a href="context-memory-verification.html">Context, Memory, Verification</a> to reduce unsupported claims and keep useful knowledge.</li>
 </ol>
 <pre class="mermaid"><code>flowchart LR
-    A["Project idea"] --&gt; B["Delivery lifecycle"]
-    B --&gt; B1["Planning matrix architecture"]
-    B1 --&gt; C["Agent team and skills"]
-    C --&gt; D["Runtime decision"]
-    D --&gt; E["Source/generated boundary"]
-    E --&gt; F["Architecture Intelligence maps"]
-    F --&gt; G["Implementation loop"]
-    G --&gt; H["Skill exposure boundary"]
-    H --&gt; I["Skill lifecycle"]
-    G --&gt; J["Context and verification"]
-    I --&gt; K["Reusable project methods"]
-    J --&gt; L["Product-ready output"]</code></pre>
+    A["User task"] --&gt; B{"Scope and risk"}
+    B --&gt;|Ordinary| C["Scope, change, checks, result"]
+    B --&gt;|Large or high risk| D["Delivery lifecycle"]
+    D --&gt; E["Ownership and optional agents"]
+    E --&gt; F["Runtime and source boundaries"]
+    F --&gt; G["Implementation and evidence"]
+    G --&gt; H["Skill or automation candidate when justified"]</code></pre>
 <h2 id="inputs">Inputs<a class="headerlink" href="#inputs" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Product goal, source context and project constraints.</li>
@@ -3427,6 +3486,10 @@
 <li>Skipping the atlas can lead to runtime or agent choices that are not aligned with approvals and evidence.</li>
 <li>Treating generated views, browser proof gaps or installed skill cache as source truth can create unsupported completion claims.</li>
 </ul>
+<h2 id="model-and-runtime-refresh">Model and runtime refresh<a class="headerlink" href="#model-and-runtime-refresh" title="Permanent link">&para;</a></h2>
+<p>Use the <a href="../codex/models-and-reasoning.html">model matrix</a> and <a href="../playbooks/model-migration.html">migration playbook</a> with the team/runtime diagrams. API capabilities and candidate models are documented separately from current Product-Agent OS activation.</p>
+<h2 id="choose-the-short-or-full-route">Choose the short or full route<a class="headerlink" href="#choose-the-short-or-full-route" title="Permanent link">&para;</a></h2>
+<p><a href="product-delivery-lifecycle.html">Delivery lifecycle</a> starts with size and risk. An ordinary task does not require a team, a worktree or a new file set. Use the full atlas for material dependencies, ownership or release/readiness. Each next diagram should answer a concrete task question.</p>
 
 
 

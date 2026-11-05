@@ -1,4 +1,10 @@
-# Quality, Testing & Evals Methodology Research
+---
+title: "Архив — Quality, Testing & Evals Methodology Research"
+---
+
+# Архив — Quality, Testing & Evals Methodology Research {#quality-testing-evals-methodology-research}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `official + expert reference + vendor documentation + tool-assisted`
 

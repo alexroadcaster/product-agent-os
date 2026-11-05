@@ -2,6 +2,51 @@
 
 Source status: `project-authored`
 
+## Локальная интеграция ORD-01–ORD-06 — 05.11.2026
+
+| ID | Source | Claim scope | Status |
+| --- | --- | --- | --- |
+| ORD-S01 | `plugins/product-agent-os/scripts/product_agent_os/task_routing.py`, `scripts/codex_runtime_runner/cli.py`, `state.py`, `routes.py` | Opt-in task context, готовые selectors T26/T27, state provenance, legacy trace, read-only result | project-authored / local integration; без host activation claim |
+| ORD-S02 | `plugins/product-agent-os/scripts/product_agent_os/templates.py`, `infrastructure.py`; `tests/product_agent_os/test_infrastructure_renderer.py` | Выбор templates, сохранение staging/merge boundary и user files | project-authored / synthetic local checks |
+| ORD-S03 | `tests/product_agent_os/test_codex_runtime_runner_cli.py`; active/package compact contract | Public CLI, RU/EN decisions, high-risk/negative cases, regression RED/GREEN и stale receipts | project-authored / bounded local evidence; не behavioral promotion |
+
+Evidence и финальные команды принадлежат `research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md`. T23–T29 и historical receipts сохранены; T30–T34 вне этого slice.
+
+## Обновление пользовательского сайта — 05.11.2026
+
+Источники проверены через OpenAI documentation connector для аудита и этого docs slice. Проверка относится к перечисленным claims, не ко всему API, account availability или runtime activation. Воспроизводимые local checks принадлежат текущему evidence receipt; исторические записи ниже сохраняют свои даты.
+
+| ID | Source | Claim scope | checked_at | Status |
+| --- | --- | --- | --- | --- |
+| SITE-S01 | [Model Context Protocol](https://learn.chatgpt.com/docs/extend/mcp) | local/cloud MCP and orchestration | 2026-11-05 | official / documentation_checked |
+| SITE-S02 | [Hooks](https://learn.chatgpt.com/docs/hooks) | trust, merge, concurrency, supported handlers and failure boundaries | 2026-11-05 | official / documentation_checked |
+| SITE-S03 | [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents) | delegation and inherited controls | 2026-11-05 | official / documentation_checked |
+| SITE-S04 | [Approvals and security](https://learn.chatgpt.com/docs/agent-approvals-security) | retired approval policy and execution scope | 2026-11-05 | official / documentation_checked |
+| SITE-S05 | [Package your plugin](https://developers.openai.com/plugins/build/plugins) | portable and compatibility layouts | 2026-11-05 | official / documentation_checked |
+| SITE-S06 | [Developer settings](https://learn.chatgpt.com/docs/developer-settings) | effective configuration diagnostics | 2026-11-05 | official / documentation_checked |
+| SITE-S07 | [Scheduled tasks](https://developers.openai.com/codex/app/automations) | modes and execution prerequisites | 2026-11-05 | official / documentation_checked |
+| SITE-S08 | [Git worktrees](https://learn.chatgpt.com/docs/environments/git-worktrees) | Git isolation and Handoff | 2026-11-05 | official / documentation_checked |
+| SITE-S09 | [Build skills](https://learn.chatgpt.com/docs/build-skills) | instructions-first and exposure | 2026-11-05 | official / documentation_checked |
+| SITE-S10 | [Models](https://learn.chatgpt.com/docs/models) | client availability and model controls | 2026-11-05 | official / documentation_checked |
+| SITE-S11 | [Latest model](https://developers.openai.com/api/docs/guides/latest-model) | initiative, scoped verification and migration | 2026-11-05 | official / documentation_checked |
+| SITE-S12 | [Agents](https://developers.openai.com/api/docs/guides/agents) | runtime and state ownership | 2026-11-05 | official / documentation_checked |
+| SITE-S13 | [AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md) | discovery versus supporting docs | 2026-11-05 | official / documentation_checked |
+| SITE-S14 | [Memories](https://developers.openai.com/codex/memories) | local/web stores, use/generate and reset | 2026-11-05 | official / documentation_checked |
+| SITE-S15 | [Deployment checklist](https://developers.openai.com/api/docs/guides/deployment-checklist) | reference only; no deployment claim | 2026-11-05 | official / documentation_checked |
+| SITE-S16 | [Evaluation best practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices) | single-agent baseline and evaluation | 2026-11-05 | official / documentation_checked |
+| SITE-S17 | [Plugins](https://learn.chatgpt.com/docs/plugins) | component/client support and installation | 2026-11-05 | official / documentation_checked |
+| SITE-S18 | [Cloud network scope](https://learn.chatgpt.com/docs/enterprise/security-cookbook#configure-cloud-environment-networking-separately) | current versus legacy networking | 2026-11-05 | official / documentation_checked |
+| SITE-S19 | [Cloud environments](https://learn.chatgpt.com/docs/environments/cloud-environments) | setup, publication and network secrets | 2026-11-05 | official / documentation_checked |
+| SITE-S20 | [Non-interactive](https://developers.openai.com/codex/noninteractive) | JSONL/final schema and approval failures | 2026-11-05 | official / documentation_checked |
+| SITE-S21 | [Prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching) | explicit breakpoints and lifetime | 2026-11-05 | official / documentation_checked |
+| SITE-S22 | [Responses Multi-agent](https://developers.openai.com/api/docs/guides/responses-multi-agent) | beta ownership and compatibility | 2026-11-05 | official / documentation_checked |
+| SITE-S23 | [Async tool calling](https://developers.openai.com/api/docs/guides/async-tool-calling) | pending tools and call_id | 2026-11-05 | official / documentation_checked |
+| SITE-S24 | [Mid-turn steering](https://developers.openai.com/api/docs/guides/steering) | steering does not undo tools | 2026-11-05 | official / documentation_checked |
+| SITE-S25 | [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs) | output shape versus truth | 2026-11-05 | official / documentation_checked |
+
+Затронуты: Codex surfaces/configuration/security/workflows, lifecycle, plugin packaging, hooks, skills, memory, runtime, prompting, related playbooks/templates/diagrams и их RU/EN пары. [Проверки текущего обновления](../superpowers/specs/site-docs-refresh-2026-11-05.json).
+
+
 Этот файл сжат 2026-06-11, чтобы активный source registry оставался ниже soft-size limit в system-file hygiene audit. Полные historical source cards, включая URL, summaries, relevance и verification details, сохранены в archive sibling.
 
 Archive sibling: `source-registry-archive-20260611.txt`.

@@ -1,4 +1,10 @@
-# Backend Methodology Research
+---
+title: "Архив — Backend Methodology Research"
+---
+
+# Архив — Backend Methodology Research {#backend-methodology-research}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `official + expert reference + vendor documentation + tool-assisted`
 

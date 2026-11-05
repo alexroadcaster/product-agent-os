@@ -118,3 +118,7 @@ A docs-only update cannot create new passed evidence. It can only cite current-r
 ## Next Action
 
 The next safe step is either documentation/source closure for the current real-testing evidence, or owner-provided M41 git release fields. Until those fields are supplied, git release/PR stays blocked. Any new live server, browser automation, provider/API, canonical mutation or git action still needs its own narrow approval packet.
+
+## Current route and evidence
+
+Evidence distinguishes a trusted definition, an authorized tool and observed execution/denial. An MCP-hook error is not fail-closed. Use the [hook guide](../runtime/worktrees-hooks-rules.md) for the local receipt and remaining limits.

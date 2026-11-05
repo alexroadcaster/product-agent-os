@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
   </span>
 
 
@@ -2829,6 +2852,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -3015,6 +3040,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3927,7 +3973,7 @@
 <span class="n">python</span> <span class="n">-m</span> <span class="n">mkdocs</span> <span class="n">build</span> <span class="p">-</span><span class="n">-strict</span>
 <span class="n">git</span> <span class="nb">diff </span><span class="p">-</span><span class="n">-check</span>
 </code></pre></div>
-<p>Запустите минимальный релевантный набор для текущего slice. Закрывающий claim требует порядок: <code>source docs -&gt; registry -&gt; docs tests -&gt; check_docs.py -&gt; strict MkDocs -&gt; optional full closure</code>.</p>
+<p>Запустите минимальный релевантный набор для текущей задачи: source docs → registry → docs tests → <code>check_docs.py</code>. Strict MkDocs и проверка site обязательны при изменении navigation, diagrams, search или generated site и наличии разрешения на сборку; остальные gates выбираются по затронутому поведению. <a href="../playbooks/docs-update.html">Процесс обновления документации</a>.</p>
 <h2 id="_4">Риски и сбои<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Запуск <code>stage command</code> внутри <code>target workspace</code> может смешать generated и source-of-truth boundaries.</li>

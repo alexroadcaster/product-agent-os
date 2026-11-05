@@ -118,3 +118,7 @@ The documentation audit does not promote package compatibility into proven opera
 | OPEN-RUNTIME | New Agents API/Responses capabilities are documented | Separate implementation and runtime evidence if the route is selected |
 
 The owner authorized technical follow-up on 2026-11-03. Configuration, profiles, templates and validators are updated; activation and behavioral promotion remain open. Exact commands and results belong to the [plan](../superpowers/plans/2026-11-03-gpt6-documentation-refresh.md).
+
+## Components and runtime evidence
+
+Record compatibility by client/version/authentication/component. A local fixture or manifest does not prove native installation, trust or runtime success. IDE native plugins are unsupported; the legacy package remains a compatible format. See [surface matrix](../codex/surfaces.md) and [package contract](technical.md).

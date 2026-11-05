@@ -24,7 +24,7 @@ The plugin does not publish itself, install dependencies, start live servers, ac
 | --- | --- |
 | Codex App | Ambiguity resolution, steering, review and local workspace work. |
 | CLI | Deterministic checks, renderers, validators and staged artifact generation. |
-| IDE extension | Navigation, implementation support and review context. |
+| IDE extension | Repository files and review context; native plugin installation is not supported. |
 | skills | Repeatable methods with inputs, outputs, verification and failure modes. |
 | subagents | Specialized or parallel work when ownership is clear. |
 | MCP | Declared integration context with approval boundaries. |
@@ -246,3 +246,7 @@ Validate plugin metadata, docs structure, fixture evals and Codex compatibility 
 
 - Compatibility checks are not publication approval.
 - Bundling live actions into the plugin contract can bypass the explicit approval model.
+
+## Package compatibility
+
+The specification lists the existing package layout, not the only official format. Portable `plugin.json` / `mcp.json`, legacy fallback, new sessions, authentication and trust are explained in [technical installation](../product-agent-os/technical.md). Verify product, component and account support separately against [Plugins](https://learn.chatgpt.com/docs/plugins).

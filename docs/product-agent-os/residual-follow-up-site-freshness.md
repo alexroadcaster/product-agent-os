@@ -30,3 +30,7 @@ Final `DOC-M25` может rebuild root `site` только после отде�
 ## Closure Rule
 
 G5 может закрыть source docs, nav, tests, registry и control-plane sync без root `site` freshness claim. Полная generated-site freshness требует current strict MkDocs build to root `site`, search/sitemap evidence и `git diff --check` в том же approved slice.
+
+## Актуальный маршрут и evidence
+
+Обновление от 05.11 включает пересборку root site и expected RU/EN routes, ссылки/якоря и Mermaid. Точные observed checks находятся в source-owned receipt `docs/superpowers/specs/site-docs-refresh-2026-11-05.json`. Более ранние deferred записи ниже описывают свои snapshots, а не текущий итог.

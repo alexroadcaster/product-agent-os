@@ -1,4 +1,10 @@
-# Product-Agent OS Batch 34B public copy rewrite packet
+---
+title: "Archive - Product-Agent OS Batch 34B public copy rewrite packet"
+---
+
+# Archive - Product-Agent OS Batch 34B public copy rewrite packet {#product-agent-os-batch-34b-public-copy-rewrite-packet}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `internal`
 

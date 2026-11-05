@@ -1,4 +1,10 @@
-# GPT-5.6 R1-R6 Remediation Plan
+---
+title: "Archive - GPT-5.6 R1-R6 Remediation Plan"
+---
+
+# Archive - GPT-5.6 R1-R6 Remediation Plan {#gpt-56-r1-r6-remediation-plan}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `current project task plan`.
 

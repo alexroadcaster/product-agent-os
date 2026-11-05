@@ -1,4 +1,10 @@
-# API & Integrations Methodology Research
+---
+title: "Архив — API & Integrations Methodology Research"
+---
+
+# Архив — API & Integrations Methodology Research {#api-integrations-methodology-research}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `official + verified methodology + tool-assisted`
 

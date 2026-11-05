@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
   </span>
 
 
@@ -2430,6 +2453,24 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#api-runtime-map-and-implementation-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      API runtime map and implementation level
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#choose-by-execution-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choose by execution boundary
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -2766,6 +2807,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2952,6 +2995,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3433,6 +3497,24 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#api-runtime-map-and-implementation-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      API runtime map and implementation level
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#choose-by-execution-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choose by execution boundary
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3469,6 +3551,11 @@ Sources: <a href="https://developers.openai.com/codex/cli/features">Codex CLI fe
 <li>Live server launch, browser automation, provider calls and git release actions need explicit approval.</li>
 <li>Automating before a workflow is stable can repeat unresolved failures.</li>
 </ul>
+<h2 id="api-runtime-map-and-implementation-level">API runtime map and implementation level<a class="headerlink" href="#api-runtime-map-and-implementation-level" title="Permanent link">&para;</a></h2>
+<p><a href="https://developers.openai.com/api/docs/guides/agents">Agents API</a> runs an OpenAI-managed Codex harness; Agents SDK runs the agent loop in the application; Responses API provides a direct API contract with optional hosted orchestration. <a href="https://developers.openai.com/api/docs/guides/responses-multi-agent">Responses Multi-agent</a> is a separate beta capability, not a synonym for Codex subagents.</p>
+<p>Use the <a href="../agent-systems/sdk-patterns.html">SDK patterns table</a> and <a href="../diagrams/runtime-decision-map.html">runtime diagram</a> to choose state/tool/approval ownership. Product-Agent OS documents these routes; this refresh does not implement Agents API, async/steering or a new hosted runner. Documented, designed, implemented and runtime-verified are different evidence levels and do not automatically imply one another.</p>
+<h2 id="choose-by-execution-boundary">Choose by execution boundary<a class="headerlink" href="#choose-by-execution-boundary" title="Permanent link">&para;</a></h2>
+<p>Identify local/current Cloud/legacy first, then authentication, tool controls and state ownership. See <a href="../codex/surfaces.html">surface matrix and Cloud setup</a>, <a href="../agent-systems/sdk-patterns.html">Agents API/SDK/Responses</a>, <a href="automations-github.html">Scheduled tasks</a>. Local tools do not imply local orchestration.</p>
 
 
 

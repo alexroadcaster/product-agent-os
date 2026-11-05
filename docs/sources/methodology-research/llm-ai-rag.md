@@ -1,4 +1,10 @@
-# LLM / AI / RAG Methodology Research
+---
+title: "Архив — LLM / AI / RAG Methodology Research"
+---
+
+# Архив — LLM / AI / RAG Methodology Research {#llm-ai-rag-methodology-research}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `official + vendor documentation + tool-assisted`
 

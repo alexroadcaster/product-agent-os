@@ -13,6 +13,8 @@ This is a coding sub-gate. It does not replace Task Start Brief / Completion Led
 - Use for implementation or refactoring tasks that can change behavior, public contracts, runtime behavior, dependency graph, shared abstractions, generated code, or long-term maintainability.
 - Use `not_applicable` for docs-only, formatting-only, read-only research, or tiny mechanical edits; record the reason and reduced evidence path.
 
+Ordinary code work uses the existing eight-field compact contract. High-risk work keeps applicable safety and verification gates; full lifecycle reporting is selected independently by the config-routed lifecycle contract. Project-mandated checks remain mandatory. File updates alone do not prove fresh-session loading.
+
 ## Inputs
 
 - Task row id:
@@ -22,7 +24,8 @@ This is a coding sub-gate. It does not replace Task Start Brief / Completion Led
 - Forbidden files:
 - Existing local patterns:
 - Existing test/eval path:
-- Checklist artifact: `.codex/artifact-templates/coding-standard-checklist.md`
+- Default generation context: `.codex/artifact-templates/code-change-contract.md`
+- Reviewer/reference detail when needed: `.codex/artifact-templates/coding-standard-checklist.md`
 - Agent task packet:
 - Approval requirements:
 
@@ -41,7 +44,8 @@ This is a coding sub-gate. It does not replace Task Start Brief / Completion Led
 
 ## Outputs
 
-- Completed coding-standard checklist or `not_applicable` reason.
+- Completed compact code-change contract or `not_applicable` reason.
+- Full coding-standard checklist only as reviewer/reference material when its additional detail applies.
 - Selected leverage path and rejected alternatives.
 - Dependency decision and approval status.
 - Module, public-contract, and legacy risk notes.

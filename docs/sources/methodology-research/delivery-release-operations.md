@@ -1,4 +1,10 @@
-# Delivery, Release & Operations Methodology Research
+---
+title: "Архив — Delivery, Release & Operations Methodology Research"
+---
+
+# Архив — Delivery, Release & Operations Methodology Research {#delivery-release-operations-methodology-research}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `official + verified methodology + vendor documentation + tool-assisted`
 

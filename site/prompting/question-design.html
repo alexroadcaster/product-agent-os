@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
   </span>
 
 
@@ -1082,6 +1105,24 @@
   <a href="#checklist" class="md-nav__link">
     <span class="md-ellipsis">
       Checklist перед отправкой
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проверка prompt перед миграцией
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Когда уточнять
     </span>
   </a>
 
@@ -2784,6 +2825,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2970,6 +3013,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3469,6 +3533,24 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проверка prompt перед миграцией
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Когда уточнять
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3577,9 +3659,9 @@ You are ...
 <div class="highlight"><pre><span></span><code><span class="nt">examples</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">input</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Проверь</span><span class="nv"> </span><span class="s">claim:</span><span class="nv"> </span><span class="s">Codex</span><span class="nv"> </span><span class="s">сам</span><span class="nv"> </span><span class="s">запускает</span><span class="nv"> </span><span class="s">subagents.&quot;</span>
 <span class="w">    </span><span class="nt">output</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;rejected&quot;</span>
-<span class="w">      </span><span class="nt">reason</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Official</span><span class="nv"> </span><span class="s">docs</span><span class="nv"> </span><span class="s">require</span><span class="nv"> </span><span class="s">explicit</span><span class="nv"> </span><span class="s">user</span><span class="nv"> </span><span class="s">request</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">subagents.&quot;</span>
-<span class="w">      </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://developers.openai.com/codex/subagents&quot;</span>
+<span class="w">      </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;qualified&quot;</span>
+<span class="w">      </span><span class="nt">reason</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Local</span><span class="nv"> </span><span class="s">Codex</span><span class="nv"> </span><span class="s">delegation</span><span class="nv"> </span><span class="s">can</span><span class="nv"> </span><span class="s">be</span><span class="nv"> </span><span class="s">requested</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">user</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">applicable</span><span class="nv"> </span><span class="s">AGENTS/skill</span><span class="nv"> </span><span class="s">instructions;</span><span class="nv"> </span><span class="s">project</span><span class="nv"> </span><span class="s">policy</span><span class="nv"> </span><span class="s">may</span><span class="nv"> </span><span class="s">be</span><span class="nv"> </span><span class="s">stricter.</span><span class="nv"> </span><span class="s">Work</span><span class="nv"> </span><span class="s">Ultra</span><span class="nv"> </span><span class="s">has</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">separate</span><span class="nv"> </span><span class="s">proactive</span><span class="nv"> </span><span class="s">workflow.&quot;</span>
+<span class="w">      </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://learn.chatgpt.com/docs/agent-configuration/subagents&quot;</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">input</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Проверь</span><span class="nv"> </span><span class="s">claim:</span><span class="nv"> </span><span class="s">Structured</span><span class="nv"> </span><span class="s">Outputs</span><span class="nv"> </span><span class="s">решают</span><span class="nv"> </span><span class="s">все</span><span class="nv"> </span><span class="s">hallucinations.&quot;</span>
 <span class="w">    </span><span class="nt">output</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;qualified&quot;</span>
@@ -3595,6 +3677,10 @@ You are ...
 <li>Есть правило для uncertainty?</li>
 <li>Есть критерий проверки?</li>
 </ul>
+<h2 id="prompt">Проверка prompt перед миграцией<a class="headerlink" href="#prompt" title="Permanent link">&para;</a></h2>
+<p>Перед изменением prompt проверьте: задан ли результат; можно ли продолжить полезную работу без ответа; где заканчивается уже разрешенный scope; какие проверки обязательны; что оправдывает повтор; кто решает promotion. Не требуйте private chain-of-thought: нужны краткие основания, допущения и evidence. Сначала сравните модель при фиксированном prompt, затем изменяйте prompt отдельно. См. <a href="overview.html">GPT-6 prompting</a> и <a href="../playbooks/model-migration.html">migration playbook</a>.</p>
+<h2 id="_4">Когда уточнять<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>Уточняйте вопрос, если ответ меняет scope, authority или существенный результат. Для обратимых деталей допустимо явно названное обоснованное допущение. Продолжайте независимую разрешённую работу; время ожидания не означает approval. <a href="https://developers.openai.com/api/docs/guides/latest-model">Model guidance</a>.</p>
 
 
 

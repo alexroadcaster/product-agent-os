@@ -559,27 +559,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
-  <a href="#inputs" class="md-nav__link">
+  <a href="#how-to-use" class="md-nav__link">
     <span class="md-ellipsis">
-      Inputs
+      How to use
     </span>
   </a>
 
 </li>
 
         <li class="md-nav__item">
-  <a href="#outputs" class="md-nav__link">
+  <a href="#outputs-and-verification" class="md-nav__link">
     <span class="md-ellipsis">
-      Outputs
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#verification" class="md-nav__link">
-    <span class="md-ellipsis">
-      Verification
+      Outputs and Verification
     </span>
   </a>
 
@@ -589,6 +580,24 @@
   <a href="#risks" class="md-nav__link">
     <span class="md-ellipsis">
       Risks
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inputs
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verification
     </span>
   </a>
 
@@ -824,6 +833,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -905,6 +916,27 @@
 
   <span class="md-ellipsis">
     Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
   </span>
 
 
@@ -2766,6 +2798,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2952,6 +2986,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3398,27 +3453,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
-  <a href="#inputs" class="md-nav__link">
+  <a href="#how-to-use" class="md-nav__link">
     <span class="md-ellipsis">
-      Inputs
+      How to use
     </span>
   </a>
 
 </li>
 
         <li class="md-nav__item">
-  <a href="#outputs" class="md-nav__link">
+  <a href="#outputs-and-verification" class="md-nav__link">
     <span class="md-ellipsis">
-      Outputs
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#verification" class="md-nav__link">
-    <span class="md-ellipsis">
-      Verification
+      Outputs and Verification
     </span>
   </a>
 
@@ -3428,6 +3474,24 @@
   <a href="#risks" class="md-nav__link">
     <span class="md-ellipsis">
       Risks
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inputs
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verification
     </span>
   </a>
 
@@ -3450,37 +3514,42 @@
 
 <h1 id="runtime-decision-map">Runtime decision map<a class="headerlink" href="#runtime-decision-map" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + experiment</code></p>
-<p>Use this map to choose where Codex work should run: Codex App, CLI, <code>codex exec</code>, GitHub Action, MCP, Agents SDK or automation.</p>
+<p>Reviewed 2026-11-03.</p>
 <pre class="mermaid"><code>flowchart TD
-    A["Work item"] --&gt; B{"Ambiguous or needs steering?"}
-    B --&gt;|Yes| C["Codex App / IDE extension"]
-    B --&gt;|No| D{"Stable command?"}
-    D --&gt;|Yes| E["CLI or codex exec"]
-    D --&gt;|No| F{"CI or PR event?"}
-    F --&gt;|Yes| G["GitHub Action with approval"]
-    F --&gt;|No| H{"Programmable orchestration?"}
-    H --&gt;|Yes| I["MCP or Agents SDK"]
-    H --&gt;|No| J["Manual playbook"]
-    J --&gt; K{"Repeated and stable?"}
-    K --&gt;|Yes| L["Automation candidate"]
-    K --&gt;|No| M["Keep manual"]</code></pre>
-<h2 id="inputs">Inputs<a class="headerlink" href="#inputs" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Uncertainty level, risk, required tools, approval boundary and expected evidence.</li>
-<li>Existing project rules for sandbox, network, external writes and git actions.</li>
-</ul>
-<h2 id="outputs">Outputs<a class="headerlink" href="#outputs" title="Permanent link">&para;</a></h2>
-<ul>
-<li>A runtime choice with explicit evidence and rollback expectations.</li>
-<li>A safe next action for manual work, skill promotion or automation candidate.</li>
-</ul>
-<h2 id="verification">Verification<a class="headerlink" href="#verification" title="Permanent link">&para;</a></h2>
-<p>Runtime choice should be recorded with source context, allowed commands, forbidden actions and stop conditions.</p>
+    A["Work, authority and acceptance"] --&gt; B{"Interactive repository work?"}
+    B --&gt;|Yes| C["Codex App / IDE / CLI"]
+    C --&gt; D["Subagents only when authorized and useful"]
+    B --&gt;|No| E{"Stable command or trigger?"}
+    E --&gt;|Yes| F["codex exec / CI / automation candidate"]
+    E --&gt;|No| G{"Agent application: execution owner?"}
+    G --&gt;|OpenAI managed harness| H["Agents API"]
+    G --&gt;|Application agent loop| I["Agents SDK"]
+    G --&gt;|Direct API contract| J["Responses API"]
+    J --&gt; K["Optional Responses Multi-agent beta"]
+    I --&gt; M["Optional Codex MCP tool boundary"]
+    D --&gt; V["Verify selected surface and permissions"]
+    F --&gt; V
+    H --&gt; V
+    M --&gt; V
+    K --&gt; V
+    V --&gt; W["Record actual implementation and runtime evidence"]</code></pre>
+<h2 id="how-to-use">How to use<a class="headerlink" href="#how-to-use" title="Permanent link">&para;</a></h2>
+<p>Choose by uncertainty, execution owner, state lifetime, tools, approval scope and failure cost. Interactive ambiguity belongs in App/IDE/CLI; a stable self-contained contract may fit <code>codex exec</code>. CI/GitHub Action and schedules need explicit authority, minimal permissions and predictable failure handling. MCP exposes a tool boundary; it does not resolve missing requirements.</p>
+<p>For an agent application, <a href="https://developers.openai.com/api/docs/guides/agents">Agents API</a> provides an OpenAI-managed Codex harness; SDK runs in your app; Responses exposes the API contract with optional hosted orchestration. <a href="https://developers.openai.com/api/docs/guides/responses-multi-agent">Responses Multi-agent</a> is a separate beta with model/mode limits. None is automatically interchangeable with Codex subagents.</p>
+<h2 id="outputs-and-verification">Outputs and Verification<a class="headerlink" href="#outputs-and-verification" title="Permanent link">&para;</a></h2>
+<p>Record runtime/client/auth/model, state and tool owners, allowed actions, stop/rollback and required evidence. Use <a href="../runtime/overview.html">runtime overview</a>, <a href="../agent-systems/sdk-patterns.html">SDK contracts</a>, <a href="../agent-systems/session-control.html">session control</a> and <a href="../codex/models-and-reasoning.html">model matrix</a>. Mark documented, designed, implemented and runtime-verified separately. This refresh activates no new runtime.</p>
 <h2 id="risks">Risks<a class="headerlink" href="#risks" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Using automation or MCP to compensate for an unclear prompt contract can hide missing requirements.</li>
-<li>A live or external runtime needs separate explicit approval and current evidence.</li>
+<li>Treating a session, conversation and sandbox as the same resource.</li>
+<li>Transferring one model's beta support to the whole family.</li>
+<li>Treating MCP or automation as a workaround for unclear scope.</li>
+<li>Publishing, launching servers or calling providers without separate authority.</li>
+<li>Treating a static diagram or passing docs build as runtime evidence.</li>
 </ul>
+<h2 id="inputs">Inputs<a class="headerlink" href="#inputs" title="Permanent link">&para;</a></h2>
+<p>Current goal, applicable instructions, source context, ownership boundaries and required evidence.</p>
+<h2 id="verification">Verification<a class="headerlink" href="#verification" title="Permanent link">&para;</a></h2>
+<p>Check applicability, authority, ownership and observed evidence before accepting a result.</p>
 
 
 

@@ -1,4 +1,10 @@
-# Batch 45 S9-A Durable Contract Recovery
+---
+title: "Archive - Batch 45 S9-A Durable Contract Recovery"
+---
+
+# Archive - Batch 45 S9-A Durable Contract Recovery {#batch-45-s9-a-durable-contract-recovery}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `active local implementation plan; no live or provider evidence`
 

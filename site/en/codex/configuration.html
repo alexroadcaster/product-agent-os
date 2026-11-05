@@ -14,7 +14,7 @@
         <link rel="prev" href="surfaces.html">
 
 
-        <link rel="next" href="security.html">
+        <link rel="next" href="models-and-reasoning.html">
 
 
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -750,6 +750,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
 
 
@@ -870,11 +872,44 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
-  <a href="#approval-policy-as-a-managed-interface" class="md-nav__link">
+  <a href="#approval-policy-and-permission-profiles" class="md-nav__link">
     <span class="md-ellipsis">
-      Approval policy as a managed interface
+      Approval policy and permission profiles
     </span>
   </a>
+
+    <nav class="md-nav" aria-label="Approval policy and permission profiles">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#granular-prompt-categories" class="md-nav__link">
+    <span class="md-ellipsis">
+      Granular prompt categories
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#permission-profiles-beta" class="md-nav__link">
+    <span class="md-ellipsis">
+      Permission profiles (beta)
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#models-and-current-project-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      Models and current project contract
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
 
 </li>
 
@@ -896,10 +931,40 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#check-effective-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Check effective settings
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
 
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
+  </span>
+
+
+      </a>
     </li>
 
 
@@ -2757,6 +2822,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2943,6 +3010,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3389,11 +3477,44 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
-  <a href="#approval-policy-as-a-managed-interface" class="md-nav__link">
+  <a href="#approval-policy-and-permission-profiles" class="md-nav__link">
     <span class="md-ellipsis">
-      Approval policy as a managed interface
+      Approval policy and permission profiles
     </span>
   </a>
+
+    <nav class="md-nav" aria-label="Approval policy and permission profiles">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#granular-prompt-categories" class="md-nav__link">
+    <span class="md-ellipsis">
+      Granular prompt categories
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#permission-profiles-beta" class="md-nav__link">
+    <span class="md-ellipsis">
+      Permission profiles (beta)
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#models-and-current-project-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      Models and current project contract
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
 
 </li>
 
@@ -3415,6 +3536,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#check-effective-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Check effective settings
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3431,65 +3561,69 @@
 
 
 <h1 id="codex-configuration-and-extensibility">Codex Configuration and Extensibility<a class="headerlink" href="#codex-configuration-and-extensibility" title="Permanent link">&para;</a></h1>
-<p>Source status: <code>official</code>
-Sources: <a href="https://developers.openai.com/codex/agent-approvals-security">Agent approvals and security</a>, <a href="https://developers.openai.com/codex/skills/create-skill">Create a skill</a>, <a href="https://developers.openai.com/codex/subagents">Subagents</a>, <a href="https://developers.openai.com/codex/guides/agents-sdk">Agents SDK with Codex</a>.</p>
-<h2 id="approval-policy-as-a-managed-interface">Approval policy as a managed interface<a class="headerlink" href="#approval-policy-as-a-managed-interface" title="Permanent link">&para;</a></h2>
-<p>For advanced work, approval policy is better described not as one global switch, but as a set of separate gates:</p>
-<div class="highlight"><pre><span></span><code><span class="n">approval_policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">granular</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">sandbox_approval</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">  </span><span class="n">rules</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">  </span><span class="n">mcp_elicitations</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">  </span><span class="n">request_permissions</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-<span class="w">  </span><span class="n">skill_approval</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">false</span>
-<span class="p">}</span><span class="w"> </span><span class="p">}</span>
+<p>Source status: <code>official + experiment</code>
+Sources: <a href="https://learn.chatgpt.com/docs/permissions">Agent approvals and security</a>, <a href="https://developers.openai.com/codex/skills/create-skill">Create a skill</a>, <a href="https://learn.chatgpt.com/docs/agent-configuration/subagents">Subagents</a>, <a href="https://developers.openai.com/codex/guides/agents-sdk">Agents SDK with Codex</a>.</p>
+<h2 id="approval-policy-and-permission-profiles">Approval policy and permission profiles<a class="headerlink" href="#approval-policy-and-permission-profiles" title="Permanent link">&para;</a></h2>
+<p>Checked 2026-11-03 against <a href="https://learn.chatgpt.com/docs/config-file/config-reference">Configuration Reference</a> and <a href="https://learn.chatgpt.com/docs/permissions">Permissions</a>. These are standalone examples, not changes to this repository's configuration. Effective settings also depend on client version, trusted project layers and managed policy.</p>
+<p><code>on-request</code> allows eligible interactive approval prompts; <code>never</code> rejects requests that need approval. Neither grants extra filesystem access. <code>untrusted</code> is retired as an approval policy; project <code>trust_level</code> is a different setting. <code>approvals_reviewer</code> chooses the reviewer for eligible prompts, not sandbox permissions or review of already permitted actions.</p>
+<h3 id="granular-prompt-categories">Granular prompt categories<a class="headerlink" href="#granular-prompt-categories" title="Permanent link">&para;</a></h3>
+<p>This complete TOML example uses regular tables to remain compatible with the project's TOML parser. Do not combine it with a scalar <code>approval_policy</code> in the same configuration.</p>
+<div class="highlight"><pre><span></span><code><span class="k">[approval_policy.granular]</span>
+<span class="n">sandbox_approval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="n">rules</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="n">mcp_elicitations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="n">request_permissions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="n">skill_approval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
 </code></pre></div>
-<p>Practical meaning:</p>
 <table>
 <thead>
 <tr>
-<th>Gate</th>
-<th>What it controls</th>
-<th>Recommendation</th>
+<th>Key</th>
+<th>Meaning when true</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>sandbox_approval</code></td>
-<td>A command crossing the sandbox boundary</td>
-<td>Enable for local projects</td>
+<td>Permit sandbox escalation approval prompts</td>
 </tr>
 <tr>
 <td><code>rules</code></td>
-<td>Confirmation for rule-based actions</td>
-<td>Enable when the access policy is complex</td>
+<td>Permit prompts triggered by rules</td>
 </tr>
 <tr>
 <td><code>mcp_elicitations</code></td>
-<td>Confirmation requests from MCP tools</td>
-<td>Enable for external systems</td>
+<td>Permit MCP elicitation prompts</td>
 </tr>
 <tr>
 <td><code>request_permissions</code></td>
-<td>Requests for expanded permissions</td>
-<td>Disable by default, enable deliberately</td>
+<td>Permit permission-expansion prompts</td>
 </tr>
 <tr>
 <td><code>skill_approval</code></td>
-<td>Permission for skill invocation</td>
-<td>Enable if skills have side effects</td>
+<td>Permit skill-script approval prompts; not general skill invocation</td>
 </tr>
 </tbody>
 </table>
-<p>Baseline for analysis and review:</p>
-<div class="highlight"><pre><span></span><code><span class="n">approval_policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;untrusted&quot;</span>
-<span class="n">sandbox_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;read-only&quot;</span>
+<p>False denies that prompt category; it does not silently approve the operation. Choose each flag for the authorized workflow rather than enabling all categories by habit.</p>
+<h3 id="permission-profiles-beta">Permission profiles (beta)<a class="headerlink" href="#permission-profiles-beta" title="Permanent link">&para;</a></h3>
+<p>Independent parent-session example for analysis:</p>
+<div class="highlight"><pre><span></span><code><span class="n">default_permissions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;:read-only&quot;</span>
+<span class="n">approval_policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;on-request&quot;</span>
 <span class="n">allow_login_shell</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
 </code></pre></div>
-<p>Baseline for controlled implementation:</p>
-<div class="highlight"><pre><span></span><code><span class="n">approval_policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;on-request&quot;</span>
-<span class="n">sandbox_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;workspace-write&quot;</span>
+<p>Independent parent-session example for authorized local editing:</p>
+<div class="highlight"><pre><span></span><code><span class="n">default_permissions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;:workspace&quot;</span>
+<span class="n">approval_policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;on-request&quot;</span>
 <span class="n">allow_login_shell</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
 </code></pre></div>
+<p>Profiles do not compose with <code>sandbox_mode</code> / <code>sandbox_workspace_write</code>. Check every loaded layer and CLI override: legacy settings can select the legacy route; managed profile requirements may reject that route. The legacy option remains supported where documented:</p>
+<div class="highlight"><pre><span></span><code><span class="n">sandbox_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;workspace-write&quot;</span>
+<span class="n">approval_policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;on-request&quot;</span>
+</code></pre></div>
+<p>Use this legacy example only instead of a permission-profile configuration. <code>:workspace</code> protects <code>.git</code>, <code>.agents</code>, <code>.codex</code> and <code>.aws</code> inside writable roots; inspect effective policy before claiming a path is writable. See <a href="security.html">security boundaries</a> for command network versus MCP/web/browser controls.</p>
+<h3 id="models-and-current-project-contract">Models and current project contract<a class="headerlink" href="#models-and-current-project-contract" title="Permanent link">&para;</a></h3>
+<p>The <a href="models-and-reasoning.html">model matrix</a> records applicability. Following authorized technical work on 2026-11-03, the repository uses GPT-6.1 Sol/Terra pins, parent <code>default_permissions = ":workspace"</code> and parent MCP. The validator follows these contracts. Effective permissions and model selection in a fresh session require separate evidence; see <a href="../product-agent-os/codex-compatibility.html">technical follow-up</a>.</p>
 <h2 id="skill-metadata">Skill metadata<a class="headerlink" href="#skill-metadata" title="Permanent link">&para;</a></h2>
 <p>The official skill structure can include <code>agents/openai.yaml</code> to describe UI, invocation policy and tool dependencies:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">interface</span><span class="p">:</span>
@@ -3527,9 +3661,11 @@ Sources: <a href="https://developers.openai.com/codex/agent-approvals-security">
 <ul>
 <li>Codex can be used not only as a standalone assistant, but also as an execution tool inside broader Agents SDK orchestration.</li>
 <li>Project Manager must define source of truth documents: <code>REQUIREMENTS.md</code>, <code>AGENT_TASKS.md</code>, <code>TEST.md</code>.</li>
-<li>Each worker-agent must have narrow deliverables and a sandbox/approval policy.</li>
+<li>Each worker must have bounded deliverables; Codex subagents inherit the parent session sandbox and approvals. Separate runtimes need their own explicit execution policy.</li>
 <li>Handoff back to Project Manager is mandatory so that the final assembly of decisions does not fall apart into independent results.</li>
 </ul>
+<h2 id="check-effective-settings">Check effective settings<a class="headerlink" href="#check-effective-settings" title="Permanent link">&para;</a></h2>
+<p>After configuration changes check client/version, workspace root and managed policy. <code>/status</code>, <code>/debug-config</code> and <code>--strict-config</code> help on supported clients; a file does not prove loading. Current Cloud configuration is separate from local configuration. <a href="https://learn.chatgpt.com/docs/developer-settings">Developer settings</a>.</p>
 
 
 

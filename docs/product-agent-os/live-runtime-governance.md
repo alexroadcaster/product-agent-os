@@ -100,3 +100,7 @@ Governance является acceptable только когда evidence shows:
 ## Next Action
 
 Используйте эта page как governance checklist до any approval-bound real-testing action. Этот next safe artifact является approval packet который names exactly один planned action, его owner, allowed target, data policy, command scope, rollback и verification evidence.
+
+## Актуальный маршрут и evidence
+
+Local execution и cloud orchestration имеют разные controls. MCP, connectors, browser и shell не разделяют одну network policy. [Surface matrix](../codex/surfaces.md) и [security](../codex/security.md) применяются до любого runtime claim.

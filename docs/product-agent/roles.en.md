@@ -81,3 +81,7 @@ Every role must return more than output. The handoff must include:
 
 - Vague titles without file ownership create overlap and hidden gaps.
 - Overusing high reasoning or large agent teams can add latency without improving evidence.
+
+## Role versus separate agent
+
+A role defines responsibility; one agent may perform several roles sequentially. Delegation needs value, independent ownership and applicable authority. Parent permissions/MCP are inherited; role prose does not create a separate sandbox. [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents).

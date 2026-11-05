@@ -23,3 +23,7 @@ The audit should remain read-only. It should name commands and evidence gaps wit
 
 - Treating an audit as proof of readiness can hide missing runtime evidence.
 - Broad recommendations without a safe next action can expand scope unnecessarily.
+
+## Inventory versus readiness
+
+Skills/plugins/config presence is `present_unverified`. A runtime claim needs effective settings, supported client/authentication, skill exposure and an observed result. Use the [surface matrix](../codex/surfaces.md) and [skill diagnostics](../agent-systems/subagents-skills.md); an audit does not activate discovered assets.

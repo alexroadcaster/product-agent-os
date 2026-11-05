@@ -6,6 +6,20 @@ Sources: [Codex plugins](https://developers.openai.com/codex/plugins), [Build pl
 
 Product-Agent OS packages a product-delivery operating model for Codex. It combines durable project rules, lifecycle skills, staged artifacts, evals and approval boundaries while keeping live systems disabled until the owner explicitly approves a specific action.
 
+## End-to-end ordinary route {#ordinary-route}
+
+| Boundary | Behavior | What the result does not prove |
+| --- | --- | --- |
+| Discovery → adapter | Real paths/manifests and task context enter `task_routing.py` | Commands found in files are not executed |
+| Adapter → selectors | Reuses `select_code_quality_profile` and `select_test_strategy` | Tool presence does not mean a successful check |
+| State resolver → route | Separates structural readiness, task-bound state and inferred recommendation; RU/EN headings and builder.toml do not control the ordinary route | State provenance grants no write authority |
+| Route → result | Compact contract, reasoned checks, gaps and trace | `route_ready` does not mean task completion |
+| Renderer → stage | A template subset or reuse of existing documents | The full registry is not a mandatory package |
+
+The `--task-context` entry point is opt-in. Without it, the explicitly identified legacy fallback is preserved, including previous control-plane heading inference. Legacy lifecycle/runner diagrams describe that compatibility path. The scoped path supplements it; high-risk/full retains applicable gates, source policy and approval checks.
+
+An empty or ambiguous project receives a discovery/requirements gap rather than fictitious build readiness. Explicit task state requires matching task ID, lifecycle value and source-record hash. ORD-01–ORD-06 local integration does not imply fresh host activation, promotion, production readiness or automatic infrastructure application.
+
 ## Layered Model
 
 | Layer | Responsibility | Boundary |

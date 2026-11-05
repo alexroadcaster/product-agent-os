@@ -100,3 +100,7 @@ For docs-only preparation, read-only inspection is enough unless a focused docs 
 ## Next Action
 
 Use this page as the governance checklist before any approval-bound real-testing action. The next safe artifact is an approval packet that names exactly one planned action, its owner, allowed target, data policy, command scope, rollback and verification evidence.
+
+## Current route and evidence
+
+Local execution and cloud orchestration have different controls. MCP, connectors, browser and shell do not share one network policy. Apply the [surface matrix](../codex/surfaces.md) and [security guide](../codex/security.md) before any runtime claim.

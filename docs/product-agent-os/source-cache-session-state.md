@@ -59,3 +59,7 @@ A fresh-session proof should record what changed between old and new context:
 7. Residual risk if current session remains stale.
 
 Until this exists, use `present_unverified`, `planned-only` or `approval_required` instead of fixed/ready language.
+
+## Разные виды состояния
+
+Project source cache хранит retrieval artifacts; API prompt cache повторно использует prefix; local memory сохраняет recall; session поддерживает continuity. Не переносите TTL, retention или authority между слоями. [Context/cache](../prompting/context-engineering.md), [memory controls](../agent-systems/memory.md).

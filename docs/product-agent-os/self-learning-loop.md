@@ -171,14 +171,14 @@ flowchart LR
 ```mermaid
 sequenceDiagram
     participant Owner
-    participant Loop as Self-Learning Loop
+    participant LearningCycle as Self-Learning LearningCycle
     participant Worker as Codex staged repair worker
     participant Review as Owner review
-    Owner->>Loop: approves candidate review
-    Loop->>Worker: staged repair task contract
+    Owner->>LearningCycle: approves candidate review
+    LearningCycle->>Worker: staged repair task contract
     Worker->>Worker: local allowed-file patch proposal
     Worker->>Review: staged repair result packet
-    Review-->>Loop: approve / reject / request changes
+    Review-->>LearningCycle: approve / reject / request changes
 ```
 
 Repair contract может помочь будущему implementation slice, но сам никогда не сливает и не применяет изменения.

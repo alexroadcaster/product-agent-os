@@ -29,3 +29,7 @@ Record the chosen runtime, command evidence and stop condition. Do not claim run
 [Agents API](https://developers.openai.com/api/docs/guides/agents) runs an OpenAI-managed Codex harness; Agents SDK runs the agent loop in the application; Responses API provides a direct API contract with optional hosted orchestration. [Responses Multi-agent](https://developers.openai.com/api/docs/guides/responses-multi-agent) is a separate beta capability, not a synonym for Codex subagents.
 
 Use the [SDK patterns table](../agent-systems/sdk-patterns.md) and [runtime diagram](../diagrams/runtime-decision-map.md) to choose state/tool/approval ownership. Product-Agent OS documents these routes; this refresh does not implement Agents API, async/steering or a new hosted runner. Documented, designed, implemented and runtime-verified are different evidence levels and do not automatically imply one another.
+
+## Choose by execution boundary
+
+Identify local/current Cloud/legacy first, then authentication, tool controls and state ownership. See [surface matrix and Cloud setup](../codex/surfaces.md), [Agents API/SDK/Responses](../agent-systems/sdk-patterns.md), [Scheduled tasks](automations-github.md). Local tools do not imply local orchestration.

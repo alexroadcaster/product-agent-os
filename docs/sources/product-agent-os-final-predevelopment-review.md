@@ -1,4 +1,10 @@
-# Product-Agent OS: финальный pre-development review
+---
+title: "Архив — Product-Agent OS: финальный pre-development review"
+---
+
+# Архив — Product-Agent OS: финальный pre-development review {#product-agent-os-pre-development-review}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `implementation planning + critical review`
 

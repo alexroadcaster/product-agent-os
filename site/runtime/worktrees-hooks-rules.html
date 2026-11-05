@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
   </span>
 
 
@@ -2502,6 +2525,24 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#hook-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      Текущий hook contract и диагностика активации
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#trust" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trust и границы исполнения
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -2775,6 +2816,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2961,6 +3004,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3451,6 +3515,24 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#hook-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      Текущий hook contract и диагностика активации
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#trust" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trust и границы исполнения
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3468,7 +3550,7 @@
 
 <h1 id="worktrees-hooks-rules">Worktrees, hooks, rules<a class="headerlink" href="#worktrees-hooks-rules" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + experiment</code><br />
-Источники: <a href="https://developers.openai.com/codex/learn/best-practices">Codex best practices</a>, <a href="https://developers.openai.com/codex/app/worktrees">Codex worktrees</a>, <a href="https://developers.openai.com/codex/hooks">Codex hooks</a>, <a href="https://developers.openai.com/codex/config/rules">Codex rules</a>, <a href="https://developers.openai.com/codex/agent-approvals-security">Agent approvals and security</a>.</p>
+Источники: <a href="https://developers.openai.com/codex/learn/best-practices">Codex best practices</a>, <a href="https://developers.openai.com/codex/app/worktrees">Codex worktrees</a>, <a href="https://learn.chatgpt.com/docs/hooks">Codex hooks</a>, <a href="https://developers.openai.com/codex/config/rules">Codex rules</a>, <a href="https://learn.chatgpt.com/docs/permissions">Agent approvals and security</a>.</p>
 <h2 id="worktree-strategy">Worktree strategy<a class="headerlink" href="#worktree-strategy" title="Permanent link">&para;</a></h2>
 <p>Используйте worktrees, когда:</p>
 <ul>
@@ -3494,10 +3576,10 @@
 <ul>
 <li><code>SessionStart</code> показывает наличие control-plane и lifecycle файлов;</li>
 <li><code>PreToolUse</code> пропускает read-only discovery по fast path без чтения marker, но блокирует mutating/non-read-only команды без <code>.codex/product-agent-os/lifecycle-state.json</code>;</li>
-<li>marker должен появиться только после видимого пользователю полного стартового брифа в формате списка полей и содержать <code>task_start_brief_shown</code>, <code>task_id</code>, <code>scope</code>, <code>updated_at</code>, <code>approval_boundary</code>, <code>brief_schema_version: task_start_brief_v1</code>, <code>brief_format: field_list</code>, <code>brief_digest</code> и <code>brief_fields_present</code> со всеми обязательными полями стартового брифа;</li>
+<li>Перед mutation покажите применимый scope: для large/high-risk/material/release — <code>task_start_brief_v2</code>, <code>brief_format: bold_fields</code> и девять полей; для ordinary — <code>task_scope_note_v1</code>, <code>brief_format: concise</code>, поля Scope/Evidence/Limits. Затем запишите marker с task_id, scope, updated_at, approval_boundary, brief_digest и brief_fields_present; <code>task_start_brief_shown</code> относится только к full route. <code>task_start_brief_v1</code> / <code>field_list</code> сохраняется для уже начатых legacy sessions.</li>
 <li>per-write <code>PostToolUse</code> проверяет comment sufficiency только для путей текущего patch, а не повторно для всего dirty worktree;</li>
-<li>после всех записей, проверок и control-plane sync marker переходит в <code>ready_for_completion_brief</code>; дальнейшие mutations блокируются;</li>
-<li><code>Stop</code> принимает один terminal <code>Completion Brief</code> с полным набором полей без continuation, а при неполном Brief запрашивает не более одной корректирующей continuation. После валидного Brief tool calls запрещены.</li>
+<li>после всех записей, проверок и control-plane sync marker переходит в <code>ready_for_completion_ledger</code> (full) или <code>ready_for_completion_brief</code> (concise/legacy); дальнейшие mutations блокируются;</li>
+<li>Проектный <code>Stop</code> рекомендательный: он не проверяет формат чата и не запрашивает корректирующую continuation. Полный scope использует стартовый brief (9 полей) и Completion Ledger (13 пунктов); обычная работа — краткие результаты, проверки и ограничения. Все инструменты и control-plane sync завершаются до финального ответа. Явная локальная проверка пакета не доказывает активацию.</li>
 </ul>
 <p>Marker не является transcript store: в него нельзя помещать raw chat, secrets, private source bodies, private customer data или credentials. Activation hooks остаётся отдельным approval boundary.</p>
 <h2 id="rules">Rules<a class="headerlink" href="#rules" title="Permanent link">&para;</a></h2>
@@ -3539,6 +3621,44 @@
 </tr>
 </tbody>
 </table>
+<h2 id="hook-contract">Текущий hook contract и диагностика активации<a class="headerlink" href="#hook-contract" title="Permanent link">&para;</a></h2>
+<p>Проверено 2026-11-03: <a href="https://learn.chatgpt.com/docs/hooks">Hooks reference</a>. Non-managed hooks требуют review/trust текущего hash; новые или измененные определения пропускаются до trust. Доверенный project layer и корректный JSON сами по себе не доказывают исполнение. Поддерживаются <code>command</code> и <code>mcp_tool</code>; <code>prompt</code>/<code>agent</code> handlers парсятся, но пропускаются. Несколько matching command hooks одного события могут выполняться параллельно: не рассчитывайте на порядок записи общего состояния.</p>
+<table>
+<thead>
+<tr>
+<th>Событие</th>
+<th>Граница</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SessionStart</code></td>
+<td>Контекст старта; не приемка реализации</td>
+</tr>
+<tr>
+<td><code>PreToolUse</code></td>
+<td>Поддерживаемый deny может предотвратить действие; ошибка callback не равна гарантированному запрету</td>
+</tr>
+<tr>
+<td><code>PostToolUse</code></td>
+<td>Проверка после действия; не может отменить уже выполненный side effect</td>
+</tr>
+<tr>
+<td><code>Stop</code></td>
+<td>Может запросить continuation; учитывать <code>stop_hook_active</code>, чтобы не создать цикл</td>
+</tr>
+<tr>
+<td><code>SessionEnd</code>, <code>Interrupt</code></td>
+<td>Короткий best-effort lifecycle, не долгий gate</td>
+</tr>
+</tbody>
+</table>
+<p><code>timeout</code> задается в секундах: обычно по умолчанию 600, для <code>SessionEnd</code>/<code>Interrupt</code> — 1 и максимум 3. У MCP действует меньший hook/server timeout; ожидание elicitation имеет отдельную семантику. Покрытие зависит от tool/event и runtime. Cloud-orchestrated enterprise remote MCP hooks имеют отдельные ограничения; локальный command hook нельзя считать универсальным cloud guardrail. Перед использованием проверяйте точную строку покрытия в reference.</p>
+<p>Для доказательства активации нужны: client/runtime, загруженный источник, hash/trust, реально сработавший event/tool, разрешенный сценарий и наблюдаемый результат. Разбор JSON, unit tests и прямой запуск hook script — локальные evidence, не fresh-session proof. Receipt от 03.11.2026 фиксирует <code>verified_local_runtime</code> для проверенных Desktop маршрутов: large, ordinary и terminal-marker denial. ACT-F1..F6 закрыты в source-owned <code>lifecycle_parity.repair</code>; это исторически выполненный run, не новая проверка этой страницы. Silent Stop execution и полнота всех mutation channels не доказаны. <a href="../product-agent-os/control-plane-current-state.html">Текущая граница evidence</a>. Проектный <code>Stop</code> lifecycle выше остается правилом проекта, а не универсальной семантикой OpenAI.</p>
+<h2 id="trust">Trust и границы исполнения<a class="headerlink" href="#trust" title="Permanent link">&para;</a></h2>
+<p>Проверено 05.11.2026 по <a href="https://learn.chatgpt.com/docs/hooks">Hooks</a>. Определения hooks из применимых источников объединяются; более близкий файл не заменяет все предыдущие hooks. Matching command hooks могут стартовать параллельно. После изменения определения или bundled plugin script нужен повторный review; install/enabled не равны trusted/executed.</p>
+<p>MCP hook использует уже доступный сервер: он не запускает и не переподключает MCP. Недоступный сервер, tool или ошибка MCP hook не дают гарантированного запрета — fail-closed нужно проверять отдельно. В cloud-orchestrated Work локальные command/plugin hooks не поддерживаются; поддерживаемые admin-managed MCP hooks настраиваются отдельно.</p>
+<p>Worktree разделяет Git working files, но не создаёт отдельные permissions. Для одного небольшого изменения обычно достаточно текущего workspace. Git-only worktrees, setup и Handoff выбирайте по <a href="https://learn.chatgpt.com/docs/environments/git-worktrees">официальному маршруту</a> и project authority. Проверка: загруженная definition и trust → allowed case → denied case → evidence конкретного tool/runtime.</p>
 
 
 

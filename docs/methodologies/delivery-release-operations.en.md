@@ -217,3 +217,7 @@ It does not prescribe one deployment platform, force Kubernetes or GitOps onto a
 - [OpenFeature introduction](https://openfeature.dev/docs/reference/intro/)
 - [Codex: Run verified operations](https://developers.openai.com/codex/use-cases/verified-operations-workflows)
 - [Context7 research](../sources/context7-research.md)
+
+## Scheduled and Cloud delivery
+
+A native schedule is a separate route with local/cloud prerequisites. Publishing a cloud environment captures reusable setup for new tasks; it is not product publication. See [schedules](../runtime/automations-github.md) and [Cloud](../codex/surfaces.md). Release still requires current evidence and authority.

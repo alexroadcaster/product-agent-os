@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
   </span>
 
 
@@ -2692,6 +2715,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
 
 
@@ -2889,6 +2914,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обычная правка
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -2952,6 +2986,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3433,6 +3488,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обычная правка
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3455,11 +3519,11 @@
 <p>Провести feature от идеи до PR с управляемыми агентными ролями и проверками.</p>
 <h2 id="procedure">Procedure<a class="headerlink" href="#procedure" title="Permanent link">&para;</a></h2>
 <ol>
-<li>Создать <code>REQUIREMENTS.md</code>.</li>
+<li>Уточнить требования и переиспользовать <code>REQUIREMENTS.md</code>, если файл уже есть.</li>
 <li>Попросить Codex подготовить <code>PLAN.md</code>, не меняя код.</li>
 <li>Разделить work по ownership: backend, frontend, tests, docs, release.</li>
-<li>Запустить builder tasks в отдельных worktrees или с непересекающимися write scopes.</li>
-<li>Запустить test/review agents.</li>
+<li>Выполнять focused slices одним агентом; независимые задачи делегировать только при пользе и authority. Worktrees создавать только при необходимости и разрешении.</li>
+<li>Выполнить test/review; отдельный агент нужен по риску или требованию независимости.</li>
 <li>Запустить evals или visual/manual QA.</li>
 <li>Подготовить PR body и release notes.</li>
 <li>Перенести повторяемый метод в skill или <code>AGENTS.md</code>.</li>
@@ -3472,7 +3536,7 @@ Read:
 - REQUIREMENTS.md
 
 Before changing files:
-- produce PLAN.md;
+- reuse or update the existing plan; create PLAN.md for material multi-step work;
 - name ownership boundaries;
 - identify required tests and evals;
 - list risks and rollback.
@@ -3497,6 +3561,8 @@ Final output:
 <li>PR summary includes verification evidence.</li>
 <li>Reusable lessons are captured.</li>
 </ul>
+<h2 id="_3">Обычная правка<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>Для небольшого исправления используйте scope → change → affected checks → result/limits. Полный feature workflow выше не является квотой на документы или агентов. Git/PR/release действия требуют применимого разрешения. <a href="../product-agent/lifecycle.html">Lifecycle routing</a>.</p>
 
 
 

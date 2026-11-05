@@ -21,3 +21,17 @@ trust_level: "high | medium | low"
 - `community` нельзя превращать в инструкцию без проверки.
 - `experiment` должен иметь воспроизводимый сценарий проверки.
 - Если источник противоречит официальной документации, фиксируйте конфликт и не переносите утверждение в основные инструкции.
+
+## Область утверждения
+
+Для изменяемых product claims дополнительно заполняйте поля; `checked_at` не обновляется без чтения источника.
+
+```yaml
+product: ""
+client_and_version: ""
+auth_and_plan_scope: ""
+claim: ""
+current_or_legacy: ""
+evidence_kind: "documentation | local_check | runtime"
+limitations: []
+```

@@ -1,8 +1,27 @@
-﻿# Product-Agent OS artifact contracts
+# Product-Agent OS artifact contracts
 
 Source status: `official + experiment`
 
 Эта страница перечисляет основные generated artifacts Product-Agent OS для modernization loop, project code graph, live/runtime governance и approval-bound handoff. Это не JSON Schema spec, а operator-facing contract map: что создается, зачем нужно, где проходит source-of-truth boundary и какие approval gates действуют.
+
+## Контракт ordinary route {#ordinary-route-contract}
+
+`task_context` v1 — явное описание scope, acceptance, changed paths, risks и source-backed checks. Это вход для решения, не разрешение на запись. [CLI example](cli-reference.md#ordinary-route) показывает полный минимальный code case.
+
+| Поле результата | Смысл | Ограничение |
+| --- | --- | --- |
+| `routing_trace` | Mode, task ID, selectors, reasons, state provenance | Legacy fallback видим отдельно |
+| `task_routing` | Решение, gaps, acceptance, invariants | Не удостоверяет полноту анализа рисков |
+| `code_quality_profile` / `quality_strategy` | Результаты T26/T27 | Обнаруженные инструменты остаются `present_unverified` |
+| `code_change_contract` | Восемь полей T25, inline | Для docs-only пуст; полный checklist остаётся reference |
+| `verification_plan` | Source, reasons, test kinds, execution policy | Команда — предложение для review; unsafe предложение блокируется |
+| `input_digest` | Связь с declared changed/verification paths, manifests, source instructions и task context | Не fingerprint всего runtime environment |
+| `check_observations` | Caller-reported command/status/exit и digest | Freshness не доказывает независимое исполнение; stale receipt не принимается как current |
+| `template_selection` | Selected/omitted artifacts с причинами в renderer | Не активирует agents/hooks/automation и не заменяет merge approval |
+
+Optional `check_results` содержит `command`, `input_digest`, `status`, `exit_code`. Для `passed` нужен exit 0, для `failed` — ненулевой exit, для `skipped` / `not_run_with_gap` — null. Receipt не превращает contract-mode result в `completed`. Реальные command evidence сохраняет выполняющий проверку Codex/оператор; незаявленные зависимости остаются вне digest scope.
+
+Ordinary sections можно хранить в существующем task artifact. Отдельные REQUIREMENTS/PLAN/EVALS и custom builder не обязательны для каждой малой задачи, но обязательные правила данного workspace продолжают действовать.
 
 ## Contract Boundary
 
@@ -216,3 +235,7 @@ Artifact verification следует check:
 ## Next Action
 
 Используйте эта contract map когда writing docs tests, source registry entries и packaging/closure checks. Navigation и generated `site/` refresh являются intentionally handled после source docs packet является stable.
+
+## Актуальный маршрут и evidence
+
+Для current lifecycle используйте full `task_start_brief_v2` либо ordinary `task_scope_note_v1` по scope; legacy v1 относится к ранее начатым sessions. [Контракт и evidence](../runtime/worktrees-hooks-rules.md). Подробные language-specific inventories ниже являются справочником, а exact schema определяется source implementation.

@@ -18,7 +18,7 @@
 
 
 
-        <title>Product-Agent OS Track 10 backlog - Product-Agent OS Documentation</title>
+        <title>Archive - Product-Agent OS Track 10 backlog - Product-Agent OS Documentation</title>
 
 
 
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
 
-              Product-Agent OS Track 10 backlog
+              Archive - Product-Agent OS Track 10 backlog
 
           </span>
         </div>
@@ -744,6 +744,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -825,6 +827,27 @@
 
   <span class="md-ellipsis">
     Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
   </span>
 
 
@@ -2686,6 +2709,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2872,6 +2897,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3638,7 +3684,10 @@
 
 
 
-<h1 id="product-agent-os-track-10-backlog">Product-Agent OS Track 10 backlog<a class="headerlink" href="#product-agent-os-track-10-backlog" title="Permanent link">&para;</a></h1>
+<h1 id="product-agent-os-track-10-backlog">Archive - Product-Agent OS Track 10 backlog<a class="headerlink" href="#product-agent-os-track-10-backlog" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.</p>
+</blockquote>
 <p>Source status: <code>internal</code></p>
 <p>This backlog tracks deferred and follow-up work for Track 10 <code>Task 23: Guided Question Protocol And Project Status Dashboard</code>, <code>Task 24: Self-Verification And Modernization Loop</code> and <code>Task 25: Project Code Graph And HTML Cockpit Visualization</code>.</p>
 <h2 id="batch-5-closure">Batch 5 Closure<a class="headerlink" href="#batch-5-closure" title="Permanent link">&para;</a></h2>
@@ -4905,6 +4954,9 @@
 <p>Task 25 Batch 21 verification is recorded in <code>TEST.md</code> and <code>RUNLOG.md</code>: RED tests first failed on missing <code>product_agent_os.project_graph_semantic</code>, missing CLI semantic index controls, missing fixture fields and stale docs/control-plane terms. Focused semantic/CLI/fixture/docs checks ran 27 tests with <code>OK</code>; docs contract suite ran 22 tests with <code>OK</code>; full unittest ran 688 tests with <code>OK</code> in 639.625s using <code>timeout_ms: 1200000</code>; fixture eval exited <code>0</code> with renderer file count 191 and all emitted fixture records <code>ok: true</code>; transcript eval exited <code>0</code> with 17 sessions and 0 failures; Codex compatibility returned <code>status: compatible</code>; docs check, strict MkDocs with disposable <code>.mkdocs_task25_batch21_site</code> and <code>git diff --check</code> exited <code>0</code>. This proves Batch 21 explicit approval, generated semantic retrieval cache schema, semantic corpus and chunk policy, embeddings cache metadata, semantic query packets, cross-encoder reranking gate, semantic retrieval eval suite, stale graph-fingerprint blocking, <code>present_unverified</code> orientation evidence, no canonical graph edge rewrites and rollback/disable path by deleting <code>.codex/product-agent-os/project-code-graph-semantic-index.json</code>. Batch 22 and Batch 23 are now implemented separately as generated, approval-bound extension slices, and commit, push and PR actions remain explicit-only.</p>
 <p>Task 25 Batch 22 verification is recorded in <code>TEST.md</code> and <code>RUNLOG.md</code>: RED tests first failed on missing <code>product_agent_os.project_graph_llm_extraction</code>, missing CLI <code>--build-llm-proposals</code>/<code>--disable-llm-proposals</code>, missing fixture fields and stale docs/control-plane terms. Focused Batch 22 module/CLI/fixture/docs suite ran 29 tests with <code>OK</code>; Product-Agent OS docs contract suite ran 23 tests with <code>OK</code>; adjacent graph/backend/semantic/LLM suite ran 45 tests with <code>OK</code>; full unittest ran 697 tests with <code>OK</code> in 880.817s using <code>timeout_ms: 1200000</code>; fixture eval exited <code>0</code> for 91 fixture directories with renderer file count 191 and all emitted fixture records <code>ok: true</code>; transcript eval exited <code>0</code> with 17 sessions and 0 failures; Codex compatibility returned <code>status: compatible</code>; docs check passed; strict MkDocs with disposable <code>.mkdocs_task25_batch22_site</code> exited <code>0</code> and the site directory was removed; <code>git diff --check</code> exited <code>0</code>. This proves Batch 22 explicit approval, local deterministic prompt/model policy, structured JSON proposal schema, semantic node and edge proposals, rationale/comment proposals, human review, AI incident workflow, no canonical graph mutation and rollback/disable path by deleting <code>.codex/product-agent-os/project-code-graph-llm-proposals.json</code>. Batch 23 is closed separately as generated extension verification/rollback evidence, and commit, push and PR actions remain explicit-only.</p>
 <p>Task 25 Batch 23 verification is recorded in <code>TEST.md</code> and <code>RUNLOG.md</code>: RED tests first failed on missing <code>product_agent_os.project_graph_extension_closure</code>, missing CLI <code>--verify-extensions</code>/<code>--disable-extensions</code>, missing fixture fields and stale docs/control-plane terms. Focused Batch 23 module/CLI/fixture slice ran 6 tests with <code>OK</code>; Product-Agent OS docs contract suite ran 24 tests with <code>OK</code>; adjacent graph extension suite ran 50 tests with <code>OK</code>; full unittest ran 703 tests with <code>OK</code> in 724.475s using <code>timeout_ms: 1200000</code>; fixture eval exited <code>0</code> with renderer file count 191 and all emitted fixture records <code>ok: true</code>; transcript eval exited <code>0</code> with 17 sessions and 0 failures; Codex compatibility returned <code>status: compatible</code>; docs check passed; strict MkDocs with disposable <code>.mkdocs_task25_batch23_site</code> exited <code>0</code> and the site directory was removed; <code>git diff --check</code> exited <code>0</code>. This proves the local closure contract for <code>project_graph_extension_closure.py</code>, <code>verify-extensions</code>, <code>disable-extensions</code>, deletion proof, graph-only fallback, <code>blocked_without_new_explicit_approval</code>, no live external model/API calls, no canonical graph mutation and explicit-only git boundary.</p>
+
+
+
 
 
 

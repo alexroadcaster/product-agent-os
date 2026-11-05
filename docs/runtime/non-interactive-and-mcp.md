@@ -51,3 +51,7 @@ Remote app-server mode полезен, когда код и credentials живу
 В [custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents) MCP наследуется от родителя. Agent-local declaration не переопределяет parent MCP и не доказывает доступность tool. Проверяйте загруженную конфигурацию и результат обращения в разрешенном runtime; документационное изменение не активирует сервер.
 
 Command network policy не является политикой web search, connectors, MCP и browser. Для каждого инструмента нужны собственные controls и допустимый scope; см. [security](../codex/security.md). Не переносите API-параметры в CLI runner: [API compatibility](../agent-systems/sdk-patterns.md) относится к соответствующему endpoint. Текущий проектный runner не заменяется Responses или Agents API.
+
+## Разделить два MCP маршрута
+
+Codex как MCP server исполняет работу для внешнего orchestrator; подключённый к Codex MCP server предоставляет ему tools. Это разные роли и policy boundaries. `codex exec --json` возвращает поток JSONL events; `--output-schema` задаёт final result contract. Не путайте turn completion с успешной проверкой задачи. В noninteractive route заранее задайте допустимую policy и обработайте запрос недоступного approval как явный failure. [Non-interactive mode](https://developers.openai.com/codex/noninteractive).

@@ -69,3 +69,7 @@ changes_proposed: []
 risks: []
 next_step: ""
 ```
+
+## Single-agent baseline
+
+Начните с одного агента. Multi-agent нужен, когда representative evals показывают пользу специализации относительно стоимости coordination/handoffs. Затем выберите [runtime ownership](sdk-patterns.md). [Evaluation best practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices).

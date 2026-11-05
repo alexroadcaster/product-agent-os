@@ -1,4 +1,10 @@
-# ADD, DDD, TDD And FSD In LLM-Assisted Development
+---
+title: "Archive - ADD, DDD, TDD And FSD In LLM-Assisted Development"
+---
+
+# Archive - ADD, DDD, TDD And FSD In LLM-Assisted Development {#add-ddd-tdd-and-fsd-in-llm-assisted-development}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `mixed source-backed draft`  
 Status: incoming research document. Before moving claims into core guidance, verify primary sources and explicitly separate Data-Driven Development from Domain-Driven Design.

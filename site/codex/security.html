@@ -11,7 +11,7 @@
 
 
 
-        <link rel="prev" href="configuration.html">
+        <link rel="prev" href="models-and-reasoning.html">
 
 
         <link rel="next" href="workflows.html">
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
 
 
-        <a href="#sandbox-approvals" class="md-skip">
+        <a href="#permissions-approvals" class="md-skip">
           Перейти к содержанию
         </a>
 
@@ -750,6 +750,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
 
 
@@ -844,6 +846,27 @@
 
 
 
+    <li class="md-nav__item">
+      <a href="models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
 
 
     <li class="md-nav__item md-nav__item--active">
@@ -893,34 +916,43 @@
         <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Базовая модель
+      Выбрать одну схему конфигурации
     </span>
   </a>
 
 </li>
 
         <li class="md-nav__item">
-  <a href="#sandbox" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      Режимы sandbox
+      Сеть и поверхности инструментов
     </span>
   </a>
 
 </li>
 
         <li class="md-nav__item">
-  <a href="#network-access" class="md-nav__link">
+  <a href="#approval" class="md-nav__link">
     <span class="md-ellipsis">
-      Network access
+      Approval и данные
     </span>
   </a>
 
 </li>
 
         <li class="md-nav__item">
-  <a href="#approval-checklist" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
-      Approval checklist
+      Граница проверки
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#cloud-hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cloud и hooks
     </span>
   </a>
 
@@ -2766,6 +2798,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2952,6 +2986,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3400,34 +3455,43 @@
         <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Базовая модель
+      Выбрать одну схему конфигурации
     </span>
   </a>
 
 </li>
 
         <li class="md-nav__item">
-  <a href="#sandbox" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      Режимы sandbox
+      Сеть и поверхности инструментов
     </span>
   </a>
 
 </li>
 
         <li class="md-nav__item">
-  <a href="#network-access" class="md-nav__link">
+  <a href="#approval" class="md-nav__link">
     <span class="md-ellipsis">
-      Network access
+      Approval и данные
     </span>
   </a>
 
 </li>
 
         <li class="md-nav__item">
-  <a href="#approval-checklist" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
-      Approval checklist
+      Граница проверки
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#cloud-hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cloud и hooks
     </span>
   </a>
 
@@ -3448,61 +3512,62 @@
 
 
 
-<h1 id="sandbox-approvals">Безопасность, sandbox и approvals<a class="headerlink" href="#sandbox-approvals" title="Permanent link">&para;</a></h1>
-<p>Source status: <code>official</code><br />
-Источники: <a href="https://developers.openai.com/codex/concepts/sandboxing">Sandbox</a>, <a href="https://developers.openai.com/codex/agent-approvals-security">Agent approvals and security</a>, <a href="https://developers.openai.com/codex/cloud">Codex cloud</a>.</p>
-<h2 id="_1">Базовая модель<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<p>Sandbox - это техническая граница: какие файлы Codex может изменять, какие команды запускать и есть ли доступ к сети. Approval policy - управленческая граница: когда Codex должен остановиться и спросить разрешение.</p>
-<p>Для локальной работы безопасный baseline:</p>
-<div class="highlight"><pre><span></span><code>sandbox_mode = &quot;workspace-write&quot;
-approval_policy = &quot;on-request&quot;
-approvals_reviewer = &quot;user&quot;
-</code></pre></div>
-<p>Такой режим позволяет работать внутри workspace, но требует approval для действий за пределами границы, сетевых команд или иных чувствительных операций.</p>
-<h2 id="sandbox">Режимы sandbox<a class="headerlink" href="#sandbox" title="Permanent link">&para;</a></h2>
+<h1 id="permissions-approvals">Безопасность, permissions и approvals<a class="headerlink" href="#permissions-approvals" title="Permanent link">&para;</a></h1>
+<p>Source status: <code>official + experiment</code></p>
+<p>Проверено 2026-11-03: <a href="https://learn.chatgpt.com/docs/permissions">Permissions</a>, <a href="https://learn.chatgpt.com/docs/agent-configuration/subagents">Subagents</a>, <a href="https://learn.chatgpt.com/docs/config-file/config-reference">Configuration Reference</a>.</p>
+<p>Sandbox и permissions технически ограничивают выполнение локальных команд. Approval policy управляет допустимыми запросами подтверждения. Описание роли, документ или skill не выдают привилегий. В этом проекте внешние записи, provider/model calls, browser, Git и изменение активации требуют отдельного разрешения.</p>
+<h2 id="_1">Выбрать одну схему конфигурации<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>Permission profiles имеют beta-статус. Используйте либо <code>default_permissions</code> / <code>[permissions]</code>, либо legacy <code>sandbox_mode</code> / <code>[sandbox_workspace_write]</code>, без смешивания. Проверяйте все effective layers и managed policy; примеры — в <a href="configuration.html">конфигурации</a>. <code>:workspace</code> защищает <code>.git</code>, <code>.agents</code>, <code>.codex</code>, <code>.aws</code>: разрешенная запись в каталог проекта не означает запись в любой дочерний путь. Legacy <code>read-only</code>, <code>workspace-write</code> и <code>danger-full-access</code> — разные режимы; последний снимает локальные sandbox-ограничения и не служит способом обхода неудобных approvals.</p>
+<p>Custom agents наследуют permissions и approvals родителя. Инструкция reviewer не редактировать файлы задает поведение, а не отдельный технический read-only sandbox. Agent-local sandbox/MCP settings не переопределяют родителя. Реальная изоляция требует применимых механизмов исполнения и доказательств из свежей сессии.</p>
+<h2 id="_2">Сеть и поверхности инструментов<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Mode</th>
-<th>Смысл</th>
-<th>Использовать</th>
+<th>Поверхность</th>
+<th>Механизм контроля</th>
+<th>Какой вывод недопустим</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>read-only</code></td>
-<td>Codex может читать, но не должен менять файлы или выполнять существенные команды без разрешения</td>
-<td>Планирование, review, аудит</td>
+<td>Локальные команды</td>
+<td>Effective filesystem/network policy и command sandbox</td>
+<td>Writable workspace не означает доступ к сети</td>
 </tr>
 <tr>
-<td><code>workspace-write</code></td>
-<td>Codex может читать, менять workspace и запускать routine commands в границах проекта</td>
-<td>Большинство локальных задач</td>
+<td>Фильтрация адресатов команд</td>
+<td>Активный network proxy и domain rules</td>
+<td>Одного <code>network.enabled = true</code> недостаточно для фильтрации</td>
 </tr>
 <tr>
-<td><code>danger-full-access</code></td>
-<td>Codex работает без sandbox-ограничений</td>
-<td>Только осознанно и кратковременно</td>
+<td>Web search</td>
+<td>Product/tool policy</td>
+<td>Command proxy allowlist не управляет этим поиском</td>
+</tr>
+<tr>
+<td>MCP</td>
+<td>Конфигурация родителя, tool/server policy и approvals</td>
+<td>Декларация не доказывает подключение или успешный вызов</td>
+</tr>
+<tr>
+<td>Apps/connectors</td>
+<td>Авторизация и approvals приложения/инструмента</td>
+<td>Command network policy не является политикой connector</td>
+</tr>
+<tr>
+<td>Browser/computer tools</td>
+<td>Собственные controls и разрешенный scope задачи</td>
+<td>Command sandbox не обеспечивает универсальную изоляцию browser</td>
 </tr>
 </tbody>
 </table>
-<h2 id="network-access">Network access<a class="headerlink" href="#network-access" title="Permanent link">&para;</a></h2>
-<p>По официальной модели Codex по умолчанию не должен свободно ходить в сеть во время агентной работы. В cloud setup network может быть доступен на этапе подготовки окружения, а agent phase обычно требует отдельного решения по internet access.</p>
-<p>Практическое правило:</p>
-<ul>
-<li>документацию можно сверять через официальные источники;</li>
-<li>install и package manager команды требуют явного понимания, что будет загружено;</li>
-<li>secrets не должны попадать в prompts, docs, memory или artifacts.</li>
-</ul>
-<h2 id="approval-checklist">Approval checklist<a class="headerlink" href="#approval-checklist" title="Permanent link">&para;</a></h2>
-<p>Перед approval спросите:</p>
-<ul>
-<li>Команда пишет за пределы workspace?</li>
-<li>Команда использует сеть?</li>
-<li>Команда может удалить, переписать или отправить данные?</li>
-<li>Есть ли менее широкий способ дать доступ?</li>
-<li>Можно ли заменить broad access на command prefix rule?</li>
-</ul>
+<p>Domain rules требуют <code>features.network_proxy = true</code> или включенного managed proxy. Активный proxy без allow entries блокирует запросы доменов; deny имеет приоритет. Local, cloud setup и cloud agent phase имеют разные сетевые controls: проверяйте выбранную поверхность, не предполагая универсальный default.</p>
+<h2 id="approval">Approval и данные<a class="headerlink" href="#approval" title="Permanent link">&para;</a></h2>
+<p>Перед чувствительным действием определите адресата, данные, side effects, уже имеющееся разрешение и минимальные необходимые права. Чтение публичной документации отличается от установки зависимостей или provider operation. Не помещайте secrets и лишние private data в prompts, docs, memory или evidence. <code>approvals_reviewer</code> не расширяет sandbox и не проверяет повторно уже разрешенные действия.</p>
+<h2 id="_3">Граница проверки<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>Разбор конфигурации не доказывает effective runtime policy. Для заявления об активации нужны client/version/auth, загруженная конфигурация, permissions родителя, выбранный инструмент и наблюдаемое permitted/denied поведение. Обновление документации не меняет permissions; открытые контракты проекта перечислены в <a href="../product-agent-os/codex-compatibility.html">Codex compatibility</a>.</p>
+<h2 id="cloud-hooks">Cloud и hooks<a class="headerlink" href="#cloud-hooks" title="Permanent link">&para;</a></h2>
+<p>Network secrets current Cloud и direct variables имеют разные способы доставки; legacy setup-only правило не универсально. См. <a href="surfaces.html">Cloud setup</a> и <a href="../runtime/worktrees-hooks-rules.html">hook trust/failure boundaries</a>. Проверяйте execution и orchestration отдельно.</p>
 
 
 

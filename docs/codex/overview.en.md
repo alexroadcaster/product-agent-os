@@ -39,3 +39,6 @@ Every instruction in the core knowledge base must have one of three statuses:
 
 Without this, a claim remains a note, not an instruction.
 
+## Getting started
+
+Start with the [surface matrix](surfaces.md), then choose the [ordinary/full workflow](../product-agent/lifecycle.md). Plugin support is separate from IDE capabilities; select a model with the [model matrix](models-and-reasoning.md).

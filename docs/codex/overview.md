@@ -38,3 +38,7 @@ Codex лучше рассматривать не как автодополнен
 - локальная гипотеза со сценарием проверки.
 
 Без этого утверждение остается заметкой, а не инструкцией.
+
+## Начало работы
+
+Начните с [surface matrix](surfaces.md), затем выберите [ordinary/full workflow](../product-agent/lifecycle.md). Plugin support проверяется отдельно от возможностей IDE; модель — по [model matrix](models-and-reasoning.md).

@@ -1,4 +1,10 @@
-# Batch 45 S9-B: компактный authoring runtime
+---
+title: "Архив — Batch 45 S9-B: компактный authoring runtime"
+---
+
+# Архив — Batch 45 S9-B: компактный authoring runtime {#batch-45-s9-b-authoring-runtime}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `активный план локальной реализации; без live/provider/runtime-activation доказательств`
 

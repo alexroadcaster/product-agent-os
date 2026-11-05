@@ -1,4 +1,10 @@
-# Product-Agent OS Batch 40 Doubt verifier source-transfer packet
+---
+title: "Archive - Product-Agent OS Batch 40 Doubt verifier source-transfer packet"
+---
+
+# Archive - Product-Agent OS Batch 40 Doubt verifier source-transfer packet {#product-agent-os-batch-40-doubt-verifier-source-transfer-packet}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `internal`
 

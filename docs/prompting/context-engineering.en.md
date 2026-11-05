@@ -105,3 +105,9 @@ For GPT-5.6 and later, Responses lifetime uses `prompt_cache_options.ttl`: `30m`
 Account for uncached input, cached input, cache writes and output at their corresponding rates; a cache-write rate is not an additional ordinary-input charge for the same tokens. Record model, pricing date, tier and long-context conditions. Total cost includes failures, retries and subagents. Compare cost per completed task, quality and latency rather than cache-hit percentage alone. API billing is not subscription usage.
 
 Compaction changes context and can alter prefix reuse. `configuration_update` has compatibility limits documented in [session control](../agent-systems/session-control.md). Do not confuse API context windows with effective client limits; see the [model matrix](../codex/models-and-reasoning.md).
+
+## Optional: explicit cache boundaries
+
+Checked 2026-11-05 against [Prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching). A suitable Responses workflow can select `prompt_cache_options.mode: "explicit"` and `prompt_cache_breakpoint: { "mode": "explicit" }` on supported content blocks. With no explicit breakpoints this mode performs no cache reads/writes. Changing content after the final breakpoint is billed as uncached input without a cache-write charge.
+
+This is advanced optimization, not a mandatory step for ordinary tasks. First compare quality, total cost and latency on a representative workload; account for cache-write price, TTL, model and pricing date. Automatic cache, local memory and session persistence are different mechanisms.

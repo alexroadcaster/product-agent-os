@@ -57,3 +57,7 @@ Use lowercase contract labels in handoffs when needed: eval cases and automation
 - `eval-loop-runner`
 - `ui-visual-reviewer`
 - `workspace-readiness-auditor`
+
+## Minimal skill implementation
+
+Start with an instructions-only `SKILL.md`. Add scripts for deterministic operations only. Before distribution check the trigger, initial exposure, explicit/implicit invocation and result; see [troubleshooting](../agent-systems/subagents-skills.md).

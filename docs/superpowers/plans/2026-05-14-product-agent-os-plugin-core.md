@@ -1,4 +1,10 @@
-# Product-Agent OS Plugin Core Implementation Plan
+---
+title: "Archive - Product-Agent OS Plugin Core Implementation Plan"
+---
+
+# Archive - Product-Agent OS Plugin Core Implementation Plan {#product-agent-os-plugin-core-implementation-plan}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `official + experiment`
 

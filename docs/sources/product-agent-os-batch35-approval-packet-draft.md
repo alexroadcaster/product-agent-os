@@ -1,4 +1,10 @@
-# Product-Agent OS Batch 35 approval packet draft
+---
+title: "Архив — Product-Agent OS Batch 35 approval packet draft"
+---
+
+# Архив — Product-Agent OS Batch 35 approval packet draft {#product-agent-os-batch-35-approval-packet-draft}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `internal`
 

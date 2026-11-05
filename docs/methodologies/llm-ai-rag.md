@@ -194,3 +194,7 @@ LLM / AI / RAG слой описывает, как проектировать, �
 - Should Agents SDK trace schema and OpenTelemetry GenAI spans be connected in one evidence packet?
 - How should human approvals be represented consistently across Codex App, CLI, Agents SDK, MCP and external workflow tools?
 - What AI incident workflow should capture hallucination reports, unsafe output, tool misuse and data exposure?
+
+## Runtime и оценка
+
+Для OpenAI integrations выбирайте [runtime ownership](../agent-systems/sdk-patterns.md) до orchestration. Retrieval, local memory и prompt cache — разные слои. Evals включают typical/edge/adversarial tasks и стоимость завершённого результата, не только token price.

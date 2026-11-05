@@ -235,3 +235,7 @@ It does not mandate one test runner, 100 percent coverage, universal TDD, univer
 - [Promptfoo assertions and metrics](https://www.promptfoo.dev/docs/configuration/expected-outputs/)
 - [Ragas available metrics](https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/)
 - [Context7 research](../sources/context7-research.md)
+
+## Sufficient verification
+
+Start with a task-specific baseline and predefined thresholds/budget. Compare multi-agent against one agent; calibrate judges against human review. Select checks by affected behavior and risk. [Evaluation best practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices).

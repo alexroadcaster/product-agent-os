@@ -6,6 +6,14 @@ Sources: Batch 45 research packets `plugins/product-agent-os/assets/research/ai-
 
 Professional Code Authoring is the Product-Agent OS layer for non-mechanical coding tasks. Its main rule is simple: the agent checks existing capability, standard library support, framework primitives, configuration paths, current dependencies and project helpers before adding custom code. The best implementation may be one line, a deletion or a configuration change when that satisfies the acceptance criteria with less debt.
 
+## Ordinary authoring and current integration {#ordinary-authoring}
+
+For an ordinary change, the default generation context is `.codex/artifact-templates/code-change-contract.md`: eight T25 fields without repeated injection of the full checklist. The active workflow and packaged contract are aligned; `coding-standard-checklist.md` is reviewer/reference material when additional detail is needed.
+
+The opt-in [ordinary CLI route](cli-reference.en.md#ordinary-route) connects discovery to the existing T26/T27 selectors. Each selected check needs a risk/invariant and a source; missing tools do not authorize auto-installation. Docs-only can be `not_applicable`, while reuse/deletion/no-op can be correct outcomes. Project-mandated checks remain required.
+
+High-risk and full lifecycle reporting are selected independently of coding-contract length. Local CLI/fixture checks establish integration; updating the active file does not prove fresh-session loading. T23–T29 are not reopened; T30–T34 and behavioral promotion remain separate work. Historical Batch 45 receipts below retain their own evidence ceiling.
+
 ## Applied Gates
 
 | Gate | What the agent records | When it can be skipped |

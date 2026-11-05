@@ -35,3 +35,6 @@ Storybook остается deferred. Его можно пересмотреть 
 
 Минимальный gate для docs slice: docs unittest, `tools/check_docs.py`, strict MkDocs smoke в `.docs-tools/reports`, JSON packet validation и `git diff --check`. Browser proof, screenshots, broad Vale enforcement и Storybook остаются approval-required.
 
+## Проверка полноты сайта
+
+Сравните expected RU/EN routes с HTML, затем internal links/anchors, search и Mermaid render. Проверка существующих links не найдёт отсутствующую новую страницу, если nav тоже устарел. Build pass не является browser proof. [Docs update](../playbooks/docs-update.md).

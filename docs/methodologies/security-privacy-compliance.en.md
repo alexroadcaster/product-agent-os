@@ -225,3 +225,7 @@ It does not provide legal advice, replace security engineering review, replace p
 - [California Consumer Privacy Act](https://oag.ca.gov/privacy/ccpa)
 - [GDPR Regulation 2016/679](https://eur-lex.europa.eu/eli/reg/2016/679/oj)
 - [Context7 research](../sources/context7-research.md)
+
+## OpenAI execution scope
+
+Local command sandbox, cloud orchestrator, MCP, connectors and browser use different controls. Current Cloud network secrets are not direct variables. Check [security](../codex/security.md) and [Cloud setup](../codex/surfaces.md); an OpenAI update does not recertify OWASP/NIST or project compliance.

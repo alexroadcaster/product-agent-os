@@ -208,3 +208,7 @@ Security, Privacy & Compliance слой определяет gates для authn,
 - Which API security negative test templates should Product-Agent OS generate by default?
 - When should SBOM/provenance be required for internal apps, packages, plugins or release artifacts?
 - How should vulnerability response records connect to release and postmortem workflows?
+
+## OpenAI execution scope
+
+Local command sandbox, cloud orchestrator, MCP, connectors и browser имеют разные controls. Current Cloud network secrets не равны direct variables. Сверяйте [security](../codex/security.md) и [Cloud setup](../codex/surfaces.md); обновление OpenAI не переаттестовывает OWASP/NIST или compliance проекта.

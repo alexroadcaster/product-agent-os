@@ -13,6 +13,7 @@ from product_agent_os.infrastructure import (  # noqa: E402
     render_infrastructure_plan,
     stage_infrastructure,
 )
+from product_agent_os.task_routing import TaskContextError, load_task_context  # noqa: E402
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -20,6 +21,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("workspace")
     parser.add_argument("--dry-run", action="store_true", help="Print plan without writing staged files.")
     parser.add_argument("--stage", help="Write staged artifacts to this output directory.")
+    parser.add_argument("--task-context", help="Workspace-relative task context v1 JSON; select applicable templates.")
     args = parser.parse_args(argv)
 
     if args.dry_run == bool(args.stage):
@@ -27,11 +29,13 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     try:
+        task_context = load_task_context(args.workspace, args.task_context) if args.task_context else None
+        task_options = {"task_context": task_context} if task_context is not None else {}
         if args.dry_run:
-            result = render_infrastructure_plan(args.workspace)
+            result = render_infrastructure_plan(args.workspace, **task_options)
         else:
-            result = stage_infrastructure(args.workspace, args.stage)
-    except InfrastructureError as exc:
+            result = stage_infrastructure(args.workspace, args.stage, **task_options)
+    except (InfrastructureError, TaskContextError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
 

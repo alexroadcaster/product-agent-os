@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
   </span>
 
 
@@ -1668,6 +1691,15 @@
   <a href="#fresh-session-proof" class="md-nav__link">
     <span class="md-ellipsis">
       Fresh-session proof
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Разные виды состояния
     </span>
   </a>
 
@@ -2766,6 +2798,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2952,6 +2986,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3433,6 +3488,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Разные виды состояния
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3554,6 +3618,8 @@
 <li>Residual risk if current session remains stale.</li>
 </ol>
 <p>Until this exists, use <code>present_unverified</code>, <code>planned-only</code> or <code>approval_required</code> instead of fixed/ready language.</p>
+<h2 id="_1">Разные виды состояния<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>Project source cache хранит retrieval artifacts; API prompt cache повторно использует prefix; local memory сохраняет recall; session поддерживает continuity. Не переносите TTL, retention или authority между слоями. <a href="../prompting/context-engineering.html">Context/cache</a>, <a href="../agent-systems/memory.html">memory controls</a>.</p>
 
 
 

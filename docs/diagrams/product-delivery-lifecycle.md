@@ -1,67 +1,57 @@
-﻿# Product-Agent Delivery Lifecycle
+# Product-Agent Delivery Lifecycle
 
 Source status: `official + experiment`
 
-Эта диаграмма показывает полный рабочий процесс реализации проекта через Codex: от идеи до заметки к release и обновления agent operating docs.
-
-## Диаграмма
+Маршрут зависит от задачи и риска. Diagram описывает workflow, а не автоматически выдаёт полномочия.
 
 ```mermaid
 flowchart TD
-    A["Idea / пользователь request"] --> B["REQUIREMENTS.md"]
-    B --> B1["Product hypothesis / success metrics"]
-    B1 --> C["Source review"]
-    C --> D["PLAN.md"]
-    D --> D1["Architecture boundary / ownership"]
-    D1 --> E["Agent team design"]
-    E --> F["Candidate skills"]
-    F --> G["Runtime choice"]
-    G --> H["Implementation worktree"]
-    H --> I["Code / docs diff"]
-    I --> J["TEST.md deterministic checks"]
-    I --> K["EVALS.md quality checks"]
-    I --> K1["Docs-as-code impact"]
-    J --> L{"Pass?"}
-    K --> L
-    K1 --> L
-    L -->|No| M["Focused fix loop"]
-    M --> H
-    L -->|Yes| N["Review и PR"]
-    N --> O["Release notes"]
-    O --> P["Update RUNLOG.md / measurement"]
-    P --> Q["Update AGENTS.md / skills / insights"]
-    Q --> R["Next project начинается smarter"]
+    A["User goal and current sources"] --> B{"Scope size and risk"}
+    B -->|Ordinary| C["Concise scope; reuse artifacts"]
+    B -->|Large or high risk| D["Requirements, plan and ownership"]
+    D --> E{"Independent work benefits from delegation?"}
+    E -->|No| F["One agent"]
+    E -->|Yes and authorized| G["Bounded team with handoffs"]
+    C --> F
+    F --> H["Focused change in authorized workspace"]
+    G --> H
+    H --> I["Affected tests; eval or visual check when applicable"]
+    I --> J{"Required checks pass?"}
+    J -->|No| K["Repair or report blocker"]
+    K --> H
+    J -->|Yes| L["Review and evidence"]
+    L --> M["Result and limits"]
+    M --> N["PR or release only with separate authority"]
 ```
 
 ## Как применять
 
-Используйте эту схему как checklist для любого проекта, который больше одной небольшой правки.
+Для обычной правки достаточно scope, изменения, релевантной проверки и результата. Существующие `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md` и `RUNLOG.md` переиспользуйте; новые artifacts создавайте, когда они удерживают реальные требования, зависимости или evidence. Для большой работы сначала определите acceptance, ownership, risks и rollback. Worktree нужен для изоляции файлов при соответствующем Git authority, а не для каждой задачи.
 
-1. Сначала зафиксируйте продуктовую цель, гипотезу и success metric в `REQUIREMENTS.md`.
-2. Перед планом проведите source review: официальные docs, существующий код, ограничения проекта.
-3. В `PLAN.md` пишите не размышления, а исполнимую последовательность работ с architecture boundary и влияние на docs.
-4. Агентов назначайте по зонам владения: architecture, build, review, test, docs, release.
-5. Skills создавайте только для повторяемых методов, а не для разовых идей.
-6. Evals добавляйте там, где качество нельзя проверить только тестом.
-7. Docs-as-code artifacts обновляйте вместе с поведением: architecture, API, UI, DB и release docs.
-8. После PR переносите устойчивые правила в `AGENTS.md`, а повторяемые методы в skills.
+Одна роль может выполнять несколько этапов. Команду, skills и evals подключайте по применимости. После required checks повтор оправдан новой правкой, failure или неустранённым риском. PR draft не означает публикацию.
 
-## Артефакты на выходе
+## Результат и проверка
 
-| Этап | Артефакт | Зачем нужен |
-| --- | --- | --- |
-| Discovery | `REQUIREMENTS.md` | Удерживает цель, scope и constraints |
-| Planning | `PLAN.md` | Делает работу исполнимой по шагам |
-| Implementation | Worktree / branch | Изолирует изменения и ownership |
-| Проверка | `TEST.md`, `EVALS.md` | Разделяет deterministic checks и quality checks |
-| Learning | `RUNLOG.md`, `AGENTS.md`, skills | Превращает опыт проекта в память системы |
-
-Если этот lifecycle нужно упаковать в переносимый инструмент для проектов, используйте [Product-Agent OS plugin](../product-agent-os/index.md) как пользовательский entrypoint для plugin, skills, custom agents, hooks, evals и automation promotion.
+Проверяемый diff или artifact, выполненные checks, ограничения и следующий шаг. Runtime/model activation требует отдельного evidence; наличие плана или диаграммы этого не доказывает.
 
 ## Типовые ошибки
 
-- Начинать с implementation без `REQUIREMENTS.md`.
-- Создавать много агентов без явных handoff artifacts.
-- Делать skill до того, как workflow был несколько раз выполнен вручную.
-- Автоматизировать workflow без eval threshold и failure log.
-- Смешивать community insight с official rule без статуса проверки.
+Обязательная команда без независимых задач; дублирующие control-plane files; бесконечный общий gate; публикация без authority.
+
+Связанные материалы: [lifecycle](../product-agent/lifecycle.md), [Product-Agent OS plugin](../product-agent-os/index.md), [model guidance](https://developers.openai.com/api/docs/guides/latest-model), [eval guidance](https://developers.openai.com/api/docs/guides/evaluation-best-practices).
+
+## Входы
+
+Цель пользователя, текущие источники, ограничения, ownership и применимые разрешения.
+
+## Выходы
+
+Выбранный маршрут, проверяемый artifact и evidence с явными ограничениями.
+
+## Проверка
+
+Сверьте маршрут с исходниками и наблюдаемым результатом; после изменения синтаксиса проверьте render.
+
+## Риски
+
+Диаграмма помогает навигации, но не доказывает runtime activation или release.

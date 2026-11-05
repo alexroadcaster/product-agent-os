@@ -1225,6 +1225,32 @@ def required_templates() -> tuple[TemplateSpec, ...]:
     return _TEMPLATES
 
 
+def selected_templates(
+    decision: dict[str, Any], existing_paths: set[str],
+) -> tuple[tuple[TemplateSpec, ...], dict[str, Any]]:
+    """Select staged proposals, never activate agents, hooks or automations implicitly."""
+    targets: set[str] = set()
+    if decision["mode"] == "full":
+        targets.update({"AGENTS.md", "REQUIREMENTS.md", "PLAN.md", "TEST.md", "EVALS.md", "RUNLOG.md"})
+        targets.update({".codex/artifact-templates/code-change-contract.md",
+                        ".codex/artifact-templates/quality-strategy.md"})
+    elif not ({"AGENTS.md", "AGENTS.override.md"} & existing_paths):
+        targets.update({"AGENTS.md", "REQUIREMENTS.md"})
+    # Existing ordinary projects reuse their task/evidence sections, including
+    # inline compact contracts; they do not need an extra file per decision.
+    selected = tuple(item for item in _TEMPLATES if item.target_path in targets)
+    report = {
+        "mode": decision["mode"], "registry_count": len(_TEMPLATES),
+        "selected": [item.target_path for item in selected],
+        "omitted": [{"target_path": item.target_path,
+                     "reason": "reuse_existing_task_context_or_not_applicable"}
+                    for item in _TEMPLATES if item.target_path not in targets],
+        "reason": "applicable_full_gates" if decision["mode"] == "full" else "ordinary_reuse_or_discovery",
+        "gaps": decision["gaps"],
+    }
+    return selected, report
+
+
 def template_by_target(target_path: str) -> TemplateSpec:
     normalized = target_path.replace("\\", "/")
     for item in _TEMPLATES:

@@ -1,5 +1,14 @@
 # RUNLOG.md
 
+## Current ordinary route integration — 2026-11-05
+
+`PAOS-ORD-01-06-2026-11-05`: public `--task-context` route, state provenance, T26/T27 adapter, minimal template selection, active compact contract and four RU/EN guide pairs implemented. Final integrated verification passed: 1272 tests, 753.848s, OK (skipped=1), exit 0; fixture 91, transcript 26/26, compatibility and docs gates passed. Detailed RED/GREEN history, scenario mapping, measured legacy/ordinary comparison and boundaries belong to [the owning plan](research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md). Local fixture evidence does not prove fresh Codex host loading; report-path authority remains GAP-05. T23-T29 and B45 status are preserved. No publication or external writes.
+
+## Current documentation refresh — 2026-11-05
+
+`PAOS-SITE-DOCS-REFRESH-2026-11-05`: updated documentation contracts, ordinary/full workflows, Cloud/schedules/skills/memory, RU/EN and source registry. Archive records retain historical bodies and remain searchable with explicit archive labels, preserving the full-site search contract. Completed: docs_static_verified. Strict build, 100 docs tests, 220 routes, links/anchors/search, 93 Mermaid renders and local RU/EN browser checks passed. 1017 protected file hashes unchanged; no publication. Evidence owner: `docs/superpowers/specs/site-docs-refresh-2026-11-05.json`.
+
+
 <!-- product-agent-os:start runlog -->
 Project: Codex Docs / Product-Agent OS
 Last compacted: 2026-07-07

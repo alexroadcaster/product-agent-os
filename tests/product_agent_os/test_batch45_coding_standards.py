@@ -15,6 +15,18 @@ from product_agent_os.templates import required_templates, template_by_target  #
 
 
 class Batch45CodingStandardsTemplateTest(unittest.TestCase):
+    def test_active_compact_contract_reuses_packaged_fields_and_retains_local_guards(self):
+        active = ROOT / ".codex" / "artifact-templates" / "code-change-contract.md"
+        packaged = TEMPLATE_ROOT / "artifact-templates" / "code-change-contract.md"
+        field_pattern = r"^- `([a-z_]+)`:\s*(.+)$"
+        self.assertEqual(re.findall(field_pattern, active.read_text(encoding="utf-8"), re.MULTILINE),
+                         re.findall(field_pattern, packaged.read_text(encoding="utf-8"), re.MULTILINE))
+        workflow = (ROOT / ".codex" / "workflows" / "coding-standards.md").read_text(encoding="utf-8")
+        self.assertIn("Default generation context: `.codex/artifact-templates/code-change-contract.md`", workflow)
+        self.assertIn("reviewer/reference", workflow)
+        for guard in ("Task Start Brief / Completion Ledger", "control-plane sync", "security approval", "release gates"):
+            self.assertIn(guard, workflow)
+
     def test_compact_code_change_contract_is_the_default_registered_authoring_context(self):
         target = ".codex/artifact-templates/code-change-contract.md"
         expected_fields = [

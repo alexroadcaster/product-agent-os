@@ -67,7 +67,7 @@ plugins/product-agent-os/
     fixtures/
 ```
 
-Официальный contract Codex plugin требует `.codex-plugin/plugin.json`; остальные bundled components лежат в plugin root. В текущем package manifest указывает на bundled `skills` и `.mcp.json`, а пользовательская логика lives в local scripts и templates.
+Текущий package использует совместимый layout `.codex-plugin/plugin.json`; это не единственный официальный формат. В текущем package manifest указывает на bundled `skills` и `.mcp.json`, а пользовательская логика lives в local scripts и templates.
 
 ## Bundled MCP
 
@@ -280,7 +280,7 @@ Focused и full verification следует cover graph/cockpit/search, status/r
 
 ## Codex installation boundary
 
-Для Codex installation plugin должен быть доступен через plugin marketplace или curated plugin list, а package root должен содержать `.codex-plugin/plugin.json`. В этом репозитории package уже подготовлен локально в рамках `plugins/product-agent-os/`; подключение к конкретной Codex App installation остается отдельным environment step и следует follow текущий official Codex plugin docs.
+Для Codex installation plugin должен быть доступен через plugin marketplace или curated plugin list, а manifest должен соответствовать поддерживаемому portable или compatibility layout. В этом репозитории package уже подготовлен локально в рамках `plugins/product-agent-os/`; подключение к конкретной Codex App installation остается отдельным environment step и следует follow текущий official Codex plugin docs.
 
 Этот project intentionally keeps runtime code Codex-only:
 
@@ -321,3 +321,9 @@ After plugin scripts, templates, fixtures или tests change:
 python -m unittest discover -s tests -p "test_*.py" -v
 python plugins\product-agent-os\scripts\run_fixture_eval.py
 ```
+
+## Формат package и установка: проверено 05.11.2026
+
+[Package your plugin](https://developers.openai.com/plugins/build/plugins) описывает portable root `plugin.json`, `mcp.json` и OpenAI metadata в `extensions.com.openai`. Legacy `.codex-plugin/plugin.json` поддерживается как compatibility fallback; Plugin Creator может создавать такой scaffold. Наш существующий пакет остаётся в legacy layout. Миграция реализации этим руководством не выполняется: простое переименование `.mcp.json` неверно, transport schema различается.
+
+[Plugins](https://learn.chatgpt.com/docs/plugins) доступны на поддерживаемых desktop/CLI/web/mobile поверхностях с ограничениями компонентов и auth. IDE extension не поддерживает native plugins. Работа с файлами проекта в IDE — отдельная возможность. После установки начинайте новый chat/session для bundled skills; MCP auth и hook trust проверяйте отдельно. Подробнее: [surface matrix](../codex/surfaces.md), [skill exposure](../agent-systems/subagents-skills.md).

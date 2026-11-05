@@ -90,14 +90,14 @@ Promptfoo integration is export-only by default. The adapter writes prompts, tes
 ```mermaid
 sequenceDiagram
     participant Owner
-    participant Loop as Self-Learning Loop
+    participant LearningCycle as Self-Learning LearningCycle
     participant Worker as Codex staged repair worker
     participant Review as Owner review
-    Owner->>Loop: approve candidate review
-    Loop->>Worker: staged repair task contract
+    Owner->>LearningCycle: approve candidate review
+    LearningCycle->>Worker: staged repair task contract
     Worker->>Worker: local allowed-file patch proposal
     Worker->>Review: staged repair result packet
-    Review-->>Loop: approve / reject / request changes
+    Review-->>LearningCycle: approve / reject / request changes
 ```
 
 ## B44-S7 Evidence

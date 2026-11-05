@@ -2,29 +2,32 @@
 
 Source status: `official + experiment`
 
-Product-Agent OS is the operating model for running Codex work as product delivery: requirements, planning, agent ownership, verification evidence, review, packaging and learning stay connected from the first request to the final handoff.
+Use these guides to complete a task with Codex, onboard an existing project, or design an agent application. User workflows checked against official documentation: **2026-11-05**. Availability depends on client, account, authentication and managed policy.
 
-Start with [Product-Agent OS](product-agent-os/index.md) for the product overview, then use the [implementation atlas](diagrams/index.md) to choose the workflow, agent team, runtime surface and verification path.
+## Start with your task
 
-The documentation keeps internal evidence separate from presentation copy. Public pages explain product value, capabilities, boundaries, outputs and next action. Internal evidence pages under `docs/sources/` store the source registry, packets, backlogs and verification records; they should not be the first route for a new user.
+| Goal | Start here | Result |
+| --- | --- | --- |
+| Complete or fix one task | [Surfaces](codex/surfaces.md) → [Workflows](codex/workflows.md) | Bounded scope, change, verification and result |
+| Onboard a project | [Product-Agent OS](product-agent-os/index.md) → [workspace audit](playbooks/workspace-readiness-audit.md) | Read-only discovery and a reviewable staged proposal |
+| Build an agent application | [Runtime choice](agent-systems/sdk-patterns.md) → [evals](agent-systems/evals-observability.md) | Explicit state/tool ownership and quality criteria |
 
-Generated `site/`, dashboards, graphs, cockpit views, reports and smoke results are review artifacts, not source of truth. Source of truth remains in Markdown source files, the source registry, current command/eval/runtime evidence, owner decisions and accepted gaps. Live runtime launch, browser automation, provider/API calls, canonical graph mutation, publication and git release actions stay approval-bound.
+An ordinary change does not require a new document set or a team. For complex work use the [Diagram atlas](diagrams/index.md), [lifecycle](product-agent/lifecycle.md) and [model migration](playbooks/model-migration.md). Model and reasoning selection: [current matrix](codex/models-and-reasoning.md).
 
-## Inputs
+## Implementation and evidence boundary
 
-- A real project or documentation workflow that needs Codex governance.
-- Product-Agent OS pages, diagrams, runtime guidance and playbooks.
+Product-Agent OS is a local plugin package with lifecycle skills, staged infrastructure, validators, project graph/cockpit and eval fixtures. It produces reviewable artifacts; package presence does not prove hosted delivery, success on every project or production readiness.
 
-## Outputs
+Markdown sources, current source/configuration, command/runtime evidence and owner decisions establish facts. Generated `site/`, dashboards, graphs, cockpit and reports help navigation but do not replace that evidence.
 
-- A safe route through product intent, agent team design, implementation, verification and handoff.
-- A clear boundary between public product documentation and internal evidence.
+## Sources and history
 
-## Verification
+Official OpenAI material supports platform claims; project decisions are labeled separately. Community/experiment material does not become official guidance without verification. [Registry](sources/registry.md) · [insights](insights/index.md) · [current state and dated history](product-agent-os/control-plane-current-state.md).
 
-Use the focused docs tests, `python tools\check_docs.py` and strict MkDocs build after localization or navigation changes.
+Historical plans and source receipts retain their dates and do not replace current guides. Public guides explain goals, inputs, actions, expected results and limits.
 
-## Risks
+External writes, Git publication, deployment, provider calls and hook/schedule activation require applicable authority. Documentation does not activate those capabilities.
 
-- Treating generated evidence as source of truth can hide stale or unsupported claims.
-- Launching live systems, provider calls or git release actions without approval breaks the operating boundary.
+## Public/Internal Documentation Boundary
+
+Internal evidence pages preserve the source registry, packets, backlogs and verification records. Source of truth remains in Markdown source files, current code/configuration, observed checks and owner decisions. Historical records do not replace current guides.

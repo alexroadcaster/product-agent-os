@@ -28,7 +28,7 @@ flowchart TD
 1. Classify project type, current state and risk; identify requirements, plan, tests/evals and runlog owners.
 2. Split by independent files/subsystems. Prefer one agent when shared writes or sequential dependencies erase the benefit of delegation.
 3. Give each role inputs, owned and forbidden files, output artifact, checks, stop conditions, budget and handoff destination.
-4. Choose model/effort using the [single model matrix](../codex/models-and-reasoning.md) and [role policy](../product-agent/roles.md). These are candidate recommendations; existing GPT-5.6 pins remain unchanged. Use the [migration playbook](../playbooks/model-migration.md) before promotion.
+4. Choose model/effort using the [single model matrix](../codex/models-and-reasoning.md) and [role policy](../product-agent/roles.md). Current active profiles are pinned to GPT-6.1 Sol/Terra; behavioral promotion remains a separate gate. This guide does not change pins. Use the [migration playbook](../playbooks/model-migration.md) before promotion.
 5. Return sources, assumptions, touched/proposed files, observed checks, residual risks and the next role. The primary agent reconciles conflicting findings.
 6. Promote manual workflow -> playbook -> skill -> plugin -> automation candidate only after representative evals, failure records, owner review and rollback design. Scheduling is a separate authorized action.
 

@@ -36,3 +36,7 @@ Storybook remains deferred. Revisit it only when a component surface, repeated v
 ## Verification
 
 Minimum gate for this docs slice: docs unittest, `tools/check_docs.py`, strict MkDocs smoke under `.docs-tools/reports`, JSON packet validation, and `git diff --check`. Browser proof, screenshots, broad Vale enforcement, and Storybook remain approval-required.
+
+## Site completeness check
+
+Compare expected RU/EN routes with HTML, then check internal links/anchors, search and Mermaid rendering. Existing-link checks miss a new page when navigation is also stale. A build pass is not browser proof. [Docs update](../playbooks/docs-update.md).

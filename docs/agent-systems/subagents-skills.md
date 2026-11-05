@@ -114,3 +114,18 @@ Skill `allow_implicit_invocation: false` отключает implicit selection, 
 ## Входы и выходы
 
 Входы: текущая цель, применимые инструкции, источники, ownership и требуемые доказательства. Выходы: ограниченный пакет работы, обоснованный результат и handoff с открытыми рисками. Проверяйте применимость, полномочия и наблюдаемые evidence. Основные риски: пересечение записей, устаревший контекст и выдача предложения за активированное поведение.
+
+## Если установленный skill не используется
+
+Проверено 05.11.2026: [Build skills](https://learn.chatgpt.com/docs/build-skills), [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents), [Plugins](https://learn.chatgpt.com/docs/plugins).
+
+1. Проверьте supported skill location и валидный `SKILL.md`.
+2. Проверьте discovery и initial list: его бюджет ограничен; при большом каталоге descriptions сокращаются, часть skills может не попасть в список.
+3. Дайте skill короткое различимое описание и конкретный trigger. После выбора Codex читает полное тело skill.
+4. Сравните explicit invocation и implicit routing. `allow_implicit_invocation: false` выключает автоматический выбор, но оставляет explicit invocation.
+5. После plugin install начните новый chat/session; MCP auth и доступность tools проверяйте отдельно.
+6. Проверьте результат на representative task: source presence, exposure и invocation — разные evidence.
+
+Начинайте с instructions-only skill. Scripts нужны для проверяемой детерминированной операции, а не для хранения ещё одного agent loop. Роль agent, skill и plugin — разные компоненты. Custom agents наследуют parent permissions/MCP; описание read-only роли само по себе не создаёт sandbox.
+
+На большинстве intelligence levels делегирование запрашивается явно; поддерживаемый Ultra может делегировать проактивно. Проверяйте client/account и действующие инструкции. Наличие subagents не делает команду обязательной: нужны независимый ownership, budget и способ объединить результаты.

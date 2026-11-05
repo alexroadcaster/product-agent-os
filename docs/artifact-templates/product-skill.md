@@ -48,3 +48,6 @@ Run:
 - ...
 ````
 
+## Проверка exposure
+
+Сначала instructions-only. Проверьте distinct description/trigger, supported path, initial list, explicit/implicit invocation и output. Наличие файла не доказывает exposure. [Build skills](https://learn.chatgpt.com/docs/build-skills).

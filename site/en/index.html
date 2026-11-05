@@ -289,36 +289,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
-  <a href="#inputs" class="md-nav__link">
+  <a href="#start-with-your-task" class="md-nav__link">
     <span class="md-ellipsis">
-      Inputs
+      Start with your task
     </span>
   </a>
 
 </li>
 
         <li class="md-nav__item">
-  <a href="#outputs" class="md-nav__link">
+  <a href="#implementation-and-evidence-boundary" class="md-nav__link">
     <span class="md-ellipsis">
-      Outputs
+      Implementation and evidence boundary
     </span>
   </a>
 
 </li>
 
         <li class="md-nav__item">
-  <a href="#verification" class="md-nav__link">
+  <a href="#sources-and-history" class="md-nav__link">
     <span class="md-ellipsis">
-      Verification
+      Sources and history
     </span>
   </a>
 
 </li>
 
         <li class="md-nav__item">
-  <a href="#risks" class="md-nav__link">
+  <a href="#publicinternal-documentation-boundary" class="md-nav__link">
     <span class="md-ellipsis">
-      Risks
+      Public/Internal Documentation Boundary
     </span>
   </a>
 
@@ -822,6 +822,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -903,6 +905,27 @@
 
   <span class="md-ellipsis">
     Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
   </span>
 
 
@@ -2764,6 +2787,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2950,6 +2975,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3396,36 +3442,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
-  <a href="#inputs" class="md-nav__link">
+  <a href="#start-with-your-task" class="md-nav__link">
     <span class="md-ellipsis">
-      Inputs
+      Start with your task
     </span>
   </a>
 
 </li>
 
         <li class="md-nav__item">
-  <a href="#outputs" class="md-nav__link">
+  <a href="#implementation-and-evidence-boundary" class="md-nav__link">
     <span class="md-ellipsis">
-      Outputs
+      Implementation and evidence boundary
     </span>
   </a>
 
 </li>
 
         <li class="md-nav__item">
-  <a href="#verification" class="md-nav__link">
+  <a href="#sources-and-history" class="md-nav__link">
     <span class="md-ellipsis">
-      Verification
+      Sources and history
     </span>
   </a>
 
 </li>
 
         <li class="md-nav__item">
-  <a href="#risks" class="md-nav__link">
+  <a href="#publicinternal-documentation-boundary" class="md-nav__link">
     <span class="md-ellipsis">
-      Risks
+      Public/Internal Documentation Boundary
     </span>
   </a>
 
@@ -3448,27 +3494,44 @@
 
 <h1 id="product-agent-os">Product-Agent OS<a class="headerlink" href="#product-agent-os" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + experiment</code></p>
-<p>Product-Agent OS is the operating model for running Codex work as product delivery: requirements, planning, agent ownership, verification evidence, review, packaging and learning stay connected from the first request to the final handoff.</p>
-<p>Start with <a href="product-agent-os/index.html">Product-Agent OS</a> for the product overview, then use the <a href="diagrams/index.html">implementation atlas</a> to choose the workflow, agent team, runtime surface and verification path.</p>
-<p>The documentation keeps internal evidence separate from presentation copy. Public pages explain product value, capabilities, boundaries, outputs and next action. Internal evidence pages under <code>docs/sources/</code> store the source registry, packets, backlogs and verification records; they should not be the first route for a new user.</p>
-<p>Generated <code>site/</code>, dashboards, graphs, cockpit views, reports and smoke results are review artifacts, not source of truth. Source of truth remains in Markdown source files, the source registry, current command/eval/runtime evidence, owner decisions and accepted gaps. Live runtime launch, browser automation, provider/API calls, canonical graph mutation, publication and git release actions stay approval-bound.</p>
-<h2 id="inputs">Inputs<a class="headerlink" href="#inputs" title="Permanent link">&para;</a></h2>
-<ul>
-<li>A real project or documentation workflow that needs Codex governance.</li>
-<li>Product-Agent OS pages, diagrams, runtime guidance and playbooks.</li>
-</ul>
-<h2 id="outputs">Outputs<a class="headerlink" href="#outputs" title="Permanent link">&para;</a></h2>
-<ul>
-<li>A safe route through product intent, agent team design, implementation, verification and handoff.</li>
-<li>A clear boundary between public product documentation and internal evidence.</li>
-</ul>
-<h2 id="verification">Verification<a class="headerlink" href="#verification" title="Permanent link">&para;</a></h2>
-<p>Use the focused docs tests, <code>python tools\check_docs.py</code> and strict MkDocs build after localization or navigation changes.</p>
-<h2 id="risks">Risks<a class="headerlink" href="#risks" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Treating generated evidence as source of truth can hide stale or unsupported claims.</li>
-<li>Launching live systems, provider calls or git release actions without approval breaks the operating boundary.</li>
-</ul>
+<p>Use these guides to complete a task with Codex, onboard an existing project, or design an agent application. User workflows checked against official documentation: <strong>2026-11-05</strong>. Availability depends on client, account, authentication and managed policy.</p>
+<h2 id="start-with-your-task">Start with your task<a class="headerlink" href="#start-with-your-task" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Start here</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Complete or fix one task</td>
+<td><a href="codex/surfaces.html">Surfaces</a> → <a href="codex/workflows.html">Workflows</a></td>
+<td>Bounded scope, change, verification and result</td>
+</tr>
+<tr>
+<td>Onboard a project</td>
+<td><a href="product-agent-os/index.html">Product-Agent OS</a> → <a href="playbooks/workspace-readiness-audit.html">workspace audit</a></td>
+<td>Read-only discovery and a reviewable staged proposal</td>
+</tr>
+<tr>
+<td>Build an agent application</td>
+<td><a href="agent-systems/sdk-patterns.html">Runtime choice</a> → <a href="agent-systems/evals-observability.html">evals</a></td>
+<td>Explicit state/tool ownership and quality criteria</td>
+</tr>
+</tbody>
+</table>
+<p>An ordinary change does not require a new document set or a team. For complex work use the <a href="diagrams/index.html">Diagram atlas</a>, <a href="product-agent/lifecycle.html">lifecycle</a> and <a href="playbooks/model-migration.html">model migration</a>. Model and reasoning selection: <a href="codex/models-and-reasoning.html">current matrix</a>.</p>
+<h2 id="implementation-and-evidence-boundary">Implementation and evidence boundary<a class="headerlink" href="#implementation-and-evidence-boundary" title="Permanent link">&para;</a></h2>
+<p>Product-Agent OS is a local plugin package with lifecycle skills, staged infrastructure, validators, project graph/cockpit and eval fixtures. It produces reviewable artifacts; package presence does not prove hosted delivery, success on every project or production readiness.</p>
+<p>Markdown sources, current source/configuration, command/runtime evidence and owner decisions establish facts. Generated <code>site/</code>, dashboards, graphs, cockpit and reports help navigation but do not replace that evidence.</p>
+<h2 id="sources-and-history">Sources and history<a class="headerlink" href="#sources-and-history" title="Permanent link">&para;</a></h2>
+<p>Official OpenAI material supports platform claims; project decisions are labeled separately. Community/experiment material does not become official guidance without verification. <a href="sources/registry.html">Registry</a> · <a href="insights/index.html">insights</a> · <a href="product-agent-os/control-plane-current-state.html">current state and dated history</a>.</p>
+<p>Historical plans and source receipts retain their dates and do not replace current guides. Public guides explain goals, inputs, actions, expected results and limits.</p>
+<p>External writes, Git publication, deployment, provider calls and hook/schedule activation require applicable authority. Documentation does not activate those capabilities.</p>
+<h2 id="publicinternal-documentation-boundary">Public/Internal Documentation Boundary<a class="headerlink" href="#publicinternal-documentation-boundary" title="Permanent link">&para;</a></h2>
+<p>Internal evidence pages preserve the source registry, packets, backlogs and verification records. Source of truth remains in Markdown source files, current code/configuration, observed checks and owner decisions. Historical records do not replace current guides.</p>
 
 
 

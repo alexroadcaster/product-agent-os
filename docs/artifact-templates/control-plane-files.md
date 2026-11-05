@@ -76,3 +76,6 @@ Source status: `official + experiment`
 ## Failure taxonomy
 ```
 
+## Минимальный набор
+
+Это шаблоны по применимости, не требование создать все файлы. Переиспользуйте project documents. Applicable `AGENTS.md` и task-loaded supporting docs имеют разные loading semantics; [control-plane guide](../product-agent/control-plane.md).

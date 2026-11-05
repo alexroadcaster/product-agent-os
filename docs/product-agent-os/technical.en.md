@@ -7,7 +7,7 @@ Sources: [Codex plugins](https://developers.openai.com/codex/plugins), [Build pl
 
 Product-Agent OS is a local Codex plugin package. Use it to stage control-plane artifacts, route product-agent workflows, run deterministic validators and package repeatable methods as skills. Installation does not grant permission to start live systems, call providers, mutate target repositories or publish anything.
 
-This quick-start page is not the full command-policy matrix. The broader list of docs-tooling commands, install/runtime variants and approval-state cases belongs to later `DOC-M26`; final root `site` freshness belongs to `DOC-M25` after G2-G5.
+Use the [operator command matrix](operator-command-matrix.md) for command authority and [site freshness](residual-follow-up-site-freshness.md) for current build evidence. Historical DOC-M26/DOC-M25 milestones are not the current installation procedure.
 
 ## Capability status
 
@@ -203,3 +203,9 @@ python -m mkdocs build --strict
 
 - Plugin installation does not approve publication, live calls or target workspace writes.
 - Generated graph and report output can become stale unless fingerprint and source boundaries are checked.
+
+## Package format and installation: checked 2026-11-05
+
+[Package your plugin](https://developers.openai.com/plugins/build/plugins) describes portable root `plugin.json`, `mcp.json` and OpenAI metadata in `extensions.com.openai`. Legacy `.codex-plugin/plugin.json` remains a compatibility fallback; Plugin Creator can generate that scaffold. Our existing package stays on the legacy layout. This guide does not migrate implementation: renaming `.mcp.json` alone is invalid because the transport schema differs.
+
+[Plugins](https://learn.chatgpt.com/docs/plugins) are available on supported desktop/CLI/web/mobile surfaces with component and authentication limits. The IDE extension does not support native plugins. Working with repository files in the IDE is a separate capability. Start a new chat/session for bundled skills after installation; verify MCP authentication and hook trust separately. See [surface matrix](../codex/surfaces.md) and [skill exposure](../agent-systems/subagents-skills.md).

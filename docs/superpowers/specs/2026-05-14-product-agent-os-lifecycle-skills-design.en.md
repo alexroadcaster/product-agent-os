@@ -1,4 +1,10 @@
-# Product-Agent OS Lifecycle Skills Design
+---
+title: "Archive - Product-Agent OS Lifecycle Skills Design"
+---
+
+# Archive - Product-Agent OS Lifecycle Skills Design {#product-agent-os-lifecycle-skills-design}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `official + experiment`
 

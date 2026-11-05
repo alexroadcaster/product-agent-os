@@ -11,7 +11,7 @@
 
 
 
-        <link rel="prev" href="configuration.html">
+        <link rel="prev" href="models-and-reasoning.html">
 
 
         <link rel="next" href="workflows.html">
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
 
 
-        <a href="#security-sandbox-and-approvals" class="md-skip">
+        <a href="#security-permissions-and-approvals" class="md-skip">
           Skip to content
         </a>
 
@@ -750,6 +750,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
 
 
@@ -844,6 +846,27 @@
 
 
 
+    <li class="md-nav__item">
+      <a href="models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
 
 
     <li class="md-nav__item md-nav__item--active">
@@ -891,36 +914,45 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
-  <a href="#baseline-model" class="md-nav__link">
+  <a href="#choose-one-configuration-scheme" class="md-nav__link">
     <span class="md-ellipsis">
-      Baseline model
+      Choose one configuration scheme
     </span>
   </a>
 
 </li>
 
         <li class="md-nav__item">
-  <a href="#sandbox-modes" class="md-nav__link">
+  <a href="#network-and-tool-surfaces" class="md-nav__link">
     <span class="md-ellipsis">
-      Sandbox modes
+      Network and tool surfaces
     </span>
   </a>
 
 </li>
 
         <li class="md-nav__item">
-  <a href="#network-access" class="md-nav__link">
+  <a href="#approval-and-data-review" class="md-nav__link">
     <span class="md-ellipsis">
-      Network access
+      Approval and data review
     </span>
   </a>
 
 </li>
 
         <li class="md-nav__item">
-  <a href="#approval-checklist" class="md-nav__link">
+  <a href="#verification-boundary" class="md-nav__link">
     <span class="md-ellipsis">
-      Approval checklist
+      Verification boundary
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#cloud-and-hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cloud and hooks
     </span>
   </a>
 
@@ -2766,6 +2798,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2952,6 +2986,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3398,36 +3453,45 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
-  <a href="#baseline-model" class="md-nav__link">
+  <a href="#choose-one-configuration-scheme" class="md-nav__link">
     <span class="md-ellipsis">
-      Baseline model
+      Choose one configuration scheme
     </span>
   </a>
 
 </li>
 
         <li class="md-nav__item">
-  <a href="#sandbox-modes" class="md-nav__link">
+  <a href="#network-and-tool-surfaces" class="md-nav__link">
     <span class="md-ellipsis">
-      Sandbox modes
+      Network and tool surfaces
     </span>
   </a>
 
 </li>
 
         <li class="md-nav__item">
-  <a href="#network-access" class="md-nav__link">
+  <a href="#approval-and-data-review" class="md-nav__link">
     <span class="md-ellipsis">
-      Network access
+      Approval and data review
     </span>
   </a>
 
 </li>
 
         <li class="md-nav__item">
-  <a href="#approval-checklist" class="md-nav__link">
+  <a href="#verification-boundary" class="md-nav__link">
     <span class="md-ellipsis">
-      Approval checklist
+      Verification boundary
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#cloud-and-hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cloud and hooks
     </span>
   </a>
 
@@ -3448,61 +3512,62 @@
 
 
 
-<h1 id="security-sandbox-and-approvals">Security, sandbox and approvals<a class="headerlink" href="#security-sandbox-and-approvals" title="Permanent link">&para;</a></h1>
-<p>Source status: <code>official</code><br />
-Sources: <a href="https://developers.openai.com/codex/concepts/sandboxing">Sandbox</a>, <a href="https://developers.openai.com/codex/agent-approvals-security">Agent approvals and security</a>, <a href="https://developers.openai.com/codex/cloud">Codex cloud</a>.</p>
-<h2 id="baseline-model">Baseline model<a class="headerlink" href="#baseline-model" title="Permanent link">&para;</a></h2>
-<p>Sandbox is a technical boundary: which files Codex can modify, which commands it can run and whether network access is available. Approval policy is a governance boundary: when Codex must stop and ask for permission.</p>
-<p>A safe baseline for local work:</p>
-<div class="highlight"><pre><span></span><code>sandbox_mode = &quot;workspace-write&quot;
-approval_policy = &quot;on-request&quot;
-approvals_reviewer = &quot;user&quot;
-</code></pre></div>
-<p>This mode allows work inside the workspace, but requires approval for actions outside the boundary, network commands or other sensitive operations.</p>
-<h2 id="sandbox-modes">Sandbox modes<a class="headerlink" href="#sandbox-modes" title="Permanent link">&para;</a></h2>
+<h1 id="security-permissions-and-approvals">Security, permissions and approvals<a class="headerlink" href="#security-permissions-and-approvals" title="Permanent link">&para;</a></h1>
+<p>Source status: <code>official + experiment</code></p>
+<p>Checked 2026-11-03: <a href="https://learn.chatgpt.com/docs/permissions">Permissions</a>, <a href="https://learn.chatgpt.com/docs/agent-configuration/subagents">Subagents</a>, <a href="https://learn.chatgpt.com/docs/config-file/config-reference">Configuration Reference</a>.</p>
+<p>Sandbox and permissions are technical controls on local command execution. Approval policy controls eligible prompts. A role description, source document or skill does not grant privileges. This repository requires separate authorization for external writes, provider/model calls, browser, Git and activation changes.</p>
+<h2 id="choose-one-configuration-scheme">Choose one configuration scheme<a class="headerlink" href="#choose-one-configuration-scheme" title="Permanent link">&para;</a></h2>
+<p>Permission profiles are beta. Select either <code>default_permissions</code> / <code>[permissions]</code> or legacy <code>sandbox_mode</code> / <code>[sandbox_workspace_write]</code>, not both. Inspect all effective layers and managed policy; examples are in <a href="configuration.html">configuration</a>. <code>:workspace</code> protects <code>.git</code>, <code>.agents</code>, <code>.codex</code>, <code>.aws</code>; a project directory being writable does not make every child writable. Legacy <code>read-only</code>, <code>workspace-write</code> and <code>danger-full-access</code> remain distinct modes; the last removes local sandbox restrictions and is not a remedy for approval friction.</p>
+<p>Custom agents inherit parent permissions and approvals. A reviewer instructed to avoid edits is behaviorally read-only, not a separately enforced read-only sandbox. Agent-local sandbox/MCP settings do not override the parent. Actual isolation requires applicable execution controls and fresh-session evidence.</p>
+<h2 id="network-and-tool-surfaces">Network and tool surfaces<a class="headerlink" href="#network-and-tool-surfaces" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Mode</th>
-<th>Meaning</th>
-<th>Use for</th>
+<th>Surface</th>
+<th>Control boundary</th>
+<th>What not to infer</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>read-only</code></td>
-<td>Codex can read, but should not change files or run substantial commands without permission</td>
-<td>Planning, review, audit</td>
+<td>Local commands</td>
+<td>Effective filesystem/network policy and command sandbox</td>
+<td>A writable workspace does not imply network access</td>
 </tr>
 <tr>
-<td><code>workspace-write</code></td>
-<td>Codex can read, modify the workspace and run routine commands within the project boundary</td>
-<td>Most local tasks</td>
+<td>Command destination filtering</td>
+<td>Active network proxy and domain rules</td>
+<td><code>network.enabled = true</code> alone does not activate domain filtering</td>
 </tr>
 <tr>
-<td><code>danger-full-access</code></td>
-<td>Codex runs without sandbox restrictions</td>
-<td>Only deliberately and for a short time</td>
+<td>Web search</td>
+<td>Product/tool policy</td>
+<td>Not governed by the command proxy allowlist</td>
+</tr>
+<tr>
+<td>MCP</td>
+<td>Parent MCP configuration, tool/server policy and approvals</td>
+<td>Declaration is not connection or successful execution</td>
+</tr>
+<tr>
+<td>Apps/connectors</td>
+<td>App/tool authorization and approval settings</td>
+<td>Command network policy is not a connector policy</td>
+</tr>
+<tr>
+<td>Browser/computer tools</td>
+<td>Tool-specific controls and task authorization</td>
+<td>Local command sandbox is not universal browser isolation</td>
 </tr>
 </tbody>
 </table>
-<h2 id="network-access">Network access<a class="headerlink" href="#network-access" title="Permanent link">&para;</a></h2>
-<p>Under the official model, Codex should not freely access the network by default during agentic work. In cloud setup, network access may be available during environment preparation, while the agent phase usually requires a separate internet access decision.</p>
-<p>Practical rule:</p>
-<ul>
-<li>documentation can be checked against official sources;</li>
-<li>install and package manager commands require explicit understanding of what will be downloaded;</li>
-<li>secrets must not end up in prompts, docs, memory or artifacts.</li>
-</ul>
-<h2 id="approval-checklist">Approval checklist<a class="headerlink" href="#approval-checklist" title="Permanent link">&para;</a></h2>
-<p>Before approval, ask:</p>
-<ul>
-<li>Does the command write outside the workspace?</li>
-<li>Does the command use the network?</li>
-<li>Can the command delete, overwrite or send data?</li>
-<li>Is there a narrower way to grant access?</li>
-<li>Can broad access be replaced with a command prefix rule?</li>
-</ul>
+<p>Domain rules require <code>features.network_proxy = true</code> or an enabled managed proxy. An active proxy without allow entries blocks domain requests; deny rules take precedence. Local, cloud setup and cloud agent phases have different network controls: inspect the chosen surface rather than asserting a universal default.</p>
+<h2 id="approval-and-data-review">Approval and data review<a class="headerlink" href="#approval-and-data-review" title="Permanent link">&para;</a></h2>
+<p>Before a sensitive action, identify destination, data, side effects, existing authority and the narrowest usable permission. A public documentation lookup and an install/provider operation are different actions. Never include secrets or unnecessary private data in prompts, docs, memory or evidence. <code>approvals_reviewer</code> does not widen the sandbox or re-review already allowed actions.</p>
+<h2 id="verification-boundary">Verification boundary<a class="headerlink" href="#verification-boundary" title="Permanent link">&para;</a></h2>
+<p>Static config parsing cannot prove effective runtime policy. Record client/version/auth, loaded configuration, parent permissions, selected tool and observed permitted/denied behavior before an activation claim. The current documentation refresh changes no permissions; unresolved project contracts are listed in <a href="../product-agent-os/codex-compatibility.html">Codex compatibility</a>.</p>
+<h2 id="cloud-and-hooks">Cloud and hooks<a class="headerlink" href="#cloud-and-hooks" title="Permanent link">&para;</a></h2>
+<p>Current Cloud network secrets and direct variables use different delivery mechanisms; the legacy setup-only rule is not universal. See <a href="surfaces.html">Cloud setup</a> and <a href="../runtime/worktrees-hooks-rules.html">hook trust/failure boundaries</a>. Check execution and orchestration separately.</p>
 
 
 

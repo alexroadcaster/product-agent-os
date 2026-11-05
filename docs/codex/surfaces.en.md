@@ -54,3 +54,28 @@ Cloud fits background tasks, especially when work can proceed independently from
 ## Models and surface boundaries
 
 CLI version does not establish Codex App or IDE extension version. API-key and ChatGPT sign-in can have different availability/retirement conditions. Match client/auth/model/effort using the [shared reference](models-and-reasoning.md); account availability and runtime activation need their own evidence.
+
+## Choose a surface: checked 2026-11-05
+
+| Scenario | Surface | Check before work |
+| --- | --- | --- |
+| Local files and commands | Desktop Codex / CLI / IDE extension | Workspace, effective permissions, project instructions |
+| Install a plugin | Supported Desktop/CLI, ChatGPT web/mobile | Components, authentication and plan; IDE has no native plugins |
+| Work in a prepared environment | Current Codex Cloud | Published environment, network policy, variables/secrets |
+| Cloud orchestration with local access | Work Cloud + local computer access | Local execution and cloud orchestration controls separately |
+| Repeat a tested workflow | Scheduled tasks | Local/cloud mode, machine availability, destination and authority |
+| Build an agent application | Agents API / Agents SDK / Responses | Ownership of loop/state, deployment, tools and approvals |
+
+Sources: [Plugins](https://learn.chatgpt.com/docs/plugins), [MCP](https://learn.chatgpt.com/docs/extend/mcp), [Cloud](https://learn.chatgpt.com/docs/environments/cloud-environments). Availability depends on account, client, authentication, rollout and managed policy. Discovering a Desktop only plugin on the web does not make it usable there.
+
+### Set up a current Cloud environment
+
+1. Choose **Work in → Cloud → Create environment** and authorized repositories.
+2. Specify dependencies, versions and services in the conversation. Codex prepares and tests setup; writing an install script manually is optional.
+3. Review **Install script**, **Start skill**, network policy and configuration.
+4. **Save** stores settings; **Publish** captures the prepared environment for new tasks. After changes use **Republish** and a new task; existing tasks retain their state.
+5. Check a project command in a new task and access only to authorized destinations.
+
+Environment variables reach programs directly. Network secrets use placeholders and proxy substitution for allowed HTTPS destinations (port 443), during setup and tasks. Do not apply the legacy setup-only secret rule to current Cloud. Network policy, credential delivery and service permissions are separate checks. When access is missing, identify the required destination and identity rather than broadening policy automatically.
+
+Legacy Cloud has separate setup/maintenance/network rules. Do not mix [current Cloud documentation](https://learn.chatgpt.com/docs/environments/cloud-environments) and [legacy internet settings](https://learn.chatgpt.com/docs/cloud/internet-access) in one recipe.

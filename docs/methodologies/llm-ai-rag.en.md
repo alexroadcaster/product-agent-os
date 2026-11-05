@@ -225,3 +225,7 @@ It does not mandate OpenAI-only architecture, RAG for every feature, multi-agent
 - [Ragas available metrics](https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/)
 - [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/)
 - [Context7 research](../sources/context7-research.md)
+
+## Runtime and evaluation
+
+For OpenAI integrations choose [runtime ownership](../agent-systems/sdk-patterns.md) before orchestration. Retrieval, local memory and prompt caching are separate layers. Evals include typical/edge/adversarial tasks and cost per completed outcome, not token price alone.

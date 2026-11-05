@@ -23,6 +23,43 @@ def load_cli():
 
 
 class RenderInfrastructureCliTest(unittest.TestCase):
+    def test_task_context_cli_reuses_existing_docs_without_bulk_templates(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "AGENTS.md").write_text("Preserve project rules.\n", encoding="utf-8")
+            (root / "README.md").write_text("Existing documentation.\n", encoding="utf-8")
+            (root / "TEST.md").write_text("Run `python check_docs.py`.\n", encoding="utf-8")
+            task = {
+                "schema_version": 1, "task_id": "DOCS", "intent": "Correct README wording",
+                "change_mode": "docs_only", "changed_paths": ["README.md"],
+                "risk_level": "low", "risks": [], "acceptance": ["Clear wording"],
+                "checks": [{"command": "python check_docs.py", "source": "TEST.md", "test_kinds": ["docs"]}],
+            }
+            (root / "task.json").write_text(json.dumps(task), encoding="utf-8")
+            before = {p.name: p.read_bytes() for p in root.iterdir()}
+            result = subprocess.run(
+                [sys.executable, str(SCRIPT), str(root), "--dry-run", "--task-context", "task.json"],
+                capture_output=True, text=True, check=False,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            payload = json.loads(result.stdout)
+            self.assertEqual(payload["infrastructure_plan"]["template_selection"]["mode"], "ordinary")
+            self.assertEqual(payload["infrastructure_plan"]["template_selection"]["selected"], [])
+            self.assertEqual(before, {p.name: p.read_bytes() for p in root.iterdir()})
+            with tempfile.TemporaryDirectory() as stage_tmp:
+                task["explicit_full_packet"] = True
+                (root / "task.json").write_text(json.dumps(task), encoding="utf-8")
+                before = {p.name: p.read_bytes() for p in root.iterdir()}
+                staged = subprocess.run(
+                    [sys.executable, str(SCRIPT), str(root), "--stage", str(Path(stage_tmp) / "proposal"),
+                     "--task-context", "task.json"], capture_output=True, text=True, check=False,
+                )
+                self.assertEqual(staged.returncode, 0, staged.stderr)
+                packet = json.loads(staged.stdout)
+                self.assertEqual(packet["infrastructure_plan"]["template_selection"]["mode"], "full")
+                self.assertEqual(len(packet["infrastructure_plan"]["template_selection"]["selected"]), 8)
+                self.assertEqual(before, {p.name: p.read_bytes() for p in root.iterdir()})
+
     def test_dry_run_cli_prints_plan_json(self):
         result = subprocess.run(
             [sys.executable, str(SCRIPT), str(FIXTURES / "node-app"), "--dry-run"],

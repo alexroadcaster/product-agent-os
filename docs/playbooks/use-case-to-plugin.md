@@ -1,4 +1,4 @@
-﻿# Playbook: перевод использовать case в plugin
+# Playbook: перевод использовать case в plugin
 
 Source status: `official + experiment`  
 Источники: [Codex use cases](https://developers.openai.com/codex/use-cases), [Save workflows as skills](https://developers.openai.com/codex/use-cases/reusable-codex-skills), [Create a CLI Codex can use](https://developers.openai.com/codex/use-cases/agent-friendly-clis), [Codex plugins](https://developers.openai.com/codex/plugins), [Build plugins](https://developers.openai.com/codex/plugins/build).
@@ -199,3 +199,7 @@ Automation появляется только после того, как plugin 
 - Plugin не смешивает unrelated workflows.
 - Есть failure log и update loop.
 - Есть владелец, который обновляет sources и eval cases.
+
+## Skill или plugin
+
+Для одного повторяемого метода достаточно skill. Plugin нужен для distribution или связанных integrations. Перед упаковкой выберите portable/compatibility layout, supported surfaces и auth; [technical installation](../product-agent-os/technical.md). IDE не поддерживает native plugins.

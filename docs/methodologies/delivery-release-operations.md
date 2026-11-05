@@ -209,3 +209,7 @@ Delivery, Release & Operations слой описывает how the system ships,
 - Which artifact integrity evidence should be default: checksums, signatures, SBOM, provenance or none for docs-only releases?
 - How should incident severity and postmortem triggers be encoded for small projects?
 - Should DORA measurement live in delivery docs, metrics docs or both?
+
+## Scheduled и Cloud delivery
+
+Native schedule — отдельный route с local/cloud prerequisites. Publish cloud environment фиксирует reusable setup для новых tasks; это не публикация продукта. [Schedules](../runtime/automations-github.md), [Cloud](../codex/surfaces.md). Release по-прежнему требует current evidence и authority.

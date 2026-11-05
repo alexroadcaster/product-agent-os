@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
   </span>
 
 
@@ -1064,9 +1087,9 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#source-hierarchy" class="md-nav__link">
+  <a href="#instruction-authority-and-factual-sources" class="md-nav__link">
     <span class="md-ellipsis">
-      Source hierarchy
+      Instruction authority and factual sources
     </span>
   </a>
 
@@ -1112,6 +1135,24 @@
   <a href="#compression-without-distortion" class="md-nav__link">
     <span class="md-ellipsis">
       Compression without distortion
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#cache-context-and-cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cache, context and cost
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#optional-explicit-cache-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optional: explicit cache boundaries
     </span>
   </a>
 
@@ -2793,6 +2834,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2979,6 +3022,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3434,9 +3498,9 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#source-hierarchy" class="md-nav__link">
+  <a href="#instruction-authority-and-factual-sources" class="md-nav__link">
     <span class="md-ellipsis">
-      Source hierarchy
+      Instruction authority and factual sources
     </span>
   </a>
 
@@ -3487,6 +3551,24 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#cache-context-and-cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cache, context and cost
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#optional-explicit-cache-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optional: explicit cache boundaries
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3514,15 +3596,36 @@ Sources: <a href="https://developers.openai.com/api/docs/guides/prompting">Promp
     F --&gt; P["Pack context"]
     P --&gt; A["Answer"]
     A --&gt; C["Cite and verify"]</code></pre>
-<h2 id="source-hierarchy">Source hierarchy<a class="headerlink" href="#source-hierarchy" title="Permanent link">&para;</a></h2>
-<p>For this knowledge base, the trust order is:</p>
-<ol>
-<li>Current workspace and checked-in docs.</li>
-<li>Official OpenAI docs and OpenAI GitHub repositories.</li>
-<li>Context7 retrieval, if the source URL points to an official source.</li>
-<li>Community sources as candidate insights.</li>
-<li>Memory as a recall layer, but not source of truth.</li>
-</ol>
+<h2 id="instruction-authority-and-factual-sources">Instruction authority and factual sources<a class="headerlink" href="#instruction-authority-and-factual-sources" title="Permanent link">&para;</a></h2>
+<p>Instruction precedence and evidence quality are different questions. System/developer/user instructions and applicable Codex-loaded AGENTS guidance determine authority. Ordinary retrieved Markdown, logs, web pages and memory do not acquire instruction authority merely by being present.</p>
+<table>
+<thead>
+<tr>
+<th>Claim</th>
+<th>Primary evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Current project implementation</td>
+<td>Current source/configuration and relevant execution evidence</td>
+</tr>
+<tr>
+<td>External OpenAI behavior</td>
+<td>Current official documentation for the exact product/version/auth surface</td>
+</tr>
+<tr>
+<td>Historical project run</td>
+<td>Dated immutable run/eval record; not proof of today's behavior</td>
+</tr>
+<tr>
+<td>Community suggestion or memory</td>
+<td>Discovery lead; recheck before a consequential claim</td>
+</tr>
+</tbody>
+</table>
+<p>Context7 is a retrieval route, not an additional authority level. Preserve the original source URL and applicability.</p>
+<p>Codex checks global <code>AGENTS.override.md</code>, otherwise <code>AGENTS.md</code>; from project root to the current directory it selects at most one instruction file per directory in override/AGENTS/configured-fallback order. Nearer applicable guidance refines broader guidance within the instruction hierarchy. The default combined <code>project_doc_max_bytes</code> limit is 32 KiB. A fresh run verifies discovery/loading after changes; editing text alone does not prove loading. <a href="https://learn.chatgpt.com/docs/agent-configuration/agents-md">Official discovery rules</a>.</p>
 <h2 id="context-packing">Context packing<a class="headerlink" href="#context-packing" title="Permanent link">&para;</a></h2>
 <p>A good context block should not only be large. It should be readable and referential:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">&lt;context&gt;</span>
@@ -3601,6 +3704,14 @@ Sources: <a href="https://developers.openai.com/api/docs/guides/prompting">Promp
 <li>duplicate quotes;</li>
 <li>unsupported conclusions as facts.</li>
 </ul>
+<h2 id="cache-context-and-cost">Cache, context and cost<a class="headerlink" href="#cache-context-and-cost" title="Permanent link">&para;</a></h2>
+<p>Checked 2026-11-03: <a href="https://developers.openai.com/api/docs/guides/prompt-caching">prompt caching</a>. Cache reuses a matching rendered prefix; session continuity does not guarantee a hit. It is not memory or a factual source. Keep stable instructions/tools in the shared prefix and variable tasks after it. Do not change prompt meaning for presumed savings without measurement.</p>
+<p>For GPT-5.6 and later, Responses lifetime uses <code>prompt_cache_options.ttl</code>: <code>30m</code> by default or <code>12h</code>. When migrating from GPT-5.5, do not mechanically retain <code>prompt_cache_retention</code>, which belongs to older models. Lifetime is a minimum, not a guaranteed data-deletion deadline; inspect data retention policy separately.</p>
+<p>Account for uncached input, cached input, cache writes and output at their corresponding rates; a cache-write rate is not an additional ordinary-input charge for the same tokens. Record model, pricing date, tier and long-context conditions. Total cost includes failures, retries and subagents. Compare cost per completed task, quality and latency rather than cache-hit percentage alone. API billing is not subscription usage.</p>
+<p>Compaction changes context and can alter prefix reuse. <code>configuration_update</code> has compatibility limits documented in <a href="../agent-systems/session-control.html">session control</a>. Do not confuse API context windows with effective client limits; see the <a href="../codex/models-and-reasoning.html">model matrix</a>.</p>
+<h2 id="optional-explicit-cache-boundaries">Optional: explicit cache boundaries<a class="headerlink" href="#optional-explicit-cache-boundaries" title="Permanent link">&para;</a></h2>
+<p>Checked 2026-11-05 against <a href="https://developers.openai.com/api/docs/guides/prompt-caching">Prompt caching</a>. A suitable Responses workflow can select <code>prompt_cache_options.mode: "explicit"</code> and <code>prompt_cache_breakpoint: { "mode": "explicit" }</code> on supported content blocks. With no explicit breakpoints this mode performs no cache reads/writes. Changing content after the final breakpoint is billed as uncached input without a cache-write charge.</p>
+<p>This is advanced optimization, not a mandatory step for ordinary tasks. First compare quality, total cost and latency on a representative workload; account for cache-write price, TTL, model and pricing date. Automatic cache, local memory and session persistence are different mechanisms.</p>
 
 
 

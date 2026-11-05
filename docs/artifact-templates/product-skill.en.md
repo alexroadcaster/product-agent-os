@@ -47,3 +47,7 @@ Run:
 
 - ...
 ````
+
+## Exposure check
+
+Start instructions-only. Check a distinct description/trigger, supported path, initial list, explicit/implicit invocation and output. File presence does not prove exposure. [Build skills](https://learn.chatgpt.com/docs/build-skills).

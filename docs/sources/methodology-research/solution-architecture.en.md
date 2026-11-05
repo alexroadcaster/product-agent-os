@@ -1,4 +1,10 @@
-# Solution Architecture Methodology Research
+---
+title: "Archive - Solution Architecture Methodology Research"
+---
+
+# Archive - Solution Architecture Methodology Research {#solution-architecture-methodology-research}
+
+> Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.
 
 Source status: `official + verified methodology + local implementation evidence + tool-assisted`
 

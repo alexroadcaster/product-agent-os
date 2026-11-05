@@ -118,3 +118,7 @@ Approvals являются не bundled. Approval для один surface не g
 | OPEN-RUNTIME | Новые Agents API/Responses возможности описаны | Отдельная реализация и runtime evidence, если маршрут выбран |
 
 Техническое продолжение разрешено владельцем 2026-11-03. Конфигурация, профили, шаблоны и валидаторы обновлены; активация и behavioral promotion остаются открыты. Результаты и точные команды принадлежат [плану](../superpowers/plans/2026-11-03-gpt6-documentation-refresh.md).
+
+## Компоненты и runtime evidence
+
+Совместимость фиксируйте по client/version/auth/component. Local fixture или наличие manifest не доказывают native install, trust или успешный runtime. IDE native plugins не поддерживаются; legacy package остаётся совместимым форматом. [Surface matrix](../codex/surfaces.md), [package contract](technical.md).

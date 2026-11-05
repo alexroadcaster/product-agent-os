@@ -42,3 +42,6 @@ If context is insufficient, return:
 - unsupported_claims
 ```
 
+## Применимость шаблона
+
+Полный prompt packet нужен, когда сложность требует отдельных fields. Для обычной задачи достаточно goal, scope, acceptance и limits. Начинайте zero-shot; примеры добавляйте для measured recurring failure или product requirement. [Prompt guidance](https://developers.openai.com/api/docs/guides/latest-model).

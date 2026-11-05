@@ -68,3 +68,7 @@ Self-learning-loop в Product-Agent OS может записать lesson, candi
 ## Next safe action
 
 Если operator видит, что Product-Agent OS не включился на релевантный prompt, первый безопасный шаг: создать read-only source/cache/session packet, затем route/eval packet. Cache refresh, global config writes, plugin sharing, hook trust changes and fresh-session proof остаются отдельными approvals.
+
+## Актуальный маршрут и evidence
+
+Применимый full/concise lifecycle, trust и terminal marker описаны в [hook guide](../runtime/worktrees-hooks-rules.md). Local receipt от 03.11 покрывает проверенные Desktop routes; полнота всех mutation channels и silent Stop trace не заявляются.

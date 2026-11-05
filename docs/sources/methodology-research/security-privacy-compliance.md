@@ -1,4 +1,10 @@
-# Security, Privacy & Compliance Methodology Research
+---
+title: "Архив — Security, Privacy & Compliance Methodology Research"
+---
+
+# Архив — Security, Privacy & Compliance Methodology Research {#security-privacy-compliance-methodology-research}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `official + legal/regulatory reference + vendor documentation + tool-assisted`
 

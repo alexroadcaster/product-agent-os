@@ -40,7 +40,7 @@ flowchart TD
     M --> O["Final answer / docs change"]
 ```
 
-For this knowledge base, Manager pattern is the default.
+Manager pattern is conditional on independent subtasks. Start with one agent and add architecture complexity based on evals.
 
 ## Handoff Pattern
 
@@ -120,3 +120,11 @@ Checked against [Agents](https://developers.openai.com/api/docs/guides/agents) a
 | Responses Multi-agent | Hosted beta orchestration; app integrates tool results | Separate beta: 6.1 Sol and GPT-5.6 on the review date, not all GPT-6 |
 
 Responses Multi-agent has its own beta contract; root/subagents compact automatically and standalone `/responses/compact` is unsupported. Single-agent parameters are not universal: `reasoning.summary` and `max_tool_calls`, for example, are unsupported in this mode. Do not unconditionally combine async tools with parallel tool calls in Multi-agent; check the selected mode. An Agents API session, SDK session, Responses conversation and sandbox are different resources. See [session control](session-control.md) for tool state and steering.
+
+## Selection example and failure path
+
+For “process documents and return a verifiable result”, first decide who owns state. Consider Agents API for a managed harness, Agents SDK when the application owns Runner/storage/approvals, or Responses for wire-level control and an application loop. This is an integration decision, not a switch of the current Codex runner.
+
+The JSON above is an output-schema fragment, not a complete request for every endpoint. For Responses use the current `text.format`/SDK parsing contract; handle refusals, incomplete output and factual errors separately. [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs).
+
+If an async tool finishes after steering, match call_id and check current scope and prior application before applying the result; do not repeat side effects. Return an explicit timeout and decide retries by idempotency/budget. [Session control](session-control.md).

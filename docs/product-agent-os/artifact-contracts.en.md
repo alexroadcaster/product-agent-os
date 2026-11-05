@@ -4,6 +4,25 @@ Source status: `official + experiment`
 
 This page lists the main generated Product-Agent OS artifacts for the modernization loop, project code graph, live/runtime governance and approval-bound handoff. It is not a JSON Schema spec; it is an operator-facing contract map: what gets created, why it exists, where the source-of-truth boundary sits and which approval gates apply.
 
+## Ordinary route contract {#ordinary-route-contract}
+
+`task_context` v1 explicitly describes scope, acceptance, changed paths, risks and source-backed checks. It is decision input, not permission to write. The [CLI example](cli-reference.en.md#ordinary-route) shows a complete minimal code case.
+
+| Result field | Meaning | Boundary |
+| --- | --- | --- |
+| `routing_trace` | Mode, task ID, selectors, reasons and state provenance | Legacy fallback is identified separately |
+| `task_routing` | Decision, gaps, acceptance and invariants | Does not certify completeness of risk analysis |
+| `code_quality_profile` / `quality_strategy` | T26/T27 outputs | Detected tools remain `present_unverified` |
+| `code_change_contract` | Eight inline T25 fields | Empty for docs-only; full checklist remains reference material |
+| `verification_plan` | Source, reasons, test kinds and execution policy | Commands are proposals for review; unsafe proposals are blocked |
+| `input_digest` | Binding to declared changed/verification paths, manifests, source instructions and task context | Not a fingerprint of the entire runtime environment |
+| `check_observations` | Caller-reported command/status/exit and digest | Freshness does not prove independent execution; stale receipts are not current |
+| `template_selection` | Selected/omitted renderer artifacts with reasons | Does not activate agents/hooks/automation or replace merge approval |
+
+Optional `check_results` contains `command`, `input_digest`, `status` and `exit_code`. A `passed` receipt requires exit 0; `failed` requires nonzero exit; `skipped` / `not_run_with_gap` requires null. Receipts cannot turn a contract-mode result into `completed`. The executing Codex/operator records actual command evidence; undeclared dependencies remain outside digest scope.
+
+Ordinary sections can live in an existing task artifact. Separate REQUIREMENTS/PLAN/EVALS files and a custom builder are not prerequisites for every small task, while mandatory workspace rules still apply.
+
 ## Contract Boundary
 
 Generated artifacts are staged evidence only. They are not source of truth unless a later owner-approved process explicitly promotes a fact back into checked-in source documentation or another canonical artifact.
@@ -206,3 +225,7 @@ Artifact verification should check:
 ## Next Action
 
 Use this contract map when writing docs tests, source registry entries and packaging/closure checks. Navigation and generated `site/` refresh are intentionally handled after the source docs packet is stable.
+
+## Current route and evidence
+
+Current lifecycle uses full `task_start_brief_v2` or ordinary `task_scope_note_v1` by scope; legacy v1 applies to previously started sessions. See [contract and evidence](../runtime/worktrees-hooks-rules.md). Detailed language-specific inventories below are references; source implementation defines the exact schema.

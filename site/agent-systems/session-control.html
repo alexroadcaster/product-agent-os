@@ -748,6 +748,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -829,6 +831,27 @@
 
   <span class="md-ellipsis">
     Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Модели и reasoning
   </span>
 
 
@@ -2604,9 +2627,9 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#manager-pattern-default" class="md-nav__link">
+  <a href="#manager-pattern" class="md-nav__link">
     <span class="md-ellipsis">
-      Manager pattern как default
+      Когда нужен Manager pattern
     </span>
   </a>
 
@@ -2643,6 +2666,24 @@
   <a href="#tracing-questions" class="md-nav__link">
     <span class="md-ellipsis">
       Tracing questions
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#async-tools-steering" class="md-nav__link">
+    <span class="md-ellipsis">
+      Async tools и steering
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#reasoning-updates-compaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reasoning updates и compaction
     </span>
   </a>
 
@@ -2745,6 +2786,8 @@
         </nav>
 
     </li>
+
+
 
 
 
@@ -2979,6 +3022,27 @@
 
   <span class="md-ellipsis">
     Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Миграция моделей
   </span>
 
 
@@ -3443,9 +3507,9 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#manager-pattern-default" class="md-nav__link">
+  <a href="#manager-pattern" class="md-nav__link">
     <span class="md-ellipsis">
-      Manager pattern как default
+      Когда нужен Manager pattern
     </span>
   </a>
 
@@ -3487,6 +3551,24 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#async-tools-steering" class="md-nav__link">
+    <span class="md-ellipsis">
+      Async tools и steering
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#reasoning-updates-compaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reasoning updates и compaction
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3504,7 +3586,7 @@
 
 <h1 id="_1">Контроль агентов и сессий<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + experiment</code><br />
-Источники: <a href="https://openai.github.io/openai-agents-js/guides/sessions/">Agents SDK sessions</a>, <a href="https://github.com/openai/openai-agents-python">OpenAI Agents SDK Python</a>, <a href="https://developers.openai.com/codex/memories">Codex memories</a>, <a href="https://developers.openai.com/codex/subagents">Codex subagents</a>.</p>
+Источники: <a href="https://openai.github.io/openai-agents-js/guides/sessions/">Agents SDK sessions</a>, <a href="https://github.com/openai/openai-agents-python">OpenAI Agents SDK Python</a>, <a href="https://developers.openai.com/codex/memories">Codex memories</a>, <a href="https://learn.chatgpt.com/docs/agent-configuration/subagents">Codex subagents</a>.</p>
 <h2 id="session-control">Задача session control<a class="headerlink" href="#session-control" title="Permanent link">&para;</a></h2>
 <p>Session control нужен, чтобы агент не превращал накопленный диалог в непроверяемую память. Сессия должна сохранять полезную continuity, но не подменять retrieved context, source registry или project rules.</p>
 <h2 id="session-boundary">Session boundary<a class="headerlink" href="#session-boundary" title="Permanent link">&para;</a></h2>
@@ -3518,9 +3600,9 @@
 <span class="nt">freshness_required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="nt">exit_criteria</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
 </code></pre></div>
-<p>Если goal изменился, лучше создать новую сессию или явно сбросить context.</p>
-<h2 id="manager-pattern-default">Manager pattern как default<a class="headerlink" href="#manager-pattern-default" title="Permanent link">&para;</a></h2>
-<p>Для уменьшения hallucinations используйте Manager pattern:</p>
+<p>При уточнении goal сохраните релевантный контекст и ограничения; для несовместимой новой цели явно определите границу сессии. См. steering и compaction ниже.</p>
+<h2 id="manager-pattern">Когда нужен Manager pattern<a class="headerlink" href="#manager-pattern" title="Permanent link">&para;</a></h2>
+<p>Начните с одного агента. Если независимые подзадачи оправдывают координацию и evals показывают пользу, Manager pattern распределяет ответственность:</p>
 <ul>
 <li>Manager держит source policy и final answer.</li>
 <li>Specialist agents выполняют bounded subtasks.</li>
@@ -3584,7 +3666,7 @@
 <tr>
 <td>Session bloat</td>
 <td>Слишком много нерелевантной history</td>
-<td>Summarize and reset</td>
+<td>Summarize or compact; reset only with an explicit boundary</td>
 </tr>
 </tbody>
 </table>
@@ -3598,6 +3680,70 @@
 <li>Где возник fallback/refusal?</li>
 <li>Какой eval доказывает качество?</li>
 </ul>
+<h2 id="async-tools-steering">Async tools и steering<a class="headerlink" href="#async-tools-steering" title="Permanent link">&para;</a></h2>
+<p>Проверено 2026-11-03: <a href="https://developers.openai.com/api/docs/guides/async-tool-calling">Async tool calling</a>, <a href="https://developers.openai.com/api/docs/guides/steering">Steering</a>. Это описанные API-возможности, а не новая активация Product-Agent OS.</p>
+<p><code>async: true</code> поддерживаемого function/custom tool позволяет модели продолжать независимую работу, пока приложение исполняет tool. OpenAI не берет исполнение этого tool на себя. Возвращайте output с исходным <code>call_id</code>; async не является Background mode и не применяется автоматически к hosted tools или Programmatic Tool Calling.</p>
+<table>
+<thead>
+<tr>
+<th>Состояние</th>
+<th>Обязанность приложения / проектируемый контракт</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pending</td>
+<td>Сохранить call_id, owner, deadline, разрешенные side effects; не объявлять зависимый результат готовым</td>
+</tr>
+<tr>
+<td>Completed</td>
+<td>Сопоставить output с вызовом и применить результат один раз</td>
+</tr>
+<tr>
+<td>Failed / timeout</td>
+<td>Вернуть явный failure, определить retry по idempotency и бюджету</td>
+</tr>
+<tr>
+<td>Duplicate / late</td>
+<td>Проверить идентичность, актуальность задачи и факт предыдущего применения; не повторять side effect</td>
+</tr>
+</tbody>
+</table>
+<p>Для mid-turn steering Responses WebSocket использует <code>response.steer</code>. Подтверждение очереди означает accepted, но не applied. Следите за продолжением response и причиной <code>steered</code>; не считайте обновление обработанным до соответствующего evidence. Steering не отменяет завершенные действия или уже запущенные tools. Перед следующим side effect приложение сверяет обновленный scope и pending calls. Финал возможен, когда обязательные зависимости завершены либо их отсутствие явно отражено в результате.</p>
+<h2 id="reasoning-updates-compaction">Reasoning updates и compaction<a class="headerlink" href="#reasoning-updates-compaction" title="Permanent link">&para;</a></h2>
+<p>Источники: <a href="https://developers.openai.com/api/docs/guides/reasoning">Reasoning</a>, <a href="https://developers.openai.com/api/docs/guides/compaction">Compaction</a>. В поддерживаемом standard single-agent GPT-6 Responses conversation <code>configuration_update</code> может менять effort между ответами, сохраняя request-level <code>reasoning.effort</code> и исходный prefix. Изменение действует до следующего update; response-level effort может отражать исходную настройку, а не applied update.</p>
+<table>
+<thead>
+<tr>
+<th>Механизм</th>
+<th>Совместимость / действие</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>configuration_update</code></td>
+<td>Поддерживаемый single-agent режим; не считать общим для всех runtimes</td>
+</tr>
+<tr>
+<td>Automatic compaction/truncation</td>
+<td>Не сочетать с configuration updates</td>
+</tr>
+<tr>
+<td>Standalone <code>/responses/compact</code></td>
+<td>Отклоняет history с configuration updates</td>
+</tr>
+<tr>
+<td>Explicit <code>compaction_trigger</code></td>
+<td>После compaction заново добавить update перед следующим user message, восстановив все измененные settings</td>
+</tr>
+<tr>
+<td>Server-side compaction</td>
+<td><code>context_management</code> и <code>compact_threshold</code>; opaque encrypted item, не обычный summary</td>
+</tr>
+</tbody>
+</table>
+<p>Уточнение задачи не требует автоматического reset. Сохраняйте цель, ограничения, решения и незавершенные calls; новую сессию выбирайте при необходимости независимого scope или свежей загрузки settings. Compaction, ручной summary и межсессионная memory имеют разные контракты. Для manual history сохраняйте возвращенные state items и требуемые поля; не запрашивайте private chain-of-thought.</p>
+<p>Роль Verifier не гарантирует независимую проверку или отсутствие hallucinations. Сравнивайте результат с single-agent baseline; handoffs добавляют точки недетерминизма. <a href="https://developers.openai.com/api/docs/guides/evaluation-best-practices">Evaluation best practices</a>.</p>
 
 
 

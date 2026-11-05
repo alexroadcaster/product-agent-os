@@ -1,4 +1,10 @@
-﻿# Product-Agent OS Track 10 backlog
+---
+title: "Архив — Product-Agent OS Track 10 backlog"
+---
+
+# Архив — Product-Agent OS Track 10 backlog {#product-agent-os-track-10-backlog}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `internal`
 

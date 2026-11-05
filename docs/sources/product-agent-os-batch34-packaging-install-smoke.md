@@ -1,4 +1,10 @@
-# Product-Agent OS Batch 34 packaging/install smoke packet
+---
+title: "Архив — Product-Agent OS Batch 34 packaging/install smoke packet"
+---
+
+# Архив — Product-Agent OS Batch 34 packaging/install smoke packet {#product-agent-os-batch-34-packaginginstall-smoke-packet}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
 
 Source status: `internal`
 

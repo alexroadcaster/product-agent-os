@@ -18,7 +18,7 @@
 
 
 
-        <title>Product-Agent OS Codex Runtime Runner Design - Product-Agent OS Documentation</title>
+        <title>Archive - Product-Agent OS Codex Runtime Runner Design - Product-Agent OS Documentation</title>
 
 
 
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
 
-              Product-Agent OS Codex Runtime Runner Design
+              Archive - Product-Agent OS Codex Runtime Runner Design
 
           </span>
         </div>
@@ -744,6 +744,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -825,6 +827,27 @@
 
   <span class="md-ellipsis">
     Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/models-and-reasoning.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Models And Reasoning
   </span>
 
 
@@ -2686,6 +2709,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2872,6 +2897,27 @@
 
   <span class="md-ellipsis">
     Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/model-migration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Model Migration
   </span>
 
 
@@ -3527,7 +3573,10 @@
 
 
 
-<h1 id="product-agent-os-codex-runtime-runner-design">Product-Agent OS Codex Runtime Runner Design<a class="headerlink" href="#product-agent-os-codex-runtime-runner-design" title="Permanent link">&para;</a></h1>
+<h1 id="product-agent-os-codex-runtime-runner-design">Archive - Product-Agent OS Codex Runtime Runner Design<a class="headerlink" href="#product-agent-os-codex-runtime-runner-design" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Historical source record. Dates and verdicts below describe that run; use current guides for present behavior.</p>
+</blockquote>
 <p>Source status: <code>official + experiment</code></p>
 <p>Sources: <a href="../../product-agent/product-agent-os-plugin-spec.html">Product-Agent OS plugin spec</a>, <a href="2026-05-14-product-agent-os-production-hardening-design.html">Product-Agent OS production hardening design</a>, Product-Agent OS production hardening plan (<code>docs/superpowers/plans/2026-05-14-product-agent-os-production-hardening.md</code>), <a href="2026-05-14-product-agent-os-agents-sdk-runner-design.html">Product-Agent OS Agents SDK runner boundary</a>, <a href="../../sources/registry.html">source registry</a>, <a href="https://developers.openai.com/codex/plugins">Codex plugins</a>, <a href="https://developers.openai.com/codex/skills">Codex skills</a>, <a href="https://developers.openai.com/codex/subagents">Codex subagents</a>, <a href="https://developers.openai.com/codex/hooks">Codex hooks</a>, <a href="https://developers.openai.com/codex/agent-approvals-security">Agent approvals and security</a>, <a href="https://developers.openai.com/codex/workflows">Codex workflows</a>.</p>
 <p>This design supersedes the Track 5 standalone Agents SDK runner idea. The plugin will run only inside Codex surfaces: Codex App, CLI, IDE extension, plugin skills, subagents, hooks, staged renderer, approval-gated merge, and local validators. Track 5 therefore implements a Codex runtime runner, not an API-backed application and not a separate OpenAI Agents SDK service.</p>
@@ -3912,6 +3961,9 @@
 <li>the runner may exist in the repo while remaining inactive by default;</li>
 <li>writes and automations remain approval-gated through existing Product-Agent OS controls.</li>
 </ul>
+
+
+
 
 
 

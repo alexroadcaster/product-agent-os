@@ -112,3 +112,7 @@ python plugins\product-agent-os\scripts\render_agent_skill_metrics_report.py <wo
 ## Next Action
 
 Используйте эта page когда agent/skill evidence требует к быть interpreted или packaged для owner review. Следующий safe artifact - staged scorecard ledger, daily report, weekly verification packet или update candidate. Applying any update остается separate owner-approved implementation slice.
+
+## Актуальный маршрут и evidence
+
+После изменения skill/plugin проверяйте discovery, initial exposure, explicit/implicit invocation и результат. Установка не означает loading; обновление bundled hook script требует review. Promotion остаётся candidate-only до owner decision. [Skill diagnostics](../agent-systems/subagents-skills.md).
