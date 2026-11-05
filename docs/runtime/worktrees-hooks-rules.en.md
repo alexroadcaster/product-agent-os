@@ -5,6 +5,14 @@ Sources: [Codex best practices](https://developers.openai.com/codex/learn/best-p
 
 Worktrees isolate larger changes. Hooks and rules can guide or block unsafe actions, but they should remain explicit, reviewable and aligned with sandbox and approvals.
 
+## GAP-05: exact report authority — 2026-11-05
+
+Optional pinned report authority permits one new Markdown file through a grant pinned by SHA-256 in the trusted hook command: `--report-authority` and `--report-authority-sha256`. Research/review/planning markers grant no writes by default; tool payload cannot supply authority.
+
+The grant binds workspace digest, new/previous task IDs, exact marker bytes, output path and expiry of at most 24 hours. It requires a fresh/nonterminal marker with an explicit task transition. One literal `apply_patch` Add File is accepted, direct or a single literal call within `functions.exec`. Existing/neighbor paths, control-plane/config/hooks, traversal/symlinks, dynamic/multiple calls and shell writes are denied. Pinned-mode shell reads are limited to literal `Get-Content`/`Get-ChildItem -LiteralPath 'path'` with `login: false`; other commands require review.
+
+This is a preflight guard, not an atomic filesystem transaction. Sandbox, secret/path/command restrictions and host approvals remain intact. Active/package sources are synchronized; `hooks.json`, trust and cache are unchanged. A fresh-host positive/negative probe remains a separate gate. Next artifact: an exact-hash approval packet and authorized probe receipt. Active/package `task-plan-lifecycle.md` defines the grant; rollback restores only this slice's source changes without modifying trust.
+
 ## Product-Agent OS lifecycle hooks
 
 Product-Agent OS ships staged hooks through `plugins/product-agent-os/assets/templates/hooks/` and `render_infrastructure.py --stage`. For an end project they land under `.codex/hooks/` as proposed/staged assets, not as silently activated automation.

@@ -1,5 +1,10 @@
 # TEST.md
 
+## Current GAP-01–GAP-05 implementation — 2026-11-05
+
+`PAOS-GAP-01-05-2026-11-05`: partially_verified: local implementation verified (1284 unittest, one skip; fixture 91/91; transcript 26/26). GAP-01/02/04 are implemented; GAP-03/05 remain blocked on the named owner/host gates. Evidence and reviewable remaining decisions belong to [the owning plan](research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md). Shared component resolver, B42 provenance/routing, exact-host source policy and optional pinned report authority are implemented locally. Current package compatibility is intentionally `needs_review` (legacy flat MCP declaration); four skill metadata were corrected under PAOS-GAP03-METADATA-2026-11-05 (94 focused tests and 232 docs/lifecycle/template tests passed); fresh-host exposure/invocation/trust remain open. Hooks definitions, trust, installed cache, T23–T29 implementation and T30–T34 are unchanged. Local source changes do not extend the dated ACT-F1..F6 host receipt.
+
+
 ## Ordinary route integration — 2026-11-05
 
 `PAOS-ORD-01-06-2026-11-05`: verify public contract and infrastructure CLIs, malformed/unknown/stale task inputs, RU/EN/no-builder parity, sensitive Windows paths, mandatory project checks, approval/source-policy guards, isolated RED/GREEN behavior and target-file preservation. Commands and current receipts: [owning plan](research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md). Final integrated verification passed: 1272 tests, 753.848s, OK (skipped=1), exit 0; fixture 91, transcript 26/26, compatibility and docs gates passed. Run the full unittest suite, fixture/transcript evals, compatibility validator, docs tests, docs checker and diff check. This slice uses an isolated TEMP and `PYTHONDONTWRITEBYTECODE=1`; sandbox TEMP failures are setup failures, not behavior evidence. Strict MkDocs output is isolated under `.docs-tools/reports/ordinary-route-preview`; root `site/` remains the earlier documentation build. Host activation and provider/model comparisons are separate gates.
@@ -74,6 +79,8 @@ Run strict MkDocs only when navigation, Mermaid diagrams, Markdown extensions, M
 python -m unittest discover -s tests -p "test_*.py" -v
 ```
 
+Compatibility gate interpretation for GAP-02: `validate_codex_compatibility.py` currently exits 1 with `needs_review` because the checked-in flat `.mcp.json` is only observed legacy structure. This is an explicit unresolved package finding, not a waived check or runtime pass. Resolver tests must pass supported/unsupported cases; any stronger package claim waits for an approved format decision and host evidence.
+
 ## Required Checks After Plugin Or Runtime Changes
 
 Use focused checks first, then broaden through the relevant project route:
@@ -99,7 +106,7 @@ Use `timeout_ms: 1200000` for full Product-Agent OS unittest runs.
 | Batch 38 cache/readiness | `B38-S2` records `plugin_cache_refresh_final_status: completed_local_cache_refresh_from_prepared_stage`; historical `blocked_pending_explicit_cache_mutation_approval` remains preserved. | Treat as historical unless a new cache mutation is requested. |
 | Batch 39 | `B39-S1` through `B39-S5` are source-owned; S5 is `closed_for_owner_feedback_testing_not_release_ready`. | Use `prod_test.md`, S5 packets, focused tests, full unittest, fixture/transcript eval, Codex compatibility, docs check and diff hygiene before stronger claims. |
 | Batch 41 | S9 modernization and Neural_Flow comparison are generated-artifact evidence. | Use focused first-run/cockpit renderer tests and docs checks; browser/Cosmos.gl/WebGL/target-apply proof requires approval. |
-| Batch 42 | Planned-only matrix. | No fixed-auto-engagement claim until route/eval/source/cache/session evidence exists. |
+| Batch 42 | Historical planned-only snapshot plus GAP-03 local inventory/metadata/routing evidence in current_execution. | M04 explicit-only decision and four metadata corrections are locally verified; M06 fresh-host evidence remains open; no fixed-auto-engagement claim. |
 | Batch 44 | Self-Learning Loop S0-S7 are local/staged/manual evidence. | Run focused state/extensions/docs tests before S8 decision; no automation claim without owner approval and activation proof. |
 | Batch 45 | A04-A06 locally implement/focused-verify T23-T29. T28: families 34 (limit 98), exceptions 3 (limit 10), combined test LOC 5658 (<8130 baseline), focused route 48/48. T29/promotion: 23/23. | Local contracts only; T30-T33, live/CLI/provider/external reviewer/model behavior/promotion and T34 exact approval remain open. |
 | Track 11 DOC-M25 | Root `site`, search and sitemap freshness are source-owned by DOC-M25 packet. | Root site freshness checks prove generated site/search/sitemap only; browser proof and broad scans remain separate. |

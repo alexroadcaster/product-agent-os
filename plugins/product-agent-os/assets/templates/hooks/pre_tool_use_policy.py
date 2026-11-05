@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import os
 import re
 import subprocess
@@ -176,7 +177,7 @@ def _parse_updated_at(value: str) -> datetime | None:
     return parsed.astimezone(timezone.utc)
 
 
-def _lifecycle_marker_ok(path: Path, *, now: datetime | None = None) -> tuple[bool, str]:
+def _lifecycle_marker_ok(path: Path, *, now: datetime | None = None, report_authorized: bool = False) -> tuple[bool, str]:
     """Validate current lifecycle scope; reporting never grants action authority."""
     if not path.exists():
         return False, "missing lifecycle marker"
@@ -217,7 +218,7 @@ def _lifecycle_marker_ok(path: Path, *, now: datetime | None = None) -> tuple[bo
         if any(type(scope.get(key)) is not bool for key in flags) or not isinstance(scope.get("reason"), str) or not scope["reason"].strip():
             return False, "lifecycle_scope requires boolean triggers and a reason"
         # Reporting scope never grants mutation authority to a read-only request.
-        if scope["work_type"] in {"review", "research", "planning"}:
+        if scope["work_type"] in {"review", "research", "planning"} and not report_authorized:
             return False, "read-only lifecycle scope does not authorize mutation"
         full_required = scope["size"] == "large" or scope["risk"] == "high" or any(scope[key] for key in flags)
         if concise and full_required:
@@ -265,7 +266,133 @@ def _deny(reason: str) -> None:
     )
 
 
-def main() -> int:
+def _literal_call(payload: dict[str, Any]) -> tuple[str, Any] | None:
+    """Recognize one literal tool call, never evaluate arbitrary wrapper code."""
+    tool = _tool_name(payload).rsplit(".", 1)[-1]
+    value = payload.get("tool_input", payload.get("arguments", payload.get("input")))
+    if tool in {"apply_patch", "exec_command"}:
+        if tool == "apply_patch" and isinstance(value, dict) and len(value) == 1:
+            value = value.get("patch", value.get("input"))
+        return tool, value
+    if tool != "exec":
+        return None
+    code = value.get("code") if isinstance(value, dict) else value
+    if not isinstance(code, str):
+        return None
+    prefix = re.match(r"^\s*(text\(\s*)?await\s+tools\.(apply_patch|exec_command)\(\s*", code)
+    if not prefix:
+        return None
+    try:
+        argument, end = json.JSONDecoder().raw_decode(code[prefix.end():])
+    except ValueError:
+        return None
+    suffix = code[prefix.end() + end:]
+    pattern = r"\s*\)\s*\)\s*;?\s*" if prefix[1] else r"\s*\)\s*;?\s*"
+    return (prefix[2], argument) if re.fullmatch(pattern, suffix) else None
+
+
+def _report_read_only(payload: dict[str, Any]) -> bool:
+    """Allow literal PowerShell reads only; flags such as git --output can write."""
+    call = _literal_call(payload)
+    if call is None or call[0] != "exec_command" or not isinstance(call[1], dict):
+        return False
+    args = call[1]
+    if set(args) - {"cmd", "login", "max_output_tokens", "yield_time_ms"} or args.get("login") is not False:
+        return False
+    command = args.get("cmd")
+    return isinstance(command, str) and bool(re.fullmatch(
+        r"(?i)(?:Get-Content|Get-ChildItem) -LiteralPath '[A-Za-z0-9_./\\ :\-]+'(?: -Raw)?", command
+    ))
+
+
+def _report_path(root: Path, value: Any) -> Path:
+    """Reject traversal, aliases and existing/symlink targets before create-only writes."""
+    if not isinstance(value, str) or not value or value != value.strip() or any(ord(c) < 32 for c in value):
+        raise ValueError("invalid_report_path")
+    value = value.replace("\\", "/")
+    path = Path(value)
+    if path.is_absolute():
+        value = path.relative_to(root).as_posix()
+    parts = value.split("/")
+    if any(p in {"", ".."} or p.endswith((".", " ")) or ":" in p or "~" in p for p in parts):
+        raise ValueError("report_path_alias_or_traversal")
+    parts = [p for p in parts if p != "."]
+    protected = {"agents.md", "agents.override.md", "requirements.md", "plan.md", "test.md", "evals.md", "runlog.md", "skill.md"}
+    if not parts or any(p.startswith(".") for p in parts) or parts[-1].lower() in protected:
+        raise ValueError("protected_report_destination")
+    if any(re.fullmatch(r"(?i)(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\..*)?", p) for p in parts):
+        raise ValueError("reserved_report_destination")
+    candidate = root.joinpath(*parts)
+    if candidate.suffix.lower() != ".md" or not candidate.resolve().is_relative_to(root):
+        raise ValueError("report_must_be_workspace_markdown")
+    if candidate.exists() or candidate.is_symlink() or any(p.is_symlink() for p in candidate.parents if p != root):
+        raise ValueError("report_destination_exists_or_is_symlink")
+    return candidate.resolve()
+
+
+def _report_action_ok(root: Path, payload: dict[str, Any], authority: Path, expected_sha256: str) -> tuple[bool, str]:
+    """Validate operator-pinned authority, task transition and one exact Add File.
+
+    The pin is supplied only by trusted hook command arguments, never tool data.
+    This is a preflight guard, not an atomic filesystem transaction or sandbox.
+    """
+    root = root.resolve()
+    try:
+        authority = authority.resolve()
+        if not authority.is_relative_to(root) or authority.stat().st_size > 65536:
+            return False, "authority_path_or_size_invalid"
+        raw = authority.read_bytes()
+        if len(expected_sha256) != 64 or not re.fullmatch(r"[0-9a-f]+", expected_sha256) or hashlib.sha256(raw).hexdigest() != expected_sha256:
+            return False, "authority_pin_mismatch"
+        grant = json.loads(raw)
+        fields = {"schema_version", "task_id", "previous_task_id", "workspace_sha256", "marker_sha256", "output_path", "issued_at", "expires_at"}
+        if not isinstance(grant, dict) or set(grant) != fields or type(grant["schema_version"]) is not int or grant["schema_version"] != 1:
+            return False, "authority_schema_invalid"
+        if any(not isinstance(grant[k], str) or not grant[k].strip() for k in fields - {"schema_version"}):
+            return False, "authority_fields_invalid"
+        if grant["workspace_sha256"] != hashlib.sha256(os.path.normcase(str(root)).encode()).hexdigest():
+            return False, "authority_workspace_mismatch"
+        issued, expiry = _parse_updated_at(grant["issued_at"]), _parse_updated_at(grant["expires_at"])
+        now = datetime.now(timezone.utc)
+        if issued is None or expiry is None or issued > now + MARKER_FUTURE_SKEW or not issued < expiry or expiry <= now or expiry - issued > timedelta(hours=24):
+            return False, "authority_expired_or_invalid_window"
+        marker_path = root / LIFECYCLE_STATE_REL
+        marker_raw = marker_path.read_bytes()
+        if hashlib.sha256(marker_raw).hexdigest() != grant["marker_sha256"]:
+            return False, "authority_marker_mismatch"
+        marker = json.loads(marker_raw)
+        if not isinstance(marker, dict) or marker.get("task_id") != grant["task_id"] or marker.get("previous_task_id") != grant["previous_task_id"] or grant["task_id"] == grant["previous_task_id"]:
+            return False, "explicit_new_task_transition_required"
+        if not isinstance(marker.get("lifecycle_scope"), dict) or marker["lifecycle_scope"].get("work_type") not in {"research", "review", "planning"}:
+            return False, "report_authority_requires_read_only_task"
+        valid, reason = _lifecycle_marker_ok(marker_path, now=now, report_authorized=True)
+        if not valid:
+            return False, reason
+        allowed = _report_path(root, grant["output_path"])
+        call = _literal_call(payload)
+        if call is None or call[0] != "apply_patch" or not isinstance(call[1], str):
+            return False, "only_literal_single_report_patch_allowed"
+        lines = call[1].strip().splitlines()
+        if len(lines) < 4 or lines[0] != "*** Begin Patch" or lines[-1] != "*** End Patch" or not lines[1].startswith("*** Add File: ") or any(not line.startswith("+") for line in lines[2:-1]):
+            return False, "only_single_add_file_patch_allowed"
+        if _report_path(root, lines[1][len("*** Add File: "):]) != allowed:
+            return False, "report_output_not_authorized"
+        return True, "ok"
+    except (OSError, ValueError, TypeError, KeyError):
+        return False, "report_authority_invalid"
+
+
+def _report_options(argv: list[str], root: Path) -> tuple[Path, str] | None:
+    """Only trusted command-line flags select report mode; payload fields are inert."""
+    if not any(arg.startswith("--report-authority") for arg in argv):
+        return None
+    if len(argv) != 4 or argv[0] != "--report-authority" or argv[2] != "--report-authority-sha256":
+        raise ValueError("invalid_report_authority_arguments")
+    path = Path(argv[1])
+    return (path if path.is_absolute() else root / path), argv[3]
+
+
+def main(argv: list[str] | None = None) -> int:
     """Deny unsafe or unbriefed mutations through the official PreToolUse wire contract."""
     payload, raw = _read_payload()
     command = _command_text(payload, raw)
@@ -278,6 +405,21 @@ def main() -> int:
         reasons.append("Command references a path outside normal project ownership.")
     if _matches(SENSITIVE_WRITE_PATTERNS, command):
         reasons.append("Command may write sensitive material; credentials must not enter project artifacts.")
+
+    arguments = sys.argv[1:] if argv is None else argv
+    try:
+        options = _report_options(arguments, _workspace_root(payload)) if any(arg.startswith("--report-authority") for arg in arguments) else None
+    except ValueError:
+        _deny("Invalid pinned report authority configuration.")
+        return 0
+    if options is not None:
+        if not _report_read_only(payload):
+            allowed, reason = _report_action_ok(_workspace_root(payload), payload, *options)
+            if not allowed:
+                reasons.append("Report authority denied: " + reason)
+        if reasons:
+            _deny(" ".join(dict.fromkeys(reasons)))
+        return 0
 
     mutating = _is_mutating(tool, command)
     marker_write = _is_lifecycle_marker_write(command)

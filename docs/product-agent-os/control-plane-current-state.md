@@ -4,11 +4,13 @@ Source status: `experiment`
 
 ## Текущий пользовательский маршрут — 05.11.2026
 
-Начинайте с [surface matrix](../codex/surfaces.md) и [ordinary/full lifecycle](../product-agent/lifecycle.md). Текущий пакет использует поддерживаемый legacy manifest; portable format описан отдельно. IDE не поддерживает native plugins. При обновлении skills проверяйте exposure, invocation и результат.
+Начинайте с [surface matrix](../codex/surfaces.md) и [ordinary/full lifecycle](../product-agent/lifecycle.md). Пакет имеет Codex compatibility manifest; его наличие не подтверждает валидность всех компонентов или host support. Component/surface evidence разделены в [compatibility matrix](codex-compatibility.md). При обновлении skills проверяйте exposure, invocation и результат.
 
-ACT-F1..F6 закрыты в dated local runtime receipt от 03.11 для проверенных Desktop маршрутов. Это не доказательство всех mutation channels, silent Stop execution или hosted/production delivery. Новое обновление касается только docs/site; текущие checks — в [receipt](../superpowers/specs/site-docs-refresh-2026-11-05.json).
+ACT-F1..F6 закрыты в dated local runtime receipt от 03.11 для проверенных Desktop маршрутов. Это не доказательство всех mutation channels, silent Stop execution или hosted/production delivery. Docs/site receipt от 05.11 остаётся историческим результатом. ORD-01–ORD-06 затем реализованы и локально проверены через public CLI. Текущая product integration queue — GAP-01–GAP-05; отдельная B45 queue — T30 после локально завершённых T23–T29. Источник: `research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md` и существующий B45 task-group JSON. Production/distribution readiness не заявляется; placeholder listing URLs остаются ограничением локального пакета.
 
 RU/EN раздел выше имеет одинаковые текущие claims и границы. Ниже — сохранённые исторические записи; EN history является сокращённым обзором, а не полным переводом всех ledgers. Для точных receipt используйте source-owned JSON. Исторический pending/failure не отменяет более поздний scoped retest.
+
+GAP-01–GAP-05: локальная реализация проверена: 1284 tests (1 skip), fixture 91/91, transcript 26/26. GAP-01/02/04 implemented; общий статус partially_verified. Четыре metadata GAP-03 исправлены с разрешения владельца, 94 focused tests прошли; остаётся fresh-host receipt; GAP-05 — отдельного trust/probe. Текущий compatibility status `needs_review` из-за flat MCP declaration. Source hook изменён, поэтому прежний ACT receipt не доказывает активацию новой версии.
 
 <details markdown="1">
 <summary>Датированная история и подробные evidence</summary>

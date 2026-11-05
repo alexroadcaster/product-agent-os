@@ -2,9 +2,31 @@
 
 Source status: `official + experiment`
 
+## Component inventory — GAP-02, 2026-11-05
+
+Input: a local package path. The shared `plugin_components.py` resolver supplies compatibility, package inventory, discovery, methodology audit and system-file hygiene. Output separates format/version, selected component paths, skill/MCP server names, transports, issues and `host_status: not_verified`. Commands, endpoint URLs, environment values and secrets are neither returned nor executed.
+
+| Input | Rule | Result |
+| --- | --- | --- |
+| Recognized root `plugin.json` | Agent Plugins 1.0.0 identity; portable `skills/` and `mcp.json` take precedence | `present_unverified` for supported structure |
+| `extensions.com.openai` | Replaces compatibility settings as a whole; no field merging | Explicit `settings_source` |
+| `.codex-plugin/plugin.json` | Compatibility format when root manifest is absent | Paths constrained to package |
+| MCP `mcpServers` wrapper | Portable schema or Codex compatibility wrapper | Transport checked separately from host |
+| Flat `.mcp.json`, unknown schema, invalid types, escaping paths | Preserve observation without silent fallback | `needs_review` |
+
+The current package remains `needs_review`: `context7` is observed in legacy flat `.mcp.json`. No automatic migration occurs. Validation covers a bounded structural subset, not full JSON Schema validation. Auth extensions and unsupported constructs need separate review.
+
+| Component / surface | Codex App | CLI | IDE extension |
+| --- | --- | --- | --- |
+| Standalone skills | Documented mechanism; selection and invocation checked separately | Same | Same |
+| Local executors/scripts | Project-specific checks required | Project-specific checks required | Project-specific checks required |
+| Native package, MCP, hooks | Client/version/auth/component receipt required | Separate receipt required | Separate receipt required |
+
+Output: reviewable inventory; next decide MCP declaration migration, then verify the intended host. Neither `supported_surfaces` nor manifest presence proves runtime acceptance. Sources checked 2026-11-05: [Build plugins](https://developers.openai.com/plugins/build/plugins), [manifest schema](https://agent-plugins.org/schemas/1.0.0/plugin.schema.json), [MCP schema](https://agent-plugins.org/schemas/1.0.0/mcp.schema.json).
+
 Sources: [Codex plugins](https://developers.openai.com/codex/plugins), [Build plugins](https://developers.openai.com/codex/plugins/build), [Agent Skills](https://learn.chatgpt.com/docs/build-skills), [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents), [AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md), [Codex hooks](https://learn.chatgpt.com/docs/hooks), [Agent approvals and security](https://learn.chatgpt.com/docs/permissions), [Codex with Agents SDK](https://developers.openai.com/codex/guides/agents-sdk), [Product-Agent OS architecture](architecture.md).
 
-Compatibility means the package fits Codex surfaces. It does not approve live execution, provider calls, external writes, hosted docs, database access, automation activation or git actions.
+Compatibility describes checked local package structure; each component still needs host evidence. It does not approve live execution, provider calls, external writes, hosted docs, database access, automation activation or git actions.
 
 ## Inputs
 
@@ -35,7 +57,7 @@ Product-Agent OS keeps a conservative Codex boundary:
 - no hosted docs or DB introspection bypass;
 - no readiness claims from detection.
 
-Codex App, CLI, IDE extension, skills, MCP declarations and staged hooks are supported package surfaces. They are not permission to mutate target workspaces, GitHub, CI, package registries, production databases, hosted documentation, security systems or schedules without explicit approval and current verification evidence.
+Codex App, CLI and IDE extension are intended workflow surfaces; native package, skills, MCP and hooks require separate component evidence. They are not permission to mutate target workspaces, GitHub, CI, package registries, production databases, hosted documentation, security systems or schedules without explicit approval and current verification evidence.
 
 ## Compatible Surfaces
 
@@ -121,4 +143,4 @@ The owner authorized technical follow-up on 2026-11-03. Configuration, profiles,
 
 ## Components and runtime evidence
 
-Record compatibility by client/version/authentication/component. A local fixture or manifest does not prove native installation, trust or runtime success. IDE native plugins are unsupported; the legacy package remains a compatible format. See [surface matrix](../codex/surfaces.md) and [package contract](technical.md).
+Record compatibility by client/version/authentication/component. A local fixture or manifest does not prove native installation, trust or runtime success. The current package is needs_review as described above; native host support cannot be inferred from standalone skills. See [surface matrix](../codex/surfaces.md) and [package contract](technical.md).

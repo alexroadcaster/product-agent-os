@@ -4,11 +4,13 @@ Source status: `experiment`
 
 ## Current user route — 2026-11-05
 
-Start with the [surface matrix](../codex/surfaces.md) and [ordinary/full lifecycle](../product-agent/lifecycle.md). The current package uses a supported legacy manifest; the portable format is documented separately. IDE has no native plugin support. After skill updates verify exposure, invocation and results.
+Start with the [surface matrix](../codex/surfaces.md) and [ordinary/full lifecycle](../product-agent/lifecycle.md). The package has a Codex compatibility manifest; its presence does not establish component validity or host support. See the separate component/surface evidence in the [compatibility matrix](codex-compatibility.md). After skill updates verify exposure, invocation and results.
 
-ACT-F1..F6 are resolved in the dated 2026-11-03 local runtime receipt for tested Desktop routes. It does not prove all mutation channels, silent Stop execution or hosted/production delivery. The new update changes docs/site only; current checks are in the source-owned receipt `docs/superpowers/specs/site-docs-refresh-2026-11-05.json`.
+ACT-F1..F6 are resolved in the dated 2026-11-03 local runtime receipt for tested Desktop routes. It does not prove all mutation channels, silent Stop execution or hosted/production delivery. The November 5 docs/site receipt remains historical evidence. ORD-01–ORD-06 were subsequently implemented and locally verified through the public CLI. The current product integration queue is GAP-01–GAP-05; the separate B45 queue starts at T30 after locally completed T23–T29. Sources: `research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md` and the existing B45 task-group JSON. Production/distribution readiness is not claimed; placeholder listing URLs remain a local-package limitation.
 
 The RU/EN section above has the same current claims and limits. Below are preserved historical records; EN history is an abridged overview, not a complete translation of every ledger. Use source-owned JSON for exact receipts. Historical pending/failure entries do not override later scoped retests.
+
+GAP-01–GAP-05: local implementation verified: 1284 tests (1 skip), fixture 91/91, transcript 26/26. GAP-01/02/04 implemented; overall partially_verified. The four GAP-03 metadata files were corrected with owner approval and 94 focused tests passed; the fresh-host receipt remains open; GAP-05 needs separate trust/probe. Current compatibility status is `needs_review` for the flat MCP declaration. Hook source changed, so the earlier ACT receipt does not prove activation of this revision.
 
 <details markdown="1">
 <summary>Dated history and detailed evidence</summary>

@@ -54,6 +54,33 @@ Use `validate_lifecycle_packet_text` for explicit local format checks and regres
 
 PreToolUse retains command/path/secret restrictions plus scoped marker checks; reporting scope never expands sandbox or approvals. Stop is advisory only: no automatic chat validation, format-based rejection or corrective continuation. A missing literal heading must not cause the final answer to repeat. SessionStart points to the current templates and applicability. Changed hook definitions may require exact-hash trust review in `/hooks` and a fresh session. Never bypass trust or infer activation from local tests.
 
+## Optional Pinned Report Authority
+
+A research/review/planning task remains read-only by default. A separately approved
+hook command may supply `--report-authority <workspace-relative-json>` followed by
+`--report-authority-sha256 <64-lowercase-hex>` for one exact new Markdown report.
+The grant has exactly `schema_version: 1`, `task_id`, `previous_task_id`,
+`workspace_sha256`, `marker_sha256`, `output_path`, `issued_at`, `expires_at`.
+Hash the resolved workspace with platform `normcase` and UTF-8; hash the exact
+current marker bytes. The fresh nonterminal read-only marker must explicitly
+name the prior task and a different current task. Expiry cannot exceed 24 hours.
+
+Prepare and review the grant, exact command and source hashes before asking for
+hook trust/activation approval. Never derive authority from tool payload fields,
+reset a terminal marker automatically, or install a command/pin silently. Existing
+sandbox, command/path/secret guards and host approvals remain authoritative.
+
+The supported write is one literal `apply_patch` Add File, either direct or a
+single `await tools.apply_patch(JSON-string)` call inside `functions.exec`
+(optional `text(...)`). Dynamic wrappers, multiple calls, existing output,
+neighboring paths, config/hooks/control-plane files, traversal and symlinks fail
+closed. Shell writes are not supported. In pinned mode only literal
+`Get-Content`/`Get-ChildItem -LiteralPath 'path'` with `login: false` are accepted
+as shell reads; other commands need separate review. The default command without
+report flags preserves the previous lifecycle route. This is a preflight check,
+not an atomic write transaction or host activation receipt. Local fixtures do
+not close the separate fresh-host positive/negative gate.
+
 ## Stop Conditions
 
 - Required scope, ownership, verification or approval is missing.

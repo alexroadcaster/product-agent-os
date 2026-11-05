@@ -1,6 +1,161 @@
 # Product-Agent OS: план реализации после аудита документации
 
-Source status: project-local implementation proposal, 2026-11-05; основан на текущем коде и source-owned task groups. План сохранён по запросу владельца; ORD-01–ORD-06 затем отдельно разрешены к реализации. Остальные задачи не начаты.
+Source status: project-local implementation proposal, 2026-11-05; основан на текущем коде и source-owned task groups. План сохранён по запросу владельца; ORD-01–ORD-06 реализованы локально, GAP-01–GAP-05 реализованы локально с указанными ниже незакрытыми gates. T30–T34 и GAP-06 не начаты.
+
+## GAP-03 approved metadata correction — 05.11.2026
+
+Task ID: PAOS-GAP03-METADATA-2026-11-05. The owner explicitly approved the four-file diff below. Scope extension: only the four named `agents/openai.yaml` files plus existing status/evidence synchronization. Ordinary bounded fix; explicit-only remains false; no new implicit class, cache refresh, global settings, trust, host probe, Git or publication.
+
+Implemented: moved `allow_implicit_invocation: false` from `interface` to `policy` in `agent-team-designer`, `docs-maintainer`, `implementation-planner`, `requirements-author`. Before editing, all four current SHA-256 matched the saved proposal. Before validation produced four errors per file; afterward all 12 canonical metadata validate with false and no errors. Source/cache normalized drift remains 11/12; cache hashes remain unchanged. This closes the metadata correction and M04 decision locally, not M06 host exposure/invocation or GAP-05 trust/probe. The earlier proposal/digests and GAP receipts below remain historical evidence.
+
+Verification: `python -B -m unittest tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_validators -q` — 94 tests, 1.680s, OK, exit 0. Final docs/control-plane checks: 232 tests, 9.969s, OK, exit 0 (`test_product_agent_os_docs`, `test_task_plan_lifecycle`, `test_lifecycle_hooks`, `test_infrastructure_templates`). Both hook validators, task-matrix validator, check_docs and git diff --check passed. Exact approved diff confirmed; 2394 other baseline files unchanged; all 12 cache skill hashes unchanged. Receipt: `.docs-tools/reports/gap-metadata-preservation.json`. No full unittest/fixture rerun is needed for this bounded metadata correction; the earlier 1284/91/26 results are historical, not newly executed evidence.
+
+Control-plane sync: PLAN/RUNLOG/TEST, B42 matrix, affected current RU/EN claims and registry updated. REQUIREMENTS/EVALS/prod_test: not_applicable (no new requirements/rubrics/historical Batch 39 evidence). No site rebuild or freshness claim; navigation and Mermaid unchanged. Self-review verifies exact approved diff and unchanged false policy; no independent reviewer or host activation claim.
+
+
+## Исполнение GAP-01–GAP-05 — текущий запуск 05.11.2026
+
+Lifecycle task ID: PAOS-GAP-01-05-2026-11-05. Status: partially_verified. Explicit user authority: local implementation of GAP-01–05, their tests and RU/EN sync. No T30–T34/GAP-06, cache/trust/provider/publication actions. GAP-03 M06 and GAP-05 fresh-host probes remain separate evidence gates. Baseline: .docs-tools/reports/gap-01-05-baseline.json. Ownership is the union of the five task scopes plus TEST.md, this plan and the service marker. One writer, self_review; no delegation.
+
+### GAP design and scope decisions
+
+- GAP-01: current product queue and B45 next=T30 are distinct. Old T28/Stop receipts stay historical; manifest becomes local-package wording, placeholder URLs are not invented away.
+- GAP-02: one bounded read-only resolver owns portable/compatibility precedence. Recognized root plugin.json owns skills/ and mcp.json; inline extensions.com.openai replaces the overlay, never merges. Flat .mcp.json remains legacy_flat_observed/needs_review. No automatic migration or MCP execution. Official source checked 2026-11-05: https://developers.openai.com/plugins/build/plugins and https://agent-plugins.org/schemas/1.0.0/plugin.schema.json plus mcp.schema.json. Supported-subset checking is not full JSON Schema or host verification.
+- GAP-03: preserve intended explicit-only policy. Source/cache normalized digests, declared selection and host exposure/invocation are separate. Four metadata files put allow_implicit_invocation under interface instead of policy; validator reports errors. Correcting those four agents/openai.yaml files is outside the five named task file lists and requires a concrete owner decision; no silent edit. M06 fresh-session evidence remains missing. Discovery's explicit compliance/learning overlay is shared GAP-02/03 ownership; recommendations grant no authority.
+- GAP-04: exact HTTPS hostname parsing, presence vs semantic support vs freshness; 90-day date review is a local heuristic. Headers and lookalike/userinfo URLs do not prove evidence. No crawler or automatic freshness claim.
+- GAP-05 decision: optional hook command arguments --report-authority and --report-authority-sha256 pin a bounded grant in the trusted hook definition. Arbitrary tool payload cannot grant permission. Grant binds workspace digest, exact new task ID, previous task ID, exact current marker SHA-256, exact new Markdown path, issued/expiry time (maximum 24h). Current read-only marker must be fresh/nonterminal and explicitly transitioned. Only one literal Add File patch is allowed; canonical nested functions.exec literal apply_patch is supported, dynamic/multiple/unknown mutating wrappers fail closed. Existing files, neighboring output, config/hook/control-plane paths, traversal/symlink/Windows aliases and expired/stale/terminal grants are denied. Existing safety guards run first. Default hook command has no grant and keeps prior behavior. A grant cannot change sandbox or host approvals.
+- GAP-05 alternatives: payload boolean or unpinned workspace grant rejected as self-authorizing; broad directory grant rejected; automatic marker-reset rejected. Read-only target plus exact create-only report is the smallest implementable contract. Later append/update needs a separately reviewed contract; no automatic reusable write token.
+- GAP-05 activation: prepare source patch, negative tests and exact hashes first. Do not alter hooks.json, trust records, active command arguments or installed cache. Fresh-host positive/negative probe is a separate exact-hash owner action. Local pass cannot close that gate.
+- Verification ownership: primary agent, self_review. Existing capability scan completed for component consumers, source policy, skill contracts and hook parser. No new dependency; standard-library adapters; risk-selected malformed/precedence/provenance/spoof/path/terminal cases. Frontend/DDD/product-outcome/model promotion gates are not_applicable to this local contract slice; no product-effect claim is made.
+
+## GAP closure matrix
+
+| Task | Plan status | Strongest evidence | Remaining gate |
+| --- | --- | --- | --- |
+| GAP-01 | implemented | Local docs/manifest/pointers verified | No distribution/production readiness claim |
+| GAP-02 | implemented | Shared resolver and consumers locally verified | Actual package MCP needs_review; host evidence separate |
+| GAP-03 | blocked | Local provenance/metadata/routing verified; approved metadata correction applied | M06 host receipt |
+| GAP-04 | implemented | Local source-policy positive/negative checks verified | Semantic source review remains manual |
+| GAP-05 | blocked | implemented_not_runtime_verified | Separate trust and fresh-host report probe |
+
+Parent closure_level=partially_verified; tester_verdict=partial_only; context_mode=self_review. Required host/owner children prevent parent completion. No global/cache/trust/provider/Git/publication action occurred.
+
+## GAP final verification receipt — 05.11.2026
+
+Final source/test gate: Python 3.13.5, isolated accessible host TEMP (`paos-gap-tests`), no bytecode writes. The implementation/test manifest records 20 selected input hashes; all still match the tested revision. Active/package hook and workflow sources match. No later implementation changes were made.
+
+| Check | Observed result |
+| --- | --- |
+| Full unittest | 1284 tests, 848.832s, OK (skipped=1), exit 0 |
+| Fixture eval | 91/91, exit 0 after renderer correction |
+| Transcript eval | 26/26, exit 0; deterministic synthetic sessions |
+| Final docs + task-plan tests | 106 tests, 3.198s, exit 0 |
+| Hook definitions/source validators | exit 0; no activation proof |
+| Task-matrix validator, check_docs, diff check | exit 0 |
+| Final strict MkDocs preview | 18.60s, exit 0; root site unchanged |
+| Final preview links/anchors | 10 RU/EN pages, 1554 checked, zero errors |
+| Mermaid | Source blocks unchanged; runtime rendering not repeated |
+| Package compatibility | exit 1, needs_review; current flat MCP declaration remains unresolved |
+
+Commands executed for this GAP slice:
+
+```powershell
+python -B -m unittest discover -s tests -p 'test_*.py' -q
+python -B plugins/product-agent-os/scripts/run_fixture_eval.py
+python -B plugins/product-agent-os/scripts/run_transcript_eval.py
+python -B plugins/product-agent-os/scripts/validate_codex_compatibility.py
+python -B -m unittest tests.product_agent_os.test_product_agent_os_docs tests.product_agent_os.test_task_plan_lifecycle -q
+python -B plugins/product-agent-os/scripts/validate_hooks.py .codex/hooks.json
+python -B plugins/product-agent-os/scripts/validate_hooks.py .codex/hooks
+python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md
+python -B tools/check_docs.py
+.venv-docs/Scripts/python.exe -B -m mkdocs build --strict --site-dir .docs-tools/reports/gap-preview
+python -B .docs-tools/reports/gap_check_links.py
+git -c core.safecrlf=false diff --check
+```
+
+Preservation receipt: 33 existing owned files changed plus one new resolver; 2369 protected baseline file hashes unchanged, including 660 root-site files. All 12 non-GAP-01–05 task blocks are unchanged (completed ORD, T30–T34 and GAP-06). Installed-cache hashes for all 12 skills match the pre-check receipt; four metadata findings persist unchanged. Root control-plane files remain below 50 KiB. A separate untracked research artifact was not authored or changed by this slice. Detailed machine receipts: `.docs-tools/reports/gap-preservation.json`, `gap-links.json`, `gap-verified-inputs.json`, `gap-01-05-full-unittest-final.log`, `gap-fixture-final.json`, `gap-transcript.json`, `gap-compatibility.json`, `gap-mkdocs-final.log`.
+
+Execution time: 4611.7 seconds from recorded baseline 2026-11-05T13:37:31.971993+00:00 to final closure preparation 2026-11-05T14:54:23.633068+00:00. Zero subagents; one observed context-compaction handoff. Exact model/reasoning and complete token/tool counters are not exposed in the available runtime trace.
+
+## GAP control-plane sync
+
+PLAN.md, RUNLOG.md and TEST.md updated with current queue, evidence and residual gates. REQUIREMENTS.md: not_applicable (approved scope/acceptance unchanged). EVALS.md: not_applicable (rubrics/thresholds unchanged; only representative local regression cases added). prod_test.md: not_applicable (historical Batch 39 evidence family unchanged). Registry RU/EN updated for component/metadata official sources and local heuristics. B42 source matrix owns current local inventory, preserving historical planning status. No overflow/refactor required; root files remain within compactness budget. Handoff: owner for four metadata files and separate host/trust decisions. T23–T29, ORD task blocks and later T30–T34/GAP-06 task blocks are preserved against baseline.
+
+## GAP remaining owner decisions and local review packet
+
+M04 proposed decision: preserve explicit-only behavior for all current skills; do not enable the read-only implicit candidate. Four malformed metadata files need only a policy-section correction. Their exact current hashes and proposed diff are below. These files are outside the saved GAP-03 owned-file list and have not been edited. Installed cache/global configuration are excluded. After a separately authorized correction, run the metadata validator and lifecycle tests; refresh cache only under a separate destination/hash/rollback approval.
+
+- `plugins/product-agent-os/skills/agent-team-designer/agents/openai.yaml`: SHA-256 `2dad58c0e2e33e0e126dfff697dab6affe2f1a6820dd9a9e648f86baaf796e8a`.
+
+```diff
+--- plugins/product-agent-os/skills/agent-team-designer/agents/openai.yaml
++++ plugins/product-agent-os/skills/agent-team-designer/agents/openai.yaml
+@@ -4,2 +4,3 @@
+   default_prompt: "Use $agent-team-designer to design role ownership and handoffs for this plan."
++policy:
+   allow_implicit_invocation: false
+```
+
+- `plugins/product-agent-os/skills/docs-maintainer/agents/openai.yaml`: SHA-256 `8354e8bce49c0743d62982c2d40de8a24b1651f5685e5b17a6e14e8f4b718d6f`.
+
+```diff
+--- plugins/product-agent-os/skills/docs-maintainer/agents/openai.yaml
++++ plugins/product-agent-os/skills/docs-maintainer/agents/openai.yaml
+@@ -4,2 +4,3 @@
+   default_prompt: "Use $docs-maintainer to align requirements, source registry, glossary, and traceability docs."
++policy:
+   allow_implicit_invocation: false
+```
+
+- `plugins/product-agent-os/skills/implementation-planner/agents/openai.yaml`: SHA-256 `01329c0b3474d2354746962dc193ee654cb038986e8b678e6f35197f45ec50e5`.
+
+```diff
+--- plugins/product-agent-os/skills/implementation-planner/agents/openai.yaml
++++ plugins/product-agent-os/skills/implementation-planner/agents/openai.yaml
+@@ -4,2 +4,3 @@
+   default_prompt: "Use $implementation-planner to decompose these requirements into verified implementation slices."
++policy:
+   allow_implicit_invocation: false
+```
+
+- `plugins/product-agent-os/skills/requirements-author/agents/openai.yaml`: SHA-256 `eeea4967fe77cd2c744a64bb473d4b77bc2c8945eda9b340292856cacd3832ba`.
+
+```diff
+--- plugins/product-agent-os/skills/requirements-author/agents/openai.yaml
++++ plugins/product-agent-os/skills/requirements-author/agents/openai.yaml
+@@ -4,2 +4,3 @@
+   default_prompt: "Use $requirements-author to turn this project goal into acceptance criteria."
++policy:
+   allow_implicit_invocation: false
+```
+
+GAP-05 source patch is reviewable; report authority is **not installed**. Active/package source hashes match. The existing `hooks.json` definition/pin is unchanged. A future exact-host probe must identify client/version/auth, show a new-task scope, prepare a fresh marker transition and a bounded grant, review the complete command/pin in the host, then run one positive exact-report case and negatives for neighboring code/config/hook paths, stale/terminal state and nested wrappers. No successful report creation in an actual host is claimed by the current preflight fixtures. Approval for source edits is not approval for trust, cache or provider mutation.
+
+| Artifact | SHA-256 | Boundary |
+| --- | --- | --- |
+| `.codex/hooks/pre_tool_use_policy.py` | `244ced9c58aedb2ace885fa4ad5e2f6d1bd1a03c3b8d7b858ef1ef0297bb0878` | source only / trust unchanged |
+| `plugins/product-agent-os/assets/templates/hooks/pre_tool_use_policy.py` | `244ced9c58aedb2ace885fa4ad5e2f6d1bd1a03c3b8d7b858ef1ef0297bb0878` | source only / trust unchanged |
+| `.codex/hooks.json` | `8a40cbbb7bdc0b1d1b48d1ec873b109ee21358d85daae1479891e3a4fec74abb` | source only / trust unchanged |
+| `plugins/product-agent-os/assets/templates/hooks/hooks.json` | `8a40cbbb7bdc0b1d1b48d1ec873b109ee21358d85daae1479891e3a4fec74abb` | source only / trust unchanged |
+
+Grant schema: exactly `schema_version: 1`, `task_id`, `previous_task_id`, `workspace_sha256`, `marker_sha256`, `output_path`, `issued_at`, `expires_at`. Command arguments: `--report-authority <reviewed-workspace-relative-file> --report-authority-sha256 <exact-reviewed-grant-hash>`. The future grant is not pre-authorized: its marker, output, expiry and hash must be concrete before trust approval. Proposed probe output is a new `research/gap-05-report-authority-probe.md`; existing file means stop, not overwrite. Read-only report creation only; no append/update, implementation edits or target mutation. Rollback restores only these source changes against the recorded baseline; active command/trust rollback belongs to any later approved probe.
+
+## GAP verification and self-review log
+
+- Initial component RED: current flat MCP was incorrectly compatible. Added supported/unsupported, portable precedence and cross-consumer checks. Additional malformed metadata RED (`version: 1` wrongly present_unverified) fixed; 9 focused resolver/provenance tests passed.
+- Source-policy RED: bare Sources headings, lookalike/userinfo/query URLs and missing source_evidence were accepted incorrectly. Exact-host/source-presence/date tests and discovery regressions passed (87 tests).
+- B42 local route negative: unrelated business compliance was matched by an overbroad Russian fragment; narrowed to instruction-specific intent. Local provenance/lifecycle/validators passed (93 tests); RU/EN route subset passed (3 tests). M06 and actual model behavior remain not_verified.
+- Hook report preflight: direct/nested literal patch accepted only with pinned authority; forged payload, wrong pin/path, terminal/stale/rebound marker, expired/workspace mismatch and unsafe shell commands denied. Wire-format focused tests passed (2 tests). Default no-flag read path remains unchanged.
+- Combined focused route: 343 tests, four docs wording failures. Corrected public internal-batch wording and Russian explanatory text; docs rerun 100/100 passed. Tests and thresholds were not weakened.
+- First fixture eval returned exit 1 for all 91 records because the renderer treated the hook regex quantifier `{64}` as an unresolved substitution marker. Isolated renderer diagnosis confirmed that single shared cause. Changed to length check plus hex-character regex; active/package source synchronized. Renderer/templates/hooks rerun: 157 tests, 36.539s, OK, exit 0. First broad unittest was interrupted after discovering this cause and is not completion evidence. Final full/fixture reruns use the corrected frozen inputs.
+- A diagnostic render attempted in sandbox TEMP hit PermissionError before execution; repeated under the already-authorized isolated host TEMP. No sandbox protection was weakened.
+- Transcript eval: 26/26, exit 0, deterministic synthetic sessions; no live model/provider invocation.
+- Compatibility validator: exit 1, status needs_review, issue legacy_flat_mcp_requires_schema_review. This unresolved package-format finding is reported, not silently waived; the resolver implementation is evaluated against positive and negative fixtures.
+- Initial strict MkDocs preview: exit 0, 22.05s. Ten changed RU/EN preview pages: 1554 local links/anchors, zero errors. First ad-hoc link check assumed directory URLs and failed before checking links; corrected to the repository's use_directory_urls=false, then passed. Mermaid source blocks are unchanged; no browser rendering claim.
+- Self-review context_mode=self_review: checked path containment, portable precedence, metadata scalar/schema handling, source URL authority separation, route non-invocation, hook grant pin/task binding, default-route preservation and scope. No independent reviewer was used. Material residuals: bounded schema/YAML subsets, non-atomic hook preflight, current MCP finding, four metadata findings and absent fresh-host evidence.
+
+Final integrated receipt: full unittest 1284 tests in 848.832s, OK (skipped=1), exit 0; fixture eval 91/91 exit 0; transcript 26/26 exit 0. Compatibility exit 1 needs_review remains an explicit package finding. Frozen final implementation/test hashes match after the gate. Inputs: `.docs-tools/reports/gap-verified-inputs.json`; logs use `.docs-tools/reports/gap-*`. No root site update or publication.
 
 ## Исполнение ORD-01–ORD-06 — текущий запуск 05.11.2026
 
@@ -471,12 +626,12 @@ Review mode текущего плана: self_review. Сверены IMP-01–IM
 ### Task `PAOS-GAP-01`
 
 - Task: Свести current pointers и убрать неподтверждённые maturity claims
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: План по отчёту; будущая реализация пока не разрешена
+- Plan trigger: Отдельный запрос владельца реализовать GAP-01–GAP-05
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 05-11-2026 17:48
 - Depends on: Предпочтительно после ORD-06; технически независимо от реализации ordinary route
 - Blocks: Честный handoff и compatibility описание GAP-02
 - Source: IMP-05/07
@@ -498,25 +653,25 @@ Review mode текущего плана: self_review. Сверены IMP-01–IM
 
 #### Completion Report
 
-- status: planned
-- what was done: pending
-- files touched / work locations: pending
-- technical value delivered: pending
-- product value delivered: pending
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending
-- residual risks: pending
-- follow-up: pending
+- status: implemented
+- what was done: Current product/B45 pointers reconciled; historical T28/Stop receipts retained; manifest production-readiness wording replaced by local-package limits.
+- files touched / work locations: `PLAN.md`; `RUNLOG.md`; `plugins/product-agent-os/.codex-plugin/plugin.json`; `docs/product-agent-os/control-plane-current-state.md`; `docs/product-agent-os/control-plane-current-state.en.md`; `docs/sources/registry.md`; `docs/sources/registry.en.md`
+- technical value delivered: Current product/B45 pointers reconciled; historical T28/Stop receipts retained; manifest production-readiness wording replaced by local-package limits.
+- product value delivered: Пользователь и следующий исполнитель не возвращаются к закрытым задачам и неверным claims. Local scope only.
+- actual implementation date and time: 05-11-2026 17:48
+- verification evidence: Final full unittest: 1284 tests, 848.832s, OK (skipped=1), exit 0; fixture 91/91 exit 0; transcript 26/26 exit 0; focused RED/GREEN and docs receipts in GAP verification log. Compatibility exit 1 needs_review explicitly remains open.
+- residual risks: Historical runtime/site receipts remain dated; placeholder distribution URLs unchanged.
+- follow-up: Continue from T30 only under its separate task scope.
 
 ### Task `PAOS-GAP-02`
 
 - Task: Согласовать MCP/component inventory и capability matrix
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: План по отчёту; будущая реализация пока не разрешена
+- Plan trigger: Отдельный запрос владельца реализовать GAP-01–GAP-05
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 05-11-2026 17:48
 - Depends on: GAP-01 для текста maturity; кодовый parser независим от ORD
 - Blocks: Надёжная inventory часть B42 и будущая distribution review
 - Source: IMP-04/05
@@ -538,32 +693,32 @@ Review mode текущего плана: self_review. Сверены IMP-01–IM
 
 #### Completion Report
 
-- status: planned
-- what was done: pending
-- files touched / work locations: pending
-- technical value delivered: pending
-- product value delivered: pending
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending
-- residual risks: pending
-- follow-up: pending
+- status: implemented
+- what was done: One supported-subset resolver feeds compatibility, package inventory, discovery, methodology and hygiene; portable/overlay precedence and malformed/escape cases tested.
+- files touched / work locations: `plugins/product-agent-os/scripts/product_agent_os/codex_compatibility.py`; `plugins/product-agent-os/scripts/product_agent_os/batch39_inventory.py`; `plugins/product-agent-os/scripts/product_agent_os/discovery.py`; `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`; `plugins/product-agent-os/scripts/product_agent_os/system_file_hygiene.py`; `tests/product_agent_os/test_codex_compatibility.py`; `docs/product-agent-os/codex-compatibility.md`; `docs/product-agent-os/codex-compatibility.en.md`; `docs/sources/registry.md`; `docs/sources/registry.en.md`
+- technical value delivered: One supported-subset resolver feeds compatibility, package inventory, discovery, methodology and hygiene; portable/overlay precedence and malformed/escape cases tested.
+- product value delivered: Диагностика перестаёт одновременно сообщать compatible и пустой MCP inventory. Local scope only.
+- actual implementation date and time: 05-11-2026 17:48
+- verification evidence: Final full unittest: 1284 tests, 848.832s, OK (skipped=1), exit 0; fixture 91/91 exit 0; transcript 26/26 exit 0; focused RED/GREEN and docs receipts in GAP verification log. Compatibility exit 1 needs_review explicitly remains open.
+- residual risks: Current flat MCP declaration remains needs_review; no full-schema or native-host claim.
+- follow-up: Owner decides MCP migration before stronger package compatibility claim.
 
 ### Task `PAOS-GAP-03`
 
 - Task: Продолжить существующие B42 M02/M04–M08 по provenance и skill exposure
-- Status: planned
+- Status: blocked
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: План по отчёту; будущая реализация пока не разрешена
+- Plan trigger: Отдельный запрос владельца реализовать GAP-01–GAP-05
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 05-11-2026 17:48
 - Depends on: B42 source matrix; GAP-02 для общего component inventory; ORD-05 для intended compact workflow
 - Blocks: Fresh-host ordinary claim и GAP-06 target pilot на выбранной поверхности
 - Source: IMP-06; B42-S1-M02/M04/M05/M06/M07/M08 — прежние task IDs сохраняются
 - Short description: M02: source/package/cache normalized digest и effective selection path. M04/M05: отдельно определить safe read-only implicit class и explicit-only write/release/automation; изменить metadata только если owner выбрал такую policy, не по умолчанию. M07/M08: routing и synthetic regression cases. M06: отдельный разрешённый fresh-session probe exposure плюс invocation, результаты сохранять в owning B42 matrix, без raw chat. Этот блок — координация прежних задач, не их замена новым статусом.
 - Technical value: Понятно, какая версия skill управляет задачей, и что действительно доступно пользователю.
 - Product value: Понятно, какая версия skill управляет задачей, и что действительно доступно пользователю.
-- Scope: Owned files: `docs/superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json`; `plugins/product-agent-os/scripts/product_agent_os/validators.py`; `plugins/product-agent-os/skills/project-lifecycle-orchestrator/SKILL.md`; `plugins/product-agent-os/skills/workspace-discovery-auditor/SKILL.md`; `tests/product_agent_os/test_lifecycle_skills.py`; `tests/product_agent_os/test_validators.py`; `docs/product-agent-os/instruction-tool-use-compliance.md`; `docs/product-agent-os/instruction-tool-use-compliance.en.md`
+- Scope: Owned files: `docs/superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json`; `plugins/product-agent-os/scripts/product_agent_os/validators.py`; `plugins/product-agent-os/skills/project-lifecycle-orchestrator/SKILL.md`; `plugins/product-agent-os/skills/workspace-discovery-auditor/SKILL.md`; `tests/product_agent_os/test_lifecycle_skills.py`; `tests/product_agent_os/test_validators.py`; `docs/product-agent-os/instruction-tool-use-compliance.md`; `docs/product-agent-os/instruction-tool-use-compliance.en.md`; approved follow-up extension: `plugins/product-agent-os/skills/agent-team-designer/agents/openai.yaml`; `plugins/product-agent-os/skills/docs-maintainer/agents/openai.yaml`; `plugins/product-agent-os/skills/implementation-planner/agents/openai.yaml`; `plugins/product-agent-os/skills/requirements-author/agents/openai.yaml`
 - Non-goals: Неуказанные файлы, автоматические target/cache/global writes, provider/browser/Git/publication и повторная реализация T23–T29 вне scope. Исключения только по явно scoped later approval.
 - Expected result: Existing B42 task evidence и RU/EN guidance; cache остаётся неизменным без отдельной exact authority.
 - Acceptance criteria: 11/12 drift из отчёта повторно проверен, а не принят за вечную константу; различаются installed, exposed, selected и invoked. Explicit-only отсутствие implicit invocation не считается поломкой. Source/cache mismatch не исправляется молча. Local metadata/eval evidence и fresh-host receipt имеют разные статусы.
@@ -578,25 +733,25 @@ Review mode текущего плана: self_review. Сверены IMP-01–IM
 
 #### Completion Report
 
-- status: planned
-- what was done: pending
-- files touched / work locations: pending
-- technical value delivered: pending
-- product value delivered: pending
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending
-- residual risks: pending
-- follow-up: pending
+- status: blocked
+- what was done: Owner-approved four-file metadata correction subsequently applied (94 focused tests); local provenance and metadata validation, source/cache digests and explicit compliance/learning routing implemented; B42 current_execution preserves original task IDs and historical snapshot.
+- files touched / work locations: `docs/superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json`; `plugins/product-agent-os/scripts/product_agent_os/validators.py`; `plugins/product-agent-os/skills/project-lifecycle-orchestrator/SKILL.md`; `plugins/product-agent-os/skills/workspace-discovery-auditor/SKILL.md`; `tests/product_agent_os/test_lifecycle_skills.py`; `docs/product-agent-os/instruction-tool-use-compliance.md`; `docs/product-agent-os/instruction-tool-use-compliance.en.md`; `plugins/product-agent-os/scripts/product_agent_os/discovery.py (shared with GAP-02)`; approved follow-up: `plugins/product-agent-os/skills/agent-team-designer/agents/openai.yaml`; `plugins/product-agent-os/skills/docs-maintainer/agents/openai.yaml`; `plugins/product-agent-os/skills/implementation-planner/agents/openai.yaml`; `plugins/product-agent-os/skills/requirements-author/agents/openai.yaml`
+- technical value delivered: Local provenance and metadata validation, source/cache digests and explicit compliance/learning routing implemented; B42 current_execution preserves original task IDs and historical snapshot.
+- product value delivered: Понятно, какая версия skill управляет задачей, и что действительно доступно пользователю. Local scope only.
+- actual implementation date and time: 05-11-2026 17:48
+- verification evidence: Final full unittest: 1284 tests, 848.832s, OK (skipped=1), exit 0; fixture 91/91 exit 0; transcript 26/26 exit 0; focused RED/GREEN and docs receipts in GAP verification log. Compatibility exit 1 needs_review explicitly remains open.
+- residual risks: Local implementation verified; M04 explicit-only decision and four metadata corrections completed locally; M06 fresh-host exposure/invocation remains required.
+- follow-up: Four-file correction applied with explicit owner approval; authorize fresh-host probe separately; no cache/global write.
 
 ### Task `PAOS-GAP-04`
 
 - Task: Исправить локальную source-policy эвристику без ложной проверки фактов
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: План по отчёту; будущая реализация пока не разрешена
+- Plan trigger: Отдельный запрос владельца реализовать GAP-01–GAP-05
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 05-11-2026 17:48
 - Depends on: Отчёт IMP-08; независима от B45
 - Blocks: Source-status consistency для последующих claims
 - Source: IMP-08
@@ -618,25 +773,25 @@ Review mode текущего плана: self_review. Сверены IMP-01–IM
 
 #### Completion Report
 
-- status: planned
-- what was done: pending
-- files touched / work locations: pending
-- technical value delivered: pending
-- product value delivered: pending
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending
-- residual risks: pending
-- follow-up: pending
+- status: implemented
+- what was done: Exact official HTTPS hostname classification separates source_present, claim_supported and freshness; header/spoof/date negatives tested.
+- files touched / work locations: `plugins/product-agent-os/scripts/product_agent_os/source_policy.py`; `tests/product_agent_os/test_source_policy.py`; `docs/sources/registry.md`; `docs/sources/registry.en.md`
+- technical value delivered: Exact official HTTPS hostname classification separates source_present, claim_supported and freshness; header/spoof/date negatives tested.
+- product value delivered: Актуальные официальные ссылки не отклоняются, пустой заголовок не маскирует отсутствие evidence. Local scope only.
+- actual implementation date and time: 05-11-2026 17:48
+- verification evidence: Final full unittest: 1284 tests, 848.832s, OK (skipped=1), exit 0; fixture 91/91 exit 0; transcript 26/26 exit 0; focused RED/GREEN and docs receipts in GAP verification log. Compatibility exit 1 needs_review explicitly remains open.
+- residual risks: Presence/date heuristics do not validate source contents or semantic claim support; no crawler or freshness guarantee.
+- follow-up: Use claim-level source review when stronger evidence is needed.
 
 ### Task `PAOS-GAP-05`
 
 - Task: Спроектировать и отдельно проверить bounded report authority для read-only анализа
-- Status: planned
+- Status: blocked
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: План по отчёту; будущая реализация пока не разрешена
+- Plan trigger: Отдельный запрос владельца реализовать GAP-01–GAP-05
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 05-11-2026 17:48
 - Depends on: Отчёт IMP-09; ORD-06 для стабильной ordinary semantics; отдельное разрешение durable hook change
 - Blocks: Полная OR-A3 path-specific acceptance; не блокирует остальные ordinary cases
 - Source: IMP-09; новый случай, не переоткрытие ACT-F1–F6
@@ -658,15 +813,15 @@ Review mode текущего плана: self_review. Сверены IMP-01–IM
 
 #### Completion Report
 
-- status: planned
-- what was done: pending
-- files touched / work locations: pending
-- technical value delivered: pending
-- product value delivered: pending
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending
-- residual risks: pending
-- follow-up: pending
+- status: blocked
+- what was done: Pinned report grant, explicit task transition and one literal create-only Markdown patch implemented; active/package source mirrored; direct/nested wire and negative/default-route cases passed.
+- files touched / work locations: `.codex/hooks/pre_tool_use_policy.py`; `plugins/product-agent-os/assets/templates/hooks/pre_tool_use_policy.py`; `.codex/workflows/task-plan-lifecycle.md`; `plugins/product-agent-os/assets/templates/workflows/task-plan-lifecycle.md`; `tests/product_agent_os/test_lifecycle_hooks.py`; `docs/runtime/worktrees-hooks-rules.md`; `docs/runtime/worktrees-hooks-rules.en.md`
+- technical value delivered: Pinned report grant, explicit task transition and one literal create-only Markdown patch implemented; active/package source mirrored; direct/nested wire and negative/default-route cases passed.
+- product value delivered: Явно запрошенный отчёт сохраняется без путаницы между read-only исследованием и разрешённой записью результата. Local scope only.
+- actual implementation date and time: 05-11-2026 17:48
+- verification evidence: Final full unittest: 1284 tests, 848.832s, OK (skipped=1), exit 0; fixture 91/91 exit 0; transcript 26/26 exit 0; focused RED/GREEN and docs receipts in GAP verification log. Compatibility exit 1 needs_review explicitly remains open.
+- residual risks: implemented_not_runtime_verified: no report-mode trusted command installed, no fresh-host positive/negative receipt; preflight is not atomic.
+- follow-up: Separate exact-hash command/grant trust approval and fresh-host probe before closing OR-A3.
 
 ### Task `B45-CQRR-T30`
 
@@ -907,5 +1062,3 @@ Review mode текущего плана: self_review. Сверены IMP-01–IM
 - verification evidence: pending
 - residual risks: pending
 - follow-up: pending
-
-

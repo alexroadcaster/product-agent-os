@@ -5,6 +5,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from product_agent_os.plugin_components import resolve_plugin_components
 from product_agent_os.stage_manifest import canonical_json, content_digest, file_digest
 
 
@@ -113,16 +114,17 @@ def _cache_root_inventory(workspace: Path, root: Path, index: int) -> dict[str, 
         "status": summary["status"],
         "file_count": summary["file_count"],
         "skill_count": _count_named_files(root / "skills", "SKILL.md"),
-        "plugin_json_present": (root / ".codex-plugin" / "plugin.json").is_file(),
-        "mcp_present": (root / ".mcp.json").is_file(),
+        "plugin_json_present": (root / ".codex-plugin" / "plugin.json").is_file() or (root / "plugin.json").is_file(),
+        "mcp_present": (root / ".mcp.json").is_file() or (root / "mcp.json").is_file(),
         "inventory_digest": summary["inventory_digest"],
         "read_errors": summary["read_errors"],
     }
 
 
 def _package_inventory(workspace: Path, plugin_root: Path) -> dict[str, Any]:
-    manifest_path = plugin_root / ".codex-plugin" / "plugin.json"
-    mcp_path = plugin_root / ".mcp.json"
+    components = resolve_plugin_components(plugin_root)
+    manifest_path = plugin_root / (components["manifest_path"] or ".codex-plugin/plugin.json")
+    mcp_path = plugin_root / (components["mcp"]["path"] or ".mcp.json")
     manifest = _read_json_object(manifest_path)
     mcp = _read_json_object(mcp_path)
     return {
@@ -136,9 +138,8 @@ def _package_inventory(workspace: Path, plugin_root: Path) -> dict[str, Any]:
             "skills": _string_value(manifest.get("skills")),
             "mcpServers": _string_value(manifest.get("mcpServers")),
         },
-        "mcp_server_keys": sorted(str(key) for key in mcp.get("mcpServers", {}).keys())
-        if isinstance(mcp.get("mcpServers"), dict)
-        else [],
+        "mcp_server_keys": components["mcp"]["server_names"],
+        "component_inventory": components,
         "package_digest": content_digest(canonical_json({"manifest": manifest, "mcp_keys": sorted(mcp.keys())})),
     }
 

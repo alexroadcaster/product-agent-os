@@ -1,7 +1,7 @@
 {
   "name": "product-agent-os",
   "version": "0.1.0",
-  "description": "Production-ready Codex plugin for end-to-end product-agent delivery, methodology intelligence, status dashboards, and self-verification metrics loops.",
+  "description": "Local Codex plugin package for governed product-agent delivery, methodology guidance and verification evidence; distribution and production readiness are not established.",
   "author": {
     "name": "OpenAI Codex Knowledge Base",
     "email": "codex-docs@example.invalid",
@@ -22,7 +22,7 @@
   "interface": {
     "displayName": "Product-Agent OS",
     "shortDescription": "Guide product-agent delivery with methodology, dashboards, and metrics loops.",
-    "longDescription": "Creates and maintains product-agent control-plane files, lifecycle skills, project-scoped agents, methodology intelligence, guided question/status dashboards, self-verification metrics loops, evidence logs, eval gates and automation candidates.",
+    "longDescription": "Creates and maintains product-agent control-plane files, lifecycle skills, project-scoped agents, methodology intelligence, guided question/status dashboards, self-verification metrics loops, evidence logs, eval gates and automation candidates. Local package only; placeholder listing URLs are not distribution readiness evidence.",
     "developerName": "OpenAI Codex Knowledge Base",
     "category": "Productivity",
     "capabilities": [

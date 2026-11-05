@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from product_agent_os.contracts import CONTROL_PLANE_FILES
+from product_agent_os.plugin_components import discover_plugin_components
 from product_agent_os.methodology_catalog import load_methodology_catalog
 from product_agent_os.methodology_synthesis import build_methodology_synthesis, dedupe_owner_questions
 
@@ -901,6 +902,7 @@ def build_methodology_audit(
     return {
         "status": "ok",
         "write_policy": "read_only",
+        "plugin_components": discover_plugin_components(root, sorted(files)),
         "maturity_level": maturity_level,
         "complexity_profile": complexity_profile,
         "observed_signals": observed,
@@ -1228,6 +1230,8 @@ def _backend_signal_evidence(files: set[str], directories: set[str]) -> list[str
 def _codex_agentic_signal_evidence(files: set[str], directories: set[str]) -> list[str]:
     exact_files = {
         ".mcp.json",
+        "mcp.json",
+        "plugin.json",
         "agents.md",
         "agents.override.md",
         "automation.toml",
@@ -3071,7 +3075,7 @@ def _codex_agentic_workflow_recommendations(
             residual="A side-effecting workflow can execute without an auditable owner approval.",
         )
     if (
-        _has_signal(observed, "codex_agentic_workflow") and any(path.endswith(".mcp.json") for path in files)
+        _has_signal(observed, "codex_agentic_workflow") and any(path.endswith((".mcp.json", "/mcp.json")) or path == "mcp.json" for path in files)
     ) or _mentions_any(intent, {"mcp", "remote mcp", "side-effecting tool"}):
         add(
             "mcp_permission_review_present",

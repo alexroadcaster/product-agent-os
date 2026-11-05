@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import re
 from pathlib import Path
 from typing import Any
@@ -14,6 +15,109 @@ from product_agent_os.doubt_verification import (
     validate_doubt_verification_packet,
     validate_doubt_verification_packet_file,
 )
+
+
+def validate_skill_agent_metadata(path: Path, *, expected_implicit: bool = False) -> list[str]:
+    """Validate the repository's flat YAML subset without enabling any skill.
+
+    Complex YAML, aliases and unknown fields require review rather than being
+    guessed by a permissive regex parser. No third-party YAML runtime is needed.
+    """
+    try:
+        if path.stat().st_size > 65536:
+            return ["metadata_too_large"]
+        text = path.read_text(encoding="utf-8-sig")
+    except (OSError, UnicodeError):
+        return ["metadata_missing_or_unreadable"]
+    sections: dict[str, dict[str, str]] = {}
+    current = None
+    errors = []
+    for line in text.splitlines():
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        root = re.fullmatch(r"(interface|policy):\s*", line)
+        if root:
+            current = root[1]
+            if current in sections:
+                errors.append("duplicate_metadata_section")
+            sections.setdefault(current, {})
+            continue
+        field = re.fullmatch(r"  ([a-z_]+):[ \t]*(.+)", line)
+        if current is None or field is None:
+            errors.append("unsupported_metadata_yaml")
+            continue
+        key, value = field.groups()
+        if key in sections[current]:
+            errors.append("duplicate_metadata_field")
+        sections[current][key] = value.strip()
+    interface = sections.get("interface", {})
+    allowed = {"display_name", "short_description", "default_prompt", "icon_small", "icon_large", "brand_color"}
+    if set(interface) - allowed:
+        errors.append("unknown_interface_field")
+    for key, value in interface.items():
+        try:
+            scalar = json.loads(value) if value.startswith('"') else value
+            if not isinstance(scalar, str) or not scalar.strip() or scalar.startswith(("[", "{", "&", "*", "|", ">")) or (not value.startswith(('"', "'")) and (scalar.lower() in {"null", "true", "false", "yes", "no", "~"} or re.fullmatch(r"[-+]?\d+(?:\.\d+)?", scalar))):
+                errors.append("invalid_interface_scalar:" + key)
+        except ValueError:
+            errors.append("invalid_interface_scalar:" + key)
+    if not {"display_name", "short_description", "default_prompt"}.issubset(interface):
+        errors.append("required_interface_field_missing")
+    policy = sections.get("policy", {})
+    if set(policy) != {"allow_implicit_invocation"}:
+        errors.append("explicit_invocation_policy_required")
+    if policy.get("allow_implicit_invocation") != ("true" if expected_implicit else "false"):
+        errors.append("implicit_invocation_policy_mismatch")
+    return sorted(set(errors))
+
+
+def _skill_tree_digest(root: Path) -> dict[str, Any]:
+    """Hash bounded skill text with canonical newlines; never return its contents."""
+    if root.is_symlink() or root.parent.is_symlink():
+        return {"present": True, "normalized_sha256": None, "raw_sha256": None, "errors": ["symlink_skill_root_requires_review"]}
+    if not root.is_dir():
+        return {"present": False, "normalized_sha256": None, "raw_sha256": None, "errors": []}
+    normalized, raw_hashes, errors = {}, {}, []
+    paths = sorted(p for p in root.rglob("*") if p.is_file())
+    if len(paths) > 200:
+        return {"present": True, "normalized_sha256": None, "raw_sha256": None, "errors": ["skill_inventory_limit"]}
+    for path in paths:
+        try:
+            if not path.resolve().is_relative_to(root.resolve()) or path.stat().st_size > 1024 * 1024:
+                raise ValueError("bounded_file_required")
+            raw = path.read_bytes(); name = path.relative_to(root).as_posix()
+            raw_hashes[name] = hashlib.sha256(raw).hexdigest()
+            normalized[name] = hashlib.sha256(raw.decode("utf-8-sig").replace("\r\n", "\n").replace("\r", "\n").encode()).hexdigest()
+        except (OSError, ValueError):
+            errors.append("skill_file_unreadable_or_unsupported")
+    digest = lambda values: hashlib.sha256(json.dumps(values, sort_keys=True).encode()).hexdigest()
+    return {"present": True, "normalized_sha256": digest(normalized) if not errors else None,
+            "raw_sha256": digest(raw_hashes) if not errors else None, "errors": sorted(set(errors))}
+
+
+def build_skill_provenance(source_root: Path, cache_root: Path | None = None, *, selected_root: Path | None = None) -> dict[str, Any]:
+    """Separate source/cache presence from caller-selected path and host evidence."""
+    source_root = source_root.resolve()
+    cache_root = cache_root.resolve() if cache_root else None
+    selected_root = selected_root.resolve() if selected_root else None
+    source_names = {p.parent.name for p in (source_root / "skills").glob("*/SKILL.md")}
+    cache_names = {p.parent.name for p in (cache_root / "skills").glob("*/SKILL.md")} if cache_root else set()
+    records = []
+    for name in sorted(source_names | cache_names):
+        source = _skill_tree_digest(source_root / "skills" / name)
+        cache = _skill_tree_digest(cache_root / "skills" / name) if cache_root else {"present": False, "normalized_sha256": None, "raw_sha256": None, "errors": []}
+        metadata = source_root / "skills" / name / "agents/openai.yaml"
+        policy_errors = validate_skill_agent_metadata(metadata) if metadata.resolve().is_relative_to(source_root) else ["metadata_outside_source"]
+        selected = "repository" if selected_root == source_root else "installed_cache" if cache_root and selected_root == cache_root else "unknown"
+        records.append({"name": name, "source_path": "source/skills/" + name, "cache_path": "cache/skills/" + name if cache_root else None,
+                        "source": source, "cache": cache, "installed": cache["present"],
+                        "normalized_match": bool(source["normalized_sha256"] and source["normalized_sha256"] == cache["normalized_sha256"]),
+                        "policy_class": "read_only_implicit_candidate_not_enabled" if name == "workspace-discovery-auditor" else "explicit_only",
+                        "implicit_enabled": False if not policy_errors else None, "metadata_errors": policy_errors,
+                        "selected_source": selected, "selection_evidence": "caller_declared_path_not_host_loading",
+                        "exposed": "not_verified", "invoked": "not_verified"})
+    return {"schema_version": 1, "status": "needs_review" if any(r["metadata_errors"] or r["source"]["errors"] or r["cache"]["errors"] for r in records) else "present_unverified",
+            "policy": "preserve_explicit_only_no_metadata_rewrite", "skills": records, "host_status": "not_verified"}
 
 
 AGENT_REQUIRED_FIELDS = [

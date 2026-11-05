@@ -2,4 +2,5 @@ interface:
   display_name: "Implementation Planner"
   short_description: "Stages implementation slices, gates, rollback, and ownership."
   default_prompt: "Use $implementation-planner to decompose these requirements into verified implementation slices."
+policy:
   allow_implicit_invocation: false

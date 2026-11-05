@@ -4,7 +4,29 @@ Source status: `official + experiment`
 
 Источники: [Codex plugins](https://developers.openai.com/codex/plugins), [Build plugins](https://developers.openai.com/codex/plugins/build), [Agent Skills](https://learn.chatgpt.com/docs/build-skills), [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents), [AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md), [Codex hooks](https://learn.chatgpt.com/docs/hooks), [Agent approvals and security](https://learn.chatgpt.com/docs/permissions), [Codex with Agents SDK](https://developers.openai.com/codex/guides/agents-sdk), [Product-Agent OS architecture](architecture.md).
 
-Compatibility означает, что package подходит для Codex surfaces. Это не approval на live execution, provider calls, external writes, hosted docs, database access, automation activation или git actions.
+Compatibility report описывает проверенную локальную структуру package. Он не доказывает поддержку каждого компонента конкретным host и не разрешает live execution, provider calls, external writes или git actions.
+
+## Component inventory — GAP-02, 05.11.2026
+
+Вход: путь локального package. Общий resolver `plugin_components.py` используется compatibility, package inventory, discovery, methodology audit и system-file hygiene. Он возвращает format/version, выбранные component paths, имена skills/MCP servers, transports, issues и `host_status: not_verified`; команды, URL, env values и secrets в результат не копируются и не исполняются.
+
+| Вход | Правило | Результат |
+| --- | --- | --- |
+| Recognized root `plugin.json` | Agent Plugins 1.0.0 identity; portable `skills/` и `mcp.json` имеют приоритет | `present_unverified` при поддерживаемой структуре |
+| `extensions.com.openai` | Целиком заменяет compatibility settings; поля не смешиваются | Явный `settings_source` |
+| `.codex-plugin/plugin.json` | Compatibility format при отсутствии root manifest | Component paths проверяются внутри package |
+| MCP `mcpServers` wrapper | Portable schema либо Codex compatibility wrapper | Transport проверяется отдельно от host |
+| Flat `.mcp.json`, неизвестная schema, неверный тип, escape path | Наблюдение сохраняется без молчаливого fallback | `needs_review` |
+
+Текущий package остаётся `needs_review`: `context7` обнаружен в legacy flat `.mcp.json`. Формат не мигрирован автоматически. Validator выполняет ограниченную структурную проверку, а не полную JSON Schema validation. Auth extensions и неподдерживаемые конструкции требуют отдельного review.
+
+| Component / surface | Codex App | CLI | IDE extension |
+| --- | --- | --- | --- |
+| Standalone skills | Документированный механизм; selected path и invocation проверяются отдельно | То же | То же |
+| Local executors/scripts | Требуются проверки проекта | Требуются проверки проекта | Требуются проверки проекта |
+| Native package, MCP, hooks | Нужен receipt client/version/auth/component | Нужен отдельный receipt | Нужен отдельный receipt |
+
+Выход: reviewable inventory и конкретный следующий шаг — решить миграцию MCP declaration, затем проверить выбранный host. Ни `supported_surfaces`, ни manifest presence не являются runtime acceptance. Источники проверены 05.11.2026: [Build plugins](https://developers.openai.com/plugins/build/plugins), [manifest schema](https://agent-plugins.org/schemas/1.0.0/plugin.schema.json), [MCP schema](https://agent-plugins.org/schemas/1.0.0/mcp.schema.json).
 
 ## Входы
 
@@ -35,7 +57,7 @@ Product-Agent OS keeps conservative Codex boundary:
 - нет hosted docs или DB introspection bypass;
 - нет readiness claims из detection.
 
-Codex App, CLI, IDE extension, skills, MCP declarations и staged hooks являются supported package surfaces. Они являются не permission к mutate target workspaces, GitHub, CI, package registries, production databases, hosted documentation, security systems или schedules без explicit approval и текущий verification evidence.
+Codex App, CLI и IDE extension перечислены как intended workflow surfaces. Поддержка native package, skills, MCP и hooks проверяется раздельно по матрице выше. Перечень не разрешает target, GitHub, CI, registry, database или schedule mutations.
 
 ## Compatible Surfaces
 
@@ -121,4 +143,4 @@ Approvals являются не bundled. Approval для один surface не g
 
 ## Компоненты и runtime evidence
 
-Совместимость фиксируйте по client/version/auth/component. Local fixture или наличие manifest не доказывают native install, trust или успешный runtime. IDE native plugins не поддерживаются; legacy package остаётся совместимым форматом. [Surface matrix](../codex/surfaces.md), [package contract](technical.md).
+Совместимость фиксируйте по client/version/auth/component. Local fixture или наличие manifest не доказывают native install, trust или успешный runtime. Для текущего package действует `needs_review` выше; native host support нельзя выводить из standalone skills. [Surface matrix](../codex/surfaces.md), [package contract](technical.md).

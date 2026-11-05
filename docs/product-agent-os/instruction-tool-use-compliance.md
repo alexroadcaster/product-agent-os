@@ -4,7 +4,22 @@ Source status: `official + project evidence`
 
 Источники: [Agent Skills](https://developers.openai.com/codex/skills), [Plugins](https://developers.openai.com/codex/plugins), [Build plugins](https://developers.openai.com/codex/plugins/build), [`AGENTS.md`](https://developers.openai.com/codex/guides/agents-md), [Hooks](https://developers.openai.com/codex/hooks), [Permissions](https://developers.openai.com/codex/permissions), [Subagents](https://developers.openai.com/codex/subagents), [Skill exposure and invocation boundary](../diagrams/skill-exposure-and-invocation.md), `docs/superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json`.
 
-Эта страница описывает, как Product-Agent OS должен обрабатывать запросы про instruction compliance, tool-use compliance, skill/plugin exposure и self-learning-loop. Она не утверждает, что auto-engagement уже исправлен. Текущее состояние: `planned-only` для Batch 42 execution и `implemented_source_docs_no_site_rebuild` для этой документационной страницы.
+Эта страница описывает, как Product-Agent OS должен обрабатывать запросы про instruction compliance, tool-use compliance, skill/plugin exposure и self-learning-loop. Она не утверждает, что auto-engagement уже исправлен. GAP-03 добавляет local evidence к историческому planned-only B42 snapshot; host activation не подтверждён.
+
+## Локальный GAP-03 — 05.11.2026
+
+Входы: canonical source skills, явно выбранный read-only cache и declared selected source. `build_skill_provenance` разделяет raw/normalized hashes, installed, selected, exposed и invoked. BOM/newlines нормализуются; mismatch не вызывает cache refresh. Declared selected path не доказывает загрузку host.
+
+Текущий inventory: 12 source skills, 12 cache skills, normalized drift 11/12. У четырёх canonical metadata (`agent-team-designer`, `docs-maintainer`, `implementation-planner`, `requirements-author`) выявлено неверное размещение `allow_implicit_invocation` внутри `interface`. После разрешения владельца поле перенесено в `policy`, значение `false` сохранено. Все 12 source metadata проходят validator, 94 focused tests прошли. Cache сохранён; effective host policy требует отдельной проверки.
+
+| B42 row | Локальное изменение | Открытая граница |
+| --- | --- | --- |
+| M02 | Bounded inventory и digests | Host exposure/invocation |
+| M04/M05 | Explicit-only policy classification, read-only candidate, metadata validator | Explicit-only решение принято; четыре файла исправлены локально, host loading не проверен |
+| M06 | Отдельный gate сохранён | Fresh-session probe не выполнен |
+| M07/M08 | Compliance к discovery/orchestrator; learning к candidate-only learning loop; RU/EN synthetic cases | Реальное следование инструкциям моделью не проверено |
+
+Route recommendation не вызывает skill и не разрешает запись. Explicit-only отсутствие implicit invocation не является дефектом. Выход: owning B42 evidence и решение владельца; следующий artifact — разрешённый fresh-session receipt с фиксированными hashes. [Skill metadata](https://learn.chatgpt.com/docs/build-skills#optional-metadata), checked 2026-11-05.
 
 ## Что проверяется
 

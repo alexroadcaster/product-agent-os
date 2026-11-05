@@ -1,35 +1,38 @@
 {
-  "task_id": "PAOS-ORD-01-06-2026-11-05",
-  "plan_path": "research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md",
-  "status": "ready_for_completion_ledger",
+  "task_id": "PAOS-WEB-DOCS-2026-11-05",
+  "previous_task_id": "PAOS-GAP03-METADATA-2026-11-05",
+  "previous_task_closure": {
+    "closure_reason": "Approved four-file metadata fix complete; 12 valid explicit-only source metadata, 94 focused and 232 docs/lifecycle/template tests passed. Exact diff and 2394 protected files/12 cache hashes preserved. Parent GAP-03 M06 and GAP-05 host/trust gates remain open.",
+    "status": "ready_for_completion_brief",
+    "plan_path": "research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md",
+    "closure_level": "implemented_locally_verified"
+  },
+  "plan_path": "research/product-agent-os-web-architecture-2026-11-05.md",
+  "scope": "Scope: two Markdown Web proposals and narrow source registry/RUNLOG links. Evidence: SOL audit, current PAOS source, official App Server documentation. Limits: documentation_only; no product implementation, hooks, providers, servers, Git or publication.",
+  "approval_boundary": "Explicit owner approval to start the documentation task and transition the terminal marker; Markdown proposals and registry/RUNLOG only.",
+  "updated_at": "2026-11-05T15:37:49.7928069Z",
+  "status": "ready_for_completion_brief",
   "completion_ready": true,
   "completion_brief_shown": false,
-  "task_start_brief_shown": true,
-  "brief_schema_version": "task_start_brief_v2",
-  "brief_format": "bold_fields",
+  "scope_note_shown": true,
+  "task_start_brief_shown": false,
+  "brief_schema_version": "task_scope_note_v1",
+  "brief_format": "concise",
   "brief_fields_present": [
-    "Request",
-    "Goal",
-    "Context",
     "Scope",
-    "Value",
-    "Execution",
-    "Acceptance",
-    "Risks / approvals",
-    "Next step"
+    "Evidence",
+    "Limits"
   ],
-  "brief_digest": "sha256:6f721a1cbee206b5d5c0aa81ade53bfcbef985785ca1140f289e2fd869d8a32c",
-  "scope": "Implement only PAOS-ORD-01 through PAOS-ORD-06 from research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md. Reuse T23-T29 unchanged. Own named adapter, renderer, runner, focused tests, active compact workflow, RU/EN docs and current control-plane evidence. No GAP/T30-T34, hooks, cache, providers, publication or Git mutations.",
-  "approval_boundary": "Explicit user request to implement ORD-01–06, verify locally and synchronize RU/EN. No publication. Active coding workflow edits included; no hooks/trust changes.",
-  "updated_at": "2026-11-05T12:44:01.112754+00:00",
+  "brief_digest": "sha256:6912bffe5aa37771b8ccf4d50b0d48a2e67feca77483c6f46961bcee4f25b37b",
   "lifecycle_scope": {
-    "work_type": "implementation",
-    "size": "large",
-    "risk": "high",
-    "financially_material": false,
     "release_or_readiness": false,
+    "risk": "low",
+    "size": "bounded",
+    "work_type": "implementation",
     "explicit_packet_request": false,
-    "reason": "Six integrated local routing/infrastructure/workflow slices with approval and legacy compatibility invariants."
+    "reason": "Documentation-only authoring explicitly requested; schema has no documentation work type. Product implementation excluded.",
+    "financially_material": false
   },
-  "closure_level": "implemented_locally_verified"
+  "closure_level": "docs_static_verified",
+  "closure_reason": "PRD and architecture saved as draft_for_review; 100 docs tests, check_docs, strict MkDocs preview, diff and 22 local links checked. No Web implementation. Owner acceptance, runtime compatibility and browser/product checks pending. Evidence: research/product-agent-os-web-architecture-2026-11-05.md sections 16-17."
 }

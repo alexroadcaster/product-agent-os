@@ -2,6 +2,32 @@
 
 Source status: `project-authored`
 
+## Product-Agent OS Web — design 2026-11-05
+
+Scope: documentation proposals, without development or runtime activation. Stack and ICP remain review hypotheses.
+
+| ID | Source | Claim scope | checked_at | Status |
+| --- | --- | --- | --- | --- |
+| WEB-S01 | `research/sol-0.6-product-agent-os-web-analysis-2026-11-05.md` | Local stack, implemented modules, limitations and reuse hypotheses | 2026-11-05 | local audit / source-backed; earlier checks not rerun |
+| WEB-S02 | `research/product-agent-os-web-architecture-2026-11-05.md` | Owning PAOS sources: snapshot, cockpit, routing, question ledger, merge, contract runner | 2026-11-05 | local source inspected; not Web implementation |
+| WEB-S03 | [Codex App Server](https://learn.chatgpt.com/docs/app-server) | Rich client integration, events, approvals; proposed stdio adapter | 2026-11-05 | official / documentation_checked; local compatibility not_verified |
+| WEB-S04 | `research/product-agent-os-web-prd-2026-11-05.md`, `research/product-agent-os-web-architecture-2026-11-05.md` | Screens, scenarios, requirements, proposed stack and A0–A6 stages | 2026-11-05 | project-authored / draft_for_review; implementation not_started |
+
+## Local GAP-01–GAP-05 — 2026-11-05
+
+Local implementation; host activation and semantic source support are not established. Evidence owner: `research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md`.
+
+| ID | Source | Claim scope | checked_at | Status |
+| --- | --- | --- | --- | --- |
+| GAP-S01 | [Build plugins](https://developers.openai.com/plugins/build/plugins) | Portable/compatibility precedence, OpenAI settings overlay, MCP wrapper | 2026-11-05 | official / documentation_checked |
+| GAP-S02 | [Manifest schema](https://agent-plugins.org/schemas/1.0.0/plugin.schema.json), [MCP schema](https://agent-plugins.org/schemas/1.0.0/mcp.schema.json) | Agent Plugins 1.0.0 supported structural subset; not full schema/host validation | 2026-11-05 | primary specification / documentation_checked |
+| GAP-S03 | [Skill metadata](https://learn.chatgpt.com/docs/build-skills#optional-metadata) | policy.allow_implicit_invocation; explicit-only differs from loading/invocation | 2026-11-05 | official / documentation_checked |
+| GAP-S04 | `plugin_components.py`, `validators.py`, B42 matrix | Local inventory/provenance, 12/12 skills, 11 normalized mismatches; four metadata placement errors corrected after owner approval, 12/12 source metadata valid | 2026-11-05 | project-authored / local evidence |
+| GAP-S05 | `source_policy.py`, `test_source_policy.py` | Exact HTTPS hostname; source_present separate from claim_supported and freshness | 2026-11-05 | project-authored / heuristic only |
+| GAP-S06 | Active/package `pre_tool_use_policy.py`, `test_lifecycle_hooks.py` | Pinned exact report grant, task transition and fail-closed negative cases | 2026-11-05 | project-authored / local; fresh host not_verified |
+
+Source policy accepts exact HTTPS hosts `developers.openai.com`, `platform.openai.com`, `learn.chatgpt.com`, `help.openai.com`, `openai.com` and GitHub organization `openai`. Sources headings and lookalike/userinfo/query URLs are not source evidence. `source_present` does not imply `claim_supported`: semantic support remains `not_verified`. Dates older than 90 days or future/invalid dates require review; 90 days is a local heuristic, not an OpenAI standard. Next open the source and verify the specific claim.
+
 ## ORD-01–ORD-06 local integration — 2026-11-05
 
 | ID | Source | Claim scope | Status |

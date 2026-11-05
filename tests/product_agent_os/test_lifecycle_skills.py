@@ -1,6 +1,8 @@
 import re
 import sys
 import unittest
+import tempfile
+import json
 from pathlib import Path
 
 
@@ -13,6 +15,56 @@ ARTIFACT_TEMPLATES = (
 sys.path.insert(0, str(SCRIPTS))
 
 from product_agent_os.contracts import LIFECYCLE_STATES  # noqa: E402
+
+
+class SkillProvenanceTest(unittest.TestCase):
+    def test_compliance_and_learning_routes_preserve_explicit_boundaries(self):
+        from codex_runtime_runner.cli import run_contract
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "AGENTS.md").write_text("Read project instructions first.", encoding="utf-8")
+            for prompt, expected in (("Product-Agent OS auto-engagement broken", "workspace-discovery-auditor"), ("Codex instruction compliance audit", "workspace-discovery-auditor"), ("Проведи аудит инструкций Product-Agent OS", "workspace-discovery-auditor"), ("Product-Agent OS self-learning loop", "learning-loop-maintainer")):
+                with self.subTest(prompt=prompt):
+                    result = run_contract(root, intent_hint=prompt)
+                    route = result["route_packet"]["usage_mode"]["product_agent_route"]
+                    self.assertEqual(route["next_skill"], expected)
+                    self.assertEqual(route["invocation_status"], "recommended_not_invoked")
+                    self.assertEqual(route["write_authority"], "none")
+                    self.assertIn("skill read", route["required_evidence"])
+                    self.assertIn("official sources for OpenAI claims", route["required_evidence"])
+                    self.assertNotEqual(result["status"], "completed")
+            unrelated = run_contract(root, intent_hint="Проверь соблюдение договора поставки")
+            self.assertNotIn("product_agent_route", unrelated["route_packet"]["usage_mode"])
+
+    def test_normalized_cache_drift_is_separate_from_selection_and_invocation(self):
+        from product_agent_os.validators import build_skill_provenance
+        with tempfile.TemporaryDirectory() as tmp:
+            source, cache = Path(tmp) / "source", Path(tmp) / "cache"
+            for root, newline in ((source, "\n"), (cache, "\r\n")):
+                skill = root / "skills/example"; (skill / "agents").mkdir(parents=True)
+                (skill / "SKILL.md").write_bytes(("# Example" + newline).encode())
+                (skill / "agents/openai.yaml").write_text('interface:\n  display_name: "Example"\n  short_description: "Example skill"\n  default_prompt: "Use $example"\npolicy:\n  allow_implicit_invocation: false\n', encoding="utf-8")
+            report = build_skill_provenance(source, cache, selected_root=source)
+            row = report["skills"][0]
+            self.assertTrue(row["installed"])
+            self.assertTrue(row["normalized_match"])
+            self.assertEqual(row["selected_source"], "repository")
+            self.assertEqual(row["exposed"], "not_verified")
+            self.assertEqual(row["invoked"], "not_verified")
+            self.assertNotIn(str(Path(tmp)), json.dumps(report))
+            (cache / "skills/example/SKILL.md").write_text("Changed content", encoding="utf-8")
+            self.assertFalse(build_skill_provenance(source, cache)["skills"][0]["normalized_match"])
+
+    def test_metadata_policy_is_explicit_and_malformed_values_fail(self):
+        from product_agent_os.validators import validate_skill_agent_metadata
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "openai.yaml"
+            prefix = 'interface:\n  display_name: "Example"\n  short_description: "Example skill"\n  default_prompt: "Use $example"\npolicy:\n'
+            for value in ('"false"', 'true', 'null', '[]', 'false\n  allow_implicit_invocation: true'):
+                path.write_text(prefix + '  allow_implicit_invocation: ' + value + '\n', encoding="utf-8")
+                self.assertTrue(validate_skill_agent_metadata(path))
+            path.write_text(prefix + '  allow_implicit_invocation: false\n', encoding="utf-8")
+            self.assertEqual(validate_skill_agent_metadata(path), [])
 
 
 SKILL_NAMES = [

@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from product_agent_os.plugin_components import discover_plugin_components
 from product_agent_os.contracts import CONTROL_PLANE_FILES
 from product_agent_os.methodology_audit import build_methodology_audit
 from product_agent_os.question_protocol import build_question_queue
@@ -683,6 +684,8 @@ def _has_professional_code_authoring_signal(lowered_files: set[str]) -> bool:
 def _has_codex_agentic_workflow_signal(lowered_files: set[str]) -> bool:
     exact_files = {
         ".mcp.json",
+        "mcp.json",
+        "plugin.json",
         "agents.md",
         "agents.override.md",
         "automation.toml",
@@ -980,6 +983,11 @@ def _classify_usage_mode(
     )
     reasons: list[str] = []
 
+    audit_route = _product_agent_audit_route(intent)
+    if audit_route:
+        packet = _usage_mode_packet("maintenance", [], "high", [audit_route["reason"]])
+        packet["product_agent_route"] = audit_route
+        return packet
     if _mentions_any(intent, ["pr", "pull request", "diff", "review before merge"]):
         primary = "pr_review"
         confidence = "high"
@@ -1091,6 +1099,25 @@ def _classify_usage_mode(
 
     secondary = _secondary_usage_modes(primary, lowered, signals, profile)
     return _usage_mode_packet(primary, secondary, confidence, reasons)
+
+
+def _product_agent_audit_route(intent: str) -> dict[str, Any] | None:
+    """Recommend an audit before generic bug handling; never invoke or enable skills."""
+    compliance = any(term in intent for term in (
+        "instruction compliance", "tool-use compliance", "tool use compliance", "auto-engagement",
+        "аудит инструкц", "соблюдение инструкций", "соблюдения инструкций", "аудит использования инструмент",
+    ))
+    learning = any(term in intent for term in ("self-learning loop", "self learning loop", "цикл самообучения"))
+    if not (compliance or learning):
+        return None
+    return {
+        "next_skill": "learning-loop-maintainer" if learning else "workspace-discovery-auditor",
+        "handoff_skill": "project-lifecycle-orchestrator",
+        "reason": "Product-Agent OS learning/compliance requires provenance and instruction audit; generic bug rescue alone is insufficient",
+        "policy": "candidate_only" if learning else "read_only_audit_first",
+        "required_evidence": ["selected skill source/digest", "skill read", "official sources for OpenAI claims", "approval boundary", "current checks and gaps"],
+        "invocation_status": "recommended_not_invoked", "write_authority": "none",
+    }
 
 
 def _usage_mode_packet(
@@ -4048,6 +4075,7 @@ def analyze_workspace(root: str | Path, *, intent_hint: str = "") -> dict[str, A
     return {
         "workspace": str(workspace),
         "detected_files": sorted(files),
+        "plugin_components": discover_plugin_components(workspace, files),
         "detected_stack": stack,
         "existing_control_plane": existing_control_plane,
         "missing_control_plane": missing_control_plane,

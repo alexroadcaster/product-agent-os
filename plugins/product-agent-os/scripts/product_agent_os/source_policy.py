@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import re
+from datetime import date
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlsplit
 
 from product_agent_os.validators import is_forbidden_secret_assignment
 
@@ -11,10 +13,10 @@ OPENAI_BEHAVIOR_PATTERN = re.compile(
     r"\b(OpenAI|Codex|Agents SDK|MCP|hooks?|approvals?|models?|automation|sandbox)\b",
     re.IGNORECASE,
 )
-OFFICIAL_SOURCE_HINT_PATTERN = re.compile(
-    r"(Sources?:|source registry|docs/sources/registry\.md|developers\.openai\.com|github\.com/openai|official docs)",
-    re.IGNORECASE,
-)
+OFFICIAL_HOSTS = {"developers.openai.com", "platform.openai.com", "learn.chatgpt.com", "help.openai.com", "openai.com"}
+URL_PATTERN = re.compile(r'https?://[^\s<>"`]+', re.IGNORECASE)
+CHECKED_DATE_PATTERN = re.compile(r"(?im)^\s*(?:Checked|checked_on|Last verified|Проверено|Дата проверки):\s*`?(\d{4}-\d{2}-\d{2})")
+FRESHNESS_REVIEW_DAYS = 90  # Local review heuristic, never a source freshness guarantee.
 COMMUNITY_PATTERN = re.compile(r"\b(community|user report|reddit|forum|сообщество|отчет пользователя)\b", re.IGNORECASE)
 FRESHNESS_PATTERN = re.compile(
     r"\b(current|latest|today|сейчас|актуальн|models?|pricing|security|approvals?|hooks?|Agents SDK|MCP|automation)\b",
@@ -25,7 +27,7 @@ SENSITIVE_DATA_LITERAL_PATTERN = re.compile(
 )
 
 
-def validate_source_policy(workspace: str | Path) -> dict[str, Any]:
+def validate_source_policy(workspace: str | Path, *, as_of: date | None = None) -> dict[str, Any]:
     """Validate deterministic source-policy markers for a workspace."""
     workspace_path = Path(workspace)
     files: list[dict[str, Any]] = []
@@ -39,7 +41,7 @@ def validate_source_policy(workspace: str | Path) -> dict[str, Any]:
         errors.append(f"workspace is not a directory: {workspace_path}")
     else:
         for path in _candidate_docs(workspace_path):
-            file_report = _validate_file(workspace_path, path)
+            file_report = _validate_file(workspace_path, path, as_of or date.today())
             files.append(file_report)
             if "Source status is required" in file_report["missing_context"]:
                 errors.append("missing Source status")
@@ -66,7 +68,7 @@ def _candidate_docs(workspace: Path) -> list[Path]:
     return []
 
 
-def _validate_file(workspace: Path, path: Path) -> dict[str, Any]:
+def _validate_file(workspace: Path, path: Path, as_of: date) -> dict[str, Any]:
     relative = path.relative_to(workspace).as_posix()
     try:
         text = path.read_text(encoding="utf-8")
@@ -78,7 +80,8 @@ def _validate_file(workspace: Path, path: Path) -> dict[str, Any]:
         )
 
     source_status = _source_status(text)
-    exempt = relative in {"docs/index.md", "docs/sources/registry.md"}
+    exempt = relative in {"docs/index.md", "docs/index.en.md", "docs/sources/registry.md", "docs/sources/registry.en.md"}
+    source_evidence = _source_evidence(text, as_of)
     supported_facts: list[str] = []
     assumptions: list[str] = []
     unsupported_claims: list[str] = []
@@ -88,10 +91,12 @@ def _validate_file(workspace: Path, path: Path) -> dict[str, Any]:
 
     if source_status == "missing" and not exempt:
         missing_context.append("Source status is required")
-    if _has_openai_behavior_claim(text) and not _has_official_source_hint(text):
+    if _has_openai_behavior_claim(text) and not source_evidence["source_present"]:
         missing_context.append("official source hint is required for OpenAI behavior claim")
-    if _has_openai_behavior_claim(text):
-        supported_facts.append("OpenAI-related claim requires source-policy review")
+    if source_evidence["source_present"]:
+        supported_facts.append("Official-source URL is present; content and claim support were not verified")
+    if source_evidence["freshness"]["status"] in {"stale", "invalid", "future"}:
+        missing_context.append("source check date requires review")
     if FRESHNESS_PATTERN.search(text):
         freshness_risks.append("current OpenAI/runtime behavior may drift")
     if _has_community_claim(text) and not _has_community_metadata(text):
@@ -105,6 +110,7 @@ def _validate_file(workspace: Path, path: Path) -> dict[str, Any]:
     return {
         "path": relative,
         "source_status": source_status,
+        "source_evidence": source_evidence,
         "supported_facts": supported_facts,
         "assumptions": assumptions,
         "unsupported_claims": unsupported_claims,
@@ -135,8 +141,8 @@ def _file_report(
 
 
 def _source_status(text: str) -> str:
-    match = re.search(r"Source status:\s*`([^`]+)`", text)
-    return match.group(1).strip() if match else "missing"
+    match = re.search(r"(?m)^Source status:[ \t]*([^\r\n]+)", text)
+    return match.group(1).strip().strip("`") or "missing" if match else "missing"
 
 
 def _has_openai_behavior_claim(text: str) -> bool:
@@ -144,7 +150,39 @@ def _has_openai_behavior_claim(text: str) -> bool:
 
 
 def _has_official_source_hint(text: str) -> bool:
-    return bool(OFFICIAL_SOURCE_HINT_PATTERN.search(text))
+    return bool(_official_hosts(text))
+
+
+def _official_hosts(text: str) -> list[str]:
+    """Classify exact URL hosts; headings, userinfo and suffixes are not evidence."""
+    hosts = set()
+    prose = "\n".join(line for _, line in _non_fenced_lines(text))
+    for candidate in URL_PATTERN.findall(prose):
+        try:
+            parsed = urlsplit(candidate.rstrip(".,);]}"))
+            host = (parsed.hostname or "").lower().rstrip(".")
+            if parsed.scheme.lower() != "https" or parsed.username is not None or parsed.password is not None or parsed.port not in (None, 443):
+                continue
+            if host in OFFICIAL_HOSTS or (host == "github.com" and parsed.path.lower().split("/")[1:2] == ["openai"]):
+                hosts.add(host)
+        except ValueError:
+            continue
+    return sorted(hosts)
+
+
+def _source_evidence(text: str, as_of: date) -> dict[str, Any]:
+    """Separate link presence, date markers and semantic evidence; no web requests."""
+    hosts = _official_hosts(text)
+    match = CHECKED_DATE_PATTERN.search(text)
+    freshness = {"status": "missing", "checked_on": None, "review_after_days": FRESHNESS_REVIEW_DAYS}
+    if match:
+        freshness["checked_on"] = match.group(1)
+        try:
+            age = (as_of - date.fromisoformat(match.group(1))).days
+            freshness["status"] = "future" if age < 0 else "stale" if age > FRESHNESS_REVIEW_DAYS else "date_present_not_verified"
+        except ValueError:
+            freshness["status"] = "invalid"
+    return {"source_present": bool(hosts), "official_hosts": hosts, "claim_supported": "not_verified", "freshness": freshness}
 
 
 def _has_community_claim(text: str) -> bool:

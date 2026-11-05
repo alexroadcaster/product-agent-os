@@ -4,6 +4,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from datetime import date
 from pathlib import Path
 
 
@@ -17,6 +18,35 @@ from product_agent_os.source_policy import validate_source_policy  # noqa: E402
 
 
 class SourcePolicyTest(unittest.TestCase):
+    def test_official_presence_is_not_semantic_or_freshness_verification(self):
+        for host in ("learn.chatgpt.com", "platform.openai.com", "developers.openai.com"):
+            with self.subTest(host=host), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp); (root / "docs").mkdir()
+                (root / "docs/guide.md").write_text("Source status: official\nCodex approvals.\nSources: https://" + host + "/docs\nChecked: 2026-11-05\n", encoding="utf-8")
+                report = validate_source_policy(root, as_of=date(2026, 11, 5))
+                evidence = report["files"][0]["source_evidence"]
+                self.assertTrue(evidence["source_present"])
+                self.assertEqual(evidence["claim_supported"], "not_verified")
+                self.assertEqual(evidence["freshness"]["status"], "date_present_not_verified")
+                self.assertEqual(report["status"], "ok")
+
+    def test_empty_source_header_and_spoofed_urls_do_not_supply_evidence(self):
+        for source in ("Sources:", "official docs", "https://developers.openai.com.evil.test/docs", "https://developers.openai.com@evil.test/docs", "https://evil.test/?next=https://developers.openai.com", "https://[broken", "https://github.com/openai-evil/repo"):
+            with self.subTest(source=source), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp); (root / "docs").mkdir()
+                (root / "docs/guide.md").write_text("Source status: `official`\nCodex approvals.\n" + source, encoding="utf-8")
+                report = validate_source_policy(root)
+                self.assertEqual(report["status"], "needs_review")
+                self.assertFalse(report["files"][0]["source_evidence"]["source_present"])
+
+    def test_stale_invalid_and_missing_dates_remain_explicit(self):
+        for marker, status in (("Checked: 2020-01-01", "stale"), ("Checked: 2026-99-99", "invalid"), ("", "missing")):
+            with self.subTest(marker=marker), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp); (root / "docs").mkdir()
+                (root / "docs/guide.md").write_text("Source status: `official`\nCodex MCP\nhttps://developers.openai.com/codex\n" + marker, encoding="utf-8")
+                report = validate_source_policy(root, as_of=date(2026, 11, 5))
+                self.assertEqual(report["files"][0]["source_evidence"]["freshness"]["status"], status)
+
     def test_missing_source_status_blocks_docs_page(self):
         with tempfile.TemporaryDirectory() as tmp:
             workspace = Path(tmp)

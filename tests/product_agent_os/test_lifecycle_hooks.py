@@ -1,4 +1,5 @@
 import json
+import hashlib
 import importlib.util
 import io
 import os
@@ -85,6 +86,72 @@ def load_hook_module(script: Path):
 
 
 class LifecycleHooksTest(unittest.TestCase):
+    def test_read_only_report_requires_pinned_authority_and_exact_patch(self):
+        module = load_hook_module(HOOKS / "pre_tool_use_policy.py")
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            marker = valid_marker(brief_schema_version="task_scope_note_v1", brief_format="concise",
+                brief_fields_present=["Scope", "Evidence", "Limits"], scope_note_shown=True,
+                previous_task_id="OLD-TASK", lifecycle_scope={"work_type": "research", "size": "bounded", "risk": "low",
+                "financially_material": False, "release_or_readiness": False, "explicit_packet_request": False, "reason": "Read-only analysis with exact report"})
+            write_marker(root, marker)
+            now = datetime.now(timezone.utc)
+            grant = {"schema_version": 1, "task_id": marker["task_id"], "previous_task_id": "OLD-TASK",
+                "workspace_sha256": hashlib.sha256(os.path.normcase(str(root.resolve())).encode()).hexdigest(),
+                "marker_sha256": hashlib.sha256((root / module.LIFECYCLE_STATE_REL).read_bytes()).hexdigest(),
+                "output_path": "reports/result.md", "issued_at": now.isoformat(), "expires_at": (now + timedelta(hours=1)).isoformat()}
+            authority = root / "authority.json"; authority.write_text(json.dumps(grant), encoding="utf-8")
+            digest = hashlib.sha256(authority.read_bytes()).hexdigest()
+            patch = "*** Begin Patch\n*** Add File: reports/result.md\n+Observed result\n*** End Patch"
+            direct = {"tool_name": "functions.apply_patch", "tool_input": patch}
+            nested = {"tool_name": "functions.exec", "tool_input": {"code": "text(await tools.apply_patch(" + json.dumps(patch) + "));"}}
+            for payload in (direct, nested):
+                self.assertEqual(module._report_action_ok(root, payload, authority, digest), (True, "ok"))
+            args = ["--report-authority", str(authority), "--report-authority-sha256", digest]
+            env = dict(os.environ, CODEX_HOOK_WORKSPACE_ROOT=str(root))
+            def wire(payload, flags=args):
+                result = subprocess.run([sys.executable, str(HOOKS / "pre_tool_use_policy.py"), *flags],
+                    input=json.dumps(payload), cwd=root, env=env, capture_output=True, text=True, check=False)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                return json.loads(result.stdout) if result.stdout else {}
+            for payload in (direct, nested):
+                self.assertEqual(wire(payload), {})
+            denied = wire({**direct, "report_authority": grant}, [])
+            self.assertEqual(denied["hookSpecificOutput"]["permissionDecision"], "deny")
+            for cmd in ("git diff --output reports/neighbor.md", "rg --pre malware pattern", "Get-Content -LiteralPath 'x'; write y"):
+                denied = wire({"tool_name": "functions.exec_command", "tool_input": {"cmd": cmd, "login": False}})
+                self.assertEqual(denied["hookSpecificOutput"]["permissionDecision"], "deny")
+            read = {"tool_name": "functions.exec_command", "tool_input": {"cmd": "Get-Content -LiteralPath 'README.md'", "login": False}}
+            self.assertEqual(wire(read), {})
+            self.assertFalse(module._report_read_only({**read, "tool_input": {**read["tool_input"], "shell": "untrusted"}}))
+            self.assertFalse(module._report_action_ok(root, direct, authority, "0" * 64)[0])
+            for name in ("reports/neighbor.md", "src/code.py", ".codex/config.toml", ".codex/hooks/policy.py", "../result.md", "reports/../reports/result.md", "reports/result.md:stream", "reports/RESULT~1.md"):
+                bad = {**direct, "tool_input": patch.replace("reports/result.md", name)}
+                self.assertFalse(module._report_action_ok(root, bad, authority, digest)[0], name)
+            for code in ('await tools.exec_command({"cmd":"python -c write_target"});', nested["tool_input"]["code"] + ' await tools.exec_command({"cmd":"write"});'):
+                self.assertFalse(module._report_action_ok(root, {"tool_name": "functions.exec", "tool_input": {"code": code}}, authority, digest)[0])
+            (root / "reports").mkdir(); (root / "reports/result.md").write_text("user content", encoding="utf-8")
+            self.assertFalse(module._report_action_ok(root, direct, authority, digest)[0])
+            (root / "reports/result.md").unlink()
+            for change in ({"status": "ready_for_completion_ledger"}, {"updated_at": (now - timedelta(days=3)).isoformat()}, {"previous_task_id": "WRONG"}):
+                write_marker(root, {**marker, **change})
+                grant["marker_sha256"] = hashlib.sha256((root / module.LIFECYCLE_STATE_REL).read_bytes()).hexdigest()
+                authority.write_text(json.dumps(grant), encoding="utf-8")
+                digest = hashlib.sha256(authority.read_bytes()).hexdigest()
+                self.assertFalse(module._report_action_ok(root, direct, authority, digest)[0])
+            write_marker(root, marker)
+            grant["marker_sha256"] = hashlib.sha256((root / module.LIFECYCLE_STATE_REL).read_bytes()).hexdigest()
+            for change in ({"expires_at": (now - timedelta(seconds=1)).isoformat()}, {"workspace_sha256": "0" * 64}, {"output_path": "PLAN.md"}):
+                authority.write_text(json.dumps({**grant, **change}), encoding="utf-8")
+                pin = hashlib.sha256(authority.read_bytes()).hexdigest()
+                self.assertFalse(module._report_action_ok(root, direct, authority, pin)[0])
+
+    def test_report_options_do_not_slow_normal_read_only_path(self):
+        module = load_hook_module(HOOKS / "pre_tool_use_policy.py")
+        payload = {"tool_name": "functions.exec_command", "tool_input": {"cmd": "git status --short"}}
+        with mock.patch.object(module, "_read_payload", return_value=(payload, json.dumps(payload))), mock.patch.object(module, "_workspace_root", side_effect=AssertionError("normal read must not resolve workspace")):
+            self.assertEqual(module.main([]), 0)
+
     def test_pre_tool_use_accepts_trade_shaped_start_and_scoped_concise_note(self):
         module = load_hook_module(HOOKS / "pre_tool_use_policy.py")
         scope = {"work_type": "implementation", "size": "large", "risk": "high",

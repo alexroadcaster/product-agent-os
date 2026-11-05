@@ -4,7 +4,22 @@ Source status: `official + project evidence`
 
 Sources: [Agent Skills](https://developers.openai.com/codex/skills), [Plugins](https://developers.openai.com/codex/plugins), [Build plugins](https://developers.openai.com/codex/plugins/build), [`AGENTS.md`](https://developers.openai.com/codex/guides/agents-md), [Hooks](https://developers.openai.com/codex/hooks), [Permissions](https://developers.openai.com/codex/permissions), [Subagents](https://developers.openai.com/codex/subagents), [Skill exposure and invocation boundary](../diagrams/skill-exposure-and-invocation.en.md), `docs/superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json`.
 
-This page documents how Product-Agent OS should handle instruction compliance, tool-use compliance, skill/plugin exposure and self-learning-loop requests. It does not claim that auto-engagement is already fixed. Current status is `planned-only` for Batch 42 execution and `implemented_source_docs_no_site_rebuild` for this documentation page.
+This page documents how Product-Agent OS should handle instruction compliance, tool-use compliance, skill/plugin exposure and self-learning-loop requests. It does not claim that auto-engagement is already fixed. GAP-03 adds local evidence to the historical planned-only B42 snapshot; host activation remains unverified.
+
+## Local GAP-03 — 2026-11-05
+
+Inputs: canonical source skills, an explicitly selected read-only cache and a declared selected source. `build_skill_provenance` separates raw/normalized hashes, installed, selected, exposed and invoked. BOM/newlines are normalized; mismatch never refreshes cache. A declared selected path does not prove host loading.
+
+Current inventory: 12 source skills, 12 cache skills, normalized drift 11/12. Four canonical metadata files (`agent-team-designer`, `docs-maintainer`, `implementation-planner`, `requirements-author`) placed `allow_implicit_invocation` under `interface`. After owner approval, the field was moved to `policy`, preserving `false`. All 12 source metadata files pass validation and 94 focused tests passed. Cache is preserved; effective host policy still needs separate verification.
+
+| B42 row | Local change | Open boundary |
+| --- | --- | --- |
+| M02 | Bounded inventory and digests | Host exposure/invocation |
+| M04/M05 | Explicit-only policy classification, read-only candidate, metadata validator | Explicit-only decision approved; four files corrected locally; host loading unverified |
+| M06 | Separate gate preserved | Fresh-session probe not performed |
+| M07/M08 | Compliance to discovery/orchestrator; learning to candidate-only learning loop; RU/EN synthetic cases | Actual model instruction-following not tested |
+
+Route recommendation neither invokes a skill nor grants writes. Missing implicit invocation for an explicit-only skill is not a defect. Output: owning B42 evidence and owner decision; next artifact: an authorized fresh-session receipt with fixed hashes. [Skill metadata](https://learn.chatgpt.com/docs/build-skills#optional-metadata), checked 2026-11-05.
 
 ## Checked Layers
 

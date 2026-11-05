@@ -6,6 +6,7 @@ import re
 from pathlib import Path
 from typing import Any
 
+from product_agent_os.plugin_components import discover_plugin_components
 from product_agent_os.contracts import CONTROL_PLANE_FILES
 from product_agent_os.stage_manifest import content_digest
 from product_agent_os.validators import is_forbidden_secret_assignment
@@ -267,6 +268,11 @@ SYSTEM_FILE_CLASSES: tuple[SystemFileClass, ...] = (
             "plugins/*/.codex-plugin/plugin.json",
             "plugins/*/README.md",
             "plugins/*/.mcp.json",
+            "plugins/*/plugin.json",
+            "plugins/*/mcp.json",
+            ".codex-plugin/plugin.json",
+            "plugin.json",
+            "mcp.json",
             "plugins/*/skills/**/SKILL.md",
             "plugins/*/assets/templates/**/*.md",
             "plugins/*/assets/templates/**/*.json",
@@ -403,6 +409,7 @@ def build_system_file_hygiene_audit(
         "triggers": TRIGGER_POLICY,
         "system_file_classes": system_file_class_records(),
         "inventory": sorted(inventory, key=lambda item: item["path"]),
+        "plugin_components": discover_plugin_components(workspace, [item["path"] for item in inventory]),
         "findings": sorted(findings, key=lambda item: (item["severity"], item["path"], item["code"])),
         "file_statuses": _file_statuses(inventory, findings, audit_dt, last_audit_at),
         "summary": _summary(status, warnings, errors, trigger, files_scanned=len(inventory)),

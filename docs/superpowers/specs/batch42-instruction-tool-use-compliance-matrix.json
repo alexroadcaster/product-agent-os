@@ -63,7 +63,15 @@
       "acceptance": "Evidence packet lists each Product-Agent OS skill, source path, cache path, manifest entry, agent metadata and active-session exposure status.",
       "verification": "`validate_codex_compatibility.py`, read-only file inventory, fresh-session manual proof when needed.",
       "risks_approval_gates": "Installed cache mutation or global config edits require separate exact approval.",
-      "status": "planned"
+      "status": "planned",
+      "execution_evidence": {
+        "task_id": "PAOS-GAP-03",
+        "checked_at": "2026-11-05",
+        "status": "partially_verified_local_inventory",
+        "owner": "lifecycle-orchestrator",
+        "evidence": "current_execution; owning implementation plan",
+        "host_status": "not_verified"
+      }
     },
     {
       "id": "B42-S1-M03",
@@ -102,7 +110,15 @@
       "acceptance": "Policy lists safe implicit triggers, explicit-only skills, stop conditions, approval gates and rollback path.",
       "verification": "Policy review, fixture route tests, transcript evals and no-unapproved-actions proof.",
       "risks_approval_gates": "Broad implicit invocation can over-trigger skills, add latency or bypass user intent; config/cache changes need separate approval.",
-      "status": "planned"
+      "status": "planned",
+      "execution_evidence": {
+        "task_id": "PAOS-GAP03-METADATA-2026-11-05",
+        "checked_at": "2026-11-05",
+        "status": "implemented_locally_verified_explicit_only",
+        "owner": "lifecycle-orchestrator",
+        "evidence": "current_execution.metadata_correction; owning plan follow-up receipt",
+        "host_status": "not_verified"
+      }
     },
     {
       "id": "B42-S2-M05",
@@ -121,7 +137,15 @@
       "acceptance": "Validator reports all Product-Agent OS skills, policy class, implicit flag, route owner and actionable errors without exposing secrets or raw private paths.",
       "verification": "Focused validator tests, Codex compatibility validation, fixture eval field if promoted.",
       "risks_approval_gates": "Validator must not rewrite metadata automatically or mutate installed cache.",
-      "status": "planned"
+      "status": "planned",
+      "execution_evidence": {
+        "task_id": "PAOS-GAP03-METADATA-2026-11-05",
+        "checked_at": "2026-11-05",
+        "status": "implemented_locally_verified_explicit_only",
+        "owner": "lifecycle-orchestrator",
+        "evidence": "current_execution.metadata_correction; owning plan follow-up receipt",
+        "host_status": "not_verified"
+      }
     },
     {
       "id": "B42-S2-M06",
@@ -141,7 +165,15 @@
       "acceptance": "Fresh-session packet records exposed skills, missing skills, plugin version, restart requirement and accepted gaps.",
       "verification": "Fresh-session manual proof plus docs/control-plane sync; no runtime claim from old-session evidence alone.",
       "risks_approval_gates": "Current session may remain stale; do not claim fixed auto-engagement until fresh-session proof exists.",
-      "status": "planned"
+      "status": "planned",
+      "execution_evidence": {
+        "task_id": "PAOS-GAP-03",
+        "checked_at": "2026-11-05",
+        "status": "not_verified_fresh_host_required",
+        "owner": "lifecycle-orchestrator",
+        "evidence": "current_execution; owning implementation plan",
+        "host_status": "not_verified"
+      }
     },
     {
       "id": "B42-S3-M07",
@@ -161,7 +193,15 @@
       "acceptance": "Runtime route packet recommends Product-Agent OS discovery/lifecycle/compliance/learning-loop handling and records why `bug_rescue` is insufficient when used alone.",
       "verification": "`test_codex_runtime_runner_state_routes`, transcript evals, behavioral eval fixtures and no-provider/no-browser/no-git proof.",
       "risks_approval_gates": "Route recommendation is not permission to mutate config, cache, target files or external systems.",
-      "status": "planned"
+      "status": "planned",
+      "execution_evidence": {
+        "task_id": "PAOS-GAP-03",
+        "checked_at": "2026-11-05",
+        "status": "implemented_locally_synthetic_route",
+        "owner": "lifecycle-orchestrator",
+        "evidence": "current_execution; owning implementation plan",
+        "host_status": "not_verified"
+      }
     },
     {
       "id": "B42-S3-M08",
@@ -181,7 +221,15 @@
       "acceptance": "Eval set catches missing skill reads, unsupported official-doc claims, route bypass, missing approval gates and false completion claims.",
       "verification": "Behavioral evals, transcript replay, focused docs tests and completion-skeptic review.",
       "risks_approval_gates": "Eval fixtures must not include raw private chat logs, secrets or user-specific absolute paths.",
-      "status": "planned"
+      "status": "planned",
+      "execution_evidence": {
+        "task_id": "PAOS-GAP-03",
+        "checked_at": "2026-11-05",
+        "status": "partially_verified_synthetic_only",
+        "owner": "lifecycle-orchestrator",
+        "evidence": "current_execution; owning implementation plan",
+        "host_status": "not_verified"
+      }
     },
     {
       "id": "B42-S4-M09",
@@ -250,5 +298,512 @@
     "B42-S3 runtime route and instruction/tool-use eval hardening",
     "B42-S4 staged self-learning-loop and system-file hygiene triage",
     "B42-S5 closure, control-plane sync and no-unapproved-actions proof"
-  ]
+  ],
+  "current_execution": {
+    "task_id": "PAOS-GAP-01-05-2026-11-05",
+    "checked_at": "2026-11-05",
+    "status": "partially_verified",
+    "historical_snapshot": "planning_boundary and original task status fields retain the 2026-06-19 planning snapshot; current_execution and per-row execution_evidence own the new local evidence.",
+    "owning_plan": "research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md",
+    "source_skill_count": 12,
+    "cache_skill_count": 12,
+    "normalized_drift_count": 11,
+    "metadata_findings": [],
+    "skill_inventory": {
+      "schema_version": 1,
+      "status": "present_unverified",
+      "policy": "preserve_explicit_only_no_metadata_rewrite",
+      "skills": [
+        {
+          "name": "agent-team-designer",
+          "source_path": "source/skills/agent-team-designer",
+          "cache_path": "cache/skills/agent-team-designer",
+          "source": {
+            "present": true,
+            "normalized_sha256": "9f51fa33c83df0aac6e2c4912f5cbf81b3e85e03dc0afe3f8f5e2268b43241fd",
+            "raw_sha256": "9f51fa33c83df0aac6e2c4912f5cbf81b3e85e03dc0afe3f8f5e2268b43241fd",
+            "errors": []
+          },
+          "cache": {
+            "present": true,
+            "normalized_sha256": "fbc274fc7eeb53dc4beb0df0e229b7ca4e6e63c537f1511251c91a74febf3bc0",
+            "raw_sha256": "fbc274fc7eeb53dc4beb0df0e229b7ca4e6e63c537f1511251c91a74febf3bc0",
+            "errors": []
+          },
+          "installed": true,
+          "normalized_match": false,
+          "policy_class": "explicit_only",
+          "implicit_enabled": false,
+          "metadata_errors": [],
+          "selected_source": "repository",
+          "selection_evidence": "caller_declared_path_not_host_loading",
+          "exposed": "not_verified",
+          "invoked": "not_verified"
+        },
+        {
+          "name": "automation-promoter",
+          "source_path": "source/skills/automation-promoter",
+          "cache_path": "cache/skills/automation-promoter",
+          "source": {
+            "present": true,
+            "normalized_sha256": "05f4db1d417e2535616c81e03b45302bdbd325d23e7f04d496964138804dcb99",
+            "raw_sha256": "05f4db1d417e2535616c81e03b45302bdbd325d23e7f04d496964138804dcb99",
+            "errors": []
+          },
+          "cache": {
+            "present": true,
+            "normalized_sha256": "7e462bf2952ec9e0011b266619539b16022c82477ae1b4b4acca3a0fd5fb6fbe",
+            "raw_sha256": "7e462bf2952ec9e0011b266619539b16022c82477ae1b4b4acca3a0fd5fb6fbe",
+            "errors": []
+          },
+          "installed": true,
+          "normalized_match": false,
+          "policy_class": "explicit_only",
+          "implicit_enabled": false,
+          "metadata_errors": [],
+          "selected_source": "repository",
+          "selection_evidence": "caller_declared_path_not_host_loading",
+          "exposed": "not_verified",
+          "invoked": "not_verified"
+        },
+        {
+          "name": "completion-skeptic",
+          "source_path": "source/skills/completion-skeptic",
+          "cache_path": "cache/skills/completion-skeptic",
+          "source": {
+            "present": true,
+            "normalized_sha256": "1f56b3d934a49c392ba15f550d71d8b36ea8cbd3fe8e7e5b97a8b3fb0dbc9d26",
+            "raw_sha256": "1f56b3d934a49c392ba15f550d71d8b36ea8cbd3fe8e7e5b97a8b3fb0dbc9d26",
+            "errors": []
+          },
+          "cache": {
+            "present": true,
+            "normalized_sha256": "1f56b3d934a49c392ba15f550d71d8b36ea8cbd3fe8e7e5b97a8b3fb0dbc9d26",
+            "raw_sha256": "1f56b3d934a49c392ba15f550d71d8b36ea8cbd3fe8e7e5b97a8b3fb0dbc9d26",
+            "errors": []
+          },
+          "installed": true,
+          "normalized_match": true,
+          "policy_class": "explicit_only",
+          "implicit_enabled": false,
+          "metadata_errors": [],
+          "selected_source": "repository",
+          "selection_evidence": "caller_declared_path_not_host_loading",
+          "exposed": "not_verified",
+          "invoked": "not_verified"
+        },
+        {
+          "name": "docs-maintainer",
+          "source_path": "source/skills/docs-maintainer",
+          "cache_path": "cache/skills/docs-maintainer",
+          "source": {
+            "present": true,
+            "normalized_sha256": "464469fb33d8f9a37b53727c911e92fa35a1210f66f369926d5adb8f90ab88ea",
+            "raw_sha256": "464469fb33d8f9a37b53727c911e92fa35a1210f66f369926d5adb8f90ab88ea",
+            "errors": []
+          },
+          "cache": {
+            "present": true,
+            "normalized_sha256": "81cb88fe045390b60ddd5800aa44fd00a09c8cfc8d4ad78b75287aae2ab7058f",
+            "raw_sha256": "81cb88fe045390b60ddd5800aa44fd00a09c8cfc8d4ad78b75287aae2ab7058f",
+            "errors": []
+          },
+          "installed": true,
+          "normalized_match": false,
+          "policy_class": "explicit_only",
+          "implicit_enabled": false,
+          "metadata_errors": [],
+          "selected_source": "repository",
+          "selection_evidence": "caller_declared_path_not_host_loading",
+          "exposed": "not_verified",
+          "invoked": "not_verified"
+        },
+        {
+          "name": "implementation-planner",
+          "source_path": "source/skills/implementation-planner",
+          "cache_path": "cache/skills/implementation-planner",
+          "source": {
+            "present": true,
+            "normalized_sha256": "8fb594bfe456e54b729251cd0cfe9e01ceaecae8dfb08e7188507b6ee5adca3b",
+            "raw_sha256": "8fb594bfe456e54b729251cd0cfe9e01ceaecae8dfb08e7188507b6ee5adca3b",
+            "errors": []
+          },
+          "cache": {
+            "present": true,
+            "normalized_sha256": "5b0314ea558a99c6385130372ba4d391d61f09ae81d4b92d9c94e554ebc49162",
+            "raw_sha256": "5b0314ea558a99c6385130372ba4d391d61f09ae81d4b92d9c94e554ebc49162",
+            "errors": []
+          },
+          "installed": true,
+          "normalized_match": false,
+          "policy_class": "explicit_only",
+          "implicit_enabled": false,
+          "metadata_errors": [],
+          "selected_source": "repository",
+          "selection_evidence": "caller_declared_path_not_host_loading",
+          "exposed": "not_verified",
+          "invoked": "not_verified"
+        },
+        {
+          "name": "learning-loop-maintainer",
+          "source_path": "source/skills/learning-loop-maintainer",
+          "cache_path": "cache/skills/learning-loop-maintainer",
+          "source": {
+            "present": true,
+            "normalized_sha256": "7b38a777b1611103b050dc5442a6d3b95ae76047ff52f4983eadfb76fc82b721",
+            "raw_sha256": "7b38a777b1611103b050dc5442a6d3b95ae76047ff52f4983eadfb76fc82b721",
+            "errors": []
+          },
+          "cache": {
+            "present": true,
+            "normalized_sha256": "c49f3e7cbe4f1d5f8b6203774cecc3812f04b852ce28a03cb6022ac167a8451b",
+            "raw_sha256": "c49f3e7cbe4f1d5f8b6203774cecc3812f04b852ce28a03cb6022ac167a8451b",
+            "errors": []
+          },
+          "installed": true,
+          "normalized_match": false,
+          "policy_class": "explicit_only",
+          "implicit_enabled": false,
+          "metadata_errors": [],
+          "selected_source": "repository",
+          "selection_evidence": "caller_declared_path_not_host_loading",
+          "exposed": "not_verified",
+          "invoked": "not_verified"
+        },
+        {
+          "name": "pr-release-operator",
+          "source_path": "source/skills/pr-release-operator",
+          "cache_path": "cache/skills/pr-release-operator",
+          "source": {
+            "present": true,
+            "normalized_sha256": "a950518c15308554123eeead5ff1d2fb3e5aa26a3684a7172f0c4256dd54d5d4",
+            "raw_sha256": "a950518c15308554123eeead5ff1d2fb3e5aa26a3684a7172f0c4256dd54d5d4",
+            "errors": []
+          },
+          "cache": {
+            "present": true,
+            "normalized_sha256": "425d19ed779f7e933f0be6a1f689c280d3340cb129c6752509533bf412694734",
+            "raw_sha256": "425d19ed779f7e933f0be6a1f689c280d3340cb129c6752509533bf412694734",
+            "errors": []
+          },
+          "installed": true,
+          "normalized_match": false,
+          "policy_class": "explicit_only",
+          "implicit_enabled": false,
+          "metadata_errors": [],
+          "selected_source": "repository",
+          "selection_evidence": "caller_declared_path_not_host_loading",
+          "exposed": "not_verified",
+          "invoked": "not_verified"
+        },
+        {
+          "name": "project-lifecycle-orchestrator",
+          "source_path": "source/skills/project-lifecycle-orchestrator",
+          "cache_path": "cache/skills/project-lifecycle-orchestrator",
+          "source": {
+            "present": true,
+            "normalized_sha256": "a8ecdcb4f662e5b65282db071dc03bbde5b14ee48ab4ec76d42fa59387761445",
+            "raw_sha256": "dd9b5505385bbdac47f4e2b68440cb5ba275bcb392d5dccf770433f67f3b04e1",
+            "errors": []
+          },
+          "cache": {
+            "present": true,
+            "normalized_sha256": "a77a871310dd9b3ead678749dd606578ba41c13320dced39d4966f8a535b1b51",
+            "raw_sha256": "a77a871310dd9b3ead678749dd606578ba41c13320dced39d4966f8a535b1b51",
+            "errors": []
+          },
+          "installed": true,
+          "normalized_match": false,
+          "policy_class": "explicit_only",
+          "implicit_enabled": false,
+          "metadata_errors": [],
+          "selected_source": "repository",
+          "selection_evidence": "caller_declared_path_not_host_loading",
+          "exposed": "not_verified",
+          "invoked": "not_verified"
+        },
+        {
+          "name": "requirements-author",
+          "source_path": "source/skills/requirements-author",
+          "cache_path": "cache/skills/requirements-author",
+          "source": {
+            "present": true,
+            "normalized_sha256": "dc1cd9026219c5af247930250b74e2bc36ad5aef8aa3530ae8ddcc46a023a69f",
+            "raw_sha256": "dc1cd9026219c5af247930250b74e2bc36ad5aef8aa3530ae8ddcc46a023a69f",
+            "errors": []
+          },
+          "cache": {
+            "present": true,
+            "normalized_sha256": "41f0e811131d6a3c9b403e082950ce2aa067d824deda054462a436716b523685",
+            "raw_sha256": "41f0e811131d6a3c9b403e082950ce2aa067d824deda054462a436716b523685",
+            "errors": []
+          },
+          "installed": true,
+          "normalized_match": false,
+          "policy_class": "explicit_only",
+          "implicit_enabled": false,
+          "metadata_errors": [],
+          "selected_source": "repository",
+          "selection_evidence": "caller_declared_path_not_host_loading",
+          "exposed": "not_verified",
+          "invoked": "not_verified"
+        },
+        {
+          "name": "risk-reviewer",
+          "source_path": "source/skills/risk-reviewer",
+          "cache_path": "cache/skills/risk-reviewer",
+          "source": {
+            "present": true,
+            "normalized_sha256": "a236d5aed00924ac69e98886c260086f3b56bdc6b06f2daaeef3072c5d216d1c",
+            "raw_sha256": "a236d5aed00924ac69e98886c260086f3b56bdc6b06f2daaeef3072c5d216d1c",
+            "errors": []
+          },
+          "cache": {
+            "present": true,
+            "normalized_sha256": "d6223a8357ce08ebfa3d382e6ea2fbdc2489df65374733a0cf97e2c43ce88c0c",
+            "raw_sha256": "d6223a8357ce08ebfa3d382e6ea2fbdc2489df65374733a0cf97e2c43ce88c0c",
+            "errors": []
+          },
+          "installed": true,
+          "normalized_match": false,
+          "policy_class": "explicit_only",
+          "implicit_enabled": false,
+          "metadata_errors": [],
+          "selected_source": "repository",
+          "selection_evidence": "caller_declared_path_not_host_loading",
+          "exposed": "not_verified",
+          "invoked": "not_verified"
+        },
+        {
+          "name": "test-eval-designer",
+          "source_path": "source/skills/test-eval-designer",
+          "cache_path": "cache/skills/test-eval-designer",
+          "source": {
+            "present": true,
+            "normalized_sha256": "8d6280ecf89a264ad5039191a1146b5e9fb67d51f82aa35ade4f72708751a266",
+            "raw_sha256": "8d6280ecf89a264ad5039191a1146b5e9fb67d51f82aa35ade4f72708751a266",
+            "errors": []
+          },
+          "cache": {
+            "present": true,
+            "normalized_sha256": "075d7fa8a4edb2540d7064546ed547055f8eec9965da9451aafe5fc95f48bfdb",
+            "raw_sha256": "075d7fa8a4edb2540d7064546ed547055f8eec9965da9451aafe5fc95f48bfdb",
+            "errors": []
+          },
+          "installed": true,
+          "normalized_match": false,
+          "policy_class": "explicit_only",
+          "implicit_enabled": false,
+          "metadata_errors": [],
+          "selected_source": "repository",
+          "selection_evidence": "caller_declared_path_not_host_loading",
+          "exposed": "not_verified",
+          "invoked": "not_verified"
+        },
+        {
+          "name": "workspace-discovery-auditor",
+          "source_path": "source/skills/workspace-discovery-auditor",
+          "cache_path": "cache/skills/workspace-discovery-auditor",
+          "source": {
+            "present": true,
+            "normalized_sha256": "9c0b60ee67ce27de0443c87f11c901d2977e3e09933e07320f442efeed32bdd1",
+            "raw_sha256": "aab9d328f23499154d75c6aec3fab82d75a2ec84e6410983841f6c725b022119",
+            "errors": []
+          },
+          "cache": {
+            "present": true,
+            "normalized_sha256": "550aed4a36c16e1678370690c15f17c39b69dc067d5dfaa1b2c2591df7c156f5",
+            "raw_sha256": "550aed4a36c16e1678370690c15f17c39b69dc067d5dfaa1b2c2591df7c156f5",
+            "errors": []
+          },
+          "installed": true,
+          "normalized_match": false,
+          "policy_class": "read_only_implicit_candidate_not_enabled",
+          "implicit_enabled": false,
+          "metadata_errors": [],
+          "selected_source": "repository",
+          "selection_evidence": "caller_declared_path_not_host_loading",
+          "exposed": "not_verified",
+          "invoked": "not_verified"
+        }
+      ],
+      "host_status": "not_verified"
+    },
+    "cache_mutation": false,
+    "global_config_mutation": false,
+    "fresh_host_receipt": "not_verified",
+    "route_evidence": "tests/product_agent_os/test_lifecycle_skills.py:SkillProvenanceTest; deterministic RU/EN contract route, not actual model invocation",
+    "metadata_correction": {
+      "task_id": "PAOS-GAP03-METADATA-2026-11-05",
+      "owner_approval": "Explicit four-file correction approved in current conversation; preserve false; no cache/global/trust authority.",
+      "status": "implemented_locally_verified",
+      "previous_findings": [
+        {
+          "name": "agent-team-designer",
+          "errors": [
+            "explicit_invocation_policy_required",
+            "implicit_invocation_policy_mismatch",
+            "invalid_interface_scalar:allow_implicit_invocation",
+            "unknown_interface_field"
+          ]
+        },
+        {
+          "name": "docs-maintainer",
+          "errors": [
+            "explicit_invocation_policy_required",
+            "implicit_invocation_policy_mismatch",
+            "invalid_interface_scalar:allow_implicit_invocation",
+            "unknown_interface_field"
+          ]
+        },
+        {
+          "name": "implementation-planner",
+          "errors": [
+            "explicit_invocation_policy_required",
+            "implicit_invocation_policy_mismatch",
+            "invalid_interface_scalar:allow_implicit_invocation",
+            "unknown_interface_field"
+          ]
+        },
+        {
+          "name": "requirements-author",
+          "errors": [
+            "explicit_invocation_policy_required",
+            "implicit_invocation_policy_mismatch",
+            "invalid_interface_scalar:allow_implicit_invocation",
+            "unknown_interface_field"
+          ]
+        }
+      ],
+      "previous_affected_inventory": [
+        {
+          "name": "agent-team-designer",
+          "source_path": "source/skills/agent-team-designer",
+          "cache_path": "cache/skills/agent-team-designer",
+          "source": {
+            "present": true,
+            "normalized_sha256": "f175050bef8db68eaff87b0f1c2b6d9bfa6ea31151a294becd2e6263046f40ba",
+            "raw_sha256": "f175050bef8db68eaff87b0f1c2b6d9bfa6ea31151a294becd2e6263046f40ba",
+            "errors": []
+          },
+          "cache": {
+            "present": true,
+            "normalized_sha256": "fbc274fc7eeb53dc4beb0df0e229b7ca4e6e63c537f1511251c91a74febf3bc0",
+            "raw_sha256": "fbc274fc7eeb53dc4beb0df0e229b7ca4e6e63c537f1511251c91a74febf3bc0",
+            "errors": []
+          },
+          "installed": true,
+          "normalized_match": false,
+          "policy_class": "explicit_only",
+          "implicit_enabled": null,
+          "metadata_errors": [
+            "explicit_invocation_policy_required",
+            "implicit_invocation_policy_mismatch",
+            "invalid_interface_scalar:allow_implicit_invocation",
+            "unknown_interface_field"
+          ],
+          "selected_source": "repository",
+          "selection_evidence": "caller_declared_path_not_host_loading",
+          "exposed": "not_verified",
+          "invoked": "not_verified"
+        },
+        {
+          "name": "docs-maintainer",
+          "source_path": "source/skills/docs-maintainer",
+          "cache_path": "cache/skills/docs-maintainer",
+          "source": {
+            "present": true,
+            "normalized_sha256": "f411dd211993c4660be1b3ba4e6cff339f07f7a5b9aec307aa53931363fd7d4a",
+            "raw_sha256": "f411dd211993c4660be1b3ba4e6cff339f07f7a5b9aec307aa53931363fd7d4a",
+            "errors": []
+          },
+          "cache": {
+            "present": true,
+            "normalized_sha256": "81cb88fe045390b60ddd5800aa44fd00a09c8cfc8d4ad78b75287aae2ab7058f",
+            "raw_sha256": "81cb88fe045390b60ddd5800aa44fd00a09c8cfc8d4ad78b75287aae2ab7058f",
+            "errors": []
+          },
+          "installed": true,
+          "normalized_match": false,
+          "policy_class": "explicit_only",
+          "implicit_enabled": null,
+          "metadata_errors": [
+            "explicit_invocation_policy_required",
+            "implicit_invocation_policy_mismatch",
+            "invalid_interface_scalar:allow_implicit_invocation",
+            "unknown_interface_field"
+          ],
+          "selected_source": "repository",
+          "selection_evidence": "caller_declared_path_not_host_loading",
+          "exposed": "not_verified",
+          "invoked": "not_verified"
+        },
+        {
+          "name": "implementation-planner",
+          "source_path": "source/skills/implementation-planner",
+          "cache_path": "cache/skills/implementation-planner",
+          "source": {
+            "present": true,
+            "normalized_sha256": "6918b11187c178c8c650187adf16f040b38b62376b5e473eb49ce73a7232efcc",
+            "raw_sha256": "6918b11187c178c8c650187adf16f040b38b62376b5e473eb49ce73a7232efcc",
+            "errors": []
+          },
+          "cache": {
+            "present": true,
+            "normalized_sha256": "5b0314ea558a99c6385130372ba4d391d61f09ae81d4b92d9c94e554ebc49162",
+            "raw_sha256": "5b0314ea558a99c6385130372ba4d391d61f09ae81d4b92d9c94e554ebc49162",
+            "errors": []
+          },
+          "installed": true,
+          "normalized_match": false,
+          "policy_class": "explicit_only",
+          "implicit_enabled": null,
+          "metadata_errors": [
+            "explicit_invocation_policy_required",
+            "implicit_invocation_policy_mismatch",
+            "invalid_interface_scalar:allow_implicit_invocation",
+            "unknown_interface_field"
+          ],
+          "selected_source": "repository",
+          "selection_evidence": "caller_declared_path_not_host_loading",
+          "exposed": "not_verified",
+          "invoked": "not_verified"
+        },
+        {
+          "name": "requirements-author",
+          "source_path": "source/skills/requirements-author",
+          "cache_path": "cache/skills/requirements-author",
+          "source": {
+            "present": true,
+            "normalized_sha256": "7763bbe8e515cbaac3e65d7f5909cede9a3aa1ee347c31a16cbc27098c86324d",
+            "raw_sha256": "7763bbe8e515cbaac3e65d7f5909cede9a3aa1ee347c31a16cbc27098c86324d",
+            "errors": []
+          },
+          "cache": {
+            "present": true,
+            "normalized_sha256": "41f0e811131d6a3c9b403e082950ce2aa067d824deda054462a436716b523685",
+            "raw_sha256": "41f0e811131d6a3c9b403e082950ce2aa067d824deda054462a436716b523685",
+            "errors": []
+          },
+          "installed": true,
+          "normalized_match": false,
+          "policy_class": "explicit_only",
+          "implicit_enabled": null,
+          "metadata_errors": [
+            "explicit_invocation_policy_required",
+            "implicit_invocation_policy_mismatch",
+            "invalid_interface_scalar:allow_implicit_invocation",
+            "unknown_interface_field"
+          ],
+          "selected_source": "repository",
+          "selection_evidence": "caller_declared_path_not_host_loading",
+          "exposed": "not_verified",
+          "invoked": "not_verified"
+        }
+      ],
+      "verification": "All 12 source skill metadata valid with policy.allow_implicit_invocation=false; 94 lifecycle/validator tests passed, exit 0. Final docs/lifecycle/template suite: 232 tests, exit 0; both hook validators, task-matrix/docs/diff checks passed; exact diff and protected/cache preservation confirmed.",
+      "host_status": "not_verified",
+      "cache_mutation": false
+    }
+  }
 }

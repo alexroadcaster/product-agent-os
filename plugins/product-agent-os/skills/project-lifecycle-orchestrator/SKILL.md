@@ -28,6 +28,12 @@ Ask for approval for external writes, permission changes, deployment, billing, a
 
 Read shared references when needed: [lifecycle states](<../references/lifecycle-states.md>), [handoff contract](<../references/handoff-contract.md>), [source policy](<../references/source-policy.md>), and [complexity routing](<../references/complexity-routing.md>).
 
+## Provenance and explicit compliance routing
+
+For an explicit instruction/tool-use compliance audit or Product-Agent OS auto-engagement failure, inspect skill source, installed cache and current-session exposure separately before generic bug rescue. Read the selected canonical SKILL.md; record its normalized digest and selected source path. Installed files do not prove exposure, selection or invocation. Never mix source and cache copies of a same-named skill within a run. Missing implicit invocation is expected while allow_implicit_invocation is false; preserve explicit-only policy unless the owner separately chooses a narrow implicit class.
+
+Use the read-only build_skill_provenance result from product_agent_os.validators as local inventory evidence. Its selected path is caller-declared, not proof of host loading. Unknown or mismatched provenance remains a gap. OpenAI behavior claims need current official sources; route recommendations confer no write, cache, provider or publication authority. Self-learning requests produce candidate-only handoffs to learning-loop-maintainer. Fresh-session exposure and invocation require separate host receipts.
+
 ## Inputs
 
 - User goal, workspace path, and requested lifecycle action.
