@@ -1,0 +1,28 @@
+{
+  "task_id": "PAOS-AUDIT-TASK-MATRIX-2026-11-09",
+  "session_id": "01a1a27d-9b83-7da1-b800-11ad9eb81d95",
+  "plan_path": "research/product-agent-os-audit-remediation-task-plan-2026-11-09.md",
+  "scope": "Create one Markdown task matrix for six audit-remediation groups and 26 tasks; implementation and existing documents unchanged.",
+  "updated_at": "2026-11-09T08:45:19+00:00",
+  "approval_boundary": "User requested the separate planning artifact. Only that Markdown and this session marker may change; no runtime, target, cache, trust, ACL, provider, browser, Git or publication actions.",
+  "status": "ready_for_completion_brief",
+  "completion_ready": true,
+  "closure_level": "plan_static_verified",
+  "closure_reason": "Saved one Markdown task plan with six groups and 26 cards. Final task-matrix validator, integrity checks, 100 docs tests, check_docs and diff hygiene passed. Implementation and existing tracked files unchanged; all planned task execution and host/model acceptance remain pending.",
+  "completion_brief_shown": false,
+  "scope_note_shown": true,
+  "task_start_brief_shown": false,
+  "brief_schema_version": "task_scope_note_v1",
+  "brief_format": "concise",
+  "brief_fields_present": ["Scope", "Evidence", "Limits"],
+  "brief_digest": "sha256:4161e1f395b534b04a3e9388db5c5354dcf40c172057c7878ce5f88987aadc06",
+  "lifecycle_scope": {
+    "work_type": "implementation",
+    "size": "bounded",
+    "risk": "low",
+    "financially_material": false,
+    "release_or_readiness": false,
+    "explicit_packet_request": false,
+    "reason": "Authorized planning-document authoring only; current mutation schema has no document-authoring type. This does not authorize implementing planned tasks."
+  }
+}
