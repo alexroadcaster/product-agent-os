@@ -6,7 +6,14 @@ Source status: `official + experiment`
 
 ## Ordinary route: ограниченная задача {#ordinary-route}
 
-Для существующего проекта передайте `--task-context task.json`. Путь JSON считается относительно target workspace и не может выходить за него. Вызов без этого аргумента сохраняет прежний маршрут, помеченный `routing_trace.mode=legacy`.
+Для небольшой явной задачи используйте inline intake без создания JSON-файла. Обязательны `--task`, `--change-mode`, `--changed-path` и `--acceptance` (no_op допускает отсутствие changed paths). Paths/acceptance можно повторять; `--task-id` — необязательный routing label. Отсутствующий `--risk-level` означает unknown и сохраняет gap. Для behavioral invariants/checks/state используйте `--task-context task.json`; путь остаётся внутри workspace. Смешанный или неполный ввод отклоняется без fallback. Без обоих вариантов прежний default сохраняется, оба entrypoints показывают `intake.mode=legacy_fallback`; runtime также сохраняет `routing_trace.mode=legacy`.
+
+```powershell
+python plugins/product-agent-os/scripts/run_codex_runtime_runner.py ./sample --contract --task "Correct wording" --change-mode docs_only --changed-path README.md --acceptance "Correct wording" --risk-level low
+python plugins/product-agent-os/scripts/render_infrastructure.py ./sample --dry-run --task "Correct wording" --change-mode docs_only --changed-path README.md --acceptance "Correct wording" --risk-level low
+```
+
+В workspace должны быть собственные инструкции и source-backed checks, например TEST.md с `python check_docs.py`. Inline input не даёт authority и не запускает проверки. Ordinary stage может содержать ноль предлагаемых файлов и manifest; output остаётся вне target.
 
 ```powershell
 python plugins/product-agent-os/scripts/run_codex_runtime_runner.py ./sample --contract --task-context task.json

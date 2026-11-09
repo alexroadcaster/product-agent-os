@@ -1,5 +1,11 @@
 # EVALS.md
 
+## PAOS-AUD-G4 — 2026-11-09
+
+Source read-set comparison отделён от live behavioral evaluation. 93 moved sections сохранены; 12 metadata unchanged. Typical/edge/adversarial contract gates должны сохраняться. Model/effort/B45 compact-contract treatment не меняется. Partial input не разрешает legacy fallback; unchanged evidence требует original provenance.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
 ## PAOS-AUD-G3 — 2026-11-09
 
 PAOS-AUD-G3: invalid/future/stale/missing dates, local registry escape/broken refs, empty/rejected feedback и historical/current/conflict cases различены. Date/URL не semantic verification; owner_label_supported не positive sentiment/promotion; source status не owner acceptance. No-pointer B37 fallback сохраняется; malformed/stale pointer не разрешает historical fallback.

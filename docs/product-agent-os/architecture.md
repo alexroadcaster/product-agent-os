@@ -18,7 +18,7 @@ Product-Agent OS plugin строит управляемый lifecycle вокру
 | Route → result | Compact contract, checks с reasons, gaps и trace | `route_ready` не означает выполненную задачу |
 | Renderer → stage | Подмножество templates или reuse существующих документов | Полный registry не становится обязательным пакетом |
 
-Вход через `--task-context` — opt-in. Без него сохранён явно обозначенный legacy fallback, включая прежнюю inference по control-plane headings. Схемы legacy lifecycle и runner ниже описывают этот совместимый путь. Новый scoped path дополняет его; high-risk/full сохраняет применимые gates, source policy и approval checks.
+Вход через `--task-context` или явный inline `--task` — opt-in. Без обоих вариантов сохранён явно обозначенный legacy fallback, включая прежнюю inference по control-plane headings. Схемы legacy lifecycle и runner ниже описывают этот совместимый путь. Новый scoped path дополняет его; high-risk/full сохраняет применимые gates, source policy и approval checks.
 
 Пустой или неоднозначный проект получает discovery/requirements gap, а не фиктивную build readiness. Указанный task state требует совпадающих task ID, lifecycle value и hash source record. Полезный локальный результат ORD-01–ORD-06 не означает fresh host activation, promotion, production readiness или автоматическое применение инфраструктуры.
 

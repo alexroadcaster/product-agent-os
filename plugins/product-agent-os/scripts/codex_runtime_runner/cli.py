@@ -15,7 +15,8 @@ from codex_runtime_runner.state import infer_lifecycle_state, resolve_task_state
 from product_agent_os.discovery import analyze_workspace
 from product_agent_os.source_policy import validate_source_policy
 from product_agent_os.task_routing import (
-    TaskContextError, build_task_routing, load_task_context, validate_task_context,
+    TaskContextError, build_task_routing, validate_task_context,
+    add_task_intake_arguments, task_context_from_args, intake_receipt,
 )
 
 
@@ -61,6 +62,7 @@ def run_contract(
         task_routing=task_routing,
     )
     errors: list[str] = []
+    route["intake"] = intake_receipt(task_context)
     warnings: list[str] = []
 
     if context["unreadable"]:
@@ -108,7 +110,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--allow-subagents", action="store_true", help="Allow subagent route recommendations.")
     parser.add_argument("--approval-status", default="not_required")
     parser.add_argument("--intent-hint", default="", help="Optional prompt-like routing hint for contract mode.")
-    parser.add_argument("--task-context", help="Workspace-relative task context v1 JSON; opt in to task-scoped routing.")
+    add_task_intake_arguments(parser)
     parser.add_argument("--output", help="Optional JSON output file.")
     args = parser.parse_args(argv)
     if not args.contract:
@@ -116,7 +118,7 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     try:
-        task_context = load_task_context(args.workspace, args.task_context) if args.task_context else None
+        task_context = task_context_from_args(args.workspace, args)
         result = run_contract(
             args.workspace,
             allow_subagents=args.allow_subagents,

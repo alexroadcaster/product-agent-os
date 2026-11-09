@@ -2,9 +2,11 @@
 
 Source status: `experiment`
 
+G4 (F05/F09/F10/F15) is implemented and locally verified. The next group is G5. Its inline intake preserves legacy defaults; conditional skill gates move to role-specific references, and discovery reuses one immutable inventory for its scope detector. Host loading remains unverified.
+
 ## Current route — 2026-11-09
 
-G1/G2/G3 are locally complete and verified; G3 covers F03/F08/F16. The next slice is G4. Owning plan: `research/product-agent-os-audit-remediation-task-plan-2026-11-09.md`. Local MCP compatibility after G2 is `compatible`; publisher/URLs/icons and actual host acceptance remain gated. This is not release or production readiness.
+G1/G2/G3 are locally complete and verified; G3 covers F03/F08/F16. The next slice is G5. Owning plan: `research/product-agent-os-audit-remediation-task-plan-2026-11-09.md`. Local MCP compatibility after G2 is `compatible`; publisher/URLs/icons and actual host acceptance remain gated. This is not release or production readiness.
 
 The sole machine-readable current pointer lives in `PLAN.md`, between `product-agent-os:current-state:start/end`. It holds owning source paths and SHA-256 revisions only, without duplicating task statuses. `RUNLOG.md` and `TEST.md` refer to that pointer; old Current headings do not establish precedence. Sources are the audit task plan and B42/B45 JSON. Optional task_prefixes bounds ownership: the audit plan projects PAOS-AUD-* only, so its T30–T34 cross-reference cards do not compete with canonical B45. A source change requires an explicit reviewed pointer refresh; a mismatch gives unknown without historical fallback.
 

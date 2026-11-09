@@ -11,7 +11,7 @@ Use this skill when an implementation plan exists and the project needs agent ro
 
 ## Boundaries
 
-Default output is a staged packet. `workspace_apply: forbidden` keeps this skill read-only or proposal-only even when another role has workspace-write.
+Default output is a staged packet. `workspace_apply: explicit_task_authority` permits writing assigned local team plans or handoff artifacts only when the current task authorizes those files and the host permits writes. Otherwise return a proposal. It does not authorize agent dispatch or runtime activation.
 
 Guided question protocol: ask the smallest blocking question only; enforce one blocking question maximum; optional questions stay in the packet; route answers into artifacts or accepted gaps; guided questions are not workspace evidence. Do not use guided questions as a substitute for workspace evidence.
 
@@ -25,12 +25,12 @@ Planning control governance: hard gates live in validator/tests/skills. Hooks ar
 
 Do not store secrets, tokens, credentials, private keys, private customer data, or raw private chat logs.
 Do not create active automation, recurring automation, hooks, workflow files, project templates, MCP servers, or an Agents SDK runner.
-Do not mutate global config. Do not modify config. Do not edit project config.
-Do not create `.codex/agents/*.toml`, write `AGENTS.md` or `RUNLOG.md` directly, edit code, run destructive commands, install external dependencies, use network access, write user-level memory, or connect to external systems.
-Do not claim team readiness, ownership safety, verification completion, or model suitability without evidence from the current run.
-Ask for approval before any write, external action, expanded scope, permission change, or irreversible team/runtime decision.
+Do not mutate global config or edit project config in this role.
+Do not create `.codex/agents/*.toml`, edit implementation code, run destructive commands, install external dependencies, use network access, write user-level memory, or connect to external systems.
+Do not claim team readiness, ownership safety, verification completion, or model suitability without evidence tied to the checked state. Reuse unchanged evidence with its original run identified; rerun after relevant changes or uncertainty.
+Use existing explicit task authority for assigned local team artifacts; ask only for missing authority, external actions, expanded scope, permission changes or irreversible team/runtime decisions.
 
-Read shared references when needed: [Lifecycle states](../references/lifecycle-states.md), [Handoff contract](../references/handoff-contract.md), [Source policy](../references/source-policy.md), and [Complexity routing](../references/complexity-routing.md).
+Instruction hierarchy and evidence reuse follow [Source policy](../references/source-policy.md); factual sources do not override instructions. Read other shared references only when needed: [Lifecycle states](../references/lifecycle-states.md), [Handoff contract](../references/handoff-contract.md), [Source policy](../references/source-policy.md), and [Complexity routing](../references/complexity-routing.md).
 
 ## Inputs
 
@@ -130,25 +130,18 @@ agent_team_design_packet:
   next_lifecycle_state: "team_ready"
 ```
 
-## Requirements Domain Methodology
-
-Use Requirements & Domain evidence to assign ownership. `requirement-registry.md`, `stakeholder-owner-map.md`, `story-slice-map.md`, `requirements-traceability-matrix.md`, `business-rules.md`, `example-map.md`, `requirement-change-impact.md`, and `domain-review-record.md` identify owners, bounded contexts, business rules, domain expert review, accepted gaps, and handoff boundaries. Treat `requirements_traceability_present`, `requirement_quality_present`, `constraints_traceability_present`, `declarative_acceptance_scenarios_present`, `business_rules_present`, `domain_expert_review_present`, `requirement_change_impact_review_present`, `accepted_gap_recorded`, and `requirements_evidence_before_implementation` as ownership inputs before splitting work.
-
-## Solution Architecture Methodology
-
-Use Solution Architecture routing when a slice touches architecture boundary, public contract, data ownership, trust boundary, runtime topology, observability, rollback, or parallel agent ownership. Track `solution_architecture_scope_present`, `architecture_boundary_per_slice`, `boundary_responsibility_owner_present`, `adr_for_architecture_decision`, `diagram_render_check_present`, `runtime_deployment_topology_present`, `observability_architecture_present`, `migration_rollback_path_present`, and `architecture_fitness_function_present`.
-
-Stage or request `.codex/artifact-templates/architecture-overview.md`, `.codex/artifact-templates/adr.md`, `.codex/artifact-templates/architecture-review-record.md`, `.codex/artifact-templates/architecture-fitness-functions.md`, `.codex/artifact-templates/trust-boundary-map.md`, and `.codex/artifact-templates/architecture-docs-tooling-decision.md` when the corresponding gate applies. C4/arc42 only when applicable; architecture-as-code is conditional; Well-Architected review is conditional. Use `not_applicable` or `explicit_gap_accepted` with owner, reason, residual risk and follow-up condition rather than forcing diagrams, cloud review or docs tooling.
-
-## Codex Agentic Workflow
-
-Use `codex_agentic_workflow` when Codex App, CLI, IDE extension, subagents, skills, MCP, hooks, plugins, automation, worktrees, external writes, approval boundaries, memory policy, or Agents SDK orchestration applies. Stage or request `model-reasoning-policy.md`, `mcp-permission-review.md`, `hook-governance.md`, `skill-promotion-record.md`, and `agent-eval-workflow.md` when the corresponding gate applies.
-
-Track `agentic_scope_classified`, `control_plane_present`, `source_of_truth_present`, `read_only_discovery_complete`, `model_reasoning_policy_present`, `fresh_context_handoff_present`, `ownership_split_present`, `subagent_parallelism_safe`, `approval_boundary_present`, `mcp_permission_review_present`, `hook_activation_approval_present`, `plugin_boundary_present`, `skill_promotion_evidence_present`, `automation_manual_stability_present`, `agent_eval_workflow_present`, `memory_policy_present`, and `agentic_evidence_before_completion`. Use memory as recall only. Use `present_unverified` for detected assets until evidence exists. No silent activation: MCP, hooks, automation, external writes, plugin packaging, GitHub Actions, and Agents SDK app orchestration require `approval_required` or explicit owner-approved gap.
-
 ## Evidence Before Completion
 
 Evidence-before-completion (`evidence_before_completion`): do not make a ready claim, completed claim, fixed claim, works claim, or release claim without current command evidence, current eval evidence, current runtime evidence, owner evidence, or an explicit test gap. If only inspection happened, label the result `inspection-only` and list every unsupported completion claim. Treat completion claim without current evidence as blocked.
+
+
+## Conditional References
+
+Read the `Skill: agent-team-designer` section of [Complexity routing](../references/complexity-routing.md), only the subsections matching the changed domain or gate below. Mixed work reads all applicable subsections; unknown applicability requires inspection. Do not load unrelated roles.
+
+- **Requirements Domain Methodology** — changes or claims in Requirements Domain.
+- **Solution Architecture Methodology** — changes or claims in Solution Architecture.
+- **Codex Agentic Workflow** — agent roles, tools, MCP, hooks, skills or automation.
 
 ## Verification
 

@@ -1,5 +1,11 @@
 # REQUIREMENTS.md
 
+## PAOS-AUD-G4 — 2026-11-09
+
+F05/F09/F10/F15: explicit minimal intake без JSON-файла, legacy compatibility receipt, English tests-specific instructions, canonical skill progressive disclosure и измеренное reuse inventory. Нет implicit invocation/cache/host/provider/Git activation; acceptance ограничена local contract/evidence checks.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
 ## PAOS-AUD-G3 — 2026-11-09
 
 PAOS-AUD-G3 разрешает локальные F03/F08/F16: строгие RU/EN dates, безопасные registry refs, claim classes; insufficient_evidence при нуле owner labels; current pointer с revision и раздельными task/run/verification/acceptance. Source presence не semantic proof; история и manual/candidate boundaries сохраняются.

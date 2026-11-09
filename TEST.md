@@ -1,5 +1,11 @@
 # TEST.md
 
+## PAOS-AUD-G4 — 2026-11-09
+
+Full final: 1326 tests, 540.818 s, OK (skipped=1), exit 0; final focused 253 OK; template contracts 95 OK; fixtures 91/91; transcripts 26/26; compatibility exit 0, local structure only. Failed attempts и measurement provenance — owning plan. Final docs/matrix/consistency/diff checks обязательны после closure edits.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
 ## PAOS-AUD-G3 — 2026-11-09
 
 PAOS-AUD-G3: Full unittest: 1320 tests, 725.771 s, OK (skipped=1); final focused 78 tests OK; fixture 91/91; transcript 26/26; compatibility passed (local structure only). Current pointer только в PLAN.md; mismatch запрещает fallback. Source-policy needs_review не равен failed parser test. Failed attempts, UTC fixture correction, final checks и provenance — owning evidence.

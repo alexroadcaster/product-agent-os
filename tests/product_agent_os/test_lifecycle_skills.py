@@ -18,6 +18,23 @@ from product_agent_os.contracts import LIFECYCLE_STATES  # noqa: E402
 
 
 class SkillProvenanceTest(unittest.TestCase):
+    def test_conditional_contract_reader_keeps_role_ownership_and_rejects_missing_section(self):
+        from product_agent_os.validators import read_skill_contract
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "example").mkdir()
+            (root / "references").mkdir()
+            skill = root / "example/SKILL.md"
+            skill.write_text("# Example\n## Conditional References\nRead the `Skill: example` section of [Complexity routing](../references/complexity-routing.md).\n", encoding="utf-8")
+            ref = root / "references/complexity-routing.md"
+            ref.write_text("## Skill: other\nOTHER_ONLY\n## Skill: example\n### Backend\nKEEP_GATE\n", encoding="utf-8")
+            text = read_skill_contract(skill)
+            self.assertIn("KEEP_GATE", text)
+            self.assertNotIn("OTHER_ONLY", text)
+            ref.write_text("## Skill: other\nOTHER_ONLY\n", encoding="utf-8")
+            with self.assertRaises(ValueError):
+                read_skill_contract(skill)
+
     def test_compliance_and_learning_routes_preserve_explicit_boundaries(self):
         from codex_runtime_runner.cli import run_contract
         with tempfile.TemporaryDirectory() as tmp:
@@ -1908,9 +1925,10 @@ class LifecycleSkillsTest(unittest.TestCase):
         self.assertIn("manual stability evidence", text)
 
     def _skill_text(self, name: str) -> str:
+        from product_agent_os.validators import read_skill_contract
         path = SKILLS / name / "SKILL.md"
         self.assertTrue(path.exists(), f"{name} must include SKILL.md")
-        return path.read_text(encoding="utf-8")
+        return read_skill_contract(path)
 
     def _metadata_text(self, name: str) -> str:
         path = SKILLS / name / "agents" / "openai.yaml"

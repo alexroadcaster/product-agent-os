@@ -21,6 +21,59 @@ from codex_runtime_runner.guards import validate_route_packet  # noqa: E402
 
 
 class CodexRuntimeRunnerCliTest(unittest.TestCase):
+    def test_inline_intake_routes_both_languages_without_builder_or_task_file(self):
+        import contextlib
+        import io
+        from render_infrastructure import main as render_main
+        for intent in ("Correct a typo", "Исправить опечатку"):
+            with self.subTest(intent=intent), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp) / "project"
+                root.mkdir()
+                (root / "AGENTS.md").write_text("Follow local instructions.", encoding="utf-8")
+                (root / "README.md").write_text("Text", encoding="utf-8")
+                (root / "TEST.md").write_text("`python check_docs.py`", encoding="utf-8")
+                before = {p.name: p.read_bytes() for p in root.iterdir()}
+                intake = ["--task", intent, "--change-mode", "docs_only", "--changed-path", "README.md",
+                          "--acceptance", "Correct wording", "--risk-level", "low"]
+                stream = io.StringIO()
+                with contextlib.redirect_stdout(stream):
+                    code = runtime_cli.main([str(root), "--contract", *intake])
+                result = json.loads(stream.getvalue())
+                self.assertEqual(code, 0, result)
+                self.assertEqual(result["route_packet"]["task_routing"]["mode"], "ordinary")
+                self.assertEqual(result["route_packet"]["intake"]["mode"], "explicit_task_context")
+                stream = io.StringIO()
+                with contextlib.redirect_stdout(stream):
+                    code = render_main([str(root), "--stage", str(Path(tmp) / "stage"), *intake])
+                staged = json.loads(stream.getvalue())
+                self.assertEqual(code, 0)
+                self.assertEqual(staged["rendered_artifacts"]["files"], [])
+                self.assertEqual(before, {p.name: p.read_bytes() for p in root.iterdir()})
+
+    def test_inline_intake_rejects_partial_mixed_and_escaping_inputs(self):
+        from product_agent_os.task_routing import add_task_intake_arguments, task_context_from_args, TaskContextError
+        import argparse
+        parser = argparse.ArgumentParser()
+        add_task_intake_arguments(parser)
+        with tempfile.TemporaryDirectory() as tmp:
+            for args in (["--task", "Fix"], ["--changed-path", "README.md"], ["--task-context", ""],
+                         ["--task-context", "task.json", "--task", "Fix"],
+                         ["--task", "Fix", "--change-mode", "docs_only", "--changed-path", "../outside.md", "--acceptance", "Fixed"]):
+                with self.subTest(args=args), self.assertRaises(TaskContextError):
+                    task_context_from_args(tmp, parser.parse_args(args))
+            args = parser.parse_args(["--task", "Fix", "--change-mode", "docs_only", "--changed-path", "README.md", "--acceptance", "Fixed"])
+            self.assertEqual(task_context_from_args(tmp, args)["risk_level"], "unknown")
+
+    def test_legacy_callers_expose_fallback_without_changing_default(self):
+        from product_agent_os.infrastructure import render_infrastructure_plan
+        from product_agent_os.templates import required_templates
+        with tempfile.TemporaryDirectory() as tmp:
+            result = runtime_cli.run_contract(tmp)
+            self.assertEqual(result["route_packet"]["intake"]["mode"], "legacy_fallback")
+            rendered = render_infrastructure_plan(tmp)
+            self.assertEqual(rendered["infrastructure_plan"]["intake"]["mode"], "legacy_fallback")
+            self.assertEqual(len(rendered["rendered_artifacts"]["files"]), len(required_templates()))
+
     def test_contract_cli_returns_route_ready_for_quality_gate_workspace(self):
         with tempfile.TemporaryDirectory() as tmp:
             workspace = Path(tmp)

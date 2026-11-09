@@ -16,7 +16,7 @@ Product-Agent OS packages a product-delivery operating model for Codex. It combi
 | Route → result | Compact contract, reasoned checks, gaps and trace | `route_ready` does not mean task completion |
 | Renderer → stage | A template subset or reuse of existing documents | The full registry is not a mandatory package |
 
-The `--task-context` entry point is opt-in. Without it, the explicitly identified legacy fallback is preserved, including previous control-plane heading inference. Legacy lifecycle/runner diagrams describe that compatibility path. The scoped path supplements it; high-risk/full retains applicable gates, source policy and approval checks.
+The `--task-context` or explicit inline `--task` entry point is opt-in. Without either, the explicitly identified legacy fallback is preserved, including previous control-plane heading inference. Legacy lifecycle/runner diagrams describe that compatibility path. The scoped path supplements it; high-risk/full retains applicable gates, source policy and approval checks.
 
 An empty or ambiguous project receives a discovery/requirements gap rather than fictitious build readiness. Explicit task state requires matching task ID, lifecycle value and source-record hash. ORD-01–ORD-06 local integration does not imply fresh host activation, promotion, production readiness or automatic infrastructure application.
 

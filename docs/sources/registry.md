@@ -1,5 +1,9 @@
 # Реестр источников
 
+## PAOS-AUD-G4 — project-local contracts
+
+Project-local G4 contracts: inline/legacy intake, canonical skill disclosure/authority и измеренное reuse inventory. Источники: task_routing.py, discovery.py, canonical skills/references и audit remediation task plan (09.11.2026). Local checks не доказывают host activation или live behavioral quality.
+
 ## PAOS-AUD-G3 — 2026-11-09
 
 | ID | Source | Claim scope | checked_at | Status |

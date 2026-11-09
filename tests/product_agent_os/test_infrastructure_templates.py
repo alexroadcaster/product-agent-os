@@ -1795,10 +1795,9 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 self.assertIn(expected, required_evidence)
 
     def test_backend_intake_security_ops_and_contract_depth(self):
+        from product_agent_os.validators import read_skill_contract
         payloads = {
-            "requirements-author": (PLUGIN_ROOT / "skills" / "requirements-author" / "SKILL.md")
-            .read_text(encoding="utf-8")
-            .lower(),
+            "requirements-author": read_skill_contract(PLUGIN_ROOT / "skills" / "requirements-author" / "SKILL.md").lower(),
             "REQUIREMENTS.md": (TEMPLATE_ROOT / "control-plane" / "REQUIREMENTS.md").read_text(
                 encoding="utf-8"
             ).lower(),

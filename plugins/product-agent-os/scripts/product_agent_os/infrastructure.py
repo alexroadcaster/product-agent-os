@@ -15,7 +15,7 @@ from product_agent_os.status_dashboard import StatusDashboardError
 from product_agent_os.status_dashboard import render_status_dashboard_plan as _render_status_dashboard_plan
 from product_agent_os.status_dashboard import stage_status_dashboard as _stage_status_dashboard
 from product_agent_os.templates import TemplateSpec, render_template, required_templates, selected_templates
-from product_agent_os.task_routing import build_task_routing
+from product_agent_os.task_routing import build_task_routing, intake_receipt
 from product_agent_os.validators import validate_agent_file, validate_agent_project_config, validate_hook_file
 
 
@@ -227,9 +227,13 @@ def _build_result(
             },
         },
     }
+    result["infrastructure_plan"]["intake"] = intake_receipt(task_context)
     if selection is not None:
         result["infrastructure_plan"]["template_selection"] = selection
     if write_files and stage_root is not None:
+        # An ordinary task may reuse every file; its empty proposal still needs
+        # a manifest directory, created only after the task-context gate passes.
+        stage_root.mkdir(parents=True, exist_ok=True)
         manifest = build_stage_manifest(
             workspace=workspace,
             stage_root=stage_root,

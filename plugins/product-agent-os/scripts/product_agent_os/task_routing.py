@@ -49,6 +49,48 @@ class TaskContextError(ValueError):
     """Malformed or out-of-bound task data; callers must not silently fall back."""
 
 
+def add_task_intake_arguments(parser: Any) -> None:
+    """Share the explicit, file-free intake across the two public entrypoints."""
+    parser.add_argument("--task-context", help="Workspace-relative task context v1 JSON; mutually exclusive with inline intake.")
+    parser.add_argument("--task", help="Task intent; opt in to scoped routing without a JSON file.")
+    parser.add_argument("--task-id", help="Optional routing label; never authority or a completion receipt.")
+    parser.add_argument("--change-mode", choices=sorted(CHANGE_MODES | EXTRA_MODES))
+    parser.add_argument("--changed-path", action="append", help="Changed workspace-relative path; repeat as needed.")
+    parser.add_argument("--acceptance", action="append", help="Observable acceptance criterion; repeat as needed.")
+    parser.add_argument("--risk-level", choices=("low", "medium", "high", "unknown"))
+
+
+def task_context_from_args(workspace: str | Path, args: Any) -> dict[str, Any] | None:
+    """Normalize explicit intake; partial input fails closed, never legacy fallback.
+
+    Rich risks, checks and state receipts use the existing JSON contract. Inline
+    input does not infer invariants, executable seams, verification or authority.
+    """
+    inline = any(getattr(args, name) is not None for name in
+                 ("task", "task_id", "change_mode", "changed_path", "acceptance", "risk_level"))
+    if args.task_context is not None:
+        if inline:
+            raise TaskContextError("task_context:mixed_inline_and_file")
+        return load_task_context(workspace, args.task_context)
+    if not inline:
+        return None
+    return validate_task_context(Path(workspace).resolve(), {
+        "schema_version": 1, "task_id": args.task_id if args.task_id is not None else "inline-task", "intent": args.task,
+        "change_mode": args.change_mode, "changed_paths": args.changed_path or [],
+        "acceptance": args.acceptance or [], "risk_level": args.risk_level or "unknown", "risks": [],
+    })
+
+
+def intake_receipt(task_context: dict[str, Any] | None) -> dict[str, str]:
+    """Make compatibility fallback visible without changing legacy defaults."""
+    return {
+        "mode": "legacy_fallback" if task_context is None else "explicit_task_context",
+        "reason": "no_explicit_task_context" if task_context is None else "existing_selectors_with_task_scope",
+        "next_action": "Use --task with scope/acceptance/risk, or --task-context for rich risks/checks/state.",
+        "authority": "routing_only_not_write_permission",
+    }
+
+
 def workspace_path(root: Path, name: str) -> Path:
     """Resolve a workspace-relative path, rejecting traversal, drives and symlinks out."""
     if not isinstance(name, str) or not name.strip() or name != name.strip():

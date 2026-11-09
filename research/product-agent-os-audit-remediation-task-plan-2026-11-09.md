@@ -1,6 +1,6 @@
 # Product-Agent OS — задачи и группы исправлений по полному аудиту
 
-Source status: project-local planning artifact, 09.11.2026; составлен по сохранённому аудиту и текущим owning plans. Статус документа: `G1/G2/G3 implemented_locally_verified`; G4–G6 остаются planned. Сохранение карточек не означает выполнение, promotion или разрешение на перечисленные внешние действия.
+Source status: project-local planning artifact, 09.11.2026; составлен по сохранённому аудиту и текущим owning plans. Статус документа: `G1/G2/G3/G4 implemented_locally_verified`; G5–G6 остаются planned. Сохранение карточек не означает выполнение, promotion или разрешение на перечисленные внешние действия.
 
 Document ID: `PAOS-AUDIT-REMEDIATION-2026-11-09`. Authoring task: `PAOS-AUDIT-TASK-MATRIX-2026-11-09`. Часовой пояс: `Europe/Moscow`.
 
@@ -54,7 +54,7 @@ Document ID: `PAOS-AUDIT-REMEDIATION-2026-11-09`. Authoring task: `PAOS-AUDIT-TA
 - Новые behavior/bug fixes: observable RED → минимальный GREEN → scoped refactor. Behavior-neutral документация и форматирование — static checks. Relevant regression, fixture/transcript и compatibility gates выбираются по TEST.md; не повторять неизменные проверки без причины.
 - Локальные contract tests, schema validation и generated artifact не доказывают actual host loading, trust, model selection или product acceptance. Для таких claims нужны отдельные receipts выбранного проверенного состояния.
 - Указанные роли — будущая ownership recommendation. Они не означают запущенных subagents. Skill выбирать по конкретному подэтапу; canonical Product-Agent OS skills брать из repository, не смешивать с installed cache.
-- Исходный authoring запрос разрешал сохранить план, но не выполнять его implementation, provider/model/reviewer calls, cache/global edits, target apply, ACL/trust/rules activation, browser/server, Git или publication. Запросы 09.11.2026 разрешили локальную реализацию G1, G2 и G3; для остальных групп требуется соответствующий implementation request; конкретные внешние границы сохраняются.
+- Исходный authoring запрос разрешал сохранить план, но не выполнять его implementation, provider/model/reviewer calls, cache/global edits, target apply, ACL/trust/rules activation, browser/server, Git или publication. Запросы 09.11.2026 разрешили локальную реализацию G1, G2, G3 и G4; для остальных групп требуется соответствующий implementation request; конкретные внешние границы сохраняются.
 - Rollback будущего slice: отменить только его собственные изменения относительно снятого baseline, сохранив чужие hunks и историческое evidence. Для ACL/target/trust заранее нужен отдельный rollback route.
 - Оценки длительности не зафиксированы: нет достаточного measured baseline. Не подменять расписание выдуманными сроками; после первого slice оценить фактический объём.
 
@@ -84,6 +84,103 @@ Self-review: новые corrective slices отделены от уже выпо�
 - Registry RU/EN: not_applicable для этого research plan — новые official behavior claims не добавляются; источник findings остаётся аудит. Обновления registry включены в соответствующие будущие slices.
 - Site/navigation/diagrams: not_applicable для authoring; план не включён в site и не содержит claim о свежей сборке.
 - Overflow/refactor: not_applicable. Исторические артефакты, machine status и прочие файлы сохранены.
+
+## PAOS-AUD-G4 — execution evidence 09.11.2026
+
+Status: `implemented_locally_verified`; F05/F09/F10/F15. Можно переходить к G5. Start: 11:30:07 UTC после preflight. Один исполнитель, zero delegation, self_review. Baseline git status: только собственный lifecycle marker dirty; G1–G3 и параллельная Web-документация уже находились в текущем checkout. История не менялась.
+
+### Scope и решения
+
+- F05: existing `task_routing.py` общий adapter `--task`, `--change-mode`, repeated `--changed-path` / `--acceptance`, optional `--task-id`, `--risk-level`. Missing risk=unknown; поведенческие invariants/checks/state остаются в rich `--task-context`. Partial/mixed/unsafe input rejected без fallback. Оба public callers: `codex_runtime_runner/cli.py`, `render_infrastructure.py`; explicit/legacy receipt также в `infrastructure.py`. Legacy default сохранён решением compatibility: автоматическое угадывание task scope из prompt не заменяет checked contract. Existing selectors/state/routes/templates не переписаны. Пустой ordinary stage создаёт manifest directory после gates; target не меняется.
+- F10/F09 manifest: все 12 canonical `plugins/product-agent-os/skills/*/SKILL.md`; существующие `references/complexity-routing.md`, `references/source-policy.md`, `references/handoff-contract.md`; `tests/AGENTS.md`; профильные `test_lifecycle_skills.py`, `test_validators.py`; связанный contract consumer `test_infrastructure_templates.py`. Фактически test_validators.py не менялся, его checks переиспользованы. `agent-team-designer` пишет только явно порученные local team/handoff artifacts; dispatch/config activation не разрешены. Completion skeptic и прочие assurance roles read-only. Instruction precedence отделена от factual authority. Relevant unchanged evidence можно переиспользовать с исходной provenance.
+- F09: 93 conditional domain sections перенесены без смысловых правок в role-specific sections существующего complexity reference. Entry points содержат triggers, authority, inputs/outputs, stop/verification и индекс applicability. Mixed work читает все затронутые subsections; unknown требует inspection. Role-specific contract reader в `validators.py` и его callers в `test_lifecycle_skills.py` / `run_fixture_eval.py` проверяют сохранённые gates, не загружают skills в host. Metadata всех 12 skills byte-identical; implicit invocation/cache не менялись. Новых refs/framework нет.
+- F15: только `discovery.py` извлекает чистый scope detector и переиспользует frozenset текущего inventory внутри одного вызова. Публичный scope API по-прежнему сканирует свежие данные. Methodology/first-run inventories имеют другие exclusions; их не объединяли. Нового cross-call cache, БД или module framework нет.
+- Tests: `test_codex_runtime_runner_cli.py`, `test_methodology_audit.py`, `test_lifecycle_skills.py`; existing renderer/state/validator tests. Read-only fixture work и ignored measurements под `.docs-tools/reports/paos-aud-g4/`; TEMP/TMP под `tmp` и `eval-tmp`, Python -B/PYTHONDONTWRITEBYTECODE=1.
+
+### Проверки и failed attempts
+
+| Command / check | Observed result |
+| --- | --- |
+| Three new intake tests | RED exit 1: 3 tests, 4 errors; flags/helper/fallback receipt отсутствовали |
+| `python -B -m unittest tests.product_agent_os.test_codex_runtime_runner_cli tests.product_agent_os.test_codex_runtime_runner_state_routes tests.product_agent_os.test_infrastructure_renderer -v` | Первый GREEN attempt: 77 tests, 2 errors; empty ordinary stage не создавал manifest directory. Исправлено и включено в passing combined run |
+| `test_discovery_reuses_inventory_for_scope_without_stale_cross_call_cache` | RED exit 1: scan count 2 != 1; затем GREEN в combined run, включая fresh second call after filesystem change |
+| Runtime modules выше плюс `tests.product_agent_os.test_methodology_audit` | Exit 0: 134 tests, 28.223 s (`runtime-green.log`) |
+| Conditional role-section reader | RED import error; первая implementation выявила CRLF regex mismatch. Normalization исправлена; final role isolation/missing section checks pass |
+| `python -B -m unittest tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_validators -v` | Exit 0: 95 tests, 2.498 s (`skills-final.log`) |
+| `skill-creator/scripts/quick_validate.py` validate_skill on each canonical skill, PYTHONUTF8=1 | 12/12 valid, exit 0; metadata unchanged |
+| `measure_scans.py baseline/after` | Первый measurement attempt: sandbox TEMP PermissionError (setup failure). Повтор с workspace TEMP: exit 0; baseline до discovery change сохранён. Five-run timings и exact outputs в JSON |
+| `python -B plugins/product-agent-os/scripts/run_fixture_eval.py` | Attempt 1 exit 1: typo в readiness reader, исправлен. Attempt 2 exit 1: 82/91 из-за оставшихся f-string readers; подключены к role-specific reader, assertions сохранены. Final exit 0: 91/91 (`fixtures-verified.log`) |
+| `python -B -m unittest discover -s tests -p "test_*.py" -v` | Initial exit 1: 1326 tests, 469.721 s, failures=9, skipped=1; старые fixture readers и один template test consumer. Исправлены до final. Full final: 1326 tests, 540.818 s, OK (skipped=1), exit 0 (`full-final.log`) |
+| `python -B -m unittest tests.product_agent_os.test_codex_runtime_runner_cli tests.product_agent_os.test_infrastructure_renderer tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_validators tests.product_agent_os.test_product_agent_os_docs -v` | Exit 0: 253 tests, 34.476 s (`final-focused.log`), включает docs и empty explicit task-context regression |
+| `python -B -m unittest tests.product_agent_os.test_infrastructure_templates -v` | Exit 0: 95 tests, 1.399 s; backend assertions сохранены, reader следует relocation |
+| `python -B plugins/product-agent-os/scripts/run_transcript_eval.py`; `validate_codex_compatibility.py` | Каждый exit 0; transcripts 26/26; compatibility local structure only, host not_verified |
+| `validate_agents.py .codex/agents`; `validate_hooks.py .codex/hooks.json`; `validate_hooks.py plugins/product-agent-os/assets/templates/hooks` | Каждый exit 0; 15 active agents, errors/config_errors=[]; hooks errors=[]; activation не выполнялась |
+| `python -B tools/check_docs.py`; `validate_task_state_consistency.py`; `validate_task_matrix.py` с этим plan | Exit 0; structure passed; validators ok=true/errors=[] |
+| `git diff --check` | Initial: один trailing blank line в complexity reference; удалён. Final exit 0 |
+| Self-review empty explicit file argument | RED exit 1: `--task-context ""` ошибочно выбирал legacy. Проверка None вместо truthiness исправляет отказ; final focused passed |
+
+### Измерения и claim ceiling
+
+Fixed synthetic workspace: 304 files, 300 source files в 10 directories; один environment, пять discovery samples. Calls `_relative_files`: 2 → 1. Median discovery: 114.448 ms → 103.959 ms (~9.2% в этом локальном fixture). Полный discovery output до/после equal. Методологический scan отдельно сохранён; это не обещание универсального ускорения.
+
+На том же fixture legacy renderer предлагает 209 artifacts, explicit ordinary — 0, questions=[] в обоих. Timing diagnostic: legacy 593.0/588.5 ms до/после; ordinary 127.6/118.3 ms. Снижение questions не заявляется, baseline уже нулевой. CLI-to-stage RU/EN/no-builder test не создаёт task.json и сохраняет target bytes.
+
+93 moved section bodies сравнены с baseline; все совпали. Entrypoint raw UTF-8 bytes: 292137 → 194355. Ниже реально прочитанные deterministic measurement read sets: SKILL.md + указанные shared refs + selected conditional subsection bodies. Это source-loading simulation, не fresh-host/model token/latency/quality evidence.
+
+| Read set | Before bytes | After bytes | Reduction |
+| --- | --- | --- | --- |
+| ordinary-doc-plan: implementation-planner + Docs Tooling Selector + source-policy | 42401 | 29541 | 30.33% |
+| backend-review: risk-reviewer + Backend + Quality Testing/Evals + source-policy | 34927 | 24137 | 30.89% |
+| security-ai-review: risk-reviewer + Security + LLM/AI/RAG + Quality + source-policy | 34927 | 25458 | 27.11% |
+| team-handoff: agent-team-designer + Codex Agentic Workflow + source-policy + handoff-contract | 26947 | 26863 | 0.31% |
+
+No claim that every skill or path shrinks equally. All-domain reads can cost more due to the index; applicability remains the selector. Local typical/edge/adversarial contract comparisons preserve role ownership, missing evidence, approvals, unsafe paths and conditional domain gates. Live behavioral comparison/fresh-session discovery belongs to G6, not this source-level check. Model/effort and B45 treatment не менялись.
+
+Rollback: только G4 hunks. Snapshot baseline и file hashes в ignored reports. B42/B45 source JSON, G1–G3, installed cache, global instructions, trust, hooks/rules и Git history не меняются.
+
+
+### Closure, sync и provenance
+
+Final closure checks после записи статусов: docs unittest exit 0, 100 tests, 3.511 s (`docs-final.log`); check_docs, task matrix, task-state consistency и git diff --check — каждый exit 0. Source/test hashes совпадают с verified manifest; current projection содержит 43 tasks без issues.
+
+Self-review: context_mode=self_review; tester_verdict=closed_allowed для local scope. Проверены public caller compatibility, fail-closed intake, source/read-only boundaries, unchanged metadata, role-scoped references и snapshot lifetime. Blocking findings исправлены. Source bodies 93/93 preserved; текущая projection обновляется после owning-plan write.
+
+Control-plane sync: REQUIREMENTS/PLAN/TEST/EVALS/RUNLOG updated; CLI/architecture/current-state RU/EN и registry RU/EN updated. prod_test.md not_applicable (Batch 39 не затронут); handoffs none; overflow not_required (<50 KiB roots). Strict MkDocs not_applicable: nav/Mermaid/extensions/site не менялись. Generated site freshness не заявляется.
+
+Measured interval 11:30:07–11:58:37 UTC: 28 мин 30 с; preflight и final evidence checks после checkpoint не включены. Model/reasoning inherited, subagents=0; token/tool telemetry unavailable. Skills: skill-creator прочитан; Python advisory skills ранее прочитаны.
+
+SHA-256 проверенного source/test manifest (raw bytes); source bodies и metadata имеют отдельное baseline сравнение:
+
+| Path | SHA-256 |
+| --- | --- |
+| `plugins/product-agent-os/scripts/codex_runtime_runner/cli.py` | `a7ce19682281a554894d8c15d45dbb8d1cdf6cb7cb86019d387797e771c382e2` |
+| `plugins/product-agent-os/scripts/product_agent_os/discovery.py` | `38311ab28a2b80f9fd61f73c6b39c9b38bae1e139c5e32044e5260aec16aa6e8` |
+| `plugins/product-agent-os/scripts/product_agent_os/infrastructure.py` | `b9c8c4a211c5c042148ec9fd0034943b67d577498b8b346bcc51c646b8a58326` |
+| `plugins/product-agent-os/scripts/product_agent_os/task_routing.py` | `bcf5740677a3651558643f8d259b744faff0fd916c5090d622de5328e439e097` |
+| `plugins/product-agent-os/scripts/product_agent_os/validators.py` | `9fa8cf833a99f1188d00b24b18a5cdf18fdf305627501f145d109e7a3e888deb` |
+| `plugins/product-agent-os/scripts/render_infrastructure.py` | `7238888560086dcf97bbcfb0000b2c6a469366bb2d969de33dd57603dc6687a5` |
+| `plugins/product-agent-os/scripts/run_fixture_eval.py` | `34216b5ddc01dd64abf2c2e29e53c0671c812d9064b95552276f42658eff0bc2` |
+| `plugins/product-agent-os/skills/agent-team-designer/SKILL.md` | `8767197ce0ef37475a24dfc9daa5614ba259ce4dd9fd4437389242342031658e` |
+| `plugins/product-agent-os/skills/automation-promoter/SKILL.md` | `01911c2074257c5318dee54fb3b914cf30281f97cbab4fdc257106fdf5393838` |
+| `plugins/product-agent-os/skills/completion-skeptic/SKILL.md` | `3f88af990e13b8cb51c2cf320579fdca550b321fbc153ae195b7bee38711f9c8` |
+| `plugins/product-agent-os/skills/docs-maintainer/SKILL.md` | `7871f1d7a1df5f794cace515248b82973d7410834cd70f62cbf6c3c2ba91f1fa` |
+| `plugins/product-agent-os/skills/implementation-planner/SKILL.md` | `e6e846e712e9988f6dccb8336e2580ef760fa83225c01edcb5a2b4ab2832c151` |
+| `plugins/product-agent-os/skills/learning-loop-maintainer/SKILL.md` | `d132400fd3ee5117a43dc885c82a63929ed2da196c714c30ec3f78bde12ffd98` |
+| `plugins/product-agent-os/skills/pr-release-operator/SKILL.md` | `538eee5bffbdaa07e57dbea8ee69c9dd6f740a0568559900ad747de034cafc27` |
+| `plugins/product-agent-os/skills/project-lifecycle-orchestrator/SKILL.md` | `de0ddc5ac698a5f23e1dcf86c8f7d68d6a649054405129bca97209561f2cf7e8` |
+| `plugins/product-agent-os/skills/references/complexity-routing.md` | `cb8fe7a0fd0435385726f19727d2650c79e56a05de0a3d4202b024fc43fa0cb2` |
+| `plugins/product-agent-os/skills/references/handoff-contract.md` | `fa7529e299eea52b329d0cfec64810ce8642a92e5a00889b50210d740d9fffe6` |
+| `plugins/product-agent-os/skills/references/lifecycle-states.md` | `649cb4d7ba706ee6c7fe88a2cd8640daab5c011c51c04a92d0097c70cfa21cd8` |
+| `plugins/product-agent-os/skills/references/source-policy.md` | `c31766c27ba09fa0a2ad7ce1798482177be9e5d22d93bea075f7fd45f85b8e35` |
+| `plugins/product-agent-os/skills/requirements-author/SKILL.md` | `50c13a4f52ed81f0d6bfa459620b48f13619312827c92c3f35c5bb45bf1b1e82` |
+| `plugins/product-agent-os/skills/risk-reviewer/SKILL.md` | `6a3e6d8ff4f5c6796a154d842e3632a3efcb553e0432cfdd0207ec03487f902b` |
+| `plugins/product-agent-os/skills/test-eval-designer/SKILL.md` | `0d969a53d66e33fe14fab1501896ec7f33299b2bf405ead63018a513c6c6df19` |
+| `plugins/product-agent-os/skills/workspace-discovery-auditor/SKILL.md` | `cca08a7300df6c2a1fc6d55513dda1ffeb2e21c0fd6d0319a8f90a59713b5187` |
+| `tests/AGENTS.md` | `305aced71d08747c36eeb0c0fe8659e349d2fb19e60c6b538b785c9512a01005` |
+| `tests/product_agent_os/test_codex_runtime_runner_cli.py` | `0ae558423c1b4e90b49c80bed04120d24617a1ecc60e984f80dd505bd5351177` |
+| `tests/product_agent_os/test_infrastructure_templates.py` | `b3441d7c35b1ef187100f43af1de1c2ae15371d3bea13c5a2d242a957bb87879` |
+| `tests/product_agent_os/test_lifecycle_skills.py` | `ee777fbf3a7dcec93e1427d6a3d8e704ae551c2fccc3f1c743619d45b68ed6cd` |
+| `tests/product_agent_os/test_methodology_audit.py` | `b11b58305b1f411e1434f5a3237a475963e7918f84271b4e51d894d450e8caa4` |
 
 ## PAOS-AUD-G3 — execution evidence 09.11.2026
 
@@ -898,12 +995,12 @@ host acceptance; иных обязательных local handoffs нет.
 - Scope: **Затрагиваемые файлы:** `plugins/product-agent-os/scripts/product_agent_os/infrastructure.py`; `plugins/product-agent-os/scripts/product_agent_os/templates.py`; `plugins/product-agent-os/scripts/codex_runtime_runner/cli.py`; `plugins/product-agent-os/scripts/codex_runtime_runner/state.py`; `plugins/product-agent-os/scripts/codex_runtime_runner/routes.py`; `tests/product_agent_os/test_codex_runtime_runner_cli.py`; `tests/product_agent_os/test_codex_runtime_runner_state_routes.py`; `tests/product_agent_os/test_infrastructure_renderer.py`. Общий docs/control-plane scope — по правилам выше.
 - Acceptance criteria: **Критерии приёмки:** 1) Small ordinary case выбирает согласованный минимальный artifact set; high-risk/unknown case сохраняет escalation. 2) RU/EN проекты и отсутствие builder не вызывают скрытого full onboarding. 3) Legacy callers имеют явный fallback receipt; default меняется только после compatibility regression и отдельного решения в задаче. 4) Нет автоматического target apply или повторной реализации T25–T29.
 - Group: PAOS-AUD-G4
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Сохранение плана по запросу владельца; execution не разрешён.
+- Plan trigger: Запрос владельца 09.11.2026 на полную локальную реализацию G4 с проверками.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 09-11-2026 14:58
 - Depends on: ORD-01–ORD-06 выполнены. Intake можно реализовать независимо; incremental report scenario использует завершённые F06/F18.
 - Blocks: PAOS-AUD-F15, PAOS-AUD-F14, PAOS-GAP-06
 - Source: F05; ORD-01–ORD-06 и T23–T29 уже реализованы.
@@ -915,20 +1012,20 @@ host acceptance; иных обязательных local handoffs нет.
 - Estimated execution time: not_estimated; после preflight конкретного slice.
 - Agents: plugin-runtime-builder; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
-- Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: Проверить названные зависимости, затем согласовать точный local file scope, воспроизвести исходный case и выполнить только эту задачу после запроса на реализацию.
+- Output artifacts: Scope files и G4 execution evidence в этом плане.
+- Next step: PAOS-AUD-G5; host/behavioral gates отдельно в G6.
 
 #### Completion Report
 
-- status: planned
-- what was done: Не выполнялась.
-- files touched / work locations: Не изменены.
-- technical value delivered: Не подтверждено.
-- product value delivered: Не подтверждено.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending_execution; authoring checks не доказывают implementation.
-- residual risks: medium; authority и readiness не выводятся только из task context.
-- follow-up: Выполнить Dependencies и Acceptance в авторизованном slice.
+- status: implemented
+- what was done: Inline intake и явный fallback receipt в двух public CLIs; rich JSON и selectors сохранены. Empty/partial/mixed/escaping input rejected; empty ordinary stage manifest исправлен.
+- files touched / work locations: task_routing.py; codex_runtime_runner/cli.py; infrastructure.py; render_infrastructure.py; test_codex_runtime_runner_cli.py; docs/control-plane и owning plan
+- technical value delivered: Explicit ordinary path переиспользует действующие selectors без legacy inference.
+- product value delivered: Небольшая docs задача работает без task.json и builder; 0 вместо 209 file proposals.
+- actual implementation date and time: 09-11-2026 14:58
+- verification evidence: G4 execution evidence выше. Full final: 1326 tests, 540.818 s, OK (skipped=1), exit 0; final focused 253 OK; template contracts 95 OK; fixtures 91/91; transcripts 26/26; compatibility exit 0, local structure only.
+- residual risks: Source-level/local contracts проверены; fresh host discovery и live behavioral evaluation не выполнены, принадлежат G6. No provider/cache/activation/Git actions.
+- follow-up: PAOS-AUD-G5; затем G6 host/behavioral gates на зафиксированном source.
 
 ### Task `PAOS-AUD-F09`
 
@@ -940,12 +1037,12 @@ host acceptance; иных обязательных local handoffs нет.
 - Scope: **Затрагиваемые файлы:** `plugins/product-agent-os/skills/`; `tests/product_agent_os/test_lifecycle_skills.py`; `tests/product_agent_os/test_validators.py`. Общий docs/control-plane scope — по правилам выше.
 - Acceptance criteria: **Критерии приёмки:** 1) Все 12 canonical skills сохраняют свои role boundaries и metadata; ссылки на references валидны. 2) Измерено сокращение реально загружаемого контекста на выбранных задачах, включая conditional reference reads. 3) Typical/edge/adversarial cases не теряют authority и необходимые gates; local checks и live behavioral evaluation обозначены отдельно. 4) No implicit enable, cache install или повышение context limit как замена сокращению.
 - Group: PAOS-AUD-G4
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Сохранение плана по запросу владельца; execution не разрешён.
+- Plan trigger: Запрос владельца 09.11.2026 на полную локальную реализацию G4 с проверками.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 09-11-2026 14:58
 - Depends on: PAOS-AUD-F10
 - Blocks: PAOS-AUD-HOST-01
 - Source: F09
@@ -957,20 +1054,20 @@ host acceptance; иных обязательных local handoffs нет.
 - Estimated execution time: not_estimated; после preflight конкретного slice.
 - Agents: lifecycle-orchestrator; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
-- Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: Проверить названные зависимости, затем согласовать точный local file scope, воспроизвести исходный case и выполнить только эту задачу после запроса на реализацию.
+- Output artifacts: Scope files и G4 execution evidence в этом плане.
+- Next step: PAOS-AUD-G5; host/behavioral gates отдельно в G6.
 
 #### Completion Report
 
-- status: planned
-- what was done: Не выполнялась.
-- files touched / work locations: Не изменены.
-- technical value delivered: Не подтверждено.
-- product value delivered: Не подтверждено.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending_execution; authoring checks не доказывают implementation.
-- residual risks: medium; directory scope означает только 12 canonical skills и непосредственно используемые references; точный file manifest фиксируется до правки.
-- follow-up: Выполнить Dependencies и Acceptance в авторизованном slice.
+- status: implemented
+- what was done: 93 conditional sections moved verbatim в existing role-specific reference; entrypoints сохраняют triggers/authority/I/O/stop. Metadata 12/12 unchanged; contract readers следуют relocation.
+- files touched / work locations: 12 canonical SKILL.md; references/complexity-routing.md; validators.py; run_fixture_eval.py; test_lifecycle_skills.py; test_infrastructure_templates.py; docs/control-plane и owning plan
+- technical value delivered: Selected read sets сокращены на 0.31–30.89%; baseline и conditional reads учтены.
+- product value delivered: Меньше нерелевантного context при сохранении domain gates и явных gaps.
+- actual implementation date and time: 09-11-2026 14:58
+- verification evidence: G4 execution evidence выше. Full final: 1326 tests, 540.818 s, OK (skipped=1), exit 0; final focused 253 OK; template contracts 95 OK; fixtures 91/91; transcripts 26/26; compatibility exit 0, local structure only.
+- residual risks: Source-level/local contracts проверены; fresh host discovery и live behavioral evaluation не выполнены, принадлежат G6. No provider/cache/activation/Git actions.
+- follow-up: PAOS-AUD-G5; затем G6 host/behavioral gates на зафиксированном source.
 
 ### Task `PAOS-AUD-F10`
 
@@ -982,12 +1079,12 @@ host acceptance; иных обязательных local handoffs нет.
 - Scope: **Затрагиваемые файлы:** `tests/AGENTS.md`; `plugins/product-agent-os/skills/agent-team-designer/SKILL.md`; `plugins/product-agent-os/skills/completion-skeptic/SKILL.md`; `plugins/product-agent-os/skills/`. Общий docs/control-plane scope — по правилам выше.
 - Acceptance criteria: **Критерии приёмки:** 1) tests/AGENTS.md на английском, содержит только уместные test-specific инструкции и корректную hierarchy. 2) Общие правила не конфликтуют с действующей root policy; read-only assurance и approval boundaries сохранены. 3) Проверено отсутствие дублирующих противоречий в остальных canonical skills; правятся только найденные случаи. 4) Static correction не объявляется runtime discovery proof; при таком claim нужен fresh-session receipt.
 - Group: PAOS-AUD-G4
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Сохранение плана по запросу владельца; execution не разрешён.
+- Plan trigger: Запрос владельца 09.11.2026 на полную локальную реализацию G4 с проверками.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 09-11-2026 14:58
 - Depends on: Нет новых обязательных задач этого плана.
 - Blocks: PAOS-AUD-F09
 - Source: F10
@@ -999,20 +1096,20 @@ host acceptance; иных обязательных local handoffs нет.
 - Estimated execution time: not_estimated; после preflight конкретного slice.
 - Agents: lifecycle-orchestrator; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
-- Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: Проверить актуальность finding и baseline, затем согласовать точный local file scope, воспроизвести исходный case и выполнить только эту задачу после запроса на реализацию.
+- Output artifacts: Scope files и G4 execution evidence в этом плане.
+- Next step: PAOS-AUD-G5; host/behavioral gates отдельно в G6.
 
 #### Completion Report
 
-- status: planned
-- what was done: Не выполнялась.
-- files touched / work locations: Не изменены.
-- technical value delivered: Не подтверждено.
-- product value delivered: Не подтверждено.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending_execution; authoring checks не доказывают implementation.
-- residual risks: medium; глобальный AGENTS.md и настройки host не входят в scope.
-- follow-up: Выполнить Dependencies и Acceptance в авторизованном slice.
+- status: implemented
+- what was done: tests/AGENTS.md стал кратким English test-specific файлом. Instruction hierarchy отделена от factual evidence; task-authorized team writing и read-only assurance различены; unchanged evidence сохраняет provenance.
+- files touched / work locations: tests/AGENTS.md; 12 canonical SKILL.md; references/source-policy.md; references/handoff-contract.md; docs/control-plane и owning plan
+- technical value delivered: tests/AGENTS.md: 8471→1483 bytes; убрано дублирование global rules и запрет на порученные team artifacts.
+- product value delivered: Меньше противоречивых инструкций; approval и assurance boundaries сохранены.
+- actual implementation date and time: 09-11-2026 14:58
+- verification evidence: G4 execution evidence выше. Full final: 1326 tests, 540.818 s, OK (skipped=1), exit 0; final focused 253 OK; template contracts 95 OK; fixtures 91/91; transcripts 26/26; compatibility exit 0, local structure only.
+- residual risks: Source-level/local contracts проверены; fresh host discovery и live behavioral evaluation не выполнены, принадлежат G6. No provider/cache/activation/Git actions.
+- follow-up: PAOS-AUD-G5; затем G6 host/behavioral gates на зафиксированном source.
 
 ### Task `PAOS-AUD-F15`
 
@@ -1024,12 +1121,12 @@ host acceptance; иных обязательных local handoffs нет.
 - Scope: **Затрагиваемые файлы:** `plugins/product-agent-os/scripts/product_agent_os/discovery.py`; `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`; `plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py`; `plugins/product-agent-os/scripts/product_agent_os/code_quality_metrics.py`; `tests/product_agent_os/test_methodology_audit.py`; `tests/product_agent_os/test_infrastructure_renderer.py`. Общий docs/control-plane scope — по правилам выше.
 - Acceptance criteria: **Критерии приёмки:** 1) До изменения записан baseline scan counts/runtime/output на одинаковом fixture и окружении. 2) После изменения output contracts и safety boundaries сохранены; уменьшение повторных операций измерено. 3) Если существенного дублирования не подтверждено, задача закрывается accepted_gap с обоснованием без рефакторинга. 4) Выделение нового модуля допускается только после фиксации конкретной границы и собственного test coverage; live semantic/provider claims не добавляются.
 - Group: PAOS-AUD-G4
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Сохранение плана по запросу владельца; execution не разрешён.
+- Plan trigger: Запрос владельца 09.11.2026 на полную локальную реализацию G4 с проверками.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 09-11-2026 14:58
 - Depends on: PAOS-AUD-F05
 - Blocks: Нет обязательной downstream implementation зависимости в этом документе; собственный acceptance gate сохраняется.
 - Source: F15
@@ -1041,20 +1138,20 @@ host acceptance; иных обязательных local handoffs нет.
 - Estimated execution time: not_estimated; после preflight конкретного slice.
 - Agents: plugin-runtime-builder; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
-- Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: Проверить названные зависимости, затем согласовать точный local file scope, воспроизвести исходный case и выполнить только эту задачу после запроса на реализацию.
+- Output artifacts: Scope files и G4 execution evidence в этом плане.
+- Next step: PAOS-AUD-G5; host/behavioral gates отдельно в G6.
 
 #### Completion Report
 
-- status: planned
-- what was done: Не выполнялась.
-- files touched / work locations: Не изменены.
-- technical value delivered: Не подтверждено.
-- product value delivered: Не подтверждено.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending_execution; authoring checks не доказывают implementation.
-- residual risks: medium; условная оптимизация, не обязательное переписывание больших модулей.
-- follow-up: Выполнить Dependencies и Acceptance в авторизованном slice.
+- status: implemented
+- what was done: Внутри analyze_workspace scope detector использует один immutable inventory snapshot. Public API свежий на каждый вызов; различающиеся methodology/first-run inventories не объединены.
+- files touched / work locations: discovery.py; test_methodology_audit.py; docs/control-plane и owning plan
+- technical value delivered: Discovery inventory calls 2→1, identical output; median 114.448→103.959 ms на fixed synthetic fixture.
+- product value delivered: Меньше повторной работы без нового cache/framework и без потери свежести.
+- actual implementation date and time: 09-11-2026 14:58
+- verification evidence: G4 execution evidence выше. Full final: 1326 tests, 540.818 s, OK (skipped=1), exit 0; final focused 253 OK; template contracts 95 OK; fixtures 91/91; transcripts 26/26; compatibility exit 0, local structure only.
+- residual risks: Source-level/local contracts проверены; fresh host discovery и live behavioral evaluation не выполнены, принадлежат G6. No provider/cache/activation/Git actions.
+- follow-up: PAOS-AUD-G5; затем G6 host/behavioral gates на зафиксированном source.
 
 ## PAOS-AUD-G5 — Документация, offline tooling и актуальный site
 

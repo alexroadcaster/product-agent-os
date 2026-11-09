@@ -1,5 +1,11 @@
 # PLAN.md
 
+## PAOS-AUD-G4 — 2026-11-09
+
+G4 F05/F09/F10/F15 implemented_locally_verified. Следующая группа — G5. Legacy defaults сохранены; source baseline заморожен для будущего G6. Rollback только G4 hunks; current pointer закрепляет owning sources без вторых статусов.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
 <!-- product-agent-os:current-state:start -->
 ```json
 {
@@ -7,7 +13,7 @@
   "sources": [
     {
       "path": "research/product-agent-os-audit-remediation-task-plan-2026-11-09.md",
-      "revision": "sha256:ec32756b86b5d9784b998a41b024b0de1456e0b6bd9350d6ed4d772246538ed7",
+      "revision": "sha256:8af5a31c600be2ed626cfb6d83e9c268270844ec70f64ba84b2ea45ce5ee2904",
       "task_prefixes": [
         "PAOS-AUD-"
       ]

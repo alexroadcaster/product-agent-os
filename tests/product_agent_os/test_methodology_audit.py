@@ -10,6 +10,21 @@ sys.path.insert(0, str(SCRIPTS))
 
 
 class MethodologyAuditContractTest(unittest.TestCase):
+    def test_discovery_reuses_inventory_for_scope_without_stale_cross_call_cache(self):
+        from unittest.mock import patch
+        from product_agent_os import discovery
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "AGENTS.md").write_text("Synthetic instructions", encoding="utf-8")
+            expected = discovery.detect_product_agent_os_scope(root)
+            with patch.object(discovery, "_relative_files", wraps=discovery._relative_files) as scan:
+                result = discovery.analyze_workspace(root)
+            self.assertEqual(scan.call_count, 1)
+            self.assertEqual(result["product_agent_os_scope"], expected)
+            (root / "plugins/product-agent-os").mkdir(parents=True)
+            (root / "plugins/product-agent-os/marker.md").write_text("Synthetic marker", encoding="utf-8")
+            self.assertTrue(discovery.analyze_workspace(root)["product_agent_os_scope"]["eligible"])
+
     def _domain_status(self, result, domain_id):
         domains = {domain["id"]: domain for domain in result["methodology_domains"]}
         return domains[domain_id]["status"]

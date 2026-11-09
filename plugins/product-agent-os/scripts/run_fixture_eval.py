@@ -230,7 +230,7 @@ from product_agent_os.merge_infrastructure import (  # noqa: E402
 from product_agent_os.source_policy import validate_source_policy  # noqa: E402
 from product_agent_os.stage_manifest import MANIFEST_NAME, content_digest, workspace_audit_digest  # noqa: E402
 from product_agent_os.transcript_evals import evaluate_transcript_sessions  # noqa: E402
-from product_agent_os.validators import validate_task_matrix_text  # noqa: E402
+from product_agent_os.validators import validate_task_matrix_text, read_skill_contract  # noqa: E402
 from codex_runtime_runner.cli import run_contract  # noqa: E402
 from codex_runtime_runner.contracts import build_result, validate_runner_result  # noqa: E402
 from codex_runtime_runner.guards import (  # noqa: E402
@@ -3155,7 +3155,7 @@ def _domain_model_gate_contract_present() -> bool:
         TEMPLATE_ROOT / "evals" / "project-readiness.json",
         PLUGIN_ROOT / "skills" / "implementation-planner" / "SKILL.md",
     ]
-    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    payload = "\n".join(read_skill_contract(path) for path in paths).lower()
     return all(term in payload for term in DOMAIN_MODEL_GATE_TERMS)
 
 
@@ -3166,7 +3166,7 @@ def _bounded_context_trace_contract_present() -> bool:
         TEMPLATE_ROOT / "evals" / "project-readiness.json",
         PLUGIN_ROOT / "skills" / "implementation-planner" / "SKILL.md",
     ]
-    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    payload = "\n".join(read_skill_contract(path) for path in paths).lower()
     return all(term in payload for term in BOUNDED_CONTEXT_TRACE_TERMS)
 
 
@@ -3180,7 +3180,7 @@ def _ubiquitous_language_traceability_contract_present() -> bool:
         TEMPLATE_ROOT / "evals" / "project-readiness.json",
         PLUGIN_ROOT / "skills" / "implementation-planner" / "SKILL.md",
     ]
-    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    payload = "\n".join(read_skill_contract(path) for path in paths).lower()
     return all(term in payload for term in UBIQUITOUS_LANGUAGE_TRACE_TERMS)
 
 
@@ -3198,7 +3198,7 @@ def _metric_hardening_contract_present() -> bool:
         PLUGIN_ROOT / "skills" / "risk-reviewer" / "SKILL.md",
         PLUGIN_ROOT / "skills" / "pr-release-operator" / "SKILL.md",
     ]
-    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    payload = "\n".join(read_skill_contract(path) for path in paths).lower()
     return all(term in payload for term in METRIC_HARDENING_TERMS)
 
 
@@ -3247,7 +3247,7 @@ def _business_product_contract_present() -> bool:
         PLUGIN_ROOT / "skills" / "automation-promoter" / "SKILL.md",
     ]
     payload = "\n".join(
-        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+        f"{path.name}\n{read_skill_contract(path)}" for path in paths
     ).lower()
     return all(term in payload for term in BUSINESS_PRODUCT_TERMS)
 
@@ -3299,7 +3299,7 @@ def _requirements_domain_contract_present() -> bool:
         PLUGIN_ROOT / "skills" / "docs-maintainer" / "SKILL.md",
     ]
     payload = "\n".join(
-        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+        f"{path.name}\n{read_skill_contract(path)}" for path in paths
     ).lower()
     return all(term in payload for term in REQUIREMENTS_DOMAIN_TERMS)
 
@@ -3348,7 +3348,7 @@ def _solution_architecture_contract_present() -> bool:
         PLUGIN_ROOT / "skills" / "docs-maintainer" / "SKILL.md",
     ]
     payload = "\n".join(
-        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+        f"{path.name}\n{read_skill_contract(path)}" for path in paths
     ).lower()
     return all(term in payload for term in SOLUTION_ARCHITECTURE_TERMS)
 
@@ -3398,7 +3398,7 @@ def _quality_testing_evals_contract_present() -> bool:
         PLUGIN_ROOT / "scripts" / "product_agent_os" / "methodology_audit.py",
     ]
     payload = "\n".join(
-        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+        f"{path.name}\n{read_skill_contract(path)}" for path in paths
     ).lower()
     return all(term in payload for term in QUALITY_TESTING_EVALS_TERMS)
 
@@ -3495,7 +3495,7 @@ def _frontend_contract_present() -> bool:
         PLUGIN_ROOT / "scripts" / "product_agent_os" / "methodology_audit.py",
     ]
     payload = "\n".join(
-        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+        f"{path.name}\n{read_skill_contract(path)}" for path in paths
     ).lower()
     return all(term in payload for term in FRONTEND_TERMS)
 
@@ -3560,7 +3560,7 @@ def _backend_contract_present() -> bool:
         PLUGIN_ROOT / "scripts" / "product_agent_os" / "methodology_audit.py",
     ]
     payload = "\n".join(
-        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+        f"{path.name}\n{read_skill_contract(path)}" for path in paths
     ).lower()
     return all(term in payload for term in BACKEND_TERMS)
 
@@ -3620,7 +3620,7 @@ def _api_integrations_contract_present() -> bool:
         PLUGIN_ROOT / "scripts" / "product_agent_os" / "methodology_audit.py",
     ]
     payload = "\n".join(
-        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+        f"{path.name}\n{read_skill_contract(path)}" for path in paths
     ).lower()
     return all(term in payload for term in API_INTEGRATIONS_TERMS)
 
@@ -3680,7 +3680,7 @@ def _database_data_contract_present() -> bool:
         PLUGIN_ROOT / "scripts" / "product_agent_os" / "methodology_audit.py",
     ]
     payload = "\n".join(
-        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+        f"{path.name}\n{read_skill_contract(path)}" for path in paths
     ).lower()
     return all(term.lower() in payload for term in DATABASE_DATA_TERMS)
 
@@ -3747,7 +3747,7 @@ def _llm_ai_rag_contract_present() -> bool:
     if not all(path.exists() for path in paths):
         return False
     payload = "\n".join(
-        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+        f"{path.name}\n{read_skill_contract(path)}" for path in paths
     ).lower()
     return all(term in payload for term in LLM_AI_RAG_TERMS)
 
@@ -3816,7 +3816,7 @@ def _security_privacy_compliance_contract_present() -> bool:
     if not all(path.exists() for path in paths):
         return False
     payload = "\n".join(
-        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+        f"{path.name}\n{read_skill_contract(path)}" for path in paths
     ).lower()
     return all(term.lower() in payload for term in SECURITY_PRIVACY_COMPLIANCE_TERMS)
 
@@ -3898,7 +3898,7 @@ def _delivery_release_operations_contract_present() -> bool:
     if not all(path.exists() for path in paths):
         return False
     payload = "\n".join(
-        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+        f"{path.name}\n{read_skill_contract(path)}" for path in paths
     ).lower()
     return all(term.lower() in payload for term in DELIVERY_RELEASE_OPERATIONS_TERMS)
 
@@ -7565,7 +7565,7 @@ def _codex_agentic_workflow_contract_present() -> bool:
         PLUGIN_ROOT / "scripts" / "product_agent_os" / "methodology_audit.py",
     ]
     payload = "\n".join(
-        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+        f"{path.name}\n{read_skill_contract(path)}" for path in paths
     ).lower()
     return all(term in payload for term in CODEX_AGENTIC_WORKFLOW_TERMS)
 
@@ -7592,7 +7592,7 @@ def _completion_evidence_contract_present() -> bool:
         PLUGIN_ROOT / "skills" / "learning-loop-maintainer" / "SKILL.md",
         PLUGIN_ROOT / "skills" / "automation-promoter" / "SKILL.md",
     ]
-    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    payload = "\n".join(read_skill_contract(path) for path in paths).lower()
     return all(term in payload for term in COMPLETION_EVIDENCE_TERMS)
 
 
@@ -7808,7 +7808,7 @@ def _task_matrix_planner_routing_contract_present() -> bool:
         PLUGIN_ROOT / "skills" / "implementation-planner" / "SKILL.md",
         PROJECT_ROOT / "tests" / "product_agent_os" / "test_lifecycle_skills.py",
     ]
-    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    payload = "\n".join(read_skill_contract(path) for path in paths).lower()
     terms = {
         "task-matrix-plan.md",
         "specs/adrs/standards/handoffs/risky multi-slice work",
@@ -7828,7 +7828,7 @@ def _task_matrix_agent_handoff_contract_present() -> bool:
         TEMPLATE_ROOT / "artifact-templates" / "agent-task-packet.md",
         PROJECT_ROOT / "tests" / "product_agent_os" / "test_lifecycle_skills.py",
     ]
-    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    payload = "\n".join(read_skill_contract(path) for path in paths).lower()
     terms = {
         "task rows",
         "task row id",
@@ -7877,7 +7877,7 @@ def _task_matrix_planning_control_governance_present() -> bool:
         TEMPLATE_ROOT / "evals" / "behavioral-workflows.json",
         TRANSCRIPT_FIXTURE,
     ]
-    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    payload = "\n".join(read_skill_contract(path) for path in paths).lower()
     terms = {
         "planning control governance",
         "hard gates live in validator/tests/skills",
@@ -7948,7 +7948,7 @@ def _docs_tooling_selector_contract_present() -> bool:
         PLUGIN_ROOT / "skills" / "risk-reviewer" / "SKILL.md",
         PLUGIN_ROOT / "scripts" / "product_agent_os" / "discovery.py",
     ]
-    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    payload = "\n".join(read_skill_contract(path) for path in paths).lower()
     return all(term in payload for term in DOCS_TOOLING_SELECTOR_TERMS)
 
 
@@ -8820,7 +8820,7 @@ def _metrics_loop_lifecycle_contract_present() -> bool:
             "automation-promoter",
         ]
     ]
-    payload = "\n".join(path.read_text(encoding="utf-8").lower() for path in paths)
+    payload = "\n".join(read_skill_contract(path).lower() for path in paths)
     terms = [
         "agent_skill_metrics_loop",
         "self-verification metrics loop",
@@ -9104,7 +9104,7 @@ def _standards_trigger_contract_present() -> bool:
         PLUGIN_ROOT / "skills" / "risk-reviewer" / "SKILL.md",
         PLUGIN_ROOT / "skills" / "pr-release-operator" / "SKILL.md",
     ]
-    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    payload = "\n".join(read_skill_contract(path) for path in paths).lower()
     return all(term in payload for term in STANDARDS_TRIGGER_TERMS)
 
 
@@ -9143,7 +9143,7 @@ def _conditional_readiness_gates_contract_present() -> bool:
         PLUGIN_ROOT / "skills" / "risk-reviewer" / "SKILL.md",
         PLUGIN_ROOT / "skills" / "project-lifecycle-orchestrator" / "SKILL.md",
     ]
-    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    payload = "\n".join(read_skill_contract(path) for path in paths).lower()
     return all(term in payload for term in CONDITIONAL_READINESS_TERMS)
 
 

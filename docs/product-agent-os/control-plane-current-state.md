@@ -2,9 +2,11 @@
 
 Source status: `experiment`
 
+G4 (F05/F09/F10/F15) реализована и локально проверена. Следующая группа — G5. Inline intake сохраняет legacy default; conditional skill gates перенесены в role-specific references; discovery переиспользует один immutable inventory для scope detector. Host loading этим не доказан.
+
 ## Текущий маршрут — 09.11.2026
 
-G1/G2 завершены локально; G3 (F03/F08/F16) реализована и локально проверена. Следующий slice — G4. Owning plan: `research/product-agent-os-audit-remediation-task-plan-2026-11-09.md`. Локальный MCP compatibility status после G2 — `compatible`; publisher/URLs/icons и actual host acceptance остаются gated. Это не release или production readiness.
+G1/G2 завершены локально; G3 (F03/F08/F16) реализована и локально проверена. Следующий slice — G5. Owning plan: `research/product-agent-os-audit-remediation-task-plan-2026-11-09.md`. Локальный MCP compatibility status после G2 — `compatible`; publisher/URLs/icons и actual host acceptance остаются gated. Это не release или production readiness.
 
 Единственный machine-readable current pointer находится в `PLAN.md`, между `product-agent-os:current-state:start/end`. Он содержит только пути owning sources и их SHA-256 revisions, без дублирования task statuses. `RUNLOG.md` и `TEST.md` ссылаются на этот pointer; несколько старых заголовков Current не задают precedence. Источники — audit task plan, B42 и B45 JSON. Optional task_prefixes ограничивает ownership: audit-план проецирует только PAOS-AUD-*, поэтому его cross-reference карточки T30–T34 не конкурируют с canonical B45. Изменение source требует явного обновления pointer после review; mismatch даёт unknown без fallback к истории.
 

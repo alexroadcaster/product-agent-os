@@ -1,5 +1,11 @@
 # RUNLOG.md
 
+## PAOS-AUD-G4 — 2026-11-09
+
+G4 F05/F09/F10/F15 implemented_locally_verified. Full final: 1326 tests, 540.818 s, OK (skipped=1), exit 0; final focused 253 OK; template contracts 95 OK; fixtures 91/91; transcripts 26/26; compatibility exit 0, local structure only. Self-review завершён. Inline intake, conditional references и inventory reuse проверены локально; следующий G5. Host/behavioral evaluation остаётся G6.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
 ## PAOS-AUD-G3 — 2026-11-09
 
 PAOS-AUD-G3: F03/F08/F16 implemented_locally_verified. Full unittest: 1320 tests, 725.771 s, OK (skipped=1); final focused 78 tests OK; fixture 91/91; transcript 26/26; compatibility passed (local structure only). Единственный current pointer — PLAN.md; B42/B45 preserved. Self-review завершён. Следующая группа — G4; semantic source review и actual host/promotion остаются отдельными gates.

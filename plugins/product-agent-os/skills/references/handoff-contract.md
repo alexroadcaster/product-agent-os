@@ -130,7 +130,7 @@ Rules:
 - At least one of `files_touched` or `files_proposed` must be non-empty.
 - `unsupported_claims` must be explicit when sources or runtime checks are missing.
 - `commands_run` records command strings, not invented outcomes.
-- `verification_evidence` records observed results from the current run.
+- `verification_evidence` records observed results and their original run. Reuse only while relevant code/configuration/dependencies/environment/data are unchanged; otherwise rerun. Never label reused evidence newly executed.
 - `stop_reason` is required when the skill cannot advance the lifecycle.
 - Reject handoffs that claim readiness without evidence, hide unsupported claims, omit stop conditions, or blur touched files with proposed files.
 - Fresh-context handoff is required before any subagent or parallel worker starts.

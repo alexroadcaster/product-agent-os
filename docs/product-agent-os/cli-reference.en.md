@@ -6,7 +6,14 @@ This page records the local Product-Agent OS CLI surfaces that already exist in 
 
 ## Ordinary route: a bounded task {#ordinary-route}
 
-For an existing project, pass `--task-context task.json`. The JSON path is relative to the target workspace and must remain inside it. Omitting this argument preserves the previous route, marked `routing_trace.mode=legacy`.
+For a small explicit task, use inline intake without creating a JSON file. `--task`, `--change-mode`, `--changed-path` and `--acceptance` are required (no_op may omit changed paths). Paths/acceptance repeat; `--task-id` is an optional routing label. Missing `--risk-level` means unknown and keeps a gap. Rich behavioral invariants/checks/state use `--task-context task.json`; its path must remain inside the workspace. Mixing inline/file input or providing partial input fails, without fallback. With neither input, the previous default is preserved and both entrypoints expose `intake.mode=legacy_fallback`; runtime also retains `routing_trace.mode=legacy`.
+
+```powershell
+python plugins/product-agent-os/scripts/run_codex_runtime_runner.py ./sample --contract --task "Correct wording" --change-mode docs_only --changed-path README.md --acceptance "Correct wording" --risk-level low
+python plugins/product-agent-os/scripts/render_infrastructure.py ./sample --dry-run --task "Correct wording" --change-mode docs_only --changed-path README.md --acceptance "Correct wording" --risk-level low
+```
+
+The workspace must contain its own instructions and source-backed checks, for example TEST.md with `python check_docs.py`. Inline input grants no authority and executes no checks. An ordinary stage can contain zero proposed files plus its manifest; the output remains outside the target.
 
 ```powershell
 python plugins/product-agent-os/scripts/run_codex_runtime_runner.py ./sample --contract --task-context task.json

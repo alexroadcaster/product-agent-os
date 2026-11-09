@@ -17,6 +17,33 @@ from product_agent_os.doubt_verification import (
 )
 
 
+def read_skill_contract(path: Path) -> str:
+    """Read entrypoint plus its exact conditional role section for static checks.
+
+    This is a verification reader, not runtime loading or activation. No recursive
+    links, unrelated role sections or external references enter the contract.
+    Non-skill artifact callers retain their existing plain-text read behavior.
+    """
+    text = path.read_text(encoding="utf-8")
+    if path.name != "SKILL.md" or "## Conditional References" not in text:
+        return text
+    name = path.parent.name
+    if not re.fullmatch(r"[a-z0-9-]+", name) or f"`Skill: {name}`" not in text or "../references/complexity-routing.md" not in text:
+        raise ValueError("invalid_conditional_skill_reference")
+    root = path.parent.parent.resolve()
+    reference = (root / "references/complexity-routing.md").resolve()
+    if not reference.is_relative_to(root):
+        raise ValueError("conditional_reference_outside_skills")
+    with reference.open("rb") as stream:
+        raw = stream.read(512 * 1024 + 1)
+    if len(raw) > 512 * 1024:
+        raise ValueError("conditional_reference_too_large")
+    sections = re.findall(r"(?ms)^## Skill: " + re.escape(name) + r"\n(.*?)(?=^## |\Z)", raw.decode("utf-8").replace("\r\n", "\n"))
+    if len(sections) != 1:
+        raise ValueError("conditional_skill_section_missing_or_ambiguous")
+    return text + "\n" + sections[0]
+
+
 def validate_skill_agent_metadata(path: Path, *, expected_implicit: bool = False) -> list[str]:
     """Validate the repository's flat YAML subset without enabling any skill.
 

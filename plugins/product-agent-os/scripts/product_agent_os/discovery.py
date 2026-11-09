@@ -267,7 +267,17 @@ def detect_product_agent_os_scope(root: str | Path, *, allow_raw_paths: bool = F
     if not workspace.is_dir():
         raise NotADirectoryError(f"workspace is not a directory: {workspace}")
 
-    files = _relative_files(workspace)
+    return _product_agent_os_scope_from_inventory(workspace, frozenset(_relative_files(workspace)), allow_raw_paths=allow_raw_paths)
+
+
+def _product_agent_os_scope_from_inventory(
+    workspace: Path, files: frozenset[str], *, allow_raw_paths: bool = False,
+) -> dict[str, Any]:
+    """Use the caller's immutable discovery inventory, never a cross-call cache.
+
+    Methodology and first-run inventories have different exclusions and remain
+    separate; reusing this snapshot does not merge their evidence boundaries.
+    """
     lowered = {path.lower().replace("\\", "/") for path in files}
     explicit_markers = sorted(
         path
@@ -4013,7 +4023,7 @@ def analyze_workspace(root: str | Path, *, intent_hint: str = "") -> dict[str, A
         raise NotADirectoryError(f"workspace is not a directory: {workspace}")
     files = _relative_files(workspace)
     route_files = _route_source_files(files)
-    product_agent_os_scope = detect_product_agent_os_scope(workspace)
+    product_agent_os_scope = _product_agent_os_scope_from_inventory(workspace, frozenset(files))
     generated_artifact_inputs = _generated_artifact_inputs(files)
     stack = _detect_stack(route_files)
     existing_control_plane = [name for name in CONTROL_PLANE_FILES if name in route_files]
