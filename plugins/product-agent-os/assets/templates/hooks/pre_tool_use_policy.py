@@ -67,10 +67,6 @@ MUTATING_PATTERNS = [
 READ_ONLY_PATTERNS = [
     re.compile(r"(?i)^\s*(get-content|get-childitem|select-string|rg|git\s+(?:diff|status|show|log)|python\b.*(?:--help|-h)|type|dir|ls)\b"),
 ]
-LIFECYCLE_MARKER_WRITE_PATTERNS = [
-    re.compile(r"(?i)\.codex[/\\]product-agent-os[/\\]lifecycle-state\.json"),
-    re.compile(r"(?i)(?:task_start_brief_shown|scope_note_shown)"),
-]
 
 
 def _workspace_root(payload: dict[str, Any] | None = None) -> Path:
@@ -147,8 +143,72 @@ def _is_read_only(command: str) -> bool:
     return bool(command.strip()) and _matches(READ_ONLY_PATTERNS, command.strip())
 
 
-def _is_lifecycle_marker_write(command: str) -> bool:
-    return all(pattern.search(command) for pattern in LIFECYCLE_MARKER_WRITE_PATTERNS)
+def lifecycle_session_id(payload: dict[str, Any]) -> str | None:
+    """Use only the host envelope; tool arguments never select another chat."""
+    if "session_id" not in payload:
+        return None
+    value = payload["session_id"]
+    if not isinstance(value, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,127}", value):
+        raise ValueError("invalid host session_id")
+    return value
+
+
+def lifecycle_marker_path(root: Path, payload: dict[str, Any]) -> Path:
+    """Select an isolated marker, with legacy mode only when identity is absent."""
+    session = lifecycle_session_id(payload)
+    relative = LIFECYCLE_STATE_REL
+    if session is not None:
+        digest = hashlib.sha256(session.encode("utf-8")).hexdigest()
+        relative = relative.with_name("lifecycle-state." + digest + ".json")
+    root = root.resolve()
+    path = root / relative
+    for part in (path, *path.parents):
+        if part == root:
+            break
+        if part.is_symlink() or (hasattr(part, "is_junction") and part.is_junction()):
+            raise ValueError("lifecycle marker must not use a symlink or junction")
+    if not path.resolve().is_relative_to(root):
+        raise ValueError("lifecycle marker must stay in workspace")
+    return path
+
+
+def _marker_write_targets(payload: dict[str, Any], command: str) -> tuple[list[str], bool]:
+    """Recognize patch destinations or one literal marker write, not body mentions."""
+    call = _literal_call(payload)
+    patch = call[1] if call and call[0] == "apply_patch" else None
+    if isinstance(patch, str):
+        lines = patch.strip().splitlines()
+        targets = re.findall(r"^\*\*\* (?:(?:Add|Update|Delete) File|Move to): (.+)$", patch, re.MULTILINE)
+        exact = (len(targets) == 1 and len(lines) >= 4 and lines[0] == "*** Begin Patch"
+                 and lines[-1] == "*** End Patch" and not any(
+                     line.startswith(("*** Delete File:", "*** Move to:")) for line in lines))
+        return targets, exact
+    match = re.fullmatch(
+        r"(?is)\s*Set-Content\s+(?:-LiteralPath\s+)?('([^']+)'|\"([^\"]+)\"|([^\s;|]+))"
+        r"\s+(?:-Value\s+)?'((?:[^']|'')*)'(?:\s+-Encoding\s+utf8)?\s*", command
+    )
+    if match:
+        return [next(value for value in match.group(2, 3, 4) if value is not None)], True
+    return [], False
+
+
+def _marker_write_policy(root: Path, payload: dict[str, Any], command: str) -> tuple[bool, str | None]:
+    """Bootstrap only this chat's marker; other targets need ordinary validation."""
+    own = lifecycle_marker_path(root, payload)
+    targets, exact = _marker_write_targets(payload, command)
+    marker_targets = []
+    for value in targets:
+        path = Path(value)
+        path = path if path.is_absolute() else root / path
+        path = path.resolve()
+        if path.parent == own.parent and re.fullmatch(r"lifecycle-state(?:\.[0-9a-f]+)?\.json", path.name, re.IGNORECASE):
+            marker_targets.append(path)
+    if not marker_targets:
+        return False, None
+    if not exact or len(targets) != 1 or marker_targets != [own]:
+        return False, "lifecycle writes must target only this session's marker"
+    shown = re.search(r"task_start_brief_shown|scope_note_shown", command)
+    return bool(shown), None
 
 
 def _is_mutating(tool: str, command: str) -> bool:
@@ -177,7 +237,8 @@ def _parse_updated_at(value: str) -> datetime | None:
     return parsed.astimezone(timezone.utc)
 
 
-def _lifecycle_marker_ok(path: Path, *, now: datetime | None = None, report_authorized: bool = False) -> tuple[bool, str]:
+def _lifecycle_marker_ok(path: Path, *, now: datetime | None = None, report_authorized: bool = False,
+                         expected_session_id: str | None = None) -> tuple[bool, str]:
     """Validate current lifecycle scope; reporting never grants action authority."""
     if not path.exists():
         return False, "missing lifecycle marker"
@@ -187,6 +248,8 @@ def _lifecycle_marker_ok(path: Path, *, now: datetime | None = None, report_auth
         return False, "invalid lifecycle marker"
     if not isinstance(payload, dict):
         return False, "lifecycle marker must be a JSON object"
+    if payload.get("session_id") != expected_session_id:
+        return False, "lifecycle marker session_id does not match host session"
     schema = payload.get("brief_schema_version")
     concise = schema == "task_scope_note_v1"
     if concise and payload.get("scope_note_shown") is not True:
@@ -272,7 +335,7 @@ def _literal_call(payload: dict[str, Any]) -> tuple[str, Any] | None:
     value = payload.get("tool_input", payload.get("arguments", payload.get("input")))
     if tool in {"apply_patch", "exec_command"}:
         if tool == "apply_patch" and isinstance(value, dict) and len(value) == 1:
-            value = value.get("patch", value.get("input"))
+            value = value.get("command", value.get("patch", value.get("input")))
         return tool, value
     if tool != "exec":
         return None
@@ -356,7 +419,7 @@ def _report_action_ok(root: Path, payload: dict[str, Any], authority: Path, expe
         now = datetime.now(timezone.utc)
         if issued is None or expiry is None or issued > now + MARKER_FUTURE_SKEW or not issued < expiry or expiry <= now or expiry - issued > timedelta(hours=24):
             return False, "authority_expired_or_invalid_window"
-        marker_path = root / LIFECYCLE_STATE_REL
+        marker_path = lifecycle_marker_path(root, payload)
         marker_raw = marker_path.read_bytes()
         if hashlib.sha256(marker_raw).hexdigest() != grant["marker_sha256"]:
             return False, "authority_marker_mismatch"
@@ -365,7 +428,8 @@ def _report_action_ok(root: Path, payload: dict[str, Any], authority: Path, expe
             return False, "explicit_new_task_transition_required"
         if not isinstance(marker.get("lifecycle_scope"), dict) or marker["lifecycle_scope"].get("work_type") not in {"research", "review", "planning"}:
             return False, "report_authority_requires_read_only_task"
-        valid, reason = _lifecycle_marker_ok(marker_path, now=now, report_authorized=True)
+        valid, reason = _lifecycle_marker_ok(marker_path, now=now, report_authorized=True,
+                                            expected_session_id=lifecycle_session_id(payload))
         if not valid:
             return False, reason
         allowed = _report_path(root, grant["output_path"])
@@ -422,15 +486,25 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     mutating = _is_mutating(tool, command)
-    marker_write = _is_lifecycle_marker_write(command)
-    if mutating and not marker_write:
-        marker_ok, marker_reason = _lifecycle_marker_ok(_workspace_root(payload) / LIFECYCLE_STATE_REL)
-        if not marker_ok:
-            reasons.append(
-                "Mutating Product-Agent OS work requires current scope-applicable reporting and an active lifecycle marker: "
-                + marker_reason
-                + "."
-            )
+    if mutating:
+        try:
+            root = _workspace_root(payload)
+            marker_path = lifecycle_marker_path(root, payload)
+            marker_write, write_error = _marker_write_policy(root, payload, command)
+            if write_error:
+                reasons.append(write_error)
+            elif not marker_write:
+                marker_ok, marker_reason = _lifecycle_marker_ok(
+                    marker_path, expected_session_id=lifecycle_session_id(payload)
+                )
+                if not marker_ok:
+                    reasons.append(
+                        "Mutating Product-Agent OS work requires current scope-applicable reporting and an active lifecycle marker: "
+                        + marker_reason + ". Selected marker: " + marker_path.relative_to(root).as_posix()
+                        + ". Do not reset another chat's marker."
+                    )
+        except ValueError as exc:
+            reasons.append(str(exc))
 
     if reasons:
         _deny(" ".join(dict.fromkeys(reasons)))

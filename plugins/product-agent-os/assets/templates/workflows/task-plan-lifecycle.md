@@ -14,7 +14,7 @@ First read applicable instructions, the packet template and enough source to ide
 
 ## State Ownership
 
-- The root owns the visible Task Start Brief, lifecycle marker, terminal Completion Ledger or concise result, and the single shared Control-Plane Sync.
+- The root owns, within its chat, the visible Task Start Brief, session-bound lifecycle marker, terminal Completion Ledger or concise result, and Control-Plane Sync. Independent chats do not share a current-task marker; coordinate only overlapping file ownership.
 - Delegated agents return a Subagent Result Packet; never start or close a nested lifecycle or update the root marker.
 - Source-owned task-group JSON owns machine status; the concrete task-matrix plan owns task detail; RUNLOG.md owns a compact current-cycle handoff; TEST.md owns verification routes and ceiling.
 - Reuse the owning detailed evidence artifact. Do not create a separate script/report/state file per command or persist a duplicate of the visible packet by default.
@@ -27,6 +27,29 @@ First read applicable instructions, the packet template and enough source to ide
 3. Inspect relevant source, ownership, worktree, existing tests and rollback. For complex work use task_matrix_plan_v1 with planned status and pending_execution_timestamp; otherwise reuse the current plan with a concrete lightweight-exception reason.
 4. Before authorized non-mechanical mutations, record the minimal lifecycle marker below. Preserve user work. Read-only tasks need no marker mutation.
 5. Validate a new or changed concrete plan with `python plugins/product-agent-os/scripts/validate_task_matrix.py <plan-file>`.
+
+## Session Isolation
+
+Use the marker path displayed by SessionStart. With host `session_id`, it is
+`.codex/product-agent-os/lifecycle-state.<sha256(session_id)>.json`, where the hash
+uses UTF-8 and lowercase hexadecimal. Record the matching `session_id` in the
+marker. PreToolUse, SessionStart and Stop select the same path from the top-level
+host envelope; tool-input fields cannot select a different session. Subagents
+use the parent session and do not own separate root lifecycle transitions.
+
+The unsuffixed `.codex/product-agent-os/lifecycle-state.json` is legacy-only for
+callers without session identity. Never fall back to it when session_id exists,
+and never wait for or reset another chat's marker. A missing own marker requires
+the applicable brief and new own marker, not permission from another chat.
+For a new user-authorized task in the same chat, preserve the prior closure and
+start the new scope; terminal state does not grant additional old-task writes.
+
+Bootstrap supports one exact Add/Update patch to the selected marker, or one
+literal Set-Content write to that path. A body mention, foreign marker, move/delete
+or mixed patch is not bootstrap. Dynamic shell/code writes are not an authorization
+interface. Existing sandbox/approvals and path/secret restrictions still apply.
+Reporting metadata is not a filesystem lock or proof of user approval; concurrent
+edits to the same source still need explicit ownership coordination.
 
 ## Lifecycle Marker Fields
 

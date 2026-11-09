@@ -1,5 +1,13 @@
 # RUNLOG.md
 
+## Session lifecycle repair — 2026-11-09
+
+`PAOS-SESSION-LIFECYCLE-2026-11-09`: implemented_locally_verified. Active/package PreToolUse, SessionStart and Stop select a session-bound marker; exact bootstrap replaces mention-based exemption. Full discovery: 1288 tests, one skip, exit 0; final focused: 236 passed; fixtures 91/91 and transcripts 26/26 (last Windows-case correction covered by focused suite). Hook validators, docs and diff checks pass. Current-host foreign-marker write denied, probe absent; own writes succeeded. Compatibility remains needs_review for existing legacy MCP format. [Owning record](research/product-agent-os-session-lifecycle-fix-2026-11-09.md) records RED/retests, provenance and fresh-host gap. No hook definitions/trust, sandbox or Web implementation change.
+
+## Web M1 — UX и wireframes — 2026-11-09
+
+`PAOS-WEB-M1-UX-2026-11-09`: [экраны и wireframes](research/product-agent-os-web-m1-wireframes-2026-11-09.md), `draft_for_review / docs_static_verified`. W01–W10, J01–J05, narrow layouts, navigation/search/freshness/error contracts; M1 read-only, без разработки. PRD/архитектура связаны с детализацией. Docs suite, check_docs, UTF-8/fences/local links и diff hygiene пройдены; receipt и control-plane sync — §17. Product/UI acceptance не выполнена.
+
 ## Web PRD и архитектура — 2026-11-05
 
 `PAOS-WEB-DOCS-2026-11-05`: [PRD](research/product-agent-os-web-prd-2026-11-05.md) и [архитектура](research/product-agent-os-web-architecture-2026-11-05.md), `draft_for_review / docs_static_verified`. M1 — обзор; M2 — proposals/apply; M3 — Codex execution. Разработка не начата. RU/EN registry синхронизированы. Проверки: 100 docs tests, check_docs, strict MkDocs preview и diff check — exit 0 после исправления EN anchor и вне-сайтовых ссылок. 22 local links и FR/SC mapping проверены. Commands, failures/retests, limits и control-plane sync — §16–17 архитектуры. Product acceptance и runtime compatibility pending; active implementation queue и parent GAP-03/GAP-05 gates не изменены.

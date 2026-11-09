@@ -1,38 +1,42 @@
 {
-  "task_id": "PAOS-WEB-DOCS-2026-11-05",
-  "previous_task_id": "PAOS-GAP03-METADATA-2026-11-05",
+  "task_id": "PAOS-SESSION-LIFECYCLE-2026-11-09",
+  "previous_task_id": "PAOS-FULL-AUDIT-2026-11-09",
   "previous_task_closure": {
-    "closure_reason": "Approved four-file metadata fix complete; 12 valid explicit-only source metadata, 94 focused and 232 docs/lifecycle/template tests passed. Exact diff and 2394 protected files/12 cache hashes preserved. Parent GAP-03 M06 and GAP-05 host/trust gates remain open.",
+    "closure_reason": "Requested research report saved and self-reviewed: 18 findings, 5 P1. Current checks: 327 unittest cases, 326 passed and 1 skipped; 91 fixture and 26 synthetic transcript cases passed. Compatibility and execpolicy findings remain open. Implementation, existing documentation and site unchanged. No host/model activation or product-readiness claim.",
     "status": "ready_for_completion_brief",
-    "plan_path": "research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md",
-    "closure_level": "implemented_locally_verified"
+    "closure_level": "audit_complete_with_findings",
+    "plan_path": "research/product-agent-os-full-audit-2026-11-09.md"
   },
-  "plan_path": "research/product-agent-os-web-architecture-2026-11-05.md",
-  "scope": "Scope: two Markdown Web proposals and narrow source registry/RUNLOG links. Evidence: SOL audit, current PAOS source, official App Server documentation. Limits: documentation_only; no product implementation, hooks, providers, servers, Git or publication.",
-  "approval_boundary": "Explicit owner approval to start the documentation task and transition the terminal marker; Markdown proposals and registry/RUNLOG only.",
-  "updated_at": "2026-11-05T15:37:49.7928069Z",
-  "status": "ready_for_completion_brief",
+  "plan_path": "research/product-agent-os-session-lifecycle-fix-2026-11-09.md",
+  "scope": "Authorized session-isolated lifecycle repair: active/package PreToolUse, SessionStart, Stop; focused regression tests; lifecycle docs/config and control-plane evidence; save prepared M1 Markdown wireframes. Preserve sandbox, approvals, path/secret/destructive guards. No Web implementation or trust bypass.",
+  "approval_boundary": "Explicit user request to fix PreToolUse interference between chats; prior request for M1 documentation. Local code/tests/docs only, no trust or sandbox changes.",
+  "updated_at": "2026-11-09T07:40:01.692098Z",
+  "status": "migrated_to_session_state",
   "completion_ready": true,
   "completion_brief_shown": false,
-  "scope_note_shown": true,
-  "task_start_brief_shown": false,
-  "brief_schema_version": "task_scope_note_v1",
-  "brief_format": "concise",
+  "task_start_brief_shown": true,
+  "brief_schema_version": "task_start_brief_v2",
+  "brief_format": "bold_fields",
   "brief_fields_present": [
+    "Request",
+    "Goal",
+    "Context",
     "Scope",
-    "Evidence",
-    "Limits"
+    "Value",
+    "Execution",
+    "Acceptance",
+    "Risks / approvals",
+    "Next step"
   ],
-  "brief_digest": "sha256:6912bffe5aa37771b8ccf4d50b0d48a2e67feca77483c6f46961bcee4f25b37b",
+  "brief_digest": "sha256:295e295ff3b4aae6f37ea7c09932d92554859ae176085acde7dded5cac30c09f",
   "lifecycle_scope": {
-    "release_or_readiness": false,
-    "risk": "low",
+    "work_type": "fix",
+    "reason": "Changes lifecycle guardrail selection and exact marker bootstrap; full reporting and negative regressions required.",
+    "financially_material": false,
     "size": "bounded",
-    "work_type": "implementation",
-    "explicit_packet_request": false,
-    "reason": "Documentation-only authoring explicitly requested; schema has no documentation work type. Product implementation excluded.",
-    "financially_material": false
+    "risk": "high",
+    "release_or_readiness": false,
+    "explicit_packet_request": false
   },
-  "closure_level": "docs_static_verified",
-  "closure_reason": "PRD and architecture saved as draft_for_review; 100 docs tests, check_docs, strict MkDocs preview, diff and 22 local links checked. No Web implementation. Owner acceptance, runtime compatibility and browser/product checks pending. Evidence: research/product-agent-os-web-architecture-2026-11-05.md sections 16-17."
+  "migration_note": "Workflow state moved to session-specific marker; this legacy snapshot is not task completion evidence."
 }

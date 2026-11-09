@@ -2,6 +2,13 @@
 
 Source status: `project-authored`
 
+## Session lifecycle isolation — 09.11.2026
+
+| ID | Source | Claim scope | checked_at | Status |
+| --- | --- | --- | --- | --- |
+| LCS-S01 | [Hooks: common input fields](https://learn.chatgpt.com/docs/hooks#common-input-fields) | Top-level session_id; subagents используют parent session ID | 2026-11-09 | official / documentation_checked |
+| LCS-S02 | `research/product-agent-os-session-lifecycle-fix-2026-11-09.md` | Local selector, bootstrap, tests и границы host evidence | 2026-11-09 | local implementation; verification receipt принадлежит отчёту |
+
 ## Product-Agent OS Web — проектирование 05.11.2026
 
 Scope: документационные предложения, без разработки или runtime activation. Стек и ICP — гипотезы для review.

@@ -6,6 +6,8 @@ Source status: `project-authored / proposed / local-source-backed`. Дата: 20
 
 Связи: [архитектура и этапы](product-agent-os-web-architecture-2026-11-05.md), [анализ SOL 0.6](sol-0.6-product-agent-os-web-analysis-2026-11-05.md).
 
+Детализация M1 от 2026-11-09: [экраны, навигация, пользовательские пути и wireframes](product-agent-os-web-m1-wireframes-2026-11-09.md). Proposed UX уточняет первый MVP: четыре раздела, список задач, read-only evidence; решения M2/M3 сохранены в этом PRD.
+
 ## 1. Проблема, цель и ценность
 
 Пользователь Product-Agent OS вынужден искать текущее состояние между Markdown/JSON-файлами, чатами и результатами проверок. Трудно определить, что уже сделано, что подтверждено, где требуется решение и как продолжить после перерыва.

@@ -1,0 +1,44 @@
+{
+  "task_id": "PAOS-SESSION-LIFECYCLE-2026-11-09",
+  "previous_task_id": "PAOS-FULL-AUDIT-2026-11-09",
+  "previous_task_closure": {
+    "closure_reason": "Requested research report saved and self-reviewed: 18 findings, 5 P1. Current checks: 327 unittest cases, 326 passed and 1 skipped; 91 fixture and 26 synthetic transcript cases passed. Compatibility and execpolicy findings remain open. Implementation, existing documentation and site unchanged. No host/model activation or product-readiness claim.",
+    "status": "ready_for_completion_brief",
+    "closure_level": "audit_complete_with_findings",
+    "plan_path": "research/product-agent-os-full-audit-2026-11-09.md"
+  },
+  "plan_path": "research/product-agent-os-session-lifecycle-fix-2026-11-09.md",
+  "scope": "Authorized session-isolated lifecycle repair: active/package PreToolUse, SessionStart, Stop; focused regression tests; lifecycle docs/config and control-plane evidence; save prepared M1 Markdown wireframes. Preserve sandbox, approvals, path/secret/destructive guards. No Web implementation or trust bypass.",
+  "approval_boundary": "Explicit user request to fix PreToolUse interference between chats; prior request for M1 documentation. Local code/tests/docs only, no trust or sandbox changes.",
+  "updated_at": "2026-11-09T08:09:02.814968+00:00",
+  "status": "ready_for_completion_ledger",
+  "completion_ready": true,
+  "completion_brief_shown": false,
+  "task_start_brief_shown": true,
+  "brief_schema_version": "task_start_brief_v2",
+  "brief_format": "bold_fields",
+  "brief_fields_present": [
+    "Request",
+    "Goal",
+    "Context",
+    "Scope",
+    "Value",
+    "Execution",
+    "Acceptance",
+    "Risks / approvals",
+    "Next step"
+  ],
+  "brief_digest": "sha256:295e295ff3b4aae6f37ea7c09932d92554859ae176085acde7dded5cac30c09f",
+  "lifecycle_scope": {
+    "work_type": "fix",
+    "reason": "Changes lifecycle guardrail selection and exact marker bootstrap; full reporting and negative regressions required.",
+    "financially_material": false,
+    "size": "bounded",
+    "risk": "high",
+    "release_or_readiness": false,
+    "explicit_packet_request": false
+  },
+  "session_id": "01a1abef-86df-7e13-b06e-5f580cd90c8c",
+  "closure_level": "implemented_locally_verified",
+  "closure_reason": "Session-isolated hooks and exact bootstrap verified locally. Full discovery 1288 tests, one platform skip; final affected suite 236 passed; final docs 100 passed. Fixtures 91 and transcripts 26 passed before final Windows case correction, covered by final focused suite. Current-host own write and foreign marker denial observed; fresh multi-chat host proof remains open. Existing legacy MCP compatibility needs_review. M1 wireframes saved and statically verified; product acceptance pending; no Web implementation."
+}

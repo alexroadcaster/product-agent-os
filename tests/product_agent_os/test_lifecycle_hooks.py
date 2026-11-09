@@ -41,11 +41,16 @@ def run_hook(
     cwd: Path | None = None,
     env: dict[str, str] | None = None,
 ) -> subprocess.CompletedProcess[str]:
+    # Synthetic fixtures must not inherit the parent repository via git discovery.
+    hook_env = os.environ.copy()
+    hook_env.update(env or {})
+    if cwd is not None and (env is None or "CODEX_HOOK_WORKSPACE_ROOT" not in env):
+        hook_env["CODEX_HOOK_WORKSPACE_ROOT"] = str(cwd)
     return subprocess.run(
         [sys.executable, str(script)],
         input=json.dumps(payload or {}),
         cwd=str(cwd) if cwd is not None else str(ROOT),
-        env=env,
+        env=hook_env,
         check=False,
         capture_output=True,
         text=True,
@@ -86,6 +91,111 @@ def load_hook_module(script: Path):
 
 
 class LifecycleHooksTest(unittest.TestCase):
+
+    def test_session_markers_isolate_parallel_chats_and_ignore_shared_terminal(self):
+        for hooks in (HOOKS, LOCAL_HOOKS):
+            with self.subTest(hooks=hooks), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                write_marker(root, valid_marker(completion_ready=True))
+                for session, terminal in (("chat-a", False), ("chat-b", True)):
+                    path = root / ".codex/product-agent-os" / (
+                        "lifecycle-state." + hashlib.sha256(session.encode()).hexdigest() + ".json"
+                    )
+                    path.write_text(json.dumps(valid_marker(
+                        session_id=session, completion_ready=terminal
+                    )), encoding="utf-8")
+                for session, allowed in (("chat-a", True), ("chat-b", False), ("chat-c", False)):
+                    result = run_hook(hooks / "pre_tool_use_policy.py", {
+                        "session_id": session, "cwd": str(root), "tool_name": "apply_patch",
+                        "tool_input": {"command": "*** Begin Patch\n*** Add File: report.md\n+hello\n*** End Patch"}
+                    }, root)
+                    self.assertEqual(0, result.returncode, result.stderr)
+                    if allowed:
+                        self.assertEqual("", result.stdout)
+                    else:
+                        self.assertEqual("deny", json.loads(result.stdout)["hookSpecificOutput"]["permissionDecision"])
+
+    def test_session_identity_cannot_be_spoofed_from_tool_input_or_foreign_marker(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            write_marker(root, valid_marker())
+            session = "chat-a"
+            path = root / ".codex/product-agent-os" / (
+                "lifecycle-state." + hashlib.sha256(session.encode()).hexdigest() + ".json"
+            )
+            path.write_text(json.dumps(valid_marker(session_id="chat-b")), encoding="utf-8")
+            for supplied in (session, "../escape", "", None, 123):
+                with self.subTest(session=supplied):
+                    result = run_hook(HOOKS / "pre_tool_use_policy.py", {
+                        "session_id": supplied, "cwd": str(root), "tool_name": "apply_patch",
+                        "tool_input": {"command": "*** Begin Patch\n*** Add File: report.md\n+hello\n*** End Patch",
+                                       "session_id": "chat-b"}
+                    }, root)
+                    self.assertEqual(0, result.returncode, result.stderr)
+                    self.assertTrue(result.stdout, "Invalid or foreign session identity must produce a denial")
+                    self.assertEqual("deny", json.loads(result.stdout)["hookSpecificOutput"]["permissionDecision"])
+
+    def test_session_start_and_stop_use_the_same_session_marker(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            write_marker(root, valid_marker(task_id="FOREIGN", completion_ready=True))
+            session = "chat-a"
+            filename = "lifecycle-state." + hashlib.sha256(session.encode()).hexdigest() + ".json"
+            path = root / ".codex/product-agent-os" / filename
+            path.write_text(json.dumps(valid_marker(task_id="OWN", session_id=session)), encoding="utf-8")
+            env = os.environ.copy()
+            env["CODEX_HOOK_WORKSPACE_ROOT"] = str(root)
+            for hooks in (HOOKS, LOCAL_HOOKS):
+                start = run_hook(hooks / "session_start_context.py", {"session_id": session}, root, env)
+                self.assertEqual(0, start.returncode, start.stderr)
+                context = json.loads(start.stdout)["hookSpecificOutput"]["additionalContext"]
+                self.assertIn(filename, context)
+                self.assertIn("task_id=OWN", context)
+                self.assertNotIn("task_id=FOREIGN", context)
+                stop = run_hook(hooks / "stop_runlog_reminder.py", {"session_id": session}, root, env)
+                self.assertIn("systemMessage", json.loads(stop.stdout))
+            path.write_text(json.dumps(valid_marker(
+                task_id="OWN", session_id=session, completion_ready=True, status="ready_for_completion_brief"
+            )), encoding="utf-8")
+            stop = run_hook(HOOKS / "stop_runlog_reminder.py", {"session_id": session}, root, env)
+            self.assertEqual("", stop.stdout)
+
+    def test_marker_bootstrap_is_exact_and_session_bound(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            own = ".codex/product-agent-os/lifecycle-state." + hashlib.sha256(b"chat-a").hexdigest() + ".json"
+            other = ".codex/product-agent-os/lifecycle-state." + hashlib.sha256(b"chat-b").hexdigest() + ".json"
+            patches = [
+                (f"*** Begin Patch\n*** Add File: {own}\n+{{\"scope_note_shown\": true}}\n*** End Patch", True),
+                (f"*** Begin Patch\n*** Add File: {other}\n+{{\"scope_note_shown\": true}}\n*** End Patch", False),
+                (f"*** Begin Patch\n*** Add File: report.md\n+.codex/product-agent-os/lifecycle-state.json scope_note_shown\n*** End Patch", False),
+                (f"*** Begin Patch\n*** Add File: {own}\n+{{\"scope_note_shown\": true}}\n*** Add File: report.md\n+hello\n*** End Patch", False),
+            ]
+            for patch, allowed in patches:
+                with self.subTest(allowed=allowed, patch=patch):
+                    result = run_hook(HOOKS / "pre_tool_use_policy.py", {
+                        "session_id": "chat-a", "cwd": str(root), "tool_name": "apply_patch",
+                        "tool_input": {"command": patch}
+                    }, root)
+                    self.assertEqual(0, result.returncode, result.stderr)
+                    self.assertEqual(not allowed, bool(result.stdout), result.stdout)
+
+            # An active own marker must not authorize patches to another chat's state.
+            write_marker(root, valid_marker(completion_ready=True))
+            (root / own).write_text(json.dumps(valid_marker(session_id="chat-a")), encoding="utf-8")
+            for patch, _ in patches[1::2]:
+                result = run_hook(HOOKS / "pre_tool_use_policy.py", {
+                    "session_id": "chat-a", "cwd": str(root), "tool_name": "apply_patch",
+                    "tool_input": {"command": patch}
+                }, root)
+                self.assertIn("only this session", result.stdout)
+            if os.name == "nt":
+                result = run_hook(HOOKS / "pre_tool_use_policy.py", {
+                    "session_id": "chat-a", "cwd": str(root), "tool_name": "apply_patch",
+                    "tool_input": {"command": patches[1][0].replace(other, other.upper())}
+                }, root)
+                self.assertIn("only this session", result.stdout)
+
     def test_read_only_report_requires_pinned_authority_and_exact_patch(self):
         module = load_hook_module(HOOKS / "pre_tool_use_policy.py")
         with tempfile.TemporaryDirectory() as tmp:
@@ -107,6 +217,15 @@ class LifecycleHooksTest(unittest.TestCase):
             nested = {"tool_name": "functions.exec", "tool_input": {"code": "text(await tools.apply_patch(" + json.dumps(patch) + "));"}}
             for payload in (direct, nested):
                 self.assertEqual(module._report_action_ok(root, payload, authority, digest), (True, "ok"))
+            session_payload = {**direct, "session_id": "report-chat"}
+            session_marker = module.lifecycle_marker_path(root, session_payload)
+            session_marker.write_text(json.dumps({**marker, "session_id": "report-chat"}), encoding="utf-8")
+            session_grant = {**grant, "marker_sha256": hashlib.sha256(session_marker.read_bytes()).hexdigest()}
+            session_authority = root / "session-authority.json"
+            session_authority.write_text(json.dumps(session_grant), encoding="utf-8")
+            session_pin = hashlib.sha256(session_authority.read_bytes()).hexdigest()
+            self.assertEqual(module._report_action_ok(root, session_payload, session_authority, session_pin), (True, "ok"))
+            self.assertFalse(module._report_action_ok(root, {**session_payload, "session_id": "another-chat"}, session_authority, session_pin)[0])
             args = ["--report-authority", str(authority), "--report-authority-sha256", digest]
             env = dict(os.environ, CODEX_HOOK_WORKSPACE_ROOT=str(root))
             def wire(payload, flags=args):

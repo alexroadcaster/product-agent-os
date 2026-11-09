@@ -22,7 +22,7 @@ Generated at: {generated_at}
 
 ## Lifecycle Reporting
 
-Load `[product_agent_os.lifecycle_contract]` and `[workflows]` from `.codex/config.toml`. The routed templates define scoped Task Start Brief / Completion Ledger reporting; ordinary work uses concise evidence and limits. The root owns shared state and completion. Reporting never grants mutation authority; hook trust and fresh-session activation require separate evidence.
+Load `[product_agent_os.lifecycle_contract]` and `[workflows]` from `.codex/config.toml`. The routed templates define scoped Task Start Brief / Completion Ledger reporting; ordinary work uses concise evidence and limits. Each chat root owns its session-bound state and completion; follow the marker path displayed by SessionStart and the routed lifecycle workflow, without waiting for another chat's marker. Reporting never grants mutation authority; hook trust and fresh-session activation require separate evidence.
 
 ## Verification Policy
 

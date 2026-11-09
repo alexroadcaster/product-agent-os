@@ -20,13 +20,15 @@ Product-Agent OS ships staged hooks through `plugins/product-agent-os/assets/tem
 The lifecycle guard works as follows:
 
 - `SessionStart` reports control-plane and lifecycle file presence;
-- `PreToolUse` allows read-only discovery through a fast path that does not read the marker, but blocks mutating or non-read-only commands without `.codex/product-agent-os/lifecycle-state.json`;
+- `PreToolUse` allows recognized read-only discovery through a fast path; recognized mutations require the current chat's active marker;
 - Before mutation show the applicable scope: large/high-risk/material/release work uses `task_start_brief_v2`, `brief_format: bold_fields` and nine fields; ordinary work uses `task_scope_note_v1`, `brief_format: concise`, and Scope/Evidence/Limits. Then record task_id, scope, updated_at, approval_boundary, brief_digest and brief_fields_present in the marker; `task_start_brief_shown` applies only to the full route. `task_start_brief_v1` / `field_list` remains compatible with already-started legacy sessions.
 - the per-write `PostToolUse` comment-sufficiency advisory checks only paths from the current patch instead of rescanning the entire dirty worktree;
 - after all writes, checks, and control-plane sync, the marker moves to `ready_for_completion_ledger` (full) or `ready_for_completion_brief` (concise/legacy) and further mutations are denied;
 - Project `Stop` is advisory: it does not validate chat format or request corrective continuation. Full scopes use start brief (9 fields) and Completion Ledger (13 items); ordinary work uses concise results, evidence and limits. Finish tools and control-plane sync before the terminal response. Explicit local packet validation does not prove activation.
 
 The marker is not a transcript store: do not put raw chat, secrets, private source bodies, private customer data, or credentials in it. Hook activation remains a separate approval boundary.
+
+As of 2026-11-09, local implementation selects `.codex/product-agent-os/lifecycle-state.<sha256(session_id)>.json` from the top-level host `session_id` and checks the marker owner. `SessionStart`, `PreToolUse`, and `Stop` share the selector. Another chat's marker neither blocks independent work nor authorizes its actions. The unsuffixed `.codex/product-agent-os/lifecycle-state.json` is legacy-only when session identity is absent; session-aware calls cannot fall back to it. Scope, freshness, and terminal guards remain. Marker state does not authorize arbitrary file access; overlapping file ownership still needs coordination. The session_id field comes from the [official Hooks contract](https://learn.chatgpt.com/docs/hooks#common-input-fields). Local evidence and host-verification limits: `research/product-agent-os-session-lifecycle-fix-2026-11-09.md`.
 
 ## Inputs
 

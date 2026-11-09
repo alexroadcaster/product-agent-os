@@ -41,13 +41,15 @@ Product-Agent OS поставляет staged hooks через `plugins/product-a
 Lifecycle guard устроен так:
 
 - `SessionStart` показывает наличие control-plane и lifecycle файлов;
-- `PreToolUse` пропускает read-only discovery по fast path без чтения marker, но блокирует mutating/non-read-only команды без `.codex/product-agent-os/lifecycle-state.json`;
+- `PreToolUse` пропускает распознанное read-only discovery по fast path; распознанные mutations требуют текущего marker своего чата;
 - Перед mutation покажите применимый scope: для large/high-risk/material/release — `task_start_brief_v2`, `brief_format: bold_fields` и девять полей; для ordinary — `task_scope_note_v1`, `brief_format: concise`, поля Scope/Evidence/Limits. Затем запишите marker с task_id, scope, updated_at, approval_boundary, brief_digest и brief_fields_present; `task_start_brief_shown` относится только к full route. `task_start_brief_v1` / `field_list` сохраняется для уже начатых legacy sessions.
 - per-write `PostToolUse` проверяет comment sufficiency только для путей текущего patch, а не повторно для всего dirty worktree;
 - после всех записей, проверок и control-plane sync marker переходит в `ready_for_completion_ledger` (full) или `ready_for_completion_brief` (concise/legacy); дальнейшие mutations блокируются;
 - Проектный `Stop` рекомендательный: он не проверяет формат чата и не запрашивает корректирующую continuation. Полный scope использует стартовый brief (9 полей) и Completion Ledger (13 пунктов); обычная работа — краткие результаты, проверки и ограничения. Все инструменты и control-plane sync завершаются до финального ответа. Явная локальная проверка пакета не доказывает активацию.
 
 Marker не является transcript store: в него нельзя помещать raw chat, secrets, private source bodies, private customer data или credentials. Activation hooks остаётся отдельным approval boundary.
+
+С 2026-11-09 local implementation выбирает `.codex/product-agent-os/lifecycle-state.<sha256(session_id)>.json` по top-level host `session_id` и проверяет owner в marker. `SessionStart`, `PreToolUse` и `Stop` используют один selector. Чужой marker не блокирует независимую задачу и не разрешает её действия. Unsuffixed `.codex/product-agent-os/lifecycle-state.json` — legacy только при отсутствии session identity; с session_id fallback запрещён. Scope, freshness и terminal guards сохраняются. Состояние marker не является разрешением на произвольные файлы; пересечения по одним файлам всё ещё требуют coordination. Основание поля session_id: [официальный Hooks contract](https://learn.chatgpt.com/docs/hooks#common-input-fields). Local evidence и пределы host verification: `research/product-agent-os-session-lifecycle-fix-2026-11-09.md`.
 
 ## Rules
 

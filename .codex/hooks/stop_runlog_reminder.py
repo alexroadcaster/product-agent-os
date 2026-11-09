@@ -6,8 +6,9 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from pre_tool_use_policy import lifecycle_marker_path, lifecycle_session_id
 
-LIFECYCLE_STATE_REL = Path(".codex/product-agent-os/lifecycle-state.json")
+
 TERMINAL_STATUSES = {"ready_for_completion_brief", "ready_for_completion_ledger", "blocked", "stopped_repair_required"}
 WORKSPACE_ROOT_ENV = "CODEX_HOOK_WORKSPACE_ROOT"
 REMINDER = (
@@ -38,13 +39,16 @@ def _workspace_root(payload: dict[str, Any]) -> Path:
     return current
 
 
-def _completion_ready(root: Path) -> bool:
+def _completion_ready(root: Path, payload: dict[str, Any] | None = None) -> bool:
+    """Suppress the advisory only for this session's terminal marker."""
     try:
-        marker = json.loads((root / LIFECYCLE_STATE_REL).read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
+        session = lifecycle_session_id(payload or {})
+        marker = json.loads(lifecycle_marker_path(root, payload or {}).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
         return False
     return (
         isinstance(marker, dict)
+        and marker.get("session_id") == session
         and marker.get("completion_ready") is True
         and marker.get("status") in TERMINAL_STATUSES
     )
@@ -56,7 +60,7 @@ def main() -> int:
     if payload.get("stop_hook_active") is True:
         return 0
     # The marker is workflow metadata, not proof that chat was delivered or reviewed.
-    if not _completion_ready(_workspace_root(payload)):
+    if not _completion_ready(_workspace_root(payload), payload):
         print(json.dumps({"systemMessage": REMINDER}, sort_keys=True))
     return 0
 

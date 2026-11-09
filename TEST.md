@@ -1,5 +1,9 @@
 # TEST.md
 
+## Session lifecycle regression — 2026-11-09
+
+`PAOS-SESSION-LIFECYCLE-2026-11-09`: run `python -m unittest tests.product_agent_os.test_lifecycle_hooks -v` for two-chat isolation, invalid/foreign identity, exact bootstrap, Windows case handling and SessionStart/Stop agreement, then required docs/template and plugin suites below. Current receipts: full discovery 1288 tests, one skip, exit 0; final affected suite 236 passed; fixture 91/91, transcript 26/26; hook validators/docs/diff passed. Compatibility exit 1 remains the existing legacy MCP gap. Exact state provenance and current-host versus synthetic evidence: `research/product-agent-os-session-lifecycle-fix-2026-11-09.md`. No trust or sandbox bypass is part of verification.
+
 ## Current GAP-01–GAP-05 implementation — 2026-11-05
 
 `PAOS-GAP-01-05-2026-11-05`: partially_verified: local implementation verified (1284 unittest, one skip; fixture 91/91; transcript 26/26). GAP-01/02/04 are implemented; GAP-03/05 remain blocked on the named owner/host gates. Evidence and reviewable remaining decisions belong to [the owning plan](research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md). Shared component resolver, B42 provenance/routing, exact-host source policy and optional pinned report authority are implemented locally. Current package compatibility is intentionally `needs_review` (legacy flat MCP declaration); four skill metadata were corrected under PAOS-GAP03-METADATA-2026-11-05 (94 focused tests and 232 docs/lifecycle/template tests passed); fresh-host exposure/invocation/trust remain open. Hooks definitions, trust, installed cache, T23–T29 implementation and T30–T34 are unchanged. Local source changes do not extend the dated ACT-F1..F6 host receipt.

@@ -1,5 +1,9 @@
 # REQUIREMENTS.md
 
+## Session lifecycle isolation — 2026-11-09
+
+`PAOS-SESSION-LIFECYCLE-2026-11-09`: user-authorized repair. Independent chats select their own marker from host session_id; no cross-chat fallback or reset. Preserve native sandbox/approvals, safety patterns, full/concise reporting, freshness and terminal checks. Legacy callers without session identity retain the legacy route. Acceptance and evidence: [owning record](research/product-agent-os-session-lifecycle-fix-2026-11-09.md). M1 wireframes remain documentation-only; Web implementation is not authorized.
+
 <!-- product-agent-os:start requirements -->
 Project: Codex Docs / Product-Agent OS
 Last compacted: 2026-06-11

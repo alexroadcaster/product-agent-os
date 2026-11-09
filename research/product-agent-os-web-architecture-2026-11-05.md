@@ -6,6 +6,8 @@ Source status: `project-authored / proposed / local-source-backed`. Дата: 20
 
 Связи: [PRD](product-agent-os-web-prd-2026-11-05.md), [анализ SOL 0.6](sol-0.6-product-agent-os-web-analysis-2026-11-05.md).
 
+UX-детализация M1 от 2026-11-09: [wireframes и interaction contracts](product-agent-os-web-m1-wireframes-2026-11-09.md), `draft_for_review`; это документационное уточнение, разработка не начата.
+
 ## 1. Архитектурный вывод
 
 Рекомендуется локальное browser application: React UI и один локальный Node.js service, использующий существующий Python package PAOS через узкий adapter. Markdown/JSON проекта сохраняют свою authority. SQLite хранит новые сущности Web — команды, решения, события и служебные связи; read models можно перестроить из источников.

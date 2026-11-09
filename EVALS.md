@@ -1,5 +1,9 @@
 # EVALS.md
 
+## Session lifecycle contract cases — 2026-11-09
+
+`PAOS-SESSION-LIFECYCLE-2026-11-09`: another chat's terminal/active marker must neither block nor authorize this chat. Missing/invalid/foreign own identity denies recognized mutations; exact own-marker bootstrap remains possible. Preserve legacy behavior only for payloads without session_id and preserve pinned-report restrictions. These deterministic regression cases supplement existing gates; they do not establish fresh-host multi-chat activation. Evidence: `research/product-agent-os-session-lifecycle-fix-2026-11-09.md`.
+
 <!-- product-agent-os:start evals -->
 Project: Codex Docs / Product-Agent OS
 Last compacted: 2026-07-07

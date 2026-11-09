@@ -7,6 +7,8 @@ import subprocess
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+from pre_tool_use_policy import _read_payload, lifecycle_marker_path, lifecycle_session_id
+
 
 CONTROL_PLANE_FILES = ["AGENTS.md", "REQUIREMENTS.md", "PLAN.md", "TEST.md", "EVALS.md", "RUNLOG.md"]
 LIFECYCLE_FILES = [
@@ -16,7 +18,6 @@ LIFECYCLE_FILES = [
     ".codex/evals/agent-context-contract.json",
     ".codex/hooks.json",
 ]
-LIFECYCLE_STATE = ".codex/product-agent-os/lifecycle-state.json"
 CANONICAL_SKILL_ROOT = Path("plugins/product-agent-os/skills")
 STALE_AFTER = timedelta(hours=48)
 WORKSPACE_ROOT_ENV = "CODEX_HOOK_WORKSPACE_ROOT"
@@ -76,16 +77,19 @@ def _skill_provenance(root: Path) -> str:
     )
 
 
-def _lifecycle_state_summary(root: Path) -> str:
-    path = root / LIFECYCLE_STATE
+def _lifecycle_state_summary(root: Path, payload: dict | None = None) -> str:
+    """Summarize only the selected chat; another chat cannot imply resume or completion."""
     try:
+        path = lifecycle_marker_path(root, payload or {})
         marker = json.loads(path.read_text(encoding="utf-8"))
     except FileNotFoundError:
         return "lifecycle_state=missing"
-    except (OSError, json.JSONDecodeError):
+    except (OSError, ValueError):
         return "lifecycle_state=invalid; action=repair_before_mutation"
     if not isinstance(marker, dict):
         return "lifecycle_state=invalid; action=repair_before_mutation"
+    if marker.get("session_id") != lifecycle_session_id(payload or {}):
+        return "lifecycle_state=foreign_session; action=repair_own_marker"
     status = str(marker.get("status") or "missing")
     task_id = str(marker.get("task_id") or "missing")
     if status != "in_progress":
@@ -102,7 +106,12 @@ def _lifecycle_state_summary(root: Path) -> str:
 
 
 def main() -> int:
+    payload, _ = _read_payload()
     root = _workspace_root()
+    try:
+        state_path = lifecycle_marker_path(root, payload).relative_to(root.resolve()).as_posix()
+    except ValueError:
+        state_path = "invalid_session_identity"
     present_control = _present(root, CONTROL_PLANE_FILES)
     missing_control = _missing(root, CONTROL_PLANE_FILES)
     present_lifecycle = _present(root, LIFECYCLE_FILES)
@@ -115,9 +124,11 @@ def main() -> int:
         + ", ".join(present_lifecycle)
         + ("; missing=" + ", ".join(missing_lifecycle) if missing_lifecycle else "; missing=none")
         + ". State marker="
-        + LIFECYCLE_STATE
+        + state_path
         + "; "
-        + _lifecycle_state_summary(root)
+        + _lifecycle_state_summary(root, payload)
+        + ". Scope=own_session; never wait for or reset another chat's marker. "
+        + "Use the displayed marker path and matching session_id. Coordinate only overlapping file ownership."
         + ". Skill provenance: "
         + _skill_provenance(root)
         + ". Load the config-routed task-start-brief.md and completion-ledger.md templates. "
