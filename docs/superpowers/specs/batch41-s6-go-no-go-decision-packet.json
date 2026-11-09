@@ -6,11 +6,11 @@
     "approve git/release/publish actions before external distribution"
   ],
   "attempt_id": "B41-S6-CLOSURE-A01",
-  "decision_digest": "sha256:2cfae0dd1fca91d6292fddc7314a4503d81ffdd39aa5ae59c2f199dc686e2aa3",
+  "decision_digest": "sha256:c67fa3ebd799d2edb8fb851253fe8423a96b20b85b6edb22e26315f026fe882f",
   "generated_at": "2026-06-18T01:10:00+03:00",
   "go_no_go": {
     "owner_feedback_testing": "conditional_go",
-    "plugin_cache_readiness": "approval_required",
+    "plugin_cache_readiness": "ready",
     "reason": "Batch 41 has local/read-only/staged evidence, but release, runtime/browser and plugin-cache readiness remain separately gated.",
     "release": "no_go",
     "runtime_browser_pilot": "approval_required",

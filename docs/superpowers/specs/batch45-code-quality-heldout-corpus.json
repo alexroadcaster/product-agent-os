@@ -1,0 +1,346 @@
+{
+  "schema_version": "heldout_corpus_v1",
+  "corpus_id": "B45-CQRR-HELDOUT-V1",
+  "version": "v1",
+  "provenance": "synthetic_authored_before_any_generation_outputs",
+  "frozen_at": "2026-11-09",
+  "treatment_outputs_inspected": false,
+  "generation_visibility": [
+    "task.json",
+    "input.*"
+  ],
+  "oracle_visibility": "checks/reference/seeded are evaluator-only; never generation context",
+  "tasks": [
+    {
+      "task_id": "CQ01",
+      "stack_family": "python",
+      "risk_class": "legacy_bug",
+      "expected_action": "fix",
+      "difficulty": "small",
+      "intent": "Preserve a supplied zero timeout; use the default only for None.",
+      "acceptance": "The evaluator checks must pass; no dependencies or unrelated files may change.",
+      "material_change_required": true,
+      "input_file": "input.py",
+      "check_command": [
+        "python",
+        "check.py",
+        "{candidate}"
+      ],
+      "reference_file": "reference.py",
+      "seeded_file": "seeded.py",
+      "initial_expected_pass": false,
+      "path": "tests/fixtures/product_agent_os/batch45/code-quality-corpus/CQ01",
+      "sha256": {
+        "input.py": "f13442324b1916ac507fc96bd06ec7d73a12817d7930ff48dd75531e9bedd24b",
+        "reference.py": "2f89c80c073de5248eb9074cd113e68219ad7f10fce75861d6d0784c12fe7bba",
+        "seeded.py": "f13442324b1916ac507fc96bd06ec7d73a12817d7930ff48dd75531e9bedd24b",
+        "check.py": "01b5a2c19ac4f771dce9ca3db38f85ef541e1c12db0873349e7920f8bd1ea729",
+        "task.json": "2117e6bb63723bb80ec38aa6d2decdf6d549e74282978092c750911af6e56cb5"
+      }
+    },
+    {
+      "task_id": "CQ02",
+      "stack_family": "python",
+      "risk_class": "performance",
+      "expected_action": "reuse",
+      "difficulty": "medium",
+      "intent": "Deduplicate in input order using existing hash-based capabilities; avoid quadratic equality scans.",
+      "acceptance": "The evaluator checks must pass; no dependencies or unrelated files may change.",
+      "material_change_required": true,
+      "input_file": "input.py",
+      "check_command": [
+        "python",
+        "check.py",
+        "{candidate}"
+      ],
+      "reference_file": "reference.py",
+      "seeded_file": "seeded.py",
+      "initial_expected_pass": false,
+      "path": "tests/fixtures/product_agent_os/batch45/code-quality-corpus/CQ02",
+      "sha256": {
+        "input.py": "42076cb34593150699c3703ed542a8326209cc2b3d7c7bcec025b295f98f4bbc",
+        "reference.py": "3c21a5d7cecb780bc53a62ac3f68caa5624b2f94c17c9501b436549b44ea1f09",
+        "seeded.py": "42076cb34593150699c3703ed542a8326209cc2b3d7c7bcec025b295f98f4bbc",
+        "check.py": "12547f55f552d90ef0d4d7545d9337073f8cd452e52b8f340f3d71c45433624d",
+        "task.json": "13dcff745537ef58b150a5f9eaa6ea50c9388c142493010bdaae44b6f8ee4ab8"
+      }
+    },
+    {
+      "task_id": "CQ03",
+      "stack_family": "python",
+      "risk_class": "unnecessary_abstraction",
+      "expected_action": "no_new_code",
+      "difficulty": "small",
+      "intent": "The inclusive boundary is already correct. Verify it and leave source unchanged; no framework or abstraction.",
+      "acceptance": "The evaluator checks must pass; no dependencies or unrelated files may change.",
+      "material_change_required": false,
+      "input_file": "input.py",
+      "check_command": [
+        "python",
+        "check.py",
+        "{candidate}"
+      ],
+      "reference_file": "reference.py",
+      "seeded_file": "seeded.py",
+      "initial_expected_pass": true,
+      "path": "tests/fixtures/product_agent_os/batch45/code-quality-corpus/CQ03",
+      "sha256": {
+        "input.py": "73bcd4dbc0ecc2ea11f71f512f58f51f06528e9ec389e5b1a969ea64a204af91",
+        "reference.py": "73bcd4dbc0ecc2ea11f71f512f58f51f06528e9ec389e5b1a969ea64a204af91",
+        "seeded.py": "36096590faa8bac799bb5b4762f5d3334ba6ab9c50f9d29926cdffff08ef7555",
+        "check.py": "ff0048f98fdd596e24ab1843f3c038bec394a7a636701430e06ba39c21189262",
+        "task.json": "d6e00e22998b39a2a4ca9591e5a19b0490b23a935108b775bac28b7ad7f6849b"
+      }
+    },
+    {
+      "task_id": "CQ04",
+      "stack_family": "javascript",
+      "risk_class": "small_change",
+      "expected_action": "fix",
+      "difficulty": "small",
+      "intent": "Normalize user display labels by trimming only outer whitespace, preserving interior spacing.",
+      "acceptance": "The evaluator checks must pass; no dependencies or unrelated files may change.",
+      "material_change_required": true,
+      "input_file": "input.cjs",
+      "check_command": [
+        "node",
+        "check.cjs",
+        "{candidate}"
+      ],
+      "reference_file": "reference.cjs",
+      "seeded_file": "seeded.cjs",
+      "initial_expected_pass": false,
+      "path": "tests/fixtures/product_agent_os/batch45/code-quality-corpus/CQ04",
+      "sha256": {
+        "input.cjs": "1a867e7f1de35886d0af24d2fb04afab390beb1290fb9580bc3ecc7ed30763a0",
+        "reference.cjs": "7d9fc6918ecc0329a961d07a1b4ea5c6979c18d1a3b744103a886df9ab963b56",
+        "seeded.cjs": "1a867e7f1de35886d0af24d2fb04afab390beb1290fb9580bc3ecc7ed30763a0",
+        "check.cjs": "d8fd66f8ec55eebf6dfdf36431f71d24fc2f2c94fa45761e12a921c4adbe7e92",
+        "task.json": "c6a0f6cc7a14308db6c9f7b47e3b4fb9df6beea302d97a3901282d403b8fffad"
+      }
+    },
+    {
+      "task_id": "CQ05",
+      "stack_family": "javascript",
+      "risk_class": "privacy",
+      "expected_action": "fix",
+      "difficulty": "medium",
+      "intent": "Return only id and displayName from a profile. Do not expose unexpected fields.",
+      "acceptance": "The evaluator checks must pass; no dependencies or unrelated files may change.",
+      "material_change_required": true,
+      "input_file": "input.cjs",
+      "check_command": [
+        "node",
+        "check.cjs",
+        "{candidate}"
+      ],
+      "reference_file": "reference.cjs",
+      "seeded_file": "seeded.cjs",
+      "initial_expected_pass": false,
+      "path": "tests/fixtures/product_agent_os/batch45/code-quality-corpus/CQ05",
+      "sha256": {
+        "input.cjs": "bb8d967a1885d915cee988e98cb82ccf7ab2bd04178f36c4c909844b4cc98019",
+        "reference.cjs": "15c56ddcab9503a61875ea999d6e1f09a4d44d50cb1e5b0799db55b1c1f94ee3",
+        "seeded.cjs": "bb8d967a1885d915cee988e98cb82ccf7ab2bd04178f36c4c909844b4cc98019",
+        "check.cjs": "09948b9a15226787cb74e96d414a4d6779601a9d8af08b31823b66c4a2e91a14",
+        "task.json": "eb95d2537fa9bee4a14ffbb5b7215ae10ef4b3a624e0af77e6b1151543938de4"
+      }
+    },
+    {
+      "task_id": "CQ06",
+      "stack_family": "javascript",
+      "risk_class": "unnecessary_abstraction",
+      "expected_action": "deletion",
+      "difficulty": "small",
+      "intent": "Remove the unused module-level cache; preserve the formatter and do not replace it with a service.",
+      "acceptance": "The evaluator checks must pass; no dependencies or unrelated files may change.",
+      "material_change_required": true,
+      "input_file": "input.cjs",
+      "check_command": [
+        "node",
+        "check.cjs",
+        "{candidate}"
+      ],
+      "reference_file": "reference.cjs",
+      "seeded_file": "seeded.cjs",
+      "initial_expected_pass": false,
+      "path": "tests/fixtures/product_agent_os/batch45/code-quality-corpus/CQ06",
+      "sha256": {
+        "input.cjs": "f0f818dfa252473a537d02eada2fbec447fa5c981d4b80ff10c0f04bbba667d0",
+        "reference.cjs": "b1e52ccfc6d51974dc97ce09739b4b9046b6600a1d49b1ff5ea4505d466433d4",
+        "seeded.cjs": "f0f818dfa252473a537d02eada2fbec447fa5c981d4b80ff10c0f04bbba667d0",
+        "check.cjs": "3f7405b9ac7e6a8ae405d42bf6815bbad62c3084ff2a3bf8dcd4b00511914976",
+        "task.json": "ee255f09ed56e764c8095e2572690c66544c90083c530ee1c1a1095439a58d3c"
+      }
+    },
+    {
+      "task_id": "CQ07",
+      "stack_family": "sqlite",
+      "risk_class": "legacy_bug",
+      "expected_action": "fix",
+      "difficulty": "small",
+      "intent": "Return distinct labels in sorted order from the provided rows.",
+      "acceptance": "The evaluator checks must pass; no dependencies or unrelated files may change.",
+      "material_change_required": true,
+      "input_file": "input.sql",
+      "check_command": [
+        "python",
+        "check.py",
+        "{candidate}"
+      ],
+      "reference_file": "reference.sql",
+      "seeded_file": "seeded.sql",
+      "initial_expected_pass": false,
+      "path": "tests/fixtures/product_agent_os/batch45/code-quality-corpus/CQ07",
+      "sha256": {
+        "input.sql": "7dd1916f265613fe9c5334c78e8ac9adc540b2b087c89da86e134b10b7a15021",
+        "reference.sql": "f0e5f80b72fb8e6951fb79265edbd6d14ba33091a56cb6b50b8aad41669b95e3",
+        "seeded.sql": "7dd1916f265613fe9c5334c78e8ac9adc540b2b087c89da86e134b10b7a15021",
+        "check.py": "39d80d8d85b46ac2b141603feff45d33a190a76268d0f06caa535bb897efd792",
+        "task.json": "33992c7b77ca358e35f4a30b167e0f0e849127987f45eda5be78fd76507aad84"
+      }
+    },
+    {
+      "task_id": "CQ08",
+      "stack_family": "sqlite",
+      "risk_class": "security_boundary",
+      "expected_action": "fix",
+      "difficulty": "medium",
+      "intent": "List only blue-tenant item IDs, in order; do not expose other tenants.",
+      "acceptance": "The evaluator checks must pass; no dependencies or unrelated files may change.",
+      "material_change_required": true,
+      "input_file": "input.sql",
+      "check_command": [
+        "python",
+        "check.py",
+        "{candidate}"
+      ],
+      "reference_file": "reference.sql",
+      "seeded_file": "seeded.sql",
+      "initial_expected_pass": false,
+      "path": "tests/fixtures/product_agent_os/batch45/code-quality-corpus/CQ08",
+      "sha256": {
+        "input.sql": "94829daf5b63eda41cbb77d78dd55b4a24a1144b600882d55fcd0e5903dc94b5",
+        "reference.sql": "9d030f9eba66546f44458431f8a5cb40a64f0c832bf7cdb0b5f37a25f544a6b0",
+        "seeded.sql": "94829daf5b63eda41cbb77d78dd55b4a24a1144b600882d55fcd0e5903dc94b5",
+        "check.py": "ef59b79f953e9dfa7d63c43edddff61683883249b29ded11f69245cb1288d5d5",
+        "task.json": "ef0c0aa31621e20183b12e64c5fd3eab96363537982b15ac8fcf17b9e0bb7267"
+      }
+    },
+    {
+      "task_id": "CQ09",
+      "stack_family": "sqlite",
+      "risk_class": "data_integrity",
+      "expected_action": "configuration",
+      "difficulty": "medium",
+      "intent": "Enable foreign-key enforcement for this SQLite connection, without adding application validation code.",
+      "acceptance": "The evaluator checks must pass; no dependencies or unrelated files may change.",
+      "material_change_required": true,
+      "input_file": "input.sql",
+      "check_command": [
+        "python",
+        "check.py",
+        "{candidate}"
+      ],
+      "reference_file": "reference.sql",
+      "seeded_file": "seeded.sql",
+      "initial_expected_pass": false,
+      "path": "tests/fixtures/product_agent_os/batch45/code-quality-corpus/CQ09",
+      "sha256": {
+        "input.sql": "0218f42e5ba57a8cd5f7207f6f3b258ded695da00d40ffde9ca773ea6af46105",
+        "reference.sql": "b0fcd808902fbc0195ec7d57afedf6f0fa3a141f5f4b406b8d8c8d5715ef2921",
+        "seeded.sql": "0218f42e5ba57a8cd5f7207f6f3b258ded695da00d40ffde9ca773ea6af46105",
+        "check.py": "36a2f6c79a211171a19d24fe625f82d1f0fa253195748edca46cab222d8235ab",
+        "task.json": "9ccf9bc94ffb5c6f7ab222568b7d55e67d9b6ba172a8af77ac300649aea36b8c"
+      }
+    },
+    {
+      "task_id": "CQ10",
+      "stack_family": "powershell",
+      "risk_class": "legacy_bug",
+      "expected_action": "fix",
+      "difficulty": "small",
+      "intent": "Preserve explicitly supplied false; default to true only for null.",
+      "acceptance": "The evaluator checks must pass; no dependencies or unrelated files may change.",
+      "material_change_required": true,
+      "input_file": "input.ps1",
+      "check_command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "check.ps1",
+        "{candidate}"
+      ],
+      "reference_file": "reference.ps1",
+      "seeded_file": "seeded.ps1",
+      "initial_expected_pass": false,
+      "path": "tests/fixtures/product_agent_os/batch45/code-quality-corpus/CQ10",
+      "sha256": {
+        "input.ps1": "c3b1ce9cd897334dc4e21a87b71f4c34232cef3335cea0dcbd11ae68a3d116fe",
+        "reference.ps1": "d4cc21034b252339173cf1e446fb86cbd01aea85c0d29e6e4e16b390564d9766",
+        "seeded.ps1": "c3b1ce9cd897334dc4e21a87b71f4c34232cef3335cea0dcbd11ae68a3d116fe",
+        "check.ps1": "371ecf15579eb5d2daff755d0a88badf6890a567c1fc8b38d79a4cb10f6ff919",
+        "task.json": "631b4bb1c4468d9cc49802bd3d0c9f7a04b0f70ebbf8b9bde515ab6ade7bd1b0"
+      }
+    },
+    {
+      "task_id": "CQ11",
+      "stack_family": "powershell",
+      "risk_class": "security_boundary",
+      "expected_action": "fix",
+      "difficulty": "medium",
+      "intent": "For normalized slash paths, allow the root itself and descendants but reject sibling prefixes. Case-sensitive contract.",
+      "acceptance": "The evaluator checks must pass; no dependencies or unrelated files may change.",
+      "material_change_required": true,
+      "input_file": "input.ps1",
+      "check_command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "check.ps1",
+        "{candidate}"
+      ],
+      "reference_file": "reference.ps1",
+      "seeded_file": "seeded.ps1",
+      "initial_expected_pass": false,
+      "path": "tests/fixtures/product_agent_os/batch45/code-quality-corpus/CQ11",
+      "sha256": {
+        "input.ps1": "959e0537ff21e5c530b906ed7be0ee187d2b851337150996fc4c6fe2788d3449",
+        "reference.ps1": "6d434f5dc45f97d5cfac3408a367be4eba7118c1cd74086dea22aa77f5aceb51",
+        "seeded.ps1": "959e0537ff21e5c530b906ed7be0ee187d2b851337150996fc4c6fe2788d3449",
+        "check.ps1": "8065420fd271e9c8031b554b4c18920f67732fc835ca31dc1accb352d68aaf79",
+        "task.json": "e70f230b40b07bebfb5e427d4434379aa40d779f80cd297fc43e9f933cf78425"
+      }
+    },
+    {
+      "task_id": "CQ12",
+      "stack_family": "powershell",
+      "risk_class": "small_change",
+      "expected_action": "reuse",
+      "difficulty": "small",
+      "intent": "Join words with a single separator using the native join operator. Preserve an empty list.",
+      "acceptance": "The evaluator checks must pass; no dependencies or unrelated files may change.",
+      "material_change_required": true,
+      "input_file": "input.ps1",
+      "check_command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "check.ps1",
+        "{candidate}"
+      ],
+      "reference_file": "reference.ps1",
+      "seeded_file": "seeded.ps1",
+      "initial_expected_pass": false,
+      "path": "tests/fixtures/product_agent_os/batch45/code-quality-corpus/CQ12",
+      "sha256": {
+        "input.ps1": "f3d2db0ad8187b05abb81175a6b0cddf53de4c57828b6637d0d23fca3523a19c",
+        "reference.ps1": "db124b88b4b68c8871ba80d2977ffeb667723ac0326aa719a67bbb108f1faee4",
+        "seeded.ps1": "f3d2db0ad8187b05abb81175a6b0cddf53de4c57828b6637d0d23fca3523a19c",
+        "check.ps1": "b2ad580632187f7bab9b04fe3a2fff0cf8303c5a9e53ab95e2b97ba633313004",
+        "task.json": "8b84cd021d8ca0d460ed97e79fc344112191c705fd6f732d2b75898fab63e4a6"
+      }
+    }
+  ],
+  "content_sha256": "480eaedea3d29b3ab2c2dcc62f43e12cebeb06032aaf25b037ed8e7a1c0c1017"
+}

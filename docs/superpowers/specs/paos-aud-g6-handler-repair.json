@@ -1,0 +1,85 @@
+{
+  "schema_version": "paos_g6_handler_repair_v1",
+  "checked_at": "2026-11-09T13:24:47.017337+00:00",
+  "status": "locally_fixed_verified_full_run_plus_exact_regression_retest",
+  "finding": "Generated hook definition referenced an unregistered comment advisory handler",
+  "fix": "Register existing handler; use concatenation for runtime cap text so it cannot be mistaken for an unresolved template placeholder; preserve active/template parity",
+  "changed_paths": [
+    "plugins/product-agent-os/scripts/product_agent_os/templates.py",
+    "plugins/product-agent-os/assets/templates/hooks/comment_sufficiency_advisory.py",
+    ".codex/hooks/comment_sufficiency_advisory.py",
+    "tests/product_agent_os/test_infrastructure_templates.py",
+    "tests/product_agent_os/test_fixture_eval_runner.py"
+  ],
+  "red": "handler-red.log: intended assertion for missing handler",
+  "first_green_attempt": "96 tests, 1 unresolved-placeholder assertion; fixed runtime string formatting without changing output",
+  "focused": "108 tests, 2.224s, OK, exit 0",
+  "dry_run_exit": 0,
+  "stage_exit": 0,
+  "staged_handlers": [
+    ".codex/hooks/comment_sufficiency_advisory.py",
+    ".codex/hooks/permission_request_summary.py",
+    ".codex/hooks/post_tool_use_evidence.py",
+    ".codex/hooks/pre_tool_use_policy.py",
+    ".codex/hooks/session_start_context.py",
+    ".codex/hooks/stop_runlog_reminder.py"
+  ],
+  "all_handlers_present": true,
+  "target_apply": false,
+  "hook_trust_updated": false,
+  "active_hook_sha256": "82ec169bb5d5584e6b0eaf682ac55c2fa72e5d78071b3d31934f65a793ae50f8",
+  "new_stage": ".docs-tools/reports/paos-aud-g6/handler-stage-recheck",
+  "full_gate_log": ".docs-tools/reports/paos-aud-g6/approved-full.log",
+  "final_checks": {
+    "full_unittest": {
+      "command": "python -B -m unittest discover -s tests -p 'test_*.py' -v",
+      "tests": 1342,
+      "seconds": 796.146,
+      "exit_code": 1,
+      "failures": 1,
+      "skipped": 1,
+      "failure": "Outdated 209 staged-file count; correct generated count is 210",
+      "resolved_by": "approved-count-retest.log"
+    },
+    "count_retest": {
+      "command": "python -B -m unittest tests.product_agent_os.test_fixture_eval_runner.FixtureEvalRunnerTest.test_fixture_eval_checks_expected_renderer_behavior_by_fixture -v",
+      "tests": 1,
+      "seconds": 58.423,
+      "exit_code": 0
+    },
+    "focused": {
+      "tests": 108,
+      "exit_code": 0
+    },
+    "docs_lifecycle": {
+      "tests": 112,
+      "seconds": 9.925,
+      "exit_code": 0
+    },
+    "fixtures": {
+      "passed": 91,
+      "exit_code": 0
+    },
+    "transcripts": {
+      "passed": 26,
+      "failed": 0,
+      "exit_code": 0
+    },
+    "hook_validators": {
+      "exit_code": 0
+    },
+    "docs_structure": {
+      "exit_code": 0
+    },
+    "task_matrix": {
+      "exit_code": 0
+    },
+    "state_consistency": {
+      "exit_code": 0
+    },
+    "diff_check": {
+      "exit_code": 0
+    },
+    "verification_scope": "Full suite plus exact regression rerun; full suite was not rerun after count-only expectation correction"
+  }
+}

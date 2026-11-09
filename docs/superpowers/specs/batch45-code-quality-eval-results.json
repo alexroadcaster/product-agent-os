@@ -1,0 +1,64 @@
+{
+  "schema_version": "batch45_code_quality_eval_results_v1",
+  "status": "blocked_before_generation",
+  "approval_id": "B45-CQRR-T34-PROPOSED-A01",
+  "approved": true,
+  "consumed": false,
+  "preflight": {
+    "schema_version": "paos_g6_runtime_preflight_v1",
+    "checked_at": "2026-11-09T13:17:34.839657+00:00",
+    "owner_approval": "All three bounded packets approved in current user continuation",
+    "freeze_checks": {
+      "readiness_sha256_matches": true,
+      "design_sha256_matches": true,
+      "context_sha256_matches": true
+    },
+    "commands": [
+      {
+        "command": "codex --version",
+        "exit_code": 0,
+        "observed": "codex-cli 0.167.0"
+      },
+      {
+        "command": "codex login status",
+        "exit_code": 0,
+        "observed": "ChatGPT authentication"
+      },
+      {
+        "command": "codex exec --help",
+        "exit_code": 0,
+        "has_ephemeral": true,
+        "has_no_tools_flag": false,
+        "has_ignore_user_config": true,
+        "help_is_not_tool_isolation_proof": true
+      },
+      {
+        "command": "codex debug prompt-input G6 synthetic preflight; do not execute any task.",
+        "exit_code": 0,
+        "raw_output_retained": false,
+        "output_sha256": "86fb53c0207b8320e9bd70ad79ce8b83210d8cb65be2f0d3b41ef4922fef5815",
+        "output_characters": 145446,
+        "ambient_project_context_detected": true,
+        "tool_list_attested": false
+      }
+    ],
+    "primary_calls": 0,
+    "reviewer_calls": 0,
+    "approval_consumed": false,
+    "status": "no_go_preflight_tool_context_isolation_not_attested",
+    "reason": "The frozen design requires tools=[] and no ambient skills/hooks/AGENTS. CLI help and local prompt rendering do not establish such an execution path. Do not substitute a no-tool instruction for an empty tool schema or disable policy guardrails. No candidate generation started.",
+    "cost_status": "ChatGPT login observed; per-call cost/allowance comparison telemetry not established",
+    "source_reference": "https://learn.chatgpt.com/docs/config-file/config-reference",
+    "source_scope": "MCP enabled_tools and shell_tool describe scoped controls, not an attestation of globally empty tools. No categorical claim that all future versions lack this capability.",
+    "initial_sandbox_attempt": {
+      "command": "codex debug prompt-input",
+      "exit_code": 1,
+      "observation": "Access is denied (os error 5); approved escalation then succeeded without model calls"
+    }
+  },
+  "primary_results": [],
+  "reviewer_results": [],
+  "valid_pairs": 0,
+  "required_pairs": 12,
+  "raw_private_output_retained": false
+}

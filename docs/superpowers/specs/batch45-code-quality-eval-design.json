@@ -1,0 +1,59 @@
+{
+  "schema_version": "code_quality_eval_design_v1",
+  "design_id": "B45-CQRR-ISOLATED-V1",
+  "status": "frozen_local_contract_not_live_verified",
+  "corpus_path": "docs/superpowers/specs/batch45-code-quality-heldout-corpus.json",
+  "generation_context_keys": [
+    "intent",
+    "acceptance",
+    "input_source"
+  ],
+  "intervention": "Before editing, identify the observable behavior and invariants. Check existing\ncode and standard capabilities; prefer reuse, configuration, deletion or no change\nwhen sufficient. Choose the smallest correct change and risk-relevant verification.\nAdd comments only for non-obvious intent. Do not invent test results or performance\nclaims. Keep this preparation private; return only the requested candidate source.",
+  "reviewer_assistance": false,
+  "comment_advisory": false,
+  "arms": {
+    "baseline": {
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "medium",
+      "runner": "approved_codex_cli_ephemeral_adapter",
+      "timeout_seconds": 180,
+      "tools": [],
+      "corpus_sha256": "480eaedea3d29b3ab2c2dcc62f43e12cebeb06032aaf25b037ed8e7a1c0c1017",
+      "context_policy": "isolated synthetic task/input only; no ambient skills, hooks, AGENTS or oracle",
+      "prompt_path": "plugins/product-agent-os/assets/templates/evals/code-quality-baseline-prompt.md",
+      "prompt_sha256": "628d8c33da3d301ba8904e944ceb74810f505cfe172f7e0639b4b85f326aeff1"
+    },
+    "treatment": {
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "medium",
+      "runner": "approved_codex_cli_ephemeral_adapter",
+      "timeout_seconds": 180,
+      "tools": [],
+      "corpus_sha256": "480eaedea3d29b3ab2c2dcc62f43e12cebeb06032aaf25b037ed8e7a1c0c1017",
+      "context_policy": "isolated synthetic task/input only; no ambient skills, hooks, AGENTS or oracle",
+      "prompt_path": "plugins/product-agent-os/assets/templates/evals/code-quality-treatment-prompt.md",
+      "prompt_sha256": "84b4fee6fd2935b6ec60217a1112f56232333c3fda2696142710fcf30330450c"
+    }
+  },
+  "output_contract": "Raw candidate source; deterministic harness owns result schema and metrics. Model self-scores are not requested.",
+  "context_sha256": {
+    "docs/superpowers/specs/batch45-code-quality-heldout-corpus.json": "7b78997781d1b5d3be54f52fff547d9b1030e23d81f56ec6f796f50f16dbaa8f",
+    "plugins/product-agent-os/scripts/codex_runtime_runner/eval_design.py": "c97ad03ad1473116b8b5a232895f0464f35744137d025ec0cab1ac960000ac3b",
+    "plugins/product-agent-os/scripts/codex_runtime_runner/promotion_contract.py": "c81cc818ab262ead774a6c5fc431133d41e8bf2537f95e725f9a8762ad76b133",
+    "plugins/product-agent-os/scripts/codex_runtime_runner/reviewer_contract.py": "d097da84c577ebdf07d30e7b0053fbe84adc9fa2b4343165cd16d70b63604044",
+    "plugins/product-agent-os/assets/templates/evals/code-quality-reviewer-rubric.json": "68d3c70a2b468768749adee4b1973c0617f00ddc2c8aeac118b56f8c5bdeb5ce",
+    "plugins/product-agent-os/scripts/product_agent_os/code_quality_metrics.py": "d89730d33cd5fff88f92e0a0395b28d4267c38246db760dc9cddd53cd99524a2"
+  },
+  "runtime_approval_required": true,
+  "promotion_policy": {
+    "all_pairs_valid": true,
+    "critical_findings": 0,
+    "minimum_dimension": 6,
+    "correctness_regressions": 0,
+    "latency_regression_max_fraction": 0.2,
+    "token_regression_max_fraction": 0.2,
+    "cost_regression_max_fraction": 0.2,
+    "missing_cost_or_latency": "no_go",
+    "performance": "measured benchmark required for performance claim; operation counts alone do not prove speedup"
+  }
+}

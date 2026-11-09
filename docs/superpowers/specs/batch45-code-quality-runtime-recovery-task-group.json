@@ -2,11 +2,11 @@
   "schema_version": "batch45_code_quality_runtime_recovery_task_group_v2",
   "task_group_id": "B45-CODE-QUALITY-RUNTIME-RECOVERY",
   "evidence_id": "B45-CQRR-A01",
-  "status": "t28_t29_locally_implemented_focused_verified",
-  "checked_at": "2026-08-17T06:33:27+03:00",
-  "source_status": "Source-owned Batch 45 corrective task list. A04 covers T23/T24, A05 covers T25-T27 and A06 covers local T28/T29 implementation plus focused deterministic checks. T28 replaced the unaccepted 196-record manifest and legacy T18-T22 block with semantic packet cases; T29 added deterministic evidence aggregation integrated at the promotion contract. This is not CLI/runtime activation, live/provider/model or external reviewer behavior, promotion or production evidence.",
-  "latest_execution_evidence_id": "B45-CQRR-A06",
-  "latest_execution_pointer": "docs/superpowers/plans/2026-08-17-product-agent-os-loop-remediation.md",
+  "status": "t30_t33_locally_verified_t34_approved_preflight_blocked",
+  "checked_at": "2026-11-09T13:25:56.385619+00:00",
+  "source_status": "Source-owned Batch 45 corrective task list. A04 covers T23/T24, A05 covers T25-T27 and A06 covers local T28/T29 implementation plus focused deterministic checks. T28 replaced the unaccepted 196-record manifest and legacy T18-T22 block with semantic packet cases; T29 added deterministic evidence aggregation integrated at the promotion contract. This is not CLI/runtime activation, live/provider/model or external reviewer behavior, promotion or production evidence. A07 (2026-11-09) adds locally verified T30-T33; T34 remains approval_required_not_started. No model/provider/reviewer/host execution or promotion is claimed.",
+  "latest_execution_evidence_id": "B45-CQRR-A07",
+  "latest_execution_pointer": "docs/superpowers/specs/batch45-code-quality-local-readiness.json",
   "goal": "Recover Batch 45 Professional Code Authoring around the user outcome: a non-programmer should receive the smallest safe, readable and performant patch, with risk-selected tests and intent-focused comments, without generating a second codebase of low-value tests or policy prose.",
   "user_outcome": {
     "primary_user": "mass user or vibe-coder who cannot independently design code, architecture and test strategy",
@@ -345,7 +345,10 @@
         "Stop before a live reviewer call without exact approval.",
         "Stop if the reviewer receives the arm label or target verdict."
       ],
-      "status": "planned_not_started"
+      "status": "locally_implemented_focused_verified",
+      "implementation_evidence": "B45-CQRR-A07: docs/superpowers/specs/batch45-code-quality-local-readiness.json",
+      "checked_at": "2026-11-09T16:04:21.435465+03:00",
+      "result_status": "accepted_local_contract_not_live_behavior"
     },
     {
       "task_id": "B45-CQRR-T31",
@@ -379,7 +382,10 @@
         "Stop if the corpus is tuned after treatment inspection.",
         "Stop if a task requires unauthorized target access or external data."
       ],
-      "status": "planned_not_started"
+      "status": "locally_implemented_focused_verified",
+      "implementation_evidence": "B45-CQRR-A07: docs/superpowers/specs/batch45-code-quality-local-readiness.json",
+      "checked_at": "2026-11-09T16:04:21.435465+03:00",
+      "result_status": "accepted_local_contract_not_live_behavior"
     },
     {
       "task_id": "B45-CQRR-T32",
@@ -414,7 +420,10 @@
         "Stop if multiple behavior interventions change in the same comparison.",
         "Stop if prompts are ephemeral or cannot be reproduced."
       ],
-      "status": "planned_not_started"
+      "status": "locally_implemented_focused_verified",
+      "implementation_evidence": "B45-CQRR-A07: docs/superpowers/specs/batch45-code-quality-local-readiness.json",
+      "checked_at": "2026-11-09T16:04:21.435465+03:00",
+      "result_status": "accepted_local_contract_not_live_behavior"
     },
     {
       "task_id": "B45-CQRR-T33",
@@ -451,7 +460,10 @@
         "Stop and keep no-go if any schema, seeded-fault, blinding or reproducibility case fails.",
         "Stop before approval-packet creation when local readiness is not green."
       ],
-      "status": "planned_not_started"
+      "status": "locally_implemented_focused_verified",
+      "implementation_evidence": "B45-CQRR-A07: docs/superpowers/specs/batch45-code-quality-local-readiness.json",
+      "checked_at": "2026-11-09T16:04:21.435465+03:00",
+      "result_status": "accepted_local_contract_not_live_behavior"
     },
     {
       "task_id": "B45-CQRR-T34",
@@ -487,7 +499,11 @@
         "Stop on first invalid schema, unauthorized cost/timeout drift, privacy breach or critical reviewer finding.",
         "Do not reuse an approval after any call starts."
       ],
-      "status": "approval_required_not_started"
+      "status": "blocked",
+      "result_status": "approved_preflight_blocked",
+      "checked_at": "2026-11-09T13:25:56.385619+00:00",
+      "implementation_evidence": "docs/superpowers/specs/batch45-code-quality-eval-results.json",
+      "blocker": "Frozen tools/context isolation not attested; zero primary/reviewer calls"
     }
   ],
   "does_not_authorize": [
@@ -505,5 +521,26 @@
     "Each implementation task must remain revertible by removing only its new module/template/test files and restoring the previous advisory-only selector.",
     "A failed local or live gate returns Batch 45 to advisory-only/no-go without deleting evidence."
   ],
-  "claim_ceiling": "A04 proves local T23/T24, A05 proves local T25-T27, and A06 proves local T28/T29 implementation with focused deterministic verification. A06 shows semantic test compaction and a deterministic promotion-evidence contract only; it does not prove T30-T34, multi-language runtime enforcement, model behavior improvement, CLI/runtime or hook activation, live/provider/model/external-reviewer behavior, promotion, release readiness or production readiness."
+  "claim_ceiling": "A04 proves local T23/T24, A05 proves local T25-T27, and A06 proves local T28/T29 implementation with focused deterministic verification. A06 shows semantic test compaction and a deterministic promotion-evidence contract only; it does not prove T30-T34, multi-language runtime enforcement, model behavior improvement, CLI/runtime or hook activation, live/provider/model/external-reviewer behavior, promotion, release readiness or production readiness. A07 proves local blinded-review gating, twelve frozen synthetic tasks across four stacks, isolated prompts and local preflight only. Historical T18-T22 no-go remains.",
+  "execution_evidence": [
+    {
+      "evidence_id": "B45-CQRR-A07",
+      "recorded_at": "2026-11-09T16:04:21.435465+03:00",
+      "tasks": [
+        "B45-CQRR-T30",
+        "B45-CQRR-T31",
+        "B45-CQRR-T32",
+        "B45-CQRR-T33"
+      ],
+      "status": "locally_implemented_focused_verified",
+      "path": "docs/superpowers/specs/batch45-code-quality-local-readiness.json"
+    }
+  ],
+  "approved_runtime_followup": {
+    "status": "blocked_before_generation",
+    "path": "docs/superpowers/specs/batch45-code-quality-eval-results.json",
+    "decision": "no_go",
+    "approved": true,
+    "consumed": false
+  }
 }

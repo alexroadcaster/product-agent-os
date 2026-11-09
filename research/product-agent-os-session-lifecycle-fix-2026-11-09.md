@@ -1,5 +1,9 @@
 # Исправление изоляции lifecycle по чатам
 
+## G6 handoff — 09.11.2026
+
+G6 partially_verified: уточнённый HOST-пакет разрешён и применён — два cache-файла и 210 target files проверены readback. Свежая целевая сессия не запустилась: App API не задаёт произвольный cwd, elevated CLI остановлен auto-review, sandbox CLI не может открыть локальное состояние. Нужен штатный запуск пользователем существующего host-target в Codex App, без повторного разрешения. Пилоты not_run; acceptance null; T34 no-go.
+
 Source status: `project-authored / implemented_locally_verified / current_host_partially_verified`.
 
 Task: `PAOS-SESSION-LIFECYCLE-2026-11-09`. Дата: 2026-11-09. Пользователь явно поручил исправить блокировки PreToolUse при независимой работе чатов. Связанная исходная задача — сохранить M1 wireframes без Web-разработки.

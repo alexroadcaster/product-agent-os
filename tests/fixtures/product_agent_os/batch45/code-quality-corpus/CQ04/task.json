@@ -1,0 +1,19 @@
+{
+  "task_id": "CQ04",
+  "stack_family": "javascript",
+  "risk_class": "small_change",
+  "expected_action": "fix",
+  "difficulty": "small",
+  "intent": "Normalize user display labels by trimming only outer whitespace, preserving interior spacing.",
+  "acceptance": "The evaluator checks must pass; no dependencies or unrelated files may change.",
+  "material_change_required": true,
+  "input_file": "input.cjs",
+  "check_command": [
+    "node",
+    "check.cjs",
+    "{candidate}"
+  ],
+  "reference_file": "reference.cjs",
+  "seeded_file": "seeded.cjs",
+  "initial_expected_pass": false
+}

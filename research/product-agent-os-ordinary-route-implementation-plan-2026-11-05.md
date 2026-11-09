@@ -1,6 +1,10 @@
 # Product-Agent OS: план реализации после аудита документации
 
-Source status: project-local implementation proposal, 2026-11-05; основан на текущем коде и source-owned task groups. План сохранён по запросу владельца; ORD-01–ORD-06 реализованы локально, GAP-01–GAP-05 реализованы локально с указанными ниже незакрытыми gates. T30–T34 и GAP-06 не начаты.
+## G6 handoff — 09.11.2026
+
+G6 partially_verified: три синтетических пилота выполнены из текущего проекта в host-target/pilots; все проверки passed, результаты needs_user_acceptance. По разрешению владельца HOST-01 больше не блокирует эти пилоты. Fresh-session activation HOST-01/HOST-02 остаётся отдельной открытой задачей; T34 no-go. Owner feedback/acceptance null; manual_only сохраняется.
+
+Source status: project-local implementation proposal, 2026-11-05; основан на текущем коде и source-owned task groups. План сохранён по запросу владельца; ORD-01–ORD-06 реализованы локально, GAP-01–GAP-05 реализованы локально с указанными ниже незакрытыми gates. Текущий G6: T30–T33 локально реализованы, T34 no-go; три GAP-06 pilots passed и ожидают owner acceptance.
 
 ## GAP-03 approved metadata correction — 05.11.2026
 
@@ -713,7 +717,7 @@ Review mode текущего плана: self_review. Сверены IMP-01–IM
 - Validator target: detailed task blocks
 - Date and time of task implementation: 05-11-2026 17:48
 - Depends on: B42 source matrix; GAP-02 для общего component inventory; ORD-05 для intended compact workflow
-- Blocks: Fresh-host ordinary claim и GAP-06 target pilot на выбранной поверхности
+- Blocks: Fresh-host ordinary claim; current-project GAP-06 pilots имеют отдельное owner approval и не зависят от fresh-host receipt
 - Source: IMP-06; B42-S1-M02/M04/M05/M06/M07/M08 — прежние task IDs сохраняются
 - Short description: M02: source/package/cache normalized digest и effective selection path. M04/M05: отдельно определить safe read-only implicit class и explicit-only write/release/automation; изменить metadata только если owner выбрал такую policy, не по умолчанию. M07/M08: routing и synthetic regression cases. M06: отдельный разрешённый fresh-session probe exposure плюс invocation, результаты сохранять в owning B42 matrix, без raw chat. Этот блок — координация прежних задач, не их замена новым статусом.
 - Technical value: Понятно, какая версия skill управляет задачей, и что действительно доступно пользователю.
@@ -729,7 +733,7 @@ Review mode текущего плана: self_review. Сверены IMP-01–IM
 - Agents: lifecycle-orchestrator; evidence owner: tester; роли обозначают ownership, не запущенных subagents
 - Skills: implementation-planner для scope/handoff; Python implementation: python-design-patterns и python-code-style; docs-maintainer для названного docs impact; только task-matching canonical skills
 - Output artifacts: Existing B42 task evidence и RU/EN guidance; cache остаётся неизменным без отдельной exact authority.
-- Next step: GAP-06 после successful intended-host probe либо сохранить explicit host gap.
+- Next step: Fresh-host probe остаётся отдельным; current-project GAP-06 pilots выполнены с explicit host gap.
 
 #### Completion Report
 
@@ -1026,13 +1030,13 @@ Review mode текущего плана: self_review. Сверены IMP-01–IM
 ### Task `PAOS-GAP-06`
 
 - Task: Проверить ordinary user outcomes через существующие B39/B44 manual packets
-- Status: planned
+- Status: in_progress
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: План по отчёту; будущая реализация пока не разрешена
+- Plan trigger: Владелец разрешил три пилота из текущего проекта в host-target; HOST-01 dependency снята, activation отдельно.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
-- Depends on: ORD-06; GAP-03 для provenance выбранного host; GAP-05 только для report-authority сценариев
+- Date and time of task implementation: 09-11-2026 17:11
+- Depends on: ORD-06 и локальные F05/F08 выполнены; HOST-01/HOST-02 и T34 не являются gates этих трёх synthetic local pilots.
 - Blocks: Решение о следующем улучшении; не даёт automatic promotion
 - Source: IMP-11; существующие B39 feedback и B44 manual pilot
 - Short description: Сначала read-only owner review existing packets. Зафиксировать 3–5 представительных ordinary задач: bugfix, docs, legacy, no-new-code, boundary change; конкретные targets и действия выбрать с owner до pilot. При точной authority выполнить bounded target journey; измерить время до полезного результата, лишние вопросы/artifacts, повторные проверки, acceptance correctness и owner intervention. Передать findings в существующий manual learning loop как candidates.
@@ -1042,23 +1046,23 @@ Review mode текущего плана: self_review. Сверены IMP-01–IM
 - Non-goals: Неуказанные файлы, автоматические target/cache/global writes, provider/browser/Git/publication и повторная реализация T23–T29 вне scope. Исключения только по явно scoped later approval.
 - Expected result: Существующие manual pilot/feedback receipts и краткий RUNLOG; без нового автоматического learning framework.
 - Acceptance criteria: Каждый outcome связан с task/host/source version и evidence, failure не исключается из denominator. Нет причинного вывода о всей системе из одного pilot. Target/browser/provider actions выполнены только в названной authority. B39 no-go/release ceiling и B44 manual_only сохраняются до отдельных решений.
-- Verification gates: Для report-only updates: docs gate и JSON parse existing summary. Для нового target pilot exact commands, target paths, owner, rollback и verification формируются в существующем packet до исполнения; до этого readiness=approval_required, concrete live command намеренно отсутствует — нельзя честно выдумать target.
-- Risks / approval gates: Это сознательно gated future task, не plan_ready для target execution. Не считать один pilot достаточным основанием включить schedules или auto-apply. Rollback: только изменения данного slice относительно сохранённого baseline; чужие hunks и historical receipts сохранить.
+- Verification gates: Фактические baseline/final checks, source hashes и file inventories в pilot-results; обязательные docs/matrix/state gates; owner feedback отдельно.
+- Risks / approval gates: Текущий local pilot scope явно разрешён; owner acceptance pending; fresh-session/provider/browser/Git не входят в этот маршрут. Rollback по initial_source proposal; receipts сохранить.
 - Complexity: medium
 - Estimated execution time: 0.5–1 день подготовки; длительность pilot определяется approved targets
 - Agents: product-manager; evidence owner: learning-loop-engineer; owner acceptance у пользователя; роли обозначают ownership, не запущенных subagents
 - Skills: implementation-planner для scope/handoff; Python implementation: python-design-patterns и python-code-style; docs-maintainer для названного docs impact; только task-matching canonical skills
 - Output artifacts: Существующие manual pilot/feedback receipts и краткий RUNLOG; без нового автоматического learning framework.
-- Next step: Owner выбирает следующий candidate; promotion/automation остаются отдельными решениями.
+- Next step: Приёмка трёх результатов пользователем; fresh-session activation остаётся самостоятельной открытой задачей.
 
 #### Completion Report
 
-- status: planned
-- what was done: pending
-- files touched / work locations: pending
-- technical value delivered: pending
-- product value delivered: pending
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending
-- residual risks: pending
-- follow-up: pending
+- status: in_progress
+- what was done: Три одобренных пилота выполнены в host-target/pilots из текущей сессии; HOST-01 dependency снята по решению владельца.
+- files touched / work locations: candidate.py, candidate.json, неизменный candidate.cjs и три receipt.json; pilot proposal/results; owning plans и control-plane.
+- technical value delivered: Наблюдаемый bug RED/GREEN; config JSON/invariant checks; no-new-code SHA-256 preservation.
+- product value delivered: Три проверяемых результата для owner acceptance, без лишних вопросов в ходе пилотов.
+- actual implementation date and time: 09-11-2026 17:11
+- verification evidence: docs/superpowers/specs/paos-aud-g6-pilot-results.json; python -B .docs-tools/reports/paos-aud-g6/run_pilots.py baseline и verify, оба exit 0; внутри baseline ожидаемый bug/config assertion exit 1.
+- residual risks: needs_user_acceptance; feedback/acceptance null. Synthetic cases не доказывают массовую полезность; fresh-session activation и T34 отдельно открыты.
+- follow-up: Пользователь принимает или отклоняет каждый результат; findings остаются manual candidates.

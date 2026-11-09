@@ -1,0 +1,93 @@
+{
+  "schema_version": "paos_g6_host_approval_preview_v1",
+  "status": "approved_cache_applied_host_partially_verified",
+  "checked_at": "2026-11-09T13:08:04.455207+00:00",
+  "source_root": "plugins/product-agent-os",
+  "cache_root_contract": "<user-home>/.codex/plugins/cache/personal-product-agent-plugins/product-agent-os/0.1.0",
+  "canonical_tree_sha256": "1bd63e09cac04818960454f6f0e61715a6b4e0bb9e2461ec69aad3e76e88532e",
+  "cache_tree_sha256": "d3586ce14d52797d91c76b0648eef56ff3120d1cff8141126433d1e17341badb",
+  "file_manifest_path": ".docs-tools/reports/paos-aud-g6/cache-file-preview.json",
+  "changed_file_count": 185,
+  "extra_cache_files": [],
+  "proposed_actions": [
+    "Back up the exact cache leaf into ignored workspace reports before any write; verify original tree digest.",
+    "Apply only reviewed add/replace rows; preserve extras and stop if source/cache hashes drift. No automatic deletion.",
+    "Verify installed bytes; reopen a fresh Codex App session and explicitly invoke workspace-discovery-auditor. Record actual selected path, version and observed model only when available.",
+    "Create two fresh verification chats only after explicit owner approval; each owns its exact marker and unique probe report.",
+    "For the generated-target probe, create only the named empty disposable target and run git init there after exact owner approval, so git-root hook commands cannot resolve to the parent repository. No stage, commit, branch switching, push or publication.",
+    "Exercise positive own-report write and safe negative foreign-marker/out-of-scope write against disposable target; require actual hook-denial output and unchanged file hashes.",
+    "Inspect and trust only exact reviewed hook definitions for disposable target if host requires it; do not alter global approvals or sandbox."
+  ],
+  "target_root": ".docs-tools/reports/paos-aud-g6/host-target",
+  "stage_root": ".docs-tools/reports/paos-aud-g6/host-stage",
+  "disposable_git_preflight": {
+    "command": "git -C .docs-tools/reports/paos-aud-g6/host-target init",
+    "requires_exact_owner_approval": true,
+    "preconditions": [
+      "target must be newly created and empty",
+      "resolved target stays under this workspace reports directory",
+      "never run in the parent workspace"
+    ],
+    "reason": "Prevent parent git-root fallback from masking generated-target hook activation"
+  },
+  "permitted_report_paths": [
+    ".docs-tools/reports/paos-aud-g6/host-target/reports/probe-a.md",
+    ".docs-tools/reports/paos-aud-g6/host-target/reports/probe-b.md"
+  ],
+  "hook_sources_sha256": {
+    ".codex/hooks/comment_sufficiency_advisory.py": "a7d846e5e3e5064ee60439e2cbdae47c6db8cce76f458015960c5ce09244cee3",
+    ".codex/hooks/permission_request_summary.py": "77ff547e477fd57c7e29f50c8100c0eb54303bb824510a1e5b476ce42ec92983",
+    ".codex/hooks/post_tool_use_evidence.py": "5643c3f595aab14b80750d0e095452aad4b85907835aa02cc67e95ef5a32f805",
+    ".codex/hooks/pre_tool_use_policy.py": "cd78b4f34db916c622f17dfa8e275f97e30143525caaf60b25a13b416d23326b",
+    ".codex/hooks/session_start_context.py": "fd42dcf8e26f3d90c17ab928cd8257ab9753ea5f8a5cb4d1db927a079a03cdb6",
+    ".codex/hooks/stop_runlog_reminder.py": "75bf1aa037b3fb90087bf960a3e6bdcc365410faf2c53c225737209dd7259402"
+  },
+  "definition_sha256": "8a40cbbb7bdc0b1d1b48d1ec873b109ee21358d85daae1479891e3a4fec74abb",
+  "report_authority": "Session-bound grant hash/expiry can be generated only after the fresh session IDs exist; requires exact definition review before trust. No preapproved blanket grant.",
+  "rollback": "Restore only changed cache files from verified backup; remove only newly added manifest rows after scope checks. Revoke disposable hook trust via host UI; preserve reports as evidence.",
+  "current_host_observation": "Own session terminal guard denied compound command before marker transition; not a fresh-host or multi-chat acceptance receipt.",
+  "cli_package_observation": {
+    "name": "@openai/codex",
+    "version": "0.167.0",
+    "source": "<user-home>/AppData/Roaming/npm/node_modules/@openai/codex/package.json",
+    "method": "read-only installed manifest; CLI not executed; not a Codex App version"
+  },
+  "unverified": [
+    "client_version",
+    "actual_skill_selection",
+    "fresh_session_invocation",
+    "hook_trust",
+    "two_fresh_chat_isolation",
+    "generated_target_activation",
+    "observed_model"
+  ],
+  "does_not_authorize": [
+    "execution",
+    "cache_writes",
+    "trust_changes",
+    "provider_calls",
+    "Git",
+    "publication"
+  ],
+  "execution": {
+    "owner_approved": true,
+    "recorded_at": "2026-11-09T13:18:48.927401+00:00",
+    "cache_receipt": {
+      "status": "cache_bytes_verified_activation_pending",
+      "checked_at": "2026-11-09T13:14:02.873468+00:00",
+      "changed_files": 185,
+      "source_sha256": "1bd63e09cac04818960454f6f0e61715a6b4e0bb9e2461ec69aad3e76e88532e",
+      "before_sha256": "d3586ce14d52797d91c76b0648eef56ff3120d1cff8141126433d1e17341badb",
+      "after_sha256": "1bd63e09cac04818960454f6f0e61715a6b4e0bb9e2461ec69aad3e76e88532e",
+      "backup": ".docs-tools/reports/paos-aud-g6/cache-backup-approved",
+      "owner_authority": "Current user approved all three G6 packets",
+      "runtime_activation": false
+    },
+    "verification_threads": [
+      "01a1c072-9005-7d22-bc0b-f832e57bbcb1",
+      "01a1c072-b0d8-7732-822c-af95aa89a639"
+    ],
+    "host_acceptance": "not_verified",
+    "receipt": "docs/superpowers/specs/paos-aud-g6-approved-execution.json"
+  }
+}

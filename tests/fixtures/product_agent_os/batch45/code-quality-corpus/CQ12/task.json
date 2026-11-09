@@ -1,0 +1,21 @@
+{
+  "task_id": "CQ12",
+  "stack_family": "powershell",
+  "risk_class": "small_change",
+  "expected_action": "reuse",
+  "difficulty": "small",
+  "intent": "Join words with a single separator using the native join operator. Preserve an empty list.",
+  "acceptance": "The evaluator checks must pass; no dependencies or unrelated files may change.",
+  "material_change_required": true,
+  "input_file": "input.ps1",
+  "check_command": [
+    "pwsh",
+    "-NoProfile",
+    "-File",
+    "check.ps1",
+    "{candidate}"
+  ],
+  "reference_file": "reference.ps1",
+  "seeded_file": "seeded.ps1",
+  "initial_expected_pass": false
+}

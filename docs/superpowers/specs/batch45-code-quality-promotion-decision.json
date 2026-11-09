@@ -1,0 +1,12 @@
+{
+  "schema_version": "batch45_code_quality_promotion_decision_v1",
+  "decision": "no_go",
+  "checked_at": "2026-11-09T13:18:48.927401+00:00",
+  "basis": "Approved runtime preflight did not attest tools=[] or isolated model context; no primary/reviewer calls started",
+  "results_path": "docs/superpowers/specs/batch45-code-quality-eval-results.json",
+  "results_sha256": "9f53dd900bab9a77e3dc3b9b77cb5dbf814aabf9a55f802a02adb5fcf81accc9",
+  "promotion": false,
+  "task_completed": false,
+  "historical_no_go_preserved": true,
+  "next_gate": "Provide and verify a supported isolated CLI invocation matching frozen design before first call; no repeat approval needed for unchanged unconsumed scope"
+}

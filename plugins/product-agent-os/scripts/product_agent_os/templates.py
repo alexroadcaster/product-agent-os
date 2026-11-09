@@ -181,6 +181,7 @@ _TEMPLATES: tuple[TemplateSpec, ...] = (
     _spec("hook-pre-tool-use", "hooks", "hooks/pre_tool_use_policy.py", ".codex/hooks/pre_tool_use_policy.py", "hook"),
     _spec("hook-permission-request", "hooks", "hooks/permission_request_summary.py", ".codex/hooks/permission_request_summary.py", "hook"),
     _spec("hook-post-tool-use", "hooks", "hooks/post_tool_use_evidence.py", ".codex/hooks/post_tool_use_evidence.py", "hook"),
+    _spec("hook-comment-sufficiency", "hooks", "hooks/comment_sufficiency_advisory.py", ".codex/hooks/comment_sufficiency_advisory.py", "hook"),
     _spec("hook-stop", "hooks", "hooks/stop_runlog_reminder.py", ".codex/hooks/stop_runlog_reminder.py", "hook"),
     _spec("workflow-source-context-pack", "workflows", "workflows/source-context-pack.md", ".codex/workflows/source-context-pack.md"),
     _spec("workflow-worktree-ownership", "workflows", "workflows/worktree-ownership.md", ".codex/workflows/worktree-ownership.md"),

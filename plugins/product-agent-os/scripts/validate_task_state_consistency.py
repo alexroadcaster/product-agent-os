@@ -38,7 +38,7 @@ def validate_workspace(root: Path) -> list[str]:
     task_id = lifecycle.get("task_id") if isinstance(lifecycle, dict) else None
     if not isinstance(task_id, str) or task_id not in plan:
         errors.append("lifecycle_task_missing_from_active_plan")
-    if group.get("latest_execution_evidence_id") not in {"B45-CQRR-A04", "B45-CQRR-A05", "B45-CQRR-A06"}:
+    if group.get("latest_execution_evidence_id") not in {"B45-CQRR-A04", "B45-CQRR-A05", "B45-CQRR-A06", "B45-CQRR-A07"}:
         errors.append("task_group_latest_evidence_unknown")
 
     projections = {

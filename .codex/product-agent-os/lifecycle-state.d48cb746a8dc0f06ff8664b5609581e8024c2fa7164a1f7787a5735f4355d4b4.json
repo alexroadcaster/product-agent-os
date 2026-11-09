@@ -1,21 +1,18 @@
 {
-  "task_id": "PAOS-WEB-TASK-MANAGER-2026-11-09",
-  "previous_task_id": "PAOS-SESSION-LIFECYCLE-2026-11-09",
+  "task_id": "PAOS-WEB-ISSUE-WORKFLOWS-2026-11-09",
+  "previous_task_id": "PAOS-WEB-TASK-MANAGER-2026-11-09",
   "previous_task_closure": {
     "status": "ready_for_completion_ledger",
-    "closure_level": "implemented_locally_verified",
-    "plan_path": "research/product-agent-os-session-lifecycle-fix-2026-11-09.md",
-    "closure_reason": "Session-isolated hooks locally verified; full discovery 1288 tests with one skip; final focused 236; final docs 100. Current-host own-write and foreign-marker denial observed. Fresh multi-chat and existing MCP compatibility gaps remain. M1 wireframes saved."
+    "closure_level": "docs_static_verified",
+    "plan_path": "research/product-agent-os-web-task-manager-plan-2026-11-09.md"
   },
   "session_id": "01a1abef-86df-7e13-b06e-5f580cd90c8c",
   "plan_path": "research/product-agent-os-web-task-manager-plan-2026-11-09.md",
-  "scope": "User-authorized documentation changes: Web PRD, architecture, task plan and groups, UX specifications, source registry and control-plane pointers; Hallmark screen image concepts. No Web runtime implementation.",
-  "approval_boundary": "Explicit user request to add requirements to plans/task groups and create images. No provider integration, agent execution, skill installation, real session export, Git publication or hook changes.",
-  "updated_at": "2026-11-09T09:56:43.0811184+00:00",
-  "status": "ready_for_completion_ledger",
+  "scope": "Docs extension for Jira-informed task hierarchy and workflows.",
+  "approval_boundary": "User requested documentation only. No code, hooks or external writes.",
+  "updated_at": "2026-11-09T14:43:39.7556678+00:00",
+  "status": "ready_for_completion_brief",
   "completion_ready": true,
-  "completion_brief_shown": false,
-  "task_start_brief_shown": false,
   "scope_note_shown": true,
   "brief_schema_version": "task_scope_note_v1",
   "brief_format": "concise",
@@ -24,7 +21,7 @@
     "Evidence",
     "Limits"
   ],
-  "brief_digest": "sha256:fafe93ae66e7ee1d17aed66ff7a9f131c2e99be05a84d708068d2e8d1d3b9ee8",
+  "brief_digest": "sha256:072ff838a0a204554ec6c6e2197f7d30cb2f77e3d367ae794cf8a574531d4c4b",
   "lifecycle_scope": {
     "work_type": "implementation",
     "size": "bounded",
@@ -32,8 +29,8 @@
     "financially_material": false,
     "release_or_readiness": false,
     "explicit_packet_request": false,
-    "reason": "Implementation of explicitly requested documentation changes and image artifacts only; application engineering remains planned."
+    "reason": "Requested documentation edits only; application remains planned."
   },
-  "closure_level": "docs_static_verified",
-  "closure_reason": "PRD/architecture updated; 30 planned tasks in 8 groups; 24 screen concepts in 6 PNG sheets; 100 docs tests, structure, task matrix, strict MkDocs and diff checks passed. Visual design needs user acceptance; no Web implementation."
+  "closure_level": "documentation_updated_partially_verified",
+  "closure_reason": "PRD v0.3 and 38 planned tasks in 10 groups saved; 13 Jira Cloud sources; docs 105 tests, structure, matrix, consistency and scoped diff passed. Global strict MkDocs has two prior G6 link warnings; global diff has unrelated audit-plan EOF. No runtime implementation; images unchanged."
 }

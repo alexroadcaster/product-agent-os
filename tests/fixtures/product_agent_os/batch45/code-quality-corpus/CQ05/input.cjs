@@ -1,0 +1,1 @@
+exports.publicProfile=p=>({...p});

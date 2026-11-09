@@ -18,7 +18,7 @@
     "approve git/release/publish actions before external distribution"
   ],
   "attempt_id": "B41-S6-CLOSURE-A01",
-  "closure_digest": "sha256:272a79fd1f839c34726e30436ba69dd0909a75b624577b34cbc5d5a682c0d395",
+  "closure_digest": "sha256:256637d5dfa5c8c4ca579301f3b45fd8b89c5248a686620443fa87b85eb3ca41",
   "control_plane_sync": {
     "PLAN.md": "updated_required",
     "RUNLOG.md": "updated_required",
@@ -39,13 +39,13 @@
   "generated_at": "2026-06-18T01:10:00+03:00",
   "go_no_go": {
     "owner_feedback_testing": "conditional_go",
-    "plugin_cache_readiness": "approval_required",
+    "plugin_cache_readiness": "ready",
     "reason": "Batch 41 has local/read-only/staged evidence, but release, runtime/browser and plugin-cache readiness remain separately gated.",
     "release": "no_go",
     "runtime_browser_pilot": "approval_required",
     "target_apply": "approval_required"
   },
-  "plugin_cache_readiness_status": "blocked_expected_approval_required",
+  "plugin_cache_readiness_status": "ready",
   "real_target_pilot_statuses": {
     "B41-S6-M25": "blocked_target_unavailable",
     "B41-S6-M26": "blocked_target_unavailable"
@@ -78,7 +78,7 @@
     },
     "B41-S6-M29": {
       "evidence": "batch41-s6-plugin-cache-readiness.json",
-      "status": "blocked_expected_approval_required"
+      "status": "implemented"
     },
     "B41-S6-M30": {
       "evidence": "batch41-s6-closure-summary.json",

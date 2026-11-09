@@ -1,0 +1,19 @@
+{
+  "task_id": "CQ07",
+  "stack_family": "sqlite",
+  "risk_class": "legacy_bug",
+  "expected_action": "fix",
+  "difficulty": "small",
+  "intent": "Return distinct labels in sorted order from the provided rows.",
+  "acceptance": "The evaluator checks must pass; no dependencies or unrelated files may change.",
+  "material_change_required": true,
+  "input_file": "input.sql",
+  "check_command": [
+    "python",
+    "check.py",
+    "{candidate}"
+  ],
+  "reference_file": "reference.sql",
+  "seeded_file": "seeded.sql",
+  "initial_expected_pass": false
+}

@@ -1,0 +1,227 @@
+{
+  "schema_version": "paos_g6_pilot_results_v1",
+  "status": "needs_user_acceptance",
+  "recorded_at": "2026-11-09T14:10:54.973531+00:00",
+  "route": "Current project session; host-target is a disposable test environment; no native skill or hook activation claim",
+  "host_dependency": "None for current-project local pilots; HOST-01/HOST-02 fresh-session activation remains a separate open task",
+  "python": "3.13.5",
+  "node": "v26.5.0",
+  "pilots": [
+    {
+      "id": "G6-PILOT-BUG",
+      "target": ".docs-tools/reports/paos-aud-g6/host-target/pilots/bug",
+      "started_epoch": 1794233441.938346,
+      "initial_sha256": "04435eea420fd4acb566cb3c6165725aed6bd5770321b08e209d7c12dbaea588",
+      "initial_source": "def retry_delay(attempt):\n    return 2 ** attempt\n",
+      "baseline": {
+        "command": [
+          "python.exe",
+          "-B",
+          "-c",
+          "import runpy,sys,json; f=runpy.run_path(sys.argv[1])['retry_delay']; a=[0,2,3,6]; v=[f(x) for x in a]; print(json.dumps({'attempts':a,'actual':v})); assert v==[1,4,8,8]",
+          ".docs-tools\\reports\\paos-aud-g6\\host-target\\pilots\\bug\\candidate.py"
+        ],
+        "exit_code": 1,
+        "stdout": "{\"attempts\": [0, 2, 3, 6], \"actual\": [1, 4, 8, 64]}",
+        "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import runpy,sys,json; f=runpy.run_path(sys.argv[1])['retry_delay']; a=[0,2,3,6]; v=[f(x) for x in a]; print(json.dumps({'attempts':a,'actual':v})); assert v==[1,4,8,8]\n                                                                                                                                                                ^^^^^^^^^^^^\nAssertionError"
+      },
+      "status": "needs_user_acceptance",
+      "final_check": {
+        "command": [
+          "python.exe",
+          "-B",
+          "-c",
+          "import runpy,sys,json; f=runpy.run_path(sys.argv[1])['retry_delay']; a=[0,2,3,6,1000000]; v=[f(x) for x in a]; print(json.dumps({'attempts':a,'actual':v})); assert v==[1,4,8,8,8]",
+          ".docs-tools\\reports\\paos-aud-g6\\host-target\\pilots\\bug\\candidate.py"
+        ],
+        "exit_code": 0,
+        "stdout": "{\"attempts\": [0, 2, 3, 6, 1000000], \"actual\": [1, 4, 8, 8, 8]}",
+        "stderr": ""
+      },
+      "final_sha256": "53ee851c301a1dd66aadc898eeec7e42f12953ece44bc658cea74bd425cc5430",
+      "final_source": "def retry_delay(attempt):\n    return 2 ** min(attempt, 3)\n",
+      "file_inventory": [
+        "candidate.py",
+        "receipt.json"
+      ],
+      "source_unchanged": false,
+      "metrics": {
+        "time_to_useful_result_seconds": 12.872,
+        "extra_questions": 0,
+        "extra_artifacts": 0,
+        "repeated_checks": 0,
+        "correctness": "passed",
+        "owner_interventions": 0,
+        "failed_attempts": 0,
+        "owner_feedback": null,
+        "owner_acceptance": null
+      }
+    },
+    {
+      "id": "G6-PILOT-CONFIG",
+      "target": ".docs-tools/reports/paos-aud-g6/host-target/pilots/config",
+      "started_epoch": 1794233442.0543108,
+      "initial_sha256": "88735486b75f3071761e8b1388e7c36169cdd8506e4cc9228b2630dd52e58590",
+      "initial_source": "{\"log_level\":\"debug\",\"retention_days\":7}\n",
+      "baseline": {
+        "command": [
+          "python.exe",
+          "-B",
+          "-c",
+          "import json,sys; from pathlib import Path; v=json.loads(Path(sys.argv[1]).read_text()); print(json.dumps(v)); assert v=={'log_level':'info','retention_days':7}",
+          ".docs-tools\\reports\\paos-aud-g6\\host-target\\pilots\\config\\candidate.json"
+        ],
+        "exit_code": 1,
+        "stdout": "{\"log_level\": \"debug\", \"retention_days\": 7}",
+        "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import json,sys; from pathlib import Path; v=json.loads(Path(sys.argv[1]).read_text()); print(json.dumps(v)); assert v=={'log_level':'info','retention_days':7}\n                                                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError"
+      },
+      "status": "needs_user_acceptance",
+      "final_check": {
+        "command": [
+          "python.exe",
+          "-B",
+          "-c",
+          "import json,sys; from pathlib import Path; v=json.loads(Path(sys.argv[1]).read_text()); print(json.dumps(v)); assert v=={'log_level':'info','retention_days':7}",
+          ".docs-tools\\reports\\paos-aud-g6\\host-target\\pilots\\config\\candidate.json"
+        ],
+        "exit_code": 0,
+        "stdout": "{\"log_level\": \"info\", \"retention_days\": 7}",
+        "stderr": ""
+      },
+      "final_sha256": "356f6128d3d8d4320fe3d35c634f5108006a05f8e2862cca0a7d8caf8428b501",
+      "final_source": "{\"log_level\":\"info\",\"retention_days\":7}\n",
+      "file_inventory": [
+        "candidate.json",
+        "receipt.json"
+      ],
+      "source_unchanged": false,
+      "metrics": {
+        "time_to_useful_result_seconds": 12.852,
+        "extra_questions": 0,
+        "extra_artifacts": 0,
+        "repeated_checks": 0,
+        "correctness": "passed",
+        "owner_interventions": 0,
+        "failed_attempts": 0,
+        "owner_feedback": null,
+        "owner_acceptance": null
+      }
+    },
+    {
+      "id": "G6-PILOT-NO-NEW-CODE",
+      "target": ".docs-tools/reports/paos-aud-g6/host-target/pilots/no-new-code",
+      "started_epoch": 1794233442.1700077,
+      "initial_sha256": "7b13490b29c9d94a347c3ac110b14c5fe4a03d9d51e87a1b5ddbf31a6431623a",
+      "initial_source": "exports.encode=value=>encodeURIComponent(value);\n",
+      "baseline": {
+        "command": [
+          "node",
+          "-e",
+          "const assert=require('node:assert/strict');const f=require(process.argv[1]).encode;const actual=['/',' ',''].map(f);console.log(JSON.stringify(actual));assert.deepEqual(actual,['%2F','%20','']);",
+          ".docs-tools\\reports\\paos-aud-g6\\host-target\\pilots\\no-new-code\\candidate.cjs"
+        ],
+        "exit_code": 0,
+        "stdout": "[\"%2F\",\"%20\",\"\"]",
+        "stderr": ""
+      },
+      "status": "needs_user_acceptance",
+      "final_check": {
+        "command": [
+          "node",
+          "-e",
+          "const assert=require('node:assert/strict');const f=require(process.argv[1]).encode;const actual=['/',' ',''].map(f);console.log(JSON.stringify(actual));assert.deepEqual(actual,['%2F','%20','']);",
+          ".docs-tools\\reports\\paos-aud-g6\\host-target\\pilots\\no-new-code\\candidate.cjs"
+        ],
+        "exit_code": 0,
+        "stdout": "[\"%2F\",\"%20\",\"\"]",
+        "stderr": ""
+      },
+      "final_sha256": "7b13490b29c9d94a347c3ac110b14c5fe4a03d9d51e87a1b5ddbf31a6431623a",
+      "final_source": "exports.encode=value=>encodeURIComponent(value);\n",
+      "file_inventory": [
+        "candidate.cjs",
+        "receipt.json"
+      ],
+      "source_unchanged": true,
+      "metrics": {
+        "time_to_useful_result_seconds": 12.803,
+        "extra_questions": 0,
+        "extra_artifacts": 0,
+        "repeated_checks": 1,
+        "correctness": "passed",
+        "owner_interventions": 0,
+        "failed_attempts": 0,
+        "owner_feedback": null,
+        "owner_acceptance": null
+      }
+    }
+  ],
+  "measurement_notes": "Elapsed from each setup start through final check includes operator/tool latency, not model-only latency. Expected baseline assertion failures are RED evidence, not failed repair attempts. Config baseline is static validation. One unchanged-source check repeated for final no-new-code readback. Extra artifacts excludes required receipts and shared audit evidence. No comparative baseline for productivity claims.",
+  "owner_feedback": null,
+  "owner_acceptance": null,
+  "promotion": "manual_only; candidate-only",
+  "claim_ceiling": "Three synthetic local journeys; no fresh-session activation, live production or model-quality promotion proof",
+  "verification": [
+    {
+      "command": "python -B .docs-tools/reports/paos-aud-g6/run_pilots.py baseline; then approved candidate edits; then python -B .docs-tools/reports/paos-aud-g6/run_pilots.py verify",
+      "exit_code": 0,
+      "output": "BUG baseline RED [1,4,8,64], final GREEN [1,4,8,8,8]; CONFIG baseline debug/7, final info/7; NO-NEW-CODE passed before/after, hash unchanged"
+    },
+    {
+      "command": "python -B plugins/product-agent-os/scripts/validate_task_state_consistency.py",
+      "exit_code": 0,
+      "output": "{\"errors\":[],\"ok\":true}"
+    },
+    {
+      "command": "python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-audit-remediation-task-plan-2026-11-09.md",
+      "exit_code": 0,
+      "output": "{\r\n  \"errors\": [],\r\n  \"ok\": true,\r\n  \"path\": \"research\\\\product-agent-os-audit-remediation-task-plan-2026-11-09.md\",\r\n  \"schema_version\": \"task_matrix_plan_v1\"\r\n}"
+    },
+    {
+      "command": "python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md",
+      "exit_code": 0,
+      "output": "{\r\n  \"errors\": [],\r\n  \"ok\": true,\r\n  \"path\": \"research\\\\product-agent-os-ordinary-route-implementation-plan-2026-11-05.md\",\r\n  \"schema_version\": \"task_matrix_plan_v1\"\r\n}"
+    },
+    {
+      "command": "python -B tools/check_docs.py",
+      "exit_code": 0,
+      "output": "OK: documentation structure checks passed"
+    },
+    {
+      "command": "git -c core.safecrlf=false diff --check",
+      "exit_code": 1,
+      "output": "research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md:1069: new blank line at EOF."
+    },
+    {
+      "command": "$env:TEMP=Join-Path $PWD '.docs-tools/reports/paos-aud-g6/docs-tmp'; $env:TMP=$env:TEMP; python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -v *> .docs-tools/reports/paos-aud-g6/pilots-docs.log; Get-Content .docs-tools/reports/paos-aud-g6/pilots-docs.log -Tail 6; exit $LASTEXITCODE",
+      "exit_code": 0,
+      "output": "test_track9_security_privacy_compliance_docs_and_backlog_are_synced (tests.product_agent_os.test_product_agent_os_docs.ProductAgentOsDocsTest.test_track9_security_privacy_compliance_docs_and_backlog_are_synced) ... ok\r\n\r\n----------------------------------------------------------------------\r\nRan 105 tests in 8.329s\r\n\r\nOK"
+    },
+    {
+      "command": "git -c core.safecrlf=false diff --check",
+      "exit_code": 0,
+      "output": "Passed after removing extra EOF blank line"
+    }
+  ],
+  "control_plane_sync": {
+    "updated": [
+      "REQUIREMENTS.md",
+      "PLAN.md",
+      "TEST.md",
+      "EVALS.md",
+      "RUNLOG.md"
+    ],
+    "not_applicable": {
+      "prod_test.md": "No B39 evidence changes"
+    },
+    "overflow": "not_required",
+    "handoffs": "owner acceptance; fresh-session activation separately open"
+  },
+  "review": {
+    "context_mode": "self_review",
+    "tester_verdict": "partial_only",
+    "findings": "All three local scenarios passed; owner acceptance and parent host/eval gates remain open Initial diff check found an extra blank line at EOF in the ordinary plan; fixed before final checks."
+  },
+  "verification_gap": "Full plugin runtime suite not repeated: no plugin runtime changes in this pilot continuation. Fresh-session activation and T34 remain open. Owner feedback/acceptance pending.",
+  "execution_elapsed_seconds": 221
+}

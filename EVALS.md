@@ -1,5 +1,15 @@
 # EVALS.md
 
+## Web issue workflows v0.3 — 2026-11-09
+
+Web v0.3 eval scenarios: различение иерархии/links/code graph; Affects vs Fix version; creator vs initiator; Done vs Cancelled; replay не запускает recipe дважды; publish не меняет pinned run; comments не являются командами. [PRD §14](research/product-agent-os-web-prd-2026-11-05.md). Только спецификация, без agent/model activation.
+
+## PAOS-AUD-G6 — 2026-11-09
+
+G6 partially_verified: три синтетических пилота выполнены из текущего проекта в host-target/pilots; все проверки passed, результаты needs_user_acceptance. По разрешению владельца HOST-01 больше не блокирует эти пилоты. Fresh-session activation HOST-01/HOST-02 остаётся отдельной открытой задачей; T34 no-go. Owner feedback/acceptance null; manual_only сохраняется. [Результаты](docs/superpowers/specs/paos-aud-g6-pilot-results.json).
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
 ## PAOS-AUD-G5 — 2026-11-09
 
 G5 проверяет command routing и documentation/build integrity. Offline failures не дают network fallback; successful CLI exit не снимает context gaps. Mermaid render не доказывает host activation. Новые model/behavioral evals не применимы; прежний G4 run имеет прежнюю provenance; G6 gates открыты.

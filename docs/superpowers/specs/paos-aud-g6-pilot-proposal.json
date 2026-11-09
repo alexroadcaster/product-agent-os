@@ -1,0 +1,89 @@
+{
+  "schema_version": "paos_g6_pilot_proposal_v1",
+  "status": "needs_user_acceptance",
+  "owner_family": "B44 manual candidate loop; no B39 production evidence",
+  "host_dependency": "None for current-project local pilots; HOST-01/HOST-02 fresh-session activation remains a separate open task",
+  "targets": [
+    {
+      "id": "G6-PILOT-BUG",
+      "task": "Cap exponential retry delay at eight seconds for nonnegative attempt numbers",
+      "initial_source": "def retry_delay(attempt):\n    return 2 ** attempt\n",
+      "target": ".docs-tools/reports/paos-aud-g6/host-target/pilots/bug",
+      "setup_files": [
+        "candidate.py"
+      ],
+      "allowed_writes": [
+        "candidate.py",
+        "receipt.json"
+      ],
+      "acceptance": "Attempts 0, 2, 3 and 6 return 1, 4, 8 and 8; no dependency or new abstraction"
+    },
+    {
+      "id": "G6-PILOT-CONFIG",
+      "task": "Set synthetic service log level to info; preserve the existing retention setting",
+      "initial_source": "{\"log_level\":\"debug\",\"retention_days\":7}\n",
+      "target": ".docs-tools/reports/paos-aud-g6/host-target/pilots/config",
+      "setup_files": [
+        "candidate.json"
+      ],
+      "allowed_writes": [
+        "candidate.json",
+        "receipt.json"
+      ],
+      "acceptance": "Valid JSON; log_level=info and retention_days=7; no application code added"
+    },
+    {
+      "id": "G6-PILOT-NO-NEW-CODE",
+      "task": "Verify the native URL-component encoder and leave source unchanged",
+      "initial_source": "exports.encode=value=>encodeURIComponent(value);\n",
+      "target": ".docs-tools/reports/paos-aud-g6/host-target/pilots/no-new-code",
+      "setup_files": [
+        "candidate.cjs"
+      ],
+      "allowed_writes": [
+        "receipt.json"
+      ],
+      "acceptance": "Slash and space encode as %2F and %20, empty string stays empty; source hash unchanged, no new files except receipt"
+    }
+  ],
+  "measurement_protocol": {
+    "before_each_run": [
+      "owner confirms task and target",
+      "record source digest",
+      "record initial check result",
+      "start elapsed timer"
+    ],
+    "per_task": [
+      "time_to_useful_result_seconds",
+      "extra_questions",
+      "extra_artifacts",
+      "repeated_checks",
+      "correctness",
+      "owner_interventions",
+      "failed_attempts",
+      "owner_feedback",
+      "owner_acceptance"
+    ],
+    "owner_feedback": null,
+    "owner_acceptance": null,
+    "historical_receipts_as_new_baseline": false,
+    "claim_ceiling": "Three synthetic operator journeys; no mass-market or real production usefulness claim"
+  },
+  "rollback": "Restore candidate from initial_source in this proposal; preserve failed attempts and redacted feedback receipts. No writes outside the three disposable targets.",
+  "provider_policy": "No model call is authorized by this proposal; any Codex session run needs the bounded host approval first.",
+  "promotion": "manual_only; candidates only; no schedules, auto-apply or automation",
+  "dependency_isolation": "These separately authored pilot inputs do not use the held-out corpus. T34 is not a dependency of the owner pilot; never mix pilot outputs into the promotion comparison.",
+  "owner_execution_approval": {
+    "approved": true,
+    "recorded_at": "2026-11-09T13:18:48.927401+00:00",
+    "task_target_scope": "All three named synthetic tasks and their existing write boundaries",
+    "owner_acceptance": null
+  },
+  "execution_route": "Current project session; host-target is a disposable test environment; no native skill or hook activation claim",
+  "scope_amendment": {
+    "approved": true,
+    "recorded_at": "2026-11-09T14:10:41.937522+00:00",
+    "reason": "Owner authorized all three pilots in host-target and removed HOST-01 dependency"
+  },
+  "results": "docs/superpowers/specs/paos-aud-g6-pilot-results.json"
+}

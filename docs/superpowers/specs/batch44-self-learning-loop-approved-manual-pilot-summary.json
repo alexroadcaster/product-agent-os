@@ -105,5 +105,18 @@
     "HALO-style packet was generated locally; no HALO service was called",
     "no provider/model/API, browser automation, target workspace mutation, git, release, deploy, publish or active automation action was performed"
   ],
-  "closure_level": "staged_manual_pilot_ready_for_owner_review"
+  "closure_level": "staged_manual_pilot_ready_for_owner_review",
+  "paos_aud_g6_followup": {
+    "status": "needs_user_acceptance",
+    "proposal": "docs/superpowers/specs/paos-aud-g6-pilot-proposal.json",
+    "owner_feedback": null,
+    "owner_acceptance": null,
+    "promotion": "manual_only",
+    "historical_approval_reused": false,
+    "execution_receipt": "docs/superpowers/specs/paos-aud-g6-pilot-results.json",
+    "owner_execution_approval": true,
+    "refined_host_receipt": "docs/superpowers/specs/paos-aud-g6-refined-host-execution.json",
+    "host_dependency": "removed for current-project local pilots by owner",
+    "fresh_session_activation": "open_separate_task"
+  }
 }

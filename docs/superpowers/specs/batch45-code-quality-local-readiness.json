@@ -1,0 +1,80 @@
+{
+  "schema_version": "batch45_code_quality_local_readiness_v1",
+  "evidence_id": "B45-CQRR-A07",
+  "checked_at": "2026-11-09T13:04:21.162532+00:00",
+  "status": "local_preflight_passed",
+  "promotion_decision": "no_go_pending_live_evidence",
+  "full_unittest": {
+    "tests": 1341,
+    "seconds": 1581.125,
+    "result": "OK (skipped=1)",
+    "exit_code": 0
+  },
+  "focused": {
+    "tests": 50,
+    "exit_code": 0,
+    "scope": "reviewer/corpus/design/metrics/behavior/promotion/model-output; before added rubric metadata assertion"
+  },
+  "state_validator_followup": {
+    "tests": 7,
+    "exit_code": 0,
+    "reason": "A07 evidence metadata support after full-suite import; unknown IDs still rejected"
+  },
+  "reviewer_design_followup": {
+    "tests": 8,
+    "exit_code": 0,
+    "reason": "Final adversarial reviewer-score assertions after full-suite import; source implementation unchanged"
+  },
+  "docs": {
+    "tests": 105,
+    "exit_code": 0
+  },
+  "fixtures": {
+    "passed": 91,
+    "exit_code": 0
+  },
+  "transcripts": {
+    "passed": 26,
+    "failed": 0,
+    "exit_code": 0
+  },
+  "corpus": {
+    "tasks": 12,
+    "stack_families": 4,
+    "risk_classes": 7,
+    "reference_passes": 12,
+    "seeded_faults_detected": 12,
+    "initial_expected_results": 12
+  },
+  "design_sha256": "5ffb5defc34b69984dd21016c0c5319dbf5926e92f4eb621cf0c8e7038d39912",
+  "context_sha256": {
+    "docs/superpowers/specs/batch45-code-quality-heldout-corpus.json": "7b78997781d1b5d3be54f52fff547d9b1030e23d81f56ec6f796f50f16dbaa8f",
+    "plugins/product-agent-os/scripts/codex_runtime_runner/eval_design.py": "c97ad03ad1473116b8b5a232895f0464f35744137d025ec0cab1ac960000ac3b",
+    "plugins/product-agent-os/scripts/codex_runtime_runner/promotion_contract.py": "c81cc818ab262ead774a6c5fc431133d41e8bf2537f95e725f9a8762ad76b133",
+    "plugins/product-agent-os/scripts/codex_runtime_runner/reviewer_contract.py": "d097da84c577ebdf07d30e7b0053fbe84adc9fa2b4343165cd16d70b63604044",
+    "plugins/product-agent-os/assets/templates/evals/code-quality-reviewer-rubric.json": "68d3c70a2b468768749adee4b1973c0617f00ddc2c8aeac118b56f8c5bdeb5ce",
+    "plugins/product-agent-os/scripts/product_agent_os/code_quality_metrics.py": "d89730d33cd5fff88f92e0a0395b28d4267c38246db760dc9cddd53cd99524a2"
+  },
+  "evidence_logs": {
+    "check-docs-first.log": "8980e553ce08599d54a68baf90a197be5cde25b960ab1b92eaaef3dba110b37f",
+    "corpus.log": "32f825a7732093dbbbb50da08e9cc4ae3cf8d1387b6fdec2b5d5376c717b4c52",
+    "design-green.log": "2709ecafb3fdbb99ceae8383367adf83a00f36be743539bac90d866ec2960a18",
+    "design-red.log": "63328dfda56181d265e2f32dfd0886c5abe5e60da467776f0514a146ce5903ab",
+    "docs-first.log": "4aef8ad0763e4d4a28bc564e25b25f6ba3f08a1614a7f6f5f39578af80974ce4",
+    "focused.log": "cdf422c551aeeecee707b82911fb4c789c8d8b4aa415fdb96dd63e319be9bb1b",
+    "full.log": "ea90a6525ab01388f8a2eaadb5659003432f824505ec50f5737ef90a58d561bf",
+    "reviewer-behavior-red.log": "d330262be09f51cc12e3d81ca7749c742bb30f95c2fc6c291da97da0f1650385",
+    "reviewer-green.log": "a5b042e31c5489ef43a733f607979b9172d31cc8a178a2561242561df1422303",
+    "state-green.log": "c859b625b271c8f27093bdc99a2aa622077a7890a1375b0b5714e4bf81101c2c",
+    "state-red.log": "c6c5a89e34ac6a20c40fa97123111c8fa01d47d0a621d89c36c059c152ce1b03"
+  },
+  "limits": [
+    "No model/provider/reviewer calls",
+    "No actual independent reviewer execution",
+    "No fresh-host acceptance",
+    "No owner pilot feedback",
+    "Operation-count oracle is not a latency benchmark",
+    "Historical T18-T22 no-go unchanged"
+  ],
+  "gate_policy": "Any invalid schema, missing check, drift, seeded-fault miss or blinding failure reopens no-go. Local receipts are not behavioral promotion."
+}

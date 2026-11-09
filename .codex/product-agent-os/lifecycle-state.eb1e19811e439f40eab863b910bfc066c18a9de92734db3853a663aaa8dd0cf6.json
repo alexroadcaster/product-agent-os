@@ -1,0 +1,28 @@
+{
+  "task_id": "PAOS-AUD-HOST-02",
+  "session_id": "01a1c072-b0d8-7732-822c-af95aa89a639",
+  "plan_path": "research/product-agent-os-audit-remediation-task-plan-2026-11-09.md",
+  "scope": "Disposable host-target, host-stage, host-checks and own marker only; probe-b ownership",
+  "updated_at": "2026-11-09T13:24:28+00:00",
+  "approval_boundary": "Approved G6 package and two verification chats; git init only newly created empty host-target; preserve root, other owners, approvals and sandbox; no new chats",
+  "status": "blocked",
+  "completion_ready": true,
+  "evidence_path": ".docs-tools/reports/paos-aud-g6/host-checks/result.json",
+  "closure_level": "partially_verified",
+  "blocker": "Snapshot omitted referenced hook handler; canonical sources then changed concurrently. Target apply and activation not executed.",
+  "control_plane_sync": "handoff_required: parent owns PLAN, TEST, RUNLOG; no root control-plane writes by this chat",
+  "brief_digest": "sha256:a1859179df7d049fb1ccdbf3afc1a6baff90dd424eb6573b514f37699701934a",
+  "brief_schema_version": "task_start_brief_v2",
+  "brief_format": "bold_fields",
+  "brief_fields_present": ["Request", "Goal", "Context", "Scope", "Value", "Execution", "Acceptance", "Risks / approvals", "Next step"],
+  "task_start_brief_shown": true,
+  "lifecycle_scope": {
+    "work_type": "implementation",
+    "size": "bounded",
+    "risk": "high",
+    "financially_material": false,
+    "release_or_readiness": false,
+    "explicit_packet_request": false,
+    "reason": "Authorized disposable target preparation and guarded host activation verification"
+  }
+}

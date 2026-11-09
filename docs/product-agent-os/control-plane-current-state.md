@@ -2,6 +2,8 @@
 
 Source status: `experiment`
 
+G6 partially_verified: три синтетических пилота выполнены из текущего проекта в host-target/pilots; все проверки passed, результаты needs_user_acceptance. По разрешению владельца HOST-01 больше не блокирует эти пилоты. Fresh-session activation HOST-01/HOST-02 остаётся отдельной открытой задачей; T34 no-go. Owner feedback/acceptance null; manual_only сохраняется. [Pilot results](../superpowers/specs/paos-aud-g6-pilot-results.json).
+
 G5 (F13/F14/F17): offline installer, явный стартовый маршрут package и локальная сборка site. Следующая группа — G6 с отдельными host/behavioral/owner acceptance gates. Точные статусы и текущие verification receipts находятся в owning audit plan; site остаётся generated orientation evidence.
 
 G4 (F05/F09/F10/F15) реализована и локально проверена. Следующая группа — G6. Inline intake сохраняет legacy default; conditional skill gates перенесены в role-specific references; discovery переиспользует один immutable inventory для scope detector. Host loading этим не доказан.

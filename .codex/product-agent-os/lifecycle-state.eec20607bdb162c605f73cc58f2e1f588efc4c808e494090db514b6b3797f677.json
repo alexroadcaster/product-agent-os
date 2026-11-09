@@ -1,0 +1,28 @@
+{
+  "task_id": "PAOS-AUD-G6-PILOTS-HOST-CHECK",
+  "session_id": "01a1c072-9005-7d22-bc0b-f832e57bbcb1",
+  "plan_path": "docs/superpowers/specs/paos-aud-g6-pilot-proposal.json",
+  "scope": "Record host exposure evidence and blocked pilot results only under .docs-tools/reports/paos-aud-g6/pilots/",
+  "updated_at": "2026-11-09T13:19:17Z",
+  "approval_boundary": "Own marker and assigned pilot receipts only; no canonical, cache, Git or other session mutations",
+  "status": "blocked",
+  "completion_ready": true,
+  "result_artifacts": [".docs-tools/reports/paos-aud-g6/pilots/host-invocation.json", ".docs-tools/reports/paos-aud-g6/pilots/results.json"],
+  "control_plane_sync": "handoff_required: parent owns PLAN.md, TEST.md and RUNLOG.md; remaining control-plane files not_applicable",
+  "blocker": "Fresh supported-host native skill invocation not confirmed, including exact selector follow-up; dependent pilots not run",
+  "final_receipt_check": {"tool_chunk_id": "dad867", "command": "python -B -c", "exit_code": 0, "output": "PASS: final receipt metadata parses; status remains blocked"},
+  "brief_digest": "sha256:f9f6917bf8ea8af47a9590af0156f0a4fc7a4657fafa3fdf4ebf67c458c6f0a8",
+  "brief_schema_version": "task_scope_note_v1",
+  "brief_format": "concise",
+  "brief_fields_present": ["Scope", "Evidence", "Limits"],
+  "scope_note_shown": true,
+  "lifecycle_scope": {
+    "work_type": "implementation",
+    "size": "bounded",
+    "risk": "low",
+    "financially_material": false,
+    "release_or_readiness": false,
+    "explicit_packet_request": false,
+    "reason": "Owner-authorized bounded local evidence receipts; no product implementation or readiness closure"
+  }
+}

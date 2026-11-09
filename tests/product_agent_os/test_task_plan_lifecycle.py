@@ -50,6 +50,11 @@ class TaskPlanLifecycleTest(unittest.TestCase):
                 (root / name).write_text("A04-A06 locally implement/focused-verify T23-T29", encoding="utf-8")
             marker.write_text(json.dumps({"task_id": "CURRENT", "plan_path": "current-plan.md"}), encoding="utf-8")
             self.assertEqual(validate_workspace(root), [])
+            group.write_text(json.dumps({"tasks": [], "latest_execution_evidence_id": "B45-CQRR-A07"}), encoding="utf-8")
+            self.assertEqual(validate_workspace(root), [])
+            group.write_text(json.dumps({"tasks": [], "latest_execution_evidence_id": "UNKNOWN"}), encoding="utf-8")
+            self.assertIn("task_group_latest_evidence_unknown", validate_workspace(root))
+            group.write_text(json.dumps({"tasks": [], "latest_execution_evidence_id": "B45-CQRR-A07"}), encoding="utf-8")
             plan.write_text("Different task", encoding="utf-8")
             self.assertIn("lifecycle_task_missing_from_active_plan", validate_workspace(root))
             for invalid in ("../outside.md", str(root.parent / "outside.md"), 42):

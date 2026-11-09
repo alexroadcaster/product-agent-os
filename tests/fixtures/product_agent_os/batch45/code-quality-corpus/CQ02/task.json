@@ -1,0 +1,19 @@
+{
+  "task_id": "CQ02",
+  "stack_family": "python",
+  "risk_class": "performance",
+  "expected_action": "reuse",
+  "difficulty": "medium",
+  "intent": "Deduplicate in input order using existing hash-based capabilities; avoid quadratic equality scans.",
+  "acceptance": "The evaluator checks must pass; no dependencies or unrelated files may change.",
+  "material_change_required": true,
+  "input_file": "input.py",
+  "check_command": [
+    "python",
+    "check.py",
+    "{candidate}"
+  ],
+  "reference_file": "reference.py",
+  "seeded_file": "seeded.py",
+  "initial_expected_pass": false
+}

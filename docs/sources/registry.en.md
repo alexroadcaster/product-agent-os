@@ -1,5 +1,35 @@
 # Source registry
 
+## PAOS-AUD-G7 — research intake, 2026-11-09
+
+Deep review on 2026-11-09: [source review and traceability](../../research/product-agent-os-g7-repository-deep-review-2026-11-09.md) pins five repository revisions, inspected implementation/test slices and four tool-documentation sources. Findings P/K/M/S/D/X refine all eight planned G7 cards; adoption, adaptation and rejection are distinguished. Community status: source_inspected_runtime_not_reproduced; primary tool documentation checked, installed compatibility unverified.
+
+[The G7 matrix](../../research/product-agent-os-audit-remediation-task-plan-2026-11-09.md) records G7-S0/S1–S6/S8: Ponytail (commit `96608e0`), Karpathy-inspired guidelines, Matt Pocock skills, Superpowers, Desloppify and primary Ruff/Import Linter/dependency-cruiser/Stryker documentation. Sources were inspected in the preceding analysis; this authoring run did not reproduce runtime benchmarks. Community: `trust_level=community`, `verification_status=source_inspected_runtime_not_reproduced`; tool documentation: `trust_level=primary`, local compatibility unverified. These are planned hypotheses, not newly proven product claims; no plugins or tools were installed.
+
+## Web issue workflows v0.3 — 2026-11-09
+
+Jira Cloud reference model for Web v0.3; project-authored adaptation in `research/product-agent-os-web-prd-2026-11-05.md`, section 14. Proposed PAOS behavior is not claimed as Jira implementation.
+
+| ID | Source | Claim scope | checked_at | Status |
+| --- | --- | --- | --- | --- |
+| WEB-JIRA-01 | [Hierarchy](https://support.atlassian.com/jira-cloud-administration/docs/what-are-issue-types/) | Hierarchy; source facts mapped to proposed Web PRD section 14 | 2026-11-09 | official / documentation_checked; not PAOS runtime evidence |
+| WEB-JIRA-02 | [Status categories](https://support.atlassian.com/jira-cloud-administration/docs/what-is-a-workflow-status/) | Status categories; source facts mapped to proposed Web PRD section 14 | 2026-11-09 | official / documentation_checked; not PAOS runtime evidence |
+| WEB-JIRA-03 | [Transitions](https://support.atlassian.com/jira-cloud-administration/docs/create-workflow-transitions/) | Transitions; source facts mapped to proposed Web PRD section 14 | 2026-11-09 | official / documentation_checked; not PAOS runtime evidence |
+| WEB-JIRA-04 | [Kanban mapping](https://support.atlassian.com/jira-software-cloud/docs/configure-columns/) | Kanban mapping; source facts mapped to proposed Web PRD section 14 | 2026-11-09 | official / documentation_checked; not PAOS runtime evidence |
+| WEB-JIRA-05 | [Workflow schemes](https://support.atlassian.com/jira-cloud-administration/docs/add-edit-and-delete-an-issue-workflow-scheme/) | Workflow schemes; source facts mapped to proposed Web PRD section 14 | 2026-11-09 | official / documentation_checked; not PAOS runtime evidence |
+| WEB-JIRA-06 | [Versions](https://support.atlassian.com/jira-cloud-administration/docs/manage-versions/) | Versions; source facts mapped to proposed Web PRD section 14 | 2026-11-09 | official / documentation_checked; not PAOS runtime evidence |
+| WEB-JIRA-07 | [Components](https://support.atlassian.com/jira-software-cloud/docs/what-are-jira-components/) | Components; source facts mapped to proposed Web PRD section 14 | 2026-11-09 | official / documentation_checked; not PAOS runtime evidence |
+| WEB-JIRA-08 | [Creator](https://support.atlassian.com/jira-software-cloud/docs/jql-fields/) | Creator; source facts mapped to proposed Web PRD section 14 | 2026-11-09 | official / documentation_checked; not PAOS runtime evidence |
+| WEB-JIRA-09 | [Linked work items](https://support.atlassian.com/jira-cloud-administration/docs/configure-issue-linking/) | Linked work items; source facts mapped to proposed Web PRD section 14 | 2026-11-09 | official / documentation_checked; not PAOS runtime evidence |
+| WEB-JIRA-10 | [Comments and history](https://support.atlassian.com/jira-software-cloud/docs/what-are-the-different-types-of-activity-on-an-issue/) | Comments and history; source facts mapped to proposed Web PRD section 14 | 2026-11-09 | official / documentation_checked; not PAOS runtime evidence |
+| WEB-JIRA-11 | [Attachments](https://support.atlassian.com/jira-software-cloud/docs/add-an-attachment-to-an-issue/) | Attachments; source facts mapped to proposed Web PRD section 14 | 2026-11-09 | official / documentation_checked; not PAOS runtime evidence |
+| WEB-JIRA-12 | [Priority and resolution](https://support.atlassian.com/jira-cloud-administration/docs/what-are-issue-statuses-priorities-and-resolutions/) | Priority and resolution; source facts mapped to proposed Web PRD section 14 | 2026-11-09 | official / documentation_checked; not PAOS runtime evidence |
+| WEB-JIRA-13 | [Scheduling](https://support.atlassian.com/jira-software-cloud/docs/schedule-issues-in-advanced-roadmaps-using-start-end-dates/) | Scheduling; source facts mapped to proposed Web PRD section 14 | 2026-11-09 | official / documentation_checked; not PAOS runtime evidence |
+
+## PAOS-AUD-G6 — project-local evidence, 2026-11-09
+
+G6 remains partially verified. Three synthetic pilots ran from the current project in host-target/pilots; all checks passed and results need user acceptance. The owner removed HOST-01 as a dependency for these pilots. Fresh-session activation HOST-01/HOST-02 remains separately open; T34 remains no-go. Owner feedback/acceptance is null; promotion remains manual_only. [Pilot results](../superpowers/specs/paos-aud-g6-pilot-results.json).
+
 ## PAOS-AUD-G5 — project-local contracts, 2026-11-09
 
 F13: offline installer command contract; F14: explicit skill invocation and ordinary intake; F17: RU/EN semantic parity, local strict build, routes/links/anchors and source-bound Mermaid rendering. Sources: `tools/docs_install.ps1`, `tests/product_agent_os/test_product_agent_os_docs.py`, package README and audit remediation task plan (2026-11-09). Evidence concerns local source/build; dependency installation, publication and host acceptance are not performed.

@@ -1,5 +1,19 @@
 # RUNLOG.md
 
+## PAOS-AUD-G7 — authoring, 2026-11-09
+
+Углублённое исследование пяти repositories и четырёх инструментальных источников записано в [отдельный отчёт](research/product-agent-os-g7-repository-deep-review-2026-11-09.md); восемь G7 карточек уточнены без изменения схемы. Current-run проверки и gaps — в отчёте; prior authoring evidence — в [owning plan](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md). Только research/authoring; G6 acceptance/HOST и frozen T34 сохранены. Следующее действие — отдельный implementation request.
+
+## Web issue workflows v0.3 — 2026-11-09
+
+PAOS-WEB-ISSUE-WORKFLOWS-2026-11-09: Jira Cloud source-backed расширение [PRD](research/product-agent-os-web-prd-2026-11-05.md) и [плана](research/product-agent-os-web-task-manager-plan-2026-11-09.md), 38 planned tasks / 10 groups. Architecture/UX/source pointers синхронизированы. New screens S25/S26 только текст; PNG v0.2 сохранены. Документы updated / partially_verified: 105 tests, structure, task matrix и consistency passed; strict MkDocs failed на двух прежних G6 links. Receipts и handoff — в owning плане. Код не менялся.
+
+## PAOS-AUD-G6 — 2026-11-09
+
+G6 partially_verified: три синтетических пилота выполнены из текущего проекта в host-target/pilots; все проверки passed, результаты needs_user_acceptance. По разрешению владельца HOST-01 больше не блокирует эти пилоты. Fresh-session activation HOST-01/HOST-02 остаётся отдельной открытой задачей; T34 no-go. Owner feedback/acceptance null; manual_only сохраняется. [Результаты](docs/superpowers/specs/paos-aud-g6-pilot-results.json).
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
 ## PAOS-AUD-G5 — 2026-11-09
 
 G5 F13/F14/F17 implemented_locally_verified: offline installer исправлен через RED/GREEN; README обновлён; local site rebuilt; 105 docs tests, 220 routes, 93 Mermaid renders passed. Self-review; no dependency install/publication/host activation. Следующая группа — G6. Текущий machine pointer — PLAN.md.

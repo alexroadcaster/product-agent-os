@@ -1,5 +1,19 @@
 # PLAN.md
 
+## PAOS-AUD-G7 — planned, 2026-11-09
+
+Уточнены восемь planned задач по [deep review](research/product-agent-os-g7-repository-deep-review-2026-11-09.md): T01 → T02/T03/T05/T06 → T07 → T08; T04 — независимый guard fix. Реализация не запускалась; G6 owner/HOST/T34 gates сохранены. [Карточки и границы](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#paos-aud-g7--качество-реализации-архитектурная-простота-и-достаточная-проверка).
+
+## Web issue workflows v0.3 — 2026-11-09
+
+[Web plan v0.3](research/product-agent-os-web-task-manager-plan-2026-11-09.md): 38 planned tasks / 10 groups; G09 hierarchy/fields/context и G10 Kanban/workflow/links добавлены, зависимости G02/G07/G08 уточнены. Runtime task-matrix statuses не меняются. Rollback только собственных docs hunks; прежние images/evidence сохранить.
+
+## PAOS-AUD-G6 — 2026-11-09
+
+G6 partially_verified: три синтетических пилота выполнены из текущего проекта в host-target/pilots; все проверки passed, результаты needs_user_acceptance. По разрешению владельца HOST-01 больше не блокирует эти пилоты. Fresh-session activation HOST-01/HOST-02 остаётся отдельной открытой задачей; T34 no-go. Owner feedback/acceptance null; manual_only сохраняется. [Результаты](docs/superpowers/specs/paos-aud-g6-pilot-results.json).
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
 ## PAOS-AUD-G5 — 2026-11-09
 
 G5 F13/F14/F17 implemented_locally_verified. Следующая группа — G6; её host/behavioral/owner gates остаются отдельными. Rollback только G5 hunks и локальная пересборка site. Current pointer закрепляет owning source revisions.
@@ -19,7 +33,7 @@ G4 F05/F09/F10/F15 implemented_locally_verified. Следующая группа
   "sources": [
     {
       "path": "research/product-agent-os-audit-remediation-task-plan-2026-11-09.md",
-      "revision": "sha256:45aa0092eb7fffee5a9afd509af52cb7d222d9e26c1e4839c9e1f09f13f6f9cf",
+      "revision": "sha256:ff23658f0c86cd3fc7bd6220b74d0d7576e6247f19014dc1d0f71509fa362afd",
       "task_prefixes": [
         "PAOS-AUD-"
       ]
@@ -30,7 +44,7 @@ G4 F05/F09/F10/F15 implemented_locally_verified. Следующая группа
     },
     {
       "path": "docs/superpowers/specs/batch45-code-quality-runtime-recovery-task-group.json",
-      "revision": "sha256:1a42e0755cdfb40e74c38271d0dd918df8c1ed33404e22d2abbe839f221e4b86"
+      "revision": "sha256:fad36004d5cfb2e01ba1d0d3db7cdbde73364de290167a9bcd5776bd2baacbba"
     }
   ]
 }

@@ -2,7 +2,7 @@
 
 Source status: project-authored / proposed / requirements-backed. Дата: 2026-11-09.
 
-Статус: **draft_for_review**. Это очередь будущей реализации, не разрешение начать разработку. Все 30 задач имеют статус planned; фактическое время отсутствует. Пользовательский scope расширен относительно read-only M1. Исходные M1–M3 сохраняются как история; при расхождении приоритет имеет дополнение Task Manager в PRD и этот план.
+Статус: **draft_for_review**. Это очередь будущей реализации, не разрешение начать разработку. Все 38 задач имеют статус planned; фактическое время отсутствует. Пользовательский scope расширен относительно read-only M1. Исходные M1–M3 сохраняются как история; при расхождении приоритет имеет дополнение Task Manager в PRD и этот план.
 
 Связи: [PRD](product-agent-os-web-prd-2026-11-05.md), [архитектура](product-agent-os-web-architecture-2026-11-05.md), [экраны](product-agent-os-web-task-manager-screens-2026-11-09.md), [машинные группы](product-agent-os-web-task-manager-task-group-2026-11-09.json).
 
@@ -33,6 +33,33 @@ Control-plane sync: REQUIREMENTS/PLAN/TEST/EVALS/RUNLOG updated только с�
 
 ## Этапы и группы
 
+## Проверка расширения v0.3 — PAOS-WEB-ISSUE-WORKFLOWS-2026-11-09
+
+Source status: current-run local evidence. Это проверка документов, не реализация PAOS-0001–0038. Previous v0.2 receipts выше остаются историческими.
+
+| Проверка | Наблюдаемый результат текущего запуска |
+| --- | --- |
+| `python plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-web-task-manager-plan-2026-11-09.md` | Exit 0; ok=true; errors=[] |
+| `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v` | 105 tests, OK, exit 0 при process-local TEMP/TMP = workspace .docs-tools/reports/web-task-manager/test-temp |
+| Первоначальный docs unittest | 105 tests, 5 errors: sandbox temporary directory PermissionError; после переноса TEMP/TMP в writable workspace повтор прошёл. Код/права ОС/тесты не менялись |
+| `python tools/check_docs.py` | Exit 0; documentation structure checks passed |
+| Bounded inline `python -` consistency check | 38 уникальных карточек, 10 групп, DAG, reverse Blocks, JSON/MD fields, TM-01–24, 11 components, 8 statuses, local links/UTF-8, root budget; все actual values null; PNG hashes прежние |
+| `git diff --check` | Промежуточный exit 0 после исправления своего EOF; финальный общий запуск exit 2 на новом чужом EOF в research/product-agent-os-audit-remediation-task-plan-2026-11-09.md:2197. Scoped запуск с 12 собственными docs paths: exit 0; чужой план не исправлялся |
+| `.venv-docs/Scripts/python.exe -m mkdocs build --strict --site-dir .docs-tools/reports/web-task-manager/site-v03` | **Exit 1**: два warnings в прежних G6 разделах docs/product-agent-os/control-plane-current-state.en.md и docs/sources/registry.en.md; ссылка ../superpowers/specs/paos-aud-g6-pilot-results.json не найдена среди documentation files. Сам файл существует; причина его отсутствия в build index в этом scope не исправлялась |
+| Source review | 13 официальных Atlassian reference pages; facts отделены от PAOS proposals в PRD §14. Community/API assumptions не использованы |
+| Self-review | Проверены hierarchy vs links, affects vs fix, status vs resolution, creator vs initiator, manual completion, cancellation receipt, workflow pinning/migration, dependency cycles, comments/history и attachment boundaries |
+
+Изменённые owning artifacts: PRD §14, plan/JSON, architecture §18, UX v0.3 impact; компактные собственные sections REQUIREMENTS/PLAN/TEST/EVALS/RUNLOG и registry RU/EN. Прежние 24 image concepts сохранены; S25/S26 описаны текстом, итог — 26 routes. Sources/metadata поддерживают proposed поведение; browser/runtime/provider evidence не выполнялись.
+
+Control-plane sync: пять root files update_required и обновлены в своём scope; prod_test not_applicable; source registries RU/EN updated. Root files <50 KiB на момент проверки. Handoff_required: владелец PAOS-AUD-G6 должен устранить два существовавших G6 link warnings; наша задача не переписывает его разделы. Незакрытый strict-build gate не объявлен accepted gap и не скрыт.
+
+Completion ceiling: **documentation_updated / partially_verified**. Requested content сохранён; документационные unit/structure/plan/consistency checks passed; общий strict build остаётся failed по указанным внешним для slice ссылкам. Реализация Web not_started; все 38 implementation tasks planned. Product/domain owner acceptance и runtime проверки будущие. Общий requirements_ready/plan_ready/release-ready не заявляется.
+
+
+### Актуальная очередь v0.3
+
+Актуализация v0.3: 38 задач, 10 групп. Исходные PAOS-0001–0030 сохранены; PAOS-0031–0038 добавляют Jira-informed issue model. Предыдущий протокол выше относится к пакету v0.2 и не является проверкой этого расширения.
+
 | Группа | Содержание | Задачи |
 | --- | --- | --- |
 | G01 | Основа и контракты | PAOS-0001, PAOS-0002, PAOS-0003, PAOS-0004 |
@@ -43,12 +70,18 @@ Control-plane sync: REQUIREMENTS/PLAN/TEST/EVALS/RUNLOG updated только с�
 | G06 | Карта проекта | PAOS-0020, PAOS-0021, PAOS-0022 |
 | G07 | Автономная работа | PAOS-0023, PAOS-0024, PAOS-0025, PAOS-0026 |
 | G08 | Общие поверхности и пилот | PAOS-0027, PAOS-0028, PAOS-0029, PAOS-0030 |
+| G09 | Иерархия, поля и контекст | PAOS-0031, PAOS-0032, PAOS-0033, PAOS-0034 |
+| G10 | Kanban, workflow и взаимозависимости | PAOS-0035, PAOS-0036, PAOS-0037, PAOS-0038 |
 
-TM0: G01 и проверка доступности источников. TM1: G02–G06 и G08/PAOS-0027 дают полный интерфейс и наблюдаемость. TM2: редактирование и генерация агентов/скиллов из G04/G05 после безопасных proposal contracts. TM3: G07 выполняет работу автономно в заранее разрешённых границах. TM4: G08 проверяет связный путь и пилот. Группы — области ответственности, этапы — порядок включения; зависимости отдельных карточек обязательны.
+TM0: G01 и контракты PAOS-0031/0032. TM1: основной UI G02–G06, контекст/версии G09, Kanban PAOS-0035 и документы PAOS-0027. TM2: управляемые agent/skill changes, editor/versioning workflow PAOS-0036. TM3: execution recipes PAOS-0037, links PAOS-0038 и автономность G07. TM4: G08 проверяет весь путь и пилот. Это roadmap; индивидуальные Depends on имеют приоритет над порядком номеров и групп.
 
-Пути apps/web, apps/local-service и packages/contracts — **предлагаемые будущие расположения**, не существующая реализация. PAOS-0001 уточняет фактические точки интеграции до изменения кода. Один writer владеет shared contracts; UI feature slices могут разрабатываться независимо после фиксации контрактов. Ни одна карточка не разрешает изменение permissions, запуск providers, установку skills или публикацию без применимой авторизации.
+Shared contracts: один writer. Иерархия/поля G09 публикуют contract до потребляющего UI; recipes/links G10 до scheduler G07; G08 принимает итоговый контракт. Предлагаемые apps/web, apps/local-service, packages/contracts не означают существующие файлы. PAOS-0001 уточняет точки интеграции до кода.
 
-Оценки — предварительные часы инженерной работы, не обещание календарного срока и не измерения скорости AI. Их пересматривают перед стартом, сохраняют прежние версии; оценки параллельных задач нельзя суммировать в календарную длительность проекта. Actual time остаётся null до реального старта. Полная модель времени и полей задачи определена в PRD.
+Оценки — предварительные часы инженерной работы, не календарное обещание и не измеренная скорость AI. Обновлены оценки PAOS-0002/0005/0006/0008/0028 из-за нового scope; прежние версии сохраняются Git/source history. Actual timestamps/duration всех задач null. Development not_started. Ни одна карточка не разрешает внешние вызовы, установку или публикацию.
+
+Изменение scope: PRD §14 — источник требований TM-15–TM-24; G01/G02/G07/G08 адаптированы, G09/G10 добавлены. Статусы карточек плана planned не мигрируют в пользовательский Kanban. В JSON issue_model_proposal — предложение будущей модели, не активная runtime schema. Неизвестные legacy creators/dates/versions не выдумываются.
+
+Rollback будущих изменений: versioned proposal, revision check, migration preview и сохранение источника. Rollback текущих документов — только hunks этого scope, без потери предыдущих концептов и чужих изменений.
 
 ## Проверка плана и условия старта
 
@@ -108,19 +141,19 @@ TM0: G01 и проверка доступности источников. TM1: G
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
 - Depends on: PAOS-0001
-- Blocks: PAOS-0003, PAOS-0005, PAOS-0006
+- Blocks: PAOS-0003, PAOS-0005, PAOS-0006, PAOS-0031
 - Source: PRD: дополнение Task Manager; screen specification
-- Short description: Единый контракт всех полей задачи, стабильные ID и миграция старых записей
+- Short description: Контракт прежних 12 и дополнительных полей §14 PRD; отдельные product status и planning status
 - Technical value: Единый контракт всех полей задачи, стабильные ID и миграция старых записей
 - Product value: Пользователь ставит полную задачу один раз и сохраняет устойчивую ссылку на неё при изменениях проекта.
 - Scope: packages/contracts/tasks; apps/local-service/src/tasks
 - Non-goals: Глобальные permissions, внешняя публикация и несвязанный refactor
 - Expected result: Модель задачи и идентификаторы доступна в соответствующем этапе
-- Acceptance criteria: Все 12 полей проходят round-trip; коллизия ID отклонена; rename проекта не меняет ID
+- Acceptance criteria: Все поля §13–§14 проходят round-trip; стабильные ID; creator provenance; product workflow status не подменяет task_matrix_plan_v1 status
 - Verification gates: Focused contract tests; relevant integration checks; UI state and evidence review before closure
 - Risks / approval gates: Потеря связей, неверный источник данных, конфликт версий или недоступный adapter; внешние/разрушительные действия отдельно авторизуются
 - Complexity: medium/high, уточнить после discovery
-- Estimated execution time: 08:00:00 (предварительно)
+- Estimated execution time: 12:00:00 (предварительно)
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: packages/contracts/tasks; apps/local-service/src/tasks
@@ -194,7 +227,7 @@ TM0: G01 и проверка доступности источников. TM1: G
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
 - Depends on: PAOS-0001
-- Blocks: PAOS-0005, PAOS-0006, PAOS-0009, PAOS-0016, PAOS-0021
+- Blocks: PAOS-0005, PAOS-0006, PAOS-0009, PAOS-0016, PAOS-0021, PAOS-0032
 - Source: PRD: дополнение Task Manager; screen specification
 - Short description: Общие токены и RU/EN для всех экранов
 - Technical value: Общие токены и RU/EN для всех экранов
@@ -236,8 +269,8 @@ TM0: G01 и проверка доступности источников. TM1: G
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
-- Depends on: PAOS-0002, PAOS-0004
-- Blocks: none
+- Depends on: PAOS-0002, PAOS-0004, PAOS-0032
+- Blocks: PAOS-0035
 - Source: PRD: дополнение Task Manager; screen specification
 - Short description: Фильтры, группировка, сохранённый вид и доступная смена статуса
 - Technical value: Фильтры, группировка, сохранённый вид и доступная смена статуса
@@ -245,11 +278,11 @@ TM0: G01 и проверка доступности источников. TM1: G
 - Scope: apps/web/src/features/tasks/list; apps/web/src/features/tasks/board
 - Non-goals: Глобальные permissions, внешняя публикация и несвязанный refactor
 - Expected result: Список и доска задач доступна в соответствующем этапе
-- Acceptance criteria: Фильтры сохраняются; board и list согласованы; invalid transition объяснён
+- Acceptance criteria: Список/Kanban согласованы; type/parent/creator/priority/components/versions/dates filters сохраняются; расширенные mappings и transitions проверяются в PAOS-0035
 - Verification gates: Focused contract tests; relevant integration checks; UI state and evidence review before closure
 - Risks / approval gates: Потеря связей, неверный источник данных, конфликт версий или недоступный adapter; внешние/разрушительные действия отдельно авторизуются
 - Complexity: medium/high, уточнить после discovery
-- Estimated execution time: 10:00:00 (предварительно)
+- Estimated execution time: 14:00:00 (предварительно)
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/web/src/features/tasks/list; apps/web/src/features/tasks/board
@@ -279,7 +312,7 @@ TM0: G01 и проверка доступности источников. TM1: G
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
-- Depends on: PAOS-0002, PAOS-0003, PAOS-0004
+- Depends on: PAOS-0002, PAOS-0003, PAOS-0004, PAOS-0032
 - Blocks: PAOS-0007, PAOS-0008
 - Source: PRD: дополнение Task Manager; screen specification
 - Short description: Полная постановка задачи и понятная техническая/продуктовая ценность
@@ -288,11 +321,11 @@ TM0: G01 и проверка доступности источников. TM1: G
 - Scope: apps/web/src/features/tasks/detail; apps/web/src/features/tasks/editor
 - Non-goals: Глобальные permissions, внешняя публикация и несвязанный refactor
 - Expected result: Карточка и редактор задачи доступна в соответствующем этапе
-- Acceptance criteria: Все поля доступны; незаполненная приёмка блокирует готовность к запуску; черновик сохраняется
+- Acceptance criteria: Все поля §13–§14 доступны; пользователь создаёт draft сам; отдельные Comments/History/Attachments/Linked Issues подключаются через PAOS-0034/0038; Ready проверяет обязательные поля
 - Verification gates: Focused contract tests; relevant integration checks; UI state and evidence review before closure
 - Risks / approval gates: Потеря связей, неверный источник данных, конфликт версий или недоступный adapter; внешние/разрушительные действия отдельно авторизуются
 - Complexity: medium/high, уточнить после discovery
-- Estimated execution time: 12:00:00 (предварительно)
+- Estimated execution time: 16:00:00 (предварительно)
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/web/src/features/tasks/detail; apps/web/src/features/tasks/editor
@@ -323,7 +356,7 @@ TM0: G01 и проверка доступности источников. TM1: G
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
 - Depends on: PAOS-0006
-- Blocks: PAOS-0008, PAOS-0010, PAOS-0012, PAOS-0022, PAOS-0027
+- Blocks: PAOS-0008, PAOS-0010, PAOS-0012, PAOS-0022, PAOS-0027, PAOS-0034, PAOS-0038
 - Source: PRD: дополнение Task Manager; screen specification
 - Short description: Связать планируемые/фактические изменения, агентские runs и доказательства
 - Technical value: Связать планируемые/фактические изменения, агентские runs и доказательства
@@ -366,7 +399,7 @@ TM0: G01 и проверка доступности источников. TM1: G
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
 - Depends on: PAOS-0006, PAOS-0007
-- Blocks: PAOS-0023, PAOS-0027
+- Blocks: PAOS-0023, PAOS-0027, PAOS-0035
 - Source: PRD: дополнение Task Manager; screen specification
 - Short description: Проверки и решение пользователя определяют завершение
 - Technical value: Проверки и решение пользователя определяют завершение
@@ -374,11 +407,11 @@ TM0: G01 и проверка доступности источников. TM1: G
 - Scope: apps/local-service/src/task-workflow; apps/web/src/features/tasks/acceptance
 - Non-goals: Глобальные permissions, внешняя публикация и несвязанный refactor
 - Expected result: Приёмка и жизненный цикл доступна в соответствующем этапе
-- Acceptance criteria: Успех команды не равен приёмке; unmet criterion не даёт закрыть задачу; reopen сохраняет историю
+- Acceptance criteria: Completion, cancellation и reopening различены; criteria/child/dependency gates и manual evidence определены; действия расширяются PAOS-0035
 - Verification gates: Focused contract tests; relevant integration checks; UI state and evidence review before closure
 - Risks / approval gates: Потеря связей, неверный источник данных, конфликт версий или недоступный adapter; внешние/разрушительные действия отдельно авторизуются
 - Complexity: medium/high, уточнить после discovery
-- Estimated execution time: 10:00:00 (предварительно)
+- Estimated execution time: 14:00:00 (предварительно)
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/local-service/src/task-workflow; apps/web/src/features/tasks/acceptance
@@ -1011,7 +1044,7 @@ TM0: G01 и проверка доступности источников. TM1: G
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
 - Depends on: PAOS-0008, PAOS-0013, PAOS-0017
-- Blocks: PAOS-0024, PAOS-0026
+- Blocks: PAOS-0024, PAOS-0026, PAOS-0037
 - Source: PRD: дополнение Task Manager; screen specification
 - Short description: Задать заранее разрешённые действия, бюджеты и stop conditions
 - Technical value: Задать заранее разрешённые действия, бюджеты и stop conditions
@@ -1053,7 +1086,7 @@ TM0: G01 и проверка доступности источников. TM1: G
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
-- Depends on: PAOS-0015, PAOS-0019, PAOS-0023
+- Depends on: PAOS-0015, PAOS-0019, PAOS-0023, PAOS-0037, PAOS-0038
 - Blocks: PAOS-0025
 - Source: PRD: дополнение Task Manager; screen specification
 - Short description: Назначать агентов и skills в пределах scope без конфликтующих writers
@@ -1062,7 +1095,7 @@ TM0: G01 и проверка доступности источников. TM1: G
 - Scope: apps/local-service/src/scheduler
 - Non-goals: Глобальные permissions, внешняя публикация и несвязанный refactor
 - Expected result: Очередь, назначения и владение файлами доступна в соответствующем этапе
-- Acceptance criteria: Две задачи с пересекающимися файлами сериализуются; независимые могут идти параллельно
+- Acceptance criteria: Очередь соблюдает pinned recipe, blocks links, hard WIP и ownership; независимые writers допускаются только при отсутствии пересечения
 - Verification gates: Focused contract tests; relevant integration checks; UI state and evidence review before closure
 - Risks / approval gates: Повтор действий, конкурирующие writers, выход за разрешённый scope; внешние/разрушительные действия отдельно авторизуются
 - Complexity: medium/high, уточнить после discovery
@@ -1225,7 +1258,7 @@ TM0: G01 и проверка доступности источников. TM1: G
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
-- Depends on: PAOS-0022, PAOS-0026, PAOS-0027
+- Depends on: PAOS-0022, PAOS-0026, PAOS-0027, PAOS-0033, PAOS-0034, PAOS-0035, PAOS-0036, PAOS-0037, PAOS-0038
 - Blocks: PAOS-0029
 - Source: PRD: дополнение Task Manager; screen specification
 - Short description: Проверить создание задачи, план, запуск, сессию, изменения и приёмку
@@ -1234,11 +1267,11 @@ TM0: G01 и проверка доступности источников. TM1: G
 - Scope: tests/web; tests/local-service
 - Non-goals: Глобальные permissions, внешняя публикация и несвязанный refactor
 - Expected result: Интеграционная проверка пути доступна в соответствующем этапе
-- Acceptance criteria: Один разрешённый локальный путь проходит end-to-end; negative paths сохраняют границы
+- Acceptance criteria: Все 10 acceptance scenarios PRD §14 и прежний основной путь проверены; user-only completion и active-run cancellation подтверждены; отрицательные сценарии migration/links/attachments не теряют данные
 - Verification gates: Focused contract tests; relevant integration checks; UI state and evidence review before closure
 - Risks / approval gates: Потеря связей, неверный источник данных, конфликт версий или недоступный adapter; внешние/разрушительные действия отдельно авторизуются
 - Complexity: medium/high, уточнить после discovery
-- Estimated execution time: 16:00:00 (предварительно)
+- Estimated execution time: 24:00:00 (предварительно)
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: tests/web; tests/local-service
@@ -1277,7 +1310,7 @@ TM0: G01 и проверка доступности источников. TM1: G
 - Scope: tests/web/accessibility; docs/web/accessibility
 - Non-goals: Глобальные permissions, внешняя публикация и несвязанный refactor
 - Expected result: Доступность, языки и темы доступна в соответствующем этапе
-- Acceptance criteria: Все 24 экрана проходят RU/EN и light/dark матрицу; нет ловушек фокуса и потери действий
+- Acceptance criteria: Все 26 описанных экранов и новые task tabs проверены в RU/EN × Light/Dark; keyboard Kanban/workflow и длинные значения не теряют действия
 - Verification gates: Focused contract tests; relevant integration checks; UI state and evidence review before closure
 - Risks / approval gates: Потеря связей, неверный источник данных, конфликт версий или недоступный adapter; внешние/разрушительные действия отдельно авторизуются
 - Complexity: medium/high, уточнить после discovery
@@ -1332,6 +1365,357 @@ TM0: G01 и проверка доступности источников. TM1: G
 - Actual time: not_started; start/end/duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
 - Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
+
+#### Completion Report
+
+- Status: planned
+- What was done: pending
+- Files touched / work locations: pending
+- Technical value delivered: pending
+- Product value delivered: pending
+- Actual implementation date and time: pending_execution_timestamp
+- Verification evidence: pending
+- Residual risks: pending
+- Follow-up: pending
+
+### Task `PAOS-0031`
+
+- Task: Иерархия Epic / Task / Bug / UserStory / Sub-Task
+- Status: planned
+- Schema version: task_matrix_plan_v1
+- Timezone: Europe/Moscow
+- Plan trigger: User-requested Jira-informed issue model, 2026-11-09
+- Validator target: detailed task blocks
+- Date and time of task implementation: pending_execution_timestamp
+- Depends on: PAOS-0002
+- Blocks: PAOS-0032, PAOS-0034, PAOS-0038
+- Source: PRD §14; TM-15, TM-16
+- Short description: Родительские связи, преобразование типов и roll-up без двойного счёта
+- Technical value: Родительские связи, преобразование типов и roll-up без двойного счёта
+- Product value: Пользователь разбивает инициативу на работы и подзадачи и видит общий прогресс
+- Scope: packages/contracts/issues; apps/local-service/src/issue-hierarchy; apps/web/src/features/tasks/hierarchy
+- Non-goals: Jira sync, external publication, runtime config mutation outside authorized implementation
+- Expected result: Иерархия Epic / Task / Bug / UserStory / Sub-Task в будущем Web
+- Acceptance criteria: Epic содержит standard types; Sub-Task имеет один standard parent; циклы и недопустимый reparent отклоняются; закрытие parent проверяет children
+- Verification gates: Contract and negative-case tests; integration with adjacent modules; UI/accessibility scenarios from PRD §14
+- Risks / approval gates: Потеря связей и истории, неоднозначная миграция, неверный terminal outcome или повтор agent run; preview/revision checks обязательны
+- Complexity: high; уточнить после discovery
+- Estimated execution time: 14:00:00 (предварительно)
+- Agents: architect, builder, tester
+- Skills: implementation-planner; verification skills selected for implementation
+- Output artifacts: packages/contracts/issues; apps/local-service/src/issue-hierarchy; apps/web/src/features/tasks/hierarchy
+- Next step: Завершить Depends on, зафиксировать contract/tests и file ownership
+- Actual time: not_started; start/end/duration = null.
+- Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
+- Affected files: proposed paths above; actual create/modify/delete recorded after execution.
+
+#### Completion Report
+
+- Status: planned
+- What was done: pending
+- Files touched / work locations: pending
+- Technical value delivered: pending
+- Product value delivered: pending
+- Actual implementation date and time: pending_execution_timestamp
+- Verification evidence: pending
+- Residual risks: pending
+- Follow-up: pending
+
+
+### Task `PAOS-0032`
+
+- Task: Поля, авторство, приоритеты, компоненты и даты
+- Status: planned
+- Schema version: task_matrix_plan_v1
+- Timezone: Europe/Moscow
+- Plan trigger: User-requested Jira-informed issue model, 2026-11-09
+- Validator target: detailed task blocks
+- Date and time of task implementation: pending_execution_timestamp
+- Depends on: PAOS-0031, PAOS-0004
+- Blocks: PAOS-0005, PAOS-0006, PAOS-0033, PAOS-0035
+- Source: PRD §14; TM-16
+- Short description: Неизменяемый creator, отдельный initiator, project components и календарные поля
+- Technical value: Неизменяемый creator, отдельный initiator, project components и календарные поля
+- Product value: Пользователь знает источник задачи, её важность, область и сроки
+- Scope: packages/contracts/issue-fields; apps/local-service/src/components; apps/web/src/features/tasks/editor
+- Non-goals: Jira sync, external publication, runtime config mutation outside authorized implementation
+- Expected result: Поля, авторство, приоритеты, компоненты и даты в будущем Web
+- Acceptance criteria: 11 исходных components доступны; multi-select; creator неизменяем; start/due validation и timezone проверены; unknown import не подменяется user
+- Verification gates: Contract and negative-case tests; integration with adjacent modules; UI/accessibility scenarios from PRD §14
+- Risks / approval gates: Потеря связей и истории, неоднозначная миграция, неверный terminal outcome или повтор agent run; preview/revision checks обязательны
+- Complexity: high; уточнить после discovery
+- Estimated execution time: 12:00:00 (предварительно)
+- Agents: architect, builder, tester
+- Skills: implementation-planner; verification skills selected for implementation
+- Output artifacts: packages/contracts/issue-fields; apps/local-service/src/components; apps/web/src/features/tasks/editor
+- Next step: Завершить Depends on, зафиксировать contract/tests и file ownership
+- Actual time: not_started; start/end/duration = null.
+- Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
+- Affected files: proposed paths above; actual create/modify/delete recorded after execution.
+
+#### Completion Report
+
+- Status: planned
+- What was done: pending
+- Files touched / work locations: pending
+- Technical value delivered: pending
+- Product value delivered: pending
+- Actual implementation date and time: pending_execution_timestamp
+- Verification evidence: pending
+- Residual risks: pending
+- Follow-up: pending
+
+
+### Task `PAOS-0033`
+
+- Task: Версии продукта и release policy
+- Status: planned
+- Schema version: task_matrix_plan_v1
+- Timezone: Europe/Moscow
+- Plan trigger: User-requested Jira-informed issue model, 2026-11-09
+- Validator target: detailed task blocks
+- Date and time of task implementation: pending_execution_timestamp
+- Depends on: PAOS-0032
+- Blocks: PAOS-0028
+- Source: PRD §14; TM-17
+- Short description: Раздельные affects/fix version references и условия планирования релиза
+- Technical value: Раздельные affects/fix version references и условия планирования релиза
+- Product value: Пользователь различает затронутый продукт и выпуск, который получит исправление
+- Scope: apps/local-service/src/versions; apps/web/src/features/releases; packages/contracts/versions
+- Non-goals: Jira sync, external publication, runtime config mutation outside authorized implementation
+- Expected result: Версии продукта и release policy в будущем Web
+- Acceptance criteria: Bug affects v1.2/fix v1.3 фильтруется корректно; archive сохраняет ссылки; Done не выпускает релиз
+- Verification gates: Contract and negative-case tests; integration with adjacent modules; UI/accessibility scenarios from PRD §14
+- Risks / approval gates: Потеря связей и истории, неоднозначная миграция, неверный terminal outcome или повтор agent run; preview/revision checks обязательны
+- Complexity: high; уточнить после discovery
+- Estimated execution time: 12:00:00 (предварительно)
+- Agents: architect, builder, tester
+- Skills: implementation-planner; verification skills selected for implementation
+- Output artifacts: apps/local-service/src/versions; apps/web/src/features/releases; packages/contracts/versions
+- Next step: Завершить Depends on, зафиксировать contract/tests и file ownership
+- Actual time: not_started; start/end/duration = null.
+- Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
+- Affected files: proposed paths above; actual create/modify/delete recorded after execution.
+
+#### Completion Report
+
+- Status: planned
+- What was done: pending
+- Files touched / work locations: pending
+- Technical value delivered: pending
+- Product value delivered: pending
+- Actual implementation date and time: pending_execution_timestamp
+- Verification evidence: pending
+- Residual risks: pending
+- Follow-up: pending
+
+
+### Task `PAOS-0034`
+
+- Task: Attachments, комментарии и история изменений
+- Status: planned
+- Schema version: task_matrix_plan_v1
+- Timezone: Europe/Moscow
+- Plan trigger: User-requested Jira-informed issue model, 2026-11-09
+- Validator target: detailed task blocks
+- Date and time of task implementation: pending_execution_timestamp
+- Depends on: PAOS-0031, PAOS-0007
+- Blocks: PAOS-0028
+- Source: PRD §14; TM-18, TM-24
+- Short description: Managed files, comment revisions и append-only audit событий пользователя/агентов
+- Technical value: Managed files, comment revisions и append-only audit событий пользователя/агентов
+- Product value: Пользователь добавляет контекст и видит, кто, что и когда изменил
+- Scope: apps/local-service/src/attachments; apps/local-service/src/comments; apps/local-service/src/audit; apps/web/src/features/tasks/activity
+- Non-goals: Jira sync, external publication, runtime config mutation outside authorized implementation
+- Expected result: Attachments, комментарии и история изменений в будущем Web
+- Acceptance criteria: Upload quota/MIME/path checks; source file не меняется; tabs разделены; edits/tombstones/actor attribution и redaction проверены
+- Verification gates: Contract and negative-case tests; integration with adjacent modules; UI/accessibility scenarios from PRD §14
+- Risks / approval gates: Потеря связей и истории, неоднозначная миграция, неверный terminal outcome или повтор agent run; preview/revision checks обязательны
+- Complexity: high; уточнить после discovery
+- Estimated execution time: 20:00:00 (предварительно)
+- Agents: architect, builder, tester
+- Skills: implementation-planner; verification skills selected for implementation
+- Output artifacts: apps/local-service/src/attachments; apps/local-service/src/comments; apps/local-service/src/audit; apps/web/src/features/tasks/activity
+- Next step: Завершить Depends on, зафиксировать contract/tests и file ownership
+- Actual time: not_started; start/end/duration = null.
+- Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
+- Affected files: proposed paths above; actual create/modify/delete recorded after execution.
+
+#### Completion Report
+
+- Status: planned
+- What was done: pending
+- Files touched / work locations: pending
+- Technical value delivered: pending
+- Product value delivered: pending
+- Actual implementation date and time: pending_execution_timestamp
+- Verification evidence: pending
+- Residual risks: pending
+- Follow-up: pending
+
+
+### Task `PAOS-0035`
+
+- Task: Kanban и ручной жизненный цикл задачи
+- Status: planned
+- Schema version: task_matrix_plan_v1
+- Timezone: Europe/Moscow
+- Plan trigger: User-requested Jira-informed issue model, 2026-11-09
+- Validator target: detailed task blocks
+- Date and time of task implementation: pending_execution_timestamp
+- Depends on: PAOS-0005, PAOS-0008, PAOS-0032
+- Blocks: PAOS-0028, PAOS-0036
+- Source: PRD §14; TM-19, TM-20
+- Short description: Восемь статусов, семь колонок, transitions/guards, WIP и resolution
+- Technical value: Восемь статусов, семь колонок, transitions/guards, WIP и resolution
+- Product value: Пользователь сам создаёт, ведёт, закрывает и переоткрывает задачи без обязательного agent run
+- Scope: apps/web/src/features/tasks/board; apps/local-service/src/task-workflow
+- Non-goals: Jira sync, external publication, runtime config mutation outside authorized implementation
+- Expected result: Kanban и ручной жизненный цикл задачи в будущем Web
+- Acceptance criteria: Drag/menu равнозначны; multi-status column требует выбора; manual Done проверяет criteria; Cancelled сохраняет reason; active run ждёт cancel receipt
+- Verification gates: Contract and negative-case tests; integration with adjacent modules; UI/accessibility scenarios from PRD §14
+- Risks / approval gates: Потеря связей и истории, неоднозначная миграция, неверный terminal outcome или повтор agent run; preview/revision checks обязательны
+- Complexity: high; уточнить после discovery
+- Estimated execution time: 16:00:00 (предварительно)
+- Agents: architect, builder, tester
+- Skills: implementation-planner; verification skills selected for implementation
+- Output artifacts: apps/web/src/features/tasks/board; apps/local-service/src/task-workflow
+- Next step: Завершить Depends on, зафиксировать contract/tests и file ownership
+- Actual time: not_started; start/end/duration = null.
+- Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
+- Affected files: proposed paths above; actual create/modify/delete recorded after execution.
+
+#### Completion Report
+
+- Status: planned
+- What was done: pending
+- Files touched / work locations: pending
+- Technical value delivered: pending
+- Product value delivered: pending
+- Actual implementation date and time: pending_execution_timestamp
+- Verification evidence: pending
+- Residual risks: pending
+- Follow-up: pending
+
+
+### Task `PAOS-0036`
+
+- Task: Редактор, версии и миграции workflow
+- Status: planned
+- Schema version: task_matrix_plan_v1
+- Timezone: Europe/Moscow
+- Plan trigger: User-requested Jira-informed issue model, 2026-11-09
+- Validator target: detailed task blocks
+- Date and time of task implementation: pending_execution_timestamp
+- Depends on: PAOS-0035
+- Blocks: PAOS-0028, PAOS-0037
+- Source: PRD §14; TM-21
+- Short description: Workflow definitions, type mapping, draft/publish и pinned versions
+- Technical value: Workflow definitions, type mapping, draft/publish и pinned versions
+- Product value: Пользователь создаёт собственный процесс, не меняя незаметно уже идущую работу
+- Scope: apps/local-service/src/workflows; apps/web/src/features/workflows; packages/contracts/workflows
+- Non-goals: Jira sync, external publication, runtime config mutation outside authorized implementation
+- Expected result: Редактор, версии и миграции workflow в будущем Web
+- Acceptance criteria: S25/S26 доступны; invalid graph rejected; publish не меняет v1 runs; migration preview/status mapping/revision guards и rollback проверены
+- Verification gates: Contract and negative-case tests; integration with adjacent modules; UI/accessibility scenarios from PRD §14
+- Risks / approval gates: Потеря связей и истории, неоднозначная миграция, неверный terminal outcome или повтор agent run; preview/revision checks обязательны
+- Complexity: high; уточнить после discovery
+- Estimated execution time: 20:00:00 (предварительно)
+- Agents: architect, builder, tester
+- Skills: implementation-planner; verification skills selected for implementation
+- Output artifacts: apps/local-service/src/workflows; apps/web/src/features/workflows; packages/contracts/workflows
+- Next step: Завершить Depends on, зафиксировать contract/tests и file ownership
+- Actual time: not_started; start/end/duration = null.
+- Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
+- Affected files: proposed paths above; actual create/modify/delete recorded after execution.
+
+#### Completion Report
+
+- Status: planned
+- What was done: pending
+- Files touched / work locations: pending
+- Technical value delivered: pending
+- Product value delivered: pending
+- Actual implementation date and time: pending_execution_timestamp
+- Verification evidence: pending
+- Residual risks: pending
+- Follow-up: pending
+
+
+### Task `PAOS-0037`
+
+- Task: Цепочки агентов и привязка к workflow
+- Status: planned
+- Schema version: task_matrix_plan_v1
+- Timezone: Europe/Moscow
+- Plan trigger: User-requested Jira-informed issue model, 2026-11-09
+- Validator target: detailed task blocks
+- Date and time of task implementation: pending_execution_timestamp
+- Depends on: PAOS-0036, PAOS-0023
+- Blocks: PAOS-0024, PAOS-0028
+- Source: PRD §14; TM-22
+- Short description: Recipes с branches/join, ownership, budgets и идемпотентным запуском
+- Technical value: Recipes с branches/join, ownership, budgets и идемпотентным запуском
+- Product value: Пользователь направляет агентов по разным цепочкам для features, bugs и non-code работы
+- Scope: apps/local-service/src/execution-recipes; apps/local-service/src/scheduler; apps/web/src/features/workflows/recipes
+- Non-goals: Jira sync, external publication, runtime config mutation outside authorized implementation
+- Expected result: Цепочки агентов и привязка к workflow в будущем Web
+- Acceptance criteria: Replay не дублирует run; bounded retry останавливается; parallel writers проверяются; policy нельзя расширить recipe; Manual не запускает agent
+- Verification gates: Contract and negative-case tests; integration with adjacent modules; UI/accessibility scenarios from PRD §14
+- Risks / approval gates: Потеря связей и истории, неоднозначная миграция, неверный terminal outcome или повтор agent run; preview/revision checks обязательны
+- Complexity: high; уточнить после discovery
+- Estimated execution time: 20:00:00 (предварительно)
+- Agents: architect, builder, tester
+- Skills: implementation-planner; verification skills selected for implementation
+- Output artifacts: apps/local-service/src/execution-recipes; apps/local-service/src/scheduler; apps/web/src/features/workflows/recipes
+- Next step: Завершить Depends on, зафиксировать contract/tests и file ownership
+- Actual time: not_started; start/end/duration = null.
+- Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
+- Affected files: proposed paths above; actual create/modify/delete recorded after execution.
+
+#### Completion Report
+
+- Status: planned
+- What was done: pending
+- Files touched / work locations: pending
+- Technical value delivered: pending
+- Product value delivered: pending
+- Actual implementation date and time: pending_execution_timestamp
+- Verification evidence: pending
+- Residual risks: pending
+- Follow-up: pending
+
+
+### Task `PAOS-0038`
+
+- Task: Linked Issues и блокирующие зависимости
+- Status: planned
+- Schema version: task_matrix_plan_v1
+- Timezone: Europe/Moscow
+- Plan trigger: User-requested Jira-informed issue model, 2026-11-09
+- Validator target: detailed task blocks
+- Date and time of task implementation: pending_execution_timestamp
+- Depends on: PAOS-0031, PAOS-0007
+- Blocks: PAOS-0024, PAOS-0028
+- Source: PRD §14; TM-23
+- Short description: Canonical typed edges, inverse display, DAG blocking и авторство
+- Technical value: Canonical typed edges, inverse display, DAG blocking и авторство
+- Product value: Пользователь и агенты связывают работы и понимают, что мешает продолжению
+- Scope: apps/local-service/src/issue-links; apps/web/src/features/tasks/links; packages/contracts/issue-links
+- Non-goals: Jira sync, external publication, runtime config mutation outside authorized implementation
+- Expected result: Linked Issues и блокирующие зависимости в будущем Web
+- Acceptance criteria: Self/duplicate/cyclic blocks rejected; relates не блокирует; cancellation blocker требует решения; обе стороны и history согласованы
+- Verification gates: Contract and negative-case tests; integration with adjacent modules; UI/accessibility scenarios from PRD §14
+- Risks / approval gates: Потеря связей и истории, неоднозначная миграция, неверный terminal outcome или повтор agent run; preview/revision checks обязательны
+- Complexity: high; уточнить после discovery
+- Estimated execution time: 14:00:00 (предварительно)
+- Agents: architect, builder, tester
+- Skills: implementation-planner; verification skills selected for implementation
+- Output artifacts: apps/local-service/src/issue-links; apps/web/src/features/tasks/links; packages/contracts/issue-links
+- Next step: Завершить Depends on, зафиксировать contract/tests и file ownership
+- Actual time: not_started; start/end/duration = null.
+- Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
+- Affected files: proposed paths above; actual create/modify/delete recorded after execution.
 
 #### Completion Report
 

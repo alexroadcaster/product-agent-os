@@ -1,0 +1,100 @@
+{
+  "schema_version": "paos_g6_refined_host_execution_v1",
+  "checked_at": "2026-11-09T14:02:03.038257+00:00",
+  "status": "cache_and_stage_applied_runtime_blocked",
+  "authority": "Current owner explicitly approved two cache files, corrected stage and one fresh target-root session",
+  "cache": {
+    "status": "two_file_cache_repair_verified",
+    "checked_at": "2026-11-09T13:58:32.723234+00:00",
+    "files": [
+      {
+        "path": "assets/templates/hooks/comment_sufficiency_advisory.py",
+        "before_sha256": "a7d846e5e3e5064ee60439e2cbdae47c6db8cce76f458015960c5ce09244cee3",
+        "after_sha256": "82ec169bb5d5584e6b0eaf682ac55c2fa72e5d78071b3d31934f65a793ae50f8"
+      },
+      {
+        "path": "scripts/product_agent_os/templates.py",
+        "before_sha256": "05dd4f9754b7826efbe90ff165464d4d72db6c45b5f7ffd7381ec77aa3ce36bc",
+        "after_sha256": "bf7c107f40fb188baafa02185c90f2e222c3853d94819ebbcfd002a7ffe8f61e"
+      }
+    ],
+    "source_tree_sha256": "431837b2581c666454019b25bb5970004f1c06f2e10a6a5d13c959859b15c774",
+    "backup": ".docs-tools/reports/paos-aud-g6/cache-repair-backup",
+    "target_apply": "separate_step",
+    "authority": "User explicitly approved refined HOST packet in current continuation"
+  },
+  "target": ".docs-tools/reports/paos-aud-g6/host-target",
+  "target_files_verified": 210,
+  "target_digest_mismatches": [],
+  "target_apply_exit": 0,
+  "rollback_manifest": ".docs-tools/reports/paos-aud-g6/handler-stage-recheck/product-agent-os-rollback-manifest.json",
+  "initial_apply_attempt": {
+    "exit_code": 1,
+    "reason": "Approval blocking_hooks contained explanatory text instead of supported event name; corrected to PreToolUse before successful apply; no source contract weakened"
+  },
+  "runtime_attempts": [
+    {
+      "surface": "Codex App tool",
+      "result": "host-target is not a registered project; create_thread has no arbitrary cwd argument; no incorrectly rooted chat created"
+    },
+    {
+      "surface": "CLI elevated PTY",
+      "command": "codex -C .docs-tools/reports/paos-aud-g6/host-target --no-alt-screen",
+      "result": "Auto-review rejected continuing interactive session outside sandbox and managed network proxy; Ctrl-C terminated launcher before task submission",
+      "session_created": false
+    },
+    {
+      "surface": "CLI normal sandbox",
+      "command": "codex -C .docs-tools/reports/paos-aud-g6/host-target --no-alt-screen",
+      "exit_code": 1,
+      "result": "Access denied creating .codex/app-server-daemon"
+    },
+    {
+      "surface": "CLI normal sandbox without daemon",
+      "command": "codex -C .docs-tools/reports/paos-aud-g6/host-target --no-alt-screen --no-daemon",
+      "exit_code": 1,
+      "result": "SQLite code 14 unable to open local state DB; database corruption is not established"
+    }
+  ],
+  "fresh_working_session_created": false,
+  "hook_trust_changed": false,
+  "host_activation": "not_verified",
+  "pilots": "not_run: host invocation dependency still unmet",
+  "owner_acceptance": null,
+  "T34": "unchanged no_go; zero primary/reviewer calls",
+  "next_action": "Owner adds existing host-target folder as a Codex App project and reports it is available; the parent can then create the already authorized one fresh target-root session via the supported project API. No repeat permission for the same scope.",
+  "control_plane_sync": {
+    "updated": [
+      "REQUIREMENTS.md",
+      "PLAN.md",
+      "TEST.md",
+      "RUNLOG.md",
+      "audit plan",
+      "ordinary route plan",
+      "lifecycle plan",
+      "RU/EN current state and registries",
+      "B44 followup"
+    ],
+    "EVALS.md": "updated current execution projection; thresholds unchanged",
+    "prod_test.md": "not_applicable: no B39 evidence"
+  },
+  "verification": {
+    "target_manifest_readback": true,
+    "cache_readback": true,
+    "docs_tests": {
+      "count": 105,
+      "seconds": 7.756,
+      "exit_code": 0
+    },
+    "docs_structure": "passed",
+    "diff_check": "passed",
+    "task_matrix": "passed",
+    "state_consistency": "passed",
+    "final_docs_tests": {
+      "count": 105,
+      "seconds": 7.536,
+      "exit_code": 0,
+      "log": ".docs-tools/reports/paos-aud-g6/refined-docs-final.log"
+    }
+  }
+}

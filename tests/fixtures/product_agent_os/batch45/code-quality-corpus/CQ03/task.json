@@ -1,0 +1,19 @@
+{
+  "task_id": "CQ03",
+  "stack_family": "python",
+  "risk_class": "unnecessary_abstraction",
+  "expected_action": "no_new_code",
+  "difficulty": "small",
+  "intent": "The inclusive boundary is already correct. Verify it and leave source unchanged; no framework or abstraction.",
+  "acceptance": "The evaluator checks must pass; no dependencies or unrelated files may change.",
+  "material_change_required": false,
+  "input_file": "input.py",
+  "check_command": [
+    "python",
+    "check.py",
+    "{candidate}"
+  ],
+  "reference_file": "reference.py",
+  "seeded_file": "seeded.py",
+  "initial_expected_pass": true
+}

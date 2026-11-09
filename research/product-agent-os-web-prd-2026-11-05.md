@@ -1,6 +1,6 @@
 # Product-Agent OS Web — PRD
 
-Актуализация 2026-11-09: добавлен полный scope Task Manager v0.2 в заключительном дополнении; он имеет приоритет над исходной очередью M1–M3. [Экраны](product-agent-os-web-task-manager-screens-2026-11-09.md) и [план](product-agent-os-web-task-manager-plan-2026-11-09.md).
+Актуализация 2026-11-09: v0.3 — hierarchy, Kanban, workflow, дополнительные поля и связи в §14 имеют приоритет над прежним scope. [План: 38 задач](product-agent-os-web-task-manager-plan-2026-11-09.md).
 
 Source status: `project-authored / proposed / local-source-backed`. Дата: 2026-11-05. Версия: 0.1.
 
@@ -339,3 +339,208 @@ Owning artifacts: [экраны](product-agent-os-web-task-manager-screens-2026-
 Добавление skill по пути проверяет containment, metadata и ресурсы; внешние/vendor sources не перезаписываются без применимого права. find-skills — discovery route, поиск не равен установке. До применения показываются origin, version/hash, dependencies и доступная license/trust информация. Генерация по требованиям ссылается на конкретный requirement и проверяет дубликаты.
 
 Автономный путь: постановка → план → выбор агентов/skills → проверка ownership → исполнение → проверки → ограниченное исправление → приёмка. Внутри уже разрешённых границ повторное подтверждение не нужно. Budget exceeded, конфликт файлов, недоступный источник, исчерпанный retry budget и новый approval boundary останавливают соответствующий run с объяснением. Policy UI не расширяет sandbox/host permissions. Глобальная установка hooks и массовое unattended выполнение не считаются включёнными наличием Web.
+
+## 14. Иерархия, Kanban и настраиваемые workflow — 2026-11-09
+
+Source status: official Atlassian documentation checked 2026-11-09 / proposed Product-Agent OS design. Версия дополнения: **0.3**, draft_for_review. Дополняет §13 Task Manager и имеет приоритет при конфликте полей/статусов. Ниже решения для будущего Web; они не меняют текущие runtime statuses или task_matrix_plan_v1 в репозитории. Jira используется как reference model, интеграция с Jira не входит в scope.
+
+### 14.1. Что подтверждено в Jira Cloud
+
+| Источник | Подтверждённое поведение Jira | Решение Product-Agent OS |
+| --- | --- | --- |
+| [JIRA-01: Hierarchy](https://support.atlassian.com/jira-cloud-administration/docs/what-are-issue-types/) | Epic → standard (Story/Task/Bug) → Subtask. В новых документах Jira используются work item/work type. | Сохраняем три уровня; UI UserStory соответствует Jira Story. |
+| [JIRA-02: Status categories](https://support.atlassian.com/jira-cloud-administration/docs/what-is-a-workflow-status/) | Каждый status относится к To do, In progress или Done. | Стабильные категории и отдельные пользовательские названия статусов. |
+| [JIRA-03: Transitions](https://support.atlassian.com/jira-cloud-administration/docs/create-workflow-transitions/) | Переход направленный; обратный переход задаётся отдельно. | Явные transitions с guards и ручным/агентским инициатором. |
+| [JIRA-04: Kanban mapping](https://support.atlassian.com/jira-software-cloud/docs/configure-columns/) | Колонки доски сопоставляются статусам; колонка может содержать несколько статусов. | Kanban — представление workflow, а не отдельное поле состояния. |
+| [JIRA-05: Workflow schemes](https://support.atlassian.com/jira-cloud-administration/docs/add-edit-and-delete-an-issue-workflow-scheme/) | Workflow schemes сопоставляют типы работ workflow; изменения активной схемы требуют публикации draft и при необходимости mapping статусов. | Versioned workflow и явная миграция существующих задач. |
+| [JIRA-06: Versions](https://support.atlassian.com/jira-cloud-administration/docs/manage-versions/) | Affects versions описывает затронутые версии; Fix versions связывает работу с выпуском. | Два независимых массива версий, без смешения с release readiness. |
+| [JIRA-07: Components](https://support.atlassian.com/jira-software-cloud/docs/what-are-jira-components/) | Jira components группируют работу и ограничены company-managed spaces. | Собственный project-scoped справочник без зависимости от Jira/Compass. |
+| [JIRA-08: Creator](https://support.atlassian.com/jira-software-cloud/docs/jql-fields/) | Creator фиксирует пользователя, создавшего запись, и не меняется. | Неизменяемый actor user/agent/system; инициатор и создатель разделены. |
+| [JIRA-09: Linked work items](https://support.atlassian.com/jira-cloud-administration/docs/configure-issue-linking/) | Тип связи имеет имя и прямое/обратное описание; создание связи требует права. | Typed links с авторством и явной семантикой блокировки. |
+| [JIRA-10: Comments and history](https://support.atlassian.com/jira-software-cloud/docs/what-are-the-different-types-of-activity-on-an-issue/) | Activity разделяет Comments, History и Work log. | Отдельные вкладки Комментарии и История изменений. |
+| [JIRA-11: Attachments](https://support.atlassian.com/jira-software-cloud/docs/add-an-attachment-to-an-issue/) | Файл можно добавить upload/drag-and-drop; действуют ограничения вложений. | Локальное managed storage и явные ограничения; числовые лимиты Jira не копируем. |
+| [JIRA-12: Priority and resolution](https://support.atlassian.com/jira-cloud-administration/docs/what-are-issue-statuses-priorities-and-resolutions/) | Priority отличается от Resolution; стандартные priorities Highest–Lowest. | Пять уровней приоритета, отдельный outcome закрытия. |
+| [JIRA-13: Scheduling](https://support.atlassian.com/jira-software-cloud/docs/schedule-issues-in-advanced-roadmaps-using-start-end-dates/) | Start date/Due date используются для планирования; рассмотренная страница Plans относится к Premium/Enterprise. | Плановые даты отдельно от фактических timestamps; не заявляем эквивалентность всех Jira тарифов. |
+
+Ограничения источников: company-managed, team-managed и advanced Plans имеют различия. Мы не переносим тарифные ограничения, Jira permissions или скрытые особенности конкретного tenant в Product-Agent OS. Конкретные статусы, роли агентов, лимиты, attachment storage и правила dependency gates ниже — **проектные предложения PAOS**, а не утверждения о Jira.
+
+### 14.2. Типы и иерархия задач
+
+| Тип UI | Canonical key | Назначение | Допустимый parent |
+| --- | --- | --- | --- |
+| Epic | epic | Крупный результат или инициатива с несколькими работами | Нет |
+| Task | task | Техническая, операционная или организационная работа | Epic либо нет |
+| Bug | bug | Дефект: воспроизведение, expected/actual, затронутая версия | Epic либо нет |
+| UserStory | user_story | Пользовательская потребность, ценность и проверяемый сценарий | Epic либо нет |
+| Sub-Task | sub_task | Часть Task, Bug или UserStory | Ровно один standard item того же проекта |
+
+```mermaid
+flowchart TD
+  E["Epic"] --> T["Task"]
+  E --> B["Bug"]
+  E --> U["UserStory"]
+  T --> ST["Sub-Task"]
+  B --> SB["Sub-Task"]
+  U --> SU["Sub-Task"]
+```
+
+Task, Bug и UserStory — соседи, а не последовательные уровни. Sub-Task не имеет детей; прямой Epic → Sub-Task запрещён в выбранной модели. Standard item может существовать без Epic. Произвольные дополнительные уровни не входят в первый scope. Группы G01–G10 в плане — области реализации, они не превращаются автоматически в продуктовые Epic.
+
+Parent — структурная принадлежность; Linked Issues — другая связь. В проекте действует один parent, отсутствие циклов и запрет self-parent. Reparent/type conversion выполняются с preview: incompatible children, workflow/status, данные типа и версии сохраняются или требуют явного решения. ID не меняется. Удаление parent с детьми не каскадирует молча.
+
+Epic не запускается как один агентский run: исполняются выбранные дочерние задачи. UI показывает child counts по outcomes, обязательные незавершённые элементы, roll-up estimates и effort отдельно от elapsed. Нельзя суммировать вложенные roll-ups дважды. Собственное время parent не смешивается с child effort. Закрытие Epic/standard parent как выполненного требует завершения обязательного объёма; отменённый child требует явного исключения из scope с причиной и не считается выполненным.
+
+### 14.3. Дополнительные поля и справочники
+
+Все прежние поля сохраняются. Новые поля:
+
+| Поле | Контракт | Правило |
+| --- | --- | --- |
+| Тип / Parent | issue_type, parent_id nullable | Таблица иерархии; для Sub-Task parent обязателен |
+| Статус | status_id, status_category, workflow_id, workflow_version | Статус меняется только допустимым transition; category вычисляется из определения |
+| Создатель | created_by: actor_type + actor_id + display_name_snapshot; created_at | Неизменяемый автор сохранённой записи: user, agent или system; agent profile/run/source session при наличии |
+| Инициатор | initiated_by nullable | Если пользователь поручил агенту создать задачу, создатель agent, инициатор user. Если пользователь сохранил предложенный draft, creator=user, suggested_by=agent |
+| Приоритет | priority_id, rank отдельно | Highest, High, Medium (default), Low, Lowest; RU: Высший, Высокий, Средний, Низкий, Низший. Rank упорядочивает внутри очереди; severity Bug — отдельно, если нужна |
+| Компоненты | component_ids[] | Multi-select: BackEnd, FrontEnd, DB, RAG, LLM, Design, Marketing, Integrations, DevOps, QA, Analytic |
+| Start Date | planned_start_date, YYYY-MM-DD nullable | Плановая дата начала; label «Start Date (план)». Фактический старт берётся из actual_started_at и показывается рядом |
+| Due Date | due_date, YYYY-MM-DD nullable | Дедлайн включительно до конца дня в timezone проекта; overdue со следующего локального дня. Не принуждает к false completion |
+| Affects version | affects_version_ids[] | Версии, к которым относится проблема/наблюдение; особенно Bug; допускает несколько и «Не определено» |
+| Fix version / Target release | fix_version_ids[] | Релизы поставки результата; это поле нужно для release planning, Affects version его не заменяет |
+| Attachments | attachment references[] | Фото, документы и другие context files; отдельны от links на проектные артефакты |
+| Resolution | null либо completed/cancelled/duplicate/wont_do | Обязательно для terminal state; очищается при reopen, прежнее значение остаётся в history |
+| Blocker | is_blocked + reason + linked_issue/decision + since + owner | Ортогональный признак; не стирает текущий status |
+
+Для legacy import неизвестный creator сохраняется unknown с provenance; его нельзя приписывать текущему пользователю. Создатель, исполнители и автор последнего изменения — три разные сущности. Существующие planned записи этого репозитория не получают выдуманные продуктовые даты, creators или версии.
+
+Components — project-scoped справочник с устойчивыми ID; пользователь может добавить, переименовать и архивировать компонент. Canonical labels из требования сохранены, включая Analytic. Несколько компонентов не дают неявных конфликтующих назначений: workflow route выбирается по явному правилу, при неоднозначности показывается выбор. Компонент не тождественен файлу, модулю graph или агенту.
+
+Плановые даты опциональны, но при наличии обеих start ≤ due. Изменение Due Date сохраняет прежнее значение, автора и причину; timezone проекта показывается. Reopen не переписывает первый actual start; повторные попытки учитываются интервалами. Старт/дедлайн Epic не наследуются детям молча; обнаруженное превышение parent due показывается предупреждением.
+
+Version registry: id, name, description, planned_start_date, release_date, state=unreleased/released/archived. Название может быть SemVer или другим принятым проектом форматом. Release policy задаёт обязательность target release по типам/компонентам и условия готовности. Первоначально поле необязательно; release-managed проект требует его перед Ready, с явным исключением для unplanned hotfix. Обнаружение Bug в v1.2 и исправление в v1.3 заполняет Affects=v1.2, Fix=v1.3. Закрытие задачи не выпускает версию, не публикует код и не доказывает deployment.
+
+### 14.4. Статусы и Kanban
+
+Базовый workflow:
+
+| Canonical status | RU / EN | Category | Условие/значение |
+| --- | --- | --- | --- |
+| backlog | Бэклог / Backlog | todo | Сохранённая задача, возможна неполная постановка |
+| ready | Готово к работе / Ready | todo | Scope, ценность, приёмка, оценка и нужные поля заполнены |
+| in_progress | В работе / In progress | in_progress | Пользователь или агент начал работу; стартовый event |
+| review | Ревью / Review | in_progress | Результат передан на инженерную/предметную проверку |
+| verification | Проверка / Verification | in_progress | Выполняются предусмотренные проверки |
+| awaiting_acceptance | Ожидает приёмки / Awaiting acceptance | in_progress | Evidence собрано, требуется решение по результату |
+| done | Выполнено / Done | done | Criteria и обязательные dependencies/children выполнены; resolution=completed |
+| cancelled | Отменено / Cancelled | done | resolution=cancelled/duplicate/wont_do; причина обязательна |
+
+```mermaid
+flowchart LR
+  B["Бэклог"] --> R["Готово к работе"]
+  R --> I["В работе"]
+  I --> V["Ревью"]
+  V --> Q["Проверка"]
+  Q --> A["Ожидает приёмки"]
+  A --> D["Выполнено"]
+  V -->|доработка| I
+  Q -->|ошибка| I
+  A -->|не принято| I
+  D -->|reopen| R
+  C["Отменено"] -->|reopen| B
+```
+
+Дополнительные разрешённые transitions: любая nonterminal задача → Cancelled с причиной; Ready → Backlog при возврате на уточнение; Done/Cancelled → указанный выше стартовый статус через Reopen. Owner может закрыть вручную из любого nonterminal статуса, если проверены guards завершения; это отдельный переход Complete manually с evidence и reason. Diagram показывает основной путь, а не полный автомат переходов.
+
+Kanban по умолчанию имеет 7 колонок: Бэклог, Готово к работе, В работе, Ревью, Проверка, Ожидает приёмки, Закрыто. Последняя объединяет Done и Cancelled с разными badges/outcomes; cancelled можно скрыть фильтром, с явным числом скрытых карточек. Backlog можно вынести в отдельный список. У каждой колонки набор status IDs; один статус не дублируется в нескольких колонках одной доски. Publish board mapping требует покрытия всех статусов выбранных workflow, включая старые pinned версии, либо явного раздела «Вне доски» с count/link.
+
+Drag-and-drop вызывает transition, а не прямую запись status. При нескольких допустимых target statuses пользователь выбирает один; недопустимое перемещение объясняет guard. Keyboard/menu переходы эквивалентны drag. Отдельные фильтры: type, Epic, parent, agent, creator, priority, components, dates, affects/fix version, blocked. Default карточка: type icon+label, ID/title, priority, agents, components, due/overdue, blockers, subtasks count. Поля карточки настраиваемы.
+
+WIP limits опциональны на колонку; warning либо hard mode задаётся явно. Agent scheduler соблюдает hard WIP, ownership и dependency gates; ручной override soft limit журналируется. Priority не разрешает игнорировать blockers. Reopened — событие, failed — outcome run, blocked — признак; их не нужно принудительно добавлять как постоянные колонки.
+
+### 14.5. Создание, закрытие и права пользователя
+
+Пользователь создаёт Epic/Task/Bug/UserStory из «Новая задача», Sub-Task из parent. Сохранение создаёт Backlog; подготовка к Ready валидирует поля. Agent может создать задачу по существующей authority, с реальным авторством и источником; это не делает owner агентом автоматически.
+
+Доступны «Завершить», «Отменить», «Переоткрыть» и обычные переходы. Человек не обязан запускать агента, чтобы выполнить и закрыть задачу. Manual completion принимает ручные evidence и результат проверки; отсутствие agent run не является ошибкой. Если критерий не выполнен, UI предлагает доработку или отмену/изменение scope с причиной, а не ложное Done. Duplicate требует ссылку на canonical issue.
+
+Перед terminal transition активные runs должны завершиться либо подтвердить cancel; промежуточное «Отмена запрошена» относится к run, а status задачи ещё не terminal. Закрытие не может оставить writer незаметно работающим. Agent может выполнять переходы в пределах policy; по умолчанию итоговая приёмка владельцем, а автоматическое Done разрешается отдельно для выбранного workflow с проверяемыми criteria. Он не может расширить себе права через редактор workflow.
+
+### 14.6. Настраиваемые workflow и цепочки агентов
+
+Два связанных уровня:
+
+1. **Issue workflow**: states, categories, transitions, guards, доступные типы, ручные actions и правила completion.
+2. **Execution recipe**: последовательность/ветвления ролей и skills внутри этапа — input artifacts, output artifacts, checks, ownership, timeout, retry/iteration budget и stop conditions.
+
+Пользователь может создать workflow с нуля или копией шаблона, переименовать, добавить/убрать статусы и переходы, настроить column mapping и recipe, проверить и опубликовать новую версию. Project default workflow и mapping по issue type выбирают initial definition; explicit per-issue selection имеет приоритет, затем type mapping, затем default. Component routing допускается только с детерминированным порядком правил; конфликт не решается скрытым «первым попавшимся» агентом.
+
+Редактор содержит диаграмму и доступное табличное представление. Для transition: from/to, name, allowed actor roles, required fields, guards, associated recipe, success/failure targets и необходимость решения. Вызов permission-sensitive action остаётся в host authority; поле workflow не является shell script или способом отключить guardrails.
+
+Примеры recipes (PAOS proposals):
+
+| Шаблон | Исполнение | Завершение |
+| --- | --- | --- |
+| Feature/UserStory | product-manager уточняет критерии → architect → builder → tester → reviewer | Проверки и приёмка |
+| Bug rescue | tester воспроизводит → builder исправляет → tester regression → reviewer | Bug acceptance и affected/fix versions |
+| Design/Marketing | product-manager уточняет brief → назначенный проектный агент готовит результат → reviewer | Пользователь оценивает по предметным criteria; coding checks не навязываются |
+| Manual | Пользователь выполняет работу и добавляет evidence | Manual completion |
+
+Draft workflow не меняет active задачи. Publish создаёт immutable version после validation и preview. Задача хранит workflow version; начатый run дополнительно закрепляет recipe и profile/skill versions. Новые задачи берут active version. Для существующих нужна migration preview: old/new statuses, transitions, field requirements, board mapping, число затронутых задач; миграция только по expected revision. Активные runs остаются pinned до завершения/подтверждённой отмены. Архив workflow запрещает новые назначения, сохраняя историю. Rollback выбирает старую версию для новых задач; миграция назад также явная.
+
+Validation: один initial state, категории всех states, достижимый terminal path, отсутствие бесконечных automated loops, guards на terminal transitions, допустимые роли/skills, конечные timeout/retry/budget, разрешимые branches/join и отсутствие пересекающихся writers. Ручные rework loops допустимы; автоматические циклы имеют конечный iteration budget. SSE replay/retry не запускает рецепт повторно: command/run idempotency и compare-and-set transition обязательны.
+
+### 14.7. Linked Issues
+
+| Тип связи | Прямое / обратное отображение | Семантика PAOS |
+| --- | --- | --- |
+| blocks | блокирует / заблокирована задачей | A blocks B: B нельзя начать/закрыть как выполненную до выполнения A либо явного снятия/waiver зависимости |
+| relates_to | связана с / связана с | Симметричная информационная связь, без execution gate |
+| duplicates | дублирует / имеет дубликат | Направление к canonical issue; не закрывает автоматически |
+| clones | копия / источник копии | Provenance, без execution gate |
+
+Пользователь и разрешённый агент создают/удаляют links через поиск ID/title; actor, timestamp, reason и source сохраняются. Одна canonical запись ребра даёт прямое и обратное отображение; self-link и дубли отклоняются. Parent не хранится второй раз как blocks. Для blocks граф обязан быть DAG: цикл отвергается с путём. В relates_to циклы допустимы. Duplicate chains проверяются на цикл и приводятся к canonical target.
+
+При отмене blocker зависимость не считается выполненной: successor остаётся blocked, пока пользователь не изменит её с причиной. Reopen blocker помечает зависимые результаты как требующие пересмотра; завершённые задачи автоматически не переписываются. Новая blocking link на активную задачу приостанавливает её на безопасной границе после подтверждения runner, сохраняя pending state до receipt. Link creation не выполняет работу и не выдаёт новый approval.
+
+В первом scope links разрешены внутри проекта; cross-project links — будущая capability с проверкой доступа. Статусы, версии, badges и hover preview видны в Linked Issues. Иерархия, ссылки задач и code dependency graph — разные типы графов; UI не смешивает их edges.
+
+### 14.8. Attachments, комментарии и история
+
+Attachment — управляемая локальная копия с id, original filename, media type, bytes, hash, created_by/at, task ID, status и storage reference. Исходный внешний файл не изменяется. Предлагаемые defaults: 50 MiB/file, 500 MiB/task; параметры видимы до upload и настраиваемы owner. Проверять MIME/content/extension, path traversal, quotas и partial uploads; одинаковое имя не перезаписывает прежнее вложение. Изображения и PDF можно preview; исполняемые/активные форматы не исполняются, HTML/SVG требуют безопасного renderer или download-only. Текст вложения — untrusted context, не instruction authority.
+
+Удаление attachment требует права и показывает ссылки из comments/artifacts; остаётся tombstone/history. Backups включают metadata и binaries с проверкой hash. URL внешнего ресурса остаётся artifact link, не становится attachment без явного импорта. Доступ агента к файлу определяется task scope; отправка внешнему provider не следует автоматически из upload.
+
+**Комментарии** — самостоятельная вкладка: user/agent author, timestamp, Markdown, reply/thread, attachment refs и task mentions. Agent comment содержит run/session ссылку при наличии. Edit создаёт revision и отметку «изменено», delete — tombstone; исходный текст не остаётся публично доступным после удаления, audit хранит событие и безопасные metadata. Комментарий не запускает workflow автоматически; action «Создать предложение из комментария» отделён от обычного текста.
+
+**История изменений** — самостоятельная вкладка: кто, что, когда, старое/новое значение, причина, источник, revision/correlation. Покрывает fields, type/parent, status/resolution, workflow migration, links, versions, attachments, comments metadata, assignments и manual overrides. UTC storage, timezone display, фильтры по actor/field/date. Append-only events; correction новым event. Sensitive data не дублируются в audit, redaction отмечается. Session transcript и task comments не копируются друг в друга без явного действия.
+
+### 14.9. Требования, экраны и приёмка
+
+| ID | Требование | План |
+| --- | --- | --- |
+| TM-15 | Типы, parent rules, reparent/conversion и roll-up | PAOS-0031 |
+| TM-16 | Статус, creator/initiator, priority, components, plan dates | PAOS-0002, PAOS-0031, PAOS-0032 |
+| TM-17 | Affects/Fix versions и release policy | PAOS-0033 |
+| TM-18 | Attachments | PAOS-0034 |
+| TM-19 | Ручное создание/закрытие/reopen, guards и active-run stop | PAOS-0006, PAOS-0008, PAOS-0035 |
+| TM-20 | Kanban, mappings, WIP и фильтры | PAOS-0005, PAOS-0035 |
+| TM-21 | Создание/редактирование/versioning/migration workflow | PAOS-0036 |
+| TM-22 | Recipes и ограниченное agent execution | PAOS-0024, PAOS-0025, PAOS-0037 |
+| TM-23 | Linked Issues и dependency semantics | PAOS-0038 |
+| TM-24 | Отдельные Comments и Change history | PAOS-0034 |
+
+S04/S05 получают hierarchy filters, поля карточек и Kanban settings; S06 — type/parent, новые поля, Linked Issues, Attachments и отдельные tabs Комментарии/История изменений; S07 — полный editor. S23 ссылается на policy, не заменяет workflow editor. Предлагаются S25 «Workflow проекта» и S26 «Редактор workflow» в настройках проекта; version registry — раздел настроек релизов. Старые 24 изображения v0.2 не перерисовывались и не покрывают новое дополнение.
+
+Acceptance scenarios:
+
+1. User создаёт UserStory под Epic и Sub-Task под UserStory; Task под UserStory и self-parent отклоняются с объяснением.
+2. Agent создаёт Bug по поручению user: creator=agent, initiated_by=user; последующий editor не меняет creator.
+3. User без agent run вручную закрывает Task с выполненными criteria; при открытом обязательном child Done недоступен, Cancelled требует reason.
+4. Bug affects v1.2 и targets v1.3; release filter v1.3 находит его по Fix version, не по Affects.
+5. Drag в колонку с двумя target statuses предлагает допустимый выбор; отсутствие transition не меняет запись.
+6. Publish workflow v2 не меняет running v1; migration preview требует status mapping, stale revision не применяется.
+7. A blocks B и B blocks C; C blocks A отклоняется. Двусторонняя relates_to не блокирует исполнение.
+8. User/agent comment виден в Comments; изменение priority и status видно в History с actor, before/after и временем; удалённый attachment остаётся tombstone.
+9. Replayed transition не запускает второй run; закрытие при работающем writer ждёт подтверждённой остановки.
+10. RU/EN и обе темы сохраняют доступность новых полей, keyboard transitions и workflow editor.
+
+Non-goals: Jira sync/import API, собственный язык scripting, дополнительные hierarchy levels, cross-project dependency scheduling, hosted collaboration и автоматическая публикация релизов. Product/UX acceptance и runtime integration остаются будущими gates. Все описанные defaults можно уточнить до реализации без переписывания исторического evidence.

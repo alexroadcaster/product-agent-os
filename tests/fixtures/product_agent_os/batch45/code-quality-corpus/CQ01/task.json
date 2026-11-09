@@ -1,0 +1,19 @@
+{
+  "task_id": "CQ01",
+  "stack_family": "python",
+  "risk_class": "legacy_bug",
+  "expected_action": "fix",
+  "difficulty": "small",
+  "intent": "Preserve a supplied zero timeout; use the default only for None.",
+  "acceptance": "The evaluator checks must pass; no dependencies or unrelated files may change.",
+  "material_change_required": true,
+  "input_file": "input.py",
+  "check_command": [
+    "python",
+    "check.py",
+    "{candidate}"
+  ],
+  "reference_file": "reference.py",
+  "seeded_file": "seeded.py",
+  "initial_expected_pass": false
+}

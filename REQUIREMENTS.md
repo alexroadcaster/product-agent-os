@@ -1,5 +1,19 @@
 # REQUIREMENTS.md
 
+## PAOS-AUD-G7 — planned
+
+Восемь planned карточек в [audit plan](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md) уточнены по [deep review](research/product-agent-os-g7-repository-deep-review-2026-11-09.md): evaluator integrity, evidence validity и risk-based quality. Только research/authoring; G6 gates и frozen T34 сохранены.
+
+## Web issue workflows v0.3 — 2026-11-09
+
+Web issue model v0.3: Epic → Task/Bug/UserStory → Sub-Task; новые поля, Kanban, user-managed workflow/recipes, manual completion, links, Comments/History. [PRD §14](research/product-agent-os-web-prd-2026-11-05.md) владеет TM-15–TM-24. Документация only, implementation not_started.
+
+## PAOS-AUD-G6 — 2026-11-09
+
+G6 partially_verified: три синтетических пилота выполнены из текущего проекта в host-target/pilots; все проверки passed, результаты needs_user_acceptance. По разрешению владельца HOST-01 больше не блокирует эти пилоты. Fresh-session activation HOST-01/HOST-02 остаётся отдельной открытой задачей; T34 no-go. Owner feedback/acceptance null; manual_only сохраняется. [Результаты](docs/superpowers/specs/paos-aud-g6-pilot-results.json).
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
 ## PAOS-AUD-G5 — 2026-11-09
 
 F13/F14/F17: offline installer command contract, явный package entry route, RU/EN parity и актуальный local site. Acceptance: stub commands, docs tests, strict build, routes/links/anchors, Mermaid parse/render. Нет actual install, publication или host activation.

@@ -213,7 +213,7 @@ def main() -> int:
     if len(changed) > MAX_CHANGED_FILES:
         _emit_system_message(
             f"Comment sufficiency advisory skipped {len(changed)} changed source files because the automatic cap "
-            f"is {MAX_CHANGED_FILES}. Run the comment_sufficiency.py CLI manually for this broad audit."
+            "is " + str(MAX_CHANGED_FILES) + ". Run the comment_sufficiency.py CLI manually for this broad audit."
         )
         return 0
 

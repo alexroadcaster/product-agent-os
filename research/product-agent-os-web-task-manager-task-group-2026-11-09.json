@@ -81,6 +81,26 @@
         "PAOS-0029",
         "PAOS-0030"
       ]
+    },
+    {
+      "id": "G09",
+      "title": "Иерархия, поля и контекст",
+      "task_ids": [
+        "PAOS-0031",
+        "PAOS-0032",
+        "PAOS-0033",
+        "PAOS-0034"
+      ]
+    },
+    {
+      "id": "G10",
+      "title": "Kanban, workflow и взаимозависимости",
+      "task_ids": [
+        "PAOS-0035",
+        "PAOS-0036",
+        "PAOS-0037",
+        "PAOS-0038"
+      ]
     }
   ],
   "tasks": [
@@ -131,7 +151,7 @@
       "group_id": "G01",
       "title": "Модель задачи и идентификаторы",
       "status": "planned",
-      "short_description": "Единый контракт всех полей задачи, стабильные ID и миграция старых записей",
+      "short_description": "Контракт прежних 12 и дополнительных полей §14 PRD; отдельные product status и planning status",
       "technical_value": "Единый контракт всех полей задачи, стабильные ID и миграция старых записей",
       "product_value": "Пользователь ставит полную задачу один раз и сохраняет устойчивую ссылку на неё при изменениях проекта.",
       "affected_files": [
@@ -157,9 +177,9 @@
         "product-agent-os-web-task-manager-screens-2026-11-09.md"
       ],
       "acceptance_criteria": [
-        "Все 12 полей проходят round-trip; коллизия ID отклонена; rename проекта не меняет ID"
+        "Все поля §13–§14 проходят round-trip; стабильные ID; creator provenance; product workflow status не подменяет task_matrix_plan_v1 status"
       ],
-      "estimated_duration_hms": "08:00:00",
+      "estimated_duration_hms": "12:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
       "actual_started_at": null,
       "actual_ended_at": null,
@@ -289,9 +309,9 @@
         "product-agent-os-web-task-manager-screens-2026-11-09.md"
       ],
       "acceptance_criteria": [
-        "Фильтры сохраняются; board и list согласованы; invalid transition объяснён"
+        "Список/Kanban согласованы; type/parent/creator/priority/components/versions/dates filters сохраняются; расширенные mappings и transitions проверяются в PAOS-0035"
       ],
-      "estimated_duration_hms": "10:00:00",
+      "estimated_duration_hms": "14:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
       "actual_started_at": null,
       "actual_ended_at": null,
@@ -300,7 +320,8 @@
       "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
       "depends_on": [
         "PAOS-0002",
-        "PAOS-0004"
+        "PAOS-0004",
+        "PAOS-0032"
       ]
     },
     {
@@ -334,9 +355,9 @@
         "product-agent-os-web-task-manager-screens-2026-11-09.md"
       ],
       "acceptance_criteria": [
-        "Все поля доступны; незаполненная приёмка блокирует готовность к запуску; черновик сохраняется"
+        "Все поля §13–§14 доступны; пользователь создаёт draft сам; отдельные Comments/History/Attachments/Linked Issues подключаются через PAOS-0034/0038; Ready проверяет обязательные поля"
       ],
-      "estimated_duration_hms": "12:00:00",
+      "estimated_duration_hms": "16:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
       "actual_started_at": null,
       "actual_ended_at": null,
@@ -346,7 +367,8 @@
       "depends_on": [
         "PAOS-0002",
         "PAOS-0003",
-        "PAOS-0004"
+        "PAOS-0004",
+        "PAOS-0032"
       ]
     },
     {
@@ -424,9 +446,9 @@
         "product-agent-os-web-task-manager-screens-2026-11-09.md"
       ],
       "acceptance_criteria": [
-        "Успех команды не равен приёмке; unmet criterion не даёт закрыть задачу; reopen сохраняет историю"
+        "Completion, cancellation и reopening различены; criteria/child/dependency gates и manual evidence определены; действия расширяются PAOS-0035"
       ],
-      "estimated_duration_hms": "10:00:00",
+      "estimated_duration_hms": "14:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
       "actual_started_at": null,
       "actual_ended_at": null,
@@ -1129,7 +1151,7 @@
         "product-agent-os-web-task-manager-screens-2026-11-09.md"
       ],
       "acceptance_criteria": [
-        "Две задачи с пересекающимися файлами сериализуются; независимые могут идти параллельно"
+        "Очередь соблюдает pinned recipe, blocks links, hard WIP и ownership; независимые writers допускаются только при отсутствии пересечения"
       ],
       "estimated_duration_hms": "16:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
@@ -1141,7 +1163,9 @@
       "depends_on": [
         "PAOS-0015",
         "PAOS-0019",
-        "PAOS-0023"
+        "PAOS-0023",
+        "PAOS-0037",
+        "PAOS-0038"
       ]
     },
     {
@@ -1316,9 +1340,9 @@
         "product-agent-os-web-task-manager-screens-2026-11-09.md"
       ],
       "acceptance_criteria": [
-        "Один разрешённый локальный путь проходит end-to-end; negative paths сохраняют границы"
+        "Все 10 acceptance scenarios PRD §14 и прежний основной путь проверены; user-only completion и active-run cancellation подтверждены; отрицательные сценарии migration/links/attachments не теряют данные"
       ],
-      "estimated_duration_hms": "16:00:00",
+      "estimated_duration_hms": "24:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
       "actual_started_at": null,
       "actual_ended_at": null,
@@ -1328,7 +1352,13 @@
       "depends_on": [
         "PAOS-0022",
         "PAOS-0026",
-        "PAOS-0027"
+        "PAOS-0027",
+        "PAOS-0033",
+        "PAOS-0034",
+        "PAOS-0035",
+        "PAOS-0036",
+        "PAOS-0037",
+        "PAOS-0038"
       ]
     },
     {
@@ -1362,7 +1392,7 @@
         "product-agent-os-web-task-manager-screens-2026-11-09.md"
       ],
       "acceptance_criteria": [
-        "Все 24 экрана проходят RU/EN и light/dark матрицу; нет ловушек фокуса и потери действий"
+        "Все 26 описанных экранов и новые task tabs проверены в RU/EN × Light/Dark; keyboard Kanban/workflow и длинные значения не теряют действия"
       ],
       "estimated_duration_hms": "12:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
@@ -1418,6 +1448,495 @@
       "depends_on": [
         "PAOS-0029"
       ]
+    },
+    {
+      "id": "PAOS-0031",
+      "group_id": "G09",
+      "title": "Иерархия Epic / Task / Bug / UserStory / Sub-Task",
+      "status": "planned",
+      "short_description": "Родительские связи, преобразование типов и roll-up без двойного счёта",
+      "technical_value": "Родительские связи, преобразование типов и roll-up без двойного счёта",
+      "product_value": "Пользователь разбивает инициативу на работы и подзадачи и видит общий прогресс",
+      "affected_files": [
+        {
+          "path": "packages/contracts/issues",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/local-service/src/issue-hierarchy",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/features/tasks/hierarchy",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Epic содержит standard types; Sub-Task имеет один standard parent; циклы и недопустимый reparent отклоняются; закрытие parent проверяет children"
+      ],
+      "estimated_duration_hms": "14:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей и истории, неоднозначная миграция, неверный terminal outcome или повтор agent run; preview/revision checks обязательны",
+      "depends_on": [
+        "PAOS-0002"
+      ],
+      "requirement_ids": [
+        "TM-15",
+        "TM-16"
+      ]
+    },
+    {
+      "id": "PAOS-0032",
+      "group_id": "G09",
+      "title": "Поля, авторство, приоритеты, компоненты и даты",
+      "status": "planned",
+      "short_description": "Неизменяемый creator, отдельный initiator, project components и календарные поля",
+      "technical_value": "Неизменяемый creator, отдельный initiator, project components и календарные поля",
+      "product_value": "Пользователь знает источник задачи, её важность, область и сроки",
+      "affected_files": [
+        {
+          "path": "packages/contracts/issue-fields",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/local-service/src/components",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/features/tasks/editor",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "11 исходных components доступны; multi-select; creator неизменяем; start/due validation и timezone проверены; unknown import не подменяется user"
+      ],
+      "estimated_duration_hms": "12:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей и истории, неоднозначная миграция, неверный terminal outcome или повтор agent run; preview/revision checks обязательны",
+      "depends_on": [
+        "PAOS-0031",
+        "PAOS-0004"
+      ],
+      "requirement_ids": [
+        "TM-16"
+      ]
+    },
+    {
+      "id": "PAOS-0033",
+      "group_id": "G09",
+      "title": "Версии продукта и release policy",
+      "status": "planned",
+      "short_description": "Раздельные affects/fix version references и условия планирования релиза",
+      "technical_value": "Раздельные affects/fix version references и условия планирования релиза",
+      "product_value": "Пользователь различает затронутый продукт и выпуск, который получит исправление",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/versions",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/features/releases",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "packages/contracts/versions",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Bug affects v1.2/fix v1.3 фильтруется корректно; archive сохраняет ссылки; Done не выпускает релиз"
+      ],
+      "estimated_duration_hms": "12:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей и истории, неоднозначная миграция, неверный terminal outcome или повтор agent run; preview/revision checks обязательны",
+      "depends_on": [
+        "PAOS-0032"
+      ],
+      "requirement_ids": [
+        "TM-17"
+      ]
+    },
+    {
+      "id": "PAOS-0034",
+      "group_id": "G09",
+      "title": "Attachments, комментарии и история изменений",
+      "status": "planned",
+      "short_description": "Managed files, comment revisions и append-only audit событий пользователя/агентов",
+      "technical_value": "Managed files, comment revisions и append-only audit событий пользователя/агентов",
+      "product_value": "Пользователь добавляет контекст и видит, кто, что и когда изменил",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/attachments",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/local-service/src/comments",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/local-service/src/audit",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/features/tasks/activity",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Upload quota/MIME/path checks; source file не меняется; tabs разделены; edits/tombstones/actor attribution и redaction проверены"
+      ],
+      "estimated_duration_hms": "20:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей и истории, неоднозначная миграция, неверный terminal outcome или повтор agent run; preview/revision checks обязательны",
+      "depends_on": [
+        "PAOS-0031",
+        "PAOS-0007"
+      ],
+      "requirement_ids": [
+        "TM-18",
+        "TM-24"
+      ]
+    },
+    {
+      "id": "PAOS-0035",
+      "group_id": "G10",
+      "title": "Kanban и ручной жизненный цикл задачи",
+      "status": "planned",
+      "short_description": "Восемь статусов, семь колонок, transitions/guards, WIP и resolution",
+      "technical_value": "Восемь статусов, семь колонок, transitions/guards, WIP и resolution",
+      "product_value": "Пользователь сам создаёт, ведёт, закрывает и переоткрывает задачи без обязательного agent run",
+      "affected_files": [
+        {
+          "path": "apps/web/src/features/tasks/board",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/local-service/src/task-workflow",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Drag/menu равнозначны; multi-status column требует выбора; manual Done проверяет criteria; Cancelled сохраняет reason; active run ждёт cancel receipt"
+      ],
+      "estimated_duration_hms": "16:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей и истории, неоднозначная миграция, неверный terminal outcome или повтор agent run; preview/revision checks обязательны",
+      "depends_on": [
+        "PAOS-0005",
+        "PAOS-0008",
+        "PAOS-0032"
+      ],
+      "requirement_ids": [
+        "TM-19",
+        "TM-20"
+      ]
+    },
+    {
+      "id": "PAOS-0036",
+      "group_id": "G10",
+      "title": "Редактор, версии и миграции workflow",
+      "status": "planned",
+      "short_description": "Workflow definitions, type mapping, draft/publish и pinned versions",
+      "technical_value": "Workflow definitions, type mapping, draft/publish и pinned versions",
+      "product_value": "Пользователь создаёт собственный процесс, не меняя незаметно уже идущую работу",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/workflows",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/features/workflows",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "packages/contracts/workflows",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "S25/S26 доступны; invalid graph rejected; publish не меняет v1 runs; migration preview/status mapping/revision guards и rollback проверены"
+      ],
+      "estimated_duration_hms": "20:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей и истории, неоднозначная миграция, неверный terminal outcome или повтор agent run; preview/revision checks обязательны",
+      "depends_on": [
+        "PAOS-0035"
+      ],
+      "requirement_ids": [
+        "TM-21"
+      ]
+    },
+    {
+      "id": "PAOS-0037",
+      "group_id": "G10",
+      "title": "Цепочки агентов и привязка к workflow",
+      "status": "planned",
+      "short_description": "Recipes с branches/join, ownership, budgets и идемпотентным запуском",
+      "technical_value": "Recipes с branches/join, ownership, budgets и идемпотентным запуском",
+      "product_value": "Пользователь направляет агентов по разным цепочкам для features, bugs и non-code работы",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/execution-recipes",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/local-service/src/scheduler",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/features/workflows/recipes",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Replay не дублирует run; bounded retry останавливается; parallel writers проверяются; policy нельзя расширить recipe; Manual не запускает agent"
+      ],
+      "estimated_duration_hms": "20:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей и истории, неоднозначная миграция, неверный terminal outcome или повтор agent run; preview/revision checks обязательны",
+      "depends_on": [
+        "PAOS-0036",
+        "PAOS-0023"
+      ],
+      "requirement_ids": [
+        "TM-22"
+      ]
+    },
+    {
+      "id": "PAOS-0038",
+      "group_id": "G10",
+      "title": "Linked Issues и блокирующие зависимости",
+      "status": "planned",
+      "short_description": "Canonical typed edges, inverse display, DAG blocking и авторство",
+      "technical_value": "Canonical typed edges, inverse display, DAG blocking и авторство",
+      "product_value": "Пользователь и агенты связывают работы и понимают, что мешает продолжению",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/issue-links",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/features/tasks/links",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "packages/contracts/issue-links",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Self/duplicate/cyclic blocks rejected; relates не блокирует; cancellation blocker требует решения; обе стороны и history согласованы"
+      ],
+      "estimated_duration_hms": "14:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей и истории, неоднозначная миграция, неверный terminal outcome или повтор agent run; preview/revision checks обязательны",
+      "depends_on": [
+        "PAOS-0031",
+        "PAOS-0007"
+      ],
+      "requirement_ids": [
+        "TM-23"
+      ]
     }
-  ]
+  ],
+  "requirement_revision": "web_prd_v0.3_2026-11-09",
+  "issue_model_proposal": {
+    "not_runtime_schema": true,
+    "issue_types": [
+      "epic",
+      "task",
+      "bug",
+      "user_story",
+      "sub_task"
+    ],
+    "components": [
+      "BackEnd",
+      "FrontEnd",
+      "DB",
+      "RAG",
+      "LLM",
+      "Design",
+      "Marketing",
+      "Integrations",
+      "DevOps",
+      "QA",
+      "Analytic"
+    ],
+    "statuses": [
+      "backlog",
+      "ready",
+      "in_progress",
+      "review",
+      "verification",
+      "awaiting_acceptance",
+      "done",
+      "cancelled"
+    ],
+    "status_categories": [
+      "todo",
+      "in_progress",
+      "done"
+    ],
+    "additional_fields": [
+      "issue_type",
+      "parent_id",
+      "status_id",
+      "created_by",
+      "initiated_by",
+      "priority_id",
+      "component_ids",
+      "planned_start_date",
+      "due_date",
+      "affects_version_ids",
+      "fix_version_ids",
+      "attachments",
+      "resolution",
+      "is_blocked",
+      "workflow_id",
+      "workflow_version"
+    ],
+    "link_types": [
+      "blocks",
+      "relates_to",
+      "duplicates",
+      "clones"
+    ],
+    "planning_status_boundary": "tasks[].status remains task_matrix_plan_v1 planned; issue_model_proposal statuses describe future Web only"
+  }
 }

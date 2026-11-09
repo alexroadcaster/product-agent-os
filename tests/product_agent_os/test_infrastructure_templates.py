@@ -50,6 +50,7 @@ REQUIRED_TARGETS = {
     ".codex/hooks/pre_tool_use_policy.py",
     ".codex/hooks/permission_request_summary.py",
     ".codex/hooks/post_tool_use_evidence.py",
+    ".codex/hooks/comment_sufficiency_advisory.py",
     ".codex/hooks/stop_runlog_reminder.py",
     ".codex/workflows/source-context-pack.md",
     ".codex/workflows/worktree-ownership.md",
@@ -286,6 +287,13 @@ class InfrastructureTemplateTest(unittest.TestCase):
 
         self.assertEqual(set(targets), REQUIRED_TARGETS)
         self.assertEqual(len(targets), len(set(targets)))
+
+    def test_generated_hook_commands_have_registered_handlers(self):
+        targets = {item.target_path for item in required_templates()}
+        definition = (TEMPLATE_ROOT / "hooks/hooks.json").read_text(encoding="utf-8")
+        handlers = set(re.findall(r"\.codex/hooks/[A-Za-z0-9_]+\.py", definition))
+        self.assertTrue(handlers)
+        self.assertFalse(handlers - targets, f"Unstaged hook handlers: {handlers - targets}")
 
     def test_subagent_packet_templates_are_registered_with_required_templates(self):
         templates = required_templates()

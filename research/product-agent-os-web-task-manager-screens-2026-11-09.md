@@ -4,7 +4,26 @@ Source status: project-authored / proposed UX / generated visual concepts. Да�
 
 Статус: **draft_for_review / needs_user_acceptance**. 24 проектируемых экрана и шесть визуальных листов. Это дизайн будущего продукта, не screenshots работающего приложения. В макетах synthetic examples; названия задач/файлов, лица, статусы и счётчики не подтверждают работу текущего репозитория. Нормативные названия и поведение задаёт текст ниже; image generation может исказить мелкие подписи.
 
-Связи: [PRD](product-agent-os-web-prd-2026-11-05.md), [архитектура](product-agent-os-web-architecture-2026-11-05.md), [30 задач и 8 групп](product-agent-os-web-task-manager-plan-2026-11-09.md).
+Связи: [PRD](product-agent-os-web-prd-2026-11-05.md), [архитектура](product-agent-os-web-architecture-2026-11-05.md), [38 задач и 10 групп](product-agent-os-web-task-manager-plan-2026-11-09.md).
+
+## Дополнение v0.3: issue model и workflow
+
+Source status: proposed UX, 2026-11-09. [PRD §14](product-agent-os-web-prd-2026-11-05.md) определяет новые поля, hierarchy, статусы и правила. Основной каталог S01–S24 и изображения ниже — v0.2; они не являются полным изображением расширенного scope. Новые изображения не создавались.
+
+| Экран | Изменение v0.3 |
+| --- | --- |
+| S04 Список | Type/parent/Epic, creator, priority, components, Start/Due, Affects/Fix version; фильтры и hierarchy grouping |
+| S05 Kanban | 7 колонок для 8 default statuses; mapping, WIP, rank, badges, keyboard transitions и settings |
+| S06 Карточка | Type/parent и новые поля, ручные Завершить/Отменить/Reopen; Linked Issues, Attachments; отдельные tabs Комментарии и История изменений |
+| S07 Редактор | Новый type, parent selector, дополнительные поля и validation; сохранённый Backlog отличается от Ready |
+| S23 Автономность | Policy остаётся отдельной; ссылка на workflow/recipe, pinned version и migration notice |
+| S24 Настройки | Project components и version registry; release policy; ссылки на workflows |
+| S25 Workflow проекта | /p/:project/workflows: каталог, type mapping/default, active/draft/archived versions, create/copy/archive и migration entry |
+| S26 Редактор workflow | /p/:project/workflows/:id/edit: graph/table, transitions/guards, agent recipes, validate, diff, publish, migration preview |
+
+S25/S26 проектируются текстом; всего теперь 26 основных маршрутов, а визуальный пакет по-прежнему содержит 24 композиции. Для S25 нужны empty/draft/active/archived/conflict states; для S26 invalid graph, stale revision, running pinned version, migration mismatch и policy denial. Вкладки Comments/History/Attachments и version registry используют общие формы/панели без дополнительных верхнеуровневых вкладок проекта.
+
+Основной путь v0.3: создать Epic → UserStory/Task/Bug → при необходимости Sub-Task; назначить компоненты/приоритет/даты/версии → выбрать workflow → вести вручную или через recipe → комментарии/links/evidence → принять результат и закрыть. Cancelled отделён от Done; при работающем агенте terminal transition ждёт подтверждённой остановки. Старые «четыре колонки» изображения не задают новый workflow.
 
 ## Направление Hallmark
 

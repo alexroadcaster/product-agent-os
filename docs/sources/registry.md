@@ -1,5 +1,35 @@
 # Реестр источников
 
+## PAOS-AUD-G7 — research intake, 2026-11-09
+
+Углубление 09.11.2026: [source review и traceability](../../research/product-agent-os-g7-repository-deep-review-2026-11-09.md) закрепляет пять repository revisions, прочитанные implementation/test slices и четыре tool-doc источника. Findings P/K/M/S/D/X внесены в восемь planned G7 карточек; adopt/adapt/reject разделены. Статус community: source_inspected_runtime_not_reproduced; primary tool docs проверены, installed compatibility не проверялась.
+
+[Матрица G7](../../research/product-agent-os-audit-remediation-task-plan-2026-11-09.md) содержит G7-S0/S1–S6/S8: Ponytail (commit `96608e0`), Karpathy-inspired guidelines, Matt Pocock skills, Superpowers, Desloppify и primary docs Ruff/Import Linter/dependency-cruiser/Stryker. Источники прочитаны в предшествующем анализе; текущий authoring не повторяет runtime benchmarks. Community: `trust_level=community`, `verification_status=source_inspected_runtime_not_reproduced`; tool docs: `trust_level=primary`, local compatibility unverified. Это planned hypotheses, не новые доказанные product claims; никакие плагины или инструменты не установлены.
+
+## Web issue workflows v0.3 — 2026-11-09
+
+Jira Cloud reference model для Web v0.3; project-authored adaptation в `research/product-agent-os-web-prd-2026-11-05.md`, §14. Числовые лимиты и agent execution — PAOS proposals.
+
+| ID | Source | Claim scope | checked_at | Status |
+| --- | --- | --- | --- | --- |
+| WEB-JIRA-01 | [Hierarchy](https://support.atlassian.com/jira-cloud-administration/docs/what-are-issue-types/) | Epic → standard (Story/Task/Bug) → Subtask. В новых документах Jira используются work item/work type. | 2026-11-09 | official / documentation_checked; PAOS design proposed |
+| WEB-JIRA-02 | [Status categories](https://support.atlassian.com/jira-cloud-administration/docs/what-is-a-workflow-status/) | Каждый status относится к To do, In progress или Done. | 2026-11-09 | official / documentation_checked; PAOS design proposed |
+| WEB-JIRA-03 | [Transitions](https://support.atlassian.com/jira-cloud-administration/docs/create-workflow-transitions/) | Переход направленный; обратный переход задаётся отдельно. | 2026-11-09 | official / documentation_checked; PAOS design proposed |
+| WEB-JIRA-04 | [Kanban mapping](https://support.atlassian.com/jira-software-cloud/docs/configure-columns/) | Колонки доски сопоставляются статусам; колонка может содержать несколько статусов. | 2026-11-09 | official / documentation_checked; PAOS design proposed |
+| WEB-JIRA-05 | [Workflow schemes](https://support.atlassian.com/jira-cloud-administration/docs/add-edit-and-delete-an-issue-workflow-scheme/) | Workflow schemes сопоставляют типы работ workflow; изменения активной схемы требуют публикации draft и при необходимости mapping статусов. | 2026-11-09 | official / documentation_checked; PAOS design proposed |
+| WEB-JIRA-06 | [Versions](https://support.atlassian.com/jira-cloud-administration/docs/manage-versions/) | Affects versions описывает затронутые версии; Fix versions связывает работу с выпуском. | 2026-11-09 | official / documentation_checked; PAOS design proposed |
+| WEB-JIRA-07 | [Components](https://support.atlassian.com/jira-software-cloud/docs/what-are-jira-components/) | Jira components группируют работу и ограничены company-managed spaces. | 2026-11-09 | official / documentation_checked; PAOS design proposed |
+| WEB-JIRA-08 | [Creator](https://support.atlassian.com/jira-software-cloud/docs/jql-fields/) | Creator фиксирует пользователя, создавшего запись, и не меняется. | 2026-11-09 | official / documentation_checked; PAOS design proposed |
+| WEB-JIRA-09 | [Linked work items](https://support.atlassian.com/jira-cloud-administration/docs/configure-issue-linking/) | Тип связи имеет имя и прямое/обратное описание; создание связи требует права. | 2026-11-09 | official / documentation_checked; PAOS design proposed |
+| WEB-JIRA-10 | [Comments and history](https://support.atlassian.com/jira-software-cloud/docs/what-are-the-different-types-of-activity-on-an-issue/) | Activity разделяет Comments, History и Work log. | 2026-11-09 | official / documentation_checked; PAOS design proposed |
+| WEB-JIRA-11 | [Attachments](https://support.atlassian.com/jira-software-cloud/docs/add-an-attachment-to-an-issue/) | Файл можно добавить upload/drag-and-drop; действуют ограничения вложений. | 2026-11-09 | official / documentation_checked; PAOS design proposed |
+| WEB-JIRA-12 | [Priority and resolution](https://support.atlassian.com/jira-cloud-administration/docs/what-are-issue-statuses-priorities-and-resolutions/) | Priority отличается от Resolution; стандартные priorities Highest–Lowest. | 2026-11-09 | official / documentation_checked; PAOS design proposed |
+| WEB-JIRA-13 | [Scheduling](https://support.atlassian.com/jira-software-cloud/docs/schedule-issues-in-advanced-roadmaps-using-start-end-dates/) | Start date/Due date используются для планирования; рассмотренная страница Plans относится к Premium/Enterprise. | 2026-11-09 | official / documentation_checked; PAOS design proposed |
+
+## PAOS-AUD-G6 — project-local evidence, 2026-11-09
+
+G6 partially_verified: три синтетических пилота выполнены из текущего проекта в host-target/pilots; все проверки passed, результаты needs_user_acceptance. По разрешению владельца HOST-01 больше не блокирует эти пилоты. Fresh-session activation HOST-01/HOST-02 остаётся отдельной открытой задачей; T34 no-go. Owner feedback/acceptance null; manual_only сохраняется. [Pilot results](../superpowers/specs/paos-aud-g6-pilot-results.json).
+
 ## PAOS-AUD-G5 — project-local contracts, 2026-11-09
 
 F13: offline installer command contract; F14: explicit skill invocation и ordinary intake; F17: RU/EN semantic parity, local strict build, routes/links/anchors и source-bound Mermaid rendering. Источники: `tools/docs_install.ps1`, `tests/product_agent_os/test_product_agent_os_docs.py`, package README и audit remediation task plan (09.11.2026). Evidence относится к local source/build; dependency installation, publication и host acceptance не выполняются.

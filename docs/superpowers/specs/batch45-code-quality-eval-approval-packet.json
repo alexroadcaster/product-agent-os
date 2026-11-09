@@ -1,0 +1,50 @@
+{
+  "schema_version": "batch45_code_quality_eval_approval_packet_v1",
+  "approval_id": "B45-CQRR-T34-PROPOSED-A01",
+  "status": "approved_preflight_blocked_unconsumed",
+  "approved": true,
+  "consumed": false,
+  "created_at": "2026-11-09T13:04:21.162532+00:00",
+  "readiness_path": "docs/superpowers/specs/batch45-code-quality-local-readiness.json",
+  "readiness_sha256": "314649f8699eeb7a234a82ed553c591d38d8da3c96e26dc25d40840e853b3a77",
+  "design_path": "docs/superpowers/specs/batch45-code-quality-eval-design.json",
+  "design_sha256": "5ffb5defc34b69984dd21016c0c5319dbf5926e92f4eb621cf0c8e7038d39912",
+  "primary_model": "gpt-6.1-sol",
+  "primary_reasoning_effort": "medium",
+  "primary_calls_cap": 24,
+  "reviewer_model": "gpt-6.1-sol",
+  "reviewer_reasoning_effort": "high",
+  "reviewer_calls_cap": 12,
+  "total_calls_cap": 36,
+  "timeout_per_call_seconds": 180,
+  "generation_tools": [],
+  "execution_surface": "Codex CLI ephemeral isolated sessions under owner ChatGPT sign-in; no API key or separately billed provider API",
+  "runtime_preflight": "Owner authorization must cover a read-only CLI version/help probe and the bounded CLI execution; the prior exec --help attempt was rejected by automatic approval review and was not executed.",
+  "activation_gate": "Verify actual ChatGPT authentication mode without printing credentials; reject API-key mode. Record observed model/effort, actual tool isolation and source/context digests for each run. Missing or mismatched runtime evidence keeps no-go; never silently fall back.",
+  "targets": ".docs-tools/reports/paos-aud-g6/live-eval/{CQ01..CQ12}/{opaque-run-id}",
+  "cost_policy": {
+    "billing": "No separately billed API calls; consume only existing Codex allowance",
+    "quota_exhaustion": "stop; no fallback provider or model",
+    "unknown_cost": "no_go; do not claim cost improvement or waive comparison silently",
+    "owner_must_accept_quota_use": true
+  },
+  "reviewer_policy": "Start no reviewer calls until all 12 pairs pass schema, patch-bound deterministic checks and freeze verification. Separate independent sessions, random opaque candidate IDs, no arm labels or self-scores; unresolved critical/high finding blocks promotion.",
+  "retention": "Synthetic source/patches/check receipts only in ignored workspace run directory. Retain sanitized aggregate, hashes, latency/token/cost availability and reviewer findings in owning specs. No private chats, secrets, user data or authentication material.",
+  "stop_conditions": [
+    "first invalid output or deterministic failure",
+    "timeout",
+    "source/design drift",
+    "scope violation",
+    "quota/cost policy cannot be enforced",
+    "critical reviewer finding"
+  ],
+  "single_use": "Mark consumed before first call; approval cannot be reused after any call starts. A resumed run needs a new exact approval.",
+  "rollback": "Stop further calls, preserve sanitized failure evidence; discard only disposable candidate changes after review. Canonical product sources, cache and trust are not mutated by T34.",
+  "decision": "no_go until actual valid pair/reviewer/usage evidence exists; no guaranteed promotion",
+  "owner_decision": {
+    "decision": "approved",
+    "scope": "All three previously prepared packets, unchanged bounds; pilot results must be returned for owner acceptance",
+    "recorded_at": "2026-11-09T13:18:48.927401+00:00",
+    "source": "Current user continuation in owning G6 chat"
+  }
+}

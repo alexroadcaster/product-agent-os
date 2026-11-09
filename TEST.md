@@ -1,5 +1,21 @@
 # TEST.md
 
+## PAOS-AUD-G7 — planning verification, 2026-11-09
+
+Текущий deep-review refinement проверяется теми же authoring gates; команды, exit codes, matrix integrity и ограничения записываются в [отдельном отчёте](research/product-agent-os-g7-repository-deep-review-2026-11-09.md). Внешние tools/benchmarks не запускались; full runtime gates относятся к будущей реализации.
+
+Для authoring: docs unittest, check_docs, task-matrix/state validators, diff --check и проверка сохранности 26 прежних карточек. Для будущих задач focused commands указаны в [G7 plan](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md); runtime/full gates ниже не отменены. Live comparison и fresh-session activation — отдельные gates.
+
+## Web issue workflows v0.3 — 2026-11-09
+
+Web v0.3: docs unittest, structure check, task-matrix validator, JSON/MD/DAG checks и strict MkDocs после Mermaid/source updates. Acceptance matrix: 10 сценариев PRD §14, user-only completion, pinned migration, cyclic blocks, attachments/actor history; runtime/browser checks будущие. Receipts в [плане](research/product-agent-os-web-task-manager-plan-2026-11-09.md).
+
+## PAOS-AUD-G6 — 2026-11-09
+
+G6 partially_verified: три синтетических пилота выполнены из текущего проекта в host-target/pilots; все проверки passed, результаты needs_user_acceptance. По разрешению владельца HOST-01 больше не блокирует эти пилоты. Fresh-session activation HOST-01/HOST-02 остаётся отдельной открытой задачей; T34 no-go. Owner feedback/acceptance null; manual_only сохраняется. [Результаты](docs/superpowers/specs/paos-aud-g6-pilot-results.json).
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
 ## PAOS-AUD-G5 — 2026-11-09
 
 G5: 105 docs tests passed; check_docs, README CLI dry-run, compatibility и strict MkDocs exit 0; 368 HTML / 220 routes без link/anchor/search gaps; 93/93 Mermaid renders. Команды, RED/GREEN, retries и final logs — owning evidence и .docs-tools/reports/paos-aud-g5/. Installer tests используют stubs, не установку.

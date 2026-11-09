@@ -419,3 +419,19 @@ flowchart LR
 ```
 
 Это proposed boundaries. Host capabilities и completeness проверяются до реализации; стрелка не означает уже подключённый adapter. Runtime stop/pause принадлежит coordinator и host, а не одному UI state. Модульные contracts из таблицы выше определяют authority; SQLite не становится независимым вторым источником task truth.
+
+## 18. Issue model и workflow contracts v0.3 — 2026-11-09
+
+Source status: proposed / derived from [PRD §14](product-agent-os-web-prd-2026-11-05.md). Jira reference sources и отличие PAOS находятся в PRD. Реализация отсутствует.
+
+- Issue entity расширяет Task: type/parent, creator/initiator, status/resolution/blocker, priority/rank, components, plan dates, affects/fix versions. Product status не является status существующего task_matrix_plan_v1. Migration adapter сохраняет исходное значение и unknown provenance, а неоднозначность показывает владельцу.
+- Hierarchy service проверяет типы parent/child, проект, циклы и reparent. IssueLink service хранит canonical typed edge и inverse labels отдельно от hierarchy и code graph. Blocks graph — DAG; информационные links не участвуют в scheduler без явной семантики.
+- WorkflowDefinition/Version/Transition и ExecutionRecipe/Version — отдельные сущности. Project type mapping выбирает workflow; issue и run закрепляют версии. BoardDefinition содержит column/status mapping и WIP, а не второй status задачи.
+- Transition service авторизует actor, expected revision, required fields, criteria/children/dependencies, WIP и policy; только затем пишет событие/command receipt. Manual completion не требует agent run, но соблюдает completion guards. При активном writer cancellation receipt предшествует terminal task status.
+- Recipe runner получает idempotent transition command; outbox/journal и acknowledgement не позволяют replay повторно породить run. Transition applied и run failed — разные события: UI не выдаёт rollback источников за автоматический эффект ошибки. Failures и compensation оформляются отдельными явными steps с журналом.
+- Workflow publish не меняет pinned активные runs. Migration выполняется по плану mapping с revision guards; rollback не уничтожает старые definitions/events. Archived workflow остаётся доступным истории. Валидация циклов различает запрещённые бесконечные automatic loops и разрешённые bounded rework/manual loops.
+- Attachment store содержит managed local binaries и hash/metadata. Source path не заменяет storage ID; upload не даёт права отправлять provider. Comments versioned, audit append-only и redacted; transcript, comment и task event имеют свои identity и связи.
+- Version/component registries project-scoped. Изменение release state не запускает deployment. Actor attribution не меняется вслед за display name или удалением профиля; имя хранится snapshot, identity — устойчивый ID.
+- Ни workflow editor, ни текст комментария/attachment не расширяют host permissions. Structured declarative recipes допускают только разрешённые action kinds; произвольный исполняемый текст не становится новым runtime endpoint.
+
+Ownership: PAOS-0031–0034 — hierarchy/fields/versions/context contracts; PAOS-0035–0038 — board/workflow/recipe/links; PAOS-0024/0025 — scheduler/runner integration; PAOS-0028/0029 — integrated acceptance. Общие contracts записываются одним владельцем; UI adapters потребляют согласованную версию. Proposed file locations и dependencies — в [плане](product-agent-os-web-task-manager-plan-2026-11-09.md).

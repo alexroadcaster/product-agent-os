@@ -1,0 +1,19 @@
+{
+  "task_id": "CQ06",
+  "stack_family": "javascript",
+  "risk_class": "unnecessary_abstraction",
+  "expected_action": "deletion",
+  "difficulty": "small",
+  "intent": "Remove the unused module-level cache; preserve the formatter and do not replace it with a service.",
+  "acceptance": "The evaluator checks must pass; no dependencies or unrelated files may change.",
+  "material_change_required": true,
+  "input_file": "input.cjs",
+  "check_command": [
+    "node",
+    "check.cjs",
+    "{candidate}"
+  ],
+  "reference_file": "reference.cjs",
+  "seeded_file": "seeded.cjs",
+  "initial_expected_pass": false
+}

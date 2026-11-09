@@ -1,0 +1,46 @@
+{
+  "schema_version": "paos_g6_cache_repair_preview_v1",
+  "status": "approved_cache_and_stage_applied_runtime_blocked",
+  "reason": "Original exact host packet requires stop on source drift; this repair changes source after the approved 185-file update",
+  "cache_leaf": "<user-home>/.codex/plugins/cache/personal-product-agent-plugins/product-agent-os/0.1.0",
+  "cache_tree_sha256": "1bd63e09cac04818960454f6f0e61715a6b4e0bb9e2461ec69aad3e76e88532e",
+  "source_tree_sha256": "431837b2581c666454019b25bb5970004f1c06f2e10a6a5d13c959859b15c774",
+  "changes": [
+    {
+      "path": "assets/templates/hooks/comment_sufficiency_advisory.py",
+      "before_sha256": "a7d846e5e3e5064ee60439e2cbdae47c6db8cce76f458015960c5ce09244cee3",
+      "after_sha256": "82ec169bb5d5584e6b0eaf682ac55c2fa72e5d78071b3d31934f65a793ae50f8"
+    },
+    {
+      "path": "scripts/product_agent_os/templates.py",
+      "before_sha256": "05dd4f9754b7826efbe90ff165464d4d72db6c45b5f7ffd7381ec77aa3ce36bc",
+      "after_sha256": "bf7c107f40fb188baafa02185c90f2e222c3853d94819ebbcfd002a7ffe8f61e"
+    }
+  ],
+  "file_count": 2,
+  "rollback": "Before any write copy these exact prior files to a new scoped backup, verify digests; restore only these files on rollback. Preserve existing full backup and evidence.",
+  "followup": "Apply only this reviewed diff after bounded repair approval, verify bytes, then fresh target-root hook trust/activation; no global policy or model changes",
+  "owner_approval": "Explicit owner approval in current continuation",
+  "target_followup": {
+    "target": ".docs-tools/reports/paos-aud-g6/host-target",
+    "stage": ".docs-tools/reports/paos-aud-g6/handler-stage-recheck",
+    "stage_manifest_sha256": "cf268ec6505c33de477bb0050841508fb5bfe299638bd551f52ca332d263a288",
+    "stage_file_count": 210,
+    "current_target_contains_only_git": true,
+    "action": "Review merge preview and apply only this manifest into existing disposable target; review exact hooks through supported host trust UI; open one additional fresh session rooted in this target and run bounded report probes",
+    "additional_fresh_sessions_cap": 1,
+    "hook_sha256": {
+      "comment_sufficiency_advisory.py": "0fd6fe94f8c79f680a6c4d19fac218a880d1e810fc953735762d4efc114443b5",
+      "permission_request_summary.py": "e20627297a673c64861ae4d3f53243c38f5ba601125af38b4c823c2b8808e08f",
+      "post_tool_use_evidence.py": "20cf95ffa5de513ee2465c7a1cb67d5aee1b321366e5e4f7f01036b2a816e502",
+      "pre_tool_use_policy.py": "cd78b4f34db916c622f17dfa8e275f97e30143525caaf60b25a13b416d23326b",
+      "session_start_context.py": "fd42dcf8e26f3d90c17ab928cd8257ab9753ea5f8a5cb4d1db927a079a03cdb6",
+      "stop_runlog_reminder.py": "09e66303bb465e02d31502890d0194b63f96a548242fba672319b4a56ab953e6"
+    },
+    "hook_definition_sha256": "8a40cbbb7bdc0b1d1b48d1ec873b109ee21358d85daae1479891e3a4fec74abb",
+    "no_new_git_operation_required": true,
+    "approval_required_reason": "Original two fresh-chat allowance is exhausted; source hashes changed after the original preview",
+    "rollback": "Remove only newly created manifest-listed target files after verifying target boundary; preserve .git, reports and all unrelated files; revoke only target-specific trust through supported UI"
+  },
+  "execution_receipt": "docs/superpowers/specs/paos-aud-g6-refined-host-execution.json"
+}

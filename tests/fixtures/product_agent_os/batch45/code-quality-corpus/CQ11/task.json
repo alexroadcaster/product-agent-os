@@ -1,0 +1,21 @@
+{
+  "task_id": "CQ11",
+  "stack_family": "powershell",
+  "risk_class": "security_boundary",
+  "expected_action": "fix",
+  "difficulty": "medium",
+  "intent": "For normalized slash paths, allow the root itself and descendants but reject sibling prefixes. Case-sensitive contract.",
+  "acceptance": "The evaluator checks must pass; no dependencies or unrelated files may change.",
+  "material_change_required": true,
+  "input_file": "input.ps1",
+  "check_command": [
+    "pwsh",
+    "-NoProfile",
+    "-File",
+    "check.ps1",
+    "{candidate}"
+  ],
+  "reference_file": "reference.ps1",
+  "seeded_file": "seeded.ps1",
+  "initial_expected_pass": false
+}

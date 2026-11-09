@@ -130,6 +130,14 @@ PRIMARY_RESULT_SCHEMA = {'$schema': 'https://json-schema.org/draft/2020-12/schem
                                                      'temp_only_raw_not_persisted',
                                                      'retention_violation_quarantine']}}}
 
+# Versioned additive corpus contract; the historical eight-task schema is immutable.
+HELDOUT_RESULT_SCHEMA = deepcopy(PRIMARY_RESULT_SCHEMA)
+HELDOUT_RESULT_SCHEMA['$id'] = 'https://codex-docs.local/schemas/batch45_cqrr_primary_result_v1.json'
+HELDOUT_RESULT_SCHEMA['title'] = 'Batch 45 CQRR Held-out Primary Result'
+HELDOUT_RESULT_SCHEMA['properties']['schema_version']['enum'] = ['batch45_cqrr_primary_result_v1']
+HELDOUT_RESULT_SCHEMA['properties']['corpus_id']['enum'] = ['B45-CQRR-HELDOUT-V1']
+HELDOUT_RESULT_SCHEMA['properties']['task_id']['enum'] = [f'CQ{number:02d}' for number in range(1, 13)]
+
 _STATUS_ALIASES = {
     "pass": "passed",
     "passed": "passed",
@@ -186,7 +194,8 @@ def normalize_primary_result(payload: Any) -> tuple[Any, tuple[str, ...]]:
 def validate_primary_result(payload: Any) -> tuple[str, ...]:
     """Return stable schema-validation errors without mutating the payload."""
     errors: list[str] = []
-    _validate_schema(payload, PRIMARY_RESULT_SCHEMA, "", errors)
+    schema = HELDOUT_RESULT_SCHEMA if isinstance(payload, dict) and payload.get('schema_version') == 'batch45_cqrr_primary_result_v1' else PRIMARY_RESULT_SCHEMA
+    _validate_schema(payload, schema, "", errors)
     return tuple(errors)
 
 
@@ -211,6 +220,10 @@ def parse_primary_result(
         return QuarantinedPrimaryResult("privacy_safety_violation", errors, normalization_paths)
     if normalized["final_summary_retention"] == "retention_violation_quarantine":
         return QuarantinedPrimaryResult("retention_violation_quarantine", (), normalization_paths)
+    # No-change cases are valid only under an explicit evaluator-owned contract.
+    if (not material_change_required and normalized['schema_version'] == 'batch45_cqrr_primary_result_v1'
+            and normalized['result_class'] == 'no_op' and not normalized['changed_files']):
+        return ValidatedPrimaryResult(normalized, normalization_paths)
     if normalized["result_class"] != "valid_result":
         return QuarantinedPrimaryResult(normalized["result_class"], (), normalization_paths)
     if material_change_required and not normalized["changed_files"]:

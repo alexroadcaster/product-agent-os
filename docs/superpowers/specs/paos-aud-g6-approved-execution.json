@@ -1,0 +1,775 @@
+{
+  "schema_version": "paos_aud_g6_approved_execution_v1",
+  "checked_at": "2026-11-09T13:25:56.385619+00:00",
+  "status": "partially_verified",
+  "owner_approval": "All three packets approved in the owning chat; no repeated authorization requested",
+  "cache": {
+    "status": "cache_bytes_verified_activation_pending",
+    "checked_at": "2026-11-09T13:14:02.873468+00:00",
+    "changed_files": 185,
+    "source_sha256": "1bd63e09cac04818960454f6f0e61715a6b4e0bb9e2461ec69aad3e76e88532e",
+    "before_sha256": "d3586ce14d52797d91c76b0648eef56ff3120d1cff8141126433d1e17341badb",
+    "after_sha256": "1bd63e09cac04818960454f6f0e61715a6b4e0bb9e2461ec69aad3e76e88532e",
+    "backup": ".docs-tools/reports/paos-aud-g6/cache-backup-approved",
+    "owner_authority": "Current user approved all three G6 packets",
+    "runtime_activation": false
+  },
+  "t34_results": "docs/superpowers/specs/batch45-code-quality-eval-results.json",
+  "t34_decision": "docs/superpowers/specs/batch45-code-quality-promotion-decision.json",
+  "host_invocation": {
+    "schema_version": "paos_g6_host_invocation_receipt_v1",
+    "task_id": "PAOS-AUD-HOST-01",
+    "session_id": "01a1c072-9005-7d22-bc0b-f832e57bbcb1",
+    "status": "blocked",
+    "checked_date": "2026-11-09",
+    "timezone": "Europe/Moscow",
+    "host": "Codex desktop fresh verification chat",
+    "client_version": null,
+    "observed_model": null,
+    "model_reasoning_changed": false,
+    "requested_skill": "workspace-discovery-auditor",
+    "explicit_invocation_requested": true,
+    "native_invocation_attempt_status": "blocked_before_native_selection",
+    "additional_explicit_selector_attempt": {
+      "selector": "$product-agent-os:workspace-discovery-auditor",
+      "delivery": "Parent follow-up in this existing fresh verification chat",
+      "skill_instruction_injection_observed": false,
+      "available_skill_catalog_update_observed": false,
+      "native_selection_confirmation_observed": false,
+      "result": "not_confirmed",
+      "limit": "Recorded agent-visible observation after the exact selector; backend host logs were not available and no internal loader failure is asserted"
+    },
+    "fresh_supported_host_invocation_confirmed": false,
+    "native_selected_skill_path": null,
+    "cache_file_inspection": {
+      "path": "<user-home>/.codex/plugins/cache/personal-product-agent-plugins/product-agent-os/0.1.0/skills/workspace-discovery-auditor/SKILL.md",
+      "selection_kind": "caller_selected_file_for_inspection_only",
+      "package": "product-agent-os",
+      "version": "0.1.0",
+      "manifest": "<user-home>/.codex/plugins/cache/personal-product-agent-plugins/product-agent-os/0.1.0/.codex-plugin/plugin.json",
+      "sha256": "cca08a7300df6c2a1fc6d55513dda1ffeb2e21c0fd6d0319a8f90a59713b5187",
+      "normalized_lf_sha256": "3d97927c221c2b40428042a2a4e70eb3c1a5978fa101bdf1a15c222aae2d3560",
+      "bytes": 23843,
+      "read_complete": true,
+      "truncated_read_recovered_with_bounded_reads": true,
+      "canonical_same_named_skill_read": false,
+      "allow_implicit_invocation": false,
+      "proves_native_exposure": false
+    },
+    "fresh_session_exposure": {
+      "source": "Developer-injected Available skills catalog in this session",
+      "product_agent_os_skills_observed": [
+        "product-agent-os:agent-team-designer",
+        "product-agent-os:docs-maintainer",
+        "product-agent-os:implementation-planner",
+        "product-agent-os:requirements-author"
+      ],
+      "catalog_root": "<user-home>/.codex/plugins/cache/personal-product-agent-plugins/product-agent-os/0.1.0/skills",
+      "requested_skill_in_catalog": false,
+      "dedicated_skill_invocation_tool_exposed": false,
+      "tool_inventory_query": "ALL_TOOLS names matching skills_list|skills_read|invoke_skill|list_skills|workspace.discovery|product.agent",
+      "tool_inventory_query_result": [],
+      "startup_provenance": {
+        "canonical_skill_source": "plugins/product-agent-os/skills",
+        "skill_count": 12,
+        "sha256": "5d240f7cf0053151d21d0430849758e72dfa7877cd9e82fc4556dcbb7deb8387",
+        "interpretation": "Startup provenance statement; not a native exposure or invocation receipt"
+      },
+      "limit": "Отсутствие в переданном агенту каталоге не устанавливает причину или полное внутреннее состояние host. Чтение cache не подменяет native selection."
+    },
+    "cache_sync_receipt": {
+      "path": ".docs-tools/reports/paos-aud-g6/cache-apply-receipt.json",
+      "status": "cache_bytes_verified_activation_pending",
+      "checked_at": "2026-11-09T13:14:02.873468+00:00",
+      "after_sha256": "1bd63e09cac04818960454f6f0e61715a6b4e0bb9e2461ec69aad3e76e88532e",
+      "runtime_activation": false,
+      "provenance": "Parent receipt read in current run; full cache tree was not rehashed here"
+    },
+    "current_run_checks": [
+      {
+        "command": "Get-ChildItem -LiteralPath 'Env:CODEX_THREAD_ID'",
+        "exit_code": 0,
+        "output": "01a1c072-9005-7d22-bc0b-f832e57bbcb1"
+      },
+      {
+        "command": "Get-Content -LiteralPath '<user-home>/.codex/plugins/cache/personal-product-agent-plugins/product-agent-os/0.1.0/.codex-plugin/plugin.json'",
+        "exit_code": 0,
+        "output": {
+          "name": "product-agent-os",
+          "version": "0.1.0",
+          "skills": "./skills/"
+        }
+      },
+      {
+        "command": "Get-Content -LiteralPath '<user-home>/.codex/plugins/cache/personal-product-agent-plugins/product-agent-os/0.1.0/skills/workspace-discovery-auditor/agents/openai.yaml'",
+        "exit_code": 0,
+        "output": {
+          "allow_implicit_invocation": false
+        }
+      },
+      {
+        "command_kind": "python -B -c in-memory pathlib/hashlib inventory; no writes",
+        "tool_chunk_id": "f718c1",
+        "exit_code": 0,
+        "output": {
+          "bytes": 23843,
+          "scoped_instructions": [],
+          "pilots_exists": false
+        },
+        "digest_output": "See cache_file_inspection SHA-256 fields"
+      }
+    ],
+    "prebootstrap_hook_observations": [
+      {
+        "attempt": "Compound Get-Content of instructions, config and approval packages",
+        "result": "PreToolUse denied before execution: missing lifecycle marker",
+        "exit_code": null,
+        "recovery": "Independent literal read commands succeeded"
+      },
+      {
+        "attempt": "[System.Environment]::GetEnvironmentVariable('CODEX_THREAD_ID','Process')",
+        "result": "PreToolUse denied before execution: missing lifecycle marker",
+        "exit_code": null,
+        "recovery": "Literal Get-ChildItem Env:CODEX_THREAD_ID succeeded"
+      }
+    ],
+    "hook_observation_limit": "These two denials are not the other chat's generated-target isolation tests and do not prove plugin activation.",
+    "blocker": "workspace-discovery-auditor не представлен в доступном fresh-session каталоге skills; подтверждённого native invocation нет",
+    "stop_condition": "Pilot proposal host_dependency and delegated instruction require confirmed fresh supported-host invocation before target setup and runs",
+    "remediation_owner": "Parent chat / host owner",
+    "next_step": "Проверить host exposure/selection этого installed skill и получить fresh supported-host invocation receipt; затем продолжить BUG, CONFIG, NO-NEW-CODE последовательно",
+    "owner_feedback": null,
+    "owner_acceptance": null
+  },
+  "host_lifecycle": {
+    "receipt_validation": {
+      "command": "python -c 'import json,pathlib,hashlib; r=pathlib.Path.cwd(); b=r/\".docs-tools/reports/paos-aud-g6\"; d=json.loads((b/\"host-checks/result.json\").read_text()); m=json.loads((b/\"host-stage/product-agent-os-stage-manifest.json\").read_text()); assert all(\"sha256:\"+hashlib.sha256((b/\"host-stage\"/x[\"staged_path\"]).read_bytes()).hexdigest()==x[\"digest\"] for x in m[\"files\"]); assert sorted(x.name for x in (b/\"host-target\").iterdir())==[\".git\"]; assert len(d[\"final_provenance\"][\"source_drift\"])==3; assert not d[\"selected_configuration\"][\"generated_config_host_loaded\"]; assert d[\"status\"]==\"blocked\"; print(\"PASS: receipt JSON; 209 snapshot digests; isolated target contains only .git; source drift explicitly recorded; activation not claimed\")'",
+      "exit_code": 0,
+      "output": "PASS: receipt JSON; 209 snapshot digests; isolated target contains only .git; source drift explicitly recorded; activation not claimed\r\n"
+    },
+    "measured_interval": {
+      "from": "2026-11-09T13:16:11+00:00",
+      "to": "2026-11-09T13:24:28+00:00",
+      "seconds": 497,
+      "scope": "Recorded clock interval, excludes earlier initial reads"
+    },
+    "final_provenance": {
+      "checked_at": "2026-11-09T13:24:01.028192+00:00",
+      "source_drift": [
+        {
+          "path": "plugins/product-agent-os/scripts/product_agent_os/templates.py",
+          "snapshot_sha256": "05dd4f9754b7826efbe90ff165464d4d72db6c45b5f7ffd7381ec77aa3ce36bc",
+          "current_sha256": "bf7c107f40fb188baafa02185c90f2e222c3853d94819ebbcfd002a7ffe8f61e"
+        },
+        {
+          "path": ".codex/hooks/comment_sufficiency_advisory.py",
+          "snapshot_sha256": "a7d846e5e3e5064ee60439e2cbdae47c6db8cce76f458015960c5ce09244cee3",
+          "current_sha256": "82ec169bb5d5584e6b0eaf682ac55c2fa72e5d78071b3d31934f65a793ae50f8"
+        },
+        {
+          "path": "plugins/product-agent-os/assets/templates/hooks/comment_sufficiency_advisory.py",
+          "snapshot_sha256": "a7d846e5e3e5064ee60439e2cbdae47c6db8cce76f458015960c5ce09244cee3",
+          "current_sha256": "82ec169bb5d5584e6b0eaf682ac55c2fa72e5d78071b3d31934f65a793ae50f8"
+        }
+      ],
+      "stage_status": "Preserved snapshot from before concurrent canonical edits; do not use for current-source activation.",
+      "gate": "reopened_due_source_changes",
+      "source_edits_by_this_thread": false
+    },
+    "final_check_attempt": {
+      "command": "python -c 'import json,pathlib,hashlib; r=pathlib.Path.cwd(); b=r/\".docs-tools/reports/paos-aud-g6\"; receipt=json.loads((b/\"host-checks/result.json\").read_text(encoding=\"utf-8\")); evidence=receipt[\"source_evidence\"]; mismatch=[name for name,digest in evidence[\"sha256\"].items() if hashlib.sha256((r/name).read_bytes()).hexdigest()!=digest]; marker=r/receipt[\"selected_configuration\"][\"current_session_marker\"]; data=json.loads(marker.read_text()); assert hashlib.sha256(data[\"session_id\"].encode()).hexdigest() in marker.name; assert receipt[\"status\"]==\"blocked\"; assert receipt[\"selected_configuration\"][\"generated_config_host_loaded\"] is False; assert not mismatch,mismatch; assert sorted(x.name for x in (b/\"host-target\").iterdir())==[\".git\"]; assert not (b/\"host-target/reports/probe-a.md\").exists(); assert not (b/\"host-target/reports/probe-b.md\").exists(); print(json.dumps({\"receipt_json_valid\":True,\"source_hashes_stable\":len(evidence[\"sha256\"]),\"own_session_marker_binding\":True,\"target_infrastructure_not_applied\":True,\"report_probes_absent\":True},indent=2))'",
+      "exit_code": 1,
+      "result": "AssertionError: canonical templates.py and active/packaged comment_sufficiency_advisory.py hashes changed after snapshot. No claim of final source stability.",
+      "interpretation": "Expected provenance guard detected concurrent edits; snapshot hashes retained."
+    },
+    "final_handoff": "Parent must reconcile current canonical repair and regenerate stage after sources stabilize. This child preserved initial blocker evidence and did not apply/trust an incomplete or stale package.",
+    "schema_version": "paos_aud_host_02_receipt_v1",
+    "task_id": "PAOS-AUD-HOST-02",
+    "checked_at": "2026-11-09T13:21:47+00:00",
+    "status": "blocked",
+    "closure_level": "partially_verified",
+    "owner_thread_id": "01a1c072-b0d8-7732-822c-af95aa89a639",
+    "parent_thread_id": "01a1bf93-9bba-7df0-b087-c43aaaf1f139",
+    "workspace_scope": ".docs-tools/reports/paos-aud-g6/{host-target,host-stage,host-checks} and own lifecycle marker",
+    "authorization": {
+      "basis": "Explicit G6 package authorization and two verification chats conveyed by parent delegation",
+      "git_scope": "Only newly created empty host-target git init; absolute boundary and emptiness checked first",
+      "runtime_boundary": "No new chats, no providers, no blanket grants, no trust bypass, no root/cache/canonical edits"
+    },
+    "versions": {
+      "cli_installed_manifest": {
+        "package": "@openai/codex",
+        "version": "0.167.0",
+        "source": "<user-home>/AppData/Roaming/npm/node_modules/@openai/codex/package.json",
+        "method": "Get-Content, exit 0; CLI was not started"
+      },
+      "codex_app": "not_available: no client version telemetry supplied",
+      "model": "inherited; observed model not available",
+      "reasoning": "inherited; no override"
+    },
+    "selected_configuration": {
+      "current_session_root": "<workspace>",
+      "current_session_marker": ".codex/product-agent-os/lifecycle-state.eb1e19811e439f40eab863b910bfc066c18a9de92734db3853a663aaa8dd0cf6.json",
+      "session_id_sha256_verified": true,
+      "current_config_candidate": ".codex/config.toml",
+      "current_hook_definition_candidate": ".codex/hooks.json",
+      "attribution_limit": "Startup context and actual PreToolUse denials match repository behavior; exact host-loaded file/hash and persisted trust state were not independently introspected.",
+      "generated_config": ".docs-tools/reports/paos-aud-g6/host-stage/.codex/config.toml",
+      "generated_hook_definition": ".docs-tools/reports/paos-aud-g6/host-stage/.codex/hooks.json",
+      "generated_config_host_loaded": false,
+      "generated_target_apply": "not_attempted_after_concrete_stage_blocker",
+      "trust_observation": "Current session hooks visibly ran. Generated target hook trust not inspected/changed; target contains only .git.",
+      "trust_capabilities": "Tool inventory has no hook trust/reload/current-chat-cwd management action. Native UI/interactive CLI were not opened after stage blocker. No blanket assertion that platform lacks a supported UI route.",
+      "supported_documented_route": "Review exact definitions through CLI /hooks or desktop Settings > Hooks. Project-local hooks require trusted project layer.",
+      "prohibited_flags_used": false
+    },
+    "blockers": [
+      {
+        "id": "HOST-GENERATED-HANDLER-MISSING",
+        "severity": "blocking_generated_target_acceptance",
+        "finding": "Generated hooks.json references .codex/hooks/comment_sufficiency_advisory.py, absent from stage and 209-entry manifest, while renderer validation.ok=true.",
+        "evidence": [
+          "host-checks/stage.json",
+          "host-checks/merge-preview.json",
+          "host-checks/source-evidence.json"
+        ],
+        "source_refs": [
+          "plugins/product-agent-os/scripts/product_agent_os/templates.py:179-184",
+          "plugins/product-agent-os/assets/templates/hooks/hooks.json"
+        ],
+        "impact": "Cannot claim intact generated hook set or apply/trust it as a verified activation package.",
+        "next": "Canonical package owner repairs renderer inventory and relevant regression; regenerate and re-review source/definition hashes before target apply."
+      },
+      {
+        "id": "HOST-TARGET-FRESH-SESSION",
+        "severity": "open_gate",
+        "finding": "Both approved verification chats were started in parent workspace before target infrastructure existed. This run cannot establish fresh loading of generated target config.",
+        "impact": "A subsequent target-root session with reviewed trust or an independently supported current-session rebind would be required. No third chat created.",
+        "next": "Parent coordinates a separately authorized target-root acceptance run after package repair."
+      }
+    ],
+    "actual_host_observations": [
+      {
+        "kind": "SessionStart",
+        "result": "Observed startup context selected own session marker, lifecycle_state=missing and Scope=own_session; canonical skills count 12/digest 5d240f7cf0053151d21d0430849758e72dfa7877cd9e82fc4556dcbb7deb8387."
+      },
+      {
+        "kind": "PreToolUse",
+        "command": "Get-Content -LiteralPath AGENTS.md; Get-Content -LiteralPath .codex/config.toml; Get-Content -LiteralPath docs/superpowers/specs/paos-aud-g6-host-approval-preview.json; Get-Content -LiteralPath research/product-agent-os-session-lifecycle-fix-2026-11-09.md",
+        "exit_code": null,
+        "classification": "hook_denial_before_shell",
+        "result": "Mutating Product-Agent OS work requires current scope-applicable reporting and an active lifecycle marker: missing lifecycle marker. Selected own marker; no foreign marker reset.",
+        "limit": "Compound read classified as mutation. This is not report-authoring negative proof."
+      },
+      {
+        "kind": "PreToolUse",
+        "command": "rg -n 'HOST-02|report.grant|grant_sha|expiry|lifecycle-state|brief_schema' .codex/hooks/pre_tool_use_policy.py docs/superpowers/plans",
+        "exit_code": null,
+        "classification": "hook_denial_before_shell",
+        "result": "Same missing own marker denial; quoted pipe characters rejected by bounded read classifier."
+      },
+      {
+        "kind": "PreToolUse",
+        "command": "rg -n -A 48 -F '### Task `PAOS-AUD-HOST-02`' research/product-agent-os-audit-remediation-task-plan-2026-11-09.md",
+        "exit_code": null,
+        "classification": "hook_denial_before_shell",
+        "result": "Same missing own marker denial; quoted backticks rejected by bounded read classifier."
+      },
+      {
+        "kind": "bootstrap",
+        "tool": "apply_patch via functions.exec",
+        "result": "Exact Add File to own selected marker completed after full Task Start Brief; PostToolUse evidence reminder observed; later guarded shell actions executed.",
+        "exit_code": null,
+        "limit": "Tool succeeded, not a shell exit code; own bootstrap does not prove pinned report authority."
+      },
+      {
+        "kind": "legacy_isolation",
+        "result": "Own missing marker caused denial despite other active chats and legacy marker presence; own bootstrap then permitted scoped preparation.",
+        "limit": "Legacy marker status migrated_to_session_state checked later; no two-chat cross-marker or terminal-state matrix was executed."
+      }
+    ],
+    "acceptance": [
+      {
+        "criterion": 1,
+        "status": "partial",
+        "evidence": "Exact source/definition/generated hashes recorded; installed CLI package version confirmed.",
+        "gap": "App version, persisted trust and independent loaded-config attribution unavailable."
+      },
+      {
+        "criterion": 2,
+        "status": "partial",
+        "evidence": "Actual own missing-marker hook denial and own bootstrap observed; dry-run TEMP PermissionError recorded separately.",
+        "gap": "No target report positive/negative host probe; no forbidden-file hash invariance probe."
+      },
+      {
+        "criterion": 3,
+        "status": "partial",
+        "evidence": "Two fresh verification chats visible as active with distinct IDs; own marker SHA-256 verified; no foreign writes.",
+        "gap": "Other chat execution receipt must be reconciled by parent; safe foreign-marker/out-of-scope target probes not attempted after stage blocker."
+      },
+      {
+        "criterion": 4,
+        "status": "blocked",
+        "evidence": "Independent empty target Git root created and verified; stage + merge preview completed.",
+        "gap": "Missing handler; no target apply; generated config not loaded; legacy/mirror masking not runtime-excluded."
+      },
+      {
+        "criterion": 5,
+        "status": "not_verified",
+        "evidence": "No report grant or probe file created.",
+        "gap": "Exact session-bound pinned grant/hash/expiry and report create/update await actual target activation. No substitute default-route report write performed."
+      }
+    ],
+    "preparation": {
+      "target_new_empty_preflight": true,
+      "git_init_exit": 0,
+      "target_git_root": "<workspace>/.docs-tools/reports/paos-aud-g6/host-target",
+      "dry_run_initial_exit": 1,
+      "dry_run_initial_failure": "Filesystem PermissionError writing generated AGENTS.md under host sandbox system TEMP, including tempfile cleanup failure; not hook denial.",
+      "dry_run_workspace_temp_exit": 0,
+      "temp_scope": "Process-local TEMP/TMP set only to owned host-checks/tmp; sandbox and policies unchanged.",
+      "stage_exit": 0,
+      "stage_validation_ok": true,
+      "merge_preview_exit": 0,
+      "merge_preview_id": "merge-plan-sha256:ed1ed45b0825fd5ebc1f05bc5f1aea8befd151569f073e7aad2450b36b156e71",
+      "merge_preview_decisions": 209,
+      "merge_apply_executed": false,
+      "report_grant": "not_created: target activation blocked",
+      "target_content": [
+        ".git"
+      ]
+    },
+    "integrity": {
+      "manifest_entries": 209,
+      "digest_mismatches": [],
+      "normalized_source_equality": {
+        "permission_request_summary.py": true,
+        "post_tool_use_evidence.py": true,
+        "stop_runlog_reminder.py": true
+      },
+      "probe_a_exists": false,
+      "probe_b_exists": false
+    },
+    "source_evidence": {
+      "checked_at": "2026-11-09T13:21:12.092384+00:00",
+      "sha256": {
+        ".codex/config.toml": "a50ebe24d6914ee2ba64bc17922171e25eb7a478c9dbb7ba7999fa88e8289ab1",
+        ".codex/hooks.json": "8a40cbbb7bdc0b1d1b48d1ec873b109ee21358d85daae1479891e3a4fec74abb",
+        "plugins/product-agent-os/scripts/render_infrastructure.py": "7238888560086dcf97bbcfb0000b2c6a469366bb2d969de33dd57603dc6687a5",
+        "plugins/product-agent-os/scripts/product_agent_os/infrastructure.py": "b9c8c4a211c5c042148ec9fd0034943b67d577498b8b346bcc51c646b8a58326",
+        "plugins/product-agent-os/scripts/product_agent_os/templates.py": "05dd4f9754b7826efbe90ff165464d4d72db6c45b5f7ffd7381ec77aa3ce36bc",
+        "plugins/product-agent-os/scripts/product_agent_os/merge_infrastructure.py": "01140b699c8379e1d2dd379855f7230a575a4a8038100e01a1947edb80c58b3d",
+        "docs/superpowers/specs/paos-aud-g6-host-approval-preview.json": "24b8fc6c33179e067f66577cf4e855720dcecdbd9adcfccad1963476b4fc12d1",
+        ".docs-tools/reports/paos-aud-g6/host-stage/.codex/config.toml": "0448cdbe9db17c0975b815c3b83fa1c4aadba12cd3527be1d30c4282b51ffb8f",
+        ".docs-tools/reports/paos-aud-g6/host-stage/.codex/hooks.json": "8a40cbbb7bdc0b1d1b48d1ec873b109ee21358d85daae1479891e3a4fec74abb",
+        ".docs-tools/reports/paos-aud-g6/host-stage/product-agent-os-stage-manifest.json": "3bb920af7c9e576e1394645a43e94be73822a6ee13965ce90cab09dc66fc79a6",
+        ".docs-tools/reports/paos-aud-g6/host-stage/product-agent-os-merge-plan.json": "a28391f9ac7e650a224e32457d97589852f0e3cfecb39544cfa7be0082ecd1e7",
+        ".codex/hooks/comment_sufficiency_advisory.py": "a7d846e5e3e5064ee60439e2cbdae47c6db8cce76f458015960c5ce09244cee3",
+        ".codex/hooks/permission_request_summary.py": "77ff547e477fd57c7e29f50c8100c0eb54303bb824510a1e5b476ce42ec92983",
+        ".codex/hooks/post_tool_use_evidence.py": "5643c3f595aab14b80750d0e095452aad4b85907835aa02cc67e95ef5a32f805",
+        ".codex/hooks/pre_tool_use_policy.py": "cd78b4f34db916c622f17dfa8e275f97e30143525caaf60b25a13b416d23326b",
+        ".codex/hooks/session_start_context.py": "fd42dcf8e26f3d90c17ab928cd8257ab9753ea5f8a5cb4d1db927a079a03cdb6",
+        ".codex/hooks/stop_runlog_reminder.py": "75bf1aa037b3fb90087bf960a3e6bdcc365410faf2c53c225737209dd7259402",
+        "plugins/product-agent-os/assets/templates/hooks/comment_sufficiency_advisory.py": "a7d846e5e3e5064ee60439e2cbdae47c6db8cce76f458015960c5ce09244cee3",
+        "plugins/product-agent-os/assets/templates/hooks/permission_request_summary.py": "77ff547e477fd57c7e29f50c8100c0eb54303bb824510a1e5b476ce42ec92983",
+        "plugins/product-agent-os/assets/templates/hooks/post_tool_use_evidence.py": "5643c3f595aab14b80750d0e095452aad4b85907835aa02cc67e95ef5a32f805",
+        "plugins/product-agent-os/assets/templates/hooks/pre_tool_use_policy.py": "cd78b4f34db916c622f17dfa8e275f97e30143525caaf60b25a13b416d23326b",
+        "plugins/product-agent-os/assets/templates/hooks/session_start_context.py": "fd42dcf8e26f3d90c17ab928cd8257ab9753ea5f8a5cb4d1db927a079a03cdb6",
+        "plugins/product-agent-os/assets/templates/hooks/stop_runlog_reminder.py": "75bf1aa037b3fb90087bf960a3e6bdcc365410faf2c53c225737209dd7259402",
+        ".docs-tools/reports/paos-aud-g6/host-stage/.codex/hooks/permission_request_summary.py": "e20627297a673c64861ae4d3f53243c38f5ba601125af38b4c823c2b8808e08f",
+        ".docs-tools/reports/paos-aud-g6/host-stage/.codex/hooks/post_tool_use_evidence.py": "20cf95ffa5de513ee2465c7a1cb67d5aee1b321366e5e4f7f01036b2a816e502",
+        ".docs-tools/reports/paos-aud-g6/host-stage/.codex/hooks/pre_tool_use_policy.py": "cd78b4f34db916c622f17dfa8e275f97e30143525caaf60b25a13b416d23326b",
+        ".docs-tools/reports/paos-aud-g6/host-stage/.codex/hooks/session_start_context.py": "fd42dcf8e26f3d90c17ab928cd8257ab9753ea5f8a5cb4d1db927a079a03cdb6",
+        ".docs-tools/reports/paos-aud-g6/host-stage/.codex/hooks/stop_runlog_reminder.py": "09e66303bb465e02d31502890d0194b63f96a548242fba672319b4a56ab953e6"
+      },
+      "approval_preview_source_comparison": {
+        ".codex/hooks/comment_sufficiency_advisory.py": {
+          "expected": "a7d846e5e3e5064ee60439e2cbdae47c6db8cce76f458015960c5ce09244cee3",
+          "actual": "a7d846e5e3e5064ee60439e2cbdae47c6db8cce76f458015960c5ce09244cee3",
+          "match": true
+        },
+        ".codex/hooks/permission_request_summary.py": {
+          "expected": "77ff547e477fd57c7e29f50c8100c0eb54303bb824510a1e5b476ce42ec92983",
+          "actual": "77ff547e477fd57c7e29f50c8100c0eb54303bb824510a1e5b476ce42ec92983",
+          "match": true
+        },
+        ".codex/hooks/post_tool_use_evidence.py": {
+          "expected": "5643c3f595aab14b80750d0e095452aad4b85907835aa02cc67e95ef5a32f805",
+          "actual": "5643c3f595aab14b80750d0e095452aad4b85907835aa02cc67e95ef5a32f805",
+          "match": true
+        },
+        ".codex/hooks/pre_tool_use_policy.py": {
+          "expected": "cd78b4f34db916c622f17dfa8e275f97e30143525caaf60b25a13b416d23326b",
+          "actual": "cd78b4f34db916c622f17dfa8e275f97e30143525caaf60b25a13b416d23326b",
+          "match": true
+        },
+        ".codex/hooks/session_start_context.py": {
+          "expected": "fd42dcf8e26f3d90c17ab928cd8257ab9753ea5f8a5cb4d1db927a079a03cdb6",
+          "actual": "fd42dcf8e26f3d90c17ab928cd8257ab9753ea5f8a5cb4d1db927a079a03cdb6",
+          "match": true
+        },
+        ".codex/hooks/stop_runlog_reminder.py": {
+          "expected": "75bf1aa037b3fb90087bf960a3e6bdcc365410faf2c53c225737209dd7259402",
+          "actual": "75bf1aa037b3fb90087bf960a3e6bdcc365410faf2c53c225737209dd7259402",
+          "match": true
+        }
+      },
+      "generated_hook_handler_missing": {
+        "path": ".codex/hooks/comment_sufficiency_advisory.py",
+        "staged_file_exists": false,
+        "manifest_entry_exists": false
+      },
+      "target_top_level": [
+        ".git"
+      ],
+      "legacy_marker_metadata": {
+        "exists": true,
+        "sha256": "4f1490112f17ad494f70ed784be383dcdff4b16729b2dfec38b641e3253d2035",
+        "status": "migrated_to_session_state"
+      }
+    },
+    "commands": [
+      {
+        "command": "$ErrorActionPreference = 'Stop'\n$project = (Get-Location).Path\n$expectedProject = '<user-home>\\Desktop\\project\\codex_docs'\nif ($project -ne $expectedProject) { throw 'Unexpected workspace' }\n$reports = (Resolve-Path -LiteralPath '.docs-tools/reports/paos-aud-g6').Path\n$target = [IO.Path]::GetFullPath((Join-Path $reports 'host-target'))\nif ($target -ne '<user-home>\\Desktop\\project\\codex_docs\\.docs-tools\\reports\\paos-aud-g6\\host-target') { throw 'Boundary mismatch' }\nif (Test-Path -LiteralPath $target) { throw 'Target already exists; not newly-created empty' }\nNew-Item -ItemType Directory -Path $target | Out-Null\nif (@(Get-ChildItem -LiteralPath $target -Force).Count -ne 0) { throw 'Target is not empty' }\nWrite-Output ('Validated new empty target: ' + $target)\ngit -C $target init\nif ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }\ngit -C $target rev-parse --show-toplevel",
+        "exit_code": 0,
+        "wall_time_seconds": 1.3197022999999999,
+        "output": "Validated new empty target: <workspace>\\.docs-tools\\reports\\paos-aud-g6\\host-target\r\nInitialized empty Git repository in <workspace>/.docs-tools/reports/paos-aud-g6/host-target/.git/\n<workspace>/.docs-tools/reports/paos-aud-g6/host-target\n"
+      },
+      {
+        "command": "python plugins/product-agent-os/scripts/render_infrastructure.py .docs-tools/reports/paos-aud-g6/host-target --dry-run",
+        "exit_code": 1,
+        "wall_time_seconds": 0,
+        "output": "Traceback (most recent call last):\r\n  File \"<workspace>\\plugins\\product-agent-os\\scripts\\product_agent_os\\infrastructure.py\", line 467, in _validate_generated_files\r\n    _write_inside_root(tmp_root, path, render_template(spec, _validation_context()))\r\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"<workspace>\\plugins\\product-agent-os\\scripts\\product_agent_os\\infrastructure.py\", line 320, in _write_inside_root\r\n    destination.write_text(content, encoding=\"utf-8\")\r\n    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"C:\\Python313\\Lib\\pathlib\\_local.py\", line 555, in write_text\r\n    return PathBase.write_text(self, data, encoding, errors, newline)\r\n           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"C:\\Python313\\Lib\\pathlib\\_abc.py\", line 651, in write_text\r\n    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:\r\n         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"C:\\Python313\\Lib\\pathlib\\_local.py\", line 537, in open\r\n    return io.open(self, mode, buffering, encoding, errors, newline)\r\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nPermissionError: [Errno 13] Permission denied: '<user-home>\\\\AppData\\\\Local\\\\Packages\\\\sandbox.{2e4d2594-2d3c-46c4-8f45-1dbafe39f6d5}\\\\AC\\\\Temp\\\\product-agent-os-render-9owgz_s4\\\\AGENTS.md'\r\n\r\nDuring handling of the above exception, another exception occurred:\r\n\r\nTraceback (most recent call last):\r\n  File \"C:\\Python313\\Lib\\shutil.py\", line 631, in _rmtree_unsafe\r\n    os.rmdir(path)\r\n    ~~~~~~~~^^^^^^\r\nPermissionError: [WinError 5] Access is denied: '<user-home>\\\\AppData\\\\Local\\\\Packages\\\\sandbox.{2e4d2594-2d3c-46c4-8f45-1dbafe39f6d5}\\\\AC\\\\Temp\\\\product-agent-os-render-9owgz_s4'\r\n\r\nDuring handling of the above exception, another exception occurred:\r\n\r\nTraceback (most recent call last):\r\n  File \"<workspace>\\plugins\\product-agent-os\\scripts\\render_infrastructure.py\", line 48, in <module>\r\n    raise SystemExit(main())\r\n                     ~~~~^^\r\n  File \"<workspace>\\plugins\\product-agent-os\\scripts\\render_infrastructure.py\", line 35, in main\r\n    result = render_infrastructure_plan(args.workspace, **task_options)\r\n  File \"<workspace>\\plugins\\product-agent-os\\scripts\\product_agent_os\\infrastructure.py\", line 51, in render_infrastructure_plan\r\n    return _build_result(workspace_path, audit, None, write_files=False, task_context=task_context)\r\n  File \"<workspace>\\plugins\\product-agent-os\\scripts\\product_agent_os\\infrastructure.py\", line 193, in _build_result\r\n    validation_errors.update(_validate_generated_files(files, stage_root, write_files))\r\n                             ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"<workspace>\\plugins\\product-agent-os\\scripts\\product_agent_os\\infrastructure.py\", line 458, in _validate_generated_files\r\n    with tempfile.TemporaryDirectory(prefix=\"product-agent-os-render-\") as tmp:\r\n         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"C:\\Python313\\Lib\\tempfile.py\", line 950, in __exit__\r\n    self.cleanup()\r\n    ~~~~~~~~~~~~^^\r\n  File \"C:\\Python313\\Lib\\tempfile.py\", line 954, in cleanup\r\n    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)\r\n    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"C:\\Python313\\Lib\\tempfile.py\", line 934, in _rmtree\r\n    _shutil.rmtree(name, onexc=onexc)\r\n    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^\r\n  File \"C:\\Python313\\Lib\\shutil.py\", line 790, in rmtree\r\n    return _rmtree_unsafe(path, onexc)\r\n  File \"C:\\Python313\\Lib\\shutil.py\", line 635, in _rmtree_unsafe\r\n    onexc(os.rmdir, path, err)\r\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^\r\n  File \"C:\\Python313\\Lib\\tempfile.py\", line 906, in onexc\r\n    _resetperms(path)\r\n    ~~~~~~~~~~~^^^^^^\r\n  File \"C:\\Python313\\Lib\\tempfile.py\", line 286, in _resetperms\r\n    _dont_follow_symlinks(_os.chmod, path, 0o700)\r\n    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"C:\\Python313\\Lib\\tempfile.py\", line 275, in _dont_follow_symlinks\r\n    func(path, *args, follow_symlinks=False)\r\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nPermissionError: [WinError 5] Access is denied: '<user-home>\\\\AppData\\\\Local\\\\Packages\\\\sandbox.{2e4d2594-2d3c-46c4-8f45-1dbafe39f6d5}\\\\AC\\\\Temp\\\\product-agent-os-render-9owgz_s4'\r\n"
+      },
+      {
+        "command": "$ErrorActionPreference = 'Stop'\n$probeTemp = Join-Path (Get-Location).Path '.docs-tools/reports/paos-aud-g6/host-checks/tmp'\nNew-Item -ItemType Directory -Path $probeTemp -Force | Out-Null\n$env:TEMP = $probeTemp\n$env:TMP = $probeTemp\npython plugins/product-agent-os/scripts/render_infrastructure.py .docs-tools/reports/paos-aud-g6/host-target --dry-run",
+        "exit_code": 0,
+        "wall_time_seconds": 2.5452541,
+        "output": "Large JSON stdout omitted from receipt. Process exit was 0. Equivalent staged render result is retained in host-checks/stage.json; this does not substitute for dry-run output."
+      },
+      {
+        "command": "$ErrorActionPreference = 'Stop'\n$probeTemp = Join-Path (Get-Location).Path '.docs-tools/reports/paos-aud-g6/host-checks/tmp'\n$env:TEMP = $probeTemp\n$env:TMP = $probeTemp\npython plugins/product-agent-os/scripts/render_infrastructure.py .docs-tools/reports/paos-aud-g6/host-target --stage .docs-tools/reports/paos-aud-g6/host-stage > .docs-tools/reports/paos-aud-g6/host-checks/stage.json\n$stageExit = $LASTEXITCODE\nWrite-Output ('stage exit: ' + $stageExit)\nif ($stageExit -ne 0) { exit $stageExit }\n$staged = Get-Content -LiteralPath .docs-tools/reports/paos-aud-g6/host-checks/stage.json -Raw | ConvertFrom-Json\n$staged.rendered_artifacts.validation | ConvertTo-Json -Depth 8",
+        "exit_code": 0,
+        "wall_time_seconds": 2.2315303,
+        "output": "stage exit: 0\r\n{\r\n  \"checks\": [\r\n    \"unresolved placeholders absent\",\r\n    \"agent templates validate\",\r\n    \"hook templates validate\",\r\n    \"hook lifecycle config validates\",\r\n    \"eval json validates\",\r\n    \"staged config validates\"\r\n  ],\r\n  \"errors\": {},\r\n  \"ok\": true\r\n}\r\n"
+      },
+      {
+        "command": "python plugins/product-agent-os/scripts/merge_infrastructure.py .docs-tools/reports/paos-aud-g6/host-target .docs-tools/reports/paos-aud-g6/host-stage --plan > .docs-tools/reports/paos-aud-g6/host-checks/merge-preview.json\n$planExit = $LASTEXITCODE\nWrite-Output ('merge preview exit: ' + $planExit)\nexit $planExit",
+        "exit_code": 0,
+        "wall_time_seconds": 1.566319,
+        "output": "merge preview exit: 0\r\n"
+      },
+      {
+        "command": "python -c 'import json,pathlib,hashlib,re; p=pathlib.Path(\".docs-tools/reports/paos-aud-g6/host-stage\"); h=json.loads((p/\".codex/hooks.json\").read_text()); rows=[{\"event\":event,\"path\":match.group(1),\"exists\":(p/match.group(1)).is_file()} for event,groups in h[\"hooks\"].items() for group in groups for hook in group[\"hooks\"] for match in [re.search(r\"(/.codex/hooks/[^\\\" ]+)\",hook[\"command\"])] if match]; rows=[dict(r,path=r[\"path\"].lstrip(\"/\"),exists=(p/r[\"path\"].lstrip(\"/\")).is_file()) for r in rows]; print(json.dumps(rows,indent=2))'",
+        "exit_code": 0,
+        "wall_time_seconds": 0.9863476,
+        "output": "[\r\n  {\r\n    \"event\": \"SessionStart\",\r\n    \"path\": \".codex/hooks/session_start_context.py\",\r\n    \"exists\": true\r\n  },\r\n  {\r\n    \"event\": \"PreToolUse\",\r\n    \"path\": \".codex/hooks/pre_tool_use_policy.py\",\r\n    \"exists\": true\r\n  },\r\n  {\r\n    \"event\": \"PermissionRequest\",\r\n    \"path\": \".codex/hooks/permission_request_summary.py\",\r\n    \"exists\": true\r\n  },\r\n  {\r\n    \"event\": \"PostToolUse\",\r\n    \"path\": \".codex/hooks/post_tool_use_evidence.py\",\r\n    \"exists\": true\r\n  },\r\n  {\r\n    \"event\": \"PostToolUse\",\r\n    \"path\": \".codex/hooks/comment_sufficiency_advisory.py\",\r\n    \"exists\": false\r\n  },\r\n  {\r\n    \"event\": \"Stop\",\r\n    \"path\": \".codex/hooks/stop_runlog_reminder.py\",\r\n    \"exists\": true\r\n  }\r\n]\r\n"
+      },
+      {
+        "command": "python -c 'import hashlib,json,pathlib,datetime; r=pathlib.Path.cwd(); b=r/\".docs-tools/reports/paos-aud-g6\"; s=b/\"host-stage\"; preview=json.loads((r/\"docs/superpowers/specs/paos-aud-g6-host-approval-preview.json\").read_text()); paths=[r/\".codex/config.toml\",r/\".codex/hooks.json\",r/\"plugins/product-agent-os/scripts/render_infrastructure.py\",r/\"plugins/product-agent-os/scripts/product_agent_os/infrastructure.py\",r/\"plugins/product-agent-os/scripts/product_agent_os/templates.py\",r/\"plugins/product-agent-os/scripts/product_agent_os/merge_infrastructure.py\",r/\"docs/superpowers/specs/paos-aud-g6-host-approval-preview.json\",s/\".codex/config.toml\",s/\".codex/hooks.json\",s/\"product-agent-os-stage-manifest.json\",s/\"product-agent-os-merge-plan.json\"]; paths+=sorted((r/\".codex/hooks\").glob(\"*.py\")); paths+=sorted((r/\"plugins/product-agent-os/assets/templates/hooks\").glob(\"*.py\")); paths+=sorted((s/\".codex/hooks\").glob(\"*.py\")); hashes={p.relative_to(r).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}; comparison={name:{\"expected\":expected,\"actual\":hashes.get(name),\"match\":hashes.get(name)==expected} for name,expected in preview[\"hook_sources_sha256\"].items()}; manifest=json.loads((s/\"product-agent-os-stage-manifest.json\").read_text()); result={\"checked_at\":datetime.datetime.now(datetime.timezone.utc).isoformat(),\"sha256\":hashes,\"approval_preview_source_comparison\":comparison,\"generated_hook_handler_missing\":{\"path\":\".codex/hooks/comment_sufficiency_advisory.py\",\"staged_file_exists\":(s/\".codex/hooks/comment_sufficiency_advisory.py\").exists(),\"manifest_entry_exists\":any(x[\"target_path\"]==\".codex/hooks/comment_sufficiency_advisory.py\" for x in manifest[\"files\"])},\"target_top_level\":sorted(p.name for p in (b/\"host-target\").iterdir()),\"legacy_marker_metadata\":{}}; legacy=r/\".codex/product-agent-os/lifecycle-state.json\"; result[\"legacy_marker_metadata\"]={\"exists\":legacy.exists(),\"sha256\":hashlib.sha256(legacy.read_bytes()).hexdigest() if legacy.exists() else None,\"status\":json.loads(legacy.read_text()).get(\"status\") if legacy.exists() else None}; (b/\"host-checks/source-evidence.json\").write_text(json.dumps(result,indent=2),encoding=\"utf-8\"); print(json.dumps({\"source_files\":len(hashes),\"approval_preview_sources_match\":all(x[\"match\"] for x in comparison.values()),\"generated_hook_handler_missing\":result[\"generated_hook_handler_missing\"],\"target_top_level\":result[\"target_top_level\"],\"legacy_marker_status\":result[\"legacy_marker_metadata\"][\"status\"]},indent=2))'",
+        "exit_code": 0,
+        "wall_time_seconds": 0.9594636,
+        "output": "{\r\n  \"source_files\": 28,\r\n  \"approval_preview_sources_match\": true,\r\n  \"generated_hook_handler_missing\": {\r\n    \"path\": \".codex/hooks/comment_sufficiency_advisory.py\",\r\n    \"staged_file_exists\": false,\r\n    \"manifest_entry_exists\": false\r\n  },\r\n  \"target_top_level\": [\r\n    \".git\"\r\n  ],\r\n  \"legacy_marker_status\": \"migrated_to_session_state\"\r\n}\r\n"
+      },
+      {
+        "command": "python -c 'import json,pathlib,hashlib; r=pathlib.Path.cwd(); b=r/\".docs-tools/reports/paos-aud-g6\"; s=b/\"host-stage\"; m=json.loads((s/\"product-agent-os-stage-manifest.json\").read_text()); failures=[x[\"staged_path\"] for x in m[\"files\"] if \"sha256:\"+hashlib.sha256((s/x[\"staged_path\"]).read_bytes()).hexdigest()!=x[\"digest\"]]; names=[\"permission_request_summary.py\",\"post_tool_use_evidence.py\",\"stop_runlog_reminder.py\"]; normalized={n:(s/\".codex/hooks\"/n).read_text()==(r/\"plugins/product-agent-os/assets/templates/hooks\"/n).read_text() for n in names}; print(json.dumps({\"manifest_entries\":len(m[\"files\"]),\"digest_mismatches\":failures,\"normalized_source_equality\":normalized,\"probe_a_exists\":(b/\"host-target/reports/probe-a.md\").exists(),\"probe_b_exists\":(b/\"host-target/reports/probe-b.md\").exists()},indent=2)); assert not failures; assert all(normalized.values())'",
+        "exit_code": 0,
+        "wall_time_seconds": 1.0975255,
+        "output": "{\r\n  \"manifest_entries\": 209,\r\n  \"digest_mismatches\": [],\r\n  \"normalized_source_equality\": {\r\n    \"permission_request_summary.py\": true,\r\n    \"post_tool_use_evidence.py\": true,\r\n    \"stop_runlog_reminder.py\": true\r\n  },\r\n  \"probe_a_exists\": false,\r\n  \"probe_b_exists\": false\r\n}\r\n"
+      }
+    ],
+    "direct_script_simulation": {
+      "executed": false,
+      "reason": "Existing synthetic tests do not substitute for requested host acceptance; no hook direct invocation used as proof."
+    },
+    "control_plane_sync": {
+      "REQUIREMENTS": "not_applicable: acceptance unchanged",
+      "PLAN": "handoff_required: parent owns HOST-02 blocked state",
+      "TEST": "handoff_required: new generated-handler finding and current evidence",
+      "EVALS": "not_applicable: rubric unchanged; missing gates explicit",
+      "RUNLOG": "handoff_required: parent records compact pointer",
+      "prod_test": "not_applicable: no Batch 39 evidence changed",
+      "root_files_written": [],
+      "docs_impact": "handoff_required: parent owns source-backed docs; this receipt is ignored local evidence only"
+    },
+    "verification_policy": {
+      "full_repository_tests": "not_applicable: no canonical implementation/test/docs changes; stage integrity and contract-specific reference inspection performed",
+      "strict_mkdocs": "not_applicable: navigation/config/site evidence unchanged",
+      "review_context": "self_review",
+      "tester_verdict": "blocked"
+    },
+    "preservation": {
+      "foreign_markers_written": false,
+      "probe_a_written": false,
+      "probe_b_written": false,
+      "cache_written": false,
+      "canonical_sources_written": false,
+      "root_control_plane_written": false,
+      "third_chat_created": false,
+      "providers_called": false,
+      "trust_changed": false,
+      "parent_git_mutations": false
+    },
+    "rollback": {
+      "performed": false,
+      "reason": "Preserve staged package, isolated target .git and receipts for investigation; no target infrastructure apply to roll back."
+    },
+    "official_sources": [
+      {
+        "url": "https://learn.chatgpt.com/docs/hooks#review-and-trust-hooks",
+        "retrieved_at": "2026-11-09",
+        "supports": "Exact hash trust required; new/changed non-managed hooks require review."
+      },
+      {
+        "url": "https://learn.chatgpt.com/docs/hooks#plugin-bundled-hooks",
+        "retrieved_at": "2026-11-09",
+        "supports": "CLI /hooks and desktop Review hooks / Settings > Hooks."
+      }
+    ],
+    "smallest_next_action": "Canonical owner fixes missing renderer hook entry with regression and repeats staging; parent reconciles both fresh-chat receipts, then arranges an authorized target-root trust/activation session."
+  },
+  "pilots": {
+    "schema_version": "paos_g6_pilot_results_v1",
+    "status": "blocked",
+    "session_id": "01a1c072-9005-7d22-bc0b-f832e57bbcb1",
+    "proposal": "docs/superpowers/specs/paos-aud-g6-pilot-proposal.json",
+    "host_receipt": ".docs-tools/reports/paos-aud-g6/pilots/host-invocation.json",
+    "host_dependency_satisfied": false,
+    "owner_authority": "Delegated owner approval for all three G6 packages; this chat owns pilot receipts and its own lifecycle marker",
+    "execution_order": [
+      "G6-PILOT-BUG",
+      "G6-PILOT-CONFIG",
+      "G6-PILOT-NO-NEW-CODE"
+    ],
+    "pilot_results": [
+      {
+        "id": "G6-PILOT-BUG",
+        "status": "not_run",
+        "reason": "blocked_host_dependency",
+        "target_created": false,
+        "initial_source_sha256": null,
+        "initial_check": null,
+        "fix": null,
+        "final_checks": null,
+        "metrics": {
+          "time_to_useful_result_seconds": null,
+          "extra_questions": 0,
+          "extra_artifacts": 0,
+          "repeated_checks": 0,
+          "correctness": null,
+          "owner_interventions": 0,
+          "failed_attempts": 0,
+          "owner_feedback": null,
+          "owner_acceptance": null
+        }
+      },
+      {
+        "id": "G6-PILOT-CONFIG",
+        "status": "not_run",
+        "reason": "blocked_host_dependency",
+        "target_created": false,
+        "initial_source_sha256": null,
+        "initial_check": null,
+        "fix": null,
+        "final_checks": null,
+        "metrics": {
+          "time_to_useful_result_seconds": null,
+          "extra_questions": 0,
+          "extra_artifacts": 0,
+          "repeated_checks": 0,
+          "correctness": null,
+          "owner_interventions": 0,
+          "failed_attempts": 0,
+          "owner_feedback": null,
+          "owner_acceptance": null
+        }
+      },
+      {
+        "id": "G6-PILOT-NO-NEW-CODE",
+        "status": "not_run",
+        "reason": "blocked_host_dependency",
+        "target_created": false,
+        "initial_source_sha256": null,
+        "initial_check": null,
+        "source_preservation": null,
+        "final_checks": null,
+        "metrics": {
+          "time_to_useful_result_seconds": null,
+          "extra_questions": 0,
+          "extra_artifacts": 0,
+          "repeated_checks": 0,
+          "correctness": null,
+          "owner_interventions": 0,
+          "failed_attempts": 0,
+          "owner_feedback": null,
+          "owner_acceptance": null
+        }
+      }
+    ],
+    "measurement_limit": "Пилоты не запускались. Нулевые счётчики обозначают отсутствие действий, а не успешный результат. Время, начальные/итоговые проверки и correctness не измерялись.",
+    "artifacts_created": [
+      "host-invocation.json",
+      "results.json"
+    ],
+    "extra_artifacts": 0,
+    "test_harness_files_created": 0,
+    "heldout_t34_used": false,
+    "provider_calls": 0,
+    "subagents_created": 0,
+    "additional_chats_created": 0,
+    "cache_mutations": 0,
+    "canonical_package_mutations": 0,
+    "root_control_plane_mutations": 0,
+    "git_commands": 0,
+    "owner_feedback": null,
+    "owner_acceptance": null,
+    "control_plane_sync": {
+      "REQUIREMENTS.md": "not_applicable: scope and acceptance unchanged",
+      "PLAN.md": "handoff_required: parent owns host-dependency status and next action",
+      "TEST.md": "handoff_required: parent owns host verification gap",
+      "EVALS.md": "not_applicable: rubric and evidence ceiling unchanged",
+      "RUNLOG.md": "handoff_required: parent owns current-cycle blocked host and pilot evidence pointer",
+      "prod_test.md": "not_applicable: no B39 evidence or changes",
+      "overflow_refactor": "not_applicable",
+      "files_updated": []
+    },
+    "review": {
+      "context_mode": "self_review",
+      "tester_verdict": "blocked"
+    },
+    "receipt_verification": {
+      "command": "python -B -c",
+      "command_body_location": "Current-run tool trace chunk c9ccce; in-memory pathlib/json/hashlib assertions",
+      "exit_code": 0,
+      "status": "passed",
+      "checks": [
+        "valid_json",
+        "blocked_dependency_consistency",
+        "three_not_run_pilots",
+        "null_owner_acceptance",
+        "only_two_authorized_receipts",
+        "cache_skill_digest_unchanged",
+        "own_session_marker_binding"
+      ],
+      "scope": "Validates receipt integrity and declared boundaries only; not pilot execution or activation",
+      "docs_test_gates": "not_applicable: no documentation, source-registry, control-plane, test-contract or plugin/runtime source changes",
+      "subsequent_edit": "Only this verification metadata was appended after the assertions"
+    },
+    "claim_ceiling": "Inspection-only host evidence; no completed pilot, native activation, owner acceptance or product-readiness claim"
+  },
+  "owner_acceptance": null,
+  "historical_tests": "Previous local G6 run: 1341 unittest (one expected skip), fixtures 91, transcripts 26; not rerun as new evidence",
+  "current_verification_logs": ".docs-tools/reports/paos-aud-g6/approved-docs.log and approved-check-docs.log",
+  "claim_ceiling": "Cache byte alignment and observed host preflight only; no promotion, completed pilot, full host acceptance or audit closure",
+  "control_plane_sync": {
+    "REQUIREMENTS.md": "updated: bounded execution approved",
+    "PLAN.md": "updated: technical blockers replace missing approval",
+    "TEST.md": "updated: current commands and historical evidence distinguished",
+    "EVALS.md": "updated: T34 no-go before generation",
+    "RUNLOG.md": "updated: execution handoff",
+    "prod_test.md": "not_applicable: no B39 production evidence"
+  },
+  "handler_repair": {
+    "schema_version": "paos_g6_handler_repair_v1",
+    "checked_at": "2026-11-09T13:24:47.017337+00:00",
+    "status": "locally_fixed_focused_verified_full_gate_pending",
+    "finding": "Generated hook definition referenced an unregistered comment advisory handler",
+    "fix": "Register existing handler; use concatenation for runtime cap text so it cannot be mistaken for an unresolved template placeholder; preserve active/template parity",
+    "changed_paths": [
+      "plugins/product-agent-os/scripts/product_agent_os/templates.py",
+      "plugins/product-agent-os/assets/templates/hooks/comment_sufficiency_advisory.py",
+      ".codex/hooks/comment_sufficiency_advisory.py",
+      "tests/product_agent_os/test_infrastructure_templates.py"
+    ],
+    "red": "handler-red.log: intended assertion for missing handler",
+    "first_green_attempt": "96 tests, 1 unresolved-placeholder assertion; fixed runtime string formatting without changing output",
+    "focused": "108 tests, 2.224s, OK, exit 0",
+    "dry_run_exit": 0,
+    "stage_exit": 0,
+    "staged_handlers": [
+      ".codex/hooks/comment_sufficiency_advisory.py",
+      ".codex/hooks/permission_request_summary.py",
+      ".codex/hooks/post_tool_use_evidence.py",
+      ".codex/hooks/pre_tool_use_policy.py",
+      ".codex/hooks/session_start_context.py",
+      ".codex/hooks/stop_runlog_reminder.py"
+    ],
+    "all_handlers_present": true,
+    "target_apply": false,
+    "hook_trust_updated": false,
+    "active_hook_sha256": "82ec169bb5d5584e6b0eaf682ac55c2fa72e5d78071b3d31934f65a793ae50f8",
+    "new_stage": ".docs-tools/reports/paos-aud-g6/handler-stage-recheck",
+    "full_gate_log": ".docs-tools/reports/paos-aud-g6/approved-full.log"
+  },
+  "current_cache_alignment": "Refined two-file repair applied and verified; corrected stage applied to target",
+  "cache_repair_preview": "docs/superpowers/specs/paos-aud-g6-cache-repair-preview.json",
+  "ui_selection_attempt": {
+    "status": "stopped_before_window_interaction",
+    "observation": "Target app/window returned display name ChatGPT",
+    "instruction": "computer-use guidance.md prohibits ChatGPT desktop UI automation",
+    "actions": [
+      "list_apps"
+    ],
+    "settings_changed": false
+  },
+  "current_checks": {
+    "full_unittest": {
+      "command": "python -B -m unittest discover -s tests -p 'test_*.py' -v",
+      "tests": 1342,
+      "seconds": 796.146,
+      "exit_code": 1,
+      "failures": 1,
+      "skipped": 1,
+      "failure": "Outdated 209 staged-file count; correct generated count is 210",
+      "resolved_by": "approved-count-retest.log"
+    },
+    "count_retest": {
+      "command": "python -B -m unittest tests.product_agent_os.test_fixture_eval_runner.FixtureEvalRunnerTest.test_fixture_eval_checks_expected_renderer_behavior_by_fixture -v",
+      "tests": 1,
+      "seconds": 58.423,
+      "exit_code": 0
+    },
+    "focused": {
+      "tests": 108,
+      "exit_code": 0
+    },
+    "docs_lifecycle": {
+      "tests": 112,
+      "seconds": 9.925,
+      "exit_code": 0
+    },
+    "fixtures": {
+      "passed": 91,
+      "exit_code": 0
+    },
+    "transcripts": {
+      "passed": 26,
+      "failed": 0,
+      "exit_code": 0
+    },
+    "hook_validators": {
+      "exit_code": 0
+    },
+    "docs_structure": {
+      "exit_code": 0
+    },
+    "task_matrix": {
+      "exit_code": 0
+    },
+    "state_consistency": {
+      "exit_code": 0
+    },
+    "diff_check": {
+      "exit_code": 0
+    },
+    "verification_scope": "Full suite plus exact regression rerun; full suite was not rerun after count-only expectation correction",
+    "final_docs": {
+      "tests": 105,
+      "seconds": 11.911,
+      "exit_code": 0,
+      "log": ".docs-tools/reports/paos-aud-g6/approved-docs-final.log"
+    }
+  },
+  "next_bounded_packet": "docs/superpowers/specs/paos-aud-g6-cache-repair-preview.json",
+  "refined_host_followup": "docs/superpowers/specs/paos-aud-g6-refined-host-execution.json"
+}
