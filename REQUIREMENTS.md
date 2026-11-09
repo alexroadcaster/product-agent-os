@@ -1,5 +1,11 @@
 # REQUIREMENTS.md
 
+## PAOS-AUD-G5 — 2026-11-09
+
+F13/F14/F17: offline installer command contract, явный package entry route, RU/EN parity и актуальный local site. Acceptance: stub commands, docs tests, strict build, routes/links/anchors, Mermaid parse/render. Нет actual install, publication или host activation.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
 ## PAOS-AUD-G4 — 2026-11-09
 
 F05/F09/F10/F15: explicit minimal intake без JSON-файла, legacy compatibility receipt, English tests-specific instructions, canonical skill progressive disclosure и измеренное reuse inventory. Нет implicit invocation/cache/host/provider/Git activation; acceptance ограничена local contract/evidence checks.

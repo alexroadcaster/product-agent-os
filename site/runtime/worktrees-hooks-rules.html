@@ -2481,6 +2481,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#gap-05-05112026" class="md-nav__link">
+    <span class="md-ellipsis">
+      GAP-05: точное разрешение на отчёт — 05.11.2026
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#worktree-strategy" class="md-nav__link">
     <span class="md-ellipsis">
       Worktree strategy
@@ -2538,6 +2547,15 @@
   <a href="#trust" class="md-nav__link">
     <span class="md-ellipsis">
       Trust и границы исполнения
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#paos-aud-g1-09112026" class="md-nav__link">
+    <span class="md-ellipsis">
+      Локальные исправления PAOS-AUD-G1 — 09.11.2026
     </span>
   </a>
 
@@ -3471,6 +3489,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#gap-05-05112026" class="md-nav__link">
+    <span class="md-ellipsis">
+      GAP-05: точное разрешение на отчёт — 05.11.2026
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#worktree-strategy" class="md-nav__link">
     <span class="md-ellipsis">
       Worktree strategy
@@ -3533,6 +3560,15 @@
 
 </li>
 
+        <li class="md-nav__item">
+  <a href="#paos-aud-g1-09112026" class="md-nav__link">
+    <span class="md-ellipsis">
+      Локальные исправления PAOS-AUD-G1 — 09.11.2026
+    </span>
+  </a>
+
+</li>
+
     </ul>
 
 </nav>
@@ -3551,6 +3587,10 @@
 <h1 id="worktrees-hooks-rules">Worktrees, hooks, rules<a class="headerlink" href="#worktrees-hooks-rules" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + experiment</code><br />
 Источники: <a href="https://developers.openai.com/codex/learn/best-practices">Codex best practices</a>, <a href="https://developers.openai.com/codex/app/worktrees">Codex worktrees</a>, <a href="https://learn.chatgpt.com/docs/hooks">Codex hooks</a>, <a href="https://developers.openai.com/codex/config/rules">Codex rules</a>, <a href="https://learn.chatgpt.com/docs/permissions">Agent approvals and security</a>.</p>
+<h2 id="gap-05-05112026">GAP-05: точное разрешение на отчёт — 05.11.2026<a class="headerlink" href="#gap-05-05112026" title="Permanent link">&para;</a></h2>
+<p>Optional pinned report authority разрешает один новый Markdown через grant, закреплённый SHA-256 в доверенной hook-команде: <code>--report-authority</code> и <code>--report-authority-sha256</code>. Research/review/planning marker по умолчанию не разрешает запись; payload инструмента не выдаёт authority.</p>
+<p>Разрешение связывает хеш workspace, новый и предыдущий task ID, точные байты marker, путь отчёта и срок до 24 часов. Нужен актуальный незавершённый marker с явным переходом задачи. Принимается один literal <code>apply_patch</code> Add File, напрямую или единственный literal call внутри <code>functions.exec</code>. Существующие и соседние файлы, control-plane/config/hooks, выход за границы пути, симлинки, динамические или множественные вызовы и запись через shell отклоняются. В режиме pinned authority чтение shell ограничено literal <code>Get-Content</code>/<code>Get-ChildItem -LiteralPath 'path'</code> с <code>login: false</code>; другие команды требуют review.</p>
+<p>Это preflight guard, не атомарная filesystem transaction. Sandbox, secret/path/command restrictions и host approvals сохраняются. Active/package source синхронизирован; <code>hooks.json</code>, trust и cache не изменены. Fresh-host positive/negative probe остаётся отдельным gate. Следующий artifact — exact-hash approval packet и разрешённый probe receipt. Формат grant описан в active/package <code>task-plan-lifecycle.md</code>; rollback возвращает только source changes данного slice, не меняя trust.</p>
 <h2 id="worktree-strategy">Worktree strategy<a class="headerlink" href="#worktree-strategy" title="Permanent link">&para;</a></h2>
 <p>Используйте worktrees, когда:</p>
 <ul>
@@ -3571,17 +3611,18 @@
 </ul>
 <p>Hooks не заменяют human review и не должны хранить secrets.</p>
 <h2 id="product-agent-os-lifecycle-hooks">Product-Agent OS lifecycle hooks<a class="headerlink" href="#product-agent-os-lifecycle-hooks" title="Permanent link">&para;</a></h2>
-<p>Product-Agent OS поставляет staged hooks через <code>plugins/product-agent-os/assets/templates/hooks/</code> и <code>render_infrastructure.py --stage</code>. Для конечного проекта они попадают в <code>.codex/hooks/</code> как proposal/staged asset, а не как silently activated automation.</p>
+<p>Product-Agent OS поставляет staged hooks через <code>plugins/product-agent-os/assets/templates/hooks/</code> и <code>render_infrastructure.py --stage</code>. Для конечного проекта definition предназначен для <code>.codex/hooks.json</code>, скрипты — для <code>.codex/hooks/</code>; это proposal/staged assets до approved apply и trust.</p>
 <p>Lifecycle guard устроен так:</p>
 <ul>
 <li><code>SessionStart</code> показывает наличие control-plane и lifecycle файлов;</li>
-<li><code>PreToolUse</code> пропускает read-only discovery по fast path без чтения marker, но блокирует mutating/non-read-only команды без <code>.codex/product-agent-os/lifecycle-state.json</code>;</li>
+<li><code>PreToolUse</code> пропускает распознанное read-only discovery по fast path; mutations и нераспознанные команды требуют текущего marker своего чата;</li>
 <li>Перед mutation покажите применимый scope: для large/high-risk/material/release — <code>task_start_brief_v2</code>, <code>brief_format: bold_fields</code> и девять полей; для ordinary — <code>task_scope_note_v1</code>, <code>brief_format: concise</code>, поля Scope/Evidence/Limits. Затем запишите marker с task_id, scope, updated_at, approval_boundary, brief_digest и brief_fields_present; <code>task_start_brief_shown</code> относится только к full route. <code>task_start_brief_v1</code> / <code>field_list</code> сохраняется для уже начатых legacy sessions.</li>
 <li>per-write <code>PostToolUse</code> проверяет comment sufficiency только для путей текущего patch, а не повторно для всего dirty worktree;</li>
 <li>после всех записей, проверок и control-plane sync marker переходит в <code>ready_for_completion_ledger</code> (full) или <code>ready_for_completion_brief</code> (concise/legacy); дальнейшие mutations блокируются;</li>
 <li>Проектный <code>Stop</code> рекомендательный: он не проверяет формат чата и не запрашивает корректирующую continuation. Полный scope использует стартовый brief (9 полей) и Completion Ledger (13 пунктов); обычная работа — краткие результаты, проверки и ограничения. Все инструменты и control-plane sync завершаются до финального ответа. Явная локальная проверка пакета не доказывает активацию.</li>
 </ul>
 <p>Marker не является transcript store: в него нельзя помещать raw chat, secrets, private source bodies, private customer data или credentials. Activation hooks остаётся отдельным approval boundary.</p>
+<p>С 2026-11-09 local implementation выбирает <code>.codex/product-agent-os/lifecycle-state.&lt;sha256(session_id)&gt;.json</code> по top-level host <code>session_id</code> и проверяет owner в marker. <code>SessionStart</code>, <code>PreToolUse</code> и <code>Stop</code> используют один selector. Чужой marker не блокирует независимую задачу и не разрешает её действия. Unsuffixed <code>.codex/product-agent-os/lifecycle-state.json</code> — legacy только при отсутствии session identity; с session_id fallback запрещён. Scope, freshness и terminal guards сохраняются. Состояние marker не является разрешением на произвольные файлы; пересечения по одним файлам всё ещё требуют coordination. Основание поля session_id: <a href="https://learn.chatgpt.com/docs/hooks#common-input-fields">официальный Hooks contract</a>. Local evidence и пределы host verification: <code>research/product-agent-os-session-lifecycle-fix-2026-11-09.md</code>.</p>
 <h2 id="rules">Rules<a class="headerlink" href="#rules" title="Permanent link">&para;</a></h2>
 <p>Rules описывают policy, которую Codex должен учитывать перед действиями. Хорошие rules:</p>
 <ul>
@@ -3659,6 +3700,31 @@
 <p>Проверено 05.11.2026 по <a href="https://learn.chatgpt.com/docs/hooks">Hooks</a>. Определения hooks из применимых источников объединяются; более близкий файл не заменяет все предыдущие hooks. Matching command hooks могут стартовать параллельно. После изменения определения или bundled plugin script нужен повторный review; install/enabled не равны trusted/executed.</p>
 <p>MCP hook использует уже доступный сервер: он не запускает и не переподключает MCP. Недоступный сервер, tool или ошибка MCP hook не дают гарантированного запрета — fail-closed нужно проверять отдельно. В cloud-orchestrated Work локальные command/plugin hooks не поддерживаются; поддерживаемые admin-managed MCP hooks настраиваются отдельно.</p>
 <p>Worktree разделяет Git working files, но не создаёт отдельные permissions. Для одного небольшого изменения обычно достаточно текущего workspace. Git-only worktrees, setup и Handoff выбирайте по <a href="https://learn.chatgpt.com/docs/environments/git-worktrees">официальному маршруту</a> и project authority. Проверка: загруженная definition и trust → allowed case → denied case → evidence конкретного tool/runtime.</p>
+<h2 id="paos-aud-g1-09112026">Локальные исправления PAOS-AUD-G1 — 09.11.2026<a class="headerlink" href="#paos-aud-g1-09112026" title="Permanent link">&para;</a></h2>
+<p>Generated manifest и <code>hook_policy</code> теперь указывают <code>.codex/hooks.json</code>; скрипты
+остаются в <code>.codex/hooks/</code>. Старый mirror не является discovery config. Staging
+не активирует hooks; merge создаёт definition только с точным <code>enable_hooks</code>
+approval, сохраняет существующий пользовательский файл и поддерживает rollback.
+Trust и fresh-host acceptance проверяются отдельно. Основание discovery/trust:
+<a href="https://learn.chatgpt.com/docs/hooks">официальный Hooks contract</a>.</p>
+<p>Guard проверяет весь ограниченно распознаваемый read-only command; составные и
+неизвестные формы требуют текущего mutation scope. Текст Markdown patch является
+данными; отдельно проверяются destination paths. Реальные destructive commands
+и sensitive destinations остаются защищены.</p>
+<p>Корневой <code>.rules</code> — проверяемый proposal, не установленный discovery-файл.
+<code>match</code>/<code>not_match</code> — примеры для parser assertions, а не исключения из prefix.
+Поскольку произвольные trailing arguments могут менять действие команды,
+proposal использует <code>prompt</code> для review и сохраняет <code>forbidden</code> для системных
+изменений; широких <code>allow</code> нет. Проверка: <code>codex execpolicy check --rules .rules -- rg --files</code>.
+Команда проверяет решение без исполнения <code>rg</code>. Файл <code>.codex/rules/default.rules</code>
+не создаётся. Семантика: <a href="https://learn.chatgpt.com/docs/agent-configuration/rules">официальные Rules</a>.</p>
+<p>Опциональный report authoring v2 явно использует <code>work_type: report_authoring</code>,
+пин одного grant, session ownership, exact Markdown path и previous digest на
+каждую create/update. Legacy create-only v1 сохранён. Подробный контракт находится
+в <code>.codex/workflows/task-plan-lifecycle.md</code>; источник и local verification —
+<code>research/product-agent-os-audit-remediation-task-plan-2026-11-09.md</code>.
+CAS preflight отклоняет уже возникший conflict, но не блокирует промежуток между
+hook и записью: требуется один writer; атомарность и fresh-host activation не доказаны.</p>
 
 
 

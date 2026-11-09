@@ -1,5 +1,49 @@
 # Product-Agent OS
 
+Source status: local implementation; host activation and distribution not_verified.
+
+Product-Agent OS — локальный package для управляемой работы над проектом: scope,
+изменение, проверки, evidence и следующий шаг. Текущие receipts и ограничения:
+[current state](../../docs/product-agent-os/control-plane-current-state.md).
+
+## Быстрый старт: одна задача
+
+После установки проверьте, что нужный skill доступен в выбранной сессии. Вызовите
+его явно, например `$product-agent-os:workspace-discovery-auditor`, и укажите задачу,
+затрагиваемые файлы, ограничения и критерий приёмки. Обычный текст manifest prompt
+не гарантирует invocation; `allow_implicit_invocation: false` требует явного выбора.
+Discovery даёт read-only обзор; реализация требует соответствующего запроса владельца.
+
+Для локального read-only preview из корня этого репозитория:
+
+```powershell
+python plugins/product-agent-os/scripts/render_infrastructure.py . --dry-run --task "Correct a documentation typo" --change-mode docs_only --changed-path README.md --acceptance "Text is correct and docs checks pass" --risk-level low
+```
+
+`--task`, `--change-mode`, `--changed-path` и `--acceptance` составляют inline intake.
+Для сложного scope используйте `--task-context <task.json>` вместо этих флагов.
+Без task context остаётся legacy route; `--dry-run` не применяет изменения.
+Укажите фактический risk level: без него используется `unknown`. Проверьте
+`template_selection.mode` и `gaps`: обнаруженные риски могут дать `needs_context`
+даже при успешном завершении команды; это не разрешение обходить проверку.
+Обычная задача использует существующие artifacts и необходимые проверки. Полное
+scaffold/stage/merge требуется только по выявленным gaps, с preview и отдельной
+authority на целевые изменения. После выполнения сохраните evidence и ограничения.
+
+| Surface / component | Support contract | Проверенность |
+| --- | --- | --- |
+| Native plugin: Codex App / CLI | supported по owning compatibility matrix | actual host invocation not_verified |
+| Native plugin: IDE extension | unsupported | standalone skills проверяются отдельно |
+| Skills / local scripts | структурно проверяемые local assets | наличие не доказывает invocation |
+| MCP / staged hooks | component-specific activation | не запускаются проверкой package |
+
+Текущий package: `.codex-plugin/plugin.json` и `.mcp.json`. Resolver также распознаёт
+portable root `plugin.json` / `mcp.json`; `extensions.com.openai` заменяет settings
+целиком. Невалидные или неизвестные варианты дают `needs_review` без silent fallback.
+Это разные форматы, а не две одновременно активные установки. Подробности и источники:
+[Codex compatibility](../../docs/product-agent-os/codex-compatibility.md).
+Publisher, listing URLs и icons остаются gated; distribution identity не установлена.
+
 ## Совместимость package — PAOS-AUD-G2
 
 Локальный MCP contract использует `mcpServers` wrapper. Диагностика разделяет support и observation; publisher, URLs и distribution icons остаются gated. `Unverified local publisher` — sentinel, а не подтверждённая личность. Read-only `validate_codex_compatibility.py` принимает optional `--observations` и `--cache-root`; подробный контракт — [compatibility](../../docs/product-agent-os/codex-compatibility.md) и [model diagnostics](../../docs/codex/models-and-reasoning.md). Проверка не запускает MCP и не изменяет cache/trust/model pins.
@@ -19,6 +63,12 @@ Repair требует отдельного разрешения владельц
 Реальный repair/restore требует exact approval и отдельного acceptance. Snapshot
 сохраняет DACL, не owner/SACL/integrity labels; helper их не изменяет. Семантика:
 [Microsoft icacls](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/icacls).
+
+<details>
+<summary>Архив receipts: Track / Batch history; не текущая сводка</summary>
+
+Исторические counts и acceptance ниже относятся только к указанным runs.
+Текущие gates находятся в current state и owning плане.
 
 ## Task 22 final documentation sync closure
 
@@ -106,6 +156,8 @@ Official references:
 - [Codex hooks](https://developers.openai.com/codex/hooks)
 - [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security)
 - [Context7 MCP clients](https://context7.com/docs/resources/all-clients)
+
+</details>
 
 ## What Problem It Solves
 
@@ -314,10 +366,14 @@ The plugin manifest points to `.mcp.json`, which registers a `context7` MCP serv
 
 ```json
 {
-  "context7": {
-    "command": "npx",
-    "args": ["-y", "@upstash/context7-mcp"],
-    "startup_timeout_sec": 20
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ]
+    }
   }
 }
 ```
@@ -358,7 +414,7 @@ product-agent-os/
     automation-promoter/
 ```
 
-`plugin.json` is the required Codex plugin manifest. The current manifest points to bundled skills and `.mcp.json`; `.mcp.json` registers Context7 for up-to-date developer documentation. Hook scripts are present as templates and examples, but plugin-bundled hooks are opt-in in Codex and this plugin does not silently activate them.
+This package uses `.codex-plugin/plugin.json`; the portable root `plugin.json` variant is resolved separately. The current manifest points to bundled skills and `.mcp.json`; `.mcp.json` registers Context7 for up-to-date developer documentation. Hook scripts are present as templates and examples, but plugin-bundled hooks are opt-in in Codex and this plugin does not silently activate them.
 
 ## Install in Codex
 
@@ -467,7 +523,7 @@ There are two supported ways to apply the plugin to a project.
 
 ### Guided Codex Flow
 
-After installing the plugin, open the target project in Codex and start with one of the manifest prompts:
+After installing the plugin, explicitly select `$product-agent-os:workspace-discovery-auditor` in the target project and supply task context. The manifest prompts below are examples of intent; they do not prove or trigger implicit skill invocation:
 
 ```text
 Use Product-Agent OS to audit this workspace and propose a safe infrastructure plan.
@@ -481,7 +537,7 @@ Use Product-Agent OS to guide this feature from requirements to PR packet.
 
 Expected first behavior:
 
-1. Codex uses `workspace-discovery-auditor` or the local discovery helper.
+1. Verify the selected skill path and explicit invocation; otherwise use the read-only local discovery helper.
 2. It reports detected stack, existing control-plane files, missing artifacts, risks, and blockers.
 3. It proposes staged infrastructure instead of writing directly.
 4. It asks for approval before target workspace writes.
@@ -542,7 +598,7 @@ python scripts\validate_codex_runtime_runner.py <result.json>
 
 ## Recommended First Run
 
-For a real project, start with this sequence:
+Start ordinary work with the task intake above. Use this infrastructure sequence only when the audit identifies missing control-plane artifacts and the owner authorizes staging/apply:
 
 1. Run dry-run:
 

@@ -1808,6 +1808,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#ordinary-route-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      Контракт ordinary route
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#contract-boundary" class="md-nav__link">
     <span class="md-ellipsis">
       Contract Boundary
@@ -3588,6 +3597,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#ordinary-route-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      Контракт ordinary route
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#contract-boundary" class="md-nav__link">
     <span class="md-ellipsis">
       Contract Boundary
@@ -3785,6 +3803,61 @@
 <h1 id="product-agent-os-artifact-contracts">Product-Agent OS artifact contracts<a class="headerlink" href="#product-agent-os-artifact-contracts" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + experiment</code></p>
 <p>Эта страница перечисляет основные generated artifacts Product-Agent OS для modernization loop, project code graph, live/runtime governance и approval-bound handoff. Это не JSON Schema spec, а operator-facing contract map: что создается, зачем нужно, где проходит source-of-truth boundary и какие approval gates действуют.</p>
+<h2 id="ordinary-route-contract">Контракт ordinary route<a class="headerlink" href="#ordinary-route-contract" title="Permanent link">&para;</a></h2>
+<p><code>task_context</code> v1 — явное описание scope, acceptance, changed paths, risks и source-backed checks. Это вход для решения, не разрешение на запись. <a href="cli-reference.html#ordinary-route">CLI example</a> показывает полный минимальный code case.</p>
+<table>
+<thead>
+<tr>
+<th>Поле результата</th>
+<th>Смысл</th>
+<th>Ограничение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>routing_trace</code></td>
+<td>Mode, task ID, selectors, reasons, state provenance</td>
+<td>Legacy fallback видим отдельно</td>
+</tr>
+<tr>
+<td><code>task_routing</code></td>
+<td>Решение, gaps, acceptance, invariants</td>
+<td>Не удостоверяет полноту анализа рисков</td>
+</tr>
+<tr>
+<td><code>code_quality_profile</code> / <code>quality_strategy</code></td>
+<td>Результаты T26/T27</td>
+<td>Обнаруженные инструменты остаются <code>present_unverified</code></td>
+</tr>
+<tr>
+<td><code>code_change_contract</code></td>
+<td>Восемь полей T25, inline</td>
+<td>Для docs-only пуст; полный checklist остаётся reference</td>
+</tr>
+<tr>
+<td><code>verification_plan</code></td>
+<td>Source, reasons, test kinds, execution policy</td>
+<td>Команда — предложение для review; unsafe предложение блокируется</td>
+</tr>
+<tr>
+<td><code>input_digest</code></td>
+<td>Связь с declared changed/verification paths, manifests, source instructions и task context</td>
+<td>Не fingerprint всего runtime environment</td>
+</tr>
+<tr>
+<td><code>check_observations</code></td>
+<td>Caller-reported command/status/exit и digest</td>
+<td>Freshness не доказывает независимое исполнение; stale receipt не принимается как current</td>
+</tr>
+<tr>
+<td><code>template_selection</code></td>
+<td>Selected/omitted artifacts с причинами в renderer</td>
+<td>Не активирует agents/hooks/automation и не заменяет merge approval</td>
+</tr>
+</tbody>
+</table>
+<p>Optional <code>check_results</code> содержит <code>command</code>, <code>input_digest</code>, <code>status</code>, <code>exit_code</code>. Для <code>passed</code> нужен exit 0, для <code>failed</code> — ненулевой exit, для <code>skipped</code> / <code>not_run_with_gap</code> — null. Receipt не превращает contract-mode result в <code>completed</code>. Реальные command evidence сохраняет выполняющий проверку Codex/оператор; незаявленные зависимости остаются вне digest scope.</p>
+<p>Ordinary sections можно хранить в существующем task artifact. Отдельные REQUIREMENTS/PLAN/EVALS и custom builder не обязательны для каждой малой задачи, но обязательные правила данного workspace продолжают действовать.</p>
 <h2 id="contract-boundary">Contract Boundary<a class="headerlink" href="#contract-boundary" title="Permanent link">&para;</a></h2>
 <p>Сгенерированные артефакты являются только staged evidence. Они не являются источником истины, пока более поздний owner-approved process явно не продвинет факт обратно в checked-in source documentation или другой canonical artifact.</p>
 <p>Каноническими источниками остаются:</p>

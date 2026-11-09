@@ -1,5 +1,11 @@
 # TEST.md
 
+## PAOS-AUD-G5 — 2026-11-09
+
+G5: 105 docs tests passed; check_docs, README CLI dry-run, compatibility и strict MkDocs exit 0; 368 HTML / 220 routes без link/anchor/search gaps; 93/93 Mermaid renders. Команды, RED/GREEN, retries и final logs — owning evidence и .docs-tools/reports/paos-aud-g5/. Installer tests используют stubs, не установку.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
 ## PAOS-AUD-G4 — 2026-11-09
 
 Full final: 1326 tests, 540.818 s, OK (skipped=1), exit 0; final focused 253 OK; template contracts 95 OK; fixtures 91/91; transcripts 26/26; compatibility exit 0, local structure only. Failed attempts и measurement provenance — owning plan. Final docs/matrix/consistency/diff checks обязательны после closure edits.

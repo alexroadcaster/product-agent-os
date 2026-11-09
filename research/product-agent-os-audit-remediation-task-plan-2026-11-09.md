@@ -1,6 +1,6 @@
 # Product-Agent OS — задачи и группы исправлений по полному аудиту
 
-Source status: project-local planning artifact, 09.11.2026; составлен по сохранённому аудиту и текущим owning plans. Статус документа: `G1/G2/G3/G4 implemented_locally_verified`; G5–G6 остаются planned. Сохранение карточек не означает выполнение, promotion или разрешение на перечисленные внешние действия.
+Source status: project-local planning artifact, 09.11.2026; составлен по сохранённому аудиту и текущим owning plans. Статус документа: `G1/G2/G3/G4/G5 implemented_locally_verified`; G6 остаётся planned. Сохранение карточек не означает выполнение, promotion или разрешение на перечисленные внешние действия.
 
 Document ID: `PAOS-AUDIT-REMEDIATION-2026-11-09`. Authoring task: `PAOS-AUDIT-TASK-MATRIX-2026-11-09`. Часовой пояс: `Europe/Moscow`.
 
@@ -312,6 +312,64 @@ Full discovery стартовал до финального junction guard и re
 Lifecycle preflight: две неверные формы собственного нового marker (status `implementation_in_progress`, затем missing updated_at) отклонены hook. Исправлен только own-session marker на `in_progress` с updated_at и сохранённым prior_closure G1. Compound bootstrap rejected; применён exact patch. Это process evidence, не новая activation проверка.
 
 Rollback: отменить только G2 hunks относительно G1 baseline; сохранить чужие Web/G1 изменения и исторические receipts. `prod_test.md`, model pins/effort, installed cache, global config и host trust не изменяются. G6/AUD-HOST-01 владеет actual host receipts; distribution требует подтверждённых owner данных и отдельного разрешения.
+
+## G5 execution evidence — 2026-11-09
+
+Status: `implemented_locally_verified`; F13/F14/F17. Один исполнитель, zero delegation,
+context_mode=self_review. Baseline worktree был clean; Git history не изменялась.
+Current-run reports: `.docs-tools/reports/paos-aud-g5/`; render inputs:
+`output/playwright/paos-aud-g5/`. Подробные source/build hashes: `verified-source-hashes.json`.
+
+| Gate / команда | Наблюдение текущего run |
+| --- | --- |
+| `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs.DocsInstallerContractTest -v` | RED: 3 tests, 2 failures — offline pip upgrade без --no-index; GREEN: 3/3, затем расширено до 5 regression cases в docs suite |
+| `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -v` | 105 tests passed, exit 0; post-build/control-plane rerun: 18.137 s, docs-final.log |
+| `python -B tools/check_docs.py` | exit 0, documentation structure checks passed |
+| README renderer `--help`, полный пример `--dry-run ... --risk-level low` | exit 0; JSON корректен; context/safety gaps не превращаются в permission или activation |
+| `python -B plugins/product-agent-os/scripts/validate_codex_compatibility.py` | exit 0; local structure only, MCP не запускался |
+| `.venv-docs/Scripts/python.exe -m mkdocs build --strict` | exit 0; 28.16 s; существующие project-local dependencies, без установки |
+| `tools/fix_site_i18n_links.ps1 -SiteDir site` | final retry: updated_files=2, без ошибки; до retry два временно заблокированных Windows HTML |
+| `python -B .docs-tools/reports/paos-aud-g5/check-site.py` | 368 HTML; 220 nav routes; missing files/routes/anchors/search routes = 0; 310 search pages |
+| `python -B .docs-tools/reports/paos-aud-g5/run_render.py` | installed Chromium headless shell 1223; local Mermaid 10.9.6; 93/93 parse/render with nonzero SVG dimensions; browser exit 0 |
+| `git -c core.safecrlf=false diff --check` | exit 0 |
+
+F13: offline branch использует --no-index/--find-links, не обновляет pip; bootstrap
+использует venv/bundled ensurepip без --upgrade-deps. Offline побеждает AllowNetwork.
+Missing directory отклоняется до bootstrap, ошибка install останавливает путь без
+network fallback. Stub заменяет только subprocess boundary: фактическая установка
+не выполнялась, глобальная среда не менялась. Online upgrade остаётся explicit.
+
+F14: первый экран README содержит explicit skill invocation, ordinary inline intake,
+support/observation matrix и current-state pointer. MCP example совпадает с .mcp.json;
+startup_timeout_sec удалён из JSON. Archive receipts/counts сохранены в details, с явной
+датированной областью применимости. Publisher и distribution остаются gated.
+
+F17 semantic review: current-state RU/EN совпадают по G1–G5 scope, pointer semantics,
+source-policy/feedback limits и next G6; hooks RU/EN совпадают по session selector,
+legacy prohibition, trust и explicit activation boundary; models RU/EN совпадают по
+G2 diagnostics/cache scope и отсутствию host proof. Hooks/models sources уже согласованы
+в G1/G2, повторная редактура не нужна; новая сборка включает их. Registry обновлён
+парно. 10 English-original plans сохраняют исключение из translation inventory.
+Diagrams/mkdocs.yml/vendor assets не изменены; 93 navigation diagrams проверены заново.
+
+Failures/recovery: первоначальный README dry-run упал на sandbox TEMP cleanup;
+повтор с workspace TEMP/TMP прошёл. Shell Chrome dump не дал DOM; обычные Chrome/Edge
+и sandbox headless завершались до render. Разрешённый local headless run вне shell
+sandbox прошёл с browser sandbox сохранённым, отдельным workspace profile и DNS
+blocking; зависимости/серверы не устанавливались. Это render evidence, не host activation.
+Два mapped-file errors при i18n исправлены повтором; окончательная проверка всех links
+и anchors прошла. Неуспешные попытки не считаются acceptance.
+
+Control-plane sync: REQUIREMENTS/PLAN/TEST/EVALS/RUNLOG updated; prod_test.md
+not_applicable (Batch 39 вне scope); AGENTS/config/hooks not_applicable. Root size
+budget проверен docs suite. B42/B45 canonical source hashes сохраняются. Rollback:
+вернуть только G5 source hunks, затем пересобрать local site; не менять trust/cache.
+Full plugin unittest/fixture/transcript и live behavioral eval: not_applicable для
+изменения installer/docs; G4 evidence остаётся прежним run, не объявляется новым.
+Следующий slice — G6; owner acceptance, actual installation, fresh-host loading,
+model quality, publication и production readiness не подтверждены этим run.
+
+Task-matrix self-review: evidence перенесено перед карточками, чтобы parser не включал его в соседнюю F15 card; исходный placement дал unresolved-placeholder diagnostic. Final validator result — task-matrix-final.json.
 
 ## PAOS-AUD-G1 — execution evidence 09.11.2026
 
@@ -1175,12 +1233,12 @@ host acceptance; иных обязательных local handoffs нет.
 - Scope: **Затрагиваемые файлы:** `tools/docs_install.ps1`; `tests/product_agent_os/test_product_agent_os_docs.py`. Общий docs/control-plane scope — по правилам выше.
 - Acceptance criteria: **Критерии приёмки:** 1) OfflineWheelhouse path исключает index/network для всех pip вызовов, включая upgrade/bootstrap. 2) Online mode остаётся явным; отсутствие нужного wheel даёт понятную локальную ошибку. 3) Command-contract test не устанавливает зависимости и не меняет глобальную среду.
 - Group: PAOS-AUD-G5
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Сохранение плана по запросу владельца; execution не разрешён.
+- Plan trigger: Запрос владельца 09.11.2026 на реализацию G5 с локальными проверками и сборкой.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 09-11-2026 15:24
 - Depends on: Нет новых обязательных задач этого плана.
 - Blocks: PAOS-AUD-F17
 - Source: F13
@@ -1193,19 +1251,20 @@ host acceptance; иных обязательных local handoffs нет.
 - Agents: plugin-runtime-builder; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: Проверить актуальность finding и baseline, затем согласовать точный local file scope, воспроизвести исходный case и выполнить только эту задачу после запроса на реализацию.
+- Next step: G6; host/behavioral/owner acceptance gates остаются отдельными.
 
 #### Completion Report
 
-- status: planned
-- what was done: Не выполнялась.
-- files touched / work locations: Не изменены.
-- technical value delivered: Не подтверждено.
-- product value delivered: Не подтверждено.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending_execution; authoring checks не доказывают implementation.
-- residual risks: low; dependency installation вне текущей задачи планирования и отдельно согласуется при необходимости.
-- follow-up: Выполнить Dependencies и Acceptance в авторизованном slice.
+- status: implemented
+- what was done: Offline pip routing исправлен; online upgrade изолирован, directory/error guards и command-stub regression.
+- files touched / work locations: tools/docs_install.ps1; tests/product_agent_os/test_product_agent_os_docs.py; control-plane и owning plan.
+- technical value delivered: Проверяемый local contract без скрытой сетевой установки или activation claims.
+- product value delivered: Актуальный короткий старт и воспроизводимая локальная документация.
+- actual implementation date and time: 09-11-2026 15:24
+- verification evidence: G5 execution evidence выше; 105 docs tests, strict build, site integrity и 93 Mermaid renders passed.
+- residual risks: Actual install/host activation/publication не выполнялись; generated site не является source of truth.
+- follow-up: PAOS-AUD-G6 по его собственным gates.
+
 
 ### Task `PAOS-AUD-F14`
 
@@ -1217,12 +1276,12 @@ host acceptance; иных обязательных local handoffs нет.
 - Scope: **Затрагиваемые файлы:** `plugins/product-agent-os/README.md`; `docs/product-agent-os/control-plane-current-state.md`; `docs/product-agent-os/control-plane-current-state.en.md`; `docs/sources/registry.md`; `docs/sources/registry.en.md`. Общий docs/control-plane scope — по правилам выше.
 - Acceptance criteria: **Критерии приёмки:** 1) Примеры args/JSON соответствуют реализации и проходят локальные syntax/CLI contract checks. 2) Виден supported/unsupported/not_verified; explicit-only skills вызываются явно; ordinary route не скрыт за full generation. 3) Historical receipts доступны по ссылкам и не выданы за текущий запуск; неизвестные distribution данные не придуманы.
 - Group: PAOS-AUD-G5
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Сохранение плана по запросу владельца; execution не разрешён.
+- Plan trigger: Запрос владельца 09.11.2026 на реализацию G5 с локальными проверками и сборкой.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 09-11-2026 15:24
 - Depends on: PAOS-AUD-F01, PAOS-AUD-F02, PAOS-AUD-F04, PAOS-AUD-F05
 - Blocks: PAOS-AUD-F17
 - Source: F14
@@ -1235,19 +1294,20 @@ host acceptance; иных обязательных local handoffs нет.
 - Agents: docs-maintainer; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: Проверить названные зависимости, затем согласовать точный local file scope, воспроизвести исходный case и выполнить только эту задачу после запроса на реализацию.
+- Next step: G6; host/behavioral/owner acceptance gates остаются отдельными.
 
 #### Completion Report
 
-- status: planned
-- what was done: Не выполнялась.
-- files touched / work locations: Не изменены.
-- technical value delivered: Не подтверждено.
-- product value delivered: Не подтверждено.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending_execution; authoring checks не доказывают implementation.
-- residual risks: low; не заявлять activation на основании source tests.
-- follow-up: Выполнить Dependencies и Acceptance в авторизованном slice.
+- status: implemented
+- what was done: Короткий explicit start, ordinary task intake, актуальный MCP JSON и support matrix; archive receipts отделены.
+- files touched / work locations: plugins/product-agent-os/README.md; current-state RU/EN; registry RU/EN; control-plane и owning plan.
+- technical value delivered: Проверяемый local contract без скрытой сетевой установки или activation claims.
+- product value delivered: Актуальный короткий старт и воспроизводимая локальная документация.
+- actual implementation date and time: 09-11-2026 15:24
+- verification evidence: G5 execution evidence выше; 105 docs tests, strict build, site integrity и 93 Mermaid renders passed.
+- residual risks: Actual install/host activation/publication не выполнялись; generated site не является source of truth.
+- follow-up: PAOS-AUD-G6 по его собственным gates.
+
 
 ### Task `PAOS-AUD-F17`
 
@@ -1259,12 +1319,12 @@ host acceptance; иных обязательных local handoffs нет.
 - Scope: **Затрагиваемые файлы:** `docs/product-agent-os/control-plane-current-state.md`; `docs/product-agent-os/control-plane-current-state.en.md`; `docs/runtime/worktrees-hooks-rules.md`; `docs/runtime/worktrees-hooks-rules.en.md`; `docs/codex/models-and-reasoning.md`; `docs/codex/models-and-reasoning.en.md`; `docs/sources/registry.md`; `docs/sources/registry.en.md`; `docs/diagrams/`; `mkdocs.yml`; `site/`. Общий docs/control-plane scope — по правилам выше.
 - Acceptance criteria: **Критерии приёмки:** 1) Ручная semantic parity затронутых RU/EN пар и Source status актуальны; 10 English-original plans не объявляются missing translations. 2) Docs checks и strict MkDocs build проходят; internal routes/links/anchors проверены по generated output. 3) Затронутые Mermaid diagrams успешно разобраны/отрендерены разрешённым инструментом; отсутствие runtime render явно оставляет соответствующий gate открытым. 4) Site receipt связан с source revision; сайт не опубликован; dependencies/automation/hooks не активированы автоматически.
 - Group: PAOS-AUD-G5
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Сохранение плана по запросу владельца; execution не разрешён.
+- Plan trigger: Запрос владельца 09.11.2026 на реализацию G5 с локальными проверками и сборкой.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 09-11-2026 15:24
 - Depends on: PAOS-AUD-F03, PAOS-AUD-F13, PAOS-AUD-F14, PAOS-AUD-F16 Финальная local сборка после всех фактически выполненных G1–G4 изменений, включая F09/F10/F15; host receipts обновляются отдельной малой синхронизацией.
 - Blocks: Нет обязательной downstream implementation зависимости в этом документе; собственный acceptance gate сохраняется.
 - Source: F17
@@ -1277,19 +1337,20 @@ host acceptance; иных обязательных local handoffs нет.
 - Agents: docs-maintainer; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: Проверить названные зависимости, затем согласовать точный local file scope, воспроизвести исходный case и выполнить только эту задачу после запроса на реализацию.
+- Next step: G6; host/behavioral/owner acceptance gates остаются отдельными.
 
 #### Completion Report
 
-- status: planned
-- what was done: Не выполнялась.
-- files touched / work locations: Не изменены.
-- technical value delivered: Не подтверждено.
-- product value delivered: Не подтверждено.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending_execution; authoring checks не доказывают implementation.
-- residual risks: medium; mkdocs.yml/diagrams правятся только если затронуты новой документацией; browser/server/install/publication не следуют из сохранения плана.
-- follow-up: Выполнить Dependencies и Acceptance в авторизованном slice.
+- status: implemented
+- what was done: RU/EN semantic review, strict site rebuild, links/anchors/search и 93 Mermaid renders.
+- files touched / work locations: current-state RU/EN; registry RU/EN; site/; source hashes и render receipts; control-plane и owning plan.
+- technical value delivered: Проверяемый local contract без скрытой сетевой установки или activation claims.
+- product value delivered: Актуальный короткий старт и воспроизводимая локальная документация.
+- actual implementation date and time: 09-11-2026 15:24
+- verification evidence: G5 execution evidence выше; 105 docs tests, strict build, site integrity и 93 Mermaid renders passed.
+- residual risks: Actual install/host activation/publication не выполнялись; generated site не является source of truth.
+- follow-up: PAOS-AUD-G6 по его собственным gates.
+
 
 ## PAOS-AUD-G6 — Проверка GPT-6, host activation и пользовательской пользы
 

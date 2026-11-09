@@ -1,5 +1,11 @@
 # RUNLOG.md
 
+## PAOS-AUD-G5 — 2026-11-09
+
+G5 F13/F14/F17 implemented_locally_verified: offline installer исправлен через RED/GREEN; README обновлён; local site rebuilt; 105 docs tests, 220 routes, 93 Mermaid renders passed. Self-review; no dependency install/publication/host activation. Следующая группа — G6. Текущий machine pointer — PLAN.md.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
 ## PAOS-AUD-G4 — 2026-11-09
 
 G4 F05/F09/F10/F15 implemented_locally_verified. Full final: 1326 tests, 540.818 s, OK (skipped=1), exit 0; final focused 253 OK; template contracts 95 OK; fixtures 91/91; transcripts 26/26; compatibility exit 0, local structure only. Self-review завершён. Inline intake, conditional references и inventory reuse проверены локально; следующий G5. Host/behavioral evaluation остаётся G6.

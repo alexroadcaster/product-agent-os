@@ -1892,6 +1892,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#ordinary-authoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ordinary authoring и текущая интеграция
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       Что включается
@@ -3462,6 +3471,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#ordinary-authoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ordinary authoring и текущая интеграция
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       Что включается
@@ -3534,6 +3552,10 @@
 <p>Source status: <code>project-authored + research-backed + experiment</code></p>
 <p>Источники: Batch 45 research packets <code>plugins/product-agent-os/assets/research/ai-agent-coding-standards-research.md</code> и <code>plugins/product-agent-os/assets/research/ai-agent-coding-literature-research.md</code>, Batch 45 S5 packet <code>docs/superpowers/specs/batch45-professional-code-s5-learning-automation-summary.json</code>, S6 packets <code>docs/superpowers/specs/batch45-agent-behavior-eval-results.json</code> и <code>docs/superpowers/specs/batch45-comment-policy-promotion-decision.json</code>, S7 packets <code>docs/superpowers/specs/batch45-real-project-scorecard.json</code> и <code>docs/superpowers/specs/batch45-real-project-decision-packet.json</code>, M37 remediation packet <code>docs/superpowers/specs/batch45-review-remediation-summary.json</code>, <a href="development-standards.html">Development Standards</a>, <a href="artifact-contracts.html">Artifact Contracts</a>, <a href="behavioral-evals.html">Behavioral evals</a>, <a href="scenarios.html">Scenarios</a>, <a href="../playbooks/code-review.html">Code Review playbook</a>.</p>
 <p>Professional Code Authoring - это слой Product-Agent OS для не механических задач написания кода. Его цель проста: агент сначала ищет уже существующую возможность, стандартную библиотеку, фреймворк, конфигурацию или локальный helper, и только потом пишет новый код. Хороший результат может быть одной строкой, удалением лишнего кода или настройкой existing behavior, если это закрывает acceptance criteria с меньшим долгом.</p>
+<h2 id="ordinary-authoring">Ordinary authoring и текущая интеграция<a class="headerlink" href="#ordinary-authoring" title="Permanent link">&para;</a></h2>
+<p>Для обычной правки default generation context — <code>.codex/artifact-templates/code-change-contract.md</code>: восемь полей T25, без повторного полного checklist. Активный workflow и packaged contract согласованы; <code>coding-standard-checklist.md</code> применяется как reviewer/reference material, когда нужны дополнительные детали.</p>
+<p>Opt-in <a href="cli-reference.html#ordinary-route">ordinary CLI route</a> связывает discovery с существующими selectors T26/T27. Каждая выбранная проверка должна иметь risk/invariant и source; отсутствие инструмента не разрешает auto-install. Docs-only может иметь <code>not_applicable</code>, а reuse/deletion/no-op — быть правильным результатом. Project-mandated checks сохраняются.</p>
+<p>High-risk и full lifecycle reporting выбираются отдельно от длины coding contract. Локальные CLI/fixture проверки доказывают интеграцию; обновление активного файла не доказывает fresh-session loading. T23–T29 не переоткрываются, T30–T34 и behavioral promotion остаются отдельной очередью. Исторические Batch 45 receipts ниже сохраняют собственный evidence ceiling.</p>
 <h2 id="_1">Что включается<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

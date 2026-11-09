@@ -3568,6 +3568,7 @@
 
 <h1 id="self-learning-loop">Self-Learning Loop<a class="headerlink" href="#self-learning-loop" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + experiment</code></p>
+<p>An empty ledger, wholly rejected records and zero eligible owner labels yield <code>promotion_signal: insufficient_evidence</code>. <code>owner_feedback_rows</code>/<code>rejected_rows</code> describe input validity, <code>denominator</code>/<code>human_label_count</code> describe label coverage, and <code>owner_sentiment</code> describes explicit owner-label sentiment only. <code>owner_label_supported</code> does not mean positive feedback: negative and mixed labels remain visible. No automatic promotion occurs.</p>
 <p><code>Self-Learning Loop</code> is the manual-first Product-Agent OS improvement loop for local evidence, redacted owner feedback, metrics ledgers and review-only candidates. It is not an autonomous learning system. The default path does not call providers or models, create Codex App automations, enable hooks, write to target workspaces or apply candidates automatically.</p>
 <h2 id="quickstart">Quickstart<a class="headerlink" href="#quickstart" title="Permanent link">&para;</a></h2>
 <p>Create a staged state proposal outside the target workspace:</p>

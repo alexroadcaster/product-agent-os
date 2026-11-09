@@ -1892,6 +1892,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#ordinary-authoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ordinary authoring and current integration
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#applied-gates" class="md-nav__link">
     <span class="md-ellipsis">
       Applied Gates
@@ -3462,6 +3471,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#ordinary-authoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ordinary authoring and current integration
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#applied-gates" class="md-nav__link">
     <span class="md-ellipsis">
       Applied Gates
@@ -3534,6 +3552,10 @@
 <p>Source status: <code>project-authored + research-backed + experiment</code></p>
 <p>Sources: Batch 45 research packets <code>plugins/product-agent-os/assets/research/ai-agent-coding-standards-research.md</code> and <code>plugins/product-agent-os/assets/research/ai-agent-coding-literature-research.md</code>, Batch 45 S5 packet <code>docs/superpowers/specs/batch45-professional-code-s5-learning-automation-summary.json</code>, S6 packets <code>docs/superpowers/specs/batch45-agent-behavior-eval-results.json</code> and <code>docs/superpowers/specs/batch45-comment-policy-promotion-decision.json</code>, S7 packets <code>docs/superpowers/specs/batch45-real-project-scorecard.json</code> and <code>docs/superpowers/specs/batch45-real-project-decision-packet.json</code>, M37 remediation packet <code>docs/superpowers/specs/batch45-review-remediation-summary.json</code>, <a href="development-standards.html">Development Standards</a>, <a href="artifact-contracts.html">Artifact Contracts</a>, <a href="behavioral-evals.html">Behavioral Evals</a>, <a href="scenarios.html">Scenarios</a>, <a href="../playbooks/code-review.html">Code Review playbook</a>.</p>
 <p>Professional Code Authoring is the Product-Agent OS layer for non-mechanical coding tasks. Its main rule is simple: the agent checks existing capability, standard library support, framework primitives, configuration paths, current dependencies and project helpers before adding custom code. The best implementation may be one line, a deletion or a configuration change when that satisfies the acceptance criteria with less debt.</p>
+<h2 id="ordinary-authoring">Ordinary authoring and current integration<a class="headerlink" href="#ordinary-authoring" title="Permanent link">&para;</a></h2>
+<p>For an ordinary change, the default generation context is <code>.codex/artifact-templates/code-change-contract.md</code>: eight T25 fields without repeated injection of the full checklist. The active workflow and packaged contract are aligned; <code>coding-standard-checklist.md</code> is reviewer/reference material when additional detail is needed.</p>
+<p>The opt-in <a href="cli-reference.html#ordinary-route">ordinary CLI route</a> connects discovery to the existing T26/T27 selectors. Each selected check needs a risk/invariant and a source; missing tools do not authorize auto-installation. Docs-only can be <code>not_applicable</code>, while reuse/deletion/no-op can be correct outcomes. Project-mandated checks remain required.</p>
+<p>High-risk and full lifecycle reporting are selected independently of coding-contract length. Local CLI/fixture checks establish integration; updating the active file does not prove fresh-session loading. T23–T29 are not reopened; T30–T34 and behavioral promotion remain separate work. Historical Batch 45 receipts below retain their own evidence ceiling.</p>
 <h2 id="applied-gates">Applied Gates<a class="headerlink" href="#applied-gates" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

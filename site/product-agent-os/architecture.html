@@ -1997,6 +1997,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#ordinary-route" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сквозной ordinary route
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#layered-model" class="md-nav__link">
     <span class="md-ellipsis">
       Layered Model
@@ -3549,6 +3558,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#ordinary-route" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сквозной ordinary route
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#layered-model" class="md-nav__link">
     <span class="md-ellipsis">
       Layered Model
@@ -3709,6 +3727,45 @@
 <p>Источники: <a href="https://developers.openai.com/codex/plugins">Codex plugins</a>, <a href="https://developers.openai.com/codex/skills">Agent Skills</a>, <a href="https://developers.openai.com/codex/subagents">Subagents</a>, <a href="https://developers.openai.com/codex/guides/agents-md">AGENTS.md</a>, <a href="https://developers.openai.com/codex/hooks">Codex hooks</a>, <a href="https://developers.openai.com/codex/agent-approvals-security">Agent approvals and security</a>, <a href="https://developers.openai.com/codex/workflows">Codex workflows</a>, <a href="technical.html">Technical features</a>.</p>
 <p>Product-Agent OS plugin строит управляемый lifecycle вокруг Codex App, CLI, IDE extension, subagents, skills, <code>AGENTS.md</code>, memory, sandbox, approvals, MCP и Agents SDK. Его архитектура не пытается "сразу сделать все": она сначала читает workspace, выбирает route, фиксирует ownership и evidence, затем stage-ит предложения или выполняет разрешенный slice.</p>
 <p>Главное правило: generated surfaces помогают ориентироваться, но source files, owner decisions и текущий verification evidence остаются сильнее любого dashboard, graph, report или chat memory.</p>
+<h2 id="ordinary-route">Сквозной ordinary route<a class="headerlink" href="#ordinary-route" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Граница</th>
+<th>Что происходит</th>
+<th>Что не следует из результата</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Discovery → adapter</td>
+<td>Реальные paths/manifests и task context поступают в <code>task_routing.py</code></td>
+<td>Команды из файлов не исполняются</td>
+</tr>
+<tr>
+<td>Adapter → selectors</td>
+<td>Переиспользуются <code>select_code_quality_profile</code> и <code>select_test_strategy</code></td>
+<td>Наличие tool не означает успешную проверку</td>
+</tr>
+<tr>
+<td>State resolver → route</td>
+<td>Structural readiness, task-bound state и inferred recommendation отделены; RU/EN headings и builder.toml не управляют ordinary route</td>
+<td>State provenance не даёт write authority</td>
+</tr>
+<tr>
+<td>Route → result</td>
+<td>Compact contract, checks с reasons, gaps и trace</td>
+<td><code>route_ready</code> не означает выполненную задачу</td>
+</tr>
+<tr>
+<td>Renderer → stage</td>
+<td>Подмножество templates или reuse существующих документов</td>
+<td>Полный registry не становится обязательным пакетом</td>
+</tr>
+</tbody>
+</table>
+<p>Вход через <code>--task-context</code> или явный inline <code>--task</code> — opt-in. Без обоих вариантов сохранён явно обозначенный legacy fallback, включая прежнюю inference по control-plane headings. Схемы legacy lifecycle и runner ниже описывают этот совместимый путь. Новый scoped path дополняет его; high-risk/full сохраняет применимые gates, source policy и approval checks.</p>
+<p>Пустой или неоднозначный проект получает discovery/requirements gap, а не фиктивную build readiness. Указанный task state требует совпадающих task ID, lifecycle value и hash source record. Полезный локальный результат ORD-01–ORD-06 не означает fresh host activation, promotion, production readiness или автоматическое применение инфраструктуры.</p>
 <h2 id="layered-model">Layered Model<a class="headerlink" href="#layered-model" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

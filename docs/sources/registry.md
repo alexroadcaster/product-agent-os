@@ -1,5 +1,9 @@
 # Реестр источников
 
+## PAOS-AUD-G5 — project-local contracts, 2026-11-09
+
+F13: offline installer command contract; F14: explicit skill invocation и ordinary intake; F17: RU/EN semantic parity, local strict build, routes/links/anchors и source-bound Mermaid rendering. Источники: `tools/docs_install.ps1`, `tests/product_agent_os/test_product_agent_os_docs.py`, package README и audit remediation task plan (09.11.2026). Evidence относится к local source/build; dependency installation, publication и host acceptance не выполняются.
+
 ## PAOS-AUD-G4 — project-local contracts
 
 Project-local G4 contracts: inline/legacy intake, canonical skill disclosure/authority и измеренное reuse inventory. Источники: task_routing.py, discovery.py, canonical skills/references и audit remediation task plan (09.11.2026). Local checks не доказывают host activation или live behavioral quality.

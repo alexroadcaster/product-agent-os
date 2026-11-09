@@ -1409,6 +1409,24 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#offline-installer-paos-aud-g5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Offline installer — PAOS-AUD-G5
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#current-route-2026-11-09" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current route — 2026-11-09
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#current-user-route-2026-11-05" class="md-nav__link">
     <span class="md-ellipsis">
       Current user route — 2026-11-05
@@ -3507,6 +3525,24 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#offline-installer-paos-aud-g5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Offline installer — PAOS-AUD-G5
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#current-route-2026-11-09" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current route — 2026-11-09
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#current-user-route-2026-11-05" class="md-nav__link">
     <span class="md-ellipsis">
       Current user route — 2026-11-05
@@ -3622,12 +3658,30 @@
 
 <h1 id="current-control-plane-state">Current control-plane state<a class="headerlink" href="#current-control-plane-state" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>experiment</code></p>
-<h2 id="current-user-route-2026-11-05">Current user route — 2026-11-05<a class="headerlink" href="#current-user-route-2026-11-05" title="Permanent link">&para;</a></h2>
-<p>Start with the <a href="../codex/surfaces.html">surface matrix</a> and <a href="../product-agent/lifecycle.html">ordinary/full lifecycle</a>. The current package uses a supported legacy manifest; the portable format is documented separately. IDE has no native plugin support. After skill updates verify exposure, invocation and results.</p>
-<p>ACT-F1..F6 are resolved in the dated 2026-11-03 local runtime receipt for tested Desktop routes. It does not prove all mutation channels, silent Stop execution or hosted/production delivery. The new update changes docs/site only; current checks are in the source-owned receipt <code>docs/superpowers/specs/site-docs-refresh-2026-11-05.json</code>.</p>
-<p>The RU/EN section above has the same current claims and limits. Below are preserved historical records; EN history is an abridged overview, not a complete translation of every ledger. Use source-owned JSON for exact receipts. Historical pending/failure entries do not override later scoped retests.</p>
+<p>G5 (F13/F14/F17): offline installer, explicit package entry route and local site build. The next group is G6 with separate host/behavioral/owner acceptance gates. Exact statuses and current verification receipts belong to the owning audit plan; the site remains generated orientation evidence.</p>
+<p>G4 (F05/F09/F10/F15) is implemented and locally verified. The next group is G6. Its inline intake preserves legacy defaults; conditional skill gates move to role-specific references, and discovery reuses one immutable inventory for its scope detector. Host loading remains unverified.</p>
+<h2 id="offline-installer-paos-aud-g5">Offline installer — PAOS-AUD-G5<a class="headerlink" href="#offline-installer-paos-aud-g5" title="Permanent link">&para;</a></h2>
+<p><code>tools/docs_install.ps1 -Install -OfflineWheelhouse &lt;path&gt;</code> uses only the local
+wheelhouse and bundled ensurepip when creating a venv. Offline takes precedence
+over <code>-AllowNetwork</code>; pip upgrade runs only in the online branch. Missing directories
+or compatible wheels fail without network fallback. Without <code>-Install</code>, the command
+prints a plan; an actual installation requires separate authority. G5 checks stub
+the subprocess boundary and install nothing.</p>
+<h2 id="current-route-2026-11-09">Current route — 2026-11-09<a class="headerlink" href="#current-route-2026-11-09" title="Permanent link">&para;</a></h2>
+<p>G1/G2/G3 are locally complete and verified; G3 covers F03/F08/F16. The next slice is G6. Owning plan: <code>research/product-agent-os-audit-remediation-task-plan-2026-11-09.md</code>. Local MCP compatibility after G2 is <code>compatible</code>; publisher/URLs/icons and actual host acceptance remain gated. This is not release or production readiness.</p>
+<p>The sole machine-readable current pointer lives in <code>PLAN.md</code>, between <code>product-agent-os:current-state:start/end</code>. It holds owning source paths and SHA-256 revisions only, without duplicating task statuses. <code>RUNLOG.md</code> and <code>TEST.md</code> refer to that pointer; old Current headings do not establish precedence. Sources are the audit task plan and B42/B45 JSON. Optional task_prefixes bounds ownership: the audit plan projects PAOS-AUD-* only, so its T30–T34 cross-reference cards do not compete with canonical B45. A source change requires an explicit reviewed pointer refresh; a mismatch gives unknown without historical fallback.</p>
+<p><code>build_status_snapshot(workspace=...)</code> and the existing dashboard CLI read the pointer without workspace writes. <code>current_state</code> returns source_path/source_revision, historical_status, selected_evidence and separate task_state, run_state, verification_state, acceptance_state. New dated execution_evidence outranks older planning status. Equal-date incompatible receipts or duplicate ownership produce conflict; unknown dates, future receipts, unsupported formats and stale revisions produce unknown. Implemented alone does not mean verified or accepted. Without a pointer, the prior B37 deferred route remains.</p>
+<p>B42 historical planned fields and newer scoped execution receipts are preserved. B45 T23–T29 remain locally implemented and verified; T30–T33 are planned_not_started and T34 is approval_required_not_started. Projection does not rewrite their machine JSON. Task/run status does not replace verification or owner acceptance. Generated snapshots are orientation evidence; complete sources remain authoritative.</p>
+<p>Source-policy scanning heuristically separates project_contract, historical_receipt, official_behavior and mention_only/unknown. ISO and DD.MM.YYYY following RU/EN labels are supported; invalid/future/stale/missing remain distinct. Multiple dates use the oldest marker; a fresh section does not refresh a whole page. Registry links resolve locally to the two canonical registry files with anchor and workspace-boundary checks; registry dates are not inherited. URLs/dates never change claim_supported=not_verified. This is neither semantic audit nor a crawler.</p>
+<p>Empty feedback, rejected ledgers and absence of owner labels produce insufficient_evidence. Record validity, denominator/human_label_count and owner_sentiment are separate. owner_label_supported means labels exist, including negative labels; it does not authorize promotion. Manual-only/candidate-only policy is preserved.</p>
+<p>Dated history follows. Old planned, needs_review and activation receipts do not automatically describe the current revision. Current-group checks belong to the owning audit plan; site build freshness is not claimed.</p>
 <details>
 <summary>Dated history and detailed evidence</summary>
+<h2 id="current-user-route-2026-11-05">Current user route — 2026-11-05<a class="headerlink" href="#current-user-route-2026-11-05" title="Permanent link">&para;</a></h2>
+<p>Start with the <a href="../codex/surfaces.html">surface matrix</a> and <a href="../product-agent/lifecycle.html">ordinary/full lifecycle</a>. The package has a Codex compatibility manifest; its presence does not establish component validity or host support. See the separate component/surface evidence in the <a href="codex-compatibility.html">compatibility matrix</a>. After skill updates verify exposure, invocation and results.</p>
+<p>ACT-F1..F6 are resolved in the dated 2026-11-03 local runtime receipt for tested Desktop routes. It does not prove all mutation channels, silent Stop execution or hosted/production delivery. The November 5 docs/site receipt remains historical evidence. ORD-01–ORD-06 were subsequently implemented and locally verified through the public CLI. The current product integration queue is GAP-01–GAP-05; the separate B45 queue starts at T30 after locally completed T23–T29. Sources: <code>research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md</code> and the existing B45 task-group JSON. Production/distribution readiness is not claimed; placeholder listing URLs remain a local-package limitation.</p>
+<p>The RU/EN section above has the same current claims and limits. Below are preserved historical records; EN history is an abridged overview, not a complete translation of every ledger. Use source-owned JSON for exact receipts. Historical pending/failure entries do not override later scoped retests.</p>
+<p>GAP-01–GAP-05: local implementation verified: 1284 tests (1 skip), fixture 91/91, transcript 26/26. GAP-01/02/04 implemented; overall partially_verified. The four GAP-03 metadata files were corrected with owner approval and 94 focused tests passed; the fresh-host receipt remains open; GAP-05 needs separate trust/probe. Current compatibility status is <code>needs_review</code> for the flat MCP declaration. Hook source changed, so the earlier ACT receipt does not prove activation of this revision.</p>
 <p>This page is the site-facing owner artifact for cold history and detailed
 evidence that should no longer live in root <code>PLAN.md</code>, <code>RUNLOG.md</code>, <code>TEST.md</code>,
 or <code>EVALS.md</code>. The root control-plane files stay compact routers: they show the

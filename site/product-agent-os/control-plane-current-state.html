@@ -1409,6 +1409,24 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#offline-installer-paos-aud-g5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Offline installer — PAOS-AUD-G5
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#09112026" class="md-nav__link">
+    <span class="md-ellipsis">
+      Текущий маршрут — 09.11.2026
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#05112026" class="md-nav__link">
     <span class="md-ellipsis">
       Текущий пользовательский маршрут — 05.11.2026
@@ -3726,6 +3744,24 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#offline-installer-paos-aud-g5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Offline installer — PAOS-AUD-G5
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#09112026" class="md-nav__link">
+    <span class="md-ellipsis">
+      Текущий маршрут — 09.11.2026
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#05112026" class="md-nav__link">
     <span class="md-ellipsis">
       Текущий пользовательский маршрут — 05.11.2026
@@ -4060,12 +4096,30 @@
 
 <h1 id="control-plane-state">Текущий control-plane state<a class="headerlink" href="#control-plane-state" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>experiment</code></p>
-<h2 id="05112026">Текущий пользовательский маршрут — 05.11.2026<a class="headerlink" href="#05112026" title="Permanent link">&para;</a></h2>
-<p>Начинайте с <a href="../codex/surfaces.html">surface matrix</a> и <a href="../product-agent/lifecycle.html">ordinary/full lifecycle</a>. Текущий пакет использует поддерживаемый legacy manifest; portable format описан отдельно. IDE не поддерживает native plugins. При обновлении skills проверяйте exposure, invocation и результат.</p>
-<p>ACT-F1..F6 закрыты в dated local runtime receipt от 03.11 для проверенных Desktop маршрутов. Это не доказательство всех mutation channels, silent Stop execution или hosted/production delivery. Новое обновление касается только docs/site; текущие checks — в <a href="../superpowers/specs/site-docs-refresh-2026-11-05.json">receipt</a>.</p>
-<p>RU/EN раздел выше имеет одинаковые текущие claims и границы. Ниже — сохранённые исторические записи; EN history является сокращённым обзором, а не полным переводом всех ledgers. Для точных receipt используйте source-owned JSON. Исторический pending/failure не отменяет более поздний scoped retest.</p>
+<p>G5 (F13/F14/F17): offline installer, явный стартовый маршрут package и локальная сборка site. Следующая группа — G6 с отдельными host/behavioral/owner acceptance gates. Точные статусы и текущие verification receipts находятся в owning audit plan; site остаётся generated orientation evidence.</p>
+<p>G4 (F05/F09/F10/F15) реализована и локально проверена. Следующая группа — G6. Inline intake сохраняет legacy default; conditional skill gates перенесены в role-specific references; discovery переиспользует один immutable inventory для scope detector. Host loading этим не доказан.</p>
+<h2 id="offline-installer-paos-aud-g5">Offline installer — PAOS-AUD-G5<a class="headerlink" href="#offline-installer-paos-aud-g5" title="Permanent link">&para;</a></h2>
+<p><code>tools/docs_install.ps1 -Install -OfflineWheelhouse &lt;path&gt;</code> использует только локальный
+wheelhouse и bundled ensurepip при создании venv. Offline имеет приоритет над
+<code>-AllowNetwork</code>; upgrade pip выполняется только в online ветке. При отсутствии
+каталога или совместимых wheels команда завершается ошибкой без network fallback.
+Без <code>-Install</code> команда выводит план; сама установка требует отдельной authority.
+Проверки G5 подменяют subprocess boundary и ничего не устанавливают.</p>
+<h2 id="09112026">Текущий маршрут — 09.11.2026<a class="headerlink" href="#09112026" title="Permanent link">&para;</a></h2>
+<p>G1/G2 завершены локально; G3 (F03/F08/F16) реализована и локально проверена. Следующий slice — G6. Owning plan: <code>research/product-agent-os-audit-remediation-task-plan-2026-11-09.md</code>. Локальный MCP compatibility status после G2 — <code>compatible</code>; publisher/URLs/icons и actual host acceptance остаются gated. Это не release или production readiness.</p>
+<p>Единственный machine-readable current pointer находится в <code>PLAN.md</code>, между <code>product-agent-os:current-state:start/end</code>. Он содержит только пути owning sources и их SHA-256 revisions, без дублирования task statuses. <code>RUNLOG.md</code> и <code>TEST.md</code> ссылаются на этот pointer; несколько старых заголовков Current не задают precedence. Источники — audit task plan, B42 и B45 JSON. Optional task_prefixes ограничивает ownership: audit-план проецирует только PAOS-AUD-*, поэтому его cross-reference карточки T30–T34 не конкурируют с canonical B45. Изменение source требует явного обновления pointer после review; mismatch даёт unknown без fallback к истории.</p>
+<p><code>build_status_snapshot(workspace=...)</code> и существующий dashboard CLI читают pointer без изменения workspace. <code>current_state</code> возвращает source_path/source_revision, historical_status, selected_evidence и отдельные task_state, run_state, verification_state, acceptance_state. Новый датированный execution_evidence имеет приоритет над более ранним planning status. Равные даты с несовместимыми receipts или дублирующее ownership дают conflict; неизвестные даты, future receipt, неподдерживаемый формат и устаревшая revision — unknown. Простое implemented не означает verified или accepted. Без pointer сохраняется прежний deferred маршрут B37.</p>
+<p>B42 historical planned и более новые scoped execution receipts сохраняются. B45 T23–T29 остаются локально выполненными и проверенными; T30–T33 planned_not_started, T34 approval_required_not_started. Их machine JSON не переписывается projection. Task/run status не заменяет verification и owner acceptance. Generated snapshot — orientation evidence; полный source остаётся authoritative.</p>
+<p>Source-policy scanner различает project_contract, historical_receipt, official_behavior и mention_only/unknown эвристически. Поддерживаются ISO и DD.MM.YYYY после RU/EN меток; invalid/future/stale/missing видны отдельно. Для нескольких дат используется самая ранняя; свежая секция не освежает всю страницу. Registry links разрешаются только локально в двух canonical registry files, с проверкой anchor и workspace boundary; даты от registry не наследуются. URL и дата никогда не меняют claim_supported=not_verified. Это не semantic audit и не crawler.</p>
+<p>Пустой feedback, rejected ledger и отсутствие owner labels дают insufficient_evidence. Валидность строк, denominator/human_label_count и owner_sentiment разделены. owner_label_supported означает наличие labels, в том числе отрицательных, и не разрешает promotion. Manual-only/candidate-only policy сохраняется.</p>
+<p>Ниже — датированная история. Старые planned, needs_review и activation receipts не описывают текущую revision автоматически. Проверки текущей группы принадлежат owning audit plan; свежая site build не заявляется.</p>
 <details>
 <summary>Датированная история и подробные evidence</summary>
+<h2 id="05112026">Текущий пользовательский маршрут — 05.11.2026<a class="headerlink" href="#05112026" title="Permanent link">&para;</a></h2>
+<p>Начинайте с <a href="../codex/surfaces.html">surface matrix</a> и <a href="../product-agent/lifecycle.html">ordinary/full lifecycle</a>. Пакет имеет Codex compatibility manifest; его наличие не подтверждает валидность всех компонентов или host support. Component/surface evidence разделены в <a href="codex-compatibility.html">compatibility matrix</a>. При обновлении skills проверяйте exposure, invocation и результат.</p>
+<p>ACT-F1..F6 закрыты в dated local runtime receipt от 03.11 для проверенных Desktop маршрутов. Это не доказательство всех mutation channels, silent Stop execution или hosted/production delivery. Docs/site receipt от 05.11 остаётся историческим результатом. ORD-01–ORD-06 затем реализованы и локально проверены через public CLI. Текущая product integration queue — GAP-01–GAP-05; отдельная B45 queue — T30 после локально завершённых T23–T29. Источник: <code>research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md</code> и существующий B45 task-group JSON. Production/distribution readiness не заявляется; placeholder listing URLs остаются ограничением локального пакета.</p>
+<p>RU/EN раздел выше имеет одинаковые текущие claims и границы. Ниже — сохранённые исторические записи; EN history является сокращённым обзором, а не полным переводом всех ledgers. Для точных receipt используйте source-owned JSON. Исторический pending/failure не отменяет более поздний scoped retest.</p>
+<p>GAP-01–GAP-05: локальная реализация проверена: 1284 tests (1 skip), fixture 91/91, transcript 26/26. GAP-01/02/04 implemented; общий статус partially_verified. Четыре metadata GAP-03 исправлены с разрешения владельца, 94 focused tests прошли; остаётся fresh-host receipt; GAP-05 — отдельного trust/probe. Текущий compatibility status <code>needs_review</code> из-за flat MCP declaration. Source hook изменён, поэтому прежний ACT receipt не доказывает активацию новой версии.</p>
 <p>Эта страница является site-facing owner artifact для холодной истории и detailed
 evidence, которые больше не должны жить в root <code>PLAN.md</code>, <code>RUNLOG.md</code>,
 <code>TEST.md</code> и <code>EVALS.md</code>. Root control-plane files остаются компактными

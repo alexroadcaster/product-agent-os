@@ -1,5 +1,11 @@
 # PLAN.md
 
+## PAOS-AUD-G5 — 2026-11-09
+
+G5 F13/F14/F17 implemented_locally_verified. Следующая группа — G6; её host/behavioral/owner gates остаются отдельными. Rollback только G5 hunks и локальная пересборка site. Current pointer закрепляет owning source revisions.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
 ## PAOS-AUD-G4 — 2026-11-09
 
 G4 F05/F09/F10/F15 implemented_locally_verified. Следующая группа — G5. Legacy defaults сохранены; source baseline заморожен для будущего G6. Rollback только G4 hunks; current pointer закрепляет owning sources без вторых статусов.
@@ -13,7 +19,7 @@ G4 F05/F09/F10/F15 implemented_locally_verified. Следующая группа
   "sources": [
     {
       "path": "research/product-agent-os-audit-remediation-task-plan-2026-11-09.md",
-      "revision": "sha256:8af5a31c600be2ed626cfb6d83e9c268270844ec70f64ba84b2ea45ce5ee2904",
+      "revision": "sha256:45aa0092eb7fffee5a9afd509af52cb7d222d9e26c1e4839c9e1f09f13f6f9cf",
       "task_prefixes": [
         "PAOS-AUD-"
       ]

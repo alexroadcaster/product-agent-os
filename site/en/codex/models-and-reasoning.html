@@ -911,6 +911,15 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#local-diagnostics-paos-aud-g2-2026-11-09" class="md-nav__link">
+    <span class="md-ellipsis">
+      Local diagnostics — PAOS-AUD-G2, 2026-11-09
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#context-and-cost" class="md-nav__link">
     <span class="md-ellipsis">
       Context and cost
@@ -3471,6 +3480,15 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#local-diagnostics-paos-aud-g2-2026-11-09" class="md-nav__link">
+    <span class="md-ellipsis">
+      Local diagnostics — PAOS-AUD-G2, 2026-11-09
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#context-and-cost" class="md-nav__link">
     <span class="md-ellipsis">
       Context and cost
@@ -3586,6 +3604,10 @@
 </tbody>
 </table>
 <p>Account-specific availability was not checked in this refresh. No unsupported minimum version is claimed for the other rows. <code>Light</code> maps to <code>low</code> in the relevant product context. <code>Max</code> increases single-agent reasoning; <code>Ultra</code> uses subagents in supported products. Luna does not support Ultra. Do not send UI <code>Ultra</code> as an ordinary API <code>reasoning.effort</code>; the model page defines API values.</p>
+<h2 id="local-diagnostics-paos-aud-g2-2026-11-09">Local diagnostics — PAOS-AUD-G2, 2026-11-09<a class="headerlink" href="#local-diagnostics-paos-aud-g2-2026-11-09" title="Permanent link">&para;</a></h2>
+<p><code>validate_codex_compatibility.py</code> separates local package structure from host diagnostics. Without extra inputs, client/model receipt/trust remain missing, not_verified or unknown; installed CLI is not used as an App version. The documented <a href="https://learn.chatgpt.com/docs/models">CLI 0.159.0 minimum for GPT-6.1 Terra</a> applies only to that model/surface pair. Other minimums are not invented.</p>
+<p>Optional <code>--observations &lt;file.json&gt;</code> reads up to 16 KiB of non-secret JSON: <code>surface</code> (Codex App, CLI, IDE extension), <code>client_version</code> (three numeric components), <code>configured_model</code>, <code>observed_model</code> (the four model IDs above), <code>trust</code> (trusted/untrusted), <code>native_plugin_observed</code> and <code>standalone_skills_observed</code> (boolean). Other fields are not copied into output; unknown values do not become evidence. Duplicate keys and malformed files are rejected. Inputs are caller-supplied observations, not authenticated receipts; account access and promotion remain not_verified/not_assessed. Exit 0 means local structure only, not absence of host gaps.</p>
+<p><code>--cache-root &lt;explicit-directory&gt;</code> compares canonical/cache SHA-256 over manifests, MCP JSON and SKILL.md; results are match/drift/needs_review. Without a cache input: cache_not_provided. Reads are bounded by size/count, links are rejected, contents and absolute paths are not printed. Scope excludes scripts/templates and does not prove host skill selection; full package/host receipts remain separate gates. Caches are neither discovered automatically nor modified. Pins and effort remain unchanged; T23–T29 are not rerun as a new model migration.</p>
 <h2 id="context-and-cost">Context and cost<a class="headerlink" href="#context-and-cost" title="Permanent link">&para;</a></h2>
 <p>On the review date all four API model pages list a 1,050,000-token context window, 922,000 max input and 128,000 max output. These constraints apply jointly, not as additive independent quotas. GPT-6.1 Sol has an official 500,000-token default context in Codex; do not transfer the API limit to the client automatically.</p>
 <p>Cost depends on model, service tier, cache reads/writes and long-context conditions. Do not transfer one model's rates or surcharge to another. Use the dated model page and <a href="https://developers.openai.com/api/docs/guides/prompt-caching">prompt caching</a>; Codex/ChatGPT subscription usage is not API pricing. See the <a href="../agent-systems/evals-observability.html">eval accounting method</a>.</p>

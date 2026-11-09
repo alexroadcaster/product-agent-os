@@ -1598,6 +1598,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#local-gap-03-2026-11-05" class="md-nav__link">
+    <span class="md-ellipsis">
+      Local GAP-03 — 2026-11-05
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#checked-layers" class="md-nav__link">
     <span class="md-ellipsis">
       Checked Layers
@@ -3471,6 +3480,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#local-gap-03-2026-11-05" class="md-nav__link">
+    <span class="md-ellipsis">
+      Local GAP-03 — 2026-11-05
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#checked-layers" class="md-nav__link">
     <span class="md-ellipsis">
       Checked Layers
@@ -3551,7 +3569,42 @@
 <h1 id="instruction-and-tool-use-compliance">Instruction and tool-use compliance<a class="headerlink" href="#instruction-and-tool-use-compliance" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + project evidence</code></p>
 <p>Sources: <a href="https://developers.openai.com/codex/skills">Agent Skills</a>, <a href="https://developers.openai.com/codex/plugins">Plugins</a>, <a href="https://developers.openai.com/codex/plugins/build">Build plugins</a>, <a href="https://developers.openai.com/codex/guides/agents-md"><code>AGENTS.md</code></a>, <a href="https://developers.openai.com/codex/hooks">Hooks</a>, <a href="https://developers.openai.com/codex/permissions">Permissions</a>, <a href="https://developers.openai.com/codex/subagents">Subagents</a>, <a href="../diagrams/skill-exposure-and-invocation.html">Skill exposure and invocation boundary</a>, <code>docs/superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json</code>.</p>
-<p>This page documents how Product-Agent OS should handle instruction compliance, tool-use compliance, skill/plugin exposure and self-learning-loop requests. It does not claim that auto-engagement is already fixed. Current status is <code>planned-only</code> for Batch 42 execution and <code>implemented_source_docs_no_site_rebuild</code> for this documentation page.</p>
+<p>This page documents how Product-Agent OS should handle instruction compliance, tool-use compliance, skill/plugin exposure and self-learning-loop requests. It does not claim that auto-engagement is already fixed. GAP-03 adds local evidence to the historical planned-only B42 snapshot; host activation remains unverified.</p>
+<h2 id="local-gap-03-2026-11-05">Local GAP-03 — 2026-11-05<a class="headerlink" href="#local-gap-03-2026-11-05" title="Permanent link">&para;</a></h2>
+<p>Inputs: canonical source skills, an explicitly selected read-only cache and a declared selected source. <code>build_skill_provenance</code> separates raw/normalized hashes, installed, selected, exposed and invoked. BOM/newlines are normalized; mismatch never refreshes cache. A declared selected path does not prove host loading.</p>
+<p>Current inventory: 12 source skills, 12 cache skills, normalized drift 11/12. Four canonical metadata files (<code>agent-team-designer</code>, <code>docs-maintainer</code>, <code>implementation-planner</code>, <code>requirements-author</code>) placed <code>allow_implicit_invocation</code> under <code>interface</code>. After owner approval, the field was moved to <code>policy</code>, preserving <code>false</code>. All 12 source metadata files pass validation and 94 focused tests passed. Cache is preserved; effective host policy still needs separate verification.</p>
+<table>
+<thead>
+<tr>
+<th>B42 row</th>
+<th>Local change</th>
+<th>Open boundary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M02</td>
+<td>Bounded inventory and digests</td>
+<td>Host exposure/invocation</td>
+</tr>
+<tr>
+<td>M04/M05</td>
+<td>Explicit-only policy classification, read-only candidate, metadata validator</td>
+<td>Explicit-only decision approved; four files corrected locally; host loading unverified</td>
+</tr>
+<tr>
+<td>M06</td>
+<td>Separate gate preserved</td>
+<td>Fresh-session probe not performed</td>
+</tr>
+<tr>
+<td>M07/M08</td>
+<td>Compliance to discovery/orchestrator; learning to candidate-only learning loop; RU/EN synthetic cases</td>
+<td>Actual model instruction-following not tested</td>
+</tr>
+</tbody>
+</table>
+<p>Route recommendation neither invokes a skill nor grants writes. Missing implicit invocation for an explicit-only skill is not a defect. Output: owning B42 evidence and owner decision; next artifact: an authorized fresh-session receipt with fixed hashes. <a href="https://learn.chatgpt.com/docs/build-skills#optional-metadata">Skill metadata</a>, checked 2026-11-05.</p>
 <h2 id="checked-layers">Checked Layers<a class="headerlink" href="#checked-layers" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

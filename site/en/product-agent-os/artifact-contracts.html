@@ -1808,6 +1808,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#ordinary-route-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ordinary route contract
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#contract-boundary" class="md-nav__link">
     <span class="md-ellipsis">
       Contract Boundary
@@ -3579,6 +3588,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#ordinary-route-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ordinary route contract
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#contract-boundary" class="md-nav__link">
     <span class="md-ellipsis">
       Contract Boundary
@@ -3767,6 +3785,61 @@
 <h1 id="product-agent-os-artifact-contracts">Product-Agent OS artifact contracts<a class="headerlink" href="#product-agent-os-artifact-contracts" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + experiment</code></p>
 <p>This page lists the main generated Product-Agent OS artifacts for the modernization loop, project code graph, live/runtime governance and approval-bound handoff. It is not a JSON Schema spec; it is an operator-facing contract map: what gets created, why it exists, where the source-of-truth boundary sits and which approval gates apply.</p>
+<h2 id="ordinary-route-contract">Ordinary route contract<a class="headerlink" href="#ordinary-route-contract" title="Permanent link">&para;</a></h2>
+<p><code>task_context</code> v1 explicitly describes scope, acceptance, changed paths, risks and source-backed checks. It is decision input, not permission to write. The <a href="cli-reference.html#ordinary-route">CLI example</a> shows a complete minimal code case.</p>
+<table>
+<thead>
+<tr>
+<th>Result field</th>
+<th>Meaning</th>
+<th>Boundary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>routing_trace</code></td>
+<td>Mode, task ID, selectors, reasons and state provenance</td>
+<td>Legacy fallback is identified separately</td>
+</tr>
+<tr>
+<td><code>task_routing</code></td>
+<td>Decision, gaps, acceptance and invariants</td>
+<td>Does not certify completeness of risk analysis</td>
+</tr>
+<tr>
+<td><code>code_quality_profile</code> / <code>quality_strategy</code></td>
+<td>T26/T27 outputs</td>
+<td>Detected tools remain <code>present_unverified</code></td>
+</tr>
+<tr>
+<td><code>code_change_contract</code></td>
+<td>Eight inline T25 fields</td>
+<td>Empty for docs-only; full checklist remains reference material</td>
+</tr>
+<tr>
+<td><code>verification_plan</code></td>
+<td>Source, reasons, test kinds and execution policy</td>
+<td>Commands are proposals for review; unsafe proposals are blocked</td>
+</tr>
+<tr>
+<td><code>input_digest</code></td>
+<td>Binding to declared changed/verification paths, manifests, source instructions and task context</td>
+<td>Not a fingerprint of the entire runtime environment</td>
+</tr>
+<tr>
+<td><code>check_observations</code></td>
+<td>Caller-reported command/status/exit and digest</td>
+<td>Freshness does not prove independent execution; stale receipts are not current</td>
+</tr>
+<tr>
+<td><code>template_selection</code></td>
+<td>Selected/omitted renderer artifacts with reasons</td>
+<td>Does not activate agents/hooks/automation or replace merge approval</td>
+</tr>
+</tbody>
+</table>
+<p>Optional <code>check_results</code> contains <code>command</code>, <code>input_digest</code>, <code>status</code> and <code>exit_code</code>. A <code>passed</code> receipt requires exit 0; <code>failed</code> requires nonzero exit; <code>skipped</code> / <code>not_run_with_gap</code> requires null. Receipts cannot turn a contract-mode result into <code>completed</code>. The executing Codex/operator records actual command evidence; undeclared dependencies remain outside digest scope.</p>
+<p>Ordinary sections can live in an existing task artifact. Separate REQUIREMENTS/PLAN/EVALS files and a custom builder are not prerequisites for every small task, while mandatory workspace rules still apply.</p>
 <h2 id="contract-boundary">Contract Boundary<a class="headerlink" href="#contract-boundary" title="Permanent link">&para;</a></h2>
 <p>Generated artifacts are staged evidence only. They are not source of truth unless a later owner-approved process explicitly promotes a fact back into checked-in source documentation or another canonical artifact.</p>
 <p>Source of truth remains:</p>

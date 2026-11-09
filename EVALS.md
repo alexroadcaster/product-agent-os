@@ -1,5 +1,11 @@
 # EVALS.md
 
+## PAOS-AUD-G5 — 2026-11-09
+
+G5 проверяет command routing и documentation/build integrity. Offline failures не дают network fallback; successful CLI exit не снимает context gaps. Mermaid render не доказывает host activation. Новые model/behavioral evals не применимы; прежний G4 run имеет прежнюю provenance; G6 gates открыты.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
 ## PAOS-AUD-G4 — 2026-11-09
 
 Source read-set comparison отделён от live behavioral evaluation. 93 moved sections сохранены; 12 metadata unchanged. Typical/edge/adversarial contract gates должны сохраняться. Model/effort/B45 compact-contract treatment не меняется. Partial input не разрешает legacy fallback; unchanged evidence требует original provenance.

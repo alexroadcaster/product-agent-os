@@ -41,15 +41,25 @@ if (-not (Test-Path -LiteralPath $RequirementsPath)) {
     throw "Missing requirements.txt at $RequirementsPath"
 }
 
+$Offline = -not [string]::IsNullOrWhiteSpace($OfflineWheelhouse)
+if ($Offline -and -not (Test-Path -LiteralPath $OfflineWheelhouse -PathType Container)) {
+    throw "Offline wheelhouse directory not found: $OfflineWheelhouse"
+}
+
 if (-not (Test-Path -LiteralPath $VenvPath)) {
+    # venv uses bundled ensurepip; never request --upgrade-deps in offline mode.
     Invoke-Checked "python" "-m" "venv" $VenvPath
 }
 
-Invoke-Checked $PythonPath "-m" "pip" "install" "--upgrade" "pip"
-
-if (-not [string]::IsNullOrWhiteSpace($OfflineWheelhouse)) {
-    Invoke-Checked $PythonPath "-m" "pip" "install" "--no-index" "--find-links" $OfflineWheelhouse "-r" $RequirementsPath
+if ($Offline) {
+    # Offline takes precedence even when -AllowNetwork was also supplied.
+    try {
+        Invoke-Checked $PythonPath "-m" "pip" "install" "--no-index" "--find-links" $OfflineWheelhouse "-r" $RequirementsPath
+    } catch {
+        throw "Offline wheelhouse install failed. Supply all compatible wheels locally; no network fallback was attempted. $($_.Exception.Message)"
+    }
 } else {
+    Invoke-Checked $PythonPath "-m" "pip" "install" "--upgrade" "pip"
     Invoke-Checked $PythonPath "-m" "pip" "install" "-r" $RequirementsPath
 }
 

@@ -1787,6 +1787,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#ordinary-route" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ordinary route: ограниченная задача
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       Назначение
@@ -3507,6 +3516,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#ordinary-route" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ordinary route: ограниченная задача
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       Назначение
@@ -3623,6 +3641,66 @@
 <h1 id="product-agent-os-cli-reference">Product-Agent OS CLI reference<a class="headerlink" href="#product-agent-os-cli-reference" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + experiment</code></p>
 <p>Эта страница фиксирует локальные поверхности <code>CLI</code>, которые уже есть в <code>plugins/product-agent-os/scripts/</code>. Команды рассматриваются как <code>stage/read-only tooling</code>: они не публикуют plugin, не запускают внешние системы и не выполняют <code>live provider/model/API calls</code> без отдельного <code>explicit approval</code>.</p>
+<h2 id="ordinary-route">Ordinary route: ограниченная задача<a class="headerlink" href="#ordinary-route" title="Permanent link">&para;</a></h2>
+<p>Для небольшой явной задачи используйте inline intake без создания JSON-файла. Обязательны <code>--task</code>, <code>--change-mode</code>, <code>--changed-path</code> и <code>--acceptance</code> (no_op допускает отсутствие changed paths). Paths/acceptance можно повторять; <code>--task-id</code> — необязательный routing label. Отсутствующий <code>--risk-level</code> означает unknown и сохраняет gap. Для behavioral invariants/checks/state используйте <code>--task-context task.json</code>; путь остаётся внутри workspace. Смешанный или неполный ввод отклоняется без fallback. Без обоих вариантов прежний default сохраняется, оба entrypoints показывают <code>intake.mode=legacy_fallback</code>; runtime также сохраняет <code>routing_trace.mode=legacy</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">plugins</span><span class="p">/</span><span class="n">product-agent-os</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">run_codex_runtime_runner</span><span class="p">.</span><span class="n">py</span> <span class="p">./</span><span class="n">sample</span> <span class="p">-</span><span class="n">-contract</span> <span class="p">-</span><span class="n">-task</span> <span class="s2">&quot;Correct wording&quot;</span> <span class="p">-</span><span class="n">-change-mode</span> <span class="n">docs_only</span> <span class="p">-</span><span class="n">-changed-path</span> <span class="n">README</span><span class="p">.</span><span class="nb">md </span><span class="p">-</span><span class="n">-acceptance</span> <span class="s2">&quot;Correct wording&quot;</span> <span class="p">-</span><span class="n">-risk-level</span> <span class="n">low</span>
+<span class="n">python</span> <span class="n">plugins</span><span class="p">/</span><span class="n">product-agent-os</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">render_infrastructure</span><span class="p">.</span><span class="n">py</span> <span class="p">./</span><span class="n">sample</span> <span class="p">-</span><span class="n">-dry-run</span> <span class="p">-</span><span class="n">-task</span> <span class="s2">&quot;Correct wording&quot;</span> <span class="p">-</span><span class="n">-change-mode</span> <span class="n">docs_only</span> <span class="p">-</span><span class="n">-changed-path</span> <span class="n">README</span><span class="p">.</span><span class="nb">md </span><span class="p">-</span><span class="n">-acceptance</span> <span class="s2">&quot;Correct wording&quot;</span> <span class="p">-</span><span class="n">-risk-level</span> <span class="n">low</span>
+</code></pre></div>
+<p>В workspace должны быть собственные инструкции и source-backed checks, например TEST.md с <code>python check_docs.py</code>. Inline input не даёт authority и не запускает проверки. Ordinary stage может содержать ноль предлагаемых файлов и manifest; output остаётся вне target.</p>
+<div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">plugins</span><span class="p">/</span><span class="n">product-agent-os</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">run_codex_runtime_runner</span><span class="p">.</span><span class="n">py</span> <span class="p">./</span><span class="n">sample</span> <span class="p">-</span><span class="n">-contract</span> <span class="p">-</span><span class="n">-task-context</span> <span class="n">task</span><span class="p">.</span><span class="n">json</span>
+<span class="n">python</span> <span class="n">plugins</span><span class="p">/</span><span class="n">product-agent-os</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">render_infrastructure</span><span class="p">.</span><span class="n">py</span> <span class="p">./</span><span class="n">sample</span> <span class="p">-</span><span class="n">-dry-run</span> <span class="p">-</span><span class="n">-task-context</span> <span class="n">task</span><span class="p">.</span><span class="n">json</span>
+</code></pre></div>
+<p>Пример для workspace <code>sample</code>: файл <code>TEST.md</code> должен уже содержать команду <code>python -m unittest test_calc -v</code>; <code>calc.py</code> и <code>test_calc.py</code> — проверяемый код и regression test. Создание этих файлов не выполняется runner автоматически.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;schema_version&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;task_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fix-addition&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;intent&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Fix addition&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;change_mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;defect_fix&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;changed_paths&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;calc.py&quot;</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;verification_paths&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;test_calc.py&quot;</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;risk_level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;low&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;acceptance&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;total(2, 3) equals 5&quot;</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;risks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;risk_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sum&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pure_logic&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Addition regression&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;protected_invariants&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;addition&quot;</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;languages&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;python&quot;</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;executable_test_seam&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;checks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;python -m unittest test_calc -v&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TEST.md&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;test_kinds&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;unit&quot;</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Выбор проходит через существующие T26/T27 selectors. <code>routing_trace</code> показывает <code>ordinary</code>, <code>full</code> или <code>needs_context</code>, вызванные selectors и отсутствие legacy fallback. <code>route_ready</code> означает готовый план действий: команды не исполнялись, исходники не менялись, task не завершён.</p>
+<ul>
+<li><code>docs_only</code> допускает Markdown/text изменения без behavioral risks; code-change contract неприменим. <code>no_op</code>, <code>reuse</code>, <code>configuration</code>, <code>deletion</code> допускают результат без нового кода.</li>
+<li><code>unknown</code> risk, отсутствующие checks или stale evidence дают явный gap. High-risk, boundary/critical-flow, sensitive paths/intent, financial/release и explicit-full context сохраняют full reporting и необходимые gates.</li>
+<li><code>checks</code> связывает команду из реального source с типами проверок. Известные command lines из <code>AGENTS.md</code>, <code>AGENTS.override.md</code>, <code>TEST.md</code> и вложенных инструкций сохраняются консервативно. Это не семантический parser правил: Codex обязан прочитать все применимые инструкции; они имеют приоритет над selection.</li>
+<li><code>state</code> необязателен: <code>value</code>, <code>source</code>, <code>sha256</code> должны соответствовать JSON с теми же <code>task_id</code> и <code>lifecycle_state</code>. Ни state, ни данные task context не дают write authority.</li>
+<li>Неизвестные поля/version и выход paths за workspace дают exit 2. Корректный route — exit 0; <code>needs_context</code>, <code>needs_approval</code>, <code>blocked</code> — exit 1.</li>
+<li><code>--stage</code> также принимает task context, но требует отсутствия gaps и output directory вне target. Existing ordinary project обычно переиспользует документы и не генерирует новый пакет.</li>
+</ul>
+<p>Пример и входные поля относятся к локальному Product-Agent OS contract, а не к API OpenAI. Подробнее: <a href="artifact-contracts.html#ordinary-route-contract">artifact contracts</a>.</p>
 <h2 id="_1">Назначение<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <p>Слой <code>CLI</code> нужен для повторяемого локального цикла доказательств:</p>
 <ul>
