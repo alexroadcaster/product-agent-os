@@ -3,10 +3,14 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime
+import hashlib
+import re
+from datetime import UTC, datetime
+from pathlib import Path
 from typing import Any
 
 from codex_runtime_runner.redaction import redact_payload
+from product_agent_os.plugin_components import unique_json_object
 
 
 DEFAULT_EVIDENCE_MAX_AGE_DAYS = 14
@@ -37,6 +41,7 @@ def build_status_snapshot(
     stage_manifest: dict[str, Any] | None = None,
     question_ledger: dict[str, Any] | None = None,
     system_file_hygiene_audit: dict[str, Any] | None = None,
+    workspace: str | Path | None = None,
     generated_at: str,
     evidence_max_age_days: int = DEFAULT_EVIDENCE_MAX_AGE_DAYS,
 ) -> dict[str, Any]:
@@ -51,6 +56,7 @@ def build_status_snapshot(
     project_graph_status = route.get("project_graph_status") if isinstance(route.get("project_graph_status"), dict) else {}
     evidence_summary = _evidence_summary(runtime, generated_at, evidence_max_age_days)
     readiness_summary = _readiness_summary(runtime, usage_mode, evidence_summary, methodology_packet, project_graph_status)
+    current_state = _current_state(Path(workspace) if workspace is not None else None, generated_at)
 
     snapshot = {
         "schema_version": 1,
@@ -62,6 +68,7 @@ def build_status_snapshot(
         "question_summary": question_summary,
         "readiness_summary": readiness_summary,
         "evidence_summary": evidence_summary,
+        "current_state": current_state,
         "next_safe_action": _next_safe_action(route, methodology_packet),
         "dashboard_policy": {
             "write_policy": "read_only",
@@ -98,7 +105,193 @@ def build_status_snapshot(
             "requirements": _safe_list(route.get("approval_requirements")),
         },
     }
+    if current_state["pointer_present"]:
+        snapshot["projection_decisions"]["task_matrix_state"] = {
+            "status": current_state["status"], "state_projection": "bounded_source_revision_projection",
+            "source_policy": "PLAN pointer selects owning sources; generated view is not completion proof",
+        }
     return _redacted_snapshot(snapshot)
+
+
+_CURRENT_POINTER = re.compile(r"<!-- product-agent-os:current-state:start -->\s*```json\s*(.*?)\s*```\s*<!-- product-agent-os:current-state:end -->", re.S)
+_TASK_ID = re.compile(r"[A-Za-z0-9_.-]{1,128}")
+_REVISION = re.compile(r"sha256:[a-f0-9]{64}")
+_TASK_STATES = {
+    "planned": ("planned", "not_verified"),
+    "planned_not_started": ("planned", "not_verified"),
+    "approval_required_not_started": ("blocked", "not_verified"),
+    "in_progress": ("in_progress", "not_verified"),
+    "implemented": ("implemented", "not_verified"),
+    "locally_implemented_focused_verified": ("implemented", "locally_verified"),
+    "implemented_locally_verified": ("implemented", "locally_verified"),
+    "implemented_locally_verified_explicit_only": ("implemented", "locally_verified"),
+    "implemented_locally_synthetic_route": ("implemented", "synthetic_verified"),
+    "partially_verified_local_inventory": ("unknown", "partially_verified"),
+    "partially_verified_synthetic_only": ("unknown", "partially_verified"),
+    "not_verified_fresh_host_required": ("unknown", "not_verified"),
+    "blocked": ("blocked", "not_verified"),
+}
+
+
+def _current_state(workspace: Path | None, generated_at: str) -> dict[str, Any]:
+    """Read a single revision-pinned PLAN pointer, never infer ownership from headings.
+
+    Sources remain authoritative. No writes, global search, arbitrary Markdown
+    execution or automatic acceptance; malformed/stale sources have no fallback.
+    """
+    result = {"status": "unknown", "pointer_present": False, "tasks": [], "sources": [],
+              "issues": [], "source_policy": "generated_orientation_only_not_acceptance"}
+    if workspace is None:
+        result["issues"].append("workspace_not_provided")
+        return result
+    root = workspace.resolve()
+    try:
+        plan = _read_current_source(root, "PLAN.md").decode("utf-8")
+        matches = _CURRENT_POINTER.findall(plan)
+        result["pointer_present"] = "<!-- product-agent-os:current-state:start -->" in plan
+        if len(matches) != 1:
+            raise ValueError("current_pointer_missing_or_ambiguous")
+        pointer = json.loads(matches[0], object_pairs_hook=unique_json_object)
+        if not isinstance(pointer, dict) or pointer.get("schema_version") != 1 or set(pointer) != {"schema_version", "sources"}:
+            raise ValueError("invalid_current_pointer")
+        sources = pointer["sources"]
+        if not isinstance(sources, list) or not 1 <= len(sources) <= 8:
+            raise ValueError("invalid_current_sources")
+        for ref in sources:
+            if not isinstance(ref, dict) or not {"path", "revision"} <= set(ref) or set(ref) - {"path", "revision", "task_prefixes"} or not isinstance(ref["revision"], str) or not _REVISION.fullmatch(ref["revision"]):
+                raise ValueError("invalid_source_reference")
+            prefixes = ref.get("task_prefixes", [])
+            if not isinstance(prefixes, list) or len(prefixes) > 8 or any(not isinstance(prefix, str) or not _TASK_ID.fullmatch(prefix) for prefix in prefixes):
+                raise ValueError("invalid_task_scope")
+            path = ref["path"]
+            if not isinstance(path, str) or not path.endswith((".json", ".md")) or not path.startswith(("docs/superpowers/", "research/")):
+                raise ValueError("unsupported_source_path")
+            content = _read_current_source(root, path)
+            revision = "sha256:" + hashlib.sha256(content).hexdigest()
+            if revision != ref["revision"]:
+                raise ValueError("source_revision_mismatch")
+            result["sources"].append({"path": path, "revision": revision, "task_prefixes": prefixes})
+            if path.endswith(".json"):
+                doc = json.loads(content.decode("utf-8"), object_pairs_hook=unique_json_object)
+                if not isinstance(doc, dict) or not isinstance(doc.get("tasks"), list):
+                    raise ValueError("invalid_task_source")
+                tasks = doc["tasks"]
+                baseline_date = doc.get("generated_at") or doc.get("checked_at")
+            else:
+                tasks = _markdown_tasks(content.decode("utf-8"))
+                baseline_date = None
+            if len(tasks) > 2000 or len(result["tasks"]) + len(tasks) > 2000:
+                raise ValueError("task_projection_limit")
+            for task in tasks:
+                row = _project_task(task, path, revision, baseline_date, generated_at)
+                if not prefixes or any(row["task_id"].startswith(prefix) for prefix in prefixes):
+                    result["tasks"].append(row)
+    except (OSError, UnicodeError, ValueError, TypeError) as exc:
+        # Never copy raw input, paths from exceptions, or partial success.
+        reason = str(exc) if type(exc) is ValueError and re.fullmatch(r"[a-z_]+", str(exc)) else "invalid_current_source"
+        result["issues"].append(reason)
+        result["tasks"] = []
+        return result
+    seen = set()
+    for row in result["tasks"]:
+        if row["task_id"] in seen:
+            result["issues"].append("duplicate_task_ownership")
+            for duplicate in result["tasks"]:
+                if duplicate["task_id"] == row["task_id"]:
+                    _uncertain_task(duplicate, "conflict")
+        seen.add(row["task_id"])
+    states = {row["projection_status"] for row in result["tasks"]}
+    result["status"] = "conflict" if "conflict" in states else "unknown" if "unknown" in states or not states else "projected"
+    return result
+
+
+def _read_current_source(root: Path, relative: str) -> bytes:
+    if not _safe_project_graph_relative_path(relative) or ":" in relative or "\\" in relative:
+        raise ValueError("unsafe_source_path")
+    path = (root / relative).resolve()
+    if not path.is_relative_to(root):
+        raise ValueError("unsafe_source_path")
+    with path.open("rb") as stream:
+        content = stream.read(2 * 1024 * 1024 + 1)
+    if len(content) > 2 * 1024 * 1024:
+        raise ValueError("source_size_limit")
+    return content
+
+
+def _markdown_tasks(text: str) -> list[dict[str, Any]]:
+    tasks = []
+    for block in re.split(r"(?m)^### Task `", text)[1:]:
+        task_id = block.split("`", 1)[0]
+        status = re.findall(r"(?m)^- Status: ([a-z_]+)\s*$", block)
+        completion = re.findall(r"(?m)^- status: ([a-z_]+)\s*$", block)
+        if len(status) != 1 or len(completion) != 1:
+            raise ValueError("ambiguous_markdown_task")
+        tasks.append({"task_id": task_id, "status": status[0], "completion_status": completion[0]})
+    return tasks
+
+
+def _project_task(task: Any, path: str, revision: str, baseline_date: Any, generated_at: str) -> dict[str, Any]:
+    if not isinstance(task, dict):
+        raise ValueError("invalid_task_record")
+    task_id = task.get("task_id") or task.get("id")
+    if not isinstance(task_id, str) or not _TASK_ID.fullmatch(task_id):
+        raise ValueError("invalid_task_id")
+    historical = task.get("status")
+    row = {"task_id": task_id, "source_path": path, "source_revision": revision,
+           "historical_status": historical if isinstance(historical, str) and historical in _TASK_STATES else "unknown",
+           "selected_evidence": "source_status", "projection_status": "projected",
+           "task_state": "unknown", "run_state": "unknown", "verification_state": "not_verified", "acceptance_state": "unknown"}
+    selected = task
+    receipts = task.get("execution_evidence")
+    if receipts is not None:
+        receipts = receipts if isinstance(receipts, list) else [receipts]
+        current = _state_date(generated_at)
+        baseline = _state_date(baseline_date)
+        if not receipts or len(receipts) > 16 or current is None or baseline is None:
+            return _uncertain_task(row, "unknown")
+        dated = []
+        for receipt in receipts:
+            checked = _state_date(receipt.get("checked_at")) if isinstance(receipt, dict) else None
+            if checked is None or checked > current:
+                return _uncertain_task(row, "unknown")
+            dated.append((checked, receipt))
+        latest = max(when for when, _ in dated)
+        candidates = [item for when, item in dated if when == latest]
+        signatures = {json.dumps({key: item.get(key) for key in ("status", "run_status", "verification_status", "acceptance_status")}, sort_keys=True) for item in candidates}
+        if len(signatures) != 1 or latest == baseline and candidates[0].get("status") != historical:
+            return _uncertain_task(row, "conflict")
+        if latest > baseline:
+            selected = candidates[0]
+            row["selected_evidence"] = "execution_evidence"
+    if task.get("completion_status", historical) != historical:
+        return _uncertain_task(row, "conflict")
+    state = selected.get("status")
+    if not isinstance(state, str) or state not in _TASK_STATES:
+        return _uncertain_task(row, "unknown")
+    row["task_state"], row["verification_state"] = _TASK_STATES[state]
+    for field, allowed in (("run", {"not_started", "running", "completed", "failed", "blocked"}),
+                           ("verification", {"not_verified", "locally_verified", "partially_verified", "failed"}),
+                           ("acceptance", {"accepted", "needs_user_acceptance", "rejected"})):
+        value = selected.get(field + "_status")
+        if value is not None:
+            if not isinstance(value, str) or value not in allowed:
+                return _uncertain_task(row, "unknown")
+            row[field + "_state"] = value
+    return row
+
+
+def _uncertain_task(row: dict[str, Any], status: str) -> dict[str, Any]:
+    row.update(projection_status=status, task_state=status, run_state="unknown", verification_state="not_verified", acceptance_state="unknown")
+    return row
+
+
+def _state_date(value: Any) -> datetime | None:
+    if not isinstance(value, str):
+        return None
+    parsed = _parse_datetime(value)
+    if parsed is not None and parsed.tzinfo is None and re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
+        parsed = parsed.replace(tzinfo=UTC)
+    return parsed if parsed is not None and parsed.tzinfo is not None else None
 
 
 def _usage_mode(route: dict[str, Any], discovery: dict[str, Any]) -> dict[str, Any]:
@@ -139,21 +332,30 @@ def _evidence_summary(
     evidence = runtime.get("verification_evidence")
     items = evidence if isinstance(evidence, list) else []
     freshness = "missing"
-    stale_items = 0
+    stale_items = unknown_items = future_items = 0
     if items:
         freshness = "current"
         generated = _parse_datetime(generated_at)
         for item in items:
             recorded_at = _evidence_recorded_at(item)
-            if generated is not None and recorded_at is not None:
-                if (generated - recorded_at).days > evidence_max_age_days:
-                    stale_items += 1
-        if stale_items:
+            if generated is None or generated.tzinfo is None or recorded_at is None or recorded_at.tzinfo is None:
+                unknown_items += 1
+            elif recorded_at > generated:
+                future_items += 1
+            elif (generated - recorded_at).days > evidence_max_age_days:
+                stale_items += 1
+        if unknown_items:
+            freshness = "unknown"
+        elif future_items:
+            freshness = "future"
+        elif stale_items:
             freshness = "stale"
     return {
         "freshness": freshness,
         "evidence_count": len(items),
         "stale_count": stale_items,
+        "unknown_count": unknown_items,
+        "future_count": future_items,
         "max_age_days": evidence_max_age_days,
     }
 
@@ -173,7 +375,7 @@ def _readiness_summary(
         warnings.append("inspection-only evidence cannot prove completion")
     if evidence_summary.get("freshness") == "stale":
         warnings.append("stale evidence")
-    if evidence_summary.get("freshness") == "missing" and runtime_status == "completed":
+    if evidence_summary.get("freshness") != "current" and runtime_status == "completed":
         warnings.append("completion status lacks current verification evidence")
     if methodology_packet.get("status") == "present_unverified":
         warnings.append("methodology evidence is present_unverified")

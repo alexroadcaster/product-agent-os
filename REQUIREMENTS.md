@@ -1,5 +1,27 @@
 # REQUIREMENTS.md
 
+## PAOS-AUD-G3 — 2026-11-09
+
+PAOS-AUD-G3 разрешает локальные F03/F08/F16: строгие RU/EN dates, безопасные registry refs, claim classes; insufficient_evidence при нуле owner labels; current pointer с revision и раздельными task/run/verification/acceptance. Source presence не semantic proof; история и manual/candidate boundaries сохраняются.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
+## PAOS-AUD-G2 — 2026-11-09
+
+PAOS-AUD-G2: разрешены локальные F01/F02/F04. Acceptance: supported MCP wrapper, unsupported отдельно от not_verified, surface-specific minimum, configured/observed model, bounded canonical/cache provenance и trust unknown/observed. Неподтверждённые publisher/URLs оставляют distribution gated; host activation и T30–T34 не входят в этот scope.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
+## Web Task Manager: документационный scope — 2026-11-09
+
+Полный Web Task Manager включает восемь вкладок, управление агентами/skills, сессии, граф файлов/переменных, 12 полей задачи, оценку/факт времени, RU/EN и темы. [PRD §13](research/product-agent-os-web-prd-2026-11-05.md) владеет требованиями; [24 экрана](research/product-agent-os-web-task-manager-screens-2026-11-09.md) — proposed UX. Scope текущей задачи: документы и изображения; разработка не начата.
+
+## PAOS-AUD-G1 — 2026-11-09
+
+PAOS-AUD-G1: запрос владельца разрешает локальную реализацию F06/F12/F11/F07/F18. Acceptance: positive/negative contracts, active/package parity, native rules parser и synthetic merge/ACL tests. Реальные ACL, target apply, trust, hooks/rules activation и G6 host acceptance остаются отдельными границами.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
 ## Session lifecycle isolation — 2026-11-09
 
 `PAOS-SESSION-LIFECYCLE-2026-11-09`: user-authorized repair. Independent chats select their own marker from host session_id; no cross-chat fallback or reset. Preserve native sandbox/approvals, safety patterns, full/concise reporting, freshness and terminal checks. Legacy callers without session identity retain the legacy route. Acceptance and evidence: [owning record](research/product-agent-os-session-lifecycle-fix-2026-11-09.md). M1 wireframes remain documentation-only; Web implementation is not authorized.

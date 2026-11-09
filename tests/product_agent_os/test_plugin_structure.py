@@ -24,12 +24,12 @@ class PluginStructureTest(unittest.TestCase):
         self.assertTrue(mcp_path.exists(), ".mcp.json must exist")
         data = json.loads(mcp_path.read_text(encoding="utf-8"))
 
-        self.assertNotIn("mcpServers", data)
-        self.assertIn("context7", data)
-        context7 = data["context7"]
+        self.assertEqual(set(data), {"mcpServers"})
+        self.assertIn("context7", data["mcpServers"])
+        context7 = data["mcpServers"]["context7"]
         self.assertEqual(context7["command"], "npx")
         self.assertEqual(context7["args"], ["-y", "@upstash/context7-mcp"])
-        self.assertEqual(context7["startup_timeout_sec"], 20)
+        self.assertNotIn("startup_timeout_sec", context7)
         self.assertNotIn("YOUR_API_KEY", json.dumps(data))
         self.assertNotIn("CONTEXT7_API_KEY", json.dumps(data))
 

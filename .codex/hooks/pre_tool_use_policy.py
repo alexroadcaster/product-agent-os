@@ -120,6 +120,18 @@ def _strings_from(value: Any) -> list[str]:
 
 
 def _command_text(payload: dict[str, Any], raw: str) -> str:
+    """Separate executable payload from tool metadata; retain opaque forms for review."""
+    call = _literal_call(payload)
+    if call and call[0] == "exec_command" and isinstance(call[1], dict):
+        command = call[1].get("cmd")
+        if isinstance(command, str):
+            return command
+    if call and call[0] == "apply_patch" and isinstance(call[1], str):
+        return call[1]
+    if _tool_name(payload).rsplit(".", 1)[-1] in {"Bash", "shell_command"}:
+        arguments = payload.get("tool_input", {})
+        if isinstance(arguments, dict) and isinstance(arguments.get("command"), str):
+            return arguments["command"]
     values: list[str] = []
     for key in ("command", "cmd", "tool_input", "arguments", "input", "parameters"):
         if key in payload:
@@ -140,7 +152,18 @@ def _matches(patterns: list[re.Pattern[str]], text: str) -> bool:
 
 
 def _is_read_only(command: str) -> bool:
-    return bool(command.strip()) and _matches(READ_ONLY_PATTERNS, command.strip())
+    # Only a bounded literal command gets the fast path, never a shell program.
+    pipeline = re.fullmatch(r"(.+?)\s*\|\s*Select-Object\s+-(?:First|Last)\s+[0-9]+\s*", command, re.IGNORECASE)
+    if pipeline:
+        return _is_read_only(pipeline[1])
+    if not command.strip() or re.search(r"[;|&><`$\r\n{}()]", command):
+        return False
+    if re.search(r"(?i)(?:--output|--ext-diff|--textconv|--pre|--hostname-bin|--config|--exec)(?:[=\s]|$)", command):
+        return False
+    # Python help may import/run arbitrary user code before displaying help.
+    if re.match(r"(?i)^\s*python\b", command):
+        return False
+    return _matches(READ_ONLY_PATTERNS, command.strip())
 
 
 def lifecycle_session_id(payload: dict[str, Any]) -> str | None:
@@ -214,9 +237,40 @@ def _marker_write_policy(root: Path, payload: dict[str, Any], command: str) -> t
 def _is_mutating(tool: str, command: str) -> bool:
     if "apply_patch" in tool.lower():
         return True
-    if _is_read_only(command):
+    if tool.rsplit(".", 1)[-1] in {"", "exec_command", "shell_command", "Bash"} and _is_read_only(command):
         return False
-    return _matches(MUTATING_PATTERNS, command)
+    # Unknown commands need the same scoped lifecycle check as known writes.
+    return bool(command.strip())
+
+
+def _safety_reasons(root: Path | None, payload: dict[str, Any], command: str) -> list[str]:
+    """Inspect executable text or patch destinations, never Markdown patch prose."""
+    call = _literal_call(payload)
+    authoring = _authoring_call(payload)
+    if authoring is not None:
+        call = ("apply_patch", authoring[1])
+    if call and call[0] == "apply_patch" and isinstance(call[1], str):
+        root = root or _workspace_root(payload)
+        targets = re.findall(r"^\*\*\* (?:(?:Add|Update|Delete) File|Move to): (.+)$", call[1], re.MULTILINE)
+        reasons = []
+        for target in targets:
+            path = Path(target)
+            path = path if path.is_absolute() else root / path
+            if not path.resolve().is_relative_to(root.resolve()):
+                reasons.append("Patch destination is outside project ownership.")
+            if re.search(r"(?i)(?:^|[/\\])(?:\.env(?:\.|$)|[^/\\]*(?:credential|secret|private[_-]?key))", target):
+                reasons.append("Patch destination may contain sensitive material.")
+        return reasons
+    if call and call[0] == "exec_command" and isinstance(call[1], dict):
+        command = str(call[1].get("cmd", ""))
+    reasons = []
+    if not _is_read_only(command) and _matches(DESTRUCTIVE_PATTERNS, command):
+        reasons.append("Destructive command blocked; require explicit approval and scoped target review.")
+    if _matches(FORBIDDEN_PATH_PATTERNS, command):
+        reasons.append("Command references a path outside normal project ownership.")
+    if _matches(SENSITIVE_WRITE_PATTERNS, command):
+        reasons.append("Command may write sensitive material; credentials must not enter project artifacts.")
+    return reasons
 
 
 def _contains_sensitive_key(value: Any) -> bool:
@@ -275,13 +329,13 @@ def _lifecycle_marker_ok(path: Path, *, now: datetime | None = None, report_auth
         scope = payload.get("lifecycle_scope")
         if not isinstance(scope, dict):
             return False, "lifecycle_scope must classify packet applicability"
-        if scope.get("work_type") not in {"implementation", "fix", "review", "research", "planning"} or scope.get("size") not in {"bounded", "large"} or scope.get("risk") not in {"low", "medium", "high"}:
+        if scope.get("work_type") not in {"implementation", "fix", "review", "research", "planning", "report_authoring"} or scope.get("size") not in {"bounded", "large"} or scope.get("risk") not in {"low", "medium", "high"}:
             return False, "invalid lifecycle_scope classification"
         flags = ("financially_material", "release_or_readiness", "explicit_packet_request")
         if any(type(scope.get(key)) is not bool for key in flags) or not isinstance(scope.get("reason"), str) or not scope["reason"].strip():
             return False, "lifecycle_scope requires boolean triggers and a reason"
         # Reporting scope never grants mutation authority to a read-only request.
-        if scope["work_type"] in {"review", "research", "planning"} and not report_authorized:
+        if scope["work_type"] in {"review", "research", "planning", "report_authoring"} and not report_authorized:
             return False, "read-only lifecycle scope does not authorize mutation"
         full_required = scope["size"] == "large" or scope["risk"] == "high" or any(scope[key] for key in flags)
         if concise and full_required:
@@ -368,7 +422,7 @@ def _report_read_only(payload: dict[str, Any]) -> bool:
     ))
 
 
-def _report_path(root: Path, value: Any) -> Path:
+def _report_path(root: Path, value: Any, *, allow_existing: bool = False) -> Path:
     """Reject traversal, aliases and existing/symlink targets before create-only writes."""
     if not isinstance(value, str) or not value or value != value.strip() or any(ord(c) < 32 for c in value):
         raise ValueError("invalid_report_path")
@@ -388,9 +442,108 @@ def _report_path(root: Path, value: Any) -> Path:
     candidate = root.joinpath(*parts)
     if candidate.suffix.lower() != ".md" or not candidate.resolve().is_relative_to(root):
         raise ValueError("report_must_be_workspace_markdown")
-    if candidate.exists() or candidate.is_symlink() or any(p.is_symlink() for p in candidate.parents if p != root):
+    if (candidate.exists() and not allow_existing) or any(
+        p.is_symlink() or (hasattr(p, "is_junction") and p.is_junction())
+        for p in (candidate, *candidate.parents)
+    ):
         raise ValueError("report_destination_exists_or_is_symlink")
+    if candidate.exists() and (not candidate.is_file() or candidate.stat().st_nlink != 1):
+        raise ValueError("report_destination_not_regular_or_has_aliases")
     return candidate.resolve()
+
+
+def _authoring_call(payload: dict[str, Any]) -> tuple[str, str] | None:
+    """A literal digest comment plus one patch call; no evaluated expressions."""
+    if _tool_name(payload).rsplit(".", 1)[-1] != "exec":
+        return None
+    value = payload.get("tool_input", payload.get("arguments", payload.get("input")))
+    code = value.get("code") if isinstance(value, dict) else value
+    if not isinstance(code, str) or len(code) > 2_000_000:
+        return None
+    header = re.match(r"\A// paos-report-previous-sha256: (absent|[0-9a-f]+)\n", code)
+    if not header:
+        return None
+    if header[1] != "absent" and len(header[1]) != 64:
+        return None
+    call = _literal_call({"tool_name": "functions.exec", "tool_input": code[header.end():]})
+    if call is None or call[0] != "apply_patch" or not isinstance(call[1], str):
+        return None
+    return header[1], call[1]
+
+
+def _report_authoring_action_ok(root: Path, payload: dict[str, Any], authority: Path,
+                               expected_sha256: str) -> tuple[bool, str]:
+    """Opt-in v2: one session/report, CAS preflight and whole-file patch context.
+
+    The host still owns the actual write. This guard cannot lock the interval
+    between hook return and patch application; concurrent writers must be excluded.
+    """
+    root = root.resolve()
+    try:
+        if (not authority.resolve().is_relative_to(root) or authority.is_symlink()
+                or authority.stat().st_size > 65536):
+            return False, "authority_path_or_size_invalid"
+        raw = authority.read_bytes()
+        if hashlib.sha256(raw).hexdigest() != expected_sha256:
+            return False, "authority_pin_mismatch"
+        grant = json.loads(raw)
+        fields = {"schema_version", "task_id", "session_id", "workspace_sha256", "marker_sha256",
+                  "output_path", "issued_at", "expires_at"}
+        if (not isinstance(grant, dict) or set(grant) != fields
+                or type(grant["schema_version"]) is not int or grant["schema_version"] != 2
+                or any(not isinstance(grant[k], str) or not grant[k] for k in fields - {"schema_version"})):
+            return False, "authoring_schema_invalid"
+        session = lifecycle_session_id(payload)
+        if session is None or grant["session_id"] != session:
+            return False, "authoring_session_mismatch"
+        if grant["workspace_sha256"] != hashlib.sha256(os.path.normcase(str(root)).encode()).hexdigest():
+            return False, "authority_workspace_mismatch"
+        now = datetime.now(timezone.utc)
+        issued, expiry = _parse_updated_at(grant["issued_at"]), _parse_updated_at(grant["expires_at"])
+        if issued is None or expiry is None or issued > now + MARKER_FUTURE_SKEW or not issued < expiry or expiry <= now or expiry - issued > timedelta(hours=24):
+            return False, "authority_expired_or_invalid_window"
+        marker_path = lifecycle_marker_path(root, payload)
+        marker_raw = marker_path.read_bytes()
+        if hashlib.sha256(marker_raw).hexdigest() != grant["marker_sha256"]:
+            return False, "authority_marker_mismatch"
+        marker = json.loads(marker_raw)
+        if (marker.get("task_id") != grant["task_id"] or not isinstance(marker.get("lifecycle_scope"), dict)
+                or marker["lifecycle_scope"].get("work_type") != "report_authoring"):
+            return False, "explicit_report_authoring_scope_required"
+        valid, reason = _lifecycle_marker_ok(marker_path, now=now, report_authorized=True,
+                                            expected_session_id=session)
+        if not valid:
+            return False, reason
+        name = grant["output_path"]
+        if Path(name).is_absolute() or "\\" in name or any(p in {"", ".", ".."} for p in name.split("/")):
+            return False, "authoring_path_must_be_canonical_relative"
+        report = _report_path(root, name, allow_existing=True)
+        call = _authoring_call(payload)
+        if call is None:
+            return False, "literal_digest_and_single_patch_required"
+        previous, patch = call
+        lines = patch.splitlines()
+        if len(lines) < 4 or lines[0] != "*** Begin Patch" or lines[-1] != "*** End Patch":
+            return False, "invalid_authoring_patch"
+        if previous == "absent":
+            if report.exists() or lines[1] != "*** Add File: " + name or any(not line.startswith("+") for line in lines[2:-1]):
+                return False, "authoring_create_conflict"
+        else:
+            if not report.exists() or report.stat().st_size > 1_000_000:
+                return False, "authoring_report_missing_or_too_large"
+            before = report.read_bytes()
+            if hashlib.sha256(before).hexdigest() != previous:
+                return False, "authoring_previous_digest_conflict"
+            if (lines[1] != "*** Update File: " + name or lines[2] != "@@"
+                    or lines[-2] != "*** End of File" or any(not line.startswith(("-", "+")) for line in lines[3:-2])):
+                return False, "single_whole_report_update_required"
+            # All previous lines must occur verbatim; partial/mixed hunks fail closed.
+            removed = [line[1:] for line in lines[3:-2] if line.startswith("-")]
+            if removed != before.decode("utf-8").splitlines():
+                return False, "authoring_previous_content_conflict"
+        return True, "ok"
+    except (OSError, ValueError, TypeError, KeyError, AttributeError):
+        return False, "report_authoring_invalid"
 
 
 def _report_action_ok(root: Path, payload: dict[str, Any], authority: Path, expected_sha256: str) -> tuple[bool, str]:
@@ -461,16 +614,24 @@ def main(argv: list[str] | None = None) -> int:
     payload, raw = _read_payload()
     command = _command_text(payload, raw)
     tool = _tool_name(payload)
-    reasons: list[str] = []
-
-    if _matches(DESTRUCTIVE_PATTERNS, command):
-        reasons.append("Destructive command blocked; require explicit approval and scoped target review.")
-    if _matches(FORBIDDEN_PATH_PATTERNS, command):
-        reasons.append("Command references a path outside normal project ownership.")
-    if _matches(SENSITIVE_WRITE_PATTERNS, command):
-        reasons.append("Command may write sensitive material; credentials must not enter project artifacts.")
+    call = _literal_call(payload)
+    if call is not None:
+        tool = call[0]
+    reasons = _safety_reasons(None, payload, command)
 
     arguments = sys.argv[1:] if argv is None else argv
+    if any(arg.startswith("--report-authoring") for arg in arguments):
+        if len(arguments) != 4 or arguments[0] != "--report-authoring" or arguments[2] != "--report-authoring-sha256":
+            _deny("Invalid pinned report authoring configuration.")
+            return 0
+        if not _report_read_only(payload):
+            root = _workspace_root(payload)
+            allowed, reason = _report_authoring_action_ok(root, payload, root / arguments[1], arguments[3])
+            if not allowed:
+                reasons.append("Report authoring denied: " + reason)
+        if reasons:
+            _deny(" ".join(dict.fromkeys(reasons)))
+        return 0
     try:
         options = _report_options(arguments, _workspace_root(payload)) if any(arg.startswith("--report-authority") for arg in arguments) else None
     except ValueError:

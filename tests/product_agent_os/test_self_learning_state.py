@@ -145,6 +145,23 @@ class SelfLearningStateTests(unittest.TestCase):
         self.assertEqual(skipped["s-raw"], "raw_transcript_blocked")
         self.assertEqual(skipped["s-no-consent"], "missing_consent")
 
+    def test_satisfaction_without_owner_labels_is_insufficient(self) -> None:
+        from product_agent_os.self_learning_feedback import evaluate_satisfaction
+        for rows in ([], [{"feedback_id": "synthetic", "explicit_rating": None, "revision_requested": True, "revision_accepted": False}]):
+            result = evaluate_satisfaction(rows)
+            self.assertEqual(result['promotion_signal'], 'insufficient_evidence')
+            self.assertEqual(result['human_label_count'], 0)
+            self.assertEqual(result['owner_sentiment'], 'unknown')
+
+    def test_satisfaction_separates_label_support_and_sentiment(self) -> None:
+        from product_agent_os.self_learning_feedback import evaluate_satisfaction
+        for ratings, sentiment in [(['satisfied'], 'positive'), (['dissatisfied'], 'negative'), (['neutral'], 'neutral'), (['satisfied', 'dissatisfied'], 'mixed')]:
+            result = evaluate_satisfaction([{'feedback_id': str(i), 'explicit_rating': r} for i,r in enumerate(ratings)])
+            self.assertEqual(result['owner_sentiment'], sentiment)
+            self.assertEqual(result['human_label_count'], len(ratings))
+            self.assertEqual(result['denominator'], len(ratings))
+            self.assertEqual(result['promotion_signal'], 'owner_label_supported')
+
     def test_satisfaction_evaluator_prefers_owner_labels_and_keeps_pseudo_labels_low_confidence(self) -> None:
         from product_agent_os.self_learning_feedback import evaluate_satisfaction
 

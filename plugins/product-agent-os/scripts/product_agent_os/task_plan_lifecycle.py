@@ -4,15 +4,37 @@ from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 import argparse
+import hashlib
 import json
 import re
 from zoneinfo import ZoneInfo
 
-from product_agent_os.validators import validate_task_matrix_text
+from product_agent_os.validators import validate_task_matrix_text, validate_report_authoring_request
 
 
 TASK_TIMESTAMP_PATTERN = re.compile(r"^\d{2}-\d{2}-\d{4} \d{2}:\d{2}$")
 TASK_HEADING_TEMPLATE = "### Task `{task_id}`"
+
+
+def build_report_authoring_call(output_path: str, previous_content: bytes | None,
+                               content: str) -> str:
+    """Prepare one literal tool call; does not grant authority or perform a write."""
+    errors = validate_report_authoring_request(output_path, previous_content, content)
+    if errors:
+        raise ValueError("; ".join(errors))
+    digest = "absent" if previous_content is None else hashlib.sha256(previous_content).hexdigest()
+    lines = ["*** Begin Patch"]
+    if previous_content is None:
+        lines.append("*** Add File: " + output_path)
+    else:
+        lines.extend(["*** Update File: " + output_path, "@@"])
+        lines.extend("-" + line for line in previous_content.decode("utf-8").splitlines())
+    lines.extend("+" + line for line in content.splitlines())
+    if previous_content is not None:
+        lines.append("*** End of File")
+    lines.append("*** End Patch")
+    return ("// paos-report-previous-sha256: " + digest + "\nawait tools.apply_patch("
+            + json.dumps("\n".join(lines), ensure_ascii=True) + ");")
 
 
 @dataclass(frozen=True)

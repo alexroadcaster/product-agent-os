@@ -1,6 +1,6 @@
 # Product-Agent OS — задачи и группы исправлений по полному аудиту
 
-Source status: project-local planning artifact, 09.11.2026; составлен по сохранённому аудиту и текущим owning plans. Статус документа: `planned / implementation_not_started_by_this_plan`. Сохранение карточек не означает выполнение, promotion или разрешение на перечисленные внешние действия.
+Source status: project-local planning artifact, 09.11.2026; составлен по сохранённому аудиту и текущим owning plans. Статус документа: `G1/G2/G3 implemented_locally_verified`; G4–G6 остаются planned. Сохранение карточек не означает выполнение, promotion или разрешение на перечисленные внешние действия.
 
 Document ID: `PAOS-AUDIT-REMEDIATION-2026-11-09`. Authoring task: `PAOS-AUDIT-TASK-MATRIX-2026-11-09`. Часовой пояс: `Europe/Moscow`.
 
@@ -54,7 +54,7 @@ Document ID: `PAOS-AUDIT-REMEDIATION-2026-11-09`. Authoring task: `PAOS-AUDIT-TA
 - Новые behavior/bug fixes: observable RED → минимальный GREEN → scoped refactor. Behavior-neutral документация и форматирование — static checks. Relevant regression, fixture/transcript и compatibility gates выбираются по TEST.md; не повторять неизменные проверки без причины.
 - Локальные contract tests, schema validation и generated artifact не доказывают actual host loading, trust, model selection или product acceptance. Для таких claims нужны отдельные receipts выбранного проверенного состояния.
 - Указанные роли — будущая ownership recommendation. Они не означают запущенных subagents. Skill выбирать по конкретному подэтапу; canonical Product-Agent OS skills брать из repository, не смешивать с installed cache.
-- Этот запрос разрешает сохранить план, но не выполнять его implementation, provider/model/reviewer calls, cache/global edits, target apply, ACL/trust/rules activation, browser/server, Git или publication. Для будущего локального implementation request повторное общее согласование не нужно; конкретные внешние границы сохраняются.
+- Исходный authoring запрос разрешал сохранить план, но не выполнять его implementation, provider/model/reviewer calls, cache/global edits, target apply, ACL/trust/rules activation, browser/server, Git или publication. Запросы 09.11.2026 разрешили локальную реализацию G1, G2 и G3; для остальных групп требуется соответствующий implementation request; конкретные внешние границы сохраняются.
 - Rollback будущего slice: отменить только его собственные изменения относительно снятого baseline, сохранив чужие hunks и историческое evidence. Для ACL/target/trust заранее нужен отдельный rollback route.
 - Оценки длительности не зафиксированы: нет достаточного measured baseline. Не подменять расписание выдуманными сроками; после первого slice оценить фактический объём.
 
@@ -85,9 +85,296 @@ Self-review: новые corrective slices отделены от уже выпо�
 - Site/navigation/diagrams: not_applicable для authoring; план не включён в site и не содержит claim о свежей сборке.
 - Overflow/refactor: not_applicable. Исторические артефакты, machine status и прочие файлы сохранены.
 
+## PAOS-AUD-G3 — execution evidence 09.11.2026
+
+Status: `implemented_locally_verified`; F03/F08/F16. Start: 10:19:14 UTC (после preflight). Готов переход к G4.
+Один исполнитель, self_review, zero delegation; Python advisory skills ранее прочитаны.
+Scope: три owning modules и профильные tests; связанный read-only caller `render_status_dashboard.py` и UTC timestamps двух synthetic predicates в `run_fixture_eval.py`; current-state и self-learning docs RU/EN; registry RU/EN; пять root control-plane files и этот план. Baseline — dirty G1/G2 плюс параллельная Web-документация. Чужие изменения сохранены. Git/provider/host/cache/permission mutations не разрешены.
+
+### Исправления и критерии
+
+- F03: ISO и DD.MM.YYYY после RU/EN labels; строгая calendar validation; missing/invalid/future/stale/date_present_not_verified. Undated source prose не является датой. Несколько дат используют наиболее раннюю, future/invalid не скрываются. Registry resolution — один локальный hop внутри workspace только в canonical registry RU/EN, bounded read, exact heading/table-ID anchor; broken/unsafe refs видны. Claim classes эвристические; project/historical/mention не равны official behavior, claim_supported всегда not_verified. Exact-host URL и secret checks сохранены.
+- F08: zero owner labels → insufficient_evidence; owner_sentiment и owner_label_counts отдельно от denominator/coverage и record validity. Negative labels могут быть owner_label_supported, но не positive sentiment. Missing/empty/wholly rejected public summary сохраняет эту семантику. Invalid JSON types в ledger отклоняются без traceback и без копирования rejected payload. Manual-only/candidate-only неизменны.
+- F16: один PLAN current pointer содержит только owning paths и SHA-256 revisions. B42/B45 machine JSON сохраняются. Newer dated execution_evidence outranks historical status; equal-date contradictions и duplicate ownership → conflict; invalid/future/unknown/stale revision → unknown. Task/run/verification/acceptance раздельны; prose acceptance criteria не превращаются в acceptance. Markdown task matrices и existing JSON task groups поддерживаются bounded resolver. Existing dashboard CLI wired к workspace pointer; no-pointer B37 deferred route сохранён. Недатированное/naive/future verification evidence не считается current.
+
+### RED/GREEN и текущие gates
+
+Логи: ignored `.docs-tools/reports/paos-aud-g3/`; TEMP/TMP внутри `tmp`, Python `-B`, PYTHONDONTWRITEBYTECODE=1. Все fixtures synthetic; не actual host acceptance.
+
+| Command / check | Result |
+| --- | --- |
+| `python -B -m unittest tests.product_agent_os.test_source_policy tests.product_agent_os.test_self_learning_state tests.product_agent_os.test_self_learning_extensions -v` | RED exit 1: 46 tests, failures=4/errors=2. GREEN exit 0: 46 tests, 3.997 s |
+| `python -B -m unittest tests.product_agent_os.test_status_snapshot -v` | RED exit 1: 14 tests, failure=1/errors=4. GREEN exit 0: 14 tests, 0.060 s |
+| `test_source_policy.SourcePolicyTest.test_russian_dotted_dates_and_undated_source_prose` | RED exit 1: invalid вместо date_present_not_verified; затем включён в passing focused suite |
+| `python -B -m unittest tests.product_agent_os.test_source_policy tests.product_agent_os.test_self_learning_state tests.product_agent_os.test_self_learning_extensions tests.product_agent_os.test_status_snapshot tests.product_agent_os.test_status_dashboard -v` | Exit 0; 75 tests, 7.362 s (`focused.log`) |
+| Final status integration module | Exit 0; 16 tests, 0.141 s (`status-integration.log`); actual `_snapshot_for_workspace` wiring и byte-for-byte synthetic workspace preservation |
+| `python -B -m unittest discover -s tests -v` | Exit 0; 1320 tests, 725.771 s, OK (skipped=1); `full.log`. Запущен до последней ownership/UTC правки; final focused и final fixture отдельно проверяют эти изменения |
+| Final five-module focused command выше | Exit 0; 78 tests, 6.538 s (`final-focused.log`); scope-prefix ownership regression включена |
+| `test_pointer_scope_preserves_canonical_owner_over_planning_cross_reference` | RED exit 1, затем GREEN в final focused; PAOS-AUD-* scope исключает B45 cross-reference cards, не реальные конфликты |
+| `python -B plugins/product-agent-os/scripts/run_fixture_eval.py` | Первый exit 1: 90/91; два stale predicates имели naive timestamps. Сохранены assertions, синтетическим датам указан UTC. Повторный `fixtures-final.log`: 91/91 ok=true, JSON результат проверен отдельным assert (exit 0); исходный CLI exit повторного запуска не сохранён после compaction |
+| `python -B plugins/product-agent-os/scripts/run_transcript_eval.py` | Exit 0; 26/26 (`transcripts.log`) |
+| `python -B plugins/product-agent-os/scripts/validate_codex_compatibility.py` | Exit 0; local_structure_only_not_host_or_distribution_readiness (`compatibility.json`) |
+| `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -v` | Exit 0; 100 tests, 3.890 s (`docs.log`); closure rerun recorded below |
+| `python -B tools/check_docs.py`; `validate_task_state_consistency.py`; hooks validators `.codex/hooks.json`, `.codex/hooks`; `git diff --check` | Exit 0; source state errors=[]; hook errors=[]; финальный closure check ниже |
+
+### Scan delta на одном наборе 310 docs до documentation sync
+
+`validate_source_policy('.', as_of=date(2026,11,9))` read-only baseline: needs_review; 188 registry review rows, 151 missing official hints, 310 missing dates, zero secrets. После parser fix: needs_review; 133 review rows, 89 missing official hints, 281 missing + 29 date_present_not_verified, zero secrets. Убраны 55 review rows, новых нет. Examples: project architecture/first-run/evidence-boundary diagrams перестали требовать official behavior evidence только за project contract. 29 распознанных дат не означают semantic verification. Оставшиеся 133 findings — реальная очередь ручного разбора, а не автоматически подтверждённые defects; G3 не исправляет массово source claims. JSON baseline/after сохраняют file-level provenance; документационная синхронизация после сравнения записывается отдельно.
+
+Self-review: context_mode=self_review; tester_verdict=closed_allowed для локального scope. Проверены unsafe paths, bounded reads, stale revisions без fallback, conflicting ownership, отсутствие labels, RU/EN parity и сохранность истории. Нет открытого blocking finding. Rollback: только G3 hunks; сохранить B42/B45 bytes, G1/G2 и Web work. Source-state pointer invalidation требует повторного review и pin, не auto-refresh. Semantic source verification, fresh host и promotion остаются вне локального claim ceiling. Strict MkDocs not_applicable: навигация, Mermaid, extensions и site не меняются.
+
+
+### Финальная сверка G3
+
+- Final source scan после docs sync: 310 docs, needs_review, 133 review rows, 281 missing dates + 29 date_present_not_verified, zero secrets. Matched baseline delta выше не объявляется semantic audit.
+- Current pointer: 43 tasks, 3 revision-pinned sources, no ownership conflicts; audit source scope PAOS-AUD-*. B42/B45 bytes сверяются с pre-slice SHA-256; T23–T29 сохранены.
+- Control-plane sync: REQUIREMENTS/PLAN/TEST/EVALS/RUNLOG updated по соответствующим scope/sequence/checks/evals/handoff triggers; registry и current-state/self-learning RU/EN updated. prod_test.md not_applicable (Batch 39 не затронут); handoffs none; overflow not_required, root budget 50 KiB. Strict MkDocs not_applicable: nav/Mermaid/extensions/site не менялись.
+- Model/reasoning inherited; provider/token/tool-count telemetry unavailable. Subagents=0; один восстановленный compacted handoff в G3. Local tests не доказывают fresh-host loading или product acceptance.
+
+
+### Closure checks и provenance
+
+Final closure docs: `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -v` — exit 0, 100 tests, 4.065 s (`docs-final.log`). `python -B tools/check_docs.py`, `python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-audit-remediation-task-plan-2026-11-09.md`, `python -B plugins/product-agent-os/scripts/validate_task_state_consistency.py` и `git diff --check` — exit 0; validators errors=[]. Revision projection after closure: 43 tasks, 3 sources, issues=[]; F03/F08/F16 implemented, B45-T30 planned, B42-S2-M04 implemented from newer receipt. Root UTF-8 budgets <50 KiB; largest REQUIREMENTS.md 48010 bytes.
+
+Measured interval: 10:19:14–10:47:28 UTC, 28 мин 14 с; preflight до start и заключительная запись evidence после checkpoint не включены. Final source scan unchanged: 133 review rows; семантический разбор остаётся отдельной работой.
+
+SHA-256 связывает code/tests с проверенным local состоянием. Full suite начал импорт до последнего scope-prefix test и UTC fixture correction; final focused/fixture покрывают эти дельты. Source revision owning plan закрепляется в PLAN.md после записи этого evidence.
+
+| File | SHA-256 |
+| --- | --- |
+| `plugins/product-agent-os/scripts/product_agent_os/source_policy.py` | `6ba02af321a592cc59666179b9b9111bed660a4a2be24b48dca1f41c7e68dd00` |
+| `plugins/product-agent-os/scripts/product_agent_os/self_learning_feedback.py` | `1f0936316930475379341e635da9608cfa623c46d62559257095b3631386bcf5` |
+| `plugins/product-agent-os/scripts/product_agent_os/status_snapshot.py` | `0a3ea0049ab34e50f4599d57908694e8731925d173503ee34a09b2a82c772a11` |
+| `plugins/product-agent-os/scripts/render_status_dashboard.py` | `5cbd426fec36ae49f15430e5392b4e2f0f439df50e123c0c72ad73901cf84304` |
+| `plugins/product-agent-os/scripts/run_fixture_eval.py` | `8e74c99346c320ad9335dad105a54b77eeb22abb0bdbaa12be7d41db3432f489` |
+| `tests/product_agent_os/test_source_policy.py` | `faa97e18c29445f1b6f74f6d30f62c994ce36a979dd35c28c0bc4dc37f6df5a4` |
+| `tests/product_agent_os/test_self_learning_state.py` | `237667633f7b2b9038e64237010b8c900dc3cae3abc7475c6b0ddfb0777f4cbc` |
+| `tests/product_agent_os/test_self_learning_extensions.py` | `84f37167864361a00c7eeb7a881ea655362dc608884c6abe5992596f19776580` |
+| `tests/product_agent_os/test_status_snapshot.py` | `35bb009f88f26a875c0f3d1e78379906de42dc61458bc0807d30db87ac1943ce` |
+
+## PAOS-AUD-G2 — execution evidence 09.11.2026
+
+Status: `implemented_locally_verified`; F01/F02/F04 closed for local scope. Готов переход к G3. Один исполнитель, zero delegation, self_review.
+Измеряемый интервал: 09:57:07–10:17:15 UTC, 20 мин 8 с. До него выполнены preflight и официальный source check; время этих действий в интервал не входит. Model/reasoning наследуются; provider/token/tool-count telemetry недоступна. Subagents=0; один восстановленный compacted handoff; Python skills ранее прочитаны, OpenAI Docs прочитан для G2.
+Baseline: dirty G1 implementation и параллельные Web-документы сохранены. Scope — файлы карточек, связанные `test_plugin_structure.py`, README, compatibility RU/EN, models RU/EN, registry RU/EN и root control-plane. Новый framework, model migration и изменение T23–T29 не выполняются.
+
+### Реализация и source decisions
+
+- F01: существующий Codex compatibility manifest сохранён; `.mcp.json` использует `mcpServers`. TOML-only startup timeout не переносится в bounded plugin JSON subset. Duplicate keys, transport mixtures и unknown options требуют review; portable root/inline OpenAI precedence не меняется. Контакты/URLs с неподтверждённым владельцем удалены. Required author/developerName содержат явный `Unverified local publisher` sentinel. Publisher, listing URLs, distribution icons и release review остаются gated; это не полный submission validator.
+- F02: support и observation разделены. Native plugin documented в App/CLI, unsupported в IDE; standalone skills documented отдельно. Caller observation для unsupported вызывает conflict, а не promotion. Unknown surface не наследует CLI/App support.
+- F04: read-only diagnostics принимает до 16 KiB JSON с allowlisted non-secret полями; duplicate/malformed input отклоняется, значения вне allowlist не печатаются. Surface/version, configured/observed model, trust и account access разделены. Только Terra/CLI имеет documented minimum 0.159.0. Optional explicit cache directory сравнивается по manifests/MCP/SKILL.md; это bounded component provenance, не полный package/runtime digest. Cache writes, provider calls, subprocess host discovery, model/effort changes отсутствуют.
+- Primary sources fetched 09.11.2026: [Build plugins](https://developers.openai.com/plugins/build/plugins), [submission metadata](https://developers.openai.com/plugins/deploy/submission), [plugin surfaces](https://learn.chatgpt.com/docs/plugins#use-plugins-from-a-supported-surface), [standalone skills](https://learn.chatgpt.com/docs/build-skills), [models](https://learn.chatgpt.com/docs/models). Sources/claims indexed in both registries. Historical model catalog facts dated 03.11.2026 не объявляются заново проверенными.
+
+### Проверки текущего запуска
+
+Логи: ignored `.docs-tools/reports/paos-aud-g2/`. TEMP/TMP направлены в ignored `tmp`/`eval-tmp`; `PYTHONDONTWRITEBYTECODE=1`, Python `-B`. Это локальные synthetic/deterministic checks, не host receipts.
+
+| Command / check | Observed result |
+| --- | --- |
+| `python -B -m unittest tests.product_agent_os.test_codex_compatibility -v` до implementation | RED: 11 tests; failures=2, errors=9. Package needs_review вместо compatible; смешанный transport ошибочно accepted; новый observations/cache API отсутствует. Shell wrapper вернул 0 после Get-Content, поэтому этот exit не является успехом unittest. `red.log` сохраняет FAILED |
+| Та же focused command после implementation | Exit 0; 11 tests, 1.438 s, OK (`green.log`) |
+| `python -B -m unittest tests.product_agent_os.test_codex_compatibility tests.product_agent_os.test_plugin_structure -v` | Exit 0; 21 tests, 1.839 s, OK (`focused.log`) |
+| `python -B plugins/product-agent-os/scripts/run_transcript_eval.py` | Exit 0; 26/26, failed=0 (`transcripts.log`) |
+| `python -B plugins/product-agent-os/scripts/validate_codex_compatibility.py` | Exit 0; compatible, local_structure_only_not_host_or_distribution_readiness; distribution gated; surface unknown, model not_verified, trust unknown, cache_not_provided (`compatibility.json`) |
+| `python -B plugins/product-agent-os/scripts/run_fixture_eval.py` | Exit 0; 91 fixtures (`fixtures.log`) |
+| `python -B -m unittest tests.product_agent_os.test_codex_compatibility.CodexCompatibilityTest.test_cache_junction_is_not_followed -v` | RED exit 1; observed вместо needs_review. После Windows junction guard входит в passing final suites |
+| `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -v` | Первый запуск exit 1, 100 tests, один README phrase assertion. Сохранена точная фраза поверхностей с корректным разграничением native/standalone; final combined docs suite passed. После control-plane closure: exit 0, 100 tests, 3.566 s, OK (`docs-final.log`) |
+| `python -B -m unittest tests.product_agent_os.test_codex_compatibility tests.product_agent_os.test_plugin_structure tests.product_agent_os.test_product_agent_os_docs -v` | Exit 0; 122 tests, 10.234 s (`final-focused.log`), включает junction и docs regression |
+| `python -B -m unittest tests.product_agent_os.test_codex_compatibility tests.product_agent_os.test_plugin_structure -v` после readability refactor и surface scope label | Exit 0; 22 tests, 2.796 s (`final-contracts.log`) |
+| `python -B plugins/product-agent-os/scripts/validate_hooks.py .codex/hooks.json`; `.codex/hooks`; `plugins/product-agent-os/assets/templates/hooks` | Каждый exit 0, ok=true, errors=[]; hooks не менялись в G2 |
+| `python -B tools/check_docs.py` | Exit 0; documentation structure checks passed |
+| `git diff --check` | Exit 0; в отличие от раннего G1, чужие Web EOF ошибки к этому моменту отсутствуют. G2 их не исправляла |
+| `python -B -m unittest discover -s tests -p 'test_*.py' -v` | Exit 0; 1305 tests, 748.949 s, OK (skipped=1: non-Windows guard only), `full.log` |
+| Final `validate_task_matrix.py` на этом плане; `tools/check_docs.py`; `git -c core.safecrlf=false diff --check`; `validate_codex_compatibility.py`; memory-only integrity checker | Все exit 0; matrix errors=[], docs OK, diff clean, compatible; 26 statuses, только восемь G1/G2 задач implemented, семь конечных source hashes совпадают; UTF-8 и root budgets OK |
+
+Self-review: `context_mode=self_review`; separate reviewer не запускался. Проверены precedence, отсутствие MCP/subprocess/provider execution, output allowlist, IDE conflict, model/trust claim ceiling, bounded cache traversal, сохранение T23–T29 и Git/host boundary. Найден и исправлен Windows junction case; final diff не расширяет model policy или approval authority. Cache comparison не является race-proof authorization mechanism и не заменяет полный package receipt.
+
+### Control-plane sync G2
+
+- REQUIREMENTS/PLAN/TEST/EVALS/RUNLOG: update_required → updated; scope, sequence G3, проверки, claim ceilings и handoff синхронизированы.
+- Registry RU/EN, compatibility RU/EN, models RU/EN и README: updated с актуальными primary sources и локальными diagnostic contracts.
+- `prod_test.md`: not_applicable — Batch 39 evidence не меняется. T23–T29 и canonical T30–T34 machine status не изменены.
+- Overflow/refactor: not_applicable; все пять root files менее 50 KiB. Handoffs required: none внутри G2; G6/owner gates остаются открытыми по исходному acceptance.
+- Strict MkDocs/site/navigation/diagrams: not_applicable — изменены только prose/source/control-plane, сайт не пересобирался и его freshness не заявляется.
+- Review: self_review, tester_verdict=closed_allowed для локальной группы; closure_level=implemented_locally_verified. Не host/product/release readiness.
+
+### Привязка к проверенному source state
+
+Full discovery стартовал до финального junction guard и readability refactor. Финальные 122 tests покрывают junction/docs repair, затем 22 affected contracts проверены после последнего refactor; full-suite result не выдаётся за повторный запуск всех tests на последней версии. Fixture/transcript behavior последним refactor не меняется. SHA-256 конечных implementation/test файлов:
+
+| File | SHA-256 |
+| --- | --- |
+| `plugins/product-agent-os/.mcp.json` | `14b1ca834d9867a3f382a7ebbf7d2f149e1b7ac0d2ae9deef5cdc030e670a546` |
+| `plugins/product-agent-os/.codex-plugin/plugin.json` | `b3f07a4a2e6ba8a96b27ecfbd3b2065e94676f8d88dafd18a6e33e04bd1fd693` |
+| `plugins/product-agent-os/scripts/product_agent_os/plugin_components.py` | `e58c19c216b863f15ecfe30b93655ac2180d9df0d8f2c09aa0756024fb819d7f` |
+| `plugins/product-agent-os/scripts/product_agent_os/codex_compatibility.py` | `dacb7b39f2b1905b89d72aa26a00bb05477f18d8f821841fc1ed195e4008788e` |
+| `plugins/product-agent-os/scripts/validate_codex_compatibility.py` | `9ab5e67a3fb5359efa5ad82158f48a0b650cf8bebda0efd24f52aeccd7863265` |
+| `tests/product_agent_os/test_codex_compatibility.py` | `ff483c80a22392779320d6e8d48a4388ce910228e49b78e0013d0527786afb3b` |
+| `tests/product_agent_os/test_plugin_structure.py` | `d988222e1182cf681e6c67bc0494713320aba8ce21ab09212a4281c72387bc89` |
+
+Lifecycle preflight: две неверные формы собственного нового marker (status `implementation_in_progress`, затем missing updated_at) отклонены hook. Исправлен только own-session marker на `in_progress` с updated_at и сохранённым prior_closure G1. Compound bootstrap rejected; применён exact patch. Это process evidence, не новая activation проверка.
+
+Rollback: отменить только G2 hunks относительно G1 baseline; сохранить чужие Web/G1 изменения и исторические receipts. `prod_test.md`, model pins/effort, installed cache, global config и host trust не изменяются. G6/AUD-HOST-01 владеет actual host receipts; distribution требует подтверждённых owner данных и отдельного разрешения.
+
+## PAOS-AUD-G1 — execution evidence 09.11.2026
+
+Scope: пять карточек G1, точный file manifest соответствует Scope карточек, двум связанным F12 callers и
+общему docs/control-plane scope. Один исполнитель, self_review; subagents не запускались.
+Baseline: чистое рабочее дерево. Runtime/model/provider, trust, ACL и target changes
+не разрешаются этой записью. Host acceptance остаётся AUD-HOST-02/G6.
+
+### RED и исправления
+
+- F06: новый test_read_classification_rejects_compound_and_unknown_writes — exit 1,
+  пять failures; после исправления exit 0. Попытка добавить инертный пример опасной
+  команды в patch первоначально заблокирована действующим hook — текущий evidence
+  false deny. После исправления source классификации test_patch_prose_is_not_an_executable_command
+  проверяет отдельно данные и настоящее исполнение. Source mirror синхронизирован;
+  это не fresh-host activation receipt.
+- F12: expected discovery path исправлен в tests до реализации. Первый запуск
+  merge suite: 35 setup errors из-за sandbox TEMP; это не RED. После workspace TEMP
+  test_unapproved_hooks_json_remains_companion_only_and_not_written — exit 1,
+  approved_targets mismatch. После mapping fix все 35 merge tests — exit 0.
+- F11: native `codex execpolicy check --rules .rules -- rg --files` — exit 1,
+  invalid not_match. После первого исправления обнаружен второй parser defect:
+  unquoted Windows backslashes в match examples. Исправлены примеры и семантика.
+  Итог: rg --files → prompt; rg --replace value → no matched rules;
+  python create_task_plan.py new --output ../outside.md → prompt;
+  icacls example /remove:d S-1-5-21-123 → forbidden; все четыре checks exit 0.
+  Команды-аргументы не исполнялись. CLI сообщил предупреждения о недоступном
+  user-level arg0 TEMP; policy JSON получен. Proposal не установлен/не активирован.
+  Выбор: не оставлять широкие allow, которые не ограничивают trailing arguments.
+- F07: новый repair contract test — exit 1, отсутствует _acl_text/API; GREEN:
+  exact target/SID/digest, backup/restore, foreign DENY preservation по формируемым
+  командам, drift/reparse denial. Реальные ACL mutation не запускались.
+- F18: authoring scenario — exit 1, отсутствует отдельный API; builder test — exit 1,
+  отсутствует build_report_authoring_call. GREEN: v2 opt-in, create и два update,
+  stale digest, path/session/marker mismatch, expiry, terminal, aliases/reparse,
+  mixed patch rejection. Legacy v1 suite сохранён. CAS preflight не является
+  атомарной записью: один writer обязателен; race после hook return — явный предел.
+
+### Промежуточные проверки
+
+- `python -B -m unittest tests.product_agent_os.test_lifecycle_hooks tests.product_agent_os.test_infrastructure_templates -q`: 132 tests, exit 1, три failures (старый active mirror, ограниченный Select-Object pipeline, template placeholder regex). Исправлены parity, bounded pipeline и digest regex.
+- Пять affected modules: 183 tests, 13.604 s, OK (skipped=1), exit 0.
+- После дополнительных negative/rollback tests четыре изменённых modules: 89 tests, 12.465 s, OK (skipped=1), exit 0.
+- Все Python проверки используют `PYTHONDONTWRITEBYTECODE=1`, `TEMP=TMP=<workspace>/.codex-tmp/paos-aud-g1`; реальные target files и ACL не меняются.
+
+### Финальные проверки
+
+- Native rules parser, три validate_hooks targets, transcript eval 26/26,
+  check_docs.py — exit 0.
+- validate_codex_compatibility.py — exit 1, needs_review:
+  legacy_flat_mcp_requires_schema_review. Это существующий G2/F01 contract gap;
+  G1 не меняет MCP package и не объявляет совместимость доказанной.
+- task matrix сначала отклонён: appended evidence попало в последнюю task card
+  и было распознано как unresolved placeholder. Evidence перемещено перед
+  карточками; повторный validator — exit 0, errors=[].
+- Dry-run и staging CLI на existing-codex-config fixture — exit 0 оба;
+  manifest и staged .codex/hooks.json существуют, nested mirror отсутствует.
+- Self-review добавил F06 regression для tool metadata/unknown tool: RED exit 1,
+  executable text содержал workdir/justification; исправлено извлечение payload.
+- Финальный affected rerun сначала: 185 tests, failures=2, errors=1, skipped=1.
+  Windows TEMP cleanup sharing violation воспроизводимость не подтверждена;
+  изолирован TEMP для concurrent checks. Две contract регрессии исправлены:
+  legacy command envelope без tool_name и слово Python null-value в rendered
+  template, ошибочно распознаваемое старым placeholder assertion.
+- Первый fixture eval упал с UnboundLocalError; full discovery остановлен после
+  повторных fixture errors. Причина F12: два fixture exercise callers ещё
+  использовали старый hooks path. Дополнительный необходимый file scope:
+  plugins/product-agent-os/scripts/run_fixture_eval.py и
+  tests/product_agent_os/test_infrastructure_renderer.py. Исправлены только
+  expected paths/callers, error handling и другие gates не ослаблялись.
+- После исправлений paths: fixture eval — exit 0, 91/91 passed.
+- Affected suite после изоляции TEMP: 216 tests, 40.024 s, OK (skipped=1), exit 0.
+  Промежуточный запуск 216 tests имел только Windows cleanup WinError 32;
+  новый TEMP: .docs-tools/reports/paos-aud-g1/tmp, ignored directory.
+- `icacls /?` (read-only help) и Microsoft official reference подтверждают
+  /inheritance:d (copies ACEs), /remove:d *SID, DACL /save и /restore;
+  owner/SACL/integrity labels snapshot не сохраняет и helper не меняет.
+- `python -B -m unittest discover -s tests -p 'test_*.py' -v`: 1297 tests,
+  532.640 s, OK (skipped=1), exit 0. Единственный skip — non-Windows guard на Windows.
+  Этот прогон стартовал до последнего alias-hardening F12; его evidence не
+  подменяет последующий focused retest изменённого merge module.
+- Финальный self-review F12: ./, case, separator и trailing-dot aliases discovery
+  path обходили специальный hook gate (4 RED failures). Добавлен canonical-path
+  rejection. После изменения `python -B -m unittest
+  tests.product_agent_os.test_merge_infrastructure
+  tests.product_agent_os.test_infrastructure_renderer -q`: 67 tests,
+  16.645 s, OK, exit 0. Неизменённые другие modules повторно не запускались.
+- `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -v`:
+  100 tests, 4.415 s, OK, exit 0; итоговый status-only docs gate записан ниже.
+- Финальные validate_hooks: active definition, active scripts и packaged hooks —
+  exit 0 каждый. AST/parity hook/workflow — PASS. .codex/hooks.json,
+  .codex/hooks/hooks.json и .codex/config.toml совпадают с baseline HEAD
+  с нормализацией line endings. Root site не пересобирался и freshness не заявлена.
+
+### Acceptance mapping и self-review
+
+| Task | Локальный результат | Evidence | Отдельная граница |
+| --- | --- | --- | --- |
+| F06 | Целая bounded command, metadata separation, unknown mutation scope, inert patch prose | Lifecycle positive/negative suite; active/package parity | Не универсальный shell parser; native sandbox/approval сохраняются |
+| F12 | Один discovery path, manifest/config agreement, existing file preservation, synthetic apply/rollback, alias denial | Dry-run/stage CLI; 36 merge и 31 renderer tests | Trust/real target apply не выполнялись |
+| F11 | Valid native parser; no broad allow; proposal retained | Четыре execpolicy decisions выше | Discovery rules не устанавливались |
+| F07 | Explicit single target/SID, digest, DACL backup/restore, preservation and reparse guards | 9 Windows permissions tests, включая один platform skip; mocked icacls | Реальные ACL и rollback acceptance отдельно |
+| F18 | Pinned v2 authoring, previous digest, exact session/path, full-file update, legacy v1 preserved | Lifecycle и builder/validator regressions | Preflight не атомарен; exclusive writer; host gate G6 |
+
+Review context: self_review; tester_verdict=closed_allowed только для local G1.
+Blocking local findings после исправлений отсутствуют. Independent reviewer не
+запускался. Existing MCP compatibility gap остаётся G2/F01. Поведенческие thresholds
+LLM не менялись; live model/provider calls не требовались и не запускались.
+Откат: отменить только перечисленные G1 hunks, сохранив чужой session marker и
+параллельные .hallmark/прочие artifacts. Own session marker — служебная запись,
+не доказательство hook activation.
+
+
+
+### Финальный status-only closure check
+
+После обновления пяти карточек: validate_task_matrix.py — exit 0, errors=[];
+check_docs.py — exit 0; docs unittest — 100 tests, 3.118 s, OK, exit 0.
+Проверены 5 implemented / 21 planned, размеры пяти root файлов меньше 50 KB,
+UTF-8 без replacement characters, AST изменённых Python и parity mirrors.
+Global `git diff --check` — exit 2 из-за new blank line at EOF в параллельно
+изменённых Web architecture/M1-wireframes/PRD research docs (вне G1). Они не
+правились. `git diff --check --` с точным manifest из 30 G1-owned files — exit 0.
+Это явное разделение scope, не успешный global check и не waiver G1 gate.
+Чужой lifecycle marker, .hallmark и прочие параллельные изменения сохранены.
+
+### Проверенное source state
+
+SHA-256 exact file bytes; active/package parity подтверждена отдельно.
+
+| File | SHA-256 |
+| --- | --- |
+| `.codex/hooks/pre_tool_use_policy.py` | `cd78b4f34db916c622f17dfa8e275f97e30143525caaf60b25a13b416d23326b` |
+| `.codex/workflows/task-plan-lifecycle.md` | `962e90330c7a6e5838252eb8f866c111742d3fc65a164e991ab8f020c149e741` |
+| `.rules` | `0613c81e78076f22c4597e5b209b425f3370e00c569128cb05e764890f409d4f` |
+| `plugins/product-agent-os/scripts/product_agent_os/merge_infrastructure.py` | `01140b699c8379e1d2dd379855f7230a575a4a8038100e01a1947edb80c58b3d` |
+| `plugins/product-agent-os/scripts/product_agent_os/windows_codex_permissions.py` | `2343e407678ca325b49fdaf088d88fbe7471d8bd06b132af16b0f478c33d5ecb` |
+| `plugins/product-agent-os/scripts/product_agent_os/task_plan_lifecycle.py` | `182ee6132e5508544198567c929a53c8850666062235a7c369f237286ceb885a` |
+| `plugins/product-agent-os/scripts/product_agent_os/validators.py` | `0add6b2bb429bf12867ea4cfa83087c5eab1f918c330e556c2d9e5f3600e2ed2` |
+| `plugins/product-agent-os/scripts/product_agent_os/templates.py` | `05dd4f9754b7826efbe90ff165464d4d72db6c45b5f7ffd7381ec77aa3ce36bc` |
+| `plugins/product-agent-os/assets/templates/config/config.toml` | `68673ae1a9941a1424b8b9536204657e3d84a5aa1c7a397233eba7abcb9ef5c0` |
+
+Локальные сырые outputs сохранены под ignored `.docs-tools/reports/paos-aud-g1/`;
+ранние и integrated logs перенесены из собственного TEMP в `initial-and-integrated-runs/`.
+Durable receipt — этот план; raw logs не являются вторым status registry.
+
+### Control-plane sync
+
+REQUIREMENTS/PLAN/TEST/EVALS/RUNLOG: update_required и обновлены по scope, sequencing,
+verification, failure classes и handoff. prod_test.md: not_applicable (Batch 39 не
+затронут). Registry RU/EN и runtime docs RU/EN синхронизированы; workflow mirrors
+согласованы. Site/navigation/diagrams: not_applicable; build/activation не заявлены.
+Overflow: все пять root файлов меньше 50 KB; перераспределение не требуется. Handoff: G2 после local gates, G6 для
+host acceptance; иных обязательных local handoffs нет.
+
+
 ## PAOS-AUD-G1 — Надёжные hooks, rules и установка
 
 - **ID:** `PAOS-AUD-G1`
+- **Execution status:** `implemented_locally_verified`; пять local acceptance contracts закрыты. Next group: G2; host acceptance остаётся G6.
 - **Название группы:** Надёжные hooks, rules и установка
 - **Описание группы:** Закрыть оставшиеся ошибки классификации действий и generated onboarding; ограничить ACL repair и добавить безопасное последовательное ведение отчёта. Сохранить уже реализованную session isolation.
 - **Техническое значение (для проекта):** Согласованные active/package contracts, точные границы записи и корректные staging/merge paths.
@@ -107,12 +394,12 @@ Self-review: новые corrective slices отделены от уже выпо�
 - Scope: **Затрагиваемые файлы:** `.codex/hooks/pre_tool_use_policy.py`; `plugins/product-agent-os/assets/templates/hooks/pre_tool_use_policy.py`; `tests/product_agent_os/test_lifecycle_hooks.py`. Общий docs/control-plane scope — по правилам выше.
 - Acceptance criteria: **Критерии приёмки:** 1) Инертные cases: чистое чтение разрешено; составная read/write строка не классифицируется как чистое чтение; неизвестная запись не получает allow через отсутствие match. 2) Упоминание опасной команды как данных в обычном Markdown не трактуется как её выполнение; реальные destructive/path/secret проверки сохранены. 3) Регрессии own/foreign/mixed marker, Windows case handling и session isolation проходят; active/package файлы совпадают.
 - Group: PAOS-AUD-G1
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Сохранение плана по запросу владельца; execution не разрешён.
+- Plan trigger: Запрос владельца 09.11.2026 на полную локальную реализацию PAOS-AUD-G1.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 09-11-2026 12:47
 - Depends on: Нет новых обязательных задач этого плана. PAOS-SESSION-LIFECYCLE-2026-11-09 — использовать, не переделывать.
 - Blocks: PAOS-AUD-F18, PAOS-AUD-HOST-02; для F05 только incremental report scenario.
 - Source: F06; последующий session-lifecycle repair уже закрыл exact marker bootstrap и изоляцию чатов.
@@ -125,19 +412,20 @@ Self-review: новые corrective slices отделены от уже выпо�
 - Agents: plugin-runtime-builder; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: Проверить актуальность finding и baseline, затем согласовать точный local file scope, воспроизвести исходный case и выполнить только эту задачу после запроса на реализацию.
+- Next step: Local G1 закрыта; следующий маршрут G2, host acceptance отдельно G6.
 
 #### Completion Report
 
-- status: planned
-- what was done: Не выполнялась.
-- files touched / work locations: Не изменены.
-- technical value delivered: Не подтверждено.
-- product value delivered: Не подтверждено.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending_execution; authoring checks не доказывают implementation.
-- residual risks: high; изменение definition/trust и host probe не входит в локальное исправление.
-- follow-up: Выполнить Dependencies и Acceptance в авторизованном slice.
+- status: implemented
+- what was done: Исправлены whole-command classification, metadata extraction, conservative unknown route и patch destination/data separation; session isolation сохранена.
+- files touched / work locations: .codex/hooks/pre_tool_use_policy.py; packaged mirror; test_lifecycle_hooks.py
+- technical value delivered: False allow/deny устранены в заявленных local cases.
+- product value delivered: Чтения и Markdown examples не требуют ложного mutation approval.
+- actual implementation date and time: 09-11-2026 12:47
+- verification evidence: Lifecycle suite, full 1297, final source parity; RED/GREEN в execution evidence.
+- residual risks: Local verification only; host/trust и реальные ACL не доказаны. MCP gap принадлежит G2. Подробные limits — execution evidence.
+- follow-up: Перейти к G2; AUD-HOST-02 и real ACL acceptance остаются отдельными разрешёнными сценариями.
+
 
 ### Task `PAOS-AUD-F12`
 
@@ -146,15 +434,15 @@ Self-review: новые corrective slices отделены от уже выпо�
 - Short description: **Описание задачи:** Исправить mapping в templates/merge на discovered .codex/hooks.json; согласовать manifest и generated config. Сохранить существующие user-authored hooks. Явно разделить staging, approved apply и фактическую активацию.
 - Technical value: **Техническое значение (для проекта):** Устранение несовпадения generated filesystem layout с контрактом загрузки.
 - Product value: **Продуктовое значение (для пользователя):** Установка не создаёт видимость включённого hook, который host не загрузит.
-- Scope: **Затрагиваемые файлы:** `plugins/product-agent-os/scripts/product_agent_os/templates.py`; `plugins/product-agent-os/scripts/product_agent_os/merge_infrastructure.py`; `plugins/product-agent-os/assets/templates/config/config.toml`; `tests/product_agent_os/test_merge_infrastructure.py`; `tests/product_agent_os/test_infrastructure_templates.py`. Общий docs/control-plane scope — по правилам выше.
+- Scope: **Затрагиваемые файлы:** `plugins/product-agent-os/scripts/product_agent_os/templates.py`; `plugins/product-agent-os/scripts/product_agent_os/merge_infrastructure.py`; `plugins/product-agent-os/assets/templates/config/config.toml`; `tests/product_agent_os/test_merge_infrastructure.py`; `tests/product_agent_os/test_infrastructure_templates.py`; связанные callers `plugins/product-agent-os/scripts/run_fixture_eval.py` и `tests/product_agent_os/test_infrastructure_renderer.py`. Общий docs/control-plane scope — по правилам выше.
 - Acceptance criteria: **Критерии приёмки:** 1) Dry-run, staging manifest и config указывают один правильный путь; mirror не считается discovery config. 2) Existing unmarked config не перезаписывается; approved merge/rollback проверены на synthetic workspace. 3) Тест проверяет реальный expected discovery path; результат установки не объявляет trust/activation доказанными.
 - Group: PAOS-AUD-G1
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Сохранение плана по запросу владельца; execution не разрешён.
+- Plan trigger: Запрос владельца 09.11.2026 на полную локальную реализацию PAOS-AUD-G1.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 09-11-2026 12:47
 - Depends on: Нет жёсткой local code зависимости; integration/host probe выполняется после итогового F06.
 - Blocks: PAOS-AUD-HOST-02
 - Source: F12
@@ -167,19 +455,20 @@ Self-review: новые corrective slices отделены от уже выпо�
 - Agents: plugin-runtime-builder; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: Проверить названные зависимости, затем согласовать точный local file scope, воспроизвести исходный case и выполнить только эту задачу после запроса на реализацию.
+- Next step: Local G1 закрыта; следующий маршрут G2, host acceptance отдельно G6.
 
 #### Completion Report
 
-- status: planned
-- what was done: Не выполнялась.
-- files touched / work locations: Не изменены.
-- technical value delivered: Не подтверждено.
-- product value delivered: Не подтверждено.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending_execution; authoring checks не доказывают implementation.
-- residual risks: high; apply в реальный target и trust требуют своей точной authority.
-- follow-up: Выполнить Dependencies и Acceptance в авторизованном slice.
+- status: implemented
+- what was done: Generated hook definition перенесён в .codex/hooks.json; merge approval/rollback и alias rejection согласованы; обновлены renderer/eval callers.
+- files touched / work locations: templates.py; merge_infrastructure.py; template config.toml; run_fixture_eval.py; test_merge_infrastructure.py; test_infrastructure_templates.py; test_infrastructure_renderer.py
+- technical value delivered: Manifest/config/merge используют один discovery path с отдельным activation gate.
+- product value delivered: Установка сохраняет существующие hooks и явно отделяет staging от активации.
+- actual implementation date and time: 09-11-2026 12:47
+- verification evidence: Dry-run/staging exit 0; full 1297; final 67 merge/renderer tests after alias fix; fixture 91/91.
+- residual risks: Local verification only; host/trust и реальные ACL не доказаны. MCP gap принадлежит G2. Подробные limits — execution evidence.
+- follow-up: Перейти к G2; AUD-HOST-02 и real ACL acceptance остаются отдельными разрешёнными сценариями.
+
 
 ### Task `PAOS-AUD-F11`
 
@@ -191,12 +480,12 @@ Self-review: новые corrective slices отделены от уже выпо�
 - Scope: **Затрагиваемые файлы:** `.rules`; `docs/runtime/worktrees-hooks-rules.md`; `docs/runtime/worktrees-hooks-rules.en.md`. Общий docs/control-plane scope — по правилам выше.
 - Acceptance criteria: **Критерии приёмки:** 1) codex execpolicy check принимает файл и даёт ожидаемые решения для positive/negative cases. 2) Patterns не расширяют прежнюю заявленную authority; потенциально опасные варианты не получают широкое allow. 3) Фактический loading status указан отдельно; путь .codex/rules/default.rules не создаётся без отдельного решения об активации.
 - Group: PAOS-AUD-G1
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Сохранение плана по запросу владельца; execution не разрешён.
+- Plan trigger: Запрос владельца 09.11.2026 на полную локальную реализацию PAOS-AUD-G1.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 09-11-2026 12:47
 - Depends on: Нет новых обязательных задач этого плана.
 - Blocks: Нет обязательной downstream implementation зависимости в этом документе; собственный acceptance gate сохраняется.
 - Source: F11
@@ -209,19 +498,20 @@ Self-review: новые corrective slices отделены от уже выпо�
 - Agents: security-privacy-supply-chain-reviewer для read-only review; plugin-runtime-builder для правки; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: Проверить актуальность finding и baseline, затем согласовать точный local file scope, воспроизвести исходный case и выполнить только эту задачу после запроса на реализацию.
+- Next step: Local G1 закрыта; следующий маршрут G2, host acceptance отдельно G6.
 
 #### Completion Report
 
-- status: planned
-- what was done: Не выполнялась.
-- files touched / work locations: Не изменены.
-- technical value delivered: Не подтверждено.
-- product value delivered: Не подтверждено.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending_execution; authoring checks не доказывают implementation.
-- residual risks: high; relocation/activation rules — отдельная граница разрешения.
-- follow-up: Выполнить Dependencies и Acceptance в авторизованном slice.
+- status: implemented
+- what was done: Исправлены not_match semantics и Windows path examples; broad allow заменены review decisions; .rules оставлен proposal.
+- files touched / work locations: .rules; docs/runtime/worktrees-hooks-rules.md и .en.md; registry RU/EN
+- technical value delivered: Native parser принимает proposal, опасные trailing arguments не получают broad allow.
+- product value delivered: Loading status и необходимость review обозначены явно.
+- actual implementation date and time: 09-11-2026 12:47
+- verification evidence: Четыре codex execpolicy check: exit 0; prompt/no-match/prompt/forbidden; docs tests/checker.
+- residual risks: Local verification only; host/trust и реальные ACL не доказаны. MCP gap принадлежит G2. Подробные limits — execution evidence.
+- follow-up: Перейти к G2; AUD-HOST-02 и real ACL acceptance остаются отдельными разрешёнными сценариями.
+
 
 ### Task `PAOS-AUD-F07`
 
@@ -233,12 +523,12 @@ Self-review: новые corrective slices отделены от уже выпо�
 - Scope: **Затрагиваемые файлы:** `plugins/product-agent-os/scripts/product_agent_os/windows_codex_permissions.py`; `plugins/product-agent-os/scripts/prepare_windows_codex_permissions.py`; `tests/product_agent_os/test_windows_codex_permissions.py`; `plugins/product-agent-os/README.md`. Общий docs/control-plane scope — по правилам выше.
 - Acceptance criteria: **Критерии приёмки:** 1) Default/help/onboarding не предлагают broad apply; dry-run не меняет ACL. 2) Посторонние DENY SID не удаляются; unexpected target, digest drift и reparse ambiguity останавливают apply. 3) Backup/restore и формирование команд проверены через существующий mock/stub слой; настоящий ACL acceptance явно остаётся отдельным разрешённым сценарием.
 - Group: PAOS-AUD-G1
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Сохранение плана по запросу владельца; execution не разрешён.
+- Plan trigger: Запрос владельца 09.11.2026 на полную локальную реализацию PAOS-AUD-G1.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 09-11-2026 12:47
 - Depends on: Нет новых обязательных задач этого плана.
 - Blocks: Нет обязательной downstream implementation зависимости в этом документе; собственный acceptance gate сохраняется.
 - Source: F07
@@ -251,19 +541,20 @@ Self-review: новые corrective slices отделены от уже выпо�
 - Agents: plugin-runtime-builder; независимая проверка security-privacy-supply-chain-reviewer; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: Проверить актуальность finding и baseline, затем согласовать точный local file scope, воспроизвести исходный case и выполнить только эту задачу после запроса на реализацию.
+- Next step: Local G1 закрыта; следующий маршрут G2, host acceptance отдельно G6.
 
 #### Completion Report
 
-- status: planned
-- what was done: Не выполнялась.
-- files touched / work locations: Не изменены.
-- technical value delivered: Не подтверждено.
-- product value delivered: Не подтверждено.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending_execution; authoring checks не доказывают implementation.
-- residual risks: high; реальные ACL/permissions изменения требуют точных target, owner и rollback.
-- follow-up: Выполнить Dependencies и Acceptance в авторизованном slice.
+- status: implemented
+- what was done: Broad onboarding apply заменён single-target/SID repair с plan digest, DACL snapshot/restore, reparse/drift rejection и rollback при сбое.
+- files touched / work locations: windows_codex_permissions.py; prepare_windows_codex_permissions.py; test_windows_codex_permissions.py; plugin README.md
+- technical value delivered: Посторонние DENY SID не удаляются; операции ограничены reviewed plan.
+- product value delivered: Обычный onboarding остаётся диагностическим; repair имеет preview и путь восстановления.
+- actual implementation date and time: 09-11-2026 12:47
+- verification evidence: Permissions mock tests в affected 216 и full 1297; default no-apply, selected SID, drift, reparse, restore failure tests; native help readback.
+- residual risks: Local verification only; host/trust и реальные ACL не доказаны. MCP gap принадлежит G2. Подробные limits — execution evidence.
+- follow-up: Перейти к G2; AUD-HOST-02 и real ACL acceptance остаются отдельными разрешёнными сценариями.
+
 
 ### Task `PAOS-AUD-F18`
 
@@ -275,12 +566,12 @@ Self-review: новые corrective slices отделены от уже выпо�
 - Scope: **Затрагиваемые файлы:** `.codex/hooks/pre_tool_use_policy.py`; `plugins/product-agent-os/assets/templates/hooks/pre_tool_use_policy.py`; `plugins/product-agent-os/scripts/product_agent_os/task_plan_lifecycle.py`; `plugins/product-agent-os/scripts/product_agent_os/validators.py`; `.codex/workflows/task-plan-lifecycle.md`; `plugins/product-agent-os/assets/templates/workflows/task-plan-lifecycle.md`; `tests/product_agent_os/test_lifecycle_hooks.py`; `tests/product_agent_os/test_task_plan_lifecycle.py`. Общий docs/control-plane scope — по правилам выше.
 - Acceptance criteria: **Критерии приёмки:** 1) Несколько последовательных обновлений своего exact report проходят при совпадении digest и действующем scope. 2) Чужой marker/path, stale digest, expired grant, terminal state, symlink/alias и mixed patch отклоняются. 3) Legacy create-only поведение сохранено; новая authoring authority явно выражена и не меняет sandbox/trust. 4) Конкурирующее изменение отчёта даёт conflict, а не silent overwrite; host behavior закрывается отдельно.
 - Group: PAOS-AUD-G1
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Сохранение плана по запросу владельца; execution не разрешён.
+- Plan trigger: Запрос владельца 09.11.2026 на полную локальную реализацию PAOS-AUD-G1.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 09-11-2026 12:47
 - Depends on: PAOS-AUD-F06
 - Blocks: PAOS-AUD-HOST-02; для F05 только incremental report scenario.
 - Source: F18; GAP-05 create-only grant; session isolation уже реализована.
@@ -293,23 +584,24 @@ Self-review: новые corrective slices отделены от уже выпо�
 - Agents: lifecycle-orchestrator; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: Проверить названные зависимости, затем согласовать точный local file scope, воспроизвести исходный case и выполнить только эту задачу после запроса на реализацию.
+- Next step: Local G1 закрыта; следующий маршрут G2, host acceptance отдельно G6.
 
 #### Completion Report
 
-- status: planned
-- what was done: Не выполнялась.
-- files touched / work locations: Не изменены.
-- technical value delivered: Не подтверждено.
-- product value delivered: Не подтверждено.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending_execution; authoring checks не доказывают implementation.
-- residual risks: high; изменение opt-in grant не даёт права активировать его в hook definition.
-- follow-up: Выполнить Dependencies и Acceptance в авторизованном slice.
+- status: implemented
+- what was done: Добавлен отдельный opt-in work_type report_authoring, v2 grant/session/expiry, previous-digest conflict check и whole-report create/update builder; v1 сохранён.
+- files touched / work locations: active/package pre_tool_use_policy.py и workflow; task_plan_lifecycle.py; validators.py; lifecycle/task-plan tests
+- technical value delivered: Последовательные записи одного отчёта ограничены exact path, grant и session.
+- product value delivered: Можно накапливать отчёт без общего mutation scope и без переоформления grant на каждую версию.
+- actual implementation date and time: 09-11-2026 12:47
+- verification evidence: Create + two updates, stale digest, foreign path/session/marker, expiry, terminal, alias/reparse/mixed denial; affected 216; full 1297.
+- residual risks: Local verification only; host/trust и реальные ACL не доказаны. MCP gap принадлежит G2. Подробные limits — execution evidence.
+- follow-up: Перейти к G2; AUD-HOST-02 и real ACL acceptance остаются отдельными разрешёнными сценариями.
 
 ## PAOS-AUD-G2 — Совместимость package и диагностика host
 
 - **ID:** `PAOS-AUD-G2`
+- **Статус:** `implemented_locally_verified`; F01/F02/F04 выполнены, следующий G3.
 - **Название группы:** Совместимость package и диагностика host
 - **Описание группы:** Исправить MCP declaration, capability matrix и расширить существующий compatibility report наблюдаемыми данными host/model/provenance.
 - **Техническое значение (для проекта):** Один источник диагностики package schema и surface capabilities без нового doctor framework.
@@ -318,6 +610,7 @@ Self-review: новые corrective slices отделены от уже выпо�
 - **Критерии приёмки группы:** Поддерживаемый локальный package проходит compatibility check; unsupported и not_verified различены; version/model/cache/trust не получают вымышленных значений.
 - **Зависимости и порядок:** Можно вести независимо от G1 при отдельном владельце. F01 и F02 перед F04. Выход используется G5/G6.
 - **Предлагаемая ответственность:** plugin-runtime-builder.
+
 
 ### Task `PAOS-AUD-F01`
 
@@ -329,12 +622,12 @@ Self-review: новые corrective slices отделены от уже выпо�
 - Scope: **Затрагиваемые файлы:** `plugins/product-agent-os/.mcp.json`; `plugins/product-agent-os/.codex-plugin/plugin.json`; `plugins/product-agent-os/scripts/product_agent_os/plugin_components.py`; `tests/product_agent_os/test_codex_compatibility.py`. Общий docs/control-plane scope — по правилам выше.
 - Acceptance criteria: **Критерии приёмки:** 1) Текущий package проходит локальный compatibility check по MCP shape; malformed/ambiguous fixtures остаются rejected/needs_review. 2) Legacy manifest сохраняется, если нет отдельного требования переносимости; не смешиваются два независимых manifest authority. 3) Publisher/URLs проверены или distribution остаётся явно gated; MCP server не запускается проверкой структуры.
 - Group: PAOS-AUD-G2
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Сохранение плана по запросу владельца; execution не разрешён.
+- Plan trigger: Запрос владельца 09.11.2026 на полную локальную реализацию G2 с проверками; внешние boundaries сохранены.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 09-11-2026 13:16
 - Depends on: Нет новых обязательных задач этого плана.
 - Blocks: PAOS-AUD-F04, PAOS-AUD-F14, PAOS-AUD-HOST-01
 - Source: F01
@@ -346,20 +639,20 @@ Self-review: новые corrective slices отделены от уже выпо�
 - Estimated execution time: not_estimated; после preflight конкретного slice.
 - Agents: plugin-runtime-builder; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
-- Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: Проверить актуальность finding и baseline, затем согласовать точный local file scope, воспроизвести исходный case и выполнить только эту задачу после запроса на реализацию.
+- Output artifacts: Реализованные scope files; G2 execution evidence и SHA-256 в этом плане.
+- Next step: G3; actual host acceptance и distribution gates отдельно.
 
 #### Completion Report
 
-- status: planned
-- what was done: Не выполнялась.
-- files touched / work locations: Не изменены.
-- technical value delivered: Не подтверждено.
-- product value delivered: Не подтверждено.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending_execution; authoring checks не доказывают implementation.
-- residual risks: medium; неизвестные identity/URL не выдумывать; publication и MCP execution вне scope.
-- follow-up: Выполнить Dependencies и Acceptance в авторизованном slice.
+- status: implemented
+- what was done: Исправлен MCP wrapper; rejected duplicate/ambiguous/unknown inputs; сохранён portable precedence. Неподтверждённые publisher/URLs заменены явным gated status.
+- files touched / work locations: plugins/product-agent-os/.mcp.json; .codex-plugin/plugin.json; scripts/product_agent_os/plugin_components.py; tests/product_agent_os/test_codex_compatibility.py; test_plugin_structure.py; shared docs/control-plane.
+- technical value delivered: Поддерживаемая локальная структура без смешения authority.
+- product value delivered: Понятный package contract без ложной атрибуции издателю.
+- actual implementation date and time: 09-11-2026 13:16
+- verification evidence: G2 execution evidence выше: RED; full 1305 OK (1 platform skip), 748.949 s, exit 0; final focused 122 OK, final contracts 22 OK; fixtures 91, transcript 26/26; compatibility exit 0; docs/hooks passed. Source state provenance и hashes сохранены.
+- residual risks: Distribution publisher/URLs/icons gated; host activation/trust/account access и full package receipts не доказаны. T30–T34/G6 остаются source-owned.
+- follow-up: Переход к G3. Для actual host evidence — AUD-HOST-01/G6; publication и model promotion требуют своих gates.
 
 ### Task `PAOS-AUD-F02`
 
@@ -371,12 +664,12 @@ Self-review: новые corrective slices отделены от уже выпо�
 - Scope: **Затрагиваемые файлы:** `plugins/product-agent-os/scripts/product_agent_os/codex_compatibility.py`; `tests/product_agent_os/test_codex_compatibility.py`. Общий docs/control-plane scope — по правилам выше.
 - Acceptance criteria: **Критерии приёмки:** 1) App/CLI/IDE получают документированные разные capabilities; unsupported не заменяется requires_host_receipt. 2) Host receipt не может повысить documented unsupported до supported без обновления source-backed contract. 3) Local structure scope и отсутствие активационного доказательства сохранены.
 - Group: PAOS-AUD-G2
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Сохранение плана по запросу владельца; execution не разрешён.
+- Plan trigger: Запрос владельца 09.11.2026 на полную локальную реализацию G2 с проверками; внешние boundaries сохранены.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 09-11-2026 13:16
 - Depends on: Нет новых обязательных задач этого плана.
 - Blocks: PAOS-AUD-F04, PAOS-AUD-F14, PAOS-AUD-HOST-01
 - Source: F02
@@ -388,20 +681,20 @@ Self-review: новые corrective slices отделены от уже выпо�
 - Estimated execution time: not_estimated; после preflight конкретного slice.
 - Agents: plugin-runtime-builder; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
-- Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: Проверить актуальность finding и baseline, затем согласовать точный local file scope, воспроизвести исходный case и выполнить только эту задачу после запроса на реализацию.
+- Output artifacts: Реализованные scope files; G2 execution evidence и SHA-256 в этом плане.
+- Next step: G3; actual host acceptance и distribution gates отдельно.
 
 #### Completion Report
 
-- status: planned
-- what was done: Не выполнялась.
-- files touched / work locations: Не изменены.
-- technical value delivered: Не подтверждено.
-- product value delivered: Не подтверждено.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending_execution; authoring checks не доказывают implementation.
-- residual risks: medium; capability facts сверить заново на дату реализации.
-- follow-up: Выполнить Dependencies и Acceptance в авторизованном slice.
+- status: implemented
+- what was done: Разделены documented support и observation; IDE native plugin unsupported; receipt conflict не повышает capability; standalone skills отдельно.
+- files touched / work locations: plugins/product-agent-os/scripts/product_agent_os/codex_compatibility.py; tests/product_agent_os/test_codex_compatibility.py; shared docs/control-plane.
+- technical value delivered: Раздельный capability contract для App/CLI/IDE.
+- product value delivered: Неподдерживаемая функция не предлагается как ожидающая активации.
+- actual implementation date and time: 09-11-2026 13:16
+- verification evidence: G2 execution evidence выше: RED; full 1305 OK (1 platform skip), 748.949 s, exit 0; final focused 122 OK, final contracts 22 OK; fixtures 91, transcript 26/26; compatibility exit 0; docs/hooks passed. Source state provenance и hashes сохранены.
+- residual risks: Distribution publisher/URLs/icons gated; host activation/trust/account access и full package receipts не доказаны. T30–T34/G6 остаются source-owned.
+- follow-up: Переход к G3. Для actual host evidence — AUD-HOST-01/G6; publication и model promotion требуют своих gates.
 
 ### Task `PAOS-AUD-F04`
 
@@ -413,12 +706,12 @@ Self-review: новые corrective slices отделены от уже выпо�
 - Scope: **Затрагиваемые файлы:** `plugins/product-agent-os/scripts/product_agent_os/codex_compatibility.py`; `plugins/product-agent-os/scripts/validate_codex_compatibility.py`; `tests/product_agent_os/test_codex_compatibility.py`; `docs/codex/models-and-reasoning.md`; `docs/codex/models-and-reasoning.en.md`. Общий docs/control-plane scope — по правилам выше.
 - Acceptance criteria: **Критерии приёмки:** 1) Missing/old/unknown version, недоступный model receipt, source/cache drift и unknown trust отражаются явно. 2) Установленный CLI не выдаётся за проверенную версию App или доступность аккаунта. 3) Нет provider вызовов, cache writes, автоматического повышения effort или promotion по одному model ID. 4) Read-only inputs/report редактируют только allowlisted non-secret данные; baseline T23–T29 сохранён.
 - Group: PAOS-AUD-G2
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Сохранение плана по запросу владельца; execution не разрешён.
+- Plan trigger: Запрос владельца 09.11.2026 на полную локальную реализацию G2 с проверками; внешние boundaries сохранены.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 09-11-2026 13:16
 - Depends on: PAOS-AUD-F01, PAOS-AUD-F02
 - Blocks: PAOS-AUD-F14, PAOS-AUD-HOST-01
 - Source: F04 — локальная диагностика; качество treatment остаётся в B45-CQRR-T30–T34.
@@ -430,20 +723,20 @@ Self-review: новые corrective slices отделены от уже выпо�
 - Estimated execution time: not_estimated; после preflight конкретного slice.
 - Agents: plugin-runtime-builder; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
-- Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: Проверить названные зависимости, затем согласовать точный local file scope, воспроизвести исходный case и выполнить только эту задачу после запроса на реализацию.
+- Output artifacts: Реализованные scope files; G2 execution evidence и SHA-256 в этом плане.
+- Next step: G3; actual host acceptance и distribution gates отдельно.
 
 #### Completion Report
 
-- status: planned
-- what was done: Не выполнялась.
-- files touched / work locations: Не изменены.
-- technical value delivered: Не подтверждено.
-- product value delivered: Не подтверждено.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending_execution; authoring checks не доказывают implementation.
-- residual risks: medium; диагностика не требует credential use или изменения active profiles.
-- follow-up: Выполнить Dependencies и Acceptance в авторизованном slice.
+- status: implemented
+- what was done: Добавлены bounded allowlisted observations и explicit cache read-only comparison, version/model/trust diagnostics; CLI minimum применяется только Terra/CLI. Symlink/junction rejected; model pins/effort сохранены.
+- files touched / work locations: plugins/product-agent-os/scripts/product_agent_os/codex_compatibility.py; scripts/validate_codex_compatibility.py; tests/product_agent_os/test_codex_compatibility.py; docs/codex/models-and-reasoning.md и .en.md; shared docs/control-plane.
+- technical value delivered: Configured/observed и canonical/cache evidence раздельны, unknown явно отображён.
+- product value delivered: Видны причины отсутствия подтверждения модели, trust и выбранного skill source.
+- actual implementation date and time: 09-11-2026 13:16
+- verification evidence: G2 execution evidence выше: RED; full 1305 OK (1 platform skip), 748.949 s, exit 0; final focused 122 OK, final contracts 22 OK; fixtures 91, transcript 26/26; compatibility exit 0; docs/hooks passed. Source state provenance и hashes сохранены.
+- residual risks: Distribution publisher/URLs/icons gated; host activation/trust/account access и full package receipts не доказаны. T30–T34/G6 остаются source-owned.
+- follow-up: Переход к G3. Для actual host evidence — AUD-HOST-01/G6; publication и model promotion требуют своих gates.
 
 ## PAOS-AUD-G3 — Достоверные evidence и текущие статусы
 
@@ -467,12 +760,12 @@ Self-review: новые corrective slices отделены от уже выпо�
 - Scope: **Затрагиваемые файлы:** `plugins/product-agent-os/scripts/product_agent_os/source_policy.py`; `tests/product_agent_os/test_source_policy.py`; `docs/sources/registry.md`; `docs/sources/registry.en.md`. Общий docs/control-plane scope — по правилам выше.
 - Acceptance criteria: **Критерии приёмки:** 1) Форматы «Проверено YYYY-MM-DD.» и фактические EN формы распознаются; invalid/future/missing/stale cases различены по явной политике. 2) Registry reference разрешается безопасно внутри workspace; broken refs отражены как missing evidence. 3) Project-local и historical claims не получают ложный official verdict; дата/URL не меняют claim_supported на verified без semantic review.
 - Group: PAOS-AUD-G3
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Сохранение плана по запросу владельца; execution не разрешён.
+- Plan trigger: Запрос владельца 09.11.2026 на полную локальную реализацию G3 с проверками.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 09-11-2026 13:47
 - Depends on: Нет новых обязательных задач этого плана.
 - Blocks: PAOS-AUD-F17
 - Source: F03
@@ -484,20 +777,20 @@ Self-review: новые corrective slices отделены от уже выпо�
 - Estimated execution time: not_estimated; после preflight конкретного slice.
 - Agents: plugin-runtime-builder; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
-- Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: Проверить актуальность finding и baseline, затем согласовать точный local file scope, воспроизвести исходный case и выполнить только эту задачу после запроса на реализацию.
+- Output artifacts: Scope files и G3 execution evidence в этом плане.
+- Next step: PAOS-AUD-G4; host/promotion gates отдельно.
 
 #### Completion Report
 
-- status: planned
-- what was done: Не выполнялась.
-- files touched / work locations: Не изменены.
-- technical value delivered: Не подтверждено.
-- product value delivered: Не подтверждено.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending_execution; authoring checks не доказывают implementation.
-- residual risks: medium; сохранить exact-host URL и secret protections; не превращать scanner в crawler.
-- follow-up: Выполнить Dependencies и Acceptance в авторизованном slice.
+- status: implemented
+- what was done: RU/EN dates, strict freshness, bounded registry resolution и heuristic claim classes; URL/date не semantic proof.
+- files touched / work locations: source_policy.py; test_source_policy.py; registry RU/EN; shared control-plane и owning plan
+- technical value delivered: Убраны ложные date/source gaps при сохранении review boundaries.
+- product value delivered: Source report различает отсутствие даты, устаревание и неподтверждённую семантику.
+- actual implementation date and time: 09-11-2026 13:47
+- verification evidence: G3 execution evidence выше: RED/GREEN, Full unittest: 1320 tests, 725.771 s, OK (skipped=1); final focused 78 tests OK; fixture 91/91; transcript 26/26; compatibility passed (local structure only).
+- residual risks: Semantic source support требует ручной проверки; generated state не acceptance. Host/promotion вне scope.
+- follow-up: PAOS-AUD-G4; сохранять revision pin и canonical B42/B45 ownership.
 
 ### Task `PAOS-AUD-F08`
 
@@ -509,12 +802,12 @@ Self-review: новые corrective slices отделены от уже выпо�
 - Scope: **Затрагиваемые файлы:** `plugins/product-agent-os/scripts/product_agent_os/self_learning_feedback.py`; `tests/product_agent_os/test_self_learning_extensions.py`; `tests/product_agent_os/test_self_learning_state.py`. Общий docs/control-plane scope — по правилам выше.
 - Acceptance criteria: **Критерии приёмки:** 1) Empty ledger, missing ledger и wholly rejected records дают insufficient_evidence и не positive promotion signal. 2) Допустимые positive/negative/mixed labels сохраняют корректные denominator/counts и summary. 3) Candidate-only/manual-only safeguards не меняются; fixtures не содержат реальных персональных данных.
 - Group: PAOS-AUD-G3
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Сохранение плана по запросу владельца; execution не разрешён.
+- Plan trigger: Запрос владельца 09.11.2026 на полную локальную реализацию G3 с проверками.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 09-11-2026 13:47
 - Depends on: Нет новых обязательных задач этого плана.
 - Blocks: PAOS-GAP-06
 - Source: F08
@@ -526,20 +819,20 @@ Self-review: новые corrective slices отделены от уже выпо�
 - Estimated execution time: not_estimated; после preflight конкретного slice.
 - Agents: learning-loop-engineer; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
-- Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: Проверить актуальность finding и baseline, затем согласовать точный local file scope, воспроизвести исходный case и выполнить только эту задачу после запроса на реализацию.
+- Output artifacts: Scope files и G3 execution evidence в этом плане.
+- Next step: PAOS-AUD-G4; host/promotion gates отдельно.
 
 #### Completion Report
 
-- status: planned
-- what was done: Не выполнялась.
-- files touched / work locations: Не изменены.
-- technical value delivered: Не подтверждено.
-- product value delivered: Не подтверждено.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending_execution; authoring checks не доказывают implementation.
-- residual risks: medium; изменение output enum требует проверки существующих consumers.
-- follow-up: Выполнить Dependencies и Acceptance в авторизованном slice.
+- status: implemented
+- what was done: Zero owner labels дают insufficient_evidence; sentiment/coverage/row validity разделены; malformed ledger безопасно отклоняется.
+- files touched / work locations: self_learning_feedback.py; test_self_learning_state.py; test_self_learning_extensions.py; self-learning-loop RU/EN; shared control-plane и owning plan
+- technical value delivered: Нет положительного evidence сигнала при пустых/rejected данных.
+- product value delivered: Пользователь видит отсутствие feedback без ложного promotion signal.
+- actual implementation date and time: 09-11-2026 13:47
+- verification evidence: G3 execution evidence выше: RED/GREEN, Full unittest: 1320 tests, 725.771 s, OK (skipped=1); final focused 78 tests OK; fixture 91/91; transcript 26/26; compatibility passed (local structure only).
+- residual risks: Semantic source support требует ручной проверки; generated state не acceptance. Host/promotion вне scope.
+- follow-up: PAOS-AUD-G4; сохранять revision pin и canonical B42/B45 ownership.
 
 ### Task `PAOS-AUD-F16`
 
@@ -551,12 +844,12 @@ Self-review: новые corrective slices отделены от уже выпо�
 - Scope: **Затрагиваемые файлы:** `plugins/product-agent-os/scripts/product_agent_os/status_snapshot.py`; `tests/product_agent_os/test_status_snapshot.py`; `PLAN.md`; `RUNLOG.md`; `TEST.md`; `docs/product-agent-os/control-plane-current-state.md`; `docs/product-agent-os/control-plane-current-state.en.md`. Общий docs/control-plane scope — по правилам выше.
 - Acceptance criteria: **Критерии приёмки:** 1) Historical planned плюс более новый execution receipt не возвращает выполненную задачу в planned. 2) Current result содержит источник/revision и различает implemented, verified, accepted; ambiguous/conflicting evidence не скрывается. 3) Исторические B42/B45 receipts сохранены; T23–T29 и machine statuses не переписаны из-за новой projection.
 - Group: PAOS-AUD-G3
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Сохранение плана по запросу владельца; execution не разрешён.
+- Plan trigger: Запрос владельца 09.11.2026 на полную локальную реализацию G3 с проверками.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 09-11-2026 13:47
 - Depends on: Нет новых обязательных задач этого плана.
 - Blocks: PAOS-AUD-F17
 - Source: F16
@@ -568,20 +861,20 @@ Self-review: новые corrective slices отделены от уже выпо�
 - Estimated execution time: not_estimated; после preflight конкретного slice.
 - Agents: graph-cockpit-engineer; control-plane writer один; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
-- Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: Проверить актуальность finding и baseline, затем согласовать точный local file scope, воспроизвести исходный case и выполнить только эту задачу после запроса на реализацию.
+- Output artifacts: Scope files и G3 execution evidence в этом плане.
+- Next step: PAOS-AUD-G4; host/promotion gates отдельно.
 
 #### Completion Report
 
-- status: planned
-- what was done: Не выполнялась.
-- files touched / work locations: Не изменены.
-- technical value delivered: Не подтверждено.
-- product value delivered: Не подтверждено.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: pending_execution; authoring checks не доказывают implementation.
-- residual risks: medium; control-plane файлы общие — изменения только последовательно.
-- follow-up: Выполнить Dependencies и Acceptance в авторизованном slice.
+- status: implemented
+- what was done: Revision-pinned PLAN pointer, scoped ownership и precedence dated receipts; task/run/verification/acceptance раздельны; dashboard caller подключён.
+- files touched / work locations: status_snapshot.py; render_status_dashboard.py; run_fixture_eval.py; test_status_snapshot.py; PLAN.md; current-state RU/EN; shared control-plane и owning plan
+- technical value delivered: Current projection связана с исходником; конфликт и drift не маскируются историей.
+- product value delivered: Исторический planned не скрывает более позднее scoped execution evidence.
+- actual implementation date and time: 09-11-2026 13:47
+- verification evidence: G3 execution evidence выше: RED/GREEN, Full unittest: 1320 tests, 725.771 s, OK (skipped=1); final focused 78 tests OK; fixture 91/91; transcript 26/26; compatibility passed (local structure only).
+- residual risks: Semantic source support требует ручной проверки; generated state не acceptance. Host/promotion вне scope.
+- follow-up: PAOS-AUD-G4; сохранять revision pin и canonical B42/B45 ownership.
 
 ## PAOS-AUD-G4 — Простой ordinary route и компактные инструкции
 

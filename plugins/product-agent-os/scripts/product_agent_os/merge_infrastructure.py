@@ -23,7 +23,7 @@ from product_agent_os.stage_manifest import (
 OWNER = "product-agent-os"
 ROLLBACK_MANIFEST_NAME = "product-agent-os-rollback-manifest.json"
 MERGE_PLAN_NAME = "product-agent-os-merge-plan.json"
-HOOKS_CONFIG_TARGET = ".codex/hooks/hooks.json"
+HOOKS_CONFIG_TARGET = ".codex/hooks.json"
 ALLOWED_HOOK_EVENTS = {"SessionStart", "PreToolUse", "PermissionRequest", "PostToolUse", "Stop"}
 WRITABLE_ACTIONS = {"create_file", "append_managed_section", "replace_managed_section"}
 SAFE_EXISTING_SUFFIXES = {".md", ".markdown", ".toml", ".json", ".py"}
@@ -644,6 +644,10 @@ def _backup_path(stage_root: Path, relative_path: str) -> Path:
 def _reject_unsafe_relative_path(value: str, label: str) -> None:
     path = Path(value)
     windows_path = PureWindowsPath(value)
+    # Discovery aliases must not fall through to the ordinary-file approval route.
+    hook_alias = "/".join(part.rstrip(" .").casefold() for part in windows_path.parts)
+    if hook_alias == HOOKS_CONFIG_TARGET and value != HOOKS_CONFIG_TARGET:
+        raise MergeInfrastructureError(f"{label} must use canonical hook definition path: {HOOKS_CONFIG_TARGET}")
     unsafe = (
         not value
         or path.is_absolute()

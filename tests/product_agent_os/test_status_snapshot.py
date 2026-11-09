@@ -1,5 +1,7 @@
 import json
 import sys
+import hashlib
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -12,6 +14,111 @@ from product_agent_os.status_snapshot import build_status_snapshot  # noqa: E402
 
 
 class StatusSnapshotTest(unittest.TestCase):
+    def _current_workspace(self, root, document):
+        source = root / 'docs/superpowers/specs/tasks.json'
+        source.parent.mkdir(parents=True, exist_ok=True)
+        source.write_text(json.dumps(document), encoding='utf-8')
+        pointer = {'schema_version': 1, 'sources': [{'path': source.relative_to(root).as_posix(), 'revision': 'sha256:'+hashlib.sha256(source.read_bytes()).hexdigest()}]}
+        (root / 'PLAN.md').write_text('<!-- product-agent-os:current-state:start -->\n```json\n'+json.dumps(pointer)+'\n```\n<!-- product-agent-os:current-state:end -->\n\n## Current historical\nOld planned record.\n', encoding='utf-8')
+        return source
+
+    def test_current_execution_overrides_historical_planned_with_revision(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            self._current_workspace(root, {'generated_at':'2026-06-19T00:00:00Z', 'tasks':[{'id':'B42-S2-M04','status':'planned','execution_evidence':{'checked_at':'2026-11-05','status':'implemented_locally_verified_explicit_only'}}]})
+            result=build_status_snapshot(workspace=root, generated_at='2026-11-09T00:00:00Z')['current_state']
+            self.assertEqual(result['status'],'projected')
+            task=result['tasks'][0]
+            self.assertEqual(task['task_state'],'implemented')
+            self.assertEqual(task['verification_state'],'locally_verified')
+            self.assertEqual(task['acceptance_state'],'unknown')
+            self.assertEqual(task['historical_status'],'planned')
+            self.assertEqual(task['selected_evidence'],'execution_evidence')
+            self.assertTrue(task['source_revision'].startswith('sha256:'))
+
+    def test_current_projection_rejects_stale_revision_without_fallback(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp); source=self._current_workspace(root, {'tasks':[{'id':'T1','status':'planned'}]})
+            source.write_text('{"tasks":[]}', encoding='utf-8')
+            result=build_status_snapshot(workspace=root, generated_at='2026-11-09T00:00:00Z')['current_state']
+            self.assertEqual(result['status'],'unknown')
+            self.assertEqual(result['tasks'],[])
+            self.assertIn('source_revision_mismatch',result['issues'])
+
+    def test_equal_new_receipts_conflict_and_unknown_timestamps_fail_closed(self):
+        receipts=[{'checked_at':'2026-11-05','status':'implemented'},{'checked_at':'2026-11-05','status':'planned'}]
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            for evidence,expected in [(receipts,'conflict'), ({'status':'implemented'},'unknown'), ({'checked_at':'2030-01-01','status':'implemented'},'unknown')]:
+                self._current_workspace(root, {'generated_at':'2026-06-19', 'tasks':[{'id':'T1','status':'planned','execution_evidence':evidence}]})
+                result=build_status_snapshot(workspace=root, generated_at='2026-11-09T00:00:00Z')['current_state']
+                self.assertEqual(result['status'],expected)
+                self.assertEqual(result['tasks'][0]['task_state'],expected)
+
+    def test_current_pointer_unknown_unsafe_and_duplicate_ownership(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            self.assertEqual(build_status_snapshot(workspace=root,generated_at='2026-11-09T00:00:00Z')['current_state']['status'],'unknown')
+            self._current_workspace(root,{'tasks':[{'id':'T1','status':'implemented'},{'id':'T1','status':'planned'}]})
+            result=build_status_snapshot(workspace=root, generated_at='2026-11-09T00:00:00Z')['current_state']
+            self.assertEqual(result['status'],'conflict')
+            plan=root/'PLAN.md'
+            plan.write_text(plan.read_text(encoding='utf-8').replace('docs/superpowers/specs/tasks.json','../outside.json'),encoding='utf-8')
+            result=build_status_snapshot(workspace=root, generated_at='2026-11-09T00:00:00Z')['current_state']
+            self.assertEqual(result['status'],'unknown')
+            self.assertEqual(result['tasks'],[])
+
+    def test_snapshot_undated_and_future_evidence_are_not_current(self):
+        for item,status in [({'status':'ok'},'unknown'),({'recorded_at':'2030-01-01T00:00:00Z'},'future'),({'recorded_at':'2026-11-08T00:00:00'},'unknown')]:
+            snapshot=build_status_snapshot(runtime_result={'status':'completed','verification_evidence':[item]},generated_at='2026-11-09T00:00:00Z')
+            self.assertEqual(snapshot['evidence_summary']['freshness'],status)
+            self.assertIn('completion status lacks current verification evidence',snapshot['readiness_summary']['warnings'])
+
+    def test_current_markdown_projection_and_dashboard_wiring_are_read_only(self):
+        import importlib.util
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp); source=self._current_workspace(root, {'tasks':[]})
+            source.unlink()
+            source=root/'research/tasks.md'; source.parent.mkdir()
+            source.write_text('### Task `T1`\n- Status: implemented\n#### Completion Report\n- status: implemented\n',encoding='utf-8')
+            pointer={'schema_version':1,'sources':[{'path':'research/tasks.md','revision':'sha256:'+hashlib.sha256(source.read_bytes()).hexdigest()}]}
+            (root/'PLAN.md').write_text('<!-- product-agent-os:current-state:start -->\n```json\n'+json.dumps(pointer)+'\n```\n<!-- product-agent-os:current-state:end -->',encoding='utf-8')
+            before={p.relative_to(root).as_posix():p.read_bytes() for p in root.rglob('*') if p.is_file()}
+            spec=importlib.util.spec_from_file_location('g3_status_cli',SCRIPTS/'render_status_dashboard.py')
+            module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+            snapshot=module._snapshot_for_workspace(root)
+            row=snapshot['current_state']['tasks'][0]
+            self.assertEqual(row['task_state'],'implemented')
+            self.assertEqual(row['verification_state'],'not_verified')
+            self.assertEqual(row['acceptance_state'],'unknown')
+            self.assertEqual(before,{p.relative_to(root).as_posix():p.read_bytes() for p in root.rglob('*') if p.is_file()})
+
+    def test_stale_receipt_does_not_override_newer_source_and_dimensions_are_separate(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            self._current_workspace(root,{'checked_at':'2026-11-06','tasks':[{'id':'T1','status':'implemented','execution_evidence':{'checked_at':'2026-11-05','status':'planned'},'run_status':'failed','acceptance_status':'needs_user_acceptance'}]})
+            row=build_status_snapshot(workspace=root,generated_at='2026-11-09T00:00:00Z')['current_state']['tasks'][0]
+            self.assertEqual(row['task_state'],'implemented')
+            self.assertEqual(row['run_state'],'failed')
+            self.assertEqual(row['verification_state'],'not_verified')
+            self.assertEqual(row['acceptance_state'],'needs_user_acceptance')
+
+    def test_pointer_scope_preserves_canonical_owner_over_planning_cross_reference(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            source=self._current_workspace(root,{'tasks':[{'id':'AUD-1','status':'planned'},{'id':'B45-T30','status':'planned'}]})
+            canonical=source.with_name('canonical.json')
+            canonical.write_text(json.dumps({'tasks':[{'id':'B45-T30','status':'implemented'}]}),encoding='utf-8')
+            pointer={'schema_version':1,'sources':[
+                {'path':source.relative_to(root).as_posix(),'revision':'sha256:'+hashlib.sha256(source.read_bytes()).hexdigest(),'task_prefixes':['AUD-']},
+                {'path':canonical.relative_to(root).as_posix(),'revision':'sha256:'+hashlib.sha256(canonical.read_bytes()).hexdigest()}]}
+            (root/'PLAN.md').write_text('<!-- product-agent-os:current-state:start -->\n```json\n'+json.dumps(pointer)+'\n```\n<!-- product-agent-os:current-state:end -->',encoding='utf-8')
+            result=build_status_snapshot(workspace=root,generated_at='2026-11-09T00:00:00Z')['current_state']
+            self.assertEqual(result['status'],'projected')
+            self.assertEqual(len(result['tasks']),2)
+            self.assertEqual(result['tasks'][1]['task_state'],'implemented')
+            self.assertEqual(result['tasks'][1]['source_path'],canonical.relative_to(root).as_posix())
+
     def test_status_snapshot_summarizes_runtime_renderer_manifest_and_ledgers_without_raw_paths(self):
         runtime_result = {
             "status": "needs_approval",

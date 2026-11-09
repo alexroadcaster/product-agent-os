@@ -176,7 +176,7 @@ _TEMPLATES: tuple[TemplateSpec, ...] = (
     _spec("agent-reviewer", "agents", "agents/reviewer.toml", ".codex/agents/reviewer.toml", "agent"),
     _spec("agent-docs-maintainer", "agents", "agents/docs-maintainer.toml", ".codex/agents/docs-maintainer.toml", "agent"),
     _spec("agent-release-operator", "agents", "agents/release-operator.toml", ".codex/agents/release-operator.toml", "agent"),
-    _spec("hooks-json", "hooks", "hooks/hooks.json", ".codex/hooks/hooks.json", "hook_json"),
+    _spec("hooks-json", "hooks", "hooks/hooks.json", ".codex/hooks.json", "hook_json"),
     _spec("hook-session-start", "hooks", "hooks/session_start_context.py", ".codex/hooks/session_start_context.py", "hook"),
     _spec("hook-pre-tool-use", "hooks", "hooks/pre_tool_use_policy.py", ".codex/hooks/pre_tool_use_policy.py", "hook"),
     _spec("hook-permission-request", "hooks", "hooks/permission_request_summary.py", ".codex/hooks/permission_request_summary.py", "hook"),

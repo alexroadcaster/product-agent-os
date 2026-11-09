@@ -2,7 +2,7 @@
 
 Source status: `official + experiment`
 
-## Component inventory — GAP-02, 2026-11-05
+## Component inventory — PAOS-AUD-G2, 2026-11-09
 
 Input: a local package path. The shared `plugin_components.py` resolver supplies compatibility, package inventory, discovery, methodology audit and system-file hygiene. Output separates format/version, selected component paths, skill/MCP server names, transports, issues and `host_status: not_verified`. Commands, endpoint URLs, environment values and secrets are neither returned nor executed.
 
@@ -14,15 +14,16 @@ Input: a local package path. The shared `plugin_components.py` resolver supplies
 | MCP `mcpServers` wrapper | Portable schema or Codex compatibility wrapper | Transport checked separately from host |
 | Flat `.mcp.json`, unknown schema, invalid types, escaping paths | Preserve observation without silent fallback | `needs_review` |
 
-The current package remains `needs_review`: `context7` is observed in legacy flat `.mcp.json`. No automatic migration occurs. Validation covers a bounded structural subset, not full JSON Schema validation. Auth extensions and unsupported constructs need separate review.
+The current package retains the Codex compatibility manifest and uses the `mcpServers` wrapper in `.mcp.json`. Local validation returns `compatible`; legacy flat input, duplicate JSON keys, mixed transports and unknown fields remain `needs_review`. The TOML `startup_timeout_sec` field is not transferred into the bounded JSON subset. Validation covers a bounded structural subset, not full JSON Schema validation. Auth extensions and unsupported constructs need separate review.
 
 | Component / surface | Codex App | CLI | IDE extension |
 | --- | --- | --- | --- |
 | Standalone skills | Documented mechanism; selection and invocation checked separately | Same | Same |
 | Local executors/scripts | Project-specific checks required | Project-specific checks required | Project-specific checks required |
-| Native package, MCP, hooks | Client/version/auth/component receipt required | Separate receipt required | Separate receipt required |
+| Native plugin | Documented; observation separate | Documented; observation separate | Unsupported; receipts cannot promote support |
+| Bundled MCP/hooks | Component receipt required; hooks staged | Component receipt required; hooks staged | Native plugins unsupported; standalone MCP is a separate mechanism |
 
-Output: reviewable inventory; next decide MCP declaration migration, then verify the intended host. Neither `supported_surfaces` nor manifest presence proves runtime acceptance. Sources checked 2026-11-05: [Build plugins](https://developers.openai.com/plugins/build/plugins), [manifest schema](https://agent-plugins.org/schemas/1.0.0/plugin.schema.json), [MCP schema](https://agent-plugins.org/schemas/1.0.0/mcp.schema.json).
+Output: reviewable inventory; next verify the intended host separately. Publisher, listing URLs and distribution icons are unverified: `distribution.status: gated`. Unverified contacts and links were removed; `Unverified local publisher` is an explicit sentinel, not an established publisher identity. Neither `supported_surfaces` nor manifest presence proves runtime acceptance. Sources checked 2026-11-09: [Plugin surfaces](https://learn.chatgpt.com/docs/plugins#use-plugins-from-a-supported-surface), [submission metadata](https://developers.openai.com/plugins/deploy/submission), [Build plugins](https://developers.openai.com/plugins/build/plugins), [manifest schema](https://agent-plugins.org/schemas/1.0.0/plugin.schema.json), [MCP schema](https://agent-plugins.org/schemas/1.0.0/mcp.schema.json).
 
 Sources: [Codex plugins](https://developers.openai.com/codex/plugins), [Build plugins](https://developers.openai.com/codex/plugins/build), [Agent Skills](https://learn.chatgpt.com/docs/build-skills), [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents), [AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md), [Codex hooks](https://learn.chatgpt.com/docs/hooks), [Agent approvals and security](https://learn.chatgpt.com/docs/permissions), [Codex with Agents SDK](https://developers.openai.com/codex/guides/agents-sdk), [Product-Agent OS architecture](architecture.md).
 
@@ -143,4 +144,4 @@ The owner authorized technical follow-up on 2026-11-03. Configuration, profiles,
 
 ## Components and runtime evidence
 
-Record compatibility by client/version/authentication/component. A local fixture or manifest does not prove native installation, trust or runtime success. The current package is needs_review as described above; native host support cannot be inferred from standalone skills. See [surface matrix](../codex/surfaces.md) and [package contract](technical.md).
+Record compatibility by client/version/authentication/component. A local fixture or manifest does not prove native installation, trust or runtime success. The current package is locally compatible, distribution gated and host not_verified; native host support cannot be inferred from standalone skills. See [surface matrix](../codex/surfaces.md) and [package contract](technical.md).

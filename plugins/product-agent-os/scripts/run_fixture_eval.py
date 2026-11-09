@@ -8401,7 +8401,7 @@ def _status_snapshot_present() -> bool:
             "status": "completed",
             "lifecycle_state": "quality_gate",
             "verification_evidence": [
-                {"command": "python -m unittest", "recorded_at": "2026-05-01T00:00:00"}
+                {"command": "python -m unittest", "recorded_at": "2026-05-01T00:00:00Z"}
             ],
             "route_packet": {
                 "question_queue": build_question_queue(
@@ -8415,7 +8415,7 @@ def _status_snapshot_present() -> bool:
                 },
             },
         },
-        generated_at="2026-05-28T00:00:00",
+        generated_at="2026-05-28T00:00:00Z",
     )
     structural_checks = [
         snapshot.get("schema_version") == 1,
@@ -9060,10 +9060,10 @@ def _stale_evidence_no_success_claim() -> bool:
         runtime_result={
             "status": "completed",
             "verification_evidence": [
-                {"command": "python -m unittest", "recorded_at": "2026-05-01T00:00:00"}
+                {"command": "python -m unittest", "recorded_at": "2026-05-01T00:00:00Z"}
             ],
         },
-        generated_at="2026-05-28T00:00:00",
+        generated_at="2026-05-28T00:00:00Z",
     )
     rendered = render_status_dashboard(snapshot)
     serialized = json.dumps({"snapshot": snapshot, "dashboard": rendered}, sort_keys=True).lower()
@@ -9294,16 +9294,16 @@ def _exercise_unapproved_hook_activation() -> tuple[str, bool]:
         stage_root = Path(tmp) / "stage"
         workspace.mkdir()
         stage_root.mkdir()
-        _write_stage_file(stage_root, ".codex/hooks/hooks.json", "{}\n")
+        _write_stage_file(stage_root, ".codex/hooks.json", "{}\n")
         _write_stage_manifest(
             workspace,
             stage_root,
-            [{"target_path": ".codex/hooks/hooks.json", "staged_path": ".codex/hooks/hooks.json"}],
+            [{"target_path": ".codex/hooks.json", "staged_path": ".codex/hooks.json"}],
         )
         plan = build_merge_plan(workspace, stage_root)
         approval = _write_approval(stage_root, plan["id"], [], [])
         result = apply_merge_plan(workspace, stage_root, approval)
-        hooks_path = workspace / ".codex" / "hooks" / "hooks.json"
+        hooks_path = workspace / ".codex" / "hooks.json"
     decision = plan["decisions"][0]
     return (
         str(result.get("status", "")),
@@ -9317,22 +9317,22 @@ def _exercise_approved_hook_activation() -> tuple[str, str, bool, bool]:
         stage_root = Path(tmp) / "stage"
         workspace.mkdir()
         stage_root.mkdir()
-        _write_stage_file(stage_root, ".codex/hooks/hooks.json", "{}\n")
+        _write_stage_file(stage_root, ".codex/hooks.json", "{}\n")
         _write_stage_manifest(
             workspace,
             stage_root,
-            [{"target_path": ".codex/hooks/hooks.json", "staged_path": ".codex/hooks/hooks.json"}],
+            [{"target_path": ".codex/hooks.json", "staged_path": ".codex/hooks.json"}],
         )
         plan = build_merge_plan(workspace, stage_root)
         approval = _write_approval(
             stage_root,
             plan["id"],
-            [".codex/hooks/hooks.json"],
+            [".codex/hooks.json"],
             ["create_file"],
             enable_hooks=True,
         )
         result = apply_merge_plan(workspace, stage_root, approval)
-        hooks_path = workspace / ".codex" / "hooks" / "hooks.json"
+        hooks_path = workspace / ".codex" / "hooks.json"
         rollback_path = stage_root / ROLLBACK_MANIFEST_NAME
         hook_check = result.get("status") == "applied" and hooks_path.exists()
         rollback_check = rollback_path.exists() and rollback_path.is_file()

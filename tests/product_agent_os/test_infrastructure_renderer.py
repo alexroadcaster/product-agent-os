@@ -151,12 +151,12 @@ class InfrastructureRendererTest(unittest.TestCase):
         self.assertEqual(by_target["AGENTS.md"]["action"], "create")
         self.assertEqual(by_target["REQUIREMENTS.md"]["action"], "create")
         self.assertEqual(by_target[".codex/config.toml"]["action"], "create")
-        self.assertEqual(by_target[".codex/hooks/hooks.json"]["write_policy"], "staged_only")
+        self.assertEqual(by_target[".codex/hooks.json"]["write_policy"], "staged_only")
         self.assertIn("explicit approval", " ".join(result["infrastructure_plan"]["approval_required"]))
 
     def test_lifecycle_hooks_are_staged_with_marker_guard(self):
         expected_targets = {
-            ".codex/hooks/hooks.json",
+            ".codex/hooks.json",
             ".codex/hooks/session_start_context.py",
             ".codex/hooks/pre_tool_use_policy.py",
             ".codex/hooks/permission_request_summary.py",
@@ -475,7 +475,7 @@ class InfrastructureRendererTest(unittest.TestCase):
 
     def test_validation_requires_hook_json_events(self):
         result = self._render_with_template(
-            TemplateSpec("bad-hooks", "hooks", Path("unused"), ".codex/hooks/hooks.json", "hook_json"),
+            TemplateSpec("bad-hooks", "hooks", Path("unused"), ".codex/hooks.json", "hook_json"),
             '{"SessionStart": []}',
         )
 

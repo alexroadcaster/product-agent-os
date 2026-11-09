@@ -1,5 +1,27 @@
 # RUNLOG.md
 
+## PAOS-AUD-G3 — 2026-11-09
+
+PAOS-AUD-G3: F03/F08/F16 implemented_locally_verified. Full unittest: 1320 tests, 725.771 s, OK (skipped=1); final focused 78 tests OK; fixture 91/91; transcript 26/26; compatibility passed (local structure only). Единственный current pointer — PLAN.md; B42/B45 preserved. Self-review завершён. Следующая группа — G4; semantic source review и actual host/promotion остаются отдельными gates.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
+## PAOS-AUD-G2 — 2026-11-09
+
+PAOS-AUD-G2: F01/F02/F04 implemented_locally_verified: full 1305 tests OK (1 skip), final affected+docs 122 OK и final contracts 22 OK; fixture 91, transcript 26, compatibility/docs/hooks/diff passed. MCP wrapper, typed support/observation и read-only diagnostics добавлены; distribution/host/model promotion остаются отдельными gates. G1 и параллельная Web-документация сохранены. Self-review завершён; следующий шаг — G3.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
+## Web Task Manager: документационный scope — 2026-11-09
+
+Документационная задача расширила Web proposal до полноценного Task Manager: [план и receipts](research/product-agent-os-web-task-manager-plan-2026-11-09.md), [24 экрана и шесть листов](research/product-agent-os-web-task-manager-screens-2026-11-09.md). Требования TM-01–TM-14, все 30 будущих задач planned. Docs: 100 tests OK, structure/task-matrix/strict MkDocs/diff checks passed. Fresh-context visual review и один fix batch выполнены; raster limitations сохранены. Closure: docs_static_verified; дизайн needs_user_acceptance; разработка не начата. Чужой PAOS-AUD scope сохранён.
+
+## PAOS-AUD-G1 — 2026-11-09
+
+PAOS-AUD-G1 локально закрыта: F06 command/patch guard, F12 hooks discovery/merge, F11 rules proposal, F07 exact ACL repair и F18 pinned report_authoring. Full discovery: 1297 tests, one skip, exit 0; affected 216 и final 67 после последнего alias fix passed; fixture 91/91, transcript 26/26, docs 100/100. Compatibility needs_review — прежний G2 gap. Hooks definitions/trust, реальные ACL, provider, target apply и Git не менялись. Следующая группа G2; host acceptance остаётся G6.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
 ## Session lifecycle repair — 2026-11-09
 
 `PAOS-SESSION-LIFECYCLE-2026-11-09`: implemented_locally_verified. Active/package PreToolUse, SessionStart and Stop select a session-bound marker; exact bootstrap replaces mention-based exemption. Full discovery: 1288 tests, one skip, exit 0; final focused: 236 passed; fixtures 91/91 and transcripts 26/26 (last Windows-case correction covered by focused suite). Hook validators, docs and diff checks pass. Current-host foreign-marker write denied, probe absent; own writes succeeded. Compatibility remains needs_review for existing legacy MCP format. [Owning record](research/product-agent-os-session-lifecycle-fix-2026-11-09.md) records RED/retests, provenance and fresh-host gap. No hook definitions/trust, sandbox or Web implementation change.

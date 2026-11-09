@@ -16,6 +16,16 @@ PLUGIN_SCHEMA = "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"
 MCP_SCHEMA = "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json"
 
 
+def unique_json_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    """Reject ambiguous JSON without exposing keys or values in diagnostics."""
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError("duplicate_json_key")
+        result[key] = value
+    return result
+
+
 def _path(root: Path, value: Any) -> tuple[Path, str]:
     if not isinstance(value, str) or not value.startswith("./"):
         raise ValueError("component_path_requires_dot_prefix")
@@ -35,7 +45,7 @@ def _read(root: Path, relative: str, issues: list[str]) -> dict[str, Any] | None
             return None
         if path.stat().st_size > 1024 * 1024:
             raise ValueError("component_file_too_large")
-        value = json.loads(path.read_text(encoding="utf-8-sig"))
+        value = json.loads(path.read_text(encoding="utf-8-sig"), object_pairs_hook=unique_json_object)
         if not isinstance(value, dict):
             raise ValueError("component_object_required")
         return value
@@ -78,6 +88,11 @@ def _mcp(root: Path, relative: str | None, portable: bool, issues: list[str]) ->
         kind = server.get("type") or ("stdio" if "command" in server else "streamable-http" if "url" in server else "unknown")
         result["transports"][name] = kind if isinstance(kind, str) else "invalid"
         invalid = portable and server.get("type") not in ("stdio", "streamable-http", "sse")
+        # The compatibility subset is intentionally narrow. Do not silently
+        # accept transport mixtures or config.toml-only options in plugin JSON.
+        if not portable:
+            allowed = {"type", "command", "args", "env"} if kind == "stdio" else {"type", "url", "headers"}
+            invalid |= bool(set(server) - allowed)
         if kind == "stdio":
             invalid |= not isinstance(server.get("command"), str) or not server.get("command", "").strip()
             args = server.get("args", [])

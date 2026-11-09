@@ -104,6 +104,41 @@ report flags preserves the previous lifecycle route. This is a preflight check,
 not an atomic write transaction or host activation receipt. Local fixtures do
 not close the separate fresh-host positive/negative gate.
 
+## Optional Pinned Report Authoring (v2)
+
+This separate opt-in route requires explicit authority to create/update one
+Markdown report. It is not the legacy create-only grant and not an implementation
+request. Declare `lifecycle_scope.work_type: report_authoring`; without the pinned
+mode this work type cannot authorize mutations. Full/concise reporting still
+follows size/risk, and the marker remains session-bound, fresh and nonterminal.
+
+The reviewed hook command uses `--report-authoring <workspace-relative-json>`
+and `--report-authoring-sha256 <sha256>`. Never enable it or change trust silently.
+The exact grant fields are `schema_version: 2`, `task_id`, `session_id`,
+`workspace_sha256`, `marker_sha256`, `output_path`, `issued_at`, `expires_at`.
+Hash the resolved platform-normalized workspace and exact marker bytes as in v1.
+The validity window is at most 24 hours. Pin changes require a new reviewed grant;
+ordinary successive report edits do not change the grant or marker.
+
+Use `build_report_authoring_call(output_path, previous_content, content)` from
+`product_agent_os.task_plan_lifecycle` to prepare, not execute, a bounded literal
+`functions.exec` call. It begins with the JavaScript comment
+`// paos-report-previous-sha256: <absent-or-64-hex-digest>` and contains exactly one
+literal `await tools.apply_patch(...)`. Supply the actual previous file bytes
+(or no previous content for creation), UTF-8 Markdown with LF and a trailing newline. Updates
+replace the whole previous content with an EOF-anchored hunk. The hook checks the
+expected previous digest against disk and rejects conflicts; never automatically
+retry by overwriting a concurrent edit. Re-read and reconcile it first.
+
+Only the exact canonical relative `.md` path is writable. Other sessions, aliases,
+protected control-plane paths, symlinks/junctions/hardlinks, mixed/multiple patches,
+expired grants, stale digests and terminal markers fail closed. Reads keep the
+same narrow literal-read contract as v1. Raw secrets/private chat are forbidden.
+The native sandbox and approvals remain authoritative. This is CAS preflight,
+not an atomic filesystem transaction: hook return and tool write are separated.
+Use exclusive report ownership; true concurrent-writer atomicity and fresh-host
+activation are not claimed by local tests. Host acceptance remains AUD-HOST-02.
+
 ## Stop Conditions
 
 - Required scope, ownership, verification or approval is missing.

@@ -1,18 +1,20 @@
-# Product-Agent OS project-local command policy.
+# Product-Agent OS command-policy proposal; not installed in .codex/rules/.
+# match/not_match are parser assertions, not runtime exclusions.
+# Prefix rules cannot constrain arbitrary trailing flags: default to review.
 # Purpose: maximize autonomous local work while keeping irreversible or external
 # actions behind explicit approval. Global deny-read and sandbox rules still win.
 
 prefix_rule(
-    pattern=["rg"],
-    decision="allow",
+    pattern=["rg", "--files"],
+    decision="prompt",
     justification="Read-only source search is required for focused project discovery.",
-    match=["rg -n Product-Agent OS docs", "rg --files"],
+    match=["rg --files"],
     not_match=["rg --replace value"],
 )
 
 prefix_rule(
     pattern=[["Get-Content", "type", "cat", "more", "gc"]],
-    decision="allow",
+    decision="prompt",
     justification="Read-only file inspection is required for source-backed work.",
     match=["Get-Content AGENTS.md", "cat docs/index.md"],
     not_match=["Set-Content AGENTS.md value"],
@@ -20,7 +22,7 @@ prefix_rule(
 
 prefix_rule(
     pattern=[["Get-ChildItem", "dir", "ls", "gci", "Get-Item", "Test-Path", "Resolve-Path", "Select-String"]],
-    decision="allow",
+    decision="prompt",
     justification="Read-only PowerShell inspection supports autonomous local context gathering.",
     match=["Get-ChildItem -Force", "Select-String -Path docs/*.md -Pattern Source"],
     not_match=["Remove-Item -Recurse tmp"],
@@ -28,7 +30,7 @@ prefix_rule(
 
 prefix_rule(
     pattern=["python", "-m", "unittest"],
-    decision="allow",
+    decision="prompt",
     justification="Local unittest is the main deterministic verification gate for Product-Agent OS.",
     match=["python -m unittest tests.product_agent_os.test_infrastructure_templates -v"],
     not_match=["python -m pip install pytest"],
@@ -36,7 +38,7 @@ prefix_rule(
 
 prefix_rule(
     pattern=["python", ["tools\\check_docs.py", "tools/check_docs.py"]],
-    decision="allow",
+    decision="prompt",
     justification="Local documentation checks are deterministic project verification.",
     match=["python tools/check_docs.py"],
     not_match=["python -m pip install mkdocs"],
@@ -44,10 +46,10 @@ prefix_rule(
 
 prefix_rule(
     pattern=["python", ["plugins\\product-agent-os\\scripts\\create_task_plan.py", "plugins/product-agent-os/scripts/create_task_plan.py"]],
-    decision="allow",
-    justification="Local task-plan lifecycle generation writes only approved workspace plan files and validates task_matrix_plan_v1 output.",
+    decision="prompt",
+    justification="Task-plan output paths and mutations require scoped review; prefix matching cannot enforce destination scope.",
     match=[
-        "python plugins\\product-agent-os\\scripts\\create_task_plan.py new --output .codex/runlogs/example-plan.md --task-id TASK-001",
+        "python plugins/product-agent-os/scripts/create_task_plan.py new --output .codex/runlogs/example-plan.md --task-id TASK-001",
         "python plugins/product-agent-os/scripts/create_task_plan.py complete --path .codex/runlogs/example-plan.md --task-id TASK-001",
     ],
     not_match=["python -m pip install mkdocs"],
@@ -55,15 +57,15 @@ prefix_rule(
 
 prefix_rule(
     pattern=["python", ["plugins\\product-agent-os\\scripts\\validate_task_matrix.py", "plugins/product-agent-os/scripts/validate_task_matrix.py"]],
-    decision="allow",
+    decision="prompt",
     justification="Local task-matrix validation is deterministic Product-Agent OS plan verification.",
-    match=["python plugins\\product-agent-os\\scripts\\validate_task_matrix.py .codex/runlogs/example-plan.md"],
+    match=["python plugins/product-agent-os/scripts/validate_task_matrix.py .codex/runlogs/example-plan.md"],
     not_match=["python -m pip install mkdocs"],
 )
 
 prefix_rule(
     pattern=["git", ["status", "diff", "log", "show"]],
-    decision="allow",
+    decision="prompt",
     justification="Read-only Git inspection is safe for review and dirty-worktree awareness.",
     match=["git status --short", "git diff --check", "git log --oneline -5"],
     not_match=["git add README.md"],

@@ -1,5 +1,27 @@
 # TEST.md
 
+## PAOS-AUD-G3 — 2026-11-09
+
+PAOS-AUD-G3: Full unittest: 1320 tests, 725.771 s, OK (skipped=1); final focused 78 tests OK; fixture 91/91; transcript 26/26; compatibility passed (local structure only). Current pointer только в PLAN.md; mismatch запрещает fallback. Source-policy needs_review не равен failed parser test. Failed attempts, UTC fixture correction, final checks и provenance — owning evidence.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
+## PAOS-AUD-G2 — 2026-11-09
+
+PAOS-AUD-G2: full discovery 1305 tests, 748.949 s, OK (skipped=1), exit 0; final affected+docs 122 passed, после refactor final contracts 22 passed; fixture 91/91, transcript 26/26; compatibility exit 0, local structure only. Docs checker, hook validators и diff check passed. Проверять malformed/duplicate MCP, precedence, IDE unsupported conflict, unknown/old/version-surface, model mismatch, cache drift и read-only CLI; TEMP/TMP под ignored .docs-tools/reports/paos-aud-g2. Точные результаты и failed attempts — owning evidence.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
+## Web Task Manager: документационный scope — 2026-11-09
+
+Для Web planning slice: docs unittest, tools/check_docs.py, validate_task_matrix.py для [плана](research/product-agent-os-web-task-manager-plan-2026-11-09.md), JSON coverage/dependency checks и git diff --check. [Визуальная спецификация](research/product-agent-os-web-task-manager-screens-2026-11-09.md) фиксирует ограничения raster review; browser/runtime/a11y gates принадлежат будущей реализации. Текущие receipts — в owning плане.
+
+## PAOS-AUD-G1 — 2026-11-09
+
+PAOS-AUD-G1: full discovery 1297 tests, 532.640 s, OK (skipped=1), exit 0; affected suite 216 tests passed; final merge/renderer 67 tests passed после последнего alias-hardening. Fixture 91/91, transcript 26/26, docs 100/100; hook validators, parity/AST и native rules checks passed. Compatibility exit 1 needs_review — существующий G2/F01 legacy MCP gap. Даты, команды, failed attempts и provenance — owning evidence. Для повторения использовать ignored workspace TEMP/TMP под .docs-tools/reports/paos-aud-g1/tmp и PYTHONDONTWRITEBYTECODE=1; прежние TEMP cleanup failures не скрыты.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
 ## Session lifecycle regression — 2026-11-09
 
 `PAOS-SESSION-LIFECYCLE-2026-11-09`: run `python -m unittest tests.product_agent_os.test_lifecycle_hooks -v` for two-chat isolation, invalid/foreign identity, exact bootstrap, Windows case handling and SessionStart/Stop agreement, then required docs/template and plugin suites below. Current receipts: full discovery 1288 tests, one skip, exit 0; final affected suite 236 passed; fixture 91/91, transcript 26/26; hook validators/docs/diff passed. Compatibility exit 1 remains the existing legacy MCP gap. Exact state provenance and current-host versus synthetic evidence: `research/product-agent-os-session-lifecycle-fix-2026-11-09.md`. No trust or sandbox bypass is part of verification.
@@ -83,7 +105,7 @@ Run strict MkDocs only when navigation, Mermaid diagrams, Markdown extensions, M
 python -m unittest discover -s tests -p "test_*.py" -v
 ```
 
-Compatibility gate interpretation for GAP-02: `validate_codex_compatibility.py` currently exits 1 with `needs_review` because the checked-in flat `.mcp.json` is only observed legacy structure. This is an explicit unresolved package finding, not a waived check or runtime pass. Resolver tests must pass supported/unsupported cases; any stronger package claim waits for an approved format decision and host evidence.
+Compatibility gate after PAOS-AUD-G2: `validate_codex_compatibility.py` exits 0 for the checked-in wrapped MCP declaration. This proves bounded local structure only; distribution remains gated and host diagnostics remain separate. Legacy flat, ambiguous and malformed inputs must still fail closed. Dated earlier needs_review receipts remain historical evidence, not current status.
 
 ## Required Checks After Plugin Or Runtime Changes
 

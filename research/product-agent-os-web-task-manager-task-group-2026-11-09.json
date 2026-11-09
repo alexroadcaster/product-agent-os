@@ -1,0 +1,1423 @@
+{
+  "schema_version": "paos_web_task_groups_v1",
+  "status": "planned",
+  "source_plan": "product-agent-os-web-task-manager-plan-2026-11-09.md",
+  "note": "Proposed Web planning data, not an activated runtime import format",
+  "groups": [
+    {
+      "id": "G01",
+      "title": "Основа и контракты",
+      "task_ids": [
+        "PAOS-0001",
+        "PAOS-0002",
+        "PAOS-0003",
+        "PAOS-0004"
+      ]
+    },
+    {
+      "id": "G02",
+      "title": "Задачи",
+      "task_ids": [
+        "PAOS-0005",
+        "PAOS-0006",
+        "PAOS-0007",
+        "PAOS-0008"
+      ]
+    },
+    {
+      "id": "G03",
+      "title": "Сессии",
+      "task_ids": [
+        "PAOS-0009",
+        "PAOS-0010",
+        "PAOS-0011"
+      ]
+    },
+    {
+      "id": "G04",
+      "title": "Агенты",
+      "task_ids": [
+        "PAOS-0012",
+        "PAOS-0013",
+        "PAOS-0014",
+        "PAOS-0015"
+      ]
+    },
+    {
+      "id": "G05",
+      "title": "Скиллы",
+      "task_ids": [
+        "PAOS-0016",
+        "PAOS-0017",
+        "PAOS-0018",
+        "PAOS-0019"
+      ]
+    },
+    {
+      "id": "G06",
+      "title": "Карта проекта",
+      "task_ids": [
+        "PAOS-0020",
+        "PAOS-0021",
+        "PAOS-0022"
+      ]
+    },
+    {
+      "id": "G07",
+      "title": "Автономная работа",
+      "task_ids": [
+        "PAOS-0023",
+        "PAOS-0024",
+        "PAOS-0025",
+        "PAOS-0026"
+      ]
+    },
+    {
+      "id": "G08",
+      "title": "Общие поверхности и пилот",
+      "task_ids": [
+        "PAOS-0027",
+        "PAOS-0028",
+        "PAOS-0029",
+        "PAOS-0030"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "PAOS-0001",
+      "group_id": "G01",
+      "title": "Контракты и адаптеры проекта",
+      "status": "planned",
+      "short_description": "Установить доступность источников и API установленного host; определить project binding и coverage",
+      "technical_value": "Установить доступность источников и API установленного host; определить project binding и coverage",
+      "product_value": "Пользователь сразу видит, какие сведения проекта доступны, и не принимает неполную историю за полную.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/adapters",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "packages/contracts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Подключённый проект показывает доступные и отсутствующие источники; чужой проект исключён"
+      ],
+      "estimated_duration_hms": "08:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": []
+    },
+    {
+      "id": "PAOS-0002",
+      "group_id": "G01",
+      "title": "Модель задачи и идентификаторы",
+      "status": "planned",
+      "short_description": "Единый контракт всех полей задачи, стабильные ID и миграция старых записей",
+      "technical_value": "Единый контракт всех полей задачи, стабильные ID и миграция старых записей",
+      "product_value": "Пользователь ставит полную задачу один раз и сохраняет устойчивую ссылку на неё при изменениях проекта.",
+      "affected_files": [
+        {
+          "path": "packages/contracts/tasks",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/local-service/src/tasks",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Все 12 полей проходят round-trip; коллизия ID отклонена; rename проекта не меняет ID"
+      ],
+      "estimated_duration_hms": "08:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0001"
+      ]
+    },
+    {
+      "id": "PAOS-0003",
+      "group_id": "G01",
+      "title": "Время и журнал событий",
+      "status": "planned",
+      "short_description": "Оценка до старта, идемпотентные интервалы и измерение факта",
+      "technical_value": "Оценка до старта, идемпотентные интервалы и измерение факта",
+      "product_value": "Пользователь сравнивает ожидаемое и затраченное время без двойного учёта параллельной работы.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/events",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "packages/contracts/time",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Повтор события не удваивает время; pause/retry/crash и параллельные агенты не искажают длительность"
+      ],
+      "estimated_duration_hms": "12:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0002"
+      ]
+    },
+    {
+      "id": "PAOS-0004",
+      "group_id": "G01",
+      "title": "Темы и локализация",
+      "status": "planned",
+      "short_description": "Общие токены и RU/EN для всех экранов",
+      "technical_value": "Общие токены и RU/EN для всех экранов",
+      "product_value": "Пользователь работает на удобном языке и в выбранной теме без потери читаемости и действий.",
+      "affected_files": [
+        {
+          "path": "apps/web/src/design",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/locales",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Переключатели сохраняют выбор; длинный EN/RU текст и обе темы не скрывают действия"
+      ],
+      "estimated_duration_hms": "08:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0001"
+      ]
+    },
+    {
+      "id": "PAOS-0005",
+      "group_id": "G02",
+      "title": "Список и доска задач",
+      "status": "planned",
+      "short_description": "Фильтры, группировка, сохранённый вид и доступная смена статуса",
+      "technical_value": "Фильтры, группировка, сохранённый вид и доступная смена статуса",
+      "product_value": "Пользователь быстро находит нужную работу и видит, на каком этапе находится каждая задача.",
+      "affected_files": [
+        {
+          "path": "apps/web/src/features/tasks/list",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/features/tasks/board",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Фильтры сохраняются; board и list согласованы; invalid transition объяснён"
+      ],
+      "estimated_duration_hms": "10:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0002",
+        "PAOS-0004"
+      ]
+    },
+    {
+      "id": "PAOS-0006",
+      "group_id": "G02",
+      "title": "Карточка и редактор задачи",
+      "status": "planned",
+      "short_description": "Полная постановка задачи и понятная техническая/продуктовая ценность",
+      "technical_value": "Полная постановка задачи и понятная техническая/продуктовая ценность",
+      "product_value": "Пользователь понимает пользу задачи, формулирует ожидаемый результат и управляет её выполнением.",
+      "affected_files": [
+        {
+          "path": "apps/web/src/features/tasks/detail",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/features/tasks/editor",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Все поля доступны; незаполненная приёмка блокирует готовность к запуску; черновик сохраняется"
+      ],
+      "estimated_duration_hms": "12:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0002",
+        "PAOS-0003",
+        "PAOS-0004"
+      ]
+    },
+    {
+      "id": "PAOS-0007",
+      "group_id": "G02",
+      "title": "Файлы, артефакты и исполнители",
+      "status": "planned",
+      "short_description": "Связать планируемые/фактические изменения, агентские runs и доказательства",
+      "technical_value": "Связать планируемые/фактические изменения, агентские runs и доказательства",
+      "product_value": "Пользователь видит, кто и что изменит, и открывает подтверждающий документ из задачи.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/task-links",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/features/tasks/links",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Создание/изменение/удаление различимы; ссылка открывает нужную версию и контекст"
+      ],
+      "estimated_duration_hms": "08:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0006"
+      ]
+    },
+    {
+      "id": "PAOS-0008",
+      "group_id": "G02",
+      "title": "Приёмка и жизненный цикл",
+      "status": "planned",
+      "short_description": "Проверки и решение пользователя определяют завершение",
+      "technical_value": "Проверки и решение пользователя определяют завершение",
+      "product_value": "Пользователь принимает результат по проверяемым условиям и видит незакрытые требования.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/task-workflow",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/features/tasks/acceptance",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Успех команды не равен приёмке; unmet criterion не даёт закрыть задачу; reopen сохраняет историю"
+      ],
+      "estimated_duration_hms": "10:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0006",
+        "PAOS-0007"
+      ]
+    },
+    {
+      "id": "PAOS-0009",
+      "group_id": "G03",
+      "title": "Каталог всех доступных сессий",
+      "status": "planned",
+      "short_description": "Постраничная история проекта с archived/fork/subagent связями",
+      "technical_value": "Постраничная история проекта с archived/fork/subagent связями",
+      "product_value": "Пользователь возвращается к любому доступному обсуждению проекта, включая архив и дочерние сессии.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/sessions",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/features/sessions/list",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Нет потерь и дублей между страницами; coverage показан; недоступная история обозначена"
+      ],
+      "estimated_duration_hms": "12:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0001",
+        "PAOS-0004"
+      ]
+    },
+    {
+      "id": "PAOS-0010",
+      "group_id": "G03",
+      "title": "Сообщения и переходы по контексту",
+      "status": "planned",
+      "short_description": "Полный доступный диалог с авторами, задачами и сообщениями агентов",
+      "technical_value": "Полный доступный диалог с авторами, задачами и сообщениями агентов",
+      "product_value": "Пользователь читает обсуждение целиком и переходит от сообщения к соответствующей задаче или файлу.",
+      "affected_files": [
+        {
+          "path": "apps/web/src/features/sessions/transcript",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "packages/contracts/messages",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Порядок событий стабилен; длинный диалог открывает выбранное сообщение; fork и агент различимы"
+      ],
+      "estimated_duration_hms": "12:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0007",
+        "PAOS-0009"
+      ]
+    },
+    {
+      "id": "PAOS-0011",
+      "group_id": "G03",
+      "title": "Поиск, приватность и хранение сессий",
+      "status": "planned",
+      "short_description": "Искать историю без раскрытия секретов и чужих проектов",
+      "technical_value": "Искать историю без раскрытия секретов и чужих проектов",
+      "product_value": "Пользователь находит нужное сообщение без раскрытия чужих проектов и чувствительных данных.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/session-search",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/local-service/src/redaction",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Редакция секретов и project isolation подтверждены; пропуск/усечение и retention видимы"
+      ],
+      "estimated_duration_hms": "10:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0010"
+      ]
+    },
+    {
+      "id": "PAOS-0012",
+      "group_id": "G04",
+      "title": "Каталог и профиль агента",
+      "status": "planned",
+      "short_description": "Инструкции, источник, действующая версия и назначенные задачи",
+      "technical_value": "Инструкции, источник, действующая версия и назначенные задачи",
+      "product_value": "Пользователь понимает назначение каждого агента и инструкции, по которым он работает.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/agents",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/features/agents/catalog",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Effective/proposed/loaded версии различимы; переход к task/run/session работает"
+      ],
+      "estimated_duration_hms": "08:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0007",
+        "PAOS-0009"
+      ]
+    },
+    {
+      "id": "PAOS-0013",
+      "group_id": "G04",
+      "title": "Создание, изменение и удаление агента",
+      "status": "planned",
+      "short_description": "Ручной CRUD с diff, проверкой, архивом и восстановлением",
+      "technical_value": "Ручной CRUD с diff, проверкой, архивом и восстановлением",
+      "product_value": "Пользователь меняет состав команды и инструкции с возможностью сравнения и восстановления.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/agent-proposals",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/features/agents/editor",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Конфликт версии отклоняется; активный run не меняется; удалённый агент остаётся в истории"
+      ],
+      "estimated_duration_hms": "12:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0012"
+      ]
+    },
+    {
+      "id": "PAOS-0014",
+      "group_id": "G04",
+      "title": "Управление агентом по описанию",
+      "status": "planned",
+      "short_description": "По описанию создать, изменить или подготовить удаление агента через редактируемый proposal",
+      "technical_value": "Разобрать intent create/update/archive/delete, разрешить однозначный target и применить общий versioned proposal contract",
+      "product_value": "Пользователь описывает нужное изменение команды обычным языком и проверяет последствия до применения.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/agent-generation",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/features/agents/generator",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Create/update/delete intent создаёт draft; target и diff видны; неоднозначное имя требует уточнения; active run и history не удаляются молча"
+      ],
+      "estimated_duration_hms": "10:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0013"
+      ]
+    },
+    {
+      "id": "PAOS-0015",
+      "group_id": "G04",
+      "title": "Назначения и статистика агентов",
+      "status": "planned",
+      "short_description": "Наблюдать частоту, исходы, активные и прошлые задачи",
+      "technical_value": "Наблюдать частоту, исходы, активные и прошлые задачи",
+      "product_value": "Пользователь видит, как часто агент применяется, над чем работает и чем закончились его задачи.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/agent-metrics",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/features/agents/activity",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Метрики имеют период, знаменатель и coverage; отсутствующие данные не превращаются в нули"
+      ],
+      "estimated_duration_hms": "12:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0003",
+        "PAOS-0010",
+        "PAOS-0012"
+      ]
+    },
+    {
+      "id": "PAOS-0016",
+      "group_id": "G05",
+      "title": "Каталог и профиль скилла",
+      "status": "planned",
+      "short_description": "Показать назначение, источник, версию, зависимости и использование",
+      "technical_value": "Показать назначение, источник, версию, зависимости и использование",
+      "product_value": "Пользователь находит доступные навыки и понимает, какие агенты их используют.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/skills",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/features/skills/catalog",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Project/global/vendor scopes различимы; effective версия и связь с агентами доступны"
+      ],
+      "estimated_duration_hms": "08:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0001",
+        "PAOS-0004",
+        "PAOS-0012"
+      ]
+    },
+    {
+      "id": "PAOS-0017",
+      "group_id": "G05",
+      "title": "Редактор и версии скиллов",
+      "status": "planned",
+      "short_description": "Создавать и менять project-owned skills с проверкой структуры",
+      "technical_value": "Создавать и менять project-owned skills с проверкой структуры",
+      "product_value": "Пользователь адаптирует навык проекта и возвращается к прежней версии при ошибке.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/skill-proposals",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/features/skills/editor",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Preview diff и rollback работают; vendor original не перезаписывается; зависимость удаления видна"
+      ],
+      "estimated_duration_hms": "12:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0016"
+      ]
+    },
+    {
+      "id": "PAOS-0018",
+      "group_id": "G05",
+      "title": "Добавление по пути и find-skills",
+      "status": "planned",
+      "short_description": "Единый выбор локального источника или найденного скилла",
+      "technical_value": "Единый выбор локального источника или найденного скилла",
+      "product_value": "Пользователь добавляет навык из папки или поиска, понимая его происхождение до установки.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/skill-discovery",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/features/skills/import",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Поиск не устанавливает; path containment проверен; origin/license показаны до применения"
+      ],
+      "estimated_duration_hms": "12:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0017"
+      ]
+    },
+    {
+      "id": "PAOS-0019",
+      "group_id": "G05",
+      "title": "Генерация по требованиям и описанию",
+      "status": "planned",
+      "short_description": "Предложить недостающие навыки проекта и сгенерировать draft",
+      "technical_value": "Предложить недостающие навыки проекта и сгенерировать draft",
+      "product_value": "Пользователь получает недостающие навыки из требований проекта или собственного описания.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/skill-generation",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/features/skills/generator",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Рекомендация связана с requirement; повтор не создаёт дубликат; применение имеет preview"
+      ],
+      "estimated_duration_hms": "12:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0017",
+        "PAOS-0018"
+      ]
+    },
+    {
+      "id": "PAOS-0020",
+      "group_id": "G06",
+      "title": "Индекс файлов и символов",
+      "status": "planned",
+      "short_description": "Типизированные зависимости файлов и переменных с source anchors",
+      "technical_value": "Типизированные зависимости файлов и переменных с source anchors",
+      "product_value": "Пользователь получает понятную основу карты зависимостей с явными пробелами анализа.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/code-index",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "packages/contracts/graph",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "graph-cockpit-engineer",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Неподдержанный язык и dynamic reference обозначены; индекс привязан к revision"
+      ],
+      "estimated_duration_hms": "16:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0001"
+      ]
+    },
+    {
+      "id": "PAOS-0021",
+      "group_id": "G06",
+      "title": "Граф и навигация к исходникам",
+      "status": "planned",
+      "short_description": "Фильтровать graph и раскрывать соседей выбранного узла",
+      "technical_value": "Фильтровать graph и раскрывать соседей выбранного узла",
+      "product_value": "Пользователь исследует структуру проекта и быстро находит связанные файлы без чтения всех папок.",
+      "affected_files": [
+        {
+          "path": "apps/web/src/features/graph",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "graph-cockpit-engineer",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Есть search, depth, edge type, keyboard list alternative; большие графы не загружаются целиком"
+      ],
+      "estimated_duration_hms": "14:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0004",
+        "PAOS-0020"
+      ]
+    },
+    {
+      "id": "PAOS-0022",
+      "group_id": "G06",
+      "title": "Влияние переменной и изменения",
+      "status": "planned",
+      "short_description": "Показать define/read/write/reference по scope и задачам",
+      "technical_value": "Показать define/read/write/reference по scope и задачам",
+      "product_value": "Пользователь видит, какие места могут быть затронуты изменением конкретной переменной.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/impact",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/features/graph/inspector",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "graph-cockpit-engineer",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Одноимённые переменные разных scope различены; stale и unresolved edges видимы"
+      ],
+      "estimated_duration_hms": "14:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0007",
+        "PAOS-0020",
+        "PAOS-0021"
+      ]
+    },
+    {
+      "id": "PAOS-0023",
+      "group_id": "G07",
+      "title": "Политика автономности и лимиты",
+      "status": "planned",
+      "short_description": "Задать заранее разрешённые действия, бюджеты и stop conditions",
+      "technical_value": "Задать заранее разрешённые действия, бюджеты и stop conditions",
+      "product_value": "Пользователь задаёт границы самостоятельной работы один раз и сохраняет возможность остановки.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/autonomy-policy",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/features/autonomy",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Preview policy объясняет возможности; UI не расширяет host permissions; pause доступна"
+      ],
+      "estimated_duration_hms": "12:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Повтор действий, конкурирующие writers, выход за разрешённый scope",
+      "depends_on": [
+        "PAOS-0008",
+        "PAOS-0013",
+        "PAOS-0017"
+      ]
+    },
+    {
+      "id": "PAOS-0024",
+      "group_id": "G07",
+      "title": "Очередь, назначения и владение файлами",
+      "status": "planned",
+      "short_description": "Назначать агентов и skills в пределах scope без конфликтующих writers",
+      "technical_value": "Назначать агентов и skills в пределах scope без конфликтующих writers",
+      "product_value": "Пользователь запускает независимые задачи параллельно без незаметного перезаписывания одних файлов.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/scheduler",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Две задачи с пересекающимися файлами сериализуются; независимые могут идти параллельно"
+      ],
+      "estimated_duration_hms": "16:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Повтор действий, конкурирующие writers, выход за разрешённый scope",
+      "depends_on": [
+        "PAOS-0015",
+        "PAOS-0019",
+        "PAOS-0023"
+      ]
+    },
+    {
+      "id": "PAOS-0025",
+      "group_id": "G07",
+      "title": "Исполнение, восстановление и отмена",
+      "status": "planned",
+      "short_description": "Run adapter выполняет ограниченный план с восстановлением",
+      "technical_value": "Run adapter выполняет ограниченный план с восстановлением",
+      "product_value": "Пользователь может продолжить или отменить работу после сбоя, сохранив понятную историю.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/runtime",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/local-service/src/recovery",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Повтор команды идемпотентен; timeout/cancel/crash дают определённое состояние и evidence"
+      ],
+      "estimated_duration_hms": "24:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Повтор действий, конкурирующие writers, выход за разрешённый scope",
+      "depends_on": [
+        "PAOS-0011",
+        "PAOS-0024"
+      ]
+    },
+    {
+      "id": "PAOS-0026",
+      "group_id": "G07",
+      "title": "Решения и наблюдаемость автономности",
+      "status": "planned",
+      "short_description": "Показать что выполняется, почему остановилось и какое решение требуется",
+      "technical_value": "Показать что выполняется, почему остановилось и какое решение требуется",
+      "product_value": "Пользователь вмешивается там, где действительно требуется решение, и видит его последствия.",
+      "affected_files": [
+        {
+          "path": "apps/web/src/features/decisions",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/local-service/src/decisions",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Из решения доступен diff/scope/evidence; истёкшее решение не применяется; история сохраняется"
+      ],
+      "estimated_duration_hms": "12:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Повтор действий, конкурирующие writers, выход за разрешённый scope",
+      "depends_on": [
+        "PAOS-0023",
+        "PAOS-0025"
+      ]
+    },
+    {
+      "id": "PAOS-0027",
+      "group_id": "G08",
+      "title": "Документы, проверки и общий поиск",
+      "status": "planned",
+      "short_description": "Объединить артефакты и результаты с задачами и источниками",
+      "technical_value": "Объединить артефакты и результаты с задачами и источниками",
+      "product_value": "Пользователь находит планы и проверки прямо из задачи, не разбираясь в расположении Markdown.",
+      "affected_files": [
+        {
+          "path": "apps/web/src/features/documents",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/features/checks",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/features/search",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Source version и время видны; результат теста не выдаётся за пользовательскую приёмку"
+      ],
+      "estimated_duration_hms": "14:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0007",
+        "PAOS-0008",
+        "PAOS-0011"
+      ]
+    },
+    {
+      "id": "PAOS-0028",
+      "group_id": "G08",
+      "title": "Интеграционная проверка пути",
+      "status": "planned",
+      "short_description": "Проверить создание задачи, план, запуск, сессию, изменения и приёмку",
+      "technical_value": "Проверить создание задачи, план, запуск, сессию, изменения и приёмку",
+      "product_value": "Пользователь проходит весь путь от постановки до приёмки без разрывов между разделами.",
+      "affected_files": [
+        {
+          "path": "tests/web",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "tests/local-service",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Один разрешённый локальный путь проходит end-to-end; negative paths сохраняют границы"
+      ],
+      "estimated_duration_hms": "16:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0022",
+        "PAOS-0026",
+        "PAOS-0027"
+      ]
+    },
+    {
+      "id": "PAOS-0029",
+      "group_id": "G08",
+      "title": "Доступность, языки и темы",
+      "status": "planned",
+      "short_description": "Проверить клавиатуру, контраст, responsive и все локализованные состояния",
+      "technical_value": "Проверить клавиатуру, контраст, responsive и все локализованные состояния",
+      "product_value": "Пользователь сохраняет доступ ко всем действиям с клавиатуры, на узком экране и в обеих локализациях.",
+      "affected_files": [
+        {
+          "path": "tests/web/accessibility",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "docs/web/accessibility",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Все 24 экрана проходят RU/EN и light/dark матрицу; нет ловушек фокуса и потери действий"
+      ],
+      "estimated_duration_hms": "12:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0028"
+      ]
+    },
+    {
+      "id": "PAOS-0030",
+      "group_id": "G08",
+      "title": "Упаковка и пилот",
+      "status": "planned",
+      "short_description": "Проверить install/start/backup/rollback и полезность на реальном проекте",
+      "technical_value": "Проверить install/start/backup/rollback и полезность на реальном проекте",
+      "product_value": "Пользователь устанавливает и восстанавливает локальный продукт по проверенному процессу.",
+      "affected_files": [
+        {
+          "path": "apps/desktop-local",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "docs/web/pilot",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Пилот согласован отдельно; restore проверен; наблюдения отделены от продуктовых гипотез"
+      ],
+      "estimated_duration_hms": "16:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
+      "depends_on": [
+        "PAOS-0029"
+      ]
+    }
+  ]
+}

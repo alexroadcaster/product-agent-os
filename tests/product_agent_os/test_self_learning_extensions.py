@@ -14,6 +14,25 @@ sys.path.insert(0, str(SCRIPTS))
 
 
 class SelfLearningExtensionTests(unittest.TestCase):
+    def test_public_feedback_summary_missing_empty_and_rejected_are_insufficient(self):
+        from product_agent_os.self_learning_feedback import summarize_owner_feedback_ledger
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); ledger = root / 'feedback.jsonl'
+            for content in (None, '', '[]\n{}\n', '{"explicit_rating": []}\n'):
+                if content is not None:
+                    ledger.write_text(content, encoding='utf-8')
+                report = summarize_owner_feedback_ledger(root, ledger_path=ledger)
+                self.assertEqual(report['satisfaction_report']['promotion_signal'], 'insufficient_evidence')
+                self.assertEqual(report['satisfaction_report']['human_label_count'], 0)
+                self.assertEqual(report['owner_feedback_rows'], 0)
+            row = self._feedback_row()
+            ledger.write_text(json.dumps(row)+'\n{}\n', encoding='utf-8')
+            report = summarize_owner_feedback_ledger(root, ledger_path=ledger)
+            self.assertEqual(report['owner_feedback_rows'], 1)
+            self.assertEqual(report['rejected_rows'], 1)
+            self.assertEqual(report['satisfaction_report']['denominator'], 1)
+            self.assertEqual(report['satisfaction_report']['owner_sentiment'], 'negative')
+
     def test_state_initializer_stages_state_without_workspace_write(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir, tempfile.TemporaryDirectory() as stagedir:
             workspace = Path(tmpdir) / "workspace"

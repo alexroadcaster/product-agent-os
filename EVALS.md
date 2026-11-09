@@ -1,5 +1,27 @@
 # EVALS.md
 
+## PAOS-AUD-G3 — 2026-11-09
+
+PAOS-AUD-G3: invalid/future/stale/missing dates, local registry escape/broken refs, empty/rejected feedback и historical/current/conflict cases различены. Date/URL не semantic verification; owner_label_supported не positive sentiment/promotion; source status не owner acceptance. No-pointer B37 fallback сохраняется; malformed/stale pointer не разрешает historical fallback.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
+## PAOS-AUD-G2 — 2026-11-09
+
+PAOS-AUD-G2: receipt не повышает documented unsupported; model ID/config не доказывает account access или promotion. Для missing/unknown version, unknown trust и отсутствующего cache запрещён fabricated pass. Match component digest не доказывает full package или host selection. Deterministic fixtures сравниваются с RED baseline; provider quality/cost thresholds и T23–T29 сохраняются.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
+## Web Task Manager: документационный scope — 2026-11-09
+
+Для предложенного Web UX проверять: все требования TM-01–TM-14 покрыты экранами/задачами; нет fabricated telemetry; unknown отличается от zero; agent/skill draft отличается от loaded version; transcript coverage честен; approval объясняет diff и scope. При реализации: RU/EN × light/dark × states для всех 24 экранов. [Owning specification](research/product-agent-os-web-task-manager-screens-2026-11-09.md); product usability и runtime usefulness пока не проверены.
+
+## PAOS-AUD-G1 — 2026-11-09
+
+PAOS-AUD-G1: deterministic guard comparisons покрывают compound/unknown commands, inert patch prose, exact hooks discovery path, selected-SID ACL repair/restore и pinned report-authoring create/update. Сохраняются legacy create-only и session isolation. Local checks не доказывают hook trust, fresh-host activation, реальные ACL или атомарную запись между hook и tool; AUD-HOST-02 остаётся открытым. Порогов model/provider evals эта группа не меняет.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
 ## Session lifecycle contract cases — 2026-11-09
 
 `PAOS-SESSION-LIFECYCLE-2026-11-09`: another chat's terminal/active marker must neither block nor authorize this chat. Missing/invalid/foreign own identity denies recognized mutations; exact own-marker bootstrap remains possible. Preserve legacy behavior only for payloads without session_id and preserve pinned-report restrictions. These deterministic regression cases supplement existing gates; they do not establish fresh-host multi-chat activation. Evidence: `research/product-agent-os-session-lifecycle-fix-2026-11-09.md`.

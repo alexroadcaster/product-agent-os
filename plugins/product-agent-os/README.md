@@ -1,5 +1,25 @@
 # Product-Agent OS
 
+## Совместимость package — PAOS-AUD-G2
+
+Локальный MCP contract использует `mcpServers` wrapper. Диагностика разделяет support и observation; publisher, URLs и distribution icons остаются gated. `Unverified local publisher` — sentinel, а не подтверждённая личность. Read-only `validate_codex_compatibility.py` принимает optional `--observations` и `--cache-root`; подробный контракт — [compatibility](../../docs/product-agent-os/codex-compatibility.md) и [model diagnostics](../../docs/codex/models-and-reasoning.md). Проверка не запускает MCP и не изменяет cache/trust/model pins.
+
+## Windows permissions: диагностика и отдельный repair
+
+Обычный onboarding не снимает DENY ACE. `prepare_windows_codex_permissions.py <workspace>`
+только проверяет состояние; `--preview-repair --target .codex/runlogs --sid <SID>`
+строит read-only план для одного существующего allowlisted каталога и одного SID.
+Repair требует отдельного разрешения владельца, exact target/SID, `--plan-digest`
+и новый workspace-local `--backup`. Перед ACL mutation сохраняется DACL snapshot;
+повторная проверка digest отклоняет drift. Удаляется только указанный SID,
+посторонние DENY сохраняются; recursive apply и reparse paths запрещены.
+`--restore` требует тот же target, backup и `--backup-sha256`; receipt привязан
+к workspace/target. Ошибка repair запускает restore; backup сохраняется.
+Локальные mock tests подтверждают command contract, но не реальные Windows ACL.
+Реальный repair/restore требует exact approval и отдельного acceptance. Snapshot
+сохраняет DACL, не owner/SACL/integrity labels; helper их не изменяет. Семантика:
+[Microsoft icacls](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/icacls).
+
 ## Task 22 final documentation sync closure
 
 Task 22 final documentation sync closure defines this package as the Product-Agent OS full stack for Track 1-9: plugin manifest, lifecycle skills, staged renderer, approved merge tooling, Codex-only runtime runner, engineering standards, scenario workflows, behavioral evals and methodology intelligence. It preserves schema v1 additive compatibility for runtime packets and keeps every staged artifact boundary explicit.
@@ -8,7 +28,7 @@ The package does not activate external systems by itself. Generated files, hooks
 
 Product-Agent OS is a local Codex plugin for turning a real project workspace into a governed product delivery loop. It packages lifecycle skills, project infrastructure templates, safe merge tooling, fixture evals, and a Codex-only runtime contract runner.
 
-The plugin is designed for Codex App, CLI, and IDE extension workflows. It does not require a separate OpenAI API key and does not run as a standalone Agents SDK app.
+Product-Agent OS covers Codex App, CLI, and IDE extension workflows through surface-specific mechanisms. Native plugins are documented for Codex App and CLI; IDE extension supports standalone skills, not native plugins. Local structure validation does not prove installation or invocation. It does not require a separate OpenAI API key and does not run as a standalone Agents SDK app.
 
 Task 26 Batch 32 `T10-LIVE-M27..M31` implements Real Testing Readiness, Target Consent, Pilot Harness And Codex Surface Smoke through `project_graph_real_testing.py`, covering `real-testing-readiness.json`, `real-testing-targets.json`, `pilot-harness.json`, `codex-surface-smoke.json` and `real-testing-pilot-matrix.json` artifact contracts. It stages `project_graph_real_testing_readiness`, `project_graph_real_testing_targets`, `project_graph_pilot_harness`, `project_graph_codex_surface_smoke` and `project_graph_real_testing_pilot_matrix` under approval boundary `batch32_real_testing_readiness_target_consent_pilot_harness_codex_surface_smoke`, with surfaces `real_testing_readiness`, `real_project_target_selection`, `pilot_harness`, `codex_surface_smoke` and `use_case_pilot_matrix`. Batch 32 is `approval_required`, staged evidence only and not source of truth: real testing cannot start with no hidden unresolved Track 10 gates; No real project test without owner-approved target and data policy; Pilot harness remains dry-run and stage-only; dry-run pilot harness evidence covers Codex App, CLI and IDE extension smoke; Track 8 archetypes web, backend, docs, pr_review, evals, automation and AI/RAG are mapped to pilots; `provider_call_allowed: false`, `external_call_performed: false`, no live server, no provider calls, no live external model/API calls, no canonical graph mutation, and git staging/commit/push/PR remains explicit-only.
 

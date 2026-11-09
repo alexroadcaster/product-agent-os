@@ -2,6 +2,8 @@
 
 Source status: `official + experiment`
 
+An empty ledger, wholly rejected records and zero eligible owner labels yield `promotion_signal: insufficient_evidence`. `owner_feedback_rows`/`rejected_rows` describe input validity, `denominator`/`human_label_count` describe label coverage, and `owner_sentiment` describes explicit owner-label sentiment only. `owner_label_supported` does not mean positive feedback: negative and mixed labels remain visible. No automatic promotion occurs.
+
 `Self-Learning Loop` is the manual-first Product-Agent OS improvement loop for local evidence, redacted owner feedback, metrics ledgers and review-only candidates. It is not an autonomous learning system. The default path does not call providers or models, create Codex App automations, enable hooks, write to target workspaces or apply candidates automatically.
 
 ## Quickstart

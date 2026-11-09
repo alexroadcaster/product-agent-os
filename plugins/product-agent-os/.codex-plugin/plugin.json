@@ -3,12 +3,8 @@
   "version": "0.1.0",
   "description": "Local Codex plugin package for governed product-agent delivery, methodology guidance and verification evidence; distribution and production readiness are not established.",
   "author": {
-    "name": "OpenAI Codex Knowledge Base",
-    "email": "codex-docs@example.invalid",
-    "url": "https://developers.openai.com/codex"
+    "name": "Unverified local publisher"
   },
-  "homepage": "https://developers.openai.com/codex",
-  "repository": "https://example.invalid/product-agent-os",
   "license": "MIT",
   "keywords": [
     "codex",
@@ -21,17 +17,14 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Product-Agent OS",
-    "shortDescription": "Guide product-agent delivery with methodology, dashboards, and metrics loops.",
-    "longDescription": "Creates and maintains product-agent control-plane files, lifecycle skills, project-scoped agents, methodology intelligence, guided question/status dashboards, self-verification metrics loops, evidence logs, eval gates and automation candidates. Local package only; placeholder listing URLs are not distribution readiness evidence.",
-    "developerName": "OpenAI Codex Knowledge Base",
+    "shortDescription": "Governed engineering workflows",
+    "longDescription": "Creates and maintains product-agent control-plane files, lifecycle skills, project-scoped agents, methodology intelligence, guided question/status dashboards, self-verification metrics loops, evidence logs, eval gates and automation candidates. Local package only; publisher identity, listing URLs and icons remain unverified; distribution is gated.",
+    "developerName": "Unverified local publisher",
     "category": "Productivity",
     "capabilities": [
       "Read",
       "Write"
     ],
-    "websiteURL": "https://developers.openai.com/codex",
-    "privacyPolicyURL": "https://example.invalid/privacy",
-    "termsOfServiceURL": "https://example.invalid/terms",
     "defaultPrompt": [
       "Use Product-Agent OS to audit this workspace and propose a safe infrastructure plan.",
       "Use Product-Agent OS to guide this feature from requirements to PR packet."

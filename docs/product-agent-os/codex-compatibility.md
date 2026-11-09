@@ -6,7 +6,7 @@ Source status: `official + experiment`
 
 Compatibility report описывает проверенную локальную структуру package. Он не доказывает поддержку каждого компонента конкретным host и не разрешает live execution, provider calls, external writes или git actions.
 
-## Component inventory — GAP-02, 05.11.2026
+## Component inventory — PAOS-AUD-G2, 09.11.2026
 
 Вход: путь локального package. Общий resolver `plugin_components.py` используется compatibility, package inventory, discovery, methodology audit и system-file hygiene. Он возвращает format/version, выбранные component paths, имена skills/MCP servers, transports, issues и `host_status: not_verified`; команды, URL, env values и secrets в результат не копируются и не исполняются.
 
@@ -18,15 +18,16 @@ Compatibility report описывает проверенную локальну�
 | MCP `mcpServers` wrapper | Portable schema либо Codex compatibility wrapper | Transport проверяется отдельно от host |
 | Flat `.mcp.json`, неизвестная schema, неверный тип, escape path | Наблюдение сохраняется без молчаливого fallback | `needs_review` |
 
-Текущий package остаётся `needs_review`: `context7` обнаружен в legacy flat `.mcp.json`. Формат не мигрирован автоматически. Validator выполняет ограниченную структурную проверку, а не полную JSON Schema validation. Auth extensions и неподдерживаемые конструкции требуют отдельного review.
+Текущий package использует Codex compatibility manifest и `.mcp.json` с `mcpServers` wrapper. Локальная проверка возвращает `compatible`; legacy flat, duplicate JSON keys, смешанные transports и неизвестные поля остаются `needs_review`. Поле `startup_timeout_sec` из TOML не переносится в ограниченный JSON subset. Validator выполняет ограниченную структурную проверку, а не полную JSON Schema validation. Auth extensions и неподдерживаемые конструкции требуют отдельного review.
 
 | Component / surface | Codex App | CLI | IDE extension |
 | --- | --- | --- | --- |
 | Standalone skills | Документированный механизм; selected path и invocation проверяются отдельно | То же | То же |
 | Local executors/scripts | Требуются проверки проекта | Требуются проверки проекта | Требуются проверки проекта |
-| Native package, MCP, hooks | Нужен receipt client/version/auth/component | Нужен отдельный receipt | Нужен отдельный receipt |
+| Native plugin | Documented; observation отдельно | Documented; observation отдельно | Unsupported; receipt не повышает поддержку |
+| Bundled MCP/hooks | Нужен component receipt; hooks staged | Нужен component receipt; hooks staged | Native plugin не поддерживается; standalone MCP — отдельный механизм |
 
-Выход: reviewable inventory и конкретный следующий шаг — решить миграцию MCP declaration, затем проверить выбранный host. Ни `supported_surfaces`, ни manifest presence не являются runtime acceptance. Источники проверены 05.11.2026: [Build plugins](https://developers.openai.com/plugins/build/plugins), [manifest schema](https://agent-plugins.org/schemas/1.0.0/plugin.schema.json), [MCP schema](https://agent-plugins.org/schemas/1.0.0/mcp.schema.json).
+Выход: reviewable inventory; следующий шаг — отдельная проверка выбранного host. Publisher, listing URLs и distribution icons не подтверждены: `distribution.status: gated`. Неподтверждённые контакты и ссылки удалены; `Unverified local publisher` — явный sentinel, не установленная личность издателя. Ни `supported_surfaces`, ни manifest presence не являются runtime acceptance. Источники проверены 09.11.2026: [Plugin surfaces](https://learn.chatgpt.com/docs/plugins#use-plugins-from-a-supported-surface), [submission metadata](https://developers.openai.com/plugins/deploy/submission), [Build plugins](https://developers.openai.com/plugins/build/plugins), [manifest schema](https://agent-plugins.org/schemas/1.0.0/plugin.schema.json), [MCP schema](https://agent-plugins.org/schemas/1.0.0/mcp.schema.json).
 
 ## Входы
 
@@ -143,4 +144,4 @@ Approvals являются не bundled. Approval для один surface не g
 
 ## Компоненты и runtime evidence
 
-Совместимость фиксируйте по client/version/auth/component. Local fixture или наличие manifest не доказывают native install, trust или успешный runtime. Для текущего package действует `needs_review` выше; native host support нельзя выводить из standalone skills. [Surface matrix](../codex/surfaces.md), [package contract](technical.md).
+Совместимость фиксируйте по client/version/auth/component. Local fixture или наличие manifest не доказывают native install, trust или успешный runtime. Для текущего package локальный статус `compatible`, distribution gated и host not_verified; native host support нельзя выводить из standalone skills. [Surface matrix](../codex/surfaces.md), [package contract](technical.md).

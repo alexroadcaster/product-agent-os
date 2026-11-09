@@ -2,6 +2,25 @@
 
 Source status: `experiment`
 
+## Текущий маршрут — 09.11.2026
+
+G1/G2 завершены локально; G3 (F03/F08/F16) реализована и локально проверена. Следующий slice — G4. Owning plan: `research/product-agent-os-audit-remediation-task-plan-2026-11-09.md`. Локальный MCP compatibility status после G2 — `compatible`; publisher/URLs/icons и actual host acceptance остаются gated. Это не release или production readiness.
+
+Единственный machine-readable current pointer находится в `PLAN.md`, между `product-agent-os:current-state:start/end`. Он содержит только пути owning sources и их SHA-256 revisions, без дублирования task statuses. `RUNLOG.md` и `TEST.md` ссылаются на этот pointer; несколько старых заголовков Current не задают precedence. Источники — audit task plan, B42 и B45 JSON. Optional task_prefixes ограничивает ownership: audit-план проецирует только PAOS-AUD-*, поэтому его cross-reference карточки T30–T34 не конкурируют с canonical B45. Изменение source требует явного обновления pointer после review; mismatch даёт unknown без fallback к истории.
+
+`build_status_snapshot(workspace=...)` и существующий dashboard CLI читают pointer без изменения workspace. `current_state` возвращает source_path/source_revision, historical_status, selected_evidence и отдельные task_state, run_state, verification_state, acceptance_state. Новый датированный execution_evidence имеет приоритет над более ранним planning status. Равные даты с несовместимыми receipts или дублирующее ownership дают conflict; неизвестные даты, future receipt, неподдерживаемый формат и устаревшая revision — unknown. Простое implemented не означает verified или accepted. Без pointer сохраняется прежний deferred маршрут B37.
+
+B42 historical planned и более новые scoped execution receipts сохраняются. B45 T23–T29 остаются локально выполненными и проверенными; T30–T33 planned_not_started, T34 approval_required_not_started. Их machine JSON не переписывается projection. Task/run status не заменяет verification и owner acceptance. Generated snapshot — orientation evidence; полный source остаётся authoritative.
+
+Source-policy scanner различает project_contract, historical_receipt, official_behavior и mention_only/unknown эвристически. Поддерживаются ISO и DD.MM.YYYY после RU/EN меток; invalid/future/stale/missing видны отдельно. Для нескольких дат используется самая ранняя; свежая секция не освежает всю страницу. Registry links разрешаются только локально в двух canonical registry files, с проверкой anchor и workspace boundary; даты от registry не наследуются. URL и дата никогда не меняют claim_supported=not_verified. Это не semantic audit и не crawler.
+
+Пустой feedback, rejected ledger и отсутствие owner labels дают insufficient_evidence. Валидность строк, denominator/human_label_count и owner_sentiment разделены. owner_label_supported означает наличие labels, в том числе отрицательных, и не разрешает promotion. Manual-only/candidate-only policy сохраняется.
+
+Ниже — датированная история. Старые planned, needs_review и activation receipts не описывают текущую revision автоматически. Проверки текущей группы принадлежат owning audit plan; свежая site build не заявляется.
+
+<details markdown="1">
+<summary>Датированная история и подробные evidence</summary>
+
 ## Текущий пользовательский маршрут — 05.11.2026
 
 Начинайте с [surface matrix](../codex/surfaces.md) и [ordinary/full lifecycle](../product-agent/lifecycle.md). Пакет имеет Codex compatibility manifest; его наличие не подтверждает валидность всех компонентов или host support. Component/surface evidence разделены в [compatibility matrix](codex-compatibility.md). При обновлении skills проверяйте exposure, invocation и результат.
@@ -12,8 +31,7 @@ RU/EN раздел выше имеет одинаковые текущие claim
 
 GAP-01–GAP-05: локальная реализация проверена: 1284 tests (1 skip), fixture 91/91, transcript 26/26. GAP-01/02/04 implemented; общий статус partially_verified. Четыре metadata GAP-03 исправлены с разрешения владельца, 94 focused tests прошли; остаётся fresh-host receipt; GAP-05 — отдельного trust/probe. Текущий compatibility status `needs_review` из-за flat MCP declaration. Source hook изменён, поэтому прежний ACT receipt не доказывает активацию новой версии.
 
-<details markdown="1">
-<summary>Датированная история и подробные evidence</summary>
+
 
 
 Эта страница является site-facing owner artifact для холодной истории и detailed

@@ -36,12 +36,12 @@ Hooks не заменяют human review и не должны хранить sec
 
 ## Product-Agent OS lifecycle hooks
 
-Product-Agent OS поставляет staged hooks через `plugins/product-agent-os/assets/templates/hooks/` и `render_infrastructure.py --stage`. Для конечного проекта они попадают в `.codex/hooks/` как proposal/staged asset, а не как silently activated automation.
+Product-Agent OS поставляет staged hooks через `plugins/product-agent-os/assets/templates/hooks/` и `render_infrastructure.py --stage`. Для конечного проекта definition предназначен для `.codex/hooks.json`, скрипты — для `.codex/hooks/`; это proposal/staged assets до approved apply и trust.
 
 Lifecycle guard устроен так:
 
 - `SessionStart` показывает наличие control-plane и lifecycle файлов;
-- `PreToolUse` пропускает распознанное read-only discovery по fast path; распознанные mutations требуют текущего marker своего чата;
+- `PreToolUse` пропускает распознанное read-only discovery по fast path; mutations и нераспознанные команды требуют текущего marker своего чата;
 - Перед mutation покажите применимый scope: для large/high-risk/material/release — `task_start_brief_v2`, `brief_format: bold_fields` и девять полей; для ordinary — `task_scope_note_v1`, `brief_format: concise`, поля Scope/Evidence/Limits. Затем запишите marker с task_id, scope, updated_at, approval_boundary, brief_digest и brief_fields_present; `task_start_brief_shown` относится только к full route. `task_start_brief_v1` / `field_list` сохраняется для уже начатых legacy sessions.
 - per-write `PostToolUse` проверяет comment sufficiency только для путей текущего patch, а не повторно для всего dirty worktree;
 - после всех записей, проверок и control-plane sync marker переходит в `ready_for_completion_ledger` (full) или `ready_for_completion_brief` (concise/legacy); дальнейшие mutations блокируются;
@@ -93,3 +93,33 @@ Rules описывают policy, которую Codex должен учитыв�
 MCP hook использует уже доступный сервер: он не запускает и не переподключает MCP. Недоступный сервер, tool или ошибка MCP hook не дают гарантированного запрета — fail-closed нужно проверять отдельно. В cloud-orchestrated Work локальные command/plugin hooks не поддерживаются; поддерживаемые admin-managed MCP hooks настраиваются отдельно.
 
 Worktree разделяет Git working files, но не создаёт отдельные permissions. Для одного небольшого изменения обычно достаточно текущего workspace. Git-only worktrees, setup и Handoff выбирайте по [официальному маршруту](https://learn.chatgpt.com/docs/environments/git-worktrees) и project authority. Проверка: загруженная definition и trust → allowed case → denied case → evidence конкретного tool/runtime.
+
+## Локальные исправления PAOS-AUD-G1 — 09.11.2026
+
+Generated manifest и `hook_policy` теперь указывают `.codex/hooks.json`; скрипты
+остаются в `.codex/hooks/`. Старый mirror не является discovery config. Staging
+не активирует hooks; merge создаёт definition только с точным `enable_hooks`
+approval, сохраняет существующий пользовательский файл и поддерживает rollback.
+Trust и fresh-host acceptance проверяются отдельно. Основание discovery/trust:
+[официальный Hooks contract](https://learn.chatgpt.com/docs/hooks).
+
+Guard проверяет весь ограниченно распознаваемый read-only command; составные и
+неизвестные формы требуют текущего mutation scope. Текст Markdown patch является
+данными; отдельно проверяются destination paths. Реальные destructive commands
+и sensitive destinations остаются защищены.
+
+Корневой `.rules` — проверяемый proposal, не установленный discovery-файл.
+`match`/`not_match` — примеры для parser assertions, а не исключения из prefix.
+Поскольку произвольные trailing arguments могут менять действие команды,
+proposal использует `prompt` для review и сохраняет `forbidden` для системных
+изменений; широких `allow` нет. Проверка: `codex execpolicy check --rules .rules -- rg --files`.
+Команда проверяет решение без исполнения `rg`. Файл `.codex/rules/default.rules`
+не создаётся. Семантика: [официальные Rules](https://learn.chatgpt.com/docs/agent-configuration/rules).
+
+Опциональный report authoring v2 явно использует `work_type: report_authoring`,
+пин одного grant, session ownership, exact Markdown path и previous digest на
+каждую create/update. Legacy create-only v1 сохранён. Подробный контракт находится
+в `.codex/workflows/task-plan-lifecycle.md`; источник и local verification —
+`research/product-agent-os-audit-remediation-task-plan-2026-11-09.md`.
+CAS preflight отклоняет уже возникший conflict, но не блокирует промежуток между
+hook и записью: требуется один writer; атомарность и fresh-host activation не доказаны.

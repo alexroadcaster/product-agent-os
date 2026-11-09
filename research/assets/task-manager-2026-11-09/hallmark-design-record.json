@@ -1,0 +1,31 @@
+{
+  "skill": "hallmark",
+  "version": "2.0.0",
+  "scope": "app-screen image concepts only",
+  "theme": "inspired by Rim; light/dark and soft geometry adaptation",
+  "theme_choice": 2,
+  "genre": "modern-minimal",
+  "tone": "utilitarian + technical + soft, explicitly requested",
+  "real_material": "User requirements and existing PRD; no real metrics or transcripts",
+  "signature": "task -> agent run -> session -> files -> checks",
+  "preserved": "Source authority, local-first modular monolith, proposal and approval boundaries",
+  "introduced": "8 tabs, 24 screens, dual theme and RU/EN",
+  "not_run": [
+    "CSS scaffold",
+    "sloplint --render",
+    "browser automation",
+    "application implementation"
+  ],
+  "references": [
+    "research/product-agent-os-web-prd-2026-11-05.md:13",
+    "research/product-agent-os-web-task-manager-screens-2026-11-09.md:1"
+  ],
+  "review": {
+    "mode": "separate_fresh_context",
+    "agent": "hallmark_review",
+    "initial_verdict": "fix",
+    "fix_batch": "five sheets edited; parent inspected outputs",
+    "final_ceiling": "visual concept; not pixel-perfect implementation acceptance",
+    "remaining": "small generated labels, graph notation and mobile/error state screenshots require component design"
+  }
+}

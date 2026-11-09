@@ -424,25 +424,35 @@ class MergeInfrastructureTest(unittest.TestCase):
     def test_unapproved_hooks_json_remains_companion_only_and_not_written(self):
         with tempfile.TemporaryDirectory() as tmp:
             workspace, stage_root = _workspace_and_stage(tmp)
-            _stage_file(stage_root, ".codex/hooks/hooks.json", "{}\n")
-            _write_manifest(stage_root, [_entry(".codex/hooks/hooks.json", ".codex/hooks/hooks.json")])
+            _stage_file(stage_root, ".codex/hooks.json", "{}\n")
+            _write_manifest(stage_root, [_entry(".codex/hooks.json", ".codex/hooks.json")])
             plan = build_merge_plan(workspace, stage_root)
             result = apply_merge_plan(workspace, stage_root, _approval_file(stage_root, plan["id"], [], []))
 
             self.assertEqual(plan["decisions"][0]["action"], "companion_only")
             self.assertEqual(result["status"], "applied")
-            self.assertFalse((workspace / ".codex" / "hooks" / "hooks.json").exists())
+            self.assertFalse((workspace / ".codex" / "hooks.json").exists())
+
+    def test_hook_discovery_alias_cannot_bypass_activation_gate(self):
+        for alias in ("./.codex/hooks.json", ".CODEX/HOOKS.JSON", ".codex\\hooks.json", ".codex/hooks.json."):
+            with self.subTest(alias=alias), tempfile.TemporaryDirectory() as tmp:
+                workspace, stage_root = _workspace_and_stage(tmp)
+                _stage_file(stage_root, ".codex/hooks.json", "{}\n")
+                _write_manifest(stage_root, [_entry(alias, ".codex/hooks.json")])
+                plan = build_merge_plan(workspace, stage_root)
+                self.assertEqual("blocked", plan["status"])
+                self.assertFalse((workspace / ".codex/hooks.json").exists())
 
     def test_enable_hooks_true_writes_hooks_json_only_when_target_absent_and_approved(self):
         with tempfile.TemporaryDirectory() as tmp:
             workspace, stage_root = _workspace_and_stage(tmp)
-            _stage_file(stage_root, ".codex/hooks/hooks.json", '{"SessionStart": []}\n')
-            _write_manifest(stage_root, [_entry(".codex/hooks/hooks.json", ".codex/hooks/hooks.json")])
+            _stage_file(stage_root, ".codex/hooks.json", '{"SessionStart": []}\n')
+            _write_manifest(stage_root, [_entry(".codex/hooks.json", ".codex/hooks.json")])
             plan = build_merge_plan(workspace, stage_root)
             approval = _approval_file(
                 stage_root,
                 plan["id"],
-                [".codex/hooks/hooks.json"],
+                [".codex/hooks.json"],
                 ["create_file"],
                 enable_hooks=True,
                 approved_hook_events=["SessionStart"],
@@ -451,18 +461,20 @@ class MergeInfrastructureTest(unittest.TestCase):
             result = apply_merge_plan(workspace, stage_root, approval)
 
             self.assertEqual(result["status"], "applied")
-            self.assertTrue((workspace / ".codex" / "hooks" / "hooks.json").exists())
+            self.assertTrue((workspace / ".codex" / "hooks.json").exists())
+            rollback_merge(workspace, result["rollback_manifest"])
+            self.assertFalse((workspace / ".codex" / "hooks.json").exists())
 
     def test_enable_hooks_true_requires_full_hook_approval_metadata(self):
         with tempfile.TemporaryDirectory() as tmp:
             workspace, stage_root = _workspace_and_stage(tmp)
-            _stage_file(stage_root, ".codex/hooks/hooks.json", "{}\n")
-            _write_manifest(stage_root, [_entry(".codex/hooks/hooks.json", ".codex/hooks/hooks.json")])
+            _stage_file(stage_root, ".codex/hooks.json", "{}\n")
+            _write_manifest(stage_root, [_entry(".codex/hooks.json", ".codex/hooks.json")])
             plan = build_merge_plan(workspace, stage_root)
             approval = _approval_file(
                 stage_root,
                 plan["id"],
-                [".codex/hooks/hooks.json"],
+                [".codex/hooks.json"],
                 ["create_file"],
                 enable_hooks=True,
                 approved_hook_events=["SessionStart"],
@@ -474,18 +486,18 @@ class MergeInfrastructureTest(unittest.TestCase):
                 apply_merge_plan(workspace, stage_root, approval)
 
             self.assertIn("hook_rollback", str(error.exception))
-            self.assertFalse((workspace / ".codex" / "hooks" / "hooks.json").exists())
+            self.assertFalse((workspace / ".codex" / "hooks.json").exists())
 
     def test_enable_hooks_true_rejects_unknown_hook_events(self):
         with tempfile.TemporaryDirectory() as tmp:
             workspace, stage_root = _workspace_and_stage(tmp)
-            _stage_file(stage_root, ".codex/hooks/hooks.json", "{}\n")
-            _write_manifest(stage_root, [_entry(".codex/hooks/hooks.json", ".codex/hooks/hooks.json")])
+            _stage_file(stage_root, ".codex/hooks.json", "{}\n")
+            _write_manifest(stage_root, [_entry(".codex/hooks.json", ".codex/hooks.json")])
             plan = build_merge_plan(workspace, stage_root)
             approval = _approval_file(
                 stage_root,
                 plan["id"],
-                [".codex/hooks/hooks.json"],
+                [".codex/hooks.json"],
                 ["create_file"],
                 enable_hooks=True,
                 approved_hook_events=["NotARealHook"],
@@ -495,16 +507,16 @@ class MergeInfrastructureTest(unittest.TestCase):
                 apply_merge_plan(workspace, stage_root, approval)
 
             self.assertIn("approved_hook_events", str(error.exception))
-            self.assertFalse((workspace / ".codex" / "hooks" / "hooks.json").exists())
+            self.assertFalse((workspace / ".codex" / "hooks.json").exists())
 
     def test_enable_hooks_true_blocks_existing_hooks_json_instead_of_empty_apply(self):
         with tempfile.TemporaryDirectory() as tmp:
             workspace, stage_root = _workspace_and_stage(tmp)
-            hooks_path = workspace / ".codex" / "hooks" / "hooks.json"
+            hooks_path = workspace / ".codex" / "hooks.json"
             hooks_path.parent.mkdir(parents=True)
             hooks_path.write_text('{"SessionStart": []}\n', encoding="utf-8")
-            _stage_file(stage_root, ".codex/hooks/hooks.json", '{"SessionStart": ["generated"]}\n')
-            _write_manifest(stage_root, [_entry(".codex/hooks/hooks.json", ".codex/hooks/hooks.json")])
+            _stage_file(stage_root, ".codex/hooks.json", '{"SessionStart": ["generated"]}\n')
+            _write_manifest(stage_root, [_entry(".codex/hooks.json", ".codex/hooks.json")])
             plan = build_merge_plan(workspace, stage_root)
             approval = _approval_file(
                 stage_root,
@@ -627,22 +639,22 @@ class MergeInfrastructureTest(unittest.TestCase):
             outside_dir.mkdir()
             outside_file = outside_dir / "hooks.json"
             outside_file.write_text("{}\n", encoding="utf-8")
-            _stage_file(stage_root, ".codex/hooks/hooks.json", '{"SessionStart": []}\n')
-            _write_manifest(stage_root, [_entry(".codex/hooks/hooks.json", ".codex/hooks/hooks.json")])
+            _stage_file(stage_root, ".codex/hooks.json", '{"SessionStart": []}\n')
+            _write_manifest(stage_root, [_entry(".codex/hooks.json", ".codex/hooks.json")])
             plan = build_merge_plan(workspace, stage_root)
             approval = _approval_file(
                 stage_root,
                 plan["id"],
-                [".codex/hooks/hooks.json"],
+                [".codex/hooks.json"],
                 ["create_file"],
                 enable_hooks=True,
                 approved_hook_events=["SessionStart"],
             )
             result = apply_merge_plan(workspace, stage_root, approval)
-            (workspace / ".codex" / "hooks" / "hooks.json").unlink()
-            (workspace / ".codex" / "hooks").rmdir()
+            (workspace / ".codex" / "hooks.json").unlink()
+            (workspace / ".codex").rmdir()
             try:
-                os.symlink(outside_dir, workspace / ".codex" / "hooks")
+                os.symlink(outside_dir, workspace / ".codex")
             except (OSError, NotImplementedError) as exc:
                 self.skipTest(f"symlink creation unsupported: {exc}")
 

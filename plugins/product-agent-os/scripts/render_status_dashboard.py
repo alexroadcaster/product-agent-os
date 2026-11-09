@@ -64,6 +64,7 @@ def _snapshot_for_workspace(workspace: str | Path) -> dict[str, Any]:
         audit_started_at=generated_at,
     )
     return build_status_snapshot(
+        workspace=workspace_path,
         runtime_result=runtime_result,
         discovery_result=discovery_result,
         system_file_hygiene_audit=system_file_hygiene_audit,

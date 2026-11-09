@@ -142,7 +142,7 @@ agent_context_contract = ".codex/evals/agent-context-contract.json"
 lifecycle_state = ".codex/product-agent-os/lifecycle-state.json"
 lifecycle_state_session_pattern = ".codex/product-agent-os/lifecycle-state.<sha256(session_id)>.json"
 hook_policy = ".codex/hooks.json"
-hook_template_mirror = ".codex/hooks/hooks.json"
+# Hook scripts live in .codex/hooks/; only hook_policy is the staged definition.
 chat_visibility = "required"
 required_for = "large_high_risk_material_implementation_release_or_explicit_packet"
 agent_instruction_policy = "root_only_lifecycle_subagents_return_result_packet"

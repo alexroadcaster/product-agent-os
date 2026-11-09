@@ -71,13 +71,13 @@ def validate_owner_feedback_row(row: Any) -> list[str]:
             errors.append("privacy.raw_chat_body_stored:must_be_false")
         if privacy.get("contains_pii") is True:
             errors.append("privacy.contains_pii:must_be_false")
-    if row.get("explicit_rating") not in {None, "satisfied", "neutral", "dissatisfied"}:
+    if row.get("explicit_rating") not in (None, "satisfied", "neutral", "dissatisfied"):
         errors.append("explicit_rating:invalid")
-    if row.get("usefulness") not in {None, "high", "medium", "low", "unknown"}:
+    if row.get("usefulness") not in (None, "high", "medium", "low", "unknown"):
         errors.append("usefulness:invalid")
-    if row.get("user_effort") not in {None, "low", "medium", "high", "very_high", "unknown"}:
+    if row.get("user_effort") not in (None, "low", "medium", "high", "very_high", "unknown"):
         errors.append("user_effort:invalid")
-    if row.get("outcome") not in {None, "accepted", "partial", "reopened", "rejected", "needs_rework", "unknown"}:
+    if row.get("outcome") not in (None, "accepted", "partial", "reopened", "rejected", "needs_rework", "unknown"):
         errors.append("outcome:invalid")
     if _contains_raw_private_content(row):
         errors.append("raw_private_content:blocked")
@@ -117,10 +117,22 @@ def build_feedback_import_contract(*, scope_packet: dict[str, Any], summaries: l
 
 
 def evaluate_satisfaction(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    """Evaluate normalized label rows; the ledger boundary validates full records.
+
+    Label support is an evidence-quality signal, not positive sentiment or an
+    authorization to promote. Pseudo labels never supply human coverage.
+    """
     labels = [_label_feedback(row) for row in rows]
     human_label_count = sum(1 for item in labels if item["source_type"] == "owner_label")
     dissatisfied = sum(1 for item in labels if item["label"] == "dissatisfied")
     low_confidence = any(item["source_type"] == "pseudo_label" and item["confidence"] == "low" for item in labels)
+    owner_labels = [item["label"] for item in labels if item["source_type"] == "owner_label"]
+    sentiment = "unknown"
+    if owner_labels:
+        sentiment = {"satisfied": "positive", "neutral": "neutral", "dissatisfied": "negative"}[owner_labels[0]] if len(set(owner_labels)) == 1 else "mixed"
+    promotion_signal = "insufficient_evidence"
+    if human_label_count:
+        promotion_signal = "blocked_low_confidence" if low_confidence else "owner_label_supported"
     return {
         "schema_version": SATISFACTION_REPORT_SCHEMA_VERSION,
         "denominator": len(rows),
@@ -128,7 +140,9 @@ def evaluate_satisfaction(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "human_label_coverage": _ratio(human_label_count, len(rows)),
         "dissatisfied_count": dissatisfied,
         "labels": labels,
-        "promotion_signal": "blocked_low_confidence" if low_confidence else "owner_label_supported",
+        "promotion_signal": promotion_signal,
+        "owner_sentiment": sentiment,
+        "owner_label_counts": {label: owner_labels.count(label) for label in ("satisfied", "neutral", "dissatisfied")},
         "unsupported_claims": [
             "private emotions inferred",
             "real user satisfaction known without owner feedback",
@@ -231,7 +245,7 @@ def load_owner_feedback_ledger(
             continue
         errors = validate_owner_feedback_row(payload)
         if errors:
-            rejected.append({"line": index, "feedback_id": payload.get("feedback_id"), "errors": errors})
+            rejected.append({"line": index, "errors": errors})
         else:
             rows.append(payload)
     return rows, rejected

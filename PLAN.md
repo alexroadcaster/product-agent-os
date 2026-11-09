@@ -1,5 +1,52 @@
 # PLAN.md
 
+<!-- product-agent-os:current-state:start -->
+```json
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "path": "research/product-agent-os-audit-remediation-task-plan-2026-11-09.md",
+      "revision": "sha256:ec32756b86b5d9784b998a41b024b0de1456e0b6bd9350d6ed4d772246538ed7",
+      "task_prefixes": [
+        "PAOS-AUD-"
+      ]
+    },
+    {
+      "path": "docs/superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json",
+      "revision": "sha256:b8321bf7eddce9cd697885ff01420e7d097d155bfa4a6ef890cabaa607717407"
+    },
+    {
+      "path": "docs/superpowers/specs/batch45-code-quality-runtime-recovery-task-group.json",
+      "revision": "sha256:1a42e0755cdfb40e74c38271d0dd918df8c1ed33404e22d2abbe839f221e4b86"
+    }
+  ]
+}
+```
+<!-- product-agent-os:current-state:end -->
+
+## PAOS-AUD-G3 — 2026-11-09
+
+PAOS-AUD-G3: F03/F08/F16 implemented_locally_verified. Следующая группа — G4. Единственный current pointer выше хранит refs/revisions и ownership prefixes без вторых task statuses. Rollback: только G3 hunks поверх G1/G2; B42/B45 source JSON и параллельные Web файлы сохранить.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
+## PAOS-AUD-G2 — 2026-11-09
+
+PAOS-AUD-G2: F01/F02/F04 implemented_locally_verified после локально завершённой G1; следующий slice — G3. Package остаётся в Codex compatibility format. Rollback: только G2 hunks, сохранить G1 и параллельные Web-документы. Host receipts — G6/AUD-HOST-01, distribution owner gate отдельно.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
+## Web Task Manager: документационный scope — 2026-11-09
+
+Сохранена отдельная proposed очередь: [30 задач в 8 группах](research/product-agent-os-web-task-manager-plan-2026-11-09.md), [source-owned JSON](research/product-agent-os-web-task-manager-task-group-2026-11-09.json). Все planned. Порядок: контракты → задачи/наблюдаемость → управляемые изменения → автономность → пилот. Эта очередь не заменяет PAOS-AUD и не разрешает начало Web-разработки. Rollback: только Web-документы и изображения текущего scope.
+
+## PAOS-AUD-G1 — 2026-11-09
+
+PAOS-AUD-G1: пять карточек F06/F12/F11/F07/F18 implemented_locally_verified. Следующая группа — G2; существующий MCP compatibility gap остаётся её F01. AUD-HOST-02 относится к G6. Rollback: только G1 hunks, сохранить чужие изменения.
+
+[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+
 ## Session lifecycle isolation — 2026-11-09
 
 `PAOS-SESSION-LIFECYCLE-2026-11-09`: bounded repair implemented and locally verified; M1 wireframes saved and statically checked. Full discovery: 1288 tests, one skip, exit 0; final affected suite: 236 passed. Current-host route observed; fresh-host multi-chat verification remains separate. [Owning scope, verification and rollback](research/product-agent-os-session-lifecycle-fix-2026-11-09.md). Existing package compatibility gap and parent GAP closure are unchanged. Next Web step: owner design review; no implementation queue approval.

@@ -2,6 +2,25 @@
 
 Source status: `experiment`
 
+## Current route — 2026-11-09
+
+G1/G2/G3 are locally complete and verified; G3 covers F03/F08/F16. The next slice is G4. Owning plan: `research/product-agent-os-audit-remediation-task-plan-2026-11-09.md`. Local MCP compatibility after G2 is `compatible`; publisher/URLs/icons and actual host acceptance remain gated. This is not release or production readiness.
+
+The sole machine-readable current pointer lives in `PLAN.md`, between `product-agent-os:current-state:start/end`. It holds owning source paths and SHA-256 revisions only, without duplicating task statuses. `RUNLOG.md` and `TEST.md` refer to that pointer; old Current headings do not establish precedence. Sources are the audit task plan and B42/B45 JSON. Optional task_prefixes bounds ownership: the audit plan projects PAOS-AUD-* only, so its T30–T34 cross-reference cards do not compete with canonical B45. A source change requires an explicit reviewed pointer refresh; a mismatch gives unknown without historical fallback.
+
+`build_status_snapshot(workspace=...)` and the existing dashboard CLI read the pointer without workspace writes. `current_state` returns source_path/source_revision, historical_status, selected_evidence and separate task_state, run_state, verification_state, acceptance_state. New dated execution_evidence outranks older planning status. Equal-date incompatible receipts or duplicate ownership produce conflict; unknown dates, future receipts, unsupported formats and stale revisions produce unknown. Implemented alone does not mean verified or accepted. Without a pointer, the prior B37 deferred route remains.
+
+B42 historical planned fields and newer scoped execution receipts are preserved. B45 T23–T29 remain locally implemented and verified; T30–T33 are planned_not_started and T34 is approval_required_not_started. Projection does not rewrite their machine JSON. Task/run status does not replace verification or owner acceptance. Generated snapshots are orientation evidence; complete sources remain authoritative.
+
+Source-policy scanning heuristically separates project_contract, historical_receipt, official_behavior and mention_only/unknown. ISO and DD.MM.YYYY following RU/EN labels are supported; invalid/future/stale/missing remain distinct. Multiple dates use the oldest marker; a fresh section does not refresh a whole page. Registry links resolve locally to the two canonical registry files with anchor and workspace-boundary checks; registry dates are not inherited. URLs/dates never change claim_supported=not_verified. This is neither semantic audit nor a crawler.
+
+Empty feedback, rejected ledgers and absence of owner labels produce insufficient_evidence. Record validity, denominator/human_label_count and owner_sentiment are separate. owner_label_supported means labels exist, including negative labels; it does not authorize promotion. Manual-only/candidate-only policy is preserved.
+
+Dated history follows. Old planned, needs_review and activation receipts do not automatically describe the current revision. Current-group checks belong to the owning audit plan; site build freshness is not claimed.
+
+<details markdown="1">
+<summary>Dated history and detailed evidence</summary>
+
 ## Current user route — 2026-11-05
 
 Start with the [surface matrix](../codex/surfaces.md) and [ordinary/full lifecycle](../product-agent/lifecycle.md). The package has a Codex compatibility manifest; its presence does not establish component validity or host support. See the separate component/surface evidence in the [compatibility matrix](codex-compatibility.md). After skill updates verify exposure, invocation and results.
@@ -12,8 +31,7 @@ The RU/EN section above has the same current claims and limits. Below are preser
 
 GAP-01–GAP-05: local implementation verified: 1284 tests (1 skip), fixture 91/91, transcript 26/26. GAP-01/02/04 implemented; overall partially_verified. The four GAP-03 metadata files were corrected with owner approval and 94 focused tests passed; the fresh-host receipt remains open; GAP-05 needs separate trust/probe. Current compatibility status is `needs_review` for the flat MCP declaration. Hook source changed, so the earlier ACT receipt does not prove activation of this revision.
 
-<details markdown="1">
-<summary>Dated history and detailed evidence</summary>
+
 
 
 This page is the site-facing owner artifact for cold history and detailed

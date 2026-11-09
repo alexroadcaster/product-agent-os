@@ -91,6 +91,105 @@ def load_hook_module(script: Path):
 
 
 class LifecycleHooksTest(unittest.TestCase):
+    def test_command_payload_excludes_tool_metadata_and_unknown_tools_need_scope(self):
+        module = load_hook_module(HOOKS / "pre_tool_use_policy.py")
+        payload = {"tool_name": "functions.exec_command", "tool_input": {
+            "cmd": "Get-Content README.md", "workdir": "project", "justification": "read source"}}
+        self.assertEqual("Get-Content README.md", module._command_text(payload, ""))
+        self.assertTrue(module._is_mutating("unknown_write_tool", "Get-Content README.md"))
+
+
+    def test_patch_prose_is_not_an_executable_command(self):
+        module = load_hook_module(HOOKS / "pre_tool_use_policy.py")
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            write_marker(root, valid_marker())
+            for path, denied in (("report.md", False), ("../outside.md", True), (".env", True)):
+                patch = f"*** Begin Patch\n*** Add File: {path}\n+Never execute git reset --hard or rm -rf.\n*** End Patch"
+                payload = {"tool_name": "apply_patch", "tool_input": patch}
+                self.assertEqual(denied, bool(module._safety_reasons(root, payload, patch)))
+            self.assertTrue(module._safety_reasons(root,
+                {"tool_name": "exec_command", "tool_input": {"cmd": "git reset --hard"}}, ""))
+            self.assertFalse(module._safety_reasons(root,
+                {"tool_name": "exec_command", "tool_input": {"cmd": "rg 'git reset --hard' docs"}}, ""))
+
+    def test_pinned_authoring_updates_exact_report_and_rejects_conflicts(self):
+        module = load_hook_module(HOOKS / "pre_tool_use_policy.py")
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve()
+            session = "author-chat"
+            payload = {"tool_name": "functions.exec", "session_id": session}
+            marker_path = module.lifecycle_marker_path(root, payload)
+            marker_path.parent.mkdir(parents=True)
+            marker = valid_marker(session_id=session, brief_schema_version="task_scope_note_v1",
+                brief_format="concise", brief_fields_present=["Scope", "Evidence", "Limits"],
+                scope_note_shown=True, lifecycle_scope={"work_type": "report_authoring", "size": "bounded",
+                "risk": "low", "financially_material": False, "release_or_readiness": False,
+                "explicit_packet_request": False, "reason": "Explicit one-report authoring"})
+            marker_path.write_text(json.dumps(marker), encoding="utf-8")
+            now = datetime.now(timezone.utc)
+            grant = {"schema_version": 2, "task_id": marker["task_id"], "session_id": session,
+                "workspace_sha256": hashlib.sha256(os.path.normcase(str(root)).encode()).hexdigest(),
+                "marker_sha256": hashlib.sha256(marker_path.read_bytes()).hexdigest(),
+                "output_path": "report.md", "issued_at": now.isoformat(),
+                "expires_at": (now + timedelta(hours=1)).isoformat()}
+            authority = root / "authority.json"
+            def check(patch, previous="absent", change=None, owner=session):
+                authority.write_text(json.dumps({**grant, **(change or {})}), encoding="utf-8")
+                pin = hashlib.sha256(authority.read_bytes()).hexdigest()
+                code = "// paos-report-previous-sha256: " + previous + "\nawait tools.apply_patch(" + json.dumps(patch) + ");"
+                return module._report_authoring_action_ok(root,
+                    {**payload, "session_id": owner, "tool_input": code}, authority, pin)
+            add = "*** Begin Patch\n*** Add File: report.md\n+first\n*** End Patch"
+            self.assertEqual((True, "ok"), check(add))
+            report = root / "report.md"
+            report.write_bytes(b"first\n")
+            update = "*** Begin Patch\n*** Update File: report.md\n@@\n-first\n+second\n*** End of File\n*** End Patch"
+            previous = hashlib.sha256(report.read_bytes()).hexdigest()
+            self.assertEqual((True, "ok"), check(update, previous))
+            report.write_bytes(b"second\n")
+            self.assertFalse(check(update, previous)[0], "concurrent edit must conflict")
+            update2 = update.replace("-first", "-second").replace("+second", "+third")
+            previous = hashlib.sha256(report.read_bytes()).hexdigest()
+            self.assertEqual((True, "ok"), check(update2, previous))
+            for bad in (update2.replace("report.md", "neighbor.md"),
+                        update2.replace("report.md", "./report.md"),
+                        update2.replace("*** End Patch", "*** Add File: other.md\n+x\n*** End Patch")):
+                self.assertFalse(check(bad, previous)[0])
+            self.assertFalse(check(update2, previous, owner="foreign-chat")[0])
+            self.assertFalse(check(update2, previous, {"expires_at": now.isoformat()})[0])
+            self.assertFalse(check(update2, previous, {"schema_version": 1})[0])
+            self.assertFalse(check(update2, previous, {"marker_sha256": "0" * 64})[0])
+            with mock.patch.object(Path, "is_symlink", return_value=True):
+                self.assertFalse(check(update2, previous)[0])
+            with mock.patch.object(Path, "is_junction", return_value=True, create=True):
+                self.assertFalse(check(update2, previous)[0])
+            # Exercise trusted flag dispatch as well as the contract function.
+            code = "// paos-report-previous-sha256: " + previous + "\nawait tools.apply_patch(" + json.dumps(update2) + ");"
+            authority.write_text(json.dumps(grant), encoding="utf-8")
+            pin = hashlib.sha256(authority.read_bytes()).hexdigest()
+            wire_payload = {**payload, "tool_input": code}
+            with mock.patch.object(module, "_read_payload", return_value=(wire_payload, "")), \
+                 mock.patch.object(module, "_workspace_root", return_value=root), \
+                 mock.patch("sys.stdout", new_callable=io.StringIO) as output:
+                module.main(["--report-authoring", str(authority), "--report-authoring-sha256", pin])
+                self.assertEqual("", output.getvalue())
+            self.assertFalse(module._lifecycle_marker_ok(marker_path, expected_session_id=session)[0])
+            marker.update(completion_ready=True)
+            marker_path.write_text(json.dumps(marker), encoding="utf-8")
+            grant["marker_sha256"] = hashlib.sha256(marker_path.read_bytes()).hexdigest()
+            self.assertFalse(check(update2, previous)[0])
+
+    def test_read_classification_rejects_compound_and_unknown_writes(self):
+        module = load_hook_module(HOOKS / "pre_tool_use_policy.py")
+        for command in ("Get-Content README.md; Set-Content result.txt x",
+                        "rg example . > result.txt", "git diff --output=result.txt",
+                        "python -c \"open('result.txt', 'w').write('x')\"",
+                        "Get-Content $(Set-Content result.txt x)", "unknown-writer result.txt"):
+            with self.subTest(command=command):
+                self.assertFalse(module._is_read_only(command))
+                self.assertTrue(module._is_mutating("exec_command", command))
+        self.assertTrue(module._is_read_only("Get-Content README.md"))
 
     def test_session_markers_isolate_parallel_chats_and_ignore_shared_terminal(self):
         for hooks in (HOOKS, LOCAL_HOOKS):

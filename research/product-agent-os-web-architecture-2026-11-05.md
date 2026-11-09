@@ -1,5 +1,7 @@
 # Product-Agent OS Web — архитектура и план реализации
 
+Актуализация 2026-11-09: добавлен полный scope Task Manager v0.2 в заключительном дополнении; он имеет приоритет над исходной очередью M1–M3. [Экраны](product-agent-os-web-task-manager-screens-2026-11-09.md) и [план](product-agent-os-web-task-manager-plan-2026-11-09.md).
+
 Source status: `project-authored / proposed / local-source-backed`. Дата: 2026-11-05. Версия: 0.1.
 
 Статус: **draft_for_review**. Документ описывает будущую реализацию. Код Web, API, runtime adapter и схемы БД в этой задаче не создавались. Решения ниже предложены для обсуждения; они не меняют утверждённую очередь разработки PAOS.
@@ -353,3 +355,67 @@ Strict build относится к локальному preview документ
 
 Следующий предмет решения: принять или скорректировать M1, ICP и D01–D03. Начало разработки требует отдельной команды пользователя.
 
+## 17. Дополнение Task Manager — 2026-11-09
+
+Source status: proposed architecture / user requirements. Версия дополнения: 0.2. Приоритет над прежней декомпозицией M1–M3 для полного scope; реализации нет.
+
+Сохраняется модульный монолит: React/TypeScript Web, local Node.js/TypeScript service, Python PAOS bridge, SQLite и SSE. Не добавляем отдельные микросервисы ради новых вкладок. Конкретные версии dependencies и supported host API фиксируются при PAOS-0001, а не предполагаются по названию продукта.
+
+### Владение данными и модули
+
+| Модуль | Ответственность | Authority / запись |
+| --- | --- | --- |
+| Project registry / capabilities | Project identity, источники, coverage и доступность adapter | Локальный registry; read-only discovery до явного merge |
+| Tasks / workflow | Все поля, зависимости, status transitions, assignment links | Source-owned task-group/plan; transactional writer и projection без двух независимых masters |
+| Event journal / time | Run events, интервалы, idempotency, metrics | Append-only события с source event IDs; SQLite indexes/projections rebuildable |
+| Sessions | Project-bound history, pagination, transcripts, subagent relations | Host/source adapter authoritative; локальный индекс с retention/redaction |
+| Agent catalog / proposals | Effective/project/proposed/pinned profiles, CRUD, generation | Project-owned файлы; preview/versioned apply; host-loaded version отдельно подтверждается |
+| Skill catalog / discovery | Sources, find-skills, import, requirements-based generation | Source/version/hash и staged proposals; generation не исполняет содержимое |
+| Code index / graph | Files, symbols, typed edges, revision and confidence | Производный индекс, source files authoritative |
+| Autonomy coordinator | Policy, queue, ownership, budgets, stop/retry/recovery | Durable commands и events; host остаётся исполнителем и permission boundary |
+| Documents / evidence / decisions | Readers, diff proposals, checks, owner decisions | Source revision и scoped approval receipt; stale proposal rejected |
+| UI shell / localization | Navigation, project context, theme, RU/EN, accessible states | Preferences отдельно от project configuration |
+
+### Контракты и поток
+
+Web отправляет typed commands с project_id, entity_id, expected_revision и idempotency_key. Service проверяет capability, scope, ownership и revision, затем пишет command receipt и выполняет предусмотренный adapter. Events несут event_id, project_id, task_id, run_id, actor_id, source и timestamps. SSE sequence позволяет resume и dedup; после потери окна client перечитывает snapshot. UI optimistic state допускается для drafts/preferences; запуск, approval и завершение показываются подтверждёнными после receipt.
+
+Сессии не читаются через произвольный скрейпинг приватных host databases. PAOS-0001 проверяет доступный поддерживаемый adapter на установленной версии, completeness и project association. Пока это не доказано, transcript surface показывает unavailable/partial. Добавление agent/skill version не является доказательством загрузки runtime: profile snapshot и effective loaded receipt привязаны к run.
+
+Для файловых сущностей нужны write-ahead proposal, expected source hash, atomic replace там, где поддержано, manifest предыдущих версий и recoverable apply receipt. Rollback не перезаписывает последующие пользовательские изменения: при изменившемся hash создаётся конфликт. SQLite и file authority синхронизируются journal/reconcile; не обещать общую ACID-транзакцию файловой системы и SQLite.
+
+Graph хранит FileNode и SymbolNode с identity `file + language + lexical scope + definition location`, edges import/call/define/read/write/reference. Качество parser зависит от языка. Dynamic access, aliasing и unresolved references помечаются; static edge не доказывает runtime execution. Инкрементальная индексация привязана к source revision. Фильтры, lazy neighbors и list alternative ограничивают размер графа.
+
+### Проверка перед реализацией
+
+PAOS-0001 должен подтвердить session source API, agent run telemetry, write routes project-owned profiles, поддерживаемые языки graph и модель authority task data. До этого estimates приблизительны. Generation adapters требуют отдельно разрешённого provider/host route; данные private sessions не отправляются внешнему генератору дизайна. Security tests: path traversal/symlink, stale writes, prompt injection в импортированном skill, cross-project leakage, duplicate commands, cancel/reconnect/recovery.
+
+[План и зависимости](product-agent-os-web-task-manager-plan-2026-11-09.md) задаёт предложенные границы файлов. Новые endpoint names и schema keys уточняются contract-first в PAOS-0001/0002; не объявлены существующим API.
+
+### Обновлённая схема модулей
+
+```mermaid
+flowchart LR
+  U["Пользователь"] --> W["Web: 8 вкладок, RU/EN, темы"]
+  W --> API["Local service: typed commands + snapshots"]
+  API --> T["Tasks / workflow / time"]
+  API --> S["Sessions / transcripts"]
+  API --> A["Agents / Skills / proposals"]
+  API --> G["Code graph / impact"]
+  API --> D["Documents / checks / decisions"]
+  API --> O["Autonomy / queue / ownership"]
+  O --> B["Python PAOS bridge"]
+  O --> H["Host adapter: execution boundary"]
+  S --> H
+  T --> F["Source-owned files"]
+  A --> F
+  G --> F
+  D --> F
+  API --> J["SQLite journal + projections"]
+  H --> E["Events / source receipts"]
+  E --> J
+  J --> SSE["SSE / resumable snapshots"]
+  SSE --> W
+```
+
+Это proposed boundaries. Host capabilities и completeness проверяются до реализации; стрелка не означает уже подключённый adapter. Runtime stop/pause принадлежит coordinator и host, а не одному UI state. Модульные contracts из таблицы выше определяют authority; SQLite не становится независимым вторым источником task truth.

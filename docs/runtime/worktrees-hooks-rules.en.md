@@ -15,12 +15,12 @@ This is a preflight guard, not an atomic filesystem transaction. Sandbox, secret
 
 ## Product-Agent OS lifecycle hooks
 
-Product-Agent OS ships staged hooks through `plugins/product-agent-os/assets/templates/hooks/` and `render_infrastructure.py --stage`. For an end project they land under `.codex/hooks/` as proposed/staged assets, not as silently activated automation.
+Product-Agent OS ships staged hooks through `plugins/product-agent-os/assets/templates/hooks/` and `render_infrastructure.py --stage`. For a target project the definition is staged for `.codex/hooks.json` and scripts for `.codex/hooks/`; they remain proposals until approved apply and trust.
 
 The lifecycle guard works as follows:
 
 - `SessionStart` reports control-plane and lifecycle file presence;
-- `PreToolUse` allows recognized read-only discovery through a fast path; recognized mutations require the current chat's active marker;
+- `PreToolUse` allows recognized read-only discovery through a fast path; mutations and unrecognized commands require the current chat's active marker;
 - Before mutation show the applicable scope: large/high-risk/material/release work uses `task_start_brief_v2`, `brief_format: bold_fields` and nine fields; ordinary work uses `task_scope_note_v1`, `brief_format: concise`, and Scope/Evidence/Limits. Then record task_id, scope, updated_at, approval_boundary, brief_digest and brief_fields_present in the marker; `task_start_brief_shown` applies only to the full route. `task_start_brief_v1` / `field_list` remains compatible with already-started legacy sessions.
 - the per-write `PostToolUse` comment-sufficiency advisory checks only paths from the current patch instead of rescanning the entire dirty worktree;
 - after all writes, checks, and control-plane sync, the marker moves to `ready_for_completion_ledger` (full) or `ready_for_completion_brief` (concise/legacy) and further mutations are denied;
@@ -72,3 +72,33 @@ Checked 2026-11-05 against [Hooks](https://learn.chatgpt.com/docs/hooks). Applic
 An MCP hook uses an already available server: it does not start or reconnect MCP. A missing server/tool or MCP-hook error does not guarantee denial; verify fail-closed behavior separately. Cloud-orchestrated Work does not support local command/plugin hooks; supported admin-managed MCP hooks are configured separately.
 
 A worktree separates Git working files, not permissions. A small change usually fits the current workspace. Choose Git-only worktrees, setup and Handoff through the [official route](https://learn.chatgpt.com/docs/environments/git-worktrees) and project authority. Verify loaded definition and trust, an allowed case, a denied case, and evidence for the specific tool/runtime.
+
+## Local PAOS-AUD-G1 repairs — 2026-11-09
+
+The generated manifest and `hook_policy` now point to `.codex/hooks.json`; scripts
+remain in `.codex/hooks/`. The old mirror is not a discovery config. Staging does
+not activate hooks. Merge creates the definition only with exact `enable_hooks`
+approval, preserves existing user files and supports rollback. Trust and fresh-host
+acceptance are separate. Discovery/trust source: [official Hooks contract](https://learn.chatgpt.com/docs/hooks).
+
+The guard recognizes only bounded whole read-only commands; compound and unknown
+forms need an active mutation scope. Markdown patch prose is data; destination
+paths are checked separately. Actual destructive commands and sensitive
+destinations remain guarded.
+
+Root `.rules` is a checked proposal, not an installed discovery file.
+`match`/`not_match` are parser assertions, not prefix exclusions. Because arbitrary
+trailing arguments may change command behavior, the proposal uses `prompt` for
+review and retains `forbidden` for system changes; there are no broad `allow`
+rules. Check with `codex execpolicy check --rules .rules -- rg --files`; this
+evaluates the decision without executing `rg`. No `.codex/rules/default.rules`
+is created. Semantics: [official Rules](https://learn.chatgpt.com/docs/agent-configuration/rules).
+
+Optional report authoring v2 explicitly uses `work_type: report_authoring`, a
+pinned grant, session ownership, one exact Markdown path and a previous digest
+for every create/update. Legacy create-only v1 is preserved. The detailed
+contract is `.codex/workflows/task-plan-lifecycle.md`; local evidence belongs to
+`research/product-agent-os-audit-remediation-task-plan-2026-11-09.md`.
+CAS preflight rejects existing conflicts but does not lock the interval between
+hook and write: exclusive ownership is required; atomicity and fresh-host
+activation are not established.

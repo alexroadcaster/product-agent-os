@@ -261,6 +261,30 @@ COMPLETION_LEDGER_FIELDS = [
 ]
 
 
+def validate_report_authoring_request(output_path: str, previous_content: bytes | None,
+                                     content: str) -> list[str]:
+    """Validate authoring input shape; filesystem/session/grant checks belong to the hook."""
+    if not isinstance(output_path, str) or not output_path:
+        return ["report_path_required"]
+    parts = output_path.split("/")
+    protected = {"agents.md", "agents.override.md", "requirements.md", "plan.md", "test.md", "evals.md", "runlog.md", "skill.md"}
+    if (any(p in {"", ".", ".."} or p.startswith(".") or p.endswith((".", " ")) for p in parts)
+            or any(c in output_path for c in "\\:~") or any(ord(c) < 32 for c in output_path)
+            or not output_path.endswith(".md") or parts[-1].lower() in protected
+            or any(re.fullmatch(r"(?i)(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\..*)?", p) for p in parts)):
+        return ["report_path_must_be_canonical_unprotected_markdown"]
+    if not isinstance(content, str) or not content.endswith("\n") or "\r" in content or len(content.encode("utf-8")) > 1_000_000:
+        return ["report_content_requires_bounded_utf8_lf_text"]
+    if previous_content is not None:
+        if not isinstance(previous_content, bytes) or len(previous_content) > 1_000_000:
+            return ["previous_report_must_be_bounded_bytes"]
+        try:
+            previous_content.decode("utf-8")
+        except UnicodeError:
+            return ["previous_report_must_be_utf8"]
+    return []
+
+
 def validate_lifecycle_packet_text(text: str, kind: str) -> list[str]:
     """Check reporting shape and explicit closure contradictions, not evidence truth.
 

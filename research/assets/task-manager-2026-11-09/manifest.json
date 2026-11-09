@@ -1,0 +1,83 @@
+{
+  "schema_version": "screen_concepts_v1",
+  "images": [
+    {
+      "file": "screens-1.png",
+      "screens": [
+        "S01",
+        "S02",
+        "S03",
+        "S04"
+      ],
+      "width": 1536,
+      "height": 1024,
+      "sha256": "b5ebd03e5fa4610a2b91d93367d51a4a4f8350e39edfd185e31b1dc7890d472b",
+      "status": "concept_needs_user_acceptance"
+    },
+    {
+      "file": "screens-2.png",
+      "screens": [
+        "S05",
+        "S06",
+        "S07",
+        "S08"
+      ],
+      "width": 1536,
+      "height": 1024,
+      "sha256": "3b0df2f21b13de661590fb361e422059f2ac2293640ba63d67db188f46b563f6",
+      "status": "concept_needs_user_acceptance"
+    },
+    {
+      "file": "screens-3.png",
+      "screens": [
+        "S09",
+        "S10",
+        "S11",
+        "S12"
+      ],
+      "width": 1536,
+      "height": 1024,
+      "sha256": "2f8971eac45b781fe519043bdb9432bc83189c5bbeef7d60898f9e05f13d8184",
+      "status": "concept_needs_user_acceptance"
+    },
+    {
+      "file": "screens-4.png",
+      "screens": [
+        "S13",
+        "S14",
+        "S15",
+        "S16"
+      ],
+      "width": 1536,
+      "height": 1024,
+      "sha256": "ed29d48d2bb0db146c36ec86409e8260fae2193e318d4aa6fdfc9f42852b9610",
+      "status": "concept_needs_user_acceptance"
+    },
+    {
+      "file": "screens-5.png",
+      "screens": [
+        "S17",
+        "S18",
+        "S19",
+        "S20"
+      ],
+      "width": 1536,
+      "height": 1024,
+      "sha256": "c5ce930ca4c26deb1107a67f95f88e23b0e41f4251df671bdfbc126f2f927b97",
+      "status": "concept_needs_user_acceptance"
+    },
+    {
+      "file": "screens-6.png",
+      "screens": [
+        "S21",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "width": 1536,
+      "height": 1024,
+      "sha256": "068217385a8502317c0ce9a4e40d87393eb2a1ee28d649b199413374a4e77d31",
+      "status": "concept_needs_user_acceptance"
+    }
+  ]
+}

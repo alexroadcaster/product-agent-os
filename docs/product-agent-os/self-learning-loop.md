@@ -2,6 +2,8 @@
 
 Source status: `official + experiment`
 
+Пустой ledger, полностью rejected записи и ноль допустимых owner labels дают `promotion_signal: insufficient_evidence`. `owner_feedback_rows`/`rejected_rows` описывают валидность входа, `denominator`/`human_label_count` — покрытие labels, `owner_sentiment` — только тональность явных owner labels. `owner_label_supported` не означает положительную оценку: отрицательные и mixed labels сохраняются. Автоматического promotion нет.
+
 `Self-Learning Loop` - это ручной контур улучшения `Product-Agent OS` по локальным доказательствам, очищенной обратной связи владельца, журналу метрик и кандидатам на изменение. Он не является автономной системой обучения: режим `default` не запускает вызовы `provider` / `model` / `API`, не создает `Codex App automations`, не включает `hooks`, не пишет в целевой рабочий каталог и не применяет кандидатов автоматически.
 
 Главная цель контура - превращать повторяющиеся сбои и обратную связь владельца в ограниченные артефакты: состояние, проверку срока запуска, отчет о ходе, eval cases, таксономию сбоев, staged repair task и recommendation packets для ревью владельца.

@@ -18,6 +18,47 @@ from product_agent_os.source_policy import validate_source_policy  # noqa: E402
 
 
 class SourcePolicyTest(unittest.TestCase):
+    def test_existing_date_labels_and_strict_calendar(self):
+        from product_agent_os.source_policy import _source_evidence
+        for marker in ('Проверено 2026-11-03.', 'Checked 2026-11-03. Sources:', 'Checked: `2026-11-03`', 'Last verified 2026-11-03', 'Дата проверки: 2026-11-03', 'checked_on: 2026-11-03'):
+            self.assertEqual(_source_evidence(marker, date(2026, 11, 9))["freshness"]["status"], "date_present_not_verified", marker)
+        for marker, expected in [('Checked 2026-02-30.', 'invalid'), ('Checked 2026-1-03', 'invalid'), ('Checked 2027-01-01.', 'future'), ('Checked 2020-01-01.', 'stale'), ('Checked unknown', 'invalid'), ('No date', 'missing')]:
+            self.assertEqual(_source_evidence(marker, date(2026, 11, 9))["freshness"]["status"], expected, marker)
+
+    def test_russian_dotted_dates_and_undated_source_prose(self):
+        from product_agent_os.source_policy import _source_evidence
+        result = _source_evidence('Проверено 05.11.2026 по источнику.\nПроверено по документации.', date(2026,11,9))
+        self.assertEqual(result['freshness']['status'], 'date_present_not_verified')
+        self.assertEqual(result['freshness']['checked_on'], '2026-11-05')
+        result = _source_evidence('Checked 2026-11-03.\nChecked against documentation.\nChecked 2026-11-05.', date(2026,11,9))
+        self.assertEqual(result['freshness']['status'], 'date_present_not_verified')
+        self.assertEqual(result['freshness']['checked_on'], '2026-11-03')
+
+    def test_claim_classes_do_not_equate_a_product_mention_with_behavior(self):
+        from product_agent_os.source_policy import _validate_file
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); (root / 'docs').mkdir()
+            page = root / 'docs/guide.md'
+            for text, expected in [('Source status: project-local\nCodex project task contract.', 'project_contract'), ('Source status: historical receipt\nCodex fixture ran in 2020.', 'historical_receipt'), ('Source status: experiment\nCodex project notes.', 'mention_only'), ('Source status: project-local\nCodex always allows external writes.', 'official_behavior')]:
+                page.write_text(text, encoding='utf-8')
+                result = _validate_file(root, page, date(2026, 11, 9))
+                self.assertEqual(result['source_evidence']['claim_class'], expected)
+                self.assertEqual(bool(result['missing_context']), expected == 'official_behavior')
+                self.assertEqual(result['source_evidence']['claim_supported'], 'not_verified')
+
+    def test_registry_reference_is_local_bounded_and_anchor_specific(self):
+        from product_agent_os.source_policy import _validate_file
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); (root / 'docs/sources').mkdir(parents=True)
+            page = root / 'docs/guide.md'
+            (root / 'docs/sources/registry.md').write_text('# Registry\n\n## Models\nhttps://developers.openai.com/docs\n\n## Local\nproject contract only\n', encoding='utf-8')
+            for link, present, status in [('sources/registry.md#models', True, 'resolved'), ('sources/registry.md#local', False, 'resolved'), ('sources/registry.md#missing', False, 'missing'), ('../../registry.md', False, 'unsafe'), ('sources/missing/registry.md', False, 'missing')]:
+                page.write_text('Source status: official\nCodex supports models.\n[registry]('+link+')\nChecked 2026-11-03.', encoding='utf-8')
+                evidence = _validate_file(root, page, date(2026,11,9))['source_evidence']
+                self.assertEqual(evidence['source_present'], present, link)
+                self.assertEqual(evidence['registry_references'][0]['status'], status, link)
+                self.assertEqual(evidence['claim_supported'], 'not_verified')
+
     def test_official_presence_is_not_semantic_or_freshness_verification(self):
         for host in ("learn.chatgpt.com", "platform.openai.com", "developers.openai.com"):
             with self.subTest(host=host), tempfile.TemporaryDirectory() as tmp:

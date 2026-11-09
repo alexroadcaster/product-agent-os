@@ -4,7 +4,7 @@ import re
 from datetime import date
 from pathlib import Path
 from typing import Any
-from urllib.parse import urlsplit
+from urllib.parse import unquote, urlsplit
 
 from product_agent_os.validators import is_forbidden_secret_assignment
 
@@ -15,7 +15,7 @@ OPENAI_BEHAVIOR_PATTERN = re.compile(
 )
 OFFICIAL_HOSTS = {"developers.openai.com", "platform.openai.com", "learn.chatgpt.com", "help.openai.com", "openai.com"}
 URL_PATTERN = re.compile(r'https?://[^\s<>"`]+', re.IGNORECASE)
-CHECKED_DATE_PATTERN = re.compile(r"(?im)^\s*(?:Checked|checked_on|Last verified|Проверено|Дата проверки):\s*`?(\d{4}-\d{2}-\d{2})")
+CHECKED_DATE_PATTERN = re.compile(r"(?im)^[ \t]*(?:Checked(?: on)?|checked_on|Last verified|Проверено|Дата проверки)(?:[ \t]*:[ \t]*|[ \t]+)`?([^\s`]+)")
 FRESHNESS_REVIEW_DAYS = 90  # Local review heuristic, never a source freshness guarantee.
 COMMUNITY_PATTERN = re.compile(r"\b(community|user report|reddit|forum|сообщество|отчет пользователя)\b", re.IGNORECASE)
 FRESHNESS_PATTERN = re.compile(
@@ -82,6 +82,10 @@ def _validate_file(workspace: Path, path: Path, as_of: date) -> dict[str, Any]:
     source_status = _source_status(text)
     exempt = relative in {"docs/index.md", "docs/index.en.md", "docs/sources/registry.md", "docs/sources/registry.en.md"}
     source_evidence = _source_evidence(text, as_of)
+    references, registry_hosts = _registry_evidence(workspace, path, text)
+    source_evidence["registry_references"] = references
+    source_evidence["official_hosts"] = sorted(set(source_evidence["official_hosts"]) | registry_hosts)
+    source_evidence["source_present"] = bool(source_evidence["official_hosts"])
     supported_facts: list[str] = []
     assumptions: list[str] = []
     unsupported_claims: list[str] = []
@@ -91,13 +95,15 @@ def _validate_file(workspace: Path, path: Path, as_of: date) -> dict[str, Any]:
 
     if source_status == "missing" and not exempt:
         missing_context.append("Source status is required")
-    if _has_openai_behavior_claim(text) and not source_evidence["source_present"]:
+    if source_evidence["claim_class"] == "official_behavior" and not source_evidence["source_present"]:
         missing_context.append("official source hint is required for OpenAI behavior claim")
+    if any(ref["status"] != "resolved" for ref in references):
+        missing_context.append("registry reference is missing or unsafe")
     if source_evidence["source_present"]:
         supported_facts.append("Official-source URL is present; content and claim support were not verified")
-    if source_evidence["freshness"]["status"] in {"stale", "invalid", "future"}:
+    if source_evidence["freshness"]["status"] in {"stale", "invalid", "future", "conflict"}:
         missing_context.append("source check date requires review")
-    if FRESHNESS_PATTERN.search(text):
+    if source_evidence["claim_class"] == "official_behavior" and FRESHNESS_PATTERN.search(text):
         freshness_risks.append("current OpenAI/runtime behavior may drift")
     if _has_community_claim(text) and not _has_community_metadata(text):
         unsupported_claims.append("community claim lacks trust_level or verification_status")
@@ -146,7 +152,32 @@ def _source_status(text: str) -> str:
 
 
 def _has_openai_behavior_claim(text: str) -> bool:
-    return bool(OPENAI_BEHAVIOR_PATTERN.search(text))
+    return _claim_class(text) == "official_behavior"
+
+
+def _claim_class(text: str) -> str:
+    """Conservative lexical routing, not a semantic verification verdict.
+
+    Explicit external behavior overrides a project-local label. A historical
+    receipt or project contract alone does not become an official claim merely
+    because it names Codex. Mixed pages still need human semantic review.
+    """
+    prose = "\n".join(line for _, line in _non_fenced_lines(text))
+    status = _source_status(prose).lower()
+    explicit_behavior = any(
+        OPENAI_BEHAVIOR_PATTERN.search(line)
+        and re.search(r"\b(supports?|allows?|requires?|always|never|automatically|доступ\w*|поддержива\w*|всегда|автоматически|позволя\w*)\b", line, re.I)
+        for line in prose.splitlines() if not line.startswith(("#", "Source status:"))
+    )
+    if explicit_behavior:
+        return "official_behavior"
+    if re.search(r"historical|receipt|историческ", status):
+        return "historical_receipt"
+    if re.search(r"project.(?:local|authored|plan|contract|evidence)|проектн", status):
+        return "project_contract"
+    if "official" in status and re.search(r"\b(approvals?|sandbox|MCP|hooks?|models?)\b", prose, re.I):
+        return "official_behavior"
+    return "mention_only" if OPENAI_BEHAVIOR_PATTERN.search(prose) else "unknown"
 
 
 def _has_official_source_hint(text: str) -> bool:
@@ -173,16 +204,92 @@ def _official_hosts(text: str) -> list[str]:
 def _source_evidence(text: str, as_of: date) -> dict[str, Any]:
     """Separate link presence, date markers and semantic evidence; no web requests."""
     hosts = _official_hosts(text)
-    match = CHECKED_DATE_PATTERN.search(text)
+    prose = "\n".join(line for _, line in _non_fenced_lines(text))
+    markers = [match.group(1).rstrip(".,:;") for match in CHECKED_DATE_PATTERN.finditer(prose)
+               if match.group(1).lower() not in {"against", "по"}]
     freshness = {"status": "missing", "checked_on": None, "review_after_days": FRESHNESS_REVIEW_DAYS}
-    if match:
-        freshness["checked_on"] = match.group(1)
+    if markers:
         try:
-            age = (as_of - date.fromisoformat(match.group(1))).days
-            freshness["status"] = "future" if age < 0 else "stale" if age > FRESHNESS_REVIEW_DAYS else "date_present_not_verified"
+            dates = []
+            for value in markers:
+                if re.fullmatch(r"\d{2}\.\d{2}\.\d{4}", value):
+                    day, month, year = value.split(".")
+                    value = f"{year}-{month}-{day}"
+                if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
+                    raise ValueError("invalid_calendar_marker")
+                dates.append(date.fromisoformat(value))
+            # Different sections may have different check dates. Use the oldest
+            # marker conservatively; never promote the whole page from its latest.
+            freshness["checked_on"] = min(dates).isoformat()
+            freshness["checked_dates"] = sorted({value.isoformat() for value in dates})
+            age = (as_of - min(dates)).days
+            freshness["status"] = "future" if max(dates) > as_of else "stale" if age > FRESHNESS_REVIEW_DAYS else "date_present_not_verified"
         except ValueError:
             freshness["status"] = "invalid"
-    return {"source_present": bool(hosts), "official_hosts": hosts, "claim_supported": "not_verified", "freshness": freshness}
+    return {"source_present": bool(hosts), "official_hosts": hosts, "claim_class": _claim_class(text),
+            "claim_supported": "not_verified", "freshness": freshness}
+
+
+def _registry_evidence(workspace: Path, page: Path, text: str) -> tuple[list[dict[str, str]], set[str]]:
+    """Resolve one local registry hop; no crawler, external read or date inheritance."""
+    root = workspace.resolve()
+    allowed = {"docs/sources/registry.md", "docs/sources/registry.en.md"}
+    references: list[dict[str, str]] = []
+    hosts: set[str] = set()
+    prose = "\n".join(line for _, line in _non_fenced_lines(text))
+    for target in re.findall(r"\[[^\]\n]*\]\(([^)\s]+)\)", prose)[:256]:
+        decoded = unquote(target)
+        if not decoded.split("#", 1)[0].replace("\\", "/").endswith(("registry.md", "registry.en.md")):
+            continue
+        ref = {"status": "unsafe", "path": ""}
+        references.append(ref)
+        try:
+            parsed = urlsplit(decoded)
+            if parsed.scheme or parsed.netloc or parsed.query or "\\" in decoded or parsed.path.startswith("/"):
+                continue
+            resolved = (page.parent / parsed.path).resolve()
+            if not resolved.is_relative_to(root):
+                continue
+            relative = resolved.relative_to(root).as_posix()
+            if relative not in allowed or not resolved.is_file():
+                ref["status"] = "missing"
+                continue
+            ref["path"] = relative
+            if resolved.stat().st_size > 1024 * 1024:
+                ref["status"] = "needs_review"
+                continue
+            registry = resolved.read_text(encoding="utf-8")
+            if parsed.fragment:
+                registry = _registry_section(registry, parsed.fragment)
+                if registry is None:
+                    ref["status"] = "missing"
+                    continue
+            ref["status"] = "resolved"
+            hosts.update(_official_hosts(registry))
+        except (OSError, ValueError):
+            ref["status"] = "missing"
+    return references, hosts
+
+
+def _registry_section(text: str, anchor: str) -> str | None:
+    """Select a heading section or explicit table source ID, never an unrelated row."""
+    lines = text.splitlines()
+    for index, line in enumerate(lines):
+        heading = re.match(r"^(#{1,6})\s+(.+)$", line)
+        if heading:
+            slug = re.sub(r"[^\w\s-]", "", heading.group(2).lower()).replace(" ", "-")
+            if slug != anchor.lower():
+                continue
+            end = index + 1
+            while end < len(lines):
+                next_heading = re.match(r"^(#{1,6})\s", lines[end])
+                if next_heading and len(next_heading.group(1)) <= len(heading.group(1)):
+                    break
+                end += 1
+            return "\n".join(lines[index:end])
+        if line.startswith("|") and line.split("|")[1].strip().strip("`").lower() == anchor.lower():
+            return line
+    return None
 
 
 def _has_community_claim(text: str) -> bool:

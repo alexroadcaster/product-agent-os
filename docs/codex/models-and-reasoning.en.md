@@ -26,6 +26,14 @@ Candidate roles interpret official positioning for this project; their quality h
 
 Account-specific availability was not checked in this refresh. No unsupported minimum version is claimed for the other rows. `Light` maps to `low` in the relevant product context. `Max` increases single-agent reasoning; `Ultra` uses subagents in supported products. Luna does not support Ultra. Do not send UI `Ultra` as an ordinary API `reasoning.effort`; the model page defines API values.
 
+## Local diagnostics — PAOS-AUD-G2, 2026-11-09
+
+`validate_codex_compatibility.py` separates local package structure from host diagnostics. Without extra inputs, client/model receipt/trust remain missing, not_verified or unknown; installed CLI is not used as an App version. The documented [CLI 0.159.0 minimum for GPT-6.1 Terra](https://learn.chatgpt.com/docs/models) applies only to that model/surface pair. Other minimums are not invented.
+
+Optional `--observations <file.json>` reads up to 16 KiB of non-secret JSON: `surface` (Codex App, CLI, IDE extension), `client_version` (three numeric components), `configured_model`, `observed_model` (the four model IDs above), `trust` (trusted/untrusted), `native_plugin_observed` and `standalone_skills_observed` (boolean). Other fields are not copied into output; unknown values do not become evidence. Duplicate keys and malformed files are rejected. Inputs are caller-supplied observations, not authenticated receipts; account access and promotion remain not_verified/not_assessed. Exit 0 means local structure only, not absence of host gaps.
+
+`--cache-root <explicit-directory>` compares canonical/cache SHA-256 over manifests, MCP JSON and SKILL.md; results are match/drift/needs_review. Without a cache input: cache_not_provided. Reads are bounded by size/count, links are rejected, contents and absolute paths are not printed. Scope excludes scripts/templates and does not prove host skill selection; full package/host receipts remain separate gates. Caches are neither discovered automatically nor modified. Pins and effort remain unchanged; T23–T29 are not rerun as a new model migration.
+
 ## Context and cost
 
 On the review date all four API model pages list a 1,050,000-token context window, 922,000 max input and 128,000 max output. These constraints apply jointly, not as additive independent quotas. GPT-6.1 Sol has an official 500,000-token default context in Codex; do not transfer the API limit to the client automatically.

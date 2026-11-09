@@ -45,7 +45,7 @@ REQUIRED_TARGETS = {
     ".codex/agents/reviewer.toml",
     ".codex/agents/docs-maintainer.toml",
     ".codex/agents/release-operator.toml",
-    ".codex/hooks/hooks.json",
+    ".codex/hooks.json",
     ".codex/hooks/session_start_context.py",
     ".codex/hooks/pre_tool_use_policy.py",
     ".codex/hooks/permission_request_summary.py",
@@ -2288,7 +2288,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
         self.assertEqual(lifecycle_contract["agent_context_contract"], ".codex/evals/agent-context-contract.json")
         self.assertEqual(lifecycle_contract["lifecycle_state"], ".codex/product-agent-os/lifecycle-state.json")
         self.assertEqual(lifecycle_contract["hook_policy"], ".codex/hooks.json")
-        self.assertEqual(lifecycle_contract["hook_template_mirror"], ".codex/hooks/hooks.json")
+        self.assertNotIn("hook_template_mirror", lifecycle_contract)
         self.assertEqual(lifecycle_contract["chat_visibility"], "required")
         self.assertEqual(lifecycle_contract["required_for"], "large_high_risk_material_implementation_release_or_explicit_packet")
         self.assertEqual(

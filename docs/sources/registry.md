@@ -1,6 +1,39 @@
 # Реестр источников
 
+## PAOS-AUD-G3 — 2026-11-09
+
+| ID | Source | Claim scope | checked_at | Status |
+| --- | --- | --- | --- | --- |
+| AUD-G3-F03 | `source_policy.py`, `tests/product_agent_os/test_source_policy.py` | RU/EN calendar markers, local registry resolution, lexical claim classes; no semantic verification | 2026-11-09 | project-local contract |
+| AUD-G3-F08 | `self_learning_feedback.py`, self-learning tests | Zero human labels: insufficient_evidence; validity, coverage and sentiment separate | 2026-11-09 | project-local contract; manual_only |
+| AUD-G3-F16 | `status_snapshot.py`, `PLAN.md` current pointer, owning source revisions | Newer execution evidence precedence; task/run/verification/acceptance separate; unknown/conflict explicit | 2026-11-09 | generated orientation only; owning audit plan contains run evidence |
+
+## PAOS-AUD-G2 — 2026-11-09
+
+| ID | Source | Claim scope | checked_at | Status |
+| --- | --- | --- | --- | --- |
+| AUD-G2-S01 | [Build plugins](https://developers.openai.com/plugins/build/plugins), [submission](https://developers.openai.com/plugins/deploy/submission) | Codex compatibility wrapper, portable precedence; publisher/listing distribution gate | 2026-11-09 | official / documentation_checked |
+| AUD-G2-S02 | [Plugins](https://learn.chatgpt.com/docs/plugins#use-plugins-from-a-supported-surface), [Skills](https://learn.chatgpt.com/docs/build-skills) | Native plugin unsupported in IDE; standalone skills documented | 2026-11-09 | official / documentation_checked; no host activation |
+| AUD-G2-S03 | [Models](https://learn.chatgpt.com/docs/models) | GPT-6.1 Terra CLI minimum 0.159.0; no App/account inference | 2026-11-09 | official / documentation_checked |
+| AUD-G2-S04 | `research/product-agent-os-audit-remediation-task-plan-2026-11-09.md` | Local compatibility/diagnostic evidence; bounded component provenance | 2026-11-09 | project-local; see owning receipt |
+
+## Web Task Manager: документационный scope — 2026-11-09
+
+| ID | Source | Claim scope | checked_at | Status |
+| --- | --- | --- | --- | --- |
+| WEB-TM-01 | `research/product-agent-os-web-prd-2026-11-05.md`, `research/product-agent-os-web-architecture-2026-11-05.md` | Требования пользователя: вкладки, CRUD agents/skills, сессии, graph, task fields, time, RU/EN/themes, автономность | 2026-11-09 | project-authored / proposed |
+| WEB-TM-02 | `research/product-agent-os-web-task-manager-plan-2026-11-09.md`, `research/product-agent-os-web-task-manager-screens-2026-11-09.md` | 30 planned tasks, 8 групп, 24 экранных концепта; не runtime evidence | 2026-11-09 | draft_for_review / needs_user_acceptance |
+
 Source status: `project-authored`
+
+## Исправления PAOS-AUD-G1 — 2026-11-09
+
+| ID | Source | Claim scope | checked_at | Status |
+| --- | --- | --- | --- | --- |
+| AUD-G1-S01 | [Rules](https://learn.chatgpt.com/docs/agent-configuration/rules) | Prefix decisions; match/not_match assertions | 2026-11-09 | official / documentation_checked |
+| AUD-G1-S02 | [Hooks](https://learn.chatgpt.com/docs/hooks) | Project discovery path and trust boundary | 2026-11-09 | official / documentation_checked |
+| AUD-G1-S03 | `research/product-agent-os-audit-remediation-task-plan-2026-11-09.md` | Локальные contracts и evidence; host acceptance отдельно | 2026-11-09 | project-local; see owning receipt |
+| AUD-G1-S04 | [Microsoft icacls](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/icacls) | Selected SID removal; DACL save/restore; local icacls /? corroboration | 2026-11-09 | official / documentation_checked; real ACL mutation not exercised |
 
 ## Session lifecycle isolation — 09.11.2026
 

@@ -22,6 +22,20 @@ from validate_task_state_consistency import validate_workspace  # noqa: E402
 
 
 class TaskPlanLifecycleTest(unittest.TestCase):
+    def test_report_authoring_builder_declares_previous_digest_and_whole_file(self):
+        import hashlib
+        from product_agent_os.task_plan_lifecycle import build_report_authoring_call
+        from product_agent_os.validators import validate_report_authoring_request
+        previous = b"first\n"
+        call = build_report_authoring_call("reports/result.md", previous, "second\n")
+        self.assertTrue(call.startswith("// paos-report-previous-sha256: " + hashlib.sha256(previous).hexdigest()))
+        patch = json.loads(call.split("await tools.apply_patch(", 1)[1][:-2])
+        self.assertIn("@@\n-first\n+second\n*** End of File", patch)
+        self.assertIn("absent", build_report_authoring_call("result.md", None, "first\n"))
+        for name in ("../result.md", "./result.md", "PLAN.md", ".codex/result.md", "result.md:stream", "result.py"):
+            self.assertTrue(validate_report_authoring_request(name, previous, "second\n"))
+        self.assertTrue(validate_report_authoring_request("result.md", previous, "unterminated"))
+
     def test_lifecycle_uses_explicit_plan_with_bounded_local_path(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
