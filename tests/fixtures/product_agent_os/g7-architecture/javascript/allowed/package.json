@@ -1,0 +1,8 @@
+{
+  "name": "synthetic-g7-allowed",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#db": "./src/infra/db.mjs"
+  }
+}

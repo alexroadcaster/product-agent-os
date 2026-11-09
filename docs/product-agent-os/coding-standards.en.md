@@ -16,6 +16,10 @@ High-risk and full lifecycle reporting are selected independently of coding-cont
 
 ## Applied Gates
 
+G7 refines local contracts: a bounded capability summary reuses current inventory through the existing `existing_capability` field; reference coverage stays unknown until source inspection. Refactors reuse existing/characterization checks without artificial RED. Fingerprints include known lockfiles/config and explicit `verification_paths`; `verification_environment` is caller-reported, not automatic tool-version proof. Missing coverage does not mean clean.
+
+Review distinguishes confirmed defects, preferences, rejected findings and unresolved risks, tied to a checked revision and scenario. T34 evaluator bytes remain frozen; G7 uses a separate versioned evidence contract. See the [research and limits](../../research/product-agent-os-g7-repository-deep-review-2026-11-09.md) and [G7 plan](../../research/product-agent-os-audit-remediation-task-plan-2026-11-09.md). Local mechanism checks do not prove better model generation or fresh-session loading.
+
 | Gate | What the agent records | When it can be skipped |
 | --- | --- | --- |
 | `enterprise_leverage_check` | The existing path checked before custom implementation. | Mechanical docs/format-only work with a `not_applicable` reason. |
@@ -87,3 +91,7 @@ Before a non-mechanical code edit, the agent should be able to answer:
 - Which claims remain unsupported?
 
 Next artifact: use [Development Standards](development-standards.md) to decide whether the gate applies, [Artifact Contracts](artifact-contracts.md) to inspect the checklist boundary and [Behavioral Evals](behavioral-evals.md) to verify shortcut resistance.
+
+## G7 architecture evidence
+
+The approved local Import Linter 2.16 and dependency-cruiser 18.6.0 synthetic corpus verifies allowed, direct/transitive and cyclic dependencies; JavaScript alias and unresolved-import controls are included. JSON process exit alone is not a clean result. The optional profile API validates supplied current receipts and immutable baseline comparisons; ordinary discovery stays declaration-only. `.mjs` controls do not prove TypeScript resolver or type-only behavior. [Recorded results](../../research/product-agent-os-g7-execution-report-2026-11-09.md).

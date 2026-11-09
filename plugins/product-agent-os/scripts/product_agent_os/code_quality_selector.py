@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import re
 
 
 PRESENT_UNVERIFIED = "present_unverified"
@@ -36,11 +37,15 @@ TOOL_TRACERS = {
     "mypy": ("python", "type_checker"),
     "pytest": ("python", "test_runner"),
     "hatch": ("python", "build_tool"),
+    "import-linter": ("python", "linter"),
+    "importlinter": ("python", "linter"),
     "prettier": ("javascript_typescript", "formatter"),
     "eslint": ("javascript_typescript", "linter"),
     "typescript": ("javascript_typescript", "type_checker"),
     "vitest": ("javascript_typescript", "test_runner"),
     "vite": ("javascript_typescript", "build_tool"),
+    "dependency-cruiser": ("javascript_typescript", "linter"),
+    "@stryker-mutator/core": ("javascript_typescript", "test_runner"),
     "gofmt": ("compiled_systems", "formatter"),
     "golangci-lint": ("compiled_systems", "linter"),
     "go vet": ("compiled_systems", "type_checker"),
@@ -68,6 +73,8 @@ TOOL_LANGUAGES = {
     "mypy": "python",
     "pytest": "python",
     "hatch": "python",
+    "import-linter": "python",
+    "importlinter": "python",
     "typescript": "typescript",
     "gofmt": "go",
     "golangci-lint": "go",
@@ -169,6 +176,134 @@ class CodeQualityProfile:
     project_utilities: tuple[ProjectUtilityProfile, ...]
     gaps: tuple[str, ...]
     evidence_ceiling: str
+
+
+def capability_summary(inventory: ProjectInventory, limit: int = 12, *, scope_paths: tuple[str, ...] | None = None,
+                       architecture_context: dict | None = None, architecture_receipts: tuple = (),
+                       architecture_baseline: dict | None = None) -> dict[str, object]:
+    """Project bounded candidates from existing inventory, never infer call references.
+
+    Paths are orientation evidence only. Excluded/private paths and source bodies
+    are not injected; the caller binds freshness to its input digest.
+    """
+    _validate_inventory_types(inventory)
+    _validate_inventory_values(inventory)
+    if type(limit) is not int or not 1 <= limit <= 50:
+        raise ValueError("capability summary limit must be between 1 and 50")
+    private = re.compile(r"(?i)(^|[/_.-])(secrets?|credentials?|private|tokens?|env|node_modules|vendor|api.key|codex.tmp|docs.tools)([/_.-]|$)")
+    from pathlib import PurePosixPath
+    parents = {PurePosixPath(p).parent for p in scope_paths or ()}
+
+    def visible(path: str) -> bool:
+        if private.search(path):
+            return False
+        if scope_paths is None:
+            return True  # Direct API caller explicitly supplied this inventory.
+        candidate = PurePosixPath(path)
+        return (path in scope_paths or any(candidate.parent == parent for parent in parents)
+                or (candidate.name in {'pyproject.toml', 'package.json', 'tsconfig.json'}
+                    and any(candidate.parent in parent.parents for parent in parents)))
+
+    candidates = sorted({p for p in inventory.paths if visible(p)
+                         and p.lower().endswith((".py", ".js", ".ts", ".toml", "package.json"))})
+    tools = [t for t in _normalized_tools(inventory.declared_tools) if visible(t.source)]
+    result = {
+        "status": "candidates_only", "candidates": candidates[:limit],
+        "omitted": max(0, len(candidates) - limit), "limit": limit,
+        "reference_coverage": "unknown", "dynamic_and_config_references": "inspect_before_reuse_or_deletion",
+        "source_bodies_included": False, "freshness": "bound_to_routing_input_digest",
+        "limitations": ["inventory exclusions apply", "not a resolver or call graph", "read owning source before edits"],
+        "tools": [{"name": t.name, "source": t.source, "declared": True,
+                   "installed": None, "runnable": None, "verified": None}
+                  for t in tools[:limit]],
+        "tools_omitted": max(0, len(tools) - limit),
+        "verification_policy": {
+            "oracle": "independent expected result; preserve unique regression and exactly-once protection",
+            "adapters": "stand-in does not prove real adapter compatibility",
+            "async": "observable condition with bounded timeout; controlled clock for timing semantics",
+            "tool_scope": "record version/config/resolver/exclusions; missing coverage is unknown",
+            "baseline": "separate known/new/stale; no automatic baseline growth or suppression-as-fix",
+            "execution": "report-only proposal; no install, auto-fix or CI activation",
+        },
+    }
+
+
+    if architecture_context is not None:
+        declared = {tool.name for tool in tools[:limit]}
+        projection = architecture_evidence(architecture_context, architecture_receipts, architecture_baseline)
+        if architecture_context.get("tool") not in declared:
+            projection = {"status": "undeclared_or_out_of_scope", "verified": False, "verified_clean": False}
+        result["architecture"] = projection
+    return result
+
+
+def architecture_evidence(context: dict, receipts: tuple, baseline: dict | None = None) -> dict:
+    """Validate supplied observations, not scanner authenticity; never mutate baseline.
+
+    Context must come from current inputs, independently of receipts. Policy digest
+    binds scope, exclusions, resolver/aliases, type-only policy and dependency lock.
+    A verified scan can contain violations; only complete coverage permits absence.
+    """
+    signature = ("tool", "version", "config_digest", "policy_digest")
+    binding = (*signature, "input_digest")
+    result = dict(installed=None, runnable=None, verified=False, verified_clean=False,
+                  status="unknown", findings=[], absent_candidates=[],
+                  evidence_ceiling="supplied observations; no scanner execution or authentication")
+    if not isinstance(context, dict) or any(not isinstance(context.get(k), str) or not context[k] for k in binding):
+        return result
+    if any(re.fullmatch(r"[0-9a-f]{64}", context[k]) is None for k in binding if k.endswith("digest")):
+        return result
+    matches = [r for r in receipts if isinstance(r, dict) and r.get("tool") == context["tool"]]
+    if len(matches) != 1:
+        result["status"] = "ambiguous" if matches else "missing"
+        return result
+    receipt = matches[0]
+    if any(receipt.get(k) != context[k] for k in binding):
+        result["status"] = "stale"
+        return result
+    for key in ("installed", "runnable"):
+        result[key] = receipt.get(key) if type(receipt.get(key)) is bool else None
+
+    def indexed_findings(values):
+        if not isinstance(values, list):
+            raise ValueError("findings must be a list")
+        indexed = {}
+        for value in values:
+            if not isinstance(value, dict) or any(not isinstance(value.get(k), str) or not value[k]
+                                                for k in ("rule", "subject", "severity", "path")):
+                raise ValueError("malformed architecture finding")
+            _validate_relative_path(value["path"], "finding path")
+            if not isinstance(value.get("witness"), list) or not all(isinstance(p, str) for p in value["witness"]):
+                raise ValueError("finding witness must be a list of strings")
+            key = (value["rule"], value["subject"])
+            if key in indexed:
+                raise ValueError("duplicate architecture finding")
+            indexed[key] = {k: value[k] for k in ("rule", "subject", "severity", "path", "witness")}
+        return indexed
+
+    try:
+        current = indexed_findings(receipt.get("findings"))
+        comparable = (isinstance(baseline, dict) and all(baseline.get(k) == context[k] for k in signature)
+                      and baseline.get("outcome") == "completed" and baseline.get("coverage") == "complete"
+                      and baseline.get("installed") is True and baseline.get("runnable") is True
+                      and isinstance(baseline.get("controls"), list)
+                      and all(c in baseline["controls"] for c in ("allowed", "forbidden", "transitive")))
+        previous = indexed_findings(baseline.get("findings")) if comparable else {}
+    except ValueError:
+        result["status"] = "malformed"
+        return result
+    controls = receipt.get("controls", [])
+    complete = (result["installed"] is True and result["runnable"] is True
+                and receipt.get("outcome") == "completed" and receipt.get("coverage") == "complete"
+                and isinstance(controls, list) and all(c in controls for c in ("allowed", "forbidden", "transitive")))
+    result.update(verified=complete, verified_clean=complete and not current,
+                  status="verified" if complete else "incomplete")
+    result["findings"] = [dict(value, witness=list(value["witness"]),
+                               baseline_status="known" if previous.get(key) == value else "new_or_changed")
+                          for key, value in sorted(current.items())]
+    if complete and comparable:
+        result["absent_candidates"] = [list(key) for key in sorted(previous.keys() - current.keys())]
+    return result
 
 
 def select_code_quality_profile(inventory: ProjectInventory) -> CodeQualityProfile:

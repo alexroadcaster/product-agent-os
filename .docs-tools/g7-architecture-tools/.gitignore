@@ -1,0 +1,8 @@
+*
+!.gitignore
+!python-lock.txt
+!python-download-receipt.json
+!javascript/
+javascript/*
+!javascript/package.json
+!javascript/package-lock.json

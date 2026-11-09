@@ -1,0 +1,19 @@
+[importlinter]
+root_package = sample
+exclude_type_checking_imports = False
+
+[importlinter:contract:boundary]
+name = domain must not import infra
+type = forbidden
+source_modules =
+    sample.domain
+forbidden_modules =
+    sample.infra
+allow_indirect_imports = False
+
+[importlinter:contract:independent]
+name = domain modules independent
+type = independence
+modules =
+    sample.domain.service
+    sample.domain.other

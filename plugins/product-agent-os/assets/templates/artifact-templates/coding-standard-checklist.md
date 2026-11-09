@@ -18,6 +18,8 @@ existing filled checklist artifacts remain valid.
 
 ## Applicability
 
+Ordinary work uses the eight-field compact code-change contract. This checklist expands only applicable risks; it is not a second mandatory report. Interface assumptions include ordering/errors/configuration, not just signatures. Debt uses the existing backlog with owner and revisit trigger. Test replacement must preserve unique regression/invariant protection; internal call assertions remain valid when the call itself is the contract.
+
 - Task row id:
 - Task classification:
 - Code surfaces:

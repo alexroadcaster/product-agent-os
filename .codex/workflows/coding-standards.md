@@ -42,6 +42,18 @@ Ordinary code work uses the existing eight-field compact contract. High-risk wor
 9. Apply `comment_policy`: this is not "comment everything". State machines, algorithms, security/privacy/data/concurrency logic, and functions with non-obvious invariants need a docstring, intent comment, or explicit `comment_not_needed_reason`; avoid comments that repeat code.
 10. Update tests, evals, docs, and evidence artifacts before ready/fixed/complete/works claims.
 
+## Minimal Complete Changes
+
+The smallest safe patch satisfies all accepted behavior, errors and compatibility requirements; a stub is not simplicity. LOC and function size are review signals, never correctness gates. Keep a useful single-implementation boundary when it protects state, trust, transactions or testability; do not add hypothetical layers or force unrelated cleanup.
+
+For changed interfaces, inspect callers and applicable invariants, ordering, errors, configuration and performance assumptions. Separate pure logic from local substitutes, owned remote adapters and external effects only where that distinction matters. A stand-in does not prove real adapter compatibility. Prefer locality of change over counting modules or lines.
+
+Record deliberate debt in the existing task/backlog with owner, limit and revisit trigger. Remove orphans introduced by this change; inspect exports, configuration and dynamic references before declaring old code unused. Incomplete discovery means unknown, not absent.
+
+For defects: reproduce, state a falsifiable hypothesis, use a bounded probe, fix the cause and verify the regression. Repeated failure calls for a changed hypothesis; no fixed failure count proves a redesign is required. Preserve unique regression, exactly-once and security ordering tests. Behavior-preserving refactors reuse existing/characterization checks; configuration gets parse/invariant checks without artificial RED.
+
+Use an independent oracle, bounded observable-condition waits and controlled clocks for timing behavior. Reuse evidence only with relevant source, configuration, tool/dependency and environment provenance; name invalidation and rerun reasons. Missing or structural-only evidence never proves executable correctness.
+
 ## Outputs
 
 - Completed compact code-change contract or `not_applicable` reason.

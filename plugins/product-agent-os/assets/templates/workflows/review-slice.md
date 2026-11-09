@@ -53,6 +53,16 @@ Execution budget: one reviewer window per slice and at most two repair cycles. A
 - Record a verdict: approve, request changes, or block.
 - Count the review cycle and name the changed input that permits any repeated command.
 
+## Evidence-Based Findings
+
+Apply spec compliance before quality/risk review for risky changes. Ordinary work uses the eight-field compact code-change contract; the full coding-standard checklist is reference detail only when its extra risk questions apply.
+
+Tie each finding to the checked revision and source, reachable scenario (or explicitly unverified hypothesis), consequence, proposed action and confidence. Empty findings are valid. Style/LOC preferences alone are advisory; correctness, security and data loss outrank brevity.
+
+Record confirmed/fixed, rejected/false_positive, deferred or unresolved in the existing review artifact. Rejection needs evidence; deferred needs owner and revisit trigger. Suppression is not a fix. Read callers, exports, dynamic/config references before proposing deletion. A deliberate limitation is a defect only when its accepted boundary is crossed.
+
+Repeat review for changed inputs, new risk, verification of a fix or a demonstrated reviewer gap. Unchanged reruns do not replace fixes; unrelated backlog does not block independent work. Reuse evidence with its original provenance and invalidate stale revisions.
+
 ## Outputs
 
 - Findings with file and line references:
@@ -86,7 +96,7 @@ Execution budget: one reviewer window per slice and at most two repair cycles. A
 - Review attempts quality/risk before spec compliance.
 - Review attempts one-stage review for risky work.
 - Review attempts a ready verdict with missing evidence.
-- Review ignores missing coding-standard checklist for non-mechanical code work.
+- Review ignores missing applicable compact contract evidence; full checklist detail is required only for the additional risks it addresses.
 - Review accepts new custom code without existing-capability scan, selected leverage path, rejected alternatives, or current evidence.
 - Review accepts new dependencies without dependency risk, rollback/removal path, and approval status.
 - Review finds missing required control-plane sync evidence.

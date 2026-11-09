@@ -1,0 +1,104 @@
+{
+  "schema_version": "g7_architecture_corpus_v1",
+  "synthetic_only": true,
+  "python_tool": "import-linter==2.16",
+  "javascript_tool": "dependency-cruiser@18.6.0",
+  "type_only_policy": "not_applicable: JavaScript .mjs corpus; TypeScript coverage not claimed",
+  "scope": "full src/sample scan, node_modules excluded only; actual graph coverage checked",
+  "expected": {
+    "python": {
+      "allowed": "kept",
+      "direct": "broken",
+      "transitive": "broken",
+      "cycle": "broken"
+    },
+    "javascript": {
+      "allowed": [],
+      "direct": [
+        "domain-no-infra"
+      ],
+      "transitive": [
+        "domain-no-infra"
+      ],
+      "cycle": [
+        "no-cycles"
+      ],
+      "alias": [
+        "domain-no-infra"
+      ],
+      "unresolved": [
+        "no-unresolved"
+      ]
+    }
+  },
+  "exact_files": {
+    "python/allowed/sample/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "python/allowed/sample/domain/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "python/allowed/sample/infra/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "python/allowed/sample/domain/service.py": "c5f47efd92781d45eab45019c9a1fb27c7bd21d591dee46eaf50290c509cba9c",
+    "python/allowed/sample/domain/other.py": "603f07c14978e83fb4eaaa3fb4a68091e5bebed59d682ed2c11f72bc287806a4",
+    "python/allowed/sample/infra/db.py": "ed3739eafc84b2ebd286aa5483719eb879fb7ec6485b6022e9644d61d4573f16",
+    "python/allowed/sample/bridge.py": "063ce3827d563f9597bf872a6e8cd9fbabb1c4c5b5ed8f8759cdfc6823f364f7",
+    "python/allowed/.importlinter": "36c6a434a6ebe6c15f1df65be2c629825ad7392e7e1f1fd53b9daaf006183b9f",
+    "python/direct/sample/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "python/direct/sample/domain/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "python/direct/sample/infra/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "python/direct/sample/domain/service.py": "bb130c19ea9c1a0be361ec187ee6ee2b04ac6e60f7588853944b37dda9b4041a",
+    "python/direct/sample/domain/other.py": "603f07c14978e83fb4eaaa3fb4a68091e5bebed59d682ed2c11f72bc287806a4",
+    "python/direct/sample/infra/db.py": "ed3739eafc84b2ebd286aa5483719eb879fb7ec6485b6022e9644d61d4573f16",
+    "python/direct/sample/bridge.py": "063ce3827d563f9597bf872a6e8cd9fbabb1c4c5b5ed8f8759cdfc6823f364f7",
+    "python/direct/.importlinter": "36c6a434a6ebe6c15f1df65be2c629825ad7392e7e1f1fd53b9daaf006183b9f",
+    "python/transitive/sample/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "python/transitive/sample/domain/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "python/transitive/sample/infra/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "python/transitive/sample/domain/service.py": "81aff7334c2635ced18d6824e22fa5ba0d99ad639ca6c70c14114ffcac466185",
+    "python/transitive/sample/domain/other.py": "603f07c14978e83fb4eaaa3fb4a68091e5bebed59d682ed2c11f72bc287806a4",
+    "python/transitive/sample/infra/db.py": "ed3739eafc84b2ebd286aa5483719eb879fb7ec6485b6022e9644d61d4573f16",
+    "python/transitive/sample/bridge.py": "1749c94fc4a07fa02318b16d20b9c7f54c0a391d0d7c04a53dc734a6b12adcc8",
+    "python/transitive/.importlinter": "36c6a434a6ebe6c15f1df65be2c629825ad7392e7e1f1fd53b9daaf006183b9f",
+    "python/cycle/sample/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "python/cycle/sample/domain/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "python/cycle/sample/infra/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "python/cycle/sample/domain/service.py": "5275c15be1b2957326102c5cf5ef10f3146961760c305faa31708f8db910a243",
+    "python/cycle/sample/domain/other.py": "674d9741953827fde30506a486d51ad23d110681412f7a76d3cf6800206bf54c",
+    "python/cycle/sample/infra/db.py": "ed3739eafc84b2ebd286aa5483719eb879fb7ec6485b6022e9644d61d4573f16",
+    "python/cycle/sample/bridge.py": "063ce3827d563f9597bf872a6e8cd9fbabb1c4c5b5ed8f8759cdfc6823f364f7",
+    "python/cycle/.importlinter": "ea113d0d6dacd00276dd0521651dc25a295864d7a6c6a2178b14b5c5f2bca23b",
+    "javascript/allowed/package.json": "7eb9cf2c890f7073ec0a3de70c5251e32a409b47b360d016c52fea6553dab083",
+    "javascript/allowed/src/domain/service.mjs": "2ea68ca001690ce9a22279edb69591188e53ffd85dbd68953c6ffed9edf512b3",
+    "javascript/allowed/src/domain/other.mjs": "6bcaf1d8fae56a649f7c49fd4562e6b868cc39aaa11c2903855fc5a9369a336a",
+    "javascript/allowed/src/infra/db.mjs": "858a0d0c9b02bc0acdb0b36332168a5736897515a4726cb652676719628025ae",
+    "javascript/allowed/src/bridge.mjs": "93ca46d8fd9412f9baeb0bbbf161252423715819c419a9e401ea50db7e21cad3",
+    "javascript/allowed/rules.json": "8764fc934c8a2680fe138b76759f604c6a8869a7c5cee16587d137af31429d91",
+    "javascript/direct/package.json": "6d1eea7dcd9e6e91b2a5944b03ba70f6b2dbded013d8b94a0c65d92322c707b4",
+    "javascript/direct/src/domain/service.mjs": "03ab1d321721470ce73180e2f0a8d6fe7b2ab4c621ac49a90ff36dbc172a24a4",
+    "javascript/direct/src/domain/other.mjs": "6bcaf1d8fae56a649f7c49fd4562e6b868cc39aaa11c2903855fc5a9369a336a",
+    "javascript/direct/src/infra/db.mjs": "858a0d0c9b02bc0acdb0b36332168a5736897515a4726cb652676719628025ae",
+    "javascript/direct/src/bridge.mjs": "93ca46d8fd9412f9baeb0bbbf161252423715819c419a9e401ea50db7e21cad3",
+    "javascript/direct/rules.json": "8764fc934c8a2680fe138b76759f604c6a8869a7c5cee16587d137af31429d91",
+    "javascript/transitive/package.json": "ae920276e5e87de08deee9e00656f3224dc5c98b7adb70b644b2f5d099ad989f",
+    "javascript/transitive/src/domain/service.mjs": "645980a4a0053d4b4e1a16f35a8837ab4ea475a373af8897795ebbd73354d38c",
+    "javascript/transitive/src/domain/other.mjs": "6bcaf1d8fae56a649f7c49fd4562e6b868cc39aaa11c2903855fc5a9369a336a",
+    "javascript/transitive/src/infra/db.mjs": "858a0d0c9b02bc0acdb0b36332168a5736897515a4726cb652676719628025ae",
+    "javascript/transitive/src/bridge.mjs": "0b2fc665470973378957cafde685db101f63e02f66257124227d26a449b008df",
+    "javascript/transitive/rules.json": "8764fc934c8a2680fe138b76759f604c6a8869a7c5cee16587d137af31429d91",
+    "javascript/cycle/package.json": "4fca935a702e25b7835f801a987140f3c5bf89b279a0c97b07a16deaeac32831",
+    "javascript/cycle/src/domain/service.mjs": "8cf55af3a91f6861034ed5ceca94a819c95b8b5e8c5a32e3d0b385f1c7f85c7b",
+    "javascript/cycle/src/domain/other.mjs": "f5537208aeffa3462959a11430818c5608995e12669c9fb4374f0fff435993a9",
+    "javascript/cycle/src/infra/db.mjs": "858a0d0c9b02bc0acdb0b36332168a5736897515a4726cb652676719628025ae",
+    "javascript/cycle/src/bridge.mjs": "93ca46d8fd9412f9baeb0bbbf161252423715819c419a9e401ea50db7e21cad3",
+    "javascript/cycle/rules.json": "8764fc934c8a2680fe138b76759f604c6a8869a7c5cee16587d137af31429d91",
+    "javascript/alias/package.json": "6c0d681e4ab5b659196b73eae3b2b68a6996e959652b2e98db218b46d2526f5a",
+    "javascript/alias/src/domain/service.mjs": "97ee87a2b27ecc2b337852722210a24da78ce04ae2aa45996a4576c308437624",
+    "javascript/alias/src/domain/other.mjs": "6bcaf1d8fae56a649f7c49fd4562e6b868cc39aaa11c2903855fc5a9369a336a",
+    "javascript/alias/src/infra/db.mjs": "858a0d0c9b02bc0acdb0b36332168a5736897515a4726cb652676719628025ae",
+    "javascript/alias/src/bridge.mjs": "93ca46d8fd9412f9baeb0bbbf161252423715819c419a9e401ea50db7e21cad3",
+    "javascript/alias/rules.json": "8764fc934c8a2680fe138b76759f604c6a8869a7c5cee16587d137af31429d91",
+    "javascript/unresolved/package.json": "9ef5489bafef2959ce80eb7867d0075f9fa1bf4f756006f8a51711f72aa36190",
+    "javascript/unresolved/src/domain/service.mjs": "260a90dd6234a4a2c64cb7d74db1e1e7bfdbb0162ef6e64b429acecea9864c1d",
+    "javascript/unresolved/src/domain/other.mjs": "6bcaf1d8fae56a649f7c49fd4562e6b868cc39aaa11c2903855fc5a9369a336a",
+    "javascript/unresolved/src/infra/db.mjs": "858a0d0c9b02bc0acdb0b36332168a5736897515a4726cb652676719628025ae",
+    "javascript/unresolved/src/bridge.mjs": "93ca46d8fd9412f9baeb0bbbf161252423715819c419a9e401ea50db7e21cad3",
+    "javascript/unresolved/rules.json": "8764fc934c8a2680fe138b76759f604c6a8869a7c5cee16587d137af31429d91"
+  }
+}

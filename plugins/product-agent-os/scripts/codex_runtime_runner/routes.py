@@ -205,7 +205,7 @@ def _apply_task_routing(route: dict[str, Any], decision: dict[str, Any]) -> None
         route["required_inputs"] = decision["required_sources"]
     docs_only = decision["change_mode"] == "docs_only"
     compact = {} if docs_only else {
-        "existing_capability": "Reuse project inventory and helpers; inspect relevant sources before edits",
+        "existing_capability": decision["capability_summary"],
         "smallest_safe_patch": "Use the smallest change satisfying the task acceptance, including reuse or no-op",
         "invariants": decision["invariants"],
         "dependency_decision": "no_new_dependency; detected tools are present_unverified",

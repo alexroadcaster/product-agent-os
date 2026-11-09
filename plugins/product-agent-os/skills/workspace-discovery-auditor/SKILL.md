@@ -5,6 +5,8 @@ description: Perform a read-only Product-Agent OS workspace audit and return a s
 
 # Workspace Discovery Auditor
 
+Reuse the bounded capability_summary from task routing; it contains candidate paths, omitted count and unknown reference coverage. Read owning sources before reuse or deletion. Do not infer unused code from missing static/regex hits; inspect exports and dynamic/config references.
+
 ## Trigger
 
 Use this skill when a workspace is uninitialized, when project state is uncertain, or when a Product-Agent OS lifecycle run needs a read-only audit before requirements or planning.

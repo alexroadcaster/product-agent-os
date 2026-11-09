@@ -1,8 +1,24 @@
 # RUNLOG.md
 
-## PAOS-AUD-G7 — authoring, 2026-11-09
+## Web storage contract v0.6 — 2026-11-09
 
-Углублённое исследование пяти repositories и четырёх инструментальных источников записано в [отдельный отчёт](research/product-agent-os-g7-repository-deep-review-2026-11-09.md); восемь G7 карточек уточнены без изменения схемы. Current-run проверки и gaps — в отчёте; prior authoring evidence — в [owning plan](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md). Только research/authoring; G6 acceptance/HOST и frozen T34 сохранены. Следующее действие — отдельный implementation request.
+PAOS-WEB-STORAGE-CONTRACT-2026-11-09: PRD §16 / architecture §20 фиксируют selected SQLite+FTS5 local, PostgreSQL+pgvector team, schema и MD/JSON cutover. [План](research/product-agent-os-web-task-manager-plan-2026-11-09.md): 53 planned / 12 groups, current-run checks и gaps. Старые Web pointers в REQUIREMENTS сжаты в v0.6; owning history сохранена в документах. БД, migrations и приложение не создавались.
+
+## Web storage research — 2026-11-09
+
+PAOS-WEB-STORAGE-RESEARCH-2026-11-09: [отчёт](research/product-agent-os-web-storage-research-2026-11-09.md) сохранён поэтапно; SQL/vector/files comparison, пять GitHub аналогов с pinned sources, proposal ownership/migration. Проверки и gaps — §16. Реализация, installation, provider calls и cutover не выполнялись.
+
+## Web session UX v0.5 — 2026-11-09
+
+PAOS-WEB-SESSION-WIREFRAMES-2026-11-09: сохранены [подробные wireframes](research/product-agent-os-web-m1-wireframes-2026-11-09.md) и актуальный каталог S01–S28 для единого окна. Owning receipts и review — §14 wireframes. Реализация и новые изображения не создавались; прежние PNG и исторические спецификации сохранены.
+
+## Web single-window v0.4 — 2026-11-09
+
+PAOS-WEB-SINGLE-WINDOW-2026-11-09: принято направление собственного клиента Codex App Server. Обновлены PRD/архитектура/план (47 planned / 11 groups), UX pointers и отдельный [auth/commercial contract](research/product-agent-os-web-auth-commercial-2026-11-09.md). [План владеет текущими receipts](research/product-agent-os-web-task-manager-plan-2026-11-09.md): 105 docs tests, structure/matrix/consistency/diff passed; strict MkDocs exit 1 на шести прежних G6/G7 links. Closure: documentation_updated / partially_verified. Реализация, credentials/provider/browser и коммерческая регистрация не выполнялись. Собственный session marker переведён после повторной проверки принадлежности; hooks/чужие marker сохранены.
+
+## PAOS-AUD-G7 — partially_verified, 2026-11-09
+
+T01–T05 accepted. T06 implemented_locally_verified: actual checks 10/10, profile receipt/baseline; full 1372 tests OK (1 platform skip), owner acceptance pending. T07 trace preflight blocked (two tools, filesystem isolation unavailable), pressure model runs не запущены. T08 owner decision pending, G7 partially_verified. [Evidence и acceptance packet](research/product-agent-os-g7-execution-report-2026-11-09.md). API key/ACL/trust/Git/activation не менялись; параллельные Web edits сохранены.
 
 ## Web issue workflows v0.3 — 2026-11-09
 

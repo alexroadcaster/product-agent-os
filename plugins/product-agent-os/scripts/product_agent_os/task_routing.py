@@ -10,12 +10,14 @@ import hashlib
 import json
 import re
 import tomllib
+import sys
+from dataclasses import replace
 from pathlib import Path, PurePosixPath
 from typing import Any
 
 from product_agent_os.code_quality_selector import (
     TOOL_TRACERS, DeclaredToolSignal, ProjectCommandSignal, ProjectInventory,
-    code_quality_profile_as_dict, select_code_quality_profile,
+    capability_summary, code_quality_profile_as_dict, select_code_quality_profile,
 )
 from product_agent_os.test_strategy_selector import (
     CHANGE_MODES, TEST_KINDS, ChangeRisk, CommentSignal, TestStrategyRequest,
@@ -28,7 +30,7 @@ TASK_FIELDS = {
     "risk_level", "risks", "acceptance", "checks", "executable_test_seam",
     "test_seam_reason", "comment_signals", "state", "check_results",
     "financially_material", "release_or_readiness", "explicit_full_packet",
-    "verification_paths",
+    "verification_paths", "verification_environment",
 }
 EXTRA_MODES = {"docs_only", "no_op", "reuse", "deletion"}
 SENSITIVE_PATH = re.compile(
@@ -154,6 +156,10 @@ def validate_task_context(root: Path, task: Any) -> dict[str, Any]:
         workspace_path(root, name)
     for name in _strings(task.get("verification_paths", []), "verification_paths"):
         workspace_path(root, name)
+    environment = task.get("verification_environment", {})
+    if (not isinstance(environment, dict) or set(environment) - {"tool_versions", "runner", "environment_digest"}
+            or any(not isinstance(v, str) or len(v) > 1000 for v in environment.values())):
+        raise TaskContextError("task_context:verification_environment_invalid")
     _strings(task.get("acceptance"), "acceptance", nonempty=True)
     for key in ("risks", "checks", "comment_signals", "check_results"):
         value = task.get(key, [])
@@ -268,15 +274,21 @@ def _inventory(root: Path, audit: dict[str, Any], checks: list[dict[str, Any]]) 
 def _input_digest(root: Path, task: dict[str, Any], sources: dict[str, str],
                   audit: dict[str, Any]) -> str:
     hashes = dict(sources)
-    names = set(task["changed_paths"]) | set(task.get("verification_paths", [])) | {name for name in audit.get("detected_files", [])
-                                         if Path(name).name in {"pyproject.toml", "package.json", "go.mod", "Cargo.toml", "pom.xml"}}
+    relevant = {"pyproject.toml", "package.json", "go.mod", "Cargo.toml", "pom.xml", "uv.lock",
+                "poetry.lock", "requirements.txt", "package-lock.json", "pnpm-lock.yaml", "yarn.lock",
+                "Cargo.lock", "go.sum", "tsconfig.json", "ruff.toml", ".ruff.toml", ".importlinter",
+                ".dependency-cruiser.cjs", "stryker.config.json"}
+    names = set(task["changed_paths"]) | set(task.get("verification_paths", [])) | relevant | {
+        name for name in audit.get("detected_files", []) if Path(name).name in relevant}
     for name in sorted(names):
         path = workspace_path(root, name)
         try:
             hashes[name] = hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else "missing"
         except OSError as exc:
             raise TaskContextError("task_context:digest_input_unreadable") from exc
-    payload = {"task": {k: v for k, v in task.items() if k != "check_results"}, "files": hashes}
+    payload = {"task": {k: v for k, v in task.items() if k != "check_results"}, "files": hashes,
+               "inventory_paths": sorted(audit.get("detected_files", [])),
+               "interpreter": sys.version, "platform": sys.platform}
     return hashlib.sha256(json.dumps(payload, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
 
 
@@ -314,7 +326,8 @@ def build_task_routing(workspace: str | Path, audit: dict[str, Any], task: dict[
     risks, comments = _risk_inputs(task)
     required_sources = _mandatory_sources(root, task["changed_paths"])
     # T26 consumes real discovery paths and configured tools, not invented tools.
-    profile = select_code_quality_profile(_inventory(root, audit, []))
+    inventory = _inventory(root, audit, [])
+    profile = select_code_quality_profile(inventory)
     mode = task["change_mode"]
     strategy = None
     if mode != "docs_only":
@@ -333,7 +346,10 @@ def build_task_routing(workspace: str | Path, audit: dict[str, Any], task: dict[
     required_kinds = {d.test_kind for d in strategy.test_decisions if d.status == "required"} if strategy else set()
     checks, hashes = _checks(root, task, required_kinds, required_sources)
     # Include project commands in T26's inventory; selection stays pure/unexecuted.
-    profile = select_code_quality_profile(_inventory(root, audit, checks))
+    commands = tuple(ProjectCommandSignal(f"check-{i}", item["command"], source)
+                     for i, item in enumerate(checks) for source in item["sources"] if item["status"] != "blocked")
+    inventory = replace(inventory, project_commands=commands)
+    profile = select_code_quality_profile(inventory)
     full_reasons = []
     if task["risk_level"] in {"high", "medium"}:
         full_reasons.append("declared_risk:" + task["risk_level"])
@@ -376,6 +392,10 @@ def build_task_routing(workspace: str | Path, audit: dict[str, Any], task: dict[
         "full_reasons": full_reasons, "gaps": list(dict.fromkeys(gaps)),
         "change_mode": mode, "required_sources": required_sources,
         "code_quality_profile": code_quality_profile_as_dict(profile),
+        "capability_summary": capability_summary(inventory, scope_paths=tuple(task['changed_paths'])),
+        "evidence_validity": {"environment": "caller_reported" if task.get("verification_environment") else "unknown",
+                              "reuse": "same digest only; external tool/environment drift requires explicit receipt refresh",
+                              "extra_inputs": "use verification_paths for project-specific resolver/config files"},
         "quality_strategy": quality_strategy_as_dict(strategy) if strategy else {"status": "not_applicable", "reason": "docs_only"},
         "checks": checks, "input_digest": digest, "source_hashes": hashes,
         "check_observations": observations, "acceptance": task["acceptance"],

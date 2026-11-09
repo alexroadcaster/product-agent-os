@@ -5,6 +5,8 @@ description: Use when a Product-Agent OS plan needs deterministic tests, manual 
 
 # Test Eval Designer
 
+Use the Minimal Complete Changes section of the coding-standards workflow for independent oracles, unique-test preservation, adapter compatibility and bounded waits. For behavior-preserving refactors use existing characterization evidence; configuration needs parse/invariants, not artificial RED.
+
 ## Trigger
 
 Use this skill when a Product-Agent OS project needs test commands, eval criteria, quality gates, or explicit verification evidence requirements before implementation, review, or handoff.

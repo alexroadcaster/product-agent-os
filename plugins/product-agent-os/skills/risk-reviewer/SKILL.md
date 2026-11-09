@@ -5,6 +5,8 @@ description: Use when a Product-Agent OS plan, diff, implementation slice, or qu
 
 # Risk Reviewer
 
+Use the Evidence-Based Findings section of the staged review-slice workflow: revision-bound facts, explicit hypotheses, dispositions and rerun reasons. Ordinary work uses compact evidence; do not require full checklist completion for its own sake.
+
 ## Trigger
 
 Use this skill when a Product-Agent OS diff, implementation slice, plan, or quality gate needs review before release readiness or handoff.

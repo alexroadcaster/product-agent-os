@@ -91,6 +91,54 @@ def load_hook_module(script: Path):
 
 
 class LifecycleHooksTest(unittest.TestCase):
+    def test_g7_terminal_wire_allows_only_literal_default_shell_reads(self):
+        for script in (HOOKS, LOCAL_HOOKS):
+            module = load_hook_module(script / 'pre_tool_use_policy.py')
+            for command, extra, denied in [
+                ("rg -n 'a|b' README.md", {}, False),
+                ("Get-Content README.md | Select-String -SimpleMatch 'a'", {}, False),
+                ("rg pattern README.md", {'shell': 'custom-shell'}, True),
+                ("rg pattern README.md|Set-Content other x", {}, True),
+                ("Get-Content README.md\nSet-Content other x", {}, True),
+                ("rg -n 'x\" --pre placeholder \"suffix with more' file", {}, True),
+                (r"rg \--pre placeholder file", {}, True),
+            ]:
+                payload = {'tool_name': 'functions.exec_command', 'tool_input': {'cmd': command, **extra}}
+                output = io.StringIO()
+                with mock.patch.object(module, '_read_payload', return_value=(payload, '')), \
+                     mock.patch.object(module, '_workspace_root', return_value=ROOT), \
+                     mock.patch.object(module, '_lifecycle_marker_ok', return_value=(False, 'terminal')), \
+                     mock.patch('sys.stdout', output):
+                    self.assertEqual(module.main([]), 0)
+                self.assertEqual(bool(output.getvalue()), denied, (command, output.getvalue()))
+
+    def test_g7_literal_read_classifier_preserves_mutation_boundary(self):
+        allowed = [
+            "rg -n 'PAOS-AUD-G7|planned' PLAN.md",
+            "rg -F '|' PLAN.md",
+            "Get-Content PLAN.md | Select-String -SimpleMatch '|'",
+            "Get-Content PLAN.md | Select-String -SimpleMatch 'PAOS-AUD-G7'",
+            "Get-Content PLAN.md | Select-Object -Skip 2 -First 4",
+        ]
+        denied = [
+            "rg-evil pattern file", "Get-Content-Evil file",
+            "rg --pre script pattern file", "rg --p're' script pattern file",
+            'rg "$(Write-Output bad)" file', "rg 'unterminated file",
+            "Get-Content file | Out-File other", "Get-Content file > other",
+            "Get-Content file; Set-Content other x", "rg --% pattern file",
+            "rg pattern file|Set-Content other x",
+            "rg -n @probeArgs file",
+            "Get-Content '/etc/passwd' | Select-String root",
+        ]
+        for script in (HOOKS, LOCAL_HOOKS):
+            module = load_hook_module(script / "pre_tool_use_policy.py")
+            for command in allowed:
+                with self.subTest(script=script.name, command=command):
+                    self.assertTrue(module._is_read_only(command))
+            for command in denied:
+                with self.subTest(script=script.name, command=command):
+                    self.assertFalse(module._is_read_only(command))
+
     def test_command_payload_excludes_tool_metadata_and_unknown_tools_need_scope(self):
         module = load_hook_module(HOOKS / "pre_tool_use_policy.py")
         payload = {"tool_name": "functions.exec_command", "tool_input": {

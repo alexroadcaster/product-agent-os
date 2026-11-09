@@ -1,12 +1,12 @@
 # REQUIREMENTS.md
 
-## PAOS-AUD-G7 — planned
+## Web v0.6 — 2026-11-09
 
-Восемь planned карточек в [audit plan](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md) уточнены по [deep review](research/product-agent-os-g7-repository-deep-review-2026-11-09.md): evaluator integrity, evidence validity и risk-based quality. Только research/authoring; G6 gates и frozen T34 сохранены.
+[PRD](research/product-agent-os-web-prd-2026-11-05.md) §14–16: Task Manager, single-window Codex App Server; SQLite + FTS5 local, PostgreSQL + pgvector team. SQL task authority после проверенного MD/JSON cutover; код/инструкции остаются файлами. ST-01–12 и ST-AC-01–08; runtime/auth и UX contracts сохранены. Только документация; implementation not_started.
 
-## Web issue workflows v0.3 — 2026-11-09
+## PAOS-AUD-G7 — partial acceptance
 
-Web issue model v0.3: Epic → Task/Bug/UserStory → Sub-Task; новые поля, Kanban, user-managed workflow/recipes, manual completion, links, Comments/History. [PRD §14](research/product-agent-os-web-prd-2026-11-05.md) владеет TM-15–TM-24. Документация only, implementation not_started.
+T01–T05 accepted. T06: approved Import Linter 2.16, dependency-cruiser 18.6.0; без global/CI/auto-fix. T06–T08 acceptance pending; strict model preflight blocked. Только доступный Codex, без API-ключа; fresh-session отдельно. [Scope/evidence](research/product-agent-os-g7-execution-report-2026-11-09.md).
 
 ## PAOS-AUD-G6 — 2026-11-09
 

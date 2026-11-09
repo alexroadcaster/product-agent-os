@@ -1,0 +1,964 @@
+{
+  "design_digest": "4e20070e12875b25f851131cb9db05f89ae58a7ae681826d7e7dd32bb8037928",
+  "kind": "observational_codex_cli",
+  "strict_AB_eligible": false,
+  "owner_acceptance": null,
+  "calls": [
+    {
+      "arm": "baseline",
+      "chain": "config-format",
+      "step": "reuse",
+      "prompt_digest": "d87ec11287fff3875d955dc47bef5e90e20438b1b967afe7e0231a0bc36fb347",
+      "event_kinds": [
+        "config_warning",
+        "config_warning",
+        "reasoning",
+        "agent_message"
+      ],
+      "diagnostics": [
+        "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings.",
+        "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings."
+      ],
+      "usage": {
+        "input_tokens": 30583,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 30,
+        "reasoning_output_tokens": 10
+      },
+      "tool_activity": false,
+      "exit_code": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "permission_denied": false,
+      "configuration_error": false,
+      "candidate_file": "config-format-baseline-0.txt",
+      "status": "generated_unverified",
+      "candidate_digest": "b9259dc8707b3a710e0b72b7b90522bdaed5bcd9ca22ed6c670e103360bf8cff",
+      "elapsed_seconds": 11.203
+    },
+    {
+      "arm": "baseline",
+      "chain": "config-format",
+      "step": "format",
+      "prompt_digest": "a1afbeb28675c77c9e21a03d09f16d71b572b2cd34196f6e2fbee2c70dbefda7",
+      "event_kinds": [
+        "config_warning",
+        "config_warning",
+        "reasoning",
+        "agent_message"
+      ],
+      "diagnostics": [
+        "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings.",
+        "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings."
+      ],
+      "usage": {
+        "input_tokens": 30585,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 47,
+        "reasoning_output_tokens": 15
+      },
+      "tool_activity": false,
+      "exit_code": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "permission_denied": false,
+      "configuration_error": false,
+      "candidate_file": "config-format-baseline-1.txt",
+      "status": "generated_unverified",
+      "candidate_digest": "d0bda36255a782440fdb3be33da7edf5521006ab56836637467db07646c7cf55",
+      "elapsed_seconds": 10.699
+    },
+    {
+      "arm": "treatment",
+      "chain": "config-format",
+      "step": "reuse",
+      "prompt_digest": "33070726338ef2c3a88c78ab7e6338c55f94c9b42a777f71c09533087da01b8a",
+      "event_kinds": [
+        "config_warning",
+        "config_warning",
+        "agent_message"
+      ],
+      "diagnostics": [
+        "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings.",
+        "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings."
+      ],
+      "usage": {
+        "input_tokens": 30641,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 18,
+        "reasoning_output_tokens": 0
+      },
+      "tool_activity": false,
+      "exit_code": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "permission_denied": false,
+      "configuration_error": false,
+      "candidate_file": "config-format-treatment-0.txt",
+      "status": "generated_unverified",
+      "candidate_digest": "b9259dc8707b3a710e0b72b7b90522bdaed5bcd9ca22ed6c670e103360bf8cff",
+      "elapsed_seconds": 10.611
+    },
+    {
+      "arm": "treatment",
+      "chain": "config-format",
+      "step": "format",
+      "prompt_digest": "09253f63d28fa7281dfab4c92cd4a31c93223fe243ca8fbb231dfcb4133397f3",
+      "event_kinds": [
+        "config_warning",
+        "config_warning",
+        "reasoning",
+        "agent_message"
+      ],
+      "diagnostics": [
+        "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings.",
+        "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings."
+      ],
+      "usage": {
+        "input_tokens": 30627,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 58,
+        "reasoning_output_tokens": 26
+      },
+      "tool_activity": false,
+      "exit_code": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "permission_denied": false,
+      "configuration_error": false,
+      "candidate_file": "config-format-treatment-1.txt",
+      "status": "generated_unverified",
+      "candidate_digest": "e96b0363521ce3acd83f7162c6485354a2d4d51effb5879649166ed4f47b71c2",
+      "elapsed_seconds": 11.384
+    },
+    {
+      "arm": "baseline",
+      "chain": "state-boundary",
+      "step": "caller",
+      "prompt_digest": "c363b38e327610ed5bc0343174b7647f337df7a93e25a3b3104405b89881cdef",
+      "event_kinds": [
+        "config_warning",
+        "config_warning",
+        "reasoning",
+        "agent_message"
+      ],
+      "diagnostics": [
+        "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings.",
+        "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings."
+      ],
+      "usage": {
+        "input_tokens": 30661,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 147,
+        "reasoning_output_tokens": 47
+      },
+      "tool_activity": false,
+      "exit_code": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "permission_denied": false,
+      "configuration_error": false,
+      "candidate_file": "state-boundary-baseline-0.txt",
+      "status": "generated_unverified",
+      "candidate_digest": "f853c7dd6faa7813949b7305650881b2484ff11d9477579d033d3669a4e9b7a3",
+      "elapsed_seconds": 12.893
+    },
+    {
+      "arm": "baseline",
+      "chain": "state-boundary",
+      "step": "failure",
+      "prompt_digest": "6a107388dc190600d95644af21da1743c29f95f8925178a20cf58c6c8c524344",
+      "event_kinds": [
+        "config_warning",
+        "config_warning",
+        "reasoning",
+        "agent_message"
+      ],
+      "diagnostics": [
+        "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings.",
+        "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings."
+      ],
+      "usage": {
+        "input_tokens": 30703,
+        "cached_input_tokens": 22656,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 387,
+        "reasoning_output_tokens": 251
+      },
+      "tool_activity": false,
+      "exit_code": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "permission_denied": false,
+      "configuration_error": false,
+      "candidate_file": "state-boundary-baseline-1.txt",
+      "status": "generated_unverified",
+      "candidate_digest": "4b4c1efdb9c530dbd58a4012aca5c7a1d4d83bd614a1fd0feba8f42b93bd9cfe",
+      "elapsed_seconds": 20.558
+    },
+    {
+      "arm": "baseline",
+      "chain": "state-boundary",
+      "step": "format",
+      "prompt_digest": "a47ad0654d5d80434edc80f692c76b9024cc342e8217419df4a9a24debf843d0",
+      "event_kinds": [
+        "config_warning",
+        "config_warning",
+        "reasoning",
+        "agent_message"
+      ],
+      "diagnostics": [
+        "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings.",
+        "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings."
+      ],
+      "usage": {
+        "input_tokens": 30746,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 189,
+        "reasoning_output_tokens": 32
+      },
+      "tool_activity": false,
+      "exit_code": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "permission_denied": false,
+      "configuration_error": false,
+      "candidate_file": "state-boundary-baseline-2.txt",
+      "status": "generated_unverified",
+      "candidate_digest": "18e31b2c482b3d245c68d940bb7c9230ca6cfacad4f68c6dd4929b99ac144ffd",
+      "elapsed_seconds": 13.45
+    },
+    {
+      "arm": "baseline",
+      "chain": "state-boundary",
+      "step": "regression",
+      "prompt_digest": "17d205318159766bf98e478354917c411176b9cb3c6daecf3711520ee1cb074d",
+      "event_kinds": [
+        "config_warning",
+        "config_warning",
+        "reasoning",
+        "agent_message"
+      ],
+      "diagnostics": [
+        "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings.",
+        "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings."
+      ],
+      "usage": {
+        "input_tokens": 30755,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 421,
+        "reasoning_output_tokens": 199
+      },
+      "tool_activity": false,
+      "exit_code": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "permission_denied": false,
+      "configuration_error": false,
+      "candidate_file": "state-boundary-baseline-3.txt",
+      "status": "generated_unverified",
+      "candidate_digest": "5cbc72127d62861c952312a7978e18397beca51365cb9e4d37d8f13ab3287f55",
+      "elapsed_seconds": 20.39
+    },
+    {
+      "arm": "treatment",
+      "chain": "state-boundary",
+      "step": "caller",
+      "prompt_digest": "ba4008178c4f185d06ad6a168d04dc1fa8fcd1a8498c8d9b5079007830416050",
+      "event_kinds": [
+        "config_warning",
+        "config_warning",
+        "reasoning",
+        "agent_message"
+      ],
+      "diagnostics": [
+        "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings.",
+        "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings."
+      ],
+      "usage": {
+        "input_tokens": 30703,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 168,
+        "reasoning_output_tokens": 68
+      },
+      "tool_activity": false,
+      "exit_code": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "permission_denied": false,
+      "configuration_error": false,
+      "candidate_file": "state-boundary-treatment-0.txt",
+      "status": "generated_unverified",
+      "candidate_digest": "f853c7dd6faa7813949b7305650881b2484ff11d9477579d033d3669a4e9b7a3",
+      "elapsed_seconds": 13.383
+    },
+    {
+      "arm": "treatment",
+      "chain": "state-boundary",
+      "step": "failure",
+      "prompt_digest": "bba1be2f4e6139faa60132dc3b298ca26523d890e82842642a1bc19b47733894",
+      "event_kinds": [
+        "config_warning",
+        "config_warning",
+        "reasoning",
+        "agent_message"
+      ],
+      "diagnostics": [
+        "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings.",
+        "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings."
+      ],
+      "usage": {
+        "input_tokens": 30748,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 303,
+        "reasoning_output_tokens": 203
+      },
+      "tool_activity": false,
+      "exit_code": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "permission_denied": false,
+      "configuration_error": false,
+      "candidate_file": "state-boundary-treatment-1.txt",
+      "status": "generated_unverified",
+      "candidate_digest": "f853c7dd6faa7813949b7305650881b2484ff11d9477579d033d3669a4e9b7a3",
+      "elapsed_seconds": 18.125
+    },
+    {
+      "arm": "treatment",
+      "chain": "state-boundary",
+      "step": "format",
+      "prompt_digest": "0826079c6b8a6d95dde8c800d971a82f42d72807ca8a35b62894c87d9cf3553e",
+      "event_kinds": [
+        "config_warning",
+        "config_warning",
+        "reasoning",
+        "agent_message"
+      ],
+      "diagnostics": [
+        "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings.",
+        "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings."
+      ],
+      "usage": {
+        "input_tokens": 30747,
+        "cached_input_tokens": 22656,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 141,
+        "reasoning_output_tokens": 20
+      },
+      "tool_activity": false,
+      "exit_code": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "permission_denied": false,
+      "configuration_error": false,
+      "candidate_file": "state-boundary-treatment-2.txt",
+      "status": "generated_unverified",
+      "candidate_digest": "7f46a3c5c4c89dfa3f697a58a9793332f193c4fb201a59345a1852837eb52d00",
+      "elapsed_seconds": 14.48
+    },
+    {
+      "arm": "treatment",
+      "chain": "state-boundary",
+      "step": "regression",
+      "prompt_digest": "ebbcd36e4f9a144f12243dd9beb39034e237be8d0779f4c726664e8f1ff94ff1",
+      "event_kinds": [
+        "config_warning",
+        "config_warning",
+        "reasoning",
+        "agent_message"
+      ],
+      "diagnostics": [
+        "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings.",
+        "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings."
+      ],
+      "usage": {
+        "input_tokens": 30768,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 371,
+        "reasoning_output_tokens": 193
+      },
+      "tool_activity": false,
+      "exit_code": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "permission_denied": false,
+      "configuration_error": false,
+      "candidate_file": "state-boundary-treatment-3.txt",
+      "status": "generated_unverified",
+      "candidate_digest": "3f93e90aa9ef0f35d0b011f7aa5adc5aa01311811669b0d6eacf36c3c984af73",
+      "elapsed_seconds": 18.79
+    }
+  ],
+  "limits": [
+    "CLI ambient context/tools schema not attested empty; strict AB remains separate",
+    "Any observed tool attempt invalidates chain and stops run",
+    "Generated code not executed by this runner; independent review and checks required",
+    "One repetition; exploratory evidence, no population or component-effect inference",
+    "Known CLI warning: six PAOS metadata config keys ignored by Codex; same config for both arms, retained as warning, no activation claim"
+  ],
+  "candidate_execution": "root inspected all 12 sources; synthetic in-process independent checks, no external effects; not a general untrusted-code sandbox",
+  "command": [
+    "codex",
+    "exec",
+    "--ephemeral",
+    "--json",
+    "--sandbox",
+    "read-only",
+    "--model",
+    "gpt-6.1-sol",
+    "-c",
+    "model_reasoning_effort=\"medium\"",
+    "-c",
+    "features.shell_tool=false",
+    "-c",
+    "agents.enabled=false",
+    "-c",
+    "features.apps=false",
+    "-c",
+    "web_search=\"disabled\"",
+    "-c",
+    "allow_browser_and_computer_use=false",
+    "-"
+  ],
+  "assessments": [
+    {
+      "arm": "baseline",
+      "chain": "config-format",
+      "step": "reuse",
+      "status": "passed",
+      "failures": [],
+      "source": "def label(value, prefix=\"\"):\n    return prefix + str(value)",
+      "source_sha256": "b9259dc8707b3a710e0b72b7b90522bdaed5bcd9ca22ed6c670e103360bf8cff",
+      "nonblank_lines": 2,
+      "changed_lines_advisory": 0,
+      "questions_in_final_output": false
+    },
+    {
+      "arm": "baseline",
+      "chain": "config-format",
+      "step": "format",
+      "status": "passed",
+      "failures": [],
+      "source": "def label(value, prefix=\"\", upper=False):\n    output = prefix + str(value)\n    return output.upper() if upper else output",
+      "source_sha256": "d0bda36255a782440fdb3be33da7edf5521006ab56836637467db07646c7cf55",
+      "nonblank_lines": 3,
+      "changed_lines_advisory": 5,
+      "questions_in_final_output": false
+    },
+    {
+      "arm": "treatment",
+      "chain": "config-format",
+      "step": "reuse",
+      "status": "passed",
+      "failures": [],
+      "source": "def label(value, prefix=\"\"):\n    return prefix + str(value)",
+      "source_sha256": "b9259dc8707b3a710e0b72b7b90522bdaed5bcd9ca22ed6c670e103360bf8cff",
+      "nonblank_lines": 2,
+      "changed_lines_advisory": 0,
+      "questions_in_final_output": false
+    },
+    {
+      "arm": "treatment",
+      "chain": "config-format",
+      "step": "format",
+      "status": "passed",
+      "failures": [],
+      "source": "def label(value, prefix=\"\", upper=False):\n    result = prefix + str(value)\n    return result.upper() if upper else result",
+      "source_sha256": "e96b0363521ce3acd83f7162c6485354a2d4d51effb5879649166ed4f47b71c2",
+      "nonblank_lines": 3,
+      "changed_lines_advisory": 5,
+      "questions_in_final_output": false
+    },
+    {
+      "arm": "baseline",
+      "chain": "state-boundary",
+      "step": "caller",
+      "status": "passed",
+      "failures": [],
+      "source": "def reserve(balance, amount):\n    if amount < 0 or amount > balance:\n        raise ValueError(\"invalid amount\")\n    return balance - amount\n\n\ndef apply(state, request_id, amount, notify):\n    if request_id in state[\"seen\"]:\n        return state[\"balance\"]\n\n    remaining = reserve(state[\"balance\"], amount)\n    notify(request_id, amount)\n    state[\"balance\"] = remaining\n    state[\"seen\"].add(request_id)\n    return remaining",
+      "source_sha256": "f853c7dd6faa7813949b7305650881b2484ff11d9477579d033d3669a4e9b7a3",
+      "nonblank_lines": 12,
+      "changed_lines_advisory": 11,
+      "questions_in_final_output": false
+    },
+    {
+      "arm": "baseline",
+      "chain": "state-boundary",
+      "step": "failure",
+      "status": "passed",
+      "failures": [],
+      "source": "def reserve(balance, amount):\n    if amount < 0 or amount > balance:\n        raise ValueError(\"invalid amount\")\n    return balance - amount\n\n\ndef apply(state, request_id, amount, notify):\n    if request_id in state[\"seen\"]:\n        return state[\"balance\"]\n\n    original_balance = state[\"balance\"]\n    remaining = reserve(original_balance, amount)\n    state[\"seen\"].add(request_id)\n    state[\"balance\"] = remaining\n\n    try:\n        notify(request_id, amount)\n    except BaseException:\n        state[\"balance\"] = original_balance\n        state[\"seen\"].remove(request_id)\n        raise\n\n    return remaining",
+      "source_sha256": "4b4c1efdb9c530dbd58a4012aca5c7a1d4d83bd614a1fd0feba8f42b93bd9cfe",
+      "nonblank_lines": 18,
+      "changed_lines_advisory": 14,
+      "questions_in_final_output": false
+    },
+    {
+      "arm": "baseline",
+      "chain": "state-boundary",
+      "step": "format",
+      "status": "passed",
+      "failures": [],
+      "source": "def reserve(balance, amount):\n    if amount < 0 or amount > balance:\n        raise ValueError(\"invalid amount\")\n    return balance - amount\n\n\ndef apply(state, request_id, amount, notify):\n    if request_id in state[\"seen\"]:\n        return {\"remaining\": state[\"balance\"], \"request_id\": request_id}\n\n    original_balance = state[\"balance\"]\n    remaining = reserve(original_balance, amount)\n    state[\"seen\"].add(request_id)\n    state[\"balance\"] = remaining\n\n    try:\n        notify(request_id, amount)\n    except BaseException:\n        state[\"balance\"] = original_balance\n        state[\"seen\"].remove(request_id)\n        raise\n\n    return {\"remaining\": remaining, \"request_id\": request_id}",
+      "source_sha256": "18e31b2c482b3d245c68d940bb7c9230ca6cfacad4f68c6dd4929b99ac144ffd",
+      "nonblank_lines": 18,
+      "changed_lines_advisory": 4,
+      "questions_in_final_output": false
+    },
+    {
+      "arm": "baseline",
+      "chain": "state-boundary",
+      "step": "regression",
+      "status": "passed",
+      "failures": [],
+      "source": "from decimal import Decimal\nfrom numbers import Real\n\n\ndef reserve(balance, amount):\n    if isinstance(amount, bool) or not isinstance(amount, (Real, Decimal)):\n        raise ValueError(\"invalid amount\")\n\n    try:\n        valid = 0 <= amount <= balance\n    except (TypeError, ValueError, ArithmeticError):\n        raise ValueError(\"invalid amount\") from None\n\n    if not valid:\n        raise ValueError(\"invalid amount\")\n\n    return balance - amount\n\n\ndef apply(state, request_id, amount, notify):\n    if request_id in state[\"seen\"]:\n        return {\"remaining\": state[\"balance\"], \"request_id\": request_id}\n\n    original_balance = state[\"balance\"]\n    remaining = reserve(original_balance, amount)\n    state[\"seen\"].add(request_id)\n    state[\"balance\"] = remaining\n\n    try:\n        notify(request_id, amount)\n    except BaseException:\n        state[\"balance\"] = original_balance\n        state[\"seen\"].remove(request_id)\n        raise\n\n    return {\"remaining\": remaining, \"request_id\": request_id}",
+      "source_sha256": "5cbc72127d62861c952312a7978e18397beca51365cb9e4d37d8f13ab3287f55",
+      "nonblank_lines": 26,
+      "changed_lines_advisory": 15,
+      "questions_in_final_output": false
+    },
+    {
+      "arm": "treatment",
+      "chain": "state-boundary",
+      "step": "caller",
+      "status": "passed",
+      "failures": [],
+      "source": "def reserve(balance, amount):\n    if amount < 0 or amount > balance:\n        raise ValueError(\"invalid amount\")\n    return balance - amount\n\n\ndef apply(state, request_id, amount, notify):\n    if request_id in state[\"seen\"]:\n        return state[\"balance\"]\n\n    remaining = reserve(state[\"balance\"], amount)\n    notify(request_id, amount)\n    state[\"balance\"] = remaining\n    state[\"seen\"].add(request_id)\n    return remaining",
+      "source_sha256": "f853c7dd6faa7813949b7305650881b2484ff11d9477579d033d3669a4e9b7a3",
+      "nonblank_lines": 12,
+      "changed_lines_advisory": 11,
+      "questions_in_final_output": false
+    },
+    {
+      "arm": "treatment",
+      "chain": "state-boundary",
+      "step": "failure",
+      "status": "passed",
+      "failures": [],
+      "source": "def reserve(balance, amount):\n    if amount < 0 or amount > balance:\n        raise ValueError(\"invalid amount\")\n    return balance - amount\n\n\ndef apply(state, request_id, amount, notify):\n    if request_id in state[\"seen\"]:\n        return state[\"balance\"]\n\n    remaining = reserve(state[\"balance\"], amount)\n    notify(request_id, amount)\n    state[\"balance\"] = remaining\n    state[\"seen\"].add(request_id)\n    return remaining",
+      "source_sha256": "f853c7dd6faa7813949b7305650881b2484ff11d9477579d033d3669a4e9b7a3",
+      "nonblank_lines": 12,
+      "changed_lines_advisory": 0,
+      "questions_in_final_output": false
+    },
+    {
+      "arm": "treatment",
+      "chain": "state-boundary",
+      "step": "format",
+      "status": "passed",
+      "failures": [],
+      "source": "def reserve(balance, amount):\n    if amount < 0 or amount > balance:\n        raise ValueError(\"invalid amount\")\n    return balance - amount\n\n\ndef apply(state, request_id, amount, notify):\n    if request_id in state[\"seen\"]:\n        return {\"remaining\": state[\"balance\"], \"request_id\": request_id}\n\n    remaining = reserve(state[\"balance\"], amount)\n    notify(request_id, amount)\n    state[\"balance\"] = remaining\n    state[\"seen\"].add(request_id)\n    return {\"remaining\": remaining, \"request_id\": request_id}",
+      "source_sha256": "7f46a3c5c4c89dfa3f697a58a9793332f193c4fb201a59345a1852837eb52d00",
+      "nonblank_lines": 12,
+      "changed_lines_advisory": 4,
+      "questions_in_final_output": false
+    },
+    {
+      "arm": "treatment",
+      "chain": "state-boundary",
+      "step": "regression",
+      "status": "passed",
+      "failures": [],
+      "source": "from numbers import Number\n\n\ndef reserve(balance, amount):\n    if isinstance(amount, bool) or not isinstance(amount, Number):\n        raise ValueError(\"invalid amount\")\n\n    try:\n        valid = 0 <= amount <= balance\n    except (TypeError, ValueError, ArithmeticError):\n        raise ValueError(\"invalid amount\") from None\n\n    if not valid:\n        raise ValueError(\"invalid amount\")\n\n    return balance - amount\n\n\ndef apply(state, request_id, amount, notify):\n    if request_id in state[\"seen\"]:\n        return {\"remaining\": state[\"balance\"], \"request_id\": request_id}\n\n    remaining = reserve(state[\"balance\"], amount)\n    notify(request_id, amount)\n    state[\"balance\"] = remaining\n    state[\"seen\"].add(request_id)\n    return {\"remaining\": remaining, \"request_id\": request_id}",
+      "source_sha256": "3f93e90aa9ef0f35d0b011f7aa5adc5aa01311811669b0d6eacf36c3c984af73",
+      "nonblank_lines": 19,
+      "changed_lines_advisory": 14,
+      "questions_in_final_output": false
+    }
+  ],
+  "prior_attempts": [
+    {
+      "design_digest": "cadd8a8e9e0c6d42182baf0dc2b5081c359db660bed12ae526cba94d32492b8a",
+      "kind": "observational_codex_cli",
+      "strict_AB_eligible": false,
+      "owner_acceptance": null,
+      "calls": [
+        {
+          "arm": "baseline",
+          "chain": "config-format",
+          "step": "reuse",
+          "prompt_digest": "d87ec11287fff3875d955dc47bef5e90e20438b1b967afe7e0231a0bc36fb347",
+          "event_kinds": [
+            "error",
+            "error",
+            "agent_message"
+          ],
+          "diagnostics": [
+            "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings.",
+            "Codex is ignoring 6 unrecognized configuration settings. Check for typos or deprecated settings.\n  project ([redacted] `evals` is ignored.\n  project ([redacted] `product_agent_os` is ignored.\n  project ([redacted] `workflows` is ignored.\n  ... and 3 more ignored settings."
+          ],
+          "usage": {
+            "input_tokens": 30595,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 18,
+            "reasoning_output_tokens": 0
+          },
+          "tool_activity": true,
+          "exit_code": 0,
+          "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "permission_denied": false,
+          "configuration_error": false,
+          "candidate_file": "config-format-baseline-0.txt",
+          "status": "ineligible",
+          "diagnostic": "Codex failed or produced tool activity/no final candidate; no correctness claim",
+          "elapsed_seconds": 9.739
+        }
+      ],
+      "limits": [
+        "CLI ambient context/tools schema not attested empty; strict AB remains separate",
+        "Any observed tool attempt invalidates chain and stops run",
+        "Generated code not executed by this runner; independent review and checks required",
+        "One repetition; exploratory evidence, no population or component-effect inference"
+      ],
+      "candidate_execution": "not_performed",
+      "command": [
+        "codex",
+        "exec",
+        "--ephemeral",
+        "--json",
+        "--sandbox",
+        "read-only",
+        "--model",
+        "gpt-6.1-sol",
+        "-c",
+        "model_reasoning_effort=\"medium\"",
+        "-c",
+        "features.shell_tool=false",
+        "-c",
+        "agents.enabled=false",
+        "-c",
+        "features.apps=false",
+        "-c",
+        "web_search=\"disabled\"",
+        "-c",
+        "allow_browser_and_computer_use=false",
+        "-"
+      ]
+    },
+    {
+      "design_digest": "569b462320697bb610afb4aa26754688a9e88b959e2c6a7f5cbcc7b9f1b7627d",
+      "kind": "observational_codex_cli",
+      "strict_AB_eligible": false,
+      "owner_acceptance": null,
+      "calls": [
+        {
+          "arm": "baseline",
+          "chain": "config-format",
+          "step": "reuse",
+          "prompt_digest": "d87ec11287fff3875d955dc47bef5e90e20438b1b967afe7e0231a0bc36fb347",
+          "event_kinds": [],
+          "usage": null,
+          "tool_activity": false,
+          "exit_code": 1,
+          "stderr_digest": "9ce4fbca4a3b4797b960b59374c5176ac3814c1fa1938f50697c5cc31a8eb11b",
+          "permission_denied": true,
+          "configuration_error": false,
+          "status": "setup_error",
+          "diagnostic": "Codex failed or produced tool activity/no final candidate; no correctness claim",
+          "elapsed_seconds": 0.488
+        }
+      ],
+      "limits": [
+        "CLI ambient context/tools schema not attested empty; strict AB remains separate",
+        "Any observed tool attempt invalidates chain and stops run",
+        "Generated code not executed by this runner; independent review and checks required",
+        "One repetition; exploratory evidence, no population or component-effect inference"
+      ],
+      "candidate_execution": "not_performed",
+      "command": [
+        "codex",
+        "exec",
+        "--ephemeral",
+        "--json",
+        "--sandbox",
+        "read-only",
+        "--model",
+        "gpt-6.1-sol",
+        "-c",
+        "model_reasoning_effort=\"medium\"",
+        "-c",
+        "features.shell_tool=false",
+        "-c",
+        "agents.enabled=false",
+        "-c",
+        "features.apps=false",
+        "-c",
+        "web_search=\"disabled\"",
+        "-c",
+        "allow_browser_and_computer_use=false",
+        "-"
+      ]
+    },
+    {
+      "design_digest": "1d420afd636077d3cdcb4287840390fcb0f61d7e33e44be0fafebc9ec86073ef",
+      "kind": "observational_codex_cli",
+      "strict_AB_eligible": false,
+      "owner_acceptance": null,
+      "calls": [
+        {
+          "arm": "baseline",
+          "chain": "config-format",
+          "step": "reuse",
+          "prompt_digest": "d87ec11287fff3875d955dc47bef5e90e20438b1b967afe7e0231a0bc36fb347",
+          "event_kinds": [],
+          "usage": null,
+          "tool_activity": false,
+          "exit_code": 1,
+          "stderr_digest": "725c6a82b7cb69b20eabea533ea7bedcd745536c078a00f07de684c8b0b2d9e4",
+          "status": "setup_error",
+          "diagnostic": "Codex failed or produced tool activity/no final candidate; no correctness claim",
+          "elapsed_seconds": 0.966
+        }
+      ],
+      "limits": [
+        "CLI ambient context/tools schema not attested empty; strict AB remains separate",
+        "Any observed tool attempt invalidates chain and stops run",
+        "Generated code not executed by this runner; independent review and checks required",
+        "One repetition; exploratory evidence, no population or component-effect inference"
+      ],
+      "candidate_execution": "not_performed",
+      "command": [
+        "codex",
+        "exec",
+        "--ephemeral",
+        "--json",
+        "--sandbox",
+        "read-only",
+        "--model",
+        "gpt-6.1-sol",
+        "-c",
+        "model_reasoning_effort=\"medium\"",
+        "-c",
+        "features.shell_tool=false",
+        "-c",
+        "agents.enabled=false",
+        "-c",
+        "features.apps=false",
+        "-c",
+        "web_search=\"disabled\"",
+        "-c",
+        "allow_browser_and_computer_use=false",
+        "-"
+      ]
+    },
+    {
+      "design_digest": "569b462320697bb610afb4aa26754688a9e88b959e2c6a7f5cbcc7b9f1b7627d",
+      "kind": "observational_codex_cli",
+      "strict_AB_eligible": false,
+      "owner_acceptance": null,
+      "calls": [
+        {
+          "arm": "baseline",
+          "chain": "config-format",
+          "step": "reuse",
+          "prompt_digest": "d87ec11287fff3875d955dc47bef5e90e20438b1b967afe7e0231a0bc36fb347",
+          "event_kinds": [
+            "error",
+            "error",
+            "reasoning",
+            "agent_message"
+          ],
+          "usage": {
+            "input_tokens": 30602,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 30,
+            "reasoning_output_tokens": 10
+          },
+          "tool_activity": true,
+          "exit_code": 0,
+          "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "permission_denied": false,
+          "configuration_error": false,
+          "status": "ineligible",
+          "diagnostic": "Codex failed or produced tool activity/no final candidate; no correctness claim",
+          "elapsed_seconds": 12.828
+        }
+      ],
+      "limits": [
+        "CLI ambient context/tools schema not attested empty; strict AB remains separate",
+        "Any observed tool attempt invalidates chain and stops run",
+        "Generated code not executed by this runner; independent review and checks required",
+        "One repetition; exploratory evidence, no population or component-effect inference"
+      ],
+      "candidate_execution": "not_performed",
+      "command": [
+        "codex",
+        "exec",
+        "--ephemeral",
+        "--json",
+        "--sandbox",
+        "read-only",
+        "--model",
+        "gpt-6.1-sol",
+        "-c",
+        "model_reasoning_effort=\"medium\"",
+        "-c",
+        "features.shell_tool=false",
+        "-c",
+        "agents.enabled=false",
+        "-c",
+        "features.apps=false",
+        "-c",
+        "web_search=\"disabled\"",
+        "-c",
+        "allow_browser_and_computer_use=false",
+        "-"
+      ]
+    }
+  ],
+  "summary": {
+    "baseline": {
+      "eligible": 6,
+      "generated": 6,
+      "executed": 6,
+      "passed": 6,
+      "tool_events": 0,
+      "latency_seconds": 89.193,
+      "input_tokens": 184033,
+      "cached_input_tokens": 22656,
+      "output_tokens": 1221,
+      "changed_lines_advisory": 49,
+      "cost_money": null
+    },
+    "treatment": {
+      "eligible": 6,
+      "generated": 6,
+      "executed": 6,
+      "passed": 6,
+      "tool_events": 0,
+      "latency_seconds": 86.773,
+      "input_tokens": 184234,
+      "cached_input_tokens": 22656,
+      "output_tokens": 1059,
+      "changed_lines_advisory": 34,
+      "cost_money": null
+    }
+  },
+  "supplemental_review": {
+    "not_preregistered_score": "Baseline steps failure/format/regression mutate local state before notify, then rollback. Treatment retains notify before commit. Initial callable contract requested notify before recording success; observable ordering needs a callback-state check beyond the frozen oracle. No aggregate score was retroactively changed.",
+    "component_effect": "insufficient_evidence",
+    "owner_decision": null
+  },
+  "executed_design": {
+    "schema_version": "g7_quality_design_v1",
+    "status": "frozen_local_comparison_model_design_staged",
+    "baseline_commit": "a1c31b922953d1fd0afcd67c7485950677a6ca5b",
+    "manifest_path": "tests/fixtures/product_agent_os/g7-code-quality-evolution/manifest.json",
+    "manifest_digest": "2c2bb41a88b1987dd446155defd827089cd7cb2eedec4c4be403a92651b98e54",
+    "local_mechanisms": {
+      "guard": ".codex/hooks/pre_tool_use_policy.py",
+      "strategy": "plugins/product-agent-os/scripts/product_agent_os/test_strategy_selector.py"
+    },
+    "source_hashes": {
+      "baseline": {
+        "guard": "9a5e783bee7a177e02582480f5bd6c514a4295f5697d70e50dae6f7dd122302c",
+        "strategy": "3684834d7697d7eb1417fc6da00f7db14649744cfd98126da72de95cc5126321"
+      },
+      "treatment": {
+        "guard": "200689a68ba34d3753193f6fa4c7c4906d05c8d922b0a8c93a7793c9956e7732",
+        "strategy": "d41fc227cac10265d9a90834e610a711faff739275523a56196b11d0021f0348"
+      }
+    },
+    "repetitions": 1,
+    "case_order": "manifest order; baseline then treatment",
+    "expected_local_gate": "all treatment cases pass; preserve safety negatives",
+    "model_comparison": {
+      "status": "blocked_missing_attested_adapter",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "medium",
+      "arms": [
+        "baseline current PAOS contract",
+        "one treatment package G7"
+      ],
+      "max_generation_calls": 12,
+      "max_seconds_per_call": 180,
+      "max_total_seconds": 2160,
+      "cost_cap_usd": null,
+      "cost_gate": "no provider run until concrete cost authority and context/tool isolation evidence",
+      "critical_regressions_allowed": 0,
+      "correctness_regressions_allowed": 0,
+      "missing_outcomes": "retain and block conclusion",
+      "same_conditions": [
+        "model",
+        "effort",
+        "tool permissions",
+        "runtime",
+        "generation task inputs"
+      ],
+      "hidden_context": [
+        "oracle",
+        "reference candidates",
+        "arm labels for independent review"
+      ],
+      "component_effect": "insufficient_evidence without separate component arms",
+      "reviewer_calls": 0,
+      "review_mode": "manual blind review after candidate generation; independent analyst opinions are not candidate review",
+      "cost_cap": null,
+      "cost_authority": "User explicitly removed monetary cap; use available Codex only, do not create API key"
+    },
+    "frozen_T34": "unchanged",
+    "owner_acceptance": null,
+    "instrument_hashes": {
+      "plugins/product-agent-os/scripts/run_g7_quality_comparison.py": "82bd43f20e86ba301f695c234cc9bde4f885578274f424e904daf9b0daa08098",
+      "plugins/product-agent-os/scripts/codex_runtime_runner/g7_quality_eval.py": "f16abfa5eba0c37208a6a3418453482992a815b9b619101ff8997bf6a236e67c",
+      "plugins/product-agent-os/scripts/product_agent_os/code_quality_selector.py": "3595dcacde9b48d6d3780f8f451532a9ba960737c55dd0d5c931faaef6b45e8a"
+    },
+    "revision_note": "v8 event-classification repair: observed item.type=error carried known ignored-config advisory, not tool invocation. Narrow classifier tested RED/GREEN; unknown errors/tool starts still block. Prompts/oracles/thresholds unchanged; 2 no-generation setup attempts and 2 diagnostic generated turns retained, followed by at most 12 measured generations.",
+    "generation_prompts": {
+      "baseline": "# Code Change Contract\n\nSource status: project-local active copy of the packaged T25 compact contract.\n\nUse this compact contract as the default pre-edit generation context for\nnon-mechanical code work. It records the smallest evidence needed before editing.\nUse `.codex/workflows/coding-standards.md` for routing and\n`.codex/artifact-templates/coding-standard-checklist.md` for reviewer/reference\ndetail when it applies.\n\n- `existing_capability`: inspected source, helper, configuration, or dependency and result.\n- `smallest_safe_patch`: smallest local change and files deliberately excluded.\n- `invariants`: behavior, compatibility, safety, or data constraints that must hold.\n- `dependency_decision`: `reuse | no_new_dependency | new_dependency_approval_required` and reason.\n- `risk_selected_tests`: risk or invariant mapped to the smallest relevant checks.\n- `comment_decision`: `comment_needed | comment_not_needed` and non-obvious intent or reason.\n- `performance_applicability`: `required | not_applicable` and affected path or reason.\n- `evidence_and_gaps`: `proceed | stop`, current evidence, missing evidence, and accepted gap.\n",
+      "treatment": "# Code Change Contract\n\nSource status: project-local active copy of the packaged T25 compact contract.\n\nUse this compact contract as the default pre-edit generation context for\nnon-mechanical code work. It records the smallest evidence needed before editing.\nUse `.codex/workflows/coding-standards.md` for routing and\n`.codex/artifact-templates/coding-standard-checklist.md` for reviewer/reference\ndetail when it applies.\n\n- `existing_capability`: bounded inventory candidates and inspected source/helper/configuration; omitted/stale/unknown is explicit, dynamic references need inspection.\n- `smallest_safe_patch`: smallest local change and files deliberately excluded.\n- `invariants`: behavior, compatibility, safety, state ownership and applicable interface ordering/error/configuration constraints.\n- `dependency_decision`: `reuse | no_new_dependency | new_dependency_approval_required` and reason.\n- `risk_selected_tests`: risk mapped to the lowest reliable check, independent oracle and unique regression protection; no artificial RED for behavior-preserving refactors/configuration.\n- `comment_decision`: `comment_needed | comment_not_needed` and non-obvious intent or reason.\n- `performance_applicability`: `required | not_applicable` and affected path or reason.\n- `evidence_and_gaps`: `proceed | stop`, source/config/tool/environment provenance, missing evidence and accepted gap; rerun only on relevant invalidation, never count skipped as passed.\n"
+    },
+    "generation_output": "Return only candidate source. No self-scores, no tools, no access to oracle. Runtime enforcement still required before calls.",
+    "codex_observational_pilot": {
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "maximum_calls": 12,
+      "timeout_per_call_seconds": 180,
+      "order": "chain then baseline then treatment, sequential steps",
+      "runner_sha256": "8f1c0c15b8d9a414e3fc90226f223a542713d88a6b827208924058bf51a3b601",
+      "authorization": "User requested execution without monetary cap, using available Codex only; no API key creation",
+      "limits": [
+        "CLI ambient context/tools schema not attested empty; strict AB remains separate",
+        "Any observed tool attempt invalidates chain and stops run",
+        "Generated code not executed by this runner; independent review and checks required",
+        "One repetition; exploratory evidence, no population or component-effect inference",
+        "Known CLI warning: six PAOS metadata config keys ignored by Codex; same config for both arms, retained as warning, no activation claim"
+      ],
+      "score_gate": "all applicable independent checks must pass; missing/timeout/setup error never pass; cost/LOC cannot offset correctness",
+      "maximum_attempts_including_setup_retries": 16
+    }
+  },
+  "executed_runner_source": "\"\"\"Bounded, explicitly invoked Codex generation pilot; never executes candidate code.\n\nThis is an observational CLI pilot, not an attestation of tools=[] or hidden-context\nisolation. Any observed tool activity makes that chain ineligible for comparison.\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport hashlib\nimport json\nimport re\nimport subprocess\nimport time\nfrom pathlib import Path\n\nfrom codex_runtime_runner.g7_quality_eval import evidence_fingerprint, render_generation_context\n\n\ndef collect_events(output: str) -> dict:\n    \"\"\"Keep final code and usage only; even an incomplete tool attempt invalidates a pair.\"\"\"\n    messages, kinds, usage, diagnostics = [], [], None, []\n    for line in output.splitlines():\n        try:\n            event = json.loads(line)\n        except json.JSONDecodeError:\n            continue\n        item = event.get('item', {})\n        if event.get('type') in ('item.started', 'item.completed'):\n            kind = item.get('type', 'unknown')\n            if kind == 'error' and str(item.get('message', '')).startswith('Codex is ignoring 6 unrecognized configuration settings.'):\n                kind = 'config_warning'\n            kinds.append(kind)\n            if kind in ('error', 'config_warning'):\n                message = str(item.get('message', ''))\n                message = re.sub(r'(?i)(?:[A-Z]:[\\\\/][^\\s]+|sk-[\\w-]+)', '[redacted]', message)\n                diagnostics.append(message[:400])\n            if kind == 'agent_message' and event.get('type') == 'item.completed':\n                messages.append(item.get('text', ''))\n        if event.get('type') == 'turn.completed':\n            usage = event.get('usage')\n        if event.get('type') in ('error', 'turn.failed'):\n            kinds.append('runtime_error')\n    return {'candidate': messages[-1] if messages else '', 'event_kinds': kinds, 'diagnostics': diagnostics,\n            'usage': usage, 'tool_activity': any(k not in ('agent_message', 'reasoning', 'config_warning') for k in kinds)}\n\n\ndef run(root: Path, executable: str) -> dict:\n    \"\"\"Freeze prompts before calls, stop on setup/tool failure, and retain every attempt.\"\"\"\n    design_path = root / 'docs/superpowers/specs/paos-aud-g7-code-quality-eval-design.json'\n    design = json.loads(design_path.read_text(encoding='utf-8'))\n    pilot = design['codex_observational_pilot']\n    if hashlib.sha256(Path(__file__).read_bytes()).hexdigest() != pilot['runner_sha256']:\n        raise ValueError('pilot runner drift')\n    manifest = json.loads((root / design['manifest_path']).read_text(encoding='utf-8'))\n    destination = root / '.docs-tools/reports/g7-codex-pilot'\n    destination.mkdir(exist_ok=True)\n    if (destination / 'receipt.json').exists():\n        old = (destination / 'receipt.json').read_bytes()\n        archive = destination / ('attempt-' + hashlib.sha256(old).hexdigest()[:16] + '.json')\n        if not archive.exists():\n            archive.write_bytes(old)\n    receipt = {'design_digest': evidence_fingerprint(design), 'kind': 'observational_codex_cli',\n               'strict_AB_eligible': False, 'owner_acceptance': None, 'calls': [],\n               'limits': pilot['limits'], 'candidate_execution': 'not_performed'}\n    command = [executable, 'exec', '--ephemeral', '--json', '--sandbox', 'read-only',\n               '--model', pilot['model'], '-c', 'model_reasoning_effort=\"medium\"',\n               '-c', 'features.shell_tool=false', '-c', 'agents.enabled=false',\n               '-c', 'features.apps=false', '-c', 'web_search=\"disabled\"',\n               '-c', 'allow_browser_and_computer_use=false', '-']\n    receipt['command'] = ['codex', *command[1:]]\n    def save():\n        (destination / 'receipt.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2)+'\\n', encoding='utf-8')\n    stop = False\n    for chain in manifest['future_generation_chains']:\n        for arm in ('baseline', 'treatment'):\n            previous = None\n            for index, step in enumerate(chain['steps']):\n                packet = render_generation_context(root, arm, chain['id'], index, previous)\n                record = {'arm': arm, 'chain': chain['id'], 'step': step['id'], 'prompt_digest': packet['prompt_digest']}\n                started = time.monotonic()\n                try:\n                    completed = subprocess.run(command, input=packet['prompt'], cwd=root,\n                        capture_output=True, text=True, encoding='utf-8', timeout=180)\n                    parsed = collect_events(completed.stdout)\n                    record.update({k:v for k,v in parsed.items() if k != 'candidate'})\n                    record['exit_code'] = completed.returncode\n                    record['stderr_digest'] = hashlib.sha256(completed.stderr.encode()).hexdigest()\n                    record['permission_denied'] = 'Access is denied' in completed.stderr or 'Permission denied' in completed.stderr\n                    record['configuration_error'] = 'configuration' in completed.stderr.lower() and completed.returncode != 0\n                    if parsed['candidate']:\n                        filename = f\"{chain['id']}-{arm}-{index}.txt\"\n                        (destination / filename).write_text(parsed['candidate'], encoding='utf-8')\n                        record['candidate_file'] = filename\n                    if completed.returncode or parsed['tool_activity'] or not parsed['candidate']:\n                        record['status'] = 'setup_error' if completed.returncode else 'ineligible'\n                        # Persist only a bounded diagnostic, never raw ambient context or tool output.\n                        record['diagnostic'] = 'Codex failed or produced tool activity/no final candidate; no correctness claim'\n                        stop = True\n                    else:\n                        previous = parsed['candidate']\n                        filename = f\"{chain['id']}-{arm}-{index}.txt\"\n                        (destination / filename).write_text(previous, encoding='utf-8')\n                        record.update(status='generated_unverified', candidate_file=filename,\n                                      candidate_digest=hashlib.sha256(previous.encode()).hexdigest())\n                except subprocess.TimeoutExpired:\n                    record['status'] = 'timeout'\n                    stop = True\n                record['elapsed_seconds'] = round(time.monotonic()-started, 3)\n                receipt['calls'].append(record)\n                save()\n                print(chain['id'], arm, step['id'], record['status'], flush=True)\n                if stop:\n                    return receipt\n    return receipt\n\n\nif __name__ == '__main__':\n    parser = argparse.ArgumentParser(description=__doc__)\n    parser.add_argument('--codex-executable', required=True)\n    args = parser.parse_args()\n    result = run(Path(__file__).resolve().parents[3], args.codex_executable)\n    raise SystemExit(0 if len(result['calls']) == 12 and all(c['status']=='generated_unverified' for c in result['calls']) else 1)\n",
+  "assessment_provenance": "Operator executed reviewed sources via python -B -; exact per-step verifier subsequently saved without changing outcomes. Reviewer verified hashes/AST/aggregates, not rerun execution.",
+  "assessment_replay": {
+    "command": "python -B docs/superpowers/specs/paos-aud-g7-codex-pilot-verification.py",
+    "exit_code": 0,
+    "replayed": 12,
+    "passed": 12,
+    "verifier_sha256": "caa54437033989a366869dec22f8776c0c018a27ed09b3c83b30bf8ccd3a8b73",
+    "supplemental_callback_snapshot_not_scored": {
+      "baseline": {
+        "balance": 70,
+        "seen": [
+          "one"
+        ]
+      },
+      "treatment": {
+        "balance": 100,
+        "seen": []
+      }
+    }
+  },
+  "model_provenance": "requested gpt-6.1-sol/medium via CLI; receipt does not attest effective server model/effort",
+  "counts": {
+    "attempts": 16,
+    "setup_without_generation": 2,
+    "diagnostic_generations": 2,
+    "measured_generations": 12,
+    "generation_completions": 14,
+    "checked_steps_per_arm": 6,
+    "chains_per_arm": 2
+  },
+  "prior_candidate_retention": "Prior attempt receipts retained; their candidate bodies were not all retained separately; do not treat reused candidate_file paths as original diagnostic sources."
+}

@@ -101,6 +101,33 @@
         "PAOS-0037",
         "PAOS-0038"
       ]
+    },
+    {
+      "id": "G11",
+      "title": "Единое окно, runtime и авторизация",
+      "task_ids": [
+        "PAOS-0039",
+        "PAOS-0040",
+        "PAOS-0041",
+        "PAOS-0042",
+        "PAOS-0043",
+        "PAOS-0044",
+        "PAOS-0045",
+        "PAOS-0046",
+        "PAOS-0047"
+      ]
+    },
+    {
+      "id": "G12",
+      "title": "Хранение, поиск и перенос данных",
+      "task_ids": [
+        "PAOS-0048",
+        "PAOS-0049",
+        "PAOS-0050",
+        "PAOS-0051",
+        "PAOS-0052",
+        "PAOS-0053"
+      ]
     }
   ],
   "tasks": [
@@ -547,7 +574,8 @@
       "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
       "depends_on": [
         "PAOS-0007",
-        "PAOS-0009"
+        "PAOS-0009",
+        "PAOS-0043"
       ]
     },
     {
@@ -1210,7 +1238,8 @@
       "risks": "Повтор действий, конкурирующие writers, выход за разрешённый scope",
       "depends_on": [
         "PAOS-0011",
-        "PAOS-0024"
+        "PAOS-0024",
+        "PAOS-0044"
       ]
     },
     {
@@ -1358,7 +1387,8 @@
         "PAOS-0035",
         "PAOS-0036",
         "PAOS-0037",
-        "PAOS-0038"
+        "PAOS-0038",
+        "PAOS-0045"
       ]
     },
     {
@@ -1446,7 +1476,8 @@
       "actual_duration_hms": null,
       "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
       "depends_on": [
-        "PAOS-0029"
+        "PAOS-0029",
+        "PAOS-0046"
       ]
     },
     {
@@ -1873,9 +1904,714 @@
       "requirement_ids": [
         "TM-23"
       ]
+    },
+    {
+      "id": "PAOS-0039",
+      "group_id": "G11",
+      "title": "Допустимые auth routes и коммерческие границы",
+      "status": "planned",
+      "short_description": "Зафиксировать API BYOK baseline, ограничения managed login и admission SIWC; выбрать deployment/channel без внешней регистрации",
+      "technical_value": "Зафиксировать API BYOK baseline, ограничения managed login и admission SIWC; выбрать deployment/channel без внешней регистрации",
+      "product_value": "Пользователь знает доступный способ подключения и плательщика до начала работы.",
+      "affected_files": [
+        {
+          "path": "research/product-agent-os-web-auth-commercial-2026-11-09.md",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "packages/contracts/auth",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "product-manager",
+        "architect",
+        "security-privacy-supply-chain-reviewer"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-auth-commercial-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "AUTH-G1 имеет решение владельца по exact route; отсутствующий SIWC admission явно блокирует этот путь, но не подменяется managed login."
+      ],
+      "estimated_duration_hms": "06:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Неоднозначные условия или отсутствие коммерческого допуска.",
+      "depends_on": [
+        "PAOS-0001"
+      ]
+    },
+    {
+      "id": "PAOS-0040",
+      "group_id": "G11",
+      "title": "Launcher и жизненный цикл локального приложения",
+      "status": "planned",
+      "short_description": "Запуск service и UI, version/health checks, single instance, explicit install и graceful Quit",
+      "technical_value": "Запуск service и UI, version/health checks, single instance, explicit install и graceful Quit",
+      "product_value": "Работу можно начать ярлыком и понять, что продолжает выполняться после закрытия окна.",
+      "affected_files": [
+        {
+          "path": "apps/launcher",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/local-service/src/supervisor",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-auth-commercial-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "UI запускается без Codex App; missing runtime/offline/second instance/Quit показывают корректные состояния, не выполняют скрытых install или inference."
+      ],
+      "estimated_duration_hms": "12:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Orphan processes, зависший shutdown, несовместимый runtime.",
+      "depends_on": [
+        "PAOS-0001"
+      ]
+    },
+    {
+      "id": "PAOS-0041",
+      "group_id": "G11",
+      "title": "Локальное API-подключение и credential isolation",
+      "status": "planned",
+      "short_description": "Connection broker, secure store, payer/capabilities, disconnect и API profile без inherited login",
+      "technical_value": "Connection broker, secure store, payer/capabilities, disconnect и API profile без inherited login",
+      "product_value": "Пользователь подключает свой API account и контролирует расходы и данные.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/connections",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/settings/connections",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "packages/contracts/auth",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "builder",
+        "security-privacy-supply-chain-reviewer",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-auth-commercial-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Login state отличается от model access; secrets не попадают в logs/SQLite/browser storage/tool environment; disconnect останавливает новые calls; no fallback доказан."
+      ],
+      "estimated_duration_hms": "16:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Credential leakage, неверный payer или недоказанная isolation.",
+      "depends_on": [
+        "PAOS-0039",
+        "PAOS-0040"
+      ]
+    },
+    {
+      "id": "PAOS-0042",
+      "group_id": "G11",
+      "title": "Codex App Server adapter и ограниченное выполнение",
+      "status": "planned",
+      "short_description": "Pinned stdio protocol, project/task/run/thread/turn binding, allowlist и одна минимальная recipe",
+      "technical_value": "Pinned stdio protocol, project/task/run/thread/turn binding, allowlist и одна минимальная recipe",
+      "product_value": "Codex выполняет задачу непосредственно из PAOS в заданных границах.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/runtime/codex",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "packages/contracts/runtime",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-auth-commercial-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Initialize/start/events/approvals/interrupt работают на выбранном build; один writer на canonical workspace; Codex App и чужой auth profile не используются."
+      ],
+      "estimated_duration_hms": "20:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Protocol drift, duplicate dispatch, превышение authority.",
+      "depends_on": [
+        "PAOS-0041",
+        "PAOS-0002",
+        "PAOS-0003",
+        "PAOS-0048"
+      ]
+    },
+    {
+      "id": "PAOS-0043",
+      "group_id": "G11",
+      "title": "Активная сессия и минимальная карточка задачи",
+      "status": "planned",
+      "short_description": "Composer discussion/planning/execution, streaming, task draft и панель diff/checks/decisions без полного board",
+      "technical_value": "Composer discussion/planning/execution, streaming, task draft и панель diff/checks/decisions без полного board",
+      "product_value": "Пользователь проходит от запроса к результату в одном рабочем окне.",
+      "affected_files": [
+        {
+          "path": "apps/web/src/sessions",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/tasks/minimal",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/local-service/src/conversations",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-auth-commercial-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "SW-AC-01/03/04/08: все действия в PAOS; discussion не пишет target; Send/Stop имеют ACK; linked task содержит scope/criteria/estimate, turn success не закрывает её автоматически."
+      ],
+      "estimated_duration_hms": "20:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Смешение task/comment/session или ложное завершение.",
+      "depends_on": [
+        "PAOS-0042",
+        "PAOS-0004",
+        "PAOS-0048"
+      ]
+    },
+    {
+      "id": "PAOS-0044",
+      "group_id": "G11",
+      "title": "Recovery, повторное подключение и сохранённые сессии",
+      "status": "planned",
+      "short_description": "Durable intents, lost ACK reconciliation, restart/resume, process-bound approvals и account isolation",
+      "technical_value": "Durable intents, lost ACK reconciliation, restart/resume, process-bound approvals и account isolation",
+      "product_value": "Пользователь продолжает работу после перерыва без потери контекста и повторных изменений.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/runtime/recovery",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/recovery",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-auth-commercial-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "SW-AC-05/06/07/09: crash до/после dispatch не повторяет side effects; pending approval stale после restart; stop timeout показан как unknown; чужой account не продолжает run."
+      ],
+      "estimated_duration_hms": "16:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Невосстановимый outcome и частично выполненные tools.",
+      "depends_on": [
+        "PAOS-0043"
+      ]
+    },
+    {
+      "id": "PAOS-0045",
+      "group_id": "G11",
+      "title": "Приёмка сквозного M1 в одном окне",
+      "status": "planned",
+      "short_description": "Проверить launch/connection/chat/task/approval/result/resume и негативные границы на разрешённом runtime",
+      "technical_value": "Проверить launch/connection/chat/task/approval/result/resume и негативные границы на разрешённом runtime",
+      "product_value": "Первый MVP доказывает самостоятельный пользовательский путь, а не набор статичных экранов.",
+      "affected_files": [
+        {
+          "path": "tests/web/single-window",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "docs/evidence/web-m1",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "tester",
+        "reviewer"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-auth-commercial-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "SW-AC-01–10 имеют receipts; browser и actual runtime путь проверены отдельно от fixtures; Codex App закрыт; отсутствие provider authority оставляет gate pending."
+      ],
+      "estimated_duration_hms": "12:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Synthetic evidence ошибочно принято за live product proof.",
+      "depends_on": [
+        "PAOS-0044",
+        "PAOS-0002",
+        "PAOS-0003",
+        "PAOS-0049",
+        "PAOS-0050",
+        "PAOS-0051"
+      ]
+    },
+    {
+      "id": "PAOS-0046",
+      "group_id": "G11",
+      "title": "Коммерческий review API-варианта и выпускные gates",
+      "status": "planned",
+      "short_description": "Проверить AUTH-G1–G6, выбранные рынки, privacy, distribution licenses, payer, support и owner decision",
+      "technical_value": "Проверить AUTH-G1–G6, выбранные рынки, privacy, distribution licenses, payer, support и owner decision",
+      "product_value": "Коммерческий пакет честно описывает подключение, затраты и ограничения.",
+      "affected_files": [
+        {
+          "path": "research/product-agent-os-web-auth-commercial-2026-11-09.md",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "docs/release/web-commercial-review",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "product-manager",
+        "release-operator",
+        "security-privacy-supply-chain-reviewer"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-auth-commercial-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Каждый применимый AUTH gate содержит evidence/owner; нет обещаний без approval. Для API-only SIWC помечен unavailable; task не выполняет publication."
+      ],
+      "estimated_duration_hms": "08:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Нет admission, legal review или достаточных runtime/security evidence.",
+      "depends_on": [
+        "PAOS-0045"
+      ]
+    },
+    {
+      "id": "PAOS-0047",
+      "group_id": "G11",
+      "title": "Опциональный Sign in with ChatGPT",
+      "status": "planned",
+      "short_description": "После допуска реализовать отдельный SIWC route, consent, PKCE/scopes, refresh/restart/resume и preview capability matrix",
+      "technical_value": "После допуска реализовать отдельный SIWC route, consent, PKCE/scopes, refresh/restart/resume и preview capability matrix",
+      "product_value": "Eligible пользователь может использовать разрешённый ChatGPT plan без второго рабочего приложения.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/connections/siwc",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/settings/connections",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "builder",
+        "security-privacy-supply-chain-reviewer",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-auth-commercial-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Только после подтверждённого admission exact paid/local route: identity и plan scope проверены, refresh/resume не дублирует работу, unsupported tools скрыты с причиной; API route не зависит от этой задачи."
+      ],
+      "estimated_duration_hms": "20:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Admission отсутствует; preview restrictions изменяются; refresh прерывает активный turn.",
+      "depends_on": [
+        "PAOS-0039",
+        "PAOS-0044",
+        "PAOS-0046"
+      ]
+    },
+    {
+      "id": "PAOS-0048",
+      "group_id": "G12",
+      "title": "SQLite: схема и транзакционные команды",
+      "status": "planned",
+      "short_description": "Создать versioned operational schema и repository adapter; entity/audit/outbox commit, revision/idempotency, legacy authority gate",
+      "technical_value": "Создать versioned operational schema и repository adapter; entity/audit/outbox commit, revision/idempotency, legacy authority gate",
+      "product_value": "Задачи, сессии и работа агентов сохраняются согласованно после перезапуска.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/storage/sqlite",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "packages/contracts/storage",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/local-service/src/storage/migrations",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-storage-research-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "ST-01–04/09: FK/project isolation, duplicate/conflicting command, concurrent writers и transaction crash; legacy tasks остаются file-owned до cutover; current consumers используют adapter"
+      ],
+      "estimated_duration_hms": "16:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря транзакционности; legacy consumers обходят authority; несовместимый SQLite build",
+      "depends_on": [
+        "PAOS-0001",
+        "PAOS-0002",
+        "PAOS-0003"
+      ]
+    },
+    {
+      "id": "PAOS-0049",
+      "group_id": "G12",
+      "title": "Локальный полнотекстовый поиск FTS5",
+      "status": "planned",
+      "short_description": "Индексировать разрешённые entities и file/message projections; exact ID/path lookup, revision-aware jobs, delete/rebuild/coverage",
+      "technical_value": "Индексировать разрешённые entities и file/message projections; exact ID/path lookup, revision-aware jobs, delete/rebuild/coverage",
+      "product_value": "Пользователь находит задачи и доступный контекст без отправки данных внешней модели.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/search",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/search",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-storage-research-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "ST-06/12: RU/EN, exact ID, project filters, tombstone, stale job, failed rebuild; provider вызовов нет; snippets не раскрывают скрытые данные"
+      ],
+      "estimated_duration_hms": "12:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря индекса; утечка project content; неверные ожидания морфологии",
+      "depends_on": [
+        "PAOS-0048"
+      ]
+    },
+    {
+      "id": "PAOS-0050",
+      "group_id": "G12",
+      "title": "Миграция MD/JSON и переключение authority",
+      "status": "planned",
+      "short_description": "Inventory, staging import, stable mapping, validation, freeze/backup, atomic cutover и versioned Markdown export/re-import proposals",
+      "technical_value": "Inventory, staging import, stable mapping, validation, freeze/backup, atomic cutover и versioned Markdown export/re-import proposals",
+      "product_value": "Пользователь переносит старые задачи без потери документов и понимает, где теперь редактировать данные.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/import-export",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/projects/migration",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "packages/contracts/migration",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-storage-research-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "ST-02/03/07: duplicate MD/JSON, unknown fields/actors/status, source drift, invalid hierarchy, repeat import и crash boundaries; preview non-mutating; нет двух masters; unsupported writers блокируют cutover"
+      ],
+      "estimated_duration_hms": "20:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря неизвестных полей; concurrent MD edit; двойная запись; unsafe rollback",
+      "depends_on": [
+        "PAOS-0048"
+      ]
+    },
+    {
+      "id": "PAOS-0051",
+      "group_id": "G12",
+      "title": "Резервное копирование и восстановление local data",
+      "status": "planned",
+      "short_description": "Согласованный DB/blob manifest, schema compatibility, restore rehearsal и rollback после новых writes",
+      "technical_value": "Согласованный DB/blob manifest, schema compatibility, restore rehearsal и rollback после новых writes",
+      "product_value": "Пользователь восстанавливает данные без пропажи вложений и повторного выполнения старых команд.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/storage/backup",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/settings/data",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-storage-research-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "ST-08/12: missing blob/hash mismatch, disk full, incompatible schema; restore в отдельный каталог; approvals stale; no blind dispatch replay; reverse transfer сохраняет post-cutover deltas"
+      ],
+      "estimated_duration_hms": "12:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Неполный snapshot; backup на отказавшем диске; восстановление активного разрешения",
+      "depends_on": [
+        "PAOS-0048",
+        "PAOS-0050"
+      ]
+    },
+    {
+      "id": "PAOS-0052",
+      "group_id": "G12",
+      "title": "Командный профиль PostgreSQL и pgvector",
+      "status": "planned",
+      "short_description": "После отдельного T1 решения реализовать server repository, dialect migrations, tenancy/RLS, lexical и versioned vector index; hosting/auth/runtime design gate до кода",
+      "technical_value": "После отдельного T1 решения реализовать server repository, dialect migrations, tenancy/RLS, lexical и versioned vector index; hosting/auth/runtime design gate до кода",
+      "product_value": "Команда работает с общим актуальным состоянием и поиском в пределах своих прав.",
+      "affected_files": [
+        {
+          "path": "apps/server/src/storage/postgres",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/server/src/search",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "packages/contracts/tenancy",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-storage-research-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "ST-10: domain parity, negative tenant/pool tests, filtered search; embedding model/privacy approved; lexical fallback; hosting/auth/runtime placement согласованы; local M4 не зависит от T1"
+      ],
+      "estimated_duration_hms": "24:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "RLS bypass; provider data disclosure/cost; dialect mismatch; отсутствие team authorization design",
+      "depends_on": [
+        "PAOS-0048",
+        "PAOS-0049",
+        "PAOS-0051"
+      ]
+    },
+    {
+      "id": "PAOS-0053",
+      "group_id": "G12",
+      "title": "Перенос local проекта в team workspace",
+      "status": "planned",
+      "short_description": "Versioned logical export/import, actor/tenant mapping, blob checks, final delta и one-authority handover",
+      "technical_value": "Versioned logical export/import, actor/tenant mapping, blob checks, final delta и one-authority handover",
+      "product_value": "Пользователь переносит проект команде с прежними задачами и историей без конфликтующих writable копий.",
+      "affected_files": [
+        {
+          "path": "apps/server/src/import-export",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/local-service/src/import-export/team",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/projects/transfer",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-storage-research-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "ST-11/ST-AC-08: UUID/key collisions, identity mapping, counts/hashes/FK, final delta, rollback; credentials/pending approvals/commands исключены; local read-only после switch; без bidirectional sync"
+      ],
+      "estimated_duration_hms": "16:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Потеря последних изменений; привязка чужих credentials; split authority",
+      "depends_on": [
+        "PAOS-0050",
+        "PAOS-0052"
+      ]
     }
   ],
-  "requirement_revision": "web_prd_v0.3_2026-11-09",
+  "requirement_revision": "0.6",
   "issue_model_proposal": {
     "not_runtime_schema": true,
     "issue_types": [
@@ -1938,5 +2674,42 @@
       "clones"
     ],
     "planning_status_boundary": "tasks[].status remains task_matrix_plan_v1 planned; issue_model_proposal statuses describe future Web only"
+  },
+  "single_window_proposal": {
+    "runtime": "codex_app_server",
+    "codex_app_required": false,
+    "first_delivery": "M1_single_window",
+    "auth_baseline": "local_api_byok_candidate",
+    "commercial_eligibility": "pending_AUTH_G1_G6",
+    "siwc": "optional_admission_required",
+    "first_path_tasks": [
+      "PAOS-0001",
+      "PAOS-0002",
+      "PAOS-0003",
+      "PAOS-0004",
+      "PAOS-0039",
+      "PAOS-0040",
+      "PAOS-0041",
+      "PAOS-0042",
+      "PAOS-0043",
+      "PAOS-0044",
+      "PAOS-0045",
+      "PAOS-0048",
+      "PAOS-0049",
+      "PAOS-0050",
+      "PAOS-0051"
+    ]
+  },
+  "storage_decision": {
+    "status": "engines_selected_schema_proposed",
+    "local": "sqlite_fts5",
+    "team": "postgresql_pgvector",
+    "local_semantic_search": "not_in_M1",
+    "task_authority": "sql_after_verified_project_cutover",
+    "team_stage": "T1_after_local_M4_not_blocking",
+    "schema_source": "product-agent-os-web-architecture-2026-11-05.md#20-хранение-схема-и-миграция--v06",
+    "requirements": "ST-01–12",
+    "acceptance_scenarios": "ST-AC-01–08",
+    "implementation": "not_started"
   }
 }

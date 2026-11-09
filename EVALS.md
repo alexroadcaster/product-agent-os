@@ -1,5 +1,17 @@
 # EVALS.md
 
+## Web session UX v0.5 — 2026-11-09
+
+[UX v0.5](research/product-agent-os-web-m1-wireframes-2026-11-09.md) добавляет specification review для сохранения контекста, distinctions permission/decision/question, pending ACK, duplicate dispatch, agent provenance и narrow layouts. Hallmark finish review относится к Markdown; visual/a11y/usability оценки требуют будущего render и не считаются доказанными.
+
+## PAOS-AUD-G7 — separate instrument
+
+G7 strict preflight blocked: actual request gpt-6.1-sol/medium, two additional tools; filesystem isolation not established. Supplementary deadline/sunk-cost/incorrect-review corpus и justified/overbuilt controls подготовлены; no new comparative generation outcomes. Prior observational 6/6 per arm не повышается до strict A/B. [Evidence](research/product-agent-os-g7-execution-report-2026-11-09.md).
+
+## Web single-window v0.4 — 2026-11-09
+
+Для Web v0.4 проверять различение discussion/planning/execution, identity/inference permission/workspace authority, turn outcome/task acceptance, API billing/ChatGPT plan и unknown/zero. No silent fallback, no duplicate execution, no invented session coverage. [SW-AC и M1](research/product-agent-os-web-prd-2026-11-05.md#15-единое-окно-и-codex-app-server--v04); текущие model eval rubrics/thresholds не меняются.
+
 ## Web issue workflows v0.3 — 2026-11-09
 
 Web v0.3 eval scenarios: различение иерархии/links/code graph; Affects vs Fix version; creator vs initiator; Done vs Cancelled; replay не запускает recipe дважды; publish не меняет pinned run; comments не являются командами. [PRD §14](research/product-agent-os-web-prd-2026-11-05.md). Только спецификация, без agent/model activation.

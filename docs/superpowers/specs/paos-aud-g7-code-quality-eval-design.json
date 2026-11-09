@@ -1,0 +1,91 @@
+{
+  "schema_version": "g7_quality_design_v1",
+  "status": "frozen_local_comparison_model_design_staged",
+  "baseline_commit": "a1c31b922953d1fd0afcd67c7485950677a6ca5b",
+  "manifest_path": "tests/fixtures/product_agent_os/g7-code-quality-evolution/manifest.json",
+  "manifest_digest": "2c2bb41a88b1987dd446155defd827089cd7cb2eedec4c4be403a92651b98e54",
+  "local_mechanisms": {
+    "guard": ".codex/hooks/pre_tool_use_policy.py",
+    "strategy": "plugins/product-agent-os/scripts/product_agent_os/test_strategy_selector.py"
+  },
+  "source_hashes": {
+    "baseline": {
+      "guard": "9a5e783bee7a177e02582480f5bd6c514a4295f5697d70e50dae6f7dd122302c",
+      "strategy": "3684834d7697d7eb1417fc6da00f7db14649744cfd98126da72de95cc5126321"
+    },
+    "treatment": {
+      "guard": "200689a68ba34d3753193f6fa4c7c4906d05c8d922b0a8c93a7793c9956e7732",
+      "strategy": "d41fc227cac10265d9a90834e610a711faff739275523a56196b11d0021f0348"
+    }
+  },
+  "repetitions": 1,
+  "case_order": "manifest order; baseline then treatment",
+  "expected_local_gate": "all treatment cases pass; preserve safety negatives",
+  "model_comparison": {
+    "status": "blocked_missing_attested_adapter",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "medium",
+    "arms": [
+      "baseline current PAOS contract",
+      "one treatment package G7"
+    ],
+    "max_generation_calls": 12,
+    "max_seconds_per_call": 180,
+    "max_total_seconds": 2160,
+    "cost_cap_usd": null,
+    "cost_gate": "no provider run until concrete cost authority and context/tool isolation evidence",
+    "critical_regressions_allowed": 0,
+    "correctness_regressions_allowed": 0,
+    "missing_outcomes": "retain and block conclusion",
+    "same_conditions": [
+      "model",
+      "effort",
+      "tool permissions",
+      "runtime",
+      "generation task inputs"
+    ],
+    "hidden_context": [
+      "oracle",
+      "reference candidates",
+      "arm labels for independent review"
+    ],
+    "component_effect": "insufficient_evidence without separate component arms",
+    "reviewer_calls": 0,
+    "review_mode": "manual blind review after candidate generation; independent analyst opinions are not candidate review",
+    "cost_cap": null,
+    "cost_authority": "User explicitly removed monetary cap; use available Codex only, do not create API key"
+  },
+  "frozen_T34": "unchanged",
+  "owner_acceptance": null,
+  "instrument_hashes": {
+    "plugins/product-agent-os/scripts/run_g7_quality_comparison.py": "82bd43f20e86ba301f695c234cc9bde4f885578274f424e904daf9b0daa08098",
+    "plugins/product-agent-os/scripts/codex_runtime_runner/g7_quality_eval.py": "f16abfa5eba0c37208a6a3418453482992a815b9b619101ff8997bf6a236e67c",
+    "plugins/product-agent-os/scripts/product_agent_os/code_quality_selector.py": "0a88d07a99c3f23ae0b667f491044f58f98a4f467785357999cd43ce06cb681d"
+  },
+  "revision_note": "v10 local architecture projection and supplementary pressure corpus; prior executed v8 model pilot preserved. No retroactive rescoring. Strict model comparison requires actual context/tool receipt.",
+  "generation_prompts": {
+    "baseline": "# Code Change Contract\n\nSource status: project-local active copy of the packaged T25 compact contract.\n\nUse this compact contract as the default pre-edit generation context for\nnon-mechanical code work. It records the smallest evidence needed before editing.\nUse `.codex/workflows/coding-standards.md` for routing and\n`.codex/artifact-templates/coding-standard-checklist.md` for reviewer/reference\ndetail when it applies.\n\n- `existing_capability`: inspected source, helper, configuration, or dependency and result.\n- `smallest_safe_patch`: smallest local change and files deliberately excluded.\n- `invariants`: behavior, compatibility, safety, or data constraints that must hold.\n- `dependency_decision`: `reuse | no_new_dependency | new_dependency_approval_required` and reason.\n- `risk_selected_tests`: risk or invariant mapped to the smallest relevant checks.\n- `comment_decision`: `comment_needed | comment_not_needed` and non-obvious intent or reason.\n- `performance_applicability`: `required | not_applicable` and affected path or reason.\n- `evidence_and_gaps`: `proceed | stop`, current evidence, missing evidence, and accepted gap.\n",
+    "treatment": "# Code Change Contract\n\nSource status: project-local active copy of the packaged T25 compact contract.\n\nUse this compact contract as the default pre-edit generation context for\nnon-mechanical code work. It records the smallest evidence needed before editing.\nUse `.codex/workflows/coding-standards.md` for routing and\n`.codex/artifact-templates/coding-standard-checklist.md` for reviewer/reference\ndetail when it applies.\n\n- `existing_capability`: bounded inventory candidates and inspected source/helper/configuration; omitted/stale/unknown is explicit, dynamic references need inspection.\n- `smallest_safe_patch`: smallest local change and files deliberately excluded.\n- `invariants`: behavior, compatibility, safety, state ownership and applicable interface ordering/error/configuration constraints.\n- `dependency_decision`: `reuse | no_new_dependency | new_dependency_approval_required` and reason.\n- `risk_selected_tests`: risk mapped to the lowest reliable check, independent oracle and unique regression protection; no artificial RED for behavior-preserving refactors/configuration.\n- `comment_decision`: `comment_needed | comment_not_needed` and non-obvious intent or reason.\n- `performance_applicability`: `required | not_applicable` and affected path or reason.\n- `evidence_and_gaps`: `proceed | stop`, source/config/tool/environment provenance, missing evidence and accepted gap; rerun only on relevant invalidation, never count skipped as passed.\n"
+  },
+  "generation_output": "Return only candidate source. No self-scores, no tools, no access to oracle. Runtime enforcement still required before calls.",
+  "codex_observational_pilot": {
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "maximum_calls": 12,
+    "timeout_per_call_seconds": 180,
+    "order": "chain then baseline then treatment, sequential steps",
+    "runner_sha256": "ef4aa5a37336d9852d0adbb45c6ed8e5e5720f661a856d4f01dcbc7e9c72d4f0",
+    "authorization": "User requested execution without monetary cap, using available Codex only; no API key creation",
+    "limits": [
+      "CLI ambient context/tools schema not attested empty; strict AB remains separate",
+      "Any observed tool attempt invalidates chain and stops run",
+      "Generated code not executed by this runner; independent review and checks required",
+      "One repetition; exploratory evidence, no population or component-effect inference",
+      "Known CLI warning: six PAOS metadata config keys ignored by Codex; same config for both arms, retained as warning, no activation claim"
+    ],
+    "score_gate": "all applicable independent checks must pass; missing/timeout/setup error never pass; cost/LOC cannot offset correctness",
+    "maximum_attempts_including_setup_retries": 16
+  },
+  "supplementary_pressure_manifest": "tests/fixtures/product_agent_os/g7-pressure/manifest.json",
+  "supplementary_pressure_digest": "5f61a1063901d224af7f31fb82202bf60b71f49faef01e77dffe63c0ef82ebd8"
+}

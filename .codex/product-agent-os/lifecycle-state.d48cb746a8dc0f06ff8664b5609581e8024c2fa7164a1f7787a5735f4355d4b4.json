@@ -1,36 +1,23 @@
 {
-  "task_id": "PAOS-WEB-ISSUE-WORKFLOWS-2026-11-09",
-  "previous_task_id": "PAOS-WEB-TASK-MANAGER-2026-11-09",
-  "previous_task_closure": {
-    "status": "ready_for_completion_ledger",
-    "closure_level": "docs_static_verified",
-    "plan_path": "research/product-agent-os-web-task-manager-plan-2026-11-09.md"
-  },
+  "task_id": "PAOS-WEB-STORAGE-CONTRACT-2026-11-09",
+  "previous_storage_closure": "Research saved; SQLite/FTS5 local and PostgreSQL/pgvector team recommendation. 105 docs tests passed; strict MkDocs had eight unrelated link warnings. No implementation.",
+  "previous_task_id": "PAOS-WEB-SESSION-WIREFRAMES-2026-11-09",
+  "previous_task_closure": {"status": "ready_for_completion_brief", "closure_level": "documentation_updated_partially_verified", "plan_path": "research/product-agent-os-web-task-manager-plan-2026-11-09.md", "evidence": "Web v0.4 and auth analysis saved; 47 planned tasks; 105 docs tests and scoped checks passed; strict MkDocs had six pre-existing G6/G7 warnings."},
   "session_id": "01a1abef-86df-7e13-b06e-5f580cd90c8c",
   "plan_path": "research/product-agent-os-web-task-manager-plan-2026-11-09.md",
-  "scope": "Docs extension for Jira-informed task hierarchy and workflows.",
-  "approval_boundary": "User requested documentation only. No code, hooks or external writes.",
-  "updated_at": "2026-11-09T14:43:39.7556678+00:00",
+  "scope": "User-selected SQLite/FTS5 local and PostgreSQL/pgvector team; update PRD, architecture, plan, schema and MD migration contracts plus owning planning metadata and compact control-plane pointers. Documentation only.",
+  "approval_boundary": "User authorized documentation only; no application code, hooks, credentials, provider calls or external writes.",
+  "updated_at": "2026-11-09T17:20:42+00:00",
   "status": "ready_for_completion_brief",
   "completion_ready": true,
+  "closure_level": "documentation_updated_partially_verified",
+  "closure_reason": "Saved PRD v0.6 section 16, architecture section 20 with logical schema/three diagrams/MD cutover and restore, plan G12 with 53 planned tasks in 12 groups. SQLite/FTS5 local and PostgreSQL/pgvector team selected by user. 105 docs tests, structure, matrix, DAG/link consistency and diff checks passed. Strict MkDocs failed on 10 G6/G7 link warnings outside storage additions. No app code, database or SQL migrations created; runtime verification pending.",
   "scope_note_shown": true,
+  "previous_ux_closure": "Saved UX v0.5: 28 routes, 16 wireframes, 18 proposed acceptance scenarios. 105 docs tests and static checks passed. Six independent review findings resolved. Strict MkDocs failed on G6/G7 links; no application or runtime evidence.",
   "brief_schema_version": "task_scope_note_v1",
   "brief_format": "concise",
-  "brief_fields_present": [
-    "Scope",
-    "Evidence",
-    "Limits"
-  ],
-  "brief_digest": "sha256:072ff838a0a204554ec6c6e2197f7d30cb2f77e3d367ae794cf8a574531d4c4b",
-  "lifecycle_scope": {
-    "work_type": "implementation",
-    "size": "bounded",
-    "risk": "medium",
-    "financially_material": false,
-    "release_or_readiness": false,
-    "explicit_packet_request": false,
-    "reason": "Requested documentation edits only; application remains planned."
-  },
-  "closure_level": "documentation_updated_partially_verified",
-  "closure_reason": "PRD v0.3 and 38 planned tasks in 10 groups saved; 13 Jira Cloud sources; docs 105 tests, structure, matrix, consistency and scoped diff passed. Global strict MkDocs has two prior G6 link warnings; global diff has unrelated audit-plan EOF. No runtime implementation; images unchanged."
+  "brief_fields_present": ["Scope", "Evidence", "Limits"],
+  "brief_digest": "sha256:5dbfa5d475867e33e49371dfc076c981f6fbdcfea0e13cd475c6bcd021f0bab9",
+  "lifecycle_scope": {"work_type": "implementation", "size": "bounded", "risk": "medium", "financially_material": false, "release_or_readiness": false, "explicit_packet_request": false, "reason": "User explicitly requested incremental Markdown authoring; implementation classification authorizes only documentation, no application or database implementation."},
+  "previous_closure_reason": "PRD/architecture v0.4, auth-commercial analysis, 47 planned tasks/11 groups, UX/source/control-plane sync saved. 105 docs tests, structure, matrix, consistency and diff passed. Strict MkDocs failed on six pre-existing G6/G7 links. Runtime and commercial AUTH gates pending; no application implementation."
 }

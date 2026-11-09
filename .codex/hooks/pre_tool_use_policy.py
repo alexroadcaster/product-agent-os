@@ -151,19 +151,89 @@ def _matches(patterns: list[re.Pattern[str]], text: str) -> bool:
     return any(pattern.search(text) for pattern in patterns)
 
 
+def _literal_read_tokens(command: str) -> list[str] | None:
+    """Lex a deliberately small literal subset; never interpret shell programs.
+
+    Single-quoted metacharacters are data. Expanding strings, concatenated
+    quoting, escapes and unknown syntax stay on the scoped lifecycle route.
+    """
+    if any(c in command for c in '\r\n"\0'):
+        return None  # Newlines execute another statement; legacy native quoting can split argv.
+    lexemes: list[str] = []
+    pattern = re.compile(r"""\s*(?:'([^'\r\n]*)'|([^\s'";&><\x60$\r\n{}()\[\],]+))""")
+    position = 0
+    while position < len(command):
+        if not command[position:].strip():
+            break
+        match = pattern.match(command, position)
+        if not match:
+            return None
+        lexeme = match[1] if match[1] is not None else match[2]
+        if match[2] is not None and any(c in lexeme for c in '\\*?!#@'):
+            return None  # Do not interpret escapes, glob expansion or comments across shells.
+        if match[2] is not None and "|" in lexeme and lexeme != "|":
+            return None
+        position = match.end()
+        if position < len(command) and not command[position].isspace():
+            return None
+        if lexeme == "--%" or any(c in lexeme for c in "‘’“”"):
+            return None
+        if _matches(FORBIDDEN_PATH_PATTERNS, " " + lexeme):
+            return None
+        lexemes.append("\0PIPE" if match[2] == "|" else lexeme)
+    return lexemes
+
+
 def _is_read_only(command: str) -> bool:
-    # Only a bounded literal command gets the fast path, never a shell program.
-    pipeline = re.fullmatch(r"(.+?)\s*\|\s*Select-Object\s+-(?:First|Last)\s+[0-9]+\s*", command, re.IGNORECASE)
-    if pipeline:
-        return _is_read_only(pipeline[1])
-    if not command.strip() or re.search(r"[;|&><`$\r\n{}()]", command):
+    """Recognize literal reads without granting authority to unknown shell syntax."""
+    lexemes = _literal_read_tokens(command)
+    if not lexemes:
         return False
-    if re.search(r"(?i)(?:--output|--ext-diff|--textconv|--pre|--hostname-bin|--config|--exec)(?:[=\s]|$)", command):
+    name = lexemes[0].lower()
+    # A pipe is trusted only as a separate lexeme and with a fixed read consumer.
+    if "\0PIPE" in lexemes:
+        if lexemes.count("\0PIPE") != 1:
+            return False
+        index = lexemes.index("\0PIPE")
+        left, right = lexemes[:index], lexemes[index + 1:]
+        if name != "get-content" or not right:
+            return False
+        if not _read_command_tokens(left):
+            return False
+        consumer = right[0].lower()
+        if consumer == "select-string":
+            return _read_command_tokens(right)
+        if consumer == "select-object":
+            pairs = right[1:]
+            return bool(pairs) and len(pairs) % 2 == 0 and all(
+                pairs[i].lower() in {"-first", "-last", "-skip"}
+                and pairs[i + 1].isdigit() for i in range(0, len(pairs), 2)
+            )
         return False
-    # Python help may import/run arbitrary user code before displaying help.
-    if re.match(r"(?i)^\s*python\b", command):
+    return _read_command_tokens(lexemes)
+
+
+def _read_command_tokens(lexemes: list[str]) -> bool:
+    """Keep executable names and switches exact; aliases and expansions are untrusted."""
+    name = lexemes[0].lower()
+    if name not in {"rg", "get-content", "get-childitem", "select-string", "git", "type", "dir", "ls"}:
         return False
-    return _matches(READ_ONLY_PATTERNS, command.strip())
+    # Only known inert switches are admitted; abbreviations/config/executors fail closed.
+    flags = {
+        "rg": {"-n", "-i", "-l", "-s", "-f", "-g", "-e", "-a", "-b", "-c",
+               "--files", "--hidden", "--glob", "--iglob", "--fixed-strings",
+               "--line-number", "--ignore-case", "--files-with-matches", "--no-ignore",
+               "--heading", "--no-heading", "--count", "--max-count", "--"},
+        "get-content": {"-raw", "-literalpath", "-path", "-totalcount", "-encoding", "-tail"},
+        "get-childitem": {"-literalpath", "-path", "-recurse", "-file", "-directory", "-force", "-name"},
+        "select-string": {"-simplematch", "-pattern", "-path", "-literalpath", "-casesensitive", "-list", "-quiet", "-context"},
+        "type": set(), "dir": set(), "ls": set(),
+        "git": {"--stat", "--short", "--oneline", "--name-only", "--name-status", "--check",
+                "--no-ext-diff", "--no-textconv", "--", "-n"},
+    }
+    if name == "git" and (len(lexemes) < 2 or lexemes[1].lower() not in {"diff", "status", "show", "log"}):
+        return False
+    return all(not lexeme.startswith("-") or lexeme.lower() in flags[name] for lexeme in lexemes[1:])
 
 
 def lifecycle_session_id(payload: dict[str, Any]) -> str | None:
@@ -264,7 +334,8 @@ def _safety_reasons(root: Path | None, payload: dict[str, Any], command: str) ->
     if call and call[0] == "exec_command" and isinstance(call[1], dict):
         command = str(call[1].get("cmd", ""))
     reasons = []
-    if not _is_read_only(command) and _matches(DESTRUCTIVE_PATTERNS, command):
+    explicit_shell = bool(call and call[0] == "exec_command" and isinstance(call[1], dict) and call[1].get("shell"))
+    if (explicit_shell or not _is_read_only(command)) and _matches(DESTRUCTIVE_PATTERNS, command):
         reasons.append("Destructive command blocked; require explicit approval and scoped target review.")
     if _matches(FORBIDDEN_PATH_PATTERNS, command):
         reasons.append("Command references a path outside normal project ownership.")
@@ -647,6 +718,8 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     mutating = _is_mutating(tool, command)
+    if call and call[0] == "exec_command" and isinstance(call[1], dict) and call[1].get("shell"):
+        mutating = True  # An explicit interpreter can assign different semantics to literal text.
     if mutating:
         try:
             root = _workspace_root(payload)

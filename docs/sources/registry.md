@@ -1,6 +1,59 @@
 # Реестр источников
 
-## PAOS-AUD-G7 — research intake, 2026-11-09
+## Web storage contract v0.6 — 2026-11-09
+
+Выбор пользователя: SQLite + FTS5 local; PostgreSQL + pgvector team. PRD §16 / architecture §20 и G12 плана — schema/migration proposal, не реализация. Owning artifacts: `research/product-agent-os-web-prd-2026-11-05.md`, `research/product-agent-os-web-architecture-2026-11-05.md`, `research/product-agent-os-web-task-manager-plan-2026-11-09.md`.
+
+| ID | Source | Claim scope | Checked | Status |
+| --- | --- | --- | --- | --- |
+| WEB-DB-08 | [SQLite FK](https://sqlite.org/foreignkeys.html) | Per-connection foreign-key enforcement | 2026-11-09 | official / documentation_checked; implementation_not_started |
+| WEB-DB-09 | [PostgreSQL RLS](https://www.postgresql.org/docs/current/ddl-rowsecurity.html) | Opt-in row policies and owner/bypass boundary | 2026-11-09 | official / documentation_checked; implementation_not_started |
+
+WEB-DB-02/03 FTS5/pgvector rechecked in this authoring run; earlier WAL/backup research retained with its provenance.
+
+## Web storage research — 2026-11-09
+
+Исследовательский отчёт: `research/product-agent-os-web-storage-research-2026-11-09.md`. Предлагаемая архитектура; официальные docs и пять GitHub аналогов, pinned файлы в §6. Без DB benchmark/реализации.
+
+| ID | Source | Claim scope | Checked | Status |
+| --- | --- | --- | --- | --- |
+| WEB-DB-01 | [WEB-DB-01](https://sqlite.org/wal.html) | SQLite WAL, concurrency and runtime version caveat | 2026-11-09 | official / documentation_checked; PAOS runtime not_verified |
+| WEB-DB-02 | [WEB-DB-02](https://sqlite.org/fts5.html) | Lexical baseline and BM25 | 2026-11-09 | official / documentation_checked; PAOS runtime not_verified |
+| WEB-DB-03 | [WEB-DB-03](https://github.com/pgvector/pgvector) | PostgreSQL vector extension and filtered ANN | 2026-11-09 | official / documentation_checked; PAOS runtime not_verified |
+| WEB-DB-04 | [WEB-DB-04](https://docs.lancedb.com/basics/guarantees) | LanceDB table transaction boundary | 2026-11-09 | official / documentation_checked; PAOS runtime not_verified |
+| WEB-DB-05 | [WEB-DB-05](https://docs.lancedb.com/search/hybrid-search) | Embedded hybrid retrieval | 2026-11-09 | official / documentation_checked; PAOS runtime not_verified |
+| WEB-DB-06 | [WEB-DB-06](https://qdrant.tech/documentation/edge/edge-vs-qdrant-cluster/) | Qdrant Server versus Edge | 2026-11-09 | official / documentation_checked; PAOS runtime not_verified |
+| WEB-DB-07 | [WEB-DB-07](https://pglite.dev/docs/pglite-socket) | PGlite single-connection boundary | 2026-11-09 | official / documentation_checked; PAOS runtime not_verified |
+
+## Web session UX v0.5 — 2026-11-09
+
+| ID | Source | Scope | Checked | Status |
+| --- | --- | --- | --- | --- |
+| WEB-UX-05 | `research/product-agent-os-web-m1-wireframes-2026-11-09.md`, `research/product-agent-os-web-task-manager-screens-2026-11-09.md` | 28 маршрутов, 16 wireframes, 18 proposed критериев; чат, задачи, агенты, diff, permissions и recovery | 2026-11-09 | project-authored / draft_for_review; render and runtime not_verified |
+
+## Web single-window v0.4 — 2026-11-09
+
+Выбран собственный клиент Codex App Server; owning artifacts: `research/product-agent-os-web-prd-2026-11-05.md`, `research/product-agent-os-web-architecture-2026-11-05.md`, `research/product-agent-os-web-auth-commercial-2026-11-09.md`, `research/product-agent-os-web-task-manager-plan-2026-11-09.md`. 47 planned tasks / 11 групп; SW-01–12, 28 текстовых routes. Runtime/commercial admission не подтверждены; прежние entries/receipts исторические.
+
+| ID | Source | Claim boundary | Checked | Status |
+| --- | --- | --- | --- | --- |
+| WEB-AUTH-01 | [WEB-AUTH-01](https://learn.chatgpt.com/docs/app-server#auth-endpoints) | App Server auth и commercial/hosted restriction; не доказательство допуска PAOS | 2026-11-09 | official / documentation_checked; runtime and admission not_verified |
+| WEB-AUTH-02 | [WEB-AUTH-02](https://developers.openai.com/siwc/request-client-id) | Commercial SIWC: selected partners/waitlist | 2026-11-09 | official / documentation_checked; runtime and admission not_verified |
+| WEB-AUTH-03 | [WEB-AUTH-03](https://developers.openai.com/siwc/token-sharing-open-source) | Plan usage отдельно от identity; paid/remote требует отдельного рассмотрения; ChatGPT history не предоставляется | 2026-11-09 | official / documentation_checked; runtime and admission not_verified |
+| WEB-AUTH-04 | [WEB-AUTH-04](https://developers.openai.com/siwc/token-sharing-open-source/codex-app-server) | SIWC provider, client-owned renewal/restart/resume; model catalog не entitlement | 2026-11-09 | official / documentation_checked; runtime and admission not_verified |
+| WEB-AUTH-05 | [WEB-AUTH-05](https://developers.openai.com/siwc/token-sharing-open-source/preview-limitations) | Ограничения SIWC route, local history и tool/input boundaries | 2026-11-09 | official / documentation_checked; runtime and admission not_verified |
+| WEB-AUTH-06 | [WEB-AUTH-06](https://developers.openai.com/siwc/website) | PKCE/OIDC identity flow и собственная app session; не plan usage permission | 2026-11-09 | official / documentation_checked; runtime and admission not_verified |
+| WEB-AUTH-07 | [WEB-AUTH-07](https://openai.com/policies/services-agreement/) | API Customer Applications и запрет передачи ключей/обхода ограничений; exact deployment review pending | 2026-11-09 | official / documentation_checked; runtime and admission not_verified |
+| WEB-AUTH-08 | [WEB-AUTH-08](https://help.openai.com/en/articles/9039756-managing-billing-for-chatgpt-and-the-api-platform) | Раздельный billing ChatGPT/API | 2026-11-09 | official / documentation_checked; runtime and admission not_verified |
+| WEB-AUTH-09 | [WEB-AUTH-09](https://github.com/openai/codex/blob/main/LICENSE) | Apache-2.0 для Codex source; проверка exact distributed build отдельно | 2026-11-09 | official / documentation_checked; runtime and admission not_verified |
+
+Продуктовые решения и ограничения хранятся в auth/commercial документе. Источники не разрешают скрытое наследование login или использование платной подписки без подходящего consent/admission.
+
+## PAOS-AUD-G7 — implementation evidence, 2026-11-09
+
+G7 implementation: [current-run evidence](../../research/product-agent-os-g7-execution-report-2026-11-09.md) и [отдельный design](../superpowers/specs/paos-aud-g7-code-quality-eval-design.json). Project-local contracts и 10-case regression comparison; external benchmark results не переиспользованы как наши. Fresh-session/strict model isolation/tool execution gaps явны. Official Codex [Configuration Reference](https://learn.chatgpt.com/docs/config-file/config-reference) прочитан 09.11.2026; CLI 0.167.0 проверен локально, неизвестный tools.disable_defaults отклонён. Owner acceptance pending.
+
+### Historical research intake
 
 Углубление 09.11.2026: [source review и traceability](../../research/product-agent-os-g7-repository-deep-review-2026-11-09.md) закрепляет пять repository revisions, прочитанные implementation/test slices и четыре tool-doc источника. Findings P/K/M/S/D/X внесены в восемь planned G7 карточек; adopt/adapt/reject разделены. Статус community: source_inspected_runtime_not_reproduced; primary tool docs проверены, installed compatibility не проверялась.
 
@@ -1878,3 +1931,7 @@ Canonical mapping: старые Codex models/subagents/security URL могут �
 ## 2026-11-03 — Lifecycle repair acceptance
 
 Исправлены ACT-F1..F6. Причина пропуска PreToolUse и Stop подтверждена read-only `hooks/list`: изменение двух statusMessage сделало определения `modified`. Восстановлены прежние определения со статусом `trusted`; команды, matcher, timeout, код защиты и записи trust не менялись. Новая desktop-сессия прошла полный 9/13 и обычный concise маршруты; запись через nested apply_patch при terminal marker запрещена, sentinel отсутствует. Валидатор принимает plain/bold labels и сохраняет обязательные closure/review ограничения. Согласованы eval, assigned scope product-manager, parent-owned skills и Sol identifier. Evidence: `lifecycle_parity.repair` в существующем November task-group JSON. Граница: проверенные локальные desktop-маршруты; исполнение молчащего Stop отдельно не трассировалось, production и полнота всех каналов записи не заявляются. [Official Hooks](https://learn.chatgpt.com/docs/hooks) describes exact-definition trust and skipping modified hooks. The previous failed acceptance remains historical evidence.
+
+## G7: проверка архитектурных инструментов — 2026-11-09
+
+[Import Linter 2.16](https://pypi.org/project/import-linter/2.16/) и [dependency-cruiser v18.6.0](https://github.com/sverweij/dependency-cruiser/blob/v18.6.0/package.json): разрешённая локальная установка с pinned dependency locks; синтетические Python/JavaScript controls описаны в [G7 report](../../research/product-agent-os-g7-execution-report-2026-11-09.md). Installed JSON reporter и resolver filtering прочитаны; 10 ожидаемых outcomes распознаны после исправления фильтра, скрывавшего unresolved edges. Это local synthetic evidence, не target/TypeScript/production verification. [Codex v0.167.0 trace source](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/rollout-trace/README.md) — основание request receipt parser; фактическая eligibility указана отдельно и не выводится из config. Прежние утверждения об отсутствии установки относятся к этапу исследования.

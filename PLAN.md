@@ -1,8 +1,24 @@
 # PLAN.md
 
-## PAOS-AUD-G7 — planned, 2026-11-09
+## Web storage contract v0.6 — 2026-11-09
 
-Уточнены восемь planned задач по [deep review](research/product-agent-os-g7-repository-deep-review-2026-11-09.md): T01 → T02/T03/T05/T06 → T07 → T08; T04 — независимый guard fix. Реализация не запускалась; G6 owner/HOST/T34 gates сохранены. [Карточки и границы](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#paos-aud-g7--качество-реализации-архитектурная-простота-и-достаточная-проверка).
+[Web plan v0.6](research/product-agent-os-web-task-manager-plan-2026-11-09.md): 53 planned tasks / 12 groups; G12 0048–0053. SQLite/FTS5 foundation → session → search/import/restore → M1 acceptance. PostgreSQL/pgvector и local→team transfer — T1, не блокируют M4. Engines selected, schema proposed; разработка не начата.
+
+## Web storage research — 2026-11-09
+
+[Исследование хранения](research/product-agent-os-web-storage-research-2026-11-09.md): SQLite/FTS5 для local M1, LanceDB как candidate semantic index; PostgreSQL/pgvector при team/server scope, Qdrant и PGlite — альтернативы. Решение proposed; cutover authority, выбор SDK и benchmark не выполнены. Очередь 47 Web задач не меняется.
+
+## Web session UX v0.5 — 2026-11-09
+
+[UX v0.5](research/product-agent-os-web-m1-wireframes-2026-11-09.md) детализирует M1b/M1c и расширения M2–M3 существующего Web плана. 47 planned tasks / 11 groups сохранены; очередь и зависимости не менялись. Следующий продуктовый шаг — review/приёмка wireframes; разработка требует отдельного запроса.
+
+## Web single-window v0.4 — 2026-11-09
+
+[Web plan v0.4](research/product-agent-os-web-task-manager-plan-2026-11-09.md): 47 planned tasks / 11 groups; G11 PAOS-0039–0047. Первыми launch/connection/session/scoped run/recovery и M1 gate, затем full Task Manager и autonomy. PAOS-0047 SIWC optional, не блокирует API-M1. Implementation не разрешена; PAOS-AUD очередь не меняется.
+
+## PAOS-AUD-G7 — partially_verified, 2026-11-09
+
+T01–T05 accepted; T06 implemented_locally_verified / needs_user_acceptance: 10/10 actual tool cases, full 1372 tests OK (1 skip). T07 strict comparison blocked: actual preflight содержит два tools; T08 owner decision pending. Pressure corpus подготовлен. [Матрица](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md), [evidence](research/product-agent-os-g7-execution-report-2026-11-09.md). Fresh-session отдельно; чужие Web edits сохранить.
 
 ## Web issue workflows v0.3 — 2026-11-09
 
@@ -33,7 +49,7 @@ G4 F05/F09/F10/F15 implemented_locally_verified. Следующая группа
   "sources": [
     {
       "path": "research/product-agent-os-audit-remediation-task-plan-2026-11-09.md",
-      "revision": "sha256:ff23658f0c86cd3fc7bd6220b74d0d7576e6247f19014dc1d0f71509fa362afd",
+      "revision": "sha256:55a2403aced6a3d79bcb34869ac87d06643484ebe46e393a8cb10bd82ae50c7d",
       "task_prefixes": [
         "PAOS-AUD-"
       ]

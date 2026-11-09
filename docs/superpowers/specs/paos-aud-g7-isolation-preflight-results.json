@@ -1,0 +1,65 @@
+{
+  "schema_version": "g7_isolation_preflight_v1",
+  "status": "blocked",
+  "attempts": [
+    {
+      "preflight_call_started": true,
+      "reasons": [
+        "codex_preflight_exit_nonzero"
+      ],
+      "schema_version": "g7_codex_trace_receipt_v1",
+      "status": "blocked",
+      "strict_AB_eligible": false
+    },
+    {
+      "additional_tool_count": 2,
+      "auth_mode": "chatgpt",
+      "codex_version": "0.167.0",
+      "common_context_sha256": "5f9116fcf57a925513c0f7364c7b58dd2ad581ff0339c416640dc081eab523dd",
+      "configuration_error": false,
+      "configuration_sha256": "19dd736a87d21a6e87fc37f37ab52eee404e0ec7194a4f7ff01ac9fbd58953a6",
+      "exit_code": 0,
+      "filesystem_isolation": "not_established",
+      "forbidden_marker_check": "configured",
+      "inference_starts_observed": 1,
+      "observed_effort": "medium",
+      "observed_model": "gpt-6.1-sol",
+      "observed_tool_count": 2,
+      "permission_denied": false,
+      "preflight_call_started": true,
+      "prompt_sha256": "b66a9b4a2e12fb308728ee073a8ffbd0257fa51a5e815f5440604a9006e7999c",
+      "reasons": [
+        "tools_present",
+        "provider_mismatch"
+      ],
+      "request_sha256": "c9ffe307c1b12e97f4aab52f54118361166954578b482ffd1b798b5487daf610",
+      "schema_version": "g7_codex_trace_receipt_v1",
+      "status": "blocked",
+      "strict_AB_eligible": false,
+      "tool_inventory_sha256": "3be4a5a9844dc2063153b802fd5bf88b1fb8fcbc47a4f8527e049c4baf1f4fc1"
+    }
+  ],
+  "narrow_filesystem_probes": [
+    {
+      "backend": "elevated",
+      "result": "requires effective root read"
+    },
+    {
+      "backend": "mxc",
+      "result": "unavailable on executor"
+    }
+  ],
+  "runner_digest": "0e24798804a724c643b1f7a90b7fffd510757d65f912fc9112e5086c548f24a3",
+  "new_comparative_generations": 0,
+  "confirmed_preflight_inference_starts": 1,
+  "unattested_first_attempt_inferences": null,
+  "raw_trace_retained": false,
+  "limits": [
+    "single synthetic request; no comparative outcome",
+    "two additional tools observed despite disabled access channels",
+    "provider identifier did not match parser expectation; no alternate-provider claim",
+    "filesystem isolation not established",
+    "no API key created; existing ChatGPT authentication",
+    "fresh-session activation remains separate"
+  ]
+}

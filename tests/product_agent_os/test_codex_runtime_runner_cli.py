@@ -401,6 +401,26 @@ class CodexRuntimeRunnerCliTest(unittest.TestCase):
 class OrdinaryRouteCliTest(unittest.TestCase):
     """Exercise the public opt-in path, without granting target write authority."""
 
+    def test_g7_route_reuses_inventory_and_invalidates_lockfile_evidence(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            context = self._workspace(root)
+            context['change_mode'] = 'refactor'
+            (root / 'uv.lock').write_text('version = 1\n', encoding='utf-8')
+            first = json.loads(self._cli(root, context).stdout)['route_packet']
+            self.assertEqual(first['quality_strategy']['test_first_decision']['status'], 'not_applicable')
+            summary = first['code_change_contract']['existing_capability']
+            self.assertIsInstance(summary, dict)
+            self.assertEqual(summary['reference_coverage'], 'unknown')
+            self.assertTrue(summary['candidates'])
+            self.assertEqual(len(first['code_change_contract']), 8)
+            digest = first['task_routing']['input_digest']
+            (root / 'uv.lock').write_text('version = 2\n', encoding='utf-8')
+            second = json.loads(self._cli(root, context).stdout)['route_packet']
+            self.assertNotEqual(digest, second['task_routing']['input_digest'])
+            self.assertEqual(first['verification'], second['verification'])
+
+
     def _workspace(self, root, *, language="en"):
         (root / "AGENTS.md").write_text("# Rules\nPreserve existing behavior.\n", encoding="utf-8")
         (root / "pyproject.toml").write_text('[project]\nname = "sample"\nversion = "0.1.0"\n', encoding="utf-8")

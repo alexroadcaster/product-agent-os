@@ -1,0 +1,46 @@
+{
+  "forbidden": [
+    {
+      "name": "domain-no-infra",
+      "severity": "error",
+      "from": {
+        "path": "^src/domain/"
+      },
+      "to": {
+        "path": "^src/infra/",
+        "reachable": true
+      }
+    },
+    {
+      "name": "no-cycles",
+      "severity": "error",
+      "from": {},
+      "to": {
+        "circular": true
+      }
+    },
+    {
+      "name": "no-unresolved",
+      "severity": "error",
+      "from": {},
+      "to": {
+        "couldNotResolve": true
+      }
+    }
+  ],
+  "options": {
+    "doNotFollow": {
+      "path": "node_modules"
+    },
+    "enhancedResolveOptions": {
+      "exportsFields": [
+        "exports"
+      ],
+      "conditionNames": [
+        "import",
+        "node",
+        "default"
+      ]
+    }
+  }
+}

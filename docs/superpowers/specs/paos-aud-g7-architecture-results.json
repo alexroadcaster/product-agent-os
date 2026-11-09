@@ -1,0 +1,986 @@
+{
+  "schema_version": "g7_architecture_receipt_v1",
+  "synthetic_only": true,
+  "manifest_digest": "00f523a8f888bbe2f82fe287595a2a72c8ef7137c14f85b4287618a3e4adf191",
+  "runner_digest": "801843ea3c039598b063d5572b28dfc7dd20906ec20efcd14a380d0d5952d510",
+  "python": "3.13.5",
+  "node": "v26.5.0",
+  "passed": 10,
+  "attempted": 10,
+  "records": [
+    {
+      "family": "python",
+      "case": "allowed",
+      "expected_matched": true,
+      "context": {
+        "tool": "import-linter",
+        "version": "2.16",
+        "config_digest": "36c6a434a6ebe6c15f1df65be2c629825ad7392e7e1f1fd53b9daaf006183b9f",
+        "policy_digest": "25a8b1dab6ad4257ff856b4d5fa2c72c1f73e6a03639ac47b25173a0017ca84f",
+        "input_digest": "332242b51cbbf994831a09a33922d10beba42f2d5e3a6ca1755601d5296a20ea"
+      },
+      "receipt": {
+        "tool": "import-linter",
+        "version": "2.16",
+        "config_digest": "36c6a434a6ebe6c15f1df65be2c629825ad7392e7e1f1fd53b9daaf006183b9f",
+        "policy_digest": "25a8b1dab6ad4257ff856b4d5fa2c72c1f73e6a03639ac47b25173a0017ca84f",
+        "input_digest": "332242b51cbbf994831a09a33922d10beba42f2d5e3a6ca1755601d5296a20ea",
+        "installed": true,
+        "runnable": true,
+        "outcome": "completed",
+        "coverage": "complete",
+        "findings": [],
+        "controls": [
+          "allowed",
+          "forbidden",
+          "transitive"
+        ]
+      },
+      "policy": {
+        "scope": "sample",
+        "exclusions": [
+          "node_modules"
+        ],
+        "resolver": "python",
+        "type_only": "included",
+        "lock_digest": "d876397cb6c7ec94f46cb90433c6b5b44c6a7ae78c809c6cde3521b39ec73e35"
+      },
+      "summary": {
+        "edges": [],
+        "recognized": true
+      },
+      "process_exit_code": 0,
+      "output_digest": "5b8f05d4a1efde99ed4a6f855a8b71166c362b62a8d45376282be1627543400d",
+      "elapsed_seconds": 0.323,
+      "command": [
+        "lint-imports",
+        "--config",
+        ".importlinter",
+        "--no-cache",
+        "--no-logo"
+      ],
+      "projection": {
+        "installed": true,
+        "runnable": true,
+        "verified": true,
+        "verified_clean": true,
+        "status": "verified",
+        "findings": [],
+        "absent_candidates": [],
+        "evidence_ceiling": "supplied observations; no scanner execution or authentication"
+      }
+    },
+    {
+      "family": "python",
+      "case": "direct",
+      "expected_matched": true,
+      "context": {
+        "tool": "import-linter",
+        "version": "2.16",
+        "config_digest": "36c6a434a6ebe6c15f1df65be2c629825ad7392e7e1f1fd53b9daaf006183b9f",
+        "policy_digest": "25a8b1dab6ad4257ff856b4d5fa2c72c1f73e6a03639ac47b25173a0017ca84f",
+        "input_digest": "82b4e7dc42e1bd0d2186a87e07355183bc7323614df577afe57785adccb99d08"
+      },
+      "receipt": {
+        "tool": "import-linter",
+        "version": "2.16",
+        "config_digest": "36c6a434a6ebe6c15f1df65be2c629825ad7392e7e1f1fd53b9daaf006183b9f",
+        "policy_digest": "25a8b1dab6ad4257ff856b4d5fa2c72c1f73e6a03639ac47b25173a0017ca84f",
+        "input_digest": "82b4e7dc42e1bd0d2186a87e07355183bc7323614df577afe57785adccb99d08",
+        "installed": true,
+        "runnable": true,
+        "outcome": "completed",
+        "coverage": "complete",
+        "findings": [
+          {
+            "rule": "domain-no-infra",
+            "subject": "sample.domain",
+            "severity": "error",
+            "path": "sample/domain/service.py",
+            "witness": [
+              "sample.domain.service -> sample.infra.db (l.1)"
+            ]
+          }
+        ],
+        "controls": [
+          "allowed",
+          "forbidden",
+          "transitive"
+        ]
+      },
+      "policy": {
+        "scope": "sample",
+        "exclusions": [
+          "node_modules"
+        ],
+        "resolver": "python",
+        "type_only": "included",
+        "lock_digest": "d876397cb6c7ec94f46cb90433c6b5b44c6a7ae78c809c6cde3521b39ec73e35"
+      },
+      "summary": {
+        "edges": [
+          "sample.domain.service -> sample.infra.db (l.1)"
+        ],
+        "recognized": true
+      },
+      "process_exit_code": 1,
+      "output_digest": "f05a5bd4e8329c60df7b35182cb7b51a00732b057ace4c2a3632a062553a3786",
+      "elapsed_seconds": 0.345,
+      "command": [
+        "lint-imports",
+        "--config",
+        ".importlinter",
+        "--no-cache",
+        "--no-logo"
+      ],
+      "projection": {
+        "installed": true,
+        "runnable": true,
+        "verified": true,
+        "verified_clean": false,
+        "status": "verified",
+        "findings": [
+          {
+            "rule": "domain-no-infra",
+            "subject": "sample.domain",
+            "severity": "error",
+            "path": "sample/domain/service.py",
+            "witness": [
+              "sample.domain.service -> sample.infra.db (l.1)"
+            ],
+            "baseline_status": "new_or_changed"
+          }
+        ],
+        "absent_candidates": [],
+        "evidence_ceiling": "supplied observations; no scanner execution or authentication"
+      }
+    },
+    {
+      "family": "python",
+      "case": "transitive",
+      "expected_matched": true,
+      "context": {
+        "tool": "import-linter",
+        "version": "2.16",
+        "config_digest": "36c6a434a6ebe6c15f1df65be2c629825ad7392e7e1f1fd53b9daaf006183b9f",
+        "policy_digest": "25a8b1dab6ad4257ff856b4d5fa2c72c1f73e6a03639ac47b25173a0017ca84f",
+        "input_digest": "541a79eca96bf4a55a9b25ce84d1efbf606c6fa05a3e41b3a812249d6383069b"
+      },
+      "receipt": {
+        "tool": "import-linter",
+        "version": "2.16",
+        "config_digest": "36c6a434a6ebe6c15f1df65be2c629825ad7392e7e1f1fd53b9daaf006183b9f",
+        "policy_digest": "25a8b1dab6ad4257ff856b4d5fa2c72c1f73e6a03639ac47b25173a0017ca84f",
+        "input_digest": "541a79eca96bf4a55a9b25ce84d1efbf606c6fa05a3e41b3a812249d6383069b",
+        "installed": true,
+        "runnable": true,
+        "outcome": "completed",
+        "coverage": "complete",
+        "findings": [
+          {
+            "rule": "domain-no-infra",
+            "subject": "sample.domain",
+            "severity": "error",
+            "path": "sample/domain/service.py",
+            "witness": [
+              "sample.domain.service -> sample.bridge (l.1)",
+              "sample.bridge -> sample.infra.db (l.1)"
+            ]
+          }
+        ],
+        "controls": [
+          "allowed",
+          "forbidden",
+          "transitive"
+        ]
+      },
+      "policy": {
+        "scope": "sample",
+        "exclusions": [
+          "node_modules"
+        ],
+        "resolver": "python",
+        "type_only": "included",
+        "lock_digest": "d876397cb6c7ec94f46cb90433c6b5b44c6a7ae78c809c6cde3521b39ec73e35"
+      },
+      "summary": {
+        "edges": [
+          "sample.domain.service -> sample.bridge (l.1)",
+          "sample.bridge -> sample.infra.db (l.1)"
+        ],
+        "recognized": true
+      },
+      "process_exit_code": 1,
+      "output_digest": "539e31b617a6cf49ff6c09fe5d9c2f76b6be3b97a28a41ad24335252a091ba42",
+      "elapsed_seconds": 0.338,
+      "command": [
+        "lint-imports",
+        "--config",
+        ".importlinter",
+        "--no-cache",
+        "--no-logo"
+      ],
+      "projection": {
+        "installed": true,
+        "runnable": true,
+        "verified": true,
+        "verified_clean": false,
+        "status": "verified",
+        "findings": [
+          {
+            "rule": "domain-no-infra",
+            "subject": "sample.domain",
+            "severity": "error",
+            "path": "sample/domain/service.py",
+            "witness": [
+              "sample.domain.service -> sample.bridge (l.1)",
+              "sample.bridge -> sample.infra.db (l.1)"
+            ],
+            "baseline_status": "new_or_changed"
+          }
+        ],
+        "absent_candidates": [],
+        "evidence_ceiling": "supplied observations; no scanner execution or authentication"
+      }
+    },
+    {
+      "family": "python",
+      "case": "cycle",
+      "expected_matched": true,
+      "context": {
+        "tool": "import-linter",
+        "version": "2.16",
+        "config_digest": "ea113d0d6dacd00276dd0521651dc25a295864d7a6c6a2178b14b5c5f2bca23b",
+        "policy_digest": "25a8b1dab6ad4257ff856b4d5fa2c72c1f73e6a03639ac47b25173a0017ca84f",
+        "input_digest": "d76b09fe758c5f3848b52cf4b9d513efbd4c84e322dad13a968dd835f2545ea2"
+      },
+      "receipt": {
+        "tool": "import-linter",
+        "version": "2.16",
+        "config_digest": "ea113d0d6dacd00276dd0521651dc25a295864d7a6c6a2178b14b5c5f2bca23b",
+        "policy_digest": "25a8b1dab6ad4257ff856b4d5fa2c72c1f73e6a03639ac47b25173a0017ca84f",
+        "input_digest": "d76b09fe758c5f3848b52cf4b9d513efbd4c84e322dad13a968dd835f2545ea2",
+        "installed": true,
+        "runnable": true,
+        "outcome": "completed",
+        "coverage": "complete",
+        "findings": [
+          {
+            "rule": "independence",
+            "subject": "sample.domain",
+            "severity": "error",
+            "path": "sample/domain/service.py",
+            "witness": [
+              "sample.domain.service -> sample.domain.other (l.1)",
+              "sample.domain.other -> sample.domain.service (l.1)"
+            ]
+          }
+        ],
+        "controls": [
+          "allowed",
+          "forbidden",
+          "transitive"
+        ]
+      },
+      "policy": {
+        "scope": "sample",
+        "exclusions": [
+          "node_modules"
+        ],
+        "resolver": "python",
+        "type_only": "included",
+        "lock_digest": "d876397cb6c7ec94f46cb90433c6b5b44c6a7ae78c809c6cde3521b39ec73e35"
+      },
+      "summary": {
+        "edges": [
+          "sample.domain.service -> sample.domain.other (l.1)",
+          "sample.domain.other -> sample.domain.service (l.1)"
+        ],
+        "recognized": true
+      },
+      "process_exit_code": 1,
+      "output_digest": "2068a1ae137a8a4c236bcf20e44d28f2eb94cb32bd1d3a4692fb10ac180fd828",
+      "elapsed_seconds": 0.397,
+      "command": [
+        "lint-imports",
+        "--config",
+        ".importlinter",
+        "--no-cache",
+        "--no-logo"
+      ],
+      "projection": {
+        "installed": true,
+        "runnable": true,
+        "verified": true,
+        "verified_clean": false,
+        "status": "verified",
+        "findings": [
+          {
+            "rule": "independence",
+            "subject": "sample.domain",
+            "severity": "error",
+            "path": "sample/domain/service.py",
+            "witness": [
+              "sample.domain.service -> sample.domain.other (l.1)",
+              "sample.domain.other -> sample.domain.service (l.1)"
+            ],
+            "baseline_status": "new_or_changed"
+          }
+        ],
+        "absent_candidates": [],
+        "evidence_ceiling": "supplied observations; no scanner execution or authentication"
+      }
+    },
+    {
+      "family": "javascript",
+      "case": "allowed",
+      "expected_matched": true,
+      "context": {
+        "tool": "dependency-cruiser",
+        "version": "18.6.0",
+        "config_digest": "8764fc934c8a2680fe138b76759f604c6a8869a7c5cee16587d137af31429d91",
+        "policy_digest": "d010c1f9137b08a0958c441702e32bf08cdca1b9e4919d6d18595da9feb29a93",
+        "input_digest": "5b8bf7310a9b2207f857d4490f28553435fb50741b1d5651ef2db44ff2c57c4e"
+      },
+      "receipt": {
+        "tool": "dependency-cruiser",
+        "version": "18.6.0",
+        "config_digest": "8764fc934c8a2680fe138b76759f604c6a8869a7c5cee16587d137af31429d91",
+        "policy_digest": "d010c1f9137b08a0958c441702e32bf08cdca1b9e4919d6d18595da9feb29a93",
+        "input_digest": "5b8bf7310a9b2207f857d4490f28553435fb50741b1d5651ef2db44ff2c57c4e",
+        "installed": true,
+        "runnable": true,
+        "outcome": "completed",
+        "coverage": "complete",
+        "findings": [],
+        "controls": [
+          "allowed",
+          "forbidden",
+          "transitive"
+        ]
+      },
+      "policy": {
+        "scope": "src",
+        "exclusions": [
+          "node_modules"
+        ],
+        "resolver": "node imports #db",
+        "type_only": "not_applicable: .mjs only",
+        "lock_digest": "c61ddf131487ef049dc93c5e721e1081c4f59b50394e6974cc48faab58d26e94"
+      },
+      "summary": {
+        "advised_exit_code": 0,
+        "module_count": 4,
+        "expected_module_count": 4,
+        "unresolved": false
+      },
+      "process_exit_code": 0,
+      "output_digest": "cde7c40fe7fcff88be88324a2a42fc06ff9f64fa24b742f0ee011b49237edc1b",
+      "elapsed_seconds": 0.47,
+      "command": [
+        "node dependency-cruiser",
+        "src",
+        "--config",
+        "rules.json",
+        "--no-cache",
+        "--output-type",
+        "json"
+      ],
+      "projection": {
+        "installed": true,
+        "runnable": true,
+        "verified": true,
+        "verified_clean": true,
+        "status": "verified",
+        "findings": [],
+        "absent_candidates": [],
+        "evidence_ceiling": "supplied observations; no scanner execution or authentication"
+      }
+    },
+    {
+      "family": "javascript",
+      "case": "direct",
+      "expected_matched": true,
+      "context": {
+        "tool": "dependency-cruiser",
+        "version": "18.6.0",
+        "config_digest": "8764fc934c8a2680fe138b76759f604c6a8869a7c5cee16587d137af31429d91",
+        "policy_digest": "d010c1f9137b08a0958c441702e32bf08cdca1b9e4919d6d18595da9feb29a93",
+        "input_digest": "d62e1eca0bbf083fa39d16979cd4cca60239d2e9e72478cd13b135bcdb6ccbac"
+      },
+      "receipt": {
+        "tool": "dependency-cruiser",
+        "version": "18.6.0",
+        "config_digest": "8764fc934c8a2680fe138b76759f604c6a8869a7c5cee16587d137af31429d91",
+        "policy_digest": "d010c1f9137b08a0958c441702e32bf08cdca1b9e4919d6d18595da9feb29a93",
+        "input_digest": "d62e1eca0bbf083fa39d16979cd4cca60239d2e9e72478cd13b135bcdb6ccbac",
+        "installed": true,
+        "runnable": true,
+        "outcome": "completed",
+        "coverage": "complete",
+        "findings": [
+          {
+            "rule": "domain-no-infra",
+            "subject": "src/domain/service.mjs -> src/infra/db.mjs",
+            "severity": "error",
+            "path": "src/domain/service.mjs",
+            "witness": [
+              "src/infra/db.mjs"
+            ]
+          }
+        ],
+        "controls": [
+          "allowed",
+          "forbidden",
+          "transitive"
+        ]
+      },
+      "policy": {
+        "scope": "src",
+        "exclusions": [
+          "node_modules"
+        ],
+        "resolver": "node imports #db",
+        "type_only": "not_applicable: .mjs only",
+        "lock_digest": "c61ddf131487ef049dc93c5e721e1081c4f59b50394e6974cc48faab58d26e94"
+      },
+      "summary": {
+        "advised_exit_code": 1,
+        "module_count": 4,
+        "expected_module_count": 4,
+        "unresolved": false
+      },
+      "process_exit_code": 0,
+      "output_digest": "2c32deab266057fc190b27823a6d1165386b65e0e2fe7769afc3b282597e191d",
+      "elapsed_seconds": 0.47,
+      "command": [
+        "node dependency-cruiser",
+        "src",
+        "--config",
+        "rules.json",
+        "--no-cache",
+        "--output-type",
+        "json"
+      ],
+      "projection": {
+        "installed": true,
+        "runnable": true,
+        "verified": true,
+        "verified_clean": false,
+        "status": "verified",
+        "findings": [
+          {
+            "rule": "domain-no-infra",
+            "subject": "src/domain/service.mjs -> src/infra/db.mjs",
+            "severity": "error",
+            "path": "src/domain/service.mjs",
+            "witness": [
+              "src/infra/db.mjs"
+            ],
+            "baseline_status": "new_or_changed"
+          }
+        ],
+        "absent_candidates": [],
+        "evidence_ceiling": "supplied observations; no scanner execution or authentication"
+      }
+    },
+    {
+      "family": "javascript",
+      "case": "transitive",
+      "expected_matched": true,
+      "context": {
+        "tool": "dependency-cruiser",
+        "version": "18.6.0",
+        "config_digest": "8764fc934c8a2680fe138b76759f604c6a8869a7c5cee16587d137af31429d91",
+        "policy_digest": "d010c1f9137b08a0958c441702e32bf08cdca1b9e4919d6d18595da9feb29a93",
+        "input_digest": "7378e96f6bc4d3a726872a344ecace99421c8a1a8a2d3019e19d6ef99a4cc2eb"
+      },
+      "receipt": {
+        "tool": "dependency-cruiser",
+        "version": "18.6.0",
+        "config_digest": "8764fc934c8a2680fe138b76759f604c6a8869a7c5cee16587d137af31429d91",
+        "policy_digest": "d010c1f9137b08a0958c441702e32bf08cdca1b9e4919d6d18595da9feb29a93",
+        "input_digest": "7378e96f6bc4d3a726872a344ecace99421c8a1a8a2d3019e19d6ef99a4cc2eb",
+        "installed": true,
+        "runnable": true,
+        "outcome": "completed",
+        "coverage": "complete",
+        "findings": [
+          {
+            "rule": "domain-no-infra",
+            "subject": "src/domain/service.mjs -> src/infra/db.mjs",
+            "severity": "error",
+            "path": "src/domain/service.mjs",
+            "witness": [
+              "src/bridge.mjs",
+              "src/infra/db.mjs"
+            ]
+          }
+        ],
+        "controls": [
+          "allowed",
+          "forbidden",
+          "transitive"
+        ]
+      },
+      "policy": {
+        "scope": "src",
+        "exclusions": [
+          "node_modules"
+        ],
+        "resolver": "node imports #db",
+        "type_only": "not_applicable: .mjs only",
+        "lock_digest": "c61ddf131487ef049dc93c5e721e1081c4f59b50394e6974cc48faab58d26e94"
+      },
+      "summary": {
+        "advised_exit_code": 1,
+        "module_count": 4,
+        "expected_module_count": 4,
+        "unresolved": false
+      },
+      "process_exit_code": 0,
+      "output_digest": "4b408545f3225020836b115232d109e0192213a4ec6d9f31a9afd6fcf01adb30",
+      "elapsed_seconds": 0.531,
+      "command": [
+        "node dependency-cruiser",
+        "src",
+        "--config",
+        "rules.json",
+        "--no-cache",
+        "--output-type",
+        "json"
+      ],
+      "projection": {
+        "installed": true,
+        "runnable": true,
+        "verified": true,
+        "verified_clean": false,
+        "status": "verified",
+        "findings": [
+          {
+            "rule": "domain-no-infra",
+            "subject": "src/domain/service.mjs -> src/infra/db.mjs",
+            "severity": "error",
+            "path": "src/domain/service.mjs",
+            "witness": [
+              "src/bridge.mjs",
+              "src/infra/db.mjs"
+            ],
+            "baseline_status": "new_or_changed"
+          }
+        ],
+        "absent_candidates": [],
+        "evidence_ceiling": "supplied observations; no scanner execution or authentication"
+      }
+    },
+    {
+      "family": "javascript",
+      "case": "cycle",
+      "expected_matched": true,
+      "context": {
+        "tool": "dependency-cruiser",
+        "version": "18.6.0",
+        "config_digest": "8764fc934c8a2680fe138b76759f604c6a8869a7c5cee16587d137af31429d91",
+        "policy_digest": "d010c1f9137b08a0958c441702e32bf08cdca1b9e4919d6d18595da9feb29a93",
+        "input_digest": "75ac03caabc3866c41f395b2327f8f54999d4e2442bd1fa17d783b14eba88ce5"
+      },
+      "receipt": {
+        "tool": "dependency-cruiser",
+        "version": "18.6.0",
+        "config_digest": "8764fc934c8a2680fe138b76759f604c6a8869a7c5cee16587d137af31429d91",
+        "policy_digest": "d010c1f9137b08a0958c441702e32bf08cdca1b9e4919d6d18595da9feb29a93",
+        "input_digest": "75ac03caabc3866c41f395b2327f8f54999d4e2442bd1fa17d783b14eba88ce5",
+        "installed": true,
+        "runnable": true,
+        "outcome": "completed",
+        "coverage": "complete",
+        "findings": [
+          {
+            "rule": "no-cycles",
+            "subject": "src/domain/other.mjs -> src/domain/service.mjs",
+            "severity": "error",
+            "path": "src/domain/other.mjs",
+            "witness": [
+              "src/domain/service.mjs",
+              "src/domain/other.mjs"
+            ]
+          }
+        ],
+        "controls": [
+          "allowed",
+          "forbidden",
+          "transitive"
+        ]
+      },
+      "policy": {
+        "scope": "src",
+        "exclusions": [
+          "node_modules"
+        ],
+        "resolver": "node imports #db",
+        "type_only": "not_applicable: .mjs only",
+        "lock_digest": "c61ddf131487ef049dc93c5e721e1081c4f59b50394e6974cc48faab58d26e94"
+      },
+      "summary": {
+        "advised_exit_code": 1,
+        "module_count": 4,
+        "expected_module_count": 4,
+        "unresolved": false
+      },
+      "process_exit_code": 0,
+      "output_digest": "33972013932085dd8abb3d0c55c8a35c32db466f783b3eb5fbfdc9a21fc0d603",
+      "elapsed_seconds": 0.42,
+      "command": [
+        "node dependency-cruiser",
+        "src",
+        "--config",
+        "rules.json",
+        "--no-cache",
+        "--output-type",
+        "json"
+      ],
+      "projection": {
+        "installed": true,
+        "runnable": true,
+        "verified": true,
+        "verified_clean": false,
+        "status": "verified",
+        "findings": [
+          {
+            "rule": "no-cycles",
+            "subject": "src/domain/other.mjs -> src/domain/service.mjs",
+            "severity": "error",
+            "path": "src/domain/other.mjs",
+            "witness": [
+              "src/domain/service.mjs",
+              "src/domain/other.mjs"
+            ],
+            "baseline_status": "new_or_changed"
+          }
+        ],
+        "absent_candidates": [],
+        "evidence_ceiling": "supplied observations; no scanner execution or authentication"
+      }
+    },
+    {
+      "family": "javascript",
+      "case": "alias",
+      "expected_matched": true,
+      "context": {
+        "tool": "dependency-cruiser",
+        "version": "18.6.0",
+        "config_digest": "8764fc934c8a2680fe138b76759f604c6a8869a7c5cee16587d137af31429d91",
+        "policy_digest": "d010c1f9137b08a0958c441702e32bf08cdca1b9e4919d6d18595da9feb29a93",
+        "input_digest": "04a319c88819db0dd8a11fc44b74c2943c34e52a9d84c0bd6955ab7bdc8be7b1"
+      },
+      "receipt": {
+        "tool": "dependency-cruiser",
+        "version": "18.6.0",
+        "config_digest": "8764fc934c8a2680fe138b76759f604c6a8869a7c5cee16587d137af31429d91",
+        "policy_digest": "d010c1f9137b08a0958c441702e32bf08cdca1b9e4919d6d18595da9feb29a93",
+        "input_digest": "04a319c88819db0dd8a11fc44b74c2943c34e52a9d84c0bd6955ab7bdc8be7b1",
+        "installed": true,
+        "runnable": true,
+        "outcome": "completed",
+        "coverage": "complete",
+        "findings": [
+          {
+            "rule": "domain-no-infra",
+            "subject": "src/domain/service.mjs -> src/infra/db.mjs",
+            "severity": "error",
+            "path": "src/domain/service.mjs",
+            "witness": [
+              "src/infra/db.mjs"
+            ]
+          }
+        ],
+        "controls": [
+          "allowed",
+          "forbidden",
+          "transitive"
+        ]
+      },
+      "policy": {
+        "scope": "src",
+        "exclusions": [
+          "node_modules"
+        ],
+        "resolver": "node imports #db",
+        "type_only": "not_applicable: .mjs only",
+        "lock_digest": "c61ddf131487ef049dc93c5e721e1081c4f59b50394e6974cc48faab58d26e94"
+      },
+      "summary": {
+        "advised_exit_code": 1,
+        "module_count": 4,
+        "expected_module_count": 4,
+        "unresolved": false
+      },
+      "process_exit_code": 0,
+      "output_digest": "34bf8044152e366cf70c29be267ca5d7533cc8baaa45581ecec91a390ebcd1d7",
+      "elapsed_seconds": 0.435,
+      "command": [
+        "node dependency-cruiser",
+        "src",
+        "--config",
+        "rules.json",
+        "--no-cache",
+        "--output-type",
+        "json"
+      ],
+      "projection": {
+        "installed": true,
+        "runnable": true,
+        "verified": true,
+        "verified_clean": false,
+        "status": "verified",
+        "findings": [
+          {
+            "rule": "domain-no-infra",
+            "subject": "src/domain/service.mjs -> src/infra/db.mjs",
+            "severity": "error",
+            "path": "src/domain/service.mjs",
+            "witness": [
+              "src/infra/db.mjs"
+            ],
+            "baseline_status": "new_or_changed"
+          }
+        ],
+        "absent_candidates": [],
+        "evidence_ceiling": "supplied observations; no scanner execution or authentication"
+      }
+    },
+    {
+      "family": "javascript",
+      "case": "unresolved",
+      "expected_matched": true,
+      "context": {
+        "tool": "dependency-cruiser",
+        "version": "18.6.0",
+        "config_digest": "8764fc934c8a2680fe138b76759f604c6a8869a7c5cee16587d137af31429d91",
+        "policy_digest": "d010c1f9137b08a0958c441702e32bf08cdca1b9e4919d6d18595da9feb29a93",
+        "input_digest": "5e15cbb0474cb5d85127e6c4af735f4089d82b8c68399c588c8d20991a7b6b2f"
+      },
+      "receipt": {
+        "tool": "dependency-cruiser",
+        "version": "18.6.0",
+        "config_digest": "8764fc934c8a2680fe138b76759f604c6a8869a7c5cee16587d137af31429d91",
+        "policy_digest": "d010c1f9137b08a0958c441702e32bf08cdca1b9e4919d6d18595da9feb29a93",
+        "input_digest": "5e15cbb0474cb5d85127e6c4af735f4089d82b8c68399c588c8d20991a7b6b2f",
+        "installed": true,
+        "runnable": true,
+        "outcome": "completed",
+        "coverage": "unresolved",
+        "findings": [
+          {
+            "rule": "no-unresolved",
+            "subject": "src/domain/service.mjs -> #missing",
+            "severity": "error",
+            "path": "src/domain/service.mjs",
+            "witness": [
+              "#missing"
+            ]
+          }
+        ],
+        "controls": [
+          "allowed",
+          "forbidden",
+          "transitive"
+        ]
+      },
+      "policy": {
+        "scope": "src",
+        "exclusions": [
+          "node_modules"
+        ],
+        "resolver": "node imports #db",
+        "type_only": "not_applicable: .mjs only",
+        "lock_digest": "c61ddf131487ef049dc93c5e721e1081c4f59b50394e6974cc48faab58d26e94"
+      },
+      "summary": {
+        "advised_exit_code": 1,
+        "module_count": 5,
+        "expected_module_count": 4,
+        "unresolved": true
+      },
+      "process_exit_code": 0,
+      "output_digest": "50db36278918cc1ac73c352987415f749fd7571b4e68135f3c584bbc779712fa",
+      "elapsed_seconds": 0.419,
+      "command": [
+        "node dependency-cruiser",
+        "src",
+        "--config",
+        "rules.json",
+        "--no-cache",
+        "--output-type",
+        "json"
+      ],
+      "projection": {
+        "installed": true,
+        "runnable": true,
+        "verified": false,
+        "verified_clean": false,
+        "status": "incomplete",
+        "findings": [
+          {
+            "rule": "no-unresolved",
+            "subject": "src/domain/service.mjs -> #missing",
+            "severity": "error",
+            "path": "src/domain/service.mjs",
+            "witness": [
+              "#missing"
+            ],
+            "baseline_status": "new_or_changed"
+          }
+        ],
+        "absent_candidates": [],
+        "evidence_ceiling": "supplied observations; no scanner execution or authentication"
+      }
+    }
+  ],
+  "baseline_comparisons": [
+    {
+      "family": "python",
+      "case": "direct",
+      "result": {
+        "installed": true,
+        "runnable": true,
+        "verified": true,
+        "verified_clean": false,
+        "status": "verified",
+        "findings": [
+          {
+            "rule": "domain-no-infra",
+            "subject": "sample.domain",
+            "severity": "error",
+            "path": "sample/domain/service.py",
+            "witness": [
+              "sample.domain.service -> sample.infra.db (l.1)"
+            ],
+            "baseline_status": "known"
+          }
+        ],
+        "absent_candidates": [],
+        "evidence_ceiling": "supplied observations; no scanner execution or authentication"
+      }
+    },
+    {
+      "family": "python",
+      "case": "transitive",
+      "result": {
+        "installed": true,
+        "runnable": true,
+        "verified": true,
+        "verified_clean": false,
+        "status": "verified",
+        "findings": [
+          {
+            "rule": "domain-no-infra",
+            "subject": "sample.domain",
+            "severity": "error",
+            "path": "sample/domain/service.py",
+            "witness": [
+              "sample.domain.service -> sample.bridge (l.1)",
+              "sample.bridge -> sample.infra.db (l.1)"
+            ],
+            "baseline_status": "new_or_changed"
+          }
+        ],
+        "absent_candidates": [],
+        "evidence_ceiling": "supplied observations; no scanner execution or authentication"
+      }
+    },
+    {
+      "family": "python",
+      "case": "allowed",
+      "result": {
+        "installed": true,
+        "runnable": true,
+        "verified": true,
+        "verified_clean": true,
+        "status": "verified",
+        "findings": [],
+        "absent_candidates": [
+          [
+            "domain-no-infra",
+            "sample.domain"
+          ]
+        ],
+        "evidence_ceiling": "supplied observations; no scanner execution or authentication"
+      }
+    },
+    {
+      "family": "javascript",
+      "case": "direct",
+      "result": {
+        "installed": true,
+        "runnable": true,
+        "verified": true,
+        "verified_clean": false,
+        "status": "verified",
+        "findings": [
+          {
+            "rule": "domain-no-infra",
+            "subject": "src/domain/service.mjs -> src/infra/db.mjs",
+            "severity": "error",
+            "path": "src/domain/service.mjs",
+            "witness": [
+              "src/infra/db.mjs"
+            ],
+            "baseline_status": "known"
+          }
+        ],
+        "absent_candidates": [],
+        "evidence_ceiling": "supplied observations; no scanner execution or authentication"
+      }
+    },
+    {
+      "family": "javascript",
+      "case": "transitive",
+      "result": {
+        "installed": true,
+        "runnable": true,
+        "verified": true,
+        "verified_clean": false,
+        "status": "verified",
+        "findings": [
+          {
+            "rule": "domain-no-infra",
+            "subject": "src/domain/service.mjs -> src/infra/db.mjs",
+            "severity": "error",
+            "path": "src/domain/service.mjs",
+            "witness": [
+              "src/bridge.mjs",
+              "src/infra/db.mjs"
+            ],
+            "baseline_status": "new_or_changed"
+          }
+        ],
+        "absent_candidates": [],
+        "evidence_ceiling": "supplied observations; no scanner execution or authentication"
+      }
+    },
+    {
+      "family": "javascript",
+      "case": "allowed",
+      "result": {
+        "installed": true,
+        "runnable": true,
+        "verified": true,
+        "verified_clean": true,
+        "status": "verified",
+        "findings": [],
+        "absent_candidates": [
+          [
+            "domain-no-infra",
+            "src/domain/service.mjs -> src/infra/db.mjs"
+          ]
+        ],
+        "evidence_ceiling": "supplied observations; no scanner execution or authentication"
+      }
+    }
+  ],
+  "limits": [
+    "No TypeScript resolver/type-only execution",
+    "No target project/CI/auto-fix"
+  ]
+}

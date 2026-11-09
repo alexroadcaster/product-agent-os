@@ -1,0 +1,14 @@
+{
+  "schema_version": "g7_review_v2",
+  "implementation": "codex_runtime_runner.g7_quality_eval.review_findings",
+  "legacy_v1": "unchanged; frozen T34",
+  "required_finding_fields": ["id", "revision", "source", "scenario", "consequence", "action", "confidence", "kind", "disposition", "evidence"],
+  "dispositions": ["confirmed", "fixed", "rejected", "false_positive", "deferred", "unresolved"],
+  "policy": {
+    "empty_findings_valid": true,
+    "preferences_block": false,
+    "self_scores_affect_verdict": false,
+    "deferred_risks_require_owner_acceptance": true,
+    "source_and_evidence_semantics_require_independent_review": true
+  }
+}

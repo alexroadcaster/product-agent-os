@@ -212,8 +212,9 @@ class Batch45CodeQualitySelectorTracerTest(unittest.TestCase):
         self.assertEqual(decision.status, "required")
         self.assertEqual(decision.risk_ids, (risk_id,))
         self.assertEqual(decision.protected_invariants, (invariant,))
-        self.assertEqual(strategy.test_first_decision.status, "required")
-        self.assertEqual(strategy.test_first_decision.risk_ids, (risk_id,))
+        self.assertEqual(strategy.test_first_decision.status, "not_applicable")
+        self.assertEqual(strategy.test_first_decision.risk_ids, ())
+        self.assertIn("characterization", strategy.test_first_decision.reason)
         for deferred in strategy.test_decisions[1:]:
             with self.subTest(deferred_test_kind=deferred.test_kind):
                 self.assertEqual(deferred.status, "not_applicable")
@@ -395,11 +396,11 @@ class Batch45CodeQualitySelectorTracerTest(unittest.TestCase):
             for mode in (
                 "new_behavior",
                 "defect_fix",
-                "refactor",
                 "legacy_change",
                 "generated_code",
             )
         ) + (
+            ("refactor", (risk("risk-refactor", "pure_logic"),), True, "", "not_applicable"),
             ("configuration", (risk("risk-config", "pure_logic"),), True, "", "not_applicable"),
             ("refactor", (), True, "", "not_applicable"),
             (
@@ -1809,6 +1810,98 @@ class Batch45CodeQualitySelectorTracerTest(unittest.TestCase):
             tuple(profile_dict["project_utilities"][0]),
             ("name", "status", "source", "proposed_command"),
         )
+
+
+class G7CapabilityTest(unittest.TestCase):
+    def test_scoped_projection_excludes_unrelated_and_private_tools(self):
+        from product_agent_os.code_quality_selector import capability_summary
+        inventory = ProjectInventory(('packages/a/main.py', 'packages/a/api_key.py', 'packages/b/helper.py',
+                                      'private/pyproject.toml', '.codex-tmp/notes.py', 'pyproject.toml'),
+                                     (DeclaredToolSignal('ruff', 'private/pyproject.toml'),), ())
+        result = capability_summary(inventory, scope_paths=('packages/a/main.py',))
+        self.assertEqual(result['candidates'], ['packages/a/main.py', 'pyproject.toml'])
+        self.assertEqual(result['tools'], [])
+
+    def test_bounded_candidates_keep_unknown_and_do_not_expose_sensitive_paths(self):
+        from product_agent_os.code_quality_selector import capability_summary
+        inventory = ProjectInventory(('calc.py', 'secrets.py', 'private/helper.py', 'package.json', 'util.ts'),
+                                     (DeclaredToolSignal('dependency-cruiser', 'package.json'),), ())
+        result = capability_summary(inventory, limit=2)
+        self.assertEqual(result['candidates'], ['calc.py', 'package.json'])
+        self.assertEqual(result['omitted'], 1)
+        self.assertEqual(result['reference_coverage'], 'unknown')
+        self.assertIsNone(result['tools'][0]['installed'])
+        profile = select_code_quality_profile(inventory)
+        self.assertIn('dependency-cruiser', str(code_quality_profile_as_dict(profile)))
+        with self.assertRaises(ValueError):
+            capability_summary(inventory, limit=0)
+
+
+class G7ArchitectureEvidenceTest(unittest.TestCase):
+    def setUp(self):
+        self.context = dict(tool="import-linter", version="2.16", config_digest="a" * 64,
+                            policy_digest="b" * 64, input_digest="c" * 64)
+        self.receipt = dict(self.context, installed=True, runnable=True, outcome="completed",
+                            coverage="complete", controls=["allowed", "forbidden", "transitive"], findings=[])
+
+    def project(self, receipt=None, baseline=None):
+        from product_agent_os.code_quality_selector import architecture_evidence
+        return architecture_evidence(self.context, (receipt or self.receipt,), baseline)
+
+    def test_architecture_cli_help_and_missing_opt_in_do_not_scan(self):
+        import subprocess
+        result_path = ROOT / 'docs/superpowers/specs/paos-aud-g7-architecture-results.json'
+        before = result_path.read_bytes() if result_path.exists() else None
+        script = SCRIPTS / 'run_g7_architecture_checks.py'
+        for args, code in [(['--help'], 0), ([], 2)]:
+            completed = subprocess.run([sys.executable, '-B', str(script), *args], capture_output=True, timeout=15)
+            self.assertEqual(completed.returncode, code)
+            self.assertEqual(result_path.read_bytes() if result_path.exists() else None, before)
+
+    def test_profile_projects_only_declared_in_scope_tool(self):
+        from product_agent_os.code_quality_selector import capability_summary
+        for tool, version, source in [("import-linter", "2.16", "pyproject.toml"),
+                                       ("dependency-cruiser", "18.6.0", "package.json")]:
+            context = dict(self.context, tool=tool, version=version)
+            receipt = dict(self.receipt, **context)
+            inventory = ProjectInventory((source,), (DeclaredToolSignal(tool, source),), ())
+            result = capability_summary(inventory, architecture_context=context, architecture_receipts=(receipt,))
+            self.assertTrue(result["architecture"]["verified_clean"])
+            missing = capability_summary(ProjectInventory((source,), (), ()), architecture_context=context, architecture_receipts=(receipt,))
+            self.assertFalse(missing["architecture"]["verified"])
+
+    def test_current_scan_separates_verified_from_clean(self):
+        self.assertTrue(self.project()["verified_clean"])
+        finding = dict(rule="boundary", subject="domain", severity="error", path="src/A.py", witness=["A", "B"])
+        self.receipt["findings"] = [finding]
+        self.assertTrue(self.project()["verified"])
+        self.assertFalse(self.project()["verified_clean"])
+        self.assertEqual(self.project()["findings"][0]["baseline_status"], "new_or_changed")
+
+    def test_missing_drift_ambiguous_and_incomplete_never_clean(self):
+        from product_agent_os.code_quality_selector import architecture_evidence
+        for key, value in [("version", "old"), ("config_digest", "d"*64), ("input_digest", "e"*64),
+                           ("policy_digest", "f"*64), ("coverage", "unresolved"), ("coverage", "reduced"),
+                           ("controls", ["allowed"]), ("installed", None), ("outcome", "failed")]:
+            with self.subTest(key=key, value=value):
+                self.assertFalse(self.project(dict(self.receipt, **{key:value}))["verified_clean"])
+        self.assertFalse(architecture_evidence(self.context, ())["verified"])
+        self.assertFalse(architecture_evidence(self.context, (self.receipt, self.receipt))["verified"])
+
+    def test_baseline_is_immutable_and_changed_witness_is_actionable(self):
+        finding = dict(rule="boundary", subject="domain", severity="error", path="src/A.py", witness=["A", "B"])
+        baseline = dict(self.receipt, findings=[finding])
+        before = json.dumps(baseline, sort_keys=True)
+        self.receipt["findings"] = [finding]
+        self.assertEqual(self.project(baseline=baseline)["findings"][0]["baseline_status"], "known")
+        for change in [dict(severity="warning"), dict(path="src/a.py"), dict(witness=["A", "C", "B"])]:
+            self.receipt["findings"] = [dict(finding, **change)]
+            self.assertEqual(self.project(baseline=baseline)["findings"][0]["baseline_status"], "new_or_changed")
+        self.receipt["findings"] = []
+        self.assertEqual(self.project(baseline=baseline)["absent_candidates"], [["boundary", "domain"]])
+        self.receipt["coverage"] = "reduced"
+        self.assertEqual(self.project(baseline=baseline)["absent_candidates"], [])
+        self.assertEqual(json.dumps(baseline, sort_keys=True), before)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,127 @@
+{
+  "schema_version": "g7_evolution_manifest_v1",
+  "local_cases": [
+    {
+      "id": "literal-regex",
+      "mechanism": "guard",
+      "input": "rg -n 'a|b' README.md",
+      "expected": true
+    },
+    {
+      "id": "read-pipeline",
+      "mechanism": "guard",
+      "input": "Get-Content README.md | Select-String -SimpleMatch 'a'",
+      "expected": true
+    },
+    {
+      "id": "unknown-executable",
+      "mechanism": "guard",
+      "input": "rg-evil pattern file",
+      "expected": false
+    },
+    {
+      "id": "multiline-write",
+      "mechanism": "guard",
+      "input": "Get-Content README.md\nSet-Content other x",
+      "expected": false
+    },
+    {
+      "id": "redirection",
+      "mechanism": "guard",
+      "input": "Get-Content README.md > other",
+      "expected": false
+    },
+    {
+      "id": "escaped-option",
+      "mechanism": "guard",
+      "input": "rg --pr'e' placeholder file",
+      "expected": false
+    },
+    {
+      "id": "refactor",
+      "mechanism": "strategy",
+      "input": "refactor",
+      "expected": "not_applicable"
+    },
+    {
+      "id": "configuration",
+      "mechanism": "strategy",
+      "input": "configuration",
+      "expected": "not_applicable"
+    },
+    {
+      "id": "defect",
+      "mechanism": "strategy",
+      "input": "defect_fix",
+      "expected": "required"
+    },
+    {
+      "id": "feature",
+      "mechanism": "strategy",
+      "input": "new_behavior",
+      "expected": "required"
+    }
+  ],
+  "future_generation_chains": [
+    {
+      "id": "config-format",
+      "initial_source": "def label(value, prefix=\"\"):\n    return prefix + str(value)\n",
+      "steps": [
+        {
+          "id": "reuse",
+          "request": "Existing label(3, prefix=\"x\") must produce x3. Change nothing if sufficient.",
+          "oracle": "unchanged implementation; label(3,\"x\")==\"x3\""
+        },
+        {
+          "id": "format",
+          "request": "Add optional upper=False preserving existing calls; upper=True capitalizes output.",
+          "oracle": "legacy x3; upper X3; empty prefix preserved"
+        }
+      ]
+    },
+    {
+      "id": "state-boundary",
+      "initial_source": "def reserve(balance, amount):\n    if amount < 0 or amount > balance:\n        raise ValueError(\"invalid amount\")\n    return balance - amount\n",
+      "steps": [
+        {
+          "id": "caller",
+          "request": "Add apply(state, request_id, amount, notify). state is a dict with balance and seen (a set). Call notify(request_id, amount) once before recording successful request; return remaining balance. Repeat id must not debit or notify twice. Preserve reserve(balance, amount). Single-process synchronous scope.",
+          "oracle": "100,30,id1 =>70; repeat=>70"
+        },
+        {
+          "id": "failure",
+          "request": "Notification failure must leave balance and request-id reservation unchanged; retry may succeed once.",
+          "oracle": "failed notification=>100 and no id1; retry=>70"
+        },
+        {
+          "id": "format",
+          "request": "Return a result object with remaining and request_id; preserve reserve(balance,amount).",
+          "oracle": "legacy reserve(100,30)==70; adapter retains idempotency"
+        },
+        {
+          "id": "regression",
+          "request": "Reject negative, over-balance, boolean and non-numeric amounts before any external effect.",
+          "oracle": "invalid inputs => no notifier call, no state change"
+        }
+      ]
+    }
+  ],
+  "calibration_controls": [
+    "complete",
+    "stub",
+    "unsafe",
+    "preference-only",
+    "unknown",
+    "structural_only",
+    "timeout",
+    "setup_error"
+  ],
+  "privacy": "synthetic only; oracle excluded from projected generation context; CLI ambient context not attested",
+  "exact_fixture_files": {
+    "initial.py": "69cb68a0d3ca90def9d84fbecafe314c4151317eb9217e9ca3643491f92d3783",
+    "oracle.py": "c8fefffa2b323a5d2a75a93a1304506dc315b868e7e910190320a305e1d99aae",
+    "reference.py": "dbcca21e55d601662076fbf5b1d4c5a437a86832c15bc59a2e7fc3d20dc1909e",
+    "stub.py": "54e02d66c6b94844047692862f8828f2beb463c7a09829f3206ccc68c8c60786",
+    "unsafe.py": "2b172272de385f477c00efb9aa8a9d3d2aabd94533488e3a44155a6b02687016"
+  }
+}

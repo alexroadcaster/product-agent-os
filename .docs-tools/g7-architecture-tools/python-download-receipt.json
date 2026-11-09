@@ -1,0 +1,93 @@
+[
+  {
+    "name": "click",
+    "version": "8.5.1",
+    "sha256": "8bb5376d2006950386f8c6427613334a2acadc5f559cb80e638d00b4df957e37",
+    "license": "BSD-3-Clause",
+    "requires": []
+  },
+  {
+    "name": "grimp",
+    "version": "3.19",
+    "sha256": "a0a0228efc9d6b258cdeda87b1187dffb8428a1622d5430d47eb7112b211a26b",
+    "license": "BSD 2-Clause License",
+    "requires": []
+  },
+  {
+    "name": "import-linter",
+    "version": "2.16",
+    "sha256": "e775602e9214ab3933fc7d2162278ea1f11dd9229c914735c1bda43b94619565",
+    "license": "BSD 2-Clause License",
+    "requires": [
+      "click>=7",
+      "grimp>=3.19",
+      "rich>=14.2.0",
+      "fastapi>=0.113; extra == 'ui'",
+      "typing-extensions>=4.10.0.0; extra == 'ui'",
+      "uvicorn>=0.17.1; extra == 'ui'"
+    ]
+  },
+  {
+    "name": "markdown-it-py",
+    "version": "4.2.0",
+    "sha256": "9f7ebbcd14fe59494226453aed97c1070d83f8d24b6fc3a3bcf9a38092641c4a",
+    "license": null,
+    "requires": [
+      "mdurl~=0.1",
+      "psutil ; extra == \"benchmarking\"",
+      "pytest ; extra == \"benchmarking\"",
+      "pytest-benchmark ; extra == \"benchmarking\"",
+      "commonmark~=0.9 ; extra == \"compare\"",
+      "markdown~=3.4 ; extra == \"compare\"",
+      "mistletoe~=1.0 ; extra == \"compare\"",
+      "mistune~=3.0 ; extra == \"compare\"",
+      "panflute~=2.3 ; extra == \"compare\"",
+      "markdown-it-pyrs ; extra == \"compare\"",
+      "linkify-it-py>=1,<3 ; extra == \"linkify\"",
+      "mdit-py-plugins>=0.5.0 ; extra == \"plugins\"",
+      "gprof2dot ; extra == \"profiling\"",
+      "mdit-py-plugins>=0.5.0 ; extra == \"rtd\"",
+      "myst-parser ; extra == \"rtd\"",
+      "pyyaml ; extra == \"rtd\"",
+      "sphinx ; extra == \"rtd\"",
+      "sphinx-copybutton ; extra == \"rtd\"",
+      "sphinx-design ; extra == \"rtd\"",
+      "sphinx-book-theme~=1.0 ; extra == \"rtd\"",
+      "jupyter_sphinx ; extra == \"rtd\"",
+      "ipykernel ; extra == \"rtd\"",
+      "coverage ; extra == \"testing\"",
+      "pytest ; extra == \"testing\"",
+      "pytest-cov ; extra == \"testing\"",
+      "pytest-regressions ; extra == \"testing\"",
+      "pytest-timeout ; extra == \"testing\"",
+      "requests ; extra == \"testing\""
+    ]
+  },
+  {
+    "name": "mdurl",
+    "version": "0.1.2",
+    "sha256": "84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8",
+    "license": null,
+    "requires": []
+  },
+  {
+    "name": "Pygments",
+    "version": "2.21.0",
+    "sha256": "2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9",
+    "license": "BSD-2-Clause",
+    "requires": [
+      "colorama>=0.4.6; extra == 'windows-terminal'"
+    ]
+  },
+  {
+    "name": "rich",
+    "version": "15.0.0",
+    "sha256": "33bd4ef74232fb73fe9279a257718407f169c09b78a87ad3d296f548e27de0bb",
+    "license": "MIT",
+    "requires": [
+      "ipywidgets (>=7.5.1,<9) ; extra == \"jupyter\"",
+      "markdown-it-py (>=2.2.0)",
+      "pygments (>=2.13.0,<3.0.0)"
+    ]
+  }
+]

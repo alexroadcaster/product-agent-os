@@ -16,6 +16,10 @@ High-risk и full lifecycle reporting выбираются отдельно от
 
 ## Что включается
 
+G7 уточняет локальные контракты: bounded capability summary приходит из текущего inventory в прежнее поле `existing_capability`; reference coverage остаётся unknown до чтения источников. Refactor использует существующие/characterization checks, без искусственного RED. Fingerprint включает известные lockfiles/config и явные `verification_paths`; `verification_environment` — сведения вызывающей стороны, не автоматическое доказательство версии инструмента. Missing coverage не означает clean.
+
+Review различает доказанный дефект, предпочтение, отклонённое замечание и открытый риск; нужен checked revision и сценарий. T34 evaluator сохраняется byte-for-byte; G7 использует отдельный versioned evidence contract. [Исследование и ограничения](../../research/product-agent-os-g7-repository-deep-review-2026-11-09.md), [план G7](../../research/product-agent-os-audit-remediation-task-plan-2026-11-09.md). Локальная проверка механизмов не доказывает улучшение модельной генерации или fresh-session loading.
+
 | Gate | Что агент обязан записать | Когда можно пропустить |
 | --- | --- | --- |
 | `enterprise_leverage_check` | Какой existing path был проверен до custom implementation. | Mechanical docs/format-only edit с `not_applicable` reason. |
@@ -87,3 +91,7 @@ Before a non-mechanical code edit, the agent should be able to answer:
 - Which claims remain unsupported?
 
 Next artifact: use [Development Standards](development-standards.md) to decide whether the gate applies, [Artifact Contracts](artifact-contracts.md) to inspect the checklist boundary and [Behavioral evals](behavioral-evals.md) to verify shortcut resistance.
+
+## Архитектурные evidence G7
+
+Разрешённый локальный корпус Import Linter 2.16 и dependency-cruiser 18.6.0 проверяет allowed, direct/transitive и cyclic dependencies; для JavaScript добавлены alias и unresolved-import controls. Код завершения JSON-процесса сам по себе не означает clean. Опциональный API профиля сверяет переданные актуальные receipts и неизменяемый baseline; обычный discovery остаётся declaration-only. Корпус `.mjs` не доказывает TypeScript resolver/type-only behavior. [Результаты проверок](../../research/product-agent-os-g7-execution-report-2026-11-09.md).

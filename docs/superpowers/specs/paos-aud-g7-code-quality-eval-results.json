@@ -1,0 +1,214 @@
+{
+  "schema_version": "g7_local_comparison_v1",
+  "design_digest": "826018bbecfdb88c6eff774c7ba7caaf0ef5452a24dc3776d62f8d063a083079",
+  "manifest_digest": "2c2bb41a88b1987dd446155defd827089cd7cb2eedec4c4be403a92651b98e54",
+  "arms": [
+    {
+      "arm": "baseline",
+      "source_hashes": {
+        "guard": "9a5e783bee7a177e02582480f5bd6c514a4295f5697d70e50dae6f7dd122302c",
+        "strategy": "3684834d7697d7eb1417fc6da00f7db14649744cfd98126da72de95cc5126321"
+      },
+      "outcomes": [
+        {
+          "case_id": "literal-regex",
+          "status": "failed",
+          "observed": false,
+          "expected": true
+        },
+        {
+          "case_id": "read-pipeline",
+          "status": "failed",
+          "observed": false,
+          "expected": true
+        },
+        {
+          "case_id": "unknown-executable",
+          "status": "failed",
+          "observed": true,
+          "expected": false
+        },
+        {
+          "case_id": "multiline-write",
+          "status": "passed",
+          "observed": false,
+          "expected": false
+        },
+        {
+          "case_id": "redirection",
+          "status": "passed",
+          "observed": false,
+          "expected": false
+        },
+        {
+          "case_id": "escaped-option",
+          "status": "failed",
+          "observed": true,
+          "expected": false
+        },
+        {
+          "case_id": "refactor",
+          "status": "failed",
+          "observed": "required",
+          "expected": "not_applicable"
+        },
+        {
+          "case_id": "configuration",
+          "status": "passed",
+          "observed": "not_applicable",
+          "expected": "not_applicable"
+        },
+        {
+          "case_id": "defect",
+          "status": "passed",
+          "observed": "required",
+          "expected": "required"
+        },
+        {
+          "case_id": "feature",
+          "status": "passed",
+          "observed": "required",
+          "expected": "required"
+        }
+      ],
+      "summary": {
+        "eligible": 10,
+        "recorded": 10,
+        "attempted": 10,
+        "executed": 10,
+        "counts": {
+          "failed": 5,
+          "missing": 0,
+          "passed": 5,
+          "setup_error": 0,
+          "skipped": 0,
+          "structural_only": 0,
+          "timeout": 0,
+          "unknown": 0
+        },
+        "executable_pass_rate": 0.5,
+        "eligible_pass_rate": 0.5,
+        "complete": false,
+        "evidence_ceiling": "supplied outcomes; not independent execution or owner acceptance"
+      }
+    },
+    {
+      "arm": "treatment",
+      "source_hashes": {
+        "guard": "200689a68ba34d3753193f6fa4c7c4906d05c8d922b0a8c93a7793c9956e7732",
+        "strategy": "d41fc227cac10265d9a90834e610a711faff739275523a56196b11d0021f0348"
+      },
+      "outcomes": [
+        {
+          "case_id": "literal-regex",
+          "status": "passed",
+          "observed": true,
+          "expected": true
+        },
+        {
+          "case_id": "read-pipeline",
+          "status": "passed",
+          "observed": true,
+          "expected": true
+        },
+        {
+          "case_id": "unknown-executable",
+          "status": "passed",
+          "observed": false,
+          "expected": false
+        },
+        {
+          "case_id": "multiline-write",
+          "status": "passed",
+          "observed": false,
+          "expected": false
+        },
+        {
+          "case_id": "redirection",
+          "status": "passed",
+          "observed": false,
+          "expected": false
+        },
+        {
+          "case_id": "escaped-option",
+          "status": "passed",
+          "observed": false,
+          "expected": false
+        },
+        {
+          "case_id": "refactor",
+          "status": "passed",
+          "observed": "not_applicable",
+          "expected": "not_applicable"
+        },
+        {
+          "case_id": "configuration",
+          "status": "passed",
+          "observed": "not_applicable",
+          "expected": "not_applicable"
+        },
+        {
+          "case_id": "defect",
+          "status": "passed",
+          "observed": "required",
+          "expected": "required"
+        },
+        {
+          "case_id": "feature",
+          "status": "passed",
+          "observed": "required",
+          "expected": "required"
+        }
+      ],
+      "summary": {
+        "eligible": 10,
+        "recorded": 10,
+        "attempted": 10,
+        "executed": 10,
+        "counts": {
+          "failed": 0,
+          "missing": 0,
+          "passed": 10,
+          "setup_error": 0,
+          "skipped": 0,
+          "structural_only": 0,
+          "timeout": 0,
+          "unknown": 0
+        },
+        "executable_pass_rate": 1.0,
+        "eligible_pass_rate": 1.0,
+        "complete": true,
+        "evidence_ceiling": "supplied outcomes; not independent execution or owner acceptance"
+      }
+    }
+  ],
+  "empty_review_control_not_run_review": {
+    "schema_version": "g7_review_v2",
+    "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "verdict": "approve",
+    "evidence_gaps": [],
+    "confirmed_defects": [],
+    "advisory_or_resolved": [],
+    "evidence_ceiling": "contract validation; evidence content needs independent review"
+  },
+  "instrument_hashes": {
+    "plugins/product-agent-os/scripts/run_g7_quality_comparison.py": "82bd43f20e86ba301f695c234cc9bde4f885578274f424e904daf9b0daa08098",
+    "plugins/product-agent-os/scripts/codex_runtime_runner/g7_quality_eval.py": "f16abfa5eba0c37208a6a3418453482992a815b9b619101ff8997bf6a236e67c",
+    "plugins/product-agent-os/scripts/product_agent_os/code_quality_selector.py": "0a88d07a99c3f23ae0b667f491044f58f98a4f467785357999cd43ce06cb681d"
+  },
+  "runtime": {
+    "python": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+    "platform": "win32"
+  },
+  "baseline_scope": "pinned baseline functions with a shared current profile factory, not a full historical runtime",
+  "comparison_kind": "deterministic_repository_mechanisms_not_model_AB",
+  "model_calls": 0,
+  "model_quality_effect": null,
+  "owner_acceptance": null,
+  "limits": [
+    "targeted cases, not general quality estimate",
+    "hidden oracle isolation for model runs not established",
+    "fresh-session activation separate",
+    "no performance claim from test timings"
+  ]
+}

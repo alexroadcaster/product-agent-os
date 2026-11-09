@@ -30,9 +30,9 @@ RISK_TO_TEST = {
     "performance_claim": "benchmark",
 }
 TEST_FIRST_MODES = frozenset(
-    {"new_behavior", "defect_fix", "refactor", "legacy_change", "generated_code"}
+    {"new_behavior", "defect_fix", "legacy_change", "generated_code"}
 )
-CHANGE_MODES = TEST_FIRST_MODES | {"configuration"}
+CHANGE_MODES = TEST_FIRST_MODES | {"configuration", "refactor"}
 COMMENT_REASONS = (
     "non_obvious_intent",
     "invariant",
@@ -217,7 +217,8 @@ def _test_first_reason(request: TestStrategyRequest) -> str:
         return "no changed risks supplied"
     if not request.executable_test_seam:
         return request.test_seam_reason
-    return "change mode does not require test-first evidence"
+    return ("preserve existing behavior; reuse characterization tests and assess unique protection before replacement"
+            if request.change_mode == "refactor" else "configuration uses parse and invariant checks without artificial RED")
 
 
 def _comment_decision(signals: tuple[CommentSignal, ...]) -> CommentDecision:
