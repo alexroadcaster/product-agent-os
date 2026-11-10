@@ -14,6 +14,8 @@ WEB-ORDER-08 (2026-11-10): пользователь утвердил после�
 
 ## Web M1 v0.7 — решения после аудита, 2026-11-10
 
+WEB-M1-QUAL-01: локальный evidence PAOS-0001/0054 в `research/product-agent-os-web-m1-initial-qualification-2026-11-10.md`. Способ генерации схемы сверён с [App Server](https://learn.chatgpt.com/docs/app-server#message-schema), фильтры с [Thread listing](https://learn.chatgpt.com/docs/app-server#list-threads-with-pagination--filters), `ephemeral` с [Credential storage](https://learn.chatgpt.com/docs/auth#credential-storage). Второй изолированный прогон подтвердил persisted history по [синтетическому формату тестов CLI 0.167.0](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/app-server/tests/common/rollout.rs). Именованный профиль подтверждён в metadata. Native Windows readiness и Execution не квалифицированы.
+
 WEB-M1-ALIGN-07: PRD §17, architecture §21, plan/JSON и UX v0.7; 56 planned tasks / 12 groups, 31 routes / 21 wireframes. Audit §9 содержит WA-01–13 → design decisions → future gates. Источники: [App Server](https://learn.chatgpt.com/docs/app-server) (schema, experimental dynamic tools, request resolved не равно action success), [config reference](https://learn.chatgpt.com/docs/config-file/config-reference) (ephemeral credential store), [Node 26.5 SQLite](https://nodejs.org/download/release/v26.5.0/docs/api/sqlite.html) (DatabaseSync/backup, release candidate), проверены 2026-11-10. Scope/thresholds/auth UX — project-authored proposals, не runtime/commercial proof. Source path: research/product-agent-os-web-m1-final-audit-2026-11-10.md, §9.
 
 ## Web M1 final audit — 2026-11-10

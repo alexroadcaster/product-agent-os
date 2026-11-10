@@ -1,0 +1,74 @@
+export type UiLocale = 'en' | 'ru';
+
+const en = {
+  'nav.overview': 'Overview',
+  'nav.tasks': 'Tasks',
+  'nav.sessions': 'Sessions',
+  'nav.agents': 'Agents',
+  'nav.skills': 'Skills',
+  'nav.projectMap': 'Project map',
+  'nav.documents': 'Documents',
+  'nav.checks': 'Checks',
+  'nav.settings': 'Settings',
+  'preferences.language': 'Language',
+  'preferences.theme': 'Theme',
+  'theme.light': 'Light',
+  'theme.dark': 'Dark',
+  'theme.system': 'System',
+  'action.skipToContent': 'Skip to content',
+  'action.newSession': 'New session',
+  'action.addContext': 'Add context',
+  'action.send': 'Send',
+  'action.stopRun': 'Stop run',
+  'action.retryConnection': 'Retry connection',
+  'state.loading': 'Loading…',
+  'state.empty': 'No items',
+  'state.error': 'Could not load data',
+  'state.partial': 'Some data is unavailable',
+  'state.unavailable': 'Unavailable',
+  'state.disconnected': 'Local service disconnected',
+  'state.approvalRequired': 'Approval required',
+  'state.checkingSend': 'Checking send status',
+  'state.stopRequested': 'Stop requested',
+};
+
+export type UiMessage = keyof typeof en;
+
+const ru = {
+  'nav.overview': 'Обзор',
+  'nav.tasks': 'Задачи',
+  'nav.sessions': 'Сессии',
+  'nav.agents': 'Агенты',
+  'nav.skills': 'Скиллы',
+  'nav.projectMap': 'Карта проекта',
+  'nav.documents': 'Документы',
+  'nav.checks': 'Проверки',
+  'nav.settings': 'Настройки',
+  'preferences.language': 'Язык',
+  'preferences.theme': 'Тема',
+  'theme.light': 'Светлая',
+  'theme.dark': 'Тёмная',
+  'theme.system': 'Как в системе',
+  'action.skipToContent': 'Перейти к содержимому',
+  'action.newSession': 'Новая сессия',
+  'action.addContext': 'Добавить контекст',
+  'action.send': 'Отправить',
+  'action.stopRun': 'Остановить запуск',
+  'action.retryConnection': 'Повторить подключение',
+  'state.loading': 'Загрузка…',
+  'state.empty': 'Нет записей',
+  'state.error': 'Не удалось загрузить данные',
+  'state.partial': 'Часть данных недоступна',
+  'state.unavailable': 'Недоступно',
+  'state.disconnected': 'Нет связи с локальным сервисом',
+  'state.approvalRequired': 'Требуется разрешение',
+  'state.checkingSend': 'Проверяем отправку',
+  'state.stopRequested': 'Остановка запрошена',
+} satisfies Record<UiMessage, string>;
+
+const messages = { en, ru };
+
+/** Translate a UI label. Source content keeps its original text. */
+export function uiLabel(locale: UiLocale, key: UiMessage): string {
+  return messages[locale][key];
+}

@@ -22,9 +22,11 @@ G8 commands: `python -B -m unittest discover -s tests -p "test_*.py" -q`; focuse
 
 ## Проверки Web M1 — актуальный маршрут 2026-11-10
 
-Source status: planned acceptance / no Web runtime evidence.
+Source status: local contract checks and isolated stdio observed / Web runtime qualification blocked.
 
-[Web-план v0.8](research/product-agent-os-web-task-manager-plan-2026-11-09.md), раздел «Матрица M1 DoD», владеет соответствием acceptance → owner task. PRD §17 / architecture §21 задают M1 profile. До implementation использовать существующие docs/control-plane checks ниже; не придумывать npm/build/E2E команды для отсутствующего приложения. PAOS-0001/0054 фиксируют реальные версии, команды и evidence paths.
+[Web-план v0.8](research/product-agent-os-web-task-manager-plan-2026-11-09.md), раздел «Матрица M1 DoD», владеет соответствием acceptance → owner task. PRD §17 / architecture §21 задают M1 profile. Первый срез проверяется `node --test tests/web/*.test.mts` и `node packages/contracts/runtime/probe-local.mts .tmp/paos-m1/schema`. Команда генерации схемы, observed tuple и открытые gates находятся в [evidence PAOS-0001/0054](research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+
+Повторная оценка без запуска процесса выполняется `node packages/contracts/runtime/probe-local.mts .tmp/paos-m1/schema <receipt>`. Для `.tmp/paos-m1/stdio-qualification-result.json` ожидаются `project_history` и `scoped_execution_policy`. Для `.tmp/paos-m1/stdio-diagnostics-result.json` ожидается только `scoped_execution_policy`.
 
 | Проверяемая граница | Задачи-владельцы и evidence |
 | --- | --- |

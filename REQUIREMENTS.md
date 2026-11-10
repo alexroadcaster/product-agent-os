@@ -16,14 +16,14 @@ G8-T14/G8 явно приняты владельцем. G9 T01–T09 реали�
 
 ## Текущий scope Web M1 — 2026-11-10
 
-Source status: project-authored / user-approved planning order; implementation_not_started.
+Source status: project-authored / implementation started under the approved order.
 
 Owning scope: [PRD §17](research/product-agent-os-web-prd-2026-11-05.md), [архитектура §21](research/product-agent-os-web-architecture-2026-11-05.md), [wireframes v0.7](research/product-agent-os-web-m1-wireframes-2026-11-09.md). [Web-план v0.8](research/product-agent-os-web-task-manager-plan-2026-11-09.md) и [матрица задач](research/product-agent-os-web-task-manager-task-group-2026-11-09.json) владеют последовательностью и task status; revision scope=0.7, execution=0.8.
 
 - M1: одно рабочее окно через Codex App Server; local launch/auth boundary; сессия, чат, связанные задачи, permissions, diff/checks, Stop/recovery; минимальные Task CRUD/доска, read-only каталоги и честный coverage.
 - Local data: SQLite + FTS5, транзакционные команды, поиск, backup/restore, staged MD/JSON import и контролируемый cutover. До cutover legacy tasks file-owned; planning MD/JSON этого репозитория не мигрируются данной правкой.
 - PAOS-0002 покрывает только M1 profile. Полная иерархия, attachments, linked issues, agent/skill CRUD, редактируемые workflows — M2; цепочки автономного выполнения — M3; PostgreSQL + pgvector — отдельный T1.
-- 18 задач M1 / 234 engineering hours — плановая оценка, не срок и не evidence. Все 56 задач planned. PAOS-0046 сразу после M1, PAOS-0036 в M2.
+- 18 задач M1 / 234 engineering hours — плановая оценка. PAOS-0046 сразу после M1, PAOS-0036 в M2.
 - Приёмка M1: матрица M1 DoD в плане, SW-AC-01–10, ST-AC-01–07 в M1 profile, UX-AC-01–18 в M1 slice, DATA-AC-01–05. Документы не закрывают runtime/browser/data acceptance.
 
 Предыдущие Web receipts сохранены в [аудит и архив control-plane](research/product-agent-os-control-plane-maintenance-2026-11-10.md). Далее находятся evidence других направлений и исторические compatibility anchors; они не переопределяют этот scope.
@@ -86,7 +86,7 @@ Last compacted: 2026-06-11
 ## Current Scope
 
 - Развивать Product-Agent OS как local engineering operating system; существующий plugin, контроль доказательств и approval boundaries сохраняются.
-- Следующий согласованный продуктовый этап — Web M1 по PRD §17 / architecture §21 и очереди v0.8. Текущий запрос разрешает подготовку control-plane, а не реализацию приложения.
+- На этапе подготовки control-plane согласовали Web M1 по PRD §17 / architecture §21 и очереди v0.8. Текущее состояние исполнения владеет раздел Web M1 выше.
 - Поддерживать discovery, staged artifacts, skills, tests/evals и ручное управление решениями. Соблюдать source authority и ограничения из AGENTS.md.
 - Состояния Batch 39/42/44/45 и Track 11 учитывать как отдельные направления с собственными evidence owners. Не возобновлять старые очереди автоматически при старте Web.
 - Детальные исторические требования перенесены в [аудит и архив control-plane](research/product-agent-os-control-plane-maintenance-2026-11-10.md); критерии исторических пакетов ниже сохранены для трассировки. Они не расширяют M1.

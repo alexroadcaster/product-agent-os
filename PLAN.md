@@ -16,11 +16,11 @@ G8 closed / owner accepted. G9 T01–T09 implemented_locally_verified; T10 owner
 
 ## Активная продуктовая очередь Web — 2026-11-10
 
-Source status: project-authored / order_approved; implementation_not_started.
+Source status: project-authored / order_approved; implementation_started, runtime qualification blocked.
 
-Единственный владелец подробного порядка — [Web-план v0.8](research/product-agent-os-web-task-manager-plan-2026-11-09.md) вместе с [JSON-матрицей](research/product-agent-os-web-task-manager-task-group-2026-11-09.json). Все 56 задач planned. Не копировать новые task statuses в несколько корневых списков.
+Единственный владелец порядка и статусов — [Web-план v0.8](research/product-agent-os-web-task-manager-plan-2026-11-09.md) вместе с [JSON-матрицей](research/product-agent-os-web-task-manager-task-group-2026-11-09.json).
 
-1. После отдельного запроса на реализацию начать PAOS-0001, затем PAOS-0054. Уточнить actual file ownership, installed runtime/capabilities, executable checks и pinned manifest до зависимого кода; proposed apps/web, apps/local-service, packages/contracts пока отсутствуют в корне.
+1. PAOS-0001 подтвердил persisted history и scoped project adapter. Независимые от PAOS-0054 ветки открыты по графу. PAOS-0054 ожидает Windows sandbox qualification, что удерживает зависимую runtime/storage интеграцию. [Наблюдения и следующие проверки](research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
 2. Выполнить 18 задач M1 в утверждённом порядке с dependencies; PAOS-0045 — сквозная приёмка после data/recovery gates. PAOS-0002 ограничена M1 profile.
 3. PAOS-0046 — первая задача после M1 и до M2; затем M2 (включая PAOS-0036), M3, M4. OPTIONAL и T1 — отдельные маршруты; повторный commercial review — PAOS-0030.
 
@@ -140,7 +140,7 @@ PAOS-AUD-G1: пять карточек F06/F12/F11/F07/F18 implemented_locally_v
 
 ## Next Implementation Queue
 
-Приоритетный следующий маршрут — Web M1: PAOS-0001 → PAOS-0054, затем очередь v0.8 (ссылка выше). Таблица ниже — сохранённые follow-ups других направлений, не единая очередь и не разрешение возобновить их.
+Приоритетный маршрут — квалификация PAOS-0001/0054, затем очередь Web M1 v0.8. Таблица ниже сохраняет follow-ups других направлений.
 
 | Slice | Next decision | Approval boundary | Source pointer |
 | --- | --- | --- | --- |

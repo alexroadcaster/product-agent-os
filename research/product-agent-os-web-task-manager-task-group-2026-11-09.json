@@ -1,6 +1,6 @@
 {
   "schema_version": "paos_web_task_groups_v1",
-  "status": "planned",
+  "status": "in_progress",
   "source_plan": "product-agent-os-web-task-manager-plan-2026-11-09.md",
   "note": "Proposed Web planning data, not an activated runtime import format",
   "groups": [
@@ -138,7 +138,7 @@
       "id": "PAOS-0001",
       "group_id": "G01",
       "title": "Контракты и адаптеры проекта",
-      "status": "planned",
+      "status": "implemented",
       "short_description": "Установить доступность источников и API установленного host; определить project binding и coverage",
       "technical_value": "Установить доступность источников и API установленного host; определить project binding и coverage",
       "product_value": "Пользователь сразу видит, какие сведения проекта доступны, и не принимает неполную историю за полную.",
@@ -146,12 +146,12 @@
         {
           "path": "apps/local-service/src/adapters",
           "planned_operation": "create_or_modify_after_discovery",
-          "actual_operation": null
+          "actual_operation": "create"
         },
         {
           "path": "packages/contracts",
           "planned_operation": "create_or_modify_after_discovery",
-          "actual_operation": null
+          "actual_operation": "create"
         }
       ],
       "agents": [
@@ -169,8 +169,8 @@
       ],
       "estimated_duration_hms": "08:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
-      "actual_started_at": null,
-      "actual_ended_at": null,
+      "actual_started_at": "2026-11-10T22:15:11+03:00",
+      "actual_ended_at": "2026-11-10T23:01:54+03:00",
       "actual_duration_seconds": null,
       "actual_duration_hms": null,
       "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
@@ -182,7 +182,7 @@
       "id": "PAOS-0002",
       "group_id": "G01",
       "title": "Модель задачи и идентификаторы",
-      "status": "planned",
+      "status": "implemented",
       "short_description": "Domain contract профиля M1: flat Task, поля PRD §17.1–17.2, стабильные ID и отдельные product/planning statuses",
       "technical_value": "Типизированная модель M1 и проверяемый round-trip поддерживаемых полей без зависимости от полного Task Manager M2.",
       "product_value": "Пользователь ставит полную задачу один раз и сохраняет устойчивую ссылку на неё при изменениях проекта.",
@@ -190,12 +190,12 @@
         {
           "path": "packages/contracts/tasks",
           "planned_operation": "create_or_modify_after_discovery",
-          "actual_operation": null
+          "actual_operation": "create"
         },
         {
           "path": "apps/local-service/src/tasks",
           "planned_operation": "create_or_modify_after_discovery",
-          "actual_operation": null
+          "actual_operation": "create"
         }
       ],
       "agents": [
@@ -217,7 +217,7 @@
       "estimated_duration_hms": "12:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
       "actual_started_at": null,
-      "actual_ended_at": null,
+      "actual_ended_at": "2026-11-10T23:06:53+03:00",
       "actual_duration_seconds": null,
       "actual_duration_hms": null,
       "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
@@ -231,7 +231,7 @@
       "id": "PAOS-0003",
       "group_id": "G01",
       "title": "Время и журнал событий",
-      "status": "planned",
+      "status": "implemented",
       "short_description": "Оценка до старта, идемпотентные интервалы и измерение факта",
       "technical_value": "Оценка до старта, идемпотентные интервалы и измерение факта",
       "product_value": "Пользователь сравнивает ожидаемое и затраченное время без двойного учёта параллельной работы.",
@@ -239,12 +239,12 @@
         {
           "path": "apps/local-service/src/events",
           "planned_operation": "create_or_modify_after_discovery",
-          "actual_operation": null
+          "actual_operation": "create"
         },
         {
           "path": "packages/contracts/time",
           "planned_operation": "create_or_modify_after_discovery",
-          "actual_operation": null
+          "actual_operation": "create"
         }
       ],
       "agents": [
@@ -263,7 +263,7 @@
       "estimated_duration_hms": "12:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
       "actual_started_at": null,
-      "actual_ended_at": null,
+      "actual_ended_at": "2026-11-10T23:09:48+03:00",
       "actual_duration_seconds": null,
       "actual_duration_hms": null,
       "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
@@ -277,7 +277,7 @@
       "id": "PAOS-0004",
       "group_id": "G01",
       "title": "Темы и локализация",
-      "status": "planned",
+      "status": "in_progress",
       "short_description": "Общие токены и RU/EN для всех экранов",
       "technical_value": "Общие токены и RU/EN для всех экранов",
       "product_value": "Пользователь работает на удобном языке и в выбранной теме без потери читаемости и действий.",
@@ -285,12 +285,12 @@
         {
           "path": "apps/web/src/design",
           "planned_operation": "create_or_modify_after_discovery",
-          "actual_operation": null
+          "actual_operation": "create"
         },
         {
           "path": "apps/web/src/locales",
           "planned_operation": "create_or_modify_after_discovery",
-          "actual_operation": null
+          "actual_operation": "create"
         }
       ],
       "agents": [
@@ -1992,7 +1992,7 @@
       "id": "PAOS-0039",
       "group_id": "G11",
       "title": "Допустимые auth routes и коммерческие границы",
-      "status": "planned",
+      "status": "blocked",
       "short_description": "Зафиксировать API BYOK baseline, ограничения managed login и admission SIWC; выбрать deployment/channel без внешней регистрации",
       "technical_value": "Зафиксировать API BYOK baseline, ограничения managed login и admission SIWC; выбрать deployment/channel без внешней регистрации",
       "product_value": "Пользователь знает доступный способ подключения и плательщика до начала работы.",
@@ -2000,12 +2000,12 @@
         {
           "path": "research/product-agent-os-web-auth-commercial-2026-11-09.md",
           "planned_operation": "create_or_modify_after_discovery",
-          "actual_operation": null
+          "actual_operation": "modify"
         },
         {
           "path": "packages/contracts/auth",
           "planned_operation": "create_or_modify_after_discovery",
-          "actual_operation": null
+          "actual_operation": "create"
         }
       ],
       "agents": [
@@ -2038,7 +2038,7 @@
       "id": "PAOS-0040",
       "group_id": "G11",
       "title": "Launcher и жизненный цикл локального приложения",
-      "status": "planned",
+      "status": "in_progress",
       "short_description": "Запуск service и UI, version/health checks, single instance, explicit install и graceful Quit",
       "technical_value": "Запуск service и UI, version/health checks, single instance, explicit install и graceful Quit",
       "product_value": "Работу можно начать ярлыком и понять, что продолжает выполняться после закрытия окна.",
@@ -2046,12 +2046,12 @@
         {
           "path": "apps/launcher",
           "planned_operation": "create_or_modify_after_discovery",
-          "actual_operation": null
+          "actual_operation": "create"
         },
         {
           "path": "apps/local-service/src/supervisor",
           "planned_operation": "create_or_modify_after_discovery",
-          "actual_operation": null
+          "actual_operation": "create"
         }
       ],
       "agents": [
@@ -2735,7 +2735,7 @@
       "id": "PAOS-0054",
       "group_id": "G11",
       "title": "Контракт совместимости M1 и runtime manifest",
-      "status": "planned",
+      "status": "blocked",
       "short_description": "Закрепить candidate tuple, schema/event mapping, mode policy, bootstrap и credential transport до зависимых consumers",
       "technical_value": "Закрепить candidate tuple, schema/event mapping, mode policy, bootstrap и credential transport до зависимых consumers",
       "product_value": "Согласованный M1 сохраняет данные и показывает достоверное состояние работы в одном окне.",
@@ -2743,12 +2743,12 @@
         {
           "path": "packages/contracts/runtime",
           "planned_operation": "create_or_modify_after_discovery",
-          "actual_operation": null
+          "actual_operation": "create"
         },
         {
-          "path": "docs/evidence/web-m1/compatibility",
+          "path": "research/product-agent-os-web-m1-initial-qualification-2026-11-10.md",
           "planned_operation": "create_or_modify_after_discovery",
-          "actual_operation": null
+          "actual_operation": "create"
         }
       ],
       "agents": [
@@ -2766,7 +2766,7 @@
       ],
       "estimated_duration_hms": "12:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
-      "actual_started_at": null,
+      "actual_started_at": "2026-11-10T22:18:02+03:00",
       "actual_ended_at": null,
       "actual_duration_seconds": null,
       "actual_duration_hms": null,
@@ -2984,7 +2984,7 @@
     "implementation": "not_started"
   },
   "m1_contract": {
-    "status": "design_baseline_implementation_not_started",
+    "status": "design_baseline_runtime_qualification_blocked",
     "source": "PRD §17 / architecture §21 / plan v0.7",
     "import_profile": "m1_task_profile_v1",
     "compatibility_gate": "PAOS-0054",
@@ -2995,7 +2995,7 @@
   "execution_plan": {
     "revision": "0.8",
     "approved_at": "2026-11-10",
-    "status": "user_selected_order_implementation_not_started",
+    "status": "user_selected_order_implementation_started",
     "order_semantics": "Serial planning baseline; depends_on remains the technical DAG. Optional stage may be skipped and does not block T1. No scheduler or execution authorization.",
     "stages": [
       {

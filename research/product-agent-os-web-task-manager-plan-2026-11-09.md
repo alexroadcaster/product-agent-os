@@ -2,7 +2,7 @@
 
 Source status: project-authored / proposed / requirements-backed. Дата: 2026-11-09.
 
-Статус очереди: **order_approved / implementation_not_started**. Оценки и детали будущей реализации остаются плановыми; утверждение порядка не разрешает начать разработку. Все 56 задач имеют статус planned; фактическое время отсутствует. Пользовательский scope расширен относительно read-only M1. Исходные M1–M3 сохраняются как история; при расхождении приоритет имеют PRD §17, architecture §21 и актуальная очередь v0.8 этого плана.
+Статус очереди: **order_approved / implementation_started**. PAOS-0001 подтвердил выборку сохранённой истории и изоляцию проектного адаптера. PAOS-0054 остаётся заблокирован по Windows sandbox; задачи с подтверждёнными зависимостями доступны к выполнению. Статусы и фактическое время хранятся в карточках и JSON. При расхождении приоритет имеют PRD §17, architecture §21 и актуальная очередь v0.8.
 
 Связи: [PRD](product-agent-os-web-prd-2026-11-05.md), [архитектура](product-agent-os-web-architecture-2026-11-05.md), [экраны](product-agent-os-web-task-manager-screens-2026-11-09.md), [машинные группы](product-agent-os-web-task-manager-task-group-2026-11-09.json).
 
@@ -11,7 +11,7 @@ Source status: project-authored / proposed / requirements-backed. Дата: 2026
 
 ## Актуальная очередь v0.8: утверждённая последовательность
 
-Source status: project-authored plan, 2026-11-10; 56 planned tasks / 12 groups; implementation_not_started. Нормативный scope — PRD §17, архитектура §21, wireframes v0.7. Очереди v0.1–v0.7 и прежние receipts ниже — история; при расхождении применяется этот раздел и обновлённые карточки/JSON.
+Source status: project-authored plan, 2026-11-10; 56 tasks / 12 groups; implementation_started. Нормативный scope — PRD §17, архитектура §21, wireframes v0.7. Очереди v0.1–v0.7 и прежние receipts ниже — история; при расхождении применяется этот раздел и обновлённые карточки/JSON.
 
 | Этап | Задачи и gate | Ownership / результат |
 | --- | --- | --- |
@@ -25,7 +25,7 @@ Source status: project-authored plan, 2026-11-10; 56 planned tasks / 12 groups; 
 | M4 | 0028/0029/0030; optional 0047 отдельно | Local acceptance/pilot; повторная проверка AUTH-G1–G6 и gaps раннего 0046 |
 | T1 | 0052 после 0030 и storage foundations; 0053 после 0052/0056 | Separate hosting/auth/RBAC/runtime design; local M4 не зависит от team |
 
-Новые задачи: 0054 compatibility manifest (12 h), 0055 agent commands/writers (16 h), 0056 cutover (12 h). 0050 сокращена до preview/staging (12 h вместо 20), 0051 больше не зависит от 0050. Полное транзитивное замыкание M1 до 0045 — **18 задач, 234 engineering hours**, rough estimate, не календарное обязательство. Реальные start/end/duration у всех 56 задач null. Оценки требуют уточнения после 0054; будущие M2–T1 не включены.
+Новые задачи: 0054 compatibility manifest (12 h), 0055 agent commands/writers (16 h), 0056 cutover (12 h). 0050 сокращена до preview/staging (12 h вместо 20), 0051 больше не зависит от 0050. Полное транзитивное замыкание M1 до 0045 — **18 задач, 234 engineering hours**, rough estimate. Оценки требуют уточнения после 0054; будущие M2–T1 не включены.
 
 ### Зафиксированная матрица очереди v0.8
 
@@ -44,7 +44,7 @@ Source status: project-authored plan, 2026-11-10; 56 planned tasks / 12 groups; 
 | T1 — Командная версия после отдельного design/start | 2 | 40 ч |
 | Всего | 56 | 776 ч |
 
-Local до пилота — 708 ч без OPTIONAL/T1; M1 — 234 ч. Rough estimates без резерва и календарного обещания; actual у всех задач null.
+Local до пилота — 708 ч без OPTIONAL/T1; M1 — 234 ч. Rough estimates без резерва и календарного обещания.
 
 | № | Этап | Группа | ID | Задача | Оценка |
 | ---: | --- | --- | --- | --- | ---: |
@@ -130,7 +130,7 @@ PAOS-0002 проверяет domain contract только M1 profile (§17 PRD).
 
 Группы/границы файлов — в карточках. Общими packages/contracts владеет 0054 owner до handoff; 0048 storage owner, 0055 domain bridge owner, 0042 runtime owner применяют только согласованный contract. Без перекрывающейся записи общих файлов. Документационная правка не запускает перечисленных агентов.
 
-Re-entry gate: после отдельного разрешения начать с 0001/0054 и зависимостей; если capability отсутствует, вернуть design issue до зависящего кода. Эту спецификацию нельзя объявить verified runtime или commercial-ready. Плановые criterion IDs не являются уже выполненными проверками.
+Re-entry gate: 0001 открыт для потребителей подтверждённого project binding. Задачи с зависимостью от 0054 ждут подтверждённого sandbox profile. При отсутствии обязательной capability использовать design issue. [Наблюдения двух изолированных прогонов](product-agent-os-web-m1-initial-qualification-2026-11-10.md) отделены от runtime/browser/commercial приёмки.
 
 ### Проверка очереди v0.8
 
@@ -340,14 +340,14 @@ Rollback будущих изменений: versioned proposal, revision check, 
 ### Task `PAOS-0001`
 
 - Task: Контракты и адаптеры проекта
-- Status: planned
+- Status: implemented
 - Delivery stage: M1
 - Execution order: 1
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 10-11-2026 23:01
 - Depends on: none
 - Blocks: PAOS-0002, PAOS-0004, PAOS-0009, PAOS-0016, PAOS-0020, PAOS-0039, PAOS-0040, PAOS-0048, PAOS-0054
 - Source: PRD: дополнение Task Manager; screen specification
@@ -365,34 +365,34 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/local-service/src/adapters; packages/contracts
-- Next step: Проверить источники и контракт адаптеров
-- Actual time: not_started; start/end/duration = null.
+- Next step: Передать contract разрешённым потребителям M1; runtime transport и UI интегрируются задачами 0042/0043.
+- Actual time: старт 10-11-2026 22:15 MSK, приёмка среза 10-11-2026 23:01 MSK. Активная длительность по отдельным прогонам не измерена.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
 - Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Реализованы registry binding, инвентаризация и частичный coverage через scoped `thread/list`. Адаптер отклоняет чужие строки независимо от host-фильтра.
+- Files touched / work locations: `packages/contracts/project.ts`, `apps/local-service/src/adapters/project-sources.ts`, `tests/web/project-sources.test.mts`.
+- Technical value delivered: Сервис проверяет canonical root и identity каталога, затем возвращает относительный coverage.
+- Product value delivered: Контракт различает отсутствующий источник, исключённую ссылку и неподключённую runtime history.
+- Actual implementation date and time: 10-11-2026 23:01
+- Verification evidence: 3/3 scoped adapter tests. App Server вернул 1/1/0/2 для Alpha/Beta/Empty/All по synthetic persisted CLI rollout; `thread/read` подтвердил persisted path и правильный cwd. [Детали](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Residual risks: Только первая страница поддерживаемых persisted источников, статус partial. Свежая `vscode` сессия с пустым preview не отображается; UI и реальные профили отдельно.
+- Follow-up: PAOS-0042 подключает transport, PAOS-0043/0045 проверяют UI и сквозной путь.
 
 ### Task `PAOS-0002`
 
 - Task: Модель задачи и идентификаторы
-- Status: planned
+- Status: implemented
 - Delivery stage: M1
 - Execution order: 4
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 10-11-2026 23:06
 - Depends on: PAOS-0001
 - Blocks: PAOS-0003, PAOS-0005, PAOS-0006, PAOS-0031, PAOS-0042, PAOS-0045, PAOS-0048
 - Source: PRD §17.1–17.2; M1 profile; execution plan v0.8
@@ -410,34 +410,34 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: packages/contracts/tasks; apps/local-service/src/tasks
-- Next step: Завершить зависимости, затем уточнить tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Next step: Использовать M1 contract в учёте времени, затем в storage и импорте по зависимостям.
+- Actual time: локальная проверка 10-11-2026 23:06 MSK; точное начало и активная длительность не измерены.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
 - Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Реализован типизированный `m1_task_profile_v1` и его валидация и сериализация.
+- Files touched / work locations: `packages/contracts/tasks/m1-task-profile.ts`, `apps/local-service/src/tasks/task-profile.ts`, `tests/web/task-profile.test.mts`.
+- Technical value delivered: Round-trip сохраняет UUID, key, planning provenance, product status, дату, null actual time и поддерживаемые ссылки.
+- Product value delivered: Экспорт сохраняет известные поля и явно отклоняет значимые данные вне M1 scope.
+- Actual implementation date and time: 10-11-2026 23:06
+- Verification evidence: `node --test tests/web/task-profile.test.mts` — exit 0, 3/3 после RED.
+- Residual risks: Source mapping, выделение ID, проверка полного графа, SQL и UI принадлежат зависимым задачам.
+- Follow-up: PAOS-0003 потребляет модель в собственном контракте времени; PAOS-0048/0050 подключают persistence и import.
 
 ### Task `PAOS-0003`
 
 - Task: Время и журнал событий
-- Status: planned
+- Status: implemented
 - Delivery stage: M1
 - Execution order: 5
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 10-11-2026 23:09
 - Depends on: PAOS-0002
 - Blocks: PAOS-0006, PAOS-0015, PAOS-0042, PAOS-0045, PAOS-0048
 - Source: PRD: дополнение Task Manager; screen specification
@@ -455,27 +455,27 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/local-service/src/events; packages/contracts/time
-- Next step: Завершить зависимости, затем уточнить tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Next step: Подключить журнал к SQLite и runtime после соответствующих gates.
+- Actual time: локальная проверка 10-11-2026 23:09 MSK; точное начало и активная длительность не измерены.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
 - Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Реализованы scoped event receipts и детерминированная проекция времени с pause, retry, crash и reconciliation.
+- Files touched / work locations: `packages/contracts/time/task-time.ts`, `apps/local-service/src/events/task-time.ts`, `tests/web/task-time.test.mts`.
+- Technical value delivered: Повтор не удваивает интервалы; конфликт identity и чужая задача отклоняются. Неизвестное окончание после crash сохраняет `null`.
+- Product value delivered: Длительность задачи считается по объединению подтверждённых интервалов; трудозатраты показываются отдельно по исполнителям.
+- Actual implementation date and time: 10-11-2026 23:09
+- Verification evidence: `node --test tests/web/task-profile.test.mts tests/web/task-time.test.mts` — exit 0, 6/6 после RED, из них 3 проекции времени.
+- Residual risks: SQLite и фактический runtime ещё не подают события; проверка UI в следующих задачах.
+- Follow-up: PAOS-0048/0042 подключают журнал и runtime; PAOS-0043/0045 проверяют представление.
 
 ### Task `PAOS-0004`
 
 - Task: Темы и локализация
-- Status: planned
+- Status: in_progress
 - Delivery stage: M1
 - Execution order: 6
 - Schema version: task_matrix_plan_v1
@@ -500,22 +500,22 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/web/src/design; apps/web/src/locales
-- Next step: Завершить зависимости, затем уточнить tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Next step: Подключить настройки к хранилищу сервиса и проверить в UI с PAOS-0043/0045.
+- Actual time: foundation проверен 10-11-2026 23:07 MSK; приёмка карточки pending.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
 - Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
+- Status: in_progress
+- What was done: Добавлены RU/EN словарь, Light/Dark/System tokens и контракт сохранения настроек.
+- Files touched / work locations: `apps/web/src/design/preferences.ts`, `apps/web/src/design/theme.css`, `apps/web/src/locales/messages.ts`, `tests/web/theme-locale.test.mts`.
+- Technical value delivered: Типизированный интерфейс хранилища и применение `lang` и `data-theme`.
+- Product value delivered: Настройки темы и языка готовы для подключения к будущему UI; defaults `ru` и `system`.
 - Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Verification evidence: `node --test tests/web/theme-locale.test.mts` — exit 0, 3/3. Статический контраст 15 пар на тему: минимумы 4,73:1 для текста и 6,00:1 для focus outline.
+- Residual risks: Подключение реального хранилища, перезапуск, длинные RU/EN строки, клавиатура и 200% zoom не проверены в браузере.
+- Follow-up: Подключить foundation к PAOS-0043 и выполнить браузерные сценарии PAOS-0045 после разрешения.
 
 ### Task `PAOS-0005`
 
@@ -2057,7 +2057,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 ### Task `PAOS-0039`
 
 - Task: Допустимые auth routes и коммерческие границы
-- Status: planned
+- Status: blocked
 - Delivery stage: M1
 - Execution order: 3
 - Schema version: task_matrix_plan_v1
@@ -2082,28 +2082,28 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: product-manager, architect, security-privacy-supply-chain-reviewer
 - Skills: implementation-planner; task-matching skills selected at start
 - Output artifacts: research/product-agent-os-web-auth-commercial-2026-11-09.md; packages/contracts/auth
-- Next step: Подтвердить зависимости, доступность route и отдельный implementation scope
-- Actual time: not_started; start/end/duration = null.
+- Next step: Для AUTH-G1 требуется решение владельца по коммерческому каналу; локальный preview использует `local_api_byok`.
+- Actual time: локальный контракт проверен 10-11-2026 23:05 MSK, завершение задачи pending.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-auth-commercial-2026-11-09.md
 - Affected files: proposed paths above; actual create/modify/delete receipts only after execution.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
+- Status: blocked
+- What was done: Реализовано fail-closed решение маршрута локального engineering preview.
+- Files touched / work locations: `packages/contracts/auth/m1-route.ts`, `tests/web/auth-route.test.mts`, `research/product-agent-os-web-auth-commercial-2026-11-09.md`.
+- Technical value delivered: Local BYOK отделён от managed login, SIWC, commercial и hosted.
+- Product value delivered: Плательщик локального preview известен, entitlement остаётся `unverified`.
 - Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Verification evidence: `node --test tests/web/auth-route.test.mts` — 2/2 после RED.
+- Residual risks: AUTH-G1 ждёт решения владельца по paid/OSS, entity и рынкам. Допуск и фактический auth отдельно.
+- Follow-up: Зафиксировать точный коммерческий канал и затем проверить условия выбранного route.
 
 
 ### Task `PAOS-0040`
 
 - Task: Launcher и жизненный цикл локального приложения
-- Status: planned
+- Status: in_progress
 - Delivery stage: M1
 - Execution order: 7
 - Schema version: task_matrix_plan_v1
@@ -2128,22 +2128,22 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: builder, tester
 - Skills: implementation-planner; task-matching skills selected at start
 - Output artifacts: apps/launcher; apps/local-service/src/supervisor
-- Next step: Подтвердить зависимости, доступность route и отдельный implementation scope
-- Actual time: not_started; start/end/duration = null.
+- Next step: Подключить native instance reservation, запуск сервиса, pairing и завершение дерева процессов.
+- Actual time: локальный контракт проверен 10-11-2026; точные границы активного времени не измерены.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-auth-commercial-2026-11-09.md
 - Affected files: proposed paths above; actual create/modify/delete receipts only after execution.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
+- Status: in_progress
+- What was done: Реализован контракт launcher/supervisor с проверкой health и fingerprint, повторным использованием экземпляра, deadlines и graceful Quit.
+- Files touched / work locations: `apps/launcher/launcher.ts`, `apps/local-service/src/supervisor/lifecycle.ts`, `apps/local-service/src/supervisor/deadline.ts`, `tests/web/launcher.test.mts`.
+- Technical value delivered: Неопределённый старт удерживает reservation; при неопределённом outcome перед остановкой детей сохраняется recovery receipt.
+- Product value delivered: Локальный режим не требует подключения runtime; UI открывается только после подтверждения loopback service и его build.
 - Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Verification evidence: `node --test tests/web/launcher.test.mts` — exit 0, 6/6 после RED. Fake ports проверяют missing/incompatible runtime, reuse, health, timeout, Quit/recovery.
+- Residual risks: Native launcher, реальное межпроцессное резервирование, service health, pairing и shutdown ещё не подключены и не проверены.
+- Follow-up: Подключить Windows adapters после согласования entrypoint, pairing contract и допустимого реального прогона.
 
 
 ### Task `PAOS-0041`
@@ -2740,7 +2740,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 ### Task `PAOS-0054`
 
 - Task: Контракт совместимости M1 и runtime manifest
-- Status: planned
+- Status: blocked
 - Delivery stage: M1
 - Execution order: 2
 - Schema version: task_matrix_plan_v1
@@ -2765,22 +2765,22 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: packages/contracts/runtime; docs/evidence/web-m1/compatibility
-- Next step: Завершить зависимости; подтвердить schema/ownership и проверки до реализации
-- Actual time: not_started; start/end/duration = null.
+- Next step: Квалифицировать scoped Execution в поддерживаемой Windows-среде, где доступен native sandbox.
+- Actual time: офлайн-квалификация начата 10-11-2026 22:18 MSK, окончание и длительность pending.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-storage-research-2026-11-09.md.
 - Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
+- Status: blocked
+- What was done: Проверены схема и SQLite FTS5, выполнен один изолированный stdio-прогон. Добавлен fail-closed разбор полученного наблюдения.
+- Files touched / work locations: `packages/contracts/runtime/`, `tests/web/runtime-compatibility.test.mts`, `research/product-agent-os-web-m1-initial-qualification-2026-11-10.md`.
+- Technical value delivered: Локальный probe выявляет отсутствие обязательной части schema и отделяет static check от qualification.
+- Product value delivered: Зависимая интеграция получает проверяемый кандидат runtime без заявления о готовности запуска.
 - Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Verification evidence: Второй stdio подтвердил выбор именованного `workspaceWrite`, но `windowsSandbox/readiness=notConfigured`. Повтор оценки первого и второго receipts сохранил блокировку `scoped_execution_policy`; история во втором проходит. [Candidate tuple и команды](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Residual risks: Native sandbox и фактическое ограничение записи, изоляция после входа, app lockfile и adapter revision остаются открытыми.
+- Follow-up: В поддерживаемой Windows-среде подтвердить native readiness и scoped write/deny proof до handoff контрактов.
 
 
 ### Task `PAOS-0055`

@@ -1,0 +1,26 @@
+{
+  "session_id": "01a1c594-4b86-7311-afaf-fccb4e0f0096",
+  "task_id": "PAOS-M1",
+  "plan_path": "research/product-agent-os-web-task-manager-plan-2026-11-09.md",
+  "scope": "Dependency-ordered local Web M1 implementation from PAOS-0001 and PAOS-0054 through PAOS-0045",
+  "updated_at": "2026-11-10T23:12:21+03:00",
+  "approval_boundary": "User authorized exactly one additional local stdio launch for synthetic session history and effective Windows sandbox diagnostics. No real credentials, provider calls, browser or system policy changes. Dependency-gated local implementation remains authorized.",
+  "status": "blocked",
+  "completion_ready": true,
+  "blocker": "Second stdio launch complete. PAOS-0001, PAOS-0002 and PAOS-0003 are implemented within their local contracts. PAOS-0054 awaits Windows sandbox readiness and enforcement; AUTH-G1 and native launcher/UI integration also remain open. No unstarted M1 task has all dependencies implemented.",
+  "previous_closure": "The first isolated stdio run reported no matching history and readOnly for requested workspace-write; preserved in research/product-agent-os-web-m1-initial-qualification-2026-11-10.md.",
+  "brief_digest": "sha256:72ff5a7691e698b3f6f37f0f85de4c4cb755b1b483f7ada8c864eaf619097634",
+  "brief_schema_version": "task_start_brief_v2",
+  "brief_format": "bold_fields",
+  "brief_fields_present": ["Request", "Goal", "Context", "Scope", "Value", "Execution", "Acceptance", "Risks / approvals", "Next step"],
+  "task_start_brief_shown": true,
+  "lifecycle_scope": {
+    "work_type": "implementation",
+    "size": "large",
+    "risk": "high",
+    "financially_material": false,
+    "release_or_readiness": false,
+    "explicit_packet_request": false,
+    "reason": "M1 spans shared contracts, local runtime, session UI, data migration and integrated acceptance."
+  }
+}

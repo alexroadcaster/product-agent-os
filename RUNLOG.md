@@ -20,6 +20,12 @@ G8-T14/G8 owner accepted. G9 T01–T09 локально реализованы; 
 
 Текущий завершающий прогон после исключения docs/planning: full unittest 1414 / 1321.762s, OK (skip 1), exit 0; docs handoff 105 / 19.108s; fixture 91/91, transcript 26/26, compatibility passed. Strict MkDocs завершился за 38.95s. Все 48 audit cards сохранены, current-state projection: 65 строк без ошибок. T14 — owner_accepted; технические проверки завершены, приёмка владельца получена отдельным решением.
 
+## Старт Web M1 — 2026-11-10
+
+PAOS-0001 реализован в границах адаптера после второго разрешённого stdio-прогона. Persisted `thread/list` подтвердил 1/1/0/2 и project scope; свежая `vscode` история без preview остаётся partial. PAOS-0054 блокируется `windowsSandbox/readiness=notConfigured`, хотя named profile вернул `workspaceWrite`. Независимые ветки продолжены. [Результаты и открытые проверки](research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+
+PAOS-0002 и PAOS-0003 реализованы в границах локальных контрактов. PAOS-0004 и PAOS-0040 имеют локально проверенную основу, integration и UI остаются открытыми. В PAOS-0039 проверена политика локального preview; AUTH-G1 ждёт коммерческого решения владельца. Статусы и команды закреплены в [карточках Web-плана](research/product-agent-os-web-task-manager-plan-2026-11-09.md) и JSON.
+
 ## Подготовка control-plane к Web M1 — 2026-11-10
 
 Source status: documentation maintenance; implementation_not_started.

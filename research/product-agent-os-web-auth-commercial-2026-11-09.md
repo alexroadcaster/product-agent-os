@@ -112,3 +112,9 @@ BYOK: пользователь вводит ключ в connection form посл
 M1 — локальный engineering preview через свой API account. Для платного продукта BYOK остаётся candidate: широкое ограничение App Server auth не трактуется как автоматически снятое API-ключом. AUTH-G1–G6 проверяются до M4 commercial distribution; если admission/условия несовместимы, запуск продажи блокируется, требуется новый runtime ADR. SIWC — optional 0047, не fallback. Наличие schema/login не подтверждает право коммерческого использования.
 
 Источники: [App Server auth](https://learn.chatgpt.com/docs/app-server#auth-endpoints), [Codex credential store](https://learn.chatgpt.com/docs/config-file/config-reference) перепроверены 2026-11-10. Cookie/pairing/TTL — проектные решения.
+
+## Реализация локального выбора маршрута PAOS-0039
+
+`packages/contracts/auth/m1-route.ts` применяет согласованный local engineering preview scope. Для `local_api_byok` плательщиком указывается `user_api_account`, состояние подключения `unverified`. Inherited ChatGPT login и SIWC в M1 заблокированы. Commercial local и hosted требуют отдельного review. Проверка этой функции не использует credentials или provider.
+
+`node --test tests/web/auth-route.test.mts` прошёл 2/2 после RED на отсутствующих решениях маршрутизации. AUTH-G1 остаётся открытым для commercial distribution до решения владельца по paid/OSS, entity и рынкам и проверки условий выбранного маршрута. [OpenAI Docs — App Server auth](https://learn.chatgpt.com/docs/app-server#auth-endpoints)
