@@ -1,28 +1,26 @@
 # PLAN.md
 
-## Web M1 v0.7 — 2026-11-10
+## PAOS-AUD-G8 — планирование, 2026-11-10
 
-[План](research/product-agent-os-web-task-manager-plan-2026-11-09.md): 56 planned / 12 groups; M1 closure 18 tasks, rough 234 h. 0054 compatibility → storage/commands → single window; 0050 preview + 0051 backup + 0055 writers + 0044 recovery → 0056 cutover → 0045. Только документация; отдельное разрешение перед реализацией.
+[PAOS-AUD-G8-T01–T14](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md) — planned, implementation_not_started. Dependencies и acceptance принадлежат матрице; отдельный запрос на реализацию обязателен. Web M1 не переприоритизирован; fresh-session activation остаётся отдельной открытой HOST-задачей.
 
-## Web storage research — 2026-11-09
+## Активная продуктовая очередь Web — 2026-11-10
 
-[Исследование хранения](research/product-agent-os-web-storage-research-2026-11-09.md): SQLite/FTS5 для local M1, LanceDB как candidate semantic index; PostgreSQL/pgvector при team/server scope, Qdrant и PGlite — альтернативы. Решение proposed; cutover authority, выбор SDK и benchmark не выполнены. Очередь 47 Web задач не меняется.
+Source status: project-authored / order_approved; implementation_not_started.
 
-## Web session UX v0.5 — 2026-11-09
+Единственный владелец подробного порядка — [Web-план v0.8](research/product-agent-os-web-task-manager-plan-2026-11-09.md) вместе с [JSON-матрицей](research/product-agent-os-web-task-manager-task-group-2026-11-09.json). Все 56 задач planned. Не копировать новые task statuses в несколько корневых списков.
 
-[UX v0.5](research/product-agent-os-web-m1-wireframes-2026-11-09.md) детализирует M1b/M1c и расширения M2–M3 существующего Web плана. 47 planned tasks / 11 groups сохранены; очередь и зависимости не менялись. Следующий продуктовый шаг — review/приёмка wireframes; разработка требует отдельного запроса.
+1. После отдельного запроса на реализацию начать PAOS-0001, затем PAOS-0054. Уточнить actual file ownership, installed runtime/capabilities, executable checks и pinned manifest до зависимого кода; proposed apps/web, apps/local-service, packages/contracts пока отсутствуют в корне.
+2. Выполнить 18 задач M1 в утверждённом порядке с dependencies; PAOS-0045 — сквозная приёмка после data/recovery gates. PAOS-0002 ограничена M1 profile.
+3. PAOS-0046 — первая задача после M1 и до M2; затем M2 (включая PAOS-0036), M3, M4. OPTIONAL и T1 — отдельные маршруты; повторный commercial review — PAOS-0030.
 
-## Web single-window v0.4 — 2026-11-09
+Если PAOS-0054 не подтверждает required capability, остановить зависимый slice и обновить design issue; не подменять capability неявным fallback. Порядок исполнения не создаёт новых technical dependencies и не разрешает параллельную запись общих файлов.
+Остальные Batch/Track очереди ниже сохранены как отдельные follow-ups. Они не запускаются автоматически и не добавляют gates в M1 без установленной зависимости. Предыдущие Web receipts: [аудит и архив control-plane](research/product-agent-os-control-plane-maintenance-2026-11-10.md).
 
-[Web plan v0.4](research/product-agent-os-web-task-manager-plan-2026-11-09.md): 47 planned tasks / 11 groups; G11 PAOS-0039–0047. Первыми launch/connection/session/scoped run/recovery и M1 gate, затем full Task Manager и autonomy. PAOS-0047 SIWC optional, не блокирует API-M1. Implementation не разрешена; PAOS-AUD очередь не меняется.
 
-## PAOS-AUD-G7 — partially_verified, 2026-11-09
+## PAOS-AUD-G7 — closed / owner accepted, 2026-11-10
 
-T01–T05 accepted; T06 needs_user_acceptance. T07: 12 admitted generations, independent oracle 6/6 на arm; superiority insufficient_evidence. T07 implemented_locally_verified: full 1379 tests passed (1 skip); следующий T08 owner decision. [Матрица](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md), [evidence](research/product-agent-os-g7-execution-report-2026-11-09.md). Fresh-session отдельно; чужие Web edits сохранить.
-
-## Web issue workflows v0.3 — 2026-11-09
-
-[Web plan v0.3](research/product-agent-os-web-task-manager-plan-2026-11-09.md): 38 planned tasks / 10 groups; G09 hierarchy/fields/context и G10 Kanban/workflow/links добавлены, зависимости G02/G07/G08 уточнены. Runtime task-matrix statuses не меняются. Rollback только собственных docs hunks; прежние images/evidence сохранить.
+G7 закрыта: T01–T08 implemented_locally_verified / owner_accepted. Keep tested local mechanisms; superiority insufficient_evidence. Fresh-session activation отдельная открытая задача, T34 no-go unchanged. [Evidence](research/product-agent-os-g7-execution-report-2026-11-09.md).
 
 ## PAOS-AUD-G6 — 2026-11-09
 
@@ -49,7 +47,7 @@ G4 F05/F09/F10/F15 implemented_locally_verified. Следующая группа
   "sources": [
     {
       "path": "research/product-agent-os-audit-remediation-task-plan-2026-11-09.md",
-      "revision": "sha256:d9cd9fbfd299eb10807ba328c63b1dda1f160f50c90d430823b4d5380a32df95",
+      "revision": "sha256:1dcc67cad22db88d0ef3d15b14921fd3dc6333dca0fb5fbaee100ff1fc5b0051",
       "task_prefixes": [
         "PAOS-AUD-"
       ]
@@ -79,10 +77,6 @@ PAOS-AUD-G2: F01/F02/F04 implemented_locally_verified после локальн�
 
 [Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
-## Web Task Manager: документационный scope — 2026-11-09
-
-Сохранена отдельная proposed очередь: [30 задач в 8 группах](research/product-agent-os-web-task-manager-plan-2026-11-09.md), [source-owned JSON](research/product-agent-os-web-task-manager-task-group-2026-11-09.json). Все planned. Порядок: контракты → задачи/наблюдаемость → управляемые изменения → автономность → пилот. Эта очередь не заменяет PAOS-AUD и не разрешает начало Web-разработки. Rollback: только Web-документы и изображения текущего scope.
-
 ## PAOS-AUD-G1 — 2026-11-09
 
 PAOS-AUD-G1: пять карточек F06/F12/F11/F07/F18 implemented_locally_verified. Следующая группа — G2; существующий MCP compatibility gap остаётся её F01. AUD-HOST-02 относится к G6. Rollback: только G1 hunks, сохранить чужие изменения.
@@ -93,51 +87,11 @@ PAOS-AUD-G1: пять карточек F06/F12/F11/F07/F18 implemented_locally_v
 
 `PAOS-SESSION-LIFECYCLE-2026-11-09`: bounded repair implemented and locally verified; M1 wireframes saved and statically checked. Full discovery: 1288 tests, one skip, exit 0; final affected suite: 236 passed. Current-host route observed; fresh-host multi-chat verification remains separate. [Owning scope, verification and rollback](research/product-agent-os-session-lifecycle-fix-2026-11-09.md). Existing package compatibility gap and parent GAP closure are unchanged. Next Web step: owner design review; no implementation queue approval.
 
-## Current GAP-01–GAP-05 implementation — 2026-11-05
-
-`PAOS-GAP-01-05-2026-11-05`: partially_verified: local implementation verified (1284 unittest, one skip; fixture 91/91; transcript 26/26). GAP-01/02/04 are implemented; GAP-03/05 remain blocked on the named owner/host gates. Evidence and reviewable remaining decisions belong to [the owning plan](research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md). Shared component resolver, B42 provenance/routing, exact-host source policy and optional pinned report authority are implemented locally. Current package compatibility is intentionally `needs_review` (legacy flat MCP declaration); four skill metadata were corrected under PAOS-GAP03-METADATA-2026-11-05 (94 focused tests and 232 docs/lifecycle/template tests passed); fresh-host exposure/invocation/trust remain open. Hooks definitions, trust, installed cache, T23–T29 implementation and T30–T34 are unchanged. Local source changes do not extend the dated ACT-F1..F6 host receipt.
-
-
 ## Completed ordinary route integration — 2026-11-05
 
 `PAOS-ORD-01-06-2026-11-05`: implemented_locally_verified; final integrated verification passed. Scope is only PAOS-ORD-01 through PAOS-ORD-06 in [the owning plan](research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md). The opt-in task context connects existing T26/T27 selectors to the public contract CLI, scoped infrastructure proposals and compact authoring. T23-T29 are reused unchanged; GAP-01–GAP-05 now have a separate execution record above; T30-T34 remain unstarted. No publication, target apply, hook/cache activation or provider calls. Rollback only the ORD-owned changes against the recorded pre-slice baseline; preserve earlier docs/site work.
 
-## Current documentation refresh — 2026-11-05
-
-`PAOS-SITE-DOCS-REFRESH-2026-11-05`: user-authorized docs/site maintenance from F01-F18 audit. Scope: bilingual guides, registry, archive labels and local site rebuild/links/Mermaid checks; no implementation or publication. Plan: `.docs-tools/reports/site-docs-refresh-plan-2026-11-05.md`; evidence: `docs/superpowers/specs/site-docs-refresh-2026-11-05.json`. Completed: docs_static_verified. One writer; 100 docs tests, strict build, 220 routes, links/anchors/search and 93 Mermaid renders passed. No implementation changes or publication.
-
-
 <!-- product-agent-os:start plan -->
-Project: Codex Docs / Product-Agent OS
-Last compacted: 2026-07-07
-
-## Current lifecycle repair — 2026-11-03
-
-`PAOS-LIFECYCLE-REPAIR-2026-11-03`: **implemented_locally_verified / verified_local_runtime**. The six repair findings are resolved; activation_pending=false, activation_status=verified_local_runtime for the tested desktop routes. Future definition changes require exact-hash trust review and a fresh negative probe.
-
-Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.repair`; [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). The earlier failed activation below is historical, superseded by this bounded retest.
-
-## Historical lifecycle activation check — 2026-11-03
-
-`PAOS-LIFECYCLE-ACTIVATION-2026-11-03`: verification completed with findings; **activation_failed**. Next: diagnose ACT-F1 host trust/matcher/response handling without bypass; reconcile ACT-F2 ledger format and ACT-F3..F6 source contradictions; then repeat the fresh large/ordinary and safe negative scenarios. Fixes require their own authorized slice; this task changed evidence only.
-
-Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.activation_check`; [detailed plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). No trust/permissions/models/provider/Git changes.
-
-## Historical lifecycle parity — 2026-11-03
-
-`PAOS-TRADE-LIFECYCLE-PARITY-2026-11-03`: `implemented_locally_verified / activation_failed`. Sequence: read-only Trade baseline -> RED/GREEN regressions -> active/staged contracts -> integrated checks -> status sync. Detailed task and rollback live in the existing November plan pair; fresh-session trust/activation is a separate gate.
-
-Evidence owner: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity`; detail: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md).
-
-## Current contract alignment — 2026-11-03
-
-`PAOS-CONTRACT-MODEL-ALIGNMENT-2026-11-03`: `implemented_locally_verified / behavioral_promotion_pending`. Parent permissions and MCP inheritance aligned; 23 active/staged profiles pinned to GPT-6.1 Sol/Terra with preserved effort; inherited skills moved to parent; validators and renderer reject unsupported contracts; lifecycle validator follows the explicit current plan.
-
-Current verification: Ran 1247 tests in 611.387s; OK (skipped=1); fixture/transcript eval, compatibility, 15 active agents, both hook validators, RU/EN task matrices, state consistency, docs checker and diff check exit 0. Detailed evidence, source receipts and rollback: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md) and [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json).
-
-Fresh-session effective permissions/MCP/model availability and quality/cost/latency comparison remain unverified. No provider calls, browser, hook activation, target mutation, Git publication or root site update.
-
-Local PERM/MCP/BASELINE repair is complete. MODEL pins are switched, promotion pending. OPEN-RUNTIME remains separately scoped; Batch 45 T30 remains next in its existing queue.
 
 ## Purpose
 
@@ -158,6 +112,9 @@ Local PERM/MCP/BASELINE repair is complete. MODEL pins are switched, promotion p
 
 ## Current State
 
+Исторические записи и результаты ниже относятся к указанным срезам. Они не меняют очередь Web M1 и не являются проверками текущего запуска. При расхождении используются текущие owning artifacts; перенос истории не закрывает оставшиеся gates.
+
+
 | Workstream | State | Planning impact |
 | --- | --- | --- |
 | Product identity and agent contract | Root `AGENTS.md` now defines this repository as the implementation, verification and evidence workspace for Product-Agent OS, separates the Russian knowledge base as a supporting surface, records the current local/manual claim ceiling, and distinguishes active `.codex/agents` roles from target-workspace agent templates. | Keep volatile route and batch evidence in the owning plans, packets and `RUNLOG.md`; do not turn product mission into a broad production-readiness claim. |
@@ -172,6 +129,8 @@ Local PERM/MCP/BASELINE repair is complete. MODEL pins are switched, promotion p
 | Lifecycle/control-plane sync | Current config-routed full 9-field Task Start Brief / 13-item Completion Ledger, concise ordinary route, advisory Stop. The older B45-S9-H01 correction-loop contract is superseded by lifecycle_parity.repair (2026-11-03). | Finish checks and control-plane sync before terminal reporting. The dated ACT-F1-F6 receipt covers the tested Desktop routes; new hook changes need their own exact-hash trust/fresh-host evidence. |
 
 ## Next Implementation Queue
+
+Приоритетный следующий маршрут — Web M1: PAOS-0001 → PAOS-0054, затем очередь v0.8 (ссылка выше). Таблица ниже — сохранённые follow-ups других направлений, не единая очередь и не разрешение возобновить их.
 
 | Slice | Next decision | Approval boundary | Source pointer |
 | --- | --- | --- | --- |

@@ -174,15 +174,17 @@
       "actual_duration_seconds": null,
       "actual_duration_hms": null,
       "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
-      "depends_on": []
+      "depends_on": [],
+      "execution_order": 1,
+      "delivery_stage": "M1"
     },
     {
       "id": "PAOS-0002",
       "group_id": "G01",
       "title": "Модель задачи и идентификаторы",
       "status": "planned",
-      "short_description": "Контракт прежних 12 и дополнительных полей §14 PRD; отдельные product status и planning status",
-      "technical_value": "Единый контракт всех полей задачи, стабильные ID и миграция старых записей",
+      "short_description": "Domain contract профиля M1: flat Task, поля PRD §17.1–17.2, стабильные ID и отдельные product/planning statuses",
+      "technical_value": "Типизированная модель M1 и проверяемый round-trip поддерживаемых полей без зависимости от полного Task Manager M2.",
       "product_value": "Пользователь ставит полную задачу один раз и сохраняет устойчивую ссылку на неё при изменениях проекта.",
       "affected_files": [
         {
@@ -207,7 +209,10 @@
         "product-agent-os-web-task-manager-screens-2026-11-09.md"
       ],
       "acceptance_criteria": [
-        "Все поля §13–§14 проходят round-trip; стабильные ID; creator provenance; product workflow status не подменяет task_matrix_plan_v1 status"
+        "Round-trip domain contract покрывает только профиль M1 PRD §17.1–17.2: flat Task, исходные 12 полей, status/creator/priority/Start Date/Due Date и related/blocks references; UI и фактический импорт реализуются в owning tasks.",
+        "UUID и project key стабильны; creator provenance, source IDs/status, planned/actual operations и null/unknown time сохраняются без выдумки; product workflow status не подменяет task_matrix_plan_v1 status.",
+        "Contract fixtures отклоняют неподдерживаемые значимые поля/типы/связи без потери данных; импорт и authority switch отдельно проверяются в 0050/0056.",
+        "Epic/Bug/UserStory/Sub-Task, components, versions и attachments не являются acceptance PAOS-0002; полный round-trip M2 принадлежит PAOS-0006/0031–0034/0038."
       ],
       "estimated_duration_hms": "12:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
@@ -218,7 +223,9 @@
       "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
       "depends_on": [
         "PAOS-0001"
-      ]
+      ],
+      "execution_order": 4,
+      "delivery_stage": "M1"
     },
     {
       "id": "PAOS-0003",
@@ -262,7 +269,9 @@
       "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
       "depends_on": [
         "PAOS-0002"
-      ]
+      ],
+      "execution_order": 5,
+      "delivery_stage": "M1"
     },
     {
       "id": "PAOS-0004",
@@ -306,7 +315,9 @@
       "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
       "depends_on": [
         "PAOS-0001"
-      ]
+      ],
+      "execution_order": 6,
+      "delivery_stage": "M1"
     },
     {
       "id": "PAOS-0005",
@@ -352,7 +363,9 @@
         "PAOS-0002",
         "PAOS-0004",
         "PAOS-0032"
-      ]
+      ],
+      "execution_order": 23,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0006",
@@ -399,7 +412,9 @@
         "PAOS-0003",
         "PAOS-0004",
         "PAOS-0032"
-      ]
+      ],
+      "execution_order": 24,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0007",
@@ -443,7 +458,9 @@
       "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
       "depends_on": [
         "PAOS-0006"
-      ]
+      ],
+      "execution_order": 25,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0008",
@@ -488,7 +505,9 @@
       "depends_on": [
         "PAOS-0006",
         "PAOS-0007"
-      ]
+      ],
+      "execution_order": 26,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0009",
@@ -533,7 +552,9 @@
       "depends_on": [
         "PAOS-0001",
         "PAOS-0004"
-      ]
+      ],
+      "execution_order": 31,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0010",
@@ -579,7 +600,9 @@
         "PAOS-0007",
         "PAOS-0009",
         "PAOS-0043"
-      ]
+      ],
+      "execution_order": 32,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0011",
@@ -623,7 +646,9 @@
       "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
       "depends_on": [
         "PAOS-0010"
-      ]
+      ],
+      "execution_order": 33,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0012",
@@ -668,7 +693,9 @@
       "depends_on": [
         "PAOS-0007",
         "PAOS-0009"
-      ]
+      ],
+      "execution_order": 34,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0013",
@@ -712,7 +739,9 @@
       "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
       "depends_on": [
         "PAOS-0012"
-      ]
+      ],
+      "execution_order": 35,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0014",
@@ -756,7 +785,9 @@
       "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
       "depends_on": [
         "PAOS-0013"
-      ]
+      ],
+      "execution_order": 36,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0015",
@@ -802,7 +833,9 @@
         "PAOS-0003",
         "PAOS-0010",
         "PAOS-0012"
-      ]
+      ],
+      "execution_order": 37,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0016",
@@ -848,7 +881,9 @@
         "PAOS-0001",
         "PAOS-0004",
         "PAOS-0012"
-      ]
+      ],
+      "execution_order": 38,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0017",
@@ -892,7 +927,9 @@
       "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
       "depends_on": [
         "PAOS-0016"
-      ]
+      ],
+      "execution_order": 39,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0018",
@@ -936,7 +973,9 @@
       "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
       "depends_on": [
         "PAOS-0017"
-      ]
+      ],
+      "execution_order": 40,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0019",
@@ -981,7 +1020,9 @@
       "depends_on": [
         "PAOS-0017",
         "PAOS-0018"
-      ]
+      ],
+      "execution_order": 41,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0020",
@@ -1024,7 +1065,9 @@
       "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
       "depends_on": [
         "PAOS-0001"
-      ]
+      ],
+      "execution_order": 42,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0021",
@@ -1063,7 +1106,9 @@
       "depends_on": [
         "PAOS-0004",
         "PAOS-0020"
-      ]
+      ],
+      "execution_order": 43,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0022",
@@ -1108,7 +1153,9 @@
         "PAOS-0007",
         "PAOS-0020",
         "PAOS-0021"
-      ]
+      ],
+      "execution_order": 44,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0023",
@@ -1154,7 +1201,9 @@
         "PAOS-0008",
         "PAOS-0013",
         "PAOS-0017"
-      ]
+      ],
+      "execution_order": 46,
+      "delivery_stage": "M3"
     },
     {
       "id": "PAOS-0024",
@@ -1197,7 +1246,9 @@
         "PAOS-0023",
         "PAOS-0037",
         "PAOS-0038"
-      ]
+      ],
+      "execution_order": 48,
+      "delivery_stage": "M3"
     },
     {
       "id": "PAOS-0025",
@@ -1243,7 +1294,9 @@
         "PAOS-0011",
         "PAOS-0024",
         "PAOS-0044"
-      ]
+      ],
+      "execution_order": 49,
+      "delivery_stage": "M3"
     },
     {
       "id": "PAOS-0026",
@@ -1288,7 +1341,9 @@
       "depends_on": [
         "PAOS-0023",
         "PAOS-0025"
-      ]
+      ],
+      "execution_order": 50,
+      "delivery_stage": "M3"
     },
     {
       "id": "PAOS-0027",
@@ -1339,7 +1394,9 @@
         "PAOS-0007",
         "PAOS-0008",
         "PAOS-0011"
-      ]
+      ],
+      "execution_order": 45,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0028",
@@ -1392,7 +1449,9 @@
         "PAOS-0037",
         "PAOS-0038",
         "PAOS-0045"
-      ]
+      ],
+      "execution_order": 51,
+      "delivery_stage": "M4"
     },
     {
       "id": "PAOS-0029",
@@ -1436,7 +1495,9 @@
       "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
       "depends_on": [
         "PAOS-0028"
-      ]
+      ],
+      "execution_order": 52,
+      "delivery_stage": "M4"
     },
     {
       "id": "PAOS-0030",
@@ -1469,7 +1530,8 @@
         "product-agent-os-web-task-manager-screens-2026-11-09.md"
       ],
       "acceptance_criteria": [
-        "Пилот согласован отдельно; restore проверен; наблюдения отделены от продуктовых гипотез"
+        "Пилот согласован отдельно; restore проверен; наблюдения отделены от продуктовых гипотез",
+        "Перед коммерческим выпуском повторно сверить актуальность AUTH-G1–G6 и закрытие применимых gaps раннего PAOS-0046; прежний review не является бессрочным допуском."
       ],
       "estimated_duration_hms": "16:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
@@ -1481,7 +1543,9 @@
       "depends_on": [
         "PAOS-0029",
         "PAOS-0046"
-      ]
+      ],
+      "execution_order": 53,
+      "delivery_stage": "M4"
     },
     {
       "id": "PAOS-0031",
@@ -1534,7 +1598,9 @@
       "requirement_ids": [
         "TM-15",
         "TM-16"
-      ]
+      ],
+      "execution_order": 20,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0032",
@@ -1587,7 +1653,9 @@
       ],
       "requirement_ids": [
         "TM-16"
-      ]
+      ],
+      "execution_order": 21,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0033",
@@ -1639,7 +1707,9 @@
       ],
       "requirement_ids": [
         "TM-17"
-      ]
+      ],
+      "execution_order": 22,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0034",
@@ -1698,7 +1768,9 @@
       "requirement_ids": [
         "TM-18",
         "TM-24"
-      ]
+      ],
+      "execution_order": 27,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0035",
@@ -1748,14 +1820,16 @@
       "requirement_ids": [
         "TM-19",
         "TM-20"
-      ]
+      ],
+      "execution_order": 29,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0036",
       "group_id": "G10",
       "title": "Редактор, версии и миграции workflow",
       "status": "planned",
-      "short_description": "Workflow definitions, type mapping, draft/publish и pinned versions",
+      "short_description": "M2: редактор workflow, type mapping, draft/publish, pinned versions и migration; execution chains отдельно в M3 PAOS-0037",
       "technical_value": "Workflow definitions, type mapping, draft/publish и pinned versions",
       "product_value": "Пользователь создаёт собственный процесс, не меняя незаметно уже идущую работу",
       "affected_files": [
@@ -1800,7 +1874,9 @@
       ],
       "requirement_ids": [
         "TM-21"
-      ]
+      ],
+      "execution_order": 30,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0037",
@@ -1853,7 +1929,9 @@
       ],
       "requirement_ids": [
         "TM-22"
-      ]
+      ],
+      "execution_order": 47,
+      "delivery_stage": "M3"
     },
     {
       "id": "PAOS-0038",
@@ -1906,7 +1984,9 @@
       ],
       "requirement_ids": [
         "TM-23"
-      ]
+      ],
+      "execution_order": 28,
+      "delivery_stage": "M2"
     },
     {
       "id": "PAOS-0039",
@@ -1950,7 +2030,9 @@
       "risks": "Неоднозначные условия или отсутствие коммерческого допуска.",
       "depends_on": [
         "PAOS-0001"
-      ]
+      ],
+      "execution_order": 3,
+      "delivery_stage": "M1"
     },
     {
       "id": "PAOS-0040",
@@ -1993,7 +2075,9 @@
       "risks": "Orphan processes, зависший shutdown, несовместимый runtime.",
       "depends_on": [
         "PAOS-0001"
-      ]
+      ],
+      "execution_order": 7,
+      "delivery_stage": "M1"
     },
     {
       "id": "PAOS-0041",
@@ -2045,7 +2129,9 @@
         "PAOS-0039",
         "PAOS-0040",
         "PAOS-0054"
-      ]
+      ],
+      "execution_order": 8,
+      "delivery_stage": "M1"
     },
     {
       "id": "PAOS-0042",
@@ -2094,7 +2180,9 @@
         "PAOS-0003",
         "PAOS-0048",
         "PAOS-0055"
-      ]
+      ],
+      "execution_order": 11,
+      "delivery_stage": "M1"
     },
     {
       "id": "PAOS-0043",
@@ -2145,7 +2233,9 @@
         "PAOS-0042",
         "PAOS-0004",
         "PAOS-0048"
-      ]
+      ],
+      "execution_order": 12,
+      "delivery_stage": "M1"
     },
     {
       "id": "PAOS-0044",
@@ -2188,7 +2278,9 @@
       "risks": "Невосстановимый outcome и частично выполненные tools.",
       "depends_on": [
         "PAOS-0043"
-      ]
+      ],
+      "execution_order": 13,
+      "delivery_stage": "M1"
     },
     {
       "id": "PAOS-0045",
@@ -2236,14 +2328,16 @@
         "PAOS-0049",
         "PAOS-0051",
         "PAOS-0056"
-      ]
+      ],
+      "execution_order": 18,
+      "delivery_stage": "M1"
     },
     {
       "id": "PAOS-0046",
       "group_id": "G11",
       "title": "Коммерческий review API-варианта и выпускные gates",
       "status": "planned",
-      "short_description": "Проверить AUTH-G1–G6, выбранные рынки, privacy, distribution licenses, payer, support и owner decision",
+      "short_description": "Сразу после приёмки M1 проверить коммерческий API route, AUTH-G1–G6, рынки/privacy/licenses/payer; зарегистрировать ограничения и gates повторной проверки перед выпуском",
       "technical_value": "Проверить AUTH-G1–G6, выбранные рынки, privacy, distribution licenses, payer, support и owner decision",
       "product_value": "Коммерческий пакет честно описывает подключение, затраты и ограничения.",
       "affected_files": [
@@ -2269,7 +2363,8 @@
         "product-agent-os-web-auth-commercial-2026-11-09.md"
       ],
       "acceptance_criteria": [
-        "Каждый применимый AUTH gate содержит evidence/owner; нет обещаний без approval. Для API-only SIWC помечен unavailable; task не выполняет publication."
+        "Каждый применимый AUTH gate содержит evidence/owner; нет обещаний без approval. Для API-only SIWC помечен unavailable; task не выполняет publication.",
+        "Позиция 19 после PAOS-0045 и до M2: ранний review различает подтверждённые условия, pending evidence/admission и incompatible route; каждый gap имеет owner и запрет соответствующего выпуска. Актуальность условий повторно проверяется в PAOS-0030, ранний review не заменяет release acceptance."
       ],
       "estimated_duration_hms": "08:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
@@ -2280,7 +2375,9 @@
       "risks": "Нет admission, legal review или достаточных runtime/security evidence.",
       "depends_on": [
         "PAOS-0045"
-      ]
+      ],
+      "execution_order": 19,
+      "delivery_stage": "POST_M1"
     },
     {
       "id": "PAOS-0047",
@@ -2326,7 +2423,9 @@
         "PAOS-0039",
         "PAOS-0044",
         "PAOS-0046"
-      ]
+      ],
+      "execution_order": 54,
+      "delivery_stage": "OPTIONAL"
     },
     {
       "id": "PAOS-0048",
@@ -2378,7 +2477,9 @@
         "PAOS-0002",
         "PAOS-0003",
         "PAOS-0054"
-      ]
+      ],
+      "execution_order": 9,
+      "delivery_stage": "M1"
     },
     {
       "id": "PAOS-0049",
@@ -2422,7 +2523,9 @@
       "risks": "Потеря индекса; утечка project content; неверные ожидания морфологии",
       "depends_on": [
         "PAOS-0048"
-      ]
+      ],
+      "execution_order": 14,
+      "delivery_stage": "M1"
     },
     {
       "id": "PAOS-0050",
@@ -2471,7 +2574,9 @@
       "risks": "Потеря неизвестных полей; concurrent MD edit; двойная запись; unsafe rollback",
       "depends_on": [
         "PAOS-0048"
-      ]
+      ],
+      "execution_order": 16,
+      "delivery_stage": "M1"
     },
     {
       "id": "PAOS-0051",
@@ -2516,7 +2621,9 @@
       "risks": "Неполный snapshot; backup на отказавшем диске; восстановление активного разрешения",
       "depends_on": [
         "PAOS-0048"
-      ]
+      ],
+      "execution_order": 15,
+      "delivery_stage": "M1"
     },
     {
       "id": "PAOS-0052",
@@ -2568,7 +2675,9 @@
         "PAOS-0049",
         "PAOS-0051",
         "PAOS-0030"
-      ]
+      ],
+      "execution_order": 55,
+      "delivery_stage": "T1"
     },
     {
       "id": "PAOS-0053",
@@ -2618,7 +2727,9 @@
       "depends_on": [
         "PAOS-0056",
         "PAOS-0052"
-      ]
+      ],
+      "execution_order": 56,
+      "delivery_stage": "T1"
     },
     {
       "id": "PAOS-0054",
@@ -2662,7 +2773,9 @@
       "risks": "Неподдержанная runtime/schema capability; потеря данных или ложный success при неполном evidence.",
       "depends_on": [
         "PAOS-0001"
-      ]
+      ],
+      "execution_order": 2,
+      "delivery_stage": "M1"
     },
     {
       "id": "PAOS-0055",
@@ -2712,7 +2825,9 @@
       "depends_on": [
         "PAOS-0048",
         "PAOS-0054"
-      ]
+      ],
+      "execution_order": 10,
+      "delivery_stage": "M1"
     },
     {
       "id": "PAOS-0056",
@@ -2759,7 +2874,9 @@
         "PAOS-0051",
         "PAOS-0055",
         "PAOS-0044"
-      ]
+      ],
+      "execution_order": 17,
+      "delivery_stage": "M1"
     }
   ],
   "requirement_revision": "0.7",
@@ -2874,5 +2991,125 @@
     "cutover_gate": "PAOS-0056",
     "acceptance_task": "PAOS-0045",
     "commercial_admission": "pending_AUTH-G1-G6"
+  },
+  "execution_plan": {
+    "revision": "0.8",
+    "approved_at": "2026-11-10",
+    "status": "user_selected_order_implementation_not_started",
+    "order_semantics": "Serial planning baseline; depends_on remains the technical DAG. Optional stage may be skipped and does not block T1. No scheduler or execution authorization.",
+    "stages": [
+      {
+        "stage": "M1",
+        "title": "Единое рабочее окно",
+        "optional": false,
+        "task_ids": [
+          "PAOS-0001",
+          "PAOS-0054",
+          "PAOS-0039",
+          "PAOS-0002",
+          "PAOS-0003",
+          "PAOS-0004",
+          "PAOS-0040",
+          "PAOS-0041",
+          "PAOS-0048",
+          "PAOS-0055",
+          "PAOS-0042",
+          "PAOS-0043",
+          "PAOS-0044",
+          "PAOS-0049",
+          "PAOS-0051",
+          "PAOS-0050",
+          "PAOS-0056",
+          "PAOS-0045"
+        ],
+        "estimated_hours": 234
+      },
+      {
+        "stage": "POST_M1",
+        "title": "Ранний коммерческий review",
+        "optional": false,
+        "task_ids": [
+          "PAOS-0046"
+        ],
+        "estimated_hours": 8
+      },
+      {
+        "stage": "M2",
+        "title": "Полный Task Manager",
+        "optional": false,
+        "task_ids": [
+          "PAOS-0031",
+          "PAOS-0032",
+          "PAOS-0033",
+          "PAOS-0005",
+          "PAOS-0006",
+          "PAOS-0007",
+          "PAOS-0008",
+          "PAOS-0034",
+          "PAOS-0038",
+          "PAOS-0035",
+          "PAOS-0036",
+          "PAOS-0009",
+          "PAOS-0010",
+          "PAOS-0011",
+          "PAOS-0012",
+          "PAOS-0013",
+          "PAOS-0014",
+          "PAOS-0015",
+          "PAOS-0016",
+          "PAOS-0017",
+          "PAOS-0018",
+          "PAOS-0019",
+          "PAOS-0020",
+          "PAOS-0021",
+          "PAOS-0022",
+          "PAOS-0027"
+        ],
+        "estimated_hours": 338
+      },
+      {
+        "stage": "M3",
+        "title": "Управляемая автономность",
+        "optional": false,
+        "task_ids": [
+          "PAOS-0023",
+          "PAOS-0037",
+          "PAOS-0024",
+          "PAOS-0025",
+          "PAOS-0026"
+        ],
+        "estimated_hours": 84
+      },
+      {
+        "stage": "M4",
+        "title": "Приёмка и локальный пилот",
+        "optional": false,
+        "task_ids": [
+          "PAOS-0028",
+          "PAOS-0029",
+          "PAOS-0030"
+        ],
+        "estimated_hours": 52
+      },
+      {
+        "stage": "OPTIONAL",
+        "title": "Sign in with ChatGPT",
+        "optional": true,
+        "task_ids": [
+          "PAOS-0047"
+        ],
+        "estimated_hours": 20
+      },
+      {
+        "stage": "T1",
+        "title": "Командная версия после отдельного design/start",
+        "optional": false,
+        "task_ids": [
+          "PAOS-0052",
+          "PAOS-0053"
+        ],
+        "estimated_hours": 40
+      }
+    ]
   }
 }

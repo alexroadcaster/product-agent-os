@@ -1,28 +1,30 @@
 # TEST.md
 
-## Web M1 v0.7 — 2026-11-10
+## PAOS-AUD-G8 — планирование, 2026-11-10
 
-[Audit remediation §9](research/product-agent-os-web-m1-final-audit-2026-11-10.md) владеет текущими docs receipts. M1 DoD: SW-AC-01–10, ST-AC-01–07 в M1 profile, UX-AC-01–18 M1 slices, DATA-AC-01–05; owners в плане v0.7. Docs unittest/check_docs/task matrix/MD-JSON parity/DAG/links/diff/strict MkDocs проверяются сейчас; runtime/browser/performance — будущие gates.
+G8 verification design находится в [матрице аудита](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md): actual-context render/merge, UTF-8 boundaries, preservation map, conflict/recovery, links и synthetic E2E. Это будущие gates; текущий authoring проверяет только документы, не G8 runtime.
 
-## Web storage research — 2026-11-09
+## Проверки Web M1 — актуальный маршрут 2026-11-10
 
-[Storage research §16](research/product-agent-os-web-storage-research-2026-11-09.md) владеет текущими docs receipts. §14 содержит будущий packaging/retrieval/crash/restore experiment, не результаты DB benchmarks. Исследование не подтверждает Windows/runtime совместимость.
+Source status: planned acceptance / no Web runtime evidence.
 
-## Web session UX v0.5 — 2026-11-09
+[Web-план v0.8](research/product-agent-os-web-task-manager-plan-2026-11-09.md), раздел «Матрица M1 DoD», владеет соответствием acceptance → owner task. PRD §17 / architecture §21 задают M1 profile. До implementation использовать существующие docs/control-plane checks ниже; не придумывать npm/build/E2E команды для отсутствующего приложения. PAOS-0001/0054 фиксируют реальные версии, команды и evidence paths.
 
-Для [UX v0.5](research/product-agent-os-web-m1-wireframes-2026-11-09.md) выполняются docs unittest, check_docs, task matrix, artifact consistency, diff hygiene и strict MkDocs; текущие receipts — §14 wireframes. UX-AC-01–18 остаются сценариями будущих runtime/browser проверок, не пройденными тестами приложения.
+| Проверяемая граница | Задачи-владельцы и evidence |
+| --- | --- |
+| Manifest, policy и secrets | 0001/0054/0039/0041: exact tuple, positive/negative contracts, credential isolation |
+| Сессия, permissions, Stop, recovery | 0042/0043/0044/0055: SW-AC и UX-AC, duplicate/cleared/outcome; fixture отдельно от actual runtime |
+| SQLite, FTS5 и данные | 0048/0049/0050/0051/0056: ST-AC и DATA-AC, conflicts/crash, restore rehearsal до switch, no lost deltas |
+| UI и сквозная приёмка | 0004/0043/0045: M1 RU/EN, обе темы, a11y; real runtime + browser journey при закрытом Codex App по утверждённой матрице |
 
-## Web single-window v0.4 — 2026-11-09
+Live/provider/browser actions требуют применимой отдельной authority; их отсутствие — явный открытый gate, а не условный pass. Исторические проверки других направлений ниже не подтверждают Web M1. Текущие maintenance receipts: [аудит и архив control-plane](research/product-agent-os-control-plane-maintenance-2026-11-10.md).
 
-Web v0.4 authoring: docs unittest, check_docs, task-matrix, MD/JSON dependency/links/UTF-8 checks, strict MkDocs и diff. Будущие SW-AC-01–10 требуют browser + authorized actual runtime с закрытым Codex App, no inherited auth fallback, credential/tool isolation, lost ACK/crash/approval recovery. [Текущие receipts и gaps](research/product-agent-os-web-task-manager-plan-2026-11-09.md); runtime в этой задаче не запускался.
 
 ## PAOS-AUD-G7 — current-run verification, 2026-11-10
 
+T08 docs/acceptance-only: reuse unchanged T07 runtime suite; current frozen hashes verified. Current docs unittest 105 tests / 13.036 s; check_docs, matrix/state validators and diff check exit 0. Final acceptance edits checked below in execution report.
+
 T07: full unittest 1379 / 516.855 s / exit 0 (1 platform skip); docs 105 / 7.834 s, fixture 91/91, transcript 26/26, compatibility passed. Exact commands, RED/GREEN и attempts — [execution report](research/product-agent-os-g7-execution-report-2026-11-09.md). TEMP/TMP: workspace `.docs-tools/reports/g7-deep-review-temp`. Attested comparison 12 admitted; oracle 6/6 на arm. Offline rescore hash-guards inputs, provider=0, published writes=0. T06 10/10 tool cases — прежний receipt, в этом T07 не повторялся.
-
-## Web issue workflows v0.3 — 2026-11-09
-
-Web v0.3: docs unittest, structure check, task-matrix validator, JSON/MD/DAG checks и strict MkDocs после Mermaid/source updates. Acceptance matrix: 10 сценариев PRD §14, user-only completion, pinned migration, cyclic blocks, attachments/actor history; runtime/browser checks будущие. Receipts в [плане](research/product-agent-os-web-task-manager-plan-2026-11-09.md).
 
 ## PAOS-AUD-G6 — 2026-11-09
 
@@ -54,10 +56,6 @@ PAOS-AUD-G2: full discovery 1305 tests, 748.949 s, OK (skipped=1), exit 0; final
 
 [Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
-## Web Task Manager: документационный scope — 2026-11-09
-
-Для Web planning slice: docs unittest, tools/check_docs.py, validate_task_matrix.py для [плана](research/product-agent-os-web-task-manager-plan-2026-11-09.md), JSON coverage/dependency checks и git diff --check. [Визуальная спецификация](research/product-agent-os-web-task-manager-screens-2026-11-09.md) фиксирует ограничения raster review; browser/runtime/a11y gates принадлежат будущей реализации. Текущие receipts — в owning плане.
-
 ## PAOS-AUD-G1 — 2026-11-09
 
 PAOS-AUD-G1: full discovery 1297 tests, 532.640 s, OK (skipped=1), exit 0; affected suite 216 tests passed; final merge/renderer 67 tests passed после последнего alias-hardening. Fixture 91/91, transcript 26/26, docs 100/100; hook validators, parity/AST и native rules checks passed. Compatibility exit 1 needs_review — существующий G2/F01 legacy MCP gap. Даты, команды, failed attempts и provenance — owning evidence. Для повторения использовать ignored workspace TEMP/TMP под .docs-tools/reports/paos-aud-g1/tmp и PYTHONDONTWRITEBYTECODE=1; прежние TEMP cleanup failures не скрыты.
@@ -67,11 +65,6 @@ PAOS-AUD-G1: full discovery 1297 tests, 532.640 s, OK (skipped=1), exit 0; affec
 ## Session lifecycle regression — 2026-11-09
 
 `PAOS-SESSION-LIFECYCLE-2026-11-09`: run `python -m unittest tests.product_agent_os.test_lifecycle_hooks -v` for two-chat isolation, invalid/foreign identity, exact bootstrap, Windows case handling and SessionStart/Stop agreement, then required docs/template and plugin suites below. Current receipts: full discovery 1288 tests, one skip, exit 0; final affected suite 236 passed; fixture 91/91, transcript 26/26; hook validators/docs/diff passed. Compatibility exit 1 remains the existing legacy MCP gap. Exact state provenance and current-host versus synthetic evidence: `research/product-agent-os-session-lifecycle-fix-2026-11-09.md`. No trust or sandbox bypass is part of verification.
-
-## Current GAP-01–GAP-05 implementation — 2026-11-05
-
-`PAOS-GAP-01-05-2026-11-05`: partially_verified: local implementation verified (1284 unittest, one skip; fixture 91/91; transcript 26/26). GAP-01/02/04 are implemented; GAP-03/05 remain blocked on the named owner/host gates. Evidence and reviewable remaining decisions belong to [the owning plan](research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md). Shared component resolver, B42 provenance/routing, exact-host source policy and optional pinned report authority are implemented locally. Current package compatibility is intentionally `needs_review` (legacy flat MCP declaration); four skill metadata were corrected under PAOS-GAP03-METADATA-2026-11-05 (94 focused tests and 232 docs/lifecycle/template tests passed); fresh-host exposure/invocation/trust remain open. Hooks definitions, trust, installed cache, T23–T29 implementation and T30–T34 are unchanged. Local source changes do not extend the dated ACT-F1..F6 host receipt.
-
 
 ## Ordinary route integration — 2026-11-05
 
@@ -85,42 +78,6 @@ For `PAOS-SITE-DOCS-REFRESH-2026-11-05`, run docs unittest and check_docs.py, ap
 <!-- product-agent-os:start test -->
 Project: Codex Docs / Product-Agent OS
 Last compacted: 2026-07-07
-
-## Current lifecycle repair — 2026-11-03
-
-`PAOS-LIFECYCLE-REPAIR-2026-11-03`: **implemented_locally_verified / verified_local_runtime**. Ran 1253 tests in 772.501s; OK (skipped=1); focused 165 passed; fixture 91/91; transcript 26/26; compatibility/agents/hooks passed. Final docs/matrix/state/diff receipts are recorded in final_checks.
-
-Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.repair`; [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). The earlier failed activation below is historical, superseded by this bounded retest.
-
-Final evidence-update checks: 100 documentation tests passed after correcting one Cyrillic heading in the English plan (initial docs run: 3 locale/parity failures). check_docs.py, RU/EN task matrices and task-state consistency passed. Baseline-preservation and git diff --check passed; no unrelated edits or baseline deletions.
-
-## Historical lifecycle activation check — 2026-11-03
-
-`PAOS-LIFECYCLE-ACTIVATION-2026-11-03`: verification completed with findings; **activation_failed**. Current fresh-session checks: 15 active profiles and both hook validators passed; focused hooks 29/29 passed after isolated TEMP setup. Two earlier TEMP attempts failed (permissions, then Git-root fixture contamination) and are preserved. Actual negative host guard FAILED despite the direct script returning deny. Run docs unittest, check_docs, both task matrices, state consistency and diff hygiene for these evidence updates; no broad implementation suite rerun.
-
-Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.activation_check`; [detailed plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). No trust/permissions/models/provider/Git changes.
-
-Evidence-update checks in this run: 100 documentation tests OK; check_docs.py, both task-matrix validators, task-state consistency and git diff --check exit 0. Receipt/source-hash/size-budget checks passed. These successful checks do not change the failed host guard verdict.
-
-## Historical lifecycle parity — 2026-11-03
-
-`PAOS-TRADE-LIFECYCLE-PARITY-2026-11-03`: `implemented_locally_verified / activation_failed`. Focused lifecycle, generator, packet-validator, template and docs checks passed (264 tests); integrated checks completed; see exact initial-failure and focused-retest receipts below. Verify scoped full/concise markers, legacy compatibility, terminal rejection, packet content and closure contradictions, renderer inventory (209), unchanged safety rules and Trade hashes. Runtime activation remains unverified.
-
-Evidence owner: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity`; detail: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md).
-
-Current verification receipt: Full discovery: Ran 1253 tests in 675.268s; FAILED (failures=2, skipped=1). Two obsolete Completion Brief assertions corrected; complete hook-governance (5 tests) and renderer (28 tests) modules passed. No implementation change was needed for these failures. All remaining integrated commands exit 0; final focused/docs/status gates are recorded separately.
-
-Final affected-contract gate: 298 tests passed (including 100 documentation tests); 91/91 fixtures and 26/26 synthetic transcripts passed; compatibility is compatible; 15 active agents, hook validators, RU/EN task matrices, task-state consistency, docs structure and diff checks passed. Initial full discovery remains recorded as 1253 tests with two obsolete-name assertion failures and one platform skip; both changed modules and the final 298-test set passed afterward. No live model or fresh-session activation claim.
-
-## Current contract alignment — 2026-11-03
-
-`PAOS-CONTRACT-MODEL-ALIGNMENT-2026-11-03`: `implemented_locally_verified / behavioral_promotion_pending`. Parent permissions and MCP inheritance aligned; 23 active/staged profiles pinned to GPT-6.1 Sol/Terra with preserved effort; inherited skills moved to parent; validators and renderer reject unsupported contracts; lifecycle validator follows the explicit current plan.
-
-Current verification: Ran 1247 tests in 611.387s; OK (skipped=1); fixture/transcript eval, compatibility, 15 active agents, both hook validators, RU/EN task matrices, state consistency, docs checker and diff check exit 0. Detailed evidence, source receipts and rollback: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md) and [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json).
-
-Fresh-session effective permissions/MCP/model availability and quality/cost/latency comparison remain unverified. No provider calls, browser, hook activation, target mutation, Git publication or root site update.
-
-Final documentation/status checks: 225 tests passed (100 docs, 94 infrastructure templates, 6 lifecycle, 25 hooks); strict MkDocs preview exit 0 (`.venv-docs/Scripts/python.exe -m mkdocs build --strict --site-dir .docs-tools/reports/gpt6-contract-preview`); both task-matrix validators, task-state consistency, docs checker, static preservation checks and `git diff --check` exit 0. This preview is local build evidence, not root-site publication. Exact receipts are in `technical_followup.final_checks` of the task-group JSON.
 
 ## Purpose
 
@@ -167,6 +124,9 @@ git diff --check
 Use `timeout_ms: 1200000` for full Product-Agent OS unittest runs.
 
 ## Current Verification State
+
+Исторические записи и результаты ниже относятся к указанным срезам. Они не меняют очередь Web M1 и не являются проверками текущего запуска. При расхождении используются текущие owning artifacts; перенос истории не закрывает оставшиеся gates.
+
 
 | Area | Current evidence state | Required next check |
 | --- | --- | --- |

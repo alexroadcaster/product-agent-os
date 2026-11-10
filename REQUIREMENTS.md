@@ -1,12 +1,27 @@
 # REQUIREMENTS.md
 
-## Web v0.7 — 2026-11-10
+## PAOS-AUD-G8 — планирование, 2026-11-10
 
-[PRD](research/product-agent-os-web-prd-2026-11-05.md) §17: согласованный M1 scope, profile import и offline CRUD; [архитектура](research/product-agent-os-web-architecture-2026-11-05.md) §21: commands/policy/auth/history. SQLite+FTS5 local, PostgreSQL+pgvector T1; только docs, runtime/commercial acceptance pending.
+G8 requirements сохранены в [матрице аудита](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md): адаптивное заполнение, canonical ownership, docs navigation и lossless compaction. Будущий default limit — 40 000 UTF-8 bytes, stricter project limits сохраняются; это planned contract, действующие настройки не изменены.
 
-## PAOS-AUD-G7 — partial acceptance
+## Текущий scope Web M1 — 2026-11-10
 
-T01–T05 accepted; T06–T08 acceptance pending. T07: Codex-only paired generation, tools=[], 6/6 на arm; superiority не доказана. Без API-ключа/global/CI; fresh-session отдельно. [Scope/evidence](research/product-agent-os-g7-execution-report-2026-11-09.md).
+Source status: project-authored / user-approved planning order; implementation_not_started.
+
+Owning scope: [PRD §17](research/product-agent-os-web-prd-2026-11-05.md), [архитектура §21](research/product-agent-os-web-architecture-2026-11-05.md), [wireframes v0.7](research/product-agent-os-web-m1-wireframes-2026-11-09.md). [Web-план v0.8](research/product-agent-os-web-task-manager-plan-2026-11-09.md) и [матрица задач](research/product-agent-os-web-task-manager-task-group-2026-11-09.json) владеют последовательностью и task status; revision scope=0.7, execution=0.8.
+
+- M1: одно рабочее окно через Codex App Server; local launch/auth boundary; сессия, чат, связанные задачи, permissions, diff/checks, Stop/recovery; минимальные Task CRUD/доска, read-only каталоги и честный coverage.
+- Local data: SQLite + FTS5, транзакционные команды, поиск, backup/restore, staged MD/JSON import и контролируемый cutover. До cutover legacy tasks file-owned; planning MD/JSON этого репозитория не мигрируются данной правкой.
+- PAOS-0002 покрывает только M1 profile. Полная иерархия, attachments, linked issues, agent/skill CRUD, редактируемые workflows — M2; цепочки автономного выполнения — M3; PostgreSQL + pgvector — отдельный T1.
+- 18 задач M1 / 234 engineering hours — плановая оценка, не срок и не evidence. Все 56 задач planned. PAOS-0046 сразу после M1, PAOS-0036 в M2.
+- Приёмка M1: матрица M1 DoD в плане, SW-AC-01–10, ST-AC-01–07 в M1 profile, UX-AC-01–18 в M1 slice, DATA-AC-01–05. Документы не закрывают runtime/browser/data acceptance.
+
+Предыдущие Web receipts сохранены в [аудит и архив control-plane](research/product-agent-os-control-plane-maintenance-2026-11-10.md). Далее находятся evidence других направлений и исторические compatibility anchors; они не переопределяют этот scope.
+
+
+## PAOS-AUD-G7 — closed / owner accepted, 2026-11-10
+
+G7 T01–T08 owner accepted, локальная группа закрыта. T06 acceptance ограничена synthetic Python/JS; superiority G7 не доказана. Fresh-session activation открыта отдельно; T34 no-go сохраняется. [Evidence](research/product-agent-os-g7-execution-report-2026-11-09.md).
 
 ## PAOS-AUD-G6 — 2026-11-09
 
@@ -38,10 +53,6 @@ PAOS-AUD-G2: разрешены локальные F01/F02/F04. Acceptance: supp
 
 [Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
-## Web Task Manager: документационный scope — 2026-11-09
-
-Полный Web Task Manager включает восемь вкладок, управление агентами/skills, сессии, граф файлов/переменных, 12 полей задачи, оценку/факт времени, RU/EN и темы. [PRD §13](research/product-agent-os-web-prd-2026-11-05.md) владеет требованиями; [24 экрана](research/product-agent-os-web-task-manager-screens-2026-11-09.md) — proposed UX. Scope текущей задачи: документы и изображения; разработка не начата.
-
 ## PAOS-AUD-G1 — 2026-11-09
 
 PAOS-AUD-G1: запрос владельца разрешает локальную реализацию F06/F12/F11/F07/F18. Acceptance: positive/negative contracts, active/package parity, native rules parser и synthetic merge/ACL tests. Реальные ACL, target apply, trust, hooks/rules activation и G6 host acceptance остаются отдельными границами.
@@ -56,32 +67,6 @@ PAOS-AUD-G1: запрос владельца разрешает локальну
 Project: Codex Docs / Product-Agent OS
 Last compacted: 2026-06-11
 
-## Current lifecycle repair — 2026-11-03
-
-`PAOS-LIFECYCLE-REPAIR-2026-11-03`: **implemented_locally_verified / verified_local_runtime**. Acceptance met for ACT-F1..F6: preserve protection, full/concise reporting, strict closure semantics, parent-owned skills and assigned product-manager scope. No new product scope or model switch.
-
-Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.repair`; [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). The earlier failed activation below is historical, superseded by this bounded retest.
-
-## Historical lifecycle activation check — 2026-11-03
-
-`PAOS-LIFECYCLE-ACTIVATION-2026-11-03`: verification completed with findings; **activation_failed**. Activation acceptance requires a real host denial for a terminal marker, proportional full/concise reporting and an explicit packet-validator contract matching accepted rendering. The current negative probe failed; no activation or readiness promotion is permitted.
-
-Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.activation_check`; [detailed plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). No trust/permissions/models/provider/Git changes.
-
-## Historical lifecycle parity — 2026-11-03
-
-`PAOS-TRADE-LIFECYCLE-PARITY-2026-11-03`: `implemented_locally_verified / activation_failed`. Acceptance: nine bold start labels, thirteen ledger list items, conditional full-packet scope, concise ordinary route, honest review/metrics, no format-driven Stop continuation, active/staged parity and preserved safety controls. Trade is read-only; models, permissions, external actions and trust activation are outside this slice.
-
-Evidence owner: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity`; detail: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md).
-
-## Current contract alignment — 2026-11-03
-
-`PAOS-CONTRACT-MODEL-ALIGNMENT-2026-11-03`: `implemented_locally_verified / behavioral_promotion_pending`. Parent permissions and MCP inheritance aligned; 23 active/staged profiles pinned to GPT-6.1 Sol/Terra with preserved effort; inherited skills moved to parent; validators and renderer reject unsupported contracts; lifecycle validator follows the explicit current plan.
-
-Current verification: Ran 1247 tests in 611.387s; OK (skipped=1); fixture/transcript eval, compatibility, 15 active agents, both hook validators, RU/EN task matrices, state consistency, docs checker and diff check exit 0. Detailed evidence, source receipts and rollback: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md) and [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json).
-
-Fresh-session effective permissions/MCP/model availability and quality/cost/latency comparison remain unverified. No provider calls, browser, hook activation, target mutation, Git publication or root site update.
-
 ## Goal
 
 - Develop Product-Agent OS from an agentic-workflow toolkit into a reproducible engineering operating system for Codex App, CLI and IDE extension.
@@ -90,20 +75,16 @@ Fresh-session effective permissions/MCP/model availability and quality/cost/late
 
 ## Current Scope
 
-- Maintain this repository as the implementation, verification and evidence workspace for Product-Agent OS. The Russian Codex knowledge base, source registry and operator docs are supporting product surfaces rather than the repository's sole purpose.
-- Audit target projects and relevant in-scope Codex control surfaces, then route ideas, features and defects through staged requirements, architecture, implementation, verification, review, release evidence and learning without claiming unsupported automation or production readiness.
-- Keep Product-Agent OS plugin work routed through skills, staged artifacts, explicit verification and approval boundaries.
-- Preserve the closed Track 10 and Batch 38/B40 evidence as source-backed context without expanding root control-plane files into historical ledgers.
-- Prepare Batch 39 (`B39-TEST-M01..M54`) for real-project testing. `prod_test.md` is the required attempt/failure/fix/retest ledger before execution begins.
-- Track Batch 42 as planned instruction/tool-use compliance hardening for Product-Agent OS auto-engagement, source/cache/session skill exposure, implicit invocation policy, route/eval coverage, staged `self-learning-loop` and hygiene triage.
-- Recover Batch 45 Professional Code Authoring after the T21/T22 no-go through `B45-S9`: one durable output contract, a compact code-change contract, project-native stack/risk selection, fault-value-based tests and comments, deterministic quality/performance evidence, independent blinded review and a representative multi-stack corpus before any new live eval approval.
-- Implement Track 11 G1.1 as the project-local documentation toolchain route for reproducible docs processing, site rebuilds, Markdown/API checks, terminology checks, link/secret hygiene, offline diagrams and docs-tooling supply-chain governance.
-- Implement Track 11 G2 source docs for the first-run Architecture Intelligence Cockpit, artifact schema/gallery atlas and graph/CLI/technical cockpit boundary, while keeping root `site` freshness deferred to final `DOC-M25`.
-- Implement Track 11 G3 source docs for the source/generated trust boundary, first-run cockpit architecture, evidence/risk lifecycle, skill exposure/invocation boundary and Architecture Intelligence diagram atlas, while keeping root `site` freshness deferred to final `DOC-M25`.
-- Implement Track 11 G4 source docs for instruction/tool-use compliance, operator command matrix, guided questions/answer ledger, methodology integration map and source/cache/active-session state, while keeping root `site` freshness deferred to final `DOC-M25`.
-- Close Track 11 `DOC-M25` with owner-approved root `site`, search and sitemap freshness after G2-G5 source updates.
+- Развивать Product-Agent OS как local engineering operating system; существующий plugin, контроль доказательств и approval boundaries сохраняются.
+- Следующий согласованный продуктовый этап — Web M1 по PRD §17 / architecture §21 и очереди v0.8. Текущий запрос разрешает подготовку control-plane, а не реализацию приложения.
+- Поддерживать discovery, staged artifacts, skills, tests/evals и ручное управление решениями. Соблюдать source authority и ограничения из AGENTS.md.
+- Состояния Batch 39/42/44/45 и Track 11 учитывать как отдельные направления с собственными evidence owners. Не возобновлять старые очереди автоматически при старте Web.
+- Детальные исторические требования перенесены в [аудит и архив control-plane](research/product-agent-os-control-plane-maintenance-2026-11-10.md); критерии исторических пакетов ниже сохранены для трассировки. Они не расширяют M1.
 
 ## Current Product-Agent OS State
+
+Исторические записи и результаты ниже относятся к указанным срезам. Они не меняют очередь Web M1 и не являются проверками текущего запуска. При расхождении используются текущие owning artifacts; перенос истории не закрывает оставшиеся gates.
+
 
 | Area | Current state | Owning evidence |
 | --- | --- | --- |
@@ -116,7 +97,7 @@ Fresh-session effective permissions/MCP/model availability and quality/cost/late
 | `B38-PILOT-NF01` | First target-specific docs-only pilot addendum against `Neural_Flow`; target apply remains blocked by `source_policy_status: blocked` and missing target control-plane/source registry artifacts. | `docs/sources/product-agent-os-track-10-backlog.md`, `RUNLOG.md` |
 | Batch 39 | Executed through `B39-S5` as local/read-only/contract evidence. `B39-S5` closes source-doc sync, go/no-go and no-unapproved-actions proof as `closed_for_owner_feedback_testing_not_release_ready`: release/distribution is `no_go`, owner-feedback testing is `conditional_go`, and runtime/browser/provider/MCP/git/release/deploy/publish/automation surfaces remain approval-bound. | `PLAN.md`, `TEST.md`, `prod_test.md`, `docs/superpowers/specs/batch39-s5-closure-summary.json` |
 | Batch 40 completion-skeptic foundation | B40-S2/S3/S4/S5 closed as local manual foundation, eval hardening, docs/site/source-transfer, synthetic-local pilot ledger, scorecard calibration and go/no-go closure; current promotion status is `manual_only` and `not_promoted`. | `docs/sources/product-agent-os-track-10-backlog.md`, `RUNLOG.md` |
-| Batch 42 instruction/tool-use compliance | Planned only; source matrix covers Product-Agent OS auto-engagement, skill exposure, implicit invocation policy, route/eval hardening, staged `self-learning-loop`, system-file hygiene triage and closure. | `docs/superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json`, `docs/sources/product-agent-os-track-10-backlog.md`, `RUNLOG.md` |
+| Batch 42 instruction/tool-use compliance | Historical planned-only baseline with GAP-03 local execution overlay; host M06 remains separate. Source matrix covers Product-Agent OS auto-engagement, skill exposure, implicit invocation policy, route/eval hardening, staged `self-learning-loop`, system-file hygiene triage and closure. | `docs/superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json`, `docs/sources/product-agent-os-track-10-backlog.md`, `RUNLOG.md` |
 | Batch 44 Self-Learning Loop state/trigger/manual progress/feedback/metrics/candidate/docs closure | `B44-S0` through `B44-S6` are implemented as local/schema/fixture/docs evidence. The loop is scoped only to eligible Product-Agent OS projects; due-check state is project-local, default `manual_only`; the manual runner writes progress/HTML only to an explicit stage root; feedback/preferences are privacy-safe summaries only; metrics/evals are append-only/source-backed synthetic contracts only; candidates are review-only and blocked by forbidden-action fixtures; docs/contracts/closure records that automation promotion gate is candidate-only with minimum manual successful runs: 3 and owner approval required before activation. Trigger/cadence/manual-run/feedback/metrics/candidate/docs UX must not imply active scheduling, global session analysis, raw private ingestion, real session import without consent, live eval/provider calls, target mutation, auto-apply, git/release/deploy/publish or external writes. | `docs/superpowers/specs/batch44-self-learning-loop-current-gap-audit.json`, `docs/superpowers/specs/batch44-self-learning-loop-scope-detector-summary.json`, `docs/superpowers/specs/batch44-self-learning-loop-state-trigger-ux-summary.json`, `docs/superpowers/specs/batch44-self-learning-loop-manual-runner-progress-summary.json`, `docs/superpowers/specs/batch44-self-learning-loop-feedback-preferences-summary.json`, `docs/superpowers/specs/batch44-self-learning-loop-metrics-evals-summary.json`, `docs/superpowers/specs/batch44-self-learning-loop-candidate-safety-summary.json`, `docs/superpowers/specs/batch44-self-learning-loop-docs-contracts-closure-summary.json`, `.codex/automation-candidates/self-learning-automation-candidate.md`, `plugins/product-agent-os/scripts/check_self_learning_due.py`, `plugins/product-agent-os/scripts/run_self_learning_loop.py`, `plugins/product-agent-os/scripts/product_agent_os/self_learning_feedback.py`, `plugins/product-agent-os/scripts/product_agent_os/self_learning_metrics.py`, `plugins/product-agent-os/scripts/product_agent_os/self_learning_candidates.py`, `TEST.md`, `RUNLOG.md` |
 | Batch 45 Professional Code Authoring | Advisory-only/no-go remains active after T21 strict-schema abort and T22 blocked reviewer decision. `B45-S9` / `B45-CQRR-A01` now owns the planned corrective route T23-T34: executable schema/runtime alignment, compact generation contract, stack/risk-aware test and comment selection, artifact-test debt reduction, deterministic quality/performance metrics, blinded reviewer, representative multi-stack corpus, isolated treatment, local readiness and a separately approved final eval. | `docs/superpowers/specs/batch45-code-quality-runtime-recovery-task-group.json`, Track 11 plan, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md` |
 | Track 11 G1.1 documentation toolchain | Active implementation route for project-local docs tooling. `DOC-M35` installed the MkDocs runtime in `.venv-docs/` and passed a strict smoke build under `.docs-tools/reports/`; `DOC-M36` installed Node docs tooling in `.docs-tools/node/` and passed scoped README markdownlint/Prettier smoke; `DOC-M37` installed local Vale `3.15.1` in `.docs-tools/bin/` with advisory Product-Agent OS language rules and smoke evidence; `DOC-M38` installed local lychee `0.24.2` and gitleaks `8.30.0` with scoped fixture smokes; `DOC-M39` vendored Mermaid `10.9.6` under `docs/assets/javascripts/vendor/` and switched MkDocs off the floating CDN asset; `DOC-M40` recorded dependency audit/SBOM governance with Python inventory, `pip check`, Node CycloneDX SBOM generation, current `npm audit` findings and explicit accepted gaps; `DOC-M41` records that Docusaurus, Storybook and Structurizr DSL remain deferred until trigger evidence and owner approval exist. Docs automation, Redocly enforcement, broad docs lint/format, broad Vale enforcement, broad link/secret scans, raw report retention, Python vulnerability audit, dependency remediation, browser Mermaid rendering proof, deferred platform installation and root `site/` freshness remain approval-gated until their own current evidence exists. Product-Agent OS lifecycle hooks are tracked separately through `product_agent_os_LIFECYCLE-HOOKS-A01`. | `docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md`, `docs/superpowers/specs/documentation-refresh-g1-1-doc-m35-install-summary.json`, `docs/superpowers/specs/documentation-refresh-g1-1-doc-m36-node-tooling-summary.json`, `docs/superpowers/specs/documentation-refresh-g1-1-doc-m37-vale-language-summary.json`, `docs/superpowers/specs/documentation-refresh-g1-1-doc-m38-link-secret-summary.json`, `docs/superpowers/specs/documentation-refresh-g1-1-doc-m39-mermaid-summary.json`, `docs/superpowers/specs/documentation-refresh-g1-1-doc-m40-dependency-audit-summary.json`, `docs/superpowers/specs/documentation-refresh-g1-1-doc-m41-deferred-platform-triggers-summary.json`, `docs/superpowers/specs/product-agent-os-lifecycle-hooks-local-activation-summary.json`, `TEST.md`, `RUNLOG.md` |
@@ -162,6 +143,9 @@ Fresh-session effective permissions/MCP/model availability and quality/cost/late
 
 ## Compatibility Marker Bank
 
+Исторический source-routing anchor: Track 11 G1.1 as the project-local documentation toolchain route. Это существующий tooling route; его installation/activation не входит в Web M1.
+
+
 These compact anchors preserve current test/source contracts without restoring the previous long historical ledger.
 
 - Task 25 Batch 16; `T10-CG-V2-M19..M26`; Code Flow inside `Code Intelligence`; Graphology-compatible static; local Graphology/Sigma; selected-node evidence; fallback static; `timeout_ms: 1200000`; explicit-only.
@@ -192,6 +176,8 @@ These compact anchors preserve current test/source contracts without restoring t
 
 ## Acceptance Criteria
 
+Текущие Web M1 критерии указаны в начале файла. Batch/Track criteria ниже — historical contracts соответствующих пакетов; прежнее ожидание DOC-M25 заменено его датированным closure, не гарантией свежести site после новых правок.
+
 - Root control-plane files remain compact, current and source-routed.
 - Batch 45 recovery preserves the research corpus as stack/risk knowledge, generates the smallest safe patch through a compact contract, selects only risk-justified tests/comments/performance evidence, treats warning/coverage/LOC/self-score as diagnostic signals, and blocks any new live eval until executable schema fixtures, seeded-fault checks, blinded review and the frozen multi-stack corpus pass locally.
 - Product-Agent OS work names scope, owners, assumptions, acceptance criteria, non-goals, verification gates and residual risks before readiness claims.
@@ -210,15 +196,14 @@ These compact anchors preserve current test/source contracts without restoring t
 
 ## Open Risks
 
+Web M1: PAOS-0054 compatibility, migration/restore и actual runtime/browser/commercial gates ещё не закрыты. Далее — отдельные риски поддерживаемого plugin/docs scope, не дополнительные задачи M1.
+
 - Batch 39 real-project-adjacent execution is source-owned through `prod_test.md` and S5 closure artifacts. It includes synthetic archetype pilots, read-only `Neural_Flow` / `SOL 0.6` evidence, S4 hardening and S5 conditional owner-feedback closure. Target writes, runtime/browser/provider/model/vector/eval/live-database/migration/production-data/git/external actions and any broader target execution still require exact approval.
 - `B38-PILOT-NF01` remains blocked for target apply by missing target control-plane/source registry artifacts and `source_policy_status: blocked`.
 - Batch 40 completion-skeptic automation remains `manual_only` and `not_promoted`.
-- Batch 42 is a planning matrix only; it does not prove fixed Product-Agent OS auto-engagement until execution produces current source/cache/session exposure, official-doc source status, route/eval evidence, fresh-session proof if required and no-unapproved-actions closure.
+- Batch 42: историческая planning matrix дополнена GAP-03 local execution overlay; provenance/metadata/routing проверялись локально, M06 host receipt остаётся отдельным gate. Локальные проверки не доказывают auto-engagement во всех Codex surfaces. Owner: research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md и batch42 matrix.
 - Track 11 G1.1 is a project-local docs-toolchain route. `DOC-M35`, `DOC-M36`, `DOC-M37`, `DOC-M38`, `DOC-M39`, `DOC-M40` and `DOC-M41` have evidence for `.venv-docs/`, `.docs-tools/node/`, local Vale language guards, local lychee/gitleaks fixture checks, vendored Mermaid runtime wiring, local dependency inventory, Node CycloneDX SBOM generation, current Node advisory counts and deferred platform trigger governance. Docusaurus, Storybook and Structurizr DSL remain deferred until concrete trigger evidence exists. Generated root `site` freshness, Python vulnerability audit, complete repository SBOM, dependency remediation, browser Mermaid rendering proof, broad lint/format enforcement, broad Vale enforcement, external URL crawling, broad link/secret scans, raw report retention and deferred platform install/runtime proof remain unclaimed until their specific slices run. Product-Agent OS lifecycle hooks are project-local and owner-approved, but Codex hook trust review / fresh-session execution is still not claimed.
-- Track 11 G2 source docs are implemented, but generated root `site`, search and sitemap do not include the new G2 page until final `DOC-M25`; use `.docs-tools/reports/` strict smoke only as source/nav proof before that final rebuild.
-- Track 11 G3 source docs are implemented, but generated root `site`, search and sitemap do not include the new G3 diagram pages until final `DOC-M25`; browser proof, Cosmos.gl/WebGL runtime proof and Structurizr DSL installation remain unclaimed without separate approval/evidence.
-- Track 11 G4 source docs are implemented, but generated root `site`, search and sitemap do not include the new G4 pages until final `DOC-M25`; auto-engagement, installed-cache refresh, global config writes and fresh-session proof remain unclaimed without separate approval/evidence.
-- Track 11 G5 source docs are implemented, but generated root `site`, search and sitemap do not include the new G5 pages until final `DOC-M25`; browser proof, broad scans, dependency remediation, raw report retention, Storybook/Docusaurus/Structurizr installs and report-publication claims remain unclaimed without separate approval/evidence.
+- Track 11 G2–G5: прежнее ожидание финального DOC-M25 снято его датированным receipt; свежесть site после последующих изменений и browser/Cosmos.gl/WebGL proof этим не подтверждаются. Auto-engagement, cache/global changes, broad scans, dependency remediation, deferred platform installs и publication требуют своих evidence/authority.
 - Track 11 DOC-M25 now closes only generated root `site`/search/sitemap freshness through `documentation_refresh_DOC-M25-A01`; it does not prove browser behavior, publication, release readiness, dependency remediation, raw report retention, target mutation, provider/API behavior, automation or git/release actions.
 - Historical evidence is intentionally source-owned outside this file; use the registry/backlogs before making broad historical claims.
 

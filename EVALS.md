@@ -1,20 +1,29 @@
 # EVALS.md
 
-## Web session UX v0.5 — 2026-11-09
+## PAOS-AUD-G8 — планирование, 2026-11-10
 
-[UX v0.5](research/product-agent-os-web-m1-wireframes-2026-11-09.md) добавляет specification review для сохранения контекста, distinctions permission/decision/question, pending ACK, duplicate dispatch, agent provenance и narrow layouts. Hallmark finish review относится к Markdown; visual/a11y/usability оценки требуют будущего render и не считаются доказанными.
+G8 planned comparison: одинаковые synthetic inputs для baseline/treatment; bytes, critical-fact preservation, navigation, recovery и продолжение следующей задачи. Три профиля по исследованным проектам без их приватных данных. [Owning matrix](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md), T13/T14; cost/token benefits без измерения не заявляются.
+
+## Web M1 — scope v0.7 / очередь v0.8, 2026-11-10
+
+Source status: planned evaluation route; implementation_not_started.
+
+Owning acceptance — матрица M1 DoD в [Web-план v0.8](research/product-agent-os-web-task-manager-plan-2026-11-09.md); UX определяется [wireframes v0.7](research/product-agent-os-web-m1-wireframes-2026-11-09.md). Старый Web v0.5 receipt архивирован; критерии M2–T1 не являются критериями M1.
+
+- Детерминированные contracts, migration/restore, policy enforcement, dedup и project isolation проверяются по TEST.md; количество тестов и synthetic pass не заменяют runtime evidence.
+- Пользовательский путь оценивается на ясность source/coverage, роли агента, permission vs product decision, результата действия, lossless recovery и ручной приёмки задачи. Empty/partial/unknown не должны выглядеть как полный контекст или success.
+- При изменении agent prompts/routing сравнивать доступный baseline на representative/edge/negative cases; отделять корректность orchestration от качества ответа модели. Пока таких Web runs нет, scores/cost/latency не указывать.
+- Для PAOS-0045 требуется evidence по всем применимым M1 acceptance IDs. Отсутствующая capability, потеря данных, нарушение project/permission boundary или неподтверждённый action outcome блокируют соответствующий gate.
+- AUTH/commercial evidence принадлежит PAOS-0039/0046 и повторной проверке PAOS-0030; documentation alignment не даёт commercial acceptance.
+
+Существующие Thresholds, rubrics и запреты promotion ниже сохранены. Новые численные пороги этой правкой не вводятся. Текущая maintenance-проверка и архив: [аудит и архив control-plane](research/product-agent-os-control-plane-maintenance-2026-11-10.md).
+
 
 ## PAOS-AUD-G7 — separate instrument
 
+T08: T06/T07/final decision owner accepted; G7 closed locally. Thresholds/design unchanged, no new model run. Component decisions and acceptance boundary: [report](research/product-agent-os-g7-execution-report-2026-11-09.md).
+
 G7 attested design v2: 12 sequential paired generations, gpt-6.1-sol/medium/tools=[], одинаковый общий context после bound marker/transport normalization. Frozen oracle: 6/6 на arm; 2 prior ineligible attempts и 10 diagnostic calls отдельно. Pressure/reuse passed; superiority и component effect insufficient_evidence. No OS isolation/E2E; 1 repetition, rehearsed corpus, uneven prompt caching. Prior observational pilot не переименован. [Evidence](research/product-agent-os-g7-execution-report-2026-11-09.md).
-
-## Web single-window v0.4 — 2026-11-09
-
-Для Web v0.4 проверять различение discussion/planning/execution, identity/inference permission/workspace authority, turn outcome/task acceptance, API billing/ChatGPT plan и unknown/zero. No silent fallback, no duplicate execution, no invented session coverage. [SW-AC и M1](research/product-agent-os-web-prd-2026-11-05.md#15-единое-окно-и-codex-app-server--v04); текущие model eval rubrics/thresholds не меняются.
-
-## Web issue workflows v0.3 — 2026-11-09
-
-Web v0.3 eval scenarios: различение иерархии/links/code graph; Affects vs Fix version; creator vs initiator; Done vs Cancelled; replay не запускает recipe дважды; publish не меняет pinned run; comments не являются командами. [PRD §14](research/product-agent-os-web-prd-2026-11-05.md). Только спецификация, без agent/model activation.
 
 ## PAOS-AUD-G6 — 2026-11-09
 
@@ -46,10 +55,6 @@ PAOS-AUD-G2: receipt не повышает documented unsupported; model ID/conf
 
 [Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
-## Web Task Manager: документационный scope — 2026-11-09
-
-Для предложенного Web UX проверять: все требования TM-01–TM-14 покрыты экранами/задачами; нет fabricated telemetry; unknown отличается от zero; agent/skill draft отличается от loaded version; transcript coverage честен; approval объясняет diff и scope. При реализации: RU/EN × light/dark × states для всех 24 экранов. [Owning specification](research/product-agent-os-web-task-manager-screens-2026-11-09.md); product usability и runtime usefulness пока не проверены.
-
 ## PAOS-AUD-G1 — 2026-11-09
 
 PAOS-AUD-G1: deterministic guard comparisons покрывают compound/unknown commands, inert patch prose, exact hooks discovery path, selected-SID ACL repair/restore и pinned report-authoring create/update. Сохраняются legacy create-only и session isolation. Local checks не доказывают hook trust, fresh-host activation, реальные ACL или атомарную запись между hook и tool; AUD-HOST-02 остаётся открытым. Порогов model/provider evals эта группа не меняет.
@@ -63,34 +68,6 @@ PAOS-AUD-G1: deterministic guard comparisons покрывают compound/unknown
 <!-- product-agent-os:start evals -->
 Project: Codex Docs / Product-Agent OS
 Last compacted: 2026-07-07
-
-## Current lifecycle repair — 2026-11-03
-
-`PAOS-LIFECYCLE-REPAIR-2026-11-03`: **implemented_locally_verified / verified_local_runtime**. Bold/plain labels are equivalent presentation; explicit closure_level and honest review/partial/docs-gap checks remain mandatory. Full packet scope and concise ordinary routes are consistent across active/staged evals. Source text quoted by a read tool is never counted as a host denial.
-
-Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.repair`; [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). The earlier failed activation below is historical, superseded by this bounded retest.
-
-## Historical lifecycle activation check — 2026-11-03
-
-`PAOS-LIFECYCLE-ACTIVATION-2026-11-03`: verification completed with findings; **activation_failed**. A green fixture run cannot substitute for a negative host enforcement case. Require observation of marker state, exact tool route, expected denial and absent write. Distinguish silent Stop outcome from execution proof. Score the observed 13-item ledger separately from strict parser failure; do not normalize away a failing result or force ordinary tasks into full packets.
-
-Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.activation_check`; [detailed plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). No trust/permissions/models/provider/Git changes.
-
-## Historical lifecycle parity — 2026-11-03
-
-`PAOS-TRADE-LIFECYCLE-PARITY-2026-11-03`: `implemented_locally_verified / activation_failed`. Rubric: full packets only when scope requires; ordinary fixes remain concise; required partial/blocked/unreviewed children prevent parent completion; no invented metrics or review independence; docs-static closure never proves runtime activation. Explicit packet validator checks format and known contradictions only. Stop does not judge chat. Local fixture/transcript comparisons are not live model behavior evidence.
-
-Evidence owner: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity`; detail: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md).
-
-## Current contract alignment — 2026-11-03
-
-`PAOS-CONTRACT-MODEL-ALIGNMENT-2026-11-03`: `implemented_locally_verified / behavioral_promotion_pending`. Parent permissions and MCP inheritance aligned; 23 active/staged profiles pinned to GPT-6.1 Sol/Terra with preserved effort; inherited skills moved to parent; validators and renderer reject unsupported contracts; lifecycle validator follows the explicit current plan.
-
-Current verification: Ran 1247 tests in 611.387s; OK (skipped=1); fixture/transcript eval, compatibility, 15 active agents, both hook validators, RU/EN task matrices, state consistency, docs checker and diff check exit 0. Detailed evidence, source receipts and rollback: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md) and [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json).
-
-Fresh-session effective permissions/MCP/model availability and quality/cost/latency comparison remain unverified. No provider calls, browser, hook activation, target mutation, Git publication or root site update.
-
-Model-quality comparison must freeze parent permissions/MCP after contract repair, then compare old and new model at preserved effort before lowering effort. Synthetic evals do not close availability, activation, quality, cost or latency gates.
 
 ## Purpose
 
@@ -118,6 +95,9 @@ Model-quality comparison must freeze parent permissions/MCP after contract repai
 - Batch 45 promotion: no promotion unless current approved comparable evidence clears deterministic correctness/regression gates and an independent blinded reviewer gate. T14 `+3.27%` with reviewer `0` remains non-promotional; T21 aborted with `valid_pair_count=0`; T22-A02 remains no-go. A06 locally implements T28/T29: acceptance, regression, seeded-fault, reviewer and dependency evidence are required; performance and cost/latency are typed by applicability; missing evidence blocks; primary-model self-scores, warning reduction, coverage, test count and patch/test LOC remain diagnostic only.
 
 ## Current Evaluation State
+
+Исторические записи и результаты ниже относятся к указанным срезам. Они не меняют очередь Web M1 и не являются проверками текущего запуска. При расхождении используются текущие owning artifacts; перенос истории не закрывает оставшиеся gates.
+
 
 | Workstream | Eval state | Claim ceiling |
 | --- | --- | --- |

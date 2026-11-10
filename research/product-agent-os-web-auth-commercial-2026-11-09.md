@@ -93,7 +93,7 @@ Capability matrix хранит runtime build, connection route, account/workspac
 
 ## 9. Связь с планом и открытые вопросы
 
-PAOS-0039 фиксирует допустимые routes, admission и ownership; PAOS-0041 — local API credential connection; PAOS-0042–0045 — runtime, UX, recovery и M1 evidence; PAOS-0046 — коммерческий review; PAOS-0047 — SIWC только при подтверждённой eligibility. Запуск API-M1 не зависит от завершения опциональной PAOS-0047.
+PAOS-0039 фиксирует допустимые routes, admission и ownership; PAOS-0041 — local API credential connection; PAOS-0042–0045 — runtime, UX, recovery и M1 evidence; PAOS-0046 — ранний коммерческий review сразу после M1 (до M2), с повторной актуализацией применимых gates в PAOS-0030 перед выпуском; PAOS-0047 — SIWC только при подтверждённой eligibility. Запуск API-M1 не зависит от завершения опциональной PAOS-0047.
 
 Открыто: paid local или OSS-first distribution; entity/рынки; точный runtime build и безопасный credential transport; SIWC admission; retention defaults; модель/бюджет пилота. Решение владельца по интерфейсу принято; эти вопросы не подменяются предположением о коммерческом допуске.
 

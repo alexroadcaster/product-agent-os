@@ -554,7 +554,7 @@ Upgrade: drain new dispatch → backup journal/profile metadata → protocol/sch
 
 ### 19.7. Этапы и проверка
 
-M1: G01 minimal contracts + G11 PAOS-0039–0045. PAOS-0043 создаёт минимальную task/session поверхность, поэтому не зависит от полного Kanban, agent/skill editors или workflow builder. M2: full Task Manager G02–G06/G09, PAOS-0035/0038, PAOS-0027. M3: PAOS-0036/0037 и G07, повторно использующие M1 coordinator. M4: G08 и PAOS-0046. PAOS-0047 SIWC optional, не dependency API-M1.
+M1: G01 minimal contracts, G11 PAOS-0039–0045/0054 и local G12 PAOS-0048–0051/0055–0056 (18 задач). PAOS-0043 создаёт минимальную task/session поверхность, поэтому не зависит от полного Kanban, agent/skill editors или workflow builder. После M1: PAOS-0046 — ранний commercial review. M2: full Task Manager G02–G06/G09, PAOS-0035/0036/0038, PAOS-0027. M3: PAOS-0037 и G07, повторно использующие M1 coordinator. M4: PAOS-0028/0029/0030 с повторной проверкой актуальности коммерческих gates. Порядок всех 56 задач — план v0.8. PAOS-0047 SIWC optional, не dependency API-M1.
 
 Fitness checks: no Codex App dependency; one writer per canonical workspace; no implicit credential fallback; no provider call on discovery; no duplicate execution after uncertain dispatch; process-bound approvals; no secret tool inheritance; unknown capability/history shown honestly; files and task source remain authoritative. Required proofs — contract, failure injection, browser and authorized real runtime, не только fixtures.
 

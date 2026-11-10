@@ -2648,7 +2648,13 @@
   "expected_calls": 12,
   "context_equivalent": true,
   "comparison_eligible": true,
-  "owner_acceptance": null,
+  "owner_acceptance": {
+    "task": "PAOS-AUD-G7-T07",
+    "decision": "accepted",
+    "source": "explicit current user message",
+    "date": "2026-11-10",
+    "scope": "T07 results only; T06/final T08 acceptance separate"
+  },
   "evidence_ceiling": "generation-only; not filesystem isolation or end-to-end",
   "elapsed_seconds": 145.155,
   "summary": {
@@ -2699,7 +2705,7 @@
       "unnecessary_questions": 0
     }
   },
-  "status": "executed_needs_user_acceptance",
+  "status": "executed_owner_accepted",
   "correctness_non_regression": true,
   "scoring": "frozen independent oracle plus separately labeled no-op/reuse review",
   "offline_rescore_command": "python -B .docs-tools/reports/g7-t07-2026-11-10/rescore.py",
@@ -2978,7 +2984,7 @@
     "G7_contract_superiority": "insufficient_evidence",
     "individual_G7_component_effect": "insufficient_evidence",
     "fresh_session_activation": "separate_open_task",
-    "G7_owner_promotion": "pending_T08"
+    "G7_owner_promotion": "owner accepted tested local scope; no broad promotion"
   },
   "review": {
     "context_mode": "separate_reused_context",
@@ -3746,5 +3752,47 @@
       "frozen_inputs_intact": true,
       "raw_trace_directories": 0
     }
+  },
+  "t08_decision_packet": {
+    "technical_work": "complete",
+    "owner_decision": {
+      "decision": "accepted",
+      "tasks": [
+        "T06",
+        "T08"
+      ],
+      "source": "explicit reply to concrete final decision packet",
+      "date": "2026-11-10",
+      "scope": "keep tested local mechanisms; no superiority claim; T34 no-go unchanged; activation separate"
+    },
+    "recommendation": "keep tested local mechanisms without broad promotion",
+    "decisions": {
+      "T01-T05": "keep; owner accepted",
+      "T06": "keep; owner accepted within Python/JavaScript synthetic and trusted receipt API scope",
+      "T07": "keep instrument; owner accepted; superiority insufficient_evidence",
+      "component_effect": "insufficient_evidence",
+      "T34": "unchanged no-go",
+      "fresh_session_activation": "separate_open_task"
+    },
+    "evidence_reuse": "T07 generation and 1379-test run reused; no runtime/test source changes; current frozen hashes checked",
+    "new_model_calls": 0
+  },
+  "group_closure": {
+    "group": "PAOS-AUD-G7",
+    "status": "closed",
+    "closure_level": "implemented_locally_verified / owner_accepted",
+    "tasks": "T01-T08",
+    "fresh_session_activation": "open_separate_task",
+    "production_promotion": false
+  },
+  "t08_verification": {
+    "docs_tests": 105,
+    "docs_seconds": 23.421,
+    "exit_code": 0,
+    "frozen_inputs_unchanged": true,
+    "original_calls_and_design_unchanged": true,
+    "tasks_implemented": 8,
+    "model_calls": 0,
+    "full_suite": "reused unchanged T07 run: 1379 tests, one skip, 516.855s"
   }
 }

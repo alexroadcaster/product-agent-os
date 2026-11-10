@@ -95,3 +95,5 @@ Next artifact: use [Development Standards](development-standards.md) to decide w
 ## Архитектурные evidence G7
 
 Разрешённый локальный корпус Import Linter 2.16 и dependency-cruiser 18.6.0 проверяет allowed, direct/transitive и cyclic dependencies; для JavaScript добавлены alias и unresolved-import controls. Код завершения JSON-процесса сам по себе не означает clean. Опциональный API профиля сверяет переданные актуальные receipts и неизменяемый baseline; обычный discovery остаётся declaration-only. Корпус `.mjs` не доказывает TypeScript resolver/type-only behavior. [Результаты проверок](../../research/product-agent-os-g7-execution-report-2026-11-09.md).
+
+Итог T08: сохраняются локальные G7 механизмы в проверенных границах. В принятом владельцем T07 сравнении baseline и treatment прошли по 6/6; превосходство и эффект отдельных компонентов не установлены. [Design/results](../superpowers/specs/paos-aud-g7-attested-results.json) фиксируют generation-only scope, хеши и все попытки. Это не отменяет T34 no-go и не доказывает fresh-session activation. Владелец принял T06 и итоговое решение T08 10.11.2026; локальная группа G7 закрыта.

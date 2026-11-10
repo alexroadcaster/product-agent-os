@@ -1,5 +1,9 @@
 # Source registry
 
+WEB-CP-01 (2026-11-10): root control-plane maintenance for Web M1, scope v0.7 / execution v0.8. Superseded Web/lifecycle receipts and previous handoff archived with source hashes in research/product-agent-os-control-plane-maintenance-2026-11-10.md. Project-authored routing and historical preservation only; no implementation, runtime or external-source claim changes.
+
+WEB-ORDER-08 (2026-11-10): user approved the 56-task sequence in research/product-agent-os-web-task-manager-plan-2026-11-09.md and task-group JSON, execution_plan.revision=0.8; PRD scope remains v0.7. PAOS-0046 follows M1, PAOS-0036 belongs to M2, PAOS-0002 covers only the M1 profile. Project-authored planning metadata; external source claims and runtime evidence unchanged.
+
 ## Web M1 v0.7 — audit remediation, 2026-11-10
 
 WEB-M1-ALIGN-07: PRD section 17, architecture section 21, plan/JSON and UX v0.7; 56 planned tasks / 12 groups, 31 routes / 21 wireframes. Audit section 9 maps WA-01–13 to design decisions and future gates. Sources: [App Server](https://learn.chatgpt.com/docs/app-server) (schema, experimental dynamic tools, request resolution differs from action success), [config reference](https://learn.chatgpt.com/docs/config-file/config-reference) (ephemeral credential store), [Node 26.5 SQLite](https://nodejs.org/download/release/v26.5.0/docs/api/sqlite.html) (DatabaseSync/backup, release candidate), checked 2026-11-10. Scope/thresholds/auth UX are project-authored proposals, not runtime/commercial proof. Source path: research/product-agent-os-web-m1-final-audit-2026-11-10.md, section 9.
@@ -58,6 +62,8 @@ User selected a custom Codex App Server client; owning artifacts: `research/prod
 Product decisions and constraints belong to the auth/commercial document. Sources do not authorize implicit inherited login or paid-plan use without applicable consent/admission.
 
 ## PAOS-AUD-G7 — implementation evidence, 2026-11-09
+
+T08: owner accepted T07; retain tested local mechanisms, superiority insufficient_evidence. [Final decision packet](../../research/product-agent-os-g7-execution-report-2026-11-09.md); T06/final T08 accepted 2026-11-10; G7 closed locally, activation separate.
 
 T07 2026-11-10: [attested results](../superpowers/specs/paos-aud-g7-attested-results.json), 12 eligible generations, 6/6 per arm; tools=[] and equal normalized common context. Superiority insufficient_evidence; no OS/E2E/activation claim. [Official normalization precedent](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/core/tests/suite/responses_lite.rs#L136) and [CLI override parsing](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/config/src/overrides.rs) inspected 2026-11-10; source inspection and local actual trace evidence distinguished. T06 actual Python/JS tool checks 10/10 are recorded in the execution report; owner acceptance separate.
 

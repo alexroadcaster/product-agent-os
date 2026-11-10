@@ -267,3 +267,32 @@ Control-plane sync: REQUIREMENTS — текущий scope/authority; PLAN — T0
 
 
 Заключительный docs rerun после status/control-plane edits: **105 tests / 7.718 s / exit 0**. check_docs, task matrix/state consistency, diff --check → exit 0. Все local report links существуют, 6 frozen input hashes совпадают; raw trace **directories=0** (две старые sanitized receipt JSON с prefix g7-trace не являются raw directories). Все шесть root control-plane files < 50 KiB, REQUIREMENTS 50,359 bytes. Независимый final review: дополнительных material T07 blockers нет. Permitted closure: T07 implemented_locally_verified / needs_user_acceptance; G7 partially_verified. Current verification и original failed/setup attempts сохранены, никаких новых model calls после final sequence.
+
+
+## T08: итоговое решение G7 — 10.11.2026
+
+Владелец явно принял результаты T07. T01–T05 accepted ранее; отдельной явной приёмки T06 и итогового решения T08 пока нет. Запрос выполнить T08 разрешает подготовку/проверки, но не подменяет owner decision. Техническая реализация T01–T07 завершена; T08 завершает reconciliation и выносит следующий конкретный пакет на приёмку.
+
+| Компонент / решение | Рекомендация | Основание и граница |
+| --- | --- | --- |
+| T01–T05: compact contracts, risk-based verification, review disposition, guard, capability inventory | keep | Приняты владельцем; deterministic mechanism comparison 5/10 → 10/10 — прежнее локальное evidence, не новый model effect |
+| T06: architecture tools и receipt projection | keep | Прежний actual tool receipt: 10/10 ожидаемых outcomes, включая negative controls; только Python/JS synthetic, trusted receipt API; TS resolver/type-only не доказан |
+| T07: versioned sequence instrument | keep | T07 принят; actual 12 admitted, 6/6 на arm, tools=[], frozen hash guards, offline replay |
+| Улучшение качества генерации / вклад отдельных G7 компонентов | insufficient_evidence | 1 repetition, rehearsed corpus, same project context, uneven prompt caching; победителя нет |
+| Broad enforcement/promotion и прежний T34 | no-go / unchanged | Этот пакет не отменяет frozen T34 no-go, не включает CI/global/automatic promotion |
+| Fresh-session activation | separate_open_task | HOST-01/HOST-02 не закрываются этим пакетом |
+
+Acceptance mapping T08: (1) frozen design/authority и actual request admission — T07 receipts; (2) 10 diagnostics + 2 ineligible + 12 eligible сохранены; (3) 0 failed cases в frozen oracle, без универсального security claim; (4) T07 accepted, T06/final owner decision pending; (5) activation отдельно; (6) active/package implementation не менялась, RU/EN docs references синхронизированы; (7) generation-only scope/denominators/reused evidence раскрыты; (8) per-step changed lines, one-file spread, latency/token usage, source-only zero questions/tools и unavailable money записаны; (9) решения по компонентам приведены выше.
+
+Current T08 не повторяет model run и 1379-test suite: runtime/tests/frozen files неизменны; результаты T07 используются с исходным run provenance. Проверены current frozen hashes и все 12 executable outcome records. Повторяются только применимые docs/matrix/state/diff checks. Переустановка tool packages и fresh-host calls не требуются. Rollback: только собственные T08 docs/acceptance metadata; прежние receipts, negative attempts и чужая работа сохраняются.
+
+
+### T08: приёмка владельца и закрытие
+
+10.11.2026 15:27 Europe/Moscow владелец явно принял T06 и итоговое решение T08 после предъявления конкретного пакета. Это закрывает acceptance criterion 4 и заменяет pending status в предыдущем receipt, сохраняя его историческое происхождение. T01–T08 выполнены и приняты; **G7 closed / implemented_locally_verified / owner_accepted**. Сохранить tested local mechanisms; superiority/component effect — insufficient_evidence; T34 no-go неизменен. Fresh-session activation HOST-01/HOST-02 остаётся самостоятельной открытой задачей, не долгом закрытой локальной G7.
+
+Current T08 checks: `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -q` → 105 tests / 13.036 s / exit 0; `python -B tools/check_docs.py`, `python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-audit-remediation-task-plan-2026-11-09.md`, `python -B plugins/product-agent-os/scripts/validate_task_state_consistency.py`, `git -c core.safecrlf=false diff --check` → exit 0. Final acceptance metadata edits получают заключительную проверку ниже. Начальный compound read был отклонён terminal lifecycle hook; раздельное чтение прошло, после brief открыт только own-session marker. Это не product failure и не runtime activation evidence.
+
+Control-plane sync: REQUIREMENTS/PLAN/TEST/EVALS/RUNLOG, matrix, report, results acceptance metadata, coding-standards RU/EN и registry RU/EN обновлены. prod_test.md not_applicable; strict MkDocs not_applicable — nav/render/config/site не менялись. Runtime/tests, frozen design, provider outputs и предыдущие verification receipts сохранены. Технический self_review сопоставил все девять T08 acceptance с evidence; прежние два independent T07 reviews используются с original provenance, новых агентов не запускали.
+
+Заключительный T08 receipt: docs 105 tests / 23.421 s / exit 0; 8/8 G7 statuses implemented, owner decisions записаны. Frozen hashes совпали; сравнение с HEAD подтвердило неизменность всех original calls и executed_design (менялась только acceptance/closure metadata). Root files <50 KiB. Runtime suite не повторялась: исходники/test inputs неизменны, original T07 evidence явно reused. Финальный self-review исправил stale pending текст в T06; PLAN revision обновлён.

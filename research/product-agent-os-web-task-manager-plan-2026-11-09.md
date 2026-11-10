@@ -2,16 +2,16 @@
 
 Source status: project-authored / proposed / requirements-backed. Дата: 2026-11-09.
 
-Статус: **draft_for_review**. Это очередь будущей реализации, не разрешение начать разработку. Все 56 задач имеют статус planned; фактическое время отсутствует. Пользовательский scope расширен относительно read-only M1. Исходные M1–M3 сохраняются как история; при расхождении приоритет имеют PRD §17, architecture §21 и актуальная очередь v0.7 этого плана.
+Статус очереди: **order_approved / implementation_not_started**. Оценки и детали будущей реализации остаются плановыми; утверждение порядка не разрешает начать разработку. Все 56 задач имеют статус planned; фактическое время отсутствует. Пользовательский scope расширен относительно read-only M1. Исходные M1–M3 сохраняются как история; при расхождении приоритет имеют PRD §17, architecture §21 и актуальная очередь v0.8 этого плана.
 
 Связи: [PRD](product-agent-os-web-prd-2026-11-05.md), [архитектура](product-agent-os-web-architecture-2026-11-05.md), [экраны](product-agent-os-web-task-manager-screens-2026-11-09.md), [машинные группы](product-agent-os-web-task-manager-task-group-2026-11-09.json).
 
 
 
 
-## Актуальная очередь v0.7: M1 после аудита
+## Актуальная очередь v0.8: утверждённая последовательность
 
-Source status: project-authored plan, 2026-11-10; 56 planned tasks / 12 groups; implementation_not_started. Нормативный scope — PRD §17, архитектура §21, wireframes v0.7. Очереди v0.1–v0.6 и прежние receipts ниже — история; при расхождении применяется этот раздел и обновлённые карточки/JSON.
+Source status: project-authored plan, 2026-11-10; 56 planned tasks / 12 groups; implementation_not_started. Нормативный scope — PRD §17, архитектура §21, wireframes v0.7. Очереди v0.1–v0.7 и прежние receipts ниже — история; при расхождении применяется этот раздел и обновлённые карточки/JSON.
 
 | Этап | Задачи и gate | Ownership / результат |
 | --- | --- | --- |
@@ -19,12 +19,93 @@ Source status: project-authored plan, 2026-11-10; 56 planned tasks / 12 groups; 
 | M1b single window | 0048+0054 → 0055; 0041+0048+0055 → 0042 → 0043 → 0044 | Commands, scopes и writers до execution; минимальный Task CRUD/доска/catalog read-only принадлежат 0043 |
 | M1c data | От 0048 независимо 0049 search, 0050 preview, 0051 backup; 0050+0051+0055+0044 → 0056 cutover | Backup и restore доказаны до смены authority; source digests проверяются после freeze |
 | M1 acceptance | 0044+0049+0051+0056 → 0045 | Вся матрица ниже, включая UI, data и negative cases |
-| M2 | Прежние full Task Manager/каталоги/граф, 0035/0038/0027 | Расширения M1 schema; полный ST-03/ST-09, без второй БД |
-| M3 | G07, 0036/0037 | Workflow execution/agent autonomy поверх M1 coordinator |
-| M4 | G08/0046; optional 0047 отдельно | Local/commercial qualification, AUTH-G1–G6 |
+| После M1 | **0046**, сразу после 0045 и до M2 | Ранний commercial review; повторная актуализация перед выпуском в 0030 |
+| M2 | Full Task Manager/каталоги/граф, **0035/0036/0038**, 0027 | Расширения M1 schema; полный ST-03/ST-09, без второй БД |
+| M3 | G07, **0037** | Workflow execution/agent autonomy поверх M1 coordinator |
+| M4 | 0028/0029/0030; optional 0047 отдельно | Local acceptance/pilot; повторная проверка AUTH-G1–G6 и gaps раннего 0046 |
 | T1 | 0052 после 0030 и storage foundations; 0053 после 0052/0056 | Separate hosting/auth/RBAC/runtime design; local M4 не зависит от team |
 
 Новые задачи: 0054 compatibility manifest (12 h), 0055 agent commands/writers (16 h), 0056 cutover (12 h). 0050 сокращена до preview/staging (12 h вместо 20), 0051 больше не зависит от 0050. Полное транзитивное замыкание M1 до 0045 — **18 задач, 234 engineering hours**, rough estimate, не календарное обязательство. Реальные start/end/duration у всех 56 задач null. Оценки требуют уточнения после 0054; будущие M2–T1 не включены.
+
+### Зафиксированная матрица очереди v0.8
+
+Решение пользователя 2026-11-10: порядок ниже сохранён в execution_plan.stages и tasks[].execution_order/delivery_stage JSON. Приоритет раздела над прежними stage labels. Группы G01–G12 сохраняют владение модулями; номер группы не означает порядок исполнения. Детальные карточки ниже остаются отсортированы по ID.
+
+Порядок — последовательная плановая baseline; технические depends_on не дополнены искусственными зависимостями между соседними строками. Независимая параллельная работа требует соблюдения dependencies и отдельных владельцев файлов. OPTIONAL можно пропустить; T1 не зависит от 0047 и требует отдельного team design/start. Никаких автоматических запусков эта metadata не создаёт.
+
+| Этап | Задач | Оценка |
+| --- | ---: | ---: |
+| M1 — Единое рабочее окно | 18 | 234 ч |
+| POST_M1 — Ранний коммерческий review | 1 | 8 ч |
+| M2 — Полный Task Manager | 26 | 338 ч |
+| M3 — Управляемая автономность | 5 | 84 ч |
+| M4 — Приёмка и локальный пилот | 3 | 52 ч |
+| OPTIONAL — Sign in with ChatGPT | 1 | 20 ч |
+| T1 — Командная версия после отдельного design/start | 2 | 40 ч |
+| Всего | 56 | 776 ч |
+
+Local до пилота — 708 ч без OPTIONAL/T1; M1 — 234 ч. Rough estimates без резерва и календарного обещания; actual у всех задач null.
+
+| № | Этап | Группа | ID | Задача | Оценка |
+| ---: | --- | --- | --- | --- | ---: |
+| 1 | M1 | G01 | PAOS-0001 | Контракты и адаптеры проекта | 8 ч |
+| 2 | M1 | G11 | PAOS-0054 | Контракт совместимости M1 и runtime manifest | 12 ч |
+| 3 | M1 | G11 | PAOS-0039 | Допустимые auth routes и коммерческие границы | 6 ч |
+| 4 | M1 | G01 | PAOS-0002 | Модель задачи и идентификаторы | 12 ч |
+| 5 | M1 | G01 | PAOS-0003 | Время и журнал событий | 12 ч |
+| 6 | M1 | G01 | PAOS-0004 | Темы и локализация | 8 ч |
+| 7 | M1 | G11 | PAOS-0040 | Launcher и жизненный цикл локального приложения | 12 ч |
+| 8 | M1 | G11 | PAOS-0041 | Локальное API-подключение и credential isolation | 16 ч |
+| 9 | M1 | G12 | PAOS-0048 | SQLite: схема и транзакционные команды | 16 ч |
+| 10 | M1 | G12 | PAOS-0055 | Команды агентов и совместимость legacy writers | 16 ч |
+| 11 | M1 | G11 | PAOS-0042 | Codex App Server adapter и ограниченное выполнение | 20 ч |
+| 12 | M1 | G11 | PAOS-0043 | Активная сессия и минимальная карточка задачи | 20 ч |
+| 13 | M1 | G11 | PAOS-0044 | Recovery, повторное подключение и сохранённые сессии | 16 ч |
+| 14 | M1 | G12 | PAOS-0049 | Локальный полнотекстовый поиск FTS5 | 12 ч |
+| 15 | M1 | G12 | PAOS-0051 | Резервное копирование и восстановление local data | 12 ч |
+| 16 | M1 | G12 | PAOS-0050 | Предварительный импорт MD/JSON в staging | 12 ч |
+| 17 | M1 | G12 | PAOS-0056 | Переключение источника задач и проверка миграции | 12 ч |
+| 18 | M1 | G11 | PAOS-0045 | Приёмка сквозного M1 в одном окне | 12 ч |
+| 19 | POST_M1 | G11 | PAOS-0046 | Коммерческий review API-варианта и выпускные gates | 8 ч |
+| 20 | M2 | G09 | PAOS-0031 | Иерархия Epic / Task / Bug / UserStory / Sub-Task | 14 ч |
+| 21 | M2 | G09 | PAOS-0032 | Поля, авторство, приоритеты, компоненты и даты | 12 ч |
+| 22 | M2 | G09 | PAOS-0033 | Версии продукта и release policy | 12 ч |
+| 23 | M2 | G02 | PAOS-0005 | Список и доска задач | 14 ч |
+| 24 | M2 | G02 | PAOS-0006 | Карточка и редактор задачи | 16 ч |
+| 25 | M2 | G02 | PAOS-0007 | Файлы, артефакты и исполнители | 8 ч |
+| 26 | M2 | G02 | PAOS-0008 | Приёмка и жизненный цикл | 14 ч |
+| 27 | M2 | G09 | PAOS-0034 | Attachments, комментарии и история изменений | 20 ч |
+| 28 | M2 | G10 | PAOS-0038 | Linked Issues и блокирующие зависимости | 14 ч |
+| 29 | M2 | G10 | PAOS-0035 | Kanban и ручной жизненный цикл задачи | 16 ч |
+| 30 | M2 | G10 | PAOS-0036 | Редактор, версии и миграции workflow | 20 ч |
+| 31 | M2 | G03 | PAOS-0009 | Каталог всех доступных сессий | 12 ч |
+| 32 | M2 | G03 | PAOS-0010 | Сообщения и переходы по контексту | 12 ч |
+| 33 | M2 | G03 | PAOS-0011 | Поиск, приватность и хранение сессий | 10 ч |
+| 34 | M2 | G04 | PAOS-0012 | Каталог и профиль агента | 8 ч |
+| 35 | M2 | G04 | PAOS-0013 | Создание, изменение и удаление агента | 12 ч |
+| 36 | M2 | G04 | PAOS-0014 | Управление агентом по описанию | 10 ч |
+| 37 | M2 | G04 | PAOS-0015 | Назначения и статистика агентов | 12 ч |
+| 38 | M2 | G05 | PAOS-0016 | Каталог и профиль скилла | 8 ч |
+| 39 | M2 | G05 | PAOS-0017 | Редактор и версии скиллов | 12 ч |
+| 40 | M2 | G05 | PAOS-0018 | Добавление по пути и find-skills | 12 ч |
+| 41 | M2 | G05 | PAOS-0019 | Генерация по требованиям и описанию | 12 ч |
+| 42 | M2 | G06 | PAOS-0020 | Индекс файлов и символов | 16 ч |
+| 43 | M2 | G06 | PAOS-0021 | Граф и навигация к исходникам | 14 ч |
+| 44 | M2 | G06 | PAOS-0022 | Влияние переменной и изменения | 14 ч |
+| 45 | M2 | G08 | PAOS-0027 | Документы, проверки и общий поиск | 14 ч |
+| 46 | M3 | G07 | PAOS-0023 | Политика автономности и лимиты | 12 ч |
+| 47 | M3 | G10 | PAOS-0037 | Цепочки агентов и привязка к workflow | 20 ч |
+| 48 | M3 | G07 | PAOS-0024 | Очередь, назначения и владение файлами | 16 ч |
+| 49 | M3 | G07 | PAOS-0025 | Исполнение, восстановление и отмена | 24 ч |
+| 50 | M3 | G07 | PAOS-0026 | Решения и наблюдаемость автономности | 12 ч |
+| 51 | M4 | G08 | PAOS-0028 | Интеграционная проверка пути | 24 ч |
+| 52 | M4 | G08 | PAOS-0029 | Доступность, языки и темы | 12 ч |
+| 53 | M4 | G08 | PAOS-0030 | Упаковка и пилот | 16 ч |
+| 54 | OPTIONAL | G11 | PAOS-0047 | Опциональный Sign in with ChatGPT | 20 ч |
+| 55 | T1 | G12 | PAOS-0052 | Командный профиль PostgreSQL и pgvector | 24 ч |
+| 56 | T1 | G12 | PAOS-0053 | Перенос local проекта в team workspace | 16 ч |
+
+PAOS-0002 проверяет domain contract только M1 profile (§17 PRD). Полный round-trip следующих типов/полей/вложений закреплён за M2 PAOS-0006/0031–0034/0038; 0050/0056 владеют фактическим переносом и cutover. PAOS-0036 завершается в M2, PAOS-0037 подключает цепочки агентов в M3. PAOS-0046 выполняется сразу после M1, а 0030 повторно проверяет коммерческие ограничения перед выпуском.
 
 ### Матрица M1 DoD и граница последующих этапов
 
@@ -45,11 +126,31 @@ Source status: project-authored plan, 2026-11-10; 56 planned tasks / 12 groups; 
 | DATA-AC-01–03 | S29 preview/mapping/freeze/receipt; unsupported data и conflict не теряются | 0050/0056; 0045 | General merge editor M2 |
 | DATA-AC-04/05 | S30 backup/restore/coverage; S31 FTS scopes/partial/purge | 0051/0049; 0045 | Semantic retrieval T1 |
 
-Текущие documentation receipts и strict-site gap — [аудит §9.2](product-agent-os-web-m1-final-audit-2026-11-10.md#92-текущие-проверки-согласования). Это не evidence исполнения задач.
+Текущие receipts — раздел «Проверка очереди v0.8» ниже. [Аудит §9.2](product-agent-os-web-m1-final-audit-2026-11-10.md#92-текущие-проверки-согласования) сохраняет исторические проверки v0.7; это не evidence исполнения задач.
 
 Группы/границы файлов — в карточках. Общими packages/contracts владеет 0054 owner до handoff; 0048 storage owner, 0055 domain bridge owner, 0042 runtime owner применяют только согласованный contract. Без перекрывающейся записи общих файлов. Документационная правка не запускает перечисленных агентов.
 
 Re-entry gate: после отдельного разрешения начать с 0001/0054 и зависимостей; если capability отсутствует, вернуть design issue до зависящего кода. Эту спецификацию нельзя объявить verified runtime или commercial-ready. Плановые criterion IDs не являются уже выполненными проверками.
+
+### Проверка очереди v0.8
+
+Source status: current-run local documentation checks, 2026-11-10. Task: PAOS-WEB-EXECUTION-ORDER-2026-11-10.
+
+| Проверка | Наблюдаемый результат |
+| --- | --- |
+| python -m unittest tests.product_agent_os.test_product_agent_os_docs -v | Exit 0, 105 tests OK, 21.887 s; TEMP/TMP process-local .docs-tools/reports/web-task-manager/test-temp |
+| python tools/check_docs.py | Exit 0, documentation structure checks passed |
+| python plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-web-task-manager-plan-2026-11-09.md | Exit 0, ok=true, errors=[] |
+| Inline Node consistency self-review | errors=[]; 56 unique tasks / 12 unchanged groups; order 1–56, stage arrays, MD table/cards and JSON agree; every dependency precedes dependent; technical DAG unchanged |
+| Preservation and totals | Estimates, task statuses, actual timestamps/durations and affected_files unchanged; all planned/actual null. M1 18/234 h, post-M1 1/8 h, M2 26/338 h, M3 5/84 h, M4 3/52 h, optional 1/20 h, T1 2/40 h; total 56/776 h |
+| Text/source checks | 60 local links resolve; UTF-8/fences valid; touched root files below 50 KiB; unrelated shared-file sections preserved |
+| git diff --check | Exit 0; CRLF normalization warnings only |
+
+Strict MkDocs not_applicable для этого slice: nav, Mermaid source, Markdown extensions, MkDocs config, search/sitemap и generated site evidence не менялись. Исторические site receipts не выдаются за текущую проверку. App/runtime/provider/browser проверки не выполнялись; schema_version JSON остаётся paos_web_task_groups_v1, execution_plan — additive planning metadata, не активированный scheduler.
+
+Control-plane sync: PLAN/TEST/RUNLOG updated в собственных Web sections; registry RU/EN synchronized; PRD/architecture/auth stage pointers aligned. REQUIREMENTS not_applicable: действующий M1 profile не изменён, устранено расхождение карточки; EVALS/prod_test not_applicable: eval rubrics и production evidence не менялись. Overflow not_required. Чужие dirty changes сохранены, другие lifecycle markers не затрагивались.
+
+Review: self_review; closure_level=docs_static_verified. Утверждён только порядок документационного плана. Никакие из 56 implementation tasks не запущены/не закрыты.
 
 ## Историческая очередь v0.6: storage и миграция
 
@@ -240,6 +341,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Контракты и адаптеры проекта
 - Status: planned
+- Delivery stage: M1
+- Execution order: 1
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -283,6 +386,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Модель задачи и идентификаторы
 - Status: planned
+- Delivery stage: M1
+- Execution order: 4
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -290,14 +395,14 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Date and time of task implementation: pending_execution_timestamp
 - Depends on: PAOS-0001
 - Blocks: PAOS-0003, PAOS-0005, PAOS-0006, PAOS-0031, PAOS-0042, PAOS-0045, PAOS-0048
-- Source: PRD: дополнение Task Manager; screen specification
-- Short description: Контракт прежних 12 и дополнительных полей §14 PRD; отдельные product status и planning status
-- Technical value: Единый контракт всех полей задачи, стабильные ID и миграция старых записей
+- Source: PRD §17.1–17.2; M1 profile; execution plan v0.8
+- Short description: Domain contract профиля M1: flat Task, поля PRD §17.1–17.2, стабильные ID и отдельные product/planning statuses
+- Technical value: Типизированная модель M1 и проверяемый round-trip поддерживаемых полей без зависимости от полного Task Manager M2.
 - Product value: Пользователь ставит полную задачу один раз и сохраняет устойчивую ссылку на неё при изменениях проекта.
 - Scope: packages/contracts/tasks; apps/local-service/src/tasks
-- Non-goals: Глобальные permissions, внешняя публикация и несвязанный refactor
+- Non-goals: Полная модель/round-trip M2, UI и фактический импорт; глобальные permissions, внешняя публикация и несвязанный refactor
 - Expected result: Модель задачи и идентификаторы доступна в соответствующем этапе
-- Acceptance criteria: Все поля §13–§14 проходят round-trip; стабильные ID; creator provenance; product workflow status не подменяет task_matrix_plan_v1 status
+- Acceptance criteria: Round-trip domain contract покрывает только профиль M1 PRD §17.1–17.2: flat Task, исходные 12 полей, status/creator/priority/Start Date/Due Date и related/blocks references; UI и фактический импорт реализуются в owning tasks. UUID и project key стабильны; creator provenance, source IDs/status, planned/actual operations и null/unknown time сохраняются без выдумки; product workflow status не подменяет task_matrix_plan_v1 status. Contract fixtures отклоняют неподдерживаемые значимые поля/типы/связи без потери данных; импорт и authority switch отдельно проверяются в 0050/0056. Epic/Bug/UserStory/Sub-Task, components, versions и attachments не являются acceptance PAOS-0002; полный round-trip M2 принадлежит PAOS-0006/0031–0034/0038.
 - Verification gates: Focused contract tests; relevant integration checks; UI state and evidence review before closure
 - Risks / approval gates: Потеря связей, неверный источник данных, конфликт версий или недоступный adapter; внешние/разрушительные действия отдельно авторизуются
 - Complexity: medium/high, уточнить после discovery
@@ -326,6 +431,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Время и журнал событий
 - Status: planned
+- Delivery stage: M1
+- Execution order: 5
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -369,6 +476,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Темы и локализация
 - Status: planned
+- Delivery stage: M1
+- Execution order: 6
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -412,6 +521,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Список и доска задач
 - Status: planned
+- Delivery stage: M2
+- Execution order: 23
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -455,6 +566,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Карточка и редактор задачи
 - Status: planned
+- Delivery stage: M2
+- Execution order: 24
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -498,6 +611,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Файлы, артефакты и исполнители
 - Status: planned
+- Delivery stage: M2
+- Execution order: 25
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -541,6 +656,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Приёмка и жизненный цикл
 - Status: planned
+- Delivery stage: M2
+- Execution order: 26
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -584,6 +701,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Каталог всех доступных сессий
 - Status: planned
+- Delivery stage: M2
+- Execution order: 31
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -627,6 +746,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Сообщения и переходы по контексту
 - Status: planned
+- Delivery stage: M2
+- Execution order: 32
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -670,6 +791,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Поиск, приватность и хранение сессий
 - Status: planned
+- Delivery stage: M2
+- Execution order: 33
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -713,6 +836,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Каталог и профиль агента
 - Status: planned
+- Delivery stage: M2
+- Execution order: 34
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -756,6 +881,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Создание, изменение и удаление агента
 - Status: planned
+- Delivery stage: M2
+- Execution order: 35
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -799,6 +926,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Управление агентом по описанию
 - Status: planned
+- Delivery stage: M2
+- Execution order: 36
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -842,6 +971,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Назначения и статистика агентов
 - Status: planned
+- Delivery stage: M2
+- Execution order: 37
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -885,6 +1016,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Каталог и профиль скилла
 - Status: planned
+- Delivery stage: M2
+- Execution order: 38
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -928,6 +1061,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Редактор и версии скиллов
 - Status: planned
+- Delivery stage: M2
+- Execution order: 39
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -971,6 +1106,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Добавление по пути и find-skills
 - Status: planned
+- Delivery stage: M2
+- Execution order: 40
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -1014,6 +1151,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Генерация по требованиям и описанию
 - Status: planned
+- Delivery stage: M2
+- Execution order: 41
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -1057,6 +1196,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Индекс файлов и символов
 - Status: planned
+- Delivery stage: M2
+- Execution order: 42
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -1100,6 +1241,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Граф и навигация к исходникам
 - Status: planned
+- Delivery stage: M2
+- Execution order: 43
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -1143,6 +1286,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Влияние переменной и изменения
 - Status: planned
+- Delivery stage: M2
+- Execution order: 44
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -1186,6 +1331,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Политика автономности и лимиты
 - Status: planned
+- Delivery stage: M3
+- Execution order: 46
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -1229,6 +1376,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Очередь, назначения и владение файлами
 - Status: planned
+- Delivery stage: M3
+- Execution order: 48
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -1272,6 +1421,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Исполнение, восстановление и отмена
 - Status: planned
+- Delivery stage: M3
+- Execution order: 49
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -1315,6 +1466,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Решения и наблюдаемость автономности
 - Status: planned
+- Delivery stage: M3
+- Execution order: 50
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -1358,6 +1511,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Документы, проверки и общий поиск
 - Status: planned
+- Delivery stage: M2
+- Execution order: 45
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -1401,6 +1556,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Интеграционная проверка пути
 - Status: planned
+- Delivery stage: M4
+- Execution order: 51
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -1444,6 +1601,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Доступность, языки и темы
 - Status: planned
+- Delivery stage: M4
+- Execution order: 52
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -1487,6 +1646,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Упаковка и пилот
 - Status: planned
+- Delivery stage: M4
+- Execution order: 53
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
@@ -1501,7 +1662,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Scope: apps/desktop-local; docs/web/pilot
 - Non-goals: Глобальные permissions, внешняя публикация и несвязанный refactor
 - Expected result: Упаковка и пилот доступна в соответствующем этапе
-- Acceptance criteria: Пилот согласован отдельно; restore проверен; наблюдения отделены от продуктовых гипотез
+- Acceptance criteria: Пилот согласован отдельно; restore проверен; наблюдения отделены от продуктовых гипотез Перед коммерческим выпуском повторно сверить актуальность AUTH-G1–G6 и закрытие применимых gaps раннего PAOS-0046; прежний review не является бессрочным допуском.
 - Verification gates: Focused contract tests; relevant integration checks; UI state and evidence review before closure
 - Risks / approval gates: Потеря связей, неверный источник данных, конфликт версий или недоступный adapter; внешние/разрушительные действия отдельно авторизуются
 - Complexity: medium/high, уточнить после discovery
@@ -1530,6 +1691,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Иерархия Epic / Task / Bug / UserStory / Sub-Task
 - Status: planned
+- Delivery stage: M2
+- Execution order: 20
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Jira-informed issue model, 2026-11-09
@@ -1574,6 +1737,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Поля, авторство, приоритеты, компоненты и даты
 - Status: planned
+- Delivery stage: M2
+- Execution order: 21
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Jira-informed issue model, 2026-11-09
@@ -1618,6 +1783,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Версии продукта и release policy
 - Status: planned
+- Delivery stage: M2
+- Execution order: 22
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Jira-informed issue model, 2026-11-09
@@ -1662,6 +1829,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Attachments, комментарии и история изменений
 - Status: planned
+- Delivery stage: M2
+- Execution order: 27
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Jira-informed issue model, 2026-11-09
@@ -1706,6 +1875,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Kanban и ручной жизненный цикл задачи
 - Status: planned
+- Delivery stage: M2
+- Execution order: 29
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Jira-informed issue model, 2026-11-09
@@ -1750,6 +1921,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Редактор, версии и миграции workflow
 - Status: planned
+- Delivery stage: M2
+- Execution order: 30
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Jira-informed issue model, 2026-11-09
@@ -1758,7 +1931,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Depends on: PAOS-0035
 - Blocks: PAOS-0028, PAOS-0037
 - Source: PRD §14; TM-21
-- Short description: Workflow definitions, type mapping, draft/publish и pinned versions
+- Short description: M2: редактор workflow, type mapping, draft/publish, pinned versions и migration; execution chains отдельно в M3 PAOS-0037
 - Technical value: Workflow definitions, type mapping, draft/publish и pinned versions
 - Product value: Пользователь создаёт собственный процесс, не меняя незаметно уже идущую работу
 - Scope: apps/local-service/src/workflows; apps/web/src/features/workflows; packages/contracts/workflows
@@ -1794,6 +1967,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Цепочки агентов и привязка к workflow
 - Status: planned
+- Delivery stage: M3
+- Execution order: 47
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Jira-informed issue model, 2026-11-09
@@ -1838,6 +2013,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Linked Issues и блокирующие зависимости
 - Status: planned
+- Delivery stage: M2
+- Execution order: 28
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Jira-informed issue model, 2026-11-09
@@ -1881,6 +2058,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Допустимые auth routes и коммерческие границы
 - Status: planned
+- Delivery stage: M1
+- Execution order: 3
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-selected single-window Codex App Server, 2026-11-09
@@ -1925,6 +2104,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Launcher и жизненный цикл локального приложения
 - Status: planned
+- Delivery stage: M1
+- Execution order: 7
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-selected single-window Codex App Server, 2026-11-09
@@ -1969,6 +2150,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Локальное API-подключение и credential isolation
 - Status: planned
+- Delivery stage: M1
+- Execution order: 8
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-selected single-window Codex App Server, 2026-11-09
@@ -2013,6 +2196,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Codex App Server adapter и ограниченное выполнение
 - Status: planned
+- Delivery stage: M1
+- Execution order: 11
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-selected single-window Codex App Server, 2026-11-09
@@ -2057,6 +2242,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Активная сессия и минимальная карточка задачи
 - Status: planned
+- Delivery stage: M1
+- Execution order: 12
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-selected single-window Codex App Server, 2026-11-09
@@ -2101,6 +2288,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Recovery, повторное подключение и сохранённые сессии
 - Status: planned
+- Delivery stage: M1
+- Execution order: 13
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-selected single-window Codex App Server, 2026-11-09
@@ -2145,6 +2334,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Приёмка сквозного M1 в одном окне
 - Status: planned
+- Delivery stage: M1
+- Execution order: 18
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-selected single-window Codex App Server, 2026-11-09
@@ -2189,6 +2380,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Коммерческий review API-варианта и выпускные gates
 - Status: planned
+- Delivery stage: POST_M1
+- Execution order: 19
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-selected single-window Codex App Server, 2026-11-09
@@ -2197,13 +2390,13 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Depends on: PAOS-0045
 - Blocks: PAOS-0030, PAOS-0047
 - Source: PRD §15 SW-01–12; auth/commercial AUTH-G1–G6
-- Short description: Проверить AUTH-G1–G6, выбранные рынки, privacy, distribution licenses, payer, support и owner decision
+- Short description: Сразу после приёмки M1 проверить коммерческий API route, AUTH-G1–G6, рынки/privacy/licenses/payer; зарегистрировать ограничения и gates повторной проверки перед выпуском
 - Technical value: Проверить AUTH-G1–G6, выбранные рынки, privacy, distribution licenses, payer, support и owner decision
 - Product value: Коммерческий пакет честно описывает подключение, затраты и ограничения.
 - Scope: research/product-agent-os-web-auth-commercial-2026-11-09.md; docs/release/web-commercial-review
 - Non-goals: Не менять hooks/global permissions; не запускать внешний/provider/Git/release scope без отдельного разрешения
 - Expected result: Каждый применимый AUTH gate содержит evidence/owner; нет обещаний без approval. Для API-only SIWC помечен unavailable; task не выполняет publication.
-- Acceptance criteria: Каждый применимый AUTH gate содержит evidence/owner; нет обещаний без approval. Для API-only SIWC помечен unavailable; task не выполняет publication.
+- Acceptance criteria: Каждый применимый AUTH gate содержит evidence/owner; нет обещаний без approval. Для API-only SIWC помечен unavailable; task не выполняет publication. Позиция 19 после PAOS-0045 и до M2: ранний review различает подтверждённые условия, pending evidence/admission и incompatible route; каждый gap имеет owner и запрет соответствующего выпуска. Актуальность условий повторно проверяется в PAOS-0030, ранний review не заменяет release acceptance.
 - Verification gates: Focused contract/negative tests; authorized runtime/browser where needed; no fixture-only activation claim
 - Risks / approval gates: Нет admission, legal review или достаточных runtime/security evidence. Provider calls, registration and publication require separate authority.
 - Complexity: medium/high, уточнить после discovery
@@ -2233,6 +2426,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Опциональный Sign in with ChatGPT
 - Status: planned
+- Delivery stage: OPTIONAL
+- Execution order: 54
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-selected single-window Codex App Server, 2026-11-09
@@ -2276,6 +2471,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: SQLite: схема и транзакционные команды
 - Status: planned
+- Delivery stage: M1
+- Execution order: 9
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-selected SQLite/FTS5 local and PostgreSQL/pgvector team, 2026-11-09
@@ -2319,6 +2516,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Локальный полнотекстовый поиск FTS5
 - Status: planned
+- Delivery stage: M1
+- Execution order: 14
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-selected SQLite/FTS5 local and PostgreSQL/pgvector team, 2026-11-09
@@ -2362,6 +2561,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Предварительный импорт MD/JSON в staging
 - Status: planned
+- Delivery stage: M1
+- Execution order: 16
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-selected SQLite/FTS5 local and PostgreSQL/pgvector team, 2026-11-09
@@ -2405,6 +2606,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Резервное копирование и восстановление local data
 - Status: planned
+- Delivery stage: M1
+- Execution order: 15
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-selected SQLite/FTS5 local and PostgreSQL/pgvector team, 2026-11-09
@@ -2448,6 +2651,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Командный профиль PostgreSQL и pgvector
 - Status: planned
+- Delivery stage: T1
+- Execution order: 55
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-selected SQLite/FTS5 local and PostgreSQL/pgvector team, 2026-11-09
@@ -2491,6 +2696,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Перенос local проекта в team workspace
 - Status: planned
+- Delivery stage: T1
+- Execution order: 56
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-selected SQLite/FTS5 local and PostgreSQL/pgvector team, 2026-11-09
@@ -2534,6 +2741,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Контракт совместимости M1 и runtime manifest
 - Status: planned
+- Delivery stage: M1
+- Execution order: 2
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested M1 audit remediation, 2026-11-10
@@ -2578,6 +2787,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Команды агентов и совместимость legacy writers
 - Status: planned
+- Delivery stage: M1
+- Execution order: 10
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested M1 audit remediation, 2026-11-10
@@ -2622,6 +2833,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Переключение источника задач и проверка миграции
 - Status: planned
+- Delivery stage: M1
+- Execution order: 17
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested M1 audit remediation, 2026-11-10

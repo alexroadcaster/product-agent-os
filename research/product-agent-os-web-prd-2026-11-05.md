@@ -53,8 +53,8 @@ JTBD: «Когда я возвращаюсь к проекту или даю AI 
 | Поставка | Пользовательский результат | In scope | Исключено |
 | --- | --- | --- | --- |
 | M1 — Одно рабочее окно | Обсудить и выполнить одну ограниченную задачу через Codex, вернуться к результату | Launcher, connection, SQLite + FTS5, controlled import/restore, session composer/stream, минимальная task card, approvals, interrupt, restart/resume, diff/checks | Full workflow editor, массовая автономность, SaaS и коммерческий launch без gates |
-| M2 — Полный Task Manager | Управлять задачами, контекстом, агентами, скиллами и графом | G02–G06/G09, Kanban/links, proposals, manual CRUD и версии | Неограниченное unattended выполнение |
-| M3 — Настраиваемая автономность | Выполнять цепочки агентов по разрешённой политике | Workflow editor/recipes, ownership, budgets, queue, bounded repair, статистика | Automatic deployment, shared multi-tenant editing |
+| M2 — Полный Task Manager | Управлять задачами, контекстом, агентами, скиллами и графом | G02–G06/G09, Kanban/links, workflow editor PAOS-0036, proposals, manual CRUD и версии | Неограниченное unattended выполнение |
+| M3 — Настраиваемая автономность | Выполнять цепочки агентов по разрешённой политике | Execution recipes/PAOS-0037, ownership, budgets, queue, bounded repair, статистика | Automatic deployment, shared multi-tenant editing |
 | M4 — Проверка и выпуск | Проверить полный путь и выбранную коммерческую модель | Accessibility, install/update/restore, pilot и AUTH-G1–G6 | SIWC без admission; обещание паритета с Codex App |
 
 **MVP = обсуждение → задача → Codex run → проверяемый результат в PAOS.** Выполнение включено уже в M1. Старые M1–M3/A0–A6 и stage labels в исходных §6–§12 ниже — историческая декомпозиция, заменённая §15. Требования безопасности/authority и acceptance сценарии сохраняются; новый stage mapping — в §17.
@@ -752,6 +752,8 @@ PAOS сохраняет доступные пользовательские и �
 
 ### 17.5. Приёмка и нерешённые проверки
 
-PAOS-0045 владеет сквозной приёмкой SW-AC-01–10, ST-AC-01–07 в профиле M1, UX-AC-01–18 в M1-срезе и новым DATA-AC-01–05. Таблица владельцев и исключений — актуальный план v0.7; отсутствие M2 не повод пропускать M1 сценарии. При проверке отсутствие provider authority оставляет runtime gates pending, а не заменяет их mock.
+Очередь реализации зафиксирована в плане v0.8: PAOS-0046 сразу после M1, PAOS-0036 в M2, execution chains в M3; PAOS-0002 проверяет только domain profile §17.1–17.2. Перед выпуском PAOS-0030 повторно проверяет актуальность коммерческих gates.
+
+PAOS-0045 владеет сквозной приёмкой SW-AC-01–10, ST-AC-01–07 в профиле M1, UX-AC-01–18 в M1-срезе и новым DATA-AC-01–05. Таблица владельцев и исключений — актуальный план v0.8; отсутствие M2 не повод пропускать M1 сценарии. При проверке отсутствие provider authority оставляет runtime gates pending, а не заменяет их mock.
 
 Выбраны документально: scope, транспорт agent commands, режимы, retention, bootstrap, SQLite driver и candidate version tuple. PAOS-0054 должен получить проверенный compatibility manifest до зависимого кода; остальные implementation tests остаются будущими задачами. AUTH-G1–G6 блокируют коммерческий выпуск, не объявлены выполненными. Дальнейший старт требует отдельного запроса пользователя.

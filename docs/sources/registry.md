@@ -1,5 +1,9 @@
 # Реестр источников
 
+WEB-CP-01 (2026-11-10): control-plane подготовлен под Web M1, scope v0.7 / execution v0.8. Устаревшие Web/lifecycle receipts и прошлый handoff сохранены с source hashes в research/product-agent-os-control-plane-maintenance-2026-11-10.md. Project-authored маршрутизация и сохранение истории; без реализации, runtime и изменений внешних source claims.
+
+WEB-ORDER-08 (2026-11-10): пользователь утвердил последовательность всех 56 задач в research/product-agent-os-web-task-manager-plan-2026-11-09.md и task-group JSON, execution_plan.revision=0.8; PRD scope остаётся v0.7. PAOS-0046 после M1, PAOS-0036 в M2, PAOS-0002 только M1 profile. Project-authored planning metadata; внешние source claims и runtime evidence не изменены.
+
 ## Web M1 v0.7 — решения после аудита, 2026-11-10
 
 WEB-M1-ALIGN-07: PRD §17, architecture §21, plan/JSON и UX v0.7; 56 planned tasks / 12 groups, 31 routes / 21 wireframes. Audit §9 содержит WA-01–13 → design decisions → future gates. Источники: [App Server](https://learn.chatgpt.com/docs/app-server) (schema, experimental dynamic tools, request resolved не равно action success), [config reference](https://learn.chatgpt.com/docs/config-file/config-reference) (ephemeral credential store), [Node 26.5 SQLite](https://nodejs.org/download/release/v26.5.0/docs/api/sqlite.html) (DatabaseSync/backup, release candidate), проверены 2026-11-10. Scope/thresholds/auth UX — project-authored proposals, не runtime/commercial proof. Source path: research/product-agent-os-web-m1-final-audit-2026-11-10.md, §9.
@@ -58,6 +62,8 @@ WEB-DB-02/03 FTS5/pgvector rechecked in this authoring run; earlier WAL/backup r
 Продуктовые решения и ограничения хранятся в auth/commercial документе. Источники не разрешают скрытое наследование login или использование платной подписки без подходящего consent/admission.
 
 ## PAOS-AUD-G7 — implementation evidence, 2026-11-09
+
+T08: владелец принял T07; локальные механизмы рекомендованы keep, superiority insufficient_evidence. [Итоговое решение](../../research/product-agent-os-g7-execution-report-2026-11-09.md); T06/final T08 accepted 10.11.2026; G7 closed locally, activation отдельно.
 
 T07 10.11.2026: [attested results](../superpowers/specs/paos-aud-g7-attested-results.json), 12 eligible generations, 6/6 на arm; tools=[] и same normalized common context. Superiority insufficient_evidence, no OS/E2E/activation claim. [Official normalization precedent](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/core/tests/suite/responses_lite.rs#L136) и [CLI override parsing](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/config/src/overrides.rs) проверены 10.11.2026; source_inspected и local actual trace evidence разделены. T06 actual Python/JS tool checks 10/10 отражены в execution report; owner acceptance отдельно.
 
