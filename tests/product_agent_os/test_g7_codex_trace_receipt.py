@@ -103,6 +103,75 @@ class G7TraceReceiptTest(unittest.TestCase):
                 self.assertEqual(receipt["observed_tool_count"], 1)
                 self.assertIn("tools_present", receipt["reasons"])
 
+    def test_diagnostic_inventory_flattens_namespaces_without_raw_context(self):
+        self.request["tools"] = [{"type": "namespace", "name": "functions", "tools": [
+            {"type": "function", "name": "apply_patch"},
+            {"type": "function", "name": "private_customer_tool"}]}]
+        receipt = self._receipt()
+        self.assertEqual(receipt["observed_tool_count"], 1)
+        self.assertEqual(receipt["builtin_tool_names"], ["apply_patch"])
+        self.assertEqual(receipt["leaf_tool_count"], 2)
+        self.assertIn("private_customer_tool", receipt["tool_identifiers"])
+        self.assertNotIn(CONTEXT, json.dumps(receipt))
+
+    def test_builtin_provider_display_name_is_not_a_provider_change(self):
+        self.events[3]["provider_name"] = "OpenAI"
+        self.assertEqual(self._receipt()["status"], "passed")
+        self.events[3]["provider_name"] = "unknown-provider"
+        self.assertIn("provider_mismatch", self._receipt()["reasons"])
+
+    def test_normalizes_only_bound_startup_marker_and_keeps_other_semantics(self):
+        import hashlib
+        marker = hashlib.sha256(THREAD.encode()).hexdigest()
+        self.request["input"][0]["content"][0]["text"] = (
+            "Product-Agent OS startup context: control-plane present=AGENTS.md; missing=none. "
+            "State marker=.codex/product-agent-os/lifecycle-state." + marker + ".json; lifecycle_state=missing")
+        receipt = self._receipt()
+        self.assertNotEqual(receipt["common_context_sha256"], receipt["normalized_common_context_sha256"])
+        self.request["input"][0]["content"][0]["text"] += " safety requirement changed"
+        self.assertNotEqual(self._receipt()["normalized_common_context_sha256"], receipt["normalized_common_context_sha256"])
+
+    def test_candidate_is_bound_to_trace_output_and_not_returned_when_blocked(self):
+        import hashlib
+        receipt = self._receipt(include_output=True)
+        self.assertEqual(receipt['candidate'], 'ready')
+        self.assertEqual(receipt['candidate_sha256'], hashlib.sha256(b'ready').hexdigest())
+        self.request['tools'] = [{'type':'function','name':'apply_patch'}]
+        self.assertNotIn('candidate', self._receipt(include_output=True))
+
+    def test_sequence_stops_on_context_drift_and_preserves_attempts(self):
+        import copy
+        import run_g7_attested_comparison as runner
+        design = json.loads((ROOT/'docs/superpowers/specs/paos-aud-g7-attested-design.json').read_text(encoding='utf-8'))
+        design['frozen_files'] = {}
+        design['output_directory'] = 'output'
+        design_path = self.trace_root/'design.json'
+        self._write_json(design_path, design)
+        observed = dict(status='passed', candidate='def label(value, prefix=""):\n    return prefix + str(value)\n', normalized_common_context_sha256='a'*64)
+        with (patch.object(runner, 'ROOT', self.trace_root), patch.object(runner, 'DESIGN', design_path),
+              patch.object(runner, 'run_preflight', side_effect=[copy.deepcopy(observed),dict(observed,normalized_common_context_sha256='b'*64)])):
+            result = runner.run(Path('unused.exe'))
+            self.assertFalse(result['comparison_eligible'])
+            self.assertEqual(len(result['calls']), 2)
+            self.assertEqual(result['calls'][1]['status'], 'context_mismatch')
+            with self.assertRaisesRegex(ValueError, 'already recorded'):
+                runner.run(Path('unused.exe'))
+
+    def test_transport_identity_normalization_preserves_content_and_provenance(self):
+        from g7_codex_trace_receipt import common_context_receipt
+        def context(identity, provenance):
+            item = message('user', 'unchanged context', 'ignored')
+            item['internal_chat_message_metadata_passthrough'] = dict(turn_id=identity, create_time=1.25, content_item_kinds=[provenance])
+            return [item]
+        first = common_context_receipt(None, context('one', 'fixed'), THREAD)
+        second = common_context_receipt(None, context('two', 'fixed'), THREAD)
+        self.assertEqual(first['normalized_common_context_sha256'],second['normalized_common_context_sha256'])
+        changed = common_context_receipt(None, context('two', 'different'), THREAD)
+        self.assertNotEqual(first['normalized_common_context_sha256'],changed['normalized_common_context_sha256'])
+        changed_content = context('two', 'fixed')
+        changed_content[0]['content'][0]['text'] = THREAD
+        self.assertNotEqual(first['normalized_common_context_sha256'], common_context_receipt(None, changed_content, THREAD)['normalized_common_context_sha256'])
+
     def test_lite_without_added_tools_is_empty_for_complete_request(self):
         del self.request["tools"]
         self.request["type"] = "response.create"
@@ -170,6 +239,7 @@ class G7TraceReceiptTest(unittest.TestCase):
             self.assertEqual(kwargs["input"], PREFLIGHT_PROMPT.encode())
             self.assertEqual(kwargs["timeout"], 180)
             self.assertIn("--ephemeral", argv)
+            self.assertIn("plugins.unified-computer-use@openai-bundled.mcp_servers.cua_repl.enabled=false", argv)
             self.assertIn("mcp_servers.example.enabled=false", argv)
             self.assertNotIn("--ignore-rules", argv)
             self.assertNotIn("features.hooks=false", argv)

@@ -1,8 +1,8 @@
 # TEST.md
 
-## Web storage contract v0.6 — 2026-11-09
+## Web M1 v0.7 — 2026-11-10
 
-[Web plan v0.6](research/product-agent-os-web-task-manager-plan-2026-11-09.md) владеет текущими documentation receipts. ST-AC-01–08: SQL transactions, import/cutover, RU/EN FTS, recovery/restore и tenant isolation — будущие gates. Сейчас docs unittest, structure, task matrix, MD/JSON consistency, diff и strict MkDocs; DB/runtime evidence отсутствует.
+[Audit remediation §9](research/product-agent-os-web-m1-final-audit-2026-11-10.md) владеет текущими docs receipts. M1 DoD: SW-AC-01–10, ST-AC-01–07 в M1 profile, UX-AC-01–18 M1 slices, DATA-AC-01–05; owners в плане v0.7. Docs unittest/check_docs/task matrix/MD-JSON parity/DAG/links/diff/strict MkDocs проверяются сейчас; runtime/browser/performance — будущие gates.
 
 ## Web storage research — 2026-11-09
 
@@ -16,9 +16,9 @@
 
 Web v0.4 authoring: docs unittest, check_docs, task-matrix, MD/JSON dependency/links/UTF-8 checks, strict MkDocs и diff. Будущие SW-AC-01–10 требуют browser + authorized actual runtime с закрытым Codex App, no inherited auth fallback, credential/tool isolation, lost ACK/crash/approval recovery. [Текущие receipts и gaps](research/product-agent-os-web-task-manager-plan-2026-11-09.md); runtime в этой задаче не запускался.
 
-## PAOS-AUD-G7 — current-run verification, 2026-11-09
+## PAOS-AUD-G7 — current-run verification, 2026-11-10
 
-T06: `python -B plugins/product-agent-os/scripts/run_g7_architecture_checks.py --run-approved-fixtures` → 10/10; focused projection/evolution/trace 37 tests OK. Full frozen suite: 1372 tests / 783.819 s / exit 0 (1 platform skip); fixture 91/91, transcript 26/26, compatibility OK. Результаты и failures — [execution report](research/product-agent-os-g7-execution-report-2026-11-09.md). TEMP/TMP задавать workspace `.docs-tools/reports/g7-deep-review-temp`. Model preflight blocked не является behavioral pass.
+T07: full unittest 1379 / 516.855 s / exit 0 (1 platform skip); docs 105 / 7.834 s, fixture 91/91, transcript 26/26, compatibility passed. Exact commands, RED/GREEN и attempts — [execution report](research/product-agent-os-g7-execution-report-2026-11-09.md). TEMP/TMP: workspace `.docs-tools/reports/g7-deep-review-temp`. Attested comparison 12 admitted; oracle 6/6 на arm. Offline rescore hash-guards inputs, provider=0, published writes=0. T06 10/10 tool cases — прежний receipt, в этом T07 не повторялся.
 
 ## Web issue workflows v0.3 — 2026-11-09
 

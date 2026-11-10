@@ -1,8 +1,8 @@
 # PLAN.md
 
-## Web storage contract v0.6 — 2026-11-09
+## Web M1 v0.7 — 2026-11-10
 
-[Web plan v0.6](research/product-agent-os-web-task-manager-plan-2026-11-09.md): 53 planned tasks / 12 groups; G12 0048–0053. SQLite/FTS5 foundation → session → search/import/restore → M1 acceptance. PostgreSQL/pgvector и local→team transfer — T1, не блокируют M4. Engines selected, schema proposed; разработка не начата.
+[План](research/product-agent-os-web-task-manager-plan-2026-11-09.md): 56 planned / 12 groups; M1 closure 18 tasks, rough 234 h. 0054 compatibility → storage/commands → single window; 0050 preview + 0051 backup + 0055 writers + 0044 recovery → 0056 cutover → 0045. Только документация; отдельное разрешение перед реализацией.
 
 ## Web storage research — 2026-11-09
 
@@ -18,7 +18,7 @@
 
 ## PAOS-AUD-G7 — partially_verified, 2026-11-09
 
-T01–T05 accepted; T06 implemented_locally_verified / needs_user_acceptance: 10/10 actual tool cases, full 1372 tests OK (1 skip). T07 strict comparison blocked: actual preflight содержит два tools; T08 owner decision pending. Pressure corpus подготовлен. [Матрица](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md), [evidence](research/product-agent-os-g7-execution-report-2026-11-09.md). Fresh-session отдельно; чужие Web edits сохранить.
+T01–T05 accepted; T06 needs_user_acceptance. T07: 12 admitted generations, independent oracle 6/6 на arm; superiority insufficient_evidence. T07 implemented_locally_verified: full 1379 tests passed (1 skip); следующий T08 owner decision. [Матрица](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md), [evidence](research/product-agent-os-g7-execution-report-2026-11-09.md). Fresh-session отдельно; чужие Web edits сохранить.
 
 ## Web issue workflows v0.3 — 2026-11-09
 
@@ -49,7 +49,7 @@ G4 F05/F09/F10/F15 implemented_locally_verified. Следующая группа
   "sources": [
     {
       "path": "research/product-agent-os-audit-remediation-task-plan-2026-11-09.md",
-      "revision": "sha256:55a2403aced6a3d79bcb34869ac87d06643484ebe46e393a8cb10bd82ae50c7d",
+      "revision": "sha256:d9cd9fbfd299eb10807ba328c63b1dda1f160f50c90d430823b4d5380a32df95",
       "task_prefixes": [
         "PAOS-AUD-"
       ]

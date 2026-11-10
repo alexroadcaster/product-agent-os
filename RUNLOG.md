@@ -1,5 +1,13 @@
 # RUNLOG.md
 
+## Web M1 contract alignment — 2026-11-10
+
+PAOS-WEB-M1-CONTRACT-ALIGNMENT-2026-11-10: [устранение WA-01–13 и текущая проверка](research/product-agent-os-web-m1-final-audit-2026-11-10.md), §9. PRD/architecture/plan/JSON/UX/auth v0.7, 31 routes / 21 wireframes; design baseline, implementation_not_started. Runtime compatibility и commercial admission pending; старый аудит ниже исторический.
+
+## Web M1 final audit — 2026-11-10
+
+PAOS-WEB-M1-FINAL-AUDIT-2026-11-10: [итоговый аудит M1](research/product-agent-os-web-m1-final-audit-2026-11-10.md). 13 замечаний: 8 P1, 4 P2, 1 P3; contract gaps/решения, не runtime defects. PRD/архитектура/план/JSON/UX/auth сохранены без изменений. DAG 53 tasks / 12 groups корректен; M1 closure 15 tasks, rough sum 202 h. Verification и границы — §8 отчёта; implementation not_started.
+
 ## Web storage contract v0.6 — 2026-11-09
 
 PAOS-WEB-STORAGE-CONTRACT-2026-11-09: PRD §16 / architecture §20 фиксируют selected SQLite+FTS5 local, PostgreSQL+pgvector team, schema и MD/JSON cutover. [План](research/product-agent-os-web-task-manager-plan-2026-11-09.md): 53 planned / 12 groups, current-run checks и gaps. Старые Web pointers в REQUIREMENTS сжаты в v0.6; owning history сохранена в документах. БД, migrations и приложение не создавались.
@@ -18,7 +26,7 @@ PAOS-WEB-SINGLE-WINDOW-2026-11-09: принято направление соб�
 
 ## PAOS-AUD-G7 — partially_verified, 2026-11-09
 
-T01–T05 accepted. T06 implemented_locally_verified: actual checks 10/10, profile receipt/baseline; full 1372 tests OK (1 platform skip), owner acceptance pending. T07 trace preflight blocked (two tools, filesystem isolation unavailable), pressure model runs не запущены. T08 owner decision pending, G7 partially_verified. [Evidence и acceptance packet](research/product-agent-os-g7-execution-report-2026-11-09.md). API key/ACL/trust/Git/activation не менялись; параллельные Web edits сохранены.
+T01–T05 accepted; T06 needs_user_acceptance. T07 actual Codex comparison 12/12 admitted, oracle baseline 6/6 = G7 6/6; superiority insufficient_evidence. T07 implemented_locally_verified: full 1379 / 516.855 s, docs 105, fixtures 91/91, transcripts 26/26; compatibility passed. T08 owner decision pending; G7 partially_verified; fresh-session отдельно. [Evidence и acceptance packet](research/product-agent-os-g7-execution-report-2026-11-09.md). API key/ACL/trust/Git/activation не менялись; параллельные Web edits сохранены.
 
 ## Web issue workflows v0.3 — 2026-11-09
 

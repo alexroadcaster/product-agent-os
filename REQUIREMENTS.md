@@ -1,12 +1,12 @@
 # REQUIREMENTS.md
 
-## Web v0.6 — 2026-11-09
+## Web v0.7 — 2026-11-10
 
-[PRD](research/product-agent-os-web-prd-2026-11-05.md) §14–16: Task Manager, single-window Codex App Server; SQLite + FTS5 local, PostgreSQL + pgvector team. SQL task authority после проверенного MD/JSON cutover; код/инструкции остаются файлами. ST-01–12 и ST-AC-01–08; runtime/auth и UX contracts сохранены. Только документация; implementation not_started.
+[PRD](research/product-agent-os-web-prd-2026-11-05.md) §17: согласованный M1 scope, profile import и offline CRUD; [архитектура](research/product-agent-os-web-architecture-2026-11-05.md) §21: commands/policy/auth/history. SQLite+FTS5 local, PostgreSQL+pgvector T1; только docs, runtime/commercial acceptance pending.
 
 ## PAOS-AUD-G7 — partial acceptance
 
-T01–T05 accepted. T06: approved Import Linter 2.16, dependency-cruiser 18.6.0; без global/CI/auto-fix. T06–T08 acceptance pending; strict model preflight blocked. Только доступный Codex, без API-ключа; fresh-session отдельно. [Scope/evidence](research/product-agent-os-g7-execution-report-2026-11-09.md).
+T01–T05 accepted; T06–T08 acceptance pending. T07: Codex-only paired generation, tools=[], 6/6 на arm; superiority не доказана. Без API-ключа/global/CI; fresh-session отдельно. [Scope/evidence](research/product-agent-os-g7-execution-report-2026-11-09.md).
 
 ## PAOS-AUD-G6 — 2026-11-09
 

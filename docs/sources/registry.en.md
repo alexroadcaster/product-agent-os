@@ -1,5 +1,13 @@
 # Source registry
 
+## Web M1 v0.7 — audit remediation, 2026-11-10
+
+WEB-M1-ALIGN-07: PRD section 17, architecture section 21, plan/JSON and UX v0.7; 56 planned tasks / 12 groups, 31 routes / 21 wireframes. Audit section 9 maps WA-01–13 to design decisions and future gates. Sources: [App Server](https://learn.chatgpt.com/docs/app-server) (schema, experimental dynamic tools, request resolution differs from action success), [config reference](https://learn.chatgpt.com/docs/config-file/config-reference) (ephemeral credential store), [Node 26.5 SQLite](https://nodejs.org/download/release/v26.5.0/docs/api/sqlite.html) (DatabaseSync/backup, release candidate), checked 2026-11-10. Scope/thresholds/auth UX are project-authored proposals, not runtime/commercial proof. Source path: research/product-agent-os-web-m1-final-audit-2026-11-10.md, section 9.
+
+## Web M1 final audit — 2026-11-10
+
+Source audit `research/product-agent-os-web-m1-final-audit-2026-11-10.md`: 13 contract findings with source lines/SHA256; reviewed specifications unchanged; no implementation or runtime proof. [App Server](https://learn.chatgpt.com/docs/app-server) checked 2026-11-10: version-specific schemas, turn policy defaults, request resolution versus action outcome; [SIWC client ID](https://developers.openai.com/siwc/request-client-id): admission remains separate. Existing AUTH claims retain their evidence ceiling.
+
 ## Web storage contract v0.6 — 2026-11-09
 
 User selected SQLite + FTS5 locally and PostgreSQL + pgvector for teams. PRD section 16, architecture section 20 and plan G12 specify proposed schema/migration; no implementation. Owning artifacts: `research/product-agent-os-web-prd-2026-11-05.md`, `research/product-agent-os-web-architecture-2026-11-05.md`, `research/product-agent-os-web-task-manager-plan-2026-11-09.md`.
@@ -51,7 +59,7 @@ Product decisions and constraints belong to the auth/commercial document. Source
 
 ## PAOS-AUD-G7 — implementation evidence, 2026-11-09
 
-G7 implementation: [current-run evidence](../../research/product-agent-os-g7-execution-report-2026-11-09.md) and [separate design](../superpowers/specs/paos-aud-g7-code-quality-eval-design.json). Project-local contracts and 10-case regression comparison; external benchmarks are not our evidence. Fresh-session, strict model isolation and actual tool execution gaps remain explicit. Official Codex [Configuration Reference](https://learn.chatgpt.com/docs/config-file/config-reference) fetched 2026-11-09; local CLI 0.167.0 rejected unknown tools.disable_defaults. Owner acceptance pending.
+T07 2026-11-10: [attested results](../superpowers/specs/paos-aud-g7-attested-results.json), 12 eligible generations, 6/6 per arm; tools=[] and equal normalized common context. Superiority insufficient_evidence; no OS/E2E/activation claim. [Official normalization precedent](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/core/tests/suite/responses_lite.rs#L136) and [CLI override parsing](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/config/src/overrides.rs) inspected 2026-11-10; source inspection and local actual trace evidence distinguished. T06 actual Python/JS tool checks 10/10 are recorded in the execution report; owner acceptance separate.
 
 ### Historical research intake
 

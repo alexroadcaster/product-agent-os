@@ -1,10 +1,10 @@
 # Product-Agent OS Web: единое окно и wireframes сессий
 
-Source status: project-authored / proposed UX, Hallmark 2.0.0 applied to Markdown specification. Дата: 2026-11-09. Версия UX: **0.5**, status: **draft_for_review**. Product direction остаётся PRD v0.4; implementation not_started.
+Source status: project-authored / proposed UX, Hallmark 2.0.0 applied to Markdown specification. Дата: 2026-11-09. Версия UX: **0.7**, status: **draft_for_review**. Product direction — PRD v0.7 §17; implementation not_started.
 
 Актуальные wireframes единого окна. Они заменяют read-only M1 v0.1, сохранённый в историческом приложении. Это текстовые схемы интерфейса, без рамки браузера/ОС, CSS, HTML, нового PNG или работающего прототипа. Все примеры сообщений и PAOS-0101 ниже синтетические; они не являются текущими задачами, логами или метриками репозитория.
 
-Связи: [структура всех 28 экранов](product-agent-os-web-task-manager-screens-2026-11-09.md), [PRD §15](product-agent-os-web-prd-2026-11-05.md#15-единое-окно-и-codex-app-server--v04), [архитектура §19](product-agent-os-web-architecture-2026-11-05.md#19-единое-окно-runtime-и-авторизация--v04), [авторизация](product-agent-os-web-auth-commercial-2026-11-09.md), [план](product-agent-os-web-task-manager-plan-2026-11-09.md).
+Связи: [структура всех 31 экранов](product-agent-os-web-task-manager-screens-2026-11-09.md), [PRD §15](product-agent-os-web-prd-2026-11-05.md#15-единое-окно-и-codex-app-server--v04), [архитектура §19](product-agent-os-web-architecture-2026-11-05.md#19-единое-окно-runtime-и-авторизация--v04), [авторизация](product-agent-os-web-auth-commercial-2026-11-09.md), [план](product-agent-os-web-task-manager-plan-2026-11-09.md).
 
 ## 1. Hallmark: направление и материалы
 
@@ -477,25 +477,25 @@ Streaming chunks не объявляются screen reader посимвольн�
 | UX-AC-01 | Codex App закрыт; первый путь до результата доступен | WF-01–04/10/16; PAOS-0040–0045 |
 | UX-AC-02 | Новая сессия не отправляет контекст до Send | WF-02/03; PAOS-0041/0043 |
 | UX-AC-03 | Discussion/Planning не меняют target; переход execution явный | WF-03/04; PAOS-0042/0043 |
-| UX-AC-04 | Несколько links, один target run; смена link не переносит исполнение | WF-05; PAOS-0002/0006/0043 |
-| UX-AC-05 | История/scroll/draft сохранены при открытии файла и возврате | WF-04/07/12; PAOS-0010/0043 |
-| UX-AC-06 | Роль, assignment, run и profile version различимы | WF-06/14; PAOS-0012/0015/0042 |
-| UX-AC-07 | Proposed vs actual vs external diff не смешаны | WF-07; PAOS-0007/0043 |
-| UX-AC-08 | Вопрос, product decision и tool permission не взаимозаменяемы | WF-08/09; PAOS-0026/0042/0043 |
+| UX-AC-04 | Несколько links, один target run; смена link не переносит исполнение | WF-05; PAOS-0002/0043 |
+| UX-AC-05 | История/scroll/draft сохранены при открытии файла и возврате | WF-04/07/12; PAOS-0043 |
+| UX-AC-06 | Роль, assignment, run и profile version различимы | WF-06/14; PAOS-0042/0043 |
+| UX-AC-07 | Proposed vs actual vs external diff не смешаны | WF-07; PAOS-0043 |
+| UX-AC-08 | Вопрос, product decision и tool permission не взаимозаменяемы | WF-08/09; PAOS-0042/0043 |
 | UX-AC-09 | Allow→pending→ACK; stale/deny не разрешают действие | WF-09; PAOS-0042/0044 |
 | UX-AC-10 | Double Send / lost ACK не порождают повторный run | WF-04/11; PAOS-0044/0045 |
 | UX-AC-11 | Stop не undo; timeout не success | WF-04/11; PAOS-0044 |
-| UX-AC-12 | Failed/missing checks не превращаются в Done | WF-10/13; PAOS-0008/0045 |
+| UX-AC-12 | Failed/missing checks не превращаются в Done | WF-10/13; PAOS-0043/0045 |
 | UX-AC-13 | Cross-project/account IDs отклоняются; drafts не смешиваются | WF-01/03/11; PAOS-0041/0044 |
-| UX-AC-14 | Unsupported attachment и скрытый context объясняются до Send | WF-03/04; PAOS-0034/0043 |
-| UX-AC-15 | RU/EN, обе темы, 320/1280/1440/1920, keyboard/200% zoom | Все; PAOS-0004/0029/0045 |
-| UX-AC-16 | No data vs empty; импортированная история показывает coverage | WF-02/06/15; PAOS-0009/0011/0015 |
-| UX-AC-17 | Token/limit failure не меняет payer и не теряет draft | WF-11/16; PAOS-0041/0044/0047 |
-| UX-AC-18 | Active queue/new mode/новый profile не меняют pinned run | WF-04/06; PAOS-0024/0042–0044 |
+| UX-AC-14 | Unsupported attachment и скрытый context объясняются до Send | WF-03/04; PAOS-0043 |
+| UX-AC-15 | RU/EN, обе темы, 320/1280/1440/1920, keyboard/200% zoom | Все; PAOS-0004/0043/0045 |
+| UX-AC-16 | No data vs empty; импортированная история показывает coverage | WF-02/06/15; PAOS-0042/0043/0049 |
+| UX-AC-17 | Token/limit failure не меняет payer и не теряет draft | WF-11/16; PAOS-0041/0044 |
+| UX-AC-18 | Active queue/new mode/новый profile не меняют pinned run | WF-04/06; PAOS-0042–0044 |
 
-Это детализация SW-01–12/SW-AC-01–10, не новые реализованные endpoints и не новые statuses task_matrix. Все acceptance сценарии pending execution. M1 охватывает WF-01–12 и минимальные WF-13/16; широкий каталог/graph/custom workflow следует M2–M3. Число implementation tasks остаётся 47.
+Это детализация SW-01–12/SW-AC-01–10, не новые реализованные endpoints и не новые statuses task_matrix. Все acceptance сценарии pending execution. M1 охватывает WF-01–12 и минимальные WF-13/16; широкий каталог/graph/custom workflow следует M2–M3. Текущие 56 planned tasks / 12 groups и M1 owners — в плане v0.7.
 
-## 14. Проверка этой спецификации
+## 14. Историческая проверка UX v0.5
 
 Текущий task: PAOS-WEB-SESSION-WIREFRAMES-2026-11-09. Scope — Markdown-only; результат documentation_updated / partially_verified / needs_user_acceptance.
 
@@ -515,6 +515,147 @@ Review verdict относится к спецификации; пользова�
 Control-plane sync: REQUIREMENTS/PLAN/TEST/EVALS/RUNLOG — updated собственными краткими sections; registry RU/EN — WEB-UX-05; PRD/architecture/plan — pointers и mapping к существующим задачам. Overflow — сокращён только собственный root pointer без потери требований. prod_test — not_applicable, Batch 39 evidence не затрагивается. Handoff_required — владельцам G6/G7 для общих strict-build ссылок; это не принятый пропуск проверки. Next — пользовательский review компоновки, затем отдельный запрос на реализацию M1. Повторные runtime/browser проверки относятся к будущему продукту.
 
 Rendered Hallmark, sloplint --render, CSS stamps/scaffold, .hallmark JSON caches, browser и provider steps not_applicable к разрешённому Markdown-only scope; не создавать приложение ради проверки спецификации. Это граница результата, не waiver Floor для будущей реализации. Новый material request не требуется: задача уже задала материал/аудиторию/use/tone. Для будущего visual validation полезен обезличенный trace одной реальной задачи с permission и file diff; никаких таких данных сейчас не запрашивали и не сохраняли.
+
+
+## 15. Wireframes M1 после аудита — v0.7
+
+Source status: project-authored UX contract, 2026-11-10; text wireframes, not rendered UI. Текущая baseline — PRD §17, architecture §21. Нумерация WF-01–16 сохранена; следующие уточнения обязательны поверх старой компоновки. Исторические receipts §14 и PNG не являются результатами этой версии.
+
+### 15.1. Уточнения существующих экранов
+
+| Wireframe / screen | Обязательное поведение M1 |
+| --- | --- |
+| WF-01 / S01–S03 | Восемь вкладок; Агенты/Скиллы read-only, Карта — доступная source projection с coverage. «Данные проекта → Перенос» открывает S29; глобальные Настройки → Данные S30; project search → S31 |
+| WF-03/04 / S09 | Discussion/Planning/Execution — policy, не тон ответа. При смене: Stop/reconcile активного turn → показать selected context → новый runtime segment; не менять pinned active run |
+| WF-05/13 / S04–S07 | Flat Task, fixed Kanban, CRUD, Comments/History, related/blocks; поля/guards PRD §17. M2 controls не маскируются под работающие |
+| WF-06/14 / S10–S17 | Instructions read-only; observed assignments/run history, unknown counters без выдумки; CRUD/generation/find-skills — M2 |
+| WF-08/09 | answered_or_cleared отдельно от outcome; исчезнувший request не отмечать approved/success |
+| WF-11 | SQL healthy + no provider = local CRUD/search/backup; DB unavailable = recovery-only; lost runtime ACK = не повторять Send |
+| WF-16 / S27 | Pairing form до API key; payer/credential status/capability/limitations; SIWC недоступен без отдельного допуска |
+| WF-15 / S18 | Только существующие read-only graph сведения; без обещания полного symbol/variable dependency graph в M1 |
+
+Синтетическая сессия, уточнённый основной путь:
+
+~~~text
+Проект PAOS   Сессия: работа над задачей       Данные: SQL ✓
+Чат                                    Контекст: [Задачи][Агенты][Файлы][Проверки]
+Вы: Подготовь план...
+Агент: Предложение плана                 PAOS-0101 · Task · Ready
+[Сохранить как Task]                     Target run: PAOS-0101
+                                        Критерии / scope / estimate
+Режим: [Планирование ▾]                  История / Комментарии
+[Перейти к Выполнению]
+Новый режим создаст отдельный runtime-контекст.
+Включить: [x] эта задача [x] выбранный план [ ] другие сообщения
+[Отмена] [Открыть выполнение]
+
+Во время run:
+Разрешение: изменение файлов в пределах проекта
+[Отклонить] [Разрешить для этого запроса]
+Ответ отправлен → запрос закрыт; outcome ещё не получен.
+Позже: item outcome / diff / checks, независимо от закрытия запроса.
+[Остановить]                  Completed ≠ задача принята
+~~~
+
+Pairing: «Введите код из окна запуска PAOS»; field masked, paste allowed, [Подключить]; expired → «Получить новый код в окне запуска». Нет token в адресной строке. После pairing S27 предлагает optional API key, local tasks доступны без него. «Сохранено» у сообщения/draft только после DB commit; при commit failure остаётся warning и кнопка локального экспорта черновика.
+
+### WF-17. S29 — Inventory и предварительный перенос
+
+~~~text
+Проект / Данные / Перенос                           Шаг 1 из 3
+Источник задач сейчас: MD/JSON. Файлы не изменяются.
+Источники                       Parser        Результат
+[выбранный JSON]                 supported     Records найдены
+[MD summary]                    projection    Дубликаты объединены
+[исследование.md]                document      Остаётся файлом
+Неподдерживаемые данные: [Показать поля и исходный фрагмент]
+[Назад в проект] [Проверить перенос]
+~~~
+
+Без provider; source path/digest/parser version видимы. Counts показываются только после scan. Empty: нет tasks — можно создать новый SQL scope после проверки отсутствия legacy records; error: конкретный источник/retry; unknown significant fields блокируют Next. Выбор источника не разрешает пропустить связанные записи ради cutover.
+
+### WF-18. S29 — Mapping и конфликты
+
+~~~text
+Перенос · Шаг 2 из 3         Задачи / Связи / Поля / Ошибки
+Source ID → Public ID       Original status → Proposed status
+Creator: неизвестен         Group: сохранится как source_group
+Estimate / Actual: исходные значения или unknown
+[Открыть исходник] [Сравнить JSON и MD]
+
+Блокирует перенос: неподдерживаемая hierarchy / attachment / link
+Действие: оставить legacy до M2; не терять поле.
+[Обновить preview] [Назад] [Далее — недоступно: есть ошибки]
+~~~
+
+Явное mapping разрешено только в profile/guards; не предлагает заменить unknown creator текущим человеком. Source changed → preview expired. External edit после cutover открывает этот же экран в режиме conflict, показывает base revision/DB value/file value и [Сохранить предложение]; автоматического Apply нет.
+
+### WF-19. S29 — Cutover и receipt
+
+~~~text
+Перенос · Шаг 3 из 3
+[x/ожидается] Writers проверены
+[x/ожидается] Active/uncertain runs остановлены и согласованы
+[x/ожидается] Source hashes совпадают
+[x/ожидается] Backup создан, restore rehearsal пройден
+Authority: MD/JSON → SQLite
+Сохраняем: Tasks, supported fields/links, source references
+Остаются файлами: код, документы, инструкции
+[Отмена] [Переключить источник задач]
+
+Receipt: commit подтверждён · новая authority epoch
+[Открыть задачи] [Состав копии] [План восстановления]
+~~~
+
+Нельзя показывать fake checkmarks заранее. После нажатия кнопка busy, повтор idempotent. Lost ACK → «Проверяем, завершилось ли переключение»; сначала reread epoch, не второй cutover. Failure до commit оставляет legacy; после commit UI показывает SQL и отдельный recovery gap. Нельзя обещать мгновенный возврат к старой копии после новых writes.
+
+### WF-20. S30 — Резервные копии и восстановление
+
+~~~text
+Настройки / Данные                 Профиль: локальный
+Занято / свободно: наблюдённые значения
+[Создать копию] [Восстановить из копии]
+Копии: дата · schema · integrity · scope · coverage · pinned
+Default: последние 5 managed successful, pinned сохраняются
+
+Restore preview:
+Включено: tasks, comments, сохранённые сообщения, blobs по manifest
+Не включено: credentials, runtime threads, source repository
+История: сохранённая часть / gaps
+Цель: новый каталог; активные runs должны быть остановлены
+[Проверить копию] [Подтвердить переключение — после проверок]
+~~~
+
+Corrupt/hash mismatch/schema unsupported → block с причиной, прежний профиль доступен. Pairing/provider connection после restore не восстанавливаются молча. Purge отдельный confirm со списком messages/search/evidence effects и предупреждением о старых backups; нет обещания secure erase. Удаление backups показывает конкретные копии; личные exports не входят в rotation.
+
+### WF-21. S31 — Поиск в проекте
+
+~~~text
+Проект PAOS / Поиск                [Запрос                       ]
+Scope: этот проект    Тип: Всё / Задачи / Сообщения / Документы
+Index: готов / строится / partial [Покрытие]
+ID/path exact match
+Результат · тип · source · revision · фрагмент
+[Открыть в сессии / задаче / документе]  [Следующая страница]
+
+Нет результатов ≠ индекс не готов.
+Удалённые сообщения и запрещённые файлы не показываются.
+[Перестроить индекс]   Семантический поиск не входит в M1.
+~~~
+
+Ссылки сохраняют session anchor и filters при Back. RU/EN literal/token search, без обещания morphology/translation/semantic ranking; fallback ID search при rebuild. Loading/error/partial отличаются от empty. M1 global cross-project search не входит.
+
+### 15.2. Дополнительные критерии данных
+
+| ID | Критерий | Owner |
+| --- | --- | --- |
+| DATA-AC-01 | S29 inventory без mutations, MD/JSON dedup, unsupported fields видимы | 0050 |
+| DATA-AC-02 | Mapping/unknown/status/source drift не теряет данные и блокирует unsafe cutover | 0050/0056 |
+| DATA-AC-03 | Backup/restore до switch; crash/lost ACK не создаёт двух authorities | 0051/0056 |
+| DATA-AC-04 | S30 restore в новый каталог, coverage/exclusions; stale approvals не исполняются | 0051 |
+| DATA-AC-05 | S31 project scope, exact/FTS, partial/rebuild/delete, честное empty | 0049 |
+
+Для UX-AC-01–18 нормативные M1 owners и отложенная часть — матрица плана v0.7. Это устраняет прежнюю зависимость минимального journey от M2/M3 tasks. Все критерии продукта pending execution; эту задачу проверяем статически.
 
 <details>
 <summary>Историческое приложение: read-only M1 v0.1, заменён текущей спецификацией</summary>

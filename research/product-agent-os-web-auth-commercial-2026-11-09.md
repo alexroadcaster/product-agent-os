@@ -1,6 +1,6 @@
 # Product-Agent OS Web — авторизация и коммерческое использование
 
-Source status: official documentation checked 2026-11-09 / project-authored design. Версия: 0.4. Документация, не реализация и не разрешение на коммерческий запуск.
+Source status: official documentation checked 2026-11-09 / project-authored design. Версия: 0.7; auth mechanism: §7. Документация, не реализация и не разрешение на коммерческий запуск.
 
 Owning requirement: [PRD §15](product-agent-os-web-prd-2026-11-05.md#15-единое-окно-и-codex-app-server--v04); architecture contracts: [архитектура §19](product-agent-os-web-architecture-2026-11-05.md#19-единое-окно-runtime-и-авторизация--v04); tasks: [G11](product-agent-os-web-task-manager-plan-2026-11-09.md). Источники WEB-AUTH-01–09 перечислены ниже и в RU/EN registry.
 
@@ -96,3 +96,19 @@ Capability matrix хранит runtime build, connection route, account/workspac
 PAOS-0039 фиксирует допустимые routes, admission и ownership; PAOS-0041 — local API credential connection; PAOS-0042–0045 — runtime, UX, recovery и M1 evidence; PAOS-0046 — коммерческий review; PAOS-0047 — SIWC только при подтверждённой eligibility. Запуск API-M1 не зависит от завершения опциональной PAOS-0047.
 
 Открыто: paid local или OSS-first distribution; entity/рынки; точный runtime build и безопасный credential transport; SIWC admission; retention defaults; модель/бюджет пилота. Решение владельца по интерфейсу принято; эти вопросы не подменяются предположением о коммерческом допуске.
+
+## 7. Конкретный local M1 auth contract — v0.7
+
+Source status: project-authored design, 2026-11-10; qualification pending. Этот раздел закрывает выбор механизма, не подтверждает его реализацию и не отменяет AUTH-G1–G6.
+
+Первый запуск: launcher связывается только с 127.0.0.1 на выбранном порту, показывает в собственном локальном окне одноразовый pairing code (128 случайных бит, TTL 60 s, максимум 5 попыток). Пользователь вводит code в PAOS; POST /bootstrap/exchange принимает только exact Host/Origin и application/json. Ни URL/query/fragment, ни localStorage, telemetry или логи не содержат code/token. Launcher выводит только UI, не stdout. Истёкший code перевыпускается локально. Это startup pairing, Codex App/второй рабочий интерфейс не нужен.
+
+После exchange: random server-side session, HttpOnly; SameSite=Strict; Path=/; host-only cookie, без Domain. Loopback HTTP в M1: Secure flag не заявляется, HTTPS/LAN/remote не поддерживаются; CSRF header привязан к session, exact Host/Origin проверяются на всех mutating routes, CORS default deny, WS upgrade отсутствует. Session idle timeout 30 min, absolute 8 h; restart/logout/re-pair revoke. Отдельные UA/port instances не должны разделять cookie namespace; cookie name содержит instance ID, server проверяет принадлежность session. Не считать cookie port-isolated: local processes с правами пользователя остаются вне threat model. Pairing/rate-limit/DNS-rebinding/cross-origin checks — 0041/0054.
+
+BYOK: пользователь вводит ключ в connection form после pairing, только memory field → local POST → Windows Credential Manager credential текущего OS user, namespaced PAOS/profile/connection. UI немедленно очищает поле; SQL хранит opaque ref, display fingerprint нельзя выводить из полного ключа в логах. Никаких env/CLI args/browser storage/exports. Service получает ключ из secure store и передаёт в account/login/start apiKey через закрытый stdio child. Отдельный PAOS-owned runtime profile; cli_auth_credentials_store=ephemeral, запрет наследования чужого auth.json/ChatGPT login. Runtime получает секрет для inference, но не передаёт его shell tools. Если exact build не обеспечивает ephemeral auth либо managed policy конфликтует, Send blocked; fallback в file/auto/env запрещён. Глобальный Codex config не изменяется.
+
+Проверки 0054/0041: disposable canary credential без inference, проверка redacted logs/files/tool environment, profile isolation, logout/restart, managed-policy denial; затем только отдельно разрешённая 0045 реальная проверка provider. OS same-user arbitrary process isolation не обещается. Отсутствие secure store оставляет local CRUD, подключение недоступно.
+
+M1 — локальный engineering preview через свой API account. Для платного продукта BYOK остаётся candidate: широкое ограничение App Server auth не трактуется как автоматически снятое API-ключом. AUTH-G1–G6 проверяются до M4 commercial distribution; если admission/условия несовместимы, запуск продажи блокируется, требуется новый runtime ADR. SIWC — optional 0047, не fallback. Наличие schema/login не подтверждает право коммерческого использования.
+
+Источники: [App Server auth](https://learn.chatgpt.com/docs/app-server#auth-endpoints), [Codex credential store](https://learn.chatgpt.com/docs/config-file/config-reference) перепроверены 2026-11-10. Cookie/pairing/TTL — проектные решения.

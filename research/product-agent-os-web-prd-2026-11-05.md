@@ -1,14 +1,14 @@
 # Product-Agent OS Web — PRD
 
-Актуализация 2026-11-09: **v0.6 — SQLite + FTS5 local, PostgreSQL + pgvector team; единое окно через Codex App Server**. §16 определяет хранение и миграцию, §15 — runtime; требования Task Manager §13–§14 сохранены. [План: 53 задачи / 12 групп](product-agent-os-web-task-manager-plan-2026-11-09.md), [авторизация и коммерческие ограничения](product-agent-os-web-auth-commercial-2026-11-09.md).
+Актуализация 2026-11-10: **v0.7 — согласованный контракт M1 после аудита**. Текущий scope — §17; storage — §16 с профилем M1; runtime — §15. Требования полного Task Manager §13–§14 сохранены для M2–M3. [План: 56 задач / 12 групп](product-agent-os-web-task-manager-plan-2026-11-09.md), [авторизация и коммерческие ограничения](product-agent-os-web-auth-commercial-2026-11-09.md).
 
-Source status: `project-authored / selected-direction / proposed-implementation / official-docs-backed`. Создан: 2026-11-05. Обновлён: 2026-11-09. Версия: 0.6.
+Source status: `project-authored / selected-direction / proposed-implementation / official-docs-backed`. Создан: 2026-11-05. Обновлён: 2026-11-10. Версия: 0.7.
 
 Статус: **direction_selected / implementation_not_started**. Пользователь выбрал собственный клиент Codex App Server. Детальные контракты, оценки и коммерческий допуск остаются proposed/pending. Разрешены документы, разработка и deployment не начаты.
 
 Связи: [архитектура и этапы](product-agent-os-web-architecture-2026-11-05.md), [анализ SOL 0.6](sol-0.6-product-agent-os-web-analysis-2026-11-05.md).
 
-Исторический read-only концепт M1: [wireframes](product-agent-os-web-m1-wireframes-2026-11-09.md). Его четыре раздела и отложенный runtime больше не определяют MVP. Актуальны восемь вкладок Task Manager и активные сессии §15; прежние изображения не являются полным изображением v0.4.
+Текущая UX v0.7 и исторический read-only концепт в приложении: [wireframes](product-agent-os-web-m1-wireframes-2026-11-09.md). Его четыре раздела и отложенный runtime больше не определяют MVP. Актуальны восемь вкладок Task Manager и активные сессии §15; прежние изображения не являются полным изображением v0.4.
 
 ## 1. Проблема, цель и ценность
 
@@ -57,7 +57,7 @@ JTBD: «Когда я возвращаюсь к проекту или даю AI 
 | M3 — Настраиваемая автономность | Выполнять цепочки агентов по разрешённой политике | Workflow editor/recipes, ownership, budgets, queue, bounded repair, статистика | Automatic deployment, shared multi-tenant editing |
 | M4 — Проверка и выпуск | Проверить полный путь и выбранную коммерческую модель | Accessibility, install/update/restore, pilot и AUTH-G1–G6 | SIWC без admission; обещание паритета с Codex App |
 
-**MVP = обсуждение → задача → Codex run → проверяемый результат в PAOS.** Выполнение включено уже в M1. Старые M1–M3/A0–A6 и stage labels в исходных §6–§12 ниже — историческая декомпозиция, заменённая §15. Требования безопасности/authority и acceptance сценарии сохраняются; новый stage mapping — в §15.
+**MVP = обсуждение → задача → Codex run → проверяемый результат в PAOS.** Выполнение включено уже в M1. Старые M1–M3/A0–A6 и stage labels в исходных §6–§12 ниже — историческая декомпозиция, заменённая §15. Требования безопасности/authority и acceptance сценарии сохраняются; новый stage mapping — в §17.
 
 Общие non-goals: собственная IDE/терминал, перенос SOL backend целиком, обязательная цепочка из десяти ролей, новый multi-provider framework, marketplace, voice, billing, cloud sync, remote access, SSO/RBAC, мобильное выполнение, автоматическая правка prompts/hooks/permissions.
 
@@ -97,19 +97,19 @@ Empty state объясняет, что будет прочитано. Ошибк
 
 Цель — понять состояние и следующий шаг. Верхний блок: цель проекта, snapshot freshness/coverage, текущая задача. Далее: активная работа, блокеры, решения владельца, последние проверенные результаты.
 
-Primary CTA описывает конкретное следующее действие и причину. В M1 — навигация/refresh, в M2+ — доступная команда. Единого процента готовности продукта нет; при известном составе этапа допустимо «подтверждено N из M» с явным denominator. Source health (`current/stale/conflict/partial`) показывается отдельно от business status.
+Primary CTA описывает конкретное следующее действие и причину. В M1 — навигация/refresh и разрешённые команды §17, с отдельным execution authority. Единого процента готовности продукта нет; при известном составе этапа допустимо «подтверждено N из M» с явным denominator. Source health (`current/stale/conflict/partial`) показывается отдельно от business status.
 
 ### E03. Работа: список и доска
 
 Список/board, поиск по title/ID, фильтры состояния, owner, blockers и evidence. Карточка: title, short ID, source state, run/verification badges, owner, blocker, last update.
 
-Hierarchy выводится только из явных parent-child связей; dependencies не подменяют parentId. M1 read-only: drag-and-drop не меняет статус. Неподдерживаемая матрица остаётся документом с пояснением; LLM не генерирует «факты» из произвольного текста.
+Hierarchy выводится только из явных parent-child связей; dependencies не подменяют parentId. Legacy read-only не меняет статус; DB-owned fixed Kanban M1 меняет его только через разрешённый transition и guards §17. Неподдерживаемая матрица остаётся документом с пояснением; LLM не генерирует «факты» из произвольного текста.
 
 ### E04. Workspace задачи
 
 Компактная сводка задачи + «Обсуждение / Активность» + панель «Требования / План / Документы / Изменения / Проверки». На узком desktop панели переключаются вкладками. Сводка содержит expected result, non-goals, acceptance, зависимости, authority и текущий run.
 
-M1 читает существующие артефакты без обещания импорта всех исторических Codex chats. M2 добавляет task draft и вопросы. M3 показывает runtime conversation и timeline наблюдаемых действий. Доступные actions: уточнить, посмотреть план, подготовить изменение, начать, остановить, открыть результат.
+M1 включает task draft, runtime conversation и timeline наблюдаемых действий; импорт всех исторических Codex chats не обещается. M2 расширяет каталоги и редакторы. Доступные actions: уточнить, посмотреть план, подготовить изменение, начать, остановить, открыть результат.
 
 Interrupt сначала показывает «Остановка запрошена», затем подтверждённый runtime status. Остановка не означает rollback уже сделанного.
 
@@ -117,7 +117,7 @@ Interrupt сначала показывает «Остановка запрош�
 
 Inbox объединяет три явно различных типа: вопрос о scope, product/proposal decision, runtime approval. Карточка: задача, причина, варианты, последствия, baseline revision, срок действия и ожидаемый эффект.
 
-M1 только читает доступные записи. M2 позволяет отвечать и принимать scoped proposals. M3 передаёт решение по конкретному runtime request и ждёт acknowledgement. Ответ на продуктовый вопрос не предоставляет permission; «одобрить всё» отсутствует. Действующая authority отображается и проверяется без лишнего повторного вопроса.
+M1 читает записи, принимает ответы и передаёт решение по конкретному runtime request; response_sent, request cleared и action outcome различаются. M2 расширяет scoped proposal editor. Ответ на продуктовый вопрос не предоставляет permission; «одобрить всё» отсутствует. Действующая authority отображается и проверяется без лишнего повторного вопроса.
 
 ### E06. Документ и предложение изменения
 
@@ -129,7 +129,7 @@ Apply показывает target/effect/rollback. При внешнем изм�
 
 Результат: описание изменения, diff, acceptance checklist, реально выполненные checks с outcome и revision, environment provenance, gaps и остаточные риски. Raw private logs не сохраняются; diagnostic details доступны только в redacted виде.
 
-M1 читает существующее evidence. M3: принять, вернуть на доработку, принять с явными ограничениями. Owner acceptance не превращает failed/missing checks в passed и не выдаёт release authorization.
+M1 показывает evidence и позволяет принять либо вернуть на доработку. Невыполненные критерии не позволяют Done; partial result отображается с gaps. Owner acceptance не превращает failed/missing checks в passed и не выдаёт release authorization.
 
 ### E08. Дополнительные сведения и настройки
 
@@ -160,22 +160,22 @@ M1 читает существующее evidence. M3: принять, верн�
 | --- | --- | --- |
 | WEB-FR-01 | Подключить разрешённый workspace и выполнить read-only discovery | M1 |
 | WEB-FR-02 | Overview с provenance, freshness и next action | M1 |
-| WEB-FR-03 | Task projection без подмены source authority | M1 |
+| WEB-FR-03 | Task CRUD после SQL cutover, до него read-only projection | M1; PRD §17 |
 | WEB-FR-04 | Чтение artifacts/evidence в контексте задачи | M1 |
 | WEB-FR-05 | Изоляция workspace/events и deep links | M1 |
 | WEB-FR-06 | Refresh, external source changes, offline/partial states | M1 |
-| WEB-FR-07 | Task draft, scope questions и ordinary/full route | M2 |
+| WEB-FR-07 | Task draft, scope questions и ordinary/full route | M1 minimum / M2 full |
 | WEB-FR-08 | Source-bound proposal с diff и decision | M2 |
 | WEB-FR-09 | Revision-safe supported apply, receipt и scoped rollback | M2 |
-| WEB-FR-10 | Раздельные questions, product decisions, runtime approvals | M2/M3 |
-| WEB-FR-11 | Запуск согласованного task slice через Codex adapter | M3 |
-| WEB-FR-12 | Timeline, interrupt и recovery без скрытого повторного execution | M3 |
-| WEB-FR-13 | Checks/diff/gaps и отдельная owner acceptance | M1 чтение; M3 решение |
+| WEB-FR-10 | Раздельные questions, product decisions, runtime approvals | M1 |
+| WEB-FR-11 | Запуск согласованного task slice через Codex adapter | M1 |
+| WEB-FR-12 | Timeline, interrupt и recovery без скрытого повторного execution | M1 |
+| WEB-FR-13 | Checks/diff/gaps и отдельная owner acceptance | M1 |
 | WEB-FR-14 | Честные capabilities и unsupported states | M1–M3 |
 | WEB-FR-15 | Preservation, sensitive-data minimization и local API protection | M1–M3 |
 | WEB-FR-16 | Доступный UI и понятные errors | M1–M3 |
-| WEB-FR-17 | Elapsed/usage/model/cost только по доступным runtime данным | M3 |
-| WEB-FR-18 | Durable drafts/decisions/evidence с retention и удалением | M2/M3 |
+| WEB-FR-17 | Elapsed/usage/model/cost только по доступным runtime данным | M1 observed; M3 expanded |
+| WEB-FR-18 | Durable drafts/decisions/evidence с retention и удалением | M1 |
 
 ## 9. Acceptance scenarios
 
@@ -202,7 +202,7 @@ M1 читает существующее evidence. M3: принять, верн�
 | SC-17 / 16 | Keyboard-only → основной flow/dialog → доступные actions и корректный focus/errors | Browser/a11y / frontend owner |
 | SC-18 / 17,18 | Нет cost или sensitive log → открыть результат → cost unknown, sensitive value отсутствует | Redaction/unknown contracts / tester |
 
-Multi-file apply, remote execution и rollback всех code changes агента не входят в первый write slice. Unit checks не заменяют M3 runtime/browser evidence.
+Multi-file apply, remote execution и rollback всех code changes агента не входят в первый write slice. Unit checks не заменяют M1 runtime/browser evidence.
 
 ## 10. Нефункциональные требования
 
@@ -267,7 +267,7 @@ Qualitative loop: первое открытие, возвращение посл
 | D06 | Consent/retention, pilot owner и thresholds | До сбора данных |
 | D07 | Scope beta, install/update path, runtime cost boundary | A5 |
 
-## 13. Sources, ограничения и handoff
+## Исторические sources, ограничения и handoff v0.1
 
 Источники: [SOL audit](sol-0.6-product-agent-os-web-analysis-2026-11-05.md); текущие [status_snapshot.py](../plugins/product-agent-os/scripts/product_agent_os/status_snapshot.py), [cli.py](../plugins/product-agent-os/scripts/codex_runtime_runner/cli.py), [question_ledger.py](../plugins/product-agent-os/scripts/product_agent_os/question_ledger.py), [merge_infrastructure.py](../plugins/product-agent-os/scripts/product_agent_os/merge_infrastructure.py). Исходники PAOS перечитаны в документационной задаче. Предыдущие SOL typecheck/lint результаты не являются тестами нового UI.
 
@@ -548,7 +548,7 @@ Non-goals: Jira sync/import API, собственный язык scripting, до
 
 ## 15. Единое окно и Codex App Server — v0.4
 
-Детализация UX от 2026-11-09: [структура S01–S28](product-agent-os-web-task-manager-screens-2026-11-09.md) и [wireframes UX v0.5](product-agent-os-web-m1-wireframes-2026-11-09.md). WF-01–16 и UX-AC-01–18 определяют proposed поведение сессии, task/agent/file context, разрешений и recovery; не подтверждают реализацию или capabilities runtime.
+Детализация UX от 2026-11-09: [структура S01–S31](product-agent-os-web-task-manager-screens-2026-11-09.md) и [wireframes UX v0.7](product-agent-os-web-m1-wireframes-2026-11-09.md). WF-01–21, UX-AC-01–18 и DATA-AC-01–05 определяют proposed поведение сессии, task/agent/file context, разрешений и recovery; не подтверждают реализацию или capabilities runtime.
 
 Source status: user-selected product direction / official documentation checked 2026-11-09 / proposed implementation. Этот раздел заменяет прежнюю очередность runtime на M3 и приоритетен при конфликте с историческими §4–§12. TM-01–24, issue hierarchy, поля, workflow, связи и комментарии не сокращаются.
 
@@ -588,7 +588,7 @@ Product-Agent OS — основное окно общения и управле�
 | S27 Подключение runtime | Новый текстовый route /settings/connections; onboarding и Settings используют один flow с API/SIWC availability |
 | S28 Восстановление | Новый текстовый route /p/:project/recovery; orphan/unknown run, сохранённые side effects и действия Inspect/Resume/Stop |
 
-Всего 28 основных текстовых routes; прежние 24 image concepts не покрывают v0.3/v0.4 и не обновлялись. Новый графический дизайн в эту задачу не входит.
+Текущий каталог v0.7 содержит 31 route (включая новые S29–S31); прежние 24 image concepts не покрывают v0.3/v0.4 и не обновлялись. Новый графический дизайн в эту задачу не входит.
 
 ### 15.4. Новые требования и трассировка
 
@@ -632,7 +632,7 @@ Product-Agent OS — основное окно общения и управле�
 
 Нормативная матрица routes, AUTH-G1–G6 и ограничения SIWC — в [отдельном документе](product-agent-os-web-auth-commercial-2026-11-09.md). Базовый commercial candidate — local API BYOK; SIWC optional с подтверждённым admission. Это не обещание доступности или юридический допуск.
 
-D01: single-window/local-first направление выбрано. D02: React/TS + local Node service + Python bridge сохраняется; packaging и версии pending. D03/D04: task/source authority и editable scope требуют контрактных fixtures. D05 переносится в M1: pinned runtime, connection и approvals обязательны до первого pilot. D06/D07: privacy, installation, коммерческий route и бюджет — открытые gates. M1 не зависит от marketplace, graph visualization или готовности всех agent editors.
+D01: single-window/local-first направление выбрано. D02: React/TS + local Node service + Python bridge сохраняется; packaging и candidate tuple выбраны в architecture §21, qualification pending. D03/D04: task/source authority и editable scope требуют контрактных fixtures. D05 переносится в M1: pinned runtime, connection и approvals обязательны до первого pilot. D06/D07: privacy/install contract заданы в architecture §21; измерения, бюджет пилота и commercial admission остаются gates. M1 не зависит от marketplace, graph visualization или готовности всех agent editors.
 
 ## 16. Хранение и перенос данных — v0.6
 
@@ -682,7 +682,7 @@ M1 мигрирует project task scope целиком: нельзя остав
 | --- | --- | --- |
 | ST-01 | Local SQLite/FTS5 без отдельного DB server | Новый проект/task/comment/draft сохраняются после restart, чтение/поиск без provider |
 | ST-02 | Один источник записи | До cutover MD/JSON; после cutover SQL; external MD edit не меняет DB молча |
-| ST-03 | Все поля и связи §13–14 | Round-trip hierarchy, links, creators, dates, versions, attachments, criteria, risks и time без потери/выдумки |
+| ST-03 | Round-trip без потери по этапу | M1: профиль §17.2; M2: все поля/связи §13–14, включая hierarchy, versions и attachments |
 | ST-04 | Атомарное изменение | Entity revision + audit + outbox фиксируются вместе; duplicate command не создаёт вторую задачу/run |
 | ST-05 | Честная история сессии | Runtime item IDs, coverage, revision и actor attribution; unavailable history не заменяется придуманными сообщениями |
 | ST-06 | Локальный поиск | Exact ID/path и FTS по доступным tasks/comments/docs/message projections; RU/EN, project filters, delete/rebuild; semantic ranking не обещается |
@@ -699,4 +699,59 @@ Acceptance scenarios ST-AC-01–08: (01) restart и offline CRUD/search; (02) du
 
 M1a добавляет storage schema/transactions; M1b опирается на durable store; M1c требует FTS, migration и restore gates. Полные поля/редакторы M2 и автономные recipes M3 расширяют эту же модель. T1 не блокирует локальный выпуск M4. [Архитектура §20](product-agent-os-web-architecture-2026-11-05.md#20-хранение-схема-и-миграция--v06) владеет логической схемой; G12 PAOS-0048–0053 в [плане](product-agent-os-web-task-manager-plan-2026-11-09.md) — будущей реализацией.
 
-Приняты local/team engines и отказ от обязательного vector store в local M1. Pending: SQLite driver/package versions, retention limits, измеренные performance SLO, team hosting/RBAC/runtime placement и embedding model. Исследование альтернатив остаётся [историческим основанием](product-agent-os-web-storage-research-2026-11-09.md), а не разрешением внедрять LanceDB/Qdrant/PGlite.
+Приняты local/team engines и отказ от обязательного vector store в local M1. Driver, retention и performance targets выбраны в architecture §21; проверенный runtime manifest и измерения pending. Team hosting/RBAC/runtime placement и embedding model решаются в T1. Исследование альтернатив остаётся [историческим основанием](product-agent-os-web-storage-research-2026-11-09.md), а не разрешением внедрять LanceDB/Qdrant/PGlite.
+
+
+## 17. Согласованный scope M1 — v0.7
+
+Source status: project-authored design decisions resolving WA-01–13, 2026-11-10; implementation and runtime acceptance pending. Этот раздел — текущий контракт M1; §13–14 описывают полный продукт, §15–16 применяются с явно указанной здесь границей этапа. Это документационная baseline, не разрешение на разработку или коммерческий выпуск.
+
+### 17.1. Что получает пользователь
+
+Открыть PAOS → подключить локальный сервис → выбрать проект → при необходимости пройти preview переноса → создать Task → открыть Сессию → обсудить/составить план → явно выбрать Выполнение → увидеть разрешения, работу агента, diff и проверки → вручную принять либо вернуть результат. Codex App не нужен. Без provider доступны локальные задачи, Comments/History, сохранённые сообщения, поиск и резервные копии при исправной БД.
+
+| Возможность | M1 — обязательный минимум | Следующий этап |
+| --- | --- | --- |
+| Типы и иерархия | Flat Task; уникальный ключ из 4 латинских букв project key и последовательного номера; UUID внутренний; legacy alias сохраняется | M2: Epic → Task/Bug/UserStory → Sub-Task; изменение типа и parent constraints |
+| Карточка | Все исходные 12 полей пользователя: ID, название, краткое описание, техническая/продуктовая ценность, файлы, исполнители, артефакты, критерии, estimate, actual, риски; статус, creator, priority, Start Date/Due Date | M2: components, affects/fix versions, attachments; расширенные фильтры и формы |
+| Task CRUD | Пользователь создаёт/редактирует/закрывает/переоткрывает; отдельные Comments и History; optimistic revision conflict | M2: bulk operations и полная карточка всех типов |
+| Связи | related и blocks/blocked_by; несколько session links, один target Task для run; запрет циклов blocks | M2: duplicates, causes и другие связи §14 |
+| Kanban/workflow | Фиксированные статусы backlog → ready → in_progress → review → verification → awaiting_acceptance → done; cancelled отдельный terminal outcome. Closed column объединяет done/cancelled; blockers/approval/recovery — badges | M2: workflow editor/версии; M3: разные execution recipes и автоматизация |
+| Переходы | Пользователь переводит backlog↔ready; запуск связывает run и in_progress; результат может предложить review, но не Done. Возврат review/verification/awaiting_acceptance→ready с причиной; отмена из любого nonterminal только после остановки/reconciliation run; done/cancelled→ready вручную с причиной | M2 расширяет guards, не отменяет evidence/acceptance |
+| Приёмка | done требует нет active/uncertain run, заполнены обязательные поля, все criteria имеют проверяемое evidence текущего scope и пользователь подтвердил приёмку; при failed/missing checks остаётся awaiting_acceptance с gap. Cancelled требует причины, не означает успех | M2 configurable workflows сохраняют системные ограничения |
+| Сессии/агенты | Чат, draft, история, задачи, роли и текущий/завершённый run, diff, checks, разрешения, Stop и recovery. Один coordinator и фиксированная recipe; telemetry unknown отображается явно | M2 полный каталог/редакторы агентов и skills; M3 multi-agent orchestration |
+| Навигация | Восемь разделов сохранены; Агенты/Скиллы — read-only definitions/usage с coverage; Карта проекта — существующая read-only проекция, без обещания полного variable graph | M2 граф/CRUD; M3 автоматическое создание по требованиям |
+| Данные | SQLite + FTS5; импорт профиля M1, backup/restore; S29–S31 для переноса, копий и поиска | T1 после M4: PostgreSQL + pgvector, отдельный team design |
+| Язык/тема | RU/EN, light/dark, keyboard, zoom и responsive для доступного M1 scope | Не откладывается до M4 |
+
+Estimate — явно введённая оценка, actual — сумма подтверждённых непересекающихся интервалов работы Task; параллельное agent effort показывается отдельно и не удваивает elapsed. При crash конец неизвестного интервала остаётся unknown до reconciliation. Даты UTC в хранении, timezone пользователя при показе; сроки и estimate не выводятся из модели автоматически как факт.
+
+### 17.2. Профиль переноса M1
+
+M1 переносит task scope проекта целиком либо оставляет проект legacy read-only. Поддерживаются только versioned task blocks task_matrix_plan_v1 и planning JSON paos_web_task_groups_v1 с явным adapter version; произвольный Markdown и Jira exports не распознаются эвристически. JSON — источник records, совпадающие MD blocks — projection; несогласованные значения дают conflict. Группа плана сохраняется как source_group, не становится Epic.
+
+Профиль покрывает поля M1 из §17.1, depends_on→blocks, planned file operations отдельно от actual, agent assignments отдельно от creator, artifact references отдельно от attachments. Время null остаётся null; unknown creator сохраняется как non-login imported_unknown. Сохраняются source ID, original status, raw source digest, mapping receipt и исходный документ. Статусы: planned→backlog; текущие M1 status names сохраняются, кроме active/imported in_progress→ready с recovery_review blocker; done требует imported historical evidence и пометки acceptance_unverified, до подтверждения нормализуется awaiting_acceptance. Другие значения требуют явного mapping в preview; UI не разрешает обойти guards терминального статуса. Неподдерживаемые значимые поля, реальные attachments, parent/child и неизвестные links блокируют переключение: перенос откладывается до M2, данные не отбрасываются. Пустые поля будущего этапа не создают loss.
+
+ST-03 в M1 проверяет round-trip только этого профиля; полный round-trip §13–14 — gate M2. ST-09 в M1 проверяет чтение/hash/coverage файлов, preview/apply editor — M2. ST-AC-05 в M1: экспорт текущего профиля и preview внешнего diff, конфликт не применяется автоматически. Полные editor/merge operations — M2. Никакого требования реализовать M2 ради M1.
+
+### 17.3. Режимы и доступность
+
+| Состояние | Разрешено | Недоступно и действие пользователя |
+| --- | --- | --- |
+| SQL исправна, provider отсутствует/лимит | Tasks/Comments/History, draft, ранее сохранённые сообщения, FTS, export/backup | Send/Resume execution; открыть Подключения. Задача может быть закрыта вручную только при выполненных guards |
+| Legacy authority | Читать источники, просматривать preview | DB Task edits и mutating runs до проверенного переноса; открыть S29 |
+| SQL unavailable/corrupt | Диагностика и восстановление в отдельный каталог; уже видимые данные помечены stale | Любые writes и новые runs; не выдавать browser cache за сохранённый draft |
+| Disk full/commit failed | Читать подтверждённое; сохранить draft вручную локально по выбору | Новые runs/writes; безопасно остановить активный run, reconciliation после восстановления места |
+| Runtime disconnected при здоровой SQL | Локальная работа как обычно, task linked run = recovery_required | Повторная отправка uncertain command и старые approvals; S28 |
+
+Discussion и Planning читают выбранный контекст и возвращают текст/предложения; меняются только PAOS session journal/draft, не target files и не задачи через агентные команды. Execution разрешён после явного выбора режима и target/scope. Никаких внешних MCP действий в M1; read-only filesystem сам по себе не ограничивает удалённые tools. Точная policy матрица, смена режима и protocol mapping — architecture §21.3–21.5.
+
+### 17.4. Хранение истории и граница доказательств
+
+PAOS сохраняет доступные пользовательские и финальные видимые agent messages до явного удаления проекта/сессии; после успешного commit показывает «Сохранено». Runtime transcript остаётся источником execution truth, локальный durable read model позволяет читать сохранённую переписку без runtime. Coverage показывает пропуски; скрытые reasoning traces не собираются. Backup включает этот read model, но не гарантирует возможность продолжить runtime thread без исходного runtime profile. Retention, purge и indexes — architecture §21.6.
+
+### 17.5. Приёмка и нерешённые проверки
+
+PAOS-0045 владеет сквозной приёмкой SW-AC-01–10, ST-AC-01–07 в профиле M1, UX-AC-01–18 в M1-срезе и новым DATA-AC-01–05. Таблица владельцев и исключений — актуальный план v0.7; отсутствие M2 не повод пропускать M1 сценарии. При проверке отсутствие provider authority оставляет runtime gates pending, а не заменяет их mock.
+
+Выбраны документально: scope, транспорт agent commands, режимы, retention, bootstrap, SQLite driver и candidate version tuple. PAOS-0054 должен получить проверенный compatibility manifest до зависимого кода; остальные implementation tests остаются будущими задачами. AUTH-G1–G6 блокируют коммерческий выпуск, не объявлены выполненными. Дальнейший старт требует отдельного запроса пользователя.

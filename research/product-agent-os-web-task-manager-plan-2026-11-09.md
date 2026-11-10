@@ -2,13 +2,56 @@
 
 Source status: project-authored / proposed / requirements-backed. Дата: 2026-11-09.
 
-Статус: **draft_for_review**. Это очередь будущей реализации, не разрешение начать разработку. Все 53 задачи имеют статус planned; фактическое время отсутствует. Пользовательский scope расширен относительно read-only M1. Исходные M1–M3 сохраняются как история; при расхождении приоритет имеют PRD §16/§15 и актуальная очередь v0.6 этого плана.
+Статус: **draft_for_review**. Это очередь будущей реализации, не разрешение начать разработку. Все 56 задач имеют статус planned; фактическое время отсутствует. Пользовательский scope расширен относительно read-only M1. Исходные M1–M3 сохраняются как история; при расхождении приоритет имеют PRD §17, architecture §21 и актуальная очередь v0.7 этого плана.
 
 Связи: [PRD](product-agent-os-web-prd-2026-11-05.md), [архитектура](product-agent-os-web-architecture-2026-11-05.md), [экраны](product-agent-os-web-task-manager-screens-2026-11-09.md), [машинные группы](product-agent-os-web-task-manager-task-group-2026-11-09.json).
 
 
 
-## Актуальная очередь v0.6: storage и миграция
+
+## Актуальная очередь v0.7: M1 после аудита
+
+Source status: project-authored plan, 2026-11-10; 56 planned tasks / 12 groups; implementation_not_started. Нормативный scope — PRD §17, архитектура §21, wireframes v0.7. Очереди v0.1–v0.6 и прежние receipts ниже — история; при расхождении применяется этот раздел и обновлённые карточки/JSON.
+
+| Этап | Задачи и gate | Ownership / результат |
+| --- | --- | --- |
+| M1a contracts | 0001 → 0054; 0002/0003 → 0048 после 0054; 0004; 0039/0040 → 0041 после 0054 | Architect фиксирует manifest/schema/policies; storage owner — driver/FTS5/transactions; runtime owner — bootstrap/credentials |
+| M1b single window | 0048+0054 → 0055; 0041+0048+0055 → 0042 → 0043 → 0044 | Commands, scopes и writers до execution; минимальный Task CRUD/доска/catalog read-only принадлежат 0043 |
+| M1c data | От 0048 независимо 0049 search, 0050 preview, 0051 backup; 0050+0051+0055+0044 → 0056 cutover | Backup и restore доказаны до смены authority; source digests проверяются после freeze |
+| M1 acceptance | 0044+0049+0051+0056 → 0045 | Вся матрица ниже, включая UI, data и negative cases |
+| M2 | Прежние full Task Manager/каталоги/граф, 0035/0038/0027 | Расширения M1 schema; полный ST-03/ST-09, без второй БД |
+| M3 | G07, 0036/0037 | Workflow execution/agent autonomy поверх M1 coordinator |
+| M4 | G08/0046; optional 0047 отдельно | Local/commercial qualification, AUTH-G1–G6 |
+| T1 | 0052 после 0030 и storage foundations; 0053 после 0052/0056 | Separate hosting/auth/RBAC/runtime design; local M4 не зависит от team |
+
+Новые задачи: 0054 compatibility manifest (12 h), 0055 agent commands/writers (16 h), 0056 cutover (12 h). 0050 сокращена до preview/staging (12 h вместо 20), 0051 больше не зависит от 0050. Полное транзитивное замыкание M1 до 0045 — **18 задач, 234 engineering hours**, rough estimate, не календарное обязательство. Реальные start/end/duration у всех 56 задач null. Оценки требуют уточнения после 0054; будущие M2–T1 не включены.
+
+### Матрица M1 DoD и граница последующих этапов
+
+| Acceptance | M1 coverage / обязательное доказательство | Owner tasks | Позднее |
+| --- | --- | --- | --- |
+| SW-AC-01/02/07/09/10 | Launch, pairing, account boundary, offline SQL, полный путь; real runtime + browser отдельно | 0040/0041/0044/0045 | SIWC 0047 |
+| SW-AC-03/04/05/06/08 | Mode policy, approval answered_or_cleared, duplicate, Stop/crash, manual acceptance | 0042/0043/0044/0054/0055; verification 0045 | Custom recipes M3 |
+| ST-AC-01/02 | SQLite/FTS5 restart/offline, atomic commands/conflicts | 0048/0049/0055; 0045 | Team T1 |
+| ST-AC-03/04/05 | Профиль PRD §17.2, duplicate/source drift, staged export diff, crash cutover | 0050/0056; 0045 | Full hierarchy/attachments/import M2 |
+| ST-AC-06/07 | Search purge/rebuild, consistent backup/restore, stale approvals/replay | 0049/0051/0056; 0045 | ST-AC-08 только T1 |
+| UX-AC-01–05 | Shell/composer/links/history/scroll/draft; Task minimum | 0004/0041/0042/0043; 0045 | Full task editors не dependency |
+| UX-AC-06/07/08/09 | Pinned role read-only, diff и checks, decision vs permission, pending/cleared/outcome | 0042/0043/0044; 0045 | Agent CRUD 0012+, workflow 0026+ |
+| UX-AC-10–13 | Dedup/Stop/acceptance/project isolation | 0043/0044/0055; 0045 | Не зависит от 0008 |
+| UX-AC-14 | Text/reference context; attachment upload unsupported объяснён до Send | 0043; 0045 | Actual uploads 0034/M2 |
+| UX-AC-15 | RU/EN, обе темы, keyboard, 200% zoom, 320/1280/1440/1920 для M1 views | 0004/0043; 0045 | 0029 повторяет полный scope M4 |
+| UX-AC-16 | Unknown/empty/partial, собственная сохранённая история и read-only catalogs; graph coverage | 0042/0043/0049; 0045 | Import всех сторонних chats/полная аналитика M2 |
+| UX-AC-17/18 | API-key failure, preserved draft; одна active run, новый mode/profile только следующий binding | 0041/0042/0044; 0045 | SIWC/автономная очередь M3 |
+| DATA-AC-01–03 | S29 preview/mapping/freeze/receipt; unsupported data и conflict не теряются | 0050/0056; 0045 | General merge editor M2 |
+| DATA-AC-04/05 | S30 backup/restore/coverage; S31 FTS scopes/partial/purge | 0051/0049; 0045 | Semantic retrieval T1 |
+
+Текущие documentation receipts и strict-site gap — [аудит §9.2](product-agent-os-web-m1-final-audit-2026-11-10.md#92-текущие-проверки-согласования). Это не evidence исполнения задач.
+
+Группы/границы файлов — в карточках. Общими packages/contracts владеет 0054 owner до handoff; 0048 storage owner, 0055 domain bridge owner, 0042 runtime owner применяют только согласованный contract. Без перекрывающейся записи общих файлов. Документационная правка не запускает перечисленных агентов.
+
+Re-entry gate: после отдельного разрешения начать с 0001/0054 и зависимостей; если capability отсутствует, вернуть design issue до зависящего кода. Эту спецификацию нельзя объявить verified runtime или commercial-ready. Плановые criterion IDs не являются уже выполненными проверками.
+
+## Историческая очередь v0.6: storage и миграция
 
 Source status: engines selected by user / schema and implementation plan proposed, 2026-11-09. Всего **53 planned tasks / 12 groups**. G12 добавляет PAOS-0048–0053. Старые численности и v0.4 receipts ниже — исторические; существующие PAOS-0001–0047 сохраняются, зависимости уточнены только у 0042/0043/0045. Выбор SQLite + FTS5 local и PostgreSQL + pgvector team принят; разработка не разрешена.
 
@@ -203,7 +246,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
 - Depends on: none
-- Blocks: PAOS-0002, PAOS-0004, PAOS-0009, PAOS-0016, PAOS-0020, PAOS-0039, PAOS-0040, PAOS-0048
+- Blocks: PAOS-0002, PAOS-0004, PAOS-0009, PAOS-0016, PAOS-0020, PAOS-0039, PAOS-0040, PAOS-0048, PAOS-0054
 - Source: PRD: дополнение Task Manager; screen specification
 - Short description: Установить доступность источников и API установленного host; определить project binding и coverage
 - Technical value: Установить доступность источников и API установленного host; определить project binding и coverage
@@ -1450,7 +1493,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
 - Depends on: PAOS-0029, PAOS-0046
-- Blocks: none
+- Blocks: PAOS-0052
 - Source: PRD: дополнение Task Manager; screen specification
 - Short description: Проверить install/start/backup/rollback и полезность на реальном проекте
 - Technical value: Проверить install/start/backup/rollback и полезность на реальном проекте
@@ -1931,18 +1974,18 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Plan trigger: User-selected single-window Codex App Server, 2026-11-09
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
-- Depends on: PAOS-0039, PAOS-0040
+- Depends on: PAOS-0039, PAOS-0040, PAOS-0054
 - Blocks: PAOS-0042
-- Source: PRD §15 SW-01–12; auth/commercial AUTH-G1–G6
+- Source: PRD §17; architecture §21; plan v0.7; audit WA-01–13
 - Short description: Connection broker, secure store, payer/capabilities, disconnect и API profile без inherited login
 - Technical value: Connection broker, secure store, payer/capabilities, disconnect и API profile без inherited login
 - Product value: Пользователь подключает свой API account и контролирует расходы и данные.
 - Scope: apps/local-service/src/connections; apps/web/src/settings/connections; packages/contracts/auth
 - Non-goals: Не менять hooks/global permissions; не запускать внешний/provider/Git/release scope без отдельного разрешения
-- Expected result: Login state отличается от model access; secrets не попадают в logs/SQLite/browser storage/tool environment; disconnect останавливает новые calls; no fallback доказан.
-- Acceptance criteria: Login state отличается от model access; secrets не попадают в logs/SQLite/browser storage/tool environment; disconnect останавливает новые calls; no fallback доказан.
+- Expected result: Локальное API-подключение и credential isolation — реализовано и проверено в назначенном этапе
+- Acceptance criteria: Login state отличается от model access; secrets не попадают в logs/SQLite/browser storage/tool environment; disconnect останавливает новые calls; no fallback доказан. Auth §7 pairing/cookie/CSRF, Credential Manager + ephemeral RPC auth, no implicit fallback.
 - Verification gates: Focused contract/negative tests; authorized runtime/browser where needed; no fixture-only activation claim
-- Risks / approval gates: Credential leakage, неверный payer или недоказанная isolation. Provider calls, registration and publication require separate authority.
+- Risks / approval gates: Credential leakage, неверный payer или недоказанная isolation.
 - Complexity: medium/high, уточнить после discovery
 - Estimated execution time: 16:00:00 (предварительно)
 - Agents: builder, security-privacy-supply-chain-reviewer, tester
@@ -1975,18 +2018,18 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Plan trigger: User-selected single-window Codex App Server, 2026-11-09
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
-- Depends on: PAOS-0041, PAOS-0002, PAOS-0003, PAOS-0048
+- Depends on: PAOS-0041, PAOS-0002, PAOS-0003, PAOS-0048, PAOS-0055
 - Blocks: PAOS-0043
-- Source: PRD §15 SW-01–12; auth/commercial AUTH-G1–G6
+- Source: PRD §17; architecture §21; plan v0.7; audit WA-01–13
 - Short description: Pinned stdio protocol, project/task/run/thread/turn binding, allowlist и одна минимальная recipe
 - Technical value: Pinned stdio protocol, project/task/run/thread/turn binding, allowlist и одна минимальная recipe
 - Product value: Codex выполняет задачу непосредственно из PAOS в заданных границах.
 - Scope: apps/local-service/src/runtime/codex; packages/contracts/runtime
 - Non-goals: Не менять hooks/global permissions; не запускать внешний/provider/Git/release scope без отдельного разрешения
-- Expected result: Initialize/start/events/approvals/interrupt работают на выбранном build; один writer на canonical workspace; Codex App и чужой auth profile не используются.
-- Acceptance criteria: Initialize/start/events/approvals/interrupt работают на выбранном build; один writer на canonical workspace; Codex App и чужой auth profile не используются.
+- Expected result: Codex App Server adapter и ограниченное выполнение — реализовано и проверено в назначенном этапе
+- Acceptance criteria: Initialize/start/events/approvals/interrupt работают на выбранном build; один writer на canonical workspace; Codex App и чужой auth profile не используются. Architecture §21: project cursors, root fencing/global concurrency=1, mode binding boundary, answered_or_cleared отдельно от item outcome.
 - Verification gates: Focused contract/negative tests; authorized runtime/browser where needed; no fixture-only activation claim
-- Risks / approval gates: Protocol drift, duplicate dispatch, превышение authority. Provider calls, registration and publication require separate authority.
+- Risks / approval gates: Protocol drift, duplicate dispatch, превышение authority.
 - Complexity: medium/high, уточнить после discovery
 - Estimated execution time: 20:00:00 (предварительно)
 - Agents: architect, builder, tester
@@ -2021,16 +2064,16 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Date and time of task implementation: pending_execution_timestamp
 - Depends on: PAOS-0042, PAOS-0004, PAOS-0048
 - Blocks: PAOS-0010, PAOS-0044
-- Source: PRD §15 SW-01–12; auth/commercial AUTH-G1–G6
+- Source: PRD §17; architecture §21; plan v0.7; audit WA-01–13
 - Short description: Composer discussion/planning/execution, streaming, task draft и панель diff/checks/decisions без полного board
 - Technical value: Composer discussion/planning/execution, streaming, task draft и панель diff/checks/decisions без полного board
 - Product value: Пользователь проходит от запроса к результату в одном рабочем окне.
 - Scope: apps/web/src/sessions; apps/web/src/tasks/minimal; apps/local-service/src/conversations
 - Non-goals: Не менять hooks/global permissions; не запускать внешний/provider/Git/release scope без отдельного разрешения
-- Expected result: SW-AC-01/03/04/08: все действия в PAOS; discussion не пишет target; Send/Stop имеют ACK; linked task содержит scope/criteria/estimate, turn success не закрывает её автоматически.
-- Acceptance criteria: SW-AC-01/03/04/08: все действия в PAOS; discussion не пишет target; Send/Stop имеют ACK; linked task содержит scope/criteria/estimate, turn success не закрывает её автоматически.
+- Expected result: Активная сессия и минимальная карточка задачи — реализовано и проверено в назначенном этапе
+- Acceptance criteria: SW-AC-01/03/04/08: все действия в PAOS; discussion не пишет target; Send/Stop имеют ACK; linked task содержит scope/criteria/estimate, turn success не закрывает её автоматически. M1 Task CRUD/manual closure/Comments/History/links, read-only agent/skill catalogs, fixed Kanban, RU/EN/themes; UX owners по v0.7, без зависимости от M2 editors.
 - Verification gates: Focused contract/negative tests; authorized runtime/browser where needed; no fixture-only activation claim
-- Risks / approval gates: Смешение task/comment/session или ложное завершение. Provider calls, registration and publication require separate authority.
+- Risks / approval gates: Смешение task/comment/session или ложное завершение.
 - Complexity: medium/high, уточнить после discovery
 - Estimated execution time: 20:00:00 (предварительно)
 - Agents: builder, tester
@@ -2064,7 +2107,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
 - Depends on: PAOS-0043
-- Blocks: PAOS-0025, PAOS-0045, PAOS-0047
+- Blocks: PAOS-0025, PAOS-0045, PAOS-0047, PAOS-0056
 - Source: PRD §15 SW-01–12; auth/commercial AUTH-G1–G6
 - Short description: Durable intents, lost ACK reconciliation, restart/resume, process-bound approvals и account isolation
 - Technical value: Durable intents, lost ACK reconciliation, restart/resume, process-bound approvals и account isolation
@@ -2107,18 +2150,18 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Plan trigger: User-selected single-window Codex App Server, 2026-11-09
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
-- Depends on: PAOS-0044, PAOS-0002, PAOS-0003, PAOS-0049, PAOS-0050, PAOS-0051
+- Depends on: PAOS-0044, PAOS-0002, PAOS-0003, PAOS-0049, PAOS-0051, PAOS-0056
 - Blocks: PAOS-0028, PAOS-0046
-- Source: PRD §15 SW-01–12; auth/commercial AUTH-G1–G6
+- Source: PRD §17; architecture §21; plan v0.7; audit WA-01–13
 - Short description: Проверить launch/connection/chat/task/approval/result/resume и негативные границы на разрешённом runtime
 - Technical value: Проверить launch/connection/chat/task/approval/result/resume и негативные границы на разрешённом runtime
 - Product value: Первый MVP доказывает самостоятельный пользовательский путь, а не набор статичных экранов.
 - Scope: tests/web/single-window; docs/evidence/web-m1
 - Non-goals: Не менять hooks/global permissions; не запускать внешний/provider/Git/release scope без отдельного разрешения
-- Expected result: SW-AC-01–10 имеют receipts; browser и actual runtime путь проверены отдельно от fixtures; Codex App закрыт; отсутствие provider authority оставляет gate pending.
-- Acceptance criteria: SW-AC-01–10 имеют receipts; browser и actual runtime путь проверены отдельно от fixtures; Codex App закрыт; отсутствие provider authority оставляет gate pending.
+- Expected result: Приёмка сквозного M1 в одном окне — реализовано и проверено в назначенном этапе
+- Acceptance criteria: SW-AC-01–10, ST-AC-01–07 (M1 profile), UX-AC-01–18 (M1 slice), DATA-AC-01–05 имеют receipts по матрице v0.7; runtime/browser/workload proof отдельно от fixtures; Codex App закрыт; неразрешённые external gates pending.
 - Verification gates: Focused contract/negative tests; authorized runtime/browser where needed; no fixture-only activation claim
-- Risks / approval gates: Synthetic evidence ошибочно принято за live product proof. Provider calls, registration and publication require separate authority.
+- Risks / approval gates: Synthetic evidence ошибочно принято за live product proof.
 - Complexity: medium/high, уточнить после discovery
 - Estimated execution time: 12:00:00 (предварительно)
 - Agents: tester, reviewer
@@ -2238,15 +2281,15 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Plan trigger: User-selected SQLite/FTS5 local and PostgreSQL/pgvector team, 2026-11-09
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
-- Depends on: PAOS-0001, PAOS-0002, PAOS-0003
-- Blocks: PAOS-0042, PAOS-0043, PAOS-0049, PAOS-0050, PAOS-0051, PAOS-0052
-- Source: PRD §16 ST-01–12; architecture §20; storage decision v0.6
+- Depends on: PAOS-0001, PAOS-0002, PAOS-0003, PAOS-0054
+- Blocks: PAOS-0042, PAOS-0043, PAOS-0049, PAOS-0050, PAOS-0051, PAOS-0052, PAOS-0055
+- Source: PRD §17; architecture §21; plan v0.7; audit WA-01–13
 - Short description: Создать versioned operational schema и repository adapter; entity/audit/outbox commit, revision/idempotency, legacy authority gate
 - Technical value: Создать versioned operational schema и repository adapter; entity/audit/outbox commit, revision/idempotency, legacy authority gate
 - Product value: Задачи, сессии и работа агентов сохраняются согласованно после перезапуска.
 - Scope: apps/local-service/src/storage/sqlite; packages/contracts/storage; apps/local-service/src/storage/migrations
 - Non-goals: Не менять глобальные permissions/hooks; не делать local semantic store или bidirectional sync; внешние операции отдельно разрешаются
-- Expected result: SQLite: схема и транзакционные команды реализовано и проверено в назначенном этапе
+- Expected result: SQLite: схема и транзакционные команды — реализовано и проверено в назначенном этапе
 - Acceptance criteria: ST-01–04/09: FK/project isolation, duplicate/conflicting command, concurrent writers и transaction crash; legacy tasks остаются file-owned до cutover; current consumers используют adapter
 - Verification gates: Focused contract/failure-injection tests; migration/restore fixtures; relevant browser journey; real DB acceptance before closure
 - Risks / approval gates: Потеря транзакционности; legacy consumers обходят authority; несовместимый SQLite build
@@ -2317,7 +2360,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 ### Task `PAOS-0050`
 
-- Task: Миграция MD/JSON и переключение authority
+- Task: Предварительный импорт MD/JSON в staging
 - Status: planned
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
@@ -2325,19 +2368,19 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
 - Depends on: PAOS-0048
-- Blocks: PAOS-0045, PAOS-0051, PAOS-0053
-- Source: PRD §16 ST-01–12; architecture §20; storage decision v0.6
-- Short description: Inventory, staging import, stable mapping, validation, freeze/backup, atomic cutover и versioned Markdown export/re-import proposals
-- Technical value: Inventory, staging import, stable mapping, validation, freeze/backup, atomic cutover и versioned Markdown export/re-import proposals
+- Blocks: PAOS-0056
+- Source: PRD §17; architecture §21; plan v0.7; audit WA-01–13
+- Short description: Inventory, profile M1 mapping, validation и non-mutating preview; переключение authority принадлежит 0056
+- Technical value: Проверить переносимость профиля M1 до остановки writers и переключения authority.
 - Product value: Пользователь переносит старые задачи без потери документов и понимает, где теперь редактировать данные.
 - Scope: apps/local-service/src/import-export; apps/web/src/projects/migration; packages/contracts/migration
 - Non-goals: Не менять глобальные permissions/hooks; не делать local semantic store или bidirectional sync; внешние операции отдельно разрешаются
-- Expected result: Миграция MD/JSON и переключение authority реализовано и проверено в назначенном этапе
-- Acceptance criteria: ST-02/03/07: duplicate MD/JSON, unknown fields/actors/status, source drift, invalid hierarchy, repeat import и crash boundaries; preview non-mutating; нет двух masters; unsupported writers блокируют cutover
+- Expected result: Предварительный импорт MD/JSON в staging — реализовано и проверено в назначенном этапе
+- Acceptance criteria: PRD §17.2: supported schemas/fields/status mapping; MD/JSON dedup; unsupported significant data блокирует cutover; source drift, stable IDs, exact counts и preview без target mutations; authority switch не входит.
 - Verification gates: Focused contract/failure-injection tests; migration/restore fixtures; relevant browser journey; real DB acceptance before closure
 - Risks / approval gates: Потеря неизвестных полей; concurrent MD edit; двойная запись; unsafe rollback
 - Complexity: medium/high, уточнить после discovery
-- Estimated execution time: 20:00:00 (предварительно)
+- Estimated execution time: 12:00:00 (предварительно)
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/local-service/src/import-export; apps/web/src/projects/migration; packages/contracts/migration
@@ -2367,16 +2410,16 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Plan trigger: User-selected SQLite/FTS5 local and PostgreSQL/pgvector team, 2026-11-09
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
-- Depends on: PAOS-0048, PAOS-0050
-- Blocks: PAOS-0045, PAOS-0052
-- Source: PRD §16 ST-01–12; architecture §20; storage decision v0.6
+- Depends on: PAOS-0048
+- Blocks: PAOS-0045, PAOS-0052, PAOS-0056
+- Source: PRD §17; architecture §21; plan v0.7; audit WA-01–13
 - Short description: Согласованный DB/blob manifest, schema compatibility, restore rehearsal и rollback после новых writes
 - Technical value: Согласованный DB/blob manifest, schema compatibility, restore rehearsal и rollback после новых writes
 - Product value: Пользователь восстанавливает данные без пропажи вложений и повторного выполнения старых команд.
 - Scope: apps/local-service/src/storage/backup; apps/web/src/settings/data
 - Non-goals: Не менять глобальные permissions/hooks; не делать local semantic store или bidirectional sync; внешние операции отдельно разрешаются
-- Expected result: Резервное копирование и восстановление local data реализовано и проверено в назначенном этапе
-- Acceptance criteria: ST-08/12: missing blob/hash mismatch, disk full, incompatible schema; restore в отдельный каталог; approvals stale; no blind dispatch replay; reverse transfer сохраняет post-cutover deltas
+- Expected result: Резервное копирование и восстановление local data — реализовано и проверено в назначенном этапе
+- Acceptance criteria: ST-08/12: missing blob/hash mismatch, disk full, incompatible schema; restore в отдельный каталог; approvals stale; no blind dispatch replay; reverse transfer сохраняет post-cutover deltas Architecture §21.6: visible-message retention/coverage; last 5 managed backups; restore rehearsal до 0056, secrets/runtime threads excluded.
 - Verification gates: Focused contract/failure-injection tests; migration/restore fixtures; relevant browser journey; real DB acceptance before closure
 - Risks / approval gates: Неполный snapshot; backup на отказавшем диске; восстановление активного разрешения
 - Complexity: medium/high, уточнить после discovery
@@ -2410,15 +2453,15 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Plan trigger: User-selected SQLite/FTS5 local and PostgreSQL/pgvector team, 2026-11-09
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
-- Depends on: PAOS-0048, PAOS-0049, PAOS-0051
+- Depends on: PAOS-0048, PAOS-0049, PAOS-0051, PAOS-0030
 - Blocks: PAOS-0053
-- Source: PRD §16 ST-01–12; architecture §20; storage decision v0.6
+- Source: PRD §17; architecture §21; plan v0.7; audit WA-01–13
 - Short description: После отдельного T1 решения реализовать server repository, dialect migrations, tenancy/RLS, lexical и versioned vector index; hosting/auth/runtime design gate до кода
 - Technical value: После отдельного T1 решения реализовать server repository, dialect migrations, tenancy/RLS, lexical и versioned vector index; hosting/auth/runtime design gate до кода
 - Product value: Команда работает с общим актуальным состоянием и поиском в пределах своих прав.
 - Scope: apps/server/src/storage/postgres; apps/server/src/search; packages/contracts/tenancy
 - Non-goals: Не менять глобальные permissions/hooks; не делать local semantic store или bidirectional sync; внешние операции отдельно разрешаются
-- Expected result: Командный профиль PostgreSQL и pgvector реализовано и проверено в назначенном этапе
+- Expected result: Командный профиль PostgreSQL и pgvector — реализовано и проверено в назначенном этапе
 - Acceptance criteria: ST-10: domain parity, negative tenant/pool tests, filtered search; embedding model/privacy approved; lexical fallback; hosting/auth/runtime placement согласованы; local M4 не зависит от T1
 - Verification gates: Focused contract/failure-injection tests; migration/restore fixtures; relevant browser journey; real DB acceptance before closure
 - Risks / approval gates: RLS bypass; provider data disclosure/cost; dialect mismatch; отсутствие team authorization design
@@ -2453,15 +2496,15 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Plan trigger: User-selected SQLite/FTS5 local and PostgreSQL/pgvector team, 2026-11-09
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
-- Depends on: PAOS-0050, PAOS-0052
+- Depends on: PAOS-0056, PAOS-0052
 - Blocks: none
-- Source: PRD §16 ST-01–12; architecture §20; storage decision v0.6
+- Source: PRD §17; architecture §21; plan v0.7; audit WA-01–13
 - Short description: Versioned logical export/import, actor/tenant mapping, blob checks, final delta и one-authority handover
 - Technical value: Versioned logical export/import, actor/tenant mapping, blob checks, final delta и one-authority handover
 - Product value: Пользователь переносит проект команде с прежними задачами и историей без конфликтующих writable копий.
 - Scope: apps/server/src/import-export; apps/local-service/src/import-export/team; apps/web/src/projects/transfer
 - Non-goals: Не менять глобальные permissions/hooks; не делать local semantic store или bidirectional sync; внешние операции отдельно разрешаются
-- Expected result: Перенос local проекта в team workspace реализовано и проверено в назначенном этапе
+- Expected result: Перенос local проекта в team workspace — реализовано и проверено в назначенном этапе
 - Acceptance criteria: ST-11/ST-AC-08: UUID/key collisions, identity mapping, counts/hashes/FK, final delta, rollback; credentials/pending approvals/commands исключены; local read-only после switch; без bidirectional sync
 - Verification gates: Focused contract/failure-injection tests; migration/restore fixtures; relevant browser journey; real DB acceptance before closure
 - Risks / approval gates: Потеря последних изменений; привязка чужих credentials; split authority
@@ -2470,6 +2513,137 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/server/src/import-export; apps/local-service/src/import-export/team; apps/web/src/projects/transfer
+- Next step: Завершить зависимости; подтвердить schema/ownership и проверки до реализации
+- Actual time: not_started; start/end/duration = null.
+- Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-storage-research-2026-11-09.md.
+- Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
+
+#### Completion Report
+
+- Status: planned
+- What was done: pending
+- Files touched / work locations: pending
+- Technical value delivered: pending
+- Product value delivered: pending
+- Actual implementation date and time: pending_execution_timestamp
+- Verification evidence: pending
+- Residual risks: pending
+- Follow-up: pending
+
+### Task `PAOS-0054`
+
+- Task: Контракт совместимости M1 и runtime manifest
+- Status: planned
+- Schema version: task_matrix_plan_v1
+- Timezone: Europe/Moscow
+- Plan trigger: User-requested M1 audit remediation, 2026-11-10
+- Validator target: detailed task blocks
+- Date and time of task implementation: pending_execution_timestamp
+- Depends on: PAOS-0001
+- Blocks: PAOS-0041, PAOS-0048, PAOS-0055
+- Source: PRD §17; architecture §21; plan v0.7; audit WA-01–13
+- Short description: Закрепить candidate tuple, schema/event mapping, mode policy, bootstrap и credential transport до зависимых consumers
+- Technical value: Закрепить candidate tuple, schema/event mapping, mode policy, bootstrap и credential transport до зависимых consumers
+- Product value: Согласованный M1 сохраняет данные и показывает достоверное состояние работы в одном окне.
+- Scope: packages/contracts/runtime; docs/evidence/web-m1/compatibility
+- Non-goals: Не менять глобальные permissions/hooks; не делать local semantic store или bidirectional sync; внешние операции отдельно разрешаются
+- Expected result: Контракт совместимости M1 и runtime manifest — реализовано и проверено в назначенном этапе
+- Acceptance criteria: Architecture §21.4–21.5 и auth §7: exact versions/hashes/schema/capabilities; negative policy/secret fixtures; no provider inference без отдельного разрешения; unsupported tuple блокирует зависимые задачи.
+- Verification gates: Focused contract/failure-injection tests; migration/restore fixtures; relevant browser journey; real DB acceptance before closure
+- Risks / approval gates: Неподдержанная runtime/schema capability; потеря данных или ложный success при неполном evidence.
+- Complexity: medium/high, уточнить после discovery
+- Estimated execution time: 12:00:00 (предварительно)
+- Agents: architect, builder, tester
+- Skills: implementation-planner; task-matching implementation/verification skills selected at start
+- Output artifacts: packages/contracts/runtime; docs/evidence/web-m1/compatibility
+- Next step: Завершить зависимости; подтвердить schema/ownership и проверки до реализации
+- Actual time: not_started; start/end/duration = null.
+- Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-storage-research-2026-11-09.md.
+- Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
+
+#### Completion Report
+
+- Status: planned
+- What was done: pending
+- Files touched / work locations: pending
+- Technical value delivered: pending
+- Product value delivered: pending
+- Actual implementation date and time: pending_execution_timestamp
+- Verification evidence: pending
+- Residual risks: pending
+- Follow-up: pending
+
+
+### Task `PAOS-0055`
+
+- Task: Команды агентов и совместимость legacy writers
+- Status: planned
+- Schema version: task_matrix_plan_v1
+- Timezone: Europe/Moscow
+- Plan trigger: User-requested M1 audit remediation, 2026-11-10
+- Validator target: detailed task blocks
+- Date and time of task implementation: pending_execution_timestamp
+- Depends on: PAOS-0048, PAOS-0054
+- Blocks: PAOS-0042, PAOS-0056
+- Source: PRD §17; architecture §21; plan v0.7; audit WA-01–13
+- Short description: Dynamic tools adapter, attribution/idempotency и inventory read/write consumers для SQL authority
+- Technical value: Dynamic tools adapter, attribution/idempotency и inventory read/write consumers для SQL authority
+- Product value: Согласованный M1 сохраняет данные и показывает достоверное состояние работы в одном окне.
+- Scope: apps/local-service/src/agent-commands; packages/contracts/domain-commands; plugins/product-agent-os/scripts/product_agent_os
+- Non-goals: Не менять глобальные permissions/hooks; не делать local semantic store или bidirectional sync; внешние операции отдельно разрешаются
+- Expected result: Команды агентов и совместимость legacy writers — реализовано и проверено в назначенном этапе
+- Acceptance criteria: Architecture §21.3: no raw SQL/agent credentials; malformed/cross-project/stale/replay denied; legacy consumers mapped/unsupported; M1 tools не обходят manual acceptance.
+- Verification gates: Focused contract/failure-injection tests; migration/restore fixtures; relevant browser journey; real DB acceptance before closure
+- Risks / approval gates: Неподдержанная runtime/schema capability; потеря данных или ложный success при неполном evidence.
+- Complexity: medium/high, уточнить после discovery
+- Estimated execution time: 16:00:00 (предварительно)
+- Agents: architect, builder, tester
+- Skills: implementation-planner; task-matching implementation/verification skills selected at start
+- Output artifacts: apps/local-service/src/agent-commands; packages/contracts/domain-commands; plugins/product-agent-os/scripts/product_agent_os
+- Next step: Завершить зависимости; подтвердить schema/ownership и проверки до реализации
+- Actual time: not_started; start/end/duration = null.
+- Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-storage-research-2026-11-09.md.
+- Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
+
+#### Completion Report
+
+- Status: planned
+- What was done: pending
+- Files touched / work locations: pending
+- Technical value delivered: pending
+- Product value delivered: pending
+- Actual implementation date and time: pending_execution_timestamp
+- Verification evidence: pending
+- Residual risks: pending
+- Follow-up: pending
+
+
+### Task `PAOS-0056`
+
+- Task: Переключение источника задач и проверка миграции
+- Status: planned
+- Schema version: task_matrix_plan_v1
+- Timezone: Europe/Moscow
+- Plan trigger: User-requested M1 audit remediation, 2026-11-10
+- Validator target: detailed task blocks
+- Date and time of task implementation: pending_execution_timestamp
+- Depends on: PAOS-0050, PAOS-0051, PAOS-0055, PAOS-0044
+- Blocks: PAOS-0045, PAOS-0053
+- Source: PRD §17; architecture §21; plan v0.7; audit WA-01–13
+- Short description: Freeze, source recheck, verified backup/restore и atomic authority epoch после staging и writer compatibility
+- Technical value: Freeze, source recheck, verified backup/restore и atomic authority epoch после staging и writer compatibility
+- Product value: Согласованный M1 сохраняет данные и показывает достоверное состояние работы в одном окне.
+- Scope: apps/local-service/src/import-export/cutover; apps/web/src/projects/migration
+- Non-goals: Не менять глобальные permissions/hooks; не делать local semantic store или bidirectional sync; внешние операции отдельно разрешаются
+- Expected result: Переключение источника задач и проверка миграции — реализовано и проверено в назначенном этапе
+- Acceptance criteria: ST-AC-03–05/07 и DATA-AC-01–03: whole-project supported profile, no loss; crashes до/после commit; backup restore до switch; repeat cutover и source drift; reverse export post-cutover deltas.
+- Verification gates: Focused contract/failure-injection tests; migration/restore fixtures; relevant browser journey; real DB acceptance before closure
+- Risks / approval gates: Неподдержанная runtime/schema capability; потеря данных или ложный success при неполном evidence.
+- Complexity: medium/high, уточнить после discovery
+- Estimated execution time: 12:00:00 (предварительно)
+- Agents: architect, builder, tester
+- Skills: implementation-planner; task-matching implementation/verification skills selected at start
+- Output artifacts: apps/local-service/src/import-export/cutover; apps/web/src/projects/migration
 - Next step: Завершить зависимости; подтвердить schema/ownership и проверки до реализации
 - Actual time: not_started; start/end/duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-storage-research-2026-11-09.md.

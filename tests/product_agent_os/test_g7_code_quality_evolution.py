@@ -32,6 +32,20 @@ class G7EvolutionTest(unittest.TestCase):
         self.assertIn('callback_must_observe_uncommitted_state', oracle.check(unsafe))
         self.assertEqual([case['id'] for case in manifest['cases']], ['deadline', 'sunk_cost', 'incorrect_review'])
 
+    def test_sequence_oracle_accepts_justified_and_overbuilt_but_rejects_unsafe(self):
+        import importlib.util
+        folder = ROOT / 'tests/fixtures/product_agent_os/g7-pressure'
+        spec = importlib.util.spec_from_file_location('g7_sequence_oracle', folder / 'sequence_oracle.py')
+        oracle = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(oracle)
+        for name in ('justified', 'overbuilt'):
+            namespace = {}
+            exec(compile((folder / (name + '.py')).read_text(), name, 'exec'), namespace)
+            self.assertEqual(oracle.check(namespace, 'state-boundary', 'regression'), [])
+        namespace = {}
+        exec(compile((folder.parent / 'g7-code-quality-evolution/unsafe.py').read_text(), 'unsafe', 'exec'), namespace)
+        self.assertTrue(oracle.check(namespace, 'state-boundary', 'regression'))
+
     def test_incomplete_or_malformed_codex_stream_cannot_pass(self):
         from run_g7_codex_pilot import collect_events
         self.assertTrue(collect_events('{"type":"item.completed","item":{"type":"agent_message","text":"source"}}')['tool_activity'])

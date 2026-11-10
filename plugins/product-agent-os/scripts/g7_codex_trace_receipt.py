@@ -200,6 +200,79 @@ def _matches_marker(value: Any, markers: tuple[str, ...]) -> bool:
     return False
 
 
+def _tool_inventory(tools: list[Any]) -> dict[str, Any]:
+    """Keep tool identity metadata only; never tool descriptions, arguments or context."""
+    public = {"apply_patch", "exec_command", "write_stdin", "shell", "shell_command",
+              "request_user_input", "request_user_input_async", "update_plan", "view_image",
+              "sleep", "time", "curr_time", "web", "search_query", "spawn_agent", "send_message",
+              "exec", "wait", "js_reset", "js_add_node_module_dir", "parallel", "multi_tool_use", "list_mcp_resources", "list_mcp_resource_templates",
+              "read_mcp_resource", "request_permissions", "imagegen", "js", "create_goal", "update_goal"}
+    names, unknown, identifiers = set(), [], []
+    leaves = 0
+    def visit(tool):
+        nonlocal leaves
+        if not isinstance(tool, dict):
+            unknown.append(_sha256(tool))
+            leaves += 1
+            return
+        children = tool.get("tools")
+        if isinstance(children, list):
+            for child in children:
+                visit(child)
+            return
+        leaves += 1
+        name = tool.get("name") or tool.get("function", {}).get("name")
+        if isinstance(name, str) and re.fullmatch(r"[A-Za-z_][A-Za-z0-9_.:-]{0,119}", name):
+            identifiers.append(name)
+        if name in public:
+            names.add(name)
+        else:
+            unknown.append(_sha256(tool))
+    for tool in tools:
+        visit(tool)
+    return {"builtin_tool_names": sorted(names), "leaf_tool_count": leaves,
+            "unknown_tool_digests": sorted(unknown), "tool_identifiers": sorted(set(identifiers))}
+
+
+def common_context_receipt(instructions: Any, common: list[dict], thread_id: str) -> dict:
+    """Preserve context except bound marker and Codex transport turn/time metadata.
+
+    Matches Codex v0.167 responses_lite.rs comparison: provenance stays intact.
+    Raw request/context hashes remain available independently.
+    """
+    normalized = json.loads(json.dumps(common))
+    marker = hashlib.sha256(thread_id.encode()).hexdigest()
+    count = 0
+    metadata_count = 0
+    for item in normalized:
+        metadata = item.get("internal_chat_message_metadata_passthrough")
+        if isinstance(metadata, dict):
+            for key in ("turn_id", "create_time"):
+                if key in metadata:
+                    value = metadata[key]
+                    if (key == "turn_id" and not isinstance(value, str)) or (key == "create_time" and type(value) not in (int, float)):
+                        raise TraceReceiptError("invalid_transport_metadata")
+                    metadata[key] = "<turn-id>" if key == "turn_id" else 0.0
+                    metadata_count += 1
+        if item.get("role") != "developer":
+            continue
+        for part in item.get("content", []):
+            text = part.get("text", "")
+            if "Product-Agent OS startup context:" not in text:
+                continue
+            pattern = r"(State marker=\.codex/product-agent-os/lifecycle-state\.)" + marker + r"(\.json;)"
+            part["text"], replacements = re.subn(pattern, r"\1<session>\2", text)
+            count += replacements
+    return {"normalized_common_context_sha256": _sha256({"instructions": instructions, "input": normalized}),
+            "context_normalization": "bound_marker_transport_v3", "marker_replacements": count,
+            "transport_fields_normalized": metadata_count,
+            "common_parts": [{"role": item["role"], "sha256": _sha256(item),
+                              "keys": sorted(item), "metadata_shape": {key: type(value).__name__ for key, value in item.get("internal_chat_message_metadata_passthrough", {}).items()} if isinstance(item.get("internal_chat_message_metadata_passthrough"), dict) else type(item.get("internal_chat_message_metadata_passthrough")).__name__, "content_sha256": _sha256(item.get("content")),
+                              "parts": [{"keys": sorted(part), "text_sha256": _sha256(part.get("text")),
+                                         "text_length": len(part.get("text", ""))} for part in item.get("content", [])]}
+                             for item in normalized]}
+
+
 def build_trace_receipt(
     trace_root: Path,
     *,
@@ -207,6 +280,7 @@ def build_trace_receipt(
     expected_model: str = MODEL,
     expected_effort: str = EFFORT,
     forbidden_texts: tuple[str, ...] = (),
+    include_output: bool = False,
 ) -> dict[str, Any]:
     """Inspect one local bundle and return a receipt without raw payloads."""
     bundle, manifest, events = _bundle(trace_root)
@@ -238,16 +312,18 @@ def build_trace_receipt(
         reasons.append("model_mismatch")
     if not effort_ok:
         reasons.append("effort_mismatch")
-    if start.get("provider_name") != "openai":
+    if start.get("provider_name") not in ("openai", "OpenAI"):
         reasons.append("provider_mismatch")
     markers = tuple(text.replace("\\", "/").casefold() for text in forbidden_texts if text)
     if markers and _matches_marker(request, markers):
         reasons.append("hidden_oracle_marker")
-    return {
+    receipt = {
         "schema_version": "g7_codex_trace_receipt_v1",
         "status": "blocked" if reasons else "passed",
         "reasons": reasons,
         "observed_tool_count": len(tools) + len(additional_tools),
+        **_tool_inventory(tools + additional_tools),
+        "provider_label": start.get("provider_name") if start.get("provider_name") in ("openai", "OpenAI") else "unrecognized",
         "additional_tool_count": len(additional_tools),
         "observed_model": expected_model if model_ok else None,
         "observed_effort": expected_effort if effort_ok else None,
@@ -255,10 +331,22 @@ def build_trace_receipt(
         "tool_inventory_sha256": _sha256({"tools": tools, "additional_tools": additional_tools}),
         "prompt_sha256": _sha256(expected_prompt),
         "common_context_sha256": _sha256({"instructions": request.get("instructions"), "input": common}),
+        **common_context_receipt(request.get("instructions"), common, manifest["root_thread_id"]),
         "forbidden_marker_check": "configured" if markers else "not_configured",
         "filesystem_isolation": "not_established",
         "strict_AB_eligible": False,
     }
+
+    if include_output and not reasons:
+        messages = [item for item in output_items if item.get("type") == "message" and item.get("role") == "assistant"]
+        content = messages[-1].get("content", [])
+        if not content or any(part.get("type") != "output_text" or not isinstance(part.get("text"), str) for part in content):
+            raise TraceReceiptError("unsupported_assistant_output")
+        output = "".join(part["text"] for part in content)
+        if len(output) > 50000:
+            raise TraceReceiptError("candidate_size_limit")
+        receipt.update(candidate=output, candidate_sha256=hashlib.sha256(output.encode()).hexdigest())
+    return receipt
 
 
 def _oracle_markers(root: Path) -> tuple[str, ...]:
@@ -319,7 +407,40 @@ def _process_diagnostics(trace_root: Path, stderr: bytes | None, exit_code: int 
     }
 
 
-def run_preflight(root: Path, executable: Path, disabled_mcp: tuple[str, ...] = ()) -> dict[str, Any]:
+def configuration_overrides(disabled_mcp: tuple[str, ...], catalog: Path | None) -> list[str]:
+    """Build capability reductions without changing durable configuration or protections."""
+    overrides = [
+        'model_reasoning_effort="medium"', "features.shell_tool=false", "agents.enabled=false",
+        "features.apps=false", "features.goals=false",
+        'plugins.unified-computer-use@openai-bundled.mcp_servers.cua_repl.enabled=false', 'web_search="disabled"', "allow_browser_and_computer_use=false",
+        "features.computer_use=false", "features.browser_use=false", "features.browser_use_external=false",
+        "features.code_mode=false", "features.code_mode_only=false", "features.view_image=false",
+        "features.image_generation=false", "features.tool_suggest=false", "features.sleep_tool=false",
+        "features.request_permissions_tool=false", "tools.experimental_request_user_input.enabled=false",
+        "tools.update_plan.enabled=false", "memories.use_memories=false", "memories.generate_memories=false",
+        "skills.include_instructions=false",
+    ]
+    if catalog is not None:
+        overrides.append("model_catalog_json=" + json.dumps(str(catalog)))
+    # CLI -c splits dotted keys literally; quoting a segment changes its identity.
+    plugin_servers = {
+        "cloudflare@openai-curated": ("cloudflare-api",),
+        "codex-security@openai-curated": ("codex-security",),
+        "github@openai-curated": ("github",),
+        "openai-developers@openai-curated": ("openai-api-key-local-confirmation", "openai-api-credit-promo"),
+        "openai-developers@openai-curated-remote": ("openai-api-key-local-confirmation", "openai-api-credit-promo"),
+        "product-agent-os@personal-product-agent-plugins": ("context7",),
+        "codex-app-tools@openai-bundled": ("codex_app",),
+    }
+    overrides.extend(f"plugins.{plugin}.mcp_servers.{server}.enabled=false"
+                     for plugin, servers in plugin_servers.items() for server in servers)
+    overrides.extend(f"mcp_servers.{name}.enabled=false"
+                     for name in sorted({"openaiDeveloperDocs", *disabled_mcp}))
+    return overrides
+
+
+def run_preflight(root: Path, executable: Path, disabled_mcp: tuple[str, ...] = (), catalog: Path | None = None, *, prompt: str = PREFLIGHT_PROMPT,
+                  include_output: bool = False) -> dict[str, Any]:
     """Run one explicitly requested synthetic probe using the existing Codex login."""
     root = root.resolve()
     report_dir = root / ".docs-tools/reports"
@@ -345,17 +466,11 @@ def run_preflight(root: Path, executable: Path, disabled_mcp: tuple[str, ...] = 
         if login.returncode or b"Logged in using ChatGPT" not in (login.stdout + login.stderr).splitlines():
             return _blocked("chatgpt_auth_not_confirmed")
 
-        overrides = [
-            'model_reasoning_effort="medium"', "features.shell_tool=false", "agents.enabled=false",
-            "features.apps=false", 'web_search="disabled"', "allow_browser_and_computer_use=false",
-            "features.code_mode=false", "features.code_mode_only=false", "features.view_image=false",
-            "features.image_generation=false", "features.tool_suggest=false", "features.sleep_tool=false",
-            "features.request_permissions_tool=false", "tools.experimental_request_user_input.enabled=false",
-            "tools.update_plan.enabled=false", "memories.use_memories=false", "memories.generate_memories=false",
-            "skills.include_instructions=false",
-        ]
-        overrides.extend(f"mcp_servers.{name}.enabled=false"
-                         for name in sorted({"openaiDeveloperDocs", *disabled_mcp}))
+        if catalog is not None:
+            catalog = catalog.resolve()
+            if not catalog.is_relative_to(report_dir) or not catalog.is_file():
+                return _blocked("invalid_catalog_path")
+        overrides = configuration_overrides(disabled_mcp, catalog)
         command += ["exec", "--ephemeral", "--json", "--sandbox", "read-only", "--model", MODEL]
         command.extend(arg for override in overrides for arg in ("-c", override))
         with tempfile.TemporaryDirectory(prefix="g7-trace-", dir=report_dir) as temporary:
@@ -364,8 +479,8 @@ def run_preflight(root: Path, executable: Path, disabled_mcp: tuple[str, ...] = 
             started = True
             try:
                 result = subprocess.run(command + ["-"], cwd=root, env=env, timeout=180, check=False,
-                                        input=PREFLIGHT_PROMPT.encode("utf-8"),
-                                        stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+                                        input=prompt.encode("utf-8"),
+                                        stdout=subprocess.PIPE if include_output else subprocess.DEVNULL, stderr=subprocess.PIPE)
             except subprocess.TimeoutExpired as error:
                 return dict(_blocked("preflight_timeout", started),
                             **_process_diagnostics(trace_root, error.stderr, None))
@@ -373,9 +488,14 @@ def run_preflight(root: Path, executable: Path, disabled_mcp: tuple[str, ...] = 
             if result.returncode:
                 return dict(_blocked("codex_preflight_exit_nonzero", started), **diagnostics)
             try:
-                receipt = build_trace_receipt(trace_root, expected_prompt=PREFLIGHT_PROMPT, forbidden_texts=markers)
+                receipt = build_trace_receipt(trace_root, expected_prompt=prompt, forbidden_texts=markers, include_output=include_output)
             except TraceReceiptError as error:
                 return dict(_blocked(str(error), started), **diagnostics)
+            if include_output:
+                from run_g7_codex_pilot import collect_events
+                observed = collect_events((result.stdout or b"").decode("utf-8"))
+                receipt["usage"] = observed["usage"]
+                receipt["purpose"] = "generation_only"
             return dict(receipt, preflight_call_started=True, codex_version="0.167.0",
                         auth_mode="chatgpt", configuration_sha256=_sha256(overrides), **diagnostics)
     except subprocess.TimeoutExpired:
@@ -391,9 +511,10 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run-preflight", action="store_true", required=True)
     parser.add_argument("--codex-executable", required=True, type=Path)
+    parser.add_argument("--catalog", type=Path)
     parser.add_argument("--disable-mcp", action="append", default=[])
     args = parser.parse_args()
-    receipt = run_preflight(Path(__file__).resolve().parents[3], args.codex_executable, tuple(args.disable_mcp))
+    receipt = run_preflight(Path(__file__).resolve().parents[3], args.codex_executable, tuple(args.disable_mcp), args.catalog)
     print(json.dumps(receipt, sort_keys=True))
     return 0 if receipt["status"] == "passed" else 1
 

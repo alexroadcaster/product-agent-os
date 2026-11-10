@@ -6,7 +6,7 @@
 
 ## PAOS-AUD-G7 — separate instrument
 
-G7 strict preflight blocked: actual request gpt-6.1-sol/medium, two additional tools; filesystem isolation not established. Supplementary deadline/sunk-cost/incorrect-review corpus и justified/overbuilt controls подготовлены; no new comparative generation outcomes. Prior observational 6/6 per arm не повышается до strict A/B. [Evidence](research/product-agent-os-g7-execution-report-2026-11-09.md).
+G7 attested design v2: 12 sequential paired generations, gpt-6.1-sol/medium/tools=[], одинаковый общий context после bound marker/transport normalization. Frozen oracle: 6/6 на arm; 2 prior ineligible attempts и 10 diagnostic calls отдельно. Pressure/reuse passed; superiority и component effect insufficient_evidence. No OS isolation/E2E; 1 repetition, rehearsed corpus, uneven prompt caching. Prior observational pilot не переименован. [Evidence](research/product-agent-os-g7-execution-report-2026-11-09.md).
 
 ## Web single-window v0.4 — 2026-11-09
 

@@ -1,8 +1,8 @@
 # Product-Agent OS Web — экраны полноценного Task Manager
 
-## Актуальная структура UX v0.5 — единое окно
+## Актуальная структура UX v0.7 — единое окно
 
-Source status: project-authored / proposed UX, 2026-11-09; draft_for_review. Продуктовое направление — PRD v0.4. [Подробные wireframes WF-01–16](product-agent-os-web-m1-wireframes-2026-11-09.md) задают текущую компоновку и состояния; 24 изображения v0.2 ниже — исторические, не актуальный макет активного чата. Каталог содержит **28 маршрутов**, восемь основных вкладок проекта.
+Source status: project-authored / proposed UX, 2026-11-09; draft_for_review. Продуктовое направление — PRD v0.7 §17. [Подробные wireframes WF-01–21](product-agent-os-web-m1-wireframes-2026-11-09.md) задают текущую компоновку и состояния; 24 изображения v0.2 ниже — исторические, не актуальный макет активного чата. Каталог содержит **31 маршрут**, восемь основных вкладок проекта.
 
 Постоянная навигация: **Обзор, Задачи, Сессии, Агенты, Скиллы, Карта проекта, Документы, Проверки**. Переключатель проекта сверху; Настройки снизу. «Требует внимания» в заголовке ведёт в S22, «Автономная работа» доступна из Обзора и настроек проекта, Workflow — из Задач. Это вспомогательные маршруты, а не дополнительные основные вкладки. Нет отдельного чата вне проекта. Назад возвращает фильтры, выделение, черновик и позицию чтения.
 
@@ -11,17 +11,17 @@ Source status: project-authored / proposed UX, 2026-11-09; draft_for_review. П�
 | Семейство | Компоновка и главный переход | Граница первого M1 |
 | --- | --- | --- |
 | S01–S03 | Список проектов → read-only подключение → Обзор с активной сессией и следующим действием | Минимальные launch/selection/overview |
-| S04–S07 | Таблица/доска → карточка → редактор; создать/связать/открыть сессию | Минимальная task card и связь; полный Kanban/issue editor позднее |
+| S04–S07 | Таблица/доска → карточка → редактор; создать/связать/открыть сессию | Flat Task CRUD/Comments/History, fixed Kanban и manual closure M1; полная иерархия/редакторы позднее |
 | S08–S09 | Каталог → рабочая сессия: чат, task/run context, diff, approvals | Основной сквозной путь M1 |
-| S10–S13 | Список → профиль → редактор или генерация → preview | В сессии показаны фактические агенты; полный CRUD позднее |
-| S14–S17 | Каталог → инструкция/ресурсы → источник/поиск/генерация → preview | В сессии показаны закреплённые skills; полный CRUD позднее |
+| S10–S13 | Список → профиль → редактор или генерация → preview | Read-only список/definitions/observed agents; полный CRUD позднее |
+| S14–S17 | Каталог → инструкция/ресурсы → источник/поиск/генерация → preview | Read-only список/definitions/usage skills; полный CRUD позднее |
 | S18 | Graph + поиск/легенда + inspector выбранного узла → source/diff/session | Полная карта позднее; статические связи не обозначают runtime truth |
 | S19–S20 | Список артефактов → reader с provenance и связанными задачами/сессиями | Минимальные ссылки на evidence; полный каталог позднее |
 | S21–S22 | Проверки и очередь решений → конкретное событие сессии | Минимальная приёмка/permissions M1, расширенные каталоги позднее |
 | S23–S26 | Автономность, настройки, каталог и редактор workflow | Настройки темы/языка M1; полный workflow/autonomy позднее |
 | S27–S28 | Подключение runtime/аккаунта → проверенное состояние; recovery → история действий | Обязательные состояния M1 |
 
-Все подробные разделы S01–S28 ниже описывают целевой продукт, а не готовность функций первого M1. Приоритет текущей спецификации: UX v0.5 и PRD §15; дополнения v0.3/v0.4 сохраняют историю решений. Критерии UX-AC-01–18 и проверки документа находятся в wireframes.
+Все подробные разделы S01–S28 ниже описывают целевой продукт, а не готовность функций первого M1. Приоритет текущей спецификации: UX v0.7 §15 и PRD §17; дополнения v0.3/v0.4 сохраняют историю решений. Критерии UX-AC-01–18 и проверки документа находятся в wireframes.
 
 
 ## Историческое дополнение v0.4: активные сессии в едином окне
@@ -428,6 +428,24 @@ Graph и доступная table-альтернатива, статусы/пе�
 
 ## Проверка и ограничения
 
-Актуальный каталог содержит S01–S28. Текущая детализация и receipts — в wireframes UX v0.5; прежние изображения покрывают только S01–S24 и не подтверждают новый UX. Малые labels изображения не являются source of truth. Для разработки потребуются component-level states, responsive layouts и browser verification. Статус принятия визуального направления — needs_user_acceptance.
+Актуальный каталог содержит S01–S31. Текущая детализация и receipts — в wireframes UX v0.5; прежние изображения покрывают только S01–S24 и не подтверждают новый UX. Малые labels изображения не являются source of truth. Для разработки потребуются component-level states, responsive layouts и browser verification. Статус принятия визуального направления — needs_user_acceptance.
 
 Fresh-context Hallmark review и один пакет visual corrections записаны в [протоколе плана](product-agent-os-web-task-manager-plan-2026-11-09.md). В рисунке S18 возможны повторяющиеся labels одного примера; нормативная identity символа задаётся архитектурой. Второстепенные данные картинок не импортируются в приложение. [Manifest](assets/task-manager-2026-11-09/manifest.json) фиксирует финальные шесть PNG.
+
+## Дополнение M1 v0.7 — данные и согласованные действия
+
+Source status: project-authored / planned UI, 2026-11-10. Сохранены S01–S28; добавлены три маршрута, итого 31. Нормативный scope M1 — PRD §17 и wireframes §15. Статические images v0.2 не обновлялись.
+
+### S29. Перенос данных проекта
+
+Route: /p/:project/data/import. Вход из Обзора, Задач в legacy mode и «Данные проекта». WF-17–19: inventory → mapping/conflicts → freeze/backup/cutover → receipt. Source changed/unsupported/missing backup блокируют switch. В DB mode external MD conflict открывает тот же route, не меняет SQL автоматически. Owner 0050/0056.
+
+### S30. Данные и резервные копии
+
+Route: /settings/data. WF-20: usage, managed backups/pinning, create, restore preview/new directory/validation, purge consequences. Healthy SQL не требует provider. Credentials/runtime profiles/source repo исключены; message coverage видна. Owner 0051.
+
+### S31. Поиск в проекте
+
+Route: /p/:project/search. WF-21: FTS5 и exact ID/path, type filters, coverage/rebuild, пагинация, deep links/back. Scope только project, no semantic/global cross-project search M1. Owner 0049.
+
+M1 S04–S07 включает flat Task CRUD, fixed Kanban, Comments/History, related/blocks и ручное закрытие с guards. S10–S17 — read-only списки/определения/observed usage, S18 — существующая read-only projection с coverage. Full hierarchy/editors/generation/workflows — M2–M3. S27 включает local pairing и отдельный BYOK; S09 смена mode создаёт новый runtime segment без наследования grants. S28 не блокирует локальный CRUD при здоровой SQL. Разрешение answered_or_cleared не изображается как success файла/команды.

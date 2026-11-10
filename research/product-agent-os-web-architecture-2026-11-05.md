@@ -2,11 +2,11 @@
 
 Исследование 2026-11-09: [варианты БД и vector retrieval](product-agent-os-web-storage-research-2026-11-09.md). Выбор принят: SQLite + FTS5 local и PostgreSQL + pgvector team. Актуальные schema/authority/cutover — §20; исследование сохраняет историю альтернатив.
 
-Актуализация 2026-11-09: **v0.6 — единое окно и выбранные local/team storage profiles**. Текущий runtime/auth/startup contract — §19; прежняя очередь с runtime на M3 историческая. [Экраны](product-agent-os-web-task-manager-screens-2026-11-09.md) и [план](product-agent-os-web-task-manager-plan-2026-11-09.md).
+Актуализация 2026-11-10: **v0.7 — текущие M1 решения в §21**; PRD §17 и очередь v0.7 заменяют прежние design placeholders. Текущий runtime/auth/startup contract — §19; прежняя очередь с runtime на M3 историческая. [Экраны](product-agent-os-web-task-manager-screens-2026-11-09.md) и [план](product-agent-os-web-task-manager-plan-2026-11-09.md).
 
-Source status: `project-authored / selected-direction / proposed-implementation / official-docs-backed`. Создан: 2026-11-05. Обновлён: 2026-11-09. Версия: 0.6.
+Source status: `project-authored / selected-direction / proposed-implementation / official-docs-backed`. Создан: 2026-11-05. Обновлён: 2026-11-10. Версия: 0.7.
 
-Статус: **draft_for_review**. Документ описывает будущую реализацию. Код Web, API, runtime adapter и схемы БД в этой задаче не создавались. Решения ниже предложены для обсуждения; они не меняют утверждённую очередь разработки PAOS.
+Статус: **draft_for_review**. Документ описывает будущую реализацию. Код Web, API, runtime adapter и схемы БД в этой задаче не создавались. Решения v0.7 согласуют документационную очередь Web; это не разрешение начать реализацию и не изменение очереди прочих PAOS workstreams.
 
 Связи: [PRD](product-agent-os-web-prd-2026-11-05.md), [анализ SOL 0.6](sol-0.6-product-agent-os-web-analysis-2026-11-05.md).
 
@@ -16,7 +16,7 @@ UX-детализация M1 от 2026-11-09: [wireframes и interaction contrac
 
 Рекомендуется локальное browser application: React UI и один локальный Node.js service, использующий существующий Python package PAOS через узкий adapter. SQLite + FTS5 владеет operational Web entities после проверенного project cutover; до него legacy MD/JSON остаются authority. Код, документы и инструкции остаются файлами. PostgreSQL + pgvector выбран для будущей командной версии; детали — §20.
 
-Выполнение через Codex App Server входит в M1: сессии, approvals, interrupt/recovery и результат в одном окне. Без connection остаётся локальное чтение. Актуальная схема — §19; исходный stage mapping §3/§14 исторический. SOL полезен как источник UI-паттернов: проекты, task workspace, documents, activity feed. Его агентную цепочку, Socket.IO broadcast, JSON persistence и произвольную запись файлов переносить не следует: ограничения подтверждены в исходном аудите.
+Выполнение через Codex App Server входит в M1: сессии, approvals, interrupt/recovery и результат в одном окне. Без provider connection доступны локальные CRUD/search/backup при здоровой SQL (PRD §17). Актуальная схема — §19; исходный stage mapping §3/§14 исторический. SOL полезен как источник UI-паттернов: проекты, task workspace, documents, activity feed. Его агентную цепочку, Socket.IO broadcast, JSON persistence и произвольную запись файлов переносить не следует: ограничения подтверждены в исходном аудите.
 
 Это модульный монолит. Отдельные network services, очередь сообщений, vector database и multi-provider abstraction пока не обоснованы.
 
@@ -88,7 +88,7 @@ SOL использует Next.js, но это не делает Next.js обяз
 | CommandService | Schema/auth checks, idempotency, queue, command receipts | Произвольное исполнение shell |
 | ProposalService | Supported fields, baseline, diff, decision, apply/recovery | Универсальное редактирование repo |
 | RuntimeCoordinator | Task/run mapping, capabilities, approvals, interrupt/reconciliation | Ослабление managed sandbox/approvals |
-| EventJournal | Workspace-scoped sequence, replay, retention | Источник verification без check receipt |
+| EventJournal | Project-scoped sequence, replay, retention (§21.2) | Источник verification без check receipt |
 | UI | Навигация, понятные состояния, формы и source links | Самостоятельное вычисление разрешений |
 | LocalStore | Миграции, transactions, backup metadata | Копирование всех документов и credentials |
 
@@ -100,18 +100,18 @@ SOL использует Next.js, но это не делает Next.js обяз
 
 | Сущность | Минимальные поля | Authority |
 | --- | --- | --- |
-| Workspace | id, registeredRoot, capabilities, createdAt | Локальный registry; root не передаётся клиентом в каждом запросе |
+| Project | id, registeredRoot, capabilities, createdAt | Локальный registry; root не передаётся клиентом в каждом запросе |
 | SourceBinding | sourceId, relativePath, parserVersion, digest, observedAt | Файл и явное правило parser |
-| TaskProjection | workspaceId, sourceTaskId, title, state, acceptance, sourceRefs | Связанный source; UI value derived |
+| TaskProjection | projectId, sourceTaskId, title, state, acceptance, sourceRefs | Связанный source; UI value derived |
 | Artifact | id, sourceBinding, kind, revision, sensitivity | Файл или явно обозначенный draft |
 | Proposal | id, taskId, baseRevision, patch, supportedAction, decisionId | Web draft до apply; файл после apply |
 | Decision | id, kind, actor, scope, revision, outcome, timestamp | Журнал решений; не тождествен runtime approval |
 | ApprovalRequest | runtimeRequestId, runId, requestedAction, status | Текущий runtime request и применимая policy |
 | Run | id, taskId, runtimeThreadId, runtimeTurnId, state | Runtime observations + durable correlation |
 | Check / Evidence | id, sourceRevision, commandRef, result, observedAt, provenance | Реальный receipt; stale после relevant source change |
-| Command / Event | id, workspaceId, requestHash, sequence, schemaVersion | Durable journal, отдельный от файлов проекта |
+| Command / Event | id, projectId, requestHash, sequence, schemaVersion | Durable journal, отдельный от файлов проекта |
 
-ID — opaque UUID. Человекочитаемые task IDs сохраняются отдельно; key включает workspace и исходный task ID. Заголовок задачи не уникальный идентификатор. Cross-project references запрещены без явно поддержанного relation contract.
+ID — opaque UUID. Человекочитаемые task IDs сохраняются отдельно; key включает project и исходный task ID. Заголовок задачи не уникальный идентификатор. Cross-project references запрещены без явно поддержанного relation contract.
 
 Source authority определяется схемой, а не временем изменения файла. Для текущих PAOS task groups — явная связь task_id с owning JSON; legacy Markdown matrices поддерживаются только через конкретный parser и mapping. `PLAN.md`, `RUNLOG.md` и общий lifecycle marker нельзя механически превращать в одну универсальную task database. Если sources противоречат, UI показывает conflict и ссылки, а не выбирает последний timestamp.
 
@@ -122,29 +122,29 @@ SQLite не перезаписывает source state при rebuild. Source-bou
 | Измерение | Proposed states | Правило |
 | --- | --- | --- |
 | Source | current, stale, partial, conflict, unknown | Observed source revision необходим для current |
-| Run | queued, starting, running, awaiting_approval, interrupt_requested, succeeded, failed, interrupted, recovery_required | succeeded означает завершение runtime операции |
+| Run | queued, dispatching, running, awaiting_approval, interrupt_requested, completed, failed, interrupted, recovery_required | completed означает завершение runtime операции |
 | Verification | not_run, running, passed, failed, stale, partial | Проверки и scope остаются отдельными от Run |
 | Acceptance | pending, accepted, accepted_with_gaps, changes_requested | Только решение owner; gap не превращает failed check в passed |
 | Release | not_requested, proposed, authorized, observed | Публикация и production evidence не выводятся из acceptance |
 
-Task lifecycle показывается согласно owning source schema, с явным mapping. Нельзя автоматически записать task=done из run=succeeded.
+Task lifecycle показывается согласно owning source schema, с явным mapping. Нельзя автоматически записать task=done из run=completed.
 
 ```mermaid
 stateDiagram-v2
   [*] --> queued
-  queued --> starting: dispatch
-  starting --> running: runtime ack
-  starting --> recovery_required: ambiguous outcome
+  queued --> dispatching: dispatch
+  dispatching --> running: runtime ack
+  dispatching --> recovery_required: ambiguous outcome
   running --> awaiting_approval: runtime request
   awaiting_approval --> running: valid decision
   running --> interrupt_requested: owner stop
   awaiting_approval --> interrupt_requested: owner stop
   interrupt_requested --> interrupted: runtime confirmed
-  running --> succeeded: completion observed
+  running --> completed: completion observed
   running --> failed: failure observed
   running --> recovery_required: runtime lost
   recovery_required --> running: reconciled active run
-  recovery_required --> succeeded: completion receipt found
+  recovery_required --> completed: completion receipt found
   recovery_required --> interrupted: termination confirmed
 ```
 
@@ -156,14 +156,14 @@ Diagram показывает основной путь. Reject/timeout approval 
 
 | Method / endpoint | Семантика |
 | --- | --- |
-| GET /api/v1/workspaces | Только зарегистрированные roots текущей local session |
-| POST /api/v1/workspaces | Явное подключение выбранного root; bounded discovery |
-| GET /api/v1/workspaces/{id}/snapshot | revision, observedAt, capabilities, sources, partial flags |
-| GET /api/v1/workspaces/{id}/tasks/{taskId} | Source-bound projection и evidence |
-| GET /api/v1/workspaces/{id}/artifacts/{artifactId} | Разрешённое содержание; не arbitrary path endpoint |
-| POST /api/v1/workspaces/{id}/commands | Validated action, commandId, expectedRevision, payload |
-| GET /api/v1/workspaces/{id}/commands/{commandId} | Durable receipt, result/conflict/error |
-| GET /api/v1/workspaces/{id}/events | SSE snapshot cursor/replay; session auth |
+| GET /api/v1/projects | Только зарегистрированные roots текущей local session |
+| POST /api/v1/projects | Явное подключение выбранного root; bounded discovery |
+| GET /api/v1/projects/{id}/snapshot | revision, observedAt, capabilities, sources, partial flags |
+| GET /api/v1/projects/{id}/tasks/{taskId} | Source-bound projection и evidence |
+| GET /api/v1/projects/{id}/artifacts/{artifactId} | Разрешённое содержание; не arbitrary path endpoint |
+| POST /api/v1/projects/{id}/commands | Validated action, commandId, expectedRevision, payload |
+| GET /api/v1/projects/{id}/commands/{commandId} | Durable receipt, result/conflict/error |
+| GET /api/v1/projects/{id}/events | SSE snapshot cursor/replay; session auth |
 | GET /api/v1/health | Local service capability, без provider probe |
 
 Пример envelope, значения синтетические:
@@ -180,7 +180,7 @@ Diagram показывает основной путь. Reject/timeout approval 
 
 Server связывает actor с authenticated session, workspace — с endpoint registry, action — с allowlist. `decisionId` не bearer permission: проверяются scope, revision, expiry и действующая authority. Повторный commandId с тем же workspace/actor/action/requestHash возвращает прежний receipt; с другим payload — conflict. HTTP 202 означает принятие в очередь, не успешное выполнение. Ошибки имеют stable code, user message и retryability; raw stacks/paths не уходят в UI.
 
-Event содержит eventId, workspaceId, nullable taskId/runId, sequence, schemaVersion, observedAt, sourceRevision и redacted payload. Sequence монотонна в workspace journal; durable commit предшествует broadcast. SSE reconnect использует cursor; UI дедуплицирует eventId. Если cursor истёк, сервер требует snapshot resync. Buffer/replay bounded, slow consumer отключается с инструкцией resync.
+Event содержит eventId, projectId, nullable taskId/runId, sequence, schemaVersion, observedAt, sourceRevision и redacted payload. Sequence монотонна в project journal; durable commit предшествует broadcast. SSE reconnect использует cursor; UI дедуплицирует eventId. Если cursor истёк, сервер требует snapshot resync. Buffer/replay bounded, slow consumer отключается с инструкцией resync.
 
 Exactly-once для внешних side effects не обещается. Idempotency команд предотвращает известные дубли, а неоднозначный dispatch после crash требует reconciliation.
 
@@ -188,7 +188,7 @@ Exactly-once для внешних side effects не обещается. Idempot
 
 Localhost не заменяет authentication. Service bind — только loopback, один canonical host. Нужны строгие Host/Origin checks, отсутствие wildcard CORS, session-bound CSRF protection для mutations и проверка Web client session на SSE. DNS rebinding и запросы с произвольного сайта входят в negative suite.
 
-Launcher создаёт одноразовый bootstrap capability и передаёт его через выбранный в A0 локальный канал; token нельзя размещать в query/history/logs/localStorage. После exchange — HttpOnly SameSite cookie, короткая session, server-owned secret. Конкретный bootstrap/HTTPS или loopback transport и cookie flags надо проверить на Windows/Chrome/Edge до M1; пока это открытый design contract, а не реализованная защита.
+Bootstrap выбран в auth §7: pairing code из launcher, exchange POST и host-bound HttpOnly/SameSite session cookie; никакого token в URL. Windows/browser proof — 0054/0041, pending.
 
 Registry root выбирается явно. Сервер разрешает только зарегистрированные root и artifacts по ID, повторно проверяет canonical paths, Windows case behavior, UNC/drive forms, junctions/symlinks и traversal. За пределами root и protected paths — deny. Сканирование исключает credentials, .env, private keys, .git internals, dependencies и binaries; user source policy может только сузить доступ. Даже разрешённый Markdown может содержать секрет, поэтому UI/log/export требуют redaction и размеров response.
 
@@ -278,7 +278,7 @@ Browser disconnect не повторяет и не отменяет run авто
 
 Structured diagnostics: commandId/runId, module, duration, result code, revision; без prompts, code, credential и raw private chat по умолчанию. Метрики latency имеют scope и sample count. Unknown usage/cost остаётся unknown, цена не вычисляется по guessed тарифам.
 
-Предлагаемый retention: transient event replay и opt-in pilot metrics — 30 дней; drafts, decisions и evidence metadata — до явного archive/delete owner. Expiry replay не удаляет source evidence; UI предупреждает об ограничении timeline. Raw chat принадлежит runtime и не дублируется автоматически в local store; opt-in transcript persistence — отдельное решение с privacy contract.
+Текущий retention — §21.6: SSE replay 7 дней, durable visible messages/drafts/evidence до явного удаления; исходное предложение 30 дней и opt-in-only transcript superseded. История сохраняется с coverage, raw private reasoning не собирается.
 
 Backup включает Web-owned DB и schema version, исключает credentials; target repo backup — отдельная ответственность. Schema migration имеет backup/recovery path и запрет downgrade write при несовместимой версии. Удаление workspace из registry не удаляет файлы проекта. Retention/delete обрабатывают derived cache и ссылки без фальсификации verification history.
 
@@ -324,7 +324,7 @@ Task slicing внутри этапа: один наблюдаемый user outco
 
 SC-01–18 из PRD — acceptance contract, пока все pending. Не требуется запуск полного runtime suite ради этих документов. Исторические SOL проверки и текущие PAOS suites не доказывают Web UX или новые API.
 
-## 16. Решения, gaps и control-plane sync этой задачи
+## 16. Исторические решения и control-plane sync v0.1
 
 Утверждено только авторство Markdown и переход lifecycle marker. Предложенные стек, ICP, stages, budgets и requirements требуют product review. Открыты: D01–D07 PRD, точные editable fields, runtime protocol/version, bootstrap transport, packaging, pilot owner и budget.
 
@@ -334,7 +334,7 @@ Control-plane sync: RUNLOG — update_required, короткий handoff с сс
 
 Не изменялись product implementation, hooks, source SOL, dependency manifests, MkDocs navigation или public site. Существующие dirty changes других задач сохранены; они не являются результатом этой работы.
 
-## 17. Проверка документов в текущем запуске
+## Историческая проверка документов v0.1
 
 Статус документационного пакета: `docs_static_verified / draft_for_review`. Проверки выполнены 2026-11-05 в текущем workspace; они не являются приёмкой будущего Web.
 
@@ -350,7 +350,7 @@ Self-review: источники и proposed capabilities разделены; к�
 
 Strict build относится к локальному preview документации и проверке registry. Research-файлы находятся вне site navigation; build не доказывает rendering их Mermaid. Browser/rendered, product/runtime, usability, accessibility и performance acceptance не выполнялись. Публикации не было; root `site/` не обновлялся.
 
-## 18. Источники и пределы доказательств
+## Исторические источники и пределы v0.1
 
 - [SOL 0.6 audit](sol-0.6-product-agent-os-web-analysis-2026-11-05.md) — локальный аудит исходников, текущая основа reuse/risk decisions; прежние test receipts не перезапускались.
 - Текущие PAOS owning sources перечислены в §2; существующий source contract имеет приоритет над предложенными Web-моделями.
@@ -411,18 +411,19 @@ flowchart LR
   O --> B["Python PAOS bridge"]
   O --> H["Host adapter: execution boundary"]
   S --> H
-  T --> F["Source-owned files"]
+  T --> J["SQL task authority after cutover"]
+  T -.-> F["Legacy task sources / code / documents"]
   A --> F
   G --> F
   D --> F
-  API --> J["SQLite journal + projections"]
+  API --> J
   H --> E["Events / source receipts"]
   E --> J
   J --> SSE["SSE / resumable snapshots"]
   SSE --> W
 ```
 
-Это proposed boundaries. Host capabilities и completeness проверяются до реализации; стрелка не означает уже подключённый adapter. Runtime stop/pause принадлежит coordinator и host, а не одному UI state. Модульные contracts из таблицы выше определяют authority; SQLite не становится независимым вторым источником task truth.
+Это proposed boundaries. Host capabilities и completeness проверяются до реализации; стрелка не означает уже подключённый adapter. Runtime stop/pause принадлежит coordinator и host, а не одному UI state. Модульные contracts из таблицы выше определяют authority; SQL становится единственным источником task truth после cutover; legacy files остаются projection.
 
 ## 18. Issue model и workflow contracts v0.3 — 2026-11-09
 
@@ -442,7 +443,7 @@ Ownership: PAOS-0031–0034 — hierarchy/fields/versions/context contracts; PAO
 
 ## 19. Единое окно, runtime и авторизация — v0.4
 
-Детализация UX от 2026-11-09: [структура S01–S28](product-agent-os-web-task-manager-screens-2026-11-09.md) и [wireframes UX v0.5](product-agent-os-web-m1-wireframes-2026-11-09.md). WF-01–16 и UX-AC-01–18 определяют proposed поведение сессии, task/agent/file context, разрешений и recovery; не подтверждают реализацию или capabilities runtime.
+Детализация UX от 2026-11-09: [структура S01–S31](product-agent-os-web-task-manager-screens-2026-11-09.md) и [wireframes UX v0.7](product-agent-os-web-m1-wireframes-2026-11-09.md). WF-01–21, UX-AC-01–18 и DATA-AC-01–05 определяют proposed поведение сессии, task/agent/file context, разрешений и recovery; не подтверждают реализацию или capabilities runtime.
 
 Source status: user-selected direction / proposed architecture / official App Server documentation checked 2026-11-09. Это актуальная схема: runtime входит в M1. §11 и §14 с отложенным M3 — историческая последовательность. [PRD §15](product-agent-os-web-prd-2026-11-05.md#15-единое-окно-и-codex-app-server--v04), [auth/commercial contract](product-agent-os-web-auth-commercial-2026-11-09.md) и G11 плана имеют приоритет.
 
@@ -617,7 +618,7 @@ Project-owned rows имеют project_id; project_id → workspace_id → tenant
 | artifacts, artifact_revisions, issue_artifacts | project_id, kind, source_binding_id or external_uri; digest/revision; join issue_id/artifact_id | Plans/research/decisions/links; внешняя ссылка сама по себе не fetched; ревизия документа не становится SQL editable master |
 | comments, comment_revisions | project_id, issue_id, author_actor_id, body, current_revision; immutable previous body/version | User/agent attribution и edit history. Tombstone/redaction policy вместо молчаливого уничтожения истории |
 | blobs, attachments, issue_attachments | workspace_id, storage_key, digest, byte_size, mime, state=staged/ready/deleting; attachment/project/actor; issue join | Bytes вне SQL; scoped opaque keys, digest check, size/type limits; нет global cross-tenant dedup |
-| workflow_definitions, workflow_versions, workflow_states, workflow_transitions | project_id, definition_id, version, published_at, state category; transition from/to/guard | Immutable published version. Issue status FK принадлежит pinned workflow version. M1 seed workflow, M2 mappings, M3 editor |
+| workflow_definitions, workflow_versions, workflow_states, workflow_transitions | project_id, definition_id, version, published_at, state category; transition from/to/guard | Immutable published version. Issue status FK принадлежит pinned workflow version. M1 seed workflow, M2 mappings/editor, M3 execution recipes |
 | board_definitions, board_columns, board_status_mappings | project_id, column rank, WIP mode/limit, workflow_version_id/state_id | Status один раз на доске; legacy pinned states покрыты либо explicit outside-board |
 | recipe_definitions, recipe_versions, recipe_steps | project_id, immutable version, declarative action kind, bounded retry, ownership/budget | M3; не произвольный shell из workflow text; run pinned version |
 
@@ -628,18 +629,18 @@ Hierarchy: Epic без parent; Task/Bug/UserStory parent=Epic или NULL; Sub-T
 | Таблицы | Ключевые поля / связи | Authority и этап |
 | --- | --- | --- |
 | connections, runtime_profiles | workspace_id, principal_ref, secure_store_ref, auth_route; build/schema_hash/capabilities, process_generation | SQL metadata, secrets снаружи. Connection принадлежит actor/profile, не автоматически всем участникам team |
-| sessions, issue_sessions, session_relations | project_id, created_by, title, runtime_profile_id, external_thread_id, source, coverage; join issue_id; relation fork/child | UNIQUE(profile,external_thread_id) при наличии; task↔session many-to-many, независимо от hierarchy |
+| sessions, issue_sessions, session_relations | project_id, created_by, title, active_binding_id, source, coverage; join issue_id; relation fork/child | Runtime IDs/unique(profile,thread) находятся в session_runtime_bindings (§21), task↔session many-to-many |
 | message_drafts, runtime_items | session_id, draft_id, author_actor_id, body, revision, client_message_id; external_item_id/turn_id, item_kind, content_ref, source_revision, coverage | Draft editable до dispatch; runtime item read-only projection, redacted/retained только по выбранной policy. Draft→ACK correlation запрещает double send |
 | runs, run_agents, time_intervals | project_id, issue_id, session_id, connection_id, recipe_version_id, scope_digest, state, external_turn_id, started_at/ended_at; profile_version/child runtime ref; interval start/end/state | M1 mutating run привязан к issue; active/duration receipts. Wall time=union intervals, effort=sum per-agent intervals, elapsed/effort не смешиваются |
 | approval_requests, approval_decisions | run_id, external_request_id, process_generation, action_digest, expires_at, state; actor, decision, receipt | UNIQUE(run,generation,request); restore не оживляет pending/allow; источник runtime обязан подтвердить request |
 | checks, evidence, acceptance_decisions | issue_id/run_id, source_revision, command_ref, outcome, evidence_ref; owner/decision/gaps | Run success ≠ check passed ≠ owner acceptance; manual completion без run допустим |
 | agent_profiles, agent_profile_versions, skill_catalog, skill_versions, profile_skills | project/workspace scope, source_binding_id, digest, immutable observed version, proposed/effective state | File authority; usage по observed run/skill receipts, unknown usage не заменяется нулём |
 | source_bindings, source_snapshots, proposals | project_id, relative_path/parser_version; digest/observed_at; base_revision, patch_ref, decision | Сканер не исполняет instructions; apply только с fresh digest и scoped authority |
-| commands, outbox, events, entity_changes | workspace/project, idempotency_key, payload_hash, state; dispatch payload/ref; per-project seq, actor, entity/revision, event_schema, redacted delta | UNIQUE(workspace,idempotency_key), UNIQUE(project,seq); append-only audit; retention не удаляет незавершённые команды |
+| commands, outbox, events, entity_changes | workspace/project, idempotency_key, payload_hash, state; dispatch payload/ref; per-project seq, actor, entity/revision, event_schema, redacted delta | UNIQUE(project,idempotency_key), UNIQUE(project,seq); append-only audit; retention не удаляет незавершённые команды |
 | import_batches, import_items, legacy_id_map, export_receipts, backup_manifests | project, source hash/parser/mapping versions, state, counts, errors; source_key→entity_id; authority_epoch/schema/digests | Durable migration provenance; export/import receipts не runtime approval |
 | indexed_documents, search_index_state, graph_nodes, graph_edges | scope, entity/source revision, text/language/type, tombstone; index generation/coverage; symbols/file refs/typed edges | Derived; graph AST/parser identity, не embeddings. Индекс не владеет задачами |
 
-Приватный transcript и file contents не входят в diagnostics, tests, examples или source registry. SQL message projection не означает автоматическое копирование всех chats: полнота ограничена runtime adapter и explicit retention. Текст без durable cache может быть доступен только через runtime, и в поиске показывается соответствующая coverage.
+Приватный transcript и file contents не входят в diagnostics, tests, examples или source registry. SQL message projection не означает автоматическое копирование всех chats: полнота ограничена runtime adapter и explicit retention. Для новых M1 сессий visible messages durable по §21.6; для импортированных/недоступных runtime источников coverage остаётся partial.
 
 Основные индексы: issues(project_id,status_id,rank), issues(project_id,parent_id), issues(project_id,due_date), issue_links endpoints/type, sessions(project_id,updated_at), runtime_items(session_id,external_turn_id,order_key), events(project_id,seq), runs(project_id,state), outbox(state,next_attempt_at), source_bindings(project_id,relative_path), legacy_id_map(project_id,source_key). Уникальные связи не заменяются JSON arrays.
 
@@ -719,6 +720,119 @@ Team importer staging → validate counts/FK/permissions → freeze local writes
 
 ### 20.9. Приёмка и нерешённые вопросы
 
-ST-01–12 и ST-AC-01–08 из PRD: crash/duplicate/concurrency, source drift/cutover/reverse transfer, RU/EN search/delete/rebuild, restore с stale approvals, project/tenant isolation. Benchmarks и restore rehearsals будущие; числовые latency/corpus limits согласуются до реализации по устройству/ICP. SQLite driver, schema migration tool, exact runtime compatibility, crypto-at-rest, team hosting/RBAC policy и embedding model пока не выбраны. Основные риски: legacy writers вне adapter, потеря source provenance, index lag, schema downgrade и restore без blob/runtime consistency.
+ST-01–12 и ST-AC-01–08 из PRD: crash/duplicate/concurrency, source drift/cutover/reverse transfer, RU/EN search/delete/rebuild, restore с stale approvals, project/tenant isolation. Benchmarks и restore rehearsals будущие. Driver, SQL migration strategy, candidate tuple, local backup privacy и workload/latency targets выбраны в §21; validated compatibility pending. Team hosting/RBAC и embedding model решаются в T1. Основные риски: legacy writers вне adapter, потеря source provenance, index lag, schema downgrade и restore без blob/runtime consistency.
 
 Owning implementation: G12 PAOS-0048–0053 плюс существующие domain tasks. Текущая authoring задача не создаёт DB, SQL migrations, packages или app code.
+
+## 21. Контракты M1 после аудита — v0.7
+
+Source status: project-authored design baseline, 2026-11-10; implementation_not_started. §21 уточняет §19–20 и заменяет открытые M1 design placeholders. Проверки старых версий остаются историей; гарантии ниже — критерии будущей проверки.
+
+### 21.1. ADR: решения и последствия
+
+| ADR | Решение M1 | Альтернатива / цена решения | Проверка |
+| --- | --- | --- | --- |
+| ADR-W07 scope | Flat Task, fixed workflow, import profile PRD §17 | Полная Jira-like модель требует M2 до первого пути; unsupported проекты остаются legacy | 0050/0056: no loss |
+| ADR-W08 agent commands | Client-handled App Server dynamic tools → domain service | MCP stdio возможен, но добавляет transport lifecycle; выбранный API experimental, нужен pin/fail-closed | 0054 до 0055/0042; без скрытого fallback |
+| ADR-W09 bootstrap | Pairing code в launcher → POST exchange → local session cookie | URL fragment проще, но может попасть в history; цена решения — один pairing шаг | Auth §7, 0041 |
+| ADR-W10 driver | Node 26.5.0 node:sqlite DatabaseSync в dedicated Worker; versioned SQL migrations/checksums, без ORM | better-sqlite3 добавляет native packaging; встроенный модуль имеет release-candidate stability | 0054/0048: FTS5, crash, backup; failure требует нового ADR |
+| ADR-W11 history | Durable visible-message read model + coverage; explicit deletion | Краткоживущий cache не обеспечивает возврат к сессии; цена — рост диска/privacy | 0051 restore/purge |
+| ADR-W12 concurrency | Project-scoped cursors, canonical-root lease; global local M1 concurrency=1 | Parallel runs отложены до измерений | 0042/0044 fencing |
+
+### 21.2. Terminology, схема и транзакции
+
+Workspace — коллекция проектов одного local data profile; project — зарегистрированный canonical repository root. Tenant зарезервирован для T1. Canonical root определяется через final filesystem path/volume identity, включая junction/symlink aliases; пересекающиеся parent/child roots конфликтуют при execution. Один service writer на DB, один execution lease на root; global M1 run concurrency=1. Чтение нескольких проектов и Task CRUD доступны параллельно, но scope/target активного run закреплены.
+
+| Дополнение схемы §20 | Инвариант |
+| --- | --- |
+| projects: canonical_root_id, authority_mode, authority_epoch | Новые проекты SQL; legacy→SQL только 0056; epoch проверяется командой |
+| issues (тип Task в M1): UUID, project_id, public_key, revision, type=Task | Уникальный project key; поля M1 типизированы, JSON metadata не обходит constraints |
+| issue_links: project_id, from_id, to_id, kind | Оба FK в одном проекте; related симметричен, blocks направлен и acyclic |
+| import_items + legacy_id_map: source_digest, parser_version, source_key, task_id, raw_metadata | Mapping идемпотентен; raw metadata не делает поле поддержанным |
+| session_runtime_bindings: session_id, profile_id, external_thread_id, policy_mode, generation | Несколько последовательных runtime threads в одной PAOS session; уникальна пара profile/thread |
+| runtime_items (видимые сообщения): binding_id, source_item_id, revision, text, coverage, committed_at | Dedup binding/item/revision; final text committed до UI badge; gaps не выдумываются |
+| commands: project_id, actor_id, idempotency_key, payload_hash, expected_revision, authority_epoch | Same key/hash возвращает receipt, другой hash = conflict; actor из transport context |
+| events: project_id, seq, stream_generation, event_id, schema_version | seq монотонен в project; entity+audit+outbox атомарны |
+| root_leases: canonical_root_id, process_generation, fencing_token, run_id | TTL не доказывает остановку старого процесса; старый fencing token отклоняется |
+| import_batches/export_receipts/backup_manifests | Hashes, counts, schema/adapter version, epochs, coverage; без secrets |
+
+SSE cursor — opaque token для project_id/seq/stream_generation, проверяемый в scope local principal. Одна подписка на project; connection health имеет отдельный system stream/cursor. Workspace sequence §6/§8 заменён этим контрактом. Restore меняет stream_generation; old cursor требует snapshot resync. Audit хранится отдельно от короткого replay window.
+
+### 21.3. Agent commands и legacy writers
+
+Transport: Codex child stdio → dynamic tool request → adapter → domain service → SQL transaction → receipt. У модели нет HTTP bearer token, SQL credentials и возможности назначить себе actor/project/permission через arguments. Context связывается с process generation, principal, thread/turn/item, run/target и pinned recipe.
+
+Операции M1: task_read, task_propose, task_patch, task_comment, task_link, evidence_reference. Discussion/Planning доступны только read/propose; proposal становится Task после Save пользователя. Execution patch ограничен target и allowlist, revision обязателен; изменение scope/criteria/assignments активного run требует нового решения пользователя. Agent не выставляет Done/owner acceptance и не создаёт successful check без проверенного source receipt. Создание от агента — draft proposal. Evidence reference проверяет существование/scope observed receipt; текст агента остаётся assertion.
+
+Payload schema, byte limits и idempotency проверяются до записи. Key связывает process generation/request ID с domain command identity; lost ACK не даёт нового dispatch без reconciliation. Unknown calls отклоняются без shell/raw SQL fallback.
+
+0055 инвентаризует реальные reader/writer flows плагина, CLI и пользовательских scripts: task_routing/status_snapshot/task matrix readers, plan/update skills и runtime state consumers. Наличие файла не доказывает write роль. Каждый consumer получает read adapter, domain adapter либо unsupported status. Пока известный task writer может работать вне service, cutover запрещён. Управляемый runtime не пишет в DB-owned task projections. Внешний ручной MD edit невозможно запретить PAOS: watcher создаёт conflict, SQL не меняется. Blind dual write запрещён; код, документы, AGENTS/SKILL definitions остаются файлами.
+
+### 21.4. Policy по режимам
+
+| Mode | Target / tool network | Tools и эффекты |
+| --- | --- | --- |
+| Discussion | readOnly, зарегистрированный scope; network запрещён | read/propose; только session journal/draft |
+| Planning | Та же readOnly policy | read/propose; Save Task — отдельная user command |
+| Execution | workspaceWrite только root; network запрещён по умолчанию | Scoped domain commands; sandbox + on-request approvals; только turn-scoped grants |
+
+M1 отключает external MCP/apps/computer-use, full-access, session grants и эскалацию вне root. Inference network самого runtime не равен сети инструментов. Read-only filesystem не защищает от удалённых side effects — поэтому внешние tools отдельно выключены. Affected files в Task — план и контроль отклонений; OS sandbox охватывает root и не обещает точную per-file allowlist. Неожиданный diff требует review.
+
+Policy задаётся явно на каждом turn. Смена mode: Stop→ACK/reconciliation активного run, новый runtime thread/binding с чистой policy и явно выбранным видимым контекстом; история PAOS session сохраняется с границей сегмента. Старые grants/tools не наследуются. Resume того же режима требует сверки effective policy/profile/version. Нельзя молча продолжить при несовпадении. Защита от произвольного процесса с теми же OS правами не обещается; проверяется отсутствие secrets в tool environment/context и sandbox boundary.
+
+### 21.5. Manifest и semantic event mapping
+
+Наблюдённые локальные версии 2026-11-10: codex-cli 0.167.0, Node v26.5.0, Python 3.13.5. Это candidate tuple, не certified compatibility. 0054 фиксирует exact binary hashes, Windows build/x64, Node/SQLite compile options/FTS5, Python, Chrome/Edge versions, package lock digest, generated protocol schema digest, adapter revision. Поставка M1: Windows 11 x64, local ZIP/launcher без admin install, React/TS SPA + Node service + Python bridge; manual update. Неподдержанный tuple блокирует dependent execution, без auto-latest.
+
+0054 генерирует schema закреплённым CLI и проверяет handshake, experimental capabilities/dynamicTools, policies/auth/error forms. Проверка с реальным provider отдельно в 0045 после authority; fixtures не доказывают inference. Имена полей/enum берутся из schema, следующая таблица задаёт semantic mapping.
+
+| Сигнал | Значение PAOS | Не означает |
+| --- | --- | --- |
+| turn/start response, turn/started | Accepted turn ID; dispatching→running, dedup | Завершение |
+| item/.../requestApproval | Pending request с generation/thread/turn/item/request IDs | Permission |
+| Отправка ответа | response_sent, ждём подтверждения | Success действия |
+| serverRequest/resolved | answered_or_cleared; без evidence причина unknown | Approved/выполнено: возможен cleanup |
+| item/completed | Outcome item по type/status | Task Done или завершение turn |
+| turn/completed | completed/failed/interrupted по payload | Checks passed / owner accepted |
+| EOF/timeout/unknown event | Gap, recovery_required, reconcile | Автоматический retry dispatch |
+
+Live run states: queued, dispatching, running, awaiting_approval, interrupt_requested, completed, failed, interrupted, recovery_required. Starting/succeeded — только historical aliases, не дополнительные состояния. Task status/check/acceptance независимы.
+
+### 21.6. Retention, privacy и backup
+
+| Данные | Default | Backup |
+| --- | --- | --- |
+| Tasks/comments/audit/check receipts/visible messages/drafts | До явного удаления, без очистки по возрасту | Включены вместе с coverage |
+| Token chunks/incomplete buffers | Compact после final commit; незавершённый tail ≤24 часа, затем gap marker | Полнота tail не гарантируется |
+| SSE replay | 7 дней; audit не удаляется вместе с replay | После restore новая generation |
+| Raw stdout/stderr, hidden reasoning | По умолчанию не сохраняются; только bounded redacted excerpts evidence | Raw/private logs исключены |
+| FTS/graph | Производные; logical delete убирает refs и результаты, rebuild по доступному corpus | Перестраиваемы |
+| Secrets/runtime auth store | Credential Manager / ephemeral runtime memory | Исключены |
+
+Session delete: revoke/stop active operations → tombstone transaction → убрать messages/drafts/search refs → redacted audit receipt; UI заранее показывает затрагиваемые evidence references. Project purge после остановки runs и explicit preview/confirm. SQLite WAL/free pages и старые backups исключают обещание secure erase: отдельная maintenance compaction и управление копиями. Backup содержит private content, ACL текущего OS user; шифрование архива не обещается. Auto cloud upload отсутствует.
+
+Ручной backup обязателен до cutover/schema upgrade; дополнительные по кнопке. Retention — последние 5 managed successful backups; pinned не очищаются; rotation после проверки новой копии с показом удаляемых копий. Пользовательские exports не удаляются автоматически. Consistent SQLite backup + blob manifest/hash, без repository files/runtime threads/credentials; исключения видимы. Restore в новый каталог → integrity/FK/hash/coverage → maintenance stop → switch profile/new generation. Старый profile сохраняется до switch; rollback не теряет новые writes. Сохранённые сообщения читаются без Codex, но backup PAOS не обещает resumability утраченного runtime thread.
+
+### 21.7. Порядок миграции
+
+0050 выполняет inventory/preview/staging; 0051 независимо реализует backup/restore; 0055 — writer compatibility. Только после них и 0044 можно 0056: quiesce → source digest recheck → backup/restore gate → atomic authority switch → receipt. До switch legacy, после SQL; partial cutover связанных Tasks запрещён. Crash reconciles фактический commit/epoch, без двух masters. Export/edit/re-import M1 — proposal с base revision, conflict требует нового preview. Reverse export должен включать все post-cutover deltas; старый backup не оправдывает потерю новой работы.
+
+~~~mermaid
+flowchart LR
+  Preview["0050 Preview"] --> Gate["0056 Freeze и сверка"]
+  Backup["0051 Backup/restore"] --> Gate
+  Writers["0055 Writers"] --> Gate
+  Recovery["0044 Recovery"] --> Gate
+  Gate --> Check["Hashes, FK, mapping, restore receipt"]
+  Check --> Switch["SQL authority + epoch: одна транзакция"]
+  Check -->|"ошибка"| Legacy["Legacy остаётся authority"]
+  Switch --> Receipt["Receipt и DB-owned UI"]
+~~~
+
+### 21.8. Workload и budgets
+
+Reference workload для 0045: Windows 11 x64, 4 cores, 16 GiB RAM, local SSD; 10 000 Tasks, 100 000 visible messages, 200 MiB текста, 1 000 документов; один run, две UI tabs. Page size 50/max100; документ для индекса ≤1 MiB, остальные partial с причиной. Targets: p95 indexed search ≤500 ms; local commit/ACK ≤500 ms; event-to-visible ≤1 s; warm project view ≤1 s; cold launch ≤10 s. Это цели будущего измерения. Initial rebuild показывает progress/cancel/coverage; ID search доступен отдельно, нет индекса не означает no matches.
+
+WAL, foreign_keys ON; busy timeout 5 s, максимум 2 retries только для доказанно не committed локальных transactions. Write queue ≤100; overflow возвращает busy без side effects. 5 GiB data — soft warning без удаления истории; free disk <1 GiB запрещает new run/large import, active run останавливается с recovery. Изменение thresholds после измерений фиксируется в требованиях/manifest.
+
+Источники проверены 2026-11-10: [App Server](https://learn.chatgpt.com/docs/app-server) — schema/dynamic tools/approvals; [Codex config](https://learn.chatgpt.com/docs/config-file/config-reference) — auth storage; [Node 26.5 SQLite](https://nodejs.org/download/release/v26.5.0/docs/api/sqlite.html) — DatabaseSync/backup, release-candidate status. Choices и thresholds — требования PAOS, не обещания поставщиков.

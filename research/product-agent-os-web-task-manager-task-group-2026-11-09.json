@@ -114,7 +114,8 @@
         "PAOS-0044",
         "PAOS-0045",
         "PAOS-0046",
-        "PAOS-0047"
+        "PAOS-0047",
+        "PAOS-0054"
       ]
     },
     {
@@ -126,7 +127,9 @@
         "PAOS-0050",
         "PAOS-0051",
         "PAOS-0052",
-        "PAOS-0053"
+        "PAOS-0053",
+        "PAOS-0055",
+        "PAOS-0056"
       ]
     }
   ],
@@ -2028,7 +2031,8 @@
         "product-agent-os-web-auth-commercial-2026-11-09.md"
       ],
       "acceptance_criteria": [
-        "Login state отличается от model access; secrets не попадают в logs/SQLite/browser storage/tool environment; disconnect останавливает новые calls; no fallback доказан."
+        "Login state отличается от model access; secrets не попадают в logs/SQLite/browser storage/tool environment; disconnect останавливает новые calls; no fallback доказан.",
+        "Auth §7 pairing/cookie/CSRF, Credential Manager + ephemeral RPC auth, no implicit fallback."
       ],
       "estimated_duration_hms": "16:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
@@ -2039,7 +2043,8 @@
       "risks": "Credential leakage, неверный payer или недоказанная isolation.",
       "depends_on": [
         "PAOS-0039",
-        "PAOS-0040"
+        "PAOS-0040",
+        "PAOS-0054"
       ]
     },
     {
@@ -2073,7 +2078,8 @@
         "product-agent-os-web-auth-commercial-2026-11-09.md"
       ],
       "acceptance_criteria": [
-        "Initialize/start/events/approvals/interrupt работают на выбранном build; один writer на canonical workspace; Codex App и чужой auth profile не используются."
+        "Initialize/start/events/approvals/interrupt работают на выбранном build; один writer на canonical workspace; Codex App и чужой auth profile не используются.",
+        "Architecture §21: project cursors, root fencing/global concurrency=1, mode binding boundary, answered_or_cleared отдельно от item outcome."
       ],
       "estimated_duration_hms": "20:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
@@ -2086,7 +2092,8 @@
         "PAOS-0041",
         "PAOS-0002",
         "PAOS-0003",
-        "PAOS-0048"
+        "PAOS-0048",
+        "PAOS-0055"
       ]
     },
     {
@@ -2124,7 +2131,8 @@
         "product-agent-os-web-auth-commercial-2026-11-09.md"
       ],
       "acceptance_criteria": [
-        "SW-AC-01/03/04/08: все действия в PAOS; discussion не пишет target; Send/Stop имеют ACK; linked task содержит scope/criteria/estimate, turn success не закрывает её автоматически."
+        "SW-AC-01/03/04/08: все действия в PAOS; discussion не пишет target; Send/Stop имеют ACK; linked task содержит scope/criteria/estimate, turn success не закрывает её автоматически.",
+        "M1 Task CRUD/manual closure/Comments/History/links, read-only agent/skill catalogs, fixed Kanban, RU/EN/themes; UX owners по v0.7, без зависимости от M2 editors."
       ],
       "estimated_duration_hms": "20:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
@@ -2212,7 +2220,7 @@
         "product-agent-os-web-auth-commercial-2026-11-09.md"
       ],
       "acceptance_criteria": [
-        "SW-AC-01–10 имеют receipts; browser и actual runtime путь проверены отдельно от fixtures; Codex App закрыт; отсутствие provider authority оставляет gate pending."
+        "SW-AC-01–10, ST-AC-01–07 (M1 profile), UX-AC-01–18 (M1 slice), DATA-AC-01–05 имеют receipts по матрице v0.7; runtime/browser/workload proof отдельно от fixtures; Codex App закрыт; неразрешённые external gates pending."
       ],
       "estimated_duration_hms": "12:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
@@ -2226,8 +2234,8 @@
         "PAOS-0002",
         "PAOS-0003",
         "PAOS-0049",
-        "PAOS-0050",
-        "PAOS-0051"
+        "PAOS-0051",
+        "PAOS-0056"
       ]
     },
     {
@@ -2368,7 +2376,8 @@
       "depends_on": [
         "PAOS-0001",
         "PAOS-0002",
-        "PAOS-0003"
+        "PAOS-0003",
+        "PAOS-0054"
       ]
     },
     {
@@ -2418,10 +2427,10 @@
     {
       "id": "PAOS-0050",
       "group_id": "G12",
-      "title": "Миграция MD/JSON и переключение authority",
+      "title": "Предварительный импорт MD/JSON в staging",
       "status": "planned",
-      "short_description": "Inventory, staging import, stable mapping, validation, freeze/backup, atomic cutover и versioned Markdown export/re-import proposals",
-      "technical_value": "Inventory, staging import, stable mapping, validation, freeze/backup, atomic cutover и versioned Markdown export/re-import proposals",
+      "short_description": "Inventory, profile M1 mapping, validation и non-mutating preview; переключение authority принадлежит 0056",
+      "technical_value": "Проверить переносимость профиля M1 до остановки writers и переключения authority.",
       "product_value": "Пользователь переносит старые задачи без потери документов и понимает, где теперь редактировать данные.",
       "affected_files": [
         {
@@ -2451,9 +2460,9 @@
         "product-agent-os-web-storage-research-2026-11-09.md"
       ],
       "acceptance_criteria": [
-        "ST-02/03/07: duplicate MD/JSON, unknown fields/actors/status, source drift, invalid hierarchy, repeat import и crash boundaries; preview non-mutating; нет двух masters; unsupported writers блокируют cutover"
+        "PRD §17.2: supported schemas/fields/status mapping; MD/JSON dedup; unsupported significant data блокирует cutover; source drift, stable IDs, exact counts и preview без target mutations; authority switch не входит."
       ],
-      "estimated_duration_hms": "20:00:00",
+      "estimated_duration_hms": "12:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
       "actual_started_at": null,
       "actual_ended_at": null,
@@ -2495,7 +2504,8 @@
         "product-agent-os-web-storage-research-2026-11-09.md"
       ],
       "acceptance_criteria": [
-        "ST-08/12: missing blob/hash mismatch, disk full, incompatible schema; restore в отдельный каталог; approvals stale; no blind dispatch replay; reverse transfer сохраняет post-cutover deltas"
+        "ST-08/12: missing blob/hash mismatch, disk full, incompatible schema; restore в отдельный каталог; approvals stale; no blind dispatch replay; reverse transfer сохраняет post-cutover deltas",
+        "Architecture §21.6: visible-message retention/coverage; last 5 managed backups; restore rehearsal до 0056, secrets/runtime threads excluded."
       ],
       "estimated_duration_hms": "12:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
@@ -2505,8 +2515,7 @@
       "actual_duration_hms": null,
       "risks": "Неполный snapshot; backup на отказавшем диске; восстановление активного разрешения",
       "depends_on": [
-        "PAOS-0048",
-        "PAOS-0050"
+        "PAOS-0048"
       ]
     },
     {
@@ -2557,7 +2566,8 @@
       "depends_on": [
         "PAOS-0048",
         "PAOS-0049",
-        "PAOS-0051"
+        "PAOS-0051",
+        "PAOS-0030"
       ]
     },
     {
@@ -2606,12 +2616,153 @@
       "actual_duration_hms": null,
       "risks": "Потеря последних изменений; привязка чужих credentials; split authority",
       "depends_on": [
-        "PAOS-0050",
+        "PAOS-0056",
         "PAOS-0052"
+      ]
+    },
+    {
+      "id": "PAOS-0054",
+      "group_id": "G11",
+      "title": "Контракт совместимости M1 и runtime manifest",
+      "status": "planned",
+      "short_description": "Закрепить candidate tuple, schema/event mapping, mode policy, bootstrap и credential transport до зависимых consumers",
+      "technical_value": "Закрепить candidate tuple, schema/event mapping, mode policy, bootstrap и credential transport до зависимых consumers",
+      "product_value": "Согласованный M1 сохраняет данные и показывает достоверное состояние работы в одном окне.",
+      "affected_files": [
+        {
+          "path": "packages/contracts/runtime",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "docs/evidence/web-m1/compatibility",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-storage-research-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Architecture §21.4–21.5 и auth §7: exact versions/hashes/schema/capabilities; negative policy/secret fixtures; no provider inference без отдельного разрешения; unsupported tuple блокирует зависимые задачи."
+      ],
+      "estimated_duration_hms": "12:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Неподдержанная runtime/schema capability; потеря данных или ложный success при неполном evidence.",
+      "depends_on": [
+        "PAOS-0001"
+      ]
+    },
+    {
+      "id": "PAOS-0055",
+      "group_id": "G12",
+      "title": "Команды агентов и совместимость legacy writers",
+      "status": "planned",
+      "short_description": "Dynamic tools adapter, attribution/idempotency и inventory read/write consumers для SQL authority",
+      "technical_value": "Dynamic tools adapter, attribution/idempotency и inventory read/write consumers для SQL authority",
+      "product_value": "Согласованный M1 сохраняет данные и показывает достоверное состояние работы в одном окне.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/agent-commands",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "packages/contracts/domain-commands",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "plugins/product-agent-os/scripts/product_agent_os",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-storage-research-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "Architecture §21.3: no raw SQL/agent credentials; malformed/cross-project/stale/replay denied; legacy consumers mapped/unsupported; M1 tools не обходят manual acceptance."
+      ],
+      "estimated_duration_hms": "16:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Неподдержанная runtime/schema capability; потеря данных или ложный success при неполном evidence.",
+      "depends_on": [
+        "PAOS-0048",
+        "PAOS-0054"
+      ]
+    },
+    {
+      "id": "PAOS-0056",
+      "group_id": "G12",
+      "title": "Переключение источника задач и проверка миграции",
+      "status": "planned",
+      "short_description": "Freeze, source recheck, verified backup/restore и atomic authority epoch после staging и writer compatibility",
+      "technical_value": "Freeze, source recheck, verified backup/restore и atomic authority epoch после staging и writer compatibility",
+      "product_value": "Согласованный M1 сохраняет данные и показывает достоверное состояние работы в одном окне.",
+      "affected_files": [
+        {
+          "path": "apps/local-service/src/import-export/cutover",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "apps/web/src/projects/migration",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-storage-research-2026-11-09.md"
+      ],
+      "acceptance_criteria": [
+        "ST-AC-03–05/07 и DATA-AC-01–03: whole-project supported profile, no loss; crashes до/после commit; backup restore до switch; repeat cutover и source drift; reverse export post-cutover deltas."
+      ],
+      "estimated_duration_hms": "12:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": null,
+      "actual_ended_at": null,
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Неподдержанная runtime/schema capability; потеря данных или ложный success при неполном evidence.",
+      "depends_on": [
+        "PAOS-0050",
+        "PAOS-0051",
+        "PAOS-0055",
+        "PAOS-0044"
       ]
     }
   ],
-  "requirement_revision": "0.6",
+  "requirement_revision": "0.7",
   "issue_model_proposal": {
     "not_runtime_schema": true,
     "issue_types": [
@@ -2697,7 +2848,10 @@
       "PAOS-0048",
       "PAOS-0049",
       "PAOS-0050",
-      "PAOS-0051"
+      "PAOS-0051",
+      "PAOS-0054",
+      "PAOS-0055",
+      "PAOS-0056"
     ]
   },
   "storage_decision": {
@@ -2707,9 +2861,18 @@
     "local_semantic_search": "not_in_M1",
     "task_authority": "sql_after_verified_project_cutover",
     "team_stage": "T1_after_local_M4_not_blocking",
-    "schema_source": "product-agent-os-web-architecture-2026-11-05.md#20-хранение-схема-и-миграция--v06",
+    "schema_source": "product-agent-os-web-architecture-2026-11-05.md#21-контракты-m1-после-аудита--v07",
     "requirements": "ST-01–12",
     "acceptance_scenarios": "ST-AC-01–08",
     "implementation": "not_started"
+  },
+  "m1_contract": {
+    "status": "design_baseline_implementation_not_started",
+    "source": "PRD §17 / architecture §21 / plan v0.7",
+    "import_profile": "m1_task_profile_v1",
+    "compatibility_gate": "PAOS-0054",
+    "cutover_gate": "PAOS-0056",
+    "acceptance_task": "PAOS-0045",
+    "commercial_admission": "pending_AUTH-G1-G6"
   }
 }
