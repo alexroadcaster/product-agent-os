@@ -1,8 +1,10 @@
 # TEST.md
 
-## PAOS-AUD-G8 — планирование, 2026-11-10
+## PAOS-AUD-G8 — verification, 2026-11-10
 
-G8 verification design находится в [матрице аудита](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md): actual-context render/merge, UTF-8 boundaries, preservation map, conflict/recovery, links и synthetic E2E. Это будущие gates; текущий authoring проверяет только документы, не G8 runtime.
+G8 commands: `python -B -m unittest discover -s tests -p "test_*.py" -q`; focused `test_control_plane_documents`, `test_control_plane_compaction`, `test_document_navigation`, `test_g8_control_plane`, renderer/merge/hygiene/lifecycle/state suites. Pilot packet: `python -B -m tests.product_agent_os.test_g8_control_plane --report docs/superpowers/specs/paos-aud-g8-control-plane-results.json --baseline .codex-tmp/g8-tests/g8-baseline`. Use process-local TEMP/TMP `.codex-tmp/g8-tests`; no dependencies installed. Fixture/transcript/compatibility, docs tests/checker, task matrix and diff gates remain mandatory. Strict MkDocs builds only to `.codex-tmp/g8-tests/site`. Exact outcomes and failed attempts: [execution report](research/product-agent-os-g8-execution-report.md).
+
+Уточнение владельца 10.11.2026: подробные матрицы в `docs/planning/` сохраняются целиком, default 40k size trigger исключён; оглавления/control-plane и explicit per-file limits сохраняют ограничения. Audit matrix в `research/` остаётся целой; split отложен, прежний preview не разрешён. Единственное оставшееся решение G8 — приёмка итогового T14; fresh-session activation отдельно.
 
 ## Проверки Web M1 — актуальный маршрут 2026-11-10
 

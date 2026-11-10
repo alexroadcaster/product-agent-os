@@ -1,8 +1,10 @@
 # PLAN.md
 
-## PAOS-AUD-G8 — планирование, 2026-11-10
+## PAOS-AUD-G8 — verification / owner handoff, 2026-11-10
 
-[PAOS-AUD-G8-T01–T14](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md) — planned, implementation_not_started. Dependencies и acceptance принадлежат матрице; отдельный запрос на реализацию обязателен. Web M1 не переприоритизирован; fresh-session activation остаётся отдельной открытой HOST-задачей.
+[Матрица T01–T14](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md) владеет статусами. [Отчёт реализации](research/product-agent-os-g8-execution-report.md) содержит проверки, ограничения и сравнение. Завершить общие gates и передать T14 владельцу на приёмку; автоматического owner acceptance нет. Fresh-session activation отдельно. M1 может использовать согласованные document contracts; SQL projections и freeze cutover запрещают независимый file writer. Split текущей audit matrix отложен владельцем; её карточки не сокращены.
+
+Уточнение владельца 10.11.2026: подробные матрицы в `docs/planning/` сохраняются целиком, default 40k size trigger исключён; оглавления/control-plane и explicit per-file limits сохраняют ограничения. Audit matrix в `research/` остаётся целой; split отложен, прежний preview не разрешён. Единственное оставшееся решение G8 — приёмка итогового T14; fresh-session activation отдельно.
 
 ## Активная продуктовая очередь Web — 2026-11-10
 
@@ -47,7 +49,7 @@ G4 F05/F09/F10/F15 implemented_locally_verified. Следующая группа
   "sources": [
     {
       "path": "research/product-agent-os-audit-remediation-task-plan-2026-11-09.md",
-      "revision": "sha256:1dcc67cad22db88d0ef3d15b14921fd3dc6333dca0fb5fbaee100ff1fc5b0051",
+      "revision": "sha256:79634f87c587b8f62180717d9a73d09bb3d89b1404b0641a08f4fda7b2dfb145",
       "task_prefixes": [
         "PAOS-AUD-"
       ]

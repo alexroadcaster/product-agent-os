@@ -186,6 +186,21 @@ def _literal_read_tokens(command: str) -> list[str] | None:
 
 def _is_read_only(command: str) -> bool:
     """Recognize literal reads without granting authority to unknown shell syntax."""
+    # A bounded sequence of independently safe literal reads is still read-only.
+    # Split only outside single quotes; never execute or interpret shell code.
+    if len(command) > 32768:
+        return False
+    quoted, start, statements = False, 0, []
+    for index, char in enumerate(command):
+        if char == "'":
+            quoted = not quoted
+        elif char == ";" and not quoted:
+            statements.append(command[start:index].strip())
+            start = index + 1
+    if statements:
+        statements.append(command[start:].strip())
+        return (not quoted and len(statements) <= 16 and all(statements)
+                and all(_is_read_only(part) for part in statements))
     lexemes = _literal_read_tokens(command)
     if not lexemes:
         return False
@@ -196,7 +211,7 @@ def _is_read_only(command: str) -> bool:
             return False
         index = lexemes.index("\0PIPE")
         left, right = lexemes[:index], lexemes[index + 1:]
-        if name != "get-content" or not right:
+        if name not in {"get-content", "rg", "get-childitem"} or not right:
             return False
         if not _read_command_tokens(left):
             return False

@@ -3,11 +3,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import UTC, datetime
 import re
+import tomllib
 from pathlib import Path
 from typing import Any
 
 from product_agent_os.plugin_components import discover_plugin_components
 from product_agent_os.contracts import CONTROL_PLANE_FILES
+from product_agent_os.control_plane_documents import is_detailed_planning_matrix
 from product_agent_os.stage_manifest import content_digest
 from product_agent_os.validators import is_forbidden_secret_assignment
 
@@ -233,6 +235,9 @@ SYSTEM_FILE_CLASSES: tuple[SystemFileClass, ...] = (
         key="docs_source_control",
         label="Documentation source and evidence control files",
         patterns=(
+            "docs/index*.md", "docs/README*.md", "docs/control-plane/*.md",
+            "docs/plans/*.md", "research/*task-plan*.md",
+            "docs/planning/**/*.md",
             "docs/sources/registry*.md",
             "docs/sources/*backlog*.md",
             "docs/sources/*approval*.md",
@@ -370,18 +375,27 @@ def build_system_file_hygiene_audit(
         }
 
     seen: set[Path] = set()
+    policy: dict[str, Any] = {}
+    try:
+        config_path = workspace / ".codex/config.toml"
+        config = tomllib.loads(config_path.read_text(encoding="utf-8")) if config_path.is_file() else {}
+        policy = config.get("product_agent_os", {}).get("documents", {})
+        if not isinstance(policy, dict):
+            raise ValueError("document policy must be a table")
+    except (ValueError, OSError, UnicodeError, AttributeError) as exc:
+        findings.append(_finding("error", "document_budget_invalid", ".codex/config.toml", str(exc), None))
     for file_class in SYSTEM_FILE_CLASSES:
         for path in _iter_matching_files(workspace, file_class):
             resolved = path.resolve()
             if resolved in seen:
                 continue
             seen.add(resolved)
-            record, file_findings = _inspect_system_file(workspace, path, file_class)
+            record, file_findings = _inspect_system_file(workspace, path, file_class, policy)
             inventory.append(record)
             findings.extend(file_findings)
 
     missing_control_plane = [
-        name for name in CONTROL_PLANE_FILES if not (workspace / name).exists()
+        name for name in CONTROL_PLANE_FILES if not (workspace / name).is_file()
     ]
     for name in missing_control_plane:
         findings.append(
@@ -425,6 +439,9 @@ def system_file_class_records() -> list[dict[str, Any]]:
             "owner": item.owner,
             "soft_limit_chars": item.soft_limit_chars,
             "hard_limit_chars": item.hard_limit_chars,
+            "legacy_char_limits": "deprecated_metadata_only",
+            "soft_limit_bytes": min(item.soft_limit_chars, 32000, min(item.hard_limit_chars, 40000) * 4 // 5),
+            "hard_limit_bytes": min(item.hard_limit_chars, 40000),
             "maintenance_focus": item.maintenance_focus,
         }
         for item in SYSTEM_FILE_CLASSES
@@ -604,7 +621,9 @@ def _is_excluded(relative_path: Path) -> bool:
     return any(part in EXCLUDED_PARTS for part in relative_path.parts)
 
 
-def _inspect_system_file(root: Path, path: Path, file_class: SystemFileClass) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+def _inspect_system_file(root: Path, path: Path, file_class: SystemFileClass,
+                         policy: dict[str, Any] | None = None) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    """Measure exact UTF-8 bytes; exemptions require explicit ownership and an index."""
     relative = path.relative_to(root).as_posix()
     findings: list[dict[str, Any]] = []
     raw = b""
@@ -637,11 +656,64 @@ def _inspect_system_file(root: Path, path: Path, file_class: SystemFileClass) ->
         )
 
     chars = len(text)
+    hard_bytes = min(file_class.hard_limit_chars, 40000)
+    soft_bytes = min(file_class.soft_limit_chars, 32000, hard_bytes * 4 // 5)
+    classification = "active"
+    size_exempt = False
+    policy = policy or {}
+    try:
+        limits = policy.get("limits", {})
+        if not isinstance(limits, dict):
+            raise ValueError("document limits must be a path-to-byte-limit table")
+        limit = limits.get(relative, hard_bytes)
+        if type(limit) is not int or limit < 1:
+            raise ValueError("document byte limit must be a positive integer")
+        hard_bytes = min(hard_bytes, limit)
+        soft_bytes = min(soft_bytes, hard_bytes * 4 // 5)
+        # This is active detail, not an archive exemption. Explicit per-file
+        # project limits still override the default size-only exception.
+        if is_detailed_planning_matrix(relative, text) and relative not in limits:
+            classification = "detailed_planning_matrix"
+            size_exempt = True
+        classes = policy.get("classifications", {})
+        if not isinstance(classes, dict):
+            raise ValueError("classifications must be a path-to-record table")
+        classification_record = classes.get(relative)
+        if classification_record:
+            if not isinstance(classification_record, dict):
+                raise ValueError("classification must be a table")
+            classification = classification_record.get("kind", "")
+            if classification not in {"active", "history", "evidence", "generated", "dataset"}:
+                raise ValueError("unknown document classification")
+            if classification != "active":
+                index = classification_record.get("index", "")
+                if (relative in CONTROL_PLANE_FILES or not classification_record.get("owner")
+                        or not classification_record.get("reason") or not _safe_relative_path(index)
+                        or not (root / index).is_file() or (root / index).is_symlink()
+                        or not (root / index).resolve().is_relative_to(root.resolve())):
+                    raise ValueError("non-active classification needs owner/reason/index; root control plane stays active")
+                # A task matrix driving unresolved work cannot be exempted by
+                # renaming its folder or marking it historical.
+                if re.search(r"(?im)^- Status:\s*(planned|in_progress|blocked|partially_verified)\s*$", text):
+                    raise ValueError("active task matrix cannot be size-exempt")
+                index_text = (root / index).read_text(encoding="utf-8")
+                if Path(relative).name not in index_text:
+                    raise ValueError("classification index must reference the retained artifact")
+                size_exempt = True
+    except (ValueError, OSError, UnicodeError, AttributeError) as exc:
+        findings.append(_finding("error", "document_budget_invalid", relative, str(exc), file_class))
     lines = text.count("\n") + (1 if text else 0)
     record = {
         "path": relative,
         "class": file_class.key,
         "chars": chars,
+        "bytes": len(raw),
+        "size_unit": "utf8_bytes",
+        "soft_limit_bytes": soft_bytes,
+        "hard_limit_bytes": hard_bytes,
+        "legacy_char_limits": "deprecated_metadata_only",
+        "classification": classification,
+        "size_exempt": size_exempt,
         "lines": lines,
         "readable": True,
         "owner": file_class.owner,
@@ -649,10 +721,10 @@ def _inspect_system_file(root: Path, path: Path, file_class: SystemFileClass) ->
         "hard_limit_chars": file_class.hard_limit_chars,
         **_file_metadata(path, raw),
     }
-    if chars >= file_class.hard_limit_chars:
-        findings.append(_finding("error", "hard_size_limit_exceeded", relative, f"{chars} chars >= {file_class.hard_limit_chars}", file_class))
-    elif chars >= file_class.soft_limit_chars:
-        findings.append(_finding("warning", "soft_size_limit_exceeded", relative, f"{chars} chars >= {file_class.soft_limit_chars}", file_class))
+    if not size_exempt and len(raw) > hard_bytes:
+        findings.append(_finding("error", "hard_size_limit_exceeded", relative, f"{len(raw)} UTF-8 bytes > {hard_bytes}", file_class))
+    elif not size_exempt and len(raw) >= soft_bytes:
+        findings.append(_finding("warning", "soft_size_limit_exceeded", relative, f"{len(raw)} UTF-8 bytes >= {soft_bytes}", file_class))
     if text.startswith("\ufeff"):
         findings.append(_finding("warning", "utf8_bom_present", relative, "UTF-8 BOM should be removed from system files", file_class))
     if any(marker in text for marker in MOJIBAKE_MARKERS):
@@ -736,7 +808,8 @@ def _file_statuses(
                 "state": state,
                 "severity": severity,
                 "finding_count": len(file_findings),
-                "size": int(item.get("chars", 0)),
+                "size": int(item.get("bytes", 0)),
+                "size_unit": "utf8_bytes",
                 "line_count": int(item.get("lines", 0)),
                 "mtime_utc": str(item.get("mtime_utc", "")),
                 "age_days": age_days,

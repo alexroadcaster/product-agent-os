@@ -1227,7 +1227,7 @@ def required_templates() -> tuple[TemplateSpec, ...]:
 
 
 def selected_templates(
-    decision: dict[str, Any], existing_paths: set[str],
+    decision: dict[str, Any], existing_paths: set[str], *, evals_applicable: bool = True,
 ) -> tuple[tuple[TemplateSpec, ...], dict[str, Any]]:
     """Select staged proposals, never activate agents, hooks or automations implicitly."""
     targets: set[str] = set()
@@ -1235,12 +1235,17 @@ def selected_templates(
         targets.update({"AGENTS.md", "REQUIREMENTS.md", "PLAN.md", "TEST.md", "EVALS.md", "RUNLOG.md"})
         targets.update({".codex/artifact-templates/code-change-contract.md",
                         ".codex/artifact-templates/quality-strategy.md"})
+        if not evals_applicable:
+            targets.discard("EVALS.md")
     elif not ({"AGENTS.md", "AGENTS.override.md"} & existing_paths):
         targets.update({"AGENTS.md", "REQUIREMENTS.md"})
     # Existing ordinary projects reuse their task/evidence sections, including
     # inline compact contracts; they do not need an extra file per decision.
     selected = tuple(item for item in _TEMPLATES if item.target_path in targets)
     report = {
+        "selection_reasons": {path: ("applicable_quality_rubric" if path == "EVALS.md" else
+                                     "risk_selected_code_contract" if path.startswith(".codex/") else
+                                     "current_project_information_owner") for path in sorted(targets)},
         "mode": decision["mode"], "registry_count": len(_TEMPLATES),
         "selected": [item.target_path for item in selected],
         "omitted": [{"target_path": item.target_path,

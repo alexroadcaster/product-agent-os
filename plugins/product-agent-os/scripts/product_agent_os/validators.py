@@ -370,12 +370,35 @@ def validate_lifecycle_packet_text(text: str, kind: str) -> list[str]:
     return errors
 
 
-def validate_control_plane(root: Path) -> dict[str, Any]:
-    missing = [name for name in CONTROL_PLANE_FILES if not (root / name).exists()]
-    return {
-        "ok": not missing,
-        "missing": missing,
-    }
+def validate_control_plane(
+    root: Path, *, mode: str = "structural", receipts: dict[str, Any] | None = None,
+    required_documents: list[str] | None = None,
+) -> dict[str, Any]:
+    """Structural compatibility is explicit; semantic mode never infers acceptance."""
+    from product_agent_os.control_plane_documents import document_readiness
+
+    if mode not in {"structural", "semantic"}:
+        raise ValueError("unsupported control-plane validation mode")
+    required = list(CONTROL_PLANE_FILES) if required_documents is None else required_documents
+    if not required or any(name not in CONTROL_PLANE_FILES for name in required):
+        raise ValueError("explicit known document scope required")
+    missing = [name for name in required if not (root / name).is_file()]
+    result: dict[str, Any] = {"ok": not missing, "missing": missing, "mode": mode}
+    if mode == "semantic":
+        documents = {}
+        for name in required:
+            if name in missing:
+                documents[name] = {"state": "missing", "errors": ["regular file required"]}
+                continue
+            try:
+                text = (root / name).read_bytes().decode("utf-8")
+                documents[name] = document_readiness(name, text, (receipts or {}).get(name))
+            except (OSError, UnicodeError) as exc:
+                documents[name] = {"state": "unreadable", "errors": [type(exc).__name__]}
+        result["documents"] = documents
+        result["ok"] = all(doc["state"] in {"draft", "reviewed", "accepted"} for doc in documents.values())
+        result["claim_ceiling"] = "content_complete_not_owner_acceptance"
+    return result
 
 
 def validate_agent_file(
@@ -799,10 +822,14 @@ def print_json(payload: dict[str, Any]) -> int:
 
 
 def main_control_plane(argv: list[str]) -> int:
-    if any(arg in {"-h", "--help"} for arg in argv):
-        print("usage: validate_control_plane.py [workspace]")
-        return 0
-    root = Path(argv[0]) if argv else Path.cwd()
+    import argparse
+    parser = argparse.ArgumentParser(description="Validate explicit document scope; structural mode is legacy compatibility.")
+    parser.add_argument('workspace', nargs='?', default='.')
+    parser.add_argument('--semantic', action='store_true')
+    parser.add_argument('--document', action='append', choices=CONTROL_PLANE_FILES,
+                        help='Applicable canonical document; repeat to match the staged selection.')
+    args = parser.parse_args(argv)
+    root = Path(args.workspace)
     if not root.exists():
         return print_json(
             {
@@ -821,7 +848,8 @@ def main_control_plane(argv: list[str]) -> int:
                 "errors": ["workspace is not a directory"],
             }
         )
-    result = validate_control_plane(root)
+    result = validate_control_plane(root, mode="semantic" if args.semantic else "structural",
+                                    required_documents=args.document)
     result["root"] = str(root)
     result["errors"] = []
     return print_json(result)

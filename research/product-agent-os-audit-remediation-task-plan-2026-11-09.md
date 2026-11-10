@@ -6,7 +6,7 @@ Document ID: `PAOS-AUDIT-REMEDIATION-2026-11-09`. Authoring task: `PAOS-AUDIT-TA
 
 ## Назначение и источники
 
-В документе **8 групп и 48 карточек**: 18 задач по F01–F18, пять существующих B45-CQRR-T30–T34, три этапа host/usefulness, восемь задач G7 по качеству реализации и 14 задач G8 по control plane. Для каждой группы и задачи указаны ID, название, описание, техническое и продуктовое значение, затрагиваемые файлы и критерии приёмки. Поля task_matrix_plan_v1 сохраняют совместимость с существующим validator. G7 закрыта с owner acceptance; G8 добавлена 10.11.2026 как planned, без реализации; открытые gates и статусы G6 сохранены.
+В документе **8 групп и 48 карточек**: 18 задач по F01–F18, пять существующих B45-CQRR-T30–T34, три этапа host/usefulness, восемь задач G7 по качеству реализации и 14 задач G8 по control plane. Для каждой группы и задачи указаны ID, название, описание, техническое и продуктовое значение, затрагиваемые файлы и критерии приёмки. Поля task_matrix_plan_v1 сохраняют совместимость с существующим validator. G7 закрыта с owner acceptance; G8 реализуется по разрешению 10.11.2026; T01–T13 implemented локально, T14 awaiting owner acceptance; открытые gates и статусы G6 сохранены.
 
 - [Полный аудит 09.11.2026](product-agent-os-full-audit-2026-11-09.md): F01–F18 и границы evidence.
 - [Последующее исправление lifecycle по чатам](product-agent-os-session-lifecycle-fix-2026-11-09.md): выполненные session isolation и exact marker bootstrap.
@@ -38,7 +38,7 @@ Document ID: `PAOS-AUDIT-REMEDIATION-2026-11-09`. Authoring task: `PAOS-AUDIT-TA
 
 ## Порядок, зависимости и ускорение
 
-G7 закрыта с owner acceptance; её исторический порядок и evidence сохранены в карточках. G8 — planned продолжение по двум анализам control plane; зависимости указаны в разделе G8. Локальные задачи G8 не требуют завершения G6 целиком; T34, HOST-01/HOST-02 и G6 owner acceptance сохраняют свои gates.
+G7 закрыта с owner acceptance; её исторический порядок и evidence сохранены в карточках. G8 — разрешённая реализация по двум анализам control plane; зависимости указаны в разделе G8. Локальные задачи G8 не требуют завершения G6 целиком; T34, HOST-01/HOST-02 и G6 owner acceptance сохраняют свои gates.
 
 1. G1 и G2 — первые local corrective slices. G3 можно вести независимо по core files; shared control-plane обновляется последовательно.
 2. В G1 не объединять все guard changes в один неразличимый diff: F06 → F18; generated hooks F12 проверяется на согласованном контракте. F07 и F11 независимы и не требуют настоящих ACL/rules activation для code-level проверки.
@@ -2215,10 +2215,10 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 
 - ID: PAOS-AUD-G8
 - Название: Адаптивные control-plane документы, навигация и сокращение без потери данных.
-- Описание: Реализовать выводы двух анализов: модуля формирования файлов и структуры документов трёх проектов. Это новый planned scope; сохранение плана не разрешает реализацию.
+- Описание: Реализовать выводы двух анализов: модуля формирования файлов и структуры документов трёх проектов. Реализация разрешена владельцем 10.11.2026; T14 требует отдельной приёмки результата.
 - Техническое значение: Единый контракт генерации, содержательной проверки, provenance, byte budget, безопасного merge/compaction и восстановления.
 - Продуктовое значение: Пользователь получает актуальные обозримые документы, находит решения и продолжает большие проекты без потери истории.
-- Статус: planned; 14 задач; implementation_not_started.
+- Статус: in_progress; T01–T13 implemented локально с уточнением docs/planning; T14 result acceptance pending; needs_user_acceptance до явного решения владельца.
 - Затрагиваемые файлы: точные scope карточек ниже; directory scopes уточняются file manifest перед соответствующей реализацией.
 - Критерии приёмки группы: T01–T13 выполнены по собственным gates; T14 содержит сравнение baseline/treatment, результаты отрицательных сценариев и явное решение владельца. Сохранность данных обязательна; размер сам по себе не успех.
 - Зависимости: переиспользовать PAOS-AUD-F12 merge protections, F03/F08/F16 source ownership, F05/F09/F10 ordinary routing и G7-T04/T05 guards/routing. Не переоткрывать их без воспроизводимой регрессии. HOST-01/HOST-02, T34 и весь G6 не блокируют локальные G8 fixtures. Web M1 остаётся отдельной очередью, порядок между очередями этим планом не меняется.
@@ -2240,7 +2240,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 
 ### Контракт лимита и сохранности G8
 
-Это требования будущей реализации, не изменение действующих hooks/config. **40 КБ = 40 000 UTF-8 bytes** для активного документа; warning 32 000, stricter project budget имеет приоритет. Не использовать число символов или 40 KiB как эквивалент. Сокращение означает перенос в owning artifacts и компактные pointers, а не удаление фактов. Активные задачи, acceptance, approvals, gates, решения и негативное evidence сохраняются с provenance; original bytes доступны для восстановления. Archive/evidence могут превышать лимит по явной классификации, но должны быть индексированы; active matrix не освобождается от будущей декомпозиции простым переименованием в archive. Эта расширенная матрица сегодня сохраняется в существующем формате; её безопасное разделение относится к T09, не выполняется при authoring.
+Это контракт реализованных локальных механизмов; fresh-session loading hooks/config остаётся отдельной проверкой. **40 КБ = 40 000 UTF-8 bytes** для активного документа; warning 32 000, stricter project budget имеет приоритет. Не использовать число символов или 40 KiB как эквивалент. Сокращение означает перенос в owning artifacts и компактные pointers, а не удаление фактов. Активные задачи, acceptance, approvals, gates, решения и негативное evidence сохраняются с provenance; original bytes доступны для восстановления. Archive/evidence могут превышать лимит по явной классификации, но должны быть индексированы; Подробные матрицы в docs/planning/ сохраняются целиком и исключены из default size trigger; они остаются active detail. Оглавления и control-plane сохраняют лимит. Переименование иной active matrix в archive не создаёт исключение. Эта расширенная матрица сегодня сохраняется в существующем формате; по решению владельца 10.11.2026 её разделение отложено и не входит в оставшееся закрытие G8; прежний preview не разрешён к применению.
 
 Порядок: T01 → T02 → T03 → T04 → T05; T01 → T06 → T07 → T08; T02/T07 → T09 → T10 → T11; T06/T07 → T12; T05/T08/T10/T11/T12 → T13 → T14. Shared files изменяются последовательно. Указанные роли не означают запуск subagents.
 
@@ -2263,12 +2263,12 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Scope: **Затрагиваемые файлы:** contracts.py; templates.py; docs/product-agent-os/technical.md. Bare module names относятся к `plugins/product-agent-os/scripts/product_agent_os/`, `scripts/` и `assets/` — к plugin root; остальные paths workspace-relative. Соответствующий existing test: `tests/product_agent_os/test_infrastructure_templates.py`. Directory scope уточнить до file manifest перед edits.
 - Acceptance criteria: **Критерии приёмки:** 1) Inventory покрывает шесть control-plane файлов и существующие docs; указаны purpose, owner, required/conditional sections, inputs, outputs и update triggers. 2) Разделены durable rules, current scope, task queue, checks, evals, handoff и history. 3) Status, evidence и owner acceptance не смешиваются; существующие canonical owners переиспользованы. 4) Определены schema version/migration и совместимость существующих названий; новый обязательный реестр не создаётся без доказанной необходимости.
 - Group: PAOS-AUD-G8
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Запрос владельца 10.11.2026 сохранить G8 на основании двух анализов; реализация пока не разрешена.
+- Plan trigger: Запрос владельца 10.11.2026 выполнить G8 полностью; отдельные owner acceptance и adoption gates сохраняются.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 10-11-2026 17:41
 - Depends on: Нет внутренних prerequisites; inherited contracts перечислены в разделе группы.
 - Blocks: PAOS-AUD-G8-T02; PAOS-AUD-G8-T06; PAOS-AUD-G8-T07; PAOS-AUD-G8-T09
 - Source: G8-S01, G8-S02; traceability и границы наблюдений указаны в разделе группы.
@@ -2279,21 +2279,21 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Complexity: medium
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
 - Agents: architect — основной владелец slice; primary согласует shared files; independent review только при разрешённом dispatch, owner принимает результат T14.
-- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Сейчас только планирование.
+- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Implementation approved; canonical skills and Python guidance applied.
 - Output artifacts: Изменённые owning files из Scope; evidence в proposed G8 execution report/results и краткий RUNLOG pointer; отдельный дублирующий ledger не создавать.
-- Next step: После отдельного запроса на реализацию уточнить baseline/file ownership, выполнить acceptance scenarios и записать фактические результаты.
+- Next step: Итоговые verification receipts и решение владельца по T14; research matrix retained unsplit по решению владельца.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не выполнялась; сохранена только карточка будущей задачи.
-- files touched / work locations: Implementation files не изменены этой карточкой; authoring выполнен в общей матрице.
-- technical value delivered: not_delivered; описан ожидаемый результат.
-- product value delivered: not_delivered; требуется реализация и проверка.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: not_run для реализации; проверка матрицы не является behavioral evidence.
-- residual risks: Acceptance не проверены; сохраняются указанные approval и data-preservation gates.
-- follow-up: Отдельный implementation request; owner acceptance группы только в T14.
+- status: implemented
+- what was done: Контракт владельцев/полей/schema v1 и conditional docs inventory.
+- files touched / work locations: Owning implementation/test/workflow paths mapped per card in research/product-agent-os-g8-execution-report.md; source hashes in docs/superpowers/specs/paos-aud-g8-control-plane-results.json.
+- technical value delivered: Local contract implemented: Контракт владельцев/полей/schema v1 и conditional docs inventory.
+- product value delivered: Актуальные компактные документы, явная готовность и восстановимая история в проверенных synthetic сценариях.
+- actual implementation date and time: 10-11-2026 17:41
+- verification evidence: Focused verification and synthetic comparisons recorded in G8 execution report/results; final integrated receipts belong to that report.
+- residual risks: Synthetic/local evidence only; T14 owner acceptance pending; fresh-session activation separate; research matrix split deferred by owner; docs/planning detailed matrices remain intact; actual M1 integration owned by M1.
+- follow-up: T14 owner acceptance; research matrix remains unsplit by owner decision; separate fresh-session activation.
 
 ### Task `PAOS-AUD-G8-T02`
 
@@ -2305,12 +2305,12 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Scope: **Затрагиваемые файлы:** templates.py; task_routing.py; assets/templates/control-plane/; assets/templates/workflows/. Bare module names относятся к `plugins/product-agent-os/scripts/product_agent_os/`, `scripts/` и `assets/` — к plugin root; остальные paths workspace-relative. Соответствующий existing test: `tests/product_agent_os/test_infrastructure_templates.py`. Directory scope уточнить до file manifest перед edits.
 - Acceptance criteria: **Критерии приёмки:** 1) Ordinary route переиспользует документы; full route объясняет каждый добавленный файл. 2) Каждая ссылка на config/workflow/template разрешается в существующий файл, staged companion либо явный gap. 3) AGENTS содержит durable routing, без task ledger. 4) Conditional EVALS, architecture, decisions и operations не создаются пустыми ради комплектности. 5) Hooks/automation не активируются при генерации.
 - Group: PAOS-AUD-G8
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Запрос владельца 10.11.2026 сохранить G8 на основании двух анализов; реализация пока не разрешена.
+- Plan trigger: Запрос владельца 10.11.2026 выполнить G8 полностью; отдельные owner acceptance и adoption gates сохраняются.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 10-11-2026 17:41
 - Depends on: PAOS-AUD-G8-T01
 - Blocks: PAOS-AUD-G8-T03; PAOS-AUD-G8-T09
 - Source: G8-S01, G8-S03; traceability и границы наблюдений указаны в разделе группы.
@@ -2321,21 +2321,21 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Complexity: medium
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
 - Agents: plugin-runtime-builder — основной владелец slice; primary согласует shared files; independent review только при разрешённом dispatch, owner принимает результат T14.
-- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Сейчас только планирование.
+- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Implementation approved; canonical skills and Python guidance applied.
 - Output artifacts: Изменённые owning files из Scope; evidence в proposed G8 execution report/results и краткий RUNLOG pointer; отдельный дублирующий ledger не создавать.
-- Next step: После dependencies и отдельного запроса на реализацию уточнить baseline/file ownership, выполнить acceptance scenarios и записать фактические результаты.
+- Next step: Итоговые verification receipts и решение владельца по T14; research matrix retained unsplit по решению владельца.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не выполнялась; сохранена только карточка будущей задачи.
-- files touched / work locations: Implementation files не изменены этой карточкой; authoring выполнен в общей матрице.
-- technical value delivered: not_delivered; описан ожидаемый результат.
-- product value delivered: not_delivered; требуется реализация и проверка.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: not_run для реализации; проверка матрицы не является behavioral evidence.
-- residual risks: Acceptance не проверены; сохраняются указанные approval и data-preservation gates.
-- follow-up: Отдельный implementation request; owner acceptance группы только в T14.
+- status: implemented
+- what was done: Scoped templates, conditional EVALS, per-file reasons и dependency-gap diagnostics.
+- files touched / work locations: Owning implementation/test/workflow paths mapped per card in research/product-agent-os-g8-execution-report.md; source hashes in docs/superpowers/specs/paos-aud-g8-control-plane-results.json.
+- technical value delivered: Local contract implemented: Scoped templates, conditional EVALS, per-file reasons и dependency-gap diagnostics.
+- product value delivered: Актуальные компактные документы, явная готовность и восстановимая история в проверенных synthetic сценариях.
+- actual implementation date and time: 10-11-2026 17:41
+- verification evidence: Focused verification and synthetic comparisons recorded in G8 execution report/results; final integrated receipts belong to that report.
+- residual risks: Synthetic/local evidence only; T14 owner acceptance pending; fresh-session activation separate; research matrix split deferred by owner; docs/planning detailed matrices remain intact; actual M1 integration owned by M1.
+- follow-up: T14 owner acceptance; research matrix remains unsplit by owner decision; separate fresh-session activation.
 
 ### Task `PAOS-AUD-G8-T03`
 
@@ -2347,12 +2347,12 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Scope: **Затрагиваемые файлы:** templates.py; validators.py; discovery.py; scripts/validate_control_plane.py. Bare module names относятся к `plugins/product-agent-os/scripts/product_agent_os/`, `scripts/` и `assets/` — к plugin root; остальные paths workspace-relative. Соответствующий existing test: `tests/product_agent_os/test_validators.py`. Directory scope уточнить до file manifest перед edits.
 - Acceptance criteria: **Критерии приёмки:** 1) Approved решения, scope, IDs, constraints и acceptance переносятся с provenance; неизвестное отмечается missing, не выдумывается. 2) Directory вместо файла, пустой файл и незаполненный scaffold не проходят readiness. 3) Отдельны scaffold/draft/reviewed/accepted/stale; accepted требует owner evidence. 4) RU/EN headings не меняют смысл. 5) Legacy structural validation сохраняется с явным mode и не выдаётся за semantic validation.
 - Group: PAOS-AUD-G8
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Запрос владельца 10.11.2026 сохранить G8 на основании двух анализов; реализация пока не разрешена.
+- Plan trigger: Запрос владельца 10.11.2026 выполнить G8 полностью; отдельные owner acceptance и adoption gates сохраняются.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 10-11-2026 17:41
 - Depends on: PAOS-AUD-G8-T02
 - Blocks: PAOS-AUD-G8-T04; PAOS-AUD-G8-T10
 - Source: G8-S01; traceability и границы наблюдений указаны в разделе группы.
@@ -2363,21 +2363,21 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Complexity: high
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
 - Agents: plugin-runtime-builder — основной владелец slice; primary согласует shared files; independent review только при разрешённом dispatch, owner принимает результат T14.
-- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Сейчас только планирование.
+- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Implementation approved; canonical skills and Python guidance applied.
 - Output artifacts: Изменённые owning files из Scope; evidence в proposed G8 execution report/results и краткий RUNLOG pointer; отдельный дублирующий ledger не создавать.
-- Next step: После dependencies и отдельного запроса на реализацию уточнить baseline/file ownership, выполнить acceptance scenarios и записать фактические результаты.
+- Next step: Итоговые verification receipts и решение владельца по T14; research matrix retained unsplit по решению владельца.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не выполнялась; сохранена только карточка будущей задачи.
-- files touched / work locations: Implementation files не изменены этой карточкой; authoring выполнен в общей матрице.
-- technical value delivered: not_delivered; описан ожидаемый результат.
-- product value delivered: not_delivered; требуется реализация и проверка.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: not_run для реализации; проверка матрицы не является behavioral evidence.
-- residual risks: Acceptance не проверены; сохраняются указанные approval и data-preservation gates.
-- follow-up: Отдельный implementation request; owner acceptance группы только в T14.
+- status: implemented
+- what was done: Provenance population и semantic readiness с digest-bound review/owner receipts.
+- files touched / work locations: Owning implementation/test/workflow paths mapped per card in research/product-agent-os-g8-execution-report.md; source hashes in docs/superpowers/specs/paos-aud-g8-control-plane-results.json.
+- technical value delivered: Local contract implemented: Provenance population и semantic readiness с digest-bound review/owner receipts.
+- product value delivered: Актуальные компактные документы, явная готовность и восстановимая история в проверенных synthetic сценариях.
+- actual implementation date and time: 10-11-2026 17:41
+- verification evidence: Focused verification and synthetic comparisons recorded in G8 execution report/results; final integrated receipts belong to that report.
+- residual risks: Synthetic/local evidence only; T14 owner acceptance pending; fresh-session activation separate; research matrix split deferred by owner; docs/planning detailed matrices remain intact; actual M1 integration owned by M1.
+- follow-up: T14 owner acceptance; research matrix remains unsplit by owner decision; separate fresh-session activation.
 
 ### Task `PAOS-AUD-G8-T04`
 
@@ -2389,12 +2389,12 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Scope: **Затрагиваемые файлы:** templates.py; merge_markdown.py; merge_infrastructure.py; stage_manifest.py. Bare module names относятся к `plugins/product-agent-os/scripts/product_agent_os/`, `scripts/` и `assets/` — к plugin root; остальные paths workspace-relative. Соответствующий existing test: `tests/product_agent_os/test_merge_markdown.py`. Directory scope уточнить до file manifest перед edits.
 - Acceptance criteria: **Критерии приёмки:** 1) Полный managed body не заменяется пустым шаблоном. 2) Template version/baseline и изменения пользователя дают безопасный merge либо явный conflict. 3) User-authored regions сохраняются byte-for-byte. 4) Повторный запуск идемпотентен, нет diff только из-за времени. 5) Missing/duplicate/malformed markers приводят к conflict без записи. 6) Dirty незакоммиченные данные входят в baseline.
 - Group: PAOS-AUD-G8
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Запрос владельца 10.11.2026 сохранить G8 на основании двух анализов; реализация пока не разрешена.
+- Plan trigger: Запрос владельца 10.11.2026 выполнить G8 полностью; отдельные owner acceptance и adoption gates сохраняются.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 10-11-2026 17:41
 - Depends on: PAOS-AUD-G8-T03
 - Blocks: PAOS-AUD-G8-T05; PAOS-AUD-G8-T08
 - Source: G8-S01, G8-S03; traceability и границы наблюдений указаны в разделе группы.
@@ -2405,21 +2405,21 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Complexity: high
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
 - Agents: plugin-runtime-builder — основной владелец slice; primary согласует shared files; independent review только при разрешённом dispatch, owner принимает результат T14.
-- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Сейчас только планирование.
+- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Implementation approved; canonical skills and Python guidance applied.
 - Output artifacts: Изменённые owning files из Scope; evidence в proposed G8 execution report/results и краткий RUNLOG pointer; отдельный дублирующий ledger не создавать.
-- Next step: После dependencies и отдельного запроса на реализацию уточнить baseline/file ownership, выполнить acceptance scenarios и записать фактические результаты.
+- Next step: Итоговые verification receipts и решение владельца по T14; research matrix retained unsplit по решению владельца.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не выполнялась; сохранена только карточка будущей задачи.
-- files touched / work locations: Implementation files не изменены этой карточкой; authoring выполнен в общей матрице.
-- technical value delivered: not_delivered; описан ожидаемый результат.
-- product value delivered: not_delivered; требуется реализация и проверка.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: not_run для реализации; проверка матрицы не является behavioral evidence.
-- residual risks: Acceptance не проверены; сохраняются указанные approval и data-preservation gates.
-- follow-up: Отдельный implementation request; owner acceptance группы только в T14.
+- status: implemented
+- what was done: Сохранение filled managed body и companion-only bulk merge, без автоматической замены.
+- files touched / work locations: Owning implementation/test/workflow paths mapped per card in research/product-agent-os-g8-execution-report.md; source hashes in docs/superpowers/specs/paos-aud-g8-control-plane-results.json.
+- technical value delivered: Local contract implemented: Сохранение filled managed body и companion-only bulk merge, без автоматической замены.
+- product value delivered: Актуальные компактные документы, явная готовность и восстановимая история в проверенных synthetic сценариях.
+- actual implementation date and time: 10-11-2026 17:41
+- verification evidence: Focused verification and synthetic comparisons recorded in G8 execution report/results; final integrated receipts belong to that report.
+- residual risks: Synthetic/local evidence only; T14 owner acceptance pending; fresh-session activation separate; research matrix split deferred by owner; docs/planning detailed matrices remain intact; actual M1 integration owned by M1.
+- follow-up: T14 owner acceptance; research matrix remains unsplit by owner decision; separate fresh-session activation.
 
 ### Task `PAOS-AUD-G8-T05`
 
@@ -2431,12 +2431,12 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Scope: **Затрагиваемые файлы:** infrastructure.py; stage_manifest.py; scripts/render_infrastructure.py. Bare module names относятся к `plugins/product-agent-os/scripts/product_agent_os/`, `scripts/` и `assets/` — к plugin root; остальные paths workspace-relative. Соответствующий existing test: `tests/product_agent_os/test_infrastructure_renderer.py`. Directory scope уточнить до file manifest перед edits.
 - Acceptance criteria: **Критерии приёмки:** 1) Dry-run и stage на одном baseline дают одинаковые selection, dependencies, byte sizes и validation outcomes. 2) Validation использует actual project context и merged text; synthetic validation context не маскирует ошибку. 3) Dry-run не пишет в target; stage находится вне target. 4) Unicode paths и Markdown escaping покрыты. 5) Изменившийся target делает старый preview stale.
 - Group: PAOS-AUD-G8
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Запрос владельца 10.11.2026 сохранить G8 на основании двух анализов; реализация пока не разрешена.
+- Plan trigger: Запрос владельца 10.11.2026 выполнить G8 полностью; отдельные owner acceptance и adoption gates сохраняются.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 10-11-2026 17:41
 - Depends on: PAOS-AUD-G8-T04
 - Blocks: PAOS-AUD-G8-T13
 - Source: G8-S01; traceability и границы наблюдений указаны в разделе группы.
@@ -2447,21 +2447,21 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Complexity: medium
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
 - Agents: tester — основной владелец slice; primary согласует shared files; independent review только при разрешённом dispatch, owner принимает результат T14.
-- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Сейчас только планирование.
+- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Implementation approved; canonical skills and Python guidance applied.
 - Output artifacts: Изменённые owning files из Scope; evidence в proposed G8 execution report/results и краткий RUNLOG pointer; отдельный дублирующий ledger не создавать.
-- Next step: После dependencies и отдельного запроса на реализацию уточнить baseline/file ownership, выполнить acceptance scenarios и записать фактические результаты.
+- Next step: Итоговые verification receipts и решение владельца по T14; research matrix retained unsplit по решению владельца.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не выполнялась; сохранена только карточка будущей задачи.
-- files touched / work locations: Implementation files не изменены этой карточкой; authoring выполнен в общей матрице.
-- technical value delivered: not_delivered; описан ожидаемый результат.
-- product value delivered: not_delivered; требуется реализация и проверка.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: not_run для реализации; проверка матрицы не является behavioral evidence.
-- residual risks: Acceptance не проверены; сохраняются указанные approval и data-preservation gates.
-- follow-up: Отдельный implementation request; owner acceptance группы только в T14.
+- status: implemented
+- what was done: Actual-content dry-run/stage validation, deterministic bytes и stale-target guards.
+- files touched / work locations: Owning implementation/test/workflow paths mapped per card in research/product-agent-os-g8-execution-report.md; source hashes in docs/superpowers/specs/paos-aud-g8-control-plane-results.json.
+- technical value delivered: Local contract implemented: Actual-content dry-run/stage validation, deterministic bytes и stale-target guards.
+- product value delivered: Актуальные компактные документы, явная готовность и восстановимая история в проверенных synthetic сценариях.
+- actual implementation date and time: 10-11-2026 17:41
+- verification evidence: Focused verification and synthetic comparisons recorded in G8 execution report/results; final integrated receipts belong to that report.
+- residual risks: Synthetic/local evidence only; T14 owner acceptance pending; fresh-session activation separate; research matrix split deferred by owner; docs/planning detailed matrices remain intact; actual M1 integration owned by M1.
+- follow-up: T14 owner acceptance; research matrix remains unsplit by owner decision; separate fresh-session activation.
 
 ### Task `PAOS-AUD-G8-T06`
 
@@ -2471,14 +2471,14 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Technical value: **Техническое значение (для проекта):** Делает лимит измеримым и согласованным во всех surfaces.
 - Product value: **Продуктовое значение (для пользователя):** Рабочие документы сохраняют обозримый размер.
 - Scope: **Затрагиваемые файлы:** system_file_hygiene.py; scripts/validate_system_file_hygiene.py; assets/templates/workflows/runlog-compaction.md; .codex/workflows/runlog-compaction.md. Bare module names относятся к `plugins/product-agent-os/scripts/product_agent_os/`, `scripts/` и `assets/` — к plugin root; остальные paths workspace-relative. Соответствующий existing test: `tests/product_agent_os/test_system_file_hygiene.py`. Directory scope уточнить до file manifest перед edits.
-- Acceptance criteria: **Критерии приёмки:** 1) Default hard budget 40 000 bytes UTF-8, warning 32 000; ровно 40 000 допустимо, 40 001 требует proposal. 2) Более строгий project limit сохраняется, включая 20 000 в Trade; старые char/50KiB настройки имеют явную миграцию. 3) Проверены 39 999/40 000/40 001, RU/EN/emoji/BOM/CRLF. 4) Политика покрывает активные control-plane и navigation files; большие active plans делятся по T09. 5) History/evidence/generated/datasets классифицированы отдельно, исключение имеет owner/reason, не скрывает active dump. 6) Превышение не удаляет данные и не блокирует read-only inspection.
+- Acceptance criteria: **Критерии приёмки:** 1) Default hard budget 40 000 bytes UTF-8, warning 32 000; ровно 40 000 допустимо, 40 001 требует proposal. 2) Более строгий project limit сохраняется, включая 20 000 в Trade; старые char/50KiB настройки имеют явную миграцию. 3) Проверены 39 999/40 000/40 001, RU/EN/emoji/BOM/CRLF. 4) Политика покрывает активные control-plane и navigation files; подробные матрицы docs/planning/ сохраняются целиком; exception не применяется к оглавлениям, корневым файлам или explicit per-file limits. 5) History/evidence/generated/datasets классифицированы отдельно, исключение имеет owner/reason, не скрывает active dump. 6) Превышение не удаляет данные и не блокирует read-only inspection.
 - Group: PAOS-AUD-G8
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Запрос владельца 10.11.2026 сохранить G8 на основании двух анализов; реализация пока не разрешена.
+- Plan trigger: Запрос владельца 10.11.2026 выполнить G8 полностью; отдельные owner acceptance и adoption gates сохраняются.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 10-11-2026 17:41
 - Depends on: PAOS-AUD-G8-T01
 - Blocks: PAOS-AUD-G8-T07; PAOS-AUD-G8-T12
 - Source: G8-S04, G8-S05, G8-S06; traceability и границы наблюдений указаны в разделе группы.
@@ -2489,21 +2489,21 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Complexity: medium
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
 - Agents: plugin-runtime-builder — основной владелец slice; primary согласует shared files; independent review только при разрешённом dispatch, owner принимает результат T14.
-- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Сейчас только планирование.
+- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Implementation approved; canonical skills and Python guidance applied.
 - Output artifacts: Изменённые owning files из Scope; evidence в proposed G8 execution report/results и краткий RUNLOG pointer; отдельный дублирующий ledger не создавать.
-- Next step: После dependencies и отдельного запроса на реализацию уточнить baseline/file ownership, выполнить acceptance scenarios и записать фактические результаты.
+- Next step: Итоговые verification receipts и решение владельца по T14; research matrix retained unsplit по решению владельца.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не выполнялась; сохранена только карточка будущей задачи.
-- files touched / work locations: Implementation files не изменены этой карточкой; authoring выполнен в общей матрице.
-- technical value delivered: not_delivered; описан ожидаемый результат.
-- product value delivered: not_delivered; требуется реализация и проверка.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: not_run для реализации; проверка матрицы не является behavioral evidence.
-- residual risks: Acceptance не проверены; сохраняются указанные approval и data-preservation gates.
-- follow-up: Отдельный implementation request; owner acceptance группы только в T14.
+- status: implemented
+- what was done: UTF-8 budget 40000/32000, stricter limits, RU/EN/emoji/BOM/CRLF, indexed exemptions и size-only exception для подробных docs/planning matrices.
+- files touched / work locations: Owning implementation/test/workflow paths mapped per card in research/product-agent-os-g8-execution-report.md; source hashes in docs/superpowers/specs/paos-aud-g8-control-plane-results.json.
+- technical value delivered: Local contract implemented: UTF-8 budget 40000/32000, stricter limits, RU/EN/emoji/BOM/CRLF, indexed exemptions и size-only exception для подробных docs/planning matrices.
+- product value delivered: Актуальные компактные документы, явная готовность и восстановимая история в проверенных synthetic сценариях.
+- actual implementation date and time: 10-11-2026 17:41
+- verification evidence: Focused verification and synthetic comparisons recorded in G8 execution report/results; final integrated receipts belong to that report.
+- residual risks: Synthetic/local evidence only; T14 owner acceptance pending; fresh-session activation separate; research matrix split deferred by owner; docs/planning detailed matrices remain intact; actual M1 integration owned by M1.
+- follow-up: T14 owner acceptance; research matrix remains unsplit by owner decision; separate fresh-session activation.
 
 ### Task `PAOS-AUD-G8-T07`
 
@@ -2515,12 +2515,12 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Scope: **Затрагиваемые файлы:** system_file_hygiene.py; assets/templates/workflows/runlog-compaction.md; .codex/workflows/control-plane-sync.md. Bare module names относятся к `plugins/product-agent-os/scripts/product_agent_os/`, `scripts/` и `assets/` — к plugin root; остальные paths workspace-relative. Соответствующий existing test: `tests/product_agent_os/test_system_file_hygiene.py`. Directory scope уточнить до file manifest перед edits.
 - Acceptance criteria: **Критерии приёмки:** 1) Read-only proposal содержит before hashes/bytes, точный diff, after forecast, destination и retention reason для каждого перенесённого блока. 2) Lossless baseline включает dirty/untracked input; Git history не единственный backup. 3) Сохраняются task IDs/DAG, ограничения, approvals, открытые gates, negative attempts, evidence hashes и owner decisions. 4) Существующий owning artifact переиспользуется; semantic summary не заменяет original evidence. 5) Неопределённая классификация останавливает перенос блока. 6) Backup не расширяет disclosure/storage boundary; восстановимость проверяется до apply.
 - Group: PAOS-AUD-G8
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Запрос владельца 10.11.2026 сохранить G8 на основании двух анализов; реализация пока не разрешена.
+- Plan trigger: Запрос владельца 10.11.2026 выполнить G8 полностью; отдельные owner acceptance и adoption gates сохраняются.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 10-11-2026 17:41
 - Depends on: PAOS-AUD-G8-T01; PAOS-AUD-G8-T06
 - Blocks: PAOS-AUD-G8-T08; PAOS-AUD-G8-T09; PAOS-AUD-G8-T12
 - Source: G8-S04, G8-S05, G8-S06; traceability и границы наблюдений указаны в разделе группы.
@@ -2531,21 +2531,21 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Complexity: high
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
 - Agents: architect — основной владелец slice; primary согласует shared files; independent review только при разрешённом dispatch, owner принимает результат T14.
-- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Сейчас только планирование.
+- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Implementation approved; canonical skills and Python guidance applied.
 - Output artifacts: Изменённые owning files из Scope; evidence в proposed G8 execution report/results и краткий RUNLOG pointer; отдельный дублирующий ledger не создавать.
-- Next step: После dependencies и отдельного запроса на реализацию уточнить baseline/file ownership, выполнить acceptance scenarios и записать фактические результаты.
+- Next step: Итоговые verification receipts и решение владельца по T14; research matrix retained unsplit по решению владельца.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не выполнялась; сохранена только карточка будущей задачи.
-- files touched / work locations: Implementation files не изменены этой карточкой; authoring выполнен в общей матрице.
-- technical value delivered: not_delivered; описан ожидаемый результат.
-- product value delivered: not_delivered; требуется реализация и проверка.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: not_run для реализации; проверка матрицы не является behavioral evidence.
-- residual risks: Acceptance не проверены; сохраняются указанные approval и data-preservation gates.
-- follow-up: Отдельный implementation request; owner acceptance группы только в T14.
+- status: implemented
+- what was done: Lossless proposal, before/after bytes, diff, preservation map и independent conservation replay.
+- files touched / work locations: Owning implementation/test/workflow paths mapped per card in research/product-agent-os-g8-execution-report.md; source hashes in docs/superpowers/specs/paos-aud-g8-control-plane-results.json.
+- technical value delivered: Local contract implemented: Lossless proposal, before/after bytes, diff, preservation map и independent conservation replay.
+- product value delivered: Актуальные компактные документы, явная готовность и восстановимая история в проверенных synthetic сценариях.
+- actual implementation date and time: 10-11-2026 17:41
+- verification evidence: Focused verification and synthetic comparisons recorded in G8 execution report/results; final integrated receipts belong to that report.
+- residual risks: Synthetic/local evidence only; T14 owner acceptance pending; fresh-session activation separate; research matrix split deferred by owner; docs/planning detailed matrices remain intact; actual M1 integration owned by M1.
+- follow-up: T14 owner acceptance; research matrix remains unsplit by owner decision; separate fresh-session activation.
 
 ### Task `PAOS-AUD-G8-T08`
 
@@ -2557,12 +2557,12 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Scope: **Затрагиваемые файлы:** merge_infrastructure.py; stage_manifest.py; system_file_hygiene.py. Bare module names относятся к `plugins/product-agent-os/scripts/product_agent_os/`, `scripts/` и `assets/` — к plugin root; остальные paths workspace-relative. Соответствующий existing test: `tests/product_agent_os/test_merge_infrastructure.py`. Directory scope уточнить до file manifest перед edits.
 - Acceptance criteria: **Критерии приёмки:** 1) Explicit apply authority привязана к точному manifest; source/destination hashes проверяются перед записью. 2) Shared files имеют одного writer; concurrent changes дают conflict, не перезапись. 3) Journal/staging и fault injection подтверждают recovery после сбоя между записями; multi-file atomicity не заявляется без proof. 4) Rollback восстанавливает исходные bytes и корректно обрабатывает созданные файлы, сохраняя чужие изменения. 5) Повторный apply безопасен; path traversal, junction/symlink и Windows case collisions отклоняются. 6) Нет автоматического удаления истории; завершение только после сохранности, links и size checks.
 - Group: PAOS-AUD-G8
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Запрос владельца 10.11.2026 сохранить G8 на основании двух анализов; реализация пока не разрешена.
+- Plan trigger: Запрос владельца 10.11.2026 выполнить G8 полностью; отдельные owner acceptance и adoption gates сохраняются.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 10-11-2026 17:41
 - Depends on: PAOS-AUD-G8-T04; PAOS-AUD-G8-T07
 - Blocks: PAOS-AUD-G8-T13
 - Source: G8-S03, G8-S04; traceability и границы наблюдений указаны в разделе группы.
@@ -2573,21 +2573,21 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Complexity: high
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
 - Agents: plugin-runtime-builder — основной владелец slice; primary согласует shared files; independent review только при разрешённом dispatch, owner принимает результат T14.
-- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Сейчас только планирование.
+- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Implementation approved; canonical skills and Python guidance applied.
 - Output artifacts: Изменённые owning files из Scope; evidence в proposed G8 execution report/results и краткий RUNLOG pointer; отдельный дублирующий ledger не создавать.
-- Next step: После dependencies и отдельного запроса на реализацию уточнить baseline/file ownership, выполнить acceptance scenarios и записать фактические результаты.
+- Next step: Итоговые verification receipts и решение владельца по T14; research matrix retained unsplit по решению владельца.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не выполнялась; сохранена только карточка будущей задачи.
-- files touched / work locations: Implementation files не изменены этой карточкой; authoring выполнен в общей матрице.
-- technical value delivered: not_delivered; описан ожидаемый результат.
-- product value delivered: not_delivered; требуется реализация и проверка.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: not_run для реализации; проверка матрицы не является behavioral evidence.
-- residual risks: Acceptance не проверены; сохраняются указанные approval и data-preservation gates.
-- follow-up: Отдельный implementation request; owner acceptance группы только в T14.
+- status: implemented
+- what was done: Exact-digest apply, CAS/lock/journal, process-crash recovery, rollback и конфликтные сценарии.
+- files touched / work locations: Owning implementation/test/workflow paths mapped per card in research/product-agent-os-g8-execution-report.md; source hashes in docs/superpowers/specs/paos-aud-g8-control-plane-results.json.
+- technical value delivered: Local contract implemented: Exact-digest apply, CAS/lock/journal, process-crash recovery, rollback и конфликтные сценарии.
+- product value delivered: Актуальные компактные документы, явная готовность и восстановимая история в проверенных synthetic сценариях.
+- actual implementation date and time: 10-11-2026 17:41
+- verification evidence: Focused verification and synthetic comparisons recorded in G8 execution report/results; final integrated receipts belong to that report.
+- residual risks: Synthetic/local evidence only; T14 owner acceptance pending; fresh-session activation separate; research matrix split deferred by owner; docs/planning detailed matrices remain intact; actual M1 integration owned by M1.
+- follow-up: T14 owner acceptance; research matrix remains unsplit by owner decision; separate fresh-session activation.
 
 ### Task `PAOS-AUD-G8-T09`
 
@@ -2597,14 +2597,14 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Technical value: **Техническое значение (для проекта):** Снижает дублирование и сохраняет ссылки при росте проекта.
 - Product value: **Продуктовое значение (для пользователя):** Следующий исполнитель быстро находит нужный контракт и evidence.
 - Scope: **Затрагиваемые файлы:** assets/templates/control-plane/; assets/templates/workflows/project-formation.md; docs/product-agent-os/architecture.md; task_plan_lifecycle.py. Bare module names относятся к `plugins/product-agent-os/scripts/product_agent_os/`, `scripts/` и `assets/` — к plugin root; остальные paths workspace-relative. Соответствующий existing test: `tests/product_agent_os/test_task_plan_lifecycle.py`. Directory scope уточнить до file manifest перед edits.
-- Acceptance criteria: **Критерии приёмки:** 1) docs index ведёт к актуальным requirements, architecture/components, ADR, contracts/data, operations/runbooks, verification/evidence и archive только по применимости. 2) Для каждого conditional файла определены trigger, owner и canonical source; docs taxonomy адаптируется к существующей структуре. 3) Большие active task matrices делятся на группы с сохранением IDs, dependencies и текущего selector. 4) Incoming links/anchors получают проверенную migration map/redirect; старые receipts доступны. 5) Архив не превращается в новый безымянный мегадокумент; карта и поиск поддерживают историю. 6) Применение к текущей audit matrix отдельно согласуется при реализации, сегодняшние карточки не сокращаются.
+- Acceptance criteria: **Критерии приёмки:** 1) docs index ведёт к актуальным requirements, architecture/components, ADR, contracts/data, operations/runbooks, verification/evidence и archive только по применимости. 2) Для каждого conditional файла определены trigger, owner и canonical source; docs taxonomy адаптируется к существующей структуре. 3) Механизм разделения доступен только для отдельно согласованных документов с сохранением IDs, dependencies и selector; подробные матрицы docs/planning/ не делятся из-за размера. 4) Incoming links/anchors получают проверенную migration map/redirect; старые receipts доступны. 5) Архив не превращается в новый безымянный мегадокумент; карта и поиск поддерживают историю. 6) Решение владельца 10.11.2026: текущую audit matrix в research/ не разделять; карточки и layout сохранены, preview остаётся историческим предложением.
 - Group: PAOS-AUD-G8
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Запрос владельца 10.11.2026 сохранить G8 на основании двух анализов; реализация пока не разрешена.
+- Plan trigger: Запрос владельца 10.11.2026 выполнить G8 полностью; отдельные owner acceptance и adoption gates сохраняются.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 10-11-2026 17:41
 - Depends on: PAOS-AUD-G8-T01; PAOS-AUD-G8-T02; PAOS-AUD-G8-T07
 - Blocks: PAOS-AUD-G8-T10; PAOS-AUD-G8-T11
 - Source: G8-S05, G8-S06, G8-S07; traceability и границы наблюдений указаны в разделе группы.
@@ -2615,21 +2615,21 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Complexity: high
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
 - Agents: docs-maintainer — основной владелец slice; primary согласует shared files; independent review только при разрешённом dispatch, owner принимает результат T14.
-- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Сейчас только планирование.
+- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Implementation approved; canonical skills and Python guidance applied.
 - Output artifacts: Изменённые owning files из Scope; evidence в proposed G8 execution report/results и краткий RUNLOG pointer; отдельный дублирующий ledger не создавать.
-- Next step: После dependencies и отдельного запроса на реализацию уточнить baseline/file ownership, выполнить acceptance scenarios и записать фактические результаты.
+- Next step: Итоговые verification receipts и решение владельца по T14; research matrix retained unsplit по решению владельца.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не выполнялась; сохранена только карточка будущей задачи.
-- files touched / work locations: Implementation files не изменены этой карточкой; authoring выполнен в общей матрице.
-- technical value delivered: not_delivered; описан ожидаемый результат.
-- product value delivered: not_delivered; требуется реализация и проверка.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: not_run для реализации; проверка матрицы не является behavioral evidence.
-- residual risks: Acceptance не проверены; сохраняются указанные approval и data-preservation gates.
-- follow-up: Отдельный implementation request; owner acceptance группы только в T14.
+- status: implemented
+- what was done: Adaptive docs navigation и whole-card split/anchor migration; actual matrix preview сохранён как исторический; владелец оставил research matrix целой; docs/planning detailed matrices exempt.
+- files touched / work locations: Owning implementation/test/workflow paths mapped per card in research/product-agent-os-g8-execution-report.md; source hashes in docs/superpowers/specs/paos-aud-g8-control-plane-results.json.
+- technical value delivered: Local contract implemented: Adaptive docs navigation и whole-card split/anchor migration; actual matrix preview сохранён как исторический; владелец оставил research matrix целой; docs/planning detailed matrices exempt.
+- product value delivered: Актуальные компактные документы, явная готовность и восстановимая история в проверенных synthetic сценариях.
+- actual implementation date and time: 10-11-2026 17:41
+- verification evidence: Focused verification and synthetic comparisons recorded in G8 execution report/results; final integrated receipts belong to that report.
+- residual risks: Synthetic/local evidence only; T14 owner acceptance pending; fresh-session activation separate; research matrix split deferred by owner; docs/planning detailed matrices remain intact; actual M1 integration owned by M1.
+- follow-up: T14 owner acceptance; research matrix remains unsplit by owner decision; separate fresh-session activation.
 
 ### Task `PAOS-AUD-G8-T10`
 
@@ -2641,12 +2641,12 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Scope: **Затрагиваемые файлы:** discovery.py; task_plan_lifecycle.py; scripts/codex_runtime_runner/state.py; docs/product-agent-os/control-plane-current-state.md. Bare module names относятся к `plugins/product-agent-os/scripts/product_agent_os/`, `scripts/` и `assets/` — к plugin root; остальные paths workspace-relative. Соответствующий existing test: `tests/product_agent_os/test_codex_runtime_runner_state_routes.py`. Directory scope уточнить до file manifest перед edits.
 - Acceptance criteria: **Критерии приёмки:** 1) README/start-here и root pointers не хранят конкурирующие statuses. 2) Legacy state не выводит готовность только из английского heading/config presence. 3) Current source/revision и historical receipt различимы; missing/stale/unknown не превращаются в pass. 4) Accepted decisions не отменяются только из-за возраста. 5) Повторённые blocks дают diagnostic; semantic dedup требует review, не автоматическое удаление. 6) Существующий current-state механизм переиспользован без второго status registry.
 - Group: PAOS-AUD-G8
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Запрос владельца 10.11.2026 сохранить G8 на основании двух анализов; реализация пока не разрешена.
+- Plan trigger: Запрос владельца 10.11.2026 выполнить G8 полностью; отдельные owner acceptance и adoption gates сохраняются.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 10-11-2026 17:41
 - Depends on: PAOS-AUD-G8-T03; PAOS-AUD-G8-T09
 - Blocks: PAOS-AUD-G8-T11; PAOS-AUD-G8-T13
 - Source: G8-S01, G8-S06, G8-S07; traceability и границы наблюдений указаны в разделе группы.
@@ -2657,21 +2657,21 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Complexity: medium
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
 - Agents: plugin-runtime-builder — основной владелец slice; primary согласует shared files; independent review только при разрешённом dispatch, owner принимает результат T14.
-- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Сейчас только планирование.
+- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Implementation approved; canonical skills and Python guidance applied.
 - Output artifacts: Изменённые owning files из Scope; evidence в proposed G8 execution report/results и краткий RUNLOG pointer; отдельный дублирующий ledger не создавать.
-- Next step: После dependencies и отдельного запроса на реализацию уточнить baseline/file ownership, выполнить acceptance scenarios и записать фактические результаты.
+- Next step: Итоговые verification receipts и решение владельца по T14; research matrix retained unsplit по решению владельца.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не выполнялась; сохранена только карточка будущей задачи.
-- files touched / work locations: Implementation files не изменены этой карточкой; authoring выполнен в общей матрице.
-- technical value delivered: not_delivered; описан ожидаемый результат.
-- product value delivered: not_delivered; требуется реализация и проверка.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: not_run для реализации; проверка матрицы не является behavioral evidence.
-- residual risks: Acceptance не проверены; сохраняются указанные approval и data-preservation gates.
-- follow-up: Отдельный implementation request; owner acceptance группы только в T14.
+- status: implemented
+- what was done: Legacy heading readiness удалена; source-bound state и duplicate diagnostics.
+- files touched / work locations: Owning implementation/test/workflow paths mapped per card in research/product-agent-os-g8-execution-report.md; source hashes in docs/superpowers/specs/paos-aud-g8-control-plane-results.json.
+- technical value delivered: Local contract implemented: Legacy heading readiness удалена; source-bound state и duplicate diagnostics.
+- product value delivered: Актуальные компактные документы, явная готовность и восстановимая история в проверенных synthetic сценариях.
+- actual implementation date and time: 10-11-2026 17:41
+- verification evidence: Focused verification and synthetic comparisons recorded in G8 execution report/results; final integrated receipts belong to that report.
+- residual risks: Synthetic/local evidence only; T14 owner acceptance pending; fresh-session activation separate; research matrix split deferred by owner; docs/planning detailed matrices remain intact; actual M1 integration owned by M1.
+- follow-up: T14 owner acceptance; research matrix remains unsplit by owner decision; separate fresh-session activation.
 
 ### Task `PAOS-AUD-G8-T11`
 
@@ -2683,12 +2683,12 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Scope: **Затрагиваемые файлы:** validators.py; docs/product-agent-os/technical.md; tools/check_docs.py; tests/product_agent_os/test_product_agent_os_docs.py. Bare module names относятся к `plugins/product-agent-os/scripts/product_agent_os/`, `scripts/` и `assets/` — к plugin root; остальные paths workspace-relative. Соответствующий existing test: `tests/product_agent_os/test_product_agent_os_docs.py`. Directory scope уточнить до file manifest перед edits.
 - Acceptance criteria: **Критерии приёмки:** 1) Mirror содержит canonical path/revision и read-only drift check; copied AGENTS не создаёт unintended instruction scope. 2) Required evidence доступно в declared clean-checkout/offline profile; local optional evidence явно отделено. 3) Cross-repo refs имеют repo identity, relative path, revision и claim boundary; unavailable source даёт unknown. 4) Проверка не копирует приватные данные или абсолютные пользовательские пути в fixtures. 5) Известные G6/G7 docs links вне docs_dir классифицированы и исправлены в owning navigation без изменения historical outcomes; strict build по применимости.
 - Group: PAOS-AUD-G8
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Запрос владельца 10.11.2026 сохранить G8 на основании двух анализов; реализация пока не разрешена.
+- Plan trigger: Запрос владельца 10.11.2026 выполнить G8 полностью; отдельные owner acceptance и adoption gates сохраняются.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 10-11-2026 17:41
 - Depends on: PAOS-AUD-G8-T09; PAOS-AUD-G8-T10
 - Blocks: PAOS-AUD-G8-T13
 - Source: G8-S05, G8-S06, G8-S07, G8-S08; traceability и границы наблюдений указаны в разделе группы.
@@ -2699,21 +2699,21 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Complexity: medium
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
 - Agents: docs-maintainer — основной владелец slice; primary согласует shared files; independent review только при разрешённом dispatch, owner принимает результат T14.
-- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Сейчас только планирование.
+- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Implementation approved; canonical skills and Python guidance applied.
 - Output artifacts: Изменённые owning files из Scope; evidence в proposed G8 execution report/results и краткий RUNLOG pointer; отдельный дублирующий ledger не создавать.
-- Next step: После dependencies и отдельного запроса на реализацию уточнить baseline/file ownership, выполнить acceptance scenarios и записать фактические результаты.
+- Next step: Итоговые verification receipts и решение владельца по T14; research matrix retained unsplit по решению владельца.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не выполнялась; сохранена только карточка будущей задачи.
-- files touched / work locations: Implementation files не изменены этой карточкой; authoring выполнен в общей матрице.
-- technical value delivered: not_delivered; описан ожидаемый результат.
-- product value delivered: not_delivered; требуется реализация и проверка.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: not_run для реализации; проверка матрицы не является behavioral evidence.
-- residual risks: Acceptance не проверены; сохраняются указанные approval и data-preservation gates.
-- follow-up: Отдельный implementation request; owner acceptance группы только в T14.
+- status: implemented
+- what was done: Mirror/reference/offline-bundle checks и исправление G6/G7 navigation без изменения результатов.
+- files touched / work locations: Owning implementation/test/workflow paths mapped per card in research/product-agent-os-g8-execution-report.md; source hashes in docs/superpowers/specs/paos-aud-g8-control-plane-results.json.
+- technical value delivered: Local contract implemented: Mirror/reference/offline-bundle checks и исправление G6/G7 navigation без изменения результатов.
+- product value delivered: Актуальные компактные документы, явная готовность и восстановимая история в проверенных synthetic сценариях.
+- actual implementation date and time: 10-11-2026 17:41
+- verification evidence: Focused verification and synthetic comparisons recorded in G8 execution report/results; final integrated receipts belong to that report.
+- residual risks: Synthetic/local evidence only; T14 owner acceptance pending; fresh-session activation separate; research matrix split deferred by owner; docs/planning detailed matrices remain intact; actual M1 integration owned by M1.
+- follow-up: T14 owner acceptance; research matrix remains unsplit by owner decision; separate fresh-session activation.
 
 ### Task `PAOS-AUD-G8-T12`
 
@@ -2723,14 +2723,14 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Technical value: **Техническое значение (для проекта):** Поддерживает компактность после каждого следующего изменения.
 - Product value: **Продуктовое значение (для пользователя):** После закрытой задачи можно исследовать проект без обхода guards.
 - Scope: **Затрагиваемые файлы:** system_file_hygiene.py; .codex/workflows/control-plane-sync.md; .codex/hooks/pre_tool_use_policy.py; assets/templates/workflows/control-plane-sync.md; assets/templates/hooks/. Bare module names относятся к `plugins/product-agent-os/scripts/product_agent_os/`, `scripts/` и `assets/` — к plugin root; остальные paths workspace-relative. Соответствующий existing test: `tests/product_agent_os/test_lifecycle_hooks.py`. Directory scope уточнить до file manifest перед edits.
-- Acceptance criteria: **Критерии приёмки:** 1) Changed-document check предлагает maintenance при превышении лимита; повторное разрастание обнаруживается. 2) Read-only команды после terminal marker разрешены без нового mutation grant. 3) Новая mutation требует корректного own-session scope marker; foreign/mixed markers и unknown mutating wrappers остаются fail-closed. 4) Approval/path/secret protections не ослабляются. 5) Maintenance не становится обязательным full packet для каждого вопроса. 6) Automation/manual promotion boundaries сохранены; cache/host activation не входит в slice.
+- Acceptance criteria: **Критерии приёмки:** 1) Changed-document check предлагает maintenance при превышении применимого лимита; docs/planning detailed matrices исключены из default size trigger; повторное разрастание обнаруживается. 2) Read-only команды после terminal marker разрешены без нового mutation grant. 3) Новая mutation требует корректного own-session scope marker; foreign/mixed markers и unknown mutating wrappers остаются fail-closed. 4) Approval/path/secret protections не ослабляются. 5) Maintenance не становится обязательным full packet для каждого вопроса. 6) Automation/manual promotion boundaries сохранены; cache/host activation не входит в slice.
 - Group: PAOS-AUD-G8
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Запрос владельца 10.11.2026 сохранить G8 на основании двух анализов; реализация пока не разрешена.
+- Plan trigger: Запрос владельца 10.11.2026 выполнить G8 полностью; отдельные owner acceptance и adoption gates сохраняются.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 10-11-2026 17:41
 - Depends on: PAOS-AUD-G8-T06; PAOS-AUD-G8-T07
 - Blocks: PAOS-AUD-G8-T13
 - Source: G8-S03, G8-S04; traceability и границы наблюдений указаны в разделе группы.
@@ -2741,21 +2741,21 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Complexity: high
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
 - Agents: plugin-runtime-builder — основной владелец slice; primary согласует shared files; independent review только при разрешённом dispatch, owner принимает результат T14.
-- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Сейчас только планирование.
+- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Implementation approved; canonical skills and Python guidance applied.
 - Output artifacts: Изменённые owning files из Scope; evidence в proposed G8 execution report/results и краткий RUNLOG pointer; отдельный дублирующий ledger не создавать.
-- Next step: После dependencies и отдельного запроса на реализацию уточнить baseline/file ownership, выполнить acceptance scenarios и записать фактические результаты.
+- Next step: Итоговые verification receipts и решение владельца по T14; research matrix retained unsplit по решению владельца.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не выполнялась; сохранена только карточка будущей задачи.
-- files touched / work locations: Implementation files не изменены этой карточкой; authoring выполнен в общей матрице.
-- technical value delivered: not_delivered; описан ожидаемый результат.
-- product value delivered: not_delivered; требуется реализация и проверка.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: not_run для реализации; проверка матрицы не является behavioral evidence.
-- residual risks: Acceptance не проверены; сохраняются указанные approval и data-preservation gates.
-- follow-up: Отдельный implementation request; owner acceptance группы только в T14.
+- status: implemented
+- what was done: Active/package 40k workflows, repeated-growth checks и terminal read-only guard regressions.
+- files touched / work locations: Owning implementation/test/workflow paths mapped per card in research/product-agent-os-g8-execution-report.md; source hashes in docs/superpowers/specs/paos-aud-g8-control-plane-results.json.
+- technical value delivered: Local contract implemented: Active/package 40k workflows, repeated-growth checks и terminal read-only guard regressions.
+- product value delivered: Актуальные компактные документы, явная готовность и восстановимая история в проверенных synthetic сценариях.
+- actual implementation date and time: 10-11-2026 17:41
+- verification evidence: Focused verification and synthetic comparisons recorded in G8 execution report/results; final integrated receipts belong to that report.
+- residual risks: Synthetic/local evidence only; T14 owner acceptance pending; fresh-session activation separate; research matrix split deferred by owner; docs/planning detailed matrices remain intact; actual M1 integration owned by M1.
+- follow-up: T14 owner acceptance; research matrix remains unsplit by owner decision; separate fresh-session activation.
 
 ### Task `PAOS-AUD-G8-T13`
 
@@ -2767,12 +2767,12 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Scope: **Затрагиваемые файлы:** tests/fixtures/product_agent_os/g8-control-plane/ (proposed new); tests/product_agent_os/test_g8_control_plane.py (proposed new); docs/superpowers/specs/paos-aud-g8-control-plane-results.json (proposed new). Bare module names относятся к `plugins/product-agent-os/scripts/product_agent_os/`, `scripts/` и `assets/` — к plugin root; остальные paths workspace-relative. Соответствующий existing test: `tests/product_agent_os/test_g8_control_plane.py` (proposed new). Directory scope уточнить до file manifest перед edits.
 - Acceptance criteria: **Критерии приёмки:** 1) Три synthetic profiles: Trade-like большая history/строгий budget, myPartners-like mirrors/AI gates, site-like duplicates/cross-repo refs. 2) Frozen cases: initial render → fill → regeneration → new task → overflow → proposal → approved local apply → resume. 3) Negative controls: потеря gate/ID/evidence, stale hash, broken link, interrupted write, conflicting writer, duplicate marker. 4) Byte-for-byte recovery и сохранность critical facts проверены независимым от summary oracle. 5) Baseline/treatment имеют одинаковые inputs; failed cases и denominators сохранены. 6) Только synthetic local workspace, никаких writes в реальные три проекта; HOST-01 не prerequisite и activation не доказана.
 - Group: PAOS-AUD-G8
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Запрос владельца 10.11.2026 сохранить G8 на основании двух анализов; реализация пока не разрешена.
+- Plan trigger: Запрос владельца 10.11.2026 выполнить G8 полностью; отдельные owner acceptance и adoption gates сохраняются.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 10-11-2026 17:41
 - Depends on: PAOS-AUD-G8-T05; PAOS-AUD-G8-T08; PAOS-AUD-G8-T10; PAOS-AUD-G8-T11; PAOS-AUD-G8-T12
 - Blocks: PAOS-AUD-G8-T14
 - Source: G8-S01–G8-S08; traceability и границы наблюдений указаны в разделе группы.
@@ -2783,21 +2783,21 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Complexity: high
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
 - Agents: tester — основной владелец slice; primary согласует shared files; independent review только при разрешённом dispatch, owner принимает результат T14.
-- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Сейчас только планирование.
+- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Implementation approved; canonical skills and Python guidance applied.
 - Output artifacts: Изменённые owning files из Scope; evidence в proposed G8 execution report/results и краткий RUNLOG pointer; отдельный дублирующий ledger не создавать.
-- Next step: После dependencies и отдельного запроса на реализацию уточнить baseline/file ownership, выполнить acceptance scenarios и записать фактические результаты.
+- Next step: Итоговые verification receipts и решение владельца по T14; research matrix retained unsplit по решению владельца.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не выполнялась; сохранена только карточка будущей задачи.
-- files touched / work locations: Implementation files не изменены этой карточкой; authoring выполнен в общей матрице.
-- technical value delivered: not_delivered; описан ожидаемый результат.
-- product value delivered: not_delivered; требуется реализация и проверка.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: not_run для реализации; проверка матрицы не является behavioral evidence.
-- residual risks: Acceptance не проверены; сохраняются указанные approval и data-preservation gates.
-- follow-up: Отдельный implementation request; owner acceptance группы только в T14.
+- status: implemented
+- what was done: Три frozen synthetic profiles, controlled pre-G8/G8 comparison, source-bound JSON и negative controls.
+- files touched / work locations: Owning implementation/test/workflow paths mapped per card in research/product-agent-os-g8-execution-report.md; source hashes in docs/superpowers/specs/paos-aud-g8-control-plane-results.json.
+- technical value delivered: Local contract implemented: Три frozen synthetic profiles, controlled pre-G8/G8 comparison, source-bound JSON и negative controls.
+- product value delivered: Актуальные компактные документы, явная готовность и восстановимая история в проверенных synthetic сценариях.
+- actual implementation date and time: 10-11-2026 17:41
+- verification evidence: Focused verification and synthetic comparisons recorded in G8 execution report/results; final integrated receipts belong to that report.
+- residual risks: Synthetic/local evidence only; T14 owner acceptance pending; fresh-session activation separate; research matrix split deferred by owner; docs/planning detailed matrices remain intact; actual M1 integration owned by M1.
+- follow-up: T14 owner acceptance; research matrix remains unsplit by owner decision; separate fresh-session activation.
 
 ### Task `PAOS-AUD-G8-T14`
 
@@ -2809,12 +2809,12 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Scope: **Затрагиваемые файлы:** docs/product-agent-os/technical.md; docs/product-agent-os/technical.en.md; docs/product-agent-os/architecture.md; docs/product-agent-os/architecture.en.md; docs/sources/registry.md; docs/sources/registry.en.md; research/product-agent-os-g8-execution-report.md (proposed new); root control-plane pointers. Bare module names относятся к `plugins/product-agent-os/scripts/product_agent_os/`, `scripts/` и `assets/` — к plugin root; остальные paths workspace-relative. Соответствующий existing test: `tests/product_agent_os/test_product_agent_os_docs.py`. Directory scope уточнить до file manifest перед edits.
 - Acceptance criteria: **Критерии приёмки:** 1) Все T01–T13 имеют evidence в пределах acceptance; blocked/partial не скрыты общим score. 2) Сравнение показывает before/after UTF-8 bytes, полноту фактов, navigation/link correctness, recovery и усилие следующего изменения; token/cost savings только при измерении. 3) Active/package templates/workflows и RU/EN claims согласованы; G1–G7 evidence сохранено. 4) Owner явно принимает результаты/accepted gaps; при отсутствии решения статус needs_user_acceptance. 5) Fresh-session activation отдельно, T34 no-go и G6 acceptance не закрываются G8. 6) Нет автопубликации, target adoption или broad production claim.
 - Group: PAOS-AUD-G8
-- Status: planned
+- Status: in_progress
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Запрос владельца 10.11.2026 сохранить G8 на основании двух анализов; реализация пока не разрешена.
+- Plan trigger: Запрос владельца 10.11.2026 выполнить G8 полностью; отдельные owner acceptance и adoption gates сохраняются.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 10-11-2026 17:41
 - Depends on: PAOS-AUD-G8-T13
 - Blocks: Приёмка G8; отдельные HOST/production gates не закрывает.
 - Source: G8-S01–G8-S08; traceability и границы наблюдений указаны в разделе группы.
@@ -2825,18 +2825,18 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Complexity: high
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
 - Agents: reviewer — основной владелец slice; primary согласует shared files; independent review только при разрешённом dispatch, owner принимает результат T14.
-- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Сейчас только планирование.
+- Skills: canonical implementation-planner; task-matching repository lifecycle skills; для будущих Python edits python-design-patterns/python-code-style. Implementation approved; canonical skills and Python guidance applied.
 - Output artifacts: Изменённые owning files из Scope; evidence в proposed G8 execution report/results и краткий RUNLOG pointer; отдельный дублирующий ledger не создавать.
-- Next step: После dependencies и отдельного запроса на реализацию уточнить baseline/file ownership, выполнить acceptance scenarios и записать фактические результаты.
+- Next step: Итоговые verification receipts и решение владельца по T14; research matrix retained unsplit по решению владельца.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не выполнялась; сохранена только карточка будущей задачи.
-- files touched / work locations: Implementation files не изменены этой карточкой; authoring выполнен в общей матрице.
-- technical value delivered: not_delivered; описан ожидаемый результат.
-- product value delivered: not_delivered; требуется реализация и проверка.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: not_run для реализации; проверка матрицы не является behavioral evidence.
-- residual risks: Acceptance не проверены; сохраняются указанные approval и data-preservation gates.
-- follow-up: Отдельный implementation request; owner acceptance группы только в T14.
+- status: in_progress
+- what was done: Итоговый comparison/report, source ownership, docs/control-plane sync; owner decision ожидается.
+- files touched / work locations: Owning implementation/test/workflow paths mapped per card in research/product-agent-os-g8-execution-report.md; source hashes in docs/superpowers/specs/paos-aud-g8-control-plane-results.json.
+- technical value delivered: Local contract implemented: Итоговый comparison/report, source ownership, docs/control-plane sync; owner decision ожидается.
+- product value delivered: Актуальные компактные документы, явная готовность и восстановимая история в проверенных synthetic сценариях.
+- actual implementation date and time: 10-11-2026 17:41
+- verification evidence: Focused verification and synthetic comparisons recorded in G8 execution report/results; final integrated receipts belong to that report.
+- residual risks: Synthetic/local evidence only; T14 owner acceptance pending; fresh-session activation separate; research matrix split deferred by owner; docs/planning detailed matrices remain intact; actual M1 integration owned by M1.
+- follow-up: T14 owner acceptance; research matrix remains unsplit by owner decision; separate fresh-session activation.

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "design_status": "frozen_before_pilot_execution",
+  "evidence_ceiling": "local_synthetic_not_host_activation_or_real_project_adoption",
+  "profiles": [
+    {"id": "trade-like", "budget": 20000, "evals_required": false, "history_rows": 1600},
+    {"id": "mypartners-like", "budget": 40000, "evals_required": true, "history_rows": 1800},
+    {"id": "site-like", "budget": 40000, "evals_required": false, "history_rows": 2000}
+  ],
+  "required_scenarios": ["actual_stage_merge", "filled_regeneration_preserved", "new_requirement", "byte_overflow", "proposal_read_only", "stale_conflict", "approved_synthetic_apply", "recovery_exact_bytes", "continued_next_task", "domain_navigation"],
+  "acceptance": {"lost_original_bytes": 0, "lost_current_gates": 0, "unapproved_target_writes": 0, "all_required_scenarios": true},
+  "comparison": "Same synthetic document before/after compaction; current legacy-template route versus scoped document route. Not a historical model A/B.",
+  "non_goals": ["real project mutation", "provider calls", "automatic owner acceptance", "cost or token superiority"]
+}

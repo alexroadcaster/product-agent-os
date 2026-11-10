@@ -56,3 +56,6 @@ Thumbs.db
 .env.*
 !.env.example
 !.env.template
+
+# Local G8 test workspaces, logs and source-private recovery proposals
+/.codex-tmp/g8-tests/

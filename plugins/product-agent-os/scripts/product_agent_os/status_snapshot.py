@@ -155,8 +155,11 @@ def _current_state(workspace: Path | None, generated_at: str) -> dict[str, Any]:
         if not isinstance(pointer, dict) or pointer.get("schema_version") != 1 or set(pointer) != {"schema_version", "sources"}:
             raise ValueError("invalid_current_pointer")
         sources = pointer["sources"]
-        if not isinstance(sources, list) or not 1 <= len(sources) <= 8:
+        # Compact task groups may need more source files. Keep the original
+        # aggregate read ceiling (8 * 2 MiB), rather than multiplying it by 32.
+        if not isinstance(sources, list) or not 1 <= len(sources) <= 32:
             raise ValueError("invalid_current_sources")
+        total_source_bytes = 0
         for ref in sources:
             if not isinstance(ref, dict) or not {"path", "revision"} <= set(ref) or set(ref) - {"path", "revision", "task_prefixes"} or not isinstance(ref["revision"], str) or not _REVISION.fullmatch(ref["revision"]):
                 raise ValueError("invalid_source_reference")
@@ -167,6 +170,9 @@ def _current_state(workspace: Path | None, generated_at: str) -> dict[str, Any]:
             if not isinstance(path, str) or not path.endswith((".json", ".md")) or not path.startswith(("docs/superpowers/", "research/")):
                 raise ValueError("unsupported_source_path")
             content = _read_current_source(root, path)
+            total_source_bytes += len(content)
+            if total_source_bytes > 16 * 1024 * 1024:
+                raise ValueError("current_source_byte_limit")
             revision = "sha256:" + hashlib.sha256(content).hexdigest()
             if revision != ref["revision"]:
                 raise ValueError("source_revision_mismatch")

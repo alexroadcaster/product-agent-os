@@ -102,7 +102,7 @@ RUNLOG_FILE = ROOT / "RUNLOG.md"
 AGENTS_FILE = ROOT / "AGENTS.md"
 CONTROL_PLANE_CURRENT_STATE = PRODUCT_AGENT_OS / "control-plane-current-state.md"
 CONTROL_PLANE_SYNC = ROOT / ".codex" / "workflows" / "control-plane-sync.md"
-CONTROL_PLANE_SIZE_BUDGET_BYTES = 50 * 1024
+CONTROL_PLANE_SIZE_BUDGET_BYTES = 40000
 RUNLOG_SIZE_BUDGET_BYTES = CONTROL_PLANE_SIZE_BUDGET_BYTES
 ENGLISH_ORIGINAL_SUPERPOWERS_PLAN_PAGES = {
     DOCS / "superpowers" / "plans" / "2026-05-14-product-agent-os-generated-infrastructure.md",
@@ -202,6 +202,7 @@ def _control_plane_source_context():
         BATCH40_DOUBT_VERIFIER_CLOSURE_EN,
         DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md",
         ROOT / "prod_test.md",
+        ROOT / "research" / "product-agent-os-requirements-history-2026-11-10.md",
     ]
     source_paths.extend(sorted((DOCS / "superpowers" / "specs").glob("*.json")))
 
@@ -220,6 +221,7 @@ TEST = SourceRoutedControlPlanePath(TEST_FILE)
 EVALS = SourceRoutedControlPlanePath(EVALS_FILE)
 RUNLOG = SourceRoutedControlPlanePath(RUNLOG_FILE)
 AGENTS = SourceRoutedControlPlanePath(AGENTS_FILE)
+REQUIREMENTS = SourceRoutedControlPlanePath(REQUIREMENTS)
 
 
 class DocsInstallerContractTest(unittest.TestCase):
@@ -425,7 +427,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         state = CONTROL_PLANE_CURRENT_STATE.read_text(encoding="utf-8")
 
         self.assertLessEqual(len(runlog_bytes), RUNLOG_SIZE_BUDGET_BYTES)
-        self.assertIn("50 KB", control_plane_sync)
+        self.assertIn("40 000 UTF-8 bytes", control_plane_sync)
         self.assertIn("Before shortening `RUNLOG.md`", control_plane_sync)
         self.assertIn("REQUIREMENTS.md", control_plane_sync)
         self.assertIn("PLAN.md", control_plane_sync)

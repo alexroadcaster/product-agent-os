@@ -9475,7 +9475,7 @@ def _codex_runtime_runner_eval(path: Path) -> tuple[str, dict[str, bool]]:
 
     checks: dict[str, bool] = {"contract_mode_offline": True}
     if path.name == "codex-runner-ready":
-        result = run_contract(path)
+        result = run_contract(path, requested_state="quality_gate")
         checks["route_matches_lifecycle_state"] = (
             result["lifecycle_state"] == "quality_gate"
             and result["route_packet"]["recommended_skill"] == "risk-reviewer"
@@ -9488,7 +9488,7 @@ def _codex_runtime_runner_eval(path: Path) -> tuple[str, dict[str, bool]]:
         return str(result["status"]), checks
 
     if path.name == "codex-runner-approval-required":
-        result = run_contract(path, allow_subagents=True)
+        result = run_contract(path, allow_subagents=True, requested_state="build_active")
         checks["approval_required_for_writes"] = result["status"] == "needs_approval"
         return str(result["status"]), checks
 

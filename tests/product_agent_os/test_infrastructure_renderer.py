@@ -23,6 +23,44 @@ from product_agent_os.templates import TemplateSpec, required_templates, render_
 
 
 class InfrastructureRendererTest(unittest.TestCase):
+    def test_repeat_render_preserves_filled_managed_body_and_crlf(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            original = (b'# User\r\n<!-- product-agent-os:start requirements -->\r\n'
+                        b'R-01: Never delete approved decisions.\r\n'
+                        b'<!-- product-agent-os:end requirements -->\r\nUser tail  \r\n')
+            target = root / 'REQUIREMENTS.md'
+            target.write_bytes(original)
+            spec = next(item for item in required_templates() if item.key == 'requirements')
+            action, _, warnings, _, content = infrastructure._plan_file(spec, target, 'new blank scaffold')
+            self.assertEqual(action, 'leave_unchanged')
+            self.assertEqual(target.read_bytes(), original)
+            self.assertIn('managed_content_preserved', ' '.join(warnings))
+
+    def test_regenerated_managed_content_cannot_be_replaced_by_bulk_merge_approval(self):
+        from product_agent_os.merge_infrastructure import build_merge_plan
+        with tempfile.TemporaryDirectory() as tmp:
+            root, stage = Path(tmp) / 'root', Path(tmp) / 'stage'
+            root.mkdir()
+            raw = b'<!-- product-agent-os:start requirements -->\nR-01 accepted\n<!-- product-agent-os:end requirements -->\n'
+            (root / 'REQUIREMENTS.md').write_bytes(raw)
+            stage_infrastructure(root, stage)
+            plan = build_merge_plan(root, stage)
+            item = next(d for d in plan['decisions'] if d['target_path'] == 'REQUIREMENTS.md')
+            self.assertEqual(item['action'], 'companion_only')
+            self.assertFalse(item['approval_required'])
+            self.assertEqual((root / 'REQUIREMENTS.md').read_bytes(), raw)
+
+    def test_dry_run_validates_actual_merged_context_like_stage(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root, stage = Path(tmp) / 'project', Path(tmp) / 'stage'
+            root.mkdir()
+            audit = analyze_workspace(root)
+            audit['risks'] = ['unresolved {actual_project_gap}']
+            result = infrastructure.render_infrastructure_from_audit(root, audit)
+            self.assertFalse(result['rendered_artifacts']['validation']['ok'])
+            self.assertIn('REQUIREMENTS.md', result['rendered_artifacts']['validation']['errors'])
+
     def test_ordinary_selection_reuses_existing_files_without_full_pack(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -57,7 +95,8 @@ class InfrastructureRendererTest(unittest.TestCase):
             result = stage_infrastructure(root, stage, task_context=scope)
             self.assertTrue(result["rendered_artifacts"]["validation"]["ok"])
             selected = result["infrastructure_plan"]["template_selection"]["selected"]
-            self.assertEqual(len(selected), 8)
+            self.assertEqual(len(selected), 7)
+            self.assertNotIn("EVALS.md", selected)  # No empty eval rubric for a docs-only slice.
             self.assertFalse(any("hooks" in p or "automations" in p or "agents/" in p for p in selected))
             self.assertEqual(before, {p.relative_to(root).as_posix(): p.read_bytes() for p in root.rglob("*") if p.is_file()})
             self.assertEqual(result["infrastructure_plan"]["status"], "needs_approval")

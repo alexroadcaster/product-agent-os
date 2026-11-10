@@ -22,6 +22,84 @@ from product_agent_os.system_file_hygiene import (  # noqa: E402
 
 
 class SystemFileHygieneTest(unittest.TestCase):
+    def test_detailed_planning_matrix_size_exception_does_not_exempt_navigation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            _write_minimal_control_plane(root)
+            (root / 'docs/planning/feature').mkdir(parents=True)
+            matrix = '### Task `P-01`\n- ID: P-01\n- Status: planned\n- Acceptance criteria: retained\n' + 'Detail.\n' * 6000
+            for name in ('docs/planning/feature/tasks.md', 'docs/planning/index.md', 'PLAN.md'):
+                (root / name).write_bytes(matrix.encode())
+            result = build_system_file_hygiene_audit(root)
+            records = {r['path']: r for r in result['inventory']}
+            self.assertIn('docs/planning/feature/tasks.md', records)
+            self.assertTrue(records['docs/planning/feature/tasks.md']['size_exempt'])
+            self.assertFalse(records['docs/planning/index.md']['size_exempt'])
+            self.assertFalse(records['PLAN.md']['size_exempt'])
+            hard = {f['path'] for f in result['findings'] if f['code'] == 'hard_size_limit_exceeded'}
+            self.assertNotIn('docs/planning/feature/tasks.md', hard)
+            self.assertTrue({'PLAN.md', 'docs/planning/index.md'} <= hard)
+            self.assertEqual((root / 'docs/planning/feature/tasks.md').read_bytes(), matrix.encode())
+            from product_agent_os.document_navigation import check_local_links
+            with (root / 'docs/planning/feature/tasks.md').open('ab') as handle:
+                handle.write(b'\n[Evidence](missing.md)\n## Repeated\n## Repeated\n')
+            self.assertTrue(check_local_links(root, ['docs/planning/feature/tasks.md']))
+            content_check = build_system_file_hygiene_audit(root)
+            self.assertTrue(any(f['path'] == 'docs/planning/feature/tasks.md' and f['code'] == 'duplicate_markdown_headings'
+                                for f in content_check['findings']))
+            (root / '.codex').mkdir()
+            (root / '.codex/config.toml').write_text(
+                '[product_agent_os.documents.limits]\n"docs/planning/feature/tasks.md" = 20000\n', encoding='utf-8')
+            strict = build_system_file_hygiene_audit(root)
+            self.assertTrue(any(f['code'] == 'hard_size_limit_exceeded' and f['path'] == 'docs/planning/feature/tasks.md'
+                                for f in strict['findings']))
+
+    def test_utf8_budget_is_bytes_and_exact_hard_boundary_is_allowed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            _write_minimal_control_plane(root)
+            for size, prefix in ((size, prefix) for size in (39999, 40000, 40001, 39999, 40001)
+                                 for prefix in (b'', '\ufeffRU/EN Я🙂\r\n'.encode('utf-8'))):
+                with self.subTest(size=size, prefix=prefix):
+                    remaining = size - len(prefix)
+                    content = prefix + ('Я' * (remaining // 2)).encode() + b'x' * (remaining % 2)
+                    (root / 'PLAN.md').write_bytes(content)
+                    result = build_system_file_hygiene_audit(root)
+                    codes = [f['code'] for f in result['findings'] if f['path'] == 'PLAN.md']
+                    self.assertEqual('hard_size_limit_exceeded' in codes, size > 40000)
+                    record = next(r for r in result['inventory'] if r['path'] == 'PLAN.md')
+                    self.assertEqual(record['bytes'], size)
+
+    def test_stricter_project_byte_budget_is_preserved(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            _write_minimal_control_plane(root)
+            (root / '.codex').mkdir(exist_ok=True)
+            (root / '.codex/config.toml').write_text(
+                '[product_agent_os.documents.limits]\n"PLAN.md" = 20000\n', encoding='utf-8')
+            (root / 'PLAN.md').write_bytes(b'x' * 20001)
+            report = build_system_file_hygiene_audit(root)
+            self.assertTrue(any(f['code'] == 'hard_size_limit_exceeded' and f['path'] == 'PLAN.md'
+                                for f in report['findings']))
+
+    def test_archive_exemption_requires_index_and_cannot_hide_open_task_matrix(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            _write_minimal_control_plane(root)
+            (root / '.codex').mkdir()
+            (root / 'docs/plans').mkdir(parents=True)
+            (root / 'docs/index.md').write_text('[History](plans/history.md)', encoding='utf-8')
+            (root / 'docs/plans/history.md').write_bytes(b'closed evidence\n' * 4000)
+            (root / '.codex/config.toml').write_text(
+                '[product_agent_os.documents.classifications."docs/plans/history.md"]\n'
+                'kind="history"\nowner="maintainer"\nreason="closed cycle"\nindex="docs/index.md"\n', encoding='utf-8')
+            result = build_system_file_hygiene_audit(root)
+            self.assertTrue(next(r for r in result['inventory'] if r['path'] == 'docs/plans/history.md')['size_exempt'])
+            with (root / 'docs/plans/history.md').open('ab') as handle:
+                handle.write(b'\n- Status: planned\n')
+            result = build_system_file_hygiene_audit(root)
+            self.assertTrue(any(f['code'] == 'document_budget_invalid' for f in result['findings']))
+
     def test_trigger_policy_is_hybrid_and_candidate_only(self):
         self.assertEqual(TRIGGER_POLICY["schedule_status"], "not_created")
         self.assertEqual(TRIGGER_POLICY["write_policy"], "read_only")
@@ -241,7 +319,7 @@ class SystemFileHygieneTest(unittest.TestCase):
                 "## Duplicate\n\nFirst.\n\n## Duplicate\n\nSecond.\n",
                 encoding="utf-8",
             )
-            (root / "REQUIREMENTS.md").write_text("# REQUIREMENTS.md\n\n" + ("x" * 41000), encoding="utf-8")
+            (root / "REQUIREMENTS.md").write_text("# REQUIREMENTS.md\n\n" + ("x" * 33000), encoding="utf-8")
             (root / "TEST.md").write_bytes(b"\xef\xbb\xbf# TEST.md\n\nCurrent verification.\n")
             (root / ".codex" / "skills" / "broken").mkdir(parents=True)
             (root / ".codex" / "skills" / "broken" / "SKILL.md").write_bytes(b"\xff\xfe\x00")

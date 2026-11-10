@@ -1,5 +1,11 @@
 # Реестр источников
 
+G8 scope clarification (10.11.2026): подробные матрицы docs/planning/ сохраняются целиком, default 40k size trigger к ним не применяется. Audit matrix в research/ по решению владельца остаётся целой; split preview не разрешён к применению. T14 ожидает приёмки результатов. Контракт: [technical](../product-agent-os/technical.md); evidence: research/product-agent-os-g8-execution-report.md.
+
+
+PAOS-AUD-G8 (2026-11-10): локальные document contracts, scoped staging, сохранение managed content, UTF-8 byte budget, reviewed lossless compaction/recovery и provenance документов. Источник: [технический контракт](../product-agent-os/technical.md); repository evidence `research/product-agent-os-g8-execution-report.md` и `docs/superpowers/specs/paos-aud-g8-control-plane-results.json`. Synthetic local verification; owner acceptance pending; fresh-session activation и интеграция адаптера M1 отдельно. Исторические результаты G6/G7 сохранены; ссылки вне docs_dir обозначены путями repository artifacts.
+
+
 WEB-CP-01 (2026-11-10): control-plane подготовлен под Web M1, scope v0.7 / execution v0.8. Устаревшие Web/lifecycle receipts и прошлый handoff сохранены с source hashes в research/product-agent-os-control-plane-maintenance-2026-11-10.md. Project-authored маршрутизация и сохранение истории; без реализации, runtime и изменений внешних source claims.
 
 WEB-ORDER-08 (2026-11-10): пользователь утвердил последовательность всех 56 задач в research/product-agent-os-web-task-manager-plan-2026-11-09.md и task-group JSON, execution_plan.revision=0.8; PRD scope остаётся v0.7. PAOS-0046 после M1, PAOS-0036 в M2, PAOS-0002 только M1 profile. Project-authored planning metadata; внешние source claims и runtime evidence не изменены.
@@ -63,15 +69,15 @@ WEB-DB-02/03 FTS5/pgvector rechecked in this authoring run; earlier WAL/backup r
 
 ## PAOS-AUD-G7 — implementation evidence, 2026-11-09
 
-T08: владелец принял T07; локальные механизмы рекомендованы keep, superiority insufficient_evidence. [Итоговое решение](../../research/product-agent-os-g7-execution-report-2026-11-09.md); T06/final T08 accepted 10.11.2026; G7 closed locally, activation отдельно.
+T08: владелец принял T07; локальные механизмы рекомендованы keep, superiority insufficient_evidence. Итоговое решение (`research/product-agent-os-g7-execution-report-2026-11-09.md`); T06/final T08 accepted 10.11.2026; G7 closed locally, activation отдельно.
 
-T07 10.11.2026: [attested results](../superpowers/specs/paos-aud-g7-attested-results.json), 12 eligible generations, 6/6 на arm; tools=[] и same normalized common context. Superiority insufficient_evidence, no OS/E2E/activation claim. [Official normalization precedent](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/core/tests/suite/responses_lite.rs#L136) и [CLI override parsing](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/config/src/overrides.rs) проверены 10.11.2026; source_inspected и local actual trace evidence разделены. T06 actual Python/JS tool checks 10/10 отражены в execution report; owner acceptance отдельно.
+T07 10.11.2026: attested results (`docs/superpowers/specs/paos-aud-g7-attested-results.json`), 12 eligible generations, 6/6 на arm; tools=[] и same normalized common context. Superiority insufficient_evidence, no OS/E2E/activation claim. [Official normalization precedent](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/core/tests/suite/responses_lite.rs#L136) и [CLI override parsing](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/config/src/overrides.rs) проверены 10.11.2026; source_inspected и local actual trace evidence разделены. T06 actual Python/JS tool checks 10/10 отражены в execution report; owner acceptance отдельно.
 
 ### Historical research intake
 
-Углубление 09.11.2026: [source review и traceability](../../research/product-agent-os-g7-repository-deep-review-2026-11-09.md) закрепляет пять repository revisions, прочитанные implementation/test slices и четыре tool-doc источника. Findings P/K/M/S/D/X внесены в восемь planned G7 карточек; adopt/adapt/reject разделены. Статус community: source_inspected_runtime_not_reproduced; primary tool docs проверены, installed compatibility не проверялась.
+Углубление 09.11.2026: source review и traceability (`research/product-agent-os-g7-repository-deep-review-2026-11-09.md`) закрепляет пять repository revisions, прочитанные implementation/test slices и четыре tool-doc источника. Findings P/K/M/S/D/X внесены в восемь planned G7 карточек; adopt/adapt/reject разделены. Статус community: source_inspected_runtime_not_reproduced; primary tool docs проверены, installed compatibility не проверялась.
 
-[Матрица G7](../../research/product-agent-os-audit-remediation-task-plan-2026-11-09.md) содержит G7-S0/S1–S6/S8: Ponytail (commit `96608e0`), Karpathy-inspired guidelines, Matt Pocock skills, Superpowers, Desloppify и primary docs Ruff/Import Linter/dependency-cruiser/Stryker. Источники прочитаны в предшествующем анализе; текущий authoring не повторяет runtime benchmarks. Community: `trust_level=community`, `verification_status=source_inspected_runtime_not_reproduced`; tool docs: `trust_level=primary`, local compatibility unverified. Это planned hypotheses, не новые доказанные product claims; никакие плагины или инструменты не установлены.
+Матрица G7 (`research/product-agent-os-audit-remediation-task-plan-2026-11-09.md`) содержит G7-S0/S1–S6/S8: Ponytail (commit `96608e0`), Karpathy-inspired guidelines, Matt Pocock skills, Superpowers, Desloppify и primary docs Ruff/Import Linter/dependency-cruiser/Stryker. Источники прочитаны в предшествующем анализе; текущий authoring не повторяет runtime benchmarks. Community: `trust_level=community`, `verification_status=source_inspected_runtime_not_reproduced`; tool docs: `trust_level=primary`, local compatibility unverified. Это planned hypotheses, не новые доказанные product claims; никакие плагины или инструменты не установлены.
 
 ## Web issue workflows v0.3 — 2026-11-09
 
@@ -95,7 +101,7 @@ Jira Cloud reference model для Web v0.3; project-authored adaptation в `rese
 
 ## PAOS-AUD-G6 — project-local evidence, 2026-11-09
 
-G6 partially_verified: три синтетических пилота выполнены из текущего проекта в host-target/pilots; все проверки passed, результаты needs_user_acceptance. По разрешению владельца HOST-01 больше не блокирует эти пилоты. Fresh-session activation HOST-01/HOST-02 остаётся отдельной открытой задачей; T34 no-go. Owner feedback/acceptance null; manual_only сохраняется. [Pilot results](../superpowers/specs/paos-aud-g6-pilot-results.json).
+G6 partially_verified: три синтетических пилота выполнены из текущего проекта в host-target/pilots; все проверки passed, результаты needs_user_acceptance. По разрешению владельца HOST-01 больше не блокирует эти пилоты. Fresh-session activation HOST-01/HOST-02 остаётся отдельной открытой задачей; T34 no-go. Owner feedback/acceptance null; manual_only сохраняется. Pilot results (`docs/superpowers/specs/paos-aud-g6-pilot-results.json`).
 
 ## PAOS-AUD-G5 — project-local contracts, 2026-11-09
 
@@ -1948,4 +1954,4 @@ Canonical mapping: старые Codex models/subagents/security URL могут �
 
 ## G7: проверка архитектурных инструментов — 2026-11-09
 
-[Import Linter 2.16](https://pypi.org/project/import-linter/2.16/) и [dependency-cruiser v18.6.0](https://github.com/sverweij/dependency-cruiser/blob/v18.6.0/package.json): разрешённая локальная установка с pinned dependency locks; синтетические Python/JavaScript controls описаны в [G7 report](../../research/product-agent-os-g7-execution-report-2026-11-09.md). Installed JSON reporter и resolver filtering прочитаны; 10 ожидаемых outcomes распознаны после исправления фильтра, скрывавшего unresolved edges. Это local synthetic evidence, не target/TypeScript/production verification. [Codex v0.167.0 trace source](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/rollout-trace/README.md) — основание request receipt parser; фактическая eligibility указана отдельно и не выводится из config. Прежние утверждения об отсутствии установки относятся к этапу исследования.
+[Import Linter 2.16](https://pypi.org/project/import-linter/2.16/) и [dependency-cruiser v18.6.0](https://github.com/sverweij/dependency-cruiser/blob/v18.6.0/package.json): разрешённая локальная установка с pinned dependency locks; синтетические Python/JavaScript controls описаны в G7 report (`research/product-agent-os-g7-execution-report-2026-11-09.md`). Installed JSON reporter и resolver filtering прочитаны; 10 ожидаемых outcomes распознаны после исправления фильтра, скрывавшего unresolved edges. Это local synthetic evidence, не target/TypeScript/production verification. [Codex v0.167.0 trace source](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/rollout-trace/README.md) — основание request receipt parser; фактическая eligibility указана отдельно и не выводится из config. Прежние утверждения об отсутствии установки относятся к этапу исследования.

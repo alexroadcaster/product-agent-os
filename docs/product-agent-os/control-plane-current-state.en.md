@@ -2,7 +2,7 @@
 
 Source status: `experiment`
 
-G6 remains partially verified. Three synthetic pilots ran from the current project in host-target/pilots; all checks passed and results need user acceptance. The owner removed HOST-01 as a dependency for these pilots. Fresh-session activation HOST-01/HOST-02 remains separately open; T34 remains no-go. Owner feedback/acceptance is null; promotion remains manual_only. [Pilot results](../superpowers/specs/paos-aud-g6-pilot-results.json).
+G6 remains partially verified. Three synthetic pilots ran from the current project in host-target/pilots; all checks passed and results need user acceptance. The owner removed HOST-01 as a dependency for these pilots. Fresh-session activation HOST-01/HOST-02 remains separately open; T34 remains no-go. Owner feedback/acceptance is null; promotion remains manual_only. Pilot results (`docs/superpowers/specs/paos-aud-g6-pilot-results.json`).
 
 G5 (F13/F14/F17): offline installer, explicit package entry route and local site build. The next group is G6 with separate host/behavioral/owner acceptance gates. Exact statuses and current verification receipts belong to the owning audit plan; the site remains generated orientation evidence.
 

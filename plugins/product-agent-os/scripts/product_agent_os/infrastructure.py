@@ -1,15 +1,14 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import re
 import tempfile
 import tomllib
-from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
 from product_agent_os.discovery import analyze_workspace
-from product_agent_os.merge_markdown import merge_section
 from product_agent_os.stage_manifest import build_stage_manifest, write_stage_manifest
 from product_agent_os.status_dashboard import StatusDashboardError
 from product_agent_os.status_dashboard import render_status_dashboard_plan as _render_status_dashboard_plan
@@ -17,6 +16,7 @@ from product_agent_os.status_dashboard import stage_status_dashboard as _stage_s
 from product_agent_os.templates import TemplateSpec, render_template, required_templates, selected_templates
 from product_agent_os.task_routing import build_task_routing, intake_receipt
 from product_agent_os.validators import validate_agent_file, validate_agent_project_config, validate_hook_file
+from product_agent_os.control_plane_documents import DOCUMENT_CONTRACTS, scoped_document, document_readiness
 
 
 OWNER = "product-agent-os"
@@ -139,6 +139,7 @@ def _build_result(
     approval_required = ["explicit approval required before applying staged infrastructure to workspace"]
     blocked: list[str] = []
     files: list[dict[str, Any]] = []
+    proposed_content: dict[str, str] = {}
     managed_sections: list[dict[str, str]] = []
     validation_errors: dict[str, list[str]] = {}
     action_summary: dict[str, list[str]] = {
@@ -152,7 +153,11 @@ def _build_result(
     templates = required_templates()
     if task_context is not None:
         decision = build_task_routing(workspace, audit, task_context)
-        templates, selection = selected_templates(decision, set(audit.get("detected_files", [])))
+        templates, selection = selected_templates(
+            decision, set(audit.get("detected_files", [])),
+            evals_applicable=bool(task_context.get("evals_required") or "EVALS.md" in task_context.get("documents", {})),
+        )
+        selection["dependency_policy"] = "scoped documents use inline contracts; no implicit config/hooks/workflow activation"
         # Inspection can show proposals while gaps remain, but no incomplete
         # task context is allowed to produce a staged merge input.
         if write_files and decision["gaps"]:
@@ -160,6 +165,16 @@ def _build_result(
     for item in templates:
         _validate_template_target(item)
         rendered = render_template(item, context)
+        if task_context and item.target_path in DOCUMENT_CONTRACTS:
+            rendered = scoped_document(item.target_path, item.managed_section, task_context)
+        if selection is not None:
+            dependencies = selection.setdefault('document_dependencies', [])
+            selected_paths = {spec.target_path for spec in templates}
+            for reference in sorted(set(re.findall(r'`(\.codex/[\w./-]+\.(?:md|toml|json))`', rendered))):
+                status = ('existing' if (workspace / reference).is_file() else
+                          'staged_proposal' if reference in selected_paths else 'gap_not_staged')
+                dependencies.append({'from': item.target_path, 'path': reference, 'status': status,
+                                     'claim': 'reference_only; no activation or authority'})
         target = workspace / item.target_path
         action, write_policy, file_warnings, file_blocked, staged_content = _plan_file(item, target, rendered)
         warnings.extend(file_warnings)
@@ -175,6 +190,8 @@ def _build_result(
             )
 
         staged_path = _staged_path(stage_root, item.target_path, action)
+        if staged_content is not None:
+            proposed_content[item.target_path] = staged_content
         if write_files and action in {"create", "update", "leave_unchanged"} and staged_content is not None:
             destination = Path(staged_path)
             _write_inside_root(stage_root, destination, staged_content)
@@ -186,11 +203,14 @@ def _build_result(
                 "target_path": item.target_path,
                 "action": action,
                 "write_policy": write_policy,
+                "preserve_existing": any("managed_content_preserved" in warning for warning in file_warnings),
                 "staged_path": staged_path,
+                "bytes": len(staged_content.encode("utf-8")) if staged_content is not None else None,
+                "content_digest": hashlib.sha256(staged_content.encode("utf-8")).hexdigest() if staged_content is not None else None,
             }
         )
 
-    validation_errors.update(_validate_generated_files(files, stage_root, write_files))
+    validation_errors.update(_validate_generated_files(files, stage_root, write_files, proposed_content))
     for target_path in validation_errors:
         _block_validation_failed_file(files, managed_sections, action_summary, target_path)
         blocked.append(f"{target_path}: validation failed")
@@ -230,6 +250,10 @@ def _build_result(
     result["infrastructure_plan"]["intake"] = intake_receipt(task_context)
     if selection is not None:
         result["infrastructure_plan"]["template_selection"] = selection
+    result["rendered_artifacts"]["document_readiness"] = {
+        name: document_readiness(name, content) for name, content in proposed_content.items()
+        if name in DOCUMENT_CONTRACTS
+    }
     if write_files and stage_root is not None:
         # An ordinary task may reuse every file; its empty proposal still needs
         # a manifest directory, created only after the task-context gate passes.
@@ -317,7 +341,7 @@ def _write_inside_root(root: Path | None, destination: Path, content: str) -> No
     if not resolved_destination.is_relative_to(resolved_root):
         raise InfrastructureError(f"staged path escapes output directory: {destination}")
     destination.parent.mkdir(parents=True, exist_ok=True)
-    destination.write_text(content, encoding="utf-8")
+    destination.write_bytes(content.encode("utf-8"))
 
 
 def _template_context(workspace: Path, audit: dict[str, Any]) -> dict[str, Any]:
@@ -335,7 +359,9 @@ def _template_context(workspace: Path, audit: dict[str, Any]) -> dict[str, Any]:
         "missing_control_plane": audit.get("missing_control_plane", []),
         "existing_codex_assets": audit.get("existing_codex_assets", []),
         "risk_text": "; ".join(risks) if risks else "No initial risks detected.",
-        "generated_at": datetime.now(UTC).replace(microsecond=0).isoformat(),
+        # Rendering is a proposal, not an execution receipt. Wall clock belongs
+        # in the stage manifest, otherwise unchanged input creates new diffs.
+        "generated_at": "not_recorded; see stage manifest",
     }
 
 
@@ -386,13 +412,11 @@ def _plan_file(
             blocked.append(f"{item.target_path}: {marker_error}")
             return "blocked", "blocked", warnings, blocked, None
         if start in existing and end in existing:
-            body = _managed_body(rendered, item.managed_section)
-            try:
-                staged = merge_section(existing, OWNER, item.managed_section, body)
-            except ValueError as exc:
-                blocked.append(f"{item.target_path}: {exc}")
-                return "blocked", "blocked", warnings, blocked, None
-            return "update", "staged_only", warnings, blocked, staged
+            # Managed does not mean disposable: no ancestor/template baseline
+            # proves which values belong to the user. Offer a companion proposal
+            # and leave the entire target byte-for-byte untouched.
+            warnings.append(f"{item.target_path}: managed_content_preserved; explicit reviewed merge required")
+            return "leave_unchanged", "staged_only", warnings, blocked, rendered
 
     warnings.append(f"preserved user-authored file: {item.target_path}")
     if item.target_path == ".codex/config.toml":
@@ -416,7 +440,7 @@ def _managed_marker_error(existing: str, start: str, end: str) -> str:
 
 def _read_text(path: Path) -> str | None:
     try:
-        return path.read_text(encoding="utf-8")
+        return path.read_bytes().decode("utf-8")
     except (OSError, UnicodeDecodeError):
         return None
 
@@ -451,10 +475,11 @@ def _validate_generated_files(
     files: list[dict[str, Any]],
     stage_root: Path | None,
     write_files: bool,
+    proposed_content: dict[str, str],
 ) -> dict[str, list[str]]:
     errors: dict[str, list[str]] = {}
     specs = {item.target_path: item for item in required_templates()}
-    available_prompt_paths = set(specs)
+    available_prompt_paths = {file["target_path"] for file in files if file["action"] != "blocked"}
     with tempfile.TemporaryDirectory(prefix="product-agent-os-render-") as tmp:
         tmp_root = Path(tmp)
         for file in files:
@@ -464,7 +489,7 @@ def _validate_generated_files(
             _validate_template_target(spec)
             path = Path(file["staged_path"]) if write_files else tmp_root / spec.target_path
             if not write_files:
-                _write_inside_root(tmp_root, path, render_template(spec, _validation_context()))
+                _write_inside_root(tmp_root, path, proposed_content[spec.target_path])
             elif stage_root is not None and not path.resolve().is_relative_to(stage_root.resolve()):
                 errors[spec.target_path] = ["staged path escapes output directory"]
                 continue
@@ -476,21 +501,6 @@ def _validate_generated_files(
             if file_errors:
                 errors[spec.target_path] = file_errors
     return errors
-
-
-def _validation_context() -> dict[str, Any]:
-    return {
-        "project_name": "validation",
-        "workspace_path": "validation",
-        "profile_name": "guided-small",
-        "detected_stack": [],
-        "detected_stack_text": "none",
-        "existing_control_plane": [],
-        "missing_control_plane": [],
-        "existing_codex_assets": [],
-        "risk_text": "No initial risks detected.",
-        "generated_at": "1970-01-01T00:00:00+00:00",
-    }
 
 
 def _validate_file(
@@ -546,6 +556,15 @@ def _read_validation_text(path: Path) -> str | None:
 
 
 def _unresolved_marker_errors(text: str) -> list[str]:
+    # Supplied document facts are data, not template expressions. Parse before
+    # excluding the block so malformed/duplicated delimiters still fail closed.
+    from product_agent_os.control_plane_documents import read_document_data, DATA_START, DATA_END
+    try:
+        if read_document_data(text):
+            start, end = text.index(DATA_START), text.index(DATA_END) + len(DATA_END)
+            text = text[:start] + text[end:]
+    except ValueError as exc:
+        return [str(exc)]
     markers = sorted(set(PLACEHOLDER_PATTERN.findall(text)))
     return [f"unresolved substitution marker: {marker}" for marker in markers]
 

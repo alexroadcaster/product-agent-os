@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from codex_runtime_runner.context_loader import load_control_plane_context
-from codex_runtime_runner.contracts import build_result, validate_runner_result
+from codex_runtime_runner.contracts import build_result, validate_runner_result, ALLOWED_LIFECYCLE_STATES
 from codex_runtime_runner.guards import validate_approval_boundary, validate_route_packet
 from codex_runtime_runner.redaction import redact_payload, validate_redaction
 from codex_runtime_runner.routes import apply_runner_status_to_route, plan_route
@@ -26,13 +26,14 @@ def run_contract(
     allow_subagents: bool = False,
     approval_status: str = "not_required",
     intent_hint: str = "",
+    requested_state: str = "",
     task_context: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     if task_context is not None:
         validate_task_context(Path(workspace).resolve(), task_context)
     context = load_control_plane_context(workspace)
     request = {
-        "task": {"lifecycle_state": ""},
+        "task": {"lifecycle_state": requested_state},
         "routing": {"allow_subagents": allow_subagents, "allow_workspace_writes": False},
         "approval": {"approval_status": approval_status},
     }
@@ -110,6 +111,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--allow-subagents", action="store_true", help="Allow subagent route recommendations.")
     parser.add_argument("--approval-status", default="not_required")
     parser.add_argument("--intent-hint", default="", help="Optional prompt-like routing hint for contract mode.")
+    parser.add_argument("--requested-state", default="", choices=sorted(ALLOWED_LIFECYCLE_STATES),
+                        help="Explicit route intent, not verified task readiness or write authority.")
     add_task_intake_arguments(parser)
     parser.add_argument("--output", help="Optional JSON output file.")
     args = parser.parse_args(argv)
@@ -124,6 +127,7 @@ def main(argv: list[str] | None = None) -> int:
             allow_subagents=args.allow_subagents,
             approval_status=args.approval_status,
             intent_hint=args.intent_hint,
+            requested_state=args.requested_state,
             task_context=task_context,
         )
     except TaskContextError as exc:

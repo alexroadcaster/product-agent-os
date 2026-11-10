@@ -1,5 +1,11 @@
 # Source registry
 
+G8 scope clarification (2026-11-10): detailed docs/planning/ matrices remain intact and are exempt from the default 40k size trigger. The owner retains the research/ audit matrix unsplit; split preview is not authorized for apply. T14 awaits result acceptance. Contract: [technical](../product-agent-os/technical.md); evidence: research/product-agent-os-g8-execution-report.md.
+
+
+PAOS-AUD-G8 (2026-11-10): local document contracts, scoped staging, managed-content preservation, UTF-8 byte budgets, reviewed lossless compaction/recovery and document provenance. Source: [technical contract](../product-agent-os/technical.md); repository evidence `research/product-agent-os-g8-execution-report.md` and `docs/superpowers/specs/paos-aud-g8-control-plane-results.json`. Synthetic local verification; owner acceptance pending; fresh-session activation and M1 adapter integration separate. G6/G7 historical results unchanged; references outside docs_dir are repository artifact paths.
+
+
 WEB-CP-01 (2026-11-10): root control-plane maintenance for Web M1, scope v0.7 / execution v0.8. Superseded Web/lifecycle receipts and previous handoff archived with source hashes in research/product-agent-os-control-plane-maintenance-2026-11-10.md. Project-authored routing and historical preservation only; no implementation, runtime or external-source claim changes.
 
 WEB-ORDER-08 (2026-11-10): user approved the 56-task sequence in research/product-agent-os-web-task-manager-plan-2026-11-09.md and task-group JSON, execution_plan.revision=0.8; PRD scope remains v0.7. PAOS-0046 follows M1, PAOS-0036 belongs to M2, PAOS-0002 covers only the M1 profile. Project-authored planning metadata; external source claims and runtime evidence unchanged.
@@ -63,15 +69,15 @@ Product decisions and constraints belong to the auth/commercial document. Source
 
 ## PAOS-AUD-G7 — implementation evidence, 2026-11-09
 
-T08: owner accepted T07; retain tested local mechanisms, superiority insufficient_evidence. [Final decision packet](../../research/product-agent-os-g7-execution-report-2026-11-09.md); T06/final T08 accepted 2026-11-10; G7 closed locally, activation separate.
+T08: owner accepted T07; retain tested local mechanisms, superiority insufficient_evidence. Final decision packet (`research/product-agent-os-g7-execution-report-2026-11-09.md`); T06/final T08 accepted 2026-11-10; G7 closed locally, activation separate.
 
-T07 2026-11-10: [attested results](../superpowers/specs/paos-aud-g7-attested-results.json), 12 eligible generations, 6/6 per arm; tools=[] and equal normalized common context. Superiority insufficient_evidence; no OS/E2E/activation claim. [Official normalization precedent](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/core/tests/suite/responses_lite.rs#L136) and [CLI override parsing](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/config/src/overrides.rs) inspected 2026-11-10; source inspection and local actual trace evidence distinguished. T06 actual Python/JS tool checks 10/10 are recorded in the execution report; owner acceptance separate.
+T07 2026-11-10: attested results (`docs/superpowers/specs/paos-aud-g7-attested-results.json`), 12 eligible generations, 6/6 per arm; tools=[] and equal normalized common context. Superiority insufficient_evidence; no OS/E2E/activation claim. [Official normalization precedent](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/core/tests/suite/responses_lite.rs#L136) and [CLI override parsing](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/config/src/overrides.rs) inspected 2026-11-10; source inspection and local actual trace evidence distinguished. T06 actual Python/JS tool checks 10/10 are recorded in the execution report; owner acceptance separate.
 
 ### Historical research intake
 
-Deep review on 2026-11-09: [source review and traceability](../../research/product-agent-os-g7-repository-deep-review-2026-11-09.md) pins five repository revisions, inspected implementation/test slices and four tool-documentation sources. Findings P/K/M/S/D/X refine all eight planned G7 cards; adoption, adaptation and rejection are distinguished. Community status: source_inspected_runtime_not_reproduced; primary tool documentation checked, installed compatibility unverified.
+Deep review on 2026-11-09: source review and traceability (`research/product-agent-os-g7-repository-deep-review-2026-11-09.md`) pins five repository revisions, inspected implementation/test slices and four tool-documentation sources. Findings P/K/M/S/D/X refine all eight planned G7 cards; adoption, adaptation and rejection are distinguished. Community status: source_inspected_runtime_not_reproduced; primary tool documentation checked, installed compatibility unverified.
 
-[The G7 matrix](../../research/product-agent-os-audit-remediation-task-plan-2026-11-09.md) records G7-S0/S1–S6/S8: Ponytail (commit `96608e0`), Karpathy-inspired guidelines, Matt Pocock skills, Superpowers, Desloppify and primary Ruff/Import Linter/dependency-cruiser/Stryker documentation. Sources were inspected in the preceding analysis; this authoring run did not reproduce runtime benchmarks. Community: `trust_level=community`, `verification_status=source_inspected_runtime_not_reproduced`; tool documentation: `trust_level=primary`, local compatibility unverified. These are planned hypotheses, not newly proven product claims; no plugins or tools were installed.
+The G7 matrix (`research/product-agent-os-audit-remediation-task-plan-2026-11-09.md`) records G7-S0/S1–S6/S8: Ponytail (commit `96608e0`), Karpathy-inspired guidelines, Matt Pocock skills, Superpowers, Desloppify and primary Ruff/Import Linter/dependency-cruiser/Stryker documentation. Sources were inspected in the preceding analysis; this authoring run did not reproduce runtime benchmarks. Community: `trust_level=community`, `verification_status=source_inspected_runtime_not_reproduced`; tool documentation: `trust_level=primary`, local compatibility unverified. These are planned hypotheses, not newly proven product claims; no plugins or tools were installed.
 
 ## Web issue workflows v0.3 — 2026-11-09
 
@@ -95,7 +101,7 @@ Jira Cloud reference model for Web v0.3; project-authored adaptation in `researc
 
 ## PAOS-AUD-G6 — project-local evidence, 2026-11-09
 
-G6 remains partially verified. Three synthetic pilots ran from the current project in host-target/pilots; all checks passed and results need user acceptance. The owner removed HOST-01 as a dependency for these pilots. Fresh-session activation HOST-01/HOST-02 remains separately open; T34 remains no-go. Owner feedback/acceptance is null; promotion remains manual_only. [Pilot results](../superpowers/specs/paos-aud-g6-pilot-results.json).
+G6 remains partially verified. Three synthetic pilots ran from the current project in host-target/pilots; all checks passed and results need user acceptance. The owner removed HOST-01 as a dependency for these pilots. Fresh-session activation HOST-01/HOST-02 remains separately open; T34 remains no-go. Owner feedback/acceptance is null; promotion remains manual_only. Pilot results (`docs/superpowers/specs/paos-aud-g6-pilot-results.json`).
 
 ## PAOS-AUD-G5 — project-local contracts, 2026-11-09
 
@@ -1949,4 +1955,4 @@ ACT-F1..F6 repaired. PreToolUse/Stop were skipped because cosmetic statusMessage
 
 ## G7 architecture tool verification — 2026-11-09
 
-[Import Linter 2.16](https://pypi.org/project/import-linter/2.16/) and [dependency-cruiser v18.6.0](https://github.com/sverweij/dependency-cruiser/blob/v18.6.0/package.json): approved workspace-only installation, pinned dependency locks; synthetic Python/JavaScript controls recorded in [G7 report](../../research/product-agent-os-g7-execution-report-2026-11-09.md). Installed JSON reporter and resolver filtering were inspected; all 10 expected outcomes recognized after removing the filter that hid unresolved edges. Scope: local synthetic evidence, not target/TypeScript/production verification. [Codex v0.167.0 trace source](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/rollout-trace/README.md) underlies the request receipt parser; actual eligibility is reported separately, not inferred from configuration. Earlier statements that tools were not installed refer to the research stage.
+[Import Linter 2.16](https://pypi.org/project/import-linter/2.16/) and [dependency-cruiser v18.6.0](https://github.com/sverweij/dependency-cruiser/blob/v18.6.0/package.json): approved workspace-only installation, pinned dependency locks; synthetic Python/JavaScript controls recorded in G7 report (`research/product-agent-os-g7-execution-report-2026-11-09.md`). Installed JSON reporter and resolver filtering were inspected; all 10 expected outcomes recognized after removing the filter that hid unresolved edges. Scope: local synthetic evidence, not target/TypeScript/production verification. [Codex v0.167.0 trace source](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/rollout-trace/README.md) underlies the request receipt parser; actual eligibility is reported separately, not inferred from configuration. Earlier statements that tools were not installed refer to the research stage.

@@ -17,6 +17,10 @@ Use this workflow on first use of Product-Agent OS in a real project. It keeps p
    - Do not mutate target files, launch live servers, run browser automation, call providers, activate hooks, create automations, perform git actions, or write external systems.
 
 2. Recommendation packet
+   - Keep detailed task matrices under `docs/planning/` intact even above the default 40 000-byte budget. Keep entrypoints compact; do not classify active matrix detail as archived merely to bypass a limit. Explicit per-file limits still apply.
+   - Reuse the existing docs index and canonical names. Recommend architecture/components, ADR, API/data contracts, operations/runbooks, evidence and archive navigation only when the domain applies; name each source owner and update trigger.
+   - For scoped staging, supply confirmed document facts and provenance through task-context `documents`; leave unknown facts missing. EVALS is conditional on AI/subjective quality gates (`evals_required`), not ordinary formatting work. Dependency closure must not imply activation of config, agents or hooks.
+   - Distinguish scaffold, draft, reviewed, accepted and stale. Headings and file presence do not establish readiness; owner decisions and review receipts bind the current source digest.
    - Produce a project-specific recommendation list for agents, skills, artifact templates, documentation, methodology domains, verification gates, approval boundaries, and missing owner questions.
    - Every recommendation must name source evidence, template source, owner, risk, next action, and status: `present_unverified`, `proposal_staged`, `approval_required`, or `explicit_gap_accepted`.
 

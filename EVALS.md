@@ -1,8 +1,10 @@
 # EVALS.md
 
-## PAOS-AUD-G8 — планирование, 2026-11-10
+## PAOS-AUD-G8 — comparison contract, 2026-11-10
 
-G8 planned comparison: одинаковые synthetic inputs для baseline/treatment; bytes, critical-fact preservation, navigation, recovery и продолжение следующей задачи. Три профиля по исследованным проектам без их приватных данных. [Owning matrix](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md), T13/T14; cost/token benefits без измерения не заявляются.
+Frozen synthetic profiles: Trade-like strict 20 000 bytes/history, myPartners-like mirrors/eval gate, site-like duplicates/cross-repo refs. Same-input legacy/scoped renderer comparison and before/after exact-byte preservation; no model A/B or token/cost advantage claim. Required: 3/3 flows, zero lost original bytes/gates/IDs/evidence, fail-closed stale hash/unknown authority/broken links, exact recovery and next-change continuation. [Results](docs/superpowers/specs/paos-aud-g8-control-plane-results.json), [limits and failures](research/product-agent-os-g8-execution-report.md). Simulated redirect detection is separate from real filesystem symlink/junction evidence; owner acceptance and fresh-session activation are not inferred.
+
+Уточнение владельца 10.11.2026: подробные матрицы в `docs/planning/` сохраняются целиком, default 40k size trigger исключён; оглавления/control-plane и explicit per-file limits сохраняют ограничения. Audit matrix в `research/` остаётся целой; split отложен, прежний preview не разрешён. Единственное оставшееся решение G8 — приёмка итогового T14; fresh-session activation отдельно.
 
 ## Web M1 — scope v0.7 / очередь v0.8, 2026-11-10
 

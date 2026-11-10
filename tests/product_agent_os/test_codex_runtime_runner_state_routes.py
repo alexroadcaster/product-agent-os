@@ -23,13 +23,13 @@ class CodexRuntimeRunnerStateRoutesTest(unittest.TestCase):
 
         self.assertEqual(infer_lifecycle_state(context, {}), "uninitialized")
 
-    def test_missing_plan_after_requirements_is_requirements_ready(self):
+    def test_headings_do_not_prove_requirements_ready(self):
         with tempfile.TemporaryDirectory() as tmp:
             workspace = Path(tmp)
             self._write_control_plane(workspace, omit={"PLAN.md"})
             context = load_control_plane_context(workspace)
 
-        self.assertEqual(infer_lifecycle_state(context, {}), "requirements_ready")
+        self.assertEqual(infer_lifecycle_state(context, {}), "maintenance")
 
     def test_request_lifecycle_override_wins(self):
         with tempfile.TemporaryDirectory() as tmp:

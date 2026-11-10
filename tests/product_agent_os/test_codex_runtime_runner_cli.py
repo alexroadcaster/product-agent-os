@@ -74,7 +74,7 @@ class CodexRuntimeRunnerCliTest(unittest.TestCase):
             self.assertEqual(rendered["infrastructure_plan"]["intake"]["mode"], "legacy_fallback")
             self.assertEqual(len(rendered["rendered_artifacts"]["files"]), len(required_templates()))
 
-    def test_contract_cli_returns_route_ready_for_quality_gate_workspace(self):
+    def test_contract_cli_does_not_infer_quality_gate_from_runlog_text(self):
         with tempfile.TemporaryDirectory() as tmp:
             workspace = Path(tmp)
             self._write_control_plane(workspace, "lifecycle_state: quality_gate")
@@ -89,8 +89,8 @@ class CodexRuntimeRunnerCliTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertEqual(result.stderr, "")
         self.assertEqual(payload["status"], "route_ready")
-        self.assertEqual(payload["lifecycle_state"], "quality_gate")
-        self.assertEqual(payload["route_packet"]["recommended_skill"], "risk-reviewer")
+        self.assertEqual(payload["lifecycle_state"], "maintenance")
+        self.assertNotEqual(payload["route_packet"]["recommended_skill"], "risk-reviewer")
         self.assertEqual(payload["workspace"], "[REDACTED_LOCAL_PATH]")
         self.assertNotIn(str(workspace), result.stdout)
 
@@ -134,7 +134,8 @@ class CodexRuntimeRunnerCliTest(unittest.TestCase):
             workspace = Path(tmp)
             self._write_control_plane(workspace, "lifecycle_state: build_active")
             result = subprocess.run(
-                [sys.executable, str(WRAPPER), str(workspace), "--contract", "--allow-subagents"],
+                [sys.executable, str(WRAPPER), str(workspace), "--contract", "--allow-subagents",
+                 "--requested-state", "build_active"],
                 check=False,
                 capture_output=True,
                 text=True,

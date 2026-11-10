@@ -31,6 +31,7 @@ TASK_FIELDS = {
     "test_seam_reason", "comment_signals", "state", "check_results",
     "financially_material", "release_or_readiness", "explicit_full_packet",
     "verification_paths", "verification_environment",
+    "documents", "evals_required",
 }
 EXTRA_MODES = {"docs_only", "no_op", "reuse", "deletion"}
 SENSITIVE_PATH = re.compile(
@@ -167,7 +168,7 @@ def validate_task_context(root: Path, task: Any) -> dict[str, Any]:
             raise TaskContextError(f"task_context:{key}_invalid")
     if "risks" not in task:
         raise TaskContextError("task_context:risks_required")
-    for key in ("executable_test_seam", "financially_material", "release_or_readiness", "explicit_full_packet"):
+    for key in ("executable_test_seam", "financially_material", "release_or_readiness", "explicit_full_packet", "evals_required"):
         if key in task and type(task[key]) is not bool:
             raise TaskContextError(f"task_context:{key}_must_be_boolean")
     if "test_seam_reason" in task and not isinstance(task["test_seam_reason"], str):
@@ -176,6 +177,18 @@ def validate_task_context(root: Path, task: Any) -> dict[str, Any]:
         Path(x).suffix.lower() not in {".md", ".rst", ".txt"} for x in task["changed_paths"]
     ):
         raise TaskContextError("task_context:docs_only_contains_non_docs")
+    if "documents" in task:
+        from product_agent_os.control_plane_documents import DOCUMENT_CONTRACTS, populate_document
+        documents = task["documents"]
+        if not isinstance(documents, dict) or set(documents) - set(DOCUMENT_CONTRACTS):
+            raise TaskContextError("task_context:documents_invalid")
+        for name, packet in documents.items():
+            if not isinstance(packet, dict):
+                raise TaskContextError("task_context:document_packet_invalid")
+            try:
+                populate_document(name, packet)
+            except (TypeError, ValueError) as exc:
+                raise TaskContextError("task_context:document_packet_invalid") from exc
     return task
 
 

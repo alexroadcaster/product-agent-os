@@ -14,6 +14,27 @@ from product_agent_os.status_snapshot import build_status_snapshot  # noqa: E402
 
 
 class StatusSnapshotTest(unittest.TestCase):
+    def test_split_plan_preserves_nine_sources_with_bounded_reader(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / 'research').mkdir()
+            sources = []
+            for index in range(9):
+                path = root / f'research/part-{index}.md'
+                path.write_bytes(f'### Task `T{index}`\n- Status: planned\n#### Completion Report\n- status: planned\n'.encode())
+                sources.append({'path': path.relative_to(root).as_posix(),
+                                'revision': 'sha256:' + hashlib.sha256(path.read_bytes()).hexdigest()})
+            def write_pointer(refs):
+                (root / 'PLAN.md').write_text('<!-- product-agent-os:current-state:start -->\n```json\n'
+                    + json.dumps({'schema_version': 1, 'sources': refs})
+                    + '\n```\n<!-- product-agent-os:current-state:end -->', encoding='utf-8')
+            write_pointer(sources)
+            result = build_status_snapshot(workspace=root, generated_at='2026-11-10T00:00:00Z')['current_state']
+            self.assertEqual(result['status'], 'projected')
+            self.assertEqual({row['task_id'] for row in result['tasks']}, {f'T{i}' for i in range(9)})
+            write_pointer((sources * 4)[:33])
+            self.assertIn('invalid_current_sources', build_status_snapshot(workspace=root, generated_at='2026-11-10T00:00:00Z')['current_state']['issues'])
+
     def _current_workspace(self, root, document):
         source = root / 'docs/superpowers/specs/tasks.json'
         source.parent.mkdir(parents=True, exist_ok=True)

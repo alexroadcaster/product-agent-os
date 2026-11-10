@@ -1,5 +1,42 @@
 # Технические особенности и установка
 
+## G8: документы и безопасное сокращение
+
+Локальный scoped renderer (`--task` или `--task-context`) создаёт компактные документы по назначению. `documents` в task context задаёт явные facts с `source`; `evals_required: true` или пакет EVALS включает eval-документ. Legacy вызов без task context сохраняет полный registry; это compatibility route, а не рекомендация создавать весь набор.
+
+Владельцы информации: AGENTS — durable rules; REQUIREMENTS — scope/acceptance; PLAN — sequencing; TEST — verification; EVALS — quality rubric; RUNLOG — текущий handoff. Schema v1 хранит facts как JSON data block, независимо от языка заголовков. Неизвестные поля требуют явной миграции. `validate_control_plane.py workspace --semantic` различает missing/scaffold/draft; reviewed/accepted требуют отдельного receipt с source digest, reviewer/evidence и owner decision. Legacy structural mode проверяет только файлы. Receipt — заявленное локальное evidence, не proof runtime или автоматическая приёмка.
+
+Повторная генерация заполненной managed section сохраняет target и создаёт companion proposal; bulk merge не превращает его в replace. Dry-run и stage проверяют фактические proposed bytes. Scaffolds не равны готовым требованиям. Для существующих пользовательских названий сохраняйте canonical owner и явное mapping, не переименовывайте документы ради шаблона.
+
+Активный документ: **40 000 UTF-8 bytes**, warning 32 000; ровно 40 000 допустимо. Более строгие лимиты задаются в `[product_agent_os.documents.limits]` project config, например `"PLAN.md" = 20000`. Старые char limits остаются deprecated report metadata, не мерой размера. History/evidence/generated/dataset exemption требует классификации с owner/reason/index; Root control plane не освобождается от лимита; для подробных матриц действует исключение ниже.
+
+`compact_control_plane.py propose workspace moves.json --output private-proposal.json` формирует reviewable diff, byte ranges, preservation map и exact before/after bytes. Содержимое proposal и journal имеет privacy исходных документов: не публикуйте его в отчётах. `apply workspace private-proposal.json --approve sha256:DIGEST` требует digest конкретного рассмотренного proposal; команда не заменяет пользовательскую authority. `rollback workspace .codex/product-agent-os/compaction/DIGEST.json --approve sha256:DIGEST` восстанавливает только совпадающее состояние. Это отдельный recovery journal, не общая ACID-транзакция файловой системы. Caller исключает внешних writers; после crash stale lock снимается только по явному операторскому handoff через recovery API. Автоматического удаления истории нет.
+
+`document_navigation.task_plan_moves` предлагает разделение целых карточек; IDs/dependencies и bytes сохраняются, исходные anchors получают pointers. Один слишком большой task требует ручной декомпозиции. `documentation_inventory` переиспользует docs/index.md, docs/README.md либо docs/control-plane/index.md; architecture/decisions/API/data/operations/evidence/history добавляются только по trigger. Не создавать пустые системные файлы для комплекта.
+
+Mirror/reference checks проверяют source digest и точные bytes; required и optional evidence различаются. Межпроектные ссылки требуют repository identity, path, revision, digest и claim boundary; недоступный источник означает unknown. После M1 cutover SQL task projections запрещены для file compaction; M1 integration должна объявить authority/projection paths, а freeze останавливает запись. Эта граница проверяется fixtures, не работающим M1 service.
+
+Проверки G8 и сравнение принадлежат repository artifact `research/product-agent-os-g8-execution-report.md`; результаты пилотов — `docs/superpowers/specs/paos-aud-g8-control-plane-results.json`. Fresh-session activation и owner acceptance отдельны.
+
+
+Контракт v1: обязательные факты представлены полями; неизвестное остаётся missing. Вход — packet с источником решения, выход — staged Markdown и диагностика readiness. Обновляется владеющий документ при изменении его фактов.
+
+| Document | Required facts | Update trigger |
+| --- | --- | --- |
+| AGENTS | rules, boundaries | instruction change |
+| REQUIREMENTS | goal, scope, acceptance, constraints | scope change |
+| PLAN | tasks, dependencies, next_step | queue change |
+| TEST | checks, evidence_limits | verification change |
+| EVALS (conditional) | cases, thresholds, claim_limits | eval applicability |
+| RUNLOG | result, evidence, risks, next_step | slice outcome |
+
+Повторяемый `--document NAME` задаёт semantic validation для выбранных документов. Без него structural mode сохраняет старый контракт шести файлов. `check_documents.py workspace manifest.json` принимает `paths`, conditional `signals` и `references`: проверяет локальные ссылки, повторённые абзацы и provenance без записи. Evidence profile `offline_bundle` связывает обязательный артефакт с relative path и digest; это не proof доступности в неопубликованном clean Git checkout. Provenance зеркала хранится в companion reference record (canonical source и digest), сами bytes идентичны.
+
+
+Текущий selector в PLAN поддерживает до 32 revision-pinned источников при прежнем общем пределе чтения 16 MiB; split_source_references предлагает новые pins, сохраняя существующего владельца состояния. Старые pins после переноса дают unknown до явного обновления.
+
+Подробные матрицы задач в `docs/planning/`, включая вложенные папки, сохраняются целиком: стандартный лимит размера сам по себе не требует их сокращения. Они остаются активными документами, а не архивом. Распознаются карточки и таблицы с идентификаторами, статусами и критериями приёмки; примеры внутри блоков кода исключены. Оглавления, README и control-plane файлы сохраняют ограничения. Явные лимиты отдельных файлов, проверки содержимого, ссылок и безопасности продолжают действовать.
+
 Source status: `official + experiment`  
 
 ## Quick start

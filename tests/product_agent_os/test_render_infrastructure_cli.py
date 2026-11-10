@@ -57,7 +57,7 @@ class RenderInfrastructureCliTest(unittest.TestCase):
                 self.assertEqual(staged.returncode, 0, staged.stderr)
                 packet = json.loads(staged.stdout)
                 self.assertEqual(packet["infrastructure_plan"]["template_selection"]["mode"], "full")
-                self.assertEqual(len(packet["infrastructure_plan"]["template_selection"]["selected"]), 8)
+                self.assertEqual(len(packet["infrastructure_plan"]["template_selection"]["selected"]), 7)
                 self.assertEqual(before, {p.name: p.read_bytes() for p in root.iterdir()})
 
     def test_dry_run_cli_prints_plan_json(self):

@@ -1,5 +1,42 @@
 # Technical features and installation
 
+## G8: documents and lossless compaction
+
+The scoped renderer (`--task` or `--task-context`) produces compact documents by purpose. The context field `documents` supplies explicit facts with `source`; `evals_required: true` or an EVALS packet includes the eval document. The legacy call without task context retains the full registry as compatibility behavior, not a recommendation to create every artifact.
+
+Information ownership: AGENTS owns durable rules; REQUIREMENTS scope/acceptance; PLAN sequencing; TEST verification; EVALS quality rubrics; RUNLOG current handoff. Schema v1 stores facts in a JSON data block independently of heading language. Unknown fields require explicit migration. `validate_control_plane.py workspace --semantic` distinguishes missing/scaffold/draft. Reviewed/accepted states need a separate digest-bound receipt with reviewer/evidence and owner decision. Legacy structural mode only checks files. A receipt is reported local evidence, not runtime proof or automatic acceptance.
+
+Regenerating a filled managed section preserves the target and offers a companion proposal; bulk merge cannot upgrade that proposal to replacement. Dry-run and stage validate actual proposed bytes. Scaffolds are not ready requirements. Preserve existing canonical document names and explicit mappings instead of renaming files to match a template.
+
+Active-document budget: **40,000 UTF-8 bytes**, warning at 32,000; exactly 40,000 is allowed. Stricter project budgets belong in `[product_agent_os.documents.limits]`, for example `"PLAN.md" = 20000`. Legacy character limits remain deprecated report metadata. History/evidence/generated/dataset exemptions need classification, owner, reason and index; root control-plane documents cannot be exempted; detailed planning matrices follow the exception below.
+
+`compact_control_plane.py propose workspace moves.json --output private-proposal.json` creates a reviewable diff, byte ranges, preservation map and exact before/after bytes. Proposal/journal privacy equals source privacy; do not publish their bodies. `apply workspace private-proposal.json --approve sha256:DIGEST` requires the exact reviewed proposal digest; the command does not grant user authority. `rollback workspace .codex/product-agent-os/compaction/DIGEST.json --approve sha256:DIGEST` restores only matching state. A recovery journal does not provide a cross-file ACID transaction. Callers must exclude external writers; crash recovery requires explicit operator handoff before clearing a stale lock through the recovery API. No automatic history deletion.
+
+`document_navigation.task_plan_moves` proposes complete-card splits, preserving IDs/dependencies and bytes, with source anchor pointers. Oversized individual cards require manual decomposition. `documentation_inventory` reuses docs/index.md, docs/README.md or docs/control-plane/index.md and requests architecture/decisions/API/data/operations/evidence/history only when triggered. Do not generate empty files for completeness.
+
+Mirror/reference checks verify source digests and exact bytes, separating required from optional evidence. Cross-repository references require identity, path, revision, digest and claim boundary; unavailable sources remain unknown. After M1 cutover, SQL task projections are forbidden file-compaction targets; M1 must declare authority/projection paths and freeze stops writes. Fixtures verify this boundary, not a running M1 service.
+
+G8 check receipts and comparison are repository artifact `research/product-agent-os-g8-execution-report.md`; pilot results are `docs/superpowers/specs/paos-aud-g8-control-plane-results.json`. Fresh-session activation and owner acceptance remain separate.
+
+
+Contract v1: required facts are explicit fields; absent facts remain missing. Inputs are owner-provided source packets, outputs are staged Markdown and readiness diagnostics. Update only the owning document when its facts change.
+
+| Document | Required facts | Update trigger |
+| --- | --- | --- |
+| AGENTS | rules, boundaries | instruction change |
+| REQUIREMENTS | goal, scope, acceptance, constraints | scope change |
+| PLAN | tasks, dependencies, next_step | queue change |
+| TEST | checks, evidence_limits | verification change |
+| EVALS (conditional) | cases, thresholds, claim_limits | eval applicability |
+| RUNLOG | result, evidence, risks, next_step | slice outcome |
+
+Use repeated `--document NAME` with semantic validation to match scoped selection. Structural validation without it retains the legacy six-file contract. `check_documents.py workspace manifest.json` accepts `paths`, conditional `signals` and `references`; it reports local links, duplicate paragraphs and provenance without writes. An `offline_bundle` evidence profile binds each required artifact by relative path and digest. This does not prove availability in an unpublished clean Git checkout. Mirror provenance belongs to its companion reference record (canonical source and digest); the mirrored bytes remain identical.
+
+
+The existing PLAN selector supports up to 32 revision-pinned sources while retaining the former aggregate 16 MiB read ceiling. split_source_references proposes replacement pins without another state owner. Old pins become unknown after a split until explicitly updated.
+
+Detailed task matrices under `docs/planning/` (including subfolders) are exempt from the default size trigger: preserve full cards/tables; size alone does not require compaction. This is active detail, not archive. Recognized forms are detailed cards or tables with identifiers, statuses and acceptance criteria (Russian headers supported); fenced examples are excluded. Index/README and control-plane filenames retain budgets; explicit per-file project limits and content/link/security checks still apply.
+
 Source status: `official + experiment`  
 Sources: [Codex plugins](https://developers.openai.com/codex/plugins), [Build plugins](https://developers.openai.com/codex/plugins/build), [Agent Skills](https://developers.openai.com/codex/skills), [Subagents](https://developers.openai.com/codex/subagents), [Codex MCP](https://developers.openai.com/codex/mcp), [Codex hooks](https://developers.openai.com/codex/hooks), [AGENTS.md](https://developers.openai.com/codex/guides/agents-md), [Codex with Agents SDK](https://developers.openai.com/codex/guides/agents-sdk), [Product-Agent OS architecture](architecture.md).
 

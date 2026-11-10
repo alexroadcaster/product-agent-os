@@ -274,6 +274,7 @@ def _manifest_file_entry(
         "write_policy": item["write_policy"],
         "digest": digest,
         "managed_section": managed_sections.get(item["target_path"], ""),
+        "preserve_existing": bool(item.get("preserve_existing", False)),
     }
 
 

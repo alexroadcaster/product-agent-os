@@ -114,6 +114,8 @@ class LifecycleHooksTest(unittest.TestCase):
 
     def test_g7_literal_read_classifier_preserves_mutation_boundary(self):
         allowed = [
+            "Get-Content PLAN.md; Get-Content TEST.md",
+            "rg -n 'status; planned' PLAN.md | Select-Object -First 3",
             "rg -n 'PAOS-AUD-G7|planned' PLAN.md",
             "rg -F '|' PLAN.md",
             "Get-Content PLAN.md | Select-String -SimpleMatch '|'",
@@ -121,6 +123,8 @@ class LifecycleHooksTest(unittest.TestCase):
             "Get-Content PLAN.md | Select-Object -Skip 2 -First 4",
         ]
         denied = [
+            "Get-Content PLAN.md; python -c 'write()'",
+            "Get-Content PLAN.md;; Get-Content TEST.md",
             "rg-evil pattern file", "Get-Content-Evil file",
             "rg --pre script pattern file", "rg --p're' script pattern file",
             'rg "$(Write-Output bad)" file', "rg 'unterminated file",

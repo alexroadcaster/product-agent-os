@@ -322,6 +322,11 @@ def _decision_for_entry(
         blocked.append(f"{target_path_value}: {reason}")
         return base | {"action": "blocked", "reason": reason}
 
+    if item.get("preserve_existing") is True and target.exists():
+        # Regeneration has no ancestor baseline proving a safe replacement.
+        # Bulk approval cannot silently upgrade a preserved proposal to a write.
+        return base | {"action": "companion_only", "approval_required": False,
+                       "reason": "filled managed content preserved; explicit content merge required"}
     action, reason = _planned_action(target, target_path_value, managed_section, enable_hooks, blocked, warnings)
     decision = base | {
         "action": action,
