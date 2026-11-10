@@ -1,5 +1,9 @@
 # REQUIREMENTS.md
 
+## PAOS-AUD-G9 — планирование, без реализации
+
+Разрешено только планирование: [группа G9](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#paos-aud-g9), T01–T10 planned. Цель будущей реализации — анализ → выбор файлов → согласованная структура docs/ и .codex/ → preview/staging → разрешённое применение и сопровождение. Переиспользовать G8, сохранить пользовательские данные и source ownership M1. G8-T14, fresh-session activation и внешние действия не закрываются этой правкой.
+
 ## PAOS-AUD-G8 — реализация, 2026-11-10
 
 Разрешённый scope: T01–T14 из [матрицы аудита](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md). Контракт: содержательные scoped documents, сохранение заполненного managed content, 40 000 UTF-8 bytes (warning 32 000; stricter wins), lossless proposal/apply/recovery, навигация и provenance. Реальные три проекта остаются read-only. Owner decision T14 и fresh-session activation отдельны; M1 сохраняет собственные source owners. Исторический compatibility block сохранён побайтно в [архиве требований](research/product-agent-os-requirements-history-2026-11-10.md).

@@ -1,5 +1,9 @@
 # EVALS.md
 
+## PAOS-AUD-G9 — планирование, без реализации
+
+Будущий comparison contract [группа G9](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#paos-aud-g9), T09: одинаковые входы и зафиксированный baseline; пустой/существующий/сложный проект, ordinary/AI, missing context, conflict и повторное формирование. Метрики: достаточность, лишние файлы, зависимости/ссылки, сохранность и следующее изменение. Отдельный mandatory failure не скрывать score; уменьшение файлов не доказывает качество или экономию. Сейчас eval results отсутствуют.
+
 ## PAOS-AUD-G8 — comparison contract, 2026-11-10
 
 Frozen synthetic profiles: Trade-like strict 20 000 bytes/history, myPartners-like mirrors/eval gate, site-like duplicates/cross-repo refs. Same-input legacy/scoped renderer comparison and before/after exact-byte preservation; no model A/B or token/cost advantage claim. Required: 3/3 flows, zero lost original bytes/gates/IDs/evidence, fail-closed stale hash/unknown authority/broken links, exact recovery and next-change continuation. [Results](docs/superpowers/specs/paos-aud-g8-control-plane-results.json), [limits and failures](research/product-agent-os-g8-execution-report.md). Simulated redirect detection is separate from real filesystem symlink/junction evidence; owner acceptance and fresh-session activation are not inferred.

@@ -1,5 +1,9 @@
 # PLAN.md
 
+## PAOS-AUD-G9 — планирование, без реализации
+
+[группа G9](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#paos-aud-g9) содержит десять planned-карточек; реализация не начата. Порядок T01 → T02 → T03 → T04 → T05 → T06 → T07 → T08 → T09 → T10; точные dependencies и owners — в матрице. Приёмка G8-T14 отдельна; завершение M1 целиком и HOST activation не являются prerequisite локальной реализации G9. Shared writers подчиняются M1 freeze/authority. Следующий шаг — отдельный запрос владельца на реализацию.
+
 ## PAOS-AUD-G8 — verification / owner handoff, 2026-11-10
 
 [Матрица T01–T14](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md) владеет статусами. [Отчёт реализации](research/product-agent-os-g8-execution-report.md) содержит проверки, ограничения и сравнение. Завершить общие gates и передать T14 владельцу на приёмку; автоматического owner acceptance нет. Fresh-session activation отдельно. M1 может использовать согласованные document contracts; SQL projections и freeze cutover запрещают независимый file writer. Split текущей audit matrix отложен владельцем; её карточки не сокращены.
@@ -49,7 +53,7 @@ G4 F05/F09/F10/F15 implemented_locally_verified. Следующая группа
   "sources": [
     {
       "path": "research/product-agent-os-audit-remediation-task-plan-2026-11-09.md",
-      "revision": "sha256:79634f87c587b8f62180717d9a73d09bb3d89b1404b0641a08f4fda7b2dfb145",
+      "revision": "sha256:32ac8e30665b58b845fa94d8eac3e49179345a8e58449986418f30d67020e5f2",
       "task_prefixes": [
         "PAOS-AUD-"
       ]

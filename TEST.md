@@ -1,5 +1,9 @@
 # TEST.md
 
+## PAOS-AUD-G9 — планирование, без реализации
+
+Для текущего authoring [группа G9](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#paos-aud-g9): docs unittest, tools/check_docs.py, validate_task_matrix.py, current-state revision/projection и git diff --check. Новые G9 runtime tests и пилоты не выполняются: реализация отсутствует. Будущие focused/integration/fixture/compatibility gates задаются карточками и общим TEST.md; strict MkDocs — при изменении навигации/config/site evidence.
+
 ## PAOS-AUD-G8 — verification, 2026-11-10
 
 G8 commands: `python -B -m unittest discover -s tests -p "test_*.py" -q`; focused `test_control_plane_documents`, `test_control_plane_compaction`, `test_document_navigation`, `test_g8_control_plane`, renderer/merge/hygiene/lifecycle/state suites. Pilot packet: `python -B -m tests.product_agent_os.test_g8_control_plane --report docs/superpowers/specs/paos-aud-g8-control-plane-results.json --baseline .codex-tmp/g8-tests/g8-baseline`. Use process-local TEMP/TMP `.codex-tmp/g8-tests`; no dependencies installed. Fixture/transcript/compatibility, docs tests/checker, task matrix and diff gates remain mandatory. Strict MkDocs builds only to `.codex-tmp/g8-tests/site`. Exact outcomes and failed attempts: [execution report](research/product-agent-os-g8-execution-report.md).
