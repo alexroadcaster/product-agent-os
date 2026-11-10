@@ -167,7 +167,7 @@ def _current_state(workspace: Path | None, generated_at: str) -> dict[str, Any]:
             if not isinstance(prefixes, list) or len(prefixes) > 8 or any(not isinstance(prefix, str) or not _TASK_ID.fullmatch(prefix) for prefix in prefixes):
                 raise ValueError("invalid_task_scope")
             path = ref["path"]
-            if not isinstance(path, str) or not path.endswith((".json", ".md")) or not path.startswith(("docs/superpowers/", "research/")):
+            if not isinstance(path, str) or not path.endswith((".json", ".md")) or not path.startswith(("docs/superpowers/", "docs/planning/", "research/")):
                 raise ValueError("unsupported_source_path")
             content = _read_current_source(root, path)
             total_source_bytes += len(content)

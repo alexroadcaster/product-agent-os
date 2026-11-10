@@ -151,4 +151,6 @@ Task plan generation updates durable task detail and Completion Report only. It 
 
 ## Task Matrix Commands
 
-Inspect required arguments with `python plugins/product-agent-os/scripts/create_task_plan.py new --help` and `python plugins/product-agent-os/scripts/create_task_plan.py complete --help`. The `new` command writes planned task detail; `complete` updates the selected task and Completion Report with supplied evidence. Neither command proves that a chat packet was shown. Validate the result with `validate_task_matrix.py`.
+Inspect required arguments with `python plugins/product-agent-os/scripts/create_task_plan.py new --help` and `python plugins/product-agent-os/scripts/create_task_plan.py complete --help`. The `new` command writes planned task detail; `complete --legacy-card-only` retains card-only compatibility without documentation/pointer closure evidence. Use the control-plane-sync workflow for coordinated completion. Neither command proves that a chat packet was shown. Validate the result with `validate_task_matrix.py`.
+
+For per-task docs impact, section apply and coordinated matrix/PLAN closure, follow `control-plane-sync.md`, section Per-task documentation synchronization. The default complete command requires migration to that route; `--legacy-card-only` explicitly retains card-only compatibility without synchronization proof.

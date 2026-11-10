@@ -194,3 +194,5 @@ Return current state, next state, recommended skill, blockers, questions, propos
 ## Cross-Domain Synthesis
 
 Consume `methodology_synthesis` and `recommendation_groups` as grouped recommendations; do not dump every methodology gate. Preserve owner domains, consumer domains, semantic evidence sufficiency, source artifact ledger, alias/deferred artifact ledger and risk-aware safe next action. Do not scaffold before approval, and remember that detection is not verification.
+
+Per-task documentation impact and section synchronization follow the packaged `control-plane-sync.md` workflow. Assess every task; write only changed canonical sections. A required unresolved docs handoff prevents a stronger closure claim. Local receipts do not prove semantic completeness or fresh-session activation.

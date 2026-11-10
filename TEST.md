@@ -1,8 +1,18 @@
 # TEST.md
 
-## PAOS-AUD-G9 — результаты для приёмки
+## GAP-06 acceptance и исправление проверок — 2026-11-10
 
-G9 current runtime: Ran 1435 tests in 803.716s, OK (skipped=1); post-fix focused 57 OK; fixtures 91/91, transcripts 26/26; compatibility compatible; strict MkDocs isolated preview passed. [Точные команды, failed attempts, final docs/matrix checks и evidence ceiling](research/product-agent-os-g9-execution-report.md). Проверены actual process crash/recovery, source binding, preservation, conditional selection и три synthetic formation profiles. Host activation и M1 SQL runtime не доказаны.
+GAP-06 принят владельцем; T34 и fresh-session activation отдельно открыты. Исправления locally verified: full 1450 tests (skip 1), fixtures 91/91, transcripts 26/26; актуальные проверки: [owning evidence](research/product-agent-os-audit-closeout-tooling-2026-11-10.md). Regression command: `python -B -m unittest tests.product_agent_os.test_lifecycle_hooks tests.product_agent_os.test_fixture_eval_runner -v`; затем обязательные full/fixture/transcript/compatibility/docs gates. TEMP/TMP — `.codex-tmp/audit-closeout-2026-11-10`.
+
+## G9 T11–T17 — принятые результаты реализации
+
+G9 закрыта после приёмки T17; текущие docs-only checks: 131 tests, strict preview и static gates passed. Receipt — [G9 report](research/product-agent-os-g9-execution-report.md#приёмка-t17-и-закрытие-g9). Runtime/eval результаты ниже — ранее выполненные и принятые.
+
+Полный suite: 1448 tests / 504.318s, OK (skipped=1); финальные affected/docs/lifecycle checks: 224 tests / 23.886s, OK; fixtures 91/91, transcripts 26/26, compatibility compatible, strict preview passed. Версии, команды и неуспешные попытки: [G9 execution report](research/product-agent-os-g9-execution-report.md). Использовать workspace TEMP/TMP `.codex-tmp/g9-tests/documentation-sync` и существующие полные gates; focused tests: `test_document_navigation`, `test_task_plan_lifecycle`, `test_control_plane_compaction`, `test_project_formation`.
+
+## PAOS-AUD-G9 — принятый первоначальный пакет
+
+Первоначальный принятый пакет T01–T10: Ran 1435 tests in 803.716s, OK (skipped=1); post-fix focused 57 OK; fixtures 91/91, transcripts 26/26; compatibility compatible; strict MkDocs isolated preview passed. [Точные команды, failed attempts, final docs/matrix checks и evidence ceiling](research/product-agent-os-g9-execution-report.md). Проверены actual process crash/recovery, source binding, preservation, conditional selection и три synthetic formation profiles. Host activation и M1 SQL runtime не доказаны.
 
 ## PAOS-AUD-G8 — verification, 2026-11-10
 
@@ -34,7 +44,7 @@ T07: full unittest 1379 / 516.855 s / exit 0 (1 platform skip); docs 105 / 7.834
 
 ## PAOS-AUD-G6 — 2026-11-09
 
-G6 partially_verified: три синтетических пилота выполнены из текущего проекта в host-target/pilots; все проверки passed, результаты needs_user_acceptance. По разрешению владельца HOST-01 больше не блокирует эти пилоты. Fresh-session activation HOST-01/HOST-02 остаётся отдельной открытой задачей; T34 no-go. Owner feedback/acceptance null; manual_only сохраняется. [Результаты](docs/superpowers/specs/paos-aud-g6-pilot-results.json).
+G6 partially_verified: GAP-06 implemented / owner accepted 10.11.2026; все три synthetic local pilots приняты владельцем. HOST-01 не является их зависимостью. T34 no-go и fresh-session activation HOST-01/HOST-02 остаются открытыми отдельно; manual_only сохраняется. [Результаты](docs/superpowers/specs/paos-aud-g6-pilot-results.json).
 
 [Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 

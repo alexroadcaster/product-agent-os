@@ -105,3 +105,5 @@ Name supported claims separately from unsupported claims.
 List current verification evidence and accepted gaps.
 State approval boundaries and residual risks.
 End with the next smallest action, not a completion claim, unless the packet verdict is `pass`.
+
+Per-task documentation impact and section synchronization follow the packaged `control-plane-sync.md` workflow. Assess every task; write only changed canonical sections. A required unresolved docs handoff prevents a stronger closure claim. Local receipts do not prove semantic completeness or fresh-session activation.

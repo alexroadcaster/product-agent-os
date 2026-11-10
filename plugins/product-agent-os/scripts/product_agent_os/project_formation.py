@@ -19,6 +19,7 @@ from product_agent_os.discovery import analyze_workspace
 from product_agent_os.stage_manifest import content_digest, canonical_json
 from product_agent_os.task_routing import build_task_routing, validate_task_context
 from product_agent_os.templates import TemplateSpec, required_templates, selected_templates
+from product_agent_os.document_navigation import DOMAINS as DOCUMENT_DOMAINS, DOMAIN_ALIASES
 
 SCHEMA = 'project_formation_v1'
 DOMAINS = {
@@ -122,6 +123,10 @@ def _owner_path(role: str, default: str, request: dict, inventory: dict, gaps: l
     if explicit:
         return explicit
     aliases = ALIASES.get(role, (default,))
+    navigation_role = {'evidence': 'verification', 'archive': 'history'}.get(role, role)
+    if navigation_role in DOCUMENT_DOMAINS and role != 'architecture':
+        directories = (DOCUMENT_DOMAINS[navigation_role][0], *DOMAIN_ALIASES.get(navigation_role, ()))
+        aliases = tuple(f'{directory}/{entry}' for directory in directories for entry in ('README.md', 'index.md'))
     candidates = [p for p in inventory if p in aliases or
                   (role != 'index' and Path(p).name in aliases)]
     if len(candidates) > 1:

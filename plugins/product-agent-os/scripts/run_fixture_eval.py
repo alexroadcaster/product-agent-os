@@ -1876,6 +1876,8 @@ def evaluate_fixture(path: Path) -> dict[str, Any]:
         automation_status = ""
         rollback_status = ""
         failure_log_status = ""
+        codex_runtime_runner_status = ""
+        codex_runtime_runner_checks = {}
         methodology_audit = {}
         renderer_files = []
         renderer_actions = {}

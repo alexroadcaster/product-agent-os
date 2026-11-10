@@ -230,6 +230,8 @@ def _is_read_only(command: str) -> bool:
 
 def _read_command_tokens(lexemes: list[str]) -> bool:
     """Keep executable names and switches exact; aliases and expansions are untrusted."""
+    if lexemes == ["git", "-c", "core.safecrlf=false", "diff", "--check"]:
+        return True  # This exact config override affects whitespace diagnostics only.
     name = lexemes[0].lower()
     if name not in {"rg", "get-content", "get-childitem", "select-string", "git", "type", "dir", "ls"}:
         return False
@@ -249,6 +251,39 @@ def _read_command_tokens(lexemes: list[str]) -> bool:
     if name == "git" and (len(lexemes) < 2 or lexemes[1].lower() not in {"diff", "status", "show", "log"}):
         return False
     return all(not lexeme.startswith("-") or lexeme.lower() in flags[name] for lexeme in lexemes[1:])
+
+
+def _local_validation_read(root: Path, payload: dict[str, Any], command: str) -> bool:
+    """Admit two reviewed, no-output-file validators, never arbitrary Python.
+
+    -B prevents bytecode writes. Exact argv, workspace cwd and resolved local
+    paths prevent a same-named script or a write option from using this route.
+    This is lifecycle classification, not a sandbox or code-integrity grant.
+    """
+    call = _literal_call(payload)
+    if not call or call[0] != "exec_command" or not isinstance(call[1], dict):
+        return False
+    lexemes = _literal_read_tokens(command)
+    scripts = {
+        "plugins/product-agent-os/scripts/validate_task_matrix.py",
+        "plugins/product-agent-os/scripts/validate_task_state_consistency.py",
+    }
+    if not lexemes or len(lexemes) != 4 or lexemes[:2] != ["python", "-B"] or lexemes[2] not in scripts:
+        return False
+    target = lexemes[3]
+    if not re.fullmatch(r"[A-Za-z0-9_./-]+", target) or target.startswith(("-", "/")) or ".." in target.split("/"):
+        return False
+    try:
+        root = root.resolve()
+        cwd = Path(payload.get("cwd", str(root)))
+        workdir = Path(call[1].get("workdir", str(cwd)))
+        if not workdir.is_absolute():
+            workdir = cwd / workdir
+        script = root / lexemes[2]
+        return (workdir.resolve() == root and script.is_file()
+                and script.resolve() == script and (root / target).resolve().is_relative_to(root))
+    except (OSError, ValueError, TypeError):
+        return False
 
 
 def lifecycle_session_id(payload: dict[str, Any]) -> str | None:
@@ -733,6 +768,8 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     mutating = _is_mutating(tool, command)
+    if mutating and _local_validation_read(_workspace_root(payload), payload, command):
+        mutating = False
     if call and call[0] == "exec_command" and isinstance(call[1], dict) and call[1].get("shell"):
         mutating = True  # An explicit interpreter can assign different semantics to literal text.
     if mutating:

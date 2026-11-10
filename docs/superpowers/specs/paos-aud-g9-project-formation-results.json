@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "group": "PAOS-AUD-G9",
-  "owner_acceptance": "pending",
+  "owner_acceptance": "accepted_T10_by_owner_2026-11-10",
   "environment": {
     "python": "3.13.5",
     "system": "Windows",
@@ -170,5 +170,225 @@
       "activation": "not_tested",
       "ceiling": "synthetic local; existing index update remains companion proposal"
     }
-  ]
+  ],
+  "documentation_sync_extension": {
+    "baseline_revision": "eb4a74688c9df96e2481e653cd144b2a07f39d03",
+    "environment": {
+      "python": "3.13.5",
+      "platform": "Windows"
+    },
+    "arms": {
+      "baseline": {
+        "cross_file_duplicates": {
+          "expected": 1,
+          "observed": 0,
+          "missed": 1
+        },
+        "aliases": {
+          "decisions": {
+            "expected": "docs/adr/README.md",
+            "observed": "docs/decisions/README.md"
+          },
+          "operations": {
+            "expected": "docs/runbooks/README.md",
+            "observed": "docs/operations/README.md"
+          },
+          "evidence": {
+            "expected": "docs/testing/README.md",
+            "observed": "docs/evidence/README.md"
+          },
+          "archive": {
+            "expected": "docs/archive/README.md",
+            "observed": "docs/archive/README.md"
+          }
+        },
+        "section_sync_available": false,
+        "conflicting_task_copies": {
+          "expected": 1,
+          "observed": 0
+        },
+        "section_sync": {
+          "status": "unsupported",
+          "reason": "baseline has no task-section synchronization route"
+        }
+      },
+      "treatment": {
+        "cross_file_duplicates": {
+          "expected": 1,
+          "observed": 1,
+          "missed": 0
+        },
+        "aliases": {
+          "decisions": {
+            "expected": "docs/adr/README.md",
+            "observed": "docs/adr/README.md"
+          },
+          "operations": {
+            "expected": "docs/runbooks/README.md",
+            "observed": "docs/runbooks/README.md"
+          },
+          "evidence": {
+            "expected": "docs/testing/README.md",
+            "observed": "docs/testing/README.md"
+          },
+          "archive": {
+            "expected": "docs/archive/README.md",
+            "observed": "docs/archive/README.md"
+          }
+        },
+        "section_sync_available": true,
+        "conflicting_task_copies": {
+          "expected": 1,
+          "observed": 1
+        },
+        "mandatory_impact": {
+          "explicit_event_cases": 12,
+          "missed_required_owner_gaps": 0,
+          "scope": "explicit reviewed facts only; not semantic discovery completeness"
+        },
+        "section_sync": {
+          "status": "verified",
+          "files_changed": 1,
+          "sections_changed": 1,
+          "unnecessary_files": 0,
+          "outside_section_bytes_changed": 0,
+          "repeat_writes": 0,
+          "repeat_status": "already_applied"
+        },
+        "next_task": {
+          "outside_section_bytes_changed": 0,
+          "prior_recovery_retained": true
+        }
+      }
+    },
+    "source_hashes": {
+      "plugins/product-agent-os/scripts/product_agent_os/documentation_sync.py": "6e59ca89d6d125ad440486b16043faf579871418ca85cbef674861994b6e1b41",
+      "plugins/product-agent-os/scripts/product_agent_os/control_plane_documents.py": "bd821fe99600448a288bd8f1365890fa693073568d7a30669df7708870f8f4b4",
+      "plugins/product-agent-os/scripts/product_agent_os/control_plane_compaction.py": "19237bf3ca09203a8ef136df1e3b72eef7affab1c0d201260e0c0587c702fdee",
+      "plugins/product-agent-os/scripts/product_agent_os/document_navigation.py": "f83d94a63ccea22b463452c58c3e22ebb80810f0971a056cb959dba56f04cbe7",
+      "plugins/product-agent-os/scripts/product_agent_os/project_formation.py": "ad93c0e9a213e22a0b6536751cbbb8294f66cfda914e0d9d4edf6df1b1206dc3",
+      "plugins/product-agent-os/scripts/product_agent_os/task_plan_lifecycle.py": "c9f81f9610482f73680aa0cb50aee9aa376fec66eac8fb0ed9c555eee528e3b1",
+      "plugins/product-agent-os/scripts/product_agent_os/validators.py": "855f08f9b7b44e7b5705801ab6926d0a06c9189f3df0b819254fb121c886523c",
+      "plugins/product-agent-os/scripts/product_agent_os/status_snapshot.py": "23d3e95569f691a94ef9f7546ae157657678955dd502d02742b3cfff0444f64a",
+      "plugins/product-agent-os/scripts/product_agent_os/system_file_hygiene.py": "545bbe72ead00ec7d7acc34ed75697686d210365849ff235f0c7d0aae6009738",
+      "tests/product_agent_os/g9_documentation_comparison.py": "ebc2fca2373c9f3662bd6a20d990d1c36ed1cdf1c59e15ba5ac46c9914164d93",
+      "tests/product_agent_os/test_document_navigation.py": "7a34e675cef1d73353a6745a91e0c69738a1bb1296ab6293e46ad931c40dea69",
+      "tests/product_agent_os/test_task_plan_lifecycle.py": "dd6c44f4c7e3477d84261522bbeb4bd0ea62fcfa47f65c39a17758f2615604f0",
+      "plugins/product-agent-os/assets/templates/workflows/control-plane-sync.md": "9bb71485e7c5b1fc7cca043653e8195b350a8d67a28d6c6c5f2852c7dc142082",
+      "plugins/product-agent-os/skills/implementation-planner/SKILL.md": "d498caaf075b9bcfc863c61b1877f964ea71e9b7a197a5aee74a21a655d12e5e",
+      ".codex/workflows/control-plane-sync.md": "ef77680647159ab2c0ba0749c50cb95b93dfc181a25854c78955e75b31a99c3c",
+      "plugins/product-agent-os/skills/references/handoff-contract.md": "4bea6b9e872cb914ec7d63171e3072a3f56673b37d7b1762716a327fc0a1e9c2",
+      "plugins/product-agent-os/assets/templates/artifact-templates/task-matrix-plan.md": "cd56282a8c9b5c36050f15a887c7f99140c6647d595f444d13c1b5f020dce421",
+      "tests/product_agent_os/test_lifecycle_skills.py": "f0554a078d82e11601bb92ece92485666d4306ae619bbb81cc9e60dcbb4b5b5a",
+      "plugins/product-agent-os/scripts/check_documents.py": "ae3df531a080967a06eefd3fe768041846f6de22dbdcc37e1db9be8b14c0afc5",
+      "plugins/product-agent-os/scripts/sync_task_documents.py": "dff5b10650b9ee9f179fae5533ab7c2009c548a69f49a3710c41f6c645d8a359"
+    },
+    "owner_acceptance": "accepted_T17_by_owner_2026-11-10",
+    "behavioral_model_comparison": "not_run; no model superiority claim",
+    "instruction_review": {
+      "method": "static source contract review, not model execution",
+      "baseline_routes_command_output_to_RUNLOG": true,
+      "treatment_routes_command_output_to_RUNLOG": false,
+      "review_cases": {
+        "internal_bugfix": "no_change_needed with reason",
+        "API_change": "canonical contract section",
+        "test_rerun": "existing evidence owner; unchanged commands untouched",
+        "new_documentation_domain": "formation preview",
+        "identical_repeat": "zero writes",
+        "unknown_owner": "handoff_required; no strong closure"
+      },
+      "model_behavior_evidence": "unavailable_in_this_run; limitation explicitly accepted by owner at T17; not a model-verification claim"
+    },
+    "semantic_completeness": "review input, not inferred from digests or deterministic tests",
+    "scope": "synthetic local; baseline unsupported routes are not fabricated numeric failures",
+    "verification": {
+      "full_unittest": {
+        "command": "python -B -m unittest discover -s tests -p \"test_*.py\" -q",
+        "tests": 1448,
+        "seconds": 504.318,
+        "skipped": 1,
+        "exit_code": 0
+      },
+      "closure_focused": {
+        "tests": 224,
+        "seconds": 23.886,
+        "exit_code": 0,
+        "log": ".codex-tmp/g9-tests/documentation-sync/closure-checks.log"
+      },
+      "final_docs": {
+        "command": "python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "tests": 105,
+        "seconds": 7.65,
+        "exit_code": 0
+      },
+      "fixtures": {
+        "command": "python -B plugins/product-agent-os/scripts/run_fixture_eval.py",
+        "passed": 91,
+        "total": 91,
+        "exit_code": 0
+      },
+      "transcripts": {
+        "command": "python -B plugins/product-agent-os/scripts/run_transcript_eval.py",
+        "passed": 26,
+        "total": 26,
+        "exit_code": 0
+      },
+      "compatibility": {
+        "command": "python -B plugins/product-agent-os/scripts/validate_codex_compatibility.py",
+        "status": "compatible",
+        "ceiling": "local structure only",
+        "exit_code": 0
+      },
+      "strict_mkdocs": {
+        "command": ".venv-docs/Scripts/python.exe -B -m mkdocs build --strict --site-dir .codex-tmp/g9-tests/documentation-sync/site",
+        "seconds": 11.82,
+        "exit_code": 0
+      },
+      "matrix_and_projection": {
+        "cards": 65,
+        "unchanged_prior_cards": 48,
+        "rows": 82,
+        "issues": []
+      },
+      "static_checks": {
+        "commands": [
+          "python -B tools/check_docs.py",
+          "python -B plugins/product-agent-os/scripts/validate_task_state_consistency.py .",
+          "git diff --check"
+        ],
+        "exit_codes": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "status": "closed_owner_accepted"
+  },
+  "group_status": "closed_owner_accepted",
+  "group_owner_decision": {
+    "decision": "accepted",
+    "recorded_at": "2026-11-10T18:31:05+00:00",
+    "scope": "T17 results and G9 closure",
+    "accepted_limits": [
+      "No model behavioral A/B; static instruction review only",
+      "Semantic completeness remains review-owned; no model-superiority claim"
+    ],
+    "fresh_session_activation": "open_separate",
+    "evidence": "research/product-agent-os-g9-execution-report.md",
+    "verification": {
+      "scope": "documentation_only",
+      "command": "python -B -m unittest tests.product_agent_os.test_product_agent_os_docs tests.product_agent_os.test_task_plan_lifecycle tests.product_agent_os.test_status_snapshot -v",
+      "tests": 131,
+      "seconds": 14.131,
+      "exit_code": 0,
+      "strict_mkdocs_preview_seconds": 23.48,
+      "runtime_files_unchanged": 819,
+      "prior_comparison_and_verification_receipts_preserved": true,
+      "matrix_and_state_valid": true,
+      "projection_rows": 82,
+      "prior_groups_cards_preserved": 48,
+      "new_runtime_or_model_evidence": false
+    }
+  }
 }

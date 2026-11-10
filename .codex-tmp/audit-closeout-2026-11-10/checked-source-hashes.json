@@ -1,0 +1,7 @@
+{
+  ".codex/hooks/pre_tool_use_policy.py": "f59efd157c2098fdd4768d6bc1d28f3a9e4df32eedade25c4e66c8c79bf79a65",
+  "plugins/product-agent-os/assets/templates/hooks/pre_tool_use_policy.py": "f59efd157c2098fdd4768d6bc1d28f3a9e4df32eedade25c4e66c8c79bf79a65",
+  "plugins/product-agent-os/scripts/run_fixture_eval.py": "b3c6c4ea79d72efd49245ae259e808c523f8ec7cfac44f0c4007da118a8686b0",
+  "tests/product_agent_os/test_lifecycle_hooks.py": "29023d2b0912e99d14512a1f1c67980856e65280b324e6083f77366390640f81",
+  "tests/product_agent_os/test_fixture_eval_runner.py": "52676239f010ce6ee696202cd0b9e42eb8144905384a0cc8c57f318a8f2531dc"
+}

@@ -1,1 +1,47 @@
-{"session_id":"01a1bf93-9bba-7df0-b087-c43aaaf1f139","task_id":"PAOS-AUD-G9-DOCS-PLAN","plan_path":"research/product-agent-os-audit-remediation-task-plan-2026-11-09.md","scope":"G9 documentation maintenance planning T11-T17 only","approval_boundary":"Authorized matrix and concise control-plane authoring only; no product implementation, activation, provider, target or Git actions","status":"ready_for_completion_brief","completion_ready":true,"brief_schema_version":"task_scope_note_v1","brief_format":"concise","brief_digest":"sha256:292462453bebb0eb0f3d96e91bada633d4b3af0981c985fe25f5ba43ab7a3a0a","brief_digest_provenance":"SHA256 of normalized scope: G9 documentation maintenance planning T11-T17 only","brief_fields_present":["Scope","Evidence","Limits"],"scope_note_shown":true,"updated_at":"2026-11-10T17:34:35.481161+00:00","lifecycle_scope":{"work_type":"implementation","size":"bounded","risk":"low","financially_material":false,"release_or_readiness":false,"explicit_packet_request":false,"reason":"Implement requested planning artifact edits only; product implementation excluded"},"prior_closure":{"task_id":"PAOS-AUD-G9","closure_level":"implemented_locally_verified","evidence":"research/product-agent-os-g9-execution-report.md","residual_gaps":["G9 T10 owner acceptance pending","Fresh-session activation separate"]},"closure_level":"docs_static_verified","evidence":"research/product-agent-os-audit-remediation-task-plan-2026-11-09.md: planning extension T11-T17; 130 tests OK; docs/matrix/links/diff checks passed; 58 prior cards and 39 prior changed files preserved; 82 projection rows issues=[]","residual_gaps":["T11-T17 planned; implementation not authorized by this request","T10 owner acceptance pending","Fresh-session activation separate"]}
+{
+  "session_id": "01a1bf93-9bba-7df0-b087-c43aaaf1f139",
+  "task_id": "PAOS-AUD-GAP06-ACCEPTANCE-TOOLING-FIX",
+  "plan_path": "research/product-agent-os-audit-closeout-tooling-2026-11-10.md",
+  "scope": "Record accepted GAP-06 pilots; reconcile current statuses; fix read-only hook classification and fixture runner exception handling with regression checks",
+  "approval_boundary": "Authorized local hooks, runner, tests and documentation only; T34, HOST activation, external targets, cache and Git mutations excluded",
+  "status": "ready_for_completion_ledger",
+  "completion_ready": true,
+  "brief_schema_version": "task_start_brief_v2",
+  "brief_format": "bold_fields",
+  "brief_fields_present": [
+    "Request",
+    "Goal",
+    "Context",
+    "Scope",
+    "Value",
+    "Execution",
+    "Acceptance",
+    "Risks / approvals",
+    "Next step"
+  ],
+  "task_start_brief_shown": true,
+  "updated_at": "2026-11-10T19:08:38.952266+00:00",
+  "lifecycle_scope": {
+    "work_type": "fix",
+    "size": "bounded",
+    "risk": "high",
+    "financially_material": false,
+    "release_or_readiness": false,
+    "explicit_packet_request": false,
+    "reason": "Bounded command classification change must preserve lifecycle and security guards"
+  },
+  "prior_closure": {
+    "task_id": "PAOS-AUD-G9-T17",
+    "closure_level": "docs_static_verified",
+    "owner_decision": "G9 accepted with model behavior limits"
+  },
+  "brief_digest": "sha256:e226ab956a6108e7dc665f5d890750dd88564200ce5cfff576d7b76acf1804f5",
+  "brief_digest_provenance": "SHA256 of the current authorized maintenance scope",
+  "closure_level": "implemented_locally_verified",
+  "owner_decision": "All three GAP-06 local pilots accepted; T34 and fresh-session activation remain separate",
+  "residual_gaps": [
+    "T34 no_go / preflight blocked",
+    "HOST-01/HOST-02 fresh-session activation separate",
+    "System TEMP permission boundary unchanged; workspace TEMP used"
+  ]
+}

@@ -7,6 +7,7 @@ import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -32,6 +33,22 @@ def evaluate_all_cached(runner):
 
 
 class FixtureEvalRunnerTest(unittest.TestCase):
+    def test_renderer_exception_preserves_failure_instead_of_unbound_runtime_fields(self):
+        runner = load_runner()
+        fixture = FIXTURES / "python-app"
+        for failure in (PermissionError("synthetic temp denied"), RuntimeError("synthetic renderer failure")):
+            with self.subTest(failure=type(failure).__name__), \
+                 mock.patch.object(runner, "render_infrastructure_plan", side_effect=failure):
+                result = runner.evaluate_fixture(fixture)
+                self.assertFalse(result["ok"])
+                self.assertEqual(result["codex_runtime_runner_status"], "")
+                self.assertEqual(result["codex_runtime_runner_checks"], {})
+                self.assertIn(f"renderer failed: {type(failure).__name__}: {failure}", result["risks"])
+                self.assertEqual(set(result), set(runner._failed_result("fixture", "failure")))
+                with mock.patch.object(runner, "evaluate_all", return_value=[result]), redirect_stdout(io.StringIO()) as output:
+                    self.assertEqual(runner.main(), 1)
+                self.assertFalse(json.loads(output.getvalue())[0]["ok"])
+
     def test_fixture_eval_returns_stable_named_results(self):
         runner = load_runner()
 

@@ -1,6 +1,6 @@
 # PAOS-AUD-G9 — реализация и сравнение
 
-Source status: project-local execution evidence; implemented locally; owner acceptance pending. G8-T14 и закрытие G8 явно приняты владельцем; приёмка G9 и fresh-session activation отдельны.
+Source status: project-local execution evidence; T10/T17 owner accepted; G9 closed; model-behavior limits accepted. G8-T14 и закрытие G8 явно приняты владельцем; приёмка G9 и fresh-session activation отдельны.
 
 ## Scope и решение
 
@@ -23,7 +23,7 @@ Code-change contract: no_new_dependency; stdlib и existing renderer/merge вм�
 
 ## Итог реализации и traceability — 10-11-2026 20:11 Europe/Moscow
 
-G8-T14/G8 owner accepted. G9 T01–T09 implemented_locally_verified; T10 technical work complete, needs_user_acceptance. Карточки и критерии сохранены в owning matrix; ниже evidence mapping. Свободные роли в карточках не означают dispatch: primary выполнил работу и self-review, независимых агентов в этом slice не запускал.
+G8-T14/G8 owner accepted. G9 T01–T09 implemented_locally_verified; T10 technical work complete, owner accepted 10.11.2026; extension T17 acceptance separate. Карточки и критерии сохранены в owning matrix; ниже evidence mapping. Свободные роли в карточках не означают dispatch: primary выполнил работу и self-review, независимых агентов в этом slice не запускал.
 
 | Task | Результат / acceptance coverage | Owning implementation / evidence |
 | --- | --- | --- |
@@ -87,7 +87,7 @@ context_mode=self_review; tester_verdict=partial_only для закрытия г
 
 40 000 UTF-8 bytes / warning 32 000 сохраняются для применимых документов; G8 lossless compaction и recovery переиспользованы, history не сокращается этим planner. Подробные матрицы docs/planning/ исключены из default size trigger; research matrix остаётся одним файлом по решению владельца. Перенос/сокращение не выполнялись.
 
-Предлагаемая приёмка: принять локальную реализацию T01–T09 и технический результат T10 с описанными границами; существующие target документы обновлять только после review конкретных companion proposals. До явного решения владельца G9 не закрыта. Fresh-session activation остаётся отдельной открытой задачей, T34 no-go и G6 acceptance не изменены.
+Историческое предложение, принятое владельцем в T10: принять локальную реализацию T01–T09 и технический результат T10 с описанными границами; существующие target документы обновлять только после review конкретных companion proposals. До явного решения владельца G9 не закрыта. Fresh-session activation остаётся отдельной открытой задачей, T34 no-go и G6 acceptance не изменены.
 
 Control-plane sync: REQUIREMENTS/PLAN/TEST/EVALS/RUNLOG update_required и обновлены; AGENTS/prod_test not_applicable (durable rules/Batch39 evidence не менялись); handoff_required — owner decision G9 и отдельная activation. Новая страница описывает существующую staging/merge boundary, отдельная диаграмма не нужна. Подробные receipts находятся здесь, root files содержат краткие pointers.
 
@@ -139,3 +139,48 @@ Review disposition: local implementation and required gates passed; owner decisi
 
 Добавлены десять planned-карточек [группа G9](product-agent-os-audit-remediation-task-plan-2026-11-09.md#paos-aud-g9) со всеми полями, dependencies и acceptance. Обновлены summary группы и revision-pinned PLAN selector; исторические карточки G1–G8 сохранены. Control-plane sync: REQUIREMENTS/PLAN/TEST/EVALS/RUNLOG updated; AGENTS и prod_test not_applicable — durable rules и Batch39 не менялись. Public implementation docs/source registries не менялись: новых реализованных возможностей и внешних source claims нет. G9 implementation_not_started; G8-T14 needs_user_acceptance; fresh-session activation отдельно. Текущие проверки: `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs tests.product_agent_os.test_task_plan_lifecycle tests.product_agent_os.test_status_snapshot -q` — 130 tests / 12.689s, OK, exit 0; `python -B tools/check_docs.py` — OK; `python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-audit-remediation-task-plan-2026-11-09.md` — ok=true, errors=[]; `git diff --check` — exit 0. Прямые read-only assertions: 48 прежних карточек сохранены текстуально; всего 58 карточек, G9 10/10 planned; dependency refs ведут к предыдущим задачам; revision-pinned projection 75 rows, issues=[]; local links errors=[]; все root control-plane files менее 40 000 bytes. Начальные замечания валидатора (обязательные Completion Report placeholders и HTML anchor, распознанный как placeholder) исправлены без изменения validator. Первый link probe отклонён из-за Windows separators; POSIX-relative retest passed. Strict MkDocs not_applicable: nav/config/public site docs не менялись. Финальный повтор `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -q` после записи handoff: 105 tests / 11.313s, OK, exit 0. Полный runtime suite и G9 pilots не запускались — planning-only; их прежние результаты не выданы за evidence G9.
 
+
+## Расширение T11–T17: реализация и проверка
+
+Source status: current local execution, 10.11.2026; T10 явно принят владельцем; T17 acceptance pending.
+
+Baseline: `eb4a74688c9df96e2481e653cd144b2a07f39d03`; до runtime edits сохранён git archive, SHA256 `265e2c5a89f6552d7403dac1447b04aa8d2b7b0bdd199eb6c20747f4261d5c01`. Исходный worktree чистый кроме собственного lifecycle marker. Предыдущие formation receipts/results сохранены; новый результат — ключ `documentation_sync_extension` того же JSON.
+
+Code-change contract: task scope T11–T17; ownership primary, zero delegation; применены canonical implementation-planner и Python guidance. Новый `documentation_sync.py` отвечает за impact и replay section/completion proposals; запись, CAS, lock, journal и rollback переиспользованы из control_plane_compaction.py. Отдельный lossless validator compaction сохранён. Новых зависимостей, status database и writer нет. Изменение совместимости CLI: complete требует явный --legacy-card-only либо новый preview/apply route.
+
+TDD/current checks: cross-file duplicate RED 1 test, expected 1 / actual 0, exit 1; explicit-anchor RED 8 tests, 1 failure, exit 1. GREEN focused 45 tests / 34.642s; completion regression сначала обнаружила конфликт HTML receipt delimiters с placeholder validator, исправлены только два известных delimiters, затем 1 test / 0.160s OK. Ошибка ожидаемого byte offset в тесте (23 вместо 22) исправлена через len исходного префикса. Focused docs/runtime 161 tests / 47.965s OK. Public preview/apply/rollback CLI, отказ без approved digest, 12 классов событий без owner, no-change/unknown distinction: navigation suite 17 tests / 1.595s OK.
+
+Команды: `python -B -m unittest tests.product_agent_os.test_document_navigation tests.product_agent_os.test_task_plan_lifecycle tests.product_agent_os.test_control_plane_compaction tests.product_agent_os.test_project_formation tests.product_agent_os.test_product_agent_os_docs -q`; `python -B -m tests.product_agent_os.g9_documentation_comparison --baseline .codex-tmp/g9-tests/documentation-sync/baseline --report docs/superpowers/specs/paos-aud-g9-project-formation-results.json`. TEMP/TMP — `.codex-tmp/g9-tests/documentation-sync`; Python 3.13.5/Windows, providers=0. Полные текущие gate receipts будут записаны после завершения.
+
+Comparison: одинаковый runner/fixtures в отдельных Python processes. Cross-file duplicate baseline 0/1, treatment 1/1; canonical aliases baseline 1/4, treatment 4/4. Section route отсутствует в baseline, а не получает выдуманные численные метрики. Treatment: 1 изменённый файл/раздел, 0 лишних файлов, 0 изменённых bytes вне раздела, 0 повторных записей; следующая задача сохраняет соседние bytes и предыдущий recovery journal. Это deterministic/local comparison, не доказательство качества модели.
+
+Прежний planning handoff (история, не текущий статус):
+
+Добавлены семь planned-карточек по точечному docs sync после задачи. Owning source — [матрица G9](product-agent-os-audit-remediation-task-plan-2026-11-09.md#расширение-g9-точечное-сопровождение-после-каждой-задачи). T01–T10 и их acceptance/evidence не переписаны; T10 owner decision pending. Реализация T11–T17, schedules и fresh-session activation не выполнялись. Control-plane sync: REQUIREMENTS/PLAN/RUNLOG updated; TEST/EVALS/AGENTS/prod_test not_applicable — действующие проверки, рубрики, durable rules и исторические receipts не менялись. Проверки authoring завершены; actual receipts и границы — [проверка планового дополнения](product-agent-os-audit-remediation-task-plan-2026-11-09.md#проверка-планового-дополнения-g9).
+
+
+### Итог T11–T17 для приёмки
+
+Current final full suite: 1448 tests / 504.318s, OK (skipped=1). Affected/docs suite: 164 tests / 22.975s, OK. Первый full run: 1445 tests / 806.126s, failed=2, skipped=1 — старые assertions требовали переноса evidence в RUNLOG. Исправлен оставшийся шаблон и контрактный тест теперь требует owning evidence artifact/краткий RUNLOG и запрещает старую формулировку. Повторный full run прошёл после исправления legacy lifecycle test/template; эквивалентный lookup core owners через DOCUMENT_CONTRACTS дополнительно проверен 26 targeted tests / 2.574s после refactor. Fixture 91/91, transcript 26/26, compatibility compatible; strict MkDocs isolated preview 11.81s; check_docs, task matrix/state and diff checks exit 0.
+
+Failed attempt: первый fixture runner без workspace TEMP завершился UnboundLocalError в существующей обработке ошибки; runner не изменялся. Повтор с утверждённым TEMP/TMP прошёл 91/91. Дополнительный RED выявил отсутствие ID в generated task card: detailed planning size exception не распознавала её; добавлен ID, тест >40 KB с interruption/rollback прошёл. No-op completion теперь проверяет исходную карточку; receipt pin соответствует результирующему документу; combined docs/card/PLAN integration прошла.
+
+T11–T15: contract/section/recovery/closure evidence — test_document_navigation, test_task_plan_lifecycle и existing compaction/formation suites. T16: active/packaged workflow/template/skill parity и lifecycle policy regression. T17: same-input comparison в existing G9 results JSON; точный scope, продуктовая ценность и критерии остаются в owning matrix, не дублируются здесь.
+
+Explicit self-review: replay/authority/protected paths, stale source and no-op snapshots, UTF-8/CRLF, receipts, aliases, allowed mirrors, later-edit recovery and scoped legacy compatibility inspected. Независимые агенты не запускались. Два scoped workflow/template edits потребовали разрешённой записи в защищённую .codex; activation/trust/config не менялись.
+
+Граница приёмки: изменения существующих разделов требуют review exact proposal; новые документы идут через formation. Hash/boolean не доказывают полноту перечисленных фактов и смысловую корректность текста. Six instruction cases — static review, не модельный A/B; model behavior evidence unavailable, explicit owner acceptance of this gap pending. Детерминированные проверки не доказывают превосходство модели/экономию токенов, fresh host или real M1 SQL. Multi-file recovery не ACID; внешних writers исключать. Подробные docs/planning matrices не сокращаются; research matrix не разделялась. G6/T34 и fresh-session activation не закрыты этим slice.
+
+Control-plane sync: REQUIREMENTS/PLAN/TEST/EVALS/RUNLOG updated; AGENTS/prod_test not_applicable. G1–G8 cards сохранены текстуально, 65 карточек; T10 accepted, T11–T16 implemented, T17 in_progress/needs_user_acceptance. Owner decision по T17 не подменён техническим pass.
+
+### Проверки после записи итоговых статусов
+
+Closure affected/docs/lifecycle suite: 224 tests / 23.886s, OK, exit 0; final docs `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -v`: 105 / 7.650s, OK. Final strict MkDocs: 11.82s, exit 0, только isolated preview. `verify.py` подтверждает 65 карточек, 48 прежних карточек без текстовых изменений, 82 projection rows, issues=[], local link errors=[], исходные formation results сохранены, comparison source hashes актуальны. Отдельные check_docs, task-state и diff checks exit 0. Последняя проверка выявила устаревший hash изменённого comparison runner; сравнение повторено, актуальные hashes проверены. Две root-relative ссылки перенесённого исторического handoff исправлены на пути относительно research/. Неуспешный inline pointer probe был ошибкой PowerShell quoting; его заменил проверяемый скрипт.
+
+Окончательный пакет: T10 owner accepted; T11–T16 implemented_locally_verified; T17 needs_user_acceptance. Проверенные ограничения, semantic/model evaluation gap и отдельная fresh-session activation остаются явными. Полный финальный source/command receipt сохранён в ключе documentation_sync_extension существующего results JSON.
+
+## Приёмка T17 и закрытие G9
+
+Owner decision записано 2026-11-10T18:31:05+00:00: владелец явно принял T17 и ограничения проверки модельного поведения. G9 closed / owner accepted; T01–T17 implemented. Модельный A/B не выполнялся и не объявляется проверенным. Fresh-session activation остаётся открытой отдельной задачей. Предыдущие receipts выше сохранены как история до приёмки; цифры runtime/eval не перезапущены и не переименованы в новые результаты. Текущий slice меняет только документы приёмки и статусы; код/тесты/workflows/skills сохранены.
+
+Acceptance checks (docs-only): unittest docs/task_plan_lifecycle/status_snapshot 131 tests / 14.131s, OK; check_docs, matrix/state validators, links/pins and diff check passed; strict MkDocs isolated preview 23.48s. 819 implementation/test/workflow files and prior comparison/verification receipts unchanged; 48 G1-G8 cards preserved; 17 G9 tasks implemented, 82 projection rows, no issues. Prior runtime gates reused, not rerun.

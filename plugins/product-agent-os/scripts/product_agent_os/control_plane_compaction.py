@@ -280,6 +280,12 @@ def apply(root: Path, plan: dict[str, Any], *, approved_digest: str,
     """Apply an explicitly approved plan; caller must exclude external writers."""
     root = root.resolve()
     _validate(root, plan)
+    return _apply_validated(root, plan, approved_digest=approved_digest, after_write=after_write)
+
+
+def _apply_validated(root: Path, plan: dict[str, Any], *, approved_digest: str,
+                     after_write: Callable[[int], None] | None = None) -> dict[str, str]:
+    """Shared journal/CAS engine; callers must validate their own plan semantics."""
     _authority(root, [f['path'] for f in plan['files']])
     if approved_digest != plan['digest']:
         raise ValueError('exact proposal approval required')
@@ -350,7 +356,11 @@ def rollback(root: Path, journal: str, *, abandoned_lock_digest: str | None = No
     if not journal.startswith(JOURNAL_ROOT + '/') or not journal.endswith('.json'):
         raise ValueError('invalid recovery journal')
     plan = json.loads(_path(root, journal).read_text(encoding='utf-8'))
-    _validate(root, plan)
+    if plan.get('kind') == 'documentation_sync_v1':
+        from product_agent_os.documentation_sync import validate_proposal
+        validate_proposal(root, plan, check_sources=False)
+    else:
+        _validate(root, plan)
     _authority(root, [f['path'] for f in plan['files']])
     lock = _path(root, LOCK)
     if abandoned_lock_digest is not None:

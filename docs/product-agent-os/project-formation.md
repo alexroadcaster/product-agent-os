@@ -109,3 +109,15 @@ AI/eval scope добавляет `EVALS.md`; другие области и уп
 Источники реализации: `plugins/product-agent-os/scripts/product_agent_os/project_formation.py`, `infrastructure.py`, `merge_infrastructure.py`. Проверки: `tests/product_agent_os/test_project_formation.py`; сравнение: `docs/superpowers/specs/paos-aud-g9-project-formation-results.json`; ограничения и приёмка: `research/product-agent-os-g9-execution-report.md`.
 
 См. [технический контракт](technical.md), [архитектуру](architecture.md) и [реестр источников](../sources/registry.md).
+
+## Точечное сопровождение после задачи
+
+После каждой задачи оценивается влияние на документацию. Запись нужна только при изменении сведений: один основной источник, конкретный раздел, причина и проверяемая версия. `no_change_needed` — обоснованное решение, `handoff_required` — незакрытый вопрос владельцу. Информация о решении хранится в существующей карточке/Completion Report; новый отчёт для каждой мелкой задачи не нужен.
+
+`sync_task_documents.py` предлагает exact diff существующего раздела и применяет его через общий журнал восстановления. Для завершения задачи тот же пакет обновляет карточку и её revision в PLAN; неизвестный владелец или обязательный handoff блокирует implemented closure. Другие разделы, пользовательские bytes и чужие pins сохраняются; stale input, freeze/SQL projection и конфликты останавливают запись. Повтор идентичного предложения не пишет файлы. Старый `create_task_plan.py complete` требует явного `--legacy-card-only` и не подтверждает синхронизацию.
+
+Краткая карта событий: требования → REQUIREMENTS; последовательность → PLAN; команды → TEST; eval-политика → EVALS; текущая передача работы → RUNLOG; API/схема/операции → профильный источник. Подробные проверки остаются в owning evidence artifact. Переиспользуются docs/adr, docs/runbooks, docs/ops, docs/testing и docs/archive. Новые файлы — через formation staging, неоднозначные владельцы — через review.
+
+Дубликаты между переданными затронутыми файлами и их источниками требуют решения; свежий разрешённый mirror и связанная краткая summary проверяются отдельно. Автоматического семантического удаления нет. 40 000 bytes / warning 32 000 и исключение подробных docs/planning матриц сохраняются; research matrix автоматически не разделяется. Event sync, size-trigger и периодический read-only hygiene различаются; расписания не создаются. Проверка digest доказывает целостность, а полнота перечисленных изменений, качество текста и приёмка остаются предметом review. Fresh-session activation отдельно.
+
+Источник: `plugins/product-agent-os/scripts/product_agent_os/documentation_sync.py`; проверки `test_document_navigation.py`, `test_task_plan_lifecycle.py`; evidence `research/product-agent-os-g9-execution-report.md`.

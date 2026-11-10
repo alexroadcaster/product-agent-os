@@ -22,14 +22,15 @@ DOMAINS = {
     'verification': ('docs/evidence', 'tester', 'required reproducible evidence'),
     'history': ('docs/history', 'document owner', 'closed cycle details'),
 }
+DOMAIN_ALIASES = {'decisions': ('docs/adr',), 'operations': ('docs/runbooks', 'docs/ops'),
+                  'verification': ('docs/testing',), 'history': ('docs/archive',)}
 
 
 def documentation_inventory(root: Path, *, signals: dict[str, bool]) -> dict[str, Any]:
     """Reuse known entrypoints, then propose only explicitly applicable domains."""
     index = next((p for p in ('docs/index.md', 'docs/README.md', 'docs/control-plane/index.md')
                   if _path(root, p).is_file()), None)
-    aliases = {'decisions': ('docs/adr',), 'operations': ('docs/runbooks', 'docs/ops'),
-               'verification': ('docs/testing',), 'history': ('docs/archive',)}
+    aliases = DOMAIN_ALIASES
     domains = {}
     for key, (path, owner, trigger) in DOMAINS.items():
         if signals.get(key) is not True:
@@ -62,6 +63,11 @@ def _headings(text: str) -> list[tuple[int, str]]:
         elif fence is None:
             match = re.match(r'^#{1,6}\s+(.+?)\s*#*\s*$', line.rstrip())
             if match:
+                explicit = re.search(r'\s*\{#([\w-]+)\}\s*$', match[1])
+                if explicit:
+                    headings.append((offset, explicit[1]))
+                    offset += len(line.encode('utf-8'))
+                    continue
                 slug = re.sub(r'[^\w\- ]', '', match[1].lower()).replace(' ', '-')
                 count = counts.get(slug, 0)
                 counts[slug] = count + 1
@@ -170,19 +176,30 @@ def check_reference(root: Path, record: dict[str, Any], *, repositories: dict[st
                 or not record.get('revision') or not record.get('claim_boundary')):
             return {'status': 'unknown'}
         root = repositories[repository]
-    elif kind not in {'mirror', 'required_evidence', 'optional_evidence'}:
+    elif kind not in {'mirror', 'summary', 'required_evidence', 'optional_evidence'}:
         return {'status': 'unknown'}
     try:
         path = _path(root, record['path'])
         if not path.is_file():
             return {'status': 'unavailable_optional' if kind == 'optional_evidence' else 'missing'}
         raw = path.read_bytes()
-        if kind == 'mirror':
+        if kind in {'mirror', 'summary'}:
             if path.name.lower() in {'agents.md', 'agents.override.md'}:
                 return {'status': 'conflict', 'reason': 'instruction mirror changes discovery scope'}
             source = _path(root, record['source']).read_bytes()
-            if hashlib.sha256(source).hexdigest() != record.get('source_digest') or raw != source:
+            if hashlib.sha256(source).hexdigest() != record.get('source_digest'):
                 return {'status': 'stale'}
+            if kind == 'mirror' and raw != source:
+                return {'status': 'stale'}
+            if kind == 'summary' and (not record.get('owner') or not record.get('reason')
+                    or len(raw) >= len(source) or not record.get('source_link')
+                    or '](' + record['source_link'] + ')' not in raw.decode('utf-8')):
+                return {'status': 'unknown', 'reason': 'bounded linked summary requires owner review'}
+            if kind == 'summary':
+                link = urlsplit(record['source_link'])
+                if (link.scheme or link.netloc or (path.parent / unquote(link.path)).resolve() != _path(root, record['source']).resolve()
+                        or check_local_links(root, [record['path']])):
+                    return {'status': 'unknown', 'reason': 'summary must link its canonical source'}
         elif record.get('source_digest') and hashlib.sha256(raw).hexdigest() != record['source_digest']:
             return {'status': 'stale'}
         if not raw.strip():
@@ -195,19 +212,48 @@ def check_reference(root: Path, record: dict[str, Any], *, repositories: dict[st
     return result
 
 
-def duplicate_blocks(root: Path, paths: list[str]) -> list[dict[str, Any]]:
+def duplicate_blocks(root: Path, paths: list[str], *, dispositions: list[dict] | None = None) -> list[dict[str, Any]]:
     """Exact paragraph duplicates are review hints, never a deletion instruction."""
     findings = []
+    seen: dict[str, tuple[str, int]] = {}
+    if len(paths) > 128 or len(set(paths)) != len(paths):
+        raise ValueError('duplicate scan requires at most 128 distinct affected/source paths')
+    total = 0
     for name in paths:
+        total += _path(root, name).stat().st_size
+        if total > 8 * 1024 * 1024:
+            raise ValueError('duplicate scan byte budget exceeded')
         text = _path(root, name).read_text(encoding='utf-8')
-        seen: dict[str, list[int]] = {}
+        # Examples are not contract copies; remove fenced code before paragraph inspection.
+        text = re.sub(r'(?ms)^(`{3,}|~{3,}).*?^\1[^\n]*$', '', text)
         for position, block in enumerate(re.split(r'\n\s*\n', text), 1):
             block = block.strip()
             if len(block) >= 24 and not block.startswith(('#', '```', '|', '<!--')):
                 digest = hashlib.sha256(block.encode('utf-8')).hexdigest()
-                seen.setdefault(digest, []).append(position)
-        for digest, positions in seen.items():
-            if len(positions) > 1:
-                findings.append({'path': name, 'block_digest': digest, 'paragraphs': positions,
-                                 'action': 'owner_review_only; semantic dedup requires review'})
+                if digest in seen:
+                    source, start = seen[digest]
+                    findings.append({'path': name, 'source_path': source, 'block_digest': digest,
+                                     'paragraphs': [start, position], 'disposition': 'needs_review',
+                                     'action': 'owner_review_only; semantic dedup requires review'})
+                else:
+                    seen[digest] = (name, position)
+    for item in findings:
+        for disposition in dispositions or []:
+            if (disposition.get('path') == item['path'] and disposition.get('source') == item['source_path']
+                    and disposition.get('block_digest') == item['block_digest']
+                    and disposition.get('owner') and disposition.get('reason')
+                    and disposition.get('kind') == 'mirror'
+                    and check_reference(root, disposition)['status'] == 'verified'):
+                item['disposition'] = 'allowed_mirror'
+                item['owner'] = disposition['owner']
+    # Conflicting task states are a separate finding, not an exact-text duplicate.
+    states = {}
+    for name in paths:
+        text = _path(root, name).read_text(encoding='utf-8')
+        for match in re.finditer(r'^### Task `([^`]+)`\s*\n(?:(?!^### ).)*?^- Status: ([^\n]+)', text, re.M | re.S):
+            task, state = match[1], match[2].strip()
+            if task in states and states[task][1] != state:
+                findings.append({'path': name, 'source_path': states[task][0], 'task_id': task,
+                                 'disposition': 'needs_review', 'action': 'conflicting_task_states'})
+            states[task] = (name, state)
     return findings

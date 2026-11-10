@@ -22,6 +22,74 @@ from validate_task_state_consistency import validate_workspace  # noqa: E402
 
 
 class TaskPlanLifecycleTest(unittest.TestCase):
+    def test_documentation_completion_updates_only_card_and_matching_pin(self):
+        from product_agent_os import documentation_sync as sync
+        from product_agent_os.stage_manifest import content_digest
+        from product_agent_os.status_snapshot import build_status_snapshot
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            request = {name: 'bounded synthetic value' for name, field in TaskPlanRequest.__dataclass_fields__.items()
+                       if field.default is __import__('dataclasses').MISSING}
+            request.update(task_id='SYNC-T1', task='Synthetic task')
+            request['expected_result'] = 'Detailed planning acceptance remains intact. ' * 1100
+            matrix = root / 'docs/planning/tasks.md'
+            matrix.parent.mkdir(parents=True)
+            matrix.write_text(build_planned_task_matrix(TaskPlanRequest(**request)), encoding='utf-8')
+            before = matrix.read_bytes()
+            source = root / 'source.py'
+            source.write_bytes(b'bugfix without contract change')
+            packet = {'schema_version': 1, 'task_id': 'SYNC-T1', 'facts': [
+                {'id': 'fix', 'event': 'bugfix_no_contract', 'changed_fact': 'fixed internal bug',
+                 'reason': 'public behavior contract is unchanged', 'decision': 'no_change_needed',
+                 'sources': [{'path': 'source.py', 'revision': content_digest(source.read_bytes())}]}]}
+            pointer = {'schema_version': 1, 'sources': [{'path': 'docs/planning/tasks.md', 'revision': content_digest(before)}]}
+            (root / 'PLAN.md').write_text('# Plan\n\n<!-- product-agent-os:current-state:start -->\n```json\n'
+                + json.dumps(pointer) + '\n```\n<!-- product-agent-os:current-state:end -->\n\nUnrelated next action.\n', encoding='utf-8')
+            report = {key: 'Synthetic evidence' for key in TaskCompletion.__dataclass_fields__}
+            report['timestamp'] = '10-11-2026 23:10'
+            plan = sync.propose(root, packet, [], completion={'matrix_path': 'docs/planning/tasks.md', 'report': report})
+            self.assertEqual({item['path'] for item in plan['files']}, {'PLAN.md', 'docs/planning/tasks.md'})
+            self.assertGreater(len(before), 40000)  # Detailed planning matrices keep their explicit exception.
+            pointer_before = (root / 'PLAN.md').read_bytes()
+            def interrupt_after_first_write(index):
+                if index == 1:
+                    raise RuntimeError('completion interrupted')
+            with self.assertRaisesRegex(RuntimeError, 'completion interrupted'):
+                sync.apply(root, plan, approved_digest=plan['digest'], after_write=interrupt_after_first_write)
+            self.assertEqual(matrix.read_bytes(), before)
+            self.assertEqual((root / 'PLAN.md').read_bytes(), pointer_before)
+            sync.apply(root, plan, approved_digest=plan['digest'])
+            current = build_status_snapshot(workspace=root, generated_at='2026-11-10T20:10:00Z')['current_state']
+            self.assertEqual(current['status'], 'projected', current)
+            self.assertEqual(current['tasks'][0]['task_state'], 'implemented')
+            self.assertIn('Unrelated next action.', (root / 'PLAN.md').read_text())
+            self.assertIn('docs-impact:start', matrix.read_text())
+            repeated = sync.propose(root, packet, [], completion={'matrix_path': 'docs/planning/tasks.md', 'report': report})
+            self.assertEqual(repeated['files'], [], 'a fresh repeat must not rewrite or grow the card')
+            completed = matrix.read_bytes()
+            matrix.write_bytes(completed + b'Later owner decision.\n')
+            with self.assertRaisesRegex(ValueError, 'stale no-op'):
+                sync.apply(root, repeated, approved_digest=repeated['digest'])
+            matrix.write_bytes(completed)
+            self.assertEqual(sync.apply(root, plan, approved_digest=plan['digest'])['status'], 'already_applied')
+            from product_agent_os.control_plane_compaction import rollback
+            rollback(root, '.codex/product-agent-os/compaction/' + plan['digest'].split(':')[1] + '.json')
+            self.assertEqual(matrix.read_bytes(), before)
+            api = root / 'API.md'
+            api.write_bytes(b'# API\n\n## Contract\nOld.\n')
+            packet['facts'][0].update(event='api', decision='updated', target={
+                'path': 'API.md', 'revision': content_digest(api.read_bytes()), 'owner': 'API owner', 'role': 'api', 'section': 'contract'})
+            combined = sync.propose(root, packet, [{'fact_id': 'fix', 'replacement': '## Contract\nNew.\n'}],
+                                    completion={'matrix_path': 'docs/planning/tasks.md', 'report': report})
+            sync.apply(root, combined, approved_digest=combined['digest'])
+            import re
+            receipt = json.loads(re.search(r'docs-impact:start -->\s*```json\s*(.*?)\s*```', matrix.read_text(), re.S)[1])
+            self.assertEqual(sync.assess(root, receipt)['gaps'], [], 'completion receipt binds the resulting document revision')
+            rollback(root, '.codex/product-agent-os/compaction/' + combined['digest'].split(':')[1] + '.json')
+            packet['facts'][0].update(event='unknown', decision='handoff_required')
+            with self.assertRaisesRegex(ValueError, 'handoff'):
+                sync.propose(root, packet, [], completion={'matrix_path': 'docs/planning/tasks.md', 'report': report})
+
     def test_report_authoring_builder_declares_previous_digest_and_whole_file(self):
         import hashlib
         from product_agent_os.task_plan_lifecycle import build_report_authoring_call
@@ -320,6 +388,7 @@ class TaskPlanLifecycleTest(unittest.TestCase):
                     sys.executable,
                     str(SCRIPTS / "create_task_plan.py"),
                     "complete",
+                    "--legacy-card-only",
                     "--path",
                     str(path),
                     "--task-id",

@@ -86,6 +86,7 @@ def build_planned_task_matrix(request: TaskPlanRequest) -> str:
         "",
         TASK_HEADING_TEMPLATE.format(task_id=request.task_id),
         "",
+        f"- ID: {request.task_id}",
         f"- Task: {request.task}",
         "- Status: planned",
         "- Schema version: task_matrix_plan_v1",
@@ -202,6 +203,8 @@ def main(argv: list[str] | None = None) -> int:
     complete_parser.add_argument("--path", required=True)
     complete_parser.add_argument("--task-id", required=True)
     complete_parser.add_argument("--timestamp", default="")
+    complete_parser.add_argument("--legacy-card-only", action="store_true",
+                                 help="Explicit compatibility route: card only, no documentation or pointer closure claim")
     for field in [
         "what-was-done",
         "files-touched",
@@ -260,6 +263,9 @@ def _main_new(args: argparse.Namespace) -> int:
 
 
 def _main_complete(args: argparse.Namespace) -> int:
+    if not args.legacy_card_only:
+        raise ValueError('Use sync_task_documents.py preview/apply for documentation and revision-pin closure; '
+                         '--legacy-card-only explicitly retains the old card-only behavior without sync evidence')
     path = Path(args.path)
     if not path.exists():
         raise ValueError(f"plan file does not exist: {path}")

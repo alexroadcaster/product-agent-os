@@ -109,3 +109,15 @@ AI/eval scope adds `EVALS.md`; other domains and control proposals extend the tr
 Implementation sources: `plugins/product-agent-os/scripts/product_agent_os/project_formation.py`, `infrastructure.py`, `merge_infrastructure.py`. Checks: `tests/product_agent_os/test_project_formation.py`; comparison: `docs/superpowers/specs/paos-aud-g9-project-formation-results.json`; evidence/acceptance: `research/product-agent-os-g9-execution-report.md`.
 
 See [technical contract](technical.md), [architecture](architecture.md), and [source registry](../sources/registry.md).
+
+## Targeted documentation maintenance after a task
+
+Assess documentation impact after every task; write only changed canonical sections. Reuse the task Completion Report for changed fact, owner/path/section, source revision/evidence, decision and reason. `no_change_needed` needs justification; required `handoff_required` prevents implemented closure. Small tasks do not require another report.
+
+`sync_task_documents.py` previews exact existing-section diffs and uses the shared recovery journal. Completion updates the selected task card and matching PLAN revision in one recoverable package. Other sections, user bytes and other pins remain intact. Stale input, freeze/SQL projections and conflicts stop writes; identical repeats write nothing. The old `create_task_plan.py complete` requires explicit `--legacy-card-only` and does not prove synchronization.
+
+Route requirements to REQUIREMENTS, sequencing to PLAN, commands to TEST, eval policy to EVALS, current handoff to RUNLOG, and API/schema/operations to their canonical domain source. Detailed checks stay in their evidence owner. Reuse docs/adr, docs/runbooks, docs/ops, docs/testing and docs/archive. New owners use formation staging; ambiguity requires review.
+
+Cross-file duplicates in affected/source paths need disposition; current authorized mirrors and linked brief summaries have separate checks. No automatic semantic deletion. Keep 40 000-byte / 32 000-warning budgets and the detailed docs/planning matrix exception; no automatic research matrix split. Event sync, size triggers and read-only periodic hygiene are distinct; no schedules are created. Digests establish integrity, not semantic completeness or acceptance. Fresh-session activation remains separate.
+
+Source: `plugins/product-agent-os/scripts/product_agent_os/documentation_sync.py`; checks `test_document_navigation.py`, `test_task_plan_lifecycle.py`; evidence `research/product-agent-os-g9-execution-report.md`.

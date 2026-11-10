@@ -1,12 +1,12 @@
 # Product-Agent OS — задачи и группы исправлений по полному аудиту
 
-Source status: project-local planning artifact, 09.11.2026; составлен по сохранённому аудиту и текущим owning plans. Статус документа: `G1/G2/G3/G4/G5 implemented_locally_verified`; G6 — partially_verified: T30–T33 локально выполнены; T34/HOST-01/HOST-02 остаются открытыми; GAP-06: три local pilots passed, needs_user_acceptance, без HOST-01 dependency. Сохранение карточек не означает выполнение, promotion или разрешение на перечисленные внешние действия.
+Source status: project-local planning artifact, 09.11.2026; составлен по сохранённому аудиту и текущим owning plans. Статус документа: `G1/G2/G3/G4/G5 implemented_locally_verified`; G6 — partially_verified: T30–T33 локально выполнены; T34/HOST-01/HOST-02 остаются открытыми; GAP-06: три local pilots passed / owner accepted 10.11.2026, без HOST-01 dependency. Сохранение карточек не означает выполнение, promotion или разрешение на перечисленные внешние действия.
 
 Document ID: `PAOS-AUDIT-REMEDIATION-2026-11-09`. Authoring task: `PAOS-AUDIT-TASK-MATRIX-2026-11-09`. Часовой пояс: `Europe/Moscow`.
 
 ## Назначение и источники
 
-В документе **9 групп и 65 карточек**: 18 задач по F01–F18, пять существующих B45-CQRR-T30–T34, три этапа host/usefulness, восемь задач G7 по качеству реализации, 14 задач G8 по control plane и 17 задач G9 по единому формированию и точечному сопровождению документации проекта. Для каждой группы и задачи указаны ID, название, описание, техническое и продуктовое значение, затрагиваемые файлы и критерии приёмки. Поля task_matrix_plan_v1 сохраняют совместимость с существующим validator. G7 закрыта с owner acceptance; G8 closed / owner accepted; открытые gates и статусы G6 сохранены. G9 T01–T09 implemented_locally_verified; T10 needs_user_acceptance; T11–T17 planned, без реализации. G8-T14 и закрытие G8 явно приняты владельцем.
+В документе **9 групп и 65 карточек**: 18 задач по F01–F18, пять существующих B45-CQRR-T30–T34, три этапа host/usefulness, восемь задач G7 по качеству реализации, 14 задач G8 по control plane и 17 задач G9 по единому формированию и точечному сопровождению документации проекта. Для каждой группы и задачи указаны ID, название, описание, техническое и продуктовое значение, затрагиваемые файлы и критерии приёмки. Поля task_matrix_plan_v1 сохраняют совместимость с существующим validator. G7 закрыта с owner acceptance; G8 closed / owner accepted; открытые gates и статусы G6 сохранены. G9 T01–T09 implemented_locally_verified; T10 owner accepted; T11–T16 implemented_locally_verified; T17 owner accepted; G9 closed. G8-T14 и закрытие G8 явно приняты владельцем.
 
 - [Полный аудит 09.11.2026](product-agent-os-full-audit-2026-11-09.md): F01–F18 и границы evidence.
 - [Последующее исправление lifecycle по чатам](product-agent-os-session-lifecycle-fix-2026-11-09.md): выполненные session isolation и exact marker bootstrap.
@@ -35,8 +35,7 @@ Document ID: `PAOS-AUDIT-REMEDIATION-2026-11-09`. Authoring task: `PAOS-AUDIT-TA
 | PAOS-AUD-G6 | Проверка GPT-6, host activation и пользовательской пользы | B45-CQRR-T30, B45-CQRR-T31, B45-CQRR-T32, B45-CQRR-T33, B45-CQRR-T34, PAOS-AUD-HOST-01, PAOS-AUD-HOST-02, PAOS-GAP-06 | Раздельные воспроизводимые evidence для конфигурации, активации, качества и acceptance. |
 | PAOS-AUD-G7 | Качество реализации, архитектурная простота и достаточная проверка | PAOS-AUD-G7-T01–T08 | Минимальное полное решение, risk-based checks, доказательный review, безопасные guards и отдельная сравнительная оценка. |
 | PAOS-AUD-G8 | Структура и безопасное обслуживание control plane | PAOS-AUD-G8-T01–T14 | Содержательные адаптивные документы, навигация, лимит 40 000 UTF-8 bytes, сокращение с сохранностью данных и проверяемое восстановление. |
-
-| PAOS-AUD-G9 | Единый механизм формирования проекта | PAOS-AUD-G9-T01–T17 | Формирование и точечное сопровождение docs/ и .codex/ без дублирования; T01–T09 локально проверены, T10 ожидает приёмки; T11–T17 planned. |
+| PAOS-AUD-G9 | Единый механизм формирования проекта | PAOS-AUD-G9-T01–T17 | Формирование и точечное сопровождение docs/ и .codex/ без дублирования; T01–T09 локально проверены, T10 принят; T11–T16 проверены; T17 принят; G9 закрыта. |
 
 ## Порядок, зависимости и ускорение
 
@@ -379,7 +378,7 @@ Task-matrix self-review: evidence перенесено перед карточк
 
 ## G6 current-project pilots — 2026-11-09
 
-G6 partially_verified: три синтетических пилота выполнены из текущего проекта в host-target/pilots; все проверки passed, результаты needs_user_acceptance. По разрешению владельца HOST-01 больше не блокирует эти пилоты. Fresh-session activation HOST-01/HOST-02 остаётся отдельной открытой задачей; T34 no-go. Owner feedback/acceptance null; manual_only сохраняется.
+G6 partially_verified: GAP-06 implemented / owner accepted 10.11.2026; все три synthetic local pilots приняты владельцем. HOST-01 не является их зависимостью. T34 no-go и fresh-session activation HOST-01/HOST-02 остаются открытыми отдельно; manual_only сохраняется.
 
 Результаты и команды: [pilot-results](../docs/superpowers/specs/paos-aud-g6-pilot-results.json). Baseline bug: 64 вместо 8; final 1/4/8/8 и bounded large attempt passed. Config info/7; native encoder /, space, empty passed и SHA-256 unchanged. Исторические HOST receipts ниже не являются текущим pilot status.
 
@@ -429,7 +428,7 @@ prod_test.md: not_applicable. Site не пересобирался. Cache backup
 ## G6 execution evidence — 2026-11-09 (historical local phase)
 
 Status: `partially_verified`; audit не закрыт целиком. T30–T33 implemented locally;
-T34/HOST-01/HOST-02/GAP-06 — blocked_pending_exact_authority_or_owner_acceptance.
+T34 — approved_preflight_blocked / no-go; HOST-01/HOST-02 отдельно открыты; GAP-06 owner accepted 10.11.2026.
 Canonical B45 evidence: `B45-CQRR-A07`, `docs/superpowers/specs/batch45-code-quality-local-readiness.json`.
 Один исполнитель, zero delegation, context_mode=self_review; worktree при старте clean.
 
@@ -682,7 +681,7 @@ host acceptance; иных обязательных local handoffs нет.
 - Agents: plugin-runtime-builder; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: Local G1 закрыта; следующий маршрут G2, host acceptance отдельно G6.
+- Next step: Local G1 закрыта; G2 впоследствии выполнена, host acceptance отдельно G6.
 
 #### Completion Report
 
@@ -693,8 +692,8 @@ host acceptance; иных обязательных local handoffs нет.
 - product value delivered: Чтения и Markdown examples не требуют ложного mutation approval.
 - actual implementation date and time: 09-11-2026 12:47
 - verification evidence: Lifecycle suite, full 1297, final source parity; RED/GREEN в execution evidence.
-- residual risks: Local verification only; host/trust и реальные ACL не доказаны. MCP gap принадлежит G2. Подробные limits — execution evidence.
-- follow-up: Перейти к G2; AUD-HOST-02 и real ACL acceptance остаются отдельными разрешёнными сценариями.
+- residual risks: Local verification only; host/trust и реальные ACL не доказаны. MCP compatibility gap устранён в G2. Подробные limits — execution evidence.
+- follow-up: G2 выполнена; AUD-HOST-02 и real ACL acceptance остаются отдельными разрешёнными сценариями.
 
 
 ### Task `PAOS-AUD-F12`
@@ -725,7 +724,7 @@ host acceptance; иных обязательных local handoffs нет.
 - Agents: plugin-runtime-builder; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: Local G1 закрыта; следующий маршрут G2, host acceptance отдельно G6.
+- Next step: Local G1 закрыта; G2 впоследствии выполнена, host acceptance отдельно G6.
 
 #### Completion Report
 
@@ -736,8 +735,8 @@ host acceptance; иных обязательных local handoffs нет.
 - product value delivered: Установка сохраняет существующие hooks и явно отделяет staging от активации.
 - actual implementation date and time: 09-11-2026 12:47
 - verification evidence: Dry-run/staging exit 0; full 1297; final 67 merge/renderer tests after alias fix; fixture 91/91.
-- residual risks: Local verification only; host/trust и реальные ACL не доказаны. MCP gap принадлежит G2. Подробные limits — execution evidence.
-- follow-up: Перейти к G2; AUD-HOST-02 и real ACL acceptance остаются отдельными разрешёнными сценариями.
+- residual risks: Local verification only; host/trust и реальные ACL не доказаны. MCP compatibility gap устранён в G2. Подробные limits — execution evidence.
+- follow-up: G2 выполнена; AUD-HOST-02 и real ACL acceptance остаются отдельными разрешёнными сценариями.
 
 
 ### Task `PAOS-AUD-F11`
@@ -768,7 +767,7 @@ host acceptance; иных обязательных local handoffs нет.
 - Agents: security-privacy-supply-chain-reviewer для read-only review; plugin-runtime-builder для правки; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: Local G1 закрыта; следующий маршрут G2, host acceptance отдельно G6.
+- Next step: Local G1 закрыта; G2 впоследствии выполнена, host acceptance отдельно G6.
 
 #### Completion Report
 
@@ -779,8 +778,8 @@ host acceptance; иных обязательных local handoffs нет.
 - product value delivered: Loading status и необходимость review обозначены явно.
 - actual implementation date and time: 09-11-2026 12:47
 - verification evidence: Четыре codex execpolicy check: exit 0; prompt/no-match/prompt/forbidden; docs tests/checker.
-- residual risks: Local verification only; host/trust и реальные ACL не доказаны. MCP gap принадлежит G2. Подробные limits — execution evidence.
-- follow-up: Перейти к G2; AUD-HOST-02 и real ACL acceptance остаются отдельными разрешёнными сценариями.
+- residual risks: Local verification only; host/trust и реальные ACL не доказаны. MCP compatibility gap устранён в G2. Подробные limits — execution evidence.
+- follow-up: G2 выполнена; AUD-HOST-02 и real ACL acceptance остаются отдельными разрешёнными сценариями.
 
 
 ### Task `PAOS-AUD-F07`
@@ -811,7 +810,7 @@ host acceptance; иных обязательных local handoffs нет.
 - Agents: plugin-runtime-builder; независимая проверка security-privacy-supply-chain-reviewer; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: Local G1 закрыта; следующий маршрут G2, host acceptance отдельно G6.
+- Next step: Local G1 закрыта; G2 впоследствии выполнена, host acceptance отдельно G6.
 
 #### Completion Report
 
@@ -822,8 +821,8 @@ host acceptance; иных обязательных local handoffs нет.
 - product value delivered: Обычный onboarding остаётся диагностическим; repair имеет preview и путь восстановления.
 - actual implementation date and time: 09-11-2026 12:47
 - verification evidence: Permissions mock tests в affected 216 и full 1297; default no-apply, selected SID, drift, reparse, restore failure tests; native help readback.
-- residual risks: Local verification only; host/trust и реальные ACL не доказаны. MCP gap принадлежит G2. Подробные limits — execution evidence.
-- follow-up: Перейти к G2; AUD-HOST-02 и real ACL acceptance остаются отдельными разрешёнными сценариями.
+- residual risks: Local verification only; host/trust и реальные ACL не доказаны. MCP compatibility gap устранён в G2. Подробные limits — execution evidence.
+- follow-up: G2 выполнена; AUD-HOST-02 и real ACL acceptance остаются отдельными разрешёнными сценариями.
 
 
 ### Task `PAOS-AUD-F18`
@@ -854,7 +853,7 @@ host acceptance; иных обязательных local handoffs нет.
 - Agents: lifecycle-orchestrator; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: Local G1 закрыта; следующий маршрут G2, host acceptance отдельно G6.
+- Next step: Local G1 закрыта; G2 впоследствии выполнена, host acceptance отдельно G6.
 
 #### Completion Report
 
@@ -865,8 +864,8 @@ host acceptance; иных обязательных local handoffs нет.
 - product value delivered: Можно накапливать отчёт без общего mutation scope и без переоформления grant на каждую версию.
 - actual implementation date and time: 09-11-2026 12:47
 - verification evidence: Create + two updates, stale digest, foreign path/session/marker, expiry, terminal, alias/reparse/mixed denial; affected 216; full 1297.
-- residual risks: Local verification only; host/trust и реальные ACL не доказаны. MCP gap принадлежит G2. Подробные limits — execution evidence.
-- follow-up: Перейти к G2; AUD-HOST-02 и real ACL acceptance остаются отдельными разрешёнными сценариями.
+- residual risks: Local verification only; host/trust и реальные ACL не доказаны. MCP compatibility gap устранён в G2. Подробные limits — execution evidence.
+- follow-up: G2 выполнена; AUD-HOST-02 и real ACL acceptance остаются отдельными разрешёнными сценариями.
 
 ## PAOS-AUD-G2 — Совместимость package и диагностика host
 
@@ -910,7 +909,7 @@ host acceptance; иных обязательных local handoffs нет.
 - Agents: plugin-runtime-builder; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Реализованные scope files; G2 execution evidence и SHA-256 в этом плане.
-- Next step: G3; actual host acceptance и distribution gates отдельно.
+- Next step: G3 выполнена; actual host acceptance и distribution gates отдельно.
 
 #### Completion Report
 
@@ -922,7 +921,7 @@ host acceptance; иных обязательных local handoffs нет.
 - actual implementation date and time: 09-11-2026 13:16
 - verification evidence: G2 execution evidence выше: RED; full 1305 OK (1 platform skip), 748.949 s, exit 0; final focused 122 OK, final contracts 22 OK; fixtures 91, transcript 26/26; compatibility exit 0; docs/hooks passed. Source state provenance и hashes сохранены.
 - residual risks: Distribution publisher/URLs/icons gated; host activation/trust/account access и full package receipts не доказаны. T30–T34/G6 остаются source-owned.
-- follow-up: Переход к G3. Для actual host evidence — AUD-HOST-01/G6; publication и model promotion требуют своих gates.
+- follow-up: G3 выполнена. Для actual host evidence — AUD-HOST-01/G6; publication и model promotion требуют своих gates.
 
 ### Task `PAOS-AUD-F02`
 
@@ -952,7 +951,7 @@ host acceptance; иных обязательных local handoffs нет.
 - Agents: plugin-runtime-builder; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Реализованные scope files; G2 execution evidence и SHA-256 в этом плане.
-- Next step: G3; actual host acceptance и distribution gates отдельно.
+- Next step: G3 выполнена; actual host acceptance и distribution gates отдельно.
 
 #### Completion Report
 
@@ -964,7 +963,7 @@ host acceptance; иных обязательных local handoffs нет.
 - actual implementation date and time: 09-11-2026 13:16
 - verification evidence: G2 execution evidence выше: RED; full 1305 OK (1 platform skip), 748.949 s, exit 0; final focused 122 OK, final contracts 22 OK; fixtures 91, transcript 26/26; compatibility exit 0; docs/hooks passed. Source state provenance и hashes сохранены.
 - residual risks: Distribution publisher/URLs/icons gated; host activation/trust/account access и full package receipts не доказаны. T30–T34/G6 остаются source-owned.
-- follow-up: Переход к G3. Для actual host evidence — AUD-HOST-01/G6; publication и model promotion требуют своих gates.
+- follow-up: G3 выполнена. Для actual host evidence — AUD-HOST-01/G6; publication и model promotion требуют своих gates.
 
 ### Task `PAOS-AUD-F04`
 
@@ -994,7 +993,7 @@ host acceptance; иных обязательных local handoffs нет.
 - Agents: plugin-runtime-builder; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Реализованные scope files; G2 execution evidence и SHA-256 в этом плане.
-- Next step: G3; actual host acceptance и distribution gates отдельно.
+- Next step: G3 выполнена; actual host acceptance и distribution gates отдельно.
 
 #### Completion Report
 
@@ -1006,7 +1005,7 @@ host acceptance; иных обязательных local handoffs нет.
 - actual implementation date and time: 09-11-2026 13:16
 - verification evidence: G2 execution evidence выше: RED; full 1305 OK (1 platform skip), 748.949 s, exit 0; final focused 122 OK, final contracts 22 OK; fixtures 91, transcript 26/26; compatibility exit 0; docs/hooks passed. Source state provenance и hashes сохранены.
 - residual risks: Distribution publisher/URLs/icons gated; host activation/trust/account access и full package receipts не доказаны. T30–T34/G6 остаются source-owned.
-- follow-up: Переход к G3. Для actual host evidence — AUD-HOST-01/G6; publication и model promotion требуют своих gates.
+- follow-up: G3 выполнена. Для actual host evidence — AUD-HOST-01/G6; publication и model promotion требуют своих gates.
 
 ## PAOS-AUD-G3 — Достоверные evidence и текущие статусы
 
@@ -1048,7 +1047,7 @@ host acceptance; иных обязательных local handoffs нет.
 - Agents: plugin-runtime-builder; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Scope files и G3 execution evidence в этом плане.
-- Next step: PAOS-AUD-G4; host/promotion gates отдельно.
+- Next step: PAOS-AUD-G4 выполнена; host/promotion gates отдельно.
 
 #### Completion Report
 
@@ -1060,7 +1059,7 @@ host acceptance; иных обязательных local handoffs нет.
 - actual implementation date and time: 09-11-2026 13:47
 - verification evidence: G3 execution evidence выше: RED/GREEN, Full unittest: 1320 tests, 725.771 s, OK (skipped=1); final focused 78 tests OK; fixture 91/91; transcript 26/26; compatibility passed (local structure only).
 - residual risks: Semantic source support требует ручной проверки; generated state не acceptance. Host/promotion вне scope.
-- follow-up: PAOS-AUD-G4; сохранять revision pin и canonical B42/B45 ownership.
+- follow-up: PAOS-AUD-G4 выполнена; сохранять revision pin и canonical B42/B45 ownership.
 
 ### Task `PAOS-AUD-F08`
 
@@ -1090,7 +1089,7 @@ host acceptance; иных обязательных local handoffs нет.
 - Agents: learning-loop-engineer; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Scope files и G3 execution evidence в этом плане.
-- Next step: PAOS-AUD-G4; host/promotion gates отдельно.
+- Next step: PAOS-AUD-G4 выполнена; host/promotion gates отдельно.
 
 #### Completion Report
 
@@ -1102,7 +1101,7 @@ host acceptance; иных обязательных local handoffs нет.
 - actual implementation date and time: 09-11-2026 13:47
 - verification evidence: G3 execution evidence выше: RED/GREEN, Full unittest: 1320 tests, 725.771 s, OK (skipped=1); final focused 78 tests OK; fixture 91/91; transcript 26/26; compatibility passed (local structure only).
 - residual risks: Semantic source support требует ручной проверки; generated state не acceptance. Host/promotion вне scope.
-- follow-up: PAOS-AUD-G4; сохранять revision pin и canonical B42/B45 ownership.
+- follow-up: PAOS-AUD-G4 выполнена; сохранять revision pin и canonical B42/B45 ownership.
 
 ### Task `PAOS-AUD-F16`
 
@@ -1132,7 +1131,7 @@ host acceptance; иных обязательных local handoffs нет.
 - Agents: graph-cockpit-engineer; control-plane writer один; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Scope files и G3 execution evidence в этом плане.
-- Next step: PAOS-AUD-G4; host/promotion gates отдельно.
+- Next step: PAOS-AUD-G4 выполнена; host/promotion gates отдельно.
 
 #### Completion Report
 
@@ -1144,7 +1143,7 @@ host acceptance; иных обязательных local handoffs нет.
 - actual implementation date and time: 09-11-2026 13:47
 - verification evidence: G3 execution evidence выше: RED/GREEN, Full unittest: 1320 tests, 725.771 s, OK (skipped=1); final focused 78 tests OK; fixture 91/91; transcript 26/26; compatibility passed (local structure only).
 - residual risks: Semantic source support требует ручной проверки; generated state не acceptance. Host/promotion вне scope.
-- follow-up: PAOS-AUD-G4; сохранять revision pin и canonical B42/B45 ownership.
+- follow-up: PAOS-AUD-G4 выполнена; сохранять revision pin и canonical B42/B45 ownership.
 
 ## PAOS-AUD-G4 — Простой ordinary route и компактные инструкции
 
@@ -1186,7 +1185,7 @@ host acceptance; иных обязательных local handoffs нет.
 - Agents: plugin-runtime-builder; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Scope files и G4 execution evidence в этом плане.
-- Next step: PAOS-AUD-G5; host/behavioral gates отдельно в G6.
+- Next step: PAOS-AUD-G5 выполнена; host/behavioral gates отдельно в G6.
 
 #### Completion Report
 
@@ -1198,7 +1197,7 @@ host acceptance; иных обязательных local handoffs нет.
 - actual implementation date and time: 09-11-2026 14:58
 - verification evidence: G4 execution evidence выше. Full final: 1326 tests, 540.818 s, OK (skipped=1), exit 0; final focused 253 OK; template contracts 95 OK; fixtures 91/91; transcripts 26/26; compatibility exit 0, local structure only.
 - residual risks: Source-level/local contracts проверены; fresh host discovery и live behavioral evaluation не выполнены, принадлежат G6. No provider/cache/activation/Git actions.
-- follow-up: PAOS-AUD-G5; затем G6 host/behavioral gates на зафиксированном source.
+- follow-up: PAOS-AUD-G5 выполнена; T34 и host gates G6 отдельно открыты.
 
 ### Task `PAOS-AUD-F09`
 
@@ -1228,7 +1227,7 @@ host acceptance; иных обязательных local handoffs нет.
 - Agents: lifecycle-orchestrator; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Scope files и G4 execution evidence в этом плане.
-- Next step: PAOS-AUD-G5; host/behavioral gates отдельно в G6.
+- Next step: PAOS-AUD-G5 выполнена; host/behavioral gates отдельно в G6.
 
 #### Completion Report
 
@@ -1240,7 +1239,7 @@ host acceptance; иных обязательных local handoffs нет.
 - actual implementation date and time: 09-11-2026 14:58
 - verification evidence: G4 execution evidence выше. Full final: 1326 tests, 540.818 s, OK (skipped=1), exit 0; final focused 253 OK; template contracts 95 OK; fixtures 91/91; transcripts 26/26; compatibility exit 0, local structure only.
 - residual risks: Source-level/local contracts проверены; fresh host discovery и live behavioral evaluation не выполнены, принадлежат G6. No provider/cache/activation/Git actions.
-- follow-up: PAOS-AUD-G5; затем G6 host/behavioral gates на зафиксированном source.
+- follow-up: PAOS-AUD-G5 выполнена; T34 и host gates G6 отдельно открыты.
 
 ### Task `PAOS-AUD-F10`
 
@@ -1270,7 +1269,7 @@ host acceptance; иных обязательных local handoffs нет.
 - Agents: lifecycle-orchestrator; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Scope files и G4 execution evidence в этом плане.
-- Next step: PAOS-AUD-G5; host/behavioral gates отдельно в G6.
+- Next step: PAOS-AUD-G5 выполнена; host/behavioral gates отдельно в G6.
 
 #### Completion Report
 
@@ -1282,7 +1281,7 @@ host acceptance; иных обязательных local handoffs нет.
 - actual implementation date and time: 09-11-2026 14:58
 - verification evidence: G4 execution evidence выше. Full final: 1326 tests, 540.818 s, OK (skipped=1), exit 0; final focused 253 OK; template contracts 95 OK; fixtures 91/91; transcripts 26/26; compatibility exit 0, local structure only.
 - residual risks: Source-level/local contracts проверены; fresh host discovery и live behavioral evaluation не выполнены, принадлежат G6. No provider/cache/activation/Git actions.
-- follow-up: PAOS-AUD-G5; затем G6 host/behavioral gates на зафиксированном source.
+- follow-up: PAOS-AUD-G5 выполнена; T34 и host gates G6 отдельно открыты.
 
 ### Task `PAOS-AUD-F15`
 
@@ -1312,7 +1311,7 @@ host acceptance; иных обязательных local handoffs нет.
 - Agents: plugin-runtime-builder; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Scope files и G4 execution evidence в этом плане.
-- Next step: PAOS-AUD-G5; host/behavioral gates отдельно в G6.
+- Next step: PAOS-AUD-G5 выполнена; host/behavioral gates отдельно в G6.
 
 #### Completion Report
 
@@ -1324,7 +1323,7 @@ host acceptance; иных обязательных local handoffs нет.
 - actual implementation date and time: 09-11-2026 14:58
 - verification evidence: G4 execution evidence выше. Full final: 1326 tests, 540.818 s, OK (skipped=1), exit 0; final focused 253 OK; template contracts 95 OK; fixtures 91/91; transcripts 26/26; compatibility exit 0, local structure only.
 - residual risks: Source-level/local contracts проверены; fresh host discovery и live behavioral evaluation не выполнены, принадлежат G6. No provider/cache/activation/Git actions.
-- follow-up: PAOS-AUD-G5; затем G6 host/behavioral gates на зафиксированном source.
+- follow-up: PAOS-AUD-G5 выполнена; T34 и host gates G6 отдельно открыты.
 
 ## PAOS-AUD-G5 — Документация, offline tooling и актуальный site
 
@@ -1366,7 +1365,7 @@ host acceptance; иных обязательных local handoffs нет.
 - Agents: plugin-runtime-builder; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: G6; host/behavioral/owner acceptance gates остаются отдельными.
+- Next step: G6 T34 и host gates остаются открытыми; GAP-06 принят.
 
 #### Completion Report
 
@@ -1409,7 +1408,7 @@ host acceptance; иных обязательных local handoffs нет.
 - Agents: docs-maintainer; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: G6; host/behavioral/owner acceptance gates остаются отдельными.
+- Next step: G6 T34 и host gates остаются открытыми; GAP-06 принят.
 
 #### Completion Report
 
@@ -1452,7 +1451,7 @@ host acceptance; иных обязательных local handoffs нет.
 - Agents: docs-maintainer; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Scope files и evidence в owning плане; proposed paths пока отсутствуют.
-- Next step: G6; host/behavioral/owner acceptance gates остаются отдельными.
+- Next step: G6 T34 и host gates остаются открытыми; GAP-06 принят.
 
 #### Completion Report
 
@@ -1518,7 +1517,7 @@ host acceptance; иных обязательных local handoffs нет.
 - product value delivered: Reviewable next action without invented activation, quality or acceptance.
 - actual implementation date and time: 09-11-2026 16:04
 - verification evidence: G6 execution evidence above; A07 readiness receipt and current-run logs.
-- residual risks: No actual model/reviewer calls, fresh-host activation or owner pilot acceptance.
+- residual risks: T34 primary/reviewer calls and fresh-host activation not verified; GAP-06 pilots owner accepted 10.11.2026.
 - follow-up: Exact owner approval; preserve no-go until each remaining gate passes.
 
 
@@ -1561,7 +1560,7 @@ host acceptance; иных обязательных local handoffs нет.
 - product value delivered: Reviewable next action without invented activation, quality or acceptance.
 - actual implementation date and time: 09-11-2026 16:04
 - verification evidence: G6 execution evidence above; A07 readiness receipt and current-run logs.
-- residual risks: No actual model/reviewer calls, fresh-host activation or owner pilot acceptance.
+- residual risks: T34 primary/reviewer calls and fresh-host activation not verified; GAP-06 pilots owner accepted 10.11.2026.
 - follow-up: Exact owner approval; preserve no-go until each remaining gate passes.
 
 
@@ -1604,7 +1603,7 @@ host acceptance; иных обязательных local handoffs нет.
 - product value delivered: Reviewable next action without invented activation, quality or acceptance.
 - actual implementation date and time: 09-11-2026 16:04
 - verification evidence: G6 execution evidence above; A07 readiness receipt and current-run logs.
-- residual risks: No actual model/reviewer calls, fresh-host activation or owner pilot acceptance.
+- residual risks: T34 primary/reviewer calls and fresh-host activation not verified; GAP-06 pilots owner accepted 10.11.2026.
 - follow-up: Exact owner approval; preserve no-go until each remaining gate passes.
 
 
@@ -1647,7 +1646,7 @@ host acceptance; иных обязательных local handoffs нет.
 - product value delivered: Reviewable next action without invented activation, quality or acceptance.
 - actual implementation date and time: 09-11-2026 16:04
 - verification evidence: G6 execution evidence above; A07 readiness receipt and current-run logs.
-- residual risks: No actual model/reviewer calls, fresh-host activation or owner pilot acceptance.
+- residual risks: T34 primary/reviewer calls and fresh-host activation not verified; GAP-06 pilots owner accepted 10.11.2026.
 - follow-up: Exact owner approval; preserve no-go until each remaining gate passes.
 
 
@@ -1673,13 +1672,13 @@ host acceptance; иных обязательных local handoffs нет.
 - Non-goals: См. общие границы; completed baseline не переделывать.
 - Expected result: Связанные с checked state quality/cost/latency evidence для выбранной GPT-6 конфигурации. Missing host/product gates остаются открытыми.
 - Verification gates: Approval preflight, sanitized results validation, independent reviewer evidence, retention/no-unapproved-actions checks, control-plane sync. Общие gates — TEST.md и правила выше.
-- Risks / approval gates: high; approval_required_not_started; сохранение этого плана не разрешает live calls. Rollback — по общим правилам.
+- Risks / approval gates: high; approved_preflight_blocked; tools/context isolation не подтверждена; текущий maintenance scope не запускает live calls. Rollback — по общим правилам.
 - Complexity: high
 - Estimated execution time: not_estimated; после preflight конкретного slice.
 - Agents: release-operator; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Named local task artifacts and G6 evidence; live/host/owner receipts remain pending.
-- Next step: Resolve recorded runtime/host evidence gap within approved bounds; owner acceptance only after actual pilot results.
+- Next step: Resolve recorded runtime/host evidence gap within approved bounds; GAP-06 pilots already owner accepted.
 
 #### Completion Report
 
@@ -1690,7 +1689,7 @@ host acceptance; иных обязательных local handoffs нет.
 - product value delivered: Reviewable next action without invented activation, quality or acceptance.
 - actual implementation date and time: 09-11-2026 16:04
 - verification evidence: G6 approved execution receipt and approved-*.log; previous A07 remains local-only evidence.
-- residual risks: Technical runtime/host gaps remain; pilots not_run; owner acceptance absent.
+- residual risks: T34/runtime and fresh-host gaps remain; GAP-06 pilots passed and owner accepted 10.11.2026.
 - follow-up: Resolve observed technical blocker; do not request the already granted packet authority again.
 
 
@@ -1722,7 +1721,7 @@ host acceptance; иных обязательных local handoffs нет.
 - Agents: tester; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Named local task artifacts and G6 evidence; live/host/owner receipts remain pending.
-- Next step: Resolve recorded runtime/host evidence gap within approved bounds; owner acceptance only after actual pilot results.
+- Next step: Resolve recorded runtime/host evidence gap within approved bounds; GAP-06 pilots already owner accepted.
 
 #### Completion Report
 
@@ -1733,7 +1732,7 @@ host acceptance; иных обязательных local handoffs нет.
 - product value delivered: Reviewable next action without invented activation, quality or acceptance.
 - actual implementation date and time: 09-11-2026 16:04
 - verification evidence: G6 approved execution receipt and approved-*.log; previous A07 remains local-only evidence.
-- residual risks: Technical runtime/host gaps remain; pilots not_run; owner acceptance absent.
+- residual risks: T34/runtime and fresh-host gaps remain; GAP-06 pilots passed and owner accepted 10.11.2026.
 - follow-up: Resolve observed technical blocker; do not request the already granted packet authority again.
 
 
@@ -1765,7 +1764,7 @@ host acceptance; иных обязательных local handoffs нет.
 - Agents: tester; security review read-only; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
 - Output artifacts: Named local task artifacts and G6 evidence; live/host/owner receipts remain pending.
-- Next step: Resolve recorded runtime/host evidence gap within approved bounds; owner acceptance only after actual pilot results.
+- Next step: Resolve recorded runtime/host evidence gap within approved bounds; GAP-06 pilots already owner accepted.
 
 #### Completion Report
 
@@ -1776,7 +1775,7 @@ host acceptance; иных обязательных local handoffs нет.
 - product value delivered: Reviewable next action without invented activation, quality or acceptance.
 - actual implementation date and time: 09-11-2026 16:04
 - verification evidence: G6 approved execution receipt and approved-*.log; previous A07 remains local-only evidence.
-- residual risks: Technical runtime/host gaps remain; pilots not_run; owner acceptance absent.
+- residual risks: T34/runtime and fresh-host gaps remain; GAP-06 pilots passed and owner accepted 10.11.2026.
 - follow-up: Resolve observed technical blocker; do not request the already granted packet authority again.
 
 
@@ -1790,7 +1789,7 @@ host acceptance; иных обязательных local handoffs нет.
 - Scope: **Затрагиваемые файлы:** `docs/superpowers/specs/batch44-self-learning-loop-approved-manual-pilot-summary.json`; `prod_test.md`; `RUNLOG.md`; `research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md`. Общий docs/control-plane scope — по правилам выше.
 - Acceptance criteria: **Критерии приёмки:** 1) До запуска согласованы tasks/targets/allowed actions/rollback и baseline measurements. 2) Есть per-task outcome, owner feedback/acceptance и сохранённые failed cases; один pilot не объявляется закрытием полного representative набора. 3) Выявленные улучшения идут в существующий manual candidate loop; нет automatic promotion/schedules/auto-apply. 4) prod_test.md меняется только если действительно создаётся evidence его B39 family; прочая история не переписывается.
 - Group: PAOS-AUD-G6
-- Status: in_progress
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Владелец разрешил три пилота из текущего проекта в host-target; HOST-01 dependency снята, activation отдельно.
@@ -1802,25 +1801,25 @@ host acceptance; иных обязательных local handoffs нет.
 - Non-goals: См. общие границы; completed baseline не переделывать.
 - Expected result: Проверка сквозного пользовательского пути после локальных contract gates. Missing host/product gates остаются открытыми.
 - Verification gates: Фактические baseline/final checks, source hashes и file inventories в pilot-results; обязательные docs/matrix/state gates; owner feedback отдельно.
-- Risks / approval gates: Текущий local pilot scope явно разрешён; owner acceptance pending; fresh-session/provider/browser/Git не входят в этот маршрут. Rollback по initial_source proposal; receipts сохранить.
+- Risks / approval gates: Текущий local pilot scope явно разрешён; owner acceptance получена 10.11.2026; fresh-session/provider/browser/Git не входят в этот маршрут. Rollback по initial_source proposal; receipts сохранить.
 - Complexity: medium
 - Estimated execution time: not_estimated; после preflight конкретного slice.
 - Agents: product-manager; evidence — learning-loop-engineer; acceptance — пользователь; ownership recommendation, delegation не запущена.
 - Skills: По типу slice и общим правилам выше; в authoring не применялись.
-- Output artifacts: Named local task artifacts and G6 evidence; live/host/owner receipts remain pending.
-- Next step: Приёмка трёх результатов пользователем; fresh-session activation остаётся самостоятельной открытой задачей.
+- Output artifacts: Named local task artifacts and G6 evidence; owner receipt recorded; live/host receipts remain separate.
+- Next step: Три результата приняты владельцем 10.11.2026; T34 и fresh-session activation отдельно открыты.
 
 #### Completion Report
 
-- status: in_progress
+- status: implemented
 - what was done: Три одобренных пилота выполнены в host-target/pilots из текущей сессии; HOST-01 dependency снята по решению владельца.
 - files touched / work locations: candidate.py, candidate.json, неизменный candidate.cjs и три receipt.json; pilot proposal/results; owning plans и control-plane.
 - technical value delivered: Наблюдаемый bug RED/GREEN; config JSON/invariant checks; no-new-code SHA-256 preservation.
-- product value delivered: Три проверяемых результата для owner acceptance, без лишних вопросов в ходе пилотов.
+- product value delivered: Три проверенных и принятых владельцем результата, без лишних вопросов в ходе пилотов.
 - actual implementation date and time: 09-11-2026 17:11
 - verification evidence: docs/superpowers/specs/paos-aud-g6-pilot-results.json; python -B .docs-tools/reports/paos-aud-g6/run_pilots.py baseline и verify, оба exit 0; внутри baseline ожидаемый bug/config assertion exit 1.
-- residual risks: needs_user_acceptance; feedback/acceptance null. Synthetic cases не доказывают массовую полезность; fresh-session activation и T34 отдельно открыты.
-- follow-up: Пользователь принимает или отклоняет каждый результат; findings остаются manual candidates.
+- residual risks: Owner accepted all three local pilots 10.11.2026. Synthetic cases не доказывают массовую полезность; fresh-session activation и T34 отдельно открыты.
+- follow-up: Приёмка получена для всех трёх результатов; findings остаются manual candidates, без promotion.
 
 ## PAOS-AUD-G7 — Качество реализации, архитектурная простота и достаточная проверка
 
@@ -2169,7 +2168,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - actual implementation date and time: 10-11-2026 15:00
 - verification evidence: [Текущие команды, RED/GREEN и findings](product-agent-os-g7-execution-report-2026-11-09.md); full 1379 tests / 516.855 s / exit 0 (1 platform skip), docs 105, fixture 91/91, transcript 26/26, compatibility passed. [Результаты](../docs/superpowers/specs/paos-aud-g7-attested-results.json). Closure: implemented_locally_verified / owner_accepted; explicit user acceptance 10.11.2026.
 - residual risks: Generation-only, no filesystem/E2E/activation claim; 1 repetition, rehearsed Python corpus, uneven prompt caching, component/superiority insufficient_evidence. T34 сохранён.
-- follow-up: T08 owner acceptance; не расширять выводы на другие стеки или production.
+- follow-up: T08 owner accepted, G7 closed; не расширять выводы на другие стеки или production.
 
 ### Task `PAOS-AUD-G7-T08`
 
@@ -2220,7 +2219,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Описание: Реализовать выводы двух анализов: модуля формирования файлов и структуры документов трёх проектов. Реализация разрешена владельцем 10.11.2026; T14 требует отдельной приёмки результата.
 - Техническое значение: Единый контракт генерации, содержательной проверки, provenance, byte budget, безопасного merge/compaction и восстановления.
 - Продуктовое значение: Пользователь получает актуальные обозримые документы, находит решения и продолжает большие проекты без потери истории.
-- Статус: in_progress; T01–T13 implemented локально с уточнением docs/planning; T14 owner accepted; G8 closed; needs_user_acceptance до явного решения владельца.
+- Статус: implemented; T01–T13 implemented локально с уточнением docs/planning; T14 owner accepted; G8 closed.
 - Затрагиваемые файлы: точные scope карточек ниже; directory scopes уточняются file manifest перед соответствующей реализацией.
 - Критерии приёмки группы: T01–T13 выполнены по собственным gates; T14 содержит сравнение baseline/treatment, результаты отрицательных сценариев и явное решение владельца. Сохранность данных обязательна; размер сам по себе не успех.
 - Зависимости: переиспользовать PAOS-AUD-F12 merge protections, F03/F08/F16 source ownership, F05/F09/F10 ordinary routing и G7-T04/T05 guards/routing. Не переоткрывать их без воспроизводимой регрессии. HOST-01/HOST-02, T34 и весь G6 не блокируют локальные G8 fixtures. Web M1 остаётся отдельной очередью, порядок между очередями этим планом не меняется.
@@ -2848,7 +2847,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 
 **Единый механизм формирования проекта**
 
-Source status: project-local implementation and verification. T01–T09 implemented_locally_verified; T10 needs_user_acceptance; T11–T17 planned / implementation_not_started; fresh-session activation separately open.
+Source status: project-local implementation and verification. T01–T09 implemented_locally_verified; T10 owner accepted; T11–T16 implemented_locally_verified; T17 owner accepted; G9 closed; fresh-session activation separately open.
 
 Цель: единый маршрут анализ проекта → выбор необходимых файлов → согласование структуры docs/ и .codex/ → preview → staging → разрешённое применение → проверка результата. Переиспользовать реализованные механизмы G8; не создавать вторую систему статусов или параллельный генератор.
 
@@ -2859,25 +2858,27 @@ Source status: project-local implementation and verification. T01–T09 implemen
 - G9-S03: [project formation workflow](../plugins/product-agent-os/assets/templates/workflows/project-formation.md); [результаты и ограничения G8](product-agent-os-g8-execution-report.md). Workflow направляет в общий planner; существующие документы сохраняются, обновления остаются companion proposals.
 - G9-S04: [Web M1 owning plan](product-agent-os-web-task-manager-plan-2026-11-09.md) и [PLAN](../PLAN.md): при freeze/cutover соблюдать source ownership; завершение M1 целиком не является prerequisite локальных G9 slices. SQL/runtime-интеграцию M1 не подменять synthetic authority checks.
 
-Границы: G8-T14 явно принят владельцем; G8 closed. G9 имеет отдельную приёмку. HOST/fresh-session activation, T34 no-go и G6 acceptance остаются отдельными. Матрица research сохраняется единым файлом. Лимит для применимых control-plane/navigation документов — 40 000 UTF-8 bytes, warning 32 000; explicit per-file limits приоритетны. Подробные матрицы docs/planning/ сохраняются целиком и исключены только из default size trigger; content/link/security проверки сохраняются.
+Границы: G8-T14 явно принят владельцем; G8 closed. G9 закрыта после явной приёмки T10/T17. HOST/fresh-session activation, T34 no-go и G6 acceptance остаются отдельными. Матрица research сохраняется единым файлом. Лимит для применимых control-plane/navigation документов — 40 000 UTF-8 bytes, warning 32 000; explicit per-file limits приоритетны. Подробные матрицы docs/planning/ сохраняются целиком и исключены только из default size trigger; content/link/security проверки сохраняются.
 
 Порядок: T01 → T02 → T03 → T04 → T05 → T06 → T07 → T08 → T09 → T10. Полные dependencies указаны в карточках; транзитивные Blocks через T09 ведут к T10. Указанные Agents — владельцы будущих slices, не разрешение на dispatch. Shared files изменять последовательно; до edits уточнить точный file manifest и существующие tests. Bare module paths относятся к plugins/product-agent-os/scripts/product_agent_os/; scripts/, assets/ и skills/ — к plugin root. Новые module names определять после source preflight, не создавать пустые реализации по плану.
 
 
 ### Расширение G9: точечное сопровождение после каждой задачи
 
-Source status: owner-requested planning, 10.11.2026; T11–T17 planned / implementation_not_started. Этот запрос разрешает добавление задач, но не их реализацию. T01–T09 и evidence первоначального пакета сохраняются; T10 остаётся in_progress / needs_user_acceptance. T17 отвечает за итоговую приёмку расширенной группы, не подменяя отдельное решение по T10.
+Source status: owner-authorized implementation, 10.11.2026; T11–T16 implemented_locally_verified; T17 owner accepted; G9 closed. Владелец принял T10 и разрешил полную реализацию расширения с проверками. T01–T09 и evidence первоначального пакета сохраняются; T10 implemented / owner accepted. T17 отвечает за итоговую приёмку расширенной группы, не подменяя отдельное решение по T10.
+
+Исторический baseline: G9-S05–G9-S08 ниже описывают пробелы до реализации T11–T17. Принятый результат и actual evidence — G9 execution report.
 
 - G9-S05: [control-plane sync](../.codex/workflows/control-plane-sync.md), [task lifecycle](../.codex/workflows/task-plan-lifecycle.md), [completion implementation](../plugins/product-agent-os/scripts/product_agent_os/task_plan_lifecycle.py). Checklist существует; completion helper сам по себе не проверяет docs impact и не обновляет PLAN revision.
 - G9-S06: [formation impact](../plugins/product-agent-os/scripts/product_agent_os/project_formation.py), [navigation и duplicate_blocks](../plugins/product-agent-os/scripts/product_agent_os/document_navigation.py), [document checker](../plugins/product-agent-os/scripts/check_documents.py). manual_updates/source_changed не являются section-level impact; duplicate_blocks сейчас внутрифайловый; aliases между G8/G9 расходятся.
 - G9-S07: [hygiene policy](../plugins/product-agent-os/scripts/product_agent_os/system_file_hygiene.py), [Stop reminder](../.codex/hooks/stop_runlog_reminder.py), [canonical planner](../plugins/product-agent-os/skills/implementation-planner/SKILL.md). Periodic schedule not_created; hooks advisory; правило evidence в RUNLOG нуждается в согласовании с compact handoff.
 - G9-S08: [status projection](../plugins/product-agent-os/scripts/product_agent_os/status_snapshot.py) и [G9 current evidence](product-agent-os-g9-execution-report.md). Source revision guard сохраняется; предыдущие G9 passes не доказывают ещё не реализованное расширение.
 
-Принцип: после каждой задачи обязательна оценка влияния на документацию; запись требуется только по изменению информации соответствующего owner. Один факт — один основной источник; другие документы содержат нужный краткий контекст и ссылку. Полная матрица сохраняет собственные карточки. Docs impact помещается в существующий task/completion artifact, не в новый файл на каждую задачу. Primary отвечает за общий sync; delegated owner возвращает только assigned-file impact. Новые инструкции, write routes и валидаторы здесь лишь запланированы.
+Принцип: после каждой задачи обязательна оценка влияния на документацию; запись требуется только по изменению информации соответствующего owner. Один факт — один основной источник; другие документы содержат нужный краткий контекст и ссылку. Полная матрица сохраняет собственные карточки. Docs impact помещается в существующий task/completion artifact, не в новый файл на каждую задачу. Primary отвечает за общий sync; delegated owner возвращает только assigned-file impact. Новые инструкции, write routes и валидаторы реализованы локально; результат и ограничения приняты владельцем.
 
-Порядок расширения: T11 → T12 → T13/T14 → T15 → T16 → T17. T13/T14 допускают раздельное планирование, но shared document_navigation.py требует последовательных edits или явной координации; это не разрешение на параллельный dispatch. G9-T10 acceptance не блокирует подготовку новых slices; закрытие всей группы требует обоих owner decisions. M1 freeze/SQL ownership, no auto deletion, 40 000 UTF-8 bytes, docs/planning size exception, research retained unsplit и separate fresh-session activation сохраняются.
+Порядок расширения: T11 → T12 → T13/T14 → T15 → T16 → T17. T13/T14 допускают раздельное планирование, но shared document_navigation.py требует последовательных edits или явной координации; это не разрешение на параллельный dispatch. Owner decisions T10 и T17 получены; G9 закрыта с принятыми ограничениями model/semantic evidence. M1 freeze/SQL ownership, no auto deletion, 40 000 UTF-8 bytes, docs/planning size exception, research retained unsplit и separate fresh-session activation сохраняются.
 
-Общий future verification contract: risk-based RED/GREEN для новых testable contracts, checks на lowest reliable layer и existing tests; full integration согласно TEST.md. Не вводить quota на число файлов/тестов, не запускать все проверки после каждого предложения, не заявлять стоимость/экономию/качество по количеству файлов. Для планового дополнения сейчас применяются только docs, matrix, links, dependency/pin consistency и diff checks. Rollback authoring — только добавленные T11–T17 и связанные summary/pointer hunks; prior task cards и текущая реализация сохраняются. DDD/FSD/frontend/provider/live benchmarks не применимы к этому authoring slice.
+Исходный verification contract этапа планирования: risk-based RED/GREEN для новых testable contracts, checks на lowest reliable layer и existing tests; full integration согласно TEST.md. Не вводить quota на число файлов/тестов, не запускать все проверки после каждого предложения, не заявлять стоимость/экономию/качество по количеству файлов. На этапе планового дополнения применялись docs, matrix, links, dependency/pin consistency и diff checks; actual implementation gates и приёмка зафиксированы в Completion Reports. Rollback authoring — только добавленные T11–T17 и связанные summary/pointer hunks; prior task cards и текущая реализация сохраняются. DDD/FSD/frontend/provider/live benchmarks не применимы к этому authoring slice.
 
 ### Проверка планового дополнения G9
 
@@ -2917,7 +2918,7 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - Agents: architect — роль ответственности; фактически primary выполнил slice и отвечает за согласование evidence и shared files. Dispatch не выполнен; independent review только при разрешённом scope.
 - Skills: Применимые lifecycle skills из canonical plugins/product-agent-os/skills; для Python edits python-design-patterns и python-code-style. Применены canonical implementation-planner и Python guidance; zero delegation.
 - Output artifacts: Версионированный контракт в существующем слое контрактов и согласованный workflow. Использовать existing owners; evidence реализации — в G9 execution report, краткий pointer — RUNLOG.
-- Next step: Явная приёмка владельцем T10/G9; fresh-session activation отдельно.
+- Next step: G9 закрыта с owner acceptance T10/T17; fresh-session activation отдельно.
 
 #### Completion Report
 
@@ -2928,8 +2929,8 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - product value delivered: Согласованный маршрут и объяснимый результат вместо раздельных генераторов.
 - actual implementation date and time: 10-11-2026 20:11
 - verification evidence: Ran 1435 tests in 803.716s, OK (skipped=1); fixtures 91/91; transcripts 26/26; compatibility compatible; focused/crash/pilots и docs gates — research/product-agent-os-g9-execution-report.md.
-- residual risks: Local synthetic evidence; G9 owner acceptance pending; existing files require reviewed companion adoption; real M1 SQL/host activation not proven; no model/token/cost superiority.
-- follow-up: Явная приёмка владельцем T10/G9; fresh-session activation отдельно.
+- residual risks: Local synthetic evidence; Initial G9/T10 owner accepted; T17 extension accepted; G9 closed; existing files require reviewed companion adoption; real M1 SQL/host activation not proven; no model/token/cost superiority.
+- follow-up: G9 закрыта с owner acceptance T10/T17; fresh-session activation отдельно.
 
 ### Task `PAOS-AUD-G9-T02`
 
@@ -2959,7 +2960,7 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - Agents: plugin-runtime-builder — роль ответственности; фактически primary выполнил slice и отвечает за согласование evidence и shared files. Dispatch не выполнен; independent review только при разрешённом scope.
 - Skills: Применимые lifecycle skills из canonical plugins/product-agent-os/skills; для Python edits python-design-patterns и python-code-style. Применены canonical implementation-planner и Python guidance; zero delegation.
 - Output artifacts: Нормализованные факты и gaps в существующем результате анализа. Использовать existing owners; evidence реализации — в G9 execution report, краткий pointer — RUNLOG.
-- Next step: Явная приёмка владельцем T10/G9; fresh-session activation отдельно.
+- Next step: G9 закрыта с owner acceptance T10/T17; fresh-session activation отдельно.
 
 #### Completion Report
 
@@ -2970,8 +2971,8 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - product value delivered: Исходные сведения и неизвестные данные видимы до staging.
 - actual implementation date and time: 10-11-2026 20:11
 - verification evidence: Ran 1435 tests in 803.716s, OK (skipped=1); fixtures 91/91; transcripts 26/26; compatibility compatible; focused/crash/pilots и docs gates — research/product-agent-os-g9-execution-report.md.
-- residual risks: Local synthetic evidence; G9 owner acceptance pending; existing files require reviewed companion adoption; real M1 SQL/host activation not proven; no model/token/cost superiority.
-- follow-up: Явная приёмка владельцем T10/G9; fresh-session activation отдельно.
+- residual risks: Local synthetic evidence; Initial G9/T10 owner accepted; T17 extension accepted; G9 closed; existing files require reviewed companion adoption; real M1 SQL/host activation not proven; no model/token/cost superiority.
+- follow-up: G9 закрыта с owner acceptance T10/T17; fresh-session activation отдельно.
 
 ### Task `PAOS-AUD-G9-T03`
 
@@ -3001,7 +3002,7 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - Agents: plugin-runtime-builder — роль ответственности; фактически primary выполнил slice и отвечает за согласование evidence и shared files. Dispatch не выполнен; independent review только при разрешённом scope.
 - Skills: Применимые lifecycle skills из canonical plugins/product-agent-os/skills; для Python edits python-design-patterns и python-code-style. Применены canonical implementation-planner и Python guidance; zero delegation.
 - Output artifacts: Единый selection plan с объяснениями и зависимостями. Использовать existing owners; evidence реализации — в G9 execution report, краткий pointer — RUNLOG.
-- Next step: Явная приёмка владельцем T10/G9; fresh-session activation отдельно.
+- Next step: G9 закрыта с owner acceptance T10/T17; fresh-session activation отдельно.
 
 #### Completion Report
 
@@ -3012,8 +3013,8 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - product value delivered: Нет неявного полного каталога; дополнительный файл имеет причину.
 - actual implementation date and time: 10-11-2026 20:11
 - verification evidence: Ran 1435 tests in 803.716s, OK (skipped=1); fixtures 91/91; transcripts 26/26; compatibility compatible; focused/crash/pilots и docs gates — research/product-agent-os-g9-execution-report.md.
-- residual risks: Local synthetic evidence; G9 owner acceptance pending; existing files require reviewed companion adoption; real M1 SQL/host activation not proven; no model/token/cost superiority.
-- follow-up: Явная приёмка владельцем T10/G9; fresh-session activation отдельно.
+- residual risks: Local synthetic evidence; Initial G9/T10 owner accepted; T17 extension accepted; G9 closed; existing files require reviewed companion adoption; real M1 SQL/host activation not proven; no model/token/cost superiority.
+- follow-up: G9 закрыта с owner acceptance T10/T17; fresh-session activation отдельно.
 
 ### Task `PAOS-AUD-G9-T04`
 
@@ -3043,7 +3044,7 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - Agents: architect — роль ответственности; фактически primary выполнил slice и отвечает за согласование evidence и shared files. Dispatch не выполнен; independent review только при разрешённом scope.
 - Skills: Применимые lifecycle skills из canonical plugins/product-agent-os/skills; для Python edits python-design-patterns и python-code-style. Применены canonical implementation-planner и Python guidance; zero delegation.
 - Output artifacts: Согласованный план дерева файлов и связей. Использовать existing owners; evidence реализации — в G9 execution report, краткий pointer — RUNLOG.
-- Next step: Явная приёмка владельцем T10/G9; fresh-session activation отдельно.
+- Next step: G9 закрыта с owner acceptance T10/T17; fresh-session activation отдельно.
 
 #### Completion Report
 
@@ -3054,8 +3055,8 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - product value delivered: Существующая структура сохраняется; новые разделы доступны через оглавление.
 - actual implementation date and time: 10-11-2026 20:11
 - verification evidence: Ran 1435 tests in 803.716s, OK (skipped=1); fixtures 91/91; transcripts 26/26; compatibility compatible; focused/crash/pilots и docs gates — research/product-agent-os-g9-execution-report.md.
-- residual risks: Local synthetic evidence; G9 owner acceptance pending; existing files require reviewed companion adoption; real M1 SQL/host activation not proven; no model/token/cost superiority.
-- follow-up: Явная приёмка владельцем T10/G9; fresh-session activation отдельно.
+- residual risks: Local synthetic evidence; Initial G9/T10 owner accepted; T17 extension accepted; G9 closed; existing files require reviewed companion adoption; real M1 SQL/host activation not proven; no model/token/cost superiority.
+- follow-up: G9 закрыта с owner acceptance T10/T17; fresh-session activation отдельно.
 
 ### Task `PAOS-AUD-G9-T05`
 
@@ -3085,7 +3086,7 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - Agents: plugin-runtime-builder — роль ответственности; фактически primary выполнил slice и отвечает за согласование evidence и shared files. Dispatch не выполнен; independent review только при разрешённом scope.
 - Skills: Применимые lifecycle skills из canonical plugins/product-agent-os/skills; для Python edits python-design-patterns и python-code-style. Применены canonical implementation-planner и Python guidance; zero delegation.
 - Output artifacts: Заполненные предложения документов и отчёт о gaps. Использовать existing owners; evidence реализации — в G9 execution report, краткий pointer — RUNLOG.
-- Next step: Явная приёмка владельцем T10/G9; fresh-session activation отдельно.
+- Next step: G9 закрыта с owner acceptance T10/T17; fresh-session activation отдельно.
 
 #### Completion Report
 
@@ -3096,8 +3097,8 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - product value delivered: Неизвестное не выдумывается, пользовательские данные не перезаписываются.
 - actual implementation date and time: 10-11-2026 20:11
 - verification evidence: Ran 1435 tests in 803.716s, OK (skipped=1); fixtures 91/91; transcripts 26/26; compatibility compatible; focused/crash/pilots и docs gates — research/product-agent-os-g9-execution-report.md.
-- residual risks: Local synthetic evidence; G9 owner acceptance pending; existing files require reviewed companion adoption; real M1 SQL/host activation not proven; no model/token/cost superiority.
-- follow-up: Явная приёмка владельцем T10/G9; fresh-session activation отдельно.
+- residual risks: Local synthetic evidence; Initial G9/T10 owner accepted; T17 extension accepted; G9 closed; existing files require reviewed companion adoption; real M1 SQL/host activation not proven; no model/token/cost superiority.
+- follow-up: G9 закрыта с owner acceptance T10/T17; fresh-session activation отдельно.
 
 ### Task `PAOS-AUD-G9-T06`
 
@@ -3127,7 +3128,7 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - Agents: plugin-runtime-builder — роль ответственности; фактически primary выполнил slice и отвечает за согласование evidence и shared files. Dispatch не выполнен; independent review только при разрешённом scope.
 - Skills: Применимые lifecycle skills из canonical plugins/product-agent-os/skills; для Python edits python-design-patterns и python-code-style. Применены canonical implementation-planner и Python guidance; zero delegation.
 - Output artifacts: Единый публичный маршрут и описание совместимости. Использовать existing owners; evidence реализации — в G9 execution report, краткий pointer — RUNLOG.
-- Next step: Явная приёмка владельцем T10/G9; fresh-session activation отдельно.
+- Next step: G9 закрыта с owner acceptance T10/T17; fresh-session activation отдельно.
 
 #### Completion Report
 
@@ -3138,8 +3139,8 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - product value delivered: Один маршрут от анализа до проверяемого пакета изменений.
 - actual implementation date and time: 10-11-2026 20:11
 - verification evidence: Ran 1435 tests in 803.716s, OK (skipped=1); fixtures 91/91; transcripts 26/26; compatibility compatible; focused/crash/pilots и docs gates — research/product-agent-os-g9-execution-report.md.
-- residual risks: Local synthetic evidence; G9 owner acceptance pending; existing files require reviewed companion adoption; real M1 SQL/host activation not proven; no model/token/cost superiority.
-- follow-up: Явная приёмка владельцем T10/G9; fresh-session activation отдельно.
+- residual risks: Local synthetic evidence; Initial G9/T10 owner accepted; T17 extension accepted; G9 closed; existing files require reviewed companion adoption; real M1 SQL/host activation not proven; no model/token/cost superiority.
+- follow-up: G9 закрыта с owner acceptance T10/T17; fresh-session activation отдельно.
 
 ### Task `PAOS-AUD-G9-T07`
 
@@ -3169,7 +3170,7 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - Agents: plugin-runtime-builder — роль ответственности; фактически primary выполнил slice и отвечает за согласование evidence и shared files. Dispatch не выполнен; independent review только при разрешённом scope.
 - Skills: Применимые lifecycle skills из canonical plugins/product-agent-os/skills; для Python edits python-design-patterns и python-code-style. Применены canonical implementation-planner и Python guidance; zero delegation.
 - Output artifacts: Проверенный маршрут применения formation plan. Использовать existing owners; evidence реализации — в G9 execution report, краткий pointer — RUNLOG.
-- Next step: Явная приёмка владельцем T10/G9; fresh-session activation отдельно.
+- Next step: G9 закрыта с owner acceptance T10/T17; fresh-session activation отдельно.
 
 #### Completion Report
 
@@ -3180,8 +3181,8 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - product value delivered: Повторное формирование и восстановление проверены без потери исходных bytes.
 - actual implementation date and time: 10-11-2026 20:11
 - verification evidence: Ran 1435 tests in 803.716s, OK (skipped=1); fixtures 91/91; transcripts 26/26; compatibility compatible; focused/crash/pilots и docs gates — research/product-agent-os-g9-execution-report.md.
-- residual risks: Local synthetic evidence; G9 owner acceptance pending; existing files require reviewed companion adoption; real M1 SQL/host activation not proven; no model/token/cost superiority.
-- follow-up: Явная приёмка владельцем T10/G9; fresh-session activation отдельно.
+- residual risks: Local synthetic evidence; Initial G9/T10 owner accepted; T17 extension accepted; G9 closed; existing files require reviewed companion adoption; real M1 SQL/host activation not proven; no model/token/cost superiority.
+- follow-up: G9 закрыта с owner acceptance T10/T17; fresh-session activation отдельно.
 
 ### Task `PAOS-AUD-G9-T08`
 
@@ -3211,7 +3212,7 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - Agents: lifecycle-orchestrator — роль ответственности; фактически primary выполнил slice и отвечает за согласование evidence и shared files. Dispatch не выполнен; independent review только при разрешённом scope.
 - Skills: Применимые lifecycle skills из canonical plugins/product-agent-os/skills; для Python edits python-design-patterns и python-code-style. Применены canonical implementation-planner и Python guidance; zero delegation.
 - Output artifacts: Сценарии обновления и handoff между владельцами данных. Использовать existing owners; evidence реализации — в G9 execution report, краткий pointer — RUNLOG.
-- Next step: Явная приёмка владельцем T10/G9; fresh-session activation отдельно.
+- Next step: G9 закрыта с owner acceptance T10/T17; fresh-session activation отдельно.
 
 #### Completion Report
 
@@ -3222,8 +3223,8 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - product value delivered: Рост проекта не означает автоматическое удаление или переподтверждение документов.
 - actual implementation date and time: 10-11-2026 20:11
 - verification evidence: Ran 1435 tests in 803.716s, OK (skipped=1); fixtures 91/91; transcripts 26/26; compatibility compatible; focused/crash/pilots и docs gates — research/product-agent-os-g9-execution-report.md.
-- residual risks: Local synthetic evidence; G9 owner acceptance pending; existing files require reviewed companion adoption; real M1 SQL/host activation not proven; no model/token/cost superiority.
-- follow-up: Явная приёмка владельцем T10/G9; fresh-session activation отдельно.
+- residual risks: Local synthetic evidence; Initial G9/T10 owner accepted; T17 extension accepted; G9 closed; existing files require reviewed companion adoption; real M1 SQL/host activation not proven; no model/token/cost superiority.
+- follow-up: G9 закрыта с owner acceptance T10/T17; fresh-session activation отдельно.
 
 ### Task `PAOS-AUD-G9-T09`
 
@@ -3253,7 +3254,7 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - Agents: tester — роль ответственности; фактически primary выполнил slice и отвечает за согласование evidence и shared files. Dispatch не выполнен; independent review только при разрешённом scope.
 - Skills: Применимые lifecycle skills из canonical plugins/product-agent-os/skills; для Python edits python-design-patterns и python-code-style. Применены canonical implementation-planner и Python guidance; zero delegation.
 - Output artifacts: Результаты docs/superpowers/specs/paos-aud-g9-project-formation-results.json и research/product-agent-os-g9-execution-report.md; содержат фактические результаты. Использовать existing owners; evidence реализации — в G9 execution report, краткий pointer — RUNLOG.
-- Next step: Явная приёмка владельцем T10/G9; fresh-session activation отдельно.
+- Next step: G9 закрыта с owner acceptance T10/T17; fresh-session activation отдельно.
 
 #### Completion Report
 
@@ -3264,8 +3265,8 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - product value delivered: Сравнение показывает конкретные улучшения и сохраняет ограничения.
 - actual implementation date and time: 10-11-2026 20:11
 - verification evidence: Ran 1435 tests in 803.716s, OK (skipped=1); fixtures 91/91; transcripts 26/26; compatibility compatible; focused/crash/pilots и docs gates — research/product-agent-os-g9-execution-report.md.
-- residual risks: Local synthetic evidence; G9 owner acceptance pending; existing files require reviewed companion adoption; real M1 SQL/host activation not proven; no model/token/cost superiority.
-- follow-up: Явная приёмка владельцем T10/G9; fresh-session activation отдельно.
+- residual risks: Local synthetic evidence; Initial G9/T10 owner accepted; T17 extension accepted; G9 closed; existing files require reviewed companion adoption; real M1 SQL/host activation not proven; no model/token/cost superiority.
+- follow-up: G9 закрыта с owner acceptance T10/T17; fresh-session activation отдельно.
 
 ### Task `PAOS-AUD-G9-T10`
 
@@ -3277,7 +3278,7 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - Scope: **Затрагиваемые файлы:** docs/product-agent-os/technical.md и technical.en.md; architecture.md и architecture.en.md; docs/sources/registry.md и registry.en.md; workflows; root control-plane pointers; отчёт G9. Actual file ownership и проверки перечислены в Completion Report и G9 execution report; реализация разрешена владельцем.
 - Acceptance criteria: **Критерии приёмки:** 1) По всем задачам есть соответствующее evidence; незавершённые задачи явно открыты. 2) Документация показывает компактный и расширенный режимы, реальные условия выбора и примеры дерева. 3) Active/package workflows и публичные описания согласованы. 4) Проверки документации, матрицы, ссылок и применимые runtime gates пройдены; strict MkDocs выполнен при затронутой навигации. 5) Владелец получает сравнение и явно принимает результат либо конкретные gaps. 6) До решения владельца сохраняется needs_user_acceptance; fresh-session activation отдельно.
 - Group: PAOS-AUD-G9
-- Status: in_progress
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Планирование G9, затем явный запрос владельца выполнить T01–T10 с проверками и представить сравнение; G8 принят, fresh-session activation отдельно.
@@ -3295,19 +3296,19 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - Agents: reviewer — роль ответственности; фактически primary выполнил slice и отвечает за согласование evidence и shared files. Dispatch не выполнен; independent review только при разрешённом scope.
 - Skills: Применимые lifecycle skills из canonical plugins/product-agent-os/skills; для Python edits python-design-patterns и python-code-style. Применены canonical implementation-planner и Python guidance; zero delegation.
 - Output artifacts: Итоговый пакет приёмки G9 и краткий RUNLOG handoff. Использовать existing owners; evidence реализации — в G9 execution report, краткий pointer — RUNLOG.
-- Next step: Явная приёмка владельцем T10/G9; fresh-session activation отдельно.
+- Next step: T10/T17 приняты; G9 закрыта. Fresh-session activation отдельно.
 
 #### Completion Report
 
-- status: in_progress
-- what was done: needs_user_acceptance; RU/EN docs, registry, packaged workflow, canonical skill и control-plane синхронизированы; итоговый пакет передаётся владельцу.
+- status: implemented
+- what was done: Owner accepted 10.11.2026; RU/EN docs, registry, packaged workflow, canonical skill и control-plane синхронизированы; итоговый пакет передаётся владельцу.
 - files touched / work locations: docs/product-agent-os/project-formation.md/.en.md; technical.md/.en.md; architecture.md/.en.md; cli-reference.md/.en.md; docs/runtime/worktrees-hooks-rules.md/.en.md; docs/sources/registry.md/.en.md; root control-plane; G9 report; полные пути и reuse boundaries — research/product-agent-os-g9-execution-report.md.
 - technical value delivered: RU/EN docs, registry, packaged workflow, canonical skill и control-plane синхронизированы; итоговый пакет передаётся владельцу.
-- product value delivered: Владелец получает результат сравнения для явной приёмки; owner decision pending.
+- product value delivered: Владелец получает результат сравнения для явной приёмки; owner decision accepted 10.11.2026.
 - actual implementation date and time: 10-11-2026 20:11
 - verification evidence: Ran 1435 tests in 803.716s, OK (skipped=1); fixtures 91/91; transcripts 26/26; compatibility compatible; focused/crash/pilots и docs gates — research/product-agent-os-g9-execution-report.md.
-- residual risks: Local synthetic evidence; G9 owner acceptance pending; existing files require reviewed companion adoption; real M1 SQL/host activation not proven; no model/token/cost superiority.
-- follow-up: Явная приёмка владельцем T10/G9; fresh-session activation отдельно.
+- residual risks: Local synthetic evidence; Initial G9/T10 owner accepted; T17 extension accepted; G9 closed; existing files require reviewed companion adoption; real M1 SQL/host activation not proven; no model/token/cost superiority.
+- follow-up: T10/T17 приняты; G9 закрыта. Fresh-session activation отдельно.
 
 ### Task `PAOS-AUD-G9-T11`
 
@@ -3319,37 +3320,37 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - Scope: **Затрагиваемые файлы:** control_plane_documents.py; document_navigation.py; project_formation.py; task_plan_lifecycle.py; assets/templates/artifact-templates/task-matrix-plan.md; tests/product_agent_os/test_task_plan_lifecycle.py; tests/product_agent_os/test_document_navigation.py. Bare module paths относятся к plugins/product-agent-os/scripts/product_agent_os/, scripts/assets paths — к plugin root; root/project paths указаны явно. Перед реализацией сверить actual ownership и существующие helpers/tests; новый writer/state registry не создавать без доказанной необходимости.
 - Acceptance criteria: **Критерии приёмки:** 1) Определены canonical owner, aliases, section/anchor, update trigger и допустимые summaries/mirrors; неизвестный или конфликтующий owner явно блокирует зависимое обновление. 2) В существующей карточке/Completion Report размещаются изменённый факт, task ID, source refs, путь/раздел, decision updated/no_change_needed/handoff_required, reason и evidence/revision; отдельный файл на каждую задачу не обязателен. 3) Проверка влияния обязательна после каждой выполненной задачи, запись документа — только по изменению его информации. 4) Контракт различает technical implementation, docs sync и owner acceptance. 5) Старые карточки и historical receipts остаются читаемыми; новая обязательность применяется к новому маршруту, а не ретроактивно ко всем прошлым задачам. 6) Core, docs и M1 authority имеют одного согласованного владельца; новая SQL/file система статусов не создаётся.
 - Group: PAOS-AUD-G9
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Запрос владельца по анализу добавить в G9 задачи точечного обновления документации после каждой задачи без дублирования; пока без реализации.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 10-11-2026 21:17
 - Depends on: PAOS-AUD-G9-T04; PAOS-AUD-G9-T08; переиспользуемые PAOS-AUD-G8-T01–T05.
 - Blocks: PAOS-AUD-G9-T12; PAOS-AUD-G9-T14; PAOS-AUD-G9-T16
 - Source: G9-S05–G9-S08; текущий source-backed анализ и запрос владельца; реализованные G8/G9 механизмы — reuse baseline, не evidence новых возможностей.
 - Non-goals: Реализация в текущем authoring; массовое переписывание документации; новый реестр статусов; автоматическое semantic deletion; provider calls; cache/host/hooks/schedules activation; real-target/Git/publication actions; research matrix split; закрытие G6/T34/HOST или M1 SQL integration.
 - Expected result: Контракт docs impact и общая модель ownership в существующих слоях; compatibility fixtures.
-- Verification gates: Focused test_task_plan_lifecycle и test_document_navigation: valid/invalid contract, ambiguous owner и legacy rows; существующий task-matrix validator должен сохранить совместимость. Actual execution evidence отсутствует; проверки планирования не заменяют runtime evidence.
-- Risks / approval gates: medium; потеря знаний, ложная актуальность или дублирование authority. Реализация требует отдельного разрешения; конкретные target writes/activation/external actions сохраняют свои границы. Rollback только owning slice, с проверкой concurrent changes и сохранением истории.
+- Verification gates: Focused test_task_plan_lifecycle и test_document_navigation: valid/invalid contract, ambiguous owner и legacy rows; существующий task-matrix validator должен сохранить совместимость. Actual implementation/check receipts сохранены в G9 execution report; owner acceptance T17 получена.
+- Risks / approval gates: medium; потеря знаний, ложная актуальность или дублирование authority. Локальная реализация разрешена, выполнена и принята владельцем; конкретные target writes/activation/external actions сохраняют свои границы. Rollback только owning slice, с проверкой concurrent changes и сохранением истории.
 - Complexity: medium
 - Estimated execution time: not_estimated; уточнить по focused source preflight без выдуманных сроков.
 - Agents: architect — предполагаемая роль ответственности; primary владеет общей синхронизацией и evidence. Dispatch не выполнялся; shared paths менять последовательно либо по отдельному ownership agreement.
-- Skills: canonical implementation-planner для декомпозиции; при будущей реализации применять только task-matching lifecycle skills; Python guidance для Python changes. Это поле не запускает skills, agents или hooks.
+- Skills: canonical implementation-planner для декомпозиции; при реализации применялись только task-matching lifecycle skills; Python guidance для Python changes. Это поле не запускает skills, agents или hooks.
 - Output artifacts: Контракт docs impact и общая модель ownership в существующих слоях; compatibility fixtures. Подробные actual receipts при исполнении — существующий G9 execution report/results; краткий handoff — RUNLOG; no per-command/per-task report proliferation.
-- Next step: После отдельного разрешения выполнить зависимости и slice; итоговый comparison и owner decision по PAOS-AUD-G9-T17. Сейчас implementation_not_started.
+- Next step: Приёмка T17 получена; G9 закрыта с принятыми ограничениями. Fresh-session activation отдельно.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не выполнялась; добавлена плановая карточка по выявленным пробелам.
-- files touched / work locations: Только owning matrix и связанные planning pointers; будущие implementation paths перечислены в Scope.
-- technical value delivered: pending_implementation
-- product value delivered: pending_implementation
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: not_run; статические проверки authoring отдельно от будущих behavior checks.
-- residual risks: Acceptance criteria ещё не доказаны; source preflight, implementation, relevant checks и owner acceptance впереди; fresh-session activation отдельно.
-- follow-up: Отдельное разрешение на реализацию расширения G9; затем зависимости и verification gates карточки.
+- status: implemented
+- what was done: Контракт impact: fact/source/revision, canonical owner/section, decision/reason; aliases переиспользуются; receipt в существующей карточке.
+- files touched / work locations: documentation_sync.py; document_navigation.py; project_formation.py; task-matrix templates
+- technical value delivered: Контракт impact: fact/source/revision, canonical owner/section, decision/reason; aliases переиспользуются; receipt в существующей карточке.
+- product value delivered: После задачи понятен единственный источник и причина записи или её отсутствия.
+- actual implementation date and time: 10-11-2026 21:17
+- verification evidence: Current run: full 1448 tests / 504.318s, OK (skipped=1); final affected/docs 164 tests / 22.975s, OK; fixtures 91/91, transcripts 26/26, compatibility compatible, strict MkDocs preview 11.81s. Exact provenance/deltas — research/product-agent-os-g9-execution-report.md.
+- residual risks: Local synthetic/source review only; semantic completeness and model behavior not proven; T17 owner accepted; model-behavior limits accepted; fresh-session activation and real M1 SQL adapter separate. Exact section changes require applicable authority; no new writer/status registry.
+- follow-up: Явная приёмка T17 получена; G9 закрыта. Model behavior не проверялось; ограничение принято. Fresh-session activation отдельно.
 
 ### Task `PAOS-AUD-G9-T12`
 
@@ -3361,37 +3362,37 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - Scope: **Затрагиваемые файлы:** project_formation.py; document_navigation.py; control_plane_documents.py; tests/product_agent_os/test_project_formation.py; tests/product_agent_os/test_document_navigation.py. Bare module paths относятся к plugins/product-agent-os/scripts/product_agent_os/, scripts/assets paths — к plugin root; root/project paths указаны явно. Перед реализацией сверить actual ownership и существующие helpers/tests; новый writer/state registry не создавать без доказанной необходимости.
 - Acceptance criteria: **Критерии приёмки:** 1) Результат содержит affected document/section, изменённый контракт или факт, provenance, reason и разрешённые связанные ссылки. 2) Используются фактические изменённые файлы и task acceptance; один лишь mtime или имя каталога не подтверждает семантическое изменение. 3) Bug fix без изменения публичного контракта и повторный тестовый запуск могут давать no_change_needed с причиной; изменение API/схемы/требований выбирает соответствующие owners. 4) Существующие docs/adr, docs/runbooks, docs/ops, docs/testing, docs/history и docs/archive переиспользуются по общему контракту T11; второй конкурирующий раздел не создаётся молча. 5) PLAN/REQUIREMENTS/TEST/EVALS/RUNLOG/AGENTS и index выбираются по своим событиям, не одним массовым списком. 6) Unknown impact или conflicting owners требуют review/handoff; эвристика не выдаётся за доказанную актуальность документа. 7) Одинаковые входы и версии правил дают одинаковый структурный impact; proposals не изменяют проект.
 - Group: PAOS-AUD-G9
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Запрос владельца по анализу добавить в G9 задачи точечного обновления документации после каждой задачи без дублирования; пока без реализации.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 10-11-2026 21:17
 - Depends on: PAOS-AUD-G9-T11; PAOS-AUD-G9-T02; PAOS-AUD-G9-T08.
 - Blocks: PAOS-AUD-G9-T13; PAOS-AUD-G9-T14; PAOS-AUD-G9-T15
 - Source: G9-S05–G9-S08; текущий source-backed анализ и запрос владельца; реализованные G8/G9 механизмы — reuse baseline, не evidence новых возможностей.
 - Non-goals: Реализация в текущем authoring; массовое переписывание документации; новый реестр статусов; автоматическое semantic deletion; provider calls; cache/host/hooks/schedules activation; real-target/Git/publication actions; research matrix split; закрытие G6/T34/HOST или M1 SQL integration.
 - Expected result: Объяснимый section-level impact в существующем formation/navigation результате.
-- Verification gates: Focused test_project_formation и test_document_navigation: ordinary fix, API/schema change, alias reuse, unknown source и unchanged retry; проверка target bytes до/после preview. Actual execution evidence отсутствует; проверки планирования не заменяют runtime evidence.
-- Risks / approval gates: high; потеря знаний, ложная актуальность или дублирование authority. Реализация требует отдельного разрешения; конкретные target writes/activation/external actions сохраняют свои границы. Rollback только owning slice, с проверкой concurrent changes и сохранением истории.
+- Verification gates: Focused test_project_formation и test_document_navigation: ordinary fix, API/schema change, alias reuse, unknown source и unchanged retry; проверка target bytes до/после preview. Actual implementation/check receipts сохранены в G9 execution report; owner acceptance T17 получена.
+- Risks / approval gates: high; потеря знаний, ложная актуальность или дублирование authority. Локальная реализация разрешена, выполнена и принята владельцем; конкретные target writes/activation/external actions сохраняют свои границы. Rollback только owning slice, с проверкой concurrent changes и сохранением истории.
 - Complexity: high
 - Estimated execution time: not_estimated; уточнить по focused source preflight без выдуманных сроков.
 - Agents: plugin-runtime-builder — предполагаемая роль ответственности; primary владеет общей синхронизацией и evidence. Dispatch не выполнялся; shared paths менять последовательно либо по отдельному ownership agreement.
-- Skills: canonical implementation-planner для декомпозиции; при будущей реализации применять только task-matching lifecycle skills; Python guidance для Python changes. Это поле не запускает skills, agents или hooks.
+- Skills: canonical implementation-planner для декомпозиции; при реализации применялись только task-matching lifecycle skills; Python guidance для Python changes. Это поле не запускает skills, agents или hooks.
 - Output artifacts: Объяснимый section-level impact в существующем formation/navigation результате. Подробные actual receipts при исполнении — существующий G9 execution report/results; краткий handoff — RUNLOG; no per-command/per-task report proliferation.
-- Next step: После отдельного разрешения выполнить зависимости и slice; итоговый comparison и owner decision по PAOS-AUD-G9-T17. Сейчас implementation_not_started.
+- Next step: Приёмка T17 получена; G9 закрыта с принятыми ограничениями. Fresh-session activation отдельно.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не выполнялась; добавлена плановая карточка по выявленным пробелам.
-- files touched / work locations: Только owning matrix и связанные planning pointers; будущие implementation paths перечислены в Scope.
-- technical value delivered: pending_implementation
-- product value delivered: pending_implementation
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: not_run; статические проверки authoring отдельно от будущих behavior checks.
-- residual risks: Acceptance criteria ещё не доказаны; source preflight, implementation, relevant checks и owner acceptance впереди; fresh-session activation отдельно.
-- follow-up: Отдельное разрешение на реализацию расширения G9; затем зависимости и verification gates карточки.
+- status: implemented
+- what was done: Явные классы событий и section-level candidates; no-change требует причины/coverage; unknown owner — handoff; read-only assessment.
+- files touched / work locations: documentation_sync.py; project_formation.py; document_navigation.py
+- technical value delivered: Явные классы событий и section-level candidates; no-change требует причины/coverage; unknown owner — handoff; read-only assessment.
+- product value delivered: Изменение API не заставляет переписывать все документы; повтор проверки не меняет команды.
+- actual implementation date and time: 10-11-2026 21:17
+- verification evidence: Current run: full 1448 tests / 504.318s, OK (skipped=1); final affected/docs 164 tests / 22.975s, OK; fixtures 91/91, transcripts 26/26, compatibility compatible, strict MkDocs preview 11.81s. Exact provenance/deltas — research/product-agent-os-g9-execution-report.md.
+- residual risks: Local synthetic/source review only; semantic completeness and model behavior not proven; T17 owner accepted; model-behavior limits accepted; fresh-session activation and real M1 SQL adapter separate. Exact section changes require applicable authority; no new writer/status registry.
+- follow-up: Явная приёмка T17 получена; G9 закрыта. Model behavior не проверялось; ограничение принято. Fresh-session activation отдельно.
 
 ### Task `PAOS-AUD-G9-T13`
 
@@ -3403,37 +3404,37 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - Scope: **Затрагиваемые файлы:** merge_markdown.py; merge_infrastructure.py; control_plane_compaction.py; document_navigation.py; tests/product_agent_os/test_merge_infrastructure.py; tests/product_agent_os/test_control_plane_compaction.py; tests/product_agent_os/test_project_formation.py. Bare module paths относятся к plugins/product-agent-os/scripts/product_agent_os/, scripts/assets paths — к plugin root; root/project paths указаны явно. Перед реализацией сверить actual ownership и существующие helpers/tests; новый writer/state registry не создавать без доказанной необходимости.
 - Acceptance criteria: **Критерии приёмки:** 1) Preview показывает точный документ/раздел и before/after diff; unmarked user content не переписывается без явного разрешения соответствующей правки. 2) Maintenance route использует существующие write/merge/recovery primitives; G9 formation preserve-existing contract не ослабляется и не превращается в скрытый overwrite. 3) За пределами разрешённого раздела исходные bytes сохраняются; IDs, история, evidence, ссылки и acceptance не теряются. 4) Повтор с теми же входами не создаёт записей, дублей, timestamp churn или новых отчётов. 5) Stale digest, конкурентная правка, ambiguous section, freeze/SQL authority останавливают применение; прерывание имеет проверяемое восстановление без затирания последующих пользовательских правок. 6) Лимит 40 000 bytes/warning 32 000 и explicit limits сохранены; превышение направляет в lossless compaction, не в silent truncation. 7) Подробные матрицы docs/planning/ остаются целиком; research matrix не разделяется; semantic dedup не удаляет данные автоматически.
 - Group: PAOS-AUD-G9
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Запрос владельца по анализу добавить в G9 задачи точечного обновления документации после каждой задачи без дублирования; пока без реализации.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 10-11-2026 21:17
 - Depends on: PAOS-AUD-G9-T11; PAOS-AUD-G9-T12; PAOS-AUD-G9-T07; PAOS-AUD-G8-T07–T08.
 - Blocks: PAOS-AUD-G9-T15; PAOS-AUD-G9-T17
 - Source: G9-S05–G9-S08; текущий source-backed анализ и запрос владельца; реализованные G8/G9 механизмы — reuse baseline, не evidence новых возможностей.
 - Non-goals: Реализация в текущем authoring; массовое переписывание документации; новый реестр статусов; автоматическое semantic deletion; provider calls; cache/host/hooks/schedules activation; real-target/Git/publication actions; research matrix split; закрытие G6/T34/HOST или M1 SQL integration.
 - Expected result: Bounded section-change preview/apply/recovery и no-op receipts в существующем маршруте.
-- Verification gates: Focused merge/compaction/formation tests: authorized section update, exact bytes outside section, no-op repeat, stale/concurrent edit, interrupted recovery, size boundary and planning exemption; все writes только synthetic fixtures. Actual execution evidence отсутствует; проверки планирования не заменяют runtime evidence.
-- Risks / approval gates: high; потеря знаний, ложная актуальность или дублирование authority. Реализация требует отдельного разрешения; конкретные target writes/activation/external actions сохраняют свои границы. Rollback только owning slice, с проверкой concurrent changes и сохранением истории.
+- Verification gates: Focused merge/compaction/formation tests: authorized section update, exact bytes outside section, no-op repeat, stale/concurrent edit, interrupted recovery, size boundary and planning exemption; все writes только synthetic fixtures. Actual implementation/check receipts сохранены в G9 execution report; owner acceptance T17 получена.
+- Risks / approval gates: high; потеря знаний, ложная актуальность или дублирование authority. Локальная реализация разрешена, выполнена и принята владельцем; конкретные target writes/activation/external actions сохраняют свои границы. Rollback только owning slice, с проверкой concurrent changes и сохранением истории.
 - Complexity: high
 - Estimated execution time: not_estimated; уточнить по focused source preflight без выдуманных сроков.
 - Agents: plugin-runtime-builder — предполагаемая роль ответственности; primary владеет общей синхронизацией и evidence. Dispatch не выполнялся; shared paths менять последовательно либо по отдельному ownership agreement.
-- Skills: canonical implementation-planner для декомпозиции; при будущей реализации применять только task-matching lifecycle skills; Python guidance для Python changes. Это поле не запускает skills, agents или hooks.
+- Skills: canonical implementation-planner для декомпозиции; при реализации применялись только task-matching lifecycle skills; Python guidance для Python changes. Это поле не запускает skills, agents или hooks.
 - Output artifacts: Bounded section-change preview/apply/recovery и no-op receipts в существующем маршруте. Подробные actual receipts при исполнении — существующий G9 execution report/results; краткий handoff — RUNLOG; no per-command/per-task report proliferation.
-- Next step: После отдельного разрешения выполнить зависимости и slice; итоговый comparison и owner decision по PAOS-AUD-G9-T17. Сейчас implementation_not_started.
+- Next step: Приёмка T17 получена; G9 закрыта с принятыми ограничениями. Fresh-session activation отдельно.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не выполнялась; добавлена плановая карточка по выявленным пробелам.
-- files touched / work locations: Только owning matrix и связанные planning pointers; будущие implementation paths перечислены в Scope.
-- technical value delivered: pending_implementation
-- product value delivered: pending_implementation
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: not_run; статические проверки authoring отдельно от будущих behavior checks.
-- residual risks: Acceptance criteria ещё не доказаны; source preflight, implementation, relevant checks и owner acceptance впереди; fresh-session activation отдельно.
-- follow-up: Отдельное разрешение на реализацию расширения G9; затем зависимости и verification gates карточки.
+- status: implemented
+- what was done: Exact section replay, UTF-8/CRLF preservation, CAS/digest, общий journal/rollback, no-op, freeze/SQL guards, budgets и planning exception.
+- files touched / work locations: documentation_sync.py; control_plane_compaction.py; existing navigation/compaction tests
+- technical value delivered: Exact section replay, UTF-8/CRLF preservation, CAS/digest, общий journal/rollback, no-op, freeze/SQL guards, budgets и planning exception.
+- product value delivered: Соседний текст и история восстановления сохраняются; повтор не создаёт мусор.
+- actual implementation date and time: 10-11-2026 21:17
+- verification evidence: Current run: full 1448 tests / 504.318s, OK (skipped=1); final affected/docs 164 tests / 22.975s, OK; fixtures 91/91, transcripts 26/26, compatibility compatible, strict MkDocs preview 11.81s. Exact provenance/deltas — research/product-agent-os-g9-execution-report.md.
+- residual risks: Local synthetic/source review only; semantic completeness and model behavior not proven; T17 owner accepted; model-behavior limits accepted; fresh-session activation and real M1 SQL adapter separate. Exact section changes require applicable authority; no new writer/status registry.
+- follow-up: Явная приёмка T17 получена; G9 закрыта. Model behavior не проверялось; ограничение принято. Fresh-session activation отдельно.
 
 ### Task `PAOS-AUD-G9-T14`
 
@@ -3445,37 +3446,37 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - Scope: **Затрагиваемые файлы:** document_navigation.py; system_file_hygiene.py; scripts/check_documents.py; tests/product_agent_os/test_document_navigation.py; tests/product_agent_os/test_system_file_hygiene.py. Bare module paths относятся к plugins/product-agent-os/scripts/product_agent_os/, scripts/assets paths — к plugin root; root/project paths указаны явно. Перед реализацией сверить actual ownership и существующие helpers/tests; новый writer/state registry не создавать без доказанной необходимости.
 - Acceptance criteria: **Критерии приёмки:** 1) Exact duplicate detection работает между выбранными файлами и выдаёт обе позиции/sections и canonical owner; текущие внутрифайловые проверки сохранены. 2) Намеренные short summaries, ссылки, кодовые примеры, повторяющаяся структура матрицы и declared mirrors не приравниваются автоматически к дефекту. 3) Summary ссылается на основной источник; stale mirror/revision или противоречащие статусы имеют отдельный finding. 4) Смысловые повторы и противоречия требуют агентского review; автоматическое доказательство семантической уникальности не заявляется. 5) Проверка ограничена affected docs и их явными источниками; полный scan запускается только по отдельному основанию. 6) Finding не разрешает удаление, не перезаписывает history и не скрывается общим ok=true без disposition для применимого blocking finding.
 - Group: PAOS-AUD-G9
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Запрос владельца по анализу добавить в G9 задачи точечного обновления документации после каждой задачи без дублирования; пока без реализации.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 10-11-2026 21:17
 - Depends on: PAOS-AUD-G9-T11; PAOS-AUD-G9-T12; существующие G8 duplicate/navigation checks.
 - Blocks: PAOS-AUD-G9-T15; PAOS-AUD-G9-T17
 - Source: G9-S05–G9-S08; текущий source-backed анализ и запрос владельца; реализованные G8/G9 механизмы — reuse baseline, не evidence новых возможностей.
 - Non-goals: Реализация в текущем authoring; массовое переписывание документации; новый реестр статусов; автоматическое semantic deletion; provider calls; cache/host/hooks/schedules activation; real-target/Git/publication actions; research matrix split; закрытие G6/T34/HOST или M1 SQL integration.
 - Expected result: Межфайловые findings и review dispositions в существующем checker, без отдельного duplicate registry.
-- Verification gates: Focused navigation/hygiene tests: cross-file repeated evidence, intentional summaries, tables/examples, stale mirrors, conflicting status and semantic-review-required cases; false-positive/negative cases явно сохранены. Actual execution evidence отсутствует; проверки планирования не заменяют runtime evidence.
-- Risks / approval gates: medium; потеря знаний, ложная актуальность или дублирование authority. Реализация требует отдельного разрешения; конкретные target writes/activation/external actions сохраняют свои границы. Rollback только owning slice, с проверкой concurrent changes и сохранением истории.
+- Verification gates: Focused navigation/hygiene tests: cross-file repeated evidence, intentional summaries, tables/examples, stale mirrors, conflicting status and semantic-review-required cases; false-positive/negative cases явно сохранены. Actual implementation/check receipts сохранены в G9 execution report; owner acceptance T17 получена.
+- Risks / approval gates: medium; потеря знаний, ложная актуальность или дублирование authority. Локальная реализация разрешена, выполнена и принята владельцем; конкретные target writes/activation/external actions сохраняют свои границы. Rollback только owning slice, с проверкой concurrent changes и сохранением истории.
 - Complexity: medium
 - Estimated execution time: not_estimated; уточнить по focused source preflight без выдуманных сроков.
 - Agents: plugin-runtime-builder — предполагаемая роль ответственности; primary владеет общей синхронизацией и evidence. Dispatch не выполнялся; shared paths менять последовательно либо по отдельному ownership agreement.
-- Skills: canonical implementation-planner для декомпозиции; при будущей реализации применять только task-matching lifecycle skills; Python guidance для Python changes. Это поле не запускает skills, agents или hooks.
+- Skills: canonical implementation-planner для декомпозиции; при реализации применялись только task-matching lifecycle skills; Python guidance для Python changes. Это поле не запускает skills, agents или hooks.
 - Output artifacts: Межфайловые findings и review dispositions в существующем checker, без отдельного duplicate registry. Подробные actual receipts при исполнении — существующий G9 execution report/results; краткий handoff — RUNLOG; no per-command/per-task report proliferation.
-- Next step: После отдельного разрешения выполнить зависимости и slice; итоговый comparison и owner decision по PAOS-AUD-G9-T17. Сейчас implementation_not_started.
+- Next step: Приёмка T17 получена; G9 закрыта с принятыми ограничениями. Fresh-session activation отдельно.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не выполнялась; добавлена плановая карточка по выявленным пробелам.
-- files touched / work locations: Только owning matrix и связанные planning pointers; будущие implementation paths перечислены в Scope.
-- technical value delivered: pending_implementation
-- product value delivered: pending_implementation
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: not_run; статические проверки authoring отдельно от будущих behavior checks.
-- residual risks: Acceptance criteria ещё не доказаны; source preflight, implementation, relevant checks и owner acceptance впереди; fresh-session activation отдельно.
-- follow-up: Отдельное разрешение на реализацию расширения G9; затем зависимости и verification gates карточки.
+- status: implemented
+- what was done: Cross-file duplicate/conflicting-state findings; verified mirror disposition; linked fresh summary; bounded scan и blocking unresolved findings.
+- files touched / work locations: document_navigation.py; check_documents.py; system_file_hygiene.py; test_document_navigation.py
+- technical value delivered: Cross-file duplicate/conflicting-state findings; verified mirror disposition; linked fresh summary; bounded scan и blocking unresolved findings.
+- product value delivered: Противоречащие копии видны владельцу; автоматического удаления нет.
+- actual implementation date and time: 10-11-2026 21:17
+- verification evidence: Current run: full 1448 tests / 504.318s, OK (skipped=1); final affected/docs 164 tests / 22.975s, OK; fixtures 91/91, transcripts 26/26, compatibility compatible, strict MkDocs preview 11.81s. Exact provenance/deltas — research/product-agent-os-g9-execution-report.md.
+- residual risks: Local synthetic/source review only; semantic completeness and model behavior not proven; T17 owner accepted; model-behavior limits accepted; fresh-session activation and real M1 SQL adapter separate. Exact section changes require applicable authority; no new writer/status registry.
+- follow-up: Явная приёмка T17 получена; G9 закрыта. Model behavior не проверялось; ограничение принято. Fresh-session activation отдельно.
 
 ### Task `PAOS-AUD-G9-T15`
 
@@ -3487,37 +3488,37 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - Scope: **Затрагиваемые файлы:** task_plan_lifecycle.py; validators.py; status_snapshot.py; stage_manifest.py; existing merge/recovery primitives; tests/product_agent_os/test_task_plan_lifecycle.py; tests/product_agent_os/test_status_snapshot.py; tests/product_agent_os/test_merge_infrastructure.py. Bare module paths относятся к plugins/product-agent-os/scripts/product_agent_os/, scripts/assets paths — к plugin root; root/project paths указаны явно. Перед реализацией сверить actual ownership и существующие helpers/tests; новый writer/state registry не создавать без доказанной необходимости.
 - Acceptance criteria: **Критерии приёмки:** 1) Новый completion route проверяет применимый docs impact: source/section существует, revision/evidence соответствует проверенному состоянию, no_change_needed имеет конкретное основание. 2) Обязательный unresolved update/handoff не допускает stronger completion claim; технический результат и незавершённая документация могут быть записаны как partial без ложного implemented/accepted. 3) Обновление карточки и соответствующего PLAN revision выполняется согласованным recoverable пакетом; остальные pinned sources/prefixes не меняются. 4) Stale source, freeze, competing writer и interrupted update дают явную остановку/recovery; независимая SQL projection не создаётся. 5) Старый create_task_plan complete имеет явно документированный совместимый маршрут или понятную migration error, без тихого обхода нового gate. 6) Флаг docs_synced=true или hash сам по себе не доказывает смысловую полноту; review responsibility остаётся явной. 7) Owner acceptance и fresh-session activation не выводятся из успешного machine gate; hooks остаются advisory без отдельного решения об активации.
 - Group: PAOS-AUD-G9
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Запрос владельца по анализу добавить в G9 задачи точечного обновления документации после каждой задачи без дублирования; пока без реализации.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 10-11-2026 21:17
 - Depends on: PAOS-AUD-G9-T11; PAOS-AUD-G9-T12; PAOS-AUD-G9-T13; PAOS-AUD-G9-T14.
 - Blocks: PAOS-AUD-G9-T16; PAOS-AUD-G9-T17
 - Source: G9-S05–G9-S08; текущий source-backed анализ и запрос владельца; реализованные G8/G9 механизмы — reuse baseline, не evidence новых возможностей.
 - Non-goals: Реализация в текущем authoring; массовое переписывание документации; новый реестр статусов; автоматическое semantic deletion; provider calls; cache/host/hooks/schedules activation; real-target/Git/publication actions; research matrix split; закрытие G6/T34/HOST или M1 SQL integration.
 - Expected result: Source-owned completion validation и recoverable revision sync без новой status authority.
-- Verification gates: Focused lifecycle/status/merge tests: updated/no-change/handoff, missing or forged receipt, stale digest, interrupted two-source update, unrelated source preservation, legacy migration and SQL/freeze refusal; current-state projection без issues после successful flow. Actual execution evidence отсутствует; проверки планирования не заменяют runtime evidence.
-- Risks / approval gates: high; потеря знаний, ложная актуальность или дублирование authority. Реализация требует отдельного разрешения; конкретные target writes/activation/external actions сохраняют свои границы. Rollback только owning slice, с проверкой concurrent changes и сохранением истории.
+- Verification gates: Focused lifecycle/status/merge tests: updated/no-change/handoff, missing or forged receipt, stale digest, interrupted two-source update, unrelated source preservation, legacy migration and SQL/freeze refusal; current-state projection без issues после successful flow. Actual implementation/check receipts сохранены в G9 execution report; owner acceptance T17 получена.
+- Risks / approval gates: high; потеря знаний, ложная актуальность или дублирование authority. Локальная реализация разрешена, выполнена и принята владельцем; конкретные target writes/activation/external actions сохраняют свои границы. Rollback только owning slice, с проверкой concurrent changes и сохранением истории.
 - Complexity: high
 - Estimated execution time: not_estimated; уточнить по focused source preflight без выдуманных сроков.
 - Agents: lifecycle-orchestrator — предполагаемая роль ответственности; primary владеет общей синхронизацией и evidence. Dispatch не выполнялся; shared paths менять последовательно либо по отдельному ownership agreement.
-- Skills: canonical implementation-planner для декомпозиции; при будущей реализации применять только task-matching lifecycle skills; Python guidance для Python changes. Это поле не запускает skills, agents или hooks.
+- Skills: canonical implementation-planner для декомпозиции; при реализации применялись только task-matching lifecycle skills; Python guidance для Python changes. Это поле не запускает skills, agents или hooks.
 - Output artifacts: Source-owned completion validation и recoverable revision sync без новой status authority. Подробные actual receipts при исполнении — существующий G9 execution report/results; краткий handoff — RUNLOG; no per-command/per-task report proliferation.
-- Next step: После отдельного разрешения выполнить зависимости и slice; итоговый comparison и owner decision по PAOS-AUD-G9-T17. Сейчас implementation_not_started.
+- Next step: Приёмка T17 получена; G9 закрыта с принятыми ограничениями. Fresh-session activation отдельно.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не выполнялась; добавлена плановая карточка по выявленным пробелам.
-- files touched / work locations: Только owning matrix и связанные planning pointers; будущие implementation paths перечислены в Scope.
-- technical value delivered: pending_implementation
-- product value delivered: pending_implementation
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: not_run; статические проверки authoring отдельно от будущих behavior checks.
-- residual risks: Acceptance criteria ещё не доказаны; source preflight, implementation, relevant checks и owner acceptance впереди; fresh-session activation отдельно.
-- follow-up: Отдельное разрешение на реализацию расширения G9; затем зависимости и verification gates карточки.
+- status: implemented
+- what was done: Preview/apply completion связывает docs, карточку и matching PLAN pin; handoff/stale/no-op conflicts запрещают сильное закрытие; legacy flag явный.
+- files touched / work locations: documentation_sync.py; sync_task_documents.py; task_plan_lifecycle.py; validators.py; status_snapshot.py; lifecycle tests
+- technical value delivered: Preview/apply completion связывает docs, карточку и matching PLAN pin; handoff/stale/no-op conflicts запрещают сильное закрытие; legacy flag явный.
+- product value delivered: Статус задачи не отрывается от актуального документа и указателя.
+- actual implementation date and time: 10-11-2026 21:17
+- verification evidence: Current run: full 1448 tests / 504.318s, OK (skipped=1); final affected/docs 164 tests / 22.975s, OK; fixtures 91/91, transcripts 26/26, compatibility compatible, strict MkDocs preview 11.81s. Exact provenance/deltas — research/product-agent-os-g9-execution-report.md.
+- residual risks: Local synthetic/source review only; semantic completeness and model behavior not proven; T17 owner accepted; model-behavior limits accepted; fresh-session activation and real M1 SQL adapter separate. Exact section changes require applicable authority; no new writer/status registry.
+- follow-up: Явная приёмка T17 получена; G9 закрыта. Model behavior не проверялось; ограничение принято. Fresh-session activation отдельно.
 
 ### Task `PAOS-AUD-G9-T16`
 
@@ -3529,37 +3530,37 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - Scope: **Затрагиваемые файлы:** .codex/workflows/control-plane-sync.md; .codex/workflows/task-plan-lifecycle.md; plugins/product-agent-os/assets/templates/workflows/control-plane-sync.md; plugins/product-agent-os/assets/templates/workflows/task-plan-lifecycle.md; plugins/product-agent-os/skills/implementation-planner/SKILL.md; plugins/product-agent-os/skills/project-lifecycle-orchestrator/SKILL.md; plugins/product-agent-os/skills/completion-skeptic/SKILL.md; docs/product-agent-os/project-formation.md/.en.md; technical.md/.en.md; cli-reference.md/.en.md; docs/sources/registry.md/.en.md; tests/product_agent_os/test_task_plan_lifecycle.py; tests/product_agent_os/test_product_agent_os_docs.py. Bare module paths относятся к plugins/product-agent-os/scripts/product_agent_os/, scripts/assets paths — к plugin root; root/project paths указаны явно. Перед реализацией сверить actual ownership и существующие helpers/tests; новый writer/state registry не создавать без доказанной необходимости.
 - Acceptance criteria: **Критерии приёмки:** 1) Единое правило: после каждой завершённой задачи оценить impact; изменить только затронутый owner/section либо записать no_change_needed с причиной. 2) Матрица хранит task result, owning evidence — детали проверок, TEST — команды/условия и pointers, RUNLOG — компактный актуальный handoff; полные command logs и дубли статусов не размножаются. 3) Устранены противоречащие формулировки canonical skill и active/package workflows; обычной задаче не навязывается отдельный отчёт или полный closure packet. 4) Event, soft/hard size и periodic reviews разделены; weekly/monthly policy остаётся not_created/read_only, расписание не активируется. 5) Mandatory docs gap блокирует только зависящее от него закрытие; unrelated документы не создают искусственных gates. 6) Примеры описывают bug fix, API change, test rerun, новая область docs, повторную задачу и handoff с точными owning files. 7) Static parity не выдаётся за fresh-session loading; activation остаётся отдельной задачей.
 - Group: PAOS-AUD-G9
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Запрос владельца по анализу добавить в G9 задачи точечного обновления документации после каждой задачи без дублирования; пока без реализации.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 10-11-2026 21:17
 - Depends on: PAOS-AUD-G9-T11; PAOS-AUD-G9-T15.
 - Blocks: PAOS-AUD-G9-T17
 - Source: G9-S05–G9-S08; текущий source-backed анализ и запрос владельца; реализованные G8/G9 механизмы — reuse baseline, не evidence новых возможностей.
 - Non-goals: Реализация в текущем authoring; массовое переписывание документации; новый реестр статусов; автоматическое semantic deletion; provider calls; cache/host/hooks/schedules activation; real-target/Git/publication actions; research matrix split; закрытие G6/T34/HOST или M1 SQL integration.
 - Expected result: Согласованные durable workflow instructions и RU/EN guide; никаких новых schedules/hooks activation.
-- Verification gates: Docs/lifecycle tests, tools/check_docs.py, task matrix validation, changed local links и git diff --check; strict MkDocs при navigation/config/rendered-doc изменениях. Representative baseline/treatment для materially changed agent instructions по T17, без live providers по умолчанию. Actual execution evidence отсутствует; проверки планирования не заменяют runtime evidence.
-- Risks / approval gates: medium; потеря знаний, ложная актуальность или дублирование authority. Реализация требует отдельного разрешения; конкретные target writes/activation/external actions сохраняют свои границы. Rollback только owning slice, с проверкой concurrent changes и сохранением истории.
+- Verification gates: Docs/lifecycle tests, tools/check_docs.py, task matrix validation, changed local links и git diff --check; strict MkDocs при navigation/config/rendered-doc изменениях. Representative baseline/treatment для materially changed agent instructions по T17, без live providers по умолчанию. Actual implementation/check receipts сохранены в G9 execution report; owner acceptance T17 получена.
+- Risks / approval gates: medium; потеря знаний, ложная актуальность или дублирование authority. Локальная реализация разрешена, выполнена и принята владельцем; конкретные target writes/activation/external actions сохраняют свои границы. Rollback только owning slice, с проверкой concurrent changes и сохранением истории.
 - Complexity: medium
 - Estimated execution time: not_estimated; уточнить по focused source preflight без выдуманных сроков.
 - Agents: docs-maintainer — предполагаемая роль ответственности; primary владеет общей синхронизацией и evidence. Dispatch не выполнялся; shared paths менять последовательно либо по отдельному ownership agreement.
-- Skills: canonical implementation-planner для декомпозиции; при будущей реализации применять только task-matching lifecycle skills; Python guidance для Python changes. Это поле не запускает skills, agents или hooks.
+- Skills: canonical implementation-planner для декомпозиции; при реализации применялись только task-matching lifecycle skills; Python guidance для Python changes. Это поле не запускает skills, agents или hooks.
 - Output artifacts: Согласованные durable workflow instructions и RU/EN guide; никаких новых schedules/hooks activation. Подробные actual receipts при исполнении — существующий G9 execution report/results; краткий handoff — RUNLOG; no per-command/per-task report proliferation.
-- Next step: После отдельного разрешения выполнить зависимости и slice; итоговый comparison и owner decision по PAOS-AUD-G9-T17. Сейчас implementation_not_started.
+- Next step: Приёмка T17 получена; G9 закрыта с принятыми ограничениями. Fresh-session activation отдельно.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не выполнялась; добавлена плановая карточка по выявленным пробелам.
-- files touched / work locations: Только owning matrix и связанные planning pointers; будущие implementation paths перечислены в Scope.
-- technical value delivered: pending_implementation
-- product value delivered: pending_implementation
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: not_run; статические проверки authoring отдельно от будущих behavior checks.
-- residual risks: Acceptance criteria ещё не доказаны; source preflight, implementation, relevant checks и owner acceptance впереди; fresh-session activation отдельно.
-- follow-up: Отдельное разрешение на реализацию расширения G9; затем зависимости и verification gates карточки.
+- status: implemented
+- what was done: Active/packaged workflows, canonical skills и handoff reference, templates и RU/EN docs/registry согласованы; full logs не направляются в RUNLOG.
+- files touched / work locations: .codex workflows/templates; plugin workflows/templates/skills/references; public RU/EN docs/registry
+- technical value delivered: Active/packaged workflows, canonical skills и handoff reference, templates и RU/EN docs/registry согласованы; full logs не направляются в RUNLOG.
+- product value delivered: Обновляется только изменившаяся информация; отдельный отчёт и полный packet не навязываются мелким задачам.
+- actual implementation date and time: 10-11-2026 21:17
+- verification evidence: Current run: full 1448 tests / 504.318s, OK (skipped=1); final affected/docs 164 tests / 22.975s, OK; fixtures 91/91, transcripts 26/26, compatibility compatible, strict MkDocs preview 11.81s. Exact provenance/deltas — research/product-agent-os-g9-execution-report.md.
+- residual risks: Local synthetic/source review only; semantic completeness and model behavior not proven; T17 owner accepted; model-behavior limits accepted; fresh-session activation and real M1 SQL adapter separate. Exact section changes require applicable authority; no new writer/status registry.
+- follow-up: Явная приёмка T17 получена; G9 закрыта. Model behavior не проверялось; ограничение принято. Fresh-session activation отдельно.
 
 ### Task `PAOS-AUD-G9-T17`
 
@@ -3571,34 +3572,34 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 - Scope: **Затрагиваемые файлы:** Существующие tests/product_agent_os/test_project_formation.py, test_task_plan_lifecycle.py, test_document_navigation.py, test_merge_infrastructure.py, test_system_file_hygiene.py, test_status_snapshot.py; synthetic fixtures под tests/fixtures/product_agent_os/g9-project-formation/; research/product-agent-os-g9-execution-report.md; docs/superpowers/specs/paos-aud-g9-project-formation-results.json; текущая audit matrix и root pointers. Bare module paths относятся к plugins/product-agent-os/scripts/product_agent_os/, scripts/assets paths — к plugin root; root/project paths указаны явно. Перед реализацией сверить actual ownership и существующие helpers/tests; новый writer/state registry не создавать без доказанной необходимости.
 - Acceptance criteria: **Критерии приёмки:** 1) До реализации расширения зафиксирован baseline текущего G9; comparison использует одинаковые task facts/workspaces и source/config/fixture revisions, без пересмотра старых receipts задним числом. 2) Покрыты no-contract bug fix, API/schema change, requirement change, test rerun, unknown owner, existing aliases, cross-file duplicates, allowed summary/mirror, concurrent edit/freeze, interruption и следующий task cycle. 3) Измеряются пропущенные обязательные updates, лишние изменённые файлы/sections, bytes вне authorized sections, повторные writes, конфликтующие copies, links и current-state revisions; обязательный провал не скрывается агрегатом. 4) Повтор того же sync даёт zero unnecessary writes; затем новая задача обновляет только изменившиеся сведения, без накопления повторных closure blocks. 5) History/IDs/evidence, 40 000-byte contract, docs/planning exception и запрет research split сохранены; реальным внешним проектам изменения не вносятся. 6) Representative instruction comparisons отделены от deterministic fixtures; если behavioral evidence отсутствует, это explicit gap для владельца, не claim об улучшении модели. 7) Пройдены применимые TEST.md runtime/fixture/transcript/compatibility и docs/matrix/link gates; failures и retries сохранены. 8) T10 owner decision разрешена явно как приёмка первоначального пакета, а новый результат T11–T17 отдельно предъявлен и принят владельцем; до этого расширенный G9 needs_user_acceptance, fresh-session activation отдельно.
 - Group: PAOS-AUD-G9
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Запрос владельца по анализу добавить в G9 задачи точечного обновления документации после каждой задачи без дублирования; пока без реализации.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 10-11-2026 21:17
 - Depends on: PAOS-AUD-G9-T11–T16; PAOS-AUD-G9-T10 owner decision требуется для итогового закрытия группы, но не блокирует локальную реализацию T11–T16 после отдельного разрешения.
 - Blocks: Закрытие расширенного PAOS-AUD-G9; не закрывает HOST/fresh-session activation или M1 SQL gates.
 - Source: G9-S05–G9-S08; текущий source-backed анализ и запрос владельца; реализованные G8/G9 механизмы — reuse baseline, не evidence новых возможностей.
 - Non-goals: Реализация в текущем authoring; массовое переписывание документации; новый реестр статусов; автоматическое semantic deletion; provider calls; cache/host/hooks/schedules activation; real-target/Git/publication actions; research matrix split; закрытие G6/T34/HOST или M1 SQL integration.
 - Expected result: Versioned comparison и owner acceptance packet в существующих G9 evidence artifacts; без пустого нового отчёта сейчас.
-- Verification gates: Focused перечисленные test modules; затем python -B -m unittest discover -s tests -p test_*.py, run_fixture_eval.py, run_transcript_eval.py, validate_codex_compatibility.py по TEST.md; docs unittest, check_docs.py, validate_task_matrix.py и diff check; строгий MkDocs по navigation/site scope. Actual receipts только после запуска. Actual execution evidence отсутствует; проверки планирования не заменяют runtime evidence.
-- Risks / approval gates: high; потеря знаний, ложная актуальность или дублирование authority. Реализация требует отдельного разрешения; конкретные target writes/activation/external actions сохраняют свои границы. Rollback только owning slice, с проверкой concurrent changes и сохранением истории.
+- Verification gates: Focused перечисленные test modules; затем python -B -m unittest discover -s tests -p test_*.py, run_fixture_eval.py, run_transcript_eval.py, validate_codex_compatibility.py по TEST.md; docs unittest, check_docs.py, validate_task_matrix.py и diff check; строгий MkDocs по navigation/site scope. Actual receipts только после запуска. Actual implementation/check receipts сохранены в G9 execution report; owner acceptance T17 получена.
+- Risks / approval gates: high; потеря знаний, ложная актуальность или дублирование authority. Локальная реализация разрешена, выполнена и принята владельцем; конкретные target writes/activation/external actions сохраняют свои границы. Rollback только owning slice, с проверкой concurrent changes и сохранением истории.
 - Complexity: high
 - Estimated execution time: not_estimated; уточнить по focused source preflight без выдуманных сроков.
 - Agents: reviewer — предполагаемая роль ответственности; primary владеет общей синхронизацией и evidence. Dispatch не выполнялся; shared paths менять последовательно либо по отдельному ownership agreement.
-- Skills: canonical implementation-planner для декомпозиции; при будущей реализации применять только task-matching lifecycle skills; Python guidance для Python changes. Это поле не запускает skills, agents или hooks.
+- Skills: canonical implementation-planner для декомпозиции; при реализации применялись только task-matching lifecycle skills; Python guidance для Python changes. Это поле не запускает skills, agents или hooks.
 - Output artifacts: Versioned comparison и owner acceptance packet в существующих G9 evidence artifacts; без пустого нового отчёта сейчас. Подробные actual receipts при исполнении — существующий G9 execution report/results; краткий handoff — RUNLOG; no per-command/per-task report proliferation.
-- Next step: После отдельного разрешения выполнить зависимости и slice; итоговый comparison и owner decision по PAOS-AUD-G9-T17. Сейчас implementation_not_started.
+- Next step: Приёмка T17 получена; G9 закрыта с принятыми ограничениями. Fresh-session activation отдельно.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не выполнялась; добавлена плановая карточка по выявленным пробелам.
-- files touched / work locations: Только owning matrix и связанные planning pointers; будущие implementation paths перечислены в Scope.
-- technical value delivered: pending_implementation
-- product value delivered: pending_implementation
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: not_run; статические проверки authoring отдельно от будущих behavior checks.
-- residual risks: Acceptance criteria ещё не доказаны; source preflight, implementation, relevant checks и owner acceptance впереди; fresh-session activation отдельно.
-- follow-up: Отдельное разрешение на реализацию расширения G9; затем зависимости и verification gates карточки.
+- status: implemented
+- what was done: Same-input baseline comparison, regressions и verification packet подготовлены; owner accepted, включая явно принятые ограничения model/semantic evidence; G9 closed.
+- files touched / work locations: g9_documentation_comparison.py; existing G9 results/report; root control plane; audit matrix
+- technical value delivered: Same-input baseline comparison, regressions и verification packet подготовлены; owner accepted, включая явно принятые ограничения model/semantic evidence; G9 closed.
+- product value delivered: Владелец принял воспроизводимое сравнение и ограничения; расширенная группа G9 закрыта.
+- actual implementation date and time: 10-11-2026 21:17
+- verification evidence: Current run: full 1448 tests / 504.318s, OK (skipped=1); final affected/docs 164 tests / 22.975s, OK; fixtures 91/91, transcripts 26/26, compatibility compatible, strict MkDocs preview 11.81s. Exact provenance/deltas — research/product-agent-os-g9-execution-report.md.
+- residual risks: Local synthetic/source review only; semantic completeness and model behavior not proven; T17 owner accepted; model-behavior limits accepted; fresh-session activation and real M1 SQL adapter separate. Exact section changes require applicable authority; no new writer/status registry.
+- follow-up: Явная приёмка T17 получена; G9 закрыта. Model behavior не проверялось; ограничение принято. Fresh-session activation отдельно.

@@ -5,9 +5,9 @@ Profile: {profile_name}
 
 ## Purpose
 
-Use this workflow before closing any non-mechanical Product-Agent OS task to decide whether root control-plane files need updates.
+Assess documentation impact before closing every Product-Agent OS task. Only changed owned information requires a write; small or read-only tasks may record a concise no-change reason.
 
-This is not an active hook or automation. It is a mandatory agent checklist that runs inside the parent task before the Completion Ledger.
+This is not an active hook or automation. It is a mandatory agent checklist inside the parent task before the applicable completion response; it does not require a full Completion Ledger for every task.
 
 ## Control-Plane Files
 
@@ -60,3 +60,17 @@ This is not an active hook or automation. It is a mandatory agent checklist that
 - `overflow_refactor_required` is needed but no redistribution decision names the owning files or source artifacts that received the detailed information.
 - Ownership is unclear and no handoff is recorded.
 - Verification evidence is missing for a completion, fixed, verified, ready, or release-ready claim.
+
+## Per-task documentation synchronization
+
+Assess documentation impact after every task, including small fixes and read-only outcomes. Assessment does not require rewriting a file or creating a report. Reuse the task Completion Report/evidence artifact. Record changed fact, source path/revision, canonical owner/path/section, decision (`updated`, `no_change_needed`, `handoff_required`), reason and evidence. Map the earlier checklist's `not_applicable` to `no_change_needed`; pending `update_required` becomes `updated` only after verified apply. Unresolved overflow or ownership stays `handoff_required`.
+
+Use `sync_task_documents.py` for an approved section update or coordinated task completion: `assess` reads an existing packet; `preview` returns exact section diffs/recovery bytes; `apply --approved-digest` uses the reviewed proposal. For completion the packet includes `completion.matrix_path` and the existing TaskCompletion report fields. The task card and matching PLAN revision pin update through the same existing recovery journal. Other source pins and bytes outside the selected sections are preserved. A required unresolved handoff prevents implemented closure; report partial status instead. `create_task_plan.py complete --legacy-card-only` is compatibility-only and does not establish synchronized closure.
+
+The `documentation_sync_v1` contract is implemented in `product_agent_os/documentation_sync.py`. `impact` has schema_version 1, task_id and bounded facts. Each fact has id, event, changed_fact, reason, decision and source path/revision references; a changed owner additionally has target path/revision, role, owner and section anchor. A no-change decision for a changed contract needs existing_coverage explaining that exact section. `patches` contains one fact_id/replacement per updated fact. Missing/new owners route to review or formation staging; this writer updates existing sections only. Explicit review inputs are not machine proof that all semantic changes were found.
+
+Events route independently: requirements -> REQUIREMENTS; sequencing -> PLAN; verification_command -> TEST; eval_policy -> EVALS; handoff -> RUNLOG; architecture/decision/api/schema/operations -> their canonical domain documents. Evidence details stay in the owning task/evidence artifact. TEST stores commands and a short evidence pointer; RUNLOG stores the current handoff, not full command output. Reuse docs/adr, docs/runbooks or docs/ops, docs/testing and docs/archive when they are canonical. Unknown/ambiguous owners need a handoff, not a guessed second file.
+
+Examples: an internal bugfix with unchanged contract records no_change_needed; an API/schema change updates only the affected contract; a test rerun records its outcome in the existing evidence owner and does not rewrite unchanged commands; a new documentation domain goes through formation preview; a repeated identical task update performs zero writes; out-of-scope ownership records handoff_required. A linked brief summary or explicitly reviewed current mirror may be retained. Exact cross-document copies/conflicting task states require disposition; semantic duplication remains a review question, never automatic deletion.
+
+Event-scoped sync, size-triggered lossless compaction and periodic hygiene are separate. Active/navigation files warn at 32 000 and stop above 40 000 UTF-8 bytes unless a stricter limit applies; detailed docs/planning matrices retain the existing exception. Do not split the current research matrix or delete/summarize original evidence automatically. Recovery journals retain before-images and refuse later user edits. Exclude external writers; this is recoverable multi-file coordination, not ACID or an authorization grant. Weekly/monthly hygiene remains read-only, schedule_status=not_created. These instructions and local checks do not prove fresh-session activation, semantic completeness or owner acceptance.

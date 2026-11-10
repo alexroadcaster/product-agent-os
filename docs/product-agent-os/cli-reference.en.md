@@ -239,3 +239,12 @@ Run the smallest relevant set for the current task: source docs → registry →
 ## Next Action
 
 Use this page as the operator reference for local scripts. Navigation, source registry entries, docs tests and generated `site/` refresh belong to their owning docs-maintainer and tester slices.
+
+For per-task section updates see [contract and limits](project-formation.en.md#targeted-documentation-maintenance-after-a-task). `documentation_sync.py` reuses the compaction CAS/journal engine; the original lossless validator remains separate.
+
+```powershell
+python plugins/product-agent-os/scripts/sync_task_documents.py TARGET assess task-packet.json
+python plugins/product-agent-os/scripts/sync_task_documents.py TARGET preview task-packet.json
+python plugins/product-agent-os/scripts/sync_task_documents.py TARGET apply reviewed-proposal.json --approved-digest SHA256
+python plugins/product-agent-os/scripts/sync_task_documents.py TARGET rollback .codex/product-agent-os/compaction/DIGEST.json
+```

@@ -813,6 +813,8 @@ def _normalize_task_matrix_status(value: str) -> str:
 
 
 def _contains_task_matrix_placeholder(value: str) -> bool:
+    # Recognized receipt delimiters are structural markers, not unfinished fields.
+    value = re.sub(r'<!-- product-agent-os:docs-impact:(?:start|end) -->', '', value)
     return bool(TASK_PLACEHOLDER_PATTERN.search(value))
 
 

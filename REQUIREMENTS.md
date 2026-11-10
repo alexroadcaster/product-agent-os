@@ -1,12 +1,12 @@
 # REQUIREMENTS.md
 
-## PAOS-AUD-G9 — плановое расширение сопровождения
+## PAOS-AUD-G9 — принятое расширение сопровождения
 
-Добавлены T11–T17 в [матрицу G9](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#расширение-g9-точечное-сопровождение-после-каждой-задачи): после каждой задачи оценивать docs impact, обновлять только основной источник изменившихся сведений и сохранять данные. Сейчас разрешено только планирование; детали, зависимости и критерии находятся в матрице.
+Добавлены T11–T17 в [матрицу G9](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#расширение-g9-точечное-сопровождение-после-каждой-задачи): после каждой задачи оценивать docs impact, обновлять только основной источник изменившихся сведений и сохранять данные. Владелец принял T10, затем T17 и ограничения проверки модельного поведения; G9 закрыта; детали и критерии находятся в матрице.
 
-## PAOS-AUD-G9 — результаты для приёмки
+## PAOS-AUD-G9 — принятый результат
 
-G8-T14/G8 явно приняты владельцем. G9 T01–T09 реализованы и локально проверены; T10 ожидает явной приёмки. Единый маршрут анализа, выбора, docs/.codex структуры, staging, approval-bound apply и повторного формирования сохраняет существующие данные. [Матрица G9](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#paos-aud-g9), [evidence и ограничения](research/product-agent-os-g9-execution-report.md). Fresh-session activation отдельно; реальные target/provider/Git действия не входят в выполненный slice.
+G8-T14/G8 явно приняты владельцем. G9 T01–T09 реализованы и локально проверены; T10 явно принят владельцем; расширение T11–T17 принято через T17; G9 закрыта. Единый маршрут анализа, выбора, docs/.codex структуры, staging, approval-bound apply и повторного формирования сохраняет существующие данные. [Матрица G9](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#paos-aud-g9), [evidence и ограничения](research/product-agent-os-g9-execution-report.md). Fresh-session activation отдельно; реальные target/provider/Git действия не входят в выполненный slice.
 
 ## PAOS-AUD-G8 — реализация, 2026-11-10
 
@@ -35,7 +35,7 @@ G7 T01–T08 owner accepted, локальная группа закрыта. T06
 
 ## PAOS-AUD-G6 — 2026-11-09
 
-G6 partially_verified: три синтетических пилота выполнены из текущего проекта в host-target/pilots; все проверки passed, результаты needs_user_acceptance. По разрешению владельца HOST-01 больше не блокирует эти пилоты. Fresh-session activation HOST-01/HOST-02 остаётся отдельной открытой задачей; T34 no-go. Owner feedback/acceptance null; manual_only сохраняется. [Результаты](docs/superpowers/specs/paos-aud-g6-pilot-results.json).
+G6 partially_verified: GAP-06 implemented / owner accepted 10.11.2026; все три synthetic local pilots приняты владельцем. HOST-01 не является их зависимостью. T34 no-go и fresh-session activation HOST-01/HOST-02 остаются открытыми отдельно; manual_only сохраняется. [Результаты](docs/superpowers/specs/paos-aud-g6-pilot-results.json).
 
 [Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 

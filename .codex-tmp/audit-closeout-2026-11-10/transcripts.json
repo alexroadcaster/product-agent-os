@@ -1,0 +1,274 @@
+{
+  "behavioral_template": "behavioral-workflows.json",
+  "errors": [],
+  "ok": true,
+  "results": [
+    {
+      "behavioral_case": "greenfield-no-scaffold-before-approval",
+      "forbidden_terms_present": [],
+      "id": "greenfield-direction-before-scaffold",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "bug-rescue-no-repro-stop",
+      "forbidden_terms_present": [],
+      "id": "bug-rescue-stops-before-fix-without-repro",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "two-stage-review",
+      "forbidden_terms_present": [],
+      "id": "review-keeps-spec-stage-first",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "evidence-before-completion",
+      "forbidden_terms_present": [],
+      "id": "completion-claim-stays-evidence-bound",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "completion-skeptic-check-again-trigger",
+      "forbidden_terms_present": [],
+      "id": "completion-skeptic-check-again-trigger",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "completion-skeptic-false-pass-blocked",
+      "forbidden_terms_present": [],
+      "id": "completion-skeptic-false-pass-blocked",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "completion-skeptic-false-rewrite-blocked",
+      "forbidden_terms_present": [],
+      "id": "completion-skeptic-false-rewrite-blocked",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "completion-skeptic-source-sensitive-docs",
+      "forbidden_terms_present": [],
+      "id": "completion-skeptic-source-sensitive-docs",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "completion-skeptic-code-tool-evidence",
+      "forbidden_terms_present": [],
+      "id": "completion-skeptic-code-tool-evidence",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "completion-skeptic-fake-evidence-adversarial",
+      "forbidden_terms_present": [],
+      "id": "completion-skeptic-fake-evidence-adversarial",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "completion-skeptic-scorecard-thresholds",
+      "forbidden_terms_present": [],
+      "id": "completion-skeptic-scorecard-thresholds",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "task-matrix-validator-and-completion-report",
+      "forbidden_terms_present": [],
+      "id": "task-matrix-invalid-completion-blocked",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "task-matrix-agent-handoff-and-planning-control",
+      "forbidden_terms_present": [],
+      "id": "task-matrix-agent-handoff-control",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "llm-ai-rag-evidence-before-completion",
+      "forbidden_terms_present": [],
+      "id": "ai-rag-quality-claim-stays-eval-bound",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "guided-question-smallest-blocking-question",
+      "forbidden_terms_present": [],
+      "id": "guided-question-asks-smallest-blocker",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "guided-question-no-broad-methodology-interview",
+      "forbidden_terms_present": [],
+      "id": "guided-question-rejects-broad-interview",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "status-dashboard-generated-view-only",
+      "forbidden_terms_present": [],
+      "id": "dashboard-is-generated-view-only",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "status-dashboard-stale-evidence-no-success-claim",
+      "forbidden_terms_present": [],
+      "id": "dashboard-stale-evidence-cannot-claim-success",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "runtime-first-response-no-question-dump",
+      "forbidden_terms_present": [],
+      "id": "runtime-first-response-stays-compact",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "agent-skill-metrics-loop-safety",
+      "forbidden_terms_present": [],
+      "id": "agent-skill-metrics-loop-safety",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "agent-skill-metrics-regression-finding",
+      "forbidden_terms_present": [],
+      "id": "agent-skill-metrics-regression-finding",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "agent-skill-metrics-no-data-target",
+      "forbidden_terms_present": [],
+      "id": "agent-skill-metrics-no-data-target",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "agent-skill-metrics-trace-missing-span",
+      "forbidden_terms_present": [],
+      "id": "agent-skill-metrics-trace-missing-span",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "agent-skill-metrics-judge-not-calibrated",
+      "forbidden_terms_present": [],
+      "id": "agent-skill-metrics-judge-not-calibrated",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "agent-skill-metrics-approval-required-modernization",
+      "forbidden_terms_present": [],
+      "id": "agent-skill-metrics-approval-required-modernization",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    },
+    {
+      "behavioral_case": "agent-skill-metrics-automation-candidate-only",
+      "forbidden_terms_present": [],
+      "id": "agent-skill-metrics-automation-candidate-only",
+      "message_count": 2,
+      "missing_expected_terms": [],
+      "privacy_errors": [],
+      "schema_errors": [],
+      "status": "ok"
+    }
+  ],
+  "session_count": 26,
+  "status": "ok",
+  "summary": {
+    "failed": 0,
+    "passed": 26
+  },
+  "transcript": "product-agent-os-synthetic-sessions.json"
+}

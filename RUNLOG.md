@@ -1,12 +1,16 @@
 # RUNLOG.md
 
-## PAOS-AUD-G9 — плановое дополнение T11–T17
+## GAP-06 acceptance и исправление проверок — 2026-11-10
 
-Добавлены семь planned-карточек по точечному docs sync после задачи. Owning source — [матрица G9](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#расширение-g9-точечное-сопровождение-после-каждой-задачи). T01–T10 и их acceptance/evidence не переписаны; T10 owner decision pending. Реализация T11–T17, schedules и fresh-session activation не выполнялись. Control-plane sync: REQUIREMENTS/PLAN/RUNLOG updated; TEST/EVALS/AGENTS/prod_test not_applicable — действующие проверки, рубрики, durable rules и исторические receipts не менялись. Проверки authoring завершены; actual receipts и границы — [проверка планового дополнения](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#проверка-планового-дополнения-g9).
+GAP-06 принят владельцем; T34 и fresh-session activation отдельно открыты. Исправления locally verified: full 1450 tests (skip 1), fixtures 91/91, transcripts 26/26; актуальные проверки: [owning evidence](research/product-agent-os-audit-closeout-tooling-2026-11-10.md).
+
+## PAOS-AUD-G9 — закрыта после приёмки T17
+
+T10 принят владельцем; T11–T16 реализованы и локально проверены; T17 owner accepted; G9 closed. Baseline сохранён до edits; текущие проверки и границы — [G9 execution report](research/product-agent-os-g9-execution-report.md). Проверки и comparison приняты владельцем вместе с ограничениями model behavior. Fresh-session activation отдельно.
 
 ## PAOS-AUD-G9 — результаты для приёмки
 
-G8-T14/G8 owner accepted. G9 T01–T09 локально реализованы; T10 technical packet needs_user_acceptance. Ran 1435 tests in 803.716s, OK (skip 1); fixtures 91/91, transcripts 26/26, compatibility compatible, strict MkDocs preview passed; 3/3 comparison pilots; final docs/lifecycle/status 130 tests OK, matrix/links/projection checks passed. [Отчёт и failed attempts](research/product-agent-os-g9-execution-report.md), [результаты](docs/superpowers/specs/paos-aud-g9-project-formation-results.json). Existing documents остаются companion proposals; provider/host/cache/Git/real-target actions отсутствуют. Fresh-session activation отдельно. Control-plane sync: REQUIREMENTS/PLAN/TEST/EVALS/RUNLOG updated; AGENTS/prod_test not_applicable.
+G8-T14/G8 owner accepted. G9 T01–T09 локально реализованы; T10 technical packet owner accepted (10.11.2026). Ran 1435 tests in 803.716s, OK (skip 1); fixtures 91/91, transcripts 26/26, compatibility compatible, strict MkDocs preview passed; 3/3 comparison pilots; final docs/lifecycle/status 130 tests OK, matrix/links/projection checks passed. [Отчёт и failed attempts](research/product-agent-os-g9-execution-report.md), [результаты](docs/superpowers/specs/paos-aud-g9-project-formation-results.json). Existing documents остаются companion proposals; provider/host/cache/Git/real-target actions отсутствуют. Fresh-session activation отдельно. Control-plane sync: REQUIREMENTS/PLAN/TEST/EVALS/RUNLOG updated; AGENTS/prod_test not_applicable.
 
 ## PAOS-AUD-G8 — текущая реализация, 2026-11-10
 
@@ -31,7 +35,7 @@ T08 завершена: владелец принял T06 и итоговое р
 
 ## PAOS-AUD-G6 — 2026-11-09
 
-G6 partially_verified: три синтетических пилота выполнены из текущего проекта в host-target/pilots; все проверки passed, результаты needs_user_acceptance. По разрешению владельца HOST-01 больше не блокирует эти пилоты. Fresh-session activation HOST-01/HOST-02 остаётся отдельной открытой задачей; T34 no-go. Owner feedback/acceptance null; manual_only сохраняется. [Результаты](docs/superpowers/specs/paos-aud-g6-pilot-results.json).
+G6 partially_verified: GAP-06 implemented / owner accepted 10.11.2026; все три synthetic local pilots приняты владельцем. HOST-01 не является их зависимостью. T34 no-go и fresh-session activation HOST-01/HOST-02 остаются открытыми отдельно; manual_only сохраняется. [Результаты](docs/superpowers/specs/paos-aud-g6-pilot-results.json).
 
 [Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
@@ -151,3 +155,5 @@ Web M1: runtime tuple/driver/capabilities ещё требуют PAOS-0054; migra
 - Historical detail has been intentionally moved out of root control-plane files; broad historical claims must cite source backlogs, registry or evidence packets.
 
 <!-- product-agent-os:end runlog -->
+
+Текущий slice: T10 принят владельцем; T11–T16 проверены; T17 принят; G9 закрыта. Baseline `eb4a74688c9df96e2481e653cd144b2a07f39d03` сохранён до edits; команды и результаты — [G9 report](research/product-agent-os-g9-execution-report.md). Fresh-session activation отдельно.

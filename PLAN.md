@@ -1,8 +1,12 @@
 # PLAN.md
 
-## PAOS-AUD-G9 — результаты для приёмки
+## GAP-06 acceptance и исправление проверок — 2026-11-10
 
-G8 closed / owner accepted. G9 T01–T09 implemented_locally_verified; T10 needs_user_acceptance. [Матрица G9](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#paos-aud-g9) владеет статусами; [comparison/evidence](research/product-agent-os-g9-execution-report.md). Для первоначального пакета следующий шаг — приёмка владельцем конкретного результата и ограничений. Добавлены planned T11–T17: T11 → T12 → T13/T14 → T15 → T16 → T17; реализация нового scope требует отдельного разрешения, итоговое закрытие расширения — T17. Fresh-session activation отдельно. M1 source authority/freeze сохраняется; полный M1 не prerequisite. Rollback текущего maintenance slice — только его hunks; target rollback по проверенному journal, без перезаписи последующих пользовательских правок.
+GAP-06 принят владельцем; T34 и fresh-session activation отдельно открыты. Исправления locally verified: full 1450 tests (skip 1), fixtures 91/91, transcripts 26/26; актуальные проверки: [owning evidence](research/product-agent-os-audit-closeout-tooling-2026-11-10.md).
+
+## PAOS-AUD-G9 — закрыта, owner accepted
+
+G8 closed / owner accepted. G9 T01–T09 implemented_locally_verified; T10 owner accepted; T11–T16 implemented_locally_verified; T17 owner accepted; G9 closed. [Матрица G9](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#paos-aud-g9) владеет статусами; [comparison/evidence](research/product-agent-os-g9-execution-report.md). Первоначальный пакет принят владельцем. Разрешённая последовательность T11–T17: T11 → T12 → T13/T14 → T15 → T16 → T17; реализация завершена; приёмка T17 и ограничения model behavior явно приняты владельцем. Fresh-session activation отдельно. M1 source authority/freeze сохраняется; полный M1 не prerequisite. Rollback текущего maintenance slice — только его hunks; target rollback по проверенному journal, без перезаписи последующих пользовательских правок.
 
 ## PAOS-AUD-G8 — verification / owner handoff, 2026-11-10
 
@@ -30,19 +34,19 @@ G7 закрыта: T01–T08 implemented_locally_verified / owner_accepted. Keep
 
 ## PAOS-AUD-G6 — 2026-11-09
 
-G6 partially_verified: три синтетических пилота выполнены из текущего проекта в host-target/pilots; все проверки passed, результаты needs_user_acceptance. По разрешению владельца HOST-01 больше не блокирует эти пилоты. Fresh-session activation HOST-01/HOST-02 остаётся отдельной открытой задачей; T34 no-go. Owner feedback/acceptance null; manual_only сохраняется. [Результаты](docs/superpowers/specs/paos-aud-g6-pilot-results.json).
+G6 partially_verified: GAP-06 implemented / owner accepted 10.11.2026; все три synthetic local pilots приняты владельцем. HOST-01 не является их зависимостью. T34 no-go и fresh-session activation HOST-01/HOST-02 остаются открытыми отдельно; manual_only сохраняется. [Результаты](docs/superpowers/specs/paos-aud-g6-pilot-results.json).
 
 [Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G5 — 2026-11-09
 
-G5 F13/F14/F17 implemented_locally_verified. Следующая группа — G6; её host/behavioral/owner gates остаются отдельными. Rollback только G5 hunks и локальная пересборка site. Current pointer закрепляет owning source revisions.
+G5 F13/F14/F17 implemented_locally_verified. G6 частично выполнена; T34 и host gates остаются отдельными, пилоты приняты. Rollback только G5 hunks и локальная пересборка site. Current pointer закрепляет owning source revisions.
 
 [Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G4 — 2026-11-09
 
-G4 F05/F09/F10/F15 implemented_locally_verified. Следующая группа — G5. Legacy defaults сохранены; source baseline заморожен для будущего G6. Rollback только G4 hunks; current pointer закрепляет owning sources без вторых статусов.
+G4 F05/F09/F10/F15 implemented_locally_verified. G5 впоследствии выполнена. Legacy defaults сохранены; source baseline заморожен для будущего G6. Rollback только G4 hunks; current pointer закрепляет owning sources без вторых статусов.
 
 [Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
@@ -53,7 +57,7 @@ G4 F05/F09/F10/F15 implemented_locally_verified. Следующая группа
   "sources": [
     {
       "path": "research/product-agent-os-audit-remediation-task-plan-2026-11-09.md",
-      "revision": "sha256:262f07b2f2e3479cae0151a1fd6cde697e27c3ac5bc51ee8745e4038f9ab8473",
+      "revision": "sha256:bb8d2bbdca5d882ccdb49281ef74271ec3c82ba1deb79ce0629123cf63677746",
       "task_prefixes": [
         "PAOS-AUD-"
       ]
@@ -64,7 +68,7 @@ G4 F05/F09/F10/F15 implemented_locally_verified. Следующая группа
     },
     {
       "path": "docs/superpowers/specs/batch45-code-quality-runtime-recovery-task-group.json",
-      "revision": "sha256:fad36004d5cfb2e01ba1d0d3db7cdbde73364de290167a9bcd5776bd2baacbba"
+      "revision": "sha256:6452cb3bd6a1245fd050ae160e0994d6f33bf8c7787c4447982d1b67f7df840e"
     }
   ]
 }
@@ -73,19 +77,19 @@ G4 F05/F09/F10/F15 implemented_locally_verified. Следующая группа
 
 ## PAOS-AUD-G3 — 2026-11-09
 
-PAOS-AUD-G3: F03/F08/F16 implemented_locally_verified. Следующая группа — G4. Единственный current pointer выше хранит refs/revisions и ownership prefixes без вторых task statuses. Rollback: только G3 hunks поверх G1/G2; B42/B45 source JSON и параллельные Web файлы сохранить.
+PAOS-AUD-G3: F03/F08/F16 implemented_locally_verified. G4 впоследствии выполнена. Единственный current pointer выше хранит refs/revisions и ownership prefixes без вторых task statuses. Rollback: только G3 hunks поверх G1/G2; B42/B45 source JSON и параллельные Web файлы сохранить.
 
 [Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G2 — 2026-11-09
 
-PAOS-AUD-G2: F01/F02/F04 implemented_locally_verified после локально завершённой G1; следующий slice — G3. Package остаётся в Codex compatibility format. Rollback: только G2 hunks, сохранить G1 и параллельные Web-документы. Host receipts — G6/AUD-HOST-01, distribution owner gate отдельно.
+PAOS-AUD-G2: F01/F02/F04 implemented_locally_verified после локально завершённой G1; G3 впоследствии выполнена. Package остаётся в Codex compatibility format. Rollback: только G2 hunks, сохранить G1 и параллельные Web-документы. Host receipts — G6/AUD-HOST-01, distribution owner gate отдельно.
 
 [Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G1 — 2026-11-09
 
-PAOS-AUD-G1: пять карточек F06/F12/F11/F07/F18 implemented_locally_verified. Следующая группа — G2; существующий MCP compatibility gap остаётся её F01. AUD-HOST-02 относится к G6. Rollback: только G1 hunks, сохранить чужие изменения.
+PAOS-AUD-G1: пять карточек F06/F12/F11/F07/F18 implemented_locally_verified. G2/F01 впоследствии закрыла MCP compatibility gap; текущие остатки — T34 и HOST-01/HOST-02. AUD-HOST-02 относится к G6. Rollback: только G1 hunks, сохранить чужие изменения.
 
 [Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 

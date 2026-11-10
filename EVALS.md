@@ -1,8 +1,12 @@
 # EVALS.md
 
+## G9 T17 — граница сравнения
+
+Детерминированное сравнение на одинаковых входах: обнаружение межфайлового дубликата 0/1 → 1/1; canonical aliases 1/4 → 4/4; изменён один раздел одного файла, изменений соседних bytes и повторных записей нет. Отсутствующему section route baseline не присваиваются выдуманные оценки. Шесть сценариев инструкций проверены статически; модельный поведенческий прогон не выполнялся. Смысловая полнота требует review и не доказывается digest; эта граница явно принята владельцем в T17; модельный прогон по-прежнему не выполнен. [Проверки](research/product-agent-os-g9-execution-report.md), [результаты](docs/superpowers/specs/paos-aud-g9-project-formation-results.json).
+
 ## PAOS-AUD-G9 — результаты для приёмки
 
-G9 comparison: одинаковые synthetic workspace и факты task context; desired domains отдельно отмечены как неподдерживаемые baseline. Baseline snapshot/revision сохранён до edits. Профили: empty, existing docs, monorepo+AI. Проверки: состав и объяснимость, ссылки, exact-byte preservation, stale/authority failures, repeat/no writes, process-crash recovery, next change. [Результаты](docs/superpowers/specs/paos-aud-g9-project-formation-results.json); [границы](research/product-agent-os-g9-execution-report.md). Количество файлов не является quality score; model/token/cost superiority не заявляется. Owner acceptance G9 pending.
+G9 comparison: одинаковые synthetic workspace и факты task context; desired domains отдельно отмечены как неподдерживаемые baseline. Baseline snapshot/revision сохранён до edits. Профили: empty, existing docs, monorepo+AI. Проверки: состав и объяснимость, ссылки, exact-byte preservation, stale/authority failures, repeat/no writes, process-crash recovery, next change. [Результаты](docs/superpowers/specs/paos-aud-g9-project-formation-results.json); [границы](research/product-agent-os-g9-execution-report.md). Количество файлов не является quality score; model/token/cost superiority не заявляется. Initial G9/T10 accepted; extension T17 accepted with stated model-behavior limits; G9 closed.
 
 ## PAOS-AUD-G8 — comparison contract, 2026-11-10
 
@@ -33,7 +37,7 @@ G7 attested design v2: 12 sequential paired generations, gpt-6.1-sol/medium/tool
 
 ## PAOS-AUD-G6 — 2026-11-09
 
-G6 partially_verified: три синтетических пилота выполнены из текущего проекта в host-target/pilots; все проверки passed, результаты needs_user_acceptance. По разрешению владельца HOST-01 больше не блокирует эти пилоты. Fresh-session activation HOST-01/HOST-02 остаётся отдельной открытой задачей; T34 no-go. Owner feedback/acceptance null; manual_only сохраняется. [Результаты](docs/superpowers/specs/paos-aud-g6-pilot-results.json).
+G6 partially_verified: GAP-06 implemented / owner accepted 10.11.2026; все три synthetic local pilots приняты владельцем. HOST-01 не является их зависимостью. T34 no-go и fresh-session activation HOST-01/HOST-02 остаются открытыми отдельно; manual_only сохраняется. [Результаты](docs/superpowers/specs/paos-aud-g6-pilot-results.json).
 
 [Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 

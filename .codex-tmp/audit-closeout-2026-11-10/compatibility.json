@@ -1,0 +1,186 @@
+{
+  "capability_matrix": {
+    "CLI": {
+      "host_status": "not_verified",
+      "local_executor": "project_specific_verification_required",
+      "native_plugin": {
+        "observation": "not_verified",
+        "support": "documented"
+      },
+      "standalone_skills": {
+        "observation": "not_verified",
+        "support": "documented"
+      }
+    },
+    "Codex App": {
+      "host_status": "not_verified",
+      "local_executor": "project_specific_verification_required",
+      "native_plugin": {
+        "observation": "not_verified",
+        "support": "documented"
+      },
+      "standalone_skills": {
+        "observation": "not_verified",
+        "support": "documented"
+      }
+    },
+    "IDE extension": {
+      "host_status": "not_verified",
+      "local_executor": "project_specific_verification_required",
+      "native_plugin": {
+        "observation": "not_verified",
+        "support": "unsupported"
+      },
+      "standalone_skills": {
+        "observation": "not_verified",
+        "support": "documented"
+      }
+    }
+  },
+  "checks": {
+    "bundled_skills": {
+      "detail": "12 bundled skills found",
+      "status": "ok"
+    },
+    "codex_manifest": {
+      "detail": "observed package identity; not host evidence",
+      "status": "ok"
+    },
+    "context7_mcp": {
+      "detail": "component schema scope: codex_wrapped",
+      "status": "ok"
+    },
+    "non_codex_adapters_absent": {
+      "detail": "no non-Codex adapter paths are packaged",
+      "status": "ok"
+    },
+    "readme_codex_scope": {
+      "detail": "README states Codex-only surfaces",
+      "status": "ok"
+    },
+    "staged_hooks": {
+      "detail": "hooks are templates only",
+      "status": "ok"
+    }
+  },
+  "compatibility_scope": "local_structure_only_not_host_or_distribution_readiness",
+  "component_inventory": {
+    "format": "codex_compatibility",
+    "format_version": "legacy",
+    "hooks": {
+      "path": "hooks/hooks.json",
+      "status": "absent"
+    },
+    "host_status": "not_verified",
+    "identity": {
+      "name": "product-agent-os",
+      "version": "0.1.0"
+    },
+    "issues": [],
+    "manifest_path": ".codex-plugin/plugin.json",
+    "mcp": {
+      "format": "codex_wrapped",
+      "path": ".mcp.json",
+      "server_names": [
+        "context7"
+      ],
+      "status": "present_unverified",
+      "transports": {
+        "context7": "stdio"
+      }
+    },
+    "portable_components_override_overlay": false,
+    "schema_version": 1,
+    "settings_source": ".codex-plugin/plugin.json",
+    "skills": {
+      "names": [
+        "agent-team-designer",
+        "automation-promoter",
+        "completion-skeptic",
+        "docs-maintainer",
+        "implementation-planner",
+        "learning-loop-maintainer",
+        "pr-release-operator",
+        "project-lifecycle-orchestrator",
+        "requirements-author",
+        "risk-reviewer",
+        "test-eval-designer",
+        "workspace-discovery-auditor"
+      ],
+      "paths": [
+        "skills"
+      ],
+      "status": "present_unverified"
+    },
+    "status": "present_unverified",
+    "validation_scope": "bounded_supported_subset_not_full_schema_or_host_validation"
+  },
+  "distribution": {
+    "listing_urls": "not_verified",
+    "publisher": "not_verified",
+    "required": [
+      "verified_publisher",
+      "verified_listing_urls",
+      "distribution_icons",
+      "owner_release_review"
+    ],
+    "scope": "local_structure_check_is_not_full_submission_validation",
+    "status": "gated"
+  },
+  "evidence": {
+    "directories": [
+      ".codex-plugin",
+      "skills",
+      "assets/templates/hooks"
+    ],
+    "files": [
+      ".codex-plugin/plugin.json",
+      ".mcp.json",
+      "README.md",
+      "assets/templates/hooks/hooks.json"
+    ]
+  },
+  "forbidden_required_adapters": [],
+  "host_diagnostics": {
+    "account_access": "not_verified",
+    "client": {
+      "documented_minimum": null,
+      "minimum_source": null,
+      "status": "missing",
+      "version": null
+    },
+    "input_scope": "caller_supplied_observations_not_authenticated_host_receipts",
+    "issues": [],
+    "model": {
+      "configured_model": null,
+      "observed_model": null,
+      "promotion": "not_assessed",
+      "status": "not_verified"
+    },
+    "observations": {},
+    "provenance": {
+      "cache": null,
+      "canonical": {
+        "file_count": 14,
+        "sha256": "2154b388428e647639dd27f8568915966824dfbbb8d413ac69b6feb43fbdf70b",
+        "status": "observed"
+      },
+      "scope": "manifests_mcp_and_SKILL.md_only_not_full_package_or_host_selection",
+      "status": "cache_not_provided"
+    },
+    "surface": "unknown",
+    "trust": {
+      "status": "unknown",
+      "value": null
+    }
+  },
+  "non_codex_adapter_paths_present": [],
+  "requires_non_codex_adapters": false,
+  "status": "compatible",
+  "supported_surfaces": [
+    "Codex App",
+    "CLI",
+    "IDE extension"
+  ],
+  "supported_surfaces_scope": "standalone_skills_and_workflows_not_native_plugin_support"
+}

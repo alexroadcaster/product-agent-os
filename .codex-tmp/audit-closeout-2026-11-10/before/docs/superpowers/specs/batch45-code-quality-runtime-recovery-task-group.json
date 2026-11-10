@@ -1,0 +1,546 @@
+{
+  "schema_version": "batch45_code_quality_runtime_recovery_task_group_v2",
+  "task_group_id": "B45-CODE-QUALITY-RUNTIME-RECOVERY",
+  "evidence_id": "B45-CQRR-A01",
+  "status": "t30_t33_locally_verified_t34_approved_preflight_blocked",
+  "checked_at": "2026-11-09T13:25:56.385619+00:00",
+  "source_status": "Source-owned Batch 45 corrective task list. A04 covers T23/T24, A05 covers T25-T27 and A06 covers local T28/T29 implementation plus focused deterministic checks. T28 replaced the unaccepted 196-record manifest and legacy T18-T22 block with semantic packet cases; T29 added deterministic evidence aggregation integrated at the promotion contract. This is not CLI/runtime activation, live/provider/model or external reviewer behavior, promotion or production evidence. A07 (2026-11-09) adds locally verified T30-T33; T34 remains approval_required_not_started. No model/provider/reviewer/host execution or promotion is claimed.",
+  "latest_execution_evidence_id": "B45-CQRR-A07",
+  "latest_execution_pointer": "docs/superpowers/specs/batch45-code-quality-local-readiness.json",
+  "goal": "Recover Batch 45 Professional Code Authoring around the user outcome: a non-programmer should receive the smallest safe, readable and performant patch, with risk-selected tests and intent-focused comments, without generating a second codebase of low-value tests or policy prose.",
+  "user_outcome": {
+    "primary_user": "mass user or vibe-coder who cannot independently design code, architecture and test strategy",
+    "expected_behavior": [
+      "Search existing project capabilities, standard libraries and framework primitives before adding custom code.",
+      "Produce the smallest safe patch that preserves named invariants and project conventions.",
+      "Select unit, property, characterization, contract, integration, end-to-end, mutation or performance checks only when the changed risk justifies them.",
+      "Use comments and public API documentation for non-obvious intent, invariants, trade-offs and operational boundaries rather than narrating obvious syntax.",
+      "Measure correctness and relevant performance with deterministic evidence before any model-quality or promotion claim."
+    ]
+  },
+  "audit_basis": {
+    "research_assessment": "The research corpus and smallest-safe-patch principles remain useful; the main failure is incomplete runtime translation and weak measurement.",
+    "implementation_gap": "The active implementation is dominated by workflow/checklist text and comment-sufficiency heuristics; language/tool profiles, risk-based test selection, deterministic quality metrics and performance routing are not durably wired.",
+    "test_gap": "The focused suite is green while the promotion route has zero valid pairs; the large artifact test mainly protects historical JSON and Markdown values rather than code-authoring behavior.",
+    "eval_gap": "T18 strict output requirements are not implemented as one durable executable contract, primary behavior scores are model-emitted, treatment variables are confounded and the held-out corpus is not representative of the mass-user multi-stack goal.",
+    "latest_gate": "B45-POSTQ4-T21-COST-WAIVED-RUN-A01 aborted on tests_or_checks.status schema validation; B45-POSTQ4-T22-A02 remains no-go with valid_pair_count=0 and reviewer not run."
+  },
+  "design_principles": [
+    "Keep the book and standards research as a curated knowledge base; retrieve only stack- and risk-relevant rules for a task.",
+    "Generation context gets a compact code-change contract; richer evidence mapping belongs in deterministic tooling and independent review.",
+    "Test selection follows changed risk and fault-detection value, not line coverage, test count or a universal test-to-code ratio.",
+    "Model self-scores are diagnostic telemetry only and cannot be the primary promotion metric.",
+    "Performance checks are required when a hot path or performance claim is affected and are otherwise explicitly not applicable.",
+    "No future provider/model/reviewer run starts until the local executable contract, fixtures, corpus and isolated treatment are frozen and green."
+  ],
+  "agent_team_design": {
+    "artifact": "docs/superpowers/specs/batch45-code-quality-runtime-recovery-agent-team.json",
+    "handoff_artifact": "docs/superpowers/specs/batch45-s9-0-fresh-context-handoffs.json",
+    "team_design_id": "B45-CQRR-TEAM",
+    "evidence_id": "B45-CQRR-A02",
+    "handoff_evidence_id": "B45-CQRR-A03",
+    "status": "team_handoffs_ready_no_dispatch",
+    "operational_assignment_source": true,
+    "owner_role_semantics": "owner_role remains the task's functional accountable role; writer, verifier, independent reviewer, claim gate, docs owner, skills, write scope and handoff order are authoritative in the linked task assignment.",
+    "team_ready_claimed": true,
+    "team_ready_claim_ceiling": "Complete local handoffs and ownership only; no agent dispatch, task implementation, runtime behavior or promotion evidence."
+  },
+  "execution_order": [
+    {
+      "stage": "S9-A durable contract recovery",
+      "tasks": [
+        "B45-CQRR-T23",
+        "B45-CQRR-T24"
+      ]
+    },
+    {
+      "stage": "S9-B compact authoring runtime",
+      "tasks": [
+        "B45-CQRR-T25",
+        "B45-CQRR-T26",
+        "B45-CQRR-T27"
+      ]
+    },
+    {
+      "stage": "S9-C test and metric repair",
+      "tasks": [
+        "B45-CQRR-T28",
+        "B45-CQRR-T29"
+      ]
+    },
+    {
+      "stage": "S9-D independent eval design",
+      "tasks": [
+        "B45-CQRR-T30",
+        "B45-CQRR-T31",
+        "B45-CQRR-T32"
+      ]
+    },
+    {
+      "stage": "S9-E readiness and decision",
+      "tasks": [
+        "B45-CQRR-T33",
+        "B45-CQRR-T34"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "task_id": "B45-CQRR-T23",
+      "priority": "P0",
+      "title": "Implement one durable promotion output contract",
+      "owner_role": "plugin-runtime-builder",
+      "assignment_ref": "B45-CQRR-TEAM#B45-CQRR-T23",
+      "depends_on": [
+        "B45-POSTQ4-T22-A02"
+      ],
+      "objective": "Move the T18 primary-result JSON Schema and normalization rules into a versioned runtime module used by the real runner, including tests_or_checks status handling, unknown-field rejection, score ranges and invalid-pair quarantine.",
+      "proposed_files": [
+        "plugins/product-agent-os/scripts/codex_runtime_runner/promotion_contract.py",
+        "plugins/product-agent-os/scripts/codex_runtime_runner/model_output.py"
+      ],
+      "acceptance": [
+        "The durable runner and source-owned schema share one version and one enum source.",
+        "No temporary or one-off adapter is required to validate a primary result.",
+        "Invalid output is classified before aggregation and cannot silently enter reviewer or promotion logic."
+      ],
+      "verification": [
+        "Focused promotion-contract unit tests",
+        "Existing model-output contract tests",
+        "JSON/schema consistency check"
+      ],
+      "stop_conditions": [
+        "Stop if the implementation duplicates the schema in multiple mutable sources.",
+        "Stop before any provider/model/reviewer call."
+      ],
+      "status": "locally_implemented_focused_verified"
+    },
+    {
+      "task_id": "B45-CQRR-T24",
+      "priority": "P0",
+      "title": "Add red-green schema and normalization fixtures",
+      "owner_role": "tester",
+      "assignment_ref": "B45-CQRR-TEAM#B45-CQRR-T24",
+      "depends_on": [
+        "B45-CQRR-T23"
+      ],
+      "objective": "Prove the executable contract with one valid fixture and focused negative fixtures for every required field, enum, range, malformed array, unknown field, timeout, no-op and normalization rule.",
+      "proposed_files": [
+        "tests/product_agent_os/test_codex_runtime_runner_promotion_contract.py",
+        "tests/fixtures/product_agent_os/batch45/promotion-contract/"
+      ],
+      "acceptance": [
+        "Every documented invalid-output class fails before the fix and passes after the expected validator behavior is implemented.",
+        "The exact T21 tests_or_checks.status failure has a regression fixture.",
+        "Fixture validation requires no live model or provider call."
+      ],
+      "verification": [
+        "Focused red-green unit tests",
+        "Mutation or seeded-corruption check over the validator",
+        "No raw prompt or private source retention"
+      ],
+      "stop_conditions": [
+        "Stop if tests only assert that schema text exists.",
+        "Stop before any external call."
+      ],
+      "status": "locally_implemented_focused_verified"
+    },
+    {
+      "task_id": "B45-CQRR-T25",
+      "priority": "P0",
+      "title": "Replace generation-time checklist injection with a compact code-change contract",
+      "owner_role": "architect",
+      "assignment_ref": "B45-CQRR-TEAM#B45-CQRR-T25",
+      "depends_on": [
+        "B45-CQRR-T23"
+      ],
+      "objective": "Define a maximum-eight-field pre-edit contract covering existing capability, smallest safe patch, invariants, risks, selected tests, comment decision, performance applicability and evidence/gaps; keep the full research mapping out of normal generation context.",
+      "proposed_files": [
+        "plugins/product-agent-os/assets/templates/artifact-templates/code-change-contract.md",
+        "plugins/product-agent-os/assets/templates/workflows/coding-standards.md",
+        "plugins/product-agent-os/assets/templates/artifact-templates/coding-standard-checklist.md",
+        "tests/product_agent_os/test_batch45_coding_standards.py"
+      ],
+      "acceptance": [
+        "Generation context uses the compact contract and does not paste the full standards/checklist by default.",
+        "Each field changes an implementation, verification or stop decision; decorative evidence fields are removed.",
+        "The full checklist remains reviewer/reference material or is retired with a documented compatibility path."
+      ],
+      "verification": [
+        "Template contract tests",
+        "Prompt/context size comparison",
+        "Review against the research principles and T11 compact-card design"
+      ],
+      "stop_conditions": [
+        "Stop if the compact contract recreates the 128-line checklist under a new name.",
+        "Stop if compatibility behavior is not explicit."
+      ],
+      "status": "locally_implemented_focused_verified"
+    },
+    {
+      "task_id": "B45-CQRR-T26",
+      "priority": "P0",
+      "title": "Implement project-native stack and risk selection",
+      "owner_role": "plugin-runtime-builder",
+      "assignment_ref": "B45-CQRR-TEAM#B45-CQRR-T26",
+      "depends_on": [
+        "B45-CQRR-T25"
+      ],
+      "objective": "Detect the target stack and existing formatter, linter, type checker, test runner, build tool and project utilities, then select only applicable authoring rules and commands.",
+      "proposed_files": [
+        "plugins/product-agent-os/scripts/product_agent_os/code_quality_selector.py",
+        "plugins/product-agent-os/assets/templates/artifact-templates/code-quality-profile.md",
+        "tests/product_agent_os/test_batch45_code_quality_behavior.py"
+      ],
+      "acceptance": [
+        "Profiles cover at least Python, JavaScript/TypeScript, one compiled systems family such as Go or Rust, and one enterprise OOP family such as Java or C#.",
+        "Detected tools remain present_unverified until current commands prove them.",
+        "Missing tools do not cause dependency installation or invented universal thresholds."
+      ],
+      "verification": [
+        "Synthetic stack fixtures",
+        "Project-tool detection tests",
+        "Fallback and not-applicable tests"
+      ],
+      "stop_conditions": [
+        "Stop before dependency installation, target mutation or external tool activation.",
+        "Stop if detection is treated as verified runtime evidence."
+      ],
+      "status": "locally_implemented_focused_verified"
+    },
+    {
+      "task_id": "B45-CQRR-T27",
+      "priority": "P0",
+      "title": "Implement risk-based test, comment and performance selection",
+      "owner_role": "tester",
+      "assignment_ref": "B45-CQRR-TEAM#B45-CQRR-T27",
+      "depends_on": [
+        "B45-CQRR-T26"
+      ],
+      "objective": "Map changed behavior and risk to the smallest useful test set: unit/property for pure logic, characterization for legacy behavior, contract/integration for boundaries, end-to-end for critical user flows, mutation for high-risk rules and benchmark checks for affected hot paths.",
+      "proposed_files": [
+        "plugins/product-agent-os/scripts/product_agent_os/test_strategy_selector.py",
+        "plugins/product-agent-os/assets/templates/artifact-templates/quality-strategy.md",
+        "tests/product_agent_os/test_batch45_code_quality_behavior.py"
+      ],
+      "acceptance": [
+        "Every selected test type names the risk or invariant it protects.",
+        "TDD, end-to-end, mutation, coverage and benchmarks can be not_applicable with a reason instead of being forced.",
+        "Comments are selected for intent, invariant, trade-off, compatibility, concurrency, security or operational boundaries, not line narration.",
+        "Performance evidence is mandatory only for affected hot paths or explicit performance claims."
+      ],
+      "verification": [
+        "Parameterized risk-to-test routing cases",
+        "Negative cases preventing unnecessary test layers",
+        "Comment and performance applicability cases"
+      ],
+      "stop_conditions": [
+        "Stop if line coverage or test count becomes the correctness target.",
+        "Stop if every task receives every test type."
+      ],
+      "status": "locally_implemented_focused_verified"
+    },
+    {
+      "task_id": "B45-CQRR-T28",
+      "priority": "P0",
+      "title": "Reduce Batch 45 artifact-test debt without losing fault detection",
+      "owner_role": "tester",
+      "assignment_ref": "B45-CQRR-TEAM#B45-CQRR-T28",
+      "depends_on": [
+        "B45-CQRR-T24",
+        "B45-CQRR-T27"
+      ],
+      "objective": "Replace repeated per-packet exact-value assertions with generic schema, registry, traceability and parameterized invariant checks; separate cold historical packet validation from active behavioral and runtime contract tests.",
+      "proposed_files": [
+        "tests/product_agent_os/test_coding_standards_artifacts.py",
+        "tests/product_agent_os/test_batch45_packet_contracts.py",
+        "tests/product_agent_os/test_batch45_code_quality_behavior.py"
+      ],
+      "acceptance": [
+        "Record the current 4627-line and repeated-assertion baseline before refactoring.",
+        "Reduce repeated historical exact-value assertions by at least 50 percent or record a source-owned exception for each retained family.",
+        "Seeded packet corruptions and runtime-contract mutations still fail the appropriate tests.",
+        "No universal test-to-production LOC ratio is used as a gate; LOC and assertion counts remain anomaly signals."
+      ],
+      "verification": [
+        "Red-green seeded corruption cases",
+        "Focused active-contract tests",
+        "Before/after test LOC and assertion inventory",
+        "Full relevant unittest route"
+      ],
+      "stop_conditions": [
+        "Stop if tests are deleted without proving that equivalent fault detection remains.",
+        "Stop if history is rewritten or evidence IDs are changed."
+      ],
+      "status": "locally_implemented_focused_verified",
+      "result_status": "accepted_local_semantic_repair",
+      "repair_route": "PAOS-R2-T28-SEMANTIC-TESTS",
+      "attempt_evidence": "Baseline repeated-family count 196 and combined test LOC 8130; repaired count 34, retained owned exceptions 3 and combined test LOC 5658. The 48-test T28 route passed, including seeded packet corruptions and retained legacy boundaries."
+    },
+    {
+      "task_id": "B45-CQRR-T29",
+      "priority": "P0",
+      "title": "Replace self-score promotion with deterministic quality metrics",
+      "owner_role": "architect",
+      "assignment_ref": "B45-CQRR-TEAM#B45-CQRR-T29",
+      "depends_on": [
+        "B45-CQRR-T27",
+        "B45-CQRR-T28"
+      ],
+      "objective": "Define promotion inputs from actual diffs and checks: acceptance correctness, regression status, seeded-fault or mutation detection, patch size/churn, dependency delta, project-native tool results, relevant performance delta, latency and token/cost evidence.",
+      "proposed_files": [
+        "plugins/product-agent-os/scripts/product_agent_os/code_quality_metrics.py",
+        "plugins/product-agent-os/assets/templates/evals/code-quality-metrics.json",
+        "tests/product_agent_os/test_batch45_code_quality_metrics.py",
+        "plugins/product-agent-os/scripts/codex_runtime_runner/promotion_contract.py",
+        "tests/product_agent_os/test_codex_runtime_runner_promotion_contract.py"
+      ],
+      "acceptance": [
+        "Primary-model behavior_score and dimension_scores are diagnostic only.",
+        "Promotion aggregation uses deterministic evidence plus a separate reviewer verdict.",
+        "Patch size and test size are anomaly signals requiring explanation, not optimization targets.",
+        "A performance claim cannot pass without a current benchmark; unrelated tasks record not_applicable."
+      ],
+      "verification": [
+        "Metric calculation unit tests",
+        "Seeded regression and mutation cases",
+        "Performance applicable/not-applicable cases",
+        "Aggregation tests excluding model self-score"
+      ],
+      "stop_conditions": [
+        "Stop if a warning count, coverage percentage or model self-score can independently promote the treatment.",
+        "Stop if missing evidence is converted to zero or success."
+      ],
+      "status": "locally_implemented_focused_verified",
+      "result_status": "accepted_local_deterministic_metrics",
+      "start_gate": "Satisfied by T28 semantic cases: repeated-family count 34, retained exceptions 3, combined test LOC reduced and 48 focused tests passed.",
+      "implementation_evidence": "23 focused metric and promotion-contract tests passed. Missing required evidence blocks; conditional performance/cost evidence is typed; self-scores remain diagnostic only."
+    },
+    {
+      "task_id": "B45-CQRR-T30",
+      "priority": "P1",
+      "title": "Implement an independent blinded reviewer contract",
+      "owner_role": "architect",
+      "assignment_ref": "B45-CQRR-TEAM#B45-CQRR-T30",
+      "depends_on": [
+        "B45-CQRR-T29"
+      ],
+      "objective": "Review baseline and treatment patches without arm labels and score correctness, minimality, readability, test strength, maintainability, security/privacy and relevant performance using evidence separate from the primary model output.",
+      "proposed_files": [
+        "plugins/product-agent-os/assets/templates/evals/code-quality-reviewer-rubric.json",
+        "plugins/product-agent-os/scripts/codex_runtime_runner/reviewer_contract.py",
+        "tests/product_agent_os/test_batch45_code_quality_reviewer.py"
+      ],
+      "acceptance": [
+        "Reviewer input excludes baseline/treatment labels and primary self-scores.",
+        "Reviewer verdict is blocked until deterministic pair evidence is valid.",
+        "Critical correctness, security, data-loss or regression findings override averages."
+      ],
+      "verification": [
+        "Blinding tests",
+        "Reviewer gate tests",
+        "Critical-finding override tests"
+      ],
+      "stop_conditions": [
+        "Stop before a live reviewer call without exact approval.",
+        "Stop if the reviewer receives the arm label or target verdict."
+      ],
+      "status": "locally_implemented_focused_verified",
+      "implementation_evidence": "B45-CQRR-A07: docs/superpowers/specs/batch45-code-quality-local-readiness.json",
+      "checked_at": "2026-11-09T16:04:21.435465+03:00",
+      "result_status": "accepted_local_contract_not_live_behavior"
+    },
+    {
+      "task_id": "B45-CQRR-T31",
+      "priority": "P1",
+      "title": "Build a representative multi-stack held-out corpus",
+      "owner_role": "tester",
+      "assignment_ref": "B45-CQRR-TEAM#B45-CQRR-T31",
+      "depends_on": [
+        "B45-CQRR-T27",
+        "B45-CQRR-T29"
+      ],
+      "objective": "Replace the internal-only eight-task corpus with 12 to 16 sanitized or synthetic tasks spanning at least four stack families and multiple risk classes, including small changes, legacy bugs, boundary changes, unnecessary-abstraction traps and performance-sensitive work.",
+      "proposed_files": [
+        "tests/fixtures/product_agent_os/batch45/code-quality-corpus/",
+        "docs/superpowers/specs/batch45-code-quality-heldout-corpus.json",
+        "tests/product_agent_os/test_batch45_code_quality_corpus.py"
+      ],
+      "acceptance": [
+        "At least four stack families and five risk classes are represented.",
+        "Tasks are frozen with hashes before treatment output is inspected.",
+        "Fixtures contain no secrets, private source bodies, raw chats, customer data or absolute user paths.",
+        "The corpus contains tasks where the correct result is deletion, configuration, reuse or no new code."
+      ],
+      "verification": [
+        "Corpus schema validation",
+        "Privacy and secret scans",
+        "Difficulty/risk coverage table",
+        "Hash freeze verification"
+      ],
+      "stop_conditions": [
+        "Stop if the corpus is tuned after treatment inspection.",
+        "Stop if a task requires unauthorized target access or external data."
+      ],
+      "status": "locally_implemented_focused_verified",
+      "implementation_evidence": "B45-CQRR-A07: docs/superpowers/specs/batch45-code-quality-local-readiness.json",
+      "checked_at": "2026-11-09T16:04:21.435465+03:00",
+      "result_status": "accepted_local_contract_not_live_behavior"
+    },
+    {
+      "task_id": "B45-CQRR-T32",
+      "priority": "P1",
+      "title": "Freeze an isolated treatment and executable prompt contract",
+      "owner_role": "architect",
+      "assignment_ref": "B45-CQRR-TEAM#B45-CQRR-T32",
+      "depends_on": [
+        "B45-CQRR-T25",
+        "B45-CQRR-T30",
+        "B45-CQRR-T31"
+      ],
+      "objective": "Version and persist the exact baseline and treatment prompt/context templates so the primary comparison changes only the compact pre-edit contract; evaluate reviewer assistance and comment advisory as separate later factors.",
+      "proposed_files": [
+        "plugins/product-agent-os/assets/templates/evals/code-quality-baseline-prompt.md",
+        "plugins/product-agent-os/assets/templates/evals/code-quality-treatment-prompt.md",
+        "docs/superpowers/specs/batch45-code-quality-eval-design.json",
+        "tests/product_agent_os/test_batch45_code_quality_eval_design.py"
+      ],
+      "acceptance": [
+        "Baseline and treatment use the same model, reasoning effort, runner, timeout, tools and corpus.",
+        "Only one planned intervention differs between primary arms.",
+        "Exact prompts and context digests are versioned and reproducible without raw private data.",
+        "Full research/checklist text is not injected into every generation prompt."
+      ],
+      "verification": [
+        "Prompt/context diff check",
+        "Digest reproducibility check",
+        "No-extra-variable contract test"
+      ],
+      "stop_conditions": [
+        "Stop if multiple behavior interventions change in the same comparison.",
+        "Stop if prompts are ephemeral or cannot be reproduced."
+      ],
+      "status": "locally_implemented_focused_verified",
+      "implementation_evidence": "B45-CQRR-A07: docs/superpowers/specs/batch45-code-quality-local-readiness.json",
+      "checked_at": "2026-11-09T16:04:21.435465+03:00",
+      "result_status": "accepted_local_contract_not_live_behavior"
+    },
+    {
+      "task_id": "B45-CQRR-T33",
+      "priority": "P0",
+      "title": "Run the local promotion-readiness preflight",
+      "owner_role": "completion-skeptic",
+      "assignment_ref": "B45-CQRR-TEAM#B45-CQRR-T33",
+      "depends_on": [
+        "B45-CQRR-T24",
+        "B45-CQRR-T28",
+        "B45-CQRR-T29",
+        "B45-CQRR-T30",
+        "B45-CQRR-T31",
+        "B45-CQRR-T32"
+      ],
+      "objective": "Prove locally that the executable schema, normalization, deterministic metrics, reviewer gate, frozen corpus and isolated prompt contract are reproducible before preparing any new live approval packet.",
+      "proposed_files": [
+        "docs/superpowers/specs/batch45-code-quality-local-readiness.json"
+      ],
+      "acceptance": [
+        "All valid local fixtures pass and every invalid fixture fails with the expected class.",
+        "Seeded faults are detected by the intended test or metric.",
+        "Reviewer gating and blinding work on synthetic pairs.",
+        "No provider/model/reviewer call is made."
+      ],
+      "verification": [
+        "Focused contract and strategy tests",
+        "Seeded-fault replay",
+        "Corpus and prompt freeze checks",
+        "Docs/source registry checks",
+        "Diff hygiene"
+      ],
+      "stop_conditions": [
+        "Stop and keep no-go if any schema, seeded-fault, blinding or reproducibility case fails.",
+        "Stop before approval-packet creation when local readiness is not green."
+      ],
+      "status": "locally_implemented_focused_verified",
+      "implementation_evidence": "B45-CQRR-A07: docs/superpowers/specs/batch45-code-quality-local-readiness.json",
+      "checked_at": "2026-11-09T16:04:21.435465+03:00",
+      "result_status": "accepted_local_contract_not_live_behavior"
+    },
+    {
+      "task_id": "B45-CQRR-T34",
+      "priority": "P1",
+      "title": "Prepare, execute and decide a new promotion eval only after exact approval",
+      "owner_role": "release-operator",
+      "assignment_ref": "B45-CQRR-TEAM#B45-CQRR-T34",
+      "depends_on": [
+        "B45-CQRR-T33"
+      ],
+      "objective": "After local readiness and a separate exact owner approval, run the frozen same-model comparison, invoke the independent reviewer only after all pairs are valid, and issue a promotion/no-go decision from deterministic evidence plus reviewer findings.",
+      "proposed_files": [
+        "docs/superpowers/specs/batch45-code-quality-eval-approval-packet.json",
+        "docs/superpowers/specs/batch45-code-quality-eval-results.json",
+        "docs/superpowers/specs/batch45-code-quality-promotion-decision.json"
+      ],
+      "acceptance": [
+        "A new exact approval names model, effort, call cap, timeout, cost policy, retention and reviewer policy.",
+        "All promotion-counted pairs are schema-valid and have deterministic acceptance evidence.",
+        "The independent reviewer gate runs and has no unresolved critical finding.",
+        "Any latency, token, cost or performance regression outside the frozen tolerance blocks promotion or is explicitly owner-accepted.",
+        "The final decision preserves no-go when evidence is incomplete, invalid or mixed."
+      ],
+      "verification": [
+        "Exact approval preflight",
+        "Sanitized result validation",
+        "Independent reviewer evidence",
+        "No-unapproved-actions and raw-retention checks",
+        "Control-plane sync"
+      ],
+      "stop_conditions": [
+        "Stop before every provider/model/reviewer call unless the exact approval is present and unconsumed.",
+        "Stop on first invalid schema, unauthorized cost/timeout drift, privacy breach or critical reviewer finding.",
+        "Do not reuse an approval after any call starts."
+      ],
+      "status": "blocked",
+      "result_status": "approved_preflight_blocked",
+      "checked_at": "2026-11-09T13:25:56.385619+00:00",
+      "implementation_evidence": "docs/superpowers/specs/batch45-code-quality-eval-results.json",
+      "blocker": "Frozen tools/context isolation not attested; zero primary/reviewer calls"
+    }
+  ],
+  "does_not_authorize": [
+    "Provider, model or reviewer calls",
+    "Runtime or browser automation",
+    "Target workspace mutation",
+    "Dependency installation",
+    "Hook, CI blocker, schedule or automation activation",
+    "Git branch, stage, commit, push or pull request",
+    "Release, deployment or publication",
+    "Promotion or production-readiness claims"
+  ],
+  "rollback": [
+    "Historical T18-T22 evidence remains immutable and continues to own the failed route.",
+    "Each implementation task must remain revertible by removing only its new module/template/test files and restoring the previous advisory-only selector.",
+    "A failed local or live gate returns Batch 45 to advisory-only/no-go without deleting evidence."
+  ],
+  "claim_ceiling": "A04 proves local T23/T24, A05 proves local T25-T27, and A06 proves local T28/T29 implementation with focused deterministic verification. A06 shows semantic test compaction and a deterministic promotion-evidence contract only; it does not prove T30-T34, multi-language runtime enforcement, model behavior improvement, CLI/runtime or hook activation, live/provider/model/external-reviewer behavior, promotion, release readiness or production readiness. A07 proves local blinded-review gating, twelve frozen synthetic tasks across four stacks, isolated prompts and local preflight only. Historical T18-T22 no-go remains.",
+  "execution_evidence": [
+    {
+      "evidence_id": "B45-CQRR-A07",
+      "recorded_at": "2026-11-09T16:04:21.435465+03:00",
+      "tasks": [
+        "B45-CQRR-T30",
+        "B45-CQRR-T31",
+        "B45-CQRR-T32",
+        "B45-CQRR-T33"
+      ],
+      "status": "locally_implemented_focused_verified",
+      "path": "docs/superpowers/specs/batch45-code-quality-local-readiness.json"
+    }
+  ],
+  "approved_runtime_followup": {
+    "status": "blocked_before_generation",
+    "path": "docs/superpowers/specs/batch45-code-quality-eval-results.json",
+    "decision": "no_go",
+    "approved": true,
+    "consumed": false
+  }
+}

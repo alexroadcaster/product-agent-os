@@ -91,6 +91,39 @@ def load_hook_module(script: Path):
 
 
 class LifecycleHooksTest(unittest.TestCase):
+    def test_terminal_local_validation_commands_keep_exact_scope(self):
+        commands = [
+            ("python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/tasks.md", {}, False),
+            ("python -B plugins/product-agent-os/scripts/validate_task_state_consistency.py .", {}, False),
+            ("git -c core.safecrlf=false diff --check", {}, False),
+            ("python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/tasks.md", {"workdir": "other"}, True),
+            ("python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/tasks.md", {"shell": "custom-shell"}, True),
+            ("python -B plugins/product-agent-os/scripts/validate_task_matrix.py --write", {}, True),
+            ("python -B plugins/product-agent-os/scripts/validate_task_matrix.py ../tasks.md", {}, True),
+            ("python -B plugins/product-agent-os/scripts/validate_task_matrix.py tasks.md extra", {}, True),
+            ("python plugins/product-agent-os/scripts/validate_task_matrix.py tasks.md", {}, True),
+            ("python -B other/validate_task_matrix.py tasks.md", {}, True),
+            ("python -B plugins/product-agent-os/scripts/sync_task_documents.py apply", {}, True),
+            ("python -c 'write()'", {}, True),
+            ("python -B plugins/product-agent-os/scripts/validate_task_matrix.py tasks.md; Set-Content other x", {}, True),
+            ("git -c core.safecrlf=false diff --check --output=other", {}, True),
+            ("git -c core.pager=other diff --check", {}, True),
+            ("git -c core.safecrlf=false apply patch", {}, True),
+        ]
+        for script in (HOOKS, LOCAL_HOOKS):
+            module = load_hook_module(script / "pre_tool_use_policy.py")
+            for command, extra, denied in commands:
+                with self.subTest(script=script, command=command, extra=extra):
+                    payload = {"tool_name": "functions.exec_command", "cwd": str(ROOT),
+                               "tool_input": {"cmd": command, **extra}}
+                    output = io.StringIO()
+                    with mock.patch.object(module, "_read_payload", return_value=(payload, "")), \
+                         mock.patch.object(module, "_workspace_root", return_value=ROOT), \
+                         mock.patch.object(module, "_lifecycle_marker_ok", return_value=(False, "terminal")), \
+                         mock.patch("sys.stdout", output):
+                        self.assertEqual(module.main([]), 0)
+                    self.assertEqual(bool(output.getvalue()), denied, output.getvalue())
+
     def test_g7_terminal_wire_allows_only_literal_default_shell_reads(self):
         for script in (HOOKS, LOCAL_HOOKS):
             module = load_hook_module(script / 'pre_tool_use_policy.py')

@@ -556,7 +556,8 @@ class LifecycleSkillsTest(unittest.TestCase):
         shared_terms = [
             "plan lifecycle policy",
             "active concrete task files remain active",
-            "evidence moves to runlog.md",
+            "owning task/evidence artifact",
+            "runlog.md holds",
             "history moves to docs/sources/*backlog*.md",
             "source-backed claims enter docs/sources/registry*.md",
             "no secrets, raw chat, customer data",
@@ -571,6 +572,7 @@ class LifecycleSkillsTest(unittest.TestCase):
             "task-matrix-plan": template,
         }.items():
             with self.subTest(name=name):
+                self.assertNotIn("evidence moves to runlog.md", text)
                 for expected in shared_terms:
                     self.assertIn(expected, text)
 

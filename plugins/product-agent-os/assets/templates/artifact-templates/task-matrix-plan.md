@@ -50,7 +50,7 @@ Completion-skeptic evidence: when a task claims completion, readiness, release, 
 ## Plan Lifecycle Policy
 
 - Active concrete task files remain active while they drive current execution, unresolved acceptance criteria, open verification gates or owner handoff decisions.
-- Evidence moves to RUNLOG.md when a current slice records command output, failed checks, handoff status, residual risk or completion evidence.
+- Detailed command output, failures and completion evidence stay in the owning task/evidence artifact. RUNLOG.md holds the current handoff and evidence pointer.
 - History moves to docs/sources/*backlog*.md when a cycle closes and the detail is no longer needed in the active concrete task file.
 - Source-backed claims enter docs/sources/registry*.md when documentation adds or changes source-backed factual claims.
 - No secrets, raw chat, customer data, credentials, tokens or private keys belong in task plans, evidence packets or examples.
@@ -118,3 +118,7 @@ Summary tables are planning indexes only. Keep them compact and derive them from
 - Perform no git stage/commit/push/PR from this template.
 - Preserve existing user-authored files outside managed sections.
 - Record accepted gaps with `reason`, `reduced_evidence_path` and `residual_risk`.
+
+## Documentation impact in the existing Completion Report
+
+Record task ID, changed fact, source revision/evidence, canonical owner/path/section, decision (`updated`, `no_change_needed`, `handoff_required`) and reason. Use the control-plane-sync workflow. Do not create a second task-state registry or a mandatory report per small task. Technical completion, documentation synchronization and owner acceptance remain separate.

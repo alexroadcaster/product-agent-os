@@ -23,9 +23,10 @@ def main() -> int:
         refs = [check_reference(args.workspace, item) for item in packet.get('references', [])]
         links = check_local_links(args.workspace, paths)
         result = {'navigation': documentation_inventory(args.workspace, signals=packet.get('signals', {})),
-                  'duplicates': duplicate_blocks(args.workspace, paths), 'links': links, 'references': refs,
+                  'duplicates': duplicate_blocks(args.workspace, paths, dispositions=packet.get('dispositions', [])), 'links': links, 'references': refs,
                   'write_policy': 'read_only'}
-        result['ok'] = not links and all(item['status'] in {'verified', 'unavailable_optional'} for item in refs)
+        result['ok'] = (not links and all(item['disposition'] == 'allowed_mirror' for item in result['duplicates'])
+                        and all(item['status'] in {'verified', 'unavailable_optional'} for item in refs))
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0 if result['ok'] else 1
     except (OSError, ValueError, KeyError, TypeError, AttributeError) as exc:

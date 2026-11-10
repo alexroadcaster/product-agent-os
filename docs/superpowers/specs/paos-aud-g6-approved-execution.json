@@ -771,5 +771,7 @@
     }
   },
   "next_bounded_packet": "docs/superpowers/specs/paos-aud-g6-cache-repair-preview.json",
-  "refined_host_followup": "docs/superpowers/specs/paos-aud-g6-refined-host-execution.json"
+  "refined_host_followup": "docs/superpowers/specs/paos-aud-g6-refined-host-execution.json",
+  "current_pilot_results": "docs/superpowers/specs/paos-aud-g6-pilot-results.json",
+  "historical_receipt_note": "This preflight receipt predates completed local pilots and their owner acceptance on 2026-11-10. Use current_pilot_results for current GAP-06 status; original host/preflight evidence below remains historical."
 }

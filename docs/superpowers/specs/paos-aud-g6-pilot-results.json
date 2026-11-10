@@ -1,6 +1,6 @@
 {
   "schema_version": "paos_g6_pilot_results_v1",
-  "status": "needs_user_acceptance",
+  "status": "owner_accepted",
   "recorded_at": "2026-11-09T14:10:54.973531+00:00",
   "route": "Current project session; host-target is a disposable test environment; no native skill or hook activation claim",
   "host_dependency": "None for current-project local pilots; HOST-01/HOST-02 fresh-session activation remains a separate open task",
@@ -25,7 +25,7 @@
         "stdout": "{\"attempts\": [0, 2, 3, 6], \"actual\": [1, 4, 8, 64]}",
         "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import runpy,sys,json; f=runpy.run_path(sys.argv[1])['retry_delay']; a=[0,2,3,6]; v=[f(x) for x in a]; print(json.dumps({'attempts':a,'actual':v})); assert v==[1,4,8,8]\n                                                                                                                                                                ^^^^^^^^^^^^\nAssertionError"
       },
-      "status": "needs_user_acceptance",
+      "status": "owner_accepted",
       "final_check": {
         "command": [
           "python.exe",
@@ -53,8 +53,8 @@
         "correctness": "passed",
         "owner_interventions": 0,
         "failed_attempts": 0,
-        "owner_feedback": null,
-        "owner_acceptance": null
+        "owner_feedback": "Result accepted by owner.",
+        "owner_acceptance": true
       }
     },
     {
@@ -75,7 +75,7 @@
         "stdout": "{\"log_level\": \"debug\", \"retention_days\": 7}",
         "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import json,sys; from pathlib import Path; v=json.loads(Path(sys.argv[1]).read_text()); print(json.dumps(v)); assert v=={'log_level':'info','retention_days':7}\n                                                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError"
       },
-      "status": "needs_user_acceptance",
+      "status": "owner_accepted",
       "final_check": {
         "command": [
           "python.exe",
@@ -103,8 +103,8 @@
         "correctness": "passed",
         "owner_interventions": 0,
         "failed_attempts": 0,
-        "owner_feedback": null,
-        "owner_acceptance": null
+        "owner_feedback": "Result accepted by owner.",
+        "owner_acceptance": true
       }
     },
     {
@@ -124,7 +124,7 @@
         "stdout": "[\"%2F\",\"%20\",\"\"]",
         "stderr": ""
       },
-      "status": "needs_user_acceptance",
+      "status": "owner_accepted",
       "final_check": {
         "command": [
           "node",
@@ -151,14 +151,23 @@
         "correctness": "passed",
         "owner_interventions": 0,
         "failed_attempts": 0,
-        "owner_feedback": null,
-        "owner_acceptance": null
+        "owner_feedback": "Result accepted by owner.",
+        "owner_acceptance": true
       }
     }
   ],
   "measurement_notes": "Elapsed from each setup start through final check includes operator/tool latency, not model-only latency. Expected baseline assertion failures are RED evidence, not failed repair attempts. Config baseline is static validation. One unchanged-source check repeated for final no-new-code readback. Extra artifacts excludes required receipts and shared audit evidence. No comparative baseline for productivity claims.",
-  "owner_feedback": null,
-  "owner_acceptance": null,
+  "owner_feedback": "Owner accepted all three synthetic local pilot results; no broader effectiveness claim.",
+  "owner_acceptance": {
+    "decision": "accepted",
+    "recorded_at": "2026-11-10T18:46:45.867254+00:00",
+    "scope": [
+      "G6-PILOT-BUG",
+      "G6-PILOT-CONFIG",
+      "G6-PILOT-NO-NEW-CODE"
+    ],
+    "limits": "T34 and HOST-01/HOST-02 remain open; manual_only and candidate-only unchanged"
+  },
   "promotion": "manual_only; candidate-only",
   "claim_ceiling": "Three synthetic local journeys; no fresh-session activation, live production or model-quality promotion proof",
   "verification": [

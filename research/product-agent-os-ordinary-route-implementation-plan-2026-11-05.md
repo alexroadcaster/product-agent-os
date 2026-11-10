@@ -1030,7 +1030,7 @@ Review mode текущего плана: self_review. Сверены IMP-01–IM
 ### Task `PAOS-GAP-06`
 
 - Task: Проверить ordinary user outcomes через существующие B39/B44 manual packets
-- Status: in_progress
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Владелец разрешил три пилота из текущего проекта в host-target; HOST-01 dependency снята, activation отдельно.
@@ -1047,22 +1047,22 @@ Review mode текущего плана: self_review. Сверены IMP-01–IM
 - Expected result: Существующие manual pilot/feedback receipts и краткий RUNLOG; без нового автоматического learning framework.
 - Acceptance criteria: Каждый outcome связан с task/host/source version и evidence, failure не исключается из denominator. Нет причинного вывода о всей системе из одного pilot. Target/browser/provider actions выполнены только в названной authority. B39 no-go/release ceiling и B44 manual_only сохраняются до отдельных решений.
 - Verification gates: Фактические baseline/final checks, source hashes и file inventories в pilot-results; обязательные docs/matrix/state gates; owner feedback отдельно.
-- Risks / approval gates: Текущий local pilot scope явно разрешён; owner acceptance pending; fresh-session/provider/browser/Git не входят в этот маршрут. Rollback по initial_source proposal; receipts сохранить.
+- Risks / approval gates: Текущий local pilot scope явно разрешён; owner acceptance получена 10.11.2026; fresh-session/provider/browser/Git не входят в этот маршрут. Rollback по initial_source proposal; receipts сохранить.
 - Complexity: medium
 - Estimated execution time: 0.5–1 день подготовки; длительность pilot определяется approved targets
 - Agents: product-manager; evidence owner: learning-loop-engineer; owner acceptance у пользователя; роли обозначают ownership, не запущенных subagents
 - Skills: implementation-planner для scope/handoff; Python implementation: python-design-patterns и python-code-style; docs-maintainer для названного docs impact; только task-matching canonical skills
 - Output artifacts: Существующие manual pilot/feedback receipts и краткий RUNLOG; без нового автоматического learning framework.
-- Next step: Приёмка трёх результатов пользователем; fresh-session activation остаётся самостоятельной открытой задачей.
+- Next step: Три результата приняты владельцем 10.11.2026; T34 и fresh-session activation отдельно открыты.
 
 #### Completion Report
 
-- status: in_progress
+- status: implemented
 - what was done: Три одобренных пилота выполнены в host-target/pilots из текущей сессии; HOST-01 dependency снята по решению владельца.
 - files touched / work locations: candidate.py, candidate.json, неизменный candidate.cjs и три receipt.json; pilot proposal/results; owning plans и control-plane.
 - technical value delivered: Наблюдаемый bug RED/GREEN; config JSON/invariant checks; no-new-code SHA-256 preservation.
-- product value delivered: Три проверяемых результата для owner acceptance, без лишних вопросов в ходе пилотов.
+- product value delivered: Три проверенных и принятых владельцем результата, без лишних вопросов в ходе пилотов.
 - actual implementation date and time: 09-11-2026 17:11
 - verification evidence: docs/superpowers/specs/paos-aud-g6-pilot-results.json; python -B .docs-tools/reports/paos-aud-g6/run_pilots.py baseline и verify, оба exit 0; внутри baseline ожидаемый bug/config assertion exit 1.
-- residual risks: needs_user_acceptance; feedback/acceptance null. Synthetic cases не доказывают массовую полезность; fresh-session activation и T34 отдельно открыты.
-- follow-up: Пользователь принимает или отклоняет каждый результат; findings остаются manual candidates.
+- residual risks: Owner accepted all three local pilots 10.11.2026. Synthetic cases не доказывают массовую полезность; fresh-session activation и T34 отдельно открыты.
+- follow-up: Приёмка получена для всех трёх результатов; findings остаются manual candidates, без promotion.

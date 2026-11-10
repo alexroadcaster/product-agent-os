@@ -339,6 +339,7 @@ def build_system_file_hygiene_audit(
     root: str | Path,
     audit_trigger: str = "manual_owner_requested",
     audit_started_at: str | None = None,
+    affected_document_paths: list[str] | None = None,
 ) -> dict[str, Any]:
     workspace = Path(root)
     inventory: list[dict[str, Any]] = []
@@ -408,6 +409,12 @@ def build_system_file_hygiene_audit(
             )
         )
 
+    if affected_document_paths is not None:
+        # Event-scoped review scans only supplied owners/sources, not every doc.
+        from product_agent_os.document_navigation import duplicate_blocks
+        for duplicate in duplicate_blocks(workspace, affected_document_paths):
+            findings.append(_finding('warning', 'cross_document_review_required', duplicate['path'],
+                                     'Source: ' + duplicate['source_path'] + '; ' + duplicate['action'], None))
     errors = [finding for finding in findings if finding["severity"] == "error"]
     warnings = [finding for finding in findings if finding["severity"] == "warning"]
     status = "blocked" if errors else "review_required" if warnings else "ok"
