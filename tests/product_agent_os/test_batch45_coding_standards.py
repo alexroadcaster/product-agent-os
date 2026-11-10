@@ -61,7 +61,7 @@ class Batch45CodingStandardsTemplateTest(unittest.TestCase):
             )
         )
 
-        rendered = render_infrastructure_plan(FIXTURES / "empty-repo")
+        rendered = render_infrastructure_plan(FIXTURES / "empty-repo", legacy_catalog=True)
         rendered_targets = [
             artifact["target_path"] for artifact in rendered["rendered_artifacts"]["files"]
         ]
@@ -156,7 +156,7 @@ class Batch45CodingStandardsTemplateTest(unittest.TestCase):
             )
         )
 
-        rendered = render_infrastructure_plan(FIXTURES / "empty-repo")
+        rendered = render_infrastructure_plan(FIXTURES / "empty-repo", legacy_catalog=True)
         rendered_targets = [
             artifact["target_path"]
             for artifact in rendered["rendered_artifacts"]["files"]

@@ -269,7 +269,7 @@
     "tests/product_agent_os/test_status_snapshot.py": "71c4b450b1db0017d551decb374c70eb5af818eeeb2a8aabf4d35a54a8e72b43",
     "tests/product_agent_os/test_system_file_hygiene.py": "9d66107f54c382da5039006f646958481c2fa77ce2f1bf9e74d81e8f10915836"
   },
-  "owner_acceptance": "pending",
+  "owner_acceptance": "accepted",
   "fresh_session_activation": "not_run_separate",
   "scope_decisions": {
     "docs_planning_detailed_matrices": "default_size_exception_preserve_intact",
@@ -281,5 +281,11 @@
     "junction/hardlink guards simulated; real symlink refusal checked separately in execution report",
     "M1 SQL adapter tested as declared file-authority boundary only"
   ],
-  "earlier_failed_attempts": "research/product-agent-os-g8-execution-report.md"
+  "earlier_failed_attempts": "research/product-agent-os-g8-execution-report.md",
+  "owner_decision": {
+    "scope": "G8-T14 and G8 closure",
+    "source": "explicit owner instruction in current session",
+    "fresh_session_activation": "separate_open_task",
+    "research_matrix_split": "deferred"
+  }
 }

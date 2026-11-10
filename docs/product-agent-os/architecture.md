@@ -1,5 +1,7 @@
 # Product-Agent OS architecture
 
+Единое [формирование проекта](project-formation.md) добавляет planner выбора и canonical paths поверх существующих renderer, stage manifest и approval-bound merge. Источники документов сохраняют владение; существующие файлы получают companion proposals. Source digests и локальный M1 authority contract проверяются перед применением; host activation отдельно.
+
 Source status: `official + experiment`
 
 Источники: [Codex plugins](https://developers.openai.com/codex/plugins), [Agent Skills](https://developers.openai.com/codex/skills), [Subagents](https://developers.openai.com/codex/subagents), [AGENTS.md](https://developers.openai.com/codex/guides/agents-md), [Codex hooks](https://developers.openai.com/codex/hooks), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Codex workflows](https://developers.openai.com/codex/workflows), [Technical features](technical.md).

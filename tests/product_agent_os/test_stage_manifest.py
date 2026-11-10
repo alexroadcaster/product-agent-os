@@ -30,7 +30,7 @@ class StageManifestTest(unittest.TestCase):
             stage_root = Path(tmp) / "stage"
             shutil.copytree(FIXTURES / "empty-repo", workspace)
 
-            result = stage_infrastructure(workspace, stage_root)
+            result = stage_infrastructure(workspace, stage_root, legacy_catalog=True)
             manifest_path = stage_root / MANIFEST_NAME
             manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
 
@@ -57,10 +57,10 @@ class StageManifestTest(unittest.TestCase):
             second_stage = Path(tmp) / "stage-2"
             shutil.copytree(FIXTURES / "empty-repo", workspace)
 
-            stage_infrastructure(workspace, first_stage)
+            stage_infrastructure(workspace, first_stage, legacy_catalog=True)
             first_manifest = load_stage_manifest(first_stage)
             (workspace / "AGENTS.md").write_text("# Existing rules\n\nUser-authored content.\n", encoding="utf-8")
-            stage_infrastructure(workspace, second_stage)
+            stage_infrastructure(workspace, second_stage, legacy_catalog=True)
             second_manifest = load_stage_manifest(second_stage)
 
         self.assertNotEqual(

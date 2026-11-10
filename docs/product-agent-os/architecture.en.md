@@ -1,5 +1,7 @@
 # Product-Agent OS architecture
 
+[Unified project formation](project-formation.md) adds selection and canonical-path planning above the existing renderer, stage manifest and approval-bound merge. Existing files retain ownership and receive companion proposals. Source digests and the local M1 authority contract are checked before apply; host activation is separate.
+
 Source status: `official + experiment`
 
 Sources: [Codex plugins](https://developers.openai.com/codex/plugins), [Build plugins](https://developers.openai.com/codex/plugins/build), [Agent Skills](https://developers.openai.com/codex/skills), [Subagents](https://developers.openai.com/codex/subagents), [AGENTS.md](https://developers.openai.com/codex/guides/agents-md), [Codex hooks](https://developers.openai.com/codex/hooks), [Codex MCP](https://developers.openai.com/codex/mcp), [Codex workflows](https://developers.openai.com/codex/workflows), [Codex with Agents SDK](https://developers.openai.com/codex/guides/agents-sdk).

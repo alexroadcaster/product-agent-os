@@ -36,7 +36,7 @@ def run_pilot(profile, baseline_scripts=None):
                     'REQUIREMENTS.md': {'source': 'task:SYN-01', 'goal': 'R-01 preserve decisions',
                                         'scope': ['README.md'], 'acceptance': ['R-01 checked'],
                                         'constraints': ['Never remove open owner gate']}}}
-        baseline = render_infrastructure_plan(root)
+        baseline = render_infrastructure_plan(root, legacy_catalog=True)
         controlled_comparison = None
         if baseline_scripts:
             common = {key: value for key, value in task.items() if key not in {'documents', 'evals_required'}}

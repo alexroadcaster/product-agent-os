@@ -1,14 +1,14 @@
 # PLAN.md
 
-## PAOS-AUD-G9 — планирование, без реализации
+## PAOS-AUD-G9 — результаты для приёмки
 
-[группа G9](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#paos-aud-g9) содержит десять planned-карточек; реализация не начата. Порядок T01 → T02 → T03 → T04 → T05 → T06 → T07 → T08 → T09 → T10; точные dependencies и owners — в матрице. Приёмка G8-T14 отдельна; завершение M1 целиком и HOST activation не являются prerequisite локальной реализации G9. Shared writers подчиняются M1 freeze/authority. Следующий шаг — отдельный запрос владельца на реализацию.
+G8 closed / owner accepted. G9 T01–T09 implemented_locally_verified; T10 needs_user_acceptance. [Матрица G9](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#paos-aud-g9) владеет статусами; [comparison/evidence](research/product-agent-os-g9-execution-report.md). Для первоначального пакета следующий шаг — приёмка владельцем конкретного результата и ограничений. Добавлены planned T11–T17: T11 → T12 → T13/T14 → T15 → T16 → T17; реализация нового scope требует отдельного разрешения, итоговое закрытие расширения — T17. Fresh-session activation отдельно. M1 source authority/freeze сохраняется; полный M1 не prerequisite. Rollback текущего maintenance slice — только его hunks; target rollback по проверенному journal, без перезаписи последующих пользовательских правок.
 
 ## PAOS-AUD-G8 — verification / owner handoff, 2026-11-10
 
-[Матрица T01–T14](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md) владеет статусами. [Отчёт реализации](research/product-agent-os-g8-execution-report.md) содержит проверки, ограничения и сравнение. Завершить общие gates и передать T14 владельцу на приёмку; автоматического owner acceptance нет. Fresh-session activation отдельно. M1 может использовать согласованные document contracts; SQL projections и freeze cutover запрещают независимый file writer. Split текущей audit matrix отложен владельцем; её карточки не сокращены.
+[Матрица T01–T14](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md) владеет статусами. [Отчёт реализации](research/product-agent-os-g8-execution-report.md) содержит проверки, ограничения и сравнение. G8 закрыта после проверок и явной приёмки; owner acceptance явно получена. Fresh-session activation отдельно. M1 может использовать согласованные document contracts; SQL projections и freeze cutover запрещают независимый file writer. Split текущей audit matrix отложен владельцем; её карточки не сокращены.
 
-Уточнение владельца 10.11.2026: подробные матрицы в `docs/planning/` сохраняются целиком, default 40k size trigger исключён; оглавления/control-plane и explicit per-file limits сохраняют ограничения. Audit matrix в `research/` остаётся целой; split отложен, прежний preview не разрешён. Единственное оставшееся решение G8 — приёмка итогового T14; fresh-session activation отдельно.
+Уточнение владельца 10.11.2026: подробные матрицы в `docs/planning/` сохраняются целиком, default 40k size trigger исключён; оглавления/control-plane и explicit per-file limits сохраняют ограничения. Audit matrix в `research/` остаётся целой; split отложен, прежний preview не разрешён. G8-T14 и закрытие G8 явно приняты владельцем; fresh-session activation отдельно.
 
 ## Активная продуктовая очередь Web — 2026-11-10
 
@@ -53,7 +53,7 @@ G4 F05/F09/F10/F15 implemented_locally_verified. Следующая группа
   "sources": [
     {
       "path": "research/product-agent-os-audit-remediation-task-plan-2026-11-09.md",
-      "revision": "sha256:32ac8e30665b58b845fa94d8eac3e49179345a8e58449986418f30d67020e5f2",
+      "revision": "sha256:262f07b2f2e3479cae0151a1fd6cde697e27c3ac5bc51ee8745e4038f9ab8473",
       "task_prefixes": [
         "PAOS-AUD-"
       ]

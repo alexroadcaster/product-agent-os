@@ -64,14 +64,14 @@ class CodexRuntimeRunnerCliTest(unittest.TestCase):
             args = parser.parse_args(["--task", "Fix", "--change-mode", "docs_only", "--changed-path", "README.md", "--acceptance", "Fixed"])
             self.assertEqual(task_context_from_args(tmp, args)["risk_level"], "unknown")
 
-    def test_legacy_callers_expose_fallback_without_changing_default(self):
+    def test_runtime_fallback_and_explicit_legacy_catalog_are_separate(self):
         from product_agent_os.infrastructure import render_infrastructure_plan
         from product_agent_os.templates import required_templates
         with tempfile.TemporaryDirectory() as tmp:
             result = runtime_cli.run_contract(tmp)
             self.assertEqual(result["route_packet"]["intake"]["mode"], "legacy_fallback")
-            rendered = render_infrastructure_plan(tmp)
-            self.assertEqual(rendered["infrastructure_plan"]["intake"]["mode"], "legacy_fallback")
+            rendered = render_infrastructure_plan(tmp, legacy_catalog=True)
+            self.assertEqual(rendered["infrastructure_plan"]["intake"]["mode"], "explicit_legacy_catalog")
             self.assertEqual(len(rendered["rendered_artifacts"]["files"]), len(required_templates()))
 
     def test_contract_cli_does_not_infer_quality_gate_from_runlog_text(self):

@@ -312,7 +312,7 @@ class StatusDashboardTest(unittest.TestCase):
         template_targets = {item.target_path for item in required_templates()}
         self.assertNotIn(STATUS_HTML_TARGET, template_targets)
         self.assertNotIn(STATUS_JSON_TARGET, template_targets)
-        baseline = render_infrastructure_plan(FIXTURES / "empty-repo")
+        baseline = render_infrastructure_plan(FIXTURES / "empty-repo", legacy_catalog=True)
         baseline_targets = {item["target_path"] for item in baseline["rendered_artifacts"]["files"]}
         self.assertNotIn(STATUS_HTML_TARGET, baseline_targets)
         self.assertNotIn(STATUS_JSON_TARGET, baseline_targets)

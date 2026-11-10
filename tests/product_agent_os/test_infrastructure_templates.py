@@ -1165,7 +1165,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
             ".codex/automation-candidates/weekly-agent-skill-metrics.md",
         }
         template_targets = {item.target_path for item in required_templates()}
-        baseline = render_infrastructure_plan(FIXTURES / "empty-repo")
+        baseline = render_infrastructure_plan(FIXTURES / "empty-repo", legacy_catalog=True)
         baseline_targets = {item["target_path"] for item in baseline["rendered_artifacts"]["files"]}
 
         self.assertTrue(forbidden_targets.isdisjoint(template_targets))

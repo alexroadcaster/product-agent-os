@@ -44,11 +44,11 @@ class InfrastructureError(RuntimeError):
 
 
 def render_infrastructure_plan(
-    workspace: str | Path, *, task_context: dict[str, Any] | None = None,
+    workspace: str | Path, *, task_context: dict[str, Any] | None = None, legacy_catalog: bool = False,
 ) -> dict[str, Any]:
     workspace_path = _workspace_path(workspace)
     audit = _analyze(workspace_path)
-    return _build_result(workspace_path, audit, None, write_files=False, task_context=task_context)
+    return _build_result(workspace_path, audit, None, write_files=False, task_context=task_context, legacy_catalog=legacy_catalog)
 
 
 def render_infrastructure_from_audit(
@@ -57,6 +57,7 @@ def render_infrastructure_from_audit(
     *,
     lifecycle_packets: dict[str, Any] | list[dict[str, Any]] | None = None,
     task_context: dict[str, Any] | None = None,
+    legacy_catalog: bool = False,
 ) -> dict[str, Any]:
     workspace_path = _workspace_path(workspace)
     return _build_result(
@@ -65,12 +66,12 @@ def render_infrastructure_from_audit(
         None,
         write_files=False,
         lifecycle_packets=lifecycle_packets,
-        task_context=task_context,
+        task_context=task_context, legacy_catalog=legacy_catalog,
     )
 
 
 def stage_infrastructure(
-    workspace: str | Path, output_dir: str | Path, *, task_context: dict[str, Any] | None = None,
+    workspace: str | Path, output_dir: str | Path, *, task_context: dict[str, Any] | None = None, legacy_catalog: bool = False,
 ) -> dict[str, Any]:
     workspace_path = _workspace_path(workspace)
     stage_root = Path(output_dir).resolve()
@@ -80,7 +81,7 @@ def stage_infrastructure(
         raise InfrastructureError(f"stage output path is not a directory: {stage_root}")
     audit = _analyze(workspace_path)
     try:
-        return _build_result(workspace_path, audit, stage_root, write_files=True, task_context=task_context)
+        return _build_result(workspace_path, audit, stage_root, write_files=True, task_context=task_context, legacy_catalog=legacy_catalog)
     except (OSError, ValueError) as exc:
         raise InfrastructureError(f"unable to write staged infrastructure: {exc}") from exc
 
@@ -133,6 +134,8 @@ def _build_result(
     write_files: bool,
     lifecycle_packets: dict[str, Any] | list[dict[str, Any]] | None = None,
     task_context: dict[str, Any] | None = None,
+    legacy_catalog: bool = False,
+    formation: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     context = _template_context(workspace, audit)
     warnings = _profile_warnings(workspace, audit)
@@ -151,6 +154,11 @@ def _build_result(
 
     selection = None
     templates = required_templates()
+    if task_context is None and not legacy_catalog:
+        if write_files:
+            raise InfrastructureError("formation_context_required; use form_project or explicit legacy_catalog=True")
+        templates = ()
+        blocked.append("formation_context_required")
     if task_context is not None:
         decision = build_task_routing(workspace, audit, task_context)
         templates, selection = selected_templates(
@@ -160,13 +168,37 @@ def _build_result(
         selection["dependency_policy"] = "scoped documents use inline contracts; no implicit config/hooks/workflow activation"
         # Inspection can show proposals while gaps remain, but no incomplete
         # task context is allowed to produce a staged merge input.
-        if write_files and decision["gaps"]:
+        if write_files and decision["gaps"] and formation is None:
             raise InfrastructureError("task context gaps must be resolved before staging")
+    if formation is not None:
+        templates = formation["templates"]
+        blocked.extend(formation["plan"]["gaps"])
     for item in templates:
         _validate_template_target(item)
-        rendered = render_template(item, context)
-        if task_context and item.target_path in DOCUMENT_CONTRACTS:
-            rendered = scoped_document(item.target_path, item.managed_section, task_context)
+        if formation and item.target_path in formation["contents"]:
+            rendered = formation["contents"][item.target_path]
+        else:
+            rendered = render_template(item, context)
+        if formation and item.target_path not in formation['contents'] and item.key not in {'agents-md', 'requirements', 'plan', 'test', 'evals', 'runlog'}:
+            for role, owner_path in formation['plan']['owners'].items():
+                if role in DOCUMENT_CONTRACTS and owner_path != role:
+                    rendered = rendered.replace('`' + role + '`', '`' + owner_path + '`').replace('"' + role + '"', '"' + owner_path + '"')
+        if formation and formation['plan']['conditional_references']['EVALS.md'] == 'not_applicable':
+            # Adapt known optional references instead of generating an irrelevant document.
+            if item.validation_kind == 'toml':
+                rendered = rendered.replace(', "EVALS.md"', '').replace('"EVALS.md", ', '')
+            else:
+                rendered = rendered.replace('`EVALS.md`', 'the eval document when applicable')
+        document_name = item.target_path
+        if formation:
+            document_name = next((role for role, path in formation["plan"]["owners"].items()
+                                  if path == item.target_path and role in DOCUMENT_CONTRACTS), document_name)
+        if task_context and document_name in DOCUMENT_CONTRACTS:
+            rendered = scoped_document(document_name, item.managed_section, task_context)
+        if formation:
+            from product_agent_os.control_plane_compaction import _exceeds_budget
+            if _exceeds_budget(workspace, item.target_path, rendered.encode("utf-8"), 40000):
+                raise InfrastructureError("formation document budget exceeded: " + item.target_path)
         if selection is not None:
             dependencies = selection.setdefault('document_dependencies', [])
             selected_paths = {spec.target_path for spec in templates}
@@ -203,14 +235,15 @@ def _build_result(
                 "target_path": item.target_path,
                 "action": action,
                 "write_policy": write_policy,
-                "preserve_existing": any("managed_content_preserved" in warning for warning in file_warnings),
+                "preserve_existing": bool(formation and target.exists()) or any("managed_content_preserved" in warning for warning in file_warnings),
                 "staged_path": staged_path,
                 "bytes": len(staged_content.encode("utf-8")) if staged_content is not None else None,
                 "content_digest": hashlib.sha256(staged_content.encode("utf-8")).hexdigest() if staged_content is not None else None,
             }
         )
 
-    validation_errors.update(_validate_generated_files(files, stage_root, write_files, proposed_content))
+    validation_errors.update(_validate_generated_files(files, stage_root, write_files, proposed_content, templates,
+                                                       set(formation["plan"]["source_snapshot"]) if formation else set()))
     for target_path in validation_errors:
         _block_validation_failed_file(files, managed_sections, action_summary, target_path)
         blocked.append(f"{target_path}: validation failed")
@@ -248,12 +281,21 @@ def _build_result(
         },
     }
     result["infrastructure_plan"]["intake"] = intake_receipt(task_context)
+    if task_context is None:
+        result['infrastructure_plan']['intake'] = {
+            'mode': 'explicit_legacy_catalog' if legacy_catalog else 'formation_context_required',
+            'reason': 'explicit_catalog_opt_in' if legacy_catalog else 'missing_formation_input',
+            'next_action': 'Use --formation-context request.json, scoped --task-context, or explicit --legacy-catalog.',
+            'authority': 'proposal_only_not_write_permission'}
     if selection is not None:
         result["infrastructure_plan"]["template_selection"] = selection
     result["rendered_artifacts"]["document_readiness"] = {
         name: document_readiness(name, content) for name, content in proposed_content.items()
         if name in DOCUMENT_CONTRACTS
     }
+    if formation is not None:
+        result["formation"] = formation["plan"]
+        result["infrastructure_plan"]["intake"] = {"mode": "project_formation_v1", "authority": "proposal_only"}
     if write_files and stage_root is not None:
         # An ordinary task may reuse every file; its empty proposal still needs
         # a manifest directory, created only after the task-context gate passes.
@@ -264,6 +306,8 @@ def _build_result(
             renderer_result=result,
             renderer_version=_renderer_version(),
         )
+        if formation is not None:
+            manifest["formation"] = formation["plan"]
         manifest_path = write_stage_manifest(stage_root, manifest)
         result["rendered_artifacts"]["manifest_path"] = str(manifest_path)
     return result
@@ -476,10 +520,12 @@ def _validate_generated_files(
     stage_root: Path | None,
     write_files: bool,
     proposed_content: dict[str, str],
+    template_specs: tuple[TemplateSpec, ...] | None = None,
+    existing_paths: set[str] | None = None,
 ) -> dict[str, list[str]]:
     errors: dict[str, list[str]] = {}
-    specs = {item.target_path: item for item in required_templates()}
-    available_prompt_paths = {file["target_path"] for file in files if file["action"] != "blocked"}
+    specs = {item.target_path: item for item in (template_specs if template_specs is not None else required_templates())}
+    available_prompt_paths = {file["target_path"] for file in files if file["action"] != "blocked"} | (existing_paths or set())
     with tempfile.TemporaryDirectory(prefix="product-agent-os-render-") as tmp:
         tmp_root = Path(tmp)
         for file in files:

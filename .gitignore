@@ -59,3 +59,4 @@ Thumbs.db
 
 # Local G8 test workspaces, logs and source-private recovery proposals
 /.codex-tmp/g8-tests/
+/.codex-tmp/g9-tests/

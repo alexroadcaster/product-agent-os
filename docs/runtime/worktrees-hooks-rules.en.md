@@ -15,7 +15,7 @@ This is a preflight guard, not an atomic filesystem transaction. Sandbox, secret
 
 ## Product-Agent OS lifecycle hooks
 
-Product-Agent OS ships staged hooks through `plugins/product-agent-os/assets/templates/hooks/` and `render_infrastructure.py --stage`. For a target project the definition is staged for `.codex/hooks.json` and scripts for `.codex/hooks/`; they remain proposals until approved apply and trust.
+Product-Agent OS ships staged hooks through `plugins/product-agent-os/assets/templates/hooks/` and `render_infrastructure.py --stage` (with formation context and explicit hooks selection, or `--legacy-catalog`). For a target project the definition is staged for `.codex/hooks.json` and scripts for `.codex/hooks/`; they remain proposals until approved apply and trust.
 
 The lifecycle guard works as follows:
 

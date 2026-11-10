@@ -1,0 +1,5 @@
+[
+  {"id":"empty-project","files":{},"domains":["planning","architecture","evidence"]},
+  {"id":"existing-project","files":{"AGENTS.md":"# User rules\nPreserve user decisions.\n","docs/index.md":"# Existing documentation\n","docs/architecture.md":"# Architecture\nR-01 local process.\n","TEST.md":"# Checks\nRun `python check_docs.py`.\n"},"domains":["architecture","api","evidence"]},
+  {"id":"monorepo-ai","files":{"pnpm-workspace.yaml":"packages:\n  - packages/*\n","packages/app/package.json":"{\"name\":\"synthetic-app\",\"private\":true}","docs/planning/tasks.md":"### Task `SYN-01`\n- ID: SYN-01\n- Status: planned\n- Acceptance criteria: preserve the pending owner gate\n"},"domains":["architecture","planning","data","operations","ai"]}
+]

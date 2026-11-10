@@ -2,11 +2,13 @@
 
 Source status: `official + experiment`
 
-Эта страница фиксирует локальные поверхности `CLI`, которые уже есть в `plugins/product-agent-os/scripts/`. Команды рассматриваются как `stage/read-only tooling`: они не публикуют plugin, не запускают внешние системы и не выполняют `live provider/model/API calls` без отдельного `explicit approval`.
+Эта страница фиксирует локальные поверхности `CLI`, которые уже есть в `plugins/product-agent-os/scripts/`. Основной режим — `stage/read-only tooling`; команды apply/rollback требуют отдельной authority: они не публикуют plugin, не запускают внешние системы и не выполняют `live provider/model/API calls` без отдельного `explicit approval`.
+
+Единый [маршрут формирования](project-formation.md) использует `--analyze`, `--dry-run --formation-context request.json`, staging с `--preview-digest`, затем отдельный approval-bound merge/rollback. `--legacy-catalog` в таблице ниже означает явный совместимый каталог; hooks/config/agents требуют выбора и отдельного разрешения на применение.
 
 ## Ordinary route: ограниченная задача {#ordinary-route}
 
-Для небольшой явной задачи используйте inline intake без создания JSON-файла. Обязательны `--task`, `--change-mode`, `--changed-path` и `--acceptance` (no_op допускает отсутствие changed paths). Paths/acceptance можно повторять; `--task-id` — необязательный routing label. Отсутствующий `--risk-level` означает unknown и сохраняет gap. Для behavioral invariants/checks/state используйте `--task-context task.json`; путь остаётся внутри workspace. Смешанный или неполный ввод отклоняется без fallback. Без обоих вариантов прежний default сохраняется, оба entrypoints показывают `intake.mode=legacy_fallback`; runtime также сохраняет `routing_trace.mode=legacy`.
+Для небольшой явной задачи используйте inline intake без создания JSON-файла. Обязательны `--task`, `--change-mode`, `--changed-path` и `--acceptance` (no_op допускает отсутствие changed paths). Paths/acceptance можно повторять; `--task-id` — необязательный routing label. Отсутствующий `--risk-level` означает unknown и сохраняет gap. Для behavioral invariants/checks/state используйте `--task-context task.json`; путь остаётся внутри workspace. Смешанный или неполный ввод отклоняется без fallback. Без input runtime runner сохраняет `intake.mode=legacy_fallback` и `routing_trace.mode=legacy`. Renderer требует scoped/formation context либо явный `--legacy-catalog`; без контекста выдаёт `formation_context_required`. Полный каталог больше не выбирается молча.
 
 ```powershell
 python plugins/product-agent-os/scripts/run_codex_runtime_runner.py ./sample --contract --task "Correct wording" --change-mode docs_only --changed-path README.md --acceptance "Correct wording" --risk-level low
@@ -92,8 +94,8 @@ python plugins/product-agent-os/scripts/render_infrastructure.py ./sample --dry-
 
 | Команда | Назначение | Обязательные входы | Вывод / граница |
 | --- | --- | --- | --- |
-| `python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --dry-run` | Печатает план генерации инфраструктуры. | Путь workspace. | JSON/text план только для чтения; staged files не создаются. |
-| `python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --stage <stage-dir>` | Создает control-plane/templates в staging-каталоге. | Workspace и явный stage directory. | Запись только в рамках `<stage-dir>`; прямое слияние в target остается отдельным шагом. |
+| `python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --dry-run --legacy-catalog` | Печатает план генерации инфраструктуры. | Путь workspace. | JSON/text план только для чтения; staged files не создаются. |
+| `python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --legacy-catalog --stage <stage-dir>` | Создает control-plane/templates в staging-каталоге. | Workspace и явный stage directory. | Запись только в рамках `<stage-dir>`; прямое слияние в target остается отдельным шагом. |
 | `python plugins\product-agent-os\scripts\merge_infrastructure.py <workspace> <stage-dir> --plan` | Строит план слияния только для чтения. | Workspace и stage directory. | Не пишет в target workspace. |
 | `python plugins\product-agent-os\scripts\merge_infrastructure.py <workspace> <stage-dir> --apply --approval-file <approval.json>` | Применяет решения merge с `approval`. | `Approval file`, соответствующий плану. | Пишет только разрешенный `target scope`; `rollback manifest` создается через `merge tooling`. |
 | `python plugins\product-agent-os\scripts\merge_infrastructure.py <workspace> <stage-dir> --rollback <rollback.json>` | Откатывает предыдущее approved merge. | Rollback manifest. | Восстанавливает scoped files из recorded rollback data. |

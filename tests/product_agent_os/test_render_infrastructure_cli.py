@@ -62,7 +62,7 @@ class RenderInfrastructureCliTest(unittest.TestCase):
 
     def test_dry_run_cli_prints_plan_json(self):
         result = subprocess.run(
-            [sys.executable, str(SCRIPT), str(FIXTURES / "node-app"), "--dry-run"],
+            [sys.executable, str(SCRIPT), str(FIXTURES / "node-app"), "--dry-run", "--legacy-catalog"],
             check=False,
             capture_output=True,
             text=True,
@@ -78,7 +78,7 @@ class RenderInfrastructureCliTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp) / "stage"
             result = subprocess.run(
-                [sys.executable, str(SCRIPT), str(FIXTURES / "python-app"), "--stage", str(out)],
+                [sys.executable, str(SCRIPT), str(FIXTURES / "python-app"), "--stage", str(out), "--legacy-catalog"],
                 check=False,
                 capture_output=True,
                 text=True,
@@ -92,7 +92,7 @@ class RenderInfrastructureCliTest(unittest.TestCase):
 
     def test_invalid_workspace_cli_returns_clear_error(self):
         result = subprocess.run(
-            [sys.executable, str(SCRIPT), str(FIXTURES / "missing-workspace"), "--dry-run"],
+            [sys.executable, str(SCRIPT), str(FIXTURES / "missing-workspace"), "--dry-run", "--legacy-catalog"],
             check=False,
             capture_output=True,
             text=True,
@@ -135,7 +135,7 @@ class RenderInfrastructureCliTest(unittest.TestCase):
             out.write_text("not a directory", encoding="utf-8")
 
             result = subprocess.run(
-                [sys.executable, str(SCRIPT), str(FIXTURES / "python-app"), "--stage", str(out)],
+                [sys.executable, str(SCRIPT), str(FIXTURES / "python-app"), "--stage", str(out), "--legacy-catalog"],
                 check=False,
                 capture_output=True,
                 text=True,

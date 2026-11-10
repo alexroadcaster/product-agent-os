@@ -11,6 +11,10 @@ Use this workflow on first use of Product-Agent OS in a real project. It keeps p
 
 ## Formation Order
 
+Use the single `render_infrastructure.py` route: `--analyze`, then `--dry-run --formation-context request.json`, then authorized `--stage` with the exact `--preview-digest`. The request combines task context, applicable domains, canonical paths, supplied facts and explicit control-surface proposals. `formation.gaps` blocks staging; `implementation_gaps` remains open after an honest scaffold. Unknown facts and ambiguous owners never trigger the full catalog.
+
+Review `selection_reasons`, `owners`, `manual_updates` and `runtime_dependencies`. Existing files remain companion proposals. `--previous-plan` reports review-only removal candidates, never deletion. `--merge-stage` uses the existing approval/rollback engine, including source-digest and file-authority checks. Absent input produces a clarification gap; only explicit `--legacy-catalog` selects all legacy templates. Existing `--task`/`--task-context` retains the scoped compatibility route. SessionStart runtime output and fresh-session activation stay separate.
+
 1. Read-only project audit
    - Inspect active instructions, nearest `AGENTS.md`, control-plane files, source/docs structure, stack/runtime signals, tests/evals, security/privacy/release surfaces, dirty state, sandbox and approval boundaries.
    - Run only approved local discovery/audit commands.

@@ -1,14 +1,14 @@
 # EVALS.md
 
-## PAOS-AUD-G9 — планирование, без реализации
+## PAOS-AUD-G9 — результаты для приёмки
 
-Будущий comparison contract [группа G9](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#paos-aud-g9), T09: одинаковые входы и зафиксированный baseline; пустой/существующий/сложный проект, ordinary/AI, missing context, conflict и повторное формирование. Метрики: достаточность, лишние файлы, зависимости/ссылки, сохранность и следующее изменение. Отдельный mandatory failure не скрывать score; уменьшение файлов не доказывает качество или экономию. Сейчас eval results отсутствуют.
+G9 comparison: одинаковые synthetic workspace и факты task context; desired domains отдельно отмечены как неподдерживаемые baseline. Baseline snapshot/revision сохранён до edits. Профили: empty, existing docs, monorepo+AI. Проверки: состав и объяснимость, ссылки, exact-byte preservation, stale/authority failures, repeat/no writes, process-crash recovery, next change. [Результаты](docs/superpowers/specs/paos-aud-g9-project-formation-results.json); [границы](research/product-agent-os-g9-execution-report.md). Количество файлов не является quality score; model/token/cost superiority не заявляется. Owner acceptance G9 pending.
 
 ## PAOS-AUD-G8 — comparison contract, 2026-11-10
 
 Frozen synthetic profiles: Trade-like strict 20 000 bytes/history, myPartners-like mirrors/eval gate, site-like duplicates/cross-repo refs. Same-input legacy/scoped renderer comparison and before/after exact-byte preservation; no model A/B or token/cost advantage claim. Required: 3/3 flows, zero lost original bytes/gates/IDs/evidence, fail-closed stale hash/unknown authority/broken links, exact recovery and next-change continuation. [Results](docs/superpowers/specs/paos-aud-g8-control-plane-results.json), [limits and failures](research/product-agent-os-g8-execution-report.md). Simulated redirect detection is separate from real filesystem symlink/junction evidence; owner acceptance and fresh-session activation are not inferred.
 
-Уточнение владельца 10.11.2026: подробные матрицы в `docs/planning/` сохраняются целиком, default 40k size trigger исключён; оглавления/control-plane и explicit per-file limits сохраняют ограничения. Audit matrix в `research/` остаётся целой; split отложен, прежний preview не разрешён. Единственное оставшееся решение G8 — приёмка итогового T14; fresh-session activation отдельно.
+Уточнение владельца 10.11.2026: подробные матрицы в `docs/planning/` сохраняются целиком, default 40k size trigger исключён; оглавления/control-plane и explicit per-file limits сохраняют ограничения. Audit matrix в `research/` остаётся целой; split отложен, прежний preview не разрешён. G8-T14 и закрытие G8 явно приняты владельцем; fresh-session activation отдельно.
 
 ## Web M1 — scope v0.7 / очередь v0.8, 2026-11-10
 

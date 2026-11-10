@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import re
 import shutil
+import time
 from datetime import UTC, datetime
 from pathlib import Path, PureWindowsPath
 from typing import Any
@@ -46,6 +47,7 @@ def apply_merge_plan(
     stage_root: str | Path,
     approval_file: str | Path,
 ) -> dict[str, Any]:
+    """Apply exact approvals; formation creates use a write-ahead recovery receipt."""
     workspace_path = Path(workspace).resolve()
     stage_path = Path(stage_root).resolve()
     approval_payload = _load_approval_file(Path(approval_file))
@@ -76,15 +78,25 @@ def apply_merge_plan(
     entries: list[dict[str, Any]] = []
     results: list[dict[str, Any]] = []
     _write_rollback_manifest(rollback_path, workspace_path, entries)
+    formation_apply = "formation" in load_stage_manifest(stage_path)
     for decision in required_decisions:
         current_decision = _decision_by_target(effective_current_plan, decision["target_path"])
         if current_decision["action"] != decision["action"]:
             raise MergeInfrastructureError(f"stale decision for {decision['target_path']}")
         entry = _rollback_entry(workspace_path, stage_path, current_decision)
-        _apply_decision(workspace_path, stage_path, current_decision)
+        if formation_apply:
+            # Write-ahead receipt closes the crash window after file replacement.
+            if current_decision['action'] != 'create_file':
+                raise MergeInfrastructureError('formation may only create absent files')
+            entry.update(formation=True, prepared=True, digest_after=current_decision['staged_digest'])
+            entries.append(entry)
+            _write_rollback_manifest(rollback_path, workspace_path, entries)
+        _apply_decision(workspace_path, stage_path, current_decision | {'formation_atomic_create': formation_apply})
+        entry['prepared'] = False
         entry["digest_after"] = file_digest(workspace_path / current_decision["target_path"])
         entry["verification"] = {"digest_after_recorded": True}
-        entries.append(entry)
+        if not formation_apply:
+            entries.append(entry)
         results.append(
             {
                 "target_path": current_decision["target_path"],
@@ -103,6 +115,7 @@ def apply_merge_plan(
 
 
 def rollback_merge(workspace: str | Path, rollback_manifest: str | Path) -> dict[str, Any]:
+    """Restore owned writes only when current bytes still match the recovery record."""
     workspace_path = Path(workspace).resolve()
     manifest_path = Path(rollback_manifest).resolve()
     payload = _load_json_file(manifest_path, "rollback manifest")
@@ -113,6 +126,12 @@ def rollback_merge(workspace: str | Path, rollback_manifest: str | Path) -> dict
     if not isinstance(entries, list):
         raise MergeInfrastructureError("rollback manifest entries must be a list")
 
+    if any(isinstance(e, dict) and e.get('formation') for e in entries):
+        from product_agent_os.control_plane_compaction import _authority
+        try:
+            _authority(workspace_path, [e['target_path'] for e in entries])
+        except ValueError as exc:
+            raise MergeInfrastructureError(str(exc)) from exc
     results: list[dict[str, str]] = []
     for entry in reversed(entries):
         if not isinstance(entry, dict):
@@ -122,6 +141,9 @@ def rollback_merge(workspace: str | Path, rollback_manifest: str | Path) -> dict
         _reject_symlink_path(target, workspace_path, include_file=target.exists() or target.is_symlink())
         expected_after = str(entry.get("digest_after", ""))
         if not target.exists():
+            if entry.get('formation') and entry.get('prepared') and entry.get('action') == 'created':
+                results.append({'target_path': target_path, 'status': 'not_written'})
+                continue
             raise MergeInfrastructureError(f"target changed after apply: {target_path}")
         if not target.is_file():
             raise MergeInfrastructureError(f"rollback target is not a file: {target_path}")
@@ -235,6 +257,10 @@ def _merge_plan(
 
 def _manifest_binding_errors(workspace: Path, manifest: dict[str, Any]) -> list[str]:
     errors: list[str] = []
+    if "formation" in manifest:
+        from product_agent_os.project_formation import formation_binding_errors
+        errors.extend(formation_binding_errors(workspace, manifest["formation"],
+                      [item['target_path'] for item in manifest['files']]))
     manifest_workspace = str(manifest.get("workspace", "")).strip()
     if not manifest_workspace:
         errors.append("stage manifest workspace is required")
@@ -392,6 +418,12 @@ def _apply_decision(workspace: Path, stage_root: Path, decision: dict[str, Any])
     try:
         target.parent.mkdir(parents=True, exist_ok=True)
         if decision["action"] == "create_file":
+            if decision.get('formation_atomic_create'):
+                from product_agent_os.control_plane_compaction import _write
+                if target.exists():
+                    raise MergeInfrastructureError('formation target appeared during apply')
+                _write(target, staged.read_bytes())
+                return
             shutil.copyfile(staged, target)
             return
         existing = target.read_text(encoding="utf-8")
@@ -478,22 +510,23 @@ def _rollback_entry(workspace: Path, stage_root: Path, decision: dict[str, Any])
 
 
 def _write_rollback_manifest(path: Path, workspace: Path, entries: list[dict[str, Any]]) -> None:
-    try:
-        path.write_text(
-            json.dumps(
-                {
-                    "schema_version": 1,
-                    "workspace": str(workspace),
-                    "generated_at": datetime.now(UTC).replace(microsecond=0).isoformat(),
-                    "entries": entries,
-                },
-                indent=2,
-                sort_keys=True,
-            ),
-            encoding="utf-8",
-        )
-    except OSError as exc:
-        raise MergeInfrastructureError(f"unable to write rollback manifest: {path}: {exc}") from exc
+    """Atomically retain the last complete recovery receipt on interruption."""
+    from product_agent_os.control_plane_compaction import _write
+    payload = {'schema_version': 1, 'workspace': str(workspace),
+               'generated_at': datetime.now(UTC).replace(microsecond=0).isoformat(), 'entries': entries}
+    raw = json.dumps(payload, indent=2, sort_keys=True).encode('utf-8')
+    for attempt in range(3):
+        try:
+            _write(path, raw)
+            return
+        except PermissionError as exc:
+            # Windows readers can briefly lock replacement. Retry the same
+            # atomic write, never delete the journal or bypass a pending writer.
+            if attempt == 2:
+                raise MergeInfrastructureError(f'unable to write rollback manifest: {path}: {exc}') from exc
+            time.sleep(0.05 * (attempt + 1))
+        except OSError as exc:
+            raise MergeInfrastructureError(f'unable to write rollback manifest: {path}: {exc}') from exc
 
 
 def _write_plan_artifacts(stage_root: Path, plan: dict[str, Any]) -> None:

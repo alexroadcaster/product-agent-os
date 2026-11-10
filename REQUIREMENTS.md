@@ -1,14 +1,18 @@
 # REQUIREMENTS.md
 
-## PAOS-AUD-G9 — планирование, без реализации
+## PAOS-AUD-G9 — плановое расширение сопровождения
 
-Разрешено только планирование: [группа G9](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#paos-aud-g9), T01–T10 planned. Цель будущей реализации — анализ → выбор файлов → согласованная структура docs/ и .codex/ → preview/staging → разрешённое применение и сопровождение. Переиспользовать G8, сохранить пользовательские данные и source ownership M1. G8-T14, fresh-session activation и внешние действия не закрываются этой правкой.
+Добавлены T11–T17 в [матрицу G9](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#расширение-g9-точечное-сопровождение-после-каждой-задачи): после каждой задачи оценивать docs impact, обновлять только основной источник изменившихся сведений и сохранять данные. Сейчас разрешено только планирование; детали, зависимости и критерии находятся в матрице.
+
+## PAOS-AUD-G9 — результаты для приёмки
+
+G8-T14/G8 явно приняты владельцем. G9 T01–T09 реализованы и локально проверены; T10 ожидает явной приёмки. Единый маршрут анализа, выбора, docs/.codex структуры, staging, approval-bound apply и повторного формирования сохраняет существующие данные. [Матрица G9](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#paos-aud-g9), [evidence и ограничения](research/product-agent-os-g9-execution-report.md). Fresh-session activation отдельно; реальные target/provider/Git действия не входят в выполненный slice.
 
 ## PAOS-AUD-G8 — реализация, 2026-11-10
 
 Разрешённый scope: T01–T14 из [матрицы аудита](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md). Контракт: содержательные scoped documents, сохранение заполненного managed content, 40 000 UTF-8 bytes (warning 32 000; stricter wins), lossless proposal/apply/recovery, навигация и provenance. Реальные три проекта остаются read-only. Owner decision T14 и fresh-session activation отдельны; M1 сохраняет собственные source owners. Исторический compatibility block сохранён побайтно в [архиве требований](research/product-agent-os-requirements-history-2026-11-10.md).
 
-Уточнение владельца 10.11.2026: подробные матрицы в `docs/planning/` сохраняются целиком, default 40k size trigger исключён; оглавления/control-plane и explicit per-file limits сохраняют ограничения. Audit matrix в `research/` остаётся целой; split отложен, прежний preview не разрешён. Единственное оставшееся решение G8 — приёмка итогового T14; fresh-session activation отдельно.
+Уточнение владельца 10.11.2026: подробные матрицы в `docs/planning/` сохраняются целиком, default 40k size trigger исключён; оглавления/control-plane и explicit per-file limits сохраняют ограничения. Audit matrix в `research/` остаётся целой; split отложен, прежний preview не разрешён. G8-T14 и закрытие G8 явно приняты владельцем; fresh-session activation отдельно.
 
 ## Текущий scope Web M1 — 2026-11-10
 

@@ -2,7 +2,7 @@
 
 ## G8: документы и безопасное сокращение
 
-Локальный scoped renderer (`--task` или `--task-context`) создаёт компактные документы по назначению. `documents` в task context задаёт явные facts с `source`; `evals_required: true` или пакет EVALS включает eval-документ. Legacy вызов без task context сохраняет полный registry; это compatibility route, а не рекомендация создавать весь набор.
+Локальный scoped renderer (`--task` или `--task-context`) создаёт компактные документы по назначению. `documents` в task context задаёт явные facts с `source`; `evals_required: true` или пакет EVALS включает eval-документ. Полный registry теперь требует явного `--legacy-catalog`; без контекста возвращается gap. Единый [маршрут формирования проекта](project-formation.md) использует `--formation-context`.
 
 Владельцы информации: AGENTS — durable rules; REQUIREMENTS — scope/acceptance; PLAN — sequencing; TEST — verification; EVALS — quality rubric; RUNLOG — текущий handoff. Schema v1 хранит facts как JSON data block, независимо от языка заголовков. Неизвестные поля требуют явной миграции. `validate_control_plane.py workspace --semantic` различает missing/scaffold/draft; reviewed/accepted требуют отдельного receipt с source digest, reviewer/evidence и owner decision. Legacy structural mode проверяет только файлы. Receipt — заявленное локальное evidence, не proof runtime или автоматическая приёмка.
 
@@ -45,8 +45,8 @@ Source status: `official + experiment`
 
 | Задача | Стартовая команда или страница | Boundary |
 | --- | --- | --- |
-| Проверить staged infrastructure без пишет | `render_infrastructure.py <workspace> --dry-run` | Read-only plan; target workspace не меняется. |
-| Сгенерировать proposal outside target workspace | `render_infrastructure.py <workspace> --stage <stage-dir>` | Stage directory должен быть явным. |
+| Проверить staged infrastructure без пишет | `render_infrastructure.py <workspace> --dry-run --legacy-catalog` | Read-only plan; target workspace не меняется. |
+| Сгенерировать proposal outside target workspace | `render_infrastructure.py <workspace> --legacy-catalog --stage <stage-dir>` | Stage directory должен быть явным. |
 | Построить static graph/cockpit | [Project Code Graph](project-code-graph.md) | Generated graph/cockpit являются orientation evidence only. |
 | Проверить live/runtime/provider gates | [Live Runtime Governance](live-runtime-governance.md) | Нет live server, provider calls или canonical graph mutation. |
 | Применить Professional Code Authoring | [Professional Code Authoring standards](coding-standards.md) | Source contract only; не доказывает real agent behavior или runtime enforcement. |
@@ -198,13 +198,13 @@ Generation является staged-first. Existing user-authored files явля�
 Read-only infrastructure plan:
 
 ```powershell
-python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --dry-run
+python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --dry-run --legacy-catalog
 ```
 
 Stage generated artifacts outside target workspace:
 
 ```powershell
-python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --stage <stage-dir>
+python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --legacy-catalog --stage <stage-dir>
 ```
 
 Plan merge из staged artifacts:

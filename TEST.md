@@ -1,14 +1,14 @@
 # TEST.md
 
-## PAOS-AUD-G9 — планирование, без реализации
+## PAOS-AUD-G9 — результаты для приёмки
 
-Для текущего authoring [группа G9](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#paos-aud-g9): docs unittest, tools/check_docs.py, validate_task_matrix.py, current-state revision/projection и git diff --check. Новые G9 runtime tests и пилоты не выполняются: реализация отсутствует. Будущие focused/integration/fixture/compatibility gates задаются карточками и общим TEST.md; strict MkDocs — при изменении навигации/config/site evidence.
+G9 current runtime: Ran 1435 tests in 803.716s, OK (skipped=1); post-fix focused 57 OK; fixtures 91/91, transcripts 26/26; compatibility compatible; strict MkDocs isolated preview passed. [Точные команды, failed attempts, final docs/matrix checks и evidence ceiling](research/product-agent-os-g9-execution-report.md). Проверены actual process crash/recovery, source binding, preservation, conditional selection и три synthetic formation profiles. Host activation и M1 SQL runtime не доказаны.
 
 ## PAOS-AUD-G8 — verification, 2026-11-10
 
 G8 commands: `python -B -m unittest discover -s tests -p "test_*.py" -q`; focused `test_control_plane_documents`, `test_control_plane_compaction`, `test_document_navigation`, `test_g8_control_plane`, renderer/merge/hygiene/lifecycle/state suites. Pilot packet: `python -B -m tests.product_agent_os.test_g8_control_plane --report docs/superpowers/specs/paos-aud-g8-control-plane-results.json --baseline .codex-tmp/g8-tests/g8-baseline`. Use process-local TEMP/TMP `.codex-tmp/g8-tests`; no dependencies installed. Fixture/transcript/compatibility, docs tests/checker, task matrix and diff gates remain mandatory. Strict MkDocs builds only to `.codex-tmp/g8-tests/site`. Exact outcomes and failed attempts: [execution report](research/product-agent-os-g8-execution-report.md).
 
-Уточнение владельца 10.11.2026: подробные матрицы в `docs/planning/` сохраняются целиком, default 40k size trigger исключён; оглавления/control-plane и explicit per-file limits сохраняют ограничения. Audit matrix в `research/` остаётся целой; split отложен, прежний preview не разрешён. Единственное оставшееся решение G8 — приёмка итогового T14; fresh-session activation отдельно.
+Уточнение владельца 10.11.2026: подробные матрицы в `docs/planning/` сохраняются целиком, default 40k size trigger исключён; оглавления/control-plane и explicit per-file limits сохраняют ограничения. Audit matrix в `research/` остаётся целой; split отложен, прежний preview не разрешён. G8-T14 и закрытие G8 явно приняты владельцем; fresh-session activation отдельно.
 
 ## Проверки Web M1 — актуальный маршрут 2026-11-10
 

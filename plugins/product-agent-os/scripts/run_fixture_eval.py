@@ -1819,7 +1819,7 @@ def evaluate_fixture(path: Path) -> dict[str, Any]:
     profile_name = profile.get("name", "") if isinstance(profile, dict) else ""
     risks = audit.get("risks", [])
     try:
-        rendered = render_infrastructure_plan(path)
+        rendered = render_infrastructure_plan(path, legacy_catalog=True)
         renderer_status = str(rendered["infrastructure_plan"]["status"])
         merge_status = renderer_status
         renderer_files = rendered["rendered_artifacts"]["files"]
@@ -9241,7 +9241,7 @@ def _exercise_stale_merge_plan(path: Path) -> tuple[str, bool]:
         workspace = Path(tmp) / "workspace"
         stage_root = Path(tmp) / "stage"
         shutil.copytree(path, workspace)
-        stage_infrastructure(workspace, stage_root)
+        stage_infrastructure(workspace, stage_root, legacy_catalog=True)
         (workspace / "AGENTS.md").write_text("# Added after staging\n", encoding="utf-8")
         plan = build_merge_plan(workspace, stage_root)
     blocked = " ".join(plan.get("blocked", []))

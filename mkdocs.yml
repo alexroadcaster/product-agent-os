@@ -123,6 +123,7 @@ plugins:
                 - Artifact Contracts: product-agent-os/artifact-contracts.md
                 - Packaging And Closure: product-agent-os/packaging-and-closure.md
                 - Technical Setup: product-agent-os/technical.md
+                - Project Formation: product-agent-os/project-formation.md
                 - Engineering Standards Layer: product-agent-os/development-standards.md
                 - Professional Code Authoring: product-agent-os/coding-standards.md
                 - Methodology Intelligence: product-agent-os/methodology-intelligence.md
@@ -274,6 +275,7 @@ nav:
       - Artifact Contracts: product-agent-os/artifact-contracts.md
       - Packaging And Closure: product-agent-os/packaging-and-closure.md
       - Технические особенности и установка: product-agent-os/technical.md
+      - Формирование проекта: product-agent-os/project-formation.md
       - Engineering standards layer: product-agent-os/development-standards.md
       - Professional Code Authoring: product-agent-os/coding-standards.md
       - Methodology intelligence: product-agent-os/methodology-intelligence.md

@@ -2,11 +2,13 @@
 
 Source status: `official + experiment`
 
-This page records the local Product-Agent OS CLI surfaces that already exist in `plugins/product-agent-os/scripts/`. It describes commands as stage/read-only tooling: they do not publish the plugin, start external systems or perform live provider/model/API calls without separate explicit approval.
+This page records the local Product-Agent OS CLI surfaces that already exist in `plugins/product-agent-os/scripts/`. The primary mode is stage/read-only tooling; apply/rollback commands require separate authority: they do not publish the plugin, start external systems or perform live provider/model/API calls without separate explicit approval.
+
+The unified [formation route](project-formation.md) uses `--analyze`, `--dry-run --formation-context request.json`, staging with `--preview-digest`, then separately approved merge/rollback. `--legacy-catalog` in the table below means the explicit compatibility catalog; hooks/config/agents require selection and separate apply authority.
 
 ## Ordinary route: a bounded task {#ordinary-route}
 
-For a small explicit task, use inline intake without creating a JSON file. `--task`, `--change-mode`, `--changed-path` and `--acceptance` are required (no_op may omit changed paths). Paths/acceptance repeat; `--task-id` is an optional routing label. Missing `--risk-level` means unknown and keeps a gap. Rich behavioral invariants/checks/state use `--task-context task.json`; its path must remain inside the workspace. Mixing inline/file input or providing partial input fails, without fallback. With neither input, the previous default is preserved and both entrypoints expose `intake.mode=legacy_fallback`; runtime also retains `routing_trace.mode=legacy`.
+For a small explicit task, use inline intake without creating a JSON file. `--task`, `--change-mode`, `--changed-path` and `--acceptance` are required (no_op may omit changed paths). Paths/acceptance repeat; `--task-id` is an optional routing label. Missing `--risk-level` means unknown and keeps a gap. Rich behavioral invariants/checks/state use `--task-context task.json`; its path must remain inside the workspace. Mixing inline/file input or providing partial input fails, without fallback. Without input the runtime runner retains `intake.mode=legacy_fallback` and `routing_trace.mode=legacy`. The renderer requires scoped/formation context or explicit `--legacy-catalog`; missing context returns `formation_context_required`. It no longer silently selects the full catalog.
 
 ```powershell
 python plugins/product-agent-os/scripts/run_codex_runtime_runner.py ./sample --contract --task "Correct wording" --change-mode docs_only --changed-path README.md --acceptance "Correct wording" --risk-level low
@@ -92,8 +94,8 @@ Generated outputs are not source of truth. Source of truth remains checked-in so
 
 | Command | Purpose | Required inputs | Output / boundary |
 | --- | --- | --- | --- |
-| `python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --dry-run` | Print an infrastructure render plan. | Target workspace path. | Read-only JSON/text plan; no staged files. |
-| `python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --stage <stage-dir>` | Stage generated control-plane/templates. | Workspace and explicit stage directory. | Writes only under `<stage-dir>`; direct target merge remains separate. |
+| `python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --dry-run --legacy-catalog` | Print an infrastructure render plan. | Target workspace path. | Read-only JSON/text plan; no staged files. |
+| `python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --legacy-catalog --stage <stage-dir>` | Stage generated control-plane/templates. | Workspace and explicit stage directory. | Writes only under `<stage-dir>`; direct target merge remains separate. |
 | `python plugins\product-agent-os\scripts\merge_infrastructure.py <workspace> <stage-dir> --plan` | Build a read-only merge plan. | Workspace and stage directory. | No writes to target workspace. |
 | `python plugins\product-agent-os\scripts\merge_infrastructure.py <workspace> <stage-dir> --apply --approval-file <approval.json>` | Apply approved merge decisions. | Approval file matching the plan. | Approved target writes only; rollback manifest can be produced by merge tooling. |
 | `python plugins\product-agent-os\scripts\merge_infrastructure.py <workspace> <stage-dir> --rollback <rollback.json>` | Roll back a prior approved merge. | Rollback manifest. | Restores scoped files from recorded rollback data. |

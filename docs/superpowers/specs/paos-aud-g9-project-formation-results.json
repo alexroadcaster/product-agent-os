@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "group": "PAOS-AUD-G9",
+  "owner_acceptance": "pending",
+  "environment": {
+    "python": "3.13.5",
+    "system": "Windows",
+    "providers": false
+  },
+  "baseline_revision": "6548ee12933091864b3876e8544985deaf376f4f",
+  "source_hashes": {
+    "plugins/product-agent-os/scripts/product_agent_os/project_formation.py": "c12f96df21e60bd110c782efe5d1773c1b7029f92fae417932f637f313c84c05",
+    "plugins/product-agent-os/scripts/product_agent_os/infrastructure.py": "4d37df4438a809cfc0fd6bdbdb5b7cd757737ba3c6bd10e283571030d24edb9b",
+    "plugins/product-agent-os/scripts/product_agent_os/merge_infrastructure.py": "34ad32b8c974d295c46e34d4c5b331a1d894013c54873df76d017d7efb6914a1",
+    "plugins/product-agent-os/scripts/product_agent_os/stage_manifest.py": "192f3ee010fef05bfc61b66f9b34384640cd3bf937160ca35c5a7abadabb27e7",
+    "plugins/product-agent-os/scripts/product_agent_os/templates.py": "691df7a1061bed301ec4993636b6623f47e1d6f60cfd4e4d846f1b748bf26f2d",
+    "plugins/product-agent-os/scripts/render_infrastructure.py": "fc0ffb99e565d4ea441c2023691cdbcf876eb0da9e970b835ecddb202f39b364",
+    "tests/product_agent_os/test_project_formation.py": "dda966097217704b1a261267237ee3df23f8da376e486e4d35945a57c0e0da34",
+    "tests/fixtures/product_agent_os/g9-project-formation/cases.json": "2e6274352e899c860edfa02440645667e2a75d7384d16abf4dd4ef7a3e78bac9",
+    "plugins/product-agent-os/assets/templates/workflows/project-formation.md": "e0dab58a147be40fd446dbbcc502bb13af23ffd03bbb055100747646492a9e57",
+    "plugins/product-agent-os/skills/implementation-planner/SKILL.md": "1c7e0d7ce78824f95ca3511d36a2afafa2cc5df70add9bdd4efda9d530493e7b"
+  },
+  "comparison": "same workspace and request; baseline receives identical task facts; desired domains unsupported in baseline",
+  "profiles": [
+    {
+      "profile": "empty-project",
+      "status": "passed",
+      "baseline": {
+        "files": 7,
+        "bytes": 7964,
+        "default_without_context_files": 210,
+        "project_docs": 0,
+        "validation_ok": true,
+        "desired_domains_supported": false
+      },
+      "input_digest": "587feb21e3973a27f3955e9259551d1b807476f66005601f0028f49c31855253",
+      "template_revisions": {
+        ".codex/artifact-templates/agent-task-packet.md": "sha256:c8d4c3d3b41126d6d0e09b3778662d34348d3abdc62fdf2426bf1edaa9c0fdf5",
+        ".codex/artifact-templates/code-change-contract.md": "sha256:d10ef5a065a722cf613ef6571384b5a1e9e59f43f677e1c74b9766ed173653e7",
+        ".codex/artifact-templates/coding-standard-checklist.md": "sha256:c27165c6e3e2c86792c45d541fff0c20d52e604cb2e6f906cc08cf3c1bf94de0",
+        ".codex/artifact-templates/quality-strategy.md": "sha256:27a1f620e7a0216896bd99eee326d7972a50a6f5a8dffc80f0e04f2aff5a48c5",
+        ".codex/workflows/coding-standards.md": "sha256:91cdac9aef5d7f8a2bff50c73822c27d84cbce7d8c758e218fdbe45c93ac5275",
+        "AGENTS.md": "sha256:3edeeff591a9b39f1cad14448f67d26c2879c23ff7a49539e97c4ef325640e1b",
+        "PLAN.md": "sha256:98f88fb8bb30e0ff1523c636f708571386ccc36ca6cbf9533ea685f6c4e38bda",
+        "REQUIREMENTS.md": "sha256:affa199295b6b1a4987d844e3dc4a9628b4e6dc7c50bf3f3f75fec1d67f1607d",
+        "RUNLOG.md": "sha256:cd2c48f6b67e0cb7805f8a39a0ba56d9e03f5685aa0cd5c0a563acf9d72b29a3",
+        "TEST.md": "sha256:2f1e61a535d52650324a3af96c6a46a8aff8afb8b4d79594726b3a870bf2ba09",
+        "docs/README.md": "sha256:c12f96df21e60bd110c782efe5d1773c1b7029f92fae417932f637f313c84c05",
+        "docs/architecture/overview.md": "sha256:c12f96df21e60bd110c782efe5d1773c1b7029f92fae417932f637f313c84c05",
+        "docs/evidence/README.md": "sha256:c12f96df21e60bd110c782efe5d1773c1b7029f92fae417932f637f313c84c05",
+        "docs/planning/README.md": "sha256:c12f96df21e60bd110c782efe5d1773c1b7029f92fae417932f637f313c84c05"
+      },
+      "treatment": {
+        "files": 14,
+        "bytes": 28257,
+        "project_docs": 4,
+        "formation_gaps": [],
+        "implementation_gaps": [
+          "No project-owned verification command selected; specify a check or review the project instructions",
+          "No project instruction or verification source found; perform discovery before implementation"
+        ],
+        "manual_updates": []
+      },
+      "preservation_exact": true,
+      "rollback_exact": true,
+      "navigation_valid": true,
+      "proposed_navigation_valid": true,
+      "repeat_no_writes": true,
+      "next_change_detected": true,
+      "activation": "not_tested",
+      "ceiling": "synthetic local; existing index update remains companion proposal"
+    },
+    {
+      "profile": "existing-project",
+      "status": "passed",
+      "baseline": {
+        "files": 7,
+        "bytes": 7964,
+        "default_without_context_files": 210,
+        "project_docs": 0,
+        "validation_ok": true,
+        "desired_domains_supported": false
+      },
+      "input_digest": "8457361a5124b09e16e86ed20fdbe70d18e1d315a25fcc38432e8664ad94062c",
+      "template_revisions": {
+        ".codex/artifact-templates/agent-task-packet.md": "sha256:c8d4c3d3b41126d6d0e09b3778662d34348d3abdc62fdf2426bf1edaa9c0fdf5",
+        ".codex/artifact-templates/code-change-contract.md": "sha256:d10ef5a065a722cf613ef6571384b5a1e9e59f43f677e1c74b9766ed173653e7",
+        ".codex/artifact-templates/coding-standard-checklist.md": "sha256:c27165c6e3e2c86792c45d541fff0c20d52e604cb2e6f906cc08cf3c1bf94de0",
+        ".codex/artifact-templates/quality-strategy.md": "sha256:27a1f620e7a0216896bd99eee326d7972a50a6f5a8dffc80f0e04f2aff5a48c5",
+        ".codex/workflows/coding-standards.md": "sha256:91cdac9aef5d7f8a2bff50c73822c27d84cbce7d8c758e218fdbe45c93ac5275",
+        "AGENTS.md": "sha256:3edeeff591a9b39f1cad14448f67d26c2879c23ff7a49539e97c4ef325640e1b",
+        "PLAN.md": "sha256:98f88fb8bb30e0ff1523c636f708571386ccc36ca6cbf9533ea685f6c4e38bda",
+        "REQUIREMENTS.md": "sha256:affa199295b6b1a4987d844e3dc4a9628b4e6dc7c50bf3f3f75fec1d67f1607d",
+        "RUNLOG.md": "sha256:cd2c48f6b67e0cb7805f8a39a0ba56d9e03f5685aa0cd5c0a563acf9d72b29a3",
+        "TEST.md": "sha256:2f1e61a535d52650324a3af96c6a46a8aff8afb8b4d79594726b3a870bf2ba09",
+        "docs/api/README.md": "sha256:c12f96df21e60bd110c782efe5d1773c1b7029f92fae417932f637f313c84c05",
+        "docs/architecture.md": "sha256:c12f96df21e60bd110c782efe5d1773c1b7029f92fae417932f637f313c84c05",
+        "docs/evidence/README.md": "sha256:c12f96df21e60bd110c782efe5d1773c1b7029f92fae417932f637f313c84c05",
+        "docs/index.md": "sha256:c12f96df21e60bd110c782efe5d1773c1b7029f92fae417932f637f313c84c05"
+      },
+      "treatment": {
+        "files": 14,
+        "bytes": 28208,
+        "project_docs": 4,
+        "formation_gaps": [],
+        "implementation_gaps": [],
+        "manual_updates": [
+          "AGENTS.md",
+          "TEST.md",
+          "docs/architecture.md",
+          "docs/index.md"
+        ]
+      },
+      "preservation_exact": true,
+      "rollback_exact": true,
+      "navigation_valid": true,
+      "proposed_navigation_valid": true,
+      "repeat_no_writes": true,
+      "next_change_detected": true,
+      "activation": "not_tested",
+      "ceiling": "synthetic local; existing index update remains companion proposal"
+    },
+    {
+      "profile": "monorepo-ai",
+      "status": "passed",
+      "baseline": {
+        "files": 8,
+        "bytes": 8404,
+        "default_without_context_files": 210,
+        "project_docs": 0,
+        "validation_ok": true,
+        "desired_domains_supported": false
+      },
+      "input_digest": "1048acc58deb81ca9cf58e7c9e0a0b1862314fdaadde2fd9d2f9442100cac814",
+      "template_revisions": {
+        ".codex/artifact-templates/agent-task-packet.md": "sha256:c8d4c3d3b41126d6d0e09b3778662d34348d3abdc62fdf2426bf1edaa9c0fdf5",
+        ".codex/artifact-templates/code-change-contract.md": "sha256:d10ef5a065a722cf613ef6571384b5a1e9e59f43f677e1c74b9766ed173653e7",
+        ".codex/artifact-templates/coding-standard-checklist.md": "sha256:c27165c6e3e2c86792c45d541fff0c20d52e604cb2e6f906cc08cf3c1bf94de0",
+        ".codex/artifact-templates/quality-strategy.md": "sha256:27a1f620e7a0216896bd99eee326d7972a50a6f5a8dffc80f0e04f2aff5a48c5",
+        ".codex/workflows/coding-standards.md": "sha256:91cdac9aef5d7f8a2bff50c73822c27d84cbce7d8c758e218fdbe45c93ac5275",
+        "AGENTS.md": "sha256:3edeeff591a9b39f1cad14448f67d26c2879c23ff7a49539e97c4ef325640e1b",
+        "EVALS.md": "sha256:586bb72aadc522964b35975d4e30d91f40bfc2182fc4c597ab1f399a659d1b37",
+        "PLAN.md": "sha256:98f88fb8bb30e0ff1523c636f708571386ccc36ca6cbf9533ea685f6c4e38bda",
+        "REQUIREMENTS.md": "sha256:affa199295b6b1a4987d844e3dc4a9628b4e6dc7c50bf3f3f75fec1d67f1607d",
+        "RUNLOG.md": "sha256:cd2c48f6b67e0cb7805f8a39a0ba56d9e03f5685aa0cd5c0a563acf9d72b29a3",
+        "TEST.md": "sha256:2f1e61a535d52650324a3af96c6a46a8aff8afb8b4d79594726b3a870bf2ba09",
+        "docs/README.md": "sha256:c12f96df21e60bd110c782efe5d1773c1b7029f92fae417932f637f313c84c05",
+        "docs/architecture/overview.md": "sha256:c12f96df21e60bd110c782efe5d1773c1b7029f92fae417932f637f313c84c05",
+        "docs/data/README.md": "sha256:c12f96df21e60bd110c782efe5d1773c1b7029f92fae417932f637f313c84c05",
+        "docs/operations/README.md": "sha256:c12f96df21e60bd110c782efe5d1773c1b7029f92fae417932f637f313c84c05",
+        "docs/planning/README.md": "sha256:c12f96df21e60bd110c782efe5d1773c1b7029f92fae417932f637f313c84c05"
+      },
+      "treatment": {
+        "files": 16,
+        "bytes": 29045,
+        "project_docs": 5,
+        "formation_gaps": [],
+        "implementation_gaps": [
+          "No project-owned verification command selected; specify a check or review the project instructions",
+          "No project instruction or verification source found; perform discovery before implementation"
+        ],
+        "manual_updates": []
+      },
+      "preservation_exact": true,
+      "rollback_exact": true,
+      "navigation_valid": true,
+      "proposed_navigation_valid": true,
+      "repeat_no_writes": true,
+      "next_change_detected": true,
+      "activation": "not_tested",
+      "ceiling": "synthetic local; existing index update remains companion proposal"
+    }
+  ]
+}

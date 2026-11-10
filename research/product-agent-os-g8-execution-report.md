@@ -1,14 +1,16 @@
 # PAOS-AUD-G8 — execution evidence
 
-Source status: project-local implementation and verification, 10.11.2026. Owner acceptance pending; fresh-session activation separate.
+Owner decision update: G8-T14 and G8 closure explicitly accepted in the current session. Previous pending-acceptance receipts below are historical. Fresh-session activation remains separate; research matrix retained unsplit.
+
+Source status: project-local implementation and verification, 10.11.2026. Owner accepted G8-T14 and G8 closure; fresh-session activation separate.
 
 ## Latest owner scope and T14 packet — 2026-11-10
 
-The owner has directed that detailed task matrices in `docs/planning/` remain intact and that the current audit matrix in `research/` must not be split. Those scope decisions are recorded; there is no pending split approval in G8. T14 result acceptance remains pending. Historical preview/earlier handoff sections below are retained as evidence and do not authorize apply.
+The owner has directed that detailed task matrices in `docs/planning/` remain intact and that the current audit matrix in `research/` must not be split. Those scope decisions are recorded; there is no pending split approval in G8. T14 result acceptance and G8 closure are now explicitly accepted by the owner. Historical preview/earlier handoff sections below are retained as evidence and do not authorize apply.
 
 Implementation: shared `is_detailed_planning_matrix` recognition serves hygiene and explicit compaction budget validation. It recognizes detailed cards/tables within `docs/planning/`, including nested files; index/README/control-plane filenames and fenced examples remain excluded. An explicit per-file project limit wins. Other content/link/security checks and exact apply authority remain unchanged. This is a size-only exception for active detail, not an archive relabel or automatic mutation. No real planning matrices were rewritten.
 
-The research audit matrix remains oversized by owner-directed deferral; G8 does not claim a repository-wide zero-size-finding hygiene audit. It remains one source file with 48 cards and a current revision-pinned PLAN selector. Fresh-session activation is still separate.
+The research audit matrix remains oversized by owner-directed deferral; G8 does not claim a repository-wide zero-size-finding hygiene audit. At the G8 receipt it contained 48 cards; G9 later added 10 planning cards. It remains one source file with a revision-pinned PLAN selector. Fresh-session activation is still separate.
 
 ## Scope and ownership
 

@@ -36,7 +36,7 @@ Hooks не заменяют human review и не должны хранить sec
 
 ## Product-Agent OS lifecycle hooks
 
-Product-Agent OS поставляет staged hooks через `plugins/product-agent-os/assets/templates/hooks/` и `render_infrastructure.py --stage`. Для конечного проекта definition предназначен для `.codex/hooks.json`, скрипты — для `.codex/hooks/`; это proposal/staged assets до approved apply и trust.
+Product-Agent OS поставляет staged hooks через `plugins/product-agent-os/assets/templates/hooks/` и `render_infrastructure.py --stage` (с formation context и явным выбором hooks либо `--legacy-catalog`). Для конечного проекта definition предназначен для `.codex/hooks.json`, скрипты — для `.codex/hooks/`; это proposal/staged assets до approved apply и trust.
 
 Lifecycle guard устроен так:
 

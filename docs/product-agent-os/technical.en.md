@@ -2,7 +2,7 @@
 
 ## G8: documents and lossless compaction
 
-The scoped renderer (`--task` or `--task-context`) produces compact documents by purpose. The context field `documents` supplies explicit facts with `source`; `evals_required: true` or an EVALS packet includes the eval document. The legacy call without task context retains the full registry as compatibility behavior, not a recommendation to create every artifact.
+The scoped renderer (`--task` or `--task-context`) produces compact documents by purpose. The context field `documents` supplies explicit facts with `source`; `evals_required: true` or an EVALS packet includes the eval document. Full-registry compatibility now requires explicit `--legacy-catalog`; missing context returns a gap. Use `--formation-context` for [unified project formation](project-formation.md).
 
 Information ownership: AGENTS owns durable rules; REQUIREMENTS scope/acceptance; PLAN sequencing; TEST verification; EVALS quality rubrics; RUNLOG current handoff. Schema v1 stores facts in a JSON data block independently of heading language. Unknown fields require explicit migration. `validate_control_plane.py workspace --semantic` distinguishes missing/scaffold/draft. Reviewed/accepted states need a separate digest-bound receipt with reviewer/evidence and owner decision. Legacy structural mode only checks files. A receipt is reported local evidence, not runtime proof or automatic acceptance.
 
@@ -98,13 +98,13 @@ Packaged skills cover requirements authoring, implementation planning, test/eval
 Generated infrastructure is staged-first. Use dry run before staging:
 
 ```powershell
-python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --dry-run
+python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --dry-run --legacy-catalog
 ```
 
 Use staging only with an explicit output directory:
 
 ```powershell
-python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --stage <output-dir>
+python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --legacy-catalog --stage <output-dir>
 ```
 
 The renderer must preserve user-authored files outside managed sections. Existing unmarked `AGENTS.md`, `.codex/config.toml`, hooks, workflows and automation files are user content and should be staged as companion proposals unless an approved merge path exists.

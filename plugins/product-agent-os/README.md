@@ -1,5 +1,7 @@
 # Product-Agent OS
 
+Project formation: use `render_infrastructure.py --formation-context request.json` for unified analysis, selection and canonical docs paths; stage with the reviewed `--preview-digest`. See `docs/product-agent-os/project-formation.md` in the repository. Legacy full-catalog examples below require explicit `--legacy-catalog`; they are compatibility proposals, not the default formation route.
+
 Source status: local implementation; host activation and distribution not_verified.
 
 Product-Agent OS — локальный package для управляемой работы над проектом: scope,
@@ -555,13 +557,13 @@ cd plugins\product-agent-os
 Inspect a target workspace without writing:
 
 ```powershell
-python scripts\render_infrastructure.py <workspace> --dry-run
+python scripts\render_infrastructure.py <workspace> --dry-run --legacy-catalog
 ```
 
 Stage proposed infrastructure outside the target workspace:
 
 ```powershell
-python scripts\render_infrastructure.py <workspace> --stage <stage-dir>
+python scripts\render_infrastructure.py <workspace> --legacy-catalog --stage <stage-dir>
 ```
 
 Build a read-only merge plan:
@@ -603,14 +605,14 @@ Start ordinary work with the task intake above. Use this infrastructure sequence
 1. Run dry-run:
 
 ```powershell
-python scripts\render_infrastructure.py <workspace> --dry-run
+python scripts\render_infrastructure.py <workspace> --dry-run --legacy-catalog
 ```
 
 2. Review the `infrastructure_plan.status`, `create`, `update`, `leave_unchanged`, `warnings`, and `blocked` fields.
 3. If the plan is acceptable, stage to a directory outside the workspace:
 
 ```powershell
-python scripts\render_infrastructure.py <workspace> --stage C:\tmp\product-agent-os-stage
+python scripts\render_infrastructure.py <workspace> --legacy-catalog --stage C:\tmp\product-agent-os-stage
 ```
 
 4. Build a merge plan:

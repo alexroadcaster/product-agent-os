@@ -44,7 +44,7 @@ class InfrastructureRendererTest(unittest.TestCase):
             root.mkdir()
             raw = b'<!-- product-agent-os:start requirements -->\nR-01 accepted\n<!-- product-agent-os:end requirements -->\n'
             (root / 'REQUIREMENTS.md').write_bytes(raw)
-            stage_infrastructure(root, stage)
+            stage_infrastructure(root, stage, legacy_catalog=True)
             plan = build_merge_plan(root, stage)
             item = next(d for d in plan['decisions'] if d['target_path'] == 'REQUIREMENTS.md')
             self.assertEqual(item['action'], 'companion_only')
@@ -57,7 +57,7 @@ class InfrastructureRendererTest(unittest.TestCase):
             root.mkdir()
             audit = analyze_workspace(root)
             audit['risks'] = ['unresolved {actual_project_gap}']
-            result = infrastructure.render_infrastructure_from_audit(root, audit)
+            result = infrastructure.render_infrastructure_from_audit(root, audit, legacy_catalog=True)
             self.assertFalse(result['rendered_artifacts']['validation']['ok'])
             self.assertIn('REQUIREMENTS.md', result['rendered_artifacts']['validation']['errors'])
 
@@ -135,7 +135,7 @@ class InfrastructureRendererTest(unittest.TestCase):
             shutil.copytree(FIXTURES / "node-app", workspace)
             before = self._relative_files(workspace)
 
-            result = render_infrastructure_plan(workspace)
+            result = render_infrastructure_plan(workspace, legacy_catalog=True)
             after = self._relative_files(workspace)
 
         self.assertEqual(before, after)
@@ -145,7 +145,7 @@ class InfrastructureRendererTest(unittest.TestCase):
         self.assertTrue(result["rendered_artifacts"]["validation"]["ok"])
 
     def test_plan_exposes_track_three_schema_summaries(self):
-        result = render_infrastructure_plan(FIXTURES / "empty-repo")
+        result = render_infrastructure_plan(FIXTURES / "empty-repo", legacy_catalog=True)
         plan = result["infrastructure_plan"]
         artifacts = result["rendered_artifacts"]
 
@@ -174,7 +174,7 @@ class InfrastructureRendererTest(unittest.TestCase):
             FIXTURES / "node-app",
             audit,
             lifecycle_packets=lifecycle_packets,
-        )
+        legacy_catalog=True)
 
         self.assertEqual(result["infrastructure_plan"]["profile"], "enterprise-governed")
         self.assertIn(
@@ -183,7 +183,7 @@ class InfrastructureRendererTest(unittest.TestCase):
         )
 
     def test_greenfield_plan_creates_control_plane_and_codex_assets(self):
-        result = render_infrastructure_plan(FIXTURES / "empty-repo")
+        result = render_infrastructure_plan(FIXTURES / "empty-repo", legacy_catalog=True)
         files = result["rendered_artifacts"]["files"]
         by_target = {item["target_path"]: item for item in files}
 
@@ -208,7 +208,7 @@ class InfrastructureRendererTest(unittest.TestCase):
             stage_root = Path(tmp) / "stage"
             shutil.copytree(FIXTURES / "empty-repo", workspace)
 
-            staged = stage_infrastructure(workspace, stage_root)
+            staged = stage_infrastructure(workspace, stage_root, legacy_catalog=True)
 
             staged_by_target = {
                 item["target_path"]: Path(item["staged_path"])
@@ -238,7 +238,7 @@ class InfrastructureRendererTest(unittest.TestCase):
             stage_root = Path(tmp) / "stage"
             shutil.copytree(FIXTURES / "python-app", workspace)
 
-            result = stage_infrastructure(workspace, stage_root)
+            result = stage_infrastructure(workspace, stage_root, legacy_catalog=True)
 
             staged_paths = [Path(item["staged_path"]).resolve() for item in result["rendered_artifacts"]["files"]]
             manifest_path = Path(result["rendered_artifacts"]["manifest_path"]).resolve()
@@ -265,8 +265,8 @@ class InfrastructureRendererTest(unittest.TestCase):
             stage_root = Path(tmp) / "stage"
             shutil.copytree(FIXTURES / "empty-repo", workspace)
 
-            dry_run = render_infrastructure_plan(workspace)
-            staged = stage_infrastructure(workspace, stage_root)
+            dry_run = render_infrastructure_plan(workspace, legacy_catalog=True)
+            staged = stage_infrastructure(workspace, stage_root, legacy_catalog=True)
 
             dry_run_targets = {
                 item["target_path"]
@@ -318,8 +318,8 @@ class InfrastructureRendererTest(unittest.TestCase):
             stage_root = Path(tmp) / "stage"
             shutil.copytree(FIXTURES / "empty-repo", workspace)
 
-            dry_run = render_infrastructure_plan(workspace)
-            staged = stage_infrastructure(workspace, stage_root)
+            dry_run = render_infrastructure_plan(workspace, legacy_catalog=True)
+            staged = stage_infrastructure(workspace, stage_root, legacy_catalog=True)
 
             dry_run_by_target = {
                 item["target_path"]: item
@@ -352,7 +352,7 @@ class InfrastructureRendererTest(unittest.TestCase):
             shutil.copytree(FIXTURES / "existing-codex-config", workspace)
             original = (workspace / "AGENTS.md").read_text(encoding="utf-8")
 
-            result = stage_infrastructure(workspace, stage_root)
+            result = stage_infrastructure(workspace, stage_root, legacy_catalog=True)
 
             by_target = {item["target_path"]: item for item in result["rendered_artifacts"]["files"]}
             agents = by_target["AGENTS.md"]
@@ -362,7 +362,7 @@ class InfrastructureRendererTest(unittest.TestCase):
             self.assertEqual((workspace / "AGENTS.md").read_text(encoding="utf-8"), original)
 
     def test_existing_project_config_without_marker_is_preserved(self):
-        result = render_infrastructure_plan(FIXTURES / "existing-codex-config")
+        result = render_infrastructure_plan(FIXTURES / "existing-codex-config", legacy_catalog=True)
         by_target = {item["target_path"]: item for item in result["rendered_artifacts"]["files"]}
 
         self.assertEqual(by_target[".codex/config.toml"]["action"], "leave_unchanged")
@@ -370,7 +370,7 @@ class InfrastructureRendererTest(unittest.TestCase):
         self.assertIn(".codex/config.toml", " ".join(result["infrastructure_plan"]["warnings"]))
 
     def test_duplicate_managed_section_blocks_target(self):
-        result = render_infrastructure_plan(FIXTURES / "duplicate-managed-section")
+        result = render_infrastructure_plan(FIXTURES / "duplicate-managed-section", legacy_catalog=True)
         by_target = {item["target_path"]: item for item in result["rendered_artifacts"]["files"]}
 
         self.assertEqual(result["infrastructure_plan"]["status"], "blocked")
@@ -379,7 +379,7 @@ class InfrastructureRendererTest(unittest.TestCase):
 
     def test_invalid_workspace_error_has_no_traceback_contract(self):
         with self.assertRaises(InfrastructureError) as error:
-            render_infrastructure_plan(FIXTURES / "missing-workspace")
+            render_infrastructure_plan(FIXTURES / "missing-workspace", legacy_catalog=True)
 
         self.assertIn("workspace does not exist", str(error.exception))
 
@@ -389,7 +389,7 @@ class InfrastructureRendererTest(unittest.TestCase):
             shutil.copytree(FIXTURES / "node-app", workspace)
 
             with self.assertRaises(InfrastructureError) as error:
-                stage_infrastructure(workspace, workspace / ".product-agent-os" / "staged")
+                stage_infrastructure(workspace, workspace / ".product-agent-os" / "staged", legacy_catalog=True)
 
         self.assertIn("outside workspace", str(error.exception))
 
@@ -399,7 +399,7 @@ class InfrastructureRendererTest(unittest.TestCase):
             stage_root = Path(tmp) / "stage"
             shutil.copytree(FIXTURES / "empty-repo", workspace)
 
-            result = stage_infrastructure(workspace, stage_root)
+            result = stage_infrastructure(workspace, stage_root, legacy_catalog=True)
 
             for item in result["rendered_artifacts"]["files"]:
                 if item["target_path"] not in {
@@ -416,19 +416,19 @@ class InfrastructureRendererTest(unittest.TestCase):
                 self.assertIn("<!-- product-agent-os:end", text)
 
     def test_monorepo_profile_warns_about_worktree_ownership(self):
-        result = render_infrastructure_plan(FIXTURES / "monorepo")
+        result = render_infrastructure_plan(FIXTURES / "monorepo", legacy_catalog=True)
 
         warnings = " ".join(result["infrastructure_plan"]["warnings"])
         self.assertIn("worktree ownership", warnings)
 
     def test_docs_source_context_warns_about_source_registry(self):
-        result = render_infrastructure_plan(FIXTURES / "docs-source-conflict")
+        result = render_infrastructure_plan(FIXTURES / "docs-source-conflict", legacy_catalog=True)
 
         warnings = " ".join(result["infrastructure_plan"]["warnings"])
         self.assertIn("source registry", warnings)
 
     def test_failed_verification_warns_without_checks_passed_claim(self):
-        result = render_infrastructure_plan(FIXTURES / "failed-verification")
+        result = render_infrastructure_plan(FIXTURES / "failed-verification", legacy_catalog=True)
 
         warnings = " ".join(result["infrastructure_plan"]["warnings"])
         self.assertIn("failed verification evidence", warnings)
@@ -443,7 +443,7 @@ class InfrastructureRendererTest(unittest.TestCase):
                 encoding="utf-8",
             )
 
-            result = render_infrastructure_plan(workspace)
+            result = render_infrastructure_plan(workspace, legacy_catalog=True)
 
         by_target = {item["target_path"]: item for item in result["rendered_artifacts"]["files"]}
         self.assertEqual(result["infrastructure_plan"]["status"], "blocked")
@@ -462,7 +462,7 @@ class InfrastructureRendererTest(unittest.TestCase):
                 encoding="utf-8",
             )
 
-            result = render_infrastructure_plan(workspace)
+            result = render_infrastructure_plan(workspace, legacy_catalog=True)
 
         by_target = {item["target_path"]: item for item in result["rendered_artifacts"]["files"]}
         blocked = " ".join(result["infrastructure_plan"]["blocked"])
@@ -477,10 +477,10 @@ class InfrastructureRendererTest(unittest.TestCase):
         before_agents = agents_path.read_text(encoding="utf-8")
         before_config = config_path.read_text(encoding="utf-8")
 
-        dry_run = render_infrastructure_plan(FIXTURES / "unsafe-write-request")
+        dry_run = render_infrastructure_plan(FIXTURES / "unsafe-write-request", legacy_catalog=True)
         with tempfile.TemporaryDirectory() as tmp:
             stage_root = Path(tmp) / "stage"
-            staged = stage_infrastructure(FIXTURES / "unsafe-write-request", stage_root)
+            staged = stage_infrastructure(FIXTURES / "unsafe-write-request", stage_root, legacy_catalog=True)
 
             by_target = {item["target_path"]: item for item in staged["rendered_artifacts"]["files"]}
             config = by_target[".codex/config.toml"]
@@ -600,7 +600,7 @@ class InfrastructureRendererTest(unittest.TestCase):
             infrastructure.render_template = lambda item, context: "content\n"
             try:
                 with self.assertRaises(InfrastructureError):
-                    stage_infrastructure(workspace, stage_root)
+                    stage_infrastructure(workspace, stage_root, legacy_catalog=True)
                 self.assertFalse(outside.exists())
                 if stage_root.exists():
                     for path in stage_root.rglob("*"):
@@ -616,7 +616,7 @@ class InfrastructureRendererTest(unittest.TestCase):
         infrastructure.required_templates = lambda: (spec,)
         infrastructure.render_template = lambda item, context: content
         try:
-            return render_infrastructure_plan(FIXTURES / "empty-repo")
+            return render_infrastructure_plan(FIXTURES / "empty-repo", legacy_catalog=True)
         finally:
             infrastructure.required_templates = original_required_templates
             infrastructure.render_template = original_render_template
@@ -627,7 +627,7 @@ class InfrastructureRendererTest(unittest.TestCase):
         infrastructure.required_templates = lambda: (spec,)
         infrastructure.render_template = lambda item, context: content
         try:
-            return stage_infrastructure(workspace, stage_root)
+            return stage_infrastructure(workspace, stage_root, legacy_catalog=True)
         finally:
             infrastructure.required_templates = original_required_templates
             infrastructure.render_template = original_render_template
