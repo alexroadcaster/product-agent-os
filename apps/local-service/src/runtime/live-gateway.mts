@@ -26,6 +26,9 @@ export function createLiveGateway(options: Readonly<{
   let rpc: RuntimeRpc|undefined;
   let coordinator: ReturnType<typeof createRuntimeCoordinator>|undefined;
   let connecting=false;
+  let connectionWork:Promise<unknown>|undefined;
+  let retirement:Promise<void>|undefined;
+  let dead=false;let closing=false;
   const bindings=new Map<string,RuntimeBinding>();
   const sendPins=new Map<string,{taskId:string;scopeDigest?:string;targetRevision?:number;taskContext:SavedTaskContext}>();
   const persistence=createRuntimeStoragePorts(options.store,{actorId:options.actorId});
@@ -35,6 +38,16 @@ export function createLiveGateway(options: Readonly<{
   const publicRun=(run:Record<string,unknown>)=>{const {accountId,inputDigest,scopeDigest,targetRevision,...visible}=run;return visible;};
   const connectionStatus=()=>({...broker.snapshot(),verified:broker.snapshot().state==='connected',
     verificationScope:'local_login' as const,providerAuthority:options.providerAuthority?.()===true});
+  function available(){if(closing)throw new LiveGatewayError('runtime_stopping');}
+  /** Retire a generation completely before replacing it; late callbacks cannot revoke the successor's account. */
+  function retire():Promise<void> {
+    retirement??=(async()=>{
+    if(coordinator)await coordinator.prepareShutdown();
+    if(rpc)await rpc.close();
+    if(coordinator){await coordinator.flush();coordinator.detach();}
+    rpc=undefined;coordinator=undefined;dead=false;bindings.clear();sendPins.clear();
+    })().finally(()=>{retirement=undefined;});return retirement;
+  }
   function requiredText(input:Record<string,unknown>,key:string):string {
     if(typeof input[key]!=='string'||!(input[key] as string).trim())throw new LiveGatewayError('input_invalid');
     return input[key] as string;
@@ -68,15 +81,19 @@ export function createLiveGateway(options: Readonly<{
     async dispatch(action:string,input:Record<string,unknown>) {
       if(!admitted()||!coordinator)throw new LiveGatewayError('runtime_unverified');
       if(action==='bindings') {
+        const selected=coordinator;
         const {project,sessionId}=await scope(input); const accountId=broker.accountScopeId();
         if(!accountId||!broker.authorize(accountId))throw new LiveGatewayError('connection_unavailable');
         const actualRoot=await bindProject(project.id,project.canonicalRoot);
         if(actualRoot.directoryIdentity!==project.rootIdentity)throw new LiveGatewayError('project_root_changed');
         const mode=requiredText(input,'mode');
         if(!['discussion','planning','execution'].includes(mode))throw new LiveGatewayError('mode_invalid');
-        const created=await coordinator.openBinding({projectId:project.id,sessionId,accountId,workspaceRoot:project.canonicalRoot,
+        const created=await selected.openBinding({projectId:project.id,sessionId,accountId,workspaceRoot:project.canonicalRoot,
           profileId:options.profileId,mode:mode as RuntimeBinding['mode']});
         if(created.directoryIdentity!==project.rootIdentity)throw new LiveGatewayError('project_root_changed');
+        available();
+        if(selected!==coordinator||created.generation!==rpc?.generation||!broker.authorize(accountId))throw new LiveGatewayError('binding_stale');
+        if(selected.snapshot(created.id).hasActiveRun)throw new LiveGatewayError('runtime_busy');
         bindings.delete(created.id);bindings.set(created.id,created);
         return {bindingId:created.id,projectId:created.projectId,sessionId:created.sessionId,mode:created.mode,generation:created.generation};
       }
@@ -113,14 +130,18 @@ export function createLiveGateway(options: Readonly<{
   };
   const connection={status:connectionStatus,
     async connect(input:Record<string,unknown>) {
+      available();
       if(!admitted())throw new LiveGatewayError('runtime_unverified');
-      if(connecting||rpc)throw new LiveGatewayError('connection_busy');
+      if(connecting||(rpc&&!dead))throw new LiveGatewayError('connection_busy');
       connecting=true;
-      try {
+      const work=(async()=>{try {
+        if(dead)await retire();available();
         rpc=await options.rpcFactory();
+        available();const selected=rpc;
         await rpc.request('initialize',{clientInfo:{name:'product-agent-os',version:'m1'},capabilities:{experimentalApi:true}});rpc.notify('initialized');
-        rpc.onClosed(()=>broker.runtimeClosed());
+        available();rpc.onClosed(()=>{if(rpc===selected){dead=true;broker.runtimeClosed();}});
         await broker.connect({connectionId:requiredText(input,'connectionId'),apiKey:typeof input.apiKey==='string'?input.apiKey:undefined,remember:input.remember===true});
+        available();
         coordinator=createRuntimeCoordinator({rpc,persistence,isEnabled:admitted,authorizeDispatch:(binding)=>broker.authorize(binding.accountId),
           onEvent:(event)=>options.onEvent?.(event.kind==='run'?{...event,run:publicRun(event.run as Record<string,unknown>)}:event),
           createStreamRedactor:()=>broker.createStreamRedactor(),
@@ -130,15 +151,21 @@ export function createLiveGateway(options: Readonly<{
           await coordinator.restoreRecovery({...recovered,accountId:broker.accountScopeId()??''});bindings.set(recovered.binding.id,recovered.binding);
         }
         return connectionStatus();
-      } catch(error) {broker.runtimeClosed();if(rpc)await rpc.close();rpc=undefined;coordinator=undefined;throw error;}
-      finally {connecting=false;}
+      } catch(error) {broker.runtimeClosed();dead=true;await retire();throw error;}})();
+      connectionWork=work;
+      try{return await work;}finally {connecting=false;if(connectionWork===work)connectionWork=undefined;}
     },
     async disconnect() {
-      if(coordinator)await coordinator.prepareShutdown();
-      try {await broker.disconnect();}
-      finally {if(rpc)await rpc.close();if(coordinator)await coordinator.flush();rpc=undefined;}
-      return connectionStatus();
+      available();
+      if(connecting)throw new LiveGatewayError('connection_busy');
+      connecting=true;
+      const work=(async()=>{
+        if(coordinator)await coordinator.prepareShutdown();
+        try {await broker.disconnect();}finally {await retire();}
+        return connectionStatus();
+      })();
+      connectionWork=work;try{return await work;}finally{connecting=false;if(connectionWork===work)connectionWork=undefined;}
     },
   };
-  return {runtime,connection,async close(){if(coordinator)await coordinator.prepareShutdown();if(rpc)await rpc.close();if(coordinator)await coordinator.flush();rpc=undefined;broker.runtimeClosed();}};
+  return {runtime,connection,async close(){closing=true;if(connectionWork)await Promise.allSettled([connectionWork]);await retire();broker.runtimeClosed();}};
 }

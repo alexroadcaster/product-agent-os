@@ -85,9 +85,15 @@ export function createRuntimeCoordinator(options: CoordinatorOptions) {
   let active: RuntimeRun | undefined;
   let queue = Promise.resolve();
   let suspended=false;
+  let disconnected=false;
+  const operations=new Set<Promise<unknown>>();
+  function track<T>(operation:Promise<T>):Promise<T> {
+    operations.add(operation);void operation.then(()=>operations.delete(operation),()=>operations.delete(operation));return operation;
+  }
 
-  function enabled(): void {
+  function enabled(checkConnection=true): void {
     if(suspended)throw new RuntimeCoordinatorError('runtime_stopping');
+    if(checkConnection&&disconnected)throw new RuntimeCoordinatorError('runtime_disconnected');
     if (!options.isEnabled?.()) throw new RuntimeCoordinatorError('runtime_unverified');
   }
   function bindingById(id: string): RuntimeBinding {
@@ -287,16 +293,17 @@ export function createRuntimeCoordinator(options: CoordinatorOptions) {
       catch { run.state = 'recovery_required'; throw new RuntimeCoordinatorError('persistence_unavailable'); }
     }
   }
-  rpc.subscribe((message) => {
+  const unsubscribe=rpc.subscribe((message) => {
     queue = queue.then(() => applyEvent(message)).catch(async () => { if (active) await recovery(active); });
   });
-  rpc.onClosed(() => { queue = queue.then(async () => { if (active) await recovery(active); }).catch(() => {
+  const unsubscribeClosed=rpc.onClosed(() => { disconnected=true;queue = queue.then(async () => { if (active) await recovery(active); }).catch(() => {
     if (active) active.state = 'recovery_required';
   }); });
 
   // A mode creates a new thread; grants and policies never migrate from a previous binding.
   async function openBinding(input: BindingInput): Promise<RuntimeBinding> {
     enabled();
+    if(active)throw new RuntimeCoordinatorError('runtime_busy');
     if (!['discussion', 'planning', 'execution'].includes(input.mode) || !input.accountId || !input.sessionId || !input.profileId) {
       throw new RuntimeCoordinatorError('binding_invalid');
     }
@@ -307,8 +314,9 @@ export function createRuntimeCoordinator(options: CoordinatorOptions) {
       if (previous.hash !== hash) throw new RuntimeCoordinatorError('binding_conflict');
       return previous.promise;
     }
-    const promise = (async () => {
+    const promise = track((async () => {
       const workspace = await bindProject(input.projectId, input.workspaceRoot);
+      enabled();if(active)throw new RuntimeCoordinatorError('runtime_busy');
       const permissions = input.mode === 'execution' ? 'paos_execution' : 'paos_readonly';
       const recipe=m1Recipe(input.mode);
       const dynamicTools=(options.dynamicTools??[]).filter((tool)=>tools.has(tool.name)
@@ -328,15 +336,19 @@ export function createRuntimeCoordinator(options: CoordinatorOptions) {
       }
       const binding: RuntimeBinding = { ...input, workspaceRoot: workspace.workspaceRoot,
         directoryIdentity: workspace.directoryIdentity, id: randomUUID(), generation: rpc.generation, threadId: thread.id,recipe:recipe.metadata };
-      await persistence.saveBinding(binding); bindings.set(binding.id, binding); return binding;
-    })();
+      enabled();if(active)throw new RuntimeCoordinatorError('runtime_busy');
+      await persistence.saveBinding(binding);enabled();if(active)throw new RuntimeCoordinatorError('runtime_busy');
+      bindings.set(binding.id, binding); return binding;
+    })());
     sessions.set(key, { hash, promise });
+    void promise.catch(()=>{if(sessions.get(key)?.promise===promise)sessions.delete(key);});
     return promise;
   }
 
   // Cache the promise before another caller can dispatch the same user-message identity.
   function send(input: SendInput): Promise<RuntimeRun> {
-    try { enabled(); } catch (error) { return Promise.reject(error); }
+    // Existing message receipts/recovery leases remain addressable after EOF; dispatch rechecks the transport.
+    try { enabled(false); } catch (error) { return Promise.reject(error); }
     const binding = bindingById(input.bindingId);
     if (typeof input.clientMessageId !== 'string' || !input.clientMessageId || typeof input.input !== 'string'
       || !input.input.trim() || Buffer.byteLength(input.input) > 256 * 1024) {
@@ -346,7 +358,7 @@ export function createRuntimeCoordinator(options: CoordinatorOptions) {
     const key = `${binding.id}:${input.clientMessageId}`;
     const previous = sends.get(key);
     if (previous) return previous.hash === hash ? previous.promise : Promise.reject(new RuntimeCoordinatorError('message_conflict'));
-    const promise = dispatch(binding, input, hash);
+    const promise = track(dispatch(binding, input, hash));
     sends.set(key, { hash, promise }); return promise;
   }
   // Reserve synchronously; an uncertain dispatch retains this global lease until reconciliation.
@@ -376,9 +388,13 @@ export function createRuntimeCoordinator(options: CoordinatorOptions) {
         return cloneRun(active ?? old);
       }
       if (!await options.authorizeDispatch?.(binding)) throw new RuntimeCoordinatorError('connection_unavailable');
+      enabled();
       await validateWorkspace(binding);
+      enabled();
       await persistence.appendIntent(cloneRun(run),canonicalUserMessage); runs.set(run.id, run);
       dispatched = true;
+      // Shutdown/EOF can win any awaited check. A committed intent retains recovery, never a late dispatch.
+      enabled();
       emit({kind:'message_committed',message:canonicalUserMessage});
       const result = await rpc.request('turn/start', { threadId: binding.threadId, input: [{ type: 'text', text: quoted }],
         cwd: binding.workspaceRoot,runtimeWorkspaceRoots:[binding.workspaceRoot],environments:[], permissions: binding.mode === 'execution' ? 'paos_execution' : 'paos_readonly',
@@ -397,8 +413,17 @@ export function createRuntimeCoordinator(options: CoordinatorOptions) {
     }
   }
 
-  async function answerApproval(input: Readonly<{ bindingId: string; runId: string; generation: string;
+  function answerApproval(input: Readonly<{ bindingId: string; runId: string; generation: string;
     requestId: string | number; decision: 'accept' | 'decline' | 'cancel' }>) {
+    return track(resolveApproval(input));
+  }
+  function liveApprovalRun(approval:Approval):RuntimeRun {
+    enabled();const current=active;
+    if(!current||current.id!==approval.runId||current.state==='recovery_required'||terminal.has(current.state)
+      ||approval.state==='answered_or_cleared'||approval.generation!==rpc.generation||(options.now??Date.now)()>=approval.expiresAt)throw new RuntimeCoordinatorError('approval_stale');
+    return current;
+  }
+  async function resolveApproval(input: Readonly<{bindingId:string;runId:string;generation:string;requestId:string|number;decision:'accept'|'decline'|'cancel'}>) {
     enabled();
     const approval = approvals.get(`${input.generation}:${typeof input.requestId}:${input.requestId}`);
     if (!approval || approval.bindingId !== input.bindingId || approval.runId !== input.runId
@@ -415,9 +440,14 @@ export function createRuntimeCoordinator(options: CoordinatorOptions) {
     const binding=bindingById(input.bindingId);
     if(!await options.authorizeDispatch?.(binding))throw new RuntimeCoordinatorError('connection_unavailable');
     await validateWorkspace(binding);
+    // Approval resolution, TTL, EOF, or shutdown can change while authority/root checks are pending.
+    const run=liveApprovalRun(approval);
+    if(approval.decision) {
+      if(approval.decision!==input.decision)throw new RuntimeCoordinatorError('approval_conflict');return {...approval};
+    }
     approval.decision = input.decision; approval.state = 'response_sent';
     try { rpc.respond(input.requestId, { decision: input.decision }); }
-    catch { await recovery(active); throw new RuntimeCoordinatorError('approval_outcome_unknown'); }
+    catch { if(active===run&&!terminal.has(run.state))await recovery(run);throw new RuntimeCoordinatorError('approval_outcome_unknown'); }
     emit({ kind: 'approval', approval: { ...approval } }); return { ...approval };
   }
   function interrupt(input: Readonly<{ bindingId: string; runId: string }>): Promise<RuntimeRun> {
@@ -427,21 +457,29 @@ export function createRuntimeCoordinator(options: CoordinatorOptions) {
       return Promise.reject(new RuntimeCoordinatorError('run_not_interruptible'));
     }
     if (interrupted.has(run.id)) return interrupted.get(run.id)!;
-    const promise = (async () => {
+    const promise = track((async () => {
       run.state = 'interrupt_requested'; await persist(run);
+      if(active!==run||terminal.has(run.state))return cloneRun(run);
+      if(suspended||disconnected){await recovery(run);return cloneRun(run);}
       try { await rpc.request('turn/interrupt', { threadId: run.threadId, turnId: run.turnId }); }
-      catch { await recovery(run); }
+      catch { if(active===run&&!terminal.has(run.state))await recovery(run); }
       return cloneRun(run);
-    })();
+    })());
     interrupted.set(run.id, promise); return promise;
   }
-  async function reconcile(input: Readonly<{ bindingId: string; accountId: string }>): Promise<RuntimeRun | null> {
+  function reconcile(input: Readonly<{bindingId:string;accountId:string}>):Promise<RuntimeRun|null> {
+    return track(reconcileRun(input));
+  }
+  async function reconcileRun(input: Readonly<{ bindingId: string; accountId: string }>): Promise<RuntimeRun | null> {
+    enabled();
     const binding = bindingById(input.bindingId);
     if (binding.accountId !== input.accountId) throw new RuntimeCoordinatorError('account_mismatch');
     const run = active;
     if (!run || run.bindingId !== binding.id) return null;
     await validateWorkspace(binding);
+    enabled();if(active!==run)return cloneRun(run);
     const result = await rpc.request('thread/read', { threadId: run.threadId, includeTurns: true });
+    if(active!==run)return cloneRun(run);
     const thread = record(result.thread);
     const turn = Array.isArray(thread.turns) ? thread.turns.map(record).find((entry) => entry.id === run.turnId) : undefined;
     if (thread.id === run.threadId && turn && ['completed', 'failed', 'interrupted'].includes(String(turn.status))) {
@@ -470,10 +508,13 @@ export function createRuntimeCoordinator(options: CoordinatorOptions) {
   // Commit uncertain outcomes before the host is allowed to close the process. Failure leaves it alive for retry.
   async function prepareShutdown() {
     suspended=true;
+    // Public RPC operations are separate from the incoming event reducer; both must drain before child/store close.
+    await Promise.allSettled([...operations]);
     queue=queue.catch(()=>{}).then(async()=>{if(active)await recovery(active);});
     await queue;
   }
   return { openBinding, send, answerApproval, interrupt, reconcile, restoreRecovery,prepareShutdown,
+    detach(){unsubscribe();unsubscribeClosed();},
     async flush() { await queue; },
     snapshot(bindingId: string) {
       const binding = bindingById(bindingId);

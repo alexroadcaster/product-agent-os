@@ -301,6 +301,18 @@ export interface M1Api {
   }>;
 }
 
+/** Bounded service metadata supports UI recovery without parsing human-readable text. */
+export class HttpApiError extends Error {
+  readonly status: number;
+  readonly code?: string;
+  constructor(status: number, code?: string) {
+    super(`HTTP ${status}${code ? `: ${code}` : ''}`);
+    this.name = 'HttpApiError';
+    this.status = status;
+    this.code = code;
+  }
+}
+
 /** Same-origin only; bearer credentials never enter URLs or browser persistence. */
 export function createHttpApi(fetcher: typeof fetch = fetch): M1Api {
   let csrfToken: string | undefined;
@@ -329,9 +341,12 @@ export function createHttpApi(fetcher: typeof fetch = fetch): M1Api {
         error?: { code?: unknown };
       } | null;
       const code = error?.error?.code;
-      throw new Error(
-        `HTTP ${response.status}${typeof code === "string" && /^[A-Za-z_]{1,80}$/.test(code) ? `: ${code}` : ""}`,
-      );
+      const safeCode = typeof code === 'string' && /^[A-Za-z_]{1,80}$/.test(code) ? code : undefined;
+      if (response.status === 401 && safeCode === 'SESSION_REQUIRED') {
+        csrfToken = undefined;
+        epochs.clear();
+      }
+      throw new HttpApiError(response.status, safeCode);
     }
     if (response.status === 204) return undefined as T;
     return response.json() as Promise<T>;

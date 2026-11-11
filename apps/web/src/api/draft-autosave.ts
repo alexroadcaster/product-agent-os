@@ -5,6 +5,7 @@ type Options = {
   restore(body: string): void;
   error(cause: unknown): void;
   busy?(busy: boolean): void;
+  changed?(): void;
   schedule?: (callback: () => void, delay: number) => unknown;
   cancel?: (timer: unknown) => void;
 };
@@ -31,18 +32,37 @@ export function createDraftAutosave(options: Options) {
   function error(cause: unknown) {
     if (!disposed) options.error(cause);
   }
-  const ready = options
-    .read()
-    .then((record) => {
-      baseline = record;
-      if (wanted === undefined && !disposed) options.restore(record.body);
-    })
-    .catch((cause) => {
-      blocked = true;
-      error(cause);
-    });
+  let loading: Promise<void> | undefined;
+  function load(recovering = false): Promise<void> {
+    loading ??= options
+      .read()
+      .then((record) => {
+        // A failed initial read establishes no revision. Retrying must not discard a different saved draft.
+        if (
+          recovering &&
+          wanted !== undefined &&
+          record.body !== "" &&
+          record.body !== wanted
+        )
+          throw new Error("DRAFT_RECOVERY_CONFLICT");
+        baseline = record;
+        blocked = false;
+        if (wanted === undefined && !disposed) options.restore(record.body);
+      })
+      .catch((cause) => {
+        blocked = true;
+        error(cause);
+      })
+      .finally(() => {
+        loading = undefined;
+        options.changed?.();
+      });
+    return loading;
+  }
+  const ready = load();
   async function run(retry: boolean): Promise<boolean> {
     await ready;
+    if (!baseline && retry) await load(true);
     if (!baseline || (blocked && !retry)) return false;
     if (working) return working;
     if (!job && (wanted === undefined || wanted === baseline.body)) return true;
@@ -67,6 +87,7 @@ export function createDraftAutosave(options: Options) {
       } finally {
         working = undefined;
         if (!disposed) options.busy?.(false);
+        options.changed?.();
       }
     })();
     return working;
@@ -81,11 +102,24 @@ export function createDraftAutosave(options: Options) {
           timer = undefined;
           void run(false);
         }, 500);
+      options.changed?.();
     },
     async flush(body?: string) {
       if (body !== undefined) wanted = body;
       clear();
       return run(true);
+    },
+    flushPending() {
+      clear();
+      return run(false);
+    },
+    isPending() {
+      return Boolean(
+        loading ||
+        working ||
+        job ||
+        (wanted !== undefined && (!baseline || wanted !== baseline.body)),
+      );
     },
     dispose() {
       clear();

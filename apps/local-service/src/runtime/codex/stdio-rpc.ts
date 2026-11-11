@@ -1,6 +1,5 @@
 import { createHash, randomUUID } from 'node:crypto';
 import type { ChildProcessWithoutNullStreams } from 'node:child_process';
-import { once } from 'node:events';
 
 const clientMethods = new Set([
   'initialize', 'config/read', 'configRequirements/read', 'permissionProfile/list',
@@ -171,8 +170,11 @@ export function createStdioRpc(
       if (status === 'open') { child.stdin.end(); terminate('runtime_closed'); }
       if (child.exitCode === null && child.signalCode === null) {
         let timer:ReturnType<typeof setTimeout>|undefined;
-        try {await Promise.race([once(child, 'exit'), new Promise<void>((resolve) => {timer=setTimeout(resolve,1000);})]);}
-        finally {if(timer)clearTimeout(timer);}
+        let exited:()=>void=()=>{};
+        try {await new Promise<void>((resolve)=>{exited=resolve;child.once('exit',exited);timer=setTimeout(resolve,1000);});}
+        finally {if(timer)clearTimeout(timer);child.off('exit',exited);}
+        // Logical transport closure or kill submission does not prove that the child has stopped.
+        if(child.exitCode===null&&child.signalCode===null)throw new RuntimeRpcError('runtime_stop_unverified');
       }
     },
     snapshot: () => ({ generation, status, pending: pending.size, stderrBytes }),

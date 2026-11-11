@@ -1,6 +1,16 @@
 # Product-Agent OS Web — M1
 
+Autonomous follow-up 2026-11-11: initial SESSION_REQUIRED UX fixed; browser669/autonomous launcher56/Web197 passed. PAOS-0040 technical implemented using separate native closed-App and current browser receipts. No manual tester steps required; human/provider/M1 acceptance remains separate. Evidence: research/product-agent-os-web-m1-execution-2026-11-11.md.
+
+PAOS-0004 browser acceptance 2026-11-11:667/667, Web195/195, strict/build35 passed; themes/locales implemented. PAOS-0040 external recorder prepared; real closed-App receipt still required. See research/product-agent-os-web-m1-execution-2026-11-11.md.
+
+Follow-up 2026-11-11 10:36 MSK: shared draft lifecycle/late Send ACK и runtime shutdown/approval/reconnect/time-cap guards исправлены. Общий Web suite192/192, strict/build35 и native headless33 passed. PAOS-0004/0040/0042/0043/0044 остаются in_progress до обязательной browser/provider/native-window приёмки; детали в research/product-agent-os-web-m1-execution-2026-11-11.md.
+
+Дополнение 2026-11-11 09:25 MSK: исправлены credential namespace разных PAOS-профилей и закрытие SQLite после HTTP drain. Новый Web suite 166/166, native headless33 passed; legacy default-account recovery отклоняется без автоматической миграции. Предыдущие результаты ниже сохраняют исходный provenance.
+
 Source status: локальная реализация и детерминированные проверки; браузерная и provider-приёмка не выполнены.
+
+Дополнение 2026-11-11 08:46 MSK: local auth components PAOS-0041 квалифицированы. Однократный отдельно разрешённый `node tests/web/single-window/vault-roundtrip.mts --synthetic-vault` выполнил native OS-store write/read/delete только случайной fixture; cleanup подтверждён. Этот executable требует отдельной authority, стандартный unittest его не запускает. `node tests/web/single-window/auth-metadata.mts --synthetic-auth --binary <pinned-codex.exe>` проверил actual stdio/broker login/read/logout с synthetic API value, loopback-only fixture provider и отключённым API-key model discovery, без turn и vault calls. Это local login, model access остаётся unverified. Новый полный Web suite — 159/159, no skips; прежние build/UI receipts ниже сохраняют исходный provenance.
 
 React/TypeScript SPA использует same-origin `/api/v1` локального сервиса. Production entrypoint — `dist/index.html`; сервис раздаёт `dist/` и API на одном origin. Runtime не содержит демонстрационных задач или сообщений. Без сервиса показываются сопряжение и наблюдаемая ошибка.
 

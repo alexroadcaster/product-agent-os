@@ -4,6 +4,55 @@ import { createDraftAutosave } from "../../apps/web/src/api/draft-autosave.ts";
 const settle = async () => {
   for (let i = 0; i < 25; i++) await Promise.resolve();
 };
+
+test("explicit Save retries a failed initial read and saves local text against a verified empty baseline", async () => {
+  let reads = 0;
+  let stored = { id: "d", body: "", revision: 2 };
+  let writes = 0;
+  const draft = createDraftAutosave({
+    read: async () => {
+      if (++reads === 1) throw new Error("offline");
+      return stored;
+    },
+    write: async (record, body) => {
+      writes++;
+      assert.equal(record.revision, 2);
+      return (stored = { ...record, body, revision: 3 });
+    },
+    restore() {},
+    error() {},
+  });
+  await settle();
+  draft.edit("local text");
+  assert.equal(await draft.flush(), true);
+  assert.equal(reads, 2);
+  assert.equal(writes, 1);
+  assert.equal(stored.body, "local text");
+  draft.dispose();
+});
+
+test("initial-read recovery cannot blindly overwrite a different existing server draft", async () => {
+  let reads = 0;
+  let writes = 0;
+  const draft = createDraftAutosave({
+    read: async () => {
+      if (++reads === 1) throw new Error("offline");
+      return { id: "d", body: "server text", revision: 9 };
+    },
+    write: async () => {
+      writes++;
+      throw new Error("must not overwrite");
+    },
+    restore() {},
+    error() {},
+  });
+  await settle();
+  draft.edit("local text");
+  assert.equal(await draft.flush(), false);
+  assert.equal(await draft.flush(), false);
+  assert.equal(writes, 0);
+  draft.dispose();
+});
 test("autosave debounces edits, flushes on session disposal and restores on reopen", async () => {
   let stored = { id: "draft", body: "saved", revision: 1 };
   const timers: (() => void)[] = [],

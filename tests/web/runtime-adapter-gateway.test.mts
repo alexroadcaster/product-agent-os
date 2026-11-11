@@ -8,6 +8,72 @@ import {createLiveGateway} from '../../apps/local-service/src/runtime/live-gatew
 import {createRuntimeStoragePorts} from '../../apps/local-service/src/runtime/storage-ports.mts';
 import {fixtureTask,runtimeTaskId} from './runtime-adapter-time.fixture.mts';
 
+test('EOF reconnect retires the old generation, restores recovery and ignores its late close callback',async(t)=>{
+ const {bindProject}=await import('../../apps/local-service/src/adapters/project-sources.ts');
+ const root=await mkdtemp(join(tmpdir(),'paos-eof-reconnect-'));const pin=await bindProject('p',root);
+ const store=await openLocalStore({databasePath:join(root,'state.sqlite')});let gateway:ReturnType<typeof createLiveGateway>;
+ t.after(async()=>{await gateway?.close();await store.close();await rm(root,{recursive:true,force:true});});
+ await store.registerProject({id:'p',keyPrefix:'TEST',canonicalRoot:pin.workspaceRoot,rootIdentity:pin.directoryIdentity,authorityMode:'sql'});
+ await store.write({projectId:'p',actorId:'u',idempotencyKey:'seed',expectedAuthorityEpoch:1,changes:[{expectedRevision:0,entity:{id:'s',kind:'session'}}]});
+ const closes:Array<()=>void>=[];let generations=0;let stops=0;let sends=0;const recovered=Promise.withResolvers<void>();
+ gateway=createLiveGateway({store,profileId:'fixture',actorId:'runtime',isEnabled:()=>true,providerAuthority:()=>true,
+  onEvent(event){if(event.kind==='run'&&(event.run as any).state==='recovery_required')recovered.resolve();},
+  rpcFactory:async()=>{const generation=`g${++generations}`;return {generation,notify(){},subscribe(){return()=>{};},onClosed(next){closes.push(()=>next('runtime_eof'));return()=>{};},respond(){},respondError(){},close:async()=>{stops++;},
+   async request(method,params:any){if(method==='account/login/start')return {type:'apiKey'};if(method==='account/read')return {account:{type:'apiKey'}};
+    if(method==='thread/start')return {thread:{id:'thread'},cwd:params.cwd,runtimeWorkspaceRoots:[params.cwd],activePermissionProfile:{id:params.permissions},approvalPolicy:'never',sandbox:{type:'readOnly',networkAccess:false}};
+    if(method==='turn/start'){sends++;return {turn:{id:'turn',status:'inProgress'}};}return {};}};}});
+ await gateway.connection.connect({connectionId:'same',apiKey:'synthetic'});
+ const binding:any=await gateway.runtime.dispatch('bindings',{projectId:'p',sessionId:'s',mode:'discussion'});
+ const run:any=await gateway.runtime.dispatch('send',{projectId:'p',sessionId:'s',bindingId:binding.bindingId,clientMessageId:'m',input:'synthetic'});
+ for(const close of [...closes])close();await recovered.promise;
+ await gateway.connection.connect({connectionId:'same',apiKey:'synthetic'});
+ const snapshot=await gateway.runtime.snapshot({projectId:'p',sessionId:'s'});
+ assert.equal(snapshot.runId,run.id);assert.equal(snapshot.state,'recovery_required');assert.equal(snapshot.canSend,false);
+ assert.equal(sends,1);assert.equal(generations,2);assert.equal(stops,1);
+ closes[0]();assert.equal(gateway.connection.status().verified,true);
+});
+
+test('gateway shutdown waits for pending connection creation and closes it before initialization',async()=>{
+ const gate=Promise.withResolvers<any>();let closed=false;const calls:string[]=[];
+ const gateway=createLiveGateway({store:{projects:async()=>[]} as any,profileId:'fixture',actorId:'runtime',isEnabled:()=>true,providerAuthority:()=>true,rpcFactory:()=>gate.promise});
+ const connecting=gateway.connection.connect({connectionId:'c',apiKey:'synthetic'});const observed=assert.rejects(connecting,{code:'runtime_stopping'});
+ let finished=false;const stopping=gateway.close().then(()=>{finished=true;});await Promise.resolve();const finishedEarly=finished;
+ gate.resolve({generation:'g',notify(){},onClosed(){return()=>{};},subscribe(){return()=>{};},respond(){},respondError(){},
+  request:async(method:string)=>{calls.push(method);return method==='account/login/start'?{type:'apiKey'}:method==='account/read'?{account:{type:'apiKey'}}:{};},close:async()=>{closed=true;}});
+ await observed;await stopping;assert.equal(finishedEarly,false);assert.equal(closed,true);assert.deepEqual(calls,[]);
+});
+
+test('EOF during disconnect cannot start a replacement until the connection action finishes',async()=>{
+ let generations=0;const callbacks:Array<()=>void>=[];const logout=Promise.withResolvers<void>();const entered=Promise.withResolvers<void>();
+ const gateway=createLiveGateway({store:{projects:async()=>[]} as any,profileId:'fixture',actorId:'runtime',isEnabled:()=>true,providerAuthority:()=>true,
+  rpcFactory:async()=>({generation:`g${++generations}`,notify(){},subscribe(){return()=>{};},onClosed(next){callbacks.push(()=>next('runtime_eof'));return()=>{};},respond(){},respondError(){},close:async()=>{},
+   async request(method){if(method==='account/login/start')return {type:'apiKey'};if(method==='account/read')return {account:{type:'apiKey'}};if(method==='account/logout'){entered.resolve();await logout.promise;}return {};}})});
+ await gateway.connection.connect({connectionId:'c',apiKey:'synthetic'});const disconnecting=gateway.connection.disconnect();await entered.promise;
+ for(const callback of callbacks)callback();
+ try{await assert.rejects(()=>gateway.connection.connect({connectionId:'c',apiKey:'synthetic'}),{code:'connection_busy'});}finally{logout.resolve();await disconnecting;await gateway.close();}
+ assert.equal(generations,1);
+});
+
+test('legacy default account recovery is fenced before thread access and leaves durable rows unchanged',async(t)=>{
+ const {createHash}=await import('node:crypto');
+ const root=await mkdtemp(join(tmpdir(),'paos-legacy-profile-'));const store=await openLocalStore({databasePath:join(root,'store.sqlite')});
+ let gatewayCleanup=async()=>{};t.after(async()=>{await gatewayCleanup();await store.close();await rm(root,{recursive:true,force:true});});
+ await store.registerProject({id:'p',keyPrefix:'TEST',canonicalRoot:root,rootIdentity:'fixture-root',authorityMode:'sql'});
+ const ports=createRuntimeStoragePorts(store,{actorId:'runtime'});
+ const accountId=createHash('sha256').update(JSON.stringify(['default','same','synthetic'])).digest('hex');
+ const binding={id:'b',projectId:'p',sessionId:'s',accountId,workspaceRoot:root,directoryIdentity:'fixture-root',mode:'execution' as const,profileId:'fixture',generation:'old',threadId:'thread'};
+ const run={id:'r',bindingId:'b',projectId:'p',sessionId:'s',accountId,generation:'old',threadId:'thread',turnId:'turn',clientMessageId:'m',inputDigest:'digest',taskId:null,scopeDigest:null,state:'running' as const};
+ await ports.saveBinding(binding);await ports.appendIntent(run);const before=await ports.recoverable('p');
+ const methods:string[]=[];let closed=0;
+ const gateway=createLiveGateway({store,profileId:'profile_'+'a'.repeat(64),actorId:'test',isEnabled:()=>true,providerAuthority:()=>true,
+  rpcFactory:async()=>({generation:'new',notify(){},onClosed(){return()=>{};},subscribe(){return()=>{};},close:async()=>{closed++;},respond(){},respondError(){},
+   async request(method){methods.push(method);if(method==='account/login/start')return {type:'apiKey'};if(method==='account/read')return {account:{type:'apiKey'}};return {};}})});
+ gatewayCleanup=()=>gateway.close();
+ await assert.rejects(()=>gateway.connection.connect({connectionId:'same',apiKey:'synthetic'}),{code:'account_mismatch'});
+ assert.equal(methods.some(method=>/^(thread|turn)\//.test(method)),false);assert.equal(closed,1);
+ assert.deepEqual(await ports.recoverable('p'),before);
+});
+
 test('gateway defaults deny process creation and fences changed project identity before thread/start',async(t)=>{
  const root=await mkdtemp(join(tmpdir(),'paos-gateway-'));const store=await openLocalStore({databasePath:join(root,'store.sqlite')});
  let gatewayCleanup=async()=>{};t.after(async()=>{await gatewayCleanup();await store.close();await rm(root,{recursive:true,force:true});});

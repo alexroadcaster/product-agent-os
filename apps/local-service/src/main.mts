@@ -8,6 +8,7 @@ import {createLocalApplication} from './http/application.mts';
 import {createLiveGateway} from './runtime/live-gateway.mts';
 import {createNativeRpc} from './runtime/native-rpc.mts';
 import {createWindowsCredentialStore} from './connections/windows-credential-store.ts';
+import {bindProfile,assertProfileIdentity,createProfileScopedStore} from './connections/profile-identity.mts';
 import {createDomainTools} from './commands/domain-tools.mts';
 import {inspectConfiguredRuntime} from '../../../packages/contracts/runtime/manifest.mts';
 import {inspectLegacyWriterInventory} from './commands/writer-inventory.mts';
@@ -50,30 +51,33 @@ async function respond(outgoing:ServerResponse,response:Response) {
 
 /** Source-only executable wiring. Importing this module creates no database, server, GUI, or runtime child. */
 export async function startLocalService(options:Readonly<{profileDirectory:string;instanceId:string}>,deps:Readonly<{
- openStore?:typeof openLocalStore;createHttpServer?:typeof createServer;createApplication?:typeof createLocalApplication;
+ openStore?:typeof openLocalStore;createHttpServer?:typeof createServer;createApplication?:typeof createLocalApplication;createGateway?:typeof createLiveGateway;
  prepareProfile?:(profile:string)=>Promise<void>;
 }>={}) {
  if(!isAbsolute(options.profileDirectory)||options.profileDirectory.startsWith('\\\\')||!options.instanceId)throw failure('PROFILE_INVALID');
  await(deps.prepareProfile??(async(profile)=>{await mkdir(profile,{recursive:true,mode:0o700});}))(options.profileDirectory);
- const store=await(deps.openStore??openLocalStore)({databasePath:join(options.profileDirectory,'state.sqlite')});
+ const profile=await bindProfile(options.profileDirectory);const profileDirectory=profile.canonicalRoot;
+ const store=await(deps.openStore??openLocalStore)({databasePath:join(profileDirectory,'state.sqlite')});
  let qualified=false;let providerAuthority=false;let stopping=false;
- try {qualified=(await inspectConfiguredRuntime(options.profileDirectory)).qualified;} catch {qualified=false;}
+ try {qualified=(await inspectConfiguredRuntime(profileDirectory)).qualified;} catch {qualified=false;}
  const tools=createDomainTools({store});
- const gateway=createLiveGateway({store,profileId:'default',actorId:'local-runtime',
-  isEnabled:()=>qualified,providerAuthority:()=>providerAuthority,credentialStore:createWindowsCredentialStore(),
+ const gateway=(deps.createGateway??createLiveGateway)({store,profileId:profile.profileId,actorId:'local-runtime',
+  isEnabled:()=>qualified,providerAuthority:()=>providerAuthority,credentialStore:createProfileScopedStore(profile,createWindowsCredentialStore()),
   dynamicTools:tools.specifications,domainTool:tools.dispatch,
   rpcFactory:async()=>{
-   const check=await inspectConfiguredRuntime(options.profileDirectory);
+   await assertProfileIdentity(profile);
+   const check=await inspectConfiguredRuntime(profileDirectory);
    if(!check.qualified||!check.binaryPath)throw failure('RUNTIME_UNQUALIFIED');
-   const selected=JSON.parse(await readFile(join(options.profileDirectory,'runtime-selection.json'),'utf8'));
+   const selected=JSON.parse(await readFile(join(profileDirectory,'runtime-selection.json'),'utf8'));
    if(selected.providerAuthority!==true)throw failure('PROVIDER_AUTHORITY_REQUIRED');
-   return createNativeRpc({profileDirectory:options.profileDirectory,binaryPath:check.binaryPath});
+   return createNativeRpc({profileDirectory,binaryPath:check.binaryPath});
   }});
  // Admission is refreshed before every connection action; reading selection does not invoke a provider.
  const connection={status:()=>gateway.connection.status(),
   async connect(input:unknown){
-   const check=await inspectConfiguredRuntime(options.profileDirectory);qualified=check.qualified;
-   try {providerAuthority=JSON.parse(await readFile(join(options.profileDirectory,'runtime-selection.json'),'utf8')).providerAuthority===true;}
+   await assertProfileIdentity(profile);
+   const check=await inspectConfiguredRuntime(profileDirectory);qualified=check.qualified;
+   try {providerAuthority=JSON.parse(await readFile(join(profileDirectory,'runtime-selection.json'),'utf8')).providerAuthority===true;}
    catch {providerAuthority=false;}
    if(stopping)throw failure('SERVICE_STOPPING');
    return gateway.connection.connect(input&&typeof input==='object'&&!Array.isArray(input)?input as Record<string,unknown>:{});
@@ -102,7 +106,7 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
   await new Promise<void>((resolve,reject)=>{server.once('error',reject);server.listen(0,'127.0.0.1',()=>{server.off('error',reject);resolve();});});
   const address=server.address();if(!address||typeof address==='string')throw failure('LISTEN_FAILED');
   origin=`http://127.0.0.1:${address.port}`;
-  application=await(deps.createApplication??createLocalApplication)({store,origin,instanceId:options.instanceId,profileDirectory:options.profileDirectory,
+  application=await(deps.createApplication??createLocalApplication)({store,origin,instanceId:options.instanceId,profileDirectory,
    staticDirectory:fileURLToPath(new URL('../../web/dist/',import.meta.url)),connection,runtime:gateway.runtime,
    runtimeCapable:()=>qualified,
    onQuit:()=>{if(!process.send||!process.connected)throw failure('OWNER_UNAVAILABLE');process.send({type:'quit_requested'},()=>{});},
@@ -113,8 +117,9 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
     stopping=true;application!.revokeSessions();
     serverClosing??=new Promise<void>((resolve,reject)=>server.close((error)=>error?reject(error):resolve()));
     if(!gatewayClosed){await gateway.close();gatewayClosed=true;}
-    if(!storeClosed){await store.close();storeClosed=true;}
+    // Existing import/restore handlers retain their store until the HTTP server has drained.
     await serverClosing;
+    if(!storeClosed){await store.close();storeClosed=true;}
    })().catch((error)=>{shutdown=undefined;throw error;});return shutdown;
   }
   return {port:address.port,instanceId:options.instanceId,build:'paos-m1-0.1.0',pairingCode:application.issuePairingCode(),quit};

@@ -277,7 +277,7 @@
       "id": "PAOS-0004",
       "group_id": "G01",
       "title": "Темы и локализация",
-      "status": "in_progress",
+      "status": "implemented",
       "short_description": "Общие токены и RU/EN для всех экранов",
       "technical_value": "Общие токены и RU/EN для всех экранов",
       "product_value": "Пользователь работает на удобном языке и в выбранной теме без потери читаемости и действий.",
@@ -294,6 +294,26 @@
         },
         {
           "path": "apps/web/src/ui",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
+        },
+        {
+          "path": "apps/web/src/design/app.css",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/web/src/locales/app.ts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/web/src/ui/App.tsx",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "tests/web/single-window/browser-acceptance.mts",
           "planned_operation": "create_or_modify_after_discovery",
           "actual_operation": "create"
         }
@@ -314,7 +334,7 @@
       "estimated_duration_hms": "08:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
       "actual_started_at": null,
-      "actual_ended_at": null,
+      "actual_ended_at": "2026-11-11T08:57:37.524Z",
       "actual_duration_seconds": null,
       "actual_duration_hms": null,
       "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
@@ -2048,7 +2068,7 @@
       "id": "PAOS-0040",
       "group_id": "G11",
       "title": "Launcher и жизненный цикл локального приложения",
-      "status": "in_progress",
+      "status": "implemented",
       "short_description": "Запуск service и UI, version/health checks, single instance, explicit install и graceful Quit",
       "technical_value": "Запуск service и UI, version/health checks, single instance, explicit install и graceful Quit",
       "product_value": "Работу можно начать ярлыком и понять, что продолжает выполняться после закрытия окна.",
@@ -2082,6 +2102,41 @@
           "path": "tests/web/launcher.test.mts",
           "planned_operation": "create_or_modify_after_discovery",
           "actual_operation": "modify"
+        },
+        {
+          "path": "tests/web/single-window/headless-acceptance.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/local-service/src/runtime/codex/stdio-rpc.ts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/local-service/src/runtime/live-gateway.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "tests/web/runtime-adapter.test.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "tests/web/single-window/standalone-acceptance.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
+        },
+        {
+          "path": "tests/web/launcher-standalone.test.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
+        },
+        {
+          "path": "tests/web/single-window/autonomous-launcher-acceptance.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
         }
       ],
       "agents": [
@@ -2099,7 +2154,7 @@
       "estimated_duration_hms": "12:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
       "actual_started_at": null,
-      "actual_ended_at": null,
+      "actual_ended_at": "2026-11-11T13:09:32.936Z",
       "actual_duration_seconds": null,
       "actual_duration_hms": null,
       "risks": "Orphan processes, зависший shutdown, несовместимый runtime.",
@@ -2113,7 +2168,7 @@
       "id": "PAOS-0041",
       "group_id": "G11",
       "title": "Локальное API-подключение и credential isolation",
-      "status": "in_progress",
+      "status": "implemented",
       "short_description": "Connection broker, secure store, payer/capabilities, disconnect и API profile без inherited login",
       "technical_value": "Connection broker, secure store, payer/capabilities, disconnect и API profile без inherited login",
       "product_value": "Пользователь подключает свой API account и контролирует расходы и данные.",
@@ -2130,6 +2185,41 @@
         },
         {
           "path": "apps/web/src/ui",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
+        },
+        {
+          "path": "tests/web/single-window/vault-roundtrip.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
+        },
+        {
+          "path": "tests/web/single-window/auth-metadata.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
+        },
+        {
+          "path": "tests/web/vault-roundtrip.test.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
+        },
+        {
+          "path": "tests/web/auth-metadata.test.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
+        },
+        {
+          "path": "apps/local-service/src/connections/profile-identity.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
+        },
+        {
+          "path": "apps/local-service/src/main.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "tests/web/profile-identity.test.mts",
           "planned_operation": "create_or_modify_after_discovery",
           "actual_operation": "create"
         }
@@ -2151,7 +2241,7 @@
       "estimated_duration_hms": "16:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
       "actual_started_at": null,
-      "actual_ended_at": null,
+      "actual_ended_at": "2026-11-11T08:46:17.666+03:00",
       "actual_duration_seconds": null,
       "actual_duration_hms": null,
       "risks": "Credential leakage, неверный payer или недоказанная isolation.",
@@ -2236,6 +2326,21 @@
           "path": "tests/web/runtime-sqlite.test.mts",
           "planned_operation": "create_or_modify_after_discovery",
           "actual_operation": "create"
+        },
+        {
+          "path": "apps/local-service/src/runtime/codex/coordinator.ts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/local-service/src/runtime/live-gateway.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "tests/web/runtime-adapter-races.test.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
         }
       ],
       "agents": [
@@ -2292,6 +2397,31 @@
           "path": "apps/local-service/src/tasks",
           "planned_operation": "create_or_modify_after_discovery",
           "actual_operation": "modify"
+        },
+        {
+          "path": "apps/web/src/api/draft-autosave.ts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/web/src/api/draft-registry.ts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
+        },
+        {
+          "path": "apps/web/src/ui/App.tsx",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "tests/web/ui-draft-autosave.test.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "tests/web/ui-draft-registry.test.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
         }
       ],
       "agents": [
@@ -2345,6 +2475,36 @@
           "path": "tests/web/recovery.test.mts",
           "planned_operation": "create_or_modify_after_discovery",
           "actual_operation": "create"
+        },
+        {
+          "path": "tests/web/runtime-adapter-gateway.test.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/local-service/src/runtime/codex/coordinator.ts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/local-service/src/runtime/live-gateway.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/local-service/src/runtime/storage-ports.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "tests/web/runtime-adapter-races.test.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
+        },
+        {
+          "path": "tests/web/runtime-adapter-time.test.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
         }
       ],
       "agents": [

@@ -1,5 +1,13 @@
 import type { UiLocale } from "./messages.ts";
 const labels = {
+  pairingHint: [
+    'Сначала подключите локальный сервис. Скопируйте код из окна запуска Product-Agent OS в поле ниже. После подключения станут доступны разделы приложения. Это локальное сопряжение; ключ API не нужен.',
+    'Connect the local service first. Copy the code from the Product-Agent OS launcher window into the field below. App sections become available after connecting. This is local pairing; no API key is needed.',
+  ],
+  pairingInvalid: [
+    'Код сопряжения неверен или срок его действия истёк. Используйте актуальный код из окна запуска Product-Agent OS.',
+    'The pairing code is invalid or expired. Use the current code from the Product-Agent OS launcher window.',
+  ],
   olderMessages: ["Ранее", "Older messages"],
   newerMessages: ["Новее", "Newer messages"],
   historyWindowHint: [
@@ -214,6 +222,14 @@ const labels = {
   planning: ["Планирование", "Planning"],
   execution: ["Выполнение", "Execution"],
   draft: ["Сообщение", "Message"],
+  draftScopeUnavailable: [
+    "Черновик пока недоступен. Сохраните незавершённые черновики и откройте сессию повторно.",
+    "The draft is unavailable. Save pending drafts and reopen this session.",
+  ],
+  draftCleanupPending: [
+    "Отправка подтверждена, очистка черновика ещё не сохранена. Повторите сохранение.",
+    "Send is acknowledged; draft cleanup is still pending. Retry saving the draft.",
+  ],
   context: ["Контекст", "Context"],
   changes: ["Изменения", "Changes"],
   chat: ["Чат", "Chat"],

@@ -65,13 +65,15 @@ export function createRuntimeStoragePorts(store: LocalStore, options: Readonly<{
     const timeline=[...oldTimeline];
     const all=(await listAll(run.projectId,'run')).filter((row)=>(row.data.runtimeRun as RuntimeRun|undefined)?.taskId===run.taskId)
       .flatMap((row)=>Array.isArray(row.data.timeline)?row.data.timeline as TaskTimeEvent[]:[]);
-    if(all.length>=10_000)throw Object.assign(new Error('Time journal is full.'),{code:'runtime_time_limit'});
     const lastStart=timeline.toReversed().find((event)=>event.kind==='interval_started');
     const open=lastStart&&!timeline.some((event)=>event.intervalId===lastStart.intervalId&&event.kind!=='interval_started');
     const now=(options.now??Date.now)();let kind:'interval_started'|'interval_stopped'|'interval_crashed'|undefined;
     if(!append&&run.state==='running'&&!open&&(previous!.data.runtimeRun as RuntimeRun).state!=='recovery_required')kind='interval_started';
     else if(open&&run.state==='recovery_required')kind='interval_crashed';
     else if(open&&['awaiting_approval','completed','failed','interrupted'].includes(run.state))kind='interval_stopped';
+    // Reserve a complete start/close pair for new work. Existing runs always retain Stop/recovery persistence,
+    // including one mandatory closing receipt for a legacy journal already at its admission limit.
+    if((append||kind==='interval_started')&&all.length>10_000-2)throw Object.assign(new Error('Time journal is full.'),{code:'runtime_time_limit'});
     if(kind) {
       const seq=Math.max(0,...all.map((event)=>event.seq))+1;
       const base={projectId:run.projectId,taskId:run.taskId,eventId:`${run.id}:time:${seq}`,seq,

@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import type { FormEvent } from "react";
-import { createHttpApi } from "../api/client.ts";
+import { createHttpApi, HttpApiError } from "../api/client.ts";
 import type {
   Connection,
   EntityKind,
@@ -32,7 +32,11 @@ import {
   RuntimeDiff,
   RuntimeChecks,
 } from "./SessionContext.tsx";
-import { createDraftAutosave } from "../api/draft-autosave.ts";
+import {
+  createDraftRegistry,
+  sendWithDraftAck,
+  type DraftLease,
+} from "../api/draft-registry.ts";
 import { mergeJournalMessages } from "../api/message-history.ts";
 import {
   applyUiPreferences,
@@ -52,6 +56,7 @@ import {
 } from "./Operations.tsx";
 
 const api = createHttpApi();
+const draftRegistry = createDraftRegistry();
 const sections = [
   "overview",
   "tasks",
@@ -120,7 +125,15 @@ export function App() {
       setReady(true);
       setCode("");
     } catch (error) {
-      setNotice(`${t("error")}: ${String(error)}`);
+      if (error instanceof HttpApiError && error.status === 401) {
+        setReady(false);
+        setProjects([]);
+        setProjectId('');
+        setConnection(null);
+        // A fresh profile has no local session yet. Guide pairing instead of reporting a failed operation.
+        setNotice(error.code === 'SESSION_REQUIRED' && !pairCode ? '' :
+          error.code === 'PAIRING_INVALID' ? t('pairingInvalid') : `${t('error')}: ${String(error)}`);
+      } else setNotice(`${t("error")}: ${String(error)}`);
     } finally {
       setBusy(false);
     }
@@ -171,6 +184,7 @@ export function App() {
           {sections.map((key) => (
             <button
               key={key}
+              disabled={!ready}
               aria-current={section === key ? "page" : undefined}
               onClick={() => {
                 setSection(key);
@@ -198,7 +212,7 @@ export function App() {
           >
             {t("menu")}
           </button>
-          <div className="breadcrumb">
+          <div className="breadcrumb" title={`${projects.find((p) => p.id === projectId)?.name ?? "Product-Agent OS"} / ${label(section)}`}>
             {projects.find((p) => p.id === projectId)?.name ??
               "Product-Agent OS"}
             <span>/</span>
@@ -226,6 +240,7 @@ export function App() {
           {!ready ? (
             <section className="panel narrow">
               <h2>{t("connect")}</h2>
+              <p role="status">{t('pairingHint')}</p>
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -417,6 +432,7 @@ function Settings({
           <label>
             {uiLabel(preferences.locale, "preferences.language")}
             <select
+              aria-label={uiLabel(preferences.locale, "preferences.language")}
               value={draft.locale}
               onChange={(e) =>
                 setDraft({
@@ -432,6 +448,7 @@ function Settings({
           <label>
             {uiLabel(preferences.locale, "preferences.theme")}
             <select
+              aria-label={uiLabel(preferences.locale, "preferences.theme")}
               value={draft.theme}
               onChange={(e) =>
                 setDraft({
@@ -1322,12 +1339,20 @@ function Session({
     [actionBusy, setActionBusy] = useState(false);
   const target = tasks.items.find((task) => task.id === targetId);
   const modeHydrated = useRef(false);
-  const autosave = useRef<ReturnType<typeof createDraftAutosave> | null>(null),
+  const autosave = useRef<DraftLease | null>(null),
     draftText = useRef(""),
     scrollTop = useRef(0),
     atBottom = useRef(true),
     transcript = useRef<HTMLDivElement | null>(null);
   const [draftSaving, setDraftSaving] = useState(false);
+  const [draftAvailable, setDraftAvailable] = useState(false);
+  const mounted = useRef(false);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
   const [boundMode, setBoundMode] = useState<string | null>(null);
   const [draft, setDraft] = useState(""),
     [mode, setMode] = useState("discussion"),
@@ -1335,6 +1360,7 @@ function Session({
     [snapshot, setSnapshot] = useState<RuntimeState | null>(null),
     [pane, setPane] = useState("chat");
   const runState: RunState =
+    draftAvailable &&
     !actionBusy &&
     snapshot?.canSend === true &&
     mode === boundMode &&
@@ -1358,48 +1384,57 @@ function Session({
   }, [messages.items, snapshot?.visibleDrafts, pane]);
   useEffect(() => {
     let template: StoredEntity | undefined;
-    const saver = createDraftAutosave({
-      read: async () => {
-        const page = await api.entities(entity.projectId, "draft", entity.id);
-        template = page.items[0];
-        return {
-          id: template?.id ?? `draft:${entity.id}`,
-          body: template?.body ?? "",
-          revision: template?.revision ?? 0,
-        };
-      },
-      write: async (record, body, key) => {
-        const next: StoredEntity = {
-          ...template,
-          id: record.id,
-          projectId: entity.projectId,
-          parentId: entity.id,
-          kind: "draft",
-          body,
-          revision: record.revision,
-        };
-        const receipt = (await api.command(
-          entity.projectId,
-          [{ expectedRevision: record.revision, entity: next }],
-          key,
-        )) as { revisions?: { id: string; revision: number }[] };
-        const revision = receipt.revisions?.find(
-          (row) => row.id === record.id,
-        )?.revision;
-        if (!Number.isSafeInteger(revision) || revision! <= record.revision)
-          throw new Error("DRAFT_ACK_UNVERIFIED");
-        return { id: record.id, body, revision: revision! };
-      },
-      restore: (body) => {
-        draftText.current = body;
-        setDraft(body);
-      },
-      error: (error) => setNotice(String(error)),
-      busy: setDraftSaving,
-    });
+    let saver: DraftLease;
+    try {
+      saver = draftRegistry.acquire([entity.projectId, entity.id], {
+        read: async () => {
+          const page = await api.entities(entity.projectId, "draft", entity.id);
+          template = page.items[0];
+          return {
+            id: template?.id ?? `draft:${entity.id}`,
+            body: template?.body ?? "",
+            revision: template?.revision ?? 0,
+          };
+        },
+        write: async (record, body, key) => {
+          const next: StoredEntity = {
+            ...template,
+            id: record.id,
+            projectId: entity.projectId,
+            parentId: entity.id,
+            kind: "draft",
+            body,
+            revision: record.revision,
+          };
+          const receipt = (await api.command(
+            entity.projectId,
+            [{ expectedRevision: record.revision, entity: next }],
+            key,
+          )) as { revisions?: { id: string; revision: number }[] };
+          const revision = receipt.revisions?.find(
+            (row) => row.id === record.id,
+          )?.revision;
+          if (!Number.isSafeInteger(revision) || revision! <= record.revision)
+            throw new Error("DRAFT_ACK_UNVERIFIED");
+          return { id: record.id, body, revision: revision! };
+        },
+      });
+    } catch (error) {
+      setDraftAvailable(false);
+      setNotice(error instanceof Error&&error.message==='DRAFT_SCOPE_CAPACITY'?t('draftScopeUnavailable'):String(error));
+      return;
+    }
     autosave.current = saver;
+    setDraftAvailable(true);
+    const unsubscribe = saver.subscribe((state) => {
+      draftText.current = state.body;
+      setDraft(state.body);
+      setDraftSaving(state.saving);
+      if (state.error) setNotice(state.error);
+    });
     return () => {
-      saver.dispose();
+      unsubscribe();
+      saver.release();
       if (autosave.current === saver) autosave.current = null;
     };
   }, [entity.id, entity.projectId]);
@@ -1498,7 +1533,7 @@ function Session({
   }
   async function persistDraft(body: string) {
     const saved = await autosave.current?.flush(body);
-    if (saved) setNotice(t("saved"));
+    if (saved && mounted.current) setNotice(t("saved"));
     return saved;
   }
   async function runtime(
@@ -1514,40 +1549,54 @@ function Session({
       previous ? { ...previous, canSend: false } : null,
     );
     setActionBusy(true);
+    let acknowledgement =
+      action === "interrupt"
+        ? uiLabel(locale, "state.stopRequested")
+        : t("saved");
     try {
-      await api.runtime(
-        action,
-        action === "send"
-          ? {
-              projectId: entity.projectId,
-              sessionId: entity.id,
-              ...binding,
-              clientMessageId: crypto.randomUUID(),
-              ...extra,
-            }
-          : {
+      if (action === "send") {
+        const lease = autosave.current;
+        if (!lease || typeof extra.input !== "string")
+          throw new Error(t('draftScopeUnavailable'));
+        const result = await sendWithDraftAck(
+          lease,
+          extra.input,
+          (clientMessageId) =>
+            api.runtime(action, {
               projectId: entity.projectId,
               sessionId: entity.id,
               ...binding,
               ...extra,
-            },
-      );
-      setSnapshot(await api.runtimeState(entity.projectId, entity.id));
-      if (action === "bindings") setBoundMode(mode);
-      if (action === "send" && draftText.current === extra.input) {
-        draftText.current = "";
-        setDraft("");
-        await persistDraft("");
+              clientMessageId,
+            }),
+        );
+        if (!result.acknowledged)
+          acknowledgement = uiLabel(locale, "state.checkingSend");
+        else if (!result.cleanupSaved)
+          acknowledgement += ` · ${t('draftCleanupPending')}`;
+      } else {
+        await api.runtime(action, {
+          projectId: entity.projectId,
+          sessionId: entity.id,
+          ...binding,
+          ...extra,
+        });
       }
-      setNotice(
-        action === "interrupt"
-          ? uiLabel(locale, "state.stopRequested")
-          : t("saved"),
-      );
+      if (!mounted.current) return;
+      setNotice(acknowledgement);
+      if (action === "bindings") setBoundMode(mode);
+      // Refresh failure cannot undo the already consumed command ACK or its durable draft cleanup.
+      try {
+        const current = await api.runtimeState(entity.projectId, entity.id);
+        if (mounted.current) setSnapshot(current);
+      } catch (error) {
+        if (mounted.current)
+          setNotice(`${acknowledgement} · ${t("partial")}: ${error}`);
+      }
     } catch (error) {
-      setNotice(`${t("error")}: ${error}`);
+      if (mounted.current) setNotice(`${t("error")}: ${error}`);
     } finally {
-      setActionBusy(false);
+      if (mounted.current) setActionBusy(false);
     }
   }
   return (
@@ -1722,9 +1771,8 @@ function Session({
                 {t("draft")}
                 <textarea
                   value={draft}
+                  disabled={!draftAvailable}
                   onChange={(e) => {
-                    draftText.current = e.target.value;
-                    setDraft(e.target.value);
                     autosave.current?.edit(e.target.value);
                   }}
                   rows={4}
@@ -1785,8 +1833,10 @@ function Session({
                 t={t}
                 onReference={(reference) => {
                   const next = `${draftText.current}${draftText.current ? "\n" : ""}${reference}`;
-                  draftText.current = next;
-                  setDraft(next);
+                  if (!autosave.current) {
+                    setNotice(t('draftScopeUnavailable'));
+                    return;
+                  }
                   autosave.current?.edit(next);
                 }}
               />

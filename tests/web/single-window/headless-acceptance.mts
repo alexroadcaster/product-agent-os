@@ -24,7 +24,11 @@ try {
       check('built_web_html_served', index.status === 200 && (await index.text()).includes('<div id="root">'));
       let cookie = '', csrf = '';
       async function request(path: string, payload?: unknown, method = payload === undefined ? 'GET' : 'POST', extra: Record<string, string> = {}) {
-        return fetch(`${origin}/api/v1${path}`, { method, signal: AbortSignal.timeout(5000),
+        // Native cutover holds up to two source locks under the existing 30s lease deadline.
+        // Ordinary HTTP checks retain 5s; import has no product 5s latency contract.
+        const timeoutMs=method==='POST'&&path.endsWith('/imports/commit')?35000:path.endsWith('/imports/source-status')?65000:5000;
+        evidence.lastRequest={path,method,timeoutMs};
+        return fetch(`${origin}/api/v1${path}`, { method, signal: AbortSignal.timeout(timeoutMs),
           headers: { origin, cookie, 'x-paos-csrf': csrf, 'content-type': 'application/json', ...extra },
           ...(payload === undefined ? {} : { body: JSON.stringify(payload) }) });
       }
@@ -146,7 +150,8 @@ try {
   check('quit_acknowledged_and_reservation_released', removed);
   evidence.status = 'passed_headless_local';
 } catch (error) {
-  evidence.status = 'failed'; evidence.failedCheck = error instanceof Error ? error.message : 'unknown'; process.exitCode = 1;
+  evidence.status = 'failed'; evidence.failedCheck = error instanceof Error ? error.message : 'unknown';
+  evidence.failureCode=typeof (error as {code?:unknown})?.code==='string'?(error as {code:string}).code:null;process.exitCode = 1;
 } finally {
   const lock = join(profile, 'service-instance');
   let live = false;

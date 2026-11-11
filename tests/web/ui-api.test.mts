@@ -181,6 +181,24 @@ test("revision conflicts retain the allowlisted service error code for recovery"
     )) as typeof fetch);
   await assert.rejects(api.projects(), /HTTP 409: REVISION_CONFLICT/);
 });
+
+test("session-required errors are typed and invalidate paired write authority", async () => {
+  const calls: string[] = [];
+  const api = createHttpApi((async (url: string) => {
+    calls.push(url);
+    return url.endsWith('/session')
+      ? Response.json({csrfToken:'synthetic'})
+      : url.endsWith('/projects') ? Response.json({items:[{id:'p',authorityEpoch:4}]})
+      : Response.json({error:{code:'SESSION_REQUIRED'}},{status:401});
+  }) as typeof fetch);
+  await api.pair();
+  await api.projects();
+  await assert.rejects(api.connection(), (error: any) => error.status===401&&error.code==='SESSION_REQUIRED');
+  await assert.rejects(api.quit(), /Paired session required/);
+  await api.pair();
+  await assert.rejects(api.command('p', []), /authority/i);
+  assert.deepEqual(calls,['/api/v1/session','/api/v1/projects','/api/v1/connection','/api/v1/session']);
+});
 test("import confirmation preserves stage identity and authority, restore stays in a separate destination", async () => {
   const calls: { url: string; body: Record<string, unknown> }[] = [];
   const api = createHttpApi((async (url: string, init?: RequestInit) => {

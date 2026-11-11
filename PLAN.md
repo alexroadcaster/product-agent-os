@@ -16,7 +16,7 @@ G8 closed / owner accepted. G9 T01–T09 implemented_locally_verified; T10 owner
 
 ## Активная продуктовая очередь Web — 2026-11-10
 
-Актуализация 2026-11-11: native-offline PAOS-0054 квалифицирован, local route PAOS-0039 реализован. Локальные data/runtime/UI компоненты и исполняемый пакет PAOS-0045 проверены; полная browser/provider/native-vault приёмка остаётся открытой. Следующая группа не объявлена готовой. [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md) и матрица владеют деталями. Ранее описанные Windows/AUTH-G1 блокировки ниже — датированная история, заменённая этим evidence.
+Актуализация 2026-11-11, 16:15 MSK: PAOS-0004 и PAOS-0040 implemented в своих technical scopes;PAOS-0054 native-offline,PAOS-0039 local route,PAOS-0041 local auth прежние. M1 14 implemented /3 in_progress /PAOS-0045 blocked:0042/0043/0044 provider/owner gates открыты. Autonomous launcher56/browser669/Web197/strict/build35 passed. Closed-App native component и browser — разные receipts, manual rejection сохранён; ручной повтор не нужен. AUTH-G1–G6 commercial gates прежние. [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md).
 
 Датированный baseline 10 ноября:
 
@@ -144,7 +144,7 @@ PAOS-AUD-G1: пять карточек F06/F12/F11/F07/F18 implemented_locally_v
 
 ## Next Implementation Queue
 
-Приоритетный маршрут — завершить оставшиеся gates PAOS-0045 в Web M1 v0.8; PAOS-0001/0054 native-offline qualification выполнена. Таблица ниже сохраняет follow-ups других направлений.
+Приоритетный маршрут — завершить оставшиеся gates PAOS-0045 в Web M1 v0.8; PAOS-0001/0054 native-offline qualification выполнена; PAOS-0041 local auth квалифицирован без provider inference. Таблица ниже сохраняет follow-ups других направлений.
 
 | Slice | Next decision | Approval boundary | Source pointer |
 | --- | --- | --- | --- |

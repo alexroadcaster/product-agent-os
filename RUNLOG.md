@@ -22,7 +22,7 @@ G8-T14/G8 owner accepted. G9 T01–T09 локально реализованы; 
 
 ## Старт Web M1 — 2026-11-10
 
-Текущий handoff 2026-11-11: прежние PAOS-0054/0039 блокеры сняты в native-offline/local-engineering scope. Реализованы launcher/service/SPA/SQLite/domain/import/recovery и bounded acceptance package; Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. Root и три агента исправили найденные integration findings. PAOS-0045 остаётся blocked/partially_verified: browser/provider запрещены, native vault roundtrip отклонён auto-review как OS store вне temporary profile. [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md) хранит findings, hashes, failed attempts и полную acceptance map. Исторические наблюдения 10 ноября ниже сохранены и не переопределяют current evidence.
+Текущий handoff 2026-11-11, 16:15 MSK: PAOS-0004/PAOS-0040 technical implemented; M1 14/3/1, PAOS-0045 blocked. SESSION_REQUIRED unpaired UX исправлен; autonomous launcher56/browser669/Web197/strict/build35 passed. Closed-App native owner/reuse/Quit25samples и новый browser — разные receipts; owner rejected manual journey сохранён. Ручной повтор не нужен.0042/0043/0044 provider/owner gates прежние; PAOS-0041 local auth и headless33/Python1450/evals/workload имеют прежний provenance. Standing local synthetic authority в AGENTS.md; [execution report](research/product-agent-os-web-m1-execution-2026-11-11.md) владеет hashes/limits.
 
 Датированный baseline 10 ноября:
 
@@ -154,7 +154,7 @@ Strict MkDocs is required when navigation, Mermaid diagrams, Markdown extensions
 
 ## Residual Risks
 
-Web M1: PAOS-0054 native-offline tuple/driver/capabilities и synthetic migration/restore проверены; actual provider/browser/native-vault/owner acceptance и commercial gates остаются открытыми. Остальные риски ниже сохранены из прежних срезов и проверяются у их owners перед отдельным запуском. Указанные в них control-plane sync решения относятся к тем срезам.
+Web M1: PAOS-0054 native-offline tuple/driver/capabilities и synthetic migration/restore проверены; native vault/local auth проверены; actual provider/browser/owner acceptance и commercial gates остаются открытыми. Остальные риски ниже сохранены из прежних срезов и проверяются у их owners перед отдельным запуском. Указанные в них control-plane sync решения относятся к тем срезам.
 
 - Batch 39 owner-feedback results and any runtime/browser pilot remain pending.
 - `B38-PILOT-NF01` target apply remains blocked by source-policy and target-artifact gaps.

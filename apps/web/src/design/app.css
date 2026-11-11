@@ -525,6 +525,15 @@ main:focus {
   }
   .breadcrumb {
     font-size: 0.8rem;
+    display: block;
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  header > button {
+    flex-shrink: 0;
   }
   .breadcrumb span {
     display: none;
@@ -536,8 +545,9 @@ main:focus {
     display: none;
   }
   .settings-grid,
+  .task-layout,
   .task-layout:has(.task-detail) {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .task-detail {
     grid-row: 1;

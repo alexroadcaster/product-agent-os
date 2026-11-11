@@ -16,6 +16,8 @@ G8-T14/G8 явно приняты владельцем. G9 T01–T09 реали�
 
 ## Текущий scope Web M1 — 2026-11-10
 
+Дополнение 2026-11-11, 09:25 MSK: один разрешённый native vault roundtrip PAOS-M1-fixture и local synthetic broker auth квалифицированы; fixture удалена. Credential namespace изолирован по canonical profile identity, без legacy/default fallback или миграции существующих записей; старые unresolved default-account runs fail-closed. Реальные ключи/provider/browser и системные политики исключены. Детали в [execution report](research/product-agent-os-web-m1-execution-2026-11-11.md).
+
 Уточнение исполнения 2026-11-11: владелец разрешил непрерывную локальную реализацию по DAG и синтетические native/headless проверки; системные политики, реальные ключи, provider и browser запрещены. Windows MXC write/deny проверен. Local engineering preview не требует commercial AUTH-G1–G6; выпуск остаётся gated PAOS-0046/0030. [Текущий пакет](research/product-agent-os-web-m1-execution-2026-11-11.md) не заменяет SW/UX end-to-end acceptance; M1 пока не закрыта.
 
 Датированный baseline 10 ноября:
@@ -32,6 +34,9 @@ Owning scope: [PRD §17](research/product-agent-os-web-prd-2026-11-05.md), [ар
 
 Предыдущие Web receipts сохранены в [аудит и архив control-plane](research/product-agent-os-control-plane-maintenance-2026-11-10.md). Далее находятся evidence других направлений и исторические compatibility anchors; они не переопределяют этот scope.
 
+
+
+Авторизация 2026-11-11: постоянные границы autonomous local synthetic server/browser/native/delegation по явному запросу владельца хранятся только в AGENTS.md. Для PAOS-0004/PAOS-0040 технические проверки выполняет агент; owner не обязан следовать test script. Native closed-App observation и browser verification различаются, manual rejection не подменяется приёмкой. Provider, реальные ключи, OS-store операции, системные политики и Git остаются исключены; managed controls неизменны.
 
 ## PAOS-AUD-G7 — closed / owner accepted, 2026-11-10
 
@@ -181,7 +186,7 @@ Last compacted: 2026-06-11
 
 ## Open Risks
 
-Web M1: PAOS-0054 native-offline compatibility и synthetic migration/restore проверены 11 ноября; actual provider/browser/native-vault/owner acceptance и commercial gates не закрыты. Далее — отдельные риски поддерживаемого plugin/docs scope, не дополнительные задачи M1.
+Web M1: PAOS-0054 native-offline compatibility и synthetic migration/restore проверены 11 ноября; native vault/local auth проверены, actual provider/browser/owner acceptance и commercial gates не закрыты. Далее — отдельные риски поддерживаемого plugin/docs scope, не дополнительные задачи M1.
 
 - Batch 39 real-project-adjacent execution is source-owned through `prod_test.md` and S5 closure artifacts. It includes synthetic archetype pilots, read-only `Neural_Flow` / `SOL 0.6` evidence, S4 hardening and S5 conditional owner-feedback closure. Target writes, runtime/browser/provider/model/vector/eval/live-database/migration/production-data/git/external actions and any broader target execution still require exact approval.
 - `B38-PILOT-NF01` remains blocked for target apply by missing target control-plane/source registry artifacts and `source_policy_status: blocked`.
