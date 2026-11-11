@@ -1,6 +1,6 @@
 # Web M1 — первичная проверка PAOS-0001 и PAOS-0054
 
-Source status: local implementation evidence / persisted history verified / Windows execution qualification blocked. Дата 2026-11-10, Europe/Moscow. Research receipt вне публикуемой базы знаний.
+Source status: historical local implementation evidence, 2026-11-10, Europe/Moscow. Research receipt вне публикуемой базы знаний. Прежняя Windows execution qualification была blocked в AppContainer; [нативная проверка 2026-11-11](product-agent-os-web-m1-execution-2026-11-11.md#разрешение-paos-0054) подтвердила MXC write/deny. Исторические отказы и команды ниже сохранены; они не являются текущим статусом M1.
 
 ## PAOS-0001 — обнаружение источников
 
@@ -73,6 +73,27 @@ Source status: local implementation evidence / persisted history verified / Wind
 
 Оценка обоих receipts выполнена `node packages/contracts/runtime/probe-local.mts .tmp/paos-m1/schema <receipt>`. Первый остаётся `stdio_checks_blocked` с `project_history,scoped_execution_policy`. Второй возвращает `stdio_checks_blocked` только с `scoped_execution_policy`. Оба кода 1 ожидаемы. Regression test нового receipt сначала падал на лишнем `project_history`, затем прошёл. Наличие `workspaceWrite` в metadata именованного профиля нельзя использовать вместо `windowsSandbox/readiness=ready` и доказательства ограничения записи.
 
+## Windows sandbox — проверка на текущем хосте
+
+Проверка выполнена на Windows 11 25H2 `26200.9711` и закреплённом Codex CLI `0.167.0`. Номер сборки выше указанного минимума для MXC. Каждый запуск использовал отдельный временный профиль и синтетические соседние каталоги. До App Server та же команда записала в оба каталога, затем контрольные файлы были сброшены. Оба процесса App Server завершились с exit 0, временные профили удалены. Файлы учётных данных не создавались. System policy, браузер и вызовы провайдера в проверке не использовались. [OpenAI Docs — Windows sandbox, MXC compatibility](https://learn.chatgpt.com/docs/windows/windows-sandbox#mxc-compatibility)
+
+| Backend | Статус и выбор | Наблюдение записи |
+| --- | --- | --- |
+| `mxc` | RPC вернул `ready`, startup log сообщил `Windows sandbox selection: mxc` и `MXC availability: false` | Именованный `workspaceWrite` совпал с синтетическим корнем, без сети и дополнительных writable roots. `command/exec` вернул `-32603` без exit code дочерней команды. Внутренняя запись отсутствует, внешний контрольный файл сохранился. Фактический отказ записи не наблюдался |
+| `unelevated` | RPC вернул `ready`, startup log сообщил `Windows sandbox selection: unelevated` | Выполнены только `initialize`, `config/read`, `configRequirements/read`, `windowsSandbox/readiness`. Проверка записи не запускалась |
+
+В закреплённом релизе проверка readiness возвращает `ready` при выборе MXC или restricted token без проверки запуска команды. При `unelevated` подготовка дочернего процесса может менять DACL системного устройства `\\.\NUL`, поэтому `command/exec` и setup этого режима исключены из проверки с границей временного профиля и каталогов. Причина `MXC availability: false` в текущем контексте отдельно не установлена. [Codex 0.167.0 — readiness](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/app-server/src/request_processors/windows_sandbox_processor.rs#L306), [подготовка команды](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/windows-sandbox-rs/src/spawn_prep.rs#L250), [DACL устройства NUL](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/windows-sandbox-rs/src/acl.rs#L1061)
+
+Локальные команды `python -B .tmp/paos-m1/windows-boundary.py --binary <pinned-codex.exe> --mode mxc --run-once` и с `--mode unelevated` вернули exit 1, так как ни один из запусков не получил пару write/deny. Санитизированные receipts в `.tmp/paos-m1/`: `windows-mxc-boundary-result.json` SHA-256 `21b335eb2a8833d292de1fb49d261abb437da8d766332ae5d2f6269cd2ac29e1`, `windows-unelevated-boundary-result.json` SHA-256 `c9ee43be70a716dbce0b2028848eba2ccf1dad2bc93c96d90233aef7d1a345d0`.
+
+`probe-local.mts` теперь принимает дополнительный boundary receipt с тем же SHA-256 бинарника. Для `scoped_execution_policy` требуются нативная доступность выбранного MXC, именованный профиль, успешная запись в корне и явный отказ вне корня при положительном контроле обоих путей. RED воспроизвёл ложный пропуск `ready` без receipt. GREEN проверил положительный синтетический receipt и отклонение несовпадающего SHA-256, невалидного контроля, недоступного MXC и отсутствия дочернего процесса. Воспроизведение обоих Windows receipts сохраняет `stdio_checks_blocked` с `scoped_execution_policy`. Повтор без receipts сохраняет `static_checks_passed`, exit 0. Это локальная проверка синтетической файловой границы. Network enforcement, dynamic tools, изоляция после входа и сквозная приёмка PAOS-0045 открыты.
+
+Проверки текущего среза:
+
+- `node --test tests/web/runtime-compatibility.test.mts` — RED exit 1, GREEN exit 0, 3/3. `node --test tests/web/*.test.mts` — с inherited TEMP/TMP 21/23, ошибки `EPERM` на `rename` и создании junction. Повтор с TEMP/TMP в игнорируемом workspace — 22/23, `rename` прошёл, создание junction в fixture `project-sources.test.mts` по-прежнему возвращает `EPERM` до вызова адаптера.
+- `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs tests.product_agent_os.test_task_plan_lifecycle tests.product_agent_os.test_infrastructure_templates -q` — 209/209. `python -B -m unittest tests.product_agent_os.test_lifecycle_hooks -q` — 42/42. `python -B tools/check_docs.py`, `python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-web-task-manager-plan-2026-11-09.md` и `git diff --check` — exit 0.
+- Повторная сверка M1 по JSON — 3 `implemented`, 2 `in_progress`, 2 `blocked`, 11 `planned`, среди `planned` нет карточек со всеми закрытыми зависимостями. `PLAN.md`, `TEST.md`, `RUNLOG.md`, карточка PAOS-0054 и реестры RU/EN синхронизированы. Статусы и порядок в JSON, требования и eval gates не изменились.
+
 ## Независимые ветки после PAOS-0001
 
 | Задача | Статус | Локальная проверка и граница |
@@ -86,6 +107,25 @@ Source status: local implementation evidence / persisted history verified / Wind
 Работа над моделью/временем, темами и launcher выполнялась параллельно с непересекающимся владением. Авторизацию и отчёт вёл корневой агент. `node --test tests/web/*.test.mts` на объединённом срезе — exit 0, 23/23. Ключи, провайдер, браузер и изменение системных настроек для этих веток не использовались.
 
 Итоговые проверки среза: 209 unittest для docs, task-plan lifecycle и templates, 42 unittest для hooks, `check_docs.py`, валидация Web-плана, валидация hook paths и `git diff --check` прошли. Markdown и JSON совпадают по статусам всех 56 карточек, порядок зависимостей прежний. M1 содержит 3 `implemented`, 2 `in_progress`, 2 `blocked`, 11 `planned`; среди `planned` нет задач с закрытыми зависимостями. `PLAN.md`, `TEST.md`, `RUNLOG.md`, Web-план, JSON, auth notes и реестры RU/EN обновлены; критерии `REQUIREMENTS.md` и `EVALS.md` в этом срезе не менялись.
+
+## Продолжение реализации PAOS-M1 — локальные контракты
+
+Независимая проверка закреплённого Codex 0.167.0 установила, что нативная проба MXC загружает PSEC API, создаёт среду с запретом egress и формирует атрибуты запуска. Общий результат кэшируется в процессе. `availability: false` не показывает этап или HRESULT, а sandbox manager прекращает выполнение до старта дочерней команды. Read-only `TOKEN_QUERY` процесса текущего runner вернул `isAppContainer=true`, `hasRestrictions=true`, `elevated=false`, `inJob=true`. Вложенная изоляция остаётся гипотезой о причине сбоя. В этом срезе нового App Server или setup не запускали. [Проба PSEC](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/mxc-sandbox/src/availability.rs#L17-L50), [выбор sandbox](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/sandboxing/src/manager.rs#L365-L372), [Microsoft Learn — поля Windows token](https://learn.microsoft.com/en-us/windows/win32/api/winnt/ne-winnt-token_information_class), [OpenAI Docs — MXC compatibility](https://learn.chatgpt.com/docs/windows/windows-sandbox#mxc-compatibility)
+
+| Карточка | Что добавлено и проверено | Открытая интеграция |
+| --- | --- | --- |
+| PAOS-0004 | Нативная форма восстанавливает RU/EN и Light/Dark/System из `UiPreferencesStore`, сохраняет настройки перед применением, оставляет черновик при ошибке и отслеживает смену системной темы. `node --test tests/web/theme-locale.test.mts` — 6/6 | S24, реальное хранилище и UX-AC-15 в браузере |
+| PAOS-0040 | Атомарное резервирование и публикация endpoint. Второй процесс получает `startup_unresolved` до публикации, переиспользует endpoint после неё и может занять профиль после подтверждённого Quit. `node --test tests/web/launcher-instance.test.mts tests/web/launcher.test.mts` — 9/9 | Реальный service host, native shortcut, pairing PAOS-0041 и reconciliation оставшейся после сбоя записи в PAOS-0040/0044 |
+| PAOS-0054 | Расширена проверка схемы App Server. Маппер разделяет принятие turn, состояние turn, исход item и закрытие запроса. Независимое review воспроизвело некорректные статусы item, пробельные ID и ошибочный переход к recovery на штатном progress. После исправлений `node --test tests/web/runtime-compatibility.test.mts tests/web/runtime-events.test.mts` — 9/9 | Runtime correlation по generation/thread/request и replay принадлежат PAOS-0042/0044. Native write/deny и полный runtime manifest ещё открыты |
+| PAOS-0054 | Опциональная файловая SQLite-проба. `node --test tests/web/runtime-sqlite.test.mts` — 3/3. Зафиксированные строки сохранились при повторном открытии, rollback отбросил строку, `VACUUM INTO` сохранил снимок активного WAL до следующей записи, восстановленная БД прошла integrity/FK, orphan insert отклонён | Worker, crash recovery, миграции и backup продукта принадлежат PAOS-0048/0051 |
+
+`node packages/contracts/runtime/probe-local.mts .tmp/paos-m1/schema --sqlite-fixture-root .tmp/paos-m1` вернул exit 0, `schema.missing=[]`, `static_checks_passed` и три `true` файловой SQLite-пробы. С каждым из прежних Windows receipts — ожидаемый exit 1 и единственный blocker `scoped_execution_policy`. Context7 использован для документации Codex и Node.js. Поведение и поля сверены с закреплённой схемой и первичными источниками. [OpenAI Docs — App Server turns](https://learn.chatgpt.com/docs/app-server#turns), [Node.js 26.5.0 — SQLite](https://nodejs.org/download/release/v26.5.0/docs/api/sqlite.html), [SQLite — VACUUM INTO](https://sqlite.org/lang_vacuum.html#vacuuminto)
+
+В текущем runner с `TEMP`/`TMP` в workspace `node --test tests/web/*.test.mts` дал 37/38. Единственное падение `EPERM` при создании junction в неизменённом `tests/web/project-sources.test.mts` произошло до вызова адаптера. У агента junction прошёл в промежуточном прогоне с незафиксированным токеном. В повторе с токеном AppContainer и унаследованным TEMP тот же агент получил 1/3, два `EPERM` на создании junction и `rename` до вызова адаптера. Отдельного доступного native Windows-контекста эти проверки не подтвердили.
+
+PAOS-0039 для M1 использует уже определённый `local_api_byok` preview. Критерий самой карточки требует решения владельца по exact route для AUTH-G1. Официальная документация App Server по-прежнему описывает ограничение commercial/hosted auth. Регистрация, коммерческий допуск и вызовы провайдера в этом срезе отсутствуют. [OpenAI Docs — Auth endpoints](https://learn.chatgpt.com/docs/app-server#auth-endpoints)
+
+Итоговая верификация среза: 27/27 затронутых Web-тестов, 209/209 unittest для docs/lifecycle/templates и 42/42 для hooks. `python -B tools/check_docs.py`, Web `validate_task_matrix.py`, сверка 56 статусов Markdown/JSON и `git diff --check` прошли. В M1 3 `implemented`, 2 `in_progress`, 2 `blocked`, 11 `planned`. Среди `planned` нет карточек со всеми закрытыми зависимостями. `PLAN.md`, `TEST.md`, `RUNLOG.md`, карточки PAOS-0004/0040/0054 и реестры RU/EN синхронизированы. Для `REQUIREMENTS.md`, `EVALS.md` и `prod_test.md` изменение области, eval gate или historical ledger не потребовалось.
 
 ## Открытые проверки
 

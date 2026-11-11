@@ -1,4 +1,5 @@
-import { lstat, realpath, stat } from 'node:fs/promises';
+import { lstat, open, realpath, stat } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { isAbsolute, join } from 'node:path';
 import type {
   ListRuntimeThreads, ProjectBinding, ProjectSourceCoverage, ProjectSourceId, ProjectSources,
@@ -53,6 +54,47 @@ async function assertCurrentBinding(binding: ProjectBinding): Promise<void> {
   if (current.workspaceRoot !== binding.workspaceRoot || current.directoryIdentity !== binding.directoryIdentity) {
     throw bindingError('PROJECT_ROOT_UNAVAILABLE');
   }
+}
+
+/** Read fixed source names through a checked handle. The digest identifies raw bytes; display text may be redacted. */
+export async function readProjectSource(binding: ProjectBinding, sourceId: string) {
+  const relativePath = Object.entries(controlPlaneFiles).find(([id, file]) => id === sourceId || file === sourceId)?.[1];
+  const fail = (code: string): never => { throw Object.assign(new Error('The requested source is unavailable.'), { code }); };
+  if (!relativePath) return fail('SOURCE_NOT_FOUND');
+  await assertCurrentBinding(binding);
+  const path = join(binding.workspaceRoot, relativePath);
+  const before = await lstat(path, { bigint: true }).catch(() => fail('SOURCE_UNAVAILABLE'));
+  if (!before.isFile() || before.isSymbolicLink() || before.nlink !== 1n) fail('SOURCE_UNAVAILABLE');
+  const limit = 1024 * 1024;
+  if (before.size > BigInt(limit)) fail('SOURCE_TOO_LARGE');
+  const handle = await open(path, 'r').catch(() => fail('SOURCE_UNAVAILABLE'));
+  try {
+    const opened = await handle.stat({ bigint: true });
+    if (opened.dev !== before.dev || opened.ino !== before.ino || opened.nlink !== 1n) fail('SOURCE_UNAVAILABLE');
+    const bytes = Buffer.alloc(limit + 1);
+    let count = 0;
+    while (count < bytes.length) {
+      const result = await handle.read(bytes, count, bytes.length - count, count);
+      if (!result.bytesRead) break;
+      count += result.bytesRead;
+    }
+    const after = await handle.stat({ bigint: true });
+    const current = await lstat(path, { bigint: true });
+    await assertCurrentBinding(binding);
+    if (count > limit) fail('SOURCE_TOO_LARGE');
+    if (after.dev !== opened.dev || after.ino !== opened.ino || after.size !== BigInt(count)
+      || after.mtimeNs !== before.mtimeNs || after.ctimeNs !== before.ctimeNs || after.nlink !== 1n
+      || current.isSymbolicLink() || current.ino !== opened.ino || current.dev !== opened.dev || current.nlink !== 1n
+      || current.size !== after.size || current.mtimeNs !== after.mtimeNs || current.ctimeNs !== after.ctimeNs) fail('SOURCE_CHANGED');
+    const text = (() => {
+      try { return new TextDecoder('utf-8', { fatal: true }).decode(bytes.subarray(0, count)); }
+      catch { return fail('SOURCE_ENCODING_INVALID'); }
+    })();
+    const content = text.replace(/sk-[A-Za-z0-9_-]+/g, '[REDACTED]')
+      .replace(/^(\s*(?:OPENAI_API_KEY|ANTHROPIC_API_KEY|AWS_SECRET_ACCESS_KEY|PRIVATE_KEY|ACCESS_TOKEN)\s*[:=]).+$/gim, '$1 [REDACTED]');
+    return { relativePath, content, sha256: createHash('sha256').update(bytes.subarray(0, count)).digest('hex'),
+      coverage: 'complete' as const, redacted: content !== text };
+  } finally { await handle.close(); }
 }
 
 /** Inventory only fixed control-plane paths. Linked content may belong to another project. */

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "paos_runtime_manifest_v1",
+  "qualification": "native_offline",
+  "platform": "win32",
+  "arch": "x64",
+  "windowsRelease": "10.0.26200",
+  "codex": {
+    "version": "0.167.0",
+    "sha256": "edfdd48f8b458af0906e507b4cb05217b326c3d6e515e9f024e05e3b8d650f70"
+  },
+  "node": {
+    "version": "v26.5.0",
+    "sha256": "119d6fa70e6ae1b15b90688ab6bcc8e3a2819acea021af196895cab1843645af"
+  },
+  "sqliteVersion": "3.53.3",
+  "adapterRevision": "ac18ca8a85a4757425250dd157eae47af3c4944afea25f274eaefc51a9e97d20",
+  "packageLockSha256": "d279009aa1dca2bd2d6ba0e18a77d085a67e872d0dce78dd360fb23d43975f38",
+  "schema": {
+    "sha256": "486c7c8daa5dc7f3ab2a1fb56de5316804caf7a4210fda1dc28d3f0f4e90cfe1",
+    "v2Sha256": "b1e5d17224b9d9732b5976012438ba78e2cf7e418b67f8f8a5f5cffe301b875d"
+  },
+  "capabilities": {
+    "projectHistory": true,
+    "scopedExecution": true,
+    "ephemeralAuth": true,
+    "fts5": true,
+    "backupRestore": true
+  },
+  "evidence": {
+    "nativeSmoke": "7f6cc3e29d74bd1a6252736ee7bd757d1bbd5a0883b66e008c96f9d1cdcaad86",
+    "history": "3846634cfd7b84f372a02e56a1302c9ed831c39a92cdc7a73c73e0eebdbc2516",
+    "boundary": "612e77d09da65e6329d39b1621eb79f4a50b5dbbac21409c13424d9a468661d7",
+    "ephemeralAuth": "519a06b0af264cfe882994f91c51bcbd5909360f7d7684ff6f72a8b9244bf0ba",
+    "headless": "36e0b8d465b4c7bfc2549ce1fcbc8fdedce88e16f11b4ab9b70a3644c70466a9",
+    "workload": "f4dc674a8b7086ecdf3a6d1c17231a4f7c0f70d3691500c33c695aa4e38f594c"
+  }
+}

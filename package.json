@@ -1,0 +1,12 @@
+{
+  "name": "product-agent-os-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "engines": { "node": "26.5.0" },
+  "scripts": {
+    "build:web": "npm --prefix apps/web run build",
+    "check:web-m1": "node apps/web/node_modules/typescript/bin/tsc --project tsconfig.web-m1.json",
+    "test:web-m1": "node --test tests/web/*.test.mts",
+    "start:web-m1": "node apps/launcher/main.mts"
+  }
+}

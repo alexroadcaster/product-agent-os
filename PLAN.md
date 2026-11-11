@@ -16,15 +16,19 @@ G8 closed / owner accepted. G9 T01–T09 implemented_locally_verified; T10 owner
 
 ## Активная продуктовая очередь Web — 2026-11-10
 
+Актуализация 2026-11-11: native-offline PAOS-0054 квалифицирован, local route PAOS-0039 реализован. Локальные data/runtime/UI компоненты и исполняемый пакет PAOS-0045 проверены; полная browser/provider/native-vault приёмка остаётся открытой. Следующая группа не объявлена готовой. [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md) и матрица владеют деталями. Ранее описанные Windows/AUTH-G1 блокировки ниже — датированная история, заменённая этим evidence.
+
+Датированный baseline 10 ноября:
+
 Source status: project-authored / order_approved; implementation_started, runtime qualification blocked.
 
 Единственный владелец порядка и статусов — [Web-план v0.8](research/product-agent-os-web-task-manager-plan-2026-11-09.md) вместе с [JSON-матрицей](research/product-agent-os-web-task-manager-task-group-2026-11-09.json).
 
-1. PAOS-0001 подтвердил persisted history и scoped project adapter. Независимые от PAOS-0054 ветки открыты по графу. PAOS-0054 ожидает Windows sandbox qualification, что удерживает зависимую runtime/storage интеграцию. [Наблюдения и следующие проверки](research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+1. PAOS-0001 подтвердил persisted history и scoped project adapter. В PAOS-0004 проверена форма настроек, в PAOS-0040 — межпроцессное резервирование. PAOS-0054 проверил схему, маппинг событий и файловые возможности SQLite, остаётся `blocked` без native write/deny. Для зависимой runtime/storage интеграции нужен поддерживаемый Windows-контекст с рабочим MXC. [Наблюдения и следующие проверки](research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
 2. Выполнить 18 задач M1 в утверждённом порядке с dependencies; PAOS-0045 — сквозная приёмка после data/recovery gates. PAOS-0002 ограничена M1 profile.
 3. PAOS-0046 — первая задача после M1 и до M2; затем M2 (включая PAOS-0036), M3, M4. OPTIONAL и T1 — отдельные маршруты; повторный commercial review — PAOS-0030.
 
-Если PAOS-0054 не подтверждает required capability, остановить зависимый slice и обновить design issue; не подменять capability неявным fallback. Порядок исполнения не создаёт новых technical dependencies и не разрешает параллельную запись общих файлов.
+Уточнение исполнения 2026-11-11 по запросу владельца — продолжать локальную реализацию M1 до исполняемого пакета приёмки. Нативный MXC-прогон подтвердил запись внутри root и отказ снаружи. Отсутствующие поля полного manifest блокируют активацию зависимого runtime; локальные storage/UI/domain компоненты реализуются по согласованным интерфейсам и DAG. Неподдержанная capability сохраняет design issue и запрещает неявный fallback. Порядок исполнения не создаёт новых technical dependencies и не разрешает параллельную запись общих файлов.
 Остальные Batch/Track очереди ниже сохранены как отдельные follow-ups. Они не запускаются автоматически и не добавляют gates в M1 без установленной зависимости. Предыдущие Web receipts: [аудит и архив control-plane](research/product-agent-os-control-plane-maintenance-2026-11-10.md).
 
 
@@ -140,7 +144,7 @@ PAOS-AUD-G1: пять карточек F06/F12/F11/F07/F18 implemented_locally_v
 
 ## Next Implementation Queue
 
-Приоритетный маршрут — квалификация PAOS-0001/0054, затем очередь Web M1 v0.8. Таблица ниже сохраняет follow-ups других направлений.
+Приоритетный маршрут — завершить оставшиеся gates PAOS-0045 в Web M1 v0.8; PAOS-0001/0054 native-offline qualification выполнена. Таблица ниже сохраняет follow-ups других направлений.
 
 | Slice | Next decision | Approval boundary | Source pointer |
 | --- | --- | --- | --- |

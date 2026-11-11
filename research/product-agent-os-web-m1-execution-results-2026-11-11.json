@@ -1,0 +1,712 @@
+{
+  "schemaVersion": 1,
+  "status": "partially_verified",
+  "taskId": "PAOS-M1",
+  "generatedAt": "2026-11-11T05:06:28.704Z",
+  "constraints": {
+    "syntheticOnly": true,
+    "systemPoliciesChanged": false,
+    "realKeysUsed": false,
+    "providerUsed": false,
+    "browserUsed": false,
+    "gitHistoryChanged": false
+  },
+  "manifest": {
+    "path": "packages/contracts/runtime/qualified-manifest.json",
+    "sha256": "0a980658f60e0198d1b2045feb832d53be6b1f81789422e0247846e751091cc3",
+    "adapterRevision": "ac18ca8a85a4757425250dd157eae47af3c4944afea25f274eaefc51a9e97d20",
+    "loaderChecks": {
+      "unconfiguredBlocked": true,
+      "exactTupleQualified": true,
+      "binaryDriftBlocked": true
+    }
+  },
+  "sqliteCompileOptions": [
+    "ATOMIC_INTRINSICS=1",
+    "COMPILER=clang-19.1.5",
+    "DEFAULT_AUTOVACUUM",
+    "DEFAULT_CACHE_SIZE=-2000",
+    "DEFAULT_FILE_FORMAT=4",
+    "DEFAULT_JOURNAL_SIZE_LIMIT=-1",
+    "DEFAULT_MEMSTATUS=0",
+    "DEFAULT_MMAP_SIZE=0",
+    "DEFAULT_PAGE_SIZE=4096",
+    "DEFAULT_PCACHE_INITSZ=20",
+    "DEFAULT_RECURSIVE_TRIGGERS",
+    "DEFAULT_SECTOR_SIZE=4096",
+    "DEFAULT_SYNCHRONOUS=2",
+    "DEFAULT_WAL_AUTOCHECKPOINT=1000",
+    "DEFAULT_WAL_SYNCHRONOUS=2",
+    "DEFAULT_WORKER_THREADS=0",
+    "DIRECT_OVERFLOW_READ",
+    "ENABLE_COLUMN_METADATA",
+    "ENABLE_DBSTAT_VTAB",
+    "ENABLE_FTS3",
+    "ENABLE_FTS3_PARENTHESIS",
+    "ENABLE_FTS5",
+    "ENABLE_GEOPOLY",
+    "ENABLE_MATH_FUNCTIONS",
+    "ENABLE_PERCENTILE",
+    "ENABLE_PREUPDATE_HOOK",
+    "ENABLE_RBU",
+    "ENABLE_RTREE",
+    "ENABLE_SESSION",
+    "MALLOC_SOFT_LIMIT=1024",
+    "MAX_ATTACHED=10",
+    "MAX_COLUMN=2000",
+    "MAX_COMPOUND_SELECT=500",
+    "MAX_DEFAULT_PAGE_SIZE=8192",
+    "MAX_EXPR_DEPTH=1000",
+    "MAX_FUNCTION_ARG=1000",
+    "MAX_LENGTH=1000000000",
+    "MAX_LIKE_PATTERN_LENGTH=50000",
+    "MAX_MMAP_SIZE=0x7fff0000",
+    "MAX_PAGE_COUNT=0xfffffffe",
+    "MAX_PAGE_SIZE=65536",
+    "MAX_SQL_LENGTH=1000000000",
+    "MAX_TRIGGER_DEPTH=1000",
+    "MAX_VARIABLE_NUMBER=32766",
+    "MAX_VDBE_OP=250000000",
+    "MAX_WORKER_THREADS=8",
+    "MUTEX_W32",
+    "SYSTEM_MALLOC",
+    "TEMP_STORE=1",
+    "THREADSAFE=1"
+  ],
+  "receipts": {
+    "nativeSmoke": {
+      "path": ".tmp/paos-m1/native-mxc-smoke-result.json",
+      "sha256": "7f6cc3e29d74bd1a6252736ee7bd757d1bbd5a0883b66e008c96f9d1cdcaad86",
+      "data": {
+        "binarySha256": "edfdd48f8b458af0906e507b4cb05217b326c3d6e515e9f024e05e3b8d650f70",
+        "token": {
+          "isAppContainer": false,
+          "elevated": false
+        },
+        "exitCode": 0,
+        "mxcOk": true,
+        "authFileCreated": false,
+        "managedConfigIncluded": true,
+        "stderrTags": [],
+        "tempProfileCleaned": true
+      }
+    },
+    "history": {
+      "path": ".tmp/paos-m1/stdio-diagnostics-result.json",
+      "sha256": "3846634cfd7b84f372a02e56a1302c9ed831c39a92cdc7a73c73e0eebdbc2516",
+      "data": {
+        "binarySha256": "edfdd48f8b458af0906e507b4cb05217b326c3d6e515e9f024e05e3b8d650f70",
+        "processStarted": true,
+        "handshake": {
+          "isolatedHome": true,
+          "platform": "windows",
+          "error": null
+        },
+        "effectiveConfig": {
+          "offlineFixtureProvider": true,
+          "sandbox": "read-only",
+          "approval": "never",
+          "windowsSandbox": null,
+          "projectLayers": 0,
+          "userLayerTemporary": true,
+          "userLayerCredentialMode": [
+            "ephemeral"
+          ],
+          "error": null
+        },
+        "account": {
+          "empty": true,
+          "error": null
+        },
+        "windows": {
+          "readiness": "notConfigured",
+          "readinessError": null,
+          "allowedModes": null,
+          "allowedImplementations": null,
+          "requirementsError": null,
+          "profiles": {
+            ":read-only": true,
+            ":workspace": true,
+            "paos_fixture_write": true
+          },
+          "profilesError": null
+        },
+        "persistedList": {
+          "alpha": {
+            "count": 1,
+            "matchesExpected": true,
+            "cwdMatches": true,
+            "hasNextCursor": false,
+            "error": null
+          },
+          "beta": {
+            "count": 1,
+            "matchesExpected": true,
+            "cwdMatches": true,
+            "hasNextCursor": false,
+            "error": null
+          },
+          "empty": {
+            "count": 0,
+            "matchesExpected": true,
+            "cwdMatches": true,
+            "hasNextCursor": false,
+            "error": null
+          },
+          "all": {
+            "count": 2,
+            "matchesExpected": true,
+            "cwdMatches": true,
+            "hasNextCursor": false,
+            "error": null
+          }
+        },
+        "stateDbList": {
+          "alpha": {
+            "count": 1,
+            "matchesExpected": true,
+            "cwdMatches": true,
+            "hasNextCursor": false,
+            "error": null
+          },
+          "beta": {
+            "count": 1,
+            "matchesExpected": true,
+            "cwdMatches": true,
+            "hasNextCursor": false,
+            "error": null
+          },
+          "empty": {
+            "count": 0,
+            "matchesExpected": true,
+            "cwdMatches": true,
+            "hasNextCursor": false,
+            "error": null
+          },
+          "all": {
+            "count": 2,
+            "matchesExpected": true,
+            "cwdMatches": true,
+            "hasNextCursor": false,
+            "error": null
+          }
+        },
+        "persistedRead": {
+          "source": "cli",
+          "historyMode": "legacy",
+          "ephemeral": false,
+          "pathInTemporaryProfile": true,
+          "persistedFilePresent": true,
+          "previewPresent": true,
+          "idMatches": true,
+          "cwdMatches": true,
+          "error": null
+        },
+        "fresh": {
+          "alpha": {
+            "started": true,
+            "cwdMatches": true,
+            "error": null,
+            "policy": {
+              "type": "readOnly",
+              "network": false,
+              "writableRoots": 0,
+              "excludeSlashTmp": null,
+              "excludeTmpdirEnvVar": null,
+              "approval": "never",
+              "writableRootMatches": false,
+              "runtimeWorkspaceRootMatches": true,
+              "activeProfile": null
+            },
+            "before": {
+              "source": "vscode",
+              "historyMode": "paginated",
+              "ephemeral": false,
+              "pathInTemporaryProfile": true,
+              "persistedFilePresent": false,
+              "previewPresent": false
+            },
+            "injectError": null,
+            "nameError": null,
+            "readError": null,
+            "after": {
+              "source": "vscode",
+              "historyMode": "paginated",
+              "ephemeral": false,
+              "pathInTemporaryProfile": true,
+              "persistedFilePresent": true,
+              "previewPresent": false
+            },
+            "observedSource": {
+              "freshFound": false,
+              "error": null
+            },
+            "allKnownSources": {
+              "freshFound": false,
+              "error": null
+            }
+          },
+          "beta": {
+            "started": true,
+            "cwdMatches": true,
+            "error": null,
+            "policy": {
+              "type": "readOnly",
+              "network": false,
+              "writableRoots": 0,
+              "excludeSlashTmp": null,
+              "excludeTmpdirEnvVar": null,
+              "approval": "on-request",
+              "writableRootMatches": false,
+              "runtimeWorkspaceRootMatches": true,
+              "activeProfile": null
+            },
+            "before": {
+              "source": "vscode",
+              "historyMode": "paginated",
+              "ephemeral": false,
+              "pathInTemporaryProfile": true,
+              "persistedFilePresent": false,
+              "previewPresent": false
+            },
+            "injectError": null,
+            "nameError": null,
+            "readError": null,
+            "after": {
+              "source": "vscode",
+              "historyMode": "paginated",
+              "ephemeral": false,
+              "pathInTemporaryProfile": true,
+              "persistedFilePresent": true,
+              "previewPresent": false
+            },
+            "observedSource": {
+              "freshFound": false,
+              "error": null
+            },
+            "allKnownSources": {
+              "freshFound": false,
+              "error": null
+            }
+          }
+        },
+        "namedPolicy": {
+          "started": true,
+          "policy": {
+            "type": "workspaceWrite",
+            "network": false,
+            "writableRoots": 0,
+            "excludeSlashTmp": true,
+            "excludeTmpdirEnvVar": true,
+            "approval": "on-request",
+            "writableRootMatches": false,
+            "runtimeWorkspaceRootMatches": true,
+            "activeProfile": "paos_fixture_write"
+          },
+          "error": null
+        },
+        "processExit": 0,
+        "methods": [
+          "initialize",
+          "config/read",
+          "account/read",
+          "windowsSandbox/readiness",
+          "configRequirements/read",
+          "permissionProfile/list",
+          "thread/list",
+          "thread/list",
+          "thread/list",
+          "thread/list",
+          "thread/list",
+          "thread/list",
+          "thread/list",
+          "thread/list",
+          "thread/read",
+          "thread/start",
+          "thread/start",
+          "thread/inject_items",
+          "thread/name/set",
+          "thread/read",
+          "thread/list",
+          "thread/list",
+          "thread/inject_items",
+          "thread/name/set",
+          "thread/read",
+          "thread/list",
+          "thread/list",
+          "thread/start"
+        ],
+        "turnNotifications": 0,
+        "stderrLines": 0,
+        "stderrFlags": [],
+        "authFileCreated": false,
+        "tempProfileCleaned": true
+      }
+    },
+    "boundary": {
+      "path": ".tmp/paos-m1/native-2026-11-11/windows-mxc-boundary-result.json",
+      "sha256": "612e77d09da65e6329d39b1621eb79f4a50b5dbbac21409c13424d9a468661d7",
+      "data": {
+        "mode": "mxc",
+        "binarySha256": "edfdd48f8b458af0906e507b4cb05217b326c3d6e515e9f024e05e3b8d650f70",
+        "outerBaselineBothWritable": true,
+        "isolatedHome": true,
+        "effectiveConfig": {
+          "isolatedProvider": true,
+          "projectLayers": 0,
+          "temporaryUserLayer": true,
+          "userLayerBackend": [
+            "mxc"
+          ],
+          "managedRequirementsPresent": false,
+          "requirementsError": null,
+          "configError": null
+        },
+        "readiness": "ready",
+        "readinessError": null,
+        "policy": {
+          "type": "workspaceWrite",
+          "network": false,
+          "writableRoots": 0,
+          "excludeSlashTmp": true,
+          "excludeTmpdirEnvVar": true,
+          "approval": "on-request",
+          "profileMatches": true,
+          "rootMatches": true
+        },
+        "profileError": null,
+        "writeTest": {
+          "rpcError": null,
+          "childExit": 0,
+          "childInside": "written",
+          "childOutside": "denied",
+          "insideMatchesChild": true,
+          "outsideUnchanged": true
+        },
+        "processExit": 0,
+        "methods": [
+          "initialize",
+          "config/read",
+          "configRequirements/read",
+          "windowsSandbox/readiness",
+          "thread/start",
+          "command/exec"
+        ],
+        "rpcErrorTags": [],
+        "stderrFlags": [],
+        "turnNotifications": 0,
+        "nativeBreadcrumbs": [
+          "MXC availability: true",
+          "Windows sandbox selection: mxc"
+        ],
+        "authFileCreated": false,
+        "tempProfileCleaned": true
+      }
+    },
+    "ephemeralAuth": {
+      "path": ".tmp/paos-m1/ephemeral-auth-verified-2026-11-11/windows-mxc-boundary-result.json",
+      "sha256": "519a06b0af264cfe882994f91c51bcbd5909360f7d7684ff6f72a8b9244bf0ba",
+      "data": {
+        "mode": "mxc",
+        "binarySha256": "edfdd48f8b458af0906e507b4cb05217b326c3d6e515e9f024e05e3b8d650f70",
+        "outerBaselineBothWritable": true,
+        "isolatedHome": true,
+        "effectiveConfig": {
+          "isolatedProvider": true,
+          "projectLayers": 0,
+          "temporaryUserLayer": true,
+          "userLayerBackend": [
+            "mxc"
+          ],
+          "managedRequirementsPresent": false,
+          "requirementsError": null,
+          "configError": null
+        },
+        "readiness": "ready",
+        "readinessError": null,
+        "policy": {
+          "type": "workspaceWrite",
+          "network": false,
+          "writableRoots": 0,
+          "excludeSlashTmp": true,
+          "excludeTmpdirEnvVar": true,
+          "approval": "on-request",
+          "profileMatches": true,
+          "rootMatches": true
+        },
+        "profileError": null,
+        "writeTest": {
+          "rpcError": null,
+          "childExit": 0,
+          "childInside": "written",
+          "childOutside": "denied",
+          "insideMatchesChild": true,
+          "outsideUnchanged": true
+        },
+        "credentialIsolation": {
+          "syntheticOnly": true,
+          "loginType": "apiKey",
+          "loginError": null,
+          "accountType": null,
+          "commandExit": 0,
+          "directToolEnvironmentAbsent": true,
+          "logoutError": null,
+          "accountEmptyAfterLogout": true,
+          "profileCanaryFileCount": 0,
+          "profileScanComplete": true,
+          "unreadableFileCount": 0
+        },
+        "processExit": 0,
+        "methods": [
+          "initialize",
+          "config/read",
+          "configRequirements/read",
+          "windowsSandbox/readiness",
+          "thread/start",
+          "command/exec",
+          "account/login/start",
+          "account/read",
+          "command/exec",
+          "account/logout",
+          "account/read"
+        ],
+        "rpcErrorTags": [],
+        "stderrFlags": [],
+        "turnNotifications": 0,
+        "nativeBreadcrumbs": [
+          "MXC availability: true",
+          "Windows sandbox selection: mxc"
+        ],
+        "authFileCreated": false,
+        "tempProfileCleaned": true
+      }
+    },
+    "headless": {
+      "path": ".tmp/paos-m1/headless-result.json",
+      "sha256": "36e0b8d465b4c7bfc2549ce1fcbc8fdedce88e16f11b4ab9b70a3644c70466a9",
+      "data": {
+        "syntheticOnly": true,
+        "browserUsed": false,
+        "providerUsed": false,
+        "realKeysUsed": false,
+        "systemPoliciesChanged": false,
+        "checks": [
+          "built_web_html_served",
+          "unpaired_data_rejected",
+          "private_pairing_exchange",
+          "cross_origin_write_rejected",
+          "project_registered",
+          "task_committed",
+          "task_public_key_allocated",
+          "same_command_retry",
+          "fts_finds_committed_task",
+          "preferences_persisted",
+          "session_draft_committed",
+          "no_provider_connection",
+          "send_fails_closed",
+          "real_database_backup",
+          "restore_separate_profile",
+          "reverse_export_keeps_current_task",
+          "reverse_export_reimport_stays_a_proposal",
+          "fixed_project_source_read_hash",
+          "native_source_lock_denies_concurrent_write",
+          "source_write_allowed_after_release",
+          "native_source_hardlink_rejected",
+          "legacy_preview_retains_original_alias",
+          "json_markdown_conflict_is_blocked",
+          "json_markdown_bundle_deduplicated",
+          "server_rereads_source_and_rejects_drift",
+          "projection_source_drift_rejected",
+          "native_locked_cutover_with_restore_rehearsal",
+          "cutover_retains_both_source_bindings",
+          "legacy_edit_after_cutover_is_visible_without_auto_import",
+          "cutover_retry_after_source_edit_returns_committed_receipt",
+          "authenticated_quit_requested",
+          "normal_launcher_entrypoint",
+          "quit_acknowledged_and_reservation_released"
+        ],
+        "startedAt": "2026-11-11T05:00:29.245Z",
+        "status": "passed_headless_local",
+        "fixtureCleaned": true,
+        "finishedAt": "2026-11-11T05:00:46.252Z"
+      }
+    },
+    "workload": {
+      "path": ".tmp/paos-m1/workload-result.json",
+      "sha256": "f4dc674a8b7086ecdf3a6d1c17231a4f7c0f70d3691500c33c695aa4e38f594c",
+      "data": {
+        "schemaVersion": 1,
+        "status": "completed_offline",
+        "requested": {
+          "tasks": 10000,
+          "messages": 100000,
+          "documents": 1000,
+          "approximateTextMiB": 200
+        },
+        "executionLimitMs": 180000,
+        "maximumTextBytes": 536870912,
+        "startedAt": "2026-11-11T04:59:59.347Z",
+        "node": "v26.5.0",
+        "sqlite": "3.53.3",
+        "platform": "win32",
+        "arch": "x64",
+        "windowsBuild": "10.0.26200",
+        "logicalCpus": 20,
+        "totalMemoryBytes": 16892026880,
+        "databaseSchemaVersion": 1,
+        "migrationChecksum": "5a3f097261a1d660b0494f3b2d05b9d9e9bd78390d867c9857f0217bb06c689b",
+        "sourceDigests": {
+          "apps/local-service/src/storage/local-store.mts": "3b07963cb93644275e661ff45daa8406a594740c545cbcc612516458e31007fe",
+          "apps/local-service/src/storage/sqlite-worker.mts": "d22115941ece6a2063a5a90c81d83acaacaf821d276d52368a3115a6a0048b4f",
+          "apps/local-service/src/storage/search-queries.mts": "c18305df1d676d73ad474b8e039428a8f43a8e0029f98cff0a101815524b04a1",
+          "apps/local-service/src/storage/migrations/schema.mts": "ed5d2f56f23816f7ef95efd2a66822c86df4007f21b93d9a64f3af6d01aaa9cd",
+          "tests/web/single-window/workload.mts": "ba24404cc20a312024eba688412978c3c358ae609963fb74743f47b643393cd3"
+        },
+        "evidence": "offline synthetic SQLite Worker workload",
+        "excludedMeasurements": [
+          "browser rendering",
+          "full launcher startup",
+          "provider inference",
+          "model quality",
+          "event-to-visible UI latency"
+        ],
+        "inserted": {
+          "tasks": 10000,
+          "messages": 100000,
+          "documents": 1000
+        },
+        "sourceTextBytes": 209736923,
+        "elapsedMs": 51261.753399999994,
+        "phase": "completed",
+        "verification": {
+          "counts": {
+            "document": 1000,
+            "message": 100000,
+            "session": 1,
+            "settings": 1,
+            "task": 10000
+          },
+          "indexed": 111001,
+          "foreignKeyFailures": 0
+        },
+        "coverage": "complete",
+        "metrics": {
+          "emptyStoreOpenMs": 91.1083,
+          "freshWorkerOpenExistingDatabaseMs": 63.142699999996694,
+          "osCacheFlushed": false,
+          "indexedSearch": {
+            "samples": 40,
+            "p95Ms": 108.02170000000478,
+            "maxMs": 109.39800000000105,
+            "queries": [
+              "fixtureproject",
+              "проект",
+              "tasknumber9999",
+              "messagenumber90000",
+              "documentnumber900",
+              "LOAD-9999",
+              "docs/synthetic-900.md",
+              "no-synthetic-match"
+            ]
+          },
+          "smallCommandAck": {
+            "samples": 40,
+            "p95Ms": 4.716700000004494,
+            "maxMs": 9.605100000000675
+          },
+          "warmTaskPage50": {
+            "samples": 40,
+            "p95Ms": 9.901200000000244,
+            "maxMs": 11.472900000000664
+          }
+        },
+        "targets": {
+          "indexedSearchP95Ms": 500,
+          "smallCommandAckP95Ms": 500,
+          "warmProjectViewMs": 1000
+        },
+        "targetObservations": {
+          "indexedSearchPassed": true,
+          "smallCommandAckPassed": true,
+          "warmTaskPagePassed": true,
+          "fullColdLaunchMeasured": false,
+          "eventToVisibleMeasured": false
+        },
+        "databaseBytesAfterClose": 651210752,
+        "processExitCode": 0,
+        "childStderrPresent": false,
+        "fixtureCleaned": true,
+        "finishedAt": "2026-11-11T05:00:50.844Z"
+      }
+    }
+  },
+  "checks": {
+    "web": {
+      "command": "node --test tests/web/*.test.mts",
+      "environment": "reviewed native token; workspace TEMP/TMP",
+      "exitCode": 0,
+      "tests": 150,
+      "passed": 150,
+      "skipped": 0
+    },
+    "strict": {
+      "command": "npm run check:web-m1",
+      "exitCode": 0
+    },
+    "build": {
+      "command": "npm run build",
+      "cwd": "apps/web",
+      "source": "agent /root/m1_theme_locale, frozen 2026-11-11T07:59:27+03:00",
+      "exitCode": 0,
+      "modules": 34
+    },
+    "python": {
+      "command": "python -B -m unittest discover -s tests -q",
+      "exitCode": 0,
+      "tests": 1450,
+      "skipped": 1,
+      "elapsedSeconds": 388.774
+    },
+    "fixture": {
+      "command": "python -B plugins/product-agent-os/scripts/run_fixture_eval.py",
+      "exitCode": 0,
+      "passed": 91
+    },
+    "transcript": {
+      "command": "python -B plugins/product-agent-os/scripts/run_transcript_eval.py",
+      "exitCode": 0,
+      "passed": 26
+    },
+    "compatibility": {
+      "command": "python -B plugins/product-agent-os/scripts/validate_codex_compatibility.py",
+      "exitCode": 0,
+      "status": "compatible",
+      "scope": "local_structure_only"
+    },
+    "docs": {
+      "status": "final_post_sync_results_recorded_in_execution_report"
+    }
+  },
+  "review": {
+    "context": "separate_reused_context",
+    "agents": [
+      "/root/m1_launcher",
+      "/root/m1_task_model",
+      "/root/m1_theme_locale"
+    ],
+    "verdict": "partial_only",
+    "findings": "Implemented and regression-tested code findings; browser/provider/native-vault gates remain open."
+  },
+  "unavailableGates": [
+    "browser_visual_keyboard_zoom_responsive",
+    "provider_turn_approval_interrupt_recovery",
+    "codex_app_closed_single_window_journey",
+    "native_credential_manager_roundtrip_auto_review_rejected",
+    "owner_acceptance"
+  ],
+  "approvalReview": {
+    "action": "synthetic Windows Credential Manager write/read/delete roundtrip",
+    "status": "rejected_not_executed",
+    "reason": "Real OS credential store outside the temporary profile; no native operation or alternate execution performed."
+  }
+}

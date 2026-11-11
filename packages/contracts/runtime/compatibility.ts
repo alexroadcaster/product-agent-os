@@ -2,6 +2,7 @@ const requiredMethods = {
   ClientRequest: [
     'initialize', 'thread/start', 'thread/list', 'thread/read', 'thread/resume',
     'turn/start', 'turn/interrupt', 'account/read', 'account/login/start', 'account/logout',
+    'windowsSandbox/readiness', 'command/exec',
   ],
   ClientNotification: ['initialized'],
   ServerRequest: [
@@ -16,13 +17,21 @@ const requiredMethods = {
 
 const requiredFields = {
   InitializeCapabilities: ['experimentalApi'],
-  ThreadStartParams: ['cwd', 'dynamicTools'],
+  ThreadStartParams: ['cwd', 'dynamicTools', 'developerInstructions'],
+  ThreadStartResponse: ['activePermissionProfile', 'runtimeWorkspaceRoots', 'sandbox', 'approvalPolicy'],
+  ActivePermissionProfile: ['id'],
   ThreadListParams: ['cwd', 'cursor', 'archived'],
   ThreadListResponse: ['data', 'nextCursor'],
   TurnStartParams: ['cwd', 'threadId', 'sandboxPolicy', 'approvalPolicy'],
+  TurnStartResponse: ['turn'],
+  TurnStartedNotification: ['threadId', 'turn'],
   TurnInterruptParams: ['threadId', 'turnId'],
   ServerRequestResolvedNotification: ['threadId', 'requestId'],
   TurnCompletedNotification: ['threadId', 'turn'],
+  ItemCompletedNotification: ['threadId', 'turnId', 'item'],
+  CommandExecParams: ['cwd', 'command', 'permissionProfile', 'timeoutMs', 'outputBytesCap'],
+  CommandExecResponse: ['exitCode', 'stdout'],
+  WindowsSandboxReadinessResponse: ['status'],
 } as const;
 
 function object(value: unknown): Record<string, unknown> {
@@ -67,6 +76,10 @@ export function inspectRuntimeSchema(protocol: unknown, protocolV2: unknown): st
       }
     }
   }
+  for (const status of ['inProgress', 'completed', 'failed', 'interrupted']) {
+    if (!hasEnum(v2.TurnStatus, status)) missing.push(`TurnStatus:${status}`);
+  }
+  if (!hasEnum(v2.WindowsSandboxReadiness, 'ready')) missing.push('WindowsSandboxReadiness:ready');
 
   const sandbox = variants(v2.SandboxPolicy).map(properties);
   for (const mode of ['readOnly', 'workspaceWrite']) {
@@ -97,8 +110,29 @@ export function inspectRuntimeSchema(protocol: unknown, protocolV2: unknown): st
   return missing;
 }
 
-/** Evaluate recorded offline scenarios. The receipt cannot prove provider or tool enforcement. */
-export function inspectStdioObservation(observation: unknown): string[] {
+/** Tie observed writes to the same binary and require positive controls on both paths. */
+function hasWindowsWriteBoundary(observation: unknown, binarySha256: unknown): boolean {
+  const run = object(observation);
+  const policy = object(run.policy);
+  const result = object(run.writeTest);
+  const breadcrumbs = run.nativeBreadcrumbs;
+  // Readiness can be reported before Windows can start a process with the selected backend.
+  return typeof binarySha256 === 'string' && /^[a-f0-9]{64}$/.test(binarySha256)
+    && run.binarySha256 === binarySha256 && run.mode === 'mxc'
+    && run.readiness === 'ready' && run.readinessError === null && run.profileError === null
+    && run.isolatedHome === true && run.processExit === 0 && run.turnNotifications === 0
+    && run.authFileCreated === false && run.tempProfileCleaned === true && run.outerBaselineBothWritable === true
+    && Array.isArray(breadcrumbs) && breadcrumbs.includes('MXC availability: true')
+    && !breadcrumbs.includes('MXC availability: false') && breadcrumbs.includes('Windows sandbox selection: mxc')
+    && policy.type === 'workspaceWrite' && policy.network === false && policy.approval === 'on-request'
+    && policy.writableRoots === 0 && policy.excludeSlashTmp === true && policy.excludeTmpdirEnvVar === true
+    && policy.profileMatches === true && policy.rootMatches === true
+    && result.rpcError === null && result.childExit === 0 && result.childInside === 'written'
+    && result.childOutside === 'denied' && result.insideMatchesChild === true && result.outsideUnchanged === true;
+}
+
+/** Evaluate recorded offline scenarios. This covers a synthetic file-write boundary on Windows. */
+export function inspectStdioObservation(observation: unknown, windowsBoundary?: unknown): string[] {
   const run = object(observation);
   const handshake = object(run.handshake);
   const config = object(run.effectiveConfig);
@@ -145,14 +179,14 @@ export function inspectStdioObservation(observation: unknown): string[] {
 
   // The named policy may use the runtime workspace root without repeating it in legacy writableRoots.
   const writeScopeVerified = diagnostic
-    ? object(run.windows).readiness === 'ready' && named.started === true && named.error === null
+    ? named.started === true && named.error === null
       && writePolicy.activeProfile === 'paos_fixture_write' && writePolicy.runtimeWorkspaceRootMatches === true
       && (writePolicy.writableRoots === 0 || writePolicy.writableRootMatches === true)
     : writePolicy.writableRootMatches === true;
   if (readPolicy.type !== 'readOnly' || readPolicy.approval !== 'never' || readPolicy.network !== false
     || writePolicy.type !== 'workspaceWrite' || writePolicy.approval !== 'on-request' || writePolicy.network !== false
     || !writeScopeVerified || writePolicy.excludeSlashTmp !== true
-    || writePolicy.excludeTmpdirEnvVar !== true) {
+    || writePolicy.excludeTmpdirEnvVar !== true || !hasWindowsWriteBoundary(windowsBoundary, run.binarySha256)) {
     missing.push('scoped_execution_policy');
   }
 

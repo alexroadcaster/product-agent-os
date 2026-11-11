@@ -16,6 +16,10 @@ G8-T14/G8 явно приняты владельцем. G9 T01–T09 реали�
 
 ## Текущий scope Web M1 — 2026-11-10
 
+Уточнение исполнения 2026-11-11: владелец разрешил непрерывную локальную реализацию по DAG и синтетические native/headless проверки; системные политики, реальные ключи, provider и browser запрещены. Windows MXC write/deny проверен. Local engineering preview не требует commercial AUTH-G1–G6; выпуск остаётся gated PAOS-0046/0030. [Текущий пакет](research/product-agent-os-web-m1-execution-2026-11-11.md) не заменяет SW/UX end-to-end acceptance; M1 пока не закрыта.
+
+Датированный baseline 10 ноября:
+
 Source status: project-authored / implementation started under the approved order.
 
 Owning scope: [PRD §17](research/product-agent-os-web-prd-2026-11-05.md), [архитектура §21](research/product-agent-os-web-architecture-2026-11-05.md), [wireframes v0.7](research/product-agent-os-web-m1-wireframes-2026-11-09.md). [Web-план v0.8](research/product-agent-os-web-task-manager-plan-2026-11-09.md) и [матрица задач](research/product-agent-os-web-task-manager-task-group-2026-11-09.json) владеют последовательностью и task status; revision scope=0.7, execution=0.8.
@@ -177,7 +181,7 @@ Last compacted: 2026-06-11
 
 ## Open Risks
 
-Web M1: PAOS-0054 compatibility, migration/restore и actual runtime/browser/commercial gates ещё не закрыты. Далее — отдельные риски поддерживаемого plugin/docs scope, не дополнительные задачи M1.
+Web M1: PAOS-0054 native-offline compatibility и synthetic migration/restore проверены 11 ноября; actual provider/browser/native-vault/owner acceptance и commercial gates не закрыты. Далее — отдельные риски поддерживаемого plugin/docs scope, не дополнительные задачи M1.
 
 - Batch 39 real-project-adjacent execution is source-owned through `prod_test.md` and S5 closure artifacts. It includes synthetic archetype pilots, read-only `Neural_Flow` / `SOL 0.6` evidence, S4 hardening and S5 conditional owner-feedback closure. Target writes, runtime/browser/provider/model/vector/eval/live-database/migration/production-data/git/external actions and any broader target execution still require exact approval.
 - `B38-PILOT-NF01` remains blocked for target apply by missing target control-plane/source registry artifacts and `source_policy_status: blocked`.

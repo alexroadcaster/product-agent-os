@@ -3,16 +3,26 @@
   "task_id": "PAOS-M1",
   "plan_path": "research/product-agent-os-web-task-manager-plan-2026-11-09.md",
   "scope": "Dependency-ordered local Web M1 implementation from PAOS-0001 and PAOS-0054 through PAOS-0045",
-  "updated_at": "2026-11-10T23:12:21+03:00",
-  "approval_boundary": "User authorized exactly one additional local stdio launch for synthetic session history and effective Windows sandbox diagnostics. No real credentials, provider calls, browser or system policy changes. Dependency-gated local implementation remains authorized.",
+  "updated_at": "2026-11-11T08:19:00+03:00",
+  "approval_boundary": "User authorizes current-host sandbox readiness and conditional synthetic allow/deny file writes in temporary local scope. No system policy changes, real credentials, provider, or browser. Dependency-gated local implementation remains authorized.",
   "status": "blocked",
-  "completion_ready": true,
-  "blocker": "Second stdio launch complete. PAOS-0001, PAOS-0002 and PAOS-0003 are implemented within their local contracts. PAOS-0054 awaits Windows sandbox readiness and enforcement; AUTH-G1 and native launcher/UI integration also remain open. No unstarted M1 task has all dependencies implemented.",
-  "previous_closure": "The first isolated stdio run reported no matching history and readOnly for requested workspace-write; preserved in research/product-agent-os-web-m1-initial-qualification-2026-11-10.md.",
-  "brief_digest": "sha256:72ff5a7691e698b3f6f37f0f85de4c4cb755b1b483f7ada8c864eaf619097634",
+  "completion_ready": false,
+  "closure": "PAOS-0054 native-offline qualification and PAOS-0039 local engineering auth route implemented. All authorized local M1 implementation surfaces and headless acceptance package advanced. Matrix: 11 implemented, 6 in_progress, PAOS-0045 blocked. Browser/provider/Codex-App-closed acceptance is forbidden or unavailable; native Credential Manager synthetic roundtrip rejected by automatic approval review and not executed. No full M1 acceptance or next-group readiness claim.",
+  "previous_closure": "Second isolated stdio run verified project history and observed Windows readiness notConfigured. Evidence in the existing Web M1 qualification report.",
+  "brief_digest": "sha256:9583475580af9a2f452bc4400782c0e954e9aa64aa026085dcfc3a331d1fb7e7",
   "brief_schema_version": "task_start_brief_v2",
   "brief_format": "bold_fields",
-  "brief_fields_present": ["Request", "Goal", "Context", "Scope", "Value", "Execution", "Acceptance", "Risks / approvals", "Next step"],
+  "brief_fields_present": [
+    "Request",
+    "Goal",
+    "Context",
+    "Scope",
+    "Value",
+    "Execution",
+    "Acceptance",
+    "Risks / approvals",
+    "Next step"
+  ],
   "task_start_brief_shown": true,
   "lifecycle_scope": {
     "work_type": "implementation",
@@ -22,5 +32,24 @@
     "release_or_readiness": false,
     "explicit_packet_request": false,
     "reason": "M1 spans shared contracts, local runtime, session UI, data migration and integrated acceptance."
-  }
+  },
+  "checks": {
+    "web": "150/150, no skips",
+    "strict": "exit 0",
+    "build": "exit 0, 34 modules",
+    "headless": "33/33, native, cleaned",
+    "workload": "10000 tasks, 100000 messages, 1000 documents; search p95 108.02ms",
+    "python": "1450, OK, skip 1",
+    "fixture": "91/91",
+    "transcript": "26/26",
+    "docs": "209/209, checker and matrix passed",
+    "diff": "exit 0"
+  },
+  "evidence_refs": [
+    "research/product-agent-os-web-m1-execution-2026-11-11.md",
+    "research/product-agent-os-web-m1-execution-results-2026-11-11.json",
+    "packages/contracts/runtime/qualified-manifest.json"
+  ],
+  "control_plane_sync": "updated REQUIREMENTS/PLAN/TEST/RUNLOG and registries; EVALS/AGENTS/prod_test no_change_needed",
+  "elapsed_wall_seconds": 7911
 }

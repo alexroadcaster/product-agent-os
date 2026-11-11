@@ -22,9 +22,15 @@ G8-T14/G8 owner accepted. G9 T01–T09 локально реализованы; 
 
 ## Старт Web M1 — 2026-11-10
 
-PAOS-0001 реализован в границах адаптера после второго разрешённого stdio-прогона. Persisted `thread/list` подтвердил 1/1/0/2 и project scope; свежая `vscode` история без preview остаётся partial. PAOS-0054 блокируется `windowsSandbox/readiness=notConfigured`, хотя named profile вернул `workspaceWrite`. Независимые ветки продолжены. [Результаты и открытые проверки](research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+Текущий handoff 2026-11-11: прежние PAOS-0054/0039 блокеры сняты в native-offline/local-engineering scope. Реализованы launcher/service/SPA/SQLite/domain/import/recovery и bounded acceptance package; Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. Root и три агента исправили найденные integration findings. PAOS-0045 остаётся blocked/partially_verified: browser/provider запрещены, native vault roundtrip отклонён auto-review как OS store вне temporary profile. [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md) хранит findings, hashes, failed attempts и полную acceptance map. Исторические наблюдения 10 ноября ниже сохранены и не переопределяют current evidence.
+
+Датированный baseline 10 ноября:
+
+PAOS-0001 реализован в границах адаптера. Persisted `thread/list` подтвердил 1/1/0/2 и project scope; свежая `vscode` история без preview остаётся partial. На текущем хосте `mxc` и `unelevated` вернули `ready`. MXC показал `availability: false`, а `command/exec` не запустил команду. PAOS-0054 остаётся `blocked`. Локальный probe требует подтверждённую пару write/deny. [Результаты и открытые проверки](research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
 
 PAOS-0002 и PAOS-0003 реализованы в границах локальных контрактов. PAOS-0004 и PAOS-0040 имеют локально проверенную основу, integration и UI остаются открытыми. В PAOS-0039 проверена политика локального preview; AUTH-G1 ждёт коммерческого решения владельца. Статусы и команды закреплены в [карточках Web-плана](research/product-agent-os-web-task-manager-plan-2026-11-09.md) и JSON.
+
+Продолжение M1: PAOS-0004 получил форму с восстановлением настроек и обработкой ошибок, PAOS-0040 подтвердил резервирование на двух синтетических процессах. PAOS-0054 проверил форму закреплённого протокола, семантику событий и файловые SQLite-возможности. Текущий runner подтвердил AppContainer/restricted token, точная стадия отказа PSEC неизвестна. Подтверждённого native write/deny нет, PAOS-0045 открыта. [Проверки и остаточные границы](research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
 
 ## Подготовка control-plane к Web M1 — 2026-11-10
 
@@ -148,7 +154,7 @@ Strict MkDocs is required when navigation, Mermaid diagrams, Markdown extensions
 
 ## Residual Risks
 
-Web M1: runtime tuple/driver/capabilities ещё требуют PAOS-0054; migration/restore и browser/runtime acceptance не выполнены; commercial gates не закрыты. Остальные риски ниже сохранены из прежних срезов и проверяются у их owners перед отдельным запуском. Указанные в них control-plane sync решения относятся к тем срезам.
+Web M1: PAOS-0054 native-offline tuple/driver/capabilities и synthetic migration/restore проверены; actual provider/browser/native-vault/owner acceptance и commercial gates остаются открытыми. Остальные риски ниже сохранены из прежних срезов и проверяются у их owners перед отдельным запуском. Указанные в них control-plane sync решения относятся к тем срезам.
 
 - Batch 39 owner-feedback results and any runtime/browser pilot remain pending.
 - `B38-PILOT-NF01` target apply remains blocked by source-policy and target-artifact gaps.

@@ -22,11 +22,17 @@ G8 commands: `python -B -m unittest discover -s tests -p "test_*.py" -q`; focuse
 
 ## Проверки Web M1 — актуальный маршрут 2026-11-10
 
+Актуальный маршрут 2026-11-11: `npm run check:web-m1`; `npm run build:web`; `node --test tests/web/*.test.mts`; `node tests/web/single-window/headless-acceptance.mts --synthetic`; `node tests/web/single-window/workload.mts`. Native tests используют workspace TEMP/TMP; provider/browser/vault не включаются. Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. Probe Windows теперь получает `native-2026-11-11/windows-mxc-boundary-result.json`; прежние blocked receipts ниже остаются negative controls. Точные commands/results/source hashes: [execution report](research/product-agent-os-web-m1-execution-2026-11-11.md) и соседний JSON.
+
+Датированный baseline 10 ноября:
+
 Source status: local contract checks and isolated stdio observed / Web runtime qualification blocked.
 
 [Web-план v0.8](research/product-agent-os-web-task-manager-plan-2026-11-09.md), раздел «Матрица M1 DoD», владеет соответствием acceptance → owner task. PRD §17 / architecture §21 задают M1 profile. Первый срез проверяется `node --test tests/web/*.test.mts` и `node packages/contracts/runtime/probe-local.mts .tmp/paos-m1/schema`. Команда генерации схемы, observed tuple и открытые gates находятся в [evidence PAOS-0001/0054](research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
 
-Повторная оценка без запуска процесса выполняется `node packages/contracts/runtime/probe-local.mts .tmp/paos-m1/schema <receipt>`. Для `.tmp/paos-m1/stdio-qualification-result.json` ожидаются `project_history` и `scoped_execution_policy`. Для `.tmp/paos-m1/stdio-diagnostics-result.json` ожидается только `scoped_execution_policy`.
+Повторная оценка без запуска процесса выполняется `node packages/contracts/runtime/probe-local.mts .tmp/paos-m1/schema <stdio-receipt> [<windows-boundary-receipt>]`. Для первого stdio receipt ожидаются `project_history` и `scoped_execution_policy`. Для второго с любым из двух текущих Windows receipts ожидается `scoped_execution_policy`. Для положительной квалификации нужен совпадающий SHA-256 бинарника, подтверждённый native MXC и результат записи в корень и явного отказа для доступного до запуска внешнего контроля. [Команды, receipts и ограничения](research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+
+`--sqlite-fixture-root .tmp/paos-m1` добавляет rollback, восстановление SQLite-снимка и FK на синтетической файловой БД. `node --test tests/web/runtime-compatibility.test.mts tests/web/runtime-events.test.mts tests/web/runtime-sqlite.test.mts` проверяет форму протокола, разделение статусов и возможности драйвера. Эти результаты отделены от Windows write/deny и приёмки Worker/storage.
 
 | Проверяемая граница | Задачи-владельцы и evidence |
 | --- | --- |

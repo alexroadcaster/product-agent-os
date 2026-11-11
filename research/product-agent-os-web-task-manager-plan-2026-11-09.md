@@ -2,7 +2,7 @@
 
 Source status: project-authored / proposed / requirements-backed. Дата: 2026-11-09.
 
-Статус очереди: **order_approved / implementation_started**. PAOS-0001 подтвердил выборку сохранённой истории и изоляцию проектного адаптера. PAOS-0054 остаётся заблокирован по Windows sandbox; задачи с подтверждёнными зависимостями доступны к выполнению. Статусы и фактическое время хранятся в карточках и JSON. При расхождении приоритет имеют PRD §17, architecture §21 и актуальная очередь v0.8.
+Статус очереди: **order_approved / implementation_started / acceptance_partial**. Native MXC write/deny 11 ноября снял прежний Windows blocker PAOS-0054; local engineering route PAOS-0039 отделён от commercial gates. Реализуются все локальные поверхности M1 и исполняемый пакет PAOS-0045. [Текущий execution report](product-agent-os-web-m1-execution-2026-11-11.md) отделяет native/headless/SQLite evidence от запрещённых browser/provider проверок. Статусы и фактическое время хранятся в карточках и JSON. При расхождении приоритет имеют PRD §17, architecture §21 и актуальная очередь v0.8.
 
 Связи: [PRD](product-agent-os-web-prd-2026-11-05.md), [архитектура](product-agent-os-web-architecture-2026-11-05.md), [экраны](product-agent-os-web-task-manager-screens-2026-11-09.md), [машинные группы](product-agent-os-web-task-manager-task-group-2026-11-09.json).
 
@@ -130,7 +130,7 @@ PAOS-0002 проверяет domain contract только M1 profile (§17 PRD).
 
 Группы/границы файлов — в карточках. Общими packages/contracts владеет 0054 owner до handoff; 0048 storage owner, 0055 domain bridge owner, 0042 runtime owner применяют только согласованный contract. Без перекрывающейся записи общих файлов. Документационная правка не запускает перечисленных агентов.
 
-Re-entry gate: 0001 открыт для потребителей подтверждённого project binding. Задачи с зависимостью от 0054 ждут подтверждённого sandbox profile. При отсутствии обязательной capability использовать design issue. [Наблюдения двух изолированных прогонов](product-agent-os-web-m1-initial-qualification-2026-11-10.md) отделены от runtime/browser/commercial приёмки.
+Re-entry gate: 0001 открыт для потребителей подтверждённого project binding. 2026-11-11 native MXC и именованный профиль подтвердили write/deny. По уточнению владельца локальная реализация storage/UI/domain продолжается с заблокированной активацией runtime до полного manifest. При отсутствии обязательной capability использовать design issue. [Наблюдения изолированных прогонов](product-agent-os-web-m1-initial-qualification-2026-11-10.md) отделены от runtime/browser/commercial приёмки.
 
 ### Проверка очереди v0.8
 
@@ -500,22 +500,22 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/web/src/design; apps/web/src/locales
-- Next step: Подключить настройки к хранилищу сервиса и проверить в UI с PAOS-0043/0045.
-- Actual time: foundation проверен 10-11-2026 23:07 MSK; приёмка карточки pending.
+- Next step: Завершить оставшуюся приёмку PAOS-0045 только в разрешённом scope; см. execution report.
+- Actual time: локальная реализация и проверка 11-11-2026; отдельная active duration не измерялась, JSON duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
 - Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
 
 #### Completion Report
 
 - Status: in_progress
-- What was done: Добавлены RU/EN словарь, Light/Dark/System tokens и контракт сохранения настроек.
-- Files touched / work locations: `apps/web/src/design/preferences.ts`, `apps/web/src/design/theme.css`, `apps/web/src/locales/messages.ts`, `tests/web/theme-locale.test.mts`.
-- Technical value delivered: Типизированный интерфейс хранилища и применение `lang` и `data-theme`.
-- Product value delivered: Настройки темы и языка готовы для подключения к будущему UI; defaults `ru` и `system`.
+- What was done: RU/EN, Light/Dark/System, persisted preferences и доступные controls реализованы.
+- Files touched / work locations: apps/web/src/design; apps/web/src/locales; apps/web/src/ui.
+- Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
+- Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: `node --test tests/web/theme-locale.test.mts` — exit 0, 3/3. Статический контраст 15 пар на тему: минимумы 4,73:1 для текста и 6,00:1 для focus outline.
-- Residual risks: Подключение реального хранилища, перезапуск, длинные RU/EN строки, клавиатура и 200% zoom не проверены в браузере.
-- Follow-up: Подключить foundation к PAOS-0043 и выполнить браузерные сценарии PAOS-0045 после разрешения.
+- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Residual risks: Browser keyboard/zoom/responsive/contrast приёмка запрещена текущим scope.
+- Follow-up: Завершить оставшуюся приёмку PAOS-0045 только в разрешённом scope; см. execution report.
 
 ### Task `PAOS-0005`
 
@@ -2057,14 +2057,14 @@ Rollback будущих изменений: versioned proposal, revision check, 
 ### Task `PAOS-0039`
 
 - Task: Допустимые auth routes и коммерческие границы
-- Status: blocked
+- Status: implemented
 - Delivery stage: M1
 - Execution order: 3
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-selected single-window Codex App Server, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 11-11-2026 08:09
 - Depends on: PAOS-0001
 - Blocks: PAOS-0041, PAOS-0047
 - Source: PRD §15 SW-01–12; auth/commercial AUTH-G1–G6
@@ -2073,8 +2073,8 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Product value: Пользователь знает доступный способ подключения и плательщика до начала работы.
 - Scope: research/product-agent-os-web-auth-commercial-2026-11-09.md; packages/contracts/auth
 - Non-goals: Не менять hooks/global permissions; не запускать внешний/provider/Git/release scope без отдельного разрешения
-- Expected result: AUTH-G1 имеет решение владельца по exact route; отсутствующий SIWC admission явно блокирует этот путь, но не подменяется managed login.
-- Acceptance criteria: AUTH-G1 имеет решение владельца по exact route; отсутствующий SIWC admission явно блокирует этот путь, но не подменяется managed login.
+- Expected result: Для M1 закреплён local engineering preview с local_api_byok и плательщиком user_api_account. Connection и entitlement unverified до проверки. Inherited login и SIWC недоступны; commercial/hosted distribution ожидает AUTH-G1–G6.
+- Acceptance criteria: Local route decision соответствует PRD §17.5 и auth §7. Отсутствие SIWC admission сохраняет этот путь недоступным. Commercial/hosted distribution блокируется до AUTH-G1–G6 и PAOS-0046/0030.
 - Verification gates: Focused contract/negative tests; authorized runtime/browser where needed; no fixture-only activation claim
 - Risks / approval gates: Неоднозначные условия или отсутствие коммерческого допуска. Provider calls, registration and publication require separate authority.
 - Complexity: medium/high, уточнить после discovery
@@ -2082,23 +2082,34 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: product-manager, architect, security-privacy-supply-chain-reviewer
 - Skills: implementation-planner; task-matching skills selected at start
 - Output artifacts: research/product-agent-os-web-auth-commercial-2026-11-09.md; packages/contracts/auth
-- Next step: Для AUTH-G1 требуется решение владельца по коммерческому каналу; локальный preview использует `local_api_byok`.
-- Actual time: локальный контракт проверен 10-11-2026 23:05 MSK, завершение задачи pending.
+- Next step: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
+- Actual time: локальная реализация и проверка 11-11-2026; отдельная active duration не измерялась, JSON duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-auth-commercial-2026-11-09.md
 - Affected files: proposed paths above; actual create/modify/delete receipts only after execution.
 
 #### Completion Report
 
-- Status: blocked
-- What was done: Реализовано fail-closed решение маршрута локального engineering preview.
-- Files touched / work locations: `packages/contracts/auth/m1-route.ts`, `tests/web/auth-route.test.mts`, `research/product-agent-os-web-auth-commercial-2026-11-09.md`.
-- Technical value delivered: Local BYOK отделён от managed login, SIWC, commercial и hosted.
-- Product value delivered: Плательщик локального preview известен, entitlement остаётся `unverified`.
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: `node --test tests/web/auth-route.test.mts` — 2/2 после RED.
-- Residual risks: AUTH-G1 ждёт решения владельца по paid/OSS, entity и рынкам. Допуск и фактический auth отдельно.
-- Follow-up: Зафиксировать точный коммерческий канал и затем проверить условия выбранного route.
+- Status: implemented
+- What was done: Local engineering preview закреплён: local_api_byok, payer user_api_account; commercial AUTH-G1–G6 отделены от локальной разработки.
+- Files touched / work locations: packages/contracts/auth/m1-route.ts; tests/web/auth-route.test.mts; research/product-agent-os-web-auth-commercial-2026-11-09.md.
+- Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
+- Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
+- Actual implementation date and time: 11-11-2026 08:09
+- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Residual risks: SIWC/inherited login недоступны; entitlement unverified; commercial review PAOS-0046/0030 не выполнен.
+- Follow-up: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
 
+Историческая запись до нативной проверки 11 ноября (не текущий статус):
+
+> - Status: blocked
+> - What was done: Реализовано fail-closed решение маршрута локального engineering preview.
+> - Files touched / work locations: `packages/contracts/auth/m1-route.ts`, `tests/web/auth-route.test.mts`, `research/product-agent-os-web-auth-commercial-2026-11-09.md`.
+> - Technical value delivered: Local BYOK отделён от managed login, SIWC, commercial и hosted.
+> - Product value delivered: Плательщик локального preview известен, entitlement остаётся `unverified`.
+> - Actual implementation date and time: pending_execution_timestamp
+> - Verification evidence: `node --test tests/web/auth-route.test.mts` — 2/2 после RED.
+> - Residual risks: AUTH-G1 ждёт решения владельца по paid/OSS, entity и рынкам. Допуск и фактический auth отдельно.
+> - Follow-up: Зафиксировать точный коммерческий канал и затем проверить условия выбранного route.
 
 ### Task `PAOS-0040`
 
@@ -2128,28 +2139,27 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: builder, tester
 - Skills: implementation-planner; task-matching skills selected at start
 - Output artifacts: apps/launcher; apps/local-service/src/supervisor
-- Next step: Подключить native instance reservation, запуск сервиса, pairing и завершение дерева процессов.
-- Actual time: локальный контракт проверен 10-11-2026; точные границы активного времени не измерены.
+- Next step: Завершить оставшуюся приёмку PAOS-0045 только в разрешённом scope; см. execution report.
+- Actual time: локальная реализация и проверка 11-11-2026; отдельная active duration не измерялась, JSON duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-auth-commercial-2026-11-09.md
 - Affected files: proposed paths above; actual create/modify/delete receipts only after execution.
 
 #### Completion Report
 
 - Status: in_progress
-- What was done: Реализован контракт launcher/supervisor с проверкой health и fingerprint, повторным использованием экземпляра, deadlines и graceful Quit.
-- Files touched / work locations: `apps/launcher/launcher.ts`, `apps/local-service/src/supervisor/lifecycle.ts`, `apps/local-service/src/supervisor/deadline.ts`, `tests/web/launcher.test.mts`.
-- Technical value delivered: Неопределённый старт удерживает reservation; при неопределённом outcome перед остановкой детей сохраняется recovery receipt.
-- Product value delivered: Локальный режим не требует подключения runtime; UI открывается только после подтверждения loopback service и его build.
+- What was done: Native entrypoint, single-instance, IPC ownership/keep-running, private pairing, loopback health и authenticated Quit реализованы и headless проверены.
+- Files touched / work locations: apps/launcher; apps/local-service/src/main.mts; tests/web/launcher*.test.mts.
+- Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
+- Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: `node --test tests/web/launcher.test.mts` — exit 0, 6/6 после RED. Fake ports проверяют missing/incompatible runtime, reuse, health, timeout, Quit/recovery.
-- Residual risks: Native launcher, реальное межпроцессное резервирование, service health, pairing и shutdown ещё не подключены и не проверены.
-- Follow-up: Подключить Windows adapters после согласования entrypoint, pairing contract и допустимого реального прогона.
-
+- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Residual risks: Browser/native window и самостоятельный путь при закрытом Codex App не проверены.
+- Follow-up: Завершить оставшуюся приёмку PAOS-0045 только в разрешённом scope; см. execution report.
 
 ### Task `PAOS-0041`
 
 - Task: Локальное API-подключение и credential isolation
-- Status: planned
+- Status: in_progress
 - Delivery stage: M1
 - Execution order: 8
 - Schema version: task_matrix_plan_v1
@@ -2174,28 +2184,27 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: builder, security-privacy-supply-chain-reviewer, tester
 - Skills: implementation-planner; task-matching skills selected at start
 - Output artifacts: apps/local-service/src/connections; apps/web/src/settings/connections; packages/contracts/auth
-- Next step: Подтвердить зависимости, доступность route и отдельный implementation scope
-- Actual time: not_started; start/end/duration = null.
+- Next step: Завершить оставшуюся приёмку PAOS-0045 только в разрешённом scope; см. execution report.
+- Actual time: локальная реализация и проверка 11-11-2026; отдельная active duration не измерялась, JSON duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-auth-commercial-2026-11-09.md
 - Affected files: proposed paths above; actual create/modify/delete receipts only after execution.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
+- Status: in_progress
+- What was done: Connection broker, login/disconnect UI, ephemeral RPC transport, bounded split-secret redaction, no fallback и lazy OS vault bridge реализованы.
+- Files touched / work locations: apps/local-service/src/connections; apps/local-service/src/runtime/native-rpc.mts; apps/web/src/ui.
+- Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
+- Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
-
+- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Residual risks: Native Credential Manager roundtrip отклонён automatic approval review как OS store вне временного профиля. Provider/model access запрещены и не проверены.
+- Follow-up: Завершить оставшуюся приёмку PAOS-0045 только в разрешённом scope; см. execution report.
 
 ### Task `PAOS-0042`
 
 - Task: Codex App Server adapter и ограниченное выполнение
-- Status: planned
+- Status: in_progress
 - Delivery stage: M1
 - Execution order: 11
 - Schema version: task_matrix_plan_v1
@@ -2220,28 +2229,27 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching skills selected at start
 - Output artifacts: apps/local-service/src/runtime/codex; packages/contracts/runtime
-- Next step: Подтвердить зависимости, доступность route и отдельный implementation scope
-- Actual time: not_started; start/end/duration = null.
+- Next step: Завершить оставшуюся приёмку PAOS-0045 только в разрешённом scope; см. execution report.
+- Actual time: локальная реализация и проверка 11-11-2026; отдельная active duration не измерялась, JSON duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-auth-commercial-2026-11-09.md
 - Affected files: proposed paths above; actual create/modify/delete receipts only after execution.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
+- Status: in_progress
+- What was done: Pinned stdio adapter, fixed versioned recipe, server-owned saved task scope, global lease, explicit mode, durable intents и approvals/outcomes реализованы.
+- Files touched / work locations: apps/local-service/src/runtime; packages/contracts/runtime; tests/web/runtime*.test.mts.
+- Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
+- Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
-
+- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Residual risks: Реальный provider turn/start/approval/interrupt и activation новой recipe не выполнены; filesystem fence относится ко всему workspace, file allowlist является workflow scope.
+- Follow-up: Завершить оставшуюся приёмку PAOS-0045 только в разрешённом scope; см. execution report.
 
 ### Task `PAOS-0043`
 
 - Task: Активная сессия и минимальная карточка задачи
-- Status: planned
+- Status: in_progress
 - Delivery stage: M1
 - Execution order: 12
 - Schema version: task_matrix_plan_v1
@@ -2266,28 +2274,27 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: builder, tester
 - Skills: implementation-planner; task-matching skills selected at start
 - Output artifacts: apps/web/src/sessions; apps/web/src/tasks/minimal; apps/local-service/src/conversations
-- Next step: Подтвердить зависимости, доступность route и отдельный implementation scope
-- Actual time: not_started; start/end/duration = null.
+- Next step: Завершить оставшуюся приёмку PAOS-0045 только в разрешённом scope; см. execution report.
+- Actual time: локальная реализация и проверка 11-11-2026; отдельная active duration не измерялась, JSON duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-auth-commercial-2026-11-09.md
 - Affected files: proposed paths above; actual create/modify/delete receipts only after execution.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
+- Status: in_progress
+- What was done: Task CRUD/fixed Kanban/links/comments/history, сессии, autosave, безопасный streaming, diff/checks/profile, manual acceptance и read-only каталоги реализованы.
+- Files touched / work locations: apps/web; apps/local-service/src/http; apps/local-service/src/tasks.
+- Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
+- Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
-
+- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Residual risks: Browser presentation/a11y и provider journey не выполнены; unknown phase скрыта до final.
+- Follow-up: Завершить оставшуюся приёмку PAOS-0045 только в разрешённом scope; см. execution report.
 
 ### Task `PAOS-0044`
 
 - Task: Recovery, повторное подключение и сохранённые сессии
-- Status: planned
+- Status: in_progress
 - Delivery stage: M1
 - Execution order: 13
 - Schema version: task_matrix_plan_v1
@@ -2312,28 +2319,27 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: builder, tester
 - Skills: implementation-planner; task-matching skills selected at start
 - Output artifacts: apps/local-service/src/runtime/recovery; apps/web/src/recovery
-- Next step: Подтвердить зависимости, доступность route и отдельный implementation scope
-- Actual time: not_started; start/end/duration = null.
+- Next step: Завершить оставшуюся приёмку PAOS-0045 только в разрешённом scope; см. execution report.
+- Actual time: локальная реализация и проверка 11-11-2026; отдельная active duration не измерялась, JSON duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-auth-commercial-2026-11-09.md
 - Affected files: proposed paths above; actual create/modify/delete receipts only after execution.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
+- Status: in_progress
+- What was done: Lost ACK/retry/recovery, generation/account fencing, stale approvals, Stop outcome и pre-shutdown persistence реализованы.
+- Files touched / work locations: apps/local-service/src/runtime; apps/web/src/api; tests/web/recovery.test.mts.
+- Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
+- Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
-
+- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Residual risks: Проверены fixtures/SQLite restart; provider process crash и реальный reconnect не наблюдались.
+- Follow-up: Завершить оставшуюся приёмку PAOS-0045 только в разрешённом scope; см. execution report.
 
 ### Task `PAOS-0045`
 
 - Task: Приёмка сквозного M1 в одном окне
-- Status: planned
+- Status: blocked
 - Delivery stage: M1
 - Execution order: 18
 - Schema version: task_matrix_plan_v1
@@ -2358,23 +2364,22 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: tester, reviewer
 - Skills: implementation-planner; task-matching skills selected at start
 - Output artifacts: tests/web/single-window; docs/evidence/web-m1
-- Next step: Подтвердить зависимости, доступность route и отдельный implementation scope
-- Actual time: not_started; start/end/duration = null.
+- Next step: Завершить оставшуюся приёмку PAOS-0045 только в разрешённом scope; см. execution report.
+- Actual time: локальная реализация и проверка 11-11-2026; отдельная active duration не измерялась, JSON duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-auth-commercial-2026-11-09.md
 - Affected files: proposed paths above; actual create/modify/delete receipts only after execution.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
+- Status: blocked
+- What was done: Исполняемый headless acceptance и workload пройдены; negative/failure fixtures и независимые проверки выполнены; открытые gates перечислены по SW/ST/UX/DATA.
+- Files touched / work locations: tests/web/single-window; research/product-agent-os-web-m1-execution-2026-11-11.md.
+- Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
+- Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
-
+- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Residual risks: Полная SW-AC-01–10/UX browser/provider приёмка требует запрещённых сейчас поверхностей; Codex App не закрывался. Native vault также не разрешён auto-review. M1 не принята.
+- Follow-up: Завершить оставшуюся приёмку PAOS-0045 только в разрешённом scope; см. execution report.
 
 ### Task `PAOS-0046`
 
@@ -2470,14 +2475,14 @@ Rollback будущих изменений: versioned proposal, revision check, 
 ### Task `PAOS-0048`
 
 - Task: SQLite: схема и транзакционные команды
-- Status: planned
+- Status: implemented
 - Delivery stage: M1
 - Execution order: 9
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-selected SQLite/FTS5 local and PostgreSQL/pgvector team, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 11-11-2026 08:09
 - Depends on: PAOS-0001, PAOS-0002, PAOS-0003, PAOS-0054
 - Blocks: PAOS-0042, PAOS-0043, PAOS-0049, PAOS-0050, PAOS-0051, PAOS-0052, PAOS-0055
 - Source: PRD §17; architecture §21; plan v0.7; audit WA-01–13
@@ -2495,34 +2500,34 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/local-service/src/storage/sqlite; packages/contracts/storage; apps/local-service/src/storage/migrations
-- Next step: Завершить зависимости; подтвердить schema/ownership и проверки до реализации
-- Actual time: not_started; start/end/duration = null.
+- Next step: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
+- Actual time: локальная реализация и проверка 11-11-2026; отдельная active duration не измерялась, JSON duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-storage-research-2026-11-09.md.
 - Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Dedicated SQLite Worker, FK/project scope, revisions/authority epoch, key allocation, atomic entity/audit/outbox, idempotency и crash rollback реализованы.
+- Files touched / work locations: apps/local-service/src/storage; packages/contracts/storage; tests/web/storage.test.mts.
+- Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
+- Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
+- Actual implementation date and time: 11-11-2026 08:09
+- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Residual risks: Local single-principal profile; team profile отдельно T1. Произвольные legacy writers не объявляются совместимыми.
+- Follow-up: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
 
 ### Task `PAOS-0049`
 
 - Task: Локальный полнотекстовый поиск FTS5
-- Status: planned
+- Status: implemented
 - Delivery stage: M1
 - Execution order: 14
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-selected SQLite/FTS5 local and PostgreSQL/pgvector team, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 11-11-2026 08:09
 - Depends on: PAOS-0048
 - Blocks: PAOS-0045, PAOS-0052
 - Source: PRD §16 ST-01–12; architecture §20; storage decision v0.6
@@ -2540,34 +2545,34 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/local-service/src/search; apps/web/src/search
-- Next step: Завершить зависимости; подтвердить schema/ownership и проверки до реализации
-- Actual time: not_started; start/end/duration = null.
+- Next step: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
+- Actual time: локальная реализация и проверка 11-11-2026; отдельная active duration не измерялась, JSON duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-storage-research-2026-11-09.md.
 - Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: FTS5 RU/EN/exact ID, scope/revision filtering, tombstone/partial/rebuild и bounded search реализованы; финальный workload p95 108,02 ms.
+- Files touched / work locations: apps/local-service/src/storage/search-queries.mts; apps/local-service/src/http/application.mts; tests/web/single-window/workload.mts.
+- Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
+- Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
+- Actual implementation date and time: 11-11-2026 08:09
+- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Residual risks: Workload выполнен на текущем 20-logical-CPU host; browser/event-to-visible и 4-core baseline не измерены.
+- Follow-up: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
 
 ### Task `PAOS-0050`
 
 - Task: Предварительный импорт MD/JSON в staging
-- Status: planned
+- Status: implemented
 - Delivery stage: M1
 - Execution order: 16
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-selected SQLite/FTS5 local and PostgreSQL/pgvector team, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 11-11-2026 08:09
 - Depends on: PAOS-0048
 - Blocks: PAOS-0056
 - Source: PRD §17; architecture §21; plan v0.7; audit WA-01–13
@@ -2585,34 +2590,34 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/local-service/src/import-export; apps/web/src/projects/migration; packages/contracts/migration
-- Next step: Завершить зависимости; подтвердить schema/ownership и проверки до реализации
-- Actual time: not_started; start/end/duration = null.
+- Next step: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
+- Actual time: локальная реализация и проверка 11-11-2026; отдельная active duration не измерялась, JSON duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-storage-research-2026-11-09.md.
 - Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Versioned single/bundle MD+JSON preview сохраняет snapshot/provenance, dedup и conflicts; normalized SQL export возвращается proposal с base revisions.
+- Files touched / work locations: apps/local-service/src/import-export/preview.mts; tests/web/import-preview.test.mts.
+- Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
+- Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
+- Actual implementation date and time: 11-11-2026 08:09
+- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Residual risks: Непредставимые значимые поля блокируют целый cutover; текущий research source не мигрирован. General merge editor относится к M2.
+- Follow-up: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
 
 ### Task `PAOS-0051`
 
 - Task: Резервное копирование и восстановление local data
-- Status: planned
+- Status: implemented
 - Delivery stage: M1
 - Execution order: 15
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-selected SQLite/FTS5 local and PostgreSQL/pgvector team, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 11-11-2026 08:09
 - Depends on: PAOS-0048
 - Blocks: PAOS-0045, PAOS-0052, PAOS-0056
 - Source: PRD §17; architecture §21; plan v0.7; audit WA-01–13
@@ -2630,22 +2635,22 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/local-service/src/storage/backup; apps/web/src/settings/data
-- Next step: Завершить зависимости; подтвердить schema/ownership и проверки до реализации
-- Actual time: not_started; start/end/duration = null.
+- Next step: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
+- Actual time: локальная реализация и проверка 11-11-2026; отдельная active duration не измерялась, JSON duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-storage-research-2026-11-09.md.
 - Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Immutable consistent backup/blob hashes, отдельный restore/recovery generation и preview/explicit managed rotation реализованы; ENOSPC cleanup проверен injection.
+- Files touched / work locations: apps/local-service/src/storage/snapshot.mts; apps/local-service/src/storage/restore-worker.mts; tests/web/storage-backup.test.mts.
+- Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
+- Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
+- Actual implementation date and time: 11-11-2026 08:09
+- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Residual risks: Restore создаёт отдельный профиль, не переключает активный автоматически; backup private local content без обещания secure erase или encrypted export.
+- Follow-up: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
 
 ### Task `PAOS-0052`
 
@@ -2740,14 +2745,14 @@ Rollback будущих изменений: versioned proposal, revision check, 
 ### Task `PAOS-0054`
 
 - Task: Контракт совместимости M1 и runtime manifest
-- Status: blocked
+- Status: implemented
 - Delivery stage: M1
 - Execution order: 2
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested M1 audit remediation, 2026-11-10
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 11-11-2026 08:09
 - Depends on: PAOS-0001
 - Blocks: PAOS-0041, PAOS-0048, PAOS-0055
 - Source: PRD §17; architecture §21; plan v0.7; audit WA-01–13
@@ -2765,35 +2770,46 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: packages/contracts/runtime; docs/evidence/web-m1/compatibility
-- Next step: Квалифицировать scoped Execution в поддерживаемой Windows-среде, где доступен native sandbox.
-- Actual time: офлайн-квалификация начата 10-11-2026 22:18 MSK, окончание и длительность pending.
+- Next step: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
+- Actual time: локальная реализация и проверка 11-11-2026; отдельная active duration не измерялась, JSON duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-storage-research-2026-11-09.md.
 - Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
 
 #### Completion Report
 
-- Status: blocked
-- What was done: Проверены схема и SQLite FTS5, выполнен один изолированный stdio-прогон. Добавлен fail-closed разбор полученного наблюдения.
-- Files touched / work locations: `packages/contracts/runtime/`, `tests/web/runtime-compatibility.test.mts`, `research/product-agent-os-web-m1-initial-qualification-2026-11-10.md`.
-- Technical value delivered: Локальный probe выявляет отсутствие обязательной части schema и отделяет static check от qualification.
-- Product value delivered: Зависимая интеграция получает проверяемый кандидат runtime без заявления о готовности запуска.
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: Второй stdio подтвердил выбор именованного `workspaceWrite`, но `windowsSandbox/readiness=notConfigured`. Повтор оценки первого и второго receipts сохранил блокировку `scoped_execution_policy`; история во втором проходит. [Candidate tuple и команды](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
-- Residual risks: Native sandbox и фактическое ограничение записи, изоляция после входа, app lockfile и adapter revision остаются открытыми.
-- Follow-up: В поддерживаемой Windows-среде подтвердить native readiness и scoped write/deny proof до handoff контрактов.
+- Status: implemented
+- What was done: Exact native-offline manifest закрепляет OS/build/binaries/schema/SQLite/lock и executable host revision. Native MXC ready, inside written/outside denied; ephemeral synthetic login/logout/canary проверены.
+- Files touched / work locations: packages/contracts/runtime; tests/web/runtime-compatibility.test.mts; tests/web/runtime-manifest.test.mts.
+- Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
+- Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
+- Actual implementation date and time: 11-11-2026 08:09
+- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Residual risks: Manifest квалифицирует native-offline tuple, не provider entitlement, commercial admission или browser acceptance; любое изменение tuple блокирует dispatch.
+- Follow-up: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
 
+Историческая запись до нативной проверки 11 ноября (не текущий статус):
+
+> - Status: blocked
+> - What was done: Проверены схема, семантика событий App Server, FTS5 и файловая SQLite-проба. Предыдущие изолированные stdio-прогоны подтвердили только metadata, без пары write/deny. Офлайн-оценка требует фактическую запись и отказ на синтетических контролях.
+> - Files touched / work locations: `packages/contracts/runtime/`, `tests/web/runtime-compatibility.test.mts`, `research/product-agent-os-web-m1-initial-qualification-2026-11-10.md`.
+> - Technical value delivered: Локальный probe выявляет отсутствие обязательной части schema и отделяет static check от qualification.
+> - Product value delivered: Зависимая интеграция получает проверяемый кандидат runtime без заявления о готовности запуска.
+> - Actual implementation date and time: pending_execution_timestamp
+> - Verification evidence: Schema, event и SQLite tests прошли 12/12. SQLite проверил rollback, снимок WAL и FK. Независимая сверка MXC и наблюдение Windows token подтвердили запуск диагностики в AppContainer, конкретная стадия отказа PSEC неизвестна. Оценка прежних receipts сохраняет блокировку `scoped_execution_policy`. [Candidate tuple и команды](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+> - Residual risks: Native sandbox и фактическое ограничение записи, изоляция после входа, app lockfile и adapter revision остаются открытыми.
+> - Follow-up: В поддерживаемой Windows-среде подтвердить native readiness и scoped write/deny proof до handoff контрактов.
 
 ### Task `PAOS-0055`
 
 - Task: Команды агентов и совместимость legacy writers
-- Status: planned
+- Status: implemented
 - Delivery stage: M1
 - Execution order: 10
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested M1 audit remediation, 2026-11-10
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 11-11-2026 08:09
 - Depends on: PAOS-0048, PAOS-0054
 - Blocks: PAOS-0042, PAOS-0056
 - Source: PRD §17; architecture §21; plan v0.7; audit WA-01–13
@@ -2811,35 +2827,34 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/local-service/src/agent-commands; packages/contracts/domain-commands; plugins/product-agent-os/scripts/product_agent_os
-- Next step: Завершить зависимости; подтвердить schema/ownership и проверки до реализации
-- Actual time: not_started; start/end/duration = null.
+- Next step: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
+- Actual time: локальная реализация и проверка 11-11-2026; отдельная active duration не измерялась, JSON duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-storage-research-2026-11-09.md.
 - Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
-
+- Status: implemented
+- What was done: Scoped dynamic domain tools, canonical idempotency, immutable system review guards и conservative inventory legacy writers реализованы.
+- Files touched / work locations: apps/local-service/src/commands; tests/web/domain-idempotency.test.mts; tests/web/domain-migration.test.mts.
+- Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
+- Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
+- Actual implementation date and time: 11-11-2026 08:09
+- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Residual risks: Неизвестные installed writers остаются unsupported; нет raw SQL, agent credentials или автоматической manual acceptance.
+- Follow-up: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
 
 ### Task `PAOS-0056`
 
 - Task: Переключение источника задач и проверка миграции
-- Status: planned
+- Status: implemented
 - Delivery stage: M1
 - Execution order: 17
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested M1 audit remediation, 2026-11-10
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 11-11-2026 08:09
 - Depends on: PAOS-0050, PAOS-0051, PAOS-0055, PAOS-0044
 - Blocks: PAOS-0045, PAOS-0053
 - Source: PRD §17; architecture §21; plan v0.7; audit WA-01–13
@@ -2857,19 +2872,19 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/local-service/src/import-export/cutover; apps/web/src/projects/migration
-- Next step: Завершить зависимости; подтвердить schema/ownership и проверки до реализации
-- Actual time: not_started; start/end/duration = null.
+- Next step: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
+- Actual time: локальная реализация и проверка 11-11-2026; отдельная active duration не измерялась, JSON duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-storage-research-2026-11-09.md.
 - Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Оба source files удерживаются native sharing locks до atomic cutover; re-read/digest/root checks, restore rehearsal, same-transaction source bindings и repeat receipt проверены.
+- Files touched / work locations: apps/local-service/src/import-export; apps/local-service/src/storage/sqlite-worker.mts; tests/web/domain-migration.test.mts.
+- Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
+- Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
+- Actual implementation date and time: 11-11-2026 08:09
+- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Residual risks: Только supported synthetic project; реальный target не мигрирован. Post-cutover legacy edits показываются changed, не импортируются автоматически.
+- Follow-up: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
