@@ -55,6 +55,18 @@ function terminal(value: unknown): value is TurnOutcome {
   return value === 'completed' || value === 'failed' || value === 'interrupted';
 }
 
+function tokenUsage(value: unknown): boolean {
+  const usage = record(value);
+  const count = (n: unknown) => typeof n === 'number' && Number.isSafeInteger(n) && n >= 0;
+  const breakdown = (raw: unknown) => {
+    const row = record(raw);
+    return ['inputTokens','outputTokens','cachedInputTokens','reasoningOutputTokens','totalTokens'].every(key => count(row[key]))
+      && (row.cacheWriteInputTokens === undefined || count(row.cacheWriteInputTokens));
+  };
+  return breakdown(usage.last) && breakdown(usage.total)
+    && (usage.modelContextWindow === undefined || usage.modelContextWindow === null || count(usage.modelContextWindow));
+}
+
 /** Use after RPC correlation. The result acknowledges dispatch and cannot end a turn. */
 export function mapTurnAccepted(threadId: unknown, result: unknown): RuntimeEvent {
   const turn = record(record(result).turn);
@@ -79,6 +91,32 @@ export function mapRuntimeEvent(message: unknown): RuntimeEvent {
   if (id !== undefined) return recovery;
 
   switch (method) {
+    // Pinned 0.167 telemetry is informational. It must not cancel approvals or infer a terminal turn.
+    // Explicit unavailable/error status and unknown shapes still require reconciliation.
+    case 'thread/status/changed': {
+      const status = record(params.status);
+      return status.type === 'idle' || (status.type === 'active' && Array.isArray(status.activeFlags)
+        && status.activeFlags.every(flag => flag === 'waitingOnApproval' || flag === 'waitingOnUserInput'))
+        ? { kind: 'non_lifecycle' } : recovery;
+    }
+    case 'thread/tokenUsage/updated':
+      return nonempty(turnId) && tokenUsage(params.tokenUsage) ? { kind: 'non_lifecycle' } : recovery;
+    case 'thread/name/updated':
+      return params.threadName === undefined || params.threadName === null || typeof params.threadName === 'string'
+        ? { kind: 'non_lifecycle' } : recovery;
+    case 'thread/readState/changed': {
+      const state = record(params.readState), position = record(state.firstUnread);
+      return nonempty(state.revision) && (state.firstUnread === undefined || state.firstUnread === null
+        || position.type === 'threadStart' || (position.type === 'turn' && nonempty(position.turnId)))
+        ? { kind: 'non_lifecycle' } : recovery;
+    }
+    case 'turn/diff/updated':
+      return nonempty(turnId) && typeof params.diff === 'string' ? { kind: 'non_lifecycle' } : recovery;
+    case 'turn/plan/updated':
+      return nonempty(turnId) && Array.isArray(params.plan) && params.plan.every(raw => {
+        const step = record(raw); return typeof step.step === 'string' && ['pending','inProgress','completed'].includes(String(step.status));
+      }) && (params.explanation === undefined || params.explanation === null || typeof params.explanation === 'string')
+        ? { kind: 'non_lifecycle' } : recovery;
     case 'turn/started':
     case 'turn/completed': {
       const turn = record(params.turn);

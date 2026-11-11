@@ -23,6 +23,7 @@ export function ConnectionControls({
         {t("modelAccess")}: {t("unverified")}
       </p>
       <p className="quiet">{t("credentialHint")}</p>
+      {connection?.reason && <p className="quiet">{connection.reason}</p>}
       <form
         onSubmit={async (e) => {
           e.preventDefault();

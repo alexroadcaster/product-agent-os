@@ -2341,6 +2341,16 @@
           "path": "tests/web/runtime-adapter-races.test.mts",
           "planned_operation": "create_or_modify_after_discovery",
           "actual_operation": "create"
+        },
+        {
+          "path": "packages/contracts/runtime/events.ts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "tests/web/runtime-adapter-reconciliation.test.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
         }
       ],
       "agents": [
@@ -2422,6 +2432,31 @@
           "path": "tests/web/ui-draft-registry.test.mts",
           "planned_operation": "create_or_modify_after_discovery",
           "actual_operation": "create"
+        },
+        {
+          "path": "apps/web/src/api/session-poll.ts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/web/src/api/session-target.ts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/web/src/ui/ConnectionControls.tsx",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "tests/web/ui-session-poll.test.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "tests/web/ui-session-target.test.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
         }
       ],
       "agents": [
@@ -2505,6 +2540,16 @@
           "path": "tests/web/runtime-adapter-time.test.mts",
           "planned_operation": "create_or_modify_after_discovery",
           "actual_operation": "modify"
+        },
+        {
+          "path": "tests/web/runtime-adapter-reconciliation.test.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
+        },
+        {
+          "path": "tests/web/single-window/active-runtime-acceptance.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
         }
       ],
       "agents": [
@@ -2548,6 +2593,11 @@
         },
         {
           "path": "research/product-agent-os-web-m1-execution-2026-11-11.md",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
+        },
+        {
+          "path": "tests/web/single-window/active-runtime-acceptance.mts",
           "planned_operation": "create_or_modify_after_discovery",
           "actual_operation": "create"
         }

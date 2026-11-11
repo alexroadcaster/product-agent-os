@@ -1,7 +1,201 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { startSessionPolling } from "../../apps/web/src/api/session-poll.ts";
+import {
+  startSessionPolling,
+  startConnectionPolling,
+} from "../../apps/web/src/api/session-poll.ts";
+test("settings connection polling observes EOF and ignores disposed or superseded login status", async () => {
+  const timers: (() => void)[] = [],
+    seen: boolean[] = [];
+  let connected = true,
+    version = 0,
+    finish!: (value: any) => void,
+    hung = false;
+  const dispose = startConnectionPolling({
+    read: async () =>
+      hung
+        ? new Promise((resolve) => (finish = resolve))
+        : { verified: connected },
+    publish: (value) => seen.push(value.verified),
+    error: assert.fail,
+    version: () => version,
+    schedule: (callback, delay) => {
+      assert.equal(delay, 750);
+      timers.push(callback);
+      return callback;
+    },
+    cancel: () => {
+      timers.length = 0;
+    },
+  });
+  for (let i = 0; i < 20; i++) await Promise.resolve();
+  assert.deepEqual(seen, [true]);
+  assert.equal(timers.length, 1);
+  connected = false;
+  timers.shift()!();
+  for (let i = 0; i < 20; i++) await Promise.resolve();
+  assert.deepEqual(seen, [true, false]);
+  hung = true;
+  timers.shift()!();
+  for (let i = 0; i < 20; i++) await Promise.resolve();
+  assert.equal(timers.length, 0);
+  version++;
+  finish({ verified: false });
+  for (let i = 0; i < 20; i++) await Promise.resolve();
+  assert.deepEqual(seen, [true, false]);
+  timers.shift()!();
+  for (let i = 0; i < 20; i++) await Promise.resolve();
+  dispose();
+  finish({ verified: true });
+  for (let i = 0; i < 20; i++) await Promise.resolve();
+  assert.deepEqual(seen, [true, false]);
+  assert.equal(timers.length, 0);
+});
 import { mergeJournalMessages } from "../../apps/web/src/api/message-history.ts";
+test("late healthy transcript cannot restore send authority or stale approvals after runtime-state failure", async () => {
+  const timers: (() => void)[] = [],
+    updates: any[] = [],
+    errors: unknown[] = [];
+  let stateCalls = 0,
+    messageCalls = 0,
+    finish!: (value: any) => void;
+  const dispose = startSessionPolling({
+    state: async () => {
+      if (++stateCalls > 1) throw new Error("state unavailable");
+      return {
+        canSend: true,
+        reason: null,
+        state: "idle",
+        bindingId: "b",
+        pendingApprovals: [{ requestId: "old" }],
+      };
+    },
+    messages: async () => {
+      if (++messageCalls === 1)
+        return {
+          items: [{ id: "m", projectId: "p", kind: "message", revision: 1 }],
+          hasMore: false,
+        };
+      return new Promise((resolve) => (finish = resolve));
+    },
+    publish: (update) => updates.push(update),
+    error: (error) => errors.push(error),
+    schedule: (callback) => {
+      timers.push(callback);
+      return callback;
+    },
+    cancel: () => {
+      timers.length = 0;
+    },
+  });
+  for (let i = 0; i < 30; i++) await Promise.resolve();
+  timers.shift()!();
+  for (let i = 0; i < 30; i++) await Promise.resolve();
+  assert.equal(updates.at(-1).state.canSend, false);
+  assert.deepEqual(updates.at(-1).state.pendingApprovals, []);
+  finish({
+    items: [{ id: "new", projectId: "p", kind: "message", revision: 1 }],
+    hasMore: false,
+  });
+  for (let i = 0; i < 30; i++) await Promise.resolve();
+  assert.equal(updates.at(-1).state.canSend, false);
+  assert.deepEqual(updates.at(-1).state.pendingApprovals, []);
+  assert.equal(updates.at(-1).state.reason, "runtime_state_unavailable");
+  assert.equal(errors.length, 1);
+  dispose();
+});
+test("healthy approval/run snapshots publish through failed transcript reads while prior history is retained", async () => {
+  const timers: (() => void)[] = [],
+    updates: any[] = [];
+  let calls = 0;
+  const dispose = startSessionPolling({
+    state: async () => ({
+      canSend: false,
+      reason: null,
+      bindingId: "b",
+      runId: "r",
+      state: calls > 1 ? "awaiting_approval" : "running",
+      pendingApprovals: calls > 1 ? [{ requestId: "a" }] : [],
+    }),
+    messages: async () => {
+      if (++calls > 1) throw new Error("transcript unavailable");
+      return {
+        items: [
+          {
+            id: "m",
+            projectId: "p",
+            kind: "message",
+            revision: 1,
+            body: "retained",
+          },
+        ],
+        hasMore: false,
+      };
+    },
+    publish: (update) => updates.push(update),
+    error: assert.fail,
+    schedule: (callback) => {
+      timers.push(callback);
+      return callback;
+    },
+    cancel: () => {
+      timers.length = 0;
+    },
+  });
+  for (let i = 0; i < 30; i++) await Promise.resolve();
+  timers.shift()!();
+  for (let i = 0; i < 30; i++) await Promise.resolve();
+  const latest = updates.at(-1);
+  assert.equal(latest.state.state, "awaiting_approval");
+  assert.equal(latest.state.pendingApprovals.length, 1);
+  assert.equal(latest.messages[0].body, "retained");
+  assert.match(latest.messagesError, /transcript unavailable/);
+  dispose();
+});
+test("hung transcript lane does not block fresh runtime state or start overlapping transcript requests", async () => {
+  const timers: (() => void)[] = [],
+    updates: any[] = [];
+  let stateCalls = 0,
+    messageCalls = 0,
+    finish!: (value: any) => void,
+    signal: AbortSignal | undefined;
+  const dispose = startSessionPolling({
+    state: async () => ({
+      canSend: false,
+      reason: null,
+      bindingId: "b",
+      runId: "r",
+      state: ++stateCalls === 1 ? "running" : "awaiting_approval",
+    }),
+    messages: (_offset, current) => {
+      messageCalls++;
+      signal = current;
+      return new Promise((resolve) => (finish = resolve));
+    },
+    publish: (update) => updates.push(update),
+    error: assert.fail,
+    schedule: (callback) => {
+      timers.push(callback);
+      return callback;
+    },
+    cancel: () => {
+      timers.length = 0;
+    },
+  });
+  for (let i = 0; i < 30; i++) await Promise.resolve();
+  assert.equal(updates.at(-1)?.state.state, "running");
+  assert.equal(updates.at(-1)?.messagesLoading, true);
+  timers.shift()!();
+  for (let i = 0; i < 30; i++) await Promise.resolve();
+  assert.equal(updates.at(-1)?.state.state, "awaiting_approval");
+  assert.equal(messageCalls, 1);
+  dispose();
+  const count = updates.length;
+  finish({ items: [], hasMore: false });
+  for (let i = 0; i < 30; i++) await Promise.resolve();
+  assert.equal(updates.length, count);
+  assert.equal(signal?.aborted, true);
+});
 test("newest bounded polling includes late results past 1000 and journal order ignores random IDs", async () => {
   const all = Array.from({ length: 2001 }, (_, index) => ({
     id: `random-${2001 - index}`,
@@ -123,13 +317,13 @@ test("poll publishes late approvals/final messages without duplicates and stops 
     },
   });
   await settle();
-  assert.equal(updates.length, 1);
-  assert.equal((updates[0] as any).messages.length, 1);
+  assert.ok(updates.length >= 1);
+  assert.equal((updates.at(-1) as any).messages.length, 1);
   assert.equal(timers.length, 1);
   timers.shift()!();
   await settle();
-  assert.equal((updates[1] as any).messages[0].body, "final");
-  assert.equal((updates[1] as any).state.pendingApprovals.length, 1);
+  assert.equal((updates.at(-1) as any).messages[0].body, "final");
+  assert.equal((updates.at(-1) as any).state.pendingApprovals.length, 1);
   dispose();
   assert.equal(signal?.aborted, true);
   assert.equal(timers.length, 0);

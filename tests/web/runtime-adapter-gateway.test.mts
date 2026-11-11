@@ -8,6 +8,30 @@ import {createLiveGateway} from '../../apps/local-service/src/runtime/live-gatew
 import {createRuntimeStoragePorts} from '../../apps/local-service/src/runtime/storage-ports.mts';
 import {fixtureTask,runtimeTaskId} from './runtime-adapter-time.fixture.mts';
 
+for(const outcome of ['completed','failed','interrupted'] as const)test(`gateway preserves ${outcome} display after releasing the active run lease`,async(t)=>{
+ const {bindProject}=await import('../../apps/local-service/src/adapters/project-sources.ts');
+ const root=await mkdtemp(join(tmpdir(),'paos-terminal-state-'));const pin=await bindProject('p',root);
+ const store=await openLocalStore({databasePath:join(root,'state.sqlite')});let gateway:ReturnType<typeof createLiveGateway>;
+ t.after(async()=>{await gateway?.close();await store.close();await rm(root,{recursive:true,force:true});});
+ await store.registerProject({id:'p',keyPrefix:'TEST',canonicalRoot:pin.workspaceRoot,rootIdentity:pin.directoryIdentity,authorityMode:'sql'});
+ await store.write({projectId:'p',actorId:'test',idempotencyKey:'session',expectedAuthorityEpoch:1,changes:[{expectedRevision:0,entity:{id:'s',kind:'session'}}]});
+ let listener:(message:any)=>void=()=>{};const terminal=Promise.withResolvers<void>();
+ gateway=createLiveGateway({store,profileId:'fixture',actorId:'runtime',isEnabled:()=>true,providerAuthority:()=>true,
+  onEvent(event){if(event.kind==='run'&&(event.run as any).state===outcome)terminal.resolve();},
+  rpcFactory:async()=>({generation:'g',notify(){},subscribe(next){listener=next;return()=>{};},onClosed(){return()=>{};},respond(){},respondError(){},close:async()=>{},
+   async request(method,params:any){if(method==='account/login/start')return {type:'apiKey'};if(method==='account/read')return {account:{type:'apiKey'}};
+    if(method==='thread/start')return {thread:{id:'thread'},cwd:params.cwd,runtimeWorkspaceRoots:[params.cwd],activePermissionProfile:{id:params.permissions},approvalPolicy:'never',sandbox:{type:'readOnly',networkAccess:false}};
+    if(method==='turn/start')return {turn:{id:'turn',status:'inProgress'}};return {};}})});
+ await gateway.connection.connect({connectionId:'fixture',apiKey:'synthetic'});
+ const scope={projectId:'p',sessionId:'s'};const binding:any=await gateway.runtime.dispatch('bindings',{...scope,mode:'discussion'});
+ const run:any=await gateway.runtime.dispatch('send',{...scope,bindingId:binding.bindingId,clientMessageId:'m',input:'Synthetic request'});
+ assert.equal((await gateway.runtime.snapshot(scope)).runId,run.id);
+ listener({method:'turn/completed',params:{threadId:'thread',turn:{id:'turn',status:outcome}}});await terminal.promise;await new Promise<void>(resolve=>setImmediate(resolve));
+ const snapshot=await gateway.runtime.snapshot(scope);
+ assert.equal(snapshot.state,outcome);assert.equal(snapshot.runId,undefined);assert.equal(snapshot.canSend,true);
+ assert.equal((await gateway.runtime.snapshot(scope)).state,outcome);
+});
+
 test('EOF reconnect retires the old generation, restores recovery and ignores its late close callback',async(t)=>{
  const {bindProject}=await import('../../apps/local-service/src/adapters/project-sources.ts');
  const root=await mkdtemp(join(tmpdir(),'paos-eof-reconnect-'));const pin=await bindProject('p',root);

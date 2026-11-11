@@ -16,10 +16,14 @@ import {
   canStopRun,
   canAnswerApproval,
 } from "../api/policy.ts";
-import { startSessionPolling } from "../api/session-poll.ts";
+import {
+  startSessionPolling,
+  startConnectionPolling,
+} from "../api/session-poll.ts";
 import {
   isExecutionTarget,
   attachTaskToSession,
+  loadSavedSessionTarget,
 } from "../api/session-target.ts";
 import type { RunState } from "../api/policy.ts";
 import { createLatestRequest } from "../api/latest-request.ts";
@@ -97,6 +101,11 @@ export function App() {
   const [notice, setNotice] = useState("");
   const [code, setCode] = useState("");
   const [connection, setConnection] = useState<Connection | null>(null);
+  const connectionEpoch = useRef(0);
+  function connectionChanged(current: Connection) {
+    connectionEpoch.current++;
+    setConnection(current);
+  }
   const [mobileNav, setMobileNav] = useState(false);
   const t: Text = (key) => appLabel(preferences.locale, key);
   const label = (key: Section) =>
@@ -121,18 +130,24 @@ export function App() {
         list.some((p) => p.id === current) ? current : (list[0]?.id ?? ""),
       );
       setPreferences(appearance);
-      setConnection(runtime);
+      connectionChanged(runtime);
       setReady(true);
       setCode("");
     } catch (error) {
       if (error instanceof HttpApiError && error.status === 401) {
         setReady(false);
         setProjects([]);
-        setProjectId('');
+        setProjectId("");
+        connectionEpoch.current++;
         setConnection(null);
         // A fresh profile has no local session yet. Guide pairing instead of reporting a failed operation.
-        setNotice(error.code === 'SESSION_REQUIRED' && !pairCode ? '' :
-          error.code === 'PAIRING_INVALID' ? t('pairingInvalid') : `${t('error')}: ${String(error)}`);
+        setNotice(
+          error.code === "SESSION_REQUIRED" && !pairCode
+            ? ""
+            : error.code === "PAIRING_INVALID"
+              ? t("pairingInvalid")
+              : `${t("error")}: ${String(error)}`,
+        );
       } else setNotice(`${t("error")}: ${String(error)}`);
     } finally {
       setBusy(false);
@@ -141,6 +156,19 @@ export function App() {
   useEffect(() => {
     void initialise();
   }, []);
+  useEffect(() => {
+    if (!ready || section !== "settings") return;
+    return startConnectionPolling({
+      read: () => api.connection(),
+      version: () => connectionEpoch.current,
+      publish: setConnection,
+      error: () =>
+        setConnection({
+          verified: false,
+          reason: "connection_status_unavailable",
+        }),
+    });
+  }, [ready, section]);
   useEffect(() => {
     const media = matchMedia("(prefers-color-scheme: dark)");
     const apply = () =>
@@ -212,7 +240,10 @@ export function App() {
           >
             {t("menu")}
           </button>
-          <div className="breadcrumb" title={`${projects.find((p) => p.id === projectId)?.name ?? "Product-Agent OS"} / ${label(section)}`}>
+          <div
+            className="breadcrumb"
+            title={`${projects.find((p) => p.id === projectId)?.name ?? "Product-Agent OS"} / ${label(section)}`}
+          >
             {projects.find((p) => p.id === projectId)?.name ??
               "Product-Agent OS"}
             <span>/</span>
@@ -240,7 +271,7 @@ export function App() {
           {!ready ? (
             <section className="panel narrow">
               <h2>{t("connect")}</h2>
-              <p role="status">{t('pairingHint')}</p>
+              <p role="status">{t("pairingHint")}</p>
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -266,7 +297,7 @@ export function App() {
               preferences={preferences}
               onPreferences={setPreferences}
               connection={connection}
-              onConnection={setConnection}
+              onConnection={connectionChanged}
               t={t}
               onProject={async (name, root) => {
                 await api.createProject(name, root);
@@ -1337,7 +1368,16 @@ function Session({
       String(entity.data?.taskId ?? ""),
     ),
     [actionBusy, setActionBusy] = useState(false);
-  const target = tasks.items.find((task) => task.id === targetId);
+  const [linkedTarget, setLinkedTarget] = useState<StoredEntity | undefined>();
+  const targetMap = new Map(tasks.items.map((task) => [task.id, task]));
+  if (
+    linkedTarget &&
+    (!targetMap.has(linkedTarget.id) ||
+      linkedTarget.revision >= targetMap.get(linkedTarget.id)!.revision)
+  )
+    targetMap.set(linkedTarget.id, linkedTarget);
+  const targetChoices = [...targetMap.values()];
+  const target = targetChoices.find((task) => task.id === targetId);
   const modeHydrated = useRef(false);
   const autosave = useRef<DraftLease | null>(null),
     draftText = useRef(""),
@@ -1374,6 +1414,26 @@ function Session({
     if (["completed", "failed", "interrupted"].includes(snapshot?.state ?? ""))
       void tasks.load();
   }, [snapshot?.runId, snapshot?.state]);
+  useEffect(() => {
+    let active = true;
+    if (!linkedTaskId) {
+      setLinkedTarget(undefined);
+      return;
+    }
+    void loadSavedSessionTarget(api, entity.projectId, linkedTaskId)
+      .then((task) => {
+        if (active) setLinkedTarget(task);
+      })
+      .catch((error) => {
+        if (active) {
+          setLinkedTarget(undefined);
+          setNotice(String(error));
+        }
+      });
+    return () => {
+      active = false;
+    };
+  }, [entity.projectId, linkedTaskId, snapshot?.runId, snapshot?.state]);
   useLayoutEffect(() => {
     const element = transcript.current;
     if (element) {
@@ -1421,7 +1481,11 @@ function Session({
       });
     } catch (error) {
       setDraftAvailable(false);
-      setNotice(error instanceof Error&&error.message==='DRAFT_SCOPE_CAPACITY'?t('draftScopeUnavailable'):String(error));
+      setNotice(
+        error instanceof Error && error.message === "DRAFT_SCOPE_CAPACITY"
+          ? t("draftScopeUnavailable")
+          : String(error),
+      );
       return;
     }
     autosave.current = saver;
@@ -1466,8 +1530,8 @@ function Session({
             update.messages,
           ),
           hasMore: update.hasMore,
-          loading: false,
-          error: "",
+          loading: update.messagesLoading ?? false,
+          error: update.messagesError ?? "",
         });
       },
       error: (error) => {
@@ -1557,7 +1621,7 @@ function Session({
       if (action === "send") {
         const lease = autosave.current;
         if (!lease || typeof extra.input !== "string")
-          throw new Error(t('draftScopeUnavailable'));
+          throw new Error(t("draftScopeUnavailable"));
         const result = await sendWithDraftAck(
           lease,
           extra.input,
@@ -1573,7 +1637,7 @@ function Session({
         if (!result.acknowledged)
           acknowledgement = uiLabel(locale, "state.checkingSend");
         else if (!result.cleanupSaved)
-          acknowledgement += ` · ${t('draftCleanupPending')}`;
+          acknowledgement += ` · ${t("draftCleanupPending")}`;
       } else {
         await api.runtime(action, {
           projectId: entity.projectId,
@@ -1715,7 +1779,7 @@ function Session({
                   onChange={(e) => setTargetId(e.target.value)}
                 >
                   <option value="">—</option>
-                  {tasks.items.map((task) => (
+                  {targetChoices.map((task) => (
                     <option key={task.id} value={task.id}>
                       {task.publicKey ?? task.id}: {task.title}
                     </option>
@@ -1834,7 +1898,7 @@ function Session({
                 onReference={(reference) => {
                   const next = `${draftText.current}${draftText.current ? "\n" : ""}${reference}`;
                   if (!autosave.current) {
-                    setNotice(t('draftScopeUnavailable'));
+                    setNotice(t("draftScopeUnavailable"));
                     return;
                   }
                   autosave.current?.edit(next);

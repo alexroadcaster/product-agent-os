@@ -72,7 +72,7 @@ export function createLiveGateway(options: Readonly<{
       const busy=state?.hasActiveRun===true;
       return {canSend:authorized&&!!found&&!busy&&!state?.suspended&&found.generation===rpc?.generation,
         reason:!options.isEnabled?.()?'runtime_unverified':!options.providerAuthority?.()?'provider_authority_required':!authorized?'connection_unavailable':!found?'binding_required':state?.suspended?'runtime_stopping':busy?'runtime_busy':found.generation!==rpc?.generation?'binding_stale':null,
-        state:state?.run?.state??broker.snapshot().state,bindingId:found?.id,runId:state?.run?.id,
+        state:state?.run?.state??state?.latestRun?.state??broker.snapshot().state,bindingId:found?.id,runId:state?.run?.id,
         generation:state?.generation,mode:found?.mode,pendingApprovals:state?.approvals.filter((entry)=>entry.state==='pending'||entry.state==='response_sent')??[],modelAccess:'unverified',
         visibleDrafts:state?.visibleDrafts??[],fileChanges:state?.fileChanges??[],profile:state?.profile??null,checks:state?.checks??[],
         questions:state?.questions??{status:'unsupported',reason:'request_user_input_unsupported'},

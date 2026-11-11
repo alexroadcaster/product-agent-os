@@ -1,5 +1,9 @@
 # Реестр источников
 
+WEB-M1-APP-08 (2026-11-11): владелец требует Codex App agents без отдельного API key; API-only setup отменён. [Auth](https://learn.chatgpt.com/docs/auth), [App Server auth](https://learn.chatgpt.com/docs/app-server#auth-endpoints), [SDK](https://learn.chatgpt.com/docs/codex-sdk) сверены свежими fetch. Subscription auth не равен existing-App-agent bridge; готового PAOS bridge в проверенном коде не найдено. Evidence/limits: research/product-agent-os-web-m1-execution-2026-11-11.md. Runtime code/credentials не менялись.
+
+WEB-M1-ACTIVE-07 (2026-11-11): current activefixture55/Web213/browser669/headless33;9 runtime/UI/recovery defects repaired. Source-owned research/product-agent-os-web-m1-execution-2026-11-11.md and results retain source hashes/failed receipts/remaining gates. [Official approvals](https://learn.chatgpt.com/docs/app-server#approvals) + pinned0.167 schemas; Context7 main snippets secondary. No actual Codex/provider turn or full0045 acceptance.
+
 WEB-M1-AUTO-06 (2026-11-11): source-owned SESSION_REQUIRED reproduction/fix, browser669, autonomous launcher56, Web197. Источник: research/product-agent-os-web-m1-execution-2026-11-11.md и execution-results. PAOS-0040 technical implemented по составным native/browser receipts; manual owner rejection сохранён. Standing authorization canonical AGENTS.md, managed controls неизменны; full M1/provider acceptance не заявлена.
 
 WEB-M1-UI-05 (2026-11-11): PAOS-0004 browser667 passed, native zoom200% measured; scope limited to synthetic UI, no full WCAG/provider acceptance. [W3C resize](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html), [contrast](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html), [Chromium zoom](https://raw.githubusercontent.com/chromium/chromium/main/chrome/browser/ui/zoom/chrome_zoom_level_prefs.cc). Evidence: research/product-agent-os-web-m1-execution-2026-11-11.md and results JSON. PAOS-0040 external receipt remains open.

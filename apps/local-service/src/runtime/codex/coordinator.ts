@@ -161,13 +161,35 @@ export function createRuntimeCoordinator(options: CoordinatorOptions) {
       throw new RuntimeCoordinatorError('workspace_changed');
     }
   }
+  /** Tool results are model-visible too. Scrub raw string leaves/keys before JSON escaping, with bounded traversal. */
+  function protectedToolResult(result:unknown):string {
+    const encoded=JSON.stringify(result??null);
+    if(Buffer.byteLength(encoded)>64*1024)throw new RuntimeCoordinatorError('tool_result_limit');
+    let nodes=0;
+    const scrub=(value:unknown,depth:number):unknown=>{
+      if(depth>32||++nodes>8192)throw new RuntimeCoordinatorError('tool_result_limit');
+      if(typeof value==='string')return (options.redact??((text)=>text))(value);
+      if(Array.isArray(value))return value.map(item=>scrub(item,depth+1));
+      if(value&&typeof value==='object') {
+        const safe:Record<string,unknown>=Object.create(null);
+        for(const [key,item] of Object.entries(value))safe[(options.redact??((text)=>text))(key)]=scrub(item,depth+1);
+        return safe;
+      }
+      return value;
+    };
+    const protectedText=JSON.stringify(scrub(JSON.parse(encoded),0));
+    if(Buffer.byteLength(protectedText)>64*1024)throw new RuntimeCoordinatorError('tool_result_limit');
+    return protectedText;
+  }
   // Transport correlation precedes this serialized reducer; only final visible content reaches persistence.
-  async function applyEvent(message: RpcMessage): Promise<void> {
-    const run = active;
+  async function applyEvent(message: RpcMessage, historicalRun?: RuntimeRun): Promise<void> {
+    const run = historicalRun ?? active;
     if (!run || terminal.has(run.state)) return;
     const params = record(message.params);
     if (params.threadId !== run.threadId) return;
-    if (run.generation !== rpc.generation) { await recovery(run); return; }
+    // Explicit reconciliation can project an exact prior-generation terminal item snapshot.
+    // Live notifications always retain the generation fence; this is never used for requests or dispatch.
+    if (!historicalRun && run.generation !== rpc.generation) { await recovery(run); return; }
     const binding = bindingById(run.bindingId);
     const method = message.method;
     // These typed channels contain hidden reasoning or raw tool output, never visible assistant text.
@@ -205,7 +227,7 @@ export function createRuntimeCoordinator(options: CoordinatorOptions) {
       try {
         await validateWorkspace(binding);
         const result = await options.domainTool({ tool: params.tool, arguments: params.arguments, binding, run: cloneRun(run), requestId: message.id });
-        rpc.respond(message.id, {contentItems:[{type:'inputText',text:JSON.stringify(result ?? null)}],success:true});
+        rpc.respond(message.id, {contentItems:[{type:'inputText',text:protectedToolResult(result)}],success:true});
       } catch { rpc.respondError(message.id); }
       return;
     }
@@ -476,6 +498,7 @@ export function createRuntimeCoordinator(options: CoordinatorOptions) {
     if (binding.accountId !== input.accountId) throw new RuntimeCoordinatorError('account_mismatch');
     const run = active;
     if (!run || run.bindingId !== binding.id) return null;
+    if(typeof run.turnId!=='string'||!run.turnId.trim()){await recovery(run);return cloneRun(run);}
     await validateWorkspace(binding);
     enabled();if(active!==run)return cloneRun(run);
     const result = await rpc.request('thread/read', { threadId: run.threadId, includeTurns: true });
@@ -483,7 +506,25 @@ export function createRuntimeCoordinator(options: CoordinatorOptions) {
     const thread = record(result.thread);
     const turn = Array.isArray(thread.turns) ? thread.turns.map(record).find((entry) => entry.id === run.turnId) : undefined;
     if (thread.id === run.threadId && turn && ['completed', 'failed', 'interrupted'].includes(String(turn.status))) {
-      run.state = turn.status as RunState; await persist(run); active = undefined;
+      const items=turn.items===undefined?[]:turn.items;
+      if(!Array.isArray(items)||items.length>1000||Buffer.byteLength(JSON.stringify(items))>1024*1024)throw new RuntimeCoordinatorError('recovery_history_invalid');
+      // Share the visible/check projector with live receipts, serialized against incoming events.
+      // Never infer a missing turn id, replay a request, publish reasoning, or process another turn.
+      const projection=queue.then(async()=>{
+        if(active!==run)return;
+        for(const raw of items) {
+          const item=record(raw);
+          if(!['agentMessage','userMessage','commandExecution','fileChange'].includes(String(item.type)))continue;
+          if(item.type==='agentMessage'&&item.phase!=='final_answer')continue;
+          const message={method:'item/completed',params:{threadId:run.threadId,turnId:run.turnId,item}};
+          if(mapRuntimeEvent(message).kind!=='item_ended')throw new RuntimeCoordinatorError('recovery_history_invalid');
+          await applyEvent(message,run);
+        }
+        run.state=turn.status as RunState;
+        try { await persist(run);active=undefined; }
+        catch { run.state='recovery_required';throw new RuntimeCoordinatorError('persistence_unavailable'); }
+      });
+      queue=projection.catch(()=>{});await projection;
     } else await recovery(run);
     return cloneRun(run);
   }
@@ -518,6 +559,7 @@ export function createRuntimeCoordinator(options: CoordinatorOptions) {
     async flush() { await queue; },
     snapshot(bindingId: string) {
       const binding = bindingById(bindingId);
+      const latestRun=[...runs.values()].reverse().find(run=>run.bindingId===bindingId);
       const expectedRecipe=m1Recipe(binding.mode).metadata;const recipe=binding.recipe;
       const profile=recipe&&recipe.id===expectedRecipe.id&&recipe.version===expectedRecipe.version&&recipe.role===expectedRecipe.role&&recipe.assignment===expectedRecipe.assignment
         ?expectedRecipe:{id:binding.profileId,version:null,role:null,assignment:null,coverage:'unavailable' as const};
@@ -532,6 +574,8 @@ export function createRuntimeCoordinator(options: CoordinatorOptions) {
         questions:{status:'unsupported' as const,reason:'request_user_input_unsupported'},
         streaming:{policy:'final_answer_only' as const,phaseStatus:phaseStates.get(bindingId)??'not_observed'},
         generation: binding.generation, run: active?.bindingId === bindingId ? cloneRun(active) : null,
+        // Display history is distinct from the active dispatch lease and cannot authorize reuse.
+        latestRun:latestRun?cloneRun(latestRun):null,
         approvals: [...approvals.values()].filter((approval) => approval.bindingId === bindingId).map((approval) => ({ ...approval })) };
     },
   };

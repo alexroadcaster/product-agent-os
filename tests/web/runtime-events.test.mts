@@ -67,3 +67,30 @@ test('distinguishes known item progress frames from unknown lifecycle signals', 
     { kind: 'non_lifecycle' });
   assert.deepEqual(mapRuntimeEvent({ method: 'item/agentMessage/delta', params: scope }), { kind: 'recovery_required' });
 });
+
+test('pinned informational notifications do not interrupt the active turn or clear approval state', () => {
+  const scope={threadId:'thread-1',turnId:'turn-1'};
+  const usage={inputTokens:3,outputTokens:1,cachedInputTokens:0,reasoningOutputTokens:0,totalTokens:4};
+  for(const message of [
+    {method:'thread/status/changed',params:{threadId:scope.threadId,status:{type:'active',activeFlags:['waitingOnApproval']}}},
+    {method:'thread/tokenUsage/updated',params:{...scope,tokenUsage:{last:usage,total:usage,modelContextWindow:null}}},
+    {method:'turn/diff/updated',params:{...scope,diff:'synthetic unified diff'}},
+    {method:'turn/plan/updated',params:{...scope,plan:[{step:'Verify',status:'inProgress'}],explanation:null}},
+    {method:'thread/name/updated',params:{threadId:scope.threadId,threadName:'Synthetic title'}},
+    {method:'thread/readState/changed',params:{threadId:scope.threadId,readState:{revision:'rev',firstUnread:null}}},
+  ])assert.deepEqual(mapRuntimeEvent(message),{kind:'non_lifecycle'});
+});
+
+test('malformed informational notifications and unknown thread statuses remain fail-closed',()=>{
+  const scope={threadId:'thread-1',turnId:'turn-1'};
+  for(const message of [
+    {method:'thread/status/changed',params:{threadId:scope.threadId,status:{type:'futureState'}}},
+    {method:'thread/status/changed',params:{threadId:scope.threadId,status:{type:'active'}}},
+    {method:'thread/status/changed',params:{threadId:scope.threadId,status:{type:'systemError'}}},
+    {method:'thread/readState/changed',params:{threadId:scope.threadId,readState:{revision:3}}},
+    {method:'thread/name/updated',params:{threadId:scope.threadId,threadName:{unexpected:true}}},
+    {method:'thread/tokenUsage/updated',params:{...scope,tokenUsage:{}}},
+    {method:'turn/diff/updated',params:{...scope,diff:17}},
+    {method:'turn/plan/updated',params:{...scope,plan:[{step:'Verify',status:'unknown'}]}},
+  ])assert.deepEqual(mapRuntimeEvent(message),{kind:'recovery_required'});
+});

@@ -1,11 +1,30 @@
 import type { Change, StoredEntity } from "./client.ts";
+/** Resolve the saved ID directly, independently of selector pagination; eligibility never hides existing context. */
+export async function loadSavedSessionTarget(
+  api: { entity(projectId: string, id: string): Promise<StoredEntity> },
+  projectId: string,
+  taskId: string,
+): Promise<StoredEntity | undefined> {
+  if (!taskId) return undefined;
+  const task = await api.entity(projectId, taskId);
+  if (
+    task.id !== taskId ||
+    task.projectId !== projectId ||
+    task.kind !== "task" ||
+    ("deleted" in task && task.deleted === true)
+  )
+    throw new Error("TASK_SCOPE_MISMATCH");
+  return task;
+}
 /** UI preflight; the service computes the authoritative digest from the saved task revision. */
 export function isExecutionTarget(task: StoredEntity | undefined): boolean {
   if (
     !task ||
     task.kind !== "task" ||
     task.revision < 1 ||
-    ["done", "cancelled"].includes(task.status ?? "") ||
+    task.status !== "ready" ||
+    (Array.isArray(task.data?.risks) &&
+      task.data.risks.includes("recovery_review")) ||
     task.data?.schemaVersion !== "m1_task_profile_v1"
   )
     return false;

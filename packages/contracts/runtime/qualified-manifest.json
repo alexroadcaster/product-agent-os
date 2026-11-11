@@ -13,7 +13,7 @@
     "sha256": "119d6fa70e6ae1b15b90688ab6bcc8e3a2819acea021af196895cab1843645af"
   },
   "sqliteVersion": "3.53.3",
-  "adapterRevision": "19a281d6b8f610ebae5b98bc3ed96642fd86e70fbfe4df1664001c75b44bd295",
+  "adapterRevision": "7ecf3204dbcb8aa7239ca83708f261a513309d92909f4c50f776da14109d6de7",
   "packageLockSha256": "d279009aa1dca2bd2d6ba0e18a77d085a67e872d0dce78dd360fb23d43975f38",
   "schema": {
     "sha256": "486c7c8daa5dc7f3ab2a1fb56de5316804caf7a4210fda1dc28d3f0f4e90cfe1",
@@ -31,11 +31,12 @@
     "history": "3846634cfd7b84f372a02e56a1302c9ed831c39a92cdc7a73c73e0eebdbc2516",
     "boundary": "612e77d09da65e6329d39b1621eb79f4a50b5dbbac21409c13424d9a468661d7",
     "ephemeralAuth": "519a06b0af264cfe882994f91c51bcbd5909360f7d7684ff6f72a8b9244bf0ba",
-    "headless": "3098f125d3808016485ea3e33f19ba9f55328f3d37c1f6f29bfde6dae607ed32",
+    "headless": "a3b7412c1d35fd83314f00855855b638e7ae890fefafa58e7497c417d79f7b28",
     "workload": "f4dc674a8b7086ecdf3a6d1c17231a4f7c0f70d3691500c33c695aa4e38f594c",
     "nativeVault": "45b9825236513e2976a9589ec904f19840649f059a556881825704e20f83807d",
     "nativeLocalAuth": "da0555e1c5cf5c8f40e0592029fe93adcad67015575ff3015b226f9043a8d679",
     "profileIsolation": "9a9b4ed389a03bc4d8ec976ec1dec86aba32b46f0ac169a5b061e86f21dfa78a",
-    "fiveTaskOfflineRepair": "42fcc15354add50ff4d9f6b46bb64d75f0313da96367776ec875dac2aad2d4b0"
+    "fiveTaskOfflineRepair": "42fcc15354add50ff4d9f6b46bb64d75f0313da96367776ec875dac2aad2d4b0",
+    "activeRuntimeFixture": "89e6c98cfc6e5a16b50ef78dca71dd0550faf3fb7df8ab389570d5869b4e8ec2"
   }
 }

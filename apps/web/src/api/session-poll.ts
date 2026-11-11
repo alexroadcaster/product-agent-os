@@ -1,10 +1,12 @@
-import type { Page, RuntimeState, StoredEntity } from "./client.ts";
+import type { Page, RuntimeState, StoredEntity, Connection } from "./client.ts";
 import { mergeJournalMessages } from "./message-history.ts";
 export type SessionUpdate = {
   state: RuntimeState;
   messages: StoredEntity[];
   hasMore: boolean;
   historyOffset: number;
+  messagesError?: string;
+  messagesLoading?: boolean;
 };
 type Options = {
   state(signal: AbortSignal): Promise<RuntimeState>;
@@ -14,7 +16,48 @@ type Options = {
   schedule?: (callback: () => void, delay: number) => unknown;
   cancel?: (timer: unknown) => void;
 };
-/** One in-flight cycle, at most 20 pages/cycle, one 750ms retry timer; disposal aborts all requests. */
+type ConnectionPollOptions = {
+  read(): Promise<Connection>;
+  publish(connection: Connection): void;
+  error(cause: unknown): void;
+  version?: () => number;
+  schedule?: (callback: () => void, delay: number) => unknown;
+  cancel?: (timer: unknown) => void;
+};
+/** Local broker status only: one read in flight, no auth actions, and no late result across mutation/disposal. */
+export function startConnectionPolling(
+  options: ConnectionPollOptions,
+): () => void {
+  let active = true,
+    timer: unknown;
+  const schedule =
+      options.schedule ?? ((callback, delay) => setTimeout(callback, delay)),
+    cancel =
+      options.cancel ??
+      ((timer) => clearTimeout(timer as ReturnType<typeof setTimeout>));
+  async function tick() {
+    const version = options.version?.() ?? 0;
+    try {
+      const value = await options.read();
+      if (active && version === (options.version?.() ?? 0))
+        options.publish(value);
+    } catch (cause) {
+      if (active && version === (options.version?.() ?? 0))
+        options.error(cause);
+    } finally {
+      if (active)
+        timer = schedule(() => {
+          void tick();
+        }, 750);
+    }
+  }
+  void tick();
+  return () => {
+    active = false;
+    if (timer !== undefined) cancel(timer);
+  };
+}
+/** Runtime state and bounded transcript reads have independent single-flight lanes and shared cancellation. */
 export function startSessionPolling(options: Options): () => void {
   const controller = new AbortController();
   const schedule =
@@ -23,6 +66,25 @@ export function startSessionPolling(options: Options): () => void {
     options.cancel ??
     ((timer) => clearTimeout(timer as ReturnType<typeof setTimeout>));
   let timer: unknown;
+  let state: RuntimeState | undefined, messageFlight: Promise<void> | undefined;
+  let transcript: {
+    items: StoredEntity[];
+    hasMore: boolean;
+    historyOffset: number;
+  } = { items: [], hasMore: false, historyOffset: 0 };
+  let messagesLoading = true,
+    messagesError: string | undefined;
+  function publish() {
+    if (!controller.signal.aborted && state)
+      options.publish({
+        state,
+        messages: transcript.items,
+        hasMore: transcript.hasMore,
+        historyOffset: transcript.historyOffset,
+        messagesLoading,
+        messagesError,
+      });
+  }
   async function messages() {
     const rows = new Map<string, StoredEntity>();
     let more = false;
@@ -45,21 +107,44 @@ export function startSessionPolling(options: Options): () => void {
       historyOffset,
     };
   }
-  async function tick() {
+  async function refreshMessages() {
+    messagesLoading = true;
     try {
-      const [state, page] = await Promise.all([
-        options.state(controller.signal),
-        messages(),
-      ]);
-      if (!controller.signal.aborted)
-        options.publish({
-          state,
-          messages: page.items,
-          hasMore: page.hasMore,
-          historyOffset: page.historyOffset,
-        });
+      const page = await messages();
+      if (controller.signal.aborted) return;
+      transcript = page;
+      messagesError = undefined;
     } catch (error) {
-      if (!controller.signal.aborted) options.error(error);
+      if (!controller.signal.aborted) messagesError = String(error);
+    } finally {
+      messagesLoading = false;
+      publish();
+    }
+  }
+  async function tick() {
+    if (!messageFlight)
+      messageFlight = refreshMessages().finally(() => {
+        messageFlight = undefined;
+      });
+    try {
+      const current = await options.state(controller.signal);
+      if (!controller.signal.aborted) {
+        state = current;
+        publish();
+      }
+    } catch (error) {
+      if (!controller.signal.aborted) {
+        if (state)
+          state = {
+            ...state,
+            canSend: false,
+            state: "recovery_required",
+            reason: "runtime_state_unavailable",
+            pendingApprovals: [],
+          };
+        options.error(error);
+        publish();
+      }
     } finally {
       if (!controller.signal.aborted)
         timer = schedule(() => {

@@ -2229,7 +2229,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching skills selected at start
 - Output artifacts: apps/local-service/src/runtime/codex; packages/contracts/runtime
-- Next step: Отдельно разрешённый реальный provider turn на pinned Codex build: recipe activation, events, approval, interrupt; fixture-only pass не закрывает эту задачу.
+- Next step: Настоящий pinned Codex turn: recipe activation, permissions/write deny, events/approval/interrupt на выбранном build. Provider и реальные credentials не разрешены; fixture не заменяет этот gate.
 - Actual time: локальная реализация и проверка 11-11-2026; отдельная active duration не измерялась, JSON duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-auth-commercial-2026-11-09.md
 - Affected files: proposed paths above; actual create/modify/delete receipts only after execution.
@@ -2237,14 +2237,14 @@ Rollback будущих изменений: versioned proposal, revision check, 
 #### Completion Report
 
 - Status: in_progress
-- What was done: Post-await shutdown/EOF fences предотвращают late turn/start; stale approval accept запрещён после resolved/terminal/EOF/shutdown. Active run запрещает смену mode даже при delayed thread/start/save; request и policy contracts сохранены.
+- What was done: Шесть pinned informational channels больше не сбрасывают run/approval. Dynamic tool results очищают nested values/keys до JSON escaping и имеют caps. Latest terminal display отделён от active lease. Actual HTTP/UI execution/approval/Stop проверены через explicit fixture RPC.
 - Files touched / work locations: apps/local-service/src/runtime; packages/contracts/runtime; tests/web/runtime*.test.mts.
 - Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
 - Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: Follow-up 11-11-2026 10:36: Web192/192 no skips, strict/build exit0 (35 modules), native headless33 passed/cleaned. RED/GREEN и source hashes в [текущем отчёте](product-agent-os-web-m1-execution-2026-11-11.md). Прежние Python1450/fixture91/transcript26 и native Codex receipts сохраняют исходный provenance. [Историческая квалификация](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
-- Residual risks: Отдельно разрешённый реальный provider turn на pinned Codex build: recipe activation, events, approval, interrupt; fixture-only pass не закрывает эту задачу.
-- Follow-up: Отдельно разрешённый реальный provider turn на pinned Codex build: recipe activation, events, approval, interrupt; fixture-only pass не закрывает эту задачу.
+- Verification evidence: Current active HTTP/browser fixture55; Web213/213 no skips; browser669; headless33; strict/build35 exit0. Реальный Codex turn/provider не запускался. [Execution report](product-agent-os-web-m1-execution-2026-11-11.md) содержит source hashes, failed attempts и точную SW/ST/UX/DATA map. Прежние native/workload/eval receipts сохраняют исходный provenance.
+- Residual risks: Настоящий pinned Codex turn: recipe activation, permissions/write deny, events/approval/interrupt на выбранном build. Provider и реальные credentials не разрешены; fixture не заменяет этот gate.
+- Follow-up: Настоящий pinned Codex turn: recipe activation, permissions/write deny, events/approval/interrupt на выбранном build. Provider и реальные credentials не разрешены; fixture не заменяет этот gate.
 
 ### Task `PAOS-0043`
 
@@ -2274,7 +2274,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: builder, tester
 - Skills: implementation-planner; task-matching skills selected at start
 - Output artifacts: apps/web/src/sessions; apps/web/src/tasks/minimal; apps/local-service/src/conversations
-- Next step: Отдельно разрешённый browser/provider путь active session: Send/Stop/approval/stream/diff/checks/manual acceptance; build/controller tests недостаточны для rendering/UX acceptance.
+- Next step: Реальный Codex discussion/planning/execution, filesystem write-deny и реальный Send/Stop/approval/result path; новый fixture подтверждает UI wiring, но не фактическое выполнение моделью.
 - Actual time: локальная реализация и проверка 11-11-2026; отдельная active duration не измерялась, JSON duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-auth-commercial-2026-11-09.md
 - Affected files: proposed paths above; actual create/modify/delete receipts only after execution.
@@ -2282,14 +2282,14 @@ Rollback будущих изменений: versioned proposal, revision check, 
 #### Completion Report
 
 - Status: in_progress
-- What was done: Late Send ACK обрабатывается до runtimeState GET и после unmount; очищается только отправленная editVersion, новые правки сохраняются. Bounded shared draft registry16 сохраняет single writer/idempotency key при reopen/lost ACK. Explicit Save повторяет failed initial read без blind overwrite.
+- What was done: Runtime poll независим от failed/hung transcript; Stop/approval/recovery state сохраняется. Ready/no-recovery target eligibility и direct saved-target lookup вне50 исправлены. Settings connection poll восстанавливает reconnect послеEOF с mutation-epoch fence. Active UI55 и RU/EN/themes669 passed.
 - Files touched / work locations: apps/web; apps/local-service/src/http; apps/local-service/src/tasks.
 - Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
 - Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: Follow-up 11-11-2026 10:36: Web192/192 no skips, strict/build exit0 (35 modules), native headless33 passed/cleaned. RED/GREEN и source hashes в [текущем отчёте](product-agent-os-web-m1-execution-2026-11-11.md). Прежние Python1450/fixture91/transcript26 и native Codex receipts сохраняют исходный provenance. [Историческая квалификация](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
-- Residual risks: Отдельно разрешённый browser/provider путь active session: Send/Stop/approval/stream/diff/checks/manual acceptance; build/controller tests недостаточны для rendering/UX acceptance.
-- Follow-up: Отдельно разрешённый browser/provider путь active session: Send/Stop/approval/stream/diff/checks/manual acceptance; build/controller tests недостаточны для rendering/UX acceptance.
+- Verification evidence: Current active HTTP/browser fixture55; Web213/213 no skips; browser669; headless33; strict/build35 exit0. Реальный Codex turn/provider не запускался. [Execution report](product-agent-os-web-m1-execution-2026-11-11.md) содержит source hashes, failed attempts и точную SW/ST/UX/DATA map. Прежние native/workload/eval receipts сохраняют исходный provenance.
+- Residual risks: Реальный Codex discussion/planning/execution, filesystem write-deny и реальный Send/Stop/approval/result path; новый fixture подтверждает UI wiring, но не фактическое выполнение моделью.
+- Follow-up: Реальный Codex discussion/planning/execution, filesystem write-deny и реальный Send/Stop/approval/result path; новый fixture подтверждает UI wiring, но не фактическое выполнение моделью.
 
 ### Task `PAOS-0044`
 
@@ -2319,7 +2319,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: builder, tester
 - Skills: implementation-planner; task-matching skills selected at start
 - Output artifacts: apps/local-service/src/runtime/recovery; apps/web/src/recovery
-- Next step: Отдельно разрешённый provider-backed crash/reconnect/lost ACK и browser restart journey. Если turnId и ACK отсутствуют и нет доказанной однозначной корреляции, recovery_required сохраняется; последний turn не угадывается и turn/start не повторяется.
+- Next step: Фактический pinned Codex crash/ACK-loss/reconnect/interrupt unknown и account isolation на разрешённом runtime. Автономные fixture/unit/browser отрицательные случаи пройдены отдельно от native/provider qualification.
 - Actual time: локальная реализация и проверка 11-11-2026; отдельная active duration не измерялась, JSON duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-auth-commercial-2026-11-09.md
 - Affected files: proposed paths above; actual create/modify/delete receipts only after execution.
@@ -2327,14 +2327,14 @@ Rollback будущих изменений: versioned proposal, revision check, 
 #### Completion Report
 
 - Status: in_progress
-- What was done: EOF reconnect полностью retire прежнюю generation и восстанавливает recovery без replay; late callbacks fenced, connect/disconnect сериализованы. Shutdown дожидается reconciliation. Time journal резервирует start/close capacity, не блокирует Stop/terminal/crash старого run на лимите.
+- What was done: Explicit exact-turn reconciliation восстанавливает пропущенные final/check/diff receipts без нового turn/start. Неизвестный ACK не угадывается; partial/final persistence failures сохраняют recovery lease до retry. HTTP/browser EOF/reconnect/new generation/no replay passed через fixture.
 - Files touched / work locations: apps/local-service/src/runtime; apps/web/src/api; tests/web/recovery.test.mts.
 - Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
 - Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: Follow-up 11-11-2026 10:36: Web192/192 no skips, strict/build exit0 (35 modules), native headless33 passed/cleaned. RED/GREEN и source hashes в [текущем отчёте](product-agent-os-web-m1-execution-2026-11-11.md). Прежние Python1450/fixture91/transcript26 и native Codex receipts сохраняют исходный provenance. [Историческая квалификация](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
-- Residual risks: Отдельно разрешённый provider-backed crash/reconnect/lost ACK и browser restart journey. Если turnId и ACK отсутствуют и нет доказанной однозначной корреляции, recovery_required сохраняется; последний turn не угадывается и turn/start не повторяется.
-- Follow-up: Отдельно разрешённый provider-backed crash/reconnect/lost ACK и browser restart journey. Если turnId и ACK отсутствуют и нет доказанной однозначной корреляции, recovery_required сохраняется; последний turn не угадывается и turn/start не повторяется.
+- Verification evidence: Current active HTTP/browser fixture55; Web213/213 no skips; browser669; headless33; strict/build35 exit0. Реальный Codex turn/provider не запускался. [Execution report](product-agent-os-web-m1-execution-2026-11-11.md) содержит source hashes, failed attempts и точную SW/ST/UX/DATA map. Прежние native/workload/eval receipts сохраняют исходный provenance.
+- Residual risks: Фактический pinned Codex crash/ACK-loss/reconnect/interrupt unknown и account isolation на разрешённом runtime. Автономные fixture/unit/browser отрицательные случаи пройдены отдельно от native/provider qualification.
+- Follow-up: Фактический pinned Codex crash/ACK-loss/reconnect/interrupt unknown и account isolation на разрешённом runtime. Автономные fixture/unit/browser отрицательные случаи пройдены отдельно от native/provider qualification.
 
 ### Task `PAOS-0045`
 
@@ -2364,7 +2364,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: tester, reviewer
 - Skills: implementation-planner; task-matching skills selected at start
 - Output artifacts: tests/web/single-window; docs/evidence/web-m1
-- Next step: Завершить оставшуюся приёмку PAOS-0045 только в разрешённом scope; см. execution report.
+- Next step: PAOS-0042/0043/0044 actual runtime gates остаются открыты. Для SW-AC-01/10 нужен полный разрешённый Codex turn при закрытом App; имеющийся native closed-App component и explicit fixture UI — разные прогоны. External/commercial и owner gates отдельно.
 - Actual time: локальная реализация и проверка 11-11-2026; отдельная active duration не измерялась, JSON duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-auth-commercial-2026-11-09.md
 - Affected files: proposed paths above; actual create/modify/delete receipts only after execution.
@@ -2372,14 +2372,14 @@ Rollback будущих изменений: versioned proposal, revision check, 
 #### Completion Report
 
 - Status: blocked
-- What was done: Исполняемый headless acceptance и workload пройдены; negative/failure fixtures и независимые проверки выполнены; открытые gates перечислены по SW/ST/UX/DATA.
+- What was done: Добавлен explicit-only active HTTP/browser/SQLite+production gateway/coordinator runner:55 checks, current Web213, browser669, headless33. SW/ST/UX/DATA gaps разложены в актуальном отчёте. Полный M1 и реальные Codex turns не объявлены passed.
 - Files touched / work locations: tests/web/single-window; research/product-agent-os-web-m1-execution-2026-11-11.md.
 - Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
 - Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
-- Residual risks: Полная SW-AC-01–10/UX browser/provider приёмка требует запрещённых сейчас поверхностей; Codex App не закрывался. Native vault и native local broker квалифицированы 11-11-2026 08:46, entitlement не проверен. M1 не принята.
-- Follow-up: Завершить оставшуюся приёмку PAOS-0045 только в разрешённом scope; см. execution report.
+- Verification evidence: Current active HTTP/browser fixture55; Web213/213 no skips; browser669; headless33; strict/build35 exit0. Реальный Codex turn/provider не запускался. [Execution report](product-agent-os-web-m1-execution-2026-11-11.md) содержит source hashes, failed attempts и точную SW/ST/UX/DATA map. Прежние native/workload/eval receipts сохраняют исходный provenance.
+- Residual risks: PAOS-0042/0043/0044 actual runtime gates остаются открыты. Для SW-AC-01/10 нужен полный разрешённый Codex turn при закрытом App; имеющийся native closed-App component и explicit fixture UI — разные прогоны. External/commercial и owner gates отдельно.
+- Follow-up: PAOS-0042/0043/0044 actual runtime gates остаются открыты. Для SW-AC-01/10 нужен полный разрешённый Codex turn при закрытом App; имеющийся native closed-App component и explicit fixture UI — разные прогоны. External/commercial и owner gates отдельно.
 
 ### Task `PAOS-0046`
 

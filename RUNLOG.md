@@ -22,7 +22,7 @@ G8-T14/G8 owner accepted. G9 T01–T09 локально реализованы; 
 
 ## Старт Web M1 — 2026-11-10
 
-Текущий handoff 2026-11-11, 16:15 MSK: PAOS-0004/PAOS-0040 technical implemented; M1 14/3/1, PAOS-0045 blocked. SESSION_REQUIRED unpaired UX исправлен; autonomous launcher56/browser669/Web197/strict/build35 passed. Closed-App native owner/reuse/Quit25samples и новый browser — разные receipts; owner rejected manual journey сохранён. Ручной повтор не нужен.0042/0043/0044 provider/owner gates прежние; PAOS-0041 local auth и headless33/Python1450/evals/workload имеют прежний provenance. Standing local synthetic authority в AGENTS.md; [execution report](research/product-agent-os-web-m1-execution-2026-11-11.md) владеет hashes/limits.
+Текущий handoff 2026-11-11,17:10MSK: owner требует Codex App agents без API key; key/budget вопрос снят (owner budget cap отсутствует, service limits сохраняются). Новая остановка — supported PAOS→existing-App-agent bridge/route contract, а не отсутствие ключа. PAOS-0004/PAOS-0040 и PAOS-0041 API component evidence сохранены;0042/0043/0044 unfinished, PAOS-0045 blocked без новогоintegrationproof. Runtime code не менялся; activefixture55/Web213/browser669/headless33/Python209 прежнего provenance. [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md) владеет источниками/route audit. Manual tester script владельцу не назначать.
 
 Датированный baseline 10 ноября:
 
