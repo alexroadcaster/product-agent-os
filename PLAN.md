@@ -16,7 +16,7 @@ G8 closed / owner accepted. G9 T01–T09 implemented_locally_verified; T10 owner
 
 ## Активная продуктовая очередь Web — 2026-11-10
 
-Актуализация 2026-11-11,17:10MSK: owner выбрал Codex App agents без отдельного API key; credential setup отменён. Следующий slice — PAOS-0039 route/capability contract, затем0041/0042–0045 под supported transport. PAOS-0004/PAOS-0040 technical evidence, PAOS-0054 native-offline и PAOS-0041 API-auth component сохранены. Старые14/3/1 и activefixture55/Web213/browser669/headless33 относятся к прежнему component scope, не readiness новогоAppмаршрута; PAOS-0045 blocked. AUTH-G1–G6 commercial gates прежние. [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md).
+Актуализация 2026-11-11: PAOS-0039 App route реализован; default codex_app_agent без API key, BYOK explicit compatibility без fallback. Actual App bridge16/Web238/activefixture55/browser669/headless33 passed. PAOS-0004/PAOS-0040 technical evidence, PAOS-0054 native-offline и PAOS-0041 API-auth component сохранены. PAOS-0042/0043/0044 in_progress, PAOS-0045 blocked: unattended host wakeup, scoped native Execution/approvals и real execution recovery не подтверждены; официальный proxy WSA10050. Старые14/3/1 — component counts. AUTH-G1–G6 commercial gates прежние. [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md).
 
 Датированный baseline 10 ноября:
 

@@ -2018,8 +2018,8 @@
       "group_id": "G11",
       "title": "Допустимые auth routes и коммерческие границы",
       "status": "implemented",
-      "short_description": "Зафиксировать API BYOK baseline, ограничения managed login и admission SIWC; выбрать deployment/channel без внешней регистрации",
-      "technical_value": "Зафиксировать API BYOK baseline, ограничения managed login и admission SIWC; выбрать deployment/channel без внешней регистрации",
+      "short_description": "Зафиксировать owner-default Codex App agents без API key, explicit BYOK compatibility и коммерческие границы",
+      "technical_value": "Зафиксировать owner-default Codex App agents без API key, explicit BYOK compatibility и коммерческие границы",
       "product_value": "Пользователь знает доступный способ подключения и плательщика до начала работы.",
       "affected_files": [
         {
@@ -2049,7 +2049,7 @@
         "product-agent-os-web-auth-commercial-2026-11-09.md"
       ],
       "acceptance_criteria": [
-        "Local route decision соответствует PRD §17.5 и auth §7. Отсутствие SIWC admission сохраняет этот путь недоступным. Commercial/hosted distribution блокируется до AUTH-G1–G6 и PAOS-0046/0030."
+        "Local route decision соответствует PRD §17.6 и auth §8: codex_app_agent owner_default без API key; BYOK только explicit_compatibility, без fallback и inherited cache. SIWC требует admission; commercial/hosted distribution блокируется до AUTH-G1–G6 и PAOS-0046/0030."
       ],
       "estimated_duration_hms": "06:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
@@ -3259,10 +3259,10 @@
     "planning_status_boundary": "tasks[].status remains task_matrix_plan_v1 planned; issue_model_proposal statuses describe future Web only"
   },
   "single_window_proposal": {
-    "runtime": "codex_app_server",
-    "codex_app_required": false,
+    "runtime": "codex_app_agent_pull",
+    "codex_app_required": true,
     "first_delivery": "M1_single_window",
-    "auth_baseline": "local_api_byok_candidate",
+    "auth_baseline": "codex_app_agent_owner_default_no_api_key",
     "commercial_eligibility": "pending_AUTH_G1_G6",
     "siwc": "optional_admission_required",
     "first_path_tasks": [
@@ -3284,7 +3284,13 @@
       "PAOS-0054",
       "PAOS-0055",
       "PAOS-0056"
-    ]
+    ],
+    "previous_api_m1_baseline": {
+      "runtime": "codex_app_server",
+      "codex_app_required": false,
+      "auth_baseline": "local_api_byok_candidate"
+    },
+    "api_compatibility": "local_api_byok_explicit_compatibility_no_fallback"
   },
   "storage_decision": {
     "status": "engines_selected_schema_proposed",
@@ -3305,7 +3311,20 @@
     "compatibility_gate": "PAOS-0054",
     "cutover_gate": "PAOS-0056",
     "acceptance_task": "PAOS-0045",
-    "commercial_admission": "pending_AUTH-G1-G6"
+    "commercial_admission": "pending_AUTH-G1-G6",
+    "current_runtime_route": {
+      "route": "codex_app_agent",
+      "selection": "owner_default",
+      "api_key_required": false,
+      "app_active_required": true,
+      "actual_app_agent_receipt": "app-agent-evidence-9TDdwj/app-agent-result.json",
+      "actual_app_agent_checks": 16,
+      "native_sandbox": false,
+      "execution": "blocked_permission_boundary_unverified",
+      "automatic_wakeup": "unverified",
+      "historical_closed_app_full_turn_gate": "unverified_not_waived",
+      "m1_acceptance": "blocked"
+    }
   },
   "execution_plan": {
     "revision": "0.8",

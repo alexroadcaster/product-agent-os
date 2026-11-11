@@ -42,6 +42,15 @@ test("reopen before dispose flush ACK shares the latest text and the single writ
   await settle();
   assert.equal(registry.size, 0);
 });
+test('App durable queued ACK clears the draft but unknown native dispatch does not',async()=>{
+ assert.equal(isSendAccepted({state:'queued',route:'codex_app_agent'}),true);
+ assert.equal(isSendAccepted({state:'dispatching'}),false);
+ assert.equal(isSendAccepted({state:'queued'}),false);
+ let stored={id:'d',body:'queued input',revision:1};const registry=createDraftRegistry();
+ const lease=registry.acquire(['p','app-session'],{read:async()=>stored,write:async(record,body)=>stored={...record,body,revision:record.revision+1}});
+ await settle();await sendWithDraftAck(lease,'queued input',async()=>({id:'app-job',state:'queued',route:'codex_app_agent'}));
+ await settle();assert.equal(stored.body,'');lease.release();
+});
 test("late Send ACK clears durably after release and before a failing state refresh", async () => {
   let stored = { id: "d", body: "sent", revision: 1 },
     ack!: (value: { state: string }) => void;

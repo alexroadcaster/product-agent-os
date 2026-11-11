@@ -22,7 +22,7 @@ G8 commands: `python -B -m unittest discover -s tests -p "test_*.py" -q`; focuse
 
 ## Проверки Web M1 — актуальный маршрут 2026-11-10
 
-Актуальный follow-up 2026-11-11, 16:50 MSK: `node --test tests/web/*.test.mts`213/213 no skips; `npm run check:web-m1` exit0; `npm --prefix apps/web run build`35 exit0; explicit `tests/web/single-window/active-runtime-acceptance.mts --synthetic-browser`55, `tests/web/single-window/browser-acceptance.mts --synthetic-browser`669 и `node tests/web/single-window/headless-acceptance.mts --synthetic`33 passed/cleaned. Это production HTTP/UI/SQLite с явным RPC fixture, не actualCodex/provider. Прежний autonomous-launcher-acceptance.mts56 и standalone-BVldIt closed-App component сохраняют даты; standalone-acceptance.mts/APP_ANCESTOR — history. Native vault/auth receipts не повторялись; stdio close unchanged. [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md) владеет commands/hashes/gates.
+Актуальный follow-up 2026-11-11: `node --test tests/web/*.test.mts`238/238 no skips, `npm run check:web-m1` и `npm --prefix apps/web run build` exit0; explicit App-agent acceptance16 actual attached App worker, active-runtime fixture55, browser669 и headless33 passed/cleaned. tests/web/single-window/app-agent-acceptance.mts --app-agent-browser требует real App worker с heartbeat; это не автоматический wakeup. Execution/native sandbox blocked; provider SDK/API key не используются. Native vault/auth, autonomous-launcher-acceptance.mts56 и standalone-BVldIt сохраняют прежние даты, standalone-acceptance.mts/APP_ANCESTOR — history. [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md) владеет commands/hashes/failed receipts/gates.
 
 Датированный baseline 10 ноября:
 

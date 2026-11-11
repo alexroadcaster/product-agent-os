@@ -245,3 +245,47 @@ Post-sync active follow-up: docs/lifecycle/templates209/209,29.249s,exit0; docs 
 Control-plane: REQUIREMENTS/PLAN/RUNLOG update_required; TEST/EVALS/AGENTS/prod_test no_change_needed — команды/рубрики/durable rules/Batch39 не менялись. Нужны только affected docs checks, не повтор Web213 или browser55/669: runtime/UI sources unchanged. Свежая активация auth или bridge не заявляется.
 
 Post-sync App route clarification: docs105/105,18.064s,exit0; docs checker and git diff --check exit0 (CRLF warnings only). Reviewed root sync digest2bdf64637657d1b2296560b27c4c96f7bdb8ae00d21fe449843e94b4c7d96190 applied. Runtime/auth/key configuration unchanged; no Web/browser/native/provider checks rerun or promoted.
+
+## PAOS-0039: App-agent pull route и настоящий roundtrip — 2026-11-11
+
+Source status: current checked-in implementation, current local tests and actual Codex App worker evidence. Это дополнение заменяет вывод предыдущего read-only audit об отсутствии bridge; прежние receipts не переписаны.
+
+Реализован выбранный владельцем `codex_app_agent`: локальный capability channel, отдельный App-agent gateway и сериализованный selector. PAOS сохраняет Send как `queued`, активный агент Codex App получает claim с immutable input и scope, затем возвращает final report; ответ и receipt сохраняются в SQLite. UI по умолчанию не показывает API key. Прежний `local_api_byok` оставлен только явно выбираемым compatibility component; fallback между маршрутами отсутствует. PAOS не читает App auth cache и не вызывает отдельный provider SDK. Реальная работа модели происходит внутри Codex App и расходует доступные ему лимиты; отсутствие отдельного API key не означает отсутствия model execution или неограниченного entitlement.
+
+Реализация: `apps/local-service/src/runtime/app-agent-gateway.mts`, `app-agent-channel.mts`, `app-agent-client.mts`, `route-selector.ts`, service/HTTP wiring, `packages/contracts/auth/m1-route.ts`; UI connection controls и RU/EN labels. Локальный descriptor/capability и worker lease не выдаются browser API. Exact Origin/Host, instance/profile identity, body limits, generation/lease fencing и known-secret redaction действуют до public message write. Queued Send ACK очищает draft только для App route. Scope и маршруты меняются через общую очередь; перед новым connect/binding/Send проверяются unresolved runs во всех проектах. Ошибка одного маршрута не включает другой.
+
+### Настоящий проход из PAOS в Codex App
+
+`tests/web/single-window/app-agent-acceptance.mts --app-agent-browser --playwright-core <installed-path> --chromium <installed-path>`: **16/16, exit0**. В production Node HTTP/SQLite и built Chromium UI созданы project/session, открыт keyless App channel и отправлен уникальный synthetic prompt. Настоящий `/root/m1_launcher` из Codex App через production client attached/claimed задание, вычислил сортировку и сумму, отправил report; PAOS принял seq1/state completed, сохранил ответ и отобразил его в transcript. Проверены unique token и ответ `ORDER=4,9,17; SUM=30`. Это обмен инициированным PAOS заданием, а не только факт вызова subagent в engineering чате. RPC fixture и отдельного provider client в этом проходе нет. Host identity протоколом только attested, не cryptographically proven.
+
+Receipt: `.tmp/paos-m1/app-agent-evidence-9TDdwj/app-agent-result.json`; screenshot `actual-app-agent-result.png`; hashes и компактные receipts сохранены в execution-results JSON. Service/fixture cleanup true, browser errors0, external browser requests0. Worker report exit0. Ограниченный heartbeat helper поддерживал lease семью успешными heartbeat, затем завершился exit1 при teardown fixture service; чистый terminal heartbeat не заявляется. Этот отдельный lifecycle outcome не отменяет уже принятый report.
+
+Неуспехи сохранены: `ZhBqrb` обнаружил disabled binding из-за обновления connection только в Settings — polling исправлен для всех ready sections. `dpIayh` подтвердил actual attach/claim/вычисление, но lease30s истёк до report; PAOS сохранил recovery_required, результат не принят и replay не выполнялся. Финальный проход использовал heartbeat5s во время работы агента; production lease не увеличивали. Первый полный Web run226/229 выявил три неполных injected store test doubles; setup дополнен projects(). Первоначальный headless отрицательный тест ожидал старый409: новый default App без worker/binding возвращает404/binding_not_found. Финальный тест проверяет точные route/reason/status/error и отсутствие dispatch; исходный failure зафиксирован tool trace, fixed-name временный receipt runner позднее заменил финальным.
+
+### Проверки и независимый review
+
+| Проверка текущего состояния | Наблюдаемый результат |
+| --- | --- |
+| `node --test tests/web/*.test.mts` | 238/238, skip0, exit0, 8.281s |
+| `npm run check:web-m1` | exit0 |
+| `npm --prefix apps/web run build` | exit0,36 modules, index-Cfgug4Ze.js305.39kB/gzip92.85kB |
+| explicit active-runtime fixture browser | 55/55, yjqhQa, cleanup true; synthetic RPC |
+| theme/locale/responsive/zoom browser | 669/669,22l7mM, cleanup true |
+| `node tests/web/single-window/headless-acceptance.mts --synthetic` | 33/33, actual launcher/HTTP/SQLite/source locks, cleanup true; no inference |
+| Actual attached App worker browser route | 16/16,9TDdwj, correlated answer persisted and visible |
+
+RED→GREEN покрывает missing keyless route, queued/cancel Stop, queued ACK draft, secret echo, selector race и foreign unresolved fencing. Независимые `/root/m1_task_model` и `/root/m1_theme_locale` нашли material defects; root исправил их и добавил regression checks. Финальный read-only review не нашёл новых material defects в проверенном diff. Это separate_reused_context, tester_verdict partial_only. Python plugin full1450/fixture91/transcript26 — прежние receipts, не новый запуск; Python plugin runtime не менялся.
+
+Manifest source pin обновлён после checks; qualification остаётся native_offline. Текущие adapter/hash и loader checks принадлежат results JSON: unconfigured blocked, exact tuple qualified, binary drift blocked. Предыдущие native history/sandbox/vault/auth receipts сохраняют свои даты; новый App route не получает их capabilities и не объявляется native App Server.
+
+### Открытые gates PAOS-M1
+
+PAOS-0039 реализует новый local route contract. PAOS-0042/0043/0044 остаются in_progress, PAOS-0045 blocked. App pull требует работающего App и уже активного attached agent; Web Send не умеет разбудить завершённый chat. Discussion/planning используют ограниченный protocol; native sandbox для host не подтверждён, поэтому Execution сервером запрещён. Stop после claim требует worker interrupted ACK; потеря lease, disconnect и restart сохраняют recovery_required без replay и без автоматического Done. Все утверждения об approvals, полном файловом execution и восстановлении реального execution остаются открытыми.
+
+Установленный pinned Codex0.167.0 имеет публичные `codex queue` и `codex app-server proxy`: это подтверждено help и [официальным pinned source](https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/cli/src/main.rs#L1387), [queue docs](https://learn.chatgpt.com/docs/developer-commands#codex-queue) и [protocol](https://learn.chatgpt.com/docs/app-server#protocol). Read-only daemon version и bounded proxy probe на этом хосте завершаются WSA10050 даже в разрешённом native запуске. Initialize/thread-loaded comparison не состоялись; это не доказательство отсутствия сервера. Daemon lifecycle, private IPC, auth cache и политики не менялись. Этот транспорт пока нельзя объявить ready.
+
+Owner-selected App-dependent route явно отличается от прежнего closed-App full-turn criterion. Standalone PAOS CRUD/launcher0040 остаётся отдельным компонентом; полный legacy closed-App turn не подтверждён. Новое App-active дополнение не закрывает старый criterion и не превращает component counts14/3/1 в готовность M1. Коммерческие AUTH-G1–G6 и human acceptance не повышены. Manual тесты владельцу не назначались.
+
+Control-plane sync: REQUIREMENTS/PLAN/TEST/RUNLOG update_required; EVALS/AGENTS/prod_test no_change_needed — rubric/thresholds, durable authority и Batch39 не менялись. Подробные evidence принадлежат этому разделу и execution-results JSON, root файлы получают только актуальные pointers.
+
+Post-sync App implementation: reviewed control-plane digest51e340dbcdc73de373d40020c846c6ccde1cdf4a614ddac6ca1deccd65a00cb2 applied to REQUIREMENTS/PLAN/TEST/RUNLOG. Source-owned five-file CAS and RU/EN registries updated; full56 tasks/12groups/estimates/unselected rows and failed receipts retained. Fresh aggregate docs105/105 in22.007s, checker/matrix/diff exit0; runtime manifest/compatibility6/6 after source-pin refresh. Root files remain below40000 UTF-8 bytes. EVALS/AGENTS/prod_test no_change_needed with reasons above. M1 remains partially_verified / PAOS-0045 blocked; no human acceptance or full native execution claim.

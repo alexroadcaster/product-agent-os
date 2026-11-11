@@ -18,6 +18,8 @@ export type ApplicationOptions = {
   onQuit?: () => void;
   connection?: { status(): unknown; connect(input: unknown): Promise<unknown>; disconnect(): Promise<unknown> };
   runtime?: { snapshot(input: Record<string, unknown>): Promise<unknown>; dispatch(action: string, input: Record<string, unknown>): Promise<unknown> };
+  /** Separate profile capability, never a browser cookie or a provider credential. */
+  agentChannel?: {handle(request: Request): Promise<Response>};
 };
 
 function fail(code: string): never { throw Object.assign(new Error(code), { code }); }
@@ -120,6 +122,10 @@ export async function createLocalApplication(options: ApplicationOptions) {
         const paired = gate.exchange(request, (await body(request)).code);
         return new Response(JSON.stringify({ csrfToken: paired.csrfToken, instanceId, actorId: 'local-user' }),
           { headers: { ...headers, 'set-cookie': paired.cookie } });
+      }
+      if (url.pathname.startsWith('/agent/')) {
+        if (!options.agentChannel) fail('ROUTE_NOT_FOUND');
+        return options.agentChannel.handle(request);
       }
       if (!url.pathname.startsWith('/api/')) {
         if (request.method !== 'GET') fail('ROUTE_NOT_FOUND');

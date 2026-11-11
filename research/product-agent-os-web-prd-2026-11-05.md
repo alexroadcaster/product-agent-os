@@ -1,5 +1,7 @@
 # Product-Agent OS Web — PRD
 
+Актуализация 11-11-2026: Codex App agents — выбранный owner-default маршрут без API key; его текущий контракт и предел доказательств приведены в новом App-agent addendum в конце документа. Прежний API-only/closed-App baseline ниже сохранён как история и explicit compatibility; он не определяет новый default.
+
 Актуализация 2026-11-10: **v0.7 — согласованный контракт M1 после аудита**. Текущий scope — §17; storage — §16 с профилем M1; runtime — §15. Требования полного Task Manager §13–§14 сохранены для M2–M3. [План: 56 задач / 12 групп](product-agent-os-web-task-manager-plan-2026-11-09.md), [авторизация и коммерческие ограничения](product-agent-os-web-auth-commercial-2026-11-09.md).
 
 Source status: `project-authored / selected-direction / proposed-implementation / official-docs-backed`. Создан: 2026-11-05. Обновлён: 2026-11-10. Версия: 0.7.
@@ -757,3 +759,15 @@ PAOS сохраняет доступные пользовательские и �
 PAOS-0045 владеет сквозной приёмкой SW-AC-01–10, ST-AC-01–07 в профиле M1, UX-AC-01–18 в M1-срезе и новым DATA-AC-01–05. Таблица владельцев и исключений — актуальный план v0.8; отсутствие M2 не повод пропускать M1 сценарии. При проверке отсутствие provider authority оставляет runtime gates pending, а не заменяет их mock.
 
 Выбраны документально: scope, транспорт agent commands, режимы, retention, bootstrap, SQLite driver и candidate version tuple. PAOS-0054 должен получить проверенный compatibility manifest до зависимого кода; остальные implementation tests остаются будущими задачами. AUTH-G1–G6 блокируют коммерческий выпуск, не объявлены выполненными. Дальнейший старт требует отдельного запроса пользователя.
+
+### 17.6. App-agent route: решение владельца 2026-11-11
+
+Решение владельца 11-11-2026: выбран `codex_app_agent` с `selection: owner_default`, без API key; `local_api_byok` сохранён только как явно выбираемый `explicit_compatibility` с отдельным API account. Это разные маршруты, автоматического fallback нет. Inherited auth cache не читается; SIWC остаётся отдельным admission-gated маршрутом. AUTH-G1–G6 и PAOS-0046/0030 не закрыты этим решением.
+
+Фактическая проверка 11-11-2026, 17:50:23–17:51:35 MSK: production UI → durable job → реальный App collaboration worker → capability-authenticated claim/report → сохранённый финальный ответ → результат в browser, **16/16**, service/fixture cleanup true. Receipt: `.tmp/paos-m1/app-agent-evidence-9TDdwj/app-agent-result.json`; actualAppAgent=true, actualAppServer=false, externalProviderClient=false, apiKey=false, nativeSandbox=false. Synthetic correlation value в ответе не является credential и здесь не копируется. Это реальный App-hosted reasoning/result путь, а не fixture RPC или новый provider client.
+
+Действующий App coordinator должен быть активен: consumer lease 30 s с heartbeat, host identity attested, не cryptographic. Нет доказанного automatic Desktop wakeup и фоновой работы после остановки чата/App. Pinned 0.167.0 предоставляет публичный proxy command, но фактические daemon-version/proxy проверки завершились WSA10050, включая разрешённый native повтор; transport к работающему Desktop не квалифицирован. Этот результат не подменяется чтением auth cache или private IPC. Execution заблокирован до подтверждения permission boundary; cooperative Stop требует ACK, при потере lease сохраняется recovery_required без replay. Нет native sandbox/полной tool-permission приёмки и нет обещания неограниченного usage.
+
+PAOS-0039 остаётся implemented только в контракте выбора маршрута. PAOS-0042/0043/0044 остаются in_progress, PAOS-0045 — blocked; M1: 14 implemented / 3 in_progress / 1 blocked — компонентный счёт, не readiness. Исходный full-turn gate «Codex App закрыт» SW-AC-01/UX-AC-01 сохранён как историческое требование самостоятельного App Server маршрута, остаётся непроверенным и не объявляется пройденным. Для нового owner-selected App-agent маршрута App и активный consumer обязательны: новый 16/16 receipt подтверждает только этот путь. Standalone/offline launcher PAOS-0040 проверен отдельно. Полная execution/recovery и M1/human acceptance этим addendum не закрываются; прежний manual owner rejection сохраняется.
+
+Изменение acceptance по явному решению владельца: для нового App-agent пути проверяется активный Codex App/consumer и возврат результата в PAOS; не требуется фиктивно объявлять App закрытым. Это не отмена исторического standalone full-turn критерия. SW/ST/UX/DATA матрица остаётся у PAOS-0045; незакрытые permission/execution/recovery сценарии должны получить настоящий receipt либо остаться pending. Иерархия M2, attachments, каталоги CRUD и новые этапы этим уточнением не добавляются.

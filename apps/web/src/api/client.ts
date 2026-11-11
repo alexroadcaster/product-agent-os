@@ -37,12 +37,17 @@ export type Project = {
   streamGeneration: string;
 };
 export type Page = { items: StoredEntity[]; hasMore: boolean };
+export type ConnectionRoute = "codex_app_agent" | "local_api_byok";
 export type Connection = {
   verified: boolean;
   reason?: string;
   state?: string;
   payer?: "user_api_account";
   providerAuthority?: boolean;
+  route?: ConnectionRoute;
+  nativeSandbox?: boolean;
+  cooperativeCancel?: boolean;
+  modelAccess?: string;
 };
 export type Change = {
   expectedRevision: number;
@@ -192,9 +197,10 @@ export interface M1Api {
   ): Promise<unknown>;
   connection(): Promise<Connection>;
   connect(input: {
+    route?: ConnectionRoute;
     connectionId: string;
     apiKey?: string;
-    remember: boolean;
+    remember?: boolean;
   }): Promise<Connection>;
   disconnect(): Promise<Connection>;
   runtime(
@@ -306,8 +312,8 @@ export class HttpApiError extends Error {
   readonly status: number;
   readonly code?: string;
   constructor(status: number, code?: string) {
-    super(`HTTP ${status}${code ? `: ${code}` : ''}`);
-    this.name = 'HttpApiError';
+    super(`HTTP ${status}${code ? `: ${code}` : ""}`);
+    this.name = "HttpApiError";
     this.status = status;
     this.code = code;
   }
@@ -341,8 +347,11 @@ export function createHttpApi(fetcher: typeof fetch = fetch): M1Api {
         error?: { code?: unknown };
       } | null;
       const code = error?.error?.code;
-      const safeCode = typeof code === 'string' && /^[A-Za-z_]{1,80}$/.test(code) ? code : undefined;
-      if (response.status === 401 && safeCode === 'SESSION_REQUIRED') {
+      const safeCode =
+        typeof code === "string" && /^[A-Za-z_]{1,80}$/.test(code)
+          ? code
+          : undefined;
+      if (response.status === 401 && safeCode === "SESSION_REQUIRED") {
         csrfToken = undefined;
         epochs.clear();
       }

@@ -96,7 +96,7 @@ async function main(argv:string[]) {
    {expectedRevision:0,entity:{id:sessionId,kind:'session',title:'Active fixture session',status:'idle',data:{mode:'execution',taskId:runtimeTaskId}}},
    {expectedRevision:0,entity:{id:runtimeTaskId,kind:'task',data:task}}]});check('task_session_seeded',seeded.status===200);
   await page.reload();await page.locator('.navigation select:enabled').waitFor();await page.locator('.navigation select').selectOption(project.id);
-  async function connect(){await nav('settings');await page.locator('input[name=connectionId]').fill('synthetic');await page.locator('input[name=apiKey]').fill('fixture-only-canary');
+  async function connect(){await nav('settings');await page.getByLabel(appLabel('ru','connectionRoute'),{exact:true}).selectOption('local_api_byok');await page.locator('input[name=connectionId]').fill('synthetic');await page.locator('input[name=apiKey]').fill('fixture-only-canary');
    const response=page.waitForResponse((response:any)=>response.url()===origin+'/api/v1/connection'&&response.request().method()==='POST');
    await page.getByRole('button',{name:appLabel('ru','login'),exact:true}).click();check('fixture_connection_ack',(await response).status()===200);}
   await connect();await nav('sessions');await page.locator('.session-list .records button').filter({hasText:'Active fixture session'}).click();await page.locator('.composer').waitFor();

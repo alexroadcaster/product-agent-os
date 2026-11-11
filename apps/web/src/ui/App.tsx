@@ -157,7 +157,7 @@ export function App() {
     void initialise();
   }, []);
   useEffect(() => {
-    if (!ready || section !== "settings") return;
+    if (!ready) return;
     return startConnectionPolling({
       read: () => api.connection(),
       version: () => connectionEpoch.current,
@@ -168,7 +168,7 @@ export function App() {
           reason: "connection_status_unavailable",
         }),
     });
-  }, [ready, section]);
+  }, [ready]);
   useEffect(() => {
     const media = matchMedia("(prefers-color-scheme: dark)");
     const apply = () =>
@@ -1764,7 +1764,7 @@ function Session({
                 >
                   {(["discussion", "planning", "execution"] as const).map(
                     (value) => (
-                      <option key={value} value={value}>
+                      <option key={value} value={value} disabled={value === 'execution' && connection?.route === 'codex_app_agent'}>
                         {t(value)}
                       </option>
                     ),

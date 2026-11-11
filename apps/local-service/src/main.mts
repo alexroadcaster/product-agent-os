@@ -7,6 +7,9 @@ import {openLocalStore} from './storage/local-store.mts';
 import {createLocalApplication} from './http/application.mts';
 import {createLiveGateway} from './runtime/live-gateway.mts';
 import {createNativeRpc} from './runtime/native-rpc.mts';
+import {createAppAgentGateway} from './runtime/app-agent-gateway.mts';
+import {createAppAgentChannel} from './runtime/app-agent-channel.mts';
+import {createRuntimeRouteSelector} from './runtime/route-selector.ts';
 import {createWindowsCredentialStore} from './connections/windows-credential-store.ts';
 import {bindProfile,assertProfileIdentity,createProfileScopedStore} from './connections/profile-identity.mts';
 import {createDomainTools} from './commands/domain-tools.mts';
@@ -72,16 +75,29 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
    if(selected.providerAuthority!==true)throw failure('PROVIDER_AUTHORITY_REQUIRED');
    return createNativeRpc({profileDirectory,binaryPath:check.binaryPath});
   }});
- // Admission is refreshed before every connection action; reading selection does not invoke a provider.
- const connection={status:()=>gateway.connection.status(),
-  async connect(input:unknown){
-   await assertProfileIdentity(profile);
+ // App agents and the legacy API runtime are explicit choices; neither is a fallback for the other.
+ const appGateway=createAppAgentGateway({store,profileId:profile.profileId,actorId:'codex-app-agent'});
+ const selector=createRuntimeRouteSelector({app:appGateway,api:gateway,
+  assertProfile:async()=>{if(stopping)throw failure('SERVICE_STOPPING');await assertProfileIdentity(profile);},
+  // Recheck every project after route changes; project-local SQLite requireIdle is insufficient here.
+  assertNoForeignUnresolved:async(requested)=>{
+   for(const project of await store.projects())for(let offset=0;offset<100_000;offset+=100){
+    const rows=await store.list(project.id,{kind:'run',limit:100,offset});
+    for(const row of rows)if(!['completed','failed','interrupted'].includes(row.status)) {
+     const own=requested==='codex_app_agent'?row.data.appAgentRun:row.data.runtimeRun;
+     if(!own)throw failure('FOREIGN_RUNTIME_RECOVERY_REQUIRED');
+    }
+    if(rows.length<100)break;
+    if(offset===99_900)throw failure('RUNTIME_HISTORY_LIMIT');
+   }
+  },
+  beforeApiConnect:async()=>{
    const check=await inspectConfiguredRuntime(profileDirectory);qualified=check.qualified;
    try {providerAuthority=JSON.parse(await readFile(join(profileDirectory,'runtime-selection.json'),'utf8')).providerAuthority===true;}
    catch {providerAuthority=false;}
-   if(stopping)throw failure('SERVICE_STOPPING');
-   return gateway.connection.connect(input&&typeof input==='object'&&!Array.isArray(input)?input as Record<string,unknown>:{});
-  },disconnect:()=>gateway.connection.disconnect()};
+  }});
+ const {connection,runtime}=selector;
+ let agentChannel:Awaited<ReturnType<typeof createAppAgentChannel>>|undefined;
  let application:Awaited<ReturnType<typeof createLocalApplication>>|undefined;let origin='';
  const server=(deps.createHttpServer??createServer)(async(incoming,outgoing)=>{
   const controller=new AbortController();
@@ -106,9 +122,11 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
   await new Promise<void>((resolve,reject)=>{server.once('error',reject);server.listen(0,'127.0.0.1',()=>{server.off('error',reject);resolve();});});
   const address=server.address();if(!address||typeof address==='string')throw failure('LISTEN_FAILED');
   origin=`http://127.0.0.1:${address.port}`;
+  agentChannel=await createAppAgentChannel({profileDirectory,instanceId:options.instanceId,origin,
+   assertProfile:()=>assertProfileIdentity(profile),dispatch:(action,input)=>appGateway.agent(action,input)});
   application=await(deps.createApplication??createLocalApplication)({store,origin,instanceId:options.instanceId,profileDirectory,
-   staticDirectory:fileURLToPath(new URL('../../web/dist/',import.meta.url)),connection,runtime:gateway.runtime,
-   runtimeCapable:()=>qualified,
+   staticDirectory:fileURLToPath(new URL('../../web/dist/',import.meta.url)),connection,runtime,agentChannel,
+   runtimeCapable:()=>connection.status().route==='local_api_byok'?qualified:appGateway.connection.status().verified,
    onQuit:()=>{if(!process.send||!process.connected)throw failure('OWNER_UNAVAILABLE');process.send({type:'quit_requested'},()=>{});},
    writerInventory:async(projectId)=>{const project=await store.project(projectId);if(!project)throw failure('PROJECT_NOT_FOUND');return inspectLegacyWriterInventory(project.canonicalRoot);}});
   let shutdown:Promise<void>|undefined;let serverClosing:Promise<void>|undefined;let gatewayClosed=false;let storeClosed=false;
@@ -116,14 +134,22 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
    shutdown??=(async()=>{
     stopping=true;application!.revokeSessions();
     serverClosing??=new Promise<void>((resolve,reject)=>server.close((error)=>error?reject(error):resolve()));
-    if(!gatewayClosed){await gateway.close();gatewayClosed=true;}
+    const failures:unknown[]=[];
+    if(!gatewayClosed){
+     try{await selector.drain();}catch(error){failures.push(error);}
+     const results=await Promise.allSettled([appGateway.close(),gateway.close(),agentChannel?.close()]);
+     for(const result of results)if(result.status==='rejected')failures.push(result.reason);
+     gatewayClosed=true;
+    }
     // Existing import/restore handlers retain their store until the HTTP server has drained.
     await serverClosing;
     if(!storeClosed){await store.close();storeClosed=true;}
+    if(failures.length)throw failures[0];
    })().catch((error)=>{shutdown=undefined;throw error;});return shutdown;
   }
-  return {port:address.port,instanceId:options.instanceId,build:'paos-m1-0.1.0',pairingCode:application.issuePairingCode(),quit};
- } catch(error){server.close();await gateway.close();await store.close();throw error;}
+  return {port:address.port,instanceId:options.instanceId,build:'paos-m1-0.1.0',pairingCode:application.issuePairingCode(),
+   appAgentDescriptorPath:agentChannel.descriptorPath,quit};
+ } catch(error){server.close();await Promise.allSettled([appGateway.close(),gateway.close(),agentChannel?.close()]);await store.close();throw error;}
 }
 
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)) {

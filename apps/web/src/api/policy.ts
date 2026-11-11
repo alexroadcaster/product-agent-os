@@ -13,7 +13,7 @@ export function canStopRun(snapshot: RuntimeState | null): boolean {
   return Boolean(
     snapshot?.bindingId &&
     snapshot.runId &&
-    ["running", "awaiting_approval", "interrupt_requested"].includes(
+    ["queued", "claimed", "cancel_requested", "running", "awaiting_approval", "interrupt_requested"].includes(
       snapshot.state ?? "",
     ),
   );

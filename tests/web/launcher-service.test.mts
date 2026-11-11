@@ -15,7 +15,7 @@ test('production service assigns different canonical profile namespaces without 
   const profileDirectory=join(root,name);await mkdir(profileDirectory,{recursive:true});
   const server={once(){return this;},off(){return this;},listen(_port:number,_host:string,done:()=>void){done();},address(){return {port:41001};},close(done?:()=>void){done?.();}};
   const service=await startLocalService({profileDirectory,instanceId:'fixture'},{
-   openStore:async()=>({close:async()=>{}} as any),createHttpServer:(()=>server) as any,
+   openStore:async()=>({projects:async()=>[],close:async()=>{}} as any),createHttpServer:(()=>server) as any,
    createGateway:((options:any)=>{identities.push(options.profileId);return {connection:{status:()=>({}),connect:async()=>({}),disconnect:async()=>({})},runtime:{},close:async()=>{}};}) as any,
    createApplication:async()=>({issuePairingCode:()=> 'fixture',revokeSessions(){}} as any),
   });
@@ -41,7 +41,7 @@ test('service awaits asynchronous application init before ready and closes injec
   once(){return this;},off(){return this;},listen(_port:number,host:string,callback:()=>void){assert.equal(host,'127.0.0.1');calls.push('listen-fixture');callback();return this;},
   address(){return {address:'127.0.0.1',family:'IPv4',port:41001};},close(callback?:()=>void){calls.push('server-close');callback?.();return this;}};
  const starting=startLocalService({profileDirectory:process.cwd(),instanceId:'synthetic-instance'},{
-  prepareProfile:async()=>{},openStore:async()=>({close:async()=>{calls.push('store-close');}} as any),
+  prepareProfile:async()=>{},openStore:async()=>({projects:async()=>[],close:async()=>{calls.push('store-close');}} as any),
   createHttpServer:((_handler:unknown)=>server) as any,
   createApplication:async(options:any)=>{
    assert.equal(options.runtimeCapable(),false);await init;initialized=true;
@@ -68,7 +68,7 @@ test('Quit drains active HTTP handlers before closing their SQLite store',async(
  let drained:()=>void=()=>{};let storeClosed=false;let quittingFinished=false;
  const server={once(){return this;},off(){return this;},listen(_port:number,_host:string,done:()=>void){done();},address(){return {port:41001};},close(done:()=>void){drained=done;}};
  const service=await startLocalService({profileDirectory:process.cwd(),instanceId:'drain-fixture'},{
-  prepareProfile:async()=>{},openStore:async()=>({close:async()=>{storeClosed=true;}} as any),createHttpServer:(()=>server) as any,
+  prepareProfile:async()=>{},openStore:async()=>({projects:async()=>[],close:async()=>{storeClosed=true;}} as any),createHttpServer:(()=>server) as any,
   createGateway:(()=>({connection:{},runtime:{},close:async()=>{}})) as any,
   createApplication:async()=>({issuePairingCode:()=> 'fixture',revokeSessions(){}} as any),
  });

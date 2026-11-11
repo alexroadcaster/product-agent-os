@@ -1,12 +1,33 @@
 import type { UiLocale } from "./messages.ts";
 const labels = {
+  connectionRoute: ["Способ подключения", "Connection route"],
+  appAgentRoute: [
+    "Codex App agent — без API key",
+    "Codex App agent — no API key",
+  ],
+  byokRoute: ["API key пользователя (BYOK)", "User API key (BYOK)"],
+  openAppAgentChannel: ["Открыть канал App-agent", "Open App-agent channel"],
+  appWorkerWaiting: ["Ожидание agent", "Waiting for agent"],
+  appWorkerConnected: ["Agent подключён", "Agent attached"],
+  appAgentHint: [
+    "API key в PAOS не нужен. Оставьте Codex App активным и явно подключите agent к каналу PAOS. Worker автоматически не запускается.",
+    "PAOS needs no API key. Keep Codex App active and explicitly attach an agent to the PAOS channel. No worker starts automatically.",
+  ],
+  appAgentBoundary: [
+    "Stop — cooperative: остановка требует подтверждения worker. Native sandbox PAOS для host не подтверждён. Execution недоступен, пока native boundary не подтверждена.",
+    "Stop is cooperative: stopping requires worker acknowledgement. The PAOS native sandbox is unverified for the host. Execution is unavailable until the native boundary is verified.",
+  ],
+  appAgentNoFallback: [
+    "Этот маршрут не использует скрытый API fallback. Наличие agent lease не подтверждает доступ к модели.",
+    "This route uses no hidden API fallback. An agent lease does not verify model access.",
+  ],
   pairingHint: [
-    'Сначала подключите локальный сервис. Скопируйте код из окна запуска Product-Agent OS в поле ниже. После подключения станут доступны разделы приложения. Это локальное сопряжение; ключ API не нужен.',
-    'Connect the local service first. Copy the code from the Product-Agent OS launcher window into the field below. App sections become available after connecting. This is local pairing; no API key is needed.',
+    "Сначала подключите локальный сервис. Скопируйте код из окна запуска Product-Agent OS в поле ниже. После подключения станут доступны разделы приложения. Это локальное сопряжение; ключ API не нужен.",
+    "Connect the local service first. Copy the code from the Product-Agent OS launcher window into the field below. App sections become available after connecting. This is local pairing; no API key is needed.",
   ],
   pairingInvalid: [
-    'Код сопряжения неверен или срок его действия истёк. Используйте актуальный код из окна запуска Product-Agent OS.',
-    'The pairing code is invalid or expired. Use the current code from the Product-Agent OS launcher window.',
+    "Код сопряжения неверен или срок его действия истёк. Используйте актуальный код из окна запуска Product-Agent OS.",
+    "The pairing code is invalid or expired. Use the current code from the Product-Agent OS launcher window.",
   ],
   olderMessages: ["Ранее", "Older messages"],
   newerMessages: ["Новее", "Newer messages"],

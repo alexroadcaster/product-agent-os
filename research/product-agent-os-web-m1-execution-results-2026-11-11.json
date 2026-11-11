@@ -13,14 +13,14 @@
   },
   "manifest": {
     "path": "packages/contracts/runtime/qualified-manifest.json",
-    "sha256": "8c10a0fec1a57639f5301ca172620363eb1a55ab4c0fd3ada3496e699bf117e9",
-    "adapterRevision": "7ecf3204dbcb8aa7239ca83708f261a513309d92909f4c50f776da14109d6de7",
+    "sha256": "76150ee70cdad6d28d55da4cd48fcf35f5036741ab78f464a29cb0b49858fb32",
+    "adapterRevision": "197cc40d778f5a1a037c814218e08ed1d397c792aea6be7af944714b1d55dd27",
     "loaderChecks": {
       "unconfiguredBlocked": true,
       "exactTupleQualified": true,
       "binaryDriftBlocked": true
     },
-    "previousSha256": "7bbaaa7608675973214d8aac5d83f91b06b765e74b5a97d961deeb63b5ac043e"
+    "previousSha256": "8c10a0fec1a57639f5301ca172620363eb1a55ab4c0fd3ada3496e699bf117e9"
   },
   "sqliteCompileOptions": [
     "ATOMIC_INTRINSICS=1",
@@ -25695,6 +25695,402 @@
         ],
         "runtimeOrAuthChanges": false
       }
+    },
+    {
+      "scope": "Codex App agent pull implementation and actual roundtrip",
+      "status": "partially_verified",
+      "recordedAt": "2026-11-11T14:56:06.093Z",
+      "ownerDirection": {
+        "route": "codex_app_agent",
+        "apiKey": false,
+        "manualTesting": false,
+        "budgetCap": null
+      },
+      "implementation": {
+        "connection": "App-agent lease; not provider account verification",
+        "transport": "capability-authenticated local pull/claim/report",
+        "defaultRoute": "codex_app_agent",
+        "compatibilityRoute": "local_api_byok explicit only",
+        "nativeSandbox": false,
+        "actualAppServer": false,
+        "execution": false,
+        "cooperativeStop": true,
+        "automaticWakeup": false,
+        "leaseMs": 30000,
+        "unknownOutcome": "recovery_required; no replay",
+        "hostIdentity": "attested_not_cryptographic"
+      },
+      "receipts": {
+        "actual": {
+          "path": ".tmp/paos-m1/app-agent-evidence-9TDdwj/app-agent-result.json",
+          "sha256": "7161bb26f8e59d76539ea43df4c752110bf78856f2a5e16fa6ee26a49a8146fb",
+          "receipt": {
+            "schemaVersion": "paos_app_agent_acceptance_v1",
+            "actualAppAgent": true,
+            "actualAppServer": false,
+            "externalProviderClient": false,
+            "apiKey": false,
+            "nativeSandbox": false,
+            "checks": [
+              {
+                "name": "project_registered",
+                "passed": true
+              },
+              {
+                "name": "session_saved",
+                "passed": true
+              },
+              {
+                "name": "app_route_default",
+                "passed": true
+              },
+              {
+                "name": "no_api_key_input",
+                "passed": true
+              },
+              {
+                "name": "app_route_connected_waiting",
+                "passed": true
+              },
+              {
+                "name": "actual_agent_attached",
+                "passed": true
+              },
+              {
+                "name": "app_binding_ready",
+                "passed": true
+              },
+              {
+                "name": "send_enabled",
+                "passed": true
+              },
+              {
+                "name": "durable_job_queued",
+                "passed": true
+              },
+              {
+                "name": "actual_agent_result_persisted",
+                "passed": true
+              },
+              {
+                "name": "actual_agent_answer_correlated",
+                "passed": true
+              },
+              {
+                "name": "result_visible_in_browser",
+                "passed": true
+              },
+              {
+                "name": "execution_explicitly_blocked",
+                "passed": true
+              },
+              {
+                "name": "native_sandbox_not_claimed",
+                "passed": true
+              },
+              {
+                "name": "no_browser_errors",
+                "passed": true
+              },
+              {
+                "name": "no_external_browser_requests",
+                "passed": true
+              }
+            ],
+            "screenshots": [
+              ".tmp/paos-m1/app-agent-evidence-9TDdwj/actual-app-agent-result.png"
+            ],
+            "pageErrorCount": 0,
+            "blockedExternalRequests": 0,
+            "startedAt": "2026-11-11T14:50:23.963Z",
+            "actualAgentExecution": "host collaboration worker through capability-authenticated pull/claim/report",
+            "answer": "TOKEN=0e15ebc3-1a36-45b7-a5cf-fbdef0ab952d; ORDER=4,9,17; SUM=30",
+            "hostWorker": "actual-app-worker",
+            "serviceClosed": true,
+            "fixtureCleaned": true,
+            "finishedAt": "2026-11-11T14:51:35.042Z"
+          }
+        },
+        "active": {
+          "path": ".tmp/paos-m1/active-runtime-evidence-yjqhQa/active-runtime-result.json",
+          "sha256": "7c04efbad7169b03bedd17abf835b7666f280d9726165ec69fb640938e1b4cb9",
+          "receipt": {
+            "status": "passed_local_active_runtime_fixture",
+            "fixtureCleaned": true,
+            "serviceClosed": true,
+            "startedAt": "2026-11-11T14:49:08.051Z",
+            "finishedAt": "2026-11-11T14:49:15.316Z",
+            "pageErrorCount": 0,
+            "checkCount": 55
+          }
+        },
+        "browser": {
+          "path": ".tmp/paos-m1/browser-evidence-22l7mM/browser-result.json",
+          "sha256": "f2e19ffa510ecf5b6c336378bbff4f1567004c493912d52718565efae60e803b",
+          "receipt": {
+            "status": "passed_browser_acceptance",
+            "fixtureCleaned": true,
+            "startedAt": "2026-11-11T14:49:51.866Z",
+            "finishedAt": "2026-11-11T14:50:31.465Z",
+            "checkCount": 669
+          }
+        },
+        "headless": {
+          "path": ".tmp/paos-m1/headless-result.json",
+          "sha256": "b9c189dd6b60aac5a7513a919ce49693fa612c02ce82339823f3c0bfffc043c2",
+          "receipt": {
+            "syntheticOnly": true,
+            "browserUsed": false,
+            "providerUsed": false,
+            "realKeysUsed": false,
+            "systemPoliciesChanged": false,
+            "checks": [
+              "built_web_html_served",
+              "unpaired_data_rejected",
+              "private_pairing_exchange",
+              "cross_origin_write_rejected",
+              "project_registered",
+              "task_committed",
+              "task_public_key_allocated",
+              "same_command_retry",
+              "fts_finds_committed_task",
+              "preferences_persisted",
+              "session_draft_committed",
+              "no_provider_connection",
+              "send_fails_closed",
+              "real_database_backup",
+              "restore_separate_profile",
+              "reverse_export_keeps_current_task",
+              "reverse_export_reimport_stays_a_proposal",
+              "fixed_project_source_read_hash",
+              "native_source_lock_denies_concurrent_write",
+              "source_write_allowed_after_release",
+              "native_source_hardlink_rejected",
+              "legacy_preview_retains_original_alias",
+              "json_markdown_conflict_is_blocked",
+              "json_markdown_bundle_deduplicated",
+              "server_rereads_source_and_rejects_drift",
+              "projection_source_drift_rejected",
+              "native_locked_cutover_with_restore_rehearsal",
+              "cutover_retains_both_source_bindings",
+              "legacy_edit_after_cutover_is_visible_without_auto_import",
+              "cutover_retry_after_source_edit_returns_committed_receipt",
+              "authenticated_quit_requested",
+              "normal_launcher_entrypoint",
+              "quit_acknowledged_and_reservation_released"
+            ],
+            "startedAt": "2026-11-11T14:53:38.379Z",
+            "lastRequest": {
+              "path": "/quit",
+              "method": "POST",
+              "timeoutMs": 5000
+            },
+            "status": "passed_headless_local",
+            "fixtureCleaned": true,
+            "finishedAt": "2026-11-11T14:54:02.615Z"
+          }
+        }
+      },
+      "sourceHashes": {
+        "apps/local-service/src/main.mts": "f192c4cf672281c1f189944a5fae6ec6daccc7267471100d43bfbfce7709bffb",
+        "apps/local-service/src/http/application.mts": "391453d6b1e0fba1a46929121f864ab430fcd06ce281a5d1bd95d3733e2091e3",
+        "apps/local-service/src/runtime/app-agent-gateway.mts": "8d00c1b29413d786f2f30b32fe8b64a7004c640e7b2a17266a68b8a8acacea24",
+        "apps/local-service/src/runtime/app-agent-channel.mts": "e3fc7e04b327af6550ba1c1a1f3a4a122328e9112ada9bc573e57f11fa57191b",
+        "apps/local-service/src/runtime/app-agent-client.mts": "79475cc48b4e15391c0b355e309a18482b6d441e0b062d97b51a4b751b72f9e7",
+        "apps/local-service/src/runtime/route-selector.ts": "13a242b1776b989b4f7c4354b174b5fd1489bb8033400919844f8ea0b7c77669",
+        "packages/contracts/auth/m1-route.ts": "19327bea4879a6913350c05dbdec794c45db188bd0ab46f199328d6ecf0cdc2c",
+        "apps/web/src/ui/ConnectionControls.tsx": "85fd70c8afc647d84acb2c9c0c5b96e4931a2ef0de438ea65493cf1bd05fc704",
+        "apps/web/src/ui/connection-controls-model.ts": "1d8682a1f02c66f542456d0d3252eb3150344d58532ca5e218fe8029e43371eb",
+        "apps/web/src/ui/App.tsx": "978718afa7e9db839f52dc0e0a4d0e8d5ed5b84208a088903935409295d0fcf0",
+        "apps/web/src/api/client.ts": "3d2ab0998d2e9cfa91552d7e210c93ad25fafa1d6164ea6d95beed48a77742f5",
+        "apps/web/src/api/policy.ts": "812c170725a4f60b96dc01e9c5c74be45e8d8b50e9f10c5c266262de0ea121d3",
+        "apps/web/src/api/draft-registry.ts": "fddba74d144061a5e62519718aa870a785a1e4906be1cc5f6a113c806e8bfcea",
+        "apps/web/src/locales/app.ts": "ca7b2e8bef44808ed57c68587c939e9ca828b7b16595ef86520240f325bb68a9",
+        "apps/web/dist/index.html": "edbfa6296ea12420687dd43e5a10f3b7a5ef22d4facf362730eabac9f875ea18",
+        "apps/web/dist/assets/index-Cfgug4Ze.js": "f68197a82a796f509667edd358fd308bf34b85e43edb167a80ee6f98d90c268c",
+        "tests/web/single-window/app-agent-acceptance.mts": "d4bad72cf0d4a3496998d74027e6e9a0c6db0688221f24d7c586319605f04bbe"
+      },
+      "checks": {
+        "web": {
+          "command": "node --test tests/web/*.test.mts",
+          "tests": 238,
+          "passed": 238,
+          "skipped": 0,
+          "elapsedSeconds": 8.2812651,
+          "exitCode": 0,
+          "log": ".tmp/paos-m1/app-agent-full-tests-final.log"
+        },
+        "strict": {
+          "command": "npm run check:web-m1",
+          "exitCode": 0
+        },
+        "build": {
+          "command": "npm --prefix apps/web run build",
+          "exitCode": 0,
+          "modules": 36,
+          "asset": "index-Cfgug4Ze.js",
+          "jsKB": 305.39,
+          "gzipKB": 92.85
+        }
+      },
+      "failuresPreserved": [
+        {
+          "path": ".tmp/paos-m1/app-agent-evidence-ZhBqrb/app-agent-result.json",
+          "issue": "initial browser binding disabled; connection status polling was Settings-only; corrected all-ready polling"
+        },
+        {
+          "path": ".tmp/paos-m1/app-agent-evidence-dpIayh/app-agent-result.json",
+          "issue": "actual App agent attached/claimed/computed; 30s lease expired before report; recovery fenced outcome without replay"
+        },
+        {
+          "path": ".tmp/paos-m1/app-agent-full-tests.log",
+          "issue": "initial229 tests226passed3failed; injected store test doubles lacked projects(); corrected test setup"
+        },
+        {
+          "issue": "initial headless expected legacy409, new default App unbound Send returned404binding_not_found; final test checks exact route/reason/status/error and no dispatch",
+          "provenance": "current tool trace; fixed-name headless-result.json was subsequently replaced by final runner output"
+        },
+        {
+          "issue": "successful actual worker report exit0; finite heartbeat helper exited1 after fixture service teardown, seven successful heartbeats; no clean terminal heartbeat claim",
+          "provenance": "/root/m1_launcher current App-worker run"
+        }
+      ],
+      "redGreen": [
+        "App route productionHTTP409runtime_unverified -> keyless connect+SQLite result",
+        "queued/cancel_requested Stop unavailable -> policy enabled",
+        "App queued ACK left draft uncertain -> exact Appqueued ACK cleanup",
+        "known capability/lease in result text persisted -> redacted before durable write",
+        "route connect race -> shared selector queue and refreshed cross-project foreign-run fence"
+      ],
+      "officialTransportProbe": {
+        "pinnedCodex": "0.167.0",
+        "commands": [
+          "app-server proxy --help",
+          "app-server daemon version"
+        ],
+        "helpExitCode": 0,
+        "versionExitCode": 1,
+        "proxyExitCode": 1,
+        "errorCategory": "WSA_10050",
+        "reviewedNativeRetry": true,
+        "desktopHostQualified": false,
+        "authCacheRead": false,
+        "threadContentRead": false,
+        "providerRequest": false,
+        "daemonLifecycleChanged": false
+      },
+      "review": {
+        "contextMode": "separate_reused_context",
+        "agents": [
+          "/root/m1_launcher",
+          "/root/m1_task_model",
+          "/root/m1_theme_locale"
+        ],
+        "resolved": [
+          "route selector race",
+          "stale cross-route global fence",
+          "contract/default mismatch",
+          "queued Send ACK",
+          "known local capability leakage in report text",
+          "Settings-only connection polling"
+        ],
+        "testerVerdict": "partial_only"
+      },
+      "claimCeiling": "Actual synthetic PAOS UI -> attached real Codex App worker -> correlated final response persisted and visible,16checks. No standalone provider client/APIkey. This does not prove external agent wakeup, App-closed execution, native sandbox or complete M1.",
+      "taskStates": {
+        "PAOS-0039": "implemented local App route contract",
+        "PAOS-0042": "in_progress; native scoped execution and supported unattended host dispatch open",
+        "PAOS-0043": "in_progress; real discussion roundtrip verified, execution/approval journey open",
+        "PAOS-0044": "in_progress; deterministic lease/restart/Stop guards verified, real full execution recovery open",
+        "PAOS-0045": "blocked; required children and complete applicable acceptance outstanding"
+      },
+      "documentationSync": {
+        "status": "applied",
+        "digest": "sha256:51e340dbcdc73de373d40020c846c6ccde1cdf4a614ddac6ca1deccd65a00cb2",
+        "rootFiles": [
+          "REQUIREMENTS.md",
+          "PLAN.md",
+          "TEST.md",
+          "RUNLOG.md"
+        ],
+        "sourceFiles": [
+          "research/product-agent-os-web-task-manager-plan-2026-11-09.md",
+          "research/product-agent-os-web-task-manager-task-group-2026-11-09.json",
+          "research/product-agent-os-web-prd-2026-11-05.md",
+          "research/product-agent-os-web-architecture-2026-11-05.md",
+          "research/product-agent-os-web-auth-commercial-2026-11-09.md",
+          "docs/sources/registry.md",
+          "docs/sources/registry.en.md"
+        ],
+        "no_change_needed": [
+          "AGENTS.md durable authority unchanged",
+          "EVALS.md no rubric or threshold waived",
+          "prod_test.md Batch39 unchanged"
+        ]
+      },
+      "manifestLoader": {
+        "unconfiguredBlocked": true,
+        "exactTupleQualified": true,
+        "binaryDriftBlocked": true,
+        "manifestSha256": "76150ee70cdad6d28d55da4cd48fcf35f5036741ab78f464a29cb0b49858fb32",
+        "providerUsed": false,
+        "browserUsed": false,
+        "osStoreUsed": false
+      },
+      "modelExecution": {
+        "actualCodexAppAgent": true,
+        "directProviderClient": false,
+        "separateApiKey": false,
+        "scope": "current real host worker, synthetic discussion only; no native scoped execution claim"
+      },
+      "postSyncChecks": {
+        "docs": {
+          "command": "python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -q",
+          "tests": 105,
+          "elapsedSeconds": 22.007,
+          "exitCode": 0
+        },
+        "checker": {
+          "command": "python -B tools/check_docs.py",
+          "exitCode": 0
+        },
+        "matrix": {
+          "command": "python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-web-task-manager-plan-2026-11-09.md",
+          "exitCode": 0,
+          "errors": []
+        },
+        "runtimeManifestCompatibility": {
+          "command": "node --test tests/web/runtime-manifest.test.mts tests/web/runtime-compatibility.test.mts",
+          "tests": 6,
+          "passed": 6,
+          "exitCode": 0
+        },
+        "diff": {
+          "command": "git diff --check",
+          "exitCode": 0,
+          "notes": "CRLF normalization warnings only"
+        }
+      },
+      "completionReview": {
+        "contextMode": "separate_reused_context",
+        "reviewer": "/root/m1_theme_locale",
+        "testerVerdict": "partial_only",
+        "sourceHashesMatched": 17,
+        "receiptHashesMatched": 4,
+        "adapterSourceFilesRecomputed": 51,
+        "materialOpenFindings": [],
+        "limits": "Full M1 platform/execution gates remain explicitly open."
+      },
+      "measuredExecution": {
+        "elapsedSeconds": 2506,
+        "startedAt": "2026-11-11T14:25:48Z",
+        "finishedAt": "2026-11-11T15:07:34.729160+00:00",
+        "scope": "First current clock sample through final evidence metadata; initial reads and brief excluded.",
+        "agentSpawns": 0,
+        "existingAgentsReused": 3,
+        "modelAndTokenCounters": "not_available; host trace does not expose exact counters"
+      }
     }
-  ]
+  ],
+  "constraintsScope": "Original standalone local receipt; continuation-specific model execution and authority are recorded below, including actual Codex App agent execution."
 }

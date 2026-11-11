@@ -1,5 +1,7 @@
 # Product-Agent OS Web — авторизация и коммерческое использование
 
+Актуализация 11-11-2026: Codex App agents — выбранный owner-default маршрут без API key; его текущий контракт и предел доказательств приведены в новом App-agent addendum в конце документа. Прежний API-only/closed-App baseline ниже сохранён как история и explicit compatibility; он не определяет новый default.
+
 Source status: official documentation checked 2026-11-09 / project-authored design. Версия: 0.7; auth mechanism: §7. Документация, не реализация и не разрешение на коммерческий запуск.
 
 Owning requirement: [PRD §15](product-agent-os-web-prd-2026-11-05.md#15-единое-окно-и-codex-app-server--v04); architecture contracts: [архитектура §19](product-agent-os-web-architecture-2026-11-05.md#19-единое-окно-runtime-и-авторизация--v04); tasks: [G11](product-agent-os-web-task-manager-plan-2026-11-09.md). Источники WEB-AUTH-01–09 перечислены ниже и в RU/EN registry.
@@ -118,3 +120,15 @@ M1 — локальный engineering preview через свой API account. �
 `packages/contracts/auth/m1-route.ts` применяет согласованный local engineering preview scope. Для `local_api_byok` плательщиком указывается `user_api_account`, состояние подключения `unverified`. Inherited ChatGPT login и SIWC в M1 заблокированы. Commercial local и hosted требуют отдельного review. Проверка этой функции не использует credentials или provider.
 
 `node --test tests/web/auth-route.test.mts` прошёл 2/2 после RED на отсутствующих решениях маршрутизации. AUTH-G1 остаётся открытым для commercial distribution до решения владельца по paid/OSS, entity и рынкам и проверки условий выбранного маршрута. [OpenAI Docs — App Server auth](https://learn.chatgpt.com/docs/app-server#auth-endpoints)
+
+## 8. App-agent route: решение владельца 2026-11-11
+
+Решение владельца 11-11-2026: выбран `codex_app_agent` с `selection: owner_default`, без API key; `local_api_byok` сохранён только как явно выбираемый `explicit_compatibility` с отдельным API account. Это разные маршруты, автоматического fallback нет. Inherited auth cache не читается; SIWC остаётся отдельным admission-gated маршрутом. AUTH-G1–G6 и PAOS-0046/0030 не закрыты этим решением.
+
+Фактическая проверка 11-11-2026, 17:50:23–17:51:35 MSK: production UI → durable job → реальный App collaboration worker → capability-authenticated claim/report → сохранённый финальный ответ → результат в browser, **16/16**, service/fixture cleanup true. Receipt: `.tmp/paos-m1/app-agent-evidence-9TDdwj/app-agent-result.json`; actualAppAgent=true, actualAppServer=false, externalProviderClient=false, apiKey=false, nativeSandbox=false. Synthetic correlation value в ответе не является credential и здесь не копируется. Это реальный App-hosted reasoning/result путь, а не fixture RPC или новый provider client.
+
+Действующий App coordinator должен быть активен: consumer lease 30 s с heartbeat, host identity attested, не cryptographic. Нет доказанного automatic Desktop wakeup и фоновой работы после остановки чата/App. Pinned 0.167.0 предоставляет публичный proxy command, но фактические daemon-version/proxy проверки завершились WSA10050, включая разрешённый native повтор; transport к работающему Desktop не квалифицирован. Этот результат не подменяется чтением auth cache или private IPC. Execution заблокирован до подтверждения permission boundary; cooperative Stop требует ACK, при потере lease сохраняется recovery_required без replay. Нет native sandbox/полной tool-permission приёмки и нет обещания неограниченного usage.
+
+PAOS-0039 остаётся implemented только в контракте выбора маршрута. PAOS-0042/0043/0044 остаются in_progress, PAOS-0045 — blocked; M1: 14 implemented / 3 in_progress / 1 blocked — компонентный счёт, не readiness. Исходный full-turn gate «Codex App закрыт» SW-AC-01/UX-AC-01 сохранён как историческое требование самостоятельного App Server маршрута, остаётся непроверенным и не объявляется пройденным. Для нового owner-selected App-agent маршрута App и активный consumer обязательны: новый 16/16 receipt подтверждает только этот путь. Standalone/offline launcher PAOS-0040 проверен отдельно. Полная execution/recovery и M1/human acceptance этим addendum не закрываются; прежний manual owner rejection сохраняется.
+
+Новая App-ветка не вызывает account/login, Credential Manager или API provider client. Browser pairing остаётся локальной защитой UI; worker channel — отдельная profile-scoped capability authority, не OpenAI credential. Реальные существующие credentials не читаются и не переносятся. `codex_app_account` указывает выбранный канал использования App, не подтверждает entitlement, цену, отсутствие usage limits или коммерческий допуск.

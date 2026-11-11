@@ -174,6 +174,9 @@ export function createDraftRegistry(limit = 16) {
 
 /** A command ACK is consumed before any optional state refresh; unknown outcomes retain the draft. */
 export function isSendAccepted(result: unknown): boolean {
+  // The App channel ACKs durable queuing before an agent claims the job.
+  if (result && typeof result === 'object' && (result as {state?:unknown}).state === 'queued'
+      && (result as {route?:unknown}).route === 'codex_app_agent') return true;
   const state =
     result && typeof result === "object"
       ? (result as { state?: unknown }).state

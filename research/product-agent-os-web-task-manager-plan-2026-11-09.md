@@ -1,8 +1,10 @@
 # Product-Agent OS Web — план полноценного Task Manager
 
+Актуализация 11-11-2026: owner-default runtime теперь Codex App agents без API key. Нормативное уточнение App-dependent acceptance — в addendum в конце этого файла; последовательность 56 задач, 12 групп и оценки сохранены.
+
 Source status: project-authored / proposed / requirements-backed. Дата: 2026-11-09.
 
-Статус очереди: **order_approved / implementation_started / acceptance_partial**. Native MXC write/deny 11 ноября снял прежний Windows blocker PAOS-0054; local engineering route PAOS-0039 отделён от commercial gates. Реализуются все локальные поверхности M1 и исполняемый пакет PAOS-0045. [Текущий execution report](product-agent-os-web-m1-execution-2026-11-11.md) отделяет native/headless/SQLite evidence от запрещённых browser/provider проверок. Статусы и фактическое время хранятся в карточках и JSON. При расхождении приоритет имеют PRD §17, architecture §21 и актуальная очередь v0.8.
+Статус очереди: **order_approved / implementation_started / acceptance_partial**. Native MXC write/deny 11 ноября снял прежний Windows blocker PAOS-0054; local engineering route PAOS-0039 отделён от commercial gates. Реализуются все локальные поверхности M1 и исполняемый пакет PAOS-0045. [Текущий execution report](product-agent-os-web-m1-execution-2026-11-11.md) отделяет native/headless/SQLite evidence от фактических browser/App-agent проверок и оставшихся runtime/provider gates. Статусы и фактическое время хранятся в карточках и JSON. При расхождении приоритет имеют PRD §17, architecture §21 и актуальная очередь v0.8.
 
 Связи: [PRD](product-agent-os-web-prd-2026-11-05.md), [архитектура](product-agent-os-web-architecture-2026-11-05.md), [экраны](product-agent-os-web-task-manager-screens-2026-11-09.md), [машинные группы](product-agent-os-web-task-manager-task-group-2026-11-09.json).
 
@@ -2068,13 +2070,13 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Depends on: PAOS-0001
 - Blocks: PAOS-0041, PAOS-0047
 - Source: PRD §15 SW-01–12; auth/commercial AUTH-G1–G6
-- Short description: Зафиксировать API BYOK baseline, ограничения managed login и admission SIWC; выбрать deployment/channel без внешней регистрации
-- Technical value: Зафиксировать API BYOK baseline, ограничения managed login и admission SIWC; выбрать deployment/channel без внешней регистрации
+- Short description: Зафиксировать owner-default Codex App agents без API key, explicit BYOK compatibility и коммерческие границы
+- Technical value: Зафиксировать owner-default Codex App agents без API key, explicit BYOK compatibility и коммерческие границы
 - Product value: Пользователь знает доступный способ подключения и плательщика до начала работы.
 - Scope: research/product-agent-os-web-auth-commercial-2026-11-09.md; packages/contracts/auth
 - Non-goals: Не менять hooks/global permissions; не запускать внешний/provider/Git/release scope без отдельного разрешения
-- Expected result: Для M1 закреплён local engineering preview с local_api_byok и плательщиком user_api_account. Connection и entitlement unverified до проверки. Inherited login и SIWC недоступны; commercial/hosted distribution ожидает AUTH-G1–G6.
-- Acceptance criteria: Local route decision соответствует PRD §17.5 и auth §7. Отсутствие SIWC admission сохраняет этот путь недоступным. Commercial/hosted distribution блокируется до AUTH-G1–G6 и PAOS-0046/0030.
+- Expected result: Для local engineering preview выбран codex_app_agent / owner_default без API key; API BYOK остаётся explicit_compatibility с user_api_account. Connection проверяет leased agent channel, не native sandbox/model entitlement; commercial/hosted distribution ожидает AUTH-G1–G6.
+- Acceptance criteria: Local route decision соответствует PRD §17.6 и auth §8: codex_app_agent owner_default без API key; BYOK только explicit_compatibility, без fallback и inherited cache. SIWC требует admission; commercial/hosted distribution блокируется до AUTH-G1–G6 и PAOS-0046/0030.
 - Verification gates: Focused contract/negative tests; authorized runtime/browser where needed; no fixture-only activation claim
 - Risks / approval gates: Неоднозначные условия или отсутствие коммерческого допуска. Provider calls, registration and publication require separate authority.
 - Complexity: medium/high, уточнить после discovery
@@ -2082,7 +2084,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: product-manager, architect, security-privacy-supply-chain-reviewer
 - Skills: implementation-planner; task-matching skills selected at start
 - Output artifacts: research/product-agent-os-web-auth-commercial-2026-11-09.md; packages/contracts/auth
-- Next step: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
+- Next step: Продолжить PAOS-0042/0043/0044 и PAOS-0045 по App-dependent addendum; не выдавать reasoning relay за полную execution/owner acceptance.
 - Actual time: локальная реализация и проверка 11-11-2026; отдельная active duration не измерялась, JSON duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-auth-commercial-2026-11-09.md
 - Affected files: proposed paths above; actual create/modify/delete receipts only after execution.
@@ -2090,14 +2092,14 @@ Rollback будущих изменений: versioned proposal, revision check, 
 #### Completion Report
 
 - Status: implemented
-- What was done: Local engineering preview закреплён: local_api_byok, payer user_api_account; commercial AUTH-G1–G6 отделены от локальной разработки.
-- Files touched / work locations: packages/contracts/auth/m1-route.ts; tests/web/auth-route.test.mts; research/product-agent-os-web-auth-commercial-2026-11-09.md.
+- What was done: Исходный API contract 08:09 сохранён как explicit compatibility; по решению владельца текущий default — codex_app_agent без API key. Реальный App-worker reasoning/result 17:50–17:51 проверен 16/16; execution boundary не подтверждён.
+- Files touched / work locations: packages/contracts/auth/m1-route.ts; apps/local-service/src/runtime/app-agent-gateway.mts; apps/local-service/src/runtime/route-selector.ts; tests/web/auth-route.test.mts; tests/web/app-agent-gateway.test.mts; tests/web/runtime-route-selector.test.mts; research/product-agent-os-web-auth-commercial-2026-11-09.md.
 - Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
 - Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: 11-11-2026 08:09
-- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
-- Residual risks: SIWC/inherited login недоступны; entitlement unverified; commercial review PAOS-0046/0030 не выполнен.
-- Follow-up: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
+- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](product-agent-os-web-m1-initial-qualification-2026-11-10.md). Follow-up 11-11-2026: actual App-agent receipt 9TDdwj 16/16, Web238/238, strict0/build36 Cfgug4Ze; старые receipts не переобозначены как новые.
+- Residual risks: App host identity attested; automatic wakeup/native permission boundary не доказаны, Execution blocked. SIWC/inherited login недоступны; commercial review PAOS-0046/0030 не выполнен.
+- Follow-up: Продолжить PAOS-0042/0043/0044 и PAOS-0045 по App-dependent addendum; не выдавать reasoning relay за полную execution/owner acceptance.
 
 Историческая запись до нативной проверки 11 ноября (не текущий статус):
 
@@ -2888,3 +2890,15 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](product-agent-os-web-m1-initial-qualification-2026-11-10.md).
 - Residual risks: Только supported synthetic project; реальный target не мигрирован. Post-cutover legacy edits показываются changed, не импортируются автоматически.
 - Follow-up: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
+
+## App-agent route: решение владельца 2026-11-11
+
+Решение владельца 11-11-2026: выбран `codex_app_agent` с `selection: owner_default`, без API key; `local_api_byok` сохранён только как явно выбираемый `explicit_compatibility` с отдельным API account. Это разные маршруты, автоматического fallback нет. Inherited auth cache не читается; SIWC остаётся отдельным admission-gated маршрутом. AUTH-G1–G6 и PAOS-0046/0030 не закрыты этим решением.
+
+Фактическая проверка 11-11-2026, 17:50:23–17:51:35 MSK: production UI → durable job → реальный App collaboration worker → capability-authenticated claim/report → сохранённый финальный ответ → результат в browser, **16/16**, service/fixture cleanup true. Receipt: `.tmp/paos-m1/app-agent-evidence-9TDdwj/app-agent-result.json`; actualAppAgent=true, actualAppServer=false, externalProviderClient=false, apiKey=false, nativeSandbox=false. Synthetic correlation value в ответе не является credential и здесь не копируется. Это реальный App-hosted reasoning/result путь, а не fixture RPC или новый provider client.
+
+Действующий App coordinator должен быть активен: consumer lease 30 s с heartbeat, host identity attested, не cryptographic. Нет доказанного automatic Desktop wakeup и фоновой работы после остановки чата/App. Pinned 0.167.0 предоставляет публичный proxy command, но фактические daemon-version/proxy проверки завершились WSA10050, включая разрешённый native повтор; transport к работающему Desktop не квалифицирован. Этот результат не подменяется чтением auth cache или private IPC. Execution заблокирован до подтверждения permission boundary; cooperative Stop требует ACK, при потере lease сохраняется recovery_required без replay. Нет native sandbox/полной tool-permission приёмки и нет обещания неограниченного usage.
+
+PAOS-0039 остаётся implemented только в контракте выбора маршрута. PAOS-0042/0043/0044 остаются in_progress, PAOS-0045 — blocked; M1: 14 implemented / 3 in_progress / 1 blocked — компонентный счёт, не readiness. Исходный full-turn gate «Codex App закрыт» SW-AC-01/UX-AC-01 сохранён как историческое требование самостоятельного App Server маршрута, остаётся непроверенным и не объявляется пройденным. Для нового owner-selected App-agent маршрута App и активный consumer обязательны: новый 16/16 receipt подтверждает только этот путь. Standalone/offline launcher PAOS-0040 проверен отдельно. Полная execution/recovery и M1/human acceptance этим addendum не закрываются; прежний manual owner rejection сохраняется.
+
+Локальные текущие проверки root: Web **238/238**, strict exit 0, build **36 modules / Cfgug4Ze**. Предыдущие active-runtime fixture **55/55** (`yjqhQa`), browser **669** (`22l7mM`) и headless **33** сохраняют отдельный provenance; они не называются actual App-agent или новым full M1 run. Текущая сводка и hashes принадлежат [execution report](product-agent-os-web-m1-execution-2026-11-11.md).

@@ -36,7 +36,7 @@ Owning scope: [PRD §17](research/product-agent-os-web-prd-2026-11-05.md), [ар
 
 
 
-Решение владельца 2026-11-11,17:10MSK: вызовы через Codex App agents, отдельный API key не требуется, собственного бюджетного лимита нет; квоты сервиса сохраняются. Scope PAOS-0004/PAOS-0040 evidence прежний. API-only маршрут текущего runtime больше не основание требовать ключ; actual PAOS→App transport требует route review PAOS-0039, не подменяется вызовами subagents из чата. Без auth-cache копирования, OS-store/policy/Git изменений; manual tester work не нужен. Standing synthetic authority принадлежит AGENTS.md. Прежний closed-App full-turn criterion до согласования route не отменён.
+Решение владельца 2026-11-11: выбран codex_app_agent без API key; контракт PAOS-0039 и локальный pull bridge реализованы. Actual PAOS UI→App worker→SQLite/result16 проверен; App должен быть активен, automatic wakeup и native Execution не подтверждены. PAOS-0004/PAOS-0040 прежние receipts сохранены; closed-App full-turn не объявлен пройденным. Без auth-cache копирования, OS-store/policy/Git изменений; manual tester work не нужен. Standing synthetic authority принадлежит AGENTS.md. Подробности и ограничения: [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md).
 
 ## PAOS-AUD-G7 — closed / owner accepted, 2026-11-10
 

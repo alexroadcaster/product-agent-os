@@ -1,6 +1,11 @@
 import { useState } from "react";
-import type { Connection, M1Api } from "../api/client.ts";
+import type { Connection, M1Api, ConnectionRoute } from "../api/client.ts";
 import type { AppLabel } from "../locales/app.ts";
+import {
+  initialConnectionRoute,
+  hasActiveConnection,
+  connectionRequest,
+} from "./connection-controls-model.ts";
 /** Secret input lives only in the native control and is cleared after each submission. */
 export function ConnectionControls({
   api,
@@ -15,71 +20,127 @@ export function ConnectionControls({
 }) {
   const [busy, setBusy] = useState(false),
     [error, setError] = useState("");
+  const [chosenRoute, setChosenRoute] = useState<ConnectionRoute>(() =>
+    initialConnectionRoute(connection),
+  );
+  const active = hasActiveConnection(connection),
+    route = active ? initialConnectionRoute(connection) : chosenRoute,
+    isApp = route === "codex_app_agent";
+  const appAttached =
+    connection?.route === "codex_app_agent" &&
+    connection.state === "connected" &&
+    connection.verified;
+  const waiting =
+    connection?.route === "codex_app_agent" &&
+    connection.state === "waiting_for_worker";
   return (
     <section className="panel">
       <h2>{t("connection")}</h2>
-      <p>
-        {connection?.verified ? t("verified") : t("unverified")} ·{" "}
-        {t("modelAccess")}: {t("unverified")}
+      <label>
+        {t("connectionRoute")}
+        <select
+          aria-label={t("connectionRoute")}
+          value={route}
+          disabled={busy || active}
+          onChange={(e) => {
+            setChosenRoute(e.target.value as ConnectionRoute);
+            setError("");
+          }}
+        >
+          <option value="codex_app_agent">{t("appAgentRoute")}</option>
+          <option value="local_api_byok">{t("byokRoute")}</option>
+        </select>
+      </label>
+      <p role="status">
+        {isApp
+          ? appAttached
+            ? t("appWorkerConnected")
+            : waiting
+              ? t("appWorkerWaiting")
+              : t("unverified")
+          : connection?.verified
+            ? t("verified")
+            : t("unverified")}{" "}
+        · {t("modelAccess")}: {t("unverified")}
       </p>
-      <p className="quiet">{t("credentialHint")}</p>
+      {isApp ? (
+        <>
+          <p className="quiet">{t("appAgentHint")}</p>
+          <p className="quiet">{t("appAgentBoundary")}</p>
+          <p className="quiet">{t("appAgentNoFallback")}</p>
+        </>
+      ) : (
+        <p className="quiet">{t("credentialHint")}</p>
+      )}
       {connection?.reason && <p className="quiet">{connection.reason}</p>}
       <form
         onSubmit={async (e) => {
           e.preventDefault();
           const form = e.currentTarget,
-            data = new FormData(form),
-            secret = form.elements.namedItem("apiKey") as HTMLInputElement;
+            secret = form.elements.namedItem(
+              "apiKey",
+            ) as HTMLInputElement | null;
           setBusy(true);
           setError("");
           try {
-            onConnection(
-              await api.connect({
-                connectionId: String(data.get("connectionId")),
-                apiKey: String(data.get("apiKey")),
-                remember: data.get("remember") === "on",
-              }),
+            const data = isApp ? undefined : new FormData(form);
+            const input = connectionRequest(
+              route,
+              data
+                ? {
+                    connectionId: data.get("connectionId"),
+                    apiKey: data.get("apiKey"),
+                    remember: data.get("remember") === "on",
+                  }
+                : {},
             );
+            onConnection(await api.connect(input));
           } catch (cause) {
             setError(String(cause));
           } finally {
-            secret.value = "";
+            if (secret) secret.value = "";
             setBusy(false);
           }
         }}
       >
-        <label>
-          {t("connectionAlias")}
-          <input
-            name="connectionId"
-            required
-            autoComplete="off"
-            disabled={busy || connection?.verified}
-          />
-        </label>
-        <label>
-          API key
-          <input
-            name="apiKey"
-            type="password"
-            required
-            autoComplete="off"
-            spellCheck={false}
-            disabled={busy || connection?.verified}
-          />
-        </label>
-        <label className="checkbox">
-          <input
-            name="remember"
-            type="checkbox"
-            disabled={busy || connection?.verified}
-          />
-          {t("rememberCredential")}
-        </label>
-        <button disabled={busy || connection?.verified}>{t("login")}</button>
+        {!isApp && (
+          <>
+            <label>
+              {t("connectionAlias")}
+              <input
+                name="connectionId"
+                required
+                autoComplete="off"
+                disabled={busy || active}
+              />
+            </label>
+            <label>
+              API key
+              <input
+                name="apiKey"
+                type="password"
+                required
+                autoComplete="off"
+                spellCheck={false}
+                disabled={busy || active}
+              />
+            </label>
+            <label className="checkbox">
+              <input
+                name="remember"
+                type="checkbox"
+                disabled={busy || active}
+              />
+              {t("rememberCredential")}
+            </label>
+          </>
+        )}
+        <button disabled={busy || active}>
+          {t(isApp ? "openAppAgentChannel" : "login")}
+        </button>
         <button
           type="button"
-          disabled={busy || !connection?.verified}
+          disabled={busy || !active}
           onClick={async () => {
             setBusy(true);
             setError("");

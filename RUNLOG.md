@@ -22,7 +22,7 @@ G8-T14/G8 owner accepted. G9 T01–T09 локально реализованы; 
 
 ## Старт Web M1 — 2026-11-10
 
-Текущий handoff 2026-11-11,17:10MSK: owner требует Codex App agents без API key; key/budget вопрос снят (owner budget cap отсутствует, service limits сохраняются). Новая остановка — supported PAOS→existing-App-agent bridge/route contract, а не отсутствие ключа. PAOS-0004/PAOS-0040 и PAOS-0041 API component evidence сохранены;0042/0043/0044 unfinished, PAOS-0045 blocked без новогоintegrationproof. Runtime code не менялся; activefixture55/Web213/browser669/headless33/Python209 прежнего provenance. [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md) владеет источниками/route audit. Manual tester script владельцу не назначать.
+Текущий handoff 2026-11-11: PAOS-0039 default App-agent pull реализован без API key; настоящий App worker ответил на PAOS UI job, результат сохранён/показан16/16. Web238/strict/build/activefixture55/browser669/headless33 passed. Исправлены selector race/global fence, queued ACK, secret echo и stale connection; failed receipts сохранены. PAOS-0004/PAOS-0040 и PAOS-0041 API component evidence прежние; PAOS-0042/0043/0044 in_progress, PAOS-0045 blocked: automatic host wakeup, native scoped Execution/approvals и recovery ещё не подтверждены; official proxy WSA10050. Manual owner testing не требуется. [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md) — текущие sources/evidence/claim ceiling.
 
 Датированный baseline 10 ноября:
 

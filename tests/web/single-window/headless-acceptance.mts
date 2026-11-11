@@ -64,8 +64,12 @@ try {
       const connection = await (await request('/connection')).json();
       check('no_provider_connection', connection.verified === false);
       const state = await (await request(`/runtime/state?projectId=${project.id}&sessionId=${sessionId}`)).json();
-      check('send_fails_closed', state.canSend === false && (await request('/runtime/send', {
-        projectId: project.id, sessionId, input: 'Never dispatch this fixture' })).status === 409);
+      const deniedSend=await request('/runtime/send', {
+        projectId: project.id, sessionId, input: 'Never dispatch this fixture' });
+      const denial=await deniedSend.json();
+      // The default App route has no attached worker or binding; no inference runtime is launched.
+      check('send_fails_closed', connection.route==='codex_app_agent' && state.canSend===false
+        && state.reason==='app_agent_not_attached' && deniedSend.status===404 && denial.error?.code==='binding_not_found');
       const backup = await request(`/projects/${project.id}/backups`, {});
       check('real_database_backup', backup.status === 200);
       const backupReceipt = await backup.json();

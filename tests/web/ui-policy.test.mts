@@ -113,6 +113,13 @@ test("historical terminal runs permit mode/target changes while active and unkno
     false,
   );
 });
+test('App queue Stop stays available before claim and while cancellation awaits worker ACK',()=>{
+  for(const state of ['queued','claimed','cancel_requested']) {
+    const snapshot={canSend:false,reason:null,bindingId:'b',runId:'r',state};
+    assert.equal(runBlocksScopeChange(snapshot),true);
+    assert.equal(canStopRun(snapshot),true);
+  }
+});
 test("history correlation uses exact entity identifiers rather than matching source text", () => {
   assert.equal(
     eventReferencesEntity(
