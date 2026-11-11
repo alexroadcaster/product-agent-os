@@ -48,6 +48,8 @@ export type Connection = {
   nativeSandbox?: boolean;
   cooperativeCancel?: boolean;
   modelAccess?: string;
+  hostTransport?:{status:'unavailable'|'unverified';reason:string;transport:'websocket_over_stdio_proxy';checkedAt?:string};
+  capabilities?:{executionConfigured?:boolean;nativeSandbox?:boolean;sandboxScope?:string;appHostSandboxVerified?:boolean};
 };
 export type Change = {
   expectedRevision: number;
@@ -55,6 +57,8 @@ export type Change = {
   delete?: boolean;
 };
 export type RuntimeState = {
+  recovery?:{canCancelUndispatched:boolean};
+  capabilities?:{executionConfigured?:boolean;nativeSandbox?:boolean;sandboxScope?:string;appHostSandboxVerified?:boolean};
   visibleDrafts?: readonly {
     runId: string;
     sourceItemId: string;
@@ -79,6 +83,7 @@ export type RuntimeState = {
     bindingId?: string;
     expiresAt?: number;
     reviewable?: boolean;
+    source?:string;
     state?: string;
     details?: { command?: string; reason?: string; changes?: unknown };
   }[];
@@ -128,6 +133,8 @@ export type SourceCoverage = {
 };
 export type HistoryEvent = {
   seq: number;
+  actorId?: string;
+  occurredAt?: string;
   entityId?: string;
   kind?: string;
   type?: string;
@@ -240,6 +247,7 @@ export interface M1Api {
     projectId: string,
     cursor?: string,
   ): Promise<{ items: HistoryEvent[]; nextCursor: string }>;
+  history(projectId:string,cursor?:string):Promise<{items:HistoryEvent[];nextCursor:string}>;
   previewImport(
     projectId: string,
     sourceName: string,
@@ -459,6 +467,7 @@ export function createHttpApi(fetcher: typeof fetch = fetch): M1Api {
       request(
         `${projectPath(id)}/events${cursor ? `?${new URLSearchParams({ cursor })}` : ""}`,
       ),
+    history:(id,cursor)=>request(`${projectPath(id)}/history${cursor?`?${new URLSearchParams({cursor})}`:''}`),
     previewImport: (id, sourceName, content, sourceRelativePath) =>
       request(`${projectPath(id)}/imports/preview`, {
         sourceName,

@@ -22,7 +22,7 @@ G8 commands: `python -B -m unittest discover -s tests -p "test_*.py" -q`; focuse
 
 ## Проверки Web M1 — актуальный маршрут 2026-11-10
 
-Актуальный follow-up 2026-11-11: `node --test tests/web/*.test.mts`238/238 no skips, `npm run check:web-m1` и `npm --prefix apps/web run build` exit0; explicit App-agent acceptance16 actual attached App worker, active-runtime fixture55, browser669 и headless33 passed/cleaned. tests/web/single-window/app-agent-acceptance.mts --app-agent-browser требует real App worker с heartbeat; это не автоматический wakeup. Execution/native sandbox blocked; provider SDK/API key не используются. Native vault/auth, autonomous-launcher-acceptance.mts56 и standalone-BVldIt сохраняют прежние даты, standalone-acceptance.mts/APP_ANCESTOR — history. [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md) владеет commands/hashes/failed receipts/gates.
+Актуальный follow-up 2026-11-11: `node --test tests/web/*.test.mts`306/306 skip0 (6.667s), `npm run check:web-m1`/build exit0; actual `app-broker-acceptance.mts --app-broker-browser`105, task-lifecycle-browser39, data-journeys-browser25, native default broker149162 и headless33 passed/cleaned. Current workload10k/100k/1k: search p95 278.714ms, ACK9.504ms, page28.453ms; coldGUI/event-visible/exact4core не измерены. Runtime manifest/compat6, exacttuple loader+drift fences passed. Старые geometry669/explicitfixture55 и plugin1450/91/26 имеют прежний provenance, не новый model proof. Без отдельного provider/API key; [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md) владеет commands/hashes/RED/failed receipts и AC map.
 
 Датированный baseline 10 ноября:
 

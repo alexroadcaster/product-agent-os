@@ -22,7 +22,7 @@ G8-T14/G8 owner accepted. G9 T01–T09 локально реализованы; 
 
 ## Старт Web M1 — 2026-11-10
 
-Текущий handoff 2026-11-11: PAOS-0039 default App-agent pull реализован без API key; настоящий App worker ответил на PAOS UI job, результат сохранён/показан16/16. Web238/strict/build/activefixture55/browser669/headless33 passed. Исправлены selector race/global fence, queued ACK, secret echo и stale connection; failed receipts сохранены. PAOS-0004/PAOS-0040 и PAOS-0041 API component evidence прежние; PAOS-0042/0043/0044 in_progress, PAOS-0045 blocked: automatic host wakeup, native scoped Execution/approvals и recovery ещё не подтверждены; official proxy WSA10050. Manual owner testing не требуется. [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md) — текущие sources/evidence/claim ceiling.
+Текущий handoff 2026-11-11: M1 technical18/18 в выбранном App-active маршруте. Actual App+offline native broker105, task39/data25/headless33/Web306/strict/build/manifest6 passed; source149162. Исправлены WebSocket framing/endpoint diagnosis, capability redaction/cleanup, mode-selection restart, cutover backupId replay, подробная durable History/comment privacy и TaskForm summary corruption. GPT-6-Astra/high independent review closed_allowed в bounded scope; failed receipts/owner rejection сохранены. Активный App consumer необходим; whole-App sandbox, Desktop daemon, automatic wakeup и host quota не доказаны; human/commercial/release отдельно. Следующая задача PAOS-0046. [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md).
 
 Датированный baseline 10 ноября:
 
@@ -31,6 +31,8 @@ PAOS-0001 реализован в границах адаптера. Persisted `
 PAOS-0002 и PAOS-0003 реализованы в границах локальных контрактов. PAOS-0004 и PAOS-0040 имеют локально проверенную основу, integration и UI остаются открытыми. В PAOS-0039 проверена политика локального preview; AUTH-G1 ждёт коммерческого решения владельца. Статусы и команды закреплены в [карточках Web-плана](research/product-agent-os-web-task-manager-plan-2026-11-09.md) и JSON.
 
 Продолжение M1: PAOS-0004 получил форму с восстановлением настроек и обработкой ошибок, PAOS-0040 подтвердил резервирование на двух синтетических процессах. PAOS-0054 проверил форму закреплённого протокола, семантику событий и файловые SQLite-возможности. Текущий runner подтвердил AppContainer/restricted token, точная стадия отказа PSEC неизвестна. Подтверждённого native write/deny нет, PAOS-0045 открыта. [Проверки и остаточные границы](research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+
+Ранее квалифицированные компоненты PAOS-0041, PAOS-0042 сохраняют исходные receipts; их исторический scope не переопределён новым маршрутом.
 
 ## Подготовка control-plane к Web M1 — 2026-11-10
 

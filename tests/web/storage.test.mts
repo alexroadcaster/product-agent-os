@@ -257,7 +257,7 @@ test('the bounded seven-day replay window retains the full audit and rejects an 
   } finally { await store.close(); }
 });
 
-test('comment edits retain their prior body and revision in durable audit', async (t) => {
+test('comment audit retains revisions and metadata without exposing old or deleted comment text', async (t) => {
   const { root, databasePath } = await fixture(t);
   const store = await openLocalStore({ databasePath });
   try {
@@ -270,8 +270,54 @@ test('comment edits retain their prior body and revision in durable audit', asyn
     }
     const events = await store.audit('p1');
     const payload = events.items.at(-1)?.payload as { commentChanges: { previous: { body: string; revision: number } }[] };
-    assert.deepEqual(payload.commentChanges[0]?.previous, { body: 'body-0', title: '', revision: 1 });
+    assert.deepEqual(payload.commentChanges[0]?.previous, { revision: 1 });
+    assert.equal((payload.commentChanges[0] as any).contentExcluded,true);
+    assert.equal(JSON.stringify(events).includes('body-0'),false);assert.equal(JSON.stringify(events).includes('body-1'),false);
   } finally { await store.close(); }
+});
+
+test('task history retains bounded old/new fields with actor time and transaction source without copying secrets or message bodies',async(t)=>{
+ const {root,databasePath}=await fixture(t);const store=await openLocalStore({databasePath});
+ try{
+  await store.registerProject({id:'p1',keyPrefix:'TEST',canonicalRoot:root,rootIdentity:'history-fixture',authorityMode:'sql'});
+  const initial={...task(),title:'Before history'};
+  await store.write({projectId:'p1',actorId:'synthetic-editor',expectedAuthorityEpoch:1,idempotencyKey:'history-create',changes:[{expectedRevision:0,entity:{id:initial.id,kind:'task',data:initial}}]});
+  const update={projectId:'p1',actorId:'synthetic-editor',expectedAuthorityEpoch:1,idempotencyKey:'history-edit',changes:[{expectedRevision:1,entity:{id:initial.id,kind:'task' as const,data:{...initial,title:'After history',summary:'sk-proj-SyntheticSecretCanary12345 password=InlineSecret api_key="InlineKey"'}}}]};
+  await store.write(update);await store.write(update);
+  const audit=await store.audit('p1');assert.equal(audit.items.length,2);const event=audit.items[1];const payload=event.payload as any;
+  assert.equal(event.actorId,'synthetic-editor');assert.match(event.occurredAt,/^\d{4}-\d\d-\d\dT/);
+  const change=payload.taskChanges?.find((entry:any)=>entry.id===initial.id);assert.ok(change,'task change must be recorded');
+  assert.equal(change.previousRevision,1);assert.equal(change.currentRevision,2);assert.equal(change.source,'transactional_command');assert.equal(change.reason,null);
+  const title=change.fields.find((field:any)=>field.field==='title');assert.equal(title.previous,'Before history');assert.equal(title.current,'After history');
+  assert.equal(JSON.stringify(payload).includes('sk-proj-SyntheticSecretCanary12345'),false);assert.equal(change.fields.find((field:any)=>field.field==='summary').redacted,true);
+  assert.equal(JSON.stringify(payload).includes('InlineSecret'),false);assert.equal(JSON.stringify(payload).includes('InlineKey'),false);
+  assert.equal('data' in change,false);assert.equal('body' in change,false);assert.equal(typeof payload.commandId,'string');
+ }finally{await store.close();}
+});
+
+test('legacy comment body receipts remain immutable internally but are removed from public replay and audit',async(t)=>{
+ const {root,databasePath}=await fixture(t);let store=await openLocalStore({databasePath});
+ try{
+  await store.registerProject({id:'p1',keyPrefix:'TEST',canonicalRoot:root,rootIdentity:'legacy-history',authorityMode:'sql'});
+  await store.write({projectId:'p1',actorId:'legacy-actor',expectedAuthorityEpoch:1,idempotencyKey:'legacy-event',changes:[{expectedRevision:0,entity:{id:task().id,kind:'task',data:task()}}]});
+  await store.close();const {DatabaseSync}=await import('node:sqlite');const db=new DatabaseSync(databasePath);
+  const legacy=JSON.stringify({schemaVersion:1,revisions:[{id:'old-comment',revision:2}],commentChanges:[{id:'old-comment',previous:{revision:1,title:'Note',body:'Deleted legacy private body'},current:{revision:2,title:'Note',body:'Current legacy private body',deleted:true}}]});
+  try{db.prepare('UPDATE events SET payload=? WHERE project_id=?').run(legacy,'p1');}finally{db.close();}
+  store=await openLocalStore({databasePath});
+  for(const page of [await store.events('p1'),await store.audit('p1')]){assert.equal(JSON.stringify(page).includes('legacy private body'),false);assert.equal(JSON.stringify(page).includes('Note'),false);assert.equal((page.items[0].payload as any).commentChanges[0].previous.revision,1);assert.equal((page.items[0].payload as any).commentChanges[0].contentExcluded,true);assert.equal(page.items[0].actorId,'legacy-actor');}
+  await store.close();const retained=new DatabaseSync(databasePath);try{assert.equal(retained.prepare('SELECT payload FROM events WHERE project_id=?').get('p1')!.payload,legacy);}finally{retained.close();}
+ }finally{await store.close();}
+});
+
+test('large changed task values expose explicit partial history metadata rather than silently copying full state',async(t)=>{
+ const {root,databasePath}=await fixture(t);const store=await openLocalStore({databasePath});
+ try{
+  await store.registerProject({id:'p1',keyPrefix:'TEST',canonicalRoot:root,rootIdentity:'history-budget',authorityMode:'sql'});
+  await store.write({projectId:'p1',actorId:'user',expectedAuthorityEpoch:1,idempotencyKey:'large-history',changes:[{expectedRevision:0,entity:{id:task().id,kind:'task',data:{...task(),summary:'large-value '.repeat(600)}}}]});
+  const change=(await store.audit('p1')).items[0].payload as any;const field=change.taskChanges[0].fields.find((field:any)=>field.field==='summary');
+  assert.equal(field.coverage,'partial');assert.equal(field.current.unavailable,'value_exceeds_history_budget');assert.equal(typeof field.current.sha256,'string');
+  assert.equal(JSON.stringify(change).includes('large-value '.repeat(600)),false);
+ }finally{await store.close();}
 });
 
 test('an idle-required command is serialized with run intents and pending approvals while a committed retry stays idempotent', async (t) => {

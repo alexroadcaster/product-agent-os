@@ -48,6 +48,13 @@ test('cutover rejects source drift and unmanaged writers, then rehearses restore
   complete = true;
   const result = await manager.cutover(input);
   assert.equal(result.mappingCount, 1);
+  // A fresh manager models a lost HTTP ACK followed by process restart/retry.
+  const restarted = createMigrationManager({store, profileDirectory: root,
+    inventory: async()=>({complete:false,entries:[]})});
+  const replay = await restarted.cutover(input);
+  assert.ok(result.backupId);
+  assert.equal(replay.backupId, result.backupId);
+  assert.deepEqual(replay.receipt, result.receipt);
   assert.equal((await store.project('p'))!.authorityMode, 'sql');
   assert.equal((await store.project('p'))!.authorityEpoch, epoch + 1);
   const exported = await manager.reverseTransfer('p');
@@ -65,6 +72,21 @@ test('cutover rejects source drift and unmanaged writers, then rehearses restore
   ] });
   await assert.rejects(manager.cutover({ ...input, stageId: 'stage-export', currentSource: exportedContent,
     sourceDigest: proposal.sourceDigest, expectedAuthorityEpoch: epoch + 1, idempotencyKey: 'no-auto-reimport' }), { code: 'IMPORT_PROPOSAL_ONLY' });
+});
+
+test('legacy committed cutover without a backup receipt stays replayable without inventing its backup', async (t) => {
+  const {store,root,preview,epoch}=await fixture(t,true);
+  await store.write({projectId:'p',actorId:'user',expectedAuthorityEpoch:epoch,idempotencyKey:'legacy-stage',changes:[
+    {expectedRevision:0,entity:{id:'legacy-stage',kind:'document',data:{...preview,category:'import_staging'}}}]});
+  const promotion={projectId:'p',actorId:'user',expectedAuthorityEpoch:epoch,sourceDigest:preview.sourceDigest,
+    verifiedSourceDigest:preview.sourceDigest,writerInventoryVerified:true,restoreRehearsalVerified:true,
+    items:preview.items.map(item=>item.task),idempotencyKey:'legacy-cutover'};
+  const original=await store.promoteLegacy(promotion);
+  const manager=createMigrationManager({store,profileDirectory:root,inventory:async()=>({complete:false,entries:[]})});
+  const replay=await manager.cutover({projectId:'p',stageId:'legacy-stage',actorId:'user',currentSource:content,
+    sourceDigest:preview.sourceDigest,expectedAuthorityEpoch:epoch,idempotencyKey:'legacy-cutover'});
+  assert.deepEqual(replay.receipt,original);assert.equal(replay.backupId,null);
+  assert.equal((await store.project('p'))!.authorityEpoch,epoch+1);
 });
 
 test('domain commands use trusted scope, preserve proposals and never grant Done', async (t) => {

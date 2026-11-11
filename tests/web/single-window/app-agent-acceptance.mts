@@ -18,7 +18,7 @@ async function main(){
  let service:Awaited<ReturnType<typeof startLocalService>>|undefined,context:any;
  const note=async(value:unknown)=>writeFile(coordination,JSON.stringify(value,null,2));
  try{
-  service=await startLocalService({profileDirectory,instanceId:randomUUID()});const origin=`http://127.0.0.1:${service.port}`;
+  service=await startLocalService({profileDirectory,instanceId:randomUUID()},{sandboxBrokerFactory:false});const origin=`http://127.0.0.1:${service.port}`;
   const {chromium}=await import(pathToFileURL(join(args['--playwright-core'],'index.mjs')).href);
   context=await chromium.launchPersistentContext(browserHome,{headless:true,chromiumSandbox:true,serviceWorkers:'block',viewport:{width:1440,height:1000},locale:'ru-RU',executablePath:args['--chromium'],timeout:20000,
    env:{SystemRoot:process.env.SystemRoot!,USERPROFILE:browserHome,HOME:browserHome,APPDATA:browserHome,LOCALAPPDATA:browserHome,TEMP:browserHome,TMP:browserHome}});

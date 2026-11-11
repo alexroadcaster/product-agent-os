@@ -1,8 +1,8 @@
 import {join,isAbsolute} from 'node:path';
 import {open,lstat,unlink} from 'node:fs/promises';
 import {randomBytes,createHash,timingSafeEqual} from 'node:crypto';
-export type AppAgentAction='attach'|'heartbeat'|'claim'|'report';
-export type AppAgentDescriptor=Readonly<{schemaVersion:'paos_app_agent_channel_v1';instanceId:string;origin:string;capabilityToken:string}>;
+export type AppAgentAction='attach'|'heartbeat'|'claim'|'report'|'command'|'operation'|'progress'|'reconcile';
+export type AppAgentDescriptor=Readonly<{schemaVersion:'paos_app_agent_channel_v1';instanceId:string;origin:string;capabilityToken:string;profileId?:string}>;
 const fail=(code:string):never=>{throw Object.assign(new Error(code),{code});};
 export function validatedAgentOrigin(origin:string):string {
  const url=new URL(origin);
@@ -13,17 +13,20 @@ function equal(first:string,second:string){return timingSafeEqual(createHash('sh
 function response(value:unknown,status=200){return Response.json(value??null,{status,headers:{'cache-control':'no-store','x-content-type-options':'nosniff'}});}
 
 /** A private per-instance capability channel. Browser cookies confer no authority here. */
-export async function createAppAgentChannel(options:Readonly<{profileDirectory:string;instanceId:string;origin:string;assertProfile:()=>Promise<void>;dispatch:(action:AppAgentAction,input:Record<string,unknown>)=>Promise<unknown>}>) {
+export async function createAppAgentChannel(options:Readonly<{profileDirectory:string;instanceId:string;origin:string;profileId?:string;assertProfile:()=>Promise<void>;dispatch:(action:AppAgentAction,input:Record<string,unknown>)=>Promise<unknown>}>) {
  validatedAgentOrigin(options.origin);
  if(!isAbsolute(options.profileDirectory)||!/^[A-Za-z0-9-]{1,80}$/.test(options.instanceId))fail('AGENT_DESCRIPTOR_INVALID');
  await options.assertProfile();
  const directory=await lstat(options.profileDirectory);if(!directory.isDirectory()||directory.isSymbolicLink())fail('AGENT_PROFILE_INVALID');
  const descriptorPath=join(options.profileDirectory,`app-agent-${options.instanceId}.json`);
- const descriptor:AppAgentDescriptor={schemaVersion:'paos_app_agent_channel_v1',instanceId:options.instanceId,origin:options.origin,capabilityToken:randomBytes(32).toString('hex')};
+ if(options.profileId!==undefined&&!/^[A-Za-z0-9_-]{1,100}$/.test(options.profileId))fail('AGENT_PROFILE_INVALID');
+ const descriptor:AppAgentDescriptor={schemaVersion:'paos_app_agent_channel_v1',instanceId:options.instanceId,origin:options.origin,capabilityToken:randomBytes(32).toString('hex'),...(options.profileId?{profileId:options.profileId}:{})};
  const encoded=JSON.stringify(descriptor);const file=await open(descriptorPath,'wx',0o600);
  let identity;try{await file.writeFile(encoded);await file.sync();identity=await file.stat({bigint:true});}finally{await file.close();}
  let closed=false;
  return {descriptorPath,
+  /** Backend-only sink guard; callers get a redaction function, never the capability value. */
+  redact:(text:string)=>text.replaceAll(descriptor.capabilityToken,'[REDACTED]'),
   async handle(request:Request):Promise<Response>{
    try {
     if(closed)fail('AGENT_CHANNEL_CLOSED');
@@ -31,7 +34,7 @@ export async function createAppAgentChannel(options:Readonly<{profileDirectory:s
     if(url.origin!==options.origin||request.headers.get('host')!==new URL(options.origin).host||request.headers.get('origin')!==options.origin
      ||request.headers.has('forwarded')||request.headers.has('x-forwarded-host')||request.headers.get('sec-fetch-site')==='cross-site')fail('AGENT_ORIGIN_REJECTED');
     if(request.method!=='POST')fail('AGENT_METHOD_REJECTED');
-    const match=/^\/agent\/v1\/(attach|heartbeat|claim|report)$/.exec(url.pathname);
+    const match=/^\/agent\/v1\/(attach|heartbeat|claim|report|command|operation|progress|reconcile)$/.exec(url.pathname);
     if(!match||url.search)throw Object.assign(new Error('AGENT_ROUTE_NOT_FOUND'),{code:'AGENT_ROUTE_NOT_FOUND'});
     const bearer=request.headers.get('authorization')??'';
     if(!bearer.startsWith('Bearer ')||!equal(bearer.slice(7),descriptor.capabilityToken))fail('AGENT_CAPABILITY_REQUIRED');
@@ -42,7 +45,8 @@ export async function createAppAgentChannel(options:Readonly<{profileDirectory:s
     let input:unknown;try{input=JSON.parse(Buffer.concat(chunks).toString('utf8'));}catch{fail('AGENT_JSON_INVALID');}
     if(!input||typeof input!=='object'||Array.isArray(input))fail('AGENT_INPUT_INVALID');
     // A worker can accidentally echo its local channel capability in a final answer.
-    if(match[1]==='report'&&typeof (input as Record<string,unknown>).text==='string') {
+    if(match[1]==='command'&&JSON.stringify((input as Record<string,unknown>).argv).includes(descriptor.capabilityToken))fail('AGENT_CREDENTIAL_REJECTED');
+    if(['report','progress'].includes(match[1])&&typeof (input as Record<string,unknown>).text==='string') {
       (input as Record<string,unknown>).text=((input as Record<string,unknown>).text as string).replaceAll(descriptor.capabilityToken,'[REDACTED]');
     }
     await options.assertProfile();if(closed)fail('AGENT_CHANNEL_CLOSED');

@@ -5,6 +5,7 @@ import {
   initialConnectionRoute,
   hasActiveConnection,
   connectionRequest,
+  appHostTransportLabel,
 } from "./connection-controls-model.ts";
 /** Secret input lives only in the native control and is cleared after each submission. */
 export function ConnectionControls({
@@ -33,9 +34,11 @@ export function ConnectionControls({
   const waiting =
     connection?.route === "codex_app_agent" &&
     connection.state === "waiting_for_worker";
+  const hostLabel=appHostTransportLabel(connection);
   return (
     <section className="panel">
       <h2>{t("connection")}</h2>
+      {hostLabel && <p className="quiet">{t(hostLabel)}</p>}
       <label>
         {t("connectionRoute")}
         <select
@@ -66,7 +69,7 @@ export function ConnectionControls({
       {isApp ? (
         <>
           <p className="quiet">{t("appAgentHint")}</p>
-          <p className="quiet">{t("appAgentBoundary")}</p>
+          <p className="quiet">{t(connection?.capabilities?.executionConfigured?'appBrokerBoundary':"appAgentBoundary")}</p>
           <p className="quiet">{t("appAgentNoFallback")}</p>
         </>
       ) : (

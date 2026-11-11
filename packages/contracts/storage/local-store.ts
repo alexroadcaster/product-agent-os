@@ -28,6 +28,8 @@ export type StoreWrite = Readonly<{
 }>;
 export type StoreReceipt = Readonly<{
   commandId: string; projectId: string; seq: number; revisions: readonly { id: string; revision: number }[];
+  /** Original pre-cutover backup, atomically retained for lost-ACK retries. Legacy receipts may omit it. */
+  cutoverBackupId?: string;
 }>;
 export type StoreEventPage = Readonly<{
   generation: string;
@@ -40,6 +42,7 @@ export type PromoteLegacy = Readonly<{
   verifiedSourceDigest: string; writerInventoryVerified: boolean; restoreRehearsalVerified: boolean;
   items: readonly M1TaskProfile[]; idempotencyKey: string;
   sourceBindings?: readonly ImportSourceBinding[];
+  cutoverBackupId?: string;
 }>;
 export type ImportSourceBinding = Readonly<{ role: 'records' | 'projection'; sourceName: string; sourceRelativePath: string;
   sourceDigest: string; byteSize: number }>;

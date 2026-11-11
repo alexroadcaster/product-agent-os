@@ -23,6 +23,25 @@ test('channel capability echoed in a report is scrubbed before dispatch can pers
  const response=await channel.handle(new Request(origin+'/agent/v1/report',{method:'POST',headers:{host:'127.0.0.1:41111',origin,authorization:`Bearer ${descriptor.capabilityToken}`,'content-type':'application/json'},body:JSON.stringify({text:`Result ${descriptor.capabilityToken}`})}));
  assert.equal(response.status,200);assert.deepEqual(observed,{text:'Result [REDACTED]'});
 });
+test('native command proposals cannot persist a channel capability in argv',async(t)=>{
+ const profileDirectory=await mkdtemp(join(tmpdir(),'paos-cap-command-'));t.after(()=>rm(profileDirectory,{recursive:true,force:true}));let calls=0;
+ const origin='http://127.0.0.1:41111';const channel=await createAppAgentChannel({profileDirectory,instanceId:'command',origin,assertProfile:async()=>{},dispatch:async()=>{calls++;return {};}});t.after(()=>channel.close());
+ const descriptor=JSON.parse(await readFile(channel.descriptorPath,'utf8'));
+ const response=await channel.handle(new Request(origin+'/agent/v1/command',{method:'POST',headers:{host:'127.0.0.1:41111',origin,authorization:`Bearer ${descriptor.capabilityToken}`,'content-type':'application/json'},body:JSON.stringify({argv:['echo',descriptor.capabilityToken]})}));
+ assert.equal(response.status,409);assert.deepEqual(await response.json(),{error:{code:'AGENT_CREDENTIAL_REJECTED'}});assert.equal(calls,0);
+});
+test('client reattaches the same generation with a new private lease without deleting prior state on failure',async(t)=>{
+ const profileDirectory=await mkdtemp(join(tmpdir(),'paos-client-reattach-'));t.after(()=>rm(profileDirectory,{recursive:true,force:true}));let count=0,deny=false;
+ const origin='http://127.0.0.1:41111';const channel=await createAppAgentChannel({profileDirectory,instanceId:'reattach',origin,assertProfile:async()=>{},dispatch:async(action,input)=>{
+  if(deny)throw Object.assign(new Error('private'),{code:'worker_busy'});
+  if(action==='attach')return {workerId:input.workerId,generation:input.generation,leaseToken:`synthetic-private-${++count}`,expiresAt:Date.now()+30000};return {};
+ }});t.after(()=>channel.close());
+ const fetcher:typeof fetch=async(input,init)=>{const request=new Request(input,init);if(new URL(request.url).pathname==='/health')return Response.json({instanceId:'reattach',alive:true});request.headers.set('host','127.0.0.1:41111');return channel.handle(request);};
+ const options={descriptorPath:channel.descriptorPath,workerId:'worker'};await callAppAgent({...options,action:'attach'},{fetch:fetcher});const statePath=channel.descriptorPath+'.worker-worker.json',before=JSON.parse(await readFile(statePath,'utf8'));
+ const result=await callAppAgent({...options,action:'reattach' as any},{fetch:fetcher});const after=JSON.parse(await readFile(statePath,'utf8'));
+ assert.equal(after.generation,before.generation);assert.notEqual(after.leaseToken,before.leaseToken);assert.equal(JSON.stringify(result).includes(after.leaseToken),false);
+ deny=true;await assert.rejects(callAppAgent({...options,action:'reattach' as any},{fetch:fetcher}));assert.deepEqual(JSON.parse(await readFile(statePath,'utf8')),after);
+});
 test('profile revocation and stale health fail closed without worker dispatch or secret error text',async(t)=>{
  const profileDirectory=await mkdtemp(join(tmpdir(),'paos-channel-fences-'));t.after(()=>rm(profileDirectory,{recursive:true,force:true}));let current=true,calls=0;
  const origin='http://127.0.0.1:41111';const channel=await createAppAgentChannel({profileDirectory,instanceId:'fixture',origin,assertProfile:async()=>{if(!current)throw Object.assign(new Error('private detail'),{code:'PROFILE_ROOT_UNAVAILABLE'});},dispatch:async()=>{calls++;return {};}});

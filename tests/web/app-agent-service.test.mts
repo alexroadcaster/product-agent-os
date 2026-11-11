@@ -24,7 +24,7 @@ for(const route of ['codex_app_agent','local_api_byok'] as const)test(`productio
 
 test('production service selects App agents without opening API auth and persists the scoped result',async(t)=>{
  const root=await mkdtemp(join(tmpdir(),'paos-app-service-'));const target=join(root,'workspace');await mkdir(target);
- const service=await startLocalService({profileDirectory:join(root,'profile'),instanceId:'app-agent-test'});
+ const service=await startLocalService({profileDirectory:join(root,'profile'),instanceId:'app-agent-test'},{sandboxBrokerFactory:false});
  t.after(async()=>{await service.quit();await rm(root,{recursive:true,force:true});});
  const origin=`http://127.0.0.1:${service.port}`;
  const paired=await fetch(`${origin}/bootstrap/exchange`,{method:'POST',headers:{origin,'content-type':'application/json'},body:JSON.stringify({code:service.pairingCode})});
@@ -32,6 +32,9 @@ test('production service selects App agents without opening API auth and persist
  async function api(path:string,input?:unknown){const response=await fetch(`${origin}/api/v1${path}`,{method:input===undefined?'GET':'POST',headers:{origin,cookie,'content-type':'application/json','x-paos-csrf':csrfToken},body:input===undefined?undefined:JSON.stringify(input)});return {status:response.status,body:await response.json() as any};}
  const connected=await api('/connection',{route:'codex_app_agent',connectionId:'codex-app'});
  assert.equal(connected.status,200,JSON.stringify(connected.body));assert.equal(connected.body.route,'codex_app_agent');assert.equal(connected.body.verified,false);
+ assert.equal(connected.body.hostTransport.transport,'websocket_over_stdio_proxy');
+ assert.notEqual(connected.body.hostTransport.status,'ready');
+ assert.equal(JSON.stringify(connected.body.hostTransport).includes('codexHome'),false);
  const descriptor=JSON.parse(await readFile((service as any).appAgentDescriptorPath,'utf8'));
  async function agent(action:string,input:unknown){const response=await fetch(`${origin}/agent/v1/${action}`,{method:'POST',headers:{origin,'content-type':'application/json',authorization:`Bearer ${descriptor.capabilityToken}`},body:JSON.stringify(input)});assert.equal(response.status,200);return response.json() as Promise<any>;}
  const lease=await agent('attach',{hostIdentity:'codex_app',workerId:'fixture-worker',generation:'fixture-generation'});

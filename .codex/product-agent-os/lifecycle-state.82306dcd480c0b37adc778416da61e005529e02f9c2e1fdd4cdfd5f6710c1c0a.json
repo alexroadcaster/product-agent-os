@@ -3,12 +3,12 @@
   "task_id": "PAOS-M1",
   "plan_path": "research/product-agent-os-web-task-manager-plan-2026-11-09.md",
   "scope": "Dependency-ordered local Web M1 implementation from PAOS-0001 and PAOS-0054 through PAOS-0045",
-  "updated_at": "2026-11-11T15:07:34.729160+00:00",
-  "approval_boundary": "Owner-selected Codex App agents, no separate API key; autonomous local synthetic services/browser/App worker authorized, no owner cost cap; service quotas and managed controls remain. No direct provider client, real key/auth-cache read/copy, OS-store/policy/install/Git/publication action. Native execution remains unavailable.",
-  "status": "ready_for_completion_brief",
+  "updated_at": "2026-11-11T17:02:09.765580+00:00",
+  "approval_boundary": "Completed owner-selected App-active synthetic M1: actual App worker/model plus qualified offline native command broker and autonomous local browser allowed. No separate API key/auth-cache read/copy/system-policy/user-app termination/install/Git/publication actions. Sandbox scope is PAOS-mediated commands only.",
+  "status": "completed",
   "completion_ready": true,
-  "current_continuation_scope": "PAOS-0039 keyless App-agent pull implemented; actual PAOS UI to attached Codex App worker to durable visible answer verified16/16. Native Execution and unattended host wakeup unavailable;0042/43/44 in_progress,0045 blocked.",
-  "closure": "PAOS-0039 App route implemented and activated: actual PAOS UI -> attached real Codex App worker -> durable/browser-visible answer16/16. Web238/238no skips;strict/build0;fixture55;browser669;headless33;manifest+compat6;docs105/22.007s/checker/matrix/diff0. Independent review verified17source/buildhashes,4receipts,51adapterfiles.0042/43/44in_progress;0045blocked. No fullM1/human/nativeSandbox/unattendedWakeup claim. Failed receipts/helperpost-teardownexit1 retained.",
+  "current_continuation_scope": "Completed scoped technical M1 acceptance after WSA diagnosis, offline native broker, actual App worker execution/recovery and browser task/data acceptance. No mandatory technical gaps remain within PRD17.7 scope.",
+  "closure": "M1 technical18/18 implemented. ActualApp/native/browser105;task39;data25;headless33;nativebroker149162 allmode write deny/Stop12ms;Web306skip0;strict/build0;workload10k/100k/1k3measuredtargets passed;manifest6+loader0;docs105/15.013s/checker/matrix/diff0. Independent two-stage Astra review closed_allowed. CAS roots synced;52otherJSON/MDtasks and estimates preserved. Historicalfailedreceipts/ownerrejection retained. ActiveAppconsumer required; noDesktopdaemon/automaticWakeup/wholeAppsandbox/hostprincipalquota/humancommercialrelease claim. NextPAOS-0046.",
   "prior_autonomous_closure": "Previouscontinuation0004/0040 technicalimplemented: initial401UI/autonomouslauncher56/Web197; nativeclosedApp25samples/humanrejection retained, standinglocal authorization andrequestedmemorynote saved.",
   "prior_ui_closure": "Previous continuation0004 implemented after667 browser checks;0040 external runner prepared but actual receipt not yet available. Subsequent owner receiptBVldIt retained unchanged including rejection.",
   "prior_five_task_closure": "Previous offline repair continuation: Web192/192, native headless33, docs209; five tasks in_progress. Its original receipts and source provenance retained in execution report/results.",
@@ -79,5 +79,9 @@
     "PAOS-0045 acceptance; App-active addendum is not legacy closed-App proof or human acceptance"
   ],
   "prior_brief_digest": "sha256:9583475580af9a2f452bc4400782c0e954e9aa64aa026085dcfc3a331d1fb7e7",
-  "brief_digest_scope": "normalized scope record; visible nine-field task_start_brief_v2 delivered in chat"
+  "brief_digest_scope": "normalized scope record; visible nine-field task_start_brief_v2 delivered in chat",
+  "prior_app_pull_closure": "PAOS-0039 App route implemented and activated: actual PAOS UI -> attached real Codex App worker -> durable/browser-visible answer16/16. Web238/238no skips;strict/build0;fixture55;browser669;headless33;manifest+compat6;docs105/22.007s/checker/matrix/diff0. Independent review verified17source/buildhashes,4receipts,51adapterfiles.0042/43/44in_progress;0045blocked. No fullM1/human/nativeSandbox/unattendedWakeup claim. Failed receipts/helperpost-teardownexit1 retained.",
+  "closure_contract": "product-agent-os-completion-ledger-v2",
+  "closure_level": "technical_acceptance_passed_app_active",
+  "execution_elapsed_seconds": 6562
 }

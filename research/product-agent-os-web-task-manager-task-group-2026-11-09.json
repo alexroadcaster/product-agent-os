@@ -2257,7 +2257,7 @@
       "id": "PAOS-0042",
       "group_id": "G11",
       "title": "Codex App Server adapter и ограниченное выполнение",
-      "status": "in_progress",
+      "status": "implemented",
       "short_description": "Pinned stdio protocol, project/task/run/thread/turn binding, allowlist и одна минимальная recipe",
       "technical_value": "Pinned stdio protocol, project/task/run/thread/turn binding, allowlist и одна минимальная recipe",
       "product_value": "Codex выполняет задачу непосредственно из PAOS в заданных границах.",
@@ -2364,13 +2364,12 @@
         "product-agent-os-web-auth-commercial-2026-11-09.md"
       ],
       "acceptance_criteria": [
-        "Initialize/start/events/approvals/interrupt работают на выбранном build; один writer на canonical workspace; Codex App и чужой auth profile не используются.",
-        "Architecture §21: project cursors, root fencing/global concurrency=1, mode binding boundary, answered_or_cleared отдельно от item outcome."
+        "Owner-selected App-active contract PRD §17.7 / architecture §21.10. Настоящий App worker и qualified offline native command broker: Discussion/Planning write deny, Execution inside write/outside+TEMP deny, PAOS domain approvals, idempotency, actual diffs/checks и native Stop. Ключ API/auth cache не используются. Техническая приёмка только App-active/PAOS-mediated commands; Desktop daemon, whole-App/read sandbox, automatic wakeup и реальный ChatGPT account-switch не заявляются. Human product acceptance и AUTH-G1–G6/0046/0030 отдельно."
       ],
       "estimated_duration_hms": "20:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
       "actual_started_at": null,
-      "actual_ended_at": null,
+      "actual_ended_at": "2026-11-11T19:53:17+03:00",
       "actual_duration_seconds": null,
       "actual_duration_hms": null,
       "risks": "Protocol drift, duplicate dispatch, превышение authority.",
@@ -2382,13 +2381,23 @@
         "PAOS-0055"
       ],
       "execution_order": 11,
-      "delivery_stage": "M1"
+      "delivery_stage": "M1",
+      "historical_acceptance_criteria": [
+        "Initialize/start/events/approvals/interrupt работают на выбранном build; один writer на canonical workspace; Codex App и чужой auth profile не используются.",
+        "Architecture §21: project cursors, root fencing/global concurrency=1, mode binding boundary, answered_or_cleared отдельно от item outcome."
+      ],
+      "technical_acceptance": {
+        "status": "passed",
+        "scope": "app_active_paos_mediated_commands",
+        "evidence": "product-agent-os-web-m1-execution-results-2026-11-11.json",
+        "human_acceptance": "not_inferred"
+      }
     },
     {
       "id": "PAOS-0043",
       "group_id": "G11",
       "title": "Активная сессия и минимальная карточка задачи",
-      "status": "in_progress",
+      "status": "implemented",
       "short_description": "Composer discussion/planning/execution, streaming, task draft и панель diff/checks/decisions без полного board",
       "technical_value": "Composer discussion/planning/execution, streaming, task draft и панель diff/checks/decisions без полного board",
       "product_value": "Пользователь проходит от запроса к результату в одном рабочем окне.",
@@ -2475,7 +2484,7 @@
       "estimated_duration_hms": "20:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
       "actual_started_at": null,
-      "actual_ended_at": null,
+      "actual_ended_at": "2026-11-11T19:53:17+03:00",
       "actual_duration_seconds": null,
       "actual_duration_hms": null,
       "risks": "Смешение task/comment/session или ложное завершение.",
@@ -2485,13 +2494,19 @@
         "PAOS-0048"
       ],
       "execution_order": 12,
-      "delivery_stage": "M1"
+      "delivery_stage": "M1",
+      "technical_acceptance": {
+        "status": "passed",
+        "scope": "app_active_paos_mediated_commands",
+        "evidence": "product-agent-os-web-m1-execution-results-2026-11-11.json",
+        "human_acceptance": "not_inferred"
+      }
     },
     {
       "id": "PAOS-0044",
       "group_id": "G11",
       "title": "Recovery, повторное подключение и сохранённые сессии",
-      "status": "in_progress",
+      "status": "implemented",
       "short_description": "Durable intents, lost ACK reconciliation, restart/resume, process-bound approvals и account isolation",
       "technical_value": "Durable intents, lost ACK reconciliation, restart/resume, process-bound approvals и account isolation",
       "product_value": "Пользователь продолжает работу после перерыва без потери контекста и повторных изменений.",
@@ -2567,7 +2582,7 @@
       "estimated_duration_hms": "16:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
       "actual_started_at": null,
-      "actual_ended_at": null,
+      "actual_ended_at": "2026-11-11T19:53:17+03:00",
       "actual_duration_seconds": null,
       "actual_duration_hms": null,
       "risks": "Невосстановимый outcome и частично выполненные tools.",
@@ -2575,13 +2590,19 @@
         "PAOS-0043"
       ],
       "execution_order": 13,
-      "delivery_stage": "M1"
+      "delivery_stage": "M1",
+      "technical_acceptance": {
+        "status": "passed",
+        "scope": "app_active_paos_mediated_commands",
+        "evidence": "product-agent-os-web-m1-execution-results-2026-11-11.json",
+        "human_acceptance": "not_inferred"
+      }
     },
     {
       "id": "PAOS-0045",
       "group_id": "G11",
       "title": "Приёмка сквозного M1 в одном окне",
-      "status": "blocked",
+      "status": "implemented",
       "short_description": "Проверить launch/connection/chat/task/approval/result/resume и негативные границы на разрешённом runtime",
       "technical_value": "Проверить launch/connection/chat/task/approval/result/resume и негативные границы на разрешённом runtime",
       "product_value": "Первый MVP доказывает самостоятельный пользовательский путь, а не набор статичных экранов.",
@@ -2612,12 +2633,12 @@
         "product-agent-os-web-auth-commercial-2026-11-09.md"
       ],
       "acceptance_criteria": [
-        "SW-AC-01–10, ST-AC-01–07 (M1 profile), UX-AC-01–18 (M1 slice), DATA-AC-01–05 имеют receipts по матрице v0.7; runtime/browser/workload proof отдельно от fixtures; Codex App закрыт; неразрешённые external gates pending."
+        "Owner-selected App-active contract PRD §17.7 / architecture §21.10. Все применимые SW/ST/UX/DATA M1 gates сопоставлены с actual App/native/browser/storage/workload receipts. Повторные task/data journeys после исправления History и lost-ACK backupId пройдены автономно; technical acceptance отделена от human/commercial/release. Техническая приёмка только App-active/PAOS-mediated commands; Desktop daemon, whole-App/read sandbox, automatic wakeup и реальный ChatGPT account-switch не заявляются. Human product acceptance и AUTH-G1–G6/0046/0030 отдельно."
       ],
       "estimated_duration_hms": "12:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
       "actual_started_at": null,
-      "actual_ended_at": null,
+      "actual_ended_at": "2026-11-11T19:53:17+03:00",
       "actual_duration_seconds": null,
       "actual_duration_hms": null,
       "risks": "Synthetic evidence ошибочно принято за live product proof.",
@@ -2630,7 +2651,16 @@
         "PAOS-0056"
       ],
       "execution_order": 18,
-      "delivery_stage": "M1"
+      "delivery_stage": "M1",
+      "historical_acceptance_criteria": [
+        "SW-AC-01–10, ST-AC-01–07 (M1 profile), UX-AC-01–18 (M1 slice), DATA-AC-01–05 имеют receipts по матрице v0.7; runtime/browser/workload proof отдельно от fixtures; Codex App закрыт; неразрешённые external gates pending."
+      ],
+      "technical_acceptance": {
+        "status": "passed",
+        "scope": "app_active_paos_mediated_commands",
+        "evidence": "product-agent-os-web-m1-execution-results-2026-11-11.json",
+        "human_acceptance": "not_inferred"
+      }
     },
     {
       "id": "PAOS-0046",
@@ -3305,8 +3335,8 @@
     "implementation": "not_started"
   },
   "m1_contract": {
-    "status": "local_implementation_partially_verified_acceptance_blocked",
-    "source": "PRD §17 / architecture §21 / plan v0.7",
+    "status": "technical_acceptance_passed_app_active_mediated_commands",
+    "source": "PRD §17.7 / architecture §21.10 / plan v0.8",
     "import_profile": "m1_task_profile_v1",
     "compatibility_gate": "PAOS-0054",
     "cutover_gate": "PAOS-0056",
@@ -3317,13 +3347,14 @@
       "selection": "owner_default",
       "api_key_required": false,
       "app_active_required": true,
-      "actual_app_agent_receipt": "app-agent-evidence-9TDdwj/app-agent-result.json",
-      "actual_app_agent_checks": 16,
-      "native_sandbox": false,
-      "execution": "blocked_permission_boundary_unverified",
+      "actual_app_agent_receipt": ".tmp/paos-m1/app-broker-evidence-ITfNiX/app-broker-result.json",
+      "actual_app_agent_checks": 105,
+      "native_sandbox": "paos_mediated_commands_only",
+      "execution": "qualified_offline_native_broker",
       "automatic_wakeup": "unverified",
       "historical_closed_app_full_turn_gate": "unverified_not_waived",
-      "m1_acceptance": "blocked"
+      "m1_acceptance": "technical_passed",
+      "human_acceptance": "not_inferred"
     }
   },
   "execution_plan": {

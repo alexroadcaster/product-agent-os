@@ -1,12 +1,21 @@
 import {createHash,randomBytes,randomUUID,timingSafeEqual} from 'node:crypto';
 import type {LocalStore,StoredEntity} from '../storage/local-store.mts';
 import {bindProject} from '../adapters/project-sources.ts';
+import {decodeM1TaskProfile} from '../tasks/task-profile.ts';
+import {taskScopeDigest} from './storage-ports.mts';
+import type {SandboxBroker} from './sandbox-broker.mts';
+import {captureTaskFiles,compareTaskFiles,type FileChange} from './app-agent-files.mts';
+import {projectTaskTime} from '../events/task-time.ts';
+import type {TaskTimeEvent} from '../../../../packages/contracts/time/task-time.ts';
 
 type Input=Record<string,unknown>;
-type State='queued'|'running'|'cancel_requested'|'recovery_required'|'completed'|'failed'|'interrupted';
-type Binding={id:string;projectId:string;sessionId:string;mode:'discussion'|'planning';workspaceRoot:string;rootIdentity:string};
+type State='queued'|'running'|'awaiting_approval'|'cancel_requested'|'recovery_required'|'completed'|'failed'|'interrupted';
+export type AppAgentBinding={id:string;projectId:string;sessionId:string;mode:'discussion'|'planning'|'execution';workspaceRoot:string;rootIdentity:string};
+type Binding=AppAgentBinding;
+type Operation={operationId:string;digest:string;argv:string[];timeoutMs:number;generation:string;expiresAt:number;decision?:string;state:'awaiting_approval'|'dispatching'|'completed'|'declined'|'cancelled'|'recovery_required';exitCode?:number;stdout?:string;stderr?:string;fileChanges?:FileChange[]};
 type Job={id:string;bindingId:string;projectId:string;sessionId:string;mode:Binding['mode'];clientMessageId:string;input:string;inputDigest:string;
- state:State;seq:number;workerId?:string;generation?:string;lastReport?:{key:string;hash:string;receipt:Input}};
+ state:State;seq:number;workerId?:string;generation?:string;lastReport?:{key:string;hash:string;receipt:Input};operations?:Operation[];taskContext?:Input;progress?:{seq:number;text:string;phase:'commentary'|'final_answer'};
+ recoveryResolution?:{kind:'cancel_undispatched';reason:'dispatch_not_observed'}};
 type Worker={workerId:string;generation:string;leaseToken:string;expiresAt:number};
 const route='codex_app_agent';
 const terminal=new Set<State>(['completed','failed','interrupted']);
@@ -19,46 +28,129 @@ function input(value:unknown,keys:string[]):Input {
 }
 function text(row:Input,key:string,max=200):string {const value=row[key];if(typeof value!=='string'||!value.trim()||Buffer.byteLength(value)>max||/[\0]/.test(value))fail('app_agent_input_invalid');return value;}
 /** App-hosted pull channel. Host identity is attested by the trusted caller, not proven by this protocol.
- * Public browser calls never receive worker capabilities. No App Server/sandbox/auth cache is used.
+ * Public browser calls never receive worker capabilities. Optional offline native broker enforces mediated command scope;
+ * it does not constrain the App host's own tools and never supplies model authentication.
  * One owner service serializes operations; profile instance reservation remains the cross-process boundary. */
-export function createAppAgentGateway(options:{store:LocalStore;profileId:string;actorId:string;now?:()=>number}) {
+export function createAppAgentGateway(options:{store:LocalStore;profileId:string;actorId:string;now?:()=>number;redact?:(text:string)=>string;executorFactory?:(binding:AppAgentBinding)=>Promise<SandboxBroker>}) {
  const {store}=options;const now=options.now??Date.now;const bindings=new Map<string,Binding>();
+ const selectedBindings=new Map<string,string>();
+ const selectionId=(projectId:string,sessionId:string)=>`app-selection-${hash(JSON.stringify([options.profileId,projectId,sessionId]))}`;
  let selected=false,closed=false,closing=false,foreignUnresolved=false,worker:Worker|undefined,active:Job|undefined;let queue=Promise.resolve();let shutdown:Promise<void>|undefined;
  const latest=new Map<string,Job>();const leaseMs=30_000;
+ const brokers=new Map<string,SandboxBroker>(),pendingCommands=new Set<Promise<void>>();
+ const brokerOperationId=(job:Job,op:Operation)=>`app-${hash(`${job.id}:${op.operationId}`)}`;
+ const busyOperation=(job:Job)=>job.operations?.find(op=>['awaiting_approval','dispatching','recovery_required'].includes(op.state));
+ const operationView=(job:Job,op:Operation)=>({runId:job.id,operationId:op.operationId,requestId:op.operationId,generation:op.generation,state:op.state,source:'paos_domain',exitCode:op.exitCode,stdout:op.stdout,stderr:op.stderr});
  const leaseSecrets=new Set<string>();
- const redact=(value:string)=>{for(const secret of leaseSecrets)value=value.replaceAll(secret,'[REDACTED]');return value;};
+ const canCancelUndispatched=(job:Job)=>job.state==='recovery_required'&&selected&&!!worker&&worker.expiresAt>now()&&job.workerId===worker.workerId&&job.generation===worker.generation
+  &&(job.operations??[]).every(op=>['awaiting_approval','declined','cancelled'].includes(op.state));
+ // The service supplies its channel-capability redactor; neither credential is exposed to the broker or public DTOs.
+ const redact=(value:string)=>{if(options.redact)value=options.redact(value);for(const secret of leaseSecrets)value=value.replaceAll(secret,'[REDACTED]');return value;};
+ async function attachBroker(binding:Binding){if(brokers.has(binding.id))return brokers.get(binding.id)!;if(!options.executorFactory)fail('execution_boundary_unverified');const broker=await options.executorFactory(binding);
+  if(broker.metadata.nativeSandbox!==true||broker.metadata.scope!=='paos_mediated_commands'||broker.metadata.workspaceRoot!==binding.workspaceRoot||broker.metadata.mode!==binding.mode){await broker.close();fail('app_agent_broker_scope_mismatch');}brokers.set(binding.id,broker);return broker;}
  async function all(projectId:string,kind:'settings'|'run') {
   const rows:StoredEntity[]=[];for(let offset=0;offset<10_000;offset+=100){const page=await store.list(projectId,{kind,limit:100,offset});rows.push(...page);if(page.length<100)return rows;}
   fail('app_agent_history_limit');
+ }
+ async function selectionChange(binding:Binding){
+  const id=selectionId(binding.projectId,binding.sessionId);const previous=await store.get(binding.projectId,id);
+  return {expectedRevision:previous?.revision??0,entity:{id,kind:'settings' as const,data:{profileId:options.profileId,appAgentSelection:{sessionId:binding.sessionId,bindingId:binding.id}}}};
  }
  async function save(job:Job,extra:Array<{expectedRevision:number;entity:any}>=[],requireIdle=false) {
   const project=await store.project(job.projectId);if(!project)fail('project_not_found');
   const previous=await store.get(job.projectId,job.id);
   const bindingRow=await store.get(job.projectId,`app-binding-${job.bindingId}`);
   if(!bindingRow||bindingRow.kind!=='settings'||bindingRow.data.profileId!==options.profileId)fail('binding_scope_mismatch');
+  const previousJob=previous?.data.appAgentRun as Job|undefined;
+  const taskId=typeof job.taskContext?.taskId==='string'?job.taskContext.taskId:undefined;
+  const timeline:TaskTimeEvent[]=Array.isArray(previous?.data.timeline)?[...previous.data.timeline as TaskTimeEvent[]]:[];
+  const projectedChanges=[...extra];
+  if(taskId) {
+   const task=await store.get(job.projectId,taskId);if(!task||task.kind!=='task'||task.deleted)fail('task_scope_mismatch');
+   const profile=decodeM1TaskProfile(task.data);
+   const journal=(await all(job.projectId,'run')).filter(row=>(row.data.runtimeRun as {taskId?:string}|undefined)?.taskId===taskId
+    ||(row.data.appAgentRun as Job|undefined)?.taskContext?.taskId===taskId).flatMap(row=>Array.isArray(row.data.timeline)?row.data.timeline as TaskTimeEvent[]:[]);
+   const lastStart=timeline.toReversed().find(event=>event.kind==='interval_started');
+   const open=lastStart&&!timeline.some(event=>event.intervalId===lastStart.intervalId&&event.kind!=='interval_started');
+   let kind:'interval_started'|'interval_stopped'|'interval_crashed'|undefined;
+   if(job.state==='running'&&!open&&previousJob?.state!=='recovery_required')kind='interval_started';
+   else if(open&&job.state==='recovery_required')kind='interval_crashed';
+   else if(open&&(job.state==='awaiting_approval'||terminal.has(job.state)))kind='interval_stopped';
+   // Reserve a close receipt before starting another interval; never lose Stop/crash evidence at the journal limit.
+   if(kind==='interval_started'&&journal.length>10_000-2)fail('runtime_time_limit');
+   if(kind) {
+    const seq=Math.max(0,...journal.map(event=>event.seq))+1;
+    const base={projectId:job.projectId,taskId,eventId:`${job.id}:time:${seq}`,seq,intervalId:kind==='interval_started'?`${job.id}:interval:${seq}`:lastStart!.intervalId,
+     runId:job.id,actorId:kind==='interval_started'?options.actorId:lastStart!.actorId,source:'runtime_observation',atMs:now()};
+    timeline.push(kind==='interval_stopped'?{...base,kind,reason:job.state==='awaiting_approval'?'pause':'finished'}:{...base,kind});
+   }
+   const combined=[...journal.filter(event=>event.runId!==job.id),...timeline];
+   let actual=profile.actual;
+   if(combined.length) {
+    const projection=projectTaskTime({projectId:job.projectId,taskId},combined);
+    const startedAt=new Date(Math.min(...combined.filter(event=>event.kind==='interval_started').map(event=>event.atMs))).toISOString();
+    const ended=combined.filter(event=>event.kind==='interval_stopped').map(event=>event.atMs);
+    actual={startedAt,endedAt:projection.actualDurationMs===null?null:new Date(Math.max(...ended)).toISOString(),durationSeconds:projection.actualDurationMs===null?null:Math.floor(projection.actualDurationMs/1000)};
+   }
+   // Only newly settled observed diffs change file actualOperation. Worker prose and final status never mark Task Done.
+   const observed=new Map((job.operations??[]).filter(op=>op.state==='completed'&&previousJob?.operations?.find(old=>old.operationId===op.operationId)?.state!=='completed')
+    .flatMap(op=>(op.fileChanges??[]).map(change=>[change.path,change.operation==='add'?'create' as const:change.operation] as const)));
+   const files=profile.files.map(file=>observed.has(file.relativePath)?{...file,actualOperation:observed.get(file.relativePath)!}:file);
+   if(JSON.stringify(actual)!==JSON.stringify(profile.actual)||JSON.stringify(files)!==JSON.stringify(profile.files)) {
+    const selected=projectedChanges.find(change=>change.entity.id===taskId);
+    if(selected)selected.entity={...selected.entity,data:{...selected.entity.data,actual,files}};
+    else projectedChanges.push({expectedRevision:task.revision,entity:{id:taskId,kind:'task',data:{...profile,actual,files}}});
+   }
+  }
   await store.write({projectId:job.projectId,actorId:options.actorId,expectedAuthorityEpoch:project.authorityEpoch,
    idempotencyKey:`app-agent:${job.id}:${previous?.revision??0}:${hash(JSON.stringify(job))}`,...(requireIdle?{requireIdle:true as const}:{}),
-   changes:[{expectedRevision:previous?.revision??0,entity:{id:job.id,kind:'run',status:job.state,data:{appAgentRun:job}}},
-    {expectedRevision:bindingRow.revision,entity:{id:bindingRow.id,kind:'settings',data:{...bindingRow.data,lastRunId:job.id}}},...extra]});
+   changes:[{expectedRevision:previous?.revision??0,entity:{id:job.id,kind:'run',status:job.state,data:{appAgentRun:job,...(taskId?{timeline}:{})}}},
+    {expectedRevision:bindingRow.revision,entity:{id:bindingRow.id,kind:'settings',data:{...bindingRow.data,lastRunId:job.id}}},...projectedChanges]});
   latest.set(job.bindingId,job);
  }
  const ready=(async()=>{
   const savedLatest=new Map<string,string>();
   for(const project of await store.projects()) {
-   for(const row of await all(project.id,'settings'))if(row.data.appAgentBinding&&row.data.profileId===options.profileId){const binding=row.data.appAgentBinding as Binding;bindings.set(binding.id,binding);if(typeof row.data.lastRunId==='string')savedLatest.set(binding.id,row.data.lastRunId);}
+   const settings=await all(project.id,'settings');
+   for(const row of settings)if(row.data.appAgentBinding&&row.data.profileId===options.profileId){const binding=row.data.appAgentBinding as Binding;bindings.set(binding.id,binding);if(typeof row.data.lastRunId==='string')savedLatest.set(binding.id,row.data.lastRunId);}
+   for(const row of settings)if(row.data.appAgentSelection&&row.data.profileId===options.profileId){
+    const selection=row.data.appAgentSelection as {sessionId:string;bindingId:string};const binding=bindings.get(selection.bindingId);
+    if(binding?.projectId===project.id&&binding.sessionId===selection.sessionId&&row.id===selectionId(project.id,selection.sessionId))selectedBindings.set(row.id,binding.id);
+   }
    for(const row of await all(project.id,'run')) {
     if(!row.data.appAgentRun){if(!terminal.has(row.status as State))foreignUnresolved=true;continue;}
     const job=row.data.appAgentRun as Job;if(!bindings.has(job.bindingId)){if(!terminal.has(job.state))foreignUnresolved=true;continue;}
-    if(savedLatest.get(job.bindingId)===job.id||!latest.has(job.bindingId))latest.set(job.bindingId,job);if(!terminal.has(job.state)){job.state='recovery_required';await save(job);if(active)fail('app_agent_multiple_unresolved');active=job;}
+    if(savedLatest.get(job.bindingId)===job.id||!latest.has(job.bindingId))latest.set(job.bindingId,job);if(!terminal.has(job.state)){job.state='recovery_required';job.operations=job.operations?.map(op=>({...op,state:op.state==='awaiting_approval'?'cancelled':op.state==='dispatching'?'recovery_required':op.state}));await save(job);if(active)fail('app_agent_multiple_unresolved');active=job;}
    }
   }
  })();
  // Observe startup errors even when a caller only reads synchronous connection status.
  void ready.catch(()=>{});
  function serial<T>(operation:()=>Promise<T>):Promise<T>{if(closing||closed)return Promise.reject(Object.assign(new Error('The App agent operation is unavailable.'),{code:'runtime_stopping'}));const pending=queue.then(async()=>{await ready;if(closed)fail('runtime_stopping');await expire();return operation();});queue=pending.then(()=>{},()=>{});return pending;}
- async function expire(){if(worker&&worker.expiresAt<=now()){if(active&&!terminal.has(active.state)){const changed={...active,state:'recovery_required' as const};await save(changed);active=changed;}worker=undefined;}}
+ async function expire(){if(worker&&worker.expiresAt<=now()){if(active&&!terminal.has(active.state)){const changed={...active,state:'recovery_required' as const};await save(changed);active=changed;stopCommands(changed);}worker=undefined;}
+  if(active?.operations?.some(op=>op.state==='awaiting_approval'&&op.expiresAt<=now())){const changed={...active,operations:active.operations.map(op=>op.state==='awaiting_approval'&&op.expiresAt<=now()?{...op,state:'declined' as const,decision:'expired'}:op)};if(changed.state==='awaiting_approval')changed.state='running';await save(changed);active=changed;}}
+ function stopCommands(job:Job){const broker=brokers.get(job.bindingId);for(const op of job.operations??[])if(op.state==='dispatching'&&broker)void broker.interrupt(brokerOperationId(job,op)).catch(()=>{});}
+ function startCommand(job:Job,operation:Operation,broker:SandboxBroker){
+  // Deliberately outside the admission queue: heartbeats, approvals and Stop must remain responsive.
+  const pending=Promise.resolve().then(async()=>{
+   const binding=bindings.get(job.bindingId)!;const files=(job.taskContext?.files??[]) as {relativePath:string}[];const scope={workspaceRoot:binding.workspaceRoot,directoryIdentity:binding.rootIdentity};
+   const before=await captureTaskFiles(scope,files,redact);
+   // Stop may arrive during file capture. Recheck the durable in-memory owner before admitting the native side effect.
+   if(closing||active?.id!==job.id||active.state!=='running')return {exitCode:130,stdout:'',stderr:'Command cancelled before native dispatch.',fileChanges:[] as FileChange[],cancelled:true};
+   const result=await broker.execute({operationId:brokerOperationId(job,operation),argv:operation.argv,timeoutMs:operation.timeoutMs});
+   const after=await captureTaskFiles(scope,files,redact);return {...result,fileChanges:compareTaskFiles(before,after),cancelled:false};
+  }).then(result=>({result}),()=>({result:null})).then(async({result})=>{
+   const settle=queue.then(async()=>{const previous=await store.get(job.projectId,job.id);const current=previous?.data.appAgentRun as Job|undefined;if(!current)return;
+    const op=current.operations?.find(item=>item.operationId===operation.operationId);if(!op||op.state!=='dispatching')return;
+    const valid=result&&Number.isSafeInteger(result.exitCode)&&typeof result.stdout==='string'&&typeof result.stderr==='string';
+    const next:Operation=valid?{...op,state:result.cancelled?'cancelled':'completed',exitCode:result.exitCode,stdout:redact(result.stdout.slice(0,32768)),stderr:redact(result.stderr.slice(0,32768)),fileChanges:result.fileChanges.map(change=>({...change,path:redact(change.path),diff:redact(change.diff)}))}:{...op,state:'recovery_required'};
+    const changed:Job={...current,operations:current.operations!.map(item=>item.operationId===op.operationId?next:item),state:valid?current.state:'recovery_required'};
+    await save(changed);if(active?.id===changed.id)active=changed;
+   });queue=settle.catch(()=>{});await settle;
+  }).catch(()=>{if(active?.id===job.id)active={...active,state:'recovery_required'};}).finally(()=>pendingCommands.delete(pending));pendingCommands.add(pending);
+ }
  function status(){const verified=selected&&!!worker&&worker.expiresAt>now();return {route,state:verified?'connected':selected?'waiting_for_worker':'disconnected',verified,
-  verificationScope:'app_agent_lease',modelAccess:'unverified',actualCodex:false,hostIdentityAttested:verified,capabilities};}
+  verificationScope:'app_agent_lease',modelAccess:'unverified',actualCodex:false,hostIdentityAttested:verified,capabilities:{...capabilities,executionConfigured:!!options.executorFactory}};}
  async function scoped(row:Input):Promise<{binding?:Binding;projectId:string;sessionId:string}> {
   const projectId=text(row,'projectId'),sessionId=text(row,'sessionId');const project=await store.project(projectId);const session=await store.get(projectId,sessionId);
   if(!project||!session||session.kind!=='session'||session.deleted)fail('scope_not_found');
@@ -73,51 +165,94 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
    ||!timingSafeEqual(Buffer.from(token),Buffer.from(worker.leaseToken)))fail('app_agent_lease_invalid');return worker;
  }
  function publicJob(job:Job){return {id:job.id,bindingId:job.bindingId,projectId:job.projectId,sessionId:job.sessionId,state:job.state,mode:job.mode,route};}
- function claimed(job:Job){return {runId:job.id,bindingId:job.bindingId,projectId:job.projectId,sessionId:job.sessionId,mode:job.mode,input:job.input,clientMessageId:job.clientMessageId,cancelRequested:job.state==='cancel_requested'};}
+ function claimed(job:Job){return {runId:job.id,bindingId:job.bindingId,projectId:job.projectId,sessionId:job.sessionId,mode:job.mode,input:job.input,clientMessageId:job.clientMessageId,cancelRequested:job.state==='cancel_requested',taskContext:job.taskContext};}
  const connection={status,
   connect: (value:unknown)=>serial(async()=>{input(value,['connectionId']);selected=true;return status();}),
-  disconnect:()=>serial(async()=>{if(active){const changed={...active,state:'recovery_required' as const};await save(changed);active=changed;}worker=undefined;selected=false;return status();})};
+  disconnect:()=>serial(async()=>{if(active){const changed={...active,state:'recovery_required' as const};await save(changed);active=changed;stopCommands(changed);}worker=undefined;selected=false;return status();})};
  const runtime={
   snapshot:(value:Input)=>serial(async()=>{const row=input(value,['projectId','sessionId']);const scope=await scoped(row);
-   const binding=[...bindings.values()].reverse().find(item=>item.projectId===scope.projectId&&item.sessionId===scope.sessionId);
-   const running=active?.bindingId===binding?.id?active:undefined;const last=binding?latest.get(binding.id):undefined;
+   const running=active?.projectId===scope.projectId&&active.sessionId===scope.sessionId?active:undefined;
+   // An unresolved run owns its exact scope regardless of settings enumeration order after restart.
+   const chosen=selectedBindings.get(selectionId(scope.projectId,scope.sessionId));
+   const binding=running?bindings.get(running.bindingId):chosen?bindings.get(chosen):[...bindings.values()].reverse().find(item=>item.projectId===scope.projectId&&item.sessionId===scope.sessionId);
+   const last=binding?latest.get(binding.id):undefined;const job=running??last;const broker=binding?brokers.get(binding.id):undefined;
    return {...status(),state:running?.state??last?.state??status().state,bindingId:binding?.id,runId:running?.id,mode:binding?.mode,
+    recovery:running?.state==='recovery_required'?{canCancelUndispatched:canCancelUndispatched(running)}:null,
     generation:worker?.generation,canSend:status().verified&&!!binding&&!active&&!foreignUnresolved,reason:!status().verified?'app_agent_not_attached':foreignUnresolved?'foreign_runtime_recovery_required':!binding?'binding_required':active?'runtime_busy':null,
-    pendingApprovals:[],visibleDrafts:[],fileChanges:[],checks:[],capabilities,
-    profile:binding?{id:'codex_app_agent',role:binding.mode==='discussion'?'analyst':'planner',assignment:binding.mode,version:'app_pull_v1',coverage:'attested'}:null,
+    pendingApprovals:(running?.operations??[]).filter(op=>op.state==='awaiting_approval'&&running?.state!=='recovery_required').map(op=>({requestId:op.operationId,runId:running!.id,bindingId:binding!.id,generation:op.generation,kind:'command',state:'pending',command:JSON.stringify(op.argv),details:{command:JSON.stringify(op.argv),reason:'PAOS domain approval before sandboxed execution'},expiresAt:op.expiresAt,reviewable:true,source:'paos_domain'})),
+    visibleDrafts:job?.progress?[{runId:job.id,sourceItemId:`app-progress-${job.id}`,role:'assistant',phase:job.progress.phase,text:job.progress.text,revision:job.progress.seq,status:terminal.has(job.state)?job.state:'streaming'}]:[],fileChanges:(job?.operations??[]).flatMap(op=>op.fileChanges??[]),
+    checks:(job?.operations??[]).filter(op=>['completed','declined','cancelled'].includes(op.state)).map(op=>({id:op.operationId,runId:job!.id,taskId:job!.taskContext?.taskId,itemType:'commandExecution',coverage:'observed',command:JSON.stringify(op.argv),status:op.state==='completed'?(op.exitCode===0?'completed':'failed'):op.state,exitCode:op.exitCode,stdout:op.stdout,stderr:op.stderr,source:op.state==='completed'?'native_command_broker':'paos_domain',observed:true})),
+    capabilities:{...capabilities,executionConfigured:!!options.executorFactory,...(broker?{nativeSandbox:true,execution:true,permissions:true,streaming:true,sandboxScope:'paos_mediated_commands',appHostSandboxVerified:false}:{})},
+    profile:binding?{id:'codex_app_agent',role:binding.mode==='discussion'?'analyst':binding.mode==='execution'?'engineer':'planner',assignment:binding.mode,version:'app_pull_v1',coverage:'attested'}:null,
     questions:{status:'unsupported',reason:'app_host_approvals_are_separate'},streaming:{policy:'final_answer_only',phaseStatus:'not_observed'}};
   }),
   dispatch:(action:string,value:Input)=>serial(async()=>{
-   const row=input(value,['projectId','sessionId','bindingId','clientMessageId','input','mode','taskId','runId','generation']);const scope=await scoped(row);
+   const row=input(value,['projectId','sessionId','bindingId','clientMessageId','input','mode','taskId','runId','generation','requestId','decision','resolution']);const scope=await scoped(row);
+   if(row.resolution!==undefined&&action!=='reconcile')fail('app_agent_input_invalid');
    if(row.generation!==undefined)text(row,'generation');
    if(action==='bindings') {
     if(!status().verified)fail('app_agent_not_attached');if(active||foreignUnresolved)fail('runtime_busy');
-    if(row.mode==='execution')fail('execution_boundary_unverified');if(row.mode!=='discussion'&&row.mode!=='planning')fail('mode_invalid');
+    if(row.mode==='execution'&&!options.executorFactory)fail('execution_boundary_unverified');if(row.mode!=='discussion'&&row.mode!=='planning'&&row.mode!=='execution')fail('mode_invalid');
     const existing=[...bindings.values()].find(item=>item.projectId===scope.projectId&&item.sessionId===scope.sessionId&&item.mode===row.mode);
-    if(existing){bindings.delete(existing.id);bindings.set(existing.id,existing);return {bindingId:existing.id,projectId:scope.projectId,sessionId:scope.sessionId,mode:existing.mode,route};}
+    if(existing){if(existing.mode==='execution'&&!brokers.has(existing.id))await attachBroker(existing);
+     const project=(await store.project(scope.projectId))!;const selection=await selectionChange(existing);
+     await store.write({projectId:project.id,actorId:options.actorId,expectedAuthorityEpoch:project.authorityEpoch,idempotencyKey:`app-select:${selection.entity.id}:${selection.expectedRevision}:${existing.id}`,requireIdle:true,changes:[selection]});
+     selectedBindings.set(selection.entity.id,existing.id);return {bindingId:existing.id,projectId:scope.projectId,sessionId:scope.sessionId,mode:existing.mode,route};}
     const project=(await store.project(scope.projectId))!;const pin=await bindProject(project.id,project.canonicalRoot);
     if(pin.directoryIdentity!==project.rootIdentity)fail('project_root_changed');
     const binding:Binding={id:randomUUID(),projectId:scope.projectId,sessionId:scope.sessionId,mode:row.mode,workspaceRoot:pin.workspaceRoot,rootIdentity:project.rootIdentity};
-    await store.write({projectId:project.id,actorId:options.actorId,expectedAuthorityEpoch:project.authorityEpoch,idempotencyKey:`app-binding:${binding.id}`,
-     requireIdle:true,changes:[{expectedRevision:0,entity:{id:`app-binding-${binding.id}`,kind:'settings',data:{profileId:options.profileId,appAgentBinding:binding}}}]});bindings.set(binding.id,binding);
+    // Persist explicit selection in the binding transaction; UUID/SQL enumeration order has no recency meaning.
+    const selection=await selectionChange(binding);
+    const newBroker=binding.mode==='execution'?await attachBroker(binding):undefined;
+    try {await store.write({projectId:project.id,actorId:options.actorId,expectedAuthorityEpoch:project.authorityEpoch,idempotencyKey:`app-binding:${binding.id}`,
+     requireIdle:true,changes:[{expectedRevision:0,entity:{id:`app-binding-${binding.id}`,kind:'settings',data:{profileId:options.profileId,appAgentBinding:binding}}},selection]});}
+    catch(error){if(newBroker){await newBroker.close();brokers.delete(binding.id);}throw error;}
+    bindings.set(binding.id,binding);selectedBindings.set(selection.entity.id,binding.id);
     return {bindingId:binding.id,projectId:binding.projectId,sessionId:binding.sessionId,mode:binding.mode,route};
    }
    const binding=scope.binding;if(!binding)fail('binding_not_found');
    if(action==='send') {
-    const messageId=text(row,'clientMessageId'),body=text(row,'input',32*1024);if(row.taskId!==undefined) {
+    const messageId=text(row,'clientMessageId'),body=redact(text(row,'input',32*1024));if(row.taskId!==undefined) {
      const task=await store.get(scope.projectId,text(row,'taskId'));if(!task||task.kind!=='task'||task.deleted)fail('task_scope_mismatch');}
     const id=`app-run-${hash(`${options.profileId}:${binding.id}:${messageId}`)}`;const digest=hash(JSON.stringify({body,taskId:row.taskId??null}));
     const previous=await store.get(scope.projectId,id);if(previous){const old=previous.data.appAgentRun as Job;if(old.inputDigest!==digest)fail('message_conflict');return publicJob(old);}
     if(!status().verified)fail('app_agent_not_attached');if(active||foreignUnresolved)fail('runtime_busy');
     const job:Job={id,bindingId:binding.id,projectId:binding.projectId,sessionId:binding.sessionId,mode:binding.mode,clientMessageId:messageId,input:body,inputDigest:digest,state:'queued',seq:0};
-    await save(job,[{expectedRevision:0,entity:{id:`app-user-${hash(id)}`,kind:'message',parentId:job.sessionId,body,status:'committed',data:{role:'user',runId:id,route}}}],true);active=job;return publicJob(job);
+    const extra:Array<{expectedRevision:number;entity:any}>=[{expectedRevision:0,entity:{id:`app-user-${hash(id)}`,kind:'message',parentId:job.sessionId,body,status:'committed',data:{role:'user',runId:id,route}}}];
+    if(binding.mode==='execution'){
+     if(!brokers.has(binding.id))fail('execution_boundary_unverified');const task=await store.get(scope.projectId,text(row,'taskId'));
+     if(!task||task.deleted||task.kind!=='task')fail('task_scope_mismatch');const profile=decodeM1TaskProfile(task.data);
+     if(profile.status!=='ready'||profile.risks.includes('recovery_review'))fail('task_scope_review_required');if(!profile.acceptanceCriteria.length||!profile.acceptanceCriteria.every(item=>item.trim()))fail('saved_criteria_required');
+     job.taskContext={taskId:task.id,revision:task.revision,scopeDigest:taskScopeDigest(task),workspaceRoot:binding.workspaceRoot,rootIdentity:binding.rootIdentity,key:profile.key,title:profile.title,files:profile.files,acceptanceCriteria:profile.acceptanceCriteria,risks:profile.risks};
+     extra.push({expectedRevision:task.revision,entity:{id:task.id,kind:'task',data:{...profile,status:'in_progress',sessionIds:[...new Set([...profile.sessionIds,job.sessionId])]}}});
+    }
+    await save(job,extra,true);active=job;return publicJob(job);
+   }
+   if(action==='approve'){
+    if(!active||active.id!==text(row,'runId')||active.bindingId!==binding.id||active.state==='recovery_required'||active.state==='cancel_requested')fail('approval_stale');
+    const op=active.operations?.find(item=>item.operationId===row.requestId);if(!op||op.generation!==row.generation||worker?.generation!==row.generation)fail('approval_stale');
+    const decision=text(row,'decision');if(!['accept','decline','cancel'].includes(decision))fail('approval_invalid');
+    if(op.decision){if(op.decision!==decision)fail('approval_conflict');return operationView(active,op);}
+    if(op.state!=='awaiting_approval'||op.expiresAt<=now())fail('approval_stale');
+    const broker=decision==='accept'?await attachBroker(binding):undefined;
+    const next:Operation={...op,decision,state:decision==='accept'?'dispatching':decision==='decline'?'declined':'cancelled'};
+    const changed:Job={...active,state:'running',operations:active.operations!.map(item=>item.operationId===op.operationId?next:item)};await save(changed);active=changed;
+    if(broker)startCommand(changed,next,broker);return operationView(changed,next);
    }
    if(action==='interrupt') {
     if(!active||active.bindingId!==binding.id||active.id!==text(row,'runId'))fail('run_not_interruptible');
     if(active.state==='recovery_required')fail('run_not_interruptible');
-    const changed={...active,state:active.state==='queued'?'interrupted' as const:'cancel_requested' as const};await save(changed);active=terminal.has(changed.state)?undefined:changed;return publicJob(changed);
+    const changed:Job={...active,state:active.state==='queued'?'interrupted':'cancel_requested',operations:active.operations?.map(op=>op.state==='awaiting_approval'?{...op,state:'cancelled',decision:'cancel'}:op)};await save(changed);active=terminal.has(changed.state)?undefined:changed;stopCommands(changed);return publicJob(changed);
    }
-   if(action==='reconcile')return active?.bindingId===binding.id?publicJob(active):null;
+   if(action==='reconcile') {
+    if(row.resolution===undefined)return active?.bindingId===binding.id?publicJob(active):null;
+    if(row.resolution!=='cancel_undispatched')fail('app_agent_input_invalid');
+    if(!active||active.bindingId!==binding.id||active.id!==text(row,'runId')||!canCancelUndispatched(active))fail('app_agent_recovery_unresolved');
+    // Durable states prove that no broker dispatch occurred; this never resolves an unknown native outcome or replays work.
+    const changed:Job={...active,state:'interrupted',operations:active.operations?.map(op=>op.state==='awaiting_approval'?{...op,state:'cancelled',decision:'cancel'}:op),
+     recoveryResolution:{kind:'cancel_undispatched',reason:'dispatch_not_observed'}};
+    await save(changed);active=undefined;return {...publicJob(changed),reason:'dispatch_not_observed'};
+   }
    fail('action_unsupported');
   })};
  async function agent(action:string,value:Input):Promise<any>{return serial(async()=>{
@@ -126,7 +261,8 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
    if(leaseSecrets.size>=64)fail('app_agent_restart_required');
    worker={workerId:text(row,'workerId'),generation:text(row,'generation'),leaseToken:randomBytes(32).toString('hex'),expiresAt:now()+leaseMs};leaseSecrets.add(worker.leaseToken);return {...worker};
   }
-  const row=input(value,['workerId','generation','leaseToken',...(action==='report'?['runId','seq','idempotencyKey','status','text']:[])]);const current=authenticated(row);
+  const fields:Record<string,string[]>={report:['runId','seq','idempotencyKey','status','text'],command:['runId','operationId','argv','timeoutMs'],operation:['runId','operationId'],progress:['runId','seq','text','phase'],reconcile:['runId']};
+  const row=input(value,['workerId','generation','leaseToken',...(fields[action]??[])]);const current=authenticated(row);
   if(action==='heartbeat'){current.expiresAt=now()+leaseMs;return {expiresAt:current.expiresAt,job:active?.workerId===current.workerId&&active.generation===current.generation?{runId:active.id,cancelRequested:active.state==='cancel_requested',state:active.state}:null};}
   if(action==='claim') {
    current.expiresAt=now()+leaseMs;
@@ -134,6 +270,25 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
    await scoped({projectId:active.projectId,sessionId:active.sessionId,bindingId:active.bindingId});
    if(active.state==='queued'){const changed={...active,state:'running' as const,workerId:current.workerId,generation:current.generation};await save(changed);active=changed;}
    if(active.workerId!==current.workerId||active.generation!==current.generation)fail('app_agent_generation_mismatch');return {job:claimed(active)};
+  }
+  if(['command','operation','progress','reconcile'].includes(action)){
+   const runId=text(row,'runId');let job:Job|undefined;for(const project of await store.projects()){const saved=await store.get(project.id,runId);if(saved?.data.appAgentRun){if(job)fail('app_agent_run_ambiguous');job=saved.data.appAgentRun as Job;}}
+   if(!job||job.workerId!==current.workerId||job.generation!==current.generation)fail('app_agent_generation_mismatch');await scoped({projectId:job.projectId,sessionId:job.sessionId,bindingId:job.bindingId});
+   if(action==='reconcile')return job.lastReport?.receipt??publicJob(job);
+   if(action==='operation'){const op=job.operations?.find(item=>item.operationId===text(row,'operationId'));if(!op)fail('app_agent_operation_missing');return operationView(job,op);}
+   if(!active||active.id!==job.id||['cancel_requested','recovery_required'].includes(job.state)||terminal.has(job.state))fail('app_agent_report_stale');
+   if(action==='progress'){
+    if(!Number.isSafeInteger(row.seq)||row.seq!==(job.progress?.seq??0)+1||!['commentary','final_answer'].includes(String(row.phase)))fail('app_agent_sequence_invalid');
+    const changed:Job={...job,progress:{seq:row.seq as number,text:redact(text(row,'text',32768)),phase:row.phase as 'commentary'|'final_answer'}};await save(changed);active=changed;return {runId,seq:row.seq};
+   }
+   if(!options.executorFactory)fail('execution_boundary_unverified');const operationId=text(row,'operationId',100);if(!/^[A-Za-z0-9_-]+$/.test(operationId))fail('app_agent_input_invalid');
+   if(!Array.isArray(row.argv)||!row.argv.length||row.argv.length>64||row.argv.some(arg=>typeof arg!=='string'||arg.includes('\0'))||Buffer.byteLength(JSON.stringify(row.argv))>32768)fail('app_agent_input_invalid');
+   const argv=row.argv as string[],serialized=JSON.stringify(argv);if(redact(serialized)!==serialized||/sk-[A-Za-z0-9_-]{12,}|(?:api[_-]?key|authorization|bearer|access[_-]?token)(?:\s*[=:]|[\\"\s])/i.test(serialized))fail('app_agent_credential_rejected');
+   const timeoutMs=row.timeoutMs??30000;if(!Number.isInteger(timeoutMs)||Number(timeoutMs)<1||Number(timeoutMs)>30000)fail('app_agent_input_invalid');
+   const digest=hash(JSON.stringify({argv,timeoutMs})),previous=job.operations?.find(op=>op.operationId===operationId);if(previous){if(previous.digest!==digest)fail('app_agent_operation_conflict');return operationView(job,previous);}
+   if(busyOperation(job))fail('app_agent_operation_busy');if((job.operations?.length??0)>=64)fail('app_agent_operation_limit');
+   const op:Operation={operationId,argv:[...argv],timeoutMs:Number(timeoutMs),digest,generation:current.generation,expiresAt:now()+300000,state:'awaiting_approval'};
+   const changed:Job={...job,state:'awaiting_approval',operations:[...(job.operations??[]),op]};await save(changed);active=changed;return operationView(changed,op);
   }
   if(action==='report') {
    const runId=text(row,'runId'),key=text(row,'idempotencyKey');let previous:StoredEntity|null=null;
@@ -147,11 +302,12 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
    if(!Number.isSafeInteger(row.seq)||row.seq!==job.seq+1)fail('app_agent_sequence_invalid');
    if(!['completed','interrupted','failed'].includes(String(row.status)))fail('app_agent_report_invalid');
    if(job.state==='cancel_requested'&&row.status!=='interrupted')fail('app_agent_cancel_ack_required');
+   if(busyOperation(job))fail('app_agent_operation_pending');
    const body=row.text===undefined?'':redact(text(row,'text',32*1024));if(row.status==='completed'&&!body)fail('app_agent_result_required');
    const receipt={runId,seq:row.seq,state:row.status,route};const changed:Job={...job,state:row.status as State,seq:row.seq as number,lastReport:{key,hash:digest,receipt}};
-   await save(changed,body?[{expectedRevision:0,entity:{id:`app-assistant-${hash(runId)}`,kind:'message',parentId:job.sessionId,body,status:'committed',data:{role:'assistant',runId,route,coverage:'agent_reported'}}}]:[]);active=undefined;return receipt;
+   await save(changed,body?[{expectedRevision:0,entity:{id:`app-assistant-${hash(runId)}`,kind:'message',parentId:job.sessionId,body,status:'committed',data:{role:'assistant',runId,sourceItemId:`app-progress-${runId}`,route,coverage:'agent_reported'}}}]:[]);active=undefined;return receipt;
   }
   fail('app_agent_action_unsupported');
  });}
- return {connection,runtime,agent,close(){closing=true;shutdown??=(async()=>{await queue;await ready;if(active){const changed={...active,state:'recovery_required' as const};await save(changed);active=changed;}selected=false;worker=undefined;closed=true;})().catch(error=>{shutdown=undefined;throw error;});return shutdown;}};
+ return {connection,runtime,agent,close(){closing=true;shutdown??=(async()=>{await queue;await ready;if(active){const changed={...active,state:'recovery_required' as const};await save(changed);active=changed;stopCommands(changed);}await Promise.all([...brokers.values()].map(broker=>broker.close()));await Promise.all([...pendingCommands]);await queue;selected=false;worker=undefined;closed=true;})().catch(error=>{shutdown=undefined;throw error;});return shutdown;}};
 }

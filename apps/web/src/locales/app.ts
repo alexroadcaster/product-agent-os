@@ -1,5 +1,13 @@
 import type { UiLocale } from "./messages.ts";
 const labels = {
+  historyActor:['Автор изменения','Change actor'],historyTime:['Время изменения','Change time'],historyField:['Поле','Field'],
+  historyBefore:['Предыдущее значение','Previous value'],historyAfter:['Новое значение','New value'],historyReason:['Причина','Reason'],
+  historySource:['Источник изменения','Change source'],historyRevision:['Ревизия и correlation','Revision and correlation'],historyNotRecorded:['Не записано в исходном событии','Not recorded in the original event'],
+  cancelUndispatched:["Отменить недоставленный запуск","Cancel undispatched run"],
+  appBrokerBoundary:["Команды PAOS выполняются через изолированный Codex broker после подтверждения в PAOS. Stop ожидает завершения команды и подтверждения агента. Другие инструменты Codex App этим каналом не ограничиваются.","PAOS commands run through an isolated Codex broker after PAOS approval. Stop waits for command termination and agent acknowledgement. This channel does not restrict other Codex App tools."],
+  appDomainApproval:["Подтверждение команды в PAOS перед изолированным выполнением. Это не запрос повышения прав Codex App.","PAOS command approval before sandboxed execution. This is not a Codex App permission escalation request."],
+  appHostEndpointMissing:["Общий локальный сервер Codex не обнаружен. Это не ошибка сети Windows. Канал PAOS работает с уже подключённым агентом App.","No shared local Codex server was found. This is not a Windows network failure. The PAOS channel works with an already attached App agent."],
+  appHostEndpointUnverified:["Локальный endpoint Codex не подтверждён как сервер Codex App. Доступность исполнителя проверяется отдельно.","The local Codex endpoint is not verified as a Codex App server. Agent availability is checked separately."],
   connectionRoute: ["Способ подключения", "Connection route"],
   appAgentRoute: [
     "Codex App agent — без API key",

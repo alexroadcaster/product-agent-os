@@ -3,7 +3,7 @@ import type { ChildProcessWithoutNullStreams } from 'node:child_process';
 
 const clientMethods = new Set([
   'initialize', 'config/read', 'configRequirements/read', 'permissionProfile/list',
-  'windowsSandbox/readiness',
+  'windowsSandbox/readiness', 'command/exec', 'command/exec/terminate',
   'account/read', 'account/login/start', 'account/logout', 'thread/start', 'thread/resume',
   'thread/read', 'thread/list', 'thread/items/list', 'thread/turns/list', 'turn/start', 'turn/interrupt',
 ]);

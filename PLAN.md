@@ -16,7 +16,7 @@ G8 closed / owner accepted. G9 T01–T09 implemented_locally_verified; T10 owner
 
 ## Активная продуктовая очередь Web — 2026-11-10
 
-Актуализация 2026-11-11: PAOS-0039 App route реализован; default codex_app_agent без API key, BYOK explicit compatibility без fallback. Actual App bridge16/Web238/activefixture55/browser669/headless33 passed. PAOS-0004/PAOS-0040 technical evidence, PAOS-0054 native-offline и PAOS-0041 API-auth component сохранены. PAOS-0042/0043/0044 in_progress, PAOS-0045 blocked: unattended host wakeup, scoped native Execution/approvals и real execution recovery не подтверждены; официальный proxy WSA10050. Старые14/3/1 — component counts. AUTH-G1–G6 commercial gates прежние. [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md).
+Актуализация 2026-11-11: PAOS-M1 — 18/18 technical implemented; PAOS-0042/0043/0044/0045 закрыты для App-active/PAOS-mediated commands после actual105/task39/data25/native/headless33/Web306 и separate-reused-context closed_allowed. WSA10050 missing endpoint локализован без системных изменений; существующий Desktop daemon не квалифицирован. App/consumer обязательны, API key/fallback нет. Следующая очередь — PAOS-0046 до M2; AUTH-G1–G6, human acceptance и release отдельно. Полные56 задач/12групп/estimates/другие52карточки сохранены. [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md).
 
 Датированный baseline 10 ноября:
 
@@ -31,6 +31,7 @@ Source status: project-authored / order_approved; implementation_started, runtim
 Уточнение исполнения 2026-11-11 по запросу владельца — продолжать локальную реализацию M1 до исполняемого пакета приёмки. Нативный MXC-прогон подтвердил запись внутри root и отказ снаружи. Отсутствующие поля полного manifest блокируют активацию зависимого runtime; локальные storage/UI/domain компоненты реализуются по согласованным интерфейсам и DAG. Неподдержанная capability сохраняет design issue и запрещает неявный fallback. Порядок исполнения не создаёт новых technical dependencies и не разрешает параллельную запись общих файлов.
 Остальные Batch/Track очереди ниже сохранены как отдельные follow-ups. Они не запускаются автоматически и не добавляют gates в M1 без установленной зависимости. Предыдущие Web receipts: [аудит и архив control-plane](research/product-agent-os-control-plane-maintenance-2026-11-10.md).
 
+Ранее квалифицированные компоненты PAOS-0039, PAOS-0041 сохраняют исходные receipts; их исторический scope не переопределён новым маршрутом.
 
 ## PAOS-AUD-G7 — closed / owner accepted, 2026-11-10
 

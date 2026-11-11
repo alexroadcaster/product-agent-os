@@ -870,7 +870,7 @@ function TaskForm({
       </details>
       <label>
         {t("description")}
-        <textarea name="body" defaultValue={entity?.body} rows={4} />
+        <textarea name="body" defaultValue={String(entity?.data?.summary??entity?.body??'')} rows={4} />
       </label>
       <label>
         {t("criteria")}
@@ -1764,7 +1764,7 @@ function Session({
                 >
                   {(["discussion", "planning", "execution"] as const).map(
                     (value) => (
-                      <option key={value} value={value} disabled={value === 'execution' && connection?.route === 'codex_app_agent'}>
+                      <option key={value} value={value} disabled={value === 'execution' && connection?.route === 'codex_app_agent' && !connection.capabilities?.executionConfigured}>
                         {t(value)}
                       </option>
                     ),
@@ -1878,8 +1878,8 @@ function Session({
                 >
                   {uiLabel(locale, "action.stopRun")}
                 </button>
-                <button type="button" onClick={() => void runtime("reconcile")}>
-                  {t("recover")}
+                <button type="button" onClick={() => void runtime("reconcile", snapshot?.recovery?.canCancelUndispatched?{resolution:'cancel_undispatched'}:{})}>
+                  {t(snapshot?.recovery?.canCancelUndispatched?'cancelUndispatched':"recover")}
                 </button>
               </div>
               <p role="status">{notice || messages.error}</p>
@@ -1924,6 +1924,7 @@ function Session({
         {snapshot?.pendingApprovals?.length ? (
           snapshot.pendingApprovals.map((request) => (
             <div key={request.requestId}>
+              {request.source==='paos_domain'&&<p className="quiet">{t('appDomainApproval')}</p>}
               <p>{request.description ?? request.requestId}</p>
               <span className="badge">{request.state ?? t("unverified")}</span>
               <p className="quiet">

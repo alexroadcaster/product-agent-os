@@ -56,6 +56,13 @@ test('uses the real Worker for paired CRUD, durable preferences, search and proj
   const empty = await (await request(`/projects/${project.id}/events?cursor=${events.nextCursor}`)).json();
   assert.equal(empty.nextCursor, events.nextCursor);
   assert.equal((await request(`/projects/${project.id}/events?cursor=${events.nextCursor}x`)).status, 400);
+  const historyResponse=await request(`/projects/${project.id}/history`);
+  assert.equal(historyResponse.status,200);
+  const history=await historyResponse.json();
+  assert.deepEqual(history.items,events.items);
+  assert.ok(history.items[0].actorId);
+  assert.ok(history.items[0].occurredAt);
+  assert.equal((await request(`/projects/${project.id}/history?cursor=${history.nextCursor}x`)).status,400);
   const connection = await (await request('/connection')).json();
   assert.equal(connection.verified, false);
   assert.equal((await request('/runtime/send', { input: 'not dispatched' })).status, 409);

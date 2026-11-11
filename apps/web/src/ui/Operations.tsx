@@ -382,7 +382,7 @@ export function ImportTasks({ api, projectId, t }: Props) {
             <p role="status">
               {t("saved")} · {t("candidates")}: {committed.mappingCount} ·{" "}
               {t("backupId")}:{" "}
-              <span className="mono">{committed.backupId}</span>
+              <span className="mono">{committed.backupId??t('unavailable')}</span>
             </p>
           )}
         </div>
@@ -657,7 +657,7 @@ export function TaskHistory({
   async function load(append = false) {
     setBusy(true);
     try {
-      const page = await api.events(projectId, append ? cursor : undefined);
+      const page = await api.history(projectId, append ? cursor : undefined);
       setItems((previous) =>
         append ? [...previous, ...page.items] : page.items,
       );
@@ -679,16 +679,32 @@ export function TaskHistory({
     <div>
       <p role="alert">{error}</p>
       <ul className="records">
-        {scoped.map((item) => (
+        {scoped.map((item) => {
+          const changes=Array.isArray(item.payload?.taskChanges)?item.payload.taskChanges.filter((change:any)=>change&&change.id===taskId):[];
+          const display=(value:unknown)=>value===null||value===undefined?t('historyNotRecorded'):typeof value==='string'?value:JSON.stringify(value);
+          return (
           <li key={item.seq}>
             <p className="mono">
               {item.seq} · {item.type ?? item.kind ?? "event"}
             </p>
-            <pre className="diff">
-              {JSON.stringify(item.payload ?? item, null, 2)}
-            </pre>
+            <dl className="task-metadata">
+              <dt>{t('historyActor')}</dt><dd>{item.actorId??t('historyNotRecorded')}</dd>
+              <dt>{t('historyTime')}</dt><dd><time dateTime={item.occurredAt}>{item.occurredAt&&Number.isFinite(Date.parse(item.occurredAt))?new Date(item.occurredAt).toLocaleString():t('historyNotRecorded')}</time></dd>
+              <dt>{t('historyRevision')}</dt><dd className="mono">{item.seq} · {display(item.payload?.commandId)}</dd>
+            </dl>
+            {changes.length?changes.map((change:any,index:number)=><section key={index} className="task-history-change">
+              <p>{t('historyRevision')}: {display(change.previousRevision)} → {display(change.currentRevision)} · {change.operation}</p>
+              <p>{t('historySource')}: {display(change.source)}</p><p>{t('historyReason')}: {display(change.reason)}</p>
+              {change.coverage==='partial'&&<p>{t('partial')}</p>}
+              {Array.isArray(change.fields)&&change.fields.map((field:any,fieldIndex:number)=><section key={fieldIndex} className="task-history-field">
+                <h4>{t('historyField')}: {String(field.field)}</h4>
+                <dl><dt>{t('historyBefore')}</dt><dd><pre className="diff">{display(field.previous)}</pre></dd><dt>{t('historyAfter')}</dt><dd><pre className="diff">{display(field.current)}</pre></dd></dl>
+                {field.redacted&&<span className="badge">{t('redactedSource')}</span>}{field.coverage==='partial'&&<span className="badge">{t('partial')}</span>}
+              </section>)}
+            </section>):Array.isArray(item.payload?.commentChanges)&&item.payload.commentChanges.some((change:any)=>change?.contentExcluded===true)?<p className="quiet">{t('redactedSource')}</p>:<p className="quiet">{t('historyBefore')} / {t('historyAfter')}: {t('historyNotRecorded')}</p>}
+            <details><summary>{t('historyRevision')}</summary><pre className="diff">{JSON.stringify(item.payload??item,null,2)}</pre></details>
           </li>
-        ))}
+        );})}
       </ul>
       {!scoped.length && !busy && <p className="quiet">{t("empty")}</p>}
       <button disabled={busy} onClick={() => void load(true)}>

@@ -3,6 +3,7 @@ import {Readable} from 'node:stream';
 import {mkdir,readFile} from 'node:fs/promises';
 import {join,isAbsolute,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {homedir} from 'node:os';
 import {openLocalStore} from './storage/local-store.mts';
 import {createLocalApplication} from './http/application.mts';
 import {createLiveGateway} from './runtime/live-gateway.mts';
@@ -10,6 +11,9 @@ import {createNativeRpc} from './runtime/native-rpc.mts';
 import {createAppAgentGateway} from './runtime/app-agent-gateway.mts';
 import {createAppAgentChannel} from './runtime/app-agent-channel.mts';
 import {createRuntimeRouteSelector} from './runtime/route-selector.ts';
+import {inspectAppHostEndpoint} from './runtime/app-host-endpoint.mts';
+import {createSandboxBroker,type SandboxBroker} from './runtime/sandbox-broker.mts';
+import type {AppAgentBinding} from './runtime/app-agent-gateway.mts';
 import {createWindowsCredentialStore} from './connections/windows-credential-store.ts';
 import {bindProfile,assertProfileIdentity,createProfileScopedStore} from './connections/profile-identity.mts';
 import {createDomainTools} from './commands/domain-tools.mts';
@@ -53,9 +57,10 @@ async function respond(outgoing:ServerResponse,response:Response) {
 }
 
 /** Source-only executable wiring. Importing this module creates no database, server, GUI, or runtime child. */
-export async function startLocalService(options:Readonly<{profileDirectory:string;instanceId:string}>,deps:Readonly<{
+export async function startLocalService(options:Readonly<{profileDirectory:string;instanceId:string;appCodexHome?:string}>,deps:Readonly<{
  openStore?:typeof openLocalStore;createHttpServer?:typeof createServer;createApplication?:typeof createLocalApplication;createGateway?:typeof createLiveGateway;
  prepareProfile?:(profile:string)=>Promise<void>;
+ sandboxBrokerFactory?:false|((binding:AppAgentBinding)=>Promise<SandboxBroker>);
 }>={}) {
  if(!isAbsolute(options.profileDirectory)||options.profileDirectory.startsWith('\\\\')||!options.instanceId)throw failure('PROFILE_INVALID');
  await(deps.prepareProfile??(async(profile)=>{await mkdir(profile,{recursive:true,mode:0o700});}))(options.profileDirectory);
@@ -76,9 +81,30 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
    return createNativeRpc({profileDirectory,binaryPath:check.binaryPath});
   }});
  // App agents and the legacy API runtime are explicit choices; neither is a fallback for the other.
- const appGateway=createAppAgentGateway({store,profileId:profile.profileId,actorId:'codex-app-agent'});
+ let agentChannel:Awaited<ReturnType<typeof createAppAgentChannel>>|undefined;
+ const appGateway=createAppAgentGateway({store,profileId:profile.profileId,actorId:'codex-app-agent',redact:(text)=>agentChannel?.redact(text)??text,
+  executorFactory:deps.sandboxBrokerFactory===false?undefined:deps.sandboxBrokerFactory??(async(binding)=>{
+   await assertProfileIdentity(profile);
+   const selectionPath=join(profileDirectory,'runtime-selection.json');
+   let binaryPath:string;
+   try {binaryPath=JSON.parse(await readFile(selectionPath,'utf8')).binaryPath;}
+   catch(error){
+    if((error as NodeJS.ErrnoException).code!=='ENOENT')throw failure('BROKER_SELECTION_INVALID');
+    // Discover only the documented npm package layout; never install or fall back to another model/provider.
+    const candidate=join(homedir(),'AppData','Roaming','npm','node_modules','@openai','codex','node_modules','@openai','codex-win32-x64','vendor','x86_64-pc-windows-msvc','bin','codex.exe');
+    if(process.platform!=='win32')throw failure('BROKER_RUNTIME_UNAVAILABLE');
+    binaryPath=candidate;
+    try{await import('node:fs/promises').then(fs=>fs.writeFile(selectionPath,JSON.stringify({binaryPath,providerAuthority:false,purpose:'sandbox_commands_only'}),{flag:'wx',mode:0o600}));}
+    catch(writeError){if((writeError as NodeJS.ErrnoException).code!=='EEXIST')throw writeError;binaryPath=JSON.parse(await readFile(selectionPath,'utf8')).binaryPath;}
+   }
+   if(typeof binaryPath!=='string'||!isAbsolute(binaryPath)||binaryPath.startsWith('\\\\'))throw failure('BROKER_SELECTION_INVALID');
+   return createSandboxBroker({binaryPath,profileDirectory,workspaceRoot:binding.workspaceRoot,mode:binding.mode});
+  })});
+ const appCodexHome=options.appCodexHome??join(homedir(),'.codex');
+ let hostTransport={...await inspectAppHostEndpoint({codexHome:appCodexHome}),checkedAt:new Date().toISOString()};
  const selector=createRuntimeRouteSelector({app:appGateway,api:gateway,
-  assertProfile:async()=>{if(stopping)throw failure('SERVICE_STOPPING');await assertProfileIdentity(profile);},
+  assertProfile:async()=>{if(stopping)throw failure('SERVICE_STOPPING');await assertProfileIdentity(profile);
+   hostTransport={...await inspectAppHostEndpoint({codexHome:appCodexHome}),checkedAt:new Date().toISOString()};},
   // Recheck every project after route changes; project-local SQLite requireIdle is insufficient here.
   assertNoForeignUnresolved:async(requested)=>{
    for(const project of await store.projects())for(let offset=0;offset<100_000;offset+=100){
@@ -96,8 +122,10 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
    try {providerAuthority=JSON.parse(await readFile(join(profileDirectory,'runtime-selection.json'),'utf8')).providerAuthority===true;}
    catch {providerAuthority=false;}
   }});
- const {connection,runtime}=selector;
- let agentChannel:Awaited<ReturnType<typeof createAppAgentChannel>>|undefined;
+ const connection={status:():Record<string,unknown>=>({...selector.connection.status(),hostTransport}),
+  async connect(input:unknown){const result=await selector.connection.connect(input);return {...(result as Record<string,unknown>),hostTransport};},
+  async disconnect(){const result=await selector.connection.disconnect();return {...(result as Record<string,unknown>),hostTransport};}};
+ const {runtime}=selector;
  let application:Awaited<ReturnType<typeof createLocalApplication>>|undefined;let origin='';
  const server=(deps.createHttpServer??createServer)(async(incoming,outgoing)=>{
   const controller=new AbortController();
@@ -122,7 +150,7 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
   await new Promise<void>((resolve,reject)=>{server.once('error',reject);server.listen(0,'127.0.0.1',()=>{server.off('error',reject);resolve();});});
   const address=server.address();if(!address||typeof address==='string')throw failure('LISTEN_FAILED');
   origin=`http://127.0.0.1:${address.port}`;
-  agentChannel=await createAppAgentChannel({profileDirectory,instanceId:options.instanceId,origin,
+  agentChannel=await createAppAgentChannel({profileDirectory,instanceId:options.instanceId,origin,profileId:profile.profileId,
    assertProfile:()=>assertProfileIdentity(profile),dispatch:(action,input)=>appGateway.agent(action,input)});
   application=await(deps.createApplication??createLocalApplication)({store,origin,instanceId:options.instanceId,profileDirectory,
    staticDirectory:fileURLToPath(new URL('../../web/dist/',import.meta.url)),connection,runtime,agentChannel,

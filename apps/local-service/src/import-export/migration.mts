@@ -67,8 +67,9 @@ export function createMigrationManager({ store, profileDirectory, inventory, fre
           writerInventoryVerified: true, restoreRehearsalVerified: true, items: preview.items.map((item) => item.task),
           idempotencyKey: input.idempotencyKey, ...(!previous || boundSources ? { sourceBindings: bindings } : {}) };
         if (previous) {
-          const receipt = await store.promoteLegacy(promotion);
-          return { receipt, sourceDigest: digest, backupId: null, mappingCount: preview.items.length, replayed: true };
+          const receipt = await store.promoteLegacy({...promotion,
+            ...(previous.cutoverBackupId ? {cutoverBackupId:previous.cutoverBackupId} : {})});
+          return { receipt, sourceDigest: digest, backupId: receipt.cutoverBackupId ?? null, mappingCount: preview.items.length, replayed: true };
         }
         const project = await store.project(input.projectId);
         if (!project) fail('PROJECT_NOT_FOUND');
@@ -86,9 +87,10 @@ export function createMigrationManager({ store, profileDirectory, inventory, fre
         const restored = await restoreLocalBackup(backup.directory, join(rehearsalRoot, 'state.sqlite'));
         if (!restored.generationChanged) fail('RESTORE_REHEARSAL_FAILED');
         assertHeld(leases);
-        const receipt = await store.promoteLegacy(promotion);
+        const backupId = backup.directory.split(/[\\/]/).at(-1)!;
+        const receipt = await store.promoteLegacy({...promotion,cutoverBackupId:backupId});
         assertHeld(leases);
-        return { receipt, sourceDigest: digest, backupId: backup.directory.split(/[\\/]/).at(-1),
+        return { receipt, sourceDigest: digest, backupId,
           mappingCount: preview.items.length, project: await store.project(input.projectId) };
         });
       } finally { freezes.delete(input.projectId); }

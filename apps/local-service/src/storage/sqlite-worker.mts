@@ -125,6 +125,33 @@ function search(params: { projectId: string; query: string; limit?: number; offs
   const query = currentFormat ? `"${scopeToken(params.projectId)}" AND (${terms})` : terms;
   return { items: db.prepare(RANKED_SEARCH_SQL).all(query, params.projectId, limit, offset).map(entity), coverage, generation };
 }
+/** History keeps changed task fields only. Oversized values are explicitly unavailable, never a hidden full-state copy. */
+function redactHistoryText(value:string):string {
+  return value.replace(/-----BEGIN [^-]*PRIVATE KEY-----[\s\S]*?-----END [^-]*PRIVATE KEY-----/g,'[redacted]')
+    .replace(/\bsk-[A-Za-z0-9_-]{12,}/g,'[redacted]').replace(/\bBearer\s+[A-Za-z0-9._~+\/-]{12,}/gi,'Bearer [redacted]')
+    .replace(/\b((?:password|passwd|api[_-]?key|access[_-]?token|secret|token)\s*[:=]\s*)(?:"[^"]*"|'[^']*'|[^\s,;]+)/gi,'$1[redacted]');
+}
+function historyValue(value:unknown):{value:unknown;redacted:boolean;partial:boolean} {
+  let redacted=false;
+  const encoded=JSON.stringify(value??null,(key,item)=>{
+    if(/(?:password|secret|api[_-]?key|access[_-]?token|private[_-]?key)/i.test(key)){redacted=true;return '[redacted]';}
+    if(typeof item!=='string')return item;
+    const clean=redactHistoryText(item);
+    if(clean!==item)redacted=true;return clean;
+  });
+  if(Buffer.byteLength(encoded)>4096)return {value:{unavailable:'value_exceeds_history_budget',redactedByteSize:Buffer.byteLength(encoded),sha256:hash(encoded)},redacted,partial:true};
+  return {value:JSON.parse(encoded),redacted,partial:false};
+}
+/** Legacy immutable records remain untouched; public replay/audit never reveals prior/deleted comment bodies. */
+function publicAuditPayload(raw:string):unknown {
+  const payload=JSON.parse(raw);
+  if(Array.isArray(payload.commentChanges))payload.commentChanges=payload.commentChanges.map((change:any)=>{
+    const clean={...change,contentExcluded:true};for(const side of ['previous','current'])if(clean[side]&&typeof clean[side]==='object'){
+      const {body:omitted,title:omittedTitle,...metadata}=clean[side];clean[side]=metadata;
+    }return clean;
+  });
+  return JSON.parse(JSON.stringify(payload,(_key,item)=>typeof item==='string'?redactHistoryText(item):item));
+}
 function write(command: StoreWrite, promotion?: PromoteLegacy) {
   text(command.projectId); text(command.actorId); text(command.idempotencyKey);
   if (!Array.isArray(command.changes) || command.changes.length === 0 || command.changes.length > (promotion ? 10000 : 100)) fail('INVALID_COMMAND');
@@ -143,6 +170,7 @@ function write(command: StoreWrite, promotion?: PromoteLegacy) {
     if (scope.authorityEpoch !== command.expectedAuthorityEpoch) fail('AUTHORITY_CONFLICT');
     if (command.requireIdle) assertIdle(scope.id);
     if (promotion) {
+      if(promotion.cutoverBackupId!==undefined&&(typeof promotion.cutoverBackupId!=='string'||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,199}$/.test(promotion.cutoverBackupId)))fail('BACKUP_INVALID');
       if (!promotion.writerInventoryVerified || !promotion.restoreRehearsalVerified) fail('CUTOVER_GATE_FAILED');
       if (!/^[0-9a-f]{64}$/.test(promotion.sourceDigest) || promotion.sourceDigest !== promotion.verifiedSourceDigest) fail('SOURCE_DRIFT');
       if (scope.authorityMode !== 'legacy_files') fail('AUTHORITY_CONFLICT');
@@ -171,6 +199,7 @@ function write(command: StoreWrite, promotion?: PromoteLegacy) {
     }
     const revisions = [];
     const commentChanges = [];
+    const taskChanges:Array<Record<string,unknown>>=[];let historyBytes=0;
     const now = new Date().toISOString();
     const seen = new Set<string>();
     const searchCounts = readSearchCounts(scope.id);
@@ -195,7 +224,7 @@ function write(command: StoreWrite, promotion?: PromoteLegacy) {
         input = { ...input, title: task.title, body: [task.summary, task.technicalValue, task.productValue, ...task.acceptanceCriteria].join('\n'), status: task.status, publicKey: task.key, data: task };
       }
       if (Buffer.byteLength(input.body ?? '') > 1024 * 1024 && input.kind !== 'document') fail('CONTENT_TOO_LARGE');
-      const old = db.prepare('SELECT revision,kind,public_key,title,body,coverage,deleted FROM entities WHERE project_id=? AND id=?').get(scope.id, input.id);
+      const old = db.prepare('SELECT revision,kind,public_key,title,body,status,data,coverage,deleted FROM entities WHERE project_id=? AND id=?').get(scope.id, input.id);
       if (!Number.isSafeInteger(change.expectedRevision) || change.expectedRevision < 0
         || (old?.revision ?? 0) !== change.expectedRevision) fail('REVISION_CONFLICT');
       if (old && old.kind !== input.kind) fail('ENTITY_KIND_CONFLICT');
@@ -213,6 +242,23 @@ function write(command: StoreWrite, promotion?: PromoteLegacy) {
         .run(scope.id, input.id, input.kind, input.parentId ?? null, input.title ?? '', input.body ?? '', input.status ?? '',
           input.publicKey ?? null, input.coverage ?? 'complete', JSON.stringify(input.data ?? {}), revision, change.delete ? 1 : 0, now);
       revisions.push({ id: input.id, revision });
+      if(input.kind==='task') {
+        const previous=old?JSON.parse(old.data as string) as Record<string,unknown>:{};
+        const current=input.data as Record<string,unknown>;
+        const fields=[];
+        for(const field of Object.keys(current))if(JSON.stringify(previous[field])!==JSON.stringify(current[field])) {
+          const before=historyValue(previous[field]),after=historyValue(current[field]);
+          fields.push({field,previous:before.value,current:after.value,redacted:before.redacted||after.redacted,coverage:before.partial||after.partial?'partial':'complete'});
+        }
+        if(Boolean(old?.deleted)!==Boolean(change.delete))fields.push({field:'deleted',previous:Boolean(old?.deleted),current:Boolean(change.delete),redacted:false,coverage:'complete'});
+        const acceptance=command.changes.find(item=>item.entity.kind==='comment'&&item.entity.parentId===input.id&&(item.entity.data as Record<string,unknown>|undefined)?.category==='owner_acceptance');
+        const reason=acceptance?.entity.body?historyValue(acceptance.entity.body).value:null;
+        const entry={id:input.id,previousRevision:old?.revision??null,currentRevision:revision,operation:change.delete?'delete':old?'update':'create',
+          source:promotion?'import_promotion':'transactional_command',reason,fields,coverage:fields.some(field=>field.coverage==='partial')?'partial':'complete'};
+        const bytes=Buffer.byteLength(JSON.stringify(entry));
+        if(historyBytes+bytes<=256*1024){taskChanges.push(entry);historyBytes+=bytes;}
+        else taskChanges.push({...entry,fields:[],coverage:'partial',omittedFields:fields.length});
+      }
       if (old && !old.deleted) {
         if (searchableKinds.includes(old.kind as string)) searchCounts.eligible--;
         if (old.coverage !== 'complete') searchCounts.incomplete--;
@@ -221,9 +267,9 @@ function write(command: StoreWrite, promotion?: PromoteLegacy) {
         if (searchableKinds.includes(input.kind)) searchCounts.eligible++;
         if ((input.coverage ?? 'complete') !== 'complete') searchCounts.incomplete++;
       }
-      if (input.kind === 'comment') commentChanges.push({ id: input.id,
-        previous: old ? { revision: old.revision, title: old.title, body: old.body } : null,
-        current: { revision, title: input.title ?? '', body: input.body ?? '', deleted: Boolean(change.delete) } });
+      if (input.kind === 'comment') commentChanges.push({ id: input.id,parentId:input.parentId??null,contentExcluded:true,category:(input.data as Record<string,unknown>|undefined)?.category??null,
+        previous: old ? { revision: old.revision } : null,
+        current: { revision, deleted: Boolean(change.delete) } });
       db.prepare('DELETE FROM entity_blobs WHERE project_id=? AND entity_id=?').run(scope.id, input.id);
       for (const blobId of input.blobIds ?? []) {
         if (!db.prepare('SELECT 1 FROM blobs WHERE project_id=? AND id=?').get(scope.id, blobId)) fail('BLOB_SCOPE_CONFLICT');
@@ -269,9 +315,9 @@ function write(command: StoreWrite, promotion?: PromoteLegacy) {
       revisions.push({ id, revision: 1 });
     }
     const seq = (db.prepare('SELECT COALESCE(MAX(seq),0) AS seq FROM events WHERE project_id=?').get(scope.id)!.seq as number) + 1;
-    const receipt = { commandId, projectId: scope.id, seq, revisions };
+    const receipt = { commandId, projectId: scope.id, seq, revisions,...(promotion?.cutoverBackupId?{cutoverBackupId:promotion.cutoverBackupId}:{}) };
     db.prepare('INSERT INTO commands VALUES (?,?,?,?,?)').run(scope.id, commandId, command.idempotencyKey, payloadHash, JSON.stringify(receipt));
-    const payload = JSON.stringify({ schemaVersion: 1, revisions, commentChanges });
+    const payload = JSON.stringify({ schemaVersion: 1,commandId, revisions, commentChanges,taskChanges });
     if (Buffer.byteLength(payload) > 16 * 1024 * 1024) fail('AUDIT_TOO_LARGE');
     db.prepare('INSERT INTO events VALUES (?,?,?,?,?,?,?)').run(scope.id, seq, randomUUID(), commandId, command.actorId, now, payload);
     for (const job of command.outbox ?? []) {
@@ -395,7 +441,7 @@ function dispatch(method: string, params: any, requestId: number): unknown {
       let bytes = 0;
       const byteLimit = method === 'audit' ? 16 * 1024 * 1024 : 1024 * 1024;
       for (const row of rows.slice(0, limit)) {
-        const item = { seq: row.seq, eventId: row.event_id, actorId: row.actor_id, occurredAt: row.occurred_at, payload: JSON.parse(row.payload as string) };
+        const item = { seq: row.seq, eventId: row.event_id, actorId: row.actor_id, occurredAt: row.occurred_at, payload: publicAuditPayload(row.payload as string) };
         const size = Buffer.byteLength(JSON.stringify(item));
         if (bytes + size > byteLimit) {
           if (!items.length) fail('EVENT_SNAPSHOT_REQUIRED', 'Event exceeds the replay budget; load a project snapshot');

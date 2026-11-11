@@ -1,4 +1,9 @@
 import type { Connection, ConnectionRoute, M1Api } from "../api/client.ts";
+/** Endpoint metadata explains availability; it never authenticates an App host or changes Send authority. */
+export function appHostTransportLabel(connection:Connection|null):'appHostEndpointMissing'|'appHostEndpointUnverified'|null{
+ if(connection?.route!=='codex_app_agent'||connection.verified||!connection.hostTransport)return null;
+ return connection.hostTransport.reason==='app_host_endpoint_missing'?'appHostEndpointMissing':'appHostEndpointUnverified';
+}
 export function hasActiveConnection(connection: Connection | null): boolean {
   return (
     connection?.verified === true ||

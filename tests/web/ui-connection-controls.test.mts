@@ -4,7 +4,14 @@ import {
   connectionRequest,
   initialConnectionRoute,
   hasActiveConnection,
+  appHostTransportLabel,
 } from "../../apps/web/src/ui/connection-controls-model.ts";
+test('App transport metadata never turns endpoint presence into a verified App connection',()=>{
+ assert.equal(appHostTransportLabel({verified:false,route:'codex_app_agent',hostTransport:{status:'unavailable',reason:'app_host_endpoint_missing',transport:'websocket_over_stdio_proxy'}}),'appHostEndpointMissing');
+ assert.equal(appHostTransportLabel({verified:false,route:'codex_app_agent',hostTransport:{status:'unverified',reason:'app_host_endpoint_unverified',transport:'websocket_over_stdio_proxy'}}),'appHostEndpointUnverified');
+ assert.equal(appHostTransportLabel({verified:true,route:'codex_app_agent'}),null);
+ assert.equal(appHostTransportLabel({verified:false,route:'local_api_byok'}),null);
+});
 test("App-agent is the default with an exact keyless body and no inherited API fields", () => {
   assert.equal(initialConnectionRoute(null), "codex_app_agent");
   assert.equal(

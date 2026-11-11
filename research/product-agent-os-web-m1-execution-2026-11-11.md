@@ -1,6 +1,6 @@
 # Web M1 — реализация и пакет приёмки, 2026-11-11
 
-Source status: project-authored / current-run local and native-offline evidence / partial acceptance. Исторические попытки 10 ноября сохраняются в [первичной квалификации](product-agent-os-web-m1-initial-qualification-2026-11-10.md). PAOS-0004 browser acceptance закрыта продолжением ниже; provider, PAOS-0040 closed-App и M1 owner acceptance остаются открыты.
+Source status: project-authored / dated local, native and actual Codex App evidence; актуальное техническое заключение — в последнем разделе «App-mediated native broker». Предыдущие статусы ниже сохраняют исторический scope. Исторические попытки 10 ноября сохраняются в [первичной квалификации](product-agent-os-web-m1-initial-qualification-2026-11-10.md). Технические M1 gates выбранного App-active маршрута закрыты последним продолжением; human product acceptance, legacy closed-App full-turn и commercial/release остаются отдельными.
 
 ## Scope и ограничения
 
@@ -289,3 +289,125 @@ Owner-selected App-dependent route явно отличается от прежн
 Control-plane sync: REQUIREMENTS/PLAN/TEST/RUNLOG update_required; EVALS/AGENTS/prod_test no_change_needed — rubric/thresholds, durable authority и Batch39 не менялись. Подробные evidence принадлежат этому разделу и execution-results JSON, root файлы получают только актуальные pointers.
 
 Post-sync App implementation: reviewed control-plane digest51e340dbcdc73de373d40020c846c6ccde1cdf4a614ddac6ca1deccd65a00cb2 applied to REQUIREMENTS/PLAN/TEST/RUNLOG. Source-owned five-file CAS and RU/EN registries updated; full56 tasks/12groups/estimates/unselected rows and failed receipts retained. Fresh aggregate docs105/105 in22.007s, checker/matrix/diff exit0; runtime manifest/compatibility6/6 after source-pin refresh. Root files remain below40000 UTF-8 bytes. EVALS/AGENTS/prod_test no_change_needed with reasons above. M1 remains partially_verified / PAOS-0045 blocked; no human acceptance or full native execution claim.
+
+## Продолжение: WSA10050 и App-mediated native broker — в работе
+
+Source status: current continuation, implementation/integration not yet accepted. Two owner-requested GPT-6-Astra/high specialists: /root/astra_windows_transport and /root/astra_app_integration. Windows AF_UNIX10050 reproduced for missing parent directory; default app-server-control directory absent. Native AF_UNIX socket/bind/listen/connect succeeds. This is missing daemon endpoint, not a Windows network-policy failure. Existing JSONL-over-proxy probe was malformed; new WebSocket-over-stdio probe has22 tests and passed isolated native listener initialization with loadedThreadCount0. Existing Desktop endpoint/identity is not established. No global daemon, user profile, OS policy or auth cache changed.
+
+Alternative implemented in current code: actual App worker retains LLM work; only PAOS-mediated commands run through offline native Codex command/exec/terminate broker. Separate isolatedhome outside workspace, fixedroot/mode/environment, no modelturn/auth, explicit PAOS domain approval (not native approval escalation). Native candidate and default-factory receipts under .tmp/paos-m1/astra-transport: sandbox-broker-default-1794412271089.json and synthetic-proxy-1794412374703.json. Their adapter hash c6aa035e47bd82daed7cb5102a2ec7cfe0058300bbae5400321b85cf896dc9fc qualified then; later review fixes require new pin and rerun. Discussion/Planning writes denied; Execution insidewrite/outside+TEMPdeny; nativeStop12ms, cleanuptrue. Current source policy does not restrict all App tools or all read access; no broader confidentiality claim.
+
+Initial full unit run287/287, strict/build passed before finalreview fixes. Real App+broker UI harness tests/web/single-window/app-broker-acceptance.mts prepared6 cases. First 6k83Ye failed at setup task seeding because plannedOperation add is not an M1 enum; create fixed; no jobs/commands executed. Failure receipt retained. Worker helper .tmp/paos-m1/app-broker-worker-session.mts maintains heartbeat and emits scopedjobs only; real /root/m1_launcher must interpret/run commands via bridge, never directtargettools.
+
+Current independent review fixes in progress: common credential files/PEM exclude from diffs; shared channel-capability redaction before durable broker output; clean newbroker on bindingpersistence failure; explicit clientreattach across instance changes only with stableprofile identity. Root owns main/channel/UI/filehelpers+harness; Windows specialist owns gateway+tests; App specialist owns client+newrecoverytests. No fullM1/0045 promotion. Final scopes/card reconciliation and post-sync checks pending.
+
+### Интеграционные дефекты и повторная проверка
+
+R2 QEeuAp:42 успешных assertions, затем ошибка runner в отсутствующем locale key decline; заменён на deny, strict TypeScript0. R3 8qotpH:70 pass/1 fail native_checks_recorded; App действительно записал accepted.txt один раз, outside EPERM, первоначальный TEMP ENOENT, отдельный mkdir/write probe TEMP EPERM, readback/dedup/report приняты. Дополнительный контроль дал три успешных команды вместо двух; assertion исправлен на минимум два. Неуспешные receipts сохранены.
+
+R4 djTwpo:93 pass/1 fail restart_unknown_fenced. Настоящий App worker выполнил Discussion/Planning denial, declined command без dispatch, Execution inside/outside/TEMP/dedup/readback/result и Stop после native start. Helper завершился planned_restart exit0:39 heartbeat/6 claimed. Restart proposal не исполнялся. После SQL reload порядок settings с тремя modes скрывал active recovery binding; GPT-6-Astra/high специалист воспроизвёл два RED и исправил active exact-scope selection и durable mode pointer, gateway24/24. Reattach в этом failed проходе не выполнялся.
+
+Независимые browser journeys выявили обязательные исправления: data1kwdK2 24/25 (backupId lost on cutover retry); taskcVmvW3 36 assertions пройдены, но mandatory History gap явно сохранён. Root regression migration сначала упал null vs original backup ID; после атомарного receipt поле сохраняется, domain-migration4/4. Новый durable GET/history: RED404, затем service-api6/6. History ещё дорабатывается по PRD14.8, включая actor/time/old-new/source/reason unknown, redaction и публичное скрытие текста удалённых comments. Финальная qualification/M1 promotion ожидает новые source pin, full tests/build, workload и browser/App повтор.
+
+## App-mediated native broker — техническая приёмка M1
+
+Source status: current checked-in implementation, exact qualified native tuple and actual Codex App worker; technical acceptance in PRD §17.7 scope. Более ранние blocked/in_progress и запреты Execution выше описывают прежние срезы. Failed receipts и отрицательное owner acceptance не переписаны. Статусы карточек/JSON повышаются только после независимого verdict и проверок документов.
+
+### Результат и границы
+
+WSA10050 локализован: у documented default AF_UNIX endpoint отсутствует parent directory. Native socket/bind/listen/connect работают; создание пустого parent в synthetic fixture меняет ошибку на10061, но не создаёт App daemon. Стандартный пользовательский каталог и системные политики не менялись. Исправленный WebSocket-over-stdio proxy прошёл initialize/loaded-list на отдельном synthetic offline listener. Это не квалификация существующего Desktop daemon.
+
+Рабочий выбранный маршрут: PAOS UI → durable scoped job → настоящий attached Codex App worker → typed command intent → явное PAOS domain approval → отдельный pinned offline native command broker → actual diff/checks → App report → SQLite/UI. Модель и её account остаются в Codex App; broker не запускает model turns и не импортирует credentials. API key, inherited auth cache, отдельный provider SDK и fallback payer не используются. Активный App consumer обязателен. Native sandbox ограничивает **только PAOS-mediated commands**, не все App tools и не все чтения. Квалификация manifest остаётся `native_offline`.
+
+### Фактические прогоны окончательного состояния
+
+| Проверка | Наблюдение и receipt |
+| --- | --- |
+| `node --test tests/web/*.test.mts` | **306/306**, skip0, exit0,6666.8379ms; `.tmp/paos-m1/broker-final-full-tests.log` |
+| `npm run check:web-m1` | exit0; strict production и отдельных новых runners |
+| `npm --prefix apps/web run build` | exit0,36 modules, `index-CFtuU47K.js`310.47kB/gzip94.28; CSS8.88/gzip2.63 |
+| Реальный App/native/browser R5 | **105/105**, `app-broker-evidence-ITfNiX/app-broker-result.json`,16:42:27–16:47:26UTC; no browser errors/external requests, service/fixture cleanup true |
+| Task lifecycle browser | **39/39**, `task-lifecycle-evidence-Z1nRoR/task-lifecycle-result.json`,16:44:39–16:44:45UTC;14 source/build hashes совпадают, cleanup true |
+| S29/S30/S31 browser actions | **25/25**, `data-journeys-evidence-nNbwSV/receipt.json`; cleanup, browserClosed, serviceClosed, containment и fixtureCleaned true |
+| Default native broker | `astra-transport/sandbox-broker-default-1794415324875.json`; Discussion/Planning inside/outside/TEMP EPERM; Execution inside written, outside/TEMP EPERM; Stop12ms; modelTurns0/credentialOperations0/authFileCreated false; own homes cleaned |
+| `node tests/web/single-window/headless-acceptance.mts --synthetic` | **33/33**,16:45:24–16:45:41UTC; real HTTP/launcher/SQLite/source locks/backup/cutover/retry, cleanup true |
+| `node tests/web/single-window/workload.mts` | completed_offline,164.028s;10k Tasks/100k messages/1k docs,111001 indexed/FK failures0. Search p95 **278.714ms**, ACK9.504ms, page50 p95 28.453ms; три измеренных target пройдены; cleanup true |
+
+Полные paths/hashes/receipts и source pin: execution-results JSON continuation `App-mediated native broker and complete M1 technical acceptance`. Adapter SHA256 **149162a199f03f52f3722c20678055e7df9efac9741d8ff6110ea4a22f311bd9**; Codex0.167.0 binary SHA256 edfdd48f8b458af0906e507b4cb05217b326c3d6e515e9f024e05e3b8d650f70. Source hashes не выводятся из Git clean state.
+
+R5 проверил шесть настоящих jobs: Discussion/Planning denial, decline без dispatch, inside write плюс outside/TEMP denial, exact-ID retry без второго append и отдельный CHECK_OK, Stop после native STARTED, pending approval перед restart. После restart stale approval и старый capability отвергнуты, история сохранена, команда не replayed. Тот же App worker через production client мигрировал private state при matching profile identity, прочитал completed result и unresolved recovery. UI разрешил только доказанно never-dispatched intent cancellation; после неё следующий Send доступен. Helper завершился planned_restart exit0,41 heartbeat/6 claims; reattach/reconcile exit0. Неизвестный native outcome по-прежнему не объявляется success и не отменяется этим shortcut.
+
+R5 и data25 загрузили `BHMQ7YW3`; затем единственная строка TaskForm переключена с aggregated search body на canonical summary. Runtime tuple и broker/data controls неизменны; новый TaskForm доказан отдельным final39 на `CFtuU47K`. Независимый reviewer проверил это точное различие. Прежние browser669 (7TABC6) и explicit RPC fixture55 (donrlh) сохраняют исходные timestamps: их неизменные theme/locale/geometry и legacy runtime paths используются как регрессии, **не новый actual model proof**. Новая History и summary отдельно проверены final39. Python plugin1450/fixture91/transcript26 не запускались повторно: plugin runtime не менялся.
+
+### Исправленные причины и RED → GREEN
+
+- Старый proxy probe писал JSONL вместо HTTP Upgrade/masked WebSocket frames; новый transport покрыт22 tests и native synthetic listener. Отсутствующий endpoint показывается unavailable/unverified отдельно от attached worker.
+- Shared channel-capability/lease redaction действует до durable stdout/stderr/progress/report/diff; known credential files/PEM исключены. Новый broker закрывается при failed binding persistence; task actualOperation/time вычисляются из наблюдений, approval waiting не входит во время, unknown duration остаётся null.
+- R4 restart выявил потерю выбранного binding при SQL enumeration трёх modes. Два RED проверяют active exact-scope priority и durable selection pointer; gateway24/24. Scope другого session не перехватывает recovery.
+- Data browser выявил lost-ACK backupId:null. Backup ID теперь атомарно хранится вместе с committed cutover receipt; restarted manager возвращает оригинал без повторной authority. Domain migration5/5 включает legacy receipt без поля: он replayed без выдуманного backup.
+- History содержала только revisions и использовала7-day replay. Добавлены bounded task field changes, actor/time/command correlation/source/reason с honest unknown/partial/redacted. Durable `/history` читает audit без replay cutoff. Новые comment events metadata-only; public audit/replay удаляет body/title legacy comments, сохраняя исходные private immutable records. Content exclusion явно обозначено. RED privacy/history cases прошли GREEN; service-api6/6.
+- Actual task browser RED `jkVsUL` доказал corruption summary при title-only edit: aggregated search body включал criteria. Canonical summary default исправлен одной строкой; final39 сравнивает описание точно.
+
+R1 6k83Ye setup enum, R2 QEeuAp locale key, R3 8qotpH extra-check count и R4 djTwpo restart failure сохранены. Task cVmvW3 был явно partial с History gap; data1kwdK2 24/25 — реальный backup defect. Они не заменены новыми pass receipts. В ходе повторного native browser запроса auto-review однажды ошибочно применил ранний no-browser scope; после проверки актуальной owner authorization тот же bounded action был разрешён. Обхода review не было.
+
+### Матрица применимой технической приёмки
+
+`A` — actual App R5/105; `T` — task browser39; `D` — data browser25; `N` — final default native qualification; `H` — headless33; `U` — final306 unit/integration; `W` — current workload. Прежние geometry669 и explicit fixture55 имеют отдельный provenance выше. Каждая строка относится к PAOS App-active контракту; ограничения после таблицы не выдаются за pass.
+
+| Gate | Применимое доказательство |
+| --- | --- |
+| SW-AC-01 | A launch/connect/send/result, H standalone launcher; активный App согласно §17.7 |
+| SW-AC-02 | H unpaired/offline fail-closed; U absent/expired worker, отсутствие API fallback |
+| SW-AC-03 | A/N Discussion/Planning deny и explicit Execution binding |
+| SW-AC-04 | A domain allow/deny/ACK/stale rejection; source=paos_domain |
+| SW-AC-05 | A Send/operation dedup, exact one append; U lost ACK/unknown fences |
+| SW-AC-06 | A/N native Stop, restart/history/reattach/no replay; U unknown outcome |
+| SW-AC-07 | U project/profile/worker/generation/capability isolation; A old capability rejection; host principal не импортируется |
+| SW-AC-08 | A run не закрывает Task; T missing/failed check guards и explicit acceptance/reopen |
+| SW-AC-09 | U lease/connection failure, bounded/no fallback, preserved input; host auth/quota принадлежат App и не симулируются как реальный ответ ChatGPT |
+| SW-AC-10 | A+T+D полный технический user journey; human usability acceptance отдельно |
+| ST-AC-01 | T real CRUD/Comments/History, H SQLite restart/offline, A durable messages |
+| ST-AC-02 | U real concurrent Workers/CAS/idempotency; T actual second-writer409 |
+| ST-AC-03 | D supported MD/JSON dedup, unknown/unsupported/conflict; H real source locking |
+| ST-AC-04 | D drift block/source status/cutover retry; H native freeze+restore rehearsal; U transaction/crash fences |
+| ST-AC-05 | D export→reimport proposal without overwrite; H preserves current task |
+| ST-AC-06 | D exact/EN/RU FTS/scope/delete/partial/rebuild/empty; W measured corpus |
+| ST-AC-07 | D manifest/exclusions/restore separate root; H integrity/generation; A stale permissions |
+| UX-AC-01 | A App-active Send/result; H local launcher, прежний closed-App model gate отдельно |
+| UX-AC-02 | A six explicit Send jobs; T no accidental run on navigation/context |
+| UX-AC-03 | A/N mode denial and explicit Execution |
+| UX-AC-04 | T link add/remove and revision pin; A saved task/run scope |
+| UX-AC-05 | T durable draft/source-context return/scroll and winning edit preservation |
+| UX-AC-06 | A typed profile/role/mode panel, attested coverage; U binding contracts |
+| UX-AC-07 | A actual file diff/checks, U/T detailed task file/history projection |
+| UX-AC-08 | A actual PAOS permission; T separate check and acceptance decision; no native approval impersonation |
+| UX-AC-09 | A allow/deny/ACK/stale rejection; U duplicate/late approval guards |
+| UX-AC-10 | A operation/Send retry without second append; U ACK-loss recovery |
+| UX-AC-11 | A/N native Stop after start, no late side effect; U timeout→unknown |
+| UX-AC-12 | T failed/missing guard, passed check/manual Done/reopen; A no automatic Done |
+| UX-AC-13 | U scope/profile/generation fences; A worker migration; T scoped durable draft |
+| UX-AC-14 | Unchanged M1 unsupported attachment/context boundary; U/previous browser669; M2 uploads excluded |
+| UX-AC-15 | Unchanged RU/EN/themes/keyboard/zoom geometry669; final T History and summary path, A actual controls |
+| UX-AC-16 | D unknown/unsupported/partial/empty coverage; U catalog limits |
+| UX-AC-17 | U failure/lease/retry/no payer switch; T preserved draft; host quota responses unobserved |
+| UX-AC-18 | A pinned task/binding/single active job; U active-run scope locks |
+| DATA-AC-01 | D MD+JSON preview/dedup/unsupported; H server source hashes |
+| DATA-AC-02 | D conflicts/drift blocking/mapping/status; U unknown values preserved |
+| DATA-AC-03 | D lost ACK original backup receipt/no duplicate promotion; H real freeze/backup/rehearsal; U crash boundaries |
+| DATA-AC-04 | D backup manifest/exclusions/restore in new directory/active unchanged; H integrity |
+| DATA-AC-05 | D exact/FTS/scope/delete/rebuild/partial/empty; W actual corpus |
+
+### Независимое заключение и неутверждаемые свойства
+
+`/root/astra_app_integration`, context_mode=separate_reused_context, tester_verdict=**closed_allowed** для technical PAOS-0045 в §17.7. Reviewer самостоятельно прочитал R5/39/25/native receipts, сверил adapter pin и source/build differences; новых blocking P1/P2 не найдено. Verdict: `.tmp/paos-m1/data-journeys-evidence-nNbwSV/independent-review.json`. Два GPT-6-Astra/high specialists привлекались по прямому запросу владельца; Context7 и официальные pinned sources использованы для технических решений.
+
+Не доказаны и не заявляются: automatic Desktop wakeup/работа после остановки consumer; существующий Desktop control endpoint; sandbox всех App tools или полная read isolation; реальное переключение ChatGPT principal/реальные quota/token ответы host. PAOS обрабатывает отсутствие/истечение своего worker и не меняет payer; entitlement/лимиты остаются у App. Это явно наблюдаемые границы интеграции, не скрытая API key зависимость. Performance receipt — реальные измерения текущего local storage на указанном в JSON hardware, с concurrent local acceptance и без OS-cache flush; cold GUI/event-to-visible и exact4-core reference не измерены. PRD§10/architecture21.8 обозначают их design targets, не пройденные измерения.
+
+Техническая M1 приёмка не означает human product acceptance, отмену прежнего owner rejection, AUTH-G1–G6, коммерческий допуск, release, publication или deployment. Следующая задача по утверждённой очереди — PAOS-0046 до M2. Git history, реальные credentials, auth cache и системные политики не менялись. AGENTS/EVALS/prod_test: no_change_needed — durable authority, rubric/thresholds и Batch39 evidence не менялись; REQUIREMENTS/PLAN/TEST/RUNLOG синхронизированы reviewed CAS; точные digest и результаты приведены ниже.
+
+### Окончательная синхронизация и закрытие
+
+Техническая PAOS-M1 закрыта: **18/18 implemented**, PAOS-0042/0043/0044/0045 обновлены в JSON и Markdown cards, остальные52 task objects/blocks и все estimates сохранены (независимое сравнение с HEAD). Root CAS digests: `0af9c7bbc8e55a284eb1e8d47a920ab1b6163dedadf43338894c8d86444701d8`, затем `a254a0d07eca5c441f8a37c887641c2741b11c27e54892106540dc596c2c4611` для устранения противоречивого исторического scope в REQUIREMENTS. Journals и before-images сохранены. Source-owned research matrix не разделена и не пропущена через несовместимый generic card writer.
+
+После окончательной синхронизации: `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -q` **105/105**,15.013s,exit0; `python -B tools/check_docs.py`, task matrix validator и `git diff --check` exit0. Earlier docs105/17.264s относится к состоянию до уточняющих historical labels; это отдельный наблюдаемый запуск. Runtime manifest/compatibility6/6 и loader unconfigured/exact/drift checks passed на manifest2f10405d82eadaba6d0e48dbd3de28f415a8958d94def53c1009ef4e7d160569. Strict MkDocs not_applicable: nav/diagrams/config/extensions/site evidence не менялись. Все compact root files <40000 UTF-8 bytes; REQUIREMENTS38155 до уточняющих labels, фактические final bytes записаны в JSON.
+
+Финальный completion audit: `/root/astra_app_integration`, separate_reused_context, **closed_allowed**;40 уникальных AC rows без пропусков/дублей, current scope/risks/cards согласованы. Mandatory technical gaps выбранного M1 — **нет**. `closure_level = technical_acceptance_passed_app_active`. Human acceptance и commercial/release gates не повышены. Следующий утверждённый шаг — PAOS-0046, затем M2; настоящий consumer должен оставаться активным. Новые provider keys, policy changes, Git/publication actions и ручные тесты владельца не требовались.

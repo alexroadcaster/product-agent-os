@@ -250,10 +250,11 @@ export async function createLocalApplication(options: ApplicationOptions) {
         await store.rebuildSearch(projectId, { signal: request.signal });
         return json({ status: 'rebuilt', coverage: (await store.search(projectId, { query: 'paos_index_coverage_probe', limit: 1 })).coverage });
       }
-      if (action === 'events' && request.method === 'GET') {
+      if ((action === 'events' || action === 'history') && request.method === 'GET') {
         const cursor = url.searchParams.get('cursor');
         const decoded: { after?: number; generation?: string } = cursor ? decodeCursor(cursor, projectId) : {};
-        const page = await store.events(projectId, decoded);
+        // Replay retention does not limit the immutable task audit history.
+        const page = action === 'history' ? await store.audit(projectId, decoded) : await store.events(projectId, decoded);
         const seq = page.items.at(-1)?.seq ?? decoded.after ?? 0;
         return json({ ...page, nextCursor: encodeCursor(projectId, page.generation, seq) });
       }
