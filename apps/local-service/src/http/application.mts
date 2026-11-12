@@ -186,7 +186,7 @@ export async function createLocalApplication(options: ApplicationOptions) {
       const runtimeAction = /^\/runtime\/(bindings|send|interrupt|approve|reconcile)$/.exec(path);
       if (runtimeAction && request.method === 'POST') {
         if (!options.runtime) fail('RUNTIME_UNAVAILABLE');
-        const input=await body(request);if(runtimeAction[1]==='approve'&&typeof input.projectId==='string'&&migration.frozen(input.projectId))fail('MIGRATION_BUSY');return json(runtimeAction[1]==='approve'?await decisions.inline(input,principal.actorId):await options.runtime.dispatch(runtimeAction[1],input));
+        const input=await body(request);if('taskCreationInitiator' in input)fail('RUNTIME_INPUT_INVALID');if(runtimeAction[1]==='send'&&input.taskCreationApproved===true)input.taskCreationInitiator=principal.actorId;if(runtimeAction[1]==='approve'&&typeof input.projectId==='string'&&migration.frozen(input.projectId))fail('MIGRATION_BUSY');return json(runtimeAction[1]==='approve'?await decisions.inline(input,principal.actorId):await options.runtime.dispatch(runtimeAction[1],input));
       }
       if (path === '/projects') {
         if (request.method === 'GET') {

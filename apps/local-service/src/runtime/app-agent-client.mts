@@ -25,7 +25,7 @@ async function readPrivate(path:string):Promise<string>{
 }
 /** One finite operation for an explicitly invoked Codex App worker; never auto-wakes or launches an agent. */
 export async function callAppAgent(options:Readonly<{descriptorPath:string;workerId:string;action:AppAgentClientAction;input?:Record<string,unknown>;previousStatePath?:string}>,dependencies:Readonly<{fetch?:typeof fetch}>={}) {
- if(!identifier(options.workerId)||!['attach','heartbeat','claim','report','command','operation','progress','reconcile','reattach'].includes(options.action))fail('AGENT_INPUT_INVALID');
+ if(!identifier(options.workerId)||!['attach','heartbeat','claim','report','command','operation','progress','reconcile','task-create','reattach'].includes(options.action))fail('AGENT_INPUT_INVALID');
  if(options.previousStatePath!==undefined&&(options.action!=='reattach'||!isAbsolute(options.previousStatePath)))fail('AGENT_INPUT_INVALID');
  const text=await readPrivate(options.descriptorPath);const descriptor=JSON.parse(text) as AppAgentDescriptor;
  if(descriptor.schemaVersion!=='paos_app_agent_channel_v1'||!/^[A-Za-z0-9-]{1,80}$/.test(descriptor.instanceId)||!/^[a-f0-9]{64}$/.test(descriptor.capabilityToken))fail('AGENT_DESCRIPTOR_INVALID');

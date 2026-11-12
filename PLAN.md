@@ -16,7 +16,9 @@ G8 closed / owner accepted. G9 T01–T09 implemented_locally_verified; T10 owner
 
 ## Активная продуктовая очередь Web — 2026-11-10
 
-PAOS-0026 реализована и технически проверена локально: durable decisions, единый ответ S09/S22, expiry/CAS/identity fences. Следующая PAOS-0028 — интеграционная проверка пути; её dependencies сверены с матрицей. Другие55 cards, estimates/order/groups сохранены. [Evidence](research/product-agent-os-web-m3-0026-execution-2026-11-12.md). Human/commercial/release отдельно.
+PAOS-0028 реализована и технически проверена локально: integration112, workflow51, M4 synthetic/native51 и actual App46; native Start/Stop/ACK и data preservation. Следующая PAOS-0029 — доступность, языки и темы. Другие55cards/estimates/order/groups сохранены. [Evidence](research/product-agent-os-web-m3-0026-execution-2026-11-12.md). Human/release отдельно.
+
+Исторический срез до PAOS-0028 (provenance сохранён): PAOS-0026 реализована и технически проверена локально: durable decisions, единый ответ S09/S22, expiry/CAS/identity fences. Следующая PAOS-0028 — интеграционная проверка пути; её dependencies сверены с матрицей. Другие55 cards, estimates/order/groups сохранены. [Evidence](research/product-agent-os-web-m3-0026-execution-2026-11-12.md). Human/commercial/release отдельно.
 
 Исторический срез до PAOS-0026 (provenance сохранён): PAOS-0025 технически реализована: подтверждённый checkpoint продолжает ту же recipe после restart; исходный run не повторяется, cancel ждёт Stop ACK. [Evidence](research/product-agent-os-web-m3-0025-execution-2026-11-12.md). Следующая PAOS-0026 — решения и наблюдаемость автономности; зависимости0023/0025 выполнены. Другие55 задач, estimates/order/groups сохранены; human/commercial/release отдельно.
 

@@ -60,7 +60,7 @@ async function serialize<T>(store:LocalStore,projectId:string,operation:()=>Prom
   try{return await next;}finally{if(queue.get(projectId)===next)queue.delete(projectId);}
 }
 /** All browser M2 mutations use this single authenticated command boundary. */
-export type WorkflowCommandOptions={validateWorkflowReferences?:(definition:import('../../../../packages/contracts/workflows/workflow.ts').WorkflowDefinition)=>Promise<void>;recipeExecution?:StoreWrite['recipeExecution'];schedulerCommand?:StoreWrite['schedulerCommand'];additionalChanges?:StoreWrite['changes']};
+export type WorkflowCommandOptions={validateWorkflowReferences?:(definition:import('../../../../packages/contracts/workflows/workflow.ts').WorkflowDefinition)=>Promise<void>;recipeExecution?:StoreWrite['recipeExecution'];schedulerCommand?:StoreWrite['schedulerCommand'];additionalChanges?:StoreWrite['changes'];agentCreation?:NonNullable<StoreWrite['agentTaskCreation']>};
 export function taskManagerCommand(store:LocalStore,projectId:string,actorId:string,input:Record<string,any>,options:WorkflowCommandOptions={}){
   return serialize(store,projectId,()=>applyTaskManagerCommand(store,projectId,actorId,input,options));
 }
@@ -70,7 +70,7 @@ async function applyTaskManagerCommand(store:LocalStore,projectId:string,actorId
   if(project.authorityEpoch!==input.expectedAuthorityEpoch)fail('AUTHORITY_CONFLICT');
   // A persisted operation digest makes retry independent of subsequent task/catalog revisions.
   const operationId=`m2-operation-${createHash('sha256').update(input.idempotencyKey).digest('hex')}`;
-  const inputHash=digest(input),previous=await store.receipt(projectId,input.idempotencyKey);
+  const inputHash=digest(options.agentCreation?{input,creator:options.agentCreation.actorId,initiatedBy:options.agentCreation.initiatedBy,runId:options.agentCreation.runId}:input),previous=await store.receipt(projectId,input.idempotencyKey);
   if(previous){const operation=await store.get(projectId,operationId);if(operation?.data.inputHash!==inputHash)fail('IDEMPOTENCY_CONFLICT');return {...previous,...(operation.data.linkId?{linkId:operation.data.linkId}:{})};}
   const snapshot=await taskManagerSnapshot(store,projectId);
   const command:StoreWrite={projectId,actorId,idempotencyKey:input.idempotencyKey,expectedAuthorityEpoch:input.expectedAuthorityEpoch,changes:[]};
@@ -101,13 +101,15 @@ async function applyTaskManagerCommand(store:LocalStore,projectId:string,actorId
     if(input.action==='upgrade'){
       if(!old)fail('TASK_NOT_FOUND');const current=decodeTaskProfile(old.data);raw=current.schemaVersion==='m2_task_profile_v1'?current:upgradeM1Task(current);
     }
-    const creator=old?.data.creator??{kind:'user',actorId};
+    if(options.agentCreation&&(input.action!=='save'||old||input.expectedRevision!==0||raw.type!=='bug'||actorId!==options.agentCreation.actorId))fail('AGENT_CREATION_FORBIDDEN');
+    const creator=old?.data.creator??(options.agentCreation?{kind:'agent',actorId:options.agentCreation.actorId}:{kind:'user',actorId});
     raw={...raw,hotfixReason:old?.data.hotfixReason??null,actual:old?.data.actual??{startedAt:null,endedAt:null,durationSeconds:null}};
     if(!old){
       const workflowId=input.workflowId??snapshot.workflows.typeMapping[raw.type]??snapshot.workflows.defaultWorkflowId;
       const selected=snapshot.workflows.workflows.find(w=>w.id===workflowId&&!w.archived&&w.activeVersion!==null);if(!selected)fail('WORKFLOW_ASSIGNMENT_INVALID');
       const workflow={id:selected.id,version:selected.activeVersion!};const initial=workflowSnapshot(snapshot.workflows,workflow).definition.states.find(s=>s.initial)!;
-      raw={...raw,workflow,status:initial.id,createdAt:new Date().toISOString(),timezone:snapshot.board.timezone??'Europe/Moscow',initiatedBy:null};
+      if(options.agentCreation&&initial.category!=='backlog')fail('AGENT_CREATION_INITIAL_STATE');
+      raw={...raw,workflow,status:initial.id,createdAt:new Date().toISOString(),timezone:snapshot.board.timezone??'Europe/Moscow',initiatedBy:options.agentCreation?.initiatedBy??null};
     }
     const task=decodeTaskProfile({...raw,creator,key:raw.key===''?`${project.keyPrefix}-1`:raw.key});
     if(task.schemaVersion!=='m2_task_profile_v1')fail('M2_PROFILE_REQUIRED');
@@ -223,7 +225,7 @@ async function applyTaskManagerCommand(store:LocalStore,projectId:string,actorId
     ...(input.action==='transition'?{softWipOverrideRequested:input.softWipOverride===true}:{})}}});
   const editsExistingTask=changes.some(change=>change.entity.kind==='task'&&change.expectedRevision>0);
   changes.push(...(options.additionalChanges??[]));
-  const receipt=await store.write({...command,...workflowMetadata,changes,...(input.action==='activate-link'||editsExistingTask?{requireIdle:true as const}:{}),...(transition?{taskManagerAction:transition,taskManagerReason:input.reason,
+  const receipt=await store.write({...command,...workflowMetadata,changes,...(options.agentCreation?{agentTaskCreation:options.agentCreation}:{}),...(input.action==='activate-link'||editsExistingTask?{requireIdle:true as const}:{}),...(transition?{taskManagerAction:transition,taskManagerReason:input.reason,
     ...(input.hotfixReason?{taskManagerHotfixReason:String(input.hotfixReason)}:{}),requireIdle:true as const}:{}),
     ...(['save','upgrade'].includes(input.action)&&nonempty(input.reason)?{taskManagerReviewReason:input.reason}:{}),...(options.recipeExecution?{recipeExecution:options.recipeExecution}:{}),...(options.schedulerCommand?{schedulerCommand:options.schedulerCommand}:{})});
   return {...receipt,...(createdLinkId?{linkId:createdLinkId}:{})};

@@ -1,0 +1,352 @@
+{
+  "task_id": "PAOS-0028",
+  "task_name": "Интеграционная проверка пути",
+  "status": "implemented",
+  "closure_level": "implemented_locally_verified",
+  "baseline_head": "284a19da438e92482399a7906a444e96e2afd7ec",
+  "started_at": "2026-11-12T17:43:26+03:00",
+  "implementation_completed_at": "2026-11-12T18:25:13+03:00",
+  "evidence_updated_at": "2026-11-12T18:30:42+03:00",
+  "elapsed_wall_seconds": 2836,
+  "active_duration_seconds": null,
+  "verification": {
+    "web_tests": 473,
+    "web_skipped": 0,
+    "web_seconds": 15.8567142,
+    "focused_tests": 17,
+    "python_tests": 1450,
+    "python_skipped": 1,
+    "python_seconds": 622.134,
+    "fixture_evals": 91,
+    "transcript_evals": 26,
+    "post_sync_docs_lifecycle_tests": 251,
+    "post_sync_docs_lifecycle_seconds": 29.6,
+    "final_docs_tests": 105,
+    "task_manager_browser_checks": 112,
+    "workflow_browser_checks": 51,
+    "m4_synthetic_native_checks": 51,
+    "m4_actual_app_checks": 46,
+    "current_actual_jobs": 3,
+    "typecheck_exit": 0,
+    "build_exit": 0,
+    "compatibility": "compatible",
+    "matrix_hooks_docs_diff_exit": 0
+  },
+  "acceptance": {
+    "SC14-01": "exact story hierarchy UI+service rejects invalid Task/self-parent with unchanged records/audit/blob",
+    "SC14-02": "explicit one-run owner opt-in, private claimed App Bug creation, authenticated initiator, immutable creator after edit, stable timed retry",
+    "SC14-03": "user-only completion/children guards/cancel reason; no agent runs",
+    "SC14-04": "Affects1.2/Fix1.3 separate UI filters",
+    "SC14-05": "drag/menu multi-target UI, invalid service transition preserves records",
+    "SC14-06": "workflow publish/pinned runningv1/stale/missing mapping via current storage/runtime tests and workflow UI; no separate actual-native workflow migration claim",
+    "SC14-07": "three-node DAG cycle rejection, canonical inverse informational edge, no execution gate",
+    "SC14-08": "user/agent Comments, exact priority/status actor/time/before-after service assertions, History/tombstones UI",
+    "SC14-09": "recipe replay no duplicate run; native Start marker, terminal guard, Stop terminal nonzero receipt then worker interrupted ACK before TaskCancelled",
+    "SC14-10": "RU/EN x light/dark, new fields, workflow keyboard focus and tabs; full a11y PAOS0029 separate",
+    "main_journey": "UI-created task/session -> read-only planning -> native execution/diff/checks -> owner acceptance -> durable restart",
+    "data_preservation": "exact projectEntities/audit/downloaded attachment bytes compared after rejected migration/link/upload"
+  },
+  "review": {
+    "context_mode": "separate_fresh_context",
+    "researcher": "/root/integration_coverage",
+    "reviewer": "/root/integration_review",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "confirmed_p2": [
+      {
+        "issue": "Timestamp-dependent task-create retry conflict",
+        "resolution": "Normalize generated createdAt=null before trusted save; real first timestamp service-owned; timed retry test passes"
+      }
+    ],
+    "late_root_repair": "S09 sparse projection and S22 durable operation revision churn reproduced RED 2!=1, fixed exact durable source projection;17/full473/native/browser/actual evidence",
+    "tester_verdict": "closed_allowed",
+    "ceiling": "repairs root-verified; no second independent review; human/release acceptance separate"
+  },
+  "runtime": {
+    "route": "codex_app_agent",
+    "fallback": "none; unknown effects never automatically replay",
+    "adapter_revision": "67d6ced8b371be3dcf433637a3df7a8ed5ad3140c7a412e40178ad05abbe5869",
+    "codex_version": "0.167.0",
+    "codex_sha256": "edfdd48f8b458af0906e507b4cb05217b326c3d6e515e9f024e05e3b8d650f70",
+    "manifest_other_pins_preserved": true,
+    "prior_evidence_preserved": true,
+    "actual_run_ids": [
+      "app-run-2868b88ffc2fe08d2257fbf49d93882f1c43458b41e3cabc0b91dbcc24bb1c1d",
+      "app-run-ae8377fd965223780a4b9282d72d952dc927afdcb05ad838ac7124357e8bd33d",
+      "app-run-5acfff723f3c3b252973e07b9592c012317e0a573baf79c3810f36f55d69d836"
+    ],
+    "actual_created_bug_id": "5320e71e-339f-4dd7-aa08-9b459fdb1fd9",
+    "actual_jobs": 3,
+    "execution_asset_pins": [],
+    "host_identity": "attested_not_cryptographic",
+    "sandbox_scope": "paos_mediated_commands",
+    "provider_api_calls": 0,
+    "credential_operations": 0,
+    "native_stop": "real process marker before Stop; terminal command completed exit1 then worker job interrupted ACK; early marker retained, late append absent",
+    "native_restart": "graceful service stop/relaunch after terminal acceptance; no arbitrary crash or closed-App daemon claim"
+  },
+  "agent_creation": {
+    "default": "off",
+    "selector": "S09 session-task-creation explicit checkbox per send",
+    "initiator": "authenticated HTTP principal; reserved field rejected",
+    "source": "claimed non-autonomous execution job",
+    "output": "Backlog Bug + source comment, no native grant or new run",
+    "limit_per_run": 32,
+    "receipt_identity": "runId+operationId; changed payload conflicts",
+    "transaction_fence": "source job revision/worker/generation/owner/lease with Bug+comment+receipt atomically"
+  },
+  "preservation": {
+    "task_id": "PAOS-0028",
+    "other_md_cards_unchanged": 55,
+    "other_json_tasks_unchanged": 55,
+    "task_count": 56,
+    "group_count": 12,
+    "all_estimates_order_groups_preserved": true,
+    "completed_at": "2026-11-12T18:25:13+03:00",
+    "active_duration_measured": false
+  },
+  "control_plane_sync": {
+    "status": "applied",
+    "digest": "sha256:31e69a58da8cbd76971fb2e03f1c2eabcaca57b3044e9c2a5e07cb6e469485e2",
+    "updated": [
+      "REQUIREMENTS.md",
+      "PLAN.md",
+      "TEST.md",
+      "EVALS.md",
+      "RUNLOG.md"
+    ],
+    "current_assessment": "reviewed_inputs_valid; gaps[]",
+    "card_preservation": "dedicated beforeimage journal;55other MD cards/JSON tasks exact preserved",
+    "not_applicable": [
+      "AGENTS.md durable rules unchanged",
+      "prod_test.md Batch39 unchanged"
+    ],
+    "bytes": {
+      "REQUIREMENTS.md": 28881,
+      "PLAN.md": 31886,
+      "TEST.md": 35601,
+      "EVALS.md": 27849,
+      "RUNLOG.md": 28763
+    },
+    "size": "all roots under40000; TEST warning32000",
+    "strict_mkdocs": "not_required; MkDocs nav/config/Mermaid/site unchanged"
+  },
+  "cleanup": {
+    "synthetic_binary_removed": true,
+    "sha256": "edfdd48f8b458af0906e507b4cb05217b326c3d6e515e9f024e05e3b8d650f70",
+    "containment_verified": true,
+    "workspace_browser_fixture_roots_remaining": 0,
+    "workspace_test_temp_entries_remaining": 0,
+    "test_temp_removed": [
+      {
+        "name": "tmp48r2o6gq.json",
+        "bytes": 1568,
+        "sha256": "34d1ec609176afe5d6c50119da44970598b64cfaa9e4fe6a01533db973a6981c"
+      },
+      {
+        "name": "tmpqnqd5lq9.json",
+        "bytes": 50,
+        "sha256": "fe7e4b3b034b4cdf77b4fe8c1c177c3cde765c5a3d6cc4851ab2dfb37be220c0"
+      }
+    ],
+    "user_processes_terminated": false,
+    "installed_runtime_changed": false
+  },
+  "metrics": {
+    "new_agents": 2,
+    "reused_actual_worker": 1,
+    "delegation_model": "gpt-6-astra",
+    "delegation_effort": "medium",
+    "root_model": "not_available; authoritative full trace absent",
+    "tokens_cost_tools_waits_compactions_skill_counts": "not_available; complete trace not exposed",
+    "actual_jobs": 3,
+    "provider_api_calls": 0
+  },
+  "failed_attempts": [
+    "Lifecycle closed-marker/missingdigest bootstrap rejection; corrected own scope marker",
+    "Missing agent creation behavioral RED",
+    "Independent timestamp retry P2 RED, fixed deterministic input",
+    "Initial test/oracle errors canonical reciprocal relation, parent revision afterupload, error code and interrupt runId corrected without guard changes",
+    "M2 integration missing Cancel fixture selector;90checks thenfailure, final112pass",
+    "M4 wrong S22 label/catalog session navigation/Stop locale keys/audit pagination setup errors",
+    "M4 actual S09 REVISION_CONFLICT product regression, separate stable revision RED and repair",
+    "M4 oracle initially required cancelled operation, corrected to existing completed/nonzero command receipt plus job interrupted ACK, real process marker added"
+  ],
+  "limits": [
+    "Full a11y/contrast/screenreader/all-screen matrix is PAOS0029, not promoted here",
+    "Workflow running-v1/migration checks use runtime/storage contract + current UI, not a separate actual-native migration run",
+    "Active attached App consumer required; host attestation is not cryptographic",
+    "Only PAOS-mediated commands confined; App own tools not constrained",
+    "Agent creation only Bug/Backlog with explicit per-run opt-in, max32, no autonomy or native grant",
+    "Unknown native effects not replayed; no arbitrary crash exactly-once claim",
+    "JS bundle516.36kB warning; workload SLO/token/cost/model-quality not measured",
+    "Human/commercial/release acceptance separate"
+  ],
+  "receipt_provenance": "All listed current gates are this task run. Full Python overlaps Node integration work; Python/plugin implementation unchanged, affected docs rerun after sync. Final Web includes strengthened History assertions. Every retained passing browser source hash matches current owning sources/build. Failed receipts retained separately.",
+  "next_task": "PAOS-0029",
+  "next_dependencies_ready": [
+    "PAOS-0028"
+  ],
+  "git_writes_performed": false,
+  "receipts": {
+    "web-full.log": {
+      "path": ".tmp/paos-m4-0028/web-full.log",
+      "sha256": "e6dbdd3489fd014505aaf2b8797554410c6128f2facca52a1eb62b23db796ab8"
+    },
+    "focused-green.log": {
+      "path": ".tmp/paos-m4-0028/focused-green.log",
+      "sha256": "d8049ca3c7590987df35ba4b79882a2a2f10b9660aad8d76560a54a7a35a5d83"
+    },
+    "agent-create-red.log": {
+      "path": ".tmp/paos-m4-0028/agent-create-red.log",
+      "sha256": "7e38b06f720e869ba7a415e3b7885d287d03e539b39798a7af3c79596a4e6679"
+    },
+    "inline-revision-red.log": {
+      "path": ".tmp/paos-m4-0028/inline-revision-red.log",
+      "sha256": "31f28ca9ba2af097911e44433c8443102f848ec08aa8edc733cb8b502ff33a9d"
+    },
+    "python-full.log": {
+      "path": ".tmp/paos-m4-0028/python-full.log",
+      "sha256": "8c920487808266ca87540077721a39bb109e2eb0e6cb87dea50015dbe3640fb0"
+    },
+    "fixture-eval.log": {
+      "path": ".tmp/paos-m4-0028/fixture-eval.log",
+      "sha256": "014f6152da56145aa30e29151fd0c5979f34a44596f0b0714d270e9708719c22"
+    },
+    "transcript-eval.log": {
+      "path": ".tmp/paos-m4-0028/transcript-eval.log",
+      "sha256": "5694b49e2762388661d971053ceedea106cba7f64c307fe7c7ea3a2546e70634"
+    },
+    "compatibility.log": {
+      "path": ".tmp/paos-m4-0028/compatibility.log",
+      "sha256": "eb071b781c513c6693744ac48b88b0fa28dcab5252707e4c49e96c999ceed9b2"
+    },
+    "types.log": {
+      "path": ".tmp/paos-m4-0028/types.log",
+      "sha256": "66d87221505bb187a2fe87ddeacbd07f5922ac556c005c69c5c59e0f0c74cf98"
+    },
+    "build.log": {
+      "path": ".tmp/paos-m4-0028/build.log",
+      "sha256": "5cd4bad9bd056dc489894f427a91b93793fbdc8545b01c8b3fc552b2b3c1676d"
+    },
+    "native-candidate.log": {
+      "path": ".tmp/paos-m4-0028/native-candidate.log",
+      "sha256": "9801de72d0406c5fab59679b3198bd47bdf88631bd33f73c1fca4b725616b92a"
+    },
+    "native-default.log": {
+      "path": ".tmp/paos-m4-0028/native-default.log",
+      "sha256": "5e5bdc493483eb45fe5174c011b3d0dcd4bae1482f45e76a4dec88d7c3c99a80"
+    },
+    "docs-lifecycle.log": {
+      "path": ".tmp/paos-m4-0028/docs-lifecycle.log",
+      "sha256": "66ced96b70f403a0981fadb29fad1ca6071e9198547b435e230b08c11fcceff8"
+    },
+    "docs-final.log": {
+      "path": ".tmp/paos-m4-0028/docs-final.log",
+      "sha256": "9c34264fec75c708170fc20a27ae1d3fc7dfa81bf827844dd2541b832901271e"
+    },
+    "hooks-json.log": {
+      "path": ".tmp/paos-m4-0028/hooks-json.log",
+      "sha256": "6eaa34164526a0a1f0b9dd89730318d5e31bdba9fad3ce3d93442f858e7f6782"
+    },
+    "hooks-dir.log": {
+      "path": ".tmp/paos-m4-0028/hooks-dir.log",
+      "sha256": "5d950b07458f956f2ac600215531d797483c23ed8d868b2bbdbac6f014a7b592"
+    },
+    "matrix-validation.log": {
+      "path": ".tmp/paos-m4-0028/matrix-validation.log",
+      "sha256": "f17e172c632693877fa0f2ce81fd192d44b9070c0ab929841ce28fe3393fa71c"
+    },
+    "state-validation.log": {
+      "path": ".tmp/paos-m4-0028/state-validation.log",
+      "sha256": "a4004c18fd639513dc0d8e520b850c74b8f78ed3f70b1a8c89c8649c8ae56a90"
+    },
+    "check-docs.log": {
+      "path": ".tmp/paos-m4-0028/check-docs.log",
+      "sha256": "8980e553ce08599d54a68baf90a197be5cde25b960ab1b92eaaef3dba110b37f"
+    },
+    "diff-check.log": {
+      "path": ".tmp/paos-m4-0028/diff-check.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "final-adapter.log": {
+      "path": ".tmp/paos-m4-0028/final-adapter.log",
+      "sha256": "b8f590f042a8d3cb19f0348747dcacc87ef26ab23fb3a8b0e1cabf6e3f86dcc8"
+    },
+    "doc-sync-apply.json": {
+      "path": ".tmp/paos-m4-0028/doc-sync-apply.json",
+      "sha256": "76a5eeaf385443071cf79afb8117d3d269425dec12b37f02b53275d67440f731"
+    },
+    "final-doc-assessment.json": {
+      "path": ".tmp/paos-m4-0028/final-doc-assessment.json",
+      "sha256": "569dc7efb4812454208a270a1069b6da51ada75d175533fc796648b57b3babe8"
+    },
+    "binary-cleanup.json": {
+      "path": ".tmp/paos-m4-0028/binary-cleanup.json",
+      "sha256": "8e7831602afccc283bead82dd01eb7f8305f656b9a999b318a614f236b6d1073"
+    },
+    "preservation.json": {
+      "path": ".tmp/paos-m4-0028/preservation.json",
+      "sha256": "3e4d4aacdbe95f2a1a689a7179ef977ad11aef8ccbcafb60903297086df65551"
+    },
+    "task_manager": {
+      "path": ".tmp/paos-m2/browser-evidence-GOxpeG/m2-browser-result.json",
+      "sha256": "3bc3a28ce4eb65ad7b0a26c62579411eea39e4cfa9c8028b33b09f43359562ef",
+      "checks": 112,
+      "status": "passed_m2_task_manager_browser",
+      "fixture_cleaned": true,
+      "source_hash_mismatches": []
+    },
+    "workflow": {
+      "path": ".tmp/paos-m2b/browser-evidence-ePiNlO/result.json",
+      "sha256": "d5b3b29069ba3a80f8110b63a2c6cddecbf2e99ef26620784cf41f9f3608eead",
+      "checks": 51,
+      "status": "passed",
+      "fixture_cleaned": true,
+      "source_hash_mismatches": []
+    },
+    "m4_synthetic": {
+      "path": ".tmp/paos-m4-0028/browser-evidence-MFZZRv/result.json",
+      "sha256": "7b067a7e6a50f9d675c0b6fb8d09f8a49c0343845cffaa8b46f946017d0de008",
+      "checks": 51,
+      "status": "passed",
+      "fixture_cleaned": true,
+      "source_hash_mismatches": []
+    },
+    "m4_actual": {
+      "path": ".tmp/paos-m4-0028/actual-evidence-fZiWyh/result.json",
+      "sha256": "c5605960a45f9d2a33262adca03c9eace41d6cd71bb913aa90f08ed8337ae0d8",
+      "checks": 46,
+      "status": "passed",
+      "fixture_cleaned": true,
+      "source_hash_mismatches": []
+    }
+  },
+  "source_sha256": {
+    "EVALS.md": "704f9ee1f5e2185e6a15a9fd3c7a06c737975aba8ec6d4a46a82ba74f8217119",
+    "PLAN.md": "24fb5e090705e2d553b4183d93dbb90ac3ac27cfe60afff34136eaff5a74f06f",
+    "REQUIREMENTS.md": "d63a9998854820fc06431ac37e3f2c4b20b836b8923c1107ab5b4282a1477f53",
+    "RUNLOG.md": "0f967f9ade4ad77ef672b75fa55871957f5af40e0c65b80a227d5657f21d7fdd",
+    "TEST.md": "20edee44bb0f38c1569bfe848e66c3f04ff75fce09a9d551230c6f89af263238",
+    "apps/local-service/src/decisions/service.mts": "934090dec8c8c985dea743cd9cc87f5980591c36cd89dbb48431045188ef6f95",
+    "apps/local-service/src/http/application.mts": "e35726e59b995758ac332f73b7375c5bf84f78112d391994d815229b4a1d721f",
+    "apps/local-service/src/runtime/app-agent-channel.mts": "3acc7b7e996eee3be596f32162ce88e12c40050dd199f7fea79cf270f34866d4",
+    "apps/local-service/src/runtime/app-agent-client.mts": "e8f5d44f21a17fca7fa46ec2da90debf2efda583957508eeb7ade1b3573ad641",
+    "apps/local-service/src/runtime/app-agent-gateway.mts": "e83ff3f395992c438f31d1eef06f22438cfe4dcf9a9e782017625d41f90d7acd",
+    "apps/local-service/src/storage/sqlite-worker.mts": "92375f4759d557e94032601d0108d4da58e386aa553c051721ea8f39ce417e61",
+    "apps/local-service/src/task-manager/service.mts": "0947967a4180c9573bb5109cdabf41e8953ff2ee41a23677440eacf1bc16828c",
+    "apps/web/README.md": "8c0b86e448598ad3b65526afc8a3a56c1b831d34af719d4ce9eff6ce910c1da1",
+    "apps/web/src/ui/App.tsx": "ec07d6fd33c69f763c9258a1ef9ddd4a85451860209951c85c17ab2f34f4387b",
+    "docs/sources/registry.en.md": "9f4ce0c3b7da52be9361a1db840784a3616b32b14cc3588f056ad0d0c1f66981",
+    "docs/sources/registry.md": "7f7b210579192562500833230b18d9645a04684bd3ef155d229e78f18ecd773c",
+    "packages/contracts/runtime/qualified-manifest.json": "e85b96076d07f57108e4ca80ac2e0eb3cec5884b3cd1cbe09b1926b5e974b355",
+    "packages/contracts/storage/local-store.ts": "c61bc03665a67849b593cc7e5ce13573a81336b81398de9acb9ccf108d50158c",
+    "tests/web/decision-service.test.mts": "489b0752861fa4ae714847d951abe1f591699f85cce6ca7d1af306b0b4328ab5",
+    "tests/web/single-window/m2-task-manager-browser-acceptance.mts": "1e00c6f13fe236da7a188bfcacae7cb2bfc2d9254b1e839139ab6d0a894fed5c",
+    "research/product-agent-os-web-m4-0028-execution-2026-11-12.md": "244860a83599ebccab00acc6b75340df25b0390f4a74353c52e5f4ed217da101",
+    "tests/web/m4-integration.test.mts": "f358ee27499ed80f30c82eab39404bd13514548312c5c24afa0d68423b744048",
+    "tests/web/single-window/m4-integration-acceptance.mts": "66ffc9f08f5a06c995f6e33821708a8f69ff652211d098552fb659c19733e0a8",
+    "research/product-agent-os-web-task-manager-plan-2026-11-09.md": "fb3e1b28e70d32ac4ce84ad41a3ec6ca0661f3da552f296ed30aefdfbaa9262b",
+    "research/product-agent-os-web-task-manager-task-group-2026-11-09.json": "cd79e3d4d9dab35ae206751d7c4d6636c2f8d658b879a196fad4671b7867d837"
+  }
+}

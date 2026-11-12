@@ -22,7 +22,9 @@ G8-T14/G8 owner accepted. G9 T01–T09 локально реализованы; 
 
 ## Старт Web M1 — 2026-11-10
 
-PAOS-0026 реализована: Decisions/S22, shared S09 response, private durable history, diff/scope/evidence и autonomy observation. Astra/medium research/review завершены;2 замечания исправлены и проверены. [Current receipts и ограничения](research/product-agent-os-web-m3-0026-execution-2026-11-12.md). Следующая PAOS-0028 отдельным scope; unknown native outcomes не replay, human/commercial/release отдельно.
+PAOS-0028: ten PRD scenarios и полный current App route проверены; устранены missing agent Bug creation и S09/S22 revision churn. Astra/medium research/review + actual worker завершены; source-bound receipts в [owning report](research/product-agent-os-web-m3-0026-execution-2026-11-12.md). Следующая PAOS-0029 отдельным scope; no provider/Git/install/release actions.
+
+Исторический срез до PAOS-0028 (provenance сохранён): PAOS-0026 реализована: Decisions/S22, shared S09 response, private durable history, diff/scope/evidence и autonomy observation. Astra/medium research/review завершены;2 замечания исправлены и проверены. [Current receipts и ограничения](research/product-agent-os-web-m3-0026-execution-2026-11-12.md). Следующая PAOS-0028 отдельным scope; unknown native outcomes не replay, human/commercial/release отдельно.
 
 Исторический срез до PAOS-0026 (provenance сохранён): PAOS-0025 реализована: checkpoint recovery/receipts/history, повторная квалификация exact broker binding после restart, queue running projection, timeout/cancel ACK. Astra/medium research/review завершены; current full/native/browser/actual receipts и gaps находятся в [owning report](research/product-agent-os-web-m3-0025-execution-2026-11-12.md). Следующая0026 отдельным scope. Unknown dispatch сохраняет ownership; human/commercial/release отдельно.
 

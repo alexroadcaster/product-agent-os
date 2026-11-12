@@ -16,7 +16,9 @@ Frozen synthetic profiles: Trade-like strict 20 000 bytes/history, myPartners-li
 
 ## Web M1 — scope v0.7 / очередь v0.8, 2026-11-10
 
-PAOS-0026: same-key retry не повторяет effect; changed payload конфликтует; expiry проверяется после async checks и на SQLite commit; generation/scope/authority drift fenced. Runtime grant ACK отделён от command outcome; unknown intent не replay. [Browser/native/actual evidence](research/product-agent-os-web-m3-0026-execution-2026-11-12.md). Unseen native requests, human acceptance и model-quality/token/cost/SLO promotion не доказаны.
+PAOS-0028: owner-only provenance/one-run opt-in, stable creation retry, stable S09/S22 decision revision, snapshot/audit/blob preservation на rejection. Native operation terminal receipt и worker interrupted ACK обязательны перед Task cancellation; ранний side effect сохраняется. [Traceability](research/product-agent-os-web-m3-0026-execution-2026-11-12.md). Полный a11y gate PAOS-0029, human/release/model-quality/SLO отдельно.
+
+Исторический срез до PAOS-0028 (provenance сохранён): PAOS-0026: same-key retry не повторяет effect; changed payload конфликтует; expiry проверяется после async checks и на SQLite commit; generation/scope/authority drift fenced. Runtime grant ACK отделён от command outcome; unknown intent не replay. [Browser/native/actual evidence](research/product-agent-os-web-m3-0026-execution-2026-11-12.md). Unseen native requests, human acceptance и model-quality/token/cost/SLO promotion не доказаны.
 
 Исторический срез до PAOS-0026 (provenance сохранён): PAOS-0025 correctness baseline: existing no-replay/Stop/ownership + explicit checkpoint continuation, real fixture process crash и actual App jobs через restart. Identity/evidence/policy drift negatives обязательны; retry остаётся bounded и расходует прежний budget. [Evidence](research/product-agent-os-web-m3-0025-execution-2026-11-12.md). Model-quality/token/cost/SLO promotion не заявляется.
 

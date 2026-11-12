@@ -1,7 +1,7 @@
 import {join,isAbsolute} from 'node:path';
 import {open,lstat,unlink} from 'node:fs/promises';
 import {randomBytes,createHash,timingSafeEqual} from 'node:crypto';
-export type AppAgentAction='attach'|'heartbeat'|'claim'|'report'|'command'|'operation'|'progress'|'reconcile';
+export type AppAgentAction='attach'|'heartbeat'|'claim'|'report'|'command'|'operation'|'progress'|'reconcile'|'task-create';
 export type AppAgentDescriptor=Readonly<{schemaVersion:'paos_app_agent_channel_v1';instanceId:string;origin:string;capabilityToken:string;profileId?:string}>;
 const fail=(code:string):never=>{throw Object.assign(new Error(code),{code});};
 export function validatedAgentOrigin(origin:string):string {
@@ -34,7 +34,7 @@ export async function createAppAgentChannel(options:Readonly<{profileDirectory:s
     if(url.origin!==options.origin||request.headers.get('host')!==new URL(options.origin).host||request.headers.get('origin')!==options.origin
      ||request.headers.has('forwarded')||request.headers.has('x-forwarded-host')||request.headers.get('sec-fetch-site')==='cross-site')fail('AGENT_ORIGIN_REJECTED');
     if(request.method!=='POST')fail('AGENT_METHOD_REJECTED');
-    const match=/^\/agent\/v1\/(attach|heartbeat|claim|report|command|operation|progress|reconcile)$/.exec(url.pathname);
+    const match=/^\/agent\/v1\/(attach|heartbeat|claim|report|command|operation|progress|reconcile|task-create)$/.exec(url.pathname);
     if(!match||url.search)throw Object.assign(new Error('AGENT_ROUTE_NOT_FOUND'),{code:'AGENT_ROUTE_NOT_FOUND'});
     const bearer=request.headers.get('authorization')??'';
     if(!bearer.startsWith('Bearer ')||!equal(bearer.slice(7),descriptor.capabilityToken))fail('AGENT_CAPABILITY_REQUIRED');

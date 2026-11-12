@@ -1436,6 +1436,7 @@ function Session({
     [snapshot, setSnapshot] = useState<RuntimeState | null>(null),
     [pane, setPane] = useState("chat");
   const [autonomySelected,setAutonomySelected]=useState(false);
+  const [taskCreationApproved,setTaskCreationApproved]=useState(false);
   const [autonomyState,setAutonomyState]=useState<AutonomySnapshot|null>(null);
   useEffect(()=>{
     let ignore=false;setAutonomySelected(false);setAutonomyState(null);
@@ -1680,6 +1681,7 @@ function Session({
               ...binding,
               ...extra,
               ...(autonomySelected?{autonomy:true}:{}),
+              ...(taskCreationApproved&&mode==='execution'&&connection?.route==='codex_app_agent'&&!autonomySelected?{taskCreationApproved:true}:{}),
               clientMessageId,
             }),
         );
@@ -1687,6 +1689,7 @@ function Session({
           acknowledgement = uiLabel(locale, "state.checkingSend");
         else if (!result.cleanupSaved)
           acknowledgement += ` · ${t("draftCleanupPending")}`;
+        if(result.acknowledged)setTaskCreationApproved(false);
       } else {
         await api.runtime(action, {
           projectId: entity.projectId,
@@ -1809,7 +1812,7 @@ function Session({
                 <select
                   value={mode}
                   disabled={actionBusy || runBlocksScopeChange(snapshot)}
-                  onChange={(e) => {setAutonomySelected(false);setMode(e.target.value);}}
+                  onChange={(e) => {setAutonomySelected(false);setTaskCreationApproved(false);setMode(e.target.value);}}
                 >
                   {(["discussion", "planning", "execution"] as const).map(
                     (value) => (
@@ -1821,12 +1824,13 @@ function Session({
                 </select>
               </label>
               {mode==='execution'&&connection?.route==='codex_app_agent'&&<label className="m2-check"><input type="checkbox" name="session-autonomy" checked={autonomySelected} disabled={!autonomyAvailable||actionBusy||runBlocksScopeChange(snapshot)} onChange={e=>setAutonomySelected(e.target.checked)}/>{locale==='ru'?'Выполнить по политике':'Execute under policy'}{!autonomyAvailable&&<span className="quiet"> · {locale==='ru'?'Политика недоступна, на паузе или не разрешает эту задачу':'Policy unavailable, paused, or does not allow this task'}</span>}</label>}
+              {mode==='execution'&&connection?.route==='codex_app_agent'&&<label className="m2-check"><input type="checkbox" name="session-task-creation" checked={taskCreationApproved} disabled={autonomySelected||actionBusy||runBlocksScopeChange(snapshot)} onChange={e=>setTaskCreationApproved(e.target.checked)}/>{locale==='ru'?'Разрешить агенту создать Bug в этом запуске':'Allow the agent to create a Bug in this run'}</label>}
               <label>
                 {t("executionTarget")}
                 <select
                   value={targetId}
                   disabled={actionBusy || runBlocksScopeChange(snapshot)}
-                  onChange={(e) => setTargetId(e.target.value)}
+                  onChange={(e) => {setTaskCreationApproved(false);setTargetId(e.target.value);}}
                 >
                   <option value="">—</option>
                   {targetChoices.map((task) => (

@@ -22,7 +22,9 @@ G8 commands: `python -B -m unittest discover -s tests -p "test_*.py" -q`; focuse
 
 ## Проверки Web M1 — актуальный маршрут 2026-11-10
 
-PAOS-0026: `node --test tests/web/decision-service.test.mts tests/web/decisions.test.mts tests/web/app-agent-gateway.test.mts`; full Web/TS/build; `m3-decisions-acceptance.mts --synthetic-browser` / `--actual-app-decisions` с exact fixture paths; native candidate/default и существующие Python/eval/compatibility/docs gates. [Receipts, RED и repairs](research/product-agent-os-web-m3-0026-execution-2026-11-12.md).
+PAOS-0028: `node --test tests/web/m4-integration.test.mts tests/web/decision-service.test.mts`; full Web473, TS/build, Python1450(skip1), fixtures/transcripts/compatibility/docs. `m2-task-manager-browser-acceptance.mts --scenario integration` и `m4-integration-acceptance.mts --synthetic-browser` / `--actual-app-integration` с exact installed paths. [Commands, failures и receipts](research/product-agent-os-web-m3-0026-execution-2026-11-12.md).
+
+Исторический срез до PAOS-0028 (provenance сохранён): PAOS-0026: `node --test tests/web/decision-service.test.mts tests/web/decisions.test.mts tests/web/app-agent-gateway.test.mts`; full Web/TS/build; `m3-decisions-acceptance.mts --synthetic-browser` / `--actual-app-decisions` с exact fixture paths; native candidate/default и существующие Python/eval/compatibility/docs gates. [Receipts, RED и repairs](research/product-agent-os-web-m3-0026-execution-2026-11-12.md).
 
 Исторический срез до PAOS-0026 (provenance сохранён): PAOS-0025: `node --test tests/web/recipe-recovery.test.mts tests/web/recipe-crash.test.mts`; затем full Web/TS/build, native candidate/default, `m3-recovery-acceptance.mts --synthetic-browser` / `--actual-app-recovery` с exact fixture paths, existing Python/eval/compatibility/docs gates. SIGKILL disposable host проверяет crash persistence; controlled-tick browser restart проверяет UI/native checkpoint и lost ACK. [Receipts и failures](research/product-agent-os-web-m3-0025-execution-2026-11-12.md).
 

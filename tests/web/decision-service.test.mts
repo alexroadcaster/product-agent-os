@@ -64,6 +64,14 @@ test('durable App operations supply retained history and observed evidence after
  await f.gateway.agent('report',{...f.auth,runId:job.runId,seq:1,idempotencyKey:'terminal',status:'completed',text:'Observed synthetic check'});const final=(await service.list('p')).items[0];assert.equal(final.state,'resolved');assert.equal(final.runtime!.operationState,'completed');assert.equal(final.evidence.items[0].status,'completed');assert.equal(JSON.stringify(final).includes('Pinned fixture role'),false);assert.equal(JSON.stringify(final).includes(f.auth.leaseToken),false);
 });
 
+test('App pending snapshots and durable operation projection keep one stable revision for inline approval',async t=>{
+ const f=await fixture(t,[step('one')],2,{allowedActions:['execution','command'],maxCommandsPerRun:1});await f.start();await f.service.tick();const job=(await f.gateway.agent('claim',f.auth)).job;
+ await f.gateway.agent('command',{...f.auth,runId:job.runId,operationId:'check',argv:['echo','synthetic']});const service=createDecisions({store:f.store,runtime:f.gateway.runtime,route:()=> 'codex_app_agent'});
+ const state=await f.gateway.runtime.snapshot({projectId:'p',sessionId:job.sessionId}),observed=await service.observe('p',job.sessionId,state),id=observed.pendingApprovals![0].decisionId,first=await f.store.get('p',id);
+ await service.list('p');await service.observe('p',job.sessionId,await f.gateway.runtime.snapshot({projectId:'p',sessionId:job.sessionId}));assert.equal((await f.store.get('p',id))!.revision,first!.revision);
+ const receipt=await service.inline({projectId:'p',sessionId:job.sessionId,bindingId:job.bindingId,runId:job.runId,generation:f.auth.generation,requestId:'check',decision:'accept'},'owner');assert.ok(receipt);assert.equal((await service.get('p',id)).response,'accept');
+});
+
 test('transactional decision fence rejects task drift occurring after service validation',async t=>{
  const f=await m2Fixture(t),task=await f.ready(),service=createDecisions({store:f.store}),d=await service.create('p','owner',{...local,taskId:task.id});const write=f.store.write;let changed=false;
  f.store.write=async input=>{if(input.decisionCommand&&!changed){changed=true;await f.command({action:'save',task:{...task.data,title:'Concurrent semantic change'},expectedRevision:task.revision});}return write(input);};

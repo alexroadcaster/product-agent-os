@@ -179,6 +179,12 @@ function write(command: StoreWrite, promotion?: PromoteLegacy,teamOperation?:any
     const scope = project(command.projectId);
     if (!scope) fail('PROJECT_NOT_FOUND');
     if (scope.authorityEpoch !== command.expectedAuthorityEpoch) fail('AUTHORITY_CONFLICT');
+    if(command.agentTaskCreation){const pin=command.agentTaskCreation,job=get(scope.id,pin.runId)?.data.appAgentRun as any;
+      const bugs=command.changes.filter(c=>c.entity.kind==='task'),bug=bugs[0]?.entity.data as M2TaskProfile|undefined;
+      if(!job||job.mode!=='execution'||job.state!=='running'||job.workerId!==pin.workerId||job.generation!==pin.generation||job.taskCreationInitiator!==pin.initiatedBy||job.autonomy||!pin.actorId.startsWith('agent:')||(pin.validationTime??Date.now())>=pin.leaseExpiresAt)fail('AGENT_CREATION_FORBIDDEN');
+      if(bugs.length!==1||bugs[0].expectedRevision!==0||bug?.type!=='bug'||bug.creator?.kind!=='agent'||bug.creator.actorId!==pin.actorId||bug.initiatedBy!==pin.initiatedBy)fail('AGENT_CREATION_FORBIDDEN');
+      if(Number(db.prepare("SELECT COUNT(*) AS n FROM entities WHERE project_id=? AND kind='task' AND json_extract(data,'$.creator.actorId')=?").get(scope.id,pin.actorId)!.n)>=32)fail('AGENT_CREATION_LIMIT');
+    }
     if(command.decisionCommand){const pin=command.decisionCommand,row=get(scope.id,pin.id),d=row?.data;
       if(!row||row.kind!=='settings'||d?.category!=='paos_decision'||row.revision!==pin.revision||d.state!=='pending')fail('DECISION_STALE');
       if(d.authorityEpoch!==scope.authorityEpoch||d.rootIdentity!==scope.rootIdentity||pin.rootIdentity!==scope.rootIdentity||d.taskId!==pin.taskId||d.scopeHash!==pin.scopeHash||d.expiresAt!==pin.expiresAt)fail('DECISION_SCOPE_CHANGED');

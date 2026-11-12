@@ -1564,21 +1564,21 @@ Rollback будущих изменений: versioned proposal, revision check, 
 ### Task `PAOS-0028`
 
 - Task: Интеграционная проверка пути
-- Status: planned
+- Status: implemented
 - Delivery stage: M4
 - Execution order: 51
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 12-11-2026 18:25
 - Depends on: PAOS-0022, PAOS-0026, PAOS-0027, PAOS-0033, PAOS-0034, PAOS-0035, PAOS-0036, PAOS-0037, PAOS-0038, PAOS-0045
 - Blocks: PAOS-0029
 - Source: PRD: дополнение Task Manager; screen specification
 - Short description: Проверить создание задачи, план, запуск, сессию, изменения и приёмку
 - Technical value: Проверить создание задачи, план, запуск, сессию, изменения и приёмку
 - Product value: Пользователь проходит весь путь от постановки до приёмки без разрывов между разделами.
-- Scope: tests/web; tests/local-service
+- Scope: tests/web integration; current TaskManager browser; runtime App private channel; task-manager trusted creation; storage fence; S09 opt-in and Decisions projection
 - Non-goals: Глобальные permissions, внешняя публикация и несвязанный refactor
 - Expected result: Интеграционная проверка пути доступна в соответствующем этапе
 - Acceptance criteria: Все 10 acceptance scenarios PRD §14 и прежний основной путь проверены; user-only completion и active-run cancellation подтверждены; отрицательные сценарии migration/links/attachments не теряют данные
@@ -1587,24 +1587,24 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Complexity: medium/high, уточнить после discovery
 - Estimated execution time: 24:00:00 (предварительно)
 - Agents: architect, builder, tester
-- Skills: implementation-planner; task-matching implementation/verification skills selected at start
-- Output artifacts: tests/web; tests/local-service
-- Next step: Завершить зависимости, затем уточнить tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Skills: implementation-planner; react-best-practices; frontend-testing-debugging
+- Output artifacts: EVALS.md; PLAN.md; REQUIREMENTS.md; RUNLOG.md; TEST.md; apps/local-service/src/decisions/service.mts; apps/local-service/src/http/application.mts; apps/local-service/src/runtime/app-agent-channel.mts; apps/local-service/src/runtime/app-agent-client.mts; apps/local-service/src/runtime/app-agent-gateway.mts; apps/local-service/src/storage/sqlite-worker.mts; apps/local-service/src/task-manager/service.mts; apps/web/README.md; apps/web/src/ui/App.tsx; docs/sources/registry.en.md; docs/sources/registry.md; packages/contracts/runtime/qualified-manifest.json; packages/contracts/storage/local-store.ts; tests/web/decision-service.test.mts; tests/web/single-window/m2-task-manager-browser-acceptance.mts; research/product-agent-os-web-m4-0028-execution-2026-11-12.md; tests/web/m4-integration.test.mts; tests/web/single-window/m4-integration-acceptance.mts; research/product-agent-os-web-task-manager-plan-2026-11-09.md; research/product-agent-os-web-task-manager-task-group-2026-11-09.json; research/product-agent-os-web-m3-0025-results-2026-11-12.json
+- Next step: Следующая PAOS-0029: Доступность, языки и темы. Dependency0028 implemented; отдельный scope. Остальные55cards и estimates/order/groups сохранены.
+- Actual time: Measured scope start12-11-2026 17:43:26 MSK; end 12-11-2026 18:25 MSK. Wall interval available, active duration not separately instrumented; duration=null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
-- Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
+- Affected files: EVALS.md (modify); PLAN.md (modify); REQUIREMENTS.md (modify); RUNLOG.md (modify); TEST.md (modify); apps/local-service/src/decisions/service.mts (modify); apps/local-service/src/http/application.mts (modify); apps/local-service/src/runtime/app-agent-channel.mts (modify); apps/local-service/src/runtime/app-agent-client.mts (modify); apps/local-service/src/runtime/app-agent-gateway.mts (modify); apps/local-service/src/storage/sqlite-worker.mts (modify); apps/local-service/src/task-manager/service.mts (modify); apps/web/README.md (modify); apps/web/src/ui/App.tsx (modify); docs/sources/registry.en.md (modify); docs/sources/registry.md (modify); packages/contracts/runtime/qualified-manifest.json (modify); packages/contracts/storage/local-store.ts (modify); tests/web/decision-service.test.mts (modify); tests/web/single-window/m2-task-manager-browser-acceptance.mts (modify); research/product-agent-os-web-m4-0028-execution-2026-11-12.md (create); tests/web/m4-integration.test.mts (create); tests/web/single-window/m4-integration-acceptance.mts (create); research/product-agent-os-web-task-manager-plan-2026-11-09.md (modify); research/product-agent-os-web-task-manager-task-group-2026-11-09.json (modify); research/product-agent-os-web-m3-0025-results-2026-11-12.json (create)
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Ten PRD14.9 scenarios и полный UI task/session→planning→native execution→owner acceptance/restart проверены. Active native process Start/Stop/terminal receipt/worker interrupted ACK и terminal guard подтверждены. Добавлен owner-opted agent Bug creation с immutable provenance; исправлены timestamp retry и S09/S22 revision churn.
+- Files touched / work locations: EVALS.md; PLAN.md; REQUIREMENTS.md; RUNLOG.md; TEST.md; apps/local-service/src/decisions/service.mts; apps/local-service/src/http/application.mts; apps/local-service/src/runtime/app-agent-channel.mts; apps/local-service/src/runtime/app-agent-client.mts; apps/local-service/src/runtime/app-agent-gateway.mts; apps/local-service/src/storage/sqlite-worker.mts; apps/local-service/src/task-manager/service.mts; apps/web/README.md; apps/web/src/ui/App.tsx; docs/sources/registry.en.md; docs/sources/registry.md; packages/contracts/runtime/qualified-manifest.json; packages/contracts/storage/local-store.ts; tests/web/decision-service.test.mts; tests/web/single-window/m2-task-manager-browser-acceptance.mts; research/product-agent-os-web-m4-0028-execution-2026-11-12.md; tests/web/m4-integration.test.mts; tests/web/single-window/m4-integration-acceptance.mts; research/product-agent-os-web-task-manager-plan-2026-11-09.md; research/product-agent-os-web-task-manager-task-group-2026-11-09.json; research/product-agent-os-web-m3-0025-results-2026-11-12.json
+- Technical value delivered: Связаны UI/service/storage/native evidence, exact rejection preservation и authority/provenance; исправлены найденные integration defects без ослабления guards.
+- Product value delivered: Пользователь проходит task→plan→execution→owner acceptance, может работать вручную и отменять активный run с подтверждением; агентский Bug сохраняет действительного автора и инициатора.
+- Actual implementation date and time: 12-11-2026 18:25
+- Verification evidence: Web473/473 skip0; focused17; Python1450(skip1); fixtures91/transcripts26; current TaskManager integration112/workflow51; M4 synthetic/native51 и actual App46/3jobs; native candidate/default; docs/compatibility gates — research/product-agent-os-web-m4-0028-execution-2026-11-12.md и results JSON.
+- Residual risks: Bounded local technical acceptance; PAOS-0029 полный a11y scope отдельно. Active App consumer required; PAOS-mediated commands only. Agent Bug creation opt-in per run,32max, no autonomy grant; native unknown outcomes не replay. Bundle warning516.36kB; human/commercial/release/model-quality/token/cost/SLO отдельно.
+- Follow-up: Следующая PAOS-0029: Доступность, языки и темы. Dependency0028 implemented; отдельный scope. Остальные55cards и estimates/order/groups сохранены.
 
 ### Task `PAOS-0029`
 

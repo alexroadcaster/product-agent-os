@@ -16,7 +16,9 @@ G8-T14/G8 явно приняты владельцем. G9 T01–T09 реали�
 
 ## Текущий scope Web M1 — 2026-11-10
 
-PAOS-0026: Decisions/S22 хранит scope, proposed/observed diff, evidence, ответы и историю; S09/S22 используют один response owner. Expired/stale requests не применяются; локальный выбор не выдаёт runtime grant. [Контракт и limits](research/product-agent-os-web-m3-0026-execution-2026-11-12.md).
+PAOS-0028: PRD14.9 ten scenarios и связанный task→planning→native execution→owner acceptance/Stop проверены. Одноразовый S09 owner opt-in позволяет claimed App worker создать Backlog Bug с immutable creator/initiator; не выдаёт native grant. [Контракт и evidence](research/product-agent-os-web-m3-0026-execution-2026-11-12.md).
+
+Исторический срез до PAOS-0028 (provenance сохранён): PAOS-0026: Decisions/S22 хранит scope, proposed/observed diff, evidence, ответы и историю; S09/S22 используют один response owner. Expired/stale requests не применяются; локальный выбор не выдаёт runtime grant. [Контракт и limits](research/product-agent-os-web-m3-0026-execution-2026-11-12.md).
 
 Исторический срез до PAOS-0026 (provenance сохранён): M3 PAOS-0025: explicit checkpoint continuation, idempotent recovery receipts, timeout/cancel/crash evidence. Unknown/interrupted native work не replay; policy/pins/ownership сохраняются. [Контракт и limits](research/product-agent-os-web-m3-0025-execution-2026-11-12.md).
 

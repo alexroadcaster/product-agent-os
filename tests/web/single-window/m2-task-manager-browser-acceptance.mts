@@ -14,7 +14,7 @@ async function main(){
  const argv=process.argv.slice(2);
  if(![5,7].includes(argv.length)||argv[0]!=='--synthetic-browser')throw Error('EXPLICIT_SYNTHETIC_BROWSER_REQUIRED');
  const args=Object.fromEntries([argv.slice(1,3),argv.slice(3,5)]);
- const scenario=argv.length===7&&argv[5]==='--scenario'?argv[6]:'full';if(!['full','settings-cas','markdown'].includes(scenario))throw Error('INVALID_SCENARIO');
+ const scenario=argv.length===7&&argv[5]==='--scenario'?argv[6]:'full';if(!['full','settings-cas','markdown','integration'].includes(scenario))throw Error('INVALID_SCENARIO');
  if(!['--playwright-core','--chromium'].every(k=>isAbsolute(args[k]??'')))throw Error('INSTALLED_BROWSER_PATHS_REQUIRED');
  const scratch=resolve('.tmp/paos-m2');await mkdir(scratch,{recursive:true});
  const fixture=await mkdtemp(join(scratch,'browser-fixture-')),output=await mkdtemp(join(scratch,'browser-evidence-'));
@@ -184,6 +184,22 @@ async function main(){
   await screenshot('desktop-board.png');await geometry('desktop_no_document_overflow');
   step='locale_theme';await nav('settings');await page.getByLabel(uiLabel(locale,'preferences.language'),{exact:true}).selectOption('en');await page.getByLabel(uiLabel(locale,'preferences.theme'),{exact:true}).selectOption('dark');await page.getByRole('button',{name:uiLabel(locale,'preferences.save'),exact:true}).click();locale='en';await page.waitForFunction(()=>document.documentElement.lang==='en'&&document.documentElement.dataset.theme==='dark');await nav('tasks');await manager().getByRole('button',{name:w('create'),exact:true}).waitFor();check('english_task_manager',await manager().getByRole('button',{name:w('create'),exact:true}).count()===1);await screenshot('english-dark.png');
   await page.setViewportSize({width:390,height:844});await geometry('mobile_no_document_overflow');await screenshot('mobile-dark.png');
+  if(scenario==='integration'){
+   step='SC14-01-exact-story';await page.setViewportSize({width:1440,height:1000});
+   const storyEpic=await create('Integration Epic','epic'),story=await create('Integration UserStory','user_story',storyEpic.id),storySub=await create('Integration Sub-Task','sub_task',story.id);
+   check('SC14_01_exact_tree',(await task(story.id)).data.parentId===storyEpic.id&&(await task(storySub.id)).data.parentId===story.id);
+   await open(story.id);check('SC14_01_self_parent_unavailable',await detail().locator('[name=parentId] option[value="'+story.id+'"]').count()===0);
+   await manager().getByRole('button',{name:w('create'),exact:true}).click();const invalid=page.locator('.task-list').getByTestId('task-editor');await invalid.locator('[name=type]').selectOption('task');check('SC14_01_task_under_story_unavailable',await invalid.locator('[name=parentId] option[value="'+story.id+'"]').count()===0);
+   await open(storySub.id,'acceptance');check('SC14_03_cancel_requires_reason',await page.getByTestId('task-transition').getByRole('button',{name:w('cancelTask'),exact:true}).isDisabled());
+   check('SC14_03_no_agent_runs',(await store!.projectEntities(project.id)).filter(r=>r.kind==='run').length===0);
+   step='SC14-10-four-appearance-states';
+   for(const [language,theme] of [['ru','light'],['ru','dark'],['en','light'],['en','dark']] as const){
+    await nav('settings');await page.getByLabel(uiLabel(locale,'preferences.language'),{exact:true}).selectOption(language);await page.getByLabel(uiLabel(locale,'preferences.theme'),{exact:true}).selectOption(theme);await page.getByRole('button',{name:uiLabel(locale,'preferences.save'),exact:true}).click();locale=language;await page.waitForFunction(({language,theme}:any)=>document.documentElement.lang===language&&document.documentElement.dataset.theme===theme,{language,theme});
+    const workflows=page.getByTestId('workflow-manager');await workflows.locator('[name=workflow-name]').focus();await page.keyboard.press('Tab');check('SC14_10_workflow_keyboard_'+language+'_'+theme,await page.evaluate(()=>document.activeElement?.tagName!=='BODY'));
+    await nav('tasks');await open(storySub.id);const editor=detail().getByTestId('task-editor');check('SC14_10_fields_'+language+'_'+theme,await editor.locator('[name=priority]').isVisible()&&await editor.locator('[name=type]').isVisible());
+    await detail().getByRole('tab',{name:w('summary'),exact:true}).focus();await page.keyboard.press('ArrowRight');check('SC14_10_keyboard_tabs_'+language+'_'+theme,await detail().getByRole('tab',{name:w('files'),exact:true}).getAttribute('aria-selected')==='true');await geometry('SC14_10_geometry_'+language+'_'+theme);await screenshot('integration-'+language+'-'+theme+'.png');
+   }
+  }
   check('expected_http_errors_only',report.httpErrors.every((e:any)=>e.path.endsWith('/session')&&e.status===401||e.path.endsWith('/task-manager/commands')&&[400,409,422].includes(e.status)||/attachments$/.test(e.path)&&[400,413,422].includes(e.status)));check('no_page_errors',report.pageErrors.length===0);check('no_unexpected_external_or_provider_requests',report.blockedRequests.length===0);check('no_framework_console_errors',report.consoleErrors.every((s:string)=>/^Failed to load resource:/.test(s)));
   report.status='passed_m2_task_manager_browser';report.mandatoryGaps=[];
   const sources=['tests/web/single-window/m2-task-manager-browser-acceptance.mts','packages/contracts/issues/task-profile.ts','packages/contracts/issues/manager.ts','apps/local-service/src/task-manager/service.mts','apps/local-service/src/storage/sqlite-worker.mts','apps/local-service/src/http/application.mts','apps/web/src/ui/App.tsx','apps/web/src/api/client.ts','apps/web/src/features/tasks/TaskManager.tsx','apps/web/src/features/tasks/Editor.tsx','apps/web/src/features/tasks/Panels.tsx','apps/web/src/features/tasks/Settings.tsx','apps/web/dist/index.html'];

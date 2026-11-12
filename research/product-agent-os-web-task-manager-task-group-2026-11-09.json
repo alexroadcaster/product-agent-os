@@ -2615,20 +2615,140 @@
       "id": "PAOS-0028",
       "group_id": "G08",
       "title": "Интеграционная проверка пути",
-      "status": "planned",
+      "status": "implemented",
       "short_description": "Проверить создание задачи, план, запуск, сессию, изменения и приёмку",
       "technical_value": "Проверить создание задачи, план, запуск, сессию, изменения и приёмку",
       "product_value": "Пользователь проходит весь путь от постановки до приёмки без разрывов между разделами.",
       "affected_files": [
         {
-          "path": "tests/web",
+          "path": "EVALS.md",
           "planned_operation": "create_or_modify_after_discovery",
-          "actual_operation": null
+          "actual_operation": "modify"
         },
         {
-          "path": "tests/local-service",
+          "path": "PLAN.md",
           "planned_operation": "create_or_modify_after_discovery",
-          "actual_operation": null
+          "actual_operation": "modify"
+        },
+        {
+          "path": "REQUIREMENTS.md",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "RUNLOG.md",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "TEST.md",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/local-service/src/decisions/service.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/local-service/src/http/application.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/local-service/src/runtime/app-agent-channel.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/local-service/src/runtime/app-agent-client.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/local-service/src/runtime/app-agent-gateway.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/local-service/src/storage/sqlite-worker.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/local-service/src/task-manager/service.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/web/README.md",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/web/src/ui/App.tsx",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "docs/sources/registry.en.md",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "docs/sources/registry.md",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "packages/contracts/runtime/qualified-manifest.json",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "packages/contracts/storage/local-store.ts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "tests/web/decision-service.test.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "tests/web/single-window/m2-task-manager-browser-acceptance.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "research/product-agent-os-web-m4-0028-execution-2026-11-12.md",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
+        },
+        {
+          "path": "tests/web/m4-integration.test.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
+        },
+        {
+          "path": "tests/web/single-window/m4-integration-acceptance.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
+        },
+        {
+          "path": "research/product-agent-os-web-task-manager-plan-2026-11-09.md",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "research/product-agent-os-web-task-manager-task-group-2026-11-09.json",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "research/product-agent-os-web-m3-0025-results-2026-11-12.json",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
         }
       ],
       "agents": [
@@ -2639,15 +2759,17 @@
       "project_artifacts": [
         "product-agent-os-web-prd-2026-11-05.md",
         "product-agent-os-web-architecture-2026-11-05.md",
-        "product-agent-os-web-task-manager-screens-2026-11-09.md"
+        "product-agent-os-web-task-manager-screens-2026-11-09.md",
+        "product-agent-os-web-m3-0025-execution-2026-11-12.md",
+        "product-agent-os-web-m3-0025-results-2026-11-12.json"
       ],
       "acceptance_criteria": [
         "Все 10 acceptance scenarios PRD §14 и прежний основной путь проверены; user-only completion и active-run cancellation подтверждены; отрицательные сценарии migration/links/attachments не теряют данные"
       ],
       "estimated_duration_hms": "24:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
-      "actual_started_at": null,
-      "actual_ended_at": null,
+      "actual_started_at": "2026-11-12T17:43:26+03:00",
+      "actual_ended_at": "2026-11-12T18:25:13+03:00",
       "actual_duration_seconds": null,
       "actual_duration_hms": null,
       "risks": "Потеря связей, неверный источник данных, конфликт версий или недоступный adapter",
@@ -2664,7 +2786,21 @@
         "PAOS-0045"
       ],
       "execution_order": 51,
-      "delivery_stage": "M4"
+      "delivery_stage": "M4",
+      "planned_affected_files": [
+        {
+          "path": "tests/web",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        },
+        {
+          "path": "tests/local-service",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": null
+        }
+      ],
+      "actual_time_note": "Wall interval measured from scope clock sample; per-task active duration not instrumented; null intentional.",
+      "closure_level": "implemented_locally_verified"
     },
     {
       "id": "PAOS-0029",

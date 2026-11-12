@@ -8,7 +8,8 @@ import type {SandboxBroker} from './sandbox-broker.mts';
 import {captureTaskFiles,compareTaskFiles,type FileChange} from './app-agent-files.mts';
 import {projectTaskTime} from '../events/task-time.ts';
 import type {TaskTimeEvent} from '../../../../packages/contracts/time/task-time.ts';
-import {taskManagerSnapshot} from '../task-manager/service.mts';
+import {newM2Task} from '../../../../packages/contracts/issues/task-profile.ts';
+import {taskManagerCommand,taskManagerSnapshot} from '../task-manager/service.mts';
 import {runtimeWorkflow} from '../workflows/runtime.mts';
 import {safePersistedText} from '../redaction/persisted.mts';
 import {createTeamService} from '../team/service.mts';
@@ -24,7 +25,7 @@ export type AppAgentBinding={id:string;projectId:string;sessionId:string;mode:'d
 type Binding=AppAgentBinding;
 type Operation={operationId:string;digest:string;argv:string[];timeoutMs:number;generation:string;expiresAt:number;decision?:string;state:'awaiting_approval'|'dispatching'|'completed'|'declined'|'cancelled'|'recovery_required';exitCode?:number;stdout?:string;stderr?:string;fileChanges?:FileChange[]};
 type Job={id:string;bindingId:string;projectId:string;sessionId:string;mode:Binding['mode'];clientMessageId:string;input:string;inputDigest:string;autonomy?:{budgetId:string};autonomyStopReason?:string;assetPins?:AssetPin[];observedStartedAt?:string;purpose?:'team_proposal';proposalContext?:Input;workflowSnapshot?:WorkflowSnapshot & {executionRecipe?:{id:string;version:string}};
- recipeExecution?:string;state:State;seq:number;workerId?:string;generation?:string;lastReport?:{key:string;hash:string;receipt:Input};operations?:Operation[];taskContext?:Input;progress?:{seq:number;text:string;phase:'commentary'|'final_answer'};
+ taskCreationInitiator?:string;recipeExecution?:string;state:State;seq:number;workerId?:string;generation?:string;lastReport?:{key:string;hash:string;receipt:Input};operations?:Operation[];taskContext?:Input;progress?:{seq:number;text:string;phase:'commentary'|'final_answer'};
  recoveryResolution?:{kind:'cancel_undispatched';reason:'dispatch_not_observed'}};
 type Worker={workerId:string;generation:string;leaseToken:string;expiresAt:number};
 const route='codex_app_agent';
@@ -229,7 +230,7 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
    ||!timingSafeEqual(Buffer.from(token),Buffer.from(worker.leaseToken)))fail('app_agent_lease_invalid');return worker;
  }
  function publicJob(job:Job){return {id:job.id,bindingId:job.bindingId,projectId:job.projectId,sessionId:job.sessionId,state:job.state,mode:job.mode,route,...(job.autonomy?{autonomy:job.autonomy,autonomyStopReason:job.autonomyStopReason}: {})};}
- function claimed(job:Job){return {runId:job.id,bindingId:job.bindingId,projectId:job.projectId,sessionId:job.sessionId,mode:job.mode,input:redact(job.input),clientMessageId:job.clientMessageId,cancelRequested:job.state==='cancel_requested',taskContext:job.taskContext,workflowSnapshot:job.workflowSnapshot,assetPins:job.assetPins,purpose:job.purpose,proposalContext:job.proposalContext,autonomy:job.autonomy};}
+ function claimed(job:Job){return {runId:job.id,bindingId:job.bindingId,projectId:job.projectId,sessionId:job.sessionId,mode:job.mode,input:redact(job.input),clientMessageId:job.clientMessageId,cancelRequested:job.state==='cancel_requested',taskContext:job.taskContext,workflowSnapshot:job.workflowSnapshot,assetPins:job.assetPins,purpose:job.purpose,proposalContext:job.proposalContext,autonomy:job.autonomy,taskCreationAllowed:!!job.taskCreationInitiator};}
  const connection={status,
   connect: (value:unknown)=>serial(async()=>{input(value,['connectionId']);selected=true;return status();}),
   disconnect:()=>serial(async()=>{for(const active of [...activeJobs.values()]){const changed={...active,state:'recovery_required' as const};await save(changed);stopCommands(changed);}worker=undefined;selected=false;return status();})};
@@ -252,8 +253,10 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
   }),
   dispatch:(action:string,value:Input)=>serial(async()=>{
    const executionId=recipeAdmissions.get(value);recipeAdmissions.delete(value);
-   const row=input(value,['projectId','sessionId','bindingId','clientMessageId','input','mode','taskId','runId','generation','requestId','decision','resolution','targetAssetId','autonomy',...(action==='team-proposal'?['assetKind','requirementContext']:[])]);const scope=await scoped(row);
+   const row=input(value,['projectId','sessionId','bindingId','clientMessageId','input','mode','taskId','runId','generation','requestId','decision','resolution','targetAssetId','autonomy','taskCreationApproved','taskCreationInitiator',...(action==='team-proposal'?['assetKind','requirementContext']:[])]);const scope=await scoped(row);
    if(row.autonomy!==undefined&&(typeof row.autonomy!=='boolean'||action!=='send'))fail('app_agent_input_invalid');
+    if(row.taskCreationApproved!==undefined&&(row.taskCreationApproved!==true||action!=='send'||scope.binding?.mode!=='execution'||row.autonomy===true||typeof row.taskCreationInitiator!=='string'||!row.taskCreationInitiator.trim()))fail('app_agent_creation_forbidden');
+    if(row.taskCreationInitiator!==undefined&&row.taskCreationApproved!==true)fail('app_agent_creation_forbidden');
    if(row.resolution!==undefined&&action!=='reconcile')fail('app_agent_input_invalid');
    if(row.generation!==undefined)text(row,'generation');
    if(action==='bindings') {
@@ -283,9 +286,9 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
      const task=await store.get(scope.projectId,text(row,'taskId'));if(!task||task.kind!=='task'||task.deleted)fail('task_scope_mismatch');}
     if(row.autonomy===true&&binding.mode!=='execution')fail('AUTONOMY_EXECUTION_MODE_REQUIRED');
     const id=`app-run-${hash(`${options.profileId}:${binding.id}:${messageId}`)}`;const digest=hash(JSON.stringify({body,taskId:row.taskId??null}));
-    const previous=await store.get(scope.projectId,id);if(previous){const old=previous.data.appAgentRun as Job;if(old.inputDigest!==digest||Boolean(old.autonomy)!==(row.autonomy===true))fail('message_conflict');return publicJob(old);}
+    const previous=await store.get(scope.projectId,id);if(previous){const old=previous.data.appAgentRun as Job;if(old.inputDigest!==digest||Boolean(old.autonomy)!==(row.autonomy===true)||old.taskCreationInitiator!==(row.taskCreationApproved===true?row.taskCreationInitiator:undefined))fail('message_conflict');return publicJob(old);}
     if(!status().verified)fail('app_agent_not_attached');if(foreignUnresolved||await busy(scope.projectId))fail('runtime_busy');
-    const job:Job={id,bindingId:binding.id,projectId:binding.projectId,sessionId:binding.sessionId,mode:binding.mode,clientMessageId:messageId,input:body,inputDigest:digest,state:'queued',seq:0};
+    const job:Job={...(row.taskCreationApproved===true?{taskCreationInitiator:text(row,'taskCreationInitiator')}:{}),id,bindingId:binding.id,projectId:binding.projectId,sessionId:binding.sessionId,mode:binding.mode,clientMessageId:messageId,input:body,inputDigest:digest,state:'queued',seq:0};
     if(action==='team-proposal'){
      const assetKind=row.assetKind==='skill'?'skill':'agent';
      if(row.assetKind!==undefined&&!['agent','skill'].includes(String(row.assetKind)))fail('TEAM_ASSET_KIND_INVALID');
@@ -356,7 +359,7 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
    if(leaseSecrets.size>=64)fail('app_agent_restart_required');
    worker={workerId:text(row,'workerId'),generation:text(row,'generation'),leaseToken:randomBytes(32).toString('hex'),expiresAt:now()+leaseMs};leaseSecrets.add(worker.leaseToken);return {...worker};
   }
-  const fields:Record<string,string[]>={claim:['runId'],report:['runId','seq','idempotencyKey','status','text'],command:['runId','operationId','argv','timeoutMs'],operation:['runId','operationId'],progress:['runId','seq','text','phase'],reconcile:['runId']};
+  const fields:Record<string,string[]>={'task-create':['runId','operationId','title','summary','acceptanceCriteria'],claim:['runId'],report:['runId','seq','idempotencyKey','status','text'],command:['runId','operationId','argv','timeoutMs'],operation:['runId','operationId'],progress:['runId','seq','text','phase'],reconcile:['runId']};
   const row=input(value,['workerId','generation','leaseToken',...(fields[action]??[])]);const current=authenticated(row);
   if(action==='heartbeat'){current.expiresAt=now()+leaseMs;const jobs=[...activeJobs.values()].filter(job=>job.workerId===current.workerId&&job.generation===current.generation).map(job=>({runId:job.id,cancelRequested:job.state==='cancel_requested',state:job.state}));return {expiresAt:current.expiresAt,job:jobs[0]??null,jobs};}
   if(action==='claim') {
@@ -370,12 +373,26 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
    if(active.state==='queued'){const changed={...active,state:'running' as const,observedStartedAt:new Date(now()).toISOString(),workerId:current.workerId,generation:current.generation};await save(changed);active=changed;}
    if(active.workerId!==current.workerId||active.generation!==current.generation)fail('app_agent_generation_mismatch');return {job:claimed(active)};
   }
-  if(['command','operation','progress','reconcile'].includes(action)){
+  if(['command','operation','progress','reconcile','task-create'].includes(action)){
    const runId=text(row,'runId');let job:Job|undefined;for(const project of await store.projects()){const saved=await store.get(project.id,runId);if(saved?.data.appAgentRun){if(job)fail('app_agent_run_ambiguous');job=saved.data.appAgentRun as Job;}}
    if(!job||job.workerId!==current.workerId||job.generation!==current.generation)fail('app_agent_generation_mismatch');await scoped({projectId:job.projectId,sessionId:job.sessionId,bindingId:job.bindingId});
    if(action==='reconcile')return job.lastReport?.receipt??publicJob(job);
    if(action==='operation'){const op=job.operations?.find(item=>item.operationId===text(row,'operationId'));if(!op)fail('app_agent_operation_missing');return operationView(job,op);}
    if(!activeJobs.has(job.id)||['cancel_requested','recovery_required'].includes(job.state)||terminal.has(job.state))fail('app_agent_report_stale');
+   if(action==='task-create'){
+    // Explicit owner opt-in belongs to this claimed run. It grants only creation of a Backlog Bug.
+    if(job.mode!=='execution'||job.state!=='running'||!job.taskCreationInitiator||job.autonomy)fail('app_agent_creation_forbidden');
+    await assertTaskCommandBoundary(job);if(worker!==current||now()>=current.expiresAt)fail('app_agent_lease_expired');
+    const operationId=text(row,'operationId',100);if(!/^[A-Za-z0-9_-]+$/.test(operationId))fail('app_agent_input_invalid');
+    const title=redact(text(row,'title',200)),summary=redact(text(row,'summary',8000));
+    if(!Array.isArray(row.acceptanceCriteria)||!row.acceptanceCriteria.length||row.acceptanceCriteria.length>32||row.acceptanceCriteria.some(c=>typeof c!=='string'||!c.trim()||Buffer.byteLength(c)>2000))fail('app_agent_input_invalid');
+    const criteria=(row.acceptanceCriteria as string[]).map(redact),keyHash=hash(job.id+':'+operationId),id=`${keyHash.slice(0,8)}-${keyHash.slice(8,12)}-4${keyHash.slice(13,16)}-a${keyHash.slice(17,20)}-${keyHash.slice(20,32)}`,actorId=`agent:${options.profileId}:${job.id}`;
+    const saved=(await store.get(job.projectId,job.id))!,project=(await store.project(job.projectId))!;
+    await taskManagerCommand(store,job.projectId,actorId,{action:'save',expectedAuthorityEpoch:project.authorityEpoch,idempotencyKey:'agent-create:'+job.id+':'+operationId,expectedRevision:0,
+      task:{...newM2Task(job.projectId,id,title,actorId),createdAt:null,type:'bug',summary,acceptanceCriteria:criteria}},
+      {agentCreation:{runId:job.id,workerId:current.workerId,generation:current.generation,actorId,initiatedBy:job.taskCreationInitiator,leaseExpiresAt:current.expiresAt,...(options.now?{validationTime:now()}: {})},additionalChanges:[{expectedRevision:saved.revision,entity:{id:saved.id,kind:'run',status:saved.status,data:saved.data}},{expectedRevision:0,entity:{id:'agent-bug-comment-'+keyHash,kind:'comment',parentId:id,body:summary,data:{category:'m2_agent_comment',actorId,createdAt:new Date().toISOString(),runId:job.id,sessionId:job.sessionId,source:'agent_assertion'}}}]});
+    return {taskId:id,runId:job.id,sessionId:job.sessionId};
+   }
    if(action==='progress'){
     if(!Number.isSafeInteger(row.seq)||row.seq!==(job.progress?.seq??0)+1||!['commentary','final_answer'].includes(String(row.phase)))fail('app_agent_sequence_invalid');
     const changed:Job={...job,progress:{seq:row.seq as number,text:redact(text(row,'text',32768)),phase:row.phase as 'commentary'|'final_answer'}};await save(changed);return {runId,seq:row.seq};
