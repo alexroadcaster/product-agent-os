@@ -1,0 +1,345 @@
+{
+  "task_id": "PAOS-0026",
+  "task_name": "Решения и наблюдаемость автономности",
+  "status": "implemented",
+  "closure_level": "implemented_locally_verified",
+  "baseline_head": "d930d4b2ddb03de6509d5749c4b9ab086d602cc0",
+  "started_at": "2026-11-12T16:44:11+03:00",
+  "implementation_completed_at": "2026-11-12T17:35:51+03:00",
+  "evidence_updated_at": "2026-11-12T17:41:16+03:00",
+  "elapsed_wall_seconds": 3425,
+  "active_duration_seconds": null,
+  "verification": {
+    "web_tests": 468,
+    "web_skipped": 0,
+    "focused_service_http_tests": 14,
+    "gateway_http_tests": 26,
+    "python_tests": 1450,
+    "python_skipped": 1,
+    "python_seconds": 921.701,
+    "fixture_evals": 91,
+    "transcript_evals": 26,
+    "post_sync_docs_lifecycle_tests": 251,
+    "post_sync_docs_lifecycle_seconds": 31.784,
+    "final_docs_tests": 105,
+    "synthetic_browser_native_checks": 77,
+    "actual_app_checks": 66,
+    "actual_current_unique_jobs": 2,
+    "typecheck_exit": 0,
+    "build_exit": 0,
+    "compatibility": "compatible",
+    "matrix_hooks_docs_diff_exit": 0
+  },
+  "review": {
+    "context_mode": "separate_fresh_context",
+    "reviewer": "/root/decisions_review",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "reviewer_observed_focused_tests": 12,
+    "findings": [
+      {
+        "priority": "P2",
+        "issue": "Recorded choice/answer absent from detail",
+        "resolution": "Explicit saved response/answer rendering; browser reload checks pass"
+      },
+      {
+        "priority": "P2",
+        "issue": "Disappeared old-generation pending identity remained pending until TTL",
+        "resolution": "Successful snapshot identity comparison marks stale/expired; behavioral RED then GREEN"
+      }
+    ],
+    "late_root_self_review": "Runtime file request changes now classified proposed; valid behavioral RED and14/full468/current native/browser/actual proof",
+    "tester_verdict": "closed_allowed",
+    "ceiling": "local technical scope; repairs root-verified, no second independent review; human/release separate"
+  },
+  "runtime": {
+    "route": "codex_app_agent",
+    "fallback": "none; unconfirmed persisted response intent never automatically replays",
+    "adapter_revision": "4f2695b6be5ede6ac292bfe84786ab55a1dcce504f03cb0e73eb5714ac0db6bc",
+    "codex_version": "0.167.0",
+    "codex_sha256": "edfdd48f8b458af0906e507b4cb05217b326c3d6e515e9f024e05e3b8d650f70",
+    "manifest_other_pins_preserved": true,
+    "prior_evidence_preserved": true,
+    "actual_current_run_ids": [
+      "app-run-87ad4d2c586e6a8b6683ccc5a1e99f56ed940db949beccbfc2409f96f40cf9b5",
+      "app-run-d8925bf98945ad160878fdcd3f0ead18a9ccf232eeb7318ba6bb5e9306177e77"
+    ],
+    "observed_model": null,
+    "observed_effort": null,
+    "host_identity": "attested_not_cryptographic",
+    "sandbox_scope": "paos_mediated_commands",
+    "external_provider_client_calls": 0,
+    "credential_operations": 0,
+    "native_service_restart": "graceful service quit/relaunch after terminal history; no closed-App daemon or arbitrary native crash guarantee"
+  },
+  "acceptance": {
+    "scope_diff_evidence_available": true,
+    "future_diff_coverage_explicit": true,
+    "expired_decision_never_applies": true,
+    "expiry_rechecked_after_async_boundary_and_on_sqlite_commit": true,
+    "same_response_owner_s09_s22": true,
+    "lost_ack_exact_retry_no_duplicate_effect": true,
+    "changed_payload_same_key_rejected": true,
+    "history_retained_after_restart": true,
+    "recorded_choice_answer_visible": true,
+    "missing_native_identity_stale": true,
+    "local_owner_choice_runtime_dispatches": 0,
+    "native_history_coverage": "observed_requests_only",
+    "decision_history_event_limit": 64,
+    "project_decision_capacity": 5000,
+    "record_storage": "private settings category paos_decision; generic API cannot mutate",
+    "done_requires_owner": true
+  },
+  "preservation": {
+    "task_id": "PAOS-0026",
+    "other_md_cards_unchanged": 55,
+    "other_json_tasks_unchanged": 55,
+    "task_count": 56,
+    "group_count": 12,
+    "all_estimates_order_groups_preserved": true,
+    "completed_at": "2026-11-12T17:35:51+03:00",
+    "active_duration_measured": false
+  },
+  "control_plane_sync": {
+    "status": "applied",
+    "digest": "sha256:e76cb42a78101ac90ba16f38a9e4e4840b6004e46c7f3d2ae9bc6fa5e47ef73a",
+    "updated": [
+      "REQUIREMENTS.md",
+      "PLAN.md",
+      "TEST.md",
+      "EVALS.md",
+      "RUNLOG.md"
+    ],
+    "not_applicable": [
+      "AGENTS.md: durable rules unchanged",
+      "prod_test.md: Batch39 untouched"
+    ],
+    "bytes": {
+      "REQUIREMENTS.md": 28402,
+      "PLAN.md": 31349,
+      "TEST.md": 35070,
+      "EVALS.md": 27288,
+      "RUNLOG.md": 28260
+    },
+    "assess": "reviewed_inputs_valid; gaps[]",
+    "compaction": "not_required; all roots under40000 bytes; TEST warning32000",
+    "strict_mkdocs": "not_required; MkDocs nav/mermaid/config/site unchanged"
+  },
+  "cleanup": {
+    "synthetic_binary_removed": true,
+    "sha256": "edfdd48f8b458af0906e507b4cb05217b326c3d6e515e9f024e05e3b8d650f70",
+    "containment_verified": true,
+    "workspace_browser_fixture_roots_remaining": 0,
+    "workspace_test_temp_entries_remaining": 0,
+    "test_temp_removed": [
+      {
+        "name": "tmpo3k57r7j.json",
+        "bytes": 1568,
+        "sha256": "34d1ec609176afe5d6c50119da44970598b64cfaa9e4fe6a01533db973a6981c"
+      },
+      {
+        "name": "tmpv_kh8tpi.json",
+        "bytes": 50,
+        "sha256": "fe7e4b3b034b4cdf77b4fe8c1c177c3cde765c5a3d6cc4851ab2dfb37be220c0"
+      }
+    ],
+    "user_processes_terminated": false,
+    "installed_runtime_changed": false
+  },
+  "metrics": {
+    "new_agents": 2,
+    "reused_actual_app_worker": 1,
+    "delegation_model": "gpt-6-astra",
+    "delegation_effort": "medium",
+    "root_model": "not_available; authoritative model trace absent",
+    "tokens_cost_tools_waits_compactions_skill_counters": "not_available; complete trace not exposed",
+    "current_actual_jobs": 2,
+    "provider_model_calls": 0
+  },
+  "failed_attempts": [
+    "HTTP decision routes absent behavioral RED",
+    "Initial approval entity used generic idle lock; local Task-edit regression RED; private settings chosen",
+    "Initial TTL test wrapped unused store.get seam, not valid RED; corrected projectEntities seam gave intended baseline failure",
+    "Missing native identity and file proposal classification RED; repaired",
+    "First browser passed72 then fixture Language navigation outside Settings failed; cleanup true; corrected runner77 pass",
+    "Preview CLI --output unsupported; corrected stdout redirect",
+    "Diagnostic wrong module path qualification.mts; canonical manifest.mts adapter hash matched"
+  ],
+  "receipt_provenance": "All listed gates are current-task runs. Full Python overlapped Node implementation; Python/plugin sources unchanged, docs gates after section/card/report updates. Runtime source hashes match exact current source and production build. Failed receipts preserved without weakening gates.",
+  "limits": [
+    "Native history covers observed requests only; unseen provider events unavailable",
+    "Persisted response intent without confirmed receipt never automatically replays; arbitrary crash exactly-once not claimed",
+    "Active attached App consumer required; no automatic wakeup or closed-App daemon",
+    "PAOS-mediated sandbox does not confine App host own tools",
+    "Local clarification/product response records choice without file apply or runtime grant",
+    "64 history events/5000decisions; no automatic purge",
+    "Single JS bundle515.84kB triggers build warning; workload SLO not measured",
+    "No model-quality/token/cost promotion",
+    "Human/commercial/release acceptance separate"
+  ],
+  "next_task": "PAOS-0028",
+  "next_dependencies_ready": [
+    "PAOS-0022",
+    "PAOS-0026",
+    "PAOS-0027",
+    "PAOS-0033",
+    "PAOS-0034",
+    "PAOS-0035",
+    "PAOS-0036",
+    "PAOS-0037",
+    "PAOS-0038",
+    "PAOS-0045"
+  ],
+  "git_writes_performed": false,
+  "receipts": {
+    "python-full.log": {
+      "path": ".tmp/paos-m3-0026/python-full.log",
+      "sha256": "07b335cdedb23ce949a29cedcb61c269a00cbd3617e9fa1c382f4acc811f017b"
+    },
+    "web-full.log": {
+      "path": ".tmp/paos-m3-0026/web-full.log",
+      "sha256": "4cb2ff0a115e165a69592aa8389ff49fbe6e24dfd6a041c8d05aaeed0151bb02"
+    },
+    "review-repairs.log": {
+      "path": ".tmp/paos-m3-0026/review-repairs.log",
+      "sha256": "0f65c937efad7ca74cf37016a1e6a7820cbf03059fc6954e3734dce5418796da"
+    },
+    "decisions-green-2.log": {
+      "path": ".tmp/paos-m3-0026/decisions-green-2.log",
+      "sha256": "f7312bbc4d7d8f3f8e3f42f2bde675f5aa57817b7139de757597da519bf78aed"
+    },
+    "approval-expiry-red-valid.log": {
+      "path": ".tmp/paos-m3-0026/approval-expiry-red-valid.log",
+      "sha256": "bd20f180b334173af5f75fdba6b6835ff028ff94541b3e348d1704bbe76006e5"
+    },
+    "review-red.log": {
+      "path": ".tmp/paos-m3-0026/review-red.log",
+      "sha256": "38bce7d3ada5a1e7ea0ddb943010ca090d08e3115712cf91833d1ff617051c32"
+    },
+    "fixture-eval.log": {
+      "path": ".tmp/paos-m3-0026/fixture-eval.log",
+      "sha256": "014f6152da56145aa30e29151fd0c5979f34a44596f0b0714d270e9708719c22"
+    },
+    "transcript-eval.log": {
+      "path": ".tmp/paos-m3-0026/transcript-eval.log",
+      "sha256": "5694b49e2762388661d971053ceedea106cba7f64c307fe7c7ea3a2546e70634"
+    },
+    "types.log": {
+      "path": ".tmp/paos-m3-0026/types.log",
+      "sha256": "66d87221505bb187a2fe87ddeacbd07f5922ac556c005c69c5c59e0f0c74cf98"
+    },
+    "build.log": {
+      "path": ".tmp/paos-m3-0026/build.log",
+      "sha256": "a3eabf35d3695e9427656300542a272ae2198c5fc01f7b0e64a7b4e55ae68891"
+    },
+    "native-candidate.log": {
+      "path": ".tmp/paos-m3-0026/native-candidate.log",
+      "sha256": "6d59803d23217c6fcca8fe262ad500804dfe131a150c3e8a3f3e52b1a5a6250c"
+    },
+    "native-default.log": {
+      "path": ".tmp/paos-m3-0026/native-default.log",
+      "sha256": "a10b8d869cc301b09f86a4b3904aefcf389e0e7a81b13aaa7e83e53d920f4a55"
+    },
+    "compatibility.log": {
+      "path": ".tmp/paos-m3-0026/compatibility.log",
+      "sha256": "eb071b781c513c6693744ac48b88b0fa28dcab5252707e4c49e96c999ceed9b2"
+    },
+    "docs-lifecycle.log": {
+      "path": ".tmp/paos-m3-0026/docs-lifecycle.log",
+      "sha256": "7147fe5077bed5b0fb3b5e348b88574498c0be1b6ae61ec75c63e892b5888df3"
+    },
+    "docs-final.log": {
+      "path": ".tmp/paos-m3-0026/docs-final.log",
+      "sha256": "2ded58e06ba63a7beb7240be560fbfed5f1f7acb79c424d8bb2b70c50e0640ee"
+    },
+    "hooks-json.log": {
+      "path": ".tmp/paos-m3-0026/hooks-json.log",
+      "sha256": "6eaa34164526a0a1f0b9dd89730318d5e31bdba9fad3ce3d93442f858e7f6782"
+    },
+    "hooks-dir.log": {
+      "path": ".tmp/paos-m3-0026/hooks-dir.log",
+      "sha256": "5d950b07458f956f2ac600215531d797483c23ed8d868b2bbdbac6f014a7b592"
+    },
+    "matrix-validation.log": {
+      "path": ".tmp/paos-m3-0026/matrix-validation.log",
+      "sha256": "f17e172c632693877fa0f2ce81fd192d44b9070c0ab929841ce28fe3393fa71c"
+    },
+    "state-validation.log": {
+      "path": ".tmp/paos-m3-0026/state-validation.log",
+      "sha256": "a4004c18fd639513dc0d8e520b850c74b8f78ed3f70b1a8c89c8649c8ae56a90"
+    },
+    "doc-sync-apply.json": {
+      "path": ".tmp/paos-m3-0026/doc-sync-apply.json",
+      "sha256": "6cfd733f1345c801e9c9d77febc33eea7add228cb24690b30986b34fd44a3d9a"
+    },
+    "final-doc-assessment.json": {
+      "path": ".tmp/paos-m3-0026/final-doc-assessment.json",
+      "sha256": "a0330b908315c7c6d16c2539d8b8cee2672f396b1f21f977daf5d0f04718482d"
+    },
+    "binary-cleanup.json": {
+      "path": ".tmp/paos-m3-0026/binary-cleanup.json",
+      "sha256": "81848a8bfc908f37db582716c592b08ef4f1e6cec0eb09a958f6ede1877f5544"
+    },
+    "final-adapter.log": {
+      "path": ".tmp/paos-m3-0026/final-adapter.log",
+      "sha256": "d1c23daf6a2ab56fe77470a027288ebd1bfbb7cadcf4be7474c395425c6acaac"
+    },
+    "check-docs.log": {
+      "path": ".tmp/paos-m3-0026/check-docs.log",
+      "sha256": "8980e553ce08599d54a68baf90a197be5cde25b960ab1b92eaaef3dba110b37f"
+    },
+    "diff-check.log": {
+      "path": ".tmp/paos-m3-0026/diff-check.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "browser-evidence-ZaUWGT": {
+      "path": ".tmp/paos-m3-0026/browser-evidence-ZaUWGT/result.json",
+      "sha256": "0ecd9edf7c6855b4d0eb144320189efc68ab4c62421d57913a6f69df725c2aac",
+      "checks": 77,
+      "status": "passed",
+      "fixture_cleaned": true,
+      "source_hash_mismatches": [],
+      "actual_app_agent": false,
+      "actual_native_broker": true
+    },
+    "actual-evidence-EBRgf0": {
+      "path": ".tmp/paos-m3-0026/actual-evidence-EBRgf0/result.json",
+      "sha256": "8bf0d8f1f97d6691454fa6309693a91acb2516bdc5e8ecd37f21a85afb92577d",
+      "checks": 66,
+      "status": "passed",
+      "fixture_cleaned": true,
+      "source_hash_mismatches": [],
+      "actual_app_agent": true,
+      "actual_native_broker": true
+    }
+  },
+  "source_sha256": {
+    "EVALS.md": "e3e924fa69be20c8743009614bb5c753cb693560110da46f692ea90b6230a589",
+    "PLAN.md": "9feeb1a612870c139895f3213ea68f088e87d31e3ca5e0fa546a1091d56dd89b",
+    "REQUIREMENTS.md": "129b26a212a68e88b14936305907e6e570f4ed011abacb10dd2c8973901e376f",
+    "RUNLOG.md": "8881e9dfadc35a5e8a7894f63dd8fcc34bb146352473aeeb958b77cf6571d021",
+    "TEST.md": "a2be89c2e85d96de3ad66e428159f129346d894f28445592eedd5f89ad502bdf",
+    "apps/local-service/src/http/application.mts": "c37e4467adb75f9e48bf628daa91a7e83a51bd145556d8a15a29871d8879af97",
+    "apps/local-service/src/runtime/app-agent-gateway.mts": "f993e015f467c9a23dc50257e29fada269f9e1f8734260f452ee97dd71b9044b",
+    "apps/local-service/src/storage/sqlite-worker.mts": "8c79ac539098e023cc4cd79956503f5a74c53590cb4d9e7a068282cf7ca45d57",
+    "apps/web/README.md": "7af323daaef8f5a4c5c675cd2dfb893e8727bed510ef66611dd1f00f18ef5a5d",
+    "apps/web/src/api/client.ts": "3e21a0a1561882841e1769825793fcd90282672c9a83c560b930219a12600e3a",
+    "apps/web/src/design/app.css": "c69d90fdcd650ef43f72b46ca57721f4fdfbcaa2078184162345af4d3d26327d",
+    "apps/web/src/locales/messages.ts": "ad940eac37689d57999819d88221a2c3f4df1aed5da8ef6265008e237dc77fcb",
+    "apps/web/src/ui/App.tsx": "dd71d6d43941ff2ef0ef5b86c638b0d03ff9f5347064df371cd17b8cf94b3fa3",
+    "docs/sources/registry.en.md": "2fef3cb7981fe738d7139f4fb18a990e031dd0a93b4d0b723174a3ae5e3ee77c",
+    "docs/sources/registry.md": "43676d1bba2184e69392f0f55d55766c82b4014489e8ad4cac49a114c50b4610",
+    "packages/contracts/runtime/qualified-manifest.json": "0d73f0d7e0d2daf6523952f9f99305d65861ed5176cc2e27a6ce1475d46d89ba",
+    "packages/contracts/storage/local-store.ts": "bb0f83ff6659b129e7903e8151c19d528a0bb6a607e541e051324f84b4f66da4",
+    "tests/web/app-agent-gateway.test.mts": "a388e5c650fd24c31f51f0d6dfcd039eee7bfdfe6dd25f6eda9447a5a53637b9",
+    "apps/local-service/src/decisions/service.mts": "bd531f913dfc433b7ff735754d8fac0c9fc9a17bb466ab25a980773a5f06c880",
+    "apps/web/src/features/decisions/DecisionBoard.tsx": "d8df4cc62344e3946523f2514ef0677eb0a10f71be1e962aa6a09e538b0be819",
+    "packages/contracts/decisions/decision.ts": "1f4b06280fe5f10dce483b1018fbc225bd0006fa6a30840e2ab3017c104cd448",
+    "research/product-agent-os-web-m3-0026-execution-2026-11-12.md": "872a05e5f99736c984f88d72027f69340ab46d8f5aef48495fdffbb112928488",
+    "tests/web/decision-service.test.mts": "d96fa3a70f27e8088f757948f1c4033b601f9f937f1bcae0eb3c96d353740dff",
+    "tests/web/decisions.test.mts": "08905dc63bed8eb5c86c287c3b99ec01780d1869165572abd4c29fd6b0322e61",
+    "tests/web/single-window/m3-decisions-acceptance.mts": "891e09dccd430d802326b84b5be84da03bf29dab5bd3619716c72f18ecdbc6b7",
+    "research/product-agent-os-web-task-manager-plan-2026-11-09.md": "814adcfe82658545566678a2ca865ef62e10e73d7030388163943924f2f8eeff",
+    "research/product-agent-os-web-task-manager-task-group-2026-11-09.json": "f005938ad321cc3e368a8dbbc2856504cdaec726e2c199e3bb5ea7f3086cb04c"
+  }
+}

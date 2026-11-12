@@ -38,6 +38,8 @@ export type StoreWrite = Readonly<{
   recipeExecution?: {id:string;revision:number};
   /** Scheduler-only queue CAS/admission; browser payloads never provide this authority. */
   schedulerCommand?: {queueRevision:number;entryId?:string;entryRevision?:number;admit?:boolean};
+  /** Trusted decision owner only; the transaction fences expiry, reviewed scope and exact decision revision. */
+  decisionCommand?: {id:string;revision:number;taskId:string|null;scopeHash:string|null;rootIdentity:string;expiresAt:number;validationTime?:number};
   changes: readonly { entity: EntityInput; expectedRevision: number; delete?: boolean }[];
   outbox?: readonly { kind: string; payload: Record<string, unknown> }[];
 }>;

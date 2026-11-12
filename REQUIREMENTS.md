@@ -16,7 +16,9 @@ G8-T14/G8 явно приняты владельцем. G9 T01–T09 реали�
 
 ## Текущий scope Web M1 — 2026-11-10
 
-M3 PAOS-0025: explicit checkpoint continuation, idempotent recovery receipts, timeout/cancel/crash evidence. Unknown/interrupted native work не replay; policy/pins/ownership сохраняются. [Контракт и limits](research/product-agent-os-web-m3-0025-execution-2026-11-12.md).
+PAOS-0026: Decisions/S22 хранит scope, proposed/observed diff, evidence, ответы и историю; S09/S22 используют один response owner. Expired/stale requests не применяются; локальный выбор не выдаёт runtime grant. [Контракт и limits](research/product-agent-os-web-m3-0026-execution-2026-11-12.md).
+
+Исторический срез до PAOS-0026 (provenance сохранён): M3 PAOS-0025: explicit checkpoint continuation, idempotent recovery receipts, timeout/cancel/crash evidence. Unknown/interrupted native work не replay; policy/pins/ownership сохраняются. [Контракт и limits](research/product-agent-os-web-m3-0025-execution-2026-11-12.md).
 
 Исторический срез до PAOS-0025 (provenance сохранён): M3 PAOS-0024: durable queue, pinned assignments, blocks/WIP/ownership admission. Один writer на workspace/project; до4 раздельных roots. [Контракт и пределы](research/product-agent-os-web-m3-0024-execution-2026-11-12.md).
 

@@ -1474,21 +1474,21 @@ Rollback будущих изменений: versioned proposal, revision check, 
 ### Task `PAOS-0026`
 
 - Task: Решения и наблюдаемость автономности
-- Status: planned
+- Status: implemented
 - Delivery stage: M3
 - Execution order: 50
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 12-11-2026 17:35
 - Depends on: PAOS-0023, PAOS-0025
 - Blocks: PAOS-0028
 - Source: PRD: дополнение Task Manager; screen specification
 - Short description: Показать что выполняется, почему остановилось и какое решение требуется
 - Technical value: Показать что выполняется, почему остановилось и какое решение требуется
 - Product value: Пользователь вмешивается там, где действительно требуется решение, и видит его последствия.
-- Scope: apps/web/src/features/decisions; apps/local-service/src/decisions
+- Scope: apps/local-service/src/decisions; storage transaction fence; App approval expiry seam; public decision contract; DecisionBoard/S09 integration
 - Non-goals: Глобальные permissions, внешняя публикация и несвязанный refactor
 - Expected result: Решения и наблюдаемость автономности доступна в соответствующем этапе
 - Acceptance criteria: Из решения доступен diff/scope/evidence; истёкшее решение не применяется; история сохраняется
@@ -1497,24 +1497,24 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Complexity: medium/high, уточнить после discovery
 - Estimated execution time: 12:00:00 (предварительно)
 - Agents: architect, builder, tester
-- Skills: implementation-planner; task-matching implementation/verification skills selected at start
-- Output artifacts: apps/web/src/features/decisions; apps/local-service/src/decisions
-- Next step: Завершить зависимости, затем уточнить tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Skills: implementation-planner; react-best-practices; frontend-testing-debugging
+- Output artifacts: EVALS.md; PLAN.md; REQUIREMENTS.md; RUNLOG.md; TEST.md; apps/local-service/src/http/application.mts; apps/local-service/src/runtime/app-agent-gateway.mts; apps/local-service/src/storage/sqlite-worker.mts; apps/web/README.md; apps/web/src/api/client.ts; apps/web/src/design/app.css; apps/web/src/locales/messages.ts; apps/web/src/ui/App.tsx; docs/sources/registry.en.md; docs/sources/registry.md; packages/contracts/runtime/qualified-manifest.json; packages/contracts/storage/local-store.ts; tests/web/app-agent-gateway.test.mts; apps/local-service/src/decisions/service.mts; apps/web/src/features/decisions/DecisionBoard.tsx; packages/contracts/decisions/decision.ts; research/product-agent-os-web-m3-0026-execution-2026-11-12.md; tests/web/decision-service.test.mts; tests/web/decisions.test.mts; tests/web/single-window/m3-decisions-acceptance.mts; research/product-agent-os-web-task-manager-plan-2026-11-09.md; research/product-agent-os-web-task-manager-task-group-2026-11-09.json; research/product-agent-os-web-m3-0025-results-2026-11-12.json
+- Next step: Следующая PAOS-0028: Интеграционная проверка пути. Все её dependencies implemented после закрытия0026; отдельный scope. Другие55 cards сохранены.
+- Actual time: Measured scope start12-11-2026 16:44:11 MSK; end 12-11-2026 17:35 MSK. Wall interval available, active duration not separately instrumented; duration=null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
-- Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
+- Affected files: EVALS.md (modify); PLAN.md (modify); REQUIREMENTS.md (modify); RUNLOG.md (modify); TEST.md (modify); apps/local-service/src/http/application.mts (modify); apps/local-service/src/runtime/app-agent-gateway.mts (modify); apps/local-service/src/storage/sqlite-worker.mts (modify); apps/web/README.md (modify); apps/web/src/api/client.ts (modify); apps/web/src/design/app.css (modify); apps/web/src/locales/messages.ts (modify); apps/web/src/ui/App.tsx (modify); docs/sources/registry.en.md (modify); docs/sources/registry.md (modify); packages/contracts/runtime/qualified-manifest.json (modify); packages/contracts/storage/local-store.ts (modify); tests/web/app-agent-gateway.test.mts (modify); apps/local-service/src/decisions/service.mts (create); apps/web/src/features/decisions/DecisionBoard.tsx (create); packages/contracts/decisions/decision.ts (create); research/product-agent-os-web-m3-0026-execution-2026-11-12.md (create); tests/web/decision-service.test.mts (create); tests/web/decisions.test.mts (create); tests/web/single-window/m3-decisions-acceptance.mts (create); research/product-agent-os-web-task-manager-plan-2026-11-09.md (modify); research/product-agent-os-web-task-manager-task-group-2026-11-09.json (modify); research/product-agent-os-web-m3-0025-results-2026-11-12.json (create)
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Decisions/S22 с diff/scope/evidence, durable response/history и shared S09 response owner реализованы. Expiry/identity/scope/authority/SQLite commit fences предотвращают просроченное применение; exact-key retry не повторяет effect, unknown intent не replay.
+- Files touched / work locations: EVALS.md; PLAN.md; REQUIREMENTS.md; RUNLOG.md; TEST.md; apps/local-service/src/http/application.mts; apps/local-service/src/runtime/app-agent-gateway.mts; apps/local-service/src/storage/sqlite-worker.mts; apps/web/README.md; apps/web/src/api/client.ts; apps/web/src/design/app.css; apps/web/src/locales/messages.ts; apps/web/src/ui/App.tsx; docs/sources/registry.en.md; docs/sources/registry.md; packages/contracts/runtime/qualified-manifest.json; packages/contracts/storage/local-store.ts; tests/web/app-agent-gateway.test.mts; apps/local-service/src/decisions/service.mts; apps/web/src/features/decisions/DecisionBoard.tsx; packages/contracts/decisions/decision.ts; research/product-agent-os-web-m3-0026-execution-2026-11-12.md; tests/web/decision-service.test.mts; tests/web/decisions.test.mts; tests/web/single-window/m3-decisions-acceptance.mts; research/product-agent-os-web-task-manager-plan-2026-11-09.md; research/product-agent-os-web-task-manager-task-group-2026-11-09.json; research/product-agent-os-web-m3-0025-results-2026-11-12.json
+- Technical value delivered: Один mediated response owner S09/S22, durable intent/receipts/history и SQL commit fences сохраняют scope/authority/expiry; lost ACK не повторяет runtime effect.
+- Product value delivered: Пользователь видит scope/diff/evidence, источник и сохранённый ответ решения; различает runtime grant ACK и результат команды, expired/stale выбор недоступен, история переживает restart.
+- Actual implementation date and time: 12-11-2026 17:35
+- Verification evidence: Web468/468 skip0; service/HTTP14; gateway/HTTP26; Python1450(skip1); fixtures91/transcripts26; browser/native77 и actual App66/two jobs; native candidate/default; docs/compatibility gates — research/product-agent-os-web-m3-0026-execution-2026-11-12.md и results JSON.
+- Residual risks: Native history covers observed requests; active App consumer required; PAOS-mediated commands only, host tools не confined. Unknown dispatch не replay. History64events/5000decisions; future native diff unavailable до исполнения; local choice не применяет files. Human/commercial/release/token/cost/SLO отдельно.
+- Follow-up: Следующая PAOS-0028: Интеграционная проверка пути. Все её dependencies implemented после закрытия0026; отдельный scope. Другие55 cards сохранены.
 
 ### Task `PAOS-0027`
 

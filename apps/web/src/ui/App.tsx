@@ -31,6 +31,7 @@ import { visibleAssistantDrafts } from "../api/visible-drafts.ts";
 import { ConnectionControls } from "./ConnectionControls.tsx";
 import { TaskRelations } from "./TaskRelations.tsx";
 import {GraphExplorer} from '../features/graph/GraphExplorer.tsx';
+import {DecisionBoard} from '../features/decisions/DecisionBoard.tsx';
 import {AutonomyManager} from '../features/autonomy/AutonomyManager.tsx';
 import type {AutonomySnapshot} from '../../../../packages/contracts/autonomy/policy.ts';
 import {SkillGenerator} from '../features/skills/SkillGenerator.tsx';
@@ -81,6 +82,7 @@ const sections = [
   "documents",
   "checks",
   "autonomy",
+  "decisions",
   "search",
   "import",
   "backup",
@@ -329,6 +331,8 @@ export function App() {
             />{projectId&&<WorkflowManager key={projectId} api={api} projectId={projectId} locale={preferences.locale} onOpenSession={sessionId=>{setLinkedSession({projectId,sessionId});setSection('sessions');}}/>}</>
           ) : !projectId ? (
             <Empty text={t("empty")} />
+          ) : section === "decisions" ? (
+            <DecisionBoard key={projectId} api={api} projectId={projectId} locale={preferences.locale} onOpenSession={sessionId=>{setLinkedSession({projectId,sessionId});setSection('sessions');}}/>
           ) : section === "autonomy" ? (
             <AutonomyManager key={projectId} api={api} projectId={projectId} locale={preferences.locale}/>
           ) : section === "tasks" ? (
@@ -1971,7 +1975,7 @@ function Session({
           snapshot.pendingApprovals.map((request) => (
             <div key={request.requestId}>
               {request.source==='paos_domain'&&<p className="quiet">{t('appDomainApproval')}</p>}
-              <p>{request.description ?? request.requestId}</p>
+              <p>{request.description ?? request.requestId}{request.decisionId&&<code>{request.decisionId}</code>}</p>
               <span className="badge">{request.state ?? t("unverified")}</span>
               <p className="quiet">
                 {request.kind} · {request.details?.reason}

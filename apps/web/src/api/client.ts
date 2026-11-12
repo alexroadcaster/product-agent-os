@@ -82,6 +82,7 @@ export type RuntimeState = {
   state?: string;
   pendingApprovals?: {
     requestId: string | number;
+    decisionId?:string;
     description?: string;
     kind?: string;
     runId?: string;
@@ -170,6 +171,10 @@ export type ImportPreview = {
   blocked: { sourceId: string; reasons: string[] }[];
 };
 export interface M1Api {
+  decisions(projectId:string,query?:Record<string,string|number>):Promise<import('../../../../packages/contracts/decisions/decision.ts').DecisionsPage>;
+  decision(projectId:string,id:string):Promise<import('../../../../packages/contracts/decisions/decision.ts').DecisionView>;
+  decisionCreate(projectId:string,input:Record<string,unknown>):Promise<import('../../../../packages/contracts/decisions/decision.ts').DecisionView>;
+  decisionRespond(projectId:string,id:string,input:Record<string,unknown>):Promise<import('../../../../packages/contracts/decisions/decision.ts').DecisionResponse>;
   scheduler(projectId:string):Promise<import('../../../../packages/contracts/scheduler/queue.ts').QueueSnapshot>;
   schedulerPreview(projectId:string,input:Record<string,unknown>):Promise<import('../../../../packages/contracts/scheduler/queue.ts').QueuePreview>;
   schedulerAction(projectId:string,action:string,input:Record<string,unknown>):Promise<{entryId?:string;revision:number}>;
@@ -440,6 +445,10 @@ export function createHttpApi(fetcher: typeof fetch = fetch): M1Api {
     };
   }
   return {
+    decisions:(id,query={})=>request(projectPath(id)+'/decisions?'+new URLSearchParams(Object.entries(query).map(([k,v])=>[k,String(v)]))),
+    decision:(id,decision)=>request(projectPath(id)+'/decisions/'+encodeURIComponent(decision)),
+    decisionCreate:(id,input)=>request(projectPath(id)+'/decisions',input),
+    decisionRespond:(id,decision,input)=>request(projectPath(id)+'/decisions/'+encodeURIComponent(decision)+'/respond',input),
     scheduler:id=>request(`${projectPath(id)}/scheduler`),
     schedulerPreview:(id,input)=>request(`${projectPath(id)}/scheduler/preview`,input),
     schedulerAction:(id,action,input)=>request(`${projectPath(id)}/scheduler/${encodeURIComponent(action)}`,input),

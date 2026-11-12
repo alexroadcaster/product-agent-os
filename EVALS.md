@@ -16,7 +16,9 @@ Frozen synthetic profiles: Trade-like strict 20 000 bytes/history, myPartners-li
 
 ## Web M1 — scope v0.7 / очередь v0.8, 2026-11-10
 
-PAOS-0025 correctness baseline: existing no-replay/Stop/ownership + explicit checkpoint continuation, real fixture process crash и actual App jobs через restart. Identity/evidence/policy drift negatives обязательны; retry остаётся bounded и расходует прежний budget. [Evidence](research/product-agent-os-web-m3-0025-execution-2026-11-12.md). Model-quality/token/cost/SLO promotion не заявляется.
+PAOS-0026: same-key retry не повторяет effect; changed payload конфликтует; expiry проверяется после async checks и на SQLite commit; generation/scope/authority drift fenced. Runtime grant ACK отделён от command outcome; unknown intent не replay. [Browser/native/actual evidence](research/product-agent-os-web-m3-0026-execution-2026-11-12.md). Unseen native requests, human acceptance и model-quality/token/cost/SLO promotion не доказаны.
+
+Исторический срез до PAOS-0026 (provenance сохранён): PAOS-0025 correctness baseline: existing no-replay/Stop/ownership + explicit checkpoint continuation, real fixture process crash и actual App jobs через restart. Identity/evidence/policy drift negatives обязательны; retry остаётся bounded и расходует прежний budget. [Evidence](research/product-agent-os-web-m3-0025-execution-2026-11-12.md). Model-quality/token/cost/SLO promotion не заявляется.
 
 Исторический срез до PAOS-0025 (provenance сохранён): PAOS-0024 eval ceiling: deterministic queue/assignment/physical ownership с manual/single-workspace baseline; distinct-root concurrent native commands и exact-run Stop дополнены actual App worker proof. Five-project cap и root/alias negatives обязательны. Это correctness/routing evidence, не model-quality/cost/latency promotion. [Evidence](research/product-agent-os-web-m3-0024-execution-2026-11-12.md).
 

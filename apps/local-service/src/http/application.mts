@@ -18,6 +18,7 @@ import {createCodeIndex} from '../code-index/service.mts';
 import {autonomyService} from '../autonomy-policy/service.mts';
 import {createRecipeService} from '../execution-recipes/service.mts';
 import {createScheduler} from '../scheduler/service.mts';
+import {createDecisions} from '../decisions/service.mts';
 import type {AssetRoot} from '../team/sources.mts';
 import {startTeamGeneration,teamGenerationResult} from '../team/generation.mts';
 import { loadUiPreferences, saveUiPreferences } from '../../../web/src/design/preferences.ts';
@@ -75,6 +76,7 @@ export async function createLocalApplication(options: ApplicationOptions) {
   const scheduler=options.scheduler??createScheduler({store,recipes:executionRecipes,automatic:false});
   await scheduler.initialized();
   const sessionHistory=createSessionHistory(store);
+  const decisions=createDecisions({store,runtime:options.runtime,recipes:executionRecipes,scheduler,route:()=>String((options.connection?.status() as any)?.route??'codex_app_agent')});await decisions.initialized();
   const team=createTeamService(store,options.assetRoots);
   const codeIndex=createCodeIndex(store);
   const artifacts=createArtifactCatalog(store,codeIndex);
@@ -180,12 +182,11 @@ export async function createLocalApplication(options: ApplicationOptions) {
         }
         if (request.method === 'DELETE') return json(await options.connection?.disconnect() ?? { verified: false });
       }
-      if (path === '/runtime/state' && request.method === 'GET') return json(await options.runtime?.snapshot(Object.fromEntries(url.searchParams))
-        ?? { canSend: false, reason: 'connection_unverified', state: 'idle', pendingApprovals: [] });
+      if (path === '/runtime/state' && request.method === 'GET') {const input=Object.fromEntries(url.searchParams),state=await options.runtime?.snapshot(input)??{canSend:false,reason:'connection_unverified',state:'idle',pendingApprovals:[]};return json(input.projectId&&input.sessionId?await decisions.observe(input.projectId,input.sessionId,state):state);}
       const runtimeAction = /^\/runtime\/(bindings|send|interrupt|approve|reconcile)$/.exec(path);
       if (runtimeAction && request.method === 'POST') {
         if (!options.runtime) fail('RUNTIME_UNAVAILABLE');
-        return json(await options.runtime.dispatch(runtimeAction[1], await body(request)));
+        const input=await body(request);if(runtimeAction[1]==='approve'&&typeof input.projectId==='string'&&migration.frozen(input.projectId))fail('MIGRATION_BUSY');return json(runtimeAction[1]==='approve'?await decisions.inline(input,principal.actorId):await options.runtime.dispatch(runtimeAction[1],input));
       }
       if (path === '/projects') {
         if (request.method === 'GET') {
@@ -210,6 +211,9 @@ export async function createLocalApplication(options: ApplicationOptions) {
       if (!route) fail('ROUTE_NOT_FOUND');
       const projectId = decodeURIComponent(route[1]);
       const project = await metadata(projectId);
+      if(route[2]==='decisions'&&request.method==='GET')return json(await decisions.list(projectId,url.searchParams));
+      if(route[2]==='decisions'&&request.method==='POST'){if(migration.frozen(projectId))fail('MIGRATION_BUSY');return json(await decisions.create(projectId,principal.actorId,await body(request)));}
+      const decisionRoute=/^decisions\/([^/]+)(?:\/(respond))?$/.exec(route[2]??'');if(decisionRoute){const id=decodeURIComponent(decisionRoute[1]);if(request.method==='GET'&&!decisionRoute[2])return json(await decisions.get(projectId,id));if(request.method==='POST'&&decisionRoute[2]){if(migration.frozen(projectId))fail('MIGRATION_BUSY');return json(await decisions.respond(projectId,id,principal.actorId,await body(request)));}}
       const graphAction=path.slice(`/projects/${route[1]}/`.length);
       if(graphAction==='graph/status'&&request.method==='GET')return json(await codeIndex.status(projectId));
       if(graphAction==='graph/rebuild'&&request.method==='POST'){await body(request);return json(await codeIndex.rebuild(projectId));}

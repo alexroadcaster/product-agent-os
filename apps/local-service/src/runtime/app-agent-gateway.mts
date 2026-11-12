@@ -198,6 +198,8 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
    try{await assertTaskCommandBoundary(job);if(job.autonomy)await autonomy.assertAllowed(job.projectId,job.id,'command');}
    catch{return {exitCode:130,stdout:'',stderr:'Task dependency or autonomy boundary changed before native dispatch.',fileChanges:[] as FileChange[],cancelled:true};}
    if(closing||activeJobs.get(job.id)?.state!=='running')return {exitCode:130,stdout:'',stderr:'Command cancelled before native dispatch.',fileChanges:[] as FileChange[],cancelled:true};
+   // An accepted intent is not permission to begin an operation after its approval/worker lease expires.
+   if(now()>=operation.expiresAt||!worker||worker.expiresAt<=now()||worker.generation!==operation.generation)return {exitCode:130,stdout:'',stderr:'Approval expired before native dispatch.',fileChanges:[] as FileChange[],cancelled:true};
    const result=await broker.execute({operationId:brokerOperationId(job,operation),argv:operation.argv,timeoutMs:operation.timeoutMs});
    const after=await captureTaskFiles(scope,files,redact);return {...result,fileChanges:compareTaskFiles(before,after),cancelled:false};
   }).then(result=>({result}),()=>({result:null})).then(async({result})=>{
@@ -326,6 +328,8 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
     if(op.state!=='awaiting_approval'||op.expiresAt<=now())fail('approval_stale');
     if(decision==='accept'){await assertTaskCommandBoundary(active);if(active.autonomy)await autonomy.assertAllowed(active.projectId,active.id,'command');}
     const broker=decision==='accept'?await attachBroker(binding):undefined;
+    // Boundary and broker checks await I/O. Recheck lifetime and exact owner immediately before committing a grant.
+    if(now()>=op.expiresAt||!worker||worker.expiresAt<=now()||worker.generation!==op.generation||activeJobs.get(active.id)!==active||closing)fail('approval_stale');
     const next:Operation={...op,decision,state:decision==='accept'?'dispatching':decision==='decline'?'declined':'cancelled'};
     const changed:Job={...active,state:'running',operations:active.operations!.map(item=>item.operationId===op.operationId?next:item)};await save(changed);
     if(broker)startCommand(changed,next,broker);return operationView(changed,next);

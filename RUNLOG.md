@@ -22,7 +22,9 @@ G8-T14/G8 owner accepted. G9 T01–T09 локально реализованы; 
 
 ## Старт Web M1 — 2026-11-10
 
-PAOS-0025 реализована: checkpoint recovery/receipts/history, повторная квалификация exact broker binding после restart, queue running projection, timeout/cancel ACK. Astra/medium research/review завершены; current full/native/browser/actual receipts и gaps находятся в [owning report](research/product-agent-os-web-m3-0025-execution-2026-11-12.md). Следующая0026 отдельным scope. Unknown dispatch сохраняет ownership; human/commercial/release отдельно.
+PAOS-0026 реализована: Decisions/S22, shared S09 response, private durable history, diff/scope/evidence и autonomy observation. Astra/medium research/review завершены;2 замечания исправлены и проверены. [Current receipts и ограничения](research/product-agent-os-web-m3-0026-execution-2026-11-12.md). Следующая PAOS-0028 отдельным scope; unknown native outcomes не replay, human/commercial/release отдельно.
+
+Исторический срез до PAOS-0026 (provenance сохранён): PAOS-0025 реализована: checkpoint recovery/receipts/history, повторная квалификация exact broker binding после restart, queue running projection, timeout/cancel ACK. Astra/medium research/review завершены; current full/native/browser/actual receipts и gaps находятся в [owning report](research/product-agent-os-web-m3-0025-execution-2026-11-12.md). Следующая0026 отдельным scope. Unknown dispatch сохраняет ownership; human/commercial/release отдельно.
 
 Исторический срез до PAOS-0025 (provenance сохранён): PAOS-0024 реализована: queue + immutable assignments, atomic dependencies/hard WIP/ownership, real parallel roots cap4 при project1. Web443; Python1450(skip1); fixtures91/transcripts26; browser88/native49/actual App46 passed. Astra/medium review P2cap/reserved roots и drive-root overlap исправлены. [Evidence и limits](research/product-agent-os-web-m3-0024-execution-2026-11-12.md). Следующая0025 отдельным scope. Human/commercial/release отдельно; старые receipts сохраняют provenance.
 

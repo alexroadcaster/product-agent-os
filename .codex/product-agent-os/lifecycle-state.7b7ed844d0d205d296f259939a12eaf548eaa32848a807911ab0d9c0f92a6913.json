@@ -1,19 +1,19 @@
 {
-  "task_id": "PAOS-0025",
+  "task_id": "PAOS-0026",
   "session_id": "01a1cedc-5a90-7a23-bb27-6f755c6885ce",
   "plan_path": "research/product-agent-os-web-task-manager-plan-2026-11-09.md",
-  "scope": "PAOS-0025 bounded execution, idempotency, timeout/cancel/crash recovery, existing runtime/recipe/queue/UI seams and evidence; preserve other tasks and host policy",
-  "updated_at": "2026-11-12T16:43:02+03:00",
+  "scope": "PAOS-0026 decisions, diff/scope/evidence, expiration, CAS/idempotency and durable history; existing runtime/approval/recovery integration; preserve other tasks and permissions",
+  "updated_at": "2026-11-12T17:41:16+03:00",
   "approval_boundary": "Authorized local implementation and bounded synthetic acceptance; no credentials/provider/Git/publication/global changes",
   "status": "implemented",
   "completion_ready": true,
   "closure_contract": "product-agent-os-completion-ledger-v2",
   "previous_closure": {
-    "task_id": "PAOS-0024",
+    "task_id": "PAOS-0025",
     "closure_level": "implemented_locally_verified",
-    "evidence_path": "research/product-agent-os-web-m3-0024-results-2026-11-12.json"
+    "evidence_path": "research/product-agent-os-web-m3-0025-results-2026-11-12.json"
   },
-  "brief_digest": "sha256:6bd71a5195b51f141a345c4091658f45128da942a2b2a624cedf9a3470085cd7",
+  "brief_digest": "sha256:4a978ce2ee1aefc2224944a796fcc5b1c1f76d58b9db598b24009c13e5ee7be3",
   "brief_schema_version": "task_start_brief_v2",
   "brief_format": "bold_fields",
   "brief_fields_present": [
@@ -35,12 +35,12 @@
     "financially_material": false,
     "release_or_readiness": false,
     "explicit_packet_request": false,
-    "reason": "Execution/recovery changes require runtime and negative-case proof"
+    "reason": "Decision application and approval/evidence routes require current runtime and expiry/replay negative proof"
   },
   "closure_level": "implemented_locally_verified",
-  "evidence_path": "research/product-agent-os-web-m3-0025-results-2026-11-12.json",
-  "evidence_sha256": "5d3f16e5cbb2d9089fd7622546b7d7ebeb25d3c655e89558419dab78f6d0fd13",
+  "evidence_path": "research/product-agent-os-web-m3-0026-results-2026-11-12.json",
+  "evidence_sha256": "760432acd1f85fb9eae22654ef891320f4fa88d27014f0360e9489addea44967",
   "control_plane_sync": "updated; current revisions assessed; gaps[]",
   "tester_verdict": "closed_allowed",
-  "elapsed_wall_seconds": 3083
+  "elapsed_wall_seconds": 3425
 }

@@ -638,3 +638,7 @@ main:focus {
 [data-testid="recipe-runner"] code,[data-testid="recipe-runner"] li {overflow-wrap:anywhere;}
 [data-testid="recipe-runner"] fieldset {min-width:0;}
 [data-testid="queue-manager"] code,[data-testid="queue-manager"] li {overflow-wrap:anywhere;}
+[data-testid="decision-board"] code,[data-testid="decision-board"] li {overflow-wrap:anywhere;}
+[data-testid="decision-board"] fieldset {min-width:0;}
+.decision-list {list-style:none;padding:0;display:grid;gap:8px;}
+.decision-list button {width:100%;text-align:left;white-space:normal;overflow-wrap:anywhere;}

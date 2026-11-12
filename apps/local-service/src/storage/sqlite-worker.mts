@@ -179,6 +179,12 @@ function write(command: StoreWrite, promotion?: PromoteLegacy,teamOperation?:any
     const scope = project(command.projectId);
     if (!scope) fail('PROJECT_NOT_FOUND');
     if (scope.authorityEpoch !== command.expectedAuthorityEpoch) fail('AUTHORITY_CONFLICT');
+    if(command.decisionCommand){const pin=command.decisionCommand,row=get(scope.id,pin.id),d=row?.data;
+      if(!row||row.kind!=='settings'||d?.category!=='paos_decision'||row.revision!==pin.revision||d.state!=='pending')fail('DECISION_STALE');
+      if(d.authorityEpoch!==scope.authorityEpoch||d.rootIdentity!==scope.rootIdentity||pin.rootIdentity!==scope.rootIdentity||d.taskId!==pin.taskId||d.scopeHash!==pin.scopeHash||d.expiresAt!==pin.expiresAt)fail('DECISION_SCOPE_CHANGED');
+      if(!Number.isFinite(pin.expiresAt)||(pin.validationTime??Date.now())>=pin.expiresAt)fail('DECISION_EXPIRED');
+      if(pin.taskId){const task=get(scope.id,pin.taskId);if(!task||task.kind!=='task'||task.deleted||recipeScopeHash(task.data)!==pin.scopeHash)fail('DECISION_SCOPE_CHANGED');}
+    }
     if(teamOperation){
       try{const root=realpathSync(scope.canonicalRoot),identity=lstatSync(root,{bigint:true});if(!identity.isDirectory()||`${identity.dev}:${identity.ino}`!==scope.rootIdentity)fail('PROJECT_ROOT_UNAVAILABLE');}catch{fail('PROJECT_ROOT_UNAVAILABLE');}
       ensureM2BSchema(db);

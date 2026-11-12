@@ -44,6 +44,14 @@ test('actual App pull lease claims a durable job once and reports a final visibl
 
 function brokerFactory(execute:(input:any)=>Promise<any>,interrupt:()=>Promise<void>=async()=>{}){return async(binding:any)=>({metadata:{nativeSandbox:true,scope:'paos_mediated_commands',workspaceRoot:binding.workspaceRoot,mode:binding.mode,threadId:'fixture-thread',generation:'broker-gen'},execute,interrupt,close:async()=>{}});}
 
+test('App approval expiry during awaited boundary checks never commits or dispatches a grant',async t=>{
+ let executed=0;const f=await setup(t,{executorFactory:brokerFactory(async()=>{executed++;return {exitCode:0,stdout:'',stderr:''};})});
+ await f.store.write({projectId:'p',actorId:'user',idempotencyKey:'expiry-task',expectedAuthorityEpoch:1,changes:[{expectedRevision:0,entity:{id:runtimeTaskId,kind:'task',data:fixtureTask()}}]});
+ const b=await f.gateway.runtime.dispatch('bindings',{projectId:'p',sessionId:'s',mode:'execution'}),run=await f.gateway.runtime.dispatch('send',{...f.input,bindingId:b.bindingId,taskId:runtimeTaskId});await f.gateway.agent('claim',f.auth);await f.gateway.agent('command',{...f.auth,runId:run.id,operationId:'expiry',argv:['synthetic']});
+ const all=f.store.projectEntities;let crossed=false;f.store.projectEntities=async project=>{const rows=await all(project);if(!crossed){crossed=true;f.advance(300000);}return rows;};
+ try{await assert.rejects(()=>f.gateway.runtime.dispatch('approve',{projectId:'p',sessionId:'s',bindingId:b.bindingId,runId:run.id,requestId:'expiry',generation:'generation',decision:'accept'}),{code:'approval_stale'});assert.equal(crossed,true);assert.equal(executed,0);}finally{f.store.projectEntities=all;await f.gateway.close();}
+});
+
 test('trusted channel redactor combines with lease redaction before durable broker output, progress and file diffs',async(t)=>{
  const capability='c'.repeat(64);let root='',lease='';
  const f=await setup(t,{redact:(value:string)=>value.replaceAll(capability,'[REDACTED]'),executorFactory:brokerFactory(async()=>{
