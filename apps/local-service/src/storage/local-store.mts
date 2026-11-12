@@ -1,7 +1,7 @@
 import { Worker } from 'node:worker_threads';
 import { isAbsolute } from 'node:path';
 import type { BackupManifest, BlobReceipt, ListOptions, Project, PromoteLegacy, StoredEntity, StoreEventPage, StoreReceipt, StoreWrite } from '../../../../packages/contracts/storage/local-store.ts';
-import type { M1TaskProfile } from '../../../../packages/contracts/tasks/m1-task-profile.ts';
+import type { TaskProfile } from '../../../../packages/contracts/issues/task-profile.ts';
 export { pruneManagedBackups } from './snapshot.mts';
 
 export type { Project, StoredEntity, StoreWrite } from '../../../../packages/contracts/storage/local-store.ts';
@@ -26,7 +26,8 @@ export async function openLocalStore(options: { databasePath: string }) {
     const request = pending.get(id);
     if (progress) { try { request?.onProgress?.(progress); } catch {} return; }
     pending.delete(id);
-    if (error) request?.reject(Object.assign(new Error(error.message), { code: error.code }));
+    if (error) request?.reject(Object.assign(new Error(error.message), { code: error.code,
+      ...(Array.isArray(error.cyclePath)?{cyclePath:error.cyclePath,cyclePathTruncated:error.cyclePathTruncated===true}:{}) }));
     else request?.resolve(value);
   });
   worker.on('error', rejectAll);
@@ -47,7 +48,9 @@ export async function openLocalStore(options: { databasePath: string }) {
     registerProject: (project: Omit<Project, 'authorityEpoch'>) => call<Project>('registerProject', project),
     projects: () => call<Project[]>('projects', {}),
     project: (projectId: string) => call<Project | null>('project', { projectId }),
-    exportTasks: (projectId: string) => call<{ project: Project; tasks: M1TaskProfile[]; generation: string; throughSeq: number }>('exportTasks', { projectId }),
+    compatibility:()=>call<{schemaVersion:1|2;appCompatibility:'paos-m1-v1'|'paos-m2-v1';migrationChecksum:string}>('compatibility',{}),
+    projectEntities: (projectId:string)=>call<StoredEntity[]>('projectEntities',{projectId}),
+    exportTasks: (projectId: string) => call<{ project: Project; tasks: TaskProfile[]; generation: string; throughSeq: number }>('exportTasks', { projectId }),
     write: (command: StoreWrite) => call<StoreReceipt>('write', command),
     receipt: (projectId: string, idempotencyKey: string) => call<StoreReceipt | null>('receipt', { projectId, idempotencyKey }),
     get: (projectId: string, id: string) => call<StoredEntity | null>('get', { projectId, id }),
@@ -68,6 +71,8 @@ export async function openLocalStore(options: { databasePath: string }) {
       finally { options.signal?.removeEventListener('abort', cancel); }
     },
     putBlob: (projectId: string, bytes: Uint8Array) => call<BlobReceipt>('putBlob', { projectId, bytes }),
+    readBlob: (projectId:string,id:string)=>call<Uint8Array>('readBlob',{projectId,id}),
+    discardUnreferencedBlob: (projectId:string,id:string)=>call<{discarded:boolean;reason?:string}>('discardUnreferencedBlob',{projectId,id}),
     backup: (outputRoot: string) => call<{ directory: string; manifest: BackupManifest; rotationCandidates: string[] }>('backup', { outputRoot }),
     promoteLegacy: (command: PromoteLegacy) => call<StoreReceipt>('promoteLegacy', command),
     close(): Promise<void> {

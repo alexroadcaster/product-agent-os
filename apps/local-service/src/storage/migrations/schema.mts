@@ -81,6 +81,28 @@ CREATE TABLE index_jobs (
 export const SCHEMA_VERSION = 1;
 export const MIGRATION_CHECKSUM = createHash('sha256').update(schema).digest('hex');
 
+// Lazy data-format fence: M1 SQL/checksum stays immutable, and old writers reject the second migration row.
+const m2Schema=`CREATE TABLE task_manager_capabilities (key TEXT PRIMARY KEY,value TEXT NOT NULL) STRICT;
+INSERT INTO task_manager_capabilities VALUES ('task_profile','m2_task_profile_v1');`;
+export const M2_MIGRATION_CHECKSUM=createHash('sha256').update(m2Schema).digest('hex');
+export function databaseCompatibility(db:DatabaseSync){
+  const rows=db.prepare('SELECT version,checksum FROM schema_migrations ORDER BY version').all();
+  if(rows[0]?.version!==1||rows[0]?.checksum!==MIGRATION_CHECKSUM||rows.length<1||rows.length>2
+    ||(rows.length===2&&(rows[1]?.version!==2||rows[1]?.checksum!==M2_MIGRATION_CHECKSUM)))throw Object.assign(new Error('Unsupported or modified database migration'),{code:'SCHEMA_INCOMPATIBLE'});
+  if(rows.length===2){
+    if(!db.prepare("SELECT 1 FROM sqlite_schema WHERE type='table' AND name='task_manager_capabilities'").get()
+      ||db.prepare("SELECT value FROM task_manager_capabilities WHERE key='task_profile'").get()?.value!=='m2_task_profile_v1')throw Object.assign(new Error('Missing M2 format marker'),{code:'SCHEMA_INCOMPATIBLE'});
+    return {schemaVersion:2 as const,migrationChecksum:M2_MIGRATION_CHECKSUM,appCompatibility:'paos-m2-v1' as const};
+  }
+  return {schemaVersion:1 as const,migrationChecksum:MIGRATION_CHECKSUM,appCompatibility:'paos-m1-v1' as const};
+}
+/** Called inside the existing business transaction; a rejected first M2 command rolls this fence back. */
+export function ensureM2Schema(db:DatabaseSync){
+  if(databaseCompatibility(db).schemaVersion===2)return;
+  db.exec(m2Schema);
+  db.prepare('INSERT INTO schema_migrations VALUES (?,?,?,?)').run(2,M2_MIGRATION_CHECKSUM,new Date().toISOString(),'paos-m2-v1');
+}
+
 /** Migration checksums are immutable. A drifted or newer database is never opened for writing. */
 export function migrate(db: DatabaseSync, generation: string) {
   db.exec('BEGIN IMMEDIATE');
@@ -97,9 +119,7 @@ export function migrate(db: DatabaseSync, generation: string) {
       db.prepare('INSERT INTO schema_migrations VALUES (?,?,?,?)').run(SCHEMA_VERSION, MIGRATION_CHECKSUM, new Date().toISOString(), 'paos-m1-v1');
       db.prepare('INSERT INTO store_meta VALUES (?,?)').run('stream_generation', generation);
       db.prepare('INSERT INTO store_meta VALUES (?,?)').run('index_generation', '1');
-    } else if (migrations.length !== 1 || migrations[0]?.version !== SCHEMA_VERSION || migrations[0]?.checksum !== MIGRATION_CHECKSUM) {
-      throw Object.assign(new Error('Unsupported or modified database migration'), { code: 'SCHEMA_INCOMPATIBLE' });
-    }
+    } else databaseCompatibility(db);
     db.exec('COMMIT');
   } catch (error) {
     db.exec('ROLLBACK');

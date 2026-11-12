@@ -16,6 +16,8 @@ G8-T14/G8 явно приняты владельцем. G9 T01–T09 реали�
 
 ## Текущий scope Web M1 — 2026-11-10
 
+M2: выбранные PAOS-0031/0032/0033/0005/0006/0007/0008/0034/0038/0035 технически реализованы в App-active scope. Иерархия, полный editor/board, ручная приёмка, вложения и зависимости используют прежний local service. Остальные16 задач M2 не закрыты. PAOS-0046 ранний review сохранён; commercial qualification unresolved, AUTH-G1–G6/C46-01–08 блокируют выпуск до PAOS-0030. API key, новый auth route, hosting/distribution не разрешены. [M2 execution](research/product-agent-os-web-m2-execution-2026-11-11.md); [PAOS-0046 review](research/product-agent-os-web-commercial-review-2026-11-11.md).
+
 Исторический срез 2026-11-11, 09:25 MSK (ограничения этого vault/auth прогона, не текущая authority): один разрешённый native vault roundtrip PAOS-M1-fixture и local synthetic broker auth квалифицированы; fixture удалена. Credential namespace изолирован по canonical profile identity, без legacy/default fallback или миграции существующих записей; старые unresolved default-account runs fail-closed. Реальные ключи/provider/browser и системные политики исключены. Детали в [execution report](research/product-agent-os-web-m1-execution-2026-11-11.md).
 
 Историческое уточнение до выбора App-active маршрута (заменено текущим решением ниже): владелец разрешил непрерывную локальную реализацию по DAG и синтетические native/headless проверки; системные политики, реальные ключи, provider и browser запрещены. Windows MXC write/deny проверен. Local engineering preview не требует commercial AUTH-G1–G6; выпуск остаётся gated PAOS-0046/0030. [Текущий пакет](research/product-agent-os-web-m1-execution-2026-11-11.md) не заменяет SW/UX end-to-end acceptance; M1 пока не закрыта.

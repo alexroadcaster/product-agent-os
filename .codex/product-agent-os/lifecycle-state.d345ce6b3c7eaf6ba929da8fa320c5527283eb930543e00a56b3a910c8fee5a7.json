@@ -1,0 +1,22 @@
+{
+  "session_id": "01a1cb91-c2df-7d13-97fe-64e981d02d42",
+  "task_id": "PAOS-M2-selected-task-manager",
+  "plan_path": "research/product-agent-os-web-task-manager-plan-2026-11-09.md",
+  "scope": "PAOS-0031,0032,0033,0005,0006,0007,0008,0034,0038,0035 local implementation, verification, source-owned cards and control-plane sync",
+  "updated_at": "2026-11-11T22:45:51+03:00",
+  "approval_boundary": "Authorized local implementation and bounded synthetic acceptance; no provider, real credentials, system policy, install, Git or publication",
+  "status": "ready_for_completion_ledger",
+  "completion_ready": true,
+  "closure_level": "implemented_locally_verified_app_active",
+  "verification_evidence": "research/product-agent-os-web-m2-results-2026-11-11.json",
+  "brief_digest": "sha256:7c00cb5b85492e1b33028c661d0dab2ca47a66f0ba79ee0ae74b38d86ac63742",
+  "brief_schema_version": "task_start_brief_v2",
+  "brief_format": "bold_fields",
+  "brief_fields_present": ["Request", "Goal", "Context", "Scope", "Value", "Execution", "Acceptance", "Risks / approvals", "Next step"],
+  "task_start_brief_shown": true,
+  "lifecycle_scope": {
+    "work_type": "implementation", "size": "large", "risk": "high",
+    "financially_material": false, "release_or_readiness": false, "explicit_packet_request": false,
+    "reason": "Ten authorized Task Manager tasks with persistent schema, API, frontend and acceptance changes"
+  }
+}

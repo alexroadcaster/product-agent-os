@@ -30,6 +30,7 @@ import { createLatestRequest } from "../api/latest-request.ts";
 import { visibleAssistantDrafts } from "../api/visible-drafts.ts";
 import { ConnectionControls } from "./ConnectionControls.tsx";
 import { TaskRelations } from "./TaskRelations.tsx";
+import {TaskManager} from '../features/tasks/TaskManager.tsx';
 import {
   SessionContext,
   RuntimeSummary,
@@ -96,6 +97,7 @@ export function App() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [projectId, setProjectId] = useState("");
   const [section, setSection] = useState<Section>("overview");
+  const [linkedSession,setLinkedSession]=useState<{projectId:string;sessionId:string}|null>(null);
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
@@ -307,7 +309,7 @@ export function App() {
           ) : !projectId ? (
             <Empty text={t("empty")} />
           ) : section === "tasks" ? (
-            <Tasks key={projectId} projectId={projectId} t={t} />
+            <TaskManager key={projectId} api={api} projectId={projectId} locale={preferences.locale} onOpenSession={sessionId=>{setLinkedSession({projectId,sessionId});setSection('sessions');}} />
           ) : section === "sessions" ? (
             <Sessions
               key={projectId}
@@ -315,6 +317,7 @@ export function App() {
               connection={connection}
               t={t}
               locale={preferences.locale}
+              initialSessionId={linkedSession?.projectId===projectId?linkedSession.sessionId:undefined}
             />
           ) : section === "search" ? (
             <Search key={projectId} projectId={projectId} t={t} />
@@ -1252,16 +1255,24 @@ function Sessions({
   connection,
   t,
   locale,
+  initialSessionId,
 }: {
   projectId: string;
   connection: Connection | null;
   t: Text;
   locale: UiPreferences["locale"];
+  initialSessionId?:string;
 }) {
   const sessions = useEntities(projectId, "session");
-  const [selected, setSelected] = useState(""),
+  const [selected, setSelected] = useState(initialSessionId??""),
     [notice, setNotice] = useState("");
-  const current = sessions.items.find((item) => item.id === selected);
+  const [linked,setLinked]=useState<StoredEntity>();
+  // A task's pinned session may be outside the first history page; resolve its ID directly.
+  useEffect(()=>{let ignore=false;if(initialSessionId)void api.entity(projectId,initialSessionId).then(entity=>{
+    if(entity.kind!=='session'||entity.projectId!==projectId)throw new Error('SESSION_SCOPE_MISMATCH');
+    if(!ignore)setLinked(entity);
+  }).catch(error=>{if(!ignore)setNotice(String(error));});return()=>{ignore=true;};},[projectId,initialSessionId]);
+  const current = sessions.items.find((item) => item.id === selected)??(linked?.id===selected?linked:undefined);
   return (
     <div className="session-layout">
       <aside className="session-list">

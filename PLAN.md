@@ -16,7 +16,9 @@ G8 closed / owner accepted. G9 T01–T09 implemented_locally_verified; T10 owner
 
 ## Активная продуктовая очередь Web — 2026-11-10
 
-Актуализация 2026-11-11: PAOS-M1 — 18/18 technical implemented; PAOS-0042/0043/0044/0045 закрыты для App-active/PAOS-mediated commands после actual105/task39/data25/native/headless33/Web306 и separate-reused-context closed_allowed. WSA10050 missing endpoint локализован без системных изменений; существующий Desktop daemon не квалифицирован. App/consumer обязательны, API key/fallback нет. Следующая очередь — PAOS-0046 до M2; AUTH-G1–G6, human acceptance и release отдельно. Полные56 задач/12групп/estimates/другие52карточки сохранены. [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md).
+Текущий PAOS-M2: авторизованная очередь PAOS-0031 → 0032 → 0033 → 0005 → 0006 → 0007 → 0008 → 0034 → 0038 → 0035 технически выполнена. Следующая плановая PAOS-0036 вне этой команды, остальные16 M2 planned. Все56 карточек/12групп/estimates сохранены; источник статусов — owning MD/JSON. [M2 execution](research/product-agent-os-web-m2-execution-2026-11-11.md). Ранний PAOS-0046 [review](research/product-agent-os-web-commercial-review-2026-11-11.md) не даёт commercial admission: AUTH-G1–G6, PAOS-0030, human/release отдельно. App consumer обязателен, API key/payer fallback запрещены.
+
+Результат M1 до PAOS-0046: Актуализация 2026-11-11: PAOS-M1 — 18/18 technical implemented; PAOS-0042/0043/0044/0045 закрыты для App-active/PAOS-mediated commands после actual105/task39/data25/native/headless33/Web306 и separate-reused-context closed_allowed. WSA10050 missing endpoint локализован без системных изменений; существующий Desktop daemon не квалифицирован. App/consumer обязательны, API key/fallback нет. Следующая очередь — PAOS-0046 до M2; AUTH-G1–G6, human acceptance и release отдельно. Полные56 задач/12групп/estimates/другие52карточки сохранены. [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md).
 
 Датированный baseline 10 ноября:
 

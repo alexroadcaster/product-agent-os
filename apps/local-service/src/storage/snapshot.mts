@@ -3,7 +3,7 @@ import { constants } from 'node:fs';
 import { copyFile, lstat, mkdir, mkdtemp, open, readFile, readdir, rm } from 'node:fs/promises';
 import { dirname, isAbsolute, join, resolve } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
-import { MIGRATION_CHECKSUM, SCHEMA_VERSION } from './migrations/schema.mts';
+import { MIGRATION_CHECKSUM, M2_MIGRATION_CHECKSUM,databaseCompatibility } from './migrations/schema.mts';
 import type { BackupManifest, BlobReceipt } from '../../../../packages/contracts/storage/local-store.ts';
 
 function fail(code: string): never { throw Object.assign(new Error(code), { code }); }
@@ -30,7 +30,7 @@ async function managedBackups(outputRoot: string) {
     const directory = join(outputRoot, entry.name);
     try {
       const manifest = await readManifest(directory);
-      if (manifest.schemaVersion !== 1 || manifest.appCompatibility !== 'paos-m1-v1' || manifest.manifestSha256 !== manifestDigest(manifest)) continue;
+      if (!validManifestCompatibility(manifest) || manifest.manifestSha256 !== manifestDigest(manifest)) continue;
       try { await lstat(join(directory, 'pinned')); continue; } catch {}
       managed.push({ directory, createdAt: manifest.createdAt });
     } catch {}
@@ -51,14 +51,18 @@ export async function pruneManagedBackups(outputRoot: string, candidates: readon
   }
 }
 function checkDatabase(db: DatabaseSync) {
-  const migration = db.prepare('SELECT version,checksum FROM schema_migrations').all();
-  if (migration.length !== 1 || migration[0]?.version !== SCHEMA_VERSION || migration[0]?.checksum !== MIGRATION_CHECKSUM) fail('SCHEMA_INCOMPATIBLE');
+  const compatibility=databaseCompatibility(db);
   if (db.prepare('PRAGMA integrity_check').get()?.integrity_check !== 'ok') fail('INTEGRITY_FAILED');
   if (db.prepare('PRAGMA foreign_key_check').all().length !== 0) fail('FOREIGN_KEY_FAILED');
+  return compatibility;
+}
+function validManifestCompatibility(manifest:BackupManifest){
+  return manifest.schemaVersion===1&&manifest.appCompatibility==='paos-m1-v1'&&manifest.migrationChecksum===MIGRATION_CHECKSUM
+    ||manifest.schemaVersion===2&&manifest.appCompatibility==='paos-m2-v1'&&manifest.migrationChecksum===M2_MIGRATION_CHECKSUM;
 }
 export function blobDirectory(databasePath: string) { return `${databasePath}.blobs`; }
 export async function writeBlob(databasePath: string, projectId: string, bytes: Uint8Array): Promise<BlobReceipt> {
-  if (!(bytes instanceof Uint8Array) || bytes.length > 16 * 1024 * 1024) fail('INVALID_BLOB');
+  if (!(bytes instanceof Uint8Array) || bytes.length > 50 * 1024 * 1024) fail('INVALID_BLOB');
   const directory = blobDirectory(databasePath);
   await mkdir(directory, { recursive: true });
   const id = randomUUID();
@@ -75,6 +79,7 @@ async function checkedBlob(directory: string, blob: BlobReceipt) {
   if (bytes.length !== blob.byteSize || digest(bytes) !== blob.sha256) fail('BLOB_HASH_MISMATCH');
   return bytes;
 }
+export async function readManagedBlob(databasePath:string,blob:BlobReceipt){return checkedBlob(blobDirectory(databasePath),blob);}
 
 /** The Worker serializes this operation. VACUUM INTO includes committed WAL pages. */
 export async function createSnapshot(db: DatabaseSync, databasePath: string, outputRoot: string,
@@ -86,7 +91,7 @@ export async function createSnapshot(db: DatabaseSync, databasePath: string, out
     const path = join(directory, 'database.sqlite');
     db.prepare('VACUUM INTO ?').run(path);
     using snapshot = new DatabaseSync(path, { readOnly: true, enableForeignKeyConstraints: true });
-    checkDatabase(snapshot);
+    const compatibility=checkDatabase(snapshot);
     const blobs = snapshot.prepare(`SELECT DISTINCT b.* FROM blobs b JOIN entity_blobs l ON l.project_id=b.project_id AND l.blob_id=b.id
       JOIN entities e ON e.project_id=l.project_id AND e.id=l.entity_id WHERE e.deleted=0 ORDER BY b.id`).all()
       .map(row => ({ id: row.id as string, projectId: row.project_id as string, sha256: row.sha256 as string, byteSize: row.byte_size as number }));
@@ -95,7 +100,7 @@ export async function createSnapshot(db: DatabaseSync, databasePath: string, out
       const bytes = await checkedBlob(blobDirectory(databasePath), blob);
       await persist(join(directory, 'blobs', blob.id), bytes);
     }
-    const body = { schemaVersion: 1 as const, migrationChecksum: MIGRATION_CHECKSUM, appCompatibility: 'paos-m1-v1' as const,
+    const body = { ...compatibility,
       backupId: randomUUID(), createdAt: new Date().toISOString(), databaseSha256: digest(await readFile(path)), blobs,
       exclusions: ['credentials', 'repository_files', 'runtime_threads', 'runtime_auth_store'] };
     const manifest = { ...body, manifestSha256: manifestDigest(body) };
@@ -114,14 +119,15 @@ export async function createSnapshot(db: DatabaseSync, databasePath: string, out
 export async function restoreLocalBackup(directory: string, newDatabasePath: string) {
   if (!isAbsolute(directory) || !isAbsolute(newDatabasePath) || newDatabasePath.startsWith('\\\\')) fail('INVALID_RESTORE_PATH');
   const manifest = await readManifest(directory);
-  if (manifest.schemaVersion !== SCHEMA_VERSION || manifest.migrationChecksum !== MIGRATION_CHECKSUM || manifest.appCompatibility !== 'paos-m1-v1') fail('SCHEMA_INCOMPATIBLE');
+  if (!validManifestCompatibility(manifest)) fail('SCHEMA_INCOMPATIBLE');
   if (manifest.manifestSha256 !== manifestDigest(manifest)) fail('MANIFEST_HASH_MISMATCH');
   const source = join(directory, 'database.sqlite');
   const sourceInfo = await lstat(source);
   if (!sourceInfo.isFile() || sourceInfo.isSymbolicLink()) fail('INVALID_BACKUP_DATABASE');
   if (digest(await readFile(source)) !== manifest.databaseSha256) fail('DATABASE_HASH_MISMATCH');
   using snapshot = new DatabaseSync(source, { readOnly: true, enableForeignKeyConstraints: true });
-  checkDatabase(snapshot);
+  const compatibility=checkDatabase(snapshot);
+  if(compatibility.schemaVersion!==manifest.schemaVersion||compatibility.migrationChecksum!==manifest.migrationChecksum||compatibility.appCompatibility!==manifest.appCompatibility)fail('SCHEMA_INCOMPATIBLE');
   const required = snapshot.prepare(`SELECT DISTINCT b.id,b.project_id,b.sha256,b.byte_size FROM blobs b
     JOIN entity_blobs l ON l.project_id=b.project_id AND l.blob_id=b.id JOIN entities e ON e.project_id=l.project_id AND e.id=l.entity_id
     WHERE e.deleted=0 ORDER BY b.id`).all();

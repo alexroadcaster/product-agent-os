@@ -1,0 +1,1212 @@
+{
+  "schema_version": "paos_m2_selected_execution_v1",
+  "status": "implemented_locally_verified_app_active",
+  "verification_complete": true,
+  "final_docs_gates": {
+    "status": "passed_post_sync",
+    "suite": {
+      "command": "python -B -m unittest tests.product_agent_os.test_product_agent_os_docs tests.product_agent_os.test_task_plan_lifecycle tests.product_agent_os.test_lifecycle_hooks tests.product_agent_os.test_infrastructure_templates -q",
+      "tests": 251,
+      "duration_seconds": 16.299,
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2/final-docs-suite.log"
+    },
+    "docs_checker_exit_code": 0,
+    "matrix_validator_exit_code": 0,
+    "both_hook_validators_exit_code": 0,
+    "diff_check_exit_code": 0,
+    "strict_mkdocs": "not_applicable; no navigation/diagram/config/site evidence changes",
+    "sync_digest": "sha256:07438702ec67d393a9b87e16f9adc7cc6191b647e22d572b6627557e6f42ece3",
+    "final_evidence_docs": {
+      "command": "python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -q",
+      "tests": 105,
+      "duration_seconds": 8.909,
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2/final-evidence-docs.log"
+    }
+  },
+  "recorded_at": "2026-11-11T19:37:54.467684+00:00",
+  "task_ids": [
+    "PAOS-0031",
+    "PAOS-0032",
+    "PAOS-0033",
+    "PAOS-0005",
+    "PAOS-0006",
+    "PAOS-0007",
+    "PAOS-0008",
+    "PAOS-0034",
+    "PAOS-0038",
+    "PAOS-0035"
+  ],
+  "scope": {
+    "selected_tasks": 10,
+    "total_m2_tasks": 26,
+    "remaining_m2_tasks": 16,
+    "whole_m2_closed": false,
+    "human_product_acceptance": false,
+    "commercial_release_authorized": false,
+    "provider_calls": false,
+    "credentials_used": false,
+    "git_history_changed": false
+  },
+  "web": {
+    "tests": 345,
+    "pass": 345,
+    "fail": 0,
+    "skipped": 0,
+    "duration_ms": 6136.5744,
+    "command": "node --test tests/web/*.test.mts",
+    "exit_code": 0,
+    "receipt": ".tmp/paos-m2/final-web.log"
+  },
+  "browser": {
+    "scenario": "full",
+    "startedAt": "2026-11-11T19:35:55.356Z",
+    "finishedAt": "2026-11-11T19:36:07.136Z",
+    "status": "passed_m2_task_manager_browser",
+    "checks": [
+      {
+        "name": "page_identity",
+        "passed": true
+      },
+      {
+        "name": "project_registered",
+        "passed": true
+      },
+      {
+        "name": "new_manager_is_default",
+        "passed": true
+      },
+      {
+        "name": "no_framework_overlay",
+        "passed": true
+      },
+      {
+        "name": "eleven_initial_components",
+        "passed": true
+      },
+      {
+        "name": "version_v1.2",
+        "passed": true
+      },
+      {
+        "name": "version_v1.3",
+        "passed": true
+      },
+      {
+        "name": "version_description_saved",
+        "passed": true
+      },
+      {
+        "name": "created_M2 Epic",
+        "passed": true
+      },
+      {
+        "name": "created_M2 Bug",
+        "passed": true
+      },
+      {
+        "name": "created_M2 Subtask",
+        "passed": true
+      },
+      {
+        "name": "created_M2 Incomplete",
+        "passed": true
+      },
+      {
+        "name": "unique_monotonic_keys",
+        "passed": true
+      },
+      {
+        "name": "m2_identity_server_owned",
+        "passed": true
+      },
+      {
+        "name": "incomplete_ready_explained",
+        "passed": true
+      },
+      {
+        "name": "draft_stays_backlog",
+        "passed": true
+      },
+      {
+        "name": "parent_guard_visible",
+        "passed": true
+      },
+      {
+        "name": "parent_not_false_done",
+        "passed": true
+      },
+      {
+        "name": "versions_and_components_saved",
+        "passed": true
+      },
+      {
+        "name": "draft_survives_tabs",
+        "passed": true
+      },
+      {
+        "name": "draft_survives_navigation",
+        "passed": true
+      },
+      {
+        "name": "concurrent_writer_committed",
+        "passed": true
+      },
+      {
+        "name": "revision_conflict_visible",
+        "passed": true
+      },
+      {
+        "name": "conflict_preserves_local_input",
+        "passed": true
+      },
+      {
+        "name": "conflict_preserves_server_winner",
+        "passed": true
+      },
+      {
+        "name": "structural_preview_required",
+        "passed": true
+      },
+      {
+        "name": "reviewed_reparent_applied",
+        "passed": true
+      },
+      {
+        "name": "exact_source_revision_read",
+        "passed": true
+      },
+      {
+        "name": "hierarchy_restored_after_preview",
+        "passed": true
+      },
+      {
+        "name": "view_saved",
+        "passed": true
+      },
+      {
+        "name": "saved_filter_restored",
+        "passed": true
+      },
+      {
+        "name": "distinct_release_filter",
+        "passed": true
+      },
+      {
+        "name": "affects_does_not_equal_fix",
+        "passed": true
+      },
+      {
+        "name": "manual_subtask_done",
+        "passed": true
+      },
+      {
+        "name": "manual_end_observed_without_invented_duration",
+        "passed": true
+      },
+      {
+        "name": "manual_standard_done",
+        "passed": true
+      },
+      {
+        "name": "parent_done_after_required_scope",
+        "passed": true
+      },
+      {
+        "name": "reopen_resolution_cleared",
+        "passed": true
+      },
+      {
+        "name": "created_M2 Prerequisite",
+        "passed": true
+      },
+      {
+        "name": "created_M2 Dependent",
+        "passed": true
+      },
+      {
+        "name": "created_M2 Activity",
+        "passed": true
+      },
+      {
+        "name": "canonical_link_saved",
+        "passed": true
+      },
+      {
+        "name": "inverse_link_visible",
+        "passed": true
+      },
+      {
+        "name": "cycle_rejected",
+        "passed": true
+      },
+      {
+        "name": "dependent_ready",
+        "passed": true
+      },
+      {
+        "name": "dependency_blocks_start",
+        "passed": true
+      },
+      {
+        "name": "cancel_reason_resolution_saved",
+        "passed": true
+      },
+      {
+        "name": "cancelled_blocker_still_blocks",
+        "passed": true
+      },
+      {
+        "name": "cancelled_reopened",
+        "passed": true
+      },
+      {
+        "name": "prerequisite_completed",
+        "passed": true
+      },
+      {
+        "name": "dependent_started_after_proof",
+        "passed": true
+      },
+      {
+        "name": "dependent_completed",
+        "passed": true
+      },
+      {
+        "name": "first_actual_start_preserved",
+        "passed": true
+      },
+      {
+        "name": "comment_persisted",
+        "passed": true
+      },
+      {
+        "name": "markdown_strong_rendered",
+        "passed": true
+      },
+      {
+        "name": "markdown_raw_html_inert",
+        "passed": true
+      },
+      {
+        "name": "markdown_safe_link",
+        "passed": true
+      },
+      {
+        "name": "comment_revision_visible",
+        "passed": true
+      },
+      {
+        "name": "comment_tombstone",
+        "passed": true
+      },
+      {
+        "name": "deleted_body_absent_public_history",
+        "passed": true
+      },
+      {
+        "name": "separate_history_visible",
+        "passed": true
+      },
+      {
+        "name": "same_name_upload_0",
+        "passed": true
+      },
+      {
+        "name": "same_name_upload_1",
+        "passed": true
+      },
+      {
+        "name": "duplicate_filenames_do_not_overwrite",
+        "passed": true
+      },
+      {
+        "name": "lost_ack_server_accepted",
+        "passed": true
+      },
+      {
+        "name": "lost_ack_committed_once",
+        "passed": true
+      },
+      {
+        "name": "lost_ack_retry_acknowledged",
+        "passed": true
+      },
+      {
+        "name": "lost_ack_retry_did_not_duplicate",
+        "passed": true
+      },
+      {
+        "name": "attachment_download_exact",
+        "passed": true
+      },
+      {
+        "name": "mime_mismatch_explained",
+        "passed": true
+      },
+      {
+        "name": "attachment_tombstone",
+        "passed": true
+      },
+      {
+        "name": "legacy_readable",
+        "passed": true
+      },
+      {
+        "name": "legacy_upgrade_committed",
+        "passed": true
+      },
+      {
+        "name": "legacy_unknown_author_not_forged",
+        "passed": true
+      },
+      {
+        "name": "archive_all_projects_disclosed",
+        "passed": true
+      },
+      {
+        "name": "archive_id_visible",
+        "passed": true
+      },
+      {
+        "name": "inactive_restore_explained",
+        "passed": true
+      },
+      {
+        "name": "seven_default_columns",
+        "passed": true
+      },
+      {
+        "name": "drag_opens_same_transition_contract",
+        "passed": true
+      },
+      {
+        "name": "drag_guarded_transition_saved",
+        "passed": true
+      },
+      {
+        "name": "closed_column_requires_outcome_choice",
+        "passed": true
+      },
+      {
+        "name": "desktop_no_document_overflow",
+        "passed": true,
+        "detail": {
+          "width": 1440,
+          "scroll": 1440
+        }
+      },
+      {
+        "name": "english_task_manager",
+        "passed": true
+      },
+      {
+        "name": "mobile_no_document_overflow",
+        "passed": true,
+        "detail": {
+          "width": 390,
+          "scroll": 390
+        }
+      },
+      {
+        "name": "expected_http_errors_only",
+        "passed": true
+      },
+      {
+        "name": "no_page_errors",
+        "passed": true
+      },
+      {
+        "name": "no_unexpected_external_or_provider_requests",
+        "passed": true
+      },
+      {
+        "name": "no_framework_console_errors",
+        "passed": true
+      }
+    ],
+    "sourceHashes": {
+      "tests/web/single-window/m2-task-manager-browser-acceptance.mts": "1aba2478e714c6304c685c4cee271ba582aadcbfc7af623569f72c8ba5718ad2",
+      "packages/contracts/issues/task-profile.ts": "8a8bc1fc759e9e36b6660545c1022a6121721136a4e48672e14bd0e764ff6ba9",
+      "packages/contracts/issues/manager.ts": "14f2b135a0319c34d312312a38e7d35cc81e015dd89dc5e346eef88b2f9512f0",
+      "apps/local-service/src/task-manager/service.mts": "ad9d6e19f11b563ac3ac212cb644181a2e97a32e5c048a43afc5bd7b9e146939",
+      "apps/local-service/src/storage/sqlite-worker.mts": "546c4d0c2f1476cdd6943532111499afccecfbde8cc1e514c0471ad4944a4902",
+      "apps/local-service/src/http/application.mts": "8fb336027e1c29c65c609deee848912d50b616129cb23d21710a7c5c84d8cbb3",
+      "apps/web/src/ui/App.tsx": "d666dc4371405f0fbbceb676a5180575d36b5dd66f637762f6cef31840ea869a",
+      "apps/web/src/api/client.ts": "85a1a3be29380d7b8bbfe0a4571608b7b0705d4e6ff48065217e871471e665b4",
+      "apps/web/src/features/tasks/TaskManager.tsx": "c72c237d08d1a35facffd26635a66fb48f160c40353c51c53acf3dc72ea3a847",
+      "apps/web/src/features/tasks/Editor.tsx": "2e6365c7696298cf7b569c9eabdd4c3c194d36342050daed9857da967e01f272",
+      "apps/web/src/features/tasks/Panels.tsx": "3759d555a4306f143967e1f3b89447c47ac0d46d4cfa8c304a8e0525fd173c6a",
+      "apps/web/src/features/tasks/Settings.tsx": "6352373d4e6b5c155e6afd4b64f0b71952806040996913b87cc18227e7d8fa3f",
+      "apps/web/dist/index.html": "ded2ce60620f72f914da64380f30ce444c26b63bab69bca7cf3cac64f85ac9ee",
+      "apps/web/dist/assets/index-C6CatpJF.css": "5a571444186a517f69855a10d4e07d9b4f0c19111a649dcde2d63605393532e9",
+      "apps/web/dist/assets/index-DgQ0iIeg.js": "3207f8498ab8de197aa98c356a5fcb6ffacc09c4482ec485ad4afc5c2d060bf8"
+    },
+    "actualAppAgent": false,
+    "providerCalls": false,
+    "apiKey": false,
+    "osCredentials": false,
+    "pageErrors": [],
+    "blockedRequests": [],
+    "browserClosed": true,
+    "serviceClosed": true,
+    "fixtureCleaned": true,
+    "receipt": ".tmp/paos-m2/browser-evidence-LzkG0t/m2-browser-result.json",
+    "screenshots": [
+      ".tmp/paos-m2/browser-evidence-LzkG0t/revision-conflict.png",
+      ".tmp/paos-m2/browser-evidence-LzkG0t/desktop-board.png",
+      ".tmp/paos-m2/browser-evidence-LzkG0t/english-dark.png",
+      ".tmp/paos-m2/browser-evidence-LzkG0t/mobile-dark.png"
+    ]
+  },
+  "actual_app": {
+    "startedAt": "2026-11-11T19:35:56.543Z",
+    "finishedAt": "2026-11-11T19:36:43.072Z",
+    "status": "passed_actual_m2_app_native",
+    "checks": [
+      {
+        "name": "page_identity",
+        "passed": true
+      },
+      {
+        "name": "project_saved",
+        "passed": true
+      },
+      {
+        "name": "session_saved",
+        "passed": true
+      },
+      {
+        "name": "m2_task_saved",
+        "passed": true
+      },
+      {
+        "name": "m2_ready",
+        "passed": true
+      },
+      {
+        "name": "keyless_route_default",
+        "passed": true
+      },
+      {
+        "name": "no_api_key_input",
+        "passed": true
+      },
+      {
+        "name": "app_channel_opened",
+        "passed": true
+      },
+      {
+        "name": "actual_app_worker_attached",
+        "passed": true
+      },
+      {
+        "name": "execution_binding",
+        "passed": true
+      },
+      {
+        "name": "m2_can_send",
+        "passed": true
+      },
+      {
+        "name": "send_enabled",
+        "passed": true
+      },
+      {
+        "name": "m2_dispatch_ack",
+        "passed": true
+      },
+      {
+        "name": "real_m2_profile_not_legacy_fallback",
+        "passed": true
+      },
+      {
+        "name": "domain_approval_scope",
+        "passed": true
+      },
+      {
+        "name": "bounded_native_command",
+        "passed": true
+      },
+      {
+        "name": "actual_app_completed",
+        "passed": true
+      },
+      {
+        "name": "native_approval_observed",
+        "passed": true
+      },
+      {
+        "name": "native_file_exactly_once",
+        "passed": true
+      },
+      {
+        "name": "native_observed_check",
+        "passed": true
+      },
+      {
+        "name": "actual_file_operation_recorded",
+        "passed": true
+      },
+      {
+        "name": "turn_did_not_auto_close_task",
+        "passed": true
+      },
+      {
+        "name": "actual_model_answer_correlated",
+        "passed": true
+      },
+      {
+        "name": "answer_rendered",
+        "passed": true
+      },
+      {
+        "name": "explicit_manual_task_acceptance",
+        "passed": true
+      },
+      {
+        "name": "no_browser_errors",
+        "passed": true
+      },
+      {
+        "name": "no_external_browser_requests",
+        "passed": true
+      }
+    ],
+    "sourceHashes": {
+      "apps/local-service/src/runtime/app-agent-gateway.mts": "1d1b33b1c0d049769c02ee5a20625a539b44e00e955999fd1c458fc0edc6c570",
+      "apps/local-service/src/runtime/storage-ports.mts": "5d5af78004e5bac7ace0089d1236a699d1e5a9a128f605610851b707ab42733b",
+      "apps/local-service/src/runtime/sandbox-broker.mts": "70c5694dfdf5afdb7661dc67620dac4874bf3119ff2f620955e361ca7fdf8e39",
+      "apps/local-service/src/storage/sqlite-worker.mts": "546c4d0c2f1476cdd6943532111499afccecfbde8cc1e514c0471ad4944a4902",
+      "apps/local-service/src/storage/migrations/schema.mts": "613951ff63b26b3bdf49f680a440f4364031d57ac069d7408ff09c8b83d8096d",
+      "packages/contracts/issues/task-profile.ts": "8a8bc1fc759e9e36b6660545c1022a6121721136a4e48672e14bd0e764ff6ba9",
+      "apps/web/src/api/session-target.ts": "56d35cb3341bd1f686eb85ee461ae4ab18404a3fa5b9d65e6b36d6504c40526e",
+      "tests/web/single-window/m2-app-acceptance.mts": "5b5ff880c41fa6102ee1427ad90b2bb976c033fb62afc78661143b4af9db88cb",
+      "apps/web/dist/index.html": "ded2ce60620f72f914da64380f30ce444c26b63bab69bca7cf3cac64f85ac9ee",
+      "apps/web/dist/assets/index-C6CatpJF.css": "5a571444186a517f69855a10d4e07d9b4f0c19111a649dcde2d63605393532e9",
+      "apps/web/dist/assets/index-DgQ0iIeg.js": "3207f8498ab8de197aa98c356a5fcb6ffacc09c4482ec485ad4afc5c2d060bf8"
+    },
+    "limits": [
+      "App and active consumer required",
+      "Host identity attested, not cryptographic",
+      "Only PAOS-mediated native commands qualified; no claim about every App host tool",
+      "No commercial/account entitlement promotion"
+    ],
+    "actualAppAgent": true,
+    "actualNativeBroker": true,
+    "apiKey": false,
+    "externalProviderClient": false,
+    "realCredentials": false,
+    "hostIdentity": "attested_not_cryptographic",
+    "sandboxScope": "paos_mediated_commands",
+    "pageErrors": [],
+    "externalRequests": [],
+    "browserClosed": true,
+    "serviceClosed": true,
+    "fixtureCleaned": true,
+    "receipt": ".tmp/paos-m2/actual-app-evidence-w8nuna/m2-app-result.json",
+    "screenshots": [
+      ".tmp/paos-m2/actual-app-evidence-w8nuna/actual-m2-app-result.png"
+    ]
+  },
+  "native": {
+    "candidate": {
+      "receipt": ".tmp/paos-m2/native-broker-candidate-final.log",
+      "claim": "candidate_native_command_broker",
+      "candidateInspection": true,
+      "binarySha256": "edfdd48f8b458af0906e507b4cb05217b326c3d6e515e9f024e05e3b8d650f70",
+      "adapterRevision": "311f5daed342d4e63d9ea20c6ba307c318e21a747b578b7b43be269f7b87a2db",
+      "manifestAdapterRevision": "24d4a4cc20ed9e974f8301886202998b52712195184ac05b4a4e354d153cfeda",
+      "providerRequests": 0,
+      "modelTurns": 0,
+      "credentialOperations": 0,
+      "cases": [
+        {
+          "mode": "discussion",
+          "writeResults": {
+            "inside": "EPERM",
+            "outside": "EPERM",
+            "temp": "EPERM"
+          },
+          "exitCode": 0,
+          "nativeSandbox": true,
+          "scope": "paos_mediated_commands",
+          "configuration": {
+            "beforeSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+            "afterSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+            "beforeTrustTables": 0,
+            "afterTrustTables": 0
+          },
+          "authFileCreated": false,
+          "homeCleaned": true
+        },
+        {
+          "mode": "planning",
+          "writeResults": {
+            "inside": "EPERM",
+            "outside": "EPERM",
+            "temp": "EPERM"
+          },
+          "exitCode": 0,
+          "nativeSandbox": true,
+          "scope": "paos_mediated_commands",
+          "configuration": {
+            "beforeSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+            "afterSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+            "beforeTrustTables": 0,
+            "afterTrustTables": 0
+          },
+          "authFileCreated": false,
+          "homeCleaned": true
+        },
+        {
+          "mode": "execution",
+          "writeResults": {
+            "inside": "written",
+            "outside": "EPERM",
+            "temp": "EPERM"
+          },
+          "exitCode": 0,
+          "nativeSandbox": true,
+          "scope": "paos_mediated_commands",
+          "configuration": {
+            "beforeSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+            "afterSha256": "1b6c9e26cefa4d62dfaff5551cbdc650009a0776aba054fd384682303849227d",
+            "beforeTrustTables": 0,
+            "afterTrustTables": 1
+          },
+          "stopElapsedMs": 6,
+          "stopExitCode": 1,
+          "authFileCreated": false,
+          "homeCleaned": true
+        }
+      ],
+      "status": "passed",
+      "fixtureCleaned": true
+    },
+    "qualified": {
+      "receipt": ".tmp/paos-m2/native-broker-qualified-final.log",
+      "claim": "qualified_native_command_broker",
+      "candidateInspection": false,
+      "binarySha256": "edfdd48f8b458af0906e507b4cb05217b326c3d6e515e9f024e05e3b8d650f70",
+      "adapterRevision": "311f5daed342d4e63d9ea20c6ba307c318e21a747b578b7b43be269f7b87a2db",
+      "manifestAdapterRevision": "311f5daed342d4e63d9ea20c6ba307c318e21a747b578b7b43be269f7b87a2db",
+      "providerRequests": 0,
+      "modelTurns": 0,
+      "credentialOperations": 0,
+      "cases": [
+        {
+          "mode": "discussion",
+          "writeResults": {
+            "inside": "EPERM",
+            "outside": "EPERM",
+            "temp": "EPERM"
+          },
+          "exitCode": 0,
+          "nativeSandbox": true,
+          "scope": "paos_mediated_commands",
+          "configuration": {
+            "beforeSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+            "afterSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+            "beforeTrustTables": 0,
+            "afterTrustTables": 0
+          },
+          "authFileCreated": false,
+          "homeCleaned": true
+        },
+        {
+          "mode": "planning",
+          "writeResults": {
+            "inside": "EPERM",
+            "outside": "EPERM",
+            "temp": "EPERM"
+          },
+          "exitCode": 0,
+          "nativeSandbox": true,
+          "scope": "paos_mediated_commands",
+          "configuration": {
+            "beforeSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+            "afterSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+            "beforeTrustTables": 0,
+            "afterTrustTables": 0
+          },
+          "authFileCreated": false,
+          "homeCleaned": true
+        },
+        {
+          "mode": "execution",
+          "writeResults": {
+            "inside": "written",
+            "outside": "EPERM",
+            "temp": "EPERM"
+          },
+          "exitCode": 0,
+          "nativeSandbox": true,
+          "scope": "paos_mediated_commands",
+          "configuration": {
+            "beforeSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+            "afterSha256": "1b6c9e26cefa4d62dfaff5551cbdc650009a0776aba054fd384682303849227d",
+            "beforeTrustTables": 0,
+            "afterTrustTables": 1
+          },
+          "stopElapsedMs": 6,
+          "stopExitCode": 1,
+          "authFileCreated": false,
+          "homeCleaned": true
+        }
+      ],
+      "status": "passed",
+      "fixtureCleaned": true
+    }
+  },
+  "manifest": {
+    "schemaVersion": "paos_runtime_manifest_v1",
+    "qualification": "native_offline",
+    "platform": "win32",
+    "arch": "x64",
+    "windowsRelease": "10.0.26200",
+    "codex": {
+      "version": "0.167.0",
+      "sha256": "edfdd48f8b458af0906e507b4cb05217b326c3d6e515e9f024e05e3b8d650f70"
+    },
+    "node": {
+      "version": "v26.5.0",
+      "sha256": "119d6fa70e6ae1b15b90688ab6bcc8e3a2819acea021af196895cab1843645af"
+    },
+    "sqliteVersion": "3.53.3",
+    "adapterRevision": "311f5daed342d4e63d9ea20c6ba307c318e21a747b578b7b43be269f7b87a2db",
+    "packageLockSha256": "d279009aa1dca2bd2d6ba0e18a77d085a67e872d0dce78dd360fb23d43975f38",
+    "schema": {
+      "sha256": "486c7c8daa5dc7f3ab2a1fb56de5316804caf7a4210fda1dc28d3f0f4e90cfe1",
+      "v2Sha256": "b1e5d17224b9d9732b5976012438ba78e2cf7e418b67f8f8a5f5cffe301b875d"
+    },
+    "capabilities": {
+      "projectHistory": true,
+      "scopedExecution": true,
+      "ephemeralAuth": true,
+      "fts5": true,
+      "backupRestore": true
+    },
+    "evidence": {
+      "nativeSmoke": "7f6cc3e29d74bd1a6252736ee7bd757d1bbd5a0883b66e008c96f9d1cdcaad86",
+      "history": "3846634cfd7b84f372a02e56a1302c9ed831c39a92cdc7a73c73e0eebdbc2516",
+      "boundary": "612e77d09da65e6329d39b1621eb79f4a50b5dbbac21409c13424d9a468661d7",
+      "ephemeralAuth": "519a06b0af264cfe882994f91c51bcbd5909360f7d7684ff6f72a8b9244bf0ba",
+      "headless": "3dd38c2e813a43a9eca0798784db510fda184e9cee9c6089ad2faf8f32e6abc0",
+      "workload": "f4dc674a8b7086ecdf3a6d1c17231a4f7c0f70d3691500c33c695aa4e38f594c",
+      "nativeVault": "45b9825236513e2976a9589ec904f19840649f059a556881825704e20f83807d",
+      "nativeLocalAuth": "da0555e1c5cf5c8f40e0592029fe93adcad67015575ff3015b226f9043a8d679",
+      "profileIsolation": "9a9b4ed389a03bc4d8ec976ec1dec86aba32b46f0ac169a5b061e86f21dfa78a",
+      "fiveTaskOfflineRepair": "42fcc15354add50ff4d9f6b46bb64d75f0313da96367776ec875dac2aad2d4b0",
+      "activeRuntimeFixture": "afcadfec65b8879f450a4f3e7f3ddb436823f4d13996d906e11c41c6ab5d2c7a",
+      "actualAppAgentRoundtrip": "7161bb26f8e59d76539ea43df4c752110bf78856f2a5e16fa6ee26a49a8146fb",
+      "nativeCommandBroker": "33b815268274304ed05364c8d573185229b1b608e0b2e8f19b0d53e669f5bc6a",
+      "actualAppBrokerRoundtrip": "01e2c7b5a90a1e4fbd3cc6e2785ff8fb0059beea072586546cda60e4b7d970b1",
+      "taskLifecycleBrowser": "e7009ce7b2ee6d91b0f88486cb72eb96cde244a74633604c49a33fc1d4a732d7",
+      "dataJourneysBrowser": "2359a110c7306aaa28c305466fc7bf6c0bb2ffb17c58c4d10a0400df10654a70",
+      "m2NativeCandidate": "51b65dec06d4b8da283011ec3de9e1d54dd01f563ea339bbba6625575daa914a"
+    }
+  },
+  "review": {
+    "agent": "/root/m2_independent_review",
+    "initial_context_mode": "separate_fresh_context",
+    "repair_context_mode": "separate_reused_context",
+    "passes": 2,
+    "tester_verdict": "closed_allowed",
+    "findings": [
+      {
+        "id": "M2-R1",
+        "severity": "P1",
+        "finding": "M2 profile downgrade via generic command",
+        "disposition": "confirmed_fixed"
+      },
+      {
+        "id": "M2-R2",
+        "severity": "P2",
+        "finding": "M2 Due Date reason bypass",
+        "disposition": "confirmed_fixed"
+      },
+      {
+        "id": "M2-R3",
+        "severity": "P2",
+        "finding": "Missing soft WIP override audit",
+        "disposition": "confirmed_fixed"
+      }
+    ],
+    "reviewer_runtime_tests": "not_run; source and root/builder receipts reviewed"
+  },
+  "plugin_checks": {
+    "full_unittest": {
+      "tests": 1450,
+      "skipped": 1,
+      "duration_seconds": 537.679,
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2/full-unittest.log",
+      "provenance": "current run before final docs; unchanged Python implementation"
+    },
+    "fixtures": {
+      "count": 91,
+      "all_expected_checks": true,
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2/fixture-eval.log"
+    },
+    "transcripts": {
+      "passed": 26,
+      "total": 26,
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2/transcript-eval.log"
+    },
+    "compatibility": {
+      "status": "compatible",
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2/codex-compatibility.log"
+    }
+  },
+  "additional_checks": {
+    "typecheck": {
+      "command": "npm run check:web-m1",
+      "exit_code": 0
+    },
+    "build": {
+      "command": "npm run build:web",
+      "exit_code": 0,
+      "modules": 44
+    },
+    "manifest_loader": {
+      "unconfigured_denied": true,
+      "exact_tuple_qualified": true,
+      "binary_drift_denied": true,
+      "process_launches": 0,
+      "receipt": ".tmp/paos-m2/manifest-loader.log"
+    },
+    "downgrade_compatibility": {
+      "v1_sql_checksum_unchanged": true,
+      "saved_old_source_accepts_v1": true,
+      "saved_old_source_refuses_schema2": true,
+      "new_source_reopens_schema2": true,
+      "receipt": ".tmp/paos-m2/downgrade-check.mts"
+    },
+    "settings_cas": {
+      "scenario": "settings-cas",
+      "startedAt": "2026-11-11T19:16:49.188Z",
+      "finishedAt": "2026-11-11T19:16:50.755Z",
+      "status": "passed_settings_cas",
+      "checks": [
+        {
+          "name": "page_identity",
+          "passed": true
+        },
+        {
+          "name": "project_registered",
+          "passed": true
+        },
+        {
+          "name": "new_manager_is_default",
+          "passed": true
+        },
+        {
+          "name": "no_framework_overlay",
+          "passed": true
+        },
+        {
+          "name": "other_catalog_writer_committed",
+          "passed": true
+        },
+        {
+          "name": "catalog_refresh_settled",
+          "passed": true
+        },
+        {
+          "name": "catalog_dirty_draft_retained",
+          "passed": true
+        },
+        {
+          "name": "catalog_stale_save_rejected",
+          "passed": true,
+          "detail": {
+            "status": 409,
+            "serverName": "Server winner"
+          }
+        },
+        {
+          "name": "catalog_server_winner_preserved",
+          "passed": true
+        },
+        {
+          "name": "catalog_explicit_discard_adopts_server",
+          "passed": true
+        },
+        {
+          "name": "other_board_writer_committed",
+          "passed": true
+        },
+        {
+          "name": "board_refresh_settled",
+          "passed": true
+        },
+        {
+          "name": "board_dirty_draft_retained",
+          "passed": true
+        },
+        {
+          "name": "board_stale_save_rejected",
+          "passed": true
+        },
+        {
+          "name": "board_server_winner_preserved",
+          "passed": true
+        },
+        {
+          "name": "board_explicit_discard_adopts_server",
+          "passed": true
+        },
+        {
+          "name": "no_page_errors",
+          "passed": true
+        }
+      ],
+      "sourceHashes": {
+        "tests/web/single-window/m2-task-manager-browser-acceptance.mts": "af00ce0e97741b09f7540eb47ef515b21d7e050184c517d2715af1faac44fe87",
+        "apps/web/src/features/tasks/Settings.tsx": "24d7a69b03f6e3571709f6fd517ccdcbc1517d8ab69c7b93897dcad1ad880dfc",
+        "apps/web/src/features/tasks/Panels.tsx": "26b412ea1353940ba6dfed32f5fca22c5aa6a564e2336a141dc235fe4e22bdca",
+        "apps/web/src/features/tasks/TaskManager.tsx": "c72c237d08d1a35facffd26635a66fb48f160c40353c51c53acf3dc72ea3a847",
+        "apps/web/dist/index.html": "8eb4fae5af50eae8fa9dc8da0284e59876a6f6a80853efa3d18aa58cabb2f226",
+        "apps/web/dist/assets/index-C6CatpJF.css": "5a571444186a517f69855a10d4e07d9b4f0c19111a649dcde2d63605393532e9",
+        "apps/web/dist/assets/index-Dg-GOPls.js": "fa9dec0627203acf32729993d1d7c3043a0857760198ddbb69a19ba4d149814b"
+      },
+      "actualAppAgent": false,
+      "providerCalls": false,
+      "apiKey": false,
+      "osCredentials": false,
+      "pageErrors": [],
+      "blockedRequests": [],
+      "browserClosed": true,
+      "serviceClosed": true,
+      "fixtureCleaned": true,
+      "receipt": ".tmp/paos-m2/browser-evidence-1gr8BZ/m2-browser-result.json",
+      "screenshots": [
+        ".tmp/paos-m2/browser-evidence-1gr8BZ/settings-cas.png"
+      ]
+    },
+    "markdown": {
+      "scenario": "markdown",
+      "startedAt": "2026-11-11T19:16:48.042Z",
+      "finishedAt": "2026-11-11T19:16:50.236Z",
+      "status": "passed_markdown_browser",
+      "checks": [
+        {
+          "name": "page_identity",
+          "passed": true
+        },
+        {
+          "name": "project_registered",
+          "passed": true
+        },
+        {
+          "name": "new_manager_is_default",
+          "passed": true
+        },
+        {
+          "name": "no_framework_overlay",
+          "passed": true
+        },
+        {
+          "name": "created_Markdown acceptance",
+          "passed": true
+        },
+        {
+          "name": "markdown_comment_saved",
+          "passed": true
+        },
+        {
+          "name": "markdown_strong_rendered",
+          "passed": true
+        },
+        {
+          "name": "markdown_html_and_images_inert",
+          "passed": true
+        },
+        {
+          "name": "markdown_safe_link",
+          "passed": true
+        },
+        {
+          "name": "no_external_markdown_requests",
+          "passed": true
+        },
+        {
+          "name": "no_page_errors",
+          "passed": true
+        }
+      ],
+      "sourceHashes": {
+        "tests/web/single-window/m2-task-manager-browser-acceptance.mts": "af00ce0e97741b09f7540eb47ef515b21d7e050184c517d2715af1faac44fe87",
+        "apps/web/src/features/tasks/Settings.tsx": "24d7a69b03f6e3571709f6fd517ccdcbc1517d8ab69c7b93897dcad1ad880dfc",
+        "apps/web/src/features/tasks/Panels.tsx": "26b412ea1353940ba6dfed32f5fca22c5aa6a564e2336a141dc235fe4e22bdca",
+        "apps/web/src/features/tasks/TaskManager.tsx": "c72c237d08d1a35facffd26635a66fb48f160c40353c51c53acf3dc72ea3a847",
+        "apps/web/dist/index.html": "8eb4fae5af50eae8fa9dc8da0284e59876a6f6a80853efa3d18aa58cabb2f226",
+        "apps/web/dist/assets/index-C6CatpJF.css": "5a571444186a517f69855a10d4e07d9b4f0c19111a649dcde2d63605393532e9",
+        "apps/web/dist/assets/index-Dg-GOPls.js": "fa9dec0627203acf32729993d1d7c3043a0857760198ddbb69a19ba4d149814b"
+      },
+      "actualAppAgent": false,
+      "providerCalls": false,
+      "apiKey": false,
+      "osCredentials": false,
+      "pageErrors": [],
+      "blockedRequests": [],
+      "browserClosed": true,
+      "serviceClosed": true,
+      "fixtureCleaned": true,
+      "receipt": ".tmp/paos-m2/browser-evidence-UCrvzs/m2-browser-result.json",
+      "screenshots": [
+        ".tmp/paos-m2/browser-evidence-UCrvzs/markdown-safe.png"
+      ]
+    }
+  },
+  "source_hashes": {
+    "apps/local-service/src/main.mts": "03f84437ffd5b0c941a438d3a25809770aa2344ff117c713ff5ad0fb6ec3d776",
+    "apps/local-service/src/commands/domain-tools.mts": "5625afe2c520e0f305de234269724c45be929d5c7e62927fdaa9e70013417365",
+    "apps/local-service/src/http/application.mts": "8fb336027e1c29c65c609deee848912d50b616129cb23d21710a7c5c84d8cbb3",
+    "apps/local-service/src/import-export/preview.mts": "8e10854a3ae2a2c600ed8c8ee2f7c1db26be114bdc92f79b32c832026c4dbc46",
+    "apps/local-service/src/runtime/app-agent-gateway.mts": "1d1b33b1c0d049769c02ee5a20625a539b44e00e955999fd1c458fc0edc6c570",
+    "apps/local-service/src/runtime/live-gateway.mts": "6f6fc80558c8fb96e01991b0f5b9e02f886547d41f5c5bf439f6a8ad0e2a0073",
+    "apps/local-service/src/runtime/storage-ports.mts": "5d5af78004e5bac7ace0089d1236a699d1e5a9a128f605610851b707ab42733b",
+    "apps/local-service/src/storage/local-store.mts": "c71839c76a279b24f29ac3a8e6ca85420e8f25959d2212bddfab37c60f56124a",
+    "apps/local-service/src/storage/snapshot.mts": "82ea923e465e13e8c1df59276d3496453c4873e39e60ca5dd5fd90484b3de8ba",
+    "apps/local-service/src/storage/sqlite-worker.mts": "546c4d0c2f1476cdd6943532111499afccecfbde8cc1e514c0471ad4944a4902",
+    "apps/local-service/src/task-manager/service.mts": "ad9d6e19f11b563ac3ac212cb644181a2e97a32e5c048a43afc5bd7b9e146939",
+    "apps/local-service/src/tasks/user-commands.mts": "c7c06c17b3c2e0550addcd327b7dcaa0e12543a35e5fbd95ba503b5cedea307f",
+    "apps/local-service/src/storage/migrations/schema.mts": "613951ff63b26b3bdf49f680a440f4364031d57ac069d7408ff09c8b83d8096d",
+    "apps/web/src/api/client.ts": "85a1a3be29380d7b8bbfe0a4571608b7b0705d4e6ff48065217e871471e665b4",
+    "apps/web/src/api/session-target.ts": "56d35cb3341bd1f686eb85ee461ae4ab18404a3fa5b9d65e6b36d6504c40526e",
+    "apps/web/src/design/app.css": "5128feb7bf59f72c62cb2367c76113a88f46a2aaa7c9638ca5328ace6b3b19dc",
+    "apps/web/src/ui/App.tsx": "d666dc4371405f0fbbceb676a5180575d36b5dd66f637762f6cef31840ea869a",
+    "apps/web/src/features/tasks/comment-markdown.ts": "34bc95bd6d86aaf3ab26885f1c5e6c42310a2e0ed172e06d00ec024aac3fe872",
+    "apps/web/src/features/tasks/CommentMarkdown.tsx": "b38b245fab1d8328eb71af9908dd9670fb537c5fe7eb94708328ae0f51b43337",
+    "apps/web/src/features/tasks/Editor.tsx": "2e6365c7696298cf7b569c9eabdd4c3c194d36342050daed9857da967e01f272",
+    "apps/web/src/features/tasks/labels.ts": "708b554c014e590533d7a254f08e0360446b492e9e8ff2667f30bb4e201a476e",
+    "apps/web/src/features/tasks/model.ts": "949c80cf4622ec7c0d24e03065b097e343bab42b98da99c94fa958f55761993a",
+    "apps/web/src/features/tasks/Panels.tsx": "3759d555a4306f143967e1f3b89447c47ac0d46d4cfa8c304a8e0525fd173c6a",
+    "apps/web/src/features/tasks/Settings.tsx": "6352373d4e6b5c155e6afd4b64f0b71952806040996913b87cc18227e7d8fa3f",
+    "apps/web/src/features/tasks/TaskManager.tsx": "c72c237d08d1a35facffd26635a66fb48f160c40353c51c53acf3dc72ea3a847",
+    "packages/contracts/issues/manager.ts": "14f2b135a0319c34d312312a38e7d35cc81e015dd89dc5e346eef88b2f9512f0",
+    "packages/contracts/issues/task-profile.ts": "8a8bc1fc759e9e36b6660545c1022a6121721136a4e48672e14bd0e764ff6ba9",
+    "packages/contracts/runtime/qualified-manifest.json": "7228cda9403206d5cdfbc9ba73dc7ab6b2a89ec5585d3c70261c1ece3d5aa987",
+    "packages/contracts/storage/local-store.ts": "2f3a61f2d8857b6880648f5f02b8d6858e14a28dbe329b9431c80cd78819e71b",
+    "tests/web/m2-comment-markdown.test.mts": "d0d6e8623a30e06fbce925fba0fcf9c7315e8dd59fb32fad8bf89510873fe48e",
+    "tests/web/m2-fixture.mts": "a15a517ed089c8b5c5e8dc48b2416e89effa3f0c9076ef50a9d546eb673a2a52",
+    "tests/web/m2-manager.test.mts": "783f24bfd8aa239bfaa6debad277deb5fc577be29f0bbbbb78c119ab7ed3a435",
+    "tests/web/m2-profile.test.mts": "d6d4d447f17472139b57b8b06de5275a061db232d7d8e3215dfe3e90a28cd251",
+    "tests/web/m2-repair.test.mts": "2e5eb5539ea4941f9298efe76bd46f7a8fbf9ec3851d71a3fa5a90abce2338bf",
+    "tests/web/runtime-adapter-reconciliation.test.mts": "afe6d31da1eb1aded971cf7d03ada28d4d4aceae8b931d7c0e66fc0bad82224c",
+    "tests/web/ui-api.test.mts": "ec38d2a5f855a9ca51148ead7b87053a17a15b34aa69a2124aa501df82fef78c",
+    "tests/web/ui-m2-manager.test.mts": "107d8045606edd7bdb84335ee3321891d8a6f4f353d1284f00a223094eeea77b",
+    "tests/web/single-window/m2-app-acceptance.mts": "5b5ff880c41fa6102ee1427ad90b2bb976c033fb62afc78661143b4af9db88cb",
+    "tests/web/single-window/m2-task-manager-browser-acceptance.mts": "1aba2478e714c6304c685c4cee271ba582aadcbfc7af623569f72c8ba5718ad2"
+  },
+  "failure_receipts": [
+    {
+      "receipt": ".tmp/paos-m2/browser-evidence-aLiB2z/m2-browser-result.json",
+      "scenario": "settings-cas",
+      "failed_step": "settings_cas",
+      "error": "catalog_stale_save_rejected",
+      "fixture_cleaned": true
+    },
+    {
+      "receipt": ".tmp/paos-m2/browser-evidence-ApQFOC/m2-browser-result.json",
+      "scenario": "full",
+      "failed_step": "locale_theme",
+      "error": "english_task_manager",
+      "fixture_cleaned": true
+    },
+    {
+      "receipt": ".tmp/paos-m2/browser-evidence-fm4YV9/m2-browser-result.json",
+      "scenario": "full",
+      "failed_step": "legacy",
+      "error": "locator.click: Timeout 12000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTestId('task-detail').getByRole('tab', { name: 'Сводка', exact: true })\u001b[22m\n",
+      "fixture_cleaned": true
+    },
+    {
+      "receipt": ".tmp/paos-m2/browser-evidence-gVUu75/m2-browser-result.json",
+      "scenario": "full",
+      "failed_step": "hierarchy",
+      "error": "incomplete_ready_explained",
+      "fixture_cleaned": true
+    },
+    {
+      "receipt": ".tmp/paos-m2/browser-evidence-RuiZ30/m2-browser-result.json",
+      "scenario": "full",
+      "failed_step": "saved_filters",
+      "error": "locator.waitFor: Timeout 12000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTestId('task-manager') to be visible\u001b[22m\n",
+      "fixture_cleaned": true
+    },
+    {
+      "receipt": ".tmp/paos-m2/browser-evidence-ttWr2U/m2-browser-result.json",
+      "scenario": "markdown",
+      "failed_step": "markdown",
+      "error": "markdown_strong_rendered",
+      "fixture_cleaned": true
+    },
+    {
+      "receipt": ".tmp/paos-m2/browser-evidence-UhX9XY/m2-browser-result.json",
+      "scenario": "full",
+      "failed_step": "attachments",
+      "error": "locator.click: Error: strict mode violation: getByTestId('task-attachments').locator('form').getByRole('button', { name: 'Добавить файл', exact: true }) resolved to 2 elements:\n    1) <input type=\"file\" name=\"attachment-file\"/> aka getByLabel('Добавить файл')\n    2) <button>Добавить файл</button> aka locator('button').filter({ hasText: 'Добавить файл' })\n\nCall log:\n\u001b[2m  - waiting for getByTestId('task-attachments').locator('form').getByRole('button', { name: 'Добавить файл', exact: true })\u001b[22m\n",
+      "fixture_cleaned": true
+    },
+    {
+      "receipt": ".tmp/paos-m2/browser-evidence-XoKrKV/m2-browser-result.json",
+      "scenario": "full",
+      "failed_step": "catalogs",
+      "error": "locator.fill: Timeout 12000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTestId('manager-settings').locator('form.m2-catalog-row').filter({ has: getByTestId('manager-settings').locator('[name=version-name]') }).last().locator('[name=version-description]')\u001b[22m\n",
+      "fixture_cleaned": true
+    },
+    {
+      "receipt": ".tmp/paos-m2/actual-app-evidence-fWERCF/m2-app-result.json",
+      "scenario": "actual_app",
+      "failed_step": "setup",
+      "error": "execution_binding",
+      "fixture_cleaned": true
+    },
+    {
+      "receipt": ".tmp/paos-m2/actual-app-evidence-ZGgf8g/m2-app-result.json",
+      "scenario": "actual_app",
+      "failed_step": "setup",
+      "error": "execution_binding",
+      "fixture_cleaned": true
+    }
+  ],
+  "review_red_index": ".tmp/paos-m2/review-repair-red.json",
+  "limits": [
+    "Active Codex App consumer required; no automatic wakeup or desktop daemon qualification",
+    "Host identity attested; no actual ChatGPT principal/quota/entitlement claim",
+    "Native scope only PAOS-mediated commands",
+    "Markdown subset documented; HTML/images inert, no full CommonMark/GFM claim",
+    "Lazy M2 migration2 fences older startup; no claim that arbitrary already-open SQL writer is retroactively fenced",
+    "Full local archive includes all projects, restore to inactive profile; no active switch",
+    "No broad performance/WCAG/production/commercial acceptance claim"
+  ],
+  "integrity": {
+    "tasks": 56,
+    "groups": 12,
+    "selected_implemented": 10,
+    "remaining_m2_planned": 16,
+    "unselected_cards_byte_preserved": 46,
+    "unselected_objects_preserved": 46,
+    "all_estimates_and_execution_plan_preserved": true,
+    "md_json_status_parity": true,
+    "source_hashes_current": true,
+    "browser_actual_hashes_current": true,
+    "root_utf8_bytes": {
+      "REQUIREMENTS.md": 39262,
+      "PLAN.md": 28347,
+      "TEST.md": 31654,
+      "RUNLOG.md": 25026
+    }
+  },
+  "observed_cohort_elapsed_seconds": 7371.811,
+  "observed_cohort_start": "2026-11-11T17:41:57.926359Z",
+  "observed_cohort_checked_at": "2026-11-11T19:44:49.737439+00:00",
+  "per_task_active_duration": "not_available; shared cohort not separately timed"
+}

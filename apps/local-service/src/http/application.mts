@@ -6,6 +6,7 @@ import type { EntityInput, EntityKind, StoreWrite } from '../../../../packages/c
 import { bindProject, inspectProjectSources, readProjectSource } from '../adapters/project-sources.ts';
 import { createSessionGate } from './session-gate.mts';
 import { applyUserCommand, recordManualCheck, acceptTask } from '../tasks/user-commands.mts';
+import { taskManagerSnapshot, taskManagerCommand, uploadTaskAttachment, downloadTaskAttachment, resolveTaskReference, requestPendingLinkStop } from '../task-manager/service.mts';
 import { previewTaskImport, type ImportSourceInput } from '../import-export/preview.mts';
 import { createMigrationManager, type WriterInventory } from '../import-export/migration.mts';
 import { scanReadOnlyCatalogs } from './catalogs.mts';
@@ -187,6 +188,32 @@ export async function createLocalApplication(options: ApplicationOptions) {
       const projectId = decodeURIComponent(route[1]);
       const project = await metadata(projectId);
       const action = route[2] ?? '';
+      if(action==='task-manager'&&request.method==='GET')return json(await taskManagerSnapshot(store,projectId));
+      if(action==='task-manager/commands'&&request.method==='POST'){
+        if(migration.frozen(projectId))fail('MIGRATION_BUSY');
+        const input=await body(request,16*1024*1024),result=await taskManagerCommand(store,projectId,principal.actorId,input);
+        const linkId='linkId' in result&&typeof result.linkId==='string'?result.linkId:undefined;
+        if(linkId&&(await taskManagerSnapshot(store,projectId)).links.some(link=>link.id===linkId&&link.state==='pending')){
+          try{return json({...result,pendingStop:await requestPendingLinkStop(store,options.runtime,projectId,linkId)});}
+          catch(error){return json({...result,pendingStop:{linkId,state:'pending',stopRequired:true,terminalReceipt:false,
+            reason:typeof (error as any)?.code==='string'?(error as any).code:'RUNTIME_UNAVAILABLE'}});}
+        }
+        return json(result);
+      }
+      const pendingStop=/^task-manager\/links\/([^/]+)\/stop$/.exec(action);
+      if(pendingStop&&request.method==='POST'){
+        await body(request);
+        return json(await requestPendingLinkStop(store,options.runtime,projectId,decodeURIComponent(pendingStop[1])));
+      }
+      if(action==='task-manager/reference'&&request.method==='POST')return json(await resolveTaskReference(store,projectId,await body(request)));
+      const attachmentRoute=/^tasks\/([^/]+)\/attachments(?:\/([^/]+))?$/.exec(action);
+      if(attachmentRoute){
+        if(request.method==='POST'&&!attachmentRoute[2]){
+          if(migration.frozen(projectId))fail('MIGRATION_BUSY');
+          return json(await uploadTaskAttachment(store,projectId,decodeURIComponent(attachmentRoute[1]),principal.actorId,await body(request,70*1024*1024)));
+        }
+        if(request.method==='GET'&&attachmentRoute[2])return downloadTaskAttachment(store,projectId,decodeURIComponent(attachmentRoute[1]),decodeURIComponent(attachmentRoute[2]));
+      }
       if (!action && request.method === 'GET') return json({ id: project.id, name: project.displayName, keyPrefix: project.keyPrefix,
         authorityMode: project.authorityMode, authorityEpoch: project.authorityEpoch, streamGeneration: (await store.events(projectId)).generation });
       if (action === 'sources' && request.method === 'GET') {
@@ -274,12 +301,13 @@ export async function createLocalApplication(options: ApplicationOptions) {
           sources: preview.sources?.map(({ sourceSnapshot: _content, ...pin }) => pin), items: preview.items, blocked: preview.blocked });
       }
       if (action === 'imports/source-status' && request.method === 'GET') return json(await migration.sourceStatus(projectId));
-      if (action === 'backups' && request.method === 'POST') {
+      if ((action === 'backups'||action==='task-manager/export') && request.method === 'POST') {
         const outputRoot = join(profileDirectory, 'backups');
         await mkdir(outputRoot, { recursive: true });
         const backup = await store.backup(outputRoot);
         const rotationCandidateIds = backup.rotationCandidates.map((path) => basename(path));
-        return json({ backupId: basename(backup.directory), manifest: backup.manifest, rotationCandidateIds,
+        return json({ format:'paos_full_local_profile_v1',scope:'all_local_projects_tasks_catalogs_links_comments_attachments',
+          restoreEndpoint:'task-manager/import-backup',backupId: basename(backup.directory), manifest: backup.manifest, rotationCandidateIds,
           retention: rotationCandidateIds.length ? 'pending' : 'complete' });
       }
       if (action === 'backups/rotation' && request.method === 'POST') {
@@ -299,7 +327,7 @@ export async function createLocalApplication(options: ApplicationOptions) {
         return json({ receipt: result.receipt, sourceDigest: result.sourceDigest, backupId: result.backupId, mappingCount: result.mappingCount });
       }
       if (action === 'imports/export' && request.method === 'GET') return json(await migration.reverseTransfer(projectId));
-      if (action === 'restores' && request.method === 'POST') {
+      if ((action === 'restores'||action==='task-manager/import-backup') && request.method === 'POST') {
         const input = await body(request);
         const backupId = string(input.backupId);
         if (!/^[a-zA-Z0-9_-]{1,100}$/.test(backupId)) fail('BACKUP_INVALID');
@@ -320,7 +348,9 @@ export async function createLocalApplication(options: ApplicationOptions) {
         : ['ORIGIN_REJECTED', 'CSRF_INVALID'].includes(category) ? 403 : category === 'JSON_REQUIRED' ? 415
         : /NOT_FOUND/.test(category) ? 404 : category === 'REQUEST_TOO_LARGE' ? 413
         : /CONFLICT|REQUIRED|UNAVAILABLE|AUTHORITY|FORBIDDEN|BLOCKED|UNVERIFIED|UNQUALIFIED|DRIFT|BUSY|STALE|PRIVATE/.test(category) ? 409 : 400;
-      return json({ error: { code } }, status);
+      const cyclePath=(error as any)?.cyclePath;
+      return json({ error: { code,...(Array.isArray(cyclePath)&&cyclePath.length<=100&&cyclePath.every(id=>typeof id==='string'&&/^[0-9a-f-]{36}$/.test(id))
+        ?{details:{cyclePath,cyclePathTruncated:(error as any).cyclePathTruncated===true}}:{}) } }, status);
     }
   }
   return { handleRequest, issuePairingCode: gate.issuePairingCode, revokeSessions: gate.revokeAll };

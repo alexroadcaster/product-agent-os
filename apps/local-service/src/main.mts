@@ -17,6 +17,7 @@ import type {AppAgentBinding} from './runtime/app-agent-gateway.mts';
 import {createWindowsCredentialStore} from './connections/windows-credential-store.ts';
 import {bindProfile,assertProfileIdentity,createProfileScopedStore} from './connections/profile-identity.mts';
 import {createDomainTools} from './commands/domain-tools.mts';
+import {requestPendingLinkStop} from './task-manager/service.mts';
 import {inspectConfiguredRuntime} from '../../../packages/contracts/runtime/manifest.mts';
 import {inspectLegacyWriterInventory} from './commands/writer-inventory.mts';
 
@@ -30,7 +31,9 @@ export async function toFetchRequest(incoming:IncomingMessage,origin:string,sign
  if(!target.startsWith('/')||target.startsWith('//')||target.includes('\\')||/[\r\n\0]/.test(target))throw failure('TARGET_REJECTED');
  const url=new URL(target,origin);if(url.origin!==origin)throw failure('TARGET_REJECTED');
  const method=incoming.method??'GET';
- const bodyLimit=method==='POST'&&/^\/api\/v1\/projects\/[^/]+\/imports\/preview$/.test(url.pathname)?3*1024*1024:1024*1024;
+ const bodyLimit=method==='POST'&&/^\/api\/v1\/projects\/[^/]+\/tasks\/[^/]+\/attachments$/.test(url.pathname)?70*1024*1024
+  :method==='POST'&&/^\/api\/v1\/projects\/[^/]+\/task-manager\/commands$/.test(url.pathname)?16*1024*1024
+  :method==='POST'&&/^\/api\/v1\/projects\/[^/]+\/imports\/preview$/.test(url.pathname)?3*1024*1024:1024*1024;
  const length=incoming.headers['content-length'];
  if(length!==undefined&&(!/^\d+$/.test(String(length))||Number(length)>bodyLimit))throw failure('REQUEST_TOO_LARGE');
  const chunks:Buffer[]=[];let bytes=0;
@@ -68,7 +71,10 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
  const store=await(deps.openStore??openLocalStore)({databasePath:join(profileDirectory,'state.sqlite')});
  let qualified=false;let providerAuthority=false;let stopping=false;
  try {qualified=(await inspectConfiguredRuntime(profileDirectory)).qualified;} catch {qualified=false;}
- const tools=createDomainTools({store});
+ let stopPendingAgentLink:((input:{projectId:string;linkId:string})=>Promise<unknown>)|undefined;
+ const tools=createDomainTools({store,onPendingLink:async input=>{
+  if(!stopPendingAgentLink)throw failure('RUNTIME_UNAVAILABLE');return stopPendingAgentLink(input);
+ }});
  const gateway=(deps.createGateway??createLiveGateway)({store,profileId:profile.profileId,actorId:'local-runtime',
   isEnabled:()=>qualified,providerAuthority:()=>providerAuthority,credentialStore:createProfileScopedStore(profile,createWindowsCredentialStore()),
   dynamicTools:tools.specifications,domainTool:tools.dispatch,
@@ -80,6 +86,8 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
    if(selected.providerAuthority!==true)throw failure('PROVIDER_AUTHORITY_REQUIRED');
    return createNativeRpc({profileDirectory,binaryPath:check.binaryPath});
   }});
+ // Use this already-bound gateway directly: selector Send may itself be awaiting the tool response.
+ stopPendingAgentLink=({projectId,linkId})=>requestPendingLinkStop(store,gateway.runtime,projectId,linkId);
  // App agents and the legacy API runtime are explicit choices; neither is a fallback for the other.
  let agentChannel:Awaited<ReturnType<typeof createAppAgentChannel>>|undefined;
  const appGateway=createAppAgentGateway({store,profileId:profile.profileId,actorId:'codex-app-agent',redact:(text)=>agentChannel?.redact(text)??text,

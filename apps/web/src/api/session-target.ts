@@ -25,11 +25,12 @@ export function isExecutionTarget(task: StoredEntity | undefined): boolean {
     task.status !== "ready" ||
     (Array.isArray(task.data?.risks) &&
       task.data.risks.includes("recovery_review")) ||
-    task.data?.schemaVersion !== "m1_task_profile_v1"
+    !["m1_task_profile_v1","m2_task_profile_v1"].includes(String(task.data?.schemaVersion)) ||
+    task.data?.type === 'epic'
   )
     return false;
-  const criteria = task.data.acceptanceCriteria,
-    files = task.data.files;
+  const criteria = task.data?.acceptanceCriteria,
+    files = task.data?.files;
   return (
     Array.isArray(criteria) &&
     criteria.length > 0 &&

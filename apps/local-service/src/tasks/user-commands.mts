@@ -1,11 +1,11 @@
 import { createHash } from 'node:crypto';
 import type { LocalStore } from '../storage/local-store.mts';
 import type { EntityInput, StoreWrite } from '../../../../packages/contracts/storage/local-store.ts';
-import { decodeM1TaskProfile } from './task-profile.ts';
+import { decodeTaskProfile as decodeM1TaskProfile } from '../../../../packages/contracts/issues/task-profile.ts';
 
 function fail(code: string): never { throw Object.assign(new Error(code), { code }); }
 const userKinds = new Set(['task', 'session', 'comment', 'draft']);
-const reservedComments = new Set(['manual_check', 'owner_acceptance']);
+const reservedComments = new Set(['manual_check', 'owner_acceptance','m2_comment','m2_agent_comment']);
 
 async function assertNoUnresolvedRun(store: LocalStore, projectId: string) {
   for (let offset = 0; ; offset += 100) {
@@ -28,15 +28,35 @@ export async function applyUserCommand(store: LocalStore, command: StoreWrite) {
     if (input.kind === 'comment' && (reservedComments.has(String(input.data?.category))
       || reservedComments.has(String(existing?.data.category)))) fail('USER_WRITE_FORBIDDEN');
     let entity: EntityInput = input;
+    if(input.kind==='comment'&&input.parentId){
+      const parent=await store.get(command.projectId,input.parentId);
+      if(parent?.data.schemaVersion==='m2_task_profile_v1'){
+        if(existing?.data.actorId&&existing.data.actorId!==command.actorId)fail('COMMENT_AUTHOR_REQUIRED');
+        entity={...input,data:{...input.data,actorId:existing?.data.actorId??command.actorId,createdAt:existing?.data.createdAt??new Date().toISOString(),edited:change.expectedRevision>0}};
+      }
+    }
     if (input.kind === 'task') {
       const raw = input.data as Record<string, unknown>;
+      if(!committed&&existing?.data.schemaVersion==='m2_task_profile_v1'&&raw?.schemaVersion!=='m2_task_profile_v1')fail('PROFILE_DOWNGRADE_FORBIDDEN');
       const project = await store.project(command.projectId);
       if (!project) fail('PROJECT_NOT_FOUND');
       // A deleted imported task still replays against the original creator and request hash.
       const creator = existing?.data.creator ?? (committed && change.expectedRevision > 0 ? raw?.creator : { kind: 'user', actorId: command.actorId });
       const allocating = raw?.key === '' && change.expectedRevision === 0;
+      if(raw?.schemaVersion==='m2_task_profile_v1'&&!committed){
+        if(!existing)fail('TASK_MANAGER_COMMAND_REQUIRED');
+        if(existing.revision!==change.expectedRevision)fail('REVISION_CONFLICT');
+        if(JSON.stringify(raw.actual)!==JSON.stringify(existing.data.actual))fail('OPERATIONAL_EVIDENCE_READONLY');
+      }
       const task = decodeM1TaskProfile({ ...raw, creator, key: allocating ? `${project.keyPrefix}-1` : raw?.key });
       if (task.projectId !== command.projectId || task.id !== input.id) fail('TASK_SCOPE_CONFLICT');
+      if (!committed&&task.schemaVersion==='m2_task_profile_v1' && existing && task.status!==existing.status) fail('TRANSITION_REQUIRED');
+      if(!committed&&task.schemaVersion==='m2_task_profile_v1'&&existing){
+        if(existing.data.schemaVersion!=='m2_task_profile_v1')fail('PROFILE_UPGRADE_REQUIRED');
+        if(existing.data.type!==task.type||existing.data.parentId!==task.parentId)fail('PREVIEW_REQUIRED');
+        if(JSON.stringify(existing.data.links)!==JSON.stringify(task.links))fail('ISSUE_LINK_COMMAND_REQUIRED');
+        if(existing.data.dueDate!==task.dueDate&&!command.taskManagerReason?.trim()&&!command.taskManagerReviewReason?.trim())fail('DUE_DATE_REASON_REQUIRED');
+      }
       if (!committed && task.status === 'done' && existing?.status !== 'done') fail('OWNER_ACCEPTANCE_REQUIRED');
       entity = { ...input, data: allocating ? { ...task, key: '' } : task };
     }

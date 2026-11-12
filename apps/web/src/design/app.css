@@ -1,3 +1,31 @@
+.m2-manager { min-width: 0; }
+.m2-fields { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,230px),1fr)); gap: 16px; }
+.m2-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 14px 0; }
+.m2-manager fieldset { min-width: 0; border: 1px solid var(--rule); border-radius: 6px; padding: 16px; margin: 12px 0; }
+.m2-manager legend { padding: 0 8px; font-weight: 600; }
+.m2-manager select[multiple] { min-height: 130px; }
+.m2-manager .m2-check { display: flex; gap: 10px; align-items: center; margin: 14px 0; }
+.m2-check input { width: 20px; min-height: 20px; flex: 0 0 20px; }
+.m2-filters,.m2-settings { border: 1px solid var(--rule); border-radius: 6px; padding: 18px; margin: 20px 0; }
+.m2-manager summary { cursor: pointer; min-height: 44px; padding: 8px 0; font-weight: 600; }
+.m2-settings>section,.m2-settings>form { border-top: 1px solid var(--rule); padding-top: 24px; margin-top: 20px; }
+.m2-catalog-row { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,160px),1fr)); align-items: end; margin: 16px 0; }
+.m2-manager .m2-task-layout { grid-template-columns: minmax(250px,1fr) minmax(350px,1.3fr); align-items: start; }
+.m2-task-layout>.task-list:only-child { grid-column: 1/-1; }
+.m2-manager .task-detail,.m2-manager .task-list { min-width: 0; overflow-wrap: anywhere; }
+.m2-manager .tabs { flex-wrap: wrap; }
+.m2-manager .records button { text-align: left; }
+.m2-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.m2-manager .task-list .records button { width: 100%; display: grid; gap: 7px; }
+.m2-manager .records small { color: var(--muted); }
+.m2-manager .m2-kanban { grid-template-columns: repeat(7,minmax(220px,1fr)); max-width: 100%; }
+.m2-manager .task-relations li { align-items: flex-start; flex-wrap: wrap; }
+.m2-manager .m2-comment-body { white-space: pre-wrap; overflow-wrap: anywhere; }
+.m2-manager .diff { white-space: pre-wrap; overflow-wrap: anywhere; }
+.m2-modal { position: fixed; inset: 0; z-index: 30; display: grid; place-items: center; padding: 24px; background: rgb(0 0 0 / .5); }
+.m2-modal form { width: min(100%,520px); max-height: 90vh; overflow: auto; padding: 28px; background: var(--panel); border: 1px solid var(--rule); border-radius: 8px; }
+@media(max-width:1100px) { .m2-manager .m2-task-layout { grid-template-columns: minmax(0,1fr); } }
+@media(max-width:600px) { .m2-manager .m2-fields { grid-template-columns: minmax(0,1fr); } .m2-manager .section-heading { align-items: flex-start; flex-wrap: wrap; } .m2-manager .panel { padding: 14px; } }
 .kanban {
   display: grid;
   grid-template-columns: repeat(7, minmax(200px, 1fr));

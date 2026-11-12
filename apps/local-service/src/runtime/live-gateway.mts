@@ -3,7 +3,7 @@ import { createConnectionBroker, type CredentialStore } from '../connections/bro
 import { createRuntimeCoordinator, type RuntimeBinding } from './codex/coordinator.ts';
 import type { RuntimeRpc } from './codex/stdio-rpc.ts';
 import { createRuntimeStoragePorts,taskScopeDigest } from './storage-ports.mts';
-import {decodeM1TaskProfile} from '../tasks/task-profile.ts';
+import {decodeTaskProfile as decodeM1TaskProfile} from '../../../../packages/contracts/issues/task-profile.ts';
 import { bindProject } from '../adapters/project-sources.ts';
 import type {SavedTaskContext} from './m1-recipe.mts';
 
@@ -104,6 +104,7 @@ export function createLiveGateway(options: Readonly<{
           const taskId=requiredText(input,'taskId');const task=await options.store.get(found.projectId,taskId);
           if(!task||task.deleted||task.kind!=='task')throw new LiveGatewayError('task_scope_unavailable');
           const profile=decodeM1TaskProfile(task.data);
+          if(profile.schemaVersion==='m2_task_profile_v1'&&profile.type==='epic')throw new LiveGatewayError('runtime_epic_not_executable');
           const previous=await persistence.findRun(found.id,requiredText(input,'clientMessageId'));
           if(!previous&&(profile.status!=='ready'||profile.risks.includes('recovery_review')))throw new LiveGatewayError('task_scope_review_required');
           if(!profile.acceptanceCriteria.length||!profile.acceptanceCriteria.every((criterion)=>criterion.trim()))throw new LiveGatewayError('saved_criteria_required');

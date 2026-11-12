@@ -5,7 +5,7 @@ import type { RuntimeBinding, RuntimePersistence, RuntimeRun, VisibleMessage,Run
 import type { StoredEntity } from '../../../../packages/contracts/storage/local-store.ts';
 import type {TaskTimeEvent} from '../../../../packages/contracts/time/task-time.ts';
 import {projectTaskTime} from '../events/task-time.ts';
-import {decodeM1TaskProfile} from '../tasks/task-profile.ts';
+import {decodeTaskProfile as decodeM1TaskProfile} from '../../../../packages/contracts/issues/task-profile.ts';
 
 const hash = (text: string) => createHash('sha256').update(text).digest('hex');
 export const taskScopeDigest=(task:StoredEntity)=>hash(JSON.stringify({projectId:task.projectId,id:task.id,revision:task.revision,data:task.data}));
@@ -58,6 +58,7 @@ export function createRuntimeStoragePorts(store: LocalStore, options: Readonly<{
     const task=await store.get(run.projectId,run.taskId);const session=await store.get(run.projectId,run.sessionId);
     if(!task||task.kind!=='task'||!session||session.kind!=='session')throw Object.assign(new Error('Task/session is unavailable.'),{code:'runtime_target_missing'});
     const profile=decodeM1TaskProfile(task.data);
+    if(append&&profile.schemaVersion==='m2_task_profile_v1'&&profile.type==='epic')throw Object.assign(new Error('Epic is not an execution target.'),{code:'runtime_epic_not_executable'});
     if(append&&(profile.status!=='ready'||profile.risks.includes('recovery_review')||!profile.acceptanceCriteria.length))throw Object.assign(new Error('Task requires review.'),{code:'runtime_target_review_required'});
     if(append&&(task.revision!==run.targetRevision||taskScopeDigest(task)!==run.scopeDigest))throw Object.assign(new Error('Saved task changed.'),{code:'runtime_target_changed'});
     if(!append&&!previous)throw Object.assign(new Error('Intent is missing.'),{code:'runtime_intent_missing'});
@@ -94,6 +95,7 @@ export function createRuntimeStoragePorts(store: LocalStore, options: Readonly<{
     if(previous&&JSON.stringify(previous.data)===JSON.stringify(data))return;
     await store.write({projectId:run.projectId,actorId:options.actorId,expectedAuthorityEpoch:project.authorityEpoch,
       idempotencyKey:`runtime-transition:${run.id}:${previous?.revision??0}:${hash(JSON.stringify(data))}`,
+      ...(append&&profile.schemaVersion==='m2_task_profile_v1'?{taskManagerAction:'transition' as const,taskManagerReason:'Runtime dispatch'}:{}),
       ...(append?{requireIdle:true as const}:{}),changes:[
         {expectedRevision:task.revision,entity:{id:task.id,kind:'task',data:{...profile,status:append?'in_progress':profile.status,actual,sessionIds:[...new Set([...profile.sessionIds,run.sessionId])]}}},
         {expectedRevision:previous?.revision??0,entity:{id:run.id,kind:'run',status:run.state,data}},

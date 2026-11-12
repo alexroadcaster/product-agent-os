@@ -2,22 +2,24 @@ import assert from 'node:assert/strict';
 import {test,type TestContext} from 'node:test';
 import {mkdtemp,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
-import {join} from 'node:path';
+import {join,resolve,dirname,basename} from 'node:path';
 import {createRuntimeCoordinator,type RuntimeRun} from '../../apps/local-service/src/runtime/codex/coordinator.ts';
 import {bindProject} from '../../apps/local-service/src/adapters/project-sources.ts';
 
 async function fixture(t:TestContext){
- const root=await mkdtemp(join(tmpdir(),'paos-reconciliation-'));t.after(()=>rm(root,{recursive:true,force:true}));
+ const scratch=resolve(tmpdir()),root=await mkdtemp(join(scratch,'paos-reconciliation-'));t.after(async()=>{
+  const target=resolve(root);assert.equal(dirname(target),scratch);assert.ok(basename(target).startsWith('paos-reconciliation-'));await rm(target,{recursive:true,force:true});
+ });
  const pin=await bindProject('p',root);let history:any={};let listener:(message:any)=>void=()=>{};let failCheck=false;let failTerminal=false;
  const messages=new Map<string,any>(),checks=new Map<string,any>(),saved:RuntimeRun[]=[],responses:any[]=[],calls:string[]=[];
  const canary='synthetic-credential-canary';
- const binding={id:'binding',projectId:'p',sessionId:'s',accountId:'account',workspaceRoot:root,directoryIdentity:pin.directoryIdentity,mode:'discussion' as const,profileId:'profile',generation:'old',threadId:'thread'};
+ const binding={id:'binding',projectId:'p',sessionId:'s',accountId:'account',workspaceRoot:pin.workspaceRoot,directoryIdentity:pin.directoryIdentity,mode:'discussion' as const,profileId:'profile',generation:'old',threadId:'thread'};
  const run:RuntimeRun={id:'run',bindingId:'binding',projectId:'p',sessionId:'s',accountId:'account',generation:'old',threadId:'thread',turnId:'turn',clientMessageId:'message',inputDigest:'digest',taskId:null,scopeDigest:null,state:'running',canonicalUserMessageSourceId:'client:message'};
  const coordinator=createRuntimeCoordinator({isEnabled:()=>true,authorizeDispatch:()=>true,redact:text=>text.replaceAll(canary,'[REDACTED]'),
   persistence:{findRun:async()=>null,saveBinding:async()=>{},appendIntent:async()=>{},updateRun:async(run)=>{if(failTerminal&&['completed','failed','interrupted'].includes(run.state)){failTerminal=false;throw new Error('SYNTHETIC_PERSISTENCE_FAILURE');}saved.push({...run});},saveVisibleMessage:async(message)=>{messages.set(message.sourceItemId,message);},saveCheck:async(check)=>{if(failCheck){failCheck=false;throw new Error('SYNTHETIC_PERSISTENCE_FAILURE');}checks.set(check.id,check);}},
   dynamicTools:[{type:'function',name:'task_read',description:'Synthetic read',inputSchema:{type:'object'}}],domainTool:async()=>({[canary]:[{body:canary}]}),
   rpc:{generation:'new',snapshot:()=>({generation:'new',status:'open',pending:0,stderrBytes:0}),notify(){},subscribe(next){listener=next;return()=>{};},onClosed(){return()=>{};},close:async()=>{},respond(id,result){responses.push({id,result});},respondError(id){responses.push({id,error:true});},
-   async request(method,params:any){calls.push(method);if(method==='thread/start')return {thread:{id:'thread'},cwd:root,runtimeWorkspaceRoots:[root],activePermissionProfile:{id:params.permissions},approvalPolicy:'never',sandbox:{type:'readOnly',networkAccess:false}};
+   async request(method,params:any){calls.push(method);if(method==='thread/start')return {thread:{id:'thread'},cwd:params.cwd,runtimeWorkspaceRoots:[params.cwd],activePermissionProfile:{id:params.permissions},approvalPolicy:'never',sandbox:{type:'readOnly',networkAccess:false}};
     if(method==='turn/start')return {turn:{id:'turn',status:'inProgress'}};assert.equal(method,'thread/read');return history;}}});
  return {coordinator,binding,run,messages,checks,saved,responses,calls,canary,event:(message:any)=>listener(message),history:(value:any)=>{history=value;},failNextCheck(){failCheck=true;},failNextTerminal(){failTerminal=true;},async live(){const binding=await coordinator.openBinding({projectId:'p',sessionId:'s',accountId:'account',workspaceRoot:root,mode:'discussion',profileId:'profile'});return coordinator.send({bindingId:binding.id,clientMessageId:'live-message',input:'Synthetic read'});}};
 }

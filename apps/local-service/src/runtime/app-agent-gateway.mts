@@ -1,12 +1,13 @@
 import {createHash,randomBytes,randomUUID,timingSafeEqual} from 'node:crypto';
 import type {LocalStore,StoredEntity} from '../storage/local-store.mts';
 import {bindProject} from '../adapters/project-sources.ts';
-import {decodeM1TaskProfile} from '../tasks/task-profile.ts';
+import {decodeTaskProfile as decodeM1TaskProfile} from '../../../../packages/contracts/issues/task-profile.ts';
 import {taskScopeDigest} from './storage-ports.mts';
 import type {SandboxBroker} from './sandbox-broker.mts';
 import {captureTaskFiles,compareTaskFiles,type FileChange} from './app-agent-files.mts';
 import {projectTaskTime} from '../events/task-time.ts';
 import type {TaskTimeEvent} from '../../../../packages/contracts/time/task-time.ts';
+import {taskManagerSnapshot} from '../task-manager/service.mts';
 
 type Input=Record<string,unknown>;
 type State='queued'|'running'|'awaiting_approval'|'cancel_requested'|'recovery_required'|'completed'|'failed'|'interrupted';
@@ -104,6 +105,8 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
   }
   await store.write({projectId:job.projectId,actorId:options.actorId,expectedAuthorityEpoch:project.authorityEpoch,
    idempotencyKey:`app-agent:${job.id}:${previous?.revision??0}:${hash(JSON.stringify(job))}`,...(requireIdle?{requireIdle:true as const}:{}),
+   ...(requireIdle&&projectedChanges.some(change=>change.entity.kind==='task'&&change.entity.data?.schemaVersion==='m2_task_profile_v1')
+     ?{taskManagerAction:'transition' as const,taskManagerReason:'App runtime dispatch'}:{}),
    changes:[{expectedRevision:previous?.revision??0,entity:{id:job.id,kind:'run',status:job.state,data:{appAgentRun:job,...(taskId?{timeline}:{})}}},
     {expectedRevision:bindingRow.revision,entity:{id:bindingRow.id,kind:'settings',data:{...bindingRow.data,lastRunId:job.id}}},...projectedChanges]});
   latest.set(job.bindingId,job);
@@ -130,6 +133,16 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
  async function expire(){if(worker&&worker.expiresAt<=now()){if(active&&!terminal.has(active.state)){const changed={...active,state:'recovery_required' as const};await save(changed);active=changed;stopCommands(changed);}worker=undefined;}
   if(active?.operations?.some(op=>op.state==='awaiting_approval'&&op.expiresAt<=now())){const changed={...active,operations:active.operations.map(op=>op.state==='awaiting_approval'&&op.expiresAt<=now()?{...op,state:'declined' as const,decision:'expired'}:op)};if(changed.state==='awaiting_approval')changed.state='running';await save(changed);active=changed;}}
  function stopCommands(job:Job){const broker=brokers.get(job.bindingId);for(const op of job.operations??[])if(op.state==='dispatching'&&broker)void broker.interrupt(brokerOperationId(job,op)).catch(()=>{});}
+ async function assertTaskCommandBoundary(job:Job){
+  const taskId=job.taskContext?.taskId;if(typeof taskId!=='string')return;
+  const snapshot=await taskManagerSnapshot(store,job.projectId),task=snapshot.tasks.find(t=>t.id===taskId);
+  if(!task)fail('task_scope_mismatch');
+  if(task.data.schemaVersion==='m2_task_profile_v1'&&task.data.blocker)fail('BLOCKER_RESOLUTION_REQUIRED');
+  for(const link of snapshot.links.filter(l=>l.relation==='blocks'&&l.targetId===taskId)){
+   if(link.state==='pending')fail('PENDING_LINK_RECONCILIATION_REQUIRED');
+   if(!link.waiver&&snapshot.tasks.find(t=>t.id===link.sourceId)?.status!=='done')fail('DEPENDENCY_BLOCKED');
+  }
+ }
  function startCommand(job:Job,operation:Operation,broker:SandboxBroker){
   // Deliberately outside the admission queue: heartbeats, approvals and Stop must remain responsive.
   const pending=Promise.resolve().then(async()=>{
@@ -137,6 +150,7 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
    const before=await captureTaskFiles(scope,files,redact);
    // Stop may arrive during file capture. Recheck the durable in-memory owner before admitting the native side effect.
    if(closing||active?.id!==job.id||active.state!=='running')return {exitCode:130,stdout:'',stderr:'Command cancelled before native dispatch.',fileChanges:[] as FileChange[],cancelled:true};
+   try{await assertTaskCommandBoundary(job);}catch{return {exitCode:130,stdout:'',stderr:'Task dependency changed before native dispatch.',fileChanges:[] as FileChange[],cancelled:true};}
    const result=await broker.execute({operationId:brokerOperationId(job,operation),argv:operation.argv,timeoutMs:operation.timeoutMs});
    const after=await captureTaskFiles(scope,files,redact);return {...result,fileChanges:compareTaskFiles(before,after),cancelled:false};
   }).then(result=>({result}),()=>({result:null})).then(async({result})=>{
@@ -222,6 +236,7 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
     if(binding.mode==='execution'){
      if(!brokers.has(binding.id))fail('execution_boundary_unverified');const task=await store.get(scope.projectId,text(row,'taskId'));
      if(!task||task.deleted||task.kind!=='task')fail('task_scope_mismatch');const profile=decodeM1TaskProfile(task.data);
+     if(profile.schemaVersion==='m2_task_profile_v1'&&profile.type==='epic')fail('runtime_epic_not_executable');
      if(profile.status!=='ready'||profile.risks.includes('recovery_review'))fail('task_scope_review_required');if(!profile.acceptanceCriteria.length||!profile.acceptanceCriteria.every(item=>item.trim()))fail('saved_criteria_required');
      job.taskContext={taskId:task.id,revision:task.revision,scopeDigest:taskScopeDigest(task),workspaceRoot:binding.workspaceRoot,rootIdentity:binding.rootIdentity,key:profile.key,title:profile.title,files:profile.files,acceptanceCriteria:profile.acceptanceCriteria,risks:profile.risks};
      extra.push({expectedRevision:task.revision,entity:{id:task.id,kind:'task',data:{...profile,status:'in_progress',sessionIds:[...new Set([...profile.sessionIds,job.sessionId])]}}});
@@ -234,6 +249,7 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
     const decision=text(row,'decision');if(!['accept','decline','cancel'].includes(decision))fail('approval_invalid');
     if(op.decision){if(op.decision!==decision)fail('approval_conflict');return operationView(active,op);}
     if(op.state!=='awaiting_approval'||op.expiresAt<=now())fail('approval_stale');
+    if(decision==='accept')await assertTaskCommandBoundary(active);
     const broker=decision==='accept'?await attachBroker(binding):undefined;
     const next:Operation={...op,decision,state:decision==='accept'?'dispatching':decision==='decline'?'declined':'cancelled'};
     const changed:Job={...active,state:'running',operations:active.operations!.map(item=>item.operationId===op.operationId?next:item)};await save(changed);active=changed;
@@ -281,6 +297,7 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
     if(!Number.isSafeInteger(row.seq)||row.seq!==(job.progress?.seq??0)+1||!['commentary','final_answer'].includes(String(row.phase)))fail('app_agent_sequence_invalid');
     const changed:Job={...job,progress:{seq:row.seq as number,text:redact(text(row,'text',32768)),phase:row.phase as 'commentary'|'final_answer'}};await save(changed);active=changed;return {runId,seq:row.seq};
    }
+   await assertTaskCommandBoundary(job);
    if(!options.executorFactory)fail('execution_boundary_unverified');const operationId=text(row,'operationId',100);if(!/^[A-Za-z0-9_-]+$/.test(operationId))fail('app_agent_input_invalid');
    if(!Array.isArray(row.argv)||!row.argv.length||row.argv.length>64||row.argv.some(arg=>typeof arg!=='string'||arg.includes('\0'))||Buffer.byteLength(JSON.stringify(row.argv))>32768)fail('app_agent_input_invalid');
    const argv=row.argv as string[],serialized=JSON.stringify(argv);if(redact(serialized)!==serialized||/sk-[A-Za-z0-9_-]{12,}|(?:api[_-]?key|authorization|bearer|access[_-]?token)(?:\s*[=:]|[\\"\s])/i.test(serialized))fail('app_agent_credential_rejected');

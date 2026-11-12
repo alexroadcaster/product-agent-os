@@ -1,6 +1,15 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createHttpApi } from "../../apps/web/src/api/client.ts";
+
+test('task cycle errors expose only a bounded safe path',async()=>{
+ for(const path of [['task-a','task-b','task-a'],['<script>'],Array(257).fill('a')]){
+  const api=createHttpApi((async()=>Response.json({error:{code:'DEPENDENCY_CYCLE',details:{cyclePath:path,secret:'not exposed'}}},{status:409})) as typeof fetch);
+  await assert.rejects(api.taskManager('p'),(error:any)=>{
+   assert.equal(error.code,'DEPENDENCY_CYCLE');assert.deepEqual(error.cyclePath,path.length===3?path:undefined);assert.equal(error.secret,undefined);return true;
+  });
+ }
+});
 test("visible message history explicitly requests newest journal pages with scoped offsets and abort signal", async () => {
   let url = "",
     init: RequestInit | undefined;

@@ -1,8 +1,10 @@
 # Product-Agent OS Web — план полноценного Task Manager
 
+Текущий M2, 11-11-2026: **10/26 implemented** — PAOS-0031/0032/0033/0005/0006/0007/0008/0034/0038/0035, только выбранная владельцем очередь. Остальные16, включая PAOS-0036, planned. Web345/345, browser88, actual App/native27 и independent closed_allowed; [проверки и пределы](product-agent-os-web-m2-execution-2026-11-11.md), [results](product-agent-os-web-m2-results-2026-11-11.json). Полные56 cards/12groups/estimates сохранены. Ниже M1 receipts и старые срезы сохраняют исходный provenance; commercial/human/release отдельно.
+
 Актуализация 11-11-2026: owner-default runtime теперь Codex App agents без API key. Нормативное уточнение App-dependent acceptance — в addendum в конце этого файла; последовательность 56 задач, 12 групп и оценки сохранены.
 
-Текущее техническое состояние M1: **18/18 implemented**, включая PAOS-0042, PAOS-0043, PAOS-0044 и PAOS-0045. Применяется App-active контракт PRD §17.7 / architecture §21.10: actual App/native105, task39, data25, headless33, Web306 и independent closed_allowed. [Приёмка и предел утверждений](product-agent-os-web-m1-execution-2026-11-11.md#app-mediated-native-broker--техническая-приёмка-m1). Более ранние 14/3/1 и blocked statements ниже — исторические срезы, не текущая очередь. Следующий этап — PAOS-0046 перед M2; human/commercial/release acceptance отдельно.
+Текущее техническое состояние M1: **18/18 implemented**, включая PAOS-0042, PAOS-0043, PAOS-0044 и PAOS-0045. Применяется App-active контракт PRD §17.7 / architecture §21.10: actual App/native105, task39, data25, headless33, Web306 и independent closed_allowed. [Приёмка и предел утверждений](product-agent-os-web-m1-execution-2026-11-11.md#app-mediated-native-broker--техническая-приёмка-m1). Более ранние 14/3/1 и blocked statements ниже — исторические срезы, не текущая очередь. PAOS-0046 ранний review выполнен; следующая реализация — локальная M2 в авторизованном чате. Human/commercial/release acceptance отдельно.
 
 Source status: project-authored / proposed / requirements-backed. Дата: 2026-11-09.
 
@@ -524,14 +526,14 @@ Rollback будущих изменений: versioned proposal, revision check, 
 ### Task `PAOS-0005`
 
 - Task: Список и доска задач
-- Status: planned
+- Status: implemented
 - Delivery stage: M2
 - Execution order: 23
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 11-11-2026 22:40
 - Depends on: PAOS-0002, PAOS-0004, PAOS-0032
 - Blocks: PAOS-0035
 - Source: PRD: дополнение Task Manager; screen specification
@@ -549,34 +551,34 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/web/src/features/tasks/list; apps/web/src/features/tasks/board
-- Next step: Завершить зависимости, затем уточнить tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Next step: Следующий неисполненный M2 scope — PAOS-0036; он требует отдельной команды владельца.
+- Actual time: общий cohort начат 11-11-2026 20:41 MSK; проверен 11-11-2026 22:40 MSK. Start/duration отдельно по карточкам не измерены, null сохранён.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
-- Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
+- Affected files: apps/web/src/features/tasks/TaskManager.tsx; apps/web/src/features/tasks/model.ts; apps/web/src/design/app.css. Actual operations — matching JSON task.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Default Tasks route содержит согласованные list/board, полный snapshot/count, filters/group/sort, сохранённый view, явную DOM pagination и keyboard controls.
+- Files touched / work locations: apps/web/src/features/tasks/TaskManager.tsx; apps/web/src/features/tasks/model.ts; apps/web/src/design/app.css.
+- Technical value delivered: Фильтры, группировка, сохранённый вид и доступная смена статуса; транзакционные guards и regression checks реализованы.
+- Product value delivered: Пользователь быстро находит нужную работу и видит, на каком этапе находится каждая задача.
+- Actual implementation date and time: 11-11-2026 22:40
+- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](product-agent-os-web-m2-results-2026-11-11.json).
+- Residual risks: local App-active technical scope; active consumer required, sandbox только PAOS-mediated commands. Human/commercial/release acceptance и AUTH-G1–G6 отдельно; narrow Markdown subset обозначен в UI.
+- Follow-up: Остальные 16 M2 tasks, включая PAOS-0036, остаются planned; commercial repeat review PAOS-0030. Эта карточка не закрывает весь M2.
 
 ### Task `PAOS-0006`
 
 - Task: Карточка и редактор задачи
-- Status: planned
+- Status: implemented
 - Delivery stage: M2
 - Execution order: 24
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 11-11-2026 22:40
 - Depends on: PAOS-0002, PAOS-0003, PAOS-0004, PAOS-0032
 - Blocks: PAOS-0007, PAOS-0008
 - Source: PRD: дополнение Task Manager; screen specification
@@ -594,34 +596,34 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/web/src/features/tasks/detail; apps/web/src/features/tasks/editor
-- Next step: Завершить зависимости, затем уточнить tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Next step: Следующий неисполненный M2 scope — PAOS-0036; он требует отдельной команды владельца.
+- Actual time: общий cohort начат 11-11-2026 20:41 MSK; проверен 11-11-2026 22:40 MSK. Start/duration отдельно по карточкам не измерены, null сохранён.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
-- Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
+- Affected files: apps/web/src/features/tasks/Editor.tsx; apps/web/src/features/tasks/TaskManager.tsx; apps/web/src/api/client.ts. Actual operations — matching JSON task.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Полный editor и отдельные tabs, самостоятельный draft, Ready validation, memory-only unsaved state, revision conflicts без потери ввода и reviewed structural preview.
+- Files touched / work locations: apps/web/src/features/tasks/Editor.tsx; apps/web/src/features/tasks/TaskManager.tsx; apps/web/src/api/client.ts.
+- Technical value delivered: Полная постановка задачи и понятная техническая/продуктовая ценность; транзакционные guards и regression checks реализованы.
+- Product value delivered: Пользователь понимает пользу задачи, формулирует ожидаемый результат и управляет её выполнением.
+- Actual implementation date and time: 11-11-2026 22:40
+- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](product-agent-os-web-m2-results-2026-11-11.json).
+- Residual risks: local App-active technical scope; active consumer required, sandbox только PAOS-mediated commands. Human/commercial/release acceptance и AUTH-G1–G6 отдельно; narrow Markdown subset обозначен в UI.
+- Follow-up: Остальные 16 M2 tasks, включая PAOS-0036, остаются planned; commercial repeat review PAOS-0030. Эта карточка не закрывает весь M2.
 
 ### Task `PAOS-0007`
 
 - Task: Файлы, артефакты и исполнители
-- Status: planned
+- Status: implemented
 - Delivery stage: M2
 - Execution order: 25
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 11-11-2026 22:40
 - Depends on: PAOS-0006
 - Blocks: PAOS-0008, PAOS-0010, PAOS-0012, PAOS-0022, PAOS-0027, PAOS-0034, PAOS-0038
 - Source: PRD: дополнение Task Manager; screen specification
@@ -639,34 +641,34 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/local-service/src/task-links; apps/web/src/features/tasks/links
-- Next step: Завершить зависимости, затем уточнить tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Next step: Следующий неисполненный M2 scope — PAOS-0036; он требует отдельной команды владельца.
+- Actual time: общий cohort начат 11-11-2026 20:41 MSK; проверен 11-11-2026 22:40 MSK. Start/duration отдельно по карточкам не измерены, null сохранён.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
-- Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
+- Affected files: apps/local-service/src/task-manager/service.mts; apps/web/src/features/tasks/Panels.tsx; apps/local-service/src/runtime/storage-ports.mts. Actual operations — matching JSON task.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Planned/actual create/modify/delete/rename/read, pinned source hash/context, assignments/profile/run/session и artifacts/provenance; stale/unavailable не подменяется текущим source.
+- Files touched / work locations: apps/local-service/src/task-manager/service.mts; apps/web/src/features/tasks/Panels.tsx; apps/local-service/src/runtime/storage-ports.mts.
+- Technical value delivered: Связать планируемые/фактические изменения, агентские runs и доказательства; транзакционные guards и regression checks реализованы.
+- Product value delivered: Пользователь видит, кто и что изменит, и открывает подтверждающий документ из задачи.
+- Actual implementation date and time: 11-11-2026 22:40
+- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](product-agent-os-web-m2-results-2026-11-11.json).
+- Residual risks: local App-active technical scope; active consumer required, sandbox только PAOS-mediated commands. Human/commercial/release acceptance и AUTH-G1–G6 отдельно; narrow Markdown subset обозначен в UI.
+- Follow-up: Остальные 16 M2 tasks, включая PAOS-0036, остаются planned; commercial repeat review PAOS-0030. Эта карточка не закрывает весь M2.
 
 ### Task `PAOS-0008`
 
 - Task: Приёмка и жизненный цикл
-- Status: planned
+- Status: implemented
 - Delivery stage: M2
 - Execution order: 26
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 11-11-2026 22:40
 - Depends on: PAOS-0006, PAOS-0007
 - Blocks: PAOS-0023, PAOS-0027, PAOS-0035
 - Source: PRD: дополнение Task Manager; screen specification
@@ -684,22 +686,22 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/local-service/src/task-workflow; apps/web/src/features/tasks/acceptance
-- Next step: Завершить зависимости, затем уточнить tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Next step: Следующий неисполненный M2 scope — PAOS-0036; он требует отдельной команды владельца.
+- Actual time: общий cohort начат 11-11-2026 20:41 MSK; проверен 11-11-2026 22:40 MSK. Start/duration отдельно по карточкам не измерены, null сохранён.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
-- Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
+- Affected files: packages/contracts/issues/task-profile.ts; apps/local-service/src/task-manager/service.mts; apps/local-service/src/storage/sqlite-worker.mts; apps/web/src/features/tasks/Panels.tsx; apps/local-service/src/runtime/app-agent-gateway.mts; apps/local-service/src/runtime/live-gateway.mts. Actual operations — matching JSON task.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Manual completion без agent run, evidence/children/dependencies/active-writer gates, cancellation/reopen и original actual start/history; model turn не выполняет automatic Done.
+- Files touched / work locations: packages/contracts/issues/task-profile.ts; apps/local-service/src/task-manager/service.mts; apps/local-service/src/storage/sqlite-worker.mts; apps/web/src/features/tasks/Panels.tsx; apps/local-service/src/runtime/app-agent-gateway.mts; apps/local-service/src/runtime/live-gateway.mts.
+- Technical value delivered: Проверки и решение пользователя определяют завершение; транзакционные guards и regression checks реализованы.
+- Product value delivered: Пользователь принимает результат по проверяемым условиям и видит незакрытые требования.
+- Actual implementation date and time: 11-11-2026 22:40
+- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](product-agent-os-web-m2-results-2026-11-11.json).
+- Residual risks: local App-active technical scope; active consumer required, sandbox только PAOS-mediated commands. Human/commercial/release acceptance и AUTH-G1–G6 отдельно; narrow Markdown subset обозначен в UI.
+- Follow-up: Остальные 16 M2 tasks, включая PAOS-0036, остаются planned; commercial repeat review PAOS-0030. Эта карточка не закрывает весь M2.
 
 ### Task `PAOS-0009`
 
@@ -1694,14 +1696,14 @@ Rollback будущих изменений: versioned proposal, revision check, 
 ### Task `PAOS-0031`
 
 - Task: Иерархия Epic / Task / Bug / UserStory / Sub-Task
-- Status: planned
+- Status: implemented
 - Delivery stage: M2
 - Execution order: 20
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Jira-informed issue model, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 11-11-2026 22:40
 - Depends on: PAOS-0002
 - Blocks: PAOS-0032, PAOS-0034, PAOS-0038
 - Source: PRD §14; TM-15, TM-16
@@ -1719,35 +1721,35 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; verification skills selected for implementation
 - Output artifacts: packages/contracts/issues; apps/local-service/src/issue-hierarchy; apps/web/src/features/tasks/hierarchy
-- Next step: Завершить Depends on, зафиксировать contract/tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Next step: Следующий неисполненный M2 scope — PAOS-0036; он требует отдельной команды владельца.
+- Actual time: общий cohort начат 11-11-2026 20:41 MSK; проверен 11-11-2026 22:40 MSK. Start/duration отдельно по карточкам не измерены, null сохранён.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
-- Affected files: proposed paths above; actual create/modify/delete recorded after execution.
+- Affected files: packages/contracts/issues/task-profile.ts; apps/local-service/src/storage/sqlite-worker.mts; apps/web/src/features/tasks/TaskManager.tsx; apps/web/src/features/tasks/model.ts. Actual operations — matching JSON task.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Versioned M2 profile, Epic/standard/Sub-Task rules, conversion preview, cycle/children gates и roll-up без двойного счёта; явный legacy upgrade без потери identity.
+- Files touched / work locations: packages/contracts/issues/task-profile.ts; apps/local-service/src/storage/sqlite-worker.mts; apps/web/src/features/tasks/TaskManager.tsx; apps/web/src/features/tasks/model.ts.
+- Technical value delivered: Родительские связи, преобразование типов и roll-up без двойного счёта; транзакционные guards и regression checks реализованы.
+- Product value delivered: Пользователь разбивает инициативу на работы и подзадачи и видит общий прогресс.
+- Actual implementation date and time: 11-11-2026 22:40
+- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](product-agent-os-web-m2-results-2026-11-11.json).
+- Residual risks: local App-active technical scope; active consumer required, sandbox только PAOS-mediated commands. Human/commercial/release acceptance и AUTH-G1–G6 отдельно; narrow Markdown subset обозначен в UI.
+- Follow-up: Остальные 16 M2 tasks, включая PAOS-0036, остаются planned; commercial repeat review PAOS-0030. Эта карточка не закрывает весь M2.
 
 
 ### Task `PAOS-0032`
 
 - Task: Поля, авторство, приоритеты, компоненты и даты
-- Status: planned
+- Status: implemented
 - Delivery stage: M2
 - Execution order: 21
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Jira-informed issue model, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 11-11-2026 22:40
 - Depends on: PAOS-0031, PAOS-0004
 - Blocks: PAOS-0005, PAOS-0006, PAOS-0033, PAOS-0035
 - Source: PRD §14; TM-16
@@ -1765,35 +1767,35 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; verification skills selected for implementation
 - Output artifacts: packages/contracts/issue-fields; apps/local-service/src/components; apps/web/src/features/tasks/editor
-- Next step: Завершить Depends on, зафиксировать contract/tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Next step: Следующий неисполненный M2 scope — PAOS-0036; он требует отдельной команды владельца.
+- Actual time: общий cohort начат 11-11-2026 20:41 MSK; проверен 11-11-2026 22:40 MSK. Start/duration отдельно по карточкам не измерены, null сохранён.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
-- Affected files: proposed paths above; actual create/modify/delete recorded after execution.
+- Affected files: packages/contracts/issues/task-profile.ts; apps/local-service/src/task-manager/service.mts; apps/local-service/src/storage/sqlite-worker.mts; apps/web/src/features/tasks/Editor.tsx; apps/web/src/features/tasks/Settings.tsx. Actual operations — matching JSON task.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Immutable creator/initiator/createdAt, unknown import provenance, 11 components и archive/multi-select, calendar/timezone и Due Date reason через публичные writes.
+- Files touched / work locations: packages/contracts/issues/task-profile.ts; apps/local-service/src/task-manager/service.mts; apps/local-service/src/storage/sqlite-worker.mts; apps/web/src/features/tasks/Editor.tsx; apps/web/src/features/tasks/Settings.tsx.
+- Technical value delivered: Неизменяемый creator, отдельный initiator, project components и календарные поля; транзакционные guards и regression checks реализованы.
+- Product value delivered: Пользователь знает источник задачи, её важность, область и сроки.
+- Actual implementation date and time: 11-11-2026 22:40
+- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](product-agent-os-web-m2-results-2026-11-11.json).
+- Residual risks: local App-active technical scope; active consumer required, sandbox только PAOS-mediated commands. Human/commercial/release acceptance и AUTH-G1–G6 отдельно; narrow Markdown subset обозначен в UI.
+- Follow-up: Остальные 16 M2 tasks, включая PAOS-0036, остаются planned; commercial repeat review PAOS-0030. Эта карточка не закрывает весь M2.
 
 
 ### Task `PAOS-0033`
 
 - Task: Версии продукта и release policy
-- Status: planned
+- Status: implemented
 - Delivery stage: M2
 - Execution order: 22
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Jira-informed issue model, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 11-11-2026 22:40
 - Depends on: PAOS-0032
 - Blocks: PAOS-0028
 - Source: PRD §14; TM-17
@@ -1811,35 +1813,35 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; verification skills selected for implementation
 - Output artifacts: apps/local-service/src/versions; apps/web/src/features/releases; packages/contracts/versions
-- Next step: Завершить Depends on, зафиксировать contract/tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Next step: Следующий неисполненный M2 scope — PAOS-0036; он требует отдельной команды владельца.
+- Actual time: общий cohort начат 11-11-2026 20:41 MSK; проверен 11-11-2026 22:40 MSK. Start/duration отдельно по карточкам не измерены, null сохранён.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
-- Affected files: proposed paths above; actual create/modify/delete recorded after execution.
+- Affected files: packages/contracts/issues/manager.ts; apps/local-service/src/task-manager/service.mts; apps/local-service/src/storage/sqlite-worker.mts; apps/web/src/features/tasks/Settings.tsx. Actual operations — matching JSON task.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Version registry с description/dates/state; Affects и Fix раздельны, архив сохраняет references; release policy/explicit hotfix, Done не выпускает версию.
+- Files touched / work locations: packages/contracts/issues/manager.ts; apps/local-service/src/task-manager/service.mts; apps/local-service/src/storage/sqlite-worker.mts; apps/web/src/features/tasks/Settings.tsx.
+- Technical value delivered: Раздельные affects/fix version references и условия планирования релиза; транзакционные guards и regression checks реализованы.
+- Product value delivered: Пользователь различает затронутый продукт и выпуск, который получит исправление.
+- Actual implementation date and time: 11-11-2026 22:40
+- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](product-agent-os-web-m2-results-2026-11-11.json).
+- Residual risks: local App-active technical scope; active consumer required, sandbox только PAOS-mediated commands. Human/commercial/release acceptance и AUTH-G1–G6 отдельно; narrow Markdown subset обозначен в UI.
+- Follow-up: Остальные 16 M2 tasks, включая PAOS-0036, остаются planned; commercial repeat review PAOS-0030. Эта карточка не закрывает весь M2.
 
 
 ### Task `PAOS-0034`
 
 - Task: Attachments, комментарии и история изменений
-- Status: planned
+- Status: implemented
 - Delivery stage: M2
 - Execution order: 27
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Jira-informed issue model, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 11-11-2026 22:40
 - Depends on: PAOS-0031, PAOS-0007
 - Blocks: PAOS-0028
 - Source: PRD §14; TM-18, TM-24
@@ -1857,35 +1859,35 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; verification skills selected for implementation
 - Output artifacts: apps/local-service/src/attachments; apps/local-service/src/comments; apps/local-service/src/audit; apps/web/src/features/tasks/activity
-- Next step: Завершить Depends on, зафиксировать contract/tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Next step: Следующий неисполненный M2 scope — PAOS-0036; он требует отдельной команды владельца.
+- Actual time: общий cohort начат 11-11-2026 20:41 MSK; проверен 11-11-2026 22:40 MSK. Start/duration отдельно по карточкам не измерены, null сохранён.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
-- Affected files: proposed paths above; actual create/modify/delete recorded after execution.
+- Affected files: apps/local-service/src/task-manager/service.mts; apps/local-service/src/storage/sqlite-worker.mts; apps/local-service/src/storage/snapshot.mts; apps/local-service/src/main.mts; apps/local-service/src/http/application.mts; apps/web/src/features/tasks/Panels.tsx; apps/web/src/features/tasks/CommentMarkdown.tsx; apps/web/src/features/tasks/comment-markdown.ts; apps/web/src/features/tasks/Settings.tsx. Actual operations — matching JSON task.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Managed attachment copies/quota/MIME/hash/download-only, retry lost ACK, safe cleanup, comments Markdown/replies/revisions/tombstones, redacted audit и полный local archive/inactive restore.
+- Files touched / work locations: apps/local-service/src/task-manager/service.mts; apps/local-service/src/storage/sqlite-worker.mts; apps/local-service/src/storage/snapshot.mts; apps/local-service/src/main.mts; apps/local-service/src/http/application.mts; apps/web/src/features/tasks/Panels.tsx; apps/web/src/features/tasks/CommentMarkdown.tsx; apps/web/src/features/tasks/comment-markdown.ts; apps/web/src/features/tasks/Settings.tsx.
+- Technical value delivered: Managed files, comment revisions и append-only audit событий пользователя/агентов; транзакционные guards и regression checks реализованы.
+- Product value delivered: Пользователь добавляет контекст и видит, кто, что и когда изменил.
+- Actual implementation date and time: 11-11-2026 22:40
+- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](product-agent-os-web-m2-results-2026-11-11.json).
+- Residual risks: local App-active technical scope; active consumer required, sandbox только PAOS-mediated commands. Human/commercial/release acceptance и AUTH-G1–G6 отдельно; narrow Markdown subset обозначен в UI.
+- Follow-up: Остальные 16 M2 tasks, включая PAOS-0036, остаются planned; commercial repeat review PAOS-0030. Эта карточка не закрывает весь M2.
 
 
 ### Task `PAOS-0035`
 
 - Task: Kanban и ручной жизненный цикл задачи
-- Status: planned
+- Status: implemented
 - Delivery stage: M2
 - Execution order: 29
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Jira-informed issue model, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 11-11-2026 22:40
 - Depends on: PAOS-0005, PAOS-0008, PAOS-0032
 - Blocks: PAOS-0028, PAOS-0036
 - Source: PRD §14; TM-19, TM-20
@@ -1903,22 +1905,22 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; verification skills selected for implementation
 - Output artifacts: apps/web/src/features/tasks/board; apps/local-service/src/task-workflow
-- Next step: Завершить Depends on, зафиксировать contract/tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Next step: Следующий неисполненный M2 scope — PAOS-0036; он требует отдельной команды владельца.
+- Actual time: общий cohort начат 11-11-2026 20:41 MSK; проверен 11-11-2026 22:40 MSK. Start/duration отдельно по карточкам не измерены, null сохранён.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
-- Affected files: proposed paths above; actual create/modify/delete recorded after execution.
+- Affected files: packages/contracts/issues/task-profile.ts; apps/local-service/src/task-manager/service.mts; apps/local-service/src/storage/sqlite-worker.mts; apps/web/src/features/tasks/TaskManager.tsx; apps/web/src/features/tasks/Panels.tsx; apps/web/src/features/tasks/Settings.tsx. Actual operations — matching JSON task.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: 8 statuses/7 columns, drag/menu через единый transition, явный multi-status outcome, soft/hard WIP с audit, ручные completion/cancel/reopen и безопасный active-run fence.
+- Files touched / work locations: packages/contracts/issues/task-profile.ts; apps/local-service/src/task-manager/service.mts; apps/local-service/src/storage/sqlite-worker.mts; apps/web/src/features/tasks/TaskManager.tsx; apps/web/src/features/tasks/Panels.tsx; apps/web/src/features/tasks/Settings.tsx.
+- Technical value delivered: Восемь статусов, семь колонок, transitions/guards, WIP и resolution; транзакционные guards и regression checks реализованы.
+- Product value delivered: Пользователь сам создаёт, ведёт, закрывает и переоткрывает задачи без обязательного agent run.
+- Actual implementation date and time: 11-11-2026 22:40
+- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](product-agent-os-web-m2-results-2026-11-11.json).
+- Residual risks: local App-active technical scope; active consumer required, sandbox только PAOS-mediated commands. Human/commercial/release acceptance и AUTH-G1–G6 отдельно; narrow Markdown subset обозначен в UI.
+- Follow-up: Остальные 16 M2 tasks, включая PAOS-0036, остаются planned; commercial repeat review PAOS-0030. Эта карточка не закрывает весь M2.
 
 
 ### Task `PAOS-0036`
@@ -2016,14 +2018,14 @@ Rollback будущих изменений: versioned proposal, revision check, 
 ### Task `PAOS-0038`
 
 - Task: Linked Issues и блокирующие зависимости
-- Status: planned
+- Status: implemented
 - Delivery stage: M2
 - Execution order: 28
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Jira-informed issue model, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 11-11-2026 22:40
 - Depends on: PAOS-0031, PAOS-0007
 - Blocks: PAOS-0024, PAOS-0028
 - Source: PRD §14; TM-23
@@ -2041,22 +2043,22 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; verification skills selected for implementation
 - Output artifacts: apps/local-service/src/issue-links; apps/web/src/features/tasks/links; packages/contracts/issue-links
-- Next step: Завершить Depends on, зафиксировать contract/tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Next step: Следующий неисполненный M2 scope — PAOS-0036; он требует отдельной команды владельца.
+- Actual time: общий cohort начат 11-11-2026 20:41 MSK; проверен 11-11-2026 22:40 MSK. Start/duration отдельно по карточкам не измерены, null сохранён.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
-- Affected files: proposed paths above; actual create/modify/delete recorded after execution.
+- Affected files: packages/contracts/issues/task-profile.ts; apps/local-service/src/task-manager/service.mts; apps/local-service/src/storage/sqlite-worker.mts; apps/local-service/src/commands/domain-tools.mts; apps/local-service/src/runtime/app-agent-gateway.mts; apps/web/src/features/tasks/Panels.tsx. Actual operations — matching JSON task.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Canonical typed/inverse links, DAG/cycle path/canonical duplicates, mixed legacy preservation, cancelled blocker остаётся blocking; pending Stop закреплён за original run до ACK.
+- Files touched / work locations: packages/contracts/issues/task-profile.ts; apps/local-service/src/task-manager/service.mts; apps/local-service/src/storage/sqlite-worker.mts; apps/local-service/src/commands/domain-tools.mts; apps/local-service/src/runtime/app-agent-gateway.mts; apps/web/src/features/tasks/Panels.tsx.
+- Technical value delivered: Canonical typed edges, inverse display, DAG blocking и авторство; транзакционные guards и regression checks реализованы.
+- Product value delivered: Пользователь и агенты связывают работы и понимают, что мешает продолжению.
+- Actual implementation date and time: 11-11-2026 22:40
+- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](product-agent-os-web-m2-results-2026-11-11.json).
+- Residual risks: local App-active technical scope; active consumer required, sandbox только PAOS-mediated commands. Human/commercial/release acceptance и AUTH-G1–G6 отдельно; narrow Markdown subset обозначен в UI.
+- Follow-up: Остальные 16 M2 tasks, включая PAOS-0036, остаются planned; commercial repeat review PAOS-0030. Эта карточка не закрывает весь M2.
 
 ### Task `PAOS-0039`
 
@@ -2388,18 +2390,18 @@ Rollback будущих изменений: versioned proposal, revision check, 
 ### Task `PAOS-0046`
 
 - Task: Коммерческий review API-варианта и выпускные gates
-- Status: planned
+- Status: implemented
 - Delivery stage: POST_M1
 - Execution order: 19
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-selected single-window Codex App Server, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 11-11-2026 20:37
 - Depends on: PAOS-0045
 - Blocks: PAOS-0030, PAOS-0047
 - Source: PRD §15 SW-01–12; auth/commercial AUTH-G1–G6
-- Short description: Сразу после приёмки M1 проверить коммерческий API route, AUTH-G1–G6, рынки/privacy/licenses/payer; зарегистрировать ограничения и gates повторной проверки перед выпуском
+- Short description: Ранний commercial review текущего App-agent default, BYOK/SIWC compatibility, AUTH-G1–G6 и release obligations до M2
 - Technical value: Проверить AUTH-G1–G6, выбранные рынки, privacy, distribution licenses, payer, support и owner decision
 - Product value: Коммерческий пакет честно описывает подключение, затраты и ограничения.
 - Scope: research/product-agent-os-web-auth-commercial-2026-11-09.md; docs/release/web-commercial-review
@@ -2413,22 +2415,22 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: product-manager, release-operator, security-privacy-supply-chain-reviewer
 - Skills: implementation-planner; task-matching skills selected at start
 - Output artifacts: research/product-agent-os-web-auth-commercial-2026-11-09.md; docs/release/web-commercial-review
-- Next step: Подтвердить зависимости, доступность route и отдельный implementation scope
-- Actual time: not_started; start/end/duration = null.
+- Next step: В авторизованном PAOS-M2 чате начать PAOS-0031 и согласованную очередь по dependencies; commercial gates повторно закрываются в PAOS-0030, SIWC только после admission.
+- Actual time: 00:28:12 elapsed от первого current clock sample; параллельное время агентов не суммируется.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-auth-commercial-2026-11-09.md
 - Affected files: proposed paths above; actual create/modify/delete receipts only after execution.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Проверены11 source groups и текущая реализация; составлены6 AUTH gate rows и8 release gaps с owners/blocks. App bridge commercial qualification unresolved; локальная инженерная M2 может продолжаться. No API key, runtime/policy/publication change.
+- Files touched / work locations: research/product-agent-os-web-commercial-review-2026-11-11.md; docs/release/web-commercial-review.json; research/product-agent-os-web-auth-commercial-2026-11-09.md; source-owned card/JSON; paired registries; REQUIREMENTS/PLAN/TEST/RUNLOG.
+- Technical value delivered: Подтверждённые факты, inferred applicability и pending admission разделены; отсутствует ложная эквивалентность App Server auth, API Customer Applications и собственного App bridge.
+- Product value delivered: Перед M2 определены границы payer/data/license/distribution/support; закрытие исследования отделено от commercial approval.
+- Actual implementation date and time: 11-11-2026 20:37
+- Verification evidence: Official sources retrieved2026-11-11; independent bounded review closed_allowed; auth-route2/2 +4 negative assertions; docs105/105,8.865s/checker/matrix/diff0. [Review и точный provenance](product-agent-os-web-commercial-review-2026-11-11.md), machine release packet docs/release/web-commercial-review.json. M1 runtime receipts не запускались повторно.
+- Residual risks: Commercial release blocked AUTH-G1–G6/C46-01–08: entity/markets/license/bridgequalification/notices/privacy/retention/hostusage/support. No full gate passed; это не blocker текущего local engineering M2.
+- Follow-up: Owner-authorized command в PAOS-M2 только после текущих mandatory checks; PAOS-0030 rechecks all applicable release gaps, PAOS-0047 remains admission-gated.
 
 
 ### Task `PAOS-0047`

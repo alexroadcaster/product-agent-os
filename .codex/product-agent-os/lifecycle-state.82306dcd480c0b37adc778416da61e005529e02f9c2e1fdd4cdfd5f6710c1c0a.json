@@ -1,21 +1,23 @@
 {
   "session_id": "01a1c594-4b86-7311-afaf-fccb4e0f0096",
-  "task_id": "PAOS-M1",
+  "task_id": "PAOS-0046",
+  "previous_task_id": "PAOS-M1",
   "plan_path": "research/product-agent-os-web-task-manager-plan-2026-11-09.md",
-  "scope": "Dependency-ordered local Web M1 implementation from PAOS-0001 and PAOS-0054 through PAOS-0045",
-  "updated_at": "2026-11-11T17:02:09.765580+00:00",
-  "approval_boundary": "Completed owner-selected App-active synthetic M1: actual App worker/model plus qualified offline native command broker and autonomous local browser allowed. No separate API key/auth-cache read/copy/system-policy/user-app termination/install/Git/publication actions. Sandbox scope is PAOS-mediated commands only.",
-  "status": "completed",
+  "scope": "Implement PAOS-0046 source-backed commercial review artifacts and task/control-plane sync; runtime read-only.",
+  "updated_at": "2026-11-11T17:40:18.229707+00:00",
+  "current_approval_boundary": "Local review artifacts and docs checks only; public official-source retrieval and up to two read-only agents. No API key, credentials, provider tests, browser, system policies, installations, external writes, Git or publication.",
+  "approval_boundary": "PAOS-0046 local review artifacts and docs checks; public official-source retrieval; up to two read-only agents. User authorizes one follow-up command to existing PAOS-M2 chat after verified closure. No API key, credentials, provider tests, browser, system policies, installations, other external writes, Git or publication.",
+  "status": "ready_for_completion_ledger",
   "completion_ready": true,
-  "current_continuation_scope": "Completed scoped technical M1 acceptance after WSA diagnosis, offline native broker, actual App worker execution/recovery and browser task/data acceptance. No mandatory technical gaps remain within PRD17.7 scope.",
-  "closure": "M1 technical18/18 implemented. ActualApp/native/browser105;task39;data25;headless33;nativebroker149162 allmode write deny/Stop12ms;Web306skip0;strict/build0;workload10k/100k/1k3measuredtargets passed;manifest6+loader0;docs105/15.013s/checker/matrix/diff0. Independent two-stage Astra review closed_allowed. CAS roots synced;52otherJSON/MDtasks and estimates preserved. Historicalfailedreceipts/ownerrejection retained. ActiveAppconsumer required; noDesktopdaemon/automaticWakeup/wholeAppsandbox/hostprincipalquota/humancommercialrelease claim. NextPAOS-0046.",
+  "current_continuation_scope": "Completed PAOS-0046 source-backed review and explicit user-authorized start command to existing PAOS-M2. Shared-source ownership handed off; source chat writes only its own receipt/marker after dispatch.",
+  "prior_m1_closure": "M1 technical18/18 implemented. ActualApp/native/browser105;task39;data25;headless33;nativebroker149162 allmode write deny/Stop12ms;Web306skip0;strict/build0;workload10k/100k/1k3measuredtargets passed;manifest6+loader0;docs105/15.013s/checker/matrix/diff0. Independent two-stage Astra review closed_allowed. CAS roots synced;52otherJSON/MDtasks and estimates preserved. Historicalfailedreceipts/ownerrejection retained. ActiveAppconsumer required; noDesktopdaemon/automaticWakeup/wholeAppsandbox/hostprincipalquota/humancommercialrelease claim. NextPAOS-0046.",
   "prior_autonomous_closure": "Previouscontinuation0004/0040 technicalimplemented: initial401UI/autonomouslauncher56/Web197; nativeclosedApp25samples/humanrejection retained, standinglocal authorization andrequestedmemorynote saved.",
   "prior_ui_closure": "Previous continuation0004 implemented after667 browser checks;0040 external runner prepared but actual receipt not yet available. Subsequent owner receiptBVldIt retained unchanged including rejection.",
   "prior_five_task_closure": "Previous offline repair continuation: Web192/192, native headless33, docs209; five tasks in_progress. Its original receipts and source provenance retained in execution report/results.",
   "prior_native_auth_closure": "Previous continuation qualified PAOS-0041 native local auth, one fixture vault roundtrip cleaned; profile identity and SQLite drain fixed. Web166/166 and previous headless33 passed. Receipts retained in execution report/results with their original source provenance.",
   "previous_implementation_closure": "Initial continuation: 11 implemented,6 in_progress,PAOS-0045 blocked; native vault rejected then not executed. Superseded only for the separately authorized fixture by the present continuation.",
   "previous_closure": "Second isolated stdio run verified project history and observed Windows readiness notConfigured. Evidence in the existing Web M1 qualification report.",
-  "brief_digest": "sha256:33dfb6ec40267e5c201dedfdbfc58f01a8e64d31f3a19d94db7f44da8e6bc1a0",
+  "brief_digest": "sha256:8ee7468d6880fad443ad2a5fbe88b5b0bb2860040c379ee31d9f559b90d10f0e",
   "brief_schema_version": "task_start_brief_v2",
   "brief_format": "bold_fields",
   "brief_fields_present": [
@@ -35,12 +37,12 @@
     "work_type": "implementation",
     "size": "large",
     "risk": "high",
-    "financially_material": false,
-    "release_or_readiness": true,
+    "financially_material": true,
+    "release_or_readiness": false,
     "explicit_packet_request": false,
-    "reason": "Full implementation/acceptance request for App-agent route. Nine-field brief shown. Authorized actual model work through Codex App and autonomous local synthetic checks; no separate API key or hidden auth reuse."
+    "reason": "Execute planned PAOS-0046 by implementing commercial review documents and tracked decisions; runtime remains read-only. Nine-field brief shown, no API key or external actions."
   },
-  "checks": {
+  "prior_m1_checks_historical": {
     "web": "238/238,0skipped,current App implementation,8.2812651s",
     "strict": "exit0",
     "build": "exit0,36modules,index-Cfgug4Ze.js305.39kB/gzip92.85",
@@ -61,18 +63,20 @@
     "manifest_compatibility": "6/6,afterpinrefresh"
   },
   "evidence_refs": [
-    "research/product-agent-os-web-m1-execution-2026-11-11.md",
-    "research/product-agent-os-web-m1-execution-results-2026-11-11.json",
-    "packages/contracts/runtime/qualified-manifest.json"
+    "research/product-agent-os-web-commercial-review-2026-11-11.md",
+    "docs/release/web-commercial-review.json",
+    "research/product-agent-os-web-auth-commercial-2026-11-09.md",
+    ".tmp/paos-0046/validation-result.json",
+    ".tmp/paos-0046/handoff-receipt.json"
   ],
-  "control_plane_sync": "Reviewed CAS51e340dbcdc73de373d40020c846c6ccde1cdf4a614ddac6ca1deccd65a00cb2 applied REQUIREMENTS/PLAN/TEST/RUNLOG; source-owned5route/carddocs and pairedregistries/report/results updated. AGENTS/EVALS/prod_test no_change_needed. Rootsizes<40000bytes.",
+  "control_plane_sync": "Reviewed final CAS0a73c07e47c0ff3abf7dbbda1927ff45178838d45f4cbdd9bf7823ebaa7155f6 applied fourrootdocs; initial ownCAS0c6 restored to correct internal report placement. AGENTS/EVALS/prod_test no_change_needed. No shared root writes after M2 dispatch.",
   "previous_elapsed_wall_seconds": [
     7911,
     3996
   ],
-  "elapsed_wall_seconds": 2506,
-  "elapsed_scope": "First current clock sample through final evidence metadata; initial reads and brief excluded. 2026-11-11T14:25:48Z -> 2026-11-11T15:07:34.729160+00:00",
-  "residual_gates": [
+  "elapsed_wall_seconds": 1880,
+  "elapsed_scope": "First current clock2026-11-11T17:08:58UTC through handoff acknowledgement and lifecycle closure; initial reads excluded; parallel agent time not summed.",
+  "prior_app_pull_gates_historical": [
     "Supported PAOS-driven unattended App-agent wakeup/host transport; public proxy WSA10050",
     "Native scoped Execution/approval boundary for App worker; server-blocked",
     "Full real execution Stop/recovery and complete0042/43/44journey",
@@ -82,6 +86,58 @@
   "brief_digest_scope": "normalized scope record; visible nine-field task_start_brief_v2 delivered in chat",
   "prior_app_pull_closure": "PAOS-0039 App route implemented and activated: actual PAOS UI -> attached real Codex App worker -> durable/browser-visible answer16/16. Web238/238no skips;strict/build0;fixture55;browser669;headless33;manifest+compat6;docs105/22.007s/checker/matrix/diff0. Independent review verified17source/buildhashes,4receipts,51adapterfiles.0042/43/44in_progress;0045blocked. No fullM1/human/nativeSandbox/unattendedWakeup claim. Failed receipts/helperpost-teardownexit1 retained.",
   "closure_contract": "product-agent-os-completion-ledger-v2",
-  "closure_level": "technical_acceptance_passed_app_active",
-  "execution_elapsed_seconds": 6562
+  "previous_closure_level": "technical_acceptance_passed_app_active",
+  "execution_elapsed_seconds": 1880,
+  "prior_m1_control_plane_sync": "Reviewed CAS51e340dbcdc73de373d40020c846c6ccde1cdf4a614ddac6ca1deccd65a00cb2 applied REQUIREMENTS/PLAN/TEST/RUNLOG; source-owned5route/carddocs and pairedregistries/report/results updated. AGENTS/EVALS/prod_test no_change_needed. Rootsizes<40000bytes.",
+  "prior_m1_evidence_refs": [
+    "research/product-agent-os-web-m1-execution-2026-11-11.md",
+    "research/product-agent-os-web-m1-execution-results-2026-11-11.json",
+    "packages/contracts/runtime/qualified-manifest.json"
+  ],
+  "prior_m1_execution_elapsed_seconds": 6562,
+  "completion_brief_shown": false,
+  "closure_level": "docs_static_verified_early_commercial_review",
+  "closure": "PAOS-0046 implemented as bounded early review. Eleven official/local source groups, six AUTH gates and eight C46 release gaps have evidence/owners/blocks. Commercial qualification of exact App-agent bridge unresolved; current no-key local engineering M2 may proceed. Docs105/1058.865s;auth-route2/2+fournegative assertions;checker/matrix/diff+artifactvalidation0. Independent reviewer separate_reused_context closed_allowed;55other taskobjects/blocks and estimates preserved. No runtime/key/credential/systempolicy/Git/testguard/nav changes. User-authorized M2 command delivered; target active and explicitly started PAOS-0031 in ten-taskqueue.",
+  "checks": {
+    "docs": "105/105,8.865s,exit0",
+    "auth_route": "2/2,117.8079ms,exit0",
+    "negative_commercial_routes": "4 direct assertions passed",
+    "checker": "exit0",
+    "matrix": "exit0,errors[]",
+    "diff": "exit0,normalizationwarningsonly",
+    "artifact": "6gates/8gaps/11sourcegroups;55otherobjects/blocks and estimates unchanged"
+  },
+  "remaining_required_review_gates": [],
+  "release_gates_not_promoted": [
+    "AUTH-G1–G6",
+    "C46-01–08",
+    "human product acceptance",
+    "PAOS-0030 release recheck"
+  ],
+  "handoff": {
+    "schema_version": 1,
+    "source_task": "PAOS-0046",
+    "target_thread": "01a1cb91-c2df-7d13-97fe-64e981d02d42",
+    "host_id": "local",
+    "target_turn_id": "01a1cbb0-ca64-7121-9230-1111f79c80b6",
+    "delivery": "accepted",
+    "observed_status": "active",
+    "acknowledged_start": "PAOS-0031",
+    "authorized_by": "explicit user instruction in source chat",
+    "verified_at": "2026-11-11T17:40:18.229707+00:00",
+    "scope": [
+      "PAOS-0031",
+      "PAOS-0032",
+      "PAOS-0033",
+      "PAOS-0005",
+      "PAOS-0006",
+      "PAOS-0007",
+      "PAOS-0008",
+      "PAOS-0034",
+      "PAOS-0038",
+      "PAOS-0035"
+    ],
+    "commercial_release_authorized": false,
+    "shared_control_plane_writes_by_source_after_dispatch": false
+  }
 }

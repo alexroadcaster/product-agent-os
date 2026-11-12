@@ -1,7 +1,8 @@
 import { createHash } from 'node:crypto';
 import type { LocalStore } from '../storage/local-store.mts';
-import { decodeM1TaskProfile } from '../tasks/task-profile.ts';
+import { decodeTaskProfile as decodeM1TaskProfile } from '../../../../packages/contracts/issues/task-profile.ts';
 import type { RuntimeBinding, RuntimeRun } from '../runtime/codex/coordinator.ts';
+import { taskManagerSnapshot,pinBlockingRun } from '../task-manager/service.mts';
 
 type ToolRequest = { tool: string; arguments: unknown; binding: RuntimeBinding; run: RuntimeRun; requestId: string | number };
 const schemas = {
@@ -26,7 +27,7 @@ function canonicalJson(value: unknown): string {
 }
 
 /** Runtime supplies scope and actor. Model arguments can never change project, mode, target or authority. */
-export function createDomainTools({ store }: { store: LocalStore }) {
+export function createDomainTools({ store,onPendingLink }: { store: LocalStore;onPendingLink?:(input:{projectId:string;linkId:string})=>Promise<unknown> }) {
   return { specifications: domainToolSpecifications, async dispatch(request: ToolRequest) {
     if (!Object.hasOwn(schemas, request.tool)) fail('TOOL_UNSUPPORTED');
     if (!request.arguments || typeof request.arguments !== 'object' || Array.isArray(request.arguments)
@@ -49,12 +50,14 @@ export function createDomainTools({ store }: { store: LocalStore }) {
     if (previous) {
       const operation = await store.get(project.id, operationId);
       if (operation?.data.inputHash !== inputHash) fail('IDEMPOTENCY_CONFLICT');
+      if(typeof operation.data.linkId==='string'&&onPendingLink){try{await onPendingLink({projectId:project.id,linkId:operation.data.linkId});}catch{/* The canonical edge remains visibly pending; retry never targets a successor run. */}}
       return previous;
     }
-    const commit = (changes: Parameters<LocalStore['write']>[0]['changes']) => store.write({ projectId: project.id, actorId,
+    const commit = (changes: Parameters<LocalStore['write']>[0]['changes'],m2Transition=false,linkId?:string) => store.write({ projectId: project.id, actorId,
+      ...(m2Transition?{taskManagerAction:'transition' as const,taskManagerReason:'Bound agent transition',taskManagerRun:{id:run.id,bindingId:binding.id,generation:binding.generation,taskId:run.taskId!}}:{}),
       idempotencyKey, expectedAuthorityEpoch: project.authorityEpoch, changes: [...changes,
         { expectedRevision: 0, entity: { id: operationId, kind: 'evidence', coverage: 'partial',
-          data: { category: 'domain_command_receipt', observed: false, inputHash, runId: run.id } } }] });
+          data: { category: 'domain_command_receipt', observed: false, inputHash, runId: run.id,...(linkId?{linkId}:{}) } } }] });
     if (request.tool === 'task_propose') {
       if (typeof args.title !== 'string' || !args.title.trim() || (args.summary !== undefined && typeof args.summary !== 'string')
         || (args.acceptanceCriteria !== undefined && (!Array.isArray(args.acceptanceCriteria)
@@ -66,12 +69,14 @@ export function createDomainTools({ store }: { store: LocalStore }) {
     if (typeof args.taskId !== 'string') fail('TOOL_ARGUMENTS_INVALID');
     const target = await store.get(project.id, args.taskId);
     if (!target || target.kind !== 'task') fail('TASK_NOT_FOUND');
-    if (request.tool === 'task_read') return target;
+    if (request.tool === 'task_read') return target.data.schemaVersion==='m2_task_profile_v1'||(typeof store.compatibility==='function'&&(await store.compatibility()).schemaVersion===2)
+      ?{...target,issueLinks:(await taskManagerSnapshot(store,project.id)).links.filter(l=>l.sourceId===target.id||l.targetId===target.id)}:target;
     if (binding.mode !== 'execution' || run.taskId !== target.id || !run.scopeDigest) fail('TOOL_WRITE_FORBIDDEN');
     if (request.tool === 'task_comment') {
       if (typeof args.body !== 'string' || !args.body.trim()) fail('TOOL_ARGUMENTS_INVALID');
       return commit([{ expectedRevision: 0, entity: { id: `comment-${entityId}`, kind: 'comment', parentId: target.id,
-          body: args.body, data: { category: 'agent_comment', source: 'agent_assertion', runId: run.id } } }]);
+          body: args.body, data: { category: target.data.schemaVersion==='m2_task_profile_v1'?'m2_agent_comment':'agent_comment', source: 'agent_assertion', runId: run.id,
+            ...(target.data.schemaVersion==='m2_task_profile_v1'?{actorId,createdAt:new Date().toISOString(),sessionId:binding.sessionId}:{}) } } }]);
     }
     if (request.tool === 'evidence_reference') {
       if (typeof args.evidenceId !== 'string') fail('TOOL_ARGUMENTS_INVALID');
@@ -94,9 +99,22 @@ export function createDomainTools({ store }: { store: LocalStore }) {
       if (typeof args.toTaskId !== 'string' || !['related', 'blocks', 'blocked_by'].includes(String(args.relation))) fail('TOOL_ARGUMENTS_INVALID');
       const other = await store.get(project.id, args.toTaskId);
       if (!other || other.kind !== 'task') fail('TASK_NOT_FOUND');
+      if(target.data.schemaVersion==='m2_task_profile_v1'||other.data.schemaVersion==='m2_task_profile_v1'
+        ||(typeof store.compatibility==='function'&&(await store.compatibility()).schemaVersion===2)){
+        const snapshot=await taskManagerSnapshot(store,project.id);
+        let sourceId=target.id,targetId=other.id;if(args.relation==='blocked_by')[sourceId,targetId]=[targetId,sourceId];
+        const relation=args.relation==='related'?'relates_to' as const:'blocks' as const;
+        const pin=relation==='blocks'?pinBlockingRun(await store.projectEntities(project.id),targetId):undefined;
+        const link={id:`agent-link-${entityId}`,sourceId,targetId,relation,actorId,createdAt:new Date().toISOString(),reason:'Agent task link',source:`agent:${run.id}`,
+          state:pin?'pending' as const:'active' as const,...(pin?{blockedRun:pin,requiredAction:'stop_and_reconcile_then_activate' as const}:{})};
+        const receipt=await commit([{expectedRevision:target.revision,entity:{id:target.id,kind:'task',data:target.data}},
+          {expectedRevision:snapshot.settingsRevisions.links,entity:{id:'m2-links',kind:'settings',data:{items:[...snapshot.links,link]}}}],false,link.id);
+        if(pin&&onPendingLink){try{await onPendingLink({projectId:project.id,linkId:link.id});}catch{/* A committed pending edge still fences new work and remains available for explicit Stop retry. */}}
+        return receipt;
+      }
       changed = { links: [...(target.data.links as unknown[]), { relation: args.relation, taskId: other.id, projectId: project.id }] };
     }
     const task = decodeM1TaskProfile({ ...target.data, ...changed });
-    return commit([{ expectedRevision: target.revision, entity: { id: target.id, kind: 'task', data: task } }]);
+    return commit([{ expectedRevision: target.revision, entity: { id: target.id, kind: 'task', data: task } }],task.schemaVersion==='m2_task_profile_v1'&&task.status!==target.status);
   } };
 }

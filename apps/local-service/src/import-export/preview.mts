@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
 import { decodeM1TaskProfile } from '../tasks/task-profile.ts';
+import { decodeTaskProfile, type TaskProfile } from '../../../../packages/contracts/issues/task-profile.ts';
 import { M1_TASK_STATUSES, type M1TaskProfile, type M1TaskStatus } from '../../../../packages/contracts/tasks/m1-task-profile.ts';
 
 export type ImportSourceInput = { role: 'records' | 'projection'; sourceName: string; sourceRelativePath?: string; content: string };
@@ -76,7 +77,7 @@ export type ImportPreview = {
   sources?: ImportSourcePin[];
   proposal?: { baseAuthorityEpoch: number; baseStreamGeneration: string; baseThroughSeq: number;
     baseRevisions: Record<string, number>; requiresCurrentSnapshot: true };
-  items: { sourceId: string; task: M1TaskProfile }[];
+  items: { sourceId: string; task: TaskProfile }[];
   blocked: { sourceId: string; reasons: string[] }[];
 };
 
@@ -196,12 +197,12 @@ function normalizedProposal(projectId: string, sourceName: string, content: stri
   for (const [field, value] of Object.entries(parsed)) {
     if (!allowed.has(field) && value != null && value !== '') result.blocked.push({ sourceId: '_document', reasons: [`unsupported:${field}`] });
   }
-  const tasks: M1TaskProfile[] = [];
+  const tasks: TaskProfile[] = [];
   const ids = new Map<string, number>();
   const keys = new Map<string, number>();
   for (const [index, input] of parsed.tasks.entries()) {
     try {
-      const task = decodeM1TaskProfile(input);
+      const task = decodeTaskProfile(input);
       if (task.projectId !== projectId || !Object.hasOwn(baseRevisions, task.id)) throw invalid();
       tasks.push(task);
       ids.set(task.id, (ids.get(task.id) ?? 0) + 1);

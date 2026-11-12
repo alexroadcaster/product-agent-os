@@ -2,6 +2,10 @@ import type {
   UiPreferences,
   UiPreferencesStore,
 } from "../design/preferences.ts";
+import type {ManagerSnapshot} from '../../../../packages/contracts/issues/manager.ts';
+
+export type TaskReference = {availability:'available'|'unavailable'|'stale';relativePath:string;revision?:string;expectedRevision?:string;reason?:string;content?:string;redacted?:boolean};
+export type FullProfileArchive = {format:string;backupId:string;manifest:unknown;restoreEndpoint:string};
 
 export type EntityKind =
   | "task"
@@ -15,6 +19,8 @@ export type EntityKind =
   | "approval"
   | "document";
 export type StoredEntity = {
+  updatedAt?:string;
+  blobIds?:readonly string[];
   journalOrder?: number;
   id: string;
   projectId: string;
@@ -164,6 +170,14 @@ export type ImportPreview = {
   blocked: { sourceId: string; reasons: string[] }[];
 };
 export interface M1Api {
+  taskManager(projectId:string,signal?:AbortSignal):Promise<ManagerSnapshot<StoredEntity>>;
+  taskManagerCommand(projectId:string,input:Record<string,unknown>,idempotencyKey?:string):Promise<Record<string,unknown>>;
+  stopPendingLink(projectId:string,linkId:string):Promise<{stopRequested:boolean}>;
+  uploadAttachment(projectId:string,taskId:string,revision:number,file:{filename:string;mediaType:string;base64:string},idempotencyKey?:string):Promise<unknown>;
+  attachmentUrl(projectId:string,taskId:string,attachmentId:string):string;
+  taskReference(projectId:string,input:{taskId:string;relativePath:string;revision?:string|null}):Promise<TaskReference>;
+  exportFullProfile(projectId:string):Promise<FullProfileArchive>;
+  restoreFullProfile(projectId:string,backupId:string):Promise<{restoreId:string;requiresRestart:boolean;activeProfileChanged:boolean}>;
   pair(code?: string): Promise<void>;
   quit(): Promise<{ status: "quit_requested" }>;
   projects(): Promise<Project[]>;
@@ -319,11 +333,13 @@ export interface M1Api {
 export class HttpApiError extends Error {
   readonly status: number;
   readonly code?: string;
-  constructor(status: number, code?: string) {
+  readonly cyclePath?: readonly string[];
+  constructor(status: number, code?: string, cyclePath?: readonly string[]) {
     super(`HTTP ${status}${code ? `: ${code}` : ""}`);
     this.name = "HttpApiError";
     this.status = status;
     this.code = code;
+    this.cyclePath = cyclePath;
   }
 }
 
@@ -352,7 +368,7 @@ export function createHttpApi(fetcher: typeof fetch = fetch): M1Api {
     });
     if (!response.ok) {
       const error = (await response.json().catch(() => null)) as {
-        error?: { code?: unknown };
+        error?: { code?: unknown; details?: {cyclePath?:unknown} };
       } | null;
       const code = error?.error?.code;
       const safeCode =
@@ -363,7 +379,9 @@ export function createHttpApi(fetcher: typeof fetch = fetch): M1Api {
         csrfToken = undefined;
         epochs.clear();
       }
-      throw new HttpApiError(response.status, safeCode);
+      const path=error?.error?.details?.cyclePath;
+      const safePath=Array.isArray(path)&&path.length<=256&&path.every(id=>typeof id==='string'&&/^[A-Za-z0-9_-]{1,100}$/.test(id))?path as string[]:undefined;
+      throw new HttpApiError(response.status, safeCode,safePath);
     }
     if (response.status === 204) return undefined as T;
     return response.json() as Promise<T>;
@@ -379,6 +397,18 @@ export function createHttpApi(fetcher: typeof fetch = fetch): M1Api {
     };
   }
   return {
+    taskManager:(projectId,signal)=>request(`${projectPath(projectId)}/task-manager`,undefined,'GET',signal),
+    stopPendingLink:(projectId,linkId)=>request(`${projectPath(projectId)}/task-manager/links/${encodeURIComponent(linkId)}/stop`,{}),
+    taskManagerCommand:(projectId,input,idempotencyKey=crypto.randomUUID())=>{
+      if(!epochs.has(projectId))return Promise.reject(new Error('Project authority is unverified'));
+      return request(`${projectPath(projectId)}/task-manager/commands`,{...input,expectedAuthorityEpoch:epochs.get(projectId),idempotencyKey});
+    },
+    uploadAttachment:(projectId,taskId,revision,file,idempotencyKey=crypto.randomUUID())=>
+      request(`${projectPath(projectId)}/tasks/${encodeURIComponent(taskId)}/attachments`,{...file,...authority(projectId,revision),idempotencyKey}),
+    attachmentUrl:(projectId,taskId,attachmentId)=>`/api/v1${projectPath(projectId)}/tasks/${encodeURIComponent(taskId)}/attachments/${encodeURIComponent(attachmentId)}`,
+    taskReference:(projectId,input)=>request(`${projectPath(projectId)}/task-manager/reference`,input),
+    exportFullProfile:projectId=>request(`${projectPath(projectId)}/task-manager/export`,{}),
+    restoreFullProfile:(projectId,backupId)=>request(`${projectPath(projectId)}/task-manager/import-backup`,{backupId}),
     quit: () => request("/quit", {}),
     async pair(code) {
       const session = await request<{ csrfToken: string }>(

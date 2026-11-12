@@ -2,7 +2,7 @@
 
 Актуализация 11-11-2026: Codex App agents — выбранный owner-default маршрут без API key; его текущий контракт и предел доказательств приведены в новом App-agent addendum в конце документа. Прежний API-only/closed-App baseline ниже сохранён как история и explicit compatibility; он не определяет новый default.
 
-Source status: official documentation checked 2026-11-09 / project-authored design. Версия: 0.7; auth mechanism: §7. Документация, не реализация и не разрешение на коммерческий запуск.
+Source status: initial official-documentation baseline checked 2026-11-09; current commercial review checked 2026-11-11 in §10. Версия baseline:0.7; текущий default — App-active §8.1. Исторические API-only/16-check/blocked-M1 statements ниже не переопределяют принятую M1 и новый review; разрешение на коммерческий запуск не выдано.
 
 Owning requirement: [PRD §15](product-agent-os-web-prd-2026-11-05.md#15-единое-окно-и-codex-app-server--v04); architecture contracts: [архитектура §19](product-agent-os-web-architecture-2026-11-05.md#19-единое-окно-runtime-и-авторизация--v04); tasks: [G11](product-agent-os-web-task-manager-plan-2026-11-09.md). Источники WEB-AUTH-01–09 перечислены ниже и в RU/EN registry.
 
@@ -138,3 +138,15 @@ PAOS-0039 остаётся implemented только в контракте выб
 Source status: local implementation clarification, 2026-11-11; [PRD §17.7](product-agent-os-web-prd-2026-11-05.md#177-уточнение-app-active-execution--2026-11-11) owns acceptance. Модель работает в attached Codex App agent с его host account. Отдельный offline native command broker не запускает model turns, не импортирует App authentication и не требует API key. PAOS domain approval не подтверждает OpenAI entitlement или native provider approval. Lease/profile isolation не является проверкой реального ChatGPT sign-out/account-switch.
 
 Существующий Desktop daemon transport остаётся неквалифицированным; проверка broker не меняет этот статус. При недоступном host или истёкшей lease работа запрещена, fallback на API payer отсутствует. Не обещаются unlimited usage и работа после остановки App consumer. AUTH-G1–G6, PAOS-0046/0030, distribution rights и human product acceptance сохраняют отдельных владельцев и gates. Текущие receipts и source pins принадлежат [отчёту](product-agent-os-web-m1-execution-2026-11-11.md).
+
+## 10. PAOS-0046 — ранний commercial review перед M2, 2026-11-11
+
+Source status: current official-source review and repository inspection; [канонический review-пакет](product-agent-os-web-commercial-review-2026-11-11.md) владеет source matrix C46-S01–11, AUTH-G1–G6 evidence/owners, gap register C46-01–08 и verification.
+
+Техническая M1 принята в App-active scope PRD§17.7; её прежние receipts не являются коммерческим допуском. Ранний PAOS-0046 различает `review completed` и `commercial release blocked`. Закрытие задачи означает выполнение её review acceptance с управляемыми выпускными пробелами; оно не превращает все AUTH gates в passed.
+
+Решение перед M2: продолжать локальную инженерную разработку с текущим `codex_app_agent` owner-default, без API key и без смены payer. Commercial qualification **конкретного App-agent bridge** остаётся unresolved: прямое ограничение App Server authentication не доказывает ни blanket ban bridge, ни exemption из account-access/extraction terms. Для `local_api_byok` использование apiKey RPC не отменяет широкого auth restriction; обычная API Customer Application — отдельный потенциальный architecture route, который этим review не активируется. SIWC остаётся unavailable/admission pending и optional PAOS-0047; форм и registration не выполнялось.
+
+AUTH-G1–G6 остаются release gates: определены owners и запреты по entity/markets/distribution, exact route qualification, account/model entitlement, privacy/secrets/retention, notices/license/packaging, payer/usage и support/upgrade/acceptance. M1 technical receipts закрывают только свой наблюдаемый scope. Root code остаётся неизменным, включая `commercial_review_required`; PAOS-0030 повторно проверяет актуальные условия и все применимые C46 gaps перед выпуском. Закрытие раннего review не снимает этот guard.
+
+После проверенного закрытия PAOS-0046 владелец отдельно разрешил передать команду в существующий PAOS-M2 чат. Первая очередь этого чата сохранена в review-пакете; это не разрешение на hosting, real-customer pilot или commercial distribution.

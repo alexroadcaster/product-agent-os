@@ -1,9 +1,11 @@
 import { parentPort, workerData } from 'node:worker_threads';
 import { createHash, randomUUID } from 'node:crypto';
 import { DatabaseSync } from 'node:sqlite';
-import { migrate } from './migrations/schema.mts';
-import { decodeM1TaskProfile } from '../tasks/task-profile.ts';
-import { createSnapshot, writeBlob } from './snapshot.mts';
+import { unlinkSync,realpathSync,lstatSync } from 'node:fs';
+import { resolve,join,dirname } from 'node:path';
+import { migrate,ensureM2Schema,databaseCompatibility } from './migrations/schema.mts';
+import { decodeTaskProfile as decodeM1TaskProfile, validateIssueGraph, validateReady, transitionAllowed, canonicalIssueLinks, type M2TaskProfile, type TaskProfile, type IssueLink } from '../../../../packages/contracts/issues/task-profile.ts';
+import { createSnapshot, writeBlob, readManagedBlob,blobDirectory } from './snapshot.mts';
 import { RANKED_SEARCH_SQL } from './search-queries.mts';
 import type { EntityKind, Project, PromoteLegacy, StoreWrite, StoredEntity } from '../../../../packages/contracts/storage/local-store.ts';
 
@@ -168,7 +170,17 @@ function write(command: StoreWrite, promotion?: PromoteLegacy) {
     const scope = project(command.projectId);
     if (!scope) fail('PROJECT_NOT_FOUND');
     if (scope.authorityEpoch !== command.expectedAuthorityEpoch) fail('AUTHORITY_CONFLICT');
-    if (command.requireIdle) assertIdle(scope.id);
+    // Check the pre-command state: the same atomic dispatch may insert its own run before its task row.
+    if(command.taskManagerRun){
+      const pin=command.taskManagerRun,row=get(scope.id,pin.id),run=(row?.data.runtimeRun??row?.data.appAgentRun) as any;
+      const taskId=run?.taskId??run?.taskContext?.taskId;
+      if(!row||row.kind!=='run'||!run||!['running','dispatching','awaiting_approval'].includes(row.status)||run.bindingId!==pin.bindingId
+        ||run.generation!==pin.generation||taskId!==pin.taskId||!command.actorId.startsWith('agent:')
+        ||!command.actorId.endsWith(`:${pin.id}`)||command.changes.some(c=>c.entity.kind==='task'&&(c.entity.id!==pin.taskId||['done','cancelled'].includes(String(c.entity.data?.status)))))fail('TOOL_SCOPE_INVALID');
+    }
+    if (command.requireIdle || (command.taskManagerAction&&!command.taskManagerRun)) assertIdle(scope.id);
+    if(command.changes.some(c=>c.entity.data?.schemaVersion==='m2_task_profile_v1'||c.entity.id.startsWith('m2-')
+      ||['m2_comment','managed_attachment'].includes(String((c.entity.data as any)?.category))))ensureM2Schema(db);
     if (promotion) {
       if(promotion.cutoverBackupId!==undefined&&(typeof promotion.cutoverBackupId!=='string'||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,199}$/.test(promotion.cutoverBackupId)))fail('BACKUP_INVALID');
       if (!promotion.writerInventoryVerified || !promotion.restoreRehearsalVerified) fail('CUTOVER_GATE_FAILED');
@@ -200,6 +212,10 @@ function write(command: StoreWrite, promotion?: PromoteLegacy) {
     const revisions = [];
     const commentChanges = [];
     const taskChanges:Array<Record<string,unknown>>=[];let historyBytes=0;
+    const issueGuardIds=new Set<string>();
+    const managerChanges:Array<Record<string,unknown>>=[];
+    // Only the atomic count below may assert an actual override; supplied receipt metadata is not evidence.
+    for(const change of command.changes){const data=change.entity.data as Record<string,unknown>|undefined;if(data?.category==='m2_command_receipt')delete data.wipOverride;}
     const now = new Date().toISOString();
     const seen = new Set<string>();
     const searchCounts = readSearchCounts(scope.id);
@@ -208,6 +224,10 @@ function write(command: StoreWrite, promotion?: PromoteLegacy) {
       text(input.id);
       if (seen.has(input.id)) fail('DUPLICATE_ENTITY');
       seen.add(input.id);
+      const old = db.prepare('SELECT revision,kind,public_key,title,body,status,data,coverage,deleted FROM entities WHERE project_id=? AND id=?').get(scope.id, input.id);
+      // Profile selection is itself an invariant: choosing the legacy decoder cannot remove M2 guards or fields.
+      if(input.kind==='task'&&old?.kind==='task'&&JSON.parse(old.data as string).schemaVersion==='m2_task_profile_v1'
+        &&input.data?.schemaVersion!=='m2_task_profile_v1')fail('PROFILE_DOWNGRADE_FORBIDDEN');
       if (input.kind === 'task' && scope.authorityMode !== 'sql' && !promotion) fail('LEGACY_AUTHORITY');
       if (input.kind === 'task') {
         let data = input.data;
@@ -221,16 +241,72 @@ function write(command: StoreWrite, promotion?: PromoteLegacy) {
         const number = Number(task.key.split('-')[1]);
         if (!Number.isSafeInteger(number) || number >= Number.MAX_SAFE_INTEGER) fail('TASK_KEY_OUT_OF_RANGE');
         db.prepare('UPDATE projects SET next_task_number=MAX(next_task_number,?) WHERE id=?').run(number + 1, scope.id);
-        input = { ...input, title: task.title, body: [task.summary, task.technicalValue, task.productValue, ...task.acceptanceCriteria].join('\n'), status: task.status, publicKey: task.key, data: task };
+        input = { ...input, ...(task.schemaVersion === 'm2_task_profile_v1' ? {parentId: task.parentId} : {}), title: task.title, body: [task.summary, task.technicalValue, task.productValue, ...task.acceptanceCriteria].join('\n'), status: task.status, publicKey: task.key, data: task };
       }
       if (Buffer.byteLength(input.body ?? '') > 1024 * 1024 && input.kind !== 'document') fail('CONTENT_TOO_LARGE');
-      const old = db.prepare('SELECT revision,kind,public_key,title,body,status,data,coverage,deleted FROM entities WHERE project_id=? AND id=?').get(scope.id, input.id);
       if (!Number.isSafeInteger(change.expectedRevision) || change.expectedRevision < 0
         || (old?.revision ?? 0) !== change.expectedRevision) fail('REVISION_CONFLICT');
       if (old && old.kind !== input.kind) fail('ENTITY_KIND_CONFLICT');
       if (old && input.kind === 'task' && old.public_key !== input.publicKey) fail('TASK_KEY_IMMUTABLE');
+      if(input.kind==='task'&&(!old||old.status!==input.status))issueGuardIds.add(input.id);
+      if(input.kind==='task'&&!promotion&&db.prepare('SELECT 1 FROM schema_migrations WHERE version=2').get()){
+        const profile=input.data as TaskProfile,prior=old?JSON.parse(old.data as string) as TaskProfile:null;
+        for(const ref of profile.links.filter(link=>link.relation!=='related'&&!prior?.links.some(old=>JSON.stringify(old)===JSON.stringify(link)))){
+          const targetId=ref.relation==='blocked_by'?profile.id:ref.taskId;
+          if(db.prepare(`SELECT 1 FROM entities WHERE project_id=? AND kind='run' AND deleted=0 AND status NOT IN ('completed','failed','interrupted')
+            AND (json_extract(data,'$.runtimeRun.taskId')=? OR json_extract(data,'$.appAgentRun.taskContext.taskId')=?) LIMIT 1`).get(scope.id,targetId,targetId))fail('ACTIVE_RUN_RECONCILIATION_REQUIRED');
+        }
+      }
       if (input.parentId && !get(scope.id, input.parentId)) fail('PARENT_SCOPE_CONFLICT');
-      if (input.parentId === input.id || (input.parentId && ['task','session','settings','document'].includes(input.kind))) fail('PARENT_KIND_CONFLICT');
+      if (input.parentId === input.id || (input.parentId && (['session','settings','document'].includes(input.kind)
+        || (input.kind === 'task' && input.data?.schemaVersion !== 'm2_task_profile_v1')))) fail('PARENT_KIND_CONFLICT');
+      if (input.kind === 'task' && input.data?.schemaVersion === 'm2_task_profile_v1') {
+        const task = input.data as M2TaskProfile;
+        const before = old ? JSON.parse(old.data as string) as TaskProfile : null;
+        if(!before||before.status!==task.status)issueGuardIds.add(task.id);
+        if(task.parentId&&(!before||(before as M2TaskProfile).parentId!==task.parentId))issueGuardIds.add(task.parentId);
+        if (before && JSON.stringify(before.creator)!==JSON.stringify(task.creator)) fail('CREATOR_IMMUTABLE');
+        if (before?.schemaVersion==='m2_task_profile_v1' && (before.createdAt!==task.createdAt || before.initiatedBy!==task.initiatedBy)) fail('CREATOR_IMMUTABLE');
+        if(before?.schemaVersion==='m2_task_profile_v1'){
+          const old=before as M2TaskProfile;
+          if(old.dueDate!==task.dueDate&&!command.taskManagerReason?.trim()&&!command.taskManagerReviewReason?.trim())fail('DUE_DATE_REASON_REQUIRED');
+          if(old.status==='done'&&task.status==='done'&&['summary','technicalValue','productValue','files','artifactReferences','acceptanceCriteria','criteriaEvidence','scopeExclusions','parentId','type','artifacts','fileContexts','estimateSeconds','blocker']
+            .some(field=>JSON.stringify((old as any)[field])!==JSON.stringify((task as any)[field])))fail('REOPEN_REQUIRED');
+          if(old.status===task.status&&old.resolution!==task.resolution&&!command.taskManagerAction)fail('TRANSITION_REQUIRED');
+          if(old.status===task.status&&['dependency_review','scope_review','recovery_review','acceptance_unverified'].some(flag=>old.risks.includes(flag)&&!task.risks.includes(flag))){
+            if(!command.taskManagerReviewReason?.trim()||command.actorId.startsWith('agent:'))fail('SYSTEM_REVIEW_REQUIRED');
+            issueGuardIds.add(task.id);
+          }
+        }
+        if(task.hotfixReason!==((before as M2TaskProfile|null)?.hotfixReason??null)&&command.taskManagerAction!=='transition')fail('HOTFIX_APPROVAL_REQUIRED');
+        if (!before && (task.status!=='backlog' || task.resolution!==null)) fail('INITIAL_STATUS_REQUIRED');
+        if (before && before.status!==task.status) {
+          if (!command.taskManagerAction || !transitionAllowed(before.status,task.status,command.taskManagerAction==='complete')) fail('TRANSITION_REQUIRED');
+          if (['done','cancelled'].includes(task.status) && !command.taskManagerReason?.trim()) fail('REASON_REQUIRED');
+          if (task.status==='done' && (!task.acceptanceCriteria.length || task.acceptanceCriteria.some(c=>!task.criteriaEvidence.some(e=>e.criterion===c&&e.outcome==='passed'&&e.evidence.trim())))) fail('CRITERIA_EVIDENCE_REQUIRED');
+          if(task.blocker&&['in_progress','done'].includes(task.status))fail('BLOCKER_RESOLUTION_REQUIRED');
+        }
+        if(before?.schemaVersion==='m2_task_profile_v1'&&task.blocker&&JSON.stringify(before.blocker)!==JSON.stringify(task.blocker))assertIdle(scope.id);
+        if ((task.status==='ready' || task.status==='in_progress')&&!(before?.schemaVersion==='m1_task_profile_v1'&&before.status===task.status&&task.risks.includes('recovery_review'))) validateReady(task);
+        const board=get(scope.id,'m2-board')?.data.value as any;
+        if(['ready','in_progress'].includes(task.status)&&(board?.releaseRequiredTypes?.includes(task.type)||board?.releaseRequiredComponents?.some((id:string)=>task.components.includes(id)))
+          &&!task.fixVersions.length&&!task.hotfixReason&&!command.taskManagerHotfixReason)fail('TARGET_RELEASE_REQUIRED');
+        if(before&&before.status!==task.status){
+          const column=board?.columns?.find((c:any)=>c.statuses.includes(task.status));
+          if(column?.wipLimit!==undefined&&!column.statuses.includes(before.status)){
+            const count=db.prepare("SELECT status FROM entities WHERE project_id=? AND kind='task' AND deleted=0 AND id<>?").all(scope.id,task.id).filter(r=>column.statuses.includes(r.status)).length;
+            if(count>=column.wipLimit&&column.wipMode==='hard')fail('HARD_WIP_LIMIT');
+            if(count>=column.wipLimit&&column.wipMode==='soft'){
+              const receipt=command.changes.find(c=>{const data=c.entity.data as Record<string,unknown>|undefined;return data?.category==='m2_command_receipt'&&data.action==='transition'&&data.taskId===task.id;})?.entity.data as Record<string,unknown>|undefined;
+              if(receipt?.softWipOverrideRequested!==true)fail('SOFT_WIP_CONFIRMATION_REQUIRED');
+              if(!command.taskManagerReason?.trim())fail('REASON_REQUIRED');
+              receipt.wipOverride={override:true,columnId:column.id,limit:column.wipLimit,count,actorId:command.actorId,reason:command.taskManagerReason};
+            }
+          }
+        }
+        if ((task.status==='done' && task.resolution!=='completed') || (task.status==='cancelled' && !['cancelled','duplicate','wont_do'].includes(task.resolution??''))
+          || (!['done','cancelled'].includes(task.status)&&task.resolution!==null)) fail('RESOLUTION_REQUIRED');
+      }
       const expectedParent = requiredParentKinds[input.kind];
       if (expectedParent && (!input.parentId || get(scope.id, input.parentId)?.kind !== expectedParent)) fail('PARENT_KIND_CONFLICT');
       if (change.delete && db.prepare('SELECT 1 FROM entities WHERE project_id=? AND parent_id=? AND deleted=0').get(scope.id, input.id)) fail('ENTITY_HAS_CHILDREN');
@@ -270,6 +346,11 @@ function write(command: StoreWrite, promotion?: PromoteLegacy) {
       if (input.kind === 'comment') commentChanges.push({ id: input.id,parentId:input.parentId??null,contentExcluded:true,category:(input.data as Record<string,unknown>|undefined)?.category??null,
         previous: old ? { revision: old.revision } : null,
         current: { revision, deleted: Boolean(change.delete) } });
+      const metadata=input.data as Record<string,unknown>|undefined;
+      if((input.kind==='settings'&&input.id.startsWith('m2-'))||metadata?.category==='managed_attachment'||metadata?.category==='m2_command_receipt'){
+        const before=historyValue(old?JSON.parse(old.data as string):null),after=historyValue(input.data);
+        managerChanges.push({id:input.id,kind:input.kind,taskId:metadata?.taskId??null,previous:before.value,current:after.value,redacted:before.redacted||after.redacted,revision});
+      }
       db.prepare('DELETE FROM entity_blobs WHERE project_id=? AND entity_id=?').run(scope.id, input.id);
       for (const blobId of input.blobIds ?? []) {
         if (!db.prepare('SELECT 1 FROM blobs WHERE project_id=? AND id=?').get(scope.id, blobId)) fail('BLOB_SCOPE_CONFLICT');
@@ -277,6 +358,30 @@ function write(command: StoreWrite, promotion?: PromoteLegacy) {
       }
       db.prepare('INSERT INTO index_jobs VALUES (?,?,?) ON CONFLICT(project_id,entity_id) DO UPDATE SET revision=excluded.revision')
         .run(scope.id, input.id, revision);
+    }
+    if (command.changes.some(c=>c.entity.kind==='task' || c.entity.id==='m2-links')
+      &&db.prepare("SELECT 1 FROM schema_migrations WHERE version=2").get()) {
+      const tasks=db.prepare("SELECT data FROM entities WHERE project_id=? AND kind='task' AND deleted=0").all(scope.id).map(row=>decodeM1TaskProfile(JSON.parse(row.data as string)));
+      const links=canonicalIssueLinks(tasks,(get(scope.id,'m2-links')?.data.items??[]) as IssueLink[]);
+      const components=(get(scope.id,'m2-components')?.data.items??['BackEnd','FrontEnd','DB','RAG','LLM','Design','Marketing','Integrations','DevOps','QA','Analytic'].map(id=>({id}))) as {id:string}[];
+      const versions=(get(scope.id,'m2-versions')?.data.items??[]) as {id:string}[];
+      for(const task of tasks){if(task.schemaVersion!=='m2_task_profile_v1')continue;
+        if(task.components.some(id=>!components.some(c=>c.id===id)))fail('COMPONENT_NOT_FOUND');
+        if([...task.affectsVersions,...task.fixVersions].some(id=>!versions.some(c=>c.id===id)))fail('VERSION_NOT_FOUND');
+      }
+      validateIssueGraph(tasks,links,issueGuardIds);
+      for(const task of tasks)if(task.schemaVersion==='m2_task_profile_v1'&&issueGuardIds.has(task.id)&&task.resolution==='duplicate'
+        &&!links.some(link=>link.sourceId===task.id&&link.relation==='duplicates'))fail('CANONICAL_DUPLICATE_REQUIRED');
+    }
+    if(command.changes.some(c=>(c.entity.data as Record<string,unknown>|undefined)?.category==='managed_attachment')){
+      const board=get(scope.id,'m2-board')?.data.value as any;
+      const attachments=db.prepare("SELECT data FROM entities WHERE project_id=? AND kind='document' AND deleted=0 AND json_extract(data,'$.category')='managed_attachment'").all(scope.id).map(row=>JSON.parse(row.data as string));
+      const totals=new Map<string,number>();
+      for(const attachment of attachments){if(attachment.status==='deleted')continue;
+        if(!get(scope.id,attachment.taskId)||attachment.byteSize>(board?.attachmentFileBytes??50*1024*1024))fail('FILE_QUOTA_EXCEEDED');
+        totals.set(attachment.taskId,(totals.get(attachment.taskId)??0)+attachment.byteSize);
+      }
+      if([...totals.values()].some(n=>n>(board?.attachmentTaskBytes??500*1024*1024)))fail('TASK_QUOTA_EXCEEDED');
     }
     saveSearchCounts(scope.id, searchCounts);
     for (const change of command.changes) {
@@ -317,7 +422,7 @@ function write(command: StoreWrite, promotion?: PromoteLegacy) {
     const seq = (db.prepare('SELECT COALESCE(MAX(seq),0) AS seq FROM events WHERE project_id=?').get(scope.id)!.seq as number) + 1;
     const receipt = { commandId, projectId: scope.id, seq, revisions,...(promotion?.cutoverBackupId?{cutoverBackupId:promotion.cutoverBackupId}:{}) };
     db.prepare('INSERT INTO commands VALUES (?,?,?,?,?)').run(scope.id, commandId, command.idempotencyKey, payloadHash, JSON.stringify(receipt));
-    const payload = JSON.stringify({ schemaVersion: 1,commandId, revisions, commentChanges,taskChanges });
+    const payload = JSON.stringify({ schemaVersion: 1,commandId, revisions, commentChanges,taskChanges,...(managerChanges.length?{managerChanges}:{}) });
     if (Buffer.byteLength(payload) > 16 * 1024 * 1024) fail('AUDIT_TOO_LARGE');
     db.prepare('INSERT INTO events VALUES (?,?,?,?,?,?,?)').run(scope.id, seq, randomUUID(), commandId, command.actorId, now, payload);
     for (const job of command.outbox ?? []) {
@@ -361,6 +466,12 @@ function dispatch(method: string, params: any, requestId: number): unknown {
     }
     case 'projects': return db.prepare('SELECT id FROM projects ORDER BY id').all().map(row => project(row.id as string));
     case 'project': return project(params.projectId);
+    case 'compatibility': return databaseCompatibility(db);
+    case 'projectEntities': {
+      const rows=db.prepare('SELECT * FROM entities WHERE project_id=? AND deleted=0 ORDER BY id LIMIT 100001').all(params.projectId);
+      if(rows.length>100000||rows.reduce((n,r)=>n+Buffer.byteLength(r.data as string)+Buffer.byteLength(r.body as string),0)>64*1024*1024)fail('SNAPSHOT_TOO_LARGE');
+      return rows.map(entity);
+    }
     case 'exportTasks': {
       db.exec('BEGIN');
       try {
@@ -383,6 +494,24 @@ function dispatch(method: string, params: any, requestId: number): unknown {
         return blob;
       });
     }
+    case 'readBlob': {
+      const row=db.prepare('SELECT * FROM blobs WHERE project_id=? AND id=?').get(params.projectId,params.id);
+      if(!row)fail('BLOB_NOT_FOUND');
+      return readManagedBlob(workerData.databasePath,{id:row.id as string,projectId:row.project_id as string,sha256:row.sha256 as string,byteSize:row.byte_size as number});
+    }
+    case 'discardUnreferencedBlob': return transaction(()=>{
+      if(typeof params.id!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(params.id))fail('INVALID_BLOB');
+      const row=db.prepare('SELECT 1 FROM blobs WHERE project_id=? AND id=?').get(params.projectId,params.id);
+      if(!row)return {discarded:false,reason:'not_found'};
+      if(db.prepare('SELECT 1 FROM entity_blobs WHERE project_id=? AND blob_id=? LIMIT 1').get(params.projectId,params.id))return {discarded:false,reason:'referenced'};
+      const intended=resolve(blobDirectory(workerData.databasePath)),directory=realpathSync(intended);
+      const normalize=(v:string)=>process.platform==='win32'?v.toLowerCase():v;
+      if(normalize(directory)!==normalize(intended))fail('BLOB_PATH_CONFLICT');
+      const target=resolve(join(directory,params.id));if(dirname(target)!==directory)fail('BLOB_PATH_CONFLICT');
+      try{const info=lstatSync(target);if(!info.isFile()||info.isSymbolicLink())fail('BLOB_PATH_CONFLICT');unlinkSync(target);}
+      catch(error){if((error as any).code!=='ENOENT')throw error;}
+      db.prepare('DELETE FROM blobs WHERE project_id=? AND id=?').run(params.projectId,params.id);return {discarded:true};
+    });
     case 'backup': return createSnapshot(db, workerData.databasePath, params.outputRoot);
     case 'write': return write(params);
     case 'receipt': {
@@ -474,8 +603,9 @@ try {
     queue = queue.then(async () => {
       try { parentPort!.postMessage({ id, value: await dispatch(method, params, id) }); }
       catch (error) {
-        const failure = error as Error & { code?: string };
-        parentPort!.postMessage({ id, error: { message: failure.message, code: failure.code ?? 'STORAGE_FAILURE' } });
+        const failure = error as Error & { code?: string;cyclePath?:string[] };
+        parentPort!.postMessage({ id, error: { message: failure.message, code: failure.code ?? 'STORAGE_FAILURE',
+          ...(Array.isArray(failure.cyclePath)?{cyclePath:failure.cyclePath.slice(0,100),cyclePathTruncated:failure.cyclePath.length>100}:{}) } });
       }
     });
   });
