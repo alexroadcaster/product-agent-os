@@ -34,6 +34,9 @@ export function workflowWriteContext(command:StoreWrite,rows:StoredEntity[]){
   const snapshot=workflowSnapshot(proposed,execution.workflowSnapshot.ref),task=tasks.find(t=>t.id===execution.taskId),transition=snapshot.definition.transitions.find(t=>t.id===execution.transition.id),recipe=snapshot.definition.recipes.find(r=>r.id===transition?.recipeId);
   if(!task||recipeHash(snapshot)!==recipeHash(execution.workflowSnapshot)||recipeHash(transition)!==recipeHash(execution.transition)||recipeHash(recipe)!==recipeHash(execution.recipe)||recipeHash(task.data.workflow)!==recipeHash(snapshot.ref))fail('RECIPE_WORKFLOW_PIN_INVALID');
  }
+ for(const item of command.changes){const data=item.entity.data as any;if(data?.category!=='scheduler_entry'||rows.some(r=>r.id===item.entity.id))continue;const p=data.plan,snapshot=workflowSnapshot(proposed,p.workflowSnapshot.ref),task=tasks.find(t=>t.id===p.taskId),transition=snapshot.definition.transitions.find(t=>t.id===p.transition.id),recipe=snapshot.definition.recipes.find(r=>r.id===transition?.recipeId);
+  if(!task||recipeHash(snapshot)!==recipeHash(p.workflowSnapshot)||recipeHash(transition)!==recipeHash(p.transition)||recipeHash(recipe)!==recipeHash(p.recipe)||recipeHash(task.data.workflow)!==recipeHash(snapshot.ref))fail('QUEUE_WORKFLOW_PIN_INVALID');
+ }
  if(change||command.changes.some(c=>c.entity.id==='m2-board'))validateWorkflowBoard(proposed,proposedTasks,proposedBoard);
  for(const c of command.changes){if(c.entity.kind!=='run')continue;const old=rows.find(r=>r.id===c.entity.id);const before=(old?.data.runtimeRun??old?.data.appAgentRun) as any;const after=((c.entity.data as any)?.runtimeRun??(c.entity.data as any)?.appAgentRun) as any;
   if(before?.workflowSnapshot&&JSON.stringify(before.workflowSnapshot)!==JSON.stringify(after?.workflowSnapshot))fail('RUNTIME_WORKFLOW_PIN_IMMUTABLE');

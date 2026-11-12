@@ -170,6 +170,9 @@ export type ImportPreview = {
   blocked: { sourceId: string; reasons: string[] }[];
 };
 export interface M1Api {
+  scheduler(projectId:string):Promise<import('../../../../packages/contracts/scheduler/queue.ts').QueueSnapshot>;
+  schedulerPreview(projectId:string,input:Record<string,unknown>):Promise<import('../../../../packages/contracts/scheduler/queue.ts').QueuePreview>;
+  schedulerAction(projectId:string,action:string,input:Record<string,unknown>):Promise<{entryId?:string;revision:number}>;
   recipes(projectId:string):Promise<{items:import('../../../../packages/contracts/execution-recipes/recipe.ts').RecipeExecutionView[]}>;
   recipePreview(projectId:string,input:Record<string,unknown>):Promise<import('../../../../packages/contracts/execution-recipes/recipe.ts').RecipePreview>;
   recipeStart(projectId:string,input:Record<string,unknown>):Promise<import('../../../../packages/contracts/execution-recipes/recipe.ts').RecipeExecutionView|{mode:'manual';agentRuns:number;taskId:string;target:string}>;
@@ -437,6 +440,9 @@ export function createHttpApi(fetcher: typeof fetch = fetch): M1Api {
     };
   }
   return {
+    scheduler:id=>request(`${projectPath(id)}/scheduler`),
+    schedulerPreview:(id,input)=>request(`${projectPath(id)}/scheduler/preview`,input),
+    schedulerAction:(id,action,input)=>request(`${projectPath(id)}/scheduler/${encodeURIComponent(action)}`,input),
     recipes:id=>request(`${projectPath(id)}/execution-recipes`),
     recipePreview:(id,input)=>request(`${projectPath(id)}/execution-recipes/preview`,input),
     recipeStart:(id,input)=>request(`${projectPath(id)}/execution-recipes/start`,input),

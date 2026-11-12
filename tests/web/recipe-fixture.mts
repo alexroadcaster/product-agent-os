@@ -1,0 +1,30 @@
+import assert from 'node:assert/strict';
+import {randomUUID} from 'node:crypto';
+import {writeFile} from 'node:fs/promises';
+import {join} from 'node:path';
+import {m2Fixture} from './m2-fixture.mts';
+import {defaultRegistry} from '../../apps/local-service/src/workflows/registry.mts';
+import {taskManagerSnapshot} from '../../apps/local-service/src/task-manager/service.mts';
+import {createTeamService} from '../../apps/local-service/src/team/service.mts';
+import {createAppAgentGateway} from '../../apps/local-service/src/runtime/app-agent-gateway.mts';
+import {createRecipeService} from '../../apps/local-service/src/execution-recipes/service.mts';
+import {autonomyService} from '../../apps/local-service/src/autonomy-policy/service.mts';
+import {defaultAutonomyPolicy} from '../../packages/contracts/autonomy/policy.ts';
+import {qualifyGraph} from '../../apps/local-service/src/execution-recipes/contract.mts';
+import type {WorkflowRecipe} from '../../packages/contracts/workflows/workflow.ts';
+export const step=(id:string,extra:Partial<WorkflowRecipe['steps'][number]>={}):WorkflowRecipe['steps'][number]=>({id,role:'builder',profileVersion:'1',skills:[],skillVersions:{},inputArtifacts:[],outputArtifacts:[],checks:[],ownership:[],timeoutSeconds:60,retryBudget:0,iterationBudget:1,...extra});
+export async function fixture(t:Parameters<typeof m2Fixture>[0],steps=[step('one'),step('two')],maxRuns=20,extraPolicy:Record<string,any>={},targets:Record<string,string>={}){
+ const f=await m2Fixture(t),definition=structuredClone(defaultRegistry().workflows[0].versions[0].definition);definition.name='Recipe fixture';definition.recipes=[{id:'recipe',name:'Recipe',steps}];definition.transitions.find(tr=>tr.id==='ready-in_progress')!.recipeId='recipe';Object.assign(definition.transitions.find(tr=>tr.id==='ready-in_progress')!,targets);
+ await f.command({action:'workflow-save-draft',workflowId:'recipes',definition,expectedRevision:0});let snap=await taskManagerSnapshot(f.store,'p');const p=await f.command({action:'workflow-publish-preview',workflowId:'recipes',expectedRevision:snap.settingsRevisions.workflows}) as any;
+ await f.command({action:'workflow-publish',workflowId:'recipes',expectedRevision:snap.settingsRevisions.workflows,previewDigest:p.previewDigest});snap=await taskManagerSnapshot(f.store,'p');await f.command({action:'workflow-assign',defaultWorkflowId:'recipes',expectedRevision:snap.settingsRevisions.workflows});
+ const task=await f.ready(),team=createTeamService(f.store),preview=await team.preview('p',{proposal:{kind:'agent',action:'create',name:'Builder',description:'Fixture',content:'Pinned fixture role',dependencies:[],reason:'Fixture'},expectedRevision:0});const a=await team.apply('p','local-user',{...preview,expectedRevision:0,epoch:1,idempotencyKey:'role'});
+ await f.store.write({projectId:'p',actorId:'test',expectedAuthorityEpoch:1,idempotencyKey:'session',changes:[{expectedRevision:0,entity:{id:'s',kind:'session'}}]});
+ const gateway=createAppAgentGateway({store:f.store,profileId:'recipe-test',actorId:'app',executorFactory:async b=>({metadata:{nativeSandbox:true,scope:'paos_mediated_commands',workspaceRoot:b.workspaceRoot,mode:b.mode},execute:async()=>({exitCode:0,stdout:'',stderr:''}),interrupt:async()=>{},close:async()=>{}}) as any});
+ await gateway.connection.connect({});const worker=await gateway.agent('attach',{hostIdentity:'codex_app',workerId:'w',generation:'g'}),auth={workerId:worker.workerId,generation:worker.generation,leaseToken:worker.leaseToken};await gateway.runtime.dispatch('bindings',{projectId:'p',sessionId:'s',mode:'execution'});
+ const autonomy=autonomyService(f.store),policy={...defaultAutonomyPolicy(),allowedTaskIds:[task.id],maxRuns,...extraPolicy};const policyPreview=await autonomy.preview('p',policy,0);await autonomy.command('p','local-user','save',{expectedRevision:0,expectedAuthorityEpoch:1,idempotencyKey:'policy',policy,previewDigest:policyPreview.previewDigest});await autonomy.command('p','local-user','resume',{expectedRevision:1,expectedAuthorityEpoch:1,idempotencyKey:'resume'});
+ let service=createRecipeService({store:f.store,port:gateway.recipeRuntime,automatic:false});f.beforeClose(async()=>{await service.close();await gateway.close();});
+ const input={taskId:task.id,transitionId:'ready-in_progress',mode:'recipe',sessionId:'s',roleBindings:{builder:a.assetId},expectedTaskRevision:task.revision,reason:'Fixture recipe'};
+ const start=async()=>{const preview=await service.preview('p',input);const request={...input,previewDigest:preview.previewDigest,expectedAuthorityEpoch:1,idempotencyKey:'start'};return {execution:await service.start('p','local-user',request),request};};
+ const report=async(status='completed')=>{const claim=await gateway.agent('claim',auth);assert.ok(claim.job);await gateway.agent('report',{...auth,runId:claim.job.runId,seq:1,idempotencyKey:randomUUID(),status,text:'Fixture outcome'});return claim.job;};
+ return {...f,task,gateway,auth,autonomy,input,start,report,get service(){return service;},async restart(){await service.close();service=createRecipeService({store:f.store,port:gateway.recipeRuntime,automatic:false});await service.list('p');}};
+}

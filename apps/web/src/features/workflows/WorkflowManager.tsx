@@ -5,6 +5,7 @@ import type {WorkflowDefinition,WorkflowRegistry,WorkflowCategory} from '../../.
 import {WORKFLOW_CATEGORIES} from '../../../../../packages/contracts/workflows/workflow.ts';
 import {label,statusText,errorText,type Locale} from '../tasks/labels.ts';
 import {RecipeRunner} from './recipes/RecipeRunner.tsx';
+import {QueueManager} from './recipes/QueueManager.tsx';
 
 type Preview={previewDigest:string;missingStates?:string[];affectedCount?:number;affectedTasks?:unknown[];tasks?:{id:string;revision:number;oldStatus:string;newStatus:string}[];version?:number};
 const list=(s:string)=>s.split(',').map(v=>v.trim()).filter(Boolean);
@@ -54,5 +55,6 @@ export function WorkflowManager({api,projectId,locale,onOpenSession}:{api:M1Api;
    {record&&<section><h3>{w('Версии и архив','Versions and archive')}</h3><ul>{record.versions.map(v=><li key={v.version}>v{v.version} · {v.definition.name} · {v.publishedAt??w('Дата неизвестна','Date unknown')} <button disabled={busy||dirty||v.version===record.activeVersion} onClick={()=>void run(()=>action('workflow-rollback',{version:v.version}))}>{w('Использовать для новых задач','Use for new tasks')}</button></li>)}</ul><button disabled={busy||dirty||record.archived} onClick={()=>void run(()=>action('workflow-archive'))}>{w('Архивировать процесс','Archive workflow')}</button></section>}
   </>}
   <RecipeRunner key={projectId} api={api} projectId={projectId} locale={locale} onOpenSession={onOpenSession}/>
+  <QueueManager key={projectId+':queue'} api={api} projectId={projectId} locale={locale} onOpenSession={onOpenSession}/>
  </section>;
 }

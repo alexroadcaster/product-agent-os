@@ -60,7 +60,7 @@ async function serialize<T>(store:LocalStore,projectId:string,operation:()=>Prom
   try{return await next;}finally{if(queue.get(projectId)===next)queue.delete(projectId);}
 }
 /** All browser M2 mutations use this single authenticated command boundary. */
-export type WorkflowCommandOptions={validateWorkflowReferences?:(definition:import('../../../../packages/contracts/workflows/workflow.ts').WorkflowDefinition)=>Promise<void>;recipeExecution?:StoreWrite['recipeExecution'];additionalChanges?:StoreWrite['changes']};
+export type WorkflowCommandOptions={validateWorkflowReferences?:(definition:import('../../../../packages/contracts/workflows/workflow.ts').WorkflowDefinition)=>Promise<void>;recipeExecution?:StoreWrite['recipeExecution'];schedulerCommand?:StoreWrite['schedulerCommand'];additionalChanges?:StoreWrite['changes']};
 export function taskManagerCommand(store:LocalStore,projectId:string,actorId:string,input:Record<string,any>,options:WorkflowCommandOptions={}){
   return serialize(store,projectId,()=>applyTaskManagerCommand(store,projectId,actorId,input,options));
 }
@@ -225,7 +225,7 @@ async function applyTaskManagerCommand(store:LocalStore,projectId:string,actorId
   changes.push(...(options.additionalChanges??[]));
   const receipt=await store.write({...command,...workflowMetadata,changes,...(input.action==='activate-link'||editsExistingTask?{requireIdle:true as const}:{}),...(transition?{taskManagerAction:transition,taskManagerReason:input.reason,
     ...(input.hotfixReason?{taskManagerHotfixReason:String(input.hotfixReason)}:{}),requireIdle:true as const}:{}),
-    ...(['save','upgrade'].includes(input.action)&&nonempty(input.reason)?{taskManagerReviewReason:input.reason}:{}),...(options.recipeExecution?{recipeExecution:options.recipeExecution}:{})});
+    ...(['save','upgrade'].includes(input.action)&&nonempty(input.reason)?{taskManagerReviewReason:input.reason}:{}),...(options.recipeExecution?{recipeExecution:options.recipeExecution}:{}),...(options.schedulerCommand?{schedulerCommand:options.schedulerCommand}:{})});
   return {...receipt,...(createdLinkId?{linkId:createdLinkId}:{})};
 }
 

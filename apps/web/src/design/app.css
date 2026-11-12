@@ -637,3 +637,4 @@ main:focus {
 /* Version hashes and run identities remain readable in narrow execution history. */
 [data-testid="recipe-runner"] code,[data-testid="recipe-runner"] li {overflow-wrap:anywhere;}
 [data-testid="recipe-runner"] fieldset {min-width:0;}
+[data-testid="queue-manager"] code,[data-testid="queue-manager"] li {overflow-wrap:anywhere;}

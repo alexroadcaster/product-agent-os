@@ -7,6 +7,7 @@ import { migrate,ensureM2Schema,ensureM2BSchema,databaseCompatibility } from './
 import { decodeTaskProfile as decodeM1TaskProfile, validateIssueGraph, validateReady, canonicalIssueLinks, type M2TaskProfile, type TaskProfile, type IssueLink } from '../../../../packages/contracts/issues/task-profile.ts';
 import {workflowWriteContext,validateWorkflowTask,validateWorkflowBoard} from '../workflows/guards.mts';
 import {ownsTask,recipeScopeHash,recipeHash,type Execution} from '../execution-recipes/contract.mts';
+import {validateSchedulerWrite,type WorkspaceLock} from '../scheduler/storage-guards.mts';
 import {workflowCategory} from '../workflows/registry.mts';
 import { createSnapshot, writeBlob, readManagedBlob,blobDirectory } from './snapshot.mts';
 import { RANKED_SEARCH_SQL } from './search-queries.mts';
@@ -191,7 +192,13 @@ function write(command: StoreWrite, promotion?: PromoteLegacy,teamOperation?:any
       command={...command,changes:[{expectedRevision:old?.revision??0,entity:{id:teamId,kind:'settings',data:applied.registry as any,blobIds}}]};
     }
     // Recipe ownership fences only its Task; the global runtime idle gate stays unchanged.
-    const recipeRows=db.prepare("SELECT * FROM entities WHERE project_id=? AND kind='settings' AND deleted=0").all(scope.id).map(row=>entity(row)).filter(row=>row.data.category==='recipe_execution');
+    const settingsRows=db.prepare("SELECT * FROM entities WHERE project_id=? AND kind='settings' AND deleted=0").all(scope.id).map(row=>entity(row));
+    const recipeRows=settingsRows.filter(row=>row.data.category==='recipe_execution');
+    const workspaceLocks=db.prepare(`SELECT e.id,e.kind,p.canonical_root,json_extract(e.data,'$.appAgentRun.recipeExecution') AS owner_execution
+      FROM entities e JOIN projects p ON p.id=e.project_id WHERE e.deleted=0 AND
+      ((e.kind='run' AND e.status NOT IN ('completed','failed','interrupted')) OR
+       (e.kind='settings' AND json_extract(e.data,'$.category')='recipe_execution' AND json_extract(e.data,'$.state') NOT IN ('completed','failed','cancelled','needs_user_decision','transition_blocked')))`)
+      .all() as WorkspaceLock[];
     const recipePin=command.recipeExecution,recipeRow=recipePin?recipeRows.find(row=>row.id===recipePin.id):undefined;
     if(recipePin&&(recipeRow?.revision??0)!==recipePin.revision)fail('RECIPE_REVISION_CONFLICT');
     for(const change of command.changes){
@@ -199,7 +206,7 @@ function write(command: StoreWrite, promotion?: PromoteLegacy,teamOperation?:any
       if(previous?.data.category==='recipe_execution'||proposed?.category==='recipe_execution'){
         if(!recipePin||recipePin.id!==change.entity.id||change.delete||change.entity.kind!=='settings')fail('RECIPE_WRITE_AUTHORITY_REQUIRED');
         const before=previous?.data as unknown as Execution|undefined,after=proposed as Execution;
-        if(before&&['id','projectId','taskId','sessionId','bindingId','scopeHash','taskContext','workflowSnapshot','transition','recipe','pins','inputArtifacts','budgetId','policyHash','startDigest'].some(k=>recipeHash((before as any)[k])!==recipeHash((after as any)[k])))fail('RECIPE_PIN_IMMUTABLE');
+        if(before&&['id','projectId','taskId','sessionId','bindingId','queueEntryId','scopeHash','taskContext','workflowSnapshot','transition','recipe','pins','inputArtifacts','budgetId','policyHash','startDigest'].some(k=>recipeHash((before as any)[k])!==recipeHash((after as any)[k])))fail('RECIPE_PIN_IMMUTABLE');
         if(!before){const task=get(scope.id,after.taskId),policy=get(scope.id,'autonomy-policy');if(!task||recipeScopeHash(task.data)!==after.scopeHash||recipeRows.some(r=>ownsTask(r.data as unknown as Execution)&&r.data.taskId===after.taskId))fail('RECIPE_TASK_OWNED');
           if(!policy||policy.revision!==after.policyRevision||policy.data.budgetId!==after.budgetId||policy.data.paused||recipeHash(policy.data.policy)!==after.policyHash)fail('RECIPE_PREVIEW_STALE');
         }
@@ -223,6 +230,7 @@ function write(command: StoreWrite, promotion?: PromoteLegacy,teamOperation?:any
         ||!command.actorId.endsWith(`:${pin.id}`)||command.changes.some(c=>c.entity.kind==='task'&&(c.entity.id!==pin.taskId||['done','cancelled'].includes(String(c.entity.data?.status)))))fail('TOOL_SCOPE_INVALID');
     }
     if (command.requireIdle || (command.taskManagerAction&&!command.taskManagerRun)) assertIdle(scope.id);
+    validateSchedulerWrite(command,settingsRows,id=>get(scope.id,id),scope.canonicalRoot,workspaceLocks);
     const workflowRows=db.prepare("SELECT * FROM entities WHERE project_id=? AND deleted=0 AND kind IN ('task','settings','run')").all(scope.id).map(row=>entity(row));
     const workflowContext=workflowWriteContext(command,workflowRows);
     if(command.workflowPublish){const available=[...((get(scope.id,teamId)?.data as unknown as TeamRegistry)?.assets??[]),...trustedSourceAssets];
@@ -298,7 +306,8 @@ function write(command: StoreWrite, promotion?: PromoteLegacy,teamOperation?:any
       if(input.kind==='run'){
         const nextRun=(input.data as any)?.appAgentRun??(input.data as any)?.runtimeRun,oldData=old?JSON.parse(old.data as string):null,oldRun=oldData?.appAgentRun??oldData?.runtimeRun;
         if(oldRun?.assetPins&&JSON.stringify(oldRun.assetPins)!==JSON.stringify(nextRun?.assetPins))fail('ASSET_RUN_PIN_IMMUTABLE');
-        if(!oldRun){const registry=get(scope.id,teamId)?.data as unknown as TeamRegistry|undefined;for(const pin of nextRun?.assetPins??[]){if(!pin.assetId?.startsWith('managed-'))continue;const asset=registry?.assets.find(a=>a.id===pin.assetId),version=asset?.versions.find(v=>v.version===pin.version);if(!asset||asset.archived||asset.deleted||!version||version.version!==asset.effectiveVersion||version.hash!==pin.hash||version.content!==pin.content||JSON.stringify(version.resources)!==JSON.stringify((pin.resources??[]).map(({base64,...metadata}:any)=>metadata)))fail('ASSET_RUN_PIN_INVALID');}}
+        // A recipe continuation already proved byte equality to its immutable durable pins above.
+        if(!oldRun){const registry=get(scope.id,teamId)?.data as unknown as TeamRegistry|undefined;for(const pin of nextRun?.assetPins??[]){if(!pin.assetId?.startsWith('managed-'))continue;const asset=registry?.assets.find(a=>a.id===pin.assetId),version=asset?.versions.find(v=>v.version===pin.version);if(!asset||asset.archived||asset.deleted||!version||!nextRun.recipeExecution&&version.version!==asset.effectiveVersion||version.hash!==pin.hash||version.content!==pin.content||JSON.stringify(version.resources)!==JSON.stringify((pin.resources??[]).map(({base64,...metadata}:any)=>metadata)))fail('ASSET_RUN_PIN_INVALID');}}
       }
       // Profile selection is itself an invariant: choosing the legacy decoder cannot remove M2 guards or fields.
       if(input.kind==='task'&&old?.kind==='task'&&JSON.parse(old.data as string).schemaVersion==='m2_task_profile_v1'

@@ -17,6 +17,7 @@ import {createTeamService} from '../team/service.mts';
 import {createCodeIndex} from '../code-index/service.mts';
 import {autonomyService} from '../autonomy-policy/service.mts';
 import {createRecipeService} from '../execution-recipes/service.mts';
+import {createScheduler} from '../scheduler/service.mts';
 import type {AssetRoot} from '../team/sources.mts';
 import {startTeamGeneration,teamGenerationResult} from '../team/generation.mts';
 import { loadUiPreferences, saveUiPreferences } from '../../../web/src/design/preferences.ts';
@@ -32,6 +33,7 @@ export type ApplicationOptions = {
   agentChannel?: {handle(request: Request): Promise<Response>};
   assetRoots?:AssetRoot[];
   executionRecipes?:ReturnType<typeof createRecipeService>;
+  scheduler?:ReturnType<typeof createScheduler>;
 };
 
 function fail(code: string): never { throw Object.assign(new Error(code), { code }); }
@@ -70,6 +72,8 @@ export async function createLocalApplication(options: ApplicationOptions) {
   const autonomy=autonomyService(store);
   const executionRecipes=options.executionRecipes??createRecipeService({store,assetRoots:options.assetRoots,automatic:false});
   await executionRecipes.initialized();
+  const scheduler=options.scheduler??createScheduler({store,recipes:executionRecipes,automatic:false});
+  await scheduler.initialized();
   const sessionHistory=createSessionHistory(store);
   const team=createTeamService(store,options.assetRoots);
   const codeIndex=createCodeIndex(store);
@@ -214,6 +218,12 @@ export async function createLocalApplication(options: ApplicationOptions) {
       const graphNode=/^graph\/nodes\/([^/]+)(\/impact)?$/.exec(graphAction);
       if(graphNode&&request.method==='GET')return json(await codeIndex[graphNode[2]?'impact':'node'](projectId,decodeURIComponent(graphNode[1]),url.searchParams));
       const action = route[2] ?? '';
+      if(action==='scheduler'&&request.method==='GET')return json(await scheduler.snapshot(projectId));
+      const schedulerAction=/^scheduler\/(preview|enqueue|pause|resume|reorder|cancel|pause-entry|resume-entry)$/.exec(action);
+      if(schedulerAction&&request.method==='POST'){
+        if(migration.frozen(projectId))fail('MIGRATION_BUSY');const input=await body(request),name=schedulerAction[1];
+        return json(name==='preview'?await scheduler.preview(projectId,input):name==='enqueue'?await scheduler.enqueue(projectId,input):await scheduler.command(projectId,name,input));
+      }
       if(action==='execution-recipes'&&request.method==='GET')return json(await executionRecipes.list(projectId));
       if(/^execution-recipes\/(preview|start)$/.test(action)&&request.method==='POST'){
         if(migration.frozen(projectId))fail('MIGRATION_BUSY');const input=await body(request);return json(action.endsWith('/preview')?await executionRecipes.preview(projectId,input):await executionRecipes.start(projectId,principal.actorId,input));

@@ -7,7 +7,9 @@ import {autonomyService} from '../autonomy-policy/service.mts';
 import {resolveRecipePins} from './pins.mts';
 import {recipeFail as fail,recipeHash as hash,recipeScopeHash,qualifyGraph,publicExecution,publicSteps,ownsTask,type Execution,type Attempt} from './contract.mts';
 import {captureTaskFiles} from '../runtime/app-agent-files.mts';
-export type RecipePort={initialized?():Promise<void>;eligible(projectId:string,sessionId:string):Promise<{bindingId:string}>;sendAttempt(input:{projectId:string;executionId:string}):Promise<{id:string}>;inspectAttempt?(input:{projectId:string;executionId:string}):Promise<{runId?:string;admissionRejected?:boolean}>;interrupt(input:{projectId:string;sessionId:string;bindingId:string;runId:string}):Promise<unknown>};
+import type {FrozenRecipePlan,QueueEntry,QueueRegistry} from '../scheduler/contract.mts';
+import {verifyQueueOwnership,recipeClaims} from '../scheduler/ownership.mts';
+export type RecipePort={initialized?():Promise<void>;prepareBinding?(projectId:string,sessionId:string):Promise<{bindingId:string}>;eligible(projectId:string,sessionId:string):Promise<{bindingId:string}>;sendAttempt(input:{projectId:string;executionId:string}):Promise<{id:string}>;inspectAttempt?(input:{projectId:string;executionId:string}):Promise<{runId?:string;admissionRejected?:boolean}>;interrupt(input:{projectId:string;sessionId:string;bindingId:string;runId:string}):Promise<unknown>};
 import type {RecipePreview} from '../../../../packages/contracts/execution-recipes/recipe.ts';
 export type {RecipePreview} from '../../../../packages/contracts/execution-recipes/recipe.ts';
 export function createRecipeService(options:{store:LocalStore;port?:RecipePort;assetRoots?:AssetRoot[];now?:()=>number;automatic?:boolean}){
@@ -21,7 +23,7 @@ export function createRecipeService(options:{store:LocalStore;port?:RecipePort;a
  const ready=(async()=>{await port?.initialized?.();for(const project of await store.projects())for(const row of await rows(project.id)){const e=row.data as unknown as Execution;if(ownsTask(e)&&e.state!=='recovery_required'){e.state='recovery_required';e.reason='SERVICE_RESTART_NO_REPLAY';await save(row,e);}}})();
  function fields(input:Record<string,any>,allowed:string[]){if(Object.keys(input).some(k=>!allowed.includes(k)))fail('RECIPE_INPUT_INVALID');}
  const startFields=['taskId','transitionId','mode','sessionId','roleBindings','expectedTaskRevision','reason','previewDigest','expectedAuthorityEpoch','idempotencyKey'];
- async function prepare(projectId:string,input:Record<string,any>){
+ async function prepare(projectId:string,input:Record<string,any>,deferred=false){
   fields(input,startFields);if(!['manual','recipe'].includes(input.mode)||typeof input.reason!=='string'||!input.reason.trim())fail('RECIPE_INPUT_INVALID');
   const snapshot=await taskManagerSnapshot(store,projectId),task=await store.get(projectId,input.taskId);if(!task||task.kind!=='task'||task.deleted)fail('TASK_NOT_FOUND');
   if(task!.revision!==input.expectedTaskRevision)fail('REVISION_CONFLICT');const data=task!.data as any;if(data.schemaVersion!=='m2_task_profile_v1')fail('M2_PROFILE_REQUIRED');
@@ -34,9 +36,9 @@ export function createRecipeService(options:{store:LocalStore;port?:RecipePort;a
   if(workflow.definition.states.find(s=>s.id===transition.to)?.category!=='in_progress')fail('RECIPE_EXECUTION_PHASE_REQUIRED');
   const recipe=workflow.definition.recipes.find(r=>r.id===transition.recipeId);if(!recipe)fail('WORKFLOW_RECIPE_NOT_FOUND');qualifyGraph(recipe!);
   if(!input.roleBindings||typeof input.roleBindings!=='object'||Array.isArray(input.roleBindings))fail('RECIPE_ROLE_BINDING_REQUIRED');
-  const policy=await autonomy.snapshot(projectId);if(!policy.policy||policy.paused)fail('AUTONOMY_PAUSED');if(!policy.policy.allowedTaskIds.includes(task!.id))fail('AUTONOMY_TASK_FORBIDDEN');
-  if(!(await autonomy.preview(projectId,policy.policy,policy.revision)).executable)fail('AUTONOMY_SCOPE_UNAVAILABLE');if(policy.usedRuns>=policy.policy.maxRuns)fail('AUTONOMY_BUDGET_EXHAUSTED');
-  const {bindingId}=await port!.eligible(projectId,input.sessionId),pins=await resolveRecipePins(store,projectId,recipe!.steps,input.roleBindings,options.assetRoots);
+  const policy=await autonomy.snapshot(projectId);if(!policy.policy||policy.paused&&!deferred)fail('AUTONOMY_PAUSED');if(!policy.policy.allowedTaskIds.includes(task!.id))fail('AUTONOMY_TASK_FORBIDDEN');
+  if(!(await autonomy.preview(projectId,policy.policy,policy.revision)).executable)fail('AUTONOMY_SCOPE_UNAVAILABLE');if(policy.usedRuns>=policy.policy.maxRuns&&!deferred)fail('AUTONOMY_BUDGET_EXHAUSTED');
+  const {bindingId}=await (deferred&&port!.prepareBinding?port!.prepareBinding(projectId,input.sessionId):port!.eligible(projectId,input.sessionId)),pins=await resolveRecipePins(store,projectId,recipe!.steps,input.roleBindings,options.assetRoots);
   const produced=new Set(recipe.steps.flatMap(s=>s.outputArtifacts)),initialPaths=[...new Set([...recipe.steps[0].inputArtifacts,...recipe.steps.flatMap(s=>s.inputArtifacts).filter(path=>!produced.has(path))])];
   const inputArtifacts=await artifacts({projectId} as Execution,initialPaths);
   const previewDigest=hash({...base,sessionId:input.sessionId,bindingId,pins,inputArtifacts,policyRevision:policy.revision,budgetId:policy.budgetId,policy:policy.policy});
@@ -102,6 +104,30 @@ export function createRecipeService(options:{store:LocalStore;port?:RecipePort;a
  const timer=port&&options.automatic!==false?setInterval(()=>void tick().catch(()=>{}),250):undefined;timer?.unref();
  return {
   initialized:async()=>{await ready;},
+  queueAvailability:(plan:FrozenRecipePlan)=>serial(async()=>{if(!port||((await port.eligible(plan.taskContext.projectId??'',plan.sessionId)).bindingId!==plan.bindingId))fail('RECIPE_RUNTIME_UNAVAILABLE');}),
+  freezeQueue:(projectId:string,input:Record<string,any>):Promise<FrozenRecipePlan>=>serial(async()=>{
+   if(input.mode!=='recipe')fail('QUEUE_RECIPE_REQUIRED');const p=await prepare(projectId,input,true),project=(await store.project(projectId))!;
+   const plan:FrozenRecipePlan={taskId:p.task.id,taskRevision:p.task.revision,taskContext:structuredClone(p.task.data),scopeHash:recipeScopeHash(p.task.data),workflowSnapshot:p.workflow,transition:p.transition,recipe:p.recipe!,pins:p.pins,inputArtifacts:p.inputArtifacts??[],budgetId:p.policy!.budgetId,policyHash:hash(p.policy!.policy),bindingId:p.bindingId,sessionId:input.sessionId,authorityEpoch:project.authorityEpoch,workspaceRoot:project.canonicalRoot,rootIdentity:project.rootIdentity,reason:input.reason};
+   await verifyQueueOwnership(plan,recipeClaims(plan));return plan;
+  }),
+  // Consume only the durable scheduler record. The browser can never supply a frozen plan or skip admission guards.
+  admitQueue:(projectId:string,entryId:string,entryRevision:number,queueRevision:number)=>serial(async()=>{
+   const row=await store.get(projectId,entryId);if(!row||row.data.category!=='scheduler_entry')fail('QUEUE_ENTRY_NOT_FOUND');const entry=row!.data as unknown as QueueEntry,p=entry.plan;
+   if(entry.executionId){const existing=await store.get(projectId,entry.executionId);if(existing?.data.appAgentRun)fail('QUEUE_EXECUTION_INVALID');if(existing)return publicExecution(existing.data as unknown as Execution,existing.revision);}
+   if(row!.revision!==entryRevision||entry.state!=='queued')fail('QUEUE_REVISION_CONFLICT');
+   const queueRow=await store.get(projectId,'scheduler-queue'),registry=queueRow?.data as unknown as QueueRegistry;
+   if(queueRow?.revision!==queueRevision||registry.paused||!registry.order.includes(entryId))fail('QUEUE_REVISION_CONFLICT');
+   const project=(await store.project(projectId))!,task=await store.get(projectId,p.taskId),policy=await autonomy.snapshot(projectId);
+   if(project.authorityEpoch!==p.authorityEpoch||project.rootIdentity!==p.rootIdentity||project.canonicalRoot!==p.workspaceRoot)fail('QUEUE_AUTHORITY_CHANGED');
+   if(!task||task.revision!==p.taskRevision||recipeScopeHash(task.data)!==p.scopeHash)fail('QUEUE_TASK_CHANGED');
+   if(policy.budgetId!==p.budgetId||hash(policy.policy)!==p.policyHash)fail('QUEUE_POLICY_CHANGED');if(policy.paused)fail('AUTONOMY_PAUSED');if(policy.usedRuns>=policy.policy!.maxRuns)fail('AUTONOMY_BUDGET_EXHAUSTED');
+   await verifyQueueOwnership(p,entry.claims);const observed=await artifacts({projectId} as Execution,p.inputArtifacts.map(a=>a.path));if(hash(observed)!==hash(p.inputArtifacts))fail('RECIPE_ARTIFACT_DRIFT');
+   if(!port||((await port.eligible(projectId,p.sessionId)).bindingId!==p.bindingId))fail('RECIPE_RUNTIME_UNAVAILABLE');
+   const id=`recipe-queue-${hash([projectId,entryId])}`,e:Execution={category:'recipe_execution',id,projectId,taskId:p.taskId,sessionId:p.sessionId,bindingId:p.bindingId,queueEntryId:entryId,mode:'recipe',state:'running',scopeHash:p.scopeHash,taskContext:p.taskContext,workflowSnapshot:p.workflowSnapshot,transition:p.transition,recipe:p.recipe,pins:p.pins,inputArtifacts:p.inputArtifacts,budgetId:p.budgetId,policyRevision:policy.revision,policyHash:p.policyHash,queue:[p.recipe.steps[0].id],arrivals:{},iterations:{},attempts:[],createdAt:now(),updatedAt:now(),startDigest:hash(p)};
+   const next={...entry,state:'running' as const,executionId:id,updatedAt:now()};
+   await taskManagerCommand(store,projectId,'local-user',{action:'transition',taskId:p.taskId,status:p.transition.to,expectedRevision:p.taskRevision,expectedAuthorityEpoch:p.authorityEpoch,idempotencyKey:`queue-admit:${entryId}`,reason:p.reason},{recipeExecution:{id,revision:0},schedulerCommand:{queueRevision,entryId,entryRevision,admit:true},additionalChanges:[{expectedRevision:0,entity:{id,kind:'settings',data:e as any}},{expectedRevision:entryRevision,entity:{id:entryId,kind:'settings',data:next as any}},{expectedRevision:queueRevision,entity:{id:'scheduler-queue',kind:'settings',data:{...registry,order:registry.order.filter(id=>id!==entryId)} as any}}]});
+   return publicExecution(e,1);
+  }),
   preview:(projectId:string,input:Record<string,any>):Promise<RecipePreview>=>serial(async()=>(await prepare(projectId,input)).preview as RecipePreview),
   list:(projectId:string)=>serial(async()=>({items:(await rows(projectId)).map(r=>publicExecution(r.data as unknown as Execution,r.revision))})),
   get:(projectId:string,id:string)=>serial(async()=>{const r=await read(projectId,id);return publicExecution(r.data as unknown as Execution,r.revision);}),

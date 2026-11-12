@@ -296,7 +296,7 @@ test('worker reports fence generation, exact payload, sequence and fields; brows
  await assert.rejects(f.gateway.agent('report',{...report,text:'changed'}),{code:'app_agent_report_conflict'});
 });
 
-test('concurrent Send admits one global job and private binding internals never reach browser responses',async(t)=>{
+test('concurrent Send admits one job per workspace and private binding internals never reach browser responses',async(t)=>{
  const f=await setup(t);const attempts=await Promise.allSettled([f.gateway.runtime.dispatch('send',f.input),f.gateway.runtime.dispatch('send',{...f.input,clientMessageId:'other'})]);
  assert.equal(attempts.filter(result=>result.status==='fulfilled').length,1);
  const run=(attempts.find(result=>result.status==='fulfilled') as PromiseFulfilledResult<any>).value;

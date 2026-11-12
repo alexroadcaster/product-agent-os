@@ -1,0 +1,346 @@
+{
+  "task_id": "PAOS-0024",
+  "task_name": "Очередь, назначения и владение файлами",
+  "status": "implemented",
+  "closure_level": "implemented_locally_verified",
+  "started_at": "2026-11-12T14:42:57+03:00",
+  "implementation_completed_at": "2026-11-12T15:44:15+03:00",
+  "evidence_updated_at": "2026-11-12T15:49:38+03:00",
+  "elapsed_wall_seconds": 4001,
+  "active_duration_seconds": null,
+  "baseline_head": "eefdeeb6fe0236a7f15ff34a28083da72a2b4651",
+  "receipt_provenance": "current run; broad Python/fixture/transcript before final docs; affected251 after card/control-plane sync; final receipt/source/build hashes unchanged",
+  "verification": {
+    "web_tests": 443,
+    "web_skipped": 0,
+    "python_tests": 1450,
+    "python_skipped": 1,
+    "fixture_evals": 91,
+    "transcript_evals": 26,
+    "post_sync_docs_tests": 251,
+    "post_sync_docs_seconds": 21.125,
+    "review_repair_tests": 7,
+    "typecheck_exit": 0,
+    "build_exit": 0,
+    "synthetic_browser_checks": 88,
+    "synthetic_parallel_native_checks": 49,
+    "actual_app_parallel_checks": 46,
+    "actual_unique_app_jobs": 2,
+    "native_modes": [
+      "discussion",
+      "planning",
+      "execution"
+    ],
+    "compatibility": "compatible",
+    "docs_matrix_hooks_diff_exit": 0
+  },
+  "review": {
+    "context_mode": "separate_fresh_context",
+    "reviewer": "/root/queue_review",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "resolved_findings": [
+      "P2 count reserved workspace executions toward cap4",
+      "P2 physical drive-root overlap"
+    ],
+    "open_blocking_findings": [],
+    "tester_verdict": "closed_allowed",
+    "ceiling": "local technical scope; root reconciled independent review with current native/browser/actual proof"
+  },
+  "runtime": {
+    "route": "codex_app_agent",
+    "fallback": "none; API opt-in unavailable",
+    "adapter_revision": "d8311aa149804f07059bd23dfbdcabd4dd03f02f6bb84f8fce49805051983ddc",
+    "codex_version": "0.167.0",
+    "codex_sha256": "edfdd48f8b458af0906e507b4cb05217b326c3d6e515e9f024e05e3b8d650f70",
+    "manifest_other_pins_preserved": true,
+    "prior_evidence_preserved": true,
+    "actual_app_run_ids": [
+      "app-run-86d6fc254840c331c12a6233910ad1f549f1efd63425dd25b2c65fcd4de2fc78",
+      "app-run-b6b1d5b793c0664c00d1375efaa5bc07e10005c1cd601ae2f89584a3206ee647"
+    ],
+    "observed_model": null,
+    "observed_effort": null,
+    "provider_client_used": false,
+    "credential_operations": 0,
+    "host_identity": "attested_not_cryptographic",
+    "sandbox_scope": "paos_mediated_commands",
+    "per_project_workspace_writer_cap": 1,
+    "distinct_workspace_cap": 4,
+    "native_concurrent_workspace_proof_count": 2,
+    "global_reservation_cap_test_projects": 5
+  },
+  "acceptance": {
+    "frozen_assignments_preserved_after_profile_publish": true,
+    "dependency_hard_wip_ownership_atomic": true,
+    "blocked_head_skipped": true,
+    "replay_no_duplicate_entry_or_run": true,
+    "manual_agent_runs": 0,
+    "selective_stop_kept_other_native_job_running": true,
+    "cross_workspace_write_denied": true,
+    "fifth_project_waited_then_automatically_admitted": true,
+    "done_requires_owner": true
+  },
+  "preservation": {
+    "task_id": "PAOS-0024",
+    "other_md_cards_unchanged": 55,
+    "other_json_tasks_unchanged": 55,
+    "task_count": 56,
+    "group_count": 12,
+    "all_estimates_order_groups_preserved": true,
+    "completed_at": "2026-11-12T15:44:15+03:00",
+    "active_duration_measured": false
+  },
+  "control_plane_sync": {
+    "status": "applied",
+    "digest": "sha256:a93777db87f28a5d89b355dcd2961514253c8c414ef40408c6fe09382d73b87d",
+    "updated": [
+      "REQUIREMENTS.md",
+      "PLAN.md",
+      "TEST.md",
+      "EVALS.md",
+      "RUNLOG.md"
+    ],
+    "not_applicable": [
+      "AGENTS.md: durable rules unchanged",
+      "prod_test.md: Batch39 unchanged"
+    ],
+    "bytes": {
+      "REQUIREMENTS.md": 27574,
+      "PLAN.md": 30114,
+      "TEST.md": 33949,
+      "EVALS.md": 26174,
+      "RUNLOG.md": 27056
+    },
+    "assess": "reviewed_inputs_valid; gaps[]",
+    "compaction": {
+      "exact_bytes": 12773,
+      "sha256": "sha256:2bfb5192749a4c5801c3bf92e1d68f2bb79d64cd8dca2a7ce6b0fa729ca55edc",
+      "original_rows_preserved": true,
+      "task_matrix_split": false
+    },
+    "strict_mkdocs": "not_required; nav/mermaid/config/site unchanged"
+  },
+  "cleanup": {
+    "synthetic_binary_removed": true,
+    "sha256": "edfdd48f8b458af0906e507b4cb05217b326c3d6e515e9f024e05e3b8d650f70",
+    "containment_verified": true,
+    "browser_fixture_roots_remaining": 0,
+    "parallel_fixture_roots_remaining": 0,
+    "installed_runtime_changed": false
+  },
+  "metrics": {
+    "delegation_model": "gpt-6-astra",
+    "delegation_effort": "medium",
+    "new_agents": 2,
+    "reused_app_worker": 1,
+    "root_model": "not_available; no authoritative model trace",
+    "input_cached_output_reasoning_tokens": "not_available; no token trace",
+    "tool_wait_timeout_compaction_skill_read_counters": "not_available; complete trace not exposed",
+    "external_provider_client_calls": 0
+  },
+  "limits": [
+    "Active attached App consumer required; no automatic wakeup or closed-App daemon",
+    "One writer per project/workspace; declarations do not create a per-file sandbox",
+    "No confinement of App-host own tools",
+    "Interrupted/unknown attempts never replay automatically",
+    "No model-quality/token/cost/workload SLO claim",
+    "Human/commercial/release acceptance separate"
+  ],
+  "failed_attempts": [
+    "HTTP404 queue behavioral RED",
+    "second distinct-root runtime_busy behavioral RED",
+    "cap5 admitted instead4 valid RED",
+    "drive-root overlap false behavioral RED",
+    "historical profile ASSET_RUN_PIN_INVALID regression",
+    "optional queueEntryId hash(undefined) regression",
+    "first full Web legacy idle-error ordering regression",
+    "browser fixture API/UI polling race",
+    "native fixture command-length/replayed-claim consumer setup failures",
+    "initial lifecycle digest/closed-scope guard rejection",
+    "first history move rejected by relative-link guard before writes",
+    "initial exact-card adapter stale filename assertion before writes"
+  ],
+  "next_task": "PAOS-0025",
+  "next_dependencies_ready": [
+    "PAOS-0011",
+    "PAOS-0024",
+    "PAOS-0044"
+  ],
+  "git_writes_performed": false,
+  "receipts": {
+    "python-full.log": {
+      "path": ".tmp/paos-m3-0024/python-full.log",
+      "sha256": "765de4d69831307940ffe9562b0149d63ff7a3cac571aa51a842c37792dcc44e"
+    },
+    "fixture-eval.log": {
+      "path": ".tmp/paos-m3-0024/fixture-eval.log",
+      "sha256": "014f6152da56145aa30e29151fd0c5979f34a44596f0b0714d270e9708719c22"
+    },
+    "transcript-eval.log": {
+      "path": ".tmp/paos-m3-0024/transcript-eval.log",
+      "sha256": "5694b49e2762388661d971053ceedea106cba7f64c307fe7c7ea3a2546e70634"
+    },
+    "web-full-final.log": {
+      "path": ".tmp/paos-m3-0024/web-full-final.log",
+      "sha256": "89d730ed305db5134a498ee83ac819a452b82de2bbbcb7a2bb870301e1011b85"
+    },
+    "typecheck.log": {
+      "path": ".tmp/paos-m3-0024/typecheck.log",
+      "sha256": "66d87221505bb187a2fe87ddeacbd07f5922ac556c005c69c5c59e0f0c74cf98"
+    },
+    "build.log": {
+      "path": ".tmp/paos-m3-0024/build.log",
+      "sha256": "1da46213d4b25b99a67ca385822c4cd5cc855c973f0767e0c5fdc4edc6c2804c"
+    },
+    "queue-focused.log": {
+      "path": ".tmp/paos-m3-0024/queue-focused.log",
+      "sha256": "c8d1772df9cd857485c8f53252bc2cb7b8a3056e5e11a53dd9722fc84d9faa5d"
+    },
+    "review-repairs.log": {
+      "path": ".tmp/paos-m3-0024/review-repairs.log",
+      "sha256": "47b4d537d10424ced9107b5eb4e8c33384e0ddb41004c62eed6ec6d85087f57a"
+    },
+    "native-candidate.log": {
+      "path": ".tmp/paos-m3-0024/native-candidate.log",
+      "sha256": "f1aea935f7fc1e69044182c53ca0d5bb1253b32269b194a985c340e083d1f351"
+    },
+    "native-default.log": {
+      "path": ".tmp/paos-m3-0024/native-default.log",
+      "sha256": "4dfee1a3bbcbbb837a0af8225fa3aa7b84d30e97380f147e611a6927d2c32e58"
+    },
+    "compatibility.log": {
+      "path": ".tmp/paos-m3-0024/compatibility.log",
+      "sha256": "eb071b781c513c6693744ac48b88b0fa28dcab5252707e4c49e96c999ceed9b2"
+    },
+    "post-sync-docs.log": {
+      "path": ".tmp/paos-m3-0024/post-sync-docs.log",
+      "sha256": "1b048977bb9938958db152a3df8a581d2501edacac072af4ee5927a74e5d8a4b"
+    },
+    "matrix-validation.log": {
+      "path": ".tmp/paos-m3-0024/matrix-validation.log",
+      "sha256": "f17e172c632693877fa0f2ce81fd192d44b9070c0ab929841ce28fe3393fa71c"
+    },
+    "state-validation.log": {
+      "path": ".tmp/paos-m3-0024/state-validation.log",
+      "sha256": "a4004c18fd639513dc0d8e520b850c74b8f78ed3f70b1a8c89c8649c8ae56a90"
+    },
+    "hooks-json.log": {
+      "path": ".tmp/paos-m3-0024/hooks-json.log",
+      "sha256": "6eaa34164526a0a1f0b9dd89730318d5e31bdba9fad3ce3d93442f858e7f6782"
+    },
+    "hooks-dir.log": {
+      "path": ".tmp/paos-m3-0024/hooks-dir.log",
+      "sha256": "5d950b07458f956f2ac600215531d797483c23ed8d868b2bbdbac6f014a7b592"
+    },
+    "doc-sync-apply.json": {
+      "path": ".tmp/paos-m3-0024/doc-sync-apply.json",
+      "sha256": "5cbc66914b6fee377bd9774bd1453e344eea1f033127a02457710196da57f17e"
+    },
+    "compaction-apply-v2.json": {
+      "path": ".tmp/paos-m3-0024/compaction-apply-v2.json",
+      "sha256": "faa2edd3b22bf29ddad9e121d7ab4a445531c71e384e8a9874b2ef1e2bdded68"
+    },
+    "compaction-preservation.json": {
+      "path": ".tmp/paos-m3-0024/compaction-preservation.json",
+      "sha256": "a6c984076f320768ef4a479b3e72fa2a0c91feba92752e48f60af3d85045a826"
+    },
+    "binary-cleanup.json": {
+      "path": ".tmp/paos-m3-0024/binary-cleanup.json",
+      "sha256": "f633a72cdddf6f4b462c2b78012017da829a9a9d2561392d8370f73591750dcf"
+    },
+    "final-adapter.json": {
+      "path": ".tmp/paos-m3-0024/final-adapter.json",
+      "sha256": "65f87ec6aa1343d10c4dd71b34a6c032c3c45b9a7cb6400c07160339b4cbc4b9"
+    },
+    "check-docs-final.log": {
+      "path": ".tmp/paos-m3-0024/check-docs-final.log",
+      "sha256": "8980e553ce08599d54a68baf90a197be5cde25b960ab1b92eaaef3dba110b37f"
+    },
+    "final-doc-assessment.json": {
+      "path": ".tmp/paos-m3-0024/final-doc-assessment.json",
+      "sha256": "d881cd6f70700d885900ce716453f45290dae550ddbd4f81b739c06faeb65012"
+    },
+    "diff-check.log": {
+      "path": ".tmp/paos-m3-0024/diff-check.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "docs-final.log": {
+      "path": ".tmp/paos-m3-0024/docs-final.log",
+      "sha256": "b64498e74d5f0f729322bab91a8bc989fdbe65ceeee995754fd84564eb345941"
+    },
+    "browser-evidence-mEIqoy": {
+      "path": ".tmp/paos-m3-0024/browser-evidence-mEIqoy/result.json",
+      "sha256": "e67ebcf3ce224311012a63694ece24b9e6740b6604867e13c39ba8a250f80014",
+      "checks": 88,
+      "status": "passed",
+      "actual_app_agent": false,
+      "actual_native_broker": true,
+      "fixture_cleaned": true,
+      "source_hash_mismatches": []
+    },
+    "parallel-evidence-YsTAWI": {
+      "path": ".tmp/paos-m3-0024/parallel-evidence-YsTAWI/result.json",
+      "sha256": "75df8a4516c55719ce726e9bfb5e5668fd5fbc2e51b61400423f292f6a96fd8c",
+      "checks": 49,
+      "status": "passed",
+      "actual_app_agent": false,
+      "actual_native_broker": true,
+      "fixture_cleaned": true,
+      "source_hash_mismatches": []
+    },
+    "actual-parallel-evidence-YJyW9x": {
+      "path": ".tmp/paos-m3-0024/actual-parallel-evidence-YJyW9x/result.json",
+      "sha256": "72c335ca98a982a9521d3de4d51b7680f446fa560ba29fd77708ebac2b93901d",
+      "checks": 46,
+      "status": "passed",
+      "actual_app_agent": true,
+      "actual_native_broker": true,
+      "fixture_cleaned": true,
+      "source_hash_mismatches": []
+    }
+  },
+  "source_sha256": {
+    "EVALS.md": "54065f2d8ffbff4f4aed986ebab31424480bb4f2bc9afe91a818cc187d9982d4",
+    "PLAN.md": "759efd751b097d84e4f9e5d4f6bf34c573d19a5c5178dfede860991dee9ff680",
+    "REQUIREMENTS.md": "3ff0e4c329e1057f2a5fdfae6846b168134dc7f1348f1b7757f63299c9ffcdda",
+    "RUNLOG.md": "44642ac7ddec47916f72ea3096e6b4bff02bf7c8a31de46f8ca9ded2d9925401",
+    "TEST.md": "598e0be8ee44e90c0ade5c0547ad695ebee89ad837d172250e2c253e819d2b22",
+    "apps/local-service/src/execution-recipes/contract.mts": "a488036272e1549130de5fe80d7203ccf8f280b18fedab668d3a671fa42999f8",
+    "apps/local-service/src/execution-recipes/service.mts": "fe5566ea2cc5b154ee517909be63791c9bcb5beda60bfcc0a47e0fb39525466d",
+    "apps/local-service/src/http/application.mts": "e098f71d0ae8c2b060f4e0216f6c33fadccfa1b18be653eb36f486d18c9a6c37",
+    "apps/local-service/src/main.mts": "6a8c27c95a902790b9e74651057a21df7639fb36edfd336c1414ecdc6e829530",
+    "apps/local-service/src/runtime/app-agent-gateway.mts": "000e96a7343eb040c2e327f6670a72ced30a0093c794bbad984d88ffe956c889",
+    "apps/local-service/src/storage/sqlite-worker.mts": "78da7f9591a437facfb49025c3867e33d59d91b0e51dd5a47da98d1c67ede823",
+    "apps/local-service/src/task-manager/service.mts": "67f8fd4a6a35c92d07e5d500746527c82696e834f0cfebb5c553ac7191300f38",
+    "apps/local-service/src/workflows/guards.mts": "86c4cac8edcd67d596610e03e938f51cf67a7c863ee22d26443d353b7f8d7f2e",
+    "apps/web/README.md": "72cbff318e21f638a3fa8f03a44816774d953e9ed5e680e39eb3d14c069c7a4b",
+    "apps/web/src/api/client.ts": "f1482a9d110db22483654f35c461d67ad41b6bc3e2dfb29f0de0ead2820420ff",
+    "apps/web/src/design/app.css": "474eca1f854d9ad4f8b7c93806ae176016bc665265b6647bfbeafb03f53a6eda",
+    "apps/web/src/features/workflows/WorkflowManager.tsx": "a10608009ee086f43aa7341ff5785d40a278683b9b5de84e4adb1f9e88ac0464",
+    "apps/web/src/features/workflows/recipes/RecipeRunner.tsx": "f2004d3f5c8b1261630808f0a40729efd6d3bc678951ca355faeb8884998ea63",
+    "docs/sources/registry.en.md": "b51333503c4974babfb134c5903e5b2fde5d0b9363545dacb569e0a8ab975e28",
+    "docs/sources/registry.md": "6962058d90aaafca11db15711b6b6ebee16d6fbaefa602a36af5b1e9205cb1dd",
+    "packages/contracts/runtime/qualified-manifest.json": "02888abe354cedcfb32d38ee203f7a2c9c5e20dc3276be733b2c32ab2a014814",
+    "packages/contracts/storage/local-store.ts": "d53029617789f7cbda513daa9145fee923390978d47ad99e442917c634ae6eda",
+    "research/product-agent-os-requirements-history-2026-11-10.md": "aa39d3b5b736c0b1dfdcf1b2d0b9c62e580413d02a09191a888f7148b65d186d",
+    "tests/web/app-agent-gateway.test.mts": "c10d55eb8438ed049fefa0b4a59d86dbf4d20e5d46e33742b82ecbc2c5431f07",
+    "tests/web/recipe-runtime.test.mts": "d5efbd5e2eeba12d95a605abf791127d1a06b2b50ef00b0accffe044e7a190f4",
+    "apps/local-service/src/scheduler/contract.mts": "da4ea1d6874031b960be25f1d78ba995efc7f686400e6d5abbd9b849b1faefac",
+    "apps/local-service/src/scheduler/ownership.mts": "be88b48a6705b9cfaf554a2539341e6aa4e3d4f9e008ede62852502317da6791",
+    "apps/local-service/src/scheduler/service.mts": "2dab5ea43c87df30a80bd084f9deafac0c18f0d33b4b2d0acba5e473e9b04278",
+    "apps/local-service/src/scheduler/storage-guards.mts": "40a69cde6336d9948b83bbf9617c8e8856fbb184286d384a188f82743ec77cf1",
+    "apps/web/src/features/workflows/recipes/QueueManager.tsx": "4a017e9e64ee1a907c9771f499fbf4a4b9522aecdbb0ff04b607cbaec2123acc",
+    "packages/contracts/scheduler/queue.ts": "a71ea79bcc3fd5eafd8c45b9edd1d6bdc386d203ded681117d0285bf564af1fd",
+    "research/product-agent-os-web-m3-0024-execution-2026-11-12.md": "9557f45966b38e4de752c2edc5729acb2baa0ebdde31283379f52a4ddd8b92d9",
+    "tests/web/parallel-workspaces.test.mts": "d7e117efbcf72823131e5f99b7cd044ac9353b6e34cc23e792820647c4474a8b",
+    "tests/web/recipe-fixture.mts": "f7e4f259ff2800f20e5d0a2251b58fdaef163b18c25103d6f227069761cef8fb",
+    "tests/web/scheduler-capacity.test.mts": "0d8876ed619aa14de99eaf10d51fa9ed3925613f7f44550154b83eba103f7d93",
+    "tests/web/scheduler-runtime.test.mts": "92f464a0d05c3e6433977e929b318de796840cd1f16fce0ebeb00f50d4852570",
+    "tests/web/scheduler.test.mts": "69205d3f2b5606998e741b3ec22695c019778af77093298d27998e587253c18e",
+    "tests/web/single-window/m3-queue-acceptance.mts": "a9e08348f5f838bbeeff3cf8a64c91e0b4dfce3bf12746a9b591de7853edb9b5",
+    "tests/web/single-window/m3-queue-parallel-acceptance.mts": "baa861e19ab3f67d7c109848e565dad69c80695a6404f07bf46a7f99d19ba18f",
+    "research/product-agent-os-web-task-manager-plan-2026-11-09.md": "35e1b80037cc481383d836ab3db86d6d107be4359156b469369762952fa1b59c",
+    "research/product-agent-os-web-task-manager-task-group-2026-11-09.json": "c28f5946973d83293dee42ad5b7990042124ab0e18ff54214880bd0c829ca741"
+  }
+}

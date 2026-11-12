@@ -36,6 +36,8 @@ export type StoreWrite = Readonly<{
   taskManagerRun?: {id:string;bindingId:string;generation:string;taskId:string};
   /** Service-only durable recipe ownership CAS. Never accepted as browser input. */
   recipeExecution?: {id:string;revision:number};
+  /** Scheduler-only queue CAS/admission; browser payloads never provide this authority. */
+  schedulerCommand?: {queueRevision:number;entryId?:string;entryRevision?:number;admit?:boolean};
   changes: readonly { entity: EntityInput; expectedRevision: number; delete?: boolean }[];
   outbox?: readonly { kind: string; payload: Record<string, unknown> }[];
 }>;

@@ -1,26 +1,45 @@
 {
-  "task_id": "PAOS-0037",
+  "task_id": "PAOS-0024",
   "session_id": "01a1cedc-5a90-7a23-bb27-6f755c6885ce",
   "plan_path": "research/product-agent-os-web-task-manager-plan-2026-11-09.md",
-  "scope": "PAOS-0037 pinned recipes, bounded DAG scheduling, existing App runtime/workflow integration, UI/tests/docs; preserve other tasks and host policy",
-  "updated_at": "2026-11-12T14:34:19+03:00",
+  "scope": "PAOS-0024 queue, assignments, dependency/WIP/ownership admission, existing pinned recipe/runtime integration, UI/tests/docs; preserve other tasks and host policy",
+  "updated_at": "2026-11-12T15:50:18+03:00",
   "approval_boundary": "Authorized local implementation and bounded synthetic acceptance; no credentials/provider/Git/publication/global changes",
   "status": "implemented",
   "completion_ready": true,
   "closure_contract": "product-agent-os-completion-ledger-v2",
-  "closure_level": "implemented_locally_verified",
-  "evidence_path": "research/product-agent-os-web-m3-0037-results-2026-11-12.json",
-  "control_plane_sync": "applied; final reassessment reviewed_inputs_valid, gaps=[]",
-  "previous_closure": {"task_id":"PAOS-0023","closure_level":"implemented_locally_verified","evidence_path":"research/product-agent-os-web-m3-0023-results-2026-11-12.json"},
-  "brief_digest": "sha256:0a2a90523ba1e24f134b37c7aa961907db66f8d449908bd45ce8ec404d5a86fe",
+  "previous_closure": {
+    "task_id": "PAOS-0037",
+    "closure_level": "implemented_locally_verified",
+    "evidence_path": "research/product-agent-os-web-m3-0037-results-2026-11-12.json"
+  },
+  "brief_digest": "sha256:ab9fd847c2d64d48bbc0e27a7ceea209a47c80f178f3a87a9ccd3a0492cdce37",
   "brief_schema_version": "task_start_brief_v2",
   "brief_format": "bold_fields",
-  "brief_fields_present": ["Request", "Goal", "Context", "Scope", "Value", "Execution", "Acceptance", "Risks / approvals", "Next step"],
+  "brief_fields_present": [
+    "Request",
+    "Goal",
+    "Context",
+    "Scope",
+    "Value",
+    "Execution",
+    "Acceptance",
+    "Risks / approvals",
+    "Next step"
+  ],
   "task_start_brief_shown": true,
   "lifecycle_scope": {
-    "work_type": "implementation", "size": "large", "risk": "high",
-    "financially_material": false, "release_or_readiness": false,
+    "work_type": "implementation",
+    "size": "large",
+    "risk": "high",
+    "financially_material": false,
+    "release_or_readiness": false,
     "explicit_packet_request": false,
-    "reason": "Pinned recipe dispatch, retries, ownership and workflow outcomes change agent execution and require runtime/negative-case proof"
-  }
+    "reason": "Queue admission, dependency/WIP and ownership routing change execution and require runtime/negative-case proof"
+  },
+  "closure_level": "implemented_locally_verified",
+  "evidence_path": "research/product-agent-os-web-m3-0024-results-2026-11-12.json",
+  "control_plane_sync": "updated; assessed current revisions; gaps[]",
+  "tester_verdict": "closed_allowed",
+  "elapsed_wall_seconds": 4041
 }

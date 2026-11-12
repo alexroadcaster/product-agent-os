@@ -1384,21 +1384,21 @@ Rollback будущих изменений: versioned proposal, revision check, 
 ### Task `PAOS-0024`
 
 - Task: Очередь, назначения и владение файлами
-- Status: planned
+- Status: implemented
 - Delivery stage: M3
 - Execution order: 48
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 12-11-2026 15:44
 - Depends on: PAOS-0015, PAOS-0019, PAOS-0023, PAOS-0037, PAOS-0038
 - Blocks: PAOS-0025
 - Source: PRD: дополнение Task Manager; screen specification
 - Short description: Назначать агентов и skills в пределах scope без конфликтующих writers
 - Technical value: Назначать агентов и skills в пределах scope без конфликтующих writers
 - Product value: Пользователь запускает независимые задачи параллельно без незаметного перезаписывания одних файлов.
-- Scope: apps/local-service/src/scheduler
+- Scope: packages/contracts/scheduler/queue.ts; apps/local-service/src/scheduler; private recipe/App/SQLite/workflow integration; apps/web/src/features/workflows/recipes
 - Non-goals: Глобальные permissions, внешняя публикация и несвязанный refactor
 - Expected result: Очередь, назначения и владение файлами доступна в соответствующем этапе
 - Acceptance criteria: Очередь соблюдает pinned recipe, blocks links, hard WIP и ownership; независимые writers допускаются только при отсутствии пересечения
@@ -1407,24 +1407,24 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Complexity: medium/high, уточнить после discovery
 - Estimated execution time: 16:00:00 (предварительно)
 - Agents: architect, builder, tester
-- Skills: implementation-planner; task-matching implementation/verification skills selected at start
-- Output artifacts: apps/local-service/src/scheduler
-- Next step: Завершить зависимости, затем уточнить tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Skills: implementation-planner; react-best-practices; frontend-testing-debugging
+- Output artifacts: EVALS.md; PLAN.md; REQUIREMENTS.md; RUNLOG.md; TEST.md; apps/local-service/src/execution-recipes/contract.mts; apps/local-service/src/execution-recipes/service.mts; apps/local-service/src/http/application.mts; apps/local-service/src/main.mts; apps/local-service/src/runtime/app-agent-gateway.mts; apps/local-service/src/storage/sqlite-worker.mts; apps/local-service/src/task-manager/service.mts; apps/local-service/src/workflows/guards.mts; apps/web/README.md; apps/web/src/api/client.ts; apps/web/src/design/app.css; apps/web/src/features/workflows/WorkflowManager.tsx; apps/web/src/features/workflows/recipes/RecipeRunner.tsx; docs/sources/registry.en.md; docs/sources/registry.md; packages/contracts/runtime/qualified-manifest.json; packages/contracts/storage/local-store.ts; research/product-agent-os-requirements-history-2026-11-10.md; tests/web/app-agent-gateway.test.mts; tests/web/recipe-runtime.test.mts; apps/local-service/src/scheduler/contract.mts; apps/local-service/src/scheduler/ownership.mts; apps/local-service/src/scheduler/service.mts; apps/local-service/src/scheduler/storage-guards.mts; apps/web/src/features/workflows/recipes/QueueManager.tsx; packages/contracts/scheduler/queue.ts; research/product-agent-os-web-m3-0024-execution-2026-11-12.md; tests/web/parallel-workspaces.test.mts; tests/web/recipe-fixture.mts; tests/web/scheduler-capacity.test.mts; tests/web/scheduler-runtime.test.mts; tests/web/scheduler.test.mts; tests/web/single-window/m3-queue-acceptance.mts; tests/web/single-window/m3-queue-parallel-acceptance.mts; research/product-agent-os-web-task-manager-plan-2026-11-09.md; research/product-agent-os-web-task-manager-task-group-2026-11-09.json; research/product-agent-os-web-m3-0024-results-2026-11-12.json
+- Next step: Следующая PAOS-0025: исполнение, восстановление и отмена. Зависимости0011/0024/0044 выполнены; следующий slice требует отдельного scope. PAOS-0026/0028 остаются planned.
+- Actual time: Measured scope start12-11-2026 14:42:57 MSK; end 12-11-2026 15:44 MSK. Wall interval available, active duration not separately instrumented; duration=null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
-- Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
+- Affected files: EVALS.md (modify); PLAN.md (modify); REQUIREMENTS.md (modify); RUNLOG.md (modify); TEST.md (modify); apps/local-service/src/execution-recipes/contract.mts (modify); apps/local-service/src/execution-recipes/service.mts (modify); apps/local-service/src/http/application.mts (modify); apps/local-service/src/main.mts (modify); apps/local-service/src/runtime/app-agent-gateway.mts (modify); apps/local-service/src/storage/sqlite-worker.mts (modify); apps/local-service/src/task-manager/service.mts (modify); apps/local-service/src/workflows/guards.mts (modify); apps/web/README.md (modify); apps/web/src/api/client.ts (modify); apps/web/src/design/app.css (modify); apps/web/src/features/workflows/WorkflowManager.tsx (modify); apps/web/src/features/workflows/recipes/RecipeRunner.tsx (modify); docs/sources/registry.en.md (modify); docs/sources/registry.md (modify); packages/contracts/runtime/qualified-manifest.json (modify); packages/contracts/storage/local-store.ts (modify); research/product-agent-os-requirements-history-2026-11-10.md (modify); tests/web/app-agent-gateway.test.mts (modify); tests/web/recipe-runtime.test.mts (modify); apps/local-service/src/scheduler/contract.mts (create); apps/local-service/src/scheduler/ownership.mts (create); apps/local-service/src/scheduler/service.mts (create); apps/local-service/src/scheduler/storage-guards.mts (create); apps/web/src/features/workflows/recipes/QueueManager.tsx (create); packages/contracts/scheduler/queue.ts (create); research/product-agent-os-web-m3-0024-execution-2026-11-12.md (create); tests/web/parallel-workspaces.test.mts (create); tests/web/recipe-fixture.mts (create); tests/web/scheduler-capacity.test.mts (create); tests/web/scheduler-runtime.test.mts (create); tests/web/scheduler.test.mts (create); tests/web/single-window/m3-queue-acceptance.mts (create); tests/web/single-window/m3-queue-parallel-acceptance.mts (create); research/product-agent-os-web-task-manager-plan-2026-11-09.md (modify); research/product-agent-os-web-task-manager-task-group-2026-11-09.json (modify); research/product-agent-os-web-m3-0024-results-2026-11-12.json (create)
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Durable queue, reviewed enqueue/reorder/pause/cancel, frozen recipe assignments, atomic blocks/hard WIP/ownership admission и bounded coordinator реализованы. До4 разных non-overlapping workspace roots исполняются параллельно при одном writer/project/workspace; capacity/root findings исправлены.
+- Files touched / work locations: EVALS.md; PLAN.md; REQUIREMENTS.md; RUNLOG.md; TEST.md; apps/local-service/src/execution-recipes/contract.mts; apps/local-service/src/execution-recipes/service.mts; apps/local-service/src/http/application.mts; apps/local-service/src/main.mts; apps/local-service/src/runtime/app-agent-gateway.mts; apps/local-service/src/storage/sqlite-worker.mts; apps/local-service/src/task-manager/service.mts; apps/local-service/src/workflows/guards.mts; apps/web/README.md; apps/web/src/api/client.ts; apps/web/src/design/app.css; apps/web/src/features/workflows/WorkflowManager.tsx; apps/web/src/features/workflows/recipes/RecipeRunner.tsx; docs/sources/registry.en.md; docs/sources/registry.md; packages/contracts/runtime/qualified-manifest.json; packages/contracts/storage/local-store.ts; research/product-agent-os-requirements-history-2026-11-10.md; tests/web/app-agent-gateway.test.mts; tests/web/recipe-runtime.test.mts; apps/local-service/src/scheduler/contract.mts; apps/local-service/src/scheduler/ownership.mts; apps/local-service/src/scheduler/service.mts; apps/local-service/src/scheduler/storage-guards.mts; apps/web/src/features/workflows/recipes/QueueManager.tsx; packages/contracts/scheduler/queue.ts; research/product-agent-os-web-m3-0024-execution-2026-11-12.md; tests/web/parallel-workspaces.test.mts; tests/web/recipe-fixture.mts; tests/web/scheduler-capacity.test.mts; tests/web/scheduler-runtime.test.mts; tests/web/scheduler.test.mts; tests/web/single-window/m3-queue-acceptance.mts; tests/web/single-window/m3-queue-parallel-acceptance.mts; research/product-agent-os-web-task-manager-plan-2026-11-09.md; research/product-agent-os-web-task-manager-task-group-2026-11-09.json; research/product-agent-os-web-m3-0024-results-2026-11-12.json
+- Technical value delivered: Queue coordinator сохраняет CAS/idempotency и immutable pins; SQLite атомарно проверяет dependencies/WIP/task ownership/physical roots/cap4, gateway обслуживает независимые native jobs.
+- Product value delivered: Пользователь ставит Task в очередь с закреплённым recipe и назначениями, видит порядок/ожидание/владение, управляет pause/cancel; независимые workspaces выполняются параллельно без конфликтующих writers.
+- Actual implementation date and time: 12-11-2026 15:44
+- Verification evidence: Web443/443 skip0; queue/parallel7; Python1450(skip1); fixtures91/transcripts26; browser88, parallel native49 и actual App46; exact native candidate/default; docs/compatibility gates — research/product-agent-os-web-m3-0024-execution-2026-11-12.md и results JSON.
+- Residual risks: Active App consumer required; PAOS-mediated commands only, host tools не confined. Execution phase in_progress; interrupted/unknown work не replay. Token/cost/performance/model-quality и human/commercial/release acceptance отдельно.
+- Follow-up: Следующая PAOS-0025: исполнение, восстановление и отмена. Зависимости0011/0024/0044 выполнены; следующий slice требует отдельного scope. PAOS-0026/0028 остаются planned.
 
 ### Task `PAOS-0025`
 

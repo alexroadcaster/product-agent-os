@@ -16,7 +16,9 @@ Frozen synthetic profiles: Trade-like strict 20 000 bytes/history, myPartners-li
 
 ## Web M1 — scope v0.7 / очередь v0.8, 2026-11-10
 
-Source status: project-authored / PAOS-0037 local orchestration verified. Recipe/ordinary Send и Manual сравниваются по admission, pinned context, policy, replay и outcomes; representative/edge/negative fixtures дополняются actual App two-step proof. Это функциональная проверка маршрута, не улучшение качества модели; scores/cost/latency не измерены. [Evidence и ограничения](research/product-agent-os-web-m3-0037-execution-2026-11-12.md).
+PAOS-0024 eval ceiling: deterministic queue/assignment/physical ownership с manual/single-workspace baseline; distinct-root concurrent native commands и exact-run Stop дополнены actual App worker proof. Five-project cap и root/alias negatives обязательны. Это correctness/routing evidence, не model-quality/cost/latency promotion. [Evidence](research/product-agent-os-web-m3-0024-execution-2026-11-12.md).
+
+Исторический срез до PAOS-0024 (provenance сохранён): Source status: project-authored / PAOS-0037 local orchestration verified. Recipe/ordinary Send и Manual сравниваются по admission, pinned context, policy, replay и outcomes; representative/edge/negative fixtures дополняются actual App two-step proof. Это функциональная проверка маршрута, не улучшение качества модели; scores/cost/latency не измерены. [Evidence и ограничения](research/product-agent-os-web-m3-0037-execution-2026-11-12.md).
 
 Исторический срез до PAOS-0037 (provenance сохранён): Source status: planned evaluation route; implementation_not_started.
 

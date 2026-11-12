@@ -16,7 +16,9 @@ G8 closed / owner accepted. G9 T01–T09 implemented_locally_verified; T10 owner
 
 ## Активная продуктовая очередь Web — 2026-11-10
 
-PAOS-0037 технически реализована: pinned recipes и bounded execution поверх PAOS-0023. [Контракт и evidence](research/product-agent-os-web-m3-0037-execution-2026-11-12.md). Следующая — PAOS-0024 (общая очередь), её реализация требует нового scope. PAOS-0025/0026/0028 остаются planned; M2 technical26/26 и прочие карточки сохраняют provenance.
+PAOS-0024 технически реализована: queue/assignments, immutable pins, dependency/WIP/ownership и до4 disjoint workspace writers. [Evidence](research/product-agent-os-web-m3-0024-execution-2026-11-12.md). Следующая PAOS-0025 — исполнение, восстановление и отмена отдельным scope; её зависимости0011/0024/0044 выполнены. Другие55 задач и оценки сохранены; human/commercial/release отдельно.
+
+Исторический срез до PAOS-0024 (provenance сохранён): PAOS-0037 технически реализована: pinned recipes и bounded execution поверх PAOS-0023. [Контракт и evidence](research/product-agent-os-web-m3-0037-execution-2026-11-12.md). Следующая — PAOS-0024 (общая очередь), её реализация требует нового scope. PAOS-0025/0026/0028 остаются planned; M2 technical26/26 и прочие карточки сохраняют provenance.
 
 Исторический срез до PAOS-0037 (provenance сохранён): Текущий M3 scope — PAOS-0023: policy preview/save, durable budgets/deadline и pause через existing App gateway. [Контракт, проверки и ограничения](research/product-agent-os-web-m3-0023-execution-2026-11-12.md). Следующая задача по утверждённой очереди — PAOS-0037; её реализация требует нового scope. PAOS-0024/0025/0026 остаются planned; M2 technical26/26 сохраняет исходный provenance.
 
