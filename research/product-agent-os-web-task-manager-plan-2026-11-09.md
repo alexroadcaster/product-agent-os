@@ -1654,21 +1654,21 @@ Rollback будущих изменений: versioned proposal, revision check, 
 ### Task `PAOS-0030`
 
 - Task: Упаковка и пилот
-- Status: planned
+- Status: implemented
 - Delivery stage: M4
 - Execution order: 53
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 12-11-2026 21:26
 - Depends on: PAOS-0029, PAOS-0046
 - Blocks: PAOS-0052
 - Source: PRD: дополнение Task Manager; screen specification
 - Short description: Проверить install/start/backup/rollback и полезность на реальном проекте
 - Technical value: Проверить install/start/backup/rollback и полезность на реальном проекте
 - Product value: Пользователь устанавливает и восстанавливает локальный продукт по проверенному процессу.
-- Scope: apps/desktop-local; docs/web/pilot
+- Scope: apps/desktop-local; bounded copy pilot; packaging tests; docs/web/pilot; own task and control-plane synchronization
 - Non-goals: Глобальные permissions, внешняя публикация и несвязанный refactor
 - Expected result: Упаковка и пилот доступна в соответствующем этапе
 - Acceptance criteria: Пилот согласован отдельно; restore проверен; наблюдения отделены от продуктовых гипотез Перед коммерческим выпуском повторно сверить актуальность AUTH-G1–G6 и закрытие применимых gaps раннего PAOS-0046; прежний review не является бессрочным допуском.
@@ -1677,24 +1677,24 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Complexity: medium/high, уточнить после discovery
 - Estimated execution time: 16:00:00 (предварительно)
 - Agents: architect, builder, tester
-- Skills: implementation-planner; task-matching implementation/verification skills selected at start
-- Output artifacts: apps/desktop-local; docs/web/pilot
-- Next step: Завершить зависимости, затем уточнить tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Skills: implementation-planner; python-design-patterns/python-code-style advisory; frontend-testing-debugging; openai-docs
+- Output artifacts: EVALS.md; PLAN.md; REQUIREMENTS.md; RUNLOG.md; TEST.md; apps/web/README.md; docs/diagrams/index.en.md; docs/diagrams/index.md; docs/release/web-commercial-review.json; docs/sources/registry.en.md; docs/sources/registry.md; mkdocs.yml; tests/product_agent_os/test_product_agent_os_docs.py; tsconfig.web-m1.json; apps/desktop-local/README.md; apps/desktop-local/THIRD_PARTY_NOTICES.txt; apps/desktop-local/distribution.mts; apps/desktop-local/main.mts; docs/release/web-m4-local-release.json; docs/web/pilot.en.md; docs/web/pilot.md; research/product-agent-os-web-m4-0030-execution-2026-11-12.md; tests/web/desktop-local.test.mts; tests/web/single-window/m4-packaging-acceptance.mts; tests/web/single-window/m4-packaging-native-cancel.ps1; research/product-agent-os-web-task-manager-plan-2026-11-09.md; research/product-agent-os-web-task-manager-task-group-2026-11-09.json; research/product-agent-os-web-m4-0030-results-2026-11-12.json
+- Next step: Следующая PAOS-0052 «Командный профиль PostgreSQL и pgvector»: отдельный T1 scope с runtime placement/auth/embedding/privacy decisions. Dependencies0048/0049/0051/0030 implemented после closure. Остальные55cards/JSON values, estimates/order/groups сохранены.
+- Actual time: Measured scope start12-11-2026 20:02:51MSK; end 12-11-2026 21:26:59MSK. Active duration not separately instrumented; duration=null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
-- Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
+- Affected files: EVALS.md (modify); PLAN.md (modify); REQUIREMENTS.md (modify); RUNLOG.md (modify); TEST.md (modify); apps/web/README.md (modify); docs/diagrams/index.en.md (modify); docs/diagrams/index.md (modify); docs/release/web-commercial-review.json (modify); docs/sources/registry.en.md (modify); docs/sources/registry.md (modify); mkdocs.yml (modify); tests/product_agent_os/test_product_agent_os_docs.py (modify); tsconfig.web-m1.json (modify); apps/desktop-local/README.md (create); apps/desktop-local/THIRD_PARTY_NOTICES.txt (create); apps/desktop-local/distribution.mts (create); apps/desktop-local/main.mts (create); docs/release/web-m4-local-release.json (create); docs/web/pilot.en.md (create); docs/web/pilot.md (create); research/product-agent-os-web-m4-0030-execution-2026-11-12.md (create); tests/web/desktop-local.test.mts (create); tests/web/single-window/m4-packaging-acceptance.mts (create); tests/web/single-window/m4-packaging-native-cancel.ps1 (create); research/product-agent-os-web-task-manager-plan-2026-11-09.md (modify); research/product-agent-os-web-task-manager-task-group-2026-11-09.json (modify); research/product-agent-os-web-m4-0030-results-2026-11-12.json (create)
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Переносимый179-file package, verify/install/start, CAS selection, shared profile reservation, offline snapshot/restore и rollback через новые профили. Реальный codex_docs copy pilot88checks/3launcher-service phases, native Cancel; source14inputs preserved during pilot. Restore preferences metadata relocated, real workspace bindings unchanged. AUTH-G1–G6 повторно сверены, commercial no-go сохранён.
+- Files touched / work locations: EVALS.md; PLAN.md; REQUIREMENTS.md; RUNLOG.md; TEST.md; apps/web/README.md; docs/diagrams/index.en.md; docs/diagrams/index.md; docs/release/web-commercial-review.json; docs/sources/registry.en.md; docs/sources/registry.md; mkdocs.yml; tests/product_agent_os/test_product_agent_os_docs.py; tsconfig.web-m1.json; apps/desktop-local/README.md; apps/desktop-local/THIRD_PARTY_NOTICES.txt; apps/desktop-local/distribution.mts; apps/desktop-local/main.mts; docs/release/web-m4-local-release.json; docs/web/pilot.en.md; docs/web/pilot.md; research/product-agent-os-web-m4-0030-execution-2026-11-12.md; tests/web/desktop-local.test.mts; tests/web/single-window/m4-packaging-acceptance.mts; tests/web/single-window/m4-packaging-native-cancel.ps1; research/product-agent-os-web-task-manager-plan-2026-11-09.md; research/product-agent-os-web-task-manager-task-group-2026-11-09.json; research/product-agent-os-web-m4-0030-results-2026-11-12.json
+- Technical value delivered: Reviewable deterministic package, shared launcher maintenance fence, validated new-profile restore and actual relocated lifecycle evidence without weakening existing guards.
+- Product value delivered: Оператор устанавливает локальную версию, сохраняет данные и восстанавливает/откатывает её по проверенному процессу; полезность широкой аудитории остаётся гипотезой.
+- Actual implementation date and time: 12-11-2026 21:26
+- Verification evidence: Current full Web482/0skip, Python1450(skip1), TS/build, fixtures91/91, transcripts26/26, compatibility compatible; strict MkDocs и docs/lifecycle/validators. Actual moved package pilot88/88, data/blob/comment/preferences preservation, live/corrupt/future-schema refusals. Exact receipts/hashes/failures: research/product-agent-os-web-m4-0030-execution-2026-11-12.md и results JSON.
+- Residual risks: Bounded local technical package/pilot; unsigned, exact host tuple, no historical schema migration/human/closed-App/model proof. AUTH/C46 commercial/license/privacy/support gaps remain; no external distribution. Transient Saved notice retains old language; bundle518.44kB warning. Legacy exact-card closure after verified section-only docs sync, not coordinated completion receipt.
+- Follow-up: Следующая PAOS-0052 «Командный профиль PostgreSQL и pgvector»: отдельный T1 scope с runtime placement/auth/embedding/privacy decisions. Dependencies0048/0049/0051/0030 implemented после closure. Остальные55cards/JSON values, estimates/order/groups сохранены.
 
 ### Task `PAOS-0031`
 

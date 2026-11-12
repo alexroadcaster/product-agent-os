@@ -53,4 +53,6 @@ Use the [model matrix](../codex/models-and-reasoning.md) and [migration playbook
 
 ## Choose the short or full route
 
+For local package → profile → backup/restore → rollback, use the [operator workflow and agreed Web pilot](../web/pilot.md). Packaging does not change runtime permissions or remove commercial gates.
+
 [Delivery lifecycle](product-delivery-lifecycle.md) starts with size and risk. An ordinary task does not require a team, a worktree or a new file set. Use the full atlas for material dependencies, ownership or release/readiness. Each next diagram should answer a concrete task question.

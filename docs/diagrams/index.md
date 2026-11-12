@@ -57,4 +57,6 @@ flowchart LR
 
 ## Выберите короткий или полный маршрут
 
+Для локального package → profile → backup/restore → rollback используйте [операторский маршрут и согласованный Web-пилот](../web/pilot.md). Эта упаковка не меняет runtime permissions и не снимает коммерческие gates.
+
 [Delivery lifecycle](product-delivery-lifecycle.md) начинается с размера и риска. Ordinary task не требует команды, worktree или нового набора файлов. Полный маршрут atlas используется, когда есть существенные зависимости, ownership или release/readiness. Следующая диаграмма должна отвечать на конкретный вопрос задачи.

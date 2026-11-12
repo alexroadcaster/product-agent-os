@@ -63,6 +63,7 @@ plugins:
           nav:
             - Home: index.md
             - Web accessibility: web/accessibility.md
+            - Local package and pilot: web/pilot.md
             - Diagrams:
                 - Diagram Atlas: diagrams/index.md
                 - Architecture: diagrams/architecture.md
@@ -216,6 +217,7 @@ extra_javascript:
 nav:
   - Главная: index.md
   - Доступность Web: web/accessibility.md
+  - Локальный пакет и пилот: web/pilot.md
   - Диаграммы:
       - Обзор диаграмм: diagrams/index.md
       - Архитектура проекта: diagrams/architecture.md

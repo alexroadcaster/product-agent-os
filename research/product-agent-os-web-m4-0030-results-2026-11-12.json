@@ -1,0 +1,449 @@
+{
+  "schema_version": "paos_m4_packaging_pilot_results_v1",
+  "task_id": "PAOS-0030",
+  "status": "implemented_locally_verified",
+  "baseline_head": "97a01d5423365f45bd822d6a96dad65888dc729b",
+  "started_at": "2026-11-12T20:02:51+03:00",
+  "evidence_finalized_at": "2026-11-12T21:26:59+03:00",
+  "wall_elapsed_seconds": 5048.627,
+  "active_duration_seconds": null,
+  "active_duration_note": "Not separately instrumented; wall interval includes all attempts, tests and coordination.",
+  "report": {
+    "path": "research/product-agent-os-web-m4-0030-execution-2026-11-12.md",
+    "sha256": "63365462e632f3a86eab1dc416c2da463069e22009029a8732bf23f1fea43f44"
+  },
+  "changed_source_hashes": {
+    "EVALS.md": "2aaf3341f0bd93b9d0856e741c90a50652a4e7870585ab611608d6981e070c5a",
+    "PLAN.md": "b4325c1275725b1455ada25554d5ac77dfa55323d69749a7f131e91e6cd74810",
+    "REQUIREMENTS.md": "aac5ddd4adecc4246a28688b47c6770bad3d67cbc30b148b308de82950cf29ab",
+    "RUNLOG.md": "cbf31f848c367d709d6d3b5d1b628991d4c7d64a90f42ecf98b0da385576ff7f",
+    "TEST.md": "7f2191845cef219033f6101af6b505e238b279ba8168d4d82de31f4c622c4a3b",
+    "apps/web/README.md": "51f2f5b2fbd86361b44d2e84a627415a240486988fa308685a1072c0a9b23845",
+    "docs/diagrams/index.en.md": "2ee7301bbf7579f7c09a65b2708b326c216507f47543969a94438d72ca09327e",
+    "docs/diagrams/index.md": "9cba1a7ce30944bcae292815e8dd31bb262743a4cc46b6d741224418d048d855",
+    "docs/release/web-commercial-review.json": "cd5e9e6cb391dc5c15b16fbd06a77a34e57e4db54c577ab37e5ed1292f5844d8",
+    "docs/sources/registry.en.md": "979afacff24d0d169dcaa3998de33d13a492d7ec9cef7f90b12616ae0215fe49",
+    "docs/sources/registry.md": "d52e36584f25baa429ce4b8bcfc8c4a1c42c8251b45111780eee56fcf8105b7f",
+    "mkdocs.yml": "9b512c4d30e3dedc884a26e8bc69247ac8a191b54d6568f2a9a873359cc6d22c",
+    "tests/product_agent_os/test_product_agent_os_docs.py": "f04335ed3b516798571fda709eedb9de21f2c85808c18299e9b41f6e505342af",
+    "tsconfig.web-m1.json": "05eb53988b9e04a5266537148b30ea0cae6d52887e46538bed10d4d66cd28a94",
+    "apps/desktop-local/README.md": "3157b49cb01da42fdb93201dee74064d63e71424ed08d917c9747129821c2564",
+    "apps/desktop-local/THIRD_PARTY_NOTICES.txt": "d198a86355b8bb22271506c371c7787f642327b93a8293fd95df9a5d320af0c3",
+    "apps/desktop-local/distribution.mts": "38476000fe0c8408c86d0f53b5e894fcb77fee6053e16e34b932ff81ff0172ab",
+    "apps/desktop-local/main.mts": "65578fc432fa8864ed4b0cb427f288daad7d972436b4b5ec63bd616f39699536",
+    "docs/release/web-m4-local-release.json": "c4e899f1f12ec03e723f0934804d4c44c017311ca156aa5775b4a7f8eedfa3ab",
+    "docs/web/pilot.en.md": "efb449c00b5c2a3c09df4a5bf0c96ae71a842622b49a9a55bf3899492bc44e08",
+    "docs/web/pilot.md": "081632ed25c1be5abf3a5cc213eb06d40f89ca0bc9dbe43eca757ae7f2e22f1a",
+    "research/product-agent-os-web-m4-0030-execution-2026-11-12.md": "63365462e632f3a86eab1dc416c2da463069e22009029a8732bf23f1fea43f44",
+    "tests/web/desktop-local.test.mts": "2124efedfff3c14c0aaebf6cbd9712dddfeebc9a87fcc4b645eb01ee47d3a3c5",
+    "tests/web/single-window/m4-packaging-acceptance.mts": "acf60bda828cb30cb6386cdf45aa38650d0f1fbddf3539c604957c7cb8123c67",
+    "tests/web/single-window/m4-packaging-native-cancel.ps1": "0198d5907e5e5ef39c56ab24049ef6e23c9689e253e13e82cd36b9d7e8318e74",
+    "research/product-agent-os-web-task-manager-plan-2026-11-09.md": "478b1cc84ab9d6b1481c5e51cb4fcaa896d9817bda8e4f0a4674b324aa8f7bf7",
+    "research/product-agent-os-web-task-manager-task-group-2026-11-09.json": "571d241dca7434a207682477d7b69367dded0c3c47cc68d63f1f1afdc9fea20e"
+  },
+  "checks": {
+    "web": {
+      "tests": 482,
+      "passed": 482,
+      "skipped": 0
+    },
+    "python": {
+      "tests": 1450,
+      "skipped": 1,
+      "seconds": 687.049,
+      "skip_reason": "non-Windows guard only"
+    },
+    "docs_lifecycle": {
+      "tests": 251,
+      "seconds": 18.729
+    },
+    "final_docs": {
+      "tests": 105,
+      "seconds": 12.892
+    },
+    "fixtures": {
+      "total": 91,
+      "ok": 91
+    },
+    "transcripts": {
+      "total": 26,
+      "passed": 26
+    },
+    "compatibility": "compatible",
+    "types": "exit_0",
+    "build": "exit_0_bundle_warning_518.44kB",
+    "mkdocs": {
+      "strict": "exit_0",
+      "seconds": 29.95,
+      "postprocessed_files": 320,
+      "canonical_site_changed": false
+    },
+    "static_gates": "hooks/matrix/state/docs/diff_exit_0",
+    "missing_mandatory_gates": [],
+    "state_validator_scope": "existing legacy Batch45 projection; Web matrix independently checked by raw-card/value preservation and dependency assertions"
+  },
+  "log_evidence": [
+    {
+      "path": ".tmp/paos-m4-0030/web-full.log",
+      "sha256": "e7d108859eea306c72650fb39a8490ab2fc96067d6a4f7852d094911be9f292d",
+      "exit_code": 0
+    },
+    {
+      "path": ".tmp/paos-m4-0030/types-final.log",
+      "sha256": "66d87221505bb187a2fe87ddeacbd07f5922ac556c005c69c5c59e0f0c74cf98",
+      "exit_code": 0
+    },
+    {
+      "path": ".tmp/paos-m4-0030/build.log",
+      "sha256": "cbec081649c377a0b202efc2e525a5048d6d62b27abcfbaeedbf3a19d478a768",
+      "exit_code": 0
+    },
+    {
+      "path": ".tmp/paos-m4-0030/pilot-native.log",
+      "sha256": "b1c7de3fd096268c1c450ac53a5f1279e1abed277b9be23e5f40861b1f839c70",
+      "exit_code": 0
+    },
+    {
+      "path": ".tmp/paos-m4-0030/mkdocs-strict.log",
+      "sha256": "892fdf5f33fde63164583ed700aaa2140771a8a1530611a48668a9d8888644d4",
+      "exit_code": 0
+    },
+    {
+      "path": ".tmp/paos-m4-0030/mkdocs-file-links.log",
+      "sha256": "1e59970ada1cc4affe6474239ef1e67c1fcbf139ed9f046f18a2e349b58c72eb",
+      "exit_code": 0
+    },
+    {
+      "path": ".tmp/paos-m4-0030/python-full.log",
+      "sha256": "56c708cfb3ffc55d9046db526d36aadeeec49c12557caeb6f4ea209a94eb2cf0",
+      "exit_code": 0
+    },
+    {
+      "path": ".tmp/paos-m4-0030/docs-verified.log",
+      "sha256": "d6f1d56c34b89ed2a0941eae20e90aea746ce3a5e9443552b5f29e9706afb411",
+      "exit_code": 0
+    },
+    {
+      "path": ".tmp/paos-m4-0030/docs-final.log",
+      "sha256": "9baea2b7a8bd25b7f2ad7d06e5bbe9367edee7f48d5cf34df9c6a77789c9ba9f",
+      "exit_code": 0
+    },
+    {
+      "path": ".tmp/paos-m4-0030/fixture-eval.log",
+      "sha256": "014f6152da56145aa30e29151fd0c5979f34a44596f0b0714d270e9708719c22",
+      "exit_code": 0
+    },
+    {
+      "path": ".tmp/paos-m4-0030/transcript-eval.log",
+      "sha256": "5694b49e2762388661d971053ceedea106cba7f64c307fe7c7ea3a2546e70634",
+      "exit_code": 0
+    },
+    {
+      "path": ".tmp/paos-m4-0030/compatibility.log",
+      "sha256": "eb071b781c513c6693744ac48b88b0fa28dcab5252707e4c49e96c999ceed9b2",
+      "exit_code": 0
+    },
+    {
+      "path": ".tmp/paos-m4-0030/hooks-json.log",
+      "sha256": "6eaa34164526a0a1f0b9dd89730318d5e31bdba9fad3ce3d93442f858e7f6782",
+      "exit_code": 0
+    },
+    {
+      "path": ".tmp/paos-m4-0030/hooks-dir.log",
+      "sha256": "5d950b07458f956f2ac600215531d797483c23ed8d868b2bbdbac6f014a7b592",
+      "exit_code": 0
+    },
+    {
+      "path": ".tmp/paos-m4-0030/matrix-final-validation.log",
+      "sha256": "f17e172c632693877fa0f2ce81fd192d44b9070c0ab929841ce28fe3393fa71c",
+      "exit_code": 0
+    },
+    {
+      "path": ".tmp/paos-m4-0030/state-final-validation.log",
+      "sha256": "a4004c18fd639513dc0d8e520b850c74b8f78ed3f70b1a8c89c8649c8ae56a90",
+      "exit_code": 0
+    },
+    {
+      "path": ".tmp/paos-m4-0030/check-docs-final.log",
+      "sha256": "8980e553ce08599d54a68baf90a197be5cde25b960ab1b92eaaef3dba110b37f",
+      "exit_code": 0
+    },
+    {
+      "path": ".tmp/paos-m4-0030/diff-check.log",
+      "sha256": "44bff8656401cfee245433f6ff9f3960cfc15dfa33995ca809436d400cc5bf99",
+      "exit_code": 0
+    },
+    {
+      "path": ".tmp/paos-m4-0030/package-final-verify.log",
+      "sha256": "a88020757322abd867fcc6ef21210d140eef16436e717046da514592cd61c547",
+      "exit_code": 0
+    },
+    {
+      "path": ".tmp/paos-m4-0030/adapter.log",
+      "sha256": "b8f590f042a8d3cb19f0348747dcacc87ef26ab23fb3a8b0e1cabf6e3f86dcc8",
+      "exit_code": 0
+    }
+  ],
+  "pilot": {
+    "path": ".tmp/paos-m4-0030/pilot-evidence-bRbjv8/result.json",
+    "sha256": "48214c4b876f2815a53cdbc3e11eb01d915bab074ed7d5b778a354a7f43cbadc",
+    "checks": 88,
+    "phases": [
+      {
+        "name": "initial",
+        "releaseId": "928d557d35bdb90464b79571f33327b6edc16b6a65f361794135c51969afc653",
+        "actualLauncherIpc": true,
+        "actualNativeWindow": false,
+        "checksStart": 19,
+        "elapsedMs": 6929,
+        "checksEnd": 33
+      },
+      {
+        "name": "upgraded",
+        "releaseId": "2b34674443acfe5ca4fe4b0f8e4e5d5ab266997a810a2d6f8d370b736f8298e1",
+        "actualLauncherIpc": true,
+        "actualNativeWindow": false,
+        "checksStart": 34,
+        "elapsedMs": 4782,
+        "checksEnd": 51
+      },
+      {
+        "name": "rollback",
+        "releaseId": "928d557d35bdb90464b79571f33327b6edc16b6a65f361794135c51969afc653",
+        "actualLauncherIpc": true,
+        "actualNativeWindow": false,
+        "checksStart": 51,
+        "elapsedMs": 2938,
+        "checksEnd": 65
+      }
+    ],
+    "actual_native_window": {
+      "target": "owned_native_child",
+      "windowObserved": true,
+      "pairingRead": false,
+      "cancelRequested": true,
+      "actualNativeWindow": true,
+      "cleanShutdown": true
+    },
+    "original_source_files_unchanged_during_pilot": [
+      {
+        "path": "PLAN.md",
+        "sha256": "51e436dd2a35b8f9bb2ee590faef55a23f27bddd2cdff7660a0b060c57099026",
+        "bytes": 32531
+      },
+      {
+        "path": "REQUIREMENTS.md",
+        "sha256": "19e4b164db6e4982ccaea47e9fc36040e611e152fa3245837b9f5999dc3cd4aa",
+        "bytes": 29344
+      },
+      {
+        "path": "apps/web/src/ui/App.tsx",
+        "sha256": "4d812fb2d706e9bdadb76cc645cd7727e864400245597d28cf44c8803557df6d",
+        "bytes": 77622
+      },
+      {
+        "path": "apps/web/src/ui/Modal.tsx",
+        "sha256": "441aafcc71055488b52382f9c64ee0f86c918de92f0c794b80066d14df17cb42",
+        "bytes": 1315
+      },
+      {
+        "path": "apps/web/src/design/theme.css",
+        "sha256": "74eb11a565b16af1b6b7b84e5c4173db18b5c82543cd8586ffe1a698a7eae547",
+        "bytes": 1021
+      },
+      {
+        "path": "apps/web/src/design/app.css",
+        "sha256": "b6e85b63a1ee635e357fc9108779391fe48af619299c3d6d37faf48cfed99dbc",
+        "bytes": 15110
+      },
+      {
+        "path": "apps/web/src/features/tasks/TaskManager.tsx",
+        "sha256": "7d87b542366dd35b03a8bc942721af353738950c3e8e268d6741978309cd165b",
+        "bytes": 21079
+      },
+      {
+        "path": "apps/web/src/features/tasks/Editor.tsx",
+        "sha256": "c6236757ab5150b99f2c90563a14ebe692b4a3be35192edcc9d65e829de20df5",
+        "bytes": 14418
+      },
+      {
+        "path": "apps/web/src/features/tasks/Panels.tsx",
+        "sha256": "bdad070aae00087190435d101d76e9b6c7997fb9a1f326dd23b87aff845d8bce",
+        "bytes": 23135
+      },
+      {
+        "path": "apps/web/src/features/graph/GraphExplorer.tsx",
+        "sha256": "ef8b056ac6619dc4aa7a6872ee98f2d5ae0090dc9527493031f58198dc05ef0c",
+        "bytes": 12868
+      },
+      {
+        "path": "apps/web/src/features/workflows/WorkflowManager.tsx",
+        "sha256": "93d67176425c223799af7cd2c063a77cb6997c4f0ee60b591fb6a232545b5e41",
+        "bytes": 18348
+      },
+      {
+        "path": "packages/contracts/issues/task-profile.ts",
+        "sha256": "ec16c4c6ee8e7cd4f7dd3e1843715133e075d27324e8f2679f0a86912ba1c973",
+        "bytes": 16270
+      },
+      {
+        "path": "docs/web/accessibility.md",
+        "sha256": "a404fe48b28587c477b3ae17f6eea004f1b1395cb5699df9f50c6c3e312f76ed",
+        "bytes": 5996
+      },
+      {
+        "path": "docs/web/accessibility.en.md",
+        "sha256": "943581724e5087ef6110797ba2d39812c14ecf797a360dafdd1dbf9ccaecdb60",
+        "bytes": 3283
+      }
+    ],
+    "source_span_note": "PLAN/REQUIREMENTS changed later by authorized engineering documentation sync; not whole-task immutability.",
+    "fixture_cleaned": true,
+    "provider_calls": 0,
+    "credential_operations": 0,
+    "external_requests": 0,
+    "page_errors": 0,
+    "console_errors": 0,
+    "graph_page_nodes": 101,
+    "human_acceptance": "not_claimed",
+    "closed_codex_app_observation": "not_performed"
+  },
+  "distribution": {
+    "path": ".tmp/paos-m4-0030/distribution",
+    "release_id": "928d557d35bdb90464b79571f33327b6edc16b6a65f361794135c51969afc653",
+    "manifest_sha256": "c6c9d6f643669a1e33ad069194cdc2aababbbc6bd868a3d94f72ddf1a587d5b1",
+    "files": 179,
+    "bytes": 25526369,
+    "pilot_release_b": "2b34674443acfe5ca4fe4b0f8e4e5d5ab266997a810a2d6f8d370b736f8298e1",
+    "current_payload_source_hash_matches": 179,
+    "publisher_signed": false,
+    "system_installed": false,
+    "node_codex_binaries_included": false,
+    "adapter_revision": "67d6ced8b371be3dcf433637a3df7a8ed5ad3140c7a412e40178ad05abbe5869",
+    "runtime_dependencies": [
+      {
+        "name": "rolldown",
+        "version": "1.2.18",
+        "license": "MIT"
+      },
+      {
+        "name": "@rolldown/binding-win32-x64-msvc",
+        "version": "1.2.18",
+        "license": "MIT"
+      },
+      {
+        "name": "@rolldown/pluginutils",
+        "version": "1.1.0",
+        "license": "MIT"
+      },
+      {
+        "name": "@oxc-project/types",
+        "version": "0.156.0",
+        "license": "MIT"
+      }
+    ],
+    "historical_schema_upgrade_claimed": false
+  },
+  "review": {
+    "context_mode": "separate_reused_context",
+    "reviewer": "/root/packaging_review",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "review_windows": 1,
+    "finding": "P2: cross-state/direct-launch profile concurrency race",
+    "resolution": "Shared service-instance reservation, ownership-safe cleanup, native claimer regression",
+    "late_changes": "Parser closure and restored preference relocation checked by explicit root self-review and tests/pilot; no independent re-review",
+    "tester_verdict": "closed_allowed"
+  },
+  "documentation_sync": {
+    "mode": "section_only_apply_plus_exact_legacy_card_and_json_recovery",
+    "coordinated_completion_receipt": false,
+    "final_assessment_gaps": [],
+    "apply_digest": "sha256:32c95edbf2440d64eab7e4d15c36c1940413361c42eec73d739de90c6d11510f",
+    "preservation_path": ".tmp/paos-m4-0030/preservation.json",
+    "other_md_cards_preserved": 55,
+    "other_json_tasks_preserved": 55,
+    "task_count": 56,
+    "group_count": 12,
+    "estimates_order_groups_preserved": true,
+    "other_md_blocks_raw_bytes_and_line_endings_preserved": true
+  },
+  "commercial_review": {
+    "packet": "docs/release/web-m4-local-release.json",
+    "commercial_release_authorized": false,
+    "external_distribution_authorized": false,
+    "auth_gates_passed": [],
+    "remaining_gap_ids": [
+      "C46-01",
+      "C46-02",
+      "C46-03",
+      "C46-04",
+      "C46-05",
+      "C46-06",
+      "C46-07",
+      "C46-08"
+    ]
+  },
+  "limits": [
+    "Exact pinned Windows host only; unsigned digest is not publisher authentication",
+    "Manual human acceptance, model/account admission and closed-App observation remain unverified",
+    "PAOS license/Terms/Privacy/transitive native licenses/account/market/support decisions remain blocked",
+    "Two content revisions use same label/schema; no historical schema migration claim",
+    "Transient Saved notice retains former locale after language switch; frontend follow-up",
+    "Bundle518.44kB warning; no performance/SLO claim",
+    "Legacy coordinated matrix writer incompatibility explicitly recorded; plugin/budgets unchanged"
+  ],
+  "runtime_metrics": {
+    "agent_spawns": 2,
+    "subagent_model": "gpt-6-astra",
+    "subagent_reasoning_effort": "medium",
+    "max_concurrent_writers": 1,
+    "root_model_and_reasoning": "inherited_host_configuration",
+    "tokens_and_tool_totals": "not_available: complete runtime counters not exposed",
+    "observed_compaction_handoff": true
+  },
+  "cleanup": {
+    "owned_fixture_directories": [
+      {
+        "removed": true,
+        "name": "temp"
+      },
+      {
+        "removed": true,
+        "name": "python-temp"
+      }
+    ],
+    "user_processes_terminated": false,
+    "task_id": "PAOS-0030",
+    "retained": [
+      "distribution",
+      "site-final",
+      "logs",
+      "pilot-evidence"
+    ]
+  },
+  "protected_source_domains_unchanged": [
+    "apps/launcher",
+    "apps/local-service",
+    "packages/contracts",
+    "plugins/product-agent-os",
+    "AGENTS.md",
+    ".codex/config.toml",
+    ".codex/hooks.json",
+    ".codex/agents",
+    "site",
+    "package-lock.json"
+  ],
+  "next_task": {
+    "id": "PAOS-0052",
+    "name": "Командный профиль PostgreSQL и pgvector",
+    "depends_on": [
+      "PAOS-0048",
+      "PAOS-0049",
+      "PAOS-0051",
+      "PAOS-0030"
+    ],
+    "dependencies_implemented": true,
+    "scope": "Separate T1 decisions on placement/auth/embedding/privacy; not started"
+  }
+}

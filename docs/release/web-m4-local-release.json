@@ -1,0 +1,217 @@
+{
+  "schema_version": "paos_local_m4_release_v1",
+  "task_id": "PAOS-0030",
+  "status": "local_technical_verified_commercial_release_blocked",
+  "reviewed_at": "2026-11-12T17:59:46+00:00",
+  "commercial_release_authorized": false,
+  "external_distribution_authorized": false,
+  "local_pilot_agreement": "Owner separately selected codex_docs copy; original source read-only during pilot.",
+  "pilot": {
+    "path": ".tmp/paos-m4-0030/pilot-evidence-bRbjv8/result.json",
+    "sha256": "48214c4b876f2815a53cdbc3e11eb01d915bab074ed7d5b778a354a7f43cbadc",
+    "checks": 88,
+    "actual_launcher_service_phases": 3,
+    "actual_native_cancel": true,
+    "original_files_unchanged_during_pilot": 14,
+    "graph_page_nodes": 101,
+    "model_quality_or_human_acceptance": "not_claimed"
+  },
+  "package": {
+    "path": ".tmp/paos-m4-0030/distribution",
+    "manifest_sha256": "c6c9d6f643669a1e33ad069194cdc2aababbbc6bd868a3d94f72ddf1a587d5b1",
+    "release_id": "928d557d35bdb90464b79571f33327b6edc16b6a65f361794135c51969afc653",
+    "files": 179,
+    "bytes": 25526369,
+    "runtime_dependencies": [
+      {
+        "name": "rolldown",
+        "version": "1.2.18",
+        "license": "MIT"
+      },
+      {
+        "name": "@rolldown/binding-win32-x64-msvc",
+        "version": "1.2.18",
+        "license": "MIT"
+      },
+      {
+        "name": "@rolldown/pluginutils",
+        "version": "1.1.0",
+        "license": "MIT"
+      },
+      {
+        "name": "@oxc-project/types",
+        "version": "0.156.0",
+        "license": "MIT"
+      }
+    ],
+    "node_codex_binaries_included": false,
+    "system_installation": false,
+    "signed": false,
+    "expected_digest_required": true,
+    "prerequisites": {
+      "node": {
+        "version": "v26.5.0",
+        "sha256": "119d6fa70e6ae1b15b90688ab6bcc8e3a2819acea021af196895cab1843645af"
+      },
+      "sqliteVersion": "3.53.3",
+      "platform": "win32",
+      "arch": "x64",
+      "windowsRelease": "10.0.26200",
+      "adapterRevision": "67d6ced8b371be3dcf433637a3df7a8ed5ad3140c7a412e40178ad05abbe5869"
+    }
+  },
+  "backup_restore": {
+    "existing_snapshot_format": true,
+    "new_profile_only": true,
+    "offline_profile_reservation": true,
+    "preferences_scope_relocated": true,
+    "workspace_bindings_changed": false,
+    "credentials_included": false,
+    "approvals": "stale",
+    "unfinished_runs_outbox": "recovery_required",
+    "source_backup_and_profiles_preserved": true,
+    "automatic_replay": false
+  },
+  "sources": [
+    {
+      "id": "M4-S01",
+      "url": "https://learn.chatgpt.com/docs/app-server#auth-endpoints",
+      "retrieved": "2026-11-12",
+      "kind": "official_documentation",
+      "finding": "Commercial/hosted App Server authentication is not permitted; exact PAOS App-agent bridge commercial applicability remains unresolved."
+    },
+    {
+      "id": "M4-S02",
+      "url": "https://developers.openai.com/siwc/request-client-id",
+      "retrieved": "2026-11-12",
+      "kind": "official_documentation",
+      "finding": "Selected commercial partners; interest form is not admission. No form was submitted."
+    },
+    {
+      "id": "M4-S03",
+      "url": "https://developers.openai.com/siwc/token-sharing-open-source",
+      "retrieved": "2026-11-12",
+      "kind": "official_documentation",
+      "finding": "Plan usage is optional, eligible requests only; paid/remote use needs the stated commercial path, not inferred OSS eligibility."
+    },
+    {
+      "id": "M4-S04",
+      "url": "https://openai.com/policies/services-agreement/",
+      "retrieved": "2026-11-12",
+      "updated": "2025-12-01",
+      "effective": "2026-01-01",
+      "kind": "official_policy",
+      "finding": "Business/API agreement does not establish exact PAOS bridge authorization."
+    },
+    {
+      "id": "M4-S05",
+      "url": "https://openai.com/policies/terms-of-use/",
+      "retrieved": "2026-11-12",
+      "effective": "2026-01-01",
+      "kind": "official_policy",
+      "finding": "Account access/distribution/extraction restrictions remain relevant; account class and region not inferred."
+    },
+    {
+      "id": "M4-S06",
+      "url": "https://openai.com/policies/service-terms/",
+      "retrieved": "2026-11-12",
+      "updated": "2026-11-10",
+      "kind": "official_policy",
+      "finding": "Service-specific terms and documented API use remain applicable; no PAOS commercial grant established."
+    },
+    {
+      "id": "M4-S07",
+      "url": "https://learn.chatgpt.com/docs/pricing",
+      "retrieved": "2026-11-12",
+      "kind": "official_documentation",
+      "finding": "Actual account allowances/price/entitlement not measured; no unlimited/free promise."
+    }
+  ],
+  "auth_gates": [
+    {
+      "id": "AUTH-G1",
+      "early_status": "pending_route_qualification",
+      "commercial_status": "pending_route_qualification",
+      "local_evidence": "No new entity/markets/account admission. Local owner copy pilot only; customer/commercial route qualification remains unresolved.",
+      "release_passed": false,
+      "remaining_gaps": [
+        "C46-01",
+        "C46-02",
+        "C46-03",
+        "C46-04"
+      ],
+      "owner": "Product owner + commercial/legal reviewer"
+    },
+    {
+      "id": "AUTH-G2",
+      "early_status": "partially_verified",
+      "commercial_status": "partially_verified",
+      "local_evidence": "Relocated package on exact existing host tuple, actual launcher/service IPC and native Cancel; no host model/account entitlement claimed.",
+      "release_passed": false,
+      "remaining_gaps": [
+        "C46-02",
+        "C46-07"
+      ],
+      "owner": "Runtime owner + tester"
+    },
+    {
+      "id": "AUTH-G3",
+      "early_status": "partially_verified",
+      "commercial_status": "partially_verified",
+      "local_evidence": "Expected digest/path/private-state guards, shared profile reservation, isolated new profile and restore invalidation verified; no real customer secrets or broad same-user confidentiality claim.",
+      "release_passed": false,
+      "remaining_gaps": [
+        "C46-06"
+      ],
+      "owner": "Security + tester"
+    },
+    {
+      "id": "AUTH-G4",
+      "early_status": "blocked_release",
+      "commercial_status": "blocked_release",
+      "local_evidence": "Exact179-file manifest, four pinned parser dependencies, React and retained parser notices. PAOS license/Terms/Privacy and complete transitive native license audit remain release-blocking.",
+      "release_passed": false,
+      "remaining_gaps": [
+        "C46-01",
+        "C46-05",
+        "C46-06"
+      ],
+      "owner": "Product/privacy owner + Release Operator"
+    },
+    {
+      "id": "AUTH-G5",
+      "early_status": "partially_verified_host_usage_unknown",
+      "commercial_status": "partially_verified_host_usage_unknown",
+      "local_evidence": "No runtime provider/model/auth calls, no payer switch, real quota/tariff/account consent not exercised.",
+      "release_passed": false,
+      "remaining_gaps": [
+        "C46-07"
+      ],
+      "owner": "Product owner + tester"
+    },
+    {
+      "id": "AUTH-G6",
+      "early_status": "pending_release_operations",
+      "commercial_status": "pending_release_operations",
+      "local_evidence": "Local install/start, two content revisions, offline backup, restore, rollback and actual native Cancel verified. Signed installer/update, GA/SLA/support commitments, remote revocation and human acceptance remain unapproved.",
+      "release_passed": false,
+      "remaining_gaps": [
+        "C46-08"
+      ],
+      "owner": "Runtime/Release Operator + Product owner"
+    }
+  ],
+  "remaining_gap_ids": [
+    "C46-01",
+    "C46-02",
+    "C46-03",
+    "C46-04",
+    "C46-05",
+    "C46-06",
+    "C46-07",
+    "C46-08"
+  ],
+  "incident_owner": "workspace maintainer for local technical operation; commercial owner decisions remain required",
+  "report": "research/product-agent-os-web-m4-0030-execution-2026-11-12.md",
+  "claim_ceiling": "bounded local engineering package/pilot, not commercial/GA/production readiness"
+}

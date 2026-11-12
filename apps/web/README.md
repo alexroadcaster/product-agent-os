@@ -1,5 +1,7 @@
 # Product-Agent OS Web — M1 / M2
 
+PAOS-0030,2026-11-12: переносимый local package, install/start/backup/restore/selection/rollback и owner-agreed codex_docs copy pilot проверены. Actual launcher/service88checks, native Cancel без запуска пользовательского браузера; две content revisions и сохранение post-upgrade comments/blob/preferences. [Operator guide](../../docs/web/pilot.md); [current evidence](../../research/product-agent-os-web-m4-0030-execution-2026-11-12.md). AUTH-G1–G6 повторно сверены: commercial release остаётся no-go. Исторические записи ниже сохраняют provenance.
+
 PAOS-0029,2026-11-12: keyboard Kanban/task tabs/workflow, native status dialog с Escape/focus restore, mobile disclosure, RU/EN Light/Dark и длинные narrow layouts проверены. [Руководство](../../docs/web/accessibility.md); [screen/state evidence](../../research/product-agent-os-web-m4-0029-execution-2026-11-12.md). Browser matrix/core/states отделены от manual screen-reader/WCAG certification и human/release acceptance. Исторические записи ниже сохраняют provenance.
 
 PAOS-0028,2026-11-12: связанный task→planning→execution→diff/checks→owner acceptance и active native Stop проверены. В S09 «Разрешить агенту создать Bug в этом запуске» — одноразовый opt-in, по умолчанию off. Private claimed worker создаёт только Backlog Bug с server-owned creator/initiator и source comment; retry не дублирует запись. S09/S22 используют стабильную durable operation projection. [API, gates и limits](../../research/product-agent-os-web-m3-0026-execution-2026-11-12.md). Записи ниже исторические.
