@@ -1339,21 +1339,21 @@ Rollback будущих изменений: versioned proposal, revision check, 
 ### Task `PAOS-0023`
 
 - Task: Политика автономности и лимиты
-- Status: planned
+- Status: implemented
 - Delivery stage: M3
 - Execution order: 46
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 12-11-2026 13:20
 - Depends on: PAOS-0008, PAOS-0013, PAOS-0017
 - Blocks: PAOS-0024, PAOS-0026, PAOS-0037
 - Source: PRD: дополнение Task Manager; screen specification
 - Short description: Задать заранее разрешённые действия, бюджеты и stop conditions
 - Technical value: Задать заранее разрешённые действия, бюджеты и stop conditions
 - Product value: Пользователь задаёт границы самостоятельной работы один раз и сохраняет возможность остановки.
-- Scope: apps/local-service/src/autonomy-policy; apps/web/src/features/autonomy
+- Scope: packages/contracts/autonomy/policy.ts; apps/local-service/src/autonomy-policy; existing App gateway/HTTP integration; apps/web/src/features/autonomy
 - Non-goals: Глобальные permissions, внешняя публикация и несвязанный refactor
 - Expected result: Политика автономности и лимиты доступна в соответствующем этапе
 - Acceptance criteria: Preview policy объясняет возможности; UI не расширяет host permissions; pause доступна
@@ -1362,24 +1362,24 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Complexity: medium/high, уточнить после discovery
 - Estimated execution time: 12:00:00 (предварительно)
 - Agents: architect, builder, tester
-- Skills: implementation-planner; task-matching implementation/verification skills selected at start
-- Output artifacts: apps/local-service/src/autonomy-policy; apps/web/src/features/autonomy
-- Next step: Завершить зависимости, затем уточнить tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Skills: implementation-planner; react-best-practices; frontend-testing-debugging
+- Output artifacts: apps/local-service/src/autonomy-policy/service.mts; packages/contracts/autonomy/policy.ts; apps/local-service/src/http/application.mts; apps/local-service/src/runtime/app-agent-gateway.mts; apps/local-service/src/runtime/live-gateway.mts; packages/contracts/runtime/qualified-manifest.json; apps/web/src/features/autonomy/AutonomyManager.tsx; apps/web/src/api/client.ts; apps/web/src/ui/App.tsx; apps/web/src/locales/messages.ts; tests/web/autonomy-policy.test.mts; tests/web/autonomy-runtime.test.mts; tests/web/single-window/m3-autonomy-acceptance.mts; apps/web/README.md; research/product-agent-os-web-m3-0023-execution-2026-11-12.md; research/product-agent-os-web-m3-0023-results-2026-11-12.json; REQUIREMENTS.md; PLAN.md; TEST.md; RUNLOG.md; docs/sources/registry.md; docs/sources/registry.en.md; research/product-agent-os-web-task-manager-plan-2026-11-09.md; research/product-agent-os-web-task-manager-task-group-2026-11-09.json
+- Next step: Следующая PAOS-0037: Depends on PAOS-0036/0023 технически выполнены; начать отдельным scope, сохраняя budget/pause/approval guards.
+- Actual time: Measured scope start 12-11-2026 12:37:57 MSK; end 12-11-2026 13:20 MSK; active duration not separately measured, duration=null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
-- Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
+- Affected files: Actual create/modify receipts: apps/local-service/src/autonomy-policy/service.mts (create); packages/contracts/autonomy/policy.ts (create); apps/local-service/src/http/application.mts (modify); apps/local-service/src/runtime/app-agent-gateway.mts (modify); apps/local-service/src/runtime/live-gateway.mts (modify); packages/contracts/runtime/qualified-manifest.json (modify); apps/web/src/features/autonomy/AutonomyManager.tsx (create); apps/web/src/api/client.ts (modify); apps/web/src/ui/App.tsx (modify); apps/web/src/locales/messages.ts (modify); tests/web/autonomy-policy.test.mts (create); tests/web/autonomy-runtime.test.mts (create); tests/web/single-window/m3-autonomy-acceptance.mts (create); apps/web/README.md (modify); research/product-agent-os-web-m3-0023-execution-2026-11-12.md (create); research/product-agent-os-web-m3-0023-results-2026-11-12.json (create); REQUIREMENTS.md (modify); PLAN.md (modify); TEST.md (modify); RUNLOG.md (modify); docs/sources/registry.md (modify); docs/sources/registry.en.md (modify); research/product-agent-os-web-task-manager-plan-2026-11-09.md (modify); research/product-agent-os-web-task-manager-task-group-2026-11-09.json (modify)
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Project policy preview/save/resume/pause, explicit App opt-in, durable run/command budgets/deadline, stop conditions и current pause fence реализованы; old Pause replay cohort исправлен.
+- Files touched / work locations: apps/local-service/src/autonomy-policy/service.mts; packages/contracts/autonomy/policy.ts; apps/local-service/src/http/application.mts; apps/local-service/src/runtime/app-agent-gateway.mts; apps/local-service/src/runtime/live-gateway.mts; packages/contracts/runtime/qualified-manifest.json; apps/web/src/features/autonomy/AutonomyManager.tsx; apps/web/src/api/client.ts; apps/web/src/ui/App.tsx; apps/web/src/locales/messages.ts; tests/web/autonomy-policy.test.mts; tests/web/autonomy-runtime.test.mts; tests/web/single-window/m3-autonomy-acceptance.mts; apps/web/README.md; research/product-agent-os-web-m3-0023-execution-2026-11-12.md; research/product-agent-os-web-m3-0023-results-2026-11-12.json; REQUIREMENTS.md; PLAN.md; TEST.md; RUNLOG.md; docs/sources/registry.md; docs/sources/registry.en.md; research/product-agent-os-web-task-manager-plan-2026-11-09.md; research/product-agent-os-web-task-manager-task-group-2026-11-09.json
+- Technical value delivered: Один server-side policy owner использует существующие SQLite CAS/idempotency и App coordinator; unsupported paths/routes fail closed, approvals не расширяются.
+- Product value delivered: Пользователь выбирает задачи и лимиты, видит preview, явно включает допуск и ставит работу на паузу; черновик не теряется при conflict.
+- Actual implementation date and time: 12-11-2026 13:20
+- Verification evidence: Web413/413 skip0; focused15; production browser/native47; exact candidate/default native3modes; full Python/fixture91/transcript26/compatibility и docs gates — research/product-agent-os-web-m3-0023-execution-2026-11-12.md, соседний results JSON.
+- Residual risks: PAOS-mediated commands only; App/active consumer required. Narrow paths/API opt-in и token/cost metering unavailable. Installed npm Codex mismatch сохраняется; cached exact tuple проверен отдельно. Human/commercial/release acceptance отдельно.
+- Follow-up: Следующая PAOS-0037: Depends on PAOS-0036/0023 технически выполнены; начать отдельным scope, сохраняя budget/pause/approval guards.
 
 ### Task `PAOS-0024`
 

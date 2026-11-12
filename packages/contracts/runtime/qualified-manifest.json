@@ -13,7 +13,7 @@
     "sha256": "119d6fa70e6ae1b15b90688ab6bcc8e3a2819acea021af196895cab1843645af"
   },
   "sqliteVersion": "3.53.3",
-  "adapterRevision": "f43e825ffaf6371a778cfde3155d9d90c654191510a45b596be82c1da65d64bd",
+  "adapterRevision": "cb01327876c661be98d21ea35e680462a6abde1f374a5264015f84476ea85345",
   "packageLockSha256": "d279009aa1dca2bd2d6ba0e18a77d085a67e872d0dce78dd360fb23d43975f38",
   "schema": {
     "sha256": "486c7c8daa5dc7f3ab2a1fb56de5316804caf7a4210fda1dc28d3f0f4e90cfe1",
@@ -27,6 +27,7 @@
     "backupRestore": true
   },
   "evidence": {
+    "m3AutonomyNativeCandidate": "94787a9aa937a7d0ff3bd61ba701be81388b7bd900b42d05b07b4994bffd30ca",
     "nativeSmoke": "7f6cc3e29d74bd1a6252736ee7bd757d1bbd5a0883b66e008c96f9d1cdcaad86",
     "history": "3846634cfd7b84f372a02e56a1302c9ed831c39a92cdc7a73c73e0eebdbc2516",
     "boundary": "612e77d09da65e6329d39b1621eb79f4a50b5dbbac21409c13424d9a468661d7",

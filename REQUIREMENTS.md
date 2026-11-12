@@ -16,6 +16,8 @@ G8-T14/G8 явно приняты владельцем. G9 T01–T09 реали�
 
 ## Текущий scope Web M1 — 2026-11-10
 
+M3 PAOS-0023: opt-in policy, budgets и pause для PAOS-mediated App work. Без расширения permissions; [контракт и пределы](research/product-agent-os-web-m3-0023-execution-2026-11-12.md).
+
 M2: PAOS-0019/0020/0021/0022/0027 реализованы: requirement-linked skill planning, scoped index/graph/impact, документы/checks/search. Вместе с [M2b](research/product-agent-os-web-m2b-execution-2026-11-12.md) (PAOS-0036/0009–0018) и [first10 M2](research/product-agent-os-web-m2-execution-2026-11-11.md) —26/26 technical. [M2c evidence](research/product-agent-os-web-m2c-execution-2026-11-12.md). Lexical subset/coverage явные; Apply reviewed, document proposals staged-only. App consumer обязателен; installed npm runtime_mismatch fail-closed, cached exact tuple отдельно. [PAOS-0046 review](research/product-agent-os-web-commercial-review-2026-11-11.md) сохраняет AUTH-G1–G6/C46-01–08/PAOS-0030, human/release gates. API key/provider/hosting/distribution не разрешены.
 
 Исторический срез 2026-11-11, 09:25 MSK (ограничения этого vault/auth прогона, не текущая authority): один разрешённый native vault roundtrip PAOS-M1-fixture и local synthetic broker auth квалифицированы; fixture удалена. Credential namespace изолирован по canonical profile identity, без legacy/default fallback или миграции существующих записей; старые unresolved default-account runs fail-closed. Реальные ключи/provider/browser и системные политики исключены. Детали в [execution report](research/product-agent-os-web-m1-execution-2026-11-11.md).

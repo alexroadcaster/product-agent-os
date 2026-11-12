@@ -15,6 +15,7 @@ import {createArtifactCatalog} from '../artifacts/service.mts';
 import {createSkillGeneration} from '../team/skill-generation.mts';
 import {createTeamService} from '../team/service.mts';
 import {createCodeIndex} from '../code-index/service.mts';
+import {autonomyService} from '../autonomy-policy/service.mts';
 import type {AssetRoot} from '../team/sources.mts';
 import {startTeamGeneration,teamGenerationResult} from '../team/generation.mts';
 import { loadUiPreferences, saveUiPreferences } from '../../../web/src/design/preferences.ts';
@@ -64,6 +65,7 @@ async function body(request: Request, limit = 1024 * 1024) {
 /** Direct Request/Response entry point. Tests exercise the real service without opening a socket. */
 export async function createLocalApplication(options: ApplicationOptions) {
   const { store, origin, instanceId, profileDirectory } = options;
+  const autonomy=autonomyService(store);
   const sessionHistory=createSessionHistory(store);
   const team=createTeamService(store,options.assetRoots);
   const codeIndex=createCodeIndex(store);
@@ -208,6 +210,17 @@ export async function createLocalApplication(options: ApplicationOptions) {
       const graphNode=/^graph\/nodes\/([^/]+)(\/impact)?$/.exec(graphAction);
       if(graphNode&&request.method==='GET')return json(await codeIndex[graphNode[2]?'impact':'node'](projectId,decodeURIComponent(graphNode[1]),url.searchParams));
       const action = route[2] ?? '';
+      if(action==='autonomy'&&request.method==='GET')return json(await autonomy.snapshot(projectId));
+      if(action==='autonomy/preview'&&request.method==='POST'){
+        const input=await body(request);if(Object.keys(input).some(k=>!['policy','expectedRevision'].includes(k)))fail('AUTONOMY_INPUT_INVALID');
+        return json(await autonomy.preview(projectId,input.policy,input.expectedRevision));
+      }
+      if(/^autonomy\/(save|resume|pause)$/.test(action)&&request.method==='POST'){
+        if(migration.frozen(projectId))fail('MIGRATION_BUSY');
+        const name=action.slice('autonomy/'.length),input=await body(request);
+        return json(name==='pause'?await autonomy.pause(projectId,principal.actorId,input,options.runtime)
+          :await autonomy.command(projectId,principal.actorId,name,input));
+      }
       if(action==='task-manager'&&request.method==='GET')return json(await taskManagerSnapshot(store,projectId));
       if(action==='task-manager/commands'&&request.method==='POST'){
         if(migration.frozen(projectId))fail('MIGRATION_BUSY');

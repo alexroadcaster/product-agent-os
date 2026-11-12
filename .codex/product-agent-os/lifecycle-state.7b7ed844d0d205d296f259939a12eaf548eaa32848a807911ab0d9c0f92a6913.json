@@ -1,0 +1,23 @@
+{
+  "task_id": "PAOS-0023",
+  "session_id": "01a1cedc-5a90-7a23-bb27-6f755c6885ce",
+  "plan_path": "research/product-agent-os-web-task-manager-plan-2026-11-09.md",
+  "scope": "PAOS-0023 project autonomy policy contracts/service/UI/coordinator integration/tests and owning documentation; preserve other task cards and host permissions",
+  "updated_at": "2026-11-12T13:25:40+03:00",
+  "approval_boundary": "Authorized local implementation and bounded synthetic acceptance; no credentials/provider/Git/publication/global changes",
+  "status": "ready_for_completion_ledger",
+  "completion_ready": true,
+  "closure_level": "implemented_locally_verified",
+  "evidence_path": "research/product-agent-os-web-m3-0023-results-2026-11-12.json",
+  "brief_digest": "sha256:8d4628a69ee7edf3a64211d7b05ef635303da4e0601c300642ec548b44ecd8de",
+  "brief_schema_version": "task_start_brief_v2",
+  "brief_format": "bold_fields",
+  "brief_fields_present": ["Request", "Goal", "Context", "Scope", "Value", "Execution", "Acceptance", "Risks / approvals", "Next step"],
+  "task_start_brief_shown": true,
+  "lifecycle_scope": {
+    "work_type": "implementation", "size": "large", "risk": "high",
+    "financially_material": false, "release_or_readiness": false,
+    "explicit_packet_request": false,
+    "reason": "Server-enforced autonomous execution boundaries, budgets and coordinator pause require integration and negative-case proof"
+  }
+}

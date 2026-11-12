@@ -14,13 +14,14 @@ import {createTeamService} from '../team/service.mts';
 import type {AssetPin} from '../../../../packages/contracts/team/assets.ts';
 import type {AssetRoot} from '../team/sources.mts';
 import type {WorkflowSnapshot} from '../../../../packages/contracts/workflows/workflow.ts';
+import {autonomyService} from '../autonomy-policy/service.mts';
 
 type Input=Record<string,unknown>;
 type State='queued'|'running'|'awaiting_approval'|'cancel_requested'|'recovery_required'|'completed'|'failed'|'interrupted';
 export type AppAgentBinding={id:string;projectId:string;sessionId:string;mode:'discussion'|'planning'|'execution';workspaceRoot:string;rootIdentity:string};
 type Binding=AppAgentBinding;
 type Operation={operationId:string;digest:string;argv:string[];timeoutMs:number;generation:string;expiresAt:number;decision?:string;state:'awaiting_approval'|'dispatching'|'completed'|'declined'|'cancelled'|'recovery_required';exitCode?:number;stdout?:string;stderr?:string;fileChanges?:FileChange[]};
-type Job={id:string;bindingId:string;projectId:string;sessionId:string;mode:Binding['mode'];clientMessageId:string;input:string;inputDigest:string;assetPins?:AssetPin[];observedStartedAt?:string;purpose?:'team_proposal';proposalContext?:Input;workflowSnapshot?:WorkflowSnapshot & {executionRecipe?:{id:string;version:string}};
+type Job={id:string;bindingId:string;projectId:string;sessionId:string;mode:Binding['mode'];clientMessageId:string;input:string;inputDigest:string;autonomy?:{budgetId:string};autonomyStopReason?:string;assetPins?:AssetPin[];observedStartedAt?:string;purpose?:'team_proposal';proposalContext?:Input;workflowSnapshot?:WorkflowSnapshot & {executionRecipe?:{id:string;version:string}};
  state:State;seq:number;workerId?:string;generation?:string;lastReport?:{key:string;hash:string;receipt:Input};operations?:Operation[];taskContext?:Input;progress?:{seq:number;text:string;phase:'commentary'|'final_answer'};
  recoveryResolution?:{kind:'cancel_undispatched';reason:'dispatch_not_observed'}};
 type Worker={workerId:string;generation:string;leaseToken:string;expiresAt:number};
@@ -40,6 +41,7 @@ function text(row:Input,key:string,max=200):string {const value=row[key];if(type
  * One owner service serializes operations; profile instance reservation remains the cross-process boundary. */
 export function createAppAgentGateway(options:{store:LocalStore;profileId:string;actorId:string;now?:()=>number;redact?:(text:string)=>string;executorFactory?:(binding:AppAgentBinding)=>Promise<SandboxBroker>;assetRoots?:AssetRoot[]}) {
  const {store}=options;const now=options.now??Date.now;const bindings=new Map<string,Binding>();
+ const autonomy=autonomyService(store,now);
  const team=createTeamService(store,options.assetRoots);
  const selectedBindings=new Map<string,string>();
  const selectionId=(projectId:string,sessionId:string)=>`app-selection-${hash(JSON.stringify([options.profileId,projectId,sessionId]))}`;
@@ -137,7 +139,16 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
  // Observe startup errors even when a caller only reads synchronous connection status.
  void ready.catch(()=>{});
  function serial<T>(operation:()=>Promise<T>):Promise<T>{if(closing||closed)return Promise.reject(Object.assign(new Error('The App agent operation is unavailable.'),{code:'runtime_stopping'}));const pending=queue.then(async()=>{await ready;if(closed)fail('runtime_stopping');await expire();return operation();});queue=pending.then(()=>{},()=>{});return pending;}
- async function expire(){if(worker&&worker.expiresAt<=now()){if(active&&!terminal.has(active.state)){const changed={...active,state:'recovery_required' as const};await save(changed);active=changed;stopCommands(changed);}worker=undefined;}
+ async function expire(){
+  if(active?.autonomy&&!['cancel_requested','recovery_required'].includes(active.state)&&!terminal.has(active.state)){
+   try{await autonomy.assertAllowed(active.projectId,active.id);}
+   catch(error){const code=(error as {code?:string}).code;if(!code?.startsWith('AUTONOMY_'))throw error;
+    const changed:Job={...active,state:active.state==='queued'?'interrupted':'cancel_requested',autonomyStopReason:code,
+     operations:active.operations?.map(op=>op.state==='awaiting_approval'?{...op,state:'cancelled',decision:'cancel'}:op)};
+    await save(changed);stopCommands(changed);active=terminal.has(changed.state)?undefined:changed;
+   }
+  }
+  if(worker&&worker.expiresAt<=now()){if(active&&!terminal.has(active.state)){const changed={...active,state:'recovery_required' as const};await save(changed);active=changed;stopCommands(changed);}worker=undefined;}
   if(active?.operations?.some(op=>op.state==='awaiting_approval'&&op.expiresAt<=now())){const changed={...active,operations:active.operations.map(op=>op.state==='awaiting_approval'&&op.expiresAt<=now()?{...op,state:'declined' as const,decision:'expired'}:op)};if(changed.state==='awaiting_approval')changed.state='running';await save(changed);active=changed;}}
  function stopCommands(job:Job){const broker=brokers.get(job.bindingId);for(const op of job.operations??[])if(op.state==='dispatching'&&broker)void broker.interrupt(brokerOperationId(job,op)).catch(()=>{});}
  async function assertTaskCommandBoundary(job:Job){
@@ -157,7 +168,9 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
    const before=await captureTaskFiles(scope,files,redact);
    // Stop may arrive during file capture. Recheck the durable in-memory owner before admitting the native side effect.
    if(closing||active?.id!==job.id||active.state!=='running')return {exitCode:130,stdout:'',stderr:'Command cancelled before native dispatch.',fileChanges:[] as FileChange[],cancelled:true};
-   try{await assertTaskCommandBoundary(job);}catch{return {exitCode:130,stdout:'',stderr:'Task dependency changed before native dispatch.',fileChanges:[] as FileChange[],cancelled:true};}
+   try{await assertTaskCommandBoundary(job);if(job.autonomy)await autonomy.assertAllowed(job.projectId,job.id,'command');}
+   catch{return {exitCode:130,stdout:'',stderr:'Task dependency or autonomy boundary changed before native dispatch.',fileChanges:[] as FileChange[],cancelled:true};}
+   if(closing||active?.id!==job.id||active.state!=='running')return {exitCode:130,stdout:'',stderr:'Command cancelled before native dispatch.',fileChanges:[] as FileChange[],cancelled:true};
    const result=await broker.execute({operationId:brokerOperationId(job,operation),argv:operation.argv,timeoutMs:operation.timeoutMs});
    const after=await captureTaskFiles(scope,files,redact);return {...result,fileChanges:compareTaskFiles(before,after),cancelled:false};
   }).then(result=>({result}),()=>({result:null})).then(async({result})=>{
@@ -167,6 +180,7 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
     const next:Operation=valid?{...op,state:result.cancelled?'cancelled':'completed',exitCode:result.exitCode,stdout:redact(result.stdout.slice(0,32768)),stderr:redact(result.stderr.slice(0,32768)),fileChanges:result.fileChanges.map(change=>({...change,path:redact(change.path),diff:redact(change.diff)}))}:{...op,state:'recovery_required'};
     const changed:Job={...current,operations:current.operations!.map(item=>item.operationId===op.operationId?next:item),state:valid?current.state:'recovery_required'};
     await save(changed);if(active?.id===changed.id)active=changed;
+    if(changed.autonomy&&valid&&!result.cancelled&&result.exitCode!==0)await autonomy.observedFailure(changed.projectId,changed.id);
    });queue=settle.catch(()=>{});await settle;
   }).catch(()=>{if(active?.id===job.id)active={...active,state:'recovery_required'};}).finally(()=>pendingCommands.delete(pending));pendingCommands.add(pending);
  }
@@ -185,8 +199,8 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
   if(!selected||!worker||worker.workerId!==workerId||worker.generation!==generation||!/^[a-f0-9]{64}$/.test(token)||token.length!==worker.leaseToken.length
    ||!timingSafeEqual(Buffer.from(token),Buffer.from(worker.leaseToken)))fail('app_agent_lease_invalid');return worker;
  }
- function publicJob(job:Job){return {id:job.id,bindingId:job.bindingId,projectId:job.projectId,sessionId:job.sessionId,state:job.state,mode:job.mode,route};}
- function claimed(job:Job){return {runId:job.id,bindingId:job.bindingId,projectId:job.projectId,sessionId:job.sessionId,mode:job.mode,input:redact(job.input),clientMessageId:job.clientMessageId,cancelRequested:job.state==='cancel_requested',taskContext:job.taskContext,workflowSnapshot:job.workflowSnapshot,assetPins:job.assetPins,purpose:job.purpose,proposalContext:job.proposalContext};}
+ function publicJob(job:Job){return {id:job.id,bindingId:job.bindingId,projectId:job.projectId,sessionId:job.sessionId,state:job.state,mode:job.mode,route,...(job.autonomy?{autonomy:job.autonomy,autonomyStopReason:job.autonomyStopReason}: {})};}
+ function claimed(job:Job){return {runId:job.id,bindingId:job.bindingId,projectId:job.projectId,sessionId:job.sessionId,mode:job.mode,input:redact(job.input),clientMessageId:job.clientMessageId,cancelRequested:job.state==='cancel_requested',taskContext:job.taskContext,workflowSnapshot:job.workflowSnapshot,assetPins:job.assetPins,purpose:job.purpose,proposalContext:job.proposalContext,autonomy:job.autonomy};}
  const connection={status,
   connect: (value:unknown)=>serial(async()=>{input(value,['connectionId']);selected=true;return status();}),
   disconnect:()=>serial(async()=>{if(active){const changed={...active,state:'recovery_required' as const};await save(changed);active=changed;stopCommands(changed);}worker=undefined;selected=false;return status();})};
@@ -197,7 +211,7 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
    const chosen=selectedBindings.get(selectionId(scope.projectId,scope.sessionId));
    const binding=running?bindings.get(running.bindingId):chosen?bindings.get(chosen):[...bindings.values()].reverse().find(item=>item.projectId===scope.projectId&&item.sessionId===scope.sessionId);
    const last=binding?latest.get(binding.id):undefined;const job=running??last;const broker=binding?brokers.get(binding.id):undefined;
-   return {...status(),state:running?.state??last?.state??status().state,bindingId:binding?.id,runId:running?.id,mode:binding?.mode,
+   return {...status(),state:running?.state??last?.state??status().state,bindingId:binding?.id,runId:running?.id,mode:binding?.mode,autonomy:job?.autonomy,autonomyStopReason:job?.autonomyStopReason,
     recovery:running?.state==='recovery_required'?{canCancelUndispatched:canCancelUndispatched(running)}:null,
     generation:worker?.generation,canSend:status().verified&&!!binding&&!active&&!foreignUnresolved,reason:!status().verified?'app_agent_not_attached':foreignUnresolved?'foreign_runtime_recovery_required':!binding?'binding_required':active?'runtime_busy':null,
     pendingApprovals:(running?.operations??[]).filter(op=>op.state==='awaiting_approval'&&running?.state!=='recovery_required').map(op=>({requestId:op.operationId,runId:running!.id,bindingId:binding!.id,generation:op.generation,kind:'command',state:'pending',command:JSON.stringify(op.argv),details:{command:JSON.stringify(op.argv),reason:'PAOS domain approval before sandboxed execution'},expiresAt:op.expiresAt,reviewable:true,source:'paos_domain'})),
@@ -208,7 +222,8 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
     questions:{status:'unsupported',reason:'app_host_approvals_are_separate'},streaming:{policy:'final_answer_only',phaseStatus:'not_observed'}};
   }),
   dispatch:(action:string,value:Input)=>serial(async()=>{
-   const row=input(value,['projectId','sessionId','bindingId','clientMessageId','input','mode','taskId','runId','generation','requestId','decision','resolution','targetAssetId',...(action==='team-proposal'?['assetKind','requirementContext']:[])]);const scope=await scoped(row);
+   const row=input(value,['projectId','sessionId','bindingId','clientMessageId','input','mode','taskId','runId','generation','requestId','decision','resolution','targetAssetId','autonomy',...(action==='team-proposal'?['assetKind','requirementContext']:[])]);const scope=await scoped(row);
+   if(row.autonomy!==undefined&&(typeof row.autonomy!=='boolean'||action!=='send'))fail('app_agent_input_invalid');
    if(row.resolution!==undefined&&action!=='reconcile')fail('app_agent_input_invalid');
    if(row.generation!==undefined)text(row,'generation');
    if(action==='bindings') {
@@ -236,8 +251,9 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
     if(action==='team-proposal'&&binding.mode!=='planning')fail('TEAM_PLANNING_BINDING_REQUIRED');
     const messageId=text(row,'clientMessageId'),body=redact(text(row,'input',32*1024));if(row.taskId!==undefined) {
      const task=await store.get(scope.projectId,text(row,'taskId'));if(!task||task.kind!=='task'||task.deleted)fail('task_scope_mismatch');}
+    if(row.autonomy===true&&binding.mode!=='execution')fail('AUTONOMY_EXECUTION_MODE_REQUIRED');
     const id=`app-run-${hash(`${options.profileId}:${binding.id}:${messageId}`)}`;const digest=hash(JSON.stringify({body,taskId:row.taskId??null}));
-    const previous=await store.get(scope.projectId,id);if(previous){const old=previous.data.appAgentRun as Job;if(old.inputDigest!==digest)fail('message_conflict');return publicJob(old);}
+    const previous=await store.get(scope.projectId,id);if(previous){const old=previous.data.appAgentRun as Job;if(old.inputDigest!==digest||Boolean(old.autonomy)!==(row.autonomy===true))fail('message_conflict');return publicJob(old);}
     if(!status().verified)fail('app_agent_not_attached');if(active||foreignUnresolved)fail('runtime_busy');
     const job:Job={id,bindingId:binding.id,projectId:binding.projectId,sessionId:binding.sessionId,mode:binding.mode,clientMessageId:messageId,input:body,inputDigest:digest,state:'queued',seq:0};
     if(action==='team-proposal'){
@@ -260,7 +276,11 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
      job.taskContext={taskId:task.id,revision:task.revision,scopeDigest:taskScopeDigest(task),workspaceRoot:binding.workspaceRoot,rootIdentity:binding.rootIdentity,key:profile.key,title:profile.title,files:profile.files,acceptanceCriteria:profile.acceptanceCriteria,risks:profile.risks};
      extra.push({expectedRevision:task.revision,entity:{id:task.id,kind:'task',data:{...profile,status:workflow.executionState(),sessionIds:[...new Set([...profile.sessionIds,job.sessionId])]}}});
     }
-    await save(job,extra,true);active=job;return publicJob(job);
+    if(row.autonomy===true){job.autonomy=await autonomy.reserve(job.projectId,{runId:job.id,bindingId:job.bindingId,sessionId:job.sessionId,taskId:job.taskContext!.taskId as string});
+     await autonomy.assertAllowed(job.projectId,job.id);}
+    await save(job,extra,true);active=job;
+    // A concurrent pause can win while persistence is awaiting the Worker; never expose a newly queued run unfenced.
+    if(job.autonomy)await expire();return publicJob(latest.get(job.bindingId)!);
    }
    if(action==='approve'){
     if(!active||active.id!==text(row,'runId')||active.bindingId!==binding.id||active.state==='recovery_required'||active.state==='cancel_requested')fail('approval_stale');
@@ -268,7 +288,7 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
     const decision=text(row,'decision');if(!['accept','decline','cancel'].includes(decision))fail('approval_invalid');
     if(op.decision){if(op.decision!==decision)fail('approval_conflict');return operationView(active,op);}
     if(op.state!=='awaiting_approval'||op.expiresAt<=now())fail('approval_stale');
-    if(decision==='accept')await assertTaskCommandBoundary(active);
+    if(decision==='accept'){await assertTaskCommandBoundary(active);if(active.autonomy)await autonomy.assertAllowed(active.projectId,active.id,'command');}
     const broker=decision==='accept'?await attachBroker(binding):undefined;
     const next:Operation={...op,decision,state:decision==='accept'?'dispatching':decision==='decline'?'declined':'cancelled'};
     const changed:Job={...active,state:'running',operations:active.operations!.map(item=>item.operationId===op.operationId?next:item)};await save(changed);active=changed;
@@ -323,6 +343,7 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
    const timeoutMs=row.timeoutMs??30000;if(!Number.isInteger(timeoutMs)||Number(timeoutMs)<1||Number(timeoutMs)>30000)fail('app_agent_input_invalid');
    const digest=hash(JSON.stringify({argv,timeoutMs})),previous=job.operations?.find(op=>op.operationId===operationId);if(previous){if(previous.digest!==digest)fail('app_agent_operation_conflict');return operationView(job,previous);}
    if(busyOperation(job))fail('app_agent_operation_busy');if((job.operations?.length??0)>=64)fail('app_agent_operation_limit');
+   if(job.autonomy)await autonomy.reserveCommand(job.projectId,job.id,operationId);
    const op:Operation={operationId,argv:[...argv],timeoutMs:Number(timeoutMs),digest,generation:current.generation,expiresAt:now()+300000,state:'awaiting_approval'};
    const changed:Job={...job,state:'awaiting_approval',operations:[...(job.operations??[]),op]};await save(changed);active=changed;return operationView(changed,op);
   }
@@ -345,5 +366,10 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
   }
   fail('app_agent_action_unsupported');
  });}
- return {connection,runtime,agent,close(){closing=true;shutdown??=(async()=>{await queue;await ready;if(active){const changed={...active,state:'recovery_required' as const};await save(changed);active=changed;stopCommands(changed);}await Promise.all([...brokers.values()].map(broker=>broker.close()));await Promise.all([...pendingCommands]);await queue;selected=false;worker=undefined;closed=true;})().catch(error=>{shutdown=undefined;throw error;});return shutdown;}};
+ // Deadline/pause enforcement is independent of browser polling and worker cooperation; Stop itself remains acknowledged by the host.
+ let watchdogPending=false;
+ const watchdog=setInterval(()=>{if(!active?.autonomy||watchdogPending||closing)return;watchdogPending=true;void serial(async()=>{}).catch(()=>{
+   if(active){active={...active,state:'recovery_required'};stopCommands(active);}
+ }).finally(()=>{watchdogPending=false;});},250);watchdog.unref();
+ return {connection,runtime,agent,close(){closing=true;clearInterval(watchdog);shutdown??=(async()=>{await queue;await ready;if(active){const changed={...active,state:'recovery_required' as const};await save(changed);active=changed;stopCommands(changed);}await Promise.all([...brokers.values()].map(broker=>broker.close()));await Promise.all([...pendingCommands]);await queue;selected=false;worker=undefined;closed=true;})().catch(error=>{shutdown=undefined;throw error;});return shutdown;}};
 }

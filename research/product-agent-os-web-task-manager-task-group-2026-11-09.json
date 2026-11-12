@@ -1714,11 +1714,162 @@
       "id": "PAOS-0023",
       "group_id": "G07",
       "title": "Политика автономности и лимиты",
-      "status": "planned",
+      "status": "implemented",
       "short_description": "Задать заранее разрешённые действия, бюджеты и stop conditions",
       "technical_value": "Задать заранее разрешённые действия, бюджеты и stop conditions",
       "product_value": "Пользователь задаёт границы самостоятельной работы один раз и сохраняет возможность остановки.",
       "affected_files": [
+        {
+          "path": "apps/local-service/src/autonomy-policy/service.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
+        },
+        {
+          "path": "packages/contracts/autonomy/policy.ts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
+        },
+        {
+          "path": "apps/local-service/src/http/application.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/local-service/src/runtime/app-agent-gateway.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/local-service/src/runtime/live-gateway.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "packages/contracts/runtime/qualified-manifest.json",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/web/src/features/autonomy/AutonomyManager.tsx",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
+        },
+        {
+          "path": "apps/web/src/api/client.ts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/web/src/ui/App.tsx",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "apps/web/src/locales/messages.ts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "tests/web/autonomy-policy.test.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
+        },
+        {
+          "path": "tests/web/autonomy-runtime.test.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
+        },
+        {
+          "path": "tests/web/single-window/m3-autonomy-acceptance.mts",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
+        },
+        {
+          "path": "apps/web/README.md",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "research/product-agent-os-web-m3-0023-execution-2026-11-12.md",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
+        },
+        {
+          "path": "research/product-agent-os-web-m3-0023-results-2026-11-12.json",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "create"
+        },
+        {
+          "path": "REQUIREMENTS.md",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "PLAN.md",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "TEST.md",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "RUNLOG.md",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "docs/sources/registry.md",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "docs/sources/registry.en.md",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "research/product-agent-os-web-task-manager-plan-2026-11-09.md",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        },
+        {
+          "path": "research/product-agent-os-web-task-manager-task-group-2026-11-09.json",
+          "planned_operation": "create_or_modify_after_discovery",
+          "actual_operation": "modify"
+        }
+      ],
+      "agents": [
+        "architect",
+        "builder",
+        "tester"
+      ],
+      "project_artifacts": [
+        "product-agent-os-web-prd-2026-11-05.md",
+        "product-agent-os-web-architecture-2026-11-05.md",
+        "product-agent-os-web-task-manager-screens-2026-11-09.md",
+        "product-agent-os-web-m3-0023-execution-2026-11-12.md",
+        "product-agent-os-web-m3-0023-results-2026-11-12.json"
+      ],
+      "acceptance_criteria": [
+        "Preview policy объясняет возможности; UI не расширяет host permissions; pause доступна"
+      ],
+      "estimated_duration_hms": "12:00:00",
+      "estimate_status": "rough_planning_estimate_not_commitment",
+      "actual_started_at": "2026-11-12T12:37:57+03:00",
+      "actual_ended_at": "2026-11-12T13:20:47+03:00",
+      "actual_duration_seconds": null,
+      "actual_duration_hms": null,
+      "risks": "Повтор действий, конкурирующие writers, выход за разрешённый scope",
+      "depends_on": [
+        "PAOS-0008",
+        "PAOS-0013",
+        "PAOS-0017"
+      ],
+      "execution_order": 46,
+      "delivery_stage": "M3",
+      "planned_affected_files": [
         {
           "path": "apps/local-service/src/autonomy-policy",
           "planned_operation": "create_or_modify_after_discovery",
@@ -1730,33 +1881,8 @@
           "actual_operation": null
         }
       ],
-      "agents": [
-        "architect",
-        "builder",
-        "tester"
-      ],
-      "project_artifacts": [
-        "product-agent-os-web-prd-2026-11-05.md",
-        "product-agent-os-web-architecture-2026-11-05.md",
-        "product-agent-os-web-task-manager-screens-2026-11-09.md"
-      ],
-      "acceptance_criteria": [
-        "Preview policy объясняет возможности; UI не расширяет host permissions; pause доступна"
-      ],
-      "estimated_duration_hms": "12:00:00",
-      "estimate_status": "rough_planning_estimate_not_commitment",
-      "actual_started_at": null,
-      "actual_ended_at": null,
-      "actual_duration_seconds": null,
-      "actual_duration_hms": null,
-      "risks": "Повтор действий, конкурирующие writers, выход за разрешённый scope",
-      "depends_on": [
-        "PAOS-0008",
-        "PAOS-0013",
-        "PAOS-0017"
-      ],
-      "execution_order": 46,
-      "delivery_stage": "M3"
+      "actual_time_note": "Measured start is first clock sample after discovery; wall interval available, per-task active duration not instrumented; null intentional.",
+      "closure_level": "implemented_locally_verified"
     },
     {
       "id": "PAOS-0024",

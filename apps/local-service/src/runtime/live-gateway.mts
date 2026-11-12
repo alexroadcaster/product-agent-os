@@ -82,6 +82,9 @@ export function createLiveGateway(options: Readonly<{
         streaming:state?.streaming??{policy:'final_answer_only',phaseStatus:'not_observed'}};
     },
     async dispatch(action:string,input:Record<string,unknown>) {
+      // This route lacks per-operation autonomy enforcement. Never silently treat an opt-in run as manual.
+      if(input.autonomy===true)throw new LiveGatewayError('AUTONOMY_ROUTE_UNAVAILABLE');
+      if(input.autonomy!==undefined&&typeof input.autonomy!=='boolean')throw new LiveGatewayError('input_invalid');
       if(!admitted()||!coordinator)throw new LiveGatewayError('runtime_unverified');
       if(action==='bindings') {
         const selected=coordinator;

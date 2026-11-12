@@ -1,0 +1,451 @@
+{
+  "schema_version": 1,
+  "task_id": "PAOS-0023",
+  "status": "implemented_locally_verified",
+  "evidence_scope": "synthetic_project_production_ui_http_sqlite_native_broker",
+  "actual_model_turn": false,
+  "actual_app_agent": false,
+  "synthetic_worker": true,
+  "actual_native_broker": true,
+  "human_acceptance": "not_claimed",
+  "release_readiness": "not_claimed",
+  "review": {
+    "context_mode": "separate_fresh_context",
+    "agent": "/root/autonomy_review",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "findings": [
+      {
+        "severity": "P2",
+        "finding": "old Pause replay could interrupt successor after Resume",
+        "status": "fixed_and_regression_verified"
+      }
+    ],
+    "tester_verdict": "closed_allowed_for_local_technical_scope"
+  },
+  "tests": {
+    "focused": {
+      "command": "node --test tests/web/autonomy-policy.test.mts tests/web/autonomy-runtime.test.mts",
+      "passed": 15,
+      "exit_code": 0
+    },
+    "web_full": {
+      "command": "node --test tests/web/*.test.mts",
+      "passed": 413,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m3/web-tests-final.log"
+    },
+    "python_full": {
+      "command": "python -B -m unittest discover -s tests -p 'test_*.py' -q",
+      "tests": 1450,
+      "seconds": 638.427,
+      "skipped": 1,
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m3/python-full.log"
+    },
+    "fixture_eval": {
+      "fixtures": 91,
+      "passed": 91,
+      "exit_code": 0
+    },
+    "transcript_eval": {
+      "failed": 0,
+      "passed": 26,
+      "exit_code": 0
+    },
+    "typescript": {
+      "command": "npm run check:web-m1",
+      "exit_code": 0
+    },
+    "production_build": {
+      "command": "npm run build:web",
+      "exit_code": 0,
+      "modules": 54
+    },
+    "compatibility": {
+      "command": "python -B plugins/product-agent-os/scripts/validate_codex_compatibility.py",
+      "status": "compatible",
+      "exit_code": 0
+    },
+    "post_sync_docs": {
+      "command": "python -B -m unittest tests.product_agent_os.test_product_agent_os_docs tests.product_agent_os.test_task_plan_lifecycle tests.product_agent_os.test_lifecycle_hooks tests.product_agent_os.test_infrastructure_templates -q",
+      "tests": 251,
+      "seconds": 20.045,
+      "exit_code": 0
+    },
+    "docs_checker": {
+      "command": "python tools/check_docs.py",
+      "exit_code": 0
+    },
+    "task_matrix_and_consistency": {
+      "exit_code": 0
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "exit_code": 0
+    },
+    "docs_final": {
+      "command": "python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -q",
+      "tests": 105,
+      "seconds": 12.224,
+      "exit_code": 0
+    }
+  },
+  "browser": {
+    "receipt": ".tmp/paos-m3/browser-evidence-R1FHss/result.json",
+    "sha256": "7e78d3e6cb8eac637410e35ab323da3f499447972c47e329b0ee39cecba19772",
+    "passed": 47,
+    "checks": [
+      {
+        "name": "page_identity",
+        "passed": true
+      },
+      {
+        "name": "not_blank",
+        "passed": true
+      },
+      {
+        "name": "no_overlay",
+        "passed": true
+      },
+      {
+        "name": "project_created",
+        "passed": true
+      },
+      {
+        "name": "task_saved",
+        "passed": true
+      },
+      {
+        "name": "task_ready",
+        "passed": true
+      },
+      {
+        "name": "session_saved",
+        "passed": true
+      },
+      {
+        "name": "narrow_boundary_explicit",
+        "passed": true
+      },
+      {
+        "name": "unsupported_save_disabled",
+        "passed": true
+      },
+      {
+        "name": "edit_invalidates_preview",
+        "passed": true
+      },
+      {
+        "name": "save_is_paused",
+        "passed": true
+      },
+      {
+        "name": "save_does_not_dispatch",
+        "passed": true
+      },
+      {
+        "name": "resume_admission_only",
+        "passed": true
+      },
+      {
+        "name": "permissions_boundary_visible",
+        "passed": true
+      },
+      {
+        "name": "stale_revision_explained",
+        "passed": true
+      },
+      {
+        "name": "stale_draft_retained",
+        "passed": true
+      },
+      {
+        "name": "reviewed_draft_saved",
+        "passed": true
+      },
+      {
+        "name": "policy_armed",
+        "passed": true
+      },
+      {
+        "name": "desktop_geometry",
+        "passed": true,
+        "detail": {
+          "width": 1440,
+          "scroll": 1440
+        }
+      },
+      {
+        "name": "app_route_selected",
+        "passed": true
+      },
+      {
+        "name": "qualified_native_binding",
+        "passed": true
+      },
+      {
+        "name": "optin_available",
+        "passed": true
+      },
+      {
+        "name": "send_enabled",
+        "passed": true
+      },
+      {
+        "name": "policy_dispatch",
+        "passed": true
+      },
+      {
+        "name": "autonomy_explicit_payload",
+        "passed": true
+      },
+      {
+        "name": "policy_pin",
+        "passed": true
+      },
+      {
+        "name": "claimed_existing_gateway",
+        "passed": true
+      },
+      {
+        "name": "budget_charged_once",
+        "passed": true
+      },
+      {
+        "name": "command_awaits_approval",
+        "passed": true
+      },
+      {
+        "name": "no_unapproved_file",
+        "passed": true
+      },
+      {
+        "name": "explicit_approval",
+        "passed": true
+      },
+      {
+        "name": "native_command_observed",
+        "passed": true
+      },
+      {
+        "name": "native_command_exit_zero",
+        "passed": true
+      },
+      {
+        "name": "native_output",
+        "passed": true
+      },
+      {
+        "name": "actual_fixture_write",
+        "passed": true
+      },
+      {
+        "name": "pause_durable",
+        "passed": true
+      },
+      {
+        "name": "pause_denies_pending_approval",
+        "passed": true
+      },
+      {
+        "name": "stop_request_not_terminal",
+        "passed": true
+      },
+      {
+        "name": "terminal_only_after_ack",
+        "passed": true
+      },
+      {
+        "name": "paused_command_absent",
+        "passed": true
+      },
+      {
+        "name": "task_acceptance_separate",
+        "passed": true
+      },
+      {
+        "name": "english_dark",
+        "passed": true
+      },
+      {
+        "name": "mobile_geometry",
+        "passed": true,
+        "detail": {
+          "width": 390,
+          "scroll": 390
+        }
+      },
+      {
+        "name": "keyboard_focus",
+        "passed": true
+      },
+      {
+        "name": "no_page_errors",
+        "passed": true,
+        "detail": []
+      },
+      {
+        "name": "no_console_errors",
+        "passed": true,
+        "detail": []
+      },
+      {
+        "name": "no_external_requests",
+        "passed": true
+      }
+    ],
+    "page_errors": [],
+    "console_errors": [],
+    "external_requests": [],
+    "desktop": "1440x1000 ru/light",
+    "mobile": "390x844 en/dark",
+    "screenshots": [
+      "paos-0023-desktop.png",
+      "paos-0023-mobile.png"
+    ],
+    "fixture_cleaned": true,
+    "source_hash_mismatches": []
+  },
+  "native": {
+    "candidate_receipt": ".tmp/paos-m3/native-candidate-final.log",
+    "default_receipt": ".tmp/paos-m3/native-default-final.log",
+    "candidate_sha256": "94787a9aa937a7d0ff3bd61ba701be81388b7bd900b42d05b07b4994bffd30ca",
+    "default_sha256": "f46a05660860a2c3796b0dd3c35c5ef4ce25505445e3056ef89c40d153254f77",
+    "adapter_revision": "cb01327876c661be98d21ea35e680462a6abde1f374a5264015f84476ea85345",
+    "cases": [
+      {
+        "mode": "discussion",
+        "writeResults": {
+          "inside": "EPERM",
+          "outside": "EPERM",
+          "temp": "EPERM"
+        },
+        "exitCode": 0,
+        "nativeSandbox": true,
+        "scope": "paos_mediated_commands",
+        "configuration": {
+          "beforeSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+          "afterSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+          "beforeTrustTables": 0,
+          "afterTrustTables": 0
+        },
+        "authFileCreated": false,
+        "homeCleaned": true
+      },
+      {
+        "mode": "planning",
+        "writeResults": {
+          "inside": "EPERM",
+          "outside": "EPERM",
+          "temp": "EPERM"
+        },
+        "exitCode": 0,
+        "nativeSandbox": true,
+        "scope": "paos_mediated_commands",
+        "configuration": {
+          "beforeSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+          "afterSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+          "beforeTrustTables": 0,
+          "afterTrustTables": 0
+        },
+        "authFileCreated": false,
+        "homeCleaned": true
+      },
+      {
+        "mode": "execution",
+        "writeResults": {
+          "inside": "written",
+          "outside": "EPERM",
+          "temp": "EPERM"
+        },
+        "exitCode": 0,
+        "nativeSandbox": true,
+        "scope": "paos_mediated_commands",
+        "configuration": {
+          "beforeSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+          "afterSha256": "1b6c9e26cefa4d62dfaff5551cbdc650009a0776aba054fd384682303849227d",
+          "beforeTrustTables": 0,
+          "afterTrustTables": 1
+        },
+        "stopElapsedMs": 6,
+        "stopExitCode": 1,
+        "authFileCreated": false,
+        "homeCleaned": true
+      }
+    ],
+    "status": "passed",
+    "fixture_cleaned": true,
+    "binary_source": "verified existing npm cache member, isolated fixture, no installation",
+    "pinned_binary_sha256": "edfdd48f8b458af0906e507b4cb05217b326c3d6e515e9f024e05e3b8d650f70",
+    "installed_npm_binary_sha256": "6f65c42e3769209976cce097a400720b5d877e1d24ec8bb6272bf0f02d5e0fd7",
+    "installed_npm_qualification": "runtime_mismatch",
+    "cached_fixture_removed": true
+  },
+  "preservation": {
+    "task_id": "PAOS-0023",
+    "other_md_cards_unchanged": 55,
+    "other_json_tasks_unchanged": 55,
+    "task_count": 56,
+    "group_count": 12,
+    "all_estimates_order_groups_preserved": true,
+    "completed_at": "2026-11-12T13:20:47+03:00",
+    "active_duration_measured": false,
+    "recovery_path": ".tmp/paos-m3/matrix-recovery.json"
+  },
+  "documentation_sync": {
+    "decision": "updated",
+    "files": [
+      "REQUIREMENTS.md",
+      "PLAN.md",
+      "TEST.md",
+      "RUNLOG.md",
+      "apps/web/README.md",
+      "docs/sources/registry.md",
+      "docs/sources/registry.en.md"
+    ],
+    "proposal_digest": "sha256:b2599bff77de0e38f45d2b698fdb7752fc2b8b02abb7baaffb5954fd22f488fb",
+    "final_assessment": ".tmp/paos-m3/doc-sync-final-assessment.json",
+    "gaps": [],
+    "no_change_needed": {
+      "EVALS.md": "Existing deterministic policy/guard rubric applies; model/prompt/retrieval and quality promises unchanged.",
+      "prod_test.md": "Batch39 historical evidence unaffected.",
+      "AGENTS.md": "No durable rules or permissions changed."
+    }
+  },
+  "limitations": [
+    "Only PAOS-mediated work is constrained; App host tools remain outside this boundary.",
+    "Only entire-workspace execution scope is enforceable; narrow paths fail closed.",
+    "Legacy API route opt-in unavailable; no silent fallback.",
+    "No token/cost metering; unsupported budget fields rejected.",
+    "Pause/deadline are durable admission fences plus cooperative Stop; terminal outcome requires ACK or reconciliation.",
+    "Installed npm Codex remains unqualified; exact cached fixture qualification is separate.",
+    "No model-quality, human/commercial/release, full M3 or unattended delivery claim."
+  ],
+  "source_hashes": {
+    "packages/contracts/autonomy/policy.ts": "dacf0e6dbb8440b612c3292bc85b9c832150bfdafe29b4653d13a8d15f26a0b3",
+    "apps/local-service/src/autonomy-policy/service.mts": "bf9ca67c3e953af67a9b714967dd694b287828fce7ec46565350f60c3b8abf60",
+    "apps/local-service/src/runtime/app-agent-gateway.mts": "1797b556daaf90cac1cd6f1e8c50c416d43f0be8e2acf49b27aa54d74aee9e85",
+    "apps/local-service/src/runtime/live-gateway.mts": "4d26b19c7b41cb4b63173162d4aaeae32e221d43ff5482460b756b4b6008849f",
+    "apps/local-service/src/http/application.mts": "e21c3733147f64cb65ea25977db869162435ebfb374bb26cf649a781e71b1314",
+    "apps/web/src/features/autonomy/AutonomyManager.tsx": "fe03e4fe191ae1fd2608cacdc4996c33baa544be8c9e56684b11b6dd0328e62b",
+    "apps/web/src/api/client.ts": "3bc7bfb6aaaf92e0beec4aa697ff6602f602c99401c440ffa2adab9d9ca42df4",
+    "apps/web/src/ui/App.tsx": "cd416b103ab97c75e9c3820626bd7036f3f60d8fbed963851ad44d4d0c419ec3",
+    "apps/web/src/locales/messages.ts": "d19acfad6a442a2d43dc7377a02e6821b342f0f124aff1d0f0475b0daa26f192",
+    "packages/contracts/runtime/qualified-manifest.json": "41389694d25ad4acab52143bcf9f17cee93d291b84c0bb55a985898b11914d42",
+    "tests/web/autonomy-policy.test.mts": "c1516229552f16b058fc883ef9f4932d9b150368bccce72d7507b12599cb7d3c",
+    "tests/web/autonomy-runtime.test.mts": "adf9b4bfc85ee2eb6bf2f840a3e413fcf044cd1517999bd1ab6b54f4034e36e9",
+    "tests/web/single-window/m3-autonomy-acceptance.mts": "09fdc91051ce6c66c5566b30178193b7f004fb58488e3dd84305d5606196c164",
+    "apps/web/dist/index.html": "fc4d2f26e0e1acfdea0fb557afb2eda5c4e99504db6a8394ac43739d985b1c1d",
+    "apps/web/dist/assets/index-6ocZaMs-.css": "ceb159596ac2f91952bbbeab48933957480da03acae68d8383abdacc1c89a5b1",
+    "apps/web/dist/assets/index-DhQVqT8h.js": "a69bc30ba62fb11a448d39634c7063e8b23ad00bc21f7b2d864a6212047d0d58",
+    "research/product-agent-os-web-task-manager-plan-2026-11-09.md": "dd21159c2bcf064290b1a11a912ca02f63ba17cb8dd526983c5b45b64cf1da37",
+    "research/product-agent-os-web-task-manager-task-group-2026-11-09.json": "002d6d4448678ceaf861d16ffdc96b2bc31d3ab68517860c7a5e27d04e3e451f"
+  },
+  "measured_scope_started_at": "2026-11-12T09:37:57+00:00",
+  "completed_at": "2026-11-12T10:25:40+00:00",
+  "active_duration_measured": false,
+  "measured_elapsed_wall_seconds": 2863.0
+}

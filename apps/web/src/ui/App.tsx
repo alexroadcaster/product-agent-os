@@ -31,6 +31,8 @@ import { visibleAssistantDrafts } from "../api/visible-drafts.ts";
 import { ConnectionControls } from "./ConnectionControls.tsx";
 import { TaskRelations } from "./TaskRelations.tsx";
 import {GraphExplorer} from '../features/graph/GraphExplorer.tsx';
+import {AutonomyManager} from '../features/autonomy/AutonomyManager.tsx';
+import type {AutonomySnapshot} from '../../../../packages/contracts/autonomy/policy.ts';
 import {SkillGenerator} from '../features/skills/SkillGenerator.tsx';
 import {ArtifactExplorer} from '../features/artifacts/ArtifactExplorer.tsx';
 import {WorkflowManager} from '../features/workflows/WorkflowManager.tsx';
@@ -78,6 +80,7 @@ const sections = [
   "projectMap",
   "documents",
   "checks",
+  "autonomy",
   "search",
   "import",
   "backup",
@@ -326,6 +329,8 @@ export function App() {
             />{projectId&&<WorkflowManager key={projectId} api={api} projectId={projectId} locale={preferences.locale}/>}</>
           ) : !projectId ? (
             <Empty text={t("empty")} />
+          ) : section === "autonomy" ? (
+            <AutonomyManager key={projectId} api={api} projectId={projectId} locale={preferences.locale}/>
           ) : section === "tasks" ? (
             <TaskManager key={projectId} api={api} projectId={projectId} locale={preferences.locale} initialTaskId={linkedTask?.projectId===projectId?linkedTask.id:undefined} initialTab={linkedTask?.projectId===projectId?linkedTask.tab:undefined} onOpenSession={sessionId=>{setLinkedSession({projectId,sessionId});setSection('sessions');}} />
           ) : section === "sessions" ? (
@@ -1426,6 +1431,17 @@ function Session({
     [notice, setNotice] = useState(""),
     [snapshot, setSnapshot] = useState<RuntimeState | null>(null),
     [pane, setPane] = useState("chat");
+  const [autonomySelected,setAutonomySelected]=useState(false);
+  const [autonomyState,setAutonomyState]=useState<AutonomySnapshot|null>(null);
+  useEffect(()=>{
+    let ignore=false;setAutonomySelected(false);setAutonomyState(null);
+    if(mode==='execution'&&connection?.route==='codex_app_agent')void api.autonomy(entity.projectId).then(value=>{if(!ignore)setAutonomyState(value);}).catch(()=>{});
+    return()=>{ignore=true;};
+  },[entity.projectId,entity.id,mode,connection?.route,targetId,snapshot?.runId,snapshot?.state]);
+  const autonomyAvailable=mode==='execution'&&connection?.route==='codex_app_agent'&&connection.verified===true
+    &&connection.capabilities?.executionConfigured===true&&!!autonomyState?.policy&&!autonomyState.paused
+    &&autonomyState.usedRuns<autonomyState.policy.maxRuns&&autonomyState.policy.allowedTaskIds.includes(linkedTaskId);
+  const autonomySendAllowed=!autonomySelected||autonomyAvailable;
   const runState: RunState =
     draftAvailable &&
     !actionBusy &&
@@ -1646,6 +1662,7 @@ function Session({
         : t("saved");
     try {
       if (action === "send") {
+        if(autonomySelected&&!autonomyAvailable)throw new Error(locale==='ru'?'Политика недоступна для этого запуска':'Policy unavailable for this run');
         const lease = autosave.current;
         if (!lease || typeof extra.input !== "string")
           throw new Error(t("draftScopeUnavailable"));
@@ -1658,6 +1675,7 @@ function Session({
               sessionId: entity.id,
               ...binding,
               ...extra,
+              ...(autonomySelected?{autonomy:true}:{}),
               clientMessageId,
             }),
         );
@@ -1775,7 +1793,7 @@ function Session({
               className="composer"
               onSubmit={(e) => {
                 e.preventDefault();
-                if (!draftSaving && canSend(connection, runState, draft))
+                if (!draftSaving && autonomySendAllowed && canSend(connection, runState, draft))
                   void runtime("send", {
                     input: draft,
                     ...(linkedTaskId ? { taskId: linkedTaskId } : {}),
@@ -1787,7 +1805,7 @@ function Session({
                 <select
                   value={mode}
                   disabled={actionBusy || runBlocksScopeChange(snapshot)}
-                  onChange={(e) => setMode(e.target.value)}
+                  onChange={(e) => {setAutonomySelected(false);setMode(e.target.value);}}
                 >
                   {(["discussion", "planning", "execution"] as const).map(
                     (value) => (
@@ -1798,6 +1816,7 @@ function Session({
                   )}
                 </select>
               </label>
+              {mode==='execution'&&connection?.route==='codex_app_agent'&&<label className="m2-check"><input type="checkbox" name="session-autonomy" checked={autonomySelected} disabled={!autonomyAvailable||actionBusy||runBlocksScopeChange(snapshot)} onChange={e=>setAutonomySelected(e.target.checked)}/>{locale==='ru'?'Выполнить по политике':'Execute under policy'}{!autonomyAvailable&&<span className="quiet"> · {locale==='ru'?'Политика недоступна, на паузе или не разрешает эту задачу':'Policy unavailable, paused, or does not allow this task'}</span>}</label>}
               <label>
                 {t("executionTarget")}
                 <select
@@ -1876,7 +1895,7 @@ function Session({
                 <button
                   className="primary"
                   disabled={
-                    draftSaving || !canSend(connection, runState, draft)
+                    draftSaving || !autonomySendAllowed || !canSend(connection, runState, draft)
                   }
                   aria-describedby="send-hint"
                 >

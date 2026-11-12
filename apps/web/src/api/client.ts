@@ -170,6 +170,10 @@ export type ImportPreview = {
   blocked: { sourceId: string; reasons: string[] }[];
 };
 export interface M1Api {
+  project(projectId:string):Promise<Project>;
+  autonomy(projectId:string):Promise<import('../../../../packages/contracts/autonomy/policy.ts').AutonomySnapshot>;
+  autonomyPreview(projectId:string,input:Record<string,unknown>):Promise<import('../../../../packages/contracts/autonomy/policy.ts').AutonomyPreview>;
+  autonomyAction(projectId:string,action:'save'|'pause'|'resume',input:Record<string,unknown>):Promise<import('../../../../packages/contracts/autonomy/policy.ts').AutonomySnapshot & {interrupts?:{runId:string;status:string;reason?:string}[]}>;
   graphStatus(projectId:string):Promise<import('../../../../packages/contracts/graph/code-graph.ts').GraphStatus>;
   rebuildGraph(projectId:string):Promise<import('../../../../packages/contracts/graph/code-graph.ts').GraphStatus>;
   graphPage(projectId:string,query:Record<string,string|number>):Promise<import('../../../../packages/contracts/graph/code-graph.ts').GraphPage>;
@@ -429,6 +433,10 @@ export function createHttpApi(fetcher: typeof fetch = fetch): M1Api {
     };
   }
   return {
+    project:async id=>{const project=await request<Project>(projectPath(id));epochs.set(id,project.authorityEpoch);return project;},
+    autonomy:id=>request(`${projectPath(id)}/autonomy`),
+    autonomyPreview:(id,input)=>request(`${projectPath(id)}/autonomy/preview`,input),
+    autonomyAction:(id,action,input)=>request(`${projectPath(id)}/autonomy/${action}`,input),
     sessionCatalog:(id,q)=>request(`${projectPath(id)}/sessions/catalog?${new URLSearchParams(Object.entries(q).map(([k,v])=>[k,String(v)]))}`),
     sessionSearch:(id,q)=>request(`${projectPath(id)}/sessions/search?${new URLSearchParams(Object.entries(q).map(([k,v])=>[k,String(v)]))}`),
     sessionTranscript:(id,session,q)=>request(`${projectPath(id)}/sessions/${encodeURIComponent(session)}/transcript?${new URLSearchParams(Object.entries(q).map(([k,v])=>[k,String(v)]))}`),
