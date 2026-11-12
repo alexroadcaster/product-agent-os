@@ -634,3 +634,6 @@ main:focus {
 .code-graph-canvas g[role=button] { cursor: pointer; }
 .code-graph-canvas g[role=button]:focus { outline: 2px solid currentColor; }
 .m2-manager fieldset { min-width: 0; }
+/* Version hashes and run identities remain readable in narrow execution history. */
+[data-testid="recipe-runner"] code,[data-testid="recipe-runner"] li {overflow-wrap:anywhere;}
+[data-testid="recipe-runner"] fieldset {min-width:0;}

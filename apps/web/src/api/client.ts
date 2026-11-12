@@ -170,6 +170,10 @@ export type ImportPreview = {
   blocked: { sourceId: string; reasons: string[] }[];
 };
 export interface M1Api {
+  recipes(projectId:string):Promise<{items:import('../../../../packages/contracts/execution-recipes/recipe.ts').RecipeExecutionView[]}>;
+  recipePreview(projectId:string,input:Record<string,unknown>):Promise<import('../../../../packages/contracts/execution-recipes/recipe.ts').RecipePreview>;
+  recipeStart(projectId:string,input:Record<string,unknown>):Promise<import('../../../../packages/contracts/execution-recipes/recipe.ts').RecipeExecutionView|{mode:'manual';agentRuns:number;taskId:string;target:string}>;
+  recipeAction(projectId:string,id:string,action:'pause'|'resume'|'cancel'|'reconcile',input:Record<string,unknown>):Promise<import('../../../../packages/contracts/execution-recipes/recipe.ts').RecipeExecutionView>;
   project(projectId:string):Promise<Project>;
   autonomy(projectId:string):Promise<import('../../../../packages/contracts/autonomy/policy.ts').AutonomySnapshot>;
   autonomyPreview(projectId:string,input:Record<string,unknown>):Promise<import('../../../../packages/contracts/autonomy/policy.ts').AutonomyPreview>;
@@ -433,6 +437,10 @@ export function createHttpApi(fetcher: typeof fetch = fetch): M1Api {
     };
   }
   return {
+    recipes:id=>request(`${projectPath(id)}/execution-recipes`),
+    recipePreview:(id,input)=>request(`${projectPath(id)}/execution-recipes/preview`,input),
+    recipeStart:(id,input)=>request(`${projectPath(id)}/execution-recipes/start`,input),
+    recipeAction:(id,execution,action,input)=>request(`${projectPath(id)}/execution-recipes/${encodeURIComponent(execution)}/${action}`,input),
     project:async id=>{const project=await request<Project>(projectPath(id));epochs.set(id,project.authorityEpoch);return project;},
     autonomy:id=>request(`${projectPath(id)}/autonomy`),
     autonomyPreview:(id,input)=>request(`${projectPath(id)}/autonomy/preview`,input),

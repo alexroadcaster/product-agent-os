@@ -326,7 +326,7 @@ export function App() {
                 await api.createProject(name, root);
                 await initialise();
               }}
-            />{projectId&&<WorkflowManager key={projectId} api={api} projectId={projectId} locale={preferences.locale}/>}</>
+            />{projectId&&<WorkflowManager key={projectId} api={api} projectId={projectId} locale={preferences.locale} onOpenSession={sessionId=>{setLinkedSession({projectId,sessionId});setSection('sessions');}}/>}</>
           ) : !projectId ? (
             <Empty text={t("empty")} />
           ) : section === "autonomy" ? (

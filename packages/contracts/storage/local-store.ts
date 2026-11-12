@@ -34,6 +34,8 @@ export type StoreWrite = Readonly<{
   workflowPublish?: {previewDigest:string;workflowId:string;registryRevision:number;boardRevision:number};
   /** Bound runtime tool context; never accepted from generic browser commands. */
   taskManagerRun?: {id:string;bindingId:string;generation:string;taskId:string};
+  /** Service-only durable recipe ownership CAS. Never accepted as browser input. */
+  recipeExecution?: {id:string;revision:number};
   changes: readonly { entity: EntityInput; expectedRevision: number; delete?: boolean }[];
   outbox?: readonly { kind: string; payload: Record<string, unknown> }[];
 }>;

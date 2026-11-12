@@ -2,6 +2,7 @@ import type {StoreWrite,StoredEntity} from '../../../../packages/contracts/stora
 import {defaultRegistry,validateRegistry,workflowCategory,workflowSnapshot,requiredBoardStates,type WorkflowRegistry} from './registry.mts';
 import {transitionAllowed,validateReady} from '../../../../packages/contracts/issues/task-profile.ts';
 import {publishPreview,migrationPreview} from './commands.mts';
+import {recipeHash,type Execution} from '../execution-recipes/contract.mts';
 function fail(code:string):never{throw Object.assign(new Error(code),{code});}
 export function registryFromRows(rows:readonly StoredEntity[]):WorkflowRegistry{return validateRegistry(rows.find(r=>r.id==='m2-workflows')?.data??defaultRegistry());}
 export function workflowWriteContext(command:StoreWrite,rows:StoredEntity[]){
@@ -29,10 +30,19 @@ export function workflowWriteContext(command:StoreWrite,rows:StoredEntity[]){
  const proposedTasks=tasks.filter(t=>!command.changes.some(c=>c.entity.kind==='task'&&c.entity.id===t.id)).map(t=>t.data);
  for(const c of command.changes)if(c.entity.kind==='task'&&!c.delete)proposedTasks.push(c.entity.data as Record<string,unknown>);
  // Board coverage includes every active version and every historical pin still in use.
+ for(const change of command.changes){const execution=change.entity.data as unknown as Execution;if(execution?.category!=='recipe_execution')continue;
+  const snapshot=workflowSnapshot(proposed,execution.workflowSnapshot.ref),task=tasks.find(t=>t.id===execution.taskId),transition=snapshot.definition.transitions.find(t=>t.id===execution.transition.id),recipe=snapshot.definition.recipes.find(r=>r.id===transition?.recipeId);
+  if(!task||recipeHash(snapshot)!==recipeHash(execution.workflowSnapshot)||recipeHash(transition)!==recipeHash(execution.transition)||recipeHash(recipe)!==recipeHash(execution.recipe)||recipeHash(task.data.workflow)!==recipeHash(snapshot.ref))fail('RECIPE_WORKFLOW_PIN_INVALID');
+ }
  if(change||command.changes.some(c=>c.entity.id==='m2-board'))validateWorkflowBoard(proposed,proposedTasks,proposedBoard);
  for(const c of command.changes){if(c.entity.kind!=='run')continue;const old=rows.find(r=>r.id===c.entity.id);const before=(old?.data.runtimeRun??old?.data.appAgentRun) as any;const after=((c.entity.data as any)?.runtimeRun??(c.entity.data as any)?.appAgentRun) as any;
   if(before?.workflowSnapshot&&JSON.stringify(before.workflowSnapshot)!==JSON.stringify(after?.workflowSnapshot))fail('RUNTIME_WORKFLOW_PIN_IMMUTABLE');
-  if(after?.workflowSnapshot){const ref=after.workflowSnapshot.ref,snapshot=workflowSnapshot(proposed,ref);if(after.workflowSnapshot.definitionHash!==snapshot.definitionHash||JSON.stringify(after.workflowSnapshot.definition)!==JSON.stringify(snapshot.definition)||JSON.stringify(after.workflowSnapshot.executionRecipe)!==JSON.stringify({id:'paos_m1_execution',version:'m1_fixed_v1'}))fail('RUNTIME_WORKFLOW_PIN_INVALID');const task=tasks.find(t=>t.id===(after.taskId??after.taskContext?.taskId));if(!before&&(!task||JSON.stringify(task.data.workflow)!==JSON.stringify(ref)))fail('RUNTIME_WORKFLOW_PIN_INVALID');}
+  if(after?.workflowSnapshot){const ref=after.workflowSnapshot.ref,snapshot=workflowSnapshot(proposed,ref);
+   const execution=after.recipeExecution?rows.find(r=>r.id===after.recipeExecution&&r.data.category==='recipe_execution')?.data as unknown as Execution:undefined;
+   const expected=execution?{id:execution.recipe.id,version:String(execution.workflowSnapshot.ref.version)}:{id:'paos_m1_execution',version:'m1_fixed_v1'};
+   if(after.recipeExecution&&(!execution||recipeHash(execution.workflowSnapshot)!==recipeHash(snapshot)))fail('RUNTIME_WORKFLOW_PIN_INVALID');
+   if(after.workflowSnapshot.definitionHash!==snapshot.definitionHash||JSON.stringify(after.workflowSnapshot.definition)!==JSON.stringify(snapshot.definition)||JSON.stringify(after.workflowSnapshot.executionRecipe)!==JSON.stringify(expected))fail('RUNTIME_WORKFLOW_PIN_INVALID');
+   const task=tasks.find(t=>t.id===(after.taskId??after.taskContext?.taskId));if(!before&&(!task||JSON.stringify(task.data.workflow)!==JSON.stringify(ref)))fail('RUNTIME_WORKFLOW_PIN_INVALID');}
  }
  return {registry:proposed,board};
 }

@@ -6,6 +6,7 @@ import { resolve,join,dirname } from 'node:path';
 import { migrate,ensureM2Schema,ensureM2BSchema,databaseCompatibility } from './migrations/schema.mts';
 import { decodeTaskProfile as decodeM1TaskProfile, validateIssueGraph, validateReady, canonicalIssueLinks, type M2TaskProfile, type TaskProfile, type IssueLink } from '../../../../packages/contracts/issues/task-profile.ts';
 import {workflowWriteContext,validateWorkflowTask,validateWorkflowBoard} from '../workflows/guards.mts';
+import {ownsTask,recipeScopeHash,recipeHash,type Execution} from '../execution-recipes/contract.mts';
 import {workflowCategory} from '../workflows/registry.mts';
 import { createSnapshot, writeBlob, readManagedBlob,blobDirectory } from './snapshot.mts';
 import { RANKED_SEARCH_SQL } from './search-queries.mts';
@@ -189,6 +190,30 @@ function write(command: StoreWrite, promotion?: PromoteLegacy,teamOperation?:any
       const blobIds=[...new Set(applied.registry.assets.flatMap(a=>a.versions.flatMap(v=>v.resources.flatMap(r=>r.blobId?[r.blobId]:[]))))];
       command={...command,changes:[{expectedRevision:old?.revision??0,entity:{id:teamId,kind:'settings',data:applied.registry as any,blobIds}}]};
     }
+    // Recipe ownership fences only its Task; the global runtime idle gate stays unchanged.
+    const recipeRows=db.prepare("SELECT * FROM entities WHERE project_id=? AND kind='settings' AND deleted=0").all(scope.id).map(row=>entity(row)).filter(row=>row.data.category==='recipe_execution');
+    const recipePin=command.recipeExecution,recipeRow=recipePin?recipeRows.find(row=>row.id===recipePin.id):undefined;
+    if(recipePin&&(recipeRow?.revision??0)!==recipePin.revision)fail('RECIPE_REVISION_CONFLICT');
+    for(const change of command.changes){
+      const previous=get(scope.id,change.entity.id),proposed=change.entity.data as any;
+      if(previous?.data.category==='recipe_execution'||proposed?.category==='recipe_execution'){
+        if(!recipePin||recipePin.id!==change.entity.id||change.delete||change.entity.kind!=='settings')fail('RECIPE_WRITE_AUTHORITY_REQUIRED');
+        const before=previous?.data as unknown as Execution|undefined,after=proposed as Execution;
+        if(before&&['id','projectId','taskId','sessionId','bindingId','scopeHash','taskContext','workflowSnapshot','transition','recipe','pins','inputArtifacts','budgetId','policyHash','startDigest'].some(k=>recipeHash((before as any)[k])!==recipeHash((after as any)[k])))fail('RECIPE_PIN_IMMUTABLE');
+        if(!before){const task=get(scope.id,after.taskId),policy=get(scope.id,'autonomy-policy');if(!task||recipeScopeHash(task.data)!==after.scopeHash||recipeRows.some(r=>ownsTask(r.data as unknown as Execution)&&r.data.taskId===after.taskId))fail('RECIPE_TASK_OWNED');
+          if(!policy||policy.revision!==after.policyRevision||policy.data.budgetId!==after.budgetId||policy.data.paused||recipeHash(policy.data.policy)!==after.policyHash)fail('RECIPE_PREVIEW_STALE');
+        }
+      }
+      if(change.entity.kind==='task'){
+        const owner=recipeRows.find(r=>ownsTask(r.data as unknown as Execution)&&r.data.taskId===change.entity.id);
+        if(owner&&recipePin?.id!==owner.id)fail('RECIPE_TASK_OWNED');
+        if(owner&&recipeScopeHash(proposed)!==(owner.data as unknown as Execution).scopeHash)fail('RECIPE_TASK_SCOPE_CHANGED');
+      }
+      if(change.entity.kind==='run'&&!previous){const job=proposed?.appAgentRun??proposed?.runtimeRun,taskId=job?.taskContext?.taskId??job?.taskId,owner=recipeRows.find(r=>ownsTask(r.data as unknown as Execution)&&r.data.taskId===taskId);
+        if(owner&&recipePin?.id!==owner.id)fail('RECIPE_TASK_OWNED');
+        if(job?.recipeExecution){const execution=owner?.data as unknown as Execution,attempt=execution?.attempts.at(-1);if(!execution||execution.state!=='running'||job.recipeExecution!==execution.id||attempt?.state!=='planned'||attempt.clientMessageId!==job.clientMessageId||job.bindingId!==execution.bindingId||recipeHash(job.assetPins)!==recipeHash(execution.pins[attempt.stepId])||job.autonomy?.budgetId!==execution.budgetId)fail('RECIPE_ADMISSION_INVALID');}
+      }
+    }
     // Check the pre-command state: the same atomic dispatch may insert its own run before its task row.
     if(command.taskManagerRun){
       const pin=command.taskManagerRun,row=get(scope.id,pin.id),run=(row?.data.runtimeRun??row?.data.appAgentRun) as any;
@@ -202,7 +227,7 @@ function write(command: StoreWrite, promotion?: PromoteLegacy,teamOperation?:any
     const workflowContext=workflowWriteContext(command,workflowRows);
     if(command.workflowPublish){const available=[...((get(scope.id,teamId)?.data as unknown as TeamRegistry)?.assets??[]),...trustedSourceAssets];
       const published=workflowContext.registry.workflows.find(w=>w.id===command.workflowPublish!.workflowId)?.versions.at(-1);
-      for(const recipe of published?.definition.recipes??[])for(const step of recipe.steps)for(const id of step.skills){const a=available.find(a=>a.id===id&&a.kind==='skill'&&!a.archived&&!a.deleted);if(!a)fail('WORKFLOW_SKILL_REFERENCE_INVALID');const version=step.skillVersions[id];if(version&&version!==String(a.effectiveVersion??a.source?.hash))fail('WORKFLOW_SKILL_VERSION_INVALID');}
+      for(const recipe of published?.definition.recipes??[])for(const step of recipe.steps)for(const id of step.skills){const a=available.find(a=>a.id===id&&a.kind==='skill'&&!a.archived&&!a.deleted);if(!a)fail('WORKFLOW_SKILL_REFERENCE_INVALID');const version=step.skillVersions[id];if(version&&!(a.management==='paos_managed'?a.versions.some((v:{version:number})=>String(v.version)===version.replace(/^v/,'')):version===a.source?.hash))fail('WORKFLOW_SKILL_VERSION_INVALID');}
     }
     const migrationCohort=new Set(command.workflowMigration?.tasks.map(t=>t.id)??[]);
     if(command.workflowMigration){

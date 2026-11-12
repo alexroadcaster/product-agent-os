@@ -16,6 +16,7 @@ import {createSkillGeneration} from '../team/skill-generation.mts';
 import {createTeamService} from '../team/service.mts';
 import {createCodeIndex} from '../code-index/service.mts';
 import {autonomyService} from '../autonomy-policy/service.mts';
+import {createRecipeService} from '../execution-recipes/service.mts';
 import type {AssetRoot} from '../team/sources.mts';
 import {startTeamGeneration,teamGenerationResult} from '../team/generation.mts';
 import { loadUiPreferences, saveUiPreferences } from '../../../web/src/design/preferences.ts';
@@ -30,6 +31,7 @@ export type ApplicationOptions = {
   /** Separate profile capability, never a browser cookie or a provider credential. */
   agentChannel?: {handle(request: Request): Promise<Response>};
   assetRoots?:AssetRoot[];
+  executionRecipes?:ReturnType<typeof createRecipeService>;
 };
 
 function fail(code: string): never { throw Object.assign(new Error(code), { code }); }
@@ -66,6 +68,8 @@ async function body(request: Request, limit = 1024 * 1024) {
 export async function createLocalApplication(options: ApplicationOptions) {
   const { store, origin, instanceId, profileDirectory } = options;
   const autonomy=autonomyService(store);
+  const executionRecipes=options.executionRecipes??createRecipeService({store,assetRoots:options.assetRoots,automatic:false});
+  await executionRecipes.initialized();
   const sessionHistory=createSessionHistory(store);
   const team=createTeamService(store,options.assetRoots);
   const codeIndex=createCodeIndex(store);
@@ -210,6 +214,13 @@ export async function createLocalApplication(options: ApplicationOptions) {
       const graphNode=/^graph\/nodes\/([^/]+)(\/impact)?$/.exec(graphAction);
       if(graphNode&&request.method==='GET')return json(await codeIndex[graphNode[2]?'impact':'node'](projectId,decodeURIComponent(graphNode[1]),url.searchParams));
       const action = route[2] ?? '';
+      if(action==='execution-recipes'&&request.method==='GET')return json(await executionRecipes.list(projectId));
+      if(/^execution-recipes\/(preview|start)$/.test(action)&&request.method==='POST'){
+        if(migration.frozen(projectId))fail('MIGRATION_BUSY');const input=await body(request);return json(action.endsWith('/preview')?await executionRecipes.preview(projectId,input):await executionRecipes.start(projectId,principal.actorId,input));
+      }
+      const recipeRoute=/^execution-recipes\/([^/]+)(?:\/(pause|resume|cancel|reconcile))?$/.exec(action);
+      if(recipeRoute&&request.method==='GET'&&!recipeRoute[2])return json(await executionRecipes.get(projectId,decodeURIComponent(recipeRoute[1])));
+      if(recipeRoute&&request.method==='POST'&&recipeRoute[2]){if(migration.frozen(projectId))fail('MIGRATION_BUSY');return json(await executionRecipes.command(projectId,decodeURIComponent(recipeRoute[1]),recipeRoute[2],await body(request)));}
       if(action==='autonomy'&&request.method==='GET')return json(await autonomy.snapshot(projectId));
       if(action==='autonomy/preview'&&request.method==='POST'){
         const input=await body(request);if(Object.keys(input).some(k=>!['policy','expectedRevision'].includes(k)))fail('AUTONOMY_INPUT_INVALID');

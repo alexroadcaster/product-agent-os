@@ -13,7 +13,7 @@
     "sha256": "119d6fa70e6ae1b15b90688ab6bcc8e3a2819acea021af196895cab1843645af"
   },
   "sqliteVersion": "3.53.3",
-  "adapterRevision": "cb01327876c661be98d21ea35e680462a6abde1f374a5264015f84476ea85345",
+  "adapterRevision": "2ca41cdcadb8bbf179a506999d52e70ad40d2d6043d88fa570b6c025e8b68a80",
   "packageLockSha256": "d279009aa1dca2bd2d6ba0e18a77d085a67e872d0dce78dd360fb23d43975f38",
   "schema": {
     "sha256": "486c7c8daa5dc7f3ab2a1fb56de5316804caf7a4210fda1dc28d3f0f4e90cfe1",
@@ -46,6 +46,7 @@
     "dataJourneysBrowser": "2359a110c7306aaa28c305466fc7bf6c0bb2ffb17c58c4d10a0400df10654a70",
     "m2NativeCandidate": "51b65dec06d4b8da283011ec3de9e1d54dd01f563ea339bbba6625575daa914a",
     "m2bNativeCandidate": "a8f4f15f41d22d0d41faed105a65895511d3a0871f0730cd6f02c3756a2129b5",
-    "m2cNativeCandidate": "fb7cc3b51537efe1fbdb60c627a3621ed7c0d0a8af2505c3d88db9733c48d601"
+    "m2cNativeCandidate": "fb7cc3b51537efe1fbdb60c627a3621ed7c0d0a8af2505c3d88db9733c48d601",
+    "m3RecipesNativeCandidate": "32dfdeeeffeca03a40d865758372c3f50b2b3409ae8602cf3fd08e4c38ddf21b"
   }
 }

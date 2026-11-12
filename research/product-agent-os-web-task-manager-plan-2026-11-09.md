@@ -1975,21 +1975,21 @@ Rollback будущих изменений: versioned proposal, revision check, 
 ### Task `PAOS-0037`
 
 - Task: Цепочки агентов и привязка к workflow
-- Status: planned
+- Status: implemented
 - Delivery stage: M3
 - Execution order: 47
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Jira-informed issue model, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 12-11-2026 14:29
 - Depends on: PAOS-0036, PAOS-0023
 - Blocks: PAOS-0024, PAOS-0028
 - Source: PRD §14; TM-22
 - Short description: Recipes с branches/join, ownership, budgets и идемпотентным запуском
 - Technical value: Recipes с branches/join, ownership, budgets и идемпотентным запуском
 - Product value: Пользователь направляет агентов по разным цепочкам для features, bugs и non-code работы
-- Scope: apps/local-service/src/execution-recipes; apps/local-service/src/scheduler; apps/web/src/features/workflows/recipes
+- Scope: packages/contracts/execution-recipes/recipe.ts; apps/local-service/src/execution-recipes (scheduler owner); private App/SQLite/workflow integration; apps/web/src/features/workflows/recipes
 - Non-goals: Jira sync, external publication, runtime config mutation outside authorized implementation
 - Expected result: Цепочки агентов и привязка к workflow в будущем Web
 - Acceptance criteria: Replay не дублирует run; bounded retry останавливается; parallel writers проверяются; policy нельзя расширить recipe; Manual не запускает agent
@@ -1998,24 +1998,24 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Complexity: high; уточнить после discovery
 - Estimated execution time: 20:00:00 (предварительно)
 - Agents: architect, builder, tester
-- Skills: implementation-planner; verification skills selected for implementation
-- Output artifacts: apps/local-service/src/execution-recipes; apps/local-service/src/scheduler; apps/web/src/features/workflows/recipes
-- Next step: Завершить Depends on, зафиксировать contract/tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Skills: implementation-planner; react-best-practices; frontend-testing-debugging
+- Output artifacts: EVALS.md; PLAN.md; REQUIREMENTS.md; RUNLOG.md; TEST.md; apps/local-service/src/http/application.mts; apps/local-service/src/main.mts; apps/local-service/src/runtime/app-agent-gateway.mts; apps/local-service/src/storage/sqlite-worker.mts; apps/local-service/src/task-manager/service.mts; apps/local-service/src/team/service.mts; apps/local-service/src/workflows/guards.mts; apps/local-service/src/workflows/registry.mts; apps/web/README.md; apps/web/src/api/client.ts; apps/web/src/design/app.css; apps/web/src/features/workflows/WorkflowManager.tsx; apps/web/src/ui/App.tsx; docs/sources/registry.en.md; docs/sources/registry.md; packages/contracts/runtime/qualified-manifest.json; packages/contracts/storage/local-store.ts; apps/local-service/src/execution-recipes/contract.mts; apps/local-service/src/execution-recipes/pins.mts; apps/local-service/src/execution-recipes/service.mts; apps/web/src/features/workflows/recipes/RecipeRunner.tsx; packages/contracts/execution-recipes/recipe.ts; research/product-agent-os-web-m3-0037-execution-2026-11-12.md; tests/web/execution-recipes.test.mts; tests/web/recipe-pins.test.mts; tests/web/recipe-runtime.test.mts; tests/web/single-window/m3-recipes-acceptance.mts; research/product-agent-os-web-task-manager-plan-2026-11-09.md; research/product-agent-os-web-task-manager-task-group-2026-11-09.json; research/product-agent-os-web-m3-0037-results-2026-11-12.json
+- Next step: Следующая PAOS-0024: общая очередь и single coordinator. Реализация требует отдельного scope; PAOS-0025/0026/0028 остаются planned.
+- Actual time: Measured scope start12-11-2026 13:28:07 MSK; end 12-11-2026 14:29 MSK. Wall interval available, active duration not separately instrumented; duration=null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
-- Affected files: proposed paths above; actual create/modify/delete recorded after execution.
+- Affected files: EVALS.md (modify); PLAN.md (modify); REQUIREMENTS.md (modify); RUNLOG.md (modify); TEST.md (modify); apps/local-service/src/http/application.mts (modify); apps/local-service/src/main.mts (modify); apps/local-service/src/runtime/app-agent-gateway.mts (modify); apps/local-service/src/storage/sqlite-worker.mts (modify); apps/local-service/src/task-manager/service.mts (modify); apps/local-service/src/team/service.mts (modify); apps/local-service/src/workflows/guards.mts (modify); apps/local-service/src/workflows/registry.mts (modify); apps/web/README.md (modify); apps/web/src/api/client.ts (modify); apps/web/src/design/app.css (modify); apps/web/src/features/workflows/WorkflowManager.tsx (modify); apps/web/src/ui/App.tsx (modify); docs/sources/registry.en.md (modify); docs/sources/registry.md (modify); packages/contracts/runtime/qualified-manifest.json (modify); packages/contracts/storage/local-store.ts (modify); apps/local-service/src/execution-recipes/contract.mts (create); apps/local-service/src/execution-recipes/pins.mts (create); apps/local-service/src/execution-recipes/service.mts (create); apps/web/src/features/workflows/recipes/RecipeRunner.tsx (create); packages/contracts/execution-recipes/recipe.ts (create); research/product-agent-os-web-m3-0037-execution-2026-11-12.md (create); tests/web/execution-recipes.test.mts (create); tests/web/recipe-pins.test.mts (create); tests/web/recipe-runtime.test.mts (create); tests/web/single-window/m3-recipes-acceptance.mts (create); research/product-agent-os-web-task-manager-plan-2026-11-09.md (modify); research/product-agent-os-web-task-manager-task-group-2026-11-09.json (modify); research/product-agent-os-web-m3-0037-results-2026-11-12.json (create)
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Pinned workflow recipes, exact asset versions, finite branch/join/retry scheduler, transactional task ownership, policy-bound private App attempts, Manual0 и reviewed UI transitions реализованы. Replay/recovery/timeout findings исправлены.
+- Files touched / work locations: EVALS.md; PLAN.md; REQUIREMENTS.md; RUNLOG.md; TEST.md; apps/local-service/src/http/application.mts; apps/local-service/src/main.mts; apps/local-service/src/runtime/app-agent-gateway.mts; apps/local-service/src/storage/sqlite-worker.mts; apps/local-service/src/task-manager/service.mts; apps/local-service/src/team/service.mts; apps/local-service/src/workflows/guards.mts; apps/local-service/src/workflows/registry.mts; apps/web/README.md; apps/web/src/api/client.ts; apps/web/src/design/app.css; apps/web/src/features/workflows/WorkflowManager.tsx; apps/web/src/ui/App.tsx; docs/sources/registry.en.md; docs/sources/registry.md; packages/contracts/runtime/qualified-manifest.json; packages/contracts/storage/local-store.ts; apps/local-service/src/execution-recipes/contract.mts; apps/local-service/src/execution-recipes/pins.mts; apps/local-service/src/execution-recipes/service.mts; apps/web/src/features/workflows/recipes/RecipeRunner.tsx; packages/contracts/execution-recipes/recipe.ts; research/product-agent-os-web-m3-0037-execution-2026-11-12.md; tests/web/execution-recipes.test.mts; tests/web/recipe-pins.test.mts; tests/web/recipe-runtime.test.mts; tests/web/single-window/m3-recipes-acceptance.mts; research/product-agent-os-web-task-manager-plan-2026-11-09.md; research/product-agent-os-web-task-manager-task-group-2026-11-09.json; research/product-agent-os-web-m3-0037-results-2026-11-12.json
+- Technical value delivered: Durable pinned execution owner сохраняет CAS/idempotency, deep ownership/join и существующие policy/approval guards.
+- Product value delivered: Пользователь связывает recipe с переходом, видит preview/versions/budgets и историю, ведёт задачу вручную либо через конечную проверяемую цепочку.
+- Actual implementation date and time: 12-11-2026 14:29
+- Verification evidence: Web433/433 skip0; recipe20; Python1450(skip1); fixtures91/transcripts26; browser/native57 и actual App46/two steps; exact native candidate/default; docs/compatibility gates — research/product-agent-os-web-m3-0037-execution-2026-11-12.md и results JSON.
+- Residual risks: Active App consumer required; PAOS-mediated commands only, host tools не confined. Execution phase in_progress; interrupted/unknown work не replay. Token/cost/performance/model-quality и human/commercial/release acceptance отдельно.
+- Follow-up: Следующая PAOS-0024: общая очередь и single coordinator. Реализация требует отдельного scope; PAOS-0025/0026/0028 остаются planned.
 
 
 ### Task `PAOS-0038`

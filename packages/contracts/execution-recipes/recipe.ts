@@ -1,0 +1,8 @@
+import type {WorkflowRecipe,WorkflowSnapshot} from '../workflows/workflow.ts';
+type WorkflowRef=WorkflowSnapshot['ref'];
+import type {AssetPin} from '../team/assets.ts';
+/** Browser-safe execution views never include frozen instruction content or resource bytes. */
+export type RecipeStepView=WorkflowRecipe['steps'][number]&{pins:Pick<AssetPin,'assetId'|'kind'|'version'|'hash'|'requestedModel'|'requestedEffort'|'observedModel'|'observedEffort'>[]};
+export type RecipeAttemptView={stepId:string;iteration:number;try:number;clientMessageId:string;runId?:string;admissionRejected?:boolean;state:'planned'|'dispatched'|'completed'|'failed';startedAt:number;deadlineAt:number;artifacts?:{path:string;sha256:string}[]};
+export type RecipeExecutionView={id:string;projectId:string;taskId:string;sessionId:string;mode:'recipe';state:'running'|'paused'|'cancel_requested'|'recovery_required'|'completed'|'failed'|'cancelled'|'needs_user_decision'|'transition_blocked';revision:number;workflow:WorkflowRef;recipeId:string;transitionId:string;steps:RecipeStepView[];iterations:Record<string,number>;attempts:RecipeAttemptView[];createdAt:number;updatedAt:number;reason:string|null;outcome:'success'|'failure'|null};
+export type RecipePreview={mode:'manual';agentRuns:0;previewDigest:string;transitionId:string;target:string}|{mode:'recipe';agentRuns:number;previewDigest:string;transitionId:string;target:string;recipeId:string;workflow:WorkflowRef;steps:RecipeStepView[];policy:{budgetId:string;remainingRuns:number;maxRunSeconds:number;concurrency:1};maxAttempts:number;concurrency:1};

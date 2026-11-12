@@ -10,6 +10,7 @@ import {createLocalApplication} from './http/application.mts';
 import {createLiveGateway} from './runtime/live-gateway.mts';
 import {createNativeRpc} from './runtime/native-rpc.mts';
 import {createAppAgentGateway} from './runtime/app-agent-gateway.mts';
+import {createRecipeService} from './execution-recipes/service.mts';
 import {createAppAgentChannel} from './runtime/app-agent-channel.mts';
 import {createRuntimeRouteSelector} from './runtime/route-selector.ts';
 import {inspectAppHostEndpoint} from './runtime/app-host-endpoint.mts';
@@ -140,6 +141,7 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
   async connect(input:unknown){const result=await selector.connection.connect(input);return {...(result as Record<string,unknown>),hostTransport};},
   async disconnect(){const result=await selector.connection.disconnect();return {...(result as Record<string,unknown>),hostTransport};}};
  const {runtime}=selector;
+ const executionRecipes=createRecipeService({store,assetRoots,port:{...appGateway.recipeRuntime,async eligible(projectId,sessionId){await assertProfileIdentity(profile);if(connection.status().route!=='codex_app_agent')throw failure('RECIPE_APP_ROUTE_REQUIRED');for(const project of await store.projects())for(const row of await store.projectEntities(project.id))if(row.kind==='run'&&!['completed','failed','interrupted'].includes(row.status)&&!row.data.appAgentRun)throw failure('FOREIGN_RUNTIME_RECOVERY_REQUIRED');return appGateway.recipeRuntime.eligible(projectId,sessionId);}}});
  let application:Awaited<ReturnType<typeof createLocalApplication>>|undefined;let origin='';
  const server=(deps.createHttpServer??createServer)(async(incoming,outgoing)=>{
   const controller=new AbortController();
@@ -167,7 +169,7 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
   agentChannel=await createAppAgentChannel({profileDirectory,instanceId:options.instanceId,origin,profileId:profile.profileId,
    assertProfile:()=>assertProfileIdentity(profile),dispatch:(action,input)=>appGateway.agent(action,input)});
   application=await(deps.createApplication??createLocalApplication)({store,origin,instanceId:options.instanceId,profileDirectory,assetRoots,
-   staticDirectory:fileURLToPath(new URL('../../web/dist/',import.meta.url)),connection,runtime,agentChannel,
+   staticDirectory:fileURLToPath(new URL('../../web/dist/',import.meta.url)),connection,runtime,agentChannel,executionRecipes,
    runtimeCapable:()=>connection.status().route==='local_api_byok'?qualified:appGateway.connection.status().verified,
    onQuit:()=>{if(!process.send||!process.connected)throw failure('OWNER_UNAVAILABLE');process.send({type:'quit_requested'},()=>{});},
    writerInventory:async(projectId)=>{const project=await store.project(projectId);if(!project)throw failure('PROJECT_NOT_FOUND');return inspectLegacyWriterInventory(project.canonicalRoot);}});
@@ -178,6 +180,7 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
     serverClosing??=new Promise<void>((resolve,reject)=>server.close((error)=>error?reject(error):resolve()));
     const failures:unknown[]=[];
     if(!gatewayClosed){
+     try{await executionRecipes.close();}catch(error){failures.push(error);}
      try{await selector.drain();}catch(error){failures.push(error);}
      const results=await Promise.allSettled([appGateway.close(),gateway.close(),agentChannel?.close()]);
      for(const result of results)if(result.status==='rejected')failures.push(result.reason);
@@ -191,7 +194,7 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
   }
   return {port:address.port,instanceId:options.instanceId,build:'paos-m1-0.1.0',pairingCode:application.issuePairingCode(),
    appAgentDescriptorPath:agentChannel.descriptorPath,quit};
- } catch(error){server.close();await Promise.allSettled([appGateway.close(),gateway.close(),agentChannel?.close()]);await store.close();throw error;}
+ } catch(error){server.close();await executionRecipes.close();await Promise.allSettled([appGateway.close(),gateway.close(),agentChannel?.close()]);await store.close();throw error;}
 }
 
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)) {

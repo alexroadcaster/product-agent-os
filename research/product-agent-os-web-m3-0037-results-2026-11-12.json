@@ -1,0 +1,284 @@
+{
+  "task_id": "PAOS-0037",
+  "task_name": "Цепочки агентов и привязка к workflow",
+  "status": "implemented",
+  "closure_level": "implemented_locally_verified",
+  "started_at": "2026-11-12T13:28:07+03:00",
+  "evidence_updated_at": "2026-11-12T14:34:19+03:00",
+  "elapsed_wall_seconds": 3972,
+  "active_duration_seconds": null,
+  "baseline_head": "b50b7c07600223cbf6373246f6b92e5e4094a2af",
+  "receipt_provenance": "current run; Python/fixtures/transcripts before final docs, final affected docs/lifecycle checks after sync; implementation source unchanged after native/browser tuple",
+  "verification": {
+    "recipe_tests": 20,
+    "web_tests": 433,
+    "web_skipped": 0,
+    "python_tests": 1450,
+    "python_skipped": 1,
+    "fixture_evals": 91,
+    "transcript_evals": 26,
+    "post_sync_docs_tests": 251,
+    "post_sync_docs_seconds": 33.545,
+    "typecheck_exit": 0,
+    "build_exit": 0,
+    "synthetic_browser_checks": 57,
+    "actual_app_checks": 46,
+    "actual_app_steps": 2,
+    "native_modes": [
+      "discussion",
+      "planning",
+      "execution"
+    ]
+  },
+  "review": {
+    "context_mode": "separate_fresh_context",
+    "reviewer": "/root/recipe_review",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "findings_resolved": [
+      "P2 command replay timeout digest",
+      "P2 missing UI recipe binding fields",
+      "Recovery persisted-child/no-admission reconciliation"
+    ],
+    "open_blocking_findings": [],
+    "tester_verdict": "closed_allowed",
+    "ceiling": "local technical scope; root reconciled browser/native/current full gates"
+  },
+  "runtime": {
+    "route": "codex_app_agent",
+    "fallback": "none; API opt-in unavailable",
+    "adapter_revision": "2ca41cdcadb8bbf179a506999d52e70ad40d2d6043d88fa570b6c025e8b68a80",
+    "codex_version": "0.167.0",
+    "codex_sha256": "edfdd48f8b458af0906e507b4cb05217b326c3d6e515e9f024e05e3b8d650f70",
+    "manifest_other_pins_preserved": true,
+    "prior_evidence_preserved": true,
+    "actual_app_run_ids": [
+      "app-run-e8fe6a69878954b7bd0ca56ad219bd9a599ccc39e4074bead77e17e9c6bd5044",
+      "app-run-736b4cd35faf3d1dfb49b00e3e07adada2f41da191deba0f7797b1edba1af8f6"
+    ],
+    "observed_model": null,
+    "observed_effort": null,
+    "provider_client_used": false,
+    "credential_operations": 0,
+    "host_identity": "attested_not_cryptographic",
+    "sandbox_scope": "paos_mediated_commands"
+  },
+  "acceptance": {
+    "replay_no_duplicate_run": true,
+    "retry_iteration_bounded": true,
+    "parallel_writer_definitions_checked": true,
+    "policy_not_expanded": true,
+    "manual_agent_runs": 0,
+    "deep_join_order": [
+      "root",
+      "left",
+      "right",
+      "deep",
+      "end"
+    ],
+    "done_requires_owner": true
+  },
+  "preservation": {
+    "task_id": "PAOS-0037",
+    "other_md_cards_unchanged": 55,
+    "other_json_tasks_unchanged": 55,
+    "task_count": 56,
+    "group_count": 12,
+    "all_estimates_order_groups_preserved": true,
+    "completed_at": "2026-11-12T14:29:14+03:00",
+    "active_duration_measured": false
+  },
+  "control_plane_sync": {
+    "status": "applied",
+    "digest": "sha256:2c2c075c9445495e9922f5fd984d99984b23c73798c783febe42442622436c17",
+    "updated": [
+      "REQUIREMENTS.md",
+      "PLAN.md",
+      "TEST.md",
+      "EVALS.md",
+      "RUNLOG.md"
+    ],
+    "not_applicable": [
+      "AGENTS.md: durable rules unchanged",
+      "prod_test.md: Batch39 unchanged"
+    ],
+    "bytes": {
+      "REQUIREMENTS.md": 39922,
+      "PLAN.md": 29513,
+      "TEST.md": 33309,
+      "EVALS.md": 25659,
+      "RUNLOG.md": 26420
+    },
+    "strict_mkdocs": "not_required; nav/mermaid/config/site unchanged"
+  },
+  "limits": [
+    "Active App consumer required; no automatic wakeup or closed-App daemon",
+    "Association execution phase in_progress only",
+    "No confinement of App-host own tools; policy governs PAOS-mediated commands",
+    "Interrupted/unknown attempts never replay; cancellation-only reconciliation",
+    "No token/cost/model-quality/workload performance claim",
+    "Human/commercial/release acceptance separate"
+  ],
+  "failed_attempts": [
+    "Manual404 behavioral RED",
+    "shrinking timeout replay RED",
+    "rejected admission reconciliation RED",
+    "frontend Node-only type imports build fail",
+    "initial full Web STORAGE_CLOSED race",
+    "browser fixture key/label/routing/fetch-capture failures",
+    "node_repl worker transport EACCES",
+    "initial docs sync removed-evidence-links rejection"
+  ],
+  "next_task": "PAOS-0024",
+  "git_writes_performed": false,
+  "receipts": {
+    "python-full.log": {
+      "path": ".tmp/paos-m3-0037/python-full.log",
+      "sha256": "39620384e2bdbf6d075ff1f122aeccd7923a33c700e5c904ec1726fcba7b5ee1"
+    },
+    "fixture-eval.log": {
+      "path": ".tmp/paos-m3-0037/fixture-eval.log",
+      "sha256": "014f6152da56145aa30e29151fd0c5979f34a44596f0b0714d270e9708719c22"
+    },
+    "transcript-eval.log": {
+      "path": ".tmp/paos-m3-0037/transcript-eval.log",
+      "sha256": "5694b49e2762388661d971053ceedea106cba7f64c307fe7c7ea3a2546e70634"
+    },
+    "web-full-final.log": {
+      "path": ".tmp/paos-m3-0037/web-full-final.log",
+      "sha256": "048b569fbd5ccb7bdc3311b5bbc71a3c3ee2517e559d9e3a1937cfb942480379"
+    },
+    "typecheck.log": {
+      "path": ".tmp/paos-m3-0037/typecheck.log",
+      "sha256": "99be2c89c5d050cd7c5f18c3ef1d3f2d266422a9edfa850b8c44b76c50a490d7"
+    },
+    "build.log": {
+      "path": ".tmp/paos-m3-0037/build.log",
+      "sha256": "bd220d4abb8d7167bb90b613e33c823614a94059f0caded841670f9205eba4e4"
+    },
+    "recipe-green.log": {
+      "path": ".tmp/paos-m3-0037/recipe-green.log",
+      "sha256": "ef0e7e36411c247fab3e82ed7ef8179aa44ca010b560730070e7ae7792f5ab80"
+    },
+    "startup-green.log": {
+      "path": ".tmp/paos-m3-0037/startup-green.log",
+      "sha256": "4c4de531a925feeeaccd5e58b899fa4aecd5a0db14ea26871005943109814f89"
+    },
+    "native-candidate.log": {
+      "path": ".tmp/paos-m3-0037/native-candidate.log",
+      "sha256": "32dfdeeeffeca03a40d865758372c3f50b2b3409ae8602cf3fd08e4c38ddf21b"
+    },
+    "native-default.log": {
+      "path": ".tmp/paos-m3-0037/native-default.log",
+      "sha256": "a86cef5271097ad615d81a1dbdaa6fc15cbd132e001711749b7a61d618020e63"
+    },
+    "compatibility.log": {
+      "path": ".tmp/paos-m3-0037/compatibility.log",
+      "sha256": "eb071b781c513c6693744ac48b88b0fa28dcab5252707e4c49e96c999ceed9b2"
+    },
+    "post-sync-docs.log": {
+      "path": ".tmp/paos-m3-0037/post-sync-docs.log",
+      "sha256": "fcc827f4bb49575a9cbe9c3691677069ff7a0985ec3076d8a007a043ef56491d"
+    },
+    "matrix-validation.log": {
+      "path": ".tmp/paos-m3-0037/matrix-validation.log",
+      "sha256": "f17e172c632693877fa0f2ce81fd192d44b9070c0ab929841ce28fe3393fa71c"
+    },
+    "state-validation.log": {
+      "path": ".tmp/paos-m3-0037/state-validation.log",
+      "sha256": "a4004c18fd639513dc0d8e520b850c74b8f78ed3f70b1a8c89c8649c8ae56a90"
+    },
+    "hooks-json.log": {
+      "path": ".tmp/paos-m3-0037/hooks-json.log",
+      "sha256": "6eaa34164526a0a1f0b9dd89730318d5e31bdba9fad3ce3d93442f858e7f6782"
+    },
+    "hooks-dir.log": {
+      "path": ".tmp/paos-m3-0037/hooks-dir.log",
+      "sha256": "5d950b07458f956f2ac600215531d797483c23ed8d868b2bbdbac6f014a7b592"
+    },
+    "doc-sync-apply.json": {
+      "path": ".tmp/paos-m3-0037/doc-sync-apply.json",
+      "sha256": "36db17dcd86cbc3eeb1be6118a58ffa791475a4fa39f85164112133f26a267c9"
+    },
+    "orphan-cleanup.json": {
+      "path": ".tmp/paos-m3-0037/orphan-cleanup.json",
+      "sha256": "04817821752c5ca2848307617828a1b3f3541f650d98b382e01414098f26a098"
+    },
+    "binary-cleanup.json": {
+      "path": ".tmp/paos-m3-0037/binary-cleanup.json",
+      "sha256": "61ac7c8fe925c226906522a97254a154637a6ddb8d8ae7f14db7642517afe2c7"
+    },
+    "final-adapter.json": {
+      "path": ".tmp/paos-m3-0037/final-adapter.json",
+      "sha256": "f21fc39d0536a850abe2d1f31292e91b08f63b60e0f20406b84a3a90093dca50"
+    },
+    "check-docs-final.log": {
+      "path": ".tmp/paos-m3-0037/check-docs-final.log",
+      "sha256": "8980e553ce08599d54a68baf90a197be5cde25b960ab1b92eaaef3dba110b37f"
+    },
+    "final-doc-assessment.json": {
+      "path": ".tmp/paos-m3-0037/final-doc-assessment.json",
+      "sha256": "c1c84f65c773889442e0c764183da3ea631589720680058db5057f66b86fff47"
+    },
+    "diff-check.log": {
+      "path": ".tmp/paos-m3-0037/diff-check.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "browser-evidence-3R26KQ": {
+      "path": ".tmp/paos-m3-0037/browser-evidence-3R26KQ/result.json",
+      "sha256": "1a858d4dc13709eb861956eeb7d52a064de307e253ad4dd27e7e254bc7a65b82",
+      "checks": 57,
+      "status": "passed",
+      "actual_app_agent": false,
+      "actual_native_broker": true,
+      "fixture_cleaned": true,
+      "source_hash_mismatches": []
+    },
+    "actual-evidence-iDVFs3": {
+      "path": ".tmp/paos-m3-0037/actual-evidence-iDVFs3/result.json",
+      "sha256": "a70bc7eac9372306b43626a23b20c83cd3c8e8817a79e407e1651d1c9a4c1c86",
+      "checks": 46,
+      "status": "passed",
+      "actual_app_agent": true,
+      "actual_native_broker": true,
+      "fixture_cleaned": true,
+      "source_hash_mismatches": []
+    }
+  },
+  "source_sha256": {
+    "EVALS.md": "19265b6600d98977f95cf3fc09a3ca5d650aed2d7f75d7ea51bf355712d07dcd",
+    "PLAN.md": "7a3b69e037b3fac1a4e97c48ef79f44c81119700be97beb6852eed87e3cb4075",
+    "REQUIREMENTS.md": "72a8e88aea2645a31f83cd06aa0c6214f7546943fac2874f0c280ab1f0363a27",
+    "RUNLOG.md": "76973ac47ebe60408e2fdec9309f9f3e483a08029cf9506511dfad9a07c0bc88",
+    "TEST.md": "35f635ddb82961d76426dc04d401e9b6ea3400448834aed995e1051a630d3a36",
+    "apps/local-service/src/http/application.mts": "580b66654acf847de1a43d8f62809e2b4346c98bf58cbdd7e288747c9acd6d84",
+    "apps/local-service/src/main.mts": "ec96f8a7bf6205cb679fec337f9370c5126332719a8e8b1861b6379a77b6ad72",
+    "apps/local-service/src/runtime/app-agent-gateway.mts": "e0eaa2a263397a2f52deb51a95699b0d6593d29aeb1f806c09da7258e242750e",
+    "apps/local-service/src/storage/sqlite-worker.mts": "c6efdb01d0d68ca048a5ab2ce6f557f9a96a1046896bbfdfc468516080501ad0",
+    "apps/local-service/src/task-manager/service.mts": "d029f852611cfd80e3aeeb4fab0bbaf1d561fb80a62efab4ee0af47a9d9624c3",
+    "apps/local-service/src/team/service.mts": "7d3020520fc06dc4f7c2c81451bd5a83bcd0a5ba7434b477e9ecc5f3750683c1",
+    "apps/local-service/src/workflows/guards.mts": "2ddb50ce5e8778f9089d25066f6ac3735765b7140bf8dd36ecafd80f2c4e9a6e",
+    "apps/local-service/src/workflows/registry.mts": "e2c7f3051926307c89cf4e16af42b42959a3440708d50f573428a1c81b969e54",
+    "apps/web/README.md": "b19e03c99bd1416137f40185118bcc65f719ccbb5b9d16bf9febbc6ce98cc0fe",
+    "apps/web/src/api/client.ts": "470fb8a1d236b1e8665a69c733091b159f0bb6bc7f1301f63122e0db31dd3d14",
+    "apps/web/src/design/app.css": "736bf0a84d5cdfad0830ec76f9dc7ce888467021d110f6ce8ec5e98d28976da2",
+    "apps/web/src/features/workflows/WorkflowManager.tsx": "78125ca565b71f14fabb4e79af01a44cc839baa59607e88872054df406ad93c1",
+    "apps/web/src/ui/App.tsx": "bc8eeffdf8cd8424268119cd998a4cefce8aec6129bc725fc77f2f2f347c9876",
+    "docs/sources/registry.en.md": "d64f5aa91e8722c9a6fe77024b0b5ba76cd2ca2f4cf5afee028565497baa5a66",
+    "docs/sources/registry.md": "998ac6ee53732e8307a3971f0227e5f9690d59d0a3fa75376ee06ca0772410f8",
+    "packages/contracts/runtime/qualified-manifest.json": "1db0ee8f052febc51419bc3ff10419a38320edf9e5d898d418856db7b098f102",
+    "packages/contracts/storage/local-store.ts": "a184ff86c12d444d6f08710a7db9640d973f1502e324092375b375d6b9f0e620",
+    "apps/local-service/src/execution-recipes/contract.mts": "80d1dfb6f4df5fb43122a7e05238aee56ef3bb6f8595f4c0431ee4eb7e9cf37d",
+    "apps/local-service/src/execution-recipes/pins.mts": "84840014b2a618d9e0ab8dd2de493e0cf6450dde1dfc2372da38b0826c5867d8",
+    "apps/local-service/src/execution-recipes/service.mts": "8cb8b19259be8fedd257442acda9645832fc7937fca32004dd0c4d4dc84b3647",
+    "apps/web/src/features/workflows/recipes/RecipeRunner.tsx": "ed1255c269c4b877321de3bd1458fbd7efec9f87e385363c9f600e3d2747b749",
+    "packages/contracts/execution-recipes/recipe.ts": "1d286aefc454bb08d8ea83607631480b0f2f9d515961c60b4669dc932a909a92",
+    "research/product-agent-os-web-m3-0037-execution-2026-11-12.md": "2373fe0fd711e7cb9b37e84f06fbcd45d732ca5cfd3a960ea1c44ce72a237210",
+    "tests/web/execution-recipes.test.mts": "3eaf7bd23ce980089dcb70ffe803747636d37fa93875ab5598dd9a7948641a90",
+    "tests/web/recipe-pins.test.mts": "8ffdcb89f544934564b8089f9d828c13da0d928e0c9c06ad1e1be51a9f0370c4",
+    "tests/web/recipe-runtime.test.mts": "6148be7c8c124ce7f0845cb134e51ecf8a4fbaa7156081e806550a7052fa2041",
+    "tests/web/single-window/m3-recipes-acceptance.mts": "e63475c1bed99c3d81a32ef1f4256da5aa2d66f806ad9c84596aef3881499c89",
+    "research/product-agent-os-web-task-manager-plan-2026-11-09.md": "aa79d8127f189e2da07ded75b050e7f9dbe729374b256c471ee0c380a1b6b732",
+    "research/product-agent-os-web-task-manager-task-group-2026-11-09.json": "eb809c45388980acab4a58dce288237b0f073d3c9cbad36e5e849879679d6efc"
+  }
+}

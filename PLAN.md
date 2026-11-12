@@ -16,7 +16,9 @@ G8 closed / owner accepted. G9 T01–T09 implemented_locally_verified; T10 owner
 
 ## Активная продуктовая очередь Web — 2026-11-10
 
-Текущий M3 scope — PAOS-0023: policy preview/save, durable budgets/deadline и pause через existing App gateway. [Контракт, проверки и ограничения](research/product-agent-os-web-m3-0023-execution-2026-11-12.md). Следующая задача по утверждённой очереди — PAOS-0037; её реализация требует нового scope. PAOS-0024/0025/0026 остаются planned; M2 technical26/26 сохраняет исходный provenance.
+PAOS-0037 технически реализована: pinned recipes и bounded execution поверх PAOS-0023. [Контракт и evidence](research/product-agent-os-web-m3-0037-execution-2026-11-12.md). Следующая — PAOS-0024 (общая очередь), её реализация требует нового scope. PAOS-0025/0026/0028 остаются planned; M2 technical26/26 и прочие карточки сохраняют provenance.
+
+Исторический срез до PAOS-0037 (provenance сохранён): Текущий M3 scope — PAOS-0023: policy preview/save, durable budgets/deadline и pause через existing App gateway. [Контракт, проверки и ограничения](research/product-agent-os-web-m3-0023-execution-2026-11-12.md). Следующая задача по утверждённой очереди — PAOS-0037; её реализация требует нового scope. PAOS-0024/0025/0026 остаются planned; M2 technical26/26 сохраняет исходный provenance.
 
 Текущий PAOS-M2: PAOS-0019/0020/0021/0022/0027 technical implemented;26/26 вместе с [M2b](research/product-agent-os-web-m2b-execution-2026-11-12.md) (PAOS-0036/0009–0018) и [first10 M2](research/product-agent-os-web-m2-execution-2026-11-11.md). Все56 карточек/12групп/estimates сохранены. [M2c evidence](research/product-agent-os-web-m2c-execution-2026-11-12.md). Следующая стадия M3 отдельным scope; текущий запрос завершён. [PAOS-0046 review](research/product-agent-os-web-commercial-review-2026-11-11.md) сохраняет AUTH-G1–G6/C46-01–08/PAOS-0030, human/release. App consumer обязателен; installed npm Codex mismatch не repinned, exact cached native tuple отдельно.
 
