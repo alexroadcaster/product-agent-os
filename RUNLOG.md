@@ -22,7 +22,9 @@ G8-T14/G8 owner accepted. G9 T01–T09 локально реализованы; 
 
 ## Старт Web M1 — 2026-11-10
 
-PAOS-0028: ten PRD scenarios и полный current App route проверены; устранены missing agent Bug creation и S09/S22 revision churn. Astra/medium research/review + actual worker завершены; source-bound receipts в [owning report](research/product-agent-os-web-m3-0026-execution-2026-11-12.md). Следующая PAOS-0029 отдельным scope; no provider/Git/install/release actions.
+PAOS-0029: доступны keyboard Kanban/workflow/task tabs, RU/EN light/dark, modal/mobile focus, длинные узкие layouts. Matrix1311/280views, core136/20 и states289/60 passed; Astra/medium mapping/review, два P2 стенда исправлены; поздний mobile fix проверен root. [Owning evidence](research/product-agent-os-web-m4-0029-execution-2026-11-12.md). Следующая0030: отдельный pilot scope и повторный AUTH review; no provider/Git/install/release actions.
+
+Исторический срез до PAOS-0029 (provenance сохранён): PAOS-0028: ten PRD scenarios и полный current App route проверены; устранены missing agent Bug creation и S09/S22 revision churn. Astra/medium research/review + actual worker завершены; source-bound receipts в [owning report](research/product-agent-os-web-m3-0026-execution-2026-11-12.md). Следующая PAOS-0029 отдельным scope; no provider/Git/install/release actions.
 
 Исторический срез до PAOS-0028 (provenance сохранён): PAOS-0026 реализована: Decisions/S22, shared S09 response, private durable history, diff/scope/evidence и autonomy observation. Astra/medium research/review завершены;2 замечания исправлены и проверены. [Current receipts и ограничения](research/product-agent-os-web-m3-0026-execution-2026-11-12.md). Следующая PAOS-0028 отдельным scope; unknown native outcomes не replay, human/commercial/release отдельно.
 

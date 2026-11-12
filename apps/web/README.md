@@ -1,5 +1,7 @@
 # Product-Agent OS Web — M1 / M2
 
+PAOS-0029,2026-11-12: keyboard Kanban/task tabs/workflow, native status dialog с Escape/focus restore, mobile disclosure, RU/EN Light/Dark и длинные narrow layouts проверены. [Руководство](../../docs/web/accessibility.md); [screen/state evidence](../../research/product-agent-os-web-m4-0029-execution-2026-11-12.md). Browser matrix/core/states отделены от manual screen-reader/WCAG certification и human/release acceptance. Исторические записи ниже сохраняют provenance.
+
 PAOS-0028,2026-11-12: связанный task→planning→execution→diff/checks→owner acceptance и active native Stop проверены. В S09 «Разрешить агенту создать Bug в этом запуске» — одноразовый opt-in, по умолчанию off. Private claimed worker создаёт только Backlog Bug с server-owned creator/initiator и source comment; retry не дублирует запись. S09/S22 используют стабильную durable operation projection. [API, gates и limits](../../research/product-agent-os-web-m3-0026-execution-2026-11-12.md). Записи ниже исторические.
 
 PAOS-0026,2026-11-12: Decisions/S22 показывает clarification/product/runtime permission requests, scope, proposed/observed diff, evidence, ответ и историю. S09/S22 используют один response owner и exact-key retry; expired/stale requests fenced. Локальный выбор сохраняет решение владельца без runtime grant; runtime ACK и итог команды различимы. История наблюдённых запросов переживает restart. [API, verification и limits](../../research/product-agent-os-web-m3-0026-execution-2026-11-12.md). Записи ниже исторические.

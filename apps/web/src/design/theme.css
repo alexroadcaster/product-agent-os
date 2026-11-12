@@ -11,6 +11,7 @@
   --warning: #785212;
   --success: #22633f;
   --rule: #d9d5cc;
+  --control-rule: #857e73;
   --font-body: system-ui, "Segoe UI", sans-serif;
   --font-code: "Cascadia Mono", Consolas, monospace;
   --font-size-body: 1rem;
@@ -38,6 +39,7 @@
   --warning: #eac775;
   --success: #a4dab2;
   --rule: #514d46;
+  --control-rule: #9c9589;
 }
 
 :focus-visible {

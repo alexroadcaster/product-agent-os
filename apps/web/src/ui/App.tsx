@@ -125,6 +125,7 @@ export function App() {
     setConnection(current);
   }
   const [mobileNav, setMobileNav] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
   const t: Text = (key) => appLabel(preferences.locale, key);
   const label = (key: Section) =>
     ["search", "import", "backup"].includes(key)
@@ -207,13 +208,24 @@ export function App() {
     return () => media.removeEventListener("change", apply);
   }, [preferences]);
   return (
-    <div className="app">
+    <div className="app" onFocusCapture={event => {
+      // A disclosure must stop covering content when keyboard focus leaves it.
+      const target = event.target as Element;
+      if (mobileNav && target !== menuButton.current && !target.closest('.navigation')) setMobileNav(false);
+    }}>
       <a className="skip" href="#main">
         {uiLabel(preferences.locale, "action.skipToContent")}
       </a>
       <aside
+        id="project-navigation"
         className={`navigation ${mobileNav ? "open" : ""}`}
         aria-label={t("menu")}
+        onKeyDown={event => {
+          if (event.key === 'Escape' && mobileNav) {
+            setMobileNav(false);
+            menuButton.current?.focus();
+          }
+        }}
       >
         <div className="brand">
           Product-Agent OS<span>{t("local")}</span>
@@ -242,6 +254,7 @@ export function App() {
               onClick={() => {
                 setSection(key);
                 setMobileNav(false);
+                if (mobileNav) requestAnimationFrame(() => document.getElementById('main')?.focus());
               }}
             >
               {label(key)}
@@ -259,9 +272,11 @@ export function App() {
       <div className="workspace">
         <header>
           <button
+            ref={menuButton}
             className="mobile-menu"
             onClick={() => setMobileNav(!mobileNav)}
             aria-expanded={mobileNav}
+            aria-controls="project-navigation"
           >
             {t("menu")}
           </button>
@@ -1765,6 +1780,8 @@ function Session({
             <div
               className="transcript"
               role="log"
+              tabIndex={0}
+              aria-label={locale==='ru'?'Сообщения сессии':'Session messages'}
               aria-live="polite"
               ref={transcript}
               onScroll={(e) => {

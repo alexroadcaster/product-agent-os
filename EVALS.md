@@ -16,7 +16,9 @@ Frozen synthetic profiles: Trade-like strict 20 000 bytes/history, myPartners-li
 
 ## Web M1 — scope v0.7 / очередь v0.8, 2026-11-10
 
-PAOS-0028: owner-only provenance/one-run opt-in, stable creation retry, stable S09/S22 decision revision, snapshot/audit/blob preservation на rejection. Native operation terminal receipt и worker interrupted ACK обязательны перед Task cancellation; ранний side effect сохраняется. [Traceability](research/product-agent-os-web-m3-0026-execution-2026-11-12.md). Полный a11y gate PAOS-0029, human/release/model-quality/SLO отдельно.
+PAOS-0029: current-build rendered RGB contrast4.5/3, controls3, Accessibility Tree names, focus exposure, modal containment/restore, keyboard transition/save и320CSSpx reflow обязательны. Хеши всех frontend sources/build/harness до и после run должны совпадать. [Screen/state coverage и limitations](research/product-agent-os-web-m4-0029-execution-2026-11-12.md). Native paint/placeholder/manual screen reader и полная WCAG certification не заявлены; human/release отдельно.
+
+Исторический срез до PAOS-0029 (provenance сохранён): PAOS-0028: owner-only provenance/one-run opt-in, stable creation retry, stable S09/S22 decision revision, snapshot/audit/blob preservation на rejection. Native operation terminal receipt и worker interrupted ACK обязательны перед Task cancellation; ранний side effect сохраняется. [Traceability](research/product-agent-os-web-m3-0026-execution-2026-11-12.md). Полный a11y gate PAOS-0029, human/release/model-quality/SLO отдельно.
 
 Исторический срез до PAOS-0028 (provenance сохранён): PAOS-0026: same-key retry не повторяет effect; changed payload конфликтует; expiry проверяется после async checks и на SQLite commit; generation/scope/authority drift fenced. Runtime grant ACK отделён от command outcome; unknown intent не replay. [Browser/native/actual evidence](research/product-agent-os-web-m3-0026-execution-2026-11-12.md). Unseen native requests, human acceptance и model-quality/token/cost/SLO promotion не доказаны.
 

@@ -22,7 +22,9 @@
 .m2-manager .task-relations li { align-items: flex-start; flex-wrap: wrap; }
 .m2-manager .m2-comment-body { white-space: pre-wrap; overflow-wrap: anywhere; }
 .m2-manager .diff { white-space: pre-wrap; overflow-wrap: anywhere; }
-.m2-modal { position: fixed; inset: 0; z-index: 30; display: grid; place-items: center; padding: 24px; background: rgb(0 0 0 / .5); }
+.m2-modal { border: 0; padding: 16px; background: transparent; color: var(--ink); width: min(100%,560px); max-width: 100%; max-height: 100dvh; }
+.m2-modal[open] { display: grid; place-items: center; }
+.m2-modal::backdrop { background: rgb(0 0 0 / .5); }
 .m2-modal form { width: min(100%,520px); max-height: 90vh; overflow: auto; padding: 28px; background: var(--panel); border: 1px solid var(--rule); border-radius: 8px; }
 @media(max-width:1100px) { .m2-manager .m2-task-layout { grid-template-columns: minmax(0,1fr); } }
 @media(max-width:600px) { .m2-manager .m2-fields { grid-template-columns: minmax(0,1fr); } .m2-manager .section-heading { align-items: flex-start; flex-wrap: wrap; } .m2-manager .panel { padding: 14px; } }
@@ -134,13 +136,14 @@ button.primary {
   border-color: var(--accent);
   color: var(--accent-ink);
 }
+button.primary:hover:enabled { background: var(--accent); }
 input,
 select,
 textarea {
   width: 100%;
   min-height: 44px;
   padding: 9px 11px;
-  border: 1px solid var(--rule);
+  border: 1px solid var(--control-rule);
   border-radius: 5px;
   background: var(--panel);
 }
@@ -255,9 +258,14 @@ header {
 }
 .breadcrumb {
   display: flex;
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
   gap: 12px;
   font-size: 0.875rem;
 }
+header > button { flex-shrink: 0; }
 .breadcrumb span {
   color: var(--muted);
 }
@@ -265,7 +273,13 @@ main {
   padding: 24px;
   max-width: 1800px;
   margin: auto;
+  overflow-wrap: anywhere;
 }
+/* Intrinsic widths of long source names must not enlarge a grid/flex track or the page. */
+main :where(section,article,aside,form,fieldset,details,label,div,dl,dd,ul,li,button,pre,input,select,textarea) { min-width: 0; max-width: 100%; }
+.records li > button { flex-wrap: wrap; }
+.records li > button > * { min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
+.tabs { flex-wrap: wrap; }
 .page-heading {
   display: flex;
   justify-content: space-between;

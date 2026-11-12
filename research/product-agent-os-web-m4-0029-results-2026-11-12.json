@@ -1,0 +1,486 @@
+{
+  "schema_version": "paos_task_verification_v1",
+  "task_id": "PAOS-0029",
+  "task_title": "Доступность, языки и темы",
+  "status": "implemented",
+  "closure_level": "implemented_locally_verified",
+  "baseline_head": "668461ca77caad7955ff7f8346b944b04de1d799",
+  "scope": "frontend/accessibility/tests/docs only",
+  "report": "research/product-agent-os-web-m4-0029-execution-2026-11-12.md",
+  "started_at": "2026-11-12T15:54:48+00:00",
+  "implementation_ended_at": "2026-11-12T19:56:22+03:00",
+  "verification_recorded_at": "2026-11-12T16:59:23+00:00",
+  "wall_elapsed_seconds": 3875.609,
+  "active_duration_seconds": null,
+  "browser": {
+    "matrix": {
+      "path": ".tmp/paos-m4-0029/browser-evidence-Z6WkiC/result.json",
+      "sha256": "966036799e774126f691ac5461828be0b222b5e6f3f81450100be25bfdb7f74f",
+      "status": "passed",
+      "checks": 1311,
+      "views": 280,
+      "source_hash_count": 49,
+      "source_hash_mismatches": [],
+      "fixture_cleaned": true,
+      "text_samples": 45964,
+      "control_samples": 8784,
+      "focus_samples": 19620,
+      "screenshots": [
+        "C:\\Users\\user\\.codex\\visualizations\\2026\\11\\12\\01a1cedc-5a90-7a23-bb27-6f755c6885ce\\paos-0029-ru-light-1440-workflow.png",
+        "C:\\Users\\user\\.codex\\visualizations\\2026\\11\\12\\01a1cedc-5a90-7a23-bb27-6f755c6885ce\\paos-0029-ru-light-320-workflow.png",
+        "C:\\Users\\user\\.codex\\visualizations\\2026\\11\\12\\01a1cedc-5a90-7a23-bb27-6f755c6885ce\\paos-0029-ru-dark-1440-workflow.png",
+        "C:\\Users\\user\\.codex\\visualizations\\2026\\11\\12\\01a1cedc-5a90-7a23-bb27-6f755c6885ce\\paos-0029-ru-dark-320-workflow.png",
+        "C:\\Users\\user\\.codex\\visualizations\\2026\\11\\12\\01a1cedc-5a90-7a23-bb27-6f755c6885ce\\paos-0029-en-light-1440-workflow.png",
+        "C:\\Users\\user\\.codex\\visualizations\\2026\\11\\12\\01a1cedc-5a90-7a23-bb27-6f755c6885ce\\paos-0029-en-light-320-workflow.png",
+        "C:\\Users\\user\\.codex\\visualizations\\2026\\11\\12\\01a1cedc-5a90-7a23-bb27-6f755c6885ce\\paos-0029-en-dark-1440-workflow.png",
+        "C:\\Users\\user\\.codex\\visualizations\\2026\\11\\12\\01a1cedc-5a90-7a23-bb27-6f755c6885ce\\paos-0029-en-dark-320-workflow.png"
+      ],
+      "provider_calls": 0,
+      "credential_operations": 0,
+      "external_requests": 0
+    },
+    "core": {
+      "path": ".tmp/paos-m4-0029/browser-evidence-ZpVad3/result.json",
+      "sha256": "b30d6e09399f48dc2e0d0ef0aa7b6a9aa242b4a5eb8f75a440c3b48beee3ef3b",
+      "status": "passed",
+      "checks": 136,
+      "views": 20,
+      "source_hash_count": 49,
+      "source_hash_mismatches": [],
+      "fixture_cleaned": true,
+      "text_samples": 4904,
+      "control_samples": 1332,
+      "focus_samples": 2156,
+      "screenshots": [
+        "C:\\Users\\user\\.codex\\visualizations\\2026\\11\\12\\01a1cedc-5a90-7a23-bb27-6f755c6885ce\\paos-0029-ru-light-core.png",
+        "C:\\Users\\user\\.codex\\visualizations\\2026\\11\\12\\01a1cedc-5a90-7a23-bb27-6f755c6885ce\\paos-0029-ru-dark-core.png",
+        "C:\\Users\\user\\.codex\\visualizations\\2026\\11\\12\\01a1cedc-5a90-7a23-bb27-6f755c6885ce\\paos-0029-en-light-core.png",
+        "C:\\Users\\user\\.codex\\visualizations\\2026\\11\\12\\01a1cedc-5a90-7a23-bb27-6f755c6885ce\\paos-0029-en-dark-core.png"
+      ],
+      "provider_calls": 0,
+      "credential_operations": 0,
+      "external_requests": 0
+    },
+    "states": {
+      "path": ".tmp/paos-m4-0029/browser-evidence-DAdmsd/result.json",
+      "sha256": "308faaf1089b3fafaf8869a6c1915ecf7be8bb1fdcdd901b46af0c63dc7a3b9c",
+      "status": "passed",
+      "checks": 289,
+      "views": 60,
+      "source_hash_count": 49,
+      "source_hash_mismatches": [],
+      "fixture_cleaned": true,
+      "text_samples": 8626,
+      "control_samples": 2384,
+      "focus_samples": 3534,
+      "screenshots": [
+        "C:\\Users\\user\\.codex\\visualizations\\2026\\11\\12\\01a1cedc-5a90-7a23-bb27-6f755c6885ce\\paos-0029-ru-light-forced-colors.png",
+        "C:\\Users\\user\\.codex\\visualizations\\2026\\11\\12\\01a1cedc-5a90-7a23-bb27-6f755c6885ce\\paos-0029-ru-dark-forced-colors.png",
+        "C:\\Users\\user\\.codex\\visualizations\\2026\\11\\12\\01a1cedc-5a90-7a23-bb27-6f755c6885ce\\paos-0029-en-light-forced-colors.png",
+        "C:\\Users\\user\\.codex\\visualizations\\2026\\11\\12\\01a1cedc-5a90-7a23-bb27-6f755c6885ce\\paos-0029-en-dark-forced-colors.png"
+      ],
+      "provider_calls": 0,
+      "credential_operations": 0,
+      "external_requests": 0
+    }
+  },
+  "browser_totals": {
+    "checks": 1736,
+    "views": 360,
+    "distinct_matrix_screens": 26,
+    "task_tabs": 8,
+    "explicit_locale_theme_pairs": 4,
+    "widths_css_px": [
+      1440,
+      320
+    ]
+  },
+  "gates": {
+    "web": {
+      "passed": 473,
+      "skipped": 0,
+      "duration_seconds": 12.9896507,
+      "exit_code": 0
+    },
+    "typecheck": {
+      "exit_code": 0
+    },
+    "build": {
+      "exit_code": 0,
+      "bundle_kb": 518.44,
+      "warning": "chunk_over_500_kb"
+    },
+    "docs_lifecycle": {
+      "passed": 251,
+      "duration_seconds": 29.728,
+      "exit_code": 0,
+      "site_dir": ".tmp/paos-m4-0029/site-final"
+    },
+    "docs_final": {
+      "passed": 105,
+      "duration_seconds": 13.611,
+      "exit_code": 0
+    },
+    "mkdocs_strict": {
+      "exit_code": 0,
+      "warnings": 0,
+      "duration_seconds": 18.12,
+      "postprocess": "tools/fix_site_i18n_links.ps1",
+      "canonical_site_promoted": false
+    },
+    "hooks_matrix_state_docs_compatibility_diff": {
+      "exit_code": 0
+    },
+    "adapter": {
+      "adapterRevision": "67d6ced8b371be3dcf433637a3df7a8ed5ad3140c7a412e40178ad05abbe5869",
+      "matches": true
+    }
+  },
+  "review": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "mapping_agent": "/root/accessibility_mapping",
+    "reviewer": "/root/accessibility_review",
+    "context_mode": "separate_reused_context",
+    "findings": {
+      "P2": 2,
+      "resolved": 2
+    },
+    "late_changes": "root self_review and current-run browser/static gates",
+    "tester_verdict": "closed_allowed",
+    "human_acceptance": "not_claimed"
+  },
+  "docs_sync": {
+    "status": "updated",
+    "impact_gaps": [],
+    "mode": "verified_section_sync_plus_exact_legacy_card_json_compatibility_fallback",
+    "coordinated_completion_receipt": false,
+    "journals": [
+      ".codex/product-agent-os/compaction/99bad7643621a86a89daf115fa763ebaa494f040d0381f5ed6a8d6a447f70859.json",
+      ".codex/product-agent-os/compaction/3333068bdf99903163c5fb86be71e6b4ca224c7f0f3f300f06ef7a66001f313d.json"
+    ],
+    "prod_test": "not_applicable_Batch39_unchanged"
+  },
+  "preservation": {
+    "task_id": "PAOS-0029",
+    "baseline_head": "668461ca77caad7955ff7f8346b944b04de1d799",
+    "other_md_cards_unchanged": 55,
+    "other_json_tasks_unchanged": 55,
+    "task_count": 56,
+    "group_count": 12,
+    "all_estimates_order_groups_preserved": true,
+    "completed_at": "2026-11-12T19:56:22+03:00",
+    "active_duration_measured": false,
+    "next_task": "PAOS-0030",
+    "next_dependencies": [
+      "PAOS-0029",
+      "PAOS-0046"
+    ],
+    "files": {
+      "EVALS.md": "modify",
+      "PLAN.md": "modify",
+      "REQUIREMENTS.md": "modify",
+      "RUNLOG.md": "modify",
+      "TEST.md": "modify",
+      "apps/web/README.md": "modify",
+      "apps/web/src/design/app.css": "modify",
+      "apps/web/src/design/theme.css": "modify",
+      "apps/web/src/features/artifacts/ArtifactExplorer.tsx": "modify",
+      "apps/web/src/features/tasks/TaskManager.tsx": "modify",
+      "apps/web/src/features/team/TeamManager.tsx": "modify",
+      "apps/web/src/features/workflows/WorkflowManager.tsx": "modify",
+      "apps/web/src/ui/App.tsx": "modify",
+      "docs/sources/registry.en.md": "modify",
+      "docs/sources/registry.md": "modify",
+      "mkdocs.yml": "modify",
+      "tests/product_agent_os/test_product_agent_os_docs.py": "modify",
+      "apps/web/src/ui/Modal.tsx": "create",
+      "docs/web/accessibility.en.md": "create",
+      "docs/web/accessibility.md": "create",
+      "research/product-agent-os-web-m4-0029-execution-2026-11-12.md": "create",
+      "tests/web/accessibility/audit.mts": "create",
+      "tests/web/accessibility/browser-acceptance.mts": "create",
+      "research/product-agent-os-web-task-manager-plan-2026-11-09.md": "modify",
+      "research/product-agent-os-web-task-manager-task-group-2026-11-09.json": "modify",
+      "research/product-agent-os-web-m4-0029-results-2026-11-12.json": "create"
+    },
+    "closure_mode": "exact_legacy_card_and_json_after_section_sync"
+  },
+  "source_hashes": {
+    "EVALS.md": "473975bfeab2b7948809ad2661e7b7f599c5de0ec2a51d51e845a0c1be95c647",
+    "PLAN.md": "51e436dd2a35b8f9bb2ee590faef55a23f27bddd2cdff7660a0b060c57099026",
+    "REQUIREMENTS.md": "19e4b164db6e4982ccaea47e9fc36040e611e152fa3245837b9f5999dc3cd4aa",
+    "RUNLOG.md": "174ffb76f5bef04dd4f48f4502a9212051ed927e59646be97e4a6326f7e6b74d",
+    "TEST.md": "0e388c59b71873d56f354761eacf40aed5980aa8afe7b3e00fe6660f95abcde7",
+    "apps/web/README.md": "262e5244f83748ed7bd2f5749d872ece4b3ebced54dbd8703f2779c5b1ef5475",
+    "apps/web/src/design/app.css": "b6e85b63a1ee635e357fc9108779391fe48af619299c3d6d37faf48cfed99dbc",
+    "apps/web/src/design/theme.css": "74eb11a565b16af1b6b7b84e5c4173db18b5c82543cd8586ffe1a698a7eae547",
+    "apps/web/src/features/artifacts/ArtifactExplorer.tsx": "49e14d194705e1d02adb5dc10e91aad05dbd4eae27228acc45e8e4672b7d4689",
+    "apps/web/src/features/tasks/TaskManager.tsx": "7d87b542366dd35b03a8bc942721af353738950c3e8e268d6741978309cd165b",
+    "apps/web/src/features/team/TeamManager.tsx": "22c8a834237a5bdff8bc4604514a8eaaddd33dd3172fdb8edeb4f4bf43d7e467",
+    "apps/web/src/features/workflows/WorkflowManager.tsx": "93d67176425c223799af7cd2c063a77cb6997c4f0ee60b591fb6a232545b5e41",
+    "apps/web/src/ui/App.tsx": "4d812fb2d706e9bdadb76cc645cd7727e864400245597d28cf44c8803557df6d",
+    "docs/sources/registry.en.md": "cf094038167561c36f3f45d9cb38e79d9c5d34f3af6ee0acf241a84495a33e6c",
+    "docs/sources/registry.md": "f0eb5df79da77330c042265167db4b06d8dc3eef5f9bb72d72baeb810bae0f07",
+    "mkdocs.yml": "490494bb44de206bb667bd638bce236615e49ee62beb82f04cfc19e3cfa32b60",
+    "tests/product_agent_os/test_product_agent_os_docs.py": "f05c69bbc5ba7ec62ff5af5a163ba0f35ab066c542a195e45e99dc1635c55407",
+    "apps/web/src/ui/Modal.tsx": "441aafcc71055488b52382f9c64ee0f86c918de92f0c794b80066d14df17cb42",
+    "docs/web/accessibility.en.md": "943581724e5087ef6110797ba2d39812c14ecf797a360dafdd1dbf9ccaecdb60",
+    "docs/web/accessibility.md": "a404fe48b28587c477b3ae17f6eea004f1b1395cb5699df9f50c6c3e312f76ed",
+    "research/product-agent-os-web-m4-0029-execution-2026-11-12.md": "cb7c46339e18ba9370e749341e4c8eac03b2d961bd7b36a84e11d416c68b0c50",
+    "tests/web/accessibility/audit.mts": "7f01a03a3a2e72a7a84ea4ed239e997ca8ac65b6a19c9031a5472a6433c44248",
+    "tests/web/accessibility/browser-acceptance.mts": "4ea03cd5ce44188985b5a0d3d2722ba5fa25c8c560dffd2bb52d31116b3cfa3f",
+    "research/product-agent-os-web-task-manager-plan-2026-11-09.md": "22d5255db6c51308b528cee46e4ab175221a71ee2e10206957983a90620fbb42",
+    "research/product-agent-os-web-task-manager-task-group-2026-11-09.json": "2696a5fb596cc24a933e57f13f23e05085f442913358885f10edff5cec17485d"
+  },
+  "receipts": {
+    "web-full.log": {
+      "path": ".tmp/paos-m4-0029/web-full.log",
+      "sha256": "dfde8fea300539b27097748f13d671377202eb06aec3b3cb25a7c1853f2806e3"
+    },
+    "web-full-green.log": {
+      "path": ".tmp/paos-m4-0029/web-full-green.log",
+      "sha256": "e6fe603172360e9df788af393c2ab065a49d4cd3cb68172f3b3df769b38679b0"
+    },
+    "web-final.log": {
+      "path": ".tmp/paos-m4-0029/web-final.log",
+      "sha256": "96fc6e8875f707e1667a339bb7845cf713e9854c69fed6b4b03330ed17f4cf67"
+    },
+    "types-final.log": {
+      "path": ".tmp/paos-m4-0029/types-final.log",
+      "sha256": "66d87221505bb187a2fe87ddeacbd07f5922ac556c005c69c5c59e0f0c74cf98"
+    },
+    "build-final-green.log": {
+      "path": ".tmp/paos-m4-0029/build-final-green.log",
+      "sha256": "22b50286cc57dc3ff4467c6559249aee63a25803eb8c0c1e988374d0de979fb8"
+    },
+    "build-final.log": {
+      "path": ".tmp/paos-m4-0029/build-final.log",
+      "sha256": "13805fbe882dff92becf2e68ff08bbe70163edd481be0e19a8934a2f26119b7f"
+    },
+    "core-baseline.log": {
+      "path": ".tmp/paos-m4-0029/core-baseline.log",
+      "sha256": "4beef0323ca4650dfddec23fc8efde4834052fd91d12094242171463d83a2781"
+    },
+    "core-red.log": {
+      "path": ".tmp/paos-m4-0029/core-red.log",
+      "sha256": "a829276466480f1cf508074c7caae533dd3e5669004aebd741b6dbc72dd08cf8"
+    },
+    "matrix-first.log": {
+      "path": ".tmp/paos-m4-0029/matrix-first.log",
+      "sha256": "1e562c7769b350bcae7a101744919abec2ae114c670d29d5c2aa6efe3eaf1e6b"
+    },
+    "matrix-second.log": {
+      "path": ".tmp/paos-m4-0029/matrix-second.log",
+      "sha256": "7bd2aaeb5c3c44804fa260a2ceed603960c8a67067550e73bbab0737accdbdaf"
+    },
+    "matrix-focus.log": {
+      "path": ".tmp/paos-m4-0029/matrix-focus.log",
+      "sha256": "81a1c3232152004d2cea08ce0f95129dd59701bb72a31316717b2419efa6aaa3"
+    },
+    "matrix-focus2.log": {
+      "path": ".tmp/paos-m4-0029/matrix-focus2.log",
+      "sha256": "59e97811f003acb9cab8d19dc2d6d2e7a0d7c530be294c544cdc4802e2f9345f"
+    },
+    "mobile-red.log": {
+      "path": ".tmp/paos-m4-0029/mobile-red.log",
+      "sha256": "5e36a91c5390ffec89ea8bb8f5110596ed7cd7fe5d36d0fe6637e3d434117408"
+    },
+    "states-first.log": {
+      "path": ".tmp/paos-m4-0029/states-first.log",
+      "sha256": "b7ac0077b626e082ec4dc0a3bd9a1d205b70183446da9410146974800370553a"
+    },
+    "core-verified.log": {
+      "path": ".tmp/paos-m4-0029/core-verified.log",
+      "sha256": "c989cd260e34822e77e543c8b21db930998b393381476fffd1db6ed9804516c9"
+    },
+    "matrix-verified.log": {
+      "path": ".tmp/paos-m4-0029/matrix-verified.log",
+      "sha256": "205913c6b63874fd5472959d39a9cac7106c28dfa598874c2c8cb7d319fcd650"
+    },
+    "states-verified.log": {
+      "path": ".tmp/paos-m4-0029/states-verified.log",
+      "sha256": "b080c74b15ab92f9c71921ee6d2aab842b7f8bdc82b8f3ec7a61ccaa859080d0"
+    },
+    "docs-lifecycle.log": {
+      "path": ".tmp/paos-m4-0029/docs-lifecycle.log",
+      "sha256": "c4b6d58dea205131ff0ac92f8158c5e132bd41484d842bda7a2c0530d3d603ac"
+    },
+    "docs-lifecycle-green.log": {
+      "path": ".tmp/paos-m4-0029/docs-lifecycle-green.log",
+      "sha256": "2676ec29b498f64e093f3727efe5a947e74806b47fc5ab5a5505bb42ce6386e1"
+    },
+    "docs-lifecycle-final.log": {
+      "path": ".tmp/paos-m4-0029/docs-lifecycle-final.log",
+      "sha256": "6e1ba7f484339aa36ede223cbf9296c515ef7d3c8bdd2536c90389301dc1e0b9"
+    },
+    "docs-isolated-final.log": {
+      "path": ".tmp/paos-m4-0029/docs-isolated-final.log",
+      "sha256": "8dec183f0ab612810cb3a50e778759bf565547f7e6dac18edb2a752728fb5428"
+    },
+    "docs-verified.log": {
+      "path": ".tmp/paos-m4-0029/docs-verified.log",
+      "sha256": "8b895b9964d3f007a7fe3f1fcd78fb7528438904f979abfbe5ac5935685a0811"
+    },
+    "docs-final.log": {
+      "path": ".tmp/paos-m4-0029/docs-final.log",
+      "sha256": "57b3329aae91933eb2adf901f79da90b836ff31d0443076b252f8500e7948a20"
+    },
+    "mkdocs-first.log": {
+      "path": ".tmp/paos-m4-0029/mkdocs-first.log",
+      "sha256": "d66317c554b44c4e91294f266ff6c1ae3b04450841366c6d1bbf80d23b96b156"
+    },
+    "mkdocs-final.log": {
+      "path": ".tmp/paos-m4-0029/mkdocs-final.log",
+      "sha256": "aeae7039180f5f7018ae4e25fb54b94c5e2e12e4c0e9a0619df99ec97e05da90"
+    },
+    "mkdocs-file-links.log": {
+      "path": ".tmp/paos-m4-0029/mkdocs-file-links.log",
+      "sha256": "1fa6bd74541bc2af57ac79ea678736969f303620c20c7708bfc639e318c3347f"
+    },
+    "mkdocs-canonical.log": {
+      "path": ".tmp/paos-m4-0029/mkdocs-canonical.log",
+      "sha256": "e80639c5bf062cf0422ba41421d7495ba580a2f100acf725da2cae57adece946"
+    },
+    "generated-site-restoration.json": {
+      "path": ".tmp/paos-m4-0029/generated-site-restoration.json",
+      "sha256": "c8d6dc5c135e165b36484ccd2766b7338a77bfb4f23782f271416c301e5bac38"
+    },
+    "site-restoration.log": {
+      "path": ".tmp/paos-m4-0029/site-restoration.log",
+      "sha256": "e7066804adc62cb9111f8afaba41407596f7ad992505f7c6da9759219955693e"
+    },
+    "doc-sync-apply-sandbox-denied.json": {
+      "path": ".tmp/paos-m4-0029/doc-sync-apply-sandbox-denied.json",
+      "sha256": "c08475794484cb428303b0cae5e86759aa94810d89df24528451e5e46bd1c430"
+    },
+    "doc-sync-apply.json": {
+      "path": ".tmp/paos-m4-0029/doc-sync-apply.json",
+      "sha256": "42f64fe82164ed356b24304d29b51b91f84ca3fc95713aeaf2d6f69e224fa8b7"
+    },
+    "doc-sync-route-apply.json": {
+      "path": ".tmp/paos-m4-0029/doc-sync-route-apply.json",
+      "sha256": "049452e9c02dca73c74c247d18366928f5e7e10744a2b09708a81529244e5140"
+    },
+    "final-doc-assessment.json": {
+      "path": ".tmp/paos-m4-0029/final-doc-assessment.json",
+      "sha256": "5ff8dbf513ead50e0ecd181901b535d7a09fc6df13b227ed7fddc2385a13f610"
+    },
+    "navigation-link-repairs.json": {
+      "path": ".tmp/paos-m4-0029/navigation-link-repairs.json",
+      "sha256": "8830207c4bca35589a70bc256ad501a0c994d806d880caf9f6318aab6e00b8f9"
+    },
+    "preservation.json": {
+      "path": ".tmp/paos-m4-0029/preservation.json",
+      "sha256": "6dd81de9587772b8980ba16b6f67cbbde11954562fb79ebb3cadb1bd30f0bb23"
+    },
+    "matrix-recovery.json": {
+      "path": ".tmp/paos-m4-0029/matrix-recovery.json",
+      "sha256": "e866bc8313b5ba5b6c81f96d8b8dfe132a7e5365cfd6cfae3386018d3804fa67"
+    },
+    "hooks-json.log": {
+      "path": ".tmp/paos-m4-0029/hooks-json.log",
+      "sha256": "6eaa34164526a0a1f0b9dd89730318d5e31bdba9fad3ce3d93442f858e7f6782"
+    },
+    "hooks-dir.log": {
+      "path": ".tmp/paos-m4-0029/hooks-dir.log",
+      "sha256": "5d950b07458f956f2ac600215531d797483c23ed8d868b2bbdbac6f014a7b592"
+    },
+    "matrix-final-validation.log": {
+      "path": ".tmp/paos-m4-0029/matrix-final-validation.log",
+      "sha256": "f17e172c632693877fa0f2ce81fd192d44b9070c0ab929841ce28fe3393fa71c"
+    },
+    "state-final-validation.log": {
+      "path": ".tmp/paos-m4-0029/state-final-validation.log",
+      "sha256": "a4004c18fd639513dc0d8e520b850c74b8f78ed3f70b1a8c89c8649c8ae56a90"
+    },
+    "check-docs-final.log": {
+      "path": ".tmp/paos-m4-0029/check-docs-final.log",
+      "sha256": "8980e553ce08599d54a68baf90a197be5cde25b960ab1b92eaaef3dba110b37f"
+    },
+    "diff-check.log": {
+      "path": ".tmp/paos-m4-0029/diff-check.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "compatibility.log": {
+      "path": ".tmp/paos-m4-0029/compatibility.log",
+      "sha256": "eb071b781c513c6693744ac48b88b0fa28dcab5252707e4c49e96c999ceed9b2"
+    },
+    "final-adapter.log": {
+      "path": ".tmp/paos-m4-0029/final-adapter.log",
+      "sha256": "b8f590f042a8d3cb19f0348747dcacc87ef26ab23fb3a8b0e1cabf6e3f86dcc8"
+    },
+    "cleanup.json": {
+      "path": ".tmp/paos-m4-0029/cleanup.json",
+      "sha256": "2986810ad68a4efc088cba0f8d0ad1daa71fc3a035e14072eb4c6d7acf66079a"
+    }
+  },
+  "reused_prior_evidence": {
+    "python-full.log": {
+      "path": ".tmp/paos-m4-0028/python-full.log",
+      "sha256": "8c920487808266ca87540077721a39bb109e2eb0e6cb87dea50015dbe3640fb0",
+      "newly_executed": false,
+      "owning_report": "research/product-agent-os-web-m4-0028-execution-2026-11-12.md",
+      "reason": "Plugin/backend/contracts unchanged; frontend and docs gates rerun separately"
+    },
+    "fixture-eval.log": {
+      "path": ".tmp/paos-m4-0028/fixture-eval.log",
+      "sha256": "014f6152da56145aa30e29151fd0c5979f34a44596f0b0714d270e9708719c22",
+      "newly_executed": false,
+      "owning_report": "research/product-agent-os-web-m4-0028-execution-2026-11-12.md",
+      "reason": "Plugin/backend/contracts unchanged; frontend and docs gates rerun separately"
+    },
+    "transcript-eval.log": {
+      "path": ".tmp/paos-m4-0028/transcript-eval.log",
+      "sha256": "5694b49e2762388661d971053ceedea106cba7f64c307fe7c7ea3a2546e70634",
+      "newly_executed": false,
+      "owning_report": "research/product-agent-os-web-m4-0028-execution-2026-11-12.md",
+      "reason": "Plugin/backend/contracts unchanged; frontend and docs gates rerun separately"
+    }
+  },
+  "canonical_site_restoration": {
+    "path": ".tmp/paos-m4-0029/generated-site-restoration.json",
+    "sha256": "c8d6dc5c135e165b36484ccd2766b7338a77bfb4f23782f271416c301e5bac38",
+    "content_diff": [],
+    "new_untracked_files": 0,
+    "initial_generated_tracked_changes": 322,
+    "initial_generated_new_files": 28,
+    "first_restore_before_sandbox_error": 39,
+    "remaining_restored": 283
+  },
+  "approval_boundaries": {
+    "provider_calls": 0,
+    "credentials_used": 0,
+    "dependency_installs": 0,
+    "git_history_or_index_mutations": 0,
+    "real_project_mutations": 0,
+    "publication_or_deployment": 0,
+    "external_requests": 0
+  },
+  "runtime_activation": "not_applicable_backend_runtime_provider_selection_unchanged",
+  "limits": [
+    "RGB-only computed contrast; native widget paint/placeholder/gradients not fully covered",
+    "Manual screen-reader and full WCAG certification not claimed",
+    "200% text zoom not separately measured",
+    "Human acceptance/commercial release/model quality/token cost/SLO not claimed",
+    "Legacy completion writer cannot close this preserved research matrix; documented bounded fallback used"
+  ],
+  "metrics": {
+    "subagent_spawns": 2,
+    "read_only_research_followups": 1,
+    "model_root": "not_available_host_identity_not_exposed",
+    "tokens_and_tool_counters": "not_available_complete_host_trace_not_exposed",
+    "observed_compacted_handoffs": 1
+  },
+  "next_task": {
+    "id": "PAOS-0030",
+    "title": "Упаковка и пилот",
+    "dependencies": [
+      "PAOS-0029",
+      "PAOS-0046"
+    ],
+    "dependencies_implemented": true,
+    "pilot_requires_separate_agreement": true,
+    "commercial_auth_recheck_required": true
+  }
+}

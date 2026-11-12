@@ -1,19 +1,19 @@
 {
-  "task_id": "PAOS-0028",
+  "task_id": "PAOS-0029",
   "session_id": "01a1cedc-5a90-7a23-bb27-6f755c6885ce",
   "plan_path": "research/product-agent-os-web-task-manager-plan-2026-11-09.md",
-  "scope": "PAOS-0028 integrated task-to-acceptance verification, PRD section14 ten scenarios, manual completion, active-run cancellation, migration/links/attachments preservation; bounded repairs and evidence; preserve other tasks and permissions",
-  "updated_at": "2026-11-12T18:30:42+03:00",
+  "scope": "PAOS-0029 accessibility, RU/EN light/dark screen matrix, keyboard Kanban/workflow/task tabs, contrast and long narrow layouts; frontend/tests/docs only; preserve other tasks and runtime authority",
+  "updated_at": "2026-11-12T20:00:27+03:00",
   "approval_boundary": "Authorized local implementation and bounded synthetic acceptance; no credentials/provider/Git/publication/global changes",
-  "status": "implemented",
+  "status": "ready_for_completion_ledger",
   "completion_ready": true,
   "closure_contract": "product-agent-os-completion-ledger-v2",
   "previous_closure": {
-    "task_id": "PAOS-0026",
+    "task_id": "PAOS-0028",
     "closure_level": "implemented_locally_verified",
-    "evidence_path": "research/product-agent-os-web-m3-0026-results-2026-11-12.json"
+    "evidence_path": "research/product-agent-os-web-m4-0028-results-2026-11-12.json"
   },
-  "brief_digest": "sha256:39a962edbb8346f31cc9e5dcce55410877026ca192b292ba8087b4434a7a875c",
+  "brief_digest": "sha256:79c0687bad71124086154f9adec4a649504394d993cbacdffb360c5b9c1df6c6",
   "brief_schema_version": "task_start_brief_v2",
   "brief_format": "bold_fields",
   "brief_fields_present": [
@@ -35,12 +35,23 @@
     "financially_material": false,
     "release_or_readiness": false,
     "explicit_packet_request": false,
-    "reason": "Cross-domain acceptance and active writer cancellation require current integration and negative evidence"
+    "reason": "Cross-screen accessibility and keyboard journey changes require current browser and negative proof"
   },
   "closure_level": "implemented_locally_verified",
-  "evidence_path": "research/product-agent-os-web-m4-0028-results-2026-11-12.json",
-  "evidence_sha256": "93b9bce42e3b6582ba251efcd5b996226e9f725c06a0f59a5a705c177ec6b403",
-  "control_plane_sync": "updated; current revisions assessed; gaps[]",
+  "task_status": "implemented",
+  "evidence_path": "research/product-agent-os-web-m4-0029-results-2026-11-12.json",
+  "evidence_sha256": "9ab0d0d935df1e69fca192c2500dcf9e7dca47bbd462ec54ff7cc22c03e4c7ee",
+  "report_path": "research/product-agent-os-web-m4-0029-execution-2026-11-12.md",
+  "docs_impact": "updated; five canonical sections, Web guide RU/EN, source registries/nav and owning task MD/JSON; no unresolved handoff",
+  "closure_mode": "verified_section_sync_plus_exact_legacy_card_json_compatibility_fallback",
+  "review_context_mode": "separate_reused_context",
   "tester_verdict": "closed_allowed",
-  "elapsed_wall_seconds": 2836
+  "execution_time": {
+    "started_at": "2026-11-12T18:54:48+03:00",
+    "ended_at": "2026-11-12T20:00:27+03:00",
+    "wall_elapsed_seconds": 3939,
+    "active_duration_seconds": null
+  },
+  "next_task": "PAOS-0030",
+  "completion_brief_shown": false
 }

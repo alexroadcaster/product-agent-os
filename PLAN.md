@@ -16,7 +16,9 @@ G8 closed / owner accepted. G9 T01–T09 implemented_locally_verified; T10 owner
 
 ## Активная продуктовая очередь Web — 2026-11-10
 
-PAOS-0028 реализована и технически проверена локально: integration112, workflow51, M4 synthetic/native51 и actual App46; native Start/Stop/ACK и data preservation. Следующая PAOS-0029 — доступность, языки и темы. Другие55cards/estimates/order/groups сохранены. [Evidence](research/product-agent-os-web-m3-0026-execution-2026-11-12.md). Human/release отдельно.
+PAOS-0029 реализована и локально технически проверена: matrix1311/core136/states289 checks; keyboard task transition/workflow save, empty/loading/error/recovery и System/forced colors. Следующая PAOS-0030 «Упаковка и пилот»;0029/0046 implemented, пилот согласуется отдельно и AUTH-G1–G6 повторно проверяются. Остальные55cards/estimates/order/groups сохранены. [Evidence](research/product-agent-os-web-m4-0029-execution-2026-11-12.md).
+
+Исторический срез до PAOS-0029 (provenance сохранён): PAOS-0028 реализована и технически проверена локально: integration112, workflow51, M4 synthetic/native51 и actual App46; native Start/Stop/ACK и data preservation. Следующая PAOS-0029 — доступность, языки и темы. Другие55cards/estimates/order/groups сохранены. [Evidence](research/product-agent-os-web-m3-0026-execution-2026-11-12.md). Human/release отдельно.
 
 Исторический срез до PAOS-0028 (provenance сохранён): PAOS-0026 реализована и технически проверена локально: durable decisions, единый ответ S09/S22, expiry/CAS/identity fences. Следующая PAOS-0028 — интеграционная проверка пути; её dependencies сверены с матрицей. Другие55 cards, estimates/order/groups сохранены. [Evidence](research/product-agent-os-web-m3-0026-execution-2026-11-12.md). Human/commercial/release отдельно.
 

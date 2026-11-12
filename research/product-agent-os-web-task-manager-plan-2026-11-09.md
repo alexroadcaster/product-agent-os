@@ -1609,21 +1609,21 @@ Rollback будущих изменений: versioned proposal, revision check, 
 ### Task `PAOS-0029`
 
 - Task: Доступность, языки и темы
-- Status: planned
+- Status: implemented
 - Delivery stage: M4
 - Execution order: 52
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 12-11-2026 19:56
 - Depends on: PAOS-0028
 - Blocks: PAOS-0030
 - Source: PRD: дополнение Task Manager; screen specification
 - Short description: Проверить клавиатуру, контраст, responsive и все локализованные состояния
 - Technical value: Проверить клавиатуру, контраст, responsive и все локализованные состояния
 - Product value: Пользователь сохраняет доступ ко всем действиям с клавиатуры, на узком экране и в обеих локализациях.
-- Scope: tests/web/accessibility; docs/web/accessibility
+- Scope: tests/web/accessibility; docs/web/accessibility; focused frontend CSS/modal/mobile focus/localized labels; own task and documentation sync
 - Non-goals: Глобальные permissions, внешняя публикация и несвязанный refactor
 - Expected result: Доступность, языки и темы доступна в соответствующем этапе
 - Acceptance criteria: Все 26 описанных экранов и новые task tabs проверены в RU/EN × Light/Dark; keyboard Kanban/workflow и длинные значения не теряют действия
@@ -1632,24 +1632,24 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Complexity: medium/high, уточнить после discovery
 - Estimated execution time: 12:00:00 (предварительно)
 - Agents: architect, builder, tester
-- Skills: implementation-planner; task-matching implementation/verification skills selected at start
-- Output artifacts: tests/web/accessibility; docs/web/accessibility
-- Next step: Завершить зависимости, затем уточнить tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Skills: implementation-planner; react-best-practices; frontend-testing-debugging
+- Output artifacts: EVALS.md; PLAN.md; REQUIREMENTS.md; RUNLOG.md; TEST.md; apps/web/README.md; apps/web/src/design/app.css; apps/web/src/design/theme.css; apps/web/src/features/artifacts/ArtifactExplorer.tsx; apps/web/src/features/tasks/TaskManager.tsx; apps/web/src/features/team/TeamManager.tsx; apps/web/src/features/workflows/WorkflowManager.tsx; apps/web/src/ui/App.tsx; docs/sources/registry.en.md; docs/sources/registry.md; mkdocs.yml; tests/product_agent_os/test_product_agent_os_docs.py; apps/web/src/ui/Modal.tsx; docs/web/accessibility.en.md; docs/web/accessibility.md; research/product-agent-os-web-m4-0029-execution-2026-11-12.md; tests/web/accessibility/audit.mts; tests/web/accessibility/browser-acceptance.mts; research/product-agent-os-web-task-manager-plan-2026-11-09.md; research/product-agent-os-web-task-manager-task-group-2026-11-09.json; research/product-agent-os-web-m4-0029-results-2026-11-12.json
+- Next step: Следующая PAOS-0030 «Упаковка и пилот». Dependencies0029/0046 implemented; пилот согласуется отдельно и AUTH-G1–G6 повторно сверяются. Остальные55cards/JSON values, estimates/order/groups сохранены.
+- Actual time: Measured scope start12-11-2026 18:54:48MSK; end 12-11-2026 19:56MSK. Active duration not separately instrumented; duration=null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
-- Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
+- Affected files: EVALS.md (modify); PLAN.md (modify); REQUIREMENTS.md (modify); RUNLOG.md (modify); TEST.md (modify); apps/web/README.md (modify); apps/web/src/design/app.css (modify); apps/web/src/design/theme.css (modify); apps/web/src/features/artifacts/ArtifactExplorer.tsx (modify); apps/web/src/features/tasks/TaskManager.tsx (modify); apps/web/src/features/team/TeamManager.tsx (modify); apps/web/src/features/workflows/WorkflowManager.tsx (modify); apps/web/src/ui/App.tsx (modify); docs/sources/registry.en.md (modify); docs/sources/registry.md (modify); mkdocs.yml (modify); tests/product_agent_os/test_product_agent_os_docs.py (modify); apps/web/src/ui/Modal.tsx (create); docs/web/accessibility.en.md (create); docs/web/accessibility.md (create); research/product-agent-os-web-m4-0029-execution-2026-11-12.md (create); tests/web/accessibility/audit.mts (create); tests/web/accessibility/browser-acceptance.mts (create); research/product-agent-os-web-task-manager-plan-2026-11-09.md (modify); research/product-agent-os-web-task-manager-task-group-2026-11-09.json (modify); research/product-agent-os-web-m4-0029-results-2026-11-12.json (create)
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: S01–S26 и8task tabs проверены в RU/EN×Light/Dark при1440/320CSSpx; исправлены contrast borders/primary hover, native modal focus/Escape/restore, mobile disclosure, transcript/Kanban focus, long reflow, labels и stuck Loading. Keyboard task transition/workflow save, empty/loading/error/recovery/System/forced colors passed.
+- Files touched / work locations: EVALS.md; PLAN.md; REQUIREMENTS.md; RUNLOG.md; TEST.md; apps/web/README.md; apps/web/src/design/app.css; apps/web/src/design/theme.css; apps/web/src/features/artifacts/ArtifactExplorer.tsx; apps/web/src/features/tasks/TaskManager.tsx; apps/web/src/features/team/TeamManager.tsx; apps/web/src/features/workflows/WorkflowManager.tsx; apps/web/src/ui/App.tsx; docs/sources/registry.en.md; docs/sources/registry.md; mkdocs.yml; tests/product_agent_os/test_product_agent_os_docs.py; apps/web/src/ui/Modal.tsx; docs/web/accessibility.en.md; docs/web/accessibility.md; research/product-agent-os-web-m4-0029-execution-2026-11-12.md; tests/web/accessibility/audit.mts; tests/web/accessibility/browser-acceptance.mts; research/product-agent-os-web-task-manager-plan-2026-11-09.md; research/product-agent-os-web-task-manager-task-group-2026-11-09.json; research/product-agent-os-web-m4-0029-results-2026-11-12.json
+- Technical value delivered: Source-bound cross-screen a11y regression matrix, deterministic contrast/names/focus/reflow checks, unchanged business guards и input values.
+- Product value delivered: Действия доступны с клавиатуры и на узком экране; выбор языка/темы и recovery состояния сохраняют понятные подписи и доступ к формам.
+- Actual implementation date and time: 12-11-2026 19:56
+- Verification evidence: Current browser matrix1311/280views, core136/20, states289/60; full Web473 skip0, TS/build, strict MkDocs, docs/lifecycle/validators. Exact receipts/hashes/failures и local-only limits: research/product-agent-os-web-m4-0029-execution-2026-11-12.md и results JSON.
+- Residual risks: Bounded local technical acceptance; no manual screen-reader/full WCAG certification. RGB/native paint/placeholder/zoom scope explicit; no provider/runtime changes. Bundle518.44kB warning; human/commercial/release отдельно. Legacy research matrix closure uses exact-card compatibility fallback after verified section-only docs sync, not coordinated completion receipt.
+- Follow-up: Следующая PAOS-0030 «Упаковка и пилот». Dependencies0029/0046 implemented; пилот согласуется отдельно и AUTH-G1–G6 повторно сверяются. Остальные55cards/JSON values, estimates/order/groups сохранены.
 
 ### Task `PAOS-0030`
 

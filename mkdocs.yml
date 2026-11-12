@@ -62,6 +62,7 @@ plugins:
             language: en
           nav:
             - Home: index.md
+            - Web accessibility: web/accessibility.md
             - Diagrams:
                 - Diagram Atlas: diagrams/index.md
                 - Architecture: diagrams/architecture.md
@@ -214,6 +215,7 @@ extra_javascript:
 
 nav:
   - Главная: index.md
+  - Доступность Web: web/accessibility.md
   - Диаграммы:
       - Обзор диаграмм: diagrams/index.md
       - Архитектура проекта: diagrams/architecture.md
