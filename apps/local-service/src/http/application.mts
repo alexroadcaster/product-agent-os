@@ -11,7 +11,10 @@ import { previewTaskImport, type ImportSourceInput } from '../import-export/prev
 import { createMigrationManager, type WriterInventory } from '../import-export/migration.mts';
 import { scanReadOnlyCatalogs } from './catalogs.mts';
 import {createSessionHistory} from '../sessions/service.mts';
+import {createArtifactCatalog} from '../artifacts/service.mts';
+import {createSkillGeneration} from '../team/skill-generation.mts';
 import {createTeamService} from '../team/service.mts';
+import {createCodeIndex} from '../code-index/service.mts';
 import type {AssetRoot} from '../team/sources.mts';
 import {startTeamGeneration,teamGenerationResult} from '../team/generation.mts';
 import { loadUiPreferences, saveUiPreferences } from '../../../web/src/design/preferences.ts';
@@ -63,6 +66,9 @@ export async function createLocalApplication(options: ApplicationOptions) {
   const { store, origin, instanceId, profileDirectory } = options;
   const sessionHistory=createSessionHistory(store);
   const team=createTeamService(store,options.assetRoots);
+  const codeIndex=createCodeIndex(store);
+  const artifacts=createArtifactCatalog(store,codeIndex);
+  const skillGeneration=createSkillGeneration(store,team,options.runtime);
   const gate = createSessionGate({ origin, instanceId });
   const migration = createMigrationManager({ store, profileDirectory,
     inventory: options.writerInventory ?? (async () => ({ complete: false, entries: [] })) });
@@ -194,6 +200,13 @@ export async function createLocalApplication(options: ApplicationOptions) {
       if (!route) fail('ROUTE_NOT_FOUND');
       const projectId = decodeURIComponent(route[1]);
       const project = await metadata(projectId);
+      const graphAction=path.slice(`/projects/${route[1]}/`.length);
+      if(graphAction==='graph/status'&&request.method==='GET')return json(await codeIndex.status(projectId));
+      if(graphAction==='graph/rebuild'&&request.method==='POST'){await body(request);return json(await codeIndex.rebuild(projectId));}
+      if(graphAction==='graph'&&request.method==='GET')return json(await codeIndex.graph(projectId,url.searchParams));
+      if(graphAction==='graph/source'&&request.method==='GET')return json(await codeIndex.source(projectId,url.searchParams));
+      const graphNode=/^graph\/nodes\/([^/]+)(\/impact)?$/.exec(graphAction);
+      if(graphNode&&request.method==='GET')return json(await codeIndex[graphNode[2]?'impact':'node'](projectId,decodeURIComponent(graphNode[1]),url.searchParams));
       const action = route[2] ?? '';
       if(action==='task-manager'&&request.method==='GET')return json(await taskManagerSnapshot(store,projectId));
       if(action==='task-manager/commands'&&request.method==='POST'){
@@ -240,6 +253,13 @@ export async function createLocalApplication(options: ApplicationOptions) {
         // Deliberate allowlist: navigating a run never exposes its lease, input or full instructions.
         return json({id:row.id,sessionId:run.sessionId??null,taskId:run.taskContext?.taskId??run.taskId??null,status:run.state??row.status,mode:run.mode??null,route:run.route??(row.data.appAgentRun?'codex_app_agent':null),startedAt:run.observedStartedAt??run.startedAt??null,endedAt:run.endedAt??null,assetPins:(run.assetPins??[]).map((p:any)=>({assetId:p.assetId,kind:p.kind,version:p.version,hash:p.hash})),workflow:run.workflowSnapshot?{ref:run.workflowSnapshot.ref,definitionHash:run.workflowSnapshot.definitionHash}:null,coverage:'partial',source:'persisted_runtime'});
       }
+      if(action==='team/skills/generation'&&request.method==='POST')return json(await skillGeneration.start(projectId,await body(request)));
+      const skillGenerationRoute=/^team\/skills\/generation\/([^/]+)(?:\/(apply))?$/.exec(action);
+      if(skillGenerationRoute){const id=decodeURIComponent(skillGenerationRoute[1]);if(request.method==='GET'&&!skillGenerationRoute[2])return json(await skillGeneration.result(projectId,id));if(request.method==='POST'&&skillGenerationRoute[2]==='apply'){if(migration.frozen(projectId))fail('MIGRATION_BUSY');return json(await skillGeneration.apply(projectId,principal.actorId,id,await body(request)));}}
+      if(action==='artifacts'&&request.method==='GET')return json(await artifacts.catalog(projectId,url.searchParams));
+      if(action==='artifacts/proposals/preview'&&request.method==='POST')return json(await artifacts.preview(projectId,await body(request)));
+      if(action==='artifacts/proposals'&&request.method==='POST'){if(migration.frozen(projectId))fail('MIGRATION_BUSY');return json(await artifacts.saveProposal(projectId,principal.actorId,await body(request)));}
+      const artifactRoute=/^artifacts\/([^/]+)$/.exec(action);if(artifactRoute&&request.method==='GET')return json(await artifacts.read(projectId,decodeURIComponent(artifactRoute[1]),url.searchParams.get('version')??undefined));
       if(action==='team/catalog'&&request.method==='GET')return json(await team.catalog(projectId));
       if(action==='team/generation'&&request.method==='POST')return json(await startTeamGeneration(store,options.runtime,projectId,await body(request)));
       if(action.startsWith('team/generation/')&&request.method==='GET')return json(await teamGenerationResult(store,team,projectId,decodeURIComponent(action.slice('team/generation/'.length))));

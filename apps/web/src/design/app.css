@@ -627,3 +627,10 @@ main:focus {
     scroll-behavior: auto !important;
   }
 }
+
+/* Keep bounded graph geometry inside the existing responsive feature surface. */
+.code-graph-canvas { max-height: 540px; overflow: auto; border: 1px solid var(--border); border-radius: 8px; }
+.code-graph-canvas svg { width: 100%; min-width: 320px; display: block; }
+.code-graph-canvas g[role=button] { cursor: pointer; }
+.code-graph-canvas g[role=button]:focus { outline: 2px solid currentColor; }
+.m2-manager fieldset { min-width: 0; }

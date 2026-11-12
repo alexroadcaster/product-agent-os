@@ -1,5 +1,8 @@
 # Product-Agent OS Web — план полноценного Task Manager
 
+Текущий M2,12-11-2026: **26/26 implemented в local App-active technical scope**. Последние PAOS-0019/0020/0021/0022/0027: skills по требованиям/описанию, scoped code index/graph/impact, документы/checks/search. Web398/398, browser37, actual App29/2jobs, independent7findings fixed. [Текущие проверки и пределы](product-agent-os-web-m2c-execution-2026-11-12.md), [results](product-agent-os-web-m2c-results-2026-11-12.json). Все56 карточек/12групп/estimates сохранены; M3/T1, human/commercial/release отдельно. Ниже dated receipts — исторические срезы, не текущая очередь.
+
+
 Текущий M2, 11-11-2026: **10/26 implemented** — PAOS-0031/0032/0033/0005/0006/0007/0008/0034/0038/0035, только выбранная владельцем очередь. Остальные16, включая PAOS-0036, planned. Web345/345, browser88, actual App/native27 и independent closed_allowed; [проверки и пределы](product-agent-os-web-m2-execution-2026-11-11.md), [results](product-agent-os-web-m2-results-2026-11-11.json). Полные56 cards/12groups/estimates сохранены. Ниже M1 receipts и старые срезы сохраняют исходный provenance; commercial/human/release отдельно.
 
 Актуализация 11-11-2026: owner-default runtime теперь Codex App agents без API key. Нормативное уточнение App-dependent acceptance — в addendum в конце этого файла; последовательность 56 задач, 12 групп и оценки сохранены.
@@ -1156,14 +1159,14 @@ Rollback будущих изменений: versioned proposal, revision check, 
 ### Task `PAOS-0019`
 
 - Task: Генерация по требованиям и описанию
-- Status: planned
+- Status: implemented
 - Delivery stage: M2
 - Execution order: 41
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 12-11-2026 11:38
 - Depends on: PAOS-0017, PAOS-0018
 - Blocks: PAOS-0024
 - Source: PRD: дополнение Task Manager; screen specification
@@ -1181,34 +1184,34 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/local-service/src/skill-generation; apps/web/src/features/skills/generator
-- Next step: Завершить зависимости, затем уточнить tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Next step: Выбранный scope завершён; M2 technical26/26. Следующая стадия M3 требует отдельного запроса.
+- Actual time: Общий cohort baseline12-11-2026 10:35:51 MSK; проверен 12-11-2026 11:38 MSK. Start/duration по отдельным карточкам не измерены, null сохранён.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
-- Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
+- Affected files: apps/local-service/src/team/skill-generation.mts; apps/local-service/src/runtime/app-agent-gateway.mts; apps/local-service/src/http/application.mts; apps/web/src/features/skills/SkillGenerator.tsx; apps/web/src/api/client.ts; apps/web/src/ui/App.tsx; tests/web/skill-generation-artifacts.test.mts; tests/web/single-window/m2c-app-acceptance.mts. Actual operations — matching JSON task.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Requirement-pinned или description-based App planning даёт editable SKILL.md с host requirement links; preview/explicit Apply; stable request/job/asset reuse; stale/invalid/no-gap/unavailable состояния явные.
+- Files touched / work locations: apps/local-service/src/team/skill-generation.mts; apps/local-service/src/runtime/app-agent-gateway.mts; apps/local-service/src/http/application.mts; apps/web/src/features/skills/SkillGenerator.tsx; apps/web/src/api/client.ts; apps/web/src/ui/App.tsx; tests/web/skill-generation-artifacts.test.mts; tests/web/single-window/m2c-app-acceptance.mts.
+- Technical value delivered: Предложить недостающие навыки проекта и сгенерировать draft; bounded source/authority/revision contracts проверены.
+- Product value delivered: Пользователь получает недостающие навыки из требований проекта или собственного описания.
+- Actual implementation date and time: 12-11-2026 11:38
+- Verification evidence: Web398/398 skip0; focused generation/artifacts10 и graph13; browser37; actual App planning29/2jobs; native exact cached candidate/default3modes; build/typecheck, Python1450 skip1, fixtures91/transcripts26, independent7findings fixed + root verification. [Evidence](product-agent-os-web-m2c-execution-2026-11-12.md), [results](product-agent-os-web-m2c-results-2026-11-12.json).
+- Residual risks: Lexical subset без полного type/runtime proof; bounded derived snapshots/rebuild; available source/history coverage. Managed skill не native installation, document proposal staged-only. Installed npm Codex runtime_mismatch остаётся fail-closed; exact cached tuple квалифицирован отдельно. Human/commercial/release отдельно.
+- Follow-up: M2 technical26/26; M3/T1, AUTH-G1–G6/C46-01–08, PAOS-0030 и human/release acceptance не закрыты.
 
 ### Task `PAOS-0020`
 
 - Task: Индекс файлов и символов
-- Status: planned
+- Status: implemented
 - Delivery stage: M2
 - Execution order: 42
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 12-11-2026 11:38
 - Depends on: PAOS-0001
 - Blocks: PAOS-0021, PAOS-0022
 - Source: PRD: дополнение Task Manager; screen specification
@@ -1226,34 +1229,34 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: graph-cockpit-engineer, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/local-service/src/code-index; packages/contracts/graph
-- Next step: Завершить зависимости, затем уточнить tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Next step: Выбранный scope завершён; M2 technical26/26. Следующая стадия M3 требует отдельного запроса.
+- Actual time: Общий cohort baseline12-11-2026 10:35:51 MSK; проверен 12-11-2026 11:38 MSK. Start/duration по отдельным карточкам не измерены, null сохранён.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
-- Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
+- Affected files: packages/contracts/graph/code-graph.ts; apps/local-service/src/code-index/sources.mts; apps/local-service/src/code-index/lexical.mts; apps/local-service/src/code-index/parser-worker.mts; apps/local-service/src/code-index/service.mts; apps/local-service/src/http/application.mts; tests/web/code-index.test.mts. Actual operations — matching JSON task.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Read-only bounded JS/TS AST lexical index с file/symbol/scope/namespace/UTF-16 anchor/revision; imports/calls/references и unsupported/dynamic/unresolved/parse-error coverage; immutable snapshots и checked source boundaries.
+- Files touched / work locations: packages/contracts/graph/code-graph.ts; apps/local-service/src/code-index/sources.mts; apps/local-service/src/code-index/lexical.mts; apps/local-service/src/code-index/parser-worker.mts; apps/local-service/src/code-index/service.mts; apps/local-service/src/http/application.mts; tests/web/code-index.test.mts.
+- Technical value delivered: Типизированные зависимости файлов и переменных с source anchors; bounded source/authority/revision contracts проверены.
+- Product value delivered: Пользователь получает понятную основу карты зависимостей с явными пробелами анализа.
+- Actual implementation date and time: 12-11-2026 11:38
+- Verification evidence: Web398/398 skip0; focused generation/artifacts10 и graph13; browser37; actual App planning29/2jobs; native exact cached candidate/default3modes; build/typecheck, Python1450 skip1, fixtures91/transcripts26, independent7findings fixed + root verification. [Evidence](product-agent-os-web-m2c-execution-2026-11-12.md), [results](product-agent-os-web-m2c-results-2026-11-12.json).
+- Residual risks: Lexical subset без полного type/runtime proof; bounded derived snapshots/rebuild; available source/history coverage. Managed skill не native installation, document proposal staged-only. Installed npm Codex runtime_mismatch остаётся fail-closed; exact cached tuple квалифицирован отдельно. Human/commercial/release отдельно.
+- Follow-up: M2 technical26/26; M3/T1, AUTH-G1–G6/C46-01–08, PAOS-0030 и human/release acceptance не закрыты.
 
 ### Task `PAOS-0021`
 
 - Task: Граф и навигация к исходникам
-- Status: planned
+- Status: implemented
 - Delivery stage: M2
 - Execution order: 43
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 12-11-2026 11:38
 - Depends on: PAOS-0004, PAOS-0020
 - Blocks: PAOS-0022
 - Source: PRD: дополнение Task Manager; screen specification
@@ -1271,34 +1274,34 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: graph-cockpit-engineer, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/web/src/features/graph
-- Next step: Завершить зависимости, затем уточнить tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Next step: Выбранный scope завершён; M2 technical26/26. Следующая стадия M3 требует отдельного запроса.
+- Actual time: Общий cohort baseline12-11-2026 10:35:51 MSK; проверен 12-11-2026 11:38 MSK. Start/duration по отдельным карточкам не измерены, null сохранён.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
-- Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
+- Affected files: packages/contracts/graph/code-graph.ts; apps/local-service/src/code-index/service.mts; apps/web/src/features/graph/GraphExplorer.tsx; apps/web/src/api/client.ts; apps/web/src/ui/App.tsx; apps/web/src/design/app.css; tests/web/code-index.test.mts; tests/web/single-window/m2c-browser-acceptance.mts. Actual operations — matching JSON task.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Bounded SVG и keyboard list, query/edge types/depth/neighbors/pages, source/impact inspector; context endpoints сохраняют cross-page edges, stale и late responses не маскируются как fresh.
+- Files touched / work locations: packages/contracts/graph/code-graph.ts; apps/local-service/src/code-index/service.mts; apps/web/src/features/graph/GraphExplorer.tsx; apps/web/src/api/client.ts; apps/web/src/ui/App.tsx; apps/web/src/design/app.css; tests/web/code-index.test.mts; tests/web/single-window/m2c-browser-acceptance.mts.
+- Technical value delivered: Фильтровать graph и раскрывать соседей выбранного узла; bounded source/authority/revision contracts проверены.
+- Product value delivered: Пользователь исследует структуру проекта и быстро находит связанные файлы без чтения всех папок.
+- Actual implementation date and time: 12-11-2026 11:38
+- Verification evidence: Web398/398 skip0; focused generation/artifacts10 и graph13; browser37; actual App planning29/2jobs; native exact cached candidate/default3modes; build/typecheck, Python1450 skip1, fixtures91/transcripts26, independent7findings fixed + root verification. [Evidence](product-agent-os-web-m2c-execution-2026-11-12.md), [results](product-agent-os-web-m2c-results-2026-11-12.json).
+- Residual risks: Lexical subset без полного type/runtime proof; bounded derived snapshots/rebuild; available source/history coverage. Managed skill не native installation, document proposal staged-only. Installed npm Codex runtime_mismatch остаётся fail-closed; exact cached tuple квалифицирован отдельно. Human/commercial/release отдельно.
+- Follow-up: M2 technical26/26; M3/T1, AUTH-G1–G6/C46-01–08, PAOS-0030 и human/release acceptance не закрыты.
 
 ### Task `PAOS-0022`
 
 - Task: Влияние переменной и изменения
-- Status: planned
+- Status: implemented
 - Delivery stage: M2
 - Execution order: 44
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 12-11-2026 11:38
 - Depends on: PAOS-0007, PAOS-0020, PAOS-0021
 - Blocks: PAOS-0028
 - Source: PRD: дополнение Task Manager; screen specification
@@ -1316,22 +1319,22 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: graph-cockpit-engineer, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/local-service/src/impact; apps/web/src/features/graph/inspector
-- Next step: Завершить зависимости, затем уточнить tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Next step: Выбранный scope завершён; M2 technical26/26. Следующая стадия M3 требует отдельного запроса.
+- Actual time: Общий cohort baseline12-11-2026 10:35:51 MSK; проверен 12-11-2026 11:38 MSK. Start/duration по отдельным карточкам не измерены, null сохранён.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
-- Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
+- Affected files: apps/local-service/src/code-index/lexical.mts; apps/local-service/src/code-index/service.mts; apps/local-service/src/impact/service.mts; apps/web/src/features/graph/GraphExplorer.tsx; tests/web/code-index.test.mts. Actual operations — matching JSON task.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Shadowed bindings не сливаются; define/read/write/reference/call occurrences и explicit task file references с matching/stale/unknown pins; paged impact и ограничения lexical subset показаны.
+- Files touched / work locations: apps/local-service/src/code-index/lexical.mts; apps/local-service/src/code-index/service.mts; apps/local-service/src/impact/service.mts; apps/web/src/features/graph/GraphExplorer.tsx; tests/web/code-index.test.mts.
+- Technical value delivered: Показать define/read/write/reference по scope и задачам; bounded source/authority/revision contracts проверены.
+- Product value delivered: Пользователь видит, какие места могут быть затронуты изменением конкретной переменной.
+- Actual implementation date and time: 12-11-2026 11:38
+- Verification evidence: Web398/398 skip0; focused generation/artifacts10 и graph13; browser37; actual App planning29/2jobs; native exact cached candidate/default3modes; build/typecheck, Python1450 skip1, fixtures91/transcripts26, independent7findings fixed + root verification. [Evidence](product-agent-os-web-m2c-execution-2026-11-12.md), [results](product-agent-os-web-m2c-results-2026-11-12.json).
+- Residual risks: Lexical subset без полного type/runtime proof; bounded derived snapshots/rebuild; available source/history coverage. Managed skill не native installation, document proposal staged-only. Installed npm Codex runtime_mismatch остаётся fail-closed; exact cached tuple квалифицирован отдельно. Human/commercial/release отдельно.
+- Follow-up: M2 technical26/26; M3/T1, AUTH-G1–G6/C46-01–08, PAOS-0030 и human/release acceptance не закрыты.
 
 ### Task `PAOS-0023`
 
@@ -1516,14 +1519,14 @@ Rollback будущих изменений: versioned proposal, revision check, 
 ### Task `PAOS-0027`
 
 - Task: Документы, проверки и общий поиск
-- Status: planned
+- Status: implemented
 - Delivery stage: M2
 - Execution order: 45
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 12-11-2026 11:38
 - Depends on: PAOS-0007, PAOS-0008, PAOS-0011
 - Blocks: PAOS-0028
 - Source: PRD: дополнение Task Manager; screen specification
@@ -1541,22 +1544,22 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/web/src/features/documents; apps/web/src/features/checks; apps/web/src/features/search
-- Next step: Завершить зависимости, затем уточнить tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Next step: Выбранный scope завершён; M2 technical26/26. Следующая стадия M3 требует отдельного запроса.
+- Actual time: Общий cohort baseline12-11-2026 10:35:51 MSK; проверен 12-11-2026 11:38 MSK. Start/duration по отдельным карточкам не измерены, null сохранён.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
-- Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
+- Affected files: packages/contracts/artifacts/catalog.ts; apps/local-service/src/artifacts/service.mts; apps/local-service/src/http/application.mts; apps/web/src/features/artifacts/ArtifactExplorer.tsx; apps/web/src/api/client.ts; apps/web/src/ui/App.tsx; tests/web/skill-generation-artifacts.test.mts; tests/web/single-window/m2c-browser-acceptance.mts. Actual operations — matching JSON task.
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Version/time-pinned document/check/acceptance catalog и reader/outline/anchors; global search включает доступные sources/symbols; safe staged document proposals сохраняют оригинал; checks не заменяют owner acceptance.
+- Files touched / work locations: packages/contracts/artifacts/catalog.ts; apps/local-service/src/artifacts/service.mts; apps/local-service/src/http/application.mts; apps/web/src/features/artifacts/ArtifactExplorer.tsx; apps/web/src/api/client.ts; apps/web/src/ui/App.tsx; tests/web/skill-generation-artifacts.test.mts; tests/web/single-window/m2c-browser-acceptance.mts.
+- Technical value delivered: Объединить артефакты и результаты с задачами и источниками; bounded source/authority/revision contracts проверены.
+- Product value delivered: Пользователь находит планы и проверки прямо из задачи, не разбираясь в расположении Markdown.
+- Actual implementation date and time: 12-11-2026 11:38
+- Verification evidence: Web398/398 skip0; focused generation/artifacts10 и graph13; browser37; actual App planning29/2jobs; native exact cached candidate/default3modes; build/typecheck, Python1450 skip1, fixtures91/transcripts26, independent7findings fixed + root verification. [Evidence](product-agent-os-web-m2c-execution-2026-11-12.md), [results](product-agent-os-web-m2c-results-2026-11-12.json).
+- Residual risks: Lexical subset без полного type/runtime proof; bounded derived snapshots/rebuild; available source/history coverage. Managed skill не native installation, document proposal staged-only. Installed npm Codex runtime_mismatch остаётся fail-closed; exact cached tuple квалифицирован отдельно. Human/commercial/release отдельно.
+- Follow-up: M2 technical26/26; M3/T1, AUTH-G1–G6/C46-01–08, PAOS-0030 и human/release acceptance не закрыты.
 
 ### Task `PAOS-0028`
 

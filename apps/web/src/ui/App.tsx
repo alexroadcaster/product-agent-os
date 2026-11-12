@@ -30,6 +30,9 @@ import { createLatestRequest } from "../api/latest-request.ts";
 import { visibleAssistantDrafts } from "../api/visible-drafts.ts";
 import { ConnectionControls } from "./ConnectionControls.tsx";
 import { TaskRelations } from "./TaskRelations.tsx";
+import {GraphExplorer} from '../features/graph/GraphExplorer.tsx';
+import {SkillGenerator} from '../features/skills/SkillGenerator.tsx';
+import {ArtifactExplorer} from '../features/artifacts/ArtifactExplorer.tsx';
 import {WorkflowManager} from '../features/workflows/WorkflowManager.tsx';
 import {SessionsCatalog} from '../features/sessions/SessionsCatalog.tsx';
 import {TeamManager} from '../features/team/TeamManager.tsx';
@@ -104,6 +107,7 @@ export function App() {
   const [linkedSession,setLinkedSession]=useState<{projectId:string;sessionId:string;messageId?:string}|null>(null);
   const [linkedTask,setLinkedTask]=useState<{projectId:string;id:string;tab?:"summary"|"files"}|null>(null);
   const [linkedAsset,setLinkedAsset]=useState<{projectId:string;id:string;kind:"agent"|"skill"}|null>(null);
+  const [linkedGraph,setLinkedGraph]=useState<{projectId:string;id:string}|null>(null);
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
@@ -332,9 +336,9 @@ export function App() {
               onOpenTask={(id,tab)=>{setLinkedTask({projectId,id,tab});setSection('tasks');}}
               onOpenAgent={id=>{setLinkedAsset({projectId,id,kind:'agent'});setSection('agents');}}/>
           ) : section === "search" ? (
-            <Search key={projectId} projectId={projectId} t={t} />
+            <ArtifactExplorer key={`${projectId}:all`} api={api} projectId={projectId} locale={preferences.locale} mode="all" onOpenTask={id=>{setLinkedTask({projectId,id});setSection('tasks');}} onOpenSession={sessionId=>{setLinkedSession({projectId,sessionId});setSection('sessions');}} onOpenGraph={id=>{setLinkedGraph({projectId,id});setSection('projectMap');}}/>
           ) : section === "checks" ? (
-            <Checks key={projectId} projectId={projectId} t={t} />
+            <ArtifactExplorer key={`${projectId}:checks`} api={api} projectId={projectId} locale={preferences.locale} mode="checks" onOpenTask={id=>{setLinkedTask({projectId,id});setSection('tasks');}} onOpenSession={sessionId=>{setLinkedSession({projectId,sessionId});setSection('sessions');}} onOpenGraph={id=>{setLinkedGraph({projectId,id});setSection('projectMap');}}/>
           ) : section === "import" ? (
             <ImportTasks
               key={projectId}
@@ -345,21 +349,15 @@ export function App() {
           ) : section === "backup" ? (
             <Backup key={projectId} api={api} projectId={projectId} t={t} />
           ) : section === "documents" ? (
-            <Sources key={projectId} api={api} projectId={projectId} t={t} />
+            <ArtifactExplorer key={`${projectId}:documents`} api={api} projectId={projectId} locale={preferences.locale} mode="documents" onOpenTask={id=>{setLinkedTask({projectId,id});setSection('tasks');}} onOpenSession={sessionId=>{setLinkedSession({projectId,sessionId});setSection('sessions');}} onOpenGraph={id=>{setLinkedGraph({projectId,id});setSection('projectMap');}}/>
           ) : section === "agents" || section === "skills" ? (
-            <TeamManager key={`${projectId}:${section}`} api={api} projectId={projectId} kind={section==='agents'?'agent':'skill'} locale={preferences.locale}
+            <><TeamManager key={`${projectId}:${section}`} api={api} projectId={projectId} kind={section==='agents'?'agent':'skill'} locale={preferences.locale}
               initialAssetId={linkedAsset?.projectId===projectId&&linkedAsset.kind===(section==='agents'?'agent':'skill')?linkedAsset.id:undefined}
               onOpenAsset={(kind,id)=>{setLinkedAsset({projectId,id,kind});setSection(kind==='agent'?'agents':'skills');}}
               onOpenSession={sessionId=>{setLinkedSession({projectId,sessionId});setSection('sessions');}}
-              onOpenTask={id=>{setLinkedTask({projectId,id});setSection('tasks');}}/>
+              onOpenTask={id=>{setLinkedTask({projectId,id});setSection('tasks');}}/>{section==='skills'&&<SkillGenerator key={projectId} api={api} projectId={projectId} locale={preferences.locale} onOpenAsset={(kind,id)=>{setLinkedAsset({projectId,id,kind});setSection(kind==='skill'?'skills':'agents');}} onOpenSession={sessionId=>{setLinkedSession({projectId,sessionId});setSection('sessions');}}/>}</>
           ) : section === "projectMap" ? (
-            <Catalog
-              key={`${projectId}:${section}`}
-              api={api}
-              projectId={projectId}
-              kind="graph"
-              t={t}
-            />
+            <GraphExplorer key={projectId} api={api} projectId={projectId} locale={preferences.locale} initialNodeId={linkedGraph?.projectId===projectId?linkedGraph.id:undefined} onOpenTask={id=>{setLinkedTask({projectId,id});setSection('tasks');}}/>
           ) : section === "overview" ? (
             <Overview
               projectId={projectId}

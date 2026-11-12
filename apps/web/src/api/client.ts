@@ -170,6 +170,20 @@ export type ImportPreview = {
   blocked: { sourceId: string; reasons: string[] }[];
 };
 export interface M1Api {
+  graphStatus(projectId:string):Promise<import('../../../../packages/contracts/graph/code-graph.ts').GraphStatus>;
+  rebuildGraph(projectId:string):Promise<import('../../../../packages/contracts/graph/code-graph.ts').GraphStatus>;
+  graphPage(projectId:string,query:Record<string,string|number>):Promise<import('../../../../packages/contracts/graph/code-graph.ts').GraphPage>;
+  graphNode(projectId:string,id:string,revision:string):Promise<import('../../../../packages/contracts/graph/code-graph.ts').GraphNodeDetail>;
+  graphImpact(projectId:string,id:string,query:Record<string,string|number>):Promise<import('../../../../packages/contracts/graph/code-graph.ts').GraphImpact>;
+  graphSource(projectId:string,query:Record<string,string|number>):Promise<import('../../../../packages/contracts/graph/code-graph.ts').GraphSourceExcerpt>;
+  artifactCatalog(projectId:string,query:Record<string,string|number>):Promise<import('../../../../packages/contracts/artifacts/catalog.ts').ArtifactPage>;
+  artifactDocument(projectId:string,id:string,version?:string):Promise<import('../../../../packages/contracts/artifacts/catalog.ts').ArtifactDocument>;
+  previewDocumentProposal(projectId:string,input:Record<string,unknown>):Promise<any>;
+  saveDocumentProposal(projectId:string,input:Record<string,unknown>,key?:string):Promise<any>;
+  startSkillGeneration(projectId:string,input:Record<string,unknown>):Promise<any>;
+  skillGeneration(projectId:string,id:string):Promise<any>;
+  applySkillGeneration(projectId:string,id:string,input:Record<string,unknown>):Promise<any>;
+
   sessionCatalog(projectId:string,query:Record<string,string|number>):Promise<unknown>;
   sessionSearch(projectId:string,query:Record<string,string|number>):Promise<unknown>;
   sessionTranscript(projectId:string,sessionId:string,query:Record<string,string|number>):Promise<unknown>;
@@ -403,6 +417,7 @@ export function createHttpApi(fetcher: typeof fetch = fetch): M1Api {
     if (response.status === 204) return undefined as T;
     return response.json() as Promise<T>;
   }
+  const params=(q:Record<string,string|number>)=>new URLSearchParams(Object.entries(q).map(([k,v])=>[k,String(v)]));
   const projectPath = (id: string) => `/projects/${encodeURIComponent(id)}`;
   function authority(projectId: string, revision: number) {
     if (!epochs.has(projectId))
@@ -430,6 +445,19 @@ export function createHttpApi(fetcher: typeof fetch = fetch): M1Api {
     teamMetrics:(id,from,to)=>request(`${projectPath(id)}/team/metrics?${new URLSearchParams({from,to})}`),
     startTeamGeneration:(id,input)=>request(`${projectPath(id)}/team/generation`,input),
     teamGeneration:(id,generation)=>request(`${projectPath(id)}/team/generation/${encodeURIComponent(generation)}`),
+    graphStatus:id=>request(`${projectPath(id)}/graph/status`),
+    rebuildGraph:id=>request(`${projectPath(id)}/graph/rebuild`,{}),
+    graphPage:(id,q)=>request(`${projectPath(id)}/graph?${params(q)}`),
+    graphNode:(id,node,revision)=>request(`${projectPath(id)}/graph/nodes/${encodeURIComponent(node)}?${params({revision})}`),
+    graphImpact:(id,node,q)=>request(`${projectPath(id)}/graph/nodes/${encodeURIComponent(node)}/impact?${params(q)}`),
+    graphSource:(id,q)=>request(`${projectPath(id)}/graph/source?${params(q)}`),
+    artifactCatalog:(id,q)=>request(`${projectPath(id)}/artifacts?${params(q)}`),
+    artifactDocument:(id,document,version)=>request(`${projectPath(id)}/artifacts/${encodeURIComponent(document)}${version?'?'+params({version}):''}`),
+    previewDocumentProposal:(id,input)=>request(`${projectPath(id)}/artifacts/proposals/preview`,input),
+    saveDocumentProposal:(id,input,key=crypto.randomUUID())=>request(`${projectPath(id)}/artifacts/proposals`,{...input,...authority(id,0),epoch:epochs.get(id),idempotencyKey:key}),
+    startSkillGeneration:(id,input)=>request(`${projectPath(id)}/team/skills/generation`,input),
+    skillGeneration:(id,job)=>request(`${projectPath(id)}/team/skills/generation/${encodeURIComponent(job)}`),
+    applySkillGeneration:(id,job,input)=>request(`${projectPath(id)}/team/skills/generation/${encodeURIComponent(job)}/apply`,{...input,...authority(id,0),epoch:epochs.get(id)}),
     taskManager:(projectId,signal)=>request(`${projectPath(projectId)}/task-manager`,undefined,'GET',signal),
     stopPendingLink:(projectId,linkId)=>request(`${projectPath(projectId)}/task-manager/links/${encodeURIComponent(linkId)}/stop`,{}),
     taskManagerCommand:(projectId,input,idempotencyKey=crypto.randomUUID())=>{

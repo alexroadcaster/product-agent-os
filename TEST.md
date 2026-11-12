@@ -22,7 +22,7 @@ G8 commands: `python -B -m unittest discover -s tests -p "test_*.py" -q`; focuse
 
 ## Проверки Web M1 — актуальный маршрут 2026-11-10
 
-Текущий M2: `npm run test:web-m1`, `npm run check:web-m1`, `npm run build:web`; native fixtures используют process-local workspace TEMP/TMP. Новые runners: `tests/web/single-window/m2b-browser-acceptance.mts --synthetic-browser` и `m2b-app-acceptance.mts --actual-app-m2b`, absolute installed paths/disposable synthetic roots. Manifest exact pin обязателен. [M2b evidence](research/product-agent-os-web-m2b-execution-2026-11-12.md) владеет Web375/browser51/App49/native3mode receipts/hashes/failures. [first10 M2](research/product-agent-os-web-m2-execution-2026-11-11.md) сохраняет свой provenance; docs/lifecycle/templates/hooks/checker/matrix/diff gates обязательны. [PAOS-0046 review](research/product-agent-os-web-commercial-review-2026-11-11.md) сохраняет commercial_review_required.
+Текущий M2: `npm run test:web-m1`, `npm run check:web-m1`, `npm run build:web`; process-local workspace TEMP/TMP. Новые runners: `tests/web/single-window/m2c-browser-acceptance.mts --synthetic-browser` и `m2c-app-acceptance.mts --actual-app-m2c`, absolute installed paths/disposable roots. [M2c evidence](research/product-agent-os-web-m2c-execution-2026-11-12.md) владеет Web398/browser37/actual App29/2jobs/Python1450 skip1/fixtures91/transcripts26, hashes/failures/native3mode receipts. Exact manifest pin обязателен; current npm runtime_mismatch, cached fixture квалифицирован без installation. [M2b](research/product-agent-os-web-m2b-execution-2026-11-12.md) сохраняет provenance; docs/lifecycle/templates/hooks/checker/matrix/diff gates обязательны; [PAOS-0046 review](research/product-agent-os-web-commercial-review-2026-11-11.md) отдельно.
 
 Результат M1 до PAOS-0046: Актуальный follow-up 2026-11-11: `node --test tests/web/*.test.mts`306/306 skip0 (6.667s), `npm run check:web-m1`/build exit0; actual `app-broker-acceptance.mts --app-broker-browser`105, task-lifecycle-browser39, data-journeys-browser25, native default broker149162 и headless33 passed/cleaned. Current workload10k/100k/1k: search p95 278.714ms, ACK9.504ms, page28.453ms; coldGUI/event-visible/exact4core не измерены. Runtime manifest/compat6, exacttuple loader+drift fences passed. Старые geometry669/explicitfixture55 и plugin1450/91/26 имеют прежний provenance, не новый model proof. Без отдельного provider/API key; [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md) владеет commands/hashes/RED/failed receipts и AC map.
 
@@ -45,6 +45,7 @@ Source status: local contract checks and isolated stdio observed / Web runtime q
 
 Live/provider/browser actions требуют применимой отдельной authority; их отсутствие — явный открытый gate, а не условный pass. Исторические проверки других направлений ниже не подтверждают Web M1. Текущие maintenance receipts: [аудит и архив control-plane](research/product-agent-os-control-plane-maintenance-2026-11-10.md).
 
+Прежние evidence refs: [source](research/product-agent-os-web-m2-execution-2026-11-11.md).
 
 ## PAOS-AUD-G7 — current-run verification, 2026-11-10
 

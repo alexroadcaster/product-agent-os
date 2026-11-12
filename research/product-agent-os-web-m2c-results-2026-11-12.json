@@ -1,0 +1,659 @@
+{
+  "schema_version": "paos_web_m2c_execution_v1",
+  "task_id": "PAOS-M2-generation-code-intelligence-search",
+  "task_ids": [
+    "PAOS-0019",
+    "PAOS-0020",
+    "PAOS-0021",
+    "PAOS-0022",
+    "PAOS-0027"
+  ],
+  "status": "implemented_locally_verified_app_active",
+  "verification_complete": true,
+  "technical_verification_complete": true,
+  "baseline_at": "2026-11-12T07:35:51.453500+00:00",
+  "updated_at": "2026-11-12T08:45:14.583362+00:00",
+  "source_hashes": {
+    "apps/local-service/src/artifacts/service.mts": "fb21d8694f21b0c0b3b8e63669ab16407d6d0191a4f51e101dbfad589052e77c",
+    "apps/local-service/src/code-index/lexical.mts": "d04d7f15d5fedfa3b8a2181bc69d1989cec2891e8b73b2b094c526f41d7e4db6",
+    "apps/local-service/src/code-index/parser-worker.mts": "3e0b0f232af52761396b3aefda1b48f20f77536737121f876bc0646c6a23f57a",
+    "apps/local-service/src/code-index/service.mts": "73c85eca890329047b6e4d91cddf13e515f1958244aada45380a885c39a3ecfa",
+    "apps/local-service/src/code-index/sources.mts": "103f6676cd0c4caf8765bbb69f82d814131591c11ba8650729e785addc2f08ec",
+    "apps/local-service/src/http/application.mts": "e83d50681a295060350bd7478a5e8839864d3d32d847d221809ba3d254b4400f",
+    "apps/local-service/src/impact/service.mts": "2d74a1dd84ca41485bec222496e7b477a6e6b5ad461ad78a694785dec5f4a7c9",
+    "apps/local-service/src/runtime/app-agent-gateway.mts": "f800b7f502f492353b69ac625a5702bc89ae765f78eda108fbad0e8f8aefc210",
+    "apps/local-service/src/team/skill-generation.mts": "d620317817ea43500d4442ede3dea4fcb10f20fa208c1467b646cce96bae1c92",
+    "apps/web/src/api/client.ts": "d66abbc955203141004d3618e5a7825bb9217078d8dc220ca957666463ea2b99",
+    "apps/web/src/design/app.css": "7d9cdda3255ae807be8c9dd179e7d5df046cfb2dcdc01547a5ed1242b86533c4",
+    "apps/web/src/features/artifacts/ArtifactExplorer.tsx": "d7eed44f0c11385ba9d466f3a1a1d09cad35ac0214e5a71eb25b9fff0978045a",
+    "apps/web/src/features/graph/GraphExplorer.tsx": "ef8b056ac6619dc4aa7a6872ee98f2d5ae0090dc9527493031f58198dc05ef0c",
+    "apps/web/src/features/skills/SkillGenerator.tsx": "40e9ac699f41165138cbc294a1d08d580a51d6df49c9acd696dad9160f998292",
+    "apps/web/src/ui/App.tsx": "a21816f9b6d985ef9c79ef4c798e26cf3c18567e7e253b6ffd6e70336d975485",
+    "packages/contracts/artifacts/catalog.ts": "dfd0e031b1d92be485fe150d7071ef69466ce48af6f9e4afbb16c55e5c7a966e",
+    "packages/contracts/graph/code-graph.ts": "6024322246ff0d23451f5f08b6cb70296cffd1235b88b5f3421f4d7d652dd9f9",
+    "packages/contracts/runtime/qualified-manifest.json": "203617b8245cd397bfb4109d31e198641c7d44dfc7378101758079f7ae062e00",
+    "tests/web/code-index.test.mts": "39faf891a5736f701f15b94d152f07cdaf5c4350d8e5c891dd0e8def279faa4a",
+    "tests/web/single-window/m2c-app-acceptance.mts": "13359d25dd1ecfd61e66f8560809d795e954f84f4ae01f0fdc0220275a5f2510",
+    "tests/web/single-window/m2c-browser-acceptance.mts": "f4d1950ff5bc05b585e912ce20836e97a54a624408e0bdf71ab42967ce6d137a",
+    "tests/web/skill-generation-artifacts.test.mts": "884370fda8e699d485f26088b635c71166054ad1ed76a5e0c2f97e4f29d9f972"
+  },
+  "checks": {
+    "web": {
+      "command": "npm run test:web-m1",
+      "tests": 398,
+      "passed": 398,
+      "skipped": 0,
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2c/web-full-final.log"
+    },
+    "typecheck": {
+      "command": "npm run check:web-m1",
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2c/backend-types-final.log"
+    },
+    "build": {
+      "command": "npm run build:web",
+      "modules": 52,
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2c/ui-build-3.log"
+    },
+    "focused_generation_artifacts": {
+      "command": "node --test tests/web/skill-generation-artifacts.test.mts",
+      "tests": 10,
+      "passed": 10,
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2c/generation-artifacts-green-5.log"
+    },
+    "python": {
+      "command": "python -B -m unittest discover -s tests -p 'test_*.py' -q",
+      "tests": 1450,
+      "skipped": 1,
+      "elapsed_seconds": 1582.011,
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2c/full-unittest.log"
+    },
+    "fixtures": {
+      "command": "python plugins/product-agent-os/scripts/run_fixture_eval.py",
+      "cases": 91,
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2c/fixture-eval.log"
+    },
+    "transcripts": {
+      "command": "python plugins/product-agent-os/scripts/run_transcript_eval.py",
+      "cases": 26,
+      "passed": 26,
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2c/transcript-eval.log"
+    },
+    "compatibility": {
+      "command": "python plugins/product-agent-os/scripts/validate_codex_compatibility.py",
+      "status": "compatible",
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2c/compatibility.log"
+    },
+    "docs_lifecycle_templates": {
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2c/docs-final.log",
+      "tests": 251,
+      "elapsed_seconds": 20.753,
+      "command": "python -B -m unittest tests.product_agent_os.test_product_agent_os_docs tests.product_agent_os.test_task_plan_lifecycle tests.product_agent_os.test_lifecycle_hooks tests.product_agent_os.test_infrastructure_templates -q"
+    },
+    "docs_structure": {
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2c/check-docs.log",
+      "command": "python tools/check_docs.py"
+    },
+    "matrix_validator": {
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2c/matrix-validator.log",
+      "command": "python plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-web-task-manager-plan-2026-11-09.md"
+    },
+    "hook_json": {
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2c/hook-json-validator.log",
+      "command": "python plugins/product-agent-os/scripts/validate_hooks.py .codex/hooks.json"
+    },
+    "hook_directory": {
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2c/hook-directory-validator.log",
+      "command": "python plugins/product-agent-os/scripts/validate_hooks.py .codex/hooks"
+    },
+    "diff_check": {
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2c/diff-check.log",
+      "command": "git diff --check"
+    },
+    "docs_post_evidence": {
+      "command": "python -B -m unittest tests.product_agent_os.test_product_agent_os_docs tests.product_agent_os.test_task_plan_lifecycle -q",
+      "tests": 113,
+      "elapsed_seconds": 9.278,
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2c/docs-post-evidence.log"
+    },
+    "docs_structure_final": {
+      "command": "python tools/check_docs.py",
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2c/check-docs-final.log"
+    },
+    "diff_check_final": {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2c/diff-check-final.log"
+    }
+  },
+  "browser": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "page_identity",
+        "passed": true
+      },
+      {
+        "name": "not_blank",
+        "passed": true
+      },
+      {
+        "name": "no_framework_overlay",
+        "passed": true
+      },
+      {
+        "name": "project_saved",
+        "passed": true
+      },
+      {
+        "name": "task_fixture",
+        "passed": true
+      },
+      {
+        "name": "index_fresh",
+        "passed": true
+      },
+      {
+        "name": "large_graph_indexed",
+        "passed": true
+      },
+      {
+        "name": "scope_search_ready",
+        "passed": true
+      },
+      {
+        "name": "same_name_scopes_distinct",
+        "passed": true
+      },
+      {
+        "name": "expand_clears_executed_query",
+        "passed": true
+      },
+      {
+        "name": "source_a_delayed",
+        "passed": true
+      },
+      {
+        "name": "old_source_not_shown_under_new_node",
+        "passed": true
+      },
+      {
+        "name": "pinned_source_excerpt",
+        "passed": true
+      },
+      {
+        "name": "explicit_task_link",
+        "passed": true
+      },
+      {
+        "name": "keyboard_graph_alternative",
+        "passed": true
+      },
+      {
+        "name": "graph_desktop_geometry",
+        "passed": true,
+        "detail": {
+          "w": 1440,
+          "s": 1440
+        }
+      },
+      {
+        "name": "stale_graph_visible",
+        "passed": true
+      },
+      {
+        "name": "rebuilt_revision_changed",
+        "passed": true
+      },
+      {
+        "name": "document_source_version_time",
+        "passed": true
+      },
+      {
+        "name": "secret_redacted_document",
+        "passed": true
+      },
+      {
+        "name": "unsafe_document_link_inert",
+        "passed": true
+      },
+      {
+        "name": "document_proposal_saved",
+        "passed": true
+      },
+      {
+        "name": "document_original_unchanged",
+        "passed": true
+      },
+      {
+        "name": "check_not_owner_acceptance",
+        "passed": true
+      },
+      {
+        "name": "check_does_not_close_task",
+        "passed": true
+      },
+      {
+        "name": "separate_rejection_visible",
+        "passed": true
+      },
+      {
+        "name": "global_symbol_results",
+        "passed": true
+      },
+      {
+        "name": "search_to_symbol_navigation",
+        "passed": true
+      },
+      {
+        "name": "app_unavailable_explicit",
+        "passed": true
+      },
+      {
+        "name": "no_silent_generated_skill",
+        "passed": true
+      },
+      {
+        "name": "graph_english_dark_geometry",
+        "passed": true,
+        "detail": {
+          "w": 1440,
+          "s": 1440
+        }
+      },
+      {
+        "name": "mobile_graph_settled",
+        "passed": true
+      },
+      {
+        "name": "graph_mobile_geometry",
+        "passed": true,
+        "detail": {
+          "w": 390,
+          "s": 390
+        }
+      },
+      {
+        "name": "documents_mobile_geometry",
+        "passed": true,
+        "detail": {
+          "w": 390,
+          "s": 390
+        }
+      },
+      {
+        "name": "skills_mobile_geometry",
+        "passed": true,
+        "detail": {
+          "w": 390,
+          "s": 390
+        }
+      },
+      {
+        "name": "no_page_errors",
+        "passed": true,
+        "detail": []
+      },
+      {
+        "name": "no_external_requests",
+        "passed": true
+      }
+    ],
+    "pageErrors": [],
+    "externalRequests": [],
+    "sourceHashes": {
+      "tests/web/single-window/m2c-browser-acceptance.mts": "f4d1950ff5bc05b585e912ce20836e97a54a624408e0bdf71ab42967ce6d137a",
+      "apps/web/src/ui/App.tsx": "a21816f9b6d985ef9c79ef4c798e26cf3c18567e7e253b6ffd6e70336d975485",
+      "apps/web/src/api/client.ts": "d66abbc955203141004d3618e5a7825bb9217078d8dc220ca957666463ea2b99",
+      "apps/web/src/features/graph/GraphExplorer.tsx": "ef8b056ac6619dc4aa7a6872ee98f2d5ae0090dc9527493031f58198dc05ef0c",
+      "apps/web/src/features/skills/SkillGenerator.tsx": "40e9ac699f41165138cbc294a1d08d580a51d6df49c9acd696dad9160f998292",
+      "apps/web/src/features/artifacts/ArtifactExplorer.tsx": "d7eed44f0c11385ba9d466f3a1a1d09cad35ac0214e5a71eb25b9fff0978045a",
+      "apps/local-service/src/code-index/service.mts": "73c85eca890329047b6e4d91cddf13e515f1958244aada45380a885c39a3ecfa",
+      "apps/local-service/src/artifacts/service.mts": "fb21d8694f21b0c0b3b8e63669ab16407d6d0191a4f51e101dbfad589052e77c",
+      "apps/web/dist/index.html": "d8cbebf0caf9a3e9c15fc1fbfa985709eab0086ea9c0970c19cb7f2db88a3916",
+      "apps/web/dist/assets/index-6ocZaMs-.css": "ceb159596ac2f91952bbbeab48933957480da03acae68d8383abdacc1c89a5b1",
+      "apps/web/dist/assets/index-DMJlJGd8.js": "6fcffec4feacc33095324d7569416143a3e24ccee34c5a79da7fcc4ddd518bac"
+    },
+    "fixtureCleaned": true,
+    "receipt": ".tmp/paos-m2c/browser-evidence-829eD8/result.json"
+  },
+  "actual_app": {
+    "status": "passed_actual_m2c_skill_planning",
+    "checks": [
+      {
+        "name": "page_identity",
+        "passed": true
+      },
+      {
+        "name": "project_saved",
+        "passed": true
+      },
+      {
+        "name": "keyless_route_default",
+        "passed": true
+      },
+      {
+        "name": "no_api_key_input",
+        "passed": true
+      },
+      {
+        "name": "app_channel_opened",
+        "passed": true
+      },
+      {
+        "name": "actual_app_worker_attached",
+        "passed": true
+      },
+      {
+        "name": "requirements_dispatch",
+        "passed": true
+      },
+      {
+        "name": "requirements_generation_completed",
+        "passed": true
+      },
+      {
+        "name": "requirements_draft_editable",
+        "passed": true
+      },
+      {
+        "name": "requirements_grounding_in_draft",
+        "passed": true
+      },
+      {
+        "name": "requirements_no_auto_apply",
+        "passed": true
+      },
+      {
+        "name": "requirements_reviewed_apply",
+        "passed": true
+      },
+      {
+        "name": "requirements_applied_state",
+        "passed": true
+      },
+      {
+        "name": "requirements_repeat_reuses_job",
+        "passed": true
+      },
+      {
+        "name": "requirements_repeat_no_duplicate_asset",
+        "passed": true
+      },
+      {
+        "name": "requirements_no_duplicate_job",
+        "passed": true
+      },
+      {
+        "name": "description_dispatch",
+        "passed": true
+      },
+      {
+        "name": "description_generation_completed",
+        "passed": true
+      },
+      {
+        "name": "description_draft_editable",
+        "passed": true
+      },
+      {
+        "name": "description_grounding_in_draft",
+        "passed": true
+      },
+      {
+        "name": "description_no_auto_apply",
+        "passed": true
+      },
+      {
+        "name": "description_reviewed_apply",
+        "passed": true
+      },
+      {
+        "name": "description_applied_state",
+        "passed": true
+      },
+      {
+        "name": "description_repeat_reuses_job",
+        "passed": true
+      },
+      {
+        "name": "description_repeat_no_duplicate_asset",
+        "passed": true
+      },
+      {
+        "name": "description_no_duplicate_job",
+        "passed": true
+      },
+      {
+        "name": "no_browser_errors",
+        "passed": true
+      },
+      {
+        "name": "no_external_browser_requests",
+        "passed": true
+      },
+      {
+        "name": "no_native_operations",
+        "passed": true
+      }
+    ],
+    "runs": [
+      {
+        "id": "app-run-e82c823139d737e4402b0bf376bcacd539932cf9f6c2eb900e4a0be7fb80aa76",
+        "mode": "requirements",
+        "assetId": "managed-a859f5cc9f715a09c4e2dab8c68f50a7",
+        "requirements": [
+          {
+            "id": "requirements:1-4",
+            "relativePath": "REQUIREMENTS.md",
+            "revision": "b64668196264d39ed97f34a66342963748caa376d68bc9624878667c6995c891",
+            "startLine": 1,
+            "endLine": 4,
+            "excerpt": "# Requirements\n\nR-1: Review file changes with source evidence and approval boundaries.\nR-2: Record uncertain findings explicitly."
+          }
+        ]
+      },
+      {
+        "id": "app-run-3a9ee5c6137a5eef753d140d54dae24b3836e69e807e548b3284d494a47fe349",
+        "mode": "description",
+        "assetId": "managed-05eb2fd6d396291690851a949d529091",
+        "requirements": [
+          {
+            "id": "user-description",
+            "revision": "afe6a6236d0a96f3b3a4d8165bb5bc2beb4e1b512e1b0c254f19427ac928a20a",
+            "relativePath": null,
+            "startLine": null,
+            "endLine": null,
+            "excerpt": "Create a distinct documentation-source audit skill which checks claims, source dates and explicit uncertainty."
+          }
+        ]
+      }
+    ],
+    "actualAppAgent": true,
+    "actualNativeBroker": false,
+    "pageErrors": [],
+    "externalRequests": [],
+    "sourceHashes": {
+      "apps/local-service/src/team/skill-generation.mts": "d620317817ea43500d4442ede3dea4fcb10f20fa208c1467b646cce96bae1c92",
+      "apps/local-service/src/runtime/app-agent-gateway.mts": "f800b7f502f492353b69ac625a5702bc89ae765f78eda108fbad0e8f8aefc210",
+      "apps/web/src/features/skills/SkillGenerator.tsx": "40e9ac699f41165138cbc294a1d08d580a51d6df49c9acd696dad9160f998292",
+      "tests/web/single-window/m2c-app-acceptance.mts": "13359d25dd1ecfd61e66f8560809d795e954f84f4ae01f0fdc0220275a5f2510",
+      "apps/web/dist/index.html": "d8cbebf0caf9a3e9c15fc1fbfa985709eab0086ea9c0970c19cb7f2db88a3916",
+      "apps/web/dist/assets/index-6ocZaMs-.css": "ceb159596ac2f91952bbbeab48933957480da03acae68d8383abdacc1c89a5b1",
+      "apps/web/dist/assets/index-DMJlJGd8.js": "6fcffec4feacc33095324d7569416143a3e24ccee34c5a79da7fcc4ddd518bac"
+    },
+    "fixtureCleaned": true,
+    "receipt": ".tmp/paos-m2c/actual-app-evidence-2xi0Ih/m2c-app-result.json"
+  },
+  "native": {
+    "candidate_receipt": ".tmp/paos-m1/astra-transport/sandbox-broker-candidate-1794472141957.json",
+    "candidate_sha256": "fb7cc3b51537efe1fbdb60c627a3621ed7c0d0a8af2505c3d88db9733c48d601",
+    "default_receipt": ".tmp/paos-m1/astra-transport/sandbox-broker-default-1794472228659.json",
+    "default_sha256": "af67da823832331969352597a6d21e6eec407785d4f762a8304642553e398777",
+    "modes": 3,
+    "status": "passed_exact_cached_pinned_binary_only",
+    "installed_npm_binary": "runtime_mismatch_fail_closed",
+    "installation": false,
+    "provider_requests": 0,
+    "credential_operations": 0,
+    "cached_binary_fixture_cleaned": true
+  },
+  "review": {
+    "context_mode": "separate_reused_context",
+    "reviewer": "/root/m2c_review",
+    "findings": 7,
+    "confirmed_fixed": 7,
+    "open_blockers": 0,
+    "repair_cycles": 2,
+    "review_window": 1,
+    "tester_verdict": "closed_allowed"
+  },
+  "failures_preserved": [
+    ".tmp/paos-m2c/generation-artifacts-red.log",
+    ".tmp/paos-m2c/backend-review-red.log",
+    ".tmp/paos-m2c/edited-skill-header-red.log",
+    ".tmp/paos-m2c/backend-first-typecheck.log",
+    ".tmp/paos-m2c/browser-evidence-sh69Tc/result.json",
+    ".tmp/paos-m2c/browser-evidence-aVdMFx/result.json",
+    ".tmp/paos-m2c/native-candidate.log",
+    ".tmp/paos-m2c/actual-app-evidence-VcqLJA/m2c-app-result.json",
+    ".tmp/paos-m2c/generation-artifacts-green-3.log",
+    ".tmp/paos-m2c/generation-artifacts-green-4.log"
+  ],
+  "limits": [
+    "Lexical JS/TS subset, not type/runtime semantic proof",
+    "Bounded derived index, rebuild required after restart/source drift",
+    "Global search covers available bounded local sources, not external/full host history",
+    "Managed skill Apply is not native/global installation or activation",
+    "Document edits are staged proposals; original source file is preserved",
+    "Installed npm Codex differs from exact pinned binary and remains unqualified",
+    "Technical checks are separate from human/commercial/release acceptance"
+  ],
+  "docs_sync": "updated",
+  "protected_preservation": {
+    "baseline_files": 213,
+    "unmodified_files": 198,
+    "changed_existing_files": [
+      "apps/local-service/src/http/application.mts",
+      "apps/local-service/src/runtime/app-agent-gateway.mts",
+      "apps/web/src/api/client.ts",
+      "apps/web/src/design/app.css",
+      "apps/web/src/ui/App.tsx",
+      "packages/contracts/runtime/qualified-manifest.json",
+      "REQUIREMENTS.md",
+      "PLAN.md",
+      "TEST.md",
+      "RUNLOG.md",
+      "apps/web/README.md",
+      "research/product-agent-os-web-task-manager-plan-2026-11-09.md",
+      "research/product-agent-os-web-task-manager-task-group-2026-11-09.json",
+      "docs/sources/registry.md",
+      "docs/sources/registry.en.md"
+    ],
+    "other51_cards_exact_bytes": true,
+    "other51_json_tasks_equal": true,
+    "all56_estimates_unchanged": true,
+    "all12_groups_and_order_unchanged": true,
+    "m2_implemented": 26,
+    "m2_total": 26,
+    "manifest_only_adapter_revision_and_additive_evidence": true,
+    "root_file_bytes": {
+      "AGENTS.md": 19008,
+      "REQUIREMENTS.md": 39441,
+      "PLAN.md": 28451,
+      "TEST.md": 31779,
+      "EVALS.md": 25030,
+      "RUNLOG.md": 25077,
+      "README.md": 48566
+    },
+    "cached_binary_fixture_cleaned": true,
+    "unrelated_baseline_files_preserved": true
+  },
+  "screenshots": [
+    ".tmp/paos-m2c/browser-evidence-829eD8/graph-inspector.png",
+    ".tmp/paos-m2c/browser-evidence-829eD8/graph-canvas.png",
+    ".tmp/paos-m2c/browser-evidence-829eD8/document-reader.png",
+    ".tmp/paos-m2c/browser-evidence-829eD8/english-dark.png",
+    ".tmp/paos-m2c/browser-evidence-829eD8/mobile-graph.png",
+    ".tmp/paos-m2c/browser-evidence-829eD8/mobile-graph-canvas.png",
+    ".tmp/paos-m2c/actual-app-evidence-2xi0Ih/requirements-applied.png",
+    ".tmp/paos-m2c/actual-app-evidence-2xi0Ih/description-applied.png"
+  ],
+  "closure_level": "implemented_locally_verified_app_active",
+  "m2": {
+    "implemented": 26,
+    "total": 26,
+    "human_acceptance": false,
+    "commercial_admission": false,
+    "release_readiness": false
+  },
+  "control_plane_sync": {
+    "decision": "updated",
+    "files": [
+      "REQUIREMENTS.md",
+      "PLAN.md",
+      "TEST.md",
+      "RUNLOG.md",
+      "apps/web/README.md",
+      "docs/sources/registry.md",
+      "docs/sources/registry.en.md",
+      "research/product-agent-os-web-task-manager-plan-2026-11-09.md",
+      "research/product-agent-os-web-task-manager-task-group-2026-11-09.json"
+    ],
+    "no_change_needed": {
+      "AGENTS.md": "No durable instruction change",
+      "EVALS.md": "No rubric/threshold change",
+      "README.md": "Overall mission unchanged; existing48566-byte oversize retained unchanged",
+      "prod_test.md": "Batch39 not in scope"
+    },
+    "handoffs_required": [],
+    "proposal_digest": "sha256:25322c0e074b7eb19b8c7a0d06db6dbf8edbd7761af0ce94ffb72396365c5ca3",
+    "journal": ".codex/product-agent-os/compaction/25322c0e074b7eb19b8c7a0d06db6dbf8edbd7761af0ce94ffb72396365c5ca3.json",
+    "matrix_recovery": ".tmp/paos-m2c/matrix-recovery.json"
+  },
+  "strict_mkdocs": "not_applicable_no_nav_config_mermaid_extensions_site_or_search_changes",
+  "runtime_metrics": {
+    "model": "inherited_configured_baseline_exact_id_not_available",
+    "reasoning": "inherited_configured_baseline",
+    "token_and_call_counters": "not_available_after_compaction_no_complete_meter_trace",
+    "agent_roles": [
+      "m2c_graph_contract",
+      "m2c_graph_builder",
+      "m2c_review",
+      "m2_actual_worker"
+    ],
+    "max_concurrent_including_root": 3,
+    "canonical_writers": 1,
+    "review_windows": 1,
+    "repair_cycles": 2,
+    "duration_basis": "baseline timestamp to final receipt; individual task starts/durations unmeasured",
+    "measured_baseline_to_receipt_seconds": 4163.13
+  },
+  "documentation_hashes": {
+    "REQUIREMENTS.md": "884aedfef514e727c994abe75ac820629b13dac89af3ee706edf198fee634417",
+    "PLAN.md": "338e0515074676428a1b8241909620fc9a47fb4f351c724684f5d4550d414f41",
+    "TEST.md": "f34fb428befcdcadf2ee914d645902c3bb9b5adf23d1fbb866786a85d47c8080",
+    "RUNLOG.md": "854f8fe558bdf66f08a2022e42a1dbdfef239d72e6ce0098cea13f3663e0aa97",
+    "apps/web/README.md": "5b8e521dec893a223a351283f83ca7b75a39b973a1ab59f5b3bab211a3d49e78",
+    "docs/sources/registry.md": "107d3b4434aa4ac8011a8de6fb89be00faae406596a5a20558a7a6c6f13a0026",
+    "docs/sources/registry.en.md": "5d9d21aad0d18c147fea5c60462d93e127454a9449afbd6b86da4985ff4bbeef",
+    "research/product-agent-os-web-task-manager-plan-2026-11-09.md": "644674e5fa9a4c555374463eac782a166f6a5a31470c0e10e607ac83699cfa0c",
+    "research/product-agent-os-web-task-manager-task-group-2026-11-09.json": "10a0690a9258c5ede4f460d325171db2490ae483f0e47d1fab71a332f5a518ff",
+    "research/product-agent-os-web-m2c-execution-2026-11-12.md": "8e02ca9d1b437f1ce4a5f7bd40ac1403e4abf3e157a33f8961c1b8d29f62deb2"
+  }
+}
