@@ -1,3 +1,5 @@
+import type {WorkflowRegistry} from '../../../../../packages/contracts/workflows/workflow.ts';
+import {workflowCategory,workflowSnapshot} from '../../../../../packages/contracts/workflows/helpers.ts';
 import type {StoredEntity} from '../../api/client.ts';
 import type {IssueLink,M2TaskProfile} from '../../../../../packages/contracts/issues/task-profile.ts';
 export type {M2TaskProfile,IssueLink};
@@ -27,13 +29,13 @@ export function draftTask(projectId:string,id=crypto.randomUUID()):M2TaskProfile
     parentId:null,initiatedBy:null,createdAt:null,timezone:'Europe/Moscow',components:[],affectsVersions:[],fixVersions:[],rank:0,resolution:null,blocker:null,
     criteriaEvidence:[],assignments:[],artifacts:[],fileContexts:[],scopeExclusions:[],workflow:{id:'default',version:1},hotfixReason:null};
 }
-export function isBlocked(task:StoredEntity,tasks:StoredEntity[],links:IssueLink[]):boolean{
-  return Boolean(task.data?.blocker)||links.some(l=>l.relation==='blocks'&&l.targetId===task.id&&l.state!=='pending'&&!l.waiver&&tasks.find(t=>t.id===l.sourceId)?.status!=='done');
+export function isBlocked(task:StoredEntity,tasks:StoredEntity[],links:IssueLink[],registry?:WorkflowRegistry):boolean{
+  return Boolean(task.data?.blocker)||links.some(l=>l.relation==='blocks'&&l.targetId===task.id&&l.state!=='pending'&&!l.waiver&&semanticStatus(tasks.find(t=>t.id===l.sourceId),registry)!=='done');
 }
 /** Filters consume one complete service snapshot; no first-page-only hierarchy or count. */
-export function selectTasks(tasks:StoredEntity[],view:View,links:IssueLink[]):StoredEntity[]{
+export function selectTasks(tasks:StoredEntity[],view:View,links:IssueLink[],registry?:WorkflowRegistry):StoredEntity[]{
   const byId=new Map(tasks.map(t=>[t.id,t]));
-  const blockers=new Set(links.filter(l=>l.relation==='blocks'&&l.state!=='pending'&&!l.waiver&&byId.get(l.sourceId)?.status!=='done').map(l=>l.targetId));
+  const blockers=new Set(links.filter(l=>l.relation==='blocks'&&l.state!=='pending'&&!l.waiver&&semanticStatus(byId.get(l.sourceId),registry)!=='done').map(l=>l.targetId));
   return tasks.filter(t=>{
     const p=t.data??{};
     if(view.query&&!`${t.publicKey??''} ${t.title??''} ${p.summary??''}`.toLocaleLowerCase().includes(view.query.toLocaleLowerCase()))return false;
@@ -49,7 +51,7 @@ export function selectTasks(tasks:StoredEntity[],view:View,links:IssueLink[]):St
     if(view.startAfter&&(!p.startDate||String(p.startDate)<view.startAfter))return false;
     if(view.dueBefore&&(!p.dueDate||String(p.dueDate)>view.dueBefore))return false;
     if(view.blocked&&!p.blocker&&!blockers.has(t.id))return false;
-    return !view.hideCancelled||t.status!=='cancelled';
+    return !view.hideCancelled||semanticStatus(t,registry)!=='cancelled';
   }).sort((a,b)=>{
     const pa=a.data??{},pb=b.data??{};
     if(view.sort==='title')return String(a.title).localeCompare(String(b.title));
@@ -73,12 +75,12 @@ export function safeExternalUrl(value:string):string|null{
 }
 export function targetStatuses(status:string):string[]{return ({backlog:['ready','cancelled'],ready:['backlog','in_progress','cancelled'],in_progress:['review','cancelled'],review:['in_progress','verification','cancelled'],verification:['in_progress','awaiting_acceptance','cancelled'],awaiting_acceptance:['in_progress','done','cancelled'],done:['ready'],cancelled:['backlog']} as Record<string,string[]>)[status]??[];}
 export const lines=(value:string)=>value.split('\n').map(s=>s.trim()).filter(Boolean);
-export function hierarchyStats(tasks:StoredEntity[],taskId:string){
+export function hierarchyStats(tasks:StoredEntity[],taskId:string,registry?:WorkflowRegistry){
   const children=new Map<string,StoredEntity[]>();for(const task of tasks){const parent=task.data?.parentId;if(typeof parent==='string')children.set(parent,[...(children.get(parent)??[]),task]);}
   const visited=new Set<string>([taskId]),descendants:StoredEntity[]=[],queue=[...(children.get(taskId)??[])];
   for(let i=0;i<queue.length;i++){const task=queue[i];if(visited.has(task.id))continue;visited.add(task.id);descendants.push(task);queue.push(...(children.get(task.id)??[]));}
   const actual=descendants.map(task=>(task.data?.actual as {durationSeconds?:number|null}|undefined)?.durationSeconds);
-  return {descendants:descendants.length,done:descendants.filter(t=>t.status==='done').length,cancelled:descendants.filter(t=>t.status==='cancelled').length,
+  return {descendants:descendants.length,done:descendants.filter(t=>semanticStatus(t,registry)==='done').length,cancelled:descendants.filter(t=>semanticStatus(t,registry)==='cancelled').length,
     estimateSeconds:descendants.reduce((sum,t)=>sum+Number(t.data?.estimateSeconds??0),0),unknownEstimates:descendants.filter(t=>t.data?.estimateSeconds==null).length,
     actualSeconds:actual.length&&actual.every(value=>typeof value==='number')?actual.reduce<number>((sum,value)=>sum+Number(value),0):null,
     ownEstimateSeconds:tasks.find(t=>t.id===taskId)?.data?.estimateSeconds??null};
@@ -86,3 +88,8 @@ export function hierarchyStats(tasks:StoredEntity[],taskId:string){
 export function dueState(date:string|null,timezone:string):boolean{
   if(!date)return false;try{const parts=new Intl.DateTimeFormat('en-CA',{timeZone:timezone,year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts();const get=(type:string)=>parts.find(p=>p.type===type)?.value??'';return `${get('year')}-${get('month')}-${get('day')}`>date;}catch{return false;}
 }
+
+export function semanticStatus(task:StoredEntity|undefined,registry?:WorkflowRegistry):string {if(!task)return '';if(!isM2(task)||!registry)return task.status??'';return workflowCategory(registry,profile(task));}
+export function stateName(task:StoredEntity,registry:WorkflowRegistry|undefined,status=task.status??''):string|undefined {if(!registry||!isM2(task))return undefined;return workflowSnapshot(registry,profile(task).workflow).definition.states.find(s=>s.id===status)?.name;}
+export function userTargets(task:StoredEntity,registry?:WorkflowRegistry):string[]{if(!registry||!isM2(task))return targetStatuses(task.status??'');const d=workflowSnapshot(registry,profile(task).workflow).definition;return [...new Set(d.transitions.filter(t=>t.from===task.status&&t.actors.includes('user')).map(t=>t.to))];}
+export function categoryTargets(task:StoredEntity,registry:WorkflowRegistry|undefined,category:string):string[]{if(!registry||!isM2(task))return [category];return workflowSnapshot(registry,profile(task).workflow).definition.states.filter(s=>s.category===category).map(s=>s.id);}

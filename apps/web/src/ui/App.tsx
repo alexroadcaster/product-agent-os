@@ -30,6 +30,10 @@ import { createLatestRequest } from "../api/latest-request.ts";
 import { visibleAssistantDrafts } from "../api/visible-drafts.ts";
 import { ConnectionControls } from "./ConnectionControls.tsx";
 import { TaskRelations } from "./TaskRelations.tsx";
+import {WorkflowManager} from '../features/workflows/WorkflowManager.tsx';
+import {SessionsCatalog} from '../features/sessions/SessionsCatalog.tsx';
+import {TeamManager} from '../features/team/TeamManager.tsx';
+import type {WorkflowRegistry} from '../../../../packages/contracts/workflows/workflow.ts';
 import {TaskManager} from '../features/tasks/TaskManager.tsx';
 import {
   SessionContext,
@@ -97,13 +101,16 @@ export function App() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [projectId, setProjectId] = useState("");
   const [section, setSection] = useState<Section>("overview");
-  const [linkedSession,setLinkedSession]=useState<{projectId:string;sessionId:string}|null>(null);
+  const [linkedSession,setLinkedSession]=useState<{projectId:string;sessionId:string;messageId?:string}|null>(null);
+  const [linkedTask,setLinkedTask]=useState<{projectId:string;id:string;tab?:"summary"|"files"}|null>(null);
+  const [linkedAsset,setLinkedAsset]=useState<{projectId:string;id:string;kind:"agent"|"skill"}|null>(null);
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
   const [code, setCode] = useState("");
   const [connection, setConnection] = useState<Connection | null>(null);
   const connectionEpoch = useRef(0);
+  const appliedAnchor=useRef('');
   function connectionChanged(current: Connection) {
     connectionEpoch.current++;
     setConnection(current);
@@ -158,6 +165,13 @@ export function App() {
   useEffect(() => {
     void initialise();
   }, []);
+  useEffect(()=>{
+    if(!ready)return;
+    const openAnchor=()=>{if(appliedAnchor.current===location.hash)return;const q=new URLSearchParams(location.hash.slice(1)),p=q.get('project'),session=q.get('session'),message=q.get('message');
+      if(!p||!session||!message||!projects.some(project=>project.id===p)||[session,message].some(id=>id.length>200||/[\\\0\r\n]/.test(id)))return;
+      appliedAnchor.current=location.hash;setProjectId(p);setLinkedSession({projectId:p,sessionId:session,messageId:message});setSection('sessions');
+    };openAnchor();window.addEventListener('hashchange',openAnchor);return()=>window.removeEventListener('hashchange',openAnchor);
+  },[ready,projects]);
   useEffect(() => {
     if (!ready) return;
     return startConnectionPolling({
@@ -258,7 +272,7 @@ export function App() {
         <main id="main" tabIndex={-1}>
           <div className="page-heading">
             <div>
-              <p className="eyebrow">Product-Agent OS · M1</p>
+              <p className="eyebrow">Product-Agent OS · M2</p>
               <h1>{label(section)}</h1>
             </div>
             <span className="quiet">
@@ -295,7 +309,7 @@ export function App() {
               </form>
             </section>
           ) : section === "settings" ? (
-            <Settings
+            <><Settings
               preferences={preferences}
               onPreferences={setPreferences}
               connection={connection}
@@ -305,20 +319,18 @@ export function App() {
                 await api.createProject(name, root);
                 await initialise();
               }}
-            />
+            />{projectId&&<WorkflowManager key={projectId} api={api} projectId={projectId} locale={preferences.locale}/>}</>
           ) : !projectId ? (
             <Empty text={t("empty")} />
           ) : section === "tasks" ? (
-            <TaskManager key={projectId} api={api} projectId={projectId} locale={preferences.locale} onOpenSession={sessionId=>{setLinkedSession({projectId,sessionId});setSection('sessions');}} />
+            <TaskManager key={projectId} api={api} projectId={projectId} locale={preferences.locale} initialTaskId={linkedTask?.projectId===projectId?linkedTask.id:undefined} initialTab={linkedTask?.projectId===projectId?linkedTask.tab:undefined} onOpenSession={sessionId=>{setLinkedSession({projectId,sessionId});setSection('sessions');}} />
           ) : section === "sessions" ? (
-            <Sessions
-              key={projectId}
-              projectId={projectId}
-              connection={connection}
-              t={t}
-              locale={preferences.locale}
+            <SessionsCatalog key={projectId} api={api} projectId={projectId} locale={preferences.locale}
               initialSessionId={linkedSession?.projectId===projectId?linkedSession.sessionId:undefined}
-            />
+              initialMessageId={linkedSession?.projectId===projectId?linkedSession.messageId:undefined}
+              renderSession={entity=><Session key={entity.id} entity={entity} connection={connection} t={t} locale={preferences.locale}/>}
+              onOpenTask={(id,tab)=>{setLinkedTask({projectId,id,tab});setSection('tasks');}}
+              onOpenAgent={id=>{setLinkedAsset({projectId,id,kind:'agent'});setSection('agents');}}/>
           ) : section === "search" ? (
             <Search key={projectId} projectId={projectId} t={t} />
           ) : section === "checks" ? (
@@ -334,14 +346,18 @@ export function App() {
             <Backup key={projectId} api={api} projectId={projectId} t={t} />
           ) : section === "documents" ? (
             <Sources key={projectId} api={api} projectId={projectId} t={t} />
-          ) : section === "agents" ||
-            section === "skills" ||
-            section === "projectMap" ? (
+          ) : section === "agents" || section === "skills" ? (
+            <TeamManager key={`${projectId}:${section}`} api={api} projectId={projectId} kind={section==='agents'?'agent':'skill'} locale={preferences.locale}
+              initialAssetId={linkedAsset?.projectId===projectId&&linkedAsset.kind===(section==='agents'?'agent':'skill')?linkedAsset.id:undefined}
+              onOpenAsset={(kind,id)=>{setLinkedAsset({projectId,id,kind});setSection(kind==='agent'?'agents':'skills');}}
+              onOpenSession={sessionId=>{setLinkedSession({projectId,sessionId});setSection('sessions');}}
+              onOpenTask={id=>{setLinkedTask({projectId,id});setSection('tasks');}}/>
+          ) : section === "projectMap" ? (
             <Catalog
               key={`${projectId}:${section}`}
               api={api}
               projectId={projectId}
-              kind={section === "projectMap" ? "graph" : section}
+              kind="graph"
               t={t}
             />
           ) : section === "overview" ? (
@@ -1374,6 +1390,8 @@ function Session({
     olderRequest = useRef(createLatestRequest());
   const [historyBusy, setHistoryBusy] = useState(false);
   const tasks = useEntities(entity.projectId, "task");
+  const [workflowRegistry,setWorkflowRegistry]=useState<WorkflowRegistry>();
+  useEffect(()=>{let ignore=false;void api.taskManager(entity.projectId).then(value=>{if(!ignore)setWorkflowRegistry(value.workflows);}).catch(()=>{});return()=>{ignore=true;};},[entity.projectId]);
   const [targetId, setTargetId] = useState(String(entity.data?.taskId ?? "")),
     [linkedTaskId, setLinkedTaskId] = useState(
       String(entity.data?.taskId ?? ""),
@@ -1416,7 +1434,7 @@ function Session({
     snapshot?.canSend === true &&
     mode === boundMode &&
     (mode !== "execution" ||
-      (targetId === linkedTaskId && isExecutionTarget(target)))
+      (targetId === linkedTaskId && isExecutionTarget(target,workflowRegistry)))
       ? "idle"
       : snapshot?.state === "running"
         ? "running"
@@ -1829,7 +1847,7 @@ function Session({
                 {t("attachTask")}
               </button>
               {mode === "execution" &&
-                (!isExecutionTarget(target) || targetId !== linkedTaskId) && (
+                (!isExecutionTarget(target,workflowRegistry) || targetId !== linkedTaskId) && (
                   <p className="quiet">{t("executionScopeHint")}</p>
                 )}
               {tasks.hasMore && (

@@ -170,6 +170,23 @@ export type ImportPreview = {
   blocked: { sourceId: string; reasons: string[] }[];
 };
 export interface M1Api {
+  sessionCatalog(projectId:string,query:Record<string,string|number>):Promise<unknown>;
+  sessionSearch(projectId:string,query:Record<string,string|number>):Promise<unknown>;
+  sessionTranscript(projectId:string,sessionId:string,query:Record<string,string|number>):Promise<unknown>;
+  teamRun(projectId:string,id:string):Promise<any>;
+  teamCatalog(projectId:string):Promise<import('../../../../packages/contracts/team/assets.ts').TeamCatalog>;
+  teamAsset(projectId:string,id:string):Promise<import('../../../../packages/contracts/team/assets.ts').AssetProfile>;
+  teamPreview(projectId:string,input:Record<string,unknown>):Promise<import('../../../../packages/contracts/team/assets.ts').AssetPreview>;
+  teamApply(projectId:string,input:Record<string,unknown>,idempotencyKey?:string):Promise<{assetId:string;version:number}>;
+  assetCopyPreview(projectId:string,id:string):Promise<unknown>;
+  assetResourceUrl(projectId:string,id:string,path:string):string;
+  assetExportUrl(projectId:string,id:string):string;
+  skillDiscovery(projectId:string,query:string):Promise<unknown>;
+  skillSourcePreview(projectId:string,sourceRootId:string,relativePath:string):Promise<unknown>;
+  teamMetrics(projectId:string,from:string,to:string):Promise<unknown>;
+  startTeamGeneration(projectId:string,input:Record<string,unknown>):Promise<any>;
+  teamGeneration(projectId:string,id:string):Promise<any>;
+
   taskManager(projectId:string,signal?:AbortSignal):Promise<ManagerSnapshot<StoredEntity>>;
   taskManagerCommand(projectId:string,input:Record<string,unknown>,idempotencyKey?:string):Promise<Record<string,unknown>>;
   stopPendingLink(projectId:string,linkId:string):Promise<{stopRequested:boolean}>;
@@ -397,6 +414,22 @@ export function createHttpApi(fetcher: typeof fetch = fetch): M1Api {
     };
   }
   return {
+    sessionCatalog:(id,q)=>request(`${projectPath(id)}/sessions/catalog?${new URLSearchParams(Object.entries(q).map(([k,v])=>[k,String(v)]))}`),
+    sessionSearch:(id,q)=>request(`${projectPath(id)}/sessions/search?${new URLSearchParams(Object.entries(q).map(([k,v])=>[k,String(v)]))}`),
+    sessionTranscript:(id,session,q)=>request(`${projectPath(id)}/sessions/${encodeURIComponent(session)}/transcript?${new URLSearchParams(Object.entries(q).map(([k,v])=>[k,String(v)]))}`),
+    teamRun:(id,run)=>request(`${projectPath(id)}/team/runs/${encodeURIComponent(run)}`),
+    teamCatalog:id=>request(`${projectPath(id)}/team/catalog`),
+    teamAsset:(id,asset)=>request(`${projectPath(id)}/team/assets/${encodeURIComponent(asset)}`),
+    teamPreview:(id,input)=>request(`${projectPath(id)}/team/proposals/preview`,input),
+    teamApply:(id,input,key=crypto.randomUUID())=>request(`${projectPath(id)}/team/proposals/apply`,{...input,...authority(id,Number(input.expectedRevision)),epoch:epochs.get(id),idempotencyKey:key}),
+    assetCopyPreview:(id,asset)=>request(`${projectPath(id)}/team/assets/${encodeURIComponent(asset)}/copy-preview`,{}),
+    assetResourceUrl:(id,asset,path)=>`/api/v1${projectPath(id)}/team/assets/${encodeURIComponent(asset)}/resources/${path.split('/').map(encodeURIComponent).join('/')}`,
+    assetExportUrl:(id,asset)=>`/api/v1${projectPath(id)}/team/assets/${encodeURIComponent(asset)}/export`,
+    skillDiscovery:(id,q)=>request(`${projectPath(id)}/team/skills/discovery?${new URLSearchParams({q})}`),
+    skillSourcePreview:(id,sourceRootId,relativePath)=>request(`${projectPath(id)}/team/skills/source-preview`,{sourceRootId,relativePath}),
+    teamMetrics:(id,from,to)=>request(`${projectPath(id)}/team/metrics?${new URLSearchParams({from,to})}`),
+    startTeamGeneration:(id,input)=>request(`${projectPath(id)}/team/generation`,input),
+    teamGeneration:(id,generation)=>request(`${projectPath(id)}/team/generation/${encodeURIComponent(generation)}`),
     taskManager:(projectId,signal)=>request(`${projectPath(projectId)}/task-manager`,undefined,'GET',signal),
     stopPendingLink:(projectId,linkId)=>request(`${projectPath(projectId)}/task-manager/links/${encodeURIComponent(linkId)}/stop`,{}),
     taskManagerCommand:(projectId,input,idempotencyKey=crypto.randomUUID())=>{

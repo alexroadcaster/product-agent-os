@@ -29,6 +29,9 @@ export type StoreWrite = Readonly<{
   taskManagerReason?: string;
   taskManagerHotfixReason?: string;
   taskManagerReviewReason?: string;
+  /** Explicit preview-bound workflow migration, rechecked inside the SQLite transaction. */
+  workflowMigration?: {previewDigest:string;workflowId:string;fromVersion:number;toVersion:number;statusMapping:Record<string,string>;registryRevision:number;boardRevision:number;tasks:{id:string;revision:number}[]};
+  workflowPublish?: {previewDigest:string;workflowId:string;registryRevision:number;boardRevision:number};
   /** Bound runtime tool context; never accepted from generic browser commands. */
   taskManagerRun?: {id:string;bindingId:string;generation:string;taskId:string};
   changes: readonly { entity: EntityInput; expectedRevision: number; delete?: boolean }[];
@@ -56,7 +59,7 @@ export type ImportSourceBinding = Readonly<{ role: 'records' | 'projection'; sou
   sourceDigest: string; byteSize: number }>;
 export type BlobReceipt = Readonly<{ id: string; projectId: string; sha256: string; byteSize: number }>;
 export type BackupManifest = Readonly<{
-  schemaVersion: 1|2; migrationChecksum: string; appCompatibility: 'paos-m1-v1'|'paos-m2-v1'; backupId: string;
+  schemaVersion: 1|2|3; migrationChecksum: string; appCompatibility: 'paos-m1-v1'|'paos-m2-v1'|'paos-m2b-v1'; backupId: string;
   createdAt: string; databaseSha256: string; manifestSha256: string;
   blobs: readonly BlobReceipt[];
   exclusions: readonly string[];

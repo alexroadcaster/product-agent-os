@@ -3,7 +3,7 @@ import { constants } from 'node:fs';
 import { copyFile, lstat, mkdir, mkdtemp, open, readFile, readdir, rm } from 'node:fs/promises';
 import { dirname, isAbsolute, join, resolve } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
-import { MIGRATION_CHECKSUM, M2_MIGRATION_CHECKSUM,databaseCompatibility } from './migrations/schema.mts';
+import { MIGRATION_CHECKSUM, M2_MIGRATION_CHECKSUM,M2B_MIGRATION_CHECKSUM,databaseCompatibility } from './migrations/schema.mts';
 import type { BackupManifest, BlobReceipt } from '../../../../packages/contracts/storage/local-store.ts';
 
 function fail(code: string): never { throw Object.assign(new Error(code), { code }); }
@@ -58,7 +58,8 @@ function checkDatabase(db: DatabaseSync) {
 }
 function validManifestCompatibility(manifest:BackupManifest){
   return manifest.schemaVersion===1&&manifest.appCompatibility==='paos-m1-v1'&&manifest.migrationChecksum===MIGRATION_CHECKSUM
-    ||manifest.schemaVersion===2&&manifest.appCompatibility==='paos-m2-v1'&&manifest.migrationChecksum===M2_MIGRATION_CHECKSUM;
+    ||manifest.schemaVersion===2&&manifest.appCompatibility==='paos-m2-v1'&&manifest.migrationChecksum===M2_MIGRATION_CHECKSUM
+    ||manifest.schemaVersion===3&&manifest.appCompatibility==='paos-m2b-v1'&&manifest.migrationChecksum===M2B_MIGRATION_CHECKSUM;
 }
 export function blobDirectory(databasePath: string) { return `${databasePath}.blobs`; }
 export async function writeBlob(databasePath: string, projectId: string, bytes: Uint8Array): Promise<BlobReceipt> {

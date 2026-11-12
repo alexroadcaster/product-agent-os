@@ -4,11 +4,11 @@ import type {StoredEntity} from '../../api/client.ts';
 import {draftTask,profile,issueTypes,priorities,fileOperations,durationText,parseDuration,lines,type M2TaskProfile} from './model.ts';
 import {label,typeText,priorityText,errorText,type Locale,type Word} from './labels.ts';
 
-type Draft={task:M2TaskProfile;revision:number};
+type Draft={task:M2TaskProfile;revision:number;workflowId?:string};
 // Memory-only drafts survive navigation; no project text is written into browser persistence.
 const drafts=new Map<string,Draft>();
 export function TaskEditor({entity,projectId,snapshot,locale,onSave,onPreview}:{entity?:StoredEntity;projectId:string;snapshot:ManagerSnapshot<StoredEntity>;locale:Locale;
- onSave:(task:M2TaskProfile,revision:number,reason:string,digest?:string)=>Promise<void>;
+ onSave:(task:M2TaskProfile,revision:number,reason:string,digest?:string,workflowId?:string)=>Promise<void>;
  onPreview:(task:M2TaskProfile,revision:number,reason:string)=>Promise<{previewDigest:string}>}){
  const cacheKey=`${projectId}:${entity?.id??'new'}`;
  const [state,setState]=useState<Draft>(()=>drafts.get(cacheKey)??{task:entity?structuredClone(profile(entity)):draftTask(projectId),revision:entity?.revision??0});
@@ -24,7 +24,7 @@ export function TaskEditor({entity,projectId,snapshot,locale,onSave,onPreview}:{
  async function run(previewOnly=false){setBusy(true);setError('');try{
    const parsed={...task,estimateSeconds:parseDuration(estimate)};
    if(previewOnly){const result=await onPreview(parsed,state.revision,reason);setPreview(result.previewDigest);}
-   else{await onSave(parsed,state.revision,reason,preview);drafts.delete(cacheKey);setDirty(false);}
+   else{await onSave(parsed,state.revision,reason,preview,state.workflowId);drafts.delete(cacheKey);setDirty(false);}
   }catch(cause){setError(errorText(locale,cause));}finally{setBusy(false);}}
  const parentOptions=snapshot.tasks.filter(item=>item.id!==task.id&&(task.type==='sub_task'?['task','bug','user_story','Task'].includes(String(item.data?.type)):item.data?.type==='epic'));
  const parentDue=snapshot.tasks.find(item=>item.id===task.parentId)?.data?.dueDate;
@@ -35,6 +35,7 @@ export function TaskEditor({entity,projectId,snapshot,locale,onSave,onPreview}:{
    <label>{t('parent')}<select name="parentId" disabled={task.type==='epic'} value={task.parentId??''} onChange={e=>patch({parentId:e.target.value||null})}><option value="">{t('none')}</option>{parentOptions.map(parent=><option key={parent.id} value={parent.id}>{parent.publicKey} · {parent.title}</option>)}</select></label>
    <label>{t('priority')}<select name="priority" value={task.priority??''} onChange={e=>patch({priority:e.target.value as M2TaskProfile['priority']})}>{priorities.map(p=><option key={p} value={p}>{priorityText(locale,p)}</option>)}</select></label>
   </div>
+  <label>{locale==='ru'?'Процесс':'Workflow'}{entity?<span>{task.workflow.id}@{task.workflow.version} · {locale==='ru'?'Смена через preview миграции':'Change via migration preview'}</span>:<select name="task-workflow" value={state.workflowId??''} onChange={e=>{const next={...state,workflowId:e.target.value||undefined};setState(next);drafts.set(cacheKey,next);setDirty(true);setPreview(undefined);}}><option value="">{locale==='ru'?'Автоматически по типу / проекту':'Automatic by type / project'}</option>{snapshot.workflows.workflows.filter(w=>!w.archived&&w.activeVersion!==null).map(w=><option key={w.id} value={w.id}>{w.id}@{w.activeVersion}</option>)}</select>}</label>
   {textField('summary','description','body')}
   <div className="m2-fields">{textField('technicalValue','technicalValue')}{textField('productValue','productValue')}</div>
   <label>{t('criteria')}<textarea name="criteria" rows={4} value={rawInputs.criteria??task.acceptanceCriteria.join('\n')} onChange={e=>{setRawInputs({...rawInputs,criteria:e.target.value});patch({acceptanceCriteria:lines(e.target.value)});}}/></label>

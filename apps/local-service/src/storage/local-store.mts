@@ -7,7 +7,7 @@ export { pruneManagedBackups } from './snapshot.mts';
 export type { Project, StoredEntity, StoreWrite } from '../../../../packages/contracts/storage/local-store.ts';
 
 /** Dedicated DatabaseSync Worker. At most 100 requests may wait for its single writer. */
-export async function openLocalStore(options: { databasePath: string }) {
+export async function openLocalStore(options: { databasePath: string;assetRoots?:import('../team/sources.mts').AssetRoot[] }) {
   if (!isAbsolute(options.databasePath) || options.databasePath.startsWith('\\\\')) {
     throw Object.assign(new Error('An absolute local database path is required'), { code: 'INVALID_DATABASE_PATH' });
   }
@@ -48,8 +48,10 @@ export async function openLocalStore(options: { databasePath: string }) {
     registerProject: (project: Omit<Project, 'authorityEpoch'>) => call<Project>('registerProject', project),
     projects: () => call<Project[]>('projects', {}),
     project: (projectId: string) => call<Project | null>('project', { projectId }),
-    compatibility:()=>call<{schemaVersion:1|2;appCompatibility:'paos-m1-v1'|'paos-m2-v1';migrationChecksum:string}>('compatibility',{}),
+    compatibility:()=>call<{schemaVersion:1|2|3;appCompatibility:'paos-m1-v1'|'paos-m2-v1'|'paos-m2b-v1';migrationChecksum:string}>('compatibility',{}),
     projectEntities: (projectId:string)=>call<StoredEntity[]>('projectEntities',{projectId}),
+    historyRows:(projectId:string)=>call<StoredEntity[]>('historyRows',{projectId}),
+    teamApply:(input:Record<string,unknown>)=>call<{assetId:string;version:number;receipt:StoreReceipt}>('teamApply',input),
     exportTasks: (projectId: string) => call<{ project: Project; tasks: TaskProfile[]; generation: string; throughSeq: number }>('exportTasks', { projectId }),
     write: (command: StoreWrite) => call<StoreReceipt>('write', command),
     receipt: (projectId: string, idempotencyKey: string) => call<StoreReceipt | null>('receipt', { projectId, idempotencyKey }),

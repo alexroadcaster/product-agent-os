@@ -1,0 +1,1046 @@
+{
+  "schema_version": "paos_m2b_execution_v1",
+  "status": "implemented_locally_verified_app_active",
+  "verification_complete": true,
+  "final_docs_gates": {
+    "status": "passed",
+    "docs_lifecycle_templates": {
+      "tests": 251,
+      "duration_seconds": 44.128,
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2b/docs-lifecycle-final.log"
+    },
+    "docs_check": {
+      "status": "passed",
+      "receipt": ".tmp/paos-m2b/docs-check-terminal.log"
+    },
+    "matrix_validator": {
+      "status": "passed",
+      "tasks": 56
+    },
+    "hooks_json_exit": 0,
+    "hooks_directory_exit": 0,
+    "git_diff_check_exit": 0,
+    "strict_mkdocs": "not_applicable; no MkDocs nav/diagram/config/extension/search/site changes",
+    "root_bytes": {
+      "REQUIREMENTS.md": 39274,
+      "PLAN.md": 28449,
+      "TEST.md": 31621,
+      "RUNLOG.md": 24979
+    },
+    "recovery_journal": ".codex/product-agent-os/compaction/2833bb34335aad592a059e134742a78116d6ae53fac47e8b03fc2741e52429af.json",
+    "matrix_recovery": ".tmp/paos-m2b/matrix-apply-recovery.json",
+    "post_evidence_current_pointer": {
+      "tests": 113,
+      "duration_seconds": 19.504,
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2b/docs-final-current-pointer.log"
+    },
+    "matrix_header_recovery": ".tmp/paos-m2b/matrix-header-recovery.json",
+    "git_diff_check_receipt": ".tmp/paos-m2b/diff-terminal.log"
+  },
+  "recorded_at": "2026-11-12T06:49:12.085458+00:00",
+  "task_ids": [
+    "PAOS-0036",
+    "PAOS-0009",
+    "PAOS-0010",
+    "PAOS-0011",
+    "PAOS-0012",
+    "PAOS-0013",
+    "PAOS-0014",
+    "PAOS-0015",
+    "PAOS-0016",
+    "PAOS-0017",
+    "PAOS-0018"
+  ],
+  "scope": {
+    "selected_tasks": 11,
+    "total_m2_tasks": 26,
+    "implemented_m2_tasks": 21,
+    "remaining_m2_tasks": [
+      "PAOS-0019",
+      "PAOS-0020",
+      "PAOS-0021",
+      "PAOS-0022",
+      "PAOS-0027"
+    ],
+    "whole_m2_closed": false,
+    "human_product_acceptance": false,
+    "commercial_release_authorized": false,
+    "provider_calls": false,
+    "real_credentials": false,
+    "git_history_changed": false
+  },
+  "web": {
+    "tests": 375,
+    "pass": 375,
+    "fail": 0,
+    "skipped": 0,
+    "duration_ms": 9432.3939,
+    "command": "npm run test:web-m1",
+    "exit_code": 0,
+    "receipt": ".tmp/paos-m2b/web-full-final.log"
+  },
+  "browser": {
+    "status": "passed",
+    "startedAt": "2026-11-12T06:48:00.503Z",
+    "finishedAt": "2026-11-12T06:48:09.930Z",
+    "checks": [
+      {
+        "name": "project_created",
+        "passed": true,
+        "detail": {
+          "status": 201,
+          "body": {
+            "id": "c73f631b-d38e-4bdf-94c6-159459a4f6af",
+            "name": "M2b synthetic",
+            "keyPrefix": "MBBB",
+            "authorityMode": "sql",
+            "authorityEpoch": 1
+          }
+        }
+      },
+      {
+        "name": "sessions_seeded",
+        "passed": true
+      },
+      {
+        "name": "messages_seeded_0",
+        "passed": true
+      },
+      {
+        "name": "messages_seeded_40",
+        "passed": true
+      },
+      {
+        "name": "messages_seeded_80",
+        "passed": true
+      },
+      {
+        "name": "catalog_first_page_50",
+        "passed": true
+      },
+      {
+        "name": "concurrent_session_insert",
+        "passed": true
+      },
+      {
+        "name": "catalog_snapshot_no_duplicates",
+        "passed": true
+      },
+      {
+        "name": "anchor_beyond_first_two_pages",
+        "passed": true
+      },
+      {
+        "name": "redacted_transcript",
+        "passed": true
+      },
+      {
+        "name": "full_count_visible",
+        "passed": true
+      },
+      {
+        "name": "permalink_reload_anchor",
+        "passed": true
+      },
+      {
+        "name": "no_credential_in_permalink",
+        "passed": true
+      },
+      {
+        "name": "search_redacted",
+        "passed": true
+      },
+      {
+        "name": "history_desktop_no_overflow",
+        "passed": true,
+        "detail": {
+          "w": 1440,
+          "s": 1440
+        }
+      },
+      {
+        "name": "workflow_draft_saved",
+        "passed": true
+      },
+      {
+        "name": "workflow_published",
+        "passed": true
+      },
+      {
+        "name": "custom_draft_setup",
+        "passed": true
+      },
+      {
+        "name": "outside_board_setup",
+        "passed": true
+      },
+      {
+        "name": "custom_publish_setup",
+        "passed": true
+      },
+      {
+        "name": "custom_selection_saved",
+        "passed": true
+      },
+      {
+        "name": "custom_cancel_semantics_ui",
+        "passed": true
+      },
+      {
+        "name": "managed_agent_created",
+        "passed": true
+      },
+      {
+        "name": "native_loaded_unknown",
+        "passed": true
+      },
+      {
+        "name": "agent_archive_new_version",
+        "passed": true
+      },
+      {
+        "name": "agent_restore_history_preserved",
+        "passed": true
+      },
+      {
+        "name": "metrics_coverage_visible",
+        "passed": true
+      },
+      {
+        "name": "skill_origin_license_before_apply",
+        "passed": true
+      },
+      {
+        "name": "skill_full_copy_managed",
+        "passed": true
+      },
+      {
+        "name": "skill_resource_preserved",
+        "passed": true
+      },
+      {
+        "name": "source_original_unchanged",
+        "passed": true
+      },
+      {
+        "name": "resource_download_exact",
+        "passed": true
+      },
+      {
+        "name": "discovery_unavailable_explicit",
+        "passed": true
+      },
+      {
+        "name": "skills_desktop_no_overflow",
+        "passed": true,
+        "detail": {
+          "w": 1440,
+          "s": 1440
+        }
+      },
+      {
+        "name": "lost_ack_created_once",
+        "passed": true
+      },
+      {
+        "name": "auth_retry_preserves_pending",
+        "passed": true
+      },
+      {
+        "name": "lost_ack_repaired_without_duplicate",
+        "passed": true
+      },
+      {
+        "name": "resource_paths_visible_in_diff",
+        "passed": true
+      },
+      {
+        "name": "skill_edit_preserves_resources",
+        "passed": true
+      },
+      {
+        "name": "migration_v2_draft",
+        "passed": true
+      },
+      {
+        "name": "workflow_v2_published",
+        "passed": true
+      },
+      {
+        "name": "workflow_migration_applied",
+        "passed": true
+      },
+      {
+        "name": "workflow_rollback_only_future",
+        "passed": true
+      },
+      {
+        "name": "specific_run_detail_navigation",
+        "passed": true
+      },
+      {
+        "name": "run_to_task_navigation",
+        "passed": true
+      },
+      {
+        "name": "run_to_session_navigation",
+        "passed": true
+      },
+      {
+        "name": "english_dark",
+        "passed": true
+      },
+      {
+        "name": "skills_english_dark_no_overflow",
+        "passed": true,
+        "detail": {
+          "w": 1440,
+          "s": 1440
+        }
+      },
+      {
+        "name": "mobile_skill_no_overflow",
+        "passed": true,
+        "detail": {
+          "w": 390,
+          "s": 390
+        }
+      },
+      {
+        "name": "mobile_session_no_overflow",
+        "passed": true,
+        "detail": {
+          "w": 390,
+          "s": 390
+        }
+      },
+      {
+        "name": "no_page_errors",
+        "passed": true,
+        "detail": []
+      }
+    ],
+    "sourceHashes": {
+      "tests/web/single-window/m2b-browser-acceptance.mts": "7d8a7884639d565bf3e7756ca1c513a19e8a2c9caa221b26d8c875028a26da39",
+      "apps/web/src/ui/App.tsx": "0f2f72e30561e899dd752447410e111cac71ed51594693747ed1c94305f9a550",
+      "apps/web/src/api/client.ts": "3459612c7f2ddfad6b110ff8e9c9106635bade390e7a10f0e4cc7cf1fb96b21d",
+      "apps/web/src/features/workflows/WorkflowManager.tsx": "3972bf1c5526e87a1067350256a5675f8517907bb585245bae4ccc21b68e1621",
+      "apps/web/src/features/sessions/SessionsCatalog.tsx": "b6daa9224bb213ac887c275053c82b0036997542f7536adf634c76b1f900499b",
+      "apps/web/src/features/team/TeamManager.tsx": "9ca94e8fa4e76b6b6d13f3a9ae774236e091092f7f737f51947f94b69380e71f",
+      "apps/web/dist/index.html": "11f0e96b7efee7828aea4055d66f876a54d82fd92cfa7002f96d7fadb23f529e",
+      "apps/web/dist/assets/index-C6CatpJF.css": "5a571444186a517f69855a10d4e07d9b4f0c19111a649dcde2d63605393532e9",
+      "apps/web/dist/assets/index-VYbRGGom.js": "b4de28b3222ab2241a59328d1c4fa6ca198d877e5dbd96ff9a73d6f47705de41"
+    },
+    "syntheticOnly": true,
+    "providerCalls": false,
+    "realCredentials": false,
+    "pageErrors": [],
+    "fixtureCleaned": true,
+    "receipt": ".tmp/paos-m2b/browser-evidence-GaVuT4/result.json",
+    "receipt_sha256": "295ab8435d43ce96be1772f8177e6453c7cc5243cb2f809e7e03aa14b56ad810",
+    "screenshots": [
+      ".tmp/paos-m2b/browser-evidence-GaVuT4/history-anchor.png",
+      ".tmp/paos-m2b/browser-evidence-GaVuT4/custom-workflow.png",
+      ".tmp/paos-m2b/browser-evidence-GaVuT4/agent-versions.png",
+      ".tmp/paos-m2b/browser-evidence-GaVuT4/skill-copy.png",
+      ".tmp/paos-m2b/browser-evidence-GaVuT4/english-dark.png",
+      ".tmp/paos-m2b/browser-evidence-GaVuT4/mobile-dark.png"
+    ]
+  },
+  "actual_app": {
+    "status": "passed_actual_m2b_generation_and_pinned_native",
+    "startedAt": "2026-11-12T06:45:01.453Z",
+    "finishedAt": "2026-11-12T06:46:58.949Z",
+    "checks": [
+      {
+        "name": "page_identity",
+        "passed": true
+      },
+      {
+        "name": "project_saved",
+        "passed": true
+      },
+      {
+        "name": "session_saved",
+        "passed": true
+      },
+      {
+        "name": "custom_draft",
+        "passed": true
+      },
+      {
+        "name": "custom_published",
+        "passed": true
+      },
+      {
+        "name": "m2_task_saved",
+        "passed": true
+      },
+      {
+        "name": "m2_ready",
+        "passed": true
+      },
+      {
+        "name": "keyless_route_default",
+        "passed": true
+      },
+      {
+        "name": "no_api_key_input",
+        "passed": true
+      },
+      {
+        "name": "app_channel_opened",
+        "passed": true
+      },
+      {
+        "name": "actual_app_worker_attached",
+        "passed": true
+      },
+      {
+        "name": "generation_create_dispatch",
+        "passed": true
+      },
+      {
+        "name": "generation_create_completed",
+        "passed": true
+      },
+      {
+        "name": "generation_create_editable",
+        "passed": true
+      },
+      {
+        "name": "generation_create_no_auto_apply",
+        "passed": true
+      },
+      {
+        "name": "generation_create_explicit_apply",
+        "passed": true
+      },
+      {
+        "name": "generation_update_dispatch",
+        "passed": true
+      },
+      {
+        "name": "generation_update_completed",
+        "passed": true
+      },
+      {
+        "name": "generation_update_editable",
+        "passed": true
+      },
+      {
+        "name": "generation_update_no_auto_apply",
+        "passed": true
+      },
+      {
+        "name": "generation_update_explicit_apply",
+        "passed": true
+      },
+      {
+        "name": "generation_delete_dispatch",
+        "passed": true
+      },
+      {
+        "name": "generation_delete_completed",
+        "passed": true
+      },
+      {
+        "name": "generation_delete_editable",
+        "passed": true
+      },
+      {
+        "name": "generation_delete_no_auto_apply",
+        "passed": true
+      },
+      {
+        "name": "delete_proposal_exact_target",
+        "passed": true
+      },
+      {
+        "name": "managed_assignment_saved",
+        "passed": true
+      },
+      {
+        "name": "execution_binding",
+        "passed": true
+      },
+      {
+        "name": "m2_can_send",
+        "passed": true
+      },
+      {
+        "name": "send_enabled",
+        "passed": true
+      },
+      {
+        "name": "m2_dispatch_ack",
+        "passed": true
+      },
+      {
+        "name": "real_m2_profile_not_legacy_fallback",
+        "passed": true
+      },
+      {
+        "name": "actual_managed_pin_observed",
+        "passed": true
+      },
+      {
+        "name": "publish_during_run",
+        "passed": true
+      },
+      {
+        "name": "profile_update_during_run",
+        "passed": true
+      },
+      {
+        "name": "active_pin_retains_v2",
+        "passed": true
+      },
+      {
+        "name": "domain_approval_scope",
+        "passed": true
+      },
+      {
+        "name": "bounded_native_command",
+        "passed": true
+      },
+      {
+        "name": "actual_app_completed",
+        "passed": true
+      },
+      {
+        "name": "native_approval_observed",
+        "passed": true
+      },
+      {
+        "name": "native_file_exactly_once",
+        "passed": true
+      },
+      {
+        "name": "native_observed_check",
+        "passed": true
+      },
+      {
+        "name": "actual_file_operation_recorded",
+        "passed": true
+      },
+      {
+        "name": "turn_did_not_auto_close_task",
+        "passed": true
+      },
+      {
+        "name": "actual_model_answer_correlated",
+        "passed": true
+      },
+      {
+        "name": "answer_rendered",
+        "passed": true
+      },
+      {
+        "name": "explicit_manual_task_acceptance",
+        "passed": true
+      },
+      {
+        "name": "no_browser_errors",
+        "passed": true
+      },
+      {
+        "name": "no_external_browser_requests",
+        "passed": true
+      }
+    ],
+    "sourceHashes": {
+      "apps/local-service/src/runtime/app-agent-gateway.mts": "dce70201a4f6685e097e6e10d2a2a82b91e42c78611a42f904f4e30d4897ee84",
+      "apps/local-service/src/runtime/storage-ports.mts": "afc9e833d27d02c4c08ac418cb8fec1809af3fc8c015c671ed0eeeeb398b5721",
+      "apps/local-service/src/runtime/sandbox-broker.mts": "70c5694dfdf5afdb7661dc67620dac4874bf3119ff2f620955e361ca7fdf8e39",
+      "apps/local-service/src/storage/sqlite-worker.mts": "44787ff66409659b95489828fa8443dec2224d7489f95f3e9fa2c0b3523a0c79",
+      "apps/local-service/src/storage/migrations/schema.mts": "d511bda80bd9c1a84d12b86e46740531ba15bab0615ed550f8dc309bfa573b38",
+      "packages/contracts/issues/task-profile.ts": "ec16c4c6ee8e7cd4f7dd3e1843715133e075d27324e8f2679f0a86912ba1c973",
+      "apps/web/src/api/session-target.ts": "5866cf948c23c4c9cd2731071d75a53669ba0cb4af74ce3226447c7f5d3a869e",
+      "tests/web/single-window/m2b-app-acceptance.mts": "9a7171480cb9226b5c403c0f6e11bf15badde1946224d621f2931080dd270342",
+      "apps/web/dist/index.html": "11f0e96b7efee7828aea4055d66f876a54d82fd92cfa7002f96d7fadb23f529e",
+      "apps/web/dist/assets/index-C6CatpJF.css": "5a571444186a517f69855a10d4e07d9b4f0c19111a649dcde2d63605393532e9",
+      "apps/web/dist/assets/index-VYbRGGom.js": "b4de28b3222ab2241a59328d1c4fa6ca198d877e5dbd96ff9a73d6f47705de41"
+    },
+    "limits": [
+      "App and active consumer required",
+      "Host identity attested, not cryptographic",
+      "Only PAOS-mediated native commands qualified; no claim about every App host tool",
+      "No commercial/account entitlement promotion"
+    ],
+    "actualAppAgent": true,
+    "actualNativeBroker": true,
+    "apiKey": false,
+    "realCredentials": false,
+    "hostIdentity": "attested_not_cryptographic",
+    "sandboxScope": "paos_mediated_commands",
+    "pageErrors": [],
+    "fixtureCleaned": true,
+    "browserClosed": true,
+    "serviceClosed": true,
+    "receipt": ".tmp/paos-m2b/actual-app-evidence-JOkK0N/m2-app-result.json",
+    "receipt_sha256": "e34d95c95a913891e24231e344dc41620048c6ec48bc33111529a3de8a924cf4",
+    "screenshots": [
+      ".tmp/paos-m2b/actual-app-evidence-JOkK0N/actual-m2-app-result.png"
+    ],
+    "runId": "app-run-519f7219581a9f583348e52624c0c9f973d07735f8292ae74f946a2501dae4f6",
+    "taskId": "501d0306-a350-4b95-ae2f-00340fe8dbad",
+    "taskSchemaVersion": "m2_task_profile_v1",
+    "actual_job_ids": [
+      "app-run-7280a4fb5695b7df2808cf3f680c241d7258fc916c1209546158fab2cc6365eb",
+      "app-run-ff8647fcba3fbb15ff637f7c424fc8c3453d2d7d90ca36508c4d504fe3fd6f7a",
+      "app-run-212d4e54c65847345ac634bcd63b055438bb44fdcea838b76baab8de7c12819e",
+      "app-run-519f7219581a9f583348e52624c0c9f973d07735f8292ae74f946a2501dae4f6"
+    ],
+    "consumer_completion": {
+      "agent": "/root/m2_actual_worker",
+      "jobs_completed": 4,
+      "helper_exit_code": 0,
+      "runner_completed_observed": true,
+      "native_operation_id": "m2b-retry3-native-proof"
+    }
+  },
+  "native": {
+    "candidate": {
+      "receipt": ".tmp/paos-m2b/native-candidate-4.log",
+      "claim": "candidate_native_command_broker",
+      "candidateInspection": true,
+      "binarySha256": "edfdd48f8b458af0906e507b4cb05217b326c3d6e515e9f024e05e3b8d650f70",
+      "adapterRevision": "57575e07e1732345770439c60aed09fb2008f7173a6ab6c0252293951e85ceb7",
+      "manifestAdapterRevision": "0d07d7fdf2b828e4dfbabc2e7a6feb6219dd573acd8f25950ad90b10db1efca9",
+      "providerRequests": 0,
+      "modelTurns": 0,
+      "credentialOperations": 0,
+      "cases": [
+        {
+          "mode": "discussion",
+          "writeResults": {
+            "inside": "EPERM",
+            "outside": "EPERM",
+            "temp": "EPERM"
+          },
+          "exitCode": 0,
+          "nativeSandbox": true,
+          "scope": "paos_mediated_commands",
+          "configuration": {
+            "beforeSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+            "afterSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+            "beforeTrustTables": 0,
+            "afterTrustTables": 0
+          },
+          "authFileCreated": false,
+          "homeCleaned": true
+        },
+        {
+          "mode": "planning",
+          "writeResults": {
+            "inside": "EPERM",
+            "outside": "EPERM",
+            "temp": "EPERM"
+          },
+          "exitCode": 0,
+          "nativeSandbox": true,
+          "scope": "paos_mediated_commands",
+          "configuration": {
+            "beforeSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+            "afterSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+            "beforeTrustTables": 0,
+            "afterTrustTables": 0
+          },
+          "authFileCreated": false,
+          "homeCleaned": true
+        },
+        {
+          "mode": "execution",
+          "writeResults": {
+            "inside": "written",
+            "outside": "EPERM",
+            "temp": "EPERM"
+          },
+          "exitCode": 0,
+          "nativeSandbox": true,
+          "scope": "paos_mediated_commands",
+          "configuration": {
+            "beforeSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+            "afterSha256": "1b6c9e26cefa4d62dfaff5551cbdc650009a0776aba054fd384682303849227d",
+            "beforeTrustTables": 0,
+            "afterTrustTables": 1
+          },
+          "stopElapsedMs": 6,
+          "stopExitCode": 1,
+          "authFileCreated": false,
+          "homeCleaned": true
+        }
+      ],
+      "status": "passed",
+      "fixtureCleaned": true
+    },
+    "qualified": {
+      "receipt": ".tmp/paos-m2b/native-default-final.log",
+      "claim": "qualified_native_command_broker",
+      "candidateInspection": false,
+      "binarySha256": "edfdd48f8b458af0906e507b4cb05217b326c3d6e515e9f024e05e3b8d650f70",
+      "adapterRevision": "57575e07e1732345770439c60aed09fb2008f7173a6ab6c0252293951e85ceb7",
+      "manifestAdapterRevision": "57575e07e1732345770439c60aed09fb2008f7173a6ab6c0252293951e85ceb7",
+      "providerRequests": 0,
+      "modelTurns": 0,
+      "credentialOperations": 0,
+      "cases": [
+        {
+          "mode": "discussion",
+          "writeResults": {
+            "inside": "EPERM",
+            "outside": "EPERM",
+            "temp": "EPERM"
+          },
+          "exitCode": 0,
+          "nativeSandbox": true,
+          "scope": "paos_mediated_commands",
+          "configuration": {
+            "beforeSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+            "afterSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+            "beforeTrustTables": 0,
+            "afterTrustTables": 0
+          },
+          "authFileCreated": false,
+          "homeCleaned": true
+        },
+        {
+          "mode": "planning",
+          "writeResults": {
+            "inside": "EPERM",
+            "outside": "EPERM",
+            "temp": "EPERM"
+          },
+          "exitCode": 0,
+          "nativeSandbox": true,
+          "scope": "paos_mediated_commands",
+          "configuration": {
+            "beforeSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+            "afterSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+            "beforeTrustTables": 0,
+            "afterTrustTables": 0
+          },
+          "authFileCreated": false,
+          "homeCleaned": true
+        },
+        {
+          "mode": "execution",
+          "writeResults": {
+            "inside": "written",
+            "outside": "EPERM",
+            "temp": "EPERM"
+          },
+          "exitCode": 0,
+          "nativeSandbox": true,
+          "scope": "paos_mediated_commands",
+          "configuration": {
+            "beforeSha256": "d6d050d316441d956ba0725dd850222c35d80c402c0315cccce61dd41f893857",
+            "afterSha256": "1b6c9e26cefa4d62dfaff5551cbdc650009a0776aba054fd384682303849227d",
+            "beforeTrustTables": 0,
+            "afterTrustTables": 1
+          },
+          "stopElapsedMs": 7,
+          "stopExitCode": 1,
+          "authFileCreated": false,
+          "homeCleaned": true
+        }
+      ],
+      "status": "passed",
+      "fixtureCleaned": true
+    }
+  },
+  "manifest": {
+    "schemaVersion": "paos_runtime_manifest_v1",
+    "qualification": "native_offline",
+    "platform": "win32",
+    "arch": "x64",
+    "windowsRelease": "10.0.26200",
+    "codex": {
+      "version": "0.167.0",
+      "sha256": "edfdd48f8b458af0906e507b4cb05217b326c3d6e515e9f024e05e3b8d650f70"
+    },
+    "node": {
+      "version": "v26.5.0",
+      "sha256": "119d6fa70e6ae1b15b90688ab6bcc8e3a2819acea021af196895cab1843645af"
+    },
+    "sqliteVersion": "3.53.3",
+    "adapterRevision": "57575e07e1732345770439c60aed09fb2008f7173a6ab6c0252293951e85ceb7",
+    "packageLockSha256": "d279009aa1dca2bd2d6ba0e18a77d085a67e872d0dce78dd360fb23d43975f38",
+    "schema": {
+      "sha256": "486c7c8daa5dc7f3ab2a1fb56de5316804caf7a4210fda1dc28d3f0f4e90cfe1",
+      "v2Sha256": "b1e5d17224b9d9732b5976012438ba78e2cf7e418b67f8f8a5f5cffe301b875d"
+    },
+    "capabilities": {
+      "projectHistory": true,
+      "scopedExecution": true,
+      "ephemeralAuth": true,
+      "fts5": true,
+      "backupRestore": true
+    },
+    "evidence": {
+      "nativeSmoke": "7f6cc3e29d74bd1a6252736ee7bd757d1bbd5a0883b66e008c96f9d1cdcaad86",
+      "history": "3846634cfd7b84f372a02e56a1302c9ed831c39a92cdc7a73c73e0eebdbc2516",
+      "boundary": "612e77d09da65e6329d39b1621eb79f4a50b5dbbac21409c13424d9a468661d7",
+      "ephemeralAuth": "519a06b0af264cfe882994f91c51bcbd5909360f7d7684ff6f72a8b9244bf0ba",
+      "headless": "3dd38c2e813a43a9eca0798784db510fda184e9cee9c6089ad2faf8f32e6abc0",
+      "workload": "f4dc674a8b7086ecdf3a6d1c17231a4f7c0f70d3691500c33c695aa4e38f594c",
+      "nativeVault": "45b9825236513e2976a9589ec904f19840649f059a556881825704e20f83807d",
+      "nativeLocalAuth": "da0555e1c5cf5c8f40e0592029fe93adcad67015575ff3015b226f9043a8d679",
+      "profileIsolation": "9a9b4ed389a03bc4d8ec976ec1dec86aba32b46f0ac169a5b061e86f21dfa78a",
+      "fiveTaskOfflineRepair": "42fcc15354add50ff4d9f6b46bb64d75f0313da96367776ec875dac2aad2d4b0",
+      "activeRuntimeFixture": "afcadfec65b8879f450a4f3e7f3ddb436823f4d13996d906e11c41c6ab5d2c7a",
+      "actualAppAgentRoundtrip": "7161bb26f8e59d76539ea43df4c752110bf78856f2a5e16fa6ee26a49a8146fb",
+      "nativeCommandBroker": "33b815268274304ed05364c8d573185229b1b608e0b2e8f19b0d53e669f5bc6a",
+      "actualAppBrokerRoundtrip": "01e2c7b5a90a1e4fbd3cc6e2785ff8fb0059beea072586546cda60e4b7d970b1",
+      "taskLifecycleBrowser": "e7009ce7b2ee6d91b0f88486cb72eb96cde244a74633604c49a33fc1d4a732d7",
+      "dataJourneysBrowser": "2359a110c7306aaa28c305466fc7bf6c0bb2ffb17c58c4d10a0400df10654a70",
+      "m2NativeCandidate": "51b65dec06d4b8da283011ec3de9e1d54dd01f563ea339bbba6625575daa914a",
+      "m2bNativeCandidate": "a8f4f15f41d22d0d41faed105a65895511d3a0871f0730cd6f02c3756a2129b5"
+    }
+  },
+  "review": {
+    "agent": "/root/m2b_review",
+    "context_mode": "separate_reused_context",
+    "passes": 2,
+    "source_review_verdict": "source_review_passed",
+    "tester_verdict": "closed_allowed",
+    "root_self_review": [
+      "post-review normal-message redacted indicator regression RED/GREEN",
+      "permalink hash must not reopen after top Refresh",
+      "final snapshot/source/hash/evidence alignment"
+    ],
+    "findings": [
+      "restore effective dependency/cycle validation",
+      "full semantic diff and resource retention",
+      "project root identity in service/atomic writer",
+      "custom Done metrics profile semantics",
+      "skill reverse-agent links and source export",
+      "lostACK auth retry original envelope",
+      "specific run navigation"
+    ],
+    "all_findings": "confirmed_fixed",
+    "reviewer_runtime_tests": "not_run; source/root-builder receipts reviewed"
+  },
+  "plugin_checks": {
+    "full_unittest": {
+      "tests": 1450,
+      "skipped": 1,
+      "duration_seconds": 527.507,
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2b/full-unittest.log",
+      "provenance": "current run before TS/UI/docs; unchanged Python implementation"
+    },
+    "fixtures": {
+      "count": 91,
+      "all_expected_checks": true,
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2b/fixture-eval.log"
+    },
+    "transcripts": {
+      "passed": 26,
+      "total": 26,
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2b/transcript-eval.log"
+    },
+    "compatibility": {
+      "status": "compatible",
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2b/codex-compatibility.log"
+    }
+  },
+  "additional_checks": {
+    "build": {
+      "command": "npm run build:web",
+      "exit_code": 0,
+      "receipt": ".tmp/paos-m2b/ui-build-final.log"
+    },
+    "typecheck": {
+      "command": "npm run check:web-m1",
+      "exit_code": 0
+    },
+    "backend_review_focused": {
+      "passed": 84,
+      "skipped": 0,
+      "receipt": ".tmp/paos-m2b/backend-review-round1-native-green.log"
+    },
+    "old_reader": {
+      "lazy_schema": 3,
+      "sql_checksums_1_2_unchanged": true,
+      "actual_prior_reader_refuses_schema3": true,
+      "receipt": ".tmp/paos-m2b/workflows-prior-reader-probe.log"
+    }
+  },
+  "source_hashes": {
+    "apps/local-service/src/main.mts": "2ee1c794dc18e9ee1d9c6605ec7346705e1eea7afa8e1384eaa5d7c2472d5831",
+    "apps/local-service/src/commands/domain-tools.mts": "b2d84397a6f5390e3eea20afc5832d7cf9013881cff0fa656efb14ed70ce201c",
+    "apps/local-service/src/http/application.mts": "8c68e81d1d6ba0ef829e6e9adde9d4d497c40cfaa08b2751813265a05980d185",
+    "apps/local-service/src/redaction/persisted.mts": "e718a1a5c2063603bd6b13bfac414415a10b91d1bb342638bb49664ca7bd052b",
+    "apps/local-service/src/runtime/app-agent-gateway.mts": "dce70201a4f6685e097e6e10d2a2a82b91e42c78611a42f904f4e30d4897ee84",
+    "apps/local-service/src/runtime/live-gateway.mts": "c7e631dd7bfc58917070247817c6508c3c0a20d2b77995f5d39bc9429dcf5ebc",
+    "apps/local-service/src/runtime/m1-recipe.mts": "0b20d9bb882eb139d6b8fa88d461a66a931181ecc7a2afdf13fda4f09b319a86",
+    "apps/local-service/src/runtime/storage-ports.mts": "afc9e833d27d02c4c08ac418cb8fec1809af3fc8c015c671ed0eeeeb398b5721",
+    "apps/local-service/src/sessions/service.mts": "5d23204f7ed87822b3428314e222e63196b44bf5b0568187034f83feda7930b9",
+    "apps/local-service/src/storage/local-store.mts": "f9e9db8b95637a92f09f323c390fe187fd9e7766ce564aa111338f0b4567f456",
+    "apps/local-service/src/storage/snapshot.mts": "e2bd5297b148ca24a3263667bb273a2cbfa2c746c0647b45da4dbbc7bc56d9fd",
+    "apps/local-service/src/storage/sqlite-worker.mts": "44787ff66409659b95489828fa8443dec2224d7489f95f3e9fa2c0b3523a0c79",
+    "apps/local-service/src/task-manager/service.mts": "16a641cb97f44f83d91e661ed6eea5d873c629cbd2788bb212e58d000b953110",
+    "apps/local-service/src/tasks/user-commands.mts": "fd9f310c41049d045ea42efdc424a6840bc73e3ffc0a1ea58eaa18003663388d",
+    "apps/local-service/src/team/contract.mts": "c20fdf0cdf8a80667855f4131d0c8260e54359f696e18660241a46a3d1c78014",
+    "apps/local-service/src/team/generation.mts": "c16386d95cf7fa4702dfd5c8f340cfe39584ec0d648236cceed3d83f86532bbb",
+    "apps/local-service/src/team/service.mts": "a828c312e939331d5b821d5aa7e4f08e22458771ad97afa517ceb5591e03e8bf",
+    "apps/local-service/src/team/sources.mts": "50886dbb7b7c55e226dbbd521533828e02d23cf7a285a41ce6642da7a2abc075",
+    "apps/local-service/src/workflows/commands.mts": "21796fae601b86194c01a6f19e5599a62abaa012a83695c1dce50809cae4d015",
+    "apps/local-service/src/workflows/guards.mts": "fd8bfcf5234530e60762f2b82ad9dea0d506993c477b83013b63095dfe1a9083",
+    "apps/local-service/src/workflows/registry.mts": "57d87621d13178c66368af4cd8e8ec4524c6c1b4c1cc3d3079d0302d23b0509b",
+    "apps/local-service/src/workflows/runtime.mts": "8fa6be368683eedcb24f5a0be86db46accae9b5308a55ca2d0a0c0fb3a879288",
+    "apps/local-service/src/storage/migrations/schema.mts": "d511bda80bd9c1a84d12b86e46740531ba15bab0615ed550f8dc309bfa573b38",
+    "apps/local-service/src/runtime/codex/coordinator.ts": "e32d3832d0fd14f4a4bbfcc9dc106b8230164a662de5d071d5ec76b16d649bb6",
+    "apps/web/src/api/client.ts": "3459612c7f2ddfad6b110ff8e9c9106635bade390e7a10f0e4cc7cf1fb96b21d",
+    "apps/web/src/api/session-target.ts": "5866cf948c23c4c9cd2731071d75a53669ba0cb4af74ce3226447c7f5d3a869e",
+    "apps/web/src/ui/App.tsx": "0f2f72e30561e899dd752447410e111cac71ed51594693747ed1c94305f9a550",
+    "apps/web/src/features/sessions/SessionsCatalog.tsx": "b6daa9224bb213ac887c275053c82b0036997542f7536adf634c76b1f900499b",
+    "apps/web/src/features/tasks/Editor.tsx": "c6236757ab5150b99f2c90563a14ebe692b4a3be35192edcc9d65e829de20df5",
+    "apps/web/src/features/tasks/model.ts": "2d2fa32761e0d7cc6cb32b13913eb5b096c7ca2b5573aded2249c50171f86522",
+    "apps/web/src/features/tasks/Panels.tsx": "bdad070aae00087190435d101d76e9b6c7997fb9a1f326dd23b87aff845d8bce",
+    "apps/web/src/features/tasks/Settings.tsx": "0679f3b3ef18ccfd14af40fc67c34aad7a40f3df152b2fd9d268e031ad1440ea",
+    "apps/web/src/features/tasks/TaskManager.tsx": "a6f7ec90c9d763408e439c173aa29935035887495a8ed5f5a762577bb25051e5",
+    "apps/web/src/features/team/TeamManager.tsx": "9ca94e8fa4e76b6b6d13f3a9ae774236e091092f7f737f51947f94b69380e71f",
+    "apps/web/src/features/workflows/WorkflowManager.tsx": "3972bf1c5526e87a1067350256a5675f8517907bb585245bae4ccc21b68e1621",
+    "packages/contracts/issues/manager.ts": "55a589342eb0146484f0a2e15de150abdc3005c821514bbbd434226d92cf324d",
+    "packages/contracts/issues/task-profile.ts": "ec16c4c6ee8e7cd4f7dd3e1843715133e075d27324e8f2679f0a86912ba1c973",
+    "packages/contracts/runtime/qualified-manifest.json": "336cfca9cbadd3524244b476aae85f2b5810e69d11837e9ecf61d7f75202b3ab",
+    "packages/contracts/sessions/history.ts": "91313e9c48b4fbaa3bdbf083e5efc2691bbafdcaf1adc4dd01c0e28bd165b070",
+    "packages/contracts/storage/local-store.ts": "9c23feca0b4729cd48046288843c269d7fdcc4216666d5a667d8a1f7fa0e3c08",
+    "packages/contracts/team/assets.ts": "bbc8545d2dada57e34051ff6d2227373d6125acc8e50d4eec59df85635624a78",
+    "packages/contracts/workflows/helpers.ts": "3ae9bb02752d933a6c0a5dcbc32922de319face6df9c2fddfb3b0e14ba184d54",
+    "packages/contracts/workflows/workflow.ts": "7c1f060fea793503813d67c0f082d7b9aa7c8ebf1153200a2d8a071b1409c3a5",
+    "tests/web/sessions-team.test.mts": "6af0609f519b50021f34baa547af7334c942765d4a3dc624365d45e8e800155c",
+    "tests/web/team-review-repair.test.mts": "abcf4a72be37745cfa1a8b2d9e93dad2f4c38f91a2073e366be380dba409cd51",
+    "tests/web/team-run-navigation.test.mts": "6be3fdae6b230ecb14a21a0ec72f8615ef194b08f5b7806c2b591c879bfceb84",
+    "tests/web/workflows.test.mts": "49f1e1a7bcfd36617920c46f05d7312cd8589a67c344cada00ab26b2c7fbc6de",
+    "tests/web/single-window/m2b-app-acceptance.mts": "9a7171480cb9226b5c403c0f6e11bf15badde1946224d621f2931080dd270342",
+    "tests/web/single-window/m2b-browser-acceptance.mts": "7d8a7884639d565bf3e7756ca1c513a19e8a2c9caa221b26d8c875028a26da39"
+  },
+  "failure_receipts": [
+    {
+      "receipt": ".tmp/paos-m2b/browser-evidence-3rO1X7/result.json",
+      "sha256": "f33ed1d20779ca296acf0ea3001d17e593c74c37c8387213846d8d2331c83d7a",
+      "failed_step": "setup",
+      "error": "Error: messages_seeded_0",
+      "fixture_cleaned": true
+    },
+    {
+      "receipt": ".tmp/paos-m2b/browser-evidence-9MApYW/result.json",
+      "sha256": "bd04dd39713b654182caf822694ed3ac593d651ff200149d150904428b9d2455",
+      "failed_step": "setup",
+      "error": "Error: browserType.launchPersistentContext: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> C:/Users/user/AppData/Local/ms-playwright/chromium-1223/chrome-win64/chrome.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-inf",
+      "fixture_cleaned": true
+    },
+    {
+      "receipt": ".tmp/paos-m2b/browser-evidence-bmaHGJ/result.json",
+      "sha256": "f172df82295ae8725f9b24d8d912d266d3cadd4d91d9cc8b1d0dfc90831948ae",
+      "failed_step": "workflows",
+      "error": "TimeoutError: locator.click: Timeout 12000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTestId('workflow-manager').getByTestId('workflow-editor').getByRole('button', { name: 'Сохранить', exact: true })\u001b[22m\n",
+      "fixture_cleaned": true
+    },
+    {
+      "receipt": ".tmp/paos-m2b/browser-evidence-mixpEx/result.json",
+      "sha256": "8f4a2fecf0f0a4f7177a1801d11250746c3359e4f6feb21dde57f972fed4b2b4",
+      "failed_step": "asset_retry",
+      "error": "TimeoutError: locator.click: Timeout 12000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTestId('agent-manager').getByRole('button', { name: 'Повторить запрос', exact: true }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button>Повторить запрос</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n",
+      "fixture_cleaned": true
+    },
+    {
+      "receipt": ".tmp/paos-m2b/browser-evidence-tJH8W9/result.json",
+      "sha256": "e90d410a689437c9505c17774fcca6a8748a90939a41a58e5b46bc80b6240452",
+      "failed_step": "workflows",
+      "error": "Error: locator.click: Error: strict mode violation: locator('[data-task-id=\"f5f90d50-bd48-47b7-a6fb-830e9cea7357\"]') resolved to 2 elements:\n    1) <button aria-current=\"true\" data-task-id=\"f5f90d50-bd48-47b7-a6fb-830e9cea7357\">…</button> aka getByRole('button', { name: 'MBBB-1 Custom UI task Task' }).first()\n    2) <button aria-current=\"true\" data-task-id=\"f5f90d50-bd48-47b7-a6fb-830e9cea7357\">…</button> aka getByRole('button', { name: 'MBBB-1 Custom UI task Task' }).nth(1)\n\nCall log:\n\u001b[2m  - waiting for locator('[data-task-id=\"f5f90d50-bd48-47b7-a6fb-830e9cea7357\"]')\u001b[22m\n",
+      "fixture_cleaned": true
+    },
+    {
+      "receipt": ".tmp/paos-m2b/browser-evidence-uxvWbp/result.json",
+      "sha256": "465697d0535771b16271f62f1256d09331d21efcbbed9a3b0f3b40e408bb5410",
+      "failed_step": "setup",
+      "error": "Error: messages_seeded_0",
+      "fixture_cleaned": true
+    },
+    {
+      "receipt": ".tmp/paos-m2b/browser-evidence-wFHLTN/result.json",
+      "sha256": "b026993d07711bf2a91f123615999d8328bf20e179f3da4d7e4e4975ca2e4cec",
+      "failed_step": "setup",
+      "error": "Error: project_created",
+      "fixture_cleaned": true
+    },
+    {
+      "receipt": ".tmp/paos-m2b/actual-app-evidence-jt6mjw/m2-app-result.json",
+      "sha256": "e625b08ca9251b0edefec65377fcabc8f2597ea0164d1aca99a45f344331fd21",
+      "failed_step": "setup",
+      "error": "execution_binding",
+      "fixture_cleaned": true
+    },
+    {
+      "receipt": ".tmp/paos-m2b/actual-app-evidence-MwDU7K/m2-app-result.json",
+      "sha256": "51f7ce041f1a51d20b8082e66518d255c9a88fb3dbec79a13c626843d033208a",
+      "failed_step": "setup",
+      "error": "actual_model_answer_correlated",
+      "fixture_cleaned": true
+    }
+  ],
+  "red_receipts": [
+    "sessions-team-red.log",
+    "team-red.log",
+    "workflows-red.log",
+    "workflow-reopen-red.log",
+    "backend-review-round1-red.log",
+    "run-navigation-red-2.log",
+    "redaction-flag-red.log"
+  ],
+  "limits": [
+    "App and explicitly attached active consumer required; no auto-wakeup/closed-App claim",
+    "Only PAOS-mediated native commands qualified; no whole-App sandbox/principal/quota claim",
+    "History coverage partial for unavailable host sources; bounded service-memory cursor snapshots expire after15min/restart",
+    "Known secret forms redacted, not a proof of universal secret detection",
+    "Managed PAOS versions separate from native source activation; native loadedVersion null, observedPins explicit",
+    "M2 recipes are validated metadata; M3 execution not implemented",
+    "Local discovery/copy, remote discovery unavailable; no installation/global mutation",
+    "No broad WCAG/performance/production/commercial acceptance claim"
+  ],
+  "preservation": {
+    "other45_cards_exact_bytes": true,
+    "other45_json_tasks_unchanged": true,
+    "all56_estimates_unchanged": true,
+    "all12_groups_unchanged": true,
+    "execution_plan_unchanged": true,
+    "no_baseline_source_deleted": true,
+    "protected_hashes": {
+      "AGENTS.md": "defcf468cbc5fd09951a400e2e8b32ee0128309a3b012424d35a4995de7374d2",
+      "EVALS.md": "326f0eb3a4dc9aab49396da90d42bf2899979fdf32c0c599f70b4609fc4004cd",
+      "apps/web/package-lock.json": "d279009aa1dca2bd2d6ba0e18a77d085a67e872d0dce78dd360fb23d43975f38",
+      "research/product-agent-os-web-m2-execution-2026-11-11.md": "6edc53c630a0f427c4d6e9be5514a24ce9398cd033de99b9a9b9c9c864209214",
+      "research/product-agent-os-web-m2-results-2026-11-11.json": "f16fbe0814890d570cab5f481b60466b5f5178fd3025c3cfc8e9a496245fdc8d"
+    }
+  },
+  "finished_at": "2026-11-12T07:02:26.794970+00:00",
+  "cohort_wall_seconds": 5588.200279,
+  "per_task_durations": "not_measured; null retained",
+  "runtime_metrics": {
+    "agent_tasks": [
+      "/root/m2b_workflows",
+      "/root/m2b_catalog_discovery",
+      "/root/m2b_workflow_builder",
+      "/root/m2_backend",
+      "/root/m2b_review",
+      "/root/m2_actual_worker"
+    ],
+    "new_agent_spawns": 4,
+    "reused_agents": 2,
+    "primary_model": "not_available; configured model identity absent from trace",
+    "reasoning_tokens": "not_available; no token-counter surface",
+    "input_cached_output_tokens": "not_available; no token-counter surface",
+    "aggregate_tool_calls_waits_compactions": "not_available; no complete trace counter",
+    "cohort_wall_source": "baseline manifest timestamp to final evidence update, includes review/verification, not per-task effort"
+  }
+}

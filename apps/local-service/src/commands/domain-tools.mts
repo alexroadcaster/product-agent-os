@@ -3,6 +3,7 @@ import type { LocalStore } from '../storage/local-store.mts';
 import { decodeTaskProfile as decodeM1TaskProfile } from '../../../../packages/contracts/issues/task-profile.ts';
 import type { RuntimeBinding, RuntimeRun } from '../runtime/codex/coordinator.ts';
 import { taskManagerSnapshot,pinBlockingRun } from '../task-manager/service.mts';
+import {runtimeWorkflow} from '../workflows/runtime.mts';
 
 type ToolRequest = { tool: string; arguments: unknown; binding: RuntimeBinding; run: RuntimeRun; requestId: string | number };
 const schemas = {
@@ -89,8 +90,9 @@ export function createDomainTools({ store,onPendingLink }: { store: LocalStore;o
     if (request.tool === 'task_patch') {
       if (!args.patch || typeof args.patch !== 'object' || Array.isArray(args.patch)) fail('TOOL_ARGUMENTS_INVALID');
       changed = args.patch as Record<string, unknown>;
+      const workflow=await runtimeWorkflow(store,project.id,{...target.data,...changed});
       if (Object.keys(changed).some((key) => !['status', 'risks'].includes(key))
-        || (changed.status !== undefined && !['in_progress', 'review', 'verification', 'awaiting_acceptance'].includes(String(changed.status)))) fail('TOOL_PATCH_FORBIDDEN');
+        || (changed.status !== undefined && !['in_progress', 'review', 'verification', 'awaiting_acceptance'].includes(workflow.category))) fail('TOOL_PATCH_FORBIDDEN');
       // Imported-state review is an owner decision. A model may add risks but cannot clear these guards.
       if (changed.risks !== undefined && ['recovery_review', 'acceptance_unverified'].some((flag) =>
         Array.isArray(target.data.risks) && target.data.risks.includes(flag)

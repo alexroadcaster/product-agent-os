@@ -1,3 +1,5 @@
+import type {WorkflowRegistry} from '../../../../packages/contracts/workflows/workflow.ts';
+import {workflowCategory} from '../../../../packages/contracts/workflows/helpers.ts';
 import type { Change, StoredEntity } from "./client.ts";
 /** Resolve the saved ID directly, independently of selector pagination; eligibility never hides existing context. */
 export async function loadSavedSessionTarget(
@@ -17,12 +19,12 @@ export async function loadSavedSessionTarget(
   return task;
 }
 /** UI preflight; the service computes the authoritative digest from the saved task revision. */
-export function isExecutionTarget(task: StoredEntity | undefined): boolean {
+export function isExecutionTarget(task: StoredEntity | undefined,registry?:WorkflowRegistry): boolean {
   if (
     !task ||
     task.kind !== "task" ||
     task.revision < 1 ||
-    task.status !== "ready" ||
+    (registry&&task.data?.schemaVersion==='m2_task_profile_v1'?workflowCategory(registry,task.data as any):task.status) !== "ready" ||
     (Array.isArray(task.data?.risks) &&
       task.data.risks.includes("recovery_review")) ||
     !["m1_task_profile_v1","m2_task_profile_v1"].includes(String(task.data?.schemaVersion)) ||

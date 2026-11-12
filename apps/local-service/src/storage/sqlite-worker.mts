@@ -3,10 +3,16 @@ import { createHash, randomUUID } from 'node:crypto';
 import { DatabaseSync } from 'node:sqlite';
 import { unlinkSync,realpathSync,lstatSync } from 'node:fs';
 import { resolve,join,dirname } from 'node:path';
-import { migrate,ensureM2Schema,databaseCompatibility } from './migrations/schema.mts';
-import { decodeTaskProfile as decodeM1TaskProfile, validateIssueGraph, validateReady, transitionAllowed, canonicalIssueLinks, type M2TaskProfile, type TaskProfile, type IssueLink } from '../../../../packages/contracts/issues/task-profile.ts';
+import { migrate,ensureM2Schema,ensureM2BSchema,databaseCompatibility } from './migrations/schema.mts';
+import { decodeTaskProfile as decodeM1TaskProfile, validateIssueGraph, validateReady, canonicalIssueLinks, type M2TaskProfile, type TaskProfile, type IssueLink } from '../../../../packages/contracts/issues/task-profile.ts';
+import {workflowWriteContext,validateWorkflowTask,validateWorkflowBoard} from '../workflows/guards.mts';
+import {workflowCategory} from '../workflows/registry.mts';
 import { createSnapshot, writeBlob, readManagedBlob,blobDirectory } from './snapshot.mts';
 import { RANKED_SEARCH_SQL } from './search-queries.mts';
+import {safePersistedText,safeVisibleValue,safeRuntimeData,isHiddenMessage} from '../redaction/persisted.mts';
+import {teamId,previewAsset,applyAsset} from '../team/contract.mts';
+import type {TeamRegistry} from '../../../../packages/contracts/team/assets.ts';
+import {sourceCatalog,sourceAsset,projectAssetRoots,type AssetRoot} from '../team/sources.mts';
 import type { EntityKind, Project, PromoteLegacy, StoreWrite, StoredEntity } from '../../../../packages/contracts/storage/local-store.ts';
 
 function fail(code: string, message = code): never { throw Object.assign(new Error(message), { code }); }
@@ -34,8 +40,9 @@ function project(projectId: string): Project | null {
     authorityMode: row.authority_mode as Project['authorityMode'], authorityEpoch: row.authority_epoch as number } : null;
 }
 function entity(row: Record<string, any>): StoredEntity {
-  return { projectId: row.project_id, id: row.id, kind: row.kind, parentId: row.parent_id, title: row.title, body: row.body,
-    status: row.status, publicKey: row.public_key, coverage: row.coverage, data: JSON.parse(row.data), revision: row.revision,
+  if(row.kind==='message'&&isHiddenMessage(JSON.parse(row.data)))row={...row,title:'',body:'',coverage:'unavailable',data:JSON.stringify({visibility:'hidden',unavailable:'hidden_content_excluded'})};
+  return { projectId: row.project_id, id: row.id, kind: row.kind, parentId: row.parent_id, title: ['session','message'].includes(row.kind)?safePersistedText(row.title):row.title, body: ['session','message'].includes(row.kind)?safePersistedText(row.body):row.body,
+    status: row.status, publicKey: row.public_key, coverage: row.coverage, data: row.kind==='run'?safeRuntimeData(JSON.parse(row.data)):['message','session'].includes(row.kind)?safeVisibleValue(JSON.parse(row.data)):JSON.parse(row.data), revision: row.revision,
     deleted: Boolean(row.deleted), updatedAt: row.updated_at,
     blobIds: db.prepare('SELECT blob_id FROM entity_blobs WHERE project_id=? AND entity_id=? ORDER BY blob_id').all(row.project_id, row.id).map(blob => blob.blob_id as string) };
 }
@@ -125,7 +132,7 @@ function search(params: { projectId: string; query: string; limit?: number; offs
   if (tokens.length === 0) return { items: [], coverage, generation };
   const terms = tokens.map(token => `"${token}"`).join(' AND ');
   const query = currentFormat ? `"${scopeToken(params.projectId)}" AND (${terms})` : terms;
-  return { items: db.prepare(RANKED_SEARCH_SQL).all(query, params.projectId, limit, offset).map(entity), coverage, generation };
+  return { items: db.prepare(RANKED_SEARCH_SQL).all(query, params.projectId, limit, offset).map(entity).filter(item=>!isHiddenMessage(item)&&tokens.every(token=>(item.title+' '+item.body).toLocaleLowerCase().includes(token.toLocaleLowerCase()))), coverage, generation };
 }
 /** History keeps changed task fields only. Oversized values are explicitly unavailable, never a hidden full-state copy. */
 function redactHistoryText(value:string):string {
@@ -152,14 +159,14 @@ function publicAuditPayload(raw:string):unknown {
       const {body:omitted,title:omittedTitle,...metadata}=clean[side];clean[side]=metadata;
     }return clean;
   });
-  return JSON.parse(JSON.stringify(payload,(_key,item)=>typeof item==='string'?redactHistoryText(item):item));
+  return safeVisibleValue(payload);
 }
-function write(command: StoreWrite, promotion?: PromoteLegacy) {
+function write(command: StoreWrite, promotion?: PromoteLegacy,teamOperation?:any,trustedSourceAssets:any[]=[]) {
   text(command.projectId); text(command.actorId); text(command.idempotencyKey);
   if (!Array.isArray(command.changes) || command.changes.length === 0 || command.changes.length > (promotion ? 10000 : 100)) fail('INVALID_COMMAND');
   if (command.outbox && (!Array.isArray(command.outbox) || command.outbox.length > 100)) fail('INVALID_COMMAND');
   if (Buffer.byteLength(JSON.stringify(command)) > 16 * 1024 * 1024) fail('COMMAND_TOO_LARGE');
-  const payloadHash = hash(promotion ?? command);
+  const payloadHash = hash(teamOperation?{projectId:command.projectId,actorId:command.actorId,epoch:command.expectedAuthorityEpoch,idempotencyKey:command.idempotencyKey,expectedRevision:teamOperation.expectedRevision,previewDigest:teamOperation.previewDigest,proposal:{...teamOperation.proposal,resources:(teamOperation.proposal.resources??[]).map(({path,hash,byteSize}:any)=>({path,hash,byteSize}))}}:promotion ?? command);
   const result = transaction(() => {
     const previous = db.prepare('SELECT payload_hash,receipt FROM commands WHERE project_id=? AND idempotency_key=?')
       .get(command.projectId, command.idempotencyKey);
@@ -170,6 +177,18 @@ function write(command: StoreWrite, promotion?: PromoteLegacy) {
     const scope = project(command.projectId);
     if (!scope) fail('PROJECT_NOT_FOUND');
     if (scope.authorityEpoch !== command.expectedAuthorityEpoch) fail('AUTHORITY_CONFLICT');
+    if(teamOperation){
+      try{const root=realpathSync(scope.canonicalRoot),identity=lstatSync(root,{bigint:true});if(!identity.isDirectory()||`${identity.dev}:${identity.ino}`!==scope.rootIdentity)fail('PROJECT_ROOT_UNAVAILABLE');}catch{fail('PROJECT_ROOT_UNAVAILABLE');}
+      ensureM2BSchema(db);
+      const old=get(scope.id,teamId),registry=(old?.data??{category:'team_registry',assets:[]}) as TeamRegistry;
+      const runs=db.prepare("SELECT * FROM entities WHERE project_id=? AND kind='run' AND deleted=0 AND status NOT IN ('completed','failed','interrupted')").all(scope.id).map(row=>{const data=JSON.parse(row.data as string);const run=data.appAgentRun??data.runtimeRun;return {id:String(row.id),assetIds:(run?.assetPins??run?.taskContext?.assetPins??[]).map((p:any)=>p.assetId)};});
+      const preview=previewAsset(registry,teamOperation.proposal,teamOperation.expectedRevision,runs,[...registry.assets,...teamOperation.sourceAssets??[]]);
+      if(preview.previewDigest!==teamOperation.previewDigest)fail('TEAM_PREVIEW_STALE');
+      for(const r of preview.proposal.resources??[]){if(r.base64!==undefined)fail('ASSET_RESOURCE_NOT_MANAGED');const blob=db.prepare('SELECT * FROM blobs WHERE project_id=? AND id=?').get(scope.id,r.blobId??'');if(!blob||blob.sha256!==r.hash||blob.byte_size!==r.byteSize)fail('ASSET_RESOURCE_INVALID');}
+      const applied=applyAsset(registry,{...preview,proposal:{...preview.proposal,...(preview.proposal.action==='create'?{assetId:`managed-${hash([scope.id,command.idempotencyKey]).slice(0,32)}`}:{})}},command.actorId);
+      const blobIds=[...new Set(applied.registry.assets.flatMap(a=>a.versions.flatMap(v=>v.resources.flatMap(r=>r.blobId?[r.blobId]:[]))))];
+      command={...command,changes:[{expectedRevision:old?.revision??0,entity:{id:teamId,kind:'settings',data:applied.registry as any,blobIds}}]};
+    }
     // Check the pre-command state: the same atomic dispatch may insert its own run before its task row.
     if(command.taskManagerRun){
       const pin=command.taskManagerRun,row=get(scope.id,pin.id),run=(row?.data.runtimeRun??row?.data.appAgentRun) as any;
@@ -179,8 +198,25 @@ function write(command: StoreWrite, promotion?: PromoteLegacy) {
         ||!command.actorId.endsWith(`:${pin.id}`)||command.changes.some(c=>c.entity.kind==='task'&&(c.entity.id!==pin.taskId||['done','cancelled'].includes(String(c.entity.data?.status)))))fail('TOOL_SCOPE_INVALID');
     }
     if (command.requireIdle || (command.taskManagerAction&&!command.taskManagerRun)) assertIdle(scope.id);
+    const workflowRows=db.prepare("SELECT * FROM entities WHERE project_id=? AND deleted=0 AND kind IN ('task','settings','run')").all(scope.id).map(row=>entity(row));
+    const workflowContext=workflowWriteContext(command,workflowRows);
+    if(command.workflowPublish){const available=[...((get(scope.id,teamId)?.data as unknown as TeamRegistry)?.assets??[]),...trustedSourceAssets];
+      const published=workflowContext.registry.workflows.find(w=>w.id===command.workflowPublish!.workflowId)?.versions.at(-1);
+      for(const recipe of published?.definition.recipes??[])for(const step of recipe.steps)for(const id of step.skills){const a=available.find(a=>a.id===id&&a.kind==='skill'&&!a.archived&&!a.deleted);if(!a)fail('WORKFLOW_SKILL_REFERENCE_INVALID');const version=step.skillVersions[id];if(version&&version!==String(a.effectiveVersion??a.source?.hash))fail('WORKFLOW_SKILL_VERSION_INVALID');}
+    }
+    const migrationCohort=new Set(command.workflowMigration?.tasks.map(t=>t.id)??[]);
+    if(command.workflowMigration){
+      const rows=workflowRows.filter(r=>r.kind==='task'),profiles=rows.map(r=>decodeM1TaskProfile(r.data)),links=canonicalIssueLinks(profiles,(workflowRows.find(r=>r.id==='m2-links')?.data.items??[]) as IssueLink[]);
+      const flags=new Map<string,Set<string>>();const mark=(id:string,flag:string)=>{const row=rows.find(r=>r.id===id);if(!row||row.data.schemaVersion!=='m2_task_profile_v1'||workflowCategory(workflowContext.registry,row.data as any)!=='done')return;const set=flags.get(id)??new Set<string>();set.add(flag);flags.set(id,set);};
+      for(const change of command.changes.filter(c=>migrationCohort.has(c.entity.id))){const before=rows.find(r=>r.id===change.entity.id);if(!before)continue;const oldCategory=workflowCategory(workflowContext.registry,before.data as any),next=workflowCategory(workflowContext.registry,change.entity.data as any);if(['done','cancelled'].includes(oldCategory)&&!['done','cancelled'].includes(next)){
+        for(const link of links.filter(l=>l.relation==='blocks'&&l.sourceId===before.id))mark(link.targetId,'dependency_review');const parent=(before.data as any).parentId;if(parent)mark(parent,'scope_review');
+      }}
+      const changes=[...command.changes];for(const [id,set]of flags){const index=changes.findIndex(c=>c.entity.id===id),old=rows.find(r=>r.id===id)!;const base=index>=0?changes[index]:{expectedRevision:old.revision,entity:{id,kind:'task' as const,data:old.data}};const revised={...base,entity:{...base.entity,data:{...base.entity.data,risks:[...new Set([...(base.entity.data as any).risks,...set])]}}};if(index>=0)changes[index]=revised;else changes.push(revised);}
+      if(changes.length>100)fail('WORKFLOW_MIGRATION_TOO_LARGE');command={...command,changes};
+    }
     if(command.changes.some(c=>c.entity.data?.schemaVersion==='m2_task_profile_v1'||c.entity.id.startsWith('m2-')
       ||['m2_comment','managed_attachment'].includes(String((c.entity.data as any)?.category))))ensureM2Schema(db);
+    if(command.changes.some(c=>c.entity.id==='m2-workflows'))ensureM2BSchema(db);
     if (promotion) {
       if(promotion.cutoverBackupId!==undefined&&(typeof promotion.cutoverBackupId!=='string'||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,199}$/.test(promotion.cutoverBackupId)))fail('BACKUP_INVALID');
       if (!promotion.writerInventoryVerified || !promotion.restoreRehearsalVerified) fail('CUTOVER_GATE_FAILED');
@@ -213,6 +249,7 @@ function write(command: StoreWrite, promotion?: PromoteLegacy) {
     const commentChanges = [];
     const taskChanges:Array<Record<string,unknown>>=[];let historyBytes=0;
     const issueGuardIds=new Set<string>();
+    const workflowGuards=new Map<string,ReadonlySet<string>>();
     const managerChanges:Array<Record<string,unknown>>=[];
     // Only the atomic count below may assert an actual override; supplied receipt metadata is not evidence.
     for(const change of command.changes){const data=change.entity.data as Record<string,unknown>|undefined;if(data?.category==='m2_command_receipt')delete data.wipOverride;}
@@ -221,10 +258,23 @@ function write(command: StoreWrite, promotion?: PromoteLegacy) {
     const searchCounts = readSearchCounts(scope.id);
     for (const change of command.changes) {
       let input = change.entity;
+      if(['message','session'].includes(input.kind)){
+        if(input.kind==='message'&&isHiddenMessage(input))fail('HIDDEN_MESSAGE_FORBIDDEN');
+        const title=safePersistedText(input.title??''),body=safePersistedText(input.body??''),data=safeVisibleValue(input.data??{});
+        const changed=title!==(input.title??'')||body!==(input.body??'')||JSON.stringify(data)!==JSON.stringify(input.data??{});
+        input={...input,title,body,data};
+        if(changed)input={...input,data:{...input.data,redacted:true}};
+      }else if(input.kind==='run')input={...input,data:safeRuntimeData(input.data??{})};
       text(input.id);
       if (seen.has(input.id)) fail('DUPLICATE_ENTITY');
       seen.add(input.id);
       const old = db.prepare('SELECT revision,kind,public_key,title,body,status,data,coverage,deleted FROM entities WHERE project_id=? AND id=?').get(scope.id, input.id);
+      if(!teamOperation&&(input.id.startsWith('m2b-team-')||String((input.data as any)?.category).startsWith('team_')||old&&String(JSON.parse(old.data as string).category).startsWith('team_')))fail('TEAM_MANAGED_WRITE_FORBIDDEN');
+      if(input.kind==='run'){
+        const nextRun=(input.data as any)?.appAgentRun??(input.data as any)?.runtimeRun,oldData=old?JSON.parse(old.data as string):null,oldRun=oldData?.appAgentRun??oldData?.runtimeRun;
+        if(oldRun?.assetPins&&JSON.stringify(oldRun.assetPins)!==JSON.stringify(nextRun?.assetPins))fail('ASSET_RUN_PIN_IMMUTABLE');
+        if(!oldRun){const registry=get(scope.id,teamId)?.data as unknown as TeamRegistry|undefined;for(const pin of nextRun?.assetPins??[]){if(!pin.assetId?.startsWith('managed-'))continue;const asset=registry?.assets.find(a=>a.id===pin.assetId),version=asset?.versions.find(v=>v.version===pin.version);if(!asset||asset.archived||asset.deleted||!version||version.version!==asset.effectiveVersion||version.hash!==pin.hash||version.content!==pin.content||JSON.stringify(version.resources)!==JSON.stringify((pin.resources??[]).map(({base64,...metadata}:any)=>metadata)))fail('ASSET_RUN_PIN_INVALID');}}
+      }
       // Profile selection is itself an invariant: choosing the legacy decoder cannot remove M2 guards or fields.
       if(input.kind==='task'&&old?.kind==='task'&&JSON.parse(old.data as string).schemaVersion==='m2_task_profile_v1'
         &&input.data?.schemaVersion!=='m2_task_profile_v1')fail('PROFILE_DOWNGRADE_FORBIDDEN');
@@ -263,6 +313,10 @@ function write(command: StoreWrite, promotion?: PromoteLegacy) {
       if (input.kind === 'task' && input.data?.schemaVersion === 'm2_task_profile_v1') {
         const task = input.data as M2TaskProfile;
         const before = old ? JSON.parse(old.data as string) as TaskProfile : null;
+        const taskCommand=command.workflowMigration&&!migrationCohort.has(task.id)?{...command,workflowMigration:undefined}:command;
+        const {category,prior,migrating,guards}=validateWorkflowTask(taskCommand,task,before,workflowContext.registry);
+        if(guards.length)workflowGuards.set(task.id,new Set(guards));
+        if(migrating)issueGuardIds.add(task.id);
         if(!before||before.status!==task.status)issueGuardIds.add(task.id);
         if(task.parentId&&(!before||(before as M2TaskProfile).parentId!==task.parentId))issueGuardIds.add(task.parentId);
         if (before && JSON.stringify(before.creator)!==JSON.stringify(task.creator)) fail('CREATOR_IMMUTABLE');
@@ -270,7 +324,7 @@ function write(command: StoreWrite, promotion?: PromoteLegacy) {
         if(before?.schemaVersion==='m2_task_profile_v1'){
           const old=before as M2TaskProfile;
           if(old.dueDate!==task.dueDate&&!command.taskManagerReason?.trim()&&!command.taskManagerReviewReason?.trim())fail('DUE_DATE_REASON_REQUIRED');
-          if(old.status==='done'&&task.status==='done'&&['summary','technicalValue','productValue','files','artifactReferences','acceptanceCriteria','criteriaEvidence','scopeExclusions','parentId','type','artifacts','fileContexts','estimateSeconds','blocker']
+          if(prior==='done'&&category==='done'&&['summary','technicalValue','productValue','files','artifactReferences','acceptanceCriteria','criteriaEvidence','scopeExclusions','parentId','type','artifacts','fileContexts','estimateSeconds','blocker']
             .some(field=>JSON.stringify((old as any)[field])!==JSON.stringify((task as any)[field])))fail('REOPEN_REQUIRED');
           if(old.status===task.status&&old.resolution!==task.resolution&&!command.taskManagerAction)fail('TRANSITION_REQUIRED');
           if(old.status===task.status&&['dependency_review','scope_review','recovery_review','acceptance_unverified'].some(flag=>old.risks.includes(flag)&&!task.risks.includes(flag))){
@@ -279,17 +333,14 @@ function write(command: StoreWrite, promotion?: PromoteLegacy) {
           }
         }
         if(task.hotfixReason!==((before as M2TaskProfile|null)?.hotfixReason??null)&&command.taskManagerAction!=='transition')fail('HOTFIX_APPROVAL_REQUIRED');
-        if (!before && (task.status!=='backlog' || task.resolution!==null)) fail('INITIAL_STATUS_REQUIRED');
+        if (!before && (category!=='backlog' || task.resolution!==null)) fail('INITIAL_STATUS_REQUIRED');
         if (before && before.status!==task.status) {
-          if (!command.taskManagerAction || !transitionAllowed(before.status,task.status,command.taskManagerAction==='complete')) fail('TRANSITION_REQUIRED');
-          if (['done','cancelled'].includes(task.status) && !command.taskManagerReason?.trim()) fail('REASON_REQUIRED');
-          if (task.status==='done' && (!task.acceptanceCriteria.length || task.acceptanceCriteria.some(c=>!task.criteriaEvidence.some(e=>e.criterion===c&&e.outcome==='passed'&&e.evidence.trim())))) fail('CRITERIA_EVIDENCE_REQUIRED');
-          if(task.blocker&&['in_progress','done'].includes(task.status))fail('BLOCKER_RESOLUTION_REQUIRED');
+          if (!command.taskManagerAction&&!migrating) fail('TRANSITION_REQUIRED');
         }
         if(before?.schemaVersion==='m2_task_profile_v1'&&task.blocker&&JSON.stringify(before.blocker)!==JSON.stringify(task.blocker))assertIdle(scope.id);
-        if ((task.status==='ready' || task.status==='in_progress')&&!(before?.schemaVersion==='m1_task_profile_v1'&&before.status===task.status&&task.risks.includes('recovery_review'))) validateReady(task);
+        if ((category==='ready' || category==='in_progress')&&!(before?.schemaVersion==='m1_task_profile_v1'&&before.status===task.status&&task.risks.includes('recovery_review'))) validateReady(task);
         const board=get(scope.id,'m2-board')?.data.value as any;
-        if(['ready','in_progress'].includes(task.status)&&(board?.releaseRequiredTypes?.includes(task.type)||board?.releaseRequiredComponents?.some((id:string)=>task.components.includes(id)))
+        if(['ready','in_progress'].includes(category)&&(board?.releaseRequiredTypes?.includes(task.type)||board?.releaseRequiredComponents?.some((id:string)=>task.components.includes(id)))
           &&!task.fixVersions.length&&!task.hotfixReason&&!command.taskManagerHotfixReason)fail('TARGET_RELEASE_REQUIRED');
         if(before&&before.status!==task.status){
           const column=board?.columns?.find((c:any)=>c.statuses.includes(task.status));
@@ -304,8 +355,8 @@ function write(command: StoreWrite, promotion?: PromoteLegacy) {
             }
           }
         }
-        if ((task.status==='done' && task.resolution!=='completed') || (task.status==='cancelled' && !['cancelled','duplicate','wont_do'].includes(task.resolution??''))
-          || (!['done','cancelled'].includes(task.status)&&task.resolution!==null)) fail('RESOLUTION_REQUIRED');
+        if ((category==='done' && task.resolution!=='completed') || (category==='cancelled' && !['cancelled','duplicate','wont_do'].includes(task.resolution??''))
+          || (!['done','cancelled'].includes(category)&&task.resolution!==null)) fail('RESOLUTION_REQUIRED');
       }
       const expectedParent = requiredParentKinds[input.kind];
       if (expectedParent && (!input.parentId || get(scope.id, input.parentId)?.kind !== expectedParent)) fail('PARENT_KIND_CONFLICT');
@@ -369,7 +420,9 @@ function write(command: StoreWrite, promotion?: PromoteLegacy) {
         if(task.components.some(id=>!components.some(c=>c.id===id)))fail('COMPONENT_NOT_FOUND');
         if([...task.affectsVersions,...task.fixVersions].some(id=>!versions.some(c=>c.id===id)))fail('VERSION_NOT_FOUND');
       }
-      validateIssueGraph(tasks,links,issueGuardIds);
+      const semanticTasks=tasks.map(task=>task.schemaVersion==='m2_task_profile_v1'?{...task,status:workflowCategory(workflowContext.registry,task)}:task);
+      validateWorkflowBoard(workflowContext.registry,tasks,get(scope.id,'m2-board')?.data.value);
+      validateIssueGraph(semanticTasks,links,issueGuardIds,workflowGuards);
       for(const task of tasks)if(task.schemaVersion==='m2_task_profile_v1'&&issueGuardIds.has(task.id)&&task.resolution==='duplicate'
         &&!links.some(link=>link.sourceId===task.id&&link.relation==='duplicates'))fail('CANONICAL_DUPLICATE_REQUIRED');
     }
@@ -449,6 +502,19 @@ function write(command: StoreWrite, promotion?: PromoteLegacy) {
 
 function dispatch(method: string, params: any, requestId: number): unknown {
   switch (method) {
+    case 'teamApply': return (async()=>{
+      const command={projectId:params.projectId,actorId:params.actorId,idempotencyKey:params.idempotencyKey,expectedAuthorityEpoch:params.epoch,changes:[{expectedRevision:0,entity:{id:teamId,kind:'settings' as const,data:{request:params}}}]};
+      const result=(receipt:any)=>({assetId:params.proposal.action==='create'?`managed-${hash([params.projectId,params.idempotencyKey]).slice(0,32)}`:params.proposal.assetId,version:params.expectedRevision+1,receipt});
+      if(db.prepare('SELECT 1 FROM commands WHERE project_id=? AND idempotency_key=?').get(params.projectId,params.idempotencyKey))return result(write(command,undefined,params));
+      const scope=project(params.projectId);if(!scope)fail('PROJECT_NOT_FOUND');
+      const sourceRoots=[...projectAssetRoots(scope.canonicalRoot),...workerData.assetRoots??[]] as AssetRoot[];
+      const sourceAssets=(await sourceCatalog(sourceRoots)).assets;
+      if(params.proposal.source&&params.proposal.action==='create'){const source=params.proposal.source;
+       if(source.rootId===teamId){const original=(get(params.projectId,teamId)?.data as unknown as TeamRegistry)?.assets.find(a=>a.id===source.relativePath);if(!original||original.versions.at(-1)?.hash!==source.hash)fail('ASSET_SOURCE_DRIFT');}
+       else{const root=sourceRoots.find(r=>r.id===source.rootId);if(!root)fail('ASSET_SOURCE_ROOT_INVALID');const actual=await sourceAsset(root,source.relativePath,true);if(JSON.stringify(actual.source)!==JSON.stringify(source)||JSON.stringify(actual.resources.map(({path,hash,byteSize})=>({path,hash,byteSize})))!==JSON.stringify((params.proposal.resources??[]).map(({path,hash,byteSize}:any)=>({path,hash,byteSize}))))fail('ASSET_SOURCE_DRIFT');}}
+      for(const r of params.proposal.resources??[]){const blob=db.prepare('SELECT * FROM blobs WHERE project_id=? AND id=?').get(params.projectId,r.blobId??'');if(!blob)fail('ASSET_RESOURCE_INVALID');const bytes=await readManagedBlob(workerData.databasePath,{id:String(blob.id),projectId:params.projectId,sha256:String(blob.sha256),byteSize:Number(blob.byte_size)});if(safePersistedText(Buffer.from(bytes).toString('utf8'))!==Buffer.from(bytes).toString('utf8'))fail('SENSITIVE_ASSET_CONTENT');}
+      return result(write(command,undefined,{...params,sourceAssets}));
+    })();
     case 'registerProject': {
       for (const value of [params.id, params.canonicalRoot, params.rootIdentity]) text(value);
       if (!/^[A-Z]{4}$/.test(params.keyPrefix) || !['legacy_files', 'sql'].includes(params.authorityMode)) fail('INVALID_PROJECT');
@@ -467,6 +533,11 @@ function dispatch(method: string, params: any, requestId: number): unknown {
     case 'projects': return db.prepare('SELECT id FROM projects ORDER BY id').all().map(row => project(row.id as string));
     case 'project': return project(params.projectId);
     case 'compatibility': return databaseCompatibility(db);
+    case 'historyRows': {
+      const rows=db.prepare("SELECT rowid AS journal_order,* FROM entities WHERE project_id=? AND deleted=0 AND kind IN ('session','message','task','run') ORDER BY rowid LIMIT 100001").all(params.projectId);
+      if(rows.length>100000||rows.reduce((n,r)=>n+Buffer.byteLength(r.data as string)+Buffer.byteLength(r.body as string),0)>64*1024*1024)fail('HISTORY_TOO_LARGE');
+      return rows.map(row=>({...entity(row),journalOrder:row.journal_order}));
+    }
     case 'projectEntities': {
       const rows=db.prepare('SELECT * FROM entities WHERE project_id=? AND deleted=0 ORDER BY id LIMIT 100001').all(params.projectId);
       if(rows.length>100000||rows.reduce((n,r)=>n+Buffer.byteLength(r.data as string)+Buffer.byteLength(r.body as string),0)>64*1024*1024)fail('SNAPSHOT_TOO_LARGE');
@@ -513,7 +584,10 @@ function dispatch(method: string, params: any, requestId: number): unknown {
       db.prepare('DELETE FROM blobs WHERE project_id=? AND id=?').run(params.projectId,params.id);return {discarded:true};
     });
     case 'backup': return createSnapshot(db, workerData.databasePath, params.outputRoot);
-    case 'write': return write(params);
+    case 'write': {
+      if(!params.workflowPublish)return write(params);
+      return (async()=>{const scope=project(params.projectId);if(!scope)fail('PROJECT_NOT_FOUND');const roots=[...projectAssetRoots(scope.canonicalRoot),...workerData.assetRoots??[]] as AssetRoot[];return write(params,undefined,undefined,(await sourceCatalog(roots)).assets);})();
+    }
     case 'receipt': {
       const row = db.prepare('SELECT receipt FROM commands WHERE project_id=? AND idempotency_key=?').get(params.projectId, params.idempotencyKey);
       return row ? JSON.parse(row.receipt as string) : null;

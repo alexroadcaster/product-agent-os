@@ -1,5 +1,7 @@
 import { decodeM1TaskProfile } from '../../../apps/local-service/src/tasks/task-profile.ts';
 import type { M1TaskProfile, M1TaskStatus } from '../tasks/m1-task-profile.ts';
+import type {WorkflowRegistry} from '../workflows/workflow.ts';
+import {workflowCategory} from '../workflows/helpers.ts';
 
 export const ISSUE_TYPES = ['epic','task','bug','user_story','sub_task'] as const;
 export const DEFAULT_COMPONENTS = ['BackEnd','FrontEnd','DB','RAG','LLM','Design','Marketing','Integrations','DevOps','QA','Analytic'];
@@ -12,7 +14,8 @@ export type IssueType = typeof ISSUE_TYPES[number];
 export type BlockedRun={runId:string;bindingId:string;sessionId:string;generation:string|null;kind:'app'|'runtime'};
 export type IssueLink = {id:string;sourceId:string;targetId:string;relation:'blocks'|'relates_to'|'duplicates'|'clones';actorId:string;createdAt:string|null;reason:string;source:string;waiver?:string;state?:'pending'|'active';
   blockedRun?:BlockedRun;requiredAction?:'stop_and_reconcile_then_activate'};
-export type M2TaskProfile = Omit<M1TaskProfile,'schemaVersion'|'type'|'creator'> & {
+export type M2TaskProfile = Omit<M1TaskProfile,'schemaVersion'|'type'|'creator'|'status'> & {
+  status:string;
   schemaVersion:'m2_task_profile_v1'; type:IssueType; parentId:string|null;
   creator:{kind:'user'|'agent'|'system'|'imported_unknown';actorId:string|null;displayName?:string};
   initiatedBy:string|null;createdAt:string|null;timezone:string;components:string[];affectsVersions:string[];fixVersions:string[];
@@ -55,7 +58,8 @@ export function decodeTaskProfile(value:unknown):TaskProfile {
   const creator=raw.creator as M2TaskProfile['creator'];
   if(!creator || !['user','agent','system','imported_unknown'].includes(creator.kind)
     || (creator.kind==='imported_unknown'?creator.actorId!==null:!text(creator.actorId)))issueFail('INVALID_CREATOR');
-  const legacy=decodeM1TaskProfile({...base,schemaVersion:'m1_task_profile_v1',type:'Task',
+  if(typeof raw.status!=='string'||!/^[a-zA-Z][a-zA-Z0-9_-]{0,63}$/.test(raw.status))issueFail('INVALID_TASK_STATUS');
+  const legacy=decodeM1TaskProfile({...base,status:'backlog',schemaVersion:'m1_task_profile_v1',type:'Task',
     creator:creator.kind==='user'?{kind:'user',actorId:creator.actorId}:{kind:'imported_unknown',actorId:null}});
   if(raw.parentId!==null&&(!text(raw.parentId)||raw.parentId===raw.id))issueFail('INVALID_PARENT');
   if(raw.initiatedBy!==null&&!text(raw.initiatedBy))issueFail('INVALID_INITIATOR');
@@ -81,8 +85,8 @@ export function decodeTaskProfile(value:unknown):TaskProfile {
   }
   if(legacy.files.some(file=>!safeRelativePath(file.relativePath)||(file.previousRelativePath&&!safeRelativePath(file.previousRelativePath))))issueFail('INVALID_FILE_CONTEXT');
   if((raw.fileContexts as any[]).some(e=>!safeRelativePath(e.relativePath)||!text(e.context)||(e.revision!==null&&!text(e.revision))))issueFail('INVALID_FILE_CONTEXT');
-  if(!(raw.workflow as any)?.id||!Number.isSafeInteger((raw.workflow as any)?.version))issueFail('INVALID_WORKFLOW');
-  return {...legacy,...Object.fromEntries(extensionFields.map(k=>[k,raw[k]])),schemaVersion:'m2_task_profile_v1',type:raw.type,creator} as M2TaskProfile;
+  if(!/^[a-zA-Z][a-zA-Z0-9_-]{0,63}$/.test((raw.workflow as any)?.id??'')||!Number.isSafeInteger((raw.workflow as any)?.version)||(raw.workflow as any).version<1)issueFail('INVALID_WORKFLOW');
+  return {...legacy,...Object.fromEntries(extensionFields.map(k=>[k,raw[k]])),status:raw.status,schemaVersion:'m2_task_profile_v1',type:raw.type,creator} as M2TaskProfile;
 }
 export function newM2Task(projectId:string,id:string,title:string,actorId:string):M2TaskProfile {
   return {schemaVersion:'m2_task_profile_v1',type:'task',id,projectId,key:'',legacyAlias:null,title,summary:'',technicalValue:'',productValue:'',
@@ -111,7 +115,7 @@ export function transitionAllowed(from:M1TaskStatus,to:M1TaskStatus,manual=false
 }
 
 /** Pure graph oracle used inside the SQLite writer transaction, after all proposed changes. */
-export function validateIssueGraph(tasks:TaskProfile[],links:IssueLink[],transitionIds?:ReadonlySet<string>) {
+export function validateIssueGraph(tasks:TaskProfile[],links:IssueLink[],transitionIds?:ReadonlySet<string>,guardsByTask?:ReadonlyMap<string,ReadonlySet<string>>) {
   const byId=new Map(tasks.map(t=>[t.id,t]));
   const m2=tasks.filter((t):t is M2TaskProfile=>t.schemaVersion==='m2_task_profile_v1');
   for(const task of m2){
@@ -122,7 +126,7 @@ export function validateIssueGraph(tasks:TaskProfile[],links:IssueLink[],transit
       ||['task','bug','user_story'].includes(task.type)&&parent&&ptype!=='epic')issueFail('INVALID_PARENT_TYPE');
     const seen=new Set([task.id]);let node=parent;
     while(node){if(seen.has(node.id))issueFail('HIERARCHY_CYCLE');seen.add(node.id);node=node.schemaVersion==='m2_task_profile_v1'&&node.parentId?byId.get(node.parentId):undefined;}
-    if(task.status==='done'&&(!transitionIds||transitionIds.has(task.id))){
+    if((task.status==='done'||guardsByTask?.get(task.id)?.has('children'))&&(!transitionIds||transitionIds.has(task.id))){
       for(const child of m2.filter(t=>t.parentId===task.id))if(child.status!=='done'&&!task.scopeExclusions.some(e=>e.taskId===child.id&&e.reason))issueFail('CHILDREN_INCOMPLETE');
     }
   }
@@ -140,16 +144,17 @@ export function validateIssueGraph(tasks:TaskProfile[],links:IssueLink[],transit
     if(['blocks','duplicates'].includes(link.relation)){
       const visit=(id:string,path:string[]):void=>{if(path.includes(id))throw Object.assign(new Error('Issue link cycle'),{code:link.relation==='blocks'?'TASK_LINK_CYCLE':'DUPLICATE_CYCLE',cyclePath:[...path.slice(path.indexOf(id)),id]});for(const e of links.filter(l=>l.relation===link.relation&&l.sourceId===id))visit(e.targetId,[...path,id]);};visit(link.sourceId,[]);
     }
-    if(link.relation==='blocks'&&['in_progress','done'].includes(target.status)&&(!transitionIds||transitionIds.has(target.id))){
+    if(link.relation==='blocks'&&(['in_progress','done'].includes(target.status)||guardsByTask?.get(target.id)?.has('dependencies'))&&(!transitionIds||transitionIds.has(target.id))){
       if(link.state==='pending')issueFail('PENDING_LINK_RECONCILIATION_REQUIRED');
       if(!link.waiver&&source.status!=='done')issueFail('DEPENDENCY_BLOCKED');
     }
   }
 }
 
-export function rollup(tasks:TaskProfile[],id:string){
+export function rollup(tasks:TaskProfile[],id:string,registry?:WorkflowRegistry){
   const descendants=new Set<string>();const visit=(key:string)=>{for(const t of tasks)if(t.schemaVersion==='m2_task_profile_v1'&&t.parentId===key&&!descendants.has(t.id)){descendants.add(t.id);visit(t.id);}};visit(id);
-  const values=tasks.filter(t=>descendants.has(t.id));return {children:values.length,done:values.filter(t=>t.status==='done').length,cancelled:values.filter(t=>t.status==='cancelled').length,
+  const category=(task:TaskProfile)=>registry?workflowCategory(registry,task):task.status;
+  const values=tasks.filter(t=>descendants.has(t.id));return {children:values.length,done:values.filter(t=>category(t)==='done').length,cancelled:values.filter(t=>category(t)==='cancelled').length,
     estimateSeconds:values.reduce((n,t)=>n+(t.estimateSeconds??0),0),ownEstimateSeconds:tasks.find(t=>t.id===id)?.estimateSeconds??null};
 }
 

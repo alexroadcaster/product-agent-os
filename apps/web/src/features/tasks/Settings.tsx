@@ -1,6 +1,7 @@
 import {useEffect,useState} from 'react';
 import type {Board,CatalogItem,VersionItem,ManagerSnapshot} from '../../../../../packages/contracts/issues/manager.ts';
 import type {M1Api,StoredEntity} from '../../api/client.ts';
+import {requiredBoardStates} from '../../../../../packages/contracts/workflows/helpers.ts';
 import {issueTypes,taskStatuses} from './model.ts';
 import {label,statusText,typeText,errorText,type Locale,type Word} from './labels.ts';
 import type {Command} from './Panels.tsx';
@@ -23,6 +24,7 @@ export function ManagerSettings({snapshot,command,locale}:{snapshot:ManagerSnaps
  useEffect(()=>{if(!boardDirty){setBoard(structuredClone(snapshot.board));setBoardRevision(snapshot.settingsRevisions.board);}},[snapshot.board,snapshot.settingsRevisions.board,boardDirty]);
  const [componentName,setComponentName]=useState(''),[versionName,setVersionName]=useState('');
  async function add(version:boolean){setBusy(true);setError('');try{await command({action:version?'version':'component',expectedRevision:snapshot.settingsRevisions[version?'versions':'components'],item:{id:crypto.randomUUID(),name:version?versionName:componentName,status:version?'unreleased':'active'}});if(version)setVersionName('');else setComponentName('');}catch(e){setError(errorText(locale,e));}finally{setBusy(false);}}
+ const statusOptions=[...new Set([...taskStatuses,...requiredBoardStates(snapshot.workflows,snapshot.tasks.map(t=>t.data as any)),...snapshot.workflows.workflows.flatMap(w=>w.draft?.states.map(s=>s.id)??[])])];
  const patch=(value:Partial<Board>)=>{setBoard({...board,...value});setBoardDirty(true);};
  return <details data-testid="manager-settings" className="m2-settings"><summary>{t('settings')}</summary>
   <section><h3>{t('components')}</h3>{snapshot.components.map(c=><CatalogRow key={c.id} value={c} revision={snapshot.settingsRevisions.components} version={false} locale={locale} onSave={(item,revision)=>command({action:'component',item,expectedRevision:revision})}/>)}
@@ -36,7 +38,7 @@ export function ManagerSettings({snapshot,command,locale}:{snapshot:ManagerSnaps
    <label>{t('requireComponents')}<select multiple name="release-required-components" value={board.releaseRequiredComponents??[]} onChange={e=>patch({releaseRequiredComponents:Array.from(e.target.selectedOptions,o=>o.value)})}>{snapshot.components.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}</select></label>
    <label>{t('timezone')}<input name="project-timezone" value={board.timezone??'Europe/Moscow'} onChange={e=>patch({timezone:e.target.value})}/></label>
    <h3>{t('board')}</h3>{board.columns.map((column,index)=><fieldset key={index}><legend>{t('column')} {index+1}</legend><div className="m2-fields"><label>{t('name')}<input name={`column-name-${index}`} required value={column.id} onChange={e=>patch({columns:board.columns.map((c,i)=>i===index?{...c,id:e.target.value}:c)})}/></label>
-    <label>{t('statuses')}<select multiple name={`column-statuses-${index}`} value={column.statuses} onChange={e=>patch({columns:board.columns.map((c,i)=>i===index?{...c,statuses:Array.from(e.target.selectedOptions,o=>o.value)}:c)})}>{taskStatuses.map(s=><option key={s} value={s}>{statusText(locale,s)}</option>)}</select></label>
+    <label>{t('statuses')}<select multiple name={`column-statuses-${index}`} value={column.statuses} onChange={e=>patch({columns:board.columns.map((c,i)=>i===index?{...c,statuses:Array.from(e.target.selectedOptions,o=>o.value)}:c)})}>{statusOptions.map(s=><option key={s} value={s}>{statusText(locale,s)}</option>)}</select></label>
     <label>{t('wip')}<input name={`column-wip-${index}`} type="number" min="0" step="1" value={column.wipLimit??''} onChange={e=>patch({columns:board.columns.map((c,i)=>i===index?{...c,wipLimit:e.target.value===''?undefined:Number(e.target.value),wipMode:c.wipMode??'soft'}:c)})}/></label>
     <label>{t('wipMode')}<select name={`column-mode-${index}`} value={column.wipMode??'soft'} onChange={e=>patch({columns:board.columns.map((c,i)=>i===index?{...c,wipMode:e.target.value as 'soft'|'hard'}:c)})}><option value="soft">soft</option><option value="hard">hard</option></select></label>
    </div><button type="button" onClick={()=>patch({columns:board.columns.filter((_,i)=>i!==index)})}>{t('remove')}</button></fieldset>)}

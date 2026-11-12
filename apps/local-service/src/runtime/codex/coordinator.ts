@@ -5,6 +5,7 @@ import type { RpcMessage, RuntimeRpc } from './stdio-rpc.ts';
 import type {MessageStreamRedactor} from '../message-stream.mts';
 import {m1Recipe,quotedTaskInput,type RecipeMetadata,type SavedTaskContext} from '../m1-recipe.mts';
 import {isAbsolute,relative,resolve} from 'node:path';
+import type {WorkflowSnapshot} from '../../../../../packages/contracts/workflows/workflow.ts';
 
 export type RuntimeMode = 'discussion' | 'planning' | 'execution';
 export type RunState = 'dispatching' | 'running' | 'awaiting_approval' | 'interrupt_requested'
@@ -19,6 +20,8 @@ export type RuntimeRun = {
   generation: string; threadId: string; turnId: string | null; clientMessageId: string; inputDigest: string;
   taskId: string | null; scopeDigest: string | null; state: RunState;
   targetRevision?: number;
+  assetPins?:import('../../../../../packages/contracts/team/assets.ts').AssetPin[];
+  workflowSnapshot?:WorkflowSnapshot & {executionRecipe?:{id:string;version:string}};
   canonicalUserMessageSourceId?:string;
 };
 export type VisibleMessage = Readonly<{
@@ -37,7 +40,7 @@ export type RuntimePersistence = Readonly<{
   loadChecks?:(projectId:string,bindingId:string)=>Promise<RuntimeCheck[]>;
 }>;
 type BindingInput = Omit<RuntimeBinding, 'id' | 'directoryIdentity' | 'generation' | 'threadId'|'recipe'>;
-type SendInput = Readonly<{ bindingId: string; clientMessageId: string; input: string; taskId?: string; scopeDigest?: string;targetRevision?:number;taskContext?:SavedTaskContext }>;
+type SendInput = Readonly<{ bindingId: string; clientMessageId: string; input: string; taskId?: string; scopeDigest?: string;targetRevision?:number;taskContext?:SavedTaskContext;workflowSnapshot?:RuntimeRun['workflowSnapshot'] }>;
 export type VisibleDraft={runId:string;sourceItemId:string;role:'assistant';phase:'final_answer';text:string;revision:number;status:'streaming'|'completed'|'interrupted'|'recovery_required'};
 export type VisibleFileChange={kind:'actual'|'proposed'|'external';path:string;previousPath?:string;diff?:string;operation?:string;coverage:'partial'|'unavailable';reason:string};
 type Approval = { requestId: string | number; runId: string; bindingId: string; generation: string;
@@ -393,7 +396,7 @@ export function createRuntimeCoordinator(options: CoordinatorOptions) {
     const run: RuntimeRun = { id: randomUUID(), bindingId: binding.id, projectId: binding.projectId, sessionId: binding.sessionId,
       accountId: binding.accountId, generation: rpc.generation, threadId: binding.threadId, turnId: null,
       clientMessageId: input.clientMessageId, inputDigest: hash, taskId: input.taskId ?? null, scopeDigest: input.scopeDigest ?? null,
-      targetRevision:input.targetRevision,canonicalUserMessageSourceId:`client:${input.clientMessageId}`,state: 'dispatching' };
+      targetRevision:input.targetRevision,...(input.taskContext?.assetPins?{assetPins:structuredClone(input.taskContext.assetPins)}:{}),...(input.workflowSnapshot?{workflowSnapshot:structuredClone(input.workflowSnapshot)}:{}),canonicalUserMessageSourceId:`client:${input.clientMessageId}`,state: 'dispatching' };
     const canonicalText=(options.redact??((text)=>text))(input.input);
     if(Buffer.byteLength(canonicalText)>1024*1024)throw new RuntimeCoordinatorError('visible_message_limit');
     const canonicalUserMessage:VisibleMessage={projectId:binding.projectId,sessionId:binding.sessionId,bindingId:binding.id,runId:run.id,

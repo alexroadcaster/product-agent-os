@@ -1,0 +1,13 @@
+export type AssetKind='agent'|'skill';
+export type AssetAction='create'|'update'|'archive'|'delete'|'restore';
+export type AssetResource={path:string;hash:string;byteSize:number;blobId?:string;base64?:string};
+export type AssetSource={rootId:string;relativePath:string;hash:string;origin:string;license:string|null};
+export type AssetVersion={version:number;hash:string;createdAt:string;actorId:string;action:AssetAction;name:string;description:string;content:string;dependencies:string[];resources:AssetResource[];source:AssetSource|null};
+export type AssetProfile={id:string;kind:AssetKind;name:string;description:string;scope:'project'|'global'|'vendor';source:AssetSource|null;content:string;resources:AssetResource[];dependencies:string[];revision:number;effectiveVersion:number|null;loadedVersion:number|null;loadedCoverage:'unavailable';observedPins?:{version:number|null;hash:string;runId:string;sessionId:string;status:string}[];archived:boolean;deleted:boolean;versions:AssetVersion[];redacted:boolean;management:'source_read_only'|'paos_managed'};
+export type AssetSummary=Omit<AssetProfile,'content'|'resources'|'versions'> & {versionHash:string|null};
+export type AssetScope={id:string;scope:'project'|'global'|'vendor';availability:'available'|'unavailable';reason?:string};
+export type TeamCatalog={assets:AssetSummary[];scopes:AssetScope[];coverage:'complete'|'partial'};
+export type AssetProposal={assetId?:string;kind:AssetKind;action:AssetAction;name:string;description:string;content:string;dependencies:string[];resources?:AssetResource[];restoreVersion?:number;reason:string;source?:AssetSource|null};
+export type AssetPreview={proposal:AssetProposal;previewDigest:string;baseRevision:number;diff:{before:string;after:string};dependencyImpact:{assets:string[];activeRunIds:string[]};warnings:string[]};
+export type TeamRegistry={category:'team_registry';assets:AssetProfile[]};
+export type AssetPin={assetId:string;kind:AssetKind;version:number|null;hash:string;content:string;source:AssetSource|null;resources?:AssetResource[];requestedModel:string|null;requestedEffort:string|null;observedModel:null;observedEffort:null};

@@ -22,7 +22,7 @@ G8-T14/G8 owner accepted. G9 T01–T09 локально реализованы; 
 
 ## Старт Web M1 — 2026-11-10
 
-Текущий handoff PAOS-M2: десять выбранных задач, начиная с PAOS-0031, технически implemented_locally_verified_app_active; review findings downgrade/Due Date reason/soft WIP audit исправлены и проверены повторно. [M2 execution](research/product-agent-os-web-m2-execution-2026-11-11.md) владеет source hashes, полными checks и failure receipts. Новые профили и lazy migration2 не меняют v1 checksum, old startup отвергает M2 database; restore создаёт inactive copy. Остальные16 M2 tasks, включая PAOS-0036, не исполнены этой командой. Human/commercial/release и AUTH-G1–G6 остаются отдельно; [PAOS-0046 review](research/product-agent-os-web-commercial-review-2026-11-11.md) сохранён, M118/18 не переоткрыта. Rollback только собственных hunks, сохранить предыдущие/чужие изменения.
+Текущий handoff PAOS-M2: PAOS-0036/0009–0018 technical implemented_locally_verified_app_active;21/26 M2 вместе с [first10 M2](research/product-agent-os-web-m2-execution-2026-11-11.md). [M2b evidence](research/product-agent-os-web-m2b-execution-2026-11-12.md) владеет hashes, checks, failed receipts и2-pass independent review. Schema3 lazy fence сохраняет SQL1/2 checksums; backup restore inactive. Остались PAOS-0019/0020/0021/0022/0027 planned. App consumer обязателен; recipes M2 metadata, native loaded unknown, history/source coverage explicit. Human/commercial/release/AUTH-G1–G6/PAOS-0030 отдельно; [PAOS-0046 review](research/product-agent-os-web-commercial-review-2026-11-11.md) сохранён. Rollback только свои hunks; предыдущие/чужие изменения и M118/18 не переоткрыты.
 
 Результат M1 до PAOS-0046: Текущий handoff 2026-11-11: M1 technical18/18 в выбранном App-active маршруте. Actual App+offline native broker105, task39/data25/headless33/Web306/strict/build/manifest6 passed; source149162. Исправлены WebSocket framing/endpoint diagnosis, capability redaction/cleanup, mode-selection restart, cutover backupId replay, подробная durable History/comment privacy и TaskForm summary corruption. GPT-6-Astra/high independent review closed_allowed в bounded scope; failed receipts/owner rejection сохранены. Активный App consumer необходим; whole-App sandbox, Desktop daemon, automatic wakeup и host quota не доказаны; human/commercial/release отдельно. Следующая задача PAOS-0046. [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md).
 
@@ -35,6 +35,8 @@ PAOS-0002 и PAOS-0003 реализованы в границах локальн
 Продолжение M1: PAOS-0004 получил форму с восстановлением настроек и обработкой ошибок, PAOS-0040 подтвердил резервирование на двух синтетических процессах. PAOS-0054 проверил форму закреплённого протокола, семантику событий и файловые SQLite-возможности. Текущий runner подтвердил AppContainer/restricted token, точная стадия отказа PSEC неизвестна. Подтверждённого native write/deny нет, PAOS-0045 открыта. [Проверки и остаточные границы](research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
 
 Ранее квалифицированные компоненты PAOS-0041, PAOS-0042 сохраняют исходные receipts; их исторический scope не переопределён новым маршрутом.
+
+Исторические scope anchors PAOS-0031 сохраняют свой provenance.
 
 ## Подготовка control-plane к Web M1 — 2026-11-10
 

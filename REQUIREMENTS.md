@@ -16,7 +16,7 @@ G8-T14/G8 явно приняты владельцем. G9 T01–T09 реали�
 
 ## Текущий scope Web M1 — 2026-11-10
 
-M2: выбранные PAOS-0031/0032/0033/0005/0006/0007/0008/0034/0038/0035 технически реализованы в App-active scope. Иерархия, полный editor/board, ручная приёмка, вложения и зависимости используют прежний local service. Остальные16 задач M2 не закрыты. PAOS-0046 ранний review сохранён; commercial qualification unresolved, AUTH-G1–G6/C46-01–08 блокируют выпуск до PAOS-0030. API key, новый auth route, hosting/distribution не разрешены. [M2 execution](research/product-agent-os-web-m2-execution-2026-11-11.md); [PAOS-0046 review](research/product-agent-os-web-commercial-review-2026-11-11.md).
+M2:11 задач PAOS-0036/0009–0018 технически реализованы: workflows, sessions/privacy, managed agents/skills/proposals и App planning. Вместе с [first10 M2](research/product-agent-os-web-m2-execution-2026-11-11.md) —21/26; PAOS-0019/0020/0021/0022/0027 planned. [M2b evidence](research/product-agent-os-web-m2b-execution-2026-11-12.md). [PAOS-0046 review](research/product-agent-os-web-commercial-review-2026-11-11.md) сохраняет commercial qualification unresolved, AUTH-G1–G6/C46-01–08 до PAOS-0030; human/release отдельно. App consumer обязателен; API key/provider/hosting/distribution не разрешены.
 
 Исторический срез 2026-11-11, 09:25 MSK (ограничения этого vault/auth прогона, не текущая authority): один разрешённый native vault roundtrip PAOS-M1-fixture и local synthetic broker auth квалифицированы; fixture удалена. Credential namespace изолирован по canonical profile identity, без legacy/default fallback или миграции существующих записей; старые unresolved default-account runs fail-closed. Реальные ключи/provider/browser и системные политики исключены. Детали в [execution report](research/product-agent-os-web-m1-execution-2026-11-11.md).
 
@@ -41,6 +41,8 @@ Owning scope: [PRD §17](research/product-agent-os-web-prd-2026-11-05.md), [ар
 Решение владельца 2026-11-11: codex_app_agent без API key; технические 18/18 задач M1 проверены в App-active scope PRD§17.7. Actual App/native/browser105, task39, data25, headless33; scoped native broker149162, Web306. Модель остаётся в App; sandbox только PAOS-mediated commands, без auth-cache/provider-key/policy/Git изменений и ручных тестов владельца. Активный consumer обязателен; automatic wakeup, Desktop daemon, реальный ChatGPT principal/quota и human/commercial/release acceptance не заявляются. Исторический closed-App full-turn и owner rejection сохранены. [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md).
 
 Ранее квалифицированные компоненты PAOS-0039, PAOS-0004, PAOS-0040 сохраняют исходные receipts; их исторический scope не переопределён новым маршрутом.
+
+Исторические scope anchors PAOS-0031 сохраняют свой provenance.
 
 ## PAOS-AUD-G7 — closed / owner accepted, 2026-11-10
 

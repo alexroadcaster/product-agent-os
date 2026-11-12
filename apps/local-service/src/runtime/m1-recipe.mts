@@ -1,6 +1,7 @@
 export type RecipeMode='discussion'|'planning'|'execution';
 export type RecipeMetadata=Readonly<{id:string;version:'m1_fixed_v1';role:'analyst'|'planner'|'builder';assignment:RecipeMode;coverage:'pinned'}>;
 export type SavedTaskContext=Readonly<{
+ assetPins?:import('../../../../packages/contracts/team/assets.ts').AssetPin[];
  taskId:string;key:string;title:string;revision:number;
  files:readonly Readonly<{relativePath:string;previousRelativePath?:string;plannedOperation:string|null}>[];
  acceptanceCriteria:readonly string[];risks:readonly string[];

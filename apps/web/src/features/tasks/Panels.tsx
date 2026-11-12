@@ -2,7 +2,7 @@ import {useEffect,useRef,useState} from 'react';
 import {CommentMarkdown} from './CommentMarkdown.tsx';
 import type {ManagerSnapshot} from '../../../../../packages/contracts/issues/manager.ts';
 import type {M1Api,StoredEntity,TaskReference,HistoryEvent} from '../../api/client.ts';
-import {profile,targetStatuses,safeExternalUrl,lines,durationText,hierarchyStats,type M2TaskProfile} from './model.ts';
+import {profile,targetStatuses,safeExternalUrl,lines,durationText,hierarchyStats,semanticStatus,stateName,userTargets,categoryTargets,type M2TaskProfile} from './model.ts';
 import {label,statusText,typeText,errorText,type Locale,type Word} from './labels.ts';
 export type Command=(input:Record<string,unknown>)=>Promise<Record<string,unknown>>;
 type PendingUpload={file:File;revision:number;key:string;payload:{filename:string;mediaType:string;base64:string}};
@@ -12,25 +12,25 @@ function useAction(locale:Locale){const[busy,setBusy]=useState(false),[error,set
 
 export function LifecyclePanel({entity,snapshot,command,locale,requestedStatus}:{entity:StoredEntity;snapshot:ManagerSnapshot<StoredEntity>;command:Command;locale:Locale;requestedStatus?:string}){
  const t=(key:Word)=>label(locale,key),p=profile(entity),action=useAction(locale);
- const targets=[...targetStatuses(entity.status??''),...(requestedStatus==='done'&&!targetStatuses(entity.status??'').includes('done')?['done']:[])];
- const [reason,setReason]=useState(''),[status,setStatus]=useState(requestedStatus??targetStatuses(entity.status??'')[0]??''),[resolution,setResolution]=useState('cancelled'),[hotfix,setHotfix]=useState(''),[override,setOverride]=useState(false);
+ const targets=[...new Set([...userTargets(entity,snapshot.workflows),...categoryTargets(entity,snapshot.workflows,'done'),...(requestedStatus?[requestedStatus]:[])])], doneTargets=categoryTargets(entity,snapshot.workflows,'done'),cancelTargets=categoryTargets(entity,snapshot.workflows,'cancelled');
+ const [reason,setReason]=useState(''),[status,setStatus]=useState(requestedStatus??targets[0]??''),[resolution,setResolution]=useState('cancelled'),[hotfix,setHotfix]=useState(''),[override,setOverride]=useState(false);
  const [evidence,setEvidence]=useState(()=>p.acceptanceCriteria.map(criterion=>p.criteriaEvidence.find(e=>e.criterion===criterion)??{criterion,evidence:'',outcome:'failed' as const}));
  useEffect(()=>{if(requestedStatus)setStatus(requestedStatus);},[requestedStatus]);
  const children=snapshot.tasks.filter(task=>task.data?.parentId===entity.id),exclusions=p.scopeExclusions??[];
- const totals=hierarchyStats(snapshot.tasks,entity.id);
- async function transition(next:string,manual=false){return command({action:'transition',taskId:entity.id,expectedRevision:entity.revision,status:next,manual:manual||next==='done'&&entity.status!=='awaiting_acceptance',reason,resolution,evidence:evidence.filter(item=>item.evidence.trim()),softWipOverride:override,...(hotfix?{hotfixReason:hotfix}:{})});}
+ const totals=hierarchyStats(snapshot.tasks,entity.id,snapshot.workflows);
+ async function transition(next:string,manual=false){return command({action:'transition',taskId:entity.id,expectedRevision:entity.revision,status:next,manual:manual||doneTargets.includes(next)&&semanticStatus(entity,snapshot.workflows)!=='awaiting_acceptance',reason,resolution,evidence:evidence.filter(item=>item.evidence.trim()),softWipOverride:override,...(hotfix?{hotfixReason:hotfix}:{})});}
  return <section className="m2-panel" data-testid="task-transition"><h3>{t('acceptance')}</h3><p className="quiet">{t('manualHint')}</p>
   <dl className="task-metadata"><dt>{t('actual')}</dt><dd>{p.actual.startedAt===null?t('notStarted'):p.actual.durationSeconds===null?t('unknown'):durationText(p.actual.durationSeconds)} · {p.actual.startedAt??'—'} → {p.actual.endedAt??t('unknown')}</dd><dt>{t('creator')}</dt><dd>{p.creator.displayName??p.creator.actorId??t('unknown')} · {p.creator.kind}</dd><dt>{t('initiator')}</dt><dd>{p.initiatedBy??'—'}</dd><dt>{t('created')}</dt><dd>{p.createdAt??t('unknown')}</dd></dl>
   {p.acceptanceCriteria.map((criterion,index)=><fieldset key={criterion}><legend>{criterion}</legend><label>{t('evidence')}<input name={`criterion-evidence-${index}`} value={evidence[index]?.evidence??''} onChange={e=>setEvidence(evidence.map((v,i)=>i===index?{...v,evidence:e.target.value}:v))}/></label><label className="m2-check"><input name={`criterion-passed-${index}`} type="checkbox" checked={evidence[index]?.outcome==='passed'} onChange={e=>setEvidence(evidence.map((v,i)=>i===index?{...v,outcome:e.target.checked?'passed':'failed'}:v))}/>{t('passed')}</label></fieldset>)}
   <form onSubmit={e=>{e.preventDefault();void action.run(()=>transition(status));}}>
    <label>{t('reason')}<input name="transition-reason" value={reason} required onChange={e=>setReason(e.target.value)}/></label>
-   <label>{t('transition')}<select name="transition-status" value={status} onChange={e=>setStatus(e.target.value)}>{targets.map(s=><option key={s} value={s}>{statusText(locale,s)}</option>)}</select></label>
+   <label>{t('transition')}<select name="transition-status" value={status} onChange={e=>setStatus(e.target.value)}>{targets.map(s=><option key={s} value={s}>{stateName(entity,snapshot.workflows,s)??statusText(locale,s)}</option>)}</select></label>
    <label>{t('resolution')}<select value={resolution} onChange={e=>setResolution(e.target.value)}>{['cancelled','duplicate','wont_do'].map(v=><option key={v} value={v}>{v}</option>)}</select></label>
    <label>{t('hotfix')}<input name="hotfix-reason" value={hotfix} onChange={e=>setHotfix(e.target.value)}/></label>
    <label className="m2-check"><input name="soft-wip-override" type="checkbox" checked={override} onChange={e=>setOverride(e.target.checked)}/>{t('softOverride')}</label>
-   <button disabled={action.busy||!status}>{['done','cancelled'].includes(entity.status??'')?t('reopen'):t('transition')}</button>
+   <button disabled={action.busy||!status}>{['done','cancelled'].includes(semanticStatus(entity,snapshot.workflows))?t('reopen'):t('transition')}</button>
   </form>
-  {!['done','cancelled'].includes(entity.status??'')&&<div className="m2-actions"><button disabled={action.busy||!reason.trim()} className="primary" onClick={()=>void action.run(()=>transition('done',true))}>{t('complete')}</button><button disabled={action.busy||!reason.trim()} onClick={()=>void action.run(()=>transition('cancelled'))}>{t('cancelTask')}</button></div>}
+  {!['done','cancelled'].includes(semanticStatus(entity,snapshot.workflows))&&<div className="m2-actions"><button disabled={action.busy||!reason.trim()||doneTargets.length!==1} className="primary" onClick={()=>void action.run(()=>transition(doneTargets[0],true))}>{t('complete')}</button><button disabled={action.busy||!reason.trim()||cancelTargets.length!==1} onClick={()=>void action.run(()=>transition(cancelTargets[0]))}>{t('cancelTask')}</button></div>}
   <p>{t('timezone')}: {snapshot.board.timezone??p.timezone}{p.timezone!==snapshot.board.timezone?` · ${p.timezone}`:''}</p><h4>{t('rollup')}</h4><p>{totals.done}/{totals.descendants} · {statusText(locale,'cancelled')}: {totals.cancelled} · {t('estimate')}: {durationText(totals.estimateSeconds)}{totals.unknownEstimates?` + ${totals.unknownEstimates} ${t('unknown')}`:''} · {t('actual')}: {durationText(totals.actualSeconds)}</p><p>{t('ownEstimate')}: {durationText(totals.ownEstimateSeconds)}</p>
   <h4>{t('children')}</h4><ul>{children.map(child=><li key={child.id}><strong>{child.publicKey} · {child.title}</strong> · {statusText(locale,child.status??'')}{exclusions.find(e=>e.taskId===child.id)?<><p>{t('excluded')}: {exclusions.find(e=>e.taskId===child.id)?.reason}</p><button disabled={action.busy} onClick={()=>void action.run(()=>command({action:'save',task:{...p,scopeExclusions:exclusions.filter(e=>e.taskId!==child.id)},expectedRevision:entity.revision,reason}))}>{t('restoreScope')}</button></>:<button disabled={action.busy||!reason.trim()} onClick={()=>void action.run(()=>command({action:'save',task:{...p,scopeExclusions:[...exclusions,{taskId:child.id,reason}]},expectedRevision:entity.revision,reason}))}>{t('exclude')}</button>}</li>)}</ul>
   <p role="alert">{action.error}</p>

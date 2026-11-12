@@ -16,7 +16,7 @@ G8 closed / owner accepted. G9 T01–T09 implemented_locally_verified; T10 owner
 
 ## Активная продуктовая очередь Web — 2026-11-10
 
-Текущий PAOS-M2: авторизованная очередь PAOS-0031 → 0032 → 0033 → 0005 → 0006 → 0007 → 0008 → 0034 → 0038 → 0035 технически выполнена. Следующая плановая PAOS-0036 вне этой команды, остальные16 M2 planned. Все56 карточек/12групп/estimates сохранены; источник статусов — owning MD/JSON. [M2 execution](research/product-agent-os-web-m2-execution-2026-11-11.md). Ранний PAOS-0046 [review](research/product-agent-os-web-commercial-review-2026-11-11.md) не даёт commercial admission: AUTH-G1–G6, PAOS-0030, human/release отдельно. App consumer обязателен, API key/payer fallback запрещены.
+Текущий PAOS-M2: PAOS-0036 → 0009 → 0010 → 0011 → 0012 → 0013 → 0014 → 0015 → 0016 → 0017 → 0018 технически выполнены;21/26 M2 вместе с [first10 M2](research/product-agent-os-web-m2-execution-2026-11-11.md). Остались PAOS-0019/0020/0021/0022/0027 planned, следующая0019 требует отдельного scope. Все56 карточек/12групп/estimates сохранены. [M2b evidence](research/product-agent-os-web-m2b-execution-2026-11-12.md). [PAOS-0046 review](research/product-agent-os-web-commercial-review-2026-11-11.md) не даёт commercial admission: AUTH-G1–G6/C46-01–08, PAOS-0030, human/release отдельно. App consumer обязателен; no API key/provider/Git/publication.
 
 Результат M1 до PAOS-0046: Актуализация 2026-11-11: PAOS-M1 — 18/18 technical implemented; PAOS-0042/0043/0044/0045 закрыты для App-active/PAOS-mediated commands после actual105/task39/data25/native/headless33/Web306 и separate-reused-context closed_allowed. WSA10050 missing endpoint локализован без системных изменений; существующий Desktop daemon не квалифицирован. App/consumer обязательны, API key/fallback нет. Следующая очередь — PAOS-0046 до M2; AUTH-G1–G6, human acceptance и release отдельно. Полные56 задач/12групп/estimates/другие52карточки сохранены. [Execution report](research/product-agent-os-web-m1-execution-2026-11-11.md).
 
@@ -34,6 +34,8 @@ Source status: project-authored / order_approved; implementation_started, runtim
 Остальные Batch/Track очереди ниже сохранены как отдельные follow-ups. Они не запускаются автоматически и не добавляют gates в M1 без установленной зависимости. Предыдущие Web receipts: [аудит и архив control-plane](research/product-agent-os-control-plane-maintenance-2026-11-10.md).
 
 Ранее квалифицированные компоненты PAOS-0039, PAOS-0041 сохраняют исходные receipts; их исторический scope не переопределён новым маршрутом.
+
+Исторические scope anchors PAOS-0031 сохраняют свой provenance.
 
 ## PAOS-AUD-G7 — closed / owner accepted, 2026-11-10
 

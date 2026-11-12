@@ -1,0 +1,4 @@
+export type HistoryCoverage={status:'complete'|'partial'|'unavailable';reasons:string[]};
+export type HistoryPage<T>={items:T[];nextCursor:string|null;previousCursor?:string|null;snapshot:{generation:string;total:number;createdAt:string};coverage:HistoryCoverage;retention:{policy:'retain_available';truncated:boolean;omittedCount:number};anchorId?:string;anchorFound?:boolean};
+export type SessionSummary={id:string;title:string;status:string;archived:boolean;parentSessionId:string|null;forkOf:string|null;agentId:string|null;updatedAt:string;taskId:string|null;source:string;coverage:string};
+export type TranscriptMessage={id:string;sessionId:string;body:string;role:string;authorId:string|null;agentId:string|null;taskId:string|null;runId:string|null;fileRefs:unknown[];parentSessionId:string|null;journalOrder:number;timestamp:string|null;source:string;toolType:string|null;redacted:boolean;coverage:string};

@@ -13,7 +13,7 @@
     "sha256": "119d6fa70e6ae1b15b90688ab6bcc8e3a2819acea021af196895cab1843645af"
   },
   "sqliteVersion": "3.53.3",
-  "adapterRevision": "311f5daed342d4e63d9ea20c6ba307c318e21a747b578b7b43be269f7b87a2db",
+  "adapterRevision": "57575e07e1732345770439c60aed09fb2008f7173a6ab6c0252293951e85ceb7",
   "packageLockSha256": "d279009aa1dca2bd2d6ba0e18a77d085a67e872d0dce78dd360fb23d43975f38",
   "schema": {
     "sha256": "486c7c8daa5dc7f3ab2a1fb56de5316804caf7a4210fda1dc28d3f0f4e90cfe1",
@@ -43,6 +43,7 @@
     "actualAppBrokerRoundtrip": "01e2c7b5a90a1e4fbd3cc6e2785ff8fb0059beea072586546cda60e4b7d970b1",
     "taskLifecycleBrowser": "e7009ce7b2ee6d91b0f88486cb72eb96cde244a74633604c49a33fc1d4a732d7",
     "dataJourneysBrowser": "2359a110c7306aaa28c305466fc7bf6c0bb2ffb17c58c4d10a0400df10654a70",
-    "m2NativeCandidate": "51b65dec06d4b8da283011ec3de9e1d54dd01f563ea339bbba6625575daa914a"
+    "m2NativeCandidate": "51b65dec06d4b8da283011ec3de9e1d54dd01f563ea339bbba6625575daa914a",
+    "m2bNativeCandidate": "a8f4f15f41d22d0d41faed105a65895511d3a0871f0730cd6f02c3756a2129b5"
   }
 }

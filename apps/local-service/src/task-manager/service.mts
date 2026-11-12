@@ -7,6 +7,8 @@ import { DEFAULT_COMPONENTS, STATUS_COLUMNS, decodeTaskProfile, newM2Task, upgra
   isCalendarDate, ISSUE_TYPES,type M2TaskProfile, type IssueLink, type BlockedRun } from '../../../../packages/contracts/issues/task-profile.ts';
 
 import type { CatalogItem,VersionItem,Board } from '../../../../packages/contracts/issues/manager.ts';
+import {defaultRegistry,validateRegistry,workflowSnapshot,workflowCategory,requiredBoardStates} from '../workflows/registry.mts';
+import {workflowCommand} from '../workflows/commands.mts';
 export type {CatalogItem,VersionItem,Board} from '../../../../packages/contracts/issues/manager.ts';
 const defaultBoard:Board={columns:STATUS_COLUMNS.map(c=>({id:c.id,statuses:[...c.statuses]})),outOfBoard:false,
   attachmentFileBytes:50*1024*1024,attachmentTaskBytes:500*1024*1024,timezone:'Europe/Moscow'};
@@ -30,9 +32,9 @@ export async function taskManagerSnapshot(store:LocalStore,projectId:string){
   const rows=await store.projectEntities(projectId);const setting=(name:string)=>rows.find(e=>e.id===`m2-${name}`&&e.kind==='settings');
   const board=(setting('board')?.data.value??defaultBoard) as Board;
   return {tasks:rows.filter(e=>e.kind==='task'),components:(setting('components')?.data.items??defaults()) as CatalogItem[],
-    versions:(setting('versions')?.data.items??[]) as VersionItem[],board,links:canonicalIssueLinks(rows.filter(e=>e.kind==='task').map(e=>decodeTaskProfile(e.data)),(setting('links')?.data.items??[]) as IssueLink[]),
+    versions:(setting('versions')?.data.items??[]) as VersionItem[],workflows:validateRegistry(setting('workflows')?.data??defaultRegistry()),board,links:canonicalIssueLinks(rows.filter(e=>e.kind==='task').map(e=>decodeTaskProfile(e.data)),(setting('links')?.data.items??[]) as IssueLink[]),
     comments:rows.filter(e=>e.kind==='comment'),attachments:rows.filter(e=>e.kind==='document'&&e.data.category==='managed_attachment'),
-    settingsRevisions:Object.fromEntries(['components','versions','board','links'].map(n=>[n,setting(n)?.revision??0])),
+    settingsRevisions:Object.fromEntries(['components','versions','board','links','workflows'].map(n=>[n,setting(n)?.revision??0])),
     quota:{fileBytes:board.attachmentFileBytes,taskBytes:board.attachmentTaskBytes},coverage:'complete' as const};
 }
 function safeName(name:unknown){
@@ -58,10 +60,11 @@ async function serialize<T>(store:LocalStore,projectId:string,operation:()=>Prom
   try{return await next;}finally{if(queue.get(projectId)===next)queue.delete(projectId);}
 }
 /** All browser M2 mutations use this single authenticated command boundary. */
-export function taskManagerCommand(store:LocalStore,projectId:string,actorId:string,input:Record<string,any>){
-  return serialize(store,projectId,()=>applyTaskManagerCommand(store,projectId,actorId,input));
+export type WorkflowCommandOptions={validateWorkflowReferences?:(definition:import('../../../../packages/contracts/workflows/workflow.ts').WorkflowDefinition)=>Promise<void>};
+export function taskManagerCommand(store:LocalStore,projectId:string,actorId:string,input:Record<string,any>,options:WorkflowCommandOptions={}){
+  return serialize(store,projectId,()=>applyTaskManagerCommand(store,projectId,actorId,input,options));
 }
-async function applyTaskManagerCommand(store:LocalStore,projectId:string,actorId:string,input:Record<string,any>){
+async function applyTaskManagerCommand(store:LocalStore,projectId:string,actorId:string,input:Record<string,any>,options:WorkflowCommandOptions){
   if(!nonempty(input.idempotencyKey)||!integer(input.expectedAuthorityEpoch)||!nonempty(input.action))fail('INVALID_COMMAND');
   const project=await store.project(projectId);if(!project)fail('PROJECT_NOT_FOUND');
   if(project.authorityEpoch!==input.expectedAuthorityEpoch)fail('AUTHORITY_CONFLICT');
@@ -74,12 +77,23 @@ async function applyTaskManagerCommand(store:LocalStore,projectId:string,actorId
   const changes:Array<StoreWrite['changes'][number]>=[];
   let transition:StoreWrite['taskManagerAction'];
   let createdLinkId:string|undefined;
+  let workflowMetadata:Partial<StoreWrite>={};
   const target=()=>{const t=snapshot.tasks.find(t=>t.id===input.taskId);if(!t)fail('TASK_NOT_FOUND');if(t.revision!==input.expectedRevision)fail('REVISION_CONFLICT');return t;};
   const setting=(name:string,data:Record<string,unknown>)=>{
     if(snapshot.settingsRevisions[name]!==input.expectedRevision)fail('REVISION_CONFLICT');
     changes.push({expectedRevision:input.expectedRevision,entity:{id:`m2-${name}`,kind:'settings',data}});
   };
-  if(input.action==='save'||input.action==='upgrade'){
+  if(input.action.startsWith('workflow-')){
+    if(['workflow-validate','workflow-publish-preview','workflow-publish'].includes(input.action)){
+      const definition=input.action==='workflow-validate'&&input.definition?input.definition:snapshot.workflows.workflows.find(w=>w.id===input.workflowId)?.draft;
+      if(definition?.recipes?.some((recipe:any)=>recipe.steps?.some((step:any)=>step.skills?.length))){
+        if(!options.validateWorkflowReferences)fail('WORKFLOW_SKILL_CATALOG_UNAVAILABLE');
+        await options.validateWorkflowReferences(definition);
+      }
+    }
+    const result=workflowCommand(snapshot,input);if(result.preview!==undefined)return result.preview;
+    changes.push(...result.changes);workflowMetadata=result.metadata??{};
+  }else if(input.action==='save'||input.action==='upgrade'){
     let raw=input.task as Record<string,any>;if(!raw||raw.projectId!==projectId)fail('TASK_SCOPE_CONFLICT');
     const old=snapshot.tasks.find(t=>t.id===raw.id);
     if(old&&old.data.schemaVersion!=='m2_task_profile_v1'&&input.action!=='upgrade')fail('PROFILE_UPGRADE_REQUIRED');
@@ -89,7 +103,12 @@ async function applyTaskManagerCommand(store:LocalStore,projectId:string,actorId
     }
     const creator=old?.data.creator??{kind:'user',actorId};
     raw={...raw,hotfixReason:old?.data.hotfixReason??null,actual:old?.data.actual??{startedAt:null,endedAt:null,durationSeconds:null}};
-    if(!old)raw={...raw,createdAt:new Date().toISOString(),timezone:snapshot.board.timezone??'Europe/Moscow',initiatedBy:null};
+    if(!old){
+      const workflowId=input.workflowId??snapshot.workflows.typeMapping[raw.type]??snapshot.workflows.defaultWorkflowId;
+      const selected=snapshot.workflows.workflows.find(w=>w.id===workflowId&&!w.archived&&w.activeVersion!==null);if(!selected)fail('WORKFLOW_ASSIGNMENT_INVALID');
+      const workflow={id:selected.id,version:selected.activeVersion!};const initial=workflowSnapshot(snapshot.workflows,workflow).definition.states.find(s=>s.initial)!;
+      raw={...raw,workflow,status:initial.id,createdAt:new Date().toISOString(),timezone:snapshot.board.timezone??'Europe/Moscow',initiatedBy:null};
+    }
     const task=decodeTaskProfile({...raw,creator,key:raw.key===''?`${project.keyPrefix}-1`:raw.key});
     if(task.schemaVersion!=='m2_task_profile_v1')fail('M2_PROFILE_REQUIRED');
     if(old&&task.status!==old.status)fail('TRANSITION_REQUIRED');
@@ -107,27 +126,28 @@ async function applyTaskManagerCommand(store:LocalStore,projectId:string,actorId
     if(!nonempty(input.reason))fail('REASON_REQUIRED');
     transition=input.manual===true?'complete':'transition';
     const status=input.status as M2TaskProfile['status'];
-    if(status==='ready'&&(snapshot.board.releaseRequiredTypes?.includes(decoded.type)||snapshot.board.releaseRequiredComponents?.some(c=>decoded.components.includes(c)))
+    const category=workflowCategory(snapshot.workflows,{...decoded,status}),oldCategory=workflowCategory(snapshot.workflows,decoded);
+    if(category==='ready'&&(snapshot.board.releaseRequiredTypes?.includes(decoded.type)||snapshot.board.releaseRequiredComponents?.some(c=>decoded.components.includes(c)))
       &&!decoded.fixVersions.length&&!input.hotfixReason&&!decoded.hotfixReason)fail('TARGET_RELEASE_REQUIRED');
     const column=snapshot.board.columns.find(c=>c.statuses.includes(status));
     if(column?.wipLimit!==undefined&&!column.statuses.includes(decoded.status)&&snapshot.tasks.filter(t=>column.statuses.includes(t.status)).length>=column.wipLimit){
       if(column.wipMode==='hard')fail('HARD_WIP_LIMIT');if(!input.softWipOverride)fail('SOFT_WIP_CONFIRMATION_REQUIRED');
     }
     const now=new Date().toISOString();
-    const task={...decoded,status,resolution:status==='done'?'completed':status==='cancelled'?(input.resolution??'cancelled'):null,
+    const task={...decoded,status,resolution:category==='done'?'completed':category==='cancelled'?(input.resolution??'cancelled'):null,
       hotfixReason:input.hotfixReason??decoded.hotfixReason,
       criteriaEvidence:input.evidence??decoded.criteriaEvidence,
-      actual:status==='in_progress'?{...decoded.actual,startedAt:decoded.actual.startedAt??now,endedAt:null}
-        :['done','cancelled'].includes(status)?{...decoded.actual,endedAt:now}
-        :['done','cancelled'].includes(decoded.status)?{...decoded.actual,endedAt:null}:decoded.actual};
+      actual:category==='in_progress'?{...decoded.actual,startedAt:decoded.actual.startedAt??now,endedAt:null}
+        :['done','cancelled'].includes(category)?{...decoded.actual,endedAt:now}
+        :['done','cancelled'].includes(oldCategory)?{...decoded.actual,endedAt:null}:decoded.actual};
     changes.push({expectedRevision:old.revision,entity:{id:old.id,kind:'task',data:task}});
     // Reopening a prerequisite preserves completed history and marks downstream review explicitly.
-    if(['done','cancelled'].includes(old.status)&&!['done','cancelled'].includes(status)){
+    if(['done','cancelled'].includes(oldCategory)&&!['done','cancelled'].includes(category)){
       for(const link of snapshot.links.filter(l=>l.relation==='blocks'&&l.sourceId===old.id)){
-        const dependent=snapshot.tasks.find(t=>t.id===link.targetId);if(dependent?.data.schemaVersion==='m2_task_profile_v1'&&dependent.status==='done')changes.push({expectedRevision:dependent.revision,
+        const dependent=snapshot.tasks.find(t=>t.id===link.targetId);if(dependent?.data.schemaVersion==='m2_task_profile_v1'&&workflowCategory(snapshot.workflows,decodeTaskProfile(dependent.data))==='done')changes.push({expectedRevision:dependent.revision,
           entity:{id:dependent.id,kind:'task',data:{...dependent.data,risks:[...new Set([...(dependent.data.risks as string[]),'dependency_review'])]}}});
       }
-      const parent=snapshot.tasks.find(t=>t.id===decoded.parentId);if(parent?.status==='done'&&parent.data.schemaVersion==='m2_task_profile_v1')changes.push({expectedRevision:parent.revision,
+      const parent=snapshot.tasks.find(t=>t.id===decoded.parentId);if(parent?.data.schemaVersion==='m2_task_profile_v1'&&workflowCategory(snapshot.workflows,decodeTaskProfile(parent.data))==='done')changes.push({expectedRevision:parent.revision,
         entity:{id:parent.id,kind:'task',data:{...parent.data,risks:[...new Set([...(parent.data.risks as string[]),'scope_review'])]}}});
     }
   }else if(input.action==='component'||input.action==='version'){
@@ -145,7 +165,7 @@ async function applyTaskManagerCommand(store:LocalStore,projectId:string,actorId
     if(board.timezone!==undefined){try{if(!nonempty(board.timezone))fail('INVALID_TIMEZONE');new Intl.DateTimeFormat('en',{timeZone:board.timezone}).format();}catch{fail('INVALID_TIMEZONE');}}
     if(board.releaseRequiredTypes!==undefined&&(!Array.isArray(board.releaseRequiredTypes)||board.releaseRequiredTypes.some(t=>!ISSUE_TYPES.includes(t as any))))fail('INVALID_RELEASE_POLICY');
     if(board.releaseRequiredComponents!==undefined&&(!Array.isArray(board.releaseRequiredComponents)||board.releaseRequiredComponents.some(id=>!snapshot.components.some(c=>c.id===id))))fail('INVALID_RELEASE_POLICY');
-    const statuses=board.columns.flatMap(c=>c.statuses);const known=STATUS_COLUMNS.flatMap(c=>[...c.statuses]);
+    const statuses=board.columns.flatMap(c=>c.statuses);const known=requiredBoardStates(snapshot.workflows,snapshot.tasks.map(t=>t.data));
     if(new Set(statuses).size!==statuses.length||statuses.some(s=>!known.includes(s as any))||(!board.outOfBoard&&known.some(s=>!statuses.includes(s))))fail('INVALID_BOARD_MAPPING');
     if(board.columns.some(c=>!nonempty(c.id)||!Array.isArray(c.statuses)||(c.wipLimit!==undefined&&(!integer(c.wipLimit)||!['soft','hard'].includes(c.wipMode??'')))))fail('INVALID_WIP');
     if(!integer(board.attachmentFileBytes)||board.attachmentFileBytes<1||board.attachmentFileBytes>50*1024*1024||!integer(board.attachmentTaskBytes)||board.attachmentTaskBytes<board.attachmentFileBytes)fail('INVALID_QUOTA');
@@ -202,7 +222,7 @@ async function applyTaskManagerCommand(store:LocalStore,projectId:string,actorId
     sourceId:input.link?.sourceId??null,targetId:input.link?.targetId??null,linkId:createdLinkId??null,reason:input.reason??input.link?.reason??null,
     ...(input.action==='transition'?{softWipOverrideRequested:input.softWipOverride===true}:{})}}});
   const editsExistingTask=changes.some(change=>change.entity.kind==='task'&&change.expectedRevision>0);
-  const receipt=await store.write({...command,changes,...(input.action==='activate-link'||editsExistingTask?{requireIdle:true as const}:{}),...(transition?{taskManagerAction:transition,taskManagerReason:input.reason,
+  const receipt=await store.write({...command,...workflowMetadata,changes,...(input.action==='activate-link'||editsExistingTask?{requireIdle:true as const}:{}),...(transition?{taskManagerAction:transition,taskManagerReason:input.reason,
     ...(input.hotfixReason?{taskManagerHotfixReason:String(input.hotfixReason)}:{}),requireIdle:true as const}:{}),
     ...(['save','upgrade'].includes(input.action)&&nonempty(input.reason)?{taskManagerReviewReason:input.reason}:{})});
   return {...receipt,...(createdLinkId?{linkId:createdLinkId}:{})};

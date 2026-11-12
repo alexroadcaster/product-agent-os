@@ -4,6 +4,7 @@ import {mkdir,readFile} from 'node:fs/promises';
 import {join,isAbsolute,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {homedir} from 'node:os';
+import type {AssetRoot} from './team/sources.mts';
 import {openLocalStore} from './storage/local-store.mts';
 import {createLocalApplication} from './http/application.mts';
 import {createLiveGateway} from './runtime/live-gateway.mts';
@@ -33,6 +34,7 @@ export async function toFetchRequest(incoming:IncomingMessage,origin:string,sign
  const method=incoming.method??'GET';
  const bodyLimit=method==='POST'&&/^\/api\/v1\/projects\/[^/]+\/tasks\/[^/]+\/attachments$/.test(url.pathname)?70*1024*1024
   :method==='POST'&&/^\/api\/v1\/projects\/[^/]+\/task-manager\/commands$/.test(url.pathname)?16*1024*1024
+  :method==='POST'&&/^\/api\/v1\/projects\/[^/]+\/team\/proposals\/(?:preview|apply)$/.test(url.pathname)?8*1024*1024
   :method==='POST'&&/^\/api\/v1\/projects\/[^/]+\/imports\/preview$/.test(url.pathname)?3*1024*1024:1024*1024;
  const length=incoming.headers['content-length'];
  if(length!==undefined&&(!/^\d+$/.test(String(length))||Number(length)>bodyLimit))throw failure('REQUEST_TOO_LARGE');
@@ -64,11 +66,15 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
  openStore?:typeof openLocalStore;createHttpServer?:typeof createServer;createApplication?:typeof createLocalApplication;createGateway?:typeof createLiveGateway;
  prepareProfile?:(profile:string)=>Promise<void>;
  sandboxBrokerFactory?:false|((binding:AppAgentBinding)=>Promise<SandboxBroker>);
+ assetRoots?:AssetRoot[];
 }>={}) {
  if(!isAbsolute(options.profileDirectory)||options.profileDirectory.startsWith('\\\\')||!options.instanceId)throw failure('PROFILE_INVALID');
  await(deps.prepareProfile??(async(profile)=>{await mkdir(profile,{recursive:true,mode:0o700});}))(options.profileDirectory);
  const profile=await bindProfile(options.profileDirectory);const profileDirectory=profile.canonicalRoot;
- const store=await(deps.openStore??openLocalStore)({databasePath:join(profileDirectory,'state.sqlite')});
+ const assetRoots=deps.assetRoots??[{id:'global-agents',path:join(options.appCodexHome??join(homedir(),'.codex'),'agents'),scope:'global',kind:'agent'},
+  {id:'global-codex-skills',path:join(options.appCodexHome??join(homedir(),'.codex'),'skills'),scope:'global',kind:'skill'},
+  {id:'global-agents-skills',path:join(homedir(),'.agents','skills'),scope:'global',kind:'skill'}];
+ const store=await(deps.openStore??openLocalStore)({databasePath:join(profileDirectory,'state.sqlite'),assetRoots});
  let qualified=false;let providerAuthority=false;let stopping=false;
  try {qualified=(await inspectConfiguredRuntime(profileDirectory)).qualified;} catch {qualified=false;}
  let stopPendingAgentLink:((input:{projectId:string;linkId:string})=>Promise<unknown>)|undefined;
@@ -90,7 +96,7 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
  stopPendingAgentLink=({projectId,linkId})=>requestPendingLinkStop(store,gateway.runtime,projectId,linkId);
  // App agents and the legacy API runtime are explicit choices; neither is a fallback for the other.
  let agentChannel:Awaited<ReturnType<typeof createAppAgentChannel>>|undefined;
- const appGateway=createAppAgentGateway({store,profileId:profile.profileId,actorId:'codex-app-agent',redact:(text)=>agentChannel?.redact(text)??text,
+ const appGateway=createAppAgentGateway({store,profileId:profile.profileId,actorId:'codex-app-agent',assetRoots,redact:(text)=>agentChannel?.redact(text)??text,
   executorFactory:deps.sandboxBrokerFactory===false?undefined:deps.sandboxBrokerFactory??(async(binding)=>{
    await assertProfileIdentity(profile);
    const selectionPath=join(profileDirectory,'runtime-selection.json');
@@ -160,7 +166,7 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
   origin=`http://127.0.0.1:${address.port}`;
   agentChannel=await createAppAgentChannel({profileDirectory,instanceId:options.instanceId,origin,profileId:profile.profileId,
    assertProfile:()=>assertProfileIdentity(profile),dispatch:(action,input)=>appGateway.agent(action,input)});
-  application=await(deps.createApplication??createLocalApplication)({store,origin,instanceId:options.instanceId,profileDirectory,
+  application=await(deps.createApplication??createLocalApplication)({store,origin,instanceId:options.instanceId,profileDirectory,assetRoots,
    staticDirectory:fileURLToPath(new URL('../../web/dist/',import.meta.url)),connection,runtime,agentChannel,
    runtimeCapable:()=>connection.status().route==='local_api_byok'?qualified:appGateway.connection.status().verified,
    onQuit:()=>{if(!process.send||!process.connected)throw failure('OWNER_UNAVAILABLE');process.send({type:'quit_requested'},()=>{});},

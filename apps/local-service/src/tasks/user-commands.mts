@@ -2,6 +2,8 @@ import { createHash } from 'node:crypto';
 import type { LocalStore } from '../storage/local-store.mts';
 import type { EntityInput, StoreWrite } from '../../../../packages/contracts/storage/local-store.ts';
 import { decodeTaskProfile as decodeM1TaskProfile } from '../../../../packages/contracts/issues/task-profile.ts';
+import {runtimeWorkflow} from '../workflows/runtime.mts';
+import {categoryState} from '../workflows/registry.mts';
 
 function fail(code: string): never { throw Object.assign(new Error(code), { code }); }
 const userKinds = new Set(['task', 'session', 'comment', 'draft']);
@@ -105,16 +107,19 @@ export async function acceptTask(store: LocalStore, input: Omit<CheckInput, 'out
   const check = await store.get(input.projectId, input.checkId);
   if (!task || task.kind !== 'task' || task.revision !== input.expectedRevision) fail('REVISION_CONFLICT');
   if (typeof input.accepted !== 'boolean' || typeof input.note !== 'string') fail('INVALID_ACCEPTANCE');
-  if (input.accepted && (task.status !== 'awaiting_acceptance' || check?.parentId !== task.id
+  const workflow=await runtimeWorkflow(store,input.projectId,task.data);
+  if (input.accepted && (workflow.category !== 'awaiting_acceptance' || check?.parentId !== task.id
     || check.kind !== 'comment' || check.data.category !== 'manual_check' || check.data.outcome !== 'passed'
     || check.data.taskRevision !== task.revision)) fail('CHECK_REQUIRED');
   if (input.accepted && (!Array.isArray(task.data.acceptanceCriteria) || task.data.acceptanceCriteria.length === 0)) fail('CRITERIA_REQUIRED');
   if (input.accepted && Array.isArray(task.data.risks) && task.data.risks.includes('recovery_review')) fail('RECOVERY_REVIEW_REQUIRED');
   const risks = Array.isArray(task.data.risks) && input.accepted
     ? task.data.risks.filter((risk) => risk !== 'acceptance_unverified') : task.data.risks;
-  const profile = decodeM1TaskProfile({ ...task.data, risks, status: input.accepted ? 'done' : 'review' });
+  const profile = decodeM1TaskProfile({ ...task.data, risks, status:categoryState(workflow.registry,task.data,input.accepted?'done':'review'),
+    ...(task.data.schemaVersion==='m2_task_profile_v1'?{resolution:input.accepted?'completed':null,
+      criteriaEvidence:input.accepted?(task.data.acceptanceCriteria as string[]).map(criterion=>({criterion,evidence:input.note||`Manual check ${input.checkId}`,outcome:'passed'})):task.data.criteriaEvidence}:{}) });
   return store.write({ projectId: input.projectId, actorId: input.actorId, expectedAuthorityEpoch: input.expectedAuthorityEpoch,
-    idempotencyKey: input.idempotencyKey, requireIdle: true, changes: [
+    idempotencyKey: input.idempotencyKey, requireIdle: true,...(profile.schemaVersion==='m2_task_profile_v1'?{taskManagerAction:'transition' as const,taskManagerReason:input.note||'Owner acceptance'}:{}), changes: [
       { expectedRevision: task.revision, entity: { id: task.id, kind: 'task', data: profile } },
       { expectedRevision: 0, entity: { id: acceptanceId, kind: 'comment', parentId: task.id, title: 'Owner acceptance',
         body: input.note, data: { category: 'owner_acceptance', accepted: input.accepted, checkId: input.checkId, requestHash } } },

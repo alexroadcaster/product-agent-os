@@ -1,9 +1,12 @@
 import type { LocalStore } from '../storage/local-store.mts';
 import { createConnectionBroker, type CredentialStore } from '../connections/broker.ts';
-import { createRuntimeCoordinator, type RuntimeBinding } from './codex/coordinator.ts';
+import { createRuntimeCoordinator, type RuntimeBinding,type RuntimeRun } from './codex/coordinator.ts';
 import type { RuntimeRpc } from './codex/stdio-rpc.ts';
 import { createRuntimeStoragePorts,taskScopeDigest } from './storage-ports.mts';
 import {decodeTaskProfile as decodeM1TaskProfile} from '../../../../packages/contracts/issues/task-profile.ts';
+import {runtimeWorkflow} from '../workflows/runtime.mts';
+import {createTeamService} from '../team/service.mts';
+import {safePersistedText} from '../redaction/persisted.mts';
 import { bindProject } from '../adapters/project-sources.ts';
 import type {SavedTaskContext} from './m1-recipe.mts';
 
@@ -99,24 +102,25 @@ export function createLiveGateway(options: Readonly<{
       }
       const found=await binding(input);
       if(action==='send') {
-        let pinned: {taskId?:string;scopeDigest?:string;targetRevision?:number;taskContext?:SavedTaskContext}={};
+        let pinned: {taskId?:string;scopeDigest?:string;targetRevision?:number;taskContext?:SavedTaskContext;workflowSnapshot?:RuntimeRun['workflowSnapshot']}={};
         if(found.mode==='execution') {
           const taskId=requiredText(input,'taskId');const task=await options.store.get(found.projectId,taskId);
           if(!task||task.deleted||task.kind!=='task')throw new LiveGatewayError('task_scope_unavailable');
           const profile=decodeM1TaskProfile(task.data);
+          const workflow=await runtimeWorkflow(options.store,found.projectId,profile);
           if(profile.schemaVersion==='m2_task_profile_v1'&&profile.type==='epic')throw new LiveGatewayError('runtime_epic_not_executable');
           const previous=await persistence.findRun(found.id,requiredText(input,'clientMessageId'));
-          if(!previous&&(profile.status!=='ready'||profile.risks.includes('recovery_review')))throw new LiveGatewayError('task_scope_review_required');
+          if(!previous&&(workflow.category!=='ready'||profile.risks.includes('recovery_review')))throw new LiveGatewayError('task_scope_review_required');
           if(!profile.acceptanceCriteria.length||!profile.acceptanceCriteria.every((criterion)=>criterion.trim()))throw new LiveGatewayError('saved_criteria_required');
           const pinKey=`${found.id}:${requiredText(input,'clientMessageId')}`;const cached=sendPins.get(pinKey);
           pinned=cached?.taskId===taskId?cached:{taskId,scopeDigest:previous?.taskId===taskId?previous.scopeDigest??undefined:taskScopeDigest(task),
-            targetRevision:previous?.taskId===taskId?previous.targetRevision:task.revision,
+            targetRevision:previous?.taskId===taskId?previous.targetRevision:task.revision,workflowSnapshot:previous?.workflowSnapshot??workflow.snapshot,
             taskContext:{taskId,key:profile.key,title:profile.title,revision:previous?.taskId===taskId?previous.targetRevision??task.revision:task.revision,
               files:profile.files.map((file)=>({relativePath:file.relativePath,previousRelativePath:file.previousRelativePath,plannedOperation:file.plannedOperation})),
-              acceptanceCriteria:[...profile.acceptanceCriteria],risks:[...profile.risks]}};
+              acceptanceCriteria:[...profile.acceptanceCriteria],risks:[...profile.risks],assetPins:await createTeamService(options.store).assignmentPins(found.projectId,profile.agentAssignments)}};
           sendPins.set(pinKey,pinned as {taskId:string;scopeDigest?:string;targetRevision?:number;taskContext:SavedTaskContext});
         }
-        return publicRun(await coordinator.send({bindingId:found.id,clientMessageId:requiredText(input,'clientMessageId'),input:requiredText(input,'input'),...pinned}));
+        return publicRun(await coordinator.send({bindingId:found.id,clientMessageId:requiredText(input,'clientMessageId'),input:safePersistedText(requiredText(input,'input')),...pinned}));
       }
       if(action==='interrupt')return publicRun(await coordinator.interrupt({bindingId:found.id,runId:requiredText(input,'runId')}));
       if(action==='reconcile'){const result=await coordinator.reconcile({bindingId:found.id,accountId:broker.accountScopeId()??''});return result?publicRun(result):null;}
@@ -146,7 +150,7 @@ export function createLiveGateway(options: Readonly<{
         coordinator=createRuntimeCoordinator({rpc,persistence,isEnabled:admitted,authorizeDispatch:(binding)=>broker.authorize(binding.accountId),
           onEvent:(event)=>options.onEvent?.(event.kind==='run'?{...event,run:publicRun(event.run as Record<string,unknown>)}:event),
           createStreamRedactor:()=>broker.createStreamRedactor(),
-          redact:(text)=>broker.redact(options.redact?.(text)??text),domainTool:options.domainTool,dynamicTools:options.dynamicTools});
+          redact:(text)=>safePersistedText(broker.redact(options.redact?.(text)??text)),domainTool:options.domainTool,dynamicTools:options.dynamicTools});
         for(const project of await options.store.projects())for(const recovered of await persistence.recoverable(project.id)) {
           // M1 has one global run. Multiple unresolved durable runs require explicit repair.
           await coordinator.restoreRecovery({...recovered,accountId:broker.accountScopeId()??''});bindings.set(recovered.binding.id,recovered.binding);

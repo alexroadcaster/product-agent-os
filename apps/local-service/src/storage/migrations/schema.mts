@@ -85,22 +85,36 @@ export const MIGRATION_CHECKSUM = createHash('sha256').update(schema).digest('he
 const m2Schema=`CREATE TABLE task_manager_capabilities (key TEXT PRIMARY KEY,value TEXT NOT NULL) STRICT;
 INSERT INTO task_manager_capabilities VALUES ('task_profile','m2_task_profile_v1');`;
 export const M2_MIGRATION_CHECKSUM=createHash('sha256').update(m2Schema).digest('hex');
+// Semantic fence: pre-M2b writers do not understand immutable workflow pins and registry guards.
+const m2bSchema=`INSERT INTO task_manager_capabilities VALUES ('workflow_registry','m2b_workflow_registry_v1');`;
+export const M2B_MIGRATION_CHECKSUM=createHash('sha256').update(m2bSchema).digest('hex');
 export function databaseCompatibility(db:DatabaseSync){
   const rows=db.prepare('SELECT version,checksum FROM schema_migrations ORDER BY version').all();
-  if(rows[0]?.version!==1||rows[0]?.checksum!==MIGRATION_CHECKSUM||rows.length<1||rows.length>2
-    ||(rows.length===2&&(rows[1]?.version!==2||rows[1]?.checksum!==M2_MIGRATION_CHECKSUM)))throw Object.assign(new Error('Unsupported or modified database migration'),{code:'SCHEMA_INCOMPATIBLE'});
-  if(rows.length===2){
+  if(rows[0]?.version!==1||rows[0]?.checksum!==MIGRATION_CHECKSUM||rows.length<1||rows.length>3
+    ||(rows.length>=2&&(rows[1]?.version!==2||rows[1]?.checksum!==M2_MIGRATION_CHECKSUM))
+    ||(rows.length===3&&(rows[2]?.version!==3||rows[2]?.checksum!==M2B_MIGRATION_CHECKSUM)))throw Object.assign(new Error('Unsupported or modified database migration'),{code:'SCHEMA_INCOMPATIBLE'});
+  if(rows.length>=2){
     if(!db.prepare("SELECT 1 FROM sqlite_schema WHERE type='table' AND name='task_manager_capabilities'").get()
       ||db.prepare("SELECT value FROM task_manager_capabilities WHERE key='task_profile'").get()?.value!=='m2_task_profile_v1')throw Object.assign(new Error('Missing M2 format marker'),{code:'SCHEMA_INCOMPATIBLE'});
+    if(rows.length===3){
+      if(db.prepare("SELECT value FROM task_manager_capabilities WHERE key='workflow_registry'").get()?.value!=='m2b_workflow_registry_v1')throw Object.assign(new Error('Missing M2b format marker'),{code:'SCHEMA_INCOMPATIBLE'});
+      return {schemaVersion:3 as const,migrationChecksum:M2B_MIGRATION_CHECKSUM,appCompatibility:'paos-m2b-v1' as const};
+    }
     return {schemaVersion:2 as const,migrationChecksum:M2_MIGRATION_CHECKSUM,appCompatibility:'paos-m2-v1' as const};
   }
   return {schemaVersion:1 as const,migrationChecksum:MIGRATION_CHECKSUM,appCompatibility:'paos-m1-v1' as const};
 }
 /** Called inside the existing business transaction; a rejected first M2 command rolls this fence back. */
 export function ensureM2Schema(db:DatabaseSync){
-  if(databaseCompatibility(db).schemaVersion===2)return;
+  if(databaseCompatibility(db).schemaVersion>=2)return;
   db.exec(m2Schema);
   db.prepare('INSERT INTO schema_migrations VALUES (?,?,?,?)').run(2,M2_MIGRATION_CHECKSUM,new Date().toISOString(),'paos-m2-v1');
+}
+/** Lazy and transactional: failed workflow commands cannot stamp a newer data format. */
+export function ensureM2BSchema(db:DatabaseSync){
+  ensureM2Schema(db);if(databaseCompatibility(db).schemaVersion===3)return;
+  db.exec(m2bSchema);
+  db.prepare('INSERT INTO schema_migrations VALUES (?,?,?,?)').run(3,M2B_MIGRATION_CHECKSUM,new Date().toISOString(),'paos-m2b-v1');
 }
 
 /** Migration checksums are immutable. A drifted or newer database is never opened for writing. */
