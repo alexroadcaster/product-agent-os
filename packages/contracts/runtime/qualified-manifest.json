@@ -13,7 +13,7 @@
     "sha256": "119d6fa70e6ae1b15b90688ab6bcc8e3a2819acea021af196895cab1843645af"
   },
   "sqliteVersion": "3.53.3",
-  "adapterRevision": "d8311aa149804f07059bd23dfbdcabd4dd03f02f6bb84f8fce49805051983ddc",
+  "adapterRevision": "e38ff32eb4f81fef0574072d0e910b9384fad408331a112cbb250b8628e8e64c",
   "packageLockSha256": "d279009aa1dca2bd2d6ba0e18a77d085a67e872d0dce78dd360fb23d43975f38",
   "schema": {
     "sha256": "486c7c8daa5dc7f3ab2a1fb56de5316804caf7a4210fda1dc28d3f0f4e90cfe1",
@@ -48,6 +48,7 @@
     "m2bNativeCandidate": "a8f4f15f41d22d0d41faed105a65895511d3a0871f0730cd6f02c3756a2129b5",
     "m2cNativeCandidate": "fb7cc3b51537efe1fbdb60c627a3621ed7c0d0a8af2505c3d88db9733c48d601",
     "m3RecipesNativeCandidate": "32dfdeeeffeca03a40d865758372c3f50b2b3409ae8602cf3fd08e4c38ddf21b",
-    "m3QueueNativeCandidate": "f1aea935f7fc1e69044182c53ca0d5bb1253b32269b194a985c340e083d1f351"
+    "m3QueueNativeCandidate": "f1aea935f7fc1e69044182c53ca0d5bb1253b32269b194a985c340e083d1f351",
+    "m3RecoveryNativeCandidate": "227e0954f9e1e88db38aa2a302fd78b693a07cd8067809ad99a156c469f6c7d5"
   }
 }

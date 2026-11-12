@@ -1429,21 +1429,21 @@ Rollback будущих изменений: versioned proposal, revision check, 
 ### Task `PAOS-0025`
 
 - Task: Исполнение, восстановление и отмена
-- Status: planned
+- Status: implemented
 - Delivery stage: M3
 - Execution order: 49
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: User-requested Task Manager expansion, 2026-11-09
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 12-11-2026 16:39
 - Depends on: PAOS-0011, PAOS-0024, PAOS-0044
 - Blocks: PAOS-0026
 - Source: PRD: дополнение Task Manager; screen specification
 - Short description: Run adapter выполняет ограниченный план с восстановлением
 - Technical value: Run adapter выполняет ограниченный план с восстановлением
 - Product value: Пользователь может продолжить или отменить работу после сбоя, сохранив понятную историю.
-- Scope: apps/local-service/src/runtime; apps/local-service/src/recovery
+- Scope: apps/local-service/src/recovery; execution-recipes; runtime binding integration; scheduler projection; public recipe contract; RecipeRunner UI
 - Non-goals: Глобальные permissions, внешняя публикация и несвязанный refactor
 - Expected result: Исполнение, восстановление и отмена доступна в соответствующем этапе
 - Acceptance criteria: Повтор команды идемпотентен; timeout/cancel/crash дают определённое состояние и evidence
@@ -1452,24 +1452,24 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Complexity: medium/high, уточнить после discovery
 - Estimated execution time: 24:00:00 (предварительно)
 - Agents: architect, builder, tester
-- Skills: implementation-planner; task-matching implementation/verification skills selected at start
-- Output artifacts: apps/local-service/src/runtime; apps/local-service/src/recovery
-- Next step: Завершить зависимости, затем уточнить tests и file ownership
-- Actual time: not_started; start/end/duration = null.
+- Skills: implementation-planner; react-best-practices; frontend-testing-debugging
+- Output artifacts: EVALS.md; PLAN.md; REQUIREMENTS.md; RUNLOG.md; TEST.md; apps/local-service/src/execution-recipes/contract.mts; apps/local-service/src/execution-recipes/service.mts; apps/local-service/src/main.mts; apps/local-service/src/scheduler/service.mts; apps/web/README.md; apps/web/src/features/workflows/recipes/RecipeRunner.tsx; docs/sources/registry.en.md; docs/sources/registry.md; packages/contracts/execution-recipes/recipe.ts; packages/contracts/runtime/qualified-manifest.json; apps/local-service/src/recovery/recipe-checkpoint.mts; research/product-agent-os-web-m3-0025-execution-2026-11-12.md; tests/web/recipe-crash.fixture.mts; tests/web/recipe-crash.test.mts; tests/web/recipe-recovery.test.mts; tests/web/single-window/m3-recovery-acceptance.mts; research/product-agent-os-web-task-manager-plan-2026-11-09.md; research/product-agent-os-web-task-manager-task-group-2026-11-09.json; research/product-agent-os-web-m3-0025-results-2026-11-12.json
+- Next step: Следующая PAOS-0026: решения и наблюдаемость автономности. Dependencies0023/0025 implemented; следующий slice отдельным scope. PAOS-0028 остаётся planned.
+- Actual time: Measured scope start12-11-2026 15:51:39 MSK; end 12-11-2026 16:39 MSK. Wall interval available, active duration not separately instrumented; duration=null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-task-manager-screens-2026-11-09.md.
-- Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
+- Affected files: EVALS.md (modify); PLAN.md (modify); REQUIREMENTS.md (modify); RUNLOG.md (modify); TEST.md (modify); apps/local-service/src/execution-recipes/contract.mts (modify); apps/local-service/src/execution-recipes/service.mts (modify); apps/local-service/src/main.mts (modify); apps/local-service/src/scheduler/service.mts (modify); apps/web/README.md (modify); apps/web/src/features/workflows/recipes/RecipeRunner.tsx (modify); docs/sources/registry.en.md (modify); docs/sources/registry.md (modify); packages/contracts/execution-recipes/recipe.ts (modify); packages/contracts/runtime/qualified-manifest.json (modify); apps/local-service/src/recovery/recipe-checkpoint.mts (create); research/product-agent-os-web-m3-0025-execution-2026-11-12.md (create); tests/web/recipe-crash.fixture.mts (create); tests/web/recipe-crash.test.mts (create); tests/web/recipe-recovery.test.mts (create); tests/web/single-window/m3-recovery-acceptance.mts (create); research/product-agent-os-web-task-manager-plan-2026-11-09.md (modify); research/product-agent-os-web-task-manager-task-group-2026-11-09.json (modify); research/product-agent-os-web-m3-0025-results-2026-11-12.json (create)
 
 #### Completion Report
 
-- Status: planned
-- What was done: pending
-- Files touched / work locations: pending
-- Technical value delivered: pending
-- Product value delivered: pending
-- Actual implementation date and time: pending_execution_timestamp
-- Verification evidence: pending
-- Residual risks: pending
-- Follow-up: pending
+- Status: implemented
+- What was done: Explicit verified checkpoint continuation, durable recovery history/exact command receipts, timeout/cancel ACK и crash recovery реализованы. Exact broker binding квалифицируется после restart; Cancel при lost admission ACK находит child identity; queue projection возвращается в running без replay.
+- Files touched / work locations: EVALS.md; PLAN.md; REQUIREMENTS.md; RUNLOG.md; TEST.md; apps/local-service/src/execution-recipes/contract.mts; apps/local-service/src/execution-recipes/service.mts; apps/local-service/src/main.mts; apps/local-service/src/scheduler/service.mts; apps/web/README.md; apps/web/src/features/workflows/recipes/RecipeRunner.tsx; docs/sources/registry.en.md; docs/sources/registry.md; packages/contracts/execution-recipes/recipe.ts; packages/contracts/runtime/qualified-manifest.json; apps/local-service/src/recovery/recipe-checkpoint.mts; research/product-agent-os-web-m3-0025-execution-2026-11-12.md; tests/web/recipe-crash.fixture.mts; tests/web/recipe-crash.test.mts; tests/web/recipe-recovery.test.mts; tests/web/single-window/m3-recovery-acceptance.mts; research/product-agent-os-web-task-manager-plan-2026-11-09.md; research/product-agent-os-web-task-manager-task-group-2026-11-09.json; research/product-agent-os-web-m3-0025-results-2026-11-12.json
+- Technical value delivered: Recovery использует durable terminal evidence/CAS/exact receipts и повторно квалифицирует exact binding; policy/pins/budgets/ownership не расширяются, lost ACK не создаёт duplicate execution.
+- Product value delivered: Пользователь видит checkpoint и историю восстановления, продолжает цепочку от сохранённого результата либо запрашивает отмену с подтверждением остановки; неизвестный эффект не повторяется скрыто.
+- Actual implementation date and time: 12-11-2026 16:39
+- Verification evidence: Web453/453 skip0; focused29; real fixture SIGKILL/new host; Python1450(skip1); fixtures91/transcripts26; current browser/native67 и actual App61/two generations; native tuple; docs/compatibility gates — research/product-agent-os-web-m3-0025-execution-2026-11-12.md и results JSON.
+- Residual risks: Active App consumer required; PAOS-mediated commands only, App host tools не confined. Interrupted/unknown native dispatch не replay и удерживает ownership без terminal proof. Recovery history limit128; token/cost/SLO/model-quality и human/commercial/release acceptance отдельно.
+- Follow-up: Следующая PAOS-0026: решения и наблюдаемость автономности. Dependencies0023/0025 implemented; следующий slice отдельным scope. PAOS-0028 остаётся planned.
 
 ### Task `PAOS-0026`
 

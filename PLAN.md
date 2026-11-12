@@ -16,7 +16,9 @@ G8 closed / owner accepted. G9 T01–T09 implemented_locally_verified; T10 owner
 
 ## Активная продуктовая очередь Web — 2026-11-10
 
-PAOS-0024 технически реализована: queue/assignments, immutable pins, dependency/WIP/ownership и до4 disjoint workspace writers. [Evidence](research/product-agent-os-web-m3-0024-execution-2026-11-12.md). Следующая PAOS-0025 — исполнение, восстановление и отмена отдельным scope; её зависимости0011/0024/0044 выполнены. Другие55 задач и оценки сохранены; human/commercial/release отдельно.
+PAOS-0025 технически реализована: подтверждённый checkpoint продолжает ту же recipe после restart; исходный run не повторяется, cancel ждёт Stop ACK. [Evidence](research/product-agent-os-web-m3-0025-execution-2026-11-12.md). Следующая PAOS-0026 — решения и наблюдаемость автономности; зависимости0023/0025 выполнены. Другие55 задач, estimates/order/groups сохранены; human/commercial/release отдельно.
+
+Исторический срез до PAOS-0025 (provenance сохранён): PAOS-0024 технически реализована: queue/assignments, immutable pins, dependency/WIP/ownership и до4 disjoint workspace writers. [Evidence](research/product-agent-os-web-m3-0024-execution-2026-11-12.md). Следующая PAOS-0025 — исполнение, восстановление и отмена отдельным scope; её зависимости0011/0024/0044 выполнены. Другие55 задач и оценки сохранены; human/commercial/release отдельно.
 
 Исторический срез до PAOS-0024 (provenance сохранён): PAOS-0037 технически реализована: pinned recipes и bounded execution поверх PAOS-0023. [Контракт и evidence](research/product-agent-os-web-m3-0037-execution-2026-11-12.md). Следующая — PAOS-0024 (общая очередь), её реализация требует нового scope. PAOS-0025/0026/0028 остаются planned; M2 technical26/26 и прочие карточки сохраняют provenance.
 

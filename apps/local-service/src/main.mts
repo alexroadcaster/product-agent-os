@@ -69,6 +69,7 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
  prepareProfile?:(profile:string)=>Promise<void>;
  sandboxBrokerFactory?:false|((binding:AppAgentBinding)=>Promise<SandboxBroker>);
  assetRoots?:AssetRoot[];
+ createRecipes?:typeof createRecipeService;
 }>={}) {
  if(!isAbsolute(options.profileDirectory)||options.profileDirectory.startsWith('\\\\')||!options.instanceId)throw failure('PROFILE_INVALID');
  await(deps.prepareProfile??(async(profile)=>{await mkdir(profile,{recursive:true,mode:0o700});}))(options.profileDirectory);
@@ -142,7 +143,7 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
   async connect(input:unknown){const result=await selector.connection.connect(input);return {...(result as Record<string,unknown>),hostTransport};},
   async disconnect(){const result=await selector.connection.disconnect();return {...(result as Record<string,unknown>),hostTransport};}};
  const {runtime}=selector;
- const executionRecipes=createRecipeService({store,assetRoots,port:{...appGateway.recipeRuntime,async eligible(projectId,sessionId){await assertProfileIdentity(profile);if(connection.status().route!=='codex_app_agent')throw failure('RECIPE_APP_ROUTE_REQUIRED');for(const project of await store.projects())for(const row of await store.projectEntities(project.id))if(row.kind==='run'&&!['completed','failed','interrupted'].includes(row.status)&&!row.data.appAgentRun)throw failure('FOREIGN_RUNTIME_RECOVERY_REQUIRED');return appGateway.recipeRuntime.eligible(projectId,sessionId);}}});
+ const executionRecipes=(deps.createRecipes??createRecipeService)({store,assetRoots,port:{...appGateway.recipeRuntime,async eligible(projectId,sessionId){await assertProfileIdentity(profile);if(connection.status().route!=='codex_app_agent')throw failure('RECIPE_APP_ROUTE_REQUIRED');for(const project of await store.projects())for(const row of await store.projectEntities(project.id))if(row.kind==='run'&&!['completed','failed','interrupted'].includes(row.status)&&!row.data.appAgentRun)throw failure('FOREIGN_RUNTIME_RECOVERY_REQUIRED');return appGateway.recipeRuntime.eligible(projectId,sessionId);}}});
  const scheduler=createScheduler({store,recipes:executionRecipes});
  let application:Awaited<ReturnType<typeof createLocalApplication>>|undefined;let origin='';
  const server=(deps.createHttpServer??createServer)(async(incoming,outgoing)=>{

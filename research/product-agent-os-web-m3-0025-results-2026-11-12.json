@@ -1,0 +1,319 @@
+{
+  "task_id": "PAOS-0025",
+  "task_name": "Исполнение, восстановление и отмена",
+  "status": "implemented",
+  "closure_level": "implemented_locally_verified",
+  "baseline_head": "d309e3f4cb542a877868fd27c7be34081f9fab31",
+  "started_at": "2026-11-12T15:51:39+03:00",
+  "implementation_completed_at": "2026-11-12T16:39:46+03:00",
+  "evidence_updated_at": "2026-11-12T16:42:25+03:00",
+  "elapsed_wall_seconds": 3046,
+  "active_duration_seconds": null,
+  "verification": {
+    "web_tests": 453,
+    "web_skipped": 0,
+    "focused_tests": 29,
+    "new_recovery_crash_tests": 10,
+    "python_tests": 1450,
+    "python_skipped": 1,
+    "python_seconds": 921.276,
+    "fixture_evals": 91,
+    "transcript_evals": 26,
+    "post_sync_docs_tests": 251,
+    "post_sync_docs_seconds": 30.775,
+    "final_docs_tests": 105,
+    "synthetic_browser_native_checks": 67,
+    "actual_app_checks": 61,
+    "actual_current_unique_jobs": 2,
+    "typecheck_exit": 0,
+    "build_exit": 0,
+    "compatibility": "compatible",
+    "matrix_hooks_docs_diff_exit": 0
+  },
+  "review": {
+    "context_mode": "separate_fresh_context",
+    "reviewer": "/root/recovery_review",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "reviewer_observed_focused_tests": 7,
+    "confirmed_p1_p2": [],
+    "late_root_self_review": "Cancel after lost admission ACK valid RED, fixed via durable child identity lookup, final29/full453 and current native/browser/actual retested",
+    "tester_verdict": "closed_allowed",
+    "ceiling": "local technical scope; human/release acceptance separate"
+  },
+  "runtime": {
+    "route": "codex_app_agent",
+    "fallback": "none; unknown/interrupted attempts never replay",
+    "adapter_revision": "e38ff32eb4f81fef0574072d0e910b9384fad408331a112cbb250b8628e8e64c",
+    "codex_version": "0.167.0",
+    "codex_sha256": "edfdd48f8b458af0906e507b4cb05217b326c3d6e515e9f024e05e3b8d650f70",
+    "manifest_other_pins_preserved": true,
+    "prior_evidence_preserved": true,
+    "actual_current_run_ids": [
+      "app-run-8070bdac6c37173c127128519f68c75689ce16f7c58f301173f8c85027cf45fd",
+      "app-run-45f2d5bca0f7879ead410446b8e83552a335c3f1341fc7a92d7ed680c4a7fdc3"
+    ],
+    "actual_worker_generations": 2,
+    "observed_model": null,
+    "observed_effort": null,
+    "host_identity": "attested_not_cryptographic",
+    "sandbox_scope": "paos_mediated_commands",
+    "external_provider_client_calls": 0,
+    "credential_operations": 0,
+    "native_service_restart": "controlled recipe ticks; graceful service stop/relaunch",
+    "hard_crash": "separate actual SIGKILL fixture host and new store/gateway; fake executor; no native process-crash claim"
+  },
+  "acceptance": {
+    "existing_execution_and_pins_preserved": true,
+    "completed_checkpoint_not_dispatched_again": true,
+    "lost_admission_ack_cancel_targets_observed_child": true,
+    "cancel_requires_terminal_ack": true,
+    "late_success_after_cancel_rejected": true,
+    "unknown_native_operation_holds_ownership": true,
+    "failed_child_retry_preserves_budget": true,
+    "recovery_command_exact_replay": true,
+    "queue_running_projection_restored": true,
+    "manual_agent_runs": 0,
+    "done_requires_owner": true,
+    "recovery_history_limit": 128
+  },
+  "preservation": {
+    "task_id": "PAOS-0025",
+    "other_md_cards_unchanged": 55,
+    "other_json_tasks_unchanged": 55,
+    "task_count": 56,
+    "group_count": 12,
+    "all_estimates_order_groups_preserved": true,
+    "completed_at": "2026-11-12T16:39:46+03:00",
+    "active_duration_measured": false
+  },
+  "control_plane_sync": {
+    "status": "applied",
+    "digest": "sha256:5cf47c30f5c4f57b63b10f4d741c98ffb276b1a08c7815a81ded4591c387f74c",
+    "updated": [
+      "REQUIREMENTS.md",
+      "PLAN.md",
+      "TEST.md",
+      "EVALS.md",
+      "RUNLOG.md"
+    ],
+    "not_applicable": [
+      "AGENTS.md: durable rules unchanged",
+      "prod_test.md: Batch39 untouched"
+    ],
+    "bytes": {
+      "REQUIREMENTS.md": 27948,
+      "PLAN.md": 30768,
+      "TEST.md": 34559,
+      "EVALS.md": 26705,
+      "RUNLOG.md": 27682
+    },
+    "assess": "reviewed_inputs_valid; gaps[]",
+    "compaction": "not_required; all roots under40000 bytes; TEST warning32000",
+    "strict_mkdocs": "not_required; nav/mermaid/config/site unchanged"
+  },
+  "cleanup": {
+    "synthetic_binary_removed": true,
+    "sha256": "edfdd48f8b458af0906e507b4cb05217b326c3d6e515e9f024e05e3b8d650f70",
+    "containment_verified": true,
+    "workspace_browser_fixture_roots_remaining": 0,
+    "workspace_test_temp_entries_remaining": 0,
+    "failed_test_pids_stopped": [
+      12440,
+      27880
+    ],
+    "user_processes_terminated": false,
+    "installed_runtime_changed": false
+  },
+  "metrics": {
+    "new_agents": 2,
+    "reused_actual_app_worker": 1,
+    "delegation_model": "gpt-6-astra",
+    "delegation_effort": "medium",
+    "root_model": "not_available; authoritative model trace absent",
+    "tokens_cost_tools_waits_compactions_skill_counters": "not_available; complete trace not exposed",
+    "current_actual_jobs": 2,
+    "earlier_actual_jobs_in_retained_trials": 3
+  },
+  "failed_attempts": [
+    "Closed lifecycle marker bootstrap rejected until exact own-marker write",
+    "Recovery resume behavioral RED",
+    "Lost-ACK fixture missing claim and teardown order setup failures",
+    "New host missing broker qualification integration RED",
+    "Managed sandbox Web symlink EPERM4/skips3 then canonical TEMP allpass",
+    "First Python full3 case-sensitive expected-path failures in sandbox TEMP; targeted3 repaired, complete canonical TEMP rerun passed",
+    "Actual fixture private run-entity oracle rejection32; switched to public state without guard changes",
+    "Cancel after lost admission ACK behavioral RED; fixed and all affected gates rerun"
+  ],
+  "receipt_provenance": "All listed current gates are this task run. Earlier failures/old-source successes retained; current runtime source hashes match receipts.251 docs after section sync, final105 after card/evidence updates. Broad Python retest used canonical workspace TEMP.",
+  "limits": [
+    "Active attached App consumer required; no automatic wakeup/closed-App daemon",
+    "Interrupted/unknown native effect is never resumed or declared stopped without trusted terminal proof",
+    "PAOS-mediated sandbox does not confine App host own tools",
+    "128 recovery decisions retained; no automatic history deletion",
+    "Single JS bundle501.29kB triggers build warning; workload SLO not measured",
+    "No model-quality/token/cost promotion",
+    "Human/commercial/release acceptance separate"
+  ],
+  "next_task": "PAOS-0026",
+  "next_dependencies_ready": [
+    "PAOS-0023",
+    "PAOS-0025"
+  ],
+  "git_writes_performed": false,
+  "receipts": {
+    "python-full.log": {
+      "path": ".tmp/paos-m3-0025/python-full.log",
+      "sha256": "63bb17fbf195ec0c39c22ea10df7a9494418ae43ab49eeb140a2ae6441b19560"
+    },
+    "python-environment-repair.log": {
+      "path": ".tmp/paos-m3-0025/python-environment-repair.log",
+      "sha256": "e806a38793061a5939b7a8ef824eb02626e4cd382054f3c5644c774ef0f98699"
+    },
+    "python-full-final.log": {
+      "path": ".tmp/paos-m3-0025/python-full-final.log",
+      "sha256": "78094638501b0d7f7e6401f5b525f46ff41ad1b110dc78a58b6458b27e0028ae"
+    },
+    "web-full.log": {
+      "path": ".tmp/paos-m3-0025/web-full.log",
+      "sha256": "8279a71f80ca33e8d9183327ae606303fae1ce58a62102dbdda0b25e5281a9ef"
+    },
+    "web-full-current.log": {
+      "path": ".tmp/paos-m3-0025/web-full-current.log",
+      "sha256": "9f9aaf53367432276cf1deea93810a39b09bd8a3845c798dddede6d7322d257d"
+    },
+    "focused-final.log": {
+      "path": ".tmp/paos-m3-0025/focused-final.log",
+      "sha256": "11f54f6518b13268512c64a3e12d38b8f20e30020c835d99964e33b1ddf86f3f"
+    },
+    "cancel-lost-ack-red.log": {
+      "path": ".tmp/paos-m3-0025/cancel-lost-ack-red.log",
+      "sha256": "64217bb01e8dafbab6cd0f91d07ce86f2d3eea03de62718d9430b3814646fd0d"
+    },
+    "fixture-eval.log": {
+      "path": ".tmp/paos-m3-0025/fixture-eval.log",
+      "sha256": "014f6152da56145aa30e29151fd0c5979f34a44596f0b0714d270e9708719c22"
+    },
+    "transcript-eval.log": {
+      "path": ".tmp/paos-m3-0025/transcript-eval.log",
+      "sha256": "5694b49e2762388661d971053ceedea106cba7f64c307fe7c7ea3a2546e70634"
+    },
+    "types.log": {
+      "path": ".tmp/paos-m3-0025/types.log",
+      "sha256": "66d87221505bb187a2fe87ddeacbd07f5922ac556c005c69c5c59e0f0c74cf98"
+    },
+    "build.log": {
+      "path": ".tmp/paos-m3-0025/build.log",
+      "sha256": "731f3af8f7cc636720cde7ace11fb71bc96eea88f5cdcf655649953c7d8e2814"
+    },
+    "native-candidate.log": {
+      "path": ".tmp/paos-m3-0025/native-candidate.log",
+      "sha256": "227e0954f9e1e88db38aa2a302fd78b693a07cd8067809ad99a156c469f6c7d5"
+    },
+    "native-default.log": {
+      "path": ".tmp/paos-m3-0025/native-default.log",
+      "sha256": "c74137e8745842a8692c1138f0fa7dfec82191e32c444c7a90661d5c610a49b0"
+    },
+    "compatibility.log": {
+      "path": ".tmp/paos-m3-0025/compatibility.log",
+      "sha256": "eb071b781c513c6693744ac48b88b0fa28dcab5252707e4c49e96c999ceed9b2"
+    },
+    "post-sync-docs.log": {
+      "path": ".tmp/paos-m3-0025/post-sync-docs.log",
+      "sha256": "0e885f571e7c4d8dd86d27e86427a5736038e4dc47bf09b4ffc0af79bf1ad63c"
+    },
+    "docs-final.log": {
+      "path": ".tmp/paos-m3-0025/docs-final.log",
+      "sha256": "6493346864b639f40451e1e39977e90084c81fb8429792a3e7d786c4f4227c58"
+    },
+    "hooks-json.log": {
+      "path": ".tmp/paos-m3-0025/hooks-json.log",
+      "sha256": "6eaa34164526a0a1f0b9dd89730318d5e31bdba9fad3ce3d93442f858e7f6782"
+    },
+    "hooks-dir.log": {
+      "path": ".tmp/paos-m3-0025/hooks-dir.log",
+      "sha256": "5d950b07458f956f2ac600215531d797483c23ed8d868b2bbdbac6f014a7b592"
+    },
+    "matrix-validation.log": {
+      "path": ".tmp/paos-m3-0025/matrix-validation.log",
+      "sha256": "f17e172c632693877fa0f2ce81fd192d44b9070c0ab929841ce28fe3393fa71c"
+    },
+    "state-validation.log": {
+      "path": ".tmp/paos-m3-0025/state-validation.log",
+      "sha256": "a4004c18fd639513dc0d8e520b850c74b8f78ed3f70b1a8c89c8649c8ae56a90"
+    },
+    "doc-sync-apply.json": {
+      "path": ".tmp/paos-m3-0025/doc-sync-apply.json",
+      "sha256": "554a1a4b93d276678cd620ec48976b4cd3b7e44228a26295ba197dad9dafc9f2"
+    },
+    "final-doc-assessment.json": {
+      "path": ".tmp/paos-m3-0025/final-doc-assessment.json",
+      "sha256": "1a497846e89cf914d28c719a8c923f3af93d01d39a71d521c0307b713912f214"
+    },
+    "binary-cleanup.json": {
+      "path": ".tmp/paos-m3-0025/binary-cleanup.json",
+      "sha256": "9aa7be94f6caf42c018979b43e8163f5ea103c98ea3e43520aa7558b2ded4e75"
+    },
+    "final-adapter.json": {
+      "path": ".tmp/paos-m3-0025/final-adapter.json",
+      "sha256": "3bef759efa41fc4945ca92f89db04701d519632c780cd4ba375b4b84e006ec9e"
+    },
+    "check-docs-final.log": {
+      "path": ".tmp/paos-m3-0025/check-docs-final.log",
+      "sha256": "8980e553ce08599d54a68baf90a197be5cde25b960ab1b92eaaef3dba110b37f"
+    },
+    "diff-check.log": {
+      "path": ".tmp/paos-m3-0025/diff-check.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test-temp-cleanup.json": {
+      "path": ".tmp/paos-m3-0025/test-temp-cleanup.json",
+      "sha256": "bdc8700fb26fa0245725b3fa1bbc56badb7e096738b669f96d0cf168fce711db"
+    },
+    "browser-evidence-ziFk1Y": {
+      "path": ".tmp/paos-m3-0025/browser-evidence-ziFk1Y/result.json",
+      "sha256": "7f0e8d01a55ab578166d3fe2a016c052ac128ed1c165ab7447b623cf97d3355d",
+      "checks": 67,
+      "status": "passed",
+      "fixture_cleaned": true,
+      "source_hash_mismatches": [],
+      "actual_app_agent": false,
+      "actual_native_broker": true
+    },
+    "actual-evidence-jpwa49": {
+      "path": ".tmp/paos-m3-0025/actual-evidence-jpwa49/result.json",
+      "sha256": "7656248c1779599c4e59b15baa20d24a82f37372b147434b9f208c67affd0aed",
+      "checks": 61,
+      "status": "passed",
+      "fixture_cleaned": true,
+      "source_hash_mismatches": [],
+      "actual_app_agent": true,
+      "actual_native_broker": true
+    }
+  },
+  "source_sha256": {
+    "EVALS.md": "5e5d01f5f53eeea5f0ff1c32c8f1dde5edbf3d816312e2a6bfa356047a3acd13",
+    "PLAN.md": "d6d03fe9d2de904fc535f4fcb6e6cfe8df180b8619ac1a442e4204509de46d2b",
+    "REQUIREMENTS.md": "d6b8b3659663d0c3472025d98b5111260a5f6a6a05b3b0594b96c6cc5120115a",
+    "RUNLOG.md": "37e189cfbc3d2b0a5265a4e1d8a4769be83007fd3d77296b62b1ca2bbf7940dc",
+    "TEST.md": "0c2df1d485016c9fa5c25225ed717caa36cc021b812376a381867f42a26dcdc6",
+    "apps/local-service/src/execution-recipes/contract.mts": "f7b6d7f1d5ec9feb0c9d3656d22e30c0c01e85b07175bcae69415f05a18ae5db",
+    "apps/local-service/src/execution-recipes/service.mts": "e60f47e7312f113218333167d09def15952516c98c607a531d3f489d8d2d1e86",
+    "apps/local-service/src/main.mts": "96e9781d2c51984ff571060b0594b5718f4493a3c499c945781f4720f36d317a",
+    "apps/local-service/src/scheduler/service.mts": "4f15e9937524a07404130c623eb95b63911dab783e404fb9700697a70f266974",
+    "apps/web/README.md": "c2b8c15b37637d8cfc86d10d0876e25bd2c1f3c1e4195144b586dfe0cf0861cf",
+    "apps/web/src/features/workflows/recipes/RecipeRunner.tsx": "9e50fafc72a6039ca1aa4600aa98e4ca39ff35d408bd5e3652649c38ef711b3c",
+    "docs/sources/registry.en.md": "950eac786419633553f3555fbbd19fbe78b92a779b0b9350b85f357706602b5c",
+    "docs/sources/registry.md": "92aafb7018c83ae7266c6b98215d87c141a66571dddd5863a509071b0f12d706",
+    "packages/contracts/execution-recipes/recipe.ts": "dfc7bfc357ad9796aeddc54c22bb54e0dc885f72a08401f2e54521365b4d99c5",
+    "packages/contracts/runtime/qualified-manifest.json": "ec86df7e250a0a9a84595d9ebe287a011794674a755d6b9658e62bee62f59cd2",
+    "apps/local-service/src/recovery/recipe-checkpoint.mts": "c3141fd0b37018a0e8ace6194a5d6e1577bc8a1065e3f7d21042b5fb72f289ed",
+    "research/product-agent-os-web-m3-0025-execution-2026-11-12.md": "a198435eda48d488ec91f39db0fd01332eaff6df7fdcfe84211ae4851e3d3de0",
+    "tests/web/recipe-crash.fixture.mts": "8739dafa0d30788a37c9707d392996fef64bcad5e56396b16fe0de6457bdd839",
+    "tests/web/recipe-crash.test.mts": "dabde68ac9856983bdaac8545f82828becc8e725ca768a4af220f3ea19dadb9c",
+    "tests/web/recipe-recovery.test.mts": "831cb80de49981a24839829f8b473b4f656bc40b9e5e2bb38aa3195a21b1e59d",
+    "tests/web/single-window/m3-recovery-acceptance.mts": "521b4fd8109ec7d76425b1ec761a814ddd4dfdf81309c69d1241e1efd67f6a9a",
+    "research/product-agent-os-web-task-manager-plan-2026-11-09.md": "8c10096ac8a1a402e51cd667308d21d00e216aaa22c3b0438cd0ea6c25d7676c",
+    "research/product-agent-os-web-task-manager-task-group-2026-11-09.json": "d1baa2495e7112e413bc52c9cd8298b70fe4189696398091fae75a0c203f8943"
+  }
+}

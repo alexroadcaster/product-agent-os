@@ -1,4 +1,5 @@
 import {randomUUID} from 'node:crypto';
+import {recipeCheckpoint} from '../recovery/recipe-checkpoint.mts';
 import type {LocalStore,StoredEntity} from '../storage/local-store.mts';
 import type {AssetRoot} from '../team/sources.mts';
 import {taskManagerSnapshot,taskManagerCommand} from '../task-manager/service.mts';
@@ -17,6 +18,13 @@ export function createRecipeService(options:{store:LocalStore;port?:RecipePort;a
  const serial=<T,>(fn:()=>Promise<T>)=>{const work=queue.then(async()=>{if(closed)fail('RECIPE_SERVICE_CLOSED');await ready;return fn();});queue=work.catch(()=>{});return work;};
  const rows=async(projectId:string)=>(await store.projectEntities(projectId)).filter(r=>r.kind==='settings'&&r.data.category==='recipe_execution');
  const read=async(projectId:string,id:string)=>{const row=await store.get(projectId,id);if(!row||row.data.category!=='recipe_execution')fail('RECIPE_NOT_FOUND');return row!;};
+ async function checkpoint(e:Execution){
+  const last=e.attempts.at(-1);
+  if(last&&!last.runId&&last.state==='planned'&&port?.inspectAttempt){const proof=await port.inspectAttempt({projectId:e.projectId,executionId:e.id});if(proof.runId){last.runId=proof.runId;last.state='dispatched';}else if(proof.admissionRejected===true)last.admissionRejected=true;}
+  const child=last?.runId?await store.get(e.projectId,last.runId):null;
+  return {child,proof:recipeCheckpoint(e,child)};
+ }
+ async function view(row:StoredEntity){const e=structuredClone(row.data) as unknown as Execution;return {...publicExecution(e,row.revision),...(['paused','recovery_required','cancel_requested'].includes(e.state)?{recovery:(await checkpoint(structuredClone(e))).proof}:{})};}
  async function save(row:StoredEntity,e:Execution,key=hash(e)){
   const project=(await store.project(row.projectId))!;e.updatedAt=now();await store.write({projectId:row.projectId,actorId:'recipe-scheduler',expectedAuthorityEpoch:project.authorityEpoch,idempotencyKey:`recipe:${e.id}:${row.revision}:${key}`,recipeExecution:{id:e.id,revision:row.revision},changes:[{expectedRevision:row.revision,entity:{id:e.id,kind:'settings',data:e as any}}]});
  }
@@ -129,8 +137,8 @@ export function createRecipeService(options:{store:LocalStore;port?:RecipePort;a
    return publicExecution(e,1);
   }),
   preview:(projectId:string,input:Record<string,any>):Promise<RecipePreview>=>serial(async()=>(await prepare(projectId,input)).preview as RecipePreview),
-  list:(projectId:string)=>serial(async()=>({items:(await rows(projectId)).map(r=>publicExecution(r.data as unknown as Execution,r.revision))})),
-  get:(projectId:string,id:string)=>serial(async()=>{const r=await read(projectId,id);return publicExecution(r.data as unknown as Execution,r.revision);}),
+  list:(projectId:string)=>serial(async()=>({items:await Promise.all((await rows(projectId)).map(view))})),
+  get:(projectId:string,id:string)=>serial(async()=>view(await read(projectId,id))),
   start:(projectId:string,actorId:string,input:Record<string,any>)=>serial(async()=>{
    fields(input,startFields);if(typeof input.idempotencyKey!=='string'||!input.idempotencyKey||input.idempotencyKey.length>200)fail('RECIPE_INPUT_INVALID');
    const receiptId=`recipe-start-${hash(input.idempotencyKey)}`,digest=hash(input),prior=await store.get(projectId,receiptId);if(prior){if(prior.data.digest!==digest)fail('IDEMPOTENCY_CONFLICT');return prior.data.result;}
@@ -143,17 +151,31 @@ export function createRecipeService(options:{store:LocalStore;port?:RecipePort;a
   command:(projectId:string,id:string,action:string,input:Record<string,any>)=>serial(async()=>{
    fields(input,['expectedRevision','expectedAuthorityEpoch','idempotencyKey','reason']);if(typeof input.idempotencyKey!=='string'||!input.idempotencyKey||input.idempotencyKey.length>200)fail('RECIPE_INPUT_INVALID');
    const receiptId=`recipe-command-${hash(input.idempotencyKey)}`,digest=hash({id,action,input}),old=await store.get(projectId,receiptId);if(old){if(old.data.digest!==digest)fail('IDEMPOTENCY_CONFLICT');return old.data.result;}
-   const row=await read(projectId,id),e=row.data as unknown as Execution,project=(await store.project(projectId))!;if(row.revision!==input.expectedRevision)fail('REVISION_CONFLICT');if(project.authorityEpoch!==input.expectedAuthorityEpoch)fail('AUTHORITY_EPOCH_CONFLICT');
+   const row=await read(projectId,id),e=structuredClone(row.data) as unknown as Execution,project=(await store.project(projectId))!;if(row.revision!==input.expectedRevision)fail('REVISION_CONFLICT');if(project.authorityEpoch!==input.expectedAuthorityEpoch)fail('AUTHORITY_EPOCH_CONFLICT');
    if(!ownsTask(e))fail('RECIPE_TERMINAL');const last=e.attempts.at(-1);let child=last?.runId?await store.get(projectId,last.runId):null;
    if(action==='pause'){if(e.state==='recovery_required')fail('RECIPE_RECOVERY_REQUIRED');e.state='paused';}
-   else if(action==='cancel'){e.state='cancel_requested';}
+   else if(action==='cancel'){
+    // A lost admission ACK may hide a live child. Recover its durable identity before targeting Stop.
+    child=(await checkpoint(e)).child;e.state='cancel_requested';
+   }
    else if(action==='resume'){
-    if(e.state!=='paused'||last&&['planned','dispatched'].includes(last.state))fail('RECIPE_RECOVERY_REQUIRED');const policy=await autonomy.snapshot(projectId);if(policy.paused||policy.budgetId!==e.budgetId||hash(policy.policy)!==e.policyHash)fail('AUTONOMY_RESERVATION_CONFLICT');
-    if(recipeScopeHash((await store.get(projectId,e.taskId))!.data)!==e.scopeHash)fail('RECIPE_TASK_SCOPE_CHANGED');await port?.eligible(projectId,e.sessionId);e.state='running';
+    const {proof}=await checkpoint(e);if(!proof.canResume)fail('RECIPE_RECOVERY_REQUIRED');const policy=await autonomy.snapshot(projectId);if(policy.paused||policy.budgetId!==e.budgetId||hash(policy.policy)!==e.policyHash)fail('AUTONOMY_RESERVATION_CONFLICT');
+    const task=await store.get(projectId,e.taskId);if(!task||recipeScopeHash(task.data)!==e.scopeHash||task.status!==e.transition.to)fail('RECIPE_TASK_SCOPE_CHANGED');
+    // Check the last trusted artifacts; an unprocessed terminal step may have produced new bytes which advance validates.
+    const overwritten=proof.checkpoint==='terminal_result'?new Set(e.recipe.steps.find(s=>s.id===last!.stepId)!.outputArtifacts):new Set<string>();
+    const expected=new Map([...e.inputArtifacts,...e.attempts.filter(a=>a.state==='completed').flatMap(a=>a.artifacts??[])].filter(a=>!overwritten.has(a.path)).map(a=>[a.path,a.sha256]));
+    const observed=await artifacts(e,[...expected.keys()]);if(observed.some(a=>expected.get(a.path)!==a.sha256))fail('RECIPE_ARTIFACT_DRIFT');
+    // Restart restores binding metadata, not its native broker. Re-qualify that exact binding before continuation.
+    if(port?.prepareBinding&&(await port.prepareBinding(projectId,e.sessionId)).bindingId!==e.bindingId)fail('RECIPE_RUNTIME_UNAVAILABLE');
+    if(!port||((await port.eligible(projectId,e.sessionId)).bindingId!==e.bindingId))fail('RECIPE_RUNTIME_UNAVAILABLE');
+    if((e.recoveryDecisions?.length??0)>=128)fail('RECIPE_RECOVERY_HISTORY_LIMIT');
+    e.recoveryDecisions=[...(e.recoveryDecisions??[]),{action:'resume',at:now(),reason:typeof input.reason==='string'&&input.reason.trim()?input.reason.trim().slice(0,2000):'Explicit checkpoint continuation',checkpoint:proof.checkpoint,runId:proof.runId,childState:proof.childState}];
+    e.state='running';e.reason='RECOVERY_CONTINUED_WITHOUT_REPLAY';
    }else if(action==='reconcile'){
     if(e.state!=='recovery_required'&&e.state!=='cancel_requested')fail('RECIPE_RECOVERY_REQUIRED');
-    if(last&&!last.runId&&port?.inspectAttempt){const proof=await port.inspectAttempt({projectId,executionId:id});if(proof.runId){last.runId=proof.runId;last.state='dispatched';child=await store.get(projectId,proof.runId);}else if(proof.admissionRejected===true)last.admissionRejected=true;}
-    if(last&&(!child?!(last.admissionRejected&&!last.runId):!['completed','failed','interrupted'].includes(child.status)))fail('RECIPE_RECOVERY_UNRESOLVED');e.state='cancelled';e.reason='RECONCILED_WITHOUT_REPLAY';
+    const {proof}=await checkpoint(e);if(!proof.canCancel)fail('RECIPE_RECOVERY_UNRESOLVED');
+    if((e.recoveryDecisions?.length??0)>=128)fail('RECIPE_RECOVERY_HISTORY_LIMIT');
+    e.recoveryDecisions=[...(e.recoveryDecisions??[]),{action:'reconcile',at:now(),reason:typeof input.reason==='string'&&input.reason.trim()?input.reason.trim().slice(0,2000):'Explicit cancellation without replay',checkpoint:proof.checkpoint,runId:proof.runId,childState:proof.childState}];e.state='cancelled';e.reason='RECONCILED_WITHOUT_REPLAY';
    }else fail('RECIPE_ACTION_INVALID');
    e.updatedAt=now();const result=publicExecution(e,row.revision+1);await store.write({projectId,actorId:'recipe-owner',expectedAuthorityEpoch:project.authorityEpoch,idempotencyKey:`recipe-command:${input.idempotencyKey}`,recipeExecution:{id,revision:row.revision},changes:[{expectedRevision:row.revision,entity:{id,kind:'settings',data:e as any}},{expectedRevision:0,entity:{id:receiptId,kind:'settings',data:{category:'recipe_command_receipt',digest,result}}}]});
    if(child&&!['completed','failed','interrupted'].includes(child.status)&&['pause','cancel'].includes(action))try{await port?.interrupt({projectId,sessionId:e.sessionId,bindingId:e.bindingId,runId:child.id});}catch{}return result;
