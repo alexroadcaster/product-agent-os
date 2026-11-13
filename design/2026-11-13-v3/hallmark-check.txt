@@ -1,0 +1,6 @@
+design\2026-11-13-v3\index.html
+  WARN 49 :18 long clickable label "D Демо-проект Локальная рабочая сре…" without nowrap | fix: Shorten the label or set nowrap
+design\2026-11-13-v3\atlas.css
+  WARN F7 :88 same container recipe on 7 selectors (.search-field, .field input, .field select, .fi…...) | fix: Vary weight, radius, or fill by role; not every box is the same box
+sloplint: 0 FAIL, 2 WARN across 1 file(s).
+render tier not run: no puppeteer-core found locally, globally or via HALLMARK_PUPPETEER

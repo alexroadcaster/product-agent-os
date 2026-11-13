@@ -1,0 +1,14 @@
+{
+  "name": "paos-design-atlas-v3",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Isolated synthetic design prototype; not an application dependency",
+  "scripts": {"build": "node build.mjs", "capture": "node capture.mjs"},
+  "dependencies": {
+    "@iconify-json/duo-icons": "1.2.2",
+    "@mermaid-js/tiny": "12.3.0",
+    "d3": "7.9.2",
+    "gsap": "3.15.1"
+  },
+  "devDependencies": {"esbuild": "0.28.2"}
+}

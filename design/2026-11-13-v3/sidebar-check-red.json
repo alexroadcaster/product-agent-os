@@ -1,0 +1,9 @@
+{
+  "command": "node design/2026-11-13-v3/verify-sidebar.mjs",
+  "result": "failed",
+  "checks": [],
+  "errors": [],
+  "network": [],
+  "exitCode": 1,
+  "failure": "Sidebar collapse toggle must exist\n\n0 !== 1\n"
+}

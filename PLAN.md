@@ -1,5 +1,9 @@
 # PLAN.md
 
+## Desktop UI/UX — предложение 13.11.2026
+
+[DESIGN.md](DESIGN.md) и [UI-01–UI-12 V3](design/2026-11-13-v3/implementation-plan.md): owner approval → baseline/tokens/shell → full task dialog → dashboard/graph presentation → motion/a11y/parity. App tasks planned; usage ingestion отдельный функциональный scope. V1/V2 сохранены, M1–M5 не меняются.
+
 ## Startup UX — 13.11.2026
 
 Локальное исправление: launcher → automatic guarded bootstrap → UI. Старый service завершать штатным Quit/restart; профиль сохраняется. Rollback только own hunks. [Проверки и handoff](research/product-agent-os-web-m1-execution-2026-11-11.md#запуск-без-ручного-сопряжения--2026-11-13). M5 queue/status без изменений.

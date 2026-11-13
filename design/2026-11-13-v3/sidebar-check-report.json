@@ -1,0 +1,14 @@
+{
+  "command": "node design/2026-11-13-v3/verify-sidebar.mjs",
+  "result": "passed",
+  "checks": [
+    "Exact source spring stiffness/damping",
+    "Both themes: animated 216→64→216, three widths, all 15 routes, tooltip/Escape, Enter, selected item and collapse preserved across navigation",
+    "Rapid reversal settles without delayed reopen",
+    "Short desktop viewport: final section scrolls into keyboard view",
+    "Reduced motion snaps directly and leaves no frame loop"
+  ],
+  "errors": [],
+  "network": [],
+  "exitCode": 0
+}

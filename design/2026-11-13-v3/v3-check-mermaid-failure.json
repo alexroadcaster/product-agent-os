@@ -1,0 +1,30 @@
+{
+  "command": "node design/2026-11-13-v3/verify-v3.mjs",
+  "result": "failed",
+  "checks": [
+    "Local GSAP/D3/Mermaid/Duoicons loaded; actual D3 chart SVG",
+    "Unknown mode removes numeric charts rather than zeroing",
+    "All three project drill-downs change scope",
+    "All three agent drill-downs change scope",
+    "Single click selects coherent inspector and full-card target",
+    "Multiple-selection survives modal tab rerender",
+    "Task dblclick/Enter, complete fields, 9 tabs, keyboard focus trap/Escape return",
+    "Direct session usage resolves the existing synthetic run"
+  ],
+  "errors": [],
+  "network": [],
+  "runtime": {
+    "versions": {
+      "d3": "7.9.2",
+      "gsap": "3.15.1",
+      "mermaid": "12.3.0",
+      "icons": "1.2.2"
+    },
+    "gsap": "3.15.1",
+    "mermaid": "function",
+    "d3": "function",
+    "icons": 91
+  },
+  "exitCode": 1,
+  "failure": "The expression evaluated to a falsy value:\n\n  assert.ok(await page.locator('.v3-mermaid svg').count()>0)\n"
+}

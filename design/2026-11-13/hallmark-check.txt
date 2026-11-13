@@ -1,0 +1,6 @@
+design\2026-11-13\atlas.css
+  WARN 3 :142 side stripe border-left: 3px solid var(--warning) on .status-callout | fix: Hairline all round, none, or an accent square
+  WARN F7 :72 same container recipe on 8 selectors (.inspector, .task-tree, .surface, .workflow-ind…...) | fix: Vary weight, radius, or fill by role; not every box is the same box
+  WARN F24 :86 a hairline border under a wide soft shadow on .tabs details>div | fix: Commit to one: a defined edge, or elevation by shadow
+sloplint: 0 FAIL, 3 WARN across 3 file(s).
+render tier not run: no puppeteer-core found locally, globally or via HALLMARK_PUPPETEER

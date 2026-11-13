@@ -1,0 +1,33 @@
+{
+  "command": "node design/2026-11-13-v3/verify-v3.mjs",
+  "result": "passed",
+  "checks": [
+    "Local GSAP/D3/Mermaid/Duoicons loaded; actual D3 chart SVG",
+    "Unknown mode removes numeric charts rather than zeroing",
+    "All three project drill-downs change scope",
+    "All three agent drill-downs change scope",
+    "Single click selects coherent inspector and full-card target",
+    "Multiple-selection survives modal tab rerender",
+    "Task dblclick/Enter, complete fields, 9 tabs, keyboard focus trap/Escape return",
+    "All-unknown task tool breakdown has no fake zero bars",
+    "Direct session usage resolves the existing synthetic run",
+    "D3 graph zoom/filter/keyboard; Mermaid whole/module same node counts",
+    "GSAP route animation active; reduced-motion has no active tween"
+  ],
+  "errors": [],
+  "network": [],
+  "runtime": {
+    "versions": {
+      "d3": "7.9.2",
+      "gsap": "3.15.1",
+      "mermaid": "12.3.0",
+      "icons": "1.2.2"
+    },
+    "gsap": "3.15.1",
+    "mermaid": "function",
+    "d3": "function",
+    "icons": 91
+  },
+  "liveGsapTweens": 1,
+  "exitCode": 0
+}

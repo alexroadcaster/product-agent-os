@@ -1,10 +1,18 @@
 # RUNLOG.md
 
+## Desktop UI/UX — дизайн-пакет 13.11.2026
+
+Sidebar collapse V3 добавлен в левое меню по исходникам DesignBookmark: exact springs, 216↔64px, cascade/selection/tooltip, reduced motion. Focused RED→GREEN, V3 11 groups и полный capture 87×2/530 layouts passed; docs105 passed. [Evidence и limits](design/2026-11-13-v3/verification.md#sidebar-collapse--отдельная-доработка-13112026). Прототип проверен, human acceptance ожидается; app без изменений.
+
+V3 design_artifact_verified, human acceptance pending: [DESIGN.md](DESIGN.md), [UI-план](design/2026-11-13-v3/implementation-plan.md), [evidence](design/2026-11-13-v3/verification.md). 87 routes/две темы, 182 PNG, 530 layout checks, 11 V3 + 10 общих interaction groups passed; fresh review 7/7 findings resolved. GSAP/D3/Mermaid/Duoicons установлены изолированно; usage synthetic, реальные token/cost null. Приложение и V1/V2 UI не менялись; следующий шаг — утверждение макетов.
+
 ## Startup UX — 13.11.2026
 
 Убраны ручной код и MessageBox; protected browser bootstrap, legacy-service restart fence. Native/browser28, Web487, Python1450(skip1), docs105, evals91/26 passed; [owning report](research/product-agent-os-web-m1-execution-2026-11-11.md#запуск-без-ручного-сопряжения--2026-11-13). M5 planning byte-preserved; user service не останавливался. Следующий шаг — штатный Quit старого экземпляра и обычный запуск с тем же профилем.
 
 Settings,13.11.2026: Settings: native folder/New folder, автозаполнение/scan и понятный App draft/Send реализованы. Web495, chooser4 и actual App/browser17 passed; [current evidence/limits](research/product-agent-os-web-m1-execution-2026-11-11.md). Native URI opening на owner desktop/human acceptance отдельно. M5 planning сохранён; старый service не останавливался.
+
+13.11.2026: service_unhealthy профиля manual-review устранён по отдельному разрешению: stale reservation сохранена под backup-именем, DB bytes до startup сохранены, новый actual /health healthy. Приложение оставлено работающим. [Диагностика, approval и границы](research/product-agent-os-web-m1-execution-2026-11-11.md). Production source без изменений.
 
 ## GAP-06 acceptance и исправление проверок — 2026-11-10
 

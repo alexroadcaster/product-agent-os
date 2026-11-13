@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Полный desktop-альбом Product-Agent OS: светлая и тёмная системы, основные экраны, вложенные вкладки и состояния интерфейса.">
+  <script>document.documentElement.dataset.theme=new URLSearchParams(location.search).get('theme')==='dark'?'dark':'light';</script>
+  <title>Product-Agent OS: полный альбом интерфейса</title>
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="atlas.css">
+</head>
+<body>
+  <a class="skip" href="#main">Перейти к рабочей области</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Основная навигация">
+      <a class="brand" data-route="overview" href="?screen=overview"><span class="brand-mark" data-icon="layers"></span><span>Product-Agent OS<small>Local workspace</small></span></a>
+      <button type="button" class="project-picker" data-action="project-picker"><span class="project-avatar">D</span><span><strong>Демо-проект</strong><small>Локальная рабочая среда</small></span><span data-icon="chevrons"></span></button>
+      <nav id="nav" aria-label="Разделы проекта"></nav>
+      <div class="sidebar-foot"><span data-icon="shield"></span><span>Ваш локальный проект<small>Данные остаются в приложении</small></span></div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar"><div class="breadcrumbs"><span data-icon="folder"></span><span>Демо-проект</span><span class="separator">/</span><strong id="section-name">Задачи</strong></div><div class="top-actions"><button type="button" class="global-search" data-route="search"><span data-icon="search"></span><span>Поиск в проекте</span><kbd>Ctrl K</kbd></button><button type="button" class="connection-chip" data-route="settings-connection"><span data-icon="agent"></span><span>Агент не подключён</span></button><button type="button" class="avatar" data-action="profile-menu" aria-label="Сведения о рабочей среде">D</button></div></header>
+      <div id="section-tabs" class="section-tabs"></div>
+      <main id="main" tabindex="-1"></main>
+    </div>
+  </div>
+  <div class="review-ribbon" aria-label="Панель просмотра концепций"><span class="review-identity"><strong>Дизайн V2</strong><span>Синтетические данные</span></span><div class="review-navigation"><button type="button" id="previous" aria-label="Предыдущий экран"><span data-icon="left"></span></button><span id="review-position"></span><button type="button" id="next" aria-label="Следующий экран"><span data-icon="right"></span></button><button type="button" id="catalog-button"><span data-icon="grid"></span>Все экраны</button><a href="contact-sheet.html">Галерея снимков</a></div><div class="review-controls"><label>Состояние <select id="review-state"><option value="full">Полный экран</option><option value="loading">Загрузка</option><option value="empty">Пусто</option><option value="error">Ошибка</option><option value="stale">Устарело</option></select></label><button type="button" id="theme-switch" aria-label="Переключить цветовую тему"><span data-icon="moon"></span><span id="theme-name">Porcelain</span></button></div></div>
+  <div id="toast" class="toast" role="status" hidden></div>
+  <div id="modal-root"></div>
+  <noscript><div class="noscript"><h1>Полный альбом интерфейса</h1><p>80 содержательных экранов в двух темах. Для просмотра интерактивного альбома нужен JavaScript.</p><a href="contact-sheet.html">Открыть статическую галерею всех экранов</a></div></noscript>
+  <script src="atlas.js"></script>
+</body>
+</html>

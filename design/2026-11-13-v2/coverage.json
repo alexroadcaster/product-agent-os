@@ -1,0 +1,1695 @@
+{
+  "version": 2,
+  "scope": "desktop_design_only",
+  "themes": [
+    "light",
+    "dark"
+  ],
+  "routes": [
+    {
+      "id": "overview",
+      "group": "overview",
+      "title": "Обзор проекта",
+      "kind": "overview",
+      "source": {
+        "file": "apps/web/src/ui/App.tsx",
+        "line": 447
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Открыть задачи",
+        "Обновить источники"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-overview.png",
+        "dark": "screenshots/dark-overview.png"
+      }
+    },
+    {
+      "id": "overview-sources",
+      "group": "overview",
+      "title": "Источники проекта",
+      "kind": "sources",
+      "source": {
+        "file": "apps/web/src/ui/App.tsx",
+        "line": 447
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Проверить состояние источника",
+        "Открыть документ"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-overview-sources.png",
+        "dark": "screenshots/dark-overview-sources.png"
+      }
+    },
+    {
+      "id": "tasks-list",
+      "group": "tasks",
+      "title": "Задачи: список",
+      "kind": "list",
+      "source": {
+        "file": "apps/web/src/features/tasks/TaskManager.tsx",
+        "line": 47
+      },
+      "provenance": "actual_view",
+      "preservedActions": [
+        "Поиск",
+        "Фильтры",
+        "Группировка",
+        "Создать задачу",
+        "Открыть задачу"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-tasks-list.png",
+        "dark": "screenshots/dark-tasks-list.png"
+      }
+    },
+    {
+      "id": "tasks-board",
+      "group": "tasks",
+      "title": "Задачи: доска",
+      "kind": "board",
+      "source": {
+        "file": "apps/web/src/features/tasks/TaskManager.tsx",
+        "line": 47
+      },
+      "provenance": "actual_view",
+      "preservedActions": [
+        "Колонки и WIP",
+        "Выбрать задачу",
+        "Переход с проверками"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-tasks-board.png",
+        "dark": "screenshots/dark-tasks-board.png"
+      }
+    },
+    {
+      "id": "task-create",
+      "group": "tasks",
+      "title": "Новая задача",
+      "kind": "create",
+      "source": {
+        "file": "apps/web/src/features/tasks/TaskManager.tsx",
+        "line": 47
+      },
+      "provenance": "actual_view",
+      "preservedActions": [
+        "Тип",
+        "Родитель",
+        "Приоритет",
+        "Компоненты",
+        "Версии",
+        "Предпросмотр",
+        "Сохранить"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-task-create.png",
+        "dark": "screenshots/dark-task-create.png"
+      }
+    },
+    {
+      "id": "task-summary",
+      "group": "tasks",
+      "title": "Задача: описание",
+      "kind": "summary",
+      "source": {
+        "file": "apps/web/src/features/tasks/TaskManager.tsx",
+        "line": 74
+      },
+      "provenance": "actual_tab",
+      "preservedActions": [
+        "TaskEditor",
+        "Предпросмотр",
+        "Сохранить"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-task-summary.png",
+        "dark": "screenshots/dark-task-summary.png"
+      },
+      "presentationProposal": "Открыть полностью: proposed UI presentation"
+    },
+    {
+      "id": "task-files",
+      "group": "tasks",
+      "title": "Задача: файлы",
+      "kind": "files",
+      "source": {
+        "file": "apps/web/src/features/tasks/TaskManager.tsx",
+        "line": 74
+      },
+      "provenance": "actual_tab",
+      "preservedActions": [
+        "File references",
+        "Открыть исходник",
+        "Связанная сессия"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-task-files.png",
+        "dark": "screenshots/dark-task-files.png"
+      }
+    },
+    {
+      "id": "task-acceptance",
+      "group": "tasks",
+      "title": "Задача: критерии и переход",
+      "kind": "acceptance",
+      "source": {
+        "file": "apps/web/src/features/tasks/TaskManager.tsx",
+        "line": 74
+      },
+      "provenance": "actual_tab",
+      "preservedActions": [
+        "Критерии",
+        "Зависимости",
+        "Blocker",
+        "Предпросмотр",
+        "Решение пользователя"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-task-acceptance.png",
+        "dark": "screenshots/dark-task-acceptance.png"
+      }
+    },
+    {
+      "id": "task-comments",
+      "group": "tasks",
+      "title": "Задача: комментарии",
+      "kind": "comments",
+      "source": {
+        "file": "apps/web/src/features/tasks/TaskManager.tsx",
+        "line": 74
+      },
+      "provenance": "actual_tab",
+      "preservedActions": [
+        "Добавить комментарий",
+        "Markdown rendering"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-task-comments.png",
+        "dark": "screenshots/dark-task-comments.png"
+      }
+    },
+    {
+      "id": "task-history",
+      "group": "tasks",
+      "title": "Задача: история",
+      "kind": "history",
+      "source": {
+        "file": "apps/web/src/features/tasks/TaskManager.tsx",
+        "line": 74
+      },
+      "provenance": "actual_tab",
+      "preservedActions": [
+        "История изменений",
+        "Ревизии"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-task-history.png",
+        "dark": "screenshots/dark-task-history.png"
+      }
+    },
+    {
+      "id": "task-attachments",
+      "group": "tasks",
+      "title": "Задача: вложения",
+      "kind": "attachments",
+      "source": {
+        "file": "apps/web/src/features/tasks/TaskManager.tsx",
+        "line": 74
+      },
+      "provenance": "actual_tab",
+      "preservedActions": [
+        "Прикрепить",
+        "Скачать",
+        "Удалить с подтверждением",
+        "Лимиты"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-task-attachments.png",
+        "dark": "screenshots/dark-task-attachments.png"
+      }
+    },
+    {
+      "id": "task-links",
+      "group": "tasks",
+      "title": "Задача: связи",
+      "kind": "links",
+      "source": {
+        "file": "apps/web/src/features/tasks/TaskManager.tsx",
+        "line": 74
+      },
+      "provenance": "actual_tab",
+      "preservedActions": [
+        "Связать задачу",
+        "Тип связи",
+        "Сверка зависимости"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-task-links.png",
+        "dark": "screenshots/dark-task-links.png"
+      }
+    },
+    {
+      "id": "task-sessions",
+      "group": "tasks",
+      "title": "Задача: сессии",
+      "kind": "sessions",
+      "source": {
+        "file": "apps/web/src/features/tasks/TaskManager.tsx",
+        "line": 74
+      },
+      "provenance": "actual_tab",
+      "preservedActions": [
+        "Открыть связанную сессию"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-task-sessions.png",
+        "dark": "screenshots/dark-task-sessions.png"
+      }
+    },
+    {
+      "id": "task-move",
+      "group": "tasks",
+      "title": "Диалог перехода задачи",
+      "kind": "move",
+      "source": {
+        "file": "apps/web/src/features/tasks/TaskManager.tsx",
+        "line": 93
+      },
+      "provenance": "source_overlay",
+      "preservedActions": [
+        "Выбор целевого статуса",
+        "Отмена",
+        "Перейти к проверкам"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-task-move.png",
+        "dark": "screenshots/dark-task-move.png"
+      }
+    },
+    {
+      "id": "task-delete",
+      "group": "tasks",
+      "title": "Удаление задачи",
+      "kind": "delete",
+      "source": {
+        "file": "apps/web/src/features/tasks/TaskManager.tsx",
+        "line": 90
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Подтверждение без каскада",
+        "Удалить",
+        "Отмена"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-task-delete.png",
+        "dark": "screenshots/dark-task-delete.png"
+      }
+    },
+    {
+      "id": "task-components",
+      "group": "tasks",
+      "title": "Настройки задач: компоненты",
+      "kind": "components",
+      "source": {
+        "file": "apps/web/src/features/tasks/Settings.tsx",
+        "line": 29
+      },
+      "provenance": "proposed_organization",
+      "preservedActions": [
+        "Добавить",
+        "Редактировать",
+        "Сохранить компонент"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-task-components.png",
+        "dark": "screenshots/dark-task-components.png"
+      }
+    },
+    {
+      "id": "task-versions",
+      "group": "tasks",
+      "title": "Настройки задач: версии",
+      "kind": "versions",
+      "source": {
+        "file": "apps/web/src/features/tasks/Settings.tsx",
+        "line": 29
+      },
+      "provenance": "proposed_organization",
+      "preservedActions": [
+        "Добавить версию",
+        "Release fields",
+        "Сохранить"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-task-versions.png",
+        "dark": "screenshots/dark-task-versions.png"
+      }
+    },
+    {
+      "id": "task-release",
+      "group": "tasks",
+      "title": "Настройки задач: политика выпуска",
+      "kind": "release",
+      "source": {
+        "file": "apps/web/src/features/tasks/Settings.tsx",
+        "line": 29
+      },
+      "provenance": "proposed_organization",
+      "preservedActions": [
+        "Required types",
+        "Required components",
+        "Timezone",
+        "Сохранить"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-task-release.png",
+        "dark": "screenshots/dark-task-release.png"
+      }
+    },
+    {
+      "id": "task-columns",
+      "group": "tasks",
+      "title": "Настройки задач: доска",
+      "kind": "columns",
+      "source": {
+        "file": "apps/web/src/features/tasks/Settings.tsx",
+        "line": 29
+      },
+      "provenance": "proposed_organization",
+      "preservedActions": [
+        "Колонки",
+        "Статусы",
+        "WIP soft/hard",
+        "Вне доски",
+        "Лимиты вложений"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-task-columns.png",
+        "dark": "screenshots/dark-task-columns.png"
+      }
+    },
+    {
+      "id": "task-archive",
+      "group": "tasks",
+      "title": "Полный архив задач",
+      "kind": "archive",
+      "source": {
+        "file": "apps/web/src/features/tasks/Settings.tsx",
+        "line": 54
+      },
+      "provenance": "proposed_organization",
+      "preservedActions": [
+        "Экспорт полного профиля",
+        "Backup ID",
+        "Подтверждение восстановления",
+        "Restart"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-task-archive.png",
+        "dark": "screenshots/dark-task-archive.png"
+      }
+    },
+    {
+      "id": "sessions-work",
+      "group": "sessions",
+      "title": "Сессии: работа",
+      "kind": "work",
+      "source": {
+        "file": "apps/web/src/features/sessions/SessionsCatalog.tsx",
+        "line": 41
+      },
+      "provenance": "actual_tab",
+      "preservedActions": [
+        "Выбор сессии",
+        "Отправить",
+        "Start",
+        "Stop",
+        "Контекст"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-sessions-work.png",
+        "dark": "screenshots/dark-sessions-work.png"
+      }
+    },
+    {
+      "id": "sessions-history",
+      "group": "sessions",
+      "title": "Сессии: полная доступная история",
+      "kind": "history",
+      "source": {
+        "file": "apps/web/src/features/sessions/SessionsCatalog.tsx",
+        "line": 41
+      },
+      "provenance": "actual_tab",
+      "preservedActions": [
+        "Поиск истории",
+        "Фильтры",
+        "Открыть сессию"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-sessions-history.png",
+        "dark": "screenshots/dark-sessions-history.png"
+      }
+    },
+    {
+      "id": "session-context",
+      "group": "sessions",
+      "title": "Сессия: контекст",
+      "kind": "context",
+      "source": {
+        "file": "apps/web/src/ui/App.tsx",
+        "line": 1712
+      },
+      "provenance": "actual_tab",
+      "preservedActions": [
+        "План",
+        "Материалы",
+        "Связанные задачи"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-session-context.png",
+        "dark": "screenshots/dark-session-context.png"
+      }
+    },
+    {
+      "id": "session-changes",
+      "group": "sessions",
+      "title": "Сессия: изменения",
+      "kind": "changes",
+      "source": {
+        "file": "apps/web/src/ui/App.tsx",
+        "line": 1712
+      },
+      "provenance": "actual_tab",
+      "preservedActions": [
+        "Diff",
+        "Изменённые файлы",
+        "Источник изменений"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-session-changes.png",
+        "dark": "screenshots/dark-session-changes.png"
+      }
+    },
+    {
+      "id": "session-run",
+      "group": "sessions",
+      "title": "Сессия: запуск и профиль",
+      "kind": "run",
+      "source": {
+        "file": "apps/web/src/ui/SessionContext.tsx",
+        "line": 15
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Режим",
+        "Runtime",
+        "Профиль",
+        "Start",
+        "Stop",
+        "Pins"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-session-run.png",
+        "dark": "screenshots/dark-session-run.png"
+      }
+    },
+    {
+      "id": "session-checks",
+      "group": "sessions",
+      "title": "Сессия: проверки",
+      "kind": "checks",
+      "source": {
+        "file": "apps/web/src/ui/SessionContext.tsx",
+        "line": 87
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Результат команды",
+        "Evidence",
+        "Отдельная приёмка"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-session-checks.png",
+        "dark": "screenshots/dark-session-checks.png"
+      }
+    },
+    {
+      "id": "session-question",
+      "group": "sessions",
+      "title": "Сессия: вопрос и решение",
+      "kind": "question",
+      "source": {
+        "file": "apps/web/src/ui/SessionContext.tsx",
+        "line": 150
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Ответить на вопрос",
+        "Подтвердить",
+        "Отклонить",
+        "Неизвестный исход"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-session-question.png",
+        "dark": "screenshots/dark-session-question.png"
+      }
+    },
+    {
+      "id": "agents-profile",
+      "group": "agents",
+      "title": "Агент: профиль",
+      "kind": "profile",
+      "source": {
+        "file": "apps/web/src/features/team/TeamManager.tsx",
+        "line": 48
+      },
+      "provenance": "actual_tab",
+      "preservedActions": [
+        "Источник",
+        "Effective version",
+        "Native loaded",
+        "Зависимости",
+        "Проектная копия"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-agents-profile.png",
+        "dark": "screenshots/dark-agents-profile.png"
+      }
+    },
+    {
+      "id": "agents-edit",
+      "group": "agents",
+      "title": "Агент: редактор и diff",
+      "kind": "edit",
+      "source": {
+        "file": "apps/web/src/features/team/TeamManager.tsx",
+        "line": 48
+      },
+      "provenance": "actual_tab",
+      "preservedActions": [
+        "Действие",
+        "Контент",
+        "Причина",
+        "Preview diff",
+        "Apply",
+        "Отбросить"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-agents-edit.png",
+        "dark": "screenshots/dark-agents-edit.png"
+      }
+    },
+    {
+      "id": "agents-history",
+      "group": "agents",
+      "title": "Агент: версии",
+      "kind": "history",
+      "source": {
+        "file": "apps/web/src/features/team/TeamManager.tsx",
+        "line": 48
+      },
+      "provenance": "actual_tab",
+      "preservedActions": [
+        "История версий",
+        "Подготовить восстановление"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-agents-history.png",
+        "dark": "screenshots/dark-agents-history.png"
+      }
+    },
+    {
+      "id": "agents-activity",
+      "group": "agents",
+      "title": "Агент: использование",
+      "kind": "activity",
+      "source": {
+        "file": "apps/web/src/features/team/TeamManager.tsx",
+        "line": 48
+      },
+      "provenance": "actual_tab",
+      "preservedActions": [
+        "Период",
+        "Наблюдаемые pins",
+        "Run details"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-agents-activity.png",
+        "dark": "screenshots/dark-agents-activity.png"
+      }
+    },
+    {
+      "id": "agents-generate",
+      "group": "agents",
+      "title": "Агент: предложение",
+      "kind": "generate",
+      "source": {
+        "file": "apps/web/src/features/team/TeamManager.tsx",
+        "line": 63
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Описание потребности",
+        "Planning session",
+        "Подготовить предложение",
+        "Открыть draft"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-agents-generate.png",
+        "dark": "screenshots/dark-agents-generate.png"
+      }
+    },
+    {
+      "id": "skills-profile",
+      "group": "skills",
+      "title": "Скилл: профиль",
+      "kind": "profile",
+      "source": {
+        "file": "apps/web/src/features/team/TeamManager.tsx",
+        "line": 48
+      },
+      "provenance": "actual_tab",
+      "preservedActions": [
+        "SKILL.md",
+        "Ресурсы",
+        "Зависимости",
+        "Использующие агенты"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-skills-profile.png",
+        "dark": "screenshots/dark-skills-profile.png"
+      }
+    },
+    {
+      "id": "skills-edit",
+      "group": "skills",
+      "title": "Скилл: редактор",
+      "kind": "edit",
+      "source": {
+        "file": "apps/web/src/features/team/TeamManager.tsx",
+        "line": 48
+      },
+      "provenance": "actual_tab",
+      "preservedActions": [
+        "Контент",
+        "Зависимости",
+        "Причина",
+        "Preview",
+        "Apply"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-skills-edit.png",
+        "dark": "screenshots/dark-skills-edit.png"
+      }
+    },
+    {
+      "id": "skills-history",
+      "group": "skills",
+      "title": "Скилл: версии",
+      "kind": "history",
+      "source": {
+        "file": "apps/web/src/features/team/TeamManager.tsx",
+        "line": 48
+      },
+      "provenance": "actual_tab",
+      "preservedActions": [
+        "История версий",
+        "Подготовить восстановление"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-skills-history.png",
+        "dark": "screenshots/dark-skills-history.png"
+      }
+    },
+    {
+      "id": "skills-activity",
+      "group": "skills",
+      "title": "Скилл: использование",
+      "kind": "activity",
+      "source": {
+        "file": "apps/web/src/features/team/TeamManager.tsx",
+        "line": 48
+      },
+      "provenance": "actual_tab",
+      "preservedActions": [
+        "Период",
+        "Наблюдаемые runs",
+        "Связанные задачи"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-skills-activity.png",
+        "dark": "screenshots/dark-skills-activity.png"
+      }
+    },
+    {
+      "id": "skills-discover",
+      "group": "skills",
+      "title": "Скиллы: поиск источников",
+      "kind": "discover",
+      "source": {
+        "file": "apps/web/src/features/team/TeamManager.tsx",
+        "line": 48
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Root",
+        "Path",
+        "Поиск",
+        "Кандидаты"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-skills-discover.png",
+        "dark": "screenshots/dark-skills-discover.png"
+      }
+    },
+    {
+      "id": "skills-import",
+      "group": "skills",
+      "title": "Скиллы: импорт",
+      "kind": "import",
+      "source": {
+        "file": "apps/web/src/features/team/TeamManager.tsx",
+        "line": 48
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Preview импортируемого скилла",
+        "Источник и лицензия",
+        "Diff",
+        "Отдельный Apply"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-skills-import.png",
+        "dark": "screenshots/dark-skills-import.png"
+      }
+    },
+    {
+      "id": "skill-requirements",
+      "group": "skills",
+      "title": "Генератор скиллов: основание",
+      "kind": "requirements",
+      "source": {
+        "file": "apps/web/src/features/skills/SkillGenerator.tsx",
+        "line": 30
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Requirements lines",
+        "Source revision",
+        "Описание",
+        "Рекомендовать"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-skill-requirements.png",
+        "dark": "screenshots/dark-skill-requirements.png"
+      }
+    },
+    {
+      "id": "skill-draft",
+      "group": "skills",
+      "title": "Генератор скиллов: черновик",
+      "kind": "draft",
+      "source": {
+        "file": "apps/web/src/features/skills/SkillGenerator.tsx",
+        "line": 30
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Имя",
+        "Назначение",
+        "SKILL.md",
+        "Причина",
+        "Проверить diff"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-skill-draft.png",
+        "dark": "screenshots/dark-skill-draft.png"
+      }
+    },
+    {
+      "id": "skill-diff",
+      "group": "skills",
+      "title": "Генератор скиллов: diff и Apply",
+      "kind": "diff",
+      "source": {
+        "file": "apps/web/src/features/skills/SkillGenerator.tsx",
+        "line": 30
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Requirement links",
+        "Diff",
+        "Подтверждение",
+        "Apply"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-skill-diff.png",
+        "dark": "screenshots/dark-skill-diff.png"
+      }
+    },
+    {
+      "id": "graph-map",
+      "group": "graph",
+      "title": "Карта проекта: граф",
+      "kind": "map",
+      "source": {
+        "file": "apps/web/src/features/graph/GraphExplorer.tsx",
+        "line": 23
+      },
+      "provenance": "actual_view",
+      "preservedActions": [
+        "Query",
+        "Глубина",
+        "Типы связей",
+        "Соседи",
+        "Source",
+        "Occurrences",
+        "Related tasks"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-graph-map.png",
+        "dark": "screenshots/dark-graph-map.png"
+      }
+    },
+    {
+      "id": "graph-list",
+      "group": "graph",
+      "title": "Карта проекта: список",
+      "kind": "list",
+      "source": {
+        "file": "apps/web/src/features/graph/GraphExplorer.tsx",
+        "line": 23
+      },
+      "provenance": "actual_view",
+      "preservedActions": [
+        "Клавиатурный список",
+        "Выбрать узел",
+        "Source",
+        "Occurrences",
+        "Related tasks"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-graph-list.png",
+        "dark": "screenshots/dark-graph-list.png"
+      }
+    },
+    {
+      "id": "documents-list",
+      "group": "documents",
+      "title": "Документы: каталог",
+      "kind": "list",
+      "source": {
+        "file": "apps/web/src/features/artifacts/ArtifactExplorer.tsx",
+        "line": 27
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Поиск",
+        "Тип",
+        "Task ID",
+        "Source status",
+        "Открыть"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-documents-list.png",
+        "dark": "screenshots/dark-documents-list.png"
+      }
+    },
+    {
+      "id": "document-reader",
+      "group": "documents",
+      "title": "Документ: чтение",
+      "kind": "reader",
+      "source": {
+        "file": "apps/web/src/features/artifacts/ArtifactExplorer.tsx",
+        "line": 27
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Оглавление",
+        "Anchors",
+        "Source version",
+        "Связанные объекты",
+        "Предложить изменение"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-document-reader.png",
+        "dark": "screenshots/dark-document-reader.png"
+      }
+    },
+    {
+      "id": "document-proposal",
+      "group": "documents",
+      "title": "Документ: staged proposal",
+      "kind": "proposal",
+      "source": {
+        "file": "apps/web/src/features/artifacts/ArtifactExplorer.tsx",
+        "line": 27
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Редактор",
+        "Preview diff",
+        "Подтверждение",
+        "Сохранить предложение"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-document-proposal.png",
+        "dark": "screenshots/dark-document-proposal.png"
+      }
+    },
+    {
+      "id": "checks-list",
+      "group": "checks",
+      "title": "Проверки проекта",
+      "kind": "list",
+      "source": {
+        "file": "apps/web/src/features/artifacts/ArtifactExplorer.tsx",
+        "line": 34
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Результаты",
+        "Stale",
+        "Отдельная приёмка",
+        "Фильтр"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-checks-list.png",
+        "dark": "screenshots/dark-checks-list.png"
+      }
+    },
+    {
+      "id": "check-detail",
+      "group": "checks",
+      "title": "Проверка: результат и приёмка",
+      "kind": "detail",
+      "source": {
+        "file": "apps/web/src/features/artifacts/ArtifactExplorer.tsx",
+        "line": 34
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Команда",
+        "Source revision",
+        "Environment",
+        "Criteria",
+        "Owner decision",
+        "Открыть сессию"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-check-detail.png",
+        "dark": "screenshots/dark-check-detail.png"
+      }
+    },
+    {
+      "id": "autonomy-policy",
+      "group": "autonomy",
+      "title": "Автономность: политика",
+      "kind": "policy",
+      "source": {
+        "file": "apps/web/src/features/autonomy/AutonomyManager.tsx",
+        "line": 36
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Разрешённые задачи",
+        "Paths",
+        "Команды",
+        "Лимиты",
+        "Preview"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-autonomy-policy.png",
+        "dark": "screenshots/dark-autonomy-policy.png"
+      }
+    },
+    {
+      "id": "autonomy-preview",
+      "group": "autonomy",
+      "title": "Автономность: предпросмотр",
+      "kind": "preview",
+      "source": {
+        "file": "apps/web/src/features/autonomy/AutonomyManager.tsx",
+        "line": 36
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Причины допуска",
+        "Сохранить на паузе",
+        "Отмена"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-autonomy-preview.png",
+        "dark": "screenshots/dark-autonomy-preview.png"
+      }
+    },
+    {
+      "id": "autonomy-runs",
+      "group": "autonomy",
+      "title": "Автономность: учтённые запуски",
+      "kind": "runs",
+      "source": {
+        "file": "apps/web/src/features/autonomy/AutonomyManager.tsx",
+        "line": 36
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Пауза",
+        "Возобновить при условиях",
+        "Interrupt",
+        "Сверка runtime"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-autonomy-runs.png",
+        "dark": "screenshots/dark-autonomy-runs.png"
+      }
+    },
+    {
+      "id": "decisions-list",
+      "group": "decisions",
+      "title": "Решения: очередь",
+      "kind": "list",
+      "source": {
+        "file": "apps/web/src/features/decisions/DecisionBoard.tsx",
+        "line": 26
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Фильтры",
+        "Выбрать решение",
+        "Queue observability"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-decisions-list.png",
+        "dark": "screenshots/dark-decisions-list.png"
+      }
+    },
+    {
+      "id": "decision-detail",
+      "group": "decisions",
+      "title": "Решение: ответ",
+      "kind": "detail",
+      "source": {
+        "file": "apps/web/src/features/decisions/DecisionBoard.tsx",
+        "line": 26
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Scope",
+        "Diff",
+        "Evidence",
+        "Expiry",
+        "Подтвердить",
+        "Отклонить",
+        "Ответ"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-decision-detail.png",
+        "dark": "screenshots/dark-decision-detail.png"
+      }
+    },
+    {
+      "id": "decision-history",
+      "group": "decisions",
+      "title": "Решения: история",
+      "kind": "history",
+      "source": {
+        "file": "apps/web/src/features/decisions/DecisionBoard.tsx",
+        "line": 26
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Resolved decisions",
+        "Observed state",
+        "Отдельный outcome"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-decision-history.png",
+        "dark": "screenshots/dark-decision-history.png"
+      }
+    },
+    {
+      "id": "decision-create",
+      "group": "decisions",
+      "title": "Решение: новое",
+      "kind": "create",
+      "source": {
+        "file": "apps/web/src/features/decisions/DecisionBoard.tsx",
+        "line": 26
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Тип",
+        "Связанная задача",
+        "Текст",
+        "Причина",
+        "Создать"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-decision-create.png",
+        "dark": "screenshots/dark-decision-create.png"
+      }
+    },
+    {
+      "id": "search",
+      "group": "search",
+      "title": "Поиск по проекту",
+      "kind": "results",
+      "source": {
+        "file": "apps/web/src/features/artifacts/ArtifactExplorer.tsx",
+        "line": 27
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Query",
+        "Kind",
+        "Task ID",
+        "Результаты",
+        "Preview",
+        "Связанные объекты"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-search.png",
+        "dark": "screenshots/dark-search.png"
+      }
+    },
+    {
+      "id": "import-source",
+      "group": "import",
+      "title": "Импорт: источник",
+      "kind": "source",
+      "source": {
+        "file": "apps/web/src/ui/Operations.tsx",
+        "line": 163
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "File/path",
+        "Выбор источника",
+        "Preview"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-import-source.png",
+        "dark": "screenshots/dark-import-source.png"
+      }
+    },
+    {
+      "id": "import-preview",
+      "group": "import",
+      "title": "Импорт: предпросмотр",
+      "kind": "preview",
+      "source": {
+        "file": "apps/web/src/ui/Operations.tsx",
+        "line": 163
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Кандидаты",
+        "Blocked",
+        "Scope",
+        "Подтвердить",
+        "Source status"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-import-preview.png",
+        "dark": "screenshots/dark-import-preview.png"
+      }
+    },
+    {
+      "id": "import-export",
+      "group": "import",
+      "title": "Обратный экспорт",
+      "kind": "export",
+      "source": {
+        "file": "apps/web/src/ui/Operations.tsx",
+        "line": 163
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Reverse export",
+        "Скачать JSON"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-import-export.png",
+        "dark": "screenshots/dark-import-export.png"
+      }
+    },
+    {
+      "id": "backup-create",
+      "group": "backup",
+      "title": "Резервная копия",
+      "kind": "create",
+      "source": {
+        "file": "apps/web/src/ui/Operations.tsx",
+        "line": 468
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Создать",
+        "Receipt",
+        "Retention",
+        "Подтвердить ротацию"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-backup-create.png",
+        "dark": "screenshots/dark-backup-create.png"
+      }
+    },
+    {
+      "id": "backup-restore",
+      "group": "backup",
+      "title": "Восстановление",
+      "kind": "restore",
+      "source": {
+        "file": "apps/web/src/ui/Operations.tsx",
+        "line": 468
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Backup ID",
+        "Подтверждение",
+        "Восстановить",
+        "Restart required"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-backup-restore.png",
+        "dark": "screenshots/dark-backup-restore.png"
+      }
+    },
+    {
+      "id": "settings-general",
+      "group": "settings",
+      "title": "Настройки: общие",
+      "kind": "general",
+      "source": {
+        "file": "apps/web/src/ui/App.tsx",
+        "line": 474
+      },
+      "provenance": "proposed_organization",
+      "preservedActions": [
+        "Язык",
+        "Тема",
+        "Сохранить"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-settings-general.png",
+        "dark": "screenshots/dark-settings-general.png"
+      }
+    },
+    {
+      "id": "settings-projects",
+      "group": "settings",
+      "title": "Настройки: проекты",
+      "kind": "projects",
+      "source": {
+        "file": "apps/web/src/ui/App.tsx",
+        "line": 474
+      },
+      "provenance": "proposed_organization",
+      "preservedActions": [
+        "Folder picker",
+        "Название",
+        "Root",
+        "Explicit Add",
+        "Bounded scan"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-settings-projects.png",
+        "dark": "screenshots/dark-settings-projects.png"
+      }
+    },
+    {
+      "id": "settings-connection",
+      "group": "settings",
+      "title": "Настройки: подключение",
+      "kind": "connection",
+      "source": {
+        "file": "apps/web/src/ui/App.tsx",
+        "line": 474
+      },
+      "provenance": "proposed_organization",
+      "preservedActions": [
+        "Существующий режим",
+        "App draft",
+        "Send",
+        "Attach",
+        "Отключить"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-settings-connection.png",
+        "dark": "screenshots/dark-settings-connection.png"
+      }
+    },
+    {
+      "id": "settings-quit",
+      "group": "settings",
+      "title": "Настройки: завершение сервиса",
+      "kind": "quit",
+      "source": {
+        "file": "apps/web/src/ui/App.tsx",
+        "line": 474
+      },
+      "provenance": "proposed_organization",
+      "preservedActions": [
+        "Подтверждение",
+        "Штатное завершение"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-settings-quit.png",
+        "dark": "screenshots/dark-settings-quit.png"
+      }
+    },
+    {
+      "id": "workflow-catalog",
+      "group": "settings",
+      "title": "Процессы: каталог",
+      "kind": "catalog",
+      "source": {
+        "file": "apps/web/src/features/workflows/WorkflowManager.tsx",
+        "line": 33
+      },
+      "provenance": "proposed_organization",
+      "preservedActions": [
+        "Выбор процесса",
+        "Создать",
+        "Копировать",
+        "Refresh"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-workflow-catalog.png",
+        "dark": "screenshots/dark-workflow-catalog.png"
+      }
+    },
+    {
+      "id": "workflow-assignments",
+      "group": "settings",
+      "title": "Процессы: назначения",
+      "kind": "assignments",
+      "source": {
+        "file": "apps/web/src/features/workflows/WorkflowManager.tsx",
+        "line": 33
+      },
+      "provenance": "proposed_organization",
+      "preservedActions": [
+        "Тип задачи",
+        "Процесс",
+        "Version pin",
+        "Сохранить"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-workflow-assignments.png",
+        "dark": "screenshots/dark-workflow-assignments.png"
+      }
+    },
+    {
+      "id": "workflow-states",
+      "group": "settings",
+      "title": "Процесс: состояния",
+      "kind": "states",
+      "source": {
+        "file": "apps/web/src/features/workflows/WorkflowManager.tsx",
+        "line": 33
+      },
+      "provenance": "proposed_organization",
+      "preservedActions": [
+        "ID",
+        "Название",
+        "Категория",
+        "Initial",
+        "Добавить",
+        "Удалить"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-workflow-states.png",
+        "dark": "screenshots/dark-workflow-states.png"
+      }
+    },
+    {
+      "id": "workflow-transitions",
+      "group": "settings",
+      "title": "Процесс: переходы",
+      "kind": "transitions",
+      "source": {
+        "file": "apps/web/src/features/workflows/WorkflowManager.tsx",
+        "line": 33
+      },
+      "provenance": "proposed_organization",
+      "preservedActions": [
+        "Все поля перехода",
+        "Save draft",
+        "Validate",
+        "Discard"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-workflow-transitions.png",
+        "dark": "screenshots/dark-workflow-transitions.png"
+      }
+    },
+    {
+      "id": "workflow-diagram",
+      "group": "settings",
+      "title": "Процесс: схема",
+      "kind": "diagram",
+      "source": {
+        "file": "apps/web/src/features/workflows/WorkflowManager.tsx",
+        "line": 33
+      },
+      "provenance": "proposed_organization",
+      "preservedActions": [
+        "Схема тех же переходов",
+        "Текстовая альтернатива"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-workflow-diagram.png",
+        "dark": "screenshots/dark-workflow-diagram.png"
+      }
+    },
+    {
+      "id": "workflow-recipes",
+      "group": "settings",
+      "title": "Процесс: recipes",
+      "kind": "recipes",
+      "source": {
+        "file": "apps/web/src/features/workflows/WorkflowManager.tsx",
+        "line": 33
+      },
+      "provenance": "proposed_organization",
+      "preservedActions": [
+        "Advanced definition",
+        "Draft",
+        "Validate"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-workflow-recipes.png",
+        "dark": "screenshots/dark-workflow-recipes.png"
+      }
+    },
+    {
+      "id": "workflow-publication",
+      "group": "settings",
+      "title": "Процесс: публикация",
+      "kind": "publication",
+      "source": {
+        "file": "apps/web/src/features/workflows/WorkflowManager.tsx",
+        "line": 33
+      },
+      "provenance": "proposed_organization",
+      "preservedActions": [
+        "Preview",
+        "Изменения",
+        "Warnings",
+        "Отдельное подтверждение"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-workflow-publication.png",
+        "dark": "screenshots/dark-workflow-publication.png"
+      }
+    },
+    {
+      "id": "workflow-migration",
+      "group": "settings",
+      "title": "Процесс: миграция",
+      "kind": "migration",
+      "source": {
+        "file": "apps/web/src/features/workflows/WorkflowManager.tsx",
+        "line": 33
+      },
+      "provenance": "proposed_organization",
+      "preservedActions": [
+        "Source/target version",
+        "Mapping",
+        "Reason",
+        "Affected tasks",
+        "Stop proof",
+        "Preview"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-workflow-migration.png",
+        "dark": "screenshots/dark-workflow-migration.png"
+      }
+    },
+    {
+      "id": "workflow-versions",
+      "group": "settings",
+      "title": "Процесс: версии и архив",
+      "kind": "versions",
+      "source": {
+        "file": "apps/web/src/features/workflows/WorkflowManager.tsx",
+        "line": 33
+      },
+      "provenance": "proposed_organization",
+      "preservedActions": [
+        "Версии",
+        "Default for new tasks",
+        "Archive"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-workflow-versions.png",
+        "dark": "screenshots/dark-workflow-versions.png"
+      }
+    },
+    {
+      "id": "recipe-preview",
+      "group": "settings",
+      "title": "Выполнение: предпросмотр цепочки",
+      "kind": "preview",
+      "source": {
+        "file": "apps/web/src/features/workflows/recipes/RecipeRunner.tsx",
+        "line": 35
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Task",
+        "Pinned transition",
+        "Manual/recipe",
+        "Причина",
+        "Preview",
+        "Run"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-recipe-preview.png",
+        "dark": "screenshots/dark-recipe-preview.png"
+      }
+    },
+    {
+      "id": "recipe-history",
+      "group": "settings",
+      "title": "Выполнение: история и шаги",
+      "kind": "history",
+      "source": {
+        "file": "apps/web/src/features/workflows/recipes/RecipeRunner.tsx",
+        "line": 35
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Run history",
+        "Step details",
+        "Pinned context",
+        "Stop"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-recipe-history.png",
+        "dark": "screenshots/dark-recipe-history.png"
+      }
+    },
+    {
+      "id": "recipe-recovery",
+      "group": "settings",
+      "title": "Выполнение: восстановление",
+      "kind": "recovery",
+      "source": {
+        "file": "apps/web/src/features/workflows/recipes/RecipeRunner.tsx",
+        "line": 35
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Checkpoint",
+        "No replay",
+        "Сверка неизвестного outcome",
+        "Продолжить при допуске"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-recipe-recovery.png",
+        "dark": "screenshots/dark-recipe-recovery.png"
+      }
+    },
+    {
+      "id": "execution-queue",
+      "group": "settings",
+      "title": "Очередь и владение",
+      "kind": "queue",
+      "source": {
+        "file": "apps/web/src/features/workflows/recipes/QueueManager.tsx",
+        "line": 18
+      },
+      "provenance": "source_panel",
+      "preservedActions": [
+        "Pause/resume admissions",
+        "Reorder",
+        "Pins",
+        "Ownership",
+        "Отмена назначения",
+        "Сверка outcome"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-execution-queue.png",
+        "dark": "screenshots/dark-execution-queue.png"
+      }
+    },
+    {
+      "id": "component-lab",
+      "group": "lab",
+      "title": "Компоненты и состояния",
+      "kind": "components",
+      "source": {
+        "file": "design/2026-11-13-v2/atlas.js",
+        "line": 1
+      },
+      "provenance": "review_only",
+      "preservedActions": [
+        "Семантические статусы",
+        "Forms",
+        "Tooltip",
+        "Menu",
+        "Empty",
+        "Inline errors"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-component-lab.png",
+        "dark": "screenshots/dark-component-lab.png"
+      }
+    },
+    {
+      "id": "motion-lab",
+      "group": "lab",
+      "title": "Движение и обратная связь",
+      "kind": "motion",
+      "source": {
+        "file": "design/2026-11-13-v2/atlas.js",
+        "line": 1
+      },
+      "provenance": "review_only",
+      "preservedActions": [
+        "Copy morph",
+        "Segmented",
+        "Inspector enter/exit",
+        "Known progress",
+        "Pause/recovery",
+        "Reduced motion"
+      ],
+      "screenshots": {
+        "light": "screenshots/light-motion-lab.png",
+        "dark": "screenshots/dark-motion-lab.png"
+      }
+    }
+  ],
+  "fixturePolicy": "All data synthetic; no APIs, credentials or storage",
+  "coverageCeiling": "Review specimens preserve source actions; not runtime implementation"
+}

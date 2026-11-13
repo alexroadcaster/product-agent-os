@@ -1,5 +1,9 @@
 # TEST.md
 
+## Desktop UI/UX — проверка дизайн-пакета
+
+V3: docs unittest с существующим PAOS_DOCS_SITE_DIR, check_docs, task-matrix validator, diff check; offline capture всех routes/двух тем/трёх desktop widths, fixture sums и renderer/modal checks; `node design/2026-11-13-v3/verify-sidebar.mjs` — collapse/springs/focus. [Команды и gaps](design/2026-11-13-v3/verification.md). Проверки альбома не заменяют app/runtime gates.
+
 ## Automatic launch — 13.11.2026
 
 `node --test tests/web/launch-bootstrap.test.mts tests/web/launcher.test.mts tests/web/launcher-native.test.mts`; `single-window/launch-bootstrap-acceptance.mts --synthetic-browser` с installed browser paths. Web487/native-browser28, TS/build/Python1450(skip1)/docs105/evals passed; [exact commands, failures, limits](research/product-agent-os-web-m1-execution-2026-11-11.md#запуск-без-ручного-сопряжения--2026-11-13).

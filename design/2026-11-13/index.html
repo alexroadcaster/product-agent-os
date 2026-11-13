@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ru" data-theme="cobalt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Три визуальных направления desktop-интерфейса Product-Agent OS: задачи, подключение, процессы, сессии и компоненты.">
+  <meta name="color-scheme" content="light dark">
+  <title>Product-Agent OS: альбом редизайна</title>
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="atlas.css">
+</head>
+<body>
+  <a class="skip" href="#main">Перейти к экрану</a>
+  <div class="review-bar" aria-label="Управление альбомом">
+    <div><strong>Product-Agent OS</strong><span class="review-label">Альбом редизайна</span></div>
+    <div class="theme-switch" role="group" aria-label="Визуальное направление">
+      <button type="button" data-theme-choice="cobalt" aria-pressed="true">A <span>Cobalt Desk</span></button>
+      <button type="button" data-theme-choice="mint" aria-pressed="false">B <span>Graphite Mint</span></button>
+      <button type="button" data-theme-choice="warm" aria-pressed="false">C <span>Warm Studio</span></button>
+    </div>
+    <span class="concept-note">Концепция. Демонстрационные данные.</span>
+  </div>
+  <div class="workspace">
+    <aside class="sidebar" aria-label="Навигация проекта">
+      <a href="#tasks" class="brand"><span data-icon="layers"></span><span>Product-Agent OS<small>Локальная рабочая среда</small></span></a>
+      <button type="button" class="project-switch" data-demo="Выбор проекта"><span data-icon="folder"></span><span>Демо-проект<small>Локальная папка</small></span><span data-icon="chevron"></span></button>
+      <nav id="navigation" aria-label="Разделы приложения"></nav>
+      <div class="sidebar-bottom"><span data-icon="shield"></span><div>Локальные данные<small>Права и подтверждения сохраняются</small></div></div>
+    </aside>
+    <div class="work-area">
+      <header class="app-header"><div class="breadcrumb"><span data-icon="folder"></span><span>Демо-проект</span><span class="crumb-separator">/</span><strong id="breadcrumb">Задачи</strong></div><button type="button" class="connection-status" data-screen="connection"><span data-icon="agent"></span>Агент не подключён<span data-icon="chevron"></span></button></header>
+      <div class="screen-selector" role="group" aria-label="Экраны для сравнения">
+        <button type="button" data-screen="tasks" aria-pressed="true">Задачи</button><button type="button" data-screen="connection" aria-pressed="false">Подключение</button><button type="button" data-screen="workflows" aria-pressed="false">Процессы</button><button type="button" data-screen="sessions" aria-pressed="false">Сессии</button><button type="button" data-screen="components" aria-pressed="false">Компоненты</button>
+      </div>
+      <main id="main" tabindex="-1"></main>
+      <footer class="app-footer"><span>Эскиз интерфейса. Действия не изменяют приложение.</span><a href="../../DESIGN.md">Описание и план в DESIGN.md</a></footer>
+    </div>
+  </div>
+  <div id="notice" class="notice" role="status" hidden></div>
+  <noscript><section class="no-script"><h2>Три desktop-концепции</h2><p>Без JavaScript доступны изображения. Для переключения интерактивных экранов включите JavaScript. Полные сценарии описаны в <a href="../../DESIGN.md">DESIGN.md</a>.</p><h3>A: Cobalt Desk</h3><img src="concept-a.png" alt="Светлая концепция: список задач и панель выбранного объекта"><h3>B: Graphite Mint</h3><img src="concept-b.png" alt="Тёмная концепция: иерархия задач и схема связей"><h3>C: Warm Studio</h3><img src="concept-c.png" alt="Тёплая концепция: компактная доска задач и детали"></section></noscript>
+  <script src="atlas.js"></script>
+</body>
+</html>

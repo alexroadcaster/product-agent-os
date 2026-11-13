@@ -1,5 +1,9 @@
 # REQUIREMENTS.md
 
+## Desktop UI/UX — дизайн-этап 13.11.2026
+
+V3: цветные иконки, portfolio/project/agent dashboards, synthetic token/cost/tool_use, полная task dialog и D3/Mermaid карта; левое меню Sidebar collapse с исходными springs DesignBookmark. [DESIGN.md](DESIGN.md), [поля и data gaps](design/2026-11-13-v3/task-field-map.md) владеют scope. Все V2 экраны/две темы сохраняются; app/backend/live data/mobile исключены. Зависимости разрешены только изолированному прототипу; human acceptance ожидается.
+
 ## Запуск без кода — 13.11.2026
 
 Launcher открывает рабочий экран автоматически, без MessageBox/ручного pairing. Session/CSRF обязательны; admission — direct browser navigation, native clients вне ceiling. [Scope, acceptance и ограничения](research/product-agent-os-web-m1-execution-2026-11-11.md#запуск-без-ручного-сопряжения--2026-11-13). M5 scope сохраняется.

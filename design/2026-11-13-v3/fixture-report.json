@@ -1,0 +1,24 @@
+{
+  "command": "node design/2026-11-13-v3/verify-fixtures.mjs",
+  "result": "passed",
+  "exitCode": 0,
+  "receipts": 10,
+  "projects": 3,
+  "agents": 3,
+  "tasks": 12,
+  "knownTotals": {
+    "tokens": 104800,
+    "toolUse": 87,
+    "costMicros": 185500
+  },
+  "unknownReceipts": 1,
+  "checks": [
+    "unique IDs",
+    "scope foreign keys",
+    "input/output/cache composition",
+    "tool counts",
+    "project/agent/task partitions",
+    "zero vs unknown",
+    "task progress denominator"
+  ]
+}

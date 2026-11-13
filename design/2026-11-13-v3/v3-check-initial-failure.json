@@ -1,0 +1,26 @@
+{
+  "command": "node design/2026-11-13-v3/verify-v3.mjs",
+  "result": "failed",
+  "checks": [
+    "Local GSAP/D3/Mermaid/Duoicons loaded; actual D3 chart SVG",
+    "Unknown mode removes numeric charts rather than zeroing",
+    "All three project drill-downs change scope",
+    "All three agent drill-downs change scope"
+  ],
+  "errors": [],
+  "network": [],
+  "runtime": {
+    "versions": {
+      "d3": "7.9.2",
+      "gsap": "3.15.1",
+      "mermaid": "12.3.0",
+      "icons": "1.2.2"
+    },
+    "gsap": "3.15.1",
+    "mermaid": "function",
+    "d3": "function",
+    "icons": 91
+  },
+  "exitCode": 1,
+  "failure": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'v3-task-tab-summary'\n- 'v3-task-tab-files'\n               ^\n"
+}

@@ -1,0 +1,33 @@
+/* Hallmark · v2.0.0 · shape: app screen · scope: app · theme: three desktop concepts by request · signature: task and transition inspector */
+/* Hallmark · pre-emit critique: P4 H4 E3 S4 R4 V4 · weakest: E, browser checks must establish fit and contrast before handoff */
+:root {
+  color-scheme: light;
+  --font-body: "Segoe UI", system-ui, sans-serif;
+  --font-code: "Cascadia Mono", Consolas, monospace;
+  --paper: #f5f7fb; --surface: #ffffff; --sidebar: #edf1f8; --recess: #f0f3f9;
+  --ink: #172235; --muted: #526078; --rule: #d5ddea; --control-rule: #8997ad;
+  --accent: #3155d9; --accent-ink: #ffffff; --accent-soft: #e5ebff; --focus: #2147c9;
+  --success: #236347; --success-soft: #e6f4eb; --warning: #80500b; --warning-soft: #fff2d6;
+  --danger: #a93136; --danger-soft: #fcebed; --secondary: #6d4b9c; --scrim: #17223538;
+  --transparent: transparent; --shadow: 0 8px 24px #1722350d;
+  --radius: 8px; --radius-sm: 5px; --micro: 120ms; --short: 180ms; --ease: cubic-bezier(.2,.7,.2,1);
+  --space-4: 4px; --space-8: 8px; --space-12: 12px; --space-16: 16px; --space-20: 20px; --space-24: 24px; --space-28: 28px; --space-32: 32px; --space-40: 40px; 
+}
+:root[data-theme="mint"] {
+  color-scheme: dark;
+  --paper: #141c20; --surface: #1b272c; --sidebar: #172226; --recess: #202e34;
+  --ink: #edf5f2; --muted: #b1c2c4; --rule: #3d5158; --control-rule: #7b969c;
+  --accent: #79d8bd; --accent-ink: #112b23; --accent-soft: #244c43; --focus: #9be8d1;
+  --success: #a3dfbd; --success-soft: #26463b; --warning: #f1ce83; --warning-soft: #443923;
+  --danger: #ffb6ba; --danger-soft: #4c2c34; --secondary: #b5c5f1; --scrim: #080e1266;
+  --shadow: none;
+}
+:root[data-theme="warm"] {
+  color-scheme: light;
+  --paper: #f6f2eb; --surface: #fffcf7; --sidebar: #eee7dd; --recess: #f0e9df;
+  --ink: #29241f; --muted: #685d52; --rule: #d8cbbd; --control-rule: #93816e;
+  --accent: #a3412b; --accent-ink: #fffaf5; --accent-soft: #f6e5dd; --focus: #913924;
+  --success: #4a6742; --success-soft: #e9efdf; --warning: #80520f; --warning-soft: #f9edcf;
+  --danger: #a12f36; --danger-soft: #f8e5e5; --secondary: #795a96; --scrim: #29241f38;
+  --shadow: 0 8px 24px #3e2d1c0a;
+}

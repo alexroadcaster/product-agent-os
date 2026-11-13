@@ -1,0 +1,3 @@
+design\2026-11-13-v2\index.html
+  WARN 49 :17 long clickable label "D Демо-проект Локальная рабочая сре…" without nowrap | fix: Shorten the label or set nowrap
+sloplint: 0 FAIL, 1 WARN across 2 file(s).

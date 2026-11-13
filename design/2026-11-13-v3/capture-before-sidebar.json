@@ -1,0 +1,32 @@
+{
+  "result": "passed",
+  "command": "node design/2026-11-13-v3/capture.mjs",
+  "exitCode": 0,
+  "browser": "installed Chromium / disposable context",
+  "browserPlugin": "not available",
+  "pageIdentity": true,
+  "uniqueRoutes": 87,
+  "routes": 174,
+  "screenshots": 182,
+  "desktopLayouts": 530,
+  "meaningfulBodies": 174,
+  "contrastSamples": 2618,
+  "minimumTextContrast": 4.613249954605292,
+  "minimumControlContrast": 3.4631382698725215,
+  "interactions": [
+    "Keyboard focus visible",
+    "Context menu Escape focus return",
+    "Catalog search and Escape",
+    "Modal confirmation and Escape route",
+    "Transition selected fields",
+    "Staged proposal demo-only confirmation",
+    "Inline validation, popover",
+    "Copy, segmented, inspector, progress, pause/recover",
+    "Reduced motion static fallback",
+    "Motion enabled enter/exit"
+  ],
+  "errors": [],
+  "consoleErrors": [],
+  "provenance": "Current V3 run; no V2 results reused",
+  "motionVideo": "screenshots/motion-demo.webm"
+}

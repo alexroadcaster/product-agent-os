@@ -1,5 +1,9 @@
 # EVALS.md
 
+## Desktop UI/UX — сравнение с baseline
+
+V3: все V2 surfaces, full task fields и dblclick/keyboard dialog; dashboard scope/units/coverage; сумма unique receipts, cache без double count, unknown≠zero; D3/Mermaid activation; обе темы/overflow/focus/reduced motion. [DESIGN.md](DESIGN.md). Synthetic статистика не доказывает наличие telemetry; human acceptance отдельно.
+
 ## G9 T17 — граница сравнения
 
 Детерминированное сравнение на одинаковых входах: обнаружение межфайлового дубликата 0/1 → 1/1; canonical aliases 1/4 → 4/4; изменён один раздел одного файла, изменений соседних bytes и повторных записей нет. Отсутствующему section route baseline не присваиваются выдуманные оценки. Шесть сценариев инструкций проверены статически; модельный поведенческий прогон не выполнялся. Смысловая полнота требует review и не доказывается digest; эта граница явно принята владельцем в T17; модельный прогон по-прежнему не выполнен. [Проверки](research/product-agent-os-g9-execution-report.md), [результаты](docs/superpowers/specs/paos-aud-g9-project-formation-results.json).

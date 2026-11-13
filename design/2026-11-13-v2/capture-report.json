@@ -1,0 +1,40 @@
+{
+  "result": "passed",
+  "command": "node design/2026-11-13-v2/capture.mjs",
+  "exitCode": 0,
+  "browser": "installed Chromium / disposable context",
+  "browserPlugin": "not available",
+  "pageIdentity": true,
+  "uniqueRoutes": 80,
+  "routes": 160,
+  "screenshots": 168,
+  "desktopLayouts": 488,
+  "meaningfulBodies": 160,
+  "contrastSamples": 2350,
+  "minimumTextContrast": 4.613249954605292,
+  "minimumControlContrast": 3.4631382698725215,
+  "interactions": [
+    "Keyboard focus visible",
+    "APG object tabs Arrow/Home/End preserve focused selected tab",
+    "Context menu Escape focus return",
+    "Catalog search and Escape",
+    "Modal confirmation and Escape route",
+    "Transition selected fields",
+    "Staged proposal demo-only confirmation",
+    "Inline validation, popover",
+    "Copy, segmented, inspector, progress, pause/recover",
+    "Reduced motion static fallback",
+    "Motion enabled enter/exit"
+  ],
+  "errors": [],
+  "consoleErrors": [],
+  "previousFailedAttempt": {
+    "command": "node design/2026-11-13-v2/capture.mjs --interactions",
+    "exitCode": 1,
+    "observed": "AssertionError: tasks-list: meaningful body while checking an alternate empty/loading specimen",
+    "cause": "The original harness applied the full-screen 180-character minimum to intentionally short alternate states.",
+    "repair": "Alternate states require meaningful text plus semantic empty-region/aria-busy checks; full routes retain the 180-character requirement.",
+    "followup": "The corrected interaction-only run passed before full capture."
+  },
+  "motionVideo": "screenshots/motion-demo.webm"
+}

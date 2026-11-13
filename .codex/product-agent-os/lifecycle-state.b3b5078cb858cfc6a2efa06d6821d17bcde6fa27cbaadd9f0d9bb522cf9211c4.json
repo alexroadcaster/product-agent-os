@@ -1,0 +1,39 @@
+{
+  "session_id": "01a1d474-ed48-7a70-aa09-92f132a7310f",
+  "task_id": "PAOS-DESIGN-V3-SIDEBAR-2026-11-13",
+  "scope": "Adapt DesignBookmark Sidebar collapse to the existing V3 prototype left navigation; preserve source spring stiffness/damping, product tokens, both themes and accessible controls; no actual app changes",
+  "updated_at": "2026-11-13T13:53:57+00:00",
+  "approval_boundary": "Local design artifacts and isolated prototype dependencies authorized; no application source, live data, Git or deployment mutations",
+  "status": "ready_for_completion_brief",
+  "completion_ready": true,
+  "closure_level": "design_artifact_verified",
+  "result": "Sidebar collapse adapted with exact source springs; targeted RED/GREEN, V3 interactions, full 87-route paired capture and docs gates passed; actual app unchanged, human acceptance pending",
+  "previous_closure": {
+    "task_id": "PAOS-DESIGN-V2-2026-11-13",
+    "status": "ready_for_completion_brief",
+    "evidence_path": "design/2026-11-13-v2/verification.md",
+    "result": "V2 desktop atlas verified; owner requested V3 dashboards, usage, colored icons and complete task modal"
+  },
+  "evidence_path": "design/2026-11-13-v3/verification.md",
+  "brief_digest": "sha256:7cef7854fdeaf18d7c7919e348c3cfc5f95fe937a616def790504ad9a59cf97e",
+  "brief_schema_version": "task_scope_note_v1",
+  "brief_format": "concise",
+  "scope_note_shown": true,
+  "brief_fields_present": [
+    "Scope",
+    "Evidence",
+    "Limits"
+  ],
+  "task_start_brief_shown": true,
+  "concise_scope_note_shown": true,
+  "lifecycle_scope": {
+    "work_type": "implementation",
+    "size": "bounded",
+    "risk": "low",
+    "financially_material": false,
+    "release_or_readiness": false,
+    "explicit_packet_request": false,
+    "reason": "Bounded left-navigation component adaptation and local browser checks; concise reporting applies"
+  },
+  "human_acceptance": "pending"
+}
