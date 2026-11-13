@@ -1,5 +1,8 @@
 # Local Web package and pilot
 
+Settings, 2026-11-13: Choose project folder opens the native Windows Explorer folder dialog, including New folder. Add project registers the selected root and reports bounded JS/TS/source scanning; partial coverage stays visible. Cancel adds nothing. Connect Codex App opens a prepared draft: explicitly send it in Codex App, then return; only an attached worker changes connection status. Opening a window does not prove model access. Quit the previous service before rebuilding/restarting with the same profile. [Contract and current evidence](../../research/product-agent-os-web-m1-execution-2026-11-11.md).
+
+
 Source status: project-authored / PAOS-0030 local delivery contract; technical receipts belong to the owning execution report.
 
 This package supports local engineering on the pinned Windows/x64 host tuple. It contains the launcher, service, contracts, built Web UI and bounded runtime parser. Node/Codex binaries, profiles, credentials and workspaces remain external. PAOS licensing, admission and commercial terms remain separate gates; a local build grants no external release approval.
@@ -13,7 +16,7 @@ This package supports local engineering on the pinned Windows/x64 host tuple. It
 5. Create a separate empty profile. Run `select --state <control-directory> --install <install-directory> --expected-id <reviewed-release-id> --profile <profile-directory> --expected-selection none` for the first selection. Install, profile and control directories must not overlap.
 6. `status --state <control-directory>` returns selection and digest. `start --state <control-directory>` validates files/prerequisites and invokes the existing native launcher. Mismatch never installs prerequisites or selects a fallback. Do not place the package below node_modules: Node refuses TypeScript source entrypoints there.
 
-All filesystem paths are absolute and local. The installed CLI lives at `apps/desktop-local/main.mts`; the original checkout is unnecessary. Pairing reaches the native window through IPC/stdin, never URL/stdout. Cancel shuts down the owned service. Normal OK opens the local UI in the system browser and may use its existing profile; automated checks use disposable browser profiles.
+All filesystem paths are absolute and local. The installed CLI lives at `apps/desktop-local/main.mts`; the original checkout is unnecessary. The launcher opens `/launch` in the system browser immediately, without dialogs or a manual code. A one-use HttpOnly challenge and same-origin POST establish the session; URLs/stdout contain no secrets. Admission requires direct-user-navigation Fetch Metadata and does not isolate native HTTP clients. An old service reports `service_restart_required`: Quit the old instance, then launch with the same profile. Closing the tab leaves the backend running; use Quit in the app. The default browser may use an existing profile; automated checks use disposable profiles. [Contract and evidence](../../research/product-agent-os-web-m1-execution-2026-11-11.md).
 
 Graph support includes pinned Rolldown1.2.18, Win32/x64 binding1.2.18, pluginutils1.1.0 and oxc types0.156.0. Versions match package-lock; files/notices match the manifest. The full node_modules and build toolchain are excluded. React/React DOM/Scheduler notices live in `apps/desktop-local/THIRD_PARTY_NOTICES.txt`; parser licenses remain with its packages. Complete transitive native license review remains a release gate.
 

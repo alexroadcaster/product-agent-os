@@ -29,6 +29,8 @@ import type { RunState } from "../api/policy.ts";
 import { createLatestRequest } from "../api/latest-request.ts";
 import { visibleAssistantDrafts } from "../api/visible-drafts.ts";
 import { ConnectionControls } from "./ConnectionControls.tsx";
+import {ProjectOnboarding} from '../features/projects/ProjectOnboarding.tsx';
+import type {ProjectRegistration} from '../api/client.ts';
 import { TaskRelations } from "./TaskRelations.tsx";
 import {GraphExplorer} from '../features/graph/GraphExplorer.tsx';
 import {DecisionBoard} from '../features/decisions/DecisionBoard.tsx';
@@ -108,7 +110,10 @@ export function App() {
   });
   const [projects, setProjects] = useState<Project[]>([]);
   const [projectId, setProjectId] = useState("");
-  const [section, setSection] = useState<Section>("overview");
+  const [section, updateSection] = useState<Section>("overview");
+  const navigationEpoch=useRef(0);
+  // Every route, including workflow/deep-link callbacks, fences a pending project registration.
+  function setSection(next:Section){navigationEpoch.current++;updateSection(next);}
   const [linkedSession,setLinkedSession]=useState<{projectId:string;sessionId:string;messageId?:string}|null>(null);
   const [linkedTask,setLinkedTask]=useState<{projectId:string;id:string;tab?:"summary"|"files"}|null>(null);
   const [linkedAsset,setLinkedAsset]=useState<{projectId:string;id:string;kind:"agent"|"skill"}|null>(null);
@@ -234,7 +239,7 @@ export function App() {
           {t("project")}
           <select
             value={projectId}
-            onChange={(e) => setProjectId(e.target.value)}
+            onChange={(e) => {navigationEpoch.current++;setProjectId(e.target.value);}}
             disabled={!ready}
           >
             <option value="">—</option>
@@ -339,9 +344,12 @@ export function App() {
               connection={connection}
               onConnection={connectionChanged}
               t={t}
-              onProject={async (name, root) => {
-                await api.createProject(name, root);
-                await initialise();
+              onProject={async (name, root, requestId) => {
+                const epoch=navigationEpoch.current;
+                const saved=await api.createProject(name,root,{requestId,scan:true});
+                if(epoch===navigationEpoch.current){await initialise();if(epoch===navigationEpoch.current)setProjectId(saved.id);}
+                else setProjects(await api.projects());
+                return saved;
               }}
             />{projectId&&<WorkflowManager key={projectId} api={api} projectId={projectId} locale={preferences.locale} onOpenSession={sessionId=>{setLinkedSession({projectId,sessionId});setSection('sessions');}}/>}</>
           ) : !projectId ? (
@@ -477,7 +485,7 @@ function Settings({
   preferences: UiPreferences;
   onPreferences: (p: UiPreferences) => void;
   t: Text;
-  onProject: (name: string, root: string) => Promise<void>;
+  onProject: (name:string,root:string,requestId:string)=>Promise<ProjectRegistration>;
   connection: Connection | null;
   onConnection: (connection: Connection) => void;
 }) {
@@ -542,38 +550,7 @@ function Settings({
           <p role="status">{status}</p>
         </form>
       </section>
-      <section className="panel">
-        <h2>{t("addProject")}</h2>
-        <form
-          onSubmit={async (e) => {
-            e.preventDefault();
-            const form = e.currentTarget;
-            const data = new FormData(form);
-            setBusy(true);
-            try {
-              await onProject(
-                String(data.get("name")),
-                String(data.get("root")),
-              );
-              form.reset();
-            } catch (error) {
-              setStatus(`${t("error")}: ${error}`);
-            } finally {
-              setBusy(false);
-            }
-          }}
-        >
-          <label>
-            {t("name")}
-            <input name="name" required />
-          </label>
-          <label>
-            {t("root")}
-            <input name="root" required autoComplete="off" />
-          </label>
-          <button disabled={busy}>{t("addProject")}</button>
-        </form>
-      </section>
+      <ProjectOnboarding api={api} t={t} onProject={onProject}/>
       <ConnectionControls
         api={api}
         connection={connection}

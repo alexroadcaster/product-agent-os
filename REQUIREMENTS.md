@@ -1,5 +1,11 @@
 # REQUIREMENTS.md
 
+## Запуск без кода — 13.11.2026
+
+Launcher открывает рабочий экран автоматически, без MessageBox/ручного pairing. Session/CSRF обязательны; admission — direct browser navigation, native clients вне ceiling. [Scope, acceptance и ограничения](research/product-agent-os-web-m1-execution-2026-11-11.md#запуск-без-ручного-сопряжения--2026-11-13). M5 scope сохраняется.
+
+Settings,13.11.2026: Explorer picker/New folder, explicit Add и bounded scan; понятный App draft/Send/attach flow. Cancel no mutation; active BYOK сохраняется, auto-send запрещён. Evidence: [Settings addendum](research/product-agent-os-web-m1-execution-2026-11-11.md).
+
 ## PAOS-AUD-G9 — принятое расширение сопровождения
 
 Добавлены T11–T17 в [матрицу G9](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#расширение-g9-точечное-сопровождение-после-каждой-задачи): после каждой задачи оценивать docs impact, обновлять только основной источник изменившихся сведений и сохранять данные. Владелец принял T10, затем T17 и ограничения проверки модельного поведения; G9 закрыта; детали и критерии находятся в матрице.
@@ -15,6 +21,8 @@ G8-T14/G8 явно приняты владельцем. G9 T01–T09 реали�
 Уточнение владельца 10.11.2026: подробные матрицы в `docs/planning/` сохраняются целиком, default 40k size trigger исключён; оглавления/control-plane и explicit per-file limits сохраняют ограничения. Audit matrix в `research/` остаётся целой; split отложен, прежний preview не разрешён. G8-T14 и закрытие G8 явно приняты владельцем; fresh-session activation отдельно.
 
 ## Текущий scope Web M1 — 2026-11-10
+
+M5, 13-11-2026: PAOS-0047/0052/0053 объединены в [M5 / план v0.9](research/product-agent-os-web-task-manager-plan-2026-11-09.md#paos-m5). Ценность: разрешённое ChatGPT-подключение, общие данные/права/поиск и перенос личного проекта команде. Все3 planned; SIWC admission и team design/auth/roles/runtime/privacy gates открыты; разрешено только изменение плана.
 
 PAOS-0030: переносимый локальный package/install/start, offline backup/restore и selection/rollback с отдельными профилями. Согласован технический пилот на копии codex_docs; оригинальные inputs только read-only в его интервале. [Acceptance, source span и limits](research/product-agent-os-web-m4-0030-execution-2026-11-12.md). Commercial/GA отдельно.
 

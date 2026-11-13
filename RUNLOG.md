@@ -1,5 +1,11 @@
 # RUNLOG.md
 
+## Startup UX — 13.11.2026
+
+Убраны ручной код и MessageBox; protected browser bootstrap, legacy-service restart fence. Native/browser28, Web487, Python1450(skip1), docs105, evals91/26 passed; [owning report](research/product-agent-os-web-m1-execution-2026-11-11.md#запуск-без-ручного-сопряжения--2026-11-13). M5 planning byte-preserved; user service не останавливался. Следующий шаг — штатный Quit старого экземпляра и обычный запуск с тем же профилем.
+
+Settings,13.11.2026: Settings: native folder/New folder, автозаполнение/scan и понятный App draft/Send реализованы. Web495, chooser4 и actual App/browser17 passed; [current evidence/limits](research/product-agent-os-web-m1-execution-2026-11-11.md). Native URI opening на owner desktop/human acceptance отдельно. M5 planning сохранён; старый service не останавливался.
+
 ## GAP-06 acceptance и исправление проверок — 2026-11-10
 
 GAP-06 принят владельцем; T34 и fresh-session activation отдельно открыты. Исправления locally verified: full 1450 tests (skip 1), fixtures 91/91, transcripts 26/26; актуальные проверки: [owning evidence](research/product-agent-os-audit-closeout-tooling-2026-11-10.md).
@@ -21,6 +27,8 @@ G8-T14/G8 owner accepted. G9 T01–T09 локально реализованы; 
 Текущий завершающий прогон после исключения docs/planning: full unittest 1414 / 1321.762s, OK (skip 1), exit 0; docs handoff 105 / 19.108s; fixture 91/91, transcript 26/26, compatibility passed. Strict MkDocs завершился за 38.95s. Все 48 audit cards сохранены, current-state projection: 65 строк без ошибок. T14 — owner_accepted; технические проверки завершены, приёмка владельца получена отдельным решением.
 
 ## Старт Web M1 — 2026-11-10
+
+M5, 13-11-2026: по решению владельца PAOS-0047/0052/0053 объединены в [M5 / план v0.9](research/product-agent-os-web-task-manager-plan-2026-11-09.md#paos-m5); все planned, 60ч, прежние ID/order/dependencies/actual time сохранены. MD/JSON/PRD/architecture/auth/registry синхронизированы. Проверки текущего запуска: docs105/105 (11.802s), matrix/state/docs/diff exit0; preservation passed — другие53MDcards побайтно и JSON objects без изменений. Финальные receipts/source hashes — `.tmp/paos-m5-plan/results.json`; baseline/recovery сохранены в `.tmp/paos-m5-plan/`. Оценки прежние: M5=60ч, общий объём776ч; до M4 включительно716ч с8ч POST_M1 review. Следующий шаг — team design0052; SIWC отдельно после admission. Без runtime/provider/hosting/transfer/Git действий.
 
 PAOS-0030: переносимый package/CLI и согласованный codex_docs copy pilot выполнены;88actual checks/3phases + native Cancel, Web482. Astra/medium mapping/review: P2 shared reservation исправлен; actual startup выявил missing parser/preferences closure и internal preference relocation, исправлено без изменения native pin. [Owning evidence](research/product-agent-os-web-m4-0030-execution-2026-11-12.md). Следующая0052 отдельным scope; AUTH-G1–G6 no-go коммерческого выпуска сохраняется.
 

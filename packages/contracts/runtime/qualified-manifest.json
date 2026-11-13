@@ -13,7 +13,7 @@
     "sha256": "119d6fa70e6ae1b15b90688ab6bcc8e3a2819acea021af196895cab1843645af"
   },
   "sqliteVersion": "3.53.3",
-  "adapterRevision": "67d6ced8b371be3dcf433637a3df7a8ed5ad3140c7a412e40178ad05abbe5869",
+  "adapterRevision": "b19cdbb51f068326166873e7aa417c5e7baea0390a1ad685e1ec7f4033214a5f",
   "packageLockSha256": "d279009aa1dca2bd2d6ba0e18a77d085a67e872d0dce78dd360fb23d43975f38",
   "schema": {
     "sha256": "486c7c8daa5dc7f3ab2a1fb56de5316804caf7a4210fda1dc28d3f0f4e90cfe1",
@@ -27,6 +27,8 @@
     "backupRestore": true
   },
   "evidence": {
+    "settingsDesktopNativeCandidate": "534eb704c1210202ac8c44895cec1239df619f2f4f3c468ff520989294dc1457",
+    "automaticLocalLaunchNativeCandidate": "a8b50f310dc738d561796cd8b1beceddaf9f06a561ccb5b0996388b611d256f7",
     "m3AutonomyNativeCandidate": "94787a9aa937a7d0ff3bd61ba701be81388b7bd900b42d05b07b4994bffd30ca",
     "nativeSmoke": "7f6cc3e29d74bd1a6252736ee7bd757d1bbd5a0883b66e008c96f9d1cdcaad86",
     "history": "3846634cfd7b84f372a02e56a1302c9ed831c39a92cdc7a73c73e0eebdbc2516",

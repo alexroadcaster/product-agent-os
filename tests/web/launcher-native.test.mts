@@ -25,7 +25,7 @@ test('native entrypoint joins launcher ownership to synthetic IPC and never writ
  let windows=0;
  const result=await runNativeLauncher({profileDirectory:profile,
   serviceModule:fileURLToPath(new URL('./launcher-native.fixture.mts',import.meta.url)),
-  async readHealth(endpoint){return {...endpoint,build:'paos-m1-0.1.0',alive:true,sourceReaderReady:true,runtimeCapable:false};},
+  async readHealth(endpoint){return {...endpoint,build:'paos-m1-0.1.0',alive:true,sourceReaderReady:true,runtimeCapable:false,browserLaunchVersion:1};},
   async showWindow(input){windows++;assert.equal(input.pairingCode,'synthetic-pairing');assert.equal(input.owner,true);
    const record=await readFile(join(profile,'service-instance','endpoint.json'),'utf8');
    assert.equal(record.includes('synthetic-pairing'),false);assert.match(input.origin,/^http:\/\/127\.0\.0\.1:/);return 'quit';},
@@ -48,7 +48,7 @@ test('dismissed native controls retain IPC ownership and a later quit request re
  const {runNativeLauncher}=await import('../../apps/launcher/main.mts');const profile=await mkdtemp(join(tmpdir(),'paos-keep-running-'));
  t.after(()=>rm(profile,{recursive:true,force:true}));
  const result=await runNativeLauncher({profileDirectory:profile,serviceModule:fileURLToPath(new URL('./launcher-keep-running.fixture.mts',import.meta.url)),
-  async readHealth(endpoint){return {...endpoint,build:'paos-m1-0.1.0',alive:true,sourceReaderReady:true,runtimeCapable:false};},
+  async readHealth(endpoint){return {...endpoint,build:'paos-m1-0.1.0',alive:true,sourceReaderReady:true,runtimeCapable:false,browserLaunchVersion:1};},
   async showWindow(){return 'closed';},
  });
  assert.equal(result.status,'opened');await stat(join(profile,'service-instance'));

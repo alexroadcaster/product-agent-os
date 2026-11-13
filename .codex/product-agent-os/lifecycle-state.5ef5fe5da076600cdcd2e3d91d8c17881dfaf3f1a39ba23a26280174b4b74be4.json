@@ -1,0 +1,28 @@
+{
+  "session_id": "01a1d063-c055-7c42-84ac-eb4c36edece2",
+  "task_id": "PAOS-WEB-M5-PLAN-2026-11-13",
+  "plan_path": "research/product-agent-os-web-task-manager-plan-2026-11-09.md",
+  "scope": "Authorized documentation-only regrouping of PAOS-0047/0052/0053 into delivery stage M5; preserve implementation statuses, dependencies, estimates and historical evidence; synchronize owned planning references.",
+  "updated_at": "2026-11-13T10:53:12+03:00",
+  "approval_boundary": "Local plan, JSON and related documentation edits and static verification only; no runtime, credentials, providers, external writes, Git, deployment, hooks or policy changes.",
+  "status": "ready_for_completion_brief",
+  "completion_ready": true,
+  "closure_level": "docs_static_verified",
+  "evidence": ".tmp/paos-m5-plan/results.json",
+  "docs_impact": "updated: plan MD/JSON, PRD, architecture, auth, registry RU/EN, REQUIREMENTS/PLAN/TEST/RUNLOG; no_change_needed: EVALS/prod_test/AGENTS/config/hooks/nav/Mermaid/site",
+  "limits": "Planning regrouping only; all three M5 tasks remain planned. SIWC admission, team design and feature implementation/runtime acceptance remain open.",
+  "brief_digest": "sha256:e7a6469916a8a6d9e6f36d507b2f854592a3b5ba1d550605536076874805977d",
+  "brief_schema_version": "task_scope_note_v1",
+  "brief_format": "concise",
+  "brief_fields_present": ["Scope", "Evidence", "Limits"],
+  "scope_note_shown": true,
+  "lifecycle_scope": {
+    "work_type": "implementation",
+    "size": "bounded",
+    "risk": "low",
+    "financially_material": false,
+    "release_or_readiness": false,
+    "explicit_packet_request": false,
+    "reason": "User-authorized local planning artifact edit; no product implementation or activation."
+  }
+}

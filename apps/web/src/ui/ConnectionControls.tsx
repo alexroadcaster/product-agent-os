@@ -1,5 +1,5 @@
-import { useState } from "react";
-import type { Connection, M1Api, ConnectionRoute } from "../api/client.ts";
+import { useRef,useState } from "react";
+import {HttpApiError,type Connection,type M1Api,type ConnectionRoute} from '../api/client.ts';
 import type { AppLabel } from "../locales/app.ts";
 import {
   initialConnectionRoute,
@@ -21,6 +21,8 @@ export function ConnectionControls({
 }) {
   const [busy, setBusy] = useState(false),
     [error, setError] = useState("");
+  const [handoff,setHandoff]=useState(false);
+  const pendingHandoff=useRef<string|undefined>(undefined);
   const [chosenRoute, setChosenRoute] = useState<ConnectionRoute>(() =>
     initialConnectionRoute(connection),
   );
@@ -38,7 +40,6 @@ export function ConnectionControls({
   return (
     <section className="panel">
       <h2>{t("connection")}</h2>
-      {hostLabel && <p className="quiet">{t(hostLabel)}</p>}
       <label>
         {t("connectionRoute")}
         <select
@@ -64,18 +65,15 @@ export function ConnectionControls({
           : connection?.verified
             ? t("verified")
             : t("unverified")}{" "}
-        · {t("modelAccess")}: {t("unverified")}
+        {!isApp&&<> · {t("modelAccess")}: {t("unverified")}</>}
       </p>
       {isApp ? (
         <>
-          <p className="quiet">{t("appAgentHint")}</p>
-          <p className="quiet">{t(connection?.capabilities?.executionConfigured?'appBrokerBoundary':"appAgentBoundary")}</p>
-          <p className="quiet">{t("appAgentNoFallback")}</p>
+          {!appAttached&&<p className="notice" role="status" data-testid="app-connection-next-step">{t(handoff?'appHandoffOpened':waiting?'appWaitingInstruction':'appConnectInstruction')}</p>}
         </>
       ) : (
         <p className="quiet">{t("credentialHint")}</p>
       )}
-      {connection?.reason && <p className="quiet">{connection.reason}</p>}
       <form
         onSubmit={async (e) => {
           e.preventDefault();
@@ -86,6 +84,11 @@ export function ConnectionControls({
           setBusy(true);
           setError("");
           try {
+            if(isApp){
+              pendingHandoff.current??=crypto.randomUUID();
+              const result=await api.openAppAgent(pendingHandoff.current);pendingHandoff.current=undefined;
+              setHandoff(result.opened);onConnection(await api.connection());return;
+            }
             const data = isApp ? undefined : new FormData(form);
             const input = connectionRequest(
               route,
@@ -99,7 +102,10 @@ export function ConnectionControls({
             );
             onConnection(await api.connect(input));
           } catch (cause) {
-            setError(String(cause));
+            if(isApp&&cause instanceof HttpApiError){
+              pendingHandoff.current=undefined;
+              setError(t(cause.code==='ROUTE_NOT_FOUND'||cause.code==='APP_HANDOFF_UNAVAILABLE'?'desktopUnavailable':'appOpenFailed'));
+            }else setError(String(cause));
           } finally {
             if (secret) secret.value = "";
             setBusy(false);
@@ -138,8 +144,8 @@ export function ConnectionControls({
             </label>
           </>
         )}
-        <button disabled={busy || active}>
-          {t(isApp ? "openAppAgentChannel" : "login")}
+        <button disabled={busy || (isApp?appAttached:active)}>
+          {t(isApp ? appAttached?'appWorkerConnected':waiting?'appReopen':'appConnect' : "login")}
         </button>
         <button
           type="button"
@@ -149,6 +155,7 @@ export function ConnectionControls({
             setError("");
             try {
               onConnection(await api.disconnect());
+              setHandoff(false);pendingHandoff.current=undefined;
             } catch (cause) {
               setError(String(cause));
             } finally {
@@ -156,10 +163,16 @@ export function ConnectionControls({
             }
           }}
         >
-          {t("disconnect")}
+          {t(isApp?'appDisconnect':"disconnect")}
         </button>
         <p role="alert">{error}</p>
       </form>
+      {isApp&&<details><summary>{t('appConnectionDetails')}</summary>
+        {hostLabel&&<p className="quiet">{t(hostLabel)}</p>}
+        <p className="quiet">{t(connection?.capabilities?.executionConfigured?'appBrokerBoundary':'appAgentBoundary')}</p>
+        <p className="quiet">{t('appAgentNoFallback')}</p><p>{t('modelAccess')}: {t('unverified')}</p>
+        {connection?.reason&&<p className="quiet">{connection.reason}</p>}
+      </details>}
     </section>
   );
 }

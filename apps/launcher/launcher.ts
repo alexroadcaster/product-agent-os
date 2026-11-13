@@ -12,6 +12,7 @@ export type ServiceHealth = Readonly<{
   alive: boolean;
   sourceReaderReady: boolean;
   runtimeCapable: boolean;
+  browserLaunchVersion?: number;
 }>;
 
 type ServiceEndpoint = Readonly<{
@@ -42,7 +43,7 @@ type Opened = Readonly<{
   sourceReaderReady: boolean;
 }>;
 
-type Failure = 'instance_unavailable' | 'service_start_failed' | 'service_unhealthy' | 'ui_open_failed';
+type Failure = 'instance_unavailable' | 'service_start_failed' | 'service_unhealthy' | 'service_restart_required' | 'ui_open_failed';
 type InstanceReason = 'startup_unresolved' | 'invalid_instance_record';
 
 export class InstanceClaimError extends Error {
@@ -88,7 +89,7 @@ async function inspectRuntime(
 /** Start or reuse the trusted local instance. Only a healthy service of the expected build gets a UI window. */
 export async function launch(
   ports: LauncherPorts,
-  expected: Readonly<{ serviceBuild: string; runtime: RuntimeFingerprint | null }>,
+  expected: Readonly<{ serviceBuild: string; runtime: RuntimeFingerprint | null; browserLaunchVersion?: number }>,
   timeout = 10_000,
 ): Promise<Opened | { status: Failure; cleanupPending?: true; instanceReason?: InstanceReason }> {
   let claim: Claim | undefined;
@@ -117,6 +118,9 @@ export async function launch(
       throw new Error('Unexpected local service health response.');
     }
 
+    if(expected.browserLaunchVersion!==undefined&&health.browserLaunchVersion!==expected.browserLaunchVersion){
+      phase='service_restart_required';throw new Error('The existing service must be restarted.');
+    }
     const state: Opened = {
       status: 'opened', origin: `http://127.0.0.1:${current.port}`,
       instance: claim.kind === 'owner' ? 'started' : 'existing',

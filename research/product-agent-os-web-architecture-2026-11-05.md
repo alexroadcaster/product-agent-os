@@ -1,5 +1,12 @@
 # Product-Agent OS Web — архитектура и план реализации
 
+Уточнение Settings UX,13.11.2026: native Explorer folder selection/New folder → explicit Add → bounded source/JS/TS scan; cancel не регистрирует проект. App-agent handoff открывает server-built Codex draft, требует явного Send и сохраняет waiting до actual worker attach; URI open не доказывает host/model entitlement. Existing BYOK/approval/commercial boundaries сохранены. [Source contracts, official links и evidence](product-agent-os-web-m1-execution-2026-11-11.md).
+
+
+Startup update13-11-2026: launcher → guarded `/launch` → одноразовый HttpOnly challenge/same-origin POST → session/CSRF, без MessageBox/code. Допуск — direct browser user intent, не launcher identity; native clients вне ceiling. Старый service без browserLaunchVersion1 требует Quit/restart. [Решение и проверки](product-agent-os-web-m1-execution-2026-11-11.md#запуск-без-ручного-сопряжения--2026-11-13). Остальные runtime/model/worker boundaries сохранены; прежние startup-code описания исторические.
+
+Актуализация планирования 13-11-2026: **M5 — «Подключение ChatGPT и командная работа»** объединяет PAOS-0047 (optional/admission), PAOS-0052 и PAOS-0053 (team design/storage/transfer). Прежние OPTIONAL/T1 — исторические обозначения этих веток. Текущая группировка, функции, ценность и gates: [план v0.9](product-agent-os-web-task-manager-plan-2026-11-09.md#paos-m5). Все три задачи planned; M4 не зависит от M5, team-ветка не зависит от SIWC. Это изменение плана, без допуска, реализации или активации.
+
 Актуализация 11-11-2026: Codex App agents — выбранный owner-default маршрут без API key; его текущий контракт и предел доказательств приведены в новом App-agent addendum в конце документа. Прежний API-only/closed-App baseline ниже сохранён как история и explicit compatibility; он не определяет новый default.
 
 Исследование 2026-11-09: [варианты БД и vector retrieval](product-agent-os-web-storage-research-2026-11-09.md). Выбор принят: SQLite + FTS5 local и PostgreSQL + pgvector team. Актуальные schema/authority/cutover — §20; исследование сохраняет историю альтернатив.

@@ -11,16 +11,18 @@
 
 Source status: project-authored / proposed / requirements-backed. Дата: 2026-11-09.
 
-Статус очереди: **order_approved / implementation_started / acceptance_partial**. Native MXC write/deny 11 ноября снял прежний Windows blocker PAOS-0054; local engineering route PAOS-0039 отделён от commercial gates. Реализуются все локальные поверхности M1 и исполняемый пакет PAOS-0045. [Текущий execution report](product-agent-os-web-m1-execution-2026-11-11.md) отделяет native/headless/SQLite evidence от фактических browser/App-agent проверок и оставшихся runtime/provider gates. Статусы и фактическое время хранятся в карточках и JSON. При расхождении приоритет имеют PRD §17, architecture §21 и актуальная очередь v0.8.
+Статус очереди: **order_approved / implementation_started / acceptance_partial**. Native MXC write/deny 11 ноября снял прежний Windows blocker PAOS-0054; local engineering route PAOS-0039 отделён от commercial gates. Реализуются все локальные поверхности M1 и исполняемый пакет PAOS-0045. [Текущий execution report](product-agent-os-web-m1-execution-2026-11-11.md) отделяет native/headless/SQLite evidence от фактических browser/App-agent проверок и оставшихся runtime/provider gates. Статусы и фактическое время хранятся в карточках и JSON. При расхождении приоритет имеют PRD §17, architecture §21 и актуальная очередь v0.9.
 
 Связи: [PRD](product-agent-os-web-prd-2026-11-05.md), [архитектура](product-agent-os-web-architecture-2026-11-05.md), [экраны](product-agent-os-web-task-manager-screens-2026-11-09.md), [машинные группы](product-agent-os-web-task-manager-task-group-2026-11-09.json).
 
 
 
 
-## Актуальная очередь v0.8: утверждённая последовательность
+<a id="актуальная-очередь-v08-утверждённая-последовательность"></a>
 
-Source status: project-authored plan, 2026-11-10; 56 tasks / 12 groups; implementation_started. Нормативный scope — PRD §17, архитектура §21, wireframes v0.7. Очереди v0.1–v0.7 и прежние receipts ниже — история; при расхождении применяется этот раздел и обновлённые карточки/JSON.
+## Актуальная очередь v0.9: утверждённая последовательность
+
+Source status: project-authored plan, owner-approved M5 regrouping, 2026-11-13; 56 tasks / 12 module groups; implementation_started for earlier stages, M5 planned. Нормативный scope — PRD §17, архитектура §21, wireframes v0.7. Очереди v0.1–v0.7 и прежние receipts ниже — история; при расхождении применяется этот раздел и обновлённые карточки/JSON.
 
 | Этап | Задачи и gate | Ownership / результат |
 | --- | --- | --- |
@@ -31,16 +33,18 @@ Source status: project-authored plan, 2026-11-10; 56 tasks / 12 groups; implemen
 | После M1 | **0046**, сразу после 0045 и до M2 | Ранний commercial review; повторная актуализация перед выпуском в 0030 |
 | M2 | Full Task Manager/каталоги/граф, **0035/0036/0038**, 0027 | Расширения M1 schema; полный ST-03/ST-09, без второй БД |
 | M3 | G07, **0037** | Workflow execution/agent autonomy поверх M1 coordinator |
-| M4 | 0028/0029/0030; optional 0047 отдельно | Local acceptance/pilot; повторная проверка AUTH-G1–G6 и gaps раннего 0046 |
-| T1 | 0052 после 0030 и storage foundations; 0053 после 0052/0056 | Separate hosting/auth/RBAC/runtime design; local M4 не зависит от team |
+| M4 | 0028/0029/0030 | Local acceptance/pilot; повторная проверка AUTH-G1–G6 и gaps раннего 0046 |
+| M5 — Подключение ChatGPT и командная работа | 0047 (optional/admission); 0052 после 0030 и storage foundations; 0053 после 0052/0056 | Две независимые ветки: SIWC и team design/storage/transfer; M4 не зависит от M5 |
 
 Новые задачи: 0054 compatibility manifest (12 h), 0055 agent commands/writers (16 h), 0056 cutover (12 h). 0050 сокращена до preview/staging (12 h вместо 20), 0051 больше не зависит от 0050. Полное транзитивное замыкание M1 до 0045 — **18 задач, 234 engineering hours**, rough estimate. Оценки требуют уточнения после 0054; будущие M2–T1 не включены.
 
-### Зафиксированная матрица очереди v0.8
+<a id="зафиксированная-матрица-очереди-v08"></a>
 
-Решение пользователя 2026-11-10: порядок ниже сохранён в execution_plan.stages и tasks[].execution_order/delivery_stage JSON. Приоритет раздела над прежними stage labels. Группы G01–G12 сохраняют владение модулями; номер группы не означает порядок исполнения. Детальные карточки ниже остаются отсортированы по ID.
+### Зафиксированная матрица очереди v0.9
 
-Порядок — последовательная плановая baseline; технические depends_on не дополнены искусственными зависимостями между соседними строками. Независимая параллельная работа требует соблюдения dependencies и отдельных владельцев файлов. OPTIONAL можно пропустить; T1 не зависит от 0047 и требует отдельного team design/start. Никаких автоматических запусков эта metadata не создаёт.
+Исходный порядок утверждён 2026-11-10; решение 2026-11-13 объединяет PAOS-0047/0052/0053 в M5 без изменения ID и порядка. Порядок ниже сохранён в execution_plan.stages и tasks[].execution_order/delivery_stage JSON. Приоритет раздела над прежними stage labels. Группы G01–G12 сохраняют владение модулями; номер группы не означает порядок исполнения. Детальные карточки ниже остаются отсортированы по ID.
+
+Порядок — последовательная плановая baseline; технические depends_on не дополнены искусственными зависимостями между соседними строками. Независимая параллельная работа требует соблюдения dependencies и отдельных владельцев файлов. В M5 только PAOS-0047 остаётся optional/admission-gated; PAOS-0052/0053 от неё не зависят и требуют отдельного team design/start. OPTIONAL и T1 — прежние обозначения веток, сохранённые в исторических receipts. Никаких автоматических запусков эта metadata не создаёт.
 
 | Этап | Задач | Оценка |
 | --- | ---: | ---: |
@@ -49,11 +53,10 @@ Source status: project-authored plan, 2026-11-10; 56 tasks / 12 groups; implemen
 | M2 — Полный Task Manager | 26 | 338 ч |
 | M3 — Управляемая автономность | 5 | 84 ч |
 | M4 — Приёмка и локальный пилот | 3 | 52 ч |
-| OPTIONAL — Sign in with ChatGPT | 1 | 20 ч |
-| T1 — Командная версия после отдельного design/start | 2 | 40 ч |
+| M5 — Подключение ChatGPT и командная работа | 3 | 60 ч |
 | Всего | 56 | 776 ч |
 
-Local до пилота — 708 ч без OPTIONAL/T1; M1 — 234 ч. Rough estimates без резерва и календарного обещания.
+Local до пилота — 716 ч без M5, включая 8 ч раннего POST_M1 review (708 ч без него); M1 — 234 ч. Rough estimates без резерва и календарного обещания.
 
 | № | Этап | Группа | ID | Задача | Оценка |
 | ---: | --- | --- | --- | --- | ---: |
@@ -110,11 +113,29 @@ Local до пилота — 708 ч без OPTIONAL/T1; M1 — 234 ч. Rough esti
 | 51 | M4 | G08 | PAOS-0028 | Интеграционная проверка пути | 24 ч |
 | 52 | M4 | G08 | PAOS-0029 | Доступность, языки и темы | 12 ч |
 | 53 | M4 | G08 | PAOS-0030 | Упаковка и пилот | 16 ч |
-| 54 | OPTIONAL | G11 | PAOS-0047 | Опциональный Sign in with ChatGPT | 20 ч |
-| 55 | T1 | G12 | PAOS-0052 | Командный профиль PostgreSQL и pgvector | 24 ч |
-| 56 | T1 | G12 | PAOS-0053 | Перенос local проекта в team workspace | 16 ч |
+| 54 | M5 | G11 | PAOS-0047 | Опциональный Sign in with ChatGPT | 20 ч |
+| 55 | M5 | G12 | PAOS-0052 | Командный профиль PostgreSQL и pgvector | 24 ч |
+| 56 | M5 | G12 | PAOS-0053 | Перенос local проекта в team workspace | 16 ч |
 
 PAOS-0002 проверяет domain contract только M1 profile (§17 PRD). Полный round-trip следующих типов/полей/вложений закреплён за M2 PAOS-0006/0031–0034/0038; 0050/0056 владеют фактическим переносом и cutover. PAOS-0036 завершается в M2, PAOS-0037 подключает цепочки агентов в M3. PAOS-0046 выполняется сразу после M1, а 0030 повторно проверяет коммерческие ограничения перед выпуском.
+
+<a id="paos-m5"></a>
+
+### Группа PAOS-M5 — подключение ChatGPT и командная работа
+
+Source status: owner-approved planning change, 2026-11-13; implementation_not_started. M5 объединяет существующие PAOS-0047/0052/0053; новые задачи не создаются. Группы модульного владения G11/G12 сохраняются: M5 — delivery stage, а не новая группа модулей G13. Общие 56 задач / 12 групп / 776 ч и порядок 54–56 неизменны; M5 — 60 ч (20 + 24 + 16), rough estimate, не срок поставки. Исторические OPTIONAL/T1 означают соответствующие ветки нынешнего M5.
+
+| Задача / владелец | Функции и продуктовая ценность | Технический подход | Приёмка и evidence owner |
+| --- | --- | --- | --- |
+| PAOS-0047, connection owner; security reviewer и tester | Подключение в Settings через Sign in with ChatGPT, состояние аккаунта/доступности, повторный вход и продолжение сессии. Цель — разрешённая работа из PAOS без второго рабочего приложения для eligible пользователя; это ещё не доказанная возможность PAOS. | После подтверждения admission: отдельный OAuth/PKCE adapter, защищённые credentials, Codex app-server, capability checks, refresh/restart/resume и dedup операций. Существующий owner-default App route и explicit API compatibility не переключаются автоматически. | Авторизованный runtime/browser сценарий доказывает выполнение, доступ к выбранной модели и отсутствие повторных side effects после reconnect; отказ/истечение/unsupported capability объяснены; secrets не попадают в tools/logs. Результаты владеющей карточки собирает tester. |
+| PAOS-0052, team architect/storage owner и tester | Общее состояние задач, доски, Comments/History и поиска для участников; права доступа и обнаружение конфликтов вместо перезаписи чужих изменений. Workspace/membership UX и конкретные роли уточняются до кода. | Server API + PostgreSQL, отдельное хранение blobs, тот же domain contract, versioned migrations/revisions, authorization + RLS, очищаемый tenant context в pool. Сначала lexical search; semantic retrieval через versioned pgvector index только после embedding/privacy/cost решения. | Реальная PostgreSQL: два участника видят согласованные данные, stale edit отклоняется без потери работы; negative tenant/pool/search/blob checks; backup/restore и lexical fallback. Architect утверждает design, tester владеет проверками ST-10. |
+| PAOS-0053, transfer owner и tester | Мастер переноса: workspace → состав/исключения → identity mapping → preview конфликтов → подтверждение → командный проект; задачи, история и вложения сохраняются. | Versioned logical export/import со stable UUID/keys, staging, counts/hashes/FK, freeze/final delta и переключением одной authority; local snapshot read-only после switch. Credentials, pending approvals/commands не переносятся. | ST-11/ST-AC-08: collisions, source drift, repeat import, interrupted transfer и rollback проверены; ссылки/авторство/blobs сохранены; отсутствуют две writable копии и повторный запуск старых операций. Evidence owner — tester вместе с transfer owner. |
+
+**Порядок и входные gates.** Сначала для team-ветки согласовать hosting, вход в PAOS, workspace membership/роли, runtime placement, scope локального исполнителя или runner, blob/backup и embedding/privacy/cost policy; затем PAOS-0052 → PAOS-0053 по существующим depends_on. Наличие общей БД не доказывает удалённое выполнение агентов. SIWC не является логином в командный workspace и не выдаёт права участника. PAOS-0047 идёт независимой веткой после admission; отсутствие допуска не блокирует team-ветку. M5 не блокирует локальный M4.
+
+**Готовность и границы.** Статусы всех трёх карточек planned; actual timestamps/durations остаются null. Это утверждённая группировка и план функций, не plan_ready для реализации: admission PAOS-0047 — approval_required, team architecture/auth/roles/runtime решения — applicable_missing до design review. Подробные scenario → check → evidence и ownership уточняются в существующих карточках до build; product value здесь — ожидаемый результат, не измеренный эффект. Пилот и его метрики согласуются отдельно. Текущий запрос не разрешает provider calls, регистрацию OAuth, hosting/deployment, real-data transfer, публикацию или новые credentials; SSO, billing и bidirectional offline sync не входят в M5. Откат будущего transfer после новых team writes требует reconciliation, не простого переключателя назад.
+
+**Проверка изменения плана.** PAOS-WEB-M5-PLAN-2026-11-13: docs/matrix/state checks и preservation review; результаты текущего запуска записываются в RUNLOG.md. Runtime/DB/SIWC/pilot acceptance этих карточек не выполняется. Coding-standard/ATDD/runtime gates для самой правки планирования not_applicable: исполняемый код не меняется; они сохраняются для будущей реализации.
 
 ### Матрица M1 DoD и граница последующих этапов
 
@@ -2440,7 +2461,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Опциональный Sign in with ChatGPT
 - Status: planned
-- Delivery stage: OPTIONAL
+- Delivery stage: M5
 - Execution order: 54
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
@@ -2464,7 +2485,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: builder, security-privacy-supply-chain-reviewer, tester
 - Skills: implementation-planner; task-matching skills selected at start
 - Output artifacts: apps/local-service/src/connections/siwc; apps/web/src/settings/connections
-- Next step: Подтвердить зависимости, доступность route и отдельный implementation scope
+- Next step: M5: подтвердить зависимости и admission для точного route; затем согласовать отдельный implementation scope. Отсутствие admission не блокирует PAOS-0052/0053.
 - Actual time: not_started; start/end/duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-auth-commercial-2026-11-09.md
 - Affected files: proposed paths above; actual create/modify/delete receipts only after execution.
@@ -2665,7 +2686,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Командный профиль PostgreSQL и pgvector
 - Status: planned
-- Delivery stage: T1
+- Delivery stage: M5
 - Execution order: 55
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
@@ -2675,13 +2696,13 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Depends on: PAOS-0048, PAOS-0049, PAOS-0051, PAOS-0030
 - Blocks: PAOS-0053
 - Source: PRD §17; architecture §21; plan v0.7; audit WA-01–13
-- Short description: После отдельного T1 решения реализовать server repository, dialect migrations, tenancy/RLS, lexical и versioned vector index; hosting/auth/runtime design gate до кода
-- Technical value: После отдельного T1 решения реализовать server repository, dialect migrations, tenancy/RLS, lexical и versioned vector index; hosting/auth/runtime design gate до кода
+- Short description: После отдельного M5 team design/start решения реализовать server repository, dialect migrations, tenancy/RLS, lexical и versioned vector index; hosting/auth/runtime design gate до кода
+- Technical value: После отдельного M5 team design/start решения реализовать server repository, dialect migrations, tenancy/RLS, lexical и versioned vector index; hosting/auth/runtime design gate до кода
 - Product value: Команда работает с общим актуальным состоянием и поиском в пределах своих прав.
 - Scope: apps/server/src/storage/postgres; apps/server/src/search; packages/contracts/tenancy
 - Non-goals: Не менять глобальные permissions/hooks; не делать local semantic store или bidirectional sync; внешние операции отдельно разрешаются
 - Expected result: Командный профиль PostgreSQL и pgvector — реализовано и проверено в назначенном этапе
-- Acceptance criteria: ST-10: domain parity, negative tenant/pool tests, filtered search; embedding model/privacy approved; lexical fallback; hosting/auth/runtime placement согласованы; local M4 не зависит от T1
+- Acceptance criteria: ST-10: domain parity, negative tenant/pool tests, filtered search; embedding model/privacy approved; lexical fallback; hosting/auth/runtime placement согласованы; local M4 не зависит от M5
 - Verification gates: Focused contract/failure-injection tests; migration/restore fixtures; relevant browser journey; real DB acceptance before closure
 - Risks / approval gates: RLS bypass; provider data disclosure/cost; dialect mismatch; отсутствие team authorization design
 - Complexity: medium/high, уточнить после discovery
@@ -2689,7 +2710,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/server/src/storage/postgres; apps/server/src/search; packages/contracts/tenancy
-- Next step: Завершить зависимости; подтвердить schema/ownership и проверки до реализации
+- Next step: M5 team design gate: согласовать hosting/auth/roles/runtime placement, blob/backup и embedding/privacy/cost; подтвердить schema/ownership и проверки до реализации. PAOS-0047 не prerequisite.
 - Actual time: not_started; start/end/duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-storage-research-2026-11-09.md.
 - Affected files: proposed paths above; create/modify/delete receipts recorded after execution.
@@ -2710,7 +2731,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 - Task: Перенос local проекта в team workspace
 - Status: planned
-- Delivery stage: T1
+- Delivery stage: M5
 - Execution order: 56
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
@@ -2734,7 +2755,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Agents: architect, builder, tester
 - Skills: implementation-planner; task-matching implementation/verification skills selected at start
 - Output artifacts: apps/server/src/import-export; apps/local-service/src/import-export/team; apps/web/src/projects/transfer
-- Next step: Завершить зависимости; подтвердить schema/ownership и проверки до реализации
+- Next step: M5: после PAOS-0052/0056 согласовать target workspace, identity mapping, freeze/final delta, rollback и проверки; затем отдельный transfer implementation scope.
 - Actual time: not_started; start/end/duration = null.
 - Project artifacts: product-agent-os-web-prd-2026-11-05.md; product-agent-os-web-architecture-2026-11-05.md; product-agent-os-web-storage-research-2026-11-09.md.
 - Affected files: proposed paths above; create/modify/delete receipts recorded after execution.

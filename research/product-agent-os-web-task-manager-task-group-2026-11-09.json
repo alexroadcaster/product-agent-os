@@ -4810,7 +4810,7 @@
         "PAOS-0046"
       ],
       "execution_order": 54,
-      "delivery_stage": "OPTIONAL"
+      "delivery_stage": "M5"
     },
     {
       "id": "PAOS-0048",
@@ -5020,8 +5020,8 @@
       "group_id": "G12",
       "title": "Командный профиль PostgreSQL и pgvector",
       "status": "planned",
-      "short_description": "После отдельного T1 решения реализовать server repository, dialect migrations, tenancy/RLS, lexical и versioned vector index; hosting/auth/runtime design gate до кода",
-      "technical_value": "После отдельного T1 решения реализовать server repository, dialect migrations, tenancy/RLS, lexical и versioned vector index; hosting/auth/runtime design gate до кода",
+      "short_description": "После отдельного M5 team design/start решения реализовать server repository, dialect migrations, tenancy/RLS, lexical и versioned vector index; hosting/auth/runtime design gate до кода",
+      "technical_value": "После отдельного M5 team design/start решения реализовать server repository, dialect migrations, tenancy/RLS, lexical и versioned vector index; hosting/auth/runtime design gate до кода",
       "product_value": "Команда работает с общим актуальным состоянием и поиском в пределах своих прав.",
       "affected_files": [
         {
@@ -5051,7 +5051,7 @@
         "product-agent-os-web-storage-research-2026-11-09.md"
       ],
       "acceptance_criteria": [
-        "ST-10: domain parity, negative tenant/pool tests, filtered search; embedding model/privacy approved; lexical fallback; hosting/auth/runtime placement согласованы; local M4 не зависит от T1"
+        "ST-10: domain parity, negative tenant/pool tests, filtered search; embedding model/privacy approved; lexical fallback; hosting/auth/runtime placement согласованы; local M4 не зависит от M5"
       ],
       "estimated_duration_hms": "24:00:00",
       "estimate_status": "rough_planning_estimate_not_commitment",
@@ -5067,7 +5067,7 @@
         "PAOS-0030"
       ],
       "execution_order": 55,
-      "delivery_stage": "T1"
+      "delivery_stage": "M5"
     },
     {
       "id": "PAOS-0053",
@@ -5119,7 +5119,7 @@
         "PAOS-0052"
       ],
       "execution_order": 56,
-      "delivery_stage": "T1"
+      "delivery_stage": "M5"
     },
     {
       "id": "PAOS-0054",
@@ -5383,7 +5383,7 @@
     "team": "postgresql_pgvector",
     "local_semantic_search": "not_in_M1",
     "task_authority": "sql_after_verified_project_cutover",
-    "team_stage": "T1_after_local_M4_not_blocking",
+    "team_stage": "M5_team_after_local_M4_not_blocking",
     "schema_source": "product-agent-os-web-architecture-2026-11-05.md#21-контракты-m1-после-аудита--v07",
     "requirements": "ST-01–12",
     "acceptance_scenarios": "ST-AC-01–08",
@@ -5413,10 +5413,10 @@
     }
   },
   "execution_plan": {
-    "revision": "0.8",
-    "approved_at": "2026-11-10",
+    "revision": "0.9",
+    "approved_at": "2026-11-13",
     "status": "user_selected_order_implementation_started",
-    "order_semantics": "Serial planning baseline; depends_on remains the technical DAG. Optional stage may be skipped and does not block T1. No scheduler or execution authorization.",
+    "order_semantics": "Serial planning baseline; depends_on remains the technical DAG. M5 groups PAOS-0047/0052/0053. PAOS-0047 remains optional/admission-gated and does not block the team branch PAOS-0052 -> PAOS-0053; team design/start is required. No scheduler or execution authorization.",
     "stages": [
       {
         "stage": "M1",
@@ -5512,23 +5512,32 @@
         "estimated_hours": 52
       },
       {
-        "stage": "OPTIONAL",
-        "title": "Sign in with ChatGPT",
-        "optional": true,
-        "task_ids": [
-          "PAOS-0047"
-        ],
-        "estimated_hours": 20
-      },
-      {
-        "stage": "T1",
-        "title": "Командная версия после отдельного design/start",
+        "stage": "M5",
+        "title": "Подключение ChatGPT и командная работа",
         "optional": false,
         "task_ids": [
+          "PAOS-0047",
           "PAOS-0052",
           "PAOS-0053"
         ],
-        "estimated_hours": 40
+        "estimated_hours": 60,
+        "optional_task_ids": [
+          "PAOS-0047"
+        ],
+        "legacy_stage_mapping": {
+          "OPTIONAL": [
+            "PAOS-0047"
+          ],
+          "T1": [
+            "PAOS-0052",
+            "PAOS-0053"
+          ]
+        },
+        "entry_gates": [
+          "PAOS-0047: confirmed admission and separately authorized exact route",
+          "PAOS-0052/0053: approved hosting/auth/roles/runtime/storage/embedding/privacy/cost design before build"
+        ],
+        "implementation_authorized": false
       }
     ]
   },

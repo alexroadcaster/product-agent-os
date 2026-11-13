@@ -1,5 +1,12 @@
 # Product-Agent OS Web — PRD
 
+Уточнение Settings UX,13.11.2026: native Explorer folder selection/New folder → explicit Add → bounded source/JS/TS scan; cancel не регистрирует проект. App-agent handoff открывает server-built Codex draft, требует явного Send и сохраняет waiting до actual worker attach; URI open не доказывает host/model entitlement. Existing BYOK/approval/commercial boundaries сохранены. [Source contracts, official links и evidence](product-agent-os-web-m1-execution-2026-11-11.md).
+
+
+Startup UX13-11-2026: запуск приложения открывает рабочий экран без копирования pairing code/MessageBox. Session/CSRF остаются обязательными; guarded browser navigation имеет отдельный trust ceiling. Старый service требует штатного Quit/restart без потери профиля. [Acceptance и evidence](product-agent-os-web-m1-execution-2026-11-11.md#запуск-без-ручного-сопряжения--2026-11-13). M5/ChatGPT/team scope и статусы не меняются.
+
+Актуализация планирования 13-11-2026: **M5 — «Подключение ChatGPT и командная работа»** объединяет PAOS-0047 (optional/admission), PAOS-0052 и PAOS-0053 (team design/storage/transfer). Прежние OPTIONAL/T1 — исторические обозначения этих веток. Текущая группировка, функции, ценность и gates: [план v0.9](product-agent-os-web-task-manager-plan-2026-11-09.md#paos-m5). Все три задачи planned; M4 не зависит от M5, team-ветка не зависит от SIWC. Это изменение плана, без допуска, реализации или активации.
+
 Актуализация 11-11-2026: Codex App agents — выбранный owner-default маршрут без API key; его текущий контракт и предел доказательств приведены в новом App-agent addendum в конце документа. Прежний API-only/closed-App baseline ниже сохранён как история и explicit compatibility; он не определяет новый default.
 
 Актуализация 2026-11-10: **v0.7 — согласованный контракт M1 после аудита**. Текущий scope — §17; storage — §16 с профилем M1; runtime — §15. Требования полного Task Manager §13–§14 сохранены для M2–M3. [План: 56 задач / 12 групп](product-agent-os-web-task-manager-plan-2026-11-09.md), [авторизация и коммерческие ограничения](product-agent-os-web-auth-commercial-2026-11-09.md).
@@ -58,8 +65,11 @@ JTBD: «Когда я возвращаюсь к проекту или даю AI 
 | M2 — Полный Task Manager | Управлять задачами, контекстом, агентами, скиллами и графом | G02–G06/G09, Kanban/links, workflow editor PAOS-0036, proposals, manual CRUD и версии | Неограниченное unattended выполнение |
 | M3 — Настраиваемая автономность | Выполнять цепочки агентов по разрешённой политике | Execution recipes/PAOS-0037, ownership, budgets, queue, bounded repair, статистика | Automatic deployment, shared multi-tenant editing |
 | M4 — Проверка и выпуск | Проверить полный путь и выбранную коммерческую модель | Accessibility, install/update/restore, pilot и AUTH-G1–G6 | SIWC без admission; обещание паритета с Codex App |
+| M5 — Подключение ChatGPT и командная работа | Подключить разрешённый ChatGPT route и перейти от личного проекта к общим задачам команды | PAOS-0047 (conditional SIWC), PAOS-0052 (team storage/search/access), PAOS-0053 (verified transfer); отдельный team design/start | Admission по умолчанию, remote runtime без design, bidirectional sync, SSO/billing и deployment без отдельного решения |
 
 **MVP = обсуждение → задача → Codex run → проверяемый результат в PAOS.** Выполнение включено уже в M1. Старые M1–M3/A0–A6 и stage labels в исходных §6–§12 ниже — историческая декомпозиция, заменённая §15. Требования безопасности/authority и acceptance сценарии сохраняются; новый stage mapping — в §17.
+
+Для M5 базовые workspace membership/authorization входят в отдельный team design; SSO и остальные исключения ниже сохраняются.
 
 Общие non-goals: собственная IDE/терминал, перенос SOL backend целиком, обязательная цепочка из десяти ролей, новый multi-provider framework, marketplace, voice, billing, cloud sync, remote access, SSO/RBAC, мобильное выполнение, автоматическая правка prompts/hooks/permissions.
 

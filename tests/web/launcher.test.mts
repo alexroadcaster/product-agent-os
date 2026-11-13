@@ -5,6 +5,14 @@ import { createServiceSupervisor } from '../../apps/local-service/src/supervisor
 
 const expected = { serviceBuild: 'test-build', runtime: { version: '0.167.0', sha256: 'a'.repeat(64) } };
 
+test('an old running service needs an explicit restart and is never stopped by the new launcher',async()=>{
+ let opened=false;
+ const result=await launch({inspectRuntime:async()=>null,claimInstance:async()=>({kind:'existing',service:{instanceId:'old',port:41821,
+  health:async()=>({instanceId:'old',build:'test-build',alive:true,sourceReaderReady:true,runtimeCapable:false})}}),
+  openUi:async()=>{opened=true;}},{...expected,browserLaunchVersion:1});
+ assert.equal(result.status,'service_restart_required');assert.equal(opened,false);
+});
+
 test('opens the loopback UI in local mode when the runtime is missing', async () => {
   const opened: string[] = [];
   const modes: string[] = [];

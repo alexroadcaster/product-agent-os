@@ -20,6 +20,7 @@ import type {AppAgentBinding} from './runtime/app-agent-gateway.mts';
 import {createWindowsCredentialStore} from './connections/windows-credential-store.ts';
 import {bindProfile,assertProfileIdentity,createProfileScopedStore} from './connections/profile-identity.mts';
 import {createDomainTools} from './commands/domain-tools.mts';
+import {createNativeDesktop} from './desktop/native-desktop.mts';
 import {requestPendingLinkStop} from './task-manager/service.mts';
 import {inspectConfiguredRuntime} from '../../../packages/contracts/runtime/manifest.mts';
 import {inspectLegacyWriterInventory} from './commands/writer-inventory.mts';
@@ -70,6 +71,7 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
  sandboxBrokerFactory?:false|((binding:AppAgentBinding)=>Promise<SandboxBroker>);
  assetRoots?:AssetRoot[];
  createRecipes?:typeof createRecipeService;
+ desktop?:ReturnType<typeof createNativeDesktop>;
 }>={}) {
  if(!isAbsolute(options.profileDirectory)||options.profileDirectory.startsWith('\\\\')||!options.instanceId)throw failure('PROFILE_INVALID');
  await(deps.prepareProfile??(async(profile)=>{await mkdir(profile,{recursive:true,mode:0o700});}))(options.profileDirectory);
@@ -78,6 +80,7 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
   {id:'global-codex-skills',path:join(options.appCodexHome??join(homedir(),'.codex'),'skills'),scope:'global',kind:'skill'},
   {id:'global-agents-skills',path:join(homedir(),'.agents','skills'),scope:'global',kind:'skill'}];
  const store=await(deps.openStore??openLocalStore)({databasePath:join(profileDirectory,'state.sqlite'),assetRoots});
+ const desktop=deps.desktop??createNativeDesktop();
  let qualified=false;let providerAuthority=false;let stopping=false;
  try {qualified=(await inspectConfiguredRuntime(profileDirectory)).qualified;} catch {qualified=false;}
  let stopPendingAgentLink:((input:{projectId:string;linkId:string})=>Promise<unknown>)|undefined;
@@ -172,7 +175,7 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
   agentChannel=await createAppAgentChannel({profileDirectory,instanceId:options.instanceId,origin,profileId:profile.profileId,
    assertProfile:()=>assertProfileIdentity(profile),dispatch:(action,input)=>appGateway.agent(action,input)});
   application=await(deps.createApplication??createLocalApplication)({store,origin,instanceId:options.instanceId,profileDirectory,assetRoots,
-   staticDirectory:fileURLToPath(new URL('../../web/dist/',import.meta.url)),connection,runtime,agentChannel,executionRecipes,scheduler,
+   staticDirectory:fileURLToPath(new URL('../../web/dist/',import.meta.url)),connection,runtime,agentChannel,executionRecipes,scheduler,desktop,
    runtimeCapable:()=>connection.status().route==='local_api_byok'?qualified:appGateway.connection.status().verified,
    onQuit:()=>{if(!process.send||!process.connected)throw failure('OWNER_UNAVAILABLE');process.send({type:'quit_requested'},()=>{});},
    writerInventory:async(projectId)=>{const project=await store.project(projectId);if(!project)throw failure('PROJECT_NOT_FOUND');return inspectLegacyWriterInventory(project.canonicalRoot);}});
@@ -180,6 +183,7 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
   async function quit() {
    shutdown??=(async()=>{
     stopping=true;application!.revokeSessions();
+    await desktop.close(); // Cancel our dialog before draining the request waiting for its result.
     serverClosing??=new Promise<void>((resolve,reject)=>server.close((error)=>error?reject(error):resolve()));
     const failures:unknown[]=[];
     if(!gatewayClosed){
@@ -198,7 +202,7 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
   }
   return {port:address.port,instanceId:options.instanceId,build:'paos-m1-0.1.0',pairingCode:application.issuePairingCode(),
    appAgentDescriptorPath:agentChannel.descriptorPath,quit};
- } catch(error){server.close();await scheduler.close();await executionRecipes.close();await Promise.allSettled([appGateway.close(),gateway.close(),agentChannel?.close()]);await store.close();throw error;}
+ } catch(error){server.close();await scheduler.close();await executionRecipes.close();await Promise.allSettled([appGateway.close(),gateway.close(),agentChannel?.close(),desktop.close()]);await store.close();throw error;}
 }
 
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)) {

@@ -1,5 +1,11 @@
 # TEST.md
 
+## Automatic launch — 13.11.2026
+
+`node --test tests/web/launch-bootstrap.test.mts tests/web/launcher.test.mts tests/web/launcher-native.test.mts`; `single-window/launch-bootstrap-acceptance.mts --synthetic-browser` с installed browser paths. Web487/native-browser28, TS/build/Python1450(skip1)/docs105/evals passed; [exact commands, failures, limits](research/product-agent-os-web-m1-execution-2026-11-11.md#запуск-без-ручного-сопряжения--2026-11-13).
+
+Settings,13.11.2026: Settings: `node --test tests/web/settings-desktop.test.mts`8/8; full Web495/495, TS/build exit0. Native chooser4cases и actual App/browser17cases passed; exact commands/failed receipts/full gates — [owning report](research/product-agent-os-web-m1-execution-2026-11-11.md). TEMP/TMP `.tmp/paos-settings/test-temp`.
+
 ## GAP-06 acceptance и исправление проверок — 2026-11-10
 
 GAP-06 принят владельцем; T34 и fresh-session activation отдельно открыты. Исправления locally verified: full 1450 tests (skip 1), fixtures 91/91, transcripts 26/26; актуальные проверки: [owning evidence](research/product-agent-os-audit-closeout-tooling-2026-11-10.md). Regression command: `python -B -m unittest tests.product_agent_os.test_lifecycle_hooks tests.product_agent_os.test_fixture_eval_runner -v`; затем обязательные full/fixture/transcript/compatibility/docs gates. TEMP/TMP — `.codex-tmp/audit-closeout-2026-11-10`.
@@ -21,6 +27,8 @@ G8 commands: `python -B -m unittest discover -s tests -p "test_*.py" -q`; focuse
 Уточнение владельца 10.11.2026: подробные матрицы в `docs/planning/` сохраняются целиком, default 40k size trigger исключён; оглавления/control-plane и explicit per-file limits сохраняют ограничения. Audit matrix в `research/` остаётся целой; split отложен, прежний preview не разрешён. G8-T14 и закрытие G8 явно приняты владельцем; fresh-session activation отдельно.
 
 ## Проверки Web M1 — актуальный маршрут 2026-11-10
+
+M5 planning-only, 13-11-2026: `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -v`; `python -B tools/check_docs.py`; `python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-web-task-manager-plan-2026-11-09.md`; `python -B plugins/product-agent-os/scripts/validate_task_state_consistency.py .`; `git diff --check`. Проверить MD/JSON M5 parity и preservation baseline `.tmp/paos-m5-plan/baseline`; receipts — `.tmp/paos-m5-plan/`. [M5 / план v0.9](research/product-agent-os-web-task-manager-plan-2026-11-09.md#paos-m5). Runtime/DB/SIWC acceptance не выполняется.
 
 PAOS-0030: `node --test tests/web/desktop-local.test.mts`, full Web, `npm run check:web-m1`, `npm run build:web`; `m4-packaging-acceptance.mts --approved-copy-pilot` с installed Playwright/Chromium/screenshots, включая owned native Cancel. Strict MkDocs в `.tmp/paos-m4-0030/site-final` + file-link postprocess; `$env:PAOS_DOCS_SITE_DIR='.tmp/paos-m4-0030/site-final'` для docs/full Python. Full unittest/evals/compatibility/hooks/matrix/state/docs/diff по этому TEST. [Exact commands и current receipts](research/product-agent-os-web-m4-0030-execution-2026-11-12.md).
 

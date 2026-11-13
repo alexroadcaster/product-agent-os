@@ -1,5 +1,11 @@
 # PLAN.md
 
+## Startup UX — 13.11.2026
+
+Локальное исправление: launcher → automatic guarded bootstrap → UI. Старый service завершать штатным Quit/restart; профиль сохраняется. Rollback только own hunks. [Проверки и handoff](research/product-agent-os-web-m1-execution-2026-11-11.md#запуск-без-ручного-сопряжения--2026-11-13). M5 queue/status без изменений.
+
+Settings,13.11.2026: Settings UX slice реализован: native folder/scan и App draft handoff; проверки/границы — [owning report](research/product-agent-os-web-m1-execution-2026-11-11.md). M5 plan/cards без изменений; откат — только новые Settings hunks. Старый service завершить штатным Quit перед повторным запуском.
+
 ## GAP-06 acceptance и исправление проверок — 2026-11-10
 
 GAP-06 принят владельцем; T34 и fresh-session activation отдельно открыты. Исправления locally verified: full 1450 tests (skip 1), fixtures 91/91, transcripts 26/26; актуальные проверки: [owning evidence](research/product-agent-os-audit-closeout-tooling-2026-11-10.md).
@@ -15,6 +21,8 @@ G8 closed / owner accepted. G9 T01–T09 implemented_locally_verified; T10 owner
 Уточнение владельца 10.11.2026: подробные матрицы в `docs/planning/` сохраняются целиком, default 40k size trigger исключён; оглавления/control-plane и explicit per-file limits сохраняют ограничения. Audit matrix в `research/` остаётся целой; split отложен, прежний preview не разрешён. G8-T14 и закрытие G8 явно приняты владельцем; fresh-session activation отдельно.
 
 ## Активная продуктовая очередь Web — 2026-11-10
+
+Текущая группировка 13-11-2026: [M5 / план v0.9](research/product-agent-os-web-task-manager-plan-2026-11-09.md#paos-m5) — PAOS-0047/0052/0053, 60ч, все planned; 56tasks/12module groups/776ч сохранены. Порядок54–56 прежний; 0047 optional/admission-gated, независима от 0052→0053. Следующий team шаг — design gate0052, не запуск реализации. Прежние OPTIONAL/T1 и receipts ниже исторические; M4 не зависит от M5.
 
 PAOS-0030: package179files/25.53MB, actual launcher/service88checks, native Cancel, two content revisions и rollback проверены. Следующая PAOS-0052 — PostgreSQL/pgvector team profile, отдельный T1 scope с согласованием размещения/embedding/privacy; local M4 от T1 не зависит. Другие55cards/estimates/order/groups сохраняются. [Evidence и release no-go](research/product-agent-os-web-m4-0030-execution-2026-11-12.md).
 

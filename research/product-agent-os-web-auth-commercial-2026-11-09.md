@@ -1,5 +1,12 @@
 # Product-Agent OS Web — авторизация и коммерческое использование
 
+Уточнение Settings UX,13.11.2026: native Explorer folder selection/New folder → explicit Add → bounded source/JS/TS scan; cancel не регистрирует проект. App-agent handoff открывает server-built Codex draft, требует явного Send и сохраняет waiting до actual worker attach; URI open не доказывает host/model entitlement. Existing BYOK/approval/commercial boundaries сохранены. [Source contracts, official links и evidence](product-agent-os-web-m1-execution-2026-11-11.md).
+
+
+Startup contract,13-11-2026: ручной pairing больше не основной UX. Launcher сразу открывает `/launch`; strict direct top-level browser navigation → HttpOnly challenge/proof30s → same-origin POST → session/CSRF. No URL/log/clipboard secrets, one-use/bounded challenge, unknown metadata fail closed. Это browser user intent, не launcher identity: native HTTP clients/изоляция разных OS users вне доказанного ceiling; user-originated redirect может сохранить `Sec-Fetch-Site:none`. Site-controlled links/forms/popups/redirects/iframe/fetch проверяются отдельно. Legacy pairing API совместим; MessageBox/code/60s ниже — история. [Decision, варианты и проверки](product-agent-os-web-m1-execution-2026-11-11.md#запуск-без-ручного-сопряжения--2026-11-13). Commercial/ChatGPT/provider/worker admission не меняется.
+
+Актуализация планирования 13-11-2026: **M5 — «Подключение ChatGPT и командная работа»** объединяет PAOS-0047 (optional/admission), PAOS-0052 и PAOS-0053 (team design/storage/transfer). Прежние OPTIONAL/T1 — исторические обозначения этих веток. Текущая группировка, функции, ценность и gates: [план v0.9](product-agent-os-web-task-manager-plan-2026-11-09.md#paos-m5). Все три задачи planned; M4 не зависит от M5, team-ветка не зависит от SIWC. Это изменение плана, без допуска, реализации или активации.
+
 Актуализация 11-11-2026: Codex App agents — выбранный owner-default маршрут без API key; его текущий контракт и предел доказательств приведены в новом App-agent addendum в конце документа. Прежний API-only/closed-App baseline ниже сохранён как история и explicit compatibility; он не определяет новый default.
 
 Source status: initial official-documentation baseline checked 2026-11-09; current commercial review checked 2026-11-11 in §10. Версия baseline:0.7; текущий default — App-active §8.1. Исторические API-only/16-check/blocked-M1 statements ниже не переопределяют принятую M1 и новый review; разрешение на коммерческий запуск не выдано.

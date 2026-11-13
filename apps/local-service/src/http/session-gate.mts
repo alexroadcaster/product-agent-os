@@ -37,6 +37,16 @@ export function createSessionGate({ origin, instanceId, now = Date.now }: Option
     return code;
   }
 
+  /** Session admission is internal: legacy pairing and guarded desktop navigation share these invariants. */
+  function createSession() {
+    for (const [token,session] of sessions) if (now()-session.touchedAt>=30*60_000 || now()-session.createdAt>=8*60*60_000) sessions.delete(token);
+    if (sessions.size>=64) sessions.delete(sessions.keys().next().value!);
+    const token = randomBytes(32).toString('hex');
+    const csrfToken = randomBytes(32).toString('hex');
+    sessions.set(token, { csrfToken, createdAt: now(), touchedAt: now() });
+    return { csrfToken, cookie: `${cookieName}=${token}; HttpOnly; SameSite=Strict; Path=/` };
+  }
+
   function exchange(request: Request, code: unknown) {
     validateOrigin(request, true);
     if (request.method !== 'POST' || request.headers.get('content-type')?.split(';')[0].trim() !== 'application/json') {
@@ -46,10 +56,7 @@ export function createSessionGate({ origin, instanceId, now = Date.now }: Option
     pairing.attempts++;
     if (typeof code !== 'string' || code.length > 64 || !equal(code, pairing.code)) rejected('PAIRING_INVALID');
     pairing = undefined;
-    const token = randomBytes(32).toString('hex');
-    const csrfToken = randomBytes(32).toString('hex');
-    sessions.set(token, { csrfToken, createdAt: now(), touchedAt: now() });
-    return { csrfToken, cookie: `${cookieName}=${token}; HttpOnly; SameSite=Strict; Path=/` };
+    return createSession();
   }
 
   function authorize(request: Request) {
@@ -69,5 +76,5 @@ export function createSessionGate({ origin, instanceId, now = Date.now }: Option
     return { actorId: 'local-user', csrfToken: session.csrfToken, instanceId } as const;
   }
 
-  return { issuePairingCode, exchange, authorize, validateOrigin, revokeAll: () => sessions.clear() };
+  return { issuePairingCode, exchange, createSession, authorize, validateOrigin, revokeAll: () => sessions.clear() };
 }

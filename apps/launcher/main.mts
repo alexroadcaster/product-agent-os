@@ -78,7 +78,9 @@ export async function readLoopbackHealth(endpoint:Readonly<{instanceId:string;po
  });
 }
 
-type WindowInput=Readonly<{origin:string;pairingCode?:string;owner:boolean;runtime:string}>;
+type WindowInput=Readonly<{origin:string;pairingCode?:string;owner:boolean;runtime:string;
+ /** Explicit browser adapter for bounded acceptance or an owned browser profile; never inherit a user profile. */
+ browserExecutable?:string;browserProfileDirectory?:string}>;
 /** Browser/MessageBox side effects exist only behind the explicitly invoked launcher, never at module import. */
 export async function nativeWindow(input:WindowInput,signal?:AbortSignal):Promise<'quit'|'closed'> {
  if(process.platform!=='win32'||!process.env.SystemRoot)throw new NativeLauncherError('native_ui_unavailable');
@@ -93,7 +95,9 @@ export async function nativeWindow(input:WindowInput,signal?:AbortSignal):Promis
   child.on('error',()=>reject(new NativeLauncherError('native_ui_failed')));
   child.on('close',(code)=>{signal?.removeEventListener('abort',abort);if(signal?.aborted)resolve('closed');else if(code!==0)reject(new NativeLauncherError('native_ui_failed'));else resolve(output.trim()==='quit'?'quit':'closed');});
   child.stdin.on('error',()=>reject(new NativeLauncherError('native_ui_failed')));
-  child.stdin.end(JSON.stringify(input));
+   // Legacy pairing is retained in the internal IPC contract, never sent to the native browser opener.
+   child.stdin.end(JSON.stringify({origin:input.origin,owner:input.owner,runtime:input.runtime,
+    browserExecutable:input.browserExecutable,browserProfileDirectory:input.browserProfileDirectory}));
  });
 }
 
@@ -156,7 +160,7 @@ export async function runNativeLauncher(options:Readonly<{profileDirectory:strin
    })();
    // Attach a handler immediately; launch() does not wait on human interaction.
    windowDone.catch(()=>{});
-  }},{serviceBuild:BUILD,runtime:expectedRuntime});
+  }},{serviceBuild:BUILD,runtime:expectedRuntime,browserLaunchVersion:1});
  if(result.status==='opened'&&windowDone)await windowDone;
  return result;
 }
@@ -165,6 +169,7 @@ if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
  try {
   if(process.argv.length!==4||process.argv[2]!=='--profile')throw new NativeLauncherError('profile_argument_required');
   const result=await runNativeLauncher({profileDirectory:process.argv[3]});
-  if(result.status!=='opened'){process.stderr.write(`PAOS launcher: ${result.status}\n`);process.exitCode=1;}
+  if(result.status!=='opened'){process.stderr.write(`PAOS launcher: ${result.status}\n`);
+   if(result.status==='service_restart_required')process.stderr.write('Завершите прежний экземпляр через Выход / Quit и повторите запуск. Данные профиля сохранятся.\n');process.exitCode=1;}
  } catch(error) {process.stderr.write(`PAOS launcher: ${error instanceof NativeLauncherError?error.code:'unavailable'}\n`);process.exitCode=1;}
 }

@@ -43,6 +43,8 @@ export type Project = {
   streamGeneration: string;
 };
 export type Page = { items: StoredEntity[]; hasMore: boolean };
+export type ProjectScan={state:'ready'|'partial';checkedAt:string;sources:{id:string;status:string;relativePath?:string;reason?:string}[];counts?:{files:number;nodes:number;edges:number};reason?:string;limitations?:string[]};
+export type ProjectRegistration={id:string;name:string;keyPrefix:string;authorityMode:'legacy_files'|'sql';authorityEpoch:number;scan?:ProjectScan};
 export type ConnectionRoute = "codex_app_agent" | "local_api_byok";
 export type Connection = {
   verified: boolean;
@@ -228,7 +230,9 @@ export interface M1Api {
   pair(code?: string): Promise<void>;
   quit(): Promise<{ status: "quit_requested" }>;
   projects(): Promise<Project[]>;
-  createProject(name: string, workspaceRoot: string): Promise<unknown>;
+  createProject(name:string,workspaceRoot:string,options?:{requestId:string;scan:boolean}):Promise<ProjectRegistration>;
+  selectProjectFolder(requestId:string,initialDirectory?:string,signal?:AbortSignal):Promise<{cancelled:true}|{cancelled:false;workspaceRoot:string}>;
+  openAppAgent(requestId:string):Promise<{opened:boolean;requiresSend:boolean;verified:boolean;state:string}>;
   entities(
     projectId: string,
     kind: EntityKind,
@@ -515,8 +519,9 @@ export function createHttpApi(fetcher: typeof fetch = fetch): M1Api {
         epochs.set(project.id, project.authorityEpoch);
       return result.items;
     },
-    createProject: (name, workspaceRoot) =>
-      request("/projects", { name, workspaceRoot }),
+    createProject:(name,workspaceRoot,options)=>request('/projects',{name,workspaceRoot,...options}),
+    selectProjectFolder:(requestId,initialDirectory,signal)=>request('/desktop/project-folder',{requestId,...(initialDirectory?{initialDirectory}:{})},'POST',signal),
+    openAppAgent:requestId=>request('/connection/app-handoff',{requestId}),
     entities: (id, kind, parentId, offset = 0, signal) => {
       const q = new URLSearchParams({
         kind,

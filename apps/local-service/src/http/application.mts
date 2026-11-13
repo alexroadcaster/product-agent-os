@@ -5,6 +5,9 @@ import { restoreLocalBackup, pruneManagedBackups, type LocalStore } from '../sto
 import type { EntityInput, EntityKind, StoreWrite } from '../../../../packages/contracts/storage/local-store.ts';
 import { bindProject, inspectProjectSources, readProjectSource } from '../adapters/project-sources.ts';
 import { createSessionGate } from './session-gate.mts';
+import { createBrowserLaunch } from './browser-launch.mts';
+import type {DesktopActions} from '../desktop/native-desktop.mts';
+import {appAgentHandoff} from '../desktop/app-handoff.mts';
 import { applyUserCommand, recordManualCheck, acceptTask } from '../tasks/user-commands.mts';
 import { taskManagerSnapshot, taskManagerCommand, uploadTaskAttachment, downloadTaskAttachment, resolveTaskReference, requestPendingLinkStop } from '../task-manager/service.mts';
 import { previewTaskImport, type ImportSourceInput } from '../import-export/preview.mts';
@@ -31,7 +34,8 @@ export type ApplicationOptions = {
   connection?: { status(): unknown; connect(input: unknown): Promise<unknown>; disconnect(): Promise<unknown> };
   runtime?: { snapshot(input: Record<string, unknown>): Promise<unknown>; dispatch(action: string, input: Record<string, unknown>): Promise<unknown> };
   /** Separate profile capability, never a browser cookie or a provider credential. */
-  agentChannel?: {handle(request: Request): Promise<Response>};
+  agentChannel?: {handle(request: Request): Promise<Response>;descriptorPath?:string};
+  desktop?:Pick<DesktopActions,'selectProjectDirectory'|'openCodexDraft'>;
   assetRoots?:AssetRoot[];
   executionRecipes?:ReturnType<typeof createRecipeService>;
   scheduler?:ReturnType<typeof createScheduler>;
@@ -82,6 +86,18 @@ export async function createLocalApplication(options: ApplicationOptions) {
   const artifacts=createArtifactCatalog(store,codeIndex);
   const skillGeneration=createSkillGeneration(store,team,options.runtime);
   const gate = createSessionGate({ origin, instanceId });
+  const browserLaunch = createBrowserLaunch({gate,instanceId});
+  // Join bounded per-instance retries without opening a second dialog or registering a second project.
+  const desktopReceipts=new Map<string,{fingerprint:string;expiresAt:number;result:Promise<any>;settled:boolean}>();
+  function once(kind:string,input:Record<string,unknown>,operation:()=>Promise<any>){
+    if(typeof input.requestId!=='string'||!/^[-A-Za-z0-9_]{1,100}$/.test(input.requestId))fail('INVALID_REQUEST');
+    for(const [key,value] of desktopReceipts)if(value.settled&&value.expiresAt<Date.now())desktopReceipts.delete(key);
+    const key=kind+':'+input.requestId,fingerprint=JSON.stringify(input),previous=desktopReceipts.get(key);
+    if(previous){if(previous.fingerprint!==fingerprint)fail('REQUEST_CONFLICT');return previous.result;}
+    if(desktopReceipts.size>=32){const disposable=[...desktopReceipts].find(([,v])=>v.settled)?.[0];if(!disposable)fail('DESKTOP_REQUESTS_BUSY');desktopReceipts.delete(disposable);}
+    const result=Promise.resolve().then(operation),entry={fingerprint,expiresAt:Date.now()+600000,result,settled:false};
+    desktopReceipts.set(key,entry);void result.then(()=>{entry.settled=true;},()=>{entry.settled=true;});return result;
+  }
   const migration = createMigrationManager({ store, profileDirectory,
     inventory: options.writerInventory ?? (async () => ({ complete: false, entries: [] })) });
   const cursorSecret = randomUUID();
@@ -142,8 +158,10 @@ export async function createLocalApplication(options: ApplicationOptions) {
     try {
       const url = new URL(request.url);
       gate.validateOrigin(request, request.method !== 'GET' && request.method !== 'HEAD');
+      if(url.pathname==='/launch')return browserLaunch.navigate(request);
+      if(url.pathname==='/bootstrap/launch')return browserLaunch.exchange(request,(await body(request,1024)).proof);
       if (url.pathname === '/health' && request.method === 'GET') return json({ instanceId, build: 'paos-m1-0.1.0',
-        alive: true, sourceReaderReady: true, runtimeCapable: options.runtimeCapable?.() === true });
+        alive: true, sourceReaderReady: true, runtimeCapable: options.runtimeCapable?.() === true, browserLaunchVersion:1 });
       if (['/bootstrap/exchange', '/api/v1/bootstrap/exchange'].includes(url.pathname) && request.method === 'POST') {
         const paired = gate.exchange(request, (await body(request)).code);
         return new Response(JSON.stringify({ csrfToken: paired.csrfToken, instanceId, actorId: 'local-user' }),
@@ -159,13 +177,32 @@ export async function createLocalApplication(options: ApplicationOptions) {
       }
       const principal = gate.authorize(request);
       const path = url.pathname.replace(/^\/api\/v1/, '');
+      if(path==='/desktop/project-folder'&&request.method==='POST'){
+        const input=await body(request,8192);if(Object.keys(input).some(k=>!['requestId','initialDirectory'].includes(k))||input.initialDirectory!==undefined&&(typeof input.initialDirectory!=='string'||input.initialDirectory.length>4096))fail('INVALID_REQUEST');
+        return json(await once('folder',input,async()=>{if(!options.desktop)fail('DESKTOP_UNAVAILABLE');return options.desktop.selectProjectDirectory(request.signal,input.initialDirectory as string|undefined);}));
+      }
+      if(path==='/connection/app-handoff'&&request.method==='POST'){
+        const input=await body(request,4096);if(Object.keys(input).some(k=>k!=='requestId'))fail('INVALID_REQUEST');
+        return json(await once('app-handoff',input,async()=>{
+          if(!options.desktop||!options.agentChannel?.descriptorPath||!options.connection)fail('APP_HANDOFF_UNAVAILABLE');
+          let state=options.connection.status() as Record<string,unknown>;
+          if(state.route!=='codex_app_agent'){
+            if(state.verified===true||['connected','connecting','waiting_for_worker'].includes(String(state.state)))fail('APP_ROUTE_REQUIRED');
+            state=await options.connection.connect({route:'codex_app_agent',connectionId:'codex-app'}) as Record<string,unknown>;
+          }
+          if(state.verified===true)return {opened:false,requiresSend:false,verified:true,state:state.state};
+          if(!['waiting_for_worker','connected'].includes(String(state.state)))state=await options.connection.connect({route:'codex_app_agent',connectionId:'codex-app'}) as Record<string,unknown>;
+          const handoff=appAgentHandoff(options.agentChannel.descriptorPath,'paos-ui-'+randomUUID());
+          await options.desktop.openCodexDraft(handoff.url,request.signal);return {opened:true,requiresSend:true,verified:false,state:state.state};
+        }));
+      }
       if (path === '/session' && request.method === 'GET') return json(principal);
       if (path === '/quit' && request.method === 'POST') {
         if (!options.onQuit) fail('OWNER_UNAVAILABLE');
         options.onQuit();
         return json({ status: 'quit_requested' }, 202);
       }
-      if (path === '/logout' && request.method === 'POST') { gate.revokeAll(); return json({ revoked: true }); }
+      if (path === '/logout' && request.method === 'POST') { gate.revokeAll(); browserLaunch.revoke(); return json({ revoked: true }); }
       if (path === '/preferences') {
         if (request.method === 'GET') return json(await loadUiPreferences(preferencesStore));
         if (request.method === 'PUT') {
@@ -197,14 +234,27 @@ export async function createLocalApplication(options: ApplicationOptions) {
         }
         if (request.method === 'POST') {
           const input = await body(request);
+          if(Object.keys(input).some(k=>!['name','workspaceRoot','keyPrefix','legacySource','requestId','scan'].includes(k))||input.scan!==undefined&&typeof input.scan!=='boolean')fail('INVALID_REQUEST');
+          const register=async()=>{
           const name = string(input.name);
           const binding = await bindProject(randomUUID(), string(input.workspaceRoot));
-          const keyPrefix = typeof input.keyPrefix === 'string' ? input.keyPrefix : name.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 4).padEnd(4, 'X');
+          let keyPrefix = typeof input.keyPrefix === 'string' ? input.keyPrefix : name.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 4).padEnd(4, 'X');
+          if(input.keyPrefix===undefined){const used=new Set((await store.projects()).map(p=>p.keyPrefix));for(let attempt=0;used.has(keyPrefix)&&attempt<16;attempt++)keyPrefix=[...randomUUID().slice(0,4)].map(c=>String.fromCharCode(65+parseInt(c,16))).join('');}
           if (!/^[A-Z]{4}$/.test(keyPrefix)) fail('INVALID_PROJECT_KEY');
+          const fresh=await bindProject(binding.projectId,binding.workspaceRoot);if(fresh.directoryIdentity!==binding.directoryIdentity)fail('PROJECT_ROOT_UNAVAILABLE');
           const project = await store.registerProject({ id: binding.projectId, keyPrefix, displayName: name,
             canonicalRoot: binding.workspaceRoot, rootIdentity: binding.directoryIdentity,
             authorityMode: input.legacySource === true ? 'legacy_files' : 'sql' });
-          return json({ id: project.id, name, keyPrefix, authorityMode: project.authorityMode, authorityEpoch: project.authorityEpoch }, 201);
+          let scan:Record<string,unknown>|undefined;
+          if(input.scan===true){
+            // A scan failure cannot turn the committed registration into a failed Add/retry.
+            scan={state:'partial',checkedAt:new Date().toISOString(),sources:[]};
+            try{const sources=await inspectProjectSources(binding,binding.projectId);scan.sources=sources.sources;const graph=await codeIndex.rebuild(project.id);scan={...scan,state:graph.coverage?.some(c=>c.status!=='indexed')?'partial':'ready',counts:graph.counts,revision:graph.revision,limitations:graph.limitations};}
+            catch(error){scan.reason=typeof (error as any)?.code==='string'?(error as any).code:'PROJECT_SCAN_UNAVAILABLE';}
+          }
+          return {id:project.id,name,keyPrefix,authorityMode:project.authorityMode,authorityEpoch:project.authorityEpoch,...(scan?{scan}:{})};
+          };
+          return json(await(input.requestId===undefined?register():once('project',input,register)),201);
         }
       }
       const route = /^\/projects\/([^/]+)(?:\/(.*))?$/.exec(path);
@@ -436,7 +486,7 @@ export async function createLocalApplication(options: ApplicationOptions) {
       const code = typeof (error as { code?: unknown }).code === 'string' ? (error as { code: string }).code : 'INVALID_REQUEST';
       const category = code.toUpperCase();
       const status = ['SESSION_REQUIRED', 'PAIRING_INVALID'].includes(category) ? 401
-        : ['ORIGIN_REJECTED', 'CSRF_INVALID'].includes(category) ? 403 : category === 'JSON_REQUIRED' ? 415
+        : ['ORIGIN_REJECTED', 'CSRF_INVALID', 'LAUNCH_REJECTED'].includes(category) ? 403 : category === 'JSON_REQUIRED' ? 415
         : /NOT_FOUND/.test(category) ? 404 : category === 'REQUEST_TOO_LARGE' ? 413
         : /CONFLICT|REQUIRED|UNAVAILABLE|AUTHORITY|FORBIDDEN|BLOCKED|UNVERIFIED|UNQUALIFIED|DRIFT|BUSY|STALE|PRIVATE/.test(category) ? 409 : 400;
       const cyclePath=(error as any)?.cyclePath;
@@ -444,5 +494,5 @@ export async function createLocalApplication(options: ApplicationOptions) {
         ?{details:{cyclePath,cyclePathTruncated:(error as any).cyclePathTruncated===true}}:{}) } }, status);
     }
   }
-  return { handleRequest, issuePairingCode: gate.issuePairingCode, revokeSessions: gate.revokeAll };
+  return { handleRequest, issuePairingCode: gate.issuePairingCode, revokeSessions: () => {gate.revokeAll();browserLaunch.revoke();} };
 }
