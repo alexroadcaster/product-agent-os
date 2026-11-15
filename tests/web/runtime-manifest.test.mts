@@ -4,6 +4,8 @@ import { inspectRuntimeTuple, adapterRevision, type RuntimeManifest } from '../.
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
+import { createHash } from 'node:crypto';
+import { readFile } from 'node:fs/promises';
 
 const manifest: RuntimeManifest = {
   schemaVersion: 'paos_runtime_manifest_v1', qualification: 'native_offline',
@@ -45,4 +47,13 @@ test('pins executable host admission, HTTP guards and storage alongside the runt
     assert.notEqual(await adapterRevision(root), initial, area);
     await writeFile(join(root, area, 'fixture.mts'), 'export const revision = 1;');
   }
+});
+
+test('checked-in native qualification matches the current dependency lock and executable sources', async () => {
+  const qualified: RuntimeManifest = JSON.parse(await readFile(new URL('../../packages/contracts/runtime/qualified-manifest.json', import.meta.url), 'utf8'));
+  const packageLock = await readFile(new URL('../../apps/web/package-lock.json', import.meta.url));
+  assert.equal(qualified.packageLockSha256, createHash('sha256').update(packageLock).digest('hex'),
+    'Dependency drift requires native candidate acceptance before promoting the qualified manifest');
+  assert.equal(qualified.adapterRevision, await adapterRevision(),
+    'Executable source drift requires native candidate acceptance before promoting the qualified manifest');
 });

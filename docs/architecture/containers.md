@@ -15,3 +15,7 @@ Source status: repository_source / static_architecture_map; 15.11.2026.
 | Python plugin | Собственный lifecycle/discovery/staging package с отдельными интерфейсами | [README](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/plugins/product-agent-os/README.md); наличие пакета не устанавливает универсальный runtime bridge |
 
 Текущая карта не заменяет будущие module guides DOCS-04–15. Отдельные запланированные PoC и карта БД принадлежат [функциональному плану](../planning/functional-remediation-2026-11-15.md). [Диаграмма](../diagrams/paos-application-architecture.md) не показывает новую интеграцию Python с Web как доказанный обязательный runtime путь.
+
+## Общие contracts — FUNC-08
+
+В текущем checkout чистые preferences (`packages/contracts/ui/preferences.ts`) и строгий M1 decoder (`packages/contracts/tasks/decode-task-profile.ts`) принадлежат общему слою contracts. React и local service импортируют одного владельца; shared contracts не импортируют `apps`. DOM apply остаётся в Web, прежние import paths доступны через re-export без второй реализации. Обоснование, альтернативы, packaging limits и final native requalification — [backend modules](../backend/modules.md#текущие-зависимости-между-слоями). HTTP payload/schema и границы authority не менялись; AST regression и existing decoder/preferences checks защищают этот перенос.

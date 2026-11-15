@@ -1,17 +1,20 @@
 # Product-Agent OS — функциональные доработки после V3
 
-Source status: repository_source / static_audit / owner_requested_planning; implementation_not_started.
+Source status: repository_source / current_local_synthetic_implementation; remaining_tasks_planned.
 Дата планирования: 15.11.2026. Timezone: Europe/Moscow. Schema version: task_matrix_plan_v1.
+
+<!-- func-g01-status -->
+FUNC-G01: 7/7 implemented / locally_verified; всего 7 implemented / 27 planned; остальные группы и 3 M5 references сохранены.
 
 ## Объём и статус
 
-План содержит **34 новых задач PAOS-FUNC-01–PAOS-FUNC-34**, все `planned`, и ссылки на **3 ранее запланированные задачи M5**. Итого в этой обзорной матрице 37 позиций; это не общее число задач проекта. Существующие 56 карточек M1–M5, их 53 implemented / 3 planned и оценки сохранены. Новые дефекты не переписывают исторические receipts: они требуют текущего воспроизведения и новой проверки.
+План содержит **34 задачи PAOS-FUNC-01–PAOS-FUNC-34** и ссылки на **3 ранее запланированные задачи M5**. Текущий итог: **7 implemented / 27 planned**, FUNC-G01 закрыта по локальным техническим AC. Итого в этой обзорной матрице 37 позиций; это не общее число задач проекта. Существующие 56 карточек M1–M5, их 53 implemented / 3 planned и оценки сохранены. Новые дефекты не переписывают исторические receipts: они требуют текущего воспроизведения и новой проверки.
 
 Машинное состояние новой группы: [functional-remediation-2026-11-15.json](functional-remediation-2026-11-15.json). Этот MD владеет техническим и продуктовым обоснованием, acceptance и completion evidence. Ссылки M5 не создают второй владеющий статус: их владелец — [docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json](product-agent-os-web-task-manager-task-group-2026-11-09.json) и [docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md](product-agent-os-web-task-manager-plan-2026-11-09.md).
 
-Запрос владельца разрешает составление и запись плана. Все исправления, расширения и проверки ниже остаются будущими задачами. P1 — блокировка исполнения или проверка целостности/recovery; P2 — функциональная ценность, корректность информации и поддерживаемость; P3 — ограниченный дефект отображения. Приоритет проверочной задачи не означает, что отказ уже наблюдался.
+Первоначальный запрос разрешал планирование. Последующий запрос 15.11.2026 разрешил полное выполнение FUNC-G01, необходимые локальные synthetic проверки, статусы и документацию; семь задач группы выполнены. Остальные 27 задач и M5 остаются вне этой реализации. P1 — блокировка исполнения или проверка целостности/recovery; P2 — функциональная ценность, корректность информации и поддерживаемость; P3 — ограниченный дефект отображения. Приоритет проверочной задачи не означает, что отказ уже наблюдался.
 
-## Основания и границы доказательств
+## Исходные основания и границы доказательств
 
 - Статический аудит исходников 15.11.2026 выявил семь кандидатов в дефекты F01–F07. F01 подтверждён сравнением fingerprint: текущий `apps/web/package-lock.json` SHA-256 `f126e4dceeb06cb9644fe1167cbb5b2b2689fb8022325d54292445398ad30aac`, квалифицированный `d279009aa1dca2bd2d6ba0e18a77d085a67e872d0dce78dd360fb23d43975f38`; отказ native broker выводится из проверки контракта и должен быть воспроизведён. Runtime в этом планировании не запускался.
 - F08–F10/F18/F24 относятся к устройству реализации и полноте пользовательского пути. Производительность не признана плохой без измерений: F20 предшествует F09.
@@ -195,7 +198,7 @@ Source status: repository_owned_plan_dependency_analysis; planning_only. Гру�
 
 ## Полная обзорная матрица новых задач
 
-F01 в сокращённых зависимостях означает PAOS-FUNC-01. Все строки имеют статус `planned`.
+F01 в сокращённых зависимостях означает PAOS-FUNC-01. Статусы карточек и JSON ниже актуальны; исходные оценки сохранены.
 
 | ID | Приоритет / тип | Задача | Техническое значение | Продуктовое значение | Критерии приёмки | Зависимости |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -293,32 +296,55 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 
 Обязательная проверочная матрица: empty/no-Control-plane, Python-only/mixed stack, большой monorepo, Unicode/пробелы, wide/deep directories, ignored/generated/vendor, binary/large/invalid-encoding/unreadable, symlink/junction/hardlink/traversal, root replacement, file rename/delete во время scan, два проекта, cancel/restart/retry. Для F20 сначала фиксируются budgets и hardware/cache; лимит не снимается ради прохождения теста. Существующие guarded source helpers переиспользуются после проверки контракта.
 
+## FUNC-G01 — результаты выполнения {#func-g01-results}
+
+Статус: **closed / implemented_locally_verified**, 7/7 задач F01/F03/F04/F05/F06/F07/F08. Machine status выводится из семи member tasks; root JSON остаётся in_progress, поскольку 27 задач других групп planned. Все исходные AC, ID, приоритеты, estimates, Depends on/Blocks/execution_order, delivery-group definitions и M5 references сохранены. Реализация разрешена владельцем 15.11.2026; Git/publication/provider/real credentials не использовались.
+
+| Проверка | Наблюдаемый результат / receipt |
+| --- | --- |
+| F01 исходный RED | Manifest mismatch на текущем lockfile; `.tmp/func-g01-runtime/manifest-red.log`, `native-red.log`. Простая перезапись pin не использовалась как квалификация. |
+| F01/F08 final native | Candidate и production default прошли Discussion/Planning/Execution, inside write/outside+private-temp EPERM, binary/lock/adapter drift до spawn, повторный broker start/Stop и cleanup. `.tmp/func-g01-runtime/native-candidate-final-escalated.log`, `native-default-final-escalated.log`; runtime focused12/12. |
+| Native tuple | Codex0.167.0, Node26.5.0, Windows10.0.26200 x64, SQLite3.53.3. Adapter `fc34f72a89cd1a217cc22bd0a160284f9ee8671c453d06531e86e24b69a4c8d5`; lock `f126e4dceeb06cb9644fe1167cbb5b2b2689fb8022325d54292445398ad30aac`. Candidate receipt SHA `a2cad642d6f3bc416a04a954f4bbbfa009aae75d5aeacc77bac3f940313dcf4a`. |
+| F03/F04 browser | `node tests/web/single-window/func-g01-drafts-acceptance.mts --synthetic-browser --playwright-core <installed-path> --chromium <installed-path>`:54/54, `.tmp/func-g01-drafts/evidence-C6lIVM/result.json`. Production UI/HTTP/SQLite, concurrent writers и exact ACK revision; source hashes и fixture cleanup. |
+| F05/F06/F07 browser | `node tests/web/single-window/func-g01-dashboard-acceptance.mts --synthetic-browser --playwright-core <installed-path> --chromium <installed-path>`:30/30, `.tmp/func-g01-dashboard/evidence-MIaKso/result.json`. RU/EN partial/loading/retry/all-failed/complete, queue parity/reorder/null, updatedAt/create/edit refresh, desktop/mobile readability и screenshots. |
+| Shared contracts | AST guard сначала выявил два обратных import edges; после переноса проходят direct/compatibility identity, M1/M2 decoder и theme/locale tests. `node --test tests/web/contracts-boundaries.test.mts tests/web/task-profile.test.mts tests/web/m2-profile.test.mts tests/web/theme-locale.test.mts`; все15 представлены также в полном Web receipt. |
+| Typecheck/build | `npm run check:web-m1` и `npm run build:web` exit0. После CSS visual repair build повторён. Предупреждение bundle >500kB сохранено; оптимизация F09/F20 не входила в группу. |
+| Full Web + environment repair | `npm run test:web-m1`:507 tests,492 pass/11 fail/4 skip из-за sandbox EPERM при создании link/symlink fixtures; исходный `.tmp/func-g01/web-final.log` сохранён. Ровно15 затронутых случаев повторены с разрешённым executor:15 pass/0 fail/0 skip, `.tmp/func-g01/web-boundary-retest.log`. Итого507 уникальных тестов прошли в двух контекстах; исходный полный запуск не объявляется green. |
+| Review | Независимый implementation review `/root/func_g01_review`: closed_allowed; architecture review выполнен до F08. Cycle2 CSS/readability delta: closed_allowed. Проверяющий подтвердил current source/asset hashes и устранил замечание к исторической machine-state ссылке EN. |
+| Финальные source/state gates | `tools/check_docs.py --paths`20 changed Markdown sources passed; docs unittest3/3; `validate_task_matrix.py` RU/EN exit0; `validate_task_state_consistency.py .` exit0; `git diff --check` exit0. Проверены34 статуса RU/EN/JSON, unchanged27 task objects/cards, все исходные AC/dependencies/estimates/order/groups/M5 refs и browser source hashes. Групповой отчёт перенесён перед карточками после первого validator rejection, который относил angle-bracket command arguments к последней F34; исходная F34 не менялась. |
+
+Причины повторов и отклонённые попытки сохранены: Chromium startup без нужных executor permissions (0 checks), native MXC unavailable, исходные RED F03/F04 и ACK/refresh race, преждевременные browser assertions до завершения async save, mobile readability RED. Тестовые waits исправлены по наблюдаемому clean/enabled состоянию; product guards, sandbox policy и Chromium sandbox не ослаблялись. Первый build выявил отсутствие toSorted в frontend TypeScript lib; использована копия массива со стандартным sort. AST regression использует уже установленный public parser: установленный TypeScript7 package не предоставляет прежний JS AST API.
+
+Кодовый контракт: existing_capability — прежние handlers, memory Maps, StoreReceipt, strict decoder/preferences и installed parser; smallest_safe_patch — reset/CAS/projection corrections и два compatibility seams; invariants — original CAS, project isolation, unknown≠0, exact runtime pins; dependency_decision — no_new_dependency; risk_selected_tests — browser/state/decoder/import/native + demonstrated link-fixture retest; comment_decision — concurrency/order/boundary intent documented; performance_applicability — не benchmark, budgets не менялись; evidence_and_gaps — current source hashes/tuple и явно раздельные receipts.
+
+Documentation impact: updated — frontend state-management/components, backend lifecycle/modules, architecture containers, testing map, RU/EN source registry, эти карточки и owning JSON; control-plane REQUIREMENTS/PLAN/TEST/RUNLOG синхронизированы. EVALS/prod_test no_change_needed: eval policy и исторический Batch39 не менялись. API docs no_change_needed: endpoints/payload/schema/errors сохранены. Atlas review no_change_needed: container/runtime boundaries в диаграммах прежние; ownership/import detail отражён в architecture/modules. Site build/publication не выполнялись, dependencies не устанавливались. Human acceptance, provider/model behavior и широкая production readiness не заявлены.
+
 ## Подробные карточки
 
 ### Task `PAOS-FUNC-01`
 
 - Delivery group: `FUNC-G01`; группа не заменяет Depends on и исходные AC.
 - Task: PAOS-FUNC-01 — Восстановить квалификацию native runtime после redesign
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Дефект; функциональный аудит после V3 redesign и запрос владельца на матрицу задач.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 15-11-2026 18:17
 - Priority: P1
-- Evidence level: static_finding_reproduction_required
-- Execution authority: planning_only; внесение в план не запускает реализацию.
+- Evidence level: implemented_locally_verified
+- Execution authority: owner_authorized_local_synthetic; FUNC-G01, 15.11.2026.
 - Depends on: нет
 - Blocks: `PAOS-FUNC-08`, `PAOS-FUNC-10`, `PAOS-FUNC-15`, `PAOS-FUNC-16`, `PAOS-FUNC-17`, `PAOS-FUNC-19`, `PAOS-FUNC-20`, `PAOS-FUNC-21`, `PAOS-FUNC-22`
 - Source: Lock SHA-256 d279009a… в manifest и f126e4dc… текущего файла не совпали; adapter99 совпал в аудите15.11. [packages/contracts/runtime/manifest.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/packages/contracts/runtime/manifest.mts), [apps/local-service/src/runtime/sandbox-broker.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/runtime/sandbox-broker.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Восстановить квалификацию native runtime после redesign.
 - Technical value: Согласовать lockfile, manifest и native broker без ослабления проверки fingerprint.
 - Product value: Запуск задачи из обновлённого интерфейса действительно приводит к выполнению.
-- Scope: `packages/contracts/runtime/manifest.mts`; `packages/contracts/runtime/qualified-manifest.json`; `apps/local-service/src/runtime/sandbox-broker.mts`; `tests/web/runtime-manifest.test.mts`. Ownership назначается при старте; перечисленные роли — предложение, agents сейчас не запущены.
+- Scope: `packages/contracts/runtime/manifest.mts`; `packages/contracts/runtime/qualified-manifest.json`; `apps/local-service/src/runtime/sandbox-broker.mts`; `tests/web/runtime-manifest.test.mts`. Ownership выполненного slice: root + назначенные агенты; shared edits сериализованы.
 - Non-goals: изменения вне указанного поведения; публикация, реальные credentials, provider calls и изменение hook/trust. Чужие dirty изменения не входят в исправление.
 - Expected result: Запуск задачи из обновлённого интерфейса действительно приводит к выполнению. Подтверждение — перечисленные ниже наблюдаемые сценарии, отдельно от human acceptance.
 - Acceptance criteria: AC1: На текущем lockfile воспроизведён отказ package_lock_mismatch; исправление не подменяет квалификацию простой перезаписью хеша. AC2: На заново квалифицированном tuple новый broker исполняет synthetic command внутри разрешённого root и отклоняет запись снаружи. AC3: Отрицательные сценарии для изменённых binary, lockfile и adapter остаются fail-closed; повторный старт проходит.
-- Verification gates: `node --test tests/web/runtime-manifest.test.mts` Это будущие проверки задачи, не выполненные проверки этой планировки. Сначала воспроизведение RED на текущей версии, затем исправление и GREEN. Общие docs gates применяются при изменении документации.
+- Verification gates: `node --test tests/web/runtime-manifest.test.mts` Выполненные команды, RED/GREEN и provenance записаны в Completion Report.
 - Risks / approval gates: native_synthetic_acceptance_required; Реальные профили, внешний сервис, публикация и provider/model calls требуют отдельной точной авторизации. Synthetic acceptance — только disposable roots.
 - Complexity: medium — ограниченный сценарий с отрицательными проверками
 - Estimated execution time: 8–16 ч; rough_range_not_commitment. Перед стартом уточнить на актуальной сборке.
@@ -326,20 +352,20 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Skills: implementation-planner для плана; task-matching implementation/verification skills выбираются при старте, без установки новых skills этой задачей.
 - Output artifacts: scoped diff в перечисленных work locations; результаты проверок и Documentation impact в этом Completion Report; статус в JSON этой группы; короткий handoff в RUNLOG.md.
 - Rollback: отменить только собственные hunks после проверки drift; для данных — сохранённый synthetic backup и согласованный recovery contract; destructive Git не допускается.
-- Next step: Проверить актуальность находки. Назначить владельца и уточнить минимальный проверяемый slice.
+- Next step: Закрыта по локальным AC; новые изменения pinned sources требуют повторной квалификации.
 
 #### Completion Report
 
-- status: planned
-- what was done: задача сформулирована в плане; реализация и выполнение её приёмочных сценариев не начаты.
-- files touched / work locations: implementation none; планируемые work locations указаны в Scope.
-- technical value delivered: результат реализации ещё не получен.
-- product value delivered: результат для пользователя ещё не подтверждён.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: только исходные ссылки и статические наблюдения в Source; future Verification gates не выполнены этой задачей.
-- residual risks: native_synthetic_acceptance_required; актуальность исходного состояния повторно проверяется при старте.
-- follow-up: Next step выше; после выполнения синхронизировать статус JSON, эту карточку и только затронутые control-plane claims.
-- Documentation impact: planning_only; пока код и функциональные claims не меняются. При завершении сопоставить changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required и evidence в этом отчёте.
+- status: implemented
+- what was done: Воспроизведён package_lock_mismatch; candidate-only квалификация допускает изменённые lock/adapter pins только для нового native acceptance. Manifest продвинут после passed native receipt; production loader не ослаблен.
+- files touched / work locations: `packages/contracts/runtime/qualified-manifest.json`, `tests/web/runtime-manifest.test.mts`, `tests/web/single-window/sandbox-broker-acceptance.mts`
+- technical value delivered: Текущий lockfile квалифицирован вместе с binary/Node/OS/SQLite и adapter; fail-closed drift checks сохранены.
+- product value delivered: Новый native broker выполняет synthetic command в разрешённом root и отклоняет внешнюю запись.
+- actual implementation date and time: 15-11-2026 18:17
+- verification evidence: RED `.tmp/func-g01-runtime/manifest-red.log`, `native-red.log`; GREEN runtime-manifest + sandbox-broker 12/12; native candidate/default `.tmp/func-g01-runtime/native-candidate-initial-escalated.log`, `native-default-initial-escalated.log` exit0, three modes, inside write/outside+temp EPERM, binary/lock/adapter drift rejected before spawn, repeat start/Stop/auth cleanup. Initial sandbox MXC failure retained in native-candidate-initial.log. Final F08 requalification: `.tmp/func-g01-runtime/native-candidate-final-escalated.log`, `native-default-final-escalated.log` exit0; adapter fc34f72a89cd1a217cc22bd0a160284f9ee8671c453d06531e86e24b69a4c8d5, lock f126e4dceeb06cb9644fe1167cbb5b2b2689fb8022325d54292445398ad30aac; runtime12/12. Binary cleanup verified.
+- residual risks: Bounded native offline acceptance; provider/model/production/human acceptance не заявлены. Финальный tuple после F08 проверен.
+- follow-up: Нет в пределах AC; новая правка pinned sources требует новой квалификации.
+- Documentation impact: updated; `docs/backend/lifecycle.md` + `.en.md`; `docs/sources/registry.md` + `.en.md`; Описаны exact tuple, candidate promotion, текущие receipts и граница claims.
 
 ### Task `PAOS-FUNC-02`
 
@@ -392,26 +418,26 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 
 - Delivery group: `FUNC-G01`; группа не заменяет Depends on и исходные AC.
 - Task: PAOS-FUNC-03 — Полностью сбрасывать черновик новой задачи
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Дефект; функциональный аудит после V3 redesign и запрос владельца на матрицу задач.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 15-11-2026 18:26
 - Priority: P2
-- Evidence level: static_finding_reproduction_required
-- Execution authority: planning_only; внесение в план не запускает реализацию.
+- Evidence level: implemented_locally_verified
+- Execution authority: owner_authorized_local_synthetic; FUNC-G01, 15.11.2026.
 - Depends on: нет
 - Blocks: `PAOS-FUNC-19`
 - Source: Reset не сбрасывает rawInputs; эффект очистки требует entity. [apps/web/src/features/tasks/Editor.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/tasks/Editor.tsx). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Полностью сбрасывать черновик новой задачи.
 - Technical value: Синхронизировать модель, rawInputs, estimate, preview и dirty-state при Discard.
 - Product value: После отмены пользователь не видит данные, которые уже отсутствуют в сохраняемой задаче.
-- Scope: `apps/web/src/features/tasks/Editor.tsx`; `tests/web/single-window/m2-task-manager-browser-acceptance.mts`. Ownership назначается при старте; перечисленные роли — предложение, agents сейчас не запущены.
+- Scope: `apps/web/src/features/tasks/Editor.tsx`; `tests/web/single-window/m2-task-manager-browser-acceptance.mts`. Ownership выполненного slice: root + назначенные агенты; shared edits сериализованы.
 - Non-goals: изменения вне указанного поведения; публикация, реальные credentials, provider calls и изменение hook/trust. Чужие dirty изменения не входят в исправление.
 - Expected result: После отмены пользователь не видит данные, которые уже отсутствуют в сохраняемой задаче. Подтверждение — перечисленные ниже наблюдаемые сценарии, отдельно от human acceptance.
 - Acceptance criteria: AC1: В новой задаче заполнить criteria/risks/references/estimate, нажать Discard: все поля и модель возвращаются к одному пустому состоянию. AC2: Следующее сохранение не возвращает отменённые данные; dirty/preview/error не вводят в заблуждение. AC3: Для существующей задачи Discard возвращает серверную revision и не уничтожает чужие изменения.
-- Verification gates: `npm run check:web-m1`; `npm run test:web-m1` Это будущие проверки задачи, не выполненные проверки этой планировки. Сначала воспроизведение RED на текущей версии, затем исправление и GREEN. Общие docs gates применяются при изменении документации.
+- Verification gates: `npm run check:web-m1`; `npm run test:web-m1` Выполненные команды, RED/GREEN и provenance записаны в Completion Report.
 - Risks / approval gates: browser_reproduction_required; Реальные профили, внешний сервис, публикация и provider/model calls требуют отдельной точной авторизации. Synthetic acceptance — только disposable roots.
 - Complexity: medium — ограниченный сценарий с отрицательными проверками
 - Estimated execution time: 3–6 ч; rough_range_not_commitment. Перед стартом уточнить на актуальной сборке.
@@ -419,45 +445,45 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Skills: implementation-planner для плана; task-matching implementation/verification skills выбираются при старте, без установки новых skills этой задачей.
 - Output artifacts: scoped diff в перечисленных work locations; результаты проверок и Documentation impact в этом Completion Report; статус в JSON этой группы; короткий handoff в RUNLOG.md.
 - Rollback: отменить только собственные hunks после проверки drift; для данных — сохранённый synthetic backup и согласованный recovery contract; destructive Git не допускается.
-- Next step: Проверить актуальность находки. Назначить владельца и уточнить минимальный проверяемый slice.
+- Next step: Закрыта по локальным AC; новые изменения pinned sources требуют повторной квалификации.
 
 #### Completion Report
 
-- status: planned
-- what was done: задача сформулирована в плане; реализация и выполнение её приёмочных сценариев не начаты.
-- files touched / work locations: implementation none; планируемые work locations указаны в Scope.
-- technical value delivered: результат реализации ещё не получен.
-- product value delivered: результат для пользователя ещё не подтверждён.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: только исходные ссылки и статические наблюдения в Source; future Verification gates не выполнены этой задачей.
-- residual risks: browser_reproduction_required; актуальность исходного состояния повторно проверяется при старте.
-- follow-up: Next step выше; после выполнения синхронизировать статус JSON, эту карточку и только затронутые control-plane claims.
-- Documentation impact: planning_only; пока код и функциональные claims не меняются. При завершении сопоставить changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required и evidence в этом отчёте.
+- status: implemented
+- what was done: Discard очищает rawInputs, reason/error, модель, estimate, preview и dirty-state. Сохранение после отмены не возвращает отменённые данные; conflict сохраняет dirty draft, discard принимает текущую серверную revision.
+- files touched / work locations: `apps/web/src/features/tasks/Editor.tsx`, `tests/web/single-window/func-g01-drafts-acceptance.mts`
+- technical value delivered: Discard очищает rawInputs, reason/error, модель, estimate, preview и dirty-state. Сохранение после отмены не возвращает отменённые данные; conflict сохраняет dirty draft, discard принимает текущую серверную revision.
+- product value delivered: Отмена предсказуемо очищает форму; concurrent изменения не теряются неявно.
+- actual implementation date and time: 15-11-2026 18:26
+- verification evidence: Baseline RED `.tmp/func-g01-drafts/evidence-DGhYbl/result.json`; ACK-race RED evidence-pS0YXr/result.json; final `.tmp/func-g01-drafts/evidence-C6lIVM/result.json` 54/54 on final F08 build, actual UI/HTTP/SQLite concurrent writes, source/build hashes, fixture cleanup; typecheck exit0. Retained sandbox startup and premature-oracle receipts3Hhk34/8nW2Uj/W7ljj0; bounded observable waits repaired test timing.
+- residual risks: Browser desktop/mobile geometry проверены; human acceptance и полная UX/a11y qualification отдельно. Drafts остаются только в памяти страницы.
+- follow-up: Нет в пределах AC; сквозная F19 и human F23 остаются planned.
+- Documentation impact: updated; `docs/frontend/state-management.md` + `.en.md`; `docs/sources/registry.md` + `.en.md`; Отдельные разделы F03/F04 описывают reset/navigation/CAS, текущее source ownership и evidence54.
 
 ### Task `PAOS-FUNC-04`
 
 - Delivery group: `FUNC-G01`; группа не заменяет Depends on и исходные AC.
 - Task: PAOS-FUNC-04 — Сохранять черновик назначений workflow при навигации
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Дефект; функциональный аудит после V3 redesign и запрос владельца на матрицу задач.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 15-11-2026 18:26
 - Priority: P2
-- Evidence level: static_finding_reproduction_required
-- Execution authority: planning_only; внесение в план не запускает реализацию.
+- Evidence level: implemented_locally_verified
+- Execution authority: owner_authorized_local_synthetic; FUNC-G01, 15.11.2026.
 - Depends on: нет
 - Blocks: `PAOS-FUNC-19`
 - Source: Draft cache не включает typeMapping/mappingDirty. [apps/web/src/features/workflows/WorkflowManager.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/workflows/WorkflowManager.tsx). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Сохранять черновик назначений workflow при навигации.
 - Technical value: Включить typeMapping и исходную CAS revision в общий жизненный цикл draft.
 - Product value: Пользователь не теряет несохранённые назначения процессов при переходе между разделами.
-- Scope: `apps/web/src/features/workflows/WorkflowManager.tsx`; `tests/web/single-window/m2b-browser-acceptance.mts`. Ownership назначается при старте; перечисленные роли — предложение, agents сейчас не запущены.
+- Scope: `apps/web/src/features/workflows/WorkflowManager.tsx`; `tests/web/single-window/m2b-browser-acceptance.mts`. Ownership выполненного slice: root + назначенные агенты; shared edits сериализованы.
 - Non-goals: изменения вне указанного поведения; публикация, реальные credentials, provider calls и изменение hook/trust. Чужие dirty изменения не входят в исправление.
 - Expected result: Пользователь не теряет несохранённые назначения процессов при переходе между разделами. Подтверждение — перечисленные ниже наблюдаемые сценарии, отдельно от human acceptance.
 - Acceptance criteria: AC1: Изменить mapping типа задачи, уйти из Settings и вернуться: черновик восстановлен либо уход заранее остановлен понятным выбором. AC2: Save/Discard корректно снимают dirty-state; default workflow и mapping не перетирают друг друга. AC3: Смена проекта не переносит черновик в другой проект; stale save возвращает conflict без потери введённого.
-- Verification gates: `npm run check:web-m1`; `npm run test:web-m1` Это будущие проверки задачи, не выполненные проверки этой планировки. Сначала воспроизведение RED на текущей версии, затем исправление и GREEN. Общие docs gates применяются при изменении документации.
+- Verification gates: `npm run check:web-m1`; `npm run test:web-m1` Выполненные команды, RED/GREEN и provenance записаны в Completion Report.
 - Risks / approval gates: browser_reproduction_required; Реальные профили, внешний сервис, публикация и provider/model calls требуют отдельной точной авторизации. Synthetic acceptance — только disposable roots.
 - Complexity: medium — ограниченный сценарий с отрицательными проверками
 - Estimated execution time: 4–8 ч; rough_range_not_commitment. Перед стартом уточнить на актуальной сборке.
@@ -465,45 +491,45 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Skills: implementation-planner для плана; task-matching implementation/verification skills выбираются при старте, без установки новых skills этой задачей.
 - Output artifacts: scoped diff в перечисленных work locations; результаты проверок и Documentation impact в этом Completion Report; статус в JSON этой группы; короткий handoff в RUNLOG.md.
 - Rollback: отменить только собственные hunks после проверки drift; для данных — сохранённый synthetic backup и согласованный recovery contract; destructive Git не допускается.
-- Next step: Проверить актуальность находки. Назначить владельца и уточнить минимальный проверяемый slice.
+- Next step: Закрыта по локальным AC; новые изменения pinned sources требуют повторной квалификации.
 
 #### Completion Report
 
-- status: planned
-- what was done: задача сформулирована в плане; реализация и выполнение её приёмочных сценариев не начаты.
-- files touched / work locations: implementation none; планируемые work locations указаны в Scope.
-- technical value delivered: результат реализации ещё не получен.
-- product value delivered: результат для пользователя ещё не подтверждён.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: только исходные ссылки и статические наблюдения в Source; future Verification gates не выполнены этой задачей.
-- residual risks: browser_reproduction_required; актуальность исходного состояния повторно проверяется при старте.
-- follow-up: Next step выше; после выполнения синхронизировать статус JSON, эту карточку и только затронутые control-plane claims.
-- Documentation impact: planning_only; пока код и функциональные claims не меняются. При завершении сопоставить changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required и evidence в этом отчёте.
+- status: implemented
+- what was done: Memory-only draft хранит typeMapping/mappingDirty/original CAS revision отдельно от definition. Navigation/project changes изолированы; Save/Discard assignments корректны; default-only ACK принимает только собственную committed revision, не чужой последующий refresh.
+- files touched / work locations: `apps/web/src/features/workflows/WorkflowManager.tsx`, `tests/web/single-window/func-g01-drafts-acceptance.mts`
+- technical value delivered: Memory-only draft хранит typeMapping/mappingDirty/original CAS revision отдельно от definition. Navigation/project changes изолированы; Save/Discard assignments корректны; default-only ACK принимает только собственную committed revision, не чужой последующий refresh.
+- product value delivered: Несохранённые назначения переживают навигацию и не перетирают чужую запись.
+- actual implementation date and time: 15-11-2026 18:26
+- verification evidence: Baseline RED `.tmp/func-g01-drafts/evidence-DGhYbl/result.json`; ACK-race RED evidence-pS0YXr/result.json; final `.tmp/func-g01-drafts/evidence-C6lIVM/result.json` 54/54 on final F08 build, actual UI/HTTP/SQLite concurrent writes, source/build hashes, fixture cleanup; typecheck exit0. Retained sandbox startup and premature-oracle receipts3Hhk34/8nW2Uj/W7ljj0; bounded observable waits repaired test timing.
+- residual risks: Browser desktop/mobile geometry проверены; human acceptance и полная UX/a11y qualification отдельно. Drafts остаются только в памяти страницы.
+- follow-up: Нет в пределах AC; сквозная F19 и human F23 остаются planned.
+- Documentation impact: updated; `docs/frontend/state-management.md` + `.en.md`; `docs/sources/registry.md` + `.en.md`; Отдельные разделы F03/F04 описывают reset/navigation/CAS, текущее source ownership и evidence54.
 
 ### Task `PAOS-FUNC-05`
 
 - Delivery group: `FUNC-G01`; группа не заменяет Depends on и исходные AC.
 - Task: PAOS-FUNC-05 — Обозначить неполное покрытие portfolio рядом с итогами
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Дефект; функциональный аудит после V3 redesign и запрос владельца на матрицу задач.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 15-11-2026 18:23
 - Priority: P2
-- Evidence level: static_finding_reproduction_required
-- Execution authority: planning_only; внесение в план не запускает реализацию.
+- Evidence level: implemented_locally_verified
+- Execution authority: owner_authorized_local_synthetic; FUNC-G01, 15.11.2026.
 - Depends on: нет
 - Blocks: `PAOS-FUNC-11`, `PAOS-FUNC-18`, `PAOS-FUNC-19`, `PAOS-FUNC-24`
 - Source: aggregateSnapshots возвращает partial; dashboard totals его не показывает. [apps/web/src/features/dashboard/model.ts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/dashboard/model.ts), [apps/web/src/features/dashboard/Dashboard.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/dashboard/Dashboard.tsx). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Обозначить неполное покрытие portfolio рядом с итогами.
 - Technical value: Провести partial/loaded/expected из агрегатора в отображение KPI и progress.
 - Product value: Частично загруженные проекты не выглядят как полный итог портфеля.
-- Scope: `apps/web/src/features/dashboard/model.ts`; `apps/web/src/features/dashboard/Dashboard.tsx`; `tests/web/ui-v3-dashboard.test.mts`. Ownership назначается при старте; перечисленные роли — предложение, agents сейчас не запущены.
+- Scope: `apps/web/src/features/dashboard/model.ts`; `apps/web/src/features/dashboard/Dashboard.tsx`; `tests/web/ui-v3-dashboard.test.mts`. Ownership выполненного slice: root + назначенные агенты; shared edits сериализованы.
 - Non-goals: изменения вне указанного поведения; публикация, реальные credentials, provider calls и изменение hook/trust. Чужие dirty изменения не входят в исправление.
 - Expected result: Частично загруженные проекты не выглядят как полный итог портфеля. Подтверждение — перечисленные ниже наблюдаемые сценарии, отдельно от human acceptance.
 - Acceptance criteria: AC1: При успехе1 проекта и ошибке1 проекта рядом с totals показано «1 из2; данные неполные». AC2: Неизвестные значения не заменяются нулём; progress явно относится к доступной выборке. AC3: Loading, retry, all-failed и восстановление полного покрытия проверены в RU/EN.
-- Verification gates: `node --test tests/web/ui-v3-dashboard.test.mts` Это будущие проверки задачи, не выполненные проверки этой планировки. Сначала воспроизведение RED на текущей версии, затем исправление и GREEN. Общие docs gates применяются при изменении документации.
+- Verification gates: `node --test tests/web/ui-v3-dashboard.test.mts` Выполненные команды, RED/GREEN и provenance записаны в Completion Report.
 - Risks / approval gates: reproduce_then_fix; Реальные профили, внешний сервис, публикация и provider/model calls требуют отдельной точной авторизации. Synthetic acceptance — только disposable roots.
 - Complexity: medium — ограниченный сценарий с отрицательными проверками
 - Estimated execution time: 3–6 ч; rough_range_not_commitment. Перед стартом уточнить на актуальной сборке.
@@ -511,45 +537,45 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Skills: implementation-planner для плана; task-matching implementation/verification skills выбираются при старте, без установки новых skills этой задачей.
 - Output artifacts: scoped diff в перечисленных work locations; результаты проверок и Documentation impact в этом Completion Report; статус в JSON этой группы; короткий handoff в RUNLOG.md.
 - Rollback: отменить только собственные hunks после проверки drift; для данных — сохранённый synthetic backup и согласованный recovery contract; destructive Git не допускается.
-- Next step: Проверить актуальность находки. Назначить владельца и уточнить минимальный проверяемый slice.
+- Next step: Закрыта по локальным AC; новые изменения pinned sources требуют повторной квалификации.
 
 #### Completion Report
 
-- status: planned
-- what was done: задача сформулирована в плане; реализация и выполнение её приёмочных сценариев не начаты.
-- files touched / work locations: implementation none; планируемые work locations указаны в Scope.
-- technical value delivered: результат реализации ещё не получен.
-- product value delivered: результат для пользователя ещё не подтверждён.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: только исходные ссылки и статические наблюдения в Source; future Verification gates не выполнены этой задачей.
-- residual risks: reproduce_then_fix; актуальность исходного состояния повторно проверяется при старте.
-- follow-up: Next step выше; после выполнения синхронизировать статус JSON, эту карточку и только затронутые control-plane claims.
-- Documentation impact: planning_only; пока код и функциональные claims не меняются. При завершении сопоставить changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required и evidence в этом отчёте.
+- status: implemented
+- what was done: Показаны loaded/expected и partial рядом с totals/progress, ожидаемое количество берётся из projects до первого ответа.
+- files touched / work locations: `apps/web/src/features/dashboard/Dashboard.tsx`, `model.ts`, `tests/web/ui-v3-dashboard.test.mts`, `tests/web/single-window/func-g01-dashboard-acceptance.mts`, `apps/web/src/design/parity.css`
+- technical value delivered: Показаны loaded/expected и partial рядом с totals/progress, ожидаемое количество берётся из projects до первого ответа.
+- product value delivered: Частичный portfolio больше не выглядит полным; unknown не превращается в ноль.
+- actual implementation date and time: 15-11-2026 18:23
+- verification evidence: Browser RED `.tmp/func-g01-dashboard/evidence-IGkHii/result.json`; final GREEN `.tmp/func-g01-dashboard/evidence-MIaKso/result.json` 30/30, source/build hashes, RU/EN loading/partial/all-failed/retry/complete, 1-based/null/reorder/QueueManager parity, updatedAt ordering/create/edit refresh, desktop1440/mobile390 no overflow; model7/7. Visual QA added mobile readability oracles: RED evidence-6EV9zr (two layout failures), scoped summary wrapping/dashboard grid fixed in parity.css, final30/30 and desktop/mobile screenshots visually checked.
+- residual risks: Synthetic HTTP fixtures для отказов/timestamps/очереди; provider/human acceptance и полная accessibility qualification не заявлены.
+- follow-up: Нет в пределах AC; сквозная приёмка F19/F24 остаётся отдельной.
+- Documentation impact: updated; `docs/frontend/components.md` + `.en.md`; `docs/sources/registry.md` + `.en.md`; Описаны актуальные правила отображения, source owners и browser evidence.
 
 ### Task `PAOS-FUNC-06`
 
 - Delivery group: `FUNC-G01`; группа не заменяет Depends on и исходные AC.
 - Task: PAOS-FUNC-06 — Исправить нумерацию очереди на dashboard
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Дефект; функциональный аудит после V3 redesign и запрос владельца на матрицу задач.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 15-11-2026 18:23
 - Priority: P3
-- Evidence level: static_finding_reproduction_required
-- Execution authority: planning_only; внесение в план не запускает реализацию.
+- Evidence level: implemented_locally_verified
+- Execution authority: owner_authorized_local_synthetic; FUNC-G01, 15.11.2026.
 - Depends on: нет
 - Blocks: `PAOS-FUNC-19`
 - Source: Backend indexOf+1, dashboard position+1. [apps/local-service/src/scheduler/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/scheduler/service.mts), [apps/web/src/features/dashboard/Dashboard.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/dashboard/Dashboard.tsx). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Исправить нумерацию очереди на dashboard.
 - Technical value: Единый 1-based контракт позиции между scheduler и frontend.
 - Product value: Одинаковый порядок задач на dashboard и в управлении очередью.
-- Scope: `apps/web/src/features/dashboard/Dashboard.tsx`; `tests/web/ui-v3-dashboard.test.mts`. Ownership назначается при старте; перечисленные роли — предложение, agents сейчас не запущены.
+- Scope: `apps/web/src/features/dashboard/Dashboard.tsx`; `tests/web/ui-v3-dashboard.test.mts`. Ownership выполненного slice: root + назначенные агенты; shared edits сериализованы.
 - Non-goals: изменения вне указанного поведения; публикация, реальные credentials, provider calls и изменение hook/trust. Чужие dirty изменения не входят в исправление.
 - Expected result: Одинаковый порядок задач на dashboard и в управлении очередью. Подтверждение — перечисленные ниже наблюдаемые сценарии, отдельно от human acceptance.
 - Acceptance criteria: AC1: Для backend positions1/2 dashboard показывает №1/№2. AC2: Для null номер отсутствует; reorder отражается одинаково на обеих поверхностях.
-- Verification gates: `node --test tests/web/ui-v3-dashboard.test.mts` Это будущие проверки задачи, не выполненные проверки этой планировки. Сначала воспроизведение RED на текущей версии, затем исправление и GREEN. Общие docs gates применяются при изменении документации.
+- Verification gates: `node --test tests/web/ui-v3-dashboard.test.mts` Выполненные команды, RED/GREEN и provenance записаны в Completion Report.
 - Risks / approval gates: reproduce_then_fix; Реальные профили, внешний сервис, публикация и provider/model calls требуют отдельной точной авторизации. Synthetic acceptance — только disposable roots.
 - Complexity: medium — ограниченный сценарий с отрицательными проверками
 - Estimated execution time: 1–3 ч; rough_range_not_commitment. Перед стартом уточнить на актуальной сборке.
@@ -557,45 +583,45 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Skills: implementation-planner для плана; task-matching implementation/verification skills выбираются при старте, без установки новых skills этой задачей.
 - Output artifacts: scoped diff в перечисленных work locations; результаты проверок и Documentation impact в этом Completion Report; статус в JSON этой группы; короткий handoff в RUNLOG.md.
 - Rollback: отменить только собственные hunks после проверки drift; для данных — сохранённый synthetic backup и согласованный recovery contract; destructive Git не допускается.
-- Next step: Проверить актуальность находки. Назначить владельца и уточнить минимальный проверяемый slice.
+- Next step: Закрыта по локальным AC; новые изменения pinned sources требуют повторной квалификации.
 
 #### Completion Report
 
-- status: planned
-- what was done: задача сформулирована в плане; реализация и выполнение её приёмочных сценариев не начаты.
-- files touched / work locations: implementation none; планируемые work locations указаны в Scope.
-- technical value delivered: результат реализации ещё не получен.
-- product value delivered: результат для пользователя ещё не подтверждён.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: только исходные ссылки и статические наблюдения в Source; future Verification gates не выполнены этой задачей.
-- residual risks: reproduce_then_fix; актуальность исходного состояния повторно проверяется при старте.
-- follow-up: Next step выше; после выполнения синхронизировать статус JSON, эту карточку и только затронутые control-plane claims.
-- Documentation impact: planning_only; пока код и функциональные claims не меняются. При завершении сопоставить changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required и evidence в этом отчёте.
+- status: implemented
+- what was done: Убрано повторное +1 для scheduler position; null остаётся без номера.
+- files touched / work locations: `apps/web/src/features/dashboard/Dashboard.tsx`, `model.ts`, `tests/web/ui-v3-dashboard.test.mts`, `tests/web/single-window/func-g01-dashboard-acceptance.mts`
+- technical value delivered: Убрано повторное +1 для scheduler position; null остаётся без номера.
+- product value delivered: Dashboard и QueueManager показывают одинаковые позиции и reorder.
+- actual implementation date and time: 15-11-2026 18:23
+- verification evidence: Browser RED `.tmp/func-g01-dashboard/evidence-IGkHii/result.json`; final GREEN `.tmp/func-g01-dashboard/evidence-MIaKso/result.json` 30/30, source/build hashes, RU/EN loading/partial/all-failed/retry/complete, 1-based/null/reorder/QueueManager parity, updatedAt ordering/create/edit refresh, desktop1440/mobile390 no overflow; model7/7. Visual QA added mobile readability oracles: RED evidence-6EV9zr (two layout failures), scoped summary wrapping/dashboard grid fixed in parity.css, final30/30 and desktop/mobile screenshots visually checked.
+- residual risks: Synthetic HTTP fixtures для отказов/timestamps/очереди; provider/human acceptance и полная accessibility qualification не заявлены.
+- follow-up: Нет в пределах AC; сквозная приёмка F19/F24 остаётся отдельной.
+- Documentation impact: updated; `docs/frontend/components.md` + `.en.md`; `docs/sources/registry.md` + `.en.md`; Описаны актуальные правила отображения, source owners и browser evidence.
 
 ### Task `PAOS-FUNC-07`
 
 - Delivery group: `FUNC-G01`; группа не заменяет Depends on и исходные AC.
 - Task: PAOS-FUNC-07 — Сортировать последние задачи по времени
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Дефект; функциональный аудит после V3 redesign и запрос владельца на матрицу задач.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 15-11-2026 18:23
 - Priority: P3
-- Evidence level: static_finding_reproduction_required
-- Execution authority: planning_only; внесение в план не запускает реализацию.
+- Evidence level: implemented_locally_verified
+- Execution authority: owner_authorized_local_synthetic; FUNC-G01, 15.11.2026.
 - Depends on: нет
 - Blocks: `PAOS-FUNC-18`, `PAOS-FUNC-19`
 - Source: Dashboard slice(-3), storage ORDER BY id. [apps/web/src/features/dashboard/Dashboard.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/dashboard/Dashboard.tsx), [apps/local-service/src/storage/sqlite-worker.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/storage/sqlite-worker.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Сортировать последние задачи по времени.
 - Technical value: Задать явную сортировку по updatedAt с устойчивым tie-breaker и unknown policy.
 - Product value: Блок последних задач ведёт к действительно недавней работе.
-- Scope: `apps/web/src/features/dashboard/Dashboard.tsx`; `apps/web/src/features/dashboard/model.ts`; `tests/web/ui-v3-dashboard.test.mts`. Ownership назначается при старте; перечисленные роли — предложение, agents сейчас не запущены.
+- Scope: `apps/web/src/features/dashboard/Dashboard.tsx`; `apps/web/src/features/dashboard/model.ts`; `tests/web/ui-v3-dashboard.test.mts`. Ownership выполненного slice: root + назначенные агенты; shared edits сериализованы.
 - Non-goals: изменения вне указанного поведения; публикация, реальные credentials, provider calls и изменение hook/trust. Чужие dirty изменения не входят в исправление.
 - Expected result: Блок последних задач ведёт к действительно недавней работе. Подтверждение — перечисленные ниже наблюдаемые сценарии, отдельно от human acceptance.
 - Acceptance criteria: AC1: UUID-порядок специально противоположен времени: отображаются3 последних по updatedAt. AC2: Равные и отсутствующие timestamps обрабатываются детерминированно; подпись поясняет выбранную семантику. AC3: Создание и изменение задачи обновляют состав блока после refresh.
-- Verification gates: `node --test tests/web/ui-v3-dashboard.test.mts` Это будущие проверки задачи, не выполненные проверки этой планировки. Сначала воспроизведение RED на текущей версии, затем исправление и GREEN. Общие docs gates применяются при изменении документации.
+- Verification gates: `node --test tests/web/ui-v3-dashboard.test.mts` Выполненные команды, RED/GREEN и provenance записаны в Completion Report.
 - Risks / approval gates: reproduce_then_fix; Реальные профили, внешний сервис, публикация и provider/model calls требуют отдельной точной авторизации. Synthetic acceptance — только disposable roots.
 - Complexity: medium — ограниченный сценарий с отрицательными проверками
 - Estimated execution time: 2–4 ч; rough_range_not_commitment. Перед стартом уточнить на актуальной сборке.
@@ -603,41 +629,41 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Skills: implementation-planner для плана; task-matching implementation/verification skills выбираются при старте, без установки новых skills этой задачей.
 - Output artifacts: scoped diff в перечисленных work locations; результаты проверок и Documentation impact в этом Completion Report; статус в JSON этой группы; короткий handoff в RUNLOG.md.
 - Rollback: отменить только собственные hunks после проверки drift; для данных — сохранённый synthetic backup и согласованный recovery contract; destructive Git не допускается.
-- Next step: Проверить актуальность находки. Назначить владельца и уточнить минимальный проверяемый slice.
+- Next step: Закрыта по локальным AC; новые изменения pinned sources требуют повторной квалификации.
 
 #### Completion Report
 
-- status: planned
-- what was done: задача сформулирована в плане; реализация и выполнение её приёмочных сценариев не начаты.
-- files touched / work locations: implementation none; планируемые work locations указаны в Scope.
-- technical value delivered: результат реализации ещё не получен.
-- product value delivered: результат для пользователя ещё не подтверждён.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: только исходные ссылки и статические наблюдения в Source; future Verification gates не выполнены этой задачей.
-- residual risks: reproduce_then_fix; актуальность исходного состояния повторно проверяется при старте.
-- follow-up: Next step выше; после выполнения синхронизировать статус JSON, эту карточку и только затронутые control-plane claims.
-- Documentation impact: planning_only; пока код и функциональные claims не меняются. При завершении сопоставить changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required и evidence в этом отчёте.
+- status: implemented
+- what was done: Добавлена чистая сортировка по updatedAt с ID tie-breaker и unknown-last; семантика указана в UI.
+- files touched / work locations: `apps/web/src/features/dashboard/Dashboard.tsx`, `model.ts`, `tests/web/ui-v3-dashboard.test.mts`, `tests/web/single-window/func-g01-dashboard-acceptance.mts`
+- technical value delivered: Добавлена чистая сортировка по updatedAt с ID tie-breaker и unknown-last; семантика указана в UI.
+- product value delivered: Три последние задачи отражают создание и изменение после refresh.
+- actual implementation date and time: 15-11-2026 18:23
+- verification evidence: Browser RED `.tmp/func-g01-dashboard/evidence-IGkHii/result.json`; final GREEN `.tmp/func-g01-dashboard/evidence-MIaKso/result.json` 30/30, source/build hashes, RU/EN loading/partial/all-failed/retry/complete, 1-based/null/reorder/QueueManager parity, updatedAt ordering/create/edit refresh, desktop1440/mobile390 no overflow; model7/7. Visual QA added mobile readability oracles: RED evidence-6EV9zr (two layout failures), scoped summary wrapping/dashboard grid fixed in parity.css, final30/30 and desktop/mobile screenshots visually checked.
+- residual risks: Synthetic HTTP fixtures для отказов/timestamps/очереди; provider/human acceptance и полная accessibility qualification не заявлены.
+- follow-up: Нет в пределах AC; сквозная приёмка F19/F24 остаётся отдельной.
+- Documentation impact: updated; `docs/frontend/components.md` + `.en.md`; `docs/sources/registry.md` + `.en.md`; Описаны актуальные правила отображения, source owners и browser evidence.
 
 ### Task `PAOS-FUNC-08`
 
 - Delivery group: `FUNC-G01`; группа не заменяет Depends on и исходные AC.
 - Task: PAOS-FUNC-08 — Разделить общие контракты и зависимости UI/backend
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Архитектура; функциональный аудит после V3 redesign и запрос владельца на матрицу задач.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 15-11-2026 18:27
 - Priority: P2
-- Evidence level: static_observation
-- Execution authority: planning_only; внесение в план не запускает реализацию.
+- Evidence level: implemented_locally_verified
+- Execution authority: owner_authorized_local_synthetic; FUNC-G01, 15.11.2026.
 - Depends on: `PAOS-FUNC-01`
 - Blocks: `PAOS-FUNC-09`, `PAOS-FUNC-11`, `PAOS-FUNC-13`
 - Source: HTTP imports web/preferences; contracts imports local-service/task-profile. [apps/local-service/src/http/application.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/http/application.mts), [packages/contracts/issues/task-profile.ts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/packages/contracts/issues/task-profile.ts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Разделить общие контракты и зависимости UI/backend.
 - Technical value: Убрать импорты backend→frontend и contracts→backend, сохранив публичное поведение.
 - Product value: Изменение оформления реже ломает серверные функции и выпуск.
-- Scope: `apps/local-service/src/http/application.mts`; `apps/web/src/design/preferences.ts`; `packages/contracts/issues/task-profile.ts`; `apps/local-service/src/tasks/task-profile.ts`. Ownership назначается при старте; перечисленные роли — предложение, agents сейчас не запущены.
+- Scope: `apps/local-service/src/http/application.mts`; `apps/web/src/design/preferences.ts`; `packages/contracts/issues/task-profile.ts`; `apps/local-service/src/tasks/task-profile.ts`. Ownership выполненного slice: root + назначенные агенты; shared edits сериализованы.
 - Non-goals: изменения вне указанного поведения; публикация, реальные credentials, provider calls и изменение hook/trust. Чужие dirty изменения не входят в исправление.
 - Expected result: Изменение оформления реже ломает серверные функции и выпуск. Подтверждение — перечисленные ниже наблюдаемые сценарии, отдельно от human acceptance.
 - Acceptance criteria: AC1: Preferences и task decoder имеют одного независимого владельца; contracts не импортируют apps. AC2: Существующие payload/schema и отказные сценарии сохранены; frontend и service проходят typecheck и текущие тесты. AC3: Проверка направления импортов предотвращает регрессию; runtime tuple повторно квалифицирован, если затронуты pinned sources.
@@ -649,20 +675,20 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Skills: implementation-planner для плана; task-matching implementation/verification skills выбираются при старте, без установки новых skills этой задачей.
 - Output artifacts: scoped diff в перечисленных work locations; результаты проверок и Documentation impact в этом Completion Report; статус в JSON этой группы; короткий handoff в RUNLOG.md.
 - Rollback: отменить только собственные hunks после проверки drift; для данных — сохранённый synthetic backup и согласованный recovery contract; destructive Git не допускается.
-- Next step: Проверить зависимости и актуальность находки. Назначить владельца и уточнить минимальный проверяемый slice.
+- Next step: Закрыта по локальным AC; новые изменения pinned sources требуют повторной квалификации.
 
 #### Completion Report
 
-- status: planned
-- what was done: задача сформулирована в плане; реализация и выполнение её приёмочных сценариев не начаты.
-- files touched / work locations: implementation none; планируемые work locations указаны в Scope.
-- technical value delivered: результат реализации ещё не получен.
-- product value delivered: результат для пользователя ещё не подтверждён.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: только исходные ссылки и статические наблюдения в Source; future Verification gates не выполнены этой задачей.
-- residual risks: architecture_review_before_refactor; актуальность исходного состояния повторно проверяется при старте.
-- follow-up: Next step выше; после выполнения синхронизировать статус JSON, эту карточку и только затронутые control-plane claims.
-- Documentation impact: planning_only; пока код и функциональные claims не меняются. При завершении сопоставить changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required и evidence в этом отчёте.
+- status: implemented
+- what was done: Две чистые реализации перенесены в независимый contracts owner. M1 decoder сохранён побайтно кроме import; прежние пути re-export ту же функцию. DOM apply остаётся Web. AST guard проверяет import/export/type/literal dynamic edges; HTTP payload/schema не менялись.
+- files touched / work locations: `packages/contracts/tasks/decode-task-profile.ts`, `packages/contracts/ui/preferences.ts`, legacy decoder/frontend preferences re-exports, `issues/task-profile.ts`, HTTP `application.mts`, `locales/messages.ts`, `tests/web/contracts-boundaries.test.mts`, final runtime manifest
+- technical value delivered: Обратные импорты contracts→apps и service→Web source удалены без новых dependencies и без переписывания validation.
+- product value delivered: Изменение оформления больше не требует импортировать frontend implementation в backend preferences.
+- actual implementation date and time: 15-11-2026 18:27
+- verification evidence: Independent pre-edit architecture review /root/func_g01_runtime; AST RED found exact contracts-to-service + service-to-Web edges; GREEN shared/decoder/M2/preferences focused15, npm run check:web-m1/build:web exit0. Final native candidate/default exit0 `.tmp/func-g01-runtime/native-candidate-final-escalated.log`, native-default-final-escalated.log; manifest adapter fc34f72a89cd1a217cc22bd0a160284f9ee8671c453d06531e86e24b69a4c8d5; runtime12/12. Full Web `.tmp/func-g01/web-final.log` 507 tests492pass/11fixture EPERM/4skip + exact15 boundary retests `.tmp/func-g01/web-boundary-retest.log`15pass0fail0skip:507 unique passed across two executor contexts. Independent final review /root/func_g01_review closed_allowed.
+- residual risks: Оставлена существующая packaging/parser dependency на Web package. AST guard проверяет статические/literal edges, не произвольные вычисляемые imports; provider/human/production claims не повышены.
+- follow-up: Нет в пределах AC; новая правка pinned source требует native requalification.
+- Documentation impact: updated; `docs/backend/modules.md` + `.en.md`, `docs/architecture/containers.md` + `.en.md`, `docs/sources/registry.md` + `.en.md`; Описаны новые owners, compatibility seams, выбранный вариант/альтернатива и проверенная финальная квалификация. API docs no_change_needed: endpoints/payload/schema/errors сохранены.
 
 ### Task `PAOS-FUNC-09`
 

@@ -4,6 +4,16 @@ Source status: repository_source / static_source_review; 15.11.2026.
 
 Владелец: frontend owner и docs-maintainer. Область: Web UI на revision `ad78d5d15aced23febae90d319f2aba00bd64d0b`. Обновлять при изменении компоновки, API-контракта, компонентов или их тестов. Ссылки на тесты ниже — маршруты проверки, не утверждение об их запуске в DG04.
 
+## Dashboard — FUNC-05–07
+
+Актуальное дополнение к DG04 snapshot: исходники `apps/web/src/features/dashboard/Dashboard.tsx` и `model.ts` текущего checkout; статусы и receipts — [FUNC-G01](../planning/functional-remediation-2026-11-15.md#func-g01--стабильность-текущего-ui-и-базовых-контрактов).
+
+- **F05, покрытие portfolio.** Рядом с totals/progress всегда видны loaded/expected и полнота, например «1 из 2 · данные неполные». Progress относится к доступным проектам; неизвестные значения остаются `—`. Число ожидаемых проектов сохраняется при loading до первого ответа. Retry, all-failed и восстановление полного покрытия проверены в RU/EN.
+- **F06, позиции очереди.** Scheduler отдаёт 1-based `position`; dashboard выводит это значение без дополнительного `+1`. Для `null` номер отсутствует. Reorder отображается с теми же позициями в dashboard и QueueManager.
+- **F07, последние задачи.** Показываются три задачи по `updatedAt` от новых к старым. При одинаковом времени порядок определяется ID по возрастанию; отсутствующее или невалидное время идёт после известных timestamps. Исходный массив snapshot не меняется. Семантика указана под заголовком, создание и изменение отражаются после Refresh dashboard.
+
+`node --test tests/web/ui-v3-dashboard.test.mts` проверяет модель, включая ties/unknown/immutability. `func-g01-dashboard-acceptance.mts --synthetic-browser` проверяет production UI с disposable local service и явно синтетическими HTTP failures/timestamps/queue fixtures: 30/30, desktop 1440×1000 и mobile 390×844 без page overflow. После visual QA добавлены проверки высоты итогов и ширины основной колонки: wrapping summary и dashboard-only single-column layout до 760 px сохраняют читаемость; отдельный RED и исправленный screenshot сохранены. Первоначальный RED сохранён; сценарии не доказывают provider execution, human acceptance или полную accessibility qualification.
+
 ## Точки входа
 
 [main.tsx](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/apps/web/src/main.tsx) подключает CSS и монтирует React `App`; [App.tsx](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/apps/web/src/ui/App.tsx) владеет общей оболочкой, выбранным проектом и компоновкой экранов. [Sidebar](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/apps/web/src/ui/Sidebar.tsx) получает доступные пункты, текущий выбор и callbacks от App; он не является источником состояния сервера. См. [навигацию](navigation.md) и [состояние](state-management.md).

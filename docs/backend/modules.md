@@ -1,6 +1,6 @@
 # Backend: модули и владельцы
 
-Source status: repository_source / static_source_review; 15.11.2026.
+Source status: repository_source / static_source_review + bounded_native_synthetic_verified; 15.11.2026.
 
 Владелец: backend/local-service; storage и runtime отвечают за свои контракты. Scope/version: DG03, `2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765`. Обновлять при изменении wiring, зависимости, контракта или владельца модуля.
 
@@ -16,7 +16,13 @@ Source status: repository_source / static_source_review; 15.11.2026.
 
 ## Текущие зависимости между слоями
 
-[application.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/http/application.mts) импортирует [preferences.ts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/web/src/design/preferences.ts) из Web source для загрузки и сохранения настроек. [code-index/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/code-index/service.mts) и [parser-worker.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/code-index/parser-worker.mts) разрешают parser через Web package; [runtime/manifest.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/packages/contracts/runtime/manifest.mts) учитывает hash Web lockfile при квалификации runtime. Это существующие зависимости, а не исправленная архитектурная граница. [PAOS-FUNC-08](../planning/functional-remediation-2026-11-15.md) остаётся planned и владеет дальнейшим выделением/проверкой контрактов.
+FUNC-08, 15.11.2026: `application.mts` загружает и сохраняет preferences через `packages/contracts/ui/preferences.ts`; этот модуль владеет `UiLocale`, theme types и чистой validation/load/save логикой. Web `design/preferences.ts` сохраняет прежние exports и DOM-only `applyUiPreferences`. `packages/contracts/tasks/decode-task-profile.ts` владеет строгим M1 decoder/encoder; прежний service path — compatibility re-export. `issues/task-profile.ts` использует shared decoder напрямую. Payload/schema, validation errors и HTTP endpoints сохранены.
+
+Выбор: вынести две чистые реализации, сохранив callers через небольшие re-export seams. Оставить текущие обратные импорты означало бы сохранить связанность UI/backend; помещение decoder в файл constants/types было возможно, но отдельный runtime decoder яснее разделяет владельцев. Новых dependencies, domain layers и изменений schema не добавлено. До изменений выполнен независимый architecture review.
+
+`tests/web/contracts-boundaries.test.mts` разбирает relative import/export/type-import/literal dynamic-import edges через уже установленный публичный parser: contracts не импортируют `apps`, service не импортирует Web source. Проверяются также identity прежних и shared exports. Это static regression, а не изоляция процессов. `code-index/service.mts` и `parser-worker.mts` по-прежнему разрешают установленный parser через Web package; Web lockfile остаётся частью native qualification. Эти packaging dependencies не заменяют контрактный owner и не входили в рефакторинг.
+
+После переноса pinned sources native tuple переквалифицирован: adapter `fc34f72a89cd1a217cc22bd0a160284f9ee8671c453d06531e86e24b69a4c8d5`, lock `f126e4dceeb06cb9644fe1167cbb5b2b2689fb8022325d54292445398ad30aac`. Candidate и production default прошли native checks; [карточка F08](../planning/functional-remediation-2026-11-15.md#task-paos-func-08) владеет подробным evidence.
 
 ## Проверки и ограничения
 

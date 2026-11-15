@@ -1,6 +1,6 @@
 # Backend: modules and ownership
 
-Source status: repository_source / static_source_review; 2026-11-15.
+Source status: repository_source / static_source_review + bounded_native_synthetic_verified; 2026-11-15.
 
 Owner: backend/local-service; storage and runtime own their respective contracts. Scope/version: DG03, `2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765`. Update when wiring, a dependency, contract or module owner changes.
 
@@ -16,7 +16,13 @@ Owner: backend/local-service; storage and runtime own their respective contracts
 
 ## Current cross-layer dependencies
 
-[application.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/http/application.mts) imports [preferences.ts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/web/src/design/preferences.ts) from Web source to load and save preferences. [code-index/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/code-index/service.mts) and [parser-worker.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/code-index/parser-worker.mts) resolve the parser through the Web package; [runtime/manifest.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/packages/contracts/runtime/manifest.mts) includes the Web lockfile hash in runtime qualification. These dependencies exist today; the architectural boundary has not been repaired. [PAOS-FUNC-08](../planning/functional-remediation-2026-11-15.md) remains planned and owns further contract separation and verification.
+FUNC-08, 2026-11-15: `application.mts` loads and saves preferences through `packages/contracts/ui/preferences.ts`, which owns `UiLocale`, theme types and pure validation/load/save logic. Web `design/preferences.ts` preserves previous exports and DOM-only `applyUiPreferences`. `packages/contracts/tasks/decode-task-profile.ts` owns the strict M1 decoder/encoder; the old service path is a compatibility re-export. `issues/task-profile.ts` uses the shared decoder directly. Payload/schema, validation errors and HTTP endpoints are preserved.
+
+Decision: extract two pure implementations while preserving callers through small re-export seams. Retaining reverse imports would retain UI/backend coupling; placing the decoder in the constants/types file was viable, but a separate runtime decoder gives clearer ownership. No new dependencies, domain layers or schema changes. An independent architecture review preceded the edits.
+
+`tests/web/contracts-boundaries.test.mts` parses relative import/export/type-import/literal dynamic-import edges using the installed public parser: contracts cannot import `apps`, and the service cannot import Web source. It also checks identity of legacy and shared exports. This is a static regression guard, not process isolation. `code-index/service.mts` and `parser-worker.mts` still resolve the installed parser through the Web package; the Web lockfile remains part of native qualification. These packaging dependencies were outside this contract refactor.
+
+After moving pinned sources, native qualification was repeated: adapter `fc34f72a89cd1a217cc22bd0a160284f9ee8671c453d06531e86e24b69a4c8d5`, lock `f126e4dceeb06cb9644fe1167cbb5b2b2689fb8022325d54292445398ad30aac`. Candidate and production default passed native checks; [F08](../planning/functional-remediation-2026-11-15.en.md#task-paos-func-08) owns detailed evidence.
 
 ## Checks and limits
 

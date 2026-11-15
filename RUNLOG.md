@@ -1,5 +1,9 @@
 # RUNLOG.md
 
+## FUNC-G01 — закрыта, 15.11.2026
+
+F01/F03/F04/F05/F06/F07/F08 implemented_locally_verified,7/7; [полный evidence](docs/planning/functional-remediation-2026-11-15.md#func-g01-results), [machine state](docs/planning/functional-remediation-2026-11-15.json). Native tuple переквалифицирован после contracts move; broker write/deny/restart и drift fences passed. Draft/browser54 + dashboard/browser30, Web507 unique с отдельным15-case environment retest; TS/build passed. Independent architecture/implementation и CSS delta review closed_allowed. RU/EN domain docs, registry, task cards/statuses и control-plane обновлены. Другие27 FUNC и3 M5 refs сохранены; другая группа не запущена. EVALS/prod_test no_change_needed. Human/provider/production/site freshness не повышены; rollback только own hunks, pinned-source rollback требует requalification.
+
 DG07 завершена: DOCS-14/15/16 implemented / docs_static_verified; все 16 documentation tasks и 7 DG-групп закрыты. Шесть новых RU/EN operations pairs, пять обновлённых plugin pairs; FUNC owner/update matrix покрывает 7 групп/34 задачи. [Evidence](docs/planning/documentation-architecture-2026-11-15.md#dg07-results): source4, matrices2, strict/site7, links/parity/preservation и cross-review passed. Далее bounded FUNC slice; F17/F25/M5 и runtime/human/commercial gates не закрывались. EVALS/prod_test no_change_needed.
 
 DG06 завершена: DOCS-12/13 implemented / docs_static_verified; 11 RU/EN пар security/testing, nav/registry/maps и owning plan synchronized. [Результаты и команды](docs/planning/documentation-architecture-2026-11-15.md#dg06-results). Source4, matrices2, strict build/site7, HTML/source links и source parity passed; перекрёстный static review closed_allowed. Следующий DG07; DOCS-16/B открыт, DOCS-14/15 planned. Runtime/provider/human/release claims не повышены; EVALS/prod_test no_change_needed.

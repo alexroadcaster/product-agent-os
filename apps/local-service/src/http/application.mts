@@ -24,7 +24,7 @@ import {createScheduler} from '../scheduler/service.mts';
 import {createDecisions} from '../decisions/service.mts';
 import type {AssetRoot} from '../team/sources.mts';
 import {startTeamGeneration,teamGenerationResult} from '../team/generation.mts';
-import { loadUiPreferences, saveUiPreferences } from '../../../web/src/design/preferences.ts';
+import { loadUiPreferences, saveUiPreferences } from '../../../../packages/contracts/ui/preferences.ts';
 
 export type ApplicationOptions = {
   store: LocalStore; origin: string; instanceId: string; profileDirectory: string; staticDirectory?: string;

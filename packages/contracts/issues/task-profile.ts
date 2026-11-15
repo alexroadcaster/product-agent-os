@@ -1,4 +1,4 @@
-import { decodeM1TaskProfile } from '../../../apps/local-service/src/tasks/task-profile.ts';
+import { decodeM1TaskProfile } from '../tasks/decode-task-profile.ts';
 import type { M1TaskProfile, M1TaskStatus } from '../tasks/m1-task-profile.ts';
 import type {WorkflowRegistry} from '../workflows/workflow.ts';
 import {workflowCategory} from '../workflows/helpers.ts';

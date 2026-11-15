@@ -13,8 +13,8 @@
     "sha256": "119d6fa70e6ae1b15b90688ab6bcc8e3a2819acea021af196895cab1843645af"
   },
   "sqliteVersion": "3.53.3",
-  "adapterRevision": "b19cdbb51f068326166873e7aa417c5e7baea0390a1ad685e1ec7f4033214a5f",
-  "packageLockSha256": "d279009aa1dca2bd2d6ba0e18a77d085a67e872d0dce78dd360fb23d43975f38",
+  "adapterRevision": "fc34f72a89cd1a217cc22bd0a160284f9ee8671c453d06531e86e24b69a4c8d5",
+  "packageLockSha256": "f126e4dceeb06cb9644fe1167cbb5b2b2689fb8022325d54292445398ad30aac",
   "schema": {
     "sha256": "486c7c8daa5dc7f3ab2a1fb56de5316804caf7a4210fda1dc28d3f0f4e90cfe1",
     "v2Sha256": "b1e5d17224b9d9732b5976012438ba78e2cf7e418b67f8f8a5f5cffe301b875d"
@@ -53,6 +53,8 @@
     "m3QueueNativeCandidate": "f1aea935f7fc1e69044182c53ca0d5bb1253b32269b194a985c340e083d1f351",
     "m3RecoveryNativeCandidate": "227e0954f9e1e88db38aa2a302fd78b693a07cd8067809ad99a156c469f6c7d5",
     "m3DecisionsNativeCandidate": "6d59803d23217c6fcca8fe262ad500804dfe131a150c3e8a3f3e52b1a5a6250c",
-    "m4IntegrationNativeCandidate": "9801de72d0406c5fab59679b3198bd47bdf88631bd33f73c1fca4b725616b92a"
+    "m4IntegrationNativeCandidate": "9801de72d0406c5fab59679b3198bd47bdf88631bd33f73c1fca4b725616b92a",
+    "funcG01NativeCandidateInitial": "dd072f95617b77ae084ef78d37f585dd51b4b6367a4cd158cfd6e2f10f03abf3",
+    "funcG01NativeCandidateFinal": "a2cad642d6f3bc416a04a954f4bbbfa009aae75d5aeacc77bac3f940313dcf4a"
   }
 }

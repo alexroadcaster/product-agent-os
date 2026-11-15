@@ -1,5 +1,11 @@
 # TEST.md
 
+## FUNC-G01 — текущие проверки, 15.11.2026
+
+[Evidence/команды/provenance](docs/planning/functional-remediation-2026-11-15.md#func-g01-results), [subsystem routes](docs/testing/test-map.md#func-g01--текущие-regression-routes). Current scoped checks: `npm run check:web-m1`, `npm run build:web`; `contracts-boundaries.test.mts`, decoder/preferences и dashboard tests; `func-g01-drafts-acceptance.mts --synthetic-browser`54; `func-g01-dashboard-acceptance.mts --synthetic-browser`30; runtime-manifest/sandbox-broker12 и native candidate→promotion→production default write/deny/restart. Existing dependency/binary paths, disposable roots, no providers/real credentials.
+
+Web507 unique: исходный full run492pass/11fixture-EPERM/4skip + exact15 elevated boundary retests15pass0skip; исходный failed receipt сохранён, не объявляется green. CSS/readability delta проверен последующим browser30/build, full suite после CSS не повторялся. Все84 browser checks имеют source/build provenance; drafts54 относятся к F08 build до dashboard-only CSS. Исторические gates ниже не расширены; сайт, Python plugin/evals/hooks не менялись и не пересобирались/перезапускались этим slice.
+
 DG07: [operations/plugin/final integration evidence](docs/planning/documentation-architecture-2026-11-15.md#dg07-results) — `.docs-tools/reports/dg07/site`; source4, matrices2, strict build/i18n/site7, implementation-domain/8-plan HTML links, source parity, contracts/FUNC/relocation preservation. Runtime/provider/install не выполнялись; прежний verification route сохранён.
 
 DG06: [security/testing documentation evidence](docs/planning/documentation-architecture-2026-11-15.md#dg06-results) — isolated `.docs-tools/reports/dg06/site`, source3+card parity1, matrices2, site7, HTML/source links, 11 RU/EN source sets. TEST/EVALS routes и thresholds прежние; runtime/provider/security audit не выполнялись.

@@ -4,17 +4,17 @@
   "created_at": "2026-11-15",
   "timezone": "Europe/Moscow",
   "source_plan": "docs/planning/functional-remediation-2026-11-15.md",
-  "status": "planned",
-  "execution_authority": "planning_only",
+  "status": "in_progress",
+  "execution_authority": "owner_authorized_func_g01_local_synthetic",
   "original_group_unchanged": "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json",
   "tasks": [
     {
       "id": "PAOS-FUNC-01",
       "title": "Восстановить квалификацию native runtime после redesign",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "type": "fix",
-      "evidence_level": "static_finding_reproduction_required",
+      "evidence_level": "implemented_locally_verified",
       "technical_value": "Согласовать lockfile, manifest и native broker без ослабления проверки fingerprint.",
       "product_value": "Запуск задачи из обновлённого интерфейса действительно приводит к выполнению.",
       "acceptance_criteria": [
@@ -47,8 +47,8 @@
       "estimate": "8–16 ч",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "rough_range",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "15-11-2026 18:17",
+      "execution_authority": "owner_authorized_local_synthetic",
       "source_observation": "Lock SHA-256 d279009a… в manifest и f126e4dc… текущего файла не совпали; adapter99 совпал в аудите15.11.",
       "source_paths": [
         "packages/contracts/runtime/manifest.mts",
@@ -57,7 +57,29 @@
       "future_test_commands": [
         "node --test tests/web/runtime-manifest.test.mts"
       ],
-      "delivery_group_id": "FUNC-G01"
+      "delivery_group_id": "FUNC-G01",
+      "completion_evidence": {
+        "files": "`packages/contracts/runtime/qualified-manifest.json`, `tests/web/runtime-manifest.test.mts`, `tests/web/single-window/sandbox-broker-acceptance.mts`",
+        "evidence": "RED `.tmp/func-g01-runtime/manifest-red.log`, `native-red.log`; GREEN runtime-manifest + sandbox-broker 12/12; native candidate/default `.tmp/func-g01-runtime/native-candidate-initial-escalated.log`, `native-default-initial-escalated.log` exit0, three modes, inside write/outside+temp EPERM, binary/lock/adapter drift rejected before spawn, repeat start/Stop/auth cleanup. Initial sandbox MXC failure retained in native-candidate-initial.log. Final F08 requalification: `.tmp/func-g01-runtime/native-candidate-final-escalated.log`, `native-default-final-escalated.log` exit0; adapter fc34f72a89cd1a217cc22bd0a160284f9ee8671c453d06531e86e24b69a4c8d5, lock f126e4dceeb06cb9644fe1167cbb5b2b2689fb8022325d54292445398ad30aac; runtime12/12. Binary cleanup verified.",
+        "docs": "`docs/backend/lifecycle.md` + `.en.md`; `docs/sources/registry.md` + `.en.md`",
+        "ru": {
+          "done": "Воспроизведён package_lock_mismatch; candidate-only квалификация допускает изменённые lock/adapter pins только для нового native acceptance. Manifest продвинут после passed native receipt; production loader не ослаблен.",
+          "technical": "Текущий lockfile квалифицирован вместе с binary/Node/OS/SQLite и adapter; fail-closed drift checks сохранены.",
+          "product": "Новый native broker выполняет synthetic command в разрешённом root и отклоняет внешнюю запись.",
+          "limits": "Bounded native offline acceptance; provider/model/production/human acceptance не заявлены. Финальный tuple после F08 проверен.",
+          "followup": "Нет в пределах AC; новая правка pinned sources требует новой квалификации.",
+          "doc_reason": "Описаны exact tuple, candidate promotion, текущие receipts и граница claims."
+        },
+        "en": {
+          "done": "Reproduced package_lock_mismatch; candidate-only qualification admits changed lock/adapter pins solely for new native acceptance. Promoted manifest only after a passed native receipt; production loader remains fail-closed.",
+          "technical": "Current lockfile qualified with binary/Node/OS/SQLite and adapter; drift protections preserved.",
+          "product": "A new native broker executes a synthetic command inside its allowed root and denies outside writes.",
+          "limits": "Bounded native offline acceptance; no provider/model/production/human acceptance claim. Final tuple after F08 verified.",
+          "followup": "None within these AC; any new pinned-source edit requires new qualification.",
+          "doc_reason": "Documents the exact tuple, candidate promotion, current receipts and claim boundary."
+        },
+        "timestamp": "15-11-2026 18:17"
+      }
     },
     {
       "id": "PAOS-FUNC-02",
@@ -109,10 +131,10 @@
     {
       "id": "PAOS-FUNC-03",
       "title": "Полностью сбрасывать черновик новой задачи",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "type": "fix",
-      "evidence_level": "static_finding_reproduction_required",
+      "evidence_level": "implemented_locally_verified",
       "technical_value": "Синхронизировать модель, rawInputs, estimate, preview и dirty-state при Discard.",
       "product_value": "После отмены пользователь не видит данные, которые уже отсутствуют в сохраняемой задаче.",
       "acceptance_criteria": [
@@ -135,8 +157,8 @@
       "estimate": "3–6 ч",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "rough_range",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "15-11-2026 18:26",
+      "execution_authority": "owner_authorized_local_synthetic",
       "source_observation": "Reset не сбрасывает rawInputs; эффект очистки требует entity.",
       "source_paths": [
         "apps/web/src/features/tasks/Editor.tsx"
@@ -145,15 +167,37 @@
         "npm run check:web-m1",
         "npm run test:web-m1"
       ],
-      "delivery_group_id": "FUNC-G01"
+      "delivery_group_id": "FUNC-G01",
+      "completion_evidence": {
+        "files": "`apps/web/src/features/tasks/Editor.tsx`, `tests/web/single-window/func-g01-drafts-acceptance.mts`",
+        "evidence": "Baseline RED `.tmp/func-g01-drafts/evidence-DGhYbl/result.json`; ACK-race RED evidence-pS0YXr/result.json; final `.tmp/func-g01-drafts/evidence-C6lIVM/result.json` 54/54 on final F08 build, actual UI/HTTP/SQLite concurrent writes, source/build hashes, fixture cleanup; typecheck exit0. Retained sandbox startup and premature-oracle receipts3Hhk34/8nW2Uj/W7ljj0; bounded observable waits repaired test timing.",
+        "docs": "`docs/frontend/state-management.md` + `.en.md`; `docs/sources/registry.md` + `.en.md`",
+        "ru": {
+          "done": "Discard очищает rawInputs, reason/error, модель, estimate, preview и dirty-state. Сохранение после отмены не возвращает отменённые данные; conflict сохраняет dirty draft, discard принимает текущую серверную revision.",
+          "technical": "Discard очищает rawInputs, reason/error, модель, estimate, preview и dirty-state. Сохранение после отмены не возвращает отменённые данные; conflict сохраняет dirty draft, discard принимает текущую серверную revision.",
+          "product": "Отмена предсказуемо очищает форму; concurrent изменения не теряются неявно.",
+          "limits": "Browser desktop/mobile geometry проверены; human acceptance и полная UX/a11y qualification отдельно. Drafts остаются только в памяти страницы.",
+          "followup": "Нет в пределах AC; сквозная F19 и human F23 остаются planned.",
+          "doc_reason": "Отдельные разделы F03/F04 описывают reset/navigation/CAS, текущее source ownership и evidence54."
+        },
+        "en": {
+          "done": "Discard clears rawInputs, reason/error, model, estimate, preview and dirty-state. Saving after discard does not resurrect data; conflicts retain dirty input, discard adopts the current server revision.",
+          "technical": "Discard clears rawInputs, reason/error, model, estimate, preview and dirty-state. Saving after discard does not resurrect data; conflicts retain dirty input, discard adopts the current server revision.",
+          "product": "Discard predictably resets the form without silently losing concurrent edits.",
+          "limits": "Browser desktop/mobile geometry checked; human acceptance and full UX/a11y qualification remain separate. Drafts remain page-memory only.",
+          "followup": "None within these AC; end-to-end F19 and human F23 remain planned.",
+          "doc_reason": "Separate F03/F04 sections document reset/navigation/CAS, current source ownership and 54-check evidence."
+        },
+        "timestamp": "15-11-2026 18:26"
+      }
     },
     {
       "id": "PAOS-FUNC-04",
       "title": "Сохранять черновик назначений workflow при навигации",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "type": "fix",
-      "evidence_level": "static_finding_reproduction_required",
+      "evidence_level": "implemented_locally_verified",
       "technical_value": "Включить typeMapping и исходную CAS revision в общий жизненный цикл draft.",
       "product_value": "Пользователь не теряет несохранённые назначения процессов при переходе между разделами.",
       "acceptance_criteria": [
@@ -176,8 +220,8 @@
       "estimate": "4–8 ч",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "rough_range",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "15-11-2026 18:26",
+      "execution_authority": "owner_authorized_local_synthetic",
       "source_observation": "Draft cache не включает typeMapping/mappingDirty.",
       "source_paths": [
         "apps/web/src/features/workflows/WorkflowManager.tsx"
@@ -186,15 +230,37 @@
         "npm run check:web-m1",
         "npm run test:web-m1"
       ],
-      "delivery_group_id": "FUNC-G01"
+      "delivery_group_id": "FUNC-G01",
+      "completion_evidence": {
+        "files": "`apps/web/src/features/workflows/WorkflowManager.tsx`, `tests/web/single-window/func-g01-drafts-acceptance.mts`",
+        "evidence": "Baseline RED `.tmp/func-g01-drafts/evidence-DGhYbl/result.json`; ACK-race RED evidence-pS0YXr/result.json; final `.tmp/func-g01-drafts/evidence-C6lIVM/result.json` 54/54 on final F08 build, actual UI/HTTP/SQLite concurrent writes, source/build hashes, fixture cleanup; typecheck exit0. Retained sandbox startup and premature-oracle receipts3Hhk34/8nW2Uj/W7ljj0; bounded observable waits repaired test timing.",
+        "docs": "`docs/frontend/state-management.md` + `.en.md`; `docs/sources/registry.md` + `.en.md`",
+        "ru": {
+          "done": "Memory-only draft хранит typeMapping/mappingDirty/original CAS revision отдельно от definition. Navigation/project changes изолированы; Save/Discard assignments корректны; default-only ACK принимает только собственную committed revision, не чужой последующий refresh.",
+          "technical": "Memory-only draft хранит typeMapping/mappingDirty/original CAS revision отдельно от definition. Navigation/project changes изолированы; Save/Discard assignments корректны; default-only ACK принимает только собственную committed revision, не чужой последующий refresh.",
+          "product": "Несохранённые назначения переживают навигацию и не перетирают чужую запись.",
+          "limits": "Browser desktop/mobile geometry проверены; human acceptance и полная UX/a11y qualification отдельно. Drafts остаются только в памяти страницы.",
+          "followup": "Нет в пределах AC; сквозная F19 и human F23 остаются planned.",
+          "doc_reason": "Отдельные разделы F03/F04 описывают reset/navigation/CAS, текущее source ownership и evidence54."
+        },
+        "en": {
+          "done": "Memory-only drafts retain typeMapping/mappingDirty/original CAS revision independently of definitions. Navigation/project changes are isolated; Save/Discard assignments work; a default-only ACK adopts only its own committed revision, never another writer from refresh.",
+          "technical": "Memory-only drafts retain typeMapping/mappingDirty/original CAS revision independently of definitions. Navigation/project changes are isolated; Save/Discard assignments work; a default-only ACK adopts only its own committed revision, never another writer from refresh.",
+          "product": "Unsaved assignments survive navigation without overwriting another writer.",
+          "limits": "Browser desktop/mobile geometry checked; human acceptance and full UX/a11y qualification remain separate. Drafts remain page-memory only.",
+          "followup": "None within these AC; end-to-end F19 and human F23 remain planned.",
+          "doc_reason": "Separate F03/F04 sections document reset/navigation/CAS, current source ownership and 54-check evidence."
+        },
+        "timestamp": "15-11-2026 18:26"
+      }
     },
     {
       "id": "PAOS-FUNC-05",
       "title": "Обозначить неполное покрытие portfolio рядом с итогами",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "type": "fix",
-      "evidence_level": "static_finding_reproduction_required",
+      "evidence_level": "implemented_locally_verified",
       "technical_value": "Провести partial/loaded/expected из агрегатора в отображение KPI и progress.",
       "product_value": "Частично загруженные проекты не выглядят как полный итог портфеля.",
       "acceptance_criteria": [
@@ -221,8 +287,8 @@
       "estimate": "3–6 ч",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "rough_range",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "15-11-2026 18:23",
+      "execution_authority": "owner_authorized_local_synthetic",
       "source_observation": "aggregateSnapshots возвращает partial; dashboard totals его не показывает.",
       "source_paths": [
         "apps/web/src/features/dashboard/model.ts",
@@ -231,15 +297,37 @@
       "future_test_commands": [
         "node --test tests/web/ui-v3-dashboard.test.mts"
       ],
-      "delivery_group_id": "FUNC-G01"
+      "delivery_group_id": "FUNC-G01",
+      "completion_evidence": {
+        "files": "`apps/web/src/features/dashboard/Dashboard.tsx`, `model.ts`, `tests/web/ui-v3-dashboard.test.mts`, `tests/web/single-window/func-g01-dashboard-acceptance.mts`, `apps/web/src/design/parity.css`",
+        "evidence": "Browser RED `.tmp/func-g01-dashboard/evidence-IGkHii/result.json`; final GREEN `.tmp/func-g01-dashboard/evidence-MIaKso/result.json` 30/30, source/build hashes, RU/EN loading/partial/all-failed/retry/complete, 1-based/null/reorder/QueueManager parity, updatedAt ordering/create/edit refresh, desktop1440/mobile390 no overflow; model7/7. Visual QA added mobile readability oracles: RED evidence-6EV9zr (two layout failures), scoped summary wrapping/dashboard grid fixed in parity.css, final30/30 and desktop/mobile screenshots visually checked.",
+        "docs": "`docs/frontend/components.md` + `.en.md`; `docs/sources/registry.md` + `.en.md`",
+        "ru": {
+          "done": "Показаны loaded/expected и partial рядом с totals/progress, ожидаемое количество берётся из projects до первого ответа.",
+          "technical": "Показаны loaded/expected и partial рядом с totals/progress, ожидаемое количество берётся из projects до первого ответа.",
+          "product": "Частичный portfolio больше не выглядит полным; unknown не превращается в ноль.",
+          "limits": "Synthetic HTTP fixtures для отказов/timestamps/очереди; provider/human acceptance и полная accessibility qualification не заявлены.",
+          "followup": "Нет в пределах AC; сквозная приёмка F19/F24 остаётся отдельной.",
+          "doc_reason": "Описаны актуальные правила отображения, source owners и browser evidence."
+        },
+        "en": {
+          "done": "Displayed loaded/expected and partial next to totals/progress; expected count comes from projects before the first response.",
+          "technical": "Displayed loaded/expected and partial next to totals/progress; expected count comes from projects before the first response.",
+          "product": "Partial portfolio totals are visibly incomplete; unknown is not zero.",
+          "limits": "Synthetic HTTP fixtures for failures/timestamps/queue; no provider/human acceptance or full accessibility qualification claim.",
+          "followup": "None within these AC; end-to-end F19/F24 remains separate.",
+          "doc_reason": "Documents current display rules, source owners and browser evidence."
+        },
+        "timestamp": "15-11-2026 18:23"
+      }
     },
     {
       "id": "PAOS-FUNC-06",
       "title": "Исправить нумерацию очереди на dashboard",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P3",
       "type": "fix",
-      "evidence_level": "static_finding_reproduction_required",
+      "evidence_level": "implemented_locally_verified",
       "technical_value": "Единый 1-based контракт позиции между scheduler и frontend.",
       "product_value": "Одинаковый порядок задач на dashboard и в управлении очередью.",
       "acceptance_criteria": [
@@ -261,8 +349,8 @@
       "estimate": "1–3 ч",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "rough_range",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "15-11-2026 18:23",
+      "execution_authority": "owner_authorized_local_synthetic",
       "source_observation": "Backend indexOf+1, dashboard position+1.",
       "source_paths": [
         "apps/local-service/src/scheduler/service.mts",
@@ -271,15 +359,37 @@
       "future_test_commands": [
         "node --test tests/web/ui-v3-dashboard.test.mts"
       ],
-      "delivery_group_id": "FUNC-G01"
+      "delivery_group_id": "FUNC-G01",
+      "completion_evidence": {
+        "files": "`apps/web/src/features/dashboard/Dashboard.tsx`, `model.ts`, `tests/web/ui-v3-dashboard.test.mts`, `tests/web/single-window/func-g01-dashboard-acceptance.mts`",
+        "evidence": "Browser RED `.tmp/func-g01-dashboard/evidence-IGkHii/result.json`; final GREEN `.tmp/func-g01-dashboard/evidence-MIaKso/result.json` 30/30, source/build hashes, RU/EN loading/partial/all-failed/retry/complete, 1-based/null/reorder/QueueManager parity, updatedAt ordering/create/edit refresh, desktop1440/mobile390 no overflow; model7/7. Visual QA added mobile readability oracles: RED evidence-6EV9zr (two layout failures), scoped summary wrapping/dashboard grid fixed in parity.css, final30/30 and desktop/mobile screenshots visually checked.",
+        "docs": "`docs/frontend/components.md` + `.en.md`; `docs/sources/registry.md` + `.en.md`",
+        "ru": {
+          "done": "Убрано повторное +1 для scheduler position; null остаётся без номера.",
+          "technical": "Убрано повторное +1 для scheduler position; null остаётся без номера.",
+          "product": "Dashboard и QueueManager показывают одинаковые позиции и reorder.",
+          "limits": "Synthetic HTTP fixtures для отказов/timestamps/очереди; provider/human acceptance и полная accessibility qualification не заявлены.",
+          "followup": "Нет в пределах AC; сквозная приёмка F19/F24 остаётся отдельной.",
+          "doc_reason": "Описаны актуальные правила отображения, source owners и browser evidence."
+        },
+        "en": {
+          "done": "Removed the extra +1 from scheduler position; null has no number.",
+          "technical": "Removed the extra +1 from scheduler position; null has no number.",
+          "product": "Dashboard and QueueManager show consistent positions and reorder.",
+          "limits": "Synthetic HTTP fixtures for failures/timestamps/queue; no provider/human acceptance or full accessibility qualification claim.",
+          "followup": "None within these AC; end-to-end F19/F24 remains separate.",
+          "doc_reason": "Documents current display rules, source owners and browser evidence."
+        },
+        "timestamp": "15-11-2026 18:23"
+      }
     },
     {
       "id": "PAOS-FUNC-07",
       "title": "Сортировать последние задачи по времени",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P3",
       "type": "fix",
-      "evidence_level": "static_finding_reproduction_required",
+      "evidence_level": "implemented_locally_verified",
       "technical_value": "Задать явную сортировку по updatedAt с устойчивым tie-breaker и unknown policy.",
       "product_value": "Блок последних задач ведёт к действительно недавней работе.",
       "acceptance_criteria": [
@@ -304,8 +414,8 @@
       "estimate": "2–4 ч",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "rough_range",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "15-11-2026 18:23",
+      "execution_authority": "owner_authorized_local_synthetic",
       "source_observation": "Dashboard slice(-3), storage ORDER BY id.",
       "source_paths": [
         "apps/web/src/features/dashboard/Dashboard.tsx",
@@ -314,15 +424,37 @@
       "future_test_commands": [
         "node --test tests/web/ui-v3-dashboard.test.mts"
       ],
-      "delivery_group_id": "FUNC-G01"
+      "delivery_group_id": "FUNC-G01",
+      "completion_evidence": {
+        "files": "`apps/web/src/features/dashboard/Dashboard.tsx`, `model.ts`, `tests/web/ui-v3-dashboard.test.mts`, `tests/web/single-window/func-g01-dashboard-acceptance.mts`",
+        "evidence": "Browser RED `.tmp/func-g01-dashboard/evidence-IGkHii/result.json`; final GREEN `.tmp/func-g01-dashboard/evidence-MIaKso/result.json` 30/30, source/build hashes, RU/EN loading/partial/all-failed/retry/complete, 1-based/null/reorder/QueueManager parity, updatedAt ordering/create/edit refresh, desktop1440/mobile390 no overflow; model7/7. Visual QA added mobile readability oracles: RED evidence-6EV9zr (two layout failures), scoped summary wrapping/dashboard grid fixed in parity.css, final30/30 and desktop/mobile screenshots visually checked.",
+        "docs": "`docs/frontend/components.md` + `.en.md`; `docs/sources/registry.md` + `.en.md`",
+        "ru": {
+          "done": "Добавлена чистая сортировка по updatedAt с ID tie-breaker и unknown-last; семантика указана в UI.",
+          "technical": "Добавлена чистая сортировка по updatedAt с ID tie-breaker и unknown-last; семантика указана в UI.",
+          "product": "Три последние задачи отражают создание и изменение после refresh.",
+          "limits": "Synthetic HTTP fixtures для отказов/timestamps/очереди; provider/human acceptance и полная accessibility qualification не заявлены.",
+          "followup": "Нет в пределах AC; сквозная приёмка F19/F24 остаётся отдельной.",
+          "doc_reason": "Описаны актуальные правила отображения, source owners и browser evidence."
+        },
+        "en": {
+          "done": "Added pure updatedAt sorting, ID tie-breaker and unknown-last ordering; the UI explains the semantics.",
+          "technical": "Added pure updatedAt sorting, ID tie-breaker and unknown-last ordering; the UI explains the semantics.",
+          "product": "The three recent tasks reflect creation and edits after refresh.",
+          "limits": "Synthetic HTTP fixtures for failures/timestamps/queue; no provider/human acceptance or full accessibility qualification claim.",
+          "followup": "None within these AC; end-to-end F19/F24 remains separate.",
+          "doc_reason": "Documents current display rules, source owners and browser evidence."
+        },
+        "timestamp": "15-11-2026 18:23"
+      }
     },
     {
       "id": "PAOS-FUNC-08",
       "title": "Разделить общие контракты и зависимости UI/backend",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "type": "architecture",
-      "evidence_level": "static_observation",
+      "evidence_level": "implemented_locally_verified",
       "technical_value": "Убрать импорты backend→frontend и contracts→backend, сохранив публичное поведение.",
       "product_value": "Изменение оформления реже ломает серверные функции и выпуск.",
       "acceptance_criteria": [
@@ -351,8 +483,8 @@
       "estimate": "8–16 ч",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "rough_range",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "15-11-2026 18:27",
+      "execution_authority": "owner_authorized_local_synthetic",
       "source_observation": "HTTP imports web/preferences; contracts imports local-service/task-profile.",
       "source_paths": [
         "apps/local-service/src/http/application.mts",
@@ -362,7 +494,29 @@
         "npm run check:web-m1",
         "npm run test:web-m1"
       ],
-      "delivery_group_id": "FUNC-G01"
+      "delivery_group_id": "FUNC-G01",
+      "completion_evidence": {
+        "files": "`packages/contracts/tasks/decode-task-profile.ts`, `packages/contracts/ui/preferences.ts`, legacy decoder/frontend preferences re-exports, `issues/task-profile.ts`, HTTP `application.mts`, `locales/messages.ts`, `tests/web/contracts-boundaries.test.mts`, final runtime manifest",
+        "evidence": "Independent pre-edit architecture review /root/func_g01_runtime; AST RED found exact contracts-to-service + service-to-Web edges; GREEN shared/decoder/M2/preferences focused15, npm run check:web-m1/build:web exit0. Final native candidate/default exit0 `.tmp/func-g01-runtime/native-candidate-final-escalated.log`, native-default-final-escalated.log; manifest adapter fc34f72a89cd1a217cc22bd0a160284f9ee8671c453d06531e86e24b69a4c8d5; runtime12/12. Full Web `.tmp/func-g01/web-final.log` 507 tests492pass/11fixture EPERM/4skip + exact15 boundary retests `.tmp/func-g01/web-boundary-retest.log`15pass0fail0skip:507 unique passed across two executor contexts. Independent final review /root/func_g01_review closed_allowed.",
+        "docs": "`docs/backend/modules.md` + `.en.md`, `docs/architecture/containers.md` + `.en.md`, `docs/sources/registry.md` + `.en.md`",
+        "ru": {
+          "done": "Две чистые реализации перенесены в независимый contracts owner. M1 decoder сохранён побайтно кроме import; прежние пути re-export ту же функцию. DOM apply остаётся Web. AST guard проверяет import/export/type/literal dynamic edges; HTTP payload/schema не менялись.",
+          "technical": "Обратные импорты contracts→apps и service→Web source удалены без новых dependencies и без переписывания validation.",
+          "product": "Изменение оформления больше не требует импортировать frontend implementation в backend preferences.",
+          "limits": "Оставлена существующая packaging/parser dependency на Web package. AST guard проверяет статические/literal edges, не произвольные вычисляемые imports; provider/human/production claims не повышены.",
+          "followup": "Нет в пределах AC; новая правка pinned source требует native requalification.",
+          "doc_reason": "Описаны новые owners, compatibility seams, выбранный вариант/альтернатива и проверенная финальная квалификация. API docs no_change_needed: endpoints/payload/schema/errors сохранены."
+        },
+        "en": {
+          "done": "Moved two pure implementations into independent contract ownership. M1 decoder bytes are preserved except the import; legacy paths re-export the same functions. DOM apply stays in Web. AST guard covers import/export/type/literal dynamic edges; HTTP payload/schema unchanged.",
+          "technical": "Removed contracts→apps and service→Web-source reverse imports without new dependencies or validation rewrites.",
+          "product": "Appearance changes no longer require importing frontend implementation into backend preferences.",
+          "limits": "Existing Web package/parser packaging dependency remains. The AST guard covers static/literal edges, not arbitrary computed imports; no increased provider/human/production claim.",
+          "followup": "None within these AC; a new pinned-source edit requires native requalification.",
+          "doc_reason": "Documents ownership, compatibility seams, decision/alternative and final qualification. API docs no_change_needed: endpoints/payload/schema/errors preserved."
+        },
+        "timestamp": "15-11-2026 18:27"
+      }
     },
     {
       "id": "PAOS-FUNC-09",
@@ -1833,8 +1987,8 @@
     }
   ],
   "verification": {
-    "status": "docs_static_verified",
-    "application_checks_run": false,
+    "status": "func_g01_locally_verified_remaining_planned",
+    "application_checks_run": true,
     "initial": {
       "matrix_exit": 0,
       "docs_unittest_exit": 1,
@@ -1846,30 +2000,66 @@
       "remediation": "relocate source-owned matrix to research, preserve site inventory"
     },
     "latest": {
-      "task": "functional_delivery_groups_planning",
-      "status": "docs_static_verified",
-      "task_count": 34,
-      "group_count": 7,
+      "task": "FUNC-G01",
+      "status": "implemented_locally_verified",
+      "implemented_task_count": 7,
+      "remaining_planned_task_count": 27,
       "linked_existing_count": 3,
-      "matrix_exit": 0,
-      "scoped_docs_exit": 0,
-      "scoped_markdown_count": 4,
-      "docs_unittest_exit": 0,
-      "docs_tests": 3,
-      "docs_passed": 3,
-      "docs_elapsed_seconds": 0.733,
+      "typecheck_exit": 0,
+      "build_exit": 0,
+      "build_after_dashboard_css": true,
+      "web_original": {
+        "receipt": ".tmp/func-g01/web-final.log",
+        "tests": 507,
+        "passed": 492,
+        "failed_fixture_setup": 11,
+        "skipped_fixture_setup": 4,
+        "reason": "sandbox EPERM creating hardlink/junction fixtures",
+        "exit": 1
+      },
+      "web_environment_retest": {
+        "receipt": ".tmp/func-g01/web-boundary-retest.log",
+        "tests": 15,
+        "passed": 15,
+        "failed": 0,
+        "skipped": 0,
+        "executor": "authorized_escalation",
+        "exit": 0
+      },
+      "web_unique_passed": 507,
+      "web_full_run_after_css": false,
+      "browser_drafts": {
+        "receipt": ".tmp/func-g01-drafts/evidence-C6lIVM/result.json",
+        "passed": 54,
+        "provenance": "F08 combined build before dashboard-only CSS; editor/workflow source hashes unchanged"
+      },
+      "browser_dashboard": {
+        "receipt": ".tmp/func-g01-dashboard/evidence-MIaKso/result.json",
+        "passed": 30,
+        "provenance": "final CSS/build; all source/asset hashes current"
+      },
+      "native_candidate_receipt": ".tmp/func-g01-runtime/native-candidate-final-escalated.log",
+      "native_production_receipt": ".tmp/func-g01-runtime/native-default-final-escalated.log",
+      "runtime_focused_passed": 12,
+      "review_mode": "separate_reused_context",
+      "reviewer": "/root/func_g01_review",
+      "review_cycles": 2,
+      "tester_verdict": "closed_allowed",
+      "matrix_ru_exit": 0,
+      "matrix_en_exit": 0,
+      "state_consistency_exit": 0,
+      "source_docs_exit": 0,
+      "source_markdown_count": 20,
+      "source_docs_unittest_passed": 3,
       "diff_exit": 0,
-      "membership": "passed_exactly_once_34",
-      "task_and_group_dag": "passed_including_group_completion_gates",
-      "md_json_parity": true,
-      "original_task_fields_preserved": true,
-      "original_matrix_preserved": true,
-      "original_56_tasks_preserved": true,
-      "original_group_sha256": "23b013be2f01f088a2de53c1748693820aa8210ed382cd22fe65ce46f3a27ef1",
-      "review_mode": "self_review",
-      "application_checks_run": false,
-      "pocs_run": false,
-      "site_build_performed": false
+      "status_and_ac_parity": true,
+      "unrelated_27_cards_and_records_preserved": true,
+      "dependencies_estimates_groups_m5_preserved": true,
+      "control_plane_sync": "updated_REQUIREMENTS_PLAN_TEST_RUNLOG; no_change_needed_EVALS_prod_test",
+      "site_build_performed": false,
+      "provider_calls": false,
+      "real_credentials": false,
+      "human_acceptance": false
     },
     "previous_planning": {
       "matrix_exit": 0,
@@ -1943,11 +2133,37 @@
         "markdown_sources": 7,
         "site_archive_checked": false
       }
+    },
+    "previous_delivery_groups_planning": {
+      "task": "functional_delivery_groups_planning",
+      "status": "docs_static_verified",
+      "task_count": 34,
+      "group_count": 7,
+      "linked_existing_count": 3,
+      "matrix_exit": 0,
+      "scoped_docs_exit": 0,
+      "scoped_markdown_count": 4,
+      "docs_unittest_exit": 0,
+      "docs_tests": 3,
+      "docs_passed": 3,
+      "docs_elapsed_seconds": 0.733,
+      "diff_exit": 0,
+      "membership": "passed_exactly_once_34",
+      "task_and_group_dag": "passed_including_group_completion_gates",
+      "md_json_parity": true,
+      "original_task_fields_preserved": true,
+      "original_matrix_preserved": true,
+      "original_56_tasks_preserved": true,
+      "original_group_sha256": "23b013be2f01f088a2de53c1748693820aa8210ed382cd22fe65ce46f3a27ef1",
+      "review_mode": "self_review",
+      "application_checks_run": false,
+      "pocs_run": false,
+      "site_build_performed": false
     }
   },
-  "updated_at": "2026-11-15T11:20:21.289Z",
+  "updated_at": "2026-11-15T18:38:38+03:00",
   "planning_revision": 4,
-  "change_scope": "seven_delivery_groups_planning_only",
+  "change_scope": "func_g01_implementation_local_synthetic",
   "research_sources": [
     {
       "task": "PAOS-FUNC-30",
@@ -2530,5 +2746,6 @@
     "FUNC-G04",
     "FUNC-G05",
     "FUNC-G07"
-  ]
+  ],
+  "implementation_revision": 1
 }

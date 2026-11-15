@@ -15,3 +15,7 @@ Owner: Product-Agent OS architecture; scope/version: DG02 v1. Update when the ci
 | Python plugin | Its own lifecycle/discovery/staging package with separate interfaces | [README](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/plugins/product-agent-os/README.md); package presence does not establish a universal runtime bridge |
 
 This map does not replace future DOCS-04–15 module guides. Planned PoCs and database mapping belong to the [functional plan](../planning/functional-remediation-2026-11-15.md). The [diagram](../diagrams/paos-application-architecture.md) does not depict a new Python-to-Web integration as a proven mandatory runtime path.
+
+## Shared contracts — FUNC-08
+
+In the current checkout, pure preferences (`packages/contracts/ui/preferences.ts`) and the strict M1 decoder (`packages/contracts/tasks/decode-task-profile.ts`) belong to the shared contract layer. React and the local service import one owner; shared contracts do not import `apps`. DOM apply stays in Web, and old import paths re-export the same implementation. Rationale, alternatives, packaging limits and final native requalification are documented in [backend modules](../backend/modules.en.md#current-cross-layer-dependencies). HTTP payload/schema and authority boundaries are unchanged; the AST regression and existing decoder/preferences checks protect this move.

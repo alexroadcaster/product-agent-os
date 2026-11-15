@@ -1,4 +1,5 @@
-export type UiLocale = "en" | "ru";
+import type { UiLocale } from "../../../../packages/contracts/ui/preferences.ts";
+export type { UiLocale } from "../../../../packages/contracts/ui/preferences.ts";
 
 const en = {
   "nav.overview": "Overview",

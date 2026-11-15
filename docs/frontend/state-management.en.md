@@ -1,8 +1,10 @@
 # Frontend state, polling and drafts
 
-Source status: repository_source / static_contract_review; 2026-11-15.
+Source status: repository_source / static_contract_review / local_synthetic_browser_acceptance; 2026-11-15.
 
 Owner: frontend and docs-maintainer. Scope: Web UI at source revision `ad78d5d15aced23febae90d319f2aba00bd64d0b` (DG04). Review when state, lifecycle, polling, draft ACK or API contracts change. Sources: [App](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/apps/web/src/ui/App.tsx), [client](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/apps/web/src/api/client.ts), [session polling](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/apps/web/src/api/session-poll.ts), [draft registry](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/apps/web/src/api/draft-registry.ts).
+
+The `PAOS-FUNC-03` and `PAOS-FUNC-04` changes below describe the current working tree after DG04; the [FUNC matrix](../planning/functional-remediation-2026-11-15.en.md) owns their acceptance and statuses. DG04 links retain their original provenance and do not present the old revision as fixed.
 
 ## State ownership
 
@@ -36,6 +38,16 @@ Before send, the registry creates a ticket with `clientMessageId`; only a recogn
 
 Preview passes the current revision and returns a digest; a subsequent edit invalidates it. Save sends the revision and optional digest; errors, including revision conflicts, appear in the form. The in-memory draft is removed only after successful save or explicit discard. Expanding/collapsing the detail overlay retains the same DOM, but changing tabs can unmount the editor: unsaved local-only fields are not guaranteed. [TaskManager](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/apps/web/src/features/tasks/TaskManager.tsx) and [Modal](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/apps/web/src/ui/Modal.tsx) own these boundaries.
 
+`PAOS-FUNC-03`: **Discard draft** resets the structured model, raw inputs, estimate, reason, error, preview and dirty state together. A new task returns to an empty form; discarded criteria, risks and references do not reappear on the next save. An existing task adopts the current server entity and its revision from the snapshot. Refresh preserves a dirty draft: a save conflict stays visible and retains input; explicit discard adopts server changes, and the next save uses the new revision.
+
+## Workflow assignment draft
+
+`PAOS-FUNC-04`: `WorkflowManager` keeps definition and type assignment drafts in a project memory-only cache. Each has an independent dirty flag and original CAS revision; a mapping-only draft does not dirty the definition. Returning to Settings restores `typeMapping`, `mappingDirty` and its revision, with a visible unsaved warning. App mounts the manager with `key={projectId}`; the initial request ignores a response arriving after unmount. Drafts do not cross projects or survive page reload.
+
+**Save assignments** sends the original revision and clears dirty only after a successful write. Refresh preserves the dirty mapping revision, so another writer produces a conflict without losing input. **Discard assignments** adopts the current server snapshot's mapping and revision and clears mapping dirty/error; the definition draft remains independent. Default workflow changes are separate writes: the pending mapping draft's CAS base advances only to the exact `m2-workflows` revision in its successful ACK, retaining its input. A newer revision from another writer in the following refresh is not automatically adopted; an unconfirmed revision leaves an error and the draft.
+
 ## Checks and limits
 
 Related tests: [ui-session-poll.test.mts](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/ui-session-poll.test.mts), [ui-draft-autosave.test.mts](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/ui-draft-autosave.test.mts), [ui-draft-registry.test.mts](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/ui-draft-registry.test.mts), [ui-api.test.mts](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/ui-api.test.mts). These are coverage references, not a new run. The page describes source mechanisms; live runtime, browser concurrency and human acceptance were not proven by this documentation review.
+
+For F03/F04, `tests/web/single-window/func-g01-drafts-acceptance.mts --synthetic-browser --playwright-core <installed-path> --chromium <installed-path>` ran on 2026-11-15: 54 checks passed against a production build, local HTTP/SQLite and disposable projects. It covered reset, subsequent save, concurrent task updates, navigation/project isolation, stale mapping conflict, discard, another writer between the default-workflow ACK and refresh, and a late response from the previous project; desktop 1440×1000 and mobile 390×844 screenshots are in the local receipt. Mobile coverage checks horizontal overflow rather than full UX/accessibility. The initial RED exposed stale raw fields/error/reason and mapping loss on navigation; an additional RED confirmed possible mapping overwrite between ACK and refresh. The sandbox startup failure and corrected assertions made before ACK/refresh completion are retained separately from behavioral RED. This suite does not establish runtime/model/provider or human acceptance.

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {summarizeTasks,aggregateSnapshots,assignedWork} from '../../apps/web/src/features/dashboard/model.ts';
+import {summarizeTasks,aggregateSnapshots,assignedWork,recentTasks} from '../../apps/web/src/features/dashboard/model.ts';
 test('dashboard uses complete task snapshots and excludes cancelled from progress denominator',()=>{
  const tasks=['done','backlog','in_progress','cancelled'].map((status,i)=>({id:String(i),status,data:{},revision:1}));
  const result=summarizeTasks({tasks,links:[],workflows:{workflows:[]}} as any);
@@ -22,4 +22,22 @@ test('agent IDs that match Object prototype keys remain valid independent assign
  const tasks=[{id:'a',status:'ready',data:{agentAssignments:['constructor','toString','__proto__']}}];
  const result=assignedWork({tasks,workflows:{workflows:[]}} as any);
  for(const id of ['constructor','toString','__proto__'])assert.deepEqual(result[id],['a']);
+});
+
+test('portfolio retains the expected project count before any read completes',()=>{
+ const result=aggregateSnapshots([],2);
+ assert.equal(result.expected,2);assert.equal(result.loaded,0);assert.equal(result.partial,true);assert.equal(result.progress,null);
+});
+
+test('recent tasks follow modification time instead of storage ID order without mutating the snapshot',()=>{
+ const tasks=[{id:'a',updatedAt:'2026-11-15T12:00:00Z'},{id:'b',updatedAt:'2026-11-14T12:00:00Z'},{id:'c',updatedAt:'2026-11-13T12:00:00Z'},{id:'d',updatedAt:'2026-11-12T12:00:00Z'}];
+ assert.deepEqual(recentTasks(tasks as any).map(t=>t.id),['a','b','c']);
+ assert.deepEqual(tasks.map(t=>t.id),['a','b','c','d']);
+});
+
+test('recent task ties and absent or invalid timestamps have deterministic ID order',()=>{
+ const tasks=[{id:'z',updatedAt:'2026-11-15T12:00:00Z'},{id:'b'},{id:'a',updatedAt:'invalid'},{id:'y',updatedAt:'2026-11-15T12:00:00Z'}];
+ assert.deepEqual(recentTasks(tasks as any).map(t=>t.id),['y','z','a']);
+ assert.deepEqual(recentTasks(tasks.slice(1,3) as any).map(t=>t.id),['a','b']);
+ assert.deepEqual(recentTasks([]),[]);
 });

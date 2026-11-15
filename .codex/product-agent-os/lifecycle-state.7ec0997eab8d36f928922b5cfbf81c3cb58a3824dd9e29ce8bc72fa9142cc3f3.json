@@ -1,0 +1,25 @@
+{
+  "task_id": "FUNC-G01",
+  "session_id": "01a1dfb9-d5d9-7712-85ca-8dad082552b7",
+  "plan_path": "docs/planning/functional-remediation-2026-11-15.md",
+  "scope": "Implement PAOS-FUNC-01,03,04,05,06,07,08 with local synthetic acceptance, docs and task-state updates",
+  "updated_at": "2026-11-15T18:39:38+03:00",
+  "approval_boundary": "User-authorized local fixes and synthetic checks; no credentials, providers, Git, publication or guard weakening",
+  "status": "ready_for_completion_ledger",
+  "completion_ready": true,
+  "completion_brief_shown": false,
+  "brief_digest": "sha256:556439ad0015db92beb8913ece3dad1cb7f61acf20a2b38164206acd5b99f586",
+  "brief_schema_version": "task_start_brief_v2",
+  "brief_format": "bold_fields",
+  "brief_fields_present": ["Request", "Goal", "Context", "Scope", "Value", "Execution", "Acceptance", "Risks / approvals", "Next step"],
+  "task_start_brief_shown": true,
+  "lifecycle_scope": {
+    "work_type": "fix",
+    "size": "large",
+    "risk": "high",
+    "financially_material": false,
+    "release_or_readiness": false,
+    "explicit_packet_request": false,
+    "reason": "Seven-task group including native runtime qualification, draft preservation and contract boundaries"
+  }
+}

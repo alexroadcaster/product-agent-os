@@ -16,3 +16,14 @@ Source status: repository_source / static_contract_review; DG06, 2026-11-15.
 | Docs, локализация и план | [docs checks](documentation-checks.md), [site checks](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/tests/product_agent_os/site_checks.py) | Strict isolated build и site parity для nav/i18n; affected links и matrix validator для изменённого плана. |
 
 Для изменённого тестируемого поведения используйте воспроизводимый regression, затем focused test; добавляйте integration или E2E для отдельного риска связи или пользовательского сценария. Full suite не обязателен только потому, что изменился план: расширение по риску и причина фиксируются. Native, browser и provider проверки подчиняются применимым разрешениям. Результаты и ограничения см. в [границах evidence](synthetic-vs-live.md).
+
+## FUNC-G01 — текущие regression routes
+
+Владельцы task/status evidence — [FUNC-G01 results](../planning/functional-remediation-2026-11-15.md#func-g01-results). Новые команды используют существующие local synthetic fixtures и установленные browser paths; они не вызывают provider/model и не подтверждают human acceptance.
+
+- `node --test tests/web/contracts-boundaries.test.mts`: static/literal AST import-direction guard и identity compatibility exports; существующие `task-profile.test.mts`, `m2-profile.test.mts`, `theme-locale.test.mts` сохраняют schema/validation поведение.
+- `node tests/web/single-window/func-g01-drafts-acceptance.mts --synthetic-browser --playwright-core <installed-path> --chromium <installed-path>`:54 checks reset/navigation/CAS и concurrent writer между ACK/refresh.
+- `node tests/web/single-window/func-g01-dashboard-acceptance.mts --synthetic-browser --playwright-core <installed-path> --chromium <installed-path>`:30 checks coverage/RU/EN/queue/recent/desktop-mobile readability; HTTP failure/timestamp/queue rows — явно synthetic fixtures.
+- `node --test tests/web/runtime-manifest.test.mts tests/web/sandbox-broker.test.mts`:12 checks exact current pins и broker boundaries. `sandbox-broker-acceptance.mts --run-once --candidate-inspection --binary <verified-local-binary>` даёт новый native candidate receipt; после promotion повтор без candidate flag проверяет production admission. Один unit pass не заменяет native write/deny.
+
+507 Web tests проверены с раздельным provenance:492 pass в исходном полном sandbox run;11 EPERM setup failures и4 skips повторены как ровно15 cases на разрешённом executor,15 pass0skip. Эти результаты не описываются как один green full run. Для изменённых links/hardlink guards нужны реальные fixtures, skip не считается pass. CSS delta проверен более поздним browser30/build, прежний full receipt не выдаётся за заново выполненный после CSS.

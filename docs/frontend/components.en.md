@@ -4,6 +4,16 @@ Source status: repository_source / static_source_review; 2026-11-15.
 
 Owner: frontend owner and docs-maintainer. Scope: Web UI at revision `ad78d5d15aced23febae90d319f2aba00bd64d0b`. Update when composition, API contract, components or their tests change. Test links below identify verification routes, not test runs in DG04.
 
+## Dashboard — FUNC-05–07
+
+Current addition to the DG04 snapshot: `apps/web/src/features/dashboard/Dashboard.tsx` and `model.ts` in this checkout; statuses and receipts are owned by [FUNC-G01](../planning/functional-remediation-2026-11-15.en.md#func-g01--stability-of-the-current-ui-and-core-contracts).
+
+- **F05, portfolio coverage.** Loaded/expected and completeness remain next to totals/progress, such as “1 of 2 · incomplete data”. Progress refers to available projects; unknown values remain `—`. The expected project count is retained while loading before the first response. Retry, all-failed and restored complete coverage are checked in RU/EN.
+- **F06, queue positions.** The scheduler supplies 1-based `position`; the dashboard displays it without another `+1`. A `null` position has no number. Reordering shows the same positions in the dashboard and QueueManager.
+- **F07, recent tasks.** Three tasks are selected by `updatedAt`, newest first. Equal timestamps use ascending ID order; absent or invalid timestamps follow known times. The original snapshot array is unchanged. The UI explains this ordering; creation and edits appear after Refresh dashboard.
+
+`node --test tests/web/ui-v3-dashboard.test.mts` checks the model, including ties/unknown/immutability. `func-g01-dashboard-acceptance.mts --synthetic-browser` checks the production UI with a disposable local service and explicit synthetic HTTP failures/timestamps/queue fixtures: 30/30, desktop 1440×1000 and mobile 390×844 without page overflow. Visual QA added rendered summary-height and main-column-width checks: summary wrapping and a dashboard-only single-column layout below 760 px preserve readability; separate RED and corrected screenshots are retained. The initial RED is retained; these scenarios do not prove provider execution, human acceptance or full accessibility qualification.
+
 ## Entry points
 
 [main.tsx](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/apps/web/src/main.tsx) imports CSS and mounts React `App`; [App.tsx](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/apps/web/src/ui/App.tsx) owns the shell, selected project and screen composition. [Sidebar](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/apps/web/src/ui/Sidebar.tsx) receives items, selection and callbacks from App; it is not the server-state authority. See [navigation](navigation.md) and [state](state-management.md).

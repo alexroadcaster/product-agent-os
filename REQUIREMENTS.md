@@ -1,8 +1,12 @@
 # REQUIREMENTS.md
 
+## FUNC-G01 — выполненный scope, 15.11.2026
+
+Текущий запрос разрешил полное выполнение F01/F03/F04/F05/F06/F07/F08, необходимые локальные synthetic native/browser checks, обновление source-owned статусов и документации по каждой задаче. Все семь AC закрыты локальным техническим evidence; другие27 FUNC и3 M5 references сохранены. Scope: runtime qualification, task/workflow drafts, dashboard и независимые contracts. Provider/model/real credentials, production/publication/Git и human acceptance не входили. [Результаты и границы](docs/planning/functional-remediation-2026-11-15.md#func-g01-results).
+
 ## Документация реализации — 15.11.2026
 
-Текущий запрос DG07 разрешает DOCS-14/15/16B: полную RU/EN документацию эксплуатации, переиспользование Python plugin guides и финальную интеграцию документации. Требуются FUNC documentation owners/update matrix, сохранение relocation/history/AC/dependencies, проверка всех domain routes и восьми EN-планов, strict/source/site checks. Runtime/install/provider/publication/Git и изменение feature task-state не входят в scope; закрытие DOCS не закрывает FUNC или release gates.
+Предыдущий запрос DG07 разрешает DOCS-14/15/16B: полную RU/EN документацию эксплуатации, переиспользование Python plugin guides и финальную интеграцию документации. Требуются FUNC documentation owners/update matrix, сохранение relocation/history/AC/dependencies, проверка всех domain routes и восьми EN-планов, strict/source/site checks. Runtime/install/provider/publication/Git и изменение feature task-state не входят в scope; закрытие DOCS не закрывает FUNC или release gates.
 
 Предыдущий запрос DG06 разрешает DOCS-12 и DOCS-13/B: security/privacy/trust boundaries и карту тестов/evals/evidence, 11 полных RU/EN пар, навигацию и проверки документации. TEST/EVALS сохраняют владение маршрутами и порогами; исторические результаты DG01/A сохраняют дату. Configured policy, app guards, synthetic/live/human evidence различаются. Код, credentials/profiles, hooks/trust, provider calls, установки и публикация не входят в scope.
 

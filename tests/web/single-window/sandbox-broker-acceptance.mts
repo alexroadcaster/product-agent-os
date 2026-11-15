@@ -13,15 +13,27 @@ const manifest:RuntimeManifest=JSON.parse(await readFile('packages/contracts/run
 const sha=(bytes:Uint8Array)=>createHash('sha256').update(bytes).digest('hex');
 const fingerprint={version:manifest.codex.version,sha256:sha(await readFile(binary))};
 const currentRevision=await adapterRevision();
-const reasons=inspectRuntimeTuple(manifest,{platform:platform(),arch:arch(),windowsRelease:release(),node:{version:process.version,sha256:sha(await readFile(process.execPath))},sqliteVersion:process.versions.sqlite!,adapterRevision:currentRevision,packageLockSha256:sha(await readFile('apps/web/package-lock.json')),codexSha256:fingerprint.sha256});
-assert.equal(manifest.codex.version,'0.167.0');assert.deepEqual(reasons.filter(reason=>candidate&&reason==='adapter_mismatch'?false:true),[]);
+const currentTuple={platform:platform(),arch:arch(),windowsRelease:release(),node:{version:process.version,sha256:sha(await readFile(process.execPath))},sqliteVersion:process.versions.sqlite!,adapterRevision:currentRevision,packageLockSha256:sha(await readFile('apps/web/package-lock.json')),codexSha256:fingerprint.sha256};
+const reasons=inspectRuntimeTuple(manifest,currentTuple);
+// This explicit offline acceptance mode can qualify changed local sources/dependencies only.
+// Binary, Node, platform, SQLite and capability admission stay pinned; production inspection has no exception.
+const candidateDrift=new Set(['adapter_mismatch','package_lock_mismatch']);
+assert.equal(manifest.codex.version,'0.167.0');assert.deepEqual(reasons.filter(reason=>!candidate||!candidateDrift.has(reason)),[]);
 const root=await mkdtemp(join(scratch,'broker-acceptance-'));assert.ok(root.startsWith(scratch+sep));
-const evidence:Record<string,unknown>={claim:candidate?'candidate_native_command_broker':'qualified_native_command_broker',candidateInspection:candidate,binarySha256:fingerprint.sha256,adapterRevision:currentRevision,manifestAdapterRevision:manifest.adapterRevision,providerRequests:0,modelTurns:0,credentialOperations:0,cases:[]};
+const evidence:Record<string,unknown>={claim:candidate?'candidate_native_command_broker':'qualified_native_command_broker',candidateInspection:candidate,binarySha256:fingerprint.sha256,adapterRevision:currentRevision,manifestAdapterRevision:manifest.adapterRevision,packageLockSha256:currentTuple.packageLockSha256,manifestPackageLockSha256:manifest.packageLockSha256,prequalificationReasons:reasons,currentTuple,providerRequests:0,modelTurns:0,credentialOperations:0,cases:[],driftRejections:[]};
 let broker:SandboxBroker|undefined;
 const exists=async(path:string)=>{try{await access(path);return true;}catch{return false;}};
 try {
  const workspace=join(root,'workspace'),profile=join(root,'profile'),outside=join(root,'outside.txt');await mkdir(workspace);await mkdir(profile);await writeFile(outside,'canary');
  await writeFile(join(profile,'runtime-selection.json'),JSON.stringify({binaryPath:binary}));
+ for(const [field,reason] of [['codexSha256','runtime_mismatch'],['packageLockSha256','package_lock_mismatch'],['adapterRevision','adapter_mismatch']] as const){
+  const driftReasons=inspectRuntimeTuple(manifest,{...currentTuple,[field]:'0'.repeat(64)});assert.ok(driftReasons.includes(reason));let spawned=false;
+  await assert.rejects(createSandboxBroker({binaryPath:binary,profileDirectory:profile,workspaceRoot:workspace,mode:'execution'},{
+   inspect:async()=>({qualified:false,reasons:driftReasons,fingerprint,expected:manifest.codex,binaryPath:binary}),
+   spawnRpc:async()=>{spawned=true;throw Error('Unexpected launch for an unqualified tuple');},
+  }),{code:'BROKER_RUNTIME_UNQUALIFIED'});assert.equal(spawned,false);
+  (evidence.driftRejections as unknown[]).push({reason,code:'BROKER_RUNTIME_UNQUALIFIED',childSpawned:spawned});
+ }
  const deps=candidate?{inspect:async()=>({qualified:true,reasons:[],fingerprint,expected:manifest.codex,binaryPath:binary})}:undefined;
  const script=`const fs=require('node:fs');const paths=process.argv.slice(1);const out={};for(let i=0;i<paths.length;i++){try{fs.writeFileSync(paths[i],'written');out[['inside','outside','temp'][i]]='written';}catch(e){out[['inside','outside','temp'][i]]=e.code;}}console.log(JSON.stringify(out));`;
  for(const mode of ['discussion','planning','execution'] as const) {
@@ -43,6 +55,8 @@ try {
   row.authFileCreated=await exists(join(home,'auth.json'));assert.equal(row.authFileCreated,false);
   await broker.close();broker=undefined;row.homeCleaned=!await exists(home);assert.equal(row.homeCleaned,true);(evidence.cases as unknown[]).push(row);
  }
+ assert.equal(await adapterRevision(),currentRevision,'Source changed during native acceptance');
+ assert.equal(sha(await readFile('apps/web/package-lock.json')),currentTuple.packageLockSha256,'Dependency lock changed during native acceptance');
  evidence.status='passed';
 } catch(error) {
  evidence.status='failed';evidence.errorCode=(error as {code?:string}).code??(error as Error).name;evidence.errorMessage=(error as Error).message.replaceAll(root,'<synthetic-root>');process.exitCode=1;
