@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "paos_func_g02_corpus_v1",
+  "rootIdentity": "synthetic-code-project-a",
+  "policyVersion": "draft-F28-poc-v1",
+  "files": {
+    "tsconfig.json": "{\"compilerOptions\":{\"baseUrl\":\".\",\"paths\":{\"@app/*\":[\"src/*\"]}}}\n",
+    "package.json": "{\"name\":\"synthetic-poc\",\"private\":true,\"type\":\"module\",\"scripts\":{\"postinstall\":\"DO_NOT_EXECUTE_SYNTHETIC_CONFIG\"}}\n",
+    "src/main.ts": "import { run } from './lib';\nimport { Model } from '@app/model';\nimport { value } from './reexport';\nimport type { Shape } from './types';\nimport { absent } from './missing';\nexport function entry(){ return run() + value + new Model().value; }\nexport async function later(){ return import('./lazy'); }\n",
+    "src/lib.ts": "export function helper(){ return 2; }\nexport function run(){ return helper(); }\n",
+    "src/model.ts": "export class Model { value = 3; }\n",
+    "src/reexport.ts": "export { value } from './lazy';\n",
+    "src/lazy.ts": "export const value = 5;\n",
+    "src/types.ts": "export interface Shape { value: number; }\n",
+    "src/cycle-a.ts": "import { b } from './cycle-b';\nexport const a = () => b;\n",
+    "src/cycle-b.ts": "import { a } from './cycle-a';\nexport const b = () => a;\n",
+    "legacy/entry.cjs": "const value = require('./lib.cjs');\nmodule.exports = value;\n",
+    "legacy/lib.cjs": "module.exports = 7;\n",
+    "packages/worker/src/worker.ts": "import { shared } from '../../shared/src/shared';\nexport const worker = shared;\n",
+    "packages/shared/src/shared.ts": "export const shared = 11;\n",
+    "src/имя с пробелом.ts": "export const unicodeValue = 13;\n",
+    "python/service.py": "def helper():\n    return 2\n\ndef entry():\n    return helper()\n"
+  },
+  "excludedFiles": {
+    ".env": "SYNTHETIC_SECRET_CANARY_DO_NOT_INDEX=fixture_only\n",
+    ".dependency-cruiser.cjs": "require('node:fs').writeFileSync('CONFIG_EXECUTED','unsafe');module.exports={};\n",
+    ".tbls.yml": "dsn: sqlite://not-a-real-database\n",
+    ".codebase-memory.json": "{\"extra_extensions\":{\".private\":\"python\"}}\n"
+  },
+  "expectedImports": [
+    ["src/main.ts", "src/lib.ts"],
+    ["src/main.ts", "src/model.ts"],
+    ["src/main.ts", "src/reexport.ts"],
+    ["src/main.ts", "src/types.ts"],
+    ["src/main.ts", "src/lazy.ts"],
+    ["src/reexport.ts", "src/lazy.ts"],
+    ["src/cycle-a.ts", "src/cycle-b.ts"],
+    ["src/cycle-b.ts", "src/cycle-a.ts"],
+    ["legacy/entry.cjs", "legacy/lib.cjs"],
+    ["packages/worker/src/worker.ts", "packages/shared/src/shared.ts"]
+  ],
+  "expectedUnresolved": [{"from":"src/main.ts","specifier":"./missing","line":5}],
+  "expectedCalls": [
+    {"path":"src/lib.ts","caller":"run","callee":"helper","line":2},
+    {"path":"python/service.py","caller":"entry","callee":"helper","line":5}
+  ],
+  "changeTasks": [
+    {"id":"incoming-lib","question":"Which file imports src/lib.ts?","expectedFiles":["src/main.ts"]},
+    {"id":"incoming-alias-model","question":"Which file imports src/model.ts through alias?","expectedFiles":["src/main.ts"]},
+    {"id":"cycle","question":"Which files form the import cycle?","expectedFiles":["src/cycle-a.ts","src/cycle-b.ts"]}
+  ]
+}

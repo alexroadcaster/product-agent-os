@@ -1,25 +1,30 @@
 {
-  "task_id": "FUNC-G01",
+  "task_id": "FUNC-G02",
+  "previous_closure": {"task_id":"FUNC-G01","status":"ready_for_completion_ledger","completion_ready":true,"updated_at":"2026-11-15T18:39:38+03:00","closure_level":"implemented_locally_verified"},
   "session_id": "01a1dfb9-d5d9-7712-85ca-8dad082552b7",
   "plan_path": "docs/planning/functional-remediation-2026-11-15.md",
-  "scope": "Implement PAOS-FUNC-01,03,04,05,06,07,08 with local synthetic acceptance, docs and task-state updates",
-  "updated_at": "2026-11-15T18:39:38+03:00",
-  "approval_boundary": "User-authorized local fixes and synthetic checks; no credentials, providers, Git, publication or guard weakening",
+  "scope": "Complete PAOS-FUNC-30,31,32 isolated engine PoCs, shared protocol/baseline, adapters, V3 prototypes, per-task docs and state",
+  "updated_at": "2026-11-15T19:33:17+03:00",
+  "approval_boundary": "User-authorized isolated workspace PoCs and synthetic checks; no production integration, credentials, models/providers, global installation/configuration, Git or publication",
   "status": "ready_for_completion_ledger",
   "completion_ready": true,
+  "closure_level": "poc_research_locally_verified",
+  "elapsed_seconds": 2979,
+  "control_plane_sync": "updated_REQUIREMENTS_PLAN_TEST_RUNLOG; no_change_needed_EVALS_prod_test",
+  "evidence": "docs/planning/functional-remediation-2026-11-15.md#func-g02-results",
   "completion_brief_shown": false,
-  "brief_digest": "sha256:556439ad0015db92beb8913ece3dad1cb7f61acf20a2b38164206acd5b99f586",
+  "brief_digest": "sha256:a819775cf837e1e606045809c0b80c2d89c8e0103c79a8b234ae14d5f0e67f25",
   "brief_schema_version": "task_start_brief_v2",
   "brief_format": "bold_fields",
   "brief_fields_present": ["Request", "Goal", "Context", "Scope", "Value", "Execution", "Acceptance", "Risks / approvals", "Next step"],
   "task_start_brief_shown": true,
   "lifecycle_scope": {
-    "work_type": "fix",
+    "work_type": "implementation",
     "size": "large",
     "risk": "high",
     "financially_material": false,
     "release_or_readiness": false,
     "explicit_packet_request": false,
-    "reason": "Seven-task group including native runtime qualification, draft preservation and contract boundaries"
+    "reason": "Three engine PoCs with measured baselines, native process/read-only database boundaries, isolated V3 prototypes and per-task docs/status closure"
   }
 }

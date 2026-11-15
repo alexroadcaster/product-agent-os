@@ -1,5 +1,13 @@
 # RUNLOG.md
 
+## FUNC-G02 — закрыта как исследование, 15.11.2026
+
+F30/F31/F32 implemented / poc_research_locally_verified,3/3; [источник решений/evidence](docs/planning/functional-remediation-2026-11-15.md#func-g02-results). F30 bounded_adopt imports10/10 vs7/10baseline; F31 reject before-index для текущего Windows profile, downstream unexecuted/null; F32 reject authoritative metadata,23positive/3candidate defects retained, explicit Node alternative. Nullability P2 и два UI P2 независимого review исправлены; root проверил final delta. Combined unit22/22, prototype TS/build, browser22/22, source/build/hash bindings и screenshots подтверждены. Docs/registry/task MD/JSON/control-plane synchronized; общий итог10 implemented/24planned, остальные31 records/3M5 сохранены. Matrices RU/EN, source-docs19, preservation/provenance и diff checks passed. EVALS/prod_test no_change_needed; production tuple, real DB/credentials, provider/model/global config/Git не затрагивались. Rollback только own hunks; human/product integration отдельно.
+
+## METH — подготовлен план без реализации, 15.11.2026
+
+Созданы [RU/EN карточки METH-01–18](docs/planning/methodology-improvement-2026-11-15.md) и [JSON](docs/planning/methodology-improvement-2026-11-15.json): все planned, pending_execution_timestamp; Spec-DD/Design-DD/TDD/ADD и постепенный FSD. Текущее FUNC-G01 evidence переиспользовано только как owner baseline, tests/runtime не повторялись. Реализация, active prompts/workflows/hooks, TEST/EVALS, FUNC/Web task-state и release/human gates не менялись. Проверки подготовки плана и ограничения записаны в самом плане; следующий возможный slice — METH-01 после отдельного запроса. Сохранить параллельную работу других чатов.
+
 ## FUNC-G01 — закрыта, 15.11.2026
 
 F01/F03/F04/F05/F06/F07/F08 implemented_locally_verified,7/7; [полный evidence](docs/planning/functional-remediation-2026-11-15.md#func-g01-results), [machine state](docs/planning/functional-remediation-2026-11-15.json). Native tuple переквалифицирован после contracts move; broker write/deny/restart и drift fences passed. Draft/browser54 + dashboard/browser30, Web507 unique с отдельным15-case environment retest; TS/build passed. Independent architecture/implementation и CSS delta review closed_allowed. RU/EN domain docs, registry, task cards/statuses и control-plane обновлены. Другие27 FUNC и3 M5 refs сохранены; другая группа не запущена. EVALS/prod_test no_change_needed. Human/provider/production/site freshness не повышены; rollback только own hunks, pinned-source rollback требует requalification.

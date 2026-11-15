@@ -24,6 +24,6 @@ After execution, the user reviews observed files and artifacts, check status, so
 
 ## 4. Navigate from files to a map and DB — planned
 
-The future Files → Map → Database → code usages → source journey is described in [F19 and F26–F34](../planning/functional-remediation-2026-11-15.md). Inventory/scan contracts and PoCs precede selected adapters, UI and evidence. dependency-cruiser, codebase-memory-mcp and tbls are PoC candidates, not integrated dependencies. This journey does not establish that a target database is connected or its schema has been read.
+The future Files → Map → Database → code usages → source journey is described in [F19 and F26–F34](../planning/functional-remediation-2026-11-15.md). Inventory/scan contracts and PoCs precede selected adapters, UI and evidence. FUNC-G02 research is closed: dependency-cruiser bounded_adopt for imports; codebase-memory-mcp reject for the current Windows profile; tbls reject for authoritative SQLite metadata, with an explicit Node metadata alternative. Isolated V3 navigation passed22 browser checks. These are measured PoC decisions; production integration remains F14/F33/F34. This journey does not establish that a target database is connected or its schema has been read.
 
 Known limitations: historical receipts describe specific versions and environments; this map does not verify the current host, human acceptance, provider availability or commercial release. For a subsequent change use [capability traceability](capabilities.md) and the specific task card.

@@ -24,6 +24,6 @@ Source status: `repository_source / journey_map / static_review`, 15.11.2026.
 
 ## 4. Перейти от файлов к карте и БД — planned
 
-Будущий маршрут Files → Map → Database → code usages → source описан в [F19 и F26–F34](../planning/functional-remediation-2026-11-15.md). Сначала нужны inventory/scan contracts и PoC, затем выбранные adapters, UI и evidence. dependency-cruiser, codebase-memory-mcp и tbls — кандидаты PoC, не внедрённые зависимости. Никакая страница этого сценария не подтверждает, что target database подключена или её схема прочитана.
+Будущий маршрут Files → Map → Database → code usages → source описан в [F19 и F26–F34](../planning/functional-remediation-2026-11-15.md). Сначала нужны inventory/scan contracts и PoC, затем выбранные adapters, UI и evidence. Исследования FUNC-G02 закрыты: dependency-cruiser bounded_adopt для imports; codebase-memory-mcp reject текущего Windows profile; tbls reject для authoritative SQLite metadata, с явной Node metadata alternative. Изолированная V3-навигация прошла22 browser checks. Это измеренные решения PoC; production integration остаётся F14/F33/F34. Никакая страница этого сценария не подтверждает, что target database подключена или её схема прочитана.
 
 Known limitations: historical receipts отражают конкретные версии и окружения; current host, human acceptance, доступность provider и коммерческий выпуск не проверяются этой картой. Для следующего изменения используйте [capability traceability](capabilities.md) и конкретную task card.

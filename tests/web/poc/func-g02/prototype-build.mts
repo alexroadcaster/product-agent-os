@@ -1,0 +1,22 @@
+import {mkdir,readFile,writeFile,readdir} from 'node:fs/promises';
+import {resolve,join} from 'node:path';
+import {pathToFileURL} from 'node:url';
+import {createRequire} from 'node:module';
+import {createHash} from 'node:crypto';
+import {spawnSync} from 'node:child_process';
+
+const root=resolve('.'),prototype=resolve('design/2026-11-15-func-g02/prototype'),output=resolve('.tmp/func-g02/prototype-dist');
+const typecheck=spawnSync(process.execPath,['apps/web/node_modules/typescript/bin/tsc','--project',join(prototype,'tsconfig.json')],{encoding:'utf8'});
+if(typecheck.status!==0)throw Error('PROTOTYPE_TYPECHECK_FAILED\n'+typecheck.stdout+typecheck.stderr);
+const require=createRequire(pathToFileURL(join(root,'apps/web/package.json')));
+const {build}=await import(pathToFileURL(require.resolve('vite')).href);
+const read=async(path:string)=>JSON.parse(await readFile(path,'utf8'));
+const [f30,f31,f32,corpus]=await Promise.all(['.tmp/func-g02/f30/snapshot.json','.tmp/func-g02/f31/snapshot.json','.tmp/func-g02/f32/snapshot.json','tests/fixtures/func_g02/corpus.json'].map(read));
+if(f31.meta.coverage.status!=='unavailable'||f31.nodes.length||f31.edges.length)throw Error('REJECTED_ENGINE_MUST_NOT_BECOME_MEASURED_GRAPH');
+if(f32.meta.engine!=='node:sqlite')throw Error('EXPLICIT_SQLITE_ALTERNATIVE_REQUIRED');
+await build({root:prototype,configFile:false,resolve:{alias:{react:resolve('apps/web/node_modules/react'),'react-dom':resolve('apps/web/node_modules/react-dom')}},build:{outDir:output,emptyOutDir:true,target:'es2022'},logLevel:'warn'});
+const data={f30,f31,f32,mermaid:await readFile('.tmp/func-g02/f32/schema.mmd','utf8'),sources:{...corpus.files,...f32.sourceFiles},decisions:{f30:'bounded_adopt',f31:'reject_current_workspace_profile',f32:'tbls_rejected_node_sqlite_selected'}};
+await writeFile(join(output,'data.json'),JSON.stringify(data,null,2));
+const paths=['tests/web/poc/func-g02/prototype-build.mts',...['main.tsx','model.ts','prototype.css','index.html','README.md','tsconfig.json','package.json'].map(p=>'design/2026-11-15-func-g02/prototype/'+p),...['f30','f31','f32'].map(p=>'.tmp/func-g02/'+p+'/snapshot.json'),...['index.html','data.json',...(await readdir(join(output,'assets'))).map(p=>'assets/'+p)].map(p=>'.tmp/func-g02/prototype-dist/'+p)];
+const sourceHashes:Record<string,string>={};for(const path of paths)sourceHashes[path]=createHash('sha256').update(await readFile(path)).digest('hex');
+await writeFile('.tmp/func-g02/prototype-build.json',JSON.stringify({status:'built',builtAt:new Date().toISOString(),output,productionSourcesChanged:false,sourceHashes},null,2)+'\n');console.log(JSON.stringify({status:'built',output,snapshots:{f30:f30.nodes.length,f31:f31.nodes.length,f32:f32.nodes.length}}));

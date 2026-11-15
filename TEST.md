@@ -1,5 +1,11 @@
 # TEST.md
 
+## FUNC-G02 — scoped verification routes, 15.11.2026
+
+Combined command: `node --test tests/web/poc/func-g02/f30-model.test.mts tests/web/poc/func-g02/codebase-memory.test.mts tests/web/poc/func-g02/tbls-poc.test.mts tests/web/poc/func-g02/prototype-model.test.mts tests/web/poc/func-g02/prototype-preview.test.mts` —22/22,0skip. `node tests/web/poc/func-g02/prototype-build.mts` —TypeScript/Vite passed; `prototype-browser.mts --synthetic-browser --playwright-core ABSOLUTE_INSTALLED_PATH --chromium ABSOLUTE_INSTALLED_PATH` —22/22. Evidence `.tmp/func-g02/` source/build/harness bound; UI P2 isolation/filter regressions включены.
+
+Engine runners `f30-run.mts`, `codebase-memory.mts`, `tbls-poc.mts` используют pinned protocol/fixtures и сохраняют реальные failure receipts. F3017 scenarios; F3112 integrity/admission/preservation observations и unknown downstream metrics; F3226 observations =23positive/3candidate defects. Node alternative effective-nullability fix6/6 и baseline-only regeneration отделены от native runs. [Полный evidence/границы](docs/planning/functional-remediation-2026-11-15.md#func-g02-results). Closure требует RU/EN matrices, source-docs, MD/JSON status/AC и preservation остальных31 records. Full Web/Python/runtime/site suites не нужны для этого PoC: production source/tuple не менялись; renderer/browser проверены локально, provider/human acceptance не заявлены.
+
 ## FUNC-G01 — текущие проверки, 15.11.2026
 
 [Evidence/команды/provenance](docs/planning/functional-remediation-2026-11-15.md#func-g01-results), [subsystem routes](docs/testing/test-map.md#func-g01--текущие-regression-routes). Current scoped checks: `npm run check:web-m1`, `npm run build:web`; `contracts-boundaries.test.mts`, decoder/preferences и dashboard tests; `func-g01-drafts-acceptance.mts --synthetic-browser`54; `func-g01-dashboard-acceptance.mts --synthetic-browser`30; runtime-manifest/sandbox-broker12 и native candidate→promotion→production default write/deny/restart. Existing dependency/binary paths, disposable roots, no providers/real credentials.

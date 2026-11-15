@@ -3,16 +3,16 @@
 Source status: repository_source / current_local_synthetic_implementation; remaining_tasks_planned.
 Planning date: 15.11.2026. Timezone: Europe/Moscow. Schema version: task_matrix_plan_v1.
 
-<!-- func-g01-status -->
-FUNC-G01: 7/7 implemented / locally_verified; overall 7 implemented / 27 planned; other groups and 3 M5 references preserved.
+<!-- func-g01-g02-status -->
+FUNC-G01: 7/7 implemented / locally_verified; FUNC-G02: 3/3 implemented / poc_research_locally_verified; overall 10 implemented / 24 planned; other groups and 3 M5 references preserved.
 
 ## Scope and status
 
-The plan contains **34 tasks PAOS-FUNC-01–PAOS-FUNC-34** and references to **3 previously planned M5 tasks**. Current total: **7 implemented / 27 planned**; FUNC-G01 is closed against its local technical AC. The overview matrix therefore contains 37 entries; this is not the total number of project tasks. The existing 56 M1–M5 cards, their 53 implemented / 3 planned statuses, and estimates are preserved. New findings do not rewrite historical receipts: they require current reproduction and a new verification.
+The plan contains **34 tasks PAOS-FUNC-01–PAOS-FUNC-34** and references to **3 previously planned M5 tasks**. Current total: **10 implemented / 24 planned**; FUNC-G01 is closed against its local technical AC. The overview matrix therefore contains 37 entries; this is not the total number of project tasks. The existing 56 M1–M5 cards, their 53 implemented / 3 planned statuses, and estimates are preserved. New findings do not rewrite historical receipts: they require current reproduction and a new verification.
 
 Machine-state owner for the current checkout: `docs/planning/functional-remediation-2026-11-15.json`. The [original planning snapshot](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/docs/planning/functional-remediation-2026-11-15.json) is historical and does not carry the updated local statuses. This Markdown file owns technical and product rationale, acceptance and completion evidence. M5 references do not create a second owner for status: the owners are [docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json) and [docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md](product-agent-os-web-task-manager-plan-2026-11-09.md).
 
-The original request authorized planning. A subsequent 2026-11-15 owner request authorized complete FUNC-G01 implementation, necessary local synthetic checks, statuses and documentation; all seven group tasks are implemented. The remaining 27 tasks and M5 are outside this implementation. P1 means an execution blocker or an integrity/recovery check; P2 means functional value, information correctness and maintainability; P3 means a limited display defect. The priority of a verification task does not mean a failure has already been observed.
+The original request authorized planning. A subsequent 2026-11-15 owner request authorized complete FUNC-G01 implementation, necessary local synthetic checks, statuses and documentation; all seven group tasks are implemented. A further owner request authorized FUNC-G02: its three research PoCs are closed with measured decisions and isolated UI acceptance. The remaining24 tasks and M5 stay outside this implementation. P1 means an execution blocker or an integrity/recovery check; P2 means functional value, information correctness and maintainability; P3 means a limited display defect. The priority of a verification task does not mean a failure has already been observed.
 
 ## Original evidence basis and limits
 
@@ -317,6 +317,31 @@ Rerun reasons and rejected attempts are retained: Chromium startup without requi
 Code contract: existing_capability — existing handlers, memory Maps, StoreReceipt, strict decoder/preferences and installed parser; smallest_safe_patch — reset/CAS/projection corrections and two compatibility seams; invariants — original CAS, project isolation, unknown≠0, exact runtime pins; dependency_decision — no_new_dependency; risk_selected_tests — browser/state/decoder/import/native plus demonstrated link-fixture retest; comment_decision — concurrency/order/boundary intent documented; performance_applicability — no benchmark or budget change; evidence_and_gaps — current source hashes/tuple with separate receipts.
 
 Documentation impact: updated — frontend state-management/components, backend lifecycle/modules, architecture containers, testing map, RU/EN registry, these cards and owning JSON; REQUIREMENTS/PLAN/TEST/RUNLOG synchronized. EVALS/prod_test no_change_needed: eval policy and historical Batch39 unchanged. API docs no_change_needed: endpoints/payload/schema/errors preserved. Atlas review no_change_needed: existing diagram container/runtime boundaries unchanged; ownership/import detail recorded in architecture/modules. No site build/publication or dependency installation. No human-acceptance, provider/model behavior or broad production-readiness claim.
+
+## FUNC-G02 — protocol and engine results {#func-g02-results}
+
+Current status: **implemented / poc_research_locally_verified; 3/3 closed**. The2026-11-15owner request authorized full F30/F31/F32 execution; original planning_only phrases in the AC describe the earlier planning authority, not this request. Other FUNC/M5 work is not started. Protocol/ground truth pinned before measurements in `tests/fixtures/func_g02/protocol.json` and `corpus.json`; protocol SHA `4d8c4760f20f65c3dde015067ff6e5e59eb6835bca2f89afc99138b43f0639be`, corpus SHA `d727efe0e2fe11a9303262addadbbfb73ab97ec5af844ed585acdbbfe537f11a`.
+
+| Task | Engine decision and supported boundary |
+| --- | --- |
+| F30 | bounded_adopt: dependency-cruiser18.6.0 + isolated TypeScript5.9.2 for imports only.10/10expectededges, precision1/recall1; lexical baseline7/10. Change tasks3/3vs2/3. Cold median817.39ms vs218.27ms;200additionalfiles961.49ms/146.33MiB.4model tests and17engine scenarios. |
+| F31 | reject for the current Windows workspace profile: codebase-memory-mcp0.12.1 refuses admission beforeindex.12integrity/admission/preservation checks and3unit tests; version/help passed. Index/query/lifecycle/RSS after rejection are unexecuted with null metrics. ACL/source cause is inference, not an internal trace. |
+| F32 | reject tbls1.96.1 as authoritative SQLite metadata: generated omission, valid identifier failure and missingDBcreated with testedread-onlyDSN.26observations=23positive+3candidatefailures. Explicit node:sqlite metadata alternative; tbls200table367.996ms; current corrected Node baseline5.945ms, separately measured in-process. Earlier16.892ms baseline retained with its old provenance. Effective-nullability regression6/6 passed; native receipts unchanged. |
+
+Before measurements: pinned version/commit/license, shared synthetic JS/TS/Python corpus, independent expected import/call/change-task oracle, SQLite DDL ground truth,30s small/60s large index timeout,1MiB stdout,1024MiB RSS/cache,200-file/table workload,3cold runs. Query budget5s; prototype interaction budget1500ms. F28/F20 contracts are draft-only; production implementation is not a prerequisite. External tools receive an allowlisted read-only projection; config/secret exclusions do not become graph data. Target JS-config/scripts/hooks are not executed; no model/provider/network during measurement.
+
+Versioned proposal `paos_engine_poc_snapshot_v1`: meta engine/version/sourceRevision/rootIdentity/policyVersion/coverage/capabilities/warnings, stable node IDs/path/line and typed directed edges/evidence. Import≠call, unknown≠false/zero, unresolved/inferred never promoted to observed. Engine SQLite/cache is not writable PAOS state. F14 gets an import-only F30 proposal + existing bounded lexical baseline; multilingual semantic/call path remains a gap. F33 gets an explicitly selected Node read-only metadata adapter proposal, not silent tbls fallback. Production F14/F33/F34 integration remains planned.
+
+Pre-build UI design: existing V3 read-only explorer — compact project/mode/source/coverage bar, outline → graph/list/Mermaid → evidence inspector; mobile list-first with collapsible details. URL-only state, project changes clear incompatible selection, source-line→Back. Import graph and declared-FK schema have distinct semantics; visible direction, keyboard/table alternative, zoom/reset, RU/EN, light/dark, loading/empty/partial/error/unavailable/stale. Unavailable F31 never shows a fabricated measured graph; proposed symbol/call fixtures are separate. Protocol/wireframe peer review `/root/func_g02_cbm`: approve; renderer compatibility tested locally.
+
+Evidence: `.tmp/func-g02/f30/result.json`, `tool-audit.json`, `snapshot.json`; F31 `result.json`, native preflight/ACL/source/checksum receipts; F32 `result.json`, `dsn-mode-probes.json`, raw JSON/Mermaid and selected snapshot. Three F32 candidate failures and F31 admission rejection are retained, not called green. Later metadata/UI repair does not rewrite native findings or benchmark provenance. Final prototype/typecheck/build passed; browser22/22 and combined model/preview tests22/22. Build-bound evidence: `.tmp/func-g02/prototype-build.json`, `prototype-browser/result.json`. Installed tiny Mermaid rendered canonical erDiagram; prototype README owns preview commands.
+
+
+Independent review `/root/func_g02_review`, separate_reused_context, two cycles: SQLite effective-nullability P2 fixed and accepted; final two UI P2 repaired (project-bound direct URLs/export and filtered ER parity). Root inspected the delta, new model/browser regressions, current source/build/harness hashes and desktop/mobile screenshots: closed_allowed. The independent verdict before those final repairs was partial_only; no third review cycle is claimed. F31 downstream capabilities remain unexecuted after admission rejection; F32 three candidate failures remain negative evidence. These close research decisions, not product features.
+
+Closure commands: combined22-unit command recorded in machine state, `node tests/web/poc/func-g02/prototype-build.mts`, `node tests/web/poc/func-g02/prototype-browser.mts --synthetic-browser --playwright-core ABSOLUTE_INSTALLED_PATH --chromium ABSOLUTE_INSTALLED_PATH`, matrix validators for both languages, scoped source-docs and preservation checks. Preview: `node tests/web/poc/func-g02/prototype-preview.mts`. Control-plane sync updates REQUIREMENTS/PLAN/TEST/RUNLOG; EVALS/prod_test no_change_needed, no changed AI behavior or production-test evidence. Human acceptance and production integration remain outside PoC closure.
+
+Final static closure: both task-matrix validators passed; source-docs19 passed;31 unrelated task objects and31 cards per language, all original AC/priorities/estimates/dependencies/groups and M5 preserved; current production sources unchanged. Preservation and source/build/harness binding receipt: `.tmp/func-g02/closure-consistency.json`; diff check passed. The historical pre-relocation M5 hash was not the current baseline: corrected verification compared the unchanged task-start Git source. No M5 file was changed.
 
 ## Detailed cards
 
@@ -1717,15 +1742,15 @@ An acceptable reject closes the research task with evidence; the integration tas
 
 - Delivery group: `FUNC-G02`; the group does not replace Depends on or the original AC.
 - Task: PAOS-FUNC-30 — Evaluate dependency-cruiser for JS/TS dependency graph
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: owner request to move GitHub research into the plan with UI/UX and dependencies; planning_only
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 15-11-2026 19:24
 - Priority: P2
-- Evidence level: upstream_documentation_review_not_locally_verified
-- Execution authority: planning_only; PoC/build/installation not started
+- Evidence level: poc_research_locally_verified
+- Execution authority: owner_authorized_isolated_synthetic_poc; FUNC-G02,15.11.2026.
 - Depends on: none
 - Blocks: `PAOS-FUNC-14`
 - Source: GitHub research 15.11.2026: upstream README/license review; integration, performance and compatibility not verified locally. [sverweij/dependency-cruiser](https://github.com/sverweij/dependency-cruiser)
@@ -1746,34 +1771,34 @@ An acceptable reject closes the research task with evidence; the integration tas
 - Skills: Choose task-matching skills at start; current planning does not install or activate skills/plugins.
 - Output artifacts: Result and receipts belong in this Completion Report, status in group JSON; update existing architecture/design/help according to actual scope.
 - Rollback: Only own hunks after checking drift; disposable PoC artifacts are cleaned within agreed bounds, user processes are not terminated; prior snapshots remain until successful publication.
-- Next step: Pin protocol/versions/UI wireframes and check dependencies; run only after authorization of the next execution slice.
+- Next step: F14: bounded import-only adapter + current lexical queries; semantic/call-path gap remains.
 
 #### Completion Report
 
-- status: planned
-- what was done: task and UI/UX acceptance added to the plan; execution not started.
-- files touched / work locations: implementation none; future paths are listed in Scope.
-- technical value delivered: not yet confirmed by task execution.
-- product value delivered: not yet confirmed by the user.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: upstream documentation review; future checks were not performed.
-- residual risks: poc_protocol_and_graph_ui_design_required; versions and suitability are checked in execution.
-- follow-up: Next step above; decide and synchronize MD/JSON.
-- Documentation impact: planning_only; during execution update source-owned architecture/design/help/registry for changed claims.
+- status: implemented
+- what was done: dependency-cruiser18.6.0: 10/10 imports vs lexical7/10; change tasks3/3 vs2/3; 17 engine scenarios +4 model tests. Import-only adapter and V3 prototype checked; production F14 planned. Decision: bounded_adopt_import_only.
+- files touched / work locations: tests/web/poc/func-g02/; tests/fixtures/func_g02/; design/2026-11-15-func-g02/prototype/; owning domain docs RU/EN.
+- technical value delivered: versioned adapter proposal, reproducible measured decision and explicit rejected capabilities.
+- product value delivered: verified isolated graph/list/Mermaid/evidence/source prototype; human usefulness not measured.
+- actual implementation date and time: 15-11-2026 19:24
+- verification evidence: FUNC-G02 results above; .tmp/func-g02/ engine receipts; combined unit22/22, browser22/22; scoped typecheck/build; actual candidate failures retained.
+- residual risks: research PoC only; production integration and human acceptance remain unverified; F31 downstream cases not executed after admission rejection.
+- follow-up: F14: import-only F30 + bounded lexical; semantic/call-path gap.
+- Documentation impact: updated adapters/queries-impact/db/erd, product/user-journeys, testing/test-map, source registry and owning task records RU/EN; Control-Plane Sync updated.
 
 ### Task `PAOS-FUNC-31`
 
 - Delivery group: `FUNC-G02`; the group does not replace Depends on or the original AC.
 - Task: PAOS-FUNC-31 — Evaluate codebase-memory-mcp as an agent indexing engine
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: owner request to move GitHub research into the plan with UI/UX and dependencies; planning_only
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 15-11-2026 19:24
 - Priority: P2
-- Evidence level: upstream_documentation_review_not_locally_verified
-- Execution authority: planning_only; PoC/build/installation not started
+- Evidence level: poc_research_locally_verified
+- Execution authority: owner_authorized_isolated_synthetic_poc; FUNC-G02,15.11.2026.
 - Depends on: none
 - Blocks: `PAOS-FUNC-14`
 - Source: GitHub research 15.11.2026: upstream README/license review; integration, performance and compatibility not verified locally. [DeusData/codebase-memory-mcp](https://github.com/DeusData/codebase-memory-mcp)
@@ -1794,34 +1819,34 @@ An acceptable reject closes the research task with evidence; the integration tas
 - Skills: Choose task-matching skills at start; current planning does not install or activate skills/plugins.
 - Output artifacts: Result and receipts belong in this Completion Report, status in group JSON; update existing architecture/design/help according to actual scope.
 - Rollback: Only own hunks after checking drift; disposable PoC artifacts are cleaned within agreed bounds, user processes are not terminated; prior snapshots remain until successful publication.
-- Next step: Pin protocol/versions/UI wireframes and check dependencies; run only after authorization of the next execution slice.
+- Next step: F14: bounded import-only adapter + current lexical queries; semantic/call-path gap remains.
 
 #### Completion Report
 
-- status: planned
-- what was done: task and UI/UX acceptance added to the plan; execution not started.
-- files touched / work locations: implementation none; future paths are listed in Scope.
-- technical value delivered: not yet confirmed by task execution.
-- product value delivered: not yet confirmed by the user.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: upstream documentation review; future checks were not performed.
-- residual risks: poc_daemon_isolation_and_agent_query_design_required; versions and suitability are checked in execution.
-- follow-up: Next step above; decide and synchronize MD/JSON.
-- Documentation impact: planning_only; during execution update source-owned architecture/design/help/registry for changed claims.
+- status: implemented
+- what was done: codebase-memory-mcp0.12.1 rejected before index admission; 12 integrity/admission/preservation checks +3 unit tests. Downstream cases not_executed_after_failed_admission with null metrics; unavailable UI and separate unmeasured call-contract fixture checked. Decision: reject_current_windows_workspace_profile.
+- files touched / work locations: tests/web/poc/func-g02/; tests/fixtures/func_g02/; design/2026-11-15-func-g02/prototype/; owning domain docs RU/EN.
+- technical value delivered: versioned adapter proposal, reproducible measured decision and explicit rejected capabilities.
+- product value delivered: verified isolated graph/list/Mermaid/evidence/source prototype; human usefulness not measured.
+- actual implementation date and time: 15-11-2026 19:24
+- verification evidence: FUNC-G02 results above; .tmp/func-g02/ engine receipts; combined unit22/22, browser22/22; scoped typecheck/build; actual candidate failures retained.
+- residual risks: research PoC only; production integration and human acceptance remain unverified; F31 downstream cases not executed after admission rejection.
+- follow-up: F14: import-only F30 + bounded lexical; semantic/call-path gap.
+- Documentation impact: updated adapters/queries-impact/db/erd, product/user-journeys, testing/test-map, source registry and owning task records RU/EN; Control-Plane Sync updated.
 
 ### Task `PAOS-FUNC-32`
 
 - Delivery group: `FUNC-G02`; the group does not replace Depends on or the original AC.
 - Task: PAOS-FUNC-32 — Evaluate tbls for DB schema extraction and Mermaid ERD
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: owner request to move GitHub research into the plan with UI/UX and dependencies; planning_only
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 15-11-2026 19:24
 - Priority: P2
-- Evidence level: upstream_documentation_review_not_locally_verified
-- Execution authority: planning_only; PoC/build/installation not started
+- Evidence level: poc_research_locally_verified
+- Execution authority: owner_authorized_isolated_synthetic_poc; FUNC-G02,15.11.2026.
 - Depends on: none
 - Blocks: `PAOS-FUNC-33`
 - Source: GitHub research 15.11.2026: upstream README/license review; integration, performance and compatibility not verified locally. [k1LoW/tbls](https://github.com/k1LoW/tbls), [www.sqlite.org/pragma.html](https://www.sqlite.org/pragma.html)
@@ -1842,20 +1867,20 @@ An acceptable reject closes the research task with evidence; the integration tas
 - Skills: Choose task-matching skills at start; current planning does not install or activate skills/plugins.
 - Output artifacts: Result and receipts belong in this Completion Report, status in group JSON; update existing architecture/design/help according to actual scope.
 - Rollback: Only own hunks after checking drift; disposable PoC artifacts are cleaned within agreed bounds, user processes are not terminated; prior snapshots remain until successful publication.
-- Next step: Pin protocol/versions/UI wireframes and check dependencies; run only after authorization of the next execution slice.
+- Next step: F33: explicit node:sqlite metadata adapter proposal; production integration planned.
 
 #### Completion Report
 
-- status: planned
-- what was done: task and UI/UX acceptance added to the plan; execution not started.
-- files touched / work locations: implementation none; future paths are listed in Scope.
-- technical value delivered: not yet confirmed by task execution.
-- product value delivered: not yet confirmed by the user.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: upstream documentation review; future checks were not performed.
-- residual risks: poc_database_readonly_and_erd_ui_design_required; versions and suitability are checked in execution.
-- follow-up: Next step above; decide and synchronize MD/JSON.
-- Documentation impact: planning_only; during execution update source-owned architecture/design/help/registry for changed claims.
+- status: implemented
+- what was done: tbls1.96.1: 26 observations =23 positive +3 candidate failures (generated omission, valid identifier failure, missing DB creation). Explicit node:sqlite read-only metadata alternative, effective nullable fixed;6 unit tests; schema UI/export checked. Decision: reject_authoritative_sqlite_metadata.
+- files touched / work locations: tests/web/poc/func-g02/; tests/fixtures/func_g02/; design/2026-11-15-func-g02/prototype/; owning domain docs RU/EN.
+- technical value delivered: versioned adapter proposal, reproducible measured decision and explicit rejected capabilities.
+- product value delivered: verified isolated graph/list/Mermaid/evidence/source prototype; human usefulness not measured.
+- actual implementation date and time: 15-11-2026 19:24
+- verification evidence: FUNC-G02 results above; .tmp/func-g02/ engine receipts; combined unit22/22, browser22/22; scoped typecheck/build; actual candidate failures retained.
+- residual risks: research PoC only; production integration and human acceptance remain unverified; F31 downstream cases not executed after admission rejection.
+- follow-up: F33: explicit node:sqlite metadata adapter; production integration planned.
+- Documentation impact: updated adapters/queries-impact/db/erd, product/user-journeys, testing/test-map, source registry and owning task records RU/EN; Control-Plane Sync updated.
 
 ### Task `PAOS-FUNC-33`
 

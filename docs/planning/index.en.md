@@ -9,6 +9,8 @@ The Russian catalog lists all 42 relocated files and the new 16-task documentati
 
 ## Working plans translated in DG01
 
+- [Methodology improvements and incremental FSD: 18 planned tasks](methodology-improvement-2026-11-15.en.md), [JSON state](methodology-improvement-2026-11-15.json), [Russian](methodology-improvement-2026-11-15.md). Added after DG01; planning only, with separate FUNC/Web/V3 ownership.
+
 - [2026-11-13-ui-implementation-plan](2026-11-13-ui-implementation-plan.md)
 - [2026-11-13-v2-ui-implementation-plan](2026-11-13-v2-ui-implementation-plan.md)
 - [2026-11-13-v3-ui-implementation-plan](2026-11-13-v3-ui-implementation-plan.md)

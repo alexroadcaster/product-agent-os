@@ -1,6 +1,6 @@
 # Адаптеры и будущие интеграции
 
-Source status: repository_source / static_contract_review; 15.11.2026.
+Source status: repository_source / static_contract_review_and_synthetic_poc; 15.11.2026.
 
 Владелец: graph-cockpit-engineer + docs-maintainer. Область: DG05 / DOCS-11, snapshot `61f6cd4cd048be478e88e2406c733f98b60bc434`. Обновлять при изменении scanner, API, adapters, query contracts, тестов или статуса PoC. Результаты графа — производное evidence для навигации, не замена чтению исходников и проверкам.
 
@@ -10,16 +10,26 @@ Source status: repository_source / static_contract_review; 15.11.2026.
 
 Web использует отдельный [parser worker](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/apps/local-service/src/code-index/parser-worker.mts) и [lexical builder](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/apps/local-service/src/code-index/lexical.mts); это не запуск Python adapter. Python scanner имеет staged generated artifacts, optional local indexes и отдельные approval-bound extension gates. Это разные контракты, хранилища и пределы доказательств.
 
-## Запланированные решения
+## Решения PoC и будущие интеграции
 
 | Инициатива | Статус и ожидаемая работа |
 | --- | --- |
 | F26–F29: Files / scan / inventory / discovery | planned: отдельная директория, управляемый scan и UI/UX |
-| F30 dependency-cruiser | planned PoC для анализа JS/TS зависимостей |
-| F31 codebase-memory-mcp | planned PoC graph/agent navigation |
-| F32 tbls | planned PoC документации схемы целевой БД |
+| F30 dependency-cruiser | implemented research: bounded_adopt, только imports; production F14 planned |
+| F31 codebase-memory-mcp | implemented research: reject текущего Windows profile; unavailable до index |
+| F32 tbls | implemented research: reject authoritative SQLite metadata; для F33 выбрана Node alternative |
 | F33/F34 | planned: карта целевой БД и связи кода с таблицами, с отображением и evidence |
 
 Точные acceptance, licensing и integration gates принадлежат [функциональному плану](../planning/functional-remediation-2026-11-15.md). Упоминание проекта здесь не означает установку, выполнение PoC, интеграцию с Web или разрешение на подключение к реальной БД. После выполнения конкретной FUNC задачи её владелец обновляет эти страницы и source registry.
 
 Существующие AI adapters и query-quality границы описаны в [retrieval](../ai/rag/index.md). Связанные тесты: [Web code index](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/tests/web/code-index.test.mts), [Python graph queries](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/tests/product_agent_os/test_project_graph_queries.py), [Python overlays](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/tests/product_agent_os/test_project_graph_overlays.py). Это маршруты проверки, а не утверждение о новом прогоне.
+
+## FUNC-30 — bounded import-only PoC, locally verified
+
+В текущем checkout проверен dependency-cruiser18.6.0 (commit59606f7133843b190aa328c95d5c676631ca45f1), MIT, Node26.5.0/Windows10.0.26200x64. Изолированная копия использует cached TypeScript5.9.2 (Apache-2.0); TypeScript7 приложения не поддерживается этой версией cruiser и не менялся. Roster44 packages: MIT/ISC/Apache-2.0; version/lock/package/compiler hashes сохранены в tool audit.
+
+На общем synthetic corpus:10/10 expected import edges, precision1/recall1; текущий lexical parser7/10, precision1/recall0.7 (alias/dynamic/CommonJS gaps). Задания incoming-lib/alias/cycle:3/3 против2/3 baseline. Медиана трёх cold-process запусков:817.39ms против218.27ms; RSS примерно140–143MiB против104–105MiB. Дополнительные200файлов:961.49ms,146.33MiB,142302bytes. Это малый synthetic benchmark, не оценка пользовательской продуктивности или production monorepo.
+
+Итоговое решение PoC: **bounded_adopt для file imports**, без call/definition/multilanguage/index-daemon claims. Adapter сохраняет root identity, source revision, path/line, import direction, unresolved и unknown type-only classification. Import не становится call. Source/config/secret exclusions передаются через allowlisted projection; explicit no-config и trusted tsconfig data, Node measurement process отклоняет запись и network. Original hashes сохранены; rename/parse error/timeout/retry проверены. Baseline использует прежний parser Worker отдельно от нового engine. Normalization regressions4/4; engine scenarios17 выполнены.
+
+Артефакты: `tests/web/poc/func-g02/f30-run.mts`, `f30-model.mts`, `tests/fixtures/func_g02/protocol.json`, `corpus.json`; результаты `.tmp/func-g02/f30/result.json`, `snapshot.json`, `tool-audit.json`. Context7 [CLI no-config](https://github.com/sverweij/dependency-cruiser/blob/v18.6.0/doc/cli.md) и [pre-compilation semantics](https://github.com/sverweij/dependency-cruiser/blob/v18.6.0/doc/options-reference.md) сверены с installed source. Изолированный V3 UI прошёл общую22-browser матрицу и source/build provenance check; production integration остаётся F14. Закрытие исследования не активирует adapter в PAOS. [Закрытие FUNC-G02](../planning/functional-remediation-2026-11-15.md#func-g02-results).

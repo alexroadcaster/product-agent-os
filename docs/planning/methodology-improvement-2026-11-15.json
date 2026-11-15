@@ -1,0 +1,959 @@
+{
+  "schema_version": "methodology_improvement_task_group_v1",
+  "task_matrix_schema": "task_matrix_plan_v1",
+  "created_at": "2026-11-15",
+  "timezone": "Europe/Moscow",
+  "source_plan": "docs/planning/methodology-improvement-2026-11-15.md",
+  "english_plan": "docs/planning/methodology-improvement-2026-11-15.en.md",
+  "status": "planned",
+  "execution_authority": "planning_only_no_implementation_authorized",
+  "scope": "Product-Agent OS methodology improvements and incremental frontend FSD",
+  "source_snapshot": {
+    "git_head": "35458110145d928b9b14d9312b60d852f11f6e88",
+    "implementation_source_sha256": {
+      "apps/web/src/features/dashboard/model.ts": "8e370d6e9a1e2d37c8f48cf5c0dcebaeed74bdbef879ddc2f012520fbdf2fda9",
+      "apps/web/src/features/tasks/TaskManager.tsx": "7ea764c0f91ef2cc0fcc3af75c6c2cc0f3e310772ff88fb6f6578842bc37cb21",
+      "apps/web/src/features/workflows/WorkflowManager.tsx": "29df9ab27957e5d25dae04c5c697fa1775e76b9c1e1ce152a0774b09f042983d",
+      "apps/web/src/features/team/TeamManager.tsx": "d325186e08de6e207d7106325b1f9b101b125ac4412f152b219de12b900b3a55",
+      "apps/web/src/ui/App.tsx": "589eba6ef96dee517eb97de05a0b947aa665fdb18937185332a2dd88aefb5fb0",
+      "tests/web/contracts-boundaries.test.mts": "c263caff2140ad3fe3998059464bae9d9d072b2f08d805bad6f96f69a59c5f83",
+      "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py": "08a383b7b975370371df7cd49cdf367ab7f631200439b31fe4b4c153f5ee774c"
+    },
+    "provenance": "Current source/owner inspection; historical receipts not rerun"
+  },
+  "external_state_owners": [
+    "docs/planning/functional-remediation-2026-11-15.json",
+    "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json"
+  ],
+  "optional_tasks": [
+    "PAOS-METH-14",
+    "PAOS-METH-15",
+    "PAOS-METH-16"
+  ],
+  "tasks": [
+    {
+      "id": "PAOS-METH-01",
+      "title": "Зафиксировать baseline и владельцев улучшений",
+      "title_en": "Record the baseline and improvement ownership",
+      "status": "planned",
+      "priority": "P1",
+      "methodologies": [
+        "Spec-DD",
+        "ADD"
+      ],
+      "delivery_group_id": "foundation",
+      "depends_on": [],
+      "blocks": [
+        "PAOS-METH-02",
+        "PAOS-METH-05",
+        "PAOS-METH-06",
+        "PAOS-METH-08"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-01",
+        "PAOS-FUNC-03",
+        "PAOS-FUNC-04",
+        "PAOS-FUNC-05",
+        "PAOS-FUNC-06",
+        "PAOS-FUNC-07",
+        "PAOS-FUNC-08",
+        "PAOS-FUNC-25"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "architect + product-manager",
+      "work_locations": [
+        "docs/planning/methodology-improvement-2026-11-15.md",
+        "docs/planning/methodology-improvement-2026-11-15.json",
+        "docs/frontend/index.md"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-METH-01-AC01",
+          "ru": "Зафиксированы revision, локальные изменения, imports и действующие проверки web/plugin; прежние receipts помечены своей датой.",
+          "en": "Record the revision, local changes, imports and current web/plugin checks; date historical receipts explicitly."
+        },
+        {
+          "id": "PAOS-METH-01-AC02",
+          "ru": "Для каждой METH-карточки указано own/reuse/reference относительно FUNC/Web/V3; существующие AC и статусы не скопированы в новую владеющую очередь.",
+          "en": "Classify every METH card as own/reuse/reference against FUNC/Web/V3; do not create another owner for existing AC or status."
+        },
+        {
+          "id": "PAOS-METH-01-AC03",
+          "ru": "Назначены file/subsystem owners и точки последовательной работы; исходные F01/F03–F08 проверены по текущему владельцу, а не переоткрыты автоматически.",
+          "en": "Assign file/subsystem owners and sequential work points; inspect the current owner of F01/F03–F08 without automatically reopening them."
+        }
+      ],
+      "verification_profile": "V-PLAN",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-METH-02",
+      "title": "Связать требования, исходники и проверки в двух пилотных сценариях",
+      "title_en": "Trace requirements to source and checks in two pilot scenarios",
+      "status": "planned",
+      "priority": "P1",
+      "methodologies": [
+        "Spec-DD"
+      ],
+      "delivery_group_id": "foundation",
+      "depends_on": [
+        "PAOS-METH-01"
+      ],
+      "blocks": [
+        "PAOS-METH-03",
+        "PAOS-METH-05",
+        "PAOS-METH-06",
+        "PAOS-METH-12"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-02",
+        "PAOS-FUNC-25"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "product-manager + tester",
+      "work_locations": [
+        "docs/product/capabilities.md",
+        "docs/testing/index.md",
+        "docs/planning/methodology-improvement-2026-11-15.md"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-METH-02-AC01",
+          "ru": "В каждой из двух цепочек criterion → canonical owner → source → test/browser scenario → receipt либо explicit gap; все применимые критерии пилота покрыты строкой.",
+          "en": "For each of the two chains, map criterion → canonical owner → source → test/browser scenario → receipt or explicit gap; cover every applicable pilot criterion."
+        },
+        {
+          "id": "PAOS-METH-02-AC02",
+          "ru": "Неполное portfolio не выглядит полным, draft не теряется и не переносится в новый объект; пустые/error/stale сценарии названы явно.",
+          "en": "Specify partial portfolio, preserved drafts and new-object reset behavior; name empty/error/stale scenarios explicitly."
+        },
+        {
+          "id": "PAOS-METH-02-AC03",
+          "ru": "Одна изменённая предпосылка API/данных отражена в основном владельце, mirrors согласованы; traceability не реализует F02 и не ждёт её F28.",
+          "en": "Reflect changed API/data assumptions in their canonical owner and align mirrors; this traceability work neither implements F02 nor waits for F28."
+        }
+      ],
+      "verification_profile": "V-PLAN",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-METH-03",
+      "title": "Уточнить design-контракт состояний пилота",
+      "title_en": "Specify the pilot design-state contract",
+      "status": "planned",
+      "priority": "P1",
+      "methodologies": [
+        "Design-DD",
+        "Spec-DD"
+      ],
+      "delivery_group_id": "foundation",
+      "depends_on": [
+        "PAOS-METH-02"
+      ],
+      "blocks": [
+        "PAOS-METH-04"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-24",
+        "UI-12"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "product-manager + frontend owner",
+      "work_locations": [
+        "DESIGN.md",
+        "design/2026-11-13-v3/coverage.json",
+        "design/2026-11-13-v3/task-field-map.md",
+        "docs/frontend/state-management.md"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-METH-03-AC01",
+          "ru": "Для пилота описаны default/loading/empty/error/partial/stale/dirty/validation/confirmation с обоими themes и keyboard/focus, либо обоснованное not_applicable.",
+          "en": "Specify default/loading/empty/error/partial/stale/dirty/validation/confirmation states with both themes and keyboard/focus, or justified not_applicable."
+        },
+        {
+          "id": "PAOS-METH-03-AC02",
+          "ru": "Источник, единицы и unavailable для показателей явные; synthetic usage не становится данными приложения, F11 не реализуется этой задачей.",
+          "en": "Make metric sources, units and unavailable states explicit; synthetic usage does not become application data and this task does not implement F11."
+        },
+        {
+          "id": "PAOS-METH-03-AC03",
+          "ru": "Design differences получают disposition: исправить/предложить владельцу/принятый gap; согласование макета не закрывает UI-12 или human acceptance.",
+          "en": "Give design differences a disposition: repair/propose to owner/accepted gap; design agreement does not close UI-12 or human acceptance."
+        }
+      ],
+      "verification_profile": "V-PLAN",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-METH-04",
+      "title": "Проверять композицию и поведение интерфейса по design-контракту",
+      "title_en": "Check UI composition and behavior against the design contract",
+      "status": "planned",
+      "priority": "P1",
+      "methodologies": [
+        "Design-DD",
+        "TDD"
+      ],
+      "delivery_group_id": "foundation",
+      "depends_on": [
+        "PAOS-METH-03"
+      ],
+      "blocks": [
+        "PAOS-METH-12"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-19",
+        "PAOS-FUNC-24",
+        "UI-12"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "tester + frontend owner",
+      "work_locations": [
+        "tests/web/single-window/ui-v3-scenario.mts",
+        "tests/web/ui-v3-dashboard.test.mts",
+        "design/2026-11-13-v3/implementation-evidence.md"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-METH-04-AC01",
+          "ru": "Проверяются current-build screenshots пилота в двух themes, открытие/закрытие редактора, focus return, сохранение draft при навигации и partial/error feedback.",
+          "en": "Check current-build pilot screenshots in both themes, editor open/close, focus return, draft preservation during navigation and partial/error feedback."
+        },
+        {
+          "id": "PAOS-METH-04-AC02",
+          "ru": "Проверки обнаруживают намеренно изменённую fixture геометрию/состояние; thresholds и стабильные области обоснованы, обновление baseline явно reviewable.",
+          "en": "Checks detect deliberately changed fixture geometry/state; justify thresholds and stable regions, and make baseline updates explicitly reviewable."
+        },
+        {
+          "id": "PAOS-METH-04-AC03",
+          "ru": "Расхождения сравниваются с design owner; automated technical pass отделён от human acceptance, receipt привязан к hashes build/harness.",
+          "en": "Compare differences with the design owner; separate automated technical passes from human acceptance and bind receipts to build/harness hashes."
+        }
+      ],
+      "verification_profile": "V-WEB",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-METH-05",
+      "title": "Закрыть пробелы TDD и regression evidence для критических контрактов",
+      "title_en": "Close TDD and regression-evidence gaps for critical contracts",
+      "status": "planned",
+      "priority": "P1",
+      "methodologies": [
+        "TDD",
+        "Spec-DD"
+      ],
+      "delivery_group_id": "foundation",
+      "depends_on": [
+        "PAOS-METH-01",
+        "PAOS-METH-02"
+      ],
+      "blocks": [
+        "PAOS-METH-06",
+        "PAOS-METH-09",
+        "PAOS-METH-16"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-21",
+        "PAOS-FUNC-22"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "tester",
+      "work_locations": [
+        "TEST.md",
+        "tests/web/ui-draft-autosave.test.mts",
+        "tests/web/contracts-boundaries.test.mts",
+        "tests/product_agent_os/test_methodology_audit.py"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-METH-05-AC01",
+          "ru": "Карта risk → invariant → lowest reliable check покрывает draft conflict/lost ACK, import boundary, Stop/recovery, backup/restore и approval routing; существующие тесты переиспользованы.",
+          "en": "Map risk → invariant → lowest reliable check for draft conflict/lost ACK, import boundaries, Stop/recovery, backup/restore and approval routing; reuse existing tests."
+        },
+        {
+          "id": "PAOS-METH-05-AC02",
+          "ru": "Для нового TS boundary behavior METH-09 и нового Python routing behavior METH-16 определены ожидаемые RED причины и минимальный GREEN; evidence записывается при их реализации.",
+          "en": "Define expected RED causes and minimal GREEN for new TS boundary behavior in METH-09 and Python routing behavior in METH-16; record evidence when implementing them."
+        },
+        {
+          "id": "PAOS-METH-05-AC03",
+          "ru": "Setup/import failures не считаются RED; behavior-preserving moves используют characterization/regression без искусственно сломанного production code; F21/F22 остаются отдельными владельцами полного recovery scope.",
+          "en": "Setup/import failures are not RED; behavior-preserving moves use characterization/regression without artificially broken production code; F21/F22 retain full recovery ownership."
+        }
+      ],
+      "verification_profile": "V-TDD",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-METH-06",
+      "title": "Упростить контракты agent slice и handoff по baseline eval",
+      "title_en": "Simplify agent-slice and handoff contracts using baseline evals",
+      "status": "planned",
+      "priority": "P2",
+      "methodologies": [
+        "ADD",
+        "Spec-DD"
+      ],
+      "delivery_group_id": "foundation",
+      "depends_on": [
+        "PAOS-METH-01",
+        "PAOS-METH-02",
+        "PAOS-METH-05"
+      ],
+      "blocks": [
+        "PAOS-METH-07"
+      ],
+      "external_refs": [],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "lifecycle-orchestrator + reviewer",
+      "work_locations": [
+        ".codex/workflows/build-slice.md",
+        ".codex/workflows/review-slice.md",
+        ".codex/evals/agent-context-contract.json",
+        "plugins/product-agent-os/scripts/product_agent_os/task_plan_lifecycle.py"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-METH-06-AC01",
+          "ru": "Baseline и один candidate сравниваются на bounded fix, docs-only, missing context, overlapping ownership, premature success и unapproved external action.",
+          "en": "Compare the baseline and one candidate on a bounded fix, docs-only work, missing context, overlapping ownership, premature success and unapproved external action."
+        },
+        {
+          "id": "PAOS-METH-06-AC02",
+          "ru": "Goal/AC, source revision, owned/forbidden files, checks, stop conditions и handoff сохраняются; ordinary concise route не превращается в full packet.",
+          "en": "Preserve goal/AC, source revision, owned/forbidden files, checks, stop conditions and handoff; do not force the ordinary concise route into a full packet."
+        },
+        {
+          "id": "PAOS-METH-06-AC03",
+          "ru": "Candidate продвигается только при отсутствии новых boundary/claim failures; static contract pass не объявляется fresh-session activation или LLM quality improvement.",
+          "en": "Promote the candidate only with no new boundary/claim failures; static contract passes do not establish fresh-session activation or improved LLM quality."
+        }
+      ],
+      "verification_profile": "V-ADD",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-METH-07",
+      "title": "Измерить результат agentic-пилота на сопоставимых задачах",
+      "title_en": "Measure agentic-pilot outcomes on comparable tasks",
+      "status": "planned",
+      "priority": "P2",
+      "methodologies": [
+        "ADD"
+      ],
+      "delivery_group_id": "pilot",
+      "depends_on": [
+        "PAOS-METH-06",
+        "PAOS-METH-12"
+      ],
+      "blocks": [
+        "PAOS-METH-17"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-11",
+        "PAOS-FUNC-23"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "tester + product-manager",
+      "work_locations": [
+        "EVALS.md",
+        "docs/testing/index.md",
+        "docs/planning/methodology-improvement-2026-11-15.md"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-METH-07-AC01",
+          "ru": "Одинаковые task inputs/AC/revision и доступный runtime; фиксируются accepted/reopened, repair cycles, owner interventions и elapsed с provenance.",
+          "en": "Use identical task inputs/AC/revision and an available runtime; record accepted/reopened outcomes, repair cycles, owner interventions and elapsed time with provenance."
+        },
+        {
+          "id": "PAOS-METH-07-AC02",
+          "ru": "Tokens/cost приводятся только при достоверном источнике; unavailable не заменяется нулём; F11 telemetry не реализуется ради этого пилота.",
+          "en": "Report tokens/cost only with reliable provenance; unavailable is not zero and F11 telemetry is not implemented for this pilot."
+        },
+        {
+          "id": "PAOS-METH-07-AC03",
+          "ru": "Если actual-agent сравнение недоступно без нового разрешения, результат ограничен deterministic routing; model-quality benefit остаётся insufficient_evidence и не разрешает promotion.",
+          "en": "If actual-agent comparison requires unavailable authorization, limit results to deterministic routing; model-quality benefit remains insufficient_evidence and does not justify promotion."
+        }
+      ],
+      "verification_profile": "V-ADD",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-METH-08",
+      "title": "Спроектировать постепенные границы FSD и переходный ADR",
+      "title_en": "Design incremental FSD boundaries and a transition ADR",
+      "status": "planned",
+      "priority": "P1",
+      "methodologies": [
+        "FSD",
+        "Design-DD"
+      ],
+      "delivery_group_id": "fsd-foundation",
+      "depends_on": [
+        "PAOS-METH-01"
+      ],
+      "blocks": [
+        "PAOS-METH-09"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-08",
+        "PAOS-FUNC-30"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "architect",
+      "work_locations": [
+        "docs/architecture/decisions/",
+        "docs/frontend/index.md",
+        "apps/web/src/ui/App.tsx",
+        "apps/web/src/features/"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-METH-08-AC01",
+          "ru": "ADR сравнивает оставить feature folders, улучшить только boundaries и частично внедрить FSD; решение опирается на coupling, тестируемость и стоимость переноса.",
+          "en": "Compare retaining feature folders, boundaries-only improvements and partial FSD; base the ADR on coupling, testability and migration cost."
+        },
+        {
+          "id": "PAOS-METH-08-AC02",
+          "ru": "Предложена карта App composition → pages/widgets при необходимости → interaction features → entities → shared; whole-screen TaskManager/Dashboard не названы features автоматически.",
+          "en": "Map App composition → pages/widgets when useful → interaction features → entities → shared; do not automatically classify whole-screen TaskManager/Dashboard as features."
+        },
+        {
+          "id": "PAOS-METH-08-AC03",
+          "ru": "Зафиксированы public APIs, legacy exception list с owner/removal task, направление bridge legacy→new, fallback/rollback и критерий достаточности; FSD не распространяется на backend/Python.",
+          "en": "Specify public APIs, an owned legacy exception list with removal tasks, legacy→new bridges, fallback/rollback and sufficiency criteria; do not apply frontend FSD to backend/Python."
+        }
+      ],
+      "verification_profile": "V-PLAN",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-METH-09",
+      "title": "Добавить инкрементальную проверку frontend imports",
+      "title_en": "Add incremental frontend-import checks",
+      "status": "planned",
+      "priority": "P1",
+      "methodologies": [
+        "FSD",
+        "TDD"
+      ],
+      "delivery_group_id": "fsd-foundation",
+      "depends_on": [
+        "PAOS-METH-05",
+        "PAOS-METH-08"
+      ],
+      "blocks": [
+        "PAOS-METH-10"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-08",
+        "PAOS-FUNC-30"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "tester + builder",
+      "work_locations": [
+        "tests/web/contracts-boundaries.test.mts",
+        "apps/web/package.json",
+        "apps/web/src/"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-METH-09-AC01",
+          "ru": "RED/GREEN fixtures покрывают .ts/.tsx/.mts, type imports/reexports/literal dynamic imports и настроенные aliases; unmapped alias является явным gap/failure, не silently skipped.",
+          "en": "RED/GREEN fixtures cover .ts/.tsx/.mts, type imports/reexports/literal dynamic imports and configured aliases; an unmapped alias is an explicit gap/failure, not silently skipped."
+        },
+        {
+          "id": "PAOS-METH-09-AC02",
+          "ru": "В migrated scopes отклоняются upward/same-layer/deep imports и циклы по принятому ADR; допустимые entity cross-imports только через согласованный API, не blanket exception.",
+          "en": "Reject upward/same-layer/deep imports and cycles in migrated scopes under the accepted ADR; permit entity cross-imports only through an agreed API, not a blanket exception."
+        },
+        {
+          "id": "PAOS-METH-09-AC03",
+          "ru": "Текущие legacy edges revision-pinned и не растут; перенесённый модуль удаляется из exceptions; действующие contracts→apps и backend→frontend запреты сохраняются.",
+          "en": "Pin current legacy edges and prevent growth; remove migrated modules from exceptions; preserve contracts→apps and backend→frontend prohibitions."
+        }
+      ],
+      "verification_profile": "V-BOUNDARY",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-METH-10",
+      "title": "Выделить необходимые shared UI и инфраструктурные модули",
+      "title_en": "Extract necessary shared UI and infrastructure modules",
+      "status": "planned",
+      "priority": "P2",
+      "methodologies": [
+        "FSD"
+      ],
+      "delivery_group_id": "fsd-foundation",
+      "depends_on": [
+        "PAOS-METH-09"
+      ],
+      "blocks": [
+        "PAOS-METH-11"
+      ],
+      "external_refs": [],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "builder — shared frontend ownership",
+      "work_locations": [
+        "apps/web/src/ui/Icon.tsx",
+        "apps/web/src/ui/Modal.tsx",
+        "apps/web/src/features/tasks/CommentMarkdown.tsx",
+        "apps/web/src/locales/",
+        "apps/web/src/features/graph/GraphViews.tsx"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-METH-10-AC01",
+          "ru": "В shared попадают только используемые primitives, safe Markdown/rendering и i18n infrastructure; task status rules и task-specific labels остаются у домена.",
+          "en": "Place only used primitives, safe Markdown/rendering and i18n infrastructure in shared; retain task status rules and task-specific labels with their domain."
+        },
+        {
+          "id": "PAOS-METH-10-AC02",
+          "ru": "Mermaid/graph renderer разделён на generic rendering и domain mapping только при подтверждённом reuse; no wildcard public exports, frontend→backend зависимости не добавлены.",
+          "en": "Separate generic rendering from graph-domain mapping only with proven reuse; avoid wildcard public exports and new frontend→backend dependencies."
+        },
+        {
+          "id": "PAOS-METH-10-AC03",
+          "ru": "Compatibility reexports однонаправленные, implementation/state единственные; прежние theme/focus/Markdown-safety/reduced-motion regressions проходят.",
+          "en": "Keep compatibility reexports one-way with single implementations/state; preserve theme/focus/Markdown-safety/reduced-motion regressions."
+        }
+      ],
+      "verification_profile": "V-WEB",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-METH-11",
+      "title": "Выделить frontend entities/task и публичные интерфейсы домена",
+      "title_en": "Extract frontend entities/task and domain public interfaces",
+      "status": "planned",
+      "priority": "P2",
+      "methodologies": [
+        "FSD",
+        "Spec-DD"
+      ],
+      "delivery_group_id": "fsd-foundation",
+      "depends_on": [
+        "PAOS-METH-10"
+      ],
+      "blocks": [
+        "PAOS-METH-12"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-08"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "architect + builder — task domain",
+      "work_locations": [
+        "apps/web/src/features/tasks/model.ts",
+        "apps/web/src/features/tasks/labels.ts",
+        "apps/web/src/features/dashboard/model.ts",
+        "packages/contracts/issues/task-profile.ts"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-METH-11-AC01",
+          "ru": "Reusable selectors/status presentation/task labels имеют один frontend domain owner; editor draft и commands остаются interaction-owned, backend authority не дублируется.",
+          "en": "Give reusable selectors/status presentation/task labels one frontend domain owner; keep editor drafts and commands interaction-owned without duplicating backend authority."
+        },
+        {
+          "id": "PAOS-METH-11-AC02",
+          "ru": "packages/contracts остаётся application-independent, не импортирует React/UI; типы и decode/persistence semantics F08 сохраняются.",
+          "en": "Keep packages/contracts application-independent and free of React/UI imports; preserve F08 types and decode/persistence semantics."
+        },
+        {
+          "id": "PAOS-METH-11-AC03",
+          "ru": "Потребители пилота используют явный public API; tests semanticStatus/isBlocked/aggregation и contracts boundaries проходят, legacy bridges имеют removal owner.",
+          "en": "Pilot consumers use an explicit public API; semanticStatus/isBlocked/aggregation and contract-boundary tests pass, and legacy bridges have removal owners."
+        }
+      ],
+      "verification_profile": "V-WEB",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-METH-12",
+      "title": "Перевести dashboard на FSD-пилот",
+      "title_en": "Migrate the dashboard as an FSD pilot",
+      "status": "planned",
+      "priority": "P2",
+      "methodologies": [
+        "FSD",
+        "Design-DD",
+        "Spec-DD"
+      ],
+      "delivery_group_id": "pilot",
+      "depends_on": [
+        "PAOS-METH-02",
+        "PAOS-METH-04",
+        "PAOS-METH-11"
+      ],
+      "blocks": [
+        "PAOS-METH-07",
+        "PAOS-METH-13"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-05",
+        "PAOS-FUNC-06",
+        "PAOS-FUNC-07",
+        "PAOS-FUNC-18"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "builder — dashboard ownership",
+      "work_locations": [
+        "apps/web/src/features/dashboard/Dashboard.tsx",
+        "apps/web/src/features/dashboard/model.ts",
+        "apps/web/src/ui/App.tsx",
+        "tests/web/ui-v3-dashboard.test.mts"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-METH-12-AC01",
+          "ru": "У migrated dashboard нет imports в legacy feature internals; selectors берутся из domain public API, services и F18 refresh behavior не меняются.",
+          "en": "The migrated dashboard has no imports into legacy feature internals; selectors use domain public APIs and services/F18 refresh behavior remain unchanged."
+        },
+        {
+          "id": "PAOS-METH-12-AC02",
+          "ru": "F05 partial coverage, F06 queue numbering и F07 recent-task ordering сохранены на current source; обе themes и state matrix METH-03 проходят.",
+          "en": "Preserve F05 partial coverage, F06 queue numbering and F07 recent-task ordering on current sources; pass both themes and the METH-03 state matrix."
+        },
+        {
+          "id": "PAOS-METH-12-AC03",
+          "ru": "Записаны before/after boundary edges, touched files, regression/visual results и rollback; отрицательный результат позволяет остановить rollout без переписывания остальных экранов.",
+          "en": "Record before/after boundary edges, touched files, regression/visual results and rollback; a negative outcome can stop rollout without rewriting other screens."
+        }
+      ],
+      "verification_profile": "V-WEB",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-METH-13",
+      "title": "Перевести tasks и workflows отдельными совместимыми срезами",
+      "title_en": "Migrate tasks and workflows in separate compatible slices",
+      "status": "planned",
+      "priority": "P2",
+      "methodologies": [
+        "FSD",
+        "Design-DD",
+        "TDD"
+      ],
+      "delivery_group_id": "pilot",
+      "depends_on": [
+        "PAOS-METH-12"
+      ],
+      "blocks": [
+        "PAOS-METH-14",
+        "PAOS-METH-17"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-03",
+        "PAOS-FUNC-04",
+        "PAOS-FUNC-21"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "builder — tasks, затем builder — workflows; sequential",
+      "work_locations": [
+        "apps/web/src/features/tasks/TaskManager.tsx",
+        "apps/web/src/features/tasks/Editor.tsx",
+        "apps/web/src/features/workflows/WorkflowManager.tsx",
+        "apps/web/src/features/workflows/recipes/",
+        "apps/web/src/ui/App.tsx"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-METH-13-AC01",
+          "ru": "Сначала tasks checkpoint, затем workflows checkpoint; каждый имеет собственные source hashes, affected tests, visual evidence и обратимые hunks.",
+          "en": "Complete a tasks checkpoint before a workflows checkpoint, each with source hashes, affected tests, visual evidence and reversible hunks."
+        },
+        {
+          "id": "PAOS-METH-13-AC02",
+          "ru": "Сохранены F03 new-task reset, F04 workflow drafts/CAS, dialog focus/8 tabs, preview/confirmation и queue controls; full F21 recovery не объявляется закрытой.",
+          "en": "Preserve F03 new-task reset, F04 workflow drafts/CAS, dialog focus/eight tabs, preview/confirmation and queue controls; do not claim full F21 recovery closure."
+        },
+        {
+          "id": "PAOS-METH-13-AC03",
+          "ru": "Migrated consumers не зависят от соседних screen internals; перенесённые edges удалены из baseline exceptions, новые interaction features создаются только при реальной ответственности.",
+          "en": "Migrated consumers do not depend on sibling-screen internals; remove migrated edges from baseline exceptions and add interaction features only for real responsibilities."
+        }
+      ],
+      "verification_profile": "V-WEB",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-METH-14",
+      "title": "Расширить FSD на team и skills после go-решения",
+      "title_en": "Extend FSD to team and skills after a go decision",
+      "status": "planned",
+      "priority": "P3",
+      "methodologies": [
+        "FSD",
+        "ADD"
+      ],
+      "delivery_group_id": "optional-scale",
+      "depends_on": [
+        "PAOS-METH-13",
+        "PAOS-METH-18"
+      ],
+      "blocks": [
+        "PAOS-METH-15"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-11",
+        "PAOS-FUNC-12",
+        "PAOS-FUNC-16"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "builder — team/skills ownership",
+      "work_locations": [
+        "apps/web/src/features/team/TeamManager.tsx",
+        "apps/web/src/features/skills/SkillGenerator.tsx"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-METH-14-AC01",
+          "ru": "Начало только после METH-18 go для этой области; team и skills имеют отдельные checkpoints и owners.",
+          "en": "Start only after a METH-18 go decision for this area; team and skills have separate checkpoints and owners."
+        },
+        {
+          "id": "PAOS-METH-14-AC02",
+          "ru": "Catalog/profile/edit/history/generation preview и unavailable usage сохранены; F11/F12/F16 остаются своими задачами, provider search не вызывается.",
+          "en": "Preserve catalog/profile/edit/history/generation preview and unavailable usage; F11/F12/F16 retain ownership and no provider search is invoked."
+        },
+        {
+          "id": "PAOS-METH-14-AC03",
+          "ru": "Public APIs/boundary tests и scoped UI checks проходят; отчёт показывает удалённые legacy edges и оставшиеся exceptions.",
+          "en": "Pass public API/boundary tests and scoped UI checks; report removed legacy edges and remaining exceptions."
+        }
+      ],
+      "verification_profile": "V-WEB",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-METH-15",
+      "title": "Перенести оставшиеся выбранные экраны и завершить composition boundary",
+      "title_en": "Migrate selected remaining screens and finish the composition boundary",
+      "status": "planned",
+      "priority": "P3",
+      "methodologies": [
+        "FSD",
+        "Design-DD"
+      ],
+      "delivery_group_id": "optional-scale",
+      "depends_on": [
+        "PAOS-METH-14"
+      ],
+      "blocks": [],
+      "external_refs": [
+        "PAOS-FUNC-02",
+        "PAOS-FUNC-14",
+        "PAOS-FUNC-26",
+        "PAOS-FUNC-33",
+        "PAOS-FUNC-34"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "builder — один screen owner за раз",
+      "work_locations": [
+        "apps/web/src/features/sessions/SessionsCatalog.tsx",
+        "apps/web/src/features/artifacts/ArtifactExplorer.tsx",
+        "apps/web/src/features/graph/GraphExplorer.tsx",
+        "apps/web/src/ui/App.tsx",
+        "apps/web/src/ui/Operations.tsx"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-METH-15-AC01",
+          "ru": "sessions → artifacts → graph выполняются по одному; новый Files/Database/usages функционал не включается, ownership conflicts с FUNC разрешаются до edits.",
+          "en": "Migrate sessions → artifacts → graph one at a time; exclude new Files/Database/usages features and resolve FUNC ownership conflicts before edits."
+        },
+        {
+          "id": "PAOS-METH-15-AC02",
+          "ru": "App содержит composition/global providers/session selection, feature-local state вынесен только по подтверждённой необходимости; behavior и route IDs сохранены.",
+          "en": "Keep composition/global providers/session selection in App; move feature-local state only when justified and preserve behavior/route IDs."
+        },
+        {
+          "id": "PAOS-METH-15-AC03",
+          "ru": "В выбранном migrated scope нет неразрешённых legacy/deep/upward imports; compatibility adapters удаляются лишь после consumer inventory и regression checks.",
+          "en": "Allow no unauthorized legacy/deep/upward imports in the selected migrated scope; remove compatibility adapters only after consumer inventory and regression checks."
+        }
+      ],
+      "verification_profile": "V-WEB",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-METH-16",
+      "title": "Уточнить условную поддержку методологий в Python plugin",
+      "title_en": "Refine conditional methodology support in the Python plugin",
+      "status": "planned",
+      "priority": "P3",
+      "methodologies": [
+        "Spec-DD",
+        "FSD",
+        "TDD",
+        "ADD"
+      ],
+      "delivery_group_id": "optional-scale",
+      "depends_on": [
+        "PAOS-METH-05",
+        "PAOS-METH-18"
+      ],
+      "blocks": [],
+      "external_refs": [],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "plugin-runtime-builder + tester",
+      "work_locations": [
+        "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+        "plugins/product-agent-os/assets/methodology/methodology-catalog.json",
+        "tests/product_agent_os/test_methodology_audit.py",
+        "docs/methodologies/frontend.md"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-METH-16-AC01",
+          "ru": "Baseline/candidate cases: small frontend, growing coupled frontend, backend-only, native-only, misleading features folders, missing source и already-bounded frontend.",
+          "en": "Compare baseline/candidate cases for small frontends, growing coupled frontends, backend-only, native-only, misleading features folders, missing source and already-bounded frontends."
+        },
+        {
+          "id": "PAOS-METH-16-AC02",
+          "ru": "RED/GREEN нового detection/routing behavior; рекомендации различают not_applicable/applicable_missing/present_unverified; отсутствие сведений не становится доказательством нарушения.",
+          "en": "Use RED/GREEN for new detection/routing behavior; distinguish not_applicable/applicable_missing/present_unverified and never treat missing evidence as proof of a violation."
+        },
+        {
+          "id": "PAOS-METH-16-AC03",
+          "ru": "Proposal не мутирует target, не активирует hooks/agents и не выдаёт folder detection за import/runtime proof; docs RU/EN и catalog/evals согласованы.",
+          "en": "The proposal does not mutate targets or activate hooks/agents, and folder detection is not import/runtime proof; align RU/EN docs and catalog/evals."
+        }
+      ],
+      "verification_profile": "V-PLUGIN",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-METH-17",
+      "title": "Принять интегрированный пилот и проверить сохранность контрактов",
+      "title_en": "Accept the integrated pilot and verify contract preservation",
+      "status": "planned",
+      "priority": "P1",
+      "methodologies": [
+        "Spec-DD",
+        "Design-DD",
+        "TDD",
+        "ADD",
+        "FSD"
+      ],
+      "delivery_group_id": "pilot-acceptance",
+      "depends_on": [
+        "PAOS-METH-07",
+        "PAOS-METH-13"
+      ],
+      "blocks": [
+        "PAOS-METH-18"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-19",
+        "PAOS-FUNC-21",
+        "PAOS-FUNC-22",
+        "PAOS-FUNC-23",
+        "UI-12"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "tester + reviewer",
+      "work_locations": [
+        "tests/web/",
+        "docs/testing/index.md",
+        "docs/frontend/",
+        "docs/planning/methodology-improvement-2026-11-15.md"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-METH-17-AC01",
+          "ru": "Каждый pilot AC имеет current check/receipt либо явный unresolved gap; все обязательные checks affected contracts проходят, findings имеют disposition.",
+          "en": "Every pilot AC has a current check/receipt or explicit unresolved gap; pass all required affected-contract checks and give findings a disposition."
+        },
+        {
+          "id": "PAOS-METH-17-AC02",
+          "ru": "Проверены scope/session selection, drafts, partial data, navigation/focus и contracts independence; runtime recovery/backup evidence переиспользуется только при неизменном релевантном состоянии.",
+          "en": "Check scope/session selection, drafts, partial data, navigation/focus and contract independence; reuse recovery/backup evidence only while relevant state is unchanged."
+        },
+        {
+          "id": "PAOS-METH-17-AC03",
+          "ru": "Review и техническая приёмка ограничены пилотом; UI-12/F23 human acceptance и F19 full product E2E сохраняют своих owners; P3 задачи не блокируют bounded pilot closure.",
+          "en": "Limit review and technical acceptance to the pilot; UI-12/F23 human acceptance and F19 full-product E2E retain owners, and P3 tasks do not block bounded pilot closure."
+        }
+      ],
+      "verification_profile": "V-INTEGRATED",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-METH-18",
+      "title": "Принять решение о дальнейшем rollout и обновить владельцев документации",
+      "title_en": "Decide on further rollout and update documentation owners",
+      "status": "planned",
+      "priority": "P2",
+      "methodologies": [
+        "ADD",
+        "FSD",
+        "Spec-DD"
+      ],
+      "delivery_group_id": "rollout-decision",
+      "depends_on": [
+        "PAOS-METH-17"
+      ],
+      "blocks": [
+        "PAOS-METH-14",
+        "PAOS-METH-16"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-25"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "product-manager + architect; owner decision",
+      "work_locations": [
+        "docs/architecture/decisions/",
+        "docs/frontend/",
+        "docs/testing/",
+        "docs/sources/registry.md",
+        "PLAN.md",
+        "RUNLOG.md"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-METH-18-AC01",
+          "ru": "Сравнены baseline/pilot по unauthorized edges, regression findings, change/review effort и доступным outcome metrics; размер тестового набора не используется как benefit metric.",
+          "en": "Compare baseline/pilot unauthorized edges, regression findings, change/review effort and available outcome metrics; test counts are not benefit metrics."
+        },
+        {
+          "id": "PAOS-METH-18-AC02",
+          "ru": "Для METH-14/15/16 записаны отдельные решения, scope, owner и rollback; hold/stop сохраняет рабочий пилот и не создаёт бессрочного migration mandate.",
+          "en": "Record separate decisions, scope, owners and rollback for METH-14/15/16; hold/stop retains the working pilot without an indefinite migration mandate."
+        },
+        {
+          "id": "PAOS-METH-18-AC03",
+          "ru": "Обновлены только изменившиеся docs/registry/control-plane owners; active rules изменяются только отдельным разрешённым slice, existing FUNC/Web статусы и release gates сохранены.",
+          "en": "Update only affected docs/registry/control-plane owners; change active rules only in a separately authorized slice and preserve existing FUNC/Web status and release gates."
+        }
+      ],
+      "verification_profile": "V-PLAN",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    }
+  ]
+}

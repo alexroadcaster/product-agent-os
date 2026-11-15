@@ -5,7 +5,7 @@
   "timezone": "Europe/Moscow",
   "source_plan": "docs/planning/functional-remediation-2026-11-15.md",
   "status": "in_progress",
-  "execution_authority": "owner_authorized_func_g01_local_synthetic",
+  "execution_authority": "owner_authorized_func_g01_and_func_g02_local_synthetic",
   "original_group_unchanged": "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json",
   "tasks": [
     {
@@ -1685,10 +1685,10 @@
     {
       "id": "PAOS-FUNC-30",
       "title": "Проверить dependency-cruiser для графа зависимостей JS/TS",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "type": "poc",
-      "evidence_level": "upstream_documentation_review_not_locally_verified",
+      "evidence_level": "poc_research_locally_verified",
       "technical_value": "Проверить reuse анализатора импортов вместо расширения собственного lexical parser; согласовать adapter JSON и семантику ребра.",
       "product_value": "Пользователь и агент видят проверяемые зависимости файла, циклы и путь к месту изменения.",
       "acceptance_criteria": [
@@ -1716,8 +1716,8 @@
       "estimate": "12–20 ч PoC; build отдельно в F14",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "poc_only",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "15-11-2026 19:24",
+      "execution_authority": "owner_authorized_isolated_synthetic_poc",
       "source_observation": "GitHub research 15.11.2026: upstream README/license review; integration, performance and compatibility not verified locally.",
       "source_paths": [
         "https://github.com/sverweij/dependency-cruiser"
@@ -1726,15 +1726,36 @@
       "ui_ux_scope": "До build подготовлены и согласованы wireframes и карта навигации в существующем V3 design: проект → «Файлы», «Карта», «База данных»; названия уточняются на design review. Для затронутого экрана определены loading/empty/partial/error/unavailable/stale, progress/cancel/retry по capabilities, RU/EN, обе темы, keyboard/focus, читаемые подписи и доступная таблица вместо обязательного чтения диаграммы. Смена проекта, возврат назад, фильтр и выбранный объект не смешивают данные; видны source/revision/coverage. PoC использует изолированный прототип, production UI принимается в F14/F33/F34.",
       "decision_gate": "Результат — adopt / bounded_adopt / reject с receipts, закреплёнными version/commit/license, поддерживаемыми платформами и сравнением с baseline. Обоснованный reject закрывает PoC как исследование, но не реализует функцию; downstream design выбирает альтернативу или фиксирует blocker, без молчаливого fallback. Установка/запуск не разрешены текущим planning-only запросом.",
       "verification_protocol": "До запуска закрепить executable commands и versions в Completion Report; synthetic fixtures, baseline comparison, target preservation and isolated UI checks. Ни одна команда не выполнена текущей планировкой.",
-      "delivery_group_id": "FUNC-G02"
+      "delivery_group_id": "FUNC-G02",
+      "completion_report": {
+        "decision": "bounded_adopt_import_only",
+        "what_was_done": "dependency-cruiser18.6.0: 10/10 imports vs lexical7/10; change tasks3/3 vs2/3; 17 engine scenarios +4 model tests. Import-only adapter and V3 prototype checked; production F14 planned.",
+        "verification_evidence": [
+          "tests/web/poc/func-g02/",
+          ".tmp/func-g02/f30/result.json",
+          ".tmp/func-g02/prototype-build.json",
+          ".tmp/func-g02/prototype-browser/result.json"
+        ],
+        "browser_checks_passed": 22,
+        "human_acceptance": false,
+        "production_integration": false,
+        "documentation": [
+          "docs/code-intelligence/adapters.md",
+          "docs/code-intelligence/queries-impact.md",
+          "docs/db/erd.md",
+          "design/2026-11-15-func-g02/prototype/README.md"
+        ],
+        "follow_up": "F14 import-only + existing bounded lexical; semantic/call-path gap",
+        "ac_disposition": "bounded import-only PoC checks and isolated UI acceptance passed"
+      }
     },
     {
       "id": "PAOS-FUNC-31",
       "title": "Проверить codebase-memory-mcp как движок индексации для агентов",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "type": "poc",
-      "evidence_level": "upstream_documentation_review_not_locally_verified",
+      "evidence_level": "poc_research_locally_verified",
       "technical_value": "Оценить SQLite-backed индекс, многоязычные связи, запросы и управляемость отдельного native процесса через версионированный adapter.",
       "product_value": "Агент получает небольшой релевантный контекст и объяснимый путь к изменению, а пользователь видит основания поиска.",
       "acceptance_criteria": [
@@ -1763,8 +1784,8 @@
       "estimate": "20–36 ч PoC; integration отдельно в F14",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "poc_only",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "15-11-2026 19:24",
+      "execution_authority": "owner_authorized_isolated_synthetic_poc",
       "source_observation": "GitHub research 15.11.2026: upstream README/license review; integration, performance and compatibility not verified locally.",
       "source_paths": [
         "https://github.com/DeusData/codebase-memory-mcp"
@@ -1773,15 +1794,36 @@
       "ui_ux_scope": "До build подготовлены и согласованы wireframes и карта навигации в существующем V3 design: проект → «Файлы», «Карта», «База данных»; названия уточняются на design review. Для затронутого экрана определены loading/empty/partial/error/unavailable/stale, progress/cancel/retry по capabilities, RU/EN, обе темы, keyboard/focus, читаемые подписи и доступная таблица вместо обязательного чтения диаграммы. Смена проекта, возврат назад, фильтр и выбранный объект не смешивают данные; видны source/revision/coverage. PoC использует изолированный прототип, production UI принимается в F14/F33/F34.",
       "decision_gate": "Результат — adopt / bounded_adopt / reject с receipts, закреплёнными version/commit/license, поддерживаемыми платформами и сравнением с baseline. Обоснованный reject закрывает PoC как исследование, но не реализует функцию; downstream design выбирает альтернативу или фиксирует blocker, без молчаливого fallback. Установка/запуск не разрешены текущим planning-only запросом.",
       "verification_protocol": "До запуска закрепить executable commands и versions в Completion Report; synthetic fixtures, baseline comparison, target preservation and isolated UI checks. Ни одна команда не выполнена текущей планировкой.",
-      "delivery_group_id": "FUNC-G02"
+      "delivery_group_id": "FUNC-G02",
+      "completion_report": {
+        "decision": "reject_current_windows_workspace_profile",
+        "what_was_done": "codebase-memory-mcp0.12.1 rejected before index admission; 12 integrity/admission/preservation checks +3 unit tests. Downstream cases not_executed_after_failed_admission with null metrics; unavailable UI and separate unmeasured call-contract fixture checked.",
+        "verification_evidence": [
+          "tests/web/poc/func-g02/",
+          ".tmp/func-g02/f31/result.json",
+          ".tmp/func-g02/prototype-build.json",
+          ".tmp/func-g02/prototype-browser/result.json"
+        ],
+        "browser_checks_passed": 22,
+        "human_acceptance": false,
+        "production_integration": false,
+        "documentation": [
+          "docs/code-intelligence/adapters.md",
+          "docs/code-intelligence/queries-impact.md",
+          "docs/db/erd.md",
+          "design/2026-11-15-func-g02/prototype/README.md"
+        ],
+        "follow_up": "F14 import-only + existing bounded lexical; semantic/call-path gap",
+        "ac_disposition": "conditional_reject_closes_research; rejected downstream capabilities are not implemented"
+      }
     },
     {
       "id": "PAOS-FUNC-32",
       "title": "Проверить tbls для извлечения схемы БД и Mermaid ERD",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "type": "poc",
-      "evidence_level": "upstream_documentation_review_not_locally_verified",
+      "evidence_level": "poc_research_locally_verified",
       "technical_value": "Оценить внешний schema adapter JSON/Mermaid против встроенной SQLite introspection и закрепить контракт schema snapshot.",
       "product_value": "Получить достоверную карту таблиц без ручного рисования и без чтения пользовательских строк.",
       "acceptance_criteria": [
@@ -1809,8 +1851,8 @@
       "estimate": "12–20 ч PoC; integration отдельно в F33",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "poc_only",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "15-11-2026 19:24",
+      "execution_authority": "owner_authorized_isolated_synthetic_poc",
       "source_observation": "GitHub research 15.11.2026: upstream README/license review; integration, performance and compatibility not verified locally.",
       "source_paths": [
         "https://github.com/k1LoW/tbls",
@@ -1820,7 +1862,28 @@
       "ui_ux_scope": "До build подготовлены и согласованы wireframes и карта навигации в существующем V3 design: проект → «Файлы», «Карта», «База данных»; названия уточняются на design review. Для затронутого экрана определены loading/empty/partial/error/unavailable/stale, progress/cancel/retry по capabilities, RU/EN, обе темы, keyboard/focus, читаемые подписи и доступная таблица вместо обязательного чтения диаграммы. Смена проекта, возврат назад, фильтр и выбранный объект не смешивают данные; видны source/revision/coverage. PoC использует изолированный прототип, production UI принимается в F14/F33/F34.",
       "decision_gate": "Результат — adopt / bounded_adopt / reject с receipts, закреплёнными version/commit/license, поддерживаемыми платформами и сравнением с baseline. Обоснованный reject закрывает PoC как исследование, но не реализует функцию; downstream design выбирает альтернативу или фиксирует blocker, без молчаливого fallback. Установка/запуск не разрешены текущим planning-only запросом.",
       "verification_protocol": "До запуска закрепить executable commands и versions в Completion Report; synthetic fixtures, baseline comparison, target preservation and isolated UI checks. Ни одна команда не выполнена текущей планировкой.",
-      "delivery_group_id": "FUNC-G02"
+      "delivery_group_id": "FUNC-G02",
+      "completion_report": {
+        "decision": "reject_authoritative_sqlite_metadata",
+        "what_was_done": "tbls1.96.1: 26 observations =23 positive +3 candidate failures (generated omission, valid identifier failure, missing DB creation). Explicit node:sqlite read-only metadata alternative, effective nullable fixed;6 unit tests; schema UI/export checked.",
+        "verification_evidence": [
+          "tests/web/poc/func-g02/",
+          ".tmp/func-g02/f32/result.json",
+          ".tmp/func-g02/prototype-build.json",
+          ".tmp/func-g02/prototype-browser/result.json"
+        ],
+        "browser_checks_passed": 22,
+        "human_acceptance": false,
+        "production_integration": false,
+        "documentation": [
+          "docs/code-intelligence/adapters.md",
+          "docs/code-intelligence/queries-impact.md",
+          "docs/db/erd.md",
+          "design/2026-11-15-func-g02/prototype/README.md"
+        ],
+        "follow_up": "F33 explicit Node metadata adapter proposal; production integration planned",
+        "ac_disposition": "conditional_reject_closes_research; rejected downstream capabilities are not implemented"
+      }
     },
     {
       "id": "PAOS-FUNC-33",
@@ -1987,7 +2050,7 @@
     }
   ],
   "verification": {
-    "status": "func_g01_locally_verified_remaining_planned",
+    "status": "func_g01_locally_verified_func_g02_poc_research_verified_remaining_planned",
     "application_checks_run": true,
     "initial": {
       "matrix_exit": 0,
@@ -2000,66 +2063,59 @@
       "remediation": "relocate source-owned matrix to research, preserve site inventory"
     },
     "latest": {
-      "task": "FUNC-G01",
-      "status": "implemented_locally_verified",
-      "implemented_task_count": 7,
-      "remaining_planned_task_count": 27,
+      "task": "FUNC-G02",
+      "status": "poc_research_locally_verified",
+      "implemented_task_count": 10,
+      "remaining_planned_task_count": 24,
       "linked_existing_count": 3,
-      "typecheck_exit": 0,
-      "build_exit": 0,
-      "build_after_dashboard_css": true,
-      "web_original": {
-        "receipt": ".tmp/func-g01/web-final.log",
-        "tests": 507,
-        "passed": 492,
-        "failed_fixture_setup": 11,
-        "skipped_fixture_setup": 4,
-        "reason": "sandbox EPERM creating hardlink/junction fixtures",
-        "exit": 1
+      "unit_command": "node --test tests/web/poc/func-g02/f30-model.test.mts tests/web/poc/func-g02/codebase-memory.test.mts tests/web/poc/func-g02/tbls-poc.test.mts tests/web/poc/func-g02/prototype-model.test.mts tests/web/poc/func-g02/prototype-preview.test.mts",
+      "unit_passed": 22,
+      "unit_failed": 0,
+      "unit_skipped": 0,
+      "engine_decisions": {
+        "PAOS-FUNC-30": "bounded_adopt_import_only",
+        "PAOS-FUNC-31": "reject_current_windows_workspace_profile",
+        "PAOS-FUNC-32": "reject_authoritative_sqlite_metadata"
       },
-      "web_environment_retest": {
-        "receipt": ".tmp/func-g01/web-boundary-retest.log",
-        "tests": 15,
-        "passed": 15,
-        "failed": 0,
-        "skipped": 0,
-        "executor": "authorized_escalation",
-        "exit": 0
-      },
-      "web_unique_passed": 507,
-      "web_full_run_after_css": false,
-      "browser_drafts": {
-        "receipt": ".tmp/func-g01-drafts/evidence-C6lIVM/result.json",
-        "passed": 54,
-        "provenance": "F08 combined build before dashboard-only CSS; editor/workflow source hashes unchanged"
-      },
-      "browser_dashboard": {
-        "receipt": ".tmp/func-g01-dashboard/evidence-MIaKso/result.json",
-        "passed": 30,
-        "provenance": "final CSS/build; all source/asset hashes current"
-      },
-      "native_candidate_receipt": ".tmp/func-g01-runtime/native-candidate-final-escalated.log",
-      "native_production_receipt": ".tmp/func-g01-runtime/native-default-final-escalated.log",
-      "runtime_focused_passed": 12,
+      "engine_receipts": [
+        ".tmp/func-g02/f30/result.json",
+        ".tmp/func-g02/f31/result.json",
+        ".tmp/func-g02/f32/result.json"
+      ],
+      "prototype_typecheck_exit": 0,
+      "prototype_build_exit": 0,
+      "browser_passed": 22,
+      "prototype_build_receipt": ".tmp/func-g02/prototype-build.json",
+      "prototype_browser_receipt": ".tmp/func-g02/prototype-browser/result.json",
       "review_mode": "separate_reused_context",
-      "reviewer": "/root/func_g01_review",
+      "reviewer": "/root/func_g02_review",
       "review_cycles": 2,
-      "tester_verdict": "closed_allowed",
-      "matrix_ru_exit": 0,
-      "matrix_en_exit": 0,
-      "state_consistency_exit": 0,
-      "source_docs_exit": 0,
-      "source_markdown_count": 20,
-      "source_docs_unittest_passed": 3,
-      "diff_exit": 0,
-      "status_and_ac_parity": true,
-      "unrelated_27_cards_and_records_preserved": true,
-      "dependencies_estimates_groups_m5_preserved": true,
-      "control_plane_sync": "updated_REQUIREMENTS_PLAN_TEST_RUNLOG; no_change_needed_EVALS_prod_test",
-      "site_build_performed": false,
+      "reviewer_last_verdict": "partial_only_with_two_bounded_UI_repairs",
+      "root_delta_verdict": "closed_allowed",
+      "resolved_findings": [
+        "effective SQLite nullability",
+        "project-bound direct URL source/export",
+        "filtered ER Mermaid/export parity"
+      ],
+      "human_acceptance": false,
+      "production_integration": false,
       "provider_calls": false,
       "real_credentials": false,
-      "human_acceptance": false
+      "site_build_performed": false,
+      "full_product_suites_repeated": false,
+      "control_plane_sync": "updated_REQUIREMENTS_PLAN_TEST_RUNLOG; no_change_needed_EVALS_prod_test",
+      "static_closure_checks": "passed",
+      "matrix_ru_exit": 0,
+      "matrix_en_exit": 0,
+      "source_docs_exit": 0,
+      "source_markdown_count": 19,
+      "state_consistency_exit": 0,
+      "diff_exit": 0,
+      "unrelated_31_cards_and_records_preserved": true,
+      "all_original_ac_dependencies_estimates_groups_m5_preserved": true,
+      "production_sources_unchanged": true,
+      "build_snapshot_harness_binding": true,
+      "consistency_receipt": ".tmp/func-g02/closure-consistency.json"
     },
     "previous_planning": {
       "matrix_exit": 0,
@@ -2159,11 +2215,73 @@
       "application_checks_run": false,
       "pocs_run": false,
       "site_build_performed": false
+    },
+    "previous_func_g01": {
+      "task": "FUNC-G01",
+      "status": "implemented_locally_verified",
+      "implemented_task_count": 7,
+      "remaining_planned_task_count": 27,
+      "linked_existing_count": 3,
+      "typecheck_exit": 0,
+      "build_exit": 0,
+      "build_after_dashboard_css": true,
+      "web_original": {
+        "receipt": ".tmp/func-g01/web-final.log",
+        "tests": 507,
+        "passed": 492,
+        "failed_fixture_setup": 11,
+        "skipped_fixture_setup": 4,
+        "reason": "sandbox EPERM creating hardlink/junction fixtures",
+        "exit": 1
+      },
+      "web_environment_retest": {
+        "receipt": ".tmp/func-g01/web-boundary-retest.log",
+        "tests": 15,
+        "passed": 15,
+        "failed": 0,
+        "skipped": 0,
+        "executor": "authorized_escalation",
+        "exit": 0
+      },
+      "web_unique_passed": 507,
+      "web_full_run_after_css": false,
+      "browser_drafts": {
+        "receipt": ".tmp/func-g01-drafts/evidence-C6lIVM/result.json",
+        "passed": 54,
+        "provenance": "F08 combined build before dashboard-only CSS; editor/workflow source hashes unchanged"
+      },
+      "browser_dashboard": {
+        "receipt": ".tmp/func-g01-dashboard/evidence-MIaKso/result.json",
+        "passed": 30,
+        "provenance": "final CSS/build; all source/asset hashes current"
+      },
+      "native_candidate_receipt": ".tmp/func-g01-runtime/native-candidate-final-escalated.log",
+      "native_production_receipt": ".tmp/func-g01-runtime/native-default-final-escalated.log",
+      "runtime_focused_passed": 12,
+      "review_mode": "separate_reused_context",
+      "reviewer": "/root/func_g01_review",
+      "review_cycles": 2,
+      "tester_verdict": "closed_allowed",
+      "matrix_ru_exit": 0,
+      "matrix_en_exit": 0,
+      "state_consistency_exit": 0,
+      "source_docs_exit": 0,
+      "source_markdown_count": 20,
+      "source_docs_unittest_passed": 3,
+      "diff_exit": 0,
+      "status_and_ac_parity": true,
+      "unrelated_27_cards_and_records_preserved": true,
+      "dependencies_estimates_groups_m5_preserved": true,
+      "control_plane_sync": "updated_REQUIREMENTS_PLAN_TEST_RUNLOG; no_change_needed_EVALS_prod_test",
+      "site_build_performed": false,
+      "provider_calls": false,
+      "real_credentials": false,
+      "human_acceptance": false
     }
   },
-  "updated_at": "2026-11-15T18:38:38+03:00",
+  "updated_at": "2026-11-15T19:24:41+03:00",
   "planning_revision": 4,
-  "change_scope": "func_g01_implementation_local_synthetic",
+  "change_scope": "func_g02_isolated_poc_research_closed",
   "research_sources": [
     {
       "task": "PAOS-FUNC-30",
@@ -2171,7 +2289,7 @@
         "https://github.com/sverweij/dependency-cruiser"
       ],
       "reviewed_at": "2026-11-15",
-      "evidence": "upstream documentation; no local installation or execution"
+      "evidence": "Context7 documentation + tag-pinned official source + actual isolated native/CLI receipts; see FUNC-G02 results; production integration not implemented"
     },
     {
       "task": "PAOS-FUNC-31",
@@ -2179,7 +2297,7 @@
         "https://github.com/DeusData/codebase-memory-mcp"
       ],
       "reviewed_at": "2026-11-15",
-      "evidence": "upstream documentation; no local installation or execution"
+      "evidence": "Context7 documentation + tag-pinned official source + actual isolated native/CLI receipts; see FUNC-G02 results; production integration not implemented"
     },
     {
       "task": "PAOS-FUNC-32",
@@ -2188,7 +2306,7 @@
         "https://www.sqlite.org/pragma.html"
       ],
       "reviewed_at": "2026-11-15",
-      "evidence": "upstream documentation; no local installation or execution"
+      "evidence": "Context7 documentation + tag-pinned official source + actual isolated native/CLI receipts; see FUNC-G02 results; production integration not implemented"
     }
   ],
   "ui_ux_contract": "До build подготовлены и согласованы wireframes и карта навигации в существующем V3 design: проект → «Файлы», «Карта», «База данных»; названия уточняются на design review. Для затронутого экрана определены loading/empty/partial/error/unavailable/stale, progress/cancel/retry по capabilities, RU/EN, обе темы, keyboard/focus, читаемые подписи и доступная таблица вместо обязательного чтения диаграммы. Смена проекта, возврат назад, фильтр и выбранный объект не смешивают данные; видны source/revision/coverage. PoC использует изолированный прототип, production UI принимается в F14/F33/F34.",
@@ -2747,5 +2865,5 @@
     "FUNC-G05",
     "FUNC-G07"
   ],
-  "implementation_revision": 1
+  "implementation_revision": 2
 }

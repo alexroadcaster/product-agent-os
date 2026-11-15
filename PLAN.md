@@ -1,5 +1,13 @@
 # PLAN.md
 
+## FUNC-G02 — закрыта как исследование, 15.11.2026
+
+F30/F31/F32 implemented / poc_research_locally_verified,3/3; [решения и evidence](docs/planning/functional-remediation-2026-11-15.md#func-g02-results). F30 bounded_adopt import-only; F31 reject текущего Windows profile после admission refusal; F32 reject authoritative metadata, explicit Node read-only alternative. V3 prototype/typecheck/build, browser22/22 и combined unit22/22 прошли. Два UI P2 финального review исправлены, root delta verified; rejected capabilities не считаются реализованными. Текущий общий итог10 implemented /24 planned; остальные31 task records и3 M5 references сохранены. Следующие возможные slices — F28/F20/G03 по собственным dependencies; production F14/F33/F34 остаётся planned. Rollback: только own PoC/docs hunks, сохранить чужие METH и закрытый G01; production tuple не менялся.
+
+## Методологические улучшения — план готов, исполнение не начато, 15.11.2026
+
+[18 задач METH](docs/planning/methodology-improvement-2026-11-15.md), [machine state](docs/planning/methodology-improvement-2026-11-15.json): 8 P1 / 7 P2 / 3 P3, все planned. Старт только по отдельному запросу: METH-01 → ветки 02/08; design 03/04, TDD05 и ADD06; FSD09–11 → dashboard12 → tasks/workflows13; outcome07 + integrated17 → decision18. Optional14–16 после go; они не блокируют bounded pilot acceptance. Existing FUNC/Web/V3 не перепланированы и не переоткрыты. TEST/EVALS routes прежние; откат будущей миграции только собственными checkpoint hunks и compatibility bridges.
+
 ## FUNC-G01 — закрыта, 15.11.2026
 
 [Семь задач и evidence](docs/planning/functional-remediation-2026-11-15.md#func-g01-results): F01/F03/F04/F05/F06/F07/F08 implemented / locally_verified; group closed выводится из member tasks и собственных AC. [JSON](docs/planning/functional-remediation-2026-11-15.json):7 implemented /27 planned; исходные priorities/estimates/dependencies/order/groups и3 M5 references сохранены. F08 выполнена после native F01 и architecture review; final tuple переквалифицирован. Другая группа не запущена. Rollback — только own source/docs hunks; после изменения pinned sources требуется новая native qualification. Git history не менялась; новый slice определяется отдельным запросом.
@@ -10,7 +18,7 @@
 
 ## Функциональный backlog после V3 — 15.11.2026
 
-[Матрица PAOS-FUNC-01–34](docs/planning/functional-remediation-2026-11-15.md): 7 implemented / 27 planned + 3 M5 references; [JSON](docs/planning/functional-remediation-2026-11-15.json) — владелец статусов и семи delivery groups. G01 стабильность/contracts; G02 PoC; G03 Files/scan/discovery; G04 performance/code/DB; G05 agents/documents/autonomy; G06 recovery/distribution; G07 UI coherence/E2E/human/docs. Старт по dependencies отдельных задач, не по завершению всей предыдущей группы: F28 и PoC независимы, F33 не ждёт F14, F25 идёт постоянно. F20 → F09 сохранено. Полное G07 closure требует G01–G06; M5 отдельно. Shared API/storage/navigation edits последовательны. FUNC-G01 выполнена; прочие группы planned, все исходные карточки/AC/оценки сохранены.
+[Матрица PAOS-FUNC-01–34](docs/planning/functional-remediation-2026-11-15.md): 10 implemented / 24 planned + 3 M5 references; [JSON](docs/planning/functional-remediation-2026-11-15.json) — владелец статусов и семи delivery groups. G01 стабильность/contracts; G02 PoC; G03 Files/scan/discovery; G04 performance/code/DB; G05 agents/documents/autonomy; G06 recovery/distribution; G07 UI coherence/E2E/human/docs. Старт по dependencies отдельных задач, не по завершению всей предыдущей группы: F28 и PoC независимы, F33 не ждёт F14, F25 идёт постоянно. F20 → F09 сохранено. Полное G07 closure требует G01–G06; M5 отдельно. Shared API/storage/navigation edits последовательны. FUNC-G01 выполнена; FUNC-G02 закрыта как исследование; прочие группы planned, все исходные карточки/AC/оценки сохранены.
 
 ## MD-отчёты и чтение — 15.11.2026
 

@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "paos_func_g02_protocol_v1",
+  "createdAt": "2026-11-15T18:48:00+03:00",
+  "executionScope": "isolated_synthetic_poc_only",
+  "versions": {"dependency-cruiser":"18.6.0","codebase-memory-mcp":"0.12.1","tbls":"1.96.1"},
+  "corpus": "tests/fixtures/func_g02/corpus.json",
+  "baseline": {"code":"current apps/local-service/src/code-index/parser-worker.mts and buildLexicalGraph","database":"Node26 SQLite metadata introspection"},
+  "policy": {"source":"read-only synthetic originals; sanitized allowlisted projection for external tools","ignoreTargetConfig":true,"ignoreSymlinksAndHardlinks":true,"modelsAndProviders":false,"realCredentials":false,"globalConfig":false,"networkDuringMeasurement":false,"inventoryContract":"draft-F28-poc-v1, explicit normalized paths/root identity/revision/exclusions; no production implementation"},
+  "budgets": {"smallIndexTimeoutMs":30000,"largeIndexTimeoutMs":60000,"queryTimeoutMs":5000,"maxOutputBytes":1048576,"maxPeakRssMiB":1024,"maxCacheMiB":1024,"browserInteractionMs":1500,"repeatCount":3,"largeCorpusFiles":200},
+  "decisionThresholds": {"adopt":"all scoped semantics and isolation/read-only gates pass within budgets","bounded_adopt":"safe subset supported; every unsupported semantic/platform explicitly excluded and alternative selected","reject":"isolation/read-only/accuracy/platform or mandatory lifecycle gate cannot be satisfied without weakening controls","minimumExpectedImportRecall":0.9,"minimumExpectedImportPrecision":1},
+  "adapterContract": {"schemaVersion":"paos_engine_poc_snapshot_v1","requiredMeta":["engine","version","sourceRevision","rootIdentity","policyVersion","coverage","capabilities","warnings"],"node":["id","kind","name","relativePath","line"],"edge":["id","from","to","type","relativePath","line","resolution"],"semantics":"import is never call; unresolved/inferred never promoted to observed; original schema JSON is not writable PAOS state"},
+  "wireframe": {"design":"existing V3 components/tokens; isolated prototype, no production nav wiring","desktop":"compact project/mode/coverage bar; object outline | graph/list/Mermaid | evidence inspector","mobile":"mode/search then useful list or focused graph; collapsible outline/inspector; source/revision/coverage visible","mapModes":["dependencies","symbols"],"databaseModes":["schema","objects"],"states":["loading","empty","partial","error","unavailable","stale"],"locales":["ru","en"],"themes":["light","dark"],"navigation":"Files -> Map -> Database -> source line -> Back; project changes clear incompatible selections","accessibility":"keyboard selection/search, readable labels, table alternative, explicit zoom/reset and focus restoration","persistentState":"prototype URL query only; no browser persistence or credentials"},
+  "evidence": "source-owned task Completion Reports and docs domain pages; raw synthetic measurements in .tmp/func-g02; no copied private prompts/logs"
+}

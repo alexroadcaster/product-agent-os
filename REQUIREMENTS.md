@@ -1,8 +1,16 @@
 # REQUIREMENTS.md
 
+## FUNC-G02 — выполненный scope, 15.11.2026
+
+F30/F31/F32 закрыты в разрешённом isolated synthetic PoC scope: общий pinned protocol/ground truth, draft F28 inventory/F20 budgets, measured decisions, versioned adapter proposals, V3 UI acceptance, review и per-task docs/status sync. Обоснованные reject F31/F32 закрывают исследования; пропущенные после admission refusal cases остаются unexecuted/null. Production F14/F33/F34, реальные БД/credentials/providers/models, global installation/config/ACL, Git/publication и human acceptance остаются вне выполненного scope. [Результаты](docs/planning/functional-remediation-2026-11-15.md#func-g02-results).
+
+## Методологии и постепенный FSD — планирование, 15.11.2026
+
+Текущий запрос разрешает только [план METH-01–18](docs/planning/methodology-improvement-2026-11-15.md), [JSON](docs/planning/methodology-improvement-2026-11-15.json), полный EN и planning/source pointers. Spec-DD, Design-DD, TDD и ADD дополняются поэтапным frontend FSD: boundaries → shared/entities → dashboard → tasks/workflows → evidence-based go/hold. Все 18 задач planned; implementation/runtime/browser/provider/install/active instructions/Git/publication не начаты и не разрешены этим планом. FUNC-G01 остаётся выполненной, другие FUNC/Web/V3 сохраняют scope/status/AC; приёмка пилота, human и release разделены.
+
 ## FUNC-G01 — выполненный scope, 15.11.2026
 
-Текущий запрос разрешил полное выполнение F01/F03/F04/F05/F06/F07/F08, необходимые локальные synthetic native/browser checks, обновление source-owned статусов и документации по каждой задаче. Все семь AC закрыты локальным техническим evidence; другие27 FUNC и3 M5 references сохранены. Scope: runtime qualification, task/workflow drafts, dashboard и независимые contracts. Provider/model/real credentials, production/publication/Git и human acceptance не входили. [Результаты и границы](docs/planning/functional-remediation-2026-11-15.md#func-g01-results).
+Предыдущий запрос разрешил полное выполнение F01/F03/F04/F05/F06/F07/F08, необходимые локальные synthetic native/browser checks, обновление source-owned статусов и документации по каждой задаче. Все семь AC закрыты локальным техническим evidence; другие27 FUNC и3 M5 references сохранены. Scope: runtime qualification, task/workflow drafts, dashboard и независимые contracts. Provider/model/real credentials, production/publication/Git и human acceptance не входили. [Результаты и границы](docs/planning/functional-remediation-2026-11-15.md#func-g01-results).
 
 ## Документация реализации — 15.11.2026
 
