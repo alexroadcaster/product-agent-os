@@ -22,7 +22,7 @@ Purpose: keep a managed research backlog for the next Product-Agent OS hardening
 | in_progress | Add missing sources to the registry. | New entries cover ATDD/BDD, DDD, metrics, ADR/MADR, Structurizr, diagram tools, code/API/DB docs, docs portals, lint and release policy. |
 | planned | Prepare a deep-dive card for each methodology. | Expected shape: source, short meaning, when to use, when not to use, plugin artifact, eval/gate and residual risk. |
 | done | Compare research with the implemented plugin. | The gap matrix is stored in [development-methodology-gap-matrix.md](development-methodology-gap-matrix.md). |
-| done | Detail Track 8 by methodology, standard and tool. | The execution backlog is stored in [product-agent-os-track-8-detailed-backlog.md](product-agent-os-track-8-detailed-backlog.md). |
+| done | Detail Track 8 by methodology, standard and tool. | The execution backlog is stored in [product-agent-os-track-8-detailed-backlog.md](../planning/product-agent-os-track-8-detailed-backlog.md). |
 | done | Extend Track 8 scenario workflows. | The backlog now includes bug rescue, greenfield idea, complex system acceleration, usage-mode classifier, integration catalog and scenario-specific readiness gates. |
 | done | Run final pre-development review. | Critical analysis, ten extra scenarios and final recommendations are stored in [product-agent-os-final-predevelopment-review.md](product-agent-os-final-predevelopment-review.md). |
 | done | Extend the backlog before implementation. | The backlog includes PR review, legacy onboarding, API migration, AI eval regression, native/mobile feature work, desktop local-first work, data migration, security-sensitive change, CI stabilization, release packaging, mode stack, fixture coverage and plugin success metrics. |
@@ -100,6 +100,6 @@ Use the same protocol for each methodology or tool:
 1. Deep-dive cards for DDD, ATDD/BDD, data-informed metrics and docs-as-code governance.
 2. Decision matrix for documentation stack selection.
 3. Gap matrix: [development-methodology-gap-matrix.md](development-methodology-gap-matrix.md).
-4. Track 8 detailed backlog: [product-agent-os-track-8-detailed-backlog.md](product-agent-os-track-8-detailed-backlog.md).
+4. Track 8 detailed backlog: [product-agent-os-track-8-detailed-backlog.md](../planning/product-agent-os-track-8-detailed-backlog.md).
 5. Final pre-development review: [product-agent-os-final-predevelopment-review.md](product-agent-os-final-predevelopment-review.md).
 6. Track 8 implementation: tests first, then templates/evals/discovery updates, scenario fixture eval, docs and full verification.

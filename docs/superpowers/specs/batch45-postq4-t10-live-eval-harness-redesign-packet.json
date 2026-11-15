@@ -11,9 +11,9 @@
     "docs/superpowers/specs/batch45-postq4-t05-live-model-rerun-results.json",
     "docs/superpowers/specs/batch45-postq4-t05b-rerun-approval-packet.json",
     "docs/superpowers/specs/batch45-postq4-t06-promotion-decision.json",
-    "docs/superpowers/specs/batch45-postq4-architecture-next-actions.json",
+    "docs/planning/batch45-postq4-architecture-next-actions.json",
     "docs/superpowers/specs/batch45-postq4-t11-treatment-v3-source-design.json",
-    "docs/superpowers/specs/batch45-post-q4-next-tasks.json"
+    "docs/planning/batch45-post-q4-next-tasks.json"
   ],
   "sidecar_agent_reviews": [
     {
@@ -267,7 +267,7 @@
     "RUNLOG.md": "handoff_required_due_runlog_budget",
     "docs/sources/registry.md": "update_source_route",
     "docs/sources/registry.en.md": "update_source_route",
-    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md": "update_track11_marker",
+    "docs/planning/2026-06-20-track-11-documentation-architecture-refresh.md": "update_track11_marker",
     ".codex/product-agent-os/lifecycle-state.json": "update_current_marker"
   },
   "no_unapproved_actions": {
@@ -291,7 +291,7 @@
         "status": "passed"
       },
       {
-        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-post-q4-next-tasks.json",
+        "command": "python -m json.tool docs\\planning\\batch45-post-q4-next-tasks.json",
         "status": "passed"
       },
       {

@@ -2,7 +2,7 @@
   "schema_version": "batch41_post_neural_flow_rerun_summary_v1",
   "attempt_id": "B41-POST-NF-RERUN-A01",
   "generated_at": "2026-06-19T13:21:00+03:00",
-  "task_plan": "docs/superpowers/specs/batch41-post-neural-flow-rerun-task-plan.txt",
+  "task_plan": "docs/planning/batch41-post-neural-flow-rerun-task-plan.txt",
   "target": {
     "name": "Neural_Flow",
     "path": "C:/Users/user/Desktop/project/Neural_Flow",
@@ -149,7 +149,7 @@
   },
   "verification": [
     {
-      "command": "python plugins/product-agent-os/scripts/validate_task_matrix.py docs/superpowers/specs/batch41-post-neural-flow-rerun-task-plan.txt",
+      "command": "python plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/batch41-post-neural-flow-rerun-task-plan.txt",
       "result": "passed before and after execution"
     },
     {

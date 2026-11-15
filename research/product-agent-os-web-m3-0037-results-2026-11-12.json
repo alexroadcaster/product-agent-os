@@ -278,7 +278,7 @@
     "tests/web/recipe-pins.test.mts": "8ffdcb89f544934564b8089f9d828c13da0d928e0c9c06ad1e1be51a9f0370c4",
     "tests/web/recipe-runtime.test.mts": "6148be7c8c124ce7f0845cb134e51ecf8a4fbaa7156081e806550a7052fa2041",
     "tests/web/single-window/m3-recipes-acceptance.mts": "e63475c1bed99c3d81a32ef1f4256da5aa2d66f806ad9c84596aef3881499c89",
-    "research/product-agent-os-web-task-manager-plan-2026-11-09.md": "aa79d8127f189e2da07ded75b050e7f9dbe729374b256c471ee0c380a1b6b732",
-    "research/product-agent-os-web-task-manager-task-group-2026-11-09.json": "eb809c45388980acab4a58dce288237b0f073d3c9cbad36e5e849879679d6efc"
+    "docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md": "aa79d8127f189e2da07ded75b050e7f9dbe729374b256c471ee0c380a1b6b732",
+    "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json": "eb809c45388980acab4a58dce288237b0f073d3c9cbad36e5e849879679d6efc"
   }
 }

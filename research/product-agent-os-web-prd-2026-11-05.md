@@ -5,11 +5,11 @@
 
 Startup UX13-11-2026: запуск приложения открывает рабочий экран без копирования pairing code/MessageBox. Session/CSRF остаются обязательными; guarded browser navigation имеет отдельный trust ceiling. Старый service требует штатного Quit/restart без потери профиля. [Acceptance и evidence](product-agent-os-web-m1-execution-2026-11-11.md#запуск-без-ручного-сопряжения--2026-11-13). M5/ChatGPT/team scope и статусы не меняются.
 
-Актуализация планирования 13-11-2026: **M5 — «Подключение ChatGPT и командная работа»** объединяет PAOS-0047 (optional/admission), PAOS-0052 и PAOS-0053 (team design/storage/transfer). Прежние OPTIONAL/T1 — исторические обозначения этих веток. Текущая группировка, функции, ценность и gates: [план v0.9](product-agent-os-web-task-manager-plan-2026-11-09.md#paos-m5). Все три задачи planned; M4 не зависит от M5, team-ветка не зависит от SIWC. Это изменение плана, без допуска, реализации или активации.
+Актуализация планирования 13-11-2026: **M5 — «Подключение ChatGPT и командная работа»** объединяет PAOS-0047 (optional/admission), PAOS-0052 и PAOS-0053 (team design/storage/transfer). Прежние OPTIONAL/T1 — исторические обозначения этих веток. Текущая группировка, функции, ценность и gates: [план v0.9](../docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md#paos-m5). Все три задачи planned; M4 не зависит от M5, team-ветка не зависит от SIWC. Это изменение плана, без допуска, реализации или активации.
 
 Актуализация 11-11-2026: Codex App agents — выбранный owner-default маршрут без API key; его текущий контракт и предел доказательств приведены в новом App-agent addendum в конце документа. Прежний API-only/closed-App baseline ниже сохранён как история и explicit compatibility; он не определяет новый default.
 
-Актуализация 2026-11-10: **v0.7 — согласованный контракт M1 после аудита**. Текущий scope — §17; storage — §16 с профилем M1; runtime — §15. Требования полного Task Manager §13–§14 сохранены для M2–M3. [План: 56 задач / 12 групп](product-agent-os-web-task-manager-plan-2026-11-09.md), [авторизация и коммерческие ограничения](product-agent-os-web-auth-commercial-2026-11-09.md).
+Актуализация 2026-11-10: **v0.7 — согласованный контракт M1 после аудита**. Текущий scope — §17; storage — §16 с профилем M1; runtime — §15. Требования полного Task Manager §13–§14 сохранены для M2–M3. [План: 56 задач / 12 групп](../docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md), [авторизация и коммерческие ограничения](product-agent-os-web-auth-commercial-2026-11-09.md).
 
 Source status: `project-authored / selected-direction / proposed-implementation / official-docs-backed`. Создан: 2026-11-05. Обновлён: 2026-11-10. Версия: 0.7.
 
@@ -293,7 +293,7 @@ Control-plane sync: RUNLOG и source registries — ссылки на draft; REQ
 
 Source status: user requirements / project-authored proposal. Версия дополнения: 0.2. Это актуальный продуктовый scope. При конфликте с исходными §4–§8 и M1-wireframes приоритет имеет этот раздел. Read-only обзор сохраняется как режим без provider; актуальный M1 определён в §15. Агенты, Скиллы, Сессии и Карта проекта становятся основными вкладками. Редакторы и ограниченная автономность входят в roadmap.
 
-Owning artifacts: [экраны](product-agent-os-web-task-manager-screens-2026-11-09.md), [план и 30 карточек](product-agent-os-web-task-manager-plan-2026-11-09.md), [8 машинных групп](product-agent-os-web-task-manager-task-group-2026-11-09.json).
+Owning artifacts: [экраны](product-agent-os-web-task-manager-screens-2026-11-09.md), [план и 30 карточек](../docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md), [8 машинных групп](../docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json).
 
 ### Требования и трассировка
 
@@ -709,7 +709,7 @@ Acceptance scenarios ST-AC-01–08: (01) restart и offline CRUD/search; (02) du
 
 ### 16.5. Scope, delivery и решения
 
-M1a добавляет storage schema/transactions; M1b опирается на durable store; M1c требует FTS, migration и restore gates. Полные поля/редакторы M2 и автономные recipes M3 расширяют эту же модель. T1 не блокирует локальный выпуск M4. [Архитектура §20](product-agent-os-web-architecture-2026-11-05.md#20-хранение-схема-и-миграция--v06) владеет логической схемой; G12 PAOS-0048–0053 в [плане](product-agent-os-web-task-manager-plan-2026-11-09.md) — будущей реализацией.
+M1a добавляет storage schema/transactions; M1b опирается на durable store; M1c требует FTS, migration и restore gates. Полные поля/редакторы M2 и автономные recipes M3 расширяют эту же модель. T1 не блокирует локальный выпуск M4. [Архитектура §20](product-agent-os-web-architecture-2026-11-05.md#20-хранение-схема-и-миграция--v06) владеет логической схемой; G12 PAOS-0048–0053 в [плане](../docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md) — будущей реализацией.
 
 Приняты local/team engines и отказ от обязательного vector store в local M1. Driver, retention и performance targets выбраны в architecture §21; проверенный runtime manifest и измерения pending. Team hosting/RBAC/runtime placement и embedding model решаются в T1. Исследование альтернатив остаётся [историческим основанием](product-agent-os-web-storage-research-2026-11-09.md), а не разрешением внедрять LanceDB/Qdrant/PGlite.
 

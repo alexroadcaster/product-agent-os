@@ -101,7 +101,7 @@
     "source_packet": "docs/superpowers/specs/documentation-refresh-g1-source-site-parity-summary.json",
     "registry_ru": "docs/sources/registry.md",
     "registry_en": "docs/sources/registry.en.md",
-    "plan": "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md",
+    "plan": "docs/planning/2026-06-20-track-11-documentation-architecture-refresh.md",
     "runlog": "RUNLOG.md",
     "support_status": "source_supported_with_current_static_verification_site_rebuild_blocked",
     "public_page_change": "reader-facing pilot wording was neutralized to remove internal labels and private target labels"

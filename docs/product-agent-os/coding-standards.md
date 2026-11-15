@@ -18,7 +18,7 @@ High-risk и full lifecycle reporting выбираются отдельно от
 
 G7 уточняет локальные контракты: bounded capability summary приходит из текущего inventory в прежнее поле `existing_capability`; reference coverage остаётся unknown до чтения источников. Refactor использует существующие/characterization checks, без искусственного RED. Fingerprint включает известные lockfiles/config и явные `verification_paths`; `verification_environment` — сведения вызывающей стороны, не автоматическое доказательство версии инструмента. Missing coverage не означает clean.
 
-Review различает доказанный дефект, предпочтение, отклонённое замечание и открытый риск; нужен checked revision и сценарий. T34 evaluator сохраняется byte-for-byte; G7 использует отдельный versioned evidence contract. Исследование и ограничения (`research/product-agent-os-g7-repository-deep-review-2026-11-09.md`), план G7 (`research/product-agent-os-audit-remediation-task-plan-2026-11-09.md`). Локальная проверка механизмов не доказывает улучшение модельной генерации или fresh-session loading.
+Review различает доказанный дефект, предпочтение, отклонённое замечание и открытый риск; нужен checked revision и сценарий. T34 evaluator сохраняется byte-for-byte; G7 использует отдельный versioned evidence contract. Исследование и ограничения (`research/product-agent-os-g7-repository-deep-review-2026-11-09.md`), план G7 (`docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md`). Локальная проверка механизмов не доказывает улучшение модельной генерации или fresh-session loading.
 
 | Gate | Что агент обязан записать | Когда можно пропустить |
 | --- | --- | --- |

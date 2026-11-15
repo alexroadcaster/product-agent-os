@@ -140,7 +140,7 @@ Control-plane sync: REQUIREMENTS scope/history routing, PLAN order/revision pin,
 
 ## Earlier documentation gate and handoff — superseded by owner scope above
 
-Final docs+lifecycle suite: `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs tests.product_agent_os.test_task_plan_lifecycle -q` — 112 tests / 21.718s, exit 0. `python -B tools/check_docs.py` — exit 0. `python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-audit-remediation-task-plan-2026-11-09.md` — ok, no errors. Final strict MkDocs to the isolated G8 site directory — exit 0, 40.46s. No canonical site publication. A transient matrix-authoring CRLF matching error was corrected before the successful validator result.
+Final docs+lifecycle suite: `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs tests.product_agent_os.test_task_plan_lifecycle -q` — 112 tests / 21.718s, exit 0. `python -B tools/check_docs.py` — exit 0. `python -B plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md` — ok, no errors. Final strict MkDocs to the isolated G8 site directory — exit 0, 40.46s. No canonical site publication. A transient matrix-authoring CRLF matching error was corrected before the successful validator result.
 
 The owner asked for the consequences of the T09 adoption preview; no apply authority was inferred from that clarification. Independent implementation/checks are complete locally. The exact split proposal and PLAN selector remain unapplied pending the owner choice; T14 owner acceptance is also pending. Fresh-session activation stays separate.
 

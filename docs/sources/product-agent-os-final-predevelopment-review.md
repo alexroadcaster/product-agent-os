@@ -9,7 +9,7 @@ title: "Архив — Product-Agent OS: финальный pre-development revi
 Source status: `implementation planning + critical review`
 
 Дата: **2026-05-23**.  
-Основано на [Track 8 detailed backlog](product-agent-os-track-8-detailed-backlog.md), [gap matrix](development-methodology-gap-matrix.md), Track 6/7 implementation notes и сценарной проверке Product-Agent OS.
+Основано на [Track 8 detailed backlog](../planning/product-agent-os-track-8-detailed-backlog.md), [gap matrix](development-methodology-gap-matrix.md), Track 6/7 implementation notes и сценарной проверке Product-Agent OS.
 
 ## Финальный критический анализ идеи
 

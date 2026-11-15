@@ -5,7 +5,7 @@
   "status": "implemented_s5_synthetic_green",
   "closure_level": "synthetic_green",
   "scope": "Batch 45 S5 candidate-only learning-loop and automation-candidate policy for future Product-Agent OS Professional Code Authoring improvements.",
-  "source_contract": "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md",
+  "source_contract": "docs/planning/2026-06-20-track-11-documentation-architecture-refresh.md",
   "row_status": {
     "B45-PCA-M23": "implemented_candidate_only_synthetic_green",
     "B45-PCA-M14": "implemented_full_batch45_closure_after_m23"
@@ -67,7 +67,7 @@
       "PLAN.md",
       "TEST.md",
       "EVALS.md",
-      "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md"
+      "docs/planning/2026-06-20-track-11-documentation-architecture-refresh.md"
     ]
   },
   "supported_claims": [

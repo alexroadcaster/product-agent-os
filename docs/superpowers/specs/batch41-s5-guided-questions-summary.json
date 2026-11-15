@@ -70,7 +70,7 @@
     "plugins/product-agent-os/scripts/run_first_project_analysis.py",
     "tests/product_agent_os/test_batch41_first_run_automation.py",
     "docs/superpowers/specs/batch41-first-run-automation-matrix.json",
-    "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md",
+    "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md",
     "PLAN.md",
     "TEST.md",
     "RUNLOG.md",

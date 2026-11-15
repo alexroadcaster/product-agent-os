@@ -89,7 +89,7 @@ SHA256: 6efbacb52a343967fe16b6557a54551b585ff76827c0f6fdba192a207ae7efda
 ~~~~text
 ## Web execution order v0.8 — 2026-11-10
 
-[План и полная матрица](research/product-agent-os-web-task-manager-plan-2026-11-09.md): 56 planned / 12 groups; execution_order 1–56. M1 → 0046 → M2 (включая 0036) → M3 → M4; 0047 optional, затем отдельный T1. PAOS-0002 ограничена M1 profile. JSON хранит stages/order; dependencies и actual null сохранены. Только документация.
+[План и полная матрица](docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md): 56 planned / 12 groups; execution_order 1–56. M1 → 0046 → M2 (включая 0036) → M3 → M4; 0047 optional, затем отдельный T1. PAOS-0002 ограничена M1 profile. JSON хранит stages/order; dependencies и actual null сохранены. Только документация.
 
 
 ~~~~
@@ -125,7 +125,7 @@ SHA256: 18d95c53b9a72cc330979ef7810c892289057d32ab0c6c1cede7ec82753d2e6f
 ~~~~text
 ## Web single-window v0.4 — 2026-11-09
 
-[Web plan v0.4](research/product-agent-os-web-task-manager-plan-2026-11-09.md): 47 planned tasks / 11 groups; G11 PAOS-0039–0047. Первыми launch/connection/session/scoped run/recovery и M1 gate, затем full Task Manager и autonomy. PAOS-0047 SIWC optional, не блокирует API-M1. Implementation не разрешена; PAOS-AUD очередь не меняется.
+[Web plan v0.4](docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md): 47 planned tasks / 11 groups; G11 PAOS-0039–0047. Первыми launch/connection/session/scoped run/recovery и M1 gate, затем full Task Manager и autonomy. PAOS-0047 SIWC optional, не блокирует API-M1. Implementation не разрешена; PAOS-AUD очередь не меняется.
 
 
 ~~~~
@@ -137,7 +137,7 @@ SHA256: df1e32bd140ac351df053c3d7a3eb11569cbc5830fdc03b582d32571e8d8b2a6
 ~~~~text
 ## Web issue workflows v0.3 — 2026-11-09
 
-[Web plan v0.3](research/product-agent-os-web-task-manager-plan-2026-11-09.md): 38 planned tasks / 10 groups; G09 hierarchy/fields/context и G10 Kanban/workflow/links добавлены, зависимости G02/G07/G08 уточнены. Runtime task-matrix statuses не меняются. Rollback только собственных docs hunks; прежние images/evidence сохранить.
+[Web plan v0.3](docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md): 38 planned tasks / 10 groups; G09 hierarchy/fields/context и G10 Kanban/workflow/links добавлены, зависимости G02/G07/G08 уточнены. Runtime task-matrix statuses не меняются. Rollback только собственных docs hunks; прежние images/evidence сохранить.
 
 
 ~~~~
@@ -149,7 +149,7 @@ SHA256: 43460e4cfae9b946b39ec79da4f99f588d29f06bf82d7a0d1c837b044b484dc6
 ~~~~text
 ## Web Task Manager: документационный scope — 2026-11-09
 
-Сохранена отдельная proposed очередь: [30 задач в 8 группах](research/product-agent-os-web-task-manager-plan-2026-11-09.md), [source-owned JSON](research/product-agent-os-web-task-manager-task-group-2026-11-09.json). Все planned. Порядок: контракты → задачи/наблюдаемость → управляемые изменения → автономность → пилот. Эта очередь не заменяет PAOS-AUD и не разрешает начало Web-разработки. Rollback: только Web-документы и изображения текущего scope.
+Сохранена отдельная proposed очередь: [30 задач в 8 группах](docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md), [source-owned JSON](docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json). Все planned. Порядок: контракты → задачи/наблюдаемость → управляемые изменения → автономность → пилот. Эта очередь не заменяет PAOS-AUD и не разрешает начало Web-разработки. Rollback: только Web-документы и изображения текущего scope.
 
 
 ~~~~
@@ -161,7 +161,7 @@ SHA256: f88691943a2ce10dc58218810dc905c611228837d17947a418394e5dbede4b0e
 ~~~~text
 ## Web execution order v0.8 — 2026-11-10
 
-[Owning plan](research/product-agent-os-web-task-manager-plan-2026-11-09.md), раздел «Проверка очереди v0.8»: текущие docs receipts. Проверяются docs unittest, check_docs, task matrix, order/stage/DAG/MD-JSON parity и diff. M1 product DoD из PRD §17 сохранён; runtime/browser/performance остаются будущими gates. Исторические проверки v0.7 — audit §9.
+[Owning plan](docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md), раздел «Проверка очереди v0.8»: текущие docs receipts. Проверяются docs unittest, check_docs, task matrix, order/stage/DAG/MD-JSON parity и diff. M1 product DoD из PRD §17 сохранён; runtime/browser/performance остаются будущими gates. Исторические проверки v0.7 — audit §9.
 
 
 ~~~~
@@ -197,7 +197,7 @@ SHA256: db44cd093b56aea51b086131da3058ec0355540862a67d802d9a74dfc2f313b4
 ~~~~text
 ## Web single-window v0.4 — 2026-11-09
 
-Web v0.4 authoring: docs unittest, check_docs, task-matrix, MD/JSON dependency/links/UTF-8 checks, strict MkDocs и diff. Будущие SW-AC-01–10 требуют browser + authorized actual runtime с закрытым Codex App, no inherited auth fallback, credential/tool isolation, lost ACK/crash/approval recovery. [Текущие receipts и gaps](research/product-agent-os-web-task-manager-plan-2026-11-09.md); runtime в этой задаче не запускался.
+Web v0.4 authoring: docs unittest, check_docs, task-matrix, MD/JSON dependency/links/UTF-8 checks, strict MkDocs и diff. Будущие SW-AC-01–10 требуют browser + authorized actual runtime с закрытым Codex App, no inherited auth fallback, credential/tool isolation, lost ACK/crash/approval recovery. [Текущие receipts и gaps](docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md); runtime в этой задаче не запускался.
 
 
 ~~~~
@@ -209,7 +209,7 @@ SHA256: c97ea77065a636d7e79df684f8282272f4c70cf172e9b0df7bcffc9c3e318665
 ~~~~text
 ## Web issue workflows v0.3 — 2026-11-09
 
-Web v0.3: docs unittest, structure check, task-matrix validator, JSON/MD/DAG checks и strict MkDocs после Mermaid/source updates. Acceptance matrix: 10 сценариев PRD §14, user-only completion, pinned migration, cyclic blocks, attachments/actor history; runtime/browser checks будущие. Receipts в [плане](research/product-agent-os-web-task-manager-plan-2026-11-09.md).
+Web v0.3: docs unittest, structure check, task-matrix validator, JSON/MD/DAG checks и strict MkDocs после Mermaid/source updates. Acceptance matrix: 10 сценариев PRD §14, user-only completion, pinned migration, cyclic blocks, attachments/actor history; runtime/browser checks будущие. Receipts в [плане](docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md).
 
 
 ~~~~
@@ -221,7 +221,7 @@ SHA256: fa2da80394e517932b863d7bbefdda136ce97f1a743794b9ab97272668980298
 ~~~~text
 ## Web Task Manager: документационный scope — 2026-11-09
 
-Для Web planning slice: docs unittest, tools/check_docs.py, validate_task_matrix.py для [плана](research/product-agent-os-web-task-manager-plan-2026-11-09.md), JSON coverage/dependency checks и git diff --check. [Визуальная спецификация](research/product-agent-os-web-task-manager-screens-2026-11-09.md) фиксирует ограничения raster review; browser/runtime/a11y gates принадлежат будущей реализации. Текущие receipts — в owning плане.
+Для Web planning slice: docs unittest, tools/check_docs.py, validate_task_matrix.py для [плана](docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md), JSON coverage/dependency checks и git diff --check. [Визуальная спецификация](research/product-agent-os-web-task-manager-screens-2026-11-09.md) фиксирует ограничения raster review; browser/runtime/a11y gates принадлежат будущей реализации. Текущие receipts — в owning плане.
 
 
 ~~~~
@@ -281,7 +281,7 @@ SHA256: 47a201413bcfe111b8d9e10f5fb6f45310b8c12576fe2fb458092d044dc494f5
 ~~~~text
 ## Web execution order v0.8 — 2026-11-10
 
-PAOS-WEB-EXECUTION-ORDER-2026-11-10: [план и матрица очереди](research/product-agent-os-web-task-manager-plan-2026-11-09.md). Утверждён порядок 56 задач: 0046 сразу после M1, 0036 в M2, 0002 только M1 profile. Текущие receipts — «Проверка очереди v0.8». Все задачи planned, actual null; реализация не начата.
+PAOS-WEB-EXECUTION-ORDER-2026-11-10: [план и матрица очереди](docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md). Утверждён порядок 56 задач: 0046 сразу после M1, 0036 в M2, 0002 только M1 profile. Текущие receipts — «Проверка очереди v0.8». Все задачи planned, actual null; реализация не начата.
 
 
 ~~~~
@@ -317,7 +317,7 @@ SHA256: 793709c68e0a21d273ef3cc4935d0158a9e8f02f8b95675e899032f7796f51d1
 ~~~~text
 ## Web storage contract v0.6 — 2026-11-09
 
-PAOS-WEB-STORAGE-CONTRACT-2026-11-09: PRD §16 / architecture §20 фиксируют selected SQLite+FTS5 local, PostgreSQL+pgvector team, schema и MD/JSON cutover. [План](research/product-agent-os-web-task-manager-plan-2026-11-09.md): 53 planned / 12 groups, current-run checks и gaps. Старые Web pointers в REQUIREMENTS сжаты в v0.6; owning history сохранена в документах. БД, migrations и приложение не создавались.
+PAOS-WEB-STORAGE-CONTRACT-2026-11-09: PRD §16 / architecture §20 фиксируют selected SQLite+FTS5 local, PostgreSQL+pgvector team, schema и MD/JSON cutover. [План](docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md): 53 planned / 12 groups, current-run checks и gaps. Старые Web pointers в REQUIREMENTS сжаты в v0.6; owning history сохранена в документах. БД, migrations и приложение не создавались.
 
 
 ~~~~
@@ -353,7 +353,7 @@ SHA256: 02aafb27da9a14727b1983d1027b602f86234f925c5174cf10e106c9abcc9438
 ~~~~text
 ## Web single-window v0.4 — 2026-11-09
 
-PAOS-WEB-SINGLE-WINDOW-2026-11-09: принято направление собственного клиента Codex App Server. Обновлены PRD/архитектура/план (47 planned / 11 groups), UX pointers и отдельный [auth/commercial contract](research/product-agent-os-web-auth-commercial-2026-11-09.md). [План владеет текущими receipts](research/product-agent-os-web-task-manager-plan-2026-11-09.md): 105 docs tests, structure/matrix/consistency/diff passed; strict MkDocs exit 1 на шести прежних G6/G7 links. Closure: documentation_updated / partially_verified. Реализация, credentials/provider/browser и коммерческая регистрация не выполнялись. Собственный session marker переведён после повторной проверки принадлежности; hooks/чужие marker сохранены.
+PAOS-WEB-SINGLE-WINDOW-2026-11-09: принято направление собственного клиента Codex App Server. Обновлены PRD/архитектура/план (47 planned / 11 groups), UX pointers и отдельный [auth/commercial contract](research/product-agent-os-web-auth-commercial-2026-11-09.md). [План владеет текущими receipts](docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md): 105 docs tests, structure/matrix/consistency/diff passed; strict MkDocs exit 1 на шести прежних G6/G7 links. Closure: documentation_updated / partially_verified. Реализация, credentials/provider/browser и коммерческая регистрация не выполнялись. Собственный session marker переведён после повторной проверки принадлежности; hooks/чужие marker сохранены.
 
 
 ~~~~
@@ -365,7 +365,7 @@ SHA256: ae8f0e5bb9e83404d4b3cca9305ce60d60d7c3bc432168e7e4b507c9057eba71
 ~~~~text
 ## Web issue workflows v0.3 — 2026-11-09
 
-PAOS-WEB-ISSUE-WORKFLOWS-2026-11-09: Jira Cloud source-backed расширение [PRD](research/product-agent-os-web-prd-2026-11-05.md) и [плана](research/product-agent-os-web-task-manager-plan-2026-11-09.md), 38 planned tasks / 10 groups. Architecture/UX/source pointers синхронизированы. New screens S25/S26 только текст; PNG v0.2 сохранены. Документы updated / partially_verified: 105 tests, structure, task matrix и consistency passed; strict MkDocs failed на двух прежних G6 links. Receipts и handoff — в owning плане. Код не менялся.
+PAOS-WEB-ISSUE-WORKFLOWS-2026-11-09: Jira Cloud source-backed расширение [PRD](research/product-agent-os-web-prd-2026-11-05.md) и [плана](docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md), 38 planned tasks / 10 groups. Architecture/UX/source pointers синхронизированы. New screens S25/S26 только текст; PNG v0.2 сохранены. Документы updated / partially_verified: 105 tests, structure, task matrix и consistency passed; strict MkDocs failed на двух прежних G6 links. Receipts и handoff — в owning плане. Код не менялся.
 
 
 ~~~~
@@ -377,7 +377,7 @@ SHA256: bfd9fce98bf4355eff949dccd88faaf2f687102e37362fbc284dca8da2865eef
 ~~~~text
 ## Web Task Manager: документационный scope — 2026-11-09
 
-Документационная задача расширила Web proposal до полноценного Task Manager: [план и receipts](research/product-agent-os-web-task-manager-plan-2026-11-09.md), [24 экрана и шесть листов](research/product-agent-os-web-task-manager-screens-2026-11-09.md). Требования TM-01–TM-14, все 30 будущих задач planned. Docs: 100 tests OK, structure/task-matrix/strict MkDocs/diff checks passed. Fresh-context visual review и один fix batch выполнены; raster limitations сохранены. Closure: docs_static_verified; дизайн needs_user_acceptance; разработка не начата. Чужой PAOS-AUD scope сохранён.
+Документационная задача расширила Web proposal до полноценного Task Manager: [план и receipts](docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md), [24 экрана и шесть листов](research/product-agent-os-web-task-manager-screens-2026-11-09.md). Требования TM-01–TM-14, все 30 будущих задач planned. Docs: 100 tests OK, structure/task-matrix/strict MkDocs/diff checks passed. Fresh-context visual review и один fix batch выполнены; raster limitations сохранены. Closure: docs_static_verified; дизайн needs_user_acceptance; разработка не начата. Чужой PAOS-AUD scope сохранён.
 
 
 ~~~~
@@ -445,7 +445,7 @@ SHA256: 608fd8c21a4747b4f82322ec008a018d817a50a71c36635ee6d2c0fb2c4d221f
 - T20-A03 records the cost-waived exact approval consumed by T21.
 - Batch 45: historical anchors `B45-POSTQ4-T16-T22-A01` and `B45-POSTQ4-T17-A01` remain source-owned; `T14 is positive current-best-quality signal only`; A04-A06 locally implement/focused-verify T23-T29. The unaccepted T28 attempt was truthfully stopped, then repaired in one bounded cycle: repeated families 196→34, combined test LOC 8130→5658, exceptions=3 and the 48-test semantic/seeded-fault route is green. T29 deterministic metrics plus promotion integration are 23/23 green; missing evidence blocks and self-score is diagnostic-only. Execution-loop diagnostics/report are 7/7 green. Final affected-contract verification is 208/208 and Product-Agent OS docs are 100/100; strict MkDocs exited 0 and the 652-file generated site was restored after the sandboxed direct build left its target empty. No CLI/live/provider/external-reviewer/model-behavior/promotion evidence or no-go reversal exists; next dependency is T30 and T34 remains exact-approval-blocked.
 - Track 11 DOC-M25: generated root `site`, search and sitemap freshness are source-owned by `documentation_refresh_DOC-M25-A01`; browser proof, broad scans, remediation, publication, release/deploy and git actions remain outside scope.
-- GPT-5.6 system-file audit/remediation: historical 92-file evidence remains in `research/2026-07-23-codex-gpt-5p6-system-files-audit.md`. `GPT56-R1-R6-REMEDIATION-2026-08-05` is locally implemented: active/generated config use native `workspace-write`, Terra/medium generic defaults, explicit skill write authority, Docs MCP on source roles, semantic validator/test/eval coverage, stable staged-path checks, and compact phase-neutral root/agent prompts. Current evidence: agent validator 15/15, focused contracts 184 OK, docs 100 OK, hooks 19 OK, full discovery 1195 OK with 1 skip, fixture eval exit 0, transcript 26/26, compatibility `compatible`, strict doctor 0 fail, and docs structure OK. `REQUIREMENTS.md` and `prod_test.md` are `not_applicable`; no product scope or Batch 39 evidence changed. Fresh-session MCP/SessionStart and behavioral promotion evidence remain open in `docs/superpowers/plans/2026-08-05-gpt56-r1-r6-remediation.md`.
+- GPT-5.6 system-file audit/remediation: historical 92-file evidence remains in `research/2026-07-23-codex-gpt-5p6-system-files-audit.md`. `GPT56-R1-R6-REMEDIATION-2026-08-05` is locally implemented: active/generated config use native `workspace-write`, Terra/medium generic defaults, explicit skill write authority, Docs MCP on source roles, semantic validator/test/eval coverage, stable staged-path checks, and compact phase-neutral root/agent prompts. Current evidence: agent validator 15/15, focused contracts 184 OK, docs 100 OK, hooks 19 OK, full discovery 1195 OK with 1 skip, fixture eval exit 0, transcript 26/26, compatibility `compatible`, strict doctor 0 fail, and docs structure OK. `REQUIREMENTS.md` and `prod_test.md` are `not_applicable`; no product scope or Batch 39 evidence changed. Fresh-session MCP/SessionStart and behavioral promotion evidence remain open in `docs/planning/2026-08-05-gpt56-r1-r6-remediation.md`.
 - Historical lifecycle hooks / `B45-S9-H01` (Stop correction behavior superseded by the 2026-11-03 lifecycle repair above; current Stop is advisory): local active, mirror and packaged-template hooks now share a 5-second timeout, a read-only fast path and current-patch comment advisory; read-only shell commands no longer invoke the post-write evidence hook. `Completion Brief` moved behind all checks/control-plane sync and is emitted once as the terminal final response; the ready marker permits one bounded `Stop` correction and avoids continuation loops. Current evidence: lifecycle/template suite 121/121 OK, both hook validators OK, docs 100/100 and checker OK, JSON evals 2/2, fixture eval exit 0, transcript 26/26, compatibility `compatible`, and diff hygiene exit 0 with line-ending warnings only. Broad discovery ran 1199 tests with one existing Batch 45 plan `Source status` formatting failure; the format was corrected and the exact regression reran green. Direct script timings show a diagnostic reduction only, not activated Codex App proof. `REQUIREMENTS.md` and `prod_test.md` are `not_applicable`; no product scope or Batch 39 ledger changed. No hook trust/activation action was performed.
 
 
@@ -460,7 +460,7 @@ SHA256: 8107f2b2fda35b24cdfaee181364bfad45ba63feb4ad4849d4833d3ea374d609
 
 `PAOS-LIFECYCLE-REPAIR-2026-11-03`: **implemented_locally_verified / verified_local_runtime**. Acceptance met for ACT-F1..F6: preserve protection, full/concise reporting, strict closure semantics, parent-owned skills and assigned product-manager scope. No new product scope or model switch.
 
-Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.repair`; [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). The earlier failed activation below is historical, superseded by this bounded retest.
+Evidence: [task group](docs/planning/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.repair`; [plan](docs/planning/2026-11-03-gpt6-documentation-refresh.md). The earlier failed activation below is historical, superseded by this bounded retest.
 
 
 ~~~~
@@ -474,7 +474,7 @@ SHA256: f7af90c1fc3fbff1dfcb34cf56ac14ebc8ae137045ab0296e534c534f05293f9
 
 `PAOS-LIFECYCLE-ACTIVATION-2026-11-03`: verification completed with findings; **activation_failed**. Activation acceptance requires a real host denial for a terminal marker, proportional full/concise reporting and an explicit packet-validator contract matching accepted rendering. The current negative probe failed; no activation or readiness promotion is permitted.
 
-Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.activation_check`; [detailed plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). No trust/permissions/models/provider/Git changes.
+Evidence: [task group](docs/planning/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.activation_check`; [detailed plan](docs/planning/2026-11-03-gpt6-documentation-refresh.md). No trust/permissions/models/provider/Git changes.
 
 
 ~~~~
@@ -488,7 +488,7 @@ SHA256: bc0f5b7ef9901190f96ee3f3f99ea28783273f69271ab090d15f770fb2f32ced
 
 `PAOS-TRADE-LIFECYCLE-PARITY-2026-11-03`: `implemented_locally_verified / activation_failed`. Acceptance: nine bold start labels, thirteen ledger list items, conditional full-packet scope, concise ordinary route, honest review/metrics, no format-driven Stop continuation, active/staged parity and preserved safety controls. Trade is read-only; models, permissions, external actions and trust activation are outside this slice.
 
-Evidence owner: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity`; detail: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md).
+Evidence owner: [task group](docs/planning/gpt6-documentation-refresh-task-group.json), `lifecycle_parity`; detail: [plan](docs/planning/2026-11-03-gpt6-documentation-refresh.md).
 
 
 ~~~~
@@ -502,7 +502,7 @@ SHA256: ef5e7f02f778251ab3b6e5d3326fc8b2cee6d912a6f3dd706aa143c4bbed1544
 
 `PAOS-CONTRACT-MODEL-ALIGNMENT-2026-11-03`: `implemented_locally_verified / behavioral_promotion_pending`. Parent permissions and MCP inheritance aligned; 23 active/staged profiles pinned to GPT-6.1 Sol/Terra with preserved effort; inherited skills moved to parent; validators and renderer reject unsupported contracts; lifecycle validator follows the explicit current plan.
 
-Current verification: Ran 1247 tests in 611.387s; OK (skipped=1); fixture/transcript eval, compatibility, 15 active agents, both hook validators, RU/EN task matrices, state consistency, docs checker and diff check exit 0. Detailed evidence, source receipts and rollback: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md) and [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json).
+Current verification: Ran 1247 tests in 611.387s; OK (skipped=1); fixture/transcript eval, compatibility, 15 active agents, both hook validators, RU/EN task matrices, state consistency, docs checker and diff check exit 0. Detailed evidence, source receipts and rollback: [plan](docs/planning/2026-11-03-gpt6-documentation-refresh.md) and [task group](docs/planning/gpt6-documentation-refresh-task-group.json).
 
 Fresh-session effective permissions/MCP/model availability and quality/cost/latency comparison remain unverified. No provider calls, browser, hook activation, target mutation, Git publication or root site update.
 
@@ -516,7 +516,7 @@ SHA256: 46bad9da8ee4506bd5f735308433ff1f5f3e22f1271356af675b694d34817807
 ~~~~text
 ## Historical GAP-01–GAP-05 implementation — 2026-11-05
 
-`PAOS-GAP-01-05-2026-11-05`: partially_verified: local implementation verified (1284 unittest, one skip; fixture 91/91; transcript 26/26). GAP-01/02/04 are implemented; GAP-03/05 remain blocked on the named owner/host gates. Evidence and reviewable remaining decisions belong to [the owning plan](research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md). Shared component resolver, B42 provenance/routing, exact-host source policy and optional pinned report authority are implemented locally. Current package compatibility is intentionally `needs_review` (legacy flat MCP declaration); four skill metadata were corrected under PAOS-GAP03-METADATA-2026-11-05 (94 focused tests and 232 docs/lifecycle/template tests passed); fresh-host exposure/invocation/trust remain open. Hooks definitions, trust, installed cache, T23–T29 implementation and T30–T34 are unchanged. Local source changes do not extend the dated ACT-F1..F6 host receipt.
+`PAOS-GAP-01-05-2026-11-05`: partially_verified: local implementation verified (1284 unittest, one skip; fixture 91/91; transcript 26/26). GAP-01/02/04 are implemented; GAP-03/05 remain blocked on the named owner/host gates. Evidence and reviewable remaining decisions belong to [the owning plan](docs/planning/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md). Shared component resolver, B42 provenance/routing, exact-host source policy and optional pinned report authority are implemented locally. Current package compatibility is intentionally `needs_review` (legacy flat MCP declaration); four skill metadata were corrected under PAOS-GAP03-METADATA-2026-11-05 (94 focused tests and 232 docs/lifecycle/template tests passed); fresh-host exposure/invocation/trust remain open. Hooks definitions, trust, installed cache, T23–T29 implementation and T30–T34 are unchanged. Local source changes do not extend the dated ACT-F1..F6 host receipt.
 
 
 
@@ -548,7 +548,7 @@ SHA256: d10a86b99d845c16771d7ad8e4cb9a19d0addd85fba7fd6eb9138ba509a2a17a
 
 `PAOS-LIFECYCLE-REPAIR-2026-11-03`: **implemented_locally_verified / verified_local_runtime**. The six repair findings are resolved; activation_pending=false, activation_status=verified_local_runtime for the tested desktop routes. Future definition changes require exact-hash trust review and a fresh negative probe.
 
-Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.repair`; [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). The earlier failed activation below is historical, superseded by this bounded retest.
+Evidence: [task group](docs/planning/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.repair`; [plan](docs/planning/2026-11-03-gpt6-documentation-refresh.md). The earlier failed activation below is historical, superseded by this bounded retest.
 
 
 ~~~~
@@ -562,7 +562,7 @@ SHA256: 4fe0239222ac24451129282b1fc54f76b280ce9040dd0609f0f62679240fa3d1
 
 `PAOS-LIFECYCLE-ACTIVATION-2026-11-03`: verification completed with findings; **activation_failed**. Next: diagnose ACT-F1 host trust/matcher/response handling without bypass; reconcile ACT-F2 ledger format and ACT-F3..F6 source contradictions; then repeat the fresh large/ordinary and safe negative scenarios. Fixes require their own authorized slice; this task changed evidence only.
 
-Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.activation_check`; [detailed plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). No trust/permissions/models/provider/Git changes.
+Evidence: [task group](docs/planning/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.activation_check`; [detailed plan](docs/planning/2026-11-03-gpt6-documentation-refresh.md). No trust/permissions/models/provider/Git changes.
 
 
 ~~~~
@@ -576,7 +576,7 @@ SHA256: b3cd273d26a498a7fc094e1c6201ebadcf85dc9adc805d2d09e8429602f21641
 
 `PAOS-TRADE-LIFECYCLE-PARITY-2026-11-03`: `implemented_locally_verified / activation_failed`. Sequence: read-only Trade baseline -> RED/GREEN regressions -> active/staged contracts -> integrated checks -> status sync. Detailed task and rollback live in the existing November plan pair; fresh-session trust/activation is a separate gate.
 
-Evidence owner: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity`; detail: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md).
+Evidence owner: [task group](docs/planning/gpt6-documentation-refresh-task-group.json), `lifecycle_parity`; detail: [plan](docs/planning/2026-11-03-gpt6-documentation-refresh.md).
 
 
 ~~~~
@@ -590,7 +590,7 @@ SHA256: cb829687dd528f684aa3a6d8067ca08a5f6b2c7335b4a36fa92759f7ea2aa37a
 
 `PAOS-CONTRACT-MODEL-ALIGNMENT-2026-11-03`: `implemented_locally_verified / behavioral_promotion_pending`. Parent permissions and MCP inheritance aligned; 23 active/staged profiles pinned to GPT-6.1 Sol/Terra with preserved effort; inherited skills moved to parent; validators and renderer reject unsupported contracts; lifecycle validator follows the explicit current plan.
 
-Current verification: Ran 1247 tests in 611.387s; OK (skipped=1); fixture/transcript eval, compatibility, 15 active agents, both hook validators, RU/EN task matrices, state consistency, docs checker and diff check exit 0. Detailed evidence, source receipts and rollback: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md) and [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json).
+Current verification: Ran 1247 tests in 611.387s; OK (skipped=1); fixture/transcript eval, compatibility, 15 active agents, both hook validators, RU/EN task matrices, state consistency, docs checker and diff check exit 0. Detailed evidence, source receipts and rollback: [plan](docs/planning/2026-11-03-gpt6-documentation-refresh.md) and [task group](docs/planning/gpt6-documentation-refresh-task-group.json).
 
 Fresh-session effective permissions/MCP/model availability and quality/cost/latency comparison remain unverified. No provider calls, browser, hook activation, target mutation, Git publication or root site update.
 
@@ -606,7 +606,7 @@ SHA256: 46bad9da8ee4506bd5f735308433ff1f5f3e22f1271356af675b694d34817807
 ~~~~text
 ## Historical GAP-01–GAP-05 implementation — 2026-11-05
 
-`PAOS-GAP-01-05-2026-11-05`: partially_verified: local implementation verified (1284 unittest, one skip; fixture 91/91; transcript 26/26). GAP-01/02/04 are implemented; GAP-03/05 remain blocked on the named owner/host gates. Evidence and reviewable remaining decisions belong to [the owning plan](research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md). Shared component resolver, B42 provenance/routing, exact-host source policy and optional pinned report authority are implemented locally. Current package compatibility is intentionally `needs_review` (legacy flat MCP declaration); four skill metadata were corrected under PAOS-GAP03-METADATA-2026-11-05 (94 focused tests and 232 docs/lifecycle/template tests passed); fresh-host exposure/invocation/trust remain open. Hooks definitions, trust, installed cache, T23–T29 implementation and T30–T34 are unchanged. Local source changes do not extend the dated ACT-F1..F6 host receipt.
+`PAOS-GAP-01-05-2026-11-05`: partially_verified: local implementation verified (1284 unittest, one skip; fixture 91/91; transcript 26/26). GAP-01/02/04 are implemented; GAP-03/05 remain blocked on the named owner/host gates. Evidence and reviewable remaining decisions belong to [the owning plan](docs/planning/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md). Shared component resolver, B42 provenance/routing, exact-host source policy and optional pinned report authority are implemented locally. Current package compatibility is intentionally `needs_review` (legacy flat MCP declaration); four skill metadata were corrected under PAOS-GAP03-METADATA-2026-11-05 (94 focused tests and 232 docs/lifecycle/template tests passed); fresh-host exposure/invocation/trust remain open. Hooks definitions, trust, installed cache, T23–T29 implementation and T30–T34 are unchanged. Local source changes do not extend the dated ACT-F1..F6 host receipt.
 
 
 
@@ -621,7 +621,7 @@ SHA256: 75162bb1374fed4ba1f012dce3f29a39ccaa8a7a47dd4377ddeed6423cd84736
 
 `PAOS-LIFECYCLE-REPAIR-2026-11-03`: **implemented_locally_verified / verified_local_runtime**. Ran 1253 tests in 772.501s; OK (skipped=1); focused 165 passed; fixture 91/91; transcript 26/26; compatibility/agents/hooks passed. Final docs/matrix/state/diff receipts are recorded in final_checks.
 
-Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.repair`; [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). The earlier failed activation below is historical, superseded by this bounded retest.
+Evidence: [task group](docs/planning/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.repair`; [plan](docs/planning/2026-11-03-gpt6-documentation-refresh.md). The earlier failed activation below is historical, superseded by this bounded retest.
 
 Final evidence-update checks: 100 documentation tests passed after correcting one Cyrillic heading in the English plan (initial docs run: 3 locale/parity failures). check_docs.py, RU/EN task matrices and task-state consistency passed. Baseline-preservation and git diff --check passed; no unrelated edits or baseline deletions.
 
@@ -637,7 +637,7 @@ SHA256: 71986ea51a7a583c4afac82a0f26b1d0e5c68dbf12b0961e1f2b7404ec01a9c9
 
 `PAOS-LIFECYCLE-ACTIVATION-2026-11-03`: verification completed with findings; **activation_failed**. Current fresh-session checks: 15 active profiles and both hook validators passed; focused hooks 29/29 passed after isolated TEMP setup. Two earlier TEMP attempts failed (permissions, then Git-root fixture contamination) and are preserved. Actual negative host guard FAILED despite the direct script returning deny. Run docs unittest, check_docs, both task matrices, state consistency and diff hygiene for these evidence updates; no broad implementation suite rerun.
 
-Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.activation_check`; [detailed plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). No trust/permissions/models/provider/Git changes.
+Evidence: [task group](docs/planning/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.activation_check`; [detailed plan](docs/planning/2026-11-03-gpt6-documentation-refresh.md). No trust/permissions/models/provider/Git changes.
 
 Evidence-update checks in this run: 100 documentation tests OK; check_docs.py, both task-matrix validators, task-state consistency and git diff --check exit 0. Receipt/source-hash/size-budget checks passed. These successful checks do not change the failed host guard verdict.
 
@@ -653,7 +653,7 @@ SHA256: e3b2eb2b33ca7d8c697e3cad003417b46e8f7581a9cdb8864e7e410af80ac66d
 
 `PAOS-TRADE-LIFECYCLE-PARITY-2026-11-03`: `implemented_locally_verified / activation_failed`. Focused lifecycle, generator, packet-validator, template and docs checks passed (264 tests); integrated checks completed; see exact initial-failure and focused-retest receipts below. Verify scoped full/concise markers, legacy compatibility, terminal rejection, packet content and closure contradictions, renderer inventory (209), unchanged safety rules and Trade hashes. Runtime activation remains unverified.
 
-Evidence owner: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity`; detail: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md).
+Evidence owner: [task group](docs/planning/gpt6-documentation-refresh-task-group.json), `lifecycle_parity`; detail: [plan](docs/planning/2026-11-03-gpt6-documentation-refresh.md).
 
 Current verification receipt: Full discovery: Ran 1253 tests in 675.268s; FAILED (failures=2, skipped=1). Two obsolete Completion Brief assertions corrected; complete hook-governance (5 tests) and renderer (28 tests) modules passed. No implementation change was needed for these failures. All remaining integrated commands exit 0; final focused/docs/status gates are recorded separately.
 
@@ -671,7 +671,7 @@ SHA256: 1f26bc0a71c24ebdb9518cc94a647ec9791078a2871768760bf059bfb5726bff
 
 `PAOS-CONTRACT-MODEL-ALIGNMENT-2026-11-03`: `implemented_locally_verified / behavioral_promotion_pending`. Parent permissions and MCP inheritance aligned; 23 active/staged profiles pinned to GPT-6.1 Sol/Terra with preserved effort; inherited skills moved to parent; validators and renderer reject unsupported contracts; lifecycle validator follows the explicit current plan.
 
-Current verification: Ran 1247 tests in 611.387s; OK (skipped=1); fixture/transcript eval, compatibility, 15 active agents, both hook validators, RU/EN task matrices, state consistency, docs checker and diff check exit 0. Detailed evidence, source receipts and rollback: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md) and [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json).
+Current verification: Ran 1247 tests in 611.387s; OK (skipped=1); fixture/transcript eval, compatibility, 15 active agents, both hook validators, RU/EN task matrices, state consistency, docs checker and diff check exit 0. Detailed evidence, source receipts and rollback: [plan](docs/planning/2026-11-03-gpt6-documentation-refresh.md) and [task group](docs/planning/gpt6-documentation-refresh-task-group.json).
 
 Fresh-session effective permissions/MCP/model availability and quality/cost/latency comparison remain unverified. No provider calls, browser, hook activation, target mutation, Git publication or root site update.
 
@@ -689,7 +689,7 @@ SHA256: 7630ff4ea933dc8fa4994950bd1f593e8f7e69c5a2c89186a86c9398333b9e2e
 
 `PAOS-LIFECYCLE-REPAIR-2026-11-03`: **implemented_locally_verified / verified_local_runtime**. Bold/plain labels are equivalent presentation; explicit closure_level and honest review/partial/docs-gap checks remain mandatory. Full packet scope and concise ordinary routes are consistent across active/staged evals. Source text quoted by a read tool is never counted as a host denial.
 
-Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.repair`; [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). The earlier failed activation below is historical, superseded by this bounded retest.
+Evidence: [task group](docs/planning/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.repair`; [plan](docs/planning/2026-11-03-gpt6-documentation-refresh.md). The earlier failed activation below is historical, superseded by this bounded retest.
 
 
 ~~~~
@@ -703,7 +703,7 @@ SHA256: 53162ca9b46a4c48e9c87819b087b03b1289d93919ef34ae7ff949ccfdff13fc
 
 `PAOS-LIFECYCLE-ACTIVATION-2026-11-03`: verification completed with findings; **activation_failed**. A green fixture run cannot substitute for a negative host enforcement case. Require observation of marker state, exact tool route, expected denial and absent write. Distinguish silent Stop outcome from execution proof. Score the observed 13-item ledger separately from strict parser failure; do not normalize away a failing result or force ordinary tasks into full packets.
 
-Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.activation_check`; [detailed plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). No trust/permissions/models/provider/Git changes.
+Evidence: [task group](docs/planning/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.activation_check`; [detailed plan](docs/planning/2026-11-03-gpt6-documentation-refresh.md). No trust/permissions/models/provider/Git changes.
 
 
 ~~~~
@@ -717,7 +717,7 @@ SHA256: 52df125343dc18725bf4817d610ad1a89e139ee43a841da1f3e0aa88232fc2f8
 
 `PAOS-TRADE-LIFECYCLE-PARITY-2026-11-03`: `implemented_locally_verified / activation_failed`. Rubric: full packets only when scope requires; ordinary fixes remain concise; required partial/blocked/unreviewed children prevent parent completion; no invented metrics or review independence; docs-static closure never proves runtime activation. Explicit packet validator checks format and known contradictions only. Stop does not judge chat. Local fixture/transcript comparisons are not live model behavior evidence.
 
-Evidence owner: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity`; detail: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md).
+Evidence owner: [task group](docs/planning/gpt6-documentation-refresh-task-group.json), `lifecycle_parity`; detail: [plan](docs/planning/2026-11-03-gpt6-documentation-refresh.md).
 
 
 ~~~~
@@ -731,7 +731,7 @@ SHA256: 798d2218ca70acc5a543b2676fbe857a2946cbccd497c03b3b1c136cddde3e5f
 
 `PAOS-CONTRACT-MODEL-ALIGNMENT-2026-11-03`: `implemented_locally_verified / behavioral_promotion_pending`. Parent permissions and MCP inheritance aligned; 23 active/staged profiles pinned to GPT-6.1 Sol/Terra with preserved effort; inherited skills moved to parent; validators and renderer reject unsupported contracts; lifecycle validator follows the explicit current plan.
 
-Current verification: Ran 1247 tests in 611.387s; OK (skipped=1); fixture/transcript eval, compatibility, 15 active agents, both hook validators, RU/EN task matrices, state consistency, docs checker and diff check exit 0. Detailed evidence, source receipts and rollback: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md) and [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json).
+Current verification: Ran 1247 tests in 611.387s; OK (skipped=1); fixture/transcript eval, compatibility, 15 active agents, both hook validators, RU/EN task matrices, state consistency, docs checker and diff check exit 0. Detailed evidence, source receipts and rollback: [plan](docs/planning/2026-11-03-gpt6-documentation-refresh.md) and [task group](docs/planning/gpt6-documentation-refresh-task-group.json).
 
 Fresh-session effective permissions/MCP/model availability and quality/cost/latency comparison remain unverified. No provider calls, browser, hook activation, target mutation, Git publication or root site update.
 
@@ -747,7 +747,7 @@ SHA256: 46bad9da8ee4506bd5f735308433ff1f5f3e22f1271356af675b694d34817807
 ~~~~text
 ## Historical GAP-01–GAP-05 implementation — 2026-11-05
 
-`PAOS-GAP-01-05-2026-11-05`: partially_verified: local implementation verified (1284 unittest, one skip; fixture 91/91; transcript 26/26). GAP-01/02/04 are implemented; GAP-03/05 remain blocked on the named owner/host gates. Evidence and reviewable remaining decisions belong to [the owning plan](research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md). Shared component resolver, B42 provenance/routing, exact-host source policy and optional pinned report authority are implemented locally. Current package compatibility is intentionally `needs_review` (legacy flat MCP declaration); four skill metadata were corrected under PAOS-GAP03-METADATA-2026-11-05 (94 focused tests and 232 docs/lifecycle/template tests passed); fresh-host exposure/invocation/trust remain open. Hooks definitions, trust, installed cache, T23–T29 implementation and T30–T34 are unchanged. Local source changes do not extend the dated ACT-F1..F6 host receipt.
+`PAOS-GAP-01-05-2026-11-05`: partially_verified: local implementation verified (1284 unittest, one skip; fixture 91/91; transcript 26/26). GAP-01/02/04 are implemented; GAP-03/05 remain blocked on the named owner/host gates. Evidence and reviewable remaining decisions belong to [the owning plan](docs/planning/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md). Shared component resolver, B42 provenance/routing, exact-host source policy and optional pinned report authority are implemented locally. Current package compatibility is intentionally `needs_review` (legacy flat MCP declaration); four skill metadata were corrected under PAOS-GAP03-METADATA-2026-11-05 (94 focused tests and 232 docs/lifecycle/template tests passed); fresh-host exposure/invocation/trust remain open. Hooks definitions, trust, installed cache, T23–T29 implementation and T30–T34 are unchanged. Local source changes do not extend the dated ACT-F1..F6 host receipt.
 
 
 
@@ -760,7 +760,7 @@ SHA256: 2601b217bd26487b2fe7852241ec756efa1aebf9eba9f3fd967c1dc7ef311f75
 ~~~~text
 ## Historical ordinary route integration — 2026-11-05
 
-`PAOS-ORD-01-06-2026-11-05`: public `--task-context` route, state provenance, T26/T27 adapter, minimal template selection, active compact contract and four RU/EN guide pairs implemented. Final integrated verification passed: 1272 tests, 753.848s, OK (skipped=1), exit 0; fixture 91, transcript 26/26, compatibility and docs gates passed. Detailed RED/GREEN history, scenario mapping, measured legacy/ordinary comparison and boundaries belong to [the owning plan](research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md). Local fixture evidence does not prove fresh Codex host loading; report-path authority remains GAP-05. T23-T29 and B45 status are preserved. No publication or external writes.
+`PAOS-ORD-01-06-2026-11-05`: public `--task-context` route, state provenance, T26/T27 adapter, minimal template selection, active compact contract and four RU/EN guide pairs implemented. Final integrated verification passed: 1272 tests, 753.848s, OK (skipped=1), exit 0; fixture 91, transcript 26/26, compatibility and docs gates passed. Detailed RED/GREEN history, scenario mapping, measured legacy/ordinary comparison and boundaries belong to [the owning plan](docs/planning/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md). Local fixture evidence does not prove fresh Codex host loading; report-path authority remains GAP-05. T23-T29 and B45 status are preserved. No publication or external writes.
 
 
 ~~~~
@@ -791,7 +791,7 @@ SHA256: 7f80bd0321b971c5c7fdf8c611e8b7da1601a163ec8e61c3270faed66f45fe16
 
 `PAOS-LIFECYCLE-REPAIR-2026-11-03`: **implemented_locally_verified / verified_local_runtime**. ACT-F1..F6 repaired. PreToolUse/Stop were skipped because cosmetic statusMessage changes made exact definitions modified. Restored the prior trusted definitions; commands, matchers, timeouts, policy scripts and trust records unchanged. Full 9/13 and concise cases passed; terminal-marker nested apply_patch was denied and sentinel is absent. Local Codex Desktop acceptance for the tested routes only. Silent Stop execution is not independently traced; no correction loop or post-final tools observed. General mutation-channel completeness, hosted/production delivery and model benchmarking are not claimed. Legacy statusMessage wording is retained for exact-definition compatibility.
 
-Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.repair`; [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). The earlier failed activation below is historical, superseded by this bounded retest.
+Evidence: [task group](docs/planning/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.repair`; [plan](docs/planning/2026-11-03-gpt6-documentation-refresh.md). The earlier failed activation below is historical, superseded by this bounded retest.
 
 Final evidence-update checks: 100 documentation tests passed after correcting one Cyrillic heading in the English plan (initial docs run: 3 locale/parity failures). check_docs.py, RU/EN task matrices and task-state consistency passed. Baseline-preservation and git diff --check passed; no unrelated edits or baseline deletions.
 
@@ -807,7 +807,7 @@ SHA256: 47b63a3231e10bca0c87f8aeed6e9329f28674288823773dad8bd52765c404a4
 
 `PAOS-LIFECYCLE-ACTIVATION-2026-11-03`: verification completed with findings; **activation_failed**. Fresh chat 01a1a250-2429-73b1-91de-3ab6b06c660b completed large and ordinary scenarios. SessionStart and PostToolUse contexts were delivered; large reporting showed 9/13 fields, ordinary reporting stayed concise. The terminal-marker nested apply_patch probe created its sentinel: ACT-F1 P1, activation_failed. Direct script denial does not repair the runtime result. Six findings are recorded; implementation and trust unchanged.
 
-Evidence: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.activation_check`; [detailed plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). No trust/permissions/models/provider/Git changes.
+Evidence: [task group](docs/planning/gpt6-documentation-refresh-task-group.json), `lifecycle_parity.activation_check`; [detailed plan](docs/planning/2026-11-03-gpt6-documentation-refresh.md). No trust/permissions/models/provider/Git changes.
 
 Evidence-update checks in this run: 100 documentation tests OK; check_docs.py, both task-matrix validators, task-state consistency and git diff --check exit 0. Receipt/source-hash/size-budget checks passed. These successful checks do not change the failed host guard verdict.
 
@@ -823,7 +823,7 @@ SHA256: fbfbac9bb971dbd4a95381a8403186ab54693b8e0daf9a5f7d8e07feded1a41d
 
 `PAOS-TRADE-LIFECYCLE-PARITY-2026-11-03`: `implemented_locally_verified / activation_failed`. Local implementation and verification are complete; fresh-session acceptance failed the runtime guard probe; see the current activation receipt above. Root owns shared state and self-review; no delegation. Trade source hashes are preserved in the task group. Prior technical/model work remains a separate historical receipt.
 
-Evidence owner: [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json), `lifecycle_parity`; detail: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md).
+Evidence owner: [task group](docs/planning/gpt6-documentation-refresh-task-group.json), `lifecycle_parity`; detail: [plan](docs/planning/2026-11-03-gpt6-documentation-refresh.md).
 
 Current verification receipt: Full discovery: Ran 1253 tests in 675.268s; FAILED (failures=2, skipped=1). Two obsolete Completion Brief assertions corrected; complete hook-governance (5 tests) and renderer (28 tests) modules passed. No implementation change was needed for these failures. All remaining integrated commands exit 0; final focused/docs/status gates are recorded separately.
 
@@ -841,7 +841,7 @@ SHA256: 1f26bc0a71c24ebdb9518cc94a647ec9791078a2871768760bf059bfb5726bff
 
 `PAOS-CONTRACT-MODEL-ALIGNMENT-2026-11-03`: `implemented_locally_verified / behavioral_promotion_pending`. Parent permissions and MCP inheritance aligned; 23 active/staged profiles pinned to GPT-6.1 Sol/Terra with preserved effort; inherited skills moved to parent; validators and renderer reject unsupported contracts; lifecycle validator follows the explicit current plan.
 
-Current verification: Ran 1247 tests in 611.387s; OK (skipped=1); fixture/transcript eval, compatibility, 15 active agents, both hook validators, RU/EN task matrices, state consistency, docs checker and diff check exit 0. Detailed evidence, source receipts and rollback: [plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md) and [task group](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json).
+Current verification: Ran 1247 tests in 611.387s; OK (skipped=1); fixture/transcript eval, compatibility, 15 active agents, both hook validators, RU/EN task matrices, state consistency, docs checker and diff check exit 0. Detailed evidence, source receipts and rollback: [plan](docs/planning/2026-11-03-gpt6-documentation-refresh.md) and [task group](docs/planning/gpt6-documentation-refresh-task-group.json).
 
 Fresh-session effective permissions/MCP/model availability and quality/cost/latency comparison remain unverified. No provider calls, browser, hook activation, target mutation, Git publication or root site update.
 
@@ -874,11 +874,11 @@ SHA256: 77bbb00007bc53505d9b3e16a97912bf920565168386697931b90dd0ab09d79c
 
 ~~~~
 
-### 59. REQUIREMENTS.md — | Batch 42 instruction/tool-use compliance | Planned only; source matrix covers Product-Agent OS auto-engagement, skill exposure, implicit invocation policy, route/eval hardening, staged `self-learning-loop`, system-file hygiene triage and closure. | `docs/superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json`, `docs/sources/product-agent-os-track-10-backlog.md`, `RUNLOG.md` |
+### 59. REQUIREMENTS.md — | Batch 42 instruction/tool-use compliance | Planned only; source matrix covers Product-Agent OS auto-engagement, skill exposure, implicit invocation policy, route/eval hardening, staged `self-learning-loop`, system-file hygiene triage and closure. | `docs/superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json`, `docs/planning/product-agent-os-track-10-backlog.md`, `RUNLOG.md` |
 
 SHA256: f7d9eae92de775116174fa34d01fcfdac691ca24ed495c33291c1caf96000fc2
 
 ~~~~text
-| Batch 42 instruction/tool-use compliance | Planned only; source matrix covers Product-Agent OS auto-engagement, skill exposure, implicit invocation policy, route/eval hardening, staged `self-learning-loop`, system-file hygiene triage and closure. | `docs/superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json`, `docs/sources/product-agent-os-track-10-backlog.md`, `RUNLOG.md` |
+| Batch 42 instruction/tool-use compliance | Planned only; source matrix covers Product-Agent OS auto-engagement, skill exposure, implicit invocation policy, route/eval hardening, staged `self-learning-loop`, system-file hygiene triage and closure. | `docs/superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json`, `docs/planning/product-agent-os-track-10-backlog.md`, `RUNLOG.md` |
 
 ~~~~

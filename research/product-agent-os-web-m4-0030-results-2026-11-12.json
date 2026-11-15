@@ -38,8 +38,8 @@
     "tests/web/desktop-local.test.mts": "2124efedfff3c14c0aaebf6cbd9712dddfeebc9a87fcc4b645eb01ee47d3a3c5",
     "tests/web/single-window/m4-packaging-acceptance.mts": "acf60bda828cb30cb6386cdf45aa38650d0f1fbddf3539c604957c7cb8123c67",
     "tests/web/single-window/m4-packaging-native-cancel.ps1": "0198d5907e5e5ef39c56ab24049ef6e23c9689e253e13e82cd36b9d7e8318e74",
-    "research/product-agent-os-web-task-manager-plan-2026-11-09.md": "478b1cc84ab9d6b1481c5e51cb4fcaa896d9817bda8e4f0a4674b324aa8f7bf7",
-    "research/product-agent-os-web-task-manager-task-group-2026-11-09.json": "571d241dca7434a207682477d7b69367dded0c3c47cc68d63f1f1afdc9fea20e"
+    "docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md": "478b1cc84ab9d6b1481c5e51cb4fcaa896d9817bda8e4f0a4674b324aa8f7bf7",
+    "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json": "571d241dca7434a207682477d7b69367dded0c3c47cc68d63f1f1afdc9fea20e"
   },
   "checks": {
     "web": {

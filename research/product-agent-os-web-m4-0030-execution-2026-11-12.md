@@ -127,7 +127,7 @@ python -B plugins/product-agent-os/scripts/run_transcript_eval.py
 python -B plugins/product-agent-os/scripts/validate_codex_compatibility.py
 python -B plugins/product-agent-os/scripts/validate_hooks.py .codex/hooks.json
 python -B plugins/product-agent-os/scripts/validate_hooks.py .codex/hooks
-python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-web-task-manager-plan-2026-11-09.md
+python -B plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md
 python -B plugins/product-agent-os/scripts/validate_task_state_consistency.py
 python -B tools/check_docs.py
 git diff --check

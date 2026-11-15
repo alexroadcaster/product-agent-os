@@ -420,7 +420,7 @@ def _eval_case(
         "split": split,
         "privacy_status": privacy_status,
         "source_evidence": [
-            "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md",
+            "docs/planning/2026-06-20-track-11-documentation-architecture-refresh.md",
             "docs/superpowers/specs/batch44-self-learning-loop-current-gap-audit.json",
         ],
         "owner_review_status": "pending_or_synthetic",

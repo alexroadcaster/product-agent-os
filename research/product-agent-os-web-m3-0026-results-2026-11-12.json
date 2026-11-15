@@ -339,7 +339,7 @@
     "tests/web/decision-service.test.mts": "d96fa3a70f27e8088f757948f1c4033b601f9f937f1bcae0eb3c96d353740dff",
     "tests/web/decisions.test.mts": "08905dc63bed8eb5c86c287c3b99ec01780d1869165572abd4c29fd6b0322e61",
     "tests/web/single-window/m3-decisions-acceptance.mts": "891e09dccd430d802326b84b5be84da03bf29dab5bd3619716c72f18ecdbc6b7",
-    "research/product-agent-os-web-task-manager-plan-2026-11-09.md": "814adcfe82658545566678a2ca865ef62e10e73d7030388163943924f2f8eeff",
-    "research/product-agent-os-web-task-manager-task-group-2026-11-09.json": "f005938ad321cc3e368a8dbbc2856504cdaec726e2c199e3bb5ea7f3086cb04c"
+    "docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md": "814adcfe82658545566678a2ca865ef62e10e73d7030388163943924f2f8eeff",
+    "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json": "f005938ad321cc3e368a8dbbc2856504cdaec726e2c199e3bb5ea7f3086cb04c"
   }
 }

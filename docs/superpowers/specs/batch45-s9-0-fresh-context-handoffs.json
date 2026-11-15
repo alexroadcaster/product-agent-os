@@ -5,8 +5,8 @@
   "status": "implemented_local_handoffs_verified_no_dispatch",
   "checked_at": "2026-08-10",
   "source_status": "Source-owned fresh-context handoffs for future B45-CQRR-T23..T34 work. Handoff completeness is local planning evidence only; it does not prove agent execution, implementation, runtime behavior, reviewer judgment, promotion or production readiness.",
-  "parent_plan": "docs/superpowers/plans/2026-08-10-batch45-s9-0-team-readiness.md",
-  "task_group": "docs/superpowers/specs/batch45-code-quality-runtime-recovery-task-group.json",
+  "parent_plan": "docs/planning/2026-08-10-batch45-s9-0-team-readiness.md",
+  "task_group": "docs/planning/batch45-code-quality-runtime-recovery-task-group.json",
   "agent_team": "docs/superpowers/specs/batch45-code-quality-runtime-recovery-agent-team.json",
   "packet_resolution_rule": "Each task packet is complete when read together with global_execution_contract in this same artifact. A worker must read only the named task sources and current owned files, not raw chat history. Any conflict with the task group, team plan, active AGENTS.md or current source evidence is a stop condition.",
   "global_execution_contract": {

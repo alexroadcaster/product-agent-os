@@ -19,7 +19,7 @@
     "plugins/product-agent-os/scripts/product_agent_os/self_learning_progress.py",
     "tests/product_agent_os/test_agent_skill_metrics.py",
     "docs/superpowers/specs/batch44-self-learning-loop-metrics-evals-summary.json",
-    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md",
+    "docs/planning/2026-06-20-track-11-documentation-architecture-refresh.md",
     "REQUIREMENTS.md",
     "PLAN.md",
     "TEST.md",

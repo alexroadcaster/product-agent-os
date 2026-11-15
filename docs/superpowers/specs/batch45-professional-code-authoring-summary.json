@@ -147,7 +147,7 @@
       ]
     },
     {
-      "path": "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md",
+      "path": "docs/planning/2026-06-20-track-11-documentation-architecture-refresh.md",
       "declared_scope": "Batch 45 two-loop synthesis, entity audit, activation mechanism audit, task matrix and acceptance ceiling",
       "used_for": [
         "B45-PCA-M01",

@@ -140,7 +140,7 @@ The documentation audit does not promote package compatibility into proven opera
 | OPEN-BASELINE | Legacy requirement repaired; parent and rendered config semantics validated | Local regression gates; no runtime claim |
 | OPEN-RUNTIME | New Agents API/Responses capabilities are documented | Separate implementation and runtime evidence if the route is selected |
 
-The owner authorized technical follow-up on 2026-11-03. Configuration, profiles, templates and validators are updated; activation and behavioral promotion remain open. Exact commands and results belong to the [plan](../superpowers/plans/2026-11-03-gpt6-documentation-refresh.md).
+The owner authorized technical follow-up on 2026-11-03. Configuration, profiles, templates and validators are updated; activation and behavioral promotion remain open. Exact commands and results belong to the [plan](../planning/2026-11-03-gpt6-documentation-refresh.md).
 
 ## Components and runtime evidence
 

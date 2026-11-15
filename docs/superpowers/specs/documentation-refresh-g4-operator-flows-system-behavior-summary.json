@@ -170,7 +170,7 @@
     "tests/product_agent_os/test_product_agent_os_docs.py",
     "docs/sources/registry.md",
     "docs/sources/registry.en.md",
-    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md",
+    "docs/planning/2026-06-20-track-11-documentation-architecture-refresh.md",
     "REQUIREMENTS.md",
     "PLAN.md",
     "TEST.md",

@@ -48,8 +48,8 @@ The closure evidence surface is named `regular site/ rebuild evidence`. Actual c
 Closure sync touches:
 
 - `docs/sources/registry.md`;
-- `docs/sources/product-agent-os-track-10-backlog.md`;
-- `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md`;
+- `docs/planning/product-agent-os-track-10-backlog.md`;
+- `docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md`;
 - `tools/check_docs.py`;
 - `tests/product_agent_os/test_product_agent_os_docs.py`;
 - root control-plane files: `AGENTS.md`, `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`;

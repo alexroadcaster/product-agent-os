@@ -13,7 +13,7 @@
     "static_warning_delta_can_promote": false
   },
   "source_files_used": [
-    "docs/superpowers/specs/batch45-post-q4-next-tasks.json",
+    "docs/planning/batch45-post-q4-next-tasks.json",
     "docs/superpowers/specs/batch45-agent-behavior-eval-plan.json",
     "docs/superpowers/specs/batch45-agent-behavior-eval-results.json",
     "docs/superpowers/specs/batch45-real-project-decision-packet.json"

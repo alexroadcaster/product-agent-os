@@ -22,7 +22,7 @@ Source status: `official + verified methodology + tool-assisted research in prog
 | in_progress | Добавить недостающие источники в registry. | В registry добавляются новые источники для ATDD/BDD, DDD, metrics, ADR/MADR, Structurizr, diagram tools, code/API/DB docs, docs portals, lint/release policy. |
 | planned | Для каждой методологии подготовить deep-dive карточку. | Ожидаемый формат: источник, краткая суть, когда применять, когда не применять, артефакт plugin, eval/gate, риски. |
 | done | Сопоставить research с уже реализованным plugin. | Gap matrix сохранена в [development-methodology-gap-matrix.md](development-methodology-gap-matrix.md). |
-| done | Детализировать Track 8 по методологиям, стандартам и инструментам. | Execution backlog сохранен в [product-agent-os-track-8-detailed-backlog.md](product-agent-os-track-8-detailed-backlog.md). |
+| done | Детализировать Track 8 по методологиям, стандартам и инструментам. | Execution backlog сохранен в [product-agent-os-track-8-detailed-backlog.md](../planning/product-agent-os-track-8-detailed-backlog.md). |
 | done | Расширить Track 8 scenario workflows. | Backlog дополнен режимами `bug_rescue`, `greenfield_idea`, `complex_system_acceleration`, usage mode classifier, integration catalog и scenario-specific readiness gates. |
 | done | Провести финальный pre-development review. | Критический анализ, 10 дополнительных сценариев и итоговые рекомендации сохранены в [product-agent-os-final-predevelopment-review.md](product-agent-os-final-predevelopment-review.md). |
 | done | Финально расширить backlog перед разработкой. | Backlog дополнен режимами `pr_review`, `legacy_onboarding`, `api_migration`, `ai_eval_regression`, `native_mobile_feature`, `desktop_local_first`, `data_migration`, `security_sensitive_change`, `ci_stabilization`, `release_packaging`, mode stack, fixture coverage and plugin success metrics. |
@@ -101,6 +101,6 @@ Source status: `official + verified methodology + tool-assisted research in prog
 1. Deep-dive карточки по DDD, ATDD/BDD, data-informed metrics, docs-as-code governance.
 2. Decision matrix для documentation stack selection.
 3. Gap matrix: source claim -> plugin artifact -> eval/check -> residual risk - сохранена в [development-methodology-gap-matrix.md](development-methodology-gap-matrix.md).
-4. Track 8 detailed backlog: [product-agent-os-track-8-detailed-backlog.md](product-agent-os-track-8-detailed-backlog.md).
+4. Track 8 detailed backlog: [product-agent-os-track-8-detailed-backlog.md](../planning/product-agent-os-track-8-detailed-backlog.md).
 5. Final pre-development review: [product-agent-os-final-predevelopment-review.md](product-agent-os-final-predevelopment-review.md).
 6. Track 8 implementation: tests first, then templates/evals/discovery updates, scenario fixture eval, docs and full verification.

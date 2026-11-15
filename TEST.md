@@ -36,7 +36,7 @@ Codex compatibility проверяется при изменении manifest/co
 
 Все датированные результаты ниже относятся к указанным срезам. Они не являются проверками текущего запуска и не задают обязательный набор для новой задачи. Сохранённые старые формулировки «mandatory», «обязательны» и «full gates» описывают прежний маршрут и superseded текущей таблицей.
 
-[FUNC](research/functional-remediation-2026-11-15.md)
+[FUNC](docs/planning/functional-remediation-2026-11-15.md)
 
 ## MD-отчёты и чтение — 15.11.2026
 
@@ -74,7 +74,7 @@ G8 commands: `python -B -m unittest discover -s tests -p "test_*.py" -q`; focuse
 
 ## Проверки Web M1 — актуальный маршрут 2026-11-10
 
-M5 planning-only, 13-11-2026: `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -v`; `python -B tools/check_docs.py`; `python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-web-task-manager-plan-2026-11-09.md`; `python -B plugins/product-agent-os/scripts/validate_task_state_consistency.py .`; `git diff --check`. Проверить MD/JSON M5 parity и preservation baseline `.tmp/paos-m5-plan/baseline`; receipts — `.tmp/paos-m5-plan/`. [M5 / план v0.9](research/product-agent-os-web-task-manager-plan-2026-11-09.md#paos-m5). Runtime/DB/SIWC acceptance не выполняется.
+M5 planning-only, 13-11-2026: `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -v`; `python -B tools/check_docs.py`; `python -B plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md`; `python -B plugins/product-agent-os/scripts/validate_task_state_consistency.py .`; `git diff --check`. Проверить MD/JSON M5 parity и preservation baseline `.tmp/paos-m5-plan/baseline`; receipts — `.tmp/paos-m5-plan/`. [M5 / план v0.9](docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md#paos-m5). Runtime/DB/SIWC acceptance не выполняется.
 
 PAOS-0030: `node --test tests/web/desktop-local.test.mts`, full Web, `npm run check:web-m1`, `npm run build:web`; `m4-packaging-acceptance.mts --approved-copy-pilot` с installed Playwright/Chromium/screenshots, включая owned native Cancel. Strict MkDocs в `.tmp/paos-m4-0030/site-final` + file-link postprocess; `$env:PAOS_DOCS_SITE_DIR='.tmp/paos-m4-0030/site-final'` для docs/full Python. Full unittest/evals/compatibility/hooks/matrix/state/docs/diff по этому TEST. [Exact commands и current receipts](research/product-agent-os-web-m4-0030-execution-2026-11-12.md).
 
@@ -100,7 +100,7 @@ PAOS-0030: `node --test tests/web/desktop-local.test.mts`, full Web, `npm run ch
 
 Source status: local contract checks and isolated stdio observed / Web runtime qualification blocked.
 
-[Web-план v0.8](research/product-agent-os-web-task-manager-plan-2026-11-09.md), раздел «Матрица M1 DoD», владеет соответствием acceptance → owner task. PRD §17 / architecture §21 задают M1 profile. Первый срез проверяется `node --test tests/web/*.test.mts` и `node packages/contracts/runtime/probe-local.mts .tmp/paos-m1/schema`. Команда генерации схемы, observed tuple и открытые gates находятся в [evidence PAOS-0001/0054](research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+[Web-план v0.8](docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md), раздел «Матрица M1 DoD», владеет соответствием acceptance → owner task. PRD §17 / architecture §21 задают M1 profile. Первый срез проверяется `node --test tests/web/*.test.mts` и `node packages/contracts/runtime/probe-local.mts .tmp/paos-m1/schema`. Команда генерации схемы, observed tuple и открытые gates находятся в [evidence PAOS-0001/0054](research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
 
 Повторная оценка без запуска процесса выполняется `node packages/contracts/runtime/probe-local.mts .tmp/paos-m1/schema <stdio-receipt> [<windows-boundary-receipt>]`. Для первого stdio receipt ожидаются `project_history` и `scoped_execution_policy`. Для второго с любым из двух текущих Windows receipts ожидается `scoped_execution_policy`. Для положительной квалификации нужен совпадающий SHA-256 бинарника, подтверждённый native MXC и результат записи в корень и явного отказа для доступного до запуска внешнего контроля. [Команды, receipts и ограничения](research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
 
@@ -127,37 +127,37 @@ T07: full unittest 1379 / 516.855 s / exit 0 (1 platform skip); docs 105 / 7.834
 
 G6 partially_verified: GAP-06 implemented / owner accepted 10.11.2026; все три synthetic local pilots приняты владельцем. HOST-01 не является их зависимостью. T34 no-go и fresh-session activation HOST-01/HOST-02 остаются открытыми отдельно; manual_only сохраняется. [Результаты](docs/superpowers/specs/paos-aud-g6-pilot-results.json).
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G5 — 2026-11-09
 
 G5: 105 docs tests passed; check_docs, README CLI dry-run, compatibility и strict MkDocs exit 0; 368 HTML / 220 routes без link/anchor/search gaps; 93/93 Mermaid renders. Команды, RED/GREEN, retries и final logs — owning evidence и .docs-tools/reports/paos-aud-g5/. Installer tests используют stubs, не установку.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G4 — 2026-11-09
 
 Full final: 1326 tests, 540.818 s, OK (skipped=1), exit 0; final focused 253 OK; template contracts 95 OK; fixtures 91/91; transcripts 26/26; compatibility exit 0, local structure only. Failed attempts и measurement provenance — owning plan. Final docs/matrix/consistency/diff checks обязательны после closure edits.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G3 — 2026-11-09
 
 PAOS-AUD-G3: Full unittest: 1320 tests, 725.771 s, OK (skipped=1); final focused 78 tests OK; fixture 91/91; transcript 26/26; compatibility passed (local structure only). Current pointer только в PLAN.md; mismatch запрещает fallback. Source-policy needs_review не равен failed parser test. Failed attempts, UTC fixture correction, final checks и provenance — owning evidence.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G2 — 2026-11-09
 
 PAOS-AUD-G2: full discovery 1305 tests, 748.949 s, OK (skipped=1), exit 0; final affected+docs 122 passed, после refactor final contracts 22 passed; fixture 91/91, transcript 26/26; compatibility exit 0, local structure only. Docs checker, hook validators и diff check passed. Проверять malformed/duplicate MCP, precedence, IDE unsupported conflict, unknown/old/version-surface, model mismatch, cache drift и read-only CLI; TEMP/TMP под ignored .docs-tools/reports/paos-aud-g2. Точные результаты и failed attempts — owning evidence.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G1 — 2026-11-09
 
 PAOS-AUD-G1: full discovery 1297 tests, 532.640 s, OK (skipped=1), exit 0; affected suite 216 tests passed; final merge/renderer 67 tests passed после последнего alias-hardening. Fixture 91/91, transcript 26/26, docs 100/100; hook validators, parity/AST и native rules checks passed. Compatibility exit 1 needs_review — существующий G2/F01 legacy MCP gap. Даты, команды, failed attempts и provenance — owning evidence. Для повторения использовать ignored workspace TEMP/TMP под .docs-tools/reports/paos-aud-g1/tmp и PYTHONDONTWRITEBYTECODE=1; прежние TEMP cleanup failures не скрыты.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## Session lifecycle regression — 2026-11-09
 
@@ -165,7 +165,7 @@ PAOS-AUD-G1: full discovery 1297 tests, 532.640 s, OK (skipped=1), exit 0; affec
 
 ## Ordinary route integration — 2026-11-05
 
-`PAOS-ORD-01-06-2026-11-05`: verify public contract and infrastructure CLIs, malformed/unknown/stale task inputs, RU/EN/no-builder parity, sensitive Windows paths, mandatory project checks, approval/source-policy guards, isolated RED/GREEN behavior and target-file preservation. Commands and current receipts: [owning plan](research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md). Final integrated verification passed: 1272 tests, 753.848s, OK (skipped=1), exit 0; fixture 91, transcript 26/26, compatibility and docs gates passed. Run the full unittest suite, fixture/transcript evals, compatibility validator, docs tests, docs checker and diff check. This slice uses an isolated TEMP and `PYTHONDONTWRITEBYTECODE=1`; sandbox TEMP failures are setup failures, not behavior evidence. Strict MkDocs output is isolated under `.docs-tools/reports/ordinary-route-preview`; root `site/` remains the earlier documentation build. Host activation and provider/model comparisons are separate gates.
+`PAOS-ORD-01-06-2026-11-05`: verify public contract and infrastructure CLIs, malformed/unknown/stale task inputs, RU/EN/no-builder parity, sensitive Windows paths, mandatory project checks, approval/source-policy guards, isolated RED/GREEN behavior and target-file preservation. Commands and current receipts: [owning plan](docs/planning/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md). Final integrated verification passed: 1272 tests, 753.848s, OK (skipped=1), exit 0; fixture 91, transcript 26/26, compatibility and docs gates passed. Run the full unittest suite, fixture/transcript evals, compatibility validator, docs tests, docs checker and diff check. This slice uses an isolated TEMP and `PYTHONDONTWRITEBYTECODE=1`; sandbox TEMP failures are setup failures, not behavior evidence. Strict MkDocs output is isolated under `.docs-tools/reports/ordinary-route-preview`; root `site/` remains the earlier documentation build. Host activation and provider/model comparisons are separate gates.
 
 ## Documentation site refresh — 2026-11-05
 
@@ -205,7 +205,7 @@ Compatibility gate after PAOS-AUD-G2: `validate_codex_compatibility.py` exits 0 
 | Batch 44 | Self-Learning Loop S0-S7 are local/staged/manual evidence. | Run focused state/extensions/docs tests before S8 decision; no automation claim without owner approval and activation proof. |
 | Batch 45 | A04-A06 locally implement/focused-verify T23-T29. T28: families 34 (limit 98), exceptions 3 (limit 10), combined test LOC 5658 (<8130 baseline), focused route 48/48. T29/promotion: 23/23. | Local contracts only; T30-T33, live/CLI/provider/external reviewer/model behavior/promotion and T34 exact approval remain open. |
 | Track 11 DOC-M25 | Root `site`, search and sitemap freshness are source-owned by DOC-M25 packet. | Root site freshness checks prove generated site/search/sitemap only; browser proof and broad scans remain separate. |
-| GPT-5.6 `.codex` remediation | R1-R6 current evidence: agent validator 15/15 with zero config errors; focused contracts 184 OK; docs 100 OK; hooks 19 OK plus both hook validators; strict doctor 0 fail; fixture eval exit 0; transcript eval 26/26; compatibility `compatible`; full discovery 1195 OK with 1 skip; docs structure OK. Source: `docs/superpowers/plans/2026-08-05-gpt56-r1-r6-remediation.md`. | Maintain final diff/task-plan hygiene. Separately restart Codex for fresh MCP/`SessionStart` activation proof and run same-effort/one-lower-effort behavioral comparisons before promotion. |
+| GPT-5.6 `.codex` remediation | R1-R6 current evidence: agent validator 15/15 with zero config errors; focused contracts 184 OK; docs 100 OK; hooks 19 OK plus both hook validators; strict doctor 0 fail; fixture eval exit 0; transcript eval 26/26; compatibility `compatible`; full discovery 1195 OK with 1 skip; docs structure OK. Source: `docs/planning/2026-08-05-gpt56-r1-r6-remediation.md`. | Maintain final diff/task-plan hygiene. Separately restart Codex for fresh MCP/`SessionStart` activation proof and run same-effort/one-lower-effort behavioral comparisons before promotion. |
 | Lifecycle hooks / `B45-S9-H01` | Focused lifecycle/template suite 121/121 OK; both hook validators OK; docs 100/100 and checker OK; fixture eval exit 0; transcript eval 26/26; compatibility `compatible`. Broad discovery ran 1199 tests with one `Source status` formatting failure in the existing Batch 45 plan; the marker was corrected and the exact source-policy regression test reran green. Direct five-run script timing is diagnostic only: read fast path averaged 93.5 ms and current-file advisory 110.7 ms. | Use `/hooks` to review and trust changed hashes, then start a fresh task to collect real hook-runtime latency/activation evidence. Do not treat direct script timing as Codex App hook activation proof. |
 
 ## Batch-Specific Check Routes
@@ -254,16 +254,16 @@ For real-project target tests, the default verification mode is read-only: inven
 
 | Marker | Evidence owner |
 | --- | --- |
-| `T10-LIVE-M41`, `owner_closed_no_op_git_release_pr` | `docs/sources/product-agent-os-track-10-backlog.md`, `docs/sources/product-agent-os-batch35-approval-packet-draft.md` |
-| `blocked_pending_explicit_cache_mutation_approval`, `B38-S2` | `docs/sources/product-agent-os-track-10-backlog.md`, `docs/product-agent-os/control-plane-current-state.md` |
+| `T10-LIVE-M41`, `owner_closed_no_op_git_release_pr` | `docs/planning/product-agent-os-track-10-backlog.md`, `docs/sources/product-agent-os-batch35-approval-packet-draft.md` |
+| `blocked_pending_explicit_cache_mutation_approval`, `B38-S2` | `docs/planning/product-agent-os-track-10-backlog.md`, `docs/product-agent-os/control-plane-current-state.md` |
 | `B39-TEST-M01..M54`, `B39-S1..B39-S5` | `prod_test.md`, B39 packets |
-| `B40-S2..B40-S5`, `manual_only`, `not_promoted` | `docs/sources/product-agent-os-track-10-backlog.md` |
+| `B40-S2..B40-S5`, `manual_only`, `not_promoted` | `docs/planning/product-agent-os-track-10-backlog.md` |
 | `B41-S1..S9` | B41 packets and Track 10 backlog |
 | `B42-S1..S5` | `docs/superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json` |
 | `B44-S0..S7` | B44 packets and Track 11 plan |
 | `B45-PCA-M24..M27`, `B45-PCA-M37-A01`, `B45-POSTQ4-T15-A01`, `B45-POSTQ4-T16-T22-A01`, `B45-POSTQ4-T17-A01`, `B45-POSTQ4-T18-A01`, `B45-POSTQ4-T19-A01`, `B45-POSTQ4-T20-A01`, `B45-POSTQ4-T20-A02`, `B45-POSTQ4-T20-A03`, `B45-POSTQ4-T21-PREFLIGHT-A01`, `B45-POSTQ4-T21-PREFLIGHT-A02`, `B45-POSTQ4-T21-PREFLIGHT-A03`, `B45-POSTQ4-T21-COST-WAIVED-RUN-A01`, `B45-POSTQ4-T22-A02`, `B45-CQRR-A01`, `B45-CQRR-A02`, `B45-CQRR-A03`, `B45-CQRR-T23..T34` | B45 packets, Track 11 plan and registry |
 | `DOC-M34..DOC-M41`, `DOC-M25` | Track 11 plan and documentation-refresh packets |
-| Track 8 / Track 9 / Track 10 | `docs/sources/product-agent-os-track-8-detailed-backlog.md`, `docs/sources/product-agent-os-track-9-backlog.md`, `docs/sources/product-agent-os-track-10-backlog.md` |
+| Track 8 / Track 9 / Track 10 | `docs/planning/product-agent-os-track-8-detailed-backlog.md`, `docs/planning/product-agent-os-track-9-backlog.md`, `docs/planning/product-agent-os-track-10-backlog.md` |
 | Source registry | `docs/sources/registry.md`, `docs/sources/registry.en.md` |
 
 ## Compatibility Anchors
@@ -284,7 +284,7 @@ Do not say that a feature works, a bug is fixed, tests pass, a release is ready,
 
 Task: `PAOS-DOCS-REFRESH-2026-11-03`. Run the mandatory docs/control-plane route above, both new task-matrix validators, changed TOML/JSON example parsing, semantic RU/EN review, official-link/source comparison, protected-file hashes and strict MkDocs with `--site-dir .docs-tools/reports/gpt6-docs-preview`. The existing `.venv-docs` runtime is used without dependency installation. A preview build does not update or prove freshness of root `site/` and is not browser evidence.
 
-Initial check after plan creation: combined four-module suite ran 224 tests, exit 1 (15 failures, 33 errors); errors include Windows temporary-directory permissions, new-page counts and a legacy validator hardcoding the August plan. Both hook validators and docs checker passed. Agent validator remains exit 1: `project config must set sandbox_mode = workspace-write`; this was already found in the read-only audit and is outside implementation scope. These are initial observations, not final acceptance. Current final evidence belongs to the [refresh plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md) and RUNLOG.
+Initial check after plan creation: combined four-module suite ran 224 tests, exit 1 (15 failures, 33 errors); errors include Windows temporary-directory permissions, new-page counts and a legacy validator hardcoding the August plan. Both hook validators and docs checker passed. Agent validator remains exit 1: `project config must set sandbox_mode = workspace-write`; this was already found in the read-only audit and is outside implementation scope. These are initial observations, not final acceptance. Current final evidence belongs to the [refresh plan](docs/planning/2026-11-03-gpt6-documentation-refresh.md) and RUNLOG.
 
 Docs inventory maintenance accounts for three new localized page pairs while preserving historical site-promoted counts and pending-site semantics. It does not weaken assertions. Temporary files use an authorized workspace directory if the inherited TEMP cannot support the tests. Repeat only checks whose inputs or execution environment changed.
 

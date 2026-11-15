@@ -9,7 +9,7 @@
     "t05_result": "docs/superpowers/specs/batch45-postq4-t05-live-model-rerun-results.json",
     "t05_result_status": "stopped_on_timeout_inconclusive_no_go",
     "t04_original_packet": "docs/superpowers/specs/batch45-postq4-live-model-rerun-approval-packet.json",
-    "post_q4_queue": "docs/superpowers/specs/batch45-post-q4-next-tasks.json",
+    "post_q4_queue": "docs/planning/batch45-post-q4-next-tasks.json",
     "reason_for_revision": "T05 consumed the exact approval and stopped on a baseline timeout before treatment or reviewer comparison, so any rerun needs a new explicit packet and approval."
   },
   "decision_target": {

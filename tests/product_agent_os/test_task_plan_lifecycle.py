@@ -107,7 +107,7 @@ class TaskPlanLifecycleTest(unittest.TestCase):
     def test_lifecycle_uses_explicit_plan_with_bounded_local_path(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            group = root / "docs/superpowers/specs/batch45-code-quality-runtime-recovery-task-group.json"
+            group = root / "docs/planning/batch45-code-quality-runtime-recovery-task-group.json"
             group.parent.mkdir(parents=True)
             group.write_text(json.dumps({"tasks": [], "latest_execution_evidence_id": "B45-CQRR-A06"}), encoding="utf-8")
             marker = root / ".codex/product-agent-os/lifecycle-state.json"

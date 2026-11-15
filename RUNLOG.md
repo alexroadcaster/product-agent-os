@@ -1,12 +1,20 @@
 # RUNLOG.md
 
+## Группы документации — 15.11.2026
+
+В [плане DOCS-01–16](docs/planning/documentation-architecture-2026-11-15.md) сохранены 7 групп DG01–DG07. DG01 первым устраняет links/localization/build и устаревшие проверки: DOCS-16/A + DOCS-13/A; их финальные этапы остаются DG07/DG06. 16 задач / 18 этапов, статусы planned; исходные AC/Depends/Blocks сохранены. Matrix/source-docs 3/3/check_docs/diff и сохранность карточек, membership, stage DAG, first gate — passed; self_review. Ни исправления, ни написание разделов не выполнялись. Ранее выявленные site/archive/build gaps остаются открыты. Следующий шаг при отдельном запросе реализации — DG01.
+
+## Перенос planning и аудит документации — 15.11.2026
+
+42 файла перенесены в `docs/planning`; [карта](docs/planning/relocation-2026-11-15.json) и [backlog PAOS-DOCS-01–16](docs/planning/documentation-architecture-2026-11-15.md) владеют деталями. Исправлены references и path-dependent checks; app features не менялись. 120 focused tests passed; source/matrix/diff проверки пройдены. Архив 98/6 failures, preview site 7/4 failures; strict build exit1 (repository-only ссылки и 8 EN gaps). Полные результаты — evidence-раздел backlog; website publication не готова. Дальнейшая работа: DOCS-01 → доменные документы; FUNC/Web statuses и их семь групп сохранены.
+
 ## Проверки по изменённому контракту — 15.11.2026
 
 `PAOS-SCOPED-VERIFICATION-2026-11-15`: текущий маршрут в TEST; source docs отделены от opt-in site/archive, повторные eval CLI и per-write advisories убраны. Default document size advisory; explicit limits, permission/data guards и recovery сохранены. [Изменения, focused checks и ограничения](research/product-agent-os-scoped-verification-2026-11-15.md). Общий suite и новая сборка сайта не запускались; fresh-session loading не заявляется.
 
 ## Функциональная матрица после V3 — 15.11.2026
 
-Обновлена [матрица и evidence](research/functional-remediation-2026-11-15.md): 34 FUNC задачи распределены ровно по одному разу в 7 delivery groups; три M5 ссылки отдельно. Исходные AC/Depends/Blocks/order/status/estimates сохранены; добавлены group membership, cross-group edges, внутренние ветки, UI/UX outcomes, ownership и exit gates. Старт определяется задачей, полное закрытие G07 требует G01–G06. Matrix/scoped-docs/diff и MD/JSON membership/DAG/preservation passed; source-docs tests 3/3; предыдущие PoC-planning receipts сохранены. Реализация/PoC/runtime не запускались.
+Обновлена [матрица и evidence](docs/planning/functional-remediation-2026-11-15.md): 34 FUNC задачи распределены ровно по одному разу в 7 delivery groups; три M5 ссылки отдельно. Исходные AC/Depends/Blocks/order/status/estimates сохранены; добавлены group membership, cross-group edges, внутренние ветки, UI/UX outcomes, ownership и exit gates. Старт определяется задачей, полное закрытие G07 требует G01–G06. Matrix/scoped-docs/diff и MD/JSON membership/DAG/preservation passed; source-docs tests 3/3; предыдущие PoC-planning receipts сохранены. Реализация/PoC/runtime не запускались.
 
 ## MD-отчёты и чтение — 15.11.2026
 
@@ -14,7 +22,7 @@
 
 ## Desktop UI/UX — внедрение 13.11.2026
 
-V3 repair: сетки и внутренние экраны перенесены; visual review85×2, final web500 и V3 browser378 passed; functional team/workflow51 passed. UI-10 motion/reduced motion проверены. [План](design/2026-11-13-v3/implementation-plan.md), [evidence](design/2026-11-13-v3/implementation-evidence.md). UI-01–UI-12 in_progress до приёмки; usage unavailable, existing Chrome final reload не наблюдался (Debugger unattached). Backend/API/providers не менялись.
+V3 repair: сетки и внутренние экраны перенесены; visual review85×2, final web500 и V3 browser378 passed; functional team/workflow51 passed. UI-10 motion/reduced motion проверены. [План](docs/planning/2026-11-13-v3-ui-implementation-plan.md), [evidence](design/2026-11-13-v3/implementation-evidence.md). UI-01–UI-12 in_progress до приёмки; usage unavailable, existing Chrome final reload не наблюдался (Debugger unattached). Backend/API/providers не менялись.
 
 ## Startup UX — 13.11.2026
 
@@ -46,7 +54,7 @@ G8-T14/G8 owner accepted. G9 T01–T09 локально реализованы; 
 
 ## Старт Web M1 — 2026-11-10
 
-M5, 13-11-2026: по решению владельца PAOS-0047/0052/0053 объединены в [M5 / план v0.9](research/product-agent-os-web-task-manager-plan-2026-11-09.md#paos-m5); все planned, 60ч, прежние ID/order/dependencies/actual time сохранены. MD/JSON/PRD/architecture/auth/registry синхронизированы. Проверки текущего запуска: docs105/105 (11.802s), matrix/state/docs/diff exit0; preservation passed — другие53MDcards побайтно и JSON objects без изменений. Финальные receipts/source hashes — `.tmp/paos-m5-plan/results.json`; baseline/recovery сохранены в `.tmp/paos-m5-plan/`. Оценки прежние: M5=60ч, общий объём776ч; до M4 включительно716ч с8ч POST_M1 review. Следующий шаг — team design0052; SIWC отдельно после admission. Без runtime/provider/hosting/transfer/Git действий.
+M5, 13-11-2026: по решению владельца PAOS-0047/0052/0053 объединены в [M5 / план v0.9](docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md#paos-m5); все planned, 60ч, прежние ID/order/dependencies/actual time сохранены. MD/JSON/PRD/architecture/auth/registry синхронизированы. Проверки текущего запуска: docs105/105 (11.802s), matrix/state/docs/diff exit0; preservation passed — другие53MDcards побайтно и JSON objects без изменений. Финальные receipts/source hashes — `.tmp/paos-m5-plan/results.json`; baseline/recovery сохранены в `.tmp/paos-m5-plan/`. Оценки прежние: M5=60ч, общий объём776ч; до M4 включительно716ч с8ч POST_M1 review. Следующий шаг — team design0052; SIWC отдельно после admission. Без runtime/provider/hosting/transfer/Git действий.
 
 PAOS-0030: переносимый package/CLI и согласованный codex_docs copy pilot выполнены;88actual checks/3phases + native Cancel, Web482. Astra/medium mapping/review: P2 shared reservation исправлен; actual startup выявил missing parser/preferences closure и internal preference relocation, исправлено без изменения native pin. [Owning evidence](research/product-agent-os-web-m4-0030-execution-2026-11-12.md). Следующая0052 отдельным scope; AUTH-G1–G6 no-go коммерческого выпуска сохраняется.
 
@@ -72,7 +80,7 @@ PAOS-0030: переносимый package/CLI и согласованный code
 
 PAOS-0001 реализован в границах адаптера. Persisted `thread/list` подтвердил 1/1/0/2 и project scope; свежая `vscode` история без preview остаётся partial. На текущем хосте `mxc` и `unelevated` вернули `ready`. MXC показал `availability: false`, а `command/exec` не запустил команду. PAOS-0054 остаётся `blocked`. Локальный probe требует подтверждённую пару write/deny. [Результаты и открытые проверки](research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
 
-PAOS-0002 и PAOS-0003 реализованы в границах локальных контрактов. PAOS-0004 и PAOS-0040 имеют локально проверенную основу, integration и UI остаются открытыми. В PAOS-0039 проверена политика локального preview; AUTH-G1 ждёт коммерческого решения владельца. Статусы и команды закреплены в [карточках Web-плана](research/product-agent-os-web-task-manager-plan-2026-11-09.md) и JSON.
+PAOS-0002 и PAOS-0003 реализованы в границах локальных контрактов. PAOS-0004 и PAOS-0040 имеют локально проверенную основу, integration и UI остаются открытыми. В PAOS-0039 проверена политика локального preview; AUTH-G1 ждёт коммерческого решения владельца. Статусы и команды закреплены в [карточках Web-плана](docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md) и JSON.
 
 Продолжение M1: PAOS-0004 получил форму с восстановлением настроек и обработкой ошибок, PAOS-0040 подтвердил резервирование на двух синтетических процессах. PAOS-0054 проверил форму закреплённого протокола, семантику событий и файловые SQLite-возможности. Текущий runner подтвердил AppContainer/restricted token, точная стадия отказа PSEC неизвестна. Подтверждённого native write/deny нет, PAOS-0045 открыта. [Проверки и остаточные границы](research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
 
@@ -97,37 +105,37 @@ T08 завершена: владелец принял T06 и итоговое р
 
 G6 partially_verified: GAP-06 implemented / owner accepted 10.11.2026; все три synthetic local pilots приняты владельцем. HOST-01 не является их зависимостью. T34 no-go и fresh-session activation HOST-01/HOST-02 остаются открытыми отдельно; manual_only сохраняется. [Результаты](docs/superpowers/specs/paos-aud-g6-pilot-results.json).
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G5 — 2026-11-09
 
 G5 F13/F14/F17 implemented_locally_verified: offline installer исправлен через RED/GREEN; README обновлён; local site rebuilt; 105 docs tests, 220 routes, 93 Mermaid renders passed. Self-review; no dependency install/publication/host activation. Следующая группа — G6. Текущий machine pointer — PLAN.md.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G4 — 2026-11-09
 
 G4 F05/F09/F10/F15 implemented_locally_verified. Full final: 1326 tests, 540.818 s, OK (skipped=1), exit 0; final focused 253 OK; template contracts 95 OK; fixtures 91/91; transcripts 26/26; compatibility exit 0, local structure only. Self-review завершён. Inline intake, conditional references и inventory reuse проверены локально; следующий G5. Host/behavioral evaluation остаётся G6.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G3 — 2026-11-09
 
 PAOS-AUD-G3: F03/F08/F16 implemented_locally_verified. Full unittest: 1320 tests, 725.771 s, OK (skipped=1); final focused 78 tests OK; fixture 91/91; transcript 26/26; compatibility passed (local structure only). Единственный current pointer — PLAN.md; B42/B45 preserved. Self-review завершён. Следующая группа — G4; semantic source review и actual host/promotion остаются отдельными gates.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G2 — 2026-11-09
 
 PAOS-AUD-G2: F01/F02/F04 implemented_locally_verified: full 1305 tests OK (1 skip), final affected+docs 122 OK и final contracts 22 OK; fixture 91, transcript 26, compatibility/docs/hooks/diff passed. MCP wrapper, typed support/observation и read-only diagnostics добавлены; distribution/host/model promotion остаются отдельными gates. G1 и параллельная Web-документация сохранены. Self-review завершён; следующий шаг — G3.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G1 — 2026-11-09
 
 PAOS-AUD-G1 локально закрыта: F06 command/patch guard, F12 hooks discovery/merge, F11 rules proposal, F07 exact ACL repair и F18 pinned report_authoring. Full discovery: 1297 tests, one skip, exit 0; affected 216 и final 67 после последнего alias fix passed; fixture 91/91, transcript 26/26, docs 100/100. Compatibility needs_review — прежний G2 gap. Hooks definitions/trust, реальные ACL, provider, target apply и Git не менялись. Следующая группа G2; host acceptance остаётся G6.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## Session lifecycle repair — 2026-11-09
 
@@ -141,7 +149,7 @@ PAOS-AUD-G1 локально закрыта: F06 command/patch guard, F12 hooks 
 
 ## Documentation refresh handoff — 2026-11-03
 
-Task `PAOS-DOCS-REFRESH-2026-11-03`: documentation_implemented_locally_verified (20/20). Owner authorized saving the detailed plan and applying all 20 documentation corrections, checks and status updates. RU/EN plan validators passed at creation (exit 0). Initial combined suite: 224 tests, 15 failures/33 errors, including TEMP permissions, new-page counters and lifecycle pointer hardcoded to the August plan; both hook validators and docs checker passed. Source pages were refreshed through OpenAI Developer Docs. Agent validator still fails on the pre-existing sandbox_mode/default_permissions mismatch. No runtime/config/model/profile change is authorized or performed. Detailed evidence and final status are recorded in the [owning plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md). Control-plane sync: REQUIREMENTS/PLAN/TEST/EVALS/RUNLOG update_required and updated; prod_test.md not_applicable. No root-file overflow occurred.
+Task `PAOS-DOCS-REFRESH-2026-11-03`: documentation_implemented_locally_verified (20/20). Owner authorized saving the detailed plan and applying all 20 documentation corrections, checks and status updates. RU/EN plan validators passed at creation (exit 0). Initial combined suite: 224 tests, 15 failures/33 errors, including TEMP permissions, new-page counters and lifecycle pointer hardcoded to the August plan; both hook validators and docs checker passed. Source pages were refreshed through OpenAI Developer Docs. Agent validator still fails on the pre-existing sandbox_mode/default_permissions mismatch. No runtime/config/model/profile change is authorized or performed. Detailed evidence and final status are recorded in the [owning plan](docs/planning/2026-11-03-gpt6-documentation-refresh.md). Control-plane sync: REQUIREMENTS/PLAN/TEST/EVALS/RUNLOG update_required and updated; prod_test.md not_applicable. No root-file overflow occurred.
 
 The stale upper Batch 45 planning pointer was reconciled with its existing A06/task-group evidence: T28/T29 locally complete, T30 next; no Batch 45 implementation was performed.
 
@@ -150,7 +158,7 @@ Final documentation checks: docs 100/100, task-plan lifecycle 5/5, lifecycle hoo
 ## Current Handoff
 
 - Выполнена подготовка документационного control-plane под Web M1; implementation_not_started. Все 56 задач матрицы сохраняют planned, фактические start/end/duration — null.
-- Следующий маршрут после запроса на реализацию: PAOS-0001 «Контракты и адаптеры проекта» → PAOS-0054 «Контракт совместимости M1 и runtime manifest». Входы: PRD §17, architecture §21, wireframes v0.7, [Web-план v0.8](research/product-agent-os-web-task-manager-plan-2026-11-09.md) и его JSON.
+- Следующий маршрут после запроса на реализацию: PAOS-0001 «Контракты и адаптеры проекта» → PAOS-0054 «Контракт совместимости M1 и runtime manifest». Входы: PRD §17, architecture §21, wireframes v0.7, [Web-план v0.8](docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md) и его JSON.
 - PAOS-0054 должен подтвердить exact versions/hashes/schema/capabilities до зависимых consumers; при unsupported tuple зависимые задачи останавливаются и возвращаются на design review.
 - PAOS-0045 принимает M1 по полной применимой матрице; PAOS-0046 — сразу после M1, PAOS-0036 — M2. Старые Batch/Track follow-ups не являются неявными prerequisites Web.
 - Текущая проверка и предел доказательств: [аудит и архив control-plane](research/product-agent-os-control-plane-maintenance-2026-11-10.md). Исторические результаты не пересчитывались и не означают runtime/commercial acceptance Web.
@@ -158,15 +166,15 @@ Final documentation checks: docs 100/100, task-plan lifecycle 5/5, lifecycle hoo
 
 ## Source-Owned History Map
 
-Distribution map: `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `AGENTS.md`, `docs/product-agent-os/control-plane-current-state.md`, `docs/sources/registry.md`, `docs/sources/product-agent-os-track-8-detailed-backlog.md`, `docs/sources/product-agent-os-track-9-backlog.md`, `docs/sources/product-agent-os-track-10-backlog.md`, `docs/sources/product-agent-os-batch35-approval-packet-draft.md`, `docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md`, `docs/superpowers/specs/` and `prod_test.md`.
+Distribution map: `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `AGENTS.md`, `docs/product-agent-os/control-plane-current-state.md`, `docs/sources/registry.md`, `docs/planning/product-agent-os-track-8-detailed-backlog.md`, `docs/planning/product-agent-os-track-9-backlog.md`, `docs/planning/product-agent-os-track-10-backlog.md`, `docs/sources/product-agent-os-batch35-approval-packet-draft.md`, `docs/planning/2026-06-20-track-11-documentation-architecture-refresh.md`, `docs/superpowers/specs/` and `prod_test.md`.
 
 | History class | Source owner |
 | --- | --- |
-| Product-Agent OS Track 10 Task 26 Batch 35 approval-bound real testing execution matrix; no git stage/commit/push/PR; historical `done_through_m40` context | `docs/sources/product-agent-os-batch35-approval-packet-draft.md`; `docs/sources/product-agent-os-track-10-backlog.md` |
-| B37/B38/B40/B41/B42 marker history | `docs/sources/product-agent-os-track-10-backlog.md`; `docs/product-agent-os/control-plane-current-state.md` |
+| Product-Agent OS Track 10 Task 26 Batch 35 approval-bound real testing execution matrix; no git stage/commit/push/PR; historical `done_through_m40` context | `docs/sources/product-agent-os-batch35-approval-packet-draft.md`; `docs/planning/product-agent-os-track-10-backlog.md` |
+| B37/B38/B40/B41/B42 marker history | `docs/planning/product-agent-os-track-10-backlog.md`; `docs/product-agent-os/control-plane-current-state.md` |
 | Batch 39 attempt/failure/fix/retest ledger | `prod_test.md`; B39 packets under `docs/superpowers/specs/` |
-| Batch 44 Self-Learning Loop | `docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md`; `docs/product-agent-os/self-learning-loop.md`; B44 packets |
-| Batch 45 Professional Code Authoring | `docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md`; `docs/product-agent-os/coding-standards.md`; B45 packets |
+| Batch 44 Self-Learning Loop | `docs/planning/2026-06-20-track-11-documentation-architecture-refresh.md`; `docs/product-agent-os/self-learning-loop.md`; B44 packets |
+| Batch 45 Professional Code Authoring | `docs/planning/2026-06-20-track-11-documentation-architecture-refresh.md`; `docs/product-agent-os/coding-standards.md`; B45 packets |
 | Documentation refresh and DOC-M25 generated-site evidence | Track 11 plan; `docs/sources/registry.md`; DOC-M25 packet |
 | Lifecycle hooks and control-plane sync | `.codex/config.toml`; `.codex/workflows/task-plan-lifecycle.md`; `.codex/workflows/control-plane-sync.md`; lifecycle hook packet |
 

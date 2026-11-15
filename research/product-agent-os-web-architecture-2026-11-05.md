@@ -5,13 +5,13 @@
 
 Startup update13-11-2026: launcher → guarded `/launch` → одноразовый HttpOnly challenge/same-origin POST → session/CSRF, без MessageBox/code. Допуск — direct browser user intent, не launcher identity; native clients вне ceiling. Старый service без browserLaunchVersion1 требует Quit/restart. [Решение и проверки](product-agent-os-web-m1-execution-2026-11-11.md#запуск-без-ручного-сопряжения--2026-11-13). Остальные runtime/model/worker boundaries сохранены; прежние startup-code описания исторические.
 
-Актуализация планирования 13-11-2026: **M5 — «Подключение ChatGPT и командная работа»** объединяет PAOS-0047 (optional/admission), PAOS-0052 и PAOS-0053 (team design/storage/transfer). Прежние OPTIONAL/T1 — исторические обозначения этих веток. Текущая группировка, функции, ценность и gates: [план v0.9](product-agent-os-web-task-manager-plan-2026-11-09.md#paos-m5). Все три задачи planned; M4 не зависит от M5, team-ветка не зависит от SIWC. Это изменение плана, без допуска, реализации или активации.
+Актуализация планирования 13-11-2026: **M5 — «Подключение ChatGPT и командная работа»** объединяет PAOS-0047 (optional/admission), PAOS-0052 и PAOS-0053 (team design/storage/transfer). Прежние OPTIONAL/T1 — исторические обозначения этих веток. Текущая группировка, функции, ценность и gates: [план v0.9](../docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md#paos-m5). Все три задачи planned; M4 не зависит от M5, team-ветка не зависит от SIWC. Это изменение плана, без допуска, реализации или активации.
 
 Актуализация 11-11-2026: Codex App agents — выбранный owner-default маршрут без API key; его текущий контракт и предел доказательств приведены в новом App-agent addendum в конце документа. Прежний API-only/closed-App baseline ниже сохранён как история и explicit compatibility; он не определяет новый default.
 
 Исследование 2026-11-09: [варианты БД и vector retrieval](product-agent-os-web-storage-research-2026-11-09.md). Выбор принят: SQLite + FTS5 local и PostgreSQL + pgvector team. Актуальные schema/authority/cutover — §20; исследование сохраняет историю альтернатив.
 
-Актуализация 2026-11-10: **v0.7 — текущие M1 решения в §21**; PRD §17 и очередь v0.7 заменяют прежние design placeholders. Текущий runtime/auth/startup contract — §19; прежняя очередь с runtime на M3 историческая. [Экраны](product-agent-os-web-task-manager-screens-2026-11-09.md) и [план](product-agent-os-web-task-manager-plan-2026-11-09.md).
+Актуализация 2026-11-10: **v0.7 — текущие M1 решения в §21**; PRD §17 и очередь v0.7 заменяют прежние design placeholders. Текущий runtime/auth/startup contract — §19; прежняя очередь с runtime на M3 историческая. [Экраны](product-agent-os-web-task-manager-screens-2026-11-09.md) и [план](../docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md).
 
 Source status: `project-authored / selected-direction / proposed-implementation / official-docs-backed`. Создан: 2026-11-05. Обновлён: 2026-11-10. Версия: 0.7.
 
@@ -403,7 +403,7 @@ Graph хранит FileNode и SymbolNode с identity `file + language + lexical
 
 PAOS-0001 должен подтвердить session source API, agent run telemetry, write routes project-owned profiles, поддерживаемые языки graph и модель authority task data. До этого estimates приблизительны. Generation adapters требуют отдельно разрешённого provider/host route; данные private sessions не отправляются внешнему генератору дизайна. Security tests: path traversal/symlink, stale writes, prompt injection в импортированном skill, cross-project leakage, duplicate commands, cancel/reconnect/recovery.
 
-[План и зависимости](product-agent-os-web-task-manager-plan-2026-11-09.md) задаёт предложенные границы файлов. Новые endpoint names и schema keys уточняются contract-first в PAOS-0001/0002; не объявлены существующим API.
+[План и зависимости](../docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md) задаёт предложенные границы файлов. Новые endpoint names и schema keys уточняются contract-first в PAOS-0001/0002; не объявлены существующим API.
 
 ### Обновлённая схема модулей
 
@@ -448,7 +448,7 @@ Source status: proposed / derived from [PRD §14](product-agent-os-web-prd-2026-
 - Version/component registries project-scoped. Изменение release state не запускает deployment. Actor attribution не меняется вслед за display name или удалением профиля; имя хранится snapshot, identity — устойчивый ID.
 - Ни workflow editor, ни текст комментария/attachment не расширяют host permissions. Structured declarative recipes допускают только разрешённые action kinds; произвольный исполняемый текст не становится новым runtime endpoint.
 
-Ownership: PAOS-0031–0034 — hierarchy/fields/versions/context contracts; PAOS-0035–0038 — board/workflow/recipe/links; PAOS-0024/0025 — scheduler/runner integration; PAOS-0028/0029 — integrated acceptance. Общие contracts записываются одним владельцем; UI adapters потребляют согласованную версию. Proposed file locations и dependencies — в [плане](product-agent-os-web-task-manager-plan-2026-11-09.md).
+Ownership: PAOS-0031–0034 — hierarchy/fields/versions/context contracts; PAOS-0035–0038 — board/workflow/recipe/links; PAOS-0024/0025 — scheduler/runner integration; PAOS-0028/0029 — integrated acceptance. Общие contracts записываются одним владельцем; UI adapters потребляют согласованную версию. Proposed file locations и dependencies — в [плане](../docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md).
 
 ## 19. Единое окно, runtime и авторизация — v0.4
 

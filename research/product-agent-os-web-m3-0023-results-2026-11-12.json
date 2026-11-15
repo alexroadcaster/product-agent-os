@@ -441,8 +441,8 @@
     "apps/web/dist/index.html": "fc4d2f26e0e1acfdea0fb557afb2eda5c4e99504db6a8394ac43739d985b1c1d",
     "apps/web/dist/assets/index-6ocZaMs-.css": "ceb159596ac2f91952bbbeab48933957480da03acae68d8383abdacc1c89a5b1",
     "apps/web/dist/assets/index-DhQVqT8h.js": "a69bc30ba62fb11a448d39634c7063e8b23ad00bc21f7b2d864a6212047d0d58",
-    "research/product-agent-os-web-task-manager-plan-2026-11-09.md": "dd21159c2bcf064290b1a11a912ca02f63ba17cb8dd526983c5b45b64cf1da37",
-    "research/product-agent-os-web-task-manager-task-group-2026-11-09.json": "002d6d4448678ceaf861d16ffdc96b2bc31d3ab68517860c7a5e27d04e3e451f"
+    "docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md": "dd21159c2bcf064290b1a11a912ca02f63ba17cb8dd526983c5b45b64cf1da37",
+    "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json": "002d6d4448678ceaf861d16ffdc96b2bc31d3ab68517860c7a5e27d04e3e451f"
   },
   "measured_scope_started_at": "2026-11-12T09:37:57+00:00",
   "completed_at": "2026-11-12T10:25:40+00:00",

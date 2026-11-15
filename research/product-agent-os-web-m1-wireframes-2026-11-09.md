@@ -4,7 +4,7 @@ Source status: project-authored / proposed UX, Hallmark 2.0.0 applied to Markdow
 
 Актуальные wireframes единого окна. Они заменяют read-only M1 v0.1, сохранённый в историческом приложении. Это текстовые схемы интерфейса, без рамки браузера/ОС, CSS, HTML, нового PNG или работающего прототипа. Все примеры сообщений и PAOS-0101 ниже синтетические; они не являются текущими задачами, логами или метриками репозитория.
 
-Связи: [структура всех 31 экранов](product-agent-os-web-task-manager-screens-2026-11-09.md), [PRD §15](product-agent-os-web-prd-2026-11-05.md#15-единое-окно-и-codex-app-server--v04), [архитектура §19](product-agent-os-web-architecture-2026-11-05.md#19-единое-окно-runtime-и-авторизация--v04), [авторизация](product-agent-os-web-auth-commercial-2026-11-09.md), [план](product-agent-os-web-task-manager-plan-2026-11-09.md).
+Связи: [структура всех 31 экранов](product-agent-os-web-task-manager-screens-2026-11-09.md), [PRD §15](product-agent-os-web-prd-2026-11-05.md#15-единое-окно-и-codex-app-server--v04), [архитектура §19](product-agent-os-web-architecture-2026-11-05.md#19-единое-окно-runtime-и-авторизация--v04), [авторизация](product-agent-os-web-auth-commercial-2026-11-09.md), [план](../docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md).
 
 ## 1. Hallmark: направление и материалы
 
@@ -503,7 +503,7 @@ Streaming chunks не объявляются screen reader посимвольн�
 | --- | --- |
 | Docs unittest | `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v`: 105 tests OK, 9.462 s; process-local TEMP/TMP в .docs-tools/reports/web-task-manager/test-temp |
 | Структура | `python tools/check_docs.py`: exit 0, documentation structure checks passed |
-| Task matrix | `python plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-web-task-manager-plan-2026-11-09.md`: exit 0, errors=[] |
+| Task matrix | `python plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md`: exit 0, errors=[] |
 | Artifact check (inline Node, read-only) | 28 уникальных screen sections, 16 WF, 18 UX-AC, 81 существующая локальная ссылка в пяти owning research docs, UTF-8/fences; 47 task IDs / 11 groups, без новых задач |
 | Compactness | Первичная проверка нашла REQUIREMENTS.md 51459 bytes >51200; собственный указатель сокращён, детали остаются в этом документе. Повтор: 51183 bytes; остальные четыре root-файла ниже лимита |
 | Diff hygiene | `git diff --check`: exit 0; warnings CRLF normalization не являются whitespace errors |
@@ -1315,6 +1315,6 @@ Verification receipt: docs suite включена в текущий запуск
 
 ## Расширение до Task Manager — 2026-11-09
 
-Source status: superseded scope subset / historical wireframes. Исходные четыре раздела и read-only ограничения выше описывают только ранний M1. Актуальный полный scope включает восемь проектных вкладок, CRUD агентов и skills, историю сессий, граф файлов/переменных, полную модель задачи и ограниченную автономность: [24 экрана и изображения](product-agent-os-web-task-manager-screens-2026-11-09.md), [план и группы](product-agent-os-web-task-manager-plan-2026-11-09.md), [PRD дополнение §13](product-agent-os-web-prd-2026-11-05.md#13-дополнение-2026-11-09-полноценный-task-manager). Изображения остаются концептами; разработка не начата.
+Source status: superseded scope subset / historical wireframes. Исходные четыре раздела и read-only ограничения выше описывают только ранний M1. Актуальный полный scope включает восемь проектных вкладок, CRUD агентов и skills, историю сессий, граф файлов/переменных, полную модель задачи и ограниченную автономность: [24 экрана и изображения](product-agent-os-web-task-manager-screens-2026-11-09.md), [план и группы](../docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md), [PRD дополнение §13](product-agent-os-web-prd-2026-11-05.md#13-дополнение-2026-11-09-полноценный-task-manager). Изображения остаются концептами; разработка не начата.
 
 </details>

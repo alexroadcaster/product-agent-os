@@ -313,7 +313,7 @@
     "tests/web/recipe-crash.test.mts": "dabde68ac9856983bdaac8545f82828becc8e725ca768a4af220f3ea19dadb9c",
     "tests/web/recipe-recovery.test.mts": "831cb80de49981a24839829f8b473b4f656bc40b9e5e2bb38aa3195a21b1e59d",
     "tests/web/single-window/m3-recovery-acceptance.mts": "521b4fd8109ec7d76425b1ec761a814ddd4dfdf81309c69d1241e1efd67f6a9a",
-    "research/product-agent-os-web-task-manager-plan-2026-11-09.md": "8c10096ac8a1a402e51cd667308d21d00e216aaa22c3b0438cd0ea6c25d7676c",
-    "research/product-agent-os-web-task-manager-task-group-2026-11-09.json": "d1baa2495e7112e413bc52c9cd8298b70fe4189696398091fae75a0c203f8943"
+    "docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md": "8c10096ac8a1a402e51cd667308d21d00e216aaa22c3b0438cd0ea6c25d7676c",
+    "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json": "d1baa2495e7112e413bc52c9cd8298b70fe4189696398091fae75a0c203f8943"
   }
 }

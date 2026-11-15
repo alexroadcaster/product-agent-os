@@ -22,7 +22,7 @@ Batch 34C локализовал только promoted public-ready page set. Ba
 
 ## Current English-Original Plan Addendum
 
-Исторические M34-M49 числа ниже сохраняются как evidence того закрытого среза. Текущий buildable corpus отдельно регистрирует English-original планы, добавленные позднее; они не требуют искусственного `.en.md` дубля. На 2026-08-10 к этому allowlist относится `superpowers/plans/2026-08-10-batch45-s9-0-team-readiness.md`; текущие счетчики в docs contract: `BUILDABLE_MARKDOWN_PAGE_COUNT=153`, `LOCALIZED_MARKDOWN_PAGE_COUNT=143`, `ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT=10`.
+Исторические M34-M49 числа ниже сохраняются как evidence того закрытого среза. Текущий buildable corpus отдельно регистрирует English-original планы, добавленные позднее; они не требуют искусственного `.en.md` дубля. На 2026-08-10 к этому allowlist относится `planning/2026-08-10-batch45-s9-0-team-readiness.md`; текущие счетчики в docs contract: `BUILDABLE_MARKDOWN_PAGE_COUNT=153`, `LOCALIZED_MARKDOWN_PAGE_COUNT=143`, `ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT=10`.
 
 ## B34E-I18N-M34 Corrective Scope Reset
 
@@ -119,18 +119,18 @@ Methodology EN pages use the checked-in English methodology research dossiers as
 
 English-original plan files excluded from localized sibling parity:
 
-- `superpowers/plans/2026-05-14-product-agent-os-generated-infrastructure.md`
-- `superpowers/plans/2026-05-14-product-agent-os-lifecycle-skills.md`
-- `superpowers/plans/2026-05-14-product-agent-os-plugin-core.md`
-- `superpowers/plans/2026-05-14-product-agent-os-production-hardening.md`
-- `superpowers/plans/2026-05-15-product-agent-os-codex-runtime-runner.md`
-- `superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`
-- `superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md`
+- `planning/2026-05-14-product-agent-os-generated-infrastructure.md`
+- `planning/2026-05-14-product-agent-os-lifecycle-skills.md`
+- `planning/2026-05-14-product-agent-os-plugin-core.md`
+- `planning/2026-05-14-product-agent-os-production-hardening.md`
+- `planning/2026-05-15-product-agent-os-codex-runtime-runner.md`
+- `planning/2026-05-25-track-9-methodology-intelligence.md`
+- `planning/2026-05-27-track-10-guided-questions-status-dashboard.md`
 
 Post-Batch34E English-original plan additions are not part of the historical M35-M49 counts above, but they follow the same planning-artifact parity boundary:
 
-- `superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md`
-- `superpowers/plans/2026-08-05-gpt56-r1-r6-remediation.md`
+- `planning/2026-06-20-track-11-documentation-architecture-refresh.md`
+- `planning/2026-08-05-gpt56-r1-r6-remediation.md`
 
 ## B34E-I18N-M44 EN Editorial Quality Sweep
 
@@ -372,21 +372,21 @@ M49 closes Batch 34E full-site bilingual documentation parity. Batch 35 remains 
 - `sources/product-agent-os-batch35-approval-packet-draft.md`
 - `sources/product-agent-os-final-predevelopment-review.md`
 - `sources/product-agent-os-pre-track-8-implementation-inventory.md`
-- `sources/product-agent-os-track-10-backlog.md`
-- `sources/product-agent-os-track-8-detailed-backlog.md`
-- `sources/product-agent-os-track-9-backlog.md`
+- `planning/product-agent-os-track-10-backlog.md`
+- `planning/product-agent-os-track-8-detailed-backlog.md`
+- `planning/product-agent-os-track-9-backlog.md`
 - `sources/registry.md`
 - `sources/source-card-template.md`
 
 ### superpowers (13)
 
-- `superpowers/plans/2026-05-14-product-agent-os-generated-infrastructure.md`
-- `superpowers/plans/2026-05-14-product-agent-os-lifecycle-skills.md`
-- `superpowers/plans/2026-05-14-product-agent-os-plugin-core.md`
-- `superpowers/plans/2026-05-14-product-agent-os-production-hardening.md`
-- `superpowers/plans/2026-05-15-product-agent-os-codex-runtime-runner.md`
-- `superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`
-- `superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md`
+- `planning/2026-05-14-product-agent-os-generated-infrastructure.md`
+- `planning/2026-05-14-product-agent-os-lifecycle-skills.md`
+- `planning/2026-05-14-product-agent-os-plugin-core.md`
+- `planning/2026-05-14-product-agent-os-production-hardening.md`
+- `planning/2026-05-15-product-agent-os-codex-runtime-runner.md`
+- `planning/2026-05-25-track-9-methodology-intelligence.md`
+- `planning/2026-05-27-track-10-guided-questions-status-dashboard.md`
 - `superpowers/specs/2026-05-14-product-agent-os-agents-sdk-runner-design.md`
 - `superpowers/specs/2026-05-14-product-agent-os-generated-infrastructure-design.md`
 - `superpowers/specs/2026-05-14-product-agent-os-lifecycle-skills-design.md`

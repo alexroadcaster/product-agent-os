@@ -1058,7 +1058,7 @@
           "exitCode": 0
         },
         "matrix": {
-          "command": "python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-web-task-manager-plan-2026-11-09.md",
+          "command": "python -B plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md",
           "exitCode": 0
         },
         "diff": {
@@ -9114,7 +9114,7 @@
           "exitCode": 0
         },
         "matrixValidator": {
-          "command": "python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-web-task-manager-plan-2026-11-09.md",
+          "command": "python -B plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md",
           "exitCode": 0
         },
         "gitDiffCheck": {
@@ -17316,7 +17316,7 @@
           "exitCode": 0
         },
         "matrixValidator": {
-          "command": "python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-web-task-manager-plan-2026-11-09.md",
+          "command": "python -B plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md",
           "exitCode": 0
         },
         "gitDiffCheck": {
@@ -25579,7 +25579,7 @@
           "exitCode": 0
         },
         "matrixValidator": {
-          "command": "python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-web-task-manager-plan-2026-11-09.md",
+          "command": "python -B plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md",
           "exitCode": 0
         },
         "gitDiffCheck": {
@@ -26015,8 +26015,8 @@
           "RUNLOG.md"
         ],
         "sourceFiles": [
-          "research/product-agent-os-web-task-manager-plan-2026-11-09.md",
-          "research/product-agent-os-web-task-manager-task-group-2026-11-09.json",
+          "docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md",
+          "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json",
           "research/product-agent-os-web-prd-2026-11-05.md",
           "research/product-agent-os-web-architecture-2026-11-05.md",
           "research/product-agent-os-web-auth-commercial-2026-11-09.md",
@@ -26056,7 +26056,7 @@
           "exitCode": 0
         },
         "matrix": {
-          "command": "python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-web-task-manager-plan-2026-11-09.md",
+          "command": "python -B plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md",
           "exitCode": 0,
           "errors": []
         },
@@ -35472,7 +35472,7 @@
           "exitCode": 0
         },
         "matrix": {
-          "command": "python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-web-task-manager-plan-2026-11-09.md",
+          "command": "python -B plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md",
           "exitCode": 0,
           "errors": []
         },
@@ -35573,8 +35573,8 @@
       "remainingTechnicalGates": [],
       "closureArtifacts": {
         "research/product-agent-os-web-m1-execution-2026-11-11.md": "50ff1df8f74c73c2b34ad58dbe6ef29cbf2b839edffbc035b9c8b6c7d34b3761",
-        "research/product-agent-os-web-task-manager-plan-2026-11-09.md": "f48062286bcfc9dbdc0ee13927e22d770a140c227ec81d1fe013858ff271da90",
-        "research/product-agent-os-web-task-manager-task-group-2026-11-09.json": "695a965d09b995e8dc34263263cddbdd5ff44b051a799b092b2de54f31628feb",
+        "docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md": "f48062286bcfc9dbdc0ee13927e22d770a140c227ec81d1fe013858ff271da90",
+        "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json": "695a965d09b995e8dc34263263cddbdd5ff44b051a799b092b2de54f31628feb",
         "REQUIREMENTS.md": "f3c0e05c2e7f0f80d91e00c5e009c378f2e60a894f8c3cc2c82a33d944dc1f0d",
         "PLAN.md": "b16362b698a4e02bc5b137160367954f3de26260ebf771c21afa9bf5a697b307",
         "TEST.md": "2bdd0e19ac2409c11e7fbd4887abcabb407c3b7a406f7ed3ce57ff43607c7725",

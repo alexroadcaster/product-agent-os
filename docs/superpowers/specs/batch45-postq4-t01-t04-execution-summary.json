@@ -6,7 +6,7 @@
   "created_at": "2026-07-04T20:40:00+03:00",
   "source_status": "project-authored execution evidence for B45-POSTQ4-T01..T04",
   "parent_packets": [
-    "docs/superpowers/specs/batch45-post-q4-next-tasks.json",
+    "docs/planning/batch45-post-q4-next-tasks.json",
     "docs/superpowers/specs/batch45-quality-retest-project-slices-static-summary.json"
   ],
   "sidecar_agents": [

@@ -340,7 +340,7 @@
     "tests/web/scheduler.test.mts": "69205d3f2b5606998e741b3ec22695c019778af77093298d27998e587253c18e",
     "tests/web/single-window/m3-queue-acceptance.mts": "a9e08348f5f838bbeeff3cf8a64c91e0b4dfce3bf12746a9b591de7853edb9b5",
     "tests/web/single-window/m3-queue-parallel-acceptance.mts": "baa861e19ab3f67d7c109848e565dad69c80695a6404f07bf46a7f99d19ba18f",
-    "research/product-agent-os-web-task-manager-plan-2026-11-09.md": "35e1b80037cc481383d836ab3db86d6d107be4359156b469369762952fa1b59c",
-    "research/product-agent-os-web-task-manager-task-group-2026-11-09.json": "c28f5946973d83293dee42ad5b7990042124ab0e18ff54214880bd0c829ca741"
+    "docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md": "35e1b80037cc481383d836ab3db86d6d107be4359156b469369762952fa1b59c",
+    "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json": "c28f5946973d83293dee42ad5b7990042124ab0e18ff54214880bd0c829ca741"
   }
 }

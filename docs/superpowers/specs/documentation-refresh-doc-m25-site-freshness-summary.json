@@ -13,10 +13,10 @@
     "reason": "Refresh root site/search/sitemap after Batch 45 T15 model-change source docs and control-plane updates.",
     "included_source_updates": [
       "docs/superpowers/specs/batch45-postq4-t15-model-change-decision-packet.json",
-      "docs/superpowers/specs/batch45-post-q4-next-tasks.json",
+      "docs/planning/batch45-post-q4-next-tasks.json",
       "docs/sources/registry.md",
       "docs/sources/registry.en.md",
-      "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md",
+      "docs/planning/2026-06-20-track-11-documentation-architecture-refresh.md",
       "PLAN.md",
       "TEST.md",
       "EVALS.md"

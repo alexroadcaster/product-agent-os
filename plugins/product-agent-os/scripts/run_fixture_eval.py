@@ -7493,7 +7493,7 @@ def _project_graph_future_backend_semantic_gates_present() -> bool:
         PROJECT_ROOT / "docs" / "product-agent-os" / "index.md",
         PROJECT_ROOT / "docs" / "product-agent-os" / "technical.md",
         PROJECT_ROOT / "docs" / "product-agent-os" / "scenarios.md",
-        PROJECT_ROOT / "docs" / "sources" / "product-agent-os-track-10-backlog.md",
+        PROJECT_ROOT / "docs" / "planning" / "product-agent-os-track-10-backlog.md",
     ]
     if not all(path.exists() for path in paths):
         return False
@@ -8294,7 +8294,7 @@ def _completion_skeptic_valid_doubt_packet() -> dict[str, Any]:
         "verdict": "pass",
         "artifact_under_review": {
             "kind": "task_row",
-            "path": "docs/sources/product-agent-os-track-10-backlog.md",
+            "path": "docs/planning/product-agent-os-track-10-backlog.md",
             "label": "B40-S3",
         },
         "claim_ledger": [
@@ -8630,8 +8630,8 @@ def _system_hygiene_docs_payload() -> str:
         PROJECT_ROOT / "docs" / "product-agent-os" / "technical.en.md",
         PROJECT_ROOT / "docs" / "product-agent-os" / "artifact-contracts.md",
         PROJECT_ROOT / "docs" / "product-agent-os" / "artifact-contracts.en.md",
-        PROJECT_ROOT / "docs" / "sources" / "product-agent-os-track-10-backlog.md",
-        PROJECT_ROOT / "docs" / "sources" / "product-agent-os-track-10-backlog.en.md",
+        PROJECT_ROOT / "docs" / "planning" / "product-agent-os-track-10-backlog.md",
+        PROJECT_ROOT / "docs" / "planning" / "product-agent-os-track-10-backlog.en.md",
     ]
     return "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
 

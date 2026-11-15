@@ -12,7 +12,7 @@ Source status: V3 и Sidebar collapse утверждены владельцем 
 - [Изображения всех экранов](design/2026-11-13-v3/contact-sheet.html) и [реестр покрытия](design/2026-11-13-v3/coverage.json).
 - [Исследование компонентов, motion и лицензий](design/2026-11-13-v3/research.md).
 - [Полная карта полей задачи и доступности данных](design/2026-11-13-v3/task-field-map.md).
-- [План UI-01–UI-12 с критериями V3](design/2026-11-13-v3/implementation-plan.md).
+- [План UI-01–UI-12 с критериями V3](docs/planning/2026-11-13-v3-ui-implementation-plan.md).
 - [Проверки и ограничения](design/2026-11-13-v3/verification.md), [инструкция просмотра](design/2026-11-13-v3/README.md).
 
 Архивы: [альбом V2](design/2026-11-13-v2/index.html), [DESIGN V2](design/2026-11-13-v2/DESIGN-v2.md), [проверки V2](design/2026-11-13-v2/verification.md), [V1](design/2026-11-13/index.html). Исторические результаты не выдаются за текущие; относительные ссылки внутри точных архивных копий DESIGN разрешаются от корня репозитория.
@@ -86,7 +86,7 @@ Skeleton повторяет итоговую геометрию; error даёт 
 
 Все 80 образцов V2 сохраняются: уровни sessions; agents/skills profile/edit/history/activity; generation/discovery/import; documents/proposal/diff; checks; policy/pause/reserved runs; decisions/search/import/export/backup/restore. Настройки разделены на среду, проект, подключение, процессы, выполнение и очередь. Preview/confirmation не исчезают. Новые аналитические поверхности добавляются в coverage.
 
-[UI-01–UI-12](design/2026-11-13-v3/implementation-plan.md) — актуальный план внедрения. [Implementation evidence](design/2026-11-13-v3/implementation-evidence.md) отделяет actual app checks от исторического альбома. UI-12 остаётся открытой для пользовательской приёмки реализации. Backend telemetry, публикация и Git не входят в scope.
+[UI-01–UI-12](docs/planning/2026-11-13-v3-ui-implementation-plan.md) — актуальный план внедрения. [Implementation evidence](design/2026-11-13-v3/implementation-evidence.md) отделяет actual app checks от исторического альбома. UI-12 остаётся открытой для пользовательской приёмки реализации. Backend telemetry, публикация и Git не входят в scope.
 
 Gates альбома: обе темы и все routes, отсутствие root overflow на трёх ширинах, согласованность fixtures, фактический D3/Mermaid render, dblclick/keyboard dialog, focus/reduced motion. Результаты принадлежат verification. Полная WCAG-сертификация, production performance и human acceptance из этих проверок не следуют.
 

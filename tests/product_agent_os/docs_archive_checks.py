@@ -35,9 +35,9 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
             "EVALS.md",
             "AGENTS.md",
             "docs/sources/registry.md",
-            "docs/sources/product-agent-os-track-8-detailed-backlog.md",
-            "docs/sources/product-agent-os-track-9-backlog.md",
-            "docs/sources/product-agent-os-track-10-backlog.md",
+            "docs/planning/product-agent-os-track-8-detailed-backlog.md",
+            "docs/planning/product-agent-os-track-9-backlog.md",
+            "docs/planning/product-agent-os-track-10-backlog.md",
             "docs/sources/product-agent-os-batch35-approval-packet-draft.md",
         ]:
             with self.subTest(runlog_distribution=expected):
@@ -72,9 +72,9 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
             "EVALS.md",
             "RUNLOG.md",
             "AGENTS.md",
-            "docs/sources/product-agent-os-track-8-detailed-backlog.md",
-            "docs/sources/product-agent-os-track-9-backlog.md",
-            "docs/sources/product-agent-os-track-10-backlog.md",
+            "docs/planning/product-agent-os-track-8-detailed-backlog.md",
+            "docs/planning/product-agent-os-track-9-backlog.md",
+            "docs/planning/product-agent-os-track-10-backlog.md",
             "docs/sources/registry.md",
             "docs/sources/product-agent-os-batch35-approval-packet-draft.md",
             "git diff --check",
@@ -109,9 +109,9 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
             "tests.product_agent_os.docs_archive_checks",
             "Full discovery включает fixture/transcript evals",
             "Не запускать после него те же",
-            "docs/sources/product-agent-os-track-8-detailed-backlog.md",
-            "docs/sources/product-agent-os-track-9-backlog.md",
-            "docs/sources/product-agent-os-track-10-backlog.md",
+            "docs/planning/product-agent-os-track-8-detailed-backlog.md",
+            "docs/planning/product-agent-os-track-9-backlog.md",
+            "docs/planning/product-agent-os-track-10-backlog.md",
             "docs/sources/registry.md",
             "docs/sources/product-agent-os-batch35-approval-packet-draft.md",
             "docs/product-agent-os/control-plane-current-state.md",
@@ -172,7 +172,7 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
         test_plan = TEST.read_text(encoding="utf-8")
         runlog = RUNLOG.read_text(encoding="utf-8")
         readme = (ROOT / "plugins" / "product-agent-os" / "README.md").read_text(encoding="utf-8")
-        backlog = (ROOT / "docs" / "sources" / "product-agent-os-track-10-backlog.md").read_text(
+        backlog = (ROOT / "docs" / "planning" / "product-agent-os-track-10-backlog.md").read_text(
             encoding="utf-8"
         )
         registry = (ROOT / "docs" / "sources" / "registry.md").read_text(encoding="utf-8")
@@ -229,7 +229,7 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
         plan = PLAN.read_text(encoding="utf-8")
         test_plan = TEST.read_text(encoding="utf-8")
         runlog = RUNLOG.read_text(encoding="utf-8")
-        backlog = (ROOT / "docs" / "sources" / "product-agent-os-track-10-backlog.md").read_text(
+        backlog = (ROOT / "docs" / "planning" / "product-agent-os-track-10-backlog.md").read_text(
             encoding="utf-8"
         )
         registry = (ROOT / "docs" / "sources" / "registry.md").read_text(encoding="utf-8")
@@ -275,7 +275,7 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
         plan = PLAN.read_text(encoding="utf-8")
         test_plan = TEST.read_text(encoding="utf-8")
         runlog = RUNLOG.read_text(encoding="utf-8")
-        backlog = (ROOT / "docs" / "sources" / "product-agent-os-track-10-backlog.md").read_text(
+        backlog = (ROOT / "docs" / "planning" / "product-agent-os-track-10-backlog.md").read_text(
             encoding="utf-8"
         )
         registry = (ROOT / "docs" / "sources" / "registry.md").read_text(encoding="utf-8")
@@ -323,7 +323,7 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
         plan = PLAN.read_text(encoding="utf-8")
         test_plan = TEST.read_text(encoding="utf-8")
         runlog = RUNLOG.read_text(encoding="utf-8")
-        backlog = (ROOT / "docs" / "sources" / "product-agent-os-track-10-backlog.md").read_text(
+        backlog = (ROOT / "docs" / "planning" / "product-agent-os-track-10-backlog.md").read_text(
             encoding="utf-8"
         )
         registry = (ROOT / "docs" / "sources" / "registry.md").read_text(encoding="utf-8")
@@ -407,9 +407,9 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
             "EVALS.md",
             "RUNLOG.md",
             "docs/sources/registry.md",
-            "docs/sources/product-agent-os-track-8-detailed-backlog.md",
-            "docs/sources/product-agent-os-track-9-backlog.md",
-            "docs/sources/product-agent-os-track-10-backlog.md",
+            "docs/planning/product-agent-os-track-8-detailed-backlog.md",
+            "docs/planning/product-agent-os-track-9-backlog.md",
+            "docs/planning/product-agent-os-track-10-backlog.md",
             "docs/sources/product-agent-os-batch35-approval-packet-draft.md",
             "single verification-route owner",
             "A plan, report or control-plane text edit does not by itself require",
@@ -448,9 +448,9 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
             "delivery_release_operations_contract_present",
             "cross_domain_synthesis_contract_present",
             "T10-LIVE-M01..M41",
-            "docs/sources/product-agent-os-track-8-detailed-backlog.md",
-            "docs/sources/product-agent-os-track-9-backlog.md",
-            "docs/sources/product-agent-os-track-10-backlog.md",
+            "docs/planning/product-agent-os-track-8-detailed-backlog.md",
+            "docs/planning/product-agent-os-track-9-backlog.md",
+            "docs/planning/product-agent-os-track-10-backlog.md",
             "docs/sources/registry.md",
             "docs/sources/product-agent-os-batch35-approval-packet-draft.md",
             "docs/product-agent-os/control-plane-current-state.md",
@@ -5020,16 +5020,16 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
         backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
         plan = TRACK10_PLAN.read_text(encoding="utf-8")
         english_original_pages = [
-            DOCS / "superpowers" / "plans" / "2026-05-14-product-agent-os-generated-infrastructure.md",
-            DOCS / "superpowers" / "plans" / "2026-05-14-product-agent-os-lifecycle-skills.md",
-            DOCS / "superpowers" / "plans" / "2026-05-14-product-agent-os-plugin-core.md",
-            DOCS / "superpowers" / "plans" / "2026-05-14-product-agent-os-production-hardening.md",
-            DOCS / "superpowers" / "plans" / "2026-05-15-product-agent-os-codex-runtime-runner.md",
-            DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md",
-            DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md",
-            DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md",
-            DOCS / "superpowers" / "plans" / "2026-08-05-gpt56-r1-r6-remediation.md",
-            DOCS / "superpowers" / "plans" / "2026-08-10-batch45-s9-0-team-readiness.md",
+            DOCS / "planning" / "2026-05-14-product-agent-os-generated-infrastructure.md",
+            DOCS / "planning" / "2026-05-14-product-agent-os-lifecycle-skills.md",
+            DOCS / "planning" / "2026-05-14-product-agent-os-plugin-core.md",
+            DOCS / "planning" / "2026-05-14-product-agent-os-production-hardening.md",
+            DOCS / "planning" / "2026-05-15-product-agent-os-codex-runtime-runner.md",
+            DOCS / "planning" / "2026-05-25-track-9-methodology-intelligence.md",
+            DOCS / "planning" / "2026-05-27-track-10-guided-questions-status-dashboard.md",
+            DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md",
+            DOCS / "planning" / "2026-08-05-gpt56-r1-r6-remediation.md",
+            DOCS / "planning" / "2026-08-10-batch45-s9-0-team-readiness.md",
         ]
         base_pages = sorted(
             path
@@ -5139,9 +5139,9 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
             "sources/product-agent-os-batch35-approval-packet-draft.md",
             "sources/product-agent-os-final-predevelopment-review.md",
             "sources/product-agent-os-pre-track-8-implementation-inventory.md",
-            "sources/product-agent-os-track-10-backlog.md",
-            "sources/product-agent-os-track-8-detailed-backlog.md",
-            "sources/product-agent-os-track-9-backlog.md",
+            "planning/product-agent-os-track-10-backlog.md",
+            "planning/product-agent-os-track-8-detailed-backlog.md",
+            "planning/product-agent-os-track-9-backlog.md",
             "sources/registry.md",
             "sources/source-card-template.md",
             "superpowers/specs/2026-05-14-product-agent-os-agents-sdk-runner-design.md",
@@ -6758,7 +6758,7 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
             "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
             "track10_backlog": TRACK10_BACKLOG.read_text(encoding="utf-8"),
             "track10_backlog_en": TRACK10_BACKLOG_EN.read_text(encoding="utf-8"),
-            "track11_plan": (DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md").read_text(encoding="utf-8"),
+            "track11_plan": (DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md").read_text(encoding="utf-8"),
             "runlog": RUNLOG.read_text(encoding="utf-8"),
         }
 
@@ -7148,7 +7148,7 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
             "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
             "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
             "track11_plan": (
-                DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md"
+                DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
             ).read_text(encoding="utf-8"),
         }
 
@@ -7255,7 +7255,7 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
             "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
             "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
             "track11_plan": (
-                DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md"
+                DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
             ).read_text(encoding="utf-8"),
             "docs_tools_readme": (ROOT / ".docs-tools" / "README.md").read_text(encoding="utf-8"),
             "bin_readme": (ROOT / ".docs-tools" / "bin" / "README.md").read_text(encoding="utf-8"),
@@ -7368,7 +7368,7 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
             "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
             "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
             "track11_plan": (
-                DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md"
+                DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
             ).read_text(encoding="utf-8"),
             "docs_tools_readme": (ROOT / ".docs-tools" / "README.md").read_text(encoding="utf-8"),
             "bin_readme": (ROOT / ".docs-tools" / "bin" / "README.md").read_text(encoding="utf-8"),
@@ -7503,7 +7503,7 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
             "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
             "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
             "track11_plan": (
-                DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md"
+                DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
             ).read_text(encoding="utf-8"),
             "docs_tools_readme": (ROOT / ".docs-tools" / "README.md").read_text(encoding="utf-8"),
             "vendor_readme": (
@@ -7621,7 +7621,7 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
             "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
             "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
             "track11_plan": (
-                DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md"
+                DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
             ).read_text(encoding="utf-8"),
             "docs_tools_readme": (ROOT / ".docs-tools" / "README.md").read_text(encoding="utf-8"),
             "check_docs": CHECK_DOCS.read_text(encoding="utf-8"),
@@ -7765,7 +7765,7 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
             "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
             "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
             "track11_plan": (
-                DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md"
+                DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
             ).read_text(encoding="utf-8"),
             "check_docs": CHECK_DOCS.read_text(encoding="utf-8"),
         }
@@ -7879,7 +7879,7 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
 
     def test_documentation_refresh_g1_1_residual_followups_are_routed(self):
         track11_plan = (
-            DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
         ).read_text(encoding="utf-8")
         runlog = RUNLOG.read_text(encoding="utf-8")
 
@@ -7978,10 +7978,7 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
             "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
             "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
             "track11_plan": (
-                DOCS
-                / "superpowers"
-                / "plans"
-                / "2026-06-20-track-11-documentation-architecture-refresh.md"
+                DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
             ).read_text(encoding="utf-8"),
         }
 
@@ -8163,10 +8160,7 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
             "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
             "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
             "track11_plan": (
-                DOCS
-                / "superpowers"
-                / "plans"
-                / "2026-06-20-track-11-documentation-architecture-refresh.md"
+                DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
             ).read_text(encoding="utf-8"),
         }
 
@@ -8358,10 +8352,7 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
             "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
             "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
             "track11_plan": (
-                DOCS
-                / "superpowers"
-                / "plans"
-                / "2026-06-20-track-11-documentation-architecture-refresh.md"
+                DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
             ).read_text(encoding="utf-8"),
         }
 
@@ -8574,10 +8565,7 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
             "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
             "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
             "track11_plan": (
-                DOCS
-                / "superpowers"
-                / "plans"
-                / "2026-06-20-track-11-documentation-architecture-refresh.md"
+                DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
             ).read_text(encoding="utf-8"),
         }
 
@@ -8755,10 +8743,7 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
             "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
             "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
             "track11_plan": (
-                DOCS
-                / "superpowers"
-                / "plans"
-                / "2026-06-20-track-11-documentation-architecture-refresh.md"
+                DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
             ).read_text(encoding="utf-8"),
             "residual_site_freshness": self._localized_contract_text(
                 PRODUCT_AGENT_OS / "residual-follow-up-site-freshness.md"
@@ -8797,13 +8782,13 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
         self.assertEqual(
             [
                 "docs/codex/models-and-reasoning.md",
+                "docs/planning/2026-08-10-batch45-s9-a-durable-contract-recovery.md",
+                "docs/planning/2026-08-11-batch45-s9-b-compact-authoring-runtime.md",
+                "docs/planning/2026-11-03-gpt6-documentation-refresh.md",
                 "docs/playbooks/model-migration.md",
                 "docs/product-agent-os/coding-standards.md",
-            "docs/product-agent-os/project-formation.md",
+                "docs/product-agent-os/project-formation.md",
                 "docs/product-agent-os/self-learning-loop.md",
-                "docs/superpowers/plans/2026-08-10-batch45-s9-a-durable-contract-recovery.md",
-                "docs/superpowers/plans/2026-08-11-batch45-s9-b-compact-authoring-runtime.md",
-                "docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md",
             ],
             sorted(f"docs/{path.relative_to(DOCS).as_posix()}" for path in DOC_M25_PENDING_SITE_PAGES),
         )
@@ -8987,10 +8972,7 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
             "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
             "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
             "track11_plan": (
-                DOCS
-                / "superpowers"
-                / "plans"
-                / "2026-06-20-track-11-documentation-architecture-refresh.md"
+                DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
             ).read_text(encoding="utf-8"),
         }
 

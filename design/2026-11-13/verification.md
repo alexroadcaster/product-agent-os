@@ -18,7 +18,7 @@ Source status: current-run evidence для изолированных дизай
 
 Документация:
 
-- `python plugins/product-agent-os/scripts/validate_task_matrix.py design/2026-11-13/implementation-plan.md`: exit 0; `ok: true`, ошибок нет, schema `task_matrix_plan_v1`, 12 planned карточек.
+- `python plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/2026-11-13-ui-implementation-plan.md`: exit 0; `ok: true`, ошибок нет, schema `task_matrix_plan_v1`, 12 planned карточек.
 - `python tools/check_docs.py`: exit 0, `OK: documentation structure checks passed`.
 - `git diff --check`: exit 0; только предупреждения о возможной нормализации CRLF при будущем Git-действии, whitespace errors нет.
 - Локальная проверка Markdown-ссылок DESIGN/plan/verification и символа U+FFFD: exit 0, `Design links/text integrity: PASS`.

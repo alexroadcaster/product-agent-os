@@ -16,7 +16,7 @@ Source status: current-run local artifact evidence, 13.11.2026. Дизайн т�
 | Команда / проверка | Наблюдение |
 | --- | --- |
 | `python design/2026-11-13-v2/update_docs.py` | exit 0; ограниченное обновление собственных дизайн-секций root-файлов и плана |
-| `python plugins/product-agent-os/scripts/validate_task_matrix.py design/2026-11-13-v2/implementation-plan.md` | exit 0; ok=true, errors=[]; 12 planned задач |
+| `python plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/2026-11-13-v2-ui-implementation-plan.md` | exit 0; ok=true, errors=[]; 12 planned задач |
 | `git diff --check` | exit 0 на промежуточном состоянии; только сообщения Git о будущей CRLF/LF нормализации |
 | `python tools/check_docs.py`, ранний запуск | exit 1: ссылка registry на ещё не созданный verification.md; документ создан, требуется итоговый повтор |
 

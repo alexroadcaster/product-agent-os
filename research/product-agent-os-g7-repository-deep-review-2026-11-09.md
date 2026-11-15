@@ -6,7 +6,7 @@ Source status: source inspection completed within the selected slices, 2026-11-0
 
 Проверить полноту PAOS-AUD-G7 по Ponytail, Karpathy-inspired guidelines, Matt Pocock Skills, Superpowers и Desloppify; дополнительно проверить применимость Ruff, Import Linter, dependency-cruiser и Stryker. Результаты добавляются по мере чтения. Полный security audit всех строк и воспроизведение benchmarks не входят в эту проверку. Наличие source/tests не доказывает runtime effectiveness.
 
-Owning matrix: [PAOS-AUD-G7](product-agent-os-audit-remediation-task-plan-2026-11-09.md). Реализация карточек не запускается; G6 owner acceptance, HOST-01/HOST-02 и frozen T34 остаются отдельными.
+Owning matrix: [PAOS-AUD-G7](../docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md). Реализация карточек не запускается; G6 owner acceptance, HOST-01/HOST-02 и frozen T34 остаются отдельными.
 
 ## Метод
 
@@ -116,7 +116,7 @@ Current-run authoring verification, 09.11.2026:
 | `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -v` | Первый запуск: exit 1, 105 tests, 5 errors из-за WinError 5 в sandbox TEMP при создании test fixture directories. Это setup failure, не провал assertions G7. |
 | Та же команда после process-local `TEMP`/`TMP` → workspace `.docs-tools/reports/g7-deep-review-temp` | exit 0; 105 tests, 7.498 s, OK. Sandbox/ACL не изменялись; только доступный workspace temp. |
 | `python -B tools/check_docs.py` | exit 0; documentation structure checks passed. |
-| `python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-audit-remediation-task-plan-2026-11-09.md` | exit 0; ok=true, errors=[]. |
+| `python -B plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md` | exit 0; ok=true, errors=[]. |
 | `python -B plugins/product-agent-os/scripts/validate_task_state_consistency.py` | exit 0; ok=true, errors=[]. |
 | `git -c core.safecrlf=false diff --check` | exit 0; no whitespace errors in tracked diff. |
 | In-memory matrix/link/compactness assertions через `python -B -` | exit 0; 8 planned G7 cards, одинаковые 36 полей; SHA-256 всей части плана до G7 неизменен; локальные ссылки отчёта существуют; все root control-plane files ниже 51200 bytes. |

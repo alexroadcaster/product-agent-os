@@ -1,0 +1,2534 @@
+{
+  "schema_version": "functional_remediation_task_group_v1",
+  "task_matrix_schema": "task_matrix_plan_v1",
+  "created_at": "2026-11-15",
+  "timezone": "Europe/Moscow",
+  "source_plan": "docs/planning/functional-remediation-2026-11-15.md",
+  "status": "planned",
+  "execution_authority": "planning_only",
+  "original_group_unchanged": "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json",
+  "tasks": [
+    {
+      "id": "PAOS-FUNC-01",
+      "title": "Восстановить квалификацию native runtime после redesign",
+      "status": "planned",
+      "priority": "P1",
+      "type": "fix",
+      "evidence_level": "static_finding_reproduction_required",
+      "technical_value": "Согласовать lockfile, manifest и native broker без ослабления проверки fingerprint.",
+      "product_value": "Запуск задачи из обновлённого интерфейса действительно приводит к выполнению.",
+      "acceptance_criteria": [
+        "На текущем lockfile воспроизведён отказ package_lock_mismatch; исправление не подменяет квалификацию простой перезаписью хеша.",
+        "На заново квалифицированном tuple новый broker исполняет synthetic command внутри разрешённого root и отклоняет запись снаружи.",
+        "Отрицательные сценарии для изменённых binary, lockfile и adapter остаются fail-closed; повторный старт проходит."
+      ],
+      "depends_on": [],
+      "blocks": [
+        "PAOS-FUNC-08",
+        "PAOS-FUNC-10",
+        "PAOS-FUNC-15",
+        "PAOS-FUNC-16",
+        "PAOS-FUNC-17",
+        "PAOS-FUNC-19",
+        "PAOS-FUNC-20",
+        "PAOS-FUNC-21",
+        "PAOS-FUNC-22"
+      ],
+      "execution_order": 1,
+      "work_locations": [
+        "packages/contracts/runtime/manifest.mts",
+        "packages/contracts/runtime/qualified-manifest.json",
+        "apps/local-service/src/runtime/sandbox-broker.mts",
+        "tests/web/runtime-manifest.test.mts"
+      ],
+      "new_planned_files": [],
+      "proposed_owners": "plugin-runtime-builder + tester",
+      "gate": "native_synthetic_acceptance_required",
+      "estimate": "8–16 ч",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "rough_range",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "Lock SHA-256 d279009a… в manifest и f126e4dc… текущего файла не совпали; adapter99 совпал в аудите15.11.",
+      "source_paths": [
+        "packages/contracts/runtime/manifest.mts",
+        "apps/local-service/src/runtime/sandbox-broker.mts"
+      ],
+      "future_test_commands": [
+        "node --test tests/web/runtime-manifest.test.mts"
+      ],
+      "delivery_group_id": "FUNC-G01"
+    },
+    {
+      "id": "PAOS-FUNC-02",
+      "title": "Восстановить связи структурированных артефактов с задачами",
+      "status": "planned",
+      "priority": "P2",
+      "type": "fix",
+      "evidence_level": "static_finding_reproduction_required",
+      "technical_value": "Унифицировать нормализацию files, artifactReferences, artifacts и fileContexts.",
+      "product_value": "Документ находится из задачи, а задача — из документа и поиска.",
+      "acceptance_criteria": [
+        "Задача со ссылкой только в artifacts.reference находится фильтром каталога по taskId и отображается в связанных задачах документа.",
+        "Legacy artifactReferences/files сохраняют поведение; дубли и разделители путей нормализуются.",
+        "Внешний URL не принимается за локальный путь; stale revision и недоступный файл отображаются явно.",
+        "File references используют нормализацию и root identity F28; каталог, дерево и задачи ссылаются на один разрешённый relativePath/revision. Deleted/moved/excluded не превращаются в доступный документ или право чтения."
+      ],
+      "depends_on": [
+        "PAOS-FUNC-28"
+      ],
+      "blocks": [
+        "PAOS-FUNC-13",
+        "PAOS-FUNC-14",
+        "PAOS-FUNC-19"
+      ],
+      "execution_order": 13,
+      "work_locations": [
+        "apps/local-service/src/artifacts/service.mts",
+        "apps/local-service/src/impact/service.mts",
+        "tests/web/skill-generation-artifacts.test.mts"
+      ],
+      "new_planned_files": [],
+      "proposed_owners": "builder + tester",
+      "gate": "reproduce_then_fix",
+      "estimate": "4–8 ч",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "rough_range",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "taskPaths читает files/artifactReferences; Editor отдельно сохраняет artifacts.",
+      "source_paths": [
+        "apps/local-service/src/artifacts/service.mts",
+        "apps/web/src/features/tasks/Editor.tsx"
+      ],
+      "future_test_commands": [
+        "node --test tests/web/skill-generation-artifacts.test.mts"
+      ],
+      "delivery_group_id": "FUNC-G03"
+    },
+    {
+      "id": "PAOS-FUNC-03",
+      "title": "Полностью сбрасывать черновик новой задачи",
+      "status": "planned",
+      "priority": "P2",
+      "type": "fix",
+      "evidence_level": "static_finding_reproduction_required",
+      "technical_value": "Синхронизировать модель, rawInputs, estimate, preview и dirty-state при Discard.",
+      "product_value": "После отмены пользователь не видит данные, которые уже отсутствуют в сохраняемой задаче.",
+      "acceptance_criteria": [
+        "В новой задаче заполнить criteria/risks/references/estimate, нажать Discard: все поля и модель возвращаются к одному пустому состоянию.",
+        "Следующее сохранение не возвращает отменённые данные; dirty/preview/error не вводят в заблуждение.",
+        "Для существующей задачи Discard возвращает серверную revision и не уничтожает чужие изменения."
+      ],
+      "depends_on": [],
+      "blocks": [
+        "PAOS-FUNC-19"
+      ],
+      "execution_order": 2,
+      "work_locations": [
+        "apps/web/src/features/tasks/Editor.tsx",
+        "tests/web/single-window/m2-task-manager-browser-acceptance.mts"
+      ],
+      "new_planned_files": [],
+      "proposed_owners": "builder + tester",
+      "gate": "browser_reproduction_required",
+      "estimate": "3–6 ч",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "rough_range",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "Reset не сбрасывает rawInputs; эффект очистки требует entity.",
+      "source_paths": [
+        "apps/web/src/features/tasks/Editor.tsx"
+      ],
+      "future_test_commands": [
+        "npm run check:web-m1",
+        "npm run test:web-m1"
+      ],
+      "delivery_group_id": "FUNC-G01"
+    },
+    {
+      "id": "PAOS-FUNC-04",
+      "title": "Сохранять черновик назначений workflow при навигации",
+      "status": "planned",
+      "priority": "P2",
+      "type": "fix",
+      "evidence_level": "static_finding_reproduction_required",
+      "technical_value": "Включить typeMapping и исходную CAS revision в общий жизненный цикл draft.",
+      "product_value": "Пользователь не теряет несохранённые назначения процессов при переходе между разделами.",
+      "acceptance_criteria": [
+        "Изменить mapping типа задачи, уйти из Settings и вернуться: черновик восстановлен либо уход заранее остановлен понятным выбором.",
+        "Save/Discard корректно снимают dirty-state; default workflow и mapping не перетирают друг друга.",
+        "Смена проекта не переносит черновик в другой проект; stale save возвращает conflict без потери введённого."
+      ],
+      "depends_on": [],
+      "blocks": [
+        "PAOS-FUNC-19"
+      ],
+      "execution_order": 3,
+      "work_locations": [
+        "apps/web/src/features/workflows/WorkflowManager.tsx",
+        "tests/web/single-window/m2b-browser-acceptance.mts"
+      ],
+      "new_planned_files": [],
+      "proposed_owners": "builder + tester",
+      "gate": "browser_reproduction_required",
+      "estimate": "4–8 ч",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "rough_range",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "Draft cache не включает typeMapping/mappingDirty.",
+      "source_paths": [
+        "apps/web/src/features/workflows/WorkflowManager.tsx"
+      ],
+      "future_test_commands": [
+        "npm run check:web-m1",
+        "npm run test:web-m1"
+      ],
+      "delivery_group_id": "FUNC-G01"
+    },
+    {
+      "id": "PAOS-FUNC-05",
+      "title": "Обозначить неполное покрытие portfolio рядом с итогами",
+      "status": "planned",
+      "priority": "P2",
+      "type": "fix",
+      "evidence_level": "static_finding_reproduction_required",
+      "technical_value": "Провести partial/loaded/expected из агрегатора в отображение KPI и progress.",
+      "product_value": "Частично загруженные проекты не выглядят как полный итог портфеля.",
+      "acceptance_criteria": [
+        "При успехе1 проекта и ошибке1 проекта рядом с totals показано «1 из2; данные неполные».",
+        "Неизвестные значения не заменяются нулём; progress явно относится к доступной выборке.",
+        "Loading, retry, all-failed и восстановление полного покрытия проверены в RU/EN."
+      ],
+      "depends_on": [],
+      "blocks": [
+        "PAOS-FUNC-11",
+        "PAOS-FUNC-18",
+        "PAOS-FUNC-19",
+        "PAOS-FUNC-24"
+      ],
+      "execution_order": 4,
+      "work_locations": [
+        "apps/web/src/features/dashboard/model.ts",
+        "apps/web/src/features/dashboard/Dashboard.tsx",
+        "tests/web/ui-v3-dashboard.test.mts"
+      ],
+      "new_planned_files": [],
+      "proposed_owners": "builder + tester",
+      "gate": "reproduce_then_fix",
+      "estimate": "3–6 ч",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "rough_range",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "aggregateSnapshots возвращает partial; dashboard totals его не показывает.",
+      "source_paths": [
+        "apps/web/src/features/dashboard/model.ts",
+        "apps/web/src/features/dashboard/Dashboard.tsx"
+      ],
+      "future_test_commands": [
+        "node --test tests/web/ui-v3-dashboard.test.mts"
+      ],
+      "delivery_group_id": "FUNC-G01"
+    },
+    {
+      "id": "PAOS-FUNC-06",
+      "title": "Исправить нумерацию очереди на dashboard",
+      "status": "planned",
+      "priority": "P3",
+      "type": "fix",
+      "evidence_level": "static_finding_reproduction_required",
+      "technical_value": "Единый 1-based контракт позиции между scheduler и frontend.",
+      "product_value": "Одинаковый порядок задач на dashboard и в управлении очередью.",
+      "acceptance_criteria": [
+        "Для backend positions1/2 dashboard показывает №1/№2.",
+        "Для null номер отсутствует; reorder отражается одинаково на обеих поверхностях."
+      ],
+      "depends_on": [],
+      "blocks": [
+        "PAOS-FUNC-19"
+      ],
+      "execution_order": 5,
+      "work_locations": [
+        "apps/web/src/features/dashboard/Dashboard.tsx",
+        "tests/web/ui-v3-dashboard.test.mts"
+      ],
+      "new_planned_files": [],
+      "proposed_owners": "builder + tester",
+      "gate": "reproduce_then_fix",
+      "estimate": "1–3 ч",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "rough_range",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "Backend indexOf+1, dashboard position+1.",
+      "source_paths": [
+        "apps/local-service/src/scheduler/service.mts",
+        "apps/web/src/features/dashboard/Dashboard.tsx"
+      ],
+      "future_test_commands": [
+        "node --test tests/web/ui-v3-dashboard.test.mts"
+      ],
+      "delivery_group_id": "FUNC-G01"
+    },
+    {
+      "id": "PAOS-FUNC-07",
+      "title": "Сортировать последние задачи по времени",
+      "status": "planned",
+      "priority": "P3",
+      "type": "fix",
+      "evidence_level": "static_finding_reproduction_required",
+      "technical_value": "Задать явную сортировку по updatedAt с устойчивым tie-breaker и unknown policy.",
+      "product_value": "Блок последних задач ведёт к действительно недавней работе.",
+      "acceptance_criteria": [
+        "UUID-порядок специально противоположен времени: отображаются3 последних по updatedAt.",
+        "Равные и отсутствующие timestamps обрабатываются детерминированно; подпись поясняет выбранную семантику.",
+        "Создание и изменение задачи обновляют состав блока после refresh."
+      ],
+      "depends_on": [],
+      "blocks": [
+        "PAOS-FUNC-18",
+        "PAOS-FUNC-19"
+      ],
+      "execution_order": 6,
+      "work_locations": [
+        "apps/web/src/features/dashboard/Dashboard.tsx",
+        "apps/web/src/features/dashboard/model.ts",
+        "tests/web/ui-v3-dashboard.test.mts"
+      ],
+      "new_planned_files": [],
+      "proposed_owners": "builder + tester",
+      "gate": "reproduce_then_fix",
+      "estimate": "2–4 ч",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "rough_range",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "Dashboard slice(-3), storage ORDER BY id.",
+      "source_paths": [
+        "apps/web/src/features/dashboard/Dashboard.tsx",
+        "apps/local-service/src/storage/sqlite-worker.mts"
+      ],
+      "future_test_commands": [
+        "node --test tests/web/ui-v3-dashboard.test.mts"
+      ],
+      "delivery_group_id": "FUNC-G01"
+    },
+    {
+      "id": "PAOS-FUNC-08",
+      "title": "Разделить общие контракты и зависимости UI/backend",
+      "status": "planned",
+      "priority": "P2",
+      "type": "architecture",
+      "evidence_level": "static_observation",
+      "technical_value": "Убрать импорты backend→frontend и contracts→backend, сохранив публичное поведение.",
+      "product_value": "Изменение оформления реже ломает серверные функции и выпуск.",
+      "acceptance_criteria": [
+        "Preferences и task decoder имеют одного независимого владельца; contracts не импортируют apps.",
+        "Существующие payload/schema и отказные сценарии сохранены; frontend и service проходят typecheck и текущие тесты.",
+        "Проверка направления импортов предотвращает регрессию; runtime tuple повторно квалифицирован, если затронуты pinned sources."
+      ],
+      "depends_on": [
+        "PAOS-FUNC-01"
+      ],
+      "blocks": [
+        "PAOS-FUNC-09",
+        "PAOS-FUNC-11",
+        "PAOS-FUNC-13"
+      ],
+      "execution_order": 14,
+      "work_locations": [
+        "apps/local-service/src/http/application.mts",
+        "apps/web/src/design/preferences.ts",
+        "packages/contracts/issues/task-profile.ts",
+        "apps/local-service/src/tasks/task-profile.ts"
+      ],
+      "new_planned_files": [],
+      "proposed_owners": "architect + builder + tester",
+      "gate": "architecture_review_before_refactor",
+      "estimate": "8–16 ч",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "rough_range",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "HTTP imports web/preferences; contracts imports local-service/task-profile.",
+      "source_paths": [
+        "apps/local-service/src/http/application.mts",
+        "packages/contracts/issues/task-profile.ts"
+      ],
+      "future_test_commands": [
+        "npm run check:web-m1",
+        "npm run test:web-m1"
+      ],
+      "delivery_group_id": "FUNC-G01"
+    },
+    {
+      "id": "PAOS-FUNC-09",
+      "title": "Оптимизировать чтение и жизненный цикл снимков",
+      "status": "planned",
+      "priority": "P2",
+      "type": "architecture",
+      "evidence_level": "static_observation",
+      "technical_value": "По измерениям устранить лишние полные сканы и добавить ограниченное освобождение cache.",
+      "product_value": "Длительная работа и большие проекты не упираются в задержки и накопленные snapshots.",
+      "acceptance_criteria": [
+        "Выбраны и реализованы только bottlenecks, воспроизведённые F20; before/after на одном workload.",
+        "Девятый проект не требует restart лишь из-за8 graph snapshots: eviction/rebuild сохраняет revision/cursor safety.",
+        "Нагрузка на task/artifact/history чтение ограничена; превышение бюджета даёт объяснимый partial/error и безопасное восстановление.",
+        "После F20 сравнить metadata listing, graph status и scanner на том же workload: повторный запрос статуса не должен безусловно перечитывать все содержимое файлов; bytes/read и scan count измерены.",
+        "Cache key/eviction учитывают root identity, policy version и scan revision F27/F28; eviction не скрывает файлы из дерева F26 и не смешивает разные проекты."
+      ],
+      "depends_on": [
+        "PAOS-FUNC-08",
+        "PAOS-FUNC-20"
+      ],
+      "blocks": [
+        "PAOS-FUNC-14"
+      ],
+      "execution_order": 29,
+      "work_locations": [
+        "apps/local-service/src/task-manager/service.mts",
+        "apps/local-service/src/storage/sqlite-worker.mts",
+        "apps/local-service/src/artifacts/service.mts",
+        "apps/local-service/src/code-index/service.mts",
+        "apps/local-service/src/sessions/service.mts"
+      ],
+      "new_planned_files": [],
+      "proposed_owners": "architect + builder + tester",
+      "gate": "measured_bottleneck_required",
+      "estimate": "12–24 ч после benchmark",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "rough_range",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "Полные projectEntities; graph memory cap8; catalog snapshot limits.",
+      "source_paths": [
+        "apps/local-service/src/code-index/service.mts",
+        "apps/local-service/src/artifacts/service.mts",
+        "apps/local-service/src/task-manager/service.mts"
+      ],
+      "future_test_commands": [
+        "npm run test:web-m1",
+        "npm run check:web-m1"
+      ],
+      "delivery_group_id": "FUNC-G04"
+    },
+    {
+      "id": "PAOS-FUNC-10",
+      "title": "Показывать ограничения файлового scope до запуска",
+      "status": "planned",
+      "priority": "P2",
+      "type": "improvement",
+      "evidence_level": "static_observation",
+      "technical_value": "Общий preflight для числа файлов, размеров, excluded paths и границ actual diff.",
+      "product_value": "Пользователь заранее понимает, почему задача не стартует и как её разделить.",
+      "acceptance_criteria": [
+        "32/33 файла,64KiB/64KiB+1 и суммарные512KiB проверяются до dispatch с конкретным объяснением.",
+        "Sensitive/link/binary exclusions не раскрывают содержимое; blocked execution не выдаётся за стартовавший run.",
+        "Если расширение лимитов необходимо, оно проходит отдельный bounded performance/security gate; лимиты не снимаются безусловно.",
+        "Выбор file reference из дерева F26 проходит execution preflight повторно: видимость/читаемость/индексация файла не означают разрешение на dispatch. Policy F28 и реальные execution limits отображаются раздельно; stale path/root требует обновления."
+      ],
+      "depends_on": [
+        "PAOS-FUNC-01",
+        "PAOS-FUNC-26",
+        "PAOS-FUNC-28"
+      ],
+      "blocks": [
+        "PAOS-FUNC-15",
+        "PAOS-FUNC-19",
+        "PAOS-FUNC-24"
+      ],
+      "execution_order": 20,
+      "work_locations": [
+        "apps/local-service/src/runtime/app-agent-files.mts",
+        "apps/local-service/src/runtime/app-agent-gateway.mts",
+        "apps/web/src/ui/SessionContext.tsx",
+        "apps/web/src/ui/App.tsx",
+        "apps/web/src/features/files/ProjectFiles.tsx"
+      ],
+      "new_planned_files": [
+        "apps/web/src/features/files/ProjectFiles.tsx"
+      ],
+      "proposed_owners": "builder + tester",
+      "gate": "shared_preflight_contract_required",
+      "estimate": "6–12 ч",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "rough_range",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "Capture ограничен32 файлами,64KiB/файл,512KiB суммарно.",
+      "source_paths": [
+        "apps/local-service/src/runtime/app-agent-files.mts"
+      ],
+      "future_test_commands": [
+        "npm run test:web-m1",
+        "npm run check:web-m1"
+      ],
+      "delivery_group_id": "FUNC-G03"
+    },
+    {
+      "id": "PAOS-FUNC-11",
+      "title": "Ввести измеряемую статистику runs и расхода",
+      "status": "planned",
+      "priority": "P2",
+      "type": "feature",
+      "evidence_level": "bounded_capability_or_missing_extension",
+      "technical_value": "Versioned telemetry с provenance, дедупликацией и агрегацией session→run→task→agent.",
+      "product_value": "Длительность и расход помогают сравнивать результат работы без выдуманных чисел.",
+      "acceptance_criteria": [
+        "Сначала утверждены доступные источники duration/tokens/tool calls/cost, privacy и retention; unsupported поля остаются unknown.",
+        "Повтор события не увеличивает totals; partial streams, restart и связь нескольких агентов не приводят к double count.",
+        "Dashboard, задача и агент показывают согласованные значения, период и source; стоимость появляется только при известной модели расчёта."
+      ],
+      "depends_on": [
+        "PAOS-FUNC-05",
+        "PAOS-FUNC-08"
+      ],
+      "blocks": [
+        "PAOS-FUNC-15"
+      ],
+      "execution_order": 21,
+      "work_locations": [
+        "apps/local-service/src/team/service.mts",
+        "apps/local-service/src/events/task-time.ts",
+        "apps/web/src/features/dashboard/Dashboard.tsx",
+        "apps/web/src/features/team/TeamManager.tsx"
+      ],
+      "new_planned_files": [],
+      "proposed_owners": "architect + builder + tester",
+      "gate": "telemetry_source_privacy_design_required",
+      "estimate": "8–16 ч discovery/design; build после выбора источников",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "unknown_until_design_gate",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "Metrics durationSeconds/tokenCount/cost=null; tool_use не измеряется.",
+      "source_paths": [
+        "apps/local-service/src/team/service.mts",
+        "apps/web/src/features/dashboard/Dashboard.tsx"
+      ],
+      "future_test_commands": [
+        "node --test tests/web/sessions-team.test.mts tests/web/task-time.test.mts tests/web/ui-v3-dashboard.test.mts"
+      ],
+      "delivery_group_id": "FUNC-G05"
+    },
+    {
+      "id": "PAOS-FUNC-12",
+      "title": "Спроектировать и подключить внешний поиск skills",
+      "status": "planned",
+      "priority": "P2",
+      "type": "feature",
+      "evidence_level": "bounded_capability_or_missing_extension",
+      "technical_value": "Отдельный read-only discovery adapter с provenance, лицензией, pin и preview.",
+      "product_value": "Нужный skill можно найти вне локального каталога и осознанно добавить.",
+      "acceptance_criteria": [
+        "До build выбран разрешённый источник, network/privacy policy и формат результата.",
+        "Поиск показывает origin/license/revision; timeout/offline не ломают локальный каталог.",
+        "Поиск ничего не устанавливает; добавление проходит существующий preview/apply и проверяет drift и зависимости."
+      ],
+      "depends_on": [],
+      "blocks": [],
+      "execution_order": 7,
+      "work_locations": [
+        "apps/local-service/src/team/service.mts",
+        "apps/local-service/src/team/sources.mts",
+        "apps/web/src/features/team/TeamManager.tsx"
+      ],
+      "new_planned_files": [],
+      "proposed_owners": "architect + builder + tester",
+      "gate": "external_source_design_and_authority_required",
+      "estimate": "4–8 ч design; build после выбора адаптера",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "unknown_until_design_gate",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "remote_discovery_adapter_not_configured.",
+      "source_paths": [
+        "apps/local-service/src/team/service.mts"
+      ],
+      "future_test_commands": [
+        "node --test tests/web/sessions-team.test.mts tests/web/team-review-repair.test.mts"
+      ],
+      "delivery_group_id": "FUNC-G05"
+    },
+    {
+      "id": "PAOS-FUNC-13",
+      "title": "Добавить безопасное применение document proposals",
+      "status": "planned",
+      "priority": "P2",
+      "type": "feature",
+      "evidence_level": "bounded_capability_or_missing_extension",
+      "technical_value": "Preview-bound compare-and-swap writer с сохранением пользовательских правок и recovery.",
+      "product_value": "Согласованное предложение можно довести до изменения документа внутри приложения.",
+      "acceptance_criteria": [
+        "До build утверждены writer authority, source-vs-SQL ownership и eligible documents.",
+        "Apply меняет только проверенный файл при совпавшей revision; внешний edit вызывает conflict без overwrite.",
+        "Повтор apply идемпотентен; crash/rollback и sensitive paths проверены; staged/applied/accepted показываются отдельно."
+      ],
+      "depends_on": [
+        "PAOS-FUNC-02",
+        "PAOS-FUNC-08"
+      ],
+      "blocks": [],
+      "execution_order": 22,
+      "work_locations": [
+        "apps/local-service/src/artifacts/service.mts",
+        "apps/local-service/src/http/application.mts",
+        "apps/web/src/features/artifacts/ArtifactExplorer.tsx"
+      ],
+      "new_planned_files": [],
+      "proposed_owners": "architect + builder + tester",
+      "gate": "document_write_authority_design_required",
+      "estimate": "8–16 ч design; build после утверждения write contract",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "unknown_until_design_gate",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "Текущая политика staged_only, applied:false.",
+      "source_paths": [
+        "apps/local-service/src/artifacts/service.mts"
+      ],
+      "future_test_commands": [
+        "node --test tests/web/skill-generation-artifacts.test.mts",
+        "npm run check:web-m1"
+      ],
+      "delivery_group_id": "FUNC-G05"
+    },
+    {
+      "id": "PAOS-FUNC-14",
+      "title": "Расширить полезность и устойчивость карты проекта",
+      "status": "planned",
+      "priority": "P2",
+      "type": "feature",
+      "evidence_level": "bounded_capability_or_missing_extension",
+      "technical_value": "Выбрать поддержку языков/связей; durable revision index, imports resolution и честный coverage.",
+      "product_value": "Карта помогает оценить влияние изменения, а не создаёт видимость полного анализа.",
+      "acceptance_criteria": [
+        "До build утверждена матрица поддерживаемых языков и типов связей; unsupported semantics остаются явно отмеченными.",
+        "Для выбранного scope cross-file imports/aliases проверяются на эталонных fixtures; unresolved не становится ложным ребром.",
+        "Restart/rebuild сохраняет либо явно инвалидирует revision; D3/Mermaid/list и impact показывают один набор данных.",
+        "Graph consumer использует inventory F28 и этап code в F27; discovered/readable/indexed/unsupported/excluded/error различаются. Нулевой или успешный JS/TS индекс не означает полного анализа проекта.",
+        "Ready/stale/unavailable графа не блокирует дерево F26; restart/cancel/retry не публикуют устаревший результат, недоступный parser оставляет другие результаты сканирования доступными.",
+        "По F30/F31 зафиксирован выбор backend/композиции и rollback; обоснованный отказ PoC не становится скрытым fallback. Неподдерживаемые языки и семантика показываются явно; raw SQLite стороннего движка не становится API PAOS.",
+        "В существующей «Карте» реализованы режимы зависимостей/символов в пределах выбранных capabilities, поиск, incoming/outgoing, путь/impact и evidence drawer с file/line переходами. Graph/list/Mermaid, фильтры и counters используют один snapshot; loading/empty/partial/error/unavailable/stale и version/coverage видимы.",
+        "Общий UI/UX-контракт F30–F34 применён к production экрану, не только PoC; переходы Files↔Map и выбор проекта проверены. Раздел «Архитектура» включается только для source-backed модели: импорт не равен вызову, C4 grouping не считается извлечённым бизнес-фактом."
+      ],
+      "depends_on": [
+        "PAOS-FUNC-02",
+        "PAOS-FUNC-09",
+        "PAOS-FUNC-27",
+        "PAOS-FUNC-28",
+        "PAOS-FUNC-30",
+        "PAOS-FUNC-31"
+      ],
+      "blocks": [
+        "PAOS-FUNC-19",
+        "PAOS-FUNC-24",
+        "PAOS-FUNC-34"
+      ],
+      "execution_order": 30,
+      "work_locations": [
+        "apps/local-service/src/code-index/service.mts",
+        "apps/local-service/src/code-index/lexical.mts",
+        "apps/local-service/src/impact/service.mts",
+        "apps/web/src/features/graph/GraphExplorer.tsx",
+        "apps/web/src/ui/App.tsx",
+        "apps/web/src/ui/Sidebar.tsx",
+        "apps/web/src/api/client.ts",
+        "apps/web/src/locales/app.ts",
+        "docs/planning/2026-11-13-v3-ui-implementation-plan.md"
+      ],
+      "new_planned_files": [],
+      "proposed_owners": "architect + graph-cockpit-engineer + tester",
+      "gate": "language_semantics_storage_design_required",
+      "estimate": "8–16 ч design; build после выбора языков",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "unknown_until_design_gate",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "lexical_subset_only, imports unresolved, memory-only index.",
+      "source_paths": [
+        "apps/local-service/src/code-index/service.mts"
+      ],
+      "future_test_commands": [
+        "npm run test:web-m1",
+        "node --test tests/web/ui-v3-diagram.test.mts"
+      ],
+      "delivery_group_id": "FUNC-G04"
+    },
+    {
+      "id": "PAOS-FUNC-15",
+      "title": "Уточнить и расширить границы автономности",
+      "status": "planned",
+      "priority": "P2",
+      "type": "feature",
+      "evidence_level": "bounded_capability_or_missing_extension",
+      "technical_value": "Capability-based file/operation/cost policy без обещаний ограничения всего App host.",
+      "product_value": "Пользователь понимает и контролирует допустимую самостоятельность агента.",
+      "acceptance_criteria": [
+        "До build документированы enforceable границы и невозможные обещания; narrow-path execution без enforcement отклоняется.",
+        "В разрешённом маршруте выход за scope/лимит останавливает новые dispatch; unknown outcome остаётся fenced.",
+        "Денежный лимит допускается только при достаточном metering/reservation изF11; иначе UI явно сообщает недоступность."
+      ],
+      "depends_on": [
+        "PAOS-FUNC-01",
+        "PAOS-FUNC-10",
+        "PAOS-FUNC-11"
+      ],
+      "blocks": [],
+      "execution_order": 27,
+      "work_locations": [
+        "apps/local-service/src/autonomy-policy/service.mts",
+        "packages/contracts/autonomy/policy.ts",
+        "apps/local-service/src/runtime/sandbox-broker.mts",
+        "apps/web/src/features/autonomy/AutonomyManager.tsx"
+      ],
+      "new_planned_files": [],
+      "proposed_owners": "architect + security-privacy-supply-chain-reviewer + builder + tester",
+      "gate": "enforcement_capability_and_owner_design_required",
+      "estimate": "8–16 ч design; build после подтверждения enforcement",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "unknown_until_design_gate",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "Scope executable только '.', hostToolsConstrained=false, tokenCostMetering unavailable.",
+      "source_paths": [
+        "apps/local-service/src/autonomy-policy/service.mts"
+      ],
+      "future_test_commands": [
+        "node --test tests/web/autonomy-policy.test.mts tests/web/autonomy-runtime.test.mts"
+      ],
+      "delivery_group_id": "FUNC-G05"
+    },
+    {
+      "id": "PAOS-FUNC-16",
+      "title": "Подтверждать доступную историю и реально загруженные профили",
+      "status": "planned",
+      "priority": "P2",
+      "type": "feature",
+      "evidence_level": "bounded_capability_or_missing_extension",
+      "technical_value": "Развести configured/pinned/observed model, effort и asset version; capability-based history adapter.",
+      "product_value": "Пользователь знает, какой агент фактически работал и какая часть истории доступна.",
+      "acceptance_criteria": [
+        "До build проверен поддерживаемый host contract; недоступная история не извлекается обходом приватных хранилищ.",
+        "UI различает configured/pinned/observed; loadedVersion появляется только из подтверждённого события.",
+        "Reconnect/profile switch не смешивают историю и identity; partial coverage и отсутствие attestation объясняются."
+      ],
+      "depends_on": [
+        "PAOS-FUNC-01"
+      ],
+      "blocks": [],
+      "execution_order": 15,
+      "work_locations": [
+        "apps/local-service/src/sessions/service.mts",
+        "apps/local-service/src/team/service.mts",
+        "packages/contracts/team/assets.ts",
+        "apps/web/src/features/sessions/SessionsCatalog.tsx",
+        "apps/web/src/features/team/TeamManager.tsx"
+      ],
+      "new_planned_files": [],
+      "proposed_owners": "architect + builder + tester",
+      "gate": "supported_host_capability_required",
+      "estimate": "6–12 ч capability review; build после подтверждения API",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "unknown_until_design_gate",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "host_history_not_exposed; loadedVersion/observedModel/observedEffort unknown.",
+      "source_paths": [
+        "apps/local-service/src/sessions/service.mts",
+        "apps/local-service/src/team/service.mts"
+      ],
+      "future_test_commands": [
+        "node --test tests/web/sessions-team.test.mts tests/web/team-run-navigation.test.mts"
+      ],
+      "delivery_group_id": "FUNC-G05"
+    },
+    {
+      "id": "PAOS-FUNC-17",
+      "title": "Подготовить удобную установку, обновление и rollback",
+      "status": "planned",
+      "priority": "P2",
+      "type": "feature",
+      "evidence_level": "bounded_capability_or_missing_extension",
+      "technical_value": "Поверх переносимого package задать version/digest/signing, compatibility и recovery UX.",
+      "product_value": "Обновление не требует ручного подбора каталогов и не ставит данные под угрозу.",
+      "acceptance_criteria": [
+        "До build выбраны канал доставки, формат installer, signing и AUTH/licensing gates; публикация отдельно.",
+        "Synthetic install/update/rollback сохраняют профиль; incompatible schema/tuple блокируют запуск с понятным восстановлением.",
+        "Не удаляются пользовательские профили и старые версии без отдельного решения; новый чистый Windows-профиль проходит согласованный сценарий."
+      ],
+      "depends_on": [
+        "PAOS-FUNC-01",
+        "PAOS-FUNC-22"
+      ],
+      "blocks": [],
+      "execution_order": 23,
+      "work_locations": [
+        "apps/desktop-local/distribution.mts",
+        "apps/desktop-local/main.mts",
+        "apps/desktop-local/README.md",
+        "apps/launcher/launcher.ts",
+        "tests/web/desktop-local.test.mts"
+      ],
+      "new_planned_files": [],
+      "proposed_owners": "release-operator + builder + tester",
+      "gate": "distribution_signing_commercial_design_required",
+      "estimate": "8–16 ч design; build после выбора канала",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "unknown_until_design_gate",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "Portable CLI есть; signed installer/auto-update не заявлены.",
+      "source_paths": [
+        "apps/desktop-local/README.md"
+      ],
+      "future_test_commands": [
+        "node --test tests/web/desktop-local.test.mts"
+      ],
+      "delivery_group_id": "FUNC-G06"
+    },
+    {
+      "id": "PAOS-FUNC-18",
+      "title": "Согласовать обновление снимков задач и dashboard",
+      "status": "planned",
+      "priority": "P2",
+      "type": "improvement",
+      "evidence_level": "static_observation",
+      "technical_value": "Определить refresh/invalidation contract при фоне, мутациях и смене проекта.",
+      "product_value": "После выполнения пользователь видит актуальный статус без угадывания, какой экран обновить.",
+      "acceptance_criteria": [
+        "Изменение задачи/очереди в другом разрешённом канале либо обновляет экран, либо явно делает snapshot устаревшим.",
+        "Поздний ответ предыдущего проекта не заменяет текущие данные; dirty editor не перезаписывается refresh.",
+        "Polling/subscription останавливаются при unmount и не создают неограниченную нагрузку.",
+        "Create/modify/rename/delete и изменение policy/root инвалидируют затронутые directory/document/graph/analysis snapshots; выбран watcher либо bounded rescan/refresh с явной свежестью, без обещания невыбранного live watcher.",
+        "Scan events имеют scanId/revision; позднее событие отменённого задания или другого проекта не меняет UI. После возврата/restart отображается сохранённый scan status без перезаписи черновиков.",
+        "Общий freshness contract распространяется на code/schema snapshots и code-table links: совместимые revisions, late-response rejection, явный stale и остановка polling при уходе. Реализацию и проверку новых consumers выполняют F14/F33/F34; F18 не ждёт их и не блокирует ранний Files путь."
+      ],
+      "depends_on": [
+        "PAOS-FUNC-05",
+        "PAOS-FUNC-07",
+        "PAOS-FUNC-26",
+        "PAOS-FUNC-27"
+      ],
+      "blocks": [
+        "PAOS-FUNC-19"
+      ],
+      "execution_order": 24,
+      "work_locations": [
+        "apps/web/src/features/tasks/TaskManager.tsx",
+        "apps/web/src/features/dashboard/Dashboard.tsx",
+        "apps/web/src/api/latest-request.ts",
+        "apps/web/src/features/files/ProjectFiles.tsx",
+        "apps/web/src/features/projects/ProjectOnboarding.tsx",
+        "apps/local-service/src/project-scans/service.mts"
+      ],
+      "new_planned_files": [
+        "apps/web/src/features/files/ProjectFiles.tsx",
+        "apps/local-service/src/project-scans/service.mts"
+      ],
+      "proposed_owners": "builder + tester",
+      "gate": "freshness_contract_before_build",
+      "estimate": "6–12 ч",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "rough_range",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "Task/dashboard преимущественно initial/manual snapshots, queue polling отдельно.",
+      "source_paths": [
+        "apps/web/src/features/tasks/TaskManager.tsx",
+        "apps/web/src/features/dashboard/Dashboard.tsx"
+      ],
+      "future_test_commands": [
+        "npm run test:web-m1",
+        "npm run check:web-m1"
+      ],
+      "delivery_group_id": "FUNC-G03"
+    },
+    {
+      "id": "PAOS-FUNC-19",
+      "title": "Проверить сквозной функционал на текущей сборке",
+      "status": "planned",
+      "priority": "P1",
+      "type": "verification",
+      "evidence_level": "verification_gap",
+      "technical_value": "Связать real UI/API/storage/native receipts с одним revision без подмены execution mock-данными.",
+      "product_value": "Пользователь проходит весь рабочий путь и получает проверяемый результат.",
+      "acceptance_criteria": [
+        "Synthetic путь task→assignment→run→approval→command→diff/checks→owner acceptance проходит на текущем build.",
+        "Формы, custom workflow, RU/EN, обе темы, keyboard, links и partial/error состояния проверены послеF02–F07/F10/F18.",
+        "Actual App/model roundtrip и генерация agent/skill проверяются только при отдельном разрешении; без него фиксируется live gap, synthetic pass его не закрывает.",
+        "На synthetic fixture пройден путь Add → немедленно доступное дерево → этапы сканирования → preview допустимого файла → file reference задачи; карта и discovery не подменяют полноту файлового дерева.",
+        "Проверены empty/no-Control-plane/Python-only/mixed проекты, Unicode/пробелы, unreadable/oversized/binary/invalid-encoding, ignore/sensitive/link/traversal, rename/delete/root drift во время scan, cancel/restart/retry и два проекта. Ошибка отдельного файла сохраняет разрешённую часть, root violation блокируется; до/после target hashes совпадают.",
+        "RU/EN, две темы, keyboard/focus, pagination, явная неполнота поиска и отсутствие false-ready проверены; fixtures не используют реальные профили/credentials и не запускают target scripts.",
+        "После F14/F33/F34 пройден расширенный путь Files → Map → DB schema → code usages → source line → task reference; сохранены selection/back/filter/project isolation. Проверены confirmed/inferred/unresolved и различие runtime schema/ORM/migrations, экспорт Mermaid и bounded больших графов.",
+        "Новые вкладки/разделы имеют RU/EN, обе темы, keyboard/focus, доступный list/table fallback и все UI states; backend failure/cancel/restart не маскируются mock UI. Отдельные ранние receipts Files/scan допускаются до graph/DB, но окончательное закрытие F19 требует расширенного сценария."
+      ],
+      "depends_on": [
+        "PAOS-FUNC-01",
+        "PAOS-FUNC-02",
+        "PAOS-FUNC-03",
+        "PAOS-FUNC-04",
+        "PAOS-FUNC-05",
+        "PAOS-FUNC-06",
+        "PAOS-FUNC-07",
+        "PAOS-FUNC-10",
+        "PAOS-FUNC-18",
+        "PAOS-FUNC-24",
+        "PAOS-FUNC-26",
+        "PAOS-FUNC-27",
+        "PAOS-FUNC-29",
+        "PAOS-FUNC-14",
+        "PAOS-FUNC-33",
+        "PAOS-FUNC-34"
+      ],
+      "blocks": [
+        "PAOS-FUNC-23"
+      ],
+      "execution_order": 33,
+      "work_locations": [
+        "tests/web/single-window/m4-integration-acceptance.mts",
+        "tests/web/single-window/m2-task-manager-browser-acceptance.mts",
+        "tests/web/single-window/m2b-browser-acceptance.mts",
+        "tests/web/single-window/m2c-browser-acceptance.mts",
+        "tests/web/single-window/project-files-browser-acceptance.mts",
+        "tests/web/project-files.test.mts",
+        "tests/web/project-scans.test.mts",
+        "tests/web/project-analysis.test.mts"
+      ],
+      "new_planned_files": [
+        "tests/web/single-window/project-files-browser-acceptance.mts",
+        "tests/web/project-files.test.mts",
+        "tests/web/project-scans.test.mts",
+        "tests/web/project-analysis.test.mts"
+      ],
+      "proposed_owners": "tester + reviewer",
+      "gate": "separate_synthetic_and_actual_runtime_receipts",
+      "estimate": "8–16 ч без ожидания live approval",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "rough_range",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "Redesign receipts visual/synthetic не доказывают новый native full path.",
+      "source_paths": [
+        "design/2026-11-13-v3/implementation-evidence.md",
+        "TEST.md"
+      ],
+      "future_test_commands": [
+        "npm run test:web-m1",
+        "npm run check:web-m1",
+        "npm run build:web"
+      ],
+      "delivery_group_id": "FUNC-G07"
+    },
+    {
+      "id": "PAOS-FUNC-20",
+      "title": "Измерить масштабирование и длительную работу",
+      "status": "planned",
+      "priority": "P2",
+      "type": "verification",
+      "evidence_level": "verification_gap",
+      "technical_value": "Воспроизводимый workload с hardware/cache profile, latency/RSS/queue-depth и error budgets.",
+      "product_value": "Большой проект и длительная сессия остаются управляемыми.",
+      "acceptance_criteria": [
+        "Зафиксированы hardware/cache и объёмы:10k задач,100k сообщений,1k файлов; границы1001 файлов и9 проектов проверены отдельно.",
+        "Измерены cold startup, search/list/event-visible latency, RSS и снимки в повторяемом длительном прогоне; нет скрытой потери данных.",
+        "Результаты сравнены с WEB-NFR и согласованными порогами; deviations заведены вF09, неподдерживаемые объёмы явно ограничены.",
+        "До замеров фиксируются budgets и dataset: большой monorepo, широкая/глубокая директория, пустые папки, generated/vendor/ignored, binary/large, mixed languages. Измеряются registration-to-tree, раскрытие/поиск, scan phases, cancellation latency, restart recovery, RSS, количество обходов и прочитанных bytes.",
+        "Границы старых лимитов 1000/1001 файлов, 10000/10001 записей, depth32/33, 512KiB и 8MiB проверяются как корректный partial/bounded outcome, а не требование снять guards. Metadata listing не обязано читать содержимое всего проекта.",
+        "Baseline допускается до F26–F29; окончательное закрытие F20 требует их версии и сравнения с baseline. F09 использует этот протокол для before/after; benchmark не меняет user workspace.",
+        "Один воспроизводимый benchmark protocol задаёт ground truth и budgets для F30/F31/F32: cold/incremental scan, RSS/disk, latency и precision/recall. Для F14/F33/F34 добавлены UI responsiveness, schema size, edge limits и стоимость bounded agent context; они повторяют протокол в собственных AC. F20 не зависит от завершения PoC/DB/графа, чтобы не создать цикл F20→F09→F14."
+      ],
+      "depends_on": [
+        "PAOS-FUNC-01",
+        "PAOS-FUNC-26",
+        "PAOS-FUNC-27",
+        "PAOS-FUNC-29"
+      ],
+      "blocks": [
+        "PAOS-FUNC-09"
+      ],
+      "execution_order": 28,
+      "work_locations": [
+        "tests/web/storage.test.mts",
+        "tests/web/code-index.test.mts",
+        "tests/web/ui-stream-search.test.mts",
+        "tests/web/single-window/functional-scale-acceptance.mts",
+        "research/product-agent-os-web-prd-2026-11-05.md",
+        "apps/local-service/src/storage/sqlite-worker.mts",
+        "apps/local-service/src/code-index/service.mts",
+        "apps/local-service/src/project-inventory/service.mts",
+        "apps/local-service/src/project-scans/service.mts",
+        "apps/local-service/src/project-analysis/service.mts"
+      ],
+      "new_planned_files": [
+        "tests/web/single-window/functional-scale-acceptance.mts",
+        "apps/local-service/src/project-inventory/service.mts",
+        "apps/local-service/src/project-scans/service.mts",
+        "apps/local-service/src/project-analysis/service.mts"
+      ],
+      "proposed_owners": "tester + architect",
+      "gate": "benchmark_protocol_and_thresholds_required",
+      "estimate": "8–16 ч",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "rough_range",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "Большие проекты/long-running после redesign не измерены; runtime index/cache caps.",
+      "source_paths": [
+        "research/product-agent-os-web-prd-2026-11-05.md",
+        "apps/local-service/src/code-index/service.mts"
+      ],
+      "future_test_commands": [
+        "npm run test:web-m1"
+      ],
+      "delivery_group_id": "FUNC-G04"
+    },
+    {
+      "id": "PAOS-FUNC-21",
+      "title": "Перепроверить очередь, Stop и crash recovery",
+      "status": "planned",
+      "priority": "P1",
+      "type": "verification",
+      "evidence_level": "verification_gap",
+      "technical_value": "Проверить identity/CAS/lease/ownership fences и отсутствие replay в отказах.",
+      "product_value": "Потеря соединения не запускает задачу дважды и не теряет результат.",
+      "acceptance_criteria": [
+        "Crash до dispatch, после dispatch до receipt и после terminal receipt покрыты отдельными сценариями.",
+        "Stop без ACK не освобождает ownership; lost consumer/timeout требуют корректной сверки.",
+        "В разных roots разрешённая параллельность сохраняется, overlapping roots блокируются; selective Stop не отменяет чужой run."
+      ],
+      "depends_on": [
+        "PAOS-FUNC-01"
+      ],
+      "blocks": [
+        "PAOS-FUNC-23"
+      ],
+      "execution_order": 16,
+      "work_locations": [
+        "tests/web/recipe-recovery.test.mts",
+        "tests/web/recipe-crash.test.mts",
+        "tests/web/scheduler-runtime.test.mts",
+        "tests/web/parallel-workspaces.test.mts"
+      ],
+      "new_planned_files": [],
+      "proposed_owners": "tester + reviewer",
+      "gate": "disposable_profiles_only",
+      "estimate": "8–16 ч",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "rough_range",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "Recovery/ownership implemented; необходим current-run regression.",
+      "source_paths": [
+        "apps/local-service/src/recovery/recipe-checkpoint.mts",
+        "apps/local-service/src/scheduler/service.mts"
+      ],
+      "future_test_commands": [
+        "node --test tests/web/recipe-recovery.test.mts tests/web/recipe-crash.test.mts tests/web/scheduler-runtime.test.mts tests/web/parallel-workspaces.test.mts"
+      ],
+      "delivery_group_id": "FUNC-G06"
+    },
+    {
+      "id": "PAOS-FUNC-22",
+      "title": "Перепроверить импорт, backup и restore",
+      "status": "planned",
+      "priority": "P1",
+      "type": "verification",
+      "evidence_level": "verification_gap",
+      "technical_value": "Проверить source authority, freeze/CAS, counts/hashes/FK, blobs и идемпотентность.",
+      "product_value": "Задачи, история и вложения сохраняются при переносе и восстановлении.",
+      "acceptance_criteria": [
+        "Source drift и неизвестный writer останавливают cutover; две writable authority не появляются.",
+        "Corrupt/missing blob, прерванный import и повтор запроса дают безопасный результат без дублей.",
+        "Restore в новый synthetic profile сохраняет данные и ссылки; старый профиль неизменён; credentials/pending operations не воспроизводятся."
+      ],
+      "depends_on": [
+        "PAOS-FUNC-01"
+      ],
+      "blocks": [
+        "PAOS-FUNC-17",
+        "PAOS-FUNC-23"
+      ],
+      "execution_order": 17,
+      "work_locations": [
+        "tests/web/domain-migration.test.mts",
+        "tests/web/storage-backup.test.mts",
+        "apps/local-service/src/import-export/migration.mts"
+      ],
+      "new_planned_files": [],
+      "proposed_owners": "tester + reviewer",
+      "gate": "synthetic_data_no_real_profile_mutation",
+      "estimate": "6–12 ч",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "rough_range",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "Import/backup контракты есть; current combined verification отсутствует.",
+      "source_paths": [
+        "apps/local-service/src/import-export/migration.mts",
+        "apps/desktop-local/README.md"
+      ],
+      "future_test_commands": [
+        "node --test tests/web/domain-migration.test.mts tests/web/storage-backup.test.mts"
+      ],
+      "delivery_group_id": "FUNC-G06"
+    },
+    {
+      "id": "PAOS-FUNC-23",
+      "title": "Провести продуктовую приёмку ключевых сценариев",
+      "status": "planned",
+      "priority": "P2",
+      "type": "verification",
+      "evidence_level": "verification_gap",
+      "technical_value": "Связать acceptance с наблюдаемой корректностью решений, а не числом кликов.",
+      "product_value": "Пользователь без подсказки понимает статус, blocker, evidence и следующий шаг.",
+      "acceptance_criteria": [
+        "До пилота согласованы участники, сценарии, opt-in/retention и baseline MD/chat; production data не обязательны.",
+        "Пройдены первое открытие, возвращение, конфликт, partial evidence и приёмка; ошибки понимания фиксируются вместе с успехами.",
+        "Цели4/5 за3мин и3/5 повторное использование за14дней изPRD проверяются как гипотезы; ноль ложных трактовок verified и потерь данных; owner принимает результат отдельно.",
+        "В пилот добавлены выбор папки, поиск обычного файла вне Control-plane, объяснение excluded/unsupported/partial, отмена/повтор и возвращение после restart. Наблюдатель проверяет, что участник не путает видимость файла, успешную индексацию и разрешение на исполнение.",
+        "В human pilot включены поиск места изменения через Map и DB usages, чтение ERD/table, переход к source, понимание stale/partial/inferred и обнаружение неподдерживаемой семантики. Сравниваются успешность и время с согласованным baseline, UI convenience не выводится из технических тестов."
+      ],
+      "depends_on": [
+        "PAOS-FUNC-19",
+        "PAOS-FUNC-21",
+        "PAOS-FUNC-22",
+        "PAOS-FUNC-24"
+      ],
+      "blocks": [],
+      "execution_order": 34,
+      "work_locations": [
+        "research/product-agent-os-web-prd-2026-11-05.md",
+        "docs/planning/2026-11-13-v3-ui-implementation-plan.md"
+      ],
+      "new_planned_files": [],
+      "proposed_owners": "product-manager + tester; human acceptance — владелец",
+      "gate": "human_pilot_protocol_and_consent_required",
+      "estimate": "6–12 ч подготовки/анализа плюс14дней наблюдения, не срок разработки",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "rough_range",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "PRD pilot metrics и UI-12 acceptance остаются отдельными gates.",
+      "source_paths": [
+        "research/product-agent-os-web-prd-2026-11-05.md",
+        "docs/planning/2026-11-13-v3-ui-implementation-plan.md"
+      ],
+      "future_test_commands": [],
+      "delivery_group_id": "FUNC-G07"
+    },
+    {
+      "id": "PAOS-FUNC-24",
+      "title": "Объяснять доступность функций в момент действия",
+      "status": "planned",
+      "priority": "P2",
+      "type": "improvement",
+      "evidence_level": "static_observation",
+      "technical_value": "Единый capability vocabulary для staged/unsupported/partial/connected/qualified/accepted.",
+      "product_value": "Пользователь отличает доступную функцию от экрана с будущей возможностью.",
+      "acceptance_criteria": [
+        "Для usage, graph, proposals, skills discovery, history, autonomy и runtime рядом с действием показаны реальный scope и причина недоступности.",
+        "Есть конкретный следующий шаг; unsupported не выглядит как loading, connected не называется execution-qualified.",
+        "RU/EN и accessibility состояния проверены; нет повторного запроса уже действующей bounded authority.",
+        "В onboarding и проекте показаны независимые registration/tree/inventory/documents/code/analysis состояния F26–F29, время и scope наблюдения; counts.files не называется indexed без соответствующего покрытия.",
+        "Empty/no-supported-code не получает ложный «проект полностью проанализирован»; excluded/error/unsupported объясняют причину и действие. Недоступный parser/core adapter не скрывает доступное дерево, контрольный список Control-plane явно назван отдельным фильтром.",
+        "В project navigation и onboarding явно различаются Files, Map, DB schema и code usages; Settings владеет регистрацией/источником, не дублирует самостоятельные explorers. F14/F33/F34 несут production UI; до их завершения доступны ранние capability states, полное закрытие F24 требует всех consumers.",
+        "UI показывает только внедрённые capabilities/языки/DB sources и объясняет отсутствие: not_configured, unsupported, unavailable, indexing, partial, stale, failed. PoC/experimental не называется production-ready; engine выбран продуктом по evidence, внутренние настройки backend не навязываются пользователю."
+      ],
+      "depends_on": [
+        "PAOS-FUNC-05",
+        "PAOS-FUNC-10",
+        "PAOS-FUNC-26",
+        "PAOS-FUNC-27",
+        "PAOS-FUNC-29",
+        "PAOS-FUNC-14",
+        "PAOS-FUNC-33",
+        "PAOS-FUNC-34"
+      ],
+      "blocks": [
+        "PAOS-FUNC-19",
+        "PAOS-FUNC-23"
+      ],
+      "execution_order": 32,
+      "work_locations": [
+        "apps/web/src/features/dashboard/Dashboard.tsx",
+        "apps/web/src/features/artifacts/ArtifactExplorer.tsx",
+        "apps/web/src/features/team/TeamManager.tsx",
+        "apps/web/src/ui/ConnectionControls.tsx",
+        "apps/web/src/locales/app.ts",
+        "apps/web/src/features/files/ProjectFiles.tsx",
+        "apps/web/src/features/projects/ProjectOnboarding.tsx",
+        "apps/web/src/features/projects/ProjectAnalysis.tsx",
+        "apps/web/src/ui/App.tsx",
+        "apps/web/src/ui/Sidebar.tsx",
+        "apps/web/src/api/client.ts",
+        "docs/planning/2026-11-13-v3-ui-implementation-plan.md"
+      ],
+      "new_planned_files": [
+        "apps/web/src/features/files/ProjectFiles.tsx",
+        "apps/web/src/features/projects/ProjectAnalysis.tsx"
+      ],
+      "proposed_owners": "product-manager + builder + tester",
+      "gate": "capability_wording_review_required",
+      "estimate": "8–16 ч",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "rough_range",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "Ряд экранов уже отображает unknown/staged; нужна единая journey-проверка.",
+      "source_paths": [
+        "apps/web/src/ui/ConnectionControls.tsx",
+        "apps/web/src/features/artifacts/ArtifactExplorer.tsx"
+      ],
+      "future_test_commands": [
+        "npm run check:web-m1",
+        "npm run test:web-m1"
+      ],
+      "delivery_group_id": "FUNC-G07"
+    },
+    {
+      "id": "PAOS-FUNC-25",
+      "title": "Согласовать текущие продуктовые статусы и критерии",
+      "status": "planned",
+      "priority": "P2",
+      "type": "documentation",
+      "evidence_level": "static_observation",
+      "technical_value": "Один актуальный указатель PRD/architecture/plan/registry с сохранённой историей.",
+      "product_value": "План и документация ясно показывают, что работает, ограничено и ждёт проверки.",
+      "acceptance_criteria": [
+        "Текущие scope/status/acceptance не противоречат историческим implementation_not_started/API-only блокам: история явно помечена и маршрутизирована.",
+        "Для F01–F34 и M5 есть единый owner/status/source; implemented не подменяет human/live acceptance.",
+        "Синхронизированы только изменённые claims и RU/EN registry; validators/docs tests проходят, старые56cards сохранены.",
+        "Текущая проверка docs-site больше не сообщает missing web/accessibility.html и web/pilot.html в RU/EN; search/sitemap/switcher parity подтверждён на явно выбранном build. Публикация и promotion сайта отдельно.",
+        "Документы различают «Источники», файловое дерево F26, сканирование F27, inventory policy F28 и discovery F29; версии API/coverage, recovery и ограничения описаны в existing PRD/architecture, без заявления об автоматическом ремонте или полной семантике.",
+        "F30–F34 содержат upstream URLs, дату research, выбранные version/commit/license и реальные PoC receipts при выполнении; README claims не выдаются за локальные измерения. PRD/architecture/UI help описывают вкладки Map/Database/usages, read-only источники, экспорт, coverage и fallback; links и RU/EN согласованы."
+      ],
+      "depends_on": [],
+      "blocks": [],
+      "execution_order": 8,
+      "work_locations": [
+        "research/product-agent-os-web-prd-2026-11-05.md",
+        "research/product-agent-os-web-architecture-2026-11-05.md",
+        "docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md",
+        "docs/sources/registry.md",
+        "docs/sources/registry.en.md",
+        "docs/web/accessibility.md",
+        "docs/web/accessibility.en.md",
+        "docs/web/pilot.md",
+        "docs/web/pilot.en.md"
+      ],
+      "new_planned_files": [],
+      "proposed_owners": "docs-maintainer + product-manager",
+      "gate": "source_reconciliation_not_history_deletion",
+      "estimate": "4–8 ч",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "rough_range",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "Датированные addenda сосуществуют с ранними status blocks; нужен current-state entry. Текущий docs unittest: 4 failures из-за отсутствующих rendered accessibility/pilot RU/EN и search/sitemap parity.",
+      "source_paths": [
+        "research/product-agent-os-web-prd-2026-11-05.md",
+        "PLAN.md"
+      ],
+      "future_test_commands": [
+        "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "python tools/check_docs.py",
+        "git diff --check"
+      ],
+      "delivery_group_id": "FUNC-G07"
+    },
+    {
+      "n": 26,
+      "title": "Добавить файловый браузер проекта",
+      "priority": "P2",
+      "type": "feature",
+      "technical_value": "Независимый от графа API директорий и безопасного чтения с ленивой загрузкой, стабильными ссылками и ограниченными ответами.",
+      "product_value": "Пользователь видит структуру выбранной папки и открывает доступные файлы, даже когда индекс не готов или язык не поддерживается.",
+      "acceptance_criteria": [
+        "После регистрации раздел «Файлы» доступен без графа и завершённого сканирования; видны вложенные и пустые каталоги, исходники, конфигурации и бинарные файлы как метаданные, в пределах разрешённой политики F28.",
+        "Раскрытие каталога загружает только нужную ветку; pagination и фильтры показывают границы выборки; поиск по имени/пути явно сообщает scope. Метаданные содержат relativePath, тип, размер, modifiedAt и состояние доступа.",
+        "Текст читается по отдельному запросу с проверкой root identity, revision, размера и кодировки; binary/oversized/unreadable получают объяснение. Неподдерживаемое индексатором расширение не скрывает файл. HTML/скрипты не исполняются при просмотре.",
+        "Нет чтения за пределами корня через traversal, symlink/junction/hardlink и подмену каталога; sensitive content не раскрывается. Выбор файла не передаёт весь проект модели и не выдаёт разрешение на выполнение.",
+        "Выбранный путь можно скопировать и использовать как file reference; Control-plane — фильтр над реальными путями. Смена проекта и поздний ответ не смешивают дерево; RU/EN, keyboard, focus, empty/error/loading проверены.",
+        "Контракт file/line navigation поддерживает будущие переходы из Map/Database/code usages и возврат к выбранному файлу; недоступный/удалённый source объяснён. F26 не ждёт F30–F34, backend action отсутствующей capability не показывает ложный результат."
+      ],
+      "depends_on": [
+        "PAOS-FUNC-28"
+      ],
+      "work_locations": [
+        "packages/contracts/project-files.ts",
+        "apps/local-service/src/project-files/service.mts",
+        "apps/local-service/src/http/application.mts",
+        "apps/web/src/api/client.ts",
+        "apps/web/src/features/files/ProjectFiles.tsx",
+        "apps/web/src/ui/App.tsx",
+        "apps/web/src/ui/Sidebar.tsx",
+        "apps/web/src/locales/app.ts",
+        "tests/web/project-files.test.mts",
+        "tests/web/single-window/project-files-browser-acceptance.mts"
+      ],
+      "new_planned_files": [
+        "packages/contracts/project-files.ts",
+        "apps/local-service/src/project-files/service.mts",
+        "apps/web/src/features/files/ProjectFiles.tsx",
+        "tests/web/project-files.test.mts",
+        "tests/web/single-window/project-files-browser-acceptance.mts"
+      ],
+      "proposed_owners": "builder + tester; product-manager принимает сценарий просмотра",
+      "gate": "directory_api_ui_contract_review_required",
+      "estimate": "24–40 ч, rough planning range; уточнить после API/UI контракта",
+      "source_observation": "Sources показывает шесть фиксированных Control-plane файлов; catalog читает .md/.txt, graph — отобранные исходники. Общего дерева и независимого directory API в проверенном onboarding нет.",
+      "source_paths": [
+        "apps/local-service/src/adapters/project-sources.ts",
+        "apps/web/src/ui/Operations.tsx",
+        "apps/local-service/src/artifacts/service.mts",
+        "apps/web/src/features/graph/GraphExplorer.tsx"
+      ],
+      "future_test_commands": [
+        "node --test tests/web/project-files.test.mts tests/web/project-inventory.test.mts",
+        "npm run check:web-m1",
+        "npm run test:web-m1",
+        "npm run build:web"
+      ],
+      "boundary": "project-files API → checked filesystem metadata/read → ProjectFiles UI; graph readiness не является precondition.",
+      "non_goals": "Редактирование, удаление и перемещение файлов; terminal; выполнение preview-кода; автоматическая передача содержимого модели.",
+      "output": "Проверяемое дерево и read-only reader, typed API, focused/browser receipts в этой карточке.",
+      "id": "PAOS-FUNC-26",
+      "status": "planned",
+      "evidence_level": "static_observation",
+      "blocks": [
+        "PAOS-FUNC-10",
+        "PAOS-FUNC-18",
+        "PAOS-FUNC-19",
+        "PAOS-FUNC-20",
+        "PAOS-FUNC-24",
+        "PAOS-FUNC-33"
+      ],
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "rough_range_refine_after_design",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "execution_order": 18,
+      "delivery_group_id": "FUNC-G03"
+    },
+    {
+      "n": 27,
+      "title": "Сделать сканирование управляемым фоновым заданием",
+      "priority": "P2",
+      "type": "feature",
+      "technical_value": "Сохраняемые scan ID и этапы, bounded worker, идемпотентность, отмена, повтор и восстановление отдельно от регистрации проекта.",
+      "product_value": "Проект доступен сразу после регистрации; пользователь видит ход сканирования, частичный результат и способ продолжить после сбоя.",
+      "acceptance_criteria": [
+        "Регистрация сохраняется один раз и возвращает доступный проект без ожидания полного обхода; scan status содержит scanId, root identity, policy version, этап inventory/documents/code/analysis, начало/обновление, счётчики и причины partial/error.",
+        "Повтор Add/retry в том числе после restart не создаёт новый проект или дублирующую работу; конкурентные запросы одной revision объединяются либо получают объяснимый conflict. Изменившийся root не продолжает старое задание.",
+        "Cancel останавливает дальнейшую работу и позднюю публикацию; повтор запускается с явно определённой revision. Restart восстанавливает либо переводит задание в recovery_required/interrupted; незавершённое не становится completed.",
+        "Заданы budgets времени/памяти/записей и concurrency; failure одного анализатора сохраняет допустимые результаты других этапов. Ready одного индекса не означает полный анализ проекта; неподключённый analysis adapter отображается как unavailable.",
+        "Состояние и последнее успешное покрытие доступны после открытия Settings/проекта и restart; events или bounded polling не перезаписывают более новую revision. Scan bookkeeping остаётся в профиле PAOS, target workspace не изменяется.",
+        "Версионированный analyzer contract допускает code/schema/code_database этапы с отдельными capabilities/status/progress, cancellation и atomic publication. F30–F32 проверяют внешние исполнители изолированно, F14/F33/F34 подключают только выбранные; F27 не зависит от их реализации и не запускает установщики автоматически."
+      ],
+      "depends_on": [
+        "PAOS-FUNC-28"
+      ],
+      "work_locations": [
+        "packages/contracts/project-scan.ts",
+        "apps/local-service/src/project-scans/service.mts",
+        "apps/local-service/src/http/application.mts",
+        "apps/local-service/src/storage/local-store.mts",
+        "apps/local-service/src/storage/sqlite-worker.mts",
+        "apps/local-service/src/storage/migrations/schema.mts",
+        "apps/local-service/src/code-index/service.mts",
+        "apps/web/src/api/client.ts",
+        "apps/web/src/features/projects/ProjectOnboarding.tsx",
+        "tests/web/project-scans.test.mts",
+        "tests/web/settings-desktop.test.mts"
+      ],
+      "new_planned_files": [
+        "packages/contracts/project-scan.ts",
+        "apps/local-service/src/project-scans/service.mts",
+        "tests/web/project-scans.test.mts"
+      ],
+      "proposed_owners": "architect + builder + tester",
+      "gate": "persisted_scan_state_recovery_schema_design_required",
+      "estimate": "24–40 ч, rough planning range; storage/recovery design до build",
+      "source_observation": "POST /projects коммитит регистрацию, затем ожидает inspectProjectSources/codeIndex.rebuild. Scan summary не является durable job; once receipts находятся в памяти и истекают через 10 минут.",
+      "source_paths": [
+        "apps/local-service/src/http/application.mts",
+        "apps/local-service/src/storage/sqlite-worker.mts",
+        "apps/web/src/features/projects/ProjectOnboarding.tsx",
+        "tests/web/settings-desktop.test.mts"
+      ],
+      "future_test_commands": [
+        "node --test tests/web/project-scans.test.mts tests/web/settings-desktop.test.mts tests/web/code-index.test.mts",
+        "npm run check:web-m1",
+        "npm run test:web-m1"
+      ],
+      "boundary": "project registration → profile-owned scan job → bounded analyzers; независимые lifecycle и source authority.",
+      "non_goals": "Запуск задач/агентов, provider calls, автоматическое выполнение команд проекта и изменение target-файлов; бесконечный watchdog.",
+      "output": "Durable scan lifecycle и UI прогресса; schema compatibility/rollback и crash/cancel/retry receipts.",
+      "id": "PAOS-FUNC-27",
+      "status": "planned",
+      "evidence_level": "static_observation",
+      "blocks": [
+        "PAOS-FUNC-14",
+        "PAOS-FUNC-18",
+        "PAOS-FUNC-19",
+        "PAOS-FUNC-20",
+        "PAOS-FUNC-24",
+        "PAOS-FUNC-29",
+        "PAOS-FUNC-33"
+      ],
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "rough_range_refine_after_design",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "execution_order": 19,
+      "delivery_group_id": "FUNC-G03"
+    },
+    {
+      "n": 28,
+      "title": "Унифицировать инвентаризацию, покрытие и исключения",
+      "priority": "P2",
+      "type": "architecture",
+      "technical_value": "Общий контракт путей, revision и coverage для directory/document/code consumers при раздельных правах listing, reading и indexing.",
+      "product_value": "Файлы не исчезают из обзора из-за отсутствия языкового анализатора; пользователь понимает, что найдено, пропущено или недоступно.",
+      "acceptance_criteria": [
+        "Контракт различает discovered, readable, indexed, unsupported, excluded и error; счётчики определяют разные стадии и не суммируют пересекающиеся множества как общее число файлов. Empty и unknown отличаются; отсутствие подходящего кода не означает полный анализ.",
+        "Файловое дерево независимо от набора расширений индексатора. .gitignore и project include/exclude имеют явную precedence и разные правила видимости/индексации; ignore не выдаёт права доступа. Sensitive paths/content защищены даже при include override.",
+        "Отчёт показывает применённую policy version, причины пропуска, лимиты и partial coverage. Тяжёлые generated/vendor каталоги не читаются без необходимости; разрешённое раскрытие метаданных не снимает ограничений чтения содержимого.",
+        "Ошибка, превышение размера или unsupported encoding отдельного файла сохраняет другие разрешённые записи; directory-level denial помечает неполноту. При root identity drift, попытке выхода за корень или недостоверной revision публикация небезопасного результата блокируется.",
+        "Bounded/paged inventory поддерживает normalised relative paths, Unicode/пробелы и Windows case semantics; ссылки и race conditions не расширяют root. Одинаковые policy/root/revision дают согласованные ссылки и причины во всех consumers.",
+        "Изменение политики инвалидирует затронутые snapshots; file metadata не требует полного чтения всех исходников. Позитивные/отрицательные сценарии и нагрузочные границы проверены; исходники проекта не меняются.",
+        "PoC и будущие adapters применяют те же правила root/policy/read/index и показывают несовпадение coverage; сторонний индексатор не обходит исключения и не создаёт кеш в target. Обнаруженные DB/ORM/migration candidates — метаданные, не разрешение подключаться или выполнять миграции; scan limits и sensitive paths сохраняются."
+      ],
+      "depends_on": [],
+      "work_locations": [
+        "packages/contracts/project-inventory.ts",
+        "apps/local-service/src/project-inventory/service.mts",
+        "apps/local-service/src/code-index/sources.mts",
+        "apps/local-service/src/code-index/service.mts",
+        "apps/local-service/src/artifacts/service.mts",
+        "apps/local-service/src/adapters/project-sources.ts",
+        "tests/web/project-inventory.test.mts",
+        "tests/web/code-index.test.mts",
+        "tests/web/skill-generation-artifacts.test.mts"
+      ],
+      "new_planned_files": [
+        "packages/contracts/project-inventory.ts",
+        "apps/local-service/src/project-inventory/service.mts",
+        "tests/web/project-inventory.test.mts"
+      ],
+      "proposed_owners": "architect + builder + security-privacy-supply-chain-reviewer + tester",
+      "gate": "inventory_policy_security_boundary_design_required",
+      "estimate": "12–20 ч, rough planning range; выбрать reuse/adapter до build",
+      "source_observation": "scanCheckedSources использует жёсткий denylist и extension filter, не возвращает все пропуски и не читает .gitignore; лимит подходящих файлов может оборвать обход. Metadata, read и indexing coverage требуют раздельного контракта.",
+      "source_paths": [
+        "apps/local-service/src/code-index/sources.mts",
+        "apps/local-service/src/code-index/service.mts",
+        "apps/local-service/src/artifacts/service.mts",
+        "apps/local-service/src/adapters/project-sources.ts"
+      ],
+      "future_test_commands": [
+        "node --test tests/web/project-inventory.test.mts tests/web/code-index.test.mts tests/web/skill-generation-artifacts.test.mts tests/web/settings-desktop.test.mts",
+        "npm run check:web-m1"
+      ],
+      "boundary": "checked filesystem inventory → per-consumer visibility/read/index policy; source root остаётся владельцем файлов.",
+      "non_goals": "Безусловное снятие существующих лимитов или denylist; полный обход excluded directories; секреты в индексах; новый независимый scanner без оценки reuse.",
+      "output": "Общий inventory/coverage contract и миграция потребителей без ослабления guards; fixture evidence.",
+      "id": "PAOS-FUNC-28",
+      "status": "planned",
+      "evidence_level": "static_observation",
+      "blocks": [
+        "PAOS-FUNC-02",
+        "PAOS-FUNC-10",
+        "PAOS-FUNC-14",
+        "PAOS-FUNC-26",
+        "PAOS-FUNC-27",
+        "PAOS-FUNC-29",
+        "PAOS-FUNC-33"
+      ],
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "rough_range_refine_after_design",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "execution_order": 9,
+      "delivery_group_id": "FUNC-G03"
+    },
+    {
+      "n": 29,
+      "title": "Подключить core discovery к добавлению проекта",
+      "priority": "P2",
+      "type": "feature",
+      "technical_value": "Версионированный read-only adapter к существующему discovery/first-run analysis с provenance, ограничениями и invalidation.",
+      "product_value": "После добавления проекта видны стек, структура, Control-plane gaps и обоснованные следующие шаги, а не только количество узлов графа.",
+      "acceptance_criteria": [
+        "До build выбран способ reuse существующих core discovery/first-run модулей и deployment/runtime contract. Недоступный Python/adapter/version даёт явный unavailable; установка зависимостей и альтернативный полный scanner автоматически не запускаются.",
+        "Analysis запускается как отдельный этап F27, использует согласованную inventory policy F28 и возвращает schema version, source revision, stack/components, control-plane coverage, findings с источниками/confidence/limitations.",
+        "Обнаруженные scripts/configs только анализируются как данные: не исполняются команды проекта, tests, hooks, модели или провайдеры; target files не создаются и не исправляются. Предложения Control-plane остаются предложениями.",
+        "Пустой проект, проект без Control-plane, Python-only, mixed stack и unsupported language получают объяснимые результаты без выдуманной полноты; timeout/error сохраняют доступное дерево и уже полученное покрытие.",
+        "Изменения файлов, root или inventory policy делают прежние выводы stale; повтор и restart не смешивают revisions. Выводы доступны из выбранного проекта в RU/EN, связаны с разрешёнными file references и не раскрывают secrets.",
+        "Discovery показывает кандидаты языков/ORM/DB/schema files со source и confidence для F14/F33/F34, не открывает соединения и не исполняет migrations. В project overview есть маршруты к Files/Map/Database по capabilities; отсутствие адаптера не подменяется сторонним auto-install."
+      ],
+      "depends_on": [
+        "PAOS-FUNC-27",
+        "PAOS-FUNC-28"
+      ],
+      "work_locations": [
+        "apps/local-service/src/project-analysis/service.mts",
+        "packages/contracts/project-analysis.ts",
+        "apps/local-service/src/project-scans/service.mts",
+        "apps/local-service/src/http/application.mts",
+        "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+        "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+        "apps/web/src/features/projects/ProjectAnalysis.tsx",
+        "apps/web/src/features/projects/ProjectOnboarding.tsx",
+        "apps/web/src/api/client.ts",
+        "tests/web/project-analysis.test.mts",
+        "tests/web/single-window/project-files-browser-acceptance.mts"
+      ],
+      "new_planned_files": [
+        "apps/local-service/src/project-analysis/service.mts",
+        "packages/contracts/project-analysis.ts",
+        "apps/local-service/src/project-scans/service.mts",
+        "apps/web/src/features/projects/ProjectAnalysis.tsx",
+        "tests/web/project-analysis.test.mts",
+        "tests/web/single-window/project-files-browser-acceptance.mts"
+      ],
+      "proposed_owners": "architect + plugin-runtime-builder + builder + tester",
+      "gate": "core_adapter_capability_contract_and_readonly_review_required",
+      "estimate": "16–32 ч, rough planning range; integration/packaging выбор до build",
+      "source_observation": "Core analyze_workspace и run_first_project_analysis умеют discovery/first-run composition. Проверенный POST /projects не вызывает их: сейчас это только source inventory и code graph.",
+      "source_paths": [
+        "apps/local-service/src/http/application.mts",
+        "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+        "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py"
+      ],
+      "future_test_commands": [
+        "node --test tests/web/project-analysis.test.mts tests/web/project-scans.test.mts tests/web/settings-desktop.test.mts",
+        "npm run check:web-m1",
+        "npm run test:web-m1"
+      ],
+      "boundary": "profile scan stage → bounded structured core adapter → project analysis view; analysis не расширяет execution authority.",
+      "non_goals": "Автоматический ремонт проекта, создание Control-plane, LLM-аудит, сборка/тесты target и публикация; неподтверждённые обещания полноты.",
+      "output": "Read-only discovery integration и source-backed summary, capability/timeout/stale fixtures; reuse contract в существующей architecture.",
+      "id": "PAOS-FUNC-29",
+      "status": "planned",
+      "evidence_level": "static_observation",
+      "blocks": [
+        "PAOS-FUNC-19",
+        "PAOS-FUNC-20",
+        "PAOS-FUNC-24"
+      ],
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "rough_range_refine_after_design",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "execution_order": 25,
+      "delivery_group_id": "FUNC-G03"
+    },
+    {
+      "id": "PAOS-FUNC-30",
+      "title": "Проверить dependency-cruiser для графа зависимостей JS/TS",
+      "status": "planned",
+      "priority": "P2",
+      "type": "poc",
+      "evidence_level": "upstream_documentation_review_not_locally_verified",
+      "technical_value": "Проверить reuse анализатора импортов вместо расширения собственного lexical parser; согласовать adapter JSON и семантику ребра.",
+      "product_value": "Пользователь и агент видят проверяемые зависимости файла, циклы и путь к месту изменения.",
+      "acceptance_criteria": [
+        "До запуска зафиксированы версия/commit, MIT и лицензии поставки, Windows/Node compatibility, fixture corpus, baseline текущего lexical graph и бюджеты времени/RSS/размера ответа; результаты не выводятся из README.",
+        "На synthetic JS/TS fixtures проверены ESM/CommonJS, tsconfig aliases, re-exports, cycles, missing imports, dynamic import и monorepo boundaries; импорт не называется вызовом функции. Известные ожидаемые рёбра сопоставлены с output: false positives/negatives и unresolved перечислены.",
+        "JSON adapter сохраняет normalized path/root identity, source revision, тип/направление ребра и evidence; соблюдает согласованный контракт F28 без зависимости от завершения его реализации. Конфигурация передаётся PAOS как данные: target JS-config/scripts/hooks не исполняются; target hashes не меняются.",
+        "В изолированном UI-прототипе существующей «Карты» есть режим «Зависимости»: поиск файла, incoming/outgoing, фильтр типа, выделение пути/цикла, переход к строке/файлу и синхронные graph/list/Mermaid. Ошибки и unsupported показаны; peer review сценария не считается human acceptance.",
+        "На одинаковых заданиях поиска места изменения сравнены время, файлы/объём контекста и правильность результата с baseline; parser failure/timeout не скрывает дерево. Provider calls не нужны для deterministic benchmark; оценка с моделью — только при отдельной точной авторизации.",
+        "Результат — adopt / bounded_adopt / reject с receipts, закреплёнными version/commit/license, поддерживаемыми платформами и сравнением с baseline. Обоснованный reject закрывает PoC как исследование, но не реализует функцию; downstream design выбирает альтернативу или фиксирует blocker, без молчаливого fallback. Установка/запуск не разрешены текущим planning-only запросом.",
+        "Общий UI/UX-контракт дополнения F30–F34 выполнен в пределах PoC-прототипа или production slice этой задачи; результаты design review и scoped browser checks записаны отдельно от human acceptance."
+      ],
+      "depends_on": [],
+      "blocks": [
+        "PAOS-FUNC-14"
+      ],
+      "execution_order": 10,
+      "work_locations": [
+        "docs/planning/functional-remediation-2026-11-15.md",
+        "research/product-agent-os-web-architecture-2026-11-05.md",
+        "docs/planning/2026-11-13-v3-ui-implementation-plan.md"
+      ],
+      "new_planned_files": [],
+      "proposed_owners": "architect + graph-cockpit-engineer + tester",
+      "gate": "poc_protocol_and_graph_ui_design_required",
+      "estimate": "12–20 ч PoC; build отдельно в F14",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "poc_only",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "GitHub research 15.11.2026: upstream README/license review; integration, performance and compatibility not verified locally.",
+      "source_paths": [
+        "https://github.com/sverweij/dependency-cruiser"
+      ],
+      "future_test_commands": [],
+      "ui_ux_scope": "До build подготовлены и согласованы wireframes и карта навигации в существующем V3 design: проект → «Файлы», «Карта», «База данных»; названия уточняются на design review. Для затронутого экрана определены loading/empty/partial/error/unavailable/stale, progress/cancel/retry по capabilities, RU/EN, обе темы, keyboard/focus, читаемые подписи и доступная таблица вместо обязательного чтения диаграммы. Смена проекта, возврат назад, фильтр и выбранный объект не смешивают данные; видны source/revision/coverage. PoC использует изолированный прототип, production UI принимается в F14/F33/F34.",
+      "decision_gate": "Результат — adopt / bounded_adopt / reject с receipts, закреплёнными version/commit/license, поддерживаемыми платформами и сравнением с baseline. Обоснованный reject закрывает PoC как исследование, но не реализует функцию; downstream design выбирает альтернативу или фиксирует blocker, без молчаливого fallback. Установка/запуск не разрешены текущим planning-only запросом.",
+      "verification_protocol": "До запуска закрепить executable commands и versions в Completion Report; synthetic fixtures, baseline comparison, target preservation and isolated UI checks. Ни одна команда не выполнена текущей планировкой.",
+      "delivery_group_id": "FUNC-G02"
+    },
+    {
+      "id": "PAOS-FUNC-31",
+      "title": "Проверить codebase-memory-mcp как движок индексации для агентов",
+      "status": "planned",
+      "priority": "P2",
+      "type": "poc",
+      "evidence_level": "upstream_documentation_review_not_locally_verified",
+      "technical_value": "Оценить SQLite-backed индекс, многоязычные связи, запросы и управляемость отдельного native процесса через версионированный adapter.",
+      "product_value": "Агент получает небольшой релевантный контекст и объяснимый путь к изменению, а пользователь видит основания поиска.",
+      "acceptance_criteria": [
+        "Закреплены version/commit/license и зависимости поставки, Windows packaging, поддерживаемые языки/виды связей, workload и бюджеты. Сравнение с текущим поиском использует те же ground-truth fixtures и задания, что F30; F30 не обязан завершиться раньше.",
+        "Проверены search/definition/references/call path/impact и related tests только для заявленных capabilities; measured precision/recall, unresolved и unsupported опубликованы. Bounded ответы дают file/line evidence, revision, truncation/pagination; stale индекс не выдаётся за текущий.",
+        "Измерены cold/incremental indexing, rename/delete/branch-like change, cancel/retry/restart, два проекта, memory/disk и latency; SQLite/cache/locks принадлежат движку и не открываются PAOS как неофициальный writable API.",
+        "На disposable профиле доказаны lifecycle/cleanup daemon, timeout и child-process ownership; account-wide coordination и конфликт другого build/cache исследованы. Нельзя завершать пользовательский daemon или менять global MCP/skills/hooks/PATH, скачивать модели или отправлять код наружу. Если изоляция несовместима с PAOS, результат bounded_adopt/reject, не обход защиты.",
+        "Прототип «Карты» содержит поиск символа, callers/callees/path/impact, панель объяснения и переход к исходнику; состояния недоступного движка, partial coverage, stale и превышенного бюджета видны. Контракт UI не зависит от внутренних таблиц движка; изучается использование уже существующего graph UI PAOS.",
+        "Сравнительный отчёт определяет роли F30/F31: один выбранный backend либо явная композиция по языкам без дублей/конфликтующих revisions. До подключения engine учитывает inventory policy F28; при невозможности ограничить индексирование чувствительных файлов вариант отклонён.",
+        "Результат — adopt / bounded_adopt / reject с receipts, закреплёнными version/commit/license, поддерживаемыми платформами и сравнением с baseline. Обоснованный reject закрывает PoC как исследование, но не реализует функцию; downstream design выбирает альтернативу или фиксирует blocker, без молчаливого fallback. Установка/запуск не разрешены текущим planning-only запросом.",
+        "Общий UI/UX-контракт дополнения F30–F34 выполнен в пределах PoC-прототипа или production slice этой задачи; результаты design review и scoped browser checks записаны отдельно от human acceptance."
+      ],
+      "depends_on": [],
+      "blocks": [
+        "PAOS-FUNC-14"
+      ],
+      "execution_order": 11,
+      "work_locations": [
+        "docs/planning/functional-remediation-2026-11-15.md",
+        "research/product-agent-os-web-architecture-2026-11-05.md",
+        "docs/planning/2026-11-13-v3-ui-implementation-plan.md"
+      ],
+      "new_planned_files": [],
+      "proposed_owners": "architect + graph-cockpit-engineer + tester",
+      "gate": "poc_daemon_isolation_and_agent_query_design_required",
+      "estimate": "20–36 ч PoC; integration отдельно в F14",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "poc_only",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "GitHub research 15.11.2026: upstream README/license review; integration, performance and compatibility not verified locally.",
+      "source_paths": [
+        "https://github.com/DeusData/codebase-memory-mcp"
+      ],
+      "future_test_commands": [],
+      "ui_ux_scope": "До build подготовлены и согласованы wireframes и карта навигации в существующем V3 design: проект → «Файлы», «Карта», «База данных»; названия уточняются на design review. Для затронутого экрана определены loading/empty/partial/error/unavailable/stale, progress/cancel/retry по capabilities, RU/EN, обе темы, keyboard/focus, читаемые подписи и доступная таблица вместо обязательного чтения диаграммы. Смена проекта, возврат назад, фильтр и выбранный объект не смешивают данные; видны source/revision/coverage. PoC использует изолированный прототип, production UI принимается в F14/F33/F34.",
+      "decision_gate": "Результат — adopt / bounded_adopt / reject с receipts, закреплёнными version/commit/license, поддерживаемыми платформами и сравнением с baseline. Обоснованный reject закрывает PoC как исследование, но не реализует функцию; downstream design выбирает альтернативу или фиксирует blocker, без молчаливого fallback. Установка/запуск не разрешены текущим planning-only запросом.",
+      "verification_protocol": "До запуска закрепить executable commands и versions в Completion Report; synthetic fixtures, baseline comparison, target preservation and isolated UI checks. Ни одна команда не выполнена текущей планировкой.",
+      "delivery_group_id": "FUNC-G02"
+    },
+    {
+      "id": "PAOS-FUNC-32",
+      "title": "Проверить tbls для извлечения схемы БД и Mermaid ERD",
+      "status": "planned",
+      "priority": "P2",
+      "type": "poc",
+      "evidence_level": "upstream_documentation_review_not_locally_verified",
+      "technical_value": "Оценить внешний schema adapter JSON/Mermaid против встроенной SQLite introspection и закрепить контракт schema snapshot.",
+      "product_value": "Получить достоверную карту таблиц без ручного рисования и без чтения пользовательских строк.",
+      "acceptance_criteria": [
+        "Закреплены version/commit/MIT/dependency licenses, Windows distribution, минимальный SQLite-first scope и бюджеты; tbls JSON/Mermaid сравниваются с metadata introspection существующего SQLite driver. PostgreSQL и другие СУБД — отдельные capability targets, не автоматический scope.",
+        "Synthetic SQLite покрывает PK/FK, composite FK, UNIQUE/index, views, nullable/generated columns, self-reference и отсутствие FK. Список объектов и рёбер сравнен с ground truth; ограничение формата/драйвера и inferred relation не скрыты.",
+        "Используется явно выбранный read-only fixture/consistent snapshot; данные строк, credentials и DSN не попадают в logs/output. Проверены locked/WAL/change-during-read, недоступный и повреждённый файл; соединение не создаёт отсутствующую БД, не мигрирует её и не исполняет project config/extensions/hooks.",
+        "Результат содержит source kind, schema fingerprint/revision, tables/columns/keys/indexes/views, coverage и warnings; canonical JSON и Mermaid согласованы. Проверены экранирование имён и limits на размер ERD, неисполнение HTML/скриптов.",
+        "Изолированный прототип будущего раздела «База данных» показывает источник, ERD и таблицу объектов, выбор таблицы/колонки, поиск/фильтр и явный no-database/unsupported/stale/error. Экспорт Mermaid не требует внешнего сервиса; tiny Mermaid проверяется на нужной ERD-семантике.",
+        "Результат — adopt / bounded_adopt / reject с receipts, закреплёнными version/commit/license, поддерживаемыми платформами и сравнением с baseline. Обоснованный reject закрывает PoC как исследование, но не реализует функцию; downstream design выбирает альтернативу или фиксирует blocker, без молчаливого fallback. Установка/запуск не разрешены текущим planning-only запросом.",
+        "Общий UI/UX-контракт дополнения F30–F34 выполнен в пределах PoC-прототипа или production slice этой задачи; результаты design review и scoped browser checks записаны отдельно от human acceptance."
+      ],
+      "depends_on": [],
+      "blocks": [
+        "PAOS-FUNC-33"
+      ],
+      "execution_order": 12,
+      "work_locations": [
+        "docs/planning/functional-remediation-2026-11-15.md",
+        "research/product-agent-os-web-architecture-2026-11-05.md",
+        "docs/planning/2026-11-13-v3-ui-implementation-plan.md"
+      ],
+      "new_planned_files": [],
+      "proposed_owners": "architect + graph-cockpit-engineer + tester",
+      "gate": "poc_database_readonly_and_erd_ui_design_required",
+      "estimate": "12–20 ч PoC; integration отдельно в F33",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "poc_only",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "GitHub research 15.11.2026: upstream README/license review; integration, performance and compatibility not verified locally.",
+      "source_paths": [
+        "https://github.com/k1LoW/tbls",
+        "https://www.sqlite.org/pragma.html"
+      ],
+      "future_test_commands": [],
+      "ui_ux_scope": "До build подготовлены и согласованы wireframes и карта навигации в существующем V3 design: проект → «Файлы», «Карта», «База данных»; названия уточняются на design review. Для затронутого экрана определены loading/empty/partial/error/unavailable/stale, progress/cancel/retry по capabilities, RU/EN, обе темы, keyboard/focus, читаемые подписи и доступная таблица вместо обязательного чтения диаграммы. Смена проекта, возврат назад, фильтр и выбранный объект не смешивают данные; видны source/revision/coverage. PoC использует изолированный прототип, production UI принимается в F14/F33/F34.",
+      "decision_gate": "Результат — adopt / bounded_adopt / reject с receipts, закреплёнными version/commit/license, поддерживаемыми платформами и сравнением с baseline. Обоснованный reject закрывает PoC как исследование, но не реализует функцию; downstream design выбирает альтернативу или фиксирует blocker, без молчаливого fallback. Установка/запуск не разрешены текущим planning-only запросом.",
+      "verification_protocol": "До запуска закрепить executable commands и versions в Completion Report; synthetic fixtures, baseline comparison, target preservation and isolated UI checks. Ни одна команда не выполнена текущей планировкой.",
+      "delivery_group_id": "FUNC-G02"
+    },
+    {
+      "id": "PAOS-FUNC-33",
+      "title": "Добавить карту БД и раздел «База данных» проекта",
+      "status": "planned",
+      "priority": "P2",
+      "type": "extension",
+      "evidence_level": "upstream_documentation_review_not_locally_verified",
+      "technical_value": "Версионированные schema snapshots, schema diff и read-only адаптер выбранного источника с provenance и freshness.",
+      "product_value": "Пользователь просматривает таблицы и связи, понимает источник и актуальность схемы и переходит к её определению.",
+      "acceptance_criteria": [
+        "Перед build по F32 выбраны adapter, поддерживаемые источники и budgets; отсутствие выбранного backend остаётся blocker. БД самого PAOS и БД анализируемого проекта различаются. Обнаружение кандидата в дереве не открывает БД автоматически: пользователь выбирает разрешённый источник; external/live/credentials требуют точной авторизации.",
+        "Контракт различает фактическую DB schema, статические ORM/миграции и предложенные связи. Неприменённая миграция не объявляется текущей БД; execute migrations/project code/extensions запрещён. SQLite-first read-only schema extraction не читает строки и не создаёт/меняет БД; PostgreSQL scope не предполагается из поддержки tbls.",
+        "В project navigation добавлен раздел «База данных» с вкладками «Схема» и «Изменения»; в «Схеме» доступны ERD/табличный режим, поиск, фильтры, details таблицы/колонки, PK/FK/index/views и переход к разрешённому schema/migration source. Settings сохраняет регистрацию и выбор источника, не становится вторым независимым browser.",
+        "ERD и таблица показывают одну revision; composite FK и direction корректны, inferred связи отличаются от declared. Выбор узла синхронизируется с details/list, большие схемы дают bounded subgraph и предупреждение, Mermaid export экранирует имена, не раскрывает secrets и сообщает фильтры/coverage.",
+        "Вкладка «Изменения» сравнивает два совместимых snapshots: added/removed/changed objects; rename без доказательства показан как add/remove или гипотеза. При отсутствии baseline явное empty; дрейф источника/политики маркирует stale, schema fingerprint и время наблюдения видимы.",
+        "Этап database_schema в F27 имеет независимые progress/cancel/retry/recovery/partial/error; ошибка сохраняет прежний успешный snapshot с stale и не блокирует Files/code. Невыбранная/отсутствующая БД — not_configured/none_found, а не бесконечная загрузка. Late responses другого проекта/revision отклоняются.",
+        "Пройдены API/adapter и browser сценарии F32 на disposable fixtures: RU/EN, обе темы, keyboard/focus, table alternative, deep link/back, restart и switching projects. До/после target и контрольных файлов не меняются; отсутствуют sensitive DSN/rows в UI/export/logs; runtime evidence привязан к build.",
+        "На workload F20 измерены schema extraction, cold/warm view, large ERD, memory и response size; budget deviations имеют bounded outcome. Docs/capabilities F24/F25 обновляются по реально внедрённому scope; UI mock не закрывает acceptance.",
+        "Общий UI/UX-контракт дополнения F30–F34 выполнен в пределах PoC-прототипа или production slice этой задачи; результаты design review и scoped browser checks записаны отдельно от human acceptance."
+      ],
+      "depends_on": [
+        "PAOS-FUNC-26",
+        "PAOS-FUNC-27",
+        "PAOS-FUNC-28",
+        "PAOS-FUNC-32"
+      ],
+      "blocks": [
+        "PAOS-FUNC-19",
+        "PAOS-FUNC-24",
+        "PAOS-FUNC-34"
+      ],
+      "execution_order": 26,
+      "work_locations": [
+        "apps/local-service/src/storage/sqlite-worker.mts",
+        "apps/local-service/src/storage/migrations/schema.mts",
+        "apps/local-service/src/project-scans/service.mts",
+        "apps/web/src/ui/App.tsx",
+        "apps/web/src/ui/Sidebar.tsx",
+        "apps/web/src/api/client.ts",
+        "apps/web/src/locales/app.ts",
+        "research/product-agent-os-web-architecture-2026-11-05.md",
+        "docs/planning/2026-11-13-v3-ui-implementation-plan.md",
+        "packages/contracts/database-map.ts",
+        "apps/local-service/src/database-map/service.mts",
+        "apps/web/src/features/database/DatabaseExplorer.tsx",
+        "tests/web/database-map.test.mts",
+        "tests/web/single-window/database-map-browser-acceptance.mts"
+      ],
+      "new_planned_files": [
+        "packages/contracts/database-map.ts",
+        "apps/local-service/src/database-map/service.mts",
+        "apps/web/src/features/database/DatabaseExplorer.tsx",
+        "tests/web/database-map.test.mts",
+        "tests/web/single-window/database-map-browser-acceptance.mts"
+      ],
+      "proposed_owners": "architect + builder + graph-cockpit-engineer + tester",
+      "gate": "database_source_adapter_and_ui_design_required",
+      "estimate": "16–24 ч design; build уточнить после F32",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "design_only_build_after_gate",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "GitHub research 15.11.2026: upstream README/license review; integration, performance and compatibility not verified locally.",
+      "source_paths": [
+        "https://github.com/k1LoW/tbls",
+        "https://www.sqlite.org/pragma.html"
+      ],
+      "future_test_commands": [],
+      "ui_ux_scope": "До build подготовлены и согласованы wireframes и карта навигации в существующем V3 design: проект → «Файлы», «Карта», «База данных»; названия уточняются на design review. Для затронутого экрана определены loading/empty/partial/error/unavailable/stale, progress/cancel/retry по capabilities, RU/EN, обе темы, keyboard/focus, читаемые подписи и доступная таблица вместо обязательного чтения диаграммы. Смена проекта, возврат назад, фильтр и выбранный объект не смешивают данные; видны source/revision/coverage. PoC использует изолированный прототип, production UI принимается в F14/F33/F34.",
+      "decision_gate": "После PoC выбрать backend и согласовать architecture/UI contract; без этого build не начинается.",
+      "verification_protocol": "Adapter/API tests, UI type-check/build и synthetic browser acceptance на выбранном runtime; exact commands фиксируются до build. Новый harness сейчас не существует.",
+      "delivery_group_id": "FUNC-G04"
+    },
+    {
+      "id": "PAOS-FUNC-34",
+      "title": "Связать код с таблицами и показать влияние изменений",
+      "status": "planned",
+      "priority": "P2",
+      "type": "extension",
+      "evidence_level": "upstream_documentation_review_not_locally_verified",
+      "technical_value": "Добавить provenance-aware рёбра code→query/ORM→table с разрешением в совместимых code/schema revisions и bounded impact queries.",
+      "product_value": "Пользователь и агент видят, какой код читает или меняет таблицу и какие участки нужно проверить при изменении схемы.",
+      "acceptance_criteria": [
+        "До build выбрана ограниченная language/SQL/ORM матрица на основе F30/F31/F32; code call paths включаются лишь при подтверждённой семантике, import edges не подменяют CALLS. Ground-truth cases и пороги precision/recall фиксируются до измерений.",
+        "Связь хранит file/symbol/line span, query or model evidence, table identity/source, operation read/write/schema/unknown, extraction method/confidence и code+schema revisions. Dynamic SQL, naming heuristics, aliases и непрослеживаемый вызов остаются inferred/unresolved; unknown не считается отсутствием зависимости.",
+        "Проверены raw SQL, выбранный ORM, join/aliases, одинаковые имена таблиц в разных источниках, rename/drop, generated/dynamic query и unsupported language. Код/запросы не исполняются; secrets/строки БД не извлекаются; precision/recall и ограничения представлены для каждого поддерживаемого типа.",
+        "В «Базе данных» добавлена вкладка «Использование в коде»: таблица → места чтения/записи → файл/строка; в существующей «Карте» — фильтр связей с БД и панель пути/влияния. В reader файла доступен переход к связанным таблицам. Selection/deep link/back/filter сохраняются в пределах проекта; произвольные связи не рисуются как подтверждённые.",
+        "Пользователь переключает confirmed/inferred и read/write/unknown, открывает evidence ребра и видит incomplete impact. Доступная таблица/список дублирует смысл графа; RU/EN, обе темы, keyboard/focus, empty/unsupported/partial/error/stale и большие результаты проверены в browser.",
+        "Agent queries возвращают ограниченные source-backed paths и кандидаты тестов, truncation/cursors и обе revisions; rename/delete/change источника инвалидирует только совместимый snapshot. Смешение code/schema разных проектов или устаревших ревизий запрещено; rebuild/restart/cancel/retry проверены.",
+        "На согласованных задачах сравнен поиск места изменения без связей и с ними: correctness, пропущенные affected files/tests, контекст и время; никаких обещаний полного runtime call graph. Budgets F20 и guardrails F27/F28 соблюдены; failures одного analyzer не блокируют дерево и schema map.",
+        "Документация объясняет разницу schema ERD и code-to-table impact; release claims и capability states синхронизированы с F24/F25. Закрытие требует рабочей интеграции UI/API/agent contract, а не только схемы или прототипа.",
+        "Общий UI/UX-контракт дополнения F30–F34 выполнен в пределах PoC-прототипа или production slice этой задачи; результаты design review и scoped browser checks записаны отдельно от human acceptance."
+      ],
+      "depends_on": [
+        "PAOS-FUNC-14",
+        "PAOS-FUNC-33"
+      ],
+      "blocks": [
+        "PAOS-FUNC-19",
+        "PAOS-FUNC-24"
+      ],
+      "execution_order": 31,
+      "work_locations": [
+        "apps/local-service/src/code-index/service.mts",
+        "apps/local-service/src/impact/service.mts",
+        "apps/local-service/src/database-map/service.mts",
+        "apps/web/src/features/graph/GraphExplorer.tsx",
+        "apps/web/src/features/database/DatabaseExplorer.tsx",
+        "apps/web/src/features/files/ProjectFiles.tsx",
+        "apps/web/src/api/client.ts",
+        "apps/web/src/locales/app.ts",
+        "research/product-agent-os-web-architecture-2026-11-05.md",
+        "docs/planning/2026-11-13-v3-ui-implementation-plan.md",
+        "packages/contracts/code-database-links.ts",
+        "apps/local-service/src/code-database/service.mts",
+        "tests/web/code-database-links.test.mts",
+        "tests/web/single-window/code-database-browser-acceptance.mts"
+      ],
+      "new_planned_files": [
+        "packages/contracts/code-database-links.ts",
+        "apps/local-service/src/code-database/service.mts",
+        "tests/web/code-database-links.test.mts",
+        "tests/web/single-window/code-database-browser-acceptance.mts"
+      ],
+      "proposed_owners": "architect + builder + graph-cockpit-engineer + tester",
+      "gate": "code_database_semantics_and_impact_ui_design_required",
+      "estimate": "20–32 ч design; build после language/ORM scope",
+      "estimate_status": "rough_range_not_commitment",
+      "implementation_budget": "design_only_build_after_gate",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "planning_only",
+      "source_observation": "GitHub research 15.11.2026: upstream README/license review; integration, performance and compatibility not verified locally.",
+      "source_paths": [
+        "https://github.com/sverweij/dependency-cruiser",
+        "https://github.com/DeusData/codebase-memory-mcp",
+        "https://github.com/k1LoW/tbls"
+      ],
+      "future_test_commands": [],
+      "ui_ux_scope": "До build подготовлены и согласованы wireframes и карта навигации в существующем V3 design: проект → «Файлы», «Карта», «База данных»; названия уточняются на design review. Для затронутого экрана определены loading/empty/partial/error/unavailable/stale, progress/cancel/retry по capabilities, RU/EN, обе темы, keyboard/focus, читаемые подписи и доступная таблица вместо обязательного чтения диаграммы. Смена проекта, возврат назад, фильтр и выбранный объект не смешивают данные; видны source/revision/coverage. PoC использует изолированный прототип, production UI принимается в F14/F33/F34.",
+      "decision_gate": "После PoC выбрать backend и согласовать architecture/UI contract; без этого build не начинается.",
+      "verification_protocol": "Adapter/API tests, UI type-check/build и synthetic browser acceptance на выбранном runtime; exact commands фиксируются до build. Новый harness сейчас не существует.",
+      "delivery_group_id": "FUNC-G04"
+    }
+  ],
+  "linked_existing_tasks": [
+    {
+      "id": "PAOS-0047",
+      "source_group": "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json",
+      "source_plan": "docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md",
+      "ownership": "reference_only_no_local_status"
+    },
+    {
+      "id": "PAOS-0052",
+      "source_group": "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json",
+      "source_plan": "docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md",
+      "ownership": "reference_only_no_local_status"
+    },
+    {
+      "id": "PAOS-0053",
+      "source_group": "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json",
+      "source_plan": "docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md",
+      "ownership": "reference_only_no_local_status"
+    }
+  ],
+  "verification": {
+    "status": "docs_static_verified",
+    "application_checks_run": false,
+    "initial": {
+      "matrix_exit": 0,
+      "docs_unittest_exit": 1,
+      "docs_tests": 105,
+      "docs_failures": 13,
+      "reason": "docs/planning location changed site page inventory and lacked EN sibling",
+      "docs_check_exit": 0,
+      "diff_exit": 0,
+      "remediation": "relocate source-owned matrix to research, preserve site inventory"
+    },
+    "latest": {
+      "task": "functional_delivery_groups_planning",
+      "status": "docs_static_verified",
+      "task_count": 34,
+      "group_count": 7,
+      "linked_existing_count": 3,
+      "matrix_exit": 0,
+      "scoped_docs_exit": 0,
+      "scoped_markdown_count": 4,
+      "docs_unittest_exit": 0,
+      "docs_tests": 3,
+      "docs_passed": 3,
+      "docs_elapsed_seconds": 0.733,
+      "diff_exit": 0,
+      "membership": "passed_exactly_once_34",
+      "task_and_group_dag": "passed_including_group_completion_gates",
+      "md_json_parity": true,
+      "original_task_fields_preserved": true,
+      "original_matrix_preserved": true,
+      "original_56_tasks_preserved": true,
+      "original_group_sha256": "23b013be2f01f088a2de53c1748693820aa8210ed382cd22fe65ce46f3a27ef1",
+      "review_mode": "self_review",
+      "application_checks_run": false,
+      "pocs_run": false,
+      "site_build_performed": false
+    },
+    "previous_planning": {
+      "matrix_exit": 0,
+      "docs_unittest_exit": 1,
+      "docs_tests": 105,
+      "docs_passed": 101,
+      "docs_failures": 4,
+      "docs_failure_scope": "existing rendered accessibility/pilot RU+EN missing; parity/search checks fail",
+      "docs_check_exit": 0,
+      "diff_exit": 0,
+      "graph_consistency": "passed_25_unique_planned_DAG",
+      "original_tasks_preserved": true,
+      "original_group_sha256": "23b013be2f01f088a2de53c1748693820aa8210ed382cd22fe65ce46f3a27ef1",
+      "review_mode": "self_review",
+      "site_build_performed": false,
+      "followup": "PAOS-FUNC-25"
+    },
+    "previous_files_scanning": {
+      "task": "project_files_scanning_planning",
+      "task_count": 29,
+      "linked_existing_count": 3,
+      "matrix_exit": 0,
+      "docs_unittest_exit": 1,
+      "docs_tests": 105,
+      "docs_passed": 101,
+      "docs_failures": 4,
+      "docs_elapsed_seconds": 12.518,
+      "docs_failure_scope": "existing rendered accessibility/pilot RU+EN missing; parity/search checks fail",
+      "docs_check_exit": 0,
+      "diff_exit": 0,
+      "graph_consistency": "passed_29_unique_planned_DAG_blocks_order",
+      "per_card_md_json_parity": true,
+      "original_56_tasks_preserved": true,
+      "original_group_sha256": "23b013be2f01f088a2de53c1748693820aa8210ed382cd22fe65ce46f3a27ef1",
+      "review_mode": "self_review",
+      "site_build_performed": false,
+      "application_checks_run": false,
+      "followup": "PAOS-FUNC-25"
+    },
+    "previous_github_poc_planning": {
+      "task": "github_poc_db_ui_planning",
+      "status": "docs_static_verified",
+      "task_count": 34,
+      "linked_existing_count": 3,
+      "matrix_exit": 0,
+      "docs_check_exit": 0,
+      "docs_unittest_exit": 0,
+      "docs_tests": 3,
+      "docs_passed": 3,
+      "docs_failures": 0,
+      "docs_elapsed_seconds": 0.822,
+      "docs_suite_scope": "current source-docs suite changed by another chat before this task; not the prior 105-test/site suite",
+      "diff_exit": 0,
+      "graph_consistency": "passed_34_unique_planned_DAG_blocks_order",
+      "per_card_and_summary_md_json_parity": true,
+      "local_links_checked": 67,
+      "original_29_task_fields_preserved": true,
+      "original_56_tasks_preserved": true,
+      "original_group_sha256": "23b013be2f01f088a2de53c1748693820aa8210ed382cd22fe65ce46f3a27ef1",
+      "review_mode": "self_review",
+      "site_build_performed": false,
+      "application_checks_run": false,
+      "pocs_run": false,
+      "installation_performed": false,
+      "historical_site_failures_not_retested": true,
+      "followup": "PAOS-FUNC-25",
+      "scoped_docs_check": {
+        "initial_exit": 1,
+        "reason": "JSON passed to Markdown-only --paths",
+        "corrected_exit": 0,
+        "markdown_sources": 7,
+        "site_archive_checked": false
+      }
+    }
+  },
+  "updated_at": "2026-11-15T11:20:21.289Z",
+  "planning_revision": 4,
+  "change_scope": "seven_delivery_groups_planning_only",
+  "research_sources": [
+    {
+      "task": "PAOS-FUNC-30",
+      "urls": [
+        "https://github.com/sverweij/dependency-cruiser"
+      ],
+      "reviewed_at": "2026-11-15",
+      "evidence": "upstream documentation; no local installation or execution"
+    },
+    {
+      "task": "PAOS-FUNC-31",
+      "urls": [
+        "https://github.com/DeusData/codebase-memory-mcp"
+      ],
+      "reviewed_at": "2026-11-15",
+      "evidence": "upstream documentation; no local installation or execution"
+    },
+    {
+      "task": "PAOS-FUNC-32",
+      "urls": [
+        "https://github.com/k1LoW/tbls",
+        "https://www.sqlite.org/pragma.html"
+      ],
+      "reviewed_at": "2026-11-15",
+      "evidence": "upstream documentation; no local installation or execution"
+    }
+  ],
+  "ui_ux_contract": "До build подготовлены и согласованы wireframes и карта навигации в существующем V3 design: проект → «Файлы», «Карта», «База данных»; названия уточняются на design review. Для затронутого экрана определены loading/empty/partial/error/unavailable/stale, progress/cancel/retry по capabilities, RU/EN, обе темы, keyboard/focus, читаемые подписи и доступная таблица вместо обязательного чтения диаграммы. Смена проекта, возврат назад, фильтр и выбранный объект не смешивают данные; видны source/revision/coverage. PoC использует изолированный прототип, production UI принимается в F14/F33/F34.",
+  "delivery_group_contract": {
+    "schema_version": "functional_delivery_groups_v1",
+    "created_at": "2026-11-15T11:18:50.376Z",
+    "execution_authority": "planning_only",
+    "task_count": 34,
+    "group_count": 7,
+    "membership": "exactly_one_primary_group_per_FUNC_task; M5 references excluded",
+    "status_ownership": "task statuses remain authoritative; group closure requires all members and exit evidence",
+    "dependency_semantics": "depends_on_groups is the union of cross-group task edges, not a barrier requiring completion of the whole upstream group",
+    "start_policy": "start a task only when its own hard dependencies, design/authority gates and exclusive shared-file ownership are satisfied",
+    "scope_policy": "grouping does not merge task IDs, waive acceptance, grant execution authority, or turn PoC rejection into feature implementation",
+    "completion_policy": "G07 full backlog closure requires G01-G06; task-specific early checks and F25 docs proceed throughout",
+    "order_policy": "existing task execution_order and depends_on/blocks preserved; group topological order is an orientation aid, not seven serial batches",
+    "estimated_savings": "not_estimated; build scope and measured durations unavailable",
+    "m5": "PAOS-0047/0052/0053 remain reference-only in the original group; no eighth implementation group and no new team/provider authorization"
+  },
+  "delivery_groups": [
+    {
+      "id": "FUNC-G01",
+      "title": "Стабильность текущего UI и базовых контрактов",
+      "outcome": "Исправлены подтверждённые UX-дефекты, native runtime квалифицирован, UI/backend contracts имеют независимого владельца.",
+      "start": "F01/F03–F07 без task dependencies; F08 только после F01 и architecture review.",
+      "parallel": "Editor и WorkflowManager можно проверять отдельно от runtime; F05/F06/F07 объединить в один ownership Dashboard/model и общий regression набор.",
+      "ownership": "Runtime/manifest; task Editor; WorkflowManager; Dashboard/model; contracts. Один writer на каждую область; F08 application.mts согласовать с G03.",
+      "exit": "Все семь карточек проходят собственные AC; runtime tuple подтверждён на проверенной версии, reset/navigation/dashboard regressions проверены. UI fixes не ждут PoC.",
+      "ui": "Существующие формы и dashboard: сохранение/сброс состояния, сортировка/нумерация и честные coverage labels.",
+      "task_ids": [
+        "PAOS-FUNC-01",
+        "PAOS-FUNC-03",
+        "PAOS-FUNC-04",
+        "PAOS-FUNC-05",
+        "PAOS-FUNC-06",
+        "PAOS-FUNC-07",
+        "PAOS-FUNC-08"
+      ],
+      "execution_lanes": [
+        [
+          "PAOS-FUNC-01",
+          "PAOS-FUNC-08"
+        ],
+        [
+          "PAOS-FUNC-03"
+        ],
+        [
+          "PAOS-FUNC-04"
+        ],
+        [
+          "PAOS-FUNC-05",
+          "PAOS-FUNC-06",
+          "PAOS-FUNC-07"
+        ]
+      ],
+      "status_source": "derived_from_member_task_statuses_and_group_exit",
+      "cross_group_task_dependencies": [],
+      "depends_on_groups": [],
+      "completion_requires_groups": []
+    },
+    {
+      "id": "FUNC-G02",
+      "title": "Выбор готовых движков и UX-прототипы",
+      "outcome": "Измеренные решения adopt/bounded_adopt/reject и adapters для кода/БД; проверенные изолированные UX-прототипы.",
+      "start": "Нет hard dependencies. Сначала общий protocol/ground truth, pinned versions/licenses и draft F28/F20 contracts; готовая реализация F28/F20 не нужна.",
+      "parallel": "Три независимых PoC на согласованных fixtures; F30/F31 сравнивать на одинаковых задачах. Выводы в shared architecture/design/matrix интегрирует один владелец.",
+      "ownership": "Раздельные disposable PoC roots/processes и evidence; общий prototype navigation/data contract, один интегратор design/architecture.",
+      "exit": "Каждый PoC завершён решением с evidence и ограничениями; F14/F33 выбирают пригодный backend. Reject не означает реализованную функцию и не разрешает silent fallback.",
+      "ui": "Прототипы «Карты» и «Базы данных», graph/list/Mermaid, evidence, coverage и отказные состояния; не production UI.",
+      "task_ids": [
+        "PAOS-FUNC-30",
+        "PAOS-FUNC-31",
+        "PAOS-FUNC-32"
+      ],
+      "execution_lanes": [
+        [
+          "PAOS-FUNC-30"
+        ],
+        [
+          "PAOS-FUNC-31"
+        ],
+        [
+          "PAOS-FUNC-32"
+        ]
+      ],
+      "status_source": "derived_from_member_task_statuses_and_group_exit",
+      "cross_group_task_dependencies": [],
+      "depends_on_groups": [],
+      "completion_requires_groups": []
+    },
+    {
+      "id": "FUNC-G03",
+      "title": "Файлы, сканирование и подключение проекта",
+      "outcome": "Папка проекта доступна сразу; scan управляемый, discovery и file references согласованы, изменения и ограничения видимы.",
+      "start": "F28 независим; F26/F27/F02 после F28. F10 дополнительно требует F01, F18 — F05/F07. Не ждать всей G01 или G02.",
+      "parallel": "После inventory contract раздельно готовить directory и scan adapters, но wiring application.mts/api/client.ts выполнять последовательно. F29 после F27; reader/scope/freshness привязать к одним paths/revisions.",
+      "ownership": "Один владелец inventory/root policy; последовательные shared HTTP/API/storage patches; Files/Onboarding/freshness UI с общей навигацией.",
+      "exit": "Все семь карточек закрыты по своим AC; Add→Files→scan→discovery→file reference проходит, cancel/restart/retry и root boundaries проверены. Files работает без G04.",
+      "ui": "Раздел «Файлы», reader, project overview/scan progress, scope preflight, stale/error/unsupported и возврат после restart.",
+      "task_ids": [
+        "PAOS-FUNC-28",
+        "PAOS-FUNC-26",
+        "PAOS-FUNC-27",
+        "PAOS-FUNC-02",
+        "PAOS-FUNC-29",
+        "PAOS-FUNC-10",
+        "PAOS-FUNC-18"
+      ],
+      "execution_lanes": [
+        [
+          "PAOS-FUNC-28"
+        ],
+        [
+          "PAOS-FUNC-26",
+          "PAOS-FUNC-10"
+        ],
+        [
+          "PAOS-FUNC-27",
+          "PAOS-FUNC-29"
+        ],
+        [
+          "PAOS-FUNC-02"
+        ],
+        [
+          "PAOS-FUNC-18"
+        ]
+      ],
+      "status_source": "derived_from_member_task_statuses_and_group_exit",
+      "cross_group_task_dependencies": [
+        {
+          "task_id": "PAOS-FUNC-10",
+          "depends_on_task": "PAOS-FUNC-01",
+          "from_group": "FUNC-G01"
+        },
+        {
+          "task_id": "PAOS-FUNC-18",
+          "depends_on_task": "PAOS-FUNC-05",
+          "from_group": "FUNC-G01"
+        },
+        {
+          "task_id": "PAOS-FUNC-18",
+          "depends_on_task": "PAOS-FUNC-07",
+          "from_group": "FUNC-G01"
+        }
+      ],
+      "depends_on_groups": [
+        "FUNC-G01"
+      ],
+      "completion_requires_groups": []
+    },
+    {
+      "id": "FUNC-G04",
+      "title": "Производительность, карта кода и база данных",
+      "outcome": "Измеренная производительность, граф кода, ERD/schema diff и объяснимые связи кода с таблицами доступны UI и агенту.",
+      "start": "F20 после F01/F26/F27/F29; F09 после F08/F20; F14 после F02/F09/F27/F28/F30/F31. F33 после F26/F27/F28/F32 и может начаться до F20/F09/F14. F34 ждёт F14 и F33.",
+      "parallel": "После входных contracts вести code и DB ветки независимо; общий SQLite/schema/scans/API/UI wiring имеет одного writer. F34 объединяет готовые outputs. Measurement before optimization сохраняется.",
+      "ownership": "Code-index/impact; database-map; storage/scans; GraphExplorer/DatabaseExplorer. Shared App/Sidebar/client/locales и schema migrations интегрировать последовательными slices.",
+      "exit": "Пять карточек проходят AC и budgets; compatible revisions/coverage/provenance сохранены, read-only DB доказан, graph/table/Mermaid согласованы. Новый workload повторяется в F14/F33/F34 без обратной зависимости F20.",
+      "ui": "«Карта»: dependencies/symbols/impact; «База данных»: «Схема», «Изменения», «Использование в коде»; двусторонние source-line переходы и доступный list/table.",
+      "task_ids": [
+        "PAOS-FUNC-20",
+        "PAOS-FUNC-09",
+        "PAOS-FUNC-14",
+        "PAOS-FUNC-33",
+        "PAOS-FUNC-34"
+      ],
+      "execution_lanes": [
+        [
+          "PAOS-FUNC-20",
+          "PAOS-FUNC-09",
+          "PAOS-FUNC-14"
+        ],
+        [
+          "PAOS-FUNC-33"
+        ],
+        [
+          "PAOS-FUNC-34"
+        ]
+      ],
+      "status_source": "derived_from_member_task_statuses_and_group_exit",
+      "cross_group_task_dependencies": [
+        {
+          "task_id": "PAOS-FUNC-09",
+          "depends_on_task": "PAOS-FUNC-08",
+          "from_group": "FUNC-G01"
+        },
+        {
+          "task_id": "PAOS-FUNC-14",
+          "depends_on_task": "PAOS-FUNC-02",
+          "from_group": "FUNC-G03"
+        },
+        {
+          "task_id": "PAOS-FUNC-14",
+          "depends_on_task": "PAOS-FUNC-27",
+          "from_group": "FUNC-G03"
+        },
+        {
+          "task_id": "PAOS-FUNC-14",
+          "depends_on_task": "PAOS-FUNC-28",
+          "from_group": "FUNC-G03"
+        },
+        {
+          "task_id": "PAOS-FUNC-14",
+          "depends_on_task": "PAOS-FUNC-30",
+          "from_group": "FUNC-G02"
+        },
+        {
+          "task_id": "PAOS-FUNC-14",
+          "depends_on_task": "PAOS-FUNC-31",
+          "from_group": "FUNC-G02"
+        },
+        {
+          "task_id": "PAOS-FUNC-20",
+          "depends_on_task": "PAOS-FUNC-01",
+          "from_group": "FUNC-G01"
+        },
+        {
+          "task_id": "PAOS-FUNC-20",
+          "depends_on_task": "PAOS-FUNC-26",
+          "from_group": "FUNC-G03"
+        },
+        {
+          "task_id": "PAOS-FUNC-20",
+          "depends_on_task": "PAOS-FUNC-27",
+          "from_group": "FUNC-G03"
+        },
+        {
+          "task_id": "PAOS-FUNC-20",
+          "depends_on_task": "PAOS-FUNC-29",
+          "from_group": "FUNC-G03"
+        },
+        {
+          "task_id": "PAOS-FUNC-33",
+          "depends_on_task": "PAOS-FUNC-26",
+          "from_group": "FUNC-G03"
+        },
+        {
+          "task_id": "PAOS-FUNC-33",
+          "depends_on_task": "PAOS-FUNC-27",
+          "from_group": "FUNC-G03"
+        },
+        {
+          "task_id": "PAOS-FUNC-33",
+          "depends_on_task": "PAOS-FUNC-28",
+          "from_group": "FUNC-G03"
+        },
+        {
+          "task_id": "PAOS-FUNC-33",
+          "depends_on_task": "PAOS-FUNC-32",
+          "from_group": "FUNC-G02"
+        }
+      ],
+      "depends_on_groups": [
+        "FUNC-G01",
+        "FUNC-G02",
+        "FUNC-G03"
+      ],
+      "completion_requires_groups": []
+    },
+    {
+      "id": "FUNC-G05",
+      "title": "Возможности агентов, документы и управление",
+      "outcome": "Достоверные метрики и история, поиск skills, безопасное применение предложений и enforceable autonomy.",
+      "start": "F12 design независим; F16 после F01; F11 после F05/F08; F13 после F02/F08; F15 после F01/F10/F11. Реальные source/provider/write/enforcement gates каждой карточки сохраняются.",
+      "parallel": "После контрактов можно отдельно готовить proposals и autonomy. F11/F12/F16 делят team/service.mts и TeamManager — один owner и последовательная интеграция.",
+      "ownership": "Team/telemetry/history; ArtifactExplorer/writer; autonomy/runtime. Общие team/service, Dashboard, artifacts/service и HTTP patches согласовать с G01/G03/G04.",
+      "exit": "Каждая из пяти карточек подтверждена поддерживаемыми источниками и своими AC; unsupported остаётся unknown/unavailable, provider/target authority не расширяется. Design-only решение не закрывает implementation задачу.",
+      "ui": "Dashboard/Team/History/Artifacts/Autonomy: source/version, confirmed loaded state, proposal preview/conflict, лимиты и причины недоступности.",
+      "task_ids": [
+        "PAOS-FUNC-11",
+        "PAOS-FUNC-12",
+        "PAOS-FUNC-13",
+        "PAOS-FUNC-15",
+        "PAOS-FUNC-16"
+      ],
+      "execution_lanes": [
+        [
+          "PAOS-FUNC-11",
+          "PAOS-FUNC-15"
+        ],
+        [
+          "PAOS-FUNC-12"
+        ],
+        [
+          "PAOS-FUNC-13"
+        ],
+        [
+          "PAOS-FUNC-16"
+        ]
+      ],
+      "status_source": "derived_from_member_task_statuses_and_group_exit",
+      "cross_group_task_dependencies": [
+        {
+          "task_id": "PAOS-FUNC-11",
+          "depends_on_task": "PAOS-FUNC-05",
+          "from_group": "FUNC-G01"
+        },
+        {
+          "task_id": "PAOS-FUNC-11",
+          "depends_on_task": "PAOS-FUNC-08",
+          "from_group": "FUNC-G01"
+        },
+        {
+          "task_id": "PAOS-FUNC-13",
+          "depends_on_task": "PAOS-FUNC-02",
+          "from_group": "FUNC-G03"
+        },
+        {
+          "task_id": "PAOS-FUNC-13",
+          "depends_on_task": "PAOS-FUNC-08",
+          "from_group": "FUNC-G01"
+        },
+        {
+          "task_id": "PAOS-FUNC-15",
+          "depends_on_task": "PAOS-FUNC-01",
+          "from_group": "FUNC-G01"
+        },
+        {
+          "task_id": "PAOS-FUNC-15",
+          "depends_on_task": "PAOS-FUNC-10",
+          "from_group": "FUNC-G03"
+        },
+        {
+          "task_id": "PAOS-FUNC-16",
+          "depends_on_task": "PAOS-FUNC-01",
+          "from_group": "FUNC-G01"
+        }
+      ],
+      "depends_on_groups": [
+        "FUNC-G01",
+        "FUNC-G03"
+      ],
+      "completion_requires_groups": []
+    },
+    {
+      "id": "FUNC-G06",
+      "title": "Восстановление данных и поставка приложения",
+      "outcome": "Проверены Stop/crash/import/backup/restore и подготовлен безопасный install/update/rollback в выбранном канале.",
+      "start": "F21/F22 после F01; F17 после F01/F22 и отдельного distribution/signing/licensing design gate. Не ждать G04/G05 для ранних synthetic checks.",
+      "parallel": "Crash и data recovery допускают разные disposable profiles. Packaging после recovery evidence; shared runtime/launcher/profile resources нельзя менять одновременно.",
+      "ownership": "Recovery fixtures; import/export/backup; desktop-local/launcher. Только disposable profiles, без записи в пользовательский профиль или публикации.",
+      "exit": "Три карточки проходят собственные AC; квалификация относится к конкретному tuple/schema/build. После значимых последующих runtime/storage/packaging изменений повторить именно затронутые checks; ранний pass не доказывает финальную сборку.",
+      "ui": "Понятные recovery/compatibility/update/rollback состояния и сохранность профиля; отдельные необратимые/внешние действия по исходным gates.",
+      "task_ids": [
+        "PAOS-FUNC-21",
+        "PAOS-FUNC-22",
+        "PAOS-FUNC-17"
+      ],
+      "execution_lanes": [
+        [
+          "PAOS-FUNC-21"
+        ],
+        [
+          "PAOS-FUNC-22",
+          "PAOS-FUNC-17"
+        ]
+      ],
+      "status_source": "derived_from_member_task_statuses_and_group_exit",
+      "cross_group_task_dependencies": [
+        {
+          "task_id": "PAOS-FUNC-17",
+          "depends_on_task": "PAOS-FUNC-01",
+          "from_group": "FUNC-G01"
+        },
+        {
+          "task_id": "PAOS-FUNC-21",
+          "depends_on_task": "PAOS-FUNC-01",
+          "from_group": "FUNC-G01"
+        },
+        {
+          "task_id": "PAOS-FUNC-22",
+          "depends_on_task": "PAOS-FUNC-01",
+          "from_group": "FUNC-G01"
+        }
+      ],
+      "depends_on_groups": [
+        "FUNC-G01"
+      ],
+      "completion_requires_groups": []
+    },
+    {
+      "id": "FUNC-G07",
+      "title": "Сквозная приёмка, понятность UI и документация",
+      "outcome": "Функции согласованы в интерфейсе, полный пользовательский путь проверен, human pilot и документация имеют честный статус.",
+      "start": "F25 ведётся с первой группы, F24 — по мере доступности consumers; их полное закрытие по исходным AC. F19 после своих dependencies, F23 после F19/F21/F22/F24; ранний ограниченный pilot не закрывает весь backlog.",
+      "parallel": "Docs и capability copy идут вместе с feature slices; F19 может сохранять ранние Files receipts. Финальный F24→F19→F23 последовательный, отдельная human acceptance не подменяется тестами.",
+      "ownership": "Один интегратор App/Sidebar/locales/capabilities; tester владеет combined-build evidence; product owner — human pilot, docs owner — F25. Без повторной копии статусов в группах.",
+      "exit": "Все четыре карточки проходят AC; для закрытия всего grouped backlog дополнительно закрыты G01–G06, проверены применимые cross-group сценарии G05/G06 и provenance итоговой сборки. Незакрытый gate не скрывается снятием задачи из группы; M5/release readiness не заявляются.",
+      "ui": "Единая навигация Files/Map/Database и остальных модулей, RU/EN/темы/a11y, consistent status labels, понятные next actions и весь сквозной путь.",
+      "task_ids": [
+        "PAOS-FUNC-24",
+        "PAOS-FUNC-19",
+        "PAOS-FUNC-23",
+        "PAOS-FUNC-25"
+      ],
+      "execution_lanes": [
+        [
+          "PAOS-FUNC-24",
+          "PAOS-FUNC-19",
+          "PAOS-FUNC-23"
+        ],
+        [
+          "PAOS-FUNC-25"
+        ]
+      ],
+      "status_source": "derived_from_member_task_statuses_and_group_exit",
+      "cross_group_task_dependencies": [
+        {
+          "task_id": "PAOS-FUNC-19",
+          "depends_on_task": "PAOS-FUNC-01",
+          "from_group": "FUNC-G01"
+        },
+        {
+          "task_id": "PAOS-FUNC-19",
+          "depends_on_task": "PAOS-FUNC-02",
+          "from_group": "FUNC-G03"
+        },
+        {
+          "task_id": "PAOS-FUNC-19",
+          "depends_on_task": "PAOS-FUNC-03",
+          "from_group": "FUNC-G01"
+        },
+        {
+          "task_id": "PAOS-FUNC-19",
+          "depends_on_task": "PAOS-FUNC-04",
+          "from_group": "FUNC-G01"
+        },
+        {
+          "task_id": "PAOS-FUNC-19",
+          "depends_on_task": "PAOS-FUNC-05",
+          "from_group": "FUNC-G01"
+        },
+        {
+          "task_id": "PAOS-FUNC-19",
+          "depends_on_task": "PAOS-FUNC-06",
+          "from_group": "FUNC-G01"
+        },
+        {
+          "task_id": "PAOS-FUNC-19",
+          "depends_on_task": "PAOS-FUNC-07",
+          "from_group": "FUNC-G01"
+        },
+        {
+          "task_id": "PAOS-FUNC-19",
+          "depends_on_task": "PAOS-FUNC-10",
+          "from_group": "FUNC-G03"
+        },
+        {
+          "task_id": "PAOS-FUNC-19",
+          "depends_on_task": "PAOS-FUNC-18",
+          "from_group": "FUNC-G03"
+        },
+        {
+          "task_id": "PAOS-FUNC-19",
+          "depends_on_task": "PAOS-FUNC-26",
+          "from_group": "FUNC-G03"
+        },
+        {
+          "task_id": "PAOS-FUNC-19",
+          "depends_on_task": "PAOS-FUNC-27",
+          "from_group": "FUNC-G03"
+        },
+        {
+          "task_id": "PAOS-FUNC-19",
+          "depends_on_task": "PAOS-FUNC-29",
+          "from_group": "FUNC-G03"
+        },
+        {
+          "task_id": "PAOS-FUNC-19",
+          "depends_on_task": "PAOS-FUNC-14",
+          "from_group": "FUNC-G04"
+        },
+        {
+          "task_id": "PAOS-FUNC-19",
+          "depends_on_task": "PAOS-FUNC-33",
+          "from_group": "FUNC-G04"
+        },
+        {
+          "task_id": "PAOS-FUNC-19",
+          "depends_on_task": "PAOS-FUNC-34",
+          "from_group": "FUNC-G04"
+        },
+        {
+          "task_id": "PAOS-FUNC-23",
+          "depends_on_task": "PAOS-FUNC-21",
+          "from_group": "FUNC-G06"
+        },
+        {
+          "task_id": "PAOS-FUNC-23",
+          "depends_on_task": "PAOS-FUNC-22",
+          "from_group": "FUNC-G06"
+        },
+        {
+          "task_id": "PAOS-FUNC-24",
+          "depends_on_task": "PAOS-FUNC-05",
+          "from_group": "FUNC-G01"
+        },
+        {
+          "task_id": "PAOS-FUNC-24",
+          "depends_on_task": "PAOS-FUNC-10",
+          "from_group": "FUNC-G03"
+        },
+        {
+          "task_id": "PAOS-FUNC-24",
+          "depends_on_task": "PAOS-FUNC-26",
+          "from_group": "FUNC-G03"
+        },
+        {
+          "task_id": "PAOS-FUNC-24",
+          "depends_on_task": "PAOS-FUNC-27",
+          "from_group": "FUNC-G03"
+        },
+        {
+          "task_id": "PAOS-FUNC-24",
+          "depends_on_task": "PAOS-FUNC-29",
+          "from_group": "FUNC-G03"
+        },
+        {
+          "task_id": "PAOS-FUNC-24",
+          "depends_on_task": "PAOS-FUNC-14",
+          "from_group": "FUNC-G04"
+        },
+        {
+          "task_id": "PAOS-FUNC-24",
+          "depends_on_task": "PAOS-FUNC-33",
+          "from_group": "FUNC-G04"
+        },
+        {
+          "task_id": "PAOS-FUNC-24",
+          "depends_on_task": "PAOS-FUNC-34",
+          "from_group": "FUNC-G04"
+        }
+      ],
+      "depends_on_groups": [
+        "FUNC-G01",
+        "FUNC-G03",
+        "FUNC-G04",
+        "FUNC-G06"
+      ],
+      "completion_requires_groups": [
+        "FUNC-G01",
+        "FUNC-G02",
+        "FUNC-G03",
+        "FUNC-G04",
+        "FUNC-G05",
+        "FUNC-G06"
+      ]
+    }
+  ],
+  "delivery_group_topological_order": [
+    "FUNC-G01",
+    "FUNC-G02",
+    "FUNC-G03",
+    "FUNC-G06",
+    "FUNC-G04",
+    "FUNC-G05",
+    "FUNC-G07"
+  ]
+}

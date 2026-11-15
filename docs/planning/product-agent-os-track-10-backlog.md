@@ -1,0 +1,620 @@
+---
+title: "Архив — Product-Agent OS Track 10 backlog"
+---
+
+# Архив — Product-Agent OS Track 10 backlog {#product-agent-os-track-10-backlog}
+
+> Историческая запись. Даты и verdicts ниже относятся к тому запуску; для текущего поведения используйте актуальные руководства.
+
+Source status: `internal`
+
+This backlog tracks deferred and follow-up work for Track 10 `Task 23: Guided Question Protocol And Project Status Dashboard`, `Task 24: Self-Verification And Modernization Loop` and `Task 25: Project Code Graph And HTML Cockpit Visualization`.
+
+## Batch 5 Closure
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `done` | `T10-Q-M15..M22` eval, skills and docs coverage | Added `question_queue_contract_present`, `status_snapshot_present`, `status_dashboard_present`, `dashboard_no_external_assets`, `question_budget_false_positive_guard_present`, `dashboard_not_source_of_truth`, and `stale_evidence_no_success_claim`. |
+| `done` | Guided question behavioral/transcript coverage | Added `guided-question-smallest-blocking-question`, `guided-question-no-broad-methodology-interview`, `status-dashboard-generated-view-only`, `status-dashboard-stale-evidence-no-success-claim`, and `runtime-first-response-no-question-dump`. |
+| `done` | Lifecycle skill protocol wording | Skills now ask the smallest blocking question only, keep optional questions in the packet, route answers into artifacts or accepted gaps, and do not use guided questions as workspace evidence. |
+
+## Batch 6 Closure
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `done` | `T10-Q-M23` focused/full unit verification | Full unit discovery ran 543 tests with `OK` after focused behavioral-template contract fixes. |
+| `done` | `T10-Q-M24` full Product-Agent OS verification | Fixture eval exited `0` with `renderer_file_count: 187`; transcript eval exited `0` with 10 sessions and 0 failures; Codex compatibility returned `status: compatible`; docs check, strict MkDocs and `git diff --check` exited `0`. |
+| `done` | `T10-Q-M25` explicit-only git boundary | No `git add`, `git commit`, `git push` or PR creation was executed. |
+
+## Task 24 Batch 7 Closure
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `done` | `T10-SV-M-1..M4` foundation and registry | Added `agent_skill_metrics.py` with read-only source-priority policy, target registry collection, explicit evidence intake and bounded metrics packet helpers. |
+| `done` | `T10-SV-G1..G3` reuse/source/bounds guardrails | Reused runtime redaction, rejected dashboard/report HTML, memory, raw chat logs and unsupported community claims as source of truth, and trimmed oversized metrics packets deterministically with warnings. |
+| `done` | Batch 7 focused and full verification evidence | `test_agent_skill_metrics` failed before implementation on missing module and stale evidence support, then ran 5 tests with `OK`; adjacent status/dashboard/template/automation checks ran 103 tests with `OK`; full unittest ran 548 tests with `OK`; fixture eval, transcript eval, Codex compatibility, docs check and `git diff --check` exited `0`. |
+| `done` | Task 24 Batch 8 `T10-SV-M5..M16` | Added trace normalization, metrics redaction gate blocking, evidence dataset builder, dataset quality gates, local grader summary and judge calibration summary in `agent_skill_metrics.py`. |
+| `done` | Batch 8 focused and full verification evidence | Batch 8 RED failed on missing imports, then focused tests ran 11 tests with `OK`; adjacent status/dashboard, template/automation and slow fixture/transcript runner checks ran 22, 87 and 21 tests with `OK`; full unittest ran 554 tests with `OK`; fixture eval, transcript eval, Codex compatibility, docs check and `git diff --check` exited `0`. |
+| `done` | Task 24 Batch 9 `T10-SV-M17..M28` | Added metric aggregation, repeatability metrics, guarded scorecards, confidence/decision gates, cadence recommendation and deterministic redacted run records in `agent_skill_metrics.py`. |
+| `done` | Batch 9 focused and full verification evidence | Batch 9 RED failed on missing imports, then focused tests ran 17 tests with `OK`; adjacent status/dashboard, template/automation and slow fixture/transcript runner checks ran 28, 87 and 21 tests with `OK`; full unittest ran 560 tests with `OK` in 809.106s using `timeout_ms: 900000`; fixture eval, transcript eval, Codex compatibility, docs check and `git diff --check` exited `0`. |
+| `done` | Task 24 Batch 10 `T10-SV-M29..M45` plus `T10-SV-G4..G6` | Added trace data-classification, shared offline artifact safety, scorecard ledger, daily/weekly metrics packets, component prioritization, modernization candidates, redacted offline report renderer, dry-run/stage CLI and metrics automation candidate-only blocking. |
+| `done` | Batch 10 focused and full verification evidence | Batch 10 RED failed on missing imports/modules/templates and metrics automation blocking, then focused tests ran 127 tests with `OK`; fixture runner unit suite ran 17 tests with `OK`; full unittest ran 575 tests with `OK` in 612.098s using `timeout_ms: 1200000`; fixture eval exited `0` with 80 fixtures and `renderer_file_count: 191`; transcript eval exited `0` with 10 sessions and 0 failures; Codex compatibility returned `status: compatible`; docs check and `git diff --check` exited `0`. |
+| `done` | Task 24 Batch 11 `T10-SV-M46..M57` | Added bounded status snapshot summaries, discovery/applicability and methodology audit routing, runtime packet validation, review-only finish options, guided question integration, lifecycle skill wording, fixture false-positive coverage, behavioral eval cases, transcript sessions and batch status sync. |
+| `done` | Batch 11 focused and broad verification evidence | Batch 11 RED failed on missing status/discovery/audit/runtime/lifecycle/eval contracts, then focused tests ran 306 tests with `OK`; full unittest ran 583 tests with `OK` in 636.067s using `timeout_ms: 1200000`; fixture eval exited `0` with 85 fixtures, 0 failures and `renderer_file_count: 191`; transcript eval exited `0` with 17 sessions and 0 failures; Codex compatibility returned `status: compatible`; docs/source-policy slice ran 22 tests with `OK`; docs check and `git diff --check` exited `0`. |
+| `done` | `T10-SV-M58..M62` final docs/control-plane verification closure | Task 24 Batch 12 synchronized Product-Agent OS docs, root/plugin READMEs, source registry, Track 10 backlog and root control-plane evidence for `agent_skill_metrics_loop`; full unittest must use `timeout_ms: 1200000`; commit/push/PR remains an explicit-only git boundary. |
+
+## Task 25 Batch 13-20 Closure
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `done` | `T10-CG-V2-M01..M07` graph foundation | Added read-only, stage-first graph JSON/JSONL foundation with controlled ontology/schema validation, manifest freshness/provenance, observation lineage, temporal edge helpers, stage-local safety and scale fixtures. |
+| `done` | `T10-CG-V2-M08..M13` scanner overlays | Added Python AST package/module/class/function/method overlays, conservative import/call/test edges, unsupported-language adapter boundaries, structured docs/contracts/schema/diagram overlays, partition scopes, canonical aliases and bounded readiness metadata. |
+| `done` | `T10-CG-V2-M14..M18` graph query/runtime/analysis | Added graph-only query packets, query CLI mode, budget/filter safety, trace/impact/affected-test/delta/read-order packets, runtime/status graph summaries, lifecycle source-of-truth wording and source-free analysis reports. |
+| `done` | `T10-CG-V2-M19..M26` cockpit visualization | Added eight-page cockpit model, offline stage-only HTML/JSON renderer, Code Flow inside `Code Intelligence`, Graphology-compatible static visual projection, local Graphology/Sigma vendor boundary, filters, focused subgraphs, selected-node evidence, fallback static table, mobile CSS and no-external-assets checks. |
+| `done` | `T10-CG-V2-M27..M30` evals/docs/future gates | Added fixture structural fields, search-quality eval loop, explicit future backend and semantic gates, and docs/source registry/control-plane sync beyond Batch 16. The static search index, live database/server, LLM, embedding, cross-encoder, semantic extraction and rationale/comment extraction remain outside baseline without explicit approval defining redaction, cache, token budget, eval threshold and rollback path. |
+| `done` | `T10-CG-V2-M31..M32` final verification and closure | Task 25 Batch 18 closed the baseline with focused/full verification and explicit git boundary evidence: graph/cockpit/search suite ran 70 tests with `OK`; status/runtime suite ran 47 tests with `OK`; fixture/lifecycle/docs suite ran 86 tests with `OK`; full unittest ran 664 tests with `OK` using `timeout_ms: 1200000`; fixture eval exited `0` for 91 fixture directories with renderer file count 191; transcript eval exited `0` with 17 sessions and 0 failures; Codex compatibility returned `status: compatible`; docs check, strict MkDocs and `git diff --check` exited `0`; git staging/commit/push/PR remains explicit-only. |
+| `done` | `T10-CG-V2-M33..M38` offline static search index | Batch 19 explicit approval was the user request to execute Batch 19. It added `project_graph_index.py`, static index CLI support, optional indexed `search`, stale-index blocking, cache hit/miss/invalidation evidence and indexed search-quality comparison. The index is generated, cache-bound and not source of truth; it builds from redacted graph artifact only, writes `.codex/product-agent-os/project-code-graph-search-index.json` only under an explicit stage root, stores no raw source bodies or absolute local paths, and has no live database/server, LLM, embedding or cross-encoder. The rollback/disable path is deleting `.codex/product-agent-os/project-code-graph-search-index.json`; git staging/commit/push/PR remains explicit-only. |
+| `done` | `T10-CG-V2-M39..M44` local query backend and live database/server gate | Batch 20 explicit approval was the user request to execute Batch 20. It added `project_graph_backend.py`, CLI `--build-backend`, `--backend`, `--disable-backend`, fixture eval fields including `project_graph_local_backend_gate_present`, and a generated local file-store at `.codex/product-agent-os/project-code-graph-backend.json`. The store is built only from graph/static-index artifacts, is not source of truth, server mode is disabled by default, starts no production server, exposes read-only contract API handling with stable JSON errors, and preserves graph-only fallback. The rollback/disable path is deleting `.codex/product-agent-os/project-code-graph-backend.json`; later Batch 21-23 generated extension surfaces remain non-source-of-truth and git staging/commit/push/PR remains explicit-only. |
+| `done` | `T10-CG-V2-M45..M51` semantic retrieval, embeddings and cross-encoder eval | Batch 21 explicit approval was the user request to execute Batch 21. It added `project_graph_semantic.py`, CLI `--build-semantic-index`, `--semantic-index`, `--semantic-approval`, `--disable-semantic-index`, fixture eval fields `project_graph_semantic_retrieval_gate_present`, `project_graph_semantic_retrieval_eval_present` and `project_graph_semantic_present_unverified_routing_present`, semantic corpus and chunk policy, embeddings cache metadata, semantic query packets, cross-encoder reranking gate and semantic retrieval eval suite. The index is generated, cache-bound and not source of truth; it uses redacted graph/static-index artifacts only, local deterministic embeddings/cross-encoder eval only, stores no raw source bodies or absolute local paths, returns `present_unverified` orientation evidence as present_unverified orientation evidence, performs no canonical graph edge rewrites, and the rollback/disable path is deleting `.codex/product-agent-os/project-code-graph-semantic-index.json`. Later Batch 22-23 generated extension surfaces remain non-source-of-truth and git staging/commit/push/PR remains explicit-only. |
+
+## Task 25 Future-Gated Extension Matrix
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `done` | `T10-CG-V2-M39..M44` local query backend and live database/server gate | Batch 20 implemented a generated local file-store gate after explicit approval. The approval decision packet names storage path, port policy, process lifecycle, auth boundary, cleanup, logging, performance threshold and rollback path. Server mode is disabled by default, no production server is started, and graph-only fallback remains available. |
+| `done` | `T10-CG-V2-M45..M51` semantic retrieval, embeddings and cross-encoder eval | Batch 21 implemented a generated semantic retrieval index after explicit approval. The approval decision packet names local deterministic embedding/cross-encoder models, redaction, token budget, cache policy, eval threshold, failure handling and deletion path. Semantic hits remain `present_unverified` orientation evidence until source reads, owner review or accepted gaps exist; the index performs no canonical graph edge rewrites. |
+| `done` | `T10-CG-V2-M52..M57` LLM semantic extraction and rationale/comment proposals | Batch 22 explicit approval was the user request to execute Batch 22. It added `project_graph_llm_extraction.py`, CLI `--build-llm-proposals`, `--llm-approval`, `--disable-llm-proposals`, fixture eval fields `project_graph_llm_extraction_gate_present`, `project_graph_llm_proposal_schema_present`, `project_graph_rationale_comment_proposals_present` and `project_graph_llm_extraction_eval_present`, plus a generated proposal artifact at `.codex/product-agent-os/project-code-graph-llm-proposals.json`. The prompt/model policy is local deterministic only with no live external model/API calls. Outputs are structured JSON with provenance, uncertainty and unsupported-claim labels; semantic node and edge proposals plus rationale/comment proposals are staged proposals, not canonical graph facts. Generated semantic nodes, rationale and comments are staged proposals, not canonical graph facts. human review can accept, reject or mark accepted_gap, failed or unsafe output routes to the AI incident workflow, there is no canonical graph mutation, and the rollback/disable path is deleting `.codex/product-agent-os/project-code-graph-llm-proposals.json`. Batch 23 implements separate closure evidence and git staging/commit/push/PR remains explicit-only. |
+| `done` | `T10-CG-V2-M58..M62` future extension verification, rollback and closure | Batch 23 explicit approval was the user request to execute Batch 23. It added `project_graph_extension_closure.py`, CLI `verify-extensions`, CLI `disable-extensions`, fixture eval fields `project_graph_future_extension_closure_present`, `project_graph_extension_rollback_deletion_present`, `project_graph_unapproved_surface_blocking_present` and `project_graph_extension_full_verification_contract_present`, plus a generated closure artifact at `.codex/product-agent-os/project-code-graph-extension-closure.json`. Batch 23 records deletion proof for generated Batch 19-23 extension artifacts, proves graph-only fallback, blocks live database/server, live external embedding/cross-encoder/LLM calls and canonical graph mutation as `blocked_without_new_explicit_approval`, requires full verification with `timeout_ms: 1200000`, performs no live external model/API calls and keeps git staging/commit/push/PR remains explicit-only. |
+
+## Task 26 Batch 24 Closure
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `done` | `T10-LIVE-M01..M06` approval, data classification, redaction, credentials, cache and budget governance | Batch 24 explicit approval was the user request to execute Task 26 Batch 24 with agents and skills. It added `project_graph_live_governance.py`, CLI `--validate-live-governance`, CLI `--disable-live-governance`, fixture eval fields `project_graph_live_approval_packet_present`, `project_graph_live_data_classification_policy_present`, `project_graph_live_redaction_guard_present`, `project_graph_provider_credentials_boundary_present`, `project_graph_live_cache_deletion_policy_present`, `project_graph_live_budget_guard_present` and `project_graph_live_governance_no_live_calls_present`. No complete approval packet means no live action. Secrets, raw source bodies and absolute paths are blocked. Provider call is impossible without sanitizer pass. Cache can be deleted without graph loss. Budget exceed routes to blocked or degraded mode. Batch 24 stages policy evidence only, starts no live server, performs no provider calls, permits no live external model/API calls, performs no canonical graph mutation and git staging/commit/push/PR remains explicit-only. |
+
+## Task 26 Batch 25 Closure
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `done` | `T10-LIVE-M07..M10` live local read-only runtime, auth and fallback | Batch 25 explicit approval was the user request to execute Batch 25 with agents and skills. It adds `project_graph_live_runtime.py`, CLI `--validate-live-runtime`, CLI `--disable-live-runtime`, fixture eval fields `project_graph_live_runtime_contract_present`, `project_graph_live_runtime_governance_prerequisite_present`, `project_graph_live_runtime_read_only_routes_present`, `project_graph_live_runtime_lifecycle_controls_present`, `project_graph_live_runtime_auth_policy_present`, `project_graph_live_runtime_graph_only_fallback_present` and `project_graph_live_runtime_no_public_or_mutation_surface_present`. No write endpoints and no canonical mutation. Starts only after approval; cleanup is verified. Runtime is not public by default and rejects unauthorized access. Fallback works after disabling live layer. The contract remains `disabled_by_default_not_started`, local-only, staged evidence only, not source of truth, performs no provider calls, permits no live external model/API calls and git staging/commit/push/PR remains explicit-only. |
+
+## Task 26 Batch 26 Closure
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `done` | `T10-LIVE-M11..M12` external embedding provider gate and eval | Batch 26 explicit approval was the user request to execute Batch 26 with agents and skills. It adds `project_graph_embedding_provider.py`, CLI `--validate-embedding-provider`, CLI `--disable-embedding-provider`, fixture eval fields `project_graph_external_embedding_provider_gate_present`, `project_graph_external_embedding_governance_prerequisite_present`, `project_graph_external_embedding_redaction_cache_budget_present`, `project_graph_external_embedding_eval_baseline_present`, `project_graph_external_embedding_threshold_fallback_present` and `project_graph_external_embedding_no_live_calls_present`. No external call without approval/redaction/cache/budget. Must beat approved threshold or stay disabled. Fallback remains `semantic_retrieval_or_graph_only`. The contract is staged evidence only, not source of truth, performs no provider calls, permits no live external model/API calls, performs no canonical graph mutation and git staging/commit/push/PR remains explicit-only. |
+
+## Task 26 Batch 27 Closure
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `done` | `T10-LIVE-M13..M14` cross-encoder reranker and hybrid retrieval | Batch 27 explicit approval was the user request to execute Batch 27 with agents and skills. It adds `project_graph_reranker_provider.py`, `project_graph_hybrid_retrieval.py`, CLI `--validate-reranker-provider`, CLI `--disable-reranker-provider`, CLI `--build-hybrid-retrieval`, CLI `--disable-hybrid-retrieval`, fixture eval fields `project_graph_external_reranker_provider_gate_present`, `project_graph_external_reranker_governance_prerequisite_present`, `project_graph_external_reranker_redaction_cache_budget_present`, `project_graph_external_reranker_eval_baseline_present`, `project_graph_external_reranker_threshold_fallback_present`, `project_graph_external_reranker_no_live_calls_present`, `project_graph_hybrid_retrieval_pipeline_present`, `project_graph_hybrid_retrieval_explainable_fusion_present`, `project_graph_hybrid_retrieval_fallback_present` and `project_graph_hybrid_retrieval_no_canonical_mutation_present`. The artifact contracts are `reranker_provider.py` and `hybrid_retrieval.py`. Precision/MRR improves or fallback remains active. Results are source-backed, bounded and explainable. Fallback remains `semantic_retrieval_or_graph_only`. The contract is `approval_required`, staged evidence only, not source of truth, performs No live provider calls, no provider calls, permits no live external model/API calls, performs no canonical graph mutation and git staging/commit/push/PR remains explicit-only. |
+
+## Task 26 Batch 28 Closure
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `done` | `T10-LIVE-M15..M16` live LLM proposal adapter and safety eval | Batch 28 explicit approval was the user request to execute Batch 28 with agents and skills. It adds `project_graph_llm_proposal_provider.py`, CLI `--validate-llm-proposal-provider`, CLI `--disable-llm-proposal-provider`, artifact contracts `llm_proposal_provider.py` and `llm-proposal-eval.json`, fixture eval fields `project_graph_live_llm_proposal_provider_gate_present`, `project_graph_live_llm_proposal_governance_prerequisite_present`, `project_graph_live_llm_proposal_prompt_schema_present`, `project_graph_live_llm_proposal_redaction_cache_budget_present`, `project_graph_live_llm_proposal_safety_eval_present`, `project_graph_live_llm_proposal_threshold_fallback_present`, `project_graph_live_llm_proposal_incident_path_present`, `project_graph_live_llm_proposal_no_live_calls_present` and `project_graph_live_llm_proposal_no_canonical_mutation_present`. The generated gate is `project_graph_live_llm_proposal_provider_gate` with approval boundary `batch28_live_llm_proposal_adapter_and_safety_eval`, provider `external_llm`, surfaces `external_llm_proposal_adapter` and `llm_proposal_safety_eval`, output format `structured_json`, label `unsupported_claim`, proposal-only, never canonical fact, hallucination, privacy, grounding and stale-context tests, unsafe evidence routed to `incident_blocked` and AI incident workflow, fallback `local_llm_proposals_or_semantic_retrieval_or_graph_only`, `provider_call_allowed` false and `external_call_performed` false. The contract is `approval_required`, staged evidence only, not source of truth, performs No live provider calls, no provider calls, permits no live external model/API calls, performs no canonical graph mutation and git staging/commit/push/PR remains explicit-only. |
+
+## Task 26 Batch 29 Closure
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `done` | `T10-LIVE-M17..M18` human review ledger and proposal diff preview | Batch 29 explicit approval was the user request to execute Batch 29 with agents and skills. It adds `project_graph_review_ledger.py`, CLI `--build-review-ledger`, CLI `--disable-review-ledger`, artifact contracts `graph-review-ledger.json` and `proposal-diff.json`, fixture eval fields `project_graph_human_review_ledger_present`, `project_graph_human_review_ledger_governance_prerequisite_present`, `project_graph_human_review_ledger_owner_decision_required_present`, `project_graph_human_review_ledger_evidence_refs_present`, `project_graph_human_review_accepted_gap_present`, `project_graph_proposal_diff_preview_present`, `project_graph_proposal_diff_inspectable_changes_present`, `project_graph_proposal_diff_no_canonical_mutation_present` and `project_graph_human_review_ledger_no_live_calls_present`. The generated artifacts are `project_graph_human_review_ledger` and `project_graph_proposal_diff_preview` with approval boundary `batch29_human_review_ledger_and_proposal_diff_preview`, surfaces `human_review_ledger` and `proposal_diff_preview`, decisions `accepted`, `rejected` and `accepted_gap`, No accepted proposal without owner decision, Accept, reject or accepted_gap decisions with evidence refs, Human can inspect before mutation, proposal-only until Batch 30 dry-run mutation, `provider_call_allowed` false and `external_call_performed` false. The contract is `approval_required`, staged evidence only, not source of truth, performs no provider calls, permits no live external model/API calls, performs no canonical graph mutation and git staging/commit/push/PR remains explicit-only. |
+
+## Task 26 Batch 30 Closure
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `done` | `T10-LIVE-M19..M22` canonical graph mutation journal and rollback | Batch 30 explicit approval was the user request to execute Batch 30 with agents and skills. It adds `project_graph_canonical_mutation.py`, CLI `--build-canonical-mutation`, CLI `--disable-canonical-mutation`, artifact contracts `canonical_graph_mutation.py`, `graph_rollback.py`, `mutation_plan.json` and `graph-mutation-journal.jsonl`, plus fixture eval fields `project_graph_canonical_mutation_dry_run_plan_present`, `project_graph_canonical_mutation_governance_prerequisite_present`, `project_graph_canonical_mutation_conflict_checks_present`, `project_graph_mutation_journal_append_only_present`, `project_graph_mutation_journal_rollback_patch_present`, `project_graph_canonical_mutation_only_accepted_proposals_present`, `project_graph_canonical_mutation_apply_digest_present`, `project_graph_rollback_previous_digest_restore_present` and `project_graph_canonical_mutation_no_live_calls_present`. The generated artifacts are `project_graph_canonical_mutation_plan`, `project_graph_mutation_journal` and `project_graph_rollback_proof` with approval boundary `batch30_canonical_graph_mutation_journal_and_rollback`, surfaces `canonical_mutation_dry_run`, `mutation_journal`, `accepted_mutation_apply` and `rollback_engine`, No mutation without dry-run plan, Every mutation has rollback patch, Only accepted proposals mutate graph, Rollback restores previous graph digest, accepted_gap remains non-mutating, stage-root generated graph copy only, `provider_call_allowed` false and `external_call_performed` false. The contract is `approval_required`, staged evidence only, not source of truth, performs no provider calls, permits no live external model/API calls and git staging/commit/push/PR remains explicit-only. |
+
+## Task 26 Batch 31 Closure
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `done` | `T10-LIVE-M23..M26` audit logging security/privacy observability and agent/skill routing | Batch 31 explicit approval was the user request to execute Batch 31 with agents and skills. It adds `project_graph_live_audit.py`, CLI `--build-live-audit`, CLI `--disable-live-audit`, artifact contracts `audit-log.jsonl`, `security-privacy.json`, `runtime-observability.json` and `agent-skill-handoff.json`, plus fixture eval fields `project_graph_live_audit_log_present`, `project_graph_live_audit_governance_prerequisite_present`, `project_graph_live_audit_event_coverage_present`, `project_graph_live_audit_redaction_append_only_present`, `project_graph_live_security_privacy_tests_present`, `project_graph_live_security_privacy_negative_cases_blocked_present`, `project_graph_live_runtime_observability_present`, `project_graph_live_runtime_observability_degraded_mode_visible_present`, `project_graph_live_agent_skill_handoff_routing_present`, `project_graph_live_agent_skill_handoff_stop_conditions_present`, `project_graph_live_audit_operability_stage_disable_present` and `project_graph_live_audit_no_live_calls_present`. The generated artifacts are `project_graph_live_audit_log`, `project_graph_live_security_privacy_tests`, `project_graph_runtime_observability` and `project_graph_agent_skill_handoff_routing` with approval boundary `batch31_audit_security_observability_agent_skill_routing`, surfaces `audit_logging`, `security_privacy_tests`, `runtime_observability` and `agent_skill_handoff_routing`. Every live/provider/mutation action emits redacted append-only audit evidence. Unsafe secret/path/raw-source/prompt-injection cases are blocked. Runtime health, latency, provider errors, budget usage and degraded graph-only mode stay visible. Agent/skill handoffs require ownership, verification evidence, fresh context and stop conditions. The contract is `approval_required`, staged evidence only, not source of truth, performs no live server start, no provider calls, no live external model/API calls, no canonical graph mutation, keeps `provider_call_allowed` false and `external_call_performed` false, and git staging/commit/push/PR remains explicit-only. |
+
+## Task 26 Batch 32 Closure
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `done` | `T10-LIVE-M27..M31` real testing readiness target consent pilot harness and Codex surface smoke | Batch 32 explicit approval was the user request to execute Batch 32 with agents and skills. It adds `project_graph_real_testing.py`, CLI `--build-real-testing-readiness`, CLI `--disable-real-testing-readiness`, artifact contracts `real-testing-readiness.json`, `real-testing-targets.json`, `pilot-harness.json`, `codex-surface-smoke.json` and `real-testing-pilot-matrix.json`, plus fixture eval fields `project_graph_real_testing_readiness_present`, `project_graph_real_testing_target_consent_present`, `project_graph_real_testing_pilot_harness_present`, `project_graph_real_testing_codex_surface_smoke_present`, `project_graph_real_testing_use_case_pilot_matrix_present`, `project_graph_real_testing_no_hidden_track10_gates_present`, `project_graph_real_testing_no_unapproved_actions_present` and `project_graph_real_testing_stage_disable_present`. The generated artifacts are `project_graph_real_testing_readiness`, `project_graph_real_testing_targets`, `project_graph_pilot_harness`, `project_graph_codex_surface_smoke` and `project_graph_real_testing_pilot_matrix` with approval boundary `batch32_real_testing_readiness_target_consent_pilot_harness_codex_surface_smoke`, surfaces `real_testing_readiness`, `real_project_target_selection`, `pilot_harness`, `codex_surface_smoke` and `use_case_pilot_matrix`. Real testing cannot start with no hidden unresolved Track 10 gates. No real project test without owner-approved target and data policy. Pilot harness remains dry-run and stage-only. Codex App, CLI and IDE extension smoke is planned, blocked or accepted gap. Track 8 archetypes web, backend, docs, pr_review, evals, automation and AI/RAG are mapped to pilots. The contract is `approval_required`, staged evidence only, not source of truth, performs no live server start, no provider calls, no live external model/API calls, no canonical graph mutation, keeps `provider_call_allowed` false and `external_call_performed` false, and git staging/commit/push/PR remains explicit-only. |
+
+## Task 26 Batch 33 Closure
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `done` | `T10-LIVE-M32..M34` runtime browser QA performance and stabilization | Batch 33 explicit approval was the user request to execute Batch 33 with agents and skills. It adds `project_graph_runtime_qa.py`, CLI `--build-runtime-qa`, CLI `--disable-runtime-qa`, artifact contracts `runtime-browser-qa.json`, `performance-budget.json` and `stabilization-ledger.json`, plus fixture eval fields `project_graph_runtime_browser_qa_present`, `project_graph_runtime_browser_qa_console_network_checks_present`, `project_graph_runtime_browser_qa_mobile_overflow_labels_present`, `project_graph_performance_budget_present`, `project_graph_performance_budget_threshold_fallback_present`, `project_graph_stabilization_ledger_present`, `project_graph_stabilization_no_open_p0_p1_present`, `project_graph_runtime_qa_no_unapproved_actions_present` and `project_graph_runtime_qa_stage_disable_present`. The generated artifacts are `project_graph_runtime_browser_qa`, `project_graph_performance_budget` and `project_graph_stabilization_ledger` with approval boundary `batch33_runtime_browser_qa_performance_stabilization`, surfaces `runtime_browser_qa`, `runtime_performance_budget` and `runtime_stabilization_loop`. Runtime Browser QA records browser smoke, console/network checks, mobile overflow checks, generated-view labels and source-boundary labels. Performance budget records node/edge/search/provider latency caps and memory bounds; budget breach disables live layer or records accepted gap. Stabilization ledger records severity policy, fix-or-accepted-gap ledger, rerun plan and No open P0/P1. The contract is `approval_required`, staged evidence only, not source of truth, performs no live server start, no provider calls, no live external model/API calls, no canonical graph mutation, keeps `provider_call_allowed` false and `external_call_performed` false, and git staging/commit/push/PR remains explicit-only. |
+
+## Task 26 Batch 34 Planned Matrix And Closure Status
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `approval_required` | `T10-LIVE-M35..M36` docs packaging source registry site closure and Batch 35 handoff | Batch 34 remains approval-bound for any action beyond docs/control-plane and packaging smoke evidence. The Batch 34 Detailed Task Matrix is `B34-DOC-M01..M15` plus the Batch 34 addendum `B34-PROD-M16..M18`, `B34-PROD-M19..M23`, `B34-I18N-M24..M30`, `B34-QA-M31..M33` and corrective `B34E-I18N-M34..M49`; current addendum execution is `done_through_m49` with Batch 34E full-site i18n parity closed through `B34E-I18N-M48..M49`. Historical remaining ranges were `B34E-I18N-M45..M49`, `B34E-I18N-M46..M49` and `B34E-I18N-M47..M49`. Batch 35 execution remains separate and approval-required. |
+| `done_through_m15` | `T10-LIVE-M35..M36` docs packaging source registry site closure and Batch 35 handoff | Batch 34 implements the documentation and packaging closure plan for Task 24, Task 25 and Task 26 before approval-bound real testing. `B34-DOC-M01` completed IA/freshness inventory; `B34-DOC-M02..M08` added Product-Agent OS pages for project code graph, live runtime governance, approval-bound real testing, agent/skill modernization, CLI reference, artifact contracts and packaging/closure; `B34-DOC-M09..M10` synchronized existing Product-Agent OS IA, runtime, agent-system and playbook docs; `B34-DOC-M11` wired MkDocs navigation, `tools/check_docs.py` required paths, accepted the Mermaid external asset gap and rebuilt `site/`; `B34-DOC-M12` updates source registry, this backlog and control-plane artifacts; `B34-DOC-M13` adds focused docs contract tests; `B34-DOC-M14` runs focused docs tests, `check_docs.py`, strict MkDocs into `site/` and diff hygiene; `B34-DOC-M15` records packaging/install smoke, the docs-maintainer plugin-cache gap and the Batch 35 approval packet draft. |
+| `done_through_m18` | Batch 34A product documentation boundary and IA | `B34-PROD-M16..M18` adds `docs/sources/product-agent-os-batch34a-public-docs-boundary.md`, records `public_product_candidates`, `internal_evidence`, proposed presentation IA, reader journey, page ownership map and `public_forbidden_terms`. Product-facing pages remain `cleanup_pending` until Batch 34B rewrites public copy; `public_ready_pages` is intentionally empty in Batch 34A. Internal evidence surfaces such as `docs/sources/`, `docs/superpowers/`, registry, backlog, root control-plane files, tests, tooling and generated `site/` stay internal evidence, staged evidence only and not source of truth for product copy. |
+| `done_through_m23` | Batch 34B public copy rewrite | `B34-PROD-M19..M23` adds `docs/sources/product-agent-os-batch34b-public-copy-rewrite.md`, promotes `public_ready_pages`, records that internal ledger language removed from public-ready pages, preserves `Source status:` labels, keeps source/control-plane provenance internal and leaves `cleanup_pending_public_candidates: []`. Batch 34C RU/EN localization now starts from the promoted public-ready page set. |
+| `done_through_m30` | Batch 34C RU/EN localization | `B34-I18N-M24..M30` adds `docs/sources/product-agent-os-batch34c-i18n-localization.md`, chooses `mkdocs-static-i18n`, configures RU default at site root and EN under `/en/`, sets `fallback_to_default: false`, enables Material switcher, defines `terminology_allowlist`, creates EN sibling pages for the public-ready set and records `localized_page_parity`. Batch 34E M47 later changes search dedup to `reconfigure_search: false` for full-site sibling parity. |
+| `done_through_m33` | Batch 34D product docs QA and closure | `B34-QA-M31..M33` adds `docs/sources/product-agent-os-batch34d-product-docs-qa-closure.md`, enforces `public_forbidden_terms`, `localized_page_parity`, `Source status` rules and `localized_nav_coverage`, records `static_html_language_switcher_evidence`, requires regular site/ rebuild evidence and keeps Batch 35 execution separate and approval-required. |
+| `done_through_m37` | Batch 34E M34-M37 full-site i18n inventory and nav gate | `B34E-I18N-M34..M37` adds `docs/sources/product-agent-os-batch34e-full-site-i18n-inventory.md` plus its `.en.md` sibling, records `full_site_i18n_inventory`, `full_site_i18n_red_gate`, `full_site_en_nav_configured`, `expected_red_full_site_i18n_parity`, `docs_ru_pages_total: 128`, `english_original_pages_total: 7`, `localized_ru_pages_total: 121`, `existing_en_siblings: 121` and `missing_localized_en_siblings: 0`, and expands EN navigation metadata to cover the current RU nav sections while keeping `fallback_to_default: false`. |
+| `done_through_m43` | Batch 34E M38-M43 EN sibling translation pass | `B34E-I18N-M38..M43` creates EN siblings for the localized source corpus, records `full_site_en_siblings_created`, updates source inventory to `docs_ru_pages_total: 128`, `english_original_pages_total: 7`, `localized_ru_pages_total: 121`, `existing_en_siblings: 121` and `missing_localized_en_siblings: 0`, reclassifies `docs/superpowers/plans/*.md` as English-original source plans without duplicate `.en.md` siblings, and confirms zero Cyrillic in EN source pages. |
+| `done_through_m44` | Batch 34E M44 EN editorial quality sweep | `B34E-I18N-M44` records `full_site_en_editorial_quality_sweep`, confirms `en_source_cyrillic_hits: 0`, `en_source_mojibake_hits: 0`, `en_source_transliteration_hits: 0` and `en_internal_link_failures: 0` across the full `.en.md` corpus, while keeping generated-site closure for M47. |
+| `done_through_m45` | Batch 34E M45 RU quality sweep | `B34E-I18N-M45` records `full_site_ru_quality_sweep`, confirms `ru_source_forbidden_english_phrase_hits: 0` across the full RU `.md` corpus with `.en.md` siblings, and keeps generated-site closure for M47. |
+| `done_through_m46` | Batch 34E M46 full-site language switcher parity | `B34E-I18N-M46` records `full_site_language_switcher_parity` after a regular strict MkDocs rebuild to `site/`; static generated HTML inspection checked 120 localized RU/EN page pairs, found `static_language_switcher_pairs_checked: 121`, `english_original_pages_total: 7`, `language_switcher_pair_failures: 0` and `file_url_escape_failures: 0`, and keeps search/sitemap/final closure for M47-M49. |
+| `done_through_m47` | Batch 34E M47 search, sitemap and strict build parity | `B34E-I18N-M47` records `full_site_search_sitemap_parity` after a regular strict MkDocs rebuild to `site/`; the search policy keeps `fallback_to_default: false` and uses `reconfigure_search: false` so real EN sibling pages are not removed as duplicates. Static search/sitemap inspection found `search_index_ru_pages_present: 121`, `search_index_en_pages_present: 121`, `sitemap_ru_pages_present: 121`, `sitemap_en_pages_present: 121`, `english_original_pages_total: 7`, `search_index_ru_fallback_pollution: 0` and `sitemap_ru_fallback_pollution: 0`. |
+| `done_through_m49` | Batch 34E M48-M49 final full-site i18n closure | `B34E-I18N-M48..M49` records `done_through_m48`, `done_through_m49`, `full_site_i18n_closure` and `full_site_i18n_final_evidence` after source/control-plane sync, final strict MkDocs closure evidence, full-site parity scans, `python tools\check_docs.py`, static `file://` language-switcher simulation and `git diff --check`. Current final inventory is `docs_ru_pages_total: 128`, `english_original_pages_total: 7`, `localized_ru_pages_total: 121`, `existing_en_siblings: 121`, `missing_localized_en_siblings: 0`, `rendered_ru_pages_checked: 121`, `rendered_en_pages_checked: 121`, `static_language_switcher_pairs_checked: 121`, `language_switcher_pair_failures: 0`, `file_url_escape_failures: 0`, `search_index_ru_pages_present: 121`, `search_index_en_pages_present: 121`, `sitemap_ru_pages_present: 121`, `sitemap_en_pages_present: 121`, `en_source_cyrillic_hits: 0`, `ru_source_forbidden_english_phrase_hits: 0` and no remaining Batch 34E gates. Historical remaining ranges before M45/M46/M47 were `B34E-I18N-M45..M49`, `B34E-I18N-M46..M49` and `B34E-I18N-M47..M49`. |
+| `blocked_without_approval` | Batch 35 execution from Batch 34 handoff | Historical Batch 34 handoff marker: packaging/install smoke was evidence only and did not approve Batch 35. The fixed Batch 34 workflow remains source docs -> registry -> docs tests -> check_docs.py -> strict MkDocs -> optional full closure. site/ must be rebuilt with the regular MkDocs site_dir via `python -m mkdocs build --strict`. Later owner instructions separately approved `T10-LIVE-M37`, `T10-LIVE-M38`, `T10-LIVE-M39` and staged-only `T10-LIVE-M40`; `T10-LIVE-M41` still requires exact git release/PR fields before any git write. Batch 34 itself remains staged evidence only, not source of truth, and started no live server, ran no browser automation, performed no provider/live external model/API calls, performed no canonical graph mutation and performed no git stage/commit/push/PR. |
+
+## Task 26 Batch 35 Execution Matrix
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `done_through_m37` | `T10-LIVE-M37` approved local runtime launch | The owner selected `T10-LIVE-M37`, mapped to `approved_local_runtime_launch`. Current run evidence records `live-server-run-evidence.json` with `status: passed`, a short-lived local server bound to `127.0.0.1`, health/query/auth/public-bind/write-block checks, `server_shutdown_complete: true`, `redaction.ok: true`, no browser automation, no provider/live external model/API calls, no canonical graph mutation and no git stage/commit/push/PR. |
+| `done_through_m38` | `T10-LIVE-M38` actual browser automation smoke | The owner selected `T10-LIVE-M38`, mapped to `actual_browser_automation_smoke`. Current run evidence records `browser-automation-smoke.json` with `status: passed`, Playwright Chromium, a short-lived local server bound to `127.0.0.1`, desktop/mobile screenshots, `desktop.png`, `mobile.png`, `console_errors: 0`, `network_failures: 0`, `mobile_overflow: false`, generated-view labels, source-boundary labels, local-only network and `server_shutdown_complete: true`. It performs no provider/live external model/API calls, performs no canonical graph mutation and performs no git stage/commit/push/PR. |
+| `done_through_m39` | `T10-LIVE-M39` Codex session provider pilot | The owner selected `T10-LIVE-M39`, mapped to `approved_provider_api_pilot`, and clarified that the pilot must use the current Codex App session rather than `OPENAI_API_KEY`. Current run evidence records `provider-call-evidence.json` and `provider-eval-report.json` with `status: passed`, provider surface `codex_user_session`, `OPENAI_API_KEY used: false`, direct API call from workspace shell: false, `provider_secret_stored: false`, env-file write false, no canonical graph mutation and no git stage/commit/push/PR. |
+| `done_through_m40` | `T10-LIVE-M40` canonical mutation pilot | The owner selected Batch `T10-LIVE-M40..M41`; M40 mapped to `approved_canonical_mutation_pilot`. Current run evidence records `canonical-mutation-run.json`, `graph-mutation-journal.jsonl` and `rollback-proof.json` with `status: passed`, target scope `plugins/product-agent-os/scripts`, `stage_root_only`, `canonical_graph_source_mutated: false`, `operation_count: 1`, `journal_entry_count: 1`, `rollback_restores_previous_graph_digest: true`, no provider/live external model/API calls and no git stage/commit/push/PR. It performs no canonical graph source mutation and performs no git stage/commit/push/PR. |
+| `owner_closed_no_op_git_release_pr` | `T10-LIVE-M41` git release/PR action | M41 mapped to `explicit_git_release_pr_action`, but the owner later selected no git release/PR execution and closed M41 as no-op. Preflight evidence remains historical: `git-release-pr-evidence.md` and `git-release-pr-packet.json` record `git_stage_commit_push_pr_performed: false`, current branch `main`, `dirty_file_count: 15` and `missing_required_fields` as a `historical_preflight_snapshot`. T10-LIVE-M41 post-B38 audit records that `dirty_file_count: 15 is historical Batch 35 evidence, not current release readiness`; B37/B38/B38-S1 did not themselves close M41, while the later owner decision did. `future_git_write_requires_fresh_preflight: true`; no branch, stage, commit, push or PR was performed. |
+
+## RUNLOG Compaction And Evidence Ownership
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `done` | Root `RUNLOG.md` compacted to current handoff and marker bank | Historical implementation and verification detail is distributed to the owning control-plane and source files instead of duplicated in `RUNLOG.md`: current scope and acceptance in `REQUIREMENTS.md`, sequencing and rollback in `PLAN.md`, current verification routing in `TEST.md`, eval gates in `EVALS.md`, durable project rules in `AGENTS.md`, source-backed historical claims in `docs/sources/registry.md`, Track 8/9/10 closure detail in the detailed backlogs and Batch 35 approval/execution evidence in `docs/sources/product-agent-os-batch35-approval-packet-draft.md`. `RUNLOG.md` retains the current `T10-LIVE-M41` blocked handoff, Batch 35 latest-completed summary and test-visible control-plane marker bank. |
+| `done` | Root `PLAN.md` compacted to current sequencing and rollback | Historical completed-slice summaries and marker banks are distributed to `docs/planning/product-agent-os-track-8-detailed-backlog.md`, `docs/planning/product-agent-os-track-9-backlog.md`, this Track 10 backlog, `docs/sources/registry.md`, `REQUIREMENTS.md` and the Batch 35 approval packet. `PLAN.md` now retains current state, `T10-LIVE-M41` blocked planning contract, next implementation queue, source planning artifact pointers, architecture boundary, planning rules and rollback only. |
+| `done` | Root `TEST.md` compacted to current verification routing | Historical command logs and completed focused checks are distributed to `docs/planning/product-agent-os-track-8-detailed-backlog.md`, `docs/planning/product-agent-os-track-9-backlog.md`, this Track 10 backlog, `docs/sources/registry.md` and dedicated source packets such as `docs/sources/product-agent-os-batch35-approval-packet-draft.md`. `TEST.md` now retains current verification commands, escalation rules, timeout policy, approval-bound runtime/external-action boundaries, historical evidence owner pointers and this maintenance verification checklist only. |
+| `done` | Root `AGENTS.md` compacted to durable rules and current operating status | Historical implementation status, baseline commands and batch marker banks are distributed to `docs/planning/product-agent-os-track-8-detailed-backlog.md`, `docs/planning/product-agent-os-track-9-backlog.md`, this Track 10 backlog, `docs/sources/registry.md`, Product-Agent OS docs and dedicated source packets such as `docs/sources/product-agent-os-batch35-approval-packet-draft.md`. `AGENTS.md` now retains project rules, documentation rules, diagram atlas rules, Product-Agent operating model, Windows shell guard, Product-Agent OS plugin rules, source/insight policy, verification routing and the current `T10-LIVE-M41` blocked boundary only. |
+| `done` | Root `EVALS.md` compacted to current eval routing and rubrics | Historical eval evidence, completed focused checks, full verification logs and batch marker banks are distributed to `docs/planning/product-agent-os-track-8-detailed-backlog.md`, `docs/planning/product-agent-os-track-9-backlog.md`, this Track 10 backlog, `docs/sources/registry.md`, Product-Agent OS docs and dedicated source packets such as `docs/sources/product-agent-os-batch35-approval-packet-draft.md`. `EVALS.md` now retains current rubrics, thresholds, active eval routes, methodology eval map, unsupported-claim policy, historical evidence owner pointers and the current `T10-LIVE-M41` blocked boundary only. |
+| `done` | Root `README.md` compacted to product entrypoint | Historical task, batch and track implementation descriptions are no longer duplicated in root `README.md`; those details remain owned by `docs/sources/registry.md`, Track 8/9/10 backlogs, dedicated source packets, plugin README where package/install history is still tested, and compact root control-plane files. `README.md` now retains product positioning, operating loop, capability map, use-case routing, artifact families, quick commands, safety boundaries and a short ownership map. |
+
+## System File Hygiene Audit
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `done` | Read-only system file hygiene audit contract | Added `system_file_hygiene.py`, `validate_system_file_hygiene.py`, `.codex/workflows/system-file-hygiene-audit.md`, `.codex/artifact-templates/system-file-hygiene-report.md` and `.codex/automation-candidates/system-file-hygiene-audit.md`. The trigger policy is hybrid: weekly full audit, monthly deep ownership review, on-change review, size-threshold review and release/automation approval review. It scans root control-plane files, `README.md`, nested `AGENTS.md`, Codex config/MCP, subagents, skills, workflows, artifact templates, automation candidates, hooks, evals, PR/release packets, docs source-control files, external automation policy files and plugin package control files. The contract remains read-only and records `schedule_status: not_created`; active schedules stay approval-bound. |
+| `done_through_m03` | Batch 36A scope, trigger and packet contract | `T10-HYG-M01..M03` is implemented with Product Manager, Architect, Release Operator and Tester ownership routed through `implementation-planner`, `agent-team-designer` and `test-driven-development`. The executable audit contract now records the maintained system-file class owner map, structured weekly/monthly/on-change/size/release triggers with `write_policy: read_only` and per-trigger `stop_conditions`, plus nested validation for `system_file_hygiene_audit` trigger records, class records, inventory, findings and `summary.status`. Explorer subagents independently checked M01 inventory/ownership, M02 trigger policy and M03 packet contract; no active automation, external write or git action was performed. |
+| `done_through_m06` | Batch 36B validator, CLI and staged report output | `T10-HYG-M04..M06` is implemented with Builder, Tester and Docs Maintainer ownership routed through `test-driven-development`, `agent-team-designer`, `python-code-style` and `python-design-patterns`. The validator now records `audit_trigger`, class/owner metadata, `finding_type`, `compaction_decision`, `approval_boundary`, `no_secrets_status` and `active_schedule_markers`; detects missing required files, UTF-8 read errors, BOM/mojibake markers, secret-like literals, duplicate headings, size thresholds, historical ledger leakage and active schedule markers; blocks `no_secrets_status` when secret scanning is unverifiable; and rejects finding records whose `approval_boundary` is not `owner_approval_required_for_writes`. The CLI supports `--trigger`, prints JSON, exits `0` for `ok` or `review_required`, exits `1` only for `blocked`, and writes no target workspace files. The staged `system-file-hygiene-report.md` template captures audit trigger, class, finding type, owner, compaction decision, active schedule markers, no-secrets status and owner-approved slice boundary. Explorer subagents Hypatia and Parfit independently reviewed M04-M06 gaps and review regressions; no active automation, external write, live provider call or git action was performed. |
+| `done_through_m07` | Batch 36C template registration and staged renderer output | `T10-HYG-M07` is implemented with Builder, Docs Maintainer and Tester ownership routed through `subagent-driven-development`, `test-driven-development`, `verification-before-completion` and `agent-team-designer`. The template registry contains `workflow-system-file-hygiene-audit`, `artifact-system-file-hygiene-report` and `automation-system-file-hygiene-audit`. Renderer stages `.codex/workflows/system-file-hygiene-audit.md`, `.codex/artifact-templates/system-file-hygiene-report.md` and `.codex/automation-candidates/system-file-hygiene-audit.md`; the automation artifact remains `candidate_only`, no `cron`/`RRULE` marker or active Codex App/GitHub Actions schedule is generated, and no active automation, external write, live provider call, canonical graph mutation or git action was performed. |
+| `done_through_m09` | Batch 36C docs, source and renderer fixture sync | `T10-HYG-M08..M09` is implemented with Docs Maintainer and Tester ownership routed through `subagent-driven-development`, `test-driven-development`, `verification-before-completion` and `agent-team-designer`. Product-Agent OS technical docs, artifact contracts, runtime automation docs, plugin README, root README and source registry/backlog describe hybrid triggers, maintained file classes, the read-only boundary, candidate-only automation and activation approval requirements. Root README stays a compact product entrypoint without task/batch/track implementation ledger language. Focused coverage includes trigger policy, class inventory, clean workspace status, size/schedule blocking, template registration, docs contract and renderer fixture evidence with `renderer_file_count: 194`; no active automation, external write, live provider call, canonical graph mutation or git action was performed. |
+| `done_through_m12` | Batch 36D automation safety gate | `T10-HYG-M10..M12` is implemented with Release Operator, Security Reviewer, Reviewer and Tester ownership routed through `automation-promoter`, `subagent-driven-development`, `test-driven-development`, `verification-before-completion` and `agent-team-designer`. `automation_policy.py` now blocks active schedule markers including `cron`, `RRULE` and schedule text for non-metrics candidates, plus active Codex App automation, GitHub Actions workflow, hook activation and external write markers. The automation candidate report includes `activation_gate`, `owner_approval_present`, `accepted_residual_risks_present`, `future_activation_handoff_required`, `active_schedule_status: not_created` and a separate activation-slice boundary. Candidate packet templates, `automation-promoter`, and generated `TEST.md`/`EVALS.md`/`RUNLOG.md` routing notes require at least two successful manual runs, deterministic command evidence, owner approval, rollback/disable plan and accepted residual risks before any future activation review. Current state remains `schedule_status: not_created`; no GitHub Actions, Codex App automation, hook activation, external write, active automation, live provider call, canonical graph mutation or git action was performed. |
+| `done_through_m13` | Batch 36E status projection model | `T10-HYG-M13` is implemented with Architect, Builder and Tester ownership routed through `subagent-driven-development`, `test-driven-development`, `verification-before-completion` and `agent-team-designer`. `system_file_hygiene.py` emits bounded `file_statuses` with relative path, class, owner, state, severity, finding count, size, line count, `mtime_utc`, `age_days`, `content_digest` and `last_audit_at`; malformed or unsafe status records are rejected before report use. `status_snapshot.py` projects the hygiene packet as generated status evidence under `system file hygiene projection is generated status evidence, not source of truth`, and `render_status_dashboard.py` passes a read-only audit with trigger `status_dashboard_projection` into dry-run/stage status snapshots. No absolute paths, raw file bodies, secret literals, active automation, external write, live provider call, canonical graph mutation or git action was performed. |
+| `done_through_m15` | Batch 36E HTML dashboard page | `T10-HYG-M14..M15` is implemented with Product Manager, Docs Maintainer, Builder and Frontend Reviewer ownership routed through `subagent-driven-development`, `test-driven-development`, `verification-before-completion` and `agent-team-designer`. `status.html` now has a top-level `System Hygiene` section anchored as `system-file-hygiene`. `status_dashboard.py` renders counts for `ok`, `review_required`, `blocked`, `missing`, `unreadable`, `stale` and `owner_unknown`, then groups status tables by root control plane, agents, skills, workflows, automation candidates, hooks, evals, docs source-control and plugin control files. Rows show file, owner, state, last updated date, age and `top_finding`; `system_file_hygiene.py` emits dashboard-ready missing/unreadable/stale/owner-unknown states and `status_snapshot.py` projects bounded `top_finding` only. Embedded `status.json` remains bounded while the HTML section is rendered from the redacted snapshot. The dashboard remains generated review evidence, not source of truth; no active automation, external write, live provider call, canonical graph mutation or git action was performed. |
+| `done_through_m17` | Batch 36E HTML safety and eval closure | `T10-HYG-M16..M17` is implemented with Tester, Security Reviewer and Docs Maintainer ownership routed through `subagent-driven-development`, `test-driven-development`, `verification-before-completion` and `agent-team-designer`. `test_status_dashboard.py` proves System Hygiene HTML has no external URLs, raw absolute local paths, secret-like values or raw body fields; keeps embedded JSON bounded; preserves generated-view-only wording and stale evidence banner; and sorts rows deterministically by severity, file class and path. `run_fixture_eval.py` now records `system_file_hygiene_dashboard_present`, `system_file_status_dates_present`, `agent_skill_file_status_present` and `system_hygiene_dashboard_not_source_of_truth`. Product-Agent OS technical and artifact-contract docs explain that dashboard dates come from filesystem metadata and are freshness hints, not semantic proof of content correctness, source ownership or completion readiness. No active automation, external write, live provider call, canonical graph mutation or git action was performed. |
+| `batch36_final_closure` | Final Batch 36 verification and diff hygiene | Required Batch 36 gates passed for focused hygiene/dashboard/automation/template tests, Product-Agent OS docs tests, full fixture eval, Codex compatibility validation, docs structure check and `git diff --check`. Diff hygiene remains limited to Batch 36 source, tests and source/docs sync files. Unresolved risk: `strict_mkdocs_environment_gap`, because `python -m mkdocs build --strict` could not run in the local Python runtime with `No module named mkdocs`; Batch 36 did not change MkDocs navigation, search, sitemap or generated `site/` behavior. No active automation, external write, live provider call, canonical graph mutation or git action was performed. |
+
+## Batch 37 Planning Format Addendum
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `done_through_s1` | B37-S1 `T10-PLAN-M01..M03`, `T10-PLAN-M18` task-matrix contract, lifecycle, placement and trigger policy | The owner approved executing B37-S1 with agents and skills. Explorer agents reviewed contract gaps and verification scope. The Track 10 plan now records `task_matrix_plan_v1`, allowed statuses `planned`, `in_progress`, `implemented`, `blocked` and `accepted_gap`, `DD-MM-YYYY HH:mm` timestamp policy, detailed task blocks as the future validator target, summary tables as indexes only, staged `task-matrix-plan.md` placement, concrete task-matrix naming such as `docs/superpowers/plans/YYYY-MM-DD-<scope>-task-matrix.md`, root `PLAN.md` adjacency rules and lightweight exception fields `reason`, `reduced_evidence_path` and `residual_risk`. B37-S1 does not create the template, register renderer output, add the deterministic validator, change runtime behavior, activate hooks/automation, call providers/live external model/API endpoints, mutate canonical graph sources or perform git stage/commit/push/PR. |
+| `done_through_s2` | B37-S2 `T10-PLAN-M04..M05`, `T10-PLAN-M17` task-matrix template, renderer and packaging surface | The owner approved executing B37-S2 with agents and skills. Read-only agents audited renderer/template and packaging-surface impacts. `plugins/product-agent-os/assets/templates/artifact-templates/task-matrix-plan.md` now defines the staged `task_matrix_plan_v1` artifact; `artifact-task-matrix-plan` registers `.codex/artifact-templates/task-matrix-plan.md`; fixture expectations move to `renderer_file_count: 195`; and the plugin README records checked-in package inclusion while distinguishing packaged plugin source from currently callable session skills. Current-run verification passed focused template tests with 85 tests `OK`, renderer tests with 26 tests `OK`, fixture runner tests with 17 tests `OK`, Product-Agent OS docs tests with 64 tests `OK`, fixture eval exit `0` with `renderer_file_count: 195`, full unittest with 821 tests `OK`, transcript eval with 17 sessions and 0 failures, Codex compatibility `status: compatible`, docs check and diff hygiene. B37-S2 does not add the deterministic validator, behavioral evals, discovery routing, projection, lifecycle cleanup, plugin publication, installed-cache mutation, live automation, provider/live external model/API calls, canonical graph mutation or git stage/commit/push/PR. |
+| `done_through_s3` | B37-S3 `T10-PLAN-M06`, `T10-PLAN-M10`, `T10-PLAN-M13` task-matrix validator, eval and completion-report guard | The owner approved executing B37-S3 with agents and skills. Read-only agents audited validator/CLI, eval and fixture-contract gaps. `validators.py` now exposes `validate_task_matrix_text` and `validate_task_matrix_file`; `validate_task_matrix.py` returns JSON and exits non-zero for invalid matrices without traceback; `task-matrix-validator-and-completion-report` is covered by behavioral eval and synthetic transcript replay; fixture checks include `task_matrix_validator_contract_present`, `task_matrix_behavioral_eval_present`, `task_matrix_completion_report_guard_present`, `task_matrix_invalid_implemented_rows_blocked`, `task_matrix_detection_not_completion` and `task_matrix_summary_table_not_validator_target`. The validator rejects summary-table-only targets, unresolved placeholders, missing Completion Report fields, implemented rows with `pending_execution_timestamp`, missing files/work locations, missing verification evidence and inspection-only evidence. Current-run verification passed validator tests with 22 tests `OK`, behavioral/transcript tests with 6 tests `OK`, fixture runner tests with 17 tests `OK`, infrastructure template tests with 85 tests `OK`, Product-Agent OS docs tests with 65 tests `OK`, full unittest with 828 tests `OK`, fixture eval exit `0` with `renderer_file_count: 195`, transcript eval with 18 sessions and 0 failures, Codex compatibility `status: compatible`, docs check and diff hygiene. B37-S3 does not add discovery routing, planner/agent handoff routing, status/dashboard projection, lifecycle cleanup, plugin publication, installed-cache mutation, live automation, provider/live external model/API calls, canonical graph mutation or git stage/commit/push/PR. |
+| `done_through_s4` | B37-S4 `T10-PLAN-M07..M09`, `T10-PLAN-M20` skill routing, discovery signal and planning control | The owner approved executing B37-S4 with agents and skills. Worker agents implemented disjoint lifecycle/handoff/control-governance and discovery/audit/synthesis scopes. `implementation-planner` now routes specs/ADRs/standards/handoffs/risky multi-slice work to staged `task-matrix-plan.md` with methodology gate-to-task-field and gate-to-artifact mapping. `agent-team-designer`, `handoff-contract.md` and `agent-task-packet.md` map task rows to fresh-context handoffs with task row id, complete task context, owned/forbidden files, dependency status, expected evidence, docs update path, stop conditions, output schema and sequential fallback. Discovery/audit/synthesis treat `task-matrix-plan.md` as Codex-agentic planning evidence, classify `.codex/artifact-templates/task-matrix-plan.md` as `canonical_template`, keep detection `present_unverified`, and avoid completion/readiness claims from matrix presence alone. Behavioral evals, synthetic transcripts and fixture checks now include `task-matrix-agent-handoff-and-planning-control`, `task_matrix_planner_routing_contract_present`, `task_matrix_agent_handoff_contract_present`, `task_matrix_discovery_signal_contract_present` and `task_matrix_planning_control_governance_present`. Verification passed lifecycle/discovery/audit/synthesis tests with 176 tests `OK`, behavioral/transcript/fixture tests with 23 tests `OK`, full unittest with 835 tests `OK`, fixture eval exit `0` with `renderer_file_count: 195`, transcript eval with 19 sessions and 0 failures, Codex compatibility `status: compatible`, docs check and diff hygiene. B37-S4 does not activate hooks, recurring automation, MCP, Agents SDK runner, provider/live external model/API calls, canonical graph mutation, live server/browser automation or git stage/commit/push/PR. |
+| `done_through_s5` | B37-S5 `T10-PLAN-M11..M12`, `T10-PLAN-M14..M16`, `T10-PLAN-M19` docs/source closure, compatibility, projection, hygiene and lifecycle handoff | The owner scoped S5 to docs/source closure, compatibility policy, status/dashboard projection deferral, system-file hygiene ownership, lifecycle cleanup and final Batch 37 closure with agents and skills. Product-Agent OS docs, README, Track 10 backlog, registry and compact control-plane artifacts now record that `task-matrix-plan.md` is a staged planning artifact, not source truth, not execution evidence and not a completion/readiness signal by itself. Compatibility policy keeps historical Batch 34/35/36 matrices readable and applies the `task_matrix_plan_v1` validator only to new or explicitly targeted plan files. Status snapshot/dashboard record `deferred_in_b37` / `not_projected` decision metadata and do not project task rows or completion evidence. `.codex/artifact-templates/task-matrix-plan.md` stays under staged artifact-template ownership; concrete owner-approved task matrices are docs/source-owned artifacts. Lifecycle cleanup routes current-cycle decisions to `RUNLOG.md`, historical source-backed evidence to this backlog and claims to `docs/sources/registry.md`, without bloating root `PLAN.md`. Current-run verification passed focused integration tests with 174 tests `OK`, full unittest with 841 tests `OK`, fixture eval exit `0` with `renderer_file_count: 195` and `task_matrix_projection_deferred_in_b37`, transcript eval with 19 sessions and 0 failures, Codex compatibility `status: compatible`, docs check and diff hygiene. B37-S5 does not activate hooks, recurring automation, MCP, Agents SDK runner, live server/browser automation, provider/live external model/API calls, canonical graph mutation or git stage/commit/push/PR. |
+
+## Batch 38 Production Readiness Addendum
+
+B38-S1 Release gate and package metadata covers `B38-PROD-M01..M03` as the pre-install gate before any plugin install, cache refresh, real-project pilot, release, PR or publication action.
+
+- T10-LIVE-M41 status: `owner_closed_no_op_git_release_pr`.
+- historical_preflight_status: `blocked_pending_explicit_git_release_fields`.
+- release_fields_deferral_status: `not_required_after_owner_no_op_closure`.
+- missing release fields remain: release branch or push target, commit message, PR base branch, PR title and intent, and explicit branch creation/current-branch push policy.
+- T10-LIVE-M41 post-B38 audit: `dirty_file_count: 15 is historical Batch 35 evidence, not current release readiness`; it is a `historical_preflight_snapshot`. B37/B38/B38-S1 did not themselves close M41; the later owner decision closed it as no-op, and a fresh preflight is required before any git write.
+- git_stage_commit_push_pr_performed: false.
+- tracked_plugin_file_count: 586.
+- skill_count: 11.
+- template_file_count: 202.
+- script_file_count: 84.
+- fixture_file_count: 266.
+- package_source_digest_sha256: `7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb`.
+- digest input: sorted `git ls-files plugins/product-agent-os` paths with each file SHA-256.
+- ignored_cache_exclusions: `__pycache__ only`.
+- install source path: `plugins/product-agent-os`.
+- manifest path: `plugins/product-agent-os/.codex-plugin/plugin.json`.
+- metadata_release_candidate_status: `owner_confirmed_local_only_internal_r_and_d`.
+- metadata_decision_status: `owner_confirmed_local_only_internal_r_and_d`.
+- example.invalid trust fields intentionally remain for local-only/internal R&D and remain blocked for public or team release: author email, repository, privacy policy URL and terms of service URL.
+- Codex compatibility status: `compatible`.
+- No plugin install, plugin-cache mutation, live runtime, browser automation, provider call, canonical graph mutation or git write was performed.
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `b38_s1_release_gate_package_metadata` | B38-S1 `B38-PROD-M01..M03` | M01 is owner-closed as no-op after historical missing release fields; future git write requires fresh preflight and exact approval. M02 freezes the checked-in package source with 586 tracked plugin files, 11 bundled skills and package digest `7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb`; M03 records the owner decision to keep Product-Agent OS local-only/internal R&D for now, so `example.invalid` trust fields remain intentionally in `plugin.json` and public/team release metadata is not finalized. Verification evidence: `git status --short` was clean before edits, `git ls-files plugins/product-agent-os`, ignored-cache check showing only `__pycache__`, digest calculation, manifest review, `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returning `status: compatible`, focused docs contract 71 tests `OK`, docs structure check `OK` and diff hygiene `0`. |
+
+## Batch 38 S2 Verification And Install Smoke Addendum
+
+B38-S2 Verification and install smoke covers `B38-PROD-M04..M05` after the owner closed `T10-LIVE-M41` as `owner_closed_no_op_git_release_pr`.
+
+- batch_status: `b38_s2_verification_install_cache_smoke`.
+- git_stage_commit_push_pr_performed: false.
+- future_git_write_requires_fresh_preflight: true.
+- no_git_stage_commit_push_pr.
+- plugin_cache_refresh_completed_from_prepared_stage.
+- no external publication, live runtime, browser automation, provider/live external model/API call or canonical graph mutation was performed.
+
+agent_team_design_packet_present:
+
+- roles_have_disjoint_ownership: Tester owns `B38-PROD-M04` verification evidence; Release Operator owns `B38-PROD-M05` install/cache boundary; Reviewer owns stale-cache risk review; Docs Maintainer owns source/control-plane sync.
+- handoff_packet_fields_present: sources/context used, assumptions, files proposed, verification evidence, open risks, stop reason and recommended next role.
+- agent_skill_stop_conditions_present: stop on failed verification, cache refresh mismatch, missing cache mutation approval, plugin-cache write outside approved target, external publication request or git write request.
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `implemented` | `B38-PROD-M04` full pre-install verification | Current run evidence: `full_unittest_count: 846`, full unittest `OK`, `fixture_eval_exit_code: 0`, `transcript_eval_session_count: 19`, `transcript_eval_failure_count: 0`, `codex_compatibility_status: compatible`, `docs_check_status: ok`, `diff_hygiene_exit_code: 0`. Strict MkDocs was not routed because no MkDocs navigation, Mermaid, Markdown extension, localized nav, search/sitemap or generated `site/` evidence changed before verification. |
+| `implemented` | `B38-PROD-M05` read-only install/cache smoke, sandbox-blocked attempt and owner-run local refresh | `plugin_install_smoke_status: read_only_inspection_completed_stale_cache_detected`; initial `plugin_cache_refresh_status: blocked_pending_explicit_cache_mutation_approval`; installed cache scope `local-product-agent-plugins/product-agent-os/0.1.0`; manifest name/version match `product-agent-os` / `0.1.0`; `.mcp.json` is visible; historical stale inspection found `visible_cache_skill_count: 10` vs `checked_in_skill_count: 11`, `missing_cache_skill: docs-maintainer`, `visible_cache_script_file_count: 32` vs `checked_in_script_file_count: 84` and `visible_cache_template_file_count: 34` vs `checked_in_template_file_count: 202`; checked-in package source remains 586 tracked files, 11 bundled skills and package digest `7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb`. `cache_refresh_approval_received: true`; `cache_backup_path: tmp/product-agent-os-cache-backup-20260608-162108`; `cache_stage_path: tmp/product-agent-os-cache-stage-20260608-162108`; `stage_tracked_source_file_count: 586`; target cache write failed inside the Codex sandbox with `plugin_cache_refresh_attempt_status: blocked_sandbox_cache_write_denied_after_backup_stage`; owner local PowerShell refresh returned `local_cache_refresh_result: REFRESH_OK`; `local_cache_backup_path: tmp/product-agent-os-cache-backup-local-20260608-180210`; `local_cache_moved_aside_target: local-product-agent-plugins/product-agent-os/0.1.0.pre-refresh-20260608-180210`; `plugin_cache_refresh_final_status: completed_local_cache_refresh_from_prepared_stage`; `target_cache_files_after_refresh: 586`; `target_cache_skill_count_after_refresh: 11`; `target_cache_docs_maintainer_present_after_refresh: true`; `target_cache_still_stale: false`; `plugin_cache_refresh_completed`. |
+
+## Batch 38 S3 Pilot Design Addendum
+
+B38-S3 Pilot design covers `B38-PROD-M06..M09` as a real-project pilot design slice. It creates public operator guidance and source-owned pilot design evidence, but it does not execute a real project pilot.
+
+- batch_status: `b38_s3_real_project_pilot_design`.
+- first_run_operator_packet_present.
+- expected_first_response_fields_present.
+- staged_artifact_route_defined.
+- approval_boundary_defined.
+- rollback_remove_path_defined.
+- what_not_to_expect_section_present.
+- b38_s3_real_project_pilot_target_consent_matrix.
+- pilot_target_count: 7.
+- pilot_archetypes_covered: web_frontend, backend_api, docs_only, ai_rag, data_migration, pr_review, automation_release.
+- owner_consent_required_per_target: true.
+- target_repo_class_required_per_target: true.
+- data_policy_required_per_target: true.
+- allowed_commands_required_per_target: true.
+- blocked_commands_required_per_target: true.
+- evidence_destination_required_per_target: true.
+- stop_condition_required_per_target: true.
+- evidence_destination_policy: approved_stage_root_outside_target_workspace.
+- production_data_access_allowed: false.
+- external_writes_allowed: false.
+- live_provider_calls_allowed: false.
+- browser_automation_allowed_without_target_specific_approval: false.
+- runtime_launch_allowed_without_target_specific_approval: false.
+- target_workspace_mutation_allowed: false.
+- pilot_success_metrics_defined.
+- pilot_metric_spec_present.
+- time_to_first_route_metric_present.
+- route_accuracy_metric_present.
+- artifact_usefulness_metric_present.
+- methodology_selection_precision_metric_present.
+- owner_question_usefulness_metric_present.
+- pilot_false_positive_rate_metric_present.
+- evidence_sufficiency_metric_present.
+- pilot_counter_metrics_present.
+- accepted_gap_rules_present.
+- accepted_gap_required_fields: owner, reason, evidence_owner, downstream_risk, follow_up_condition.
+- no_success_claim_without_current_pilot_evidence.
+- pilot_harness_evidence_ledger_present.
+- pilot_harness_read_only_status: prepared.
+- read_only_pilot_commands_present.
+- stage_output_root_outside_workspace_present.
+- pilot_evidence_ledger_schema_present.
+- runlog_evidence_schema_present.
+- screenshot_log_redaction_policy_present.
+- cleanup_disable_steps_present.
+- harness_active_automation_status: not_created.
+- provider_call_allowed: false.
+- external_call_performed: false.
+- live_server_started: false.
+- canonical_graph_mutation: not_performed.
+- git_stage_commit_push_pr_performed: false.
+- no_plugin_cache_mutation_performed_during_b38_s3_design_run.
+- no_active_automation_live_server_provider_gateway_external_writer.
+- cleanup_scope: stage_root_generated_b38_s3_pilot_artifacts_only.
+- pilot_execution_status: design_only_not_run.
+- no_real_project_execution_performed.
+- no_live_server_browser_provider_canonical_git.
+- agent_read_only_audits_completed.
+
+agent_team_design_packet_present:
+
+- roles_have_disjoint_ownership: Product Manager owns `B38-PROD-M06` first-run operator packet; Product Manager and Security/Data Owner own `B38-PROD-M07` consent matrix; Tester owns `B38-PROD-M08` success metrics; Architect and Tester own `B38-PROD-M09` dry-run harness and evidence ledger; Docs Maintainer owns public docs and source registry sync.
+- handoff_packet_fields_present: sources/context used, assumptions, files proposed, verification evidence, open risks, stop reason and recommended next role.
+- agent_skill_stop_conditions_present: stop on missing owner consent, missing data policy, requested production data access, target workspace mutation, live server/browser/provider/canonical/git action request, plugin-cache mutation request or success claim without current pilot evidence.
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `implemented` | `B38-PROD-M06` first-run operator packet | `docs/product-agent-os/real-project-pilot.md` and `.en.md` define the starting prompt, expected first response fields (`lifecycle_state`, `usage_mode`, `source_boundary`, `staged_artifact_route`, `verification_route`, `approval_boundary`, `rollback_remove_path`, `safe_next_action`), staged artifact route, approval boundary, rollback/remove path and what-not-to-expect section. |
+| `implemented` | `B38-PROD-M07` target consent matrix | The matrix covers seven pilot archetypes: web/frontend, backend/API, docs-only, AI/RAG, data/migration, PR/review and automation/release. Every target row requires owner, target class, data policy, allowed commands, blocked commands, evidence destination and stop condition. Listing a target does not approve execution. |
+| `implemented` | `B38-PROD-M08` success criteria and product metrics | The pilot rubric defines `time_to_first_route`, `route_accuracy`, `artifact_usefulness`, `methodology_selection_precision`, `owner_question_usefulness`, `false_positive_rate`, `evidence_sufficiency`, counter-metrics and accepted-gap rules. No pilot-success claim is allowed without current pilot evidence. |
+| `implemented` | `B38-PROD-M09` pilot harness and evidence ledger | The harness is a dry-run plan with read-only pilot commands, staged output locations, runlog/evidence schema, screenshot/log redaction policy, cleanup steps and approval checks. It does not create active automation, live server launchers, provider gateways, browser runners, canonical graph writers, external writers or git release tools. |
+
+Current B38-S3 verification evidence: focused B38-S3 docs contract passed; strict MkDocs through workspace-local ignored `tmp\mkdocs_venv_b38s3` exited `0`; generated `site/` was rebuilt for the RU/EN pilot page, search/sitemap exposure and file-safe English-original fallback links, then mechanically normalized for trailing whitespace; final Product-Agent OS docs contract ran 74 tests with `OK`; `python tools\check_docs.py` returned `OK`; `git diff --check` exited `0`. The pilot remains `design_only_not_run` and no real project execution, target workspace mutation, plugin-cache mutation, live server, browser automation, provider/API call, canonical graph mutation, external write or git stage/commit/push/PR was performed.
+
+## Batch 38 S4 Safety And Rollback Addendum
+
+B38-S4 Safety and rollback covers `B38-PROD-M10..M11` as the final pre-pilot safety slice before any target-specific real-project execution. It records read-only security/privacy/supply-chain gaps and documents rollback/remove/cache recovery, but it does not certify release security readiness or perform cache/global config mutation.
+
+- batch_status: `b38_s4_safety_and_rollback`.
+- B38-PROD-M10 status: `reviewed_gap_recorded`.
+- B38-PROD-M11 status: `implemented`.
+- source_policy_status: `ok`.
+- system_file_hygiene_status: `blocked`.
+- system_file_hygiene_trigger: `B38-S4-M10-security-privacy-supply-chain-readiness`.
+- system_file_hygiene_errors: 9.
+- system_file_hygiene_warnings: 21.
+- system_file_hygiene_secret_like_findings: 6.
+- no_secrets_status: `blocked`.
+- active_schedule_markers: 0.
+- schedule_status: `not_created`.
+- hygiene_known_findings_accepted_gap: policy/field false positives, synthetic redaction fixture markers and existing size debt require follow-up before a security-certified release claim.
+- mcp_boundary: `approval_required_unpinned_npx_context7`.
+- fixture_dependency_boundary: `synthetic_non_install_fixtures_unpinned_dependencies`.
+- local_only_metadata_exception_remains: true.
+- release_readiness_claim: false.
+- security_certification_claim: false.
+- plugin_rollback_remove_procedure_present.
+- pre_rollback_read_only_inspection_required.
+- rollback_evidence_preservation_required.
+- installed_plugin_remove_path_documented.
+- stale_cache_restore_path_documented.
+- cache_clear_recovery_path_documented.
+- cache_global_config_mutation_requires_explicit_approval.
+- cache_backup_restore_verification_required.
+- hooks_disable_path_documented_if_ever_approved.
+- automations_disable_path_documented_if_ever_approved.
+- no_destructive_cache_delete_without_exact_approval.
+- no_cache_global_config_mutation_performed.
+- no_live_server_browser_provider_canonical_external_write.
+- no_git_stage_commit_push_pr_performed.
+- production_pilot_blocked_until_target_specific_approval.
+- agent_read_only_audits_completed.
+
+agent_team_design_packet_present:
+
+- roles_have_disjoint_ownership: Security/Data Owner and Reviewer own `B38-PROD-M10` safety review; Release Operator and Architect own `B38-PROD-M11` rollback/cache recovery procedure; Docs Maintainer owns public operator docs and source/registry sync.
+- handoff_packet_fields_present: sources/context used, assumptions, files proposed, verification evidence, open risks, stop reason and recommended next role.
+- agent_skill_stop_conditions_present: stop on missing approval, unresolved cache path, missing backup, digest/count mismatch, destructive delete request, active automation without owner, secret/customer data in evidence, external write request, provider/API call, live server/browser request, canonical mutation or git stage/commit/push/PR request.
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `reviewed_gap_recorded` | `B38-PROD-M10` security/privacy/supply-chain readiness audit | Read-only local audit completed for checked-in Product-Agent OS package source, docs, templates, fixtures, README, plugin manifest and MCP declaration. Current evidence: `git status --short` was clean before edits; tracked plugin source count `586`; `python plugins\product-agent-os\scripts\validate_source_policy.py plugins\product-agent-os` returned `status: ok`; `python plugins\product-agent-os\scripts\validate_system_file_hygiene.py . --trigger B38-S4-M10-security-privacy-supply-chain-readiness` returned `status: blocked`, `secret_like_findings: 6`, `no_secrets_status: blocked`, `active_schedule_markers: 0` and `schedule_status: not_created`; `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible`. Manual review records the secret-like hits as policy/field false positives or synthetic redaction fixture markers, not raw secret values, but M10 remains not security-certified until those findings are fixed or explicitly accepted. Supply-chain review records approval-bound unpinned `npx -y @upstash/context7-mcp` and synthetic non-install fixture dependencies as accepted gaps for local-only use, not public release closure. |
+| `implemented` | `B38-PROD-M11` rollback, removal and cache-recovery procedure | `docs/product-agent-os/real-project-pilot.md` and `.en.md` document `pre_rollback_read_only_inspection`, `rollback_evidence_preservation`, `installed_plugin_remove_path`, `stale_cache_restore_path`, `cache_clear_recovery_path`, `disable_hooks_automations_if_ever_approved`, `post_restore_verification` and stop conditions. The procedure is documented before production pilots, but no cache clear, cache restore, destructive delete, global config mutation, hook/automation activation or disable, external write, provider/API call, live server/browser action, canonical mutation or git action was performed. |
+
+## Batch 38 Target-Specific Neural_Flow Pilot Execution Addendum
+
+`B38-PILOT-NF01` records the first owner-approved, read-only Product-Agent OS pilot on a real docs-only target. The target label is `Neural_Flow`; durable source docs intentionally avoid absolute user-specific target paths.
+
+- batch_status: `b38_pilot_nf01_read_only_pilot_executed_blocked_on_target_source_policy`.
+- target_label: `Neural_Flow`.
+- target_class: `docs_only`.
+- target_git_present: false.
+- target_file_count: 13.
+- target_control_plane_status: `applicable_missing`.
+- target_agents_md_present: false.
+- complexity_profile: `guided-small`.
+- runtime_usage_mode: `legacy_onboarding`.
+- initial_runtime_usage_mode: `pr_review`.
+- route_quality_note: `clean_docs_only_intent_routes_legacy_onboarding`; initial pilot wording created a false `pr_review` route without a diff source.
+- methodology_maturity_selected: `team`.
+- methodology_complexity_selected: `standard`.
+- methodology_recommendation_p0: `quality-strategy.md`.
+- methodology_recommendation_p1: `architecture-overview.md`.
+- runtime_clean_hint_status: `blocked`.
+- source_policy_status: `blocked`.
+- approval_status: `approved`.
+- runtime_files_touched: [].
+- runtime_files_proposed: [].
+- staged_evidence_root: `tmp/neural-flow-product-agent-os-pilot-20260608-191510`.
+- infrastructure_stage_status: `needs_approval`.
+- status_dashboard_stage_validated: true.
+- status_dashboard_aggregation_status: `incomplete`; adjacent infrastructure and project-graph manifests were not consolidated into the dashboard snapshot.
+- project_graph_stage_validated: true.
+- project_graph_node_count: 481.
+- project_graph_edge_count: 480.
+- project_graph_observation_count: 961.
+- staged_control_plane_template_status: `blank_template_review_required`.
+- staged_hooks_activation_boundary: `exact_owner_approval_required_before_apply`.
+- system_file_hygiene_status: `review_required`.
+- system_file_hygiene_errors: 0.
+- system_file_hygiene_secret_like_findings: 0.
+- static_heading_jumps: 0.
+- citation_registry_rows: 277.
+- architecture_v2_citation_missing_definitions: 0.
+- architecture_v2_unverified_markers: 0.
+- issues_section_2_checked: `19/19`.
+- issues_section_6_checked: `4/4`.
+- target_apply_blocked_until_source_policy_cleanup: true.
+- target_workspace_mutation_performed: false.
+- live_server_browser_provider_canonical_git_performed: false.
+
+agent_team_design_packet_present:
+
+- roles_have_disjoint_ownership: Product Manager owns pilot value/next decision; Architect owns route and staged artifact interpretation; Tester owns command evidence and content checks; Docs Maintainer owns target source-policy cleanup proposal.
+- handoff_packet_fields_present: sources/context used, assumptions, verification evidence, files proposed, open risks, stop reason and recommended next role.
+- stop_conditions_present: stop on source-policy blocked, missing target control plane, request to apply generated files to target, live/browser/provider/canonical/git/external action request, target secrets/private data in evidence or unsupported readiness claim.
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `read_only_pilot_executed_blocked_on_target_source_policy` | `B38-PILOT-NF01` target-specific docs-only pilot | `detect_project.py` found a docs/research target with no git repository, no `AGENTS.md`, 13 files, `complexity_profile: guided-small` and `usage_mode.primary: legacy_onboarding`. `run_methodology_audit.py --json` returned `status: ok` and recommended P0 `quality-strategy.md` plus P1 `architecture-overview.md`. The initial runtime hint routed as `pr_review`; the clean docs-only intent routed correctly to `legacy_onboarding` with high confidence but exited blocked on `source_policy:blocked`. Staged infrastructure, status dashboard and project graph outputs validated outside the target, but dashboard aggregation is incomplete, staged root control-plane docs are blank templates that require review, and staged hooks remain activation-capable unless exact owner approval is given. Target source policy is blocked by missing `Source status`/registry metadata in target plan/spec docs and missing control-plane artifacts. No target workspace mutation, `.codex` target write, live server, browser automation, provider/API call, canonical graph mutation, external publication or git action was performed. |
+
+## Task 26 Batch 40 Doubt / Verifier Loop S1 Contract Addendum
+
+B40-S1 covers `B40-DVL-M01..M04`, `B40-DVL-M25`, `B40-DVL-M28`, `B40-DVL-M31` and `B40-DVL-M32` as an architecture and contract slice only.
+
+- batch_status: `b40_s1_implemented_contract_only`.
+- implementation_timestamp: `09-06-2026 17:42` `Europe/Moscow`.
+- contract_scope: requirements, non-goals, `doubt_verification_packet_v1`, claim/requirement/evidence taxonomy, trigger matrix, Worker/Skeptic/Reviser prompt contracts, escalation ladder, revision budget, UX/cost budget, route compatibility boundary and no-unapproved-actions proof.
+- agent_team_design_packet_present: true.
+- roles_have_disjoint_ownership: Product Manager owns promise, non-goals and UX budget; Architect owns schema, taxonomy, trigger levels and route boundaries; Tester owns future gate/eval acceptance; Reviewer owns false-pass, false-rewrite, fake-evidence and approval-risk checks; Docs Maintainer owns source/backlog/registry transfer; Release Operator owns no-unapproved-actions closure.
+- sidecar_agent_audits_completed: Archimedes completed docs/source/task-matrix audit; Turing completed runtime/contract/code-surface audit.
+- completion_skeptic_recommendation_boundary: future route support must be additive inside `route_packet`, not a new top-level `build_result` field and not an unknown `methodology_packet` key.
+- implemented_rows: `B40-DVL-M01`, `B40-DVL-M02`, `B40-DVL-M03`, `B40-DVL-M04`, `B40-DVL-M25`, `B40-DVL-M28`, `B40-DVL-M31`, `B40-DVL-M32`.
+- future_rows_still_planned: `B40-DVL-M05..M24`, `B40-DVL-M26..M27`, `B40-DVL-M29..M30`, `B40-DVL-M33..M38`.
+- no_runtime_code_changed: true.
+- completion_skeptic_skill_created: false.
+- packet_template_created: false.
+- validator_cli_created: false.
+- route_code_changed: false.
+- transcript_or_fixture_evals_added: false.
+- docs_site_generated: false.
+- active_hook_automation_mcp_agents_sdk_runner_created: false.
+- live_server_browser_provider_canonical_git_performed: false.
+- current_run_verification: `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v` ran 76 tests with `OK`; `python tools\check_docs.py` returned `OK: documentation structure checks passed`; `git diff --check` exited `0`.
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `implemented_contract_only` | B40-S1 architecture and contract | The owner asked to start the first Batch 40 slice with agents and skills. `implementation-planner` and `agent-team-designer` were used as planning/team-design skills, while explorer subagents supplied read-only docs/source and runtime/contract audits. The Track 10 plan now records the product promise "check evidence before claiming done", non-goals, packet schema, bounded statuses, claim/artifact/severity/confidence/freshness taxonomy, explicit and implicit triggers, skip/manual-only rules, Worker/Skeptic/Reviser contracts, revision budget, escalation ladder, UX/cost budget, route compatibility boundary and no-unapproved-actions proof. B40-S1 is not a runtime implementation and does not prove usefulness, validator enforcement, route behavior, transcript quality or promotion readiness. No plugin/runtime code, skill, template, validator, route code, eval fixture, generated site, live server, browser automation, provider/API call, canonical graph mutation, hook, automation, MCP/Agents SDK runner or git stage/commit/push/PR was performed. |
+
+## Task 26 Batch 40 Doubt / Verifier Loop S2 Plugin Foundation Addendum
+
+B40-S2 covers `B40-DVL-M05..M10`, `B40-DVL-M26`, `B40-DVL-M27`, `B40-DVL-M30`, `B40-DVL-M35` and `B40-DVL-M36` as the plugin implementation foundation.
+
+- batch_status: `b40_s2_implemented_plugin_foundation`.
+- implementation_timestamp: `09-06-2026 18:32` `Europe/Moscow`.
+- implemented_rows: `B40-DVL-M05`, `B40-DVL-M06`, `B40-DVL-M07`, `B40-DVL-M08`, `B40-DVL-M09`, `B40-DVL-M10`, `B40-DVL-M26`, `B40-DVL-M27`, `B40-DVL-M30`, `B40-DVL-M35`, `B40-DVL-M36`.
+- plugin_surfaces_added: `doubt-verification-packet.md` artifact template, `completion-skeptic` skill package, `validate_doubt_verification_packet.py` CLI, additive `route_packet.completion_skeptic_recommendation`, status snapshot/dashboard projection and candidate-only `completion-skeptic-stop-reminder.md`.
+- evidence_routing_added: bounded evidence provider policy, generated-view-only blocking, pass-without-current-evidence blocking, provenance/freshness/redaction checks and handoff projection into existing Product-Agent OS fields.
+- route_compatibility: `completion_skeptic_recommendation` is additive inside `route_packet`; primary lifecycle route semantics stay intact.
+- candidate_only_boundary: no hook, schedule, automation, MCP server, Agents SDK runner, browser automation, provider call, live server, target mutation or git action was activated.
+- current_run_verification: focused post-source-sync suite ran 313 tests with `OK`; full unittest `python -m unittest discover -s tests -p "test_*.py" -v` ran 864 tests with `OK`; `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with `renderer_file_count: 197`; transcript eval exited `0` with 19 sessions and 0 failures; `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 12 bundled skills; `python tools\check_docs.py` returned `OK`; `git diff --check` exited `0`.
+- future_rows_still_planned_after_s2: `B40-DVL-M11..M24`, `B40-DVL-M29`, `B40-DVL-M33..M34`, `B40-DVL-M37..M38`.
+- residual_risks: transcript quality, false-pass/false-rewrite negative evals, adversarial fake-evidence cases, public docs/site, manual pilots, scorecard calibration and final go/no-go remain future slices.
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `implemented_plugin_foundation` | B40-S2 plugin foundation | The owner asked to start the second Batch 40 slice with agents and skills. B40-S2 adds the packet template, `completion-skeptic` skill, validator/CLI, runtime route recommendation, contract/guard validation, provider policy, status projection, handoff/task-matrix guidance and candidate-only stop reminder. The slice preserves the local-only/no-unapproved-actions boundary and does not claim Batch 40 usefulness or promotion readiness before B40-S3 through B40-S5 evals, docs/site, pilots, scorecards and closure. |
+
+## Task 26 Batch 40 Doubt / Verifier Loop S3 Eval Hardening Addendum
+
+B40-S3 covers `B40-DVL-M11..M15`, `B40-DVL-M33` and `B40-DVL-M34` as the eval, validator and scorecard hardening slice.
+
+- batch_status: `b40_s3_implemented_eval_hardening`.
+- implementation_timestamp: `09-06-2026 19:18` `Europe/Moscow`.
+- implemented_rows: `B40-DVL-M11`, `B40-DVL-M12`, `B40-DVL-M13`, `B40-DVL-M14`, `B40-DVL-M15`, `B40-DVL-M33`, `B40-DVL-M34`.
+- eval_cases_added: `completion-skeptic-check-again-trigger`, `completion-skeptic-false-pass-blocked`, `completion-skeptic-false-rewrite-blocked`, `completion-skeptic-source-sensitive-docs`, `completion-skeptic-code-tool-evidence`, `completion-skeptic-fake-evidence-adversarial`, `completion-skeptic-scorecard-thresholds`.
+- transcript_sessions_added: same seven `completion-skeptic-*` cases in `product-agent-os-synthetic-sessions.json`.
+- validator_hardening_added: fake/unverified command evidence rejection, pass verdict blocked by approval boundary, invalid `user_claim` provenance rejection, code-behavior pass claims requiring command evidence and accepted-gap owner/reason/residual-risk/follow-up requirements.
+- scorecard_added: `COMPLETION_SKEPTIC_SCORECARD_THRESHOLDS` and `evaluate_completion_skeptic_scorecard` with false-pass, false-rewrite, unsupported-claim catch, missing-check catch, accepted-gap and user-revision acceptance metrics.
+- fixture_checks_added: `completion_skeptic_eval_hardening_present`, `completion_skeptic_scorecard_thresholds_present`, `completion_skeptic_fake_evidence_guards_present`.
+- sidecar_agent_audits_completed: Euclid completed read-only transcript/behavioral audit; Averroes completed read-only scorecard/fixture audit.
+- current_run_verification: RED focused suite first failed on missing scorecard import, absent behavioral cases, absent transcript sessions and absent fixture checks; after implementation, focused B40-S3 suite ran 31 tests with `OK`. Full unittest first caught stale infrastructure-template exact-set and unsafe-literal contracts; after repairing those contracts, focused B40 + infrastructure suite ran 117 tests with `OK`, full unittest ran 867 tests with `OK`, fixture eval returned 91 records all OK with `renderer_file_count: 197` and all three `completion_skeptic_*` checks true, transcript eval returned 26 sessions and 0 failures, Codex compatibility returned `status: compatible`, docs check returned `OK` and `git diff --check` exited `0`.
+- future_rows_still_planned: `B40-DVL-M16..M24`, `B40-DVL-M29`, `B40-DVL-M37..M38`.
+- docs_site_generated: false.
+- real_manual_pilot_executed: false.
+- active_hook_automation_mcp_agents_sdk_runner_created: false.
+- live_server_browser_provider_canonical_git_performed: false.
+- residual_risks: deterministic keyword/term evals do not prove semantic usefulness; public docs/site examples, architecture diagrams, manual pilots, real scorecard calibration and final go/no-go remain B40-S4/S5.
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `implemented_eval_hardening` | B40-S3 eval hardening | The owner asked to start the third Batch 40 slice with agents and skills. B40-S3 adds RED/GREEN coverage for the `completion-skeptic` packet validator, manual check-again trigger, false-pass and false-rewrite negatives, source-sensitive docs/research, code/tool evidence, fake-evidence adversarial prompts and scorecard thresholds. The slice preserves local-only/no-unapproved-actions boundaries and still does not claim public docs/site readiness, manual pilot value, promotion readiness or release readiness before B40-S4/S5. |
+
+## Task 26 Batch 40 Doubt / Verifier Loop S4 Docs and Site Addendum
+
+B40-S4 covers `B40-DVL-M16..M21`, `B40-DVL-M29`, `B40-DVL-M37` and `B40-DVL-M38` as the public docs, generated-site and source-transfer slice.
+
+- batch_status: `b40_s4_implemented_docs_site_source_transfer`.
+- implementation_timestamp: `10-06-2026 07:30` `Europe/Moscow`.
+- implemented_rows: `B40-DVL-M16`, `B40-DVL-M17`, `B40-DVL-M18`, `B40-DVL-M19`, `B40-DVL-M20`, `B40-DVL-M21`, `B40-DVL-M29`, `B40-DVL-M37`, `B40-DVL-M38`.
+- docs_surfaces_added_or_updated: `docs/playbooks/doubt-verification-loop.md`, `docs/playbooks/doubt-verification-loop.en.md`, `docs/sources/product-agent-os-batch40-doubt-verifier-source-transfer.md`, `docs/sources/product-agent-os-batch40-doubt-verifier-source-transfer.en.md`, Product-Agent OS architecture, artifact contracts, artifact gallery, behavioral evals, prompting/context pages, agent-systems skills guidance, workflow-to-skill guidance, MkDocs navigation and docs checker registration.
+- docs_site_generated: true after strict MkDocs build; generated `site/` is not source of truth.
+- current_run_verification: focused B40-S4 RED docs contract first failed on missing RU/EN playbook and source-transfer pages; focused B40-S4 GREEN docs contract passed; strict MkDocs rebuilt regular `site/` with ignored workspace-local `tmp\mkdocs_deps_b40s4` dependencies and exit `0`; generated-site language-switcher cleanup removed absolute `/en/` fallback links from English-original plan pages; final `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v` ran 77 tests with `OK`; `python tools\check_docs.py` returned `OK`; `git diff --check` exited `0`.
+- source_transfer_added: Chain-of-Verification, CRITIC, Self-Refine, intrinsic self-correction limitations, OpenAI Agents SDK guardrails and community "check again" prompt observations are mapped with trust level, verification status and transfer target.
+- future_rows_still_planned_after_s4: `B40-DVL-M22..M24`.
+- real_manual_pilot_executed: false.
+- active_hook_automation_mcp_agents_sdk_runner_created: false.
+- live_server_browser_provider_canonical_git_performed: false.
+- residual_risks: S4 documents the implemented local/manual gate but does not prove real usefulness, scorecard calibration, release readiness, active guardrail behavior, automation readiness or go/no-go closure; those remain B40-S5.
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `implemented_docs_site_source_transfer` | B40-S4 docs/site/source-transfer | The owner asked to start the fourth Batch 40 slice with agents and skills. B40-S4 adds RU/EN public playbook documentation, architecture diagrams, source-transfer packet, artifact examples, prompting/context/skill promotion guidance, source registry/backlog sync, MkDocs navigation, generated-site refresh and docs/site verification routing. The slice preserves local-only/no-unapproved-actions boundaries and still does not claim manual pilot value, promotion readiness, automation readiness, Agents SDK runtime readiness or release readiness before B40-S5. |
+
+## Task 26 Batch 40 Doubt / Verifier Loop S5 Pilot Metrics and Closure Addendum
+
+B40-S5 covers `B40-DVL-M22..M24` as the pilot ledger, metrics-loop calibration and go/no-go closure slice.
+
+- batch_status: `implemented_pilot_metrics_closure_manual_only`.
+- implementation_timestamp: `10-06-2026 08:40` `Europe/Moscow`.
+- implemented_rows: `B40-DVL-M22`, `B40-DVL-M23`, `B40-DVL-M24`.
+- pilot_ledger_added: `completion_skeptic_manual_pilot_ledger` records five `synthetic_local` rows across `docs_research`, `code_check` and `expected_block` so `min_sample_size: 5` is met without treating the synthetic examples as product proof.
+- scorecard_calibration_added: `completion_skeptic_scorecard_calibration` adds numerator/denominator evidence for `false_pass_rate`, `false_rewrite_rate`, `evidence_sufficiency_rate`, `missing_check_catch_rate`, `accepted_gap_rate`, `user_revision_acceptance_rate` and `revision_usefulness_rate`.
+- metrics_loop_added: append-only `agent_skill_metrics_loop` record `completion_skeptic_scorecard_calibration` preserves `pilot_denominators`, raw metric evidence, blocked promotions and `update_policy: staged_evidence_only_no_auto_apply`.
+- go_no_go_added: `completion_skeptic_go_no_go_closure` records `decision_status: manual_only`, `promotion_status: not_promoted`, `rollback_disable_path`, `no_unapproved_actions` proof and exact next approval needs.
+- source_packet_added: `docs/sources/product-agent-os-batch40-doubt-verifier-pilot-closure.md` and `.en.md`.
+- docs_site_generated: true for S5; generated `site/` was rebuilt for S5 because the new RU/EN source packet changed full-site i18n, search and sitemap inventory.
+- verification_evidence: focused B40-S5 code/docs contracts passed after initial RED failures; Product-Agent OS docs contract ran 78 tests with `OK`; full unittest ran 871 tests with `OK`; fixture eval exited `0` with `renderer_file_count: 197` and the three new `completion_skeptic_*` checks true; transcript eval exited `0` with 26 sessions and 0 failures; Codex compatibility returned `status: compatible`; strict MkDocs rebuilt generated `site/` with exit `0`; generated-site cleanup removed absolute `/en/` fallback links; `python tools\check_docs.py` returned `OK`; `git diff --check` exited `0`.
+- active_hook_automation_mcp_agents_sdk_runner_created: false.
+- live_server_browser_provider_canonical_git_performed: false.
+- release_or_automation_readiness_claimed: false.
+- residual_risks: S5 records synthetic-local calibration and a manual-only go/no-go boundary; it does not prove broad semantic usefulness, real user value, real project pilot success, active guardrail behavior, automation readiness, Agents SDK runtime readiness or public/team release readiness.
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `implemented_pilot_metrics_closure_manual_only` | B40-S5 pilot, metrics and closure | The owner asked to start B40-S5 with agents and skills. B40-S5 adds deterministic manual pilot ledger helpers, scorecard calibration with denominator evidence, an append-only metrics-loop record and a go/no-go packet. The final decision is `manual_only`, not release. No real target mutation, live server, browser automation, provider/API call, active hook/automation/MCP/Agents SDK runner, canonical graph mutation, external write or git action was performed. |
+
+## Batch 41 First-Run Orchestration And Architecture Cockpit Executed Addendum
+
+B41 records the implemented first-run orchestration and generated architecture cockpit evidence set. It is source-owned implementation evidence, not release readiness, publication readiness or target-apply safety.
+
+- batch_status: `implemented_local_read_only_staged_evidence_not_release_ready`.
+- implemented_groups: `B41-S1..S6`, `B41-S7`, `B41-S8`, `B41-S9`.
+- implemented_rows: `B41-S1-M01..M05`, `B41-S2-M06..M09`, `B41-S3-M10..M16`, `B41-S4-M17..M20`, `B41-S5-M21..M23`, `B41-S6-M24..M30`, `B41-S7-M31..M40`, `B41-S8-M41..M47`, `B41-S9-M48..M57`.
+- source_matrices_and_packets: `docs/superpowers/specs/batch41-first-run-automation-matrix.json`, `docs/superpowers/specs/batch41-s1-command-contract-summary.json`, `docs/superpowers/specs/batch41-s2-script-matrix-summary.json`, `docs/superpowers/specs/batch41-s3-project-analysis-summary.json`, `docs/superpowers/specs/batch41-s4-html-artifact-summary.json`, `docs/superpowers/specs/batch41-s5-guided-questions-summary.json`, `docs/superpowers/specs/batch41-s6-closure-summary.json`, `docs/superpowers/specs/batch41-s7-m31-m33-cockpit-foundation-summary.json`, `docs/superpowers/specs/batch41-s7-m34-m35-graph-rendering-summary.json`, `docs/superpowers/specs/batch41-s7-m36-m39-cockpit-ux-safety-summary.json`, `docs/superpowers/specs/batch41-s7-m40-neural-flow-acceptance-summary.json`, `docs/superpowers/specs/batch41-s8-m47-neural-flow-before-after-summary.json`, `docs/superpowers/specs/batch41-s9-html-modernization-summary.json`, `docs/superpowers/specs/batch41-s9-m57-neural-flow-summary.json`, `docs/superpowers/specs/batch41-s9-m57-neural-flow-comparison.json`.
+- implemented_contracts: `first_run_orchestrator_contract_v1`, `first_run_script_registry_v1`, `first_run_command_matrix_v1`, `first_run_project_analysis_summary_v1`, `first_run_cockpit_artifact_v1`, `architecture_intelligence_design_contract_v1`, `first_run_first_viewport_shell_v1`, `first_run_local_interaction_layer_v1`, `first_run_static_diagram_workbench_v1`, `first_run_schema_contract_surface_v1`, `first_run_graph_file_code_surface_v1`, `first_run_guided_tour_surface_v1`, `first_run_evidence_risk_hierarchy_v1`, `first_run_visual_accessibility_acceptance_v1`.
+- claim_ceiling: generated artifacts are `orientation_only_not_proof`; static/browser evidence remains scoped to the recorded B41 rows and must not be generalized to later docs/site groups.
+- unsupported_claims: release readiness, publication readiness, target apply safety, installed plugin readiness, automation promotion, provider/API quality, full WCAG certification and Cosmos.gl/WebGL runtime execution.
+- no_unapproved_actions: no target source mutation, live runtime, provider/API call, installed cache refresh, global config write, git action, release/deploy/publish or active automation was performed by B41.
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `implemented_local_read_only_staged_evidence_not_release_ready` | B41 first-run orchestration and architecture cockpit evidence | B41 implemented the safe first-run command flow, script matrix, project-analysis packet, guided question flow, generated HTML/cockpit surfaces, architecture-dossier redesign and static modernization evidence. The evidence is local/read-only/staged or explicitly scoped browser/static proof, not a release or publication claim. |
+
+## Task 26 Batch 42 Instruction And Tool-Use Compliance Hardening Planned Addendum
+
+B42 records the owner-requested planning matrix for Product-Agent OS instruction and tool-use compliance after local audit found that installed Product-Agent OS mechanisms are not reliably auto-engaged for instruction/tool-use audits, Product-Agent OS compliance prompts and `self-learning-loop` requests.
+
+- batch_status: `planned_task_matrix_added`.
+- planning_timestamp: `19-06-2026 13:03` `Europe/Moscow`.
+- source_matrix: `docs/superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json`.
+- planned_rows: `B42-S1-M01..M03`, `B42-S2-M04..M06`, `B42-S3-M07..M08`, `B42-S4-M09..M10`, `B42-S5-M11`.
+- execution_status: `not_started`.
+- planning_is_not_implementation_evidence: true.
+- target_workspace_mutation_authorized: false.
+- plugin_cache_write_authorized: false.
+- global_codex_config_write_authorized: false.
+- live_server_browser_provider_canonical_git_performed: false.
+- active_hook_automation_mcp_agents_sdk_runner_created: false.
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `planned` | `B42-S1-M01..M03` scope, inventory and official-source check | Freeze requirements and approval boundaries, inventory physical bundle/cache/session exposure, and verify official OpenAI/Codex documentation before product-behavior claims. Owner action remains deciding whether later execution may touch source tree, installed cache, global Codex policy or stay read-only. |
+| `planned` | `B42-S2-M04..M06` implicit invocation policy, validator and fresh-session smoke | Decide explicit-only versus narrow router-only implicit policy, add metadata validator coverage and prove fresh-session skill exposure after any source/cache change. Broad implicit invocation and cache/global config mutation remain approval-gated. |
+| `planned` | `B42-S3-M07..M08` runtime route and instruction/tool-use eval hardening | Add route and eval cases for instruction compliance, tool-use compliance, Product-Agent OS auto-engagement failure and `self-learning-loop`, so these prompts do not route only to generic bug rescue. |
+| `planned` | `B42-S4-M09..M10` staged self-learning-loop and system-file hygiene triage | Route learning-loop output through staged `agent_skill_metrics_loop` lessons only, and triage system-file hygiene / secret-like literal findings without echoing sensitive values or auto-applying policy changes. |
+| `planned` | `B42-S5-M11` closure, control-plane sync and no-unapproved-actions proof | Close only after actual checks run, with implemented rows, fresh-session exposure status, route/eval results, residual risks and exact next approvals. Planning matrix presence is not proof that auto-engagement is fixed. |
+
+## Deferred
+
+| Status | Item | Reason |
+| --- | --- | --- |
+| `deferred` | Interactive dashboard editing | `status.html` remains a generated view; editing state in the dashboard would create a second source of truth. |
+| `deferred` | Dashboard web server | Current scope is static offline HTML/JSON only; no standalone server or long-running process. |
+| `deferred` | Live external telemetry widgets | External assets and external systems remain approval-bound and out of scope for the offline dashboard. |
+| `deferred` | LLM semantic judge for question quality | Current transcript eval is deterministic term replay; calibrated judge coverage needs its own eval design and privacy policy. |
+| `deferred` | Live Graphology/Sigma vendor bundle | Batch 16 records the local/vendor-only boundary and static fallback; adding vendored assets requires version, license, hash and visual QA evidence. |
+| `deferred` | Project graph production query backend | The offline static search index is implemented as Batch 19 generated cache, and Batch 20 implements only a disabled-by-default generated local file-store gate. A live or production database/server remains outside the approved surface; it still requires separate approval with storage path, port policy, auth boundary, logging, performance threshold, runtime evidence and rollback path before implementation. |
+| `deferred` | Project graph live semantic extraction | Batch 21 implements local deterministic semantic retrieval as generated `present_unverified` orientation evidence, Batch 22 implements only local deterministic LLM extraction-style proposals as staged proposals, not canonical graph facts, and Batch 23 implements only generated closure evidence. Live external embedding/cross-encoder providers, live external LLM semantic extraction and canonical graph mutation from generated proposals remain approval-gated future work, not implied by Batch 16 visual projection, Batch 17 search-quality evals, Batch 21 retrieval packets, Batch 22 proposal packets or Batch 23 closure packets; explicit approval must define redaction, cache, token budget, eval threshold and rollback path before implementation. |
+
+## Verification
+
+Batch 5 focused verification and Batch 6 full verification are recorded in `TEST.md` and `RUNLOG.md`.
+
+Task 24 Batch 12 final verification is recorded in `TEST.md` and `RUNLOG.md`: focused docs/source-policy ran 23 tests with `OK`; full unittest ran 584 tests with `OK` in 551.714s, then reran after evidence notes and ran 584 tests with `OK` in 504.793s using `timeout_ms: 1200000`; fixture eval exited `0` for 85 fixture directories with `renderer_file_count: 191`; transcript eval exited `0` with 17 sessions and 0 failures; Codex compatibility returned `status: compatible`; docs check and `git diff --check` exited `0`. The full unittest must continue to use `timeout_ms: 1200000` to avoid false timeouts on the current suite size.
+
+Task 25 Batch 16 verification is recorded in `TEST.md` and `RUNLOG.md`: cockpit/visual/renderer RED checks failed before implementation on missing modules, focused cockpit suite ran 12 tests with `OK`, adjacent graph integration suite ran 60 tests with `OK` after reviewer-driven cockpit/visual/renderer hardening, Playwright visual smoke found 0 console errors after navigation, 0 external scripts, 8 pages, 14 nodes, 8 filters, selected-node evidence/filter behavior and no mobile horizontal overflow, full unittest ran 659 tests with `OK` in 698.951s using `timeout_ms: 1200000`, fixture eval exited `0` for 91 fixture directories with renderer file count 191 and 16 codex-runner fixtures, transcript eval exited `0` with 17 sessions and 0 failures, Codex compatibility returned `status: compatible`, docs check, strict MkDocs and `git diff --check` exited `0`. Commit, push and PR actions remain explicit-only.
+
+Task 25 Batch 17 verification is recorded in `TEST.md` and `RUNLOG.md`: RED checks first exposed missing `project_graph_search_quality.py`, absent fixture structural fields and absent Batch 17 docs/control-plane terms; focused graph/cockpit/search/docs suite ran 63 tests with `OK`; docs contract suite ran 17 tests with `OK` after restoring Batch 16 exact phrases; full unittest rerun ran 662 tests with `OK` in 671.629s using `timeout_ms: 1200000`; fixture eval exited `0` for 91 fixture directories with renderer file count 191; transcript eval exited `0` with 17 sessions and 0 failures; Codex compatibility returned `status: compatible`; docs check, strict MkDocs with disposable `.mkdocs_task25_batch17_site` and `git diff --check` exited `0`. Commit, push and PR actions remain explicit-only.
+
+Task 25 Batch 18 verification is recorded in `TEST.md` and `RUNLOG.md`: focused graph/cockpit/search suite ran 70 tests with `OK`; status/runtime suite ran 47 tests with `OK`; fixture/lifecycle/docs suite ran 86 tests with `OK`; full unittest ran 664 tests with `OK` using `timeout_ms: 1200000`; fixture eval exited `0` for 91 fixture directories with renderer file count 191; transcript eval exited `0` with 17 sessions and 0 failures; Codex compatibility returned `status: compatible`; docs check, strict MkDocs with disposable `.mkdocs_task25_batch18_site` and `git diff --check` exited `0`. Commit, push and PR actions remain explicit-only.
+
+Task 25 Batch 19 verification is recorded in `TEST.md` and `RUNLOG.md`: RED tests first failed on missing `product_agent_os.project_graph_index`, missing CLI `--build-index`, and stale docs/control-plane terms. Focused index/query/CLI/search-quality tests then ran 27 tests with `OK`, adjacent graph/cockpit/index suite ran 78 tests with `OK`, fixture/lifecycle/docs suite ran 87 tests with `OK`, full unittest ran 673 tests with `OK` in 643.591s using `timeout_ms: 1200000`, fixture eval exited `0` with renderer file count 191 and all emitted fixture records `ok: true`, transcript eval exited `0` with 17 sessions and 0 failures, Codex compatibility returned `status: compatible`, docs check, strict MkDocs with disposable `.mkdocs_task25_batch19_site` and `git diff --check` exited `0`. This proves offline static search index schema, redaction, generated cache policy, cache hit/miss/invalidation, stale-index blocking, optional indexed search packets and indexed-vs-graph search-quality comparison. Batch 20, Batch 21, Batch 22 and Batch 23 are now implemented as later approved extension slices, and commit, push and PR actions remain explicit-only.
+
+Task 25 Batch 20 verification is recorded in `TEST.md` and `RUNLOG.md`: RED tests first failed on missing `product_agent_os.project_graph_backend`, missing CLI `--build-backend`/`--backend-approval`, and stale docs/control-plane terms. Focused backend/CLI/fixture checks ran 21 tests with `OK`; docs contract suite ran 21 tests with `OK`; full unittest ran 680 tests with `OK` in 638.899s using `timeout_ms: 1200000`; fixture eval exited `0` with renderer file count 191 and all emitted fixture records `ok: true`; transcript eval exited `0` with 17 sessions and 0 failures; Codex compatibility returned `status: compatible`; docs check, strict MkDocs with disposable `.mkdocs_task25_batch20_site` and `git diff --check` exited `0`. This proves explicit approval validation, generated local file-store schema, disabled-by-default server lifecycle, read-only API contract, stable JSON errors, graph-only fallback, performance/concurrency/rollback eval fields, malformed approval handling and source-boundary redaction. Batch 20 starts no production server and does not introduce LLM semantic extraction or rationale/comment extraction. Batch 21, Batch 22 and Batch 23 are now implemented separately as generated, approval-bound extension slices, and commit, push and PR actions remain explicit-only.
+
+Task 25 Batch 21 verification is recorded in `TEST.md` and `RUNLOG.md`: RED tests first failed on missing `product_agent_os.project_graph_semantic`, missing CLI semantic index controls, missing fixture fields and stale docs/control-plane terms. Focused semantic/CLI/fixture/docs checks ran 27 tests with `OK`; docs contract suite ran 22 tests with `OK`; full unittest ran 688 tests with `OK` in 639.625s using `timeout_ms: 1200000`; fixture eval exited `0` with renderer file count 191 and all emitted fixture records `ok: true`; transcript eval exited `0` with 17 sessions and 0 failures; Codex compatibility returned `status: compatible`; docs check, strict MkDocs with disposable `.mkdocs_task25_batch21_site` and `git diff --check` exited `0`. This proves Batch 21 explicit approval, generated semantic retrieval cache schema, semantic corpus and chunk policy, embeddings cache metadata, semantic query packets, cross-encoder reranking gate, semantic retrieval eval suite, stale graph-fingerprint blocking, `present_unverified` orientation evidence, no canonical graph edge rewrites and rollback/disable path by deleting `.codex/product-agent-os/project-code-graph-semantic-index.json`. Batch 22 and Batch 23 are now implemented separately as generated, approval-bound extension slices, and commit, push and PR actions remain explicit-only.
+
+Task 25 Batch 22 verification is recorded in `TEST.md` and `RUNLOG.md`: RED tests first failed on missing `product_agent_os.project_graph_llm_extraction`, missing CLI `--build-llm-proposals`/`--disable-llm-proposals`, missing fixture fields and stale docs/control-plane terms. Focused Batch 22 module/CLI/fixture/docs suite ran 29 tests with `OK`; Product-Agent OS docs contract suite ran 23 tests with `OK`; adjacent graph/backend/semantic/LLM suite ran 45 tests with `OK`; full unittest ran 697 tests with `OK` in 880.817s using `timeout_ms: 1200000`; fixture eval exited `0` for 91 fixture directories with renderer file count 191 and all emitted fixture records `ok: true`; transcript eval exited `0` with 17 sessions and 0 failures; Codex compatibility returned `status: compatible`; docs check passed; strict MkDocs with disposable `.mkdocs_task25_batch22_site` exited `0` and the site directory was removed; `git diff --check` exited `0`. This proves Batch 22 explicit approval, local deterministic prompt/model policy, structured JSON proposal schema, semantic node and edge proposals, rationale/comment proposals, human review, AI incident workflow, no canonical graph mutation and rollback/disable path by deleting `.codex/product-agent-os/project-code-graph-llm-proposals.json`. Batch 23 is closed separately as generated extension verification/rollback evidence, and commit, push and PR actions remain explicit-only.
+
+Task 25 Batch 23 verification is recorded in `TEST.md` and `RUNLOG.md`: RED tests first failed on missing `product_agent_os.project_graph_extension_closure`, missing CLI `--verify-extensions`/`--disable-extensions`, missing fixture fields and stale docs/control-plane terms. Focused Batch 23 module/CLI/fixture slice ran 6 tests with `OK`; Product-Agent OS docs contract suite ran 24 tests with `OK`; adjacent graph extension suite ran 50 tests with `OK`; full unittest ran 703 tests with `OK` in 724.475s using `timeout_ms: 1200000`; fixture eval exited `0` with renderer file count 191 and all emitted fixture records `ok: true`; transcript eval exited `0` with 17 sessions and 0 failures; Codex compatibility returned `status: compatible`; docs check passed; strict MkDocs with disposable `.mkdocs_task25_batch23_site` exited `0` and the site directory was removed; `git diff --check` exited `0`. This proves the local closure contract for `project_graph_extension_closure.py`, `verify-extensions`, `disable-extensions`, deletion proof, graph-only fallback, `blocked_without_new_explicit_approval`, no live external model/API calls, no canonical graph mutation and explicit-only git boundary.

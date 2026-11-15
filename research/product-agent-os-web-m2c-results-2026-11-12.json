@@ -106,7 +106,7 @@
     "matrix_validator": {
       "exit_code": 0,
       "receipt": ".tmp/paos-m2c/matrix-validator.log",
-      "command": "python plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-web-task-manager-plan-2026-11-09.md"
+      "command": "python plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md"
     },
     "hook_json": {
       "exit_code": 0,
@@ -560,8 +560,8 @@
       "TEST.md",
       "RUNLOG.md",
       "apps/web/README.md",
-      "research/product-agent-os-web-task-manager-plan-2026-11-09.md",
-      "research/product-agent-os-web-task-manager-task-group-2026-11-09.json",
+      "docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md",
+      "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json",
       "docs/sources/registry.md",
       "docs/sources/registry.en.md"
     ],
@@ -612,8 +612,8 @@
       "apps/web/README.md",
       "docs/sources/registry.md",
       "docs/sources/registry.en.md",
-      "research/product-agent-os-web-task-manager-plan-2026-11-09.md",
-      "research/product-agent-os-web-task-manager-task-group-2026-11-09.json"
+      "docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md",
+      "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json"
     ],
     "no_change_needed": {
       "AGENTS.md": "No durable instruction change",
@@ -652,8 +652,8 @@
     "apps/web/README.md": "5b8e521dec893a223a351283f83ca7b75a39b973a1ab59f5b3bab211a3d49e78",
     "docs/sources/registry.md": "107d3b4434aa4ac8011a8de6fb89be00faae406596a5a20558a7a6c6f13a0026",
     "docs/sources/registry.en.md": "5d9d21aad0d18c147fea5c60462d93e127454a9449afbd6b86da4985ff4bbeef",
-    "research/product-agent-os-web-task-manager-plan-2026-11-09.md": "644674e5fa9a4c555374463eac782a166f6a5a31470c0e10e607ac83699cfa0c",
-    "research/product-agent-os-web-task-manager-task-group-2026-11-09.json": "10a0690a9258c5ede4f460d325171db2490ae483f0e47d1fab71a332f5a518ff",
+    "docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md": "644674e5fa9a4c555374463eac782a166f6a5a31470c0e10e607ac83699cfa0c",
+    "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json": "10a0690a9258c5ede4f460d325171db2490ae483f0e47d1fab71a332f5a518ff",
     "research/product-agent-os-web-m2c-execution-2026-11-12.md": "8e02ca9d1b437f1ce4a5f7bd40ac1403e4abf3e157a33f8961c1b8d29f62deb2"
   }
 }

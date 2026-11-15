@@ -13,7 +13,7 @@
     "docs/superpowers/specs/batch45-postq4-t13-strict-output-schema-and-harness-hardening.json",
     "plugins/product-agent-os/scripts/codex_runtime_runner/model_output.py",
     "docs/superpowers/specs/batch45-agent-behavior-eval-plan.json",
-    "docs/superpowers/specs/batch45-post-q4-next-tasks.json"
+    "docs/planning/batch45-post-q4-next-tasks.json"
   ],
   "approval_state": {
     "owner_confirmed": false,
@@ -343,7 +343,7 @@
         "status": "passed_with_line_ending_warnings_only"
       },
       {
-        "command": "rg -n \"C:\\\\Users|AppData|raw_stdout|raw_stderr|raw_prompt|provider_payload\" docs\\superpowers\\specs\\batch45-postq4-t14-strict-rerun-approval-packet.json docs\\superpowers\\specs\\batch45-post-q4-next-tasks.json",
+        "command": "rg -n \"C:\\\\Users|AppData|raw_stdout|raw_stderr|raw_prompt|provider_payload\" docs\\superpowers\\specs\\batch45-postq4-t14-strict-rerun-approval-packet.json docs\\planning\\batch45-post-q4-next-tasks.json",
         "status": "passed_no_matches",
         "exit_code": 1
       }

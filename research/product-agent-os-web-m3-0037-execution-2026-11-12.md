@@ -4,7 +4,7 @@ Source status: project-authored / current local implementation evidence, 2026-11
 
 ## Scope, контракт и решения
 
-Владелец статуса — PAOS-0037 в [Web-плане](product-agent-os-web-task-manager-plan-2026-11-09.md) и [task-group JSON](product-agent-os-web-task-manager-task-group-2026-11-09.json). Зависимости PAOS-0036/0023 реализованы; следующий маршрут — PAOS-0024. Оценка20h сохраняется. Другие55 задач не входят в изменение статуса.
+Владелец статуса — PAOS-0037 в [Web-плане](../docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md) и [task-group JSON](../docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json). Зависимости PAOS-0036/0023 реализованы; следующий маршрут — PAOS-0024. Оценка20h сохраняется. Другие55 задач не входят в изменение статуса.
 
 Execution recipe закреплена за transition опубликованного workflow. Manual выполняет обычный пользовательский переход без policy, worker, asset resolution или agent run. Recipe требует execution-сессию App, включённую политику PAOS-0023, точное назначение role→asset и доступную указанную version/hash. В этом срезе association transition ведёт в semantic category `in_progress`; цепочка работает внутри этой фазы. Произвольные новые фазы выполнения не объявлены поддержанными.
 

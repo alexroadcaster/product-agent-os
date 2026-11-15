@@ -270,7 +270,7 @@
       },
       {
         "kind": "PreToolUse",
-        "command": "rg -n -A 48 -F '### Task `PAOS-AUD-HOST-02`' research/product-agent-os-audit-remediation-task-plan-2026-11-09.md",
+        "command": "rg -n -A 48 -F '### Task `PAOS-AUD-HOST-02`' docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md",
         "exit_code": null,
         "classification": "hook_denial_before_shell",
         "result": "Same missing own marker denial; quoted backticks rejected by bounded read classifier."

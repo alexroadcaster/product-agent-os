@@ -2,7 +2,7 @@
   "schema_version": "batch45_professional_code_s1_artifact_workflow_summary_v1",
   "evidence_id": "B45-S1-M02-M04-A01",
   "created_at": "2026-06-29",
-  "source_contract": "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md#batch-45-task-matrix",
+  "source_contract": "docs/planning/2026-06-20-track-11-documentation-architecture-refresh.md#batch-45-task-matrix",
   "closure_level": "docs_contract_ready",
   "rows_implemented": [
     "B45-PCA-M02",

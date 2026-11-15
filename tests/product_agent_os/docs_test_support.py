@@ -19,10 +19,10 @@ SITE = ROOT / os.environ.get("PAOS_DOCS_SITE_DIR", "site")
 LOCAL_FILE_I18N_JS = DOCS / "assets" / "javascripts" / "local-file-i18n.js"
 SOURCE_REGISTRY = DOCS / "sources" / "registry.md"
 SOURCE_REGISTRY_EN = DOCS / "sources" / "registry.en.md"
-TRACK_BACKLOG = DOCS / "sources" / "product-agent-os-track-8-detailed-backlog.md"
-TRACK9_BACKLOG = DOCS / "sources" / "product-agent-os-track-9-backlog.md"
-TRACK10_BACKLOG = DOCS / "sources" / "product-agent-os-track-10-backlog.md"
-TRACK10_BACKLOG_EN = DOCS / "sources" / "product-agent-os-track-10-backlog.en.md"
+TRACK_BACKLOG = DOCS / "planning" / "product-agent-os-track-8-detailed-backlog.md"
+TRACK9_BACKLOG = DOCS / "planning" / "product-agent-os-track-9-backlog.md"
+TRACK10_BACKLOG = DOCS / "planning" / "product-agent-os-track-10-backlog.md"
+TRACK10_BACKLOG_EN = DOCS / "planning" / "product-agent-os-track-10-backlog.en.md"
 BATCH34_PACKAGING_SMOKE = DOCS / "sources" / "product-agent-os-batch34-packaging-install-smoke.md"
 BATCH34A_PUBLIC_DOCS_BOUNDARY = (
     DOCS / "sources" / "product-agent-os-batch34a-public-docs-boundary.md"
@@ -92,8 +92,8 @@ DOCUMENTATION_REFRESH_DOC_M25 = (
 PRODUCT_AGENT_OS_LIFECYCLE_HOOKS_LOCAL_ACTIVATION = (
     DOCS / "superpowers" / "specs" / "product-agent-os-lifecycle-hooks-local-activation-summary.json"
 )
-TRACK9_PLAN = DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md"
-TRACK10_PLAN = DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md"
+TRACK9_PLAN = DOCS / "planning" / "2026-05-25-track-9-methodology-intelligence.md"
+TRACK10_PLAN = DOCS / "planning" / "2026-05-27-track-10-guided-questions-status-dashboard.md"
 ROOT_README = ROOT / "README.md"
 PLUGIN_README = ROOT / "plugins" / "product-agent-os" / "README.md"
 REQUIREMENTS = ROOT / "REQUIREMENTS.md"
@@ -107,16 +107,16 @@ CONTROL_PLANE_SYNC = ROOT / ".codex" / "workflows" / "control-plane-sync.md"
 CONTROL_PLANE_SIZE_BUDGET_BYTES = 40000
 RUNLOG_SIZE_BUDGET_BYTES = CONTROL_PLANE_SIZE_BUDGET_BYTES
 ENGLISH_ORIGINAL_SUPERPOWERS_PLAN_PAGES = {
-    DOCS / "superpowers" / "plans" / "2026-05-14-product-agent-os-generated-infrastructure.md",
-    DOCS / "superpowers" / "plans" / "2026-05-14-product-agent-os-lifecycle-skills.md",
-    DOCS / "superpowers" / "plans" / "2026-05-14-product-agent-os-plugin-core.md",
-    DOCS / "superpowers" / "plans" / "2026-05-14-product-agent-os-production-hardening.md",
-    DOCS / "superpowers" / "plans" / "2026-05-15-product-agent-os-codex-runtime-runner.md",
-    DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md",
-    DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md",
-    DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md",
-    DOCS / "superpowers" / "plans" / "2026-08-05-gpt56-r1-r6-remediation.md",
-    DOCS / "superpowers" / "plans" / "2026-08-10-batch45-s9-0-team-readiness.md",
+    DOCS / "planning" / "2026-05-14-product-agent-os-generated-infrastructure.md",
+    DOCS / "planning" / "2026-05-14-product-agent-os-lifecycle-skills.md",
+    DOCS / "planning" / "2026-05-14-product-agent-os-plugin-core.md",
+    DOCS / "planning" / "2026-05-14-product-agent-os-production-hardening.md",
+    DOCS / "planning" / "2026-05-15-product-agent-os-codex-runtime-runner.md",
+    DOCS / "planning" / "2026-05-25-track-9-methodology-intelligence.md",
+    DOCS / "planning" / "2026-05-27-track-10-guided-questions-status-dashboard.md",
+    DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md",
+    DOCS / "planning" / "2026-08-05-gpt56-r1-r6-remediation.md",
+    DOCS / "planning" / "2026-08-10-batch45-s9-0-team-readiness.md",
 }
 DOC_M25_HISTORICAL_PENDING_SITE_PAGES = {
     DOCS / "product-agent-os" / "first-run-architecture-cockpit.md",
@@ -139,12 +139,12 @@ DOC_M25_PENDING_SITE_PAGES = {
     # Current source additions are preview-built, not promoted to historical root site.
     DOCS / "codex" / "models-and-reasoning.md",
     DOCS / "playbooks" / "model-migration.md",
-    DOCS / "superpowers" / "plans" / "2026-11-03-gpt6-documentation-refresh.md",
+    DOCS / "planning" / "2026-11-03-gpt6-documentation-refresh.md",
     DOCS / "product-agent-os" / "coding-standards.md",
     DOCS / "product-agent-os" / "self-learning-loop.md",
     DOCS / "product-agent-os" / "project-formation.md",
-    DOCS / "superpowers" / "plans" / "2026-08-10-batch45-s9-a-durable-contract-recovery.md",
-    DOCS / "superpowers" / "plans" / "2026-08-11-batch45-s9-b-compact-authoring-runtime.md",
+    DOCS / "planning" / "2026-08-10-batch45-s9-a-durable-contract-recovery.md",
+    DOCS / "planning" / "2026-08-11-batch45-s9-b-compact-authoring-runtime.md",
 }
 BUILDABLE_MARKDOWN_PAGE_COUNT = 163
 LOCALIZED_MARKDOWN_PAGE_COUNT = 153
@@ -203,7 +203,7 @@ def _control_plane_source_context():
         BATCH35_APPROVAL_DRAFT_EN,
         BATCH40_DOUBT_VERIFIER_CLOSURE,
         BATCH40_DOUBT_VERIFIER_CLOSURE_EN,
-        DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md",
+        DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md",
         ROOT / "prod_test.md",
         ROOT / "research" / "product-agent-os-requirements-history-2026-11-10.md",
     ]

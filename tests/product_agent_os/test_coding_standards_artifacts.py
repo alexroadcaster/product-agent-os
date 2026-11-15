@@ -31,13 +31,13 @@ M37_REMEDIATION = DOCS / "superpowers" / "specs" / "batch45-review-remediation-s
 RETEST_PROTOCOL = DOCS / "superpowers" / "specs" / "batch45-quality-retest-protocol.json"
 RETEST_Q3_SUMMARY = DOCS / "superpowers" / "specs" / "batch45-quality-retest-fixture-static-summary.json"
 RETEST_Q4_SUMMARY = DOCS / "superpowers" / "specs" / "batch45-quality-retest-project-slices-static-summary.json"
-POST_Q4_NEXT_TASKS = DOCS / "superpowers" / "specs" / "batch45-post-q4-next-tasks.json"
+POST_Q4_NEXT_TASKS = DOCS / "planning" / "batch45-post-q4-next-tasks.json"
 POST_Q4_T01_T04_SUMMARY = DOCS / "superpowers" / "specs" / "batch45-postq4-t01-t04-execution-summary.json"
 POST_Q4_T04_APPROVAL = DOCS / "superpowers" / "specs" / "batch45-postq4-live-model-rerun-approval-packet.json"
 POST_Q4_T05_RESULTS = DOCS / "superpowers" / "specs" / "batch45-postq4-t05-live-model-rerun-results.json"
 POST_Q4_T05B_APPROVAL = DOCS / "superpowers" / "specs" / "batch45-postq4-t05b-rerun-approval-packet.json"
 POST_Q4_T06_DECISION = DOCS / "superpowers" / "specs" / "batch45-postq4-t06-promotion-decision.json"
-POST_Q4_T08_ARCHITECTURE = DOCS / "superpowers" / "specs" / "batch45-postq4-architecture-next-actions.json"
+POST_Q4_T08_ARCHITECTURE = DOCS / "planning" / "batch45-postq4-architecture-next-actions.json"
 POST_Q4_T10_HARNESS = DOCS / "superpowers" / "specs" / "batch45-postq4-t10-live-eval-harness-redesign-packet.json"
 POST_Q4_T11_DESIGN = DOCS / "superpowers" / "specs" / "batch45-postq4-t11-treatment-v3-source-design.json"
 POST_Q4_T12_APPROVAL = (
@@ -62,10 +62,7 @@ POST_Q4_T14_APPROVAL = (
 POST_Q4_T14_RESULTS = DOCS / "superpowers" / "specs" / "batch45-postq4-t14-strict-rerun-results.json"
 POST_Q4_T15_DECISION = DOCS / "superpowers" / "specs" / "batch45-postq4-t15-model-change-decision-packet.json"
 POST_Q4_T16_T22_TASK_GROUP = (
-    DOCS
-    / "superpowers"
-    / "specs"
-    / "batch45-postq4-t16-t22-promotion-grade-eval-task-group.json"
+    DOCS / "planning" / "batch45-postq4-t16-t22-promotion-grade-eval-task-group.json"
 )
 POST_Q4_T17_FROZEN_HELDOUT_CORPUS = (
     DOCS
@@ -306,10 +303,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
         test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
         track11 = (
-            DOCS
-            / "superpowers"
-            / "plans"
-            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
         ).read_text(encoding="utf-8")
 
         self.assertEqual("batch45_review_remediation_summary_v1", packet["schema_version"])
@@ -377,10 +371,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
         test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
         track11 = (
-            DOCS
-            / "superpowers"
-            / "plans"
-            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
         ).read_text(encoding="utf-8")
 
         self.assertEqual("batch45_quality_retest_protocol_v1", packet["schema_version"])
@@ -450,10 +441,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
         test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
         track11 = (
-            DOCS
-            / "superpowers"
-            / "plans"
-            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
         ).read_text(encoding="utf-8")
 
         self.assertEqual("batch45_quality_retest_fixture_static_summary_v1", packet["schema_version"])
@@ -527,10 +515,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
         test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
         track11 = (
-            DOCS
-            / "superpowers"
-            / "plans"
-            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
         ).read_text(encoding="utf-8")
 
         self.assertEqual("batch45_quality_retest_project_slices_static_summary_v1", packet["schema_version"])
@@ -632,10 +617,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
         test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
         track11 = (
-            DOCS
-            / "superpowers"
-            / "plans"
-            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
         ).read_text(encoding="utf-8")
 
         self.assertEqual("batch45_post_q4_next_tasks_v1", packet["schema_version"])
@@ -692,7 +674,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             packet["execution_update"]["latest_evidence"],
         )
         self.assertEqual(
-            "docs/superpowers/specs/batch45-postq4-architecture-next-actions.json",
+            "docs/planning/batch45-postq4-architecture-next-actions.json",
             packet["execution_update"]["latest_t08_architecture_next_actions"],
         )
         self.assertEqual(
@@ -766,7 +748,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             with self.subTest(registry="source_registry"):
                 self.assertIn("B45-POST-Q4-NEXT-TASKS", registry)
                 self.assertIn("B45-POST-Q4-NEXT-TASKS-A01", registry)
-                self.assertIn("docs/superpowers/specs/batch45-post-q4-next-tasks.json", registry)
+                self.assertIn("docs/planning/batch45-post-q4-next-tasks.json", registry)
 
         for control_plane in [plan, evals, test_plan, track11]:
             with self.subTest(control_plane="compact_pointer"):
@@ -792,10 +774,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
         test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
         track11 = (
-            DOCS
-            / "superpowers"
-            / "plans"
-            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
         ).read_text(encoding="utf-8")
 
         self.assertEqual("batch45_postq4_t01_t04_execution_summary_v1", summary["schema_version"])
@@ -917,10 +896,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
         test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
         track11 = (
-            DOCS
-            / "superpowers"
-            / "plans"
-            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
         ).read_text(encoding="utf-8")
 
         self.assertEqual("batch45_postq4_t06_promotion_decision_v1", packet["schema_version"])
@@ -1001,10 +977,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
         test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
         track11 = (
-            DOCS
-            / "superpowers"
-            / "plans"
-            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
         ).read_text(encoding="utf-8")
         lifecycle = _batch45_lifecycle_projection()
 
@@ -1057,7 +1030,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 self.assertFalse(performed)
 
         self.assertEqual(
-            "docs/superpowers/specs/batch45-postq4-architecture-next-actions.json",
+            "docs/planning/batch45-postq4-architecture-next-actions.json",
             next_tasks["execution_update"]["latest_t08_architecture_next_actions"],
         )
         self.assertIn("B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS", next_tasks["execution_update"]["executed_task_ids"])
@@ -1070,7 +1043,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             with self.subTest(registry="source_registry"):
                 self.assertIn("B45-POSTQ4-T08-ARCHITECTURE-NEXT-ACTIONS", registry)
                 self.assertIn("B45-POSTQ4-T08-A01", registry)
-                self.assertIn("docs/superpowers/specs/batch45-postq4-architecture-next-actions.json", registry)
+                self.assertIn("docs/planning/batch45-postq4-architecture-next-actions.json", registry)
 
         for control_plane in [plan, evals, test_plan, track11]:
             with self.subTest(control_plane="compact_pointer"):
@@ -1088,10 +1061,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
         test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
         track11 = (
-            DOCS
-            / "superpowers"
-            / "plans"
-            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
         ).read_text(encoding="utf-8")
 
         self.assertEqual("batch45_postq4_t10_live_eval_harness_redesign_packet_v1", packet["schema_version"])
@@ -1190,10 +1160,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
         test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
         track11 = (
-            DOCS
-            / "superpowers"
-            / "plans"
-            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
         ).read_text(encoding="utf-8")
 
         self.assertEqual("batch45_postq4_t11_treatment_v3_source_design_v1", packet["schema_version"])
@@ -1292,10 +1259,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
         test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
         track11 = (
-            DOCS
-            / "superpowers"
-            / "plans"
-            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
         ).read_text(encoding="utf-8")
 
         self.assertEqual("batch45_postq4_t12_paired_live_model_rerun_exact_approval_packet_v1", packet["schema_version"])
@@ -1393,10 +1357,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
         test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
         track11 = (
-            DOCS
-            / "superpowers"
-            / "plans"
-            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
         ).read_text(encoding="utf-8")
 
         self.assertEqual("batch45_postq4_t12_paired_live_model_rerun_results_v1", result["schema_version"])
@@ -1475,10 +1436,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
         test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
         track11 = (
-            DOCS
-            / "superpowers"
-            / "plans"
-            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
         ).read_text(encoding="utf-8")
 
         self.assertEqual("batch45_postq4_t13_strict_output_schema_and_harness_hardening_v1", packet["schema_version"])
@@ -1557,10 +1515,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
         test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
         track11 = (
-            DOCS
-            / "superpowers"
-            / "plans"
-            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
         ).read_text(encoding="utf-8")
 
         self.assertEqual("batch45_postq4_t14_strict_rerun_approval_packet_v1", packet["schema_version"])
@@ -1732,10 +1687,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
         test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
         track11 = (
-            DOCS
-            / "superpowers"
-            / "plans"
-            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
         ).read_text(encoding="utf-8")
 
         self.assertEqual("batch45_postq4_t15_model_change_decision_packet_v1", packet["schema_version"])
@@ -1831,10 +1783,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
         current_state = (DOCS / "product-agent-os" / "control-plane-current-state.md").read_text(encoding="utf-8")
         track11 = (
-            DOCS
-            / "superpowers"
-            / "plans"
-            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
         ).read_text(encoding="utf-8")
 
         self.assertEqual("batch45_postq4_t16_t22_promotion_grade_eval_task_group_v1", packet["schema_version"])
@@ -1910,7 +1859,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         self.assertNotIn("same_model_comparability_selected_for_future_run", packet["unsupported_claims"])
 
         self.assertEqual(
-            "docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+            "docs/planning/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
             next_tasks["execution_update"]["latest_t16_t22_promotion_grade_eval_task_group"],
         )
         self.assertEqual(
@@ -1932,7 +1881,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
 
         for registry in [registry_ru, registry_en]:
             self.assertIn("B45-POSTQ4-T16-T22-A01", registry)
-            self.assertIn("docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json", registry)
+            self.assertIn("docs/planning/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json", registry)
 
         for control_plane in [plan, runlog, evals, test_plan, current_state, track11]:
             self.assertIn("B45-POSTQ4-T16-T22-A01", control_plane)
@@ -2013,10 +1962,7 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         behavioral_ru = (DOCS / "product-agent-os" / "behavioral-evals.md").read_text(encoding="utf-8")
         behavioral_en = (DOCS / "product-agent-os" / "behavioral-evals.en.md").read_text(encoding="utf-8")
         track11 = (
-            DOCS
-            / "superpowers"
-            / "plans"
-            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            DOCS / "planning" / "2026-06-20-track-11-documentation-architecture-refresh.md"
         ).read_text(encoding="utf-8")
 
         serialized = json.dumps(packet, sort_keys=True)

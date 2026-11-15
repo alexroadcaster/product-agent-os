@@ -1,8 +1,12 @@
 # PLAN.md
 
+## Перенос планов и архитектура документации — 15.11.2026
+
+Все самостоятельные планы/backlogs/task-state размещены в [docs/planning](docs/planning/index.md); [карта переноса](docs/planning/relocation-2026-11-15.json) сохраняет прежние пути. [Отдельные задачи PAOS-DOCS-01–16](docs/planning/documentation-architecture-2026-11-15.md) описывают product/architecture/backend/API/frontend/DB/AI/RAG/LLM, источники, зависимости и acceptance. Статусы FUNC/Web не меняются. Очередь DG01–DG07: repair (16/A+13/A) → foundation (01–03) → независимые backend/API/DB (04/05/07) и frontend (06) → AI/graph (08–11), security/testing (12+13/B), operations/plugin/final integration (14/15+16/B). Следующий slice — DG01; обязательный первый gate. Вход далее по task/stage dependencies, не по номеру группы. Все 16 задач planned; реализация не начата. Откат — обратная карта и только текущие reference hunks, с проверкой последующих изменений.
+
 ## Функциональный backlog после V3 — 15.11.2026
 
-[Матрица PAOS-FUNC-01–34](research/functional-remediation-2026-11-15.md): 34 planned + 3 M5 references; [JSON](research/functional-remediation-2026-11-15.json) — владелец статусов и семи delivery groups. G01 стабильность/contracts; G02 PoC; G03 Files/scan/discovery; G04 performance/code/DB; G05 agents/documents/autonomy; G06 recovery/distribution; G07 UI coherence/E2E/human/docs. Старт по dependencies отдельных задач, не по завершению всей предыдущей группы: F28 и PoC независимы, F33 не ждёт F14, F25 идёт постоянно. F20 → F09 сохранено. Полное G07 closure требует G01–G06; M5 отдельно. Shared API/storage/navigation edits последовательны. Только планирование; все исходные карточки/AC/оценки сохранены.
+[Матрица PAOS-FUNC-01–34](docs/planning/functional-remediation-2026-11-15.md): 34 planned + 3 M5 references; [JSON](docs/planning/functional-remediation-2026-11-15.json) — владелец статусов и семи delivery groups. G01 стабильность/contracts; G02 PoC; G03 Files/scan/discovery; G04 performance/code/DB; G05 agents/documents/autonomy; G06 recovery/distribution; G07 UI coherence/E2E/human/docs. Старт по dependencies отдельных задач, не по завершению всей предыдущей группы: F28 и PoC независимы, F33 не ждёт F14, F25 идёт постоянно. F20 → F09 сохранено. Полное G07 closure требует G01–G06; M5 отдельно. Shared API/storage/navigation edits последовательны. Только планирование; все исходные карточки/AC/оценки сохранены.
 
 ## MD-отчёты и чтение — 15.11.2026
 
@@ -10,7 +14,7 @@
 
 ## Desktop UI/UX — внедрение 13.11.2026
 
-[UI-01–UI-12 V3](design/2026-11-13-v3/implementation-plan.md): локальный repair проверен; 85 экранов × 2 темы визуально сопоставлены. UI-01–UI-12 остаются in_progress до приёмки отмеченных отличий. [Evidence](design/2026-11-13-v3/implementation-evidence.md). UI-10: Sidebar и reduced motion проверены. API/backend не изменены. Rollback — own frontend hunks, без DB changes; M1–M5 не меняются.
+[UI-01–UI-12 V3](docs/planning/2026-11-13-v3-ui-implementation-plan.md): локальный repair проверен; 85 экранов × 2 темы визуально сопоставлены. UI-01–UI-12 остаются in_progress до приёмки отмеченных отличий. [Evidence](design/2026-11-13-v3/implementation-evidence.md). UI-10: Sidebar и reduced motion проверены. API/backend не изменены. Rollback — own frontend hunks, без DB changes; M1–M5 не меняются.
 
 ## Startup UX — 13.11.2026
 
@@ -24,17 +28,17 @@ GAP-06 принят владельцем; T34 и fresh-session activation отд
 
 ## PAOS-AUD-G9 — закрыта, owner accepted
 
-G8 closed / owner accepted. G9 T01–T09 implemented_locally_verified; T10 owner accepted; T11–T16 implemented_locally_verified; T17 owner accepted; G9 closed. [Матрица G9](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#paos-aud-g9) владеет статусами; [comparison/evidence](research/product-agent-os-g9-execution-report.md). Первоначальный пакет принят владельцем. Разрешённая последовательность T11–T17: T11 → T12 → T13/T14 → T15 → T16 → T17; реализация завершена; приёмка T17 и ограничения model behavior явно приняты владельцем. Fresh-session activation отдельно. M1 source authority/freeze сохраняется; полный M1 не prerequisite. Rollback текущего maintenance slice — только его hunks; target rollback по проверенному journal, без перезаписи последующих пользовательских правок.
+G8 closed / owner accepted. G9 T01–T09 implemented_locally_verified; T10 owner accepted; T11–T16 implemented_locally_verified; T17 owner accepted; G9 closed. [Матрица G9](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md#paos-aud-g9) владеет статусами; [comparison/evidence](research/product-agent-os-g9-execution-report.md). Первоначальный пакет принят владельцем. Разрешённая последовательность T11–T17: T11 → T12 → T13/T14 → T15 → T16 → T17; реализация завершена; приёмка T17 и ограничения model behavior явно приняты владельцем. Fresh-session activation отдельно. M1 source authority/freeze сохраняется; полный M1 не prerequisite. Rollback текущего maintenance slice — только его hunks; target rollback по проверенному journal, без перезаписи последующих пользовательских правок.
 
 ## PAOS-AUD-G8 — verification / owner handoff, 2026-11-10
 
-[Матрица T01–T14](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md) владеет статусами. [Отчёт реализации](research/product-agent-os-g8-execution-report.md) содержит проверки, ограничения и сравнение. G8 закрыта после проверок и явной приёмки; owner acceptance явно получена. Fresh-session activation отдельно. M1 может использовать согласованные document contracts; SQL projections и freeze cutover запрещают независимый file writer. Split текущей audit matrix отложен владельцем; её карточки не сокращены.
+[Матрица T01–T14](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md) владеет статусами. [Отчёт реализации](research/product-agent-os-g8-execution-report.md) содержит проверки, ограничения и сравнение. G8 закрыта после проверок и явной приёмки; owner acceptance явно получена. Fresh-session activation отдельно. M1 может использовать согласованные document contracts; SQL projections и freeze cutover запрещают независимый file writer. Split текущей audit matrix отложен владельцем; её карточки не сокращены.
 
 Уточнение владельца 10.11.2026: подробные матрицы в `docs/planning/` сохраняются целиком, default 40k size trigger исключён; оглавления/control-plane и explicit per-file limits сохраняют ограничения. Audit matrix в `research/` остаётся целой; split отложен, прежний preview не разрешён. G8-T14 и закрытие G8 явно приняты владельцем; fresh-session activation отдельно.
 
 ## Активная продуктовая очередь Web — 2026-11-10
 
-Текущая группировка 13-11-2026: [M5 / план v0.9](research/product-agent-os-web-task-manager-plan-2026-11-09.md#paos-m5) — PAOS-0047/0052/0053, 60ч, все planned; 56tasks/12module groups/776ч сохранены. Порядок54–56 прежний; 0047 optional/admission-gated, независима от 0052→0053. Следующий team шаг — design gate0052, не запуск реализации. Прежние OPTIONAL/T1 и receipts ниже исторические; M4 не зависит от M5.
+Текущая группировка 13-11-2026: [M5 / план v0.9](docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md#paos-m5) — PAOS-0047/0052/0053, 60ч, все planned; 56tasks/12module groups/776ч сохранены. Порядок54–56 прежний; 0047 optional/admission-gated, независима от 0052→0053. Следующий team шаг — design gate0052, не запуск реализации. Прежние OPTIONAL/T1 и receipts ниже исторические; M4 не зависит от M5.
 
 PAOS-0030: package179files/25.53MB, actual launcher/service88checks, native Cancel, two content revisions и rollback проверены. Следующая PAOS-0052 — PostgreSQL/pgvector team profile, отдельный T1 scope с согласованием размещения/embedding/privacy; local M4 от T1 не зависит. Другие55cards/estimates/order/groups сохраняются. [Evidence и release no-go](research/product-agent-os-web-m4-0030-execution-2026-11-12.md).
 
@@ -60,7 +64,7 @@ PAOS-0030: package179files/25.53MB, actual launcher/service88checks, native Canc
 
 Source status: project-authored / order_approved; implementation_started, runtime qualification blocked.
 
-Единственный владелец порядка и статусов — [Web-план v0.8](research/product-agent-os-web-task-manager-plan-2026-11-09.md) вместе с [JSON-матрицей](research/product-agent-os-web-task-manager-task-group-2026-11-09.json).
+Единственный владелец порядка и статусов — [Web-план v0.8](docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md) вместе с [JSON-матрицей](docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json).
 
 1. PAOS-0001 подтвердил persisted history и scoped project adapter. В PAOS-0004 проверена форма настроек, в PAOS-0040 — межпроцессное резервирование. PAOS-0054 проверил схему, маппинг событий и файловые возможности SQLite, остаётся `blocked` без native write/deny. Для зависимой runtime/storage интеграции нужен поддерживаемый Windows-контекст с рабочим MXC. [Наблюдения и следующие проверки](research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
 2. Выполнить 18 задач M1 в утверждённом порядке с dependencies; PAOS-0045 — сквозная приёмка после data/recovery gates. PAOS-0002 ограничена M1 profile.
@@ -81,19 +85,19 @@ G7 закрыта: T01–T08 implemented_locally_verified / owner_accepted. Keep
 
 G6 partially_verified: GAP-06 implemented / owner accepted 10.11.2026; все три synthetic local pilots приняты владельцем. HOST-01 не является их зависимостью. T34 no-go и fresh-session activation HOST-01/HOST-02 остаются открытыми отдельно; manual_only сохраняется. [Результаты](docs/superpowers/specs/paos-aud-g6-pilot-results.json).
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G5 — 2026-11-09
 
 G5 F13/F14/F17 implemented_locally_verified. G6 частично выполнена; T34 и host gates остаются отдельными, пилоты приняты. Rollback только G5 hunks и локальная пересборка site. Current pointer закрепляет owning source revisions.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G4 — 2026-11-09
 
 G4 F05/F09/F10/F15 implemented_locally_verified. G5 впоследствии выполнена. Legacy defaults сохранены; source baseline заморожен для будущего G6. Rollback только G4 hunks; current pointer закрепляет owning sources без вторых статусов.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 <!-- product-agent-os:current-state:start -->
 ```json
@@ -101,7 +105,7 @@ G4 F05/F09/F10/F15 implemented_locally_verified. G5 впоследствии в�
   "schema_version": 1,
   "sources": [
     {
-      "path": "research/product-agent-os-audit-remediation-task-plan-2026-11-09.md",
+      "path": "docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md",
       "revision": "sha256:bb8d2bbdca5d882ccdb49281ef74271ec3c82ba1deb79ce0629123cf63677746",
       "task_prefixes": [
         "PAOS-AUD-"
@@ -112,7 +116,7 @@ G4 F05/F09/F10/F15 implemented_locally_verified. G5 впоследствии в�
       "revision": "sha256:b8321bf7eddce9cd697885ff01420e7d097d155bfa4a6ef890cabaa607717407"
     },
     {
-      "path": "docs/superpowers/specs/batch45-code-quality-runtime-recovery-task-group.json",
+      "path": "docs/planning/batch45-code-quality-runtime-recovery-task-group.json",
       "revision": "sha256:6452cb3bd6a1245fd050ae160e0994d6f33bf8c7787c4447982d1b67f7df840e"
     }
   ]
@@ -124,19 +128,19 @@ G4 F05/F09/F10/F15 implemented_locally_verified. G5 впоследствии в�
 
 PAOS-AUD-G3: F03/F08/F16 implemented_locally_verified. G4 впоследствии выполнена. Единственный current pointer выше хранит refs/revisions и ownership prefixes без вторых task statuses. Rollback: только G3 hunks поверх G1/G2; B42/B45 source JSON и параллельные Web файлы сохранить.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G2 — 2026-11-09
 
 PAOS-AUD-G2: F01/F02/F04 implemented_locally_verified после локально завершённой G1; G3 впоследствии выполнена. Package остаётся в Codex compatibility format. Rollback: только G2 hunks, сохранить G1 и параллельные Web-документы. Host receipts — G6/AUD-HOST-01, distribution owner gate отдельно.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G1 — 2026-11-09
 
 PAOS-AUD-G1: пять карточек F06/F12/F11/F07/F18 implemented_locally_verified. G2/F01 впоследствии закрыла MCP compatibility gap; текущие остатки — T34 и HOST-01/HOST-02. AUD-HOST-02 относится к G6. Rollback: только G1 hunks, сохранить чужие изменения.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## Session lifecycle isolation — 2026-11-09
 
@@ -144,7 +148,7 @@ PAOS-AUD-G1: пять карточек F06/F12/F11/F07/F18 implemented_locally_v
 
 ## Completed ordinary route integration — 2026-11-05
 
-`PAOS-ORD-01-06-2026-11-05`: implemented_locally_verified; final integrated verification passed. Scope is only PAOS-ORD-01 through PAOS-ORD-06 in [the owning plan](research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md). The opt-in task context connects existing T26/T27 selectors to the public contract CLI, scoped infrastructure proposals and compact authoring. T23-T29 are reused unchanged; GAP-01–GAP-05 now have a separate execution record above; T30-T34 remain unstarted. No publication, target apply, hook/cache activation or provider calls. Rollback only the ORD-owned changes against the recorded pre-slice baseline; preserve earlier docs/site work.
+`PAOS-ORD-01-06-2026-11-05`: implemented_locally_verified; final integrated verification passed. Scope is only PAOS-ORD-01 through PAOS-ORD-06 in [the owning plan](docs/planning/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md). The opt-in task context connects existing T26/T27 selectors to the public contract CLI, scoped infrastructure proposals and compact authoring. T23-T29 are reused unchanged; GAP-01–GAP-05 now have a separate execution record above; T30-T34 remain unstarted. No publication, target apply, hook/cache activation or provider calls. Rollback only the ORD-owned changes against the recorded pre-slice baseline; preserve earlier docs/site work.
 
 <!-- product-agent-os:start plan -->
 
@@ -154,7 +158,7 @@ PAOS-AUD-G1: пять карточек F06/F12/F11/F07/F18 implemented_locally_v
 
 ## Documentation refresh queue — 2026-11-03
 
-`PAOS-DOCS-REFRESH-2026-11-03`: documentation_implemented_locally_verified (20/20). The [detailed RU/EN plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md) owns all 20 task blocks; [task-group JSON](docs/superpowers/specs/gpt6-documentation-refresh-task-group.json) owns machine status. Completed E0 baseline -> E1 controls/instructions -> E2 models -> E3 migration/evals -> E4 API/runtime/hooks -> E5 parity/navigation -> E6 checks and status. No model/runtime promotion. The subsequent authorized contract-alignment task owns PERM/MCP/MODEL/BASELINE repair; runtime activation and new API paths remain separate. Batch 45 T30 remains the next implementation dependency; this documentation queue does not execute T30-T34. Rollback only this documentation slice, preserving historical evidence and unrelated dirty changes.
+`PAOS-DOCS-REFRESH-2026-11-03`: documentation_implemented_locally_verified (20/20). The [detailed RU/EN plan](docs/planning/2026-11-03-gpt6-documentation-refresh.md) owns all 20 task blocks; [task-group JSON](docs/planning/gpt6-documentation-refresh-task-group.json) owns machine status. Completed E0 baseline -> E1 controls/instructions -> E2 models -> E3 migration/evals -> E4 API/runtime/hooks -> E5 parity/navigation -> E6 checks and status. No model/runtime promotion. The subsequent authorized contract-alignment task owns PERM/MCP/MODEL/BASELINE repair; runtime activation and new API paths remain separate. Batch 45 T30 remains the next implementation dependency; this documentation queue does not execute T30-T34. Rollback only this documentation slice, preserving historical evidence and unrelated dirty changes.
 
 ## Current Planning Contract
 
@@ -180,7 +184,7 @@ PAOS-AUD-G1: пять карточек F06/F12/F11/F07/F18 implemented_locally_v
 | Batch 44 | Self-Learning Loop S0-S7 are local/staged/manual evidence. | Continue with `B44-S8` closure/promotion decision only after owner review; no active automation or auto-apply. |
 | Batch 45 | Professional Code Authoring remains advisory-only/no-go. T21 aborted on strict schema validation with `valid_pair_count=0`, `invalid_pair_count=8`, reviewer `0` and repo raw retention `0`; `B45-POSTQ4-T22-A02` remains no-go. A04 locally implements/focused-verifies T23/T24; `B45-CQRR-A05` locally implements/focused-verifies T25-T27: compact contract, project-native `present_unverified` stack/tool selector and risk-selected quality strategy; final T25-T27 combined route is 54 OK with independent local reviewer and completion-skeptic `GO_local_code_gate`. | A06 subsequently completed T28/T29 locally; current next dependency is T30. T30-T34 remain unstarted; T34 is exact-approval-only. The earlier A04/A05 evidence is historical. A04/A05 are no CLI/live/provider/external-reviewer/promotion proof and do not reverse T22 no-go. |
 | Track 11 DOC-M25 | Root `site`, search and sitemap freshness are source-owned by the DOC-M25 packet. | Browser proof, broad scans, remediation, raw retention, publication, release/deploy and git actions remain separate. |
-| GPT-5.6 system-file remediation | `GPT56-R1-R6-REMEDIATION-2026-08-05` is locally implemented and verified: active/generated config use one `workspace-write` permission model, generic defaults are Terra/medium, skill write authority and Docs MCP routing are explicit, semantic validation is active, and durable prompts are compact/phase-neutral. Plan: `docs/superpowers/plans/2026-08-05-gpt56-r1-r6-remediation.md`; audit: `research/2026-07-23-codex-gpt-5p6-system-files-audit.md`. | Fresh-session MCP/`SessionStart` activation and same-effort/one-lower-effort behavioral comparison remain separate gates before any quality, cost, latency or promotion claim. |
+| GPT-5.6 system-file remediation | `GPT56-R1-R6-REMEDIATION-2026-08-05` is locally implemented and verified: active/generated config use one `workspace-write` permission model, generic defaults are Terra/medium, skill write authority and Docs MCP routing are explicit, semantic validation is active, and durable prompts are compact/phase-neutral. Plan: `docs/planning/2026-08-05-gpt56-r1-r6-remediation.md`; audit: `research/2026-07-23-codex-gpt-5p6-system-files-audit.md`. | Fresh-session MCP/`SessionStart` activation and same-effort/one-lower-effort behavioral comparison remain separate gates before any quality, cost, latency or promotion claim. |
 | Lifecycle/control-plane sync | Current config-routed full 9-field Task Start Brief / 13-item Completion Ledger, concise ordinary route, advisory Stop. The older B45-S9-H01 correction-loop contract is superseded by lifecycle_parity.repair (2026-11-03). | Finish checks and control-plane sync before terminal reporting. The dated ACT-F1-F6 receipt covers the tested Desktop routes; new hook changes need their own exact-hash trust/fresh-host evidence. |
 
 ## Next Implementation Queue
@@ -191,8 +195,8 @@ PAOS-AUD-G1: пять карточек F06/F12/F11/F07/F18 implemented_locally_v
 | --- | --- | --- | --- |
 | `B39-owner-feedback` | Run/review manual owner-feedback scenarios. | Runtime/browser pilot remains separate approval. | `prod_test.md`; `docs/superpowers/specs/batch39-s5-owner-feedback-test-plan.json`. |
 | `B44-S8` | Review S7 manual pilot and decide promotion/no-go. | No scheduler, hooks, provider/model, target mutation, git/release/deploy/publish, external write or auto-apply. | `docs/superpowers/specs/batch44-self-learning-loop-approved-manual-pilot-summary.json`. |
-| `B45-S8` | Promotion-grade eval task group is source-owned through strict-schema abort evidence: T18 eval design/strict schema, T19 cost/timeout/raw-temp-only retention, T20 A03 consumed cost-waived approval, T21 invalid-schema result and T22 A02 blocked/no-go decision. | No provider/model/reviewer call, runtime/browser, target, CI/blocker, git, release/deploy or automation unless strict output/schema handling is fixed or normalized and a new exact approval authorizes a rerun; T21 must produce a valid result before T22 reviewer gate can run. | `docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json`; `docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json`; `docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json`; `docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json`; `docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json`; `docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet-1000s.json`; `docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet-cost-waived.json`; `docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json`; `docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-timeout-mismatch.json`; `docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-cost-unknown.json`; `docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-results.json`; `docs/superpowers/specs/batch45-postq4-t22-promotion-grade-decision-packet.json`. |
-| `B45-S9` | A04-A06 locally implement/focused-verify T23-T29. T28 repair replaced the unaccepted 196-record manifest/legacy T18-T22 block with semantic cases (families 34, exceptions 3, combined test LOC 5658); T29 adds deterministic promotion evidence with self-score diagnostic-only. Next dependency is T30. | Keep single-writer/two-repair budgets. T30-T33 remain local gates; T34 is exact-approval-required. No provider/model/reviewer, runtime/browser, target, Git, release/deploy or automation action is authorized. | `docs/superpowers/plans/2026-08-17-product-agent-os-loop-remediation.md`; `docs/superpowers/plans/2026-08-14-batch45-s9-c-test-metric-repair.md`; `docs/superpowers/specs/batch45-code-quality-runtime-recovery-task-group.json`. |
+| `B45-S8` | Promotion-grade eval task group is source-owned through strict-schema abort evidence: T18 eval design/strict schema, T19 cost/timeout/raw-temp-only retention, T20 A03 consumed cost-waived approval, T21 invalid-schema result and T22 A02 blocked/no-go decision. | No provider/model/reviewer call, runtime/browser, target, CI/blocker, git, release/deploy or automation unless strict output/schema handling is fixed or normalized and a new exact approval authorizes a rerun; T21 must produce a valid result before T22 reviewer gate can run. | `docs/planning/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json`; `docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json`; `docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json`; `docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json`; `docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json`; `docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet-1000s.json`; `docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet-cost-waived.json`; `docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json`; `docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-timeout-mismatch.json`; `docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-cost-unknown.json`; `docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-results.json`; `docs/superpowers/specs/batch45-postq4-t22-promotion-grade-decision-packet.json`. |
+| `B45-S9` | A04-A06 locally implement/focused-verify T23-T29. T28 repair replaced the unaccepted 196-record manifest/legacy T18-T22 block with semantic cases (families 34, exceptions 3, combined test LOC 5658); T29 adds deterministic promotion evidence with self-score diagnostic-only. Next dependency is T30. | Keep single-writer/two-repair budgets. T30-T33 remain local gates; T34 is exact-approval-required. No provider/model/reviewer, runtime/browser, target, Git, release/deploy or automation action is authorized. | `docs/planning/2026-08-17-product-agent-os-loop-remediation.md`; `docs/planning/2026-08-14-batch45-s9-c-test-metric-repair.md`; `docs/planning/batch45-code-quality-runtime-recovery-task-group.json`. |
 | `Track11-after-DOC-M25` | Maintain source docs and generated-site boundary. | Browser proof, broad scans, dependency remediation, publication and release remain separate. | `docs/superpowers/specs/documentation-refresh-doc-m25-site-freshness-summary.json`. |
 | `control-plane-overflow` | Keep `PLAN.md`, `RUNLOG.md`, `TEST.md`, `EVALS.md` under compact budgets after each task. | Size pressure is not permission to skip updates. | `docs/product-agent-os/control-plane-current-state.md`; `.codex/workflows/control-plane-sync.md`. |
 
@@ -212,10 +216,10 @@ PAOS-AUD-G1: пять карточек F06/F12/F11/F07/F18 implemented_locally_v
 | `RUNLOG.md` | Current-cycle handoff and residual risks. |
 | `AGENTS.md` | Durable operating rules and current operating status. |
 | `docs/product-agent-os/control-plane-current-state.md` | Site-facing current state, source matrix and root-file compaction owner artifact. |
-| `docs/sources/product-agent-os-track-8-detailed-backlog.md` | Track 8 detailed scenario/methodology history. |
-| `docs/sources/product-agent-os-track-9-backlog.md` | Source-owned Track 9 methodology and verification history. |
-| `docs/sources/product-agent-os-track-10-backlog.md` | Source-owned Track 10, Batch 35, Batch 38, Batch 39, Batch 40, Batch 41 and Batch 42 history. |
-| `docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md` | Active Track 11 docs architecture, Batch 44 and Batch 45 matrices. |
+| `docs/planning/product-agent-os-track-8-detailed-backlog.md` | Track 8 detailed scenario/methodology history. |
+| `docs/planning/product-agent-os-track-9-backlog.md` | Source-owned Track 9 methodology and verification history. |
+| `docs/planning/product-agent-os-track-10-backlog.md` | Source-owned Track 10, Batch 35, Batch 38, Batch 39, Batch 40, Batch 41 and Batch 42 history. |
+| `docs/planning/2026-06-20-track-11-documentation-architecture-refresh.md` | Active Track 11 docs architecture, Batch 44 and Batch 45 matrices. |
 | `docs/sources/registry.md` and `docs/sources/registry.en.md` | Claim/source registry. |
 | `docs/sources/product-agent-os-batch35-approval-packet-draft.md` | Batch 35 approval and execution packet. |
 | `docs/superpowers/specs/*.json` | Source-owned evidence packets for current batch details. |

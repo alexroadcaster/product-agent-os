@@ -13,6 +13,6 @@ Source status: isolated design prototype, synthetic data, awaiting user acceptan
 7. Сравните demo-аналитику с состоянием недоступной телеметрии. Это образцы, не статистика вашего проекта.
 8. Нажмите стрелку рядом с Product-Agent OS вверху левого меню: оно свернётся до иконок. Наведите курсор или перейдите Tab на пункт для подсказки; повторное нажатие раскроет меню с каскадом подписей. Работает на всех экранах и в обеих темах. Обновите уже открытую вкладку, чтобы загрузить новую версию.
 
-[Изображения](contact-sheet.html), [проверки](verification.md), [исследование](research.md), [поля задачи](task-field-map.md), [план](implementation-plan.md).
+[Изображения](contact-sheet.html), [проверки](verification.md), [исследование](research.md), [поля задачи](task-field-map.md), [план](../../docs/planning/2026-11-13-v3-ui-implementation-plan.md).
 
 Пересборка в этой папке: `npm ci --ignore-scripts --no-fund --no-audit`, затем `npm run build`. Lockfile закрепляет версии. `capture.mjs` использует установленный на данном Windows-хосте Playwright/Chromium; пути на другом компьютере нужно адаптировать. Проверяется только synthetic альбом.

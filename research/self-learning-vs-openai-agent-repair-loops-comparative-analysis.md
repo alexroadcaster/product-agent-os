@@ -15,7 +15,7 @@ Source status: `local_current_run_evidence + internal_research_artifact_comparis
 - `plugins/product-agent-os/scripts/product_agent_os/self_learning_candidates.py` - review-only candidate packet и forbidden-action safety report.
 - `plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py` - более широкий read-only metrics/scorecard контур для agents/skills.
 - `docs/product-agent-os/agent-skill-modernization-loop.md`, `docs/product-agent-os/behavioral-evals.md`, `docs/product-agent-os/artifact-contracts.md`.
-- `docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md` и `docs/superpowers/specs/batch44-self-learning-loop-*.json`.
+- `docs/planning/2026-06-20-track-11-documentation-architecture-refresh.md` и `docs/superpowers/specs/batch44-self-learning-loop-*.json`.
 
 Текущие команды, выполненные в этом анализе:
 

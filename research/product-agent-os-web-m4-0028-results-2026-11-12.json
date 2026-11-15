@@ -346,7 +346,7 @@
     "research/product-agent-os-web-m4-0028-execution-2026-11-12.md": "244860a83599ebccab00acc6b75340df25b0390f4a74353c52e5f4ed217da101",
     "tests/web/m4-integration.test.mts": "f358ee27499ed80f30c82eab39404bd13514548312c5c24afa0d68423b744048",
     "tests/web/single-window/m4-integration-acceptance.mts": "66ffc9f08f5a06c995f6e33821708a8f69ff652211d098552fb659c19733e0a8",
-    "research/product-agent-os-web-task-manager-plan-2026-11-09.md": "fb3e1b28e70d32ac4ce84ad41a3ec6ca0661f3da552f296ed30aefdfbaa9262b",
-    "research/product-agent-os-web-task-manager-task-group-2026-11-09.json": "cd79e3d4d9dab35ae206751d7c4d6636c2f8d658b879a196fad4671b7867d837"
+    "docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md": "fb3e1b28e70d32ac4ce84ad41a3ec6ca0661f3da552f296ed30aefdfbaa9262b",
+    "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json": "cd79e3d4d9dab35ae206751d7c4d6636c2f8d658b879a196fad4671b7867d837"
   }
 }

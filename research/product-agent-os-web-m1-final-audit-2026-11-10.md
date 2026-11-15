@@ -32,7 +32,7 @@ P0: не заявляются; действующий Web runtime не пров�
 
 ### WA-01 — P1 / противоречие объёма: минимальный M1 против полного round-trip миграции
 
-**Источники:** [PRD](product-agent-os-web-prd-2026-11-05.md) L627, L675, L683–700; [архитектура](product-agent-os-web-architecture-2026-11-05.md) L611–620, L667; [план](product-agent-os-web-task-manager-plan-2026-11-09.md) L17–20, карточки 0031–0034 (L1486–1661), 0050 (L2318).
+**Источники:** [PRD](product-agent-os-web-prd-2026-11-05.md) L627, L675, L683–700; [архитектура](product-agent-os-web-architecture-2026-11-05.md) L611–620, L667; [план](../docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md) L17–20, карточки 0031–0034 (L1486–1661), 0050 (L2318).
 
 M1 — минимальная task card и одна recipe; components/versions и полная модель отнесены к M2. Одновременно ST-03 и 0050 требуют round-trip всех полей §13–14, project task scope переносится целиком, ST-AC-01–07 обязательны для M1c. Для legacy проекта с versions, links и attachments это либо скрытая реализация M2 в M1, либо гарантированно blocked cutover. Сохранить исходный MD недостаточно, чтобы назвать все его поля рабочими SQL entities после переключения.
 
@@ -203,7 +203,7 @@ Review mode: explicit self_review, контекст предыдущего autho
 | --- | --- |
 | `git status --short` до правок | Exit 0, worktree clean |
 | `git rev-parse HEAD` | Exit 0, cc9003e733f84c86a81633fafa37431f8c62e658 |
-| `python plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-web-task-manager-plan-2026-11-09.md` | Exit 0, ok=true, errors=[] |
+| `python plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md` | Exit 0, ok=true, errors=[] |
 | Inline Node read-only plan audit | errors=[]; 53 unique tasks / 12 groups; DAG acyclic, MD Depends on/Blocks совпадают с JSON; all planned/actual null; M1 dependency closure 15 tasks, estimates sum 202 h |
 | `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v` | Exit 0, 105 tests OK, 8.331 s; process-local TEMP/TMP=.docs-tools/reports/web-task-manager/test-temp |
 | `python tools/check_docs.py` | Exit 0; documentation structure checks passed |
@@ -249,7 +249,7 @@ Task: PAOS-WEB-M1-CONTRACT-ALIGNMENT-2026-11-10. Sections 1–8 — неизме
 | --- | --- |
 | Docs unittest: python -m unittest tests.product_agent_os.test_product_agent_os_docs -v; финальный повтор без -v | 105 tests OK; финальный запуск 9.975 s, exit 0. TEMP/TMP process-local .docs-tools/reports/web-task-manager/test-temp |
 | python tools/check_docs.py | Exit 0, documentation structure checks passed |
-| python plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-web-task-manager-plan-2026-11-09.md | Exit 0, ok=true, errors=[] |
+| python plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md | Exit 0, ok=true, errors=[] |
 | Inline Node read-only consistency | 56 unique tasks / 12 groups; DAG acyclic; MD Depends on/Blocks/title/estimate совпадают с JSON; все planned и actual null; M1 18 tasks / rough 234 h |
 | Inline source/text checks | 97 local file links разрешаются; UTF-8/fences без ошибок; 31 screen sections, 21 WF; numbered PRD/architecture headings unique; WA-01–13 mapping complete; root files ≤50 KiB |
 | git diff --check | Первоначально найден extra blank line at plan EOF; исправлен, финальный exit 0. CRLF normalization warnings не выдаются за whitespace errors |

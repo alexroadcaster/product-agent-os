@@ -18,7 +18,7 @@ High-risk and full lifecycle reporting are selected independently of coding-cont
 
 G7 refines local contracts: a bounded capability summary reuses current inventory through the existing `existing_capability` field; reference coverage stays unknown until source inspection. Refactors reuse existing/characterization checks without artificial RED. Fingerprints include known lockfiles/config and explicit `verification_paths`; `verification_environment` is caller-reported, not automatic tool-version proof. Missing coverage does not mean clean.
 
-Review distinguishes confirmed defects, preferences, rejected findings and unresolved risks, tied to a checked revision and scenario. T34 evaluator bytes remain frozen; G7 uses a separate versioned evidence contract. See the research and limits (`research/product-agent-os-g7-repository-deep-review-2026-11-09.md`) and G7 plan (`research/product-agent-os-audit-remediation-task-plan-2026-11-09.md`). Local mechanism checks do not prove better model generation or fresh-session loading.
+Review distinguishes confirmed defects, preferences, rejected findings and unresolved risks, tied to a checked revision and scenario. T34 evaluator bytes remain frozen; G7 uses a separate versioned evidence contract. See the research and limits (`research/product-agent-os-g7-repository-deep-review-2026-11-09.md`) and G7 plan (`docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md`). Local mechanism checks do not prove better model generation or fresh-session loading.
 
 | Gate | What the agent records | When it can be skipped |
 | --- | --- | --- |

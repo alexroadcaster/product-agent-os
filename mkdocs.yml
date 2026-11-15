@@ -77,6 +77,7 @@ plugins:
                 - Runtime Decision Map: diagrams/runtime-decision-map.md
                 - Skill Lifecycle: diagrams/skill-lifecycle.md
                 - Context, Memory, Verification: diagrams/context-memory-verification.md
+            - Plans and tasks: planning/index.md
             - Sources:
                 - Source Registry: sources/registry.md
                 - Context7 Analysis: sources/context7-research.md
@@ -231,6 +232,7 @@ nav:
       - Runtime decision map: diagrams/runtime-decision-map.md
       - Skill lifecycle: diagrams/skill-lifecycle.md
       - Context, memory, verification: diagrams/context-memory-verification.md
+  - Планы и задачи: planning/index.md
   - Источники:
       - Реестр источников: sources/registry.md
       - Анализ Context7: sources/context7-research.md

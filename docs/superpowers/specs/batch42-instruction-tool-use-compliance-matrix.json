@@ -304,7 +304,7 @@
     "checked_at": "2026-11-05",
     "status": "partially_verified",
     "historical_snapshot": "planning_boundary and original task status fields retain the 2026-06-19 planning snapshot; current_execution and per-row execution_evidence own the new local evidence.",
-    "owning_plan": "research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md",
+    "owning_plan": "docs/planning/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md",
     "source_skill_count": 12,
     "cache_skill_count": 12,
     "normalized_drift_count": 11,

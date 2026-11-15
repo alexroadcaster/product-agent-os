@@ -14,7 +14,7 @@ Source status: project-authored design proposal based on current UI sources and 
 - [Контактный лист всех экранов](design/2026-11-13-v2/contact-sheet.html): изображения для последовательного просмотра.
 - [Реестр покрытия](design/2026-11-13-v2/coverage.json): источник, тип поверхности, действия и изображения. Это инвентарь макетов, не новые URL приложения.
 - [Исследование компонентов, motion и загрузок](design/2026-11-13-v2/research.md).
-- [План внедрения UI-01–UI-12, редакция V2](design/2026-11-13-v2/implementation-plan.md).
+- [План внедрения UI-01–UI-12, редакция V2](docs/planning/2026-11-13-v2-ui-implementation-plan.md).
 - [Проверки и ограничения](design/2026-11-13-v2/verification.md).
 - [Видео движения и обратной связи](design/2026-11-13-v2/screenshots/motion-demo.webm).
 - Art direction: [Porcelain](design/2026-11-13-v2/concept-light.png), [Obsidian](design/2026-11-13-v2/concept-dark.png).

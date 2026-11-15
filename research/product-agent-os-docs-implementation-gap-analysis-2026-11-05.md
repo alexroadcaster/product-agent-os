@@ -245,21 +245,21 @@ Product-Agent OS уже имеет существенную локальную �
 
 | Артефакт | Как использован в исследовании |
 | --- | --- |
-| [Track 1 plugin core](../docs/superpowers/plans/2026-05-14-product-agent-os-plugin-core.md) | Scope/структура/исторические task recipes; сопоставлено с manifest/discovery/validators/merge/fixture tooling |
-| [Track 2 lifecycle skills](../docs/superpowers/plans/2026-05-14-product-agent-os-lifecycle-skills.md) | Scope 12 skills/shared references, package metadata и current/cache comparison |
-| [Track 3 infrastructure](../docs/superpowers/plans/2026-05-14-product-agent-os-generated-infrastructure.md) | Staged-first architecture и profile обещания против текущего registry/renderer |
-| [Track 4 hardening](../docs/superpowers/plans/2026-05-14-product-agent-os-production-hardening.md) | Approval/merge/rollback и automation/source-policy boundaries |
-| [Track 5 runtime runner](../docs/superpowers/plans/2026-05-15-product-agent-os-codex-runtime-runner.md) | Contract helper scope; context/state/routes/guards; отсутствие обязательной SDK migration |
-| [Track 9 methodology](../docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md) и [backlog](../docs/sources/product-agent-os-track-9-backlog.md) | Структурная inventory, domain queue и synthesis/runtime boundaries; не повторный аудит всех методологических тезисов |
-| [Track 10](../docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md), [Track 8 history](../docs/sources/product-agent-os-track-8-detailed-backlog.md), [Track 10 history](../docs/sources/product-agent-os-track-10-backlog.md) | Реализованные usage-mode/first-run/question/status families и отдельные Batch 39/41/42 gates |
-| [Track 11](../docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md) | Маршрутизация B44/B45 и docs/site evidence ownership |
-| [GPT56 remediation](../docs/superpowers/plans/2026-08-05-gpt56-r1-r6-remediation.md) | Исторический этап; не переносился поверх более свежего 03.11 alignment |
-| [S9 team readiness](../docs/superpowers/plans/2026-08-10-batch45-s9-0-team-readiness.md) | Историческое разделение ownership; team readiness не равно execution |
-| [S9-A](../docs/superpowers/plans/2026-08-10-batch45-s9-a-durable-contract-recovery.md) | T23/T24 local schema и normalization completion |
-| [S9-B](../docs/superpowers/plans/2026-08-11-batch45-s9-b-compact-authoring-runtime.md) | T25–T27 completion, exact changed file classes и integration ceiling |
-| [S9-C](../docs/superpowers/plans/2026-08-14-batch45-s9-c-test-metric-repair.md), [loop remediation](../docs/superpowers/plans/2026-08-17-product-agent-os-loop-remediation.md) | Старый незавершённый attempt против последующей A06/R2–R4 repair; T28/T29 фактически локально завершены |
-| [03.11 refresh/alignment/lifecycle](../docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md) и [task-group](../docs/superpowers/specs/gpt6-documentation-refresh-task-group.json) | 20 docs tasks, technical followup, failed activation и последующий ACT repair; newer scoped receipt имеет приоритет |
-| [B45 recovery task-group](../docs/superpowers/specs/batch45-code-quality-runtime-recovery-task-group.json) | Текущий источник статусов T23–T34, dependencies, acceptance и proposed files |
+| [Track 1 plugin core](../docs/planning/2026-05-14-product-agent-os-plugin-core.md) | Scope/структура/исторические task recipes; сопоставлено с manifest/discovery/validators/merge/fixture tooling |
+| [Track 2 lifecycle skills](../docs/planning/2026-05-14-product-agent-os-lifecycle-skills.md) | Scope 12 skills/shared references, package metadata и current/cache comparison |
+| [Track 3 infrastructure](../docs/planning/2026-05-14-product-agent-os-generated-infrastructure.md) | Staged-first architecture и profile обещания против текущего registry/renderer |
+| [Track 4 hardening](../docs/planning/2026-05-14-product-agent-os-production-hardening.md) | Approval/merge/rollback и automation/source-policy boundaries |
+| [Track 5 runtime runner](../docs/planning/2026-05-15-product-agent-os-codex-runtime-runner.md) | Contract helper scope; context/state/routes/guards; отсутствие обязательной SDK migration |
+| [Track 9 methodology](../docs/planning/2026-05-25-track-9-methodology-intelligence.md) и [backlog](../docs/planning/product-agent-os-track-9-backlog.md) | Структурная inventory, domain queue и synthesis/runtime boundaries; не повторный аудит всех методологических тезисов |
+| [Track 10](../docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md), [Track 8 history](../docs/planning/product-agent-os-track-8-detailed-backlog.md), [Track 10 history](../docs/planning/product-agent-os-track-10-backlog.md) | Реализованные usage-mode/first-run/question/status families и отдельные Batch 39/41/42 gates |
+| [Track 11](../docs/planning/2026-06-20-track-11-documentation-architecture-refresh.md) | Маршрутизация B44/B45 и docs/site evidence ownership |
+| [GPT56 remediation](../docs/planning/2026-08-05-gpt56-r1-r6-remediation.md) | Исторический этап; не переносился поверх более свежего 03.11 alignment |
+| [S9 team readiness](../docs/planning/2026-08-10-batch45-s9-0-team-readiness.md) | Историческое разделение ownership; team readiness не равно execution |
+| [S9-A](../docs/planning/2026-08-10-batch45-s9-a-durable-contract-recovery.md) | T23/T24 local schema и normalization completion |
+| [S9-B](../docs/planning/2026-08-11-batch45-s9-b-compact-authoring-runtime.md) | T25–T27 completion, exact changed file classes и integration ceiling |
+| [S9-C](../docs/planning/2026-08-14-batch45-s9-c-test-metric-repair.md), [loop remediation](../docs/planning/2026-08-17-product-agent-os-loop-remediation.md) | Старый незавершённый attempt против последующей A06/R2–R4 repair; T28/T29 фактически локально завершены |
+| [03.11 refresh/alignment/lifecycle](../docs/planning/2026-11-03-gpt6-documentation-refresh.md) и [task-group](../docs/planning/gpt6-documentation-refresh-task-group.json) | 20 docs tasks, technical followup, failed activation и последующий ACT repair; newer scoped receipt имеет приоритет |
+| [B45 recovery task-group](../docs/planning/batch45-code-quality-runtime-recovery-task-group.json) | Текущий источник статусов T23–T34, dependencies, acceptance и proposed files |
 | [T21 run](../docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-results.json), [T22 decision](../docs/superpowers/specs/batch45-postq4-t22-promotion-grade-decision-packet.json) | Фактический no-go, consumed approval и отсутствие valid pairs/reviewer result |
 | [B42 matrix](../docs/superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json) | Существующий backlog для exposure/implicit policy; не выдан за выполненный |
 | [B44 S7](../docs/superpowers/specs/batch44-self-learning-loop-approved-manual-pilot-summary.json), [B39 S5](../docs/superpowers/specs/batch39-s5-go-no-go-decision-packet.json) | Manual evidence, owner/pilot/release gates; obsolete local docs blocker отделён от остальных |

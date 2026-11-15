@@ -38,7 +38,7 @@ The diagrams use four claim levels:
 | Task checklist | `plugins/product-agent-os/assets/templates/artifact-templates/coding-standard-checklist.md` |
 | Handoff contract | `plugins/product-agent-os/assets/templates/artifact-templates/agent-task-packet.md`; subagent context/result packet templates |
 | Public docs | `docs/product-agent-os/coding-standards.md`; `docs/product-agent-os/coding-standards.en.md`; related cross-links in Product-Agent OS docs and code-review playbook |
-| Task matrix | `docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md`; `PLAN.md`; `TEST.md`; `EVALS.md`; `RUNLOG.md` |
+| Task matrix | `docs/planning/2026-06-20-track-11-documentation-architecture-refresh.md`; `PLAN.md`; `TEST.md`; `EVALS.md`; `RUNLOG.md` |
 | Evidence packets | `docs/superpowers/specs/batch45-*.json` evidence packets |
 | Tests | `tests/product_agent_os/test_batch45_coding_standards.py`; `tests/product_agent_os/test_batch45_s2_existing_workflow_retrofit.py`; `tests/product_agent_os/test_batch45_s3_professional_code_authoring.py`; `tests/product_agent_os/test_coding_standards_artifacts.py`; `tests/product_agent_os/test_comment_sufficiency.py`; `tests/product_agent_os/test_lifecycle_hooks.py` |
 

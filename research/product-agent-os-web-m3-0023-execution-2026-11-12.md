@@ -4,7 +4,7 @@ Source status: project-authored / implemented_locally_verified / synthetic produ
 
 ## Scope и решения
 
-Владелец статуса — карточка PAOS-0023 в [Web-плане](product-agent-os-web-task-manager-plan-2026-11-09.md) и [task-group JSON](product-agent-os-web-task-manager-task-group-2026-11-09.json). Зависимости PAOS-0008/0013/0017 имеют implemented status; их Web API/contracts используются без нового runner. Следующий маршрут — PAOS-0037; остальные задачи не реализуются этим срезом. Оценка 12 h сохраняется как rough planning estimate.
+Владелец статуса — карточка PAOS-0023 в [Web-плане](../docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md) и [task-group JSON](../docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json). Зависимости PAOS-0008/0013/0017 имеют implemented status; их Web API/contracts используются без нового runner. Следующий маршрут — PAOS-0037; остальные задачи не реализуются этим срезом. Оценка 12 h сохраняется как rough planning estimate.
 
 Policy — отдельный project-scoped admission contract. По умолчанию политика отсутствует, ручная работа сохраняет прежний маршрут. Пользователь выбирает задачи, actions execution/command, число запусков, число допущенных команд на запуск, deadline и stop-on-failed-command. Сохранение проверенного preview оставляет policy paused; Resume включает только admission, не создаёт очередь и не повторяет runs. Каждый send по policy имеет явный `autonomy: true`; trusted gateway сохраняет budget pin. M3 recipes/scheduler подключаются к этому же contract позднее.
 

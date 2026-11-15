@@ -13,7 +13,7 @@
     "docs/superpowers/specs/batch45-postq4-t11-treatment-v3-source-design.json",
     "docs/superpowers/specs/batch45-agent-behavior-eval-plan.json",
     "docs/superpowers/specs/batch45-agent-behavior-eval-results.json",
-    "docs/superpowers/specs/batch45-post-q4-next-tasks.json"
+    "docs/planning/batch45-post-q4-next-tasks.json"
   ],
   "approval_state": {
     "owner_confirmed": false,
@@ -264,7 +264,7 @@
         "status": "passed"
       },
       {
-        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-post-q4-next-tasks.json",
+        "command": "python -m json.tool docs\\planning\\batch45-post-q4-next-tasks.json",
         "status": "passed"
       },
       {

@@ -270,12 +270,12 @@
         "evidence": "JSON parsed successfully."
       },
       {
-        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+        "command": "python -m json.tool docs\\planning\\batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
         "status": "passed",
         "evidence": "JSON parsed successfully."
       },
       {
-        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-post-q4-next-tasks.json",
+        "command": "python -m json.tool docs\\planning\\batch45-post-q4-next-tasks.json",
         "status": "passed",
         "evidence": "JSON parsed successfully."
       },

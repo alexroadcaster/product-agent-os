@@ -161,7 +161,7 @@ REQUIREMENTS: updated — approved presentation scope/non-goals. PLAN: updated �
 
 ## Финальные документационные gates
 
-`PAOS_DOCS_SITE_DIR=.tmp/paos-m4-0030/site-final python -m unittest tests.product_agent_os.test_product_agent_os_docs -v`:105 tests,21.475s,OK (существующий site fixture; свежесть site build не заявлена). `python tools/check_docs.py`:OK. `python plugins/product-agent-os/scripts/validate_task_matrix.py design/2026-11-13-v3/implementation-plan.md`:ok. `git diff --check`:exit0; только Git CRLF conversion notices. Реализация UI-01–UI-11 закрывается локальными gates, UI-12 остаётся in_progress.
+`PAOS_DOCS_SITE_DIR=.tmp/paos-m4-0030/site-final python -m unittest tests.product_agent_os.test_product_agent_os_docs -v`:105 tests,21.475s,OK (существующий site fixture; свежесть site build не заявлена). `python tools/check_docs.py`:OK. `python plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/2026-11-13-v3-ui-implementation-plan.md`:ok. `git diff --check`:exit0; только Git CRLF conversion notices. Реализация UI-01–UI-11 закрывается локальными gates, UI-12 остаётся in_progress.
 
 Матрица исторически находится под design/, который completion helper не принимает (разрешены docs/planning,docs/superpowers,research); она обновлена и валидирована на месте, без переименования/дубликата. Синхронизация финальных PLAN/RUNLOG выполняется reviewed section patch через sync_task_documents с CAS/recovery. Это локальный UI handoff, не новая инструкция и не runtime activation claim.
 

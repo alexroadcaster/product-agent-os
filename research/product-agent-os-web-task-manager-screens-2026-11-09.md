@@ -40,7 +40,7 @@ Source status: project-authored / proposed UX / generated visual concepts. Да�
 
 Статус: **draft_for_review / needs_user_acceptance**. 24 проектируемых экрана и шесть визуальных листов. Это дизайн будущего продукта, не screenshots работающего приложения. В макетах synthetic examples; названия задач/файлов, лица, статусы и счётчики не подтверждают работу текущего репозитория. Нормативные названия и поведение задаёт текст ниже; image generation может исказить мелкие подписи.
 
-Связи: [PRD](product-agent-os-web-prd-2026-11-05.md), [архитектура](product-agent-os-web-architecture-2026-11-05.md), [38 задач и 10 групп](product-agent-os-web-task-manager-plan-2026-11-09.md).
+Связи: [PRD](product-agent-os-web-prd-2026-11-05.md), [архитектура](product-agent-os-web-architecture-2026-11-05.md), [38 задач и 10 групп](../docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md).
 
 ## Дополнение v0.3: issue model и workflow
 
@@ -430,7 +430,7 @@ Graph и доступная table-альтернатива, статусы/пе�
 
 Актуальный каталог содержит S01–S31. Текущая детализация и receipts — в wireframes UX v0.5; прежние изображения покрывают только S01–S24 и не подтверждают новый UX. Малые labels изображения не являются source of truth. Для разработки потребуются component-level states, responsive layouts и browser verification. Статус принятия визуального направления — needs_user_acceptance.
 
-Fresh-context Hallmark review и один пакет visual corrections записаны в [протоколе плана](product-agent-os-web-task-manager-plan-2026-11-09.md). В рисунке S18 возможны повторяющиеся labels одного примера; нормативная identity символа задаётся архитектурой. Второстепенные данные картинок не импортируются в приложение. [Manifest](assets/task-manager-2026-11-09/manifest.json) фиксирует финальные шесть PNG.
+Fresh-context Hallmark review и один пакет visual corrections записаны в [протоколе плана](../docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md). В рисунке S18 возможны повторяющиеся labels одного примера; нормативная identity символа задаётся архитектурой. Второстепенные данные картинок не импортируются в приложение. [Manifest](assets/task-manager-2026-11-09/manifest.json) фиксирует финальные шесть PNG.
 
 ## Дополнение M1 v0.7 — данные и согласованные действия
 

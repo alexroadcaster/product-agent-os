@@ -35,7 +35,7 @@ class SelfLearningStateTests(unittest.TestCase):
             "user_effort": "high",
             "outcome": "reopened",
             "evidence_links": [
-                "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md"
+                "docs/planning/2026-06-20-track-11-documentation-architecture-refresh.md"
             ],
             "redaction_status": "redacted",
             "owner_review": "owner_labeled",

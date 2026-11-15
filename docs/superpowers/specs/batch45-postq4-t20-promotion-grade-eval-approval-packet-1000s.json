@@ -11,7 +11,7 @@
   "goal": "Provide the revised exact owner-confirmation text with a 1000s primary/reviewer timeout before T21 can run the same-model promotion-grade eval designed by T17-T19, while preserving a hard no-run boundary until the owner restates the A02 packet exactly.",
   "claim_ceiling": "T20-A02 is an approval packet revision only. It names the future run contract but does not authorize execution, satisfy reviewer gate, reverse M26/M35/T15 no-go, prove behavior improvement, or prove runtime/browser/target/CI/git/release/deploy/automation readiness.",
   "basis": {
-    "task_group": "docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+    "task_group": "docs/planning/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
     "previous_t20_approval_packet": "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
     "t21_timeout_mismatch_preflight": "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-timeout-mismatch.json",
     "frozen_corpus": "docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json",
@@ -358,7 +358,7 @@
     "docs/product-agent-os/coding-standards.en.md": "updated_evidence_ceiling",
     "docs/product-agent-os/behavioral-evals.md": "updated_professional_code_eval_route_without_raw_batch_marker",
     "docs/product-agent-os/behavioral-evals.en.md": "updated_professional_code_eval_route_without_raw_batch_marker",
-    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md": "updated_t16_t22_row_and_s8_slice",
+    "docs/planning/2026-06-20-track-11-documentation-architecture-refresh.md": "updated_t16_t22_row_and_s8_slice",
     ".codex/product-agent-os/lifecycle-state.json": "updated_current_marker"
   },
   "verification": {
@@ -370,12 +370,12 @@
         "evidence": "JSON parsed successfully."
       },
       {
-        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+        "command": "python -m json.tool docs\\planning\\batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
         "status": "passed",
         "evidence": "JSON parsed successfully."
       },
       {
-        "command": "python -m json.tool docs\\superpowers\\specs\\batch45-post-q4-next-tasks.json",
+        "command": "python -m json.tool docs\\planning\\batch45-post-q4-next-tasks.json",
         "status": "passed",
         "evidence": "JSON parsed successfully."
       },

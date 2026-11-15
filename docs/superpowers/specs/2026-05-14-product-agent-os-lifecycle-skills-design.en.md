@@ -8,7 +8,7 @@ title: "Archive - Product-Agent OS Lifecycle Skills Design"
 
 Source status: `official + experiment`
 
-This design defines Track 2 for the [Product-Agent OS plugin spec](../../product-agent/product-agent-os-plugin-spec.md). It builds on the completed Track 1 core plan (`docs/superpowers/plans/2026-05-14-product-agent-os-plugin-core.md`) and focuses only on packaged lifecycle `skills`.
+This design defines Track 2 for the [Product-Agent OS plugin spec](../../product-agent/product-agent-os-plugin-spec.md). It builds on the completed Track 1 core plan (`docs/planning/2026-05-14-product-agent-os-plugin-core.md`) and focuses only on packaged lifecycle `skills`.
 
 ## Goal
 

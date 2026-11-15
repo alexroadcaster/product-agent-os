@@ -1,0 +1,426 @@
+{
+  "schema_version": "planning_relocation_manifest_v1",
+  "date": "2026-11-15",
+  "scope": "standalone plans, task backlogs and task-state owners; not every report that mentions tasks",
+  "moves": [
+    {
+      "from": "research/functional-remediation-2026-11-15.md",
+      "to": "docs/planning/functional-remediation-2026-11-15.md",
+      "before_sha256": "76d2ff99f113102ab7d3ea33525bc5f956e33e9a5bcf44a94b7f1d81d8e5d8ec",
+      "after_sha256": "89e20319173cdb9991b6de41794b4d8e8fa8c693886d9fc13529d04ac764d352"
+    },
+    {
+      "from": "research/functional-remediation-2026-11-15.json",
+      "to": "docs/planning/functional-remediation-2026-11-15.json",
+      "before_sha256": "c5fd971add7065faf162c2f71b1a99afcd92f68a9f3f44baac322f502a91000e",
+      "after_sha256": "d2aecbdc2dd3148b14c99bdbc3a8e03963a10df6b06db7bbc6749dfc1d79a4b3"
+    },
+    {
+      "from": "research/product-agent-os-audit-remediation-task-plan-2026-11-09.md",
+      "to": "docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md",
+      "before_sha256": "bb8d2bbdca5d882ccdb49281ef74271ec3c82ba1deb79ce0629123cf63677746",
+      "after_sha256": "948290aa66cb92aeb2c74702a6ee330c6bc8356cece71b8b8b70c38549524c4e"
+    },
+    {
+      "from": "research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md",
+      "to": "docs/planning/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md",
+      "before_sha256": "daa0666a9098e4f16491e293b44ab07067540be336d4b06d2dbbc2e4fe4fbeb6",
+      "after_sha256": "989891df2990078b39cb757c6a188652e61b5992c3c9bb1ca4740c272834962d"
+    },
+    {
+      "from": "research/product-agent-os-web-task-manager-plan-2026-11-09.md",
+      "to": "docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md",
+      "before_sha256": "73e2a184a769c089f3a2fbaf93834446b02e0212dffaac90c690849b01d9aa2f",
+      "after_sha256": "ca4b6e4f02f554b26a86c1180ffb86d56053680cd2f5d3e07cb9f0f4f7ac07b2"
+    },
+    {
+      "from": "research/product-agent-os-web-task-manager-task-group-2026-11-09.json",
+      "to": "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json",
+      "before_sha256": "23b013be2f01f088a2de53c1748693820aa8210ed382cd22fe65ce46f3a27ef1",
+      "after_sha256": "9e2650fa6a27f377354c193e13046459affcf5dd76cb652dd31434c01ab560ae"
+    },
+    {
+      "from": "docs/superpowers/plans/2026-05-14-product-agent-os-generated-infrastructure.md",
+      "to": "docs/planning/2026-05-14-product-agent-os-generated-infrastructure.md",
+      "before_sha256": "070fc5f1d10d217defcfb3dd00ef2af5406ad695de0a0587c8becc2cb6537cab",
+      "after_sha256": "cf4dcec59aee26f805c053df276be3b61a37fb963cf788b59d84d15c3d74e560"
+    },
+    {
+      "from": "docs/superpowers/plans/2026-05-14-product-agent-os-lifecycle-skills.md",
+      "to": "docs/planning/2026-05-14-product-agent-os-lifecycle-skills.md",
+      "before_sha256": "3d5df0d0b90f57d8eaf6e99ad0c6ca2b8b0037181f79bb5cd892cfa4caca1966",
+      "after_sha256": "955ccab876ff4c9ca5d251d689646917292b4f582d3a2499bacd7db2d2fdf37a"
+    },
+    {
+      "from": "docs/superpowers/plans/2026-05-14-product-agent-os-plugin-core.md",
+      "to": "docs/planning/2026-05-14-product-agent-os-plugin-core.md",
+      "before_sha256": "c897a84a940935b9f68f05c6d805ed56c7c375d90256e822cf780d682ddd4d88",
+      "after_sha256": "3b68b1a42418090e5f8dbdaa312a12335c2494c08b42e177eabfde6ba407b186"
+    },
+    {
+      "from": "docs/superpowers/plans/2026-05-14-product-agent-os-production-hardening.md",
+      "to": "docs/planning/2026-05-14-product-agent-os-production-hardening.md",
+      "before_sha256": "46bcfc555912e2d61f04236218f4555f7742a680b08e613d6f36748fa278cfac",
+      "after_sha256": "01e7390622e04ec1c915f24d2e0e70725890f8698b94fbf80e323f1c16c3ba3d"
+    },
+    {
+      "from": "docs/superpowers/plans/2026-05-15-product-agent-os-codex-runtime-runner.md",
+      "to": "docs/planning/2026-05-15-product-agent-os-codex-runtime-runner.md",
+      "before_sha256": "a23133d8018e819627898225e0d974ab0bc497a61af934e8c870885437b82fe1",
+      "after_sha256": "c3544e4359be00706851c75257e39c380e439e19b6b45caf104cd14581cacb27"
+    },
+    {
+      "from": "docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md",
+      "to": "docs/planning/2026-05-25-track-9-methodology-intelligence.md",
+      "before_sha256": "f6785a2c221db45a0169ff5be6ad8277a3326ee5de3645f48598e751b47fd6bd",
+      "after_sha256": "c59f38210b6815b800158327ac58507861365264cfeefde167078cc6845e9115"
+    },
+    {
+      "from": "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md",
+      "to": "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md",
+      "before_sha256": "e0ab830a6c974b6ddc51ee32ed48967abc394bc7c26458661f96d36fcf9fe0c6",
+      "after_sha256": "c66f190a01e23e94ab8025147e27f0681b6d6283ec2127478feb3b8185900736"
+    },
+    {
+      "from": "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md",
+      "to": "docs/planning/2026-06-20-track-11-documentation-architecture-refresh.md",
+      "before_sha256": "d4fabb4a48d8f348af9720f4d247fc0a2be7ca23297e7a67ccf5761b9a39dd09",
+      "after_sha256": "ae96b77112a8506dcc0a6f941098b85b4f6732ea3ab5084c515a687f12008dab"
+    },
+    {
+      "from": "docs/superpowers/plans/2026-08-05-gpt56-r1-r6-remediation.md",
+      "to": "docs/planning/2026-08-05-gpt56-r1-r6-remediation.md",
+      "before_sha256": "1c1945eb22d8736ab8ad2837e354491341447e5d45dfd1bc4f7643f062f256c0",
+      "after_sha256": "1c1945eb22d8736ab8ad2837e354491341447e5d45dfd1bc4f7643f062f256c0"
+    },
+    {
+      "from": "docs/superpowers/plans/2026-08-10-batch45-s9-0-team-readiness.md",
+      "to": "docs/planning/2026-08-10-batch45-s9-0-team-readiness.md",
+      "before_sha256": "43aa558143efd4597ccba6c6e79be633b116fe709e53649be48e0221bc703190",
+      "after_sha256": "526c278b126b1f620a78afcc215031fa4c22d75bd088389dde1d1ae5b1a8f0f5"
+    },
+    {
+      "from": "docs/superpowers/plans/2026-08-10-batch45-s9-a-durable-contract-recovery.en.md",
+      "to": "docs/planning/2026-08-10-batch45-s9-a-durable-contract-recovery.en.md",
+      "before_sha256": "45cb53ad58fc9fe73c01e1f867c56248344baff67e51e4ec3f66ba152bbeb3e2",
+      "after_sha256": "8b76c1a5168f396202449f7911b11f6c1439fc08f93f39b47dc794fca9a8a962"
+    },
+    {
+      "from": "docs/superpowers/plans/2026-08-10-batch45-s9-a-durable-contract-recovery.md",
+      "to": "docs/planning/2026-08-10-batch45-s9-a-durable-contract-recovery.md",
+      "before_sha256": "6a7966010fd012f79e77119cff93c3f4321545b7580cb3e67cd5b6363f0e7fd0",
+      "after_sha256": "a21473c1540d5c242c2975f2531e3834027c27d30d232d364ee242d185ae91e4"
+    },
+    {
+      "from": "docs/superpowers/plans/2026-08-11-batch45-s9-b-compact-authoring-runtime.en.md",
+      "to": "docs/planning/2026-08-11-batch45-s9-b-compact-authoring-runtime.en.md",
+      "before_sha256": "dc3016b69caaa577ca64868fd51d58d41ee954ab23a3f64c4652b09d52f3ed63",
+      "after_sha256": "87c40f526f6688d2e4a7f240bb3976cb8fe924f1f37b2002c4f5f52c165c8d96"
+    },
+    {
+      "from": "docs/superpowers/plans/2026-08-11-batch45-s9-b-compact-authoring-runtime.md",
+      "to": "docs/planning/2026-08-11-batch45-s9-b-compact-authoring-runtime.md",
+      "before_sha256": "e8e9304c01d6c131b52627d01ac70d6cfb7f9c6d62699cb560b74e21fc6a241e",
+      "after_sha256": "cccec1879e9a77978479ee51798d6c60d249c026bdfa3e476a05c35fbadf7320"
+    },
+    {
+      "from": "docs/superpowers/plans/2026-08-14-batch45-s9-c-test-metric-repair.en.md",
+      "to": "docs/planning/2026-08-14-batch45-s9-c-test-metric-repair.en.md",
+      "before_sha256": "352a6cda2e8c561f5d537c3a617f41baac0cf703720328bada926d4becfb6663",
+      "after_sha256": "5a53b80dc4aad1c13b64a679855b9378459b7745a1711c364bd9ab04c60f6ffd"
+    },
+    {
+      "from": "docs/superpowers/plans/2026-08-14-batch45-s9-c-test-metric-repair.md",
+      "to": "docs/planning/2026-08-14-batch45-s9-c-test-metric-repair.md",
+      "before_sha256": "46effed32e8374e58a43660c9c258998f316854a067fe5e10f2f53e803d97d3c",
+      "after_sha256": "3c45041ac58801fbab732859e57fd39cfaa06de1079a556d6577515fcc43872f"
+    },
+    {
+      "from": "docs/superpowers/plans/2026-08-17-product-agent-os-loop-remediation.en.md",
+      "to": "docs/planning/2026-08-17-product-agent-os-loop-remediation.en.md",
+      "before_sha256": "527020eb767b5bfa267ed5b490d32e93aea6e4290f8004e7f6098cda032f98ab",
+      "after_sha256": "527020eb767b5bfa267ed5b490d32e93aea6e4290f8004e7f6098cda032f98ab"
+    },
+    {
+      "from": "docs/superpowers/plans/2026-08-17-product-agent-os-loop-remediation.md",
+      "to": "docs/planning/2026-08-17-product-agent-os-loop-remediation.md",
+      "before_sha256": "df7600c0fa1a0c7ec356191537c3b591a0d47815674de929c6bb1cff78ebd6c2",
+      "after_sha256": "df7600c0fa1a0c7ec356191537c3b591a0d47815674de929c6bb1cff78ebd6c2"
+    },
+    {
+      "from": "docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.en.md",
+      "to": "docs/planning/2026-11-03-gpt6-documentation-refresh.en.md",
+      "before_sha256": "a2533076e92a0e267b8ae29644eb655e0b39f3e2657b5cb40e7f8dcb65b03899",
+      "after_sha256": "aaebd97ed40706beee60a18768164ae0eddfbb67ca84874fa1a1a7c91a2ac642"
+    },
+    {
+      "from": "docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md",
+      "to": "docs/planning/2026-11-03-gpt6-documentation-refresh.md",
+      "before_sha256": "77536bcfdfcff5acb0ad7657720d10f51c4b8b11f6d6961aa528abaaa73130dd",
+      "after_sha256": "648a6fcdf0bd5c1c5b73c168f37e9cd82bb1f1aaa7725e8af0e0798ed194b02b"
+    },
+    {
+      "from": "docs/sources/product-agent-os-track-10-backlog.en.md",
+      "to": "docs/planning/product-agent-os-track-10-backlog.en.md",
+      "before_sha256": "cc60772a8acf96876487a37bdb9cd66647bc5f4c55c9822a893b951958fce159",
+      "after_sha256": "d320bf96e11b4d5d618ca1e9100bdaaada167414a57726d96a46cb3bb43118ce"
+    },
+    {
+      "from": "docs/sources/product-agent-os-track-10-backlog.md",
+      "to": "docs/planning/product-agent-os-track-10-backlog.md",
+      "before_sha256": "5fe62e603a109c231befcf01081c27ce29d6964480b3335fad8752ba8bc2fef2",
+      "after_sha256": "f2b9fa57c9faa834351dee8f9c96b758b26bcb830f051ab08fd6f989d7bee7b4"
+    },
+    {
+      "from": "docs/sources/product-agent-os-track-8-detailed-backlog.en.md",
+      "to": "docs/planning/product-agent-os-track-8-detailed-backlog.en.md",
+      "before_sha256": "4483802075ba188fd2cf45b2064e7c021303f961afb8684834681f7f6a7c9899",
+      "after_sha256": "68b84ad0e05675a5b3643ae4311931eccc5fd58795610e10a8483d37b640f521"
+    },
+    {
+      "from": "docs/sources/product-agent-os-track-8-detailed-backlog.md",
+      "to": "docs/planning/product-agent-os-track-8-detailed-backlog.md",
+      "before_sha256": "4852dcddeb1f49e1c94372cef0511a26bb3f6c958503ed33576be532a46b0757",
+      "after_sha256": "9095612598987818bc2439a2406ed022a89bbbdd82b7354e67a2a5823edc0937"
+    },
+    {
+      "from": "docs/sources/product-agent-os-track-9-backlog.en.md",
+      "to": "docs/planning/product-agent-os-track-9-backlog.en.md",
+      "before_sha256": "e25882e58843abee681eca226859ae1637b6785aba425db03d81d171782aeb16",
+      "after_sha256": "e25882e58843abee681eca226859ae1637b6785aba425db03d81d171782aeb16"
+    },
+    {
+      "from": "docs/sources/product-agent-os-track-9-backlog.md",
+      "to": "docs/planning/product-agent-os-track-9-backlog.md",
+      "before_sha256": "5e6038fdf853d9d5b567154752f3c9af31864aceb8de5e1087ce064802c485b0",
+      "after_sha256": "5e6038fdf853d9d5b567154752f3c9af31864aceb8de5e1087ce064802c485b0"
+    },
+    {
+      "from": "docs/superpowers/specs/batch45-code-quality-runtime-recovery-task-group.json",
+      "to": "docs/planning/batch45-code-quality-runtime-recovery-task-group.json",
+      "before_sha256": "6452cb3bd6a1245fd050ae160e0994d6f33bf8c7787c4447982d1b67f7df840e",
+      "after_sha256": "6452cb3bd6a1245fd050ae160e0994d6f33bf8c7787c4447982d1b67f7df840e"
+    },
+    {
+      "from": "docs/superpowers/specs/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+      "to": "docs/planning/batch45-postq4-t16-t22-promotion-grade-eval-task-group.json",
+      "before_sha256": "381d18537ab590401bfa22a0a93db5ded01f7ba7690c71ad55c6d8297bcdbc17",
+      "after_sha256": "02076daf184d24536854dc84956c187f20cccf7efe68e3b2f7e6f87626b3200b"
+    },
+    {
+      "from": "docs/superpowers/specs/gpt6-documentation-refresh-task-group.json",
+      "to": "docs/planning/gpt6-documentation-refresh-task-group.json",
+      "before_sha256": "d272ed9c0459a7e601e7970251a3dc64a13cfc815283e85b1da06484ddc68100",
+      "after_sha256": "fa664b950754c277d240eb4e92f03295ff44eaa9079b0eaba165d5e2fb2d4dda"
+    },
+    {
+      "from": "docs/superpowers/specs/batch39-m01-task-plan.txt",
+      "to": "docs/planning/batch39-m01-task-plan.txt",
+      "before_sha256": "9a8772509c00d7b1813e1ae8649b06edfb6b35e3487e97b0ee2c998c2cfd32ef",
+      "after_sha256": "9a8772509c00d7b1813e1ae8649b06edfb6b35e3487e97b0ee2c998c2cfd32ef"
+    },
+    {
+      "from": "docs/superpowers/specs/batch41-post-neural-flow-rerun-task-plan.txt",
+      "to": "docs/planning/batch41-post-neural-flow-rerun-task-plan.txt",
+      "before_sha256": "3020268e62c1a8409b50bd687a6b88c420f69e26b0ec24d815fa43e677f75317",
+      "after_sha256": "33c4f97ab6829241c84841e1e03f15a1b60e8dc1688e60e07014d810363244c4"
+    },
+    {
+      "from": "design/2026-11-13-v2/implementation-plan.md",
+      "to": "docs/planning/2026-11-13-v2-ui-implementation-plan.md",
+      "before_sha256": "4dd6ecb90bf4a78901b7260409f0af31237c90f64674306aa5491cc2292748d6",
+      "after_sha256": "cd1adcf40801cee44c8c49e23b4a0efb56ad23dfea27db27d3608c9c5b05004a"
+    },
+    {
+      "from": "design/2026-11-13-v3/implementation-plan.md",
+      "to": "docs/planning/2026-11-13-v3-ui-implementation-plan.md",
+      "before_sha256": "65ec3be61632c4f85d871070bc8b85adedba4a8f605679b80bf19d8a932cf339",
+      "after_sha256": "91e80d26c68e995f4ceb1b95676a64557b54d7b6107610decdb0d2cd42f3f0c7"
+    },
+    {
+      "from": "design/2026-11-13/implementation-plan.md",
+      "to": "docs/planning/2026-11-13-ui-implementation-plan.md",
+      "before_sha256": "c883fd98d92fcbab88383263f3a57708711c198515d303cffc1db6b28f0f1dbf",
+      "after_sha256": "c883fd98d92fcbab88383263f3a57708711c198515d303cffc1db6b28f0f1dbf"
+    },
+    {
+      "from": "docs/superpowers/specs/batch45-post-q4-next-tasks.json",
+      "to": "docs/planning/batch45-post-q4-next-tasks.json",
+      "before_sha256": "e51a6df3e8cad0ae0f61c1a46b9794c18558422dcd393e26db326a1e2ef73feb",
+      "after_sha256": "ec649fe4aa34cfc419ed788768fbef8dfe163c1a35a626dcd964ae66c52ad269"
+    },
+    {
+      "from": "docs/superpowers/specs/batch45-postq4-architecture-next-actions.json",
+      "to": "docs/planning/batch45-postq4-architecture-next-actions.json",
+      "before_sha256": "81db4e53025d2fb91dd57c7d3e3b417cd52704ea60738726d8ad4b02565e05ac",
+      "after_sha256": "623f8582519c83e93e1441a39f0204a4d2f483ac47db0461e2ed30548b061a3c"
+    }
+  ],
+  "reference_files_updated": [
+    "AGENTS.md",
+    "DESIGN.md",
+    "EVALS.md",
+    "PLAN.md",
+    "REQUIREMENTS.md",
+    "RUNLOG.md",
+    "TEST.md",
+    "apps/web/README.md",
+    "design/2026-11-13-v2/DESIGN-v2.md",
+    "design/2026-11-13-v2/README.md",
+    "design/2026-11-13-v2/verification.md",
+    "design/2026-11-13-v3/README.md",
+    "design/2026-11-13-v3/implementation-evidence.md",
+    "design/2026-11-13-v3/verification.md",
+    "design/2026-11-13/DESIGN-v1.md",
+    "design/2026-11-13/verification.md",
+    "docs/index.en.md",
+    "docs/index.md",
+    "docs/product-agent-os/codex-compatibility.en.md",
+    "docs/product-agent-os/codex-compatibility.md",
+    "docs/product-agent-os/coding-standards.en.md",
+    "docs/product-agent-os/coding-standards.md",
+    "docs/product-agent-os/control-plane-current-state.en.md",
+    "docs/product-agent-os/control-plane-current-state.md",
+    "docs/runtime/worktrees-hooks-rules.en.md",
+    "docs/runtime/worktrees-hooks-rules.md",
+    "docs/sources/development-methodology-research-log.en.md",
+    "docs/sources/development-methodology-research-log.md",
+    "docs/sources/product-agent-os-batch34d-product-docs-qa-closure.en.md",
+    "docs/sources/product-agent-os-batch34d-product-docs-qa-closure.md",
+    "docs/sources/product-agent-os-batch34e-full-site-i18n-inventory.en.md",
+    "docs/sources/product-agent-os-batch34e-full-site-i18n-inventory.md",
+    "docs/sources/product-agent-os-final-predevelopment-review.en.md",
+    "docs/sources/product-agent-os-final-predevelopment-review.md",
+    "docs/sources/product-agent-os-pre-track-8-implementation-inventory.en.md",
+    "docs/sources/product-agent-os-pre-track-8-implementation-inventory.md",
+    "docs/sources/registry.en.md",
+    "docs/sources/registry.md",
+    "docs/sources/source-registry-archive-20260611.en.txt",
+    "docs/sources/source-registry-archive-20260611.txt",
+    "docs/superpowers/specs/2026-05-14-product-agent-os-generated-infrastructure-design.en.md",
+    "docs/superpowers/specs/2026-05-14-product-agent-os-generated-infrastructure-design.md",
+    "docs/superpowers/specs/2026-05-14-product-agent-os-lifecycle-skills-design.en.md",
+    "docs/superpowers/specs/2026-05-14-product-agent-os-lifecycle-skills-design.md",
+    "docs/superpowers/specs/2026-05-14-product-agent-os-production-hardening-design.en.md",
+    "docs/superpowers/specs/2026-05-14-product-agent-os-production-hardening-design.md",
+    "docs/superpowers/specs/2026-05-15-product-agent-os-codex-runtime-runner-design.en.md",
+    "docs/superpowers/specs/2026-05-15-product-agent-os-codex-runtime-runner-design.md",
+    "docs/superpowers/specs/batch41-post-neural-flow-rerun-summary.json",
+    "docs/superpowers/specs/batch41-s3-project-analysis-summary.json",
+    "docs/superpowers/specs/batch41-s4-html-artifact-summary.json",
+    "docs/superpowers/specs/batch41-s5-guided-questions-summary.json",
+    "docs/superpowers/specs/batch41-s9-html-modernization-summary.json",
+    "docs/superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json",
+    "docs/superpowers/specs/batch44-self-learning-loop-candidate-safety-summary.json",
+    "docs/superpowers/specs/batch44-self-learning-loop-feedback-preferences-summary.json",
+    "docs/superpowers/specs/batch44-self-learning-loop-metrics-evals-summary.json",
+    "docs/superpowers/specs/batch45-postq4-live-model-rerun-approval-packet.json",
+    "docs/superpowers/specs/batch45-postq4-t01-t04-execution-summary.json",
+    "docs/superpowers/specs/batch45-postq4-t05b-rerun-approval-packet.json",
+    "docs/superpowers/specs/batch45-postq4-t06-promotion-decision.json",
+    "docs/superpowers/specs/batch45-postq4-t10-live-eval-harness-redesign-packet.json",
+    "docs/superpowers/specs/batch45-postq4-t11-treatment-v3-source-design.json",
+    "docs/superpowers/specs/batch45-postq4-t12-paired-live-model-rerun-exact-approval-packet.json",
+    "docs/superpowers/specs/batch45-postq4-t14-strict-rerun-approval-packet.json",
+    "docs/superpowers/specs/batch45-postq4-t15-model-change-decision-packet.json",
+    "docs/superpowers/specs/batch45-postq4-t17-frozen-heldout-corpus.json",
+    "docs/superpowers/specs/batch45-postq4-t18-promotion-grade-eval-design.json",
+    "docs/superpowers/specs/batch45-postq4-t19-cost-timeout-retention-policy.json",
+    "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet-1000s.json",
+    "docs/superpowers/specs/batch45-postq4-t20-promotion-grade-eval-approval-packet.json",
+    "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-blocked.json",
+    "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-cost-unknown.json",
+    "docs/superpowers/specs/batch45-postq4-t21-promotion-grade-eval-run-preflight-timeout-mismatch.json",
+    "docs/superpowers/specs/batch45-professional-code-authoring-summary.json",
+    "docs/superpowers/specs/batch45-professional-code-s1-artifact-workflow-summary.json",
+    "docs/superpowers/specs/batch45-professional-code-s2-existing-workflow-retrofit-summary.json",
+    "docs/superpowers/specs/batch45-professional-code-s3-evals-visibility-summary.json",
+    "docs/superpowers/specs/batch45-professional-code-s5-learning-automation-summary.json",
+    "docs/superpowers/specs/batch45-quality-retest-fixture-static-summary.json",
+    "docs/superpowers/specs/batch45-quality-retest-project-slices-static-summary.json",
+    "docs/superpowers/specs/batch45-review-remediation-summary.json",
+    "docs/superpowers/specs/batch45-s9-0-fresh-context-handoffs.json",
+    "docs/superpowers/specs/documentation-refresh-doc-m25-site-freshness-summary.json",
+    "docs/superpowers/specs/documentation-refresh-g1-1-doc-m41-deferred-platform-triggers-summary.json",
+    "docs/superpowers/specs/documentation-refresh-g1-source-site-parity-summary.json",
+    "docs/superpowers/specs/documentation-refresh-g2-first-run-cockpit-artifact-docs-summary.json",
+    "docs/superpowers/specs/documentation-refresh-g3-diagram-atlas-architecture-maps-summary.json",
+    "docs/superpowers/specs/documentation-refresh-g4-operator-flows-system-behavior-summary.json",
+    "docs/superpowers/specs/documentation-refresh-g5-evidence-quality-site-gate-summary.json",
+    "docs/superpowers/specs/paos-aud-g6-approved-execution.json",
+    "docs/superpowers/specs/paos-aud-g6-pilot-results.json",
+    "docs/superpowers/specs/product-agent-os-project-cockpit.html",
+    "mkdocs.yml",
+    "plugins/product-agent-os/scripts/product_agent_os/self_learning_evals.py",
+    "plugins/product-agent-os/scripts/run_fixture_eval.py",
+    "plugins/product-agent-os/scripts/validate_task_state_consistency.py",
+    "prod_test.md",
+    "research/batch45-professional-code-authoring-architecture-v2.md",
+    "research/batch45-professional-code-authoring-solution-map.md",
+    "research/product-agent-os-control-plane-maintenance-2026-11-10.md",
+    "research/product-agent-os-docs-implementation-gap-analysis-2026-11-05.md",
+    "research/product-agent-os-g7-execution-report-2026-11-09.md",
+    "research/product-agent-os-g7-repository-deep-review-2026-11-09.md",
+    "research/product-agent-os-g8-execution-report.md",
+    "research/product-agent-os-g9-execution-report.md",
+    "research/product-agent-os-requirements-history-2026-11-10.md",
+    "research/product-agent-os-web-architecture-2026-11-05.md",
+    "research/product-agent-os-web-auth-commercial-2026-11-09.md",
+    "research/product-agent-os-web-commercial-review-2026-11-11.md",
+    "research/product-agent-os-web-m1-execution-2026-11-11.md",
+    "research/product-agent-os-web-m1-execution-results-2026-11-11.json",
+    "research/product-agent-os-web-m1-final-audit-2026-11-10.md",
+    "research/product-agent-os-web-m1-initial-qualification-2026-11-10.md",
+    "research/product-agent-os-web-m1-wireframes-2026-11-09.md",
+    "research/product-agent-os-web-m2-execution-2026-11-11.md",
+    "research/product-agent-os-web-m2b-execution-2026-11-12.md",
+    "research/product-agent-os-web-m2c-execution-2026-11-12.md",
+    "research/product-agent-os-web-m2c-results-2026-11-12.json",
+    "research/product-agent-os-web-m3-0023-execution-2026-11-12.md",
+    "research/product-agent-os-web-m3-0023-results-2026-11-12.json",
+    "research/product-agent-os-web-m3-0024-execution-2026-11-12.md",
+    "research/product-agent-os-web-m3-0024-results-2026-11-12.json",
+    "research/product-agent-os-web-m3-0025-execution-2026-11-12.md",
+    "research/product-agent-os-web-m3-0025-results-2026-11-12.json",
+    "research/product-agent-os-web-m3-0026-execution-2026-11-12.md",
+    "research/product-agent-os-web-m3-0026-results-2026-11-12.json",
+    "research/product-agent-os-web-m3-0037-execution-2026-11-12.md",
+    "research/product-agent-os-web-m3-0037-results-2026-11-12.json",
+    "research/product-agent-os-web-m4-0028-execution-2026-11-12.md",
+    "research/product-agent-os-web-m4-0028-results-2026-11-12.json",
+    "research/product-agent-os-web-m4-0029-results-2026-11-12.json",
+    "research/product-agent-os-web-m4-0030-execution-2026-11-12.md",
+    "research/product-agent-os-web-m4-0030-results-2026-11-12.json",
+    "research/product-agent-os-web-prd-2026-11-05.md",
+    "research/product-agent-os-web-task-manager-screens-2026-11-09.md",
+    "research/self-learning-vs-openai-agent-repair-loops-comparative-analysis.md",
+    "tests/product_agent_os/docs_archive_checks.py",
+    "tests/product_agent_os/docs_test_support.py",
+    "tests/product_agent_os/test_coding_standards_artifacts.py",
+    "tests/product_agent_os/test_doubt_verification.py",
+    "tests/product_agent_os/test_methodology_synthesis.py",
+    "tests/product_agent_os/test_self_learning_state.py",
+    "tests/product_agent_os/test_task_plan_lifecycle.py",
+    "tests/product_agent_os/test_validators.py"
+  ],
+  "excluded": [
+    "foreign session lifecycle markers and historical private reviews under .codex",
+    "generated site and build caches",
+    "root control-plane owners",
+    "research reports, PRD/design/architecture analyses: classified in documentation backlog",
+    "packaged synthetic fixtures and reusable task templates are not live project task plans"
+  ],
+  "verification": {
+    "status": "partially_verified_publication_not_ready",
+    "moved_files_preserved": 42,
+    "moved_json_owners_preserved": 7,
+    "docs_tasks_planned": 16,
+    "focused_tests": "120 passed",
+    "archive_tests": "98 tests; 6 failures (5 translation assertions, 1 pre-existing PostToolUse contract mismatch)",
+    "strict_build": "exit1 both; full logs baseline 42 WARNING lines (21 RU + 21 EN), current 351 (330 RU + 21 EN); new repository-only links exposed by moving working plans into published docs",
+    "site_tests": "7 tests; 4 failures after i18n file-link postprocess",
+    "source_checker": "passed",
+    "task_matrices": "DOCS/FUNC/Web/audit/ordinary passed",
+    "notes": "Task status and historical verdicts preserved. EN gaps tracked by PAOS-DOCS-16; no full-site readiness claim."
+  }
+}

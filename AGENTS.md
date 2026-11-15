@@ -67,9 +67,9 @@ not define the repository as documentation-only.
 | Current-cycle handoff, latest completed slice and residual risks | `RUNLOG.md` |
 | Batch 39 production test attempt, failure, fix and retest ledger | `prod_test.md` |
 | Source-backed historical registry | `docs/sources/registry.md` |
-| Track 8 detailed scenario and methodology history | `docs/sources/product-agent-os-track-8-detailed-backlog.md` |
-| Track 9 detailed methodology and verification history | `docs/sources/product-agent-os-track-9-backlog.md` |
-| Track 10 detailed execution and verification history | `docs/sources/product-agent-os-track-10-backlog.md` |
+| Track 8 detailed scenario and methodology history | `docs/planning/product-agent-os-track-8-detailed-backlog.md` |
+| Track 9 detailed methodology and verification history | `docs/planning/product-agent-os-track-9-backlog.md` |
+| Track 10 detailed execution and verification history | `docs/planning/product-agent-os-track-10-backlog.md` |
 | Batch 35 approval and execution evidence | `docs/sources/product-agent-os-batch35-approval-packet-draft.md` |
 
 ## Documentation Rules
@@ -165,8 +165,8 @@ if (-not [string]::IsNullOrEmpty($pathValue)) {
 ## Product-Agent OS Plugin Rules
 
 - Treat `plugins/product-agent-os/` as the implementation package for the local Product-Agent OS plugin.
-- Treat `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md` as the active Track 9 implementation plan.
-- Treat `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md` as the staged Track 10 implementation plan.
+- Treat `docs/planning/2026-05-25-track-9-methodology-intelligence.md` as the active Track 9 implementation plan.
+- Treat `docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md` as the staged Track 10 implementation plan.
 - Track 9 methodology intelligence work is section-by-section: read only the relevant task block, audit the matching `docs/methodologies/` source file, update the plan/backlog if the audit finds unrepresented concepts, then implement the focused slice with tests/evals/docs sync.
 - Track 3 infrastructure generation is staged-first. Use `python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --dry-run` before staging infrastructure for a project.
 - Use `--stage <output-dir>` only with an output directory outside the target workspace unless a later approved merge workflow proves a safe write path.

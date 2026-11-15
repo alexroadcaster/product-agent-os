@@ -1,8 +1,12 @@
 # REQUIREMENTS.md
 
+## Документация реализации — 15.11.2026
+
+Owner request: реальные планы и задачи находятся в `docs/planning`, включая исторические; исследования и execution evidence сохраняют свои владельцы. [Documentation backlog](docs/planning/documentation-architecture-2026-11-15.md) отдельно задаёт актуальные domain docs и UI/UX/API/SQLite/AI boundaries. Приёмка переноса: сохранены карточки, статусы и зависимости, исправлены ссылки; новые страницы подсистем запланированы, не выданы за написанные.
+
 ## Функциональный план после V3 — 15.11.2026
 
-[Функциональная матрица](research/functional-remediation-2026-11-15.md): 34 planned задачи и 3 ссылки M5. F26–F29 задают независимое дерево и управляемое сканирование; F30–F32 — PoC dependency-cruiser, codebase-memory-mcp и tbls; F33/F34 — карта БД и связи кода с таблицами. UI/UX входит в acceptance: Files/Map/Database, schema/diff/usages, source navigation, RU/EN, темы, accessibility и partial/stale/error. PoC-прототип и production UI принимаются отдельно. Разрешена только запись плана; source/DB read-only, установка и исполнение не начаты.
+[Функциональная матрица](docs/planning/functional-remediation-2026-11-15.md): 34 planned задачи и 3 ссылки M5. F26–F29 задают независимое дерево и управляемое сканирование; F30–F32 — PoC dependency-cruiser, codebase-memory-mcp и tbls; F33/F34 — карта БД и связи кода с таблицами. UI/UX входит в acceptance: Files/Map/Database, schema/diff/usages, source navigation, RU/EN, темы, accessibility и partial/stale/error. PoC-прототип и production UI принимаются отдельно. Разрешена только запись плана; source/DB read-only, установка и исполнение не начаты.
 
 ## MD-отчёты и чтение — 15.11.2026
 
@@ -10,7 +14,7 @@
 
 ## Desktop UI/UX — утверждённое внедрение 13.11.2026
 
-V3 и Sidebar утверждены; разрешены UI-01–UI-12 в apps/web с прежними API/данными/permissions/guards. [DESIGN.md](DESIGN.md), [план](design/2026-11-13-v3/implementation-plan.md), [evidence](design/2026-11-13-v3/implementation-evidence.md) владеют деталями. Porcelain/Obsidian,15 назначений, full task overlay, portfolio/project/agent dashboards, D3/Mermaid, local motion. Usage unavailable; backend telemetry/mobile/Git/deploy исключены. Приёмка реализации отдельно от утверждения дизайна. Дополнительный критерий владельца: лично сравнить каждый продуктовый экран V3 в светлой и тёмной теме, включая сетки, поля, кнопки, состояния и анимации; проход тестов не заменяет визуальное сравнение.
+V3 и Sidebar утверждены; разрешены UI-01–UI-12 в apps/web с прежними API/данными/permissions/guards. [DESIGN.md](DESIGN.md), [план](docs/planning/2026-11-13-v3-ui-implementation-plan.md), [evidence](design/2026-11-13-v3/implementation-evidence.md) владеют деталями. Porcelain/Obsidian,15 назначений, full task overlay, portfolio/project/agent dashboards, D3/Mermaid, local motion. Usage unavailable; backend telemetry/mobile/Git/deploy исключены. Приёмка реализации отдельно от утверждения дизайна. Дополнительный критерий владельца: лично сравнить каждый продуктовый экран V3 в светлой и тёмной теме, включая сетки, поля, кнопки, состояния и анимации; проход тестов не заменяет визуальное сравнение.
 
 ## Запуск без кода — 13.11.2026
 
@@ -20,21 +24,21 @@ Settings,13.11.2026: Explorer picker/New folder, explicit Add и bounded scan; �
 
 ## PAOS-AUD-G9 — принятое расширение сопровождения
 
-Добавлены T11–T17 в [матрицу G9](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#расширение-g9-точечное-сопровождение-после-каждой-задачи): после каждой задачи оценивать docs impact, обновлять только основной источник изменившихся сведений и сохранять данные. Владелец принял T10, затем T17 и ограничения проверки модельного поведения; G9 закрыта; детали и критерии находятся в матрице.
+Добавлены T11–T17 в [матрицу G9](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md#расширение-g9-точечное-сопровождение-после-каждой-задачи): после каждой задачи оценивать docs impact, обновлять только основной источник изменившихся сведений и сохранять данные. Владелец принял T10, затем T17 и ограничения проверки модельного поведения; G9 закрыта; детали и критерии находятся в матрице.
 
 ## PAOS-AUD-G9 — принятый результат
 
-G8-T14/G8 явно приняты владельцем. G9 T01–T09 реализованы и локально проверены; T10 явно принят владельцем; расширение T11–T17 принято через T17; G9 закрыта. Единый маршрут анализа, выбора, docs/.codex структуры, staging, approval-bound apply и повторного формирования сохраняет существующие данные. [Матрица G9](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md#paos-aud-g9), [evidence и ограничения](research/product-agent-os-g9-execution-report.md). Fresh-session activation отдельно; реальные target/provider/Git действия не входят в выполненный slice.
+G8-T14/G8 явно приняты владельцем. G9 T01–T09 реализованы и локально проверены; T10 явно принят владельцем; расширение T11–T17 принято через T17; G9 закрыта. Единый маршрут анализа, выбора, docs/.codex структуры, staging, approval-bound apply и повторного формирования сохраняет существующие данные. [Матрица G9](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md#paos-aud-g9), [evidence и ограничения](research/product-agent-os-g9-execution-report.md). Fresh-session activation отдельно; реальные target/provider/Git действия не входят в выполненный slice.
 
 ## PAOS-AUD-G8 — реализация, 2026-11-10
 
-Разрешённый scope: T01–T14 из [матрицы аудита](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md). Контракт: содержательные scoped documents, сохранение заполненного managed content, 40 000 UTF-8 bytes (warning 32 000; stricter wins), lossless proposal/apply/recovery, навигация и provenance. Реальные три проекта остаются read-only. Owner decision T14 и fresh-session activation отдельны; M1 сохраняет собственные source owners. Исторический compatibility block сохранён побайтно в [архиве требований](research/product-agent-os-requirements-history-2026-11-10.md).
+Разрешённый scope: T01–T14 из [матрицы аудита](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md). Контракт: содержательные scoped documents, сохранение заполненного managed content, 40 000 UTF-8 bytes (warning 32 000; stricter wins), lossless proposal/apply/recovery, навигация и provenance. Реальные три проекта остаются read-only. Owner decision T14 и fresh-session activation отдельны; M1 сохраняет собственные source owners. Исторический compatibility block сохранён побайтно в [архиве требований](research/product-agent-os-requirements-history-2026-11-10.md).
 
 Уточнение владельца 10.11.2026: подробные матрицы в `docs/planning/` сохраняются целиком, default 40k size trigger исключён; оглавления/control-plane и explicit per-file limits сохраняют ограничения. Audit matrix в `research/` остаётся целой; split отложен, прежний preview не разрешён. G8-T14 и закрытие G8 явно приняты владельцем; fresh-session activation отдельно.
 
 ## Текущий scope Web M1 — 2026-11-10
 
-M5, 13-11-2026: PAOS-0047/0052/0053 объединены в [M5 / план v0.9](research/product-agent-os-web-task-manager-plan-2026-11-09.md#paos-m5). Ценность: разрешённое ChatGPT-подключение, общие данные/права/поиск и перенос личного проекта команде. Все3 planned; SIWC admission и team design/auth/roles/runtime/privacy gates открыты; разрешено только изменение плана.
+M5, 13-11-2026: PAOS-0047/0052/0053 объединены в [M5 / план v0.9](docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md#paos-m5). Ценность: разрешённое ChatGPT-подключение, общие данные/права/поиск и перенос личного проекта команде. Все3 planned; SIWC admission и team design/auth/roles/runtime/privacy gates открыты; разрешено только изменение плана.
 
 PAOS-0030: переносимый локальный package/install/start, offline backup/restore и selection/rollback с отдельными профилями. Согласован технический пилот на копии codex_docs; оригинальные inputs только read-only в его интервале. [Acceptance, source span и limits](research/product-agent-os-web-m4-0030-execution-2026-11-12.md). Commercial/GA отдельно.
 
@@ -62,7 +66,7 @@ M2: PAOS-0019/0020/0021/0022/0027 реализованы: requirement-linked ski
 
 Source status: project-authored / implementation started under the approved order.
 
-Owning scope: [PRD §17](research/product-agent-os-web-prd-2026-11-05.md), [архитектура §21](research/product-agent-os-web-architecture-2026-11-05.md), [wireframes v0.7](research/product-agent-os-web-m1-wireframes-2026-11-09.md). [Web-план v0.8](research/product-agent-os-web-task-manager-plan-2026-11-09.md) и [матрица задач](research/product-agent-os-web-task-manager-task-group-2026-11-09.json) владеют последовательностью и task status; revision scope=0.7, execution=0.8.
+Owning scope: [PRD §17](research/product-agent-os-web-prd-2026-11-05.md), [архитектура §21](research/product-agent-os-web-architecture-2026-11-05.md), [wireframes v0.7](research/product-agent-os-web-m1-wireframes-2026-11-09.md). [Web-план v0.8](docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md) и [матрица задач](docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json) владеют последовательностью и task status; revision scope=0.7, execution=0.8.
 
 - M1: одно рабочее окно через Codex App Server; local launch/auth boundary; сессия, чат, связанные задачи, permissions, diff/checks, Stop/recovery; минимальные Task CRUD/доска, read-only каталоги и честный coverage.
 - Local data: SQLite + FTS5, транзакционные команды, поиск, backup/restore, staged MD/JSON import и контролируемый cutover. До cutover legacy tasks file-owned; planning MD/JSON этого репозитория не мигрируются данной правкой.
@@ -88,37 +92,37 @@ G7 T01–T08 owner accepted, локальная группа закрыта. T06
 
 G6 partially_verified: GAP-06 implemented / owner accepted 10.11.2026; все три synthetic local pilots приняты владельцем. HOST-01 не является их зависимостью. T34 no-go и fresh-session activation HOST-01/HOST-02 остаются открытыми отдельно; manual_only сохраняется. [Результаты](docs/superpowers/specs/paos-aud-g6-pilot-results.json).
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G5 — 2026-11-09
 
 F13/F14/F17: offline installer command contract, явный package entry route, RU/EN parity и актуальный local site. Acceptance: stub commands, docs tests, strict build, routes/links/anchors, Mermaid parse/render. Нет actual install, publication или host activation.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G4 — 2026-11-09
 
 F05/F09/F10/F15: explicit minimal intake без JSON-файла, legacy compatibility receipt, English tests-specific instructions, canonical skill progressive disclosure и измеренное reuse inventory. Нет implicit invocation/cache/host/provider/Git activation; acceptance ограничена local contract/evidence checks.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G3 — 2026-11-09
 
 PAOS-AUD-G3 разрешает локальные F03/F08/F16: строгие RU/EN dates, безопасные registry refs, claim classes; insufficient_evidence при нуле owner labels; current pointer с revision и раздельными task/run/verification/acceptance. Source presence не semantic proof; история и manual/candidate boundaries сохраняются.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G2 — 2026-11-09
 
 PAOS-AUD-G2: разрешены локальные F01/F02/F04. Acceptance: supported MCP wrapper, unsupported отдельно от not_verified, surface-specific minimum, configured/observed model, bounded canonical/cache provenance и trust unknown/observed. Неподтверждённые publisher/URLs оставляют distribution gated; host activation и T30–T34 не входят в этот scope.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G1 — 2026-11-09
 
 PAOS-AUD-G1: запрос владельца разрешает локальную реализацию F06/F12/F11/F07/F18. Acceptance: positive/negative contracts, active/package parity, native rules parser и synthetic merge/ACL tests. Реальные ACL, target apply, trust, hooks/rules activation и G6 host acceptance остаются отдельными границами.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## Session lifecycle isolation — 2026-11-09
 
@@ -214,7 +218,7 @@ Web M1: PAOS-0054 native-offline qualification, actual App/native/browser и dat
 - Batch 39 real-project-adjacent execution is source-owned through `prod_test.md` and S5 closure artifacts. It includes synthetic archetype pilots, read-only `Neural_Flow` / `SOL 0.6` evidence, S4 hardening and S5 conditional owner-feedback closure. Target writes, runtime/browser/provider/model/vector/eval/live-database/migration/production-data/git/external actions and any broader target execution still require exact approval.
 - `B38-PILOT-NF01` remains blocked for target apply by missing target control-plane/source registry artifacts and `source_policy_status: blocked`.
 - Batch 40 completion-skeptic automation remains `manual_only` and `not_promoted`.
-- Batch 42: историческая planning matrix дополнена GAP-03 local execution overlay; provenance/metadata/routing проверялись локально, M06 host receipt остаётся отдельным gate. Локальные проверки не доказывают auto-engagement во всех Codex surfaces. Owner: research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md и batch42 matrix.
+- Batch 42: историческая planning matrix дополнена GAP-03 local execution overlay; provenance/metadata/routing проверялись локально, M06 host receipt остаётся отдельным gate. Локальные проверки не доказывают auto-engagement во всех Codex surfaces. Owner: docs/planning/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md и batch42 matrix.
 - Track 11 G1.1 is a project-local docs-toolchain route. `DOC-M35`, `DOC-M36`, `DOC-M37`, `DOC-M38`, `DOC-M39`, `DOC-M40` and `DOC-M41` have evidence for `.venv-docs/`, `.docs-tools/node/`, local Vale language guards, local lychee/gitleaks fixture checks, vendored Mermaid runtime wiring, local dependency inventory, Node CycloneDX SBOM generation, current Node advisory counts and deferred platform trigger governance. Docusaurus, Storybook and Structurizr DSL remain deferred until concrete trigger evidence exists. Generated root `site` freshness, Python vulnerability audit, complete repository SBOM, dependency remediation, browser Mermaid rendering proof, broad lint/format enforcement, broad Vale enforcement, external URL crawling, broad link/secret scans, raw report retention and deferred platform install/runtime proof remain unclaimed until their specific slices run. Product-Agent OS lifecycle hooks are project-local and owner-approved, but Codex hook trust review / fresh-session execution is still not claimed.
 - Track 11 G2–G5: прежнее ожидание финального DOC-M25 снято его датированным receipt; свежесть site после последующих изменений и browser/Cosmos.gl/WebGL proof этим не подтверждаются. Auto-engagement, cache/global changes, broad scans, dependency remediation, deferred platform installs и publication требуют своих evidence/authority.
 - Track 11 DOC-M25 now closes only generated root `site`/search/sitemap freshness through `documentation_refresh_DOC-M25-A01`; it does not prove browser behavior, publication, release readiness, dependency remediation, raw report retention, target mutation, provider/API behavior, automation or git/release actions.
@@ -224,4 +228,4 @@ Web M1: PAOS-0054 native-offline qualification, actual App/native/browser и dat
 
 ## Documentation refresh scope — 2026-11-03
 
-Owner-authorized task `PAOS-DOCS-REFRESH-2026-11-03` applies the 20-item documentation audit. Acceptance: current source-backed guidance, syntactically valid examples, semantic RU/EN parity, model/runtime applicability, explicit implementation gaps and passing applicable local checks. Scope includes the detailed plan pair, task-group status, guides, navigation, source registries and control-plane evidence. No model switch, permission/config/profile change, executable template/runtime/hook edit, provider/model call, browser, publication or Git action. Historical evidence and the pre-existing 17 dirty config/profile/eval files remain intact. Docs-inventory test metadata may change solely to account for the three new page pairs; assertions and historical site counters remain intact. Detailed acceptance: [refresh plan](docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md).
+Owner-authorized task `PAOS-DOCS-REFRESH-2026-11-03` applies the 20-item documentation audit. Acceptance: current source-backed guidance, syntactically valid examples, semantic RU/EN parity, model/runtime applicability, explicit implementation gaps and passing applicable local checks. Scope includes the detailed plan pair, task-group status, guides, navigation, source registries and control-plane evidence. No model switch, permission/config/profile change, executable template/runtime/hook edit, provider/model call, browser, publication or Git action. Historical evidence and the pre-existing 17 dirty config/profile/eval files remain intact. Docs-inventory test metadata may change solely to account for the three new page pairs; assertions and historical site counters remain intact. Detailed acceptance: [refresh plan](docs/planning/2026-11-03-gpt6-documentation-refresh.md).

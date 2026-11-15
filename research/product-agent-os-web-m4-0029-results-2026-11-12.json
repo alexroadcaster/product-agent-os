@@ -200,8 +200,8 @@
       "research/product-agent-os-web-m4-0029-execution-2026-11-12.md": "create",
       "tests/web/accessibility/audit.mts": "create",
       "tests/web/accessibility/browser-acceptance.mts": "create",
-      "research/product-agent-os-web-task-manager-plan-2026-11-09.md": "modify",
-      "research/product-agent-os-web-task-manager-task-group-2026-11-09.json": "modify",
+      "docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md": "modify",
+      "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json": "modify",
       "research/product-agent-os-web-m4-0029-results-2026-11-12.json": "create"
     },
     "closure_mode": "exact_legacy_card_and_json_after_section_sync"
@@ -230,8 +230,8 @@
     "research/product-agent-os-web-m4-0029-execution-2026-11-12.md": "cb7c46339e18ba9370e749341e4c8eac03b2d961bd7b36a84e11d416c68b0c50",
     "tests/web/accessibility/audit.mts": "7f01a03a3a2e72a7a84ea4ed239e997ca8ac65b6a19c9031a5472a6433c44248",
     "tests/web/accessibility/browser-acceptance.mts": "4ea03cd5ce44188985b5a0d3d2722ba5fa25c8c560dffd2bb52d31116b3cfa3f",
-    "research/product-agent-os-web-task-manager-plan-2026-11-09.md": "22d5255db6c51308b528cee46e4ab175221a71ee2e10206957983a90620fbb42",
-    "research/product-agent-os-web-task-manager-task-group-2026-11-09.json": "2696a5fb596cc24a933e57f13f23e05085f442913358885f10edff5cec17485d"
+    "docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md": "22d5255db6c51308b528cee46e4ab175221a71ee2e10206957983a90620fbb42",
+    "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json": "2696a5fb596cc24a933e57f13f23e05085f442913358885f10edff5cec17485d"
   },
   "receipts": {
     "web-full.log": {

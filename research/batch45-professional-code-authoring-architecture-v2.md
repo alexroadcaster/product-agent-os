@@ -31,7 +31,7 @@ and in Markdown previews.
 
 | Source | Role in this atlas |
 | --- | --- |
-| `docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md` | Source of truth for `B45-PCA-M28..M36`, claim ceilings and stop conditions. |
+| `docs/planning/2026-06-20-track-11-documentation-architecture-refresh.md` | Source of truth for `B45-PCA-M28..M36`, claim ceilings and stop conditions. |
 | `research/batch45-professional-code-authoring-solution-map.md` | Prior whole-system orientation map and `M27` no-go context. |
 | `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md` | Current control-plane boundaries for Batch 45 and real-project evidence. |
 | `docs/superpowers/specs/batch45-comment-policy-promotion-decision.json` | `M27` keep-advisory-only/no-go decision. |

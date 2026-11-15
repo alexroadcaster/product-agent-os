@@ -346,7 +346,7 @@ def _valid_doubt_packet():
         "verdict": "pass",
         "artifact_under_review": {
             "kind": "task_row",
-            "path": "docs/sources/product-agent-os-track-10-backlog.md",
+            "path": "docs/planning/product-agent-os-track-10-backlog.md",
             "label": "B40-S2",
         },
         "claim_ledger": [

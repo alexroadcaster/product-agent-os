@@ -16,4 +16,4 @@ Source status: local synthetic design prototype; needs_user_acceptance, 13.11.20
 
 В прототипе используется синтетический проект. Кнопки, похожие на сохранение/запуск/удаление/восстановление, демонстрируют UI и не вызывают PAOS API. Экраны не являются доказательством работы этих операций. Обычные визуальные взаимодействия (выбор вкладки, раскрытие, проверка полей) доступны локально.
 
-[DESIGN.md](../../DESIGN.md) — текущий контракт; [research.md](research.md) — источники и решения; [implementation-plan.md](implementation-plan.md) — будущие задачи; [verification.md](verification.md) — выполненные проверки и ограничения. Два concept PNG являются art direction; точные экраны для просмотра находятся в HTML и screenshots.
+[DESIGN.md](../../DESIGN.md) — текущий контракт; [research.md](research.md) — источники и решения; [implementation-plan.md](../../docs/planning/2026-11-13-v2-ui-implementation-plan.md) — будущие задачи; [verification.md](verification.md) — выполненные проверки и ограничения. Два concept PNG являются art direction; точные экраны для просмотра находятся в HTML и screenshots.

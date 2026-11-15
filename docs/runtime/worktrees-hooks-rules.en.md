@@ -104,7 +104,7 @@ Optional report authoring v2 explicitly uses `work_type: report_authoring`, a
 pinned grant, session ownership, one exact Markdown path and a previous digest
 for every create/update. Legacy create-only v1 is preserved. The detailed
 contract is `.codex/workflows/task-plan-lifecycle.md`; local evidence belongs to
-`research/product-agent-os-audit-remediation-task-plan-2026-11-09.md`.
+`docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md`.
 CAS preflight rejects existing conflicts but does not lock the interval between
 hook and write: exclusive ownership is required; atomicity and fresh-host
 activation are not established.

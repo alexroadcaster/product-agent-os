@@ -29,7 +29,7 @@ Node syntax, all-route capture обеих тем и 1280/1440/1920, fixtures/ren
 - `node .../hallmark/scripts/sloplint.mjs index.html --scope app --render`: exit 0, 0 FAIL/4 WARN. Native render tier недоступен (нет puppeteer-core); установленный Playwright используется отдельным явным harness, не выдаётся за этот tier.
 - `PAOS_DOCS_SITE_DIR=.tmp/paos-m4-0030/site-final` + `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v`: exit 0, 105 tests, 14.649s; [log](docs-tests.txt). Использован существующий isolated site как разрешено TEST; новый MkDocs build не выполнялся.
 - `python tools/check_docs.py`: exit 0.
-- `python plugins/product-agent-os/scripts/validate_task_matrix.py design/2026-11-13-v3/implementation-plan.md`: exit 0, ok true.
+- `python plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/2026-11-13-v3-ui-implementation-plan.md`: exit 0, ok true.
 - `git diff --check`: exit 0; line-ending warnings сохранены как неошибочные.
 
 Fresh review `/root/v3_finish_review`, context_mode=separate_fresh_context, read-only, Hallmark finish prompt и source audit. Исходная UI revision SHA256 `24CA34A93670BF2C6181DFFF51A3E07A5856FF3B05F416B5690FDA6E8CA7A32F`. Verdict fix: Mermaid/D3 topology mismatch; multi-select rerender; mixed task inspector; wrong session filter key; synthetic panels in current mode; chart/queue below working viewport; misleading done/total chart caption and fractional count ticks. Один пакет исправлений назначен builder, подтверждающий проход ожидается. Early modal capture mismatch исправлен до этого review batch.

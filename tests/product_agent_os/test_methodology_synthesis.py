@@ -11,7 +11,7 @@ sys.path.insert(0, str(SCRIPTS))
 
 class MethodologySynthesisContractTest(unittest.TestCase):
     def test_backlog_records_current_cross_domain_baseline(self):
-        backlog = (ROOT / "docs" / "sources" / "product-agent-os-track-9-backlog.md").read_text(
+        backlog = (ROOT / "docs" / "planning" / "product-agent-os-track-9-backlog.md").read_text(
             encoding="utf-8"
         )
 

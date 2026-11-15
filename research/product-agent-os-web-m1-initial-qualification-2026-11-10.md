@@ -91,7 +91,7 @@ Source status: historical local implementation evidence, 2026-11-10, Europe/Mosc
 Проверки текущего среза:
 
 - `node --test tests/web/runtime-compatibility.test.mts` — RED exit 1, GREEN exit 0, 3/3. `node --test tests/web/*.test.mts` — с inherited TEMP/TMP 21/23, ошибки `EPERM` на `rename` и создании junction. Повтор с TEMP/TMP в игнорируемом workspace — 22/23, `rename` прошёл, создание junction в fixture `project-sources.test.mts` по-прежнему возвращает `EPERM` до вызова адаптера.
-- `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs tests.product_agent_os.test_task_plan_lifecycle tests.product_agent_os.test_infrastructure_templates -q` — 209/209. `python -B -m unittest tests.product_agent_os.test_lifecycle_hooks -q` — 42/42. `python -B tools/check_docs.py`, `python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-web-task-manager-plan-2026-11-09.md` и `git diff --check` — exit 0.
+- `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs tests.product_agent_os.test_task_plan_lifecycle tests.product_agent_os.test_infrastructure_templates -q` — 209/209. `python -B -m unittest tests.product_agent_os.test_lifecycle_hooks -q` — 42/42. `python -B tools/check_docs.py`, `python -B plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md` и `git diff --check` — exit 0.
 - Повторная сверка M1 по JSON — 3 `implemented`, 2 `in_progress`, 2 `blocked`, 11 `planned`, среди `planned` нет карточек со всеми закрытыми зависимостями. `PLAN.md`, `TEST.md`, `RUNLOG.md`, карточка PAOS-0054 и реестры RU/EN синхронизированы. Статусы и порядок в JSON, требования и eval gates не изменились.
 
 ## Независимые ветки после PAOS-0001

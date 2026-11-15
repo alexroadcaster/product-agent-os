@@ -1,5 +1,7 @@
 # Product-Agent OS
 
+[Project plans and tasks](planning/index.md): current queues, historical plans and the subsystem documentation backlog.
+
 Source status: `official + experiment`
 
 Use these guides to complete a task with Codex, onboard an existing project, or design an agent application. User workflows checked against official documentation: **2026-11-05**. Availability depends on client, account, authentication and managed policy.

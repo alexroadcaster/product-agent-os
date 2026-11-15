@@ -6,7 +6,7 @@
 
 ```yaml
 title: "Product-Agent OS task-plan architecture section"
-url: "docs/product-agent-os/architecture.md; docs/product-agent-os/architecture.en.md; docs/diagrams/index.md; docs/diagrams/index.en.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md"
+url: "docs/product-agent-os/architecture.md; docs/product-agent-os/architecture.en.md; docs/diagrams/index.md; docs/diagrams/index.en.md; docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md"
 type: "internal architecture documentation"
 source_status: "project-authored"
 checked_at: "2026-06-07"
@@ -18,7 +18,7 @@ verification_status: "Backed by the Product-Agent OS architecture section, diagr
 
 ```yaml
 title: "Product-Agent OS Batch 37 S1 task-matrix planning contract"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; PLAN.md; TEST.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; PLAN.md; TEST.md; RUNLOG.md"
 type: "internal implementation planning evidence"
 source_status: "project-authored"
 checked_at: "2026-06-07"
@@ -32,7 +32,7 @@ verification_status: "Current run uses a dedicated Product-Agent OS docs test pl
 
 ```yaml
 title: "Product-Agent OS Batch 37 S2 task-matrix template and renderer registration"
-url: "plugins/product-agent-os/assets/templates/artifact-templates/task-matrix-plan.md; plugins/product-agent-os/scripts/product_agent_os/templates.py; plugins/product-agent-os/README.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; PLAN.md; TEST.md; RUNLOG.md"
+url: "plugins/product-agent-os/assets/templates/artifact-templates/task-matrix-plan.md; plugins/product-agent-os/scripts/product_agent_os/templates.py; plugins/product-agent-os/README.md; docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; PLAN.md; TEST.md; RUNLOG.md"
 type: "internal implementation planning evidence"
 source_status: "project-authored"
 checked_at: "2026-06-07"
@@ -44,7 +44,7 @@ verification_status: "Backed by current-run verification: focused template tests
 
 ```yaml
 title: "Product-Agent OS Batch 37 S3 task-matrix validator, eval and completion-report guard"
-url: "plugins/product-agent-os/scripts/product_agent_os/validators.py; plugins/product-agent-os/scripts/validate_task_matrix.py; plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json; plugins/product-agent-os/assets/eval-fixtures/transcripts/product-agent-os-synthetic-sessions.json; plugins/product-agent-os/scripts/run_fixture_eval.py; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; PLAN.md; TEST.md; RUNLOG.md"
+url: "plugins/product-agent-os/scripts/product_agent_os/validators.py; plugins/product-agent-os/scripts/validate_task_matrix.py; plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json; plugins/product-agent-os/assets/eval-fixtures/transcripts/product-agent-os-synthetic-sessions.json; plugins/product-agent-os/scripts/run_fixture_eval.py; docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; PLAN.md; TEST.md; RUNLOG.md"
 type: "internal implementation planning evidence"
 source_status: "project-authored"
 checked_at: "2026-06-07"
@@ -56,7 +56,7 @@ verification_status: "Backed by current-run verification: validator tests 22 tes
 
 ```yaml
 title: "Product-Agent OS Batch 37 S4 skill routing, discovery and planning control"
-url: "plugins/product-agent-os/skills/implementation-planner/SKILL.md; plugins/product-agent-os/skills/agent-team-designer/SKILL.md; plugins/product-agent-os/skills/references/handoff-contract.md; plugins/product-agent-os/assets/templates/artifact-templates/agent-task-packet.md; plugins/product-agent-os/scripts/product_agent_os/discovery.py; plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py; plugins/product-agent-os/scripts/product_agent_os/methodology_synthesis.py; plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json; plugins/product-agent-os/assets/eval-fixtures/transcripts/product-agent-os-synthetic-sessions.json; plugins/product-agent-os/scripts/run_fixture_eval.py; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; PLAN.md; TEST.md; RUNLOG.md"
+url: "plugins/product-agent-os/skills/implementation-planner/SKILL.md; plugins/product-agent-os/skills/agent-team-designer/SKILL.md; plugins/product-agent-os/skills/references/handoff-contract.md; plugins/product-agent-os/assets/templates/artifact-templates/agent-task-packet.md; plugins/product-agent-os/scripts/product_agent_os/discovery.py; plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py; plugins/product-agent-os/scripts/product_agent_os/methodology_synthesis.py; plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json; plugins/product-agent-os/assets/eval-fixtures/transcripts/product-agent-os-synthetic-sessions.json; plugins/product-agent-os/scripts/run_fixture_eval.py; docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; PLAN.md; TEST.md; RUNLOG.md"
 type: "internal implementation planning evidence"
 source_status: "project-authored"
 checked_at: "2026-06-08"
@@ -68,7 +68,7 @@ verification_status: "Backed by current-run verification: lifecycle/discovery/au
 
 ```yaml
 title: "Product-Agent OS Batch 37 S5 docs, projection, hygiene, lifecycle and closure"
-url: "docs/product-agent-os/architecture.md; docs/product-agent-os/architecture.en.md; plugins/product-agent-os/README.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; PLAN.md; TEST.md; RUNLOG.md"
+url: "docs/product-agent-os/architecture.md; docs/product-agent-os/architecture.en.md; plugins/product-agent-os/README.md; docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; PLAN.md; TEST.md; RUNLOG.md"
 type: "internal implementation planning evidence"
 source_status: "project-authored"
 checked_at: "2026-06-08"
@@ -92,7 +92,7 @@ verification_status: "Backed by the Batch 38 docs contract, read-only agent audi
 
 ```yaml
 title: "Product-Agent OS Batch 38 S1 release gate and package metadata"
-url: "docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-track-10-backlog.en.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; PLAN.md; TEST.md; RUNLOG.md; plugins/product-agent-os/.codex-plugin/plugin.json"
+url: "docs/planning/product-agent-os-track-10-backlog.md; docs/planning/product-agent-os-track-10-backlog.en.md; docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; PLAN.md; TEST.md; RUNLOG.md; plugins/product-agent-os/.codex-plugin/plugin.json"
 type: "internal release-gate and package-surface evidence"
 source_status: "project-authored"
 checked_at: "2026-06-08"
@@ -104,7 +104,7 @@ verification_status: "Backed by the B38-S1 source packet in the Track 10 backlog
 
 ```yaml
 title: "Product-Agent OS T10-LIVE-M41 post-B38 audit"
-url: "docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/sources/product-agent-os-batch35-approval-packet-draft.en.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-track-10-backlog.en.md; AGENTS.md; PLAN.md; TEST.md; RUNLOG.md"
+url: "docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/sources/product-agent-os-batch35-approval-packet-draft.en.md; docs/planning/product-agent-os-track-10-backlog.md; docs/planning/product-agent-os-track-10-backlog.en.md; AGENTS.md; PLAN.md; TEST.md; RUNLOG.md"
 type: "internal release-gate audit"
 source_status: "project-authored"
 checked_at: "2026-06-08"
@@ -116,7 +116,7 @@ verification_status: "Backed by source packet/backlog/control-plane sync and the
 
 ```yaml
 title: "Product-Agent OS T10-LIVE-M41 owner no-op closure and B38-S2 verification/install smoke"
-url: "docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/sources/product-agent-os-batch35-approval-packet-draft.en.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-track-10-backlog.en.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/product-agent-os/approval-bound-real-testing.md; docs/product-agent-os/approval-bound-real-testing.en.md; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/sources/product-agent-os-batch35-approval-packet-draft.en.md; docs/planning/product-agent-os-track-10-backlog.md; docs/planning/product-agent-os-track-10-backlog.en.md; docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/product-agent-os/approval-bound-real-testing.md; docs/product-agent-os/approval-bound-real-testing.en.md; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal release-readiness verification and cache-smoke evidence"
 source_status: "project-authored"
 checked_at: "2026-06-08"
@@ -128,7 +128,7 @@ verification_status: "Backed by full unittest 846 tests OK, fixture eval exit 0,
 
 ```yaml
 title: "Product-Agent OS Batch 38 S3 real-project pilot design"
-url: "docs/product-agent-os/real-project-pilot.md; docs/product-agent-os/real-project-pilot.en.md; docs/product-agent-os/index.md; docs/product-agent-os/index.en.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-track-10-backlog.en.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md; mkdocs.yml; tools/check_docs.py; tests/product_agent_os/test_product_agent_os_docs.py"
+url: "docs/product-agent-os/real-project-pilot.md; docs/product-agent-os/real-project-pilot.en.md; docs/product-agent-os/index.md; docs/product-agent-os/index.en.md; docs/planning/product-agent-os-track-10-backlog.md; docs/planning/product-agent-os-track-10-backlog.en.md; docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md; mkdocs.yml; tools/check_docs.py; tests/product_agent_os/test_product_agent_os_docs.py"
 type: "internal pilot-design evidence"
 source_status: "project-authored"
 checked_at: "2026-06-08"
@@ -140,7 +140,7 @@ verification_status: "Backed by the B38-S3 source packet in the Track 10 backlog
 
 ```yaml
 title: "Product-Agent OS Batch 38 S4 safety and rollback"
-url: "docs/product-agent-os/real-project-pilot.md; docs/product-agent-os/real-project-pilot.en.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-track-10-backlog.en.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md; tests/product_agent_os/test_product_agent_os_docs.py"
+url: "docs/product-agent-os/real-project-pilot.md; docs/product-agent-os/real-project-pilot.en.md; docs/planning/product-agent-os-track-10-backlog.md; docs/planning/product-agent-os-track-10-backlog.en.md; docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md; tests/product_agent_os/test_product_agent_os_docs.py"
 type: "internal safety-gap and rollback-procedure evidence"
 source_status: "project-authored"
 checked_at: "2026-06-08"
@@ -152,7 +152,7 @@ verification_status: "Backed by two read-only subagent audits, source-policy val
 
 ```yaml
 title: "Product-Agent OS B38-PILOT-NF01 Neural_Flow target-specific pilot"
-url: "docs/product-agent-os/real-project-pilot.md; docs/product-agent-os/real-project-pilot.en.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-track-10-backlog.en.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md; tmp/neural-flow-product-agent-os-pilot-20260608-191510"
+url: "docs/product-agent-os/real-project-pilot.md; docs/product-agent-os/real-project-pilot.en.md; docs/planning/product-agent-os-track-10-backlog.md; docs/planning/product-agent-os-track-10-backlog.en.md; docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md; tmp/neural-flow-product-agent-os-pilot-20260608-191510"
 type: "internal target-specific pilot evidence"
 source_status: "project-authored"
 checked_at: "2026-06-08"
@@ -164,7 +164,7 @@ verification_status: "Backed by current-run target inventory, Product-Agent OS d
 
 ```yaml
 title: "Product-Agent OS Batch 40 S1 Doubt verifier loop architecture contract"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-track-10-backlog.en.md; output/doubt-technique-comparative-report.md; output/doubt-verifier-loop-batch-task-matrix.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/planning/product-agent-os-track-10-backlog.en.md; output/doubt-technique-comparative-report.md; output/doubt-verifier-loop-batch-task-matrix.md"
 type: "internal implementation planning evidence"
 source_status: "project-authored"
 checked_at: "2026-06-09"
@@ -176,7 +176,7 @@ verification_status: "B40-S1 is contract-only: no `completion-skeptic` skill, pa
 
 ```yaml
 title: "Product-Agent OS Batch 40 S2 Doubt verifier loop plugin foundation"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-track-10-backlog.en.md; plugins/product-agent-os/scripts/product_agent_os/doubt_verification.py; plugins/product-agent-os/skills/completion-skeptic/SKILL.md; plugins/product-agent-os/assets/templates/artifact-templates/doubt-verification-packet.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/planning/product-agent-os-track-10-backlog.en.md; plugins/product-agent-os/scripts/product_agent_os/doubt_verification.py; plugins/product-agent-os/skills/completion-skeptic/SKILL.md; plugins/product-agent-os/assets/templates/artifact-templates/doubt-verification-packet.md"
 type: "internal implementation evidence"
 source_status: "project-authored"
 checked_at: "2026-06-09"
@@ -188,7 +188,7 @@ verification_status: "Backed by current-run verification: focused post-source-sy
 
 ```yaml
 title: "Product-Agent OS Batch 40 S3 Doubt verifier loop eval hardening"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-track-10-backlog.en.md; plugins/product-agent-os/scripts/product_agent_os/doubt_verification.py; plugins/product-agent-os/scripts/run_fixture_eval.py; plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json; plugins/product-agent-os/assets/eval-fixtures/transcripts/product-agent-os-synthetic-sessions.json"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/planning/product-agent-os-track-10-backlog.en.md; plugins/product-agent-os/scripts/product_agent_os/doubt_verification.py; plugins/product-agent-os/scripts/run_fixture_eval.py; plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json; plugins/product-agent-os/assets/eval-fixtures/transcripts/product-agent-os-synthetic-sessions.json"
 type: "internal implementation evidence"
 source_status: "project-authored"
 checked_at: "2026-06-09"
@@ -2855,7 +2855,7 @@ trust_level: "medium"
 
 ```yaml
 title: "Product-Agent OS pre-Track 8 implemented plans and specs inventory"
-url: "docs/sources/product-agent-os-pre-track-8-implementation-inventory.md; docs/product-agent/product-agent-os-plugin-spec.md; docs/superpowers/plans/2026-05-14-product-agent-os-plugin-core.md; docs/superpowers/plans/2026-05-14-product-agent-os-lifecycle-skills.md; docs/superpowers/plans/2026-05-14-product-agent-os-generated-infrastructure.md; docs/superpowers/plans/2026-05-14-product-agent-os-production-hardening.md; docs/superpowers/plans/2026-05-15-product-agent-os-codex-runtime-runner.md"
+url: "docs/sources/product-agent-os-pre-track-8-implementation-inventory.md; docs/product-agent/product-agent-os-plugin-spec.md; docs/planning/2026-05-14-product-agent-os-plugin-core.md; docs/planning/2026-05-14-product-agent-os-lifecycle-skills.md; docs/planning/2026-05-14-product-agent-os-generated-infrastructure.md; docs/planning/2026-05-14-product-agent-os-production-hardening.md; docs/planning/2026-05-15-product-agent-os-codex-runtime-runner.md"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-05-27"
@@ -2867,7 +2867,7 @@ verification_status: "Backed by read-only checked-in file inventory and document
 
 ```yaml
 title: "Product-Agent OS Track 9 methodology intelligence design and backlog"
-url: "docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md; docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md; docs/sources/product-agent-os-track-9-backlog.md; docs/product-agent-os/methodology-intelligence.md; plugins/product-agent-os/scripts/product_agent_os/methodology_catalog.py; plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py; plugins/product-agent-os/scripts/run_methodology_audit.py"
+url: "docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md; docs/planning/2026-05-25-track-9-methodology-intelligence.md; docs/planning/product-agent-os-track-9-backlog.md; docs/product-agent-os/methodology-intelligence.md; plugins/product-agent-os/scripts/product_agent_os/methodology_catalog.py; plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py; plugins/product-agent-os/scripts/run_methodology_audit.py"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-05-25"
@@ -2879,7 +2879,7 @@ verification_status: "Backed by Track 9 focused unit tests, fixture eval integra
 
 ```yaml
 title: "Product-Agent OS Track 9 backend methodology coverage"
-url: "docs/methodologies/backend.md; docs/sources/product-agent-os-track-9-backlog.md; docs/product-agent-os/behavioral-evals.md; docs/product-agent-os/scenarios.md; plugins/product-agent-os/scripts/product_agent_os/discovery.py; plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py; plugins/product-agent-os/scripts/run_fixture_eval.py"
+url: "docs/methodologies/backend.md; docs/planning/product-agent-os-track-9-backlog.md; docs/product-agent-os/behavioral-evals.md; docs/product-agent-os/scenarios.md; plugins/product-agent-os/scripts/product_agent_os/discovery.py; plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py; plugins/product-agent-os/scripts/run_fixture_eval.py"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-05-25"
@@ -2891,7 +2891,7 @@ verification_status: "Backed by focused T9-D7 tests, fixture eval coverage, full
 
 ```yaml
 title: "Product-Agent OS Track 9 API & Integrations methodology coverage"
-url: "docs/methodologies/api-integrations.md; docs/sources/product-agent-os-track-9-backlog.md; docs/product-agent-os/behavioral-evals.md; docs/product-agent-os/scenarios.md; plugins/product-agent-os/scripts/product_agent_os/discovery.py; plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py; plugins/product-agent-os/scripts/run_fixture_eval.py"
+url: "docs/methodologies/api-integrations.md; docs/planning/product-agent-os-track-9-backlog.md; docs/product-agent-os/behavioral-evals.md; docs/product-agent-os/scenarios.md; plugins/product-agent-os/scripts/product_agent_os/discovery.py; plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py; plugins/product-agent-os/scripts/run_fixture_eval.py"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-05-25"
@@ -2903,7 +2903,7 @@ verification_status: "Backed by focused T9-D8 catalog, audit, discovery, templat
 
 ```yaml
 title: "Product-Agent OS Track 9 Database & Data methodology coverage"
-url: "docs/methodologies/database-data.md; docs/sources/product-agent-os-track-9-backlog.md; docs/product-agent-os/behavioral-evals.md; docs/product-agent-os/scenarios.md; plugins/product-agent-os/scripts/product_agent_os/discovery.py; plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py; plugins/product-agent-os/scripts/run_fixture_eval.py"
+url: "docs/methodologies/database-data.md; docs/planning/product-agent-os-track-9-backlog.md; docs/product-agent-os/behavioral-evals.md; docs/product-agent-os/scenarios.md; plugins/product-agent-os/scripts/product_agent_os/discovery.py; plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py; plugins/product-agent-os/scripts/run_fixture_eval.py"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-05-26"
@@ -2961,7 +2961,7 @@ trust_level: "low"
 
 ```yaml
 title: "Product-Agent OS Track 1-9 final documentation closure"
-url: "docs/sources/product-agent-os-pre-track-8-implementation-inventory.md; docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md; docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md; docs/sources/product-agent-os-track-9-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/architecture.md; docs/product-agent-os/scenarios.md; docs/product-agent-os/behavioral-evals.md; docs/product-agent-os/codex-compatibility.md; docs/product-agent-os/development-standards.md; docs/product-agent-os/methodology-intelligence.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/methodology_catalog.py; plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py; plugins/product-agent-os/scripts/product_agent_os/methodology_report.py; plugins/product-agent-os/scripts/product_agent_os/discovery.py; plugins/product-agent-os/scripts/codex_runtime_runner/contracts.py; plugins/product-agent-os/scripts/run_methodology_audit.py; plugins/product-agent-os/scripts/run_fixture_eval.py; plugins/product-agent-os/scripts/run_transcript_eval.py; plugins/product-agent-os/scripts/validate_codex_compatibility.py; tests/product_agent_os/test_product_agent_os_docs.py"
+url: "docs/sources/product-agent-os-pre-track-8-implementation-inventory.md; docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md; docs/planning/2026-05-25-track-9-methodology-intelligence.md; docs/planning/product-agent-os-track-9-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/architecture.md; docs/product-agent-os/scenarios.md; docs/product-agent-os/behavioral-evals.md; docs/product-agent-os/codex-compatibility.md; docs/product-agent-os/development-standards.md; docs/product-agent-os/methodology-intelligence.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/methodology_catalog.py; plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py; plugins/product-agent-os/scripts/product_agent_os/methodology_report.py; plugins/product-agent-os/scripts/product_agent_os/discovery.py; plugins/product-agent-os/scripts/codex_runtime_runner/contracts.py; plugins/product-agent-os/scripts/run_methodology_audit.py; plugins/product-agent-os/scripts/run_fixture_eval.py; plugins/product-agent-os/scripts/run_transcript_eval.py; plugins/product-agent-os/scripts/validate_codex_compatibility.py; tests/product_agent_os/test_product_agent_os_docs.py"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-05-27"
@@ -2973,7 +2973,7 @@ verification_status: "Backed by Task 22 RED/GREEN docs tests, transcript eval, d
 
 ```yaml
 title: "Product-Agent OS Track 10 guided question and status dashboard coverage"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/product-agent-os/scenarios.md; docs/product-agent-os/behavioral-evals.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/question_protocol.py; plugins/product-agent-os/scripts/product_agent_os/question_ledger.py; plugins/product-agent-os/scripts/product_agent_os/status_snapshot.py; plugins/product-agent-os/scripts/product_agent_os/status_dashboard.py; plugins/product-agent-os/scripts/run_fixture_eval.py; plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json; plugins/product-agent-os/assets/eval-fixtures/transcripts/product-agent-os-synthetic-sessions.json; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_lifecycle_skills.py; tests/product_agent_os/test_product_agent_os_docs.py; tests/product_agent_os/test_transcript_session_evals.py"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/product-agent-os/scenarios.md; docs/product-agent-os/behavioral-evals.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/question_protocol.py; plugins/product-agent-os/scripts/product_agent_os/question_ledger.py; plugins/product-agent-os/scripts/product_agent_os/status_snapshot.py; plugins/product-agent-os/scripts/product_agent_os/status_dashboard.py; plugins/product-agent-os/scripts/run_fixture_eval.py; plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json; plugins/product-agent-os/assets/eval-fixtures/transcripts/product-agent-os-synthetic-sessions.json; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_lifecycle_skills.py; tests/product_agent_os/test_product_agent_os_docs.py; tests/product_agent_os/test_transcript_session_evals.py"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-05-28"
@@ -2985,7 +2985,7 @@ verification_status: "Backed by focused Batch 5 RED/GREEN tests and Batch 6 full
 
 ```yaml
 title: "Product-Agent OS Track 10 self-verification metrics-loop Batch 7 foundation"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py; tests/product_agent_os/test_agent_skill_metrics.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py; tests/product_agent_os/test_agent_skill_metrics.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-05-28"
@@ -2997,7 +2997,7 @@ verification_status: "Backed by focused RED/GREEN tests: missing module and stal
 
 ```yaml
 title: "Product-Agent OS Track 10 self-verification metrics-loop Batch 8 trace redaction dataset judge contracts"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py; tests/product_agent_os/test_agent_skill_metrics.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py; tests/product_agent_os/test_agent_skill_metrics.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-05-28"
@@ -3009,7 +3009,7 @@ verification_status: "Backed by focused RED/GREEN tests: Batch 8 imports failed 
 
 ```yaml
 title: "Product-Agent OS Track 10 self-verification metrics-loop Batch 9 metrics scorecards confidence cadence contracts"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py; tests/product_agent_os/test_agent_skill_metrics.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py; tests/product_agent_os/test_agent_skill_metrics.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-05-28"
@@ -3021,7 +3021,7 @@ verification_status: "Backed by focused RED/GREEN tests: Batch 9 imports failed 
 
 ```yaml
 title: "Product-Agent OS Track 10 self-verification metrics-loop Batch 10 ledger reports candidates cli contracts"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py; plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics_report.py; plugins/product-agent-os/scripts/product_agent_os/offline_artifact_safety.py; plugins/product-agent-os/scripts/render_agent_skill_metrics_report.py; tests/product_agent_os/test_agent_skill_metrics.py; tests/product_agent_os/test_agent_skill_metrics_report.py; tests/product_agent_os/test_agent_skill_metrics_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py; plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics_report.py; plugins/product-agent-os/scripts/product_agent_os/offline_artifact_safety.py; plugins/product-agent-os/scripts/render_agent_skill_metrics_report.py; tests/product_agent_os/test_agent_skill_metrics.py; tests/product_agent_os/test_agent_skill_metrics_report.py; tests/product_agent_os/test_agent_skill_metrics_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-05-28"
@@ -3033,7 +3033,7 @@ verification_status: "Backed by focused RED/GREEN tests: Batch 10 imports/module
 
 ```yaml
 title: "Product-Agent OS Track 10 self-verification metrics-loop Batch 11 runtime discovery lifecycle eval contracts"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; plugins/product-agent-os/scripts/product_agent_os/status_snapshot.py; plugins/product-agent-os/scripts/product_agent_os/discovery.py; plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py; plugins/product-agent-os/scripts/product_agent_os/question_protocol.py; plugins/product-agent-os/scripts/codex_runtime_runner/contracts.py; plugins/product-agent-os/scripts/codex_runtime_runner/routes.py; plugins/product-agent-os/scripts/run_fixture_eval.py; plugins/product-agent-os/assets/templates/evals/project-readiness.json; plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json; plugins/product-agent-os/assets/eval-fixtures/transcripts/product-agent-os-synthetic-sessions.json; plugins/product-agent-os/skills; tests/product_agent_os/test_status_snapshot.py; tests/product_agent_os/test_discovery.py; tests/product_agent_os/test_methodology_audit.py; tests/product_agent_os/test_codex_runtime_runner_contracts.py; tests/product_agent_os/test_codex_runtime_runner_state_routes.py; tests/product_agent_os/test_question_protocol.py; tests/product_agent_os/test_lifecycle_skills.py; tests/product_agent_os/test_behavioral_workflow_evals.py; tests/product_agent_os/test_transcript_session_evals.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_infrastructure_templates.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; plugins/product-agent-os/scripts/product_agent_os/status_snapshot.py; plugins/product-agent-os/scripts/product_agent_os/discovery.py; plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py; plugins/product-agent-os/scripts/product_agent_os/question_protocol.py; plugins/product-agent-os/scripts/codex_runtime_runner/contracts.py; plugins/product-agent-os/scripts/codex_runtime_runner/routes.py; plugins/product-agent-os/scripts/run_fixture_eval.py; plugins/product-agent-os/assets/templates/evals/project-readiness.json; plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json; plugins/product-agent-os/assets/eval-fixtures/transcripts/product-agent-os-synthetic-sessions.json; plugins/product-agent-os/skills; tests/product_agent_os/test_status_snapshot.py; tests/product_agent_os/test_discovery.py; tests/product_agent_os/test_methodology_audit.py; tests/product_agent_os/test_codex_runtime_runner_contracts.py; tests/product_agent_os/test_codex_runtime_runner_state_routes.py; tests/product_agent_os/test_question_protocol.py; tests/product_agent_os/test_lifecycle_skills.py; tests/product_agent_os/test_behavioral_workflow_evals.py; tests/product_agent_os/test_transcript_session_evals.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_infrastructure_templates.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-05-28"
@@ -3045,7 +3045,7 @@ verification_status: "Backed by focused RED/GREEN tests: Batch 11 status/discove
 
 ```yaml
 title: "Product-Agent OS Track 10 self-verification metrics-loop final closure"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; docs/product-agent-os/behavioral-evals.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py; plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics_report.py; plugins/product-agent-os/scripts/render_agent_skill_metrics_report.py; plugins/product-agent-os/scripts/run_fixture_eval.py; plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json; plugins/product-agent-os/assets/eval-fixtures/transcripts/product-agent-os-synthetic-sessions.json; tests/product_agent_os/test_agent_skill_metrics.py; tests/product_agent_os/test_agent_skill_metrics_report.py; tests/product_agent_os/test_agent_skill_metrics_cli.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; docs/product-agent-os/behavioral-evals.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py; plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics_report.py; plugins/product-agent-os/scripts/render_agent_skill_metrics_report.py; plugins/product-agent-os/scripts/run_fixture_eval.py; plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json; plugins/product-agent-os/assets/eval-fixtures/transcripts/product-agent-os-synthetic-sessions.json; tests/product_agent_os/test_agent_skill_metrics.py; tests/product_agent_os/test_agent_skill_metrics_report.py; tests/product_agent_os/test_agent_skill_metrics_cli.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-05-28"
@@ -3057,7 +3057,7 @@ verification_status: "Backed by Batch 12 focused RED/GREEN docs checks, 23-test 
 
 ```yaml
 title: "Product-Agent OS Track 10 project code graph Batch 13-14 foundation and overlays"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_adapters.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_chunking.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_manifest.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_observations.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_ontology.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; tests/product_agent_os/test_project_code_graph.py; tests/product_agent_os/test_project_graph_python_scanner.py; tests/product_agent_os/test_project_graph_overlays.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_adapters.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_chunking.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_manifest.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_observations.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_ontology.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; tests/product_agent_os/test_project_code_graph.py; tests/product_agent_os/test_project_graph_python_scanner.py; tests/product_agent_os/test_project_graph_overlays.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-06-01"
@@ -3069,7 +3069,7 @@ verification_status: "Backed by focused scanner/overlay tests running 14 tests w
 
 ```yaml
 title: "Product-Agent OS Track 10 project code graph Batch 15 query runtime analysis"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_analysis.py; plugins/product-agent-os/scripts/product_agent_os/status_snapshot.py; plugins/product-agent-os/scripts/codex_runtime_runner/contracts.py; plugins/product-agent-os/scripts/codex_runtime_runner/routes.py; plugins/product-agent-os/scripts/codex_runtime_runner/guards.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/skills; tests/product_agent_os/test_project_graph_queries.py; tests/product_agent_os/test_project_graph_analysis.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_status_snapshot.py; tests/product_agent_os/test_codex_runtime_runner_contracts.py; tests/product_agent_os/test_codex_runtime_runner_state_routes.py; tests/product_agent_os/test_lifecycle_skills.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_analysis.py; plugins/product-agent-os/scripts/product_agent_os/status_snapshot.py; plugins/product-agent-os/scripts/codex_runtime_runner/contracts.py; plugins/product-agent-os/scripts/codex_runtime_runner/routes.py; plugins/product-agent-os/scripts/codex_runtime_runner/guards.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/skills; tests/product_agent_os/test_project_graph_queries.py; tests/product_agent_os/test_project_graph_analysis.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_status_snapshot.py; tests/product_agent_os/test_codex_runtime_runner_contracts.py; tests/product_agent_os/test_codex_runtime_runner_state_routes.py; tests/product_agent_os/test_lifecycle_skills.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-06-01"
@@ -3081,7 +3081,7 @@ verification_status: "Backed by focused RED/GREEN query/runtime/status/lifecycle
 
 ```yaml
 title: "Product-Agent OS Track 10 project code graph Batch 16 cockpit visualization"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_cockpit_model.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_visual_model.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_renderer.py; plugins/product-agent-os/assets/templates/project-graph/project-cockpit.html; plugins/product-agent-os/assets/templates/project-graph/project-graph.html; plugins/product-agent-os/assets/templates/project-graph/project-code-flow.html; plugins/product-agent-os/assets/templates/project-graph/project-graph.css; tests/product_agent_os/test_project_cockpit_model.py; tests/product_agent_os/test_project_graph_visual_model.py; tests/product_agent_os/test_project_graph_renderer.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_cockpit_model.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_visual_model.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_renderer.py; plugins/product-agent-os/assets/templates/project-graph/project-cockpit.html; plugins/product-agent-os/assets/templates/project-graph/project-graph.html; plugins/product-agent-os/assets/templates/project-graph/project-code-flow.html; plugins/product-agent-os/assets/templates/project-graph/project-graph.css; tests/product_agent_os/test_project_cockpit_model.py; tests/product_agent_os/test_project_graph_visual_model.py; tests/product_agent_os/test_project_graph_renderer.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-06-01"
@@ -3093,7 +3093,7 @@ verification_status: "Backed by focused RED/GREEN cockpit/visual/renderer tests:
 
 ```yaml
 title: "Product-Agent OS Track 10 project code graph Batch 17 evals and future gates"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_search_quality.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_search_quality.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_search_quality.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_search_quality.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-06-01"
@@ -3105,7 +3105,7 @@ verification_status: "Backed by current-run RED/GREEN and broad verification: se
 
 ```yaml
 title: "Product-Agent OS Track 10 project code graph Batch 18 final verification closure"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-06-01"
@@ -3117,7 +3117,7 @@ verification_status: "Backed by Batch 18 focused/full verification: graph/cockpi
 
 ```yaml
 title: "Product-Agent OS Track 10 project code graph Batch 19 offline static search index"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_index.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_search_quality.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_index.py; tests/product_agent_os/test_project_graph_queries.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_project_graph_search_quality.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_index.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_search_quality.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_index.py; tests/product_agent_os/test_project_graph_queries.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_project_graph_search_quality.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-06-01"
@@ -3129,7 +3129,7 @@ verification_status: "Backed by current-run RED/GREEN and broad verification: mi
 
 ```yaml
 title: "Product-Agent OS Track 10 project code graph Batch 20 local query backend gate"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_backend.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_backend.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_backend.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_backend.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-06-01"
@@ -3141,7 +3141,7 @@ verification_status: "Backed by current-run RED/GREEN and broad verification: mi
 
 ```yaml
 title: "Product-Agent OS Track 10 project code graph Batch 21 semantic retrieval, embeddings and cross-encoder eval"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_semantic.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_semantic.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_semantic.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_semantic.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-06-01"
@@ -3153,7 +3153,7 @@ verification_status: "Backed by current-run RED/GREEN and broad verification: mi
 
 ```yaml
 title: "Product-Agent OS Track 10 project code graph Batch 22 LLM semantic extraction"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_llm_extraction.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_llm_extraction.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_llm_extraction.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_llm_extraction.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-06-02"
@@ -3165,7 +3165,7 @@ verification_status: "Backed by current-run RED/GREEN and broad verification: mi
 
 ```yaml
 title: "Product-Agent OS Track 10 project code graph Batch 23 future extension verification"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_extension_closure.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_extension_closure.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_extension_closure.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_extension_closure.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-06-02"
@@ -3177,7 +3177,7 @@ verification_status: "Backed by current-run RED/GREEN and full verification evid
 
 ```yaml
 title: "Product-Agent OS Track 10 Task 26 Batch 24 live governance"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_live_governance.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_live_governance.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_live_governance.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_live_governance.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-06-02"
@@ -3189,7 +3189,7 @@ verification_status: "Backed by current-run RED/GREEN and broad verification evi
 
 ```yaml
 title: "Product-Agent OS Track 10 Task 26 Batch 25 live runtime"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_live_runtime.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_live_governance.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_live_runtime.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_live_runtime.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_live_governance.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_live_runtime.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-06-02"
@@ -3201,7 +3201,7 @@ verification_status: "Backed by current-run RED/GREEN and broad verification evi
 
 ```yaml
 title: "Product-Agent OS Track 10 Task 26 Batch 26 external embedding provider gate and eval"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_embedding_provider.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_live_governance.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_semantic.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_embedding_provider.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_embedding_provider.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_live_governance.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_semantic.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_embedding_provider.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-06-02"
@@ -3213,7 +3213,7 @@ verification_status: "Backed by current-run RED/GREEN and broad verification evi
 
 ```yaml
 title: "Product-Agent OS Track 10 Task 26 Batch 27 cross-encoder reranker and hybrid retrieval"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_reranker_provider.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_hybrid_retrieval.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_reranker_provider.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_reranker_provider.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_hybrid_retrieval.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_reranker_provider.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-06-03"
@@ -3225,7 +3225,7 @@ verification_status: "Backed by current-run RED/GREEN and broad verification evi
 
 ```yaml
 title: "Product-Agent OS Track 10 Task 26 Batch 28 live LLM proposal adapter and safety eval"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_llm_proposal_provider.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_live_governance.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_llm_extraction.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_llm_proposal_provider.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_llm_proposal_provider.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_live_governance.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_llm_extraction.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_llm_proposal_provider.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-06-03"
@@ -3237,7 +3237,7 @@ verification_status: "Backed by current-run RED/GREEN and broad verification evi
 
 ```yaml
 title: "Product-Agent OS Track 10 Task 26 Batch 29 human review ledger and proposal diff preview"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_review_ledger.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_llm_proposal_provider.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_llm_extraction.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_review_ledger.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_review_ledger.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_llm_proposal_provider.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_llm_extraction.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_review_ledger.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 source_status: "project-authored"
 checked_at: "2026-06-03"
@@ -3249,7 +3249,7 @@ verification_status: "Backed by current-run RED/GREEN and broad verification evi
 
 ```yaml
 title: "Product-Agent OS Track 10 Task 26 Batch 30 canonical graph mutation journal and rollback"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_canonical_mutation.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_canonical_mutation.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_canonical_mutation.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_canonical_mutation.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 source_status: "project-authored"
 checked_at: "2026-06-03"
@@ -3261,7 +3261,7 @@ verification_status: "Backed by current-run RED/GREEN and broad verification evi
 
 ```yaml
 title: "Product-Agent OS Track 10 Task 26 Batch 31 audit logging security privacy observability and agent skill routing"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_live_audit.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_live_audit.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_live_audit.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_live_audit.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 source_status: "project-authored"
 checked_at: "2026-06-03"
@@ -3273,7 +3273,7 @@ verification_status: "Backed by current-run RED/GREEN and broad verification evi
 
 ```yaml
 title: "Product-Agent OS Track 10 Task 26 Batch 32 real testing readiness target consent pilot harness and Codex surface smoke"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_real_testing.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_real_testing.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_real_testing.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_real_testing.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 source_status: "project-authored"
 checked_at: "2026-06-03"
@@ -3285,7 +3285,7 @@ verification_status: "Backed by current-run RED/GREEN and broad verification evi
 
 ```yaml
 title: "Product-Agent OS Track 10 Task 26 Batch 33 runtime browser QA performance and stabilization"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_runtime_qa.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_runtime_qa.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_graph_runtime_qa.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_project_graph_runtime_qa.py; tests/product_agent_os/test_project_graph_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 source_status: "project-authored"
 checked_at: "2026-06-03"
@@ -3297,7 +3297,7 @@ verification_status: "Backed by current-run RED/GREEN and broad verification evi
 
 ```yaml
 title: "Product-Agent OS Track 10 Task 26 Batch 34 docs packaging closure matrix"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-batch34-packaging-install-smoke.md; docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; docs/product-agent-os/project-code-graph.md; docs/product-agent-os/live-runtime-governance.md; docs/product-agent-os/approval-bound-real-testing.md; docs/product-agent-os/agent-skill-modernization-loop.md; docs/product-agent-os/cli-reference.md; docs/product-agent-os/artifact-contracts.md; docs/product-agent-os/packaging-and-closure.md; docs/product-agent/product-agent-os-plugin-spec.md; mkdocs.yml; tools/check_docs.py; README.md; plugins/product-agent-os/README.md; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-batch34-packaging-install-smoke.md; docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; docs/product-agent-os/project-code-graph.md; docs/product-agent-os/live-runtime-governance.md; docs/product-agent-os/approval-bound-real-testing.md; docs/product-agent-os/agent-skill-modernization-loop.md; docs/product-agent-os/cli-reference.md; docs/product-agent-os/artifact-contracts.md; docs/product-agent-os/packaging-and-closure.md; docs/product-agent/product-agent-os-plugin-spec.md; mkdocs.yml; tools/check_docs.py; README.md; plugins/product-agent-os/README.md; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 source_status: "project-authored"
 checked_at: "2026-06-03"
@@ -3321,7 +3321,7 @@ verification_status: "Docs packet is project-authored and source-backed by repos
 
 ```yaml
 title: "Product-Agent OS Batch 34A public docs boundary and IA packet"
-url: "docs/sources/product-agent-os-batch34a-public-docs-boundary.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; tools/check_docs.py; tests/product_agent_os/test_product_agent_os_docs.py"
+url: "docs/sources/product-agent-os-batch34a-public-docs-boundary.md; docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; tools/check_docs.py; tests/product_agent_os/test_product_agent_os_docs.py"
 type: "internal documentation"
 source_status: "project-authored"
 checked_at: "2026-06-03"
@@ -3333,7 +3333,7 @@ verification_status: "Docs/source-policy slice. The packet itself does not rewri
 
 ```yaml
 title: "Product-Agent OS Batch 34B public copy rewrite packet"
-url: "docs/sources/product-agent-os-batch34b-public-copy-rewrite.md; docs/sources/product-agent-os-batch34a-public-docs-boundary.md; docs/sources/product-agent-os-track-10-backlog.md; tools/check_docs.py; tests/product_agent_os/test_product_agent_os_docs.py"
+url: "docs/sources/product-agent-os-batch34b-public-copy-rewrite.md; docs/sources/product-agent-os-batch34a-public-docs-boundary.md; docs/planning/product-agent-os-track-10-backlog.md; tools/check_docs.py; tests/product_agent_os/test_product_agent_os_docs.py"
 type: "internal documentation"
 source_status: "project-authored"
 checked_at: "2026-06-03"
@@ -3345,7 +3345,7 @@ verification_status: "Docs/source-policy slice. Public-ready pages are checked b
 
 ```yaml
 title: "Product-Agent OS Batch 34C RU/EN I18N localization packet"
-url: "docs/sources/product-agent-os-batch34c-i18n-localization.md; docs/sources/product-agent-os-batch34b-public-copy-rewrite.md; docs/sources/product-agent-os-track-10-backlog.md; mkdocs.yml; requirements.txt; tools/check_docs.py; tests/product_agent_os/test_product_agent_os_docs.py"
+url: "docs/sources/product-agent-os-batch34c-i18n-localization.md; docs/sources/product-agent-os-batch34b-public-copy-rewrite.md; docs/planning/product-agent-os-track-10-backlog.md; mkdocs.yml; requirements.txt; tools/check_docs.py; tests/product_agent_os/test_product_agent_os_docs.py"
 type: "internal documentation"
 source_status: "project-authored"
 checked_at: "2026-06-03"
@@ -3357,7 +3357,7 @@ verification_status: "Docs/config/source-policy slice. The B34C contract is chec
 
 ```yaml
 title: "Product-Agent OS Batch 34D product docs QA and closure packet"
-url: "docs/sources/product-agent-os-batch34d-product-docs-qa-closure.md; docs/sources/product-agent-os-batch34c-i18n-localization.md; docs/sources/product-agent-os-track-10-backlog.md; mkdocs.yml; tools/check_docs.py; tests/product_agent_os/test_product_agent_os_docs.py; site/index.html; site/en/index.html"
+url: "docs/sources/product-agent-os-batch34d-product-docs-qa-closure.md; docs/sources/product-agent-os-batch34c-i18n-localization.md; docs/planning/product-agent-os-track-10-backlog.md; mkdocs.yml; tools/check_docs.py; tests/product_agent_os/test_product_agent_os_docs.py; site/index.html; site/en/index.html"
 type: "internal documentation"
 source_status: "project-authored"
 checked_at: "2026-06-03"
@@ -3369,7 +3369,7 @@ verification_status: "Docs/source-policy/rendered-site slice. The B34D contract 
 
 ```yaml
 title: "Product-Agent OS Batch 34E full-site i18n parity corrective matrix"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md; README.md; plugins/product-agent-os/README.md; tests/product_agent_os/test_product_agent_os_docs.py"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md; README.md; plugins/product-agent-os/README.md; tests/product_agent_os/test_product_agent_os_docs.py"
 type: "internal documentation"
 source_status: "project-authored"
 checked_at: "2026-06-06"
@@ -3381,7 +3381,7 @@ verification_status: "Planning/control-plane update plus M38-M49 source-level EN
 
 ```yaml
 title: "Product-Agent OS Batch 34E M34-M37 full-site i18n inventory and nav gate"
-url: "docs/sources/product-agent-os-batch34e-full-site-i18n-inventory.md; docs/sources/product-agent-os-track-10-backlog.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; mkdocs.yml; tools/check_docs.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/sources/product-agent-os-batch34e-full-site-i18n-inventory.md; docs/planning/product-agent-os-track-10-backlog.md; docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; mkdocs.yml; tools/check_docs.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 source_status: "project-authored"
 checked_at: "2026-06-06"
@@ -3393,7 +3393,7 @@ verification_status: "Docs/source/config/test slice. Focused M34-M37 test first 
 
 ```yaml
 title: "Product-Agent OS Batch 34E M38-M43 EN sibling translation pass"
-url: "docs/sources/product-agent-os-batch34e-full-site-i18n-inventory.md; docs/codex/overview.en.md; docs/prompting/overview.en.md; docs/agent-systems/overview.en.md; docs/artifact-templates/prompt-packet.en.md; docs/insights/index.en.md; docs/playbooks/research-loop.en.md; docs/methodologies/index.en.md; docs/sources/registry.en.md; docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.en.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; tests/product_agent_os/test_product_agent_os_docs.py"
+url: "docs/sources/product-agent-os-batch34e-full-site-i18n-inventory.md; docs/codex/overview.en.md; docs/prompting/overview.en.md; docs/agent-systems/overview.en.md; docs/artifact-templates/prompt-packet.en.md; docs/insights/index.en.md; docs/playbooks/research-loop.en.md; docs/methodologies/index.en.md; docs/sources/registry.en.md; docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.en.md; docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; tests/product_agent_os/test_product_agent_os_docs.py"
 type: "internal documentation"
 source_status: "project-authored"
 checked_at: "2026-06-06"
@@ -3405,7 +3405,7 @@ verification_status: "Source-level translation slice. Focused M38-M43 test first
 
 ```yaml
 title: "Product-Agent OS Batch 34E M44 EN editorial quality sweep"
-url: "docs/sources/product-agent-os-batch34e-full-site-i18n-inventory.md; docs/sources/product-agent-os-track-10-backlog.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; tests/product_agent_os/test_product_agent_os_docs.py"
+url: "docs/sources/product-agent-os-batch34e-full-site-i18n-inventory.md; docs/planning/product-agent-os-track-10-backlog.md; docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; tests/product_agent_os/test_product_agent_os_docs.py"
 type: "internal documentation"
 source_status: "project-authored"
 checked_at: "2026-06-06"
@@ -3417,7 +3417,7 @@ verification_status: "Source-level editorial slice. The M44 test gate first fail
 
 ```yaml
 title: "Product-Agent OS Batch 34E M45 RU quality sweep"
-url: "docs/sources/product-agent-os-batch34e-full-site-i18n-inventory.md; docs/sources/product-agent-os-track-10-backlog.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; tests/product_agent_os/test_product_agent_os_docs.py"
+url: "docs/sources/product-agent-os-batch34e-full-site-i18n-inventory.md; docs/planning/product-agent-os-track-10-backlog.md; docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; tests/product_agent_os/test_product_agent_os_docs.py"
 type: "internal documentation"
 source_status: "project-authored"
 checked_at: "2026-06-06"
@@ -3429,7 +3429,7 @@ verification_status: "Source-level RU quality slice. The M45 test gate first fai
 
 ```yaml
 title: "Product-Agent OS Batch 34E M46 language switcher parity"
-url: "docs/sources/product-agent-os-batch34e-full-site-i18n-inventory.md; docs/sources/product-agent-os-track-10-backlog.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; site/; tests/product_agent_os/test_product_agent_os_docs.py"
+url: "docs/sources/product-agent-os-batch34e-full-site-i18n-inventory.md; docs/planning/product-agent-os-track-10-backlog.md; docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; site/; tests/product_agent_os/test_product_agent_os_docs.py"
 type: "internal documentation"
 source_status: "project-authored"
 checked_at: "2026-06-06"
@@ -3441,7 +3441,7 @@ verification_status: "Generated-site static inspection slice. The M46 test gate 
 
 ```yaml
 title: "Product-Agent OS Batch 34E M47 search sitemap and strict build parity"
-url: "docs/sources/product-agent-os-batch34e-full-site-i18n-inventory.md; docs/sources/product-agent-os-track-10-backlog.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; mkdocs.yml; site/search/search_index.json; site/sitemap.xml; tests/product_agent_os/test_product_agent_os_docs.py"
+url: "docs/sources/product-agent-os-batch34e-full-site-i18n-inventory.md; docs/planning/product-agent-os-track-10-backlog.md; docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; mkdocs.yml; site/search/search_index.json; site/sitemap.xml; tests/product_agent_os/test_product_agent_os_docs.py"
 type: "internal documentation"
 source_status: "project-authored"
 checked_at: "2026-06-06"
@@ -3453,7 +3453,7 @@ verification_status: "Generated-site search/sitemap inspection slice. The M47 te
 
 ```yaml
 title: "Product-Agent OS Batch 34E M48-M49 final full-site i18n closure"
-url: "docs/sources/product-agent-os-batch34e-full-site-i18n-inventory.md; docs/sources/product-agent-os-track-10-backlog.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; site/; site/search/search_index.json; site/sitemap.xml; tests/product_agent_os/test_product_agent_os_docs.py; tools/check_docs.py"
+url: "docs/sources/product-agent-os-batch34e-full-site-i18n-inventory.md; docs/planning/product-agent-os-track-10-backlog.md; docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; site/; site/search/search_index.json; site/sitemap.xml; tests/product_agent_os/test_product_agent_os_docs.py; tools/check_docs.py"
 type: "internal documentation"
 source_status: "project-authored"
 checked_at: "2026-06-06"
@@ -3477,7 +3477,7 @@ verification_status: "Current-run smoke evidence only. `validate_codex_compatibi
 
 ```yaml
 title: "Product-Agent OS Batch 35 approval packet draft"
-url: "docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/product-agent-os/approval-bound-real-testing.md; docs/product-agent-os/packaging-and-closure.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; RUNLOG.md; EVALS.md; TEST.md"
+url: "docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/product-agent-os/approval-bound-real-testing.md; docs/product-agent-os/packaging-and-closure.md; docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; RUNLOG.md; EVALS.md; TEST.md"
 type: "internal documentation"
 source_status: "project-authored"
 checked_at: "2026-06-06"
@@ -3489,7 +3489,7 @@ verification_status: "Packet plus current-run addenda. M37 records `live-server-
 
 ```yaml
 title: "Product-Agent OS Track 10 Task 26 Batch 35 approval-bound real testing execution matrix"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 source_status: "project-authored"
 checked_at: "2026-06-06"
@@ -3561,7 +3561,7 @@ verification_status: "`git-release-pr-evidence.md` and `git-release-pr-packet.js
 
 ```yaml
 title: "Product-Agent OS root RUNLOG compaction and evidence ownership"
-url: "RUNLOG.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-batch35-approval-packet-draft.md; tests/product_agent_os/test_product_agent_os_docs.py; TEST.md; PLAN.md; EVALS.md; REQUIREMENTS.md; AGENTS.md"
+url: "RUNLOG.md; docs/planning/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-batch35-approval-packet-draft.md; tests/product_agent_os/test_product_agent_os_docs.py; TEST.md; PLAN.md; EVALS.md; REQUIREMENTS.md; AGENTS.md"
 type: "internal control-plane maintenance"
 source_status: "project-authored"
 checked_at: "2026-06-07"
@@ -3573,7 +3573,7 @@ verification_status: "Backed by `test_root_runlog_is_compact_current_handoff_and
 
 ```yaml
 title: "Product-Agent OS root PLAN compaction and sequencing ownership"
-url: "PLAN.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-track-9-backlog.md; docs/sources/product-agent-os-batch35-approval-packet-draft.md; tests/product_agent_os/test_product_agent_os_docs.py; REQUIREMENTS.md; TEST.md; EVALS.md; RUNLOG.md; AGENTS.md"
+url: "PLAN.md; docs/planning/product-agent-os-track-10-backlog.md; docs/planning/product-agent-os-track-9-backlog.md; docs/sources/product-agent-os-batch35-approval-packet-draft.md; tests/product_agent_os/test_product_agent_os_docs.py; REQUIREMENTS.md; TEST.md; EVALS.md; RUNLOG.md; AGENTS.md"
 type: "internal control-plane maintenance"
 source_status: "project-authored"
 checked_at: "2026-06-07"
@@ -3585,7 +3585,7 @@ verification_status: "Backed by `test_root_plan_is_compact_current_sequencing_co
 
 ```yaml
 title: "Product-Agent OS root TEST compaction and verification ownership"
-url: "TEST.md; PLAN.md; RUNLOG.md; docs/sources/product-agent-os-track-8-detailed-backlog.md; docs/sources/product-agent-os-track-9-backlog.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/sources/registry.md; tests/product_agent_os/test_product_agent_os_docs.py; REQUIREMENTS.md; EVALS.md; AGENTS.md"
+url: "TEST.md; PLAN.md; RUNLOG.md; docs/planning/product-agent-os-track-8-detailed-backlog.md; docs/planning/product-agent-os-track-9-backlog.md; docs/planning/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/sources/registry.md; tests/product_agent_os/test_product_agent_os_docs.py; REQUIREMENTS.md; EVALS.md; AGENTS.md"
 type: "internal control-plane maintenance"
 source_status: "project-authored"
 checked_at: "2026-06-07"
@@ -3597,7 +3597,7 @@ verification_status: "Backed by `test_root_test_is_compact_current_verification_
 
 ```yaml
 title: "Product-Agent OS root AGENTS compaction and durable-rule ownership"
-url: "AGENTS.md; PLAN.md; RUNLOG.md; TEST.md; docs/sources/product-agent-os-track-8-detailed-backlog.md; docs/sources/product-agent-os-track-9-backlog.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/sources/registry.md; tests/product_agent_os/test_product_agent_os_docs.py; REQUIREMENTS.md; EVALS.md"
+url: "AGENTS.md; PLAN.md; RUNLOG.md; TEST.md; docs/planning/product-agent-os-track-8-detailed-backlog.md; docs/planning/product-agent-os-track-9-backlog.md; docs/planning/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/sources/registry.md; tests/product_agent_os/test_product_agent_os_docs.py; REQUIREMENTS.md; EVALS.md"
 type: "internal control-plane maintenance"
 source_status: "project-authored"
 checked_at: "2026-06-07"
@@ -3609,7 +3609,7 @@ verification_status: "Backed by `test_root_agents_is_compact_durable_rule_contra
 
 ```yaml
 title: "Product-Agent OS root EVALS compaction and eval ownership"
-url: "EVALS.md; PLAN.md; RUNLOG.md; TEST.md; AGENTS.md; docs/sources/product-agent-os-track-8-detailed-backlog.md; docs/sources/product-agent-os-track-9-backlog.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/sources/registry.md; tests/product_agent_os/test_product_agent_os_docs.py; REQUIREMENTS.md"
+url: "EVALS.md; PLAN.md; RUNLOG.md; TEST.md; AGENTS.md; docs/planning/product-agent-os-track-8-detailed-backlog.md; docs/planning/product-agent-os-track-9-backlog.md; docs/planning/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/sources/registry.md; tests/product_agent_os/test_product_agent_os_docs.py; REQUIREMENTS.md"
 type: "internal control-plane maintenance"
 source_status: "project-authored"
 checked_at: "2026-06-07"
@@ -3621,7 +3621,7 @@ verification_status: "Backed by `test_root_evals_is_compact_current_eval_contrac
 
 ```yaml
 title: "Product-Agent OS root README compaction and product-entrypoint ownership"
-url: "README.md; plugins/product-agent-os/README.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/registry.md; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "README.md; plugins/product-agent-os/README.md; docs/planning/product-agent-os-track-10-backlog.md; docs/sources/registry.md; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation maintenance"
 source_status: "project-authored"
 checked_at: "2026-06-07"
@@ -3633,7 +3633,7 @@ verification_status: "Backed by `test_root_readme_is_compact_product_entrypoint_
 
 ```yaml
 title: "Product-Agent OS system file hygiene audit"
-url: "README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/system_file_hygiene.py; plugins/product-agent-os/scripts/validate_system_file_hygiene.py; plugins/product-agent-os/scripts/product_agent_os/status_snapshot.py; plugins/product-agent-os/scripts/product_agent_os/status_dashboard.py; plugins/product-agent-os/scripts/render_status_dashboard.py; plugins/product-agent-os/scripts/run_fixture_eval.py; plugins/product-agent-os/scripts/product_agent_os/automation_policy.py; plugins/product-agent-os/scripts/codex_runtime_runner/redaction.py; plugins/product-agent-os/assets/templates/status-dashboard/status.html; plugins/product-agent-os/assets/templates/status-dashboard/status.css; plugins/product-agent-os/assets/templates/workflows/system-file-hygiene-audit.md; plugins/product-agent-os/assets/templates/artifact-templates/system-file-hygiene-report.md; plugins/product-agent-os/assets/templates/automations/system-file-hygiene-audit.md; plugins/product-agent-os/assets/templates/automations/automation-candidate.md; plugins/product-agent-os/assets/templates/control-plane/TEST.md; plugins/product-agent-os/assets/templates/control-plane/EVALS.md; plugins/product-agent-os/assets/templates/control-plane/RUNLOG.md; plugins/product-agent-os/skills/automation-promoter/SKILL.md; docs/product-agent-os/technical.md; docs/product-agent-os/technical.en.md; docs/product-agent-os/artifact-contracts.md; docs/product-agent-os/artifact-contracts.en.md; docs/runtime/automations-github.md; docs/runtime/automations-github.en.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-track-10-backlog.en.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; tests/product_agent_os/test_system_file_hygiene.py; tests/product_agent_os/test_status_snapshot.py; tests/product_agent_os/test_status_dashboard.py; tests/product_agent_os/test_automation_policy.py; tests/product_agent_os/test_infrastructure_templates.py; tests/product_agent_os/test_infrastructure_renderer.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; tests/product_agent_os/test_codex_runtime_runner_guards.py"
+url: "README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/system_file_hygiene.py; plugins/product-agent-os/scripts/validate_system_file_hygiene.py; plugins/product-agent-os/scripts/product_agent_os/status_snapshot.py; plugins/product-agent-os/scripts/product_agent_os/status_dashboard.py; plugins/product-agent-os/scripts/render_status_dashboard.py; plugins/product-agent-os/scripts/run_fixture_eval.py; plugins/product-agent-os/scripts/product_agent_os/automation_policy.py; plugins/product-agent-os/scripts/codex_runtime_runner/redaction.py; plugins/product-agent-os/assets/templates/status-dashboard/status.html; plugins/product-agent-os/assets/templates/status-dashboard/status.css; plugins/product-agent-os/assets/templates/workflows/system-file-hygiene-audit.md; plugins/product-agent-os/assets/templates/artifact-templates/system-file-hygiene-report.md; plugins/product-agent-os/assets/templates/automations/system-file-hygiene-audit.md; plugins/product-agent-os/assets/templates/automations/automation-candidate.md; plugins/product-agent-os/assets/templates/control-plane/TEST.md; plugins/product-agent-os/assets/templates/control-plane/EVALS.md; plugins/product-agent-os/assets/templates/control-plane/RUNLOG.md; plugins/product-agent-os/skills/automation-promoter/SKILL.md; docs/product-agent-os/technical.md; docs/product-agent-os/technical.en.md; docs/product-agent-os/artifact-contracts.md; docs/product-agent-os/artifact-contracts.en.md; docs/runtime/automations-github.md; docs/runtime/automations-github.en.md; docs/planning/product-agent-os-track-10-backlog.md; docs/planning/product-agent-os-track-10-backlog.en.md; docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; tests/product_agent_os/test_system_file_hygiene.py; tests/product_agent_os/test_status_snapshot.py; tests/product_agent_os/test_status_dashboard.py; tests/product_agent_os/test_automation_policy.py; tests/product_agent_os/test_infrastructure_templates.py; tests/product_agent_os/test_infrastructure_renderer.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; tests/product_agent_os/test_codex_runtime_runner_guards.py"
 type: "internal control-plane maintenance"
 source_status: "project-authored"
 checked_at: "2026-06-07"
@@ -3646,7 +3646,7 @@ verification_status: "Backed by `test_system_file_hygiene`, focused status snaps
 
 ```yaml
 title: "Product-Agent OS Batch 40 S5 Doubt verifier pilot metrics and closure"
-url: "docs/sources/product-agent-os-batch40-doubt-verifier-pilot-closure.md; docs/sources/product-agent-os-batch40-doubt-verifier-pilot-closure.en.md; plugins/product-agent-os/scripts/product_agent_os/doubt_verification.py; plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_doubt_verification.py; tests/product_agent_os/test_agent_skill_metrics.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; RUNLOG.md; TEST.md; AGENTS.md"
+url: "docs/sources/product-agent-os-batch40-doubt-verifier-pilot-closure.md; docs/sources/product-agent-os-batch40-doubt-verifier-pilot-closure.en.md; plugins/product-agent-os/scripts/product_agent_os/doubt_verification.py; plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py; plugins/product-agent-os/scripts/run_fixture_eval.py; tests/product_agent_os/test_doubt_verification.py; tests/product_agent_os/test_agent_skill_metrics.py; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_product_agent_os_docs.py; docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/planning/product-agent-os-track-10-backlog.md; RUNLOG.md; TEST.md; AGENTS.md"
 type: "internal implementation evidence"
 source_status: "project-authored"
 checked_at: "2026-06-10"

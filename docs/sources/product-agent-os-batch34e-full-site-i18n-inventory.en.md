@@ -111,18 +111,18 @@ M38-M43 preserves official OpenAI terms, source links, commands, IDs, code fence
 
 English-original plan files excluded from localized sibling parity:
 
-- `superpowers/plans/2026-05-14-product-agent-os-generated-infrastructure.md`
-- `superpowers/plans/2026-05-14-product-agent-os-lifecycle-skills.md`
-- `superpowers/plans/2026-05-14-product-agent-os-plugin-core.md`
-- `superpowers/plans/2026-05-14-product-agent-os-production-hardening.md`
-- `superpowers/plans/2026-05-15-product-agent-os-codex-runtime-runner.md`
-- `superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`
-- `superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md`
+- `planning/2026-05-14-product-agent-os-generated-infrastructure.md`
+- `planning/2026-05-14-product-agent-os-lifecycle-skills.md`
+- `planning/2026-05-14-product-agent-os-plugin-core.md`
+- `planning/2026-05-14-product-agent-os-production-hardening.md`
+- `planning/2026-05-15-product-agent-os-codex-runtime-runner.md`
+- `planning/2026-05-25-track-9-methodology-intelligence.md`
+- `planning/2026-05-27-track-10-guided-questions-status-dashboard.md`
 
 Post-Batch34E English-original plan additions are not part of the historical M35-M49 counts above, but they follow the same planning-artifact parity boundary:
 
-- `superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md`
-- `superpowers/plans/2026-08-05-gpt56-r1-r6-remediation.md`
+- `planning/2026-06-20-track-11-documentation-architecture-refresh.md`
+- `planning/2026-08-05-gpt56-r1-r6-remediation.md`
 
 ## B34E-I18N-M44 EN Editorial Quality Sweep
 

@@ -127,4 +127,4 @@ Commands stdout/stderr и наблюдаемые diffs сохраняются в
 AGENTS/EVALS/prod_test: no_change_needed — durable authority, rubric/thresholds и Batch39 не менялись. Обязательных gaps для самого раннего review нет; commercial release по AUTH/C46 всё ещё blocked. Передача M2 разрешена владельцем после closure; receipt доставки относится к текущему чату и его lifecycle-marker, а не к разрешению выпуска.
 <!-- PAOS-0046 verification:end -->
 
-Связанные артефакты: [auth/commercial contract](product-agent-os-web-auth-commercial-2026-11-09.md), [план и карточка PAOS-0046](product-agent-os-web-task-manager-plan-2026-11-09.md), [M1 evidence](product-agent-os-web-m1-execution-2026-11-11.md).
+Связанные артефакты: [auth/commercial contract](product-agent-os-web-auth-commercial-2026-11-09.md), [план и карточка PAOS-0046](../docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md), [M1 evidence](product-agent-os-web-m1-execution-2026-11-11.md).

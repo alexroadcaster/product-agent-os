@@ -20,7 +20,7 @@
     "tests/product_agent_os/test_batch41_first_run_automation.py",
     "tests/product_agent_os/test_first_run_analysis.py",
     "RUNLOG.md",
-    "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md",
+    "docs/planning/2026-05-27-track-10-guided-questions-status-dashboard.md",
     "docs/superpowers/specs/batch41-s9-html-modernization-summary.json",
     "docs/superpowers/specs/batch41-s9-m57-neural-flow-comparison.json",
     "docs/superpowers/specs/batch41-s9-m57-neural-flow-summary.json",

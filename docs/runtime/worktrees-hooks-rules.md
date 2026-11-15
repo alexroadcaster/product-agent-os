@@ -126,6 +126,6 @@ proposal использует `prompt` для review и сохраняет `forb
 пин одного grant, session ownership, exact Markdown path и previous digest на
 каждую create/update. Legacy create-only v1 сохранён. Подробный контракт находится
 в `.codex/workflows/task-plan-lifecycle.md`; источник и local verification —
-`research/product-agent-os-audit-remediation-task-plan-2026-11-09.md`.
+`docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md`.
 CAS preflight отклоняет уже возникший conflict, но не блокирует промежуток между
 hook и записью: требуется один writer; атомарность и fresh-host activation не доказаны.

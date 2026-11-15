@@ -9,7 +9,7 @@ title: "Archive - Product-Agent OS: final pre-development review"
 Source status: `implementation planning + critical review`
 
 Date: **2026-05-23**.
-Based on the [Track 8 detailed backlog](product-agent-os-track-8-detailed-backlog.md), the [gap matrix](development-methodology-gap-matrix.md), Track 6/7 implementation notes and scenario review of Product-Agent OS.
+Based on the [Track 8 detailed backlog](../planning/product-agent-os-track-8-detailed-backlog.md), the [gap matrix](development-methodology-gap-matrix.md), Track 6/7 implementation notes and scenario review of Product-Agent OS.
 
 ## Final critical review
 

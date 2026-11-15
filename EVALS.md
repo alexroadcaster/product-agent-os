@@ -46,7 +46,7 @@ PAOS-0030: trusted expected digest, runtime import/parser closure, no private pr
 
 Исторический срез до PAOS-0037 (provenance сохранён): Source status: planned evaluation route; implementation_not_started.
 
-Owning acceptance — матрица M1 DoD в [Web-план v0.8](research/product-agent-os-web-task-manager-plan-2026-11-09.md); UX определяется [wireframes v0.7](research/product-agent-os-web-m1-wireframes-2026-11-09.md). Старый Web v0.5 receipt архивирован; критерии M2–T1 не являются критериями M1.
+Owning acceptance — матрица M1 DoD в [Web-план v0.8](docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md); UX определяется [wireframes v0.7](research/product-agent-os-web-m1-wireframes-2026-11-09.md). Старый Web v0.5 receipt архивирован; критерии M2–T1 не являются критериями M1.
 
 - Детерминированные contracts, migration/restore, policy enforcement, dedup и project isolation проверяются по TEST.md; количество тестов и synthetic pass не заменяют runtime evidence.
 - Пользовательский путь оценивается на ясность source/coverage, роли агента, permission vs product decision, результата действия, lossless recovery и ручной приёмки задачи. Empty/partial/unknown не должны выглядеть как полный контекст или success.
@@ -67,37 +67,37 @@ G7 attested design v2: 12 sequential paired generations, gpt-6.1-sol/medium/tool
 
 G6 partially_verified: GAP-06 implemented / owner accepted 10.11.2026; все три synthetic local pilots приняты владельцем. HOST-01 не является их зависимостью. T34 no-go и fresh-session activation HOST-01/HOST-02 остаются открытыми отдельно; manual_only сохраняется. [Результаты](docs/superpowers/specs/paos-aud-g6-pilot-results.json).
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G5 — 2026-11-09
 
 G5 проверяет command routing и documentation/build integrity. Offline failures не дают network fallback; successful CLI exit не снимает context gaps. Mermaid render не доказывает host activation. Новые model/behavioral evals не применимы; прежний G4 run имеет прежнюю provenance; G6 gates открыты.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G4 — 2026-11-09
 
 Source read-set comparison отделён от live behavioral evaluation. 93 moved sections сохранены; 12 metadata unchanged. Typical/edge/adversarial contract gates должны сохраняться. Model/effort/B45 compact-contract treatment не меняется. Partial input не разрешает legacy fallback; unchanged evidence требует original provenance.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G3 — 2026-11-09
 
 PAOS-AUD-G3: invalid/future/stale/missing dates, local registry escape/broken refs, empty/rejected feedback и historical/current/conflict cases различены. Date/URL не semantic verification; owner_label_supported не positive sentiment/promotion; source status не owner acceptance. No-pointer B37 fallback сохраняется; malformed/stale pointer не разрешает historical fallback.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G2 — 2026-11-09
 
 PAOS-AUD-G2: receipt не повышает documented unsupported; model ID/config не доказывает account access или promotion. Для missing/unknown version, unknown trust и отсутствующего cache запрещён fabricated pass. Match component digest не доказывает full package или host selection. Deterministic fixtures сравниваются с RED baseline; provider quality/cost thresholds и T23–T29 сохраняются.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## PAOS-AUD-G1 — 2026-11-09
 
 PAOS-AUD-G1: deterministic guard comparisons покрывают compound/unknown commands, inert patch prose, exact hooks discovery path, selected-SID ACL repair/restore и pinned report-authoring create/update. Сохраняются legacy create-only и session isolation. Local checks не доказывают hook trust, fresh-host activation, реальные ACL или атомарную запись между hook и tool; AUD-HOST-02 остаётся открытым. Порогов model/provider evals эта группа не меняет.
 
-[Owning plan и evidence](research/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
+[Owning plan и evidence](docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md).
 
 ## Session lifecycle contract cases — 2026-11-09
 
@@ -200,12 +200,12 @@ Reject or downgrade these claim patterns unless current evidence exists:
 
 ## Historical Eval Evidence Owners
 
-- Track 8 scenario, readiness, false-positive and transcript/session evidence: `docs/sources/product-agent-os-track-8-detailed-backlog.md`.
-- Track 9 methodology intelligence evidence across all domains, synthesis and runtime runner: `docs/sources/product-agent-os-track-9-backlog.md` and `docs/sources/registry.md`.
-- Track 10 evidence, including project graph, live-layer gates, Batch 34 docs/i18n/product-docs closure and Batch 35 real-testing execution: `docs/sources/product-agent-os-track-10-backlog.md` and `docs/sources/registry.md`.
+- Track 8 scenario, readiness, false-positive and transcript/session evidence: `docs/planning/product-agent-os-track-8-detailed-backlog.md`.
+- Track 9 methodology intelligence evidence across all domains, synthesis and runtime runner: `docs/planning/product-agent-os-track-9-backlog.md` and `docs/sources/registry.md`.
+- Track 10 evidence, including project graph, live-layer gates, Batch 34 docs/i18n/product-docs closure and Batch 35 real-testing execution: `docs/planning/product-agent-os-track-10-backlog.md` and `docs/sources/registry.md`.
 - Batch 35 approval-bound local runtime, browser automation, provider pilot, canonical mutation pilot and git preflight evidence: `docs/sources/product-agent-os-batch35-approval-packet-draft.md`.
 - Batch 39 production-test evidence: `prod_test.md` and B39 packets.
-- Batch 44/45 and Track 11 evidence: `docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md`, `docs/product-agent-os/control-plane-current-state.md` and `docs/superpowers/specs/*.json`. Batch 45 compact anchors: `B45-PCA-M37-A01`, `B45-RETEST-Q0-Q2-A01`, `B45-RETEST-Q3-FIXTURE-STATIC-A01`, `B45-RETEST-Q4-PROJECT-SLICES-STATIC-A01`, `B45-POST-Q4-NEXT-TASKS-A01`, `B45-POSTQ4-T01-T04-A01`, `B45-POSTQ4-T05-A01`, `B45-POSTQ4-T05B-A01`, `B45-POSTQ4-T06-A01`, `B45-POSTQ4-T08-A01`, `B45-POSTQ4-T10-A01`, `B45-POSTQ4-T11-A01`, `B45-POSTQ4-T12-RUN-A01`, `B45-POSTQ4-T13-A01`, `B45-POSTQ4-T14-A01`, `B45-POSTQ4-T14-RUN-A01`, `B45-POSTQ4-T15-A01`, `B45-POSTQ4-T16-T22-A01`, `B45-POSTQ4-T17-A01`, `B45-POSTQ4-T18-A01`, `B45-POSTQ4-T19-A01`, `B45-POSTQ4-T20-A01`, `B45-POSTQ4-T20-A02`, `B45-POSTQ4-T20-A03`, `B45-POSTQ4-T21-PREFLIGHT-A01`, `B45-POSTQ4-T21-PREFLIGHT-A02`, `B45-POSTQ4-T21-PREFLIGHT-A03`, `B45-POSTQ4-T21-COST-WAIVED-RUN-A01`, `B45-POSTQ4-T22-A02`.
+- Batch 44/45 and Track 11 evidence: `docs/planning/2026-06-20-track-11-documentation-architecture-refresh.md`, `docs/product-agent-os/control-plane-current-state.md` and `docs/superpowers/specs/*.json`. Batch 45 compact anchors: `B45-PCA-M37-A01`, `B45-RETEST-Q0-Q2-A01`, `B45-RETEST-Q3-FIXTURE-STATIC-A01`, `B45-RETEST-Q4-PROJECT-SLICES-STATIC-A01`, `B45-POST-Q4-NEXT-TASKS-A01`, `B45-POSTQ4-T01-T04-A01`, `B45-POSTQ4-T05-A01`, `B45-POSTQ4-T05B-A01`, `B45-POSTQ4-T06-A01`, `B45-POSTQ4-T08-A01`, `B45-POSTQ4-T10-A01`, `B45-POSTQ4-T11-A01`, `B45-POSTQ4-T12-RUN-A01`, `B45-POSTQ4-T13-A01`, `B45-POSTQ4-T14-A01`, `B45-POSTQ4-T14-RUN-A01`, `B45-POSTQ4-T15-A01`, `B45-POSTQ4-T16-T22-A01`, `B45-POSTQ4-T17-A01`, `B45-POSTQ4-T18-A01`, `B45-POSTQ4-T19-A01`, `B45-POSTQ4-T20-A01`, `B45-POSTQ4-T20-A02`, `B45-POSTQ4-T20-A03`, `B45-POSTQ4-T21-PREFLIGHT-A01`, `B45-POSTQ4-T21-PREFLIGHT-A02`, `B45-POSTQ4-T21-PREFLIGHT-A03`, `B45-POSTQ4-T21-COST-WAIVED-RUN-A01`, `B45-POSTQ4-T22-A02`.
 
 ## Verification For This EVALS Maintenance
 

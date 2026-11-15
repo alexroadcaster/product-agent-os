@@ -182,12 +182,12 @@
       "output": "{\"errors\":[],\"ok\":true}"
     },
     {
-      "command": "python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-audit-remediation-task-plan-2026-11-09.md",
+      "command": "python -B plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md",
       "exit_code": 0,
       "output": "{\r\n  \"errors\": [],\r\n  \"ok\": true,\r\n  \"path\": \"research\\\\product-agent-os-audit-remediation-task-plan-2026-11-09.md\",\r\n  \"schema_version\": \"task_matrix_plan_v1\"\r\n}"
     },
     {
-      "command": "python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md",
+      "command": "python -B plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md",
       "exit_code": 0,
       "output": "{\r\n  \"errors\": [],\r\n  \"ok\": true,\r\n  \"path\": \"research\\\\product-agent-os-ordinary-route-implementation-plan-2026-11-05.md\",\r\n  \"schema_version\": \"task_matrix_plan_v1\"\r\n}"
     },
@@ -199,7 +199,7 @@
     {
       "command": "git -c core.safecrlf=false diff --check",
       "exit_code": 1,
-      "output": "research/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md:1069: new blank line at EOF."
+      "output": "docs/planning/product-agent-os-ordinary-route-implementation-plan-2026-11-05.md:1069: new blank line at EOF."
     },
     {
       "command": "$env:TEMP=Join-Path $PWD '.docs-tools/reports/paos-aud-g6/docs-tmp'; $env:TMP=$env:TEMP; python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -v *> .docs-tools/reports/paos-aud-g6/pilots-docs.log; Get-Content .docs-tools/reports/paos-aud-g6/pilots-docs.log -Tail 6; exit $LASTEXITCODE",
