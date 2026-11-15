@@ -14,7 +14,7 @@ async function main(){
  const argv=process.argv.slice(2);
  if(![5,7].includes(argv.length)||argv[0]!=='--synthetic-browser')throw Error('EXPLICIT_SYNTHETIC_BROWSER_REQUIRED');
  const args=Object.fromEntries([argv.slice(1,3),argv.slice(3,5)]);
- const scenario=argv.length===7&&argv[5]==='--scenario'?argv[6]:'full';if(!['full','settings-cas','markdown','integration'].includes(scenario))throw Error('INVALID_SCENARIO');
+ const scenario=argv.length===7&&argv[5]==='--scenario'?argv[6]:'full';if(!['full','settings-cas','markdown','integration','task-overlay','settings-layout'].includes(scenario))throw Error('INVALID_SCENARIO');
  if(!['--playwright-core','--chromium'].every(k=>isAbsolute(args[k]??'')))throw Error('INSTALLED_BROWSER_PATHS_REQUIRED');
  const scratch=resolve('.tmp/paos-m2');await mkdir(scratch,{recursive:true});
  const fixture=await mkdtemp(join(scratch,'browser-fixture-')),output=await mkdtemp(join(scratch,'browser-evidence-'));
@@ -41,7 +41,7 @@ async function main(){
   await page.getByRole('button',{name:appLabel('ru','connect'),exact:true}).click();csrf=(await(await paired).json()).csrfToken;
   async function api(path:string,payload?:unknown){return page.evaluate(async({path,payload,csrf}:any)=>{const r=await fetch('/api/v1'+path,{method:payload===undefined?'GET':'POST',headers:{'content-type':'application/json','x-paos-csrf':csrf},...(payload===undefined?{}:{body:JSON.stringify(payload)})});return {status:r.status,body:await r.json()};},{path,payload,csrf});}
   async function until(name:string,predicate:()=>Promise<boolean>){const deadline=Date.now()+15000;while(Date.now()<deadline){if(await predicate()){check(name,true);return;}await new Promise(r=>setTimeout(r,100));}check(name,false);}
-  async function nav(section:string){const menu=page.getByRole('button',{name:appLabel(locale,'menu'),exact:true});if(await menu.isVisible()&&await menu.getAttribute('aria-expanded')!=='true')await menu.click();await page.locator('nav').getByRole('button',{name:uiLabel(locale,('nav.'+section) as any),exact:true}).click();}
+  async function nav(section:string){const menu=page.getByRole('button',{name:appLabel(locale,'menu'),exact:true});if(await menu.isVisible()&&await menu.getAttribute('aria-expanded')!=='true')await menu.click();await page.locator('nav').getByRole('button',{name:uiLabel(locale,('nav.'+section) as any),exact:true}).click();if(section==='settings'){await page.getByTestId('settings-navigation').locator('[data-settings-section=all]').click();const workflowNav=page.getByTestId('workflow-navigation');}}
   const created=await api('/projects',{name:'Synthetic M2 acceptance',keyPrefix:'TEST',workspaceRoot:workspace});check('project_registered',created.status===201);const project=created.body;
   const snap=async()=>(await api('/projects/'+project.id+'/task-manager')).body;
   const task=async(id:string)=>(await snap()).tasks.find((t:any)=>t.id===id);
@@ -55,7 +55,7 @@ async function main(){
    await editor.locator('[name=title]').fill(title);await editor.locator('[name=type]').selectOption(type);
    if(parentId)await editor.locator('[name=parentId]').selectOption(parentId);
    await editor.locator('[name=body]').fill('Synthetic scope '+title);await editor.locator('[name=criteria]').fill('Observed synthetic result');
-   if(full){await editor.locator('[name=technicalValue]').fill('Correct persistent behavior');await editor.locator('[name=productValue]').fill('Reviewable user result');await editor.locator('[name=estimate]').fill('00:01:00');await editor.locator('[name=noRisks]').check();await editor.getByTestId('add-file').click();await editor.locator('[name=file-path-0]').fill('a.txt');await editor.locator('[name=file-planned-0]').selectOption('read');await editor.locator('[name=file-revision-0]').fill(sourceHash);}
+   if(full){await editor.locator('[name=technicalValue]').fill('Correct persistent behavior');await editor.locator('[name=productValue]').fill('Reviewable user result');await editor.locator('[name=estimate]').fill('00:01:00');await editor.locator('.task-risks>summary').click();await editor.locator('[name=noRisks]').check();await editor.locator('details:has([data-testid=add-file])>summary').click();await editor.getByTestId('add-file').click();await editor.locator('[name=file-path-0]').fill('a.txt');await editor.locator('[name=file-planned-0]').selectOption('read');await editor.locator('[name=file-revision-0]').fill(sourceHash);}
    await editor.getByRole('button',{name:w('save'),exact:true}).click();
    await until('created_'+title,async()=>(await snap()).tasks.some((t:any)=>t.title===title));
    return (await snap()).tasks.find((t:any)=>t.title===title);
@@ -67,14 +67,39 @@ async function main(){
    if(manual)await panel.getByRole('button',{name:w('complete'),exact:true}).click();
    else {await panel.locator('[name=transition-status]').selectOption(next);await panel.locator('form').getByRole('button',{name:['done','cancelled'].includes((await task(id)).status)?w('reopen'):w('transition'),exact:true}).click();}
   }
-  async function screenshot(name:string){await page.screenshot({path:join(output,name),fullPage:false});report.screenshots.push(join(output,name));}
+  async function screenshot(name:string){await page.screenshot({path:join(output,name),fullPage:false,animations:'disabled'});report.screenshots.push(join(output,name));}
   async function geometry(name:string){const size=await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth}));check(name,size.scroll<=size.width+1,size);}
   await page.reload();await page.locator('.navigation select:enabled').waitFor();await page.locator('.navigation select').selectOption(project.id);await nav('tasks');
   await manager().waitFor();check('new_manager_is_default',await page.getByTestId('task-filters').count()===1);
   check('no_framework_overlay',await page.locator('vite-error-overlay,nextjs-portal').count()===0);
+  if(scenario==='settings-layout'){
+   step='settings_layout';await nav('settings');const settingsNav=page.getByTestId('settings-navigation');await settingsNav.locator('[data-settings-section=general]').click();
+   check('general_is_compact_default',await page.getByTestId('settings-panel-general').isVisible()&&!await page.getByTestId('settings-panel-projects').isVisible());
+   const theme=page.getByLabel(uiLabel(locale,'preferences.theme'),{exact:true});await theme.selectOption('dark');await settingsNav.locator('[data-settings-section=projects]').click();await settingsNav.locator('[data-settings-section=general]').click();check('preferences_draft_survives_tabs',await theme.inputValue()==='dark');
+   await settingsNav.locator('[data-settings-section=processes]').click();const workflow=page.getByTestId('workflow-manager'),workflowNav=workflow.getByTestId('workflow-navigation');await workflowNav.locator('[data-workflow-section=states]').click();await workflow.locator('.workflow-properties>summary').click();await workflow.locator('[name=workflow-name]').fill('Unsaved local workflow name');await workflowNav.locator('[data-workflow-section=publication]').click();check('workflow_local_panel_changes',await workflow.getByTestId('workflow-publication').isVisible()&&!await workflow.getByTestId('workflow-editor').isVisible());await workflowNav.locator('[data-workflow-section=states]').click();check('workflow_draft_survives_tabs',await workflow.locator('[name=workflow-name]').inputValue()==='Unsaved local workflow name');
+   await workflowNav.locator('[data-workflow-section=transitions]').click();const rows=workflow.locator('[name^=workflow-transition-recipeId-]');check('all_transition_rows_retained',await rows.count()===(await snap()).workflows.workflows.find((record:any)=>record.id==='default').versions[0].definition.transitions.length);await workflow.locator('[data-definition-view=transitions] .workflow-selection-list:visible button').nth(1).click();check('transition_all_fields_available',await workflow.locator('select[multiple]:visible').isVisible()&&await workflow.locator('[name=workflow-transition-recipeId-1]').isVisible());
+   await workflowNav.locator('[data-workflow-section=states]').click();await workflow.getByTestId('workflow-add-state').click();const newName=workflow.locator('input[name^=workflow-state-name]').last();await workflow.locator('.workflow-selection-list:visible button').first().click();await workflow.getByTestId('workflow-editor').locator('button.primary').click();await newName.waitFor({state:'visible'});check('invalid_hidden_row_opens',await newName.evaluate((element:any)=>element===document.activeElement));
+   await geometry('settings_no_page_overflow');await screenshot('settings-workflows-light.png');check('no_page_errors',report.pageErrors.length===0);check('no_provider_requests',report.blockedRequests.length===0);report.status='passed_settings_layout';return;
+  }
+  if(scenario==='task-overlay'){
+   step='task_overlay';const work=await create('Overlay acceptance');await open(work.id);await detail().getByTestId('task-expand').click();
+   const editor=detail().getByTestId('task-editor');await editor.locator('[name=title]').fill('Unsaved overlay draft');await editor.locator('[name=criteria]').fill('First criterion\n\nSecond criterion');await editor.locator('[name=estimate]').fill('unfinished estimate');
+   await editor.evaluate((element:any)=>{element.dataset.retainedNode='true';});
+   await page.keyboard.press('Escape');const card=manager().locator('[data-task-id="'+work.id+'"]').first();await card.dblclick();
+   const surface=page.getByTestId('task-detail-surface');check('double_click_opens_modal',await surface.evaluate((element:any)=>element.matches(':modal')));
+   check('single_editor_preserved',await page.getByTestId('task-editor').count()===1&&await editor.getAttribute('data-retained-node')==='true');
+   check('unsaved_values_preserved',await editor.locator('[name=title]').inputValue()==='Unsaved overlay draft'&&await editor.locator('[name=criteria]').inputValue()==='First criterion\n\nSecond criterion'&&await editor.locator('[name=estimate]').inputValue()==='unfinished estimate');
+   check('all_existing_tabs_retained',await detail().getByRole('tab').count()===8);check('usage_is_unavailable',/tool_use/.test(await detail().getByTestId('task-usage').innerText())&&await detail().getByTestId('task-usage').locator('dd').allTextContents().then((values:string[])=>values.every(value=>value==='—')));
+   await geometry('overlay_no_page_overflow');await screenshot('task-overlay-light.png');
+   await page.keyboard.press('Escape');check('escape_returns_to_inline_detail',!await surface.evaluate((element:any)=>element.matches(':modal'))&&await detail().isVisible());check('escape_restores_opener',await card.evaluate((element:any)=>element===document.activeElement));
+   await card.press('Enter');check('enter_opens_modal',await surface.evaluate((element:any)=>element.matches(':modal')));await page.keyboard.press('Escape');
+   const expand=detail().getByTestId('task-expand');await expand.click();check('explicit_expand_opens_modal',await surface.evaluate((element:any)=>element.matches(':modal')));
+   await page.evaluate(()=>{document.documentElement.dataset.theme='dark';});await screenshot('task-overlay-dark.png');await page.keyboard.press('Escape');check('explicit_opener_focus_restored',await expand.evaluate((element:any)=>element===document.activeElement));
+   check('draft_not_saved_implicitly',(await task(work.id)).title==='Overlay acceptance');check('no_page_errors',report.pageErrors.length===0);check('no_provider_requests',report.blockedRequests.length===0);report.status='passed_task_overlay';return;
+  }
   if(scenario==='settings-cas'){
-   step='settings_cas';const settings=page.getByTestId('manager-settings');await settings.locator('summary').first().click();
-   const row=settings.locator('.m2-catalog-row').filter({has:page.locator('input[name=component-name]')}).first();await row.locator('[name=component-name]').fill('Local retained draft');
+   step='settings_cas';await manager().locator('.task-workspace-tabs').getByRole('button',{name:'Настройки задач',exact:true}).click();const settings=page.getByTestId('manager-settings');
+   await settings.locator('.catalog-item-summary').first().getByRole('button',{name:'Изменить',exact:true}).click();const row=settings.locator('.m2-catalog-row').filter({has:page.locator('input[name=component-name]')}).first();await row.locator('[name=component-name]').fill('Local retained draft');
    const before=await snap(),original=before.components[0];
    check('other_catalog_writer_committed',(await command({action:'component',expectedRevision:before.settingsRevisions.components,item:{...original,name:'Server winner'}})).status===200);
    let refreshed=page.waitForResponse((r:any)=>r.url().endsWith('/task-manager')&&r.request().method()==='GET'&&r.status()===200);
@@ -86,7 +111,7 @@ async function main(){
    check('catalog_stale_save_rejected',response.status()===409,{status:response.status(),serverName:(await snap()).components.find((c:any)=>c.id===original.id).name});
    check('catalog_server_winner_preserved',(await snap()).components.find((c:any)=>c.id===original.id).name==='Server winner');
    await row.getByRole('button',{name:w('discard'),exact:true}).click();check('catalog_explicit_discard_adopts_server',await row.locator('[name=component-name]').inputValue()==='Server winner');
-   const board=page.getByTestId('board-settings');await board.locator('[name=column-wip-0]').fill('5');
+   await settings.locator('nav').getByRole('button',{name:w('board'),exact:true}).click();const board=page.getByTestId('board-settings');await board.locator('[name=column-wip-0]').fill('5');
    const latest=await snap(),otherBoard=structuredClone(latest.board);otherBoard.columns[0].wipLimit=3;otherBoard.columns[0].wipMode='hard';
    check('other_board_writer_committed',(await command({action:'board',expectedRevision:latest.settingsRevisions.board,board:otherBoard})).status===200);
    refreshed=page.waitForResponse((r:any)=>r.url().endsWith('/task-manager')&&r.request().method()==='GET'&&r.status()===200);await manager().getByRole('button',{name:w('refresh'),exact:true}).first().click();await refreshed;

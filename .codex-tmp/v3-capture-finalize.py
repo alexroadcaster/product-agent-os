@@ -1,0 +1,7 @@
+from pathlib import Path
+p=Path('tests/web/single-window/v3-state-capture.mts');s=p.read_text(encoding='utf-8').replace("name:'Предпросмотр изменений'","name:'Предпросмотр изменения'").replace("await panel.locator('pre').waitFor();","await panel.getByRole('status').filter({hasText:'Копия создана'}).waitFor();")
+s=s.replace("if(tab==='diagram')await", "if(tab==='publication'){await page.getByTestId('workflow-publication').getByRole('button',{name:'Предпросмотр публикации',exact:true}).click();await page.getByTestId('workflow-publication').getByRole('button',{name:'Опубликовать проверенную версию',exact:true}).waitFor();}if(tab==='diagram')await")
+p.write_text(s,encoding='utf-8')
+p=Path('apps/web/src/ui/App.tsx');s=p.read_text(encoding='utf-8');s=s.replace('<><Settings\n','<><Settings\n              projects={projects}\n',1);s=s.replace('function Settings({\n','function Settings({\n  projects,\n',1);s=s.replace('  preferences: UiPreferences;\n','  projects: Project[];\n  preferences: UiPreferences;\n',1)
+s=s.replace('<ProjectOnboarding api={api} t={t} onProject={onProject}/></div>', '<ProjectOnboarding api={api} t={t} onProject={onProject}/><section className="panel"><h2>{preferences.locale===\'ru\'?\'Подключённые проекты\':\'Registered projects\'}</h2><table className="dashboard-data-table"><thead><tr><th>{t(\'name\')}</th><th>{t(\'root\')}</th></tr></thead><tbody>{projects.map(project=><tr key={project.id}><td>{project.name}</td><td>{project.workspaceRoot}</td></tr>)}</tbody></table></section></div>')
+p.write_text(s,encoding='utf-8')

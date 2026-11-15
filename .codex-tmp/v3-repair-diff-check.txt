@@ -1,0 +1,36 @@
+warning: in the working copy of '.codex/product-agent-os/lifecycle-state.b3b5078cb858cfc6a2efa06d6821d17bcde6fa27cbaadd9f0d9bb522cf9211c4.json', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'DESIGN.md', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'EVALS.md', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'PLAN.md', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'REQUIREMENTS.md', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'RUNLOG.md', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'TEST.md', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'apps/web/README.md', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'apps/web/src/design/theme.css', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'apps/web/src/features/artifacts/ArtifactExplorer.tsx', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'apps/web/src/features/autonomy/AutonomyManager.tsx', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'apps/web/src/features/decisions/DecisionBoard.tsx', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'apps/web/src/features/graph/GraphExplorer.tsx', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'apps/web/src/features/sessions/SessionsCatalog.tsx', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'apps/web/src/features/skills/SkillGenerator.tsx', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'apps/web/src/features/tasks/Editor.tsx', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'apps/web/src/features/tasks/Panels.tsx', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'apps/web/src/features/tasks/Settings.tsx', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'apps/web/src/features/tasks/TaskManager.tsx', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'apps/web/src/features/team/TeamManager.tsx', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'apps/web/src/features/workflows/WorkflowManager.tsx', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'apps/web/src/features/workflows/recipes/RecipeRunner.tsx', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'apps/web/src/main.tsx', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'apps/web/src/ui/App.tsx', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'apps/web/src/ui/ConnectionControls.tsx', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'apps/web/src/ui/Modal.tsx', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'apps/web/src/ui/Operations.tsx', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'design/2026-11-13-v3/implementation-plan.md', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'docs/sources/registry.en.md', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'docs/sources/registry.md', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'tests/web/accessibility/browser-acceptance.mts', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'tests/web/single-window/m2-task-manager-browser-acceptance.mts', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'tests/web/single-window/m2b-browser-acceptance.mts', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'tests/web/single-window/m2c-browser-acceptance.mts', CRLF will be replaced by LF the next time Git touches it
+apps/web/src/features/tasks/TaskManager.tsx:63: trailing whitespace.
++   

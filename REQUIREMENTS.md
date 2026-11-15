@@ -1,8 +1,8 @@
 # REQUIREMENTS.md
 
-## Desktop UI/UX — дизайн-этап 13.11.2026
+## Desktop UI/UX — утверждённое внедрение 13.11.2026
 
-V3: цветные иконки, portfolio/project/agent dashboards, synthetic token/cost/tool_use, полная task dialog и D3/Mermaid карта; левое меню Sidebar collapse с исходными springs DesignBookmark. [DESIGN.md](DESIGN.md), [поля и data gaps](design/2026-11-13-v3/task-field-map.md) владеют scope. Все V2 экраны/две темы сохраняются; app/backend/live data/mobile исключены. Зависимости разрешены только изолированному прототипу; human acceptance ожидается.
+V3 и Sidebar утверждены; разрешены UI-01–UI-12 в apps/web с прежними API/данными/permissions/guards. [DESIGN.md](DESIGN.md), [план](design/2026-11-13-v3/implementation-plan.md), [evidence](design/2026-11-13-v3/implementation-evidence.md) владеют деталями. Porcelain/Obsidian,15 назначений, full task overlay, portfolio/project/agent dashboards, D3/Mermaid, local motion. Usage unavailable; backend telemetry/mobile/Git/deploy исключены. Приёмка реализации отдельно от утверждения дизайна. Дополнительный критерий владельца: лично сравнить каждый продуктовый экран V3 в светлой и тёмной теме, включая сетки, поля, кнопки, состояния и анимации; проход тестов не заменяет визуальное сравнение.
 
 ## Запуск без кода — 13.11.2026
 

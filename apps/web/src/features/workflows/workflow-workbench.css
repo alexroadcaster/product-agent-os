@@ -1,0 +1,24 @@
+.workflow-workbench [hidden] { display: none !important; }
+.workflow-workbench { min-width: 0; }
+.workflow-workbench>.workflow-navigation { margin-top: 16px; }
+.workflow-workbench .workflow-definition { min-width: 0; }
+.workflow-workbench .workflow-state-list { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,280px),1fr)); gap: 8px; margin: 12px 0; align-items: start; }
+.workflow-workbench .workflow-transition-list { display: grid; gap: 8px; margin: 12px 0; }
+.workflow-workbench .workflow-row { min-width: 0; border: 1px solid var(--rule); border-radius: 10px; background: var(--panel); }
+.workflow-workbench .workflow-row>summary { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; min-height: 44px; padding: 10px 12px; font-size: .8125rem; list-style: none; }
+.workflow-row>summary::after { content: '+'; margin-left: auto; color: var(--muted); font-size: 1rem; }
+.workflow-row[open]>summary::after { content: '−'; }
+.workflow-workbench .workflow-row[open]>summary { border-bottom: 1px solid var(--rule); }
+.workflow-workbench .workflow-row>fieldset { margin: 0; border: 0; padding: 14px; }
+.workflow-row>fieldset>legend { font-size: .75rem; color: var(--muted); padding-top: 12px; }
+.workflow-row-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: 0 0 8px; }
+.workflow-route { color: var(--muted); font-size: .75rem; overflow-wrap: anywhere; }
+.workflow-row summary small { color: var(--muted); }
+.workflow-row label { display: grid; gap: 5px; margin: 10px 0; }
+.workflow-row input,.workflow-row select { max-width: 100%; min-width: 0; }
+.workflow-workbench .workflow-row select[multiple] { min-height: 80px; }
+.workflow-workbench .workflow-operation-panel { margin-top: 16px; padding-top: 8px; }
+.workflow-operation-panel>label { display: grid; gap: 6px; margin: 12px 0; }
+.workflow-workbench .workflow-expand-rows { font-size: .75rem; margin-top: 12px; }
+.workflow-workbench [data-testid=workflow-editor]>fieldset { padding: 16px; }
+.workflow-workbench [data-testid=workflow-editor]>fieldset>h3 { margin-top: 0; }

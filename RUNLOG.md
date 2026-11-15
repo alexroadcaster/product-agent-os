@@ -1,10 +1,8 @@
 # RUNLOG.md
 
-## Desktop UI/UX — дизайн-пакет 13.11.2026
+## Desktop UI/UX — внедрение 13.11.2026
 
-Sidebar collapse V3 добавлен в левое меню по исходникам DesignBookmark: exact springs, 216↔64px, cascade/selection/tooltip, reduced motion. Focused RED→GREEN, V3 11 groups и полный capture 87×2/530 layouts passed; docs105 passed. [Evidence и limits](design/2026-11-13-v3/verification.md#sidebar-collapse--отдельная-доработка-13112026). Прототип проверен, human acceptance ожидается; app без изменений.
-
-V3 design_artifact_verified, human acceptance pending: [DESIGN.md](DESIGN.md), [UI-план](design/2026-11-13-v3/implementation-plan.md), [evidence](design/2026-11-13-v3/verification.md). 87 routes/две темы, 182 PNG, 530 layout checks, 11 V3 + 10 общих interaction groups passed; fresh review 7/7 findings resolved. GSAP/D3/Mermaid/Duoicons установлены изолированно; usage synthetic, реальные token/cost null. Приложение и V1/V2 UI не менялись; следующий шаг — утверждение макетов.
+V3 repair: сетки и внутренние экраны перенесены; visual review85×2, final web500 и V3 browser378 passed; functional team/workflow51 passed. UI-10 motion/reduced motion проверены. [План](design/2026-11-13-v3/implementation-plan.md), [evidence](design/2026-11-13-v3/implementation-evidence.md). UI-01–UI-12 in_progress до приёмки; usage unavailable, existing Chrome final reload не наблюдался (Debugger unattached). Backend/API/providers не менялись.
 
 ## Startup UX — 13.11.2026
 

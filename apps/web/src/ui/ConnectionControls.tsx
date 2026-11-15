@@ -167,7 +167,7 @@ export function ConnectionControls({
         </button>
         <p role="alert">{error}</p>
       </form>
-      {isApp&&<details><summary>{t('appConnectionDetails')}</summary>
+      {isApp&&<ol className="connection-steps"><li>{t('appConnect')}</li><li>{t('appAgentBoundary')}</li><li>{t('appWorkerConnected')}</li></ol>}{isApp&&<details><summary>{t('appConnectionDetails')}</summary>
         {hostLabel&&<p className="quiet">{t(hostLabel)}</p>}
         <p className="quiet">{t(connection?.capabilities?.executionConfigured?'appBrokerBoundary':'appAgentBoundary')}</p>
         <p className="quiet">{t('appAgentNoFallback')}</p><p>{t('modelAccess')}: {t('unverified')}</p>

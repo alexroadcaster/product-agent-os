@@ -1,8 +1,8 @@
 # PLAN.md
 
-## Desktop UI/UX — предложение 13.11.2026
+## Desktop UI/UX — внедрение 13.11.2026
 
-[DESIGN.md](DESIGN.md) и [UI-01–UI-12 V3](design/2026-11-13-v3/implementation-plan.md): owner approval → baseline/tokens/shell → full task dialog → dashboard/graph presentation → motion/a11y/parity. App tasks planned; usage ingestion отдельный функциональный scope. V1/V2 сохранены, M1–M5 не меняются.
+[UI-01–UI-12 V3](design/2026-11-13-v3/implementation-plan.md): локальный repair проверен; 85 экранов × 2 темы визуально сопоставлены. UI-01–UI-12 остаются in_progress до приёмки отмеченных отличий. [Evidence](design/2026-11-13-v3/implementation-evidence.md). UI-10: Sidebar и reduced motion проверены. API/backend не изменены. Rollback — own frontend hunks, без DB changes; M1–M5 не меняются.
 
 ## Startup UX — 13.11.2026
 

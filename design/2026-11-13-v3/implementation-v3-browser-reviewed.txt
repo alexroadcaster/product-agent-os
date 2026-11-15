@@ -1,0 +1,1 @@
+{"status":"failed","scenario":"ui-v3","checks":20,"failedStep":"setup","error":"Error: locator.innerText: Error: Node is not an HTMLElement\nCall log:\n\u001b[2m  - waiting for getByTestId('graph-explorer').locator('[data-renderer=mermaid] svg')\u001b[22m\n","report":"C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-HmySvl\\result.json"}

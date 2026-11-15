@@ -1,0 +1,4295 @@
+{
+  "scenario": "ui-v3",
+  "startedAt": "2026-11-13T14:37:29.833Z",
+  "syntheticOnly": true,
+  "actualAppAgent": false,
+  "providerCalls": false,
+  "realCredentials": false,
+  "browserPlugin": "not_available",
+  "checks": [
+    {
+      "name": "page_identity",
+      "passed": true
+    },
+    {
+      "name": "not_blank",
+      "passed": true
+    },
+    {
+      "name": "no_framework_overlay",
+      "passed": true
+    },
+    {
+      "name": "project_saved",
+      "passed": true
+    },
+    {
+      "name": "task_fixture",
+      "passed": true
+    },
+    {
+      "name": "all_fifteen_destinations",
+      "passed": true
+    },
+    {
+      "name": "project_summary_loaded",
+      "passed": true
+    },
+    {
+      "name": "real_task_count",
+      "passed": true
+    },
+    {
+      "name": "d3_chart_active",
+      "passed": true
+    },
+    {
+      "name": "usage_unknown",
+      "passed": true
+    },
+    {
+      "name": "sidebar_64",
+      "passed": true
+    },
+    {
+      "name": "collapsed_survives_navigation",
+      "passed": true
+    },
+    {
+      "name": "tooltip_escape",
+      "passed": true
+    },
+    {
+      "name": "sidebar_216",
+      "passed": true
+    },
+    {
+      "name": "reduced_collapsed",
+      "passed": true
+    },
+    {
+      "name": "reduced_expanded",
+      "passed": true
+    },
+    {
+      "name": "v3_graph_fresh",
+      "passed": true
+    },
+    {
+      "name": "d3_nodes",
+      "passed": true
+    },
+    {
+      "name": "mermaid_svg",
+      "passed": true
+    },
+    {
+      "name": "renderers_same_node_count",
+      "passed": true
+    },
+    {
+      "name": "mermaid_special_identifier",
+      "passed": true
+    },
+    {
+      "name": "mermaid_exact_label",
+      "passed": true
+    },
+    {
+      "name": "whole_page_reloaded",
+      "passed": true
+    },
+    {
+      "name": "graph_module_available",
+      "passed": true
+    },
+    {
+      "name": "mermaid_module_ready",
+      "passed": true
+    },
+    {
+      "name": "module_renderers_match",
+      "passed": true,
+      "detail": {
+        "mermaid": 3,
+        "d3": 3
+      }
+    },
+    {
+      "name": "appearance_rulight",
+      "passed": true
+    },
+    {
+      "name": "contrast_rulightportfolio1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightportfolio1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rulightportfolio1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightportfolio1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rulightportfolio1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightportfolio1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rulightoverview1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightoverview1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rulightoverview1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightoverview1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rulightoverview1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightoverview1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rulighttasks1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulighttasks1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rulighttasks1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulighttasks1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rulighttasks1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulighttasks1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rulightsessions1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightsessions1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rulightsessions1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightsessions1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rulightsessions1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightsessions1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rulightagents1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightagents1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rulightagents1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightagents1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rulightagents1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightagents1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rulightskills1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightskills1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rulightskills1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightskills1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rulightskills1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightskills1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rulightprojectMap1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightprojectMap1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rulightprojectMap1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightprojectMap1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rulightprojectMap1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightprojectMap1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rulightdocuments1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightdocuments1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rulightdocuments1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightdocuments1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rulightdocuments1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightdocuments1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rulightchecks1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightchecks1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rulightchecks1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightchecks1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rulightchecks1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightchecks1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rulightautonomy1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightautonomy1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rulightautonomy1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightautonomy1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rulightautonomy1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightautonomy1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rulightdecisions1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightdecisions1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rulightdecisions1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightdecisions1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rulightdecisions1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightdecisions1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rulightsearch1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightsearch1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rulightsearch1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightsearch1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rulightsearch1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightsearch1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rulightimport1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightimport1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rulightimport1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightimport1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rulightimport1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightimport1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rulightbackup1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightbackup1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rulightbackup1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightbackup1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rulightbackup1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightbackup1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rulightsettings1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightsettings1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rulightsettings1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightsettings1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rulightsettings1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rulightsettings1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "task_tab_rulightСводка",
+      "passed": true
+    },
+    {
+      "name": "task_tab_rulightФайлы",
+      "passed": true
+    },
+    {
+      "name": "task_tab_rulightПриёмка",
+      "passed": true
+    },
+    {
+      "name": "task_tab_rulightКомментарии",
+      "passed": true
+    },
+    {
+      "name": "task_tab_rulightИстория изменений",
+      "passed": true
+    },
+    {
+      "name": "task_tab_rulightВложения",
+      "passed": true
+    },
+    {
+      "name": "task_tab_rulightСвязанные задачи",
+      "passed": true
+    },
+    {
+      "name": "task_tab_rulightСвязанные сессии",
+      "passed": true
+    },
+    {
+      "name": "settings_tab_rulightОбщие",
+      "passed": true
+    },
+    {
+      "name": "settings_tab_rulightПроекты",
+      "passed": true
+    },
+    {
+      "name": "settings_tab_rulightПодключение",
+      "passed": true
+    },
+    {
+      "name": "settings_tab_rulightЛокальный сервис",
+      "passed": true
+    },
+    {
+      "name": "settings_tab_rulightПроцессы",
+      "passed": true
+    },
+    {
+      "name": "settings_tab_rulightВсе разделы",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_rulightОпределение",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_rulightПубликация",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_rulightМиграция",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_rulightВерсии",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_rulightВыполнение",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_rulightОчередь",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_rulightВсе разделы",
+      "passed": true
+    },
+    {
+      "name": "appearance_rudark",
+      "passed": true
+    },
+    {
+      "name": "contrast_rudarkportfolio1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkportfolio1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rudarkportfolio1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkportfolio1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rudarkportfolio1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkportfolio1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rudarkoverview1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkoverview1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rudarkoverview1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkoverview1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rudarkoverview1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkoverview1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rudarktasks1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarktasks1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rudarktasks1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarktasks1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rudarktasks1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarktasks1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rudarksessions1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarksessions1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rudarksessions1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarksessions1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rudarksessions1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarksessions1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rudarkagents1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkagents1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rudarkagents1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkagents1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rudarkagents1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkagents1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rudarkskills1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkskills1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rudarkskills1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkskills1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rudarkskills1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkskills1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rudarkprojectMap1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkprojectMap1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rudarkprojectMap1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkprojectMap1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rudarkprojectMap1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkprojectMap1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rudarkdocuments1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkdocuments1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rudarkdocuments1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkdocuments1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rudarkdocuments1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkdocuments1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rudarkchecks1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkchecks1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rudarkchecks1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkchecks1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rudarkchecks1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkchecks1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rudarkautonomy1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkautonomy1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rudarkautonomy1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkautonomy1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rudarkautonomy1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkautonomy1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rudarkdecisions1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkdecisions1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rudarkdecisions1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkdecisions1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rudarkdecisions1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkdecisions1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rudarksearch1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarksearch1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rudarksearch1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarksearch1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rudarksearch1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarksearch1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rudarkimport1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkimport1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rudarkimport1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkimport1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rudarkimport1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkimport1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rudarkbackup1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkbackup1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rudarkbackup1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkbackup1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rudarkbackup1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarkbackup1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "contrast_rudarksettings1280",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarksettings1280",
+      "passed": true,
+      "detail": {
+        "width": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "contrast_rudarksettings1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarksettings1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_rudarksettings1920",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_rudarksettings1920",
+      "passed": true,
+      "detail": {
+        "width": 1920,
+        "scroll": 1920
+      }
+    },
+    {
+      "name": "task_tab_rudarkСводка",
+      "passed": true
+    },
+    {
+      "name": "task_tab_rudarkФайлы",
+      "passed": true
+    },
+    {
+      "name": "task_tab_rudarkПриёмка",
+      "passed": true
+    },
+    {
+      "name": "task_tab_rudarkКомментарии",
+      "passed": true
+    },
+    {
+      "name": "task_tab_rudarkИстория изменений",
+      "passed": true
+    },
+    {
+      "name": "task_tab_rudarkВложения",
+      "passed": true
+    },
+    {
+      "name": "task_tab_rudarkСвязанные задачи",
+      "passed": true
+    },
+    {
+      "name": "task_tab_rudarkСвязанные сессии",
+      "passed": true
+    },
+    {
+      "name": "settings_tab_rudarkОбщие",
+      "passed": true
+    },
+    {
+      "name": "settings_tab_rudarkПроекты",
+      "passed": true
+    },
+    {
+      "name": "settings_tab_rudarkПодключение",
+      "passed": true
+    },
+    {
+      "name": "settings_tab_rudarkЛокальный сервис",
+      "passed": true
+    },
+    {
+      "name": "settings_tab_rudarkПроцессы",
+      "passed": true
+    },
+    {
+      "name": "settings_tab_rudarkВсе разделы",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_rudarkОпределение",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_rudarkПубликация",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_rudarkМиграция",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_rudarkВерсии",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_rudarkВыполнение",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_rudarkОчередь",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_rudarkВсе разделы",
+      "passed": true
+    },
+    {
+      "name": "appearance_enlight",
+      "passed": true
+    },
+    {
+      "name": "contrast_enlightportfolio1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_enlightportfolio1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_enlightoverview1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_enlightoverview1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_enlighttasks1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_enlighttasks1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_enlightsessions1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_enlightsessions1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_enlightagents1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_enlightagents1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_enlightskills1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_enlightskills1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_enlightprojectMap1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_enlightprojectMap1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_enlightdocuments1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_enlightdocuments1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_enlightchecks1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_enlightchecks1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_enlightautonomy1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_enlightautonomy1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_enlightdecisions1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_enlightdecisions1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_enlightsearch1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_enlightsearch1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_enlightimport1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_enlightimport1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_enlightbackup1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_enlightbackup1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_enlightsettings1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_enlightsettings1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "task_tab_enlightSummary",
+      "passed": true
+    },
+    {
+      "name": "task_tab_enlightFiles",
+      "passed": true
+    },
+    {
+      "name": "task_tab_enlightAcceptance",
+      "passed": true
+    },
+    {
+      "name": "task_tab_enlightComments",
+      "passed": true
+    },
+    {
+      "name": "task_tab_enlightChange history",
+      "passed": true
+    },
+    {
+      "name": "task_tab_enlightAttachments",
+      "passed": true
+    },
+    {
+      "name": "task_tab_enlightLinked issues",
+      "passed": true
+    },
+    {
+      "name": "task_tab_enlightLinked sessions",
+      "passed": true
+    },
+    {
+      "name": "settings_tab_enlightGeneral",
+      "passed": true
+    },
+    {
+      "name": "settings_tab_enlightProjects",
+      "passed": true
+    },
+    {
+      "name": "settings_tab_enlightConnection",
+      "passed": true
+    },
+    {
+      "name": "settings_tab_enlightLocal service",
+      "passed": true
+    },
+    {
+      "name": "settings_tab_enlightProcesses",
+      "passed": true
+    },
+    {
+      "name": "settings_tab_enlightAll sections",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_enlightDefinition",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_enlightPublication",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_enlightMigration",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_enlightVersions",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_enlightExecution",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_enlightQueue",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_enlightAll sections",
+      "passed": true
+    },
+    {
+      "name": "appearance_endark",
+      "passed": true
+    },
+    {
+      "name": "contrast_endarkportfolio1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_endarkportfolio1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_endarkoverview1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_endarkoverview1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_endarktasks1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_endarktasks1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_endarksessions1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_endarksessions1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_endarkagents1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_endarkagents1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_endarkskills1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_endarkskills1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_endarkprojectMap1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_endarkprojectMap1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_endarkdocuments1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_endarkdocuments1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_endarkchecks1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_endarkchecks1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_endarkautonomy1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_endarkautonomy1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_endarkdecisions1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_endarkdecisions1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_endarksearch1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_endarksearch1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_endarkimport1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_endarkimport1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_endarkbackup1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_endarkbackup1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "contrast_endarksettings1440",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry_endarksettings1440",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "task_tab_endarkSummary",
+      "passed": true
+    },
+    {
+      "name": "task_tab_endarkFiles",
+      "passed": true
+    },
+    {
+      "name": "task_tab_endarkAcceptance",
+      "passed": true
+    },
+    {
+      "name": "task_tab_endarkComments",
+      "passed": true
+    },
+    {
+      "name": "task_tab_endarkChange history",
+      "passed": true
+    },
+    {
+      "name": "task_tab_endarkAttachments",
+      "passed": true
+    },
+    {
+      "name": "task_tab_endarkLinked issues",
+      "passed": true
+    },
+    {
+      "name": "task_tab_endarkLinked sessions",
+      "passed": true
+    },
+    {
+      "name": "settings_tab_endarkGeneral",
+      "passed": true
+    },
+    {
+      "name": "settings_tab_endarkProjects",
+      "passed": true
+    },
+    {
+      "name": "settings_tab_endarkConnection",
+      "passed": true
+    },
+    {
+      "name": "settings_tab_endarkLocal service",
+      "passed": true
+    },
+    {
+      "name": "settings_tab_endarkProcesses",
+      "passed": true
+    },
+    {
+      "name": "settings_tab_endarkAll sections",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_endarkDefinition",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_endarkPublication",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_endarkMigration",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_endarkVersions",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_endarkExecution",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_endarkQueue",
+      "passed": true
+    },
+    {
+      "name": "workflow_tab_endarkAll sections",
+      "passed": true
+    },
+    {
+      "name": "no_page_errors",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "no_external_requests",
+      "passed": true,
+      "detail": []
+    }
+  ],
+  "screenshots": [
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-mermaid-light.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-graph-light.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-light-portfolio.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-light-overview.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-light-tasks.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-light-sessions.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-light-agents.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-light-skills.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-light-projectMap.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-light-documents.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-light-checks.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-light-autonomy.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-light-decisions.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-light-search.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-light-import.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-light-backup.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-light-settings.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-light-task-overlay.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-light-workflow.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-dark-portfolio.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-dark-overview.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-dark-tasks.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-dark-sessions.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-dark-agents.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-dark-skills.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-dark-projectMap.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-dark-documents.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-dark-checks.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-dark-autonomy.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-dark-decisions.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-dark-search.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-dark-import.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-dark-backup.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-dark-settings.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-dark-task-overlay.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-ru-dark-workflow.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-light-portfolio.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-light-overview.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-light-tasks.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-light-sessions.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-light-agents.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-light-skills.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-light-projectMap.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-light-documents.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-light-checks.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-light-autonomy.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-light-decisions.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-light-search.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-light-import.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-light-backup.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-light-settings.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-light-task-overlay.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-light-workflow.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-dark-portfolio.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-dark-overview.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-dark-tasks.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-dark-sessions.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-dark-agents.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-dark-skills.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-dark-projectMap.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-dark-documents.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-dark-checks.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-dark-autonomy.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-dark-decisions.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-dark-search.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-dark-import.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-dark-backup.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-dark-settings.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-dark-task-overlay.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-zB6vM7\\v3-en-dark-workflow.png"
+  ],
+  "pageErrors": [],
+  "externalRequests": [],
+  "sourceHashes": {
+    "tests/web/single-window/m2c-browser-acceptance.mts": "1f2121f6061b1b7f7492b26cb84bffa1003efc1864d5ac80bb72738a6e8bed9c",
+    "apps/web/src/ui/App.tsx": "84c9a25c87b5e9a96a89e4fe09578399e3da9b5fba3423ea824fa7e907390841",
+    "apps/web/src/api/client.ts": "adbf7b3f58c9076de0471e18f66a7d48fd152a511606025d8dbab660579b90b1",
+    "apps/web/src/features/graph/GraphExplorer.tsx": "2423937f37ca838a35e8be923aec400f5f78719d33110cd615567651e1381863",
+    "apps/web/src/features/skills/SkillGenerator.tsx": "40e9ac699f41165138cbc294a1d08d580a51d6df49c9acd696dad9160f998292",
+    "apps/web/src/features/artifacts/ArtifactExplorer.tsx": "49e14d194705e1d02adb5dc10e91aad05dbd4eae27228acc45e8e4672b7d4689",
+    "apps/local-service/src/code-index/service.mts": "73c85eca890329047b6e4d91cddf13e515f1958244aada45380a885c39a3ecfa",
+    "apps/local-service/src/artifacts/service.mts": "fb21d8694f21b0c0b3b8e63669ab16407d6d0191a4f51e101dbfad589052e77c",
+    "apps/web/dist/index.html": "273af748e683fb1be90b2f3de58fa2178e7fed97b0768b712b071a6fb74f01e4",
+    "apps/web/dist/assets/index-BFo8Lx2k.js": "3f87201b92f7e95bc84e0f2139c245e66b3e18fb498edee0fc1ae11ced8d18cb",
+    "apps/web/dist/assets/index-DA4GiXeK.css": "825558f9e953d39b4fe8bc640fc460c834aa23e966040c8f0d3411531f780a71",
+    "apps/web/dist/assets/mermaid.tiny-B1X2HQuM.js": "c41f5236091b83f524c4940f97a16b2b14a76f21ff84aea4fd6b66421d8a2a9a"
+  },
+  "staticVariant": "current_production_build",
+  "views": [
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "portfolio",
+      "findings": [],
+      "textSamples": 78,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "portfolio",
+      "findings": [],
+      "textSamples": 78,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "portfolio",
+      "findings": [],
+      "textSamples": 78,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "overview",
+      "findings": [],
+      "textSamples": 60,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "overview",
+      "findings": [],
+      "textSamples": 79,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "overview",
+      "findings": [],
+      "textSamples": 79,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "tasks",
+      "findings": [],
+      "textSamples": 51,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "tasks",
+      "findings": [],
+      "textSamples": 51,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "tasks",
+      "findings": [],
+      "textSamples": 51,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "sessions",
+      "findings": [],
+      "textSamples": 44,
+      "controlSamples": 2,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "sessions",
+      "findings": [],
+      "textSamples": 44,
+      "controlSamples": 2,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "sessions",
+      "findings": [],
+      "textSamples": 44,
+      "controlSamples": 2,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "agents",
+      "findings": [],
+      "textSamples": 62,
+      "controlSamples": 3,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "agents",
+      "findings": [],
+      "textSamples": 62,
+      "controlSamples": 3,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "agents",
+      "findings": [],
+      "textSamples": 62,
+      "controlSamples": 3,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "skills",
+      "findings": [],
+      "textSamples": 62,
+      "controlSamples": 9,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "skills",
+      "findings": [],
+      "textSamples": 62,
+      "controlSamples": 9,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "skills",
+      "findings": [],
+      "textSamples": 62,
+      "controlSamples": 9,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "projectMap",
+      "findings": [],
+      "textSamples": 32,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "projectMap",
+      "findings": [],
+      "textSamples": 32,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "projectMap",
+      "findings": [],
+      "textSamples": 1071,
+      "controlSamples": 2,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "documents",
+      "findings": [],
+      "textSamples": 36,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "documents",
+      "findings": [],
+      "textSamples": 69,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "documents",
+      "findings": [],
+      "textSamples": 69,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "checks",
+      "findings": [],
+      "textSamples": 36,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "checks",
+      "findings": [],
+      "textSamples": 88,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "checks",
+      "findings": [],
+      "textSamples": 88,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "autonomy",
+      "findings": [],
+      "textSamples": 62,
+      "controlSamples": 5,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "autonomy",
+      "findings": [],
+      "textSamples": 62,
+      "controlSamples": 5,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "autonomy",
+      "findings": [],
+      "textSamples": 62,
+      "controlSamples": 5,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "decisions",
+      "findings": [],
+      "textSamples": 50,
+      "controlSamples": 3,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "decisions",
+      "findings": [],
+      "textSamples": 50,
+      "controlSamples": 3,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "decisions",
+      "findings": [],
+      "textSamples": 50,
+      "controlSamples": 3,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "search",
+      "findings": [],
+      "textSamples": 36,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "search",
+      "findings": [],
+      "textSamples": 121,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "search",
+      "findings": [],
+      "textSamples": 121,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "import",
+      "findings": [],
+      "textSamples": 39,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "import",
+      "findings": [],
+      "textSamples": 39,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "import",
+      "findings": [],
+      "textSamples": 39,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "backup",
+      "findings": [],
+      "textSamples": 34,
+      "controlSamples": 2,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "backup",
+      "findings": [],
+      "textSamples": 34,
+      "controlSamples": 2,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "backup",
+      "findings": [],
+      "textSamples": 34,
+      "controlSamples": 2,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "settings",
+      "findings": [],
+      "textSamples": 39,
+      "controlSamples": 3,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "settings",
+      "findings": [],
+      "textSamples": 39,
+      "controlSamples": 3,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "light",
+      "route": "settings",
+      "findings": [],
+      "textSamples": 39,
+      "controlSamples": 3,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "portfolio",
+      "findings": [],
+      "textSamples": 78,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "portfolio",
+      "findings": [],
+      "textSamples": 78,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "portfolio",
+      "findings": [],
+      "textSamples": 78,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "overview",
+      "findings": [],
+      "textSamples": 79,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "overview",
+      "findings": [],
+      "textSamples": 79,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "overview",
+      "findings": [],
+      "textSamples": 79,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "tasks",
+      "findings": [],
+      "textSamples": 80,
+      "controlSamples": 2,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "tasks",
+      "findings": [],
+      "textSamples": 80,
+      "controlSamples": 2,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "tasks",
+      "findings": [],
+      "textSamples": 80,
+      "controlSamples": 2,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "sessions",
+      "findings": [],
+      "textSamples": 44,
+      "controlSamples": 2,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "sessions",
+      "findings": [],
+      "textSamples": 44,
+      "controlSamples": 2,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "sessions",
+      "findings": [],
+      "textSamples": 44,
+      "controlSamples": 2,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "agents",
+      "findings": [],
+      "textSamples": 62,
+      "controlSamples": 3,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "agents",
+      "findings": [],
+      "textSamples": 62,
+      "controlSamples": 3,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "agents",
+      "findings": [],
+      "textSamples": 62,
+      "controlSamples": 3,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "skills",
+      "findings": [],
+      "textSamples": 62,
+      "controlSamples": 9,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "skills",
+      "findings": [],
+      "textSamples": 62,
+      "controlSamples": 9,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "skills",
+      "findings": [],
+      "textSamples": 62,
+      "controlSamples": 9,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "projectMap",
+      "findings": [],
+      "textSamples": 32,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "projectMap",
+      "findings": [],
+      "textSamples": 32,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "projectMap",
+      "findings": [],
+      "textSamples": 1071,
+      "controlSamples": 2,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "documents",
+      "findings": [],
+      "textSamples": 36,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "documents",
+      "findings": [],
+      "textSamples": 69,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "documents",
+      "findings": [],
+      "textSamples": 69,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "checks",
+      "findings": [],
+      "textSamples": 36,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "checks",
+      "findings": [],
+      "textSamples": 88,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "checks",
+      "findings": [],
+      "textSamples": 88,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "autonomy",
+      "findings": [],
+      "textSamples": 62,
+      "controlSamples": 5,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "autonomy",
+      "findings": [],
+      "textSamples": 62,
+      "controlSamples": 5,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "autonomy",
+      "findings": [],
+      "textSamples": 62,
+      "controlSamples": 5,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "decisions",
+      "findings": [],
+      "textSamples": 50,
+      "controlSamples": 3,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "decisions",
+      "findings": [],
+      "textSamples": 50,
+      "controlSamples": 3,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "decisions",
+      "findings": [],
+      "textSamples": 50,
+      "controlSamples": 3,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "search",
+      "findings": [],
+      "textSamples": 36,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "search",
+      "findings": [],
+      "textSamples": 121,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "search",
+      "findings": [],
+      "textSamples": 121,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "import",
+      "findings": [],
+      "textSamples": 39,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "import",
+      "findings": [],
+      "textSamples": 39,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "import",
+      "findings": [],
+      "textSamples": 39,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "backup",
+      "findings": [],
+      "textSamples": 34,
+      "controlSamples": 2,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "backup",
+      "findings": [],
+      "textSamples": 34,
+      "controlSamples": 2,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "backup",
+      "findings": [],
+      "textSamples": 34,
+      "controlSamples": 2,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "settings",
+      "findings": [],
+      "textSamples": 39,
+      "controlSamples": 3,
+      "geometry": {
+        "width": 1280,
+        "scroll": 1280
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "settings",
+      "findings": [],
+      "textSamples": 39,
+      "controlSamples": 3,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "ru",
+      "theme": "dark",
+      "route": "settings",
+      "findings": [],
+      "textSamples": 39,
+      "controlSamples": 3,
+      "geometry": {
+        "width": 1920,
+        "scroll": 1920
+      },
+      "overflow": [],
+      "lang": "ru",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "route": "portfolio",
+      "findings": [],
+      "textSamples": 78,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "route": "overview",
+      "findings": [],
+      "textSamples": 79,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "route": "tasks",
+      "findings": [],
+      "textSamples": 80,
+      "controlSamples": 2,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "route": "sessions",
+      "findings": [],
+      "textSamples": 44,
+      "controlSamples": 2,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "route": "agents",
+      "findings": [],
+      "textSamples": 61,
+      "controlSamples": 3,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "route": "skills",
+      "findings": [],
+      "textSamples": 62,
+      "controlSamples": 9,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "route": "projectMap",
+      "findings": [],
+      "textSamples": 32,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "route": "documents",
+      "findings": [],
+      "textSamples": 36,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "route": "checks",
+      "findings": [],
+      "textSamples": 36,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "route": "autonomy",
+      "findings": [],
+      "textSamples": 62,
+      "controlSamples": 5,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "route": "decisions",
+      "findings": [],
+      "textSamples": 50,
+      "controlSamples": 3,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "route": "search",
+      "findings": [],
+      "textSamples": 36,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "route": "import",
+      "findings": [],
+      "textSamples": 39,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "route": "backup",
+      "findings": [],
+      "textSamples": 34,
+      "controlSamples": 2,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "route": "settings",
+      "findings": [],
+      "textSamples": 39,
+      "controlSamples": 3,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "route": "portfolio",
+      "findings": [],
+      "textSamples": 78,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "route": "overview",
+      "findings": [],
+      "textSamples": 79,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "route": "tasks",
+      "findings": [],
+      "textSamples": 80,
+      "controlSamples": 2,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "route": "sessions",
+      "findings": [],
+      "textSamples": 44,
+      "controlSamples": 2,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "route": "agents",
+      "findings": [],
+      "textSamples": 61,
+      "controlSamples": 3,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "route": "skills",
+      "findings": [],
+      "textSamples": 62,
+      "controlSamples": 9,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "route": "projectMap",
+      "findings": [],
+      "textSamples": 32,
+      "controlSamples": 1,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "route": "documents",
+      "findings": [],
+      "textSamples": 36,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "route": "checks",
+      "findings": [],
+      "textSamples": 36,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "route": "autonomy",
+      "findings": [],
+      "textSamples": 62,
+      "controlSamples": 5,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "route": "decisions",
+      "findings": [],
+      "textSamples": 50,
+      "controlSamples": 3,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "route": "search",
+      "findings": [],
+      "textSamples": 36,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "route": "import",
+      "findings": [],
+      "textSamples": 39,
+      "controlSamples": 4,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "route": "backup",
+      "findings": [],
+      "textSamples": 34,
+      "controlSamples": 2,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "route": "settings",
+      "findings": [],
+      "textSamples": 39,
+      "controlSamples": 3,
+      "geometry": {
+        "width": 1440,
+        "scroll": 1440
+      },
+      "overflow": [],
+      "lang": "en",
+      "limitations": [
+        "RGB computed styles; gradients and native widget paint excluded",
+        "No manual screen-reader certification"
+      ]
+    }
+  ],
+  "status": "passed",
+  "fixtureCleaned": true,
+  "finishedAt": "2026-11-13T14:38:16.765Z"
+}

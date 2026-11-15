@@ -1,10 +1,10 @@
 # Product-Agent OS — desktop design V3
 
-Source status: project-authored design proposal based on current UI contracts and public technical sources, 13.11.2026. Status: needs_user_acceptance; application implementation remains planned.
+Source status: V3 и Sidebar collapse утверждены владельцем 13.11.2026. Frontend внедрение UI-01–UI-12 выполняется; human implementation acceptance отдельно. Текущие статусы и проверки: implementation-plan.md / implementation-evidence.md.
 
-## Что утверждаем
+## Утверждённое направление
 
-**Porcelain / Obsidian** сохраняют компактную среду V2. V3 добавляет цветные Duoicons, общий dashboard проектов, аналитику проекта и агентов, токеномику, полную карточку задачи поверх списка, отдельные D3/Mermaid представления карты. Работающее приложение, API, реальные данные и permissions не изменяются. Мобильная версия исключена. Разрешённые пользователем зависимости установлены только в `design/2026-11-13-v3/`.
+**Porcelain / Obsidian** сохраняют компактную среду V2. V3 добавляет цветные Duoicons, общий dashboard проектов, аналитику проекта и агентов, токеномику, полную карточку задачи поверх списка, отдельные D3/Mermaid представления карты. Frontend приложения перенесён на V3; API, хранение данных, permissions и команды сохранены. Мобильная версия исключена. Локальные D3/GSAP/Mermaid установлены также в `apps/web`; Sidebar использует native rAF, карточка — native dialog.
 
 ## Альбом и материалы
 
@@ -80,12 +80,22 @@ GSAP управляет коротким входом поверхности/dia
 
 Skeleton повторяет итоговую геометрию; error даёт повтор, empty объясняет отсутствие данных, stale сохраняет контекст. Progress показывает процент только при измеримом объёме. Toast не заменяет validation рядом с полем. Пауза, ожидание решения и остановка имеют разные подписи. Важные действия не используют магнитное движение, scroll hijacking или декоративные бесконечные эффекты.
 
-[DesignBookmark Motion](https://designbookmark.com/motion) использован для принципов tab pill, segmented control, expand card, loading-to-success. Код каталога не копировался. D3, GSAP и Mermaid действительно подключены локально; renderer activation проверяется отдельно от факта установки. Bundle около 3.26MB приемлем для offline альбома; внедрение потребует выборочных imports/lazy loading и измерений.
+[DesignBookmark Motion](https://designbookmark.com/motion) использован для принципов tab pill, segmented control, expand card, loading-to-success. Sidebar collapse адаптирован из указанного источника с сохранением spring-параметров; остальные примеры каталога использованы как референсы. D3, GSAP и Mermaid действительно подключены локально; renderer activation проверяется отдельно от факта установки. Bundle около 3.26MB относится к offline альбому. Приложение использует выборочные D3 imports и Mermaid как отдельный локальный lazy asset; текущий build сохраняет предупреждение >500kB основного chunk. Performance большого реального проекта не заявляется.
 
 ## Остальные экраны и внедрение
 
 Все 80 образцов V2 сохраняются: уровни sessions; agents/skills profile/edit/history/activity; generation/discovery/import; documents/proposal/diff; checks; policy/pause/reserved runs; decisions/search/import/export/backup/restore. Настройки разделены на среду, проект, подключение, процессы, выполнение и очередь. Preview/confirmation не исчезают. Новые аналитические поверхности добавляются в coverage.
 
-[UI-01–UI-12](design/2026-11-13-v3/implementation-plan.md) остаются planned. Сначала human approval компоновки и field parity, затем tokens/shell, task dialog, analytics presentation, graph, motion/a11y и регрессия. UI-карточки не разрешают backend telemetry, публикацию или Git.
+[UI-01–UI-12](design/2026-11-13-v3/implementation-plan.md) — актуальный план внедрения. [Implementation evidence](design/2026-11-13-v3/implementation-evidence.md) отделяет actual app checks от исторического альбома. UI-12 остаётся открытой для пользовательской приёмки реализации. Backend telemetry, публикация и Git не входят в scope.
 
 Gates альбома: обе темы и все routes, отсутствие root overflow на трёх ширинах, согласованность fixtures, фактический D3/Mermaid render, dblclick/keyboard dialog, focus/reduced motion. Результаты принадлежат verification. Полная WCAG-сертификация, production performance и human acceptance из этих проверок не следуют.
+
+## Как работает внедрённый интерфейс
+
+- «Все проекты» показывает агрегат только успешно прочитанных полных task snapshots. Ошибка проекта видна и не превращается в ноль; переход из сводки выбирает соответствующий проект.
+- «Обзор» показывает Done / все неотменённые объекты задач, оставшиеся и blocked задачи, очередь и назначения. Родительские задачи и подзадачи считаются отдельными объектами, не человеко-часами.
+- Статистика агентов разделяет текущие открытые назначения и observed runs за 7 дней. Назначение не доказывает фактическую занятость; unique run denominator не равен сумме строк агентов.
+- В задачах один клик выбирает деталь, двойной/Enter/кнопка открывают тот же редактор поверх страницы. Escape возвращает его в исходное место; незавершённый ввод и preview сохраняются. Все 8 существующих вкладок доступны.
+- Настройки и процессы переключают mounted панели. Состояния/переходы раскрываются по строке; невалидное обязательное поле раскрывается перед фокусом. Публикация, миграция и очередь сохраняют прежние подтверждения.
+- Карта имеет D3/Mermaid/список и фильтр модуля загруженной страницы. Два renderer используют одинаковые первые 100 узлов; полный список доступной страницы остаётся рядом. Graph revision/partial/stale и source authority сохраняются.
+- Tokens/cost/tool_use показывают отсутствие измерений. Демонстрационные цифры альбома не попадают в приложение. Все новые data requests — существующие локальные read-only API.

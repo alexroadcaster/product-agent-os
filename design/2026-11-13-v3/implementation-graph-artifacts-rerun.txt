@@ -1,0 +1,1 @@
+{"status":"passed","scenario":"full","checks":37,"report":"C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-yrETwY\\result.json"}

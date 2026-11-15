@@ -1,0 +1,1 @@
+{"status":"passed_settings_layout","checks":14,"report":"C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2\\browser-evidence-4MXMJk\\m2-browser-result.json","fixtureCleaned":true}

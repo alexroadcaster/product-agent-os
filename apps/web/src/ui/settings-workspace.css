@@ -1,0 +1,15 @@
+.settings-workspace { min-width: 0; }
+.settings-workspace [hidden] { display: none !important; }
+.settings-navigation,.workflow-navigation { display: flex; flex-wrap: wrap; gap: 4px; padding: 5px; margin-bottom: 20px; border: 1px solid var(--rule); border-radius: 12px; background: var(--panel); }
+.settings-navigation button,.workflow-navigation button { flex: 0 1 auto; border-color: transparent; background: transparent; color: var(--muted); min-height: 36px; }
+.settings-navigation button[aria-selected=true],.workflow-navigation button[aria-selected=true] { color: var(--accent-text); background: var(--paper); border-color: var(--rule); }
+.settings-workspace .settings-grid { display: grid; grid-template-columns: minmax(0,1fr); gap: 16px; align-items: start; }
+.settings-local-panel { min-width: 0; }
+.settings-local-panel>.panel { margin: 0; }
+.settings-local-panel form { max-width: 760px; }
+.settings-local-panel label { margin-bottom: 16px; }
+.settings-local-panel input,.settings-local-panel select { max-width: 100%; }
+.settings-process-panel { grid-column: 1/-1; }
+@media(min-width:1200px) { .settings-workspace .settings-grid:has(>.settings-local-panel:not([hidden])~.settings-local-panel:not([hidden])) { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media(prefers-reduced-motion:no-preference) { .settings-local-panel:not([hidden]) { animation: settings-panel-enter 140ms ease-out; } @keyframes settings-panel-enter { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } } }
+.settings-process-panel form { max-width: none; }

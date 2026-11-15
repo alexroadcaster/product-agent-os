@@ -98,7 +98,7 @@ export function Sources({
     };
   }, [api, projectId]);
   return (
-    <section className="panel">
+    <section className="sources-workspace"><div className="panel sources-catalog">
       <h2>{t("source")}</h2>
       {error ? (
         <p role="alert">{error}</p>
@@ -137,6 +137,7 @@ export function Sources({
           ))}
         </ul>
       )}
+      </div><aside className="panel sources-context"><h2>{t("project")}</h2><p className="quiet">{projectId}</p><dl><dt>{t("source")}</dt><dd>{source?.sources.filter(item=>item.status==='available').length??'—'} / {source?.sources.length??'—'}</dd></dl>
       {content && (
         <section>
           <h3>{content.relativePath}</h3>
@@ -157,7 +158,7 @@ export function Sources({
           )}
         </section>
       )}
-    </section>
+    </aside></section>
   );
 }
 export function ImportTasks({ api, projectId, t }: Props) {
@@ -178,9 +179,10 @@ export function ImportTasks({ api, projectId, t }: Props) {
     [sourceStatus, setSourceStatus] = useState<Awaited<
       ReturnType<M1Api["sourceStatus"]>
     > | null>(null);
+  const [pane,setPane]=useState('source');
   return (
-    <section className="panel">
-      <form
+    <section className="operations-workspace" data-testid="import-workspace"><div className="section-tabs">{[['source',t('source')],['preview',t('preview')],['export',t('reverseExport')]].map(([id,name])=><button key={id} aria-pressed={pane===id} onClick={()=>setPane(id)}>{name}</button>)}</div>
+      <form className="panel operation-form" hidden={pane!=='source'}
         onSubmit={async (e) => {
           e.preventDefault();
           const file = new FormData(e.currentTarget).get("file");
@@ -208,7 +210,7 @@ export function ImportTasks({ api, projectId, t }: Props) {
                     sourcePath,
                   ),
             );
-            setSourceFile(file);
+            setSourceFile(file);setPane('preview');
             setCommitKey(crypto.randomUUID());
           } catch (cause) {
             setError(String(cause));
@@ -285,7 +287,7 @@ export function ImportTasks({ api, projectId, t }: Props) {
         <p role="status">{t("writerInventory")}</p>
       )}
       {preview && (
-        <div className="import-preview">
+        <div className="panel import-preview" hidden={pane!=='preview'}>
           <p className="mono">
             {preview.sourceName}
             <br />
@@ -316,7 +318,7 @@ export function ImportTasks({ api, projectId, t }: Props) {
               </li>
             ))}
           </ul>
-          <p className="quiet">{t("importSafety")}</p>
+          <p className="ui-notice">{t("importSafety")}</p>
           <label className="checkbox">
             <input
               type="checkbox"
@@ -387,7 +389,7 @@ export function ImportTasks({ api, projectId, t }: Props) {
           )}
         </div>
       )}
-      <section>
+      <section className="panel" hidden={pane!=='source'}>
         <h3>{t("sourceStatus")}</h3>
         <button
           disabled={busy}
@@ -422,7 +424,7 @@ export function ImportTasks({ api, projectId, t }: Props) {
           </>
         )}
       </section>
-      <section className="reverse-export">
+      {!preview&&pane==='preview'&&<p className="panel">{t('sourceBindingHint')}</p>}<section className="panel reverse-export" hidden={pane!=='export'}>
         <h3>{t("reverseExport")}</h3>
         <button
           disabled={busy}
@@ -483,8 +485,9 @@ export function Backup({ api, projectId, t }: Props) {
       requiresRestart: boolean;
       activeProfileChanged: boolean;
     } | null>(null);
+  const [pane,setPane]=useState('create');
   return (
-    <section className="panel">
+    <section className="operations-workspace" data-testid="backup-workspace"><aside className="backup-boundary"><h3>{t("backup")}</h3><p>{t("backupHint")}</p><h3>{t("restore")}</h3><p>{t("restoreHint")}</p></aside><div className="section-tabs">{[['create',t('createBackup')],['restore',t('restore')]].map(([id,name])=><button key={id} aria-pressed={pane===id} onClick={()=>setPane(id)}>{name}</button>)}</div><div className="panel" hidden={pane!=='create'}>
       <h2>{t("backup")}</h2>
       <button
         className="primary"
@@ -515,9 +518,7 @@ export function Backup({ api, projectId, t }: Props) {
             {t("backupCreated")}:{" "}
             <span className="mono">{receipt.backupId}</span>
           </p>
-          <pre className="diff">
-            {JSON.stringify(receipt.manifest, null, 2)}
-          </pre>
+          <details><summary>Manifest</summary><pre className="diff">{JSON.stringify(receipt.manifest, null, 2)}</pre></details>
           <p>
             {t("backupRetention")}:{" "}
             <span className="badge">
@@ -584,8 +585,8 @@ export function Backup({ api, projectId, t }: Props) {
           )}
         </>
       )}
-      <section className="restore">
-        <h3>{t("restore")}</h3>
+      </div><section className="panel restore" hidden={pane!=='restore'}>
+        <h3>{t("restore")}</h3>{pane==='restore'&&<p role="alert">{error}</p>}
         <p className="quiet">{t("restoreHint")}</p>
         <form
           onSubmit={async (e) => {

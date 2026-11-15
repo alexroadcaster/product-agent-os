@@ -20,7 +20,7 @@ export function AutonomyManager({api,projectId,locale}:{api:M1Api;projectId:stri
   if(busy||!snapshot&&action!=='refresh')return;setBusy(true);setError('');setNotice('');
   try {
    if(action==='refresh') {const [state,manager]=await Promise.all([api.autonomy(projectId),api.taskManager(projectId)]);if(alive.current){setSnapshot(state);setTasks(manager.tasks);setPreview(null);}}
-   else if(action==='preview'){const value=await api.autonomyPreview(projectId,{policy:draft,expectedRevision:snapshot!.revision});if(alive.current)setPreview(value);}
+   else if(action==='preview'){const value=await api.autonomyPreview(projectId,{policy:draft,expectedRevision:snapshot!.revision});if(alive.current){setPreview(value);setPane('preview');}}
    else {
     if(action==='save'&&!preview?.executable)return;
     const project=await api.project(projectId);
@@ -32,8 +32,9 @@ export function AutonomyManager({api,projectId,locale}:{api:M1Api;projectId:stri
   }catch(e){if(alive.current){setError(String(e));setPreview(null);}}
   finally{if(alive.current)setBusy(false);}
  }
+ const [pane,setPane]=useState('policy');
  const commands=draft.allowedActions.includes('command');
- return <section className="panel" data-testid="autonomy-manager"><h2>{w('Автономная работа','Autonomous work')}</h2>
+ return <section className="autonomy-workspace" data-testid="autonomy-manager"><div className="section-tabs resource-workspace-tabs">{[['policy',w('Политика','Policy')],['preview',w('Предпросмотр','Preview')],['runs',w('Запуски','Runs')]].map(([id,name])=><button key={id} data-autonomy-pane={id} aria-pressed={pane===id} onClick={()=>setPane(id)}>{name}</button>)}</div>
   <p>{w('Задайте границы запусков, затем включите допуск. Каждый запуск выбирается явно в сессии.','Set run boundaries, then enable admission. Each run is explicitly selected in its session.')}</p>
   {loading&&<p role="status">{w('Загрузка…','Loading…')}</p>}
   {error&&<p role="alert">{w('Операция недоступна. Черновик сохранён в форме.','Operation unavailable. Your draft remains in the form.')} {error}</p>}
@@ -43,7 +44,7 @@ export function AutonomyManager({api,projectId,locale}:{api:M1Api;projectId:stri
   {snapshot&&<>
    <p role="status">{!snapshot.policy?w('Политика не настроена','No policy configured'):snapshot.paused?w('На паузе','Paused'):w('Допуск включён','Admission enabled')} · {w('Запусков использовано','Runs used')}: {snapshot.usedRuns}/{snapshot.policy?.maxRuns??0}</p>
    <div className="actions"><button disabled={busy||snapshot.paused} onClick={()=>void act('pause')}>{w('Пауза','Pause')}</button><button disabled={busy||dirty||!snapshot.paused||!snapshot.policy||snapshot.usedRuns>=snapshot.policy.maxRuns} onClick={()=>void act('resume')}>{w('Разрешить новые запуски','Enable new runs')}</button></div>
-   <form onSubmit={e=>{e.preventDefault();void act('preview');}}><fieldset disabled={busy||loading}><legend>{w('Предложение политики','Policy proposal')}</legend>
+   <div className="autonomy-policy-grid" hidden={pane!=='policy'}><form className="panel" onSubmit={e=>{e.preventDefault();void act('preview');}}><fieldset disabled={busy||loading}><legend>{w('Предложение политики','Policy proposal')}</legend>
     {dirty&&<p role="status">{w('Есть несохранённые изменения','Unsaved changes')}</p>}
     <label>{w('Разрешённые задачи','Allowed tasks')}<select name="autonomy-tasks" multiple value={[...draft.allowedTaskIds]} onChange={e=>patch({allowedTaskIds:Array.from(e.target.selectedOptions,o=>o.value)})}>
      {tasks.filter(task=>task.data?.type!=='epic').map(task=><option key={task.id} value={task.id}>{task.publicKey??task.id}: {task.title??String(task.data?.title??'')}</option>)}
@@ -61,9 +62,9 @@ export function AutonomyManager({api,projectId,locale}:{api:M1Api;projectId:stri
     <li>{w('Команды по-прежнему требуют отдельного подтверждения.','Commands still require separate approval.')}</li>
     <li>{w('Изоляция отдельных файлов недоступна. Выполнимый scope — весь workspace; узкие пути блокируют включение.','Per-file isolation is unavailable. Executable scope is the entire workspace; narrow paths block enabling.')}</li>
     <li>{w('Расход токенов и стоимость не измеряются. Пауза и истечение времени запрашивают остановку, но не доказывают её завершение.','Token usage and cost are not metered. Pause and timeout request a stop but do not prove it has completed.')}</li>
-   </ul></aside>
-   {preview&&<section data-testid="autonomy-preview"><h3>{w('Предпросмотр','Preview')}</h3><p>{preview.executable?w('Политика доступна для сохранения на паузе','Policy can be saved paused'):w('Политика не может выполняться','Policy cannot execute')}</p>{preview.reasons.length>0&&<ul>{preview.reasons.map(reason=><li key={reason}>{reason}</li>)}</ul>}<button disabled={busy||!preview.executable} onClick={()=>void act('save')}>{w('Сохранить на паузе','Save paused')}</button></section>}
-   <h3>{w('Учтённые запуски','Reserved runs')}</h3>{!snapshot.runs.length?<p>{w('Запусков ещё нет.','No runs yet.')}</p>:<ul>{snapshot.runs.map(run=><li key={run.runId}>{tasks.find(task=>task.id===run.taskId)?.publicKey??run.taskId} · {run.operationIds.length} {w('команд','commands')} · {run.stopReason??w('Причина остановки не зафиксирована','No stop reason recorded')}</li>)}</ul>}
-  </>}
+   </ul></aside></div>
+   {pane==='preview'&&!preview&&<p className="panel">{w('Заполните политику и выполните предпросмотр.','Complete the policy and request a preview.')}</p>}{preview&&<section hidden={pane!=='preview'} className="panel" data-testid="autonomy-preview"><h3>{w('Предпросмотр','Preview')}</h3><dl className="task-summary-properties"><dt>{w('Задачи','Tasks')}</dt><dd>{draft.allowedTaskIds.map(id=>tasks.find(task=>task.id===id)?.publicKey??id).join(', ')}</dd><dt>{w('Максимум запусков','Maximum runs')}</dt><dd>{draft.maxRuns}</dd><dt>{w('Команд на запуск','Commands per run')}</dt><dd>{draft.maxCommandsPerRun}</dd><dt>{w('Лимит, секунды','Limit, seconds')}</dt><dd>{draft.maxRunSeconds}</dd></dl><p className="ui-notice">{w('Права host не меняются. Сохранение не запускает работу.','Host permissions are unchanged. Saving does not start work.')}</p><p>{preview.executable?w('Политика доступна для сохранения на паузе','Policy can be saved paused'):w('Политика не может выполняться','Policy cannot execute')}</p>{preview.reasons.length>0&&<ul>{preview.reasons.map(reason=><li key={reason}>{reason}</li>)}</ul>}<button disabled={busy||!preview.executable} onClick={()=>void act('save')}>{w('Сохранить на паузе','Save paused')}</button></section>}
+   <section hidden={pane!=='runs'} className="panel"><h3>{w('Учтённые запуски','Reserved runs')}</h3>{!snapshot.runs.length?<p>{w('Запусков ещё нет.','No runs yet.')}</p>:<ul>{snapshot.runs.map(run=><li key={run.runId}>{tasks.find(task=>task.id===run.taskId)?.publicKey??run.taskId} · {run.operationIds.length} {w('команд','commands')} · {run.stopReason??w('Причина остановки не зафиксирована','No stop reason recorded')}</li>)}</ul>}
+  </section></>}
  </section>;
 }

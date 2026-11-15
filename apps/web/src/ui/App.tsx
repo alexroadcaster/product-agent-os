@@ -1,5 +1,10 @@
+import {Icon} from './Icon.tsx';
 import { useEffect, useState, useRef, useLayoutEffect } from "react";
-import type { FormEvent } from "react";
+import {gsap} from "gsap";
+import {Sidebar} from "./Sidebar.tsx";
+import {Dashboard,Usage,UsageDashboard} from "../features/dashboard/Dashboard.tsx";
+import type { FormEvent, ReactNode } from "react";
+import "./settings-workspace.css";
 import { createHttpApi, HttpApiError } from "../api/client.ts";
 import type {
   Connection,
@@ -36,7 +41,6 @@ import {GraphExplorer} from '../features/graph/GraphExplorer.tsx';
 import {DecisionBoard} from '../features/decisions/DecisionBoard.tsx';
 import {AutonomyManager} from '../features/autonomy/AutonomyManager.tsx';
 import type {AutonomySnapshot} from '../../../../packages/contracts/autonomy/policy.ts';
-import {SkillGenerator} from '../features/skills/SkillGenerator.tsx';
 import {ArtifactExplorer} from '../features/artifacts/ArtifactExplorer.tsx';
 import {WorkflowManager} from '../features/workflows/WorkflowManager.tsx';
 import {SessionsCatalog} from '../features/sessions/SessionsCatalog.tsx';
@@ -75,6 +79,7 @@ import {
 const api = createHttpApi();
 const draftRegistry = createDraftRegistry();
 const sections = [
+  "portfolio",
   "overview",
   "tasks",
   "sessions",
@@ -111,6 +116,7 @@ export function App() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [projectId, setProjectId] = useState("");
   const [section, updateSection] = useState<Section>("overview");
+  const [overviewPane,setOverviewPane]=useState('dashboard');
   const navigationEpoch=useRef(0);
   // Every route, including workflow/deep-link callbacks, fences a pending project registration.
   function setSection(next:Section){navigationEpoch.current++;updateSection(next);}
@@ -133,7 +139,7 @@ export function App() {
   const menuButton = useRef<HTMLButtonElement>(null);
   const t: Text = (key) => appLabel(preferences.locale, key);
   const label = (key: Section) =>
-    ["search", "import", "backup"].includes(key)
+    key === "portfolio" ? (preferences.locale === "ru" ? "Все проекты" : "All projects") : ["search", "import", "backup"].includes(key)
       ? t(key as AppLabel)
       : uiLabel(
           preferences.locale,
@@ -212,6 +218,11 @@ export function App() {
     media.addEventListener("change", apply);
     return () => media.removeEventListener("change", apply);
   }, [preferences]);
+  useLayoutEffect(()=>{
+    const media=gsap.matchMedia();
+    media.add('(prefers-reduced-motion: no-preference)',()=>{gsap.fromTo('#main>.page-heading',{opacity:.4,y:4},{opacity:1,y:0,duration:.18,ease:'power2.out',clearProps:'opacity,transform'});});
+    return()=>media.revert();
+  },[section]);
   return (
     <div className="app" onFocusCapture={event => {
       // A disclosure must stop covering content when keyboard focus leaves it.
@@ -221,59 +232,7 @@ export function App() {
       <a className="skip" href="#main">
         {uiLabel(preferences.locale, "action.skipToContent")}
       </a>
-      <aside
-        id="project-navigation"
-        className={`navigation ${mobileNav ? "open" : ""}`}
-        aria-label={t("menu")}
-        onKeyDown={event => {
-          if (event.key === 'Escape' && mobileNav) {
-            setMobileNav(false);
-            menuButton.current?.focus();
-          }
-        }}
-      >
-        <div className="brand">
-          Product-Agent OS<span>{t("local")}</span>
-        </div>
-        <label>
-          {t("project")}
-          <select
-            value={projectId}
-            onChange={(e) => {navigationEpoch.current++;setProjectId(e.target.value);}}
-            disabled={!ready}
-          >
-            <option value="">—</option>
-            {projects.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <nav>
-          {sections.map((key) => (
-            <button
-              key={key}
-              disabled={!ready}
-              aria-current={section === key ? "page" : undefined}
-              onClick={() => {
-                setSection(key);
-                setMobileNav(false);
-                if (mobileNav) requestAnimationFrame(() => document.getElementById('main')?.focus());
-              }}
-            >
-              {label(key)}
-            </button>
-          ))}
-        </nav>
-        <div className="connection">
-          <span className="eyebrow">{t("connection")}</span>
-          <strong>
-            {connection?.verified ? t("verified") : t("unverified")}
-          </strong>
-          <small>{connection?.reason}</small>
-        </div>
-      </aside>
+      <Sidebar items={sections.map(id=>({id,label:label(id)}))} selected={section} onSelect={key=>{setSection(key);setMobileNav(false);if(mobileNav)requestAnimationFrame(()=>document.getElementById('main')?.focus());}} projects={projects} projectId={projectId} onProject={id=>{navigationEpoch.current++;setProjectId(id);if(section==='portfolio')setSection('overview');}} ready={ready} locale={preferences.locale} mobileNav={mobileNav} onEscape={()=>{if(mobileNav){setMobileNav(false);menuButton.current?.focus();}}} connection={{verified:connection?.verified??false,label:connection?.verified?t('verified'):t('unverified'),reason:connection?.reason}}/>
       <div className="workspace">
         <header>
           <button
@@ -294,19 +253,17 @@ export function App() {
             <span>/</span>
             {label(section)}
           </div>
-          <button onClick={() => void initialise()} disabled={busy}>
+          <div className="top-actions"><button className="global-search" disabled={!ready} onClick={()=>setSection('search')}><Icon name="search"/>{t('search')}</button><span className="connection-chip"><span className={'connection-dot '+(connection?.verified?'verified':'')}/>{connection?.verified?t('verified'):t('unverified')}</span><button onClick={() => void initialise()} disabled={busy}>
             {t("reload")}
-          </button>
+          </button></div>
         </header>
-        <main id="main" tabIndex={-1}>
-          <div className="page-heading">
+        <main id="main" data-section={section} tabIndex={-1}>
+          <div className="page-heading" hidden={ready&&['tasks','overview','portfolio','agents','skills','documents','checks','search','settings','sessions','projectMap'].includes(section)}>
             <div>
               <p className="eyebrow">Product-Agent OS · M2</p>
               <h1>{label(section)}</h1>
             </div>
-            <span className="quiet">
-              {ready ? t("local") : t("unverified")}
-            </span>
+
           </div>
           {notice && (
             <p role="alert" className="notice">
@@ -339,6 +296,7 @@ export function App() {
             </section>
           ) : section === "settings" ? (
             <><Settings
+              projects={projects}
               preferences={preferences}
               onPreferences={setPreferences}
               connection={connection}
@@ -351,7 +309,10 @@ export function App() {
                 else setProjects(await api.projects());
                 return saved;
               }}
-            />{projectId&&<WorkflowManager key={projectId} api={api} projectId={projectId} locale={preferences.locale} onOpenSession={sessionId=>{setLinkedSession({projectId,sessionId});setSection('sessions');}}/>}</>
+              processes={surface=>projectId?<WorkflowManager surface={surface} key={projectId} api={api} projectId={projectId} locale={preferences.locale} onOpenSession={sessionId=>{setLinkedSession({projectId,sessionId});setSection('sessions');}}/>:null}
+            /></>
+          ) : section === "portfolio" ? (
+            <Dashboard mode="portfolio" api={api} projects={projects} locale={preferences.locale} onProject={id=>{navigationEpoch.current++;setProjectId(id);setSection('overview');}} onTask={(id,taskId)=>{navigationEpoch.current++;setProjectId(id);setLinkedTask(taskId?{projectId:id,id:taskId}:null);setSection('tasks');}} onAgents={id=>{navigationEpoch.current++;setProjectId(id);setSection('agents');}}/>
           ) : !projectId ? (
             <Empty text={t("empty")} />
           ) : section === "decisions" ? (
@@ -359,7 +320,7 @@ export function App() {
           ) : section === "autonomy" ? (
             <AutonomyManager key={projectId} api={api} projectId={projectId} locale={preferences.locale}/>
           ) : section === "tasks" ? (
-            <TaskManager key={projectId} api={api} projectId={projectId} locale={preferences.locale} initialTaskId={linkedTask?.projectId===projectId?linkedTask.id:undefined} initialTab={linkedTask?.projectId===projectId?linkedTask.tab:undefined} onOpenSession={sessionId=>{setLinkedSession({projectId,sessionId});setSection('sessions');}} />
+            <TaskManager key={projectId} api={api} projectId={projectId} projectName={projects.find(p=>p.id===projectId)?.name} locale={preferences.locale} initialTaskId={linkedTask?.projectId===projectId?linkedTask.id:undefined} initialTab={linkedTask?.projectId===projectId?linkedTask.tab:undefined} onOpenSession={sessionId=>{setLinkedSession({projectId,sessionId});setSection('sessions');}} />
           ) : section === "sessions" ? (
             <SessionsCatalog key={projectId} api={api} projectId={projectId} locale={preferences.locale}
               initialSessionId={linkedSession?.projectId===projectId?linkedSession.sessionId:undefined}
@@ -387,15 +348,11 @@ export function App() {
               initialAssetId={linkedAsset?.projectId===projectId&&linkedAsset.kind===(section==='agents'?'agent':'skill')?linkedAsset.id:undefined}
               onOpenAsset={(kind,id)=>{setLinkedAsset({projectId,id,kind});setSection(kind==='agent'?'agents':'skills');}}
               onOpenSession={sessionId=>{setLinkedSession({projectId,sessionId});setSection('sessions');}}
-              onOpenTask={id=>{setLinkedTask({projectId,id});setSection('tasks');}}/>{section==='skills'&&<SkillGenerator key={projectId} api={api} projectId={projectId} locale={preferences.locale} onOpenAsset={(kind,id)=>{setLinkedAsset({projectId,id,kind});setSection(kind==='skill'?'skills':'agents');}} onOpenSession={sessionId=>{setLinkedSession({projectId,sessionId});setSection('sessions');}}/>}</>
+              onOpenTask={id=>{setLinkedTask({projectId,id});setSection('tasks');}}/></>
           ) : section === "projectMap" ? (
             <GraphExplorer key={projectId} api={api} projectId={projectId} locale={preferences.locale} initialNodeId={linkedGraph?.projectId===projectId?linkedGraph.id:undefined} onOpenTask={id=>{setLinkedTask({projectId,id});setSection('tasks');}}/>
           ) : section === "overview" ? (
-            <Overview
-              projectId={projectId}
-              t={t}
-              onTasks={() => setSection("tasks")}
-            />
+            <section><div className="section-tabs overview-tabs">{[['dashboard',preferences.locale==='ru'?'Обзор':'Overview'],['sources',t('source')],['usage',preferences.locale==='ru'?'Расход':'Usage']].map(([id,name])=><button key={id} data-overview-section={id} aria-pressed={overviewPane===id} onClick={()=>setOverviewPane(id)}>{name}</button>)}</div><div hidden={overviewPane!=='dashboard'}><Dashboard api={api} projects={projects.filter(p=>p.id===projectId)} locale={preferences.locale} onProject={()=>{}} onTask={(id,taskId)=>{setLinkedTask(taskId?{projectId:id,id:taskId}:null);setSection('tasks');}} onAgents={()=>setSection('agents')}/></div><div hidden={overviewPane!=='sources'}><h1>{t('source')}</h1><Sources api={api} projectId={projectId} t={t}/></div><div hidden={overviewPane!=='usage'}><h2>{preferences.locale==='ru'?'Расход ресурсов проекта':'Project resource usage'}</h2><UsageDashboard locale={preferences.locale}/></div></section>
           ) : (
             <Empty text={t("unavailable")} />
           )}
@@ -475,20 +432,27 @@ function Overview({
   );
 }
 function Settings({
+  projects,
   preferences,
   onPreferences,
   t,
   onProject,
   connection,
   onConnection,
+  processes,
 }: {
+  projects: Project[];
   preferences: UiPreferences;
   onPreferences: (p: UiPreferences) => void;
   t: Text;
   onProject: (name:string,root:string,requestId:string)=>Promise<ProjectRegistration>;
   connection: Connection | null;
   onConnection: (connection: Connection) => void;
+  processes: (surface:string)=>ReactNode;
 }) {
+  const [settingsSection,setSettingsSection]=useState("general");
+  const visible=(section:string)=>settingsSection===section||settingsSection==="all";
+  const settingsSections=[["general","Общие","General"],["projects","Проекты","Projects"],["connection","Подключение","Connection"],["processes","Процессы","Processes"],["execution","Выполнение цепочек","Recipe execution"],["queue","Очередь","Queue"],["service","Завершение сервиса","Quit service"],["all","Все разделы","All sections"]];
   const [draft, setDraft] = useState(preferences),
     [status, setStatus] = useState(""),
     [busy, setBusy] = useState(false);
@@ -505,10 +469,12 @@ function Settings({
     }
   }
   return (
-    <div className="settings-grid">
-      <section className="panel">
+    <section className="settings-workspace"><div className="settings-page-title"><h1>{settingsSection==='processes'?(preferences.locale==='ru'?'Процессы проекта':'Project workflows'):['execution','queue'].includes(settingsSection)?(preferences.locale==='ru'?'Выполнение цепочек':'Recipe execution'):uiLabel(preferences.locale,'nav.settings')}</h1><p className="quiet">{preferences.locale==='ru'?'Рабочая среда и параметры текущего проекта':'Workspace and current project preferences'}</p></div>
+      <div className="settings-navigation" data-testid="settings-navigation" role="tablist" aria-label={preferences.locale==='ru'?'Разделы настроек':'Settings sections'} onKeyDown={event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();const tabs=Array.from(event.currentTarget.querySelectorAll<HTMLButtonElement>('[role=tab]')),index=tabs.findIndex(tab=>tab===document.activeElement),next=event.key==='Home'?0:event.key==='End'?tabs.length-1:(index+(event.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;tabs[next]?.focus();tabs[next]?.click();}}>{settingsSections.map(([id,ru,en])=><button type="button" key={id} role="tab" data-settings-section={id} id={'settings-tab-'+id} aria-controls={id==='all'?undefined:'settings-panel-'+id} aria-selected={settingsSection===id} tabIndex={settingsSection===id?0:-1} onClick={()=>setSettingsSection(id)}><Icon name={id==='projects'?'portfolio':id==='connection'?'agents':id==='processes'?'projectMap':id==='execution'?'autonomy':id==='queue'?'tasks':'settings'}/>{preferences.locale==='ru'?ru:en}</button>)}</div>
+      <div className="settings-grid">
+      <section className="panel settings-local-panel" id="settings-panel-general" data-testid="settings-panel-general" hidden={!visible('general')} aria-labelledby="settings-tab-general">
         <h2>{uiLabel(preferences.locale, "nav.settings")}</h2>
-        <form onSubmit={save}>
+        <form className="appearance-form" onSubmit={save}>
           <label>
             {uiLabel(preferences.locale, "preferences.language")}
             <select
@@ -544,21 +510,23 @@ function Settings({
               ))}
             </select>
           </label>
-          <button disabled={busy} className="primary">
+          <div className="form-actions"><button type="button" disabled={busy} onClick={()=>setDraft(preferences)}>{preferences.locale==='ru'?'Отменить':'Cancel'}</button><button disabled={busy} className="primary">
             {uiLabel(preferences.locale, "preferences.save")}
-          </button>
+          </button></div>
           <p role="status">{status}</p>
         </form>
       </section>
-      <ProjectOnboarding api={api} t={t} onProject={onProject}/>
-      <ConnectionControls
+      <div className="settings-local-panel" id="settings-panel-projects" data-testid="settings-panel-projects" hidden={!visible('projects')} aria-labelledby="settings-tab-projects"><ProjectOnboarding api={api} t={t} onProject={onProject}/><section className="panel"><h2>{preferences.locale==='ru'?'Подключённые проекты':'Registered projects'}</h2><table className="dashboard-data-table"><thead><tr><th>{t('name')}</th><th>{preferences.locale==='ru'?'Префикс задач':'Task prefix'}</th></tr></thead><tbody>{projects.map(project=><tr key={project.id}><td>{project.name}</td><td>{project.keyPrefix}</td></tr>)}</tbody></table></section></div>
+      <div className="settings-local-panel" id="settings-panel-connection" hidden={!visible('connection')} aria-labelledby="settings-tab-connection"><ConnectionControls
         api={api}
         connection={connection}
         onConnection={onConnection}
         t={t}
-      />
-      <QuitService t={t} />
-    </div>
+      /></div>
+      <div className="settings-local-panel" id="settings-panel-service" hidden={!visible('service')} aria-labelledby="settings-tab-service"><QuitService t={t}/></div>
+      <div className="settings-local-panel settings-process-panel" id="settings-panel-processes" hidden={!visible('processes')&&!['execution','queue'].includes(settingsSection)} aria-labelledby="settings-tab-processes">{processes(['execution','queue'].includes(settingsSection)?settingsSection:'processes')??<section className="panel"><p>{t('empty')}</p></section>}</div>
+      </div>
+    </section>
   );
 }
 function QuitService({ t }: { t: Text }) {
@@ -568,7 +536,7 @@ function QuitService({ t }: { t: Text }) {
     [error, setError] = useState("");
   return (
     <section className="panel">
-      <h2>{t("quit")}</h2>
+      <h2>{t("quit")}</h2><p className="ui-notice warning">{t("quitConfirm")}</p>
       <form
         onSubmit={async (e) => {
           e.preventDefault();
@@ -1427,6 +1395,7 @@ function Session({
     [notice, setNotice] = useState(""),
     [snapshot, setSnapshot] = useState<RuntimeState | null>(null),
     [pane, setPane] = useState("chat");
+
   const [autonomySelected,setAutonomySelected]=useState(false);
   const [taskCreationApproved,setTaskCreationApproved]=useState(false);
   const [autonomyState,setAutonomyState]=useState<AutonomySnapshot|null>(null);
@@ -1707,6 +1676,104 @@ function Session({
       if (mounted.current) setActionBusy(false);
     }
   }
+  const sessionRunFields=<div className="session-run-fields">              <label>
+                {t("mode")}
+                <select
+                  value={mode}
+                  disabled={actionBusy || runBlocksScopeChange(snapshot)}
+                  onChange={(e) => {setAutonomySelected(false);setTaskCreationApproved(false);setMode(e.target.value);}}
+                >
+                  {(["discussion", "planning", "execution"] as const).map(
+                    (value) => (
+                      <option key={value} value={value} disabled={value === 'execution' && connection?.route === 'codex_app_agent' && !connection.capabilities?.executionConfigured}>
+                        {t(value)}
+                      </option>
+                    ),
+                  )}
+                </select>
+              </label>
+              {mode==='execution'&&connection?.route==='codex_app_agent'&&<label className="m2-check"><input type="checkbox" name="session-autonomy" checked={autonomySelected} disabled={!autonomyAvailable||actionBusy||runBlocksScopeChange(snapshot)} onChange={e=>setAutonomySelected(e.target.checked)}/>{locale==='ru'?'Выполнить по политике':'Execute under policy'}{!autonomyAvailable&&<span className="quiet"> · {locale==='ru'?'Политика недоступна, на паузе или не разрешает эту задачу':'Policy unavailable, paused, or does not allow this task'}</span>}</label>}
+              {mode==='execution'&&connection?.route==='codex_app_agent'&&<label className="m2-check"><input type="checkbox" name="session-task-creation" checked={taskCreationApproved} disabled={autonomySelected||actionBusy||runBlocksScopeChange(snapshot)} onChange={e=>setTaskCreationApproved(e.target.checked)}/>{locale==='ru'?'Разрешить агенту создать Bug в этом запуске':'Allow the agent to create a Bug in this run'}</label>}
+              <label>
+                {t("executionTarget")}
+                <select
+                  value={targetId}
+                  disabled={actionBusy || runBlocksScopeChange(snapshot)}
+                  onChange={(e) => {setTaskCreationApproved(false);setTargetId(e.target.value);}}
+                >
+                  <option value="">—</option>
+                  {targetChoices.map((task) => (
+                    <option key={task.id} value={task.id}>
+                      {task.publicKey ?? task.id}: {task.title}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <button
+                type="button"
+                disabled={
+                  actionBusy ||
+                  runBlocksScopeChange(snapshot) ||
+                  !target ||
+                  targetId === linkedTaskId
+                }
+                onClick={async () => {
+                  if (!target) return;
+                  setActionBusy(true);
+                  try {
+                    const [currentSession, currentTask] = await Promise.all([
+                      api.entity(entity.projectId, entity.id),
+                      api.entity(entity.projectId, target.id),
+                    ]);
+                    await api.command(
+                      entity.projectId,
+                      attachTaskToSession(currentSession, currentTask),
+                    );
+                    setLinkedTaskId(target.id);
+                    await tasks.load();
+                  } catch (error) {
+                    setNotice(`${t("error")}: ${error}`);
+                  } finally {
+                    setActionBusy(false);
+                  }
+                }}
+              >
+                {t("attachTask")}
+              </button>
+              {mode === "execution" &&
+                (!isExecutionTarget(target,workflowRegistry) || targetId !== linkedTaskId) && (
+                  <p className="quiet">{t("executionScopeHint")}</p>
+                )}
+              {tasks.hasMore && (
+                <button
+                  type="button"
+                  disabled={tasks.loading}
+                  onClick={() => void tasks.load(true)}
+                >
+                  {t("more")}
+                </button>
+              )}
+</div>;
+  const sessionRunActions=<>                <button
+                  type="button"
+                  disabled={
+                    !connection?.verified || runBlocksScopeChange(snapshot)
+                  }
+                  onClick={() => void runtime("bindings", { mode })}
+                >
+                  {t("connect")}
+                </button>
+                <button
+                  type="button"
+                  disabled={actionBusy || !canStopRun(snapshot)}
+                  onClick={() => void runtime("interrupt")}
+                >
+                  {uiLabel(locale, "action.stopRun")}
+                </button>
+                <button type="button" onClick={() => void runtime("reconcile", snapshot?.recovery?.canCancelUndispatched?{resolution:'cancel_undispatched'}:{})}>
+                  {t(snapshot?.recovery?.canCancelUndispatched?'cancelUndispatched':"recover")}
+                </button>
+</>;
   return (
     <>
       <section className="chat-panel">
@@ -1721,7 +1788,73 @@ function Session({
             </button>
           ))}
         </div>
-        {pane === "chat" ? (
+        {['run','checks','question'].includes(pane)?<section className="session-runtime-detail"><div hidden={pane!=='run'}><h2>{locale==='ru'?'Запуск и профиль':'Run and profile'}</h2>{pane==='run'&&sessionRunFields}<div className="actions">{pane==='run'&&sessionRunActions}</div>
+        <RuntimeSummary state={snapshot} t={t} />
+        <h2>{t("context")}</h2>
+        <p className="mono">{entity.id}</p>
+        <p>
+          {t("connection")}:{" "}
+          {connection?.verified ? t("verified") : t("unverified")}
+        </p>
+        <h3>{t("approval")}</h3>
+        <p className="quiet">
+          {t("modelAccess")}: {snapshot?.modelAccess ?? t("unverified")}
+        </p>
+        <p className="quiet">{snapshot?.reason}</p>
+        {snapshot?.pendingApprovals?.length ? (
+          snapshot.pendingApprovals.map((request) => (
+            <div key={request.requestId}>
+              {request.source==='paos_domain'&&<p className="quiet">{t('appDomainApproval')}</p>}
+              <p>{request.description ?? request.requestId}{request.decisionId&&<code>{request.decisionId}</code>}</p>
+              <span className="badge">{request.state ?? t("unverified")}</span>
+              <p className="quiet">
+                {request.kind} · {request.details?.reason}
+              </p>
+              {request.details?.command && (
+                <pre className="diff">{request.details.command}</pre>
+              )}
+              {request.details?.changes != null && (
+                <pre className="diff">
+                  {JSON.stringify(request.details.changes, null, 2)}
+                </pre>
+              )}
+              {!request.reviewable && <p>{t("approvalDetailsMissing")}</p>}
+              <button
+                disabled={
+                  actionBusy || !canAnswerApproval(snapshot, request, "accept")
+                }
+                onClick={() =>
+                  void runtime("approve", {
+                    requestId: request.requestId,
+                    decision: "accept",
+                  })
+                }
+              >
+                {t("approve")}
+              </button>
+              <button
+                disabled={
+                  actionBusy || !canAnswerApproval(snapshot, request, "decline")
+                }
+                onClick={() =>
+                  void runtime("approve", {
+                    requestId: request.requestId,
+                    decision: "decline",
+                  })
+                }
+              >
+                {t("deny")}
+              </button>
+            </div>
+          ))
+        ) : (
+          <p className="quiet">{t("noApproval")}</p>
+        )}
+        </div><div hidden={pane!=='checks'}><RuntimeChecks state={snapshot} t={t} /></div><div hidden={pane!=='question'}><SessionContext api={api} entity={entity} state={snapshot} t={t} view="question"/></div>
+        <p className="quiet">
+          {t("changes")}: {snapshot?.fileChanges?.length ?? 0}
+        </p>
+</section>:pane === "chat" ? (
           <>
             {messages.hasMore && (
               <div className="history-paging">
@@ -1801,83 +1934,7 @@ function Session({
                   });
               }}
             >
-              <label>
-                {t("mode")}
-                <select
-                  value={mode}
-                  disabled={actionBusy || runBlocksScopeChange(snapshot)}
-                  onChange={(e) => {setAutonomySelected(false);setTaskCreationApproved(false);setMode(e.target.value);}}
-                >
-                  {(["discussion", "planning", "execution"] as const).map(
-                    (value) => (
-                      <option key={value} value={value} disabled={value === 'execution' && connection?.route === 'codex_app_agent' && !connection.capabilities?.executionConfigured}>
-                        {t(value)}
-                      </option>
-                    ),
-                  )}
-                </select>
-              </label>
-              {mode==='execution'&&connection?.route==='codex_app_agent'&&<label className="m2-check"><input type="checkbox" name="session-autonomy" checked={autonomySelected} disabled={!autonomyAvailable||actionBusy||runBlocksScopeChange(snapshot)} onChange={e=>setAutonomySelected(e.target.checked)}/>{locale==='ru'?'Выполнить по политике':'Execute under policy'}{!autonomyAvailable&&<span className="quiet"> · {locale==='ru'?'Политика недоступна, на паузе или не разрешает эту задачу':'Policy unavailable, paused, or does not allow this task'}</span>}</label>}
-              {mode==='execution'&&connection?.route==='codex_app_agent'&&<label className="m2-check"><input type="checkbox" name="session-task-creation" checked={taskCreationApproved} disabled={autonomySelected||actionBusy||runBlocksScopeChange(snapshot)} onChange={e=>setTaskCreationApproved(e.target.checked)}/>{locale==='ru'?'Разрешить агенту создать Bug в этом запуске':'Allow the agent to create a Bug in this run'}</label>}
-              <label>
-                {t("executionTarget")}
-                <select
-                  value={targetId}
-                  disabled={actionBusy || runBlocksScopeChange(snapshot)}
-                  onChange={(e) => {setTaskCreationApproved(false);setTargetId(e.target.value);}}
-                >
-                  <option value="">—</option>
-                  {targetChoices.map((task) => (
-                    <option key={task.id} value={task.id}>
-                      {task.publicKey ?? task.id}: {task.title}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <button
-                type="button"
-                disabled={
-                  actionBusy ||
-                  runBlocksScopeChange(snapshot) ||
-                  !target ||
-                  targetId === linkedTaskId
-                }
-                onClick={async () => {
-                  if (!target) return;
-                  setActionBusy(true);
-                  try {
-                    const [currentSession, currentTask] = await Promise.all([
-                      api.entity(entity.projectId, entity.id),
-                      api.entity(entity.projectId, target.id),
-                    ]);
-                    await api.command(
-                      entity.projectId,
-                      attachTaskToSession(currentSession, currentTask),
-                    );
-                    setLinkedTaskId(target.id);
-                    await tasks.load();
-                  } catch (error) {
-                    setNotice(`${t("error")}: ${error}`);
-                  } finally {
-                    setActionBusy(false);
-                  }
-                }}
-              >
-                {t("attachTask")}
-              </button>
-              {mode === "execution" &&
-                (!isExecutionTarget(target,workflowRegistry) || targetId !== linkedTaskId) && (
-                  <p className="quiet">{t("executionScopeHint")}</p>
-                )}
-              {tasks.hasMore && (
-                <button
-                  type="button"
-                  disabled={tasks.loading}
-                  onClick={() => void tasks.load(true)}
-                >
-                  {t("more")}
-                </button>
-              )}
+              {sessionRunFields}
               {messages.hasMore && <p role="status">{t("partial")}</p>}
               <label>
                 {t("draft")}
@@ -1910,25 +1967,7 @@ function Session({
                 >
                   {t("save")}
                 </button>
-                <button
-                  type="button"
-                  disabled={
-                    !connection?.verified || runBlocksScopeChange(snapshot)
-                  }
-                  onClick={() => void runtime("bindings", { mode })}
-                >
-                  {t("connect")}
-                </button>
-                <button
-                  type="button"
-                  disabled={actionBusy || !canStopRun(snapshot)}
-                  onClick={() => void runtime("interrupt")}
-                >
-                  {uiLabel(locale, "action.stopRun")}
-                </button>
-                <button type="button" onClick={() => void runtime("reconcile", snapshot?.recovery?.canCancelUndispatched?{resolution:'cancel_undispatched'}:{})}>
-                  {t(snapshot?.recovery?.canCancelUndispatched?'cancelUndispatched':"recover")}
-                </button>
+                {sessionRunActions}
               </div>
               <p role="status">{notice || messages.error}</p>
             </form>
@@ -1956,73 +1995,7 @@ function Session({
           </>
         )}
       </section>
-      <aside className="inspector">
-        <RuntimeSummary state={snapshot} t={t} />
-        <h2>{t("context")}</h2>
-        <p className="mono">{entity.id}</p>
-        <p>
-          {t("connection")}:{" "}
-          {connection?.verified ? t("verified") : t("unverified")}
-        </p>
-        <h3>{t("approval")}</h3>
-        <p className="quiet">
-          {t("modelAccess")}: {snapshot?.modelAccess ?? t("unverified")}
-        </p>
-        <p className="quiet">{snapshot?.reason}</p>
-        {snapshot?.pendingApprovals?.length ? (
-          snapshot.pendingApprovals.map((request) => (
-            <div key={request.requestId}>
-              {request.source==='paos_domain'&&<p className="quiet">{t('appDomainApproval')}</p>}
-              <p>{request.description ?? request.requestId}{request.decisionId&&<code>{request.decisionId}</code>}</p>
-              <span className="badge">{request.state ?? t("unverified")}</span>
-              <p className="quiet">
-                {request.kind} · {request.details?.reason}
-              </p>
-              {request.details?.command && (
-                <pre className="diff">{request.details.command}</pre>
-              )}
-              {request.details?.changes != null && (
-                <pre className="diff">
-                  {JSON.stringify(request.details.changes, null, 2)}
-                </pre>
-              )}
-              {!request.reviewable && <p>{t("approvalDetailsMissing")}</p>}
-              <button
-                disabled={
-                  actionBusy || !canAnswerApproval(snapshot, request, "accept")
-                }
-                onClick={() =>
-                  void runtime("approve", {
-                    requestId: request.requestId,
-                    decision: "accept",
-                  })
-                }
-              >
-                {t("approve")}
-              </button>
-              <button
-                disabled={
-                  actionBusy || !canAnswerApproval(snapshot, request, "decline")
-                }
-                onClick={() =>
-                  void runtime("approve", {
-                    requestId: request.requestId,
-                    decision: "decline",
-                  })
-                }
-              >
-                {t("deny")}
-              </button>
-            </div>
-          ))
-        ) : (
-          <p className="quiet">{t("noApproval")}</p>
-        )}
-        <RuntimeChecks state={snapshot} t={t} />
-        <p className="quiet">
-          {t("changes")}: {snapshot?.fileChanges?.length ?? 0}
-        </p>
-      </aside>
+      <aside className="inspector"><h3>{locale==='ru'?'Запуск и контекст':'Run and context'}</h3><div className="section-tabs inspector-tabs">{[['run',locale==='ru'?'Запуск и профиль':'Run and profile'],['checks',locale==='ru'?'Проверки':'Checks'],['question',locale==='ru'?'Вопрос':'Question']].map(([id,name])=><button key={id} data-inspector-pane={id} aria-pressed={pane===id} onClick={()=>setPane(id)}>{name}</button>)}</div><p className="quiet">{entity.id}</p><p>{t('connection')}: {connection?.verified?t('verified'):t('unverified')}</p><p>{t('approval')}: {snapshot?.pendingApprovals?.length??0}</p><p>{t('changes')}: {snapshot?.fileChanges?.length??0}</p></aside>
     </>
   );
 }

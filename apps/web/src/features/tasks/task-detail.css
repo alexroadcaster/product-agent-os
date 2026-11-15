@@ -1,0 +1,50 @@
+.m2-manager .task-detail-surface {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  max-width: none;
+  max-height: none;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  overflow: visible;
+}
+.m2-manager .task-detail-overlay {
+  position: fixed;
+  inset: 0;
+  width: min(1200px, calc(100vw - 64px));
+  max-height: calc(100dvh - 64px);
+  margin: auto;
+  overflow: auto;
+  border: 1px solid var(--rule);
+  border-radius: 18px;
+  background: var(--panel);
+  box-shadow: 0 24px 90px rgb(0 0 0 / .24);
+  scrollbar-gutter: stable;
+}
+.task-detail-overlay::backdrop { background: rgb(13 18 31 / .56); backdrop-filter: blur(5px); }
+.m2-manager .task-detail-overlay .task-detail { margin: 0; border: 0; padding: 24px 28px; }
+.task-detail-heading { gap: 16px; align-items: flex-start; }
+.task-detail-heading>div:first-child { min-width: 0; }
+.task-detail-heading h2 { margin: 6px 0 0; font-size: 1.25rem; line-height: 1.35; }
+.task-detail-key { color: var(--muted); font-size: .75rem; }
+.task-detail-heading .m2-actions { margin: 0; flex-shrink: 0; gap: 6px; }
+.task-usage { margin: 16px 0; padding: 12px 14px; border: 1px solid var(--rule); border-radius: 12px; background: var(--paper); }
+.task-usage dl { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin: 0; }
+.task-usage dt { color: var(--muted); font-size: .75rem; }
+.task-usage dd { margin: 4px 0 0; font-size: 1.1rem; font-variant-numeric: tabular-nums; }
+.task-usage p { color: var(--muted); font-size: .75rem; line-height: 1.5; margin: 8px 0 0; }
+.task-detail [role=tablist] { border-bottom: 1px solid var(--rule); gap: 4px; margin-bottom: 16px; }
+.task-detail [role=tab] { border-color: transparent; background: transparent; white-space: nowrap; }
+.task-detail [role=tab][aria-selected=true] { color: var(--accent-text); border-bottom-color: var(--accent-text); background: var(--paper); }
+.task-detail [role=tabpanel] { min-width: 0; }
+.task-detail .m2-editor>label { display: grid; gap: 6px; margin: 14px 0; }
+.task-detail .m2-editor .m2-fields { gap: 12px; }
+.task-detail .m2-editor textarea { resize: vertical; }
+.task-detail .m2-editor input,.task-detail .m2-editor select,.task-detail .m2-editor textarea { max-width: 100%; min-width: 0; }
+@media(min-width:1101px) { .m2-manager .m2-task-layout { grid-template-columns: minmax(260px,.85fr) minmax(0,1.35fr); } }
+@media(max-width:700px) { .m2-manager .task-detail-overlay { width: calc(100vw - 20px); max-height: calc(100dvh - 20px); } .task-detail-heading { flex-wrap: wrap; } }
+@media(prefers-reduced-motion:no-preference) { .task-detail-overlay[open] { animation: task-detail-enter 180ms cubic-bezier(.2,.7,.2,1); } @keyframes task-detail-enter { from { opacity: 0; transform: translateY(10px) scale(.99); } to { opacity: 1; transform: translateY(0) scale(1); } } }

@@ -1,0 +1,4414 @@
+{
+  "reviewedAt": "2026-11-13T17:05:59.957630+00:00",
+  "context_mode": "self_review",
+  "receipt": ".tmp/paos-m2c/browser-evidence-NqJx7X/result.json",
+  "method": "Pairwise visual review: reference and implementation, both themes; full-page captures plus lower sections of long forms. No pixel-identical claim.",
+  "productStates": 85,
+  "themeCaptures": 170,
+  "userAcceptance": "pending",
+  "sourceHashes": {
+    "tests/web/single-window/m2c-browser-acceptance.mts": "a9d27e79913e9b4fe99b2bcb483ea44678af4560c25861ab64ed8d3cc3d7f0c0",
+    "apps/web/src/ui/App.tsx": "589eba6ef96dee517eb97de05a0b947aa665fdb18937185332a2dd88aefb5fb0",
+    "apps/web/src/api/client.ts": "adbf7b3f58c9076de0471e18f66a7d48fd152a511606025d8dbab660579b90b1",
+    "apps/web/src/features/graph/GraphExplorer.tsx": "47362d9cdccd0c7f41e7ace7422fc7533c041148a2c19709a9534b3f7ac85e5b",
+    "apps/web/src/features/skills/SkillGenerator.tsx": "d36e68b936a0b2e2f73133bac1fe16f9f196c42014b1a73e5ef2bb30ac3d8bfe",
+    "apps/web/src/features/artifacts/ArtifactExplorer.tsx": "cf3a4a0672147a84cbd6e77a7e0f455e220779e7b43dbacc67807cf4ffd78d66",
+    "apps/local-service/src/code-index/service.mts": "73c85eca890329047b6e4d91cddf13e515f1958244aada45380a885c39a3ecfa",
+    "apps/local-service/src/artifacts/service.mts": "fb21d8694f21b0c0b3b8e63669ab16407d6d0191a4f51e101dbfad589052e77c",
+    "apps/web/dist/index.html": "2f28a9954bc0f83c710f2ece52a80b8426e12271ef6693aa59c157931edbcea6",
+    "apps/web/dist/assets/index-B7jp5dfA.js": "da238df3d74ced5e9d07a5415cdd6ac3ed3f0df81995207319c8ca5f9d0cdeb9",
+    "apps/web/dist/assets/index-xRVpE75C.css": "1a7fb324ba340087a78bdbffa7e31e124cf46091a120fd2b0c2c318940f84213",
+    "apps/web/dist/assets/mermaid.tiny-B1X2HQuM.js": "c41f5236091b83f524c4940f97a16b2b14a76f21ff84aea4fd6b66421d8a2a9a"
+  },
+  "visualMockSources": [
+    "binding response",
+    "completed skill generation",
+    "recipe recovery GET"
+  ],
+  "rows": [
+    {
+      "id": "overview",
+      "title": "Обзор проекта",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-overview.png",
+          "reference": "screenshots/light-overview.png",
+          "sha256": "91664666827dda606f7ec8d7e0d8e797db78625f21abfa28e418a3e9f62b450e",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 87,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-overview.png",
+          "reference": "screenshots/dark-overview.png",
+          "sha256": "f64a276e43961d3fd11783535c3138d96be85fa1c3c3075e85995dc59a7f4997",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 87,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "overview-sources",
+      "title": "Источники проекта",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-overview-sources.png",
+          "reference": "screenshots/light-overview-sources.png",
+          "sha256": "294d396c1fb67bb426067ac84e34a9a938c8839bddbcefa87817cc642e52b336",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 64,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-overview-sources.png",
+          "reference": "screenshots/dark-overview-sources.png",
+          "sha256": "2d784e31b39ec6b39b2a4be2f7bc71d65f2e79c6afb1796dcc4ce7d8e06f6845",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 64,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "tasks-list",
+      "title": "Задачи: список",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-tasks-list.png",
+          "reference": "screenshots/light-tasks-list.png",
+          "sha256": "c8a056ccd015723b91d011b3a78a5fbc5fddbaa8ed92f6fed4b95b659445525d",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 103,
+            "controlSamples": 3,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-tasks-list.png",
+          "reference": "screenshots/dark-tasks-list.png",
+          "sha256": "8b7d9487f0f22bcfebabf285b2ec33452a72cd8ec89ed32d98dd813526382ca4",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 103,
+            "controlSamples": 3,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "tasks-board",
+      "title": "Задачи: доска",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-tasks-board.png",
+          "reference": "screenshots/light-tasks-board.png",
+          "sha256": "6495d09a04d1710dc8680dacbd3ad0d3a27de5af914f6731c49e47b8d885a7ed",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 124,
+            "controlSamples": 3,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [
+              {
+                "element": "section",
+                "right": 1636,
+                "width": 220
+              },
+              {
+                "element": "h3",
+                "right": 1624,
+                "width": 196
+              },
+              {
+                "element": "ul",
+                "right": 1624,
+                "width": 196
+              },
+              {
+                "element": "section",
+                "right": 1868,
+                "width": 220
+              },
+              {
+                "element": "h3",
+                "right": 1856,
+                "width": 196
+              },
+              {
+                "element": "ul",
+                "right": 1856,
+                "width": 196
+              }
+            ],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-tasks-board.png",
+          "reference": "screenshots/dark-tasks-board.png",
+          "sha256": "87414ed4df2752d1087cac368d1de5107696c659501cba1e363de533d9b9a4dc",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 124,
+            "controlSamples": 3,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [
+              {
+                "element": "section",
+                "right": 1636,
+                "width": 220
+              },
+              {
+                "element": "h3",
+                "right": 1624,
+                "width": 196
+              },
+              {
+                "element": "ul",
+                "right": 1624,
+                "width": 196
+              },
+              {
+                "element": "section",
+                "right": 1868,
+                "width": 220
+              },
+              {
+                "element": "h3",
+                "right": 1856,
+                "width": 196
+              },
+              {
+                "element": "ul",
+                "right": 1856,
+                "width": 196
+              }
+            ],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "task-create",
+      "title": "Новая задача",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-task-create.png",
+          "reference": "screenshots/light-task-create.png",
+          "sha256": "0517c2af584fd29624d70a503d2a85115067530f07088964a58910e657ac2461",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 102,
+            "controlSamples": 20,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-task-create.png",
+          "reference": "screenshots/dark-task-create.png",
+          "sha256": "e6249cb5fdcd589744574e981aaf90ba3c73381f260a1ba66ad9c16bf1e4e3b8",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 102,
+            "controlSamples": 20,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "task-summary",
+      "title": "Задача: описание",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-task-summary.png",
+          "reference": "screenshots/light-task-summary.png",
+          "sha256": "17cf779bb226767ece46dc1f8b27195c108b8f8f8a1c39337a9c5b091a407637",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 129,
+            "controlSamples": 19,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-task-summary.png",
+          "reference": "screenshots/dark-task-summary.png",
+          "sha256": "3c149de53b9c09bb8cbf27ee30a0e1bfbae0fbb56b890e7cc1c70187755ac95b",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 129,
+            "controlSamples": 19,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "task-files",
+      "title": "Задача: файлы",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-task-files.png",
+          "reference": "screenshots/light-task-files.png",
+          "sha256": "5322042af1cdacff3c7c66791365e683fc1081b791ee21d5db0f080d733281f7",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 100,
+            "controlSamples": 3,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-task-files.png",
+          "reference": "screenshots/dark-task-files.png",
+          "sha256": "de017c60e561002bfc8f9bf15e6d023e00bcfcab5b9b529c6cf68b9abfa00936",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 100,
+            "controlSamples": 3,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "task-acceptance",
+      "title": "Задача: критерии и переход",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-task-acceptance.png",
+          "reference": "screenshots/light-task-acceptance.png",
+          "sha256": "b6575520d078972ec7ff3d1b5a39031edad599549e455b6b2363a15128148a2b",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 137,
+            "controlSamples": 8,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-task-acceptance.png",
+          "reference": "screenshots/dark-task-acceptance.png",
+          "sha256": "4bb2922a04d98c5189f38daa6e68dc881836ba042c5484ae520f72ae3f933d6b",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 137,
+            "controlSamples": 8,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "task-comments",
+      "title": "Задача: комментарии",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-task-comments.png",
+          "reference": "screenshots/light-task-comments.png",
+          "sha256": "f966ff264b0243c7f78324c741f0aa03c8d0329edfbd6f9d1a4222a87621cd41",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 107,
+            "controlSamples": 7,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-task-comments.png",
+          "reference": "screenshots/dark-task-comments.png",
+          "sha256": "f9db6362db373a73463695bf9e3ad5c7f5d4d75320da9cf5251f7d402cf4f9d5",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 107,
+            "controlSamples": 7,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "task-history",
+      "title": "Задача: история",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-task-history.png",
+          "reference": "screenshots/light-task-history.png",
+          "sha256": "74a85790ae6fd5416843281f43659bd659b3e0fcf2ca601dd21871f16c83c206",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 120,
+            "controlSamples": 6,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-task-history.png",
+          "reference": "screenshots/dark-task-history.png",
+          "sha256": "5b2cec3996630764269e95dea3087bf113fd823d740c24f01769d62c49b49ab4",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 120,
+            "controlSamples": 6,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "task-attachments",
+      "title": "Задача: вложения",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-task-attachments.png",
+          "reference": "screenshots/light-task-attachments.png",
+          "sha256": "084647cdbbcb18ca4e225420fe03dde0916b2547b69a021556da72daa5e5a031",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 101,
+            "controlSamples": 5,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-task-attachments.png",
+          "reference": "screenshots/dark-task-attachments.png",
+          "sha256": "72f85943db4057fdbf795637d0c7f2ff9c9463559e12033217535b4c99509543",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 101,
+            "controlSamples": 5,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "task-links",
+      "title": "Задача: связи",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-task-links.png",
+          "reference": "screenshots/light-task-links.png",
+          "sha256": "917ecb89cde2ba55614e87106123ecb350f6401d972b31927f205bf5144ab8a0",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 98,
+            "controlSamples": 8,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-task-links.png",
+          "reference": "screenshots/dark-task-links.png",
+          "sha256": "d1d26f15d5e9cb64ef4bbc645177b459a0634991af1a832613d7d4f6f3aa4bad",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 98,
+            "controlSamples": 8,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "task-sessions",
+      "title": "Задача: сессии",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-task-sessions.png",
+          "reference": "screenshots/light-task-sessions.png",
+          "sha256": "53b4ad23b55b6121f140a5a1b0d4b99b7947889f4c18b8bf2aac54742f067277",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 86,
+            "controlSamples": 3,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-task-sessions.png",
+          "reference": "screenshots/dark-task-sessions.png",
+          "sha256": "b8671dae72091faaa962c6c792c1a1cdbe49e66a6360ecd987a288ff8a4569c3",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 86,
+            "controlSamples": 3,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "task-move",
+      "title": "Диалог перехода задачи",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-task-move.png",
+          "reference": "screenshots/light-task-move.png",
+          "sha256": "18e529e46789e4f860d6efa15d1b19eb9aa67d787db3f42d29e644bcf0495f04",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 5,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-task-move.png",
+          "reference": "screenshots/dark-task-move.png",
+          "sha256": "74803c819e56421e7709d836a67f576c3739837adb1d9aa876d94c9f38a1e23f",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 5,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "task-delete",
+      "title": "Удаление задачи",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-task-delete.png",
+          "reference": "screenshots/light-task-delete.png",
+          "sha256": "4fc3327ff748114e45a294483c721bc58b85ed0a721df00bcc13ef00a7874684",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 8,
+            "controlSamples": 0,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-task-delete.png",
+          "reference": "screenshots/dark-task-delete.png",
+          "sha256": "db22cf4888833ea220db76bb7b83d3a2c19ea84fd9e69e58d51c156514f72679",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 8,
+            "controlSamples": 0,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "task-components",
+      "title": "Настройки задач: компоненты",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-task-components.png",
+          "reference": "screenshots/light-task-components.png",
+          "sha256": "6e2df95f93a80228c4faecf5574f0c6328e19c654062965c7398463579544e52",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 85,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-task-components.png",
+          "reference": "screenshots/dark-task-components.png",
+          "sha256": "0483a9d25e170b8420a7e155166d87afc589fb1b64dd345931af5bd6d0e851ab",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 85,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "task-versions",
+      "title": "Настройки задач: версии",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-task-versions.png",
+          "reference": "screenshots/light-task-versions.png",
+          "sha256": "0f2a92818f962d8740f18d2d21c0018ed92a34498eaccae60f66bc24d6f323bf",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 68,
+            "controlSamples": 7,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-task-versions.png",
+          "reference": "screenshots/dark-task-versions.png",
+          "sha256": "c7f0ed238c6f73ee2b5e2ffdf978c4f7763ff01ef8ecc2fcb9d811064ff0ee2b",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 68,
+            "controlSamples": 7,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "task-release",
+      "title": "Настройки задач: политика выпуска",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-task-release.png",
+          "reference": "screenshots/light-task-release.png",
+          "sha256": "729db70e6790eb0a4a3626c0e751121776ce48c9c6fb4491384ba3447e0bbbef",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 72,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-task-release.png",
+          "reference": "screenshots/dark-task-release.png",
+          "sha256": "bcef0ab817c6a95eab6bd27e866253aec09024f8da9647b4263061eff6ca7dc1",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 72,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "task-columns",
+      "title": "Настройки задач: доска",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-task-columns.png",
+          "reference": "screenshots/light-task-columns.png",
+          "sha256": "6806789fb720d8f0d13b5a639440eca3e3c3b6c028870216cd232ce04c60d034",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 115,
+            "controlSamples": 7,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-task-columns.png",
+          "reference": "screenshots/dark-task-columns.png",
+          "sha256": "11e8984fa6d8ce8fbcf5fe5ab2423daae7d8495259fa1700e8dee0d1280bda93",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 115,
+            "controlSamples": 7,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "task-archive",
+      "title": "Полный архив задач",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-task-archive.png",
+          "reference": "screenshots/light-task-archive.png",
+          "sha256": "1f0fbbcf5c1b869d32c4f5a8628fe1817452100714bf6d064e1ec54df04bc02d",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 52,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-task-archive.png",
+          "reference": "screenshots/dark-task-archive.png",
+          "sha256": "7671b9ab2aff113168f8ade9f6cb7c734905006667f7b83045831485afc8ca13",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 52,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "sessions-work",
+      "title": "Сессии: работа",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-sessions-work.png",
+          "reference": "screenshots/light-sessions-work.png",
+          "sha256": "1859ba51977a555457b064cce49df850704c7afc9826f30994a05c32607cc019",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 86,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-sessions-work.png",
+          "reference": "screenshots/dark-sessions-work.png",
+          "sha256": "0c27789b8d744725af294dde67e18e2f9e52bb29a600a3d609f9c6bdbc122052",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 90,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "sessions-history",
+      "title": "Сессии: полная доступная история",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-sessions-history.png",
+          "reference": "screenshots/light-sessions-history.png",
+          "sha256": "f31403f3091fb4d8fc6114a93c9ad42f00a03d6d25652e403b38ddaa9bbf6f52",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 47,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-sessions-history.png",
+          "reference": "screenshots/dark-sessions-history.png",
+          "sha256": "b1f49fd45d9201c41496295a0a703a0f68fcf121f208201929b46ca8fd441ed0",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 50,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "session-context",
+      "title": "Сессия: контекст",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-session-context.png",
+          "reference": "screenshots/light-session-context.png",
+          "sha256": "00d77d426c92d4ff4102d1d59c79b61fef0abfb93b0ba9dbe8b3d9862670440e",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 117,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-session-context.png",
+          "reference": "screenshots/dark-session-context.png",
+          "sha256": "b70ec2a7bc6fc1df64319c074aeb4e5380d561261e0c1f04c930027b5c3526ce",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 121,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "session-changes",
+      "title": "Сессия: изменения",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-session-changes.png",
+          "reference": "screenshots/light-session-changes.png",
+          "sha256": "aa28f64b8ce4426830e367c58aafc54b4632c415db351b787e343dd4f2a595f2",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 77,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-session-changes.png",
+          "reference": "screenshots/dark-session-changes.png",
+          "sha256": "c842d84503ed8e0a9f055c5f2e2b5e8b3c7bffce3e4f4cdc88cb4bd6d1f86860",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 81,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "session-run",
+      "title": "Сессия: запуск и профиль",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-session-run.png",
+          "reference": "screenshots/light-session-run.png",
+          "sha256": "98296d4481c289b1a6f4d52727f0b54b1b7f85875e0f11ca624455480bf23f82",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 108,
+            "controlSamples": 3,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-session-run.png",
+          "reference": "screenshots/dark-session-run.png",
+          "sha256": "1676afa306148f5ab05fc8d58cfb6beb91565b8da7a2e789e7b8e12697c42d04",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 112,
+            "controlSamples": 3,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "session-checks",
+      "title": "Сессия: проверки",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-session-checks.png",
+          "reference": "screenshots/light-session-checks.png",
+          "sha256": "62e9d079b48bc280a2841d33efd7af79a8de8b695b1a772195f04a5aa4a52db5",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 81,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-session-checks.png",
+          "reference": "screenshots/dark-session-checks.png",
+          "sha256": "692de0c334e437984d1abebd7cb208f8d9bf81b58c8b0aff254feac8a1393672",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 85,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "session-question",
+      "title": "Сессия: вопрос и решение",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-session-question.png",
+          "reference": "screenshots/light-session-question.png",
+          "sha256": "df8611c47eaf3ec159472a8fa249625c50305a377b9464a97b206e161ac498bf",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 86,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-session-question.png",
+          "reference": "screenshots/dark-session-question.png",
+          "sha256": "57db9ce12242b6370dfdf77b2b2377b06c878a86c983e39560f204e21ccf0bad",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 90,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "agents-profile",
+      "title": "Агент: профиль",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-agents-profile.png",
+          "reference": "screenshots/light-agents-profile.png",
+          "sha256": "9f11cc0ca0d1cdc3f4a1b0d3539b393bf2fd3698964f6abd767c27b865f8d5f5",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 85,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-agents-profile.png",
+          "reference": "screenshots/dark-agents-profile.png",
+          "sha256": "ec14f289567253ca72a6d4b8a5ffcbfdadc54f26b4459e2fa3ea5b6fd42a3a93",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 85,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "agents-edit",
+      "title": "Агент: редактор и diff",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-agents-edit.png",
+          "reference": "screenshots/light-agents-edit.png",
+          "sha256": "da06e1a91a36d9f507564d1c71fd6eef5449eac29cdaf2741a7104267f92a50f",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 74,
+            "controlSamples": 8,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-agents-edit.png",
+          "reference": "screenshots/dark-agents-edit.png",
+          "sha256": "f325d0ec87a419916179a55165a66966e853e7904251f9f0ac9bffa80004a4ce",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 74,
+            "controlSamples": 8,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "agents-history",
+      "title": "Агент: версии",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-agents-history.png",
+          "reference": "screenshots/light-agents-history.png",
+          "sha256": "524021801d51e0a5e2b432ad7cc259e54955b392d744d5fece359c10030c7b11",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 68,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-agents-history.png",
+          "reference": "screenshots/dark-agents-history.png",
+          "sha256": "de89fa2f4641c8e47bc2e6286e7c9c9c6289d912f3cecd5323a875474a372f30",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 68,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "agents-activity",
+      "title": "Агент: использование",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-agents-activity.png",
+          "reference": "screenshots/light-agents-activity.png",
+          "sha256": "2a2853f6cd85d4aa7bb48b86a2fa086cf7124ba9041cccebff48db182e805c68",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 64,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-agents-activity.png",
+          "reference": "screenshots/dark-agents-activity.png",
+          "sha256": "049752eb949def830d39caba6e34b39162de55c2d884699b38853128a2b03ca6",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 64,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "agents-generate",
+      "title": "Агент: предложение",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-agents-generate.png",
+          "reference": "screenshots/light-agents-generate.png",
+          "sha256": "3fcfc5fee0f32beba080a457a57e4e292cbe496f0df52faa68cffe4d2f6914ff",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 54,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-agents-generate.png",
+          "reference": "screenshots/dark-agents-generate.png",
+          "sha256": "9d745d0b00346671b9eed8188c7537bdbca2850b293087b83c720a440c948278",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 54,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "skills-profile",
+      "title": "Скилл: профиль",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-skills-profile.png",
+          "reference": "screenshots/light-skills-profile.png",
+          "sha256": "777e31a2a1c11cfda9f7d744b9355696b54ed4f95b0d8679417f591c62f10742",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 92,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-skills-profile.png",
+          "reference": "screenshots/dark-skills-profile.png",
+          "sha256": "2ab0ab99d898654f28e0abe823418e2984fe065d8a2e3f7617db81cc60d738e6",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 92,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "skills-edit",
+      "title": "Скилл: редактор",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-skills-edit.png",
+          "reference": "screenshots/light-skills-edit.png",
+          "sha256": "183eca532f0d53fe62f955d4bd99064683639c326311310123ad53cec2ca969d",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 80,
+            "controlSamples": 8,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-skills-edit.png",
+          "reference": "screenshots/dark-skills-edit.png",
+          "sha256": "051211efce50ac613ef9a2a06f59816cb253718006cacb6dbe4eedc8404cc51a",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 80,
+            "controlSamples": 8,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "skills-history",
+      "title": "Скилл: версии",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-skills-history.png",
+          "reference": "screenshots/light-skills-history.png",
+          "sha256": "257bff382bd54de4701880a5ccc5d71e6e8d4ae5f7509964d864160285705f8e",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 74,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-skills-history.png",
+          "reference": "screenshots/dark-skills-history.png",
+          "sha256": "2db3d1a090eb987d09be6cdf949a3cdbbaff391a64f18b77083a5aa8badb4e97",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 74,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "skills-activity",
+      "title": "Скилл: использование",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-skills-activity.png",
+          "reference": "screenshots/light-skills-activity.png",
+          "sha256": "184c13d6375875b2a450e9000fbd5dca53aec1c95e90a9585db0a7350d6aaef6",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 70,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-skills-activity.png",
+          "reference": "screenshots/dark-skills-activity.png",
+          "sha256": "042daccd740ad13c5a5d6ef347b8275f81661c262a350f829357f00fe45f00bc",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 70,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "skills-discover",
+      "title": "Скиллы: поиск источников",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-skills-discover.png",
+          "reference": "screenshots/light-skills-discover.png",
+          "sha256": "76cec58b2d676b4f880bf55597c894c4c92cffcfcb77105de5800166245cb3e6",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 79,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-skills-discover.png",
+          "reference": "screenshots/dark-skills-discover.png",
+          "sha256": "04100f9e52d60aa305baadae33b4edd2467f18917a35cf5c383e2b45e2073e39",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 79,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "skills-import",
+      "title": "Скиллы: импорт",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-skills-import.png",
+          "reference": "screenshots/light-skills-import.png",
+          "sha256": "3fe7f628bcbad6348bc4ee3d4ce6d62a0f4679a96933a6f5acbaf0985df771bf",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 85,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-skills-import.png",
+          "reference": "screenshots/dark-skills-import.png",
+          "sha256": "b676124f903da9feabbeca64bf1c30d110090132e947b38259e841b9887aba80",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 85,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "skill-requirements",
+      "title": "Генератор скиллов: основание",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-skill-requirements.png",
+          "reference": "screenshots/light-skill-requirements.png",
+          "sha256": "65c7c5450bf0e1fe387fe9bbdbfc6569eb55bc57220ba3702095226601915a17",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 56,
+            "controlSamples": 5,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-skill-requirements.png",
+          "reference": "screenshots/dark-skill-requirements.png",
+          "sha256": "d30e8afdd1ab83b0b05f4a899e667007135479a4db67832ef0f35dca571d0a61",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 66,
+            "controlSamples": 5,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "skill-draft",
+      "title": "Генератор скиллов: черновик",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-skill-draft.png",
+          "reference": "screenshots/light-skill-draft.png",
+          "sha256": "6507254790f238f2b340a20d1a76b5416d24cce2b753170d4295a8f5fb79a585",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 53,
+            "controlSamples": 5,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-skill-draft.png",
+          "reference": "screenshots/dark-skill-draft.png",
+          "sha256": "1b769605c4c65783c373fe8b06964328452176482f76fe20cd259fd2bb0c8665",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 53,
+            "controlSamples": 5,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "skill-diff",
+      "title": "Генератор скиллов: diff и Apply",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-skill-diff.png",
+          "reference": "screenshots/light-skill-diff.png",
+          "sha256": "efb42e980e30d49e4321295610cdb97cc8a403cb6885d0ae45c8374cb0cb01d7",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 46,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-skill-diff.png",
+          "reference": "screenshots/dark-skill-diff.png",
+          "sha256": "ce62f261ae15bd4e71998af041ca32e7168f9a17e4305fced47d1d5176afbcfe",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 46,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "graph-map",
+      "title": "Карта проекта: граф",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-graph-map.png",
+          "reference": "screenshots/light-graph-map.png",
+          "sha256": "7ca6b3f83439c62f3c35fe3c6f7b80baa8867be21dd1526d56ae0b03a131c1e4",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 268,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-graph-map.png",
+          "reference": "screenshots/dark-graph-map.png",
+          "sha256": "407c7cd069dce0a351c7ebe6bd385e30886ca1ac92e2b667d85d1b9b29ee843b",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 56,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "graph-list",
+      "title": "Карта проекта: список",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-graph-list.png",
+          "reference": "screenshots/light-graph-list.png",
+          "sha256": "18108e623d83bff33627b183b66c43b4f983ca5853eddd3f57ceeecb4fbb6905",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 870,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-graph-list.png",
+          "reference": "screenshots/dark-graph-list.png",
+          "sha256": "247e04490d5b1801093504429849eb01cf5f48b104d858bcbdd5b26e620c72f9",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 870,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "documents-list",
+      "title": "Документы: каталог",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-documents-list.png",
+          "reference": "screenshots/light-documents-list.png",
+          "sha256": "c2345018737611cf8da745f65db635534973e35e4c73e008ec52b0e744baee6c",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 80,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-documents-list.png",
+          "reference": "screenshots/dark-documents-list.png",
+          "sha256": "057b30560f59547db14ce15beed1e5476da27b5e1e899e47f87acdade72a8f09",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 89,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "document-reader",
+      "title": "Документ: чтение",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-document-reader.png",
+          "reference": "screenshots/light-document-reader.png",
+          "sha256": "fe16ffa1f2da4c6ad1c8be93f9ec80889e65bd4e17f98096aaab0bcfcfd082ab",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 57,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-document-reader.png",
+          "reference": "screenshots/dark-document-reader.png",
+          "sha256": "b5faf9ad5d87ff249a7049832ed6022e98fd3fa06021a377b247904ef72443eb",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 56,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "document-proposal",
+      "title": "Документ: staged proposal",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-document-proposal.png",
+          "reference": "screenshots/light-document-proposal.png",
+          "sha256": "ed516e3b9fc9e985d4dbaa834c40eaba34e01b5629d6077170f21a26ad52a2fb",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 46,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-document-proposal.png",
+          "reference": "screenshots/dark-document-proposal.png",
+          "sha256": "2b1d4fed964798abedb4d538d6b3b3461c8033ebeadd4249adb4056eb6045da9",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 46,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "checks-list",
+      "title": "Проверки проекта",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-checks-list.png",
+          "reference": "screenshots/light-checks-list.png",
+          "sha256": "2c3639a375dbed2c20c6c181ac138ca222dfe20dd19828f671befa9f59e6d282",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 121,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-checks-list.png",
+          "reference": "screenshots/dark-checks-list.png",
+          "sha256": "a29a95ac81e70c6dae0bdf70aa4a461af910333ebdb0dd67dd9fa175fe245610",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 122,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "check-detail",
+      "title": "Проверка: результат и приёмка",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-check-detail.png",
+          "reference": "screenshots/light-check-detail.png",
+          "sha256": "34e959a20308ed500da0a1095b1400b1e64b668769860a3c0cc8a7ff2b3e0eb0",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 72,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-check-detail.png",
+          "reference": "screenshots/dark-check-detail.png",
+          "sha256": "833d5b6f97efebf8d37b7107dd574e7a66a2a31e56e11551e3b99c6bc54e7ddf",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 72,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "autonomy-policy",
+      "title": "Автономность: политика",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-autonomy-policy.png",
+          "reference": "screenshots/light-autonomy-policy.png",
+          "sha256": "8976870d19144f5d074fdaf98eac63dba4ba3710f1812832ae1ba6da9682e069",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 70,
+            "controlSamples": 5,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-autonomy-policy.png",
+          "reference": "screenshots/dark-autonomy-policy.png",
+          "sha256": "230c41df8873e8e951baa6c97e4dc4899d4400a869f5803872d7a82ea78086dd",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 70,
+            "controlSamples": 5,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "autonomy-preview",
+      "title": "Автономность: предпросмотр",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-autonomy-preview.png",
+          "reference": "screenshots/light-autonomy-preview.png",
+          "sha256": "654dde43f7277f89eea07061961b8109c9b0b827009b6024f0e2f8a162279441",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 57,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-autonomy-preview.png",
+          "reference": "screenshots/dark-autonomy-preview.png",
+          "sha256": "66664231a928a7b021e93a226a7b90f1bd7a6aecb89bd81e234a98f91e449e68",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 57,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "autonomy-runs",
+      "title": "Автономность: учтённые запуски",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-autonomy-runs.png",
+          "reference": "screenshots/light-autonomy-runs.png",
+          "sha256": "9ebae3bb3a402685be1066aa064db5543f283c69495bf184f75300c306be6eb0",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 47,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-autonomy-runs.png",
+          "reference": "screenshots/dark-autonomy-runs.png",
+          "sha256": "afb3b0e96aeaea2b458a5ca53023eb30a9d0a9b7e1551e6741cb7d6a9e9e5b9f",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 47,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "decisions-list",
+      "title": "Решения: очередь",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-decisions-list.png",
+          "reference": "screenshots/light-decisions-list.png",
+          "sha256": "e7d65ba32f7c14b5441f0345de6aeec1c4e79663bbcb88aa3f0efcdcff6bc2dc",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 103,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-decisions-list.png",
+          "reference": "screenshots/dark-decisions-list.png",
+          "sha256": "bf46c900cf4ff8064527779d92fc4104716df58a5ad0733876b82d8897763e71",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 103,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "decision-detail",
+      "title": "Решение: ответ",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-decision-detail.png",
+          "reference": "screenshots/light-decision-detail.png",
+          "sha256": "c634ecdae0d41209632f61ce8b7566fa4af4cb883e33f525403f321c4899f248",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 103,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-decision-detail.png",
+          "reference": "screenshots/dark-decision-detail.png",
+          "sha256": "703f469bb3cf4931021fc9fb0444258dc1a3241e93a0888f045a6321e0b16e82",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 103,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "decision-history",
+      "title": "Решения: история",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-decision-history.png",
+          "reference": "screenshots/light-decision-history.png",
+          "sha256": "edd71952369634d094a6da4948cd41fc162d5b9f58f8f46c53c7b7f7da05ab28",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 53,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-decision-history.png",
+          "reference": "screenshots/dark-decision-history.png",
+          "sha256": "a19062b436274595ef9a341f764e98901acbf7482c70d48b50b2e3d9e292e2b7",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 53,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "decision-create",
+      "title": "Решение: новое",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-decision-create.png",
+          "reference": "screenshots/light-decision-create.png",
+          "sha256": "79c7fafc4adac20b9514fd9bea45181783de9a54c1e2d1f1657bb4f8b5eb5b85",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 60,
+            "controlSamples": 8,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-decision-create.png",
+          "reference": "screenshots/dark-decision-create.png",
+          "sha256": "21f29ba999eb44aba12d5fd8151e1fe304a5ebc57487b2ca2af2ee66d2da2b09",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 60,
+            "controlSamples": 8,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "search",
+      "title": "Поиск по проекту",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-search.png",
+          "reference": "screenshots/light-search.png",
+          "sha256": "b5e6782c43f151d6a9130c5ec3f01c93b3fee66750617e5be9c3c2b39cc6413c",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 181,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-search.png",
+          "reference": "screenshots/dark-search.png",
+          "sha256": "7459fcd3fdbae1d006cbf700a66758954ea3d3856fe7d494a6d716861bdf005d",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 188,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "import-source",
+      "title": "Импорт: источник",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-import-source.png",
+          "reference": "screenshots/light-import-source.png",
+          "sha256": "fedb28688809b6f06bf1df2d6724d6fc28b7eace68573435e8c901c33d019f03",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 46,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-import-source.png",
+          "reference": "screenshots/dark-import-source.png",
+          "sha256": "74b5862ba25070fce9d421a83c67da3b3d2a66dd88ac7e21bd1a2eb053ace952",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 46,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "import-preview",
+      "title": "Импорт: предпросмотр",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-import-preview.png",
+          "reference": "screenshots/light-import-preview.png",
+          "sha256": "27ec114f3174e6334bcd763b7a7ef1e848ab06f9bda7b635f570cf871a43777d",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 50,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-import-preview.png",
+          "reference": "screenshots/dark-import-preview.png",
+          "sha256": "6f525f0139b905bb481e1f6148d6d8e678a27ce6939a7ba2f30140c997023ed0",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 50,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "import-export",
+      "title": "Обратный экспорт",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-import-export.png",
+          "reference": "screenshots/light-import-export.png",
+          "sha256": "66fdfc3055a18f441f4254912bb76606eee96351b4e3838dabaaacb6c47db535",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 38,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-import-export.png",
+          "reference": "screenshots/dark-import-export.png",
+          "sha256": "6d584246563d91ee09f7e8c2877386b9af19e27adec5f67354c4150140dae8c1",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 38,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "backup-create",
+      "title": "Резервная копия",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-backup-create.png",
+          "reference": "screenshots/light-backup-create.png",
+          "sha256": "0a942be42f49f567c27e5b4cbb2937e73e0f09b883b268d2fabac0bc0ce74629",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 48,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-backup-create.png",
+          "reference": "screenshots/dark-backup-create.png",
+          "sha256": "ef28c39b549f099d9fa957b6a11e7e5c2698721cbd6aef2e63b855a0d7354cd2",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 48,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "backup-restore",
+      "title": "Восстановление",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-backup-restore.png",
+          "reference": "screenshots/light-backup-restore.png",
+          "sha256": "f4a0939f134ec3f5872de3ea2a7eac9ab8ffe8b304326d7658322962b4c14ba8",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 44,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-backup-restore.png",
+          "reference": "screenshots/dark-backup-restore.png",
+          "sha256": "3b18f134c18f0febb87c6d8737ddf362d98fa7586d669e6697c93c6325c1bdbf",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 44,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "settings-general",
+      "title": "Настройки: общие",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-settings-general.png",
+          "reference": "screenshots/light-settings-general.png",
+          "sha256": "610b67b8df2b02fc7c0836717d81a86fab43bde6e51c9afe4dffcee27d94fcb9",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 49,
+            "controlSamples": 3,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-settings-general.png",
+          "reference": "screenshots/dark-settings-general.png",
+          "sha256": "d6802687218a0dccc9965d53b1b50e0a1632c995bc7cb4c8aa2d6721e6aa0fba",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 49,
+            "controlSamples": 3,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "settings-projects",
+      "title": "Настройки: проекты",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-settings-projects.png",
+          "reference": "screenshots/light-settings-projects.png",
+          "sha256": "b7b8dd25795795c169fd68fa60fda687f06ca283a6b4f56ebadb9c922cd51092",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 54,
+            "controlSamples": 3,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-settings-projects.png",
+          "reference": "screenshots/dark-settings-projects.png",
+          "sha256": "285061ea7b2e4b2712daa7c27518e9fc6552dfb8fe6d10f6efbde2d980ebc155",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 54,
+            "controlSamples": 3,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "settings-connection",
+      "title": "Настройки: подключение",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-settings-connection.png",
+          "reference": "screenshots/light-settings-connection.png",
+          "sha256": "a52eda1c978b926f812612221cf78c331b3681be1172888ae0cacea7ba37ea46",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 52,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-settings-connection.png",
+          "reference": "screenshots/dark-settings-connection.png",
+          "sha256": "b35b88be6f3dafd314d80b7cb7ec618e2a7cfadbffb2c23d2358323fbd2c3130",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 52,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "settings-quit",
+      "title": "Настройки: завершение сервиса",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-settings-quit.png",
+          "reference": "screenshots/light-settings-quit.png",
+          "sha256": "fd2bbb40e45aea2901ff62b0a6b054b2e469cf997f0359b8840993f4357c5497",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 45,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-settings-quit.png",
+          "reference": "screenshots/dark-settings-quit.png",
+          "sha256": "9ca2bf6806405d1e31166a792aebb6306dfe3a02a10a05c3792ff4555f0147fd",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 45,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "workflow-catalog",
+      "title": "Процессы: каталог",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-workflow-catalog.png",
+          "reference": "screenshots/light-workflow-catalog.png",
+          "sha256": "fb3f590f24dc221b79f883ad4721a8336c3bf16694f84b08b5226e45956591f8",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 65,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-workflow-catalog.png",
+          "reference": "screenshots/dark-workflow-catalog.png",
+          "sha256": "1113e9739dc4ed762a8b19a5f36a5fc6e951fa55a683c62995691019dfcc8e8f",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 65,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "workflow-assignments",
+      "title": "Процессы: назначения",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-workflow-assignments.png",
+          "reference": "screenshots/light-workflow-assignments.png",
+          "sha256": "dc3016cbb5adb364a3ba610a6b04c4e79fa49fcc480c80a4a94bde523b57edc9",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 81,
+            "controlSamples": 7,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-workflow-assignments.png",
+          "reference": "screenshots/dark-workflow-assignments.png",
+          "sha256": "93b726a998ae7c0ce6e2fde38cea4b04912d0d32b8f71e7f8d920088e7be1612",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 81,
+            "controlSamples": 7,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "workflow-states",
+      "title": "Процесс: состояния",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-workflow-states.png",
+          "reference": "screenshots/light-workflow-states.png",
+          "sha256": "c9813280f0d38f91468111b3bfe1ee766a61ce21ff25c64cbae8fa7048b6ee6b",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 92,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-workflow-states.png",
+          "reference": "screenshots/dark-workflow-states.png",
+          "sha256": "7e8e753160660650840fad32c7c8d8965e82fcf4c1a74e0e290e0b1c94e1a911",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 92,
+            "controlSamples": 4,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "workflow-transitions",
+      "title": "Процесс: переходы",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-workflow-transitions.png",
+          "reference": "screenshots/light-workflow-transitions.png",
+          "sha256": "4eb2598e115b6003e4bbd5f136af6e07c61fbe68f8e37d14c7e1d343dc063c5e",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 137,
+            "controlSamples": 11,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-workflow-transitions.png",
+          "reference": "screenshots/dark-workflow-transitions.png",
+          "sha256": "77cf8b3327c5b290a67f2fa9f01adb9388f0c0ed1308f3aede667073cddb709a",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 137,
+            "controlSamples": 11,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "workflow-diagram",
+      "title": "Процесс: схема",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-workflow-diagram.png",
+          "reference": "screenshots/light-workflow-diagram.png",
+          "sha256": "cb51b1f80c2f0771edc36c46e35e70a19bd7086291b8b9aa9322a4cb3823bea9",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 263,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-workflow-diagram.png",
+          "reference": "screenshots/dark-workflow-diagram.png",
+          "sha256": "864190c4e02d0f9ff44203cbebce310d5e27a63ecb5be9b8cff3e81cbf6e4aa2",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 263,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "workflow-recipes",
+      "title": "Процесс: recipes",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-workflow-recipes.png",
+          "reference": "screenshots/light-workflow-recipes.png",
+          "sha256": "106078a03bd0420f22a150ab86e7bc5949da1a03e5df13183d1d0f43cd8844dc",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 67,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-workflow-recipes.png",
+          "reference": "screenshots/dark-workflow-recipes.png",
+          "sha256": "e265efe2c001348a3ed0b587e47bc707b7c5b2ec85ff952f6cdb4dce97864f4a",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 67,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "workflow-publication",
+      "title": "Процесс: публикация",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-workflow-publication.png",
+          "reference": "screenshots/light-workflow-publication.png",
+          "sha256": "4c9a1383f1e86b64e5d7fedfa30c8822081c4b638db40f88d182bd3557f5d9ed",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 68,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-workflow-publication.png",
+          "reference": "screenshots/dark-workflow-publication.png",
+          "sha256": "1367b32501803a014d83d23aaea2a49d6fd6c5d161d9fc4adb98a20db8cb5247",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 68,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "workflow-migration",
+      "title": "Процесс: миграция",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-workflow-migration.png",
+          "reference": "screenshots/light-workflow-migration.png",
+          "sha256": "91294574fab7b289c4a928c0ce8c8bd8158cb21851a995cbf752f93e645dd07b",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 102,
+            "controlSamples": 12,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-workflow-migration.png",
+          "reference": "screenshots/dark-workflow-migration.png",
+          "sha256": "a42553988abbbbdd10f63406ba683863c41ecf86f2fd2fe6ae8bf745b6ebadd7",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 102,
+            "controlSamples": 12,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "workflow-versions",
+      "title": "Процесс: версии и архив",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-workflow-versions.png",
+          "reference": "screenshots/light-workflow-versions.png",
+          "sha256": "a32e6726a7a96db0ffa3d294be8fe729a2141e63a617d95bb23c1264f2076d32",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 66,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-workflow-versions.png",
+          "reference": "screenshots/dark-workflow-versions.png",
+          "sha256": "99606bb49d84e6d4b48ea0caf276d9c60a8b57b081ce1280bf35113d2633baad",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 66,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "recipe-preview",
+      "title": "Выполнение: предпросмотр цепочки",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-recipe-preview.png",
+          "reference": "screenshots/light-recipe-preview.png",
+          "sha256": "affeab3f2873b7785810117a1ed28235a5e0d258741e8f3578d09478b480ae29",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 62,
+            "controlSamples": 5,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-recipe-preview.png",
+          "reference": "screenshots/dark-recipe-preview.png",
+          "sha256": "8c4c6002bccef2a00b43ce120449ba0afef5fb213530d5b286f83a20b533018d",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 62,
+            "controlSamples": 5,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "recipe-history",
+      "title": "Выполнение: история и шаги",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-recipe-history.png",
+          "reference": "screenshots/light-recipe-history.png",
+          "sha256": "fc25b71b77cef7a3c481a8ee47af3a542362fdca3970d4a75bdd63cf4b8265f2",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 72,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-recipe-history.png",
+          "reference": "screenshots/dark-recipe-history.png",
+          "sha256": "0ff2a61dbf2807220baa60dd9dcb8d7077e75d471c9c25bdc298d494e80fe8dc",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 72,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "recipe-recovery",
+      "title": "Выполнение: восстановление",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-recipe-recovery.png",
+          "reference": "screenshots/light-recipe-recovery.png",
+          "sha256": "f2092acb2e8a1d4bcd5550ca47e4379391a53fcca3a4b14628770b9e91166efc",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 72,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-recipe-recovery.png",
+          "reference": "screenshots/dark-recipe-recovery.png",
+          "sha256": "941115c2b96a197631ff760ccd025b946cf536a73baa5bc28625259b95e5b059",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 72,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "execution-queue",
+      "title": "Очередь и владение",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-execution-queue.png",
+          "reference": "screenshots/light-execution-queue.png",
+          "sha256": "988d6e2bdd823fb421a157ae7694a0ab7cbd21e5e05a7fe8917cada37dc216bd",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 53,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-execution-queue.png",
+          "reference": "screenshots/dark-execution-queue.png",
+          "sha256": "0e6f5aa1c68c35b10450182c19e713f9d71878da657cabb741ebcf1eef65518b",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 53,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "portfolio-dashboard",
+      "title": "Портфель: все проекты",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-portfolio-dashboard.png",
+          "reference": "screenshots/light-portfolio-dashboard.png",
+          "sha256": "2ca69a39dd05aafdf3fdfd8738b93889e441b7cf441a2f172e61e8d574a3bd50",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 89,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-portfolio-dashboard.png",
+          "reference": "screenshots/dark-portfolio-dashboard.png",
+          "sha256": "64142a0f468ac75a9f4b0c344eed78be32fa3ab3d5fa30be093640421cfd5af9",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 89,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "project-analytics",
+      "title": "Проект: использование",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-project-analytics.png",
+          "reference": "screenshots/light-project-analytics.png",
+          "sha256": "7c63e66ff941c36416a2940c60cbd412b08e9e6c9c30112c3573d2e7ae8501df",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 58,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-project-analytics.png",
+          "reference": "screenshots/dark-project-analytics.png",
+          "sha256": "4954202b661462a6d625cf1af3c08cfe0b1ad66ef8a96c2526ecec3b38099392",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 58,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "agents-dashboard",
+      "title": "Агенты: общий dashboard",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-agents-dashboard.png",
+          "reference": "screenshots/light-agents-dashboard.png",
+          "sha256": "907ed7559c0a92e0939a02a98fc3414d719a2ea95aecff26c6ce369bc97c04b5",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 85,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-agents-dashboard.png",
+          "reference": "screenshots/dark-agents-dashboard.png",
+          "sha256": "d247aa9d018fbeb4378fc4f4ee0e9194759fc7a179715b2c8a43359f32e5e318",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 85,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "agent-dashboard",
+      "title": "Агент: dashboard",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-agent-dashboard.png",
+          "reference": "screenshots/light-agent-dashboard.png",
+          "sha256": "4ce037ec36bc582d47917dfaeab652e6c2ae1d7d2d544a1bda182cc35c3988b4",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 63,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-agent-dashboard.png",
+          "reference": "screenshots/dark-agent-dashboard.png",
+          "sha256": "a47c970fe55e47a72006dbab114e8b4ca8970ecc59e1961a2d30cafde73488e8",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 63,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "task-usage",
+      "title": "Задача: использование",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-task-usage.png",
+          "reference": "screenshots/light-task-usage.png",
+          "sha256": "79f36d1bbbfa15fbb481532ae931a49b832f300ee021a96f7db0e78d732679f0",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 65,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-task-usage.png",
+          "reference": "screenshots/dark-task-usage.png",
+          "sha256": "3fab7c9baa889fd0832b0a14dcd5cbc0e09732fabcf4be002623d6367c364f7b",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 65,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "session-usage",
+      "title": "Сессия и run: использование",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-session-usage.png",
+          "reference": "screenshots/light-session-usage.png",
+          "sha256": "285cd03b0aaf9f159ae9ed28fafc9b452d2759de3fdf18e0c53c0134068af1fa",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 62,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-session-usage.png",
+          "reference": "screenshots/dark-session-usage.png",
+          "sha256": "04cf4c3ca9fac27ba0fb51547f339292a156639adf9e831abad2b3f72b3e4188",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 62,
+            "controlSamples": 1,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "graph-mermaid",
+      "title": "Архитектура Mermaid: весь снимок и модули",
+      "themes": {
+        "light": {
+          "capture": "implementation-captures/parity-light-graph-mermaid.png",
+          "reference": "screenshots/light-graph-mermaid.png",
+          "sha256": "b1544e3d81d28872b7c8651c275fde9f4373181901d091da737c1cba6b70e710",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 268,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "light",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        },
+        "dark": {
+          "capture": "implementation-captures/parity-dark-graph-mermaid.png",
+          "reference": "screenshots/dark-graph-mermaid.png",
+          "sha256": "f2c95ffa15891ec570a0f4a553ec95bdbcc16bd486f77bfb0b3a7e6d7072ef2f",
+          "review": "visually_compared",
+          "audit": {
+            "findings": [],
+            "textSamples": 268,
+            "controlSamples": 2,
+            "geometry": {
+              "width": 1440,
+              "scroll": 1440
+            },
+            "overflow": [],
+            "lang": "ru",
+            "theme": "dark",
+            "limitations": [
+              "RGB computed styles; gradients and native widget paint excluded",
+              "No manual screen-reader certification"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "reviewBasis": {
+    "allStates": ".tmp/paos-m2c/browser-evidence-V81wgT/result.json",
+    "finalRetest": ".tmp/paos-m2c/browser-evidence-NqJx7X/result.json",
+    "recheckedAfterLastPresentationChange": [
+      "agents-edit",
+      "skills-edit",
+      "graph-list",
+      "workflow-diagram"
+    ],
+    "unchangedAreas": "prior reviewed evidence reused; all final captures and audits regenerated"
+  },
+  "frontendSourceHashes": {
+    "apps/web/src/main.tsx": "f82d1ca25499af46f52d9580fe8b0d8365836bb5fe5ca93e72f62319f969ba93",
+    "apps/web/src/vite-env.d.ts": "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5",
+    "apps/web/src/api/client.ts": "adbf7b3f58c9076de0471e18f66a7d48fd152a511606025d8dbab660579b90b1",
+    "apps/web/src/api/draft-autosave.ts": "2c4697d2613427a2709610c504f1ad082343c1af64f6b4b5fed969fa621c68c2",
+    "apps/web/src/api/draft-registry.ts": "fddba74d144061a5e62519718aa870a785a1e4906be1cc5f6a113c806e8bfcea",
+    "apps/web/src/api/import-sources.ts": "5b1a567c494c62cb3b82bf14c30faec0756fe24af001ed6f867d37fc9e39f687",
+    "apps/web/src/api/latest-request.ts": "7a399a75ee6c2736417ff8a38b0f9710b1d46ed600f615c69eb3e0f16f4b8d22",
+    "apps/web/src/api/message-history.ts": "7c5c8077f419ac00457c6ed5bef8c80e34fb65077bf2c20cc3670de9975032ea",
+    "apps/web/src/api/policy.ts": "812c170725a4f60b96dc01e9c5c74be45e8d8b50e9f10c5c266262de0ea121d3",
+    "apps/web/src/api/session-poll.ts": "39f569fe8b405f5f8d66c00b6f59c2fb418bc6a5fc5eedd5304081f79890fc51",
+    "apps/web/src/api/session-target.ts": "5866cf948c23c4c9cd2731071d75a53669ba0cb4af74ce3226447c7f5d3a869e",
+    "apps/web/src/api/task.ts": "0932f669bf43adf7f0bb9f9432f3d2995893dcc104ec3e7c3b491414d8c7e3f5",
+    "apps/web/src/api/visible-drafts.ts": "ba3fd3e09abe2df2aff83203e9a237daf34a027e889c4cd52945ebe7fe1c9fe1",
+    "apps/web/src/design/app.css": "b6e85b63a1ee635e357fc9108779391fe48af619299c3d6d37faf48cfed99dbc",
+    "apps/web/src/design/parity.css": "c1b68583f8f7ea4bd0b44bdcda7b902354aa292301e31bdb8f6ab35b20721421",
+    "apps/web/src/design/preference-controls.ts": "93564c4370850416934b3871821af7cbcf80c4f6cc021ba44ceb0f5492abd35a",
+    "apps/web/src/design/preferences.ts": "c6b24b2a56902cdf79975ee0aae81efb29aba9765b2213f83f1a0c434a40c360",
+    "apps/web/src/design/theme.css": "5d0e091b781c2227f927fbe484fc1b562cee44f9a654f06ef64aa7f787b3ca09",
+    "apps/web/src/design/workspace.css": "2464cb22ab49f5c145a207f5d38c40b90f2d25601472a88fcdc971595cbe4f41",
+    "apps/web/src/locales/app.ts": "28888d1b825b59a6e8be161cdcf6b16e00bafbeb0f3f09f0611d6d56825a793b",
+    "apps/web/src/locales/messages.ts": "ad940eac37689d57999819d88221a2c3f4df1aed5da8ef6265008e237dc77fcb",
+    "apps/web/src/ui/App.tsx": "589eba6ef96dee517eb97de05a0b947aa665fdb18937185332a2dd88aefb5fb0",
+    "apps/web/src/ui/connection-controls-model.ts": "4c241f8edc2c841b04076c7eae405ef136485b46af1ac34e61d3665b616015ae",
+    "apps/web/src/ui/ConnectionControls.tsx": "a4478ce312bed9c3867a54865ae4da0ef9acbcc15820882a7b4586a060375d84",
+    "apps/web/src/ui/Icon.tsx": "6d5bd4cf5b9c9814063a8f1a51556f1f73e84d4ec5936f91491d87031871915d",
+    "apps/web/src/ui/Modal.tsx": "dbe2154e0bfc438a948de8f59e2043935176126e70a2fcc76c12e121ec45e9eb",
+    "apps/web/src/ui/Operations.tsx": "9ed1966b3040d1152e8a9d3842379d93db32736e3edeb4c7128c54ea746187ca",
+    "apps/web/src/ui/SessionContext.tsx": "3e87f4e77083652d775c3dc2dfb4e554640ed6d6e3575fa279f5213cc39bfab7",
+    "apps/web/src/ui/settings-workspace.css": "7590353fe8d11b5e8088eae846d9fa2458544041262645bdb487971bcbc5198a",
+    "apps/web/src/ui/Sidebar.tsx": "69ee9b279764c95ec6a118c41244ae5021ddee440cc0e976c2e3d388c4b1bea1",
+    "apps/web/src/ui/TaskRelations.tsx": "9d9f13a27438efb3bae06915277b15881a446f523d439343ef312214a03ac8e0",
+    "apps/web/src/features/artifacts/ArtifactExplorer.tsx": "cf3a4a0672147a84cbd6e77a7e0f455e220779e7b43dbacc67807cf4ffd78d66",
+    "apps/web/src/features/autonomy/AutonomyManager.tsx": "8e7aaf088b951796f89ec4b02d189df6dae905277d482f4b0e1eede6bfadf92f",
+    "apps/web/src/features/dashboard/Dashboard.tsx": "3cfa299613504e4f4773d5abd36cd720911855d8695fb717f8b738076c5d6580",
+    "apps/web/src/features/dashboard/model.ts": "f21e98490f1e40f500b0062081440b77be3408c4bf6f16eb1457fa3820448c59",
+    "apps/web/src/features/decisions/DecisionBoard.tsx": "1c26073d4a4758b40d7773506e7ece4c680e6101543781813c7f68ab8015ed5f",
+    "apps/web/src/features/graph/diagram-source.ts": "87f24ec6fd5f9e6727b079fecd10a17bed69eb97edacef38db00af2a5764e0f1",
+    "apps/web/src/features/graph/GraphExplorer.tsx": "47362d9cdccd0c7f41e7ace7422fc7533c041148a2c19709a9534b3f7ac85e5b",
+    "apps/web/src/features/graph/GraphViews.tsx": "e0c9f75d967df62ecfe86f751808ba12576661379192afe9d92fcb389a98d5a2",
+    "apps/web/src/features/projects/ProjectOnboarding.tsx": "a64eb810e31080a0cc5b49a73607b1f4a6a6f6603008121593b675ac95adfa0d",
+    "apps/web/src/features/sessions/SessionsCatalog.tsx": "0d459de77053e2cfad63b169a935dec4d9b135a53afcf65c4fe54b30bd3a8799",
+    "apps/web/src/features/skills/SkillGenerator.tsx": "d36e68b936a0b2e2f73133bac1fe16f9f196c42014b1a73e5ef2bb30ac3d8bfe",
+    "apps/web/src/features/tasks/comment-markdown.ts": "34bc95bd6d86aaf3ab26885f1c5e6c42310a2e0ed172e06d00ec024aac3fe872",
+    "apps/web/src/features/tasks/CommentMarkdown.tsx": "b38b245fab1d8328eb71af9908dd9670fb537c5fe7eb94708328ae0f51b43337",
+    "apps/web/src/features/tasks/Editor.tsx": "8a19d83c80ebcfc5712869d647f6311cb9927fa8849499178595ab9d65e5aab9",
+    "apps/web/src/features/tasks/labels.ts": "708b554c014e590533d7a254f08e0360446b492e9e8ff2667f30bb4e201a476e",
+    "apps/web/src/features/tasks/model.ts": "2d2fa32761e0d7cc6cb32b13913eb5b096c7ca2b5573aded2249c50171f86522",
+    "apps/web/src/features/tasks/Panels.tsx": "c013d456db39d53f22317eaa6523f100ef105c92bbd3b3600a4e6934bc38eb27",
+    "apps/web/src/features/tasks/Settings.tsx": "266c1c100974dcc691cc13ef87b4302b8d1dc35f753cb36357dce429696db151",
+    "apps/web/src/features/tasks/task-detail.css": "b10b338d3698234f536ae4c6878834f5668fb0296cbed73ccfad7424f9a95967",
+    "apps/web/src/features/tasks/TaskManager.tsx": "7ea764c0f91ef2cc0fcc3af75c6c2cc0f3e310772ff88fb6f6578842bc37cb21",
+    "apps/web/src/features/team/TeamManager.tsx": "d325186e08de6e207d7106325b1f9b101b125ac4412f152b219de12b900b3a55",
+    "apps/web/src/features/workflows/workflow-workbench.css": "8ce51378cd1885756ab31ece4521cc2ffdb28b2a75c3b4b39ab42d78bb35d0d6",
+    "apps/web/src/features/workflows/WorkflowManager.tsx": "dab514ab4faabad363bd623ef5e0d315fdf59a97e348ffd5d08595f25f77ff05",
+    "apps/web/src/features/workflows/recipes/QueueManager.tsx": "4a017e9e64ee1a907c9771f499fbf4a4b9522aecdbb0ff04b607cbaec2123acc",
+    "apps/web/src/features/workflows/recipes/RecipeRunner.tsx": "0cc45bc90c55523b9760b9c833176b2de8c07f02082763d8851df37f49d0a9e9"
+  },
+  "postBuildEdits": [
+    "TaskManager.tsx: whitespace-only removal; no executable changes"
+  ]
+}

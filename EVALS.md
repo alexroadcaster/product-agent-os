@@ -2,7 +2,7 @@
 
 ## Desktop UI/UX — сравнение с baseline
 
-V3: все V2 surfaces, full task fields и dblclick/keyboard dialog; dashboard scope/units/coverage; сумма unique receipts, cache без double count, unknown≠zero; D3/Mermaid activation; обе темы/overflow/focus/reduced motion. [DESIGN.md](DESIGN.md). Synthetic статистика не доказывает наличие telemetry; human acceptance отдельно.
+V3: все existing surfaces и task fields; один persistent editor; current assignments отдельно от observed runs, unknown usage≠zero, complete/partial scope и progress denominator. D3/Mermaid same snapshot/module/labels; exact Sidebar springs, keyboard/reduced motion/две темы/desktop overflow. [DESIGN.md](DESIGN.md). Synthetic verification не доказывает host telemetry, production performance или human acceptance. Для V3 требуется поэкранный визуальный ledger обеих тем: captured не означает reviewed; отсутствующие или несовпадающие состояния запрещают общий verdict о соответствии.
 
 ## G9 T17 — граница сравнения
 

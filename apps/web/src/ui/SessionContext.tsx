@@ -114,12 +114,14 @@ export function SessionContext({
   state,
   t,
   onReference,
+  view = 'context',
 }: {
   api: M1Api;
   entity: StoredEntity;
   state: RuntimeState | null;
   t: Text;
   onReference?: (reference: string) => void;
+  view?: 'context' | 'question';
 }) {
   const [decisions, setDecisions] = useState<StoredEntity[]>([]),
     [busy, setBusy] = useState(false),
@@ -138,7 +140,8 @@ export function SessionContext({
     void load();
   }, [entity.id, entity.projectId]);
   return (
-    <div>
+    <div className="session-context-view">
+      <div hidden={view !== 'context'}>
       <RuntimeSummary state={state} t={t} />
       <p className="quiet">{t("referenceHint")}</p>
       <Sources
@@ -147,6 +150,8 @@ export function SessionContext({
         t={t}
         onReference={onReference}
       />
+      </div>
+      <section hidden={view !== 'question'}>
       <h3>{t("runtimeQuestion")}</h3>
       <p className="quiet">
         {t("questionUnsupported")}{" "}
@@ -200,7 +205,7 @@ export function SessionContext({
         <button disabled={busy}>{t("save")}</button>
         <p role="alert">{error}</p>
       </form>
-      <RuntimeChecks state={state} t={t} />
+      </section>
     </div>
   );
 }

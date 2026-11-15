@@ -1,0 +1,1 @@
+{"status":"passed","scenario":"ui-v3","checks":378,"report":"C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2c\\browser-evidence-aWCqRV\\result.json"}

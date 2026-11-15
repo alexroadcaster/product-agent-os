@@ -1,0 +1,82 @@
+{
+  "impact": {
+    "schema_version": 1,
+    "task_id": "PAOS-UI-V3-PARITY-2026-11-13",
+    "facts": [
+      {
+        "id": "ui-0",
+        "event": "sequencing",
+        "changed_fact": "Current V3 repair and visual review evidence",
+        "reason": "Replace stale earlier-run claims with current evidence and explicit acceptance gap",
+        "decision": "updated",
+        "sources": [
+          {
+            "path": "design/2026-11-13-v3/implementation-evidence.md",
+            "revision": "sha256:2f44af99ddc585238ee21e46f2f031bd36b375e03d81c8d4eb37def225719b99"
+          }
+        ],
+        "target": {
+          "path": "PLAN.md",
+          "revision": "sha256:618cbf0a48a1fbd289dbddd49efd1b68533a8126c5274a8211e038412ed97b7a",
+          "role": "PLAN.md",
+          "owner": "root",
+          "section": "desktop-uiux--внедрение-13112026"
+        }
+      },
+      {
+        "id": "ui-1",
+        "event": "handoff",
+        "changed_fact": "Current V3 repair and visual review evidence",
+        "reason": "Replace stale earlier-run claims with current evidence and explicit acceptance gap",
+        "decision": "updated",
+        "sources": [
+          {
+            "path": "design/2026-11-13-v3/implementation-evidence.md",
+            "revision": "sha256:2f44af99ddc585238ee21e46f2f031bd36b375e03d81c8d4eb37def225719b99"
+          }
+        ],
+        "target": {
+          "path": "RUNLOG.md",
+          "revision": "sha256:00ea425e352f0fd34c606430989c5795bd9a465c1ab02c982e48409fcaaa5396",
+          "role": "RUNLOG.md",
+          "owner": "root",
+          "section": "desktop-uiux--внедрение-13112026"
+        }
+      },
+      {
+        "id": "ui-2",
+        "event": "verification_command",
+        "changed_fact": "Current V3 repair and visual review evidence",
+        "reason": "Replace stale earlier-run claims with current evidence and explicit acceptance gap",
+        "decision": "updated",
+        "sources": [
+          {
+            "path": "design/2026-11-13-v3/implementation-evidence.md",
+            "revision": "sha256:2f44af99ddc585238ee21e46f2f031bd36b375e03d81c8d4eb37def225719b99"
+          }
+        ],
+        "target": {
+          "path": "TEST.md",
+          "revision": "sha256:38fbf4c12abecf402c9911d9b5f89efeb9eb745401f68c186eb3644773f4e13a",
+          "role": "TEST.md",
+          "owner": "root",
+          "section": "desktop-uiux--actual-app-verification"
+        }
+      }
+    ]
+  },
+  "patches": [
+    {
+      "fact_id": "ui-0",
+      "replacement": "## Desktop UI/UX — внедрение 13.11.2026\n\n[UI-01–UI-12 V3](design/2026-11-13-v3/implementation-plan.md): локальный repair проверен; 85 экранов × 2 темы визуально сопоставлены. UI-01–UI-12 остаются in_progress до приёмки отмеченных отличий. [Evidence](design/2026-11-13-v3/implementation-evidence.md). UI-10: Sidebar и reduced motion проверены. API/backend не изменены. Rollback — own frontend hunks, без DB changes; M1–M5 не меняются.\n\n"
+    },
+    {
+      "fact_id": "ui-1",
+      "replacement": "## Desktop UI/UX — внедрение 13.11.2026\n\nV3 repair: сетки и внутренние экраны перенесены; visual review85×2, final web500 и V3 browser378 passed; functional team/workflow51 passed. UI-10 motion/reduced motion проверены. [План](design/2026-11-13-v3/implementation-plan.md), [evidence](design/2026-11-13-v3/implementation-evidence.md). UI-01–UI-12 in_progress до приёмки; usage unavailable, existing Chrome final reload не наблюдался (Debugger unattached). Backend/API/providers не менялись.\n\n"
+    },
+    {
+      "fact_id": "ui-2",
+      "replacement": "## Desktop UI/UX — actual app verification\n\nV3: npm run check:web-m1/build:web/test:web-m1; task-overlay/settings-layout, M2b/M2c ui-v3 browser matrix, accessibility core, docs unittest/check_docs/task-matrix/diff. [Команды, receipts, review и gaps](design/2026-11-13-v3/implementation-evidence.md). tests/web/single-window/v3-state-capture.mts:85 продуктовых состояний ×2 темы; captured отдельно от personally reviewed. Последние web500/V3 browser378 passed. Human acceptance отдельно.\n\n"
+    }
+  ]
+}

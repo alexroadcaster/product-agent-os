@@ -1,0 +1,1 @@
+{"status":"passed_m2_task_manager_browser","checks":112,"report":"C:\\Users\\user\\Desktop\\project\\codex_docs\\.tmp\\paos-m2\\browser-evidence-hQObxR\\m2-browser-result.json","fixtureCleaned":true}

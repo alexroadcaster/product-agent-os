@@ -1,0 +1,6 @@
+{
+  "errors": [],
+  "ok": true,
+  "path": "design\\2026-11-13-v3\\implementation-plan.md",
+  "schema_version": "task_matrix_plan_v1"
+}

@@ -1,0 +1,10 @@
+from pathlib import Path
+p=Path('apps/web/src/ui/App.tsx');s=p.read_text(encoding='utf-8').replace('import {Dashboard}','import {Dashboard,Usage}',1)
+s=s.replace('const [section, updateSection] = useState<Section>("overview");','const [section, updateSection] = useState<Section>("overview");\n  const [overviewPane,setOverviewPane]=useState(\'dashboard\');',1)
+s=s.replace("hidden={ready&&section==='tasks'}","hidden={ready&&['tasks','overview','portfolio'].includes(section)}",1)
+start=s.index('<><Dashboard api={api} projects={projects.filter');end=s.index('</>',start)+3
+old=s[start:end];dash=old[2:old.index('<details')]
+s=s[:start]+'''<section><div className="section-tabs overview-tabs">{[['dashboard',preferences.locale==='ru'?'Обзор':'Overview'],['sources',t('source')],['usage',preferences.locale==='ru'?'Расход':'Usage']].map(([id,name])=><button key={id} data-overview-section={id} aria-pressed={overviewPane===id} onClick={()=>setOverviewPane(id)}>{name}</button>)}</div><div hidden={overviewPane!=='dashboard'}>'''+dash+'''</div><div className="panel" hidden={overviewPane!=='sources'}><Sources api={api} projectId={projectId} t={t}/></div><div hidden={overviewPane!=='usage'}><h2>{preferences.locale==='ru'?'Расход ресурсов проекта':'Project resource usage'}</h2><Usage locale={preferences.locale}/></div></section>'''+s[end:]
+p.write_text(s,encoding='utf-8')
+p=Path('apps/web/src/features/tasks/Editor.tsx');s=p.read_text(encoding='utf-8').replace('className="m2-editor" onSubmit=', 'className="m2-editor" onInvalidCapture={e=>{let parent=(e.target as HTMLElement).parentElement;while(parent&&parent!==e.currentTarget){if(parent instanceof HTMLDetailsElement)parent.open=true;parent=parent.parentElement;}}} onSubmit=',1);p.write_text(s,encoding='utf-8')
+p=Path('apps/web/src/features/workflows/WorkflowManager.tsx');s=p.read_text(encoding='utf-8').replace("onInvalidCapture={event=>{let ancestor", "onInvalidCapture={event=>{const field=event.target as HTMLInputElement;setDefinitionTab(field.name.startsWith('workflow-transition-')?'transitions':'states');let ancestor",1);p.write_text(s,encoding='utf-8')

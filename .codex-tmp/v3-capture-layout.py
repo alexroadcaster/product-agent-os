@@ -1,0 +1,14 @@
+from pathlib import Path
+p=Path('tests/web/single-window/v3-state-capture.mts');s=p.read_text(encoding='utf-8')
+s=s.replace("for(const tab of ['summary','files','acceptance','comments','history','attachments','links','sessions'])", "await capture('task-summary',()=>click('[data-tab=summary]'));await page.keyboard.press('Escape');\n  for(const tab of ['files','acceptance','comments','history','attachments','links','sessions'])")
+s=s.replace("await capture('task-usage',()=>page.getByTestId('task-usage').scrollIntoViewIfNeeded(),'Usage measurements remain unavailable, never fabricated.');", "await capture('task-usage',()=>page.getByTestId('task-usage-open').click(),'Usage measurements remain unavailable, never fabricated.');await page.getByRole('button',{name:'Вернуться к задаче',exact:true}).click();")
+s=s.replace("await page.getByTestId('task-delete').locator('summary').click();", "await page.getByTestId('task-delete-open').click();")
+s=s.replace("name:'Предпросмотр',exact:true}).click();await panel.locator('.import-preview')", "name:'Проверить импорт',exact:true}).click();await panel.locator('.import-preview')")
+s=s.replace("await capture('skill-requirements',()=>manager.locator('[data-resource-section=requirements]').click());", "await capture('skill-requirements',async()=>{await manager.locator('[data-resource-section=requirements]').click();await page.locator('[data-generator-step=requirements]').click();});")
+s=s.replace("await page.getByTestId('decision-history').locator('summary').click();await page.getByTestId('decision-history').scrollIntoViewIfNeeded();", "await page.getByTestId('decision-board').locator('.section-tabs').getByRole('button',{name:'История',exact:true}).click();")
+s=s.replace("await capture('recipe-history',()=>page.getByRole('heading',{name:'История выполнения',exact:true}).scrollIntoViewIfNeeded());", "await capture('recipe-history',()=>click('[data-recipe-pane=history]'));")
+s=s.replace("await capture('recipe-recovery',()=>page.getByTestId('recipe-recovery').scrollIntoViewIfNeeded(),", "await capture('recipe-recovery',()=>click('[data-recipe-pane=recovery]'),")
+s=s.replace("if(!await page.getByTestId('document-proposal-editor').isVisible())await page.getByTestId('artifact-reader').getByRole('button',{name:'Предложить изменение',exact:true}).click();", "if(!await page.getByTestId('document-proposal-editor').isVisible()){const propose=page.getByTestId('artifact-reader').getByRole('button',{name:'Предложить изменение',exact:true});if(await propose.isEnabled())await propose.click();else await page.locator('button[data-artifact-pane=proposal]').click();}")
+# Capture the top of each workspace, after finite transitions settle.
+s=s.replace('await document.fonts.ready;',"await document.fonts.ready;document.querySelectorAll('.modal').forEach(e=>e.scrollTop=0);")
+p.write_text(s,encoding='utf-8')

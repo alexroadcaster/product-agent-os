@@ -1,0 +1,3 @@
+import type {GraphNode,GraphEdge} from '../../../../../packages/contracts/graph/code-graph.ts';
+/** Only safe synthetic node IDs enter Mermaid syntax; labels cannot add directives or links. */
+export function diagramSource(nodes:GraphNode[],edges:GraphEdge[]){const ids=new Map(nodes.map((n,i)=>[n.id,'n'+i]));const text=(s:string)=>[...s].map(c=>/[\p{L}\p{N} _.-]/u.test(c)?c:'#'+c.codePointAt(0)+';').join('');return 'flowchart LR\n'+nodes.map(n=>`  ${ids.get(n.id)}["${text(n.name)}"]`).join('\n')+'\n'+edges.filter(e=>ids.has(e.from)&&ids.has(e.to)).map(e=>`  ${ids.get(e.from)} -->|${text(e.type)}| ${ids.get(e.to)}`).join('\n');}
