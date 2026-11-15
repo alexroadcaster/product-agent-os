@@ -7,7 +7,7 @@ Source status: approved V3 + Sidebar collapse, 13.11.2026; UI-01–UI-12 reopene
 
 ## Повторное открытие после визуального аудита
 
-Текущий checkpoint: полный визуальный review85 экранов ×2 темы выполнен; финальная сборка, web500 и V3 browser378 passed. Повторно проверены все170 состояний. [Попарный альбом](../../design/2026-11-13-v3/implementation-gallery.html), [ledger](../../design/2026-11-13-v3/implementation-visual-review.json), [актуальные проверки и отличия](../../design/2026-11-13-v3/implementation-evidence.md). UI-01–UI-11 имеют локальное evidence; карточки остаются in_progress до разрешения отличий при приёмке, UI-12 не закрыт. Старые Completion Reports ниже не подменяют текущую сверку.
+Текущий checkpoint: полный визуальный review85 экранов ×2 темы выполнен; финальная сборка, web500 и V3 browser378 passed. Повторно проверены все170 состояний. [Попарный альбом](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v3/implementation-gallery.html), [ledger](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v3/implementation-visual-review.json), [актуальные проверки и отличия](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v3/implementation-evidence.md). UI-01–UI-11 имеют локальное evidence; карточки остаются in_progress до разрешения отличий при приёмке, UI-12 не закрыт. Старые Completion Reports ниже не подменяют текущую сверку.
 
 Предыдущие Completion Report ниже — исторические результаты первого внедрения, не доказательство visual parity. Владелец отклонил реализацию. Все UI-01–UI-12 переоткрыты 13.11.2026.
 
@@ -25,7 +25,7 @@ RED визуального аудита: title задачи в четырёхк�
 
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Owning design: [DESIGN.md](../../DESIGN.md)
+- Owning design: [DESIGN.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/DESIGN.md)
 - План отдельный от существующих M1–M5; их ID, статусы и зависимости не меняются.
 - Владелец утвердил дизайн и разрешил UI-01–UI-12. Выполняется локальное frontend внедрение и synthetic verification. Приёмка результата реализации отдельно от утверждения макета.
 - Функциональные non-goals: backend/API/schema/permissions/provider/queue semantics/новые продуктовые возможности. Только UI/UX, без мобильной версии.
@@ -37,7 +37,7 @@ RED визуального аудита: title задачи в четырёхк�
 
 Редакция V2 заменяет раннее сравнение A/B/C единым paired design Porcelain/Obsidian. Исходный план сохранён в `../2026-11-13/implementation-plan.md`; ID UI-01–UI-12 обозначают те же задачи внедрения, а не новую параллельную очередь. Статусы текущего внедрения принадлежат индексу и карточкам ниже.
 
-- Канонический реестр макетов: [coverage.json](../../design/2026-11-13-v3/coverage.json). Для UI-01 каждый source-owned tab/action сопоставляется с actual app baseline; proposed organization не выдаётся за существующий route.
+- Канонический реестр макетов: [coverage.json](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v3/coverage.json). Для UI-01 каждый source-owned tab/action сопоставляется с actual app baseline; proposed organization не выдаётся за существующий route.
 - UI-02/03: обе темы, 15 назначений, token parity, desktop 1280/1440/1920; review controls альбома не попадают в приложение.
 - UI-04: список/доска; все 8 вкладок задачи; create/move/delete; components/versions/release policy/board/archive.
 - UI-05/06: general/project/connection/shutdown; assignments, states, transitions, diagram/recipes, publication, migration, versions/archive; execution steps/recovery и queue.
@@ -50,7 +50,7 @@ Motion вводится в каждый UI-срез после проверки 
 
 ## Уточнение V3 — обязательные критерии шести доработок
 
-V3 заменяет V2 как утверждённое направление; архив V2 неизменен. Карточки UI-01–UI-12 разрешены к внедрению. Выполненный прототип сам по себе не закрывает проверки приложения. [Полная карта полей](../../design/2026-11-13-v3/task-field-map.md), [исследование](../../design/2026-11-13-v3/research.md) и [coverage](../../design/2026-11-13-v3/coverage.json) уточняют следующие критерии:
+V3 заменяет V2 как утверждённое направление; архив V2 неизменен. Карточки UI-01–UI-12 разрешены к внедрению. Выполненный прототип сам по себе не закрывает проверки приложения. [Полная карта полей](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v3/task-field-map.md), [исследование](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v3/research.md) и [coverage](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v3/coverage.json) уточняют следующие критерии:
 
 | Карточка | Обязательная доработка V3 | Проверка при внедрении |
 | --- | --- | --- |
@@ -122,7 +122,7 @@ V3 заменяет V2 как утверждённое направление; �
 - technical value delivered: Presentation layer сохраняет существующие команды, версии, авторизацию и данные; отдельные frontend projections проверяемы.
 - product value delivered: Компактная навигация и обозримая работа проекта; измерение пользовательской эффективности отдельно от реализации.
 - actual implementation date and time: 13-11-2026 17:40
-- verification evidence: Baseline build0; integration112; исходные sandbox errors сохранены, финальный full suite вне ограничения symlink500 passed. Полные receipts: [implementation-evidence.md](../../design/2026-11-13-v3/implementation-evidence.md).
+- verification evidence: Baseline build0; integration112; исходные sandbox errors сохранены, финальный full suite вне ограничения symlink500 passed. Полные receipts: [implementation-evidence.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v3/implementation-evidence.md).
 - residual risks: Human acceptance pending; unavailable telemetry не реализуется в UI; performance на больших реальных проектах не измерена.
 - follow-up: Приёмка реализации владельцем по UI-12.
 
@@ -162,7 +162,7 @@ V3 заменяет V2 как утверждённое направление; �
 - technical value delivered: Presentation layer сохраняет существующие команды, версии, авторизацию и данные; отдельные frontend projections проверяемы.
 - product value delivered: Компактная навигация и обозримая работа проекта; измерение пользовательской эффективности отдельно от реализации.
 - actual implementation date and time: 13-11-2026 17:40
-- verification evidence: Typecheck/build0; contrast desktop matrix; зависимости закреплены, npm audit0 vulnerabilities при установке. Полные receipts: [implementation-evidence.md](../../design/2026-11-13-v3/implementation-evidence.md).
+- verification evidence: Typecheck/build0; contrast desktop matrix; зависимости закреплены, npm audit0 vulnerabilities при установке. Полные receipts: [implementation-evidence.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v3/implementation-evidence.md).
 - residual risks: Human acceptance pending; unavailable telemetry не реализуется в UI; performance на больших реальных проектах не измерена.
 - follow-up: Приёмка реализации владельцем по UI-12.
 
@@ -202,7 +202,7 @@ V3 заменяет V2 как утверждённое направление; �
 - technical value delivered: Presentation layer сохраняет существующие команды, версии, авторизацию и данные; отдельные frontend projections проверяемы.
 - product value delivered: Компактная навигация и обозримая работа проекта; измерение пользовательской эффективности отдельно от реализации.
 - actual implementation date and time: 13-11-2026 17:40
-- verification evidence: Browser collapse/expand, keyboard tooltip/Escape, route persistence, reduced motion, desktop widths1280/1440/1920. Полные receipts: [implementation-evidence.md](../../design/2026-11-13-v3/implementation-evidence.md).
+- verification evidence: Browser collapse/expand, keyboard tooltip/Escape, route persistence, reduced motion, desktop widths1280/1440/1920. Полные receipts: [implementation-evidence.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v3/implementation-evidence.md).
 - residual risks: Human acceptance pending; unavailable telemetry не реализуется в UI; performance на больших реальных проектах не измерена.
 - follow-up: Приёмка реализации владельцем по UI-12.
 
@@ -242,7 +242,7 @@ V3 заменяет V2 как утверждённое направление; �
 - technical value delivered: Presentation layer сохраняет существующие команды, версии, авторизацию и данные; отдельные frontend projections проверяемы.
 - product value delivered: Компактная навигация и обозримая работа проекта; измерение пользовательской эффективности отдельно от реализации.
 - actual implementation date and time: 13-11-2026 17:40
-- verification evidence: RED→GREEN task-overlay19; existing integration112; raw multiline/invalid estimate/unsaved title и тот же DOM подтверждены. Полные receipts: [implementation-evidence.md](../../design/2026-11-13-v3/implementation-evidence.md).
+- verification evidence: RED→GREEN task-overlay19; existing integration112; raw multiline/invalid estimate/unsaved title и тот же DOM подтверждены. Полные receipts: [implementation-evidence.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v3/implementation-evidence.md).
 - residual risks: Human acceptance pending; unavailable telemetry не реализуется в UI; performance на больших реальных проектах не измерена.
 - follow-up: Приёмка реализации владельцем по UI-12.
 
@@ -282,7 +282,7 @@ V3 заменяет V2 как утверждённое направление; �
 - technical value delivered: Presentation layer сохраняет существующие команды, версии, авторизацию и данные; отдельные frontend projections проверяемы.
 - product value delivered: Компактная навигация и обозримая работа проекта; измерение пользовательской эффективности отдельно от реализации.
 - actual implementation date and time: 13-11-2026 17:40
-- verification evidence: settings-layout14; клавиатурные local tabs, сохранность preference/project drafts, existing callbacks. Полные receipts: [implementation-evidence.md](../../design/2026-11-13-v3/implementation-evidence.md).
+- verification evidence: settings-layout14; клавиатурные local tabs, сохранность preference/project drafts, existing callbacks. Полные receipts: [implementation-evidence.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v3/implementation-evidence.md).
 - residual risks: Human acceptance pending; unavailable telemetry не реализуется в UI; performance на больших реальных проектах не измерена.
 - follow-up: Приёмка реализации владельцем по UI-12.
 
@@ -322,7 +322,7 @@ V3 заменяет V2 как утверждённое направление; �
 - technical value delivered: Presentation layer сохраняет существующие команды, версии, авторизацию и данные; отдельные frontend projections проверяемы.
 - product value delivered: Компактная навигация и обозримая работа проекта; измерение пользовательской эффективности отдельно от реализации.
 - actual implementation date and time: 13-11-2026 17:40
-- verification evidence: settings-layout14 после исправления row opening; M2b51 сценарий с публикацией/миграцией passed. Полные receipts: [implementation-evidence.md](../../design/2026-11-13-v3/implementation-evidence.md).
+- verification evidence: settings-layout14 после исправления row opening; M2b51 сценарий с публикацией/миграцией passed. Полные receipts: [implementation-evidence.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v3/implementation-evidence.md).
 - residual risks: Human acceptance pending; unavailable telemetry не реализуется в UI; performance на больших реальных проектах не измерена.
 - follow-up: Приёмка реализации владельцем по UI-12.
 
@@ -362,7 +362,7 @@ V3 заменяет V2 как утверждённое направление; �
 - technical value delivered: Presentation layer сохраняет существующие команды, версии, авторизацию и данные; отдельные frontend projections проверяемы.
 - product value delivered: Компактная навигация и обозримая работа проекта; измерение пользовательской эффективности отдельно от реализации.
 - actual implementation date and time: 13-11-2026 17:40
-- verification evidence: Existing M2b51; все destinations RU/EN light/dark; session screenshots; общая web regression500. Полные receipts: [implementation-evidence.md](../../design/2026-11-13-v3/implementation-evidence.md).
+- verification evidence: Existing M2b51; все destinations RU/EN light/dark; session screenshots; общая web regression500. Полные receipts: [implementation-evidence.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v3/implementation-evidence.md).
 - residual risks: Human acceptance pending; unavailable telemetry не реализуется в UI; performance на больших реальных проектах не измерена.
 - follow-up: Приёмка реализации владельцем по UI-12.
 
@@ -402,7 +402,7 @@ V3 заменяет V2 как утверждённое направление; �
 - technical value delivered: Presentation layer сохраняет существующие команды, версии, авторизацию и данные; отдельные frontend projections проверяемы.
 - product value delivered: Компактная навигация и обозримая работа проекта; измерение пользовательской эффективности отдельно от реализации.
 - actual implementation date and time: 13-11-2026 17:40
-- verification evidence: M2b51; M2c37; real renderer activation/node parity; unit escaping special labels; fresh review2 findings исправлены. Полные receipts: [implementation-evidence.md](../../design/2026-11-13-v3/implementation-evidence.md).
+- verification evidence: M2b51; M2c37; real renderer activation/node parity; unit escaping special labels; fresh review2 findings исправлены. Полные receipts: [implementation-evidence.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v3/implementation-evidence.md).
 - residual risks: Human acceptance pending; unavailable telemetry не реализуется в UI; performance на больших реальных проектах не измерена.
 - follow-up: Приёмка реализации владельцем по UI-12.
 
@@ -442,7 +442,7 @@ V3 заменяет V2 как утверждённое направление; �
 - technical value delivered: Presentation layer сохраняет существующие команды, версии, авторизацию и данные; отдельные frontend projections проверяемы.
 - product value delivered: Компактная навигация и обозримая работа проекта; измерение пользовательской эффективности отдельно от реализации.
 - actual implementation date and time: 13-11-2026 17:40
-- verification evidence: Dashboard invariants RED→GREEN5 focused tests вместе с diagram; no fabricated cost/tool_use; existing functional journeys. Полные receipts: [implementation-evidence.md](../../design/2026-11-13-v3/implementation-evidence.md).
+- verification evidence: Dashboard invariants RED→GREEN5 focused tests вместе с diagram; no fabricated cost/tool_use; existing functional journeys. Полные receipts: [implementation-evidence.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v3/implementation-evidence.md).
 - residual risks: Human acceptance pending; unavailable telemetry не реализуется в UI; performance на больших реальных проектах не измерена.
 - follow-up: Приёмка реализации владельцем по UI-12.
 
@@ -482,7 +482,7 @@ V3 заменяет V2 как утверждённое направление; �
 - technical value delivered: Presentation layer сохраняет существующие команды, версии, авторизацию и данные; отдельные frontend projections проверяемы.
 - product value delivered: Компактная навигация и обозримая работа проекта; измерение пользовательской эффективности отдельно от реализации.
 - actual implementation date and time: 13-11-2026 17:40
-- verification evidence: Browser reduced motion/collapse/focus; accessibility core136 checks20views; contrast issue4.428 исправлен на accent-text. Полные receipts: [implementation-evidence.md](../../design/2026-11-13-v3/implementation-evidence.md).
+- verification evidence: Browser reduced motion/collapse/focus; accessibility core136 checks20views; contrast issue4.428 исправлен на accent-text. Полные receipts: [implementation-evidence.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v3/implementation-evidence.md).
 - residual risks: Human acceptance pending; unavailable telemetry не реализуется в UI; performance на больших реальных проектах не измерена.
 - follow-up: Приёмка реализации владельцем по UI-12.
 
@@ -522,7 +522,7 @@ V3 заменяет V2 как утверждённое направление; �
 - technical value delivered: Presentation layer сохраняет существующие команды, версии, авторизацию и данные; отдельные frontend projections проверяемы.
 - product value delivered: Компактная навигация и обозримая работа проекта; измерение пользовательской эффективности отдельно от реализации.
 - actual implementation date and time: 13-11-2026 17:47
-- verification evidence: Full web500 passed; build/typecheck exit0; V3 356 checks/120 views, accessibility136, docs105/check_docs passed. Полные receipts: [implementation-evidence.md](../../design/2026-11-13-v3/implementation-evidence.md).
+- verification evidence: Full web500 passed; build/typecheck exit0; V3 356 checks/120 views, accessibility136, docs105/check_docs passed. Полные receipts: [implementation-evidence.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v3/implementation-evidence.md).
 - residual risks: Human acceptance pending; unavailable telemetry не реализуется в UI; performance на больших реальных проектах не измерена.
 - follow-up: UI-12: приёмка реализации владельцем.
 
@@ -562,6 +562,6 @@ V3 заменяет V2 как утверждённое направление; �
 - technical value delivered: Presentation layer сохраняет существующие команды, версии, авторизацию и данные; отдельные frontend projections проверяемы.
 - product value delivered: Компактная навигация и обозримая работа проекта; измерение пользовательской эффективности отдельно от реализации.
 - actual implementation date and time: pending_execution_timestamp
-- verification evidence: Human implementation acceptance pending; UI-12 остаётся in_progress до решения владельца. Полные receipts: [implementation-evidence.md](../../design/2026-11-13-v3/implementation-evidence.md).
+- verification evidence: Human implementation acceptance pending; UI-12 остаётся in_progress до решения владельца. Полные receipts: [implementation-evidence.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v3/implementation-evidence.md).
 - residual risks: Human acceptance pending; unavailable telemetry не реализуется в UI; performance на больших реальных проектах не измерена.
 - follow-up: Закрыть только после соответствующих gates/решения владельца.

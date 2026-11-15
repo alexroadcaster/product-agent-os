@@ -110,7 +110,7 @@ Implementation sources: `plugins/product-agent-os/scripts/product_agent_os/proje
 
 See [technical contract](technical.md), [architecture](architecture.md), and [source registry](../sources/registry.md).
 
-## Targeted documentation maintenance after a task
+## Targeted documentation maintenance after a task {#task-documentation-maintenance}
 
 Assess documentation impact after every task; write only changed canonical sections. Reuse the task Completion Report for changed fact, owner/path/section, source revision/evidence, decision and reason. `no_change_needed` needs justification; required `handoff_required` prevents implemented closure. Small tasks do not require another report.
 

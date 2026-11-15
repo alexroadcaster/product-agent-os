@@ -16,7 +16,7 @@ Source status: repository_source / static_audit / owner_requested_planning; impl
 - Статический аудит исходников 15.11.2026 выявил семь кандидатов в дефекты F01–F07. F01 подтверждён сравнением fingerprint: текущий `apps/web/package-lock.json` SHA-256 `f126e4dceeb06cb9644fe1167cbb5b2b2689fb8022325d54292445398ad30aac`, квалифицированный `d279009aa1dca2bd2d6ba0e18a77d085a67e872d0dce78dd360fb23d43975f38`; отказ native broker выводится из проверки контракта и должен быть воспроизведён. Runtime в этом планировании не запускался.
 - F08–F10/F18/F24 относятся к устройству реализации и полноте пользовательского пути. Производительность не признана плохой без измерений: F20 предшествует F09.
 - F11–F17 — отсутствующие расширения либо намеренно ограниченные возможности текущего local scope. Это не семь доказанных регрессий redesign. Перед build нужны доступные capabilities и решения о данных, записи, privacy или канале поставки.
-- F19–F23 — недостающее текущее доказательство. Исторические Web/browser receipts из [design/2026-11-13-v3/implementation-evidence.md](../../design/2026-11-13-v3/implementation-evidence.md) не выдаются за заново выполненные проверки.
+- F19–F23 — недостающее текущее доказательство. Исторические Web/browser receipts из [design/2026-11-13-v3/implementation-evidence.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v3/implementation-evidence.md) не выдаются за заново выполненные проверки.
 - Предыдущий audit MD не был создан из-за запрета записи; первичные ссылки и наблюдения перенесены в Source каждой карточки. Чат и этот план не заменяют код и актуальные runtime результаты.
 - Внешние API и OpenAI capabilities этим планом не утверждаются. Если задача опирается на новый host/provider contract, при её discovery нужно проверить текущую официальную документацию и фактически доступный интерфейс.
 
@@ -279,7 +279,7 @@ Business/product hypothesis: корректное сохранение сост�
 
 Выбранная граница: регистрация проекта → доступное файловое дерево и read-on-demand → управляемое сканирование → отдельные inventory/documents/code/analysis результаты. «Файл видим», «файл разрешено читать», «файл проиндексирован» и «можно выполнить команду» — разные факты. Unsupported язык не скрывает директорию. Контекст модели формируется отдельно, без автоматической отправки всего проекта.
 
-Source-backed основание: [Sources](../../apps/local-service/src/adapters/project-sources.ts) перечисляет шесть Control-plane файлов; [регистрация](../../apps/local-service/src/http/application.mts) сохраняет проект, затем ждёт source/code scan; [inventory](../../apps/local-service/src/code-index/sources.mts) использует фиксированные исключения и лимиты; [core discovery](../../plugins/product-agent-os/scripts/product_agent_os/discovery.py) и [first-run](../../plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py) существуют отдельно от проверенного Web onboarding. Это статический вывод, не новый runtime receipt.
+Source-backed основание: [Sources](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/adapters/project-sources.ts) перечисляет шесть Control-plane файлов; [регистрация](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/http/application.mts) сохраняет проект, затем ждёт source/code scan; [inventory](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/code-index/sources.mts) использует фиксированные исключения и лимиты; [core discovery](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/discovery.py) и [first-run](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py) существуют отдельно от проверенного Web onboarding. Это статический вывод, не новый runtime receipt.
 
 | Design gate | Статус / владелец | Что требуется перед build |
 | --- | --- | --- |
@@ -310,7 +310,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: нет
 - Blocks: `PAOS-FUNC-08`, `PAOS-FUNC-10`, `PAOS-FUNC-15`, `PAOS-FUNC-16`, `PAOS-FUNC-17`, `PAOS-FUNC-19`, `PAOS-FUNC-20`, `PAOS-FUNC-21`, `PAOS-FUNC-22`
-- Source: Lock SHA-256 d279009a… в manifest и f126e4dc… текущего файла не совпали; adapter99 совпал в аудите15.11. [packages/contracts/runtime/manifest.mts](../../packages/contracts/runtime/manifest.mts), [apps/local-service/src/runtime/sandbox-broker.mts](../../apps/local-service/src/runtime/sandbox-broker.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: Lock SHA-256 d279009a… в manifest и f126e4dc… текущего файла не совпали; adapter99 совпал в аудите15.11. [packages/contracts/runtime/manifest.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/packages/contracts/runtime/manifest.mts), [apps/local-service/src/runtime/sandbox-broker.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/runtime/sandbox-broker.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Восстановить квалификацию native runtime после redesign.
 - Technical value: Согласовать lockfile, manifest и native broker без ослабления проверки fingerprint.
 - Product value: Запуск задачи из обновлённого интерфейса действительно приводит к выполнению.
@@ -356,7 +356,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: `PAOS-FUNC-28`
 - Blocks: `PAOS-FUNC-13`, `PAOS-FUNC-14`, `PAOS-FUNC-19`
-- Source: taskPaths читает files/artifactReferences; Editor отдельно сохраняет artifacts. [apps/local-service/src/artifacts/service.mts](../../apps/local-service/src/artifacts/service.mts), [apps/web/src/features/tasks/Editor.tsx](../../apps/web/src/features/tasks/Editor.tsx). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: taskPaths читает files/artifactReferences; Editor отдельно сохраняет artifacts. [apps/local-service/src/artifacts/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/artifacts/service.mts), [apps/web/src/features/tasks/Editor.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/tasks/Editor.tsx). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Восстановить связи структурированных артефактов с задачами.
 - Technical value: Унифицировать нормализацию files, artifactReferences, artifacts и fileContexts.
 - Product value: Документ находится из задачи, а задача — из документа и поиска.
@@ -403,7 +403,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: нет
 - Blocks: `PAOS-FUNC-19`
-- Source: Reset не сбрасывает rawInputs; эффект очистки требует entity. [apps/web/src/features/tasks/Editor.tsx](../../apps/web/src/features/tasks/Editor.tsx). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: Reset не сбрасывает rawInputs; эффект очистки требует entity. [apps/web/src/features/tasks/Editor.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/tasks/Editor.tsx). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Полностью сбрасывать черновик новой задачи.
 - Technical value: Синхронизировать модель, rawInputs, estimate, preview и dirty-state при Discard.
 - Product value: После отмены пользователь не видит данные, которые уже отсутствуют в сохраняемой задаче.
@@ -449,7 +449,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: нет
 - Blocks: `PAOS-FUNC-19`
-- Source: Draft cache не включает typeMapping/mappingDirty. [apps/web/src/features/workflows/WorkflowManager.tsx](../../apps/web/src/features/workflows/WorkflowManager.tsx). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: Draft cache не включает typeMapping/mappingDirty. [apps/web/src/features/workflows/WorkflowManager.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/workflows/WorkflowManager.tsx). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Сохранять черновик назначений workflow при навигации.
 - Technical value: Включить typeMapping и исходную CAS revision в общий жизненный цикл draft.
 - Product value: Пользователь не теряет несохранённые назначения процессов при переходе между разделами.
@@ -495,7 +495,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: нет
 - Blocks: `PAOS-FUNC-11`, `PAOS-FUNC-18`, `PAOS-FUNC-19`, `PAOS-FUNC-24`
-- Source: aggregateSnapshots возвращает partial; dashboard totals его не показывает. [apps/web/src/features/dashboard/model.ts](../../apps/web/src/features/dashboard/model.ts), [apps/web/src/features/dashboard/Dashboard.tsx](../../apps/web/src/features/dashboard/Dashboard.tsx). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: aggregateSnapshots возвращает partial; dashboard totals его не показывает. [apps/web/src/features/dashboard/model.ts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/dashboard/model.ts), [apps/web/src/features/dashboard/Dashboard.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/dashboard/Dashboard.tsx). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Обозначить неполное покрытие portfolio рядом с итогами.
 - Technical value: Провести partial/loaded/expected из агрегатора в отображение KPI и progress.
 - Product value: Частично загруженные проекты не выглядят как полный итог портфеля.
@@ -541,7 +541,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: нет
 - Blocks: `PAOS-FUNC-19`
-- Source: Backend indexOf+1, dashboard position+1. [apps/local-service/src/scheduler/service.mts](../../apps/local-service/src/scheduler/service.mts), [apps/web/src/features/dashboard/Dashboard.tsx](../../apps/web/src/features/dashboard/Dashboard.tsx). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: Backend indexOf+1, dashboard position+1. [apps/local-service/src/scheduler/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/scheduler/service.mts), [apps/web/src/features/dashboard/Dashboard.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/dashboard/Dashboard.tsx). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Исправить нумерацию очереди на dashboard.
 - Technical value: Единый 1-based контракт позиции между scheduler и frontend.
 - Product value: Одинаковый порядок задач на dashboard и в управлении очередью.
@@ -587,7 +587,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: нет
 - Blocks: `PAOS-FUNC-18`, `PAOS-FUNC-19`
-- Source: Dashboard slice(-3), storage ORDER BY id. [apps/web/src/features/dashboard/Dashboard.tsx](../../apps/web/src/features/dashboard/Dashboard.tsx), [apps/local-service/src/storage/sqlite-worker.mts](../../apps/local-service/src/storage/sqlite-worker.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: Dashboard slice(-3), storage ORDER BY id. [apps/web/src/features/dashboard/Dashboard.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/dashboard/Dashboard.tsx), [apps/local-service/src/storage/sqlite-worker.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/storage/sqlite-worker.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Сортировать последние задачи по времени.
 - Technical value: Задать явную сортировку по updatedAt с устойчивым tie-breaker и unknown policy.
 - Product value: Блок последних задач ведёт к действительно недавней работе.
@@ -633,7 +633,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: `PAOS-FUNC-01`
 - Blocks: `PAOS-FUNC-09`, `PAOS-FUNC-11`, `PAOS-FUNC-13`
-- Source: HTTP imports web/preferences; contracts imports local-service/task-profile. [apps/local-service/src/http/application.mts](../../apps/local-service/src/http/application.mts), [packages/contracts/issues/task-profile.ts](../../packages/contracts/issues/task-profile.ts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: HTTP imports web/preferences; contracts imports local-service/task-profile. [apps/local-service/src/http/application.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/http/application.mts), [packages/contracts/issues/task-profile.ts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/packages/contracts/issues/task-profile.ts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Разделить общие контракты и зависимости UI/backend.
 - Technical value: Убрать импорты backend→frontend и contracts→backend, сохранив публичное поведение.
 - Product value: Изменение оформления реже ломает серверные функции и выпуск.
@@ -679,7 +679,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: `PAOS-FUNC-08`, `PAOS-FUNC-20`
 - Blocks: `PAOS-FUNC-14`
-- Source: Полные projectEntities; graph memory cap8; catalog snapshot limits. [apps/local-service/src/code-index/service.mts](../../apps/local-service/src/code-index/service.mts), [apps/local-service/src/artifacts/service.mts](../../apps/local-service/src/artifacts/service.mts), [apps/local-service/src/task-manager/service.mts](../../apps/local-service/src/task-manager/service.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: Полные projectEntities; graph memory cap8; catalog snapshot limits. [apps/local-service/src/code-index/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/code-index/service.mts), [apps/local-service/src/artifacts/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/artifacts/service.mts), [apps/local-service/src/task-manager/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/task-manager/service.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Оптимизировать чтение и жизненный цикл снимков.
 - Technical value: По измерениям устранить лишние полные сканы и добавить ограниченное освобождение cache.
 - Product value: Длительная работа и большие проекты не упираются в задержки и накопленные snapshots.
@@ -726,7 +726,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: `PAOS-FUNC-01`, `PAOS-FUNC-26`, `PAOS-FUNC-28`
 - Blocks: `PAOS-FUNC-15`, `PAOS-FUNC-19`, `PAOS-FUNC-24`
-- Source: Capture ограничен32 файлами,64KiB/файл,512KiB суммарно. [apps/local-service/src/runtime/app-agent-files.mts](../../apps/local-service/src/runtime/app-agent-files.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: Capture ограничен32 файлами,64KiB/файл,512KiB суммарно. [apps/local-service/src/runtime/app-agent-files.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/runtime/app-agent-files.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Показывать ограничения файлового scope до запуска.
 - Technical value: Общий preflight для числа файлов, размеров, excluded paths и границ actual diff.
 - Product value: Пользователь заранее понимает, почему задача не стартует и как её разделить.
@@ -773,7 +773,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: `PAOS-FUNC-05`, `PAOS-FUNC-08`
 - Blocks: `PAOS-FUNC-15`
-- Source: Metrics durationSeconds/tokenCount/cost=null; tool_use не измеряется. [apps/local-service/src/team/service.mts](../../apps/local-service/src/team/service.mts), [apps/web/src/features/dashboard/Dashboard.tsx](../../apps/web/src/features/dashboard/Dashboard.tsx). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: Metrics durationSeconds/tokenCount/cost=null; tool_use не измеряется. [apps/local-service/src/team/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/team/service.mts), [apps/web/src/features/dashboard/Dashboard.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/dashboard/Dashboard.tsx). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Ввести измеряемую статистику runs и расхода.
 - Technical value: Versioned telemetry с provenance, дедупликацией и агрегацией session→run→task→agent.
 - Product value: Длительность и расход помогают сравнивать результат работы без выдуманных чисел.
@@ -819,7 +819,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: нет
 - Blocks: нет
-- Source: remote_discovery_adapter_not_configured. [apps/local-service/src/team/service.mts](../../apps/local-service/src/team/service.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: remote_discovery_adapter_not_configured. [apps/local-service/src/team/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/team/service.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Спроектировать и подключить внешний поиск skills.
 - Technical value: Отдельный read-only discovery adapter с provenance, лицензией, pin и preview.
 - Product value: Нужный skill можно найти вне локального каталога и осознанно добавить.
@@ -865,7 +865,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: `PAOS-FUNC-02`, `PAOS-FUNC-08`
 - Blocks: нет
-- Source: Текущая политика staged_only, applied:false. [apps/local-service/src/artifacts/service.mts](../../apps/local-service/src/artifacts/service.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: Текущая политика staged_only, applied:false. [apps/local-service/src/artifacts/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/artifacts/service.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Добавить безопасное применение document proposals.
 - Technical value: Preview-bound compare-and-swap writer с сохранением пользовательских правок и recovery.
 - Product value: Согласованное предложение можно довести до изменения документа внутри приложения.
@@ -911,7 +911,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: `PAOS-FUNC-02`, `PAOS-FUNC-09`, `PAOS-FUNC-27`, `PAOS-FUNC-28`, `PAOS-FUNC-30`, `PAOS-FUNC-31`
 - Blocks: `PAOS-FUNC-19`, `PAOS-FUNC-24`, `PAOS-FUNC-34`
-- Source: lexical_subset_only, imports unresolved, memory-only index. [apps/local-service/src/code-index/service.mts](../../apps/local-service/src/code-index/service.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: lexical_subset_only, imports unresolved, memory-only index. [apps/local-service/src/code-index/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/code-index/service.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Расширить полезность и устойчивость карты проекта.
 - Technical value: Выбрать поддержку языков/связей; durable revision index, imports resolution и честный coverage.
 - Product value: Карта помогает оценить влияние изменения, а не создаёт видимость полного анализа.
@@ -959,7 +959,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: `PAOS-FUNC-01`, `PAOS-FUNC-10`, `PAOS-FUNC-11`
 - Blocks: нет
-- Source: Scope executable только '.', hostToolsConstrained=false, tokenCostMetering unavailable. [apps/local-service/src/autonomy-policy/service.mts](../../apps/local-service/src/autonomy-policy/service.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: Scope executable только '.', hostToolsConstrained=false, tokenCostMetering unavailable. [apps/local-service/src/autonomy-policy/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/autonomy-policy/service.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Уточнить и расширить границы автономности.
 - Technical value: Capability-based file/operation/cost policy без обещаний ограничения всего App host.
 - Product value: Пользователь понимает и контролирует допустимую самостоятельность агента.
@@ -1005,7 +1005,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: `PAOS-FUNC-01`
 - Blocks: нет
-- Source: host_history_not_exposed; loadedVersion/observedModel/observedEffort unknown. [apps/local-service/src/sessions/service.mts](../../apps/local-service/src/sessions/service.mts), [apps/local-service/src/team/service.mts](../../apps/local-service/src/team/service.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: host_history_not_exposed; loadedVersion/observedModel/observedEffort unknown. [apps/local-service/src/sessions/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/sessions/service.mts), [apps/local-service/src/team/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/team/service.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Подтверждать доступную историю и реально загруженные профили.
 - Technical value: Развести configured/pinned/observed model, effort и asset version; capability-based history adapter.
 - Product value: Пользователь знает, какой агент фактически работал и какая часть истории доступна.
@@ -1051,7 +1051,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: `PAOS-FUNC-01`, `PAOS-FUNC-22`
 - Blocks: нет
-- Source: Portable CLI есть; signed installer/auto-update не заявлены. [apps/desktop-local/README.md](../../apps/desktop-local/README.md). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: Portable CLI есть; signed installer/auto-update не заявлены. [apps/desktop-local/README.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/desktop-local/README.md). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Подготовить удобную установку, обновление и rollback.
 - Technical value: Поверх переносимого package задать version/digest/signing, compatibility и recovery UX.
 - Product value: Обновление не требует ручного подбора каталогов и не ставит данные под угрозу.
@@ -1097,7 +1097,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: `PAOS-FUNC-05`, `PAOS-FUNC-07`, `PAOS-FUNC-26`, `PAOS-FUNC-27`
 - Blocks: `PAOS-FUNC-19`
-- Source: Task/dashboard преимущественно initial/manual snapshots, queue polling отдельно. [apps/web/src/features/tasks/TaskManager.tsx](../../apps/web/src/features/tasks/TaskManager.tsx), [apps/web/src/features/dashboard/Dashboard.tsx](../../apps/web/src/features/dashboard/Dashboard.tsx). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: Task/dashboard преимущественно initial/manual snapshots, queue polling отдельно. [apps/web/src/features/tasks/TaskManager.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/tasks/TaskManager.tsx), [apps/web/src/features/dashboard/Dashboard.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/dashboard/Dashboard.tsx). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Согласовать обновление снимков задач и dashboard.
 - Technical value: Определить refresh/invalidation contract при фоне, мутациях и смене проекта.
 - Product value: После выполнения пользователь видит актуальный статус без угадывания, какой экран обновить.
@@ -1145,7 +1145,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: `PAOS-FUNC-01`, `PAOS-FUNC-02`, `PAOS-FUNC-03`, `PAOS-FUNC-04`, `PAOS-FUNC-05`, `PAOS-FUNC-06`, `PAOS-FUNC-07`, `PAOS-FUNC-10`, `PAOS-FUNC-18`, `PAOS-FUNC-24`, `PAOS-FUNC-26`, `PAOS-FUNC-27`, `PAOS-FUNC-29`, `PAOS-FUNC-14`, `PAOS-FUNC-33`, `PAOS-FUNC-34`
 - Blocks: `PAOS-FUNC-23`
-- Source: Redesign receipts visual/synthetic не доказывают новый native full path. [design/2026-11-13-v3/implementation-evidence.md](../../design/2026-11-13-v3/implementation-evidence.md), [TEST.md](../../TEST.md). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: Redesign receipts visual/synthetic не доказывают новый native full path. [design/2026-11-13-v3/implementation-evidence.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v3/implementation-evidence.md), [TEST.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/TEST.md). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Проверить сквозной функционал на текущей сборке.
 - Technical value: Связать real UI/API/storage/native receipts с одним revision без подмены execution mock-данными.
 - Product value: Пользователь проходит весь рабочий путь и получает проверяемый результат.
@@ -1193,7 +1193,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: `PAOS-FUNC-01`, `PAOS-FUNC-26`, `PAOS-FUNC-27`, `PAOS-FUNC-29`
 - Blocks: `PAOS-FUNC-09`
-- Source: Большие проекты/long-running после redesign не измерены; runtime index/cache caps. [research/product-agent-os-web-prd-2026-11-05.md](../../research/product-agent-os-web-prd-2026-11-05.md), [apps/local-service/src/code-index/service.mts](../../apps/local-service/src/code-index/service.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: Большие проекты/long-running после redesign не измерены; runtime index/cache caps. [research/product-agent-os-web-prd-2026-11-05.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-prd-2026-11-05.md), [apps/local-service/src/code-index/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/code-index/service.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Измерить масштабирование и длительную работу.
 - Technical value: Воспроизводимый workload с hardware/cache profile, latency/RSS/queue-depth и error budgets.
 - Product value: Большой проект и длительная сессия остаются управляемыми.
@@ -1241,7 +1241,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: `PAOS-FUNC-01`
 - Blocks: `PAOS-FUNC-23`
-- Source: Recovery/ownership implemented; необходим current-run regression. [apps/local-service/src/recovery/recipe-checkpoint.mts](../../apps/local-service/src/recovery/recipe-checkpoint.mts), [apps/local-service/src/scheduler/service.mts](../../apps/local-service/src/scheduler/service.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: Recovery/ownership implemented; необходим current-run regression. [apps/local-service/src/recovery/recipe-checkpoint.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/recovery/recipe-checkpoint.mts), [apps/local-service/src/scheduler/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/scheduler/service.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Перепроверить очередь, Stop и crash recovery.
 - Technical value: Проверить identity/CAS/lease/ownership fences и отсутствие replay в отказах.
 - Product value: Потеря соединения не запускает задачу дважды и не теряет результат.
@@ -1287,7 +1287,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: `PAOS-FUNC-01`
 - Blocks: `PAOS-FUNC-17`, `PAOS-FUNC-23`
-- Source: Import/backup контракты есть; current combined verification отсутствует. [apps/local-service/src/import-export/migration.mts](../../apps/local-service/src/import-export/migration.mts), [apps/desktop-local/README.md](../../apps/desktop-local/README.md). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: Import/backup контракты есть; current combined verification отсутствует. [apps/local-service/src/import-export/migration.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/import-export/migration.mts), [apps/desktop-local/README.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/desktop-local/README.md). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Перепроверить импорт, backup и restore.
 - Technical value: Проверить source authority, freeze/CAS, counts/hashes/FK, blobs и идемпотентность.
 - Product value: Задачи, история и вложения сохраняются при переносе и восстановлении.
@@ -1333,7 +1333,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: `PAOS-FUNC-19`, `PAOS-FUNC-21`, `PAOS-FUNC-22`, `PAOS-FUNC-24`
 - Blocks: нет
-- Source: PRD pilot metrics и UI-12 acceptance остаются отдельными gates. [research/product-agent-os-web-prd-2026-11-05.md](../../research/product-agent-os-web-prd-2026-11-05.md), [docs/planning/2026-11-13-v3-ui-implementation-plan.md](2026-11-13-v3-ui-implementation-plan.md). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: PRD pilot metrics и UI-12 acceptance остаются отдельными gates. [research/product-agent-os-web-prd-2026-11-05.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-prd-2026-11-05.md), [docs/planning/2026-11-13-v3-ui-implementation-plan.md](2026-11-13-v3-ui-implementation-plan.md). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Провести продуктовую приёмку ключевых сценариев.
 - Technical value: Связать acceptance с наблюдаемой корректностью решений, а не числом кликов.
 - Product value: Пользователь без подсказки понимает статус, blocker, evidence и следующий шаг.
@@ -1381,7 +1381,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: `PAOS-FUNC-05`, `PAOS-FUNC-10`, `PAOS-FUNC-26`, `PAOS-FUNC-27`, `PAOS-FUNC-29`, `PAOS-FUNC-14`, `PAOS-FUNC-33`, `PAOS-FUNC-34`
 - Blocks: `PAOS-FUNC-19`, `PAOS-FUNC-23`
-- Source: Ряд экранов уже отображает unknown/staged; нужна единая journey-проверка. [apps/web/src/ui/ConnectionControls.tsx](../../apps/web/src/ui/ConnectionControls.tsx), [apps/web/src/features/artifacts/ArtifactExplorer.tsx](../../apps/web/src/features/artifacts/ArtifactExplorer.tsx). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: Ряд экранов уже отображает unknown/staged; нужна единая journey-проверка. [apps/web/src/ui/ConnectionControls.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/ui/ConnectionControls.tsx), [apps/web/src/features/artifacts/ArtifactExplorer.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/artifacts/ArtifactExplorer.tsx). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Объяснять доступность функций в момент действия.
 - Technical value: Единый capability vocabulary для staged/unsupported/partial/connected/qualified/accepted.
 - Product value: Пользователь отличает доступную функцию от экрана с будущей возможностью.
@@ -1429,7 +1429,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; внесение в план не запускает реализацию.
 - Depends on: нет
 - Blocks: нет
-- Source: Датированные addenda сосуществуют с ранними status blocks; нужен current-state entry. Текущий docs unittest: 4 failures из-за отсутствующих rendered accessibility/pilot RU/EN и search/sitemap parity. [research/product-agent-os-web-prd-2026-11-05.md](../../research/product-agent-os-web-prd-2026-11-05.md), [PLAN.md](../../PLAN.md). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
+- Source: Датированные addenda сосуществуют с ранними status blocks; нужен current-state entry. Текущий docs unittest: 4 failures из-за отсутствующих rendered accessibility/pilot RU/EN и search/sitemap parity. [research/product-agent-os-web-prd-2026-11-05.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-prd-2026-11-05.md), [PLAN.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/PLAN.md). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
 - Short description: Согласовать текущие продуктовые статусы и критерии.
 - Technical value: Один актуальный указатель PRD/architecture/plan/registry с сохранённой историей.
 - Product value: План и документация ясно показывают, что работает, ограничено и ждёт проверки.
@@ -1478,7 +1478,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; разрешена запись плана, build не начат.
 - Depends on: `PAOS-FUNC-28`
 - Blocks: `PAOS-FUNC-10`, `PAOS-FUNC-18`, `PAOS-FUNC-19`, `PAOS-FUNC-20`, `PAOS-FUNC-24`, `PAOS-FUNC-33`
-- Source: Sources показывает шесть фиксированных Control-plane файлов; catalog читает .md/.txt, graph — отобранные исходники. Общего дерева и независимого directory API в проверенном onboarding нет. [apps/local-service/src/adapters/project-sources.ts](../../apps/local-service/src/adapters/project-sources.ts), [apps/web/src/ui/Operations.tsx](../../apps/web/src/ui/Operations.tsx), [apps/local-service/src/artifacts/service.mts](../../apps/local-service/src/artifacts/service.mts), [apps/web/src/features/graph/GraphExplorer.tsx](../../apps/web/src/features/graph/GraphExplorer.tsx). Источники прочитаны в анализе 15.11.2026; runtime не запускался.
+- Source: Sources показывает шесть фиксированных Control-plane файлов; catalog читает .md/.txt, graph — отобранные исходники. Общего дерева и независимого directory API в проверенном onboarding нет. [apps/local-service/src/adapters/project-sources.ts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/adapters/project-sources.ts), [apps/web/src/ui/Operations.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/ui/Operations.tsx), [apps/local-service/src/artifacts/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/artifacts/service.mts), [apps/web/src/features/graph/GraphExplorer.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/graph/GraphExplorer.tsx). Источники прочитаны в анализе 15.11.2026; runtime не запускался.
 - Short description: Добавить файловый браузер проекта.
 - Technical value: Независимый от графа API директорий и безопасного чтения с ленивой загрузкой, стабильными ссылками и ограниченными ответами.
 - Product value: Пользователь видит структуру выбранной папки и открывает доступные файлы, даже когда индекс не готов или язык не поддерживается.
@@ -1526,7 +1526,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; разрешена запись плана, build не начат.
 - Depends on: `PAOS-FUNC-28`
 - Blocks: `PAOS-FUNC-14`, `PAOS-FUNC-18`, `PAOS-FUNC-19`, `PAOS-FUNC-20`, `PAOS-FUNC-24`, `PAOS-FUNC-29`, `PAOS-FUNC-33`
-- Source: POST /projects коммитит регистрацию, затем ожидает inspectProjectSources/codeIndex.rebuild. Scan summary не является durable job; once receipts находятся в памяти и истекают через 10 минут. [apps/local-service/src/http/application.mts](../../apps/local-service/src/http/application.mts), [apps/local-service/src/storage/sqlite-worker.mts](../../apps/local-service/src/storage/sqlite-worker.mts), [apps/web/src/features/projects/ProjectOnboarding.tsx](../../apps/web/src/features/projects/ProjectOnboarding.tsx), [tests/web/settings-desktop.test.mts](../../tests/web/settings-desktop.test.mts). Источники прочитаны в анализе 15.11.2026; runtime не запускался.
+- Source: POST /projects коммитит регистрацию, затем ожидает inspectProjectSources/codeIndex.rebuild. Scan summary не является durable job; once receipts находятся в памяти и истекают через 10 минут. [apps/local-service/src/http/application.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/http/application.mts), [apps/local-service/src/storage/sqlite-worker.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/storage/sqlite-worker.mts), [apps/web/src/features/projects/ProjectOnboarding.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/projects/ProjectOnboarding.tsx), [tests/web/settings-desktop.test.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/tests/web/settings-desktop.test.mts). Источники прочитаны в анализе 15.11.2026; runtime не запускался.
 - Short description: Сделать сканирование управляемым фоновым заданием.
 - Technical value: Сохраняемые scan ID и этапы, bounded worker, идемпотентность, отмена, повтор и восстановление отдельно от регистрации проекта.
 - Product value: Проект доступен сразу после регистрации; пользователь видит ход сканирования, частичный результат и способ продолжить после сбоя.
@@ -1574,7 +1574,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; разрешена запись плана, build не начат.
 - Depends on: нет
 - Blocks: `PAOS-FUNC-02`, `PAOS-FUNC-10`, `PAOS-FUNC-14`, `PAOS-FUNC-26`, `PAOS-FUNC-27`, `PAOS-FUNC-29`, `PAOS-FUNC-33`
-- Source: scanCheckedSources использует жёсткий denylist и extension filter, не возвращает все пропуски и не читает .gitignore; лимит подходящих файлов может оборвать обход. Metadata, read и indexing coverage требуют раздельного контракта. [apps/local-service/src/code-index/sources.mts](../../apps/local-service/src/code-index/sources.mts), [apps/local-service/src/code-index/service.mts](../../apps/local-service/src/code-index/service.mts), [apps/local-service/src/artifacts/service.mts](../../apps/local-service/src/artifacts/service.mts), [apps/local-service/src/adapters/project-sources.ts](../../apps/local-service/src/adapters/project-sources.ts). Источники прочитаны в анализе 15.11.2026; runtime не запускался.
+- Source: scanCheckedSources использует жёсткий denylist и extension filter, не возвращает все пропуски и не читает .gitignore; лимит подходящих файлов может оборвать обход. Metadata, read и indexing coverage требуют раздельного контракта. [apps/local-service/src/code-index/sources.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/code-index/sources.mts), [apps/local-service/src/code-index/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/code-index/service.mts), [apps/local-service/src/artifacts/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/artifacts/service.mts), [apps/local-service/src/adapters/project-sources.ts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/adapters/project-sources.ts). Источники прочитаны в анализе 15.11.2026; runtime не запускался.
 - Short description: Унифицировать инвентаризацию, покрытие и исключения.
 - Technical value: Общий контракт путей, revision и coverage для directory/document/code consumers при раздельных правах listing, reading и indexing.
 - Product value: Файлы не исчезают из обзора из-за отсутствия языкового анализатора; пользователь понимает, что найдено, пропущено или недоступно.
@@ -1622,7 +1622,7 @@ Shared ownership: F28 владеет inventory contract; F26 — directory API/r
 - Execution authority: planning_only; разрешена запись плана, build не начат.
 - Depends on: `PAOS-FUNC-27`, `PAOS-FUNC-28`
 - Blocks: `PAOS-FUNC-19`, `PAOS-FUNC-20`, `PAOS-FUNC-24`
-- Source: Core analyze_workspace и run_first_project_analysis умеют discovery/first-run composition. Проверенный POST /projects не вызывает их: сейчас это только source inventory и code graph. [apps/local-service/src/http/application.mts](../../apps/local-service/src/http/application.mts), [plugins/product-agent-os/scripts/product_agent_os/discovery.py](../../plugins/product-agent-os/scripts/product_agent_os/discovery.py), [plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py](../../plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py). Источники прочитаны в анализе 15.11.2026; runtime не запускался.
+- Source: Core analyze_workspace и run_first_project_analysis умеют discovery/first-run composition. Проверенный POST /projects не вызывает их: сейчас это только source inventory и code graph. [apps/local-service/src/http/application.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/http/application.mts), [plugins/product-agent-os/scripts/product_agent_os/discovery.py](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/discovery.py), [plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py). Источники прочитаны в анализе 15.11.2026; runtime не запускался.
 - Short description: Подключить core discovery к добавлению проекта.
 - Technical value: Версионированный read-only adapter к существующему discovery/first-run analysis с provenance, ограничениями и invalidation.
 - Product value: После добавления проекта видны стек, структура, Control-plane gaps и обоснованные следующие шаги, а не только количество узлов графа.

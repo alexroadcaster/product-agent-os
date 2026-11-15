@@ -247,4 +247,4 @@ python -m mkdocs build --strict
 
 [Plugins](https://learn.chatgpt.com/docs/plugins) are available on supported desktop/CLI/web/mobile surfaces with component and authentication limits. The IDE extension does not support native plugins. Working with repository files in the IDE is a separate capability. Start a new chat/session for bundled skills after installation; verify MCP authentication and hook trust separately. See [surface matrix](../codex/surfaces.md) and [skill exposure](../agent-systems/subagents-skills.md).
 
-For per-task section updates see [contract and limits](project-formation.en.md#targeted-documentation-maintenance-after-a-task). `documentation_sync.py` reuses the compaction CAS/journal engine; the original lossless validator remains separate.
+For per-task section updates see [contract and limits](project-formation.en.md#task-documentation-maintenance). `documentation_sync.py` reuses the compaction CAS/journal engine; the original lossless validator remains separate.

@@ -422,5 +422,11 @@
     "source_checker": "passed",
     "task_matrices": "DOCS/FUNC/Web/audit/ordinary passed",
     "notes": "Task status and historical verdicts preserved. EN gaps tracked by PAOS-DOCS-16; no full-site readiness claim."
+  },
+  "follow_up": {
+    "task": "DG01",
+    "status": "docs_static_verified",
+    "evidence": "docs/planning/documentation-architecture-2026-11-15.md#dg01-results",
+    "historical_verification": "Preserved above; later repairs and translations do not rewrite original relocation hashes or receipts."
   }
 }

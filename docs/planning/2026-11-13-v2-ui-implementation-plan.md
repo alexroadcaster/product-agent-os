@@ -8,7 +8,7 @@ Source status: project-authored proposal, 13.11.2026; все задачи planne
 
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Owning design: [DESIGN.md](../../DESIGN.md)
+- Owning design: [DESIGN.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/DESIGN.md)
 - План отдельный от существующих M1–M5; их ID, статусы и зависимости не меняются.
 - Разрешённый текущий этап: исследование, концепции и план. Карточки ниже описывают будущее внедрение после отдельного запроса.
 - Функциональные non-goals: backend/API/schema/permissions/provider/queue semantics/новые продуктовые возможности. Только UI/UX, без мобильной версии.
@@ -20,7 +20,7 @@ Source status: project-authored proposal, 13.11.2026; все задачи planne
 
 Редакция V2 заменяет раннее сравнение A/B/C единым paired design Porcelain/Obsidian. Исходный план сохранён в `../2026-11-13/implementation-plan.md`; ID UI-01–UI-12 обозначают те же будущие задачи, а не новую параллельную очередь. Все карточки остаются planned.
 
-- Канонический реестр макетов: [coverage.json](../../design/2026-11-13-v2/coverage.json). Для UI-01 каждый source-owned tab/action сопоставляется с actual app baseline; proposed organization не выдаётся за существующий route.
+- Канонический реестр макетов: [coverage.json](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v2/coverage.json). Для UI-01 каждый source-owned tab/action сопоставляется с actual app baseline; proposed organization не выдаётся за существующий route.
 - UI-02/03: обе темы, 14 назначений, token parity, desktop 1280/1440/1920; review controls альбома не попадают в приложение.
 - UI-04: список/доска; все 8 вкладок задачи; create/move/delete; components/versions/release policy/board/archive.
 - UI-05/06: general/project/connection/shutdown; assignments, states, transitions, diagram/recipes, publication, migration, versions/archive; execution steps/recovery и queue.

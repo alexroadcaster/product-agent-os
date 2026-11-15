@@ -7,7 +7,7 @@ Source status: `official + experiment`
 
 Проектный default hook принимает создание и обновление явно запрошенного отчёта без отдельного grant или изменения hook/trust: собственный host session marker содержит `work_type: report_authoring` и точный `report_output_path`. Marker фиксирует scope, а не доказывает разрешение пользователя. Один literal Add/Update patch, чтение перед обновлением и согласование конфликтов; protected paths, implementation/instruction directories, aliases, foreign/stale/terminal state и смешанные patches остаются запрещены. Sandbox и host approvals сохраняются.
 
-Обычное распознанное чтение не требует marker; поддерживаются Windows paths, directory-prefixed wildcards и ограниченные цепочки `rg`/`Select-String`/`Select-Object`. Начальный некавыченный glob может раскрыться в executable option на POSIX: используйте префикс каталога или quoted `--glob`. Legacy pinned routes сохранены с общим read classifier. Это проектный контракт, не встроенная возможность Codex. [Evidence и границы проверки](../../research/product-agent-os-report-read-fix-2026-11-15.md).
+Обычное распознанное чтение не требует marker; поддерживаются Windows paths, directory-prefixed wildcards и ограниченные цепочки `rg`/`Select-String`/`Select-Object`. Начальный некавыченный glob может раскрыться в executable option на POSIX: используйте префикс каталога или quoted `--glob`. Legacy pinned routes сохранены с общим read classifier. Это проектный контракт, не встроенная возможность Codex. [Evidence и границы проверки](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-report-read-fix-2026-11-15.md).
 
 ## GAP-05: точное разрешение на отчёт — 05.11.2026
 

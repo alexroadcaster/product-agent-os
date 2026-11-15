@@ -365,4 +365,4 @@ python plugins\product-agent-os\scripts\run_fixture_eval.py
 
 [Plugins](https://learn.chatgpt.com/docs/plugins) доступны на поддерживаемых desktop/CLI/web/mobile поверхностях с ограничениями компонентов и auth. IDE extension не поддерживает native plugins. Работа с файлами проекта в IDE — отдельная возможность. После установки начинайте новый chat/session для bundled skills; MCP auth и hook trust проверяйте отдельно. Подробнее: [surface matrix](../codex/surfaces.md), [skill exposure](../agent-systems/subagents-skills.md).
 
-Точечное обновление после каждой задачи: [контракт и ограничения](project-formation.md#точечное-сопровождение-после-задачи). Реализация `documentation_sync.py` переиспользует CAS/journal compaction engine; исходный lossless validator остаётся отдельным.
+Точечное обновление после каждой задачи: [контракт и ограничения](project-formation.md#task-documentation-maintenance). Реализация `documentation_sync.py` переиспользует CAS/journal compaction engine; исходный lossless validator остаётся отдельным.

@@ -2,6 +2,8 @@
 
 ## Текущий выбор проверок — 15.11.2026
 
+DG01: [результаты repair](docs/planning/documentation-architecture-2026-11-15.md#dg01-results) — source/archive/site/matrix/strict build и HTML links verified; translation preservation regression находится в `docs_archive_checks.py`. Текущий маршрут ниже не расширен.
+
 Текущая реализация маршрута и focused evidence: [scoped verification](research/product-agent-os-scoped-verification-2026-11-15.md). Для отдельного полного fixture run используйте `python -B plugins/product-agent-os/scripts/run_fixture_eval.py --summary`; после full discovery повтор не нужен.
 
 Этот раздел — единственный владелец текущего маршрута проверок. Выбор зависит от изменённого контракта и его потребителей. Сам факт изменения Markdown, control-plane файла или шаблона не запускает общую проверку продукта. Датированные receipts, прежние списки обязательных gates и batch-specific команды ниже сохраняют provenance, но не расширяют этот маршрут.

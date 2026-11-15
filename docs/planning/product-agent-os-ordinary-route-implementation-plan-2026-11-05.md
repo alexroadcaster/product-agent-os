@@ -256,14 +256,14 @@ Review findings resolved: executable-seam adapter invariant, malformed enum type
 
 ## Источники и актуальность
 
-- [Отчёт с IMP-01–IMP-11](../../research/product-agent-os-docs-implementation-gap-analysis-2026-11-05.md).
+- [Отчёт с IMP-01–IMP-11](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-docs-implementation-gap-analysis-2026-11-05.md).
 - [Текущий B45 task group](batch45-code-quality-runtime-recovery-task-group.json): владелец machine status и зависимостей T23–T34.
 - [Последний implementation/evidence pointer B45](2026-08-17-product-agent-os-loop-remediation.md).
 - [T25–T27, compact authoring](2026-08-11-batch45-s9-b-compact-authoring-runtime.md).
 - [B42 compliance matrix](../superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json).
 - [GPT-6/lifecycle receipts](gpt6-documentation-refresh-task-group.json).
-- [PLAN](../../PLAN.md), [RUNLOG](../../RUNLOG.md), [TEST](../../TEST.md), [EVALS](../../EVALS.md).
-- [Канонический implementation-planner](../../plugins/product-agent-os/skills/implementation-planner/SKILL.md).
+- [PLAN](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/PLAN.md), [RUNLOG](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/RUNLOG.md), [TEST](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/TEST.md), [EVALS](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/EVALS.md).
+- [Канонический implementation-planner](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/skills/implementation-planner/SKILL.md).
 
 Текущие code seams повторно прочитаны при составлении плана: templates/infrastructure, state/context_loader/routes/cli, contracts/guards, T26/T27 inputs и B45 task group. Числа исторических тестов ниже — receipts предыдущей реализации, не новые результаты этого запуска. Внешние утверждения опираются на проверку официальных источников в отчёте от 2026-11-05; новый внешний research в планировании не выполнялся. При реализации format/host-sensitive совместимости источники нужно перепроверить.
 

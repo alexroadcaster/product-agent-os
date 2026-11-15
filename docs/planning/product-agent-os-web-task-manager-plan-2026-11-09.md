@@ -2,20 +2,20 @@
 
 Дополнение 15.11.2026: [матрица PAOS-FUNC-01–34 и семь групп реализации](functional-remediation-2026-11-15.md) / [JSON](functional-remediation-2026-11-15.json): 34 planned + 3 M5 reference-only. Группы: стабильность/contracts; PoC; Files/scan/discovery; performance/code/DB; agents/documents/autonomy; recovery/distribution; E2E/human/docs. Start gates — dependencies задач, shared wiring последовательно; Files не ждёт graph/DB, F33 идёт независимо от F14, F25 сопровождает поставку. Исходные 56 карточек, 12 групп, статусы и оценки сохранены. Только планирование, PoC/build не начаты.
 
-Текущий M2,12-11-2026: **26/26 implemented в local App-active technical scope**. Последние PAOS-0019/0020/0021/0022/0027: skills по требованиям/описанию, scoped code index/graph/impact, документы/checks/search. Web398/398, browser37, actual App29/2jobs, independent7findings fixed. [Текущие проверки и пределы](../../research/product-agent-os-web-m2c-execution-2026-11-12.md), [results](../../research/product-agent-os-web-m2c-results-2026-11-12.json). Все56 карточек/12групп/estimates сохранены; M3/T1, human/commercial/release отдельно. Ниже dated receipts — исторические срезы, не текущая очередь.
+Текущий M2,12-11-2026: **26/26 implemented в local App-active technical scope**. Последние PAOS-0019/0020/0021/0022/0027: skills по требованиям/описанию, scoped code index/graph/impact, документы/checks/search. Web398/398, browser37, actual App29/2jobs, independent7findings fixed. [Текущие проверки и пределы](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2c-execution-2026-11-12.md), [results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2c-results-2026-11-12.json). Все56 карточек/12групп/estimates сохранены; M3/T1, human/commercial/release отдельно. Ниже dated receipts — исторические срезы, не текущая очередь.
 
 
-Текущий M2, 11-11-2026: **10/26 implemented** — PAOS-0031/0032/0033/0005/0006/0007/0008/0034/0038/0035, только выбранная владельцем очередь. Остальные16, включая PAOS-0036, planned. Web345/345, browser88, actual App/native27 и independent closed_allowed; [проверки и пределы](../../research/product-agent-os-web-m2-execution-2026-11-11.md), [results](../../research/product-agent-os-web-m2-results-2026-11-11.json). Полные56 cards/12groups/estimates сохранены. Ниже M1 receipts и старые срезы сохраняют исходный provenance; commercial/human/release отдельно.
+Текущий M2, 11-11-2026: **10/26 implemented** — PAOS-0031/0032/0033/0005/0006/0007/0008/0034/0038/0035, только выбранная владельцем очередь. Остальные16, включая PAOS-0036, planned. Web345/345, browser88, actual App/native27 и independent closed_allowed; [проверки и пределы](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2-execution-2026-11-11.md), [results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2-results-2026-11-11.json). Полные56 cards/12groups/estimates сохранены. Ниже M1 receipts и старые срезы сохраняют исходный provenance; commercial/human/release отдельно.
 
 Актуализация 11-11-2026: owner-default runtime теперь Codex App agents без API key. Нормативное уточнение App-dependent acceptance — в addendum в конце этого файла; последовательность 56 задач, 12 групп и оценки сохранены.
 
-Текущее техническое состояние M1: **18/18 implemented**, включая PAOS-0042, PAOS-0043, PAOS-0044 и PAOS-0045. Применяется App-active контракт PRD §17.7 / architecture §21.10: actual App/native105, task39, data25, headless33, Web306 и independent closed_allowed. [Приёмка и предел утверждений](../../research/product-agent-os-web-m1-execution-2026-11-11.md#app-mediated-native-broker--техническая-приёмка-m1). Более ранние 14/3/1 и blocked statements ниже — исторические срезы, не текущая очередь. PAOS-0046 ранний review выполнен; следующая реализация — локальная M2 в авторизованном чате. Human/commercial/release acceptance отдельно.
+Текущее техническое состояние M1: **18/18 implemented**, включая PAOS-0042, PAOS-0043, PAOS-0044 и PAOS-0045. Применяется App-active контракт PRD §17.7 / architecture §21.10: actual App/native105, task39, data25, headless33, Web306 и independent closed_allowed. [Приёмка и предел утверждений](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-execution-2026-11-11.md#app-mediated-native-broker--%D1%82%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D0%BF%D1%80%D0%B8%D1%91%D0%BC%D0%BA%D0%B0-m1). Более ранние 14/3/1 и blocked statements ниже — исторические срезы, не текущая очередь. PAOS-0046 ранний review выполнен; следующая реализация — локальная M2 в авторизованном чате. Human/commercial/release acceptance отдельно.
 
 Source status: project-authored / proposed / requirements-backed. Дата: 2026-11-09.
 
-Статус очереди: **order_approved / implementation_started / acceptance_partial**. Native MXC write/deny 11 ноября снял прежний Windows blocker PAOS-0054; local engineering route PAOS-0039 отделён от commercial gates. Реализуются все локальные поверхности M1 и исполняемый пакет PAOS-0045. [Текущий execution report](../../research/product-agent-os-web-m1-execution-2026-11-11.md) отделяет native/headless/SQLite evidence от фактических browser/App-agent проверок и оставшихся runtime/provider gates. Статусы и фактическое время хранятся в карточках и JSON. При расхождении приоритет имеют PRD §17, architecture §21 и актуальная очередь v0.9.
+Статус очереди: **order_approved / implementation_started / acceptance_partial**. Native MXC write/deny 11 ноября снял прежний Windows blocker PAOS-0054; local engineering route PAOS-0039 отделён от commercial gates. Реализуются все локальные поверхности M1 и исполняемый пакет PAOS-0045. [Текущий execution report](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-execution-2026-11-11.md) отделяет native/headless/SQLite evidence от фактических browser/App-agent проверок и оставшихся runtime/provider gates. Статусы и фактическое время хранятся в карточках и JSON. При расхождении приоритет имеют PRD §17, architecture §21 и актуальная очередь v0.9.
 
-Связи: [PRD](../../research/product-agent-os-web-prd-2026-11-05.md), [архитектура](../../research/product-agent-os-web-architecture-2026-11-05.md), [экраны](../../research/product-agent-os-web-task-manager-screens-2026-11-09.md), [машинные группы](product-agent-os-web-task-manager-task-group-2026-11-09.json).
+Связи: [PRD](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-prd-2026-11-05.md), [архитектура](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-architecture-2026-11-05.md), [экраны](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-task-manager-screens-2026-11-09.md), [машинные группы](product-agent-os-web-task-manager-task-group-2026-11-09.json).
 
 
 
@@ -158,11 +158,11 @@ Source status: owner-approved planning change, 2026-11-13; implementation_not_st
 | DATA-AC-01–03 | S29 preview/mapping/freeze/receipt; unsupported data и conflict не теряются | 0050/0056; 0045 | General merge editor M2 |
 | DATA-AC-04/05 | S30 backup/restore/coverage; S31 FTS scopes/partial/purge | 0051/0049; 0045 | Semantic retrieval T1 |
 
-Текущие receipts — раздел «Проверка очереди v0.8» ниже. [Аудит §9.2](../../research/product-agent-os-web-m1-final-audit-2026-11-10.md#92-текущие-проверки-согласования) сохраняет исторические проверки v0.7; это не evidence исполнения задач.
+Текущие receipts — раздел «Проверка очереди v0.8» ниже. [Аудит §9.2](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-final-audit-2026-11-10.md#92-%D1%82%D0%B5%D0%BA%D1%83%D1%89%D0%B8%D0%B5-%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%BA%D0%B8-%D1%81%D0%BE%D0%B3%D0%BB%D0%B0%D1%81%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F) сохраняет исторические проверки v0.7; это не evidence исполнения задач.
 
 Группы/границы файлов — в карточках. Общими packages/contracts владеет 0054 owner до handoff; 0048 storage owner, 0055 domain bridge owner, 0042 runtime owner применяют только согласованный contract. Без перекрывающейся записи общих файлов. Документационная правка не запускает перечисленных агентов.
 
-Re-entry gate: 0001 открыт для потребителей подтверждённого project binding. 2026-11-11 native MXC и именованный профиль подтвердили write/deny. По уточнению владельца локальная реализация storage/UI/domain продолжается с заблокированной активацией runtime до полного manifest. При отсутствии обязательной capability использовать design issue. [Наблюдения изолированных прогонов](../../research/product-agent-os-web-m1-initial-qualification-2026-11-10.md) отделены от runtime/browser/commercial приёмки.
+Re-entry gate: 0001 открыт для потребителей подтверждённого project binding. 2026-11-11 native MXC и именованный профиль подтвердили write/deny. По уточнению владельца локальная реализация storage/UI/domain продолжается с заблокированной активацией runtime до полного manifest. При отсутствии обязательной capability использовать design issue. [Наблюдения изолированных прогонов](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-initial-qualification-2026-11-10.md) отделены от runtime/browser/commercial приёмки.
 
 ### Проверка очереди v0.8
 
@@ -202,7 +202,7 @@ G12 ownership: 0048 владеет storage repository/migrations; 0049 — searc
 
 Дополнительные оценки: local G12 60 engineering hours (16+12+20+12), team 40 (24+16). Это rough estimates для планирования, не календарное обещание и не полная стоимость team edition: hosting/RBAC/remote runtime и production operations требуют уточнения до старта. Actual у всех 53 задач null. Этапы не суммируются механически при пересекающейся domain работе.
 
-Трассировка: 0048 → ST-01–04/09; 0049 → ST-06/12; 0050 → ST-02/03/07; 0051 → ST-08/12; 0052 → ST-10; 0053 → ST-11. ST-05 закрывается 0042/0043/0044 и существующими session tasks с новым persistence. Schema/authority — [архитектура §20](../../research/product-agent-os-web-architecture-2026-11-05.md#20-хранение-схема-и-миграция--v06), product acceptance — [PRD §16](../../research/product-agent-os-web-prd-2026-11-05.md#16-хранение-и-перенос-данных--v06).
+Трассировка: 0048 → ST-01–04/09; 0049 → ST-06/12; 0050 → ST-02/03/07; 0051 → ST-08/12; 0052 → ST-10; 0053 → ST-11. ST-05 закрывается 0042/0043/0044 и существующими session tasks с новым persistence. Schema/authority — [архитектура §20](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-architecture-2026-11-05.md#20-%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5-%D1%81%D1%85%D0%B5%D0%BC%D0%B0-%D0%B8-%D0%BC%D0%B8%D0%B3%D1%80%D0%B0%D1%86%D0%B8%D1%8F--v06), product acceptance — [PRD §16](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-prd-2026-11-05.md#16-%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B8-%D0%BF%D0%B5%D1%80%D0%B5%D0%BD%D0%BE%D1%81-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85--v06).
 
 Rollback будущей реализации: backup до schema/cutover, no blind downgrade, post-cutover deltas reconcile; source/DB switch только по authority_epoch. Rollback текущего authoring — собственные изменения документов/planning metadata, без отмены чужих hunks. REQUIREMENTS/PLAN/TEST/RUNLOG и source registries получают compact pointers; EVALS и prod_test not_applicable: рубрики/исторические проверки не меняются.
 
@@ -229,7 +229,7 @@ Closure: documentation_updated / partially_verified из-за общего stric
 
 ## UX v0.5: детализация сессий — 2026-11-09
 
-Source status: project-authored / proposed UX. [Wireframes WF-01–16](../../research/product-agent-os-web-m1-wireframes-2026-11-09.md) и [каталог S01–S28](../../research/product-agent-os-web-task-manager-screens-2026-11-09.md) — текущая структура интерфейса. UX-AC-01–18 в §13 wireframes расширяют acceptance существующих задач; tasks, estimates и dependencies JSON не изменяются.
+Source status: project-authored / proposed UX. [Wireframes WF-01–16](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-wireframes-2026-11-09.md) и [каталог S01–S28](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-task-manager-screens-2026-11-09.md) — текущая структура интерфейса. UX-AC-01–18 в §13 wireframes расширяют acceptance существующих задач; tasks, estimates и dependencies JSON не изменяются.
 
 | Работы | Существующие задачи | Результат будущего исполнения |
 | --- | --- | --- |
@@ -243,7 +243,7 @@ Source status: project-authored / proposed UX. [Wireframes WF-01–16](../../res
 
 ## Историческая очередь v0.4: единое окно
 
-Source status: user-selected direction / proposed implementation, 2026-11-09. Этот раздел заменяет очередность TM0–TM4 v0.3; старые receipts и stage descriptions ниже исторические. Все 47 задач в 11 группах planned; разработка не начиналась. G11 добавляет PAOS-0039–0047. [PRD SW-01–12](../../research/product-agent-os-web-prd-2026-11-05.md#15-единое-окно-и-codex-app-server--v04) и [AUTH-G1–G6](../../research/product-agent-os-web-auth-commercial-2026-11-09.md) — owning acceptance.
+Source status: user-selected direction / proposed implementation, 2026-11-09. Этот раздел заменяет очередность TM0–TM4 v0.3; старые receipts и stage descriptions ниже исторические. Все 47 задач в 11 группах planned; разработка не начиналась. G11 добавляет PAOS-0039–0047. [PRD SW-01–12](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-prd-2026-11-05.md#15-%D0%B5%D0%B4%D0%B8%D0%BD%D0%BE%D0%B5-%D0%BE%D0%BA%D0%BD%D0%BE-%D0%B8-codex-app-server--v04) и [AUTH-G1–G6](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-auth-commercial-2026-11-09.md) — owning acceptance.
 
 | Этап | Задачи / результат | Gate и владелец |
 | --- | --- | --- |
@@ -410,7 +410,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Сервис проверяет canonical root и identity каталога, затем возвращает относительный coverage.
 - Product value delivered: Контракт различает отсутствующий источник, исключённую ссылку и неподключённую runtime history.
 - Actual implementation date and time: 10-11-2026 23:01
-- Verification evidence: 3/3 scoped adapter tests. App Server вернул 1/1/0/2 для Alpha/Beta/Empty/All по synthetic persisted CLI rollout; `thread/read` подтвердил persisted path и правильный cwd. [Детали](../../research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Verification evidence: 3/3 scoped adapter tests. App Server вернул 1/1/0/2 для Alpha/Beta/Empty/All по synthetic persisted CLI rollout; `thread/read` подтвердил persisted path и правильный cwd. [Детали](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
 - Residual risks: Только первая страница поддерживаемых persisted источников, статус partial. Свежая `vscode` сессия с пустым preview не отображается; UI и реальные профили отдельно.
 - Follow-up: PAOS-0042 подключает transport, PAOS-0043/0045 проверяют UI и сквозной путь.
 
@@ -545,7 +545,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Реальные browser geometry/hit/focus/contrast/native zoom checks подтверждают acceptance.
 - Product value delivered: Длинный текст сохраняет доступность действий; выбор темы и языка переживает reload.
 - Actual implementation date and time: 11-11-2026 11:57
-- Verification evidence: Текущий follow-up: Web197/197 no skips; browser669; autonomous launcher56; strict/build35 exit0. Native BVldIt closed-App25 samples, source hashes совпадают; owner accepted=false сохранён. Это разные прогоны. [Execution report](../../research/product-agent-os-web-m1-execution-2026-11-11.md).
+- Verification evidence: Текущий follow-up: Web197/197 no skips; browser669; autonomous launcher56; strict/build35 exit0. Native BVldIt closed-App25 samples, source hashes совпадают; owner accepted=false сохранён. Это разные прогоны. [Execution report](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-execution-2026-11-11.md).
 - Residual risks: Обязательных gaps PAOS-0004 не осталось; полный WCAG audit и provider/M1 acceptance не заявлены.
 - Follow-up: PAOS-0040 technical implemented; далее0042/0043/0044 и0045.
 
@@ -590,7 +590,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Фильтры, группировка, сохранённый вид и доступная смена статуса; транзакционные guards и regression checks реализованы.
 - Product value delivered: Пользователь быстро находит нужную работу и видит, на каком этапе находится каждая задача.
 - Actual implementation date and time: 11-11-2026 22:40
-- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](../../research/product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](../../research/product-agent-os-web-m2-results-2026-11-11.json).
+- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2-results-2026-11-11.json).
 - Residual risks: local App-active technical scope; active consumer required, sandbox только PAOS-mediated commands. Human/commercial/release acceptance и AUTH-G1–G6 отдельно; narrow Markdown subset обозначен в UI.
 - Follow-up: Остальные 16 M2 tasks, включая PAOS-0036, остаются planned; commercial repeat review PAOS-0030. Эта карточка не закрывает весь M2.
 
@@ -635,7 +635,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Полная постановка задачи и понятная техническая/продуктовая ценность; транзакционные guards и regression checks реализованы.
 - Product value delivered: Пользователь понимает пользу задачи, формулирует ожидаемый результат и управляет её выполнением.
 - Actual implementation date and time: 11-11-2026 22:40
-- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](../../research/product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](../../research/product-agent-os-web-m2-results-2026-11-11.json).
+- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2-results-2026-11-11.json).
 - Residual risks: local App-active technical scope; active consumer required, sandbox только PAOS-mediated commands. Human/commercial/release acceptance и AUTH-G1–G6 отдельно; narrow Markdown subset обозначен в UI.
 - Follow-up: Остальные 16 M2 tasks, включая PAOS-0036, остаются planned; commercial repeat review PAOS-0030. Эта карточка не закрывает весь M2.
 
@@ -680,7 +680,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Связать планируемые/фактические изменения, агентские runs и доказательства; транзакционные guards и regression checks реализованы.
 - Product value delivered: Пользователь видит, кто и что изменит, и открывает подтверждающий документ из задачи.
 - Actual implementation date and time: 11-11-2026 22:40
-- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](../../research/product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](../../research/product-agent-os-web-m2-results-2026-11-11.json).
+- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2-results-2026-11-11.json).
 - Residual risks: local App-active technical scope; active consumer required, sandbox только PAOS-mediated commands. Human/commercial/release acceptance и AUTH-G1–G6 отдельно; narrow Markdown subset обозначен в UI.
 - Follow-up: Остальные 16 M2 tasks, включая PAOS-0036, остаются planned; commercial repeat review PAOS-0030. Эта карточка не закрывает весь M2.
 
@@ -725,7 +725,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Проверки и решение пользователя определяют завершение; транзакционные guards и regression checks реализованы.
 - Product value delivered: Пользователь принимает результат по проверяемым условиям и видит незакрытые требования.
 - Actual implementation date and time: 11-11-2026 22:40
-- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](../../research/product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](../../research/product-agent-os-web-m2-results-2026-11-11.json).
+- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2-results-2026-11-11.json).
 - Residual risks: local App-active technical scope; active consumer required, sandbox только PAOS-mediated commands. Human/commercial/release acceptance и AUTH-G1–G6 отдельно; narrow Markdown subset обозначен в UI.
 - Follow-up: Остальные 16 M2 tasks, включая PAOS-0036, остаются planned; commercial repeat review PAOS-0030. Эта карточка не закрывает весь M2.
 
@@ -770,7 +770,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Постраничная история проекта с archived/fork/subagent связями; source contracts и guards проверены.
 - Product value delivered: Пользователь возвращается к любому доступному обсуждению проекта, включая архив и дочерние сессии.
 - Actual implementation date and time: 12-11-2026 09:53
-- Verification evidence: Web375/375 skip0; browser51; actual App/native49; build/typecheck, negative-case regressions и independent source review + root closed_allowed. [Run evidence](../../research/product-agent-os-web-m2b-execution-2026-11-12.md), [results](../../research/product-agent-os-web-m2b-results-2026-11-12.json).
+- Verification evidence: Web375/375 skip0; browser51; actual App/native49; build/typecheck, negative-case regressions и independent source review + root closed_allowed. [Run evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2b-execution-2026-11-12.md), [results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2b-results-2026-11-12.json).
 - Residual risks: Local App-active technical scope; consumer required. History partial for unavailable sources, cursor15min; native loadedVersion unknown, remote discovery unavailable; M3/human/commercial/release отдельно.
 - Follow-up: M2 technical21/26; remaining PAOS-0019/0020/0021/0022/0027 planned. AUTH-G1–G6/PAOS-0030 и human/release не закрыты.
 
@@ -815,7 +815,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Полный доступный диалог с авторами, задачами и сообщениями агентов; source contracts и guards проверены.
 - Product value delivered: Пользователь читает обсуждение целиком и переходит от сообщения к соответствующей задаче или файлу.
 - Actual implementation date and time: 12-11-2026 09:53
-- Verification evidence: Web375/375 skip0; browser51; actual App/native49; build/typecheck, negative-case regressions и independent source review + root closed_allowed. [Run evidence](../../research/product-agent-os-web-m2b-execution-2026-11-12.md), [results](../../research/product-agent-os-web-m2b-results-2026-11-12.json).
+- Verification evidence: Web375/375 skip0; browser51; actual App/native49; build/typecheck, negative-case regressions и independent source review + root closed_allowed. [Run evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2b-execution-2026-11-12.md), [results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2b-results-2026-11-12.json).
 - Residual risks: Local App-active technical scope; consumer required. History partial for unavailable sources, cursor15min; native loadedVersion unknown, remote discovery unavailable; M3/human/commercial/release отдельно.
 - Follow-up: M2 technical21/26; remaining PAOS-0019/0020/0021/0022/0027 planned. AUTH-G1–G6/PAOS-0030 и human/release не закрыты.
 
@@ -860,7 +860,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Искать историю без раскрытия секретов и чужих проектов; source contracts и guards проверены.
 - Product value delivered: Пользователь находит нужное сообщение без раскрытия чужих проектов и чувствительных данных.
 - Actual implementation date and time: 12-11-2026 09:53
-- Verification evidence: Web375/375 skip0; browser51; actual App/native49; build/typecheck, negative-case regressions и independent source review + root closed_allowed. [Run evidence](../../research/product-agent-os-web-m2b-execution-2026-11-12.md), [results](../../research/product-agent-os-web-m2b-results-2026-11-12.json).
+- Verification evidence: Web375/375 skip0; browser51; actual App/native49; build/typecheck, negative-case regressions и independent source review + root closed_allowed. [Run evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2b-execution-2026-11-12.md), [results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2b-results-2026-11-12.json).
 - Residual risks: Local App-active technical scope; consumer required. History partial for unavailable sources, cursor15min; native loadedVersion unknown, remote discovery unavailable; M3/human/commercial/release отдельно.
 - Follow-up: M2 technical21/26; remaining PAOS-0019/0020/0021/0022/0027 planned. AUTH-G1–G6/PAOS-0030 и human/release не закрыты.
 
@@ -905,7 +905,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Инструкции, источник, действующая версия и назначенные задачи; source contracts и guards проверены.
 - Product value delivered: Пользователь понимает назначение каждого агента и инструкции, по которым он работает.
 - Actual implementation date and time: 12-11-2026 09:53
-- Verification evidence: Web375/375 skip0; browser51; actual App/native49; build/typecheck, negative-case regressions и independent source review + root closed_allowed. [Run evidence](../../research/product-agent-os-web-m2b-execution-2026-11-12.md), [results](../../research/product-agent-os-web-m2b-results-2026-11-12.json).
+- Verification evidence: Web375/375 skip0; browser51; actual App/native49; build/typecheck, negative-case regressions и independent source review + root closed_allowed. [Run evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2b-execution-2026-11-12.md), [results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2b-results-2026-11-12.json).
 - Residual risks: Local App-active technical scope; consumer required. History partial for unavailable sources, cursor15min; native loadedVersion unknown, remote discovery unavailable; M3/human/commercial/release отдельно.
 - Follow-up: M2 technical21/26; remaining PAOS-0019/0020/0021/0022/0027 planned. AUTH-G1–G6/PAOS-0030 и human/release не закрыты.
 
@@ -950,7 +950,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Ручной CRUD с diff, проверкой, архивом и восстановлением; source contracts и guards проверены.
 - Product value delivered: Пользователь меняет состав команды и инструкции с возможностью сравнения и восстановления.
 - Actual implementation date and time: 12-11-2026 09:53
-- Verification evidence: Web375/375 skip0; browser51; actual App/native49; build/typecheck, negative-case regressions и independent source review + root closed_allowed. [Run evidence](../../research/product-agent-os-web-m2b-execution-2026-11-12.md), [results](../../research/product-agent-os-web-m2b-results-2026-11-12.json).
+- Verification evidence: Web375/375 skip0; browser51; actual App/native49; build/typecheck, negative-case regressions и independent source review + root closed_allowed. [Run evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2b-execution-2026-11-12.md), [results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2b-results-2026-11-12.json).
 - Residual risks: Local App-active technical scope; consumer required. History partial for unavailable sources, cursor15min; native loadedVersion unknown, remote discovery unavailable; M3/human/commercial/release отдельно.
 - Follow-up: M2 technical21/26; remaining PAOS-0019/0020/0021/0022/0027 planned. AUTH-G1–G6/PAOS-0030 и human/release не закрыты.
 
@@ -995,7 +995,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Разобрать intent create/update/archive/delete, разрешить однозначный target и применить общий versioned proposal contract; source contracts и guards проверены.
 - Product value delivered: Пользователь описывает нужное изменение команды обычным языком и проверяет последствия до применения.
 - Actual implementation date and time: 12-11-2026 09:53
-- Verification evidence: Web375/375 skip0; browser51; actual App/native49; build/typecheck, negative-case regressions и independent source review + root closed_allowed. [Run evidence](../../research/product-agent-os-web-m2b-execution-2026-11-12.md), [results](../../research/product-agent-os-web-m2b-results-2026-11-12.json).
+- Verification evidence: Web375/375 skip0; browser51; actual App/native49; build/typecheck, negative-case regressions и independent source review + root closed_allowed. [Run evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2b-execution-2026-11-12.md), [results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2b-results-2026-11-12.json).
 - Residual risks: Local App-active technical scope; consumer required. History partial for unavailable sources, cursor15min; native loadedVersion unknown, remote discovery unavailable; M3/human/commercial/release отдельно.
 - Follow-up: M2 technical21/26; remaining PAOS-0019/0020/0021/0022/0027 planned. AUTH-G1–G6/PAOS-0030 и human/release не закрыты.
 
@@ -1040,7 +1040,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Наблюдать частоту, исходы, активные и прошлые задачи; source contracts и guards проверены.
 - Product value delivered: Пользователь видит, как часто агент применяется, над чем работает и чем закончились его задачи.
 - Actual implementation date and time: 12-11-2026 09:53
-- Verification evidence: Web375/375 skip0; browser51; actual App/native49; build/typecheck, negative-case regressions и independent source review + root closed_allowed. [Run evidence](../../research/product-agent-os-web-m2b-execution-2026-11-12.md), [results](../../research/product-agent-os-web-m2b-results-2026-11-12.json).
+- Verification evidence: Web375/375 skip0; browser51; actual App/native49; build/typecheck, negative-case regressions и independent source review + root closed_allowed. [Run evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2b-execution-2026-11-12.md), [results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2b-results-2026-11-12.json).
 - Residual risks: Local App-active technical scope; consumer required. History partial for unavailable sources, cursor15min; native loadedVersion unknown, remote discovery unavailable; M3/human/commercial/release отдельно.
 - Follow-up: M2 technical21/26; remaining PAOS-0019/0020/0021/0022/0027 planned. AUTH-G1–G6/PAOS-0030 и human/release не закрыты.
 
@@ -1085,7 +1085,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Показать назначение, источник, версию, зависимости и использование; source contracts и guards проверены.
 - Product value delivered: Пользователь находит доступные навыки и понимает, какие агенты их используют.
 - Actual implementation date and time: 12-11-2026 09:53
-- Verification evidence: Web375/375 skip0; browser51; actual App/native49; build/typecheck, negative-case regressions и independent source review + root closed_allowed. [Run evidence](../../research/product-agent-os-web-m2b-execution-2026-11-12.md), [results](../../research/product-agent-os-web-m2b-results-2026-11-12.json).
+- Verification evidence: Web375/375 skip0; browser51; actual App/native49; build/typecheck, negative-case regressions и independent source review + root closed_allowed. [Run evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2b-execution-2026-11-12.md), [results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2b-results-2026-11-12.json).
 - Residual risks: Local App-active technical scope; consumer required. History partial for unavailable sources, cursor15min; native loadedVersion unknown, remote discovery unavailable; M3/human/commercial/release отдельно.
 - Follow-up: M2 technical21/26; remaining PAOS-0019/0020/0021/0022/0027 planned. AUTH-G1–G6/PAOS-0030 и human/release не закрыты.
 
@@ -1130,7 +1130,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Создавать и менять project-owned skills с проверкой структуры; source contracts и guards проверены.
 - Product value delivered: Пользователь адаптирует навык проекта и возвращается к прежней версии при ошибке.
 - Actual implementation date and time: 12-11-2026 09:53
-- Verification evidence: Web375/375 skip0; browser51; actual App/native49; build/typecheck, negative-case regressions и independent source review + root closed_allowed. [Run evidence](../../research/product-agent-os-web-m2b-execution-2026-11-12.md), [results](../../research/product-agent-os-web-m2b-results-2026-11-12.json).
+- Verification evidence: Web375/375 skip0; browser51; actual App/native49; build/typecheck, negative-case regressions и independent source review + root closed_allowed. [Run evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2b-execution-2026-11-12.md), [results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2b-results-2026-11-12.json).
 - Residual risks: Local App-active technical scope; consumer required. History partial for unavailable sources, cursor15min; native loadedVersion unknown, remote discovery unavailable; M3/human/commercial/release отдельно.
 - Follow-up: M2 technical21/26; remaining PAOS-0019/0020/0021/0022/0027 planned. AUTH-G1–G6/PAOS-0030 и human/release не закрыты.
 
@@ -1175,7 +1175,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Единый выбор локального источника или найденного скилла; source contracts и guards проверены.
 - Product value delivered: Пользователь добавляет навык из папки или поиска, понимая его происхождение до установки.
 - Actual implementation date and time: 12-11-2026 09:53
-- Verification evidence: Web375/375 skip0; browser51; actual App/native49; build/typecheck, negative-case regressions и independent source review + root closed_allowed. [Run evidence](../../research/product-agent-os-web-m2b-execution-2026-11-12.md), [results](../../research/product-agent-os-web-m2b-results-2026-11-12.json).
+- Verification evidence: Web375/375 skip0; browser51; actual App/native49; build/typecheck, negative-case regressions и independent source review + root closed_allowed. [Run evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2b-execution-2026-11-12.md), [results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2b-results-2026-11-12.json).
 - Residual risks: Local App-active technical scope; consumer required. History partial for unavailable sources, cursor15min; native loadedVersion unknown, remote discovery unavailable; M3/human/commercial/release отдельно.
 - Follow-up: M2 technical21/26; remaining PAOS-0019/0020/0021/0022/0027 planned. AUTH-G1–G6/PAOS-0030 и human/release не закрыты.
 
@@ -1220,7 +1220,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Предложить недостающие навыки проекта и сгенерировать draft; bounded source/authority/revision contracts проверены.
 - Product value delivered: Пользователь получает недостающие навыки из требований проекта или собственного описания.
 - Actual implementation date and time: 12-11-2026 11:38
-- Verification evidence: Web398/398 skip0; focused generation/artifacts10 и graph13; browser37; actual App planning29/2jobs; native exact cached candidate/default3modes; build/typecheck, Python1450 skip1, fixtures91/transcripts26, independent7findings fixed + root verification. [Evidence](../../research/product-agent-os-web-m2c-execution-2026-11-12.md), [results](../../research/product-agent-os-web-m2c-results-2026-11-12.json).
+- Verification evidence: Web398/398 skip0; focused generation/artifacts10 и graph13; browser37; actual App planning29/2jobs; native exact cached candidate/default3modes; build/typecheck, Python1450 skip1, fixtures91/transcripts26, independent7findings fixed + root verification. [Evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2c-execution-2026-11-12.md), [results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2c-results-2026-11-12.json).
 - Residual risks: Lexical subset без полного type/runtime proof; bounded derived snapshots/rebuild; available source/history coverage. Managed skill не native installation, document proposal staged-only. Installed npm Codex runtime_mismatch остаётся fail-closed; exact cached tuple квалифицирован отдельно. Human/commercial/release отдельно.
 - Follow-up: M2 technical26/26; M3/T1, AUTH-G1–G6/C46-01–08, PAOS-0030 и human/release acceptance не закрыты.
 
@@ -1265,7 +1265,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Типизированные зависимости файлов и переменных с source anchors; bounded source/authority/revision contracts проверены.
 - Product value delivered: Пользователь получает понятную основу карты зависимостей с явными пробелами анализа.
 - Actual implementation date and time: 12-11-2026 11:38
-- Verification evidence: Web398/398 skip0; focused generation/artifacts10 и graph13; browser37; actual App planning29/2jobs; native exact cached candidate/default3modes; build/typecheck, Python1450 skip1, fixtures91/transcripts26, independent7findings fixed + root verification. [Evidence](../../research/product-agent-os-web-m2c-execution-2026-11-12.md), [results](../../research/product-agent-os-web-m2c-results-2026-11-12.json).
+- Verification evidence: Web398/398 skip0; focused generation/artifacts10 и graph13; browser37; actual App planning29/2jobs; native exact cached candidate/default3modes; build/typecheck, Python1450 skip1, fixtures91/transcripts26, independent7findings fixed + root verification. [Evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2c-execution-2026-11-12.md), [results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2c-results-2026-11-12.json).
 - Residual risks: Lexical subset без полного type/runtime proof; bounded derived snapshots/rebuild; available source/history coverage. Managed skill не native installation, document proposal staged-only. Installed npm Codex runtime_mismatch остаётся fail-closed; exact cached tuple квалифицирован отдельно. Human/commercial/release отдельно.
 - Follow-up: M2 technical26/26; M3/T1, AUTH-G1–G6/C46-01–08, PAOS-0030 и human/release acceptance не закрыты.
 
@@ -1310,7 +1310,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Фильтровать graph и раскрывать соседей выбранного узла; bounded source/authority/revision contracts проверены.
 - Product value delivered: Пользователь исследует структуру проекта и быстро находит связанные файлы без чтения всех папок.
 - Actual implementation date and time: 12-11-2026 11:38
-- Verification evidence: Web398/398 skip0; focused generation/artifacts10 и graph13; browser37; actual App planning29/2jobs; native exact cached candidate/default3modes; build/typecheck, Python1450 skip1, fixtures91/transcripts26, independent7findings fixed + root verification. [Evidence](../../research/product-agent-os-web-m2c-execution-2026-11-12.md), [results](../../research/product-agent-os-web-m2c-results-2026-11-12.json).
+- Verification evidence: Web398/398 skip0; focused generation/artifacts10 и graph13; browser37; actual App planning29/2jobs; native exact cached candidate/default3modes; build/typecheck, Python1450 skip1, fixtures91/transcripts26, independent7findings fixed + root verification. [Evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2c-execution-2026-11-12.md), [results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2c-results-2026-11-12.json).
 - Residual risks: Lexical subset без полного type/runtime proof; bounded derived snapshots/rebuild; available source/history coverage. Managed skill не native installation, document proposal staged-only. Installed npm Codex runtime_mismatch остаётся fail-closed; exact cached tuple квалифицирован отдельно. Human/commercial/release отдельно.
 - Follow-up: M2 technical26/26; M3/T1, AUTH-G1–G6/C46-01–08, PAOS-0030 и human/release acceptance не закрыты.
 
@@ -1355,7 +1355,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Показать define/read/write/reference по scope и задачам; bounded source/authority/revision contracts проверены.
 - Product value delivered: Пользователь видит, какие места могут быть затронуты изменением конкретной переменной.
 - Actual implementation date and time: 12-11-2026 11:38
-- Verification evidence: Web398/398 skip0; focused generation/artifacts10 и graph13; browser37; actual App planning29/2jobs; native exact cached candidate/default3modes; build/typecheck, Python1450 skip1, fixtures91/transcripts26, independent7findings fixed + root verification. [Evidence](../../research/product-agent-os-web-m2c-execution-2026-11-12.md), [results](../../research/product-agent-os-web-m2c-results-2026-11-12.json).
+- Verification evidence: Web398/398 skip0; focused generation/artifacts10 и graph13; browser37; actual App planning29/2jobs; native exact cached candidate/default3modes; build/typecheck, Python1450 skip1, fixtures91/transcripts26, independent7findings fixed + root verification. [Evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2c-execution-2026-11-12.md), [results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2c-results-2026-11-12.json).
 - Residual risks: Lexical subset без полного type/runtime proof; bounded derived snapshots/rebuild; available source/history coverage. Managed skill не native installation, document proposal staged-only. Installed npm Codex runtime_mismatch остаётся fail-closed; exact cached tuple квалифицирован отдельно. Human/commercial/release отдельно.
 - Follow-up: M2 technical26/26; M3/T1, AUTH-G1–G6/C46-01–08, PAOS-0030 и human/release acceptance не закрыты.
 
@@ -1580,7 +1580,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Объединить артефакты и результаты с задачами и источниками; bounded source/authority/revision contracts проверены.
 - Product value delivered: Пользователь находит планы и проверки прямо из задачи, не разбираясь в расположении Markdown.
 - Actual implementation date and time: 12-11-2026 11:38
-- Verification evidence: Web398/398 skip0; focused generation/artifacts10 и graph13; browser37; actual App planning29/2jobs; native exact cached candidate/default3modes; build/typecheck, Python1450 skip1, fixtures91/transcripts26, independent7findings fixed + root verification. [Evidence](../../research/product-agent-os-web-m2c-execution-2026-11-12.md), [results](../../research/product-agent-os-web-m2c-results-2026-11-12.json).
+- Verification evidence: Web398/398 skip0; focused generation/artifacts10 и graph13; browser37; actual App planning29/2jobs; native exact cached candidate/default3modes; build/typecheck, Python1450 skip1, fixtures91/transcripts26, independent7findings fixed + root verification. [Evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2c-execution-2026-11-12.md), [results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2c-results-2026-11-12.json).
 - Residual risks: Lexical subset без полного type/runtime proof; bounded derived snapshots/rebuild; available source/history coverage. Managed skill не native installation, document proposal staged-only. Installed npm Codex runtime_mismatch остаётся fail-closed; exact cached tuple квалифицирован отдельно. Human/commercial/release отдельно.
 - Follow-up: M2 technical26/26; M3/T1, AUTH-G1–G6/C46-01–08, PAOS-0030 и human/release acceptance не закрыты.
 
@@ -1760,7 +1760,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Родительские связи, преобразование типов и roll-up без двойного счёта; транзакционные guards и regression checks реализованы.
 - Product value delivered: Пользователь разбивает инициативу на работы и подзадачи и видит общий прогресс.
 - Actual implementation date and time: 11-11-2026 22:40
-- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](../../research/product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](../../research/product-agent-os-web-m2-results-2026-11-11.json).
+- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2-results-2026-11-11.json).
 - Residual risks: local App-active technical scope; active consumer required, sandbox только PAOS-mediated commands. Human/commercial/release acceptance и AUTH-G1–G6 отдельно; narrow Markdown subset обозначен в UI.
 - Follow-up: Остальные 16 M2 tasks, включая PAOS-0036, остаются planned; commercial repeat review PAOS-0030. Эта карточка не закрывает весь M2.
 
@@ -1806,7 +1806,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Неизменяемый creator, отдельный initiator, project components и календарные поля; транзакционные guards и regression checks реализованы.
 - Product value delivered: Пользователь знает источник задачи, её важность, область и сроки.
 - Actual implementation date and time: 11-11-2026 22:40
-- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](../../research/product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](../../research/product-agent-os-web-m2-results-2026-11-11.json).
+- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2-results-2026-11-11.json).
 - Residual risks: local App-active technical scope; active consumer required, sandbox только PAOS-mediated commands. Human/commercial/release acceptance и AUTH-G1–G6 отдельно; narrow Markdown subset обозначен в UI.
 - Follow-up: Остальные 16 M2 tasks, включая PAOS-0036, остаются planned; commercial repeat review PAOS-0030. Эта карточка не закрывает весь M2.
 
@@ -1852,7 +1852,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Раздельные affects/fix version references и условия планирования релиза; транзакционные guards и regression checks реализованы.
 - Product value delivered: Пользователь различает затронутый продукт и выпуск, который получит исправление.
 - Actual implementation date and time: 11-11-2026 22:40
-- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](../../research/product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](../../research/product-agent-os-web-m2-results-2026-11-11.json).
+- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2-results-2026-11-11.json).
 - Residual risks: local App-active technical scope; active consumer required, sandbox только PAOS-mediated commands. Human/commercial/release acceptance и AUTH-G1–G6 отдельно; narrow Markdown subset обозначен в UI.
 - Follow-up: Остальные 16 M2 tasks, включая PAOS-0036, остаются planned; commercial repeat review PAOS-0030. Эта карточка не закрывает весь M2.
 
@@ -1898,7 +1898,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Managed files, comment revisions и append-only audit событий пользователя/агентов; транзакционные guards и regression checks реализованы.
 - Product value delivered: Пользователь добавляет контекст и видит, кто, что и когда изменил.
 - Actual implementation date and time: 11-11-2026 22:40
-- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](../../research/product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](../../research/product-agent-os-web-m2-results-2026-11-11.json).
+- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2-results-2026-11-11.json).
 - Residual risks: local App-active technical scope; active consumer required, sandbox только PAOS-mediated commands. Human/commercial/release acceptance и AUTH-G1–G6 отдельно; narrow Markdown subset обозначен в UI.
 - Follow-up: Остальные 16 M2 tasks, включая PAOS-0036, остаются planned; commercial repeat review PAOS-0030. Эта карточка не закрывает весь M2.
 
@@ -1944,7 +1944,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Восемь статусов, семь колонок, transitions/guards, WIP и resolution; транзакционные guards и regression checks реализованы.
 - Product value delivered: Пользователь сам создаёт, ведёт, закрывает и переоткрывает задачи без обязательного agent run.
 - Actual implementation date and time: 11-11-2026 22:40
-- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](../../research/product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](../../research/product-agent-os-web-m2-results-2026-11-11.json).
+- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2-results-2026-11-11.json).
 - Residual risks: local App-active technical scope; active consumer required, sandbox только PAOS-mediated commands. Human/commercial/release acceptance и AUTH-G1–G6 отдельно; narrow Markdown subset обозначен в UI.
 - Follow-up: Остальные 16 M2 tasks, включая PAOS-0036, остаются planned; commercial repeat review PAOS-0030. Эта карточка не закрывает весь M2.
 
@@ -1990,7 +1990,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Workflow definitions, type mapping, draft/publish и pinned versions; source contracts и guards проверены.
 - Product value delivered: Пользователь создаёт собственный процесс, не меняя незаметно уже идущую работу
 - Actual implementation date and time: 12-11-2026 09:53
-- Verification evidence: Web375/375 skip0; browser51; actual App/native49; build/typecheck, negative-case regressions и independent source review + root closed_allowed. [Run evidence](../../research/product-agent-os-web-m2b-execution-2026-11-12.md), [results](../../research/product-agent-os-web-m2b-results-2026-11-12.json).
+- Verification evidence: Web375/375 skip0; browser51; actual App/native49; build/typecheck, negative-case regressions и independent source review + root closed_allowed. [Run evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2b-execution-2026-11-12.md), [results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2b-results-2026-11-12.json).
 - Residual risks: Local App-active technical scope; consumer required. History partial for unavailable sources, cursor15min; native loadedVersion unknown, remote discovery unavailable; M3/human/commercial/release отдельно.
 - Follow-up: M2 technical21/26; remaining PAOS-0019/0020/0021/0022/0027 planned. AUTH-G1–G6/PAOS-0030 и human/release не закрыты.
 
@@ -2082,7 +2082,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Canonical typed edges, inverse display, DAG blocking и авторство; транзакционные guards и regression checks реализованы.
 - Product value delivered: Пользователь и агенты связывают работы и понимают, что мешает продолжению.
 - Actual implementation date and time: 11-11-2026 22:40
-- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](../../research/product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](../../research/product-agent-os-web-m2-results-2026-11-11.json).
+- Verification evidence: full Web 345/345 skip0; browser 88; actual App/native 27; focused negative cases, build/typecheck и independent closed_allowed. [Run evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2-execution-2026-11-11.md), [source hashes/results](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2-results-2026-11-11.json).
 - Residual risks: local App-active technical scope; active consumer required, sandbox только PAOS-mediated commands. Human/commercial/release acceptance и AUTH-G1–G6 отдельно; narrow Markdown subset обозначен в UI.
 - Follow-up: Остальные 16 M2 tasks, включая PAOS-0036, остаются planned; commercial repeat review PAOS-0030. Эта карточка не закрывает весь M2.
 
@@ -2127,7 +2127,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
 - Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: 11-11-2026 08:09
-- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](../../research/product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](../../research/product-agent-os-web-m1-initial-qualification-2026-11-10.md). Follow-up 11-11-2026: actual App-agent receipt 9TDdwj 16/16, Web238/238, strict0/build36 Cfgug4Ze; старые receipts не переобозначены как новые.
+- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-initial-qualification-2026-11-10.md). Follow-up 11-11-2026: actual App-agent receipt 9TDdwj 16/16, Web238/238, strict0/build36 Cfgug4Ze; старые receipts не переобозначены как новые.
 - Residual risks: App host identity attested; automatic wakeup/native permission boundary не доказаны, Execution blocked. SIWC/inherited login недоступны; commercial review PAOS-0046/0030 не выполнен.
 - Follow-up: Продолжить PAOS-0042/0043/0044 и PAOS-0045 по App-dependent addendum; не выдавать reasoning relay за полную execution/owner acceptance.
 
@@ -2184,7 +2184,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Production launcher/service, source hashes, single instance, local/offline gating, authenticated Quit и cleanup проверены.
 - Product value delivered: Локальное приложение запускается самостоятельно; отсутствие сессии объясняется, разделы доступны после pairing.
 - Actual implementation date and time: 11-11-2026 16:09
-- Verification evidence: Текущий follow-up: Web197/197 no skips; browser669; autonomous launcher56; strict/build35 exit0. Native BVldIt closed-App25 samples, source hashes совпадают; owner accepted=false сохранён. Это разные прогоны. [Execution report](../../research/product-agent-os-web-m1-execution-2026-11-11.md).
+- Verification evidence: Текущий follow-up: Web197/197 no skips; browser669; autonomous launcher56; strict/build35 exit0. Native BVldIt closed-App25 samples, source hashes совпадают; owner accepted=false сохранён. Это разные прогоны. [Execution report](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-execution-2026-11-11.md).
 - Residual risks: Обязательных technical gaps SW-02 нет. Human product acceptance/rejected historical manual journey и полный SW-AC-01/10/provider turn не объявлены passed; их owning gate0045.
 - Follow-up: Продолжить0042/0043/0044 по отдельной provider authority;0045 остаётся blocked.
 
@@ -2229,7 +2229,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
 - Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: 11-11-2026 08:46
-- Verification evidence: Native vault write/read/delete и verified absence, exit 0; actual broker + isolated stdio login/read/logout, typed apiKey, zero turns, revoked authorization, no canary files, clean process/profile. Web 159/159, no skips. [Текущий отчёт](../../research/product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](../../research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Verification evidence: Native vault write/read/delete и verified absence, exit 0; actual broker + isolated stdio login/read/logout, typed apiKey, zero turns, revoked authorization, no canary files, clean process/profile. Web 159/159, no skips. [Текущий отчёт](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
 - Residual risks: Local auth components qualified; custom offline provider does not prove production OpenAI selector activation or entitlement. Model access remains unverified by design; provider/browser acceptance belongs to PAOS-0042/0045. Network zero was not instrumented; discovery-off/loopback gates verified.
 - Follow-up: PAOS-0042/0045 в разрешённом scope; реальный provider и browser не запускать без отдельной authority.
 
@@ -2274,7 +2274,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
 - Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: 11-11-2026 19:53
-- Verification evidence: Текущие команды, counts, source hashes, RED/GREEN, failed receipts и AC map: [App-mediated native broker](../../research/product-agent-os-web-m1-execution-2026-11-11.md#app-mediated-native-broker--техническая-приёмка-m1) и execution-results JSON; исходный closed-App full-turn не объявлен passed.
+- Verification evidence: Текущие команды, counts, source hashes, RED/GREEN, failed receipts и AC map: [App-mediated native broker](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-execution-2026-11-11.md#app-mediated-native-broker--%D1%82%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D0%BF%D1%80%D0%B8%D1%91%D0%BC%D0%BA%D0%B0-m1) и execution-results JSON; исходный closed-App full-turn не объявлен passed.
 - Residual risks: Техническая приёмка только App-active/PAOS-mediated commands; Desktop daemon, whole-App/read sandbox, automatic wakeup и реальный ChatGPT account-switch не заявляются. Human product acceptance и AUTH-G1–G6/0046/0030 отдельно.
 - Follow-up: PAOS-0046 — ранний commercial review перед M2; технические M1 gaps закрыты в выбранном маршруте.
 
@@ -2319,7 +2319,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
 - Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: 11-11-2026 19:53
-- Verification evidence: Текущие команды, counts, source hashes, RED/GREEN, failed receipts и AC map: [App-mediated native broker](../../research/product-agent-os-web-m1-execution-2026-11-11.md#app-mediated-native-broker--техническая-приёмка-m1) и execution-results JSON; исходный closed-App full-turn не объявлен passed.
+- Verification evidence: Текущие команды, counts, source hashes, RED/GREEN, failed receipts и AC map: [App-mediated native broker](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-execution-2026-11-11.md#app-mediated-native-broker--%D1%82%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D0%BF%D1%80%D0%B8%D1%91%D0%BC%D0%BA%D0%B0-m1) и execution-results JSON; исходный closed-App full-turn не объявлен passed.
 - Residual risks: Техническая приёмка только App-active/PAOS-mediated commands; Desktop daemon, whole-App/read sandbox, automatic wakeup и реальный ChatGPT account-switch не заявляются. Human product acceptance и AUTH-G1–G6/0046/0030 отдельно.
 - Follow-up: PAOS-0046 — ранний commercial review перед M2; технические M1 gaps закрыты в выбранном маршруте.
 
@@ -2364,7 +2364,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
 - Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: 11-11-2026 19:53
-- Verification evidence: Текущие команды, counts, source hashes, RED/GREEN, failed receipts и AC map: [App-mediated native broker](../../research/product-agent-os-web-m1-execution-2026-11-11.md#app-mediated-native-broker--техническая-приёмка-m1) и execution-results JSON; исходный closed-App full-turn не объявлен passed.
+- Verification evidence: Текущие команды, counts, source hashes, RED/GREEN, failed receipts и AC map: [App-mediated native broker](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-execution-2026-11-11.md#app-mediated-native-broker--%D1%82%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D0%BF%D1%80%D0%B8%D1%91%D0%BC%D0%BA%D0%B0-m1) и execution-results JSON; исходный closed-App full-turn не объявлен passed.
 - Residual risks: Техническая приёмка только App-active/PAOS-mediated commands; Desktop daemon, whole-App/read sandbox, automatic wakeup и реальный ChatGPT account-switch не заявляются. Human product acceptance и AUTH-G1–G6/0046/0030 отдельно.
 - Follow-up: PAOS-0046 — ранний commercial review перед M2; технические M1 gaps закрыты в выбранном маршруте.
 
@@ -2409,7 +2409,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
 - Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: 11-11-2026 19:53
-- Verification evidence: Текущие команды, counts, source hashes, RED/GREEN, failed receipts и AC map: [App-mediated native broker](../../research/product-agent-os-web-m1-execution-2026-11-11.md#app-mediated-native-broker--техническая-приёмка-m1) и execution-results JSON; исходный closed-App full-turn не объявлен passed.
+- Verification evidence: Текущие команды, counts, source hashes, RED/GREEN, failed receipts и AC map: [App-mediated native broker](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-execution-2026-11-11.md#app-mediated-native-broker--%D1%82%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D0%BF%D1%80%D0%B8%D1%91%D0%BC%D0%BA%D0%B0-m1) и execution-results JSON; исходный closed-App full-turn не объявлен passed.
 - Residual risks: Техническая приёмка только App-active/PAOS-mediated commands; Desktop daemon, whole-App/read sandbox, automatic wakeup и реальный ChatGPT account-switch не заявляются. Human product acceptance и AUTH-G1–G6/0046/0030 отдельно.
 - Follow-up: PAOS-0046 — ранний commercial review перед M2; технические M1 gaps закрыты в выбранном маршруте.
 
@@ -2454,7 +2454,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Подтверждённые факты, inferred applicability и pending admission разделены; отсутствует ложная эквивалентность App Server auth, API Customer Applications и собственного App bridge.
 - Product value delivered: Перед M2 определены границы payer/data/license/distribution/support; закрытие исследования отделено от commercial approval.
 - Actual implementation date and time: 11-11-2026 20:37
-- Verification evidence: Official sources retrieved2026-11-11; independent bounded review closed_allowed; auth-route2/2 +4 negative assertions; docs105/105,8.865s/checker/matrix/diff0. [Review и точный provenance](../../research/product-agent-os-web-commercial-review-2026-11-11.md), machine release packet docs/release/web-commercial-review.json. M1 runtime receipts не запускались повторно.
+- Verification evidence: Official sources retrieved2026-11-11; independent bounded review closed_allowed; auth-route2/2 +4 negative assertions; docs105/105,8.865s/checker/matrix/diff0. [Review и точный provenance](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-commercial-review-2026-11-11.md), machine release packet docs/release/web-commercial-review.json. M1 runtime receipts не запускались повторно.
 - Residual risks: Commercial release blocked AUTH-G1–G6/C46-01–08: entity/markets/license/bridgequalification/notices/privacy/retention/hostusage/support. No full gate passed; это не blocker текущего local engineering M2.
 - Follow-up: Owner-authorized command в PAOS-M2 только после текущих mandatory checks; PAOS-0030 rechecks all applicable release gaps, PAOS-0047 remains admission-gated.
 
@@ -2545,7 +2545,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
 - Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: 11-11-2026 08:09
-- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](../../research/product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](../../research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
 - Residual risks: Local single-principal profile; team profile отдельно T1. Произвольные legacy writers не объявляются совместимыми.
 - Follow-up: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
 
@@ -2590,7 +2590,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
 - Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: 11-11-2026 08:09
-- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](../../research/product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](../../research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
 - Residual risks: Workload выполнен на текущем 20-logical-CPU host; browser/event-to-visible и 4-core baseline не измерены.
 - Follow-up: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
 
@@ -2635,7 +2635,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
 - Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: 11-11-2026 08:09
-- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](../../research/product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](../../research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
 - Residual risks: Непредставимые значимые поля блокируют целый cutover; текущий research source не мигрирован. General merge editor относится к M2.
 - Follow-up: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
 
@@ -2680,7 +2680,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
 - Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: 11-11-2026 08:09
-- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](../../research/product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](../../research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
 - Residual risks: Restore создаёт отдельный профиль, не переключает активный автоматически; backup private local content без обещания secure erase или encrypted export.
 - Follow-up: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
 
@@ -2815,7 +2815,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
 - Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: 11-11-2026 08:09
-- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](../../research/product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](../../research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
 - Residual risks: Manifest квалифицирует native-offline tuple, не provider entitlement, commercial admission или browser acceptance; любое изменение tuple блокирует dispatch.
 - Follow-up: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
 
@@ -2827,7 +2827,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 > - Technical value delivered: Локальный probe выявляет отсутствие обязательной части schema и отделяет static check от qualification.
 > - Product value delivered: Зависимая интеграция получает проверяемый кандидат runtime без заявления о готовности запуска.
 > - Actual implementation date and time: pending_execution_timestamp
-> - Verification evidence: Schema, event и SQLite tests прошли 12/12. SQLite проверил rollback, снимок WAL и FK. Независимая сверка MXC и наблюдение Windows token подтвердили запуск диагностики в AppContainer, конкретная стадия отказа PSEC неизвестна. Оценка прежних receipts сохраняет блокировку `scoped_execution_policy`. [Candidate tuple и команды](../../research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+> - Verification evidence: Schema, event и SQLite tests прошли 12/12. SQLite проверил rollback, снимок WAL и FK. Независимая сверка MXC и наблюдение Windows token подтвердили запуск диагностики в AppContainer, конкретная стадия отказа PSEC неизвестна. Оценка прежних receipts сохраняет блокировку `scoped_execution_policy`. [Candidate tuple и команды](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
 > - Residual risks: Native sandbox и фактическое ограничение записи, изоляция после входа, app lockfile и adapter revision остаются открытыми.
 > - Follow-up: В поддерживаемой Windows-среде подтвердить native readiness и scoped write/deny proof до handoff контрактов.
 
@@ -2872,7 +2872,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
 - Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: 11-11-2026 08:09
-- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](../../research/product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](../../research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
 - Residual risks: Неизвестные installed writers остаются unsupported; нет raw SQL, agent credentials или автоматической manual acceptance.
 - Follow-up: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
 
@@ -2917,7 +2917,7 @@ Rollback будущих изменений: versioned proposal, revision check, 
 - Technical value delivered: Сквозные local contracts и отрицательные сценарии проверены без обхода authority.
 - Product value delivered: Данные/границы работы доступны в локальном приложении с явным unavailable/partial состоянием.
 - Actual implementation date and time: 11-11-2026 08:09
-- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](../../research/product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](../../research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
+- Verification evidence: Web 150/150; strict/build exit 0; headless 33; Python 1450 (skip 1), fixture 91/91, transcript 26/26, compatibility compatible. [Текущий отчёт](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-execution-2026-11-11.md). [Историческая квалификация](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-initial-qualification-2026-11-10.md).
 - Residual risks: Только supported synthetic project; реальный target не мигрирован. Post-cutover legacy edits показываются changed, не импортируются автоматически.
 - Follow-up: Передать локальный контракт потребителям; оставшиеся gates — PAOS-0045.
 
@@ -2931,4 +2931,4 @@ Rollback будущих изменений: versioned proposal, revision check, 
 
 PAOS-0039 остаётся implemented только в контракте выбора маршрута. PAOS-0042/0043/0044 остаются in_progress, PAOS-0045 — blocked; M1: 14 implemented / 3 in_progress / 1 blocked — компонентный счёт, не readiness. Исходный full-turn gate «Codex App закрыт» SW-AC-01/UX-AC-01 сохранён как историческое требование самостоятельного App Server маршрута, остаётся непроверенным и не объявляется пройденным. Для нового owner-selected App-agent маршрута App и активный consumer обязательны: новый 16/16 receipt подтверждает только этот путь. Standalone/offline launcher PAOS-0040 проверен отдельно. Полная execution/recovery и M1/human acceptance этим addendum не закрываются; прежний manual owner rejection сохраняется.
 
-Локальные текущие проверки root: Web **238/238**, strict exit 0, build **36 modules / Cfgug4Ze**. Предыдущие active-runtime fixture **55/55** (`yjqhQa`), browser **669** (`22l7mM`) и headless **33** сохраняют отдельный provenance; они не называются actual App-agent или новым full M1 run. Текущая сводка и hashes принадлежат [execution report](../../research/product-agent-os-web-m1-execution-2026-11-11.md).
+Локальные текущие проверки root: Web **238/238**, strict exit 0, build **36 modules / Cfgug4Ze**. Предыдущие active-runtime fixture **55/55** (`yjqhQa`), browser **669** (`22l7mM`) и headless **33** сохраняют отдельный provenance; они не называются actual App-agent или новым full M1 run. Текущая сводка и hashes принадлежат [execution report](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-execution-2026-11-11.md).

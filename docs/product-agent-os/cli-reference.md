@@ -235,7 +235,7 @@ git diff --check
 
 Используйте эту страницу как operator reference для local scripts. `Navigation`, `source registry entries`, `docs tests` и `generated site refresh` принадлежат своим `docs-maintainer` и `tester` slices.
 
-Точечное обновление после каждой задачи: [контракт и ограничения](project-formation.md#точечное-сопровождение-после-задачи). Реализация `documentation_sync.py` переиспользует CAS/journal compaction engine; исходный lossless validator остаётся отдельным.
+Точечное обновление после каждой задачи: [контракт и ограничения](project-formation.md#task-documentation-maintenance). Реализация `documentation_sync.py` переиспользует CAS/journal compaction engine; исходный lossless validator остаётся отдельным.
 
 ```powershell
 python plugins/product-agent-os/scripts/sync_task_documents.py TARGET assess task-packet.json

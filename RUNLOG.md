@@ -1,6 +1,10 @@
 # RUNLOG.md
 
-## Группы документации — 15.11.2026
+## DG01 — завершено, 15.11.2026
+
+DOCS-13/A и DOCS-16/A completed / docs_static_verified. [Evidence](docs/planning/documentation-architecture-2026-11-15.md#dg01-results): links/anchors и восемь полных EN-переводов; 16 matrices, source 3/3, archive 99/99, site 7/7, targeted hooks 3/3, strict isolated build и HTML links passed. Parent DOCS-13/16 in_progress до B, остальные14 planned; следующий DG02. Root site/, hooks/trust, feature JSON/runtime/Git не изменены. Review: self_review + independent scoped translation/test review, findings resolved.
+
+## Группы документации — исторический этап планирования, 15.11.2026
 
 В [плане DOCS-01–16](docs/planning/documentation-architecture-2026-11-15.md) сохранены 7 групп DG01–DG07. DG01 первым устраняет links/localization/build и устаревшие проверки: DOCS-16/A + DOCS-13/A; их финальные этапы остаются DG07/DG06. 16 задач / 18 этапов, статусы planned; исходные AC/Depends/Blocks сохранены. Matrix/source-docs 3/3/check_docs/diff и сохранность карточек, membership, stage DAG, first gate — passed; self_review. Ни исправления, ни написание разделов не выполнялись. Ранее выявленные site/archive/build gaps остаются открыты. Следующий шаг при отдельном запросе реализации — DG01.
 

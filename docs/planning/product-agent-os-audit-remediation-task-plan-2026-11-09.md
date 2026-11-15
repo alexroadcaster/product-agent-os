@@ -8,11 +8,11 @@ Document ID: `PAOS-AUDIT-REMEDIATION-2026-11-09`. Authoring task: `PAOS-AUDIT-TA
 
 В документе **9 групп и 65 карточек**: 18 задач по F01–F18, пять существующих B45-CQRR-T30–T34, три этапа host/usefulness, восемь задач G7 по качеству реализации, 14 задач G8 по control plane и 17 задач G9 по единому формированию и точечному сопровождению документации проекта. Для каждой группы и задачи указаны ID, название, описание, техническое и продуктовое значение, затрагиваемые файлы и критерии приёмки. Поля task_matrix_plan_v1 сохраняют совместимость с существующим validator. G7 закрыта с owner acceptance; G8 closed / owner accepted; открытые gates и статусы G6 сохранены. G9 T01–T09 implemented_locally_verified; T10 owner accepted; T11–T16 implemented_locally_verified; T17 owner accepted; G9 closed. G8-T14 и закрытие G8 явно приняты владельцем.
 
-- [Полный аудит 09.11.2026](../../research/product-agent-os-full-audit-2026-11-09.md): F01–F18 и границы evidence.
-- [Последующее исправление lifecycle по чатам](../../research/product-agent-os-session-lifecycle-fix-2026-11-09.md): выполненные session isolation и exact marker bootstrap.
+- [Полный аудит 09.11.2026](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-full-audit-2026-11-09.md): F01–F18 и границы evidence.
+- [Последующее исправление lifecycle по чатам](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-session-lifecycle-fix-2026-11-09.md): выполненные session isolation и exact marker bootstrap.
 - [Ordinary/GAP implementation plan](product-agent-os-ordinary-route-implementation-plan-2026-11-05.md): ORD, GAP-03 M06, GAP-05 и GAP-06.
 - [Canonical B45 task group](batch45-code-quality-runtime-recovery-task-group.json): ID, названия, dependencies и acceptance T30–T34.
-- [PLAN.md](../../PLAN.md), [TEST.md](../../TEST.md), [EVALS.md](../../EVALS.md), [RUNLOG.md](../../RUNLOG.md): текущие owning pointers и обязательные verification routes.
+- [PLAN.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/PLAN.md), [TEST.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/TEST.md), [EVALS.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/EVALS.md), [RUNLOG.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/RUNLOG.md): текущие owning pointers и обязательные verification routes.
 
 ## Что не выполнять повторно
 
@@ -1832,11 +1832,11 @@ host acceptance; иных обязательных local handoffs нет.
 - **Критерии приёмки группы:** T01–T06 имеют применимые current-run contract/regression evidence; T07 имеет frozen separate design; T08 имеет фактические результаты и owner decision. Открытая поведенческая оценка оставляет группу partially_verified. Статические проверки текста не доказывают качество генерации или fresh-session loading.
 - **Зависимости и порядок:** T01 → T02/T03/T05/T06 → T07 → T08. T04 — независимый ранний security-sensitive fix; его live activation имеет отдельный HOST-02 gate. Shared files T01/T02/T05 и T03/T07 редактировать последовательно. Незавершённые G6 acceptance/HOST/T34 не создают искусственный общий запрет на локальную G7.
 - **Предлагаемая ответственность:** Один исполнитель по умолчанию; named roles ниже описывают ownership, не разрешение автоматически запускать агентов.
-- **Статус исполнения:** `implemented`, closure_level=implemented_locally_verified / owner_accepted; T01–T08 приняты, G7 закрыта в проверенной локальной области. Текущий запрос разрешил локальную реализацию, проверки, comparison и три независимых review. Owner acceptance и fresh-session activation отдельны. [Current-run evidence](../../research/product-agent-os-g7-execution-report-2026-11-09.md).
+- **Статус исполнения:** `implemented`, closure_level=implemented_locally_verified / owner_accepted; T01–T08 приняты, G7 закрыта в проверенной локальной области. Текущий запрос разрешил локальную реализацию, проверки, comparison и три независимых review. Owner acceptance и fresh-session activation отдельны. [Current-run evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-execution-report-2026-11-09.md).
 
 ### Источники и границы выводов G7
 
-Уточнение 09.11.2026: [отдельное углублённое исследование](../../research/product-agent-os-g7-repository-deep-review-2026-11-09.md) закрепляет revisions пяти основных repositories, primary tool docs и findings P/K/M/S/D/X. Все восемь карточек уточнены в существующих полях Acceptance criteria, Source и Verification gates; новые обязательные поля не добавлены. Нужные дополнения: evaluator calibration, честные denominators, evidence invalidation, unique-test protection, review disposition, dynamic-use и resolver limits. На момент authoring статус всех задач был planned; текущие статусы ниже обновляются по execution evidence. Исследование не доказывает превосходство подхода до T07/T08.
+Уточнение 09.11.2026: [отдельное углублённое исследование](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-repository-deep-review-2026-11-09.md) закрепляет revisions пяти основных repositories, primary tool docs и findings P/K/M/S/D/X. Все восемь карточек уточнены в существующих полях `Acceptance criteria`, Source и Verification gates; новые обязательные поля не добавлены. Нужные дополнения: evaluator calibration, честные denominators, evidence invalidation, unique-test protection, review disposition, dynamic-use и resolver limits. На момент authoring статус всех задач был planned; текущие статусы ниже обновляются по execution evidence. Исследование не доказывает превосходство подхода до T07/T08.
 
 Authoring verification — 09.11.2026: `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -v` — exit 0, 105 tests, 17.003 s, OK; `python -B tools/check_docs.py` — exit 0; `python -B plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md` — exit 0, errors=[]; `python -B plugins/product-agent-os/scripts/validate_task_state_consistency.py` — exit 0, errors=[]. In-memory сравнение до/после: все 26 прежних task blocks неизменны; всего 34 task blocks; восемь новых карточек имеют тот же набор 36 полей, включая Completion Report; все existing scope paths существуют. Self-review: dependencies не создают цикла, будущие files/commands отделены от текущей реализации, G6 acceptance и T34/HOST gates не закрыты. Initial `git -c core.safecrlf=false diff --check` выявил лишнюю пустую строку EOF; строка исправлена, повторный exit 0. Log: `.docs-tools/reports/paos-aud-g6/g7-planning-docs.log`. Эти результаты проверяют authoring, не выполнение G7.
 
@@ -1894,7 +1894,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Date and time of task implementation: 09-11-2026 19:39
 - Depends on: Локальные PAOS-AUD-F05/F09/F10 и существующий compact contract; завершение G6 не требуется.
 - Blocks: PAOS-AUD-G7-T02, PAOS-AUD-G7-T03, PAOS-AUD-G7-T05, PAOS-AUD-G7-T06
-- Source: G7-S1, G7-S2, G7-S3; существующие enterprise_leverage_check/deep_module_check/legacy_seam_check; [deep review](../../research/product-agent-os-g7-repository-deep-review-2026-11-09.md), findings P01, K01–K03, M01/M02/M05, S01/S04.
+- Source: G7-S1, G7-S2, G7-S3; существующие enterprise_leverage_check/deep_module_check/legacy_seam_check; [deep review](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-repository-deep-review-2026-11-09.md), findings P01, K01–K03, M01/M02/M05, S01/S04.
 - Non-goals: Закрытие или повторная реализация G1–G6; переписывание T34 baseline; новый orchestration framework; установка стороннего plugin; массовая очистка unrelated code; auto-promotion.
 - Expected result: Единый active/package контракт без конкурирующего always-on слоя; понятные границы бизнес-правил и внешних эффектов. Evidence ceiling: local contracts до отдельной поведенческой/host проверки.
 - Verification gates: python -B -m unittest tests.product_agent_os.test_batch45_coding_standards tests.product_agent_os.test_coding_standards_artifacts -v; ожидается OK, active/package parity и отсутствие обязательных новых полей. Сценарии фиксируются до правки; текстовое совпадение не доказывает поведение агента. Общие execution gates G7 обязательны по применимости. Дополнительные scenarios из deep review должны иметь положительный и соответствующий отрицательный control в existing test/eval infrastructure; статические проверки не подменяют поведенческий результат.
@@ -1910,11 +1910,11 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 
 - status: implemented
 - what was done: Синхронизированы minimal-complete standards, compact contract и conditional checklist; восемь полей сохранены.
-- files touched / work locations: Exact Scope + execution scope refinement; actual diff и [execution report](../../research/product-agent-os-g7-execution-report-2026-11-09.md).
+- files touched / work locations: Exact Scope + execution scope refinement; actual diff и [execution report](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-execution-report-2026-11-09.md).
 - technical value delivered: Восьмиполевой compact contract и conditional reference вместо нового always-on checklist.
 - product value delivered: Меньше ложных gates и явная доказательная граница; superiority генерации не заявляется.
 - actual implementation date and time: 09-11-2026 19:39
-- verification evidence: [Текущие команды, RED/GREEN и findings](../../research/product-agent-os-g7-execution-report-2026-11-09.md); full frozen run 1357 tests / exit 0 (1 platform skip), targeted 66 / exit 0; closure_level=implemented_locally_verified, fresh-session отдельно.
+- verification evidence: [Текущие команды, RED/GREEN и findings](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-execution-report-2026-11-09.md); full frozen run 1357 tests / exit 0 (1 platform skip), targeted 66 / exit 0; closure_level=implemented_locally_verified, fresh-session отдельно.
 - residual risks: Local contracts/паритет проверяются; модельный pilot observational, superiority и fresh-session loading не доказаны.
 - follow-up: Результаты T01–T05 приняты владельцем 09.11.2026 в текущем продолжении. Fresh-session activation отдельно; продолжить T06–T08.
 
@@ -1936,7 +1936,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Date and time of task implementation: 09-11-2026 19:39
 - Depends on: PAOS-AUD-G7-T01
 - Blocks: PAOS-AUD-G7-T07
-- Source: G7-S1 review; G7-S3 TDD; G7-S8 mutation testing; текущий test_strategy_selector; [deep review](../../research/product-agent-os-g7-repository-deep-review-2026-11-09.md), findings M02–M04, S02, X04.
+- Source: G7-S1 review; G7-S3 TDD; G7-S8 mutation testing; текущий test_strategy_selector; [deep review](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-repository-deep-review-2026-11-09.md), findings M02–M04, S02, X04.
 - Non-goals: Закрытие или повторная реализация G1–G6; переписывание T34 baseline; новый orchestration framework; установка стороннего plugin; массовая очистка unrelated code; auto-promotion.
 - Expected result: Проверки защищают инварианты, не структуру реализации; исключаются бессодержательные дубли и повторные запуски на неизменных входах. Evidence ceiling: local contracts до отдельной поведенческой/host проверки.
 - Verification gates: python -B -m unittest tests.product_agent_os.test_batch45_code_quality_behavior -v; ожидается OK для bug/config/refactor/no-new-code, mandatory-gate preservation и rerun reasons. Использовать существующие fixtures; новые кейсы покрывают отдельные failure modes, не зеркалят код. Общие execution gates G7 обязательны по применимости. Дополнительные scenarios из deep review должны иметь положительный и соответствующий отрицательный control в existing test/eval infrastructure; статические проверки не подменяют поведенческий результат.
@@ -1952,11 +1952,11 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 
 - status: implemented
 - what was done: Refactor/config test-first routing исправлен; evidence reuse зависит от source/config/dependency/environment inputs.
-- files touched / work locations: Exact Scope + execution scope refinement; actual diff и [execution report](../../research/product-agent-os-g7-execution-report-2026-11-09.md).
+- files touched / work locations: Exact Scope + execution scope refinement; actual diff и [execution report](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-execution-report-2026-11-09.md).
 - technical value delivered: False RED для refactor устранён; feature/defect остаются test-first, reused evidence инвалидируется при relevant drift.
 - product value delivered: Меньше ложных gates и явная доказательная граница; superiority генерации не заявляется.
 - actual implementation date and time: 09-11-2026 19:39
-- verification evidence: [Текущие команды, RED/GREEN и findings](../../research/product-agent-os-g7-execution-report-2026-11-09.md); full frozen run 1357 tests / exit 0 (1 platform skip), targeted 66 / exit 0; closure_level=implemented_locally_verified, fresh-session отдельно.
+- verification evidence: [Текущие команды, RED/GREEN и findings](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-execution-report-2026-11-09.md); full frozen run 1357 tests / exit 0 (1 platform skip), targeted 66 / exit 0; closure_level=implemented_locally_verified, fresh-session отдельно.
 - residual risks: Внешний tool/environment provenance caller-reported или unknown; обязательные project checks не отменены.
 - follow-up: Результаты T01–T05 приняты владельцем 09.11.2026 в текущем продолжении. Fresh-session activation отдельно; продолжить T06–T08.
 
@@ -1978,7 +1978,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Date and time of task implementation: 09-11-2026 19:39
 - Depends on: PAOS-AUD-G7-T01
 - Blocks: PAOS-AUD-G7-T07
-- Source: G7-S1 review, G7-S4 Superpowers; действующие two-stage review и blinded rubric; [deep review](../../research/product-agent-os-g7-repository-deep-review-2026-11-09.md), findings P01/P02, M01, S03/S04, D01/D02.
+- Source: G7-S1 review, G7-S4 Superpowers; действующие two-stage review и blinded rubric; [deep review](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-repository-deep-review-2026-11-09.md), findings P01/P02, M01, S03/S04, D01/D02.
 - Non-goals: Закрытие или повторная реализация G1–G6; переписывание T34 baseline; новый orchestration framework; установка стороннего plugin; массовая очистка unrelated code; auto-promotion.
 - Expected result: Меньше ложных блокировок и стилистических переделок; review выявляет изменение публичного поведения и реальную связанность. Evidence ceiling: local contracts до отдельной поведенческой/host проверки.
 - Verification gates: python -B -m unittest tests.product_agent_os.test_batch45_code_quality_reviewer tests.product_agent_os.test_lifecycle_skills -v; ожидается OK для валидного finding, unsupported blocker, empty findings и legacy rubric. Точный профильный validator определить по TEST.md перед profile edits; отсутствие команды — gate до исполнения. Общие execution gates G7 обязательны по применимости. Дополнительные scenarios из deep review должны иметь положительный и соответствующий отрицательный control в existing test/eval infrastructure; статические проверки не подменяют поведенческий результат.
@@ -1994,11 +1994,11 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 
 - status: implemented
 - what was done: Evidence-based review, dispositions и rubric v2 реализованы отдельно от frozen T34; deferred требует owner/trigger.
-- files touched / work locations: Exact Scope + execution scope refinement; actual diff и [execution report](../../research/product-agent-os-g7-execution-report-2026-11-09.md).
+- files touched / work locations: Exact Scope + execution scope refinement; actual diff и [execution report](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-execution-report-2026-11-09.md).
 - technical value delivered: Checked revision, concrete scenario, dispositions и deferred owner/trigger проверяются без self-score veto.
 - product value delivered: Меньше ложных gates и явная доказательная граница; superiority генерации не заявляется.
 - actual implementation date and time: 09-11-2026 19:39
-- verification evidence: [Текущие команды, RED/GREEN и findings](../../research/product-agent-os-g7-execution-report-2026-11-09.md); full frozen run 1357 tests / exit 0 (1 platform skip), targeted 66 / exit 0; closure_level=implemented_locally_verified, fresh-session отдельно.
+- verification evidence: [Текущие команды, RED/GREEN и findings](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-execution-report-2026-11-09.md); full frozen run 1357 tests / exit 0 (1 platform skip), targeted 66 / exit 0; closure_level=implemented_locally_verified, fresh-session отдельно.
 - residual risks: Валидация finding structure не доказывает истинность evidence; независимый semantic review и owner acceptance остаются необходимыми.
 - follow-up: Результаты T01–T05 приняты владельцем 09.11.2026 в текущем продолжении. Fresh-session activation отдельно; продолжить T06–T08.
 
@@ -2020,7 +2020,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Date and time of task implementation: 09-11-2026 19:39
 - Depends on: Существующие PAOS-AUD-F06/F18; независима от G7-T01 и незакрытой приёмки G6.
 - Blocks: Безопасная проверка read-only пути G7-T08; не блокирует остальные локальные проектные задачи.
-- Source: G7-S0: два наблюдения read-only denial в предыдущем исследовании; root cause ещё не доказана; F06/F18 regression contracts; [deep review](../../research/product-agent-os-g7-repository-deep-review-2026-11-09.md), findings S01.
+- Source: G7-S0: два наблюдения read-only denial в предыдущем исследовании; root cause ещё не доказана; F06/F18 regression contracts; [deep review](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-repository-deep-review-2026-11-09.md), findings S01.
 - Non-goals: Закрытие или повторная реализация G1–G6; переписывание T34 baseline; новый orchestration framework; установка стороннего plugin; массовая очистка unrelated code; auto-promotion.
 - Expected result: Read-only inspection не требует ложной mutation authority; compound/unknown/write payload не может маскироваться под чтение. Evidence ceiling: local contracts до отдельной поведенческой/host проверки.
 - Verification gates: python -B -m unittest tests.product_agent_os.test_lifecycle_hooks tests.product_agent_os.test_task_plan_lifecycle -v; ожидается RED именно на разрешённом чтении, затем GREEN при сохранении negative denials. Проверить active/package bytes и parser outputs; actual host probe отдельно по точной authority. Общие execution gates G7 обязательны по применимости. Дополнительные scenarios из deep review должны иметь положительный и соответствующий отрицательный control в existing test/eval infrastructure; статические проверки не подменяют поведенческий результат.
@@ -2036,11 +2036,11 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 
 - status: implemented
 - what was done: Узкий literal classifier исправлен с RED/GREEN и negative wire cases; active/package parity сохранена.
-- files touched / work locations: Exact Scope + execution scope refinement; actual diff и [execution report](../../research/product-agent-os-g7-execution-report-2026-11-09.md).
+- files touched / work locations: Exact Scope + execution scope refinement; actual diff и [execution report](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-execution-report-2026-11-09.md).
 - technical value delivered: Полезные literal reads проходят; known unsafe wire cases не получают read-only exemption.
 - product value delivered: Меньше ложных gates и явная доказательная граница; superiority генерации не заявляется.
 - actual implementation date and time: 09-11-2026 19:39
-- verification evidence: [Текущие команды, RED/GREEN и findings](../../research/product-agent-os-g7-execution-report-2026-11-09.md); full frozen run 1357 tests / exit 0 (1 platform skip), targeted 66 / exit 0; closure_level=implemented_locally_verified, fresh-session отдельно.
+- verification evidence: [Текущие команды, RED/GREEN и findings](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-execution-report-2026-11-09.md); full frozen run 1357 tests / exit 0 (1 platform skip), targeted 66 / exit 0; closure_level=implemented_locally_verified, fresh-session отдельно.
 - residual risks: Classifier ограничен literal subset; произвольные shells/aliases/ambient configuration не покрыты; HOST activation отдельно.
 - follow-up: Результаты T01–T05 приняты владельцем 09.11.2026 в текущем продолжении. Fresh-session activation отдельно; продолжить T06–T08.
 
@@ -2062,7 +2062,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Date and time of task implementation: 09-11-2026 19:39
 - Depends on: PAOS-AUD-G7-T01; переиспользовать PAOS-AUD-F15
 - Blocks: PAOS-AUD-G7-T07
-- Source: G7-S1 ponytail-map; существующие discovery/F15 и code_quality_selector; [deep review](../../research/product-agent-os-g7-repository-deep-review-2026-11-09.md), findings P02, K02, X03.
+- Source: G7-S1 ponytail-map; существующие discovery/F15 и code_quality_selector; [deep review](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-repository-deep-review-2026-11-09.md), findings P02, K02, X03.
 - Non-goals: Закрытие или повторная реализация G1–G6; переписывание T34 baseline; новый orchestration framework; установка стороннего plugin; массовая очистка unrelated code; auto-promotion.
 - Expected result: Один источник inventory с явной полнотой и provenance; меньше повторных scans и дублирования кода. Evidence ceiling: local contracts до отдельной поведенческой/host проверки.
 - Verification gates: python -B -m unittest tests.product_agent_os.test_discovery tests.product_agent_os.test_batch45_code_quality_behavior -v; ожидается OK для reuse/config/no-change, incomplete/stale map, неподходящего helper и reuse одного inventory. Performance claim только после measured before/after на одинаковом входе. Общие execution gates G7 обязательны по применимости. Дополнительные scenarios из deep review должны иметь положительный и соответствующий отрицательный control в existing test/eval infrastructure; статические проверки не подменяют поведенческий результат.
@@ -2078,11 +2078,11 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 
 - status: implemented
 - what was done: Scope-bounded privacy-aware capability summary подключён к production CLI; unknown/omitted явны.
-- files touched / work locations: Exact Scope + execution scope refinement; actual diff и [execution report](../../research/product-agent-os-g7-execution-report-2026-11-09.md).
+- files touched / work locations: Exact Scope + execution scope refinement; actual diff и [execution report](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-execution-report-2026-11-09.md).
 - technical value delivered: Existing production CLI получает bounded scoped candidates без повторного чтения manifests.
 - product value delivered: Меньше ложных gates и явная доказательная граница; superiority генерации не заявляется.
 - actual implementation date and time: 09-11-2026 19:39
-- verification evidence: [Текущие команды, RED/GREEN и findings](../../research/product-agent-os-g7-execution-report-2026-11-09.md); full frozen run 1357 tests / exit 0 (1 platform skip), targeted 66 / exit 0; closure_level=implemented_locally_verified, fresh-session отдельно.
+- verification evidence: [Текущие команды, RED/GREEN и findings](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-execution-report-2026-11-09.md); full frozen run 1357 tests / exit 0 (1 platform skip), targeted 66 / exit 0; closure_level=implemented_locally_verified, fresh-session отдельно.
 - residual risks: Summary ограничен scope и лимитом; dynamic/config references остаются unknown до чтения, omitted не означает отсутствия capability.
 - follow-up: Результаты T01–T05 приняты владельцем 09.11.2026 в текущем продолжении. Fresh-session activation отдельно; продолжить T06–T08.
 
@@ -2104,7 +2104,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Date and time of task implementation: 09-11-2026 20:23
 - Depends on: PAOS-AUD-G7-T01; существующий code_quality_selector
 - Blocks: PAOS-AUD-G7-T07
-- Source: G7-S5 Desloppify (только scoped triage); G7-S6 Ruff/Import Linter/dependency-cruiser; G7-S8 Stryker; [deep review](../../research/product-agent-os-g7-repository-deep-review-2026-11-09.md), findings D01/D03/D04, X01–X04.
+- Source: G7-S5 Desloppify (только scoped triage); G7-S6 Ruff/Import Linter/dependency-cruiser; G7-S8 Stryker; [deep review](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-repository-deep-review-2026-11-09.md), findings D01/D03/D04, X01–X04.
 - Non-goals: Закрытие или повторная реализация G1–G6; переписывание T34 baseline; новый orchestration framework; установка стороннего plugin; массовая очистка unrelated code; auto-promotion.
 - Expected result: Проверяемые import boundaries, cycles и типовые дефекты без универсального score gate или нового собственного линтера. Evidence ceiling: local contracts до отдельной поведенческой/host проверки.
 - Verification gates: python -B -m unittest tests.product_agent_os.test_batch45_code_quality_behavior -v; ожидается OK на stack/tool/baseline fixtures. Для actual tool smoke: сначала read-only inventory версии и команды; exact command/target/rollback записать до запуска, missing tool оставить explicit gap, не устанавливать автоматически. Общие execution gates G7 обязательны по применимости. Дополнительные scenarios из deep review должны иметь положительный и соответствующий отрицательный control в existing test/eval infrastructure; статические проверки не подменяют поведенческий результат.
@@ -2120,11 +2120,11 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 
 - status: implemented
 - what was done: Approved tools установлены локально; actual 10/10 architecture controls, bounded receipt projection и immutable baseline реализованы. Full gate: 1372 tests OK, один platform skip; owner accepted 10.11.2026.
-- files touched / work locations: Exact Scope + execution scope refinement; actual diff и [execution report](../../research/product-agent-os-g7-execution-report-2026-11-09.md).
+- files touched / work locations: Exact Scope + execution scope refinement; actual diff и [execution report](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-execution-report-2026-11-09.md).
 - technical value delivered: Stack candidates расширены консервативно; declaration не выдаётся за installed/runnable/verified.
 - product value delivered: Меньше ложных gates и явная доказательная граница; superiority генерации не заявляется.
 - actual implementation date and time: 09-11-2026 20:23
-- verification evidence: [Текущие команды, RED/GREEN и findings](../../research/product-agent-os-g7-execution-report-2026-11-09.md); current full frozen run 1372 tests / 783.819 s / exit 0 (1 platform skip), focused 37 / exit 0; actual tools 10/10. T06 closure: implemented_locally_verified; owner accepted 10.11.2026.
+- verification evidence: [Текущие команды, RED/GREEN и findings](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-execution-report-2026-11-09.md); current full frozen run 1372 tests / 783.819 s / exit 0 (1 platform skip), focused 37 / exit 0; actual tools 10/10. T06 closure: implemented_locally_verified; owner accepted 10.11.2026.
 - residual risks: Actual evidence ограничены Python/JavaScript .mjs; TypeScript resolver/type-only не проверены. Normal discovery declaration-only, trusted receipt API explicit; owner accepted 10.11.2026.
 - follow-up: Результаты приняты владельцем; TypeScript runtime и ordinary-route automatic receipts не заявляются.
 
@@ -2146,7 +2146,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Date and time of task implementation: 10-11-2026 15:00
 - Depends on: PAOS-AUD-G7-T02, PAOS-AUD-G7-T03, PAOS-AUD-G7-T05, PAOS-AUD-G7-T06; HOST-01 и T34 completion не требуются для offline design.
 - Blocks: PAOS-AUD-G7-T08
-- Source: G7-S1 benchmark limitations; G7-S3; существующие T30–T34 eval contracts и G6 pilot claim ceiling; [deep review](../../research/product-agent-os-g7-repository-deep-review-2026-11-09.md), findings P03–P05, M03, D03, S05, X04.
+- Source: G7-S1 benchmark limitations; G7-S3; существующие T30–T34 eval contracts и G6 pilot claim ceiling; [deep review](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-repository-deep-review-2026-11-09.md), findings P03–P05, M03, D03, S05, X04.
 - Non-goals: Закрытие или повторная реализация G1–G6; переписывание T34 baseline; новый orchestration framework; установка стороннего plugin; массовая очистка unrelated code; auto-promotion.
 - Expected result: Проверка maintainability и эффективности проверок на нескольких шагах, а не только качества одного patch. Evidence ceiling: local contracts до отдельной поведенческой/host проверки.
 - Verification gates: python -B -m unittest tests.product_agent_os.test_g7_code_quality_evolution tests.product_agent_os.test_batch45_code_quality_eval_design tests.product_agent_os.test_batch45_code_quality_reviewer tests.product_agent_os.test_batch45_code_quality_metrics -v; ожидается OK, no-provider self-test и неизменность frozen T34 hashes. Новый test module proposed new: команда исполнима после его реализации. Общие execution gates G7 обязательны по применимости. Дополнительные scenarios из deep review должны иметь положительный и соответствующий отрицательный control в existing test/eval infrastructure; статические проверки не подменяют поведенческий результат.
@@ -2162,11 +2162,11 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 
 - status: implemented
 - what was done: Frozen design v2, actual tools=[]/same common context, 12 sequential generations, independent oracle baseline 6/6 = G7 6/6. Все 10 diagnostics и 2 ineligible attempts сохранены; offline replay защищён хешами и не перезаписывает evidence.
-- files touched / work locations: Exact Scope + execution scope refinement; actual diff и [execution report](../../research/product-agent-os-g7-execution-report-2026-11-09.md).
+- files touched / work locations: Exact Scope + execution scope refinement; actual diff и [execution report](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-execution-report-2026-11-09.md).
 - technical value delivered: Новый versioned instrument и synthetic controls изолированы от frozen T34; invalid outcomes не считаются pass.
 - product value delivered: Меньше ложных gates и явная доказательная граница; superiority генерации не заявляется.
 - actual implementation date and time: 10-11-2026 15:00
-- verification evidence: [Текущие команды, RED/GREEN и findings](../../research/product-agent-os-g7-execution-report-2026-11-09.md); full 1379 tests / 516.855 s / exit 0 (1 platform skip), docs 105, fixture 91/91, transcript 26/26, compatibility passed. [Результаты](../superpowers/specs/paos-aud-g7-attested-results.json). Closure: implemented_locally_verified / owner_accepted; explicit user acceptance 10.11.2026.
+- verification evidence: [Текущие команды, RED/GREEN и findings](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-execution-report-2026-11-09.md); full 1379 tests / 516.855 s / exit 0 (1 platform skip), docs 105, fixture 91/91, transcript 26/26, compatibility passed. [Результаты](../superpowers/specs/paos-aud-g7-attested-results.json). Closure: implemented_locally_verified / owner_accepted; explicit user acceptance 10.11.2026.
 - residual risks: Generation-only, no filesystem/E2E/activation claim; 1 repetition, rehearsed Python corpus, uneven prompt caching, component/superiority insufficient_evidence. T34 сохранён.
 - follow-up: T08 owner accepted, G7 closed; не расширять выводы на другие стеки или production.
 
@@ -2188,7 +2188,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Date and time of task implementation: 10-11-2026 15:27
 - Depends on: PAOS-AUD-G7-T07; PAOS-AUD-G7-T04 только для проверки исправленного read-only host path. Не требует закрытия G6 целиком; T34 no-go не переименовывается в pass.
 - Blocks: Приёмка G7 и решение о дальнейшем применении новых стандартов; не закрывает HOST-01/HOST-02/T34 автоматически.
-- Source: G7-S0 user goals; T07 frozen design; G6 separate activation policy; [deep review](../../research/product-agent-os-g7-repository-deep-review-2026-11-09.md), findings K03/M05, D02/D04, P05/S05.
+- Source: G7-S0 user goals; T07 frozen design; G6 separate activation policy; [deep review](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-repository-deep-review-2026-11-09.md), findings K03/M05, D02/D04, P05/S05.
 - Non-goals: Закрытие или повторная реализация G1–G6; переписывание T34 baseline; новый orchestration framework; установка стороннего plugin; массовая очистка unrelated code; auto-promotion.
 - Expected result: Связанные со state hashes evidence и воспроизводимое решение keep/revise/no-go без автоматического promotion. Evidence ceiling: local contracts до отдельной поведенческой/host проверки.
 - Verification gates: Повторить offline self-test G7-T07 только при изменении входов; T07 attested design/results фиксируют exact runner/arm/model/context/budget; повторный model run без изменения входов не нужен. Перед закрытием выполнить docs unittest, check_docs, task-matrix/state validators и diff --check; ожидаются exit 0 и owner acceptance отдельно. Общие execution gates G7 обязательны по применимости. Дополнительные scenarios из deep review должны иметь положительный и соответствующий отрицательный control в existing test/eval infrastructure; статические проверки не подменяют поведенческий результат.
@@ -2204,11 +2204,11 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 
 - status: implemented
 - what was done: Итоговый пакет проверен; владелец принял T06 и решение T08 10.11.2026. T01–T08 приняты; keep tested local mechanisms, superiority insufficient_evidence; G7 закрыта.
-- files touched / work locations: Exact Scope + execution scope refinement; actual diff и [execution report](../../research/product-agent-os-g7-execution-report-2026-11-09.md).
+- files touched / work locations: Exact Scope + execution scope refinement; actual diff и [execution report](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-execution-report-2026-11-09.md).
 - technical value delivered: Сохранены фактические сравнения, отрицательные attempts и reviewer opinions; owner получает проверяемый пакет.
 - product value delivered: Меньше ложных gates и явная доказательная граница; superiority генерации не заявляется.
 - actual implementation date and time: 10-11-2026 15:27
-- verification evidence: [Current T08 checks и reused T07 provenance](../../research/product-agent-os-g7-execution-report-2026-11-09.md). Runtime/tests unchanged; current docs 105 tests passed; docs/matrix/state/diff exit 0; no new model run. Owner accepted T06/T08.
+- verification evidence: [Current T08 checks и reused T07 provenance](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g7-execution-report-2026-11-09.md). Runtime/tests unchanged; current docs 105 tests passed; docs/matrix/state/diff exit 0; no new model run. Owner accepted T06/T08.
 - residual risks: Generation-only synthetic evidence; superiority/component effect insufficient_evidence; money unavailable; fresh-session activation отдельно, T34 no-go unchanged.
 - follow-up: Fresh-session activation отдельно; не расширять owner acceptance до production/general superiority.
 
@@ -2237,7 +2237,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 | G8-S05 | Trade: docs/governance/documentation-policy.md, root files, docs plans/evidence. Сильные стороны: hot/warm/cold и история compaction. PLAN 121558, TEST 132766, RUNLOG 145536 bytes при собственном budget 20000; REQUIREMENTS 54832. Большие detailed plans до 686127 bytes. Повторный рост и optional local evidence требуют отдельного контракта. | T06–T09, T11 |
 | G8-S06 | myPartners: docs/control-plane/index.md, archive-index.md, generated mirrors, root files и detailed plans. Сильные стороны: owning PLAN selector и domain docs. EVALS 46647 bytes; plans до 393734; разные stage pointers в requirements/start pages требуют reconciliation, возраст сам по себе не invalidation. Mirror check существует, его runtime результат анализом не подтверждён. | T06–T11 |
 | G8-S07 | myai-partners.app: README.md, root files, docs и src. README описывает отсутствие frontend при наличии App Router source; runtime readiness из этого не следует. Повторяющиеся correction blocks, плоская docs navigation, plan до 312826 bytes и неоднозначные cross-repo filenames. | T09–T11 |
-| G8-S08 | [Последнее обслуживание control plane](../../research/product-agent-os-control-plane-maintenance-2026-11-10.md), текущий Web plan и docs checks: сохранить параллельную работу; известные ссылки G6/G7 вне docs_dir требуют адресного разбора, а не переписывания evidence. | T11, T14 |
+| G8-S08 | [Последнее обслуживание control plane](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-control-plane-maintenance-2026-11-10.md), текущий Web plan и docs checks: сохранить параллельную работу; известные ссылки G6/G7 вне docs_dir требуют адресного разбора, а не переписывания evidence. | T11, T14 |
 
 ### Контракт лимита и сохранности G8
 
@@ -2275,7 +2275,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Source: G8-S01, G8-S02; traceability и границы наблюдений указаны в разделе группы.
 - Non-goals: Изменение трёх внешних проектов, fresh-session activation, автоматическое удаление истории, новая конкурирующая система статусов, Git/provider/publication actions.
 - Expected result: Зафиксировать классы документов и единственный источник каждого вида состояния. Результат ограничен проверенными локальными контрактами; авторизация и owner acceptance не выводятся из наличия файлов.
-- Verification gates: `python -B -m unittest tests.product_agent_os.test_infrastructure_templates -v` — OK; positive/negative scenarios из Acceptance criteria; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
+- Verification gates: `python -B -m unittest tests.product_agent_os.test_infrastructure_templates -v` — OK; positive/negative scenarios из `Acceptance criteria`; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
 - Risks / approval gates: medium; риск потери или ложной актуальности документов. Implementation request отдельно; target apply, sensitive backups и activation имеют отдельные границы. Rollback только own slice; для compaction действует полный recovery contract T07/T08.
 - Complexity: medium
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
@@ -2317,7 +2317,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Source: G8-S01, G8-S03; traceability и границы наблюдений указаны в разделе группы.
 - Non-goals: Изменение трёх внешних проектов, fresh-session activation, автоматическое удаление истории, новая конкурирующая система статусов, Git/provider/publication actions.
 - Expected result: Формировать минимальный достаточный набор файлов по задаче, размеру и стеку проекта. Результат ограничен проверенными локальными контрактами; авторизация и owner acceptance не выводятся из наличия файлов.
-- Verification gates: `python -B -m unittest tests.product_agent_os.test_infrastructure_templates -v` — OK; positive/negative scenarios из Acceptance criteria; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
+- Verification gates: `python -B -m unittest tests.product_agent_os.test_infrastructure_templates -v` — OK; positive/negative scenarios из `Acceptance criteria`; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
 - Risks / approval gates: medium; риск потери или ложной актуальности документов. Implementation request отдельно; target apply, sensitive backups и activation имеют отдельные границы. Rollback только own slice; для compaction действует полный recovery contract T07/T08.
 - Complexity: medium
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
@@ -2359,7 +2359,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Source: G8-S01; traceability и границы наблюдений указаны в разделе группы.
 - Non-goals: Изменение трёх внешних проектов, fresh-session activation, автоматическое удаление истории, новая конкурирующая система статусов, Git/provider/publication actions.
 - Expected result: Связать approved intake/packets с полями документов и проверять содержательную готовность. Результат ограничен проверенными локальными контрактами; авторизация и owner acceptance не выводятся из наличия файлов.
-- Verification gates: `python -B -m unittest tests.product_agent_os.test_validators -v` — OK; positive/negative scenarios из Acceptance criteria; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
+- Verification gates: `python -B -m unittest tests.product_agent_os.test_validators -v` — OK; positive/negative scenarios из `Acceptance criteria`; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
 - Risks / approval gates: high; риск потери или ложной актуальности документов. Implementation request отдельно; target apply, sensitive backups и activation имеют отдельные границы. Rollback только own slice; для compaction действует полный recovery contract T07/T08.
 - Complexity: high
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
@@ -2401,7 +2401,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Source: G8-S01, G8-S03; traceability и границы наблюдений указаны в разделе группы.
 - Non-goals: Изменение трёх внешних проектов, fresh-session activation, автоматическое удаление истории, новая конкурирующая система статусов, Git/provider/publication actions.
 - Expected result: Сохранить введённые значения при обновлении managed sections. Результат ограничен проверенными локальными контрактами; авторизация и owner acceptance не выводятся из наличия файлов.
-- Verification gates: `python -B -m unittest tests.product_agent_os.test_merge_markdown -v` — OK; positive/negative scenarios из Acceptance criteria; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
+- Verification gates: `python -B -m unittest tests.product_agent_os.test_merge_markdown -v` — OK; positive/negative scenarios из `Acceptance criteria`; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
 - Risks / approval gates: high; риск потери или ложной актуальности документов. Implementation request отдельно; target apply, sensitive backups и activation имеют отдельные границы. Rollback только own slice; для compaction действует полный recovery contract T07/T08.
 - Complexity: high
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
@@ -2443,7 +2443,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Source: G8-S01; traceability и границы наблюдений указаны в разделе группы.
 - Non-goals: Изменение трёх внешних проектов, fresh-session activation, автоматическое удаление истории, новая конкурирующая система статусов, Git/provider/publication actions.
 - Expected result: Проверять фактический context проекта и merged content. Результат ограничен проверенными локальными контрактами; авторизация и owner acceptance не выводятся из наличия файлов.
-- Verification gates: `python -B -m unittest tests.product_agent_os.test_infrastructure_renderer -v` — OK; positive/negative scenarios из Acceptance criteria; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
+- Verification gates: `python -B -m unittest tests.product_agent_os.test_infrastructure_renderer -v` — OK; positive/negative scenarios из `Acceptance criteria`; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
 - Risks / approval gates: medium; риск потери или ложной актуальности документов. Implementation request отдельно; target apply, sensitive backups и activation имеют отдельные границы. Rollback только own slice; для compaction действует полный recovery contract T07/T08.
 - Complexity: medium
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
@@ -2485,7 +2485,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Source: G8-S04, G8-S05, G8-S06; traceability и границы наблюдений указаны в разделе группы.
 - Non-goals: Изменение трёх внешних проектов, fresh-session activation, автоматическое удаление истории, новая конкурирующая система статусов, Git/provider/publication actions.
 - Expected result: Заменить неоднозначность chars/KiB явным byte contract для активных документов. Результат ограничен проверенными локальными контрактами; авторизация и owner acceptance не выводятся из наличия файлов.
-- Verification gates: `python -B -m unittest tests.product_agent_os.test_system_file_hygiene -v` — OK; positive/negative scenarios из Acceptance criteria; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
+- Verification gates: `python -B -m unittest tests.product_agent_os.test_system_file_hygiene -v` — OK; positive/negative scenarios из `Acceptance criteria`; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
 - Risks / approval gates: medium; риск потери или ложной актуальности документов. Implementation request отдельно; target apply, sensitive backups и activation имеют отдельные границы. Rollback только own slice; для compaction действует полный recovery contract T07/T08.
 - Complexity: medium
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
@@ -2527,7 +2527,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Source: G8-S04, G8-S05, G8-S06; traceability и границы наблюдений указаны в разделе группы.
 - Non-goals: Изменение трёх внешних проектов, fresh-session activation, автоматическое удаление истории, новая конкурирующая система статусов, Git/provider/publication actions.
 - Expected result: Перед сокращением построить baseline, назначения и проверяемую карту переноса. Результат ограничен проверенными локальными контрактами; авторизация и owner acceptance не выводятся из наличия файлов.
-- Verification gates: `python -B -m unittest tests.product_agent_os.test_system_file_hygiene -v` — OK; positive/negative scenarios из Acceptance criteria; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
+- Verification gates: `python -B -m unittest tests.product_agent_os.test_system_file_hygiene -v` — OK; positive/negative scenarios из `Acceptance criteria`; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
 - Risks / approval gates: high; риск потери или ложной актуальности документов. Implementation request отдельно; target apply, sensitive backups и activation имеют отдельные границы. Rollback только own slice; для compaction действует полный recovery contract T07/T08.
 - Complexity: high
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
@@ -2569,7 +2569,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Source: G8-S03, G8-S04; traceability и границы наблюдений указаны в разделе группы.
 - Non-goals: Изменение трёх внешних проектов, fresh-session activation, автоматическое удаление истории, новая конкурирующая система статусов, Git/provider/publication actions.
 - Expected result: Применять только утверждённый proposal с защитой от конкурентных изменений. Результат ограничен проверенными локальными контрактами; авторизация и owner acceptance не выводятся из наличия файлов.
-- Verification gates: `python -B -m unittest tests.product_agent_os.test_merge_infrastructure -v` — OK; positive/negative scenarios из Acceptance criteria; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
+- Verification gates: `python -B -m unittest tests.product_agent_os.test_merge_infrastructure -v` — OK; positive/negative scenarios из `Acceptance criteria`; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
 - Risks / approval gates: high; риск потери или ложной актуальности документов. Implementation request отдельно; target apply, sensitive backups и activation имеют отдельные границы. Rollback только own slice; для compaction действует полный recovery contract T07/T08.
 - Complexity: high
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
@@ -2611,7 +2611,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Source: G8-S05, G8-S06, G8-S07; traceability и границы наблюдений указаны в разделе группы.
 - Non-goals: Изменение трёх внешних проектов, fresh-session activation, автоматическое удаление истории, новая конкурирующая система статусов, Git/provider/publication actions.
 - Expected result: Определить discoverable структуру docs и разделение документов по ответственности. Результат ограничен проверенными локальными контрактами; авторизация и owner acceptance не выводятся из наличия файлов.
-- Verification gates: `python -B -m unittest tests.product_agent_os.test_task_plan_lifecycle -v` — OK; positive/negative scenarios из Acceptance criteria; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
+- Verification gates: `python -B -m unittest tests.product_agent_os.test_task_plan_lifecycle -v` — OK; positive/negative scenarios из `Acceptance criteria`; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
 - Risks / approval gates: high; риск потери или ложной актуальности документов. Implementation request отдельно; target apply, sensitive backups и activation имеют отдельные границы. Rollback только own slice; для compaction действует полный recovery contract T07/T08.
 - Complexity: high
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
@@ -2653,7 +2653,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Source: G8-S01, G8-S06, G8-S07; traceability и границы наблюдений указаны в разделе группы.
 - Non-goals: Изменение трёх внешних проектов, fresh-session activation, автоматическое удаление истории, новая конкурирующая система статусов, Git/provider/publication actions.
 - Expected result: Сверять start pages и legacy state с canonical owner и revision. Результат ограничен проверенными локальными контрактами; авторизация и owner acceptance не выводятся из наличия файлов.
-- Verification gates: `python -B -m unittest tests.product_agent_os.test_codex_runtime_runner_state_routes -v` — OK; positive/negative scenarios из Acceptance criteria; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
+- Verification gates: `python -B -m unittest tests.product_agent_os.test_codex_runtime_runner_state_routes -v` — OK; positive/negative scenarios из `Acceptance criteria`; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
 - Risks / approval gates: medium; риск потери или ложной актуальности документов. Implementation request отдельно; target apply, sensitive backups и activation имеют отдельные границы. Rollback только own slice; для compaction действует полный recovery contract T07/T08.
 - Complexity: medium
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
@@ -2695,7 +2695,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Source: G8-S05, G8-S06, G8-S07, G8-S08; traceability и границы наблюдений указаны в разделе группы.
 - Non-goals: Изменение трёх внешних проектов, fresh-session activation, автоматическое удаление истории, новая конкурирующая система статусов, Git/provider/publication actions.
 - Expected result: Проверять generated mirrors и доступность evidence без смешения источников. Результат ограничен проверенными локальными контрактами; авторизация и owner acceptance не выводятся из наличия файлов.
-- Verification gates: `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -v` — OK; positive/negative scenarios из Acceptance criteria; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
+- Verification gates: `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -v` — OK; positive/negative scenarios из `Acceptance criteria`; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
 - Risks / approval gates: medium; риск потери или ложной актуальности документов. Implementation request отдельно; target apply, sensitive backups и activation имеют отдельные границы. Rollback только own slice; для compaction действует полный recovery contract T07/T08.
 - Complexity: medium
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
@@ -2737,7 +2737,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Source: G8-S03, G8-S04; traceability и границы наблюдений указаны в разделе группы.
 - Non-goals: Изменение трёх внешних проектов, fresh-session activation, автоматическое удаление истории, новая конкурирующая система статусов, Git/provider/publication actions.
 - Expected result: Встроить размер/freshness checks в применимые переходы с безопасным read-only маршрутом. Результат ограничен проверенными локальными контрактами; авторизация и owner acceptance не выводятся из наличия файлов.
-- Verification gates: `python -B -m unittest tests.product_agent_os.test_lifecycle_hooks -v` — OK; positive/negative scenarios из Acceptance criteria; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
+- Verification gates: `python -B -m unittest tests.product_agent_os.test_lifecycle_hooks -v` — OK; positive/negative scenarios из `Acceptance criteria`; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
 - Risks / approval gates: high; риск потери или ложной актуальности документов. Implementation request отдельно; target apply, sensitive backups и activation имеют отдельные границы. Rollback только own slice; для compaction действует полный recovery contract T07/T08.
 - Complexity: high
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
@@ -2779,7 +2779,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Source: G8-S01–G8-S08; traceability и границы наблюдений указаны в разделе группы.
 - Non-goals: Изменение трёх внешних проектов, fresh-session activation, автоматическое удаление истории, новая конкурирующая система статусов, Git/provider/publication actions.
 - Expected result: Проверить полный жизненный цикл на трёх аналогах исследованных проектов. Результат ограничен проверенными локальными контрактами; авторизация и owner acceptance не выводятся из наличия файлов.
-- Verification gates: `python -B -m unittest tests.product_agent_os.test_g8_control_plane -v` — OK; positive/negative scenarios из Acceptance criteria; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
+- Verification gates: `python -B -m unittest tests.product_agent_os.test_g8_control_plane -v` — OK; positive/negative scenarios из `Acceptance criteria`; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
 - Risks / approval gates: high; риск потери или ложной актуальности документов. Implementation request отдельно; target apply, sensitive backups и activation имеют отдельные границы. Rollback только own slice; для compaction действует полный recovery contract T07/T08.
 - Complexity: high
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
@@ -2821,7 +2821,7 @@ Control-plane sync: REQUIREMENTS.md — scoped planned addition; PLAN.md — que
 - Source: G8-S01–G8-S08; traceability и границы наблюдений указаны в разделе группы.
 - Non-goals: Изменение трёх внешних проектов, fresh-session activation, автоматическое удаление истории, новая конкурирующая система статусов, Git/provider/publication actions.
 - Expected result: Согласовать active/package/docs и предъявить результаты владельцу. Результат ограничен проверенными локальными контрактами; авторизация и owner acceptance не выводятся из наличия файлов.
-- Verification gates: `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -v` — OK; positive/negative scenarios из Acceptance criteria; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
+- Verification gates: `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -v` — OK; positive/negative scenarios из `Acceptance criteria`; общие gates G8 по применимости. Сохранить actual commands, results и source revision.
 - Risks / approval gates: high; риск потери или ложной актуальности документов. Implementation request отдельно; target apply, sensitive backups и activation имеют отдельные границы. Rollback только own slice; для compaction действует полный recovery contract T07/T08.
 - Complexity: high
 - Estimated execution time: not_estimated; оценить после focused source preflight, без выдуманных сроков.
@@ -2853,10 +2853,10 @@ Source status: project-local implementation and verification. T01–T09 implemen
 
 ### Источники и границы G9
 
-- G9-S01: [каталог и scoped selection](../../plugins/product-agent-os/scripts/product_agent_os/templates.py), [генератор](../../plugins/product-agent-os/scripts/product_agent_os/infrastructure.py). Исторический baseline без task_context предлагал весь каталог. Теперь отсутствующий context блокирует генерацию; полный каталог доступен через explicit legacy mode.
-- G9-S02: [контракты содержимого/readiness](../../plugins/product-agent-os/scripts/product_agent_os/control_plane_documents.py), [навигация](../../plugins/product-agent-os/scripts/product_agent_os/document_navigation.py), [stage manifest](../../plugins/product-agent-os/scripts/product_agent_os/stage_manifest.py), [merge](../../plugins/product-agent-os/scripts/product_agent_os/merge_infrastructure.py).
-- G9-S03: [project formation workflow](../../plugins/product-agent-os/assets/templates/workflows/project-formation.md); [результаты и ограничения G8](../../research/product-agent-os-g8-execution-report.md). Workflow направляет в общий planner; существующие документы сохраняются, обновления остаются companion proposals.
-- G9-S04: [Web M1 owning plan](product-agent-os-web-task-manager-plan-2026-11-09.md) и [PLAN](../../PLAN.md): при freeze/cutover соблюдать source ownership; завершение M1 целиком не является prerequisite локальных G9 slices. SQL/runtime-интеграцию M1 не подменять synthetic authority checks.
+- G9-S01: [каталог и scoped selection](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/templates.py), [генератор](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/infrastructure.py). Исторический baseline без task_context предлагал весь каталог. Теперь отсутствующий context блокирует генерацию; полный каталог доступен через explicit legacy mode.
+- G9-S02: [контракты содержимого/readiness](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/control_plane_documents.py), [навигация](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/document_navigation.py), [stage manifest](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/stage_manifest.py), [merge](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/merge_infrastructure.py).
+- G9-S03: [project formation workflow](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/assets/templates/workflows/project-formation.md); [результаты и ограничения G8](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g8-execution-report.md). Workflow направляет в общий planner; существующие документы сохраняются, обновления остаются companion proposals.
+- G9-S04: [Web M1 owning plan](product-agent-os-web-task-manager-plan-2026-11-09.md) и [PLAN](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/PLAN.md): при freeze/cutover соблюдать source ownership; завершение M1 целиком не является prerequisite локальных G9 slices. SQL/runtime-интеграцию M1 не подменять synthetic authority checks.
 
 Границы: G8-T14 явно принят владельцем; G8 closed. G9 закрыта после явной приёмки T10/T17. HOST/fresh-session activation, T34 no-go и G6 acceptance остаются отдельными. Матрица research сохраняется единым файлом. Лимит для применимых control-plane/navigation документов — 40 000 UTF-8 bytes, warning 32 000; explicit per-file limits приоритетны. Подробные матрицы docs/planning/ сохраняются целиком и исключены только из default size trigger; content/link/security проверки сохраняются.
 
@@ -2869,10 +2869,10 @@ Source status: owner-authorized implementation, 10.11.2026; T11–T16 implemente
 
 Исторический baseline: G9-S05–G9-S08 ниже описывают пробелы до реализации T11–T17. Принятый результат и actual evidence — G9 execution report.
 
-- G9-S05: [control-plane sync](../../.codex/workflows/control-plane-sync.md), [task lifecycle](../../.codex/workflows/task-plan-lifecycle.md), [completion implementation](../../plugins/product-agent-os/scripts/product_agent_os/task_plan_lifecycle.py). Checklist существует; completion helper сам по себе не проверяет docs impact и не обновляет PLAN revision.
-- G9-S06: [formation impact](../../plugins/product-agent-os/scripts/product_agent_os/project_formation.py), [navigation и duplicate_blocks](../../plugins/product-agent-os/scripts/product_agent_os/document_navigation.py), [document checker](../../plugins/product-agent-os/scripts/check_documents.py). manual_updates/source_changed не являются section-level impact; duplicate_blocks сейчас внутрифайловый; aliases между G8/G9 расходятся.
-- G9-S07: [hygiene policy](../../plugins/product-agent-os/scripts/product_agent_os/system_file_hygiene.py), [Stop reminder](../../.codex/hooks/stop_runlog_reminder.py), [canonical planner](../../plugins/product-agent-os/skills/implementation-planner/SKILL.md). Periodic schedule not_created; hooks advisory; правило evidence в RUNLOG нуждается в согласовании с compact handoff.
-- G9-S08: [status projection](../../plugins/product-agent-os/scripts/product_agent_os/status_snapshot.py) и [G9 current evidence](../../research/product-agent-os-g9-execution-report.md). Source revision guard сохраняется; предыдущие G9 passes не доказывают ещё не реализованное расширение.
+- G9-S05: [control-plane sync](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/.codex/workflows/control-plane-sync.md), [task lifecycle](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/.codex/workflows/task-plan-lifecycle.md), [completion implementation](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/task_plan_lifecycle.py). Checklist существует; completion helper сам по себе не проверяет docs impact и не обновляет PLAN revision.
+- G9-S06: [formation impact](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/project_formation.py), [navigation и duplicate_blocks](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/document_navigation.py), [document checker](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/check_documents.py). manual_updates/source_changed не являются section-level impact; duplicate_blocks сейчас внутрифайловый; aliases между G8/G9 расходятся.
+- G9-S07: [hygiene policy](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/system_file_hygiene.py), [Stop reminder](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/.codex/hooks/stop_runlog_reminder.py), [canonical planner](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/skills/implementation-planner/SKILL.md). Periodic schedule not_created; hooks advisory; правило evidence в RUNLOG нуждается в согласовании с compact handoff.
+- G9-S08: [status projection](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/status_snapshot.py) и [G9 current evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g9-execution-report.md). Source revision guard сохраняется; предыдущие G9 passes не доказывают ещё не реализованное расширение.
 
 Принцип: после каждой задачи обязательна оценка влияния на документацию; запись требуется только по изменению информации соответствующего owner. Один факт — один основной источник; другие документы содержат нужный краткий контекст и ссылку. Полная матрица сохраняет собственные карточки. Docs impact помещается в существующий task/completion artifact, не в новый файл на каждую задачу. Primary отвечает за общий sync; delegated owner возвращает только assigned-file impact. Новые инструкции, write routes и валидаторы реализованы локально; результат и ограничения приняты владельцем.
 
@@ -2888,7 +2888,7 @@ Authoring scope T11–T17, 10.11.2026: implementation_not_started. `python -B -m
 
 Контракт проверок: для нового поведения risk-based RED/GREEN и существующие focused tests; затем обязательные gates TEST.md, fixture/transcript eval и compatibility по применимости. Для docs/control-plane: python -m unittest tests.product_agent_os.test_product_agent_os_docs -v; python tools/check_docs.py; python plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/product-agent-os-audit-remediation-task-plan-2026-11-09.md; git diff --check. Strict MkDocs обязателен при изменении navigation/MkDocs/site evidence. Команды и actual receipts сохранять в owning evidence, не выдавать этот список за выполненные проверки.
 
-Результаты G9-T09 должны включать source/config/fixture revisions и environment, одинаковые входы baseline/treatment, failed cases и ограничения. Не запускать providers или создавать API keys; не заявлять экономию или качество по одному уменьшению файлов. Target apply требует конкретного manifest и authority; rollback сохраняет unrelated/concurrent work. Actual receipts и failed attempts: [G9 execution report](../../research/product-agent-os-g9-execution-report.md); [comparison JSON](../superpowers/specs/paos-aud-g9-project-formation-results.json). Не переносить локальную проверку в owner acceptance или activation.
+Результаты G9-T09 должны включать source/config/fixture revisions и environment, одинаковые входы baseline/treatment, failed cases и ограничения. Не запускать providers или создавать API keys; не заявлять экономию или качество по одному уменьшению файлов. Target apply требует конкретного manifest и authority; rollback сохраняет unrelated/concurrent work. Actual receipts и failed attempts: [G9 execution report](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-g9-execution-report.md); [comparison JSON](../superpowers/specs/paos-aud-g9-project-formation-results.json). Не переносить локальную проверку в owner acceptance или activation.
 
 ### Task `PAOS-AUD-G9-T01`
 

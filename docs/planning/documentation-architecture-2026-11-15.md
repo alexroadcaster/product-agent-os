@@ -1,6 +1,6 @@
 # Product-Agent OS — архитектура документации и backlog
 
-Source status: repository_source / current_source_inspection / owner_requested_planning; documentation implementation planned.
+Source status: repository_source / current_source_inspection / owner_requested_planning; subsystem documentation implementation planned; DG01 repair docs_static_verified.
 Дата: 15.11.2026. Schema version: task_matrix_plan_v1. Timezone: Europe/Moscow.
 
 ## Результат анализа
@@ -13,19 +13,19 @@ Source status: repository_source / current_source_inspection / owner_requested_p
 
 | Область | Что найдено в реализации/документации | Пробел |
 | --- | --- | --- |
-| Backend | [apps/local-service/src/http/application.mts](../../apps/local-service/src/http/application.mts) связывает task manager, artifacts, team, code index, scheduler, recipes и decisions; отдельные storage/runtime modules | Нет единого module/lifecycle/API guide для PAOS Web; methodologies/backend — метод, а не фактическая архитектура |
-| Frontend | [apps/web/src/ui/App.tsx](../../apps/web/src/ui/App.tsx), features, API client, V3 design и [apps/web/README.md](../../apps/web/README.md) | Нет связной карты screens/state/dataflow/design-to-code; README смешивает текущие инструкции и историю |
-| DB | [apps/local-service/src/storage/migrations/schema.mts](../../apps/local-service/src/storage/migrations/schema.mts) задаёт 16 CREATE TABLE/VIRTUAL TABLE statements, включая entities/events/outbox/FTS; SQLite worker/restore/search | Нужны ERD, таблицы/инварианты/authority и migration/backup contract; schema target-проекта F33 не равна SQLite PAOS |
-| AI/LLM Web | [apps/local-service/src/runtime/route-selector.ts](../../apps/local-service/src/runtime/route-selector.ts) содержит codex_app_agent/local_api_byok и запрещает implicit fallback | Runtime маршруты/подключение/credentials/limits разбросаны по research и receipts |
-| Retrieval/RAG | Web [apps/local-service/src/storage/search-queries.mts](../../apps/local-service/src/storage/search-queries.mts) использует SQLite FTS5; [plugins/product-agent-os/scripts/product_agent_os/project_graph_semantic.py](../../plugins/product-agent-os/scripts/product_agent_os/project_graph_semantic.py) — отдельный deterministic semantic cache | Нельзя называть Web search полноценным production RAG; явная интеграция этих двух путей не установлена этим аудитом |
-| Providers/proposals | [plugins/product-agent-os/scripts/product_agent_os/project_graph_embedding_provider.py](../../plugins/product-agent-os/scripts/product_agent_os/project_graph_embedding_provider.py) и [plugins/product-agent-os/scripts/product_agent_os/project_graph_llm_extraction.py](../../plugins/product-agent-os/scripts/product_agent_os/project_graph_llm_extraction.py) определяют gates; default не вызывает live providers | Нужна capability matrix deterministic/staged/live-approved; наличие модуля не доказывает активацию |
+| Backend | [apps/local-service/src/http/application.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/http/application.mts) связывает task manager, artifacts, team, code index, scheduler, recipes и decisions; отдельные storage/runtime modules | Нет единого module/lifecycle/API guide для PAOS Web; methodologies/backend — метод, а не фактическая архитектура |
+| Frontend | [apps/web/src/ui/App.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/ui/App.tsx), features, API client, V3 design и [apps/web/README.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/README.md) | Нет связной карты screens/state/dataflow/design-to-code; README смешивает текущие инструкции и историю |
+| DB | [apps/local-service/src/storage/migrations/schema.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/storage/migrations/schema.mts) задаёт 16 CREATE TABLE/VIRTUAL TABLE statements, включая entities/events/outbox/FTS; SQLite worker/restore/search | Нужны ERD, таблицы/инварианты/authority и migration/backup contract; schema target-проекта F33 не равна SQLite PAOS |
+| AI/LLM Web | [apps/local-service/src/runtime/route-selector.ts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/runtime/route-selector.ts) содержит codex_app_agent/local_api_byok и запрещает implicit fallback | Runtime маршруты/подключение/credentials/limits разбросаны по research и receipts |
+| Retrieval/RAG | Web [apps/local-service/src/storage/search-queries.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/storage/search-queries.mts) использует SQLite FTS5; [plugins/product-agent-os/scripts/product_agent_os/project_graph_semantic.py](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/project_graph_semantic.py) — отдельный deterministic semantic cache | Нельзя называть Web search полноценным production RAG; явная интеграция этих двух путей не установлена этим аудитом |
+| Providers/proposals | [plugins/product-agent-os/scripts/product_agent_os/project_graph_embedding_provider.py](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/project_graph_embedding_provider.py) и [plugins/product-agent-os/scripts/product_agent_os/project_graph_llm_extraction.py](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/project_graph_llm_extraction.py) определяют gates; default не вызывает live providers | Нужна capability matrix deterministic/staged/live-approved; наличие модуля не доказывает активацию |
 | Guides | docs/product-agent-os уже содержит graph/governance/formation/CLI/privacy/evals; docs/agent-systems и methodologies — общие знания | Переиспользовать и связать владельцев; не копировать все страницы в новые пустые каталоги |
 
 Это статический source/docs аудит, не runtime acceptance; provider/network calls не выполнялись. Наличие названий RAG/LLM среди task components не доказывает наличие RAG runtime.
 
 ## Предлагаемая структура docs
 
-Имена каталогов — lowercase, как в существующем репозитории. AI объединяет вложенные agents/llm/rag, а не четыре независимых корневых раздела. Папки создаются вместе с содержательными страницами в задачах ниже; сейчас выполняется только перенос planning и запись этого backlog.
+Имена каталогов — lowercase, как в существующем репозитории. AI объединяет вложенные agents/llm/rag, а не четыре независимых корневых раздела. Папки создаются вместе с содержательными страницами в задачах ниже; первоначальный аудит выполнил перенос planning и запись backlog, последующий DG01 завершил repair.
 
 ```text
 docs/
@@ -73,13 +73,13 @@ docs/
 
 ## Группы реализации документации — 15.11.2026
 
-Статус всех групп и всех 16 задач: **planned**. Группировка задаёт последовательность будущей работы; исправления ссылок, переводы и написание документации в этом проходе не выполняются. IDs, исходные Depends on / Blocks, scope и AC карточек сохраняются.
+Текущий статус: DG01 — **completed / docs_static_verified**; DOCS-13 и DOCS-16 — **in_progress**; остальные группы и 14 задач — **planned**. Группировка определила последовательность без реализации. Последующий запрос DG01 разрешает исправления ссылок, локализации и проверок; написание документации остальных подсистем не начато. IDs, исходные Depends on / Blocks, scope и AC карточек сохраняются.
 
 ### Правила этапов и зависимостей
 
 DOCS-13 и DOCS-16 имеют по два этапа внутри существующей карточки: **13/A, 16/A** — устранение текущих проблем после переноса; **13/B, 16/B** — основная работа и полное закрытие. Обозначения этапов не создают новых task IDs или второй источник статуса. Всего 16 задач, 18 исполняемых этапов: 14 обычных задач и четыре этапа двух задач. Владелец полного закрытия DOCS-13 — DG06, DOCS-16 — DG07.
 
-Для обычных задач Depends on остаётся условием входа. Для DOCS-13/16 это условие этапа B и полного закрытия; этап A проверяет существующую документацию и не ждёт будущих разделов. Это явное уточнение прежнего неоднозначного разрешения раннего repair, а не удаление зависимостей. Завершение A фиксируется evidence внутри родительской карточки; родитель остаётся in_progress до B и выполнения всех исходных AC. Сейчас даже этапы A не начаты.
+Для обычных задач Depends on остаётся условием входа. Для DOCS-13/16 это условие этапа B и полного закрытия; этап A проверяет существующую документацию и не ждёт будущих разделов. Это явное уточнение прежнего неоднозначного разрешения раннего repair, а не удаление зависимостей. Завершение A фиксируется evidence внутри родительской карточки; родитель остаётся in_progress до B и выполнения всех исходных AC. Этапы A завершены; этапы B остаются planned.
 
 **DG01 — обязательный первый этап:** DG02–DG07 не начинают исполнение до его acceptance. Внутри последующих групп старт определяется зависимостями конкретной задачи: номер группы не создаёт лишнего ожидания полного завершения предыдущего номера.
 
@@ -114,6 +114,32 @@ DOCS-13 и DOCS-16 имеют по два этапа внутри существ
 
 Проверки группировки 15.11.2026: validate_task_matrix — passed; source-docs unittest — 3/3 passed (0.669s); check_docs и git diff --check — passed. Сравнение карточек до/после: 16/16 сохранены побайтно после удаления только добавленных Delivery group/Execution stages полей; все planned. Покрытие 7 групп / 18 уникальных этапов и DAG с обязательным DG01 gate — passed. Review: self_review. Control-plane sync: PLAN/RUNLOG updated; REQUIREMENTS/TEST/EVALS/registries no_change_needed — требования, source claims и verification routes не менялись. MkDocs/site/archive не перезапускались: их исправление входит в будущий DG01, результаты прежнего прохода не повышены.
 
+## DG01 — результаты исправления {#dg01-results}
+
+Статус: **completed / docs_static_verified**, 15.11.2026. **DOCS-13/A и DOCS-16/A завершены**; родительские DOCS-13/16 остаются in_progress до B. DG02–DG07 и остальные 14 задач остаются planned.
+
+Выполнены восемь полных EN-переводов: UI V1/V2/V3, документационная архитектура, functional remediation, audit remediation, ordinary route, Web task manager. Сохранены карточки, статусы, зависимости, AC, даты, команды и исторические ограничения. Смысловая проверка и сверка технических литералов дополняют regression полноты карточек и критериев.
+
+Repository-only file/directory links ведут на проверенные blob/tree targets коммита 33ed0350738e549f932a9fffdeeff9d4908ca94c. EN JSON targets используют тот же snapshot, внутренние страницы — относительные ссылки. Targets сверены с Git tree; snapshot доступен через GitHub connector, каждый внешний URL отдельно по сети не проверялся. Исправлены RU/EN project-formation anchors, language links, search/sitemap parity.
+
+Исторический PostToolUse receipt сохраняет пять событий; текущий contract отдельно проверяет SessionStart/PreToolUse/PermissionRequest/Stop. Hooks/trust не изменены. Regression проверяет все карточки, plain/backtick dependency IDs и AC numbering; групповые заголовки отделены от карточек. Литеральные имена полей оформлены в RU тексте без отключения языкового gate.
+
+| Проверка | Команда / результат |
+| --- | --- |
+| Матрицы | `python -B plugins/product-agent-os/scripts/validate_task_matrix.py <plan>` — 16 RU/EN matrices passed |
+| Исходная документация | `python -B tools/check_docs.py`; `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -q` — passed, 3/3 |
+| Архив и переводы | `python -B -m unittest tests.product_agent_os.docs_archive_checks -q` — 99/99 passed |
+| Hook regression | Historical receipt / current hook shape / optional advisory targeted checks — 3/3 passed |
+| Strict build | `.venv-docs/Scripts/python.exe -m mkdocs build --strict --site-dir .docs-tools/reports/dg01/site` — exit 0 |
+| Language links | `tools/fix_site_i18n_links.ps1 -SiteDir .docs-tools/reports/dg01/site` — passed |
+| Сайт | `PAOS_DOCS_SITE_DIR=.docs-tools/reports/dg01/site`; `python -B -m unittest tests.product_agent_os.site_checks -q` — 7/7 passed |
+| HTML links/anchors | `python -B .docs-tools/reports/dg01/check_links.py` — 30 затронутых RU/EN routes, missing targets/anchors: 0 |
+| Diff | `git diff --check` — passed |
+
+Сохранены причины RED: исходный PostToolUse assertion, отсутствующие/частичные переводы, 17 EN JSON warnings, граница group/card, литеральное имя поля, group Status и 7 directory/2 EN anchor targets. Соответствующие GREEN checks выполнены после исправлений; прежние migration receipts ниже остаются историческими.
+
+Review: self_review и независимая проверка переводов/теста агентами с раздельным владением; замечания устранены. Control-plane sync: PLAN/RUNLOG, каталог, registry RU/EN updated; TEST содержит evidence pointer. REQUIREMENTS/EVALS/prod_test no_change_needed: scope, рубрики и production history не менялись. Feature JSON task-state/dependencies сохранены. Корневой site/, публикация, runtime/provider activation и будущие domain docs не входят в результат. Следующий плановый этап — DG02.
+
 ## Evidence миграции и проверки
 
 Статус: перенос и backlog записаны; verification частичная, публикация сайта не готова. Продуктовые задачи не реализовывались.
@@ -140,7 +166,7 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 
 ## Отдельный список задач
 
-Все **16 задач PAOS-DOCS-01–16 — planned**. Они не добавляются к 34 FUNC задачам и не меняют их статусы. Разрешение этой сессии покрывает перенос планов и составление backlog, не написание всех новых разделов или реализацию фич.
+Всего 16 задач PAOS-DOCS-01–16: DOCS-13/16 — in_progress для DG01, остальные 14 — planned. Они не добавляются к 34 FUNC задачам и не меняют их статусы. Начальный запрос покрывал перенос и backlog; последующий запрос DG01 разрешает repair, но не написание всех новых разделов или реализацию фич.
 
 | ID | Задача / каталог | Что сделать | Зависимости |
 | --- | --- | --- | --- |
@@ -218,7 +244,7 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 - Priority: P2
 - Depends on: `PAOS-DOCS-01`
 - Blocks: `PAOS-DOCS-03`, `PAOS-DOCS-06`, `PAOS-DOCS-16`
-- Source: [research/product-agent-os-web-prd-2026-11-05.md](../../research/product-agent-os-web-prd-2026-11-05.md), [docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md](product-agent-os-web-task-manager-plan-2026-11-09.md), [REQUIREMENTS.md](../../REQUIREMENTS.md), [packages/contracts/issues/task-profile.ts](../../packages/contracts/issues/task-profile.ts)
+- Source: [research/product-agent-os-web-prd-2026-11-05.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-prd-2026-11-05.md), [docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md](product-agent-os-web-task-manager-plan-2026-11-09.md), [REQUIREMENTS.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/REQUIREMENTS.md), [packages/contracts/issues/task-profile.ts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/packages/contracts/issues/task-profile.ts)
 - Short description: Собрать актуальную продуктовую спецификацию и доменную модель
 - Technical value: Canonical ownership, source-to-contract traceability и меньшая вероятность неверного изменения кода агентом.
 - Product value: Разработчик и пользователь понимают текущее поведение, ограничения и следующий шаг.
@@ -262,7 +288,7 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 - Priority: P1
 - Depends on: `PAOS-DOCS-01`, `PAOS-DOCS-02`
 - Blocks: `PAOS-DOCS-04`, `PAOS-DOCS-05`, `PAOS-DOCS-06`, `PAOS-DOCS-07`, `PAOS-DOCS-08`, `PAOS-DOCS-11`, `PAOS-DOCS-12`, `PAOS-DOCS-15`, `PAOS-DOCS-16`
-- Source: [research/product-agent-os-web-architecture-2026-11-05.md](../../research/product-agent-os-web-architecture-2026-11-05.md), [research/batch45-professional-code-authoring-architecture-v2.md](../../research/batch45-professional-code-authoring-architecture-v2.md), [research/batch45-professional-code-authoring-solution-map.md](../../research/batch45-professional-code-authoring-solution-map.md), [docs/product-agent-os/architecture.md](../product-agent-os/architecture.md), [docs/diagrams/index.md](../diagrams/index.md)
+- Source: [research/product-agent-os-web-architecture-2026-11-05.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-architecture-2026-11-05.md), [research/batch45-professional-code-authoring-architecture-v2.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/batch45-professional-code-authoring-architecture-v2.md), [research/batch45-professional-code-authoring-solution-map.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/batch45-professional-code-authoring-solution-map.md), [docs/product-agent-os/architecture.md](../product-agent-os/architecture.md), [docs/diagrams/index.md](../diagrams/index.md)
 - Short description: Консолидировать архитектуру и журнал решений
 - Technical value: Canonical ownership, source-to-contract traceability и меньшая вероятность неверного изменения кода агентом.
 - Product value: Разработчик и пользователь понимают текущее поведение, ограничения и следующий шаг.
@@ -306,7 +332,7 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 - Priority: P1
 - Depends on: `PAOS-DOCS-03`
 - Blocks: `PAOS-DOCS-05`, `PAOS-DOCS-13`, `PAOS-DOCS-14`, `PAOS-DOCS-16`
-- Source: [apps/local-service/src/http/application.mts](../../apps/local-service/src/http/application.mts), [apps/local-service/src/scheduler/service.mts](../../apps/local-service/src/scheduler/service.mts), [apps/local-service/src/execution-recipes/service.mts](../../apps/local-service/src/execution-recipes/service.mts), [apps/local-service/src/supervisor](../../apps/local-service/src/supervisor), [research/product-agent-os-web-m2c-execution-2026-11-12.md](../../research/product-agent-os-web-m2c-execution-2026-11-12.md)
+- Source: [apps/local-service/src/http/application.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/http/application.mts), [apps/local-service/src/scheduler/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/scheduler/service.mts), [apps/local-service/src/execution-recipes/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/execution-recipes/service.mts), [apps/local-service/src/supervisor](https://github.com/alexroadcaster/product-agent-os/tree/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/supervisor), [research/product-agent-os-web-m2c-execution-2026-11-12.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m2c-execution-2026-11-12.md)
 - Short description: Описать backend и жизненный цикл локального сервиса
 - Technical value: Canonical ownership, source-to-contract traceability и меньшая вероятность неверного изменения кода агентом.
 - Product value: Разработчик и пользователь понимают текущее поведение, ограничения и следующий шаг.
@@ -350,7 +376,7 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 - Priority: P1
 - Depends on: `PAOS-DOCS-03`, `PAOS-DOCS-04`
 - Blocks: `PAOS-DOCS-07`, `PAOS-DOCS-08`, `PAOS-DOCS-11`, `PAOS-DOCS-12`, `PAOS-DOCS-13`, `PAOS-DOCS-16`
-- Source: [apps/local-service/src/http/application.mts](../../apps/local-service/src/http/application.mts), [apps/local-service/src/http/session-gate.mts](../../apps/local-service/src/http/session-gate.mts), [apps/web/src/api/client.ts](../../apps/web/src/api/client.ts), [packages/contracts](../../packages/contracts)
+- Source: [apps/local-service/src/http/application.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/http/application.mts), [apps/local-service/src/http/session-gate.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/http/session-gate.mts), [apps/web/src/api/client.ts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/api/client.ts), [packages/contracts](https://github.com/alexroadcaster/product-agent-os/tree/33ed0350738e549f932a9fffdeeff9d4908ca94c/packages/contracts)
 - Short description: Составить справочник HTTP API, событий и общих контрактов
 - Technical value: Canonical ownership, source-to-contract traceability и меньшая вероятность неверного изменения кода агентом.
 - Product value: Разработчик и пользователь понимают текущее поведение, ограничения и следующий шаг.
@@ -394,7 +420,7 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 - Priority: P1
 - Depends on: `PAOS-DOCS-01`, `PAOS-DOCS-02`, `PAOS-DOCS-03`
 - Blocks: `PAOS-DOCS-13`, `PAOS-DOCS-16`
-- Source: [DESIGN.md](../../DESIGN.md), [design/2026-11-13-v3/README.md](../../design/2026-11-13-v3/README.md), [design/2026-11-13-v3/task-field-map.md](../../design/2026-11-13-v3/task-field-map.md), [apps/web/README.md](../../apps/web/README.md), [apps/web/src/ui/App.tsx](../../apps/web/src/ui/App.tsx), [apps/web/src/features](../../apps/web/src/features), [docs/web/accessibility.md](../web/accessibility.md)
+- Source: [DESIGN.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/DESIGN.md), [design/2026-11-13-v3/README.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v3/README.md), [design/2026-11-13-v3/task-field-map.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v3/task-field-map.md), [apps/web/README.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/README.md), [apps/web/src/ui/App.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/ui/App.tsx), [apps/web/src/features](https://github.com/alexroadcaster/product-agent-os/tree/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features), [docs/web/accessibility.md](../web/accessibility.md)
 - Short description: Описать frontend, UI/UX и навигационные состояния
 - Technical value: Canonical ownership, source-to-contract traceability и меньшая вероятность неверного изменения кода агентом.
 - Product value: Разработчик и пользователь понимают текущее поведение, ограничения и следующий шаг.
@@ -438,7 +464,7 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 - Priority: P1
 - Depends on: `PAOS-DOCS-03`, `PAOS-DOCS-05`
 - Blocks: `PAOS-DOCS-10`, `PAOS-DOCS-12`, `PAOS-DOCS-13`, `PAOS-DOCS-14`, `PAOS-DOCS-16`
-- Source: [apps/local-service/src/storage/migrations/schema.mts](../../apps/local-service/src/storage/migrations/schema.mts), [apps/local-service/src/storage/sqlite-worker.mts](../../apps/local-service/src/storage/sqlite-worker.mts), [apps/local-service/src/storage/local-store.mts](../../apps/local-service/src/storage/local-store.mts), [apps/local-service/src/storage/restore-worker.mts](../../apps/local-service/src/storage/restore-worker.mts), [research/product-agent-os-web-storage-research-2026-11-09.md](../../research/product-agent-os-web-storage-research-2026-11-09.md)
+- Source: [apps/local-service/src/storage/migrations/schema.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/storage/migrations/schema.mts), [apps/local-service/src/storage/sqlite-worker.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/storage/sqlite-worker.mts), [apps/local-service/src/storage/local-store.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/storage/local-store.mts), [apps/local-service/src/storage/restore-worker.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/storage/restore-worker.mts), [research/product-agent-os-web-storage-research-2026-11-09.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-storage-research-2026-11-09.md)
 - Short description: Документировать фактическую SQLite-схему и жизненный цикл данных
 - Technical value: Canonical ownership, source-to-contract traceability и меньшая вероятность неверного изменения кода агентом.
 - Product value: Разработчик и пользователь понимают текущее поведение, ограничения и следующий шаг.
@@ -482,7 +508,7 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 - Priority: P1
 - Depends on: `PAOS-DOCS-03`, `PAOS-DOCS-05`
 - Blocks: `PAOS-DOCS-09`, `PAOS-DOCS-10`, `PAOS-DOCS-12`, `PAOS-DOCS-13`, `PAOS-DOCS-15`, `PAOS-DOCS-16`
-- Source: [apps/local-service/src/runtime/route-selector.ts](../../apps/local-service/src/runtime/route-selector.ts), [apps/local-service/src/runtime/app-agent-gateway.mts](../../apps/local-service/src/runtime/app-agent-gateway.mts), [apps/local-service/src/runtime/codex/coordinator.ts](../../apps/local-service/src/runtime/codex/coordinator.ts), [apps/local-service/src/team/service.mts](../../apps/local-service/src/team/service.mts), [docs/product-agent-os/live-runtime-governance.md](../product-agent-os/live-runtime-governance.md), [docs/agent-systems/subagents-skills.md](../agent-systems/subagents-skills.md)
+- Source: [apps/local-service/src/runtime/route-selector.ts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/runtime/route-selector.ts), [apps/local-service/src/runtime/app-agent-gateway.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/runtime/app-agent-gateway.mts), [apps/local-service/src/runtime/codex/coordinator.ts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/runtime/codex/coordinator.ts), [apps/local-service/src/team/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/team/service.mts), [docs/product-agent-os/live-runtime-governance.md](../product-agent-os/live-runtime-governance.md), [docs/agent-systems/subagents-skills.md](../agent-systems/subagents-skills.md)
 - Short description: Описать AI-оркестрацию и работу агентов PAOS
 - Technical value: Canonical ownership, source-to-contract traceability и меньшая вероятность неверного изменения кода агентом.
 - Product value: Разработчик и пользователь понимают текущее поведение, ограничения и следующий шаг.
@@ -526,7 +552,7 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 - Priority: P2
 - Depends on: `PAOS-DOCS-08`
 - Blocks: `PAOS-DOCS-10`, `PAOS-DOCS-16`
-- Source: [apps/local-service/src/runtime/route-selector.ts](../../apps/local-service/src/runtime/route-selector.ts), [apps/local-service/src/connections](../../apps/local-service/src/connections), [research/product-agent-os-web-auth-commercial-2026-11-09.md](../../research/product-agent-os-web-auth-commercial-2026-11-09.md), [plugins/product-agent-os/scripts/product_agent_os/project_graph_llm_extraction.py](../../plugins/product-agent-os/scripts/product_agent_os/project_graph_llm_extraction.py), [plugins/product-agent-os/scripts/product_agent_os/project_graph_llm_proposal_provider.py](../../plugins/product-agent-os/scripts/product_agent_os/project_graph_llm_proposal_provider.py)
+- Source: [apps/local-service/src/runtime/route-selector.ts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/runtime/route-selector.ts), [apps/local-service/src/connections](https://github.com/alexroadcaster/product-agent-os/tree/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/connections), [research/product-agent-os-web-auth-commercial-2026-11-09.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-auth-commercial-2026-11-09.md), [plugins/product-agent-os/scripts/product_agent_os/project_graph_llm_extraction.py](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/project_graph_llm_extraction.py), [plugins/product-agent-os/scripts/product_agent_os/project_graph_llm_proposal_provider.py](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/project_graph_llm_proposal_provider.py)
 - Short description: Описать LLM routes, prompts и model/provider boundaries
 - Technical value: Canonical ownership, source-to-contract traceability и меньшая вероятность неверного изменения кода агентом.
 - Product value: Разработчик и пользователь понимают текущее поведение, ограничения и следующий шаг.
@@ -570,7 +596,7 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 - Priority: P2
 - Depends on: `PAOS-DOCS-07`, `PAOS-DOCS-08`, `PAOS-DOCS-09`
 - Blocks: `PAOS-DOCS-11`, `PAOS-DOCS-16`
-- Source: [apps/local-service/src/storage/search-queries.mts](../../apps/local-service/src/storage/search-queries.mts), [plugins/product-agent-os/scripts/product_agent_os/project_graph_chunking.py](../../plugins/product-agent-os/scripts/product_agent_os/project_graph_chunking.py), [plugins/product-agent-os/scripts/product_agent_os/project_graph_semantic.py](../../plugins/product-agent-os/scripts/product_agent_os/project_graph_semantic.py), [plugins/product-agent-os/scripts/product_agent_os/project_graph_embedding_provider.py](../../plugins/product-agent-os/scripts/product_agent_os/project_graph_embedding_provider.py), [plugins/product-agent-os/scripts/product_agent_os/project_graph_hybrid_retrieval.py](../../plugins/product-agent-os/scripts/product_agent_os/project_graph_hybrid_retrieval.py), [docs/product-agent-os/project-code-graph.md](../product-agent-os/project-code-graph.md)
+- Source: [apps/local-service/src/storage/search-queries.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/storage/search-queries.mts), [plugins/product-agent-os/scripts/product_agent_os/project_graph_chunking.py](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/project_graph_chunking.py), [plugins/product-agent-os/scripts/product_agent_os/project_graph_semantic.py](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/project_graph_semantic.py), [plugins/product-agent-os/scripts/product_agent_os/project_graph_embedding_provider.py](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/project_graph_embedding_provider.py), [plugins/product-agent-os/scripts/product_agent_os/project_graph_hybrid_retrieval.py](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/project_graph_hybrid_retrieval.py), [docs/product-agent-os/project-code-graph.md](../product-agent-os/project-code-graph.md)
 - Short description: Документировать поиск, retrieval и границы RAG
 - Technical value: Canonical ownership, source-to-contract traceability и меньшая вероятность неверного изменения кода агентом.
 - Product value: Разработчик и пользователь понимают текущее поведение, ограничения и следующий шаг.
@@ -614,7 +640,7 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 - Priority: P2
 - Depends on: `PAOS-DOCS-03`, `PAOS-DOCS-05`, `PAOS-DOCS-10`
 - Blocks: `PAOS-DOCS-15`, `PAOS-DOCS-16`
-- Source: [apps/local-service/src/code-index/service.mts](../../apps/local-service/src/code-index/service.mts), [apps/local-service/src/code-index/lexical.mts](../../apps/local-service/src/code-index/lexical.mts), [plugins/product-agent-os/scripts/product_agent_os/discovery.py](../../plugins/product-agent-os/scripts/product_agent_os/discovery.py), [plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py](../../plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py), [docs/product-agent-os/project-code-graph.md](../product-agent-os/project-code-graph.md), [docs/product-agent-os/graph-intelligence-contract.md](../product-agent-os/graph-intelligence-contract.md)
+- Source: [apps/local-service/src/code-index/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/code-index/service.mts), [apps/local-service/src/code-index/lexical.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/code-index/lexical.mts), [plugins/product-agent-os/scripts/product_agent_os/discovery.py](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/discovery.py), [plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py), [docs/product-agent-os/project-code-graph.md](../product-agent-os/project-code-graph.md), [docs/product-agent-os/graph-intelligence-contract.md](../product-agent-os/graph-intelligence-contract.md)
 - Short description: Согласовать документацию discovery и графов проекта
 - Technical value: Canonical ownership, source-to-contract traceability и меньшая вероятность неверного изменения кода агентом.
 - Product value: Разработчик и пользователь понимают текущее поведение, ограничения и следующий шаг.
@@ -658,7 +684,7 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 - Priority: P1
 - Depends on: `PAOS-DOCS-03`, `PAOS-DOCS-05`, `PAOS-DOCS-07`, `PAOS-DOCS-08`
 - Blocks: `PAOS-DOCS-14`, `PAOS-DOCS-16`
-- Source: [apps/local-service/src/http/session-gate.mts](../../apps/local-service/src/http/session-gate.mts), [apps/local-service/src/runtime/app-agent-files.mts](../../apps/local-service/src/runtime/app-agent-files.mts), [apps/local-service/src/redaction](../../apps/local-service/src/redaction), [docs/product-agent-os/privacy-supply-chain-retention.md](../product-agent-os/privacy-supply-chain-retention.md), [research/product-agent-os-web-auth-commercial-2026-11-09.md](../../research/product-agent-os-web-auth-commercial-2026-11-09.md)
+- Source: [apps/local-service/src/http/session-gate.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/http/session-gate.mts), [apps/local-service/src/runtime/app-agent-files.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/runtime/app-agent-files.mts), [apps/local-service/src/redaction](https://github.com/alexroadcaster/product-agent-os/tree/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/redaction), [docs/product-agent-os/privacy-supply-chain-retention.md](../product-agent-os/privacy-supply-chain-retention.md), [research/product-agent-os-web-auth-commercial-2026-11-09.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-auth-commercial-2026-11-09.md)
 - Short description: Собрать security/privacy и trust-boundary документацию продукта
 - Technical value: Canonical ownership, source-to-contract traceability и меньшая вероятность неверного изменения кода агентом.
 - Product value: Разработчик и пользователь понимают текущее поведение, ограничения и следующий шаг.
@@ -692,9 +718,9 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 ### Task `PAOS-DOCS-13`
 
 - Task: PAOS-DOCS-13 — Создать карту тестов, evals и границ доказательств
-- Status: planned
+- Status: in_progress
 - Delivery group: DG01 (A), DG06 (B; полное закрытие)
-- Execution stages: A — DG01, без будущих domain prerequisites; B — после A и всех исходных Depends on. Выполнение A не закрывает задачу; полный scope/AC сохранён.
+- Execution stages: A — DG01, без будущих domain prerequisites; B — после A и всех исходных Depends on. Выполнение A не закрывает задачу; полный scope/AC сохранён. Этап A completed; B planned.
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: owner requested implementation documentation audit and separate backlog
@@ -703,7 +729,7 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 - Priority: P2
 - Depends on: `PAOS-DOCS-04`, `PAOS-DOCS-05`, `PAOS-DOCS-06`, `PAOS-DOCS-07`, `PAOS-DOCS-08`
 - Blocks: `PAOS-DOCS-14`, `PAOS-DOCS-15`, `PAOS-DOCS-16`
-- Source: [TEST.md](../../TEST.md), [EVALS.md](../../EVALS.md), [tests/web](../../tests/web), [tests/product_agent_os](../../tests/product_agent_os), [docs/product-agent-os/behavioral-evals.md](../product-agent-os/behavioral-evals.md), [docs/web/accessibility.md](../web/accessibility.md)
+- Source: [TEST.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/TEST.md), [EVALS.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/EVALS.md), [tests/web](https://github.com/alexroadcaster/product-agent-os/tree/33ed0350738e549f932a9fffdeeff9d4908ca94c/tests/web), [tests/product_agent_os](https://github.com/alexroadcaster/product-agent-os/tree/33ed0350738e549f932a9fffdeeff9d4908ca94c/tests/product_agent_os), [docs/product-agent-os/behavioral-evals.md](../product-agent-os/behavioral-evals.md), [docs/web/accessibility.md](../web/accessibility.md)
 - Short description: Создать карту тестов, evals и границ доказательств
 - Technical value: Canonical ownership, source-to-contract traceability и меньшая вероятность неверного изменения кода агентом.
 - Product value: Разработчик и пользователь понимают текущее поведение, ограничения и следующий шаг.
@@ -723,16 +749,16 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 
 #### Completion Report
 
-- status: planned
-- what was done: сформулирован scope и acceptance; документация подсистемы ещё не написана.
-- files touched / work locations: будущий каталог указан в Scope.
-- technical value delivered: not_implemented
-- product value delivered: not_verified
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: статическое сопоставление источников; будущие проверки не выполнены.
-- residual risks: source drift, смешение historical/planned/current и UI/plugin/runtime surfaces.
-- follow-up: выбрать bounded slice по dependencies.
-- Documentation impact: будущий source-owned раздел, registry/nav и только затронутые control-plane owners.
+- status: in_progress
+- what was done: Этап A завершён в DG01; этап B и полная приёмка родительской задачи остаются открытыми.
+- files touched / work locations: docs/planning/, затронутые guides/registries и docs_archive_checks.py; изолированный .docs-tools/reports/dg01/site.
+- technical value delivered: Этап A docs_static_verified; B not_implemented.
+- product value delivered: Рабочая RU/EN навигация и сохранённые planning contracts; будущие subsystem guides остаются planned.
+- actual implementation date and time: Этап A 15-11-2026; полная задача pending_execution_timestamp.
+- verification evidence: [Результаты DG01](#dg01-results); archive 99/99, source 3/3, site 7/7; matrices, strict build и HTML links passed.
+- residual risks: Зависимости B и исходные AC полной задачи остаются обязательными.
+- follow-up: DG06 / DOCS-13/B после исходных dependencies; следующая общая группа DG02.
+- Documentation impact: Этап A синхронизирован с owning plan, каталогом, registries и control plane; domain documentation остаётся planned.
 
 ### Task `PAOS-DOCS-14`
 
@@ -747,7 +773,7 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 - Priority: P2
 - Depends on: `PAOS-DOCS-04`, `PAOS-DOCS-07`, `PAOS-DOCS-12`, `PAOS-DOCS-13`
 - Blocks: `PAOS-DOCS-16`
-- Source: [apps/desktop-local/README.md](../../apps/desktop-local/README.md), [apps/desktop-local/distribution.mts](../../apps/desktop-local/distribution.mts), [apps/launcher/launcher.ts](../../apps/launcher/launcher.ts), [docs/web/pilot.md](../web/pilot.md), [docs/release/web-m4-local-release.json](../release/web-m4-local-release.json), [research/product-agent-os-web-m4-0030-execution-2026-11-12.md](../../research/product-agent-os-web-m4-0030-execution-2026-11-12.md)
+- Source: [apps/desktop-local/README.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/desktop-local/README.md), [apps/desktop-local/distribution.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/desktop-local/distribution.mts), [apps/launcher/launcher.ts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/launcher/launcher.ts), [docs/web/pilot.md](../web/pilot.md), [docs/release/web-m4-local-release.json](../release/web-m4-local-release.json), [research/product-agent-os-web-m4-0030-execution-2026-11-12.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m4-0030-execution-2026-11-12.md)
 - Short description: Описать локальную эксплуатацию, упаковку и восстановление
 - Technical value: Canonical ownership, source-to-contract traceability и меньшая вероятность неверного изменения кода агентом.
 - Product value: Разработчик и пользователь понимают текущее поведение, ограничения и следующий шаг.
@@ -791,7 +817,7 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 - Priority: P2
 - Depends on: `PAOS-DOCS-01`, `PAOS-DOCS-03`, `PAOS-DOCS-08`, `PAOS-DOCS-11`, `PAOS-DOCS-13`
 - Blocks: `PAOS-DOCS-16`
-- Source: [plugins/product-agent-os/README.md](../../plugins/product-agent-os/README.md), [docs/product-agent-os/cli-reference.md](../product-agent-os/cli-reference.md), [docs/product-agent-os/project-formation.md](../product-agent-os/project-formation.md), [docs/product-agent-os/self-learning-loop.md](../product-agent-os/self-learning-loop.md), [plugins/product-agent-os/scripts/product_agent_os/self_learning_state.py](../../plugins/product-agent-os/scripts/product_agent_os/self_learning_state.py)
+- Source: [plugins/product-agent-os/README.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/README.md), [docs/product-agent-os/cli-reference.md](../product-agent-os/cli-reference.md), [docs/product-agent-os/project-formation.md](../product-agent-os/project-formation.md), [docs/product-agent-os/self-learning-loop.md](../product-agent-os/self-learning-loop.md), [plugins/product-agent-os/scripts/product_agent_os/self_learning_state.py](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/self_learning_state.py)
 - Short description: Упорядочить документацию Python plugin, skills и learning loop
 - Technical value: Canonical ownership, source-to-contract traceability и меньшая вероятность неверного изменения кода агентом.
 - Product value: Разработчик и пользователь понимают текущее поведение, ограничения и следующий шаг.
@@ -825,9 +851,9 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 ### Task `PAOS-DOCS-16`
 
 - Task: PAOS-DOCS-16 — Связать документационные задачи с feature delivery и проверить навигацию
-- Status: planned
+- Status: in_progress
 - Delivery group: DG01 (A), DG07 (B; полное закрытие)
-- Execution stages: A — DG01, без будущих domain prerequisites; B — после A и всех исходных Depends on. Выполнение A не закрывает задачу; полный scope/AC сохранён.
+- Execution stages: A — DG01, без будущих domain prerequisites; B — после A и всех исходных Depends on. Выполнение A не закрывает задачу; полный scope/AC сохранён. Этап A completed; B planned.
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: owner requested implementation documentation audit and separate backlog
@@ -836,7 +862,7 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 - Priority: P2
 - Depends on: `PAOS-DOCS-01`, `PAOS-DOCS-02`, `PAOS-DOCS-03`, `PAOS-DOCS-04`, `PAOS-DOCS-05`, `PAOS-DOCS-06`, `PAOS-DOCS-07`, `PAOS-DOCS-08`, `PAOS-DOCS-09`, `PAOS-DOCS-10`, `PAOS-DOCS-11`, `PAOS-DOCS-12`, `PAOS-DOCS-13`, `PAOS-DOCS-14`, `PAOS-DOCS-15`
 - Blocks: нет
-- Source: [docs/planning/functional-remediation-2026-11-15.json](functional-remediation-2026-11-15.json), [docs/planning/functional-remediation-2026-11-15.md](functional-remediation-2026-11-15.md), [mkdocs.yml](../../mkdocs.yml), [docs/sources/registry.md](../sources/registry.md), [docs/sources/registry.en.md](../sources/registry.en.md)
+- Source: [docs/planning/functional-remediation-2026-11-15.json](functional-remediation-2026-11-15.json), [docs/planning/functional-remediation-2026-11-15.md](functional-remediation-2026-11-15.md), [mkdocs.yml](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/mkdocs.yml), [docs/sources/registry.md](../sources/registry.md), [docs/sources/registry.en.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/docs/sources/registry.en.md)
 - Short description: Связать документационные задачи с feature delivery и проверить навигацию
 - Technical value: Canonical ownership, source-to-contract traceability и меньшая вероятность неверного изменения кода агентом.
 - Product value: Разработчик и пользователь понимают текущее поведение, ограничения и следующий шаг.
@@ -856,14 +882,13 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 
 #### Completion Report
 
-- status: planned
-- what was done: сформулирован scope и acceptance; документация подсистемы ещё не написана.
-- files touched / work locations: будущий каталог указан в Scope.
-- technical value delivered: not_implemented
-- product value delivered: not_verified
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: статическое сопоставление источников; будущие проверки не выполнены.
-- residual risks: source drift, смешение historical/planned/current и UI/plugin/runtime surfaces.
-- follow-up: выбрать bounded slice по dependencies.
-- Documentation impact: будущий source-owned раздел, registry/nav и только затронутые control-plane owners.
-
+- status: in_progress
+- what was done: Этап A завершён в DG01; этап B и полная приёмка родительской задачи остаются открытыми.
+- files touched / work locations: docs/planning/, затронутые guides/registries и docs_archive_checks.py; изолированный .docs-tools/reports/dg01/site.
+- technical value delivered: Этап A docs_static_verified; B not_implemented.
+- product value delivered: Рабочая RU/EN навигация и сохранённые planning contracts; будущие subsystem guides остаются planned.
+- actual implementation date and time: Этап A 15-11-2026; полная задача pending_execution_timestamp.
+- verification evidence: [Результаты DG01](#dg01-results); archive 99/99, source 3/3, site 7/7; matrices, strict build и HTML links passed.
+- residual risks: Зависимости B и исходные AC полной задачи остаются обязательными.
+- follow-up: DG07 / DOCS-16/B после исходных dependencies; следующая общая группа DG02.
+- Documentation impact: Этап A синхронизирован с owning plan, каталогом, registries и control plane; domain documentation остаётся planned.

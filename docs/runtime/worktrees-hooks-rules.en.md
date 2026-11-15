@@ -9,7 +9,7 @@ Worktrees isolate larger changes. Hooks and rules can guide or block unsafe acti
 
 The project default hook accepts create/update of an explicitly requested report without a separate grant or hook/trust change. The own host-session marker records `work_type: report_authoring` and exact `report_output_path`; it declares scope, not independent proof of user permission. One literal Add/Update patch is supported. Read before update and reconcile conflicts. Protected paths, implementation/instruction directories, aliases, foreign/stale/terminal state and mixed patches remain excluded; sandbox and host approvals remain authoritative.
 
-Recognized ordinary reads need no marker, including Windows paths, directory-prefixed wildcards and bounded `rg`/`Select-String`/`Select-Object` pipelines. A leading unquoted glob may expand to executable options on POSIX: use a directory prefix or quoted `--glob`. Legacy pinned modes share the ordinary read classifier. This is a project contract, not a built-in Codex capability. [Evidence and verification limits](../../research/product-agent-os-report-read-fix-2026-11-15.md).
+Recognized ordinary reads need no marker, including Windows paths, directory-prefixed wildcards and bounded `rg`/`Select-String`/`Select-Object` pipelines. A leading unquoted glob may expand to executable options on POSIX: use a directory prefix or quoted `--glob`. Legacy pinned modes share the ordinary read classifier. This is a project contract, not a built-in Codex capability. [Evidence and verification limits](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-report-read-fix-2026-11-15.md).
 
 ## GAP-05: exact report authority — 2026-11-05
 

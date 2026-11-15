@@ -8,7 +8,7 @@ Source status: project-authored proposal, 13.11.2026; все задачи planne
 
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Owning design: [DESIGN.md](../../DESIGN.md)
+- Owning design: [DESIGN.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/DESIGN.md)
 - План отдельный от существующих M1–M5; их ID, статусы и зависимости не меняются.
 - Разрешённый текущий этап: исследование, концепции и план. Карточки ниже описывают будущее внедрение после отдельного запроса.
 - Функциональные non-goals: backend/API/schema/permissions/provider/queue semantics/новые продуктовые возможности. Только UI/UX, без мобильной версии.

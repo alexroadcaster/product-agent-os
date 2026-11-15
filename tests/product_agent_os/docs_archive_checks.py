@@ -2,6 +2,54 @@
 from tests.product_agent_os.docs_test_support import *
 
 class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
+    def test_dg01_plan_translations_preserve_task_contracts(self):
+        """An EN sibling must retain every card, not just satisfy file existence."""
+        names = [
+            "2026-11-13-ui-implementation-plan",
+            "2026-11-13-v2-ui-implementation-plan",
+            "2026-11-13-v3-ui-implementation-plan",
+            "documentation-architecture-2026-11-15",
+            "functional-remediation-2026-11-15",
+            "product-agent-os-audit-remediation-task-plan-2026-11-09",
+            "product-agent-os-ordinary-route-implementation-plan-2026-11-05",
+            "product-agent-os-web-task-manager-plan-2026-11-09",
+        ]
+        fields = ("Status", "Priority", "Schema version", "Timezone",
+                  "Date and time of task implementation")
+        for name in names:
+            with self.subTest(plan=name):
+                ru = (DOCS / "planning" / f"{name}.md").read_text(encoding="utf-8-sig")
+                en_path = DOCS / "planning" / f"{name}.en.md"
+                self.assertTrue(en_path.is_file(), "Missing full English translation")
+                en = en_path.read_text(encoding="utf-8-sig")
+                pattern = r"(?m)^### Task `([^`]+)`[^\n]*\n"
+                ru_parts = re.split(pattern, ru)
+                en_parts = re.split(pattern, en)
+                self.assertEqual(ru_parts[1::2], en_parts[1::2], "Task cards lost or reordered")
+                self.assertTrue(ru_parts[1::2], "Expected concrete task cards")
+                for task_id, source, translated in zip(ru_parts[1::2], ru_parts[2::2], en_parts[2::2]):
+                    with self.subTest(task=task_id):
+                        # A following group summary is not part of the preceding card.
+                        source = re.split(r"(?m)^## ", source, maxsplit=1)[0]
+                        translated = re.split(r"(?m)^## ", translated, maxsplit=1)[0]
+                        for field in fields:
+                            expression = rf"(?m)^- {re.escape(field)}: (.+)$"
+                            self.assertEqual(re.findall(expression, source), re.findall(expression, translated), field)
+                        for field in ("Depends on", "Blocks"):
+                            expression = rf"(?m)^- {field}: (.+)$"
+                            source_values = re.findall(expression, source)
+                            translated_values = re.findall(expression, translated)
+                            self.assertEqual(len(source_values), len(translated_values), field)
+                            # Human labels are localized; IDs remain canonical, with or without backticks.
+                            identifiers = r"\b[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+\b"
+                            self.assertEqual(re.findall(identifiers, " ".join(source_values)),
+                                             re.findall(identifiers, " ".join(translated_values)), field)
+                        acceptance = r"(?m)^- Acceptance criteria: (.+)$"
+                        clauses = r"\bAC\d+:|(?<!\w)\d+\)"
+                        self.assertEqual(re.findall(clauses, " ".join(re.findall(acceptance, source))),
+                                         re.findall(clauses, " ".join(re.findall(acceptance, translated))),
+                                         "Acceptance clauses lost; semantic parity also requires review")
+
     def test_root_runlog_is_compact_current_handoff_and_distribution_map(self):
         runlog_bytes = RUNLOG.read_bytes()
         runlog = runlog_bytes.decode("utf-8")
@@ -8879,6 +8927,12 @@ class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
         for event in ["SessionStart", "PreToolUse", "PermissionRequest", "PostToolUse", "Stop"]:
             with self.subTest(event=event):
                 self.assertIn(event, packet["installed_project_hooks"]["events"])
+
+        # The packet records the historical installation. The scoped-verification
+        # change made PostToolUse optional; current protection events remain required.
+        # Current optional-hook behavior is covered by test_lifecycle_hooks.
+        for event in ["SessionStart", "PreToolUse", "PermissionRequest", "Stop"]:
+            with self.subTest(current_protection_event=event):
                 self.assertIn(event, hooks_json["hooks"])
 
         for path in [
