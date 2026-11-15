@@ -1,5 +1,13 @@
 # PLAN.md
 
+## Функциональный backlog после V3 — 15.11.2026
+
+[Матрица PAOS-FUNC-01–29](research/functional-remediation-2026-11-15.md): 29 planned и 3 ссылки M5; [JSON](research/functional-remediation-2026-11-15.json) владеет состоянием. Новая ветка: F28 → F26/F27 → F29; дерево независимо от карты кода. F10/F18/F24 интегрируют новые contracts; F19/F20/F23 проверяют Add/files/scan/discovery. F20 предшествует F09; F14 использует F27/F28. F01 и core fixes сохраняются; F25 синхронизирует claims. Старые 56 карточек неизменны. Разрешено только планирование. Shared API/storage/UI edits — последовательные slices; rollback этого обновления — только свои hunks после проверки drift.
+
+## MD-отчёты и чтение — 15.11.2026
+
+`PAOS-REPORT-READ-FIX-2026-11-15`: implemented_current_host_verified. Report/read repair и Python-hook/document budget integration закрыты; full1453/skip1, fixtures91/91, transcripts26/26 и current-host positive/negative passed. Lightweight bounded repair без отдельной task matrix. [Evidence, ограничения и следующие рекомендации](research/product-agent-os-report-read-fix-2026-11-15.md). Rollback — только own hunks; чужие marker/UI/functional-plan изменения сохранить.
+
 ## Desktop UI/UX — внедрение 13.11.2026
 
 [UI-01–UI-12 V3](design/2026-11-13-v3/implementation-plan.md): локальный repair проверен; 85 экранов × 2 темы визуально сопоставлены. UI-01–UI-12 остаются in_progress до приёмки отмеченных отличий. [Evidence](design/2026-11-13-v3/implementation-evidence.md). UI-10: Sidebar и reduced motion проверены. API/backend не изменены. Rollback — own frontend hunks, без DB changes; M1–M5 не меняются.

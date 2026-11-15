@@ -1,5 +1,9 @@
 # EVALS.md
 
+## MD-отчёты и чтение — 15.11.2026
+
+Сравнение baseline/fix: отчёт create → update → update без hook reconfiguration; чтение без marker; denied соседний/защищённый путь, foreign/stale/terminal session, mixed patch и shell executor. Положительный сценарий обязателен вместе с отрицательными. Synthetic tests отдельно от current-host и fresh-session activation. [Контракт, проверки и ограничения](research/product-agent-os-report-read-fix-2026-11-15.md).
+
 ## Desktop UI/UX — сравнение с baseline
 
 V3: все existing surfaces и task fields; один persistent editor; current assignments отдельно от observed runs, unknown usage≠zero, complete/partial scope и progress denominator. D3/Mermaid same snapshot/module/labels; exact Sidebar springs, keyboard/reduced motion/две темы/desktop overflow. [DESIGN.md](DESIGN.md). Synthetic verification не доказывает host telemetry, production performance или human acceptance. Для V3 требуется поэкранный визуальный ledger обеих тем: captured не означает reviewed; отсутствующие или несовпадающие состояния запрещают общий verdict о соответствии.

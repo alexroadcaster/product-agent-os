@@ -1,5 +1,11 @@
 # TEST.md
 
+[FUNC](research/functional-remediation-2026-11-15.md)
+
+## MD-отчёты и чтение — 15.11.2026
+
+Focused: `python -B -m unittest tests.product_agent_os.test_lifecycle_hooks -q`. [Evidence и TEMP](research/product-agent-os-report-read-fix-2026-11-15.md); обязательные full gates ниже сохраняются.
+
 ## Desktop UI/UX — actual app verification
 
 V3: npm run check:web-m1/build:web/test:web-m1; task-overlay/settings-layout, M2b/M2c ui-v3 browser matrix, accessibility core, docs unittest/check_docs/task-matrix/diff. [Команды, receipts, review и gaps](design/2026-11-13-v3/implementation-evidence.md). tests/web/single-window/v3-state-capture.mts:85 продуктовых состояний ×2 темы; captured отдельно от personally reviewed. Последние web500/V3 browser378 passed. Human acceptance отдельно.

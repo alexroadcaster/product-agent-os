@@ -1,5 +1,13 @@
 # REQUIREMENTS.md
 
+## Функциональный план после V3 — 15.11.2026
+
+[Функциональная матрица](research/functional-remediation-2026-11-15.md): 29 planned задач и 3 ссылки M5. Дополнение владельца: read-only дерево всей доступной директории, управляемое сканирование, общая inventory policy и подключение core discovery. Дерево не зависит от готовности графа; listing/read/index/execute — разные права и состояния. Partial/error/unsupported объясняются; cancel/restart/retry и stale проверяются. AC десяти прежних задач расширены. Разрешена только запись плана, реализация не начата; synthetic/human acceptance разделены.
+
+## MD-отчёты и чтение — 15.11.2026
+
+Явно запрошенный Markdown-отчёт создаётся и обновляется по точному `report_output_path` текущего чата без per-report grant и изменения hook/trust. Обычное распознанное чтение не требует marker. Защита инструкций, кода, sandbox, чужих sessions и конфликтующих правок сохраняется. [Контракт, проверки и ограничения](research/product-agent-os-report-read-fix-2026-11-15.md).
+
 ## Desktop UI/UX — утверждённое внедрение 13.11.2026
 
 V3 и Sidebar утверждены; разрешены UI-01–UI-12 в apps/web с прежними API/данными/permissions/guards. [DESIGN.md](DESIGN.md), [план](design/2026-11-13-v3/implementation-plan.md), [evidence](design/2026-11-13-v3/implementation-evidence.md) владеют деталями. Porcelain/Obsidian,15 назначений, full task overlay, portfolio/project/agent dashboards, D3/Mermaid, local motion. Usage unavailable; backend telemetry/mobile/Git/deploy исключены. Приёмка реализации отдельно от утверждения дизайна. Дополнительный критерий владельца: лично сравнить каждый продуктовый экран V3 в светлой и тёмной теме, включая сетки, поля, кнопки, состояния и анимации; проход тестов не заменяет визуальное сравнение.

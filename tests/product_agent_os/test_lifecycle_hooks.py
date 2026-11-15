@@ -91,6 +91,103 @@ def load_hook_module(script: Path):
 
 
 class LifecycleHooksTest(unittest.TestCase):
+    def test_requested_report_default_route_creates_and_updates_only_owned_markdown(self):
+        for directory in (HOOKS, LOCAL_HOOKS):
+            module = load_hook_module(directory / 'pre_tool_use_policy.py')
+            with tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary).resolve()
+                session = 'requested-report'
+                payload = {'tool_name': 'apply_patch', 'session_id': session, 'cwd': str(root)}
+                state = module.lifecycle_marker_path(root, payload)
+                state.parent.mkdir(parents=True)
+                marker = valid_marker(session_id=session,
+                    brief_schema_version='task_scope_note_v1', brief_format='concise',
+                    brief_fields_present=['Scope', 'Evidence', 'Limits'], scope_note_shown=True,
+                    report_output_path='research/report.md',
+                    lifecycle_scope={'work_type': 'report_authoring', 'size': 'bounded', 'risk': 'low',
+                        'financially_material': False, 'release_or_readiness': False,
+                        'explicit_packet_request': False, 'reason': 'Explicitly requested report.'})
+                state.write_text(json.dumps(marker), encoding='utf-8')
+
+                def denied(patch, changes=None, envelope=None):
+                    state.write_text(json.dumps({**marker, **(changes or {})}), encoding='utf-8')
+                    result = run_hook(directory / 'pre_tool_use_policy.py',
+                        {**payload, 'tool_input': patch, **(envelope or {})}, cwd=root)
+                    self.assertEqual(result.returncode, 0, result.stderr)
+                    return bool(result.stdout.strip())
+
+                create = '*** Begin Patch\n*** Add File: research/report.md\n+# Report\n*** End Patch'
+                self.assertFalse(denied(create))
+                (root / 'research').mkdir()
+                (root / 'research/report.md').write_text('# Report\n', encoding='utf-8')
+                update = '*** Begin Patch\n*** Update File: research/report.md\n@@\n-# Report\n+# Findings\n*** End Patch'
+                self.assertFalse(denied(update))
+                (root / 'research/report.md').write_text('# Findings\n', encoding='utf-8')
+                self.assertFalse(denied(update.replace('# Report', '# Findings').replace('+# Findings', '+# Final')))
+                for patch in (create, update):
+                    self.assertTrue(denied(patch.replace('research/report.md', 'research/other.md')))
+                    self.assertTrue(denied(patch, {'completion_ready': True}))
+                    self.assertTrue(denied(patch, {'session_id': 'foreign'}))
+                    self.assertTrue(denied(patch, {'report_output_path': None}))
+                    self.assertTrue(denied(patch, {'updated_at': (datetime.now(timezone.utc) - timedelta(hours=49)).isoformat()}))
+                    self.assertTrue(denied(patch, envelope={'session_id': None}))
+                for target in ('AGENTS.md', '.codex/config.md', '../report.md', 'research/../report.md',
+                               'research/report.md:stream', 'research/report.py',
+                               'plugins/product-agent-os/assets/templates/workflows/build-slice.md',
+                               'docs/artifact-templates/instructions.md'):
+                    self.assertTrue(denied(update.replace('research/report.md', target), {'report_output_path': target}))
+                self.assertTrue(denied('*** Begin Patch\n*** Delete File: research/report.md\n*** End Patch'))
+                self.assertTrue(denied(update.replace('@@', '*** Move to: research/other.md\n@@')))
+                self.assertTrue(denied(update.replace('*** End Patch', '*** Add File: research/other.md\n+x\n*** End Patch')))
+                # Marker scope cannot turn shell or arbitrary wrappers into report authority.
+                self.assertTrue(denied('', envelope={'tool_name': 'exec_command',
+                    'tool_input': {'cmd': 'Set-Content research/report.md changed'}}))
+                self.assertFalse(denied('', envelope={'tool_name': 'functions.exec',
+                    'tool_input': 'await tools.apply_patch(' + json.dumps(update) + ');'}))
+                # Creating hardlinks is forbidden by some host sandboxes. Exercise
+                # the observed link-count boundary without requiring that privilege.
+                actual_stat = Path.stat
+                def linked_stat(path, *args, **kwargs):
+                    result = actual_stat(path, *args, **kwargs)
+                    if path == root / 'research/report.md':
+                        fields = list(result)
+                        fields[3] = 2
+                        return os.stat_result(fields)
+                    return result
+                with mock.patch.object(Path, 'stat', linked_stat):
+                    self.assertFalse(module._requested_report_action(root, {**payload, 'tool_input': update})[0])
+                with mock.patch.object(Path, 'is_symlink', return_value=True):
+                    with self.assertRaises(ValueError):
+                        module._report_path(root, 'research/report.md', allow_existing=True)
+
+    def test_ordinary_reads_without_marker_and_in_pinned_modes(self):
+        allowed = [
+            'rg -n report plugins/product-agent-os/scripts/product_agent_os/hook*',
+            "rg --files .codex | rg 'hook|lifecycle'",
+            "Get-Content .codex\\config.toml | Select-String -Pattern 'workflows'",
+            "rg -n report .codex/hooks/*.py | rg -n 'work_type' | Select-Object -First 3",
+        ]
+        rejected = [
+            'rg --pre evil pattern .', 'rg --pre-glob *.py pattern .',
+            'rg pattern . | Set-Content out.md', 'rg pattern . > out.md',
+            'Get-Content $(Set-Content out.md x)', 'rg \\--pre evil pattern .',
+            'rg pattern *', 'rg pattern ?*',
+        ]
+        for directory in (HOOKS, LOCAL_HOOKS):
+            module = load_hook_module(directory / 'pre_tool_use_policy.py')
+            for command in allowed + rejected:
+                for arguments in ([], ['--report-authoring', 'grant.json', '--report-authoring-sha256', '0' * 64],
+                                  ['--report-authority', 'grant.json', '--report-authority-sha256', '0' * 64]):
+                    with self.subTest(command=command, arguments=arguments, directory=directory):
+                        payload = {'tool_name': 'exec_command', 'tool_input': {'cmd': command}}
+                        output = io.StringIO()
+                        with mock.patch.object(module, '_read_payload', return_value=(payload, '')), \
+                             mock.patch.object(module, '_workspace_root', return_value=ROOT), \
+                             mock.patch.object(module, '_lifecycle_marker_ok', return_value=(False, 'missing')), \
+                             mock.patch('sys.stdout', output):
+                            module.main(arguments)
+                        self.assertEqual(bool(output.getvalue()), command in rejected, output.getvalue())
+
     def test_terminal_local_validation_commands_keep_exact_scope(self):
         commands = [
             ("python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/tasks.md", {}, False),

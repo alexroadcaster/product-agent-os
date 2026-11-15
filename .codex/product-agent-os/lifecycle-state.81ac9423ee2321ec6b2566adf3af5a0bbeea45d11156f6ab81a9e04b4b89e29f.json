@@ -1,0 +1,39 @@
+{
+  "task_id": "project-files-scanning-planning-2026-11-15",
+  "session_id": "01a1de89-93e2-7d91-88ab-e89a9d0bd894",
+  "scope": "Documentation only: research/functional-remediation-2026-11-15.md and .json, existing pointers in research/product-agent-os-web-task-manager-plan-2026-11-09.md, REQUIREMENTS.md, PLAN.md, RUNLOG.md and docs/sources/registry.md and registry.en.md. Add four filesystem/scanning tasks and update related acceptance/dependencies. TEST.md keeps existing commands and pointer. No product implementation.",
+  "updated_at": "2026-11-15T10:37:44.489Z",
+  "approval_boundary": "User explicitly approved reopening this exact marker for the new filesystem/scanning planning task on 2026-11-15 after automatic review requested reopening authority. Preserve prior closure and close after checks. No application, hook, permission, provider, production, Git or other session changes.",
+  "status": "ready_for_completion_brief",
+  "completion_ready": true,
+  "brief_digest": "sha256:f293424794625cddd75ccd17da154a9c1a8a53ed962f663e1efb942b52c6d0c6",
+  "brief_schema_version": "task_scope_note_v1",
+  "brief_format": "concise",
+  "brief_fields_present": [
+    "Scope",
+    "Evidence",
+    "Limits"
+  ],
+  "scope_note_shown": true,
+  "previous_planning_closure": "functional-remediation-planning-2026-11-15: planning_recorded; 25 planned plus 3 M5 references; matrix/check_docs/diff/consistency passed; docs101/105, four existing site parity failures assigned F25; original56 cards preserved.",
+  "plan_path": "research/functional-remediation-2026-11-15.md",
+  "previous_task_id": "functional-audit-2026-11-15",
+  "control_plane_sync": "Updated existing REQUIREMENTS/PLAN/RUNLOG pointers and RU/EN registry; TEST no_change_needed (existing commands and pointer retained); EVALS no_change_needed; prod_test not_applicable. Parallel report/read sections preserved by scoped rebase and verified outside-paragraph preservation.",
+  "lifecycle_scope": {
+    "work_type": "implementation",
+    "size": "bounded",
+    "risk": "low",
+    "financially_material": false,
+    "release_or_readiness": false,
+    "explicit_packet_request": false,
+    "reason": "User explicitly authorized planning documents and the exact marker mode transition. Only the named documentation paths are in mutation scope; product implementation remains planned."
+  },
+  "previous_audit": {
+    "task_id": "functional-audit-2026-11-15",
+    "evidence": "Current source inspection and SHA-256 comparison: runtime adapter matches; frontend lock differs from qualified manifest. Git diff --check passed. TypeScript command denied by PreToolUse. Application code unchanged.",
+    "report_status": "not_created: report write denied by PreToolUse; temporary privilege expansion for grant setup rejected by automatic approval review. No hook or grant configuration applied."
+  },
+  "result": "planning_recorded; added F26-F29, revised acceptance of ten existing tasks and dependencies of seven; 29 planned plus 3 M5 references; docs_partially_verified",
+  "verification": "matrix validator exit0, check_docs exit0, diff exit0; 29 unique planned cards, per-card AC/Depends/Blocks and topological order passed; original 56-task MD/JSON preserved; docs unittest 105 tests:101 passed,4 site parity failures (12.518s).",
+  "remaining_gaps": "Implementation and runtime/browser/provider/human checks remain future tasks. Four existing site accessibility/pilot RU/EN failures remain in F25; no build, site promotion, application, hook, trust or permission changes."
+}

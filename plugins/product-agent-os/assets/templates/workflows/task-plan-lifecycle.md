@@ -8,7 +8,7 @@ The config-routed lifecycle workflow contract in `.codex/config.toml` routes the
 
 ## Applicability
 
-Use the full Task Start Brief and Completion Ledger for large/high-risk or financially material implementation, release/readiness closure, or an explicit packet request. Ordinary fixes and read-only/partial/blocked work use concise results, evidence and gaps unless the full scope applies. Do not force a plan row or duplicate packet artifact for a small fix. A read-only request authorizes inspection and reporting, not implementation or marker writes.
+Use the full Task Start Brief and Completion Ledger for large/high-risk or financially material implementation, release/readiness closure, or an explicit packet request. Ordinary fixes and read-only/partial/blocked work use concise results, evidence and gaps unless the full scope applies. Do not force a plan row or duplicate packet artifact for a small fix. A read-only request alone authorizes inspection and reporting in chat, not implementation or marker writes. Explicitly requested Markdown artifacts use the Requested Markdown Reports route below.
 
 First read applicable instructions, the packet template and enough source to identify scope. Show the applicable start packet before broad exploration or edits. Uncertain values must be marked inferred; unavailable metrics need a concrete trace limitation. A heading or merged progress paragraph is not a full packet.
 
@@ -50,12 +50,15 @@ or mixed patch is not bootstrap. Dynamic shell/code writes are not an authorizat
 interface. Existing sandbox/approvals and path/secret restrictions still apply.
 Reporting metadata is not a filesystem lock or proof of user approval; concurrent
 edits to the same source still need explicit ownership coordination.
+For bootstrap/transition patches include the existing `task_start_brief_shown`
+or `scope_note_shown` line in patch context; the current guard recognizes that
+literal field even when its value is unchanged. This is not a new approval request.
 
 ## Lifecycle Marker Fields
 
 Common fields: `task_id`, `plan_path` when a concrete owning plan exists, `scope`, timezone-aware `updated_at`, `approval_boundary`, `status: in_progress`, `completion_ready: false`, `brief_digest: sha256:<64 lowercase hex characters>`, `brief_schema_version`, `brief_format`, `brief_fields_present`. Do not store raw chat or secrets. Marker freshness and terminal-state checks remain mandatory.
 
-New mutation scopes declare `lifecycle_scope`: `work_type` (`implementation` or `fix`), `size` (`bounded` or `large`), `risk` (`low`, `medium`, `high`), boolean `financially_material`, `release_or_readiness`, `explicit_packet_request`, and a nonempty `reason`. A full packet is required when any trigger applies. Review/research/planning classifications cannot authorize mutation through this marker.
+New mutation scopes declare `lifecycle_scope`: `work_type` (`implementation`, `fix` or `report_authoring`), `size` (`bounded` or `large`), `risk` (`low`, `medium`, `high`), boolean `financially_material`, `release_or_readiness`, `explicit_packet_request`, and a nonempty `reason`. A full packet is required when any trigger applies. Review/research/planning classifications cannot authorize mutation through this marker. Explicit reports use `report_authoring` with `report_output_path` as described below.
 
 - Full route: `brief_schema_version: task_start_brief_v2`, `brief_format: bold_fields`, all nine template labels in `brief_fields_present`, and `task_start_brief_shown: true` after the visible packet.
 - Ordinary route: `brief_schema_version: task_scope_note_v1`, `brief_format: concise`, `brief_fields_present: [Scope, Evidence, Limits]`, `scope_note_shown: true`; do not claim a full Task Start Brief was shown.
@@ -77,6 +80,36 @@ Use `validate_lifecycle_packet_text` for explicit local format checks and regres
 
 PreToolUse retains command/path/secret restrictions plus scoped marker checks; reporting scope never expands sandbox or approvals. Stop is advisory only: no automatic chat validation, format-based rejection or corrective continuation. A missing literal heading must not cause the final answer to repeat. SessionStart points to the current templates and applicability. Changed hook definitions may require exact-hash trust review in `/hooks` and a fresh session. Never bypass trust or infer activation from local tests.
 
+## Requested Markdown Reports
+
+An explicit request to create or update a Markdown report authorizes that artifact
+as part of the task, even when the inspected implementation remains read-only.
+Do not ask again or modify hook commands/trust for each report. Record the current
+host session, `lifecycle_scope.work_type: report_authoring`, and one canonical
+workspace-relative `report_output_path` in the own fresh/nonterminal marker after
+the applicable scope note. The marker declares scope; it is not independent proof
+of user permission and never expands sandbox or host approvals. Do not infer an
+artifact request from a request for analysis alone.
+
+The default hook accepts one literal `apply_patch` Add File or Update File for
+that exact path, directly or one literal `functions.exec` tool call. Read the
+existing file before updating and use context hunks; reconcile conflicts instead
+of overwriting concurrent changes. No grant file, per-report SHA-256, expiry or
+hook activation is required. Ordinary lifecycle freshness still applies.
+Protected control-plane/config paths, implementation and instruction/template
+directories, aliases, symlinks/junctions/hardlinks, foreign sessions, mixed patches,
+Delete/Move and shell writes remain excluded. Changing implementation or durable
+instructions needs the corresponding authorized implementation/fix scope.
+
+Recognized literal reads do not require a marker. Supported reads include
+workspace directory-prefixed wildcards, Windows path separators and bounded
+pipelines of `rg`, `Select-String` and `Select-Object`. Leading unquoted globs can
+expand into executable options on POSIX and remain unsupported; use a directory
+prefix or quoted `--glob` instead. Shell expansion, executors, redirection and
+unknown commands still require scoped review; unknown syntax is not proof of a
+write. Tests and compilers have a separate verification scope, not blanket read
+permission. Pinned legacy report modes use the same ordinary read classifier.
+
 ## Optional Pinned Report Authority
 
 A research/review/planning task remains read-only by default. A separately approved
@@ -97,10 +130,9 @@ The supported write is one literal `apply_patch` Add File, either direct or a
 single `await tools.apply_patch(JSON-string)` call inside `functions.exec`
 (optional `text(...)`). Dynamic wrappers, multiple calls, existing output,
 neighboring paths, config/hooks/control-plane files, traversal and symlinks fail
-closed. Shell writes are not supported. In pinned mode only literal
-`Get-Content`/`Get-ChildItem -LiteralPath 'path'` with `login: false` are accepted
-as shell reads; other commands need separate review. The default command without
-report flags preserves the previous lifecycle route. This is a preflight check,
+closed. Shell writes are not supported. Pinned mode preserves the ordinary
+recognized read-only route; the grant narrows writes only. The default command without
+report flags uses the lifecycle/report route above. This is a preflight check,
 not an atomic write transaction or host activation receipt. Local fixtures do
 not close the separate fresh-host positive/negative gate.
 
@@ -108,8 +140,9 @@ not close the separate fresh-host positive/negative gate.
 
 This separate opt-in route requires explicit authority to create/update one
 Markdown report. It is not the legacy create-only grant and not an implementation
-request. Declare `lifecycle_scope.work_type: report_authoring`; without the pinned
-mode this work type cannot authorize mutations. Full/concise reporting still
+request. This legacy operator-pinned route remains available for existing callers;
+ordinary explicitly requested reports use the default route above. Declare
+`lifecycle_scope.work_type: report_authoring`. Full/concise reporting still
 follows size/risk, and the marker remains session-bound, fresh and nonterminal.
 
 The reviewed hook command uses `--report-authoring <workspace-relative-json>`
@@ -132,8 +165,8 @@ retry by overwriting a concurrent edit. Re-read and reconcile it first.
 
 Only the exact canonical relative `.md` path is writable. Other sessions, aliases,
 protected control-plane paths, symlinks/junctions/hardlinks, mixed/multiple patches,
-expired grants, stale digests and terminal markers fail closed. Reads keep the
-same narrow literal-read contract as v1. Raw secrets/private chat are forbidden.
+expired grants, stale digests and terminal markers fail closed. Reads use the
+same ordinary read classifier as the default route. Raw secrets/private chat are forbidden.
 The native sandbox and approvals remain authoritative. This is CAS preflight,
 not an atomic filesystem transaction: hook return and tool write are separated.
 Use exclusive report ownership; true concurrent-writer atomicity and fresh-host

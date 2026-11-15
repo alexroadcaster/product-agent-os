@@ -5,11 +5,17 @@ Sources: [Codex best practices](https://developers.openai.com/codex/learn/best-p
 
 Worktrees isolate larger changes. Hooks and rules can guide or block unsafe actions, but they should remain explicit, reviewable and aligned with sandbox and approvals.
 
+## Explicitly requested Markdown reports — 2026-11-15
+
+The project default hook accepts create/update of an explicitly requested report without a separate grant or hook/trust change. The own host-session marker records `work_type: report_authoring` and exact `report_output_path`; it declares scope, not independent proof of user permission. One literal Add/Update patch is supported. Read before update and reconcile conflicts. Protected paths, implementation/instruction directories, aliases, foreign/stale/terminal state and mixed patches remain excluded; sandbox and host approvals remain authoritative.
+
+Recognized ordinary reads need no marker, including Windows paths, directory-prefixed wildcards and bounded `rg`/`Select-String`/`Select-Object` pipelines. A leading unquoted glob may expand to executable options on POSIX: use a directory prefix or quoted `--glob`. Legacy pinned modes share the ordinary read classifier. This is a project contract, not a built-in Codex capability. [Evidence and verification limits](../../research/product-agent-os-report-read-fix-2026-11-15.md).
+
 ## GAP-05: exact report authority — 2026-11-05
 
 Optional pinned report authority permits one new Markdown file through a grant pinned by SHA-256 in the trusted hook command: `--report-authority` and `--report-authority-sha256`. Research/review/planning markers grant no writes by default; tool payload cannot supply authority.
 
-The grant binds workspace digest, new/previous task IDs, exact marker bytes, output path and expiry of at most 24 hours. It requires a fresh/nonterminal marker with an explicit task transition. One literal `apply_patch` Add File is accepted, direct or a single literal call within `functions.exec`. Existing/neighbor paths, control-plane/config/hooks, traversal/symlinks, dynamic/multiple calls and shell writes are denied. Pinned-mode shell reads are limited to literal `Get-Content`/`Get-ChildItem -LiteralPath 'path'` with `login: false`; other commands require review.
+The grant binds workspace digest, new/previous task IDs, exact marker bytes, output path and expiry of at most 24 hours. It requires a fresh/nonterminal marker with an explicit task transition. One literal `apply_patch` Add File is accepted, direct or a single literal call within `functions.exec`. Existing/neighbor paths, control-plane/config/hooks, traversal/symlinks, dynamic/multiple calls and shell writes are denied. Since 2026-11-15 pinned mode preserves ordinary recognized reads; grants narrow writes only.
 
 This is a preflight guard, not an atomic filesystem transaction. Sandbox, secret/path/command restrictions and host approvals remain intact. Active/package sources are synchronized; `hooks.json`, trust and cache are unchanged. A fresh-host positive/negative probe remains a separate gate. Next artifact: an exact-hash approval packet and authorized probe receipt. Active/package `task-plan-lifecycle.md` defines the grant; rollback restores only this slice's source changes without modifying trust.
 

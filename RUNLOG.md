@@ -1,5 +1,13 @@
 # RUNLOG.md
 
+## Функциональная матрица после V3 — 15.11.2026
+
+Обновлена [матрица и evidence](research/functional-remediation-2026-11-15.md): добавлены F26–F29, AC десяти прежних задач, зависимости/Blocks/order; всего 29 planned + 3 ссылки M5. Ветка F28 → F26/F27 → F29; F19/F20/F23 охватывают файлы и сканирование. Matrix/check_docs/diff/consistency passed; текущий docs suite 101/105, те же 4 site failures остаются в F25. Предыдущие receipts сохранены в матрице. Реализация и application/runtime проверки не запускались. Владелец отдельно разрешил reopening только marker этого чата; чужие изменения сохранены.
+
+## MD-отчёты и чтение — 15.11.2026
+
+`PAOS-REPORT-READ-FIX-2026-11-15`: current-host MD create/update/update + neighboring deny подтверждены; full1453/skip1, focused209, fixture91/91, transcript26/26. Исправлен также document-size gate для Python hook с сохранением explicit limits. [Evidence и все failed attempts](research/product-agent-os-report-read-fix-2026-11-15.md). Hook definitions/trust не менялись; fresh-session activation отдельно. Остальные ограничения правил проанализированы, не сняты.
+
 ## Desktop UI/UX — внедрение 13.11.2026
 
 V3 repair: сетки и внутренние экраны перенесены; visual review85×2, final web500 и V3 browser378 passed; functional team/workflow51 passed. UI-10 motion/reduced motion проверены. [План](design/2026-11-13-v3/implementation-plan.md), [evidence](design/2026-11-13-v3/implementation-evidence.md). UI-01–UI-12 in_progress до приёмки; usage unavailable, existing Chrome final reload не наблюдался (Debugger unattached). Backend/API/providers не менялись.

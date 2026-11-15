@@ -1,0 +1,22 @@
+{
+  "task_id": "PAOS-REPORT-READ-FIX-2026-11-15",
+  "session_id": "01a1de93-6afa-7971-a8a6-4037a88ed5c0",
+  "scope": "Fix requested Markdown reports and ordinary read classification in active/template hooks; tests, workflow/docs sync and other-rule audit.",
+  "updated_at": "2026-11-15T13:28:05+03:00",
+  "approval_boundary": "User requested scoped guard repair; preserve host sandbox, protected paths, foreign state and Git boundaries.",
+  "status": "ready_for_completion_ledger",
+  "completion_ready": true,
+  "task_start_brief_shown": true,
+  "evidence": "research/product-agent-os-report-read-fix-2026-11-15.md; full1453 skip1, final contracts253, fixture91/91, transcript26/26, current-host create/update/update and neighboring deny.",
+  "limits": "Fresh-session activation not verified; preserve parallel functional-remediation work. No hook definition/trust or Git changes.",
+  "brief_schema_version": "task_start_brief_v2",
+  "brief_format": "bold_fields",
+  "brief_digest": "sha256:684f16119a8dd6655ecc8f3aca5aea10594c8d53a52cca300fe15b9bf9505ded",
+  "brief_fields_present": ["Request", "Goal", "Context", "Scope", "Value", "Execution", "Acceptance", "Risks / approvals", "Next step"],
+  "lifecycle_scope": {
+    "work_type": "fix", "size": "bounded", "risk": "high",
+    "financially_material": false, "release_or_readiness": false,
+    "explicit_packet_request": false,
+    "reason": "Explicit request to repair report/read guard behavior with positive and negative checks."
+  }
+}

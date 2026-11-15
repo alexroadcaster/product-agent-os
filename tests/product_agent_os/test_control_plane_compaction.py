@@ -8,6 +8,19 @@ from product_agent_os import control_plane_compaction as compaction
 
 
 class CompactionTest(unittest.TestCase):
+    def test_python_hook_is_not_a_document_but_explicit_limit_still_applies(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            name = '.codex/hooks/pre_tool_use_policy.py'
+            self.assertFalse(compaction._exceeds_budget(root, name, b'x' * 41000, 40000))
+            self.assertTrue(compaction._exceeds_budget(root, 'PLAN.md', b'x' * 41000, 40000))
+            (root / '.codex').mkdir()
+            (root / '.codex/config.toml').write_text(
+                '[product_agent_os.documents.limits]\n".codex/hooks/pre_tool_use_policy.py" = 100\n',
+                encoding='utf-8')
+            self.assertTrue(compaction._exceeds_budget(root, name, b'x' * 101, 40000))
+            self.assertFalse(compaction._exceeds_budget(root, name, b'x' * 100, 40000))
+
     def test_explicit_move_can_retain_large_detailed_planning_matrix(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

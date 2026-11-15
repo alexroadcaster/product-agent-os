@@ -169,8 +169,10 @@ def _literal_read_tokens(command: str) -> list[str] | None:
         if not match:
             return None
         lexeme = match[1] if match[1] is not None else match[2]
-        if match[2] is not None and any(c in lexeme for c in '\\*?!#@'):
-            return None  # Do not interpret escapes, glob expansion or comments across shells.
+        if match[2] is not None and (any(c in lexeme for c in '!#@') or lexeme.startswith(('\\', '*', '?'))):
+            # A leading glob can expand to --pre (or another option) on POSIX.
+            # Directory-prefixed globs keep the prefix; quoted patterns never expand.
+            return None
         if match[2] is not None and "|" in lexeme and lexeme != "|":
             return None
         position = match.end()
@@ -205,26 +207,34 @@ def _is_read_only(command: str) -> bool:
     if not lexemes:
         return False
     name = lexemes[0].lower()
-    # A pipe is trusted only as a separate lexeme and with a fixed read consumer.
+    # Validate every pipeline segment; a later writer must never inherit read status.
     if "\0PIPE" in lexemes:
-        if lexemes.count("\0PIPE") != 1:
+        if lexemes.count("\0PIPE") > 7:
             return False
-        index = lexemes.index("\0PIPE")
-        left, right = lexemes[:index], lexemes[index + 1:]
-        if name not in {"get-content", "rg", "get-childitem"} or not right:
+        segments: list[list[str]] = [[]]
+        for token in lexemes:
+            if token == "\0PIPE":
+                segments.append([])
+            else:
+                segments[-1].append(token)
+        if name not in {"get-content", "rg", "get-childitem"} or not _read_command_tokens(segments[0]):
             return False
-        if not _read_command_tokens(left):
-            return False
-        consumer = right[0].lower()
-        if consumer == "select-string":
-            return _read_command_tokens(right)
-        if consumer == "select-object":
-            pairs = right[1:]
-            return bool(pairs) and len(pairs) % 2 == 0 and all(
-                pairs[i].lower() in {"-first", "-last", "-skip"}
-                and pairs[i + 1].isdigit() for i in range(0, len(pairs), 2)
-            )
-        return False
+        for segment in segments[1:]:
+            if not segment:
+                return False
+            if segment[0].lower() in {"rg", "select-string"}:
+                if not _read_command_tokens(segment):
+                    return False
+            elif segment[0].lower() == "select-object":
+                pairs = segment[1:]
+                if not (pairs and len(pairs) % 2 == 0 and all(
+                    pairs[i].lower() in {"-first", "-last", "-skip"}
+                    and pairs[i + 1].isdigit() for i in range(0, len(pairs), 2)
+                )):
+                    return False
+            else:
+                return False
+        return True
     return _read_command_tokens(lexemes)
 
 
@@ -530,17 +540,15 @@ def _literal_call(payload: dict[str, Any]) -> tuple[str, Any] | None:
 
 
 def _report_read_only(payload: dict[str, Any]) -> bool:
-    """Allow literal PowerShell reads only; flags such as git --output can write."""
+    """Pinned report authority adds writes without narrowing ordinary safe reads."""
     call = _literal_call(payload)
     if call is None or call[0] != "exec_command" or not isinstance(call[1], dict):
         return False
     args = call[1]
-    if set(args) - {"cmd", "login", "max_output_tokens", "yield_time_ms"} or args.get("login") is not False:
+    if args.get("shell"):
         return False
     command = args.get("cmd")
-    return isinstance(command, str) and bool(re.fullmatch(
-        r"(?i)(?:Get-Content|Get-ChildItem) -LiteralPath '[A-Za-z0-9_./\\ :\-]+'(?: -Raw)?", command
-    ))
+    return isinstance(command, str) and _is_read_only(command)
 
 
 def _report_path(root: Path, value: Any, *, allow_existing: bool = False) -> Path:
@@ -720,6 +728,56 @@ def _report_action_ok(root: Path, payload: dict[str, Any], authority: Path, expe
         return False, "report_authority_invalid"
 
 
+def _requested_report_action(root: Path, payload: dict[str, Any]) -> tuple[bool, str] | None:
+    """Enforce declared report ownership, not independent proof of user permission.
+
+    The root records an explicitly requested report in its own lifecycle marker.
+    This ordinary route needs no per-report hook/trust change. Host permissions
+    remain authoritative; a marker never grants access outside the sandbox.
+    """
+    try:
+        session = lifecycle_session_id(payload)
+        if session is None:
+            return None
+        path = lifecycle_marker_path(root, payload)
+        if not path.is_file():
+            return None
+        marker = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(marker, dict) or not isinstance(marker.get("lifecycle_scope"), dict):
+            return None
+        if marker["lifecycle_scope"].get("work_type") != "report_authoring":
+            return None
+        valid, reason = _lifecycle_marker_ok(path, report_authorized=True, expected_session_id=session)
+        if not valid:
+            return False, reason
+        name = marker.get("report_output_path")
+        if (not isinstance(name, str) or Path(name).is_absolute() or "\\" in name
+                or any(part in {"", ".", ".."} for part in name.split("/"))):
+            return False, "report_output_path must be a canonical workspace-relative Markdown path"
+        instruction_parts = {"plugins", "apps", "packages", "scripts", "tools", "tests",
+                             "templates", "artifact-templates", "skills", "workflows", "agents", "hooks", "rules"}
+        if any(part.lower() in instruction_parts for part in name.split("/")[:-1]):
+            return False, "report scope cannot edit implementation or durable instruction directories"
+        report = _report_path(root, name, allow_existing=True)
+        call = _literal_call(payload)
+        if call is None or call[0] != "apply_patch" or not isinstance(call[1], str):
+            return False, "requested report requires one literal Add/Update patch"
+        lines = call[1].strip().splitlines()
+        if (len(lines) < 4 or lines[0] != "*** Begin Patch" or lines[-1] != "*** End Patch"
+                or any(line.startswith(("*** Add File:", "*** Update File:", "*** Delete File:",
+                                        "*** Move to:", "*** Begin Patch", "*** End Patch"))
+                       for line in lines[2:-1])):
+            return False, "requested report requires one unmixed Add/Update patch"
+        if lines[1] == "*** Add File: " + name:
+            return (not report.exists() and all(line.startswith("+") for line in lines[2:-1]),
+                    "requested report create conflict or invalid content")
+        if lines[1] == "*** Update File: " + name:
+            return report.is_file(), "requested report update requires an existing file"
+        return False, "patch destination is outside the requested report scope"
+    except (OSError, ValueError, TypeError):
+        return False, "invalid requested report scope"
+
+
 def _report_options(argv: list[str], root: Path) -> tuple[Path, str] | None:
     """Only trusted command-line flags select report mode; payload fields are inert."""
     if not any(arg.startswith("--report-authority") for arg in argv):
@@ -780,9 +838,9 @@ def main(argv: list[str] | None = None) -> int:
             if write_error:
                 reasons.append(write_error)
             elif not marker_write:
-                marker_ok, marker_reason = _lifecycle_marker_ok(
-                    marker_path, expected_session_id=lifecycle_session_id(payload)
-                )
+                report_result = _requested_report_action(root, payload)
+                marker_ok, marker_reason = report_result if report_result is not None else _lifecycle_marker_ok(
+                    marker_path, expected_session_id=lifecycle_session_id(payload))
                 if not marker_ok:
                     reasons.append(
                         "Mutating Product-Agent OS work requires current scope-applicable reporting and an active lifecycle marker: "

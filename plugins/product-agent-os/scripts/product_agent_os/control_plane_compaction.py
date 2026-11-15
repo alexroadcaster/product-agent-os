@@ -87,6 +87,10 @@ def _budget(root: Path, name: str, limit: int, content: bytes) -> int | None:
     value = limits.get(name, limit)
     if type(value) is not int or value < 1:
         raise ValueError('invalid project budget')
+    # Formation also stages Python hooks. The default document-size ceiling is
+    # not a code-size limit; an explicit project limit still governs that file.
+    if name not in limits and Path(name).suffix.lower() == '.py':
+        return None
     if name not in limits and is_detailed_planning_matrix(name, content.decode('utf-8')):
         return None  # Size exception is not authority to move or summarize data.
     return min(limit, value)

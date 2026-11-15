@@ -3,11 +3,17 @@
 Source status: `official + experiment`  
 Источники: [Codex best practices](https://developers.openai.com/codex/learn/best-practices), [Codex worktrees](https://developers.openai.com/codex/app/worktrees), [Codex hooks](https://learn.chatgpt.com/docs/hooks), [Codex rules](https://developers.openai.com/codex/config/rules), [Agent approvals and security](https://learn.chatgpt.com/docs/permissions).
 
+## Явно запрошенные MD-отчёты — 15.11.2026
+
+Проектный default hook принимает создание и обновление явно запрошенного отчёта без отдельного grant или изменения hook/trust: собственный host session marker содержит `work_type: report_authoring` и точный `report_output_path`. Marker фиксирует scope, а не доказывает разрешение пользователя. Один literal Add/Update patch, чтение перед обновлением и согласование конфликтов; protected paths, implementation/instruction directories, aliases, foreign/stale/terminal state и смешанные patches остаются запрещены. Sandbox и host approvals сохраняются.
+
+Обычное распознанное чтение не требует marker; поддерживаются Windows paths, directory-prefixed wildcards и ограниченные цепочки `rg`/`Select-String`/`Select-Object`. Начальный некавыченный glob может раскрыться в executable option на POSIX: используйте префикс каталога или quoted `--glob`. Legacy pinned routes сохранены с общим read classifier. Это проектный контракт, не встроенная возможность Codex. [Evidence и границы проверки](../../research/product-agent-os-report-read-fix-2026-11-15.md).
+
 ## GAP-05: точное разрешение на отчёт — 05.11.2026
 
 Optional pinned report authority разрешает один новый Markdown через grant, закреплённый SHA-256 в доверенной hook-команде: `--report-authority` и `--report-authority-sha256`. Research/review/planning marker по умолчанию не разрешает запись; payload инструмента не выдаёт authority.
 
-Разрешение связывает хеш workspace, новый и предыдущий task ID, точные байты marker, путь отчёта и срок до 24 часов. Нужен актуальный незавершённый marker с явным переходом задачи. Принимается один literal `apply_patch` Add File, напрямую или единственный literal call внутри `functions.exec`. Существующие и соседние файлы, control-plane/config/hooks, выход за границы пути, симлинки, динамические или множественные вызовы и запись через shell отклоняются. В режиме pinned authority чтение shell ограничено literal `Get-Content`/`Get-ChildItem -LiteralPath 'path'` с `login: false`; другие команды требуют review.
+Разрешение связывает хеш workspace, новый и предыдущий task ID, точные байты marker, путь отчёта и срок до 24 часов. Нужен актуальный незавершённый marker с явным переходом задачи. Принимается один literal `apply_patch` Add File, напрямую или единственный literal call внутри `functions.exec`. Существующие и соседние файлы, control-plane/config/hooks, выход за границы пути, симлинки, динамические или множественные вызовы и запись через shell отклоняются. С 15.11.2026 pinned authority сохраняет общий классификатор обычного чтения; grant ограничивает только запись.
 
 Это preflight guard, не атомарная filesystem transaction. Sandbox, secret/path/command restrictions и host approvals сохраняются. Active/package source синхронизирован; `hooks.json`, trust и cache не изменены. Fresh-host positive/negative probe остаётся отдельным gate. Следующий artifact — exact-hash approval packet и разрешённый probe receipt. Формат grant описан в active/package `task-plan-lifecycle.md`; rollback возвращает только source changes данного slice, не меняя trust.
 
