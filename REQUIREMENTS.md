@@ -2,7 +2,7 @@
 
 ## Функциональный план после V3 — 15.11.2026
 
-[Функциональная матрица](research/functional-remediation-2026-11-15.md): 29 planned задач и 3 ссылки M5. Дополнение владельца: read-only дерево всей доступной директории, управляемое сканирование, общая inventory policy и подключение core discovery. Дерево не зависит от готовности графа; listing/read/index/execute — разные права и состояния. Partial/error/unsupported объясняются; cancel/restart/retry и stale проверяются. AC десяти прежних задач расширены. Разрешена только запись плана, реализация не начата; synthetic/human acceptance разделены.
+[Функциональная матрица](research/functional-remediation-2026-11-15.md): 34 planned задачи и 3 ссылки M5. F26–F29 задают независимое дерево и управляемое сканирование; F30–F32 — PoC dependency-cruiser, codebase-memory-mcp и tbls; F33/F34 — карта БД и связи кода с таблицами. UI/UX входит в acceptance: Files/Map/Database, schema/diff/usages, source navigation, RU/EN, темы, accessibility и partial/stale/error. PoC-прототип и production UI принимаются отдельно. Разрешена только запись плана; source/DB read-only, установка и исполнение не начаты.
 
 ## MD-отчёты и чтение — 15.11.2026
 

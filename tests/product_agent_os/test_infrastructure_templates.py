@@ -2091,7 +2091,8 @@ class InfrastructureTemplateTest(unittest.TestCase):
         data = json.loads(hooks_template.read_text(encoding="utf-8"))
         hooks = data["hooks"]
 
-        for event in ["SessionStart", "PreToolUse", "PermissionRequest", "PostToolUse", "Stop"]:
+        self.assertNotIn("PostToolUse", hooks)
+        for event in ["SessionStart", "PreToolUse", "PermissionRequest", "Stop"]:
             self.assertIn(event, hooks)
             self.assertIsInstance(hooks[event], list)
             self.assertTrue(hooks[event])
@@ -2264,12 +2265,12 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "Completion Ledger",
             "Control-Plane Sync",
             "control_plane_sync_before_completion",
-            "control_plane_overflow_refactor",
-            "overflow_refactor_required",
+            "control_plane_size_advisory",
+            "explicit_hard_limit",
             "not_applicable",
             "handoff_required",
-            "budget crossing is a compaction trigger",
-            "not permission to skip",
+            "update_and_record_hygiene_follow_up",
+            "preservation_safe_resolution_or_blocker",
             "before execution",
             "after execution",
             "Subagent Context Packet",
@@ -5648,15 +5649,13 @@ class InfrastructureTemplateTest(unittest.TestCase):
                     capture_output=True,
                     text=True,
                 )
-                payload = json.loads(result.stdout)
                 self.assertEqual(result.returncode, 0)
                 if name == "permission_request_summary.py":
-                    self.assertIn("Approval remains undecided", payload["systemMessage"])
+                    payload = json.loads(result.stdout)
+                    self.assertIn("Host approval remains undecided", payload["systemMessage"])
                     self.assertNotIn("decision", payload)
                 else:
-                    output = payload["hookSpecificOutput"]
-                    self.assertEqual(output["hookEventName"], "PostToolUse")
-                    self.assertIn("current-run evidence", output["additionalContext"])
+                    self.assertEqual("", result.stdout)
     def test_api_integration_templates_cover_contract_depth_and_deferrals(self):
         payloads = {
             name: (TEMPLATE_ROOT / "artifact-templates" / name).read_text(encoding="utf-8").lower()

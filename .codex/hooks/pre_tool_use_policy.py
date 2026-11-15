@@ -264,7 +264,7 @@ def _read_command_tokens(lexemes: list[str]) -> bool:
 
 
 def _local_validation_read(root: Path, payload: dict[str, Any], command: str) -> bool:
-    """Admit two reviewed, no-output-file validators, never arbitrary Python.
+    """Admit reviewed, no-output-file validators, never arbitrary Python.
 
     -B prevents bytecode writes. Exact argv, workspace cwd and resolved local
     paths prevent a same-named script or a write option from using this route.
@@ -278,10 +278,18 @@ def _local_validation_read(root: Path, payload: dict[str, Any], command: str) ->
         "plugins/product-agent-os/scripts/validate_task_matrix.py",
         "plugins/product-agent-os/scripts/validate_task_state_consistency.py",
     }
-    if not lexemes or len(lexemes) != 4 or lexemes[:2] != ["python", "-B"] or lexemes[2] not in scripts:
+    if not lexemes or len(lexemes) < 4 or lexemes[:2] != ["python", "-B"]:
         return False
-    target = lexemes[3]
-    if not re.fullmatch(r"[A-Za-z0-9_./-]+", target) or target.startswith(("-", "/")) or ".." in target.split("/"):
+    if lexemes[2] == "tools/check_docs.py" and lexemes[3] == "--paths" and 5 <= len(lexemes) <= 36:
+        targets = lexemes[4:]
+        if any(Path(target).suffix.lower() not in {".md", ".markdown"} for target in targets):
+            return False
+    elif len(lexemes) == 4 and lexemes[2] in scripts:
+        targets = lexemes[3:]
+    else:
+        return False
+    if any(not re.fullmatch(r"[\w ./-]+", target) or target.startswith(("-", "/"))
+           or ".." in target.split("/") for target in targets):
         return False
     try:
         root = root.resolve()
@@ -291,7 +299,8 @@ def _local_validation_read(root: Path, payload: dict[str, Any], command: str) ->
             workdir = cwd / workdir
         script = root / lexemes[2]
         return (workdir.resolve() == root and script.is_file()
-                and script.resolve() == script and (root / target).resolve().is_relative_to(root))
+                and script.resolve() == script
+                and all((root / target).resolve().is_relative_to(root) for target in targets))
     except (OSError, ValueError, TypeError):
         return False
 

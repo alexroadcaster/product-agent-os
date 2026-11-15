@@ -1,10 +1,46 @@
 # TEST.md
 
+## Текущий выбор проверок — 15.11.2026
+
+Текущая реализация маршрута и focused evidence: [scoped verification](research/product-agent-os-scoped-verification-2026-11-15.md). Для отдельного полного fixture run используйте `python -B plugins/product-agent-os/scripts/run_fixture_eval.py --summary`; после full discovery повтор не нужен.
+
+Этот раздел — единственный владелец текущего маршрута проверок. Выбор зависит от изменённого контракта и его потребителей. Сам факт изменения Markdown, control-plane файла или шаблона не запускает общую проверку продукта. Датированные receipts, прежние списки обязательных gates и batch-specific команды ниже сохраняют provenance, но не расширяют этот маршрут.
+
+| Тип изменения | Проверки по умолчанию | Когда расширять |
+| --- | --- | --- |
+| План, карточки задач, статусы | `python -B plugins/product-agent-os/scripts/validate_task_matrix.py <changed-plan>` для матрицы; ID, допустимые статусы, зависимости, изменённые ссылки; согласованность и сохранность MD/JSON, если оба — часть контракта; `git diff --check` | Проверка machine state — только если он или его revision pins изменены. Изменение плана не требует docs/site/hooks/runtime suites. |
+| Явно запрошенный MD-отчёт | Содержание, целевой путь, изменённые ссылки, сохранность существующего текста и `git diff --check` | Проверки затронутых технических примеров или схем, если они изменены. |
+| Исходная документация, registry, control-plane текст | `python -B tools/check_docs.py --paths <changed-files>`; семантическая проверка затронутых утверждений, источников, переводов и ссылок; `git diff --check` | `test_product_agent_os_docs` при изменении общего контракта исходной документации; tests соответствующего workflow/config только при изменении их поведения. |
+| Навигация, локализация, генератор сайта, Mermaid, extensions, search/sitemap | Изолированная strict MkDocs сборка затронутого сайта и `python -B -m unittest tests.product_agent_os.site_checks -q`, с `PAOS_DOCS_SITE_DIR` на её output | Browser/render checks — для изменённого пользовательского сценария или отображения. Старый `site/` не доказывает результат новой сборки. |
+| Исторические evidence-пакеты | Проверки изменённого пакета и его ссылок | `python -B -m unittest tests.product_agent_os.docs_archive_checks -q` — при явном аудите архива/исторической целостности; не для обычной правки продукта. |
+| Реализация, workflow или шаблон поведения | Воспроизводимый regression и focused tests затронутых функций/потребителей; integration — для изменённой связи; `git diff --check` | Шире только для установленного cross-cutting риска, неизвестной области влияния, release qualification или явного запроса. Зафиксировать причину расширения. |
+| Разрешения, hooks, пути, секреты, пользовательские данные, миграции/восстановление | Положительные и отрицательные сценарии изменённой границы, сохранность данных и соответствующая integration; validators изменённых hook/config определений | Расширять по реальной области влияния. Изменение маршрута проверок не отменяет эти защиты и не предоставляет полномочий. |
+
+Имена unittest-модулей в таблице находятся в `tests.product_agent_os`. Для простого плана/отчёта не нужен отдельный полный стартовый пакет, evidence-файл или синхронизация всех корневых документов. Обновляется только владелец изменившегося факта; короткий результат содержит выполненные проверки и ограничения.
+
+### Полный прогон и повторное использование evidence
+
+При обоснованном выборе полного Python-прогона:
+
+```powershell
+python -B -m unittest discover -s tests -p "test_*.py" -q
+```
+
+Full discovery включает fixture/transcript evals. Не запускать после него те же `run_fixture_eval.py` и `run_transcript_eval.py` повторно. Отдельный runner нужен, когда выбран именно этот набор без полного suite, либо изменились его значимые входы. CLI-контракт проверяется компактными сценариями, полный набор eval выполняется один раз. Вывод — краткий итог; подробный synthetic JSON хранить только когда он нужен для диагностики или отдельного артефакта.
+
+Codex compatibility проверяется при изменении manifest/config/MCP/agent declaration или при квалификации совместимости; это bounded local structure, не доказательство host activation. Валидаторы hooks выполняются для изменённых определений; lifecycle/infrastructure tests — для соответствующих изменений. Strict MkDocs нужен для сайта, а не каждого Markdown-файла.
+
+Повторять команду только после изменения кода, config, fixtures, dependencies, environment или входных данных, способного повлиять на её результат, либо для разрешения конкретного сбоя/недетерминизма. Переиспользовать receipt с исходным provenance. Доработка текста результата не требует повторять runtime/evals. Общие проверки не являются условием закрытия независимой задачи из-за несвязанного дефекта; такой дефект фиксируется отдельно без ложного green-статуса.
+
+### Исторические результаты
+
+Все датированные результаты ниже относятся к указанным срезам. Они не являются проверками текущего запуска и не задают обязательный набор для новой задачи. Сохранённые старые формулировки «mandatory», «обязательны» и «full gates» описывают прежний маршрут и superseded текущей таблицей.
+
 [FUNC](research/functional-remediation-2026-11-15.md)
 
 ## MD-отчёты и чтение — 15.11.2026
 
-Focused: `python -B -m unittest tests.product_agent_os.test_lifecycle_hooks -q`. [Evidence и TEMP](research/product-agent-os-report-read-fix-2026-11-15.md); обязательные full gates ниже сохраняются.
+Выполненный focused route: `python -B -m unittest tests.product_agent_os.test_lifecycle_hooks -q`. [Evidence и TEMP](research/product-agent-os-report-read-fix-2026-11-15.md). Новые изменения проверяются по текущей таблице выше.
 
 ## Desktop UI/UX — actual app verification
 
@@ -146,43 +182,13 @@ Last compacted: 2026-07-07
 
 ## Required Checks After Docs Or Control-Plane Changes
 
-Run these checks after changes to root control-plane files, docs/source registry, templates or test contracts:
-
-```powershell
-python -m unittest tests.product_agent_os.test_product_agent_os_docs -v
-python -m unittest tests.product_agent_os.test_task_plan_lifecycle -v
-python -m unittest tests.product_agent_os.test_lifecycle_hooks -v
-python plugins\product-agent-os\scripts\validate_hooks.py .codex\hooks.json
-python plugins\product-agent-os\scripts\validate_hooks.py .codex\hooks
-python -m unittest tests.product_agent_os.test_infrastructure_templates -v
-python tools\check_docs.py
-git diff --check
-```
-
-Run strict MkDocs only when navigation, Mermaid diagrams, Markdown extensions, MkDocs config, localized nav, search/sitemap behavior or generated `site/` evidence changes. Full discovery remains the broad route:
-
-```powershell
-python -m unittest discover -s tests -p "test_*.py" -v
-```
+Текущий маршрут — таблица в начале `TEST.md`: изменённые источники отдельно от сайта, lifecycle/hooks/infrastructure только при изменении соответствующего контракта. Этот исторический anchor сохранён для ссылок; общего обязательного списка для любого control-plane edit больше нет.
 
 Compatibility gate after PAOS-AUD-G2: `validate_codex_compatibility.py` exits 0 for the checked-in wrapped MCP declaration. This proves bounded local structure only; distribution remains gated and host diagnostics remain separate. Legacy flat, ambiguous and malformed inputs must still fail closed. Dated earlier needs_review receipts remain historical evidence, not current status.
 
 ## Required Checks After Plugin Or Runtime Changes
 
-Use focused checks first, then broaden through the relevant project route:
-
-```powershell
-python -m unittest tests.product_agent_os.test_product_agent_os_docs -v
-python -m unittest tests.product_agent_os.test_lifecycle_hooks -v
-python -m unittest discover -s tests -p "test_*.py" -v
-python plugins\product-agent-os\scripts\run_fixture_eval.py
-python plugins\product-agent-os\scripts\run_transcript_eval.py
-python plugins\product-agent-os\scripts\validate_codex_compatibility.py
-python tools\check_docs.py
-git diff --check
-```
-
-Use `timeout_ms: 1200000` for full Product-Agent OS unittest runs.
+Начать с regression и затронутых integration checks из текущей таблицы. Full discovery — обоснованное расширение, а не обязательное продолжение каждого focused прогона. Если он выбран, не повторять fixture/transcript evals отдельно. Для долгого запуска использовать асинхронный tool session и короткие проверки результата, чтобы сохранять связь с пользователем.
 
 ## Current Verification State
 
@@ -215,7 +221,7 @@ Use `timeout_ms: 1200000` for full Product-Agent OS unittest runs.
 
 ## Control-Plane Size Budgets
 
-Root control-plane files use a compactness budget. `RUNLOG.md` keeps the historical `50 KB` (`50 * 1024` UTF-8 bytes) guard; the same overflow discipline applies to `PLAN.md`, `TEST.md`, `EVALS.md` and `REQUIREMENTS.md`. If a required update would exceed the budget, run `.codex/workflows/control-plane-sync.md` as `overflow_refactor_required`: route scope to `REQUIREMENTS.md`, sequencing to `PLAN.md`, verification to `TEST.md`, eval/claim ceilings to `EVALS.md`, detailed evidence to source-owned plans/specs/backlogs or `prod_test.md`, then keep root files as current pointers.
+По `.codex/workflows/control-plane-sync.md`, default compactness target — 40 000 UTF-8 bytes с warning от 32 000. Это advisory и отдельная hygiene-задача, а не блокировка небольшой правки. Explicit per-file hard limits и реальные технические ограничения загрузки сохраняются. Перенос истории требует сохранения исходного evidence, проверки ссылок и защиты от concurrent edits; автоматически удалять/суммировать историю нельзя. Прежний 50 KiB guard superseded.
 
 ## MkDocs Runtime Location
 
@@ -230,7 +236,7 @@ The default `python` may not have MkDocs installed. Historical fallback paths su
 
 ## Runtime And External-Action Verification Boundaries
 
-Fresh explicit approval is required before:
+Действующее разрешение, включая bounded standing authorization из `AGENTS.md`, требуется для:
 
 - target workspace mutation;
 - browser automation;
@@ -240,7 +246,7 @@ Fresh explicit approval is required before:
 - git branch creation/switching, stage, commit, push, tag or PR;
 - publication, deployment or external automation creation.
 
-Approval for one surface does not authorize another. Runtime launch approval does not authorize browser automation; browser approval does not authorize provider calls; provider-call approval does not authorize canonical mutation or git/release actions.
+Approval for one surface does not authorize another. Runtime launch approval does not authorize browser automation; browser approval does not authorize provider calls; provider-call approval does not authorize canonical mutation or git/release actions. Не спрашивать повторно для действия в уже разрешённых границах. Managed sandbox, tool approvals и project trust сохраняют силу; эта таблица их не расширяет.
 
 For real-project target tests, the default verification mode is read-only: inventory, route classification, source-policy status, control-plane presence, safe artifact maps, counts, digests and redacted summaries.
 

@@ -2,11 +2,11 @@ import importlib.util
 import unittest
 from pathlib import Path
 
+from tests.product_agent_os.fixture_eval_cache import evaluate_all_cached
 
 ROOT = Path(__file__).resolve().parents[2]
 RUNNER_PATH = ROOT / "plugins" / "product-agent-os" / "scripts" / "run_fixture_eval.py"
 FIXTURES = ROOT / "plugins" / "product-agent-os" / "assets" / "fixtures"
-_EVALUATE_ALL_CACHE = None
 
 
 def load_runner():
@@ -15,13 +15,6 @@ def load_runner():
     assert spec.loader is not None
     spec.loader.exec_module(module)
     return module
-
-
-def evaluate_all_cached(runner):
-    global _EVALUATE_ALL_CACHE
-    if _EVALUATE_ALL_CACHE is None:
-        _EVALUATE_ALL_CACHE = runner.evaluate_all()
-    return _EVALUATE_ALL_CACHE
 
 
 class CodexRuntimeRunnerFixtureEvalTest(unittest.TestCase):

@@ -180,8 +180,8 @@ def _patches(root: Path, packet: dict, patches: list[dict], originals: dict[str,
             previous_end = end
         for start, end, replacement in sorted(parts, reverse=True):
             after[name] = after[name][:start] + replacement + after[name][end:]
-        if storage._exceeds_budget(root, name, after[name], 40000):
-            raise ValueError('document exceeds 40000 bytes; reviewed lossless compaction required')
+        if storage.exceeds_configured_limit(root, name, after[name]):
+            raise ValueError('document exceeds configured project limit')
     return after
 
 
@@ -214,8 +214,8 @@ def _completion(root: Path, packet: dict, completion: dict, originals: dict, aft
     errors = validate_task_matrix_text(matrix.decode())
     if errors:
         raise ValueError('invalid completed task matrix: ' + str(errors))
-    if storage._exceeds_budget(root, name, matrix, 40000):
-        raise ValueError('matrix exceeds applicable byte budget; no automatic split')
+    if storage.exceeds_configured_limit(root, name, matrix):
+        raise ValueError('matrix exceeds configured project limit; no automatic split')
     pointer_raw = originals['PLAN.md']
     pointer = pointer_raw.decode()
     pattern = r'(<!-- product-agent-os:current-state:start -->\s*```json\s*)(.*?)(\s*```\s*<!-- product-agent-os:current-state:end -->)'
@@ -239,8 +239,8 @@ def _completion(root: Path, packet: dict, completion: dict, originals: dict, aft
     finish = match.start(2) + item.end()
     after[name] = matrix
     after['PLAN.md'] = (pointer[:begin] + revised + pointer[finish:]).encode()
-    if storage._exceeds_budget(root, 'PLAN.md', after['PLAN.md'], 40000):
-        raise ValueError('PLAN exceeds byte budget')
+    if storage.exceeds_configured_limit(root, 'PLAN.md', after['PLAN.md']):
+        raise ValueError('PLAN exceeds configured project limit')
 
 
 def propose(root: Path, packet: dict, patches: list[dict], *, completion: dict | None = None) -> dict:

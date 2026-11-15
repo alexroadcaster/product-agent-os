@@ -1,8 +1,12 @@
 # RUNLOG.md
 
+## Проверки по изменённому контракту — 15.11.2026
+
+`PAOS-SCOPED-VERIFICATION-2026-11-15`: текущий маршрут в TEST; source docs отделены от opt-in site/archive, повторные eval CLI и per-write advisories убраны. Default document size advisory; explicit limits, permission/data guards и recovery сохранены. [Изменения, focused checks и ограничения](research/product-agent-os-scoped-verification-2026-11-15.md). Общий suite и новая сборка сайта не запускались; fresh-session loading не заявляется.
+
 ## Функциональная матрица после V3 — 15.11.2026
 
-Обновлена [матрица и evidence](research/functional-remediation-2026-11-15.md): добавлены F26–F29, AC десяти прежних задач, зависимости/Blocks/order; всего 29 planned + 3 ссылки M5. Ветка F28 → F26/F27 → F29; F19/F20/F23 охватывают файлы и сканирование. Matrix/check_docs/diff/consistency passed; текущий docs suite 101/105, те же 4 site failures остаются в F25. Предыдущие receipts сохранены в матрице. Реализация и application/runtime проверки не запускались. Владелец отдельно разрешил reopening только marker этого чата; чужие изменения сохранены.
+Обновлена [матрица и evidence](research/functional-remediation-2026-11-15.md): 34 FUNC задачи распределены ровно по одному разу в 7 delivery groups; три M5 ссылки отдельно. Исходные AC/Depends/Blocks/order/status/estimates сохранены; добавлены group membership, cross-group edges, внутренние ветки, UI/UX outcomes, ownership и exit gates. Старт определяется задачей, полное закрытие G07 требует G01–G06. Matrix/scoped-docs/diff и MD/JSON membership/DAG/preservation passed; source-docs tests 3/3; предыдущие PoC-planning receipts сохранены. Реализация/PoC/runtime не запускались.
 
 ## MD-отчёты и чтение — 15.11.2026
 

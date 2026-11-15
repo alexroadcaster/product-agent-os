@@ -40,6 +40,7 @@ def run_hook(
     payload: dict[str, object] | None = None,
     cwd: Path | None = None,
     env: dict[str, str] | None = None,
+    review: bool = False,
 ) -> subprocess.CompletedProcess[str]:
     # Synthetic fixtures must not inherit the parent repository via git discovery.
     hook_env = os.environ.copy()
@@ -47,7 +48,7 @@ def run_hook(
     if cwd is not None and (env is None or "CODEX_HOOK_WORKSPACE_ROOT" not in env):
         hook_env["CODEX_HOOK_WORKSPACE_ROOT"] = str(cwd)
     return subprocess.run(
-        [sys.executable, str(script)],
+        [sys.executable, str(script), *(["--review"] if review else [])],
         input=json.dumps(payload or {}),
         cwd=str(cwd) if cwd is not None else str(ROOT),
         env=hook_env,
@@ -190,6 +191,14 @@ class LifecycleHooksTest(unittest.TestCase):
 
     def test_terminal_local_validation_commands_keep_exact_scope(self):
         commands = [
+            ("python -B tools/check_docs.py --paths research/report.md", {}, False),
+            ("python -B tools/check_docs.py --paths PLAN.md research/report.md", {}, False),
+            ("python -B tools/check_docs.py --paths ../outside.md", {}, True),
+            ("python -B tools/check_docs.py --paths research/report.md --output other.md", {}, True),
+            ("python -B tools/check_docs.py --paths research/report.md", {"workdir": "other"}, True),
+            ("python -B tools/check_docs.py --paths research/report.md", {"shell": "custom-shell"}, True),
+            ("python -B tools/check_docs.py --paths tools/write.py", {}, True),
+            ("python tools/check_docs.py --paths research/report.md", {}, True),
             ("python -B plugins/product-agent-os/scripts/validate_task_matrix.py research/tasks.md", {}, False),
             ("python -B plugins/product-agent-os/scripts/validate_task_state_consistency.py .", {}, False),
             ("git -c core.safecrlf=false diff --check", {}, False),
@@ -604,7 +613,7 @@ class LifecycleHooksTest(unittest.TestCase):
         self.assertEqual(active, json.loads(TEMPLATE_HOOKS_JSON.read_text(encoding="utf-8")))
 
         hooks = active["hooks"]
-        for event in ["SessionStart", "PreToolUse", "PermissionRequest", "PostToolUse", "Stop"]:
+        for event in ["SessionStart", "PreToolUse", "PermissionRequest", "Stop"]:
             with self.subTest(event=event):
                 self.assertIn(event, hooks)
                 self.assertTrue(hooks[event])
@@ -620,7 +629,7 @@ class LifecycleHooksTest(unittest.TestCase):
 
         self.assertEqual("startup|resume|clear|compact", hooks["SessionStart"][0]["matcher"])
         self.assertIn("apply_patch", hooks["PreToolUse"][0]["matcher"])
-        self.assertNotIn("Bash", hooks["PostToolUse"][0]["matcher"])
+        self.assertNotIn("PostToolUse", hooks)
         self.assertNotIn("matcher", hooks["Stop"][0])
 
     def test_project_local_hook_scripts_match_packaged_templates(self):
@@ -640,15 +649,18 @@ class LifecycleHooksTest(unittest.TestCase):
                     (LOCAL_HOOKS / name).read_text(encoding="utf-8"),
                 )
 
-    def test_project_local_post_tool_use_routes_both_evidence_and_comment_advisory(self):
+    def test_project_local_post_tool_use_does_not_repeat_advisories(self):
         data = json.loads(ACTIVE_HOOKS_JSON.read_text(encoding="utf-8"))
         commands = [
             handler["command"]
-            for group in data["hooks"]["PostToolUse"]
+            for group in data["hooks"].get("PostToolUse", [])
             for handler in group["hooks"]
         ]
-        self.assertIn("post_tool_use_evidence.py", " ".join(commands))
-        self.assertIn("comment_sufficiency_advisory.py", " ".join(commands))
+        self.assertEqual([], commands)
+        for name in ("post_tool_use_evidence.py", "comment_sufficiency_advisory.py"):
+            result = run_hook(LOCAL_HOOKS / name, {"tool_name": "apply_patch"})
+            self.assertEqual(0, result.returncode, result.stderr)
+            self.assertEqual("", result.stdout)
 
     def test_comment_sufficiency_advisory_warns_without_blocking(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -686,6 +698,7 @@ class LifecycleHooksTest(unittest.TestCase):
                 },
                 ROOT,
                 env,
+                review=True,
             )
 
         self.assertEqual(result.returncode, 0, result.stderr)
@@ -730,6 +743,7 @@ class LifecycleHooksTest(unittest.TestCase):
                 },
                 ROOT,
                 env,
+                review=True,
             )
 
         self.assertEqual(result.returncode, 0, result.stderr)
@@ -747,7 +761,7 @@ class LifecycleHooksTest(unittest.TestCase):
             )
             env = os.environ.copy()
             env["CODEX_COMMENT_ADVISORY_ROOT"] = str(root)
-            result = run_hook(LOCAL_HOOKS / "comment_sufficiency_advisory.py", cwd=ROOT, env=env)
+            result = run_hook(LOCAL_HOOKS / "comment_sufficiency_advisory.py", cwd=ROOT, env=env, review=True)
 
         self.assertEqual(result.returncode, 0, result.stderr)
         message = json.loads(result.stdout)["hookSpecificOutput"]["additionalContext"]
@@ -761,7 +775,7 @@ class LifecycleHooksTest(unittest.TestCase):
             (root / "simple.py").write_text("def simple():\n    return 1\n", encoding="utf-8")
             env = os.environ.copy()
             env["CODEX_COMMENT_ADVISORY_ROOT"] = str(root)
-            result = run_hook(LOCAL_HOOKS / "comment_sufficiency_advisory.py", cwd=ROOT, env=env)
+            result = run_hook(LOCAL_HOOKS / "comment_sufficiency_advisory.py", cwd=ROOT, env=env, review=True)
 
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual("", result.stdout)
@@ -771,7 +785,7 @@ class LifecycleHooksTest(unittest.TestCase):
             missing_root = Path(tmp) / "missing-workspace"
             env = os.environ.copy()
             env["CODEX_COMMENT_ADVISORY_ROOT"] = str(missing_root)
-            result = run_hook(LOCAL_HOOKS / "comment_sufficiency_advisory.py", cwd=ROOT, env=env)
+            result = run_hook(LOCAL_HOOKS / "comment_sufficiency_advisory.py", cwd=ROOT, env=env, review=True)
 
         self.assertEqual(result.returncode, 0, result.stderr)
         payload = json.loads(result.stdout)
@@ -785,7 +799,7 @@ class LifecycleHooksTest(unittest.TestCase):
             (root / "broken.py").write_text("def broken(:\n    return 1\n", encoding="utf-8")
             env = os.environ.copy()
             env["CODEX_COMMENT_ADVISORY_ROOT"] = str(root)
-            result = run_hook(LOCAL_HOOKS / "comment_sufficiency_advisory.py", cwd=ROOT, env=env)
+            result = run_hook(LOCAL_HOOKS / "comment_sufficiency_advisory.py", cwd=ROOT, env=env, review=True)
 
         self.assertEqual(result.returncode, 0, result.stderr)
         payload = json.loads(result.stdout)
@@ -815,18 +829,15 @@ class LifecycleHooksTest(unittest.TestCase):
 
         self.assertEqual(result.returncode, 0, result.stderr)
         payload = json.loads(result.stdout)
-        self.assertIn("Approval remains undecided", payload["systemMessage"])
+        self.assertIn("Host approval remains undecided", payload["systemMessage"])
         self.assertNotIn("decision", payload)
         self.assertNotIn("hookSpecificOutput", payload)
 
-    def test_post_tool_use_uses_official_additional_context_shape(self):
+    def test_legacy_post_tool_use_is_quiet_without_changing_decisions(self):
         result = run_hook(HOOKS / "post_tool_use_evidence.py")
 
         self.assertEqual(result.returncode, 0, result.stderr)
-        payload = json.loads(result.stdout)["hookSpecificOutput"]
-        self.assertEqual("PostToolUse", payload["hookEventName"])
-        self.assertIn("current-run evidence", payload["additionalContext"])
-        self.assertNotIn("decision", payload)
+        self.assertEqual("", result.stdout)
 
     def test_pre_tool_use_allows_read_only_discovery_without_output(self):
         with tempfile.TemporaryDirectory() as tmp:

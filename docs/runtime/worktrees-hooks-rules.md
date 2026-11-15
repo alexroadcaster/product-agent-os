@@ -49,7 +49,7 @@ Lifecycle guard устроен так:
 - `SessionStart` показывает наличие control-plane и lifecycle файлов;
 - `PreToolUse` пропускает распознанное read-only discovery по fast path; mutations и нераспознанные команды требуют текущего marker своего чата;
 - Перед mutation покажите применимый scope: для large/high-risk/material/release — `task_start_brief_v2`, `brief_format: bold_fields` и девять полей; для ordinary — `task_scope_note_v1`, `brief_format: concise`, поля Scope/Evidence/Limits. Затем запишите marker с task_id, scope, updated_at, approval_boundary, brief_digest и brief_fields_present; `task_start_brief_shown` относится только к full route. `task_start_brief_v1` / `field_list` сохраняется для уже начатых legacy sessions.
-- per-write `PostToolUse` проверяет comment sufficiency только для путей текущего patch, а не повторно для всего dirty worktree;
+- повторяющиеся per-write `PostToolUse` advisories отключены в проектной конфигурации; проверка comment sufficiency доступна по явному `--review` один раз при review изменённого кода;
 - после всех записей, проверок и control-plane sync marker переходит в `ready_for_completion_ledger` (full) или `ready_for_completion_brief` (concise/legacy); дальнейшие mutations блокируются;
 - Проектный `Stop` рекомендательный: он не проверяет формат чата и не запрашивает корректирующую continuation. Полный scope использует стартовый brief (9 полей) и Completion Ledger (13 пунктов); обычная работа — краткие результаты, проверки и ограничения. Все инструменты и control-plane sync завершаются до финального ответа. Явная локальная проверка пакета не доказывает активацию.
 

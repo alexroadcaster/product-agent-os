@@ -1,12 +1,12 @@
 {
-  "task_id": "project-files-scanning-planning-2026-11-15",
+  "task_id": "functional-delivery-groups-planning-2026-11-15",
   "session_id": "01a1de89-93e2-7d91-88ab-e89a9d0bd894",
-  "scope": "Documentation only: research/functional-remediation-2026-11-15.md and .json, existing pointers in research/product-agent-os-web-task-manager-plan-2026-11-09.md, REQUIREMENTS.md, PLAN.md, RUNLOG.md and docs/sources/registry.md and registry.en.md. Add four filesystem/scanning tasks and update related acceptance/dependencies. TEST.md keeps existing commands and pointer. No product implementation.",
-  "updated_at": "2026-11-15T10:37:44.489Z",
-  "approval_boundary": "User explicitly approved reopening this exact marker for the new filesystem/scanning planning task on 2026-11-15 after automatic review requested reopening authority. Preserve prior closure and close after checks. No application, hook, permission, provider, production, Git or other session changes.",
+  "scope": "Documentation only: group all 34 FUNC tasks into seven dependency-aware delivery groups in existing functional-remediation MD/JSON and PLAN/RUNLOG/Web-plan pointers. Preserve task acceptance, dependencies, statuses, M5 ownership and unrelated work. No implementation, PoC execution, installation, hooks, permissions, Git or runtime changes.",
+  "updated_at": "2026-11-15T11:20:21.303Z",
+  "approval_boundary": "Current user explicitly requested grouping all added tasks into 6-7 groups and saving them to the plan. Documentation and own-session reporting only. Prior closure preserved; no application implementation, installation, runtime, hook, trust, permission, provider, production, Git or other session changes.",
   "status": "ready_for_completion_brief",
   "completion_ready": true,
-  "brief_digest": "sha256:f293424794625cddd75ccd17da154a9c1a8a53ed962f663e1efb942b52c6d0c6",
+  "brief_digest": "sha256:a591ed990e3e6bef1ac8adc9550e8ca9815ab1397cf11a711ae70429bb97aaf6",
   "brief_schema_version": "task_scope_note_v1",
   "brief_format": "concise",
   "brief_fields_present": [
@@ -15,10 +15,12 @@
     "Limits"
   ],
   "scope_note_shown": true,
+  "previous_github_planning_closure": "github-poc-db-ui-planning-2026-11-15: docs_static_verified; 34 planned + 3 M5; matrix/docs/diff/parity/DAG passed; current source-docs suite 3/3. No PoC or implementation executed.",
+  "previous_files_scanning_closure": "project-files-scanning-planning-2026-11-15: planning_recorded; 29 planned plus 3 M5; matrix/check_docs/diff/consistency passed; docs101/105 with four existing site failures. Current user explicitly requests further plan/document changes including PoCs and UI/UX; no product implementation.",
   "previous_planning_closure": "functional-remediation-planning-2026-11-15: planning_recorded; 25 planned plus 3 M5 references; matrix/check_docs/diff/consistency passed; docs101/105, four existing site parity failures assigned F25; original56 cards preserved.",
   "plan_path": "research/functional-remediation-2026-11-15.md",
   "previous_task_id": "functional-audit-2026-11-15",
-  "control_plane_sync": "Updated existing REQUIREMENTS/PLAN/RUNLOG pointers and RU/EN registry; TEST no_change_needed (existing commands and pointer retained); EVALS no_change_needed; prod_test not_applicable. Parallel report/read sections preserved by scoped rebase and verified outside-paragraph preservation.",
+  "control_plane_sync": "Updated matrix MD/JSON and existing PLAN/RUNLOG/Web-plan pointers. REQUIREMENTS/TEST/EVALS/registry no_change_needed: scope, task acceptance, verification routes and upstream claims unchanged; prod_test not_applicable. Outside-pointer text and historical evidence preserved.",
   "lifecycle_scope": {
     "work_type": "implementation",
     "size": "bounded",
@@ -26,14 +28,14 @@
     "financially_material": false,
     "release_or_readiness": false,
     "explicit_packet_request": false,
-    "reason": "User explicitly authorized planning documents and the exact marker mode transition. Only the named documentation paths are in mutation scope; product implementation remains planned."
+    "reason": "Current user explicitly requested seven dependency-aware delivery groups in existing planning artifacts. Bounded documentation edits only; product implementation remains planned."
   },
   "previous_audit": {
     "task_id": "functional-audit-2026-11-15",
     "evidence": "Current source inspection and SHA-256 comparison: runtime adapter matches; frontend lock differs from qualified manifest. Git diff --check passed. TypeScript command denied by PreToolUse. Application code unchanged.",
     "report_status": "not_created: report write denied by PreToolUse; temporary privilege expansion for grant setup rejected by automatic approval review. No hook or grant configuration applied."
   },
-  "result": "planning_recorded; added F26-F29, revised acceptance of ten existing tasks and dependencies of seven; 29 planned plus 3 M5 references; docs_partially_verified",
-  "verification": "matrix validator exit0, check_docs exit0, diff exit0; 29 unique planned cards, per-card AC/Depends/Blocks and topological order passed; original 56-task MD/JSON preserved; docs unittest 105 tests:101 passed,4 site parity failures (12.518s).",
-  "remaining_gaps": "Implementation and runtime/browser/provider/human checks remain future tasks. Four existing site accessibility/pilot RU/EN failures remain in F25; no build, site promotion, application, hook, trust or permission changes."
+  "result": "planning_recorded / docs_static_verified; all 34 FUNC tasks assigned exactly once to seven delivery groups. Task AC/dependencies/order/estimates/status preserved; cross-group edges, lanes, ownership, UI outcomes and entry/exit gates recorded. Three M5 references remain separate.",
+  "verification": "Matrix/scoped-docs/diff exit0; source-docs unittest 3/3 passed in 0.733s. MD/JSON membership, 34-task exact preservation, task and group DAG including completion gates, historical MD and pointer preservation passed; original 56-task JSON unchanged. Final self-review passed.",
+  "remaining_gaps": "Grouping does not authorize execution or remove existing design/authority gates. PoCs, implementation, runtime/browser/provider/human acceptance remain future tasks; no speedup percentage or release readiness claimed. Historical site gaps not retested."
 }

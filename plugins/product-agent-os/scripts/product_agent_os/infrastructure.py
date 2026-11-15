@@ -196,9 +196,9 @@ def _build_result(
         if task_context and document_name in DOCUMENT_CONTRACTS:
             rendered = scoped_document(document_name, item.managed_section, task_context)
         if formation:
-            from product_agent_os.control_plane_compaction import _exceeds_budget
-            if _exceeds_budget(workspace, item.target_path, rendered.encode("utf-8"), 40000):
-                raise InfrastructureError("formation document budget exceeded: " + item.target_path)
+            from product_agent_os.control_plane_compaction import exceeds_configured_limit
+            if exceeds_configured_limit(workspace, item.target_path, rendered.encode("utf-8")):
+                raise InfrastructureError("formation configured project limit exceeded: " + item.target_path)
         if selection is not None:
             dependencies = selection.setdefault('document_dependencies', [])
             selected_paths = {spec.target_path for spec in templates}

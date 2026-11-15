@@ -75,13 +75,29 @@ class DocumentNavigationTest(unittest.TestCase):
             packet['facts'][0]['existing_coverage'] = 'Contract section already specifies this requirement'
             self.assertEqual(sync.assess(root, packet)['gaps'], [])
 
-    def test_sync_budget_ambiguous_sections_and_link_preservation(self):
+    def test_sync_default_size_is_advisory_and_explicit_limit_is_enforced(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             sync, packet, patches, raw = self.sync_fixture(root)
             patches[0]['replacement'] = '## Contract\n' + 'я' * 21000 + '\n'
-            with self.assertRaisesRegex(ValueError, '40000'):
-                sync.propose(root, packet, patches)
+            plan = sync.propose(root, packet, patches)
+            self.assertIn('docs/api/README.md:over_32000_bytes', plan['warnings'])
+            self.assertEqual((root / 'docs/api/README.md').read_bytes(), raw)
+            config = root / '.codex/config.toml'
+            config.parent.mkdir()
+            config.write_text('[product_agent_os.documents.limits]\n"docs/api/README.md" = 40000\n', encoding='utf-8')
+            with self.assertRaisesRegex(ValueError, 'configured.*limit'):
+                sync.apply(root, plan, approved_digest=plan['digest'])
+            self.assertEqual((root / 'docs/api/README.md').read_bytes(), raw)
+            config.write_text('[product_agent_os.documents.limits]\n"docs/api/README.md" = 50000\n', encoding='utf-8')
+            sync.apply(root, plan, approved_digest=plan['digest'])
+            self.assertGreater((root / 'docs/api/README.md').stat().st_size, 40000)
+            self.assertTrue((root / 'docs/api/README.md').read_bytes().endswith(b'## Other\r\nPreserve exactly.\r\n'))
+
+    def test_sync_ambiguous_sections_and_link_preservation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            sync, packet, patches, raw = self.sync_fixture(root)
             with self.assertRaisesRegex(ValueError, 'duplicate'):
                 sync.section_range(b'## Same\nA\n## Same\nB\n', 'same')
             self.assertEqual(sync.section_range(b'## Contract {#c}\nText\n## Other\n', 'c'), (0, len(b'## Contract {#c}\nText\n')))

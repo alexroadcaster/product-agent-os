@@ -1,0 +1,9224 @@
+"""Explicit documentation audit; not part of runtime unittest discovery."""
+from tests.product_agent_os.docs_test_support import *
+
+class ProductAgentOsDocsArchiveTest(DocsAssertions, unittest.TestCase):
+    def test_root_runlog_is_compact_current_handoff_and_distribution_map(self):
+        runlog_bytes = RUNLOG.read_bytes()
+        runlog = runlog_bytes.decode("utf-8")
+        control_plane_sync = CONTROL_PLANE_SYNC.read_text(encoding="utf-8")
+        state = CONTROL_PLANE_CURRENT_STATE.read_text(encoding="utf-8")
+
+        self.assertIn("40 000 UTF-8 bytes", control_plane_sync)
+        self.assertIn("advisory compactness target", control_plane_sync)
+        self.assertIn("Default size alone does not block a routine update", control_plane_sync)
+        self.assertIn("Explicit per-file hard limits and actual technical loading limits still apply", control_plane_sync)
+        self.assertIn("Before shortening `RUNLOG.md`", control_plane_sync)
+        self.assertIn("REQUIREMENTS.md", control_plane_sync)
+        self.assertIn("PLAN.md", control_plane_sync)
+        self.assertIn("TEST.md", control_plane_sync)
+        self.assertIn("EVALS.md", control_plane_sync)
+        self.assertIn("source-owned plans/specs/backlogs or `prod_test.md`", control_plane_sync)
+        self.assertIn("docs/product-agent-os/control-plane-current-state.md", runlog)
+        self.assertIn("Batch 35 / Batch 38: `T10-LIVE-M41`", runlog)
+        self.assertIn("owner_closed_no_op_git_release_pr", runlog)
+        self.assertIn("blocked_pending_explicit_cache_mutation_approval", runlog)
+        self.assertIn("done_through_m40", runlog)
+        self.assertIn("RUNLOG.md` is the compact current-cycle handoff layer", runlog)
+        self.assertIn("Source-Owned History Map", runlog)
+        self.assertIn("B45-POSTQ4-T16-T22-A01", runlog)
+        self.assertIn("T14 is positive current-best-quality signal only", runlog)
+
+        for expected in [
+            "REQUIREMENTS.md",
+            "PLAN.md",
+            "TEST.md",
+            "EVALS.md",
+            "AGENTS.md",
+            "docs/sources/registry.md",
+            "docs/sources/product-agent-os-track-8-detailed-backlog.md",
+            "docs/sources/product-agent-os-track-9-backlog.md",
+            "docs/sources/product-agent-os-track-10-backlog.md",
+            "docs/sources/product-agent-os-batch35-approval-packet-draft.md",
+        ]:
+            with self.subTest(runlog_distribution=expected):
+                self.assertIn(expected, runlog)
+
+        self.assertIn("Product-Agent OS Track 10 Task 26 Batch 35 approval-bound real testing execution matrix", runlog)
+        self.assertIn("no git stage/commit/push/PR", runlog)
+        self.assertIn("Root File Contract", state)
+        self.assertNotIn("Control-Plane Marker Bank", runlog)
+        self.assertNotIn("Preserved Historical Markers", runlog)
+
+
+    def test_root_plan_is_compact_current_sequencing_contract(self):
+        plan_bytes = PLAN.read_bytes()
+        plan = plan_bytes.decode("utf-8")
+
+        self.assertIn("PLAN.md` is the compact sequencing and rollback layer", plan)
+        self.assertIn("Current Planning Contract", plan)
+        self.assertIn("Next Implementation Queue", plan)
+        self.assertIn("Source Planning Artifacts", plan)
+        self.assertIn("Evidence ownership", plan)
+        self.assertIn("docs/product-agent-os/control-plane-current-state.md", plan)
+        self.assertIn("T10-LIVE-M41", plan)
+        self.assertIn("owner_closed_no_op_git_release_pr", plan)
+        self.assertIn("blocked_pending_explicit_cache_mutation_approval", plan)
+        self.assertIn("B38-S2", plan)
+        self.assertIn("B45-POSTQ4-T16-T22-A01", plan)
+
+        for expected in [
+            "REQUIREMENTS.md",
+            "TEST.md",
+            "EVALS.md",
+            "RUNLOG.md",
+            "AGENTS.md",
+            "docs/sources/product-agent-os-track-8-detailed-backlog.md",
+            "docs/sources/product-agent-os-track-9-backlog.md",
+            "docs/sources/product-agent-os-track-10-backlog.md",
+            "docs/sources/registry.md",
+            "docs/sources/product-agent-os-batch35-approval-packet-draft.md",
+            "git diff --check",
+        ]:
+            with self.subTest(plan_distribution=expected):
+                self.assertIn(expected, plan)
+
+        self.assertNotIn("Historical Planning Markers", plan)
+        self.assertNotIn("Compatibility Marker Bank", plan)
+        self.assertNotIn("## T9-D12 Delivery, Release & Operations Completed Slice", plan)
+
+
+    def test_root_test_is_compact_current_verification_contract(self):
+        test_bytes = TEST.read_bytes()
+        test_plan = test_bytes.decode("utf-8")
+
+        self.assertIn("TEST.md` is the compact verification routing layer", test_plan)
+        self.assertIn("Current Verification State", test_plan)
+        self.assertIn("Required Checks After Docs Or Control-Plane Changes", test_plan)
+        self.assertIn("Required Checks After Plugin Or Runtime Changes", test_plan)
+        self.assertIn("Runtime And External-Action Verification Boundaries", test_plan)
+        self.assertIn("Historical Evidence Owners", test_plan)
+        self.assertIn("T10-LIVE-M41", test_plan)
+        self.assertIn("owner_closed_no_op_git_release_pr", test_plan)
+        self.assertIn("blocked_pending_explicit_cache_mutation_approval", test_plan)
+        self.assertIn("B38-S2", test_plan)
+
+        for expected in [
+            "tools/check_docs.py --paths",
+            "git diff --check",
+            "tests.product_agent_os.site_checks",
+            "tests.product_agent_os.docs_archive_checks",
+            "Full discovery включает fixture/transcript evals",
+            "Не запускать после него те же",
+            "docs/sources/product-agent-os-track-8-detailed-backlog.md",
+            "docs/sources/product-agent-os-track-9-backlog.md",
+            "docs/sources/product-agent-os-track-10-backlog.md",
+            "docs/sources/registry.md",
+            "docs/sources/product-agent-os-batch35-approval-packet-draft.md",
+            "docs/product-agent-os/control-plane-current-state.md",
+        ]:
+            with self.subTest(test_distribution=expected):
+                self.assertTrue(expected in test_plan, f"Missing current verification contract: {expected}")
+
+        self.assertNotIn("Compatibility Marker Bank", test_plan)
+        self.assertNotIn("Batch 44 S0 Self-Learning Loop Scope Checks", test_plan)
+        self.assertNotIn("B45-PCA-M24: broad false-positive audit", test_plan)
+        self.assertNotIn("$env:PYTHONPATH='C:\\tmp\\codex_docs_mkdocs'", test_plan)
+        self.assertNotIn("## Completed Focused Checks For T9-D12", test_plan)
+
+
+    def test_track10_batch37_s1_task_matrix_contract_is_recorded(self):
+        track10_plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        plan = PLAN.read_text(encoding="utf-8")
+        test_plan = TEST.read_text(encoding="utf-8")
+        runlog = RUNLOG.read_text(encoding="utf-8")
+
+        track10_terms = [
+            "Batch 37 S1 implementation contract",
+            "B37-S1 implemented scope: `T10-PLAN-M01..M03`, `T10-PLAN-M18`",
+            "Allowed task statuses: `planned`, `in_progress`, `implemented`, `blocked`, `accepted_gap`",
+            "Plan-file placement policy:",
+            "docs/superpowers/plans/YYYY-MM-DD-<scope>-task-matrix.md",
+            "Lightweight exception fields: `reason`, `reduced_evidence_path`, `residual_risk`",
+            "Validator target: detailed task blocks with one explicit field per line",
+            "Summary tables are planning indexes only",
+            "| `T10-PLAN-M01` | 37 |",
+            "| `T10-PLAN-M02` | 37 |",
+            "| `T10-PLAN-M03` | 37 |",
+            "| `T10-PLAN-M18` | 37 |",
+            "what was done:",
+            "actual implementation date and time:",
+            "B37-S1 completion evidence",
+        ]
+        for expected in track10_terms:
+            with self.subTest(track10_plan=expected):
+                self.assertIn(expected, track10_plan)
+
+        for expected in [
+            "B37-S1",
+            "T10-PLAN-M01..M03",
+            "T10-PLAN-M18",
+            "task-matrix contract",
+            "task-matrix-plan.md",
+        ]:
+            with self.subTest(control_plane=expected):
+                self.assertIn(expected, plan)
+                self.assertIn(expected, test_plan)
+                self.assertIn(expected, runlog)
+
+
+    def test_track10_batch37_s2_task_matrix_template_and_renderer_are_recorded(self):
+        track10_plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        plan = PLAN.read_text(encoding="utf-8")
+        test_plan = TEST.read_text(encoding="utf-8")
+        runlog = RUNLOG.read_text(encoding="utf-8")
+        readme = (ROOT / "plugins" / "product-agent-os" / "README.md").read_text(encoding="utf-8")
+        backlog = (ROOT / "docs" / "sources" / "product-agent-os-track-10-backlog.md").read_text(
+            encoding="utf-8"
+        )
+        registry = (ROOT / "docs" / "sources" / "registry.md").read_text(encoding="utf-8")
+
+        track10_terms = [
+            "B37-S2 implementation evidence",
+            "B37-S2 implemented scope: `T10-PLAN-M04..M05`, `T10-PLAN-M17`",
+            "plugins/product-agent-os/assets/templates/artifact-templates/task-matrix-plan.md",
+            ".codex/artifact-templates/task-matrix-plan.md",
+            "artifact-task-matrix-plan",
+            "renderer_file_count: 195",
+            "Template source is packaged in the checked-in plugin source tree",
+            "does not publish the plugin cache",
+            "does not mutate `.codex-plugin/plugin.json`",
+            "does not perform live automation",
+            "does not call providers/live external model/API endpoints",
+            "does not perform git stage/commit/push/PR",
+            "| `T10-PLAN-M04` | 37 |",
+            "| `T10-PLAN-M05` | 37 |",
+            "| `T10-PLAN-M17` | 37 |",
+        ]
+        for expected in track10_terms:
+            with self.subTest(track10_plan=expected):
+                self.assertIn(expected, track10_plan)
+
+        for expected in [
+            "B37-S2",
+            "T10-PLAN-M04..M05",
+            "T10-PLAN-M17",
+            "task-matrix-plan.md",
+            "renderer_file_count: 195",
+            "plugin cache remains stale until an explicit publication/cache refresh action is approved",
+        ]:
+            with self.subTest(control_plane=expected):
+                self.assertIn(expected, plan)
+                self.assertIn(expected, test_plan)
+                self.assertIn(expected, runlog)
+
+        for expected in [
+            "Task Matrix Plan template",
+            "artifact-task-matrix-plan",
+            ".codex/artifact-templates/task-matrix-plan.md",
+            "current session skills are loaded separately from the packaged plugin source",
+        ]:
+            with self.subTest(readme=expected):
+                self.assertIn(expected, readme)
+
+        self.assertIn("done_through_s2", backlog)
+        self.assertIn("Product-Agent OS Batch 37 S2 task-matrix template and renderer registration", registry)
+
+
+    def test_track10_batch37_s3_task_matrix_validator_eval_and_completion_report_are_recorded(self):
+        track10_plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        plan = PLAN.read_text(encoding="utf-8")
+        test_plan = TEST.read_text(encoding="utf-8")
+        runlog = RUNLOG.read_text(encoding="utf-8")
+        backlog = (ROOT / "docs" / "sources" / "product-agent-os-track-10-backlog.md").read_text(
+            encoding="utf-8"
+        )
+        registry = (ROOT / "docs" / "sources" / "registry.md").read_text(encoding="utf-8")
+
+        track10_terms = [
+            "B37-S3 implementation evidence",
+            "B37-S3 implemented scope: `T10-PLAN-M06`, `T10-PLAN-M10`, `T10-PLAN-M13`",
+            "validate_task_matrix.py",
+            "validate_task_matrix_text",
+            "task-matrix-validator-and-completion-report",
+            "task_matrix_validator_contract_present",
+            "task_matrix_completion_report_guard_present",
+            "implemented with `pending_execution_timestamp` is invalid",
+            "planned rows are not implementation evidence",
+            "summary tables are planning indexes only",
+            "| `T10-PLAN-M06` | 37 |",
+            "| `T10-PLAN-M10` | 37 |",
+            "| `T10-PLAN-M13` | 37 |",
+        ]
+        for expected in track10_terms:
+            with self.subTest(track10_plan=expected):
+                self.assertIn(expected, track10_plan)
+
+        for expected in [
+            "B37-S3",
+            "T10-PLAN-M06",
+            "T10-PLAN-M10",
+            "T10-PLAN-M13",
+            "validate_task_matrix.py",
+            "task_matrix_validator_contract_present",
+        ]:
+            with self.subTest(control_plane=expected):
+                self.assertIn(expected, plan)
+                self.assertIn(expected, test_plan)
+                self.assertIn(expected, runlog)
+
+        self.assertIn("done_through_s3", backlog)
+        self.assertIn("Product-Agent OS Batch 37 S3 task-matrix validator, eval and completion-report guard", registry)
+
+
+    def test_track10_batch37_s4_skill_routing_discovery_and_control_are_recorded(self):
+        track10_plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        plan = PLAN.read_text(encoding="utf-8")
+        test_plan = TEST.read_text(encoding="utf-8")
+        runlog = RUNLOG.read_text(encoding="utf-8")
+        backlog = (ROOT / "docs" / "sources" / "product-agent-os-track-10-backlog.md").read_text(
+            encoding="utf-8"
+        )
+        registry = (ROOT / "docs" / "sources" / "registry.md").read_text(encoding="utf-8")
+
+        track10_terms = [
+            "B37-S4 implementation evidence",
+            "B37-S4 implemented scope: `T10-PLAN-M07..M09`, `T10-PLAN-M20`",
+            "task_matrix_planner_routing_contract_present",
+            "task_matrix_agent_handoff_contract_present",
+            "task_matrix_discovery_signal_contract_present",
+            "task_matrix_planning_control_governance_present",
+            "task-matrix-plan.md",
+            "present_unverified",
+            "reminder-only hooks",
+            "hard gates live in validator/tests/skills",
+            "| `T10-PLAN-M07` | 37 |",
+            "| `T10-PLAN-M08` | 37 |",
+            "| `T10-PLAN-M09` | 37 |",
+            "| `T10-PLAN-M20` | 37 |",
+        ]
+        for expected in track10_terms:
+            with self.subTest(track10_plan=expected):
+                self.assertIn(expected, track10_plan)
+
+        for expected in [
+            "B37-S4",
+            "T10-PLAN-M07..M09",
+            "T10-PLAN-M20",
+            "task_matrix_planner_routing_contract_present",
+            "task_matrix_agent_handoff_contract_present",
+            "task_matrix_discovery_signal_contract_present",
+            "task_matrix_planning_control_governance_present",
+        ]:
+            with self.subTest(control_plane=expected):
+                self.assertIn(expected, plan)
+                self.assertIn(expected, test_plan)
+                self.assertIn(expected, runlog)
+
+        self.assertIn("done_through_s4", backlog)
+        self.assertIn("Product-Agent OS Batch 37 S4 skill routing, discovery and planning control", registry)
+
+
+    def test_track10_batch37_s5_docs_projection_lifecycle_and_closure_are_recorded(self):
+        track10_plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        plan = PLAN.read_text(encoding="utf-8")
+        test_plan = TEST.read_text(encoding="utf-8")
+        runlog = RUNLOG.read_text(encoding="utf-8")
+        backlog = (ROOT / "docs" / "sources" / "product-agent-os-track-10-backlog.md").read_text(
+            encoding="utf-8"
+        )
+        registry = (ROOT / "docs" / "sources" / "registry.md").read_text(encoding="utf-8")
+
+        track10_terms = [
+            "B37-S5 implementation evidence",
+            "B37-S5 implemented scope: `T10-PLAN-M11..M12`, `T10-PLAN-M14..M16`, `T10-PLAN-M19`",
+            "task_matrix_docs_source_sync_present",
+            "task_matrix_backward_compatibility_policy_present",
+            "task_matrix_status_projection_deferred_present",
+            "task_matrix_system_file_hygiene_owner_present",
+            "task_matrix_lifecycle_archive_policy_present",
+            "Batch 37 closure evidence",
+            "staged artifact, not source truth or execution evidence",
+            "existing matrices stay valid as historical plans",
+            "dashboard projection is deferred",
+            "artifact_templates ownership",
+            "docs/source ownership",
+            "RUNLOG.md",
+            "docs/sources/*backlog*.md",
+            "docs/sources/registry*.md",
+            "| `T10-PLAN-M11` | 37 |",
+            "| `T10-PLAN-M12` | 37 |",
+            "| `T10-PLAN-M14` | 37 |",
+            "| `T10-PLAN-M15` | 37 |",
+            "| `T10-PLAN-M16` | 37 |",
+            "| `T10-PLAN-M19` | 37 |",
+        ]
+        for expected in track10_terms:
+            with self.subTest(track10_plan=expected):
+                self.assertIn(expected, track10_plan)
+
+        for expected in [
+            "B37-S5",
+            "T10-PLAN-M11..M12",
+            "T10-PLAN-M14..M16",
+            "T10-PLAN-M19",
+            "task_matrix_docs_source_sync_present",
+            "task_matrix_backward_compatibility_policy_present",
+            "task_matrix_status_projection_deferred_present",
+            "task_matrix_system_file_hygiene_owner_present",
+            "task_matrix_lifecycle_archive_policy_present",
+        ]:
+            with self.subTest(control_plane=expected):
+                self.assertIn(expected, plan)
+                self.assertIn(expected, test_plan)
+                self.assertIn(expected, runlog)
+
+        self.assertIn("done_through_s5", backlog)
+        self.assertIn("Product-Agent OS Batch 37 S5 docs, projection, hygiene, lifecycle and closure", registry)
+
+
+    def test_root_agents_is_compact_durable_rule_contract(self):
+        agents = AGENTS_FILE.read_text(encoding="utf-8")
+
+        self.assertIn("Project Identity And Mission", agents)
+        self.assertIn("implementation, verification and evidence workspace", agents)
+        self.assertIn("It is not merely a documentation collection", agents)
+        self.assertIn("System Responsibilities", agents)
+        self.assertIn("Current Implementation And Claim Ceiling", agents)
+        self.assertIn("Agent File Contract", agents)
+        self.assertIn("vibe-coder to an AI Engineer", agents)
+        self.assertNotIn("This repository is a Russian knowledge base", agents)
+        self.assertIn("AGENTS.md` is the durable project instruction layer", agents)
+        self.assertIn("Control-Plane Role", agents)
+        self.assertIn("Documentation Rules", agents)
+        self.assertIn("Diagram Atlas Rules", agents)
+        self.assertIn("Product-Agent Operating Model", agents)
+        self.assertIn("Windows Codex Shell Guard", agents)
+        self.assertIn("Product-Agent OS Plugin Rules", agents)
+        self.assertIn("Source And Insight Policy", agents)
+        self.assertIn("Verification", agents)
+        self.assertIn("Current Product-Agent OS execution status", agents)
+        self.assertIn("historical batch evidence are source-owned", agents)
+        self.assertIn("AGENTS.md` does not carry batch ledgers", agents)
+
+        for expected in [
+            "REQUIREMENTS.md",
+            "PLAN.md",
+            "TEST.md",
+            "EVALS.md",
+            "RUNLOG.md",
+            "docs/sources/registry.md",
+            "docs/sources/product-agent-os-track-8-detailed-backlog.md",
+            "docs/sources/product-agent-os-track-9-backlog.md",
+            "docs/sources/product-agent-os-track-10-backlog.md",
+            "docs/sources/product-agent-os-batch35-approval-packet-draft.md",
+            "single verification-route owner",
+            "A plan, report or control-plane text edit does not by itself require",
+            "Retain authorization, secret/path, user-file preservation, migration and recovery checks",
+            "Verification routing never grants permissions",
+        ]:
+            with self.subTest(agents_distribution=expected):
+                self.assertTrue(expected in agents, f"Missing durable instruction contract: {expected}")
+
+        self.assertNotIn("Product-Agent OS implementation status", agents)
+        self.assertNotIn("Track 8 T8-A16 baseline was refreshed", agents)
+        self.assertNotIn("Task 26 Batch 34E corrective control-plane sync terms", agents)
+
+
+    def test_root_evals_is_compact_current_eval_contract(self):
+        evals_bytes = EVALS.read_bytes()
+        evals = evals_bytes.decode("utf-8")
+
+        self.assertIn("EVALS.md` is the compact evaluation routing layer", evals)
+        self.assertIn("Rubrics", evals)
+        self.assertIn("Thresholds", evals)
+        self.assertIn("Current Evaluation State", evals)
+        self.assertIn("Active Eval Routes", evals)
+        self.assertIn("Methodology Eval Map", evals)
+        self.assertIn("Unsupported Claims", evals)
+        self.assertIn("Historical Eval Evidence Owners", evals)
+        self.assertIn("T10-LIVE-M41", evals)
+        self.assertIn("owner_closed_no_op_git_release_pr", evals)
+        self.assertIn("B38-S2", evals)
+
+        for expected in [
+            "Evidence before completion",
+            "quality_testing_evals_contract_present",
+            "llm_ai_rag_contract_present",
+            "security_privacy_compliance_contract_present",
+            "delivery_release_operations_contract_present",
+            "cross_domain_synthesis_contract_present",
+            "T10-LIVE-M01..M41",
+            "docs/sources/product-agent-os-track-8-detailed-backlog.md",
+            "docs/sources/product-agent-os-track-9-backlog.md",
+            "docs/sources/product-agent-os-track-10-backlog.md",
+            "docs/sources/registry.md",
+            "docs/sources/product-agent-os-batch35-approval-packet-draft.md",
+            "docs/product-agent-os/control-plane-current-state.md",
+            "docs/superpowers/specs/*.json",
+            "Текущий маршрут проверок задаёт только `TEST.md`",
+            "Full unittest discovery уже включает fixture/transcript evals",
+            "run_fixture_eval.py --summary",
+            "Краткий вывод не скрывает failures",
+        ]:
+            with self.subTest(evals_distribution=expected):
+                self.assertTrue(expected in evals, f"Missing current eval contract: {expected}")
+
+        self.assertNotIn("Current Task 22 eval evidence", evals)
+        self.assertNotIn("Batch 21 focused and broad evidence", evals)
+        self.assertNotIn("Batch 34E M44 sync", evals)
+        self.assertNotIn("B39-S4-GRAPH-DEPTH", evals)
+        self.assertNotIn("B45 Q4+", evals)
+        self.assertNotIn("Current run: python -m unittest", evals)
+
+
+    def test_control_plane_current_state_page_is_site_visible_and_source_indexed(self):
+        state = CONTROL_PLANE_CURRENT_STATE.read_text(encoding="utf-8")
+        state_en = CONTROL_PLANE_CURRENT_STATE.with_name(
+            "control-plane-current-state.en.md"
+        ).read_text(encoding="utf-8")
+        nav = MKDOCS.read_text(encoding="utf-8")
+        check_docs = CHECK_DOCS.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        registry_en = SOURCE_REGISTRY_EN.read_text(encoding="utf-8")
+
+        for text in [state, state_en]:
+            with self.subTest(control_plane_state_locale=text.splitlines()[0]):
+                self.assertIn("Source status:", text)
+                self.assertIn("Source Matrix", text)
+                self.assertIn("Root File Contract", text)
+                self.assertIn("PLAN.md", text)
+                self.assertIn("RUNLOG.md", text)
+                self.assertIn("TEST.md", text)
+                self.assertIn("EVALS.md", text)
+                self.assertIn("B45-POSTQ4-T15", text)
+                self.assertIn("B45-POSTQ4-T16-T22", text)
+                self.assertIn("positive current-quality signal only", text)
+                self.assertIn("promotion-grade eval", text)
+                self.assertIn("Unsupported Claims", text)
+
+        self.assertIn("product-agent-os/control-plane-current-state.md", nav)
+        self.assertIn('product-agent-os" / "control-plane-current-state.md', check_docs)
+        self.assertIn("Product-Agent OS root control-plane current-state owner page", registry)
+        self.assertIn("docs/product-agent-os/control-plane-current-state.md", registry)
+        self.assertIn("Product-Agent OS root control-plane current-state owner page", registry_en)
+
+
+    def test_root_readme_is_compact_product_entrypoint_without_history_ledger(self):
+        readme = ROOT_README.read_text(encoding="utf-8")
+
+        self.assertLess(len(readme), 50000)
+        for expected in [
+            "Product-Agent OS - local Codex plugin",
+            "Product-Agent OS full stack",
+            "Why Product-Agent OS",
+            "What You Get After The First Run",
+            "Output Preview",
+            "Codex Vs Product-Agent OS",
+            "Implementation Depth",
+            "Before And After",
+            "Current Implementation Status",
+            "Operating Loop",
+            "Capability Map",
+            "Core Capabilities",
+            "Implemented Technical Surface",
+            "Packaged Skills",
+            "Use-Case Routing",
+            "Methodology Intelligence And Auto-Selection",
+            "Project Scanning Principle",
+            "Methodology Map",
+            "Methodology And Readiness Gates",
+            "No Forced Ceremony",
+            "Who It Fits Best",
+            "Documentation And Evidence",
+            "Guided Questions And Status",
+            "Project Code Graph",
+            "Live Runtime And Retrieval Boundaries",
+            "Self-Verification And Modernization Loop",
+            "System File Hygiene",
+            "Repository Layout",
+            "Quick Commands",
+            "Where History Lives",
+            "docs/product-agent-os/index.md",
+            "artifact-gallery.md",
+            "methodology-intelligence.md",
+            "approval-bound-real-testing.md",
+            "docs/sources/registry.md",
+            "plugins/product-agent-os/README.md",
+            "TDD / Red-Green-Refactor",
+            "DDD",
+            "ADD / architecture-driven design",
+            "FSD and frontend boundary discipline",
+            "Eval-driven AI / RAG development",
+        ]:
+            with self.subTest(readme_product_contract=expected):
+                self.assertIn(expected, readme)
+
+        forbidden_history = re.compile(
+            r"\b(Task|Track|Batch)\b|T[0-9]+-|B[0-9]+-|done_through|Implementation Evidence Archive"
+        )
+        self.assertIsNone(forbidden_history.search(readme))
+
+
+    def test_batch38_p0_product_docs_are_current(self):
+        approval_page = self._localized_contract_text(
+            PRODUCT_AGENT_OS / "approval-bound-real-testing.md"
+        )
+        methodology_page = self._localized_contract_text(
+            PRODUCT_AGENT_OS / "methodology-intelligence.md"
+        )
+        source_draft = "\n".join(
+            [
+                (DOCS / "sources" / "add-ddd-tdd-fsd-llm-development.md").read_text(
+                    encoding="utf-8"
+                ),
+                (DOCS / "sources" / "add-ddd-tdd-fsd-llm-development.en.md").read_text(
+                    encoding="utf-8"
+                ),
+            ]
+        )
+
+        for expected in [
+            "M37-M41",
+            "M37",
+            "M38",
+            "M39",
+            "M40",
+            "M41",
+            "owner_closed_no_op_git_release_pr",
+            "server_shutdown_complete: true",
+            "Playwright Chromium",
+            "codex_user_session",
+            "canonical_graph_source_mutated: false",
+            "no git stage/commit/push/PR",
+        ]:
+            with self.subTest(approval_page=expected):
+                self.assertIn(expected, approval_page)
+
+        for expected in [
+            "Project Scanning Principle",
+            "Business & Product",
+            "Requirements & Domain",
+            "Solution architecture",
+            "Quality, Testing & Evals",
+            "Codex / Agentic Workflow",
+            "Frontend",
+            "Backend",
+            "API & Integrations",
+            "Database & Data",
+            "LLM / AI / RAG",
+            "Security, Privacy & Compliance",
+            "Delivery, Release & Operations",
+            "These 12 methodology domains",
+            "Readiness statuses",
+            "not_applicable",
+            "applicable_missing",
+            "present_unverified",
+            "present_verified",
+            "proposal_staged",
+            "explicit_gap_accepted",
+            "approval_required",
+            "Methodology Examples",
+            "Product discovery and metric design",
+            "ATDD / BDD acceptance scenarios",
+            "DDD",
+            "Architecture-driven design and ADRs",
+            "C4 / arc42-style architecture views",
+            "TDD / Red-Green-Refactor",
+            "FSD and frontend boundary discipline",
+            "API contract-first delivery",
+            "Eval-driven AI / RAG development",
+        ]:
+            with self.subTest(methodology_page=expected):
+                self.assertIn(expected, methodology_page)
+
+        for expected in [
+            "Terminology boundary",
+            "Product-Agent OS core methodology reserves `DDD` for Domain-Driven Design",
+            "Product-Agent OS core `DDD` means Domain-Driven Design",
+            "Data-Driven Development as product/metric discipline",
+            "DDD (draft term here)",
+        ]:
+            with self.subTest(source_draft=expected):
+                self.assertIn(expected, source_draft)
+
+
+    def test_batch38_p1_product_docs_route_outputs_and_boundary_are_current(self):
+        first_run = self._localized_contract_text(PRODUCT_AGENT_OS / "index.md")
+        gallery = self._localized_contract_text(PRODUCT_AGENT_OS / "artifact-gallery.md")
+        root_index = "\n".join(
+            [
+                (DOCS / "index.md").read_text(encoding="utf-8"),
+                (DOCS / "index.en.md").read_text(encoding="utf-8"),
+            ]
+        )
+        nav = MKDOCS.read_text(encoding="utf-8")
+        check_docs = CHECK_DOCS.read_text(encoding="utf-8")
+        plan = PLAN.read_text(encoding="utf-8")
+
+        for expected in [
+            "Первый запуск: маршрут пользователя",
+            "First-Run Walkthrough",
+            "read-only workspace audit",
+            "lifecycle state",
+            "usage_mode",
+            "methodology gaps",
+            "Methodology selection",
+            "staged artifacts",
+            "verification route",
+            "approval boundary",
+            "evidence gaps",
+            "safe_next_action",
+            "Generated views are not source of truth",
+            "no live server launch",
+            "no browser automation",
+            "no provider/API calls",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]:
+            with self.subTest(first_run=expected):
+                self.assertIn(expected, first_run)
+
+        for expected in [
+            "Витрина результатов Product-Agent OS",
+            "Product-Agent OS Artifact Gallery",
+            "Control plane",
+            "First-run route",
+            "Methodology packet",
+            "Status dashboard",
+            "Graph and cockpit",
+            "Real-testing evidence",
+            "Scorecards",
+            "Release and closure",
+            "Source of truth remains in project source files",
+            "Generated views help navigation, but canonical files remain authoritative",
+            "One approval never authorizes another action",
+            "Historical evidence and public product copy must stay separate",
+        ]:
+            with self.subTest(gallery=expected):
+                self.assertIn(expected, gallery)
+
+        for expected in [
+            "Граница public/internal документации",
+            "Public/Internal Documentation Boundary",
+            "Public product pages explain capabilities, user route, outputs, boundaries and next action",
+            "Internal evidence pages under `docs/sources/` store source/history material",
+            "Generated `site/` output is a rendered copy of source docs and review output, not source of truth",
+            "source registry, packets, backlogs and verification records",
+            "Source of truth remains in Markdown source files",
+        ]:
+            with self.subTest(boundary=expected):
+                self.assertTrue(expected in first_run or expected in root_index)
+
+        for expected in [
+            "product-agent-os/artifact-gallery.md",
+            'DOCS / "product-agent-os" / "artifact-gallery.md"',
+        ]:
+            with self.subTest(nav_or_check_docs=expected):
+                self.assertTrue(expected in nav or expected in check_docs)
+
+        public_forbidden_pattern = re.compile(
+            r"\b(Task|Track|Batch)\b|T[0-9]+-[A-Z0-9-]+|B[0-9]+-[A-Z]+-M[0-9]+"
+        )
+        for path in [
+            PRODUCT_AGENT_OS / "artifact-gallery.md",
+            PRODUCT_AGENT_OS / "artifact-gallery.en.md",
+        ]:
+            text = path.read_text(encoding="utf-8")
+            with self.subTest(public_forbidden_terms=path.name):
+                self.assertIsNone(public_forbidden_pattern.search(text), path)
+
+        for expected in [
+            "`B38-DOC-M04` | P1 | Add end-user first-run walkthrough.",
+            "`B38-DOC-M05` | P1 | Add artifact/output gallery for user-facing value.",
+            "`B38-DOC-M06` | P1 | Define public vs internal documentation IA boundary for `site/`.",
+            "| `B38-DOC-M04` | P1 |",
+            "| `B38-DOC-M05` | P1 |",
+            "| `B38-DOC-M06` | P1 |",
+        ]:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+
+
+    def test_batch38_p2_readme_registry_and_control_plane_sync_are_current(self):
+        readme = ROOT_README.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        registry_en = SOURCE_REGISTRY_EN.read_text(encoding="utf-8")
+        plan = PLAN.read_text(encoding="utf-8")
+
+        for expected in [
+            "docs/product-agent-os/index.md",
+            "artifact-gallery.md",
+            "methodology-intelligence.md",
+            "approval-bound-real-testing.md",
+            "not a ledger",
+            "route first run, outputs, methods, approvals",
+        ]:
+            with self.subTest(readme_route=expected):
+                self.assertIn(expected, readme)
+
+        self.assertLess(len(readme), 50000)
+        public_forbidden_pattern = re.compile(
+            r"\b(Task|Track|Batch)\b|T[0-9]+-|B[0-9]+-|done_through|Implementation Evidence Archive"
+        )
+        self.assertIsNone(public_forbidden_pattern.search(readme))
+
+        for expected in [
+            "Product-Agent OS Batch 38 public docs, README and registry sync",
+            "B38-DOC-M04..M10",
+            "artifact/output gallery",
+            "public/internal documentation boundary",
+            "compact README routing",
+            "RU/EN parity confirmation",
+            "final docs verification",
+            "generated `site/` refresh decision",
+            "read-only agent audits for README/i18n/registry/site scope",
+            "site/` was refreshed intentionally",
+            "root RUNLOG/TEST/EVALS remain compact",
+            'trust_level: "high"',
+            'verification_status: "Backed by the Batch 38 docs contract',
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+                self.assertIn(expected, registry_en)
+
+        for expected in [
+            "`B38-DOC-M07` | P1 | Compact README sync after source docs are corrected.",
+            "`B38-DOC-M08` | P2 | Keep RU/EN parity for every changed user-facing page.",
+            "`B38-DOC-M09` | P2 | Update source registry and control-plane pointers only where source-backed claims change.",
+            "`B38-DOC-M10` | P2 | Final docs verification and generated `site/` refresh decision.",
+            "| `B38-DOC-M07` | P1 |",
+            "| `B38-DOC-M08` | P2 |",
+            "| `B38-DOC-M09` | P2 |",
+            "| `B38-DOC-M10` | P2 |",
+            "`B38-DOC-M01..M10` implemented",
+        ]:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+
+        m10_rows = [
+            line for line in plan.splitlines() if line.startswith("| `B38-DOC-M10` |")
+        ]
+        self.assertEqual(1, len(m10_rows))
+        self.assertIn("`implemented`", m10_rows[0])
+        self.assertNotIn("`planned`; `pending_execution_timestamp`", m10_rows[0])
+        self.assertNotIn("`B38-DOC-M10` remains planned", plan)
+
+
+
+    def test_batch38_s1_release_gate_package_metadata_packet_is_source_owned(self):
+        packet = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = PLAN.read_text(encoding="utf-8")
+        track10 = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        registry_en = SOURCE_REGISTRY_EN.read_text(encoding="utf-8")
+        test_plan = TEST.read_text(encoding="utf-8")
+        runlog = RUNLOG.read_text(encoding="utf-8")
+
+        for expected in [
+            "B38-S1 Release gate and package metadata",
+            "B38-PROD-M01..M03",
+            "T10-LIVE-M41 status: `owner_closed_no_op_git_release_pr`",
+            "historical_preflight_status: `blocked_pending_explicit_git_release_fields`",
+            "release_fields_deferral_status: `not_required_after_owner_no_op_closure`",
+            "git_stage_commit_push_pr_performed: false",
+            "tracked_plugin_file_count: 586",
+            "skill_count: 11",
+            "template_file_count: 202",
+            "script_file_count: 84",
+            "fixture_file_count: 266",
+            "package_source_digest_sha256: `7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb`",
+            "ignored_cache_exclusions: `__pycache__ only`",
+            "metadata_release_candidate_status: `owner_confirmed_local_only_internal_r_and_d`",
+            "metadata_decision_status: `owner_confirmed_local_only_internal_r_and_d`",
+            "example.invalid trust fields intentionally remain for local-only/internal R&D",
+            "Codex compatibility status: `compatible`",
+            "No plugin install, plugin-cache mutation, live runtime, browser automation, provider call, canonical graph mutation or git write was performed.",
+        ]:
+            with self.subTest(packet=expected):
+                self.assertIn(expected, packet)
+
+        for expected in [
+            "`B38-PROD-M01` | P0 | Resolve or explicitly defer `T10-LIVE-M41` git release/PR gate.",
+            "`B38-PROD-M02` | P0 | Freeze install source and package surface.",
+            "`B38-PROD-M03` | P0 | Finalize public and organization-facing plugin metadata.",
+            "| `B38-PROD-M01` | P0 |",
+            "| `B38-PROD-M02` | P0 |",
+            "| `B38-PROD-M03` | P0 |",
+            "B38-S1 `B38-PROD-M01..M03`",
+            "M01 `owner_closed_no_op_git_release_pr`",
+            "M02 `implemented`",
+            "M03 `accepted_gap`",
+        ]:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+
+        m01_rows = [
+            line for line in plan.splitlines() if line.startswith("| `B38-PROD-M01` |")
+        ]
+        m02_rows = [
+            line for line in plan.splitlines() if line.startswith("| `B38-PROD-M02` |")
+        ]
+        m03_rows = [
+            line for line in plan.splitlines() if line.startswith("| `B38-PROD-M03` |")
+        ]
+        self.assertEqual(1, len(m01_rows))
+        self.assertEqual(1, len(m02_rows))
+        self.assertEqual(1, len(m03_rows))
+        self.assertIn("`owner_closed_no_op`", m01_rows[0])
+        self.assertIn("`implemented`", m02_rows[0])
+        self.assertIn("`accepted_gap`", m03_rows[0])
+        self.assertNotIn("`planned`; `pending_execution_timestamp`", m01_rows[0])
+        self.assertNotIn("`planned`; `pending_execution_timestamp`", m02_rows[0])
+        self.assertNotIn("`planned`; `pending_execution_timestamp`", m03_rows[0])
+
+        for expected in [
+            "Product-Agent OS Batch 38 S1 release gate and package metadata",
+            "B38-S1 `B38-PROD-M01..M03`",
+            "package_source_digest_sha256",
+            "local-only/internal R&D distribution",
+            'trust_level: "high"',
+            'verification_status: "Backed by the B38-S1 source packet',
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+                self.assertIn(expected, registry_en)
+
+        for expected in [
+            "`b38_s1_release_gate_package_metadata`",
+            "M01 is owner-closed as no-op after historical missing release fields",
+            "M02 freezes the checked-in package source",
+            "M03 records the owner decision to keep Product-Agent OS local-only/internal R&D",
+        ]:
+            with self.subTest(track10=expected):
+                self.assertIn(expected, track10)
+
+        for expected in [
+            "B38-S1 release gate/package metadata run",
+            "focused docs contract",
+            "Codex compatibility returned `status: compatible`",
+            "strict MkDocs was not run",
+        ]:
+            with self.subTest(test_plan=expected):
+                self.assertIn(expected, test_plan)
+
+        for expected in [
+            "Batch 38 S1 release gate/package metadata",
+            "M01 is owner-closed as `owner_closed_no_op_git_release_pr`",
+            "package source digest `7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb`",
+            "M03 is owner-confirmed as `local-only/internal R&D` distribution",
+        ]:
+            with self.subTest(runlog=expected):
+                self.assertIn(expected, runlog)
+
+
+    def test_t10_live_m41_post_b38_audit_boundary_is_source_owned(self):
+        plan = PLAN.read_text(encoding="utf-8")
+        runlog = RUNLOG.read_text(encoding="utf-8")
+        test_plan = TEST.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        registry_en = SOURCE_REGISTRY_EN.read_text(encoding="utf-8")
+        track10 = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        track10_en = TRACK10_BACKLOG_EN.read_text(encoding="utf-8")
+        batch35 = BATCH35_APPROVAL_DRAFT.read_text(encoding="utf-8")
+        batch35_en = BATCH35_APPROVAL_DRAFT_EN.read_text(encoding="utf-8")
+
+        for expected in [
+            "T10-LIVE-M41 post-B38 audit",
+            "historical_preflight_snapshot",
+            "dirty_file_count: 15 is historical Batch 35 evidence, not current release readiness",
+            "B37/B38/B38-S1 did not themselves close M41",
+            "fresh preflight is required before any git write",
+        ]:
+            with self.subTest(source_packet=expected):
+                self.assertIn(expected, batch35)
+                self.assertIn(expected, batch35_en)
+                self.assertIn(expected, track10)
+                self.assertIn(expected, track10_en)
+
+        for expected in [
+            "Next release/install/cache action",
+            "future git write",
+            "owner_closed_no_op_git_release_pr",
+        ]:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+        self.assertNotIn("Next executable product action: none", plan)
+
+        for expected in [
+            "M41 post-B38 audit",
+            "historical_preflight_snapshot",
+            "fresh git status/unrelated-change preflight",
+            "B37/B38/B38-S1 did not themselves close M41",
+        ]:
+            with self.subTest(control_plane=expected):
+                self.assertIn(expected, runlog)
+                self.assertIn(expected, test_plan)
+
+        for expected in [
+            "Product-Agent OS T10-LIVE-M41 post-B38 audit",
+            "historical_preflight_snapshot",
+            "fresh preflight is required before any git write",
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+                self.assertIn(expected, registry_en)
+
+
+    def test_batch38_s2_verification_install_cache_smoke_is_source_owned(self):
+        plan = PLAN.read_text(encoding="utf-8")
+        runlog = RUNLOG.read_text(encoding="utf-8")
+        test_plan = TEST.read_text(encoding="utf-8")
+        evals = EVALS.read_text(encoding="utf-8")
+        requirements = REQUIREMENTS.read_text(encoding="utf-8")
+        agents = AGENTS.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        registry_en = SOURCE_REGISTRY_EN.read_text(encoding="utf-8")
+        track10 = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        track10_en = TRACK10_BACKLOG_EN.read_text(encoding="utf-8")
+        track10_plan = TRACK10_PLAN.read_text(encoding="utf-8")
+
+        for expected in [
+            "owner_closed_no_op_git_release_pr",
+            "git_stage_commit_push_pr_performed: false",
+            "future_git_write_requires_fresh_preflight: true",
+            "B38-S2 Verification and install smoke",
+            "B38-PROD-M04",
+            "B38-PROD-M05",
+            "b38_s2_verification_install_cache_smoke",
+            "full_unittest_count: 846",
+            "fixture_eval_exit_code: 0",
+            "transcript_eval_session_count: 19",
+            "transcript_eval_failure_count: 0",
+            "codex_compatibility_status: compatible",
+            "docs_check_status: ok",
+            "diff_hygiene_exit_code: 0",
+            "plugin_install_smoke_status: read_only_inspection_completed_stale_cache_detected",
+            "plugin_cache_refresh_status: blocked_pending_explicit_cache_mutation_approval",
+            "visible_cache_skill_count: 10",
+            "checked_in_skill_count: 11",
+            "missing_cache_skill: docs-maintainer",
+            "visible_cache_script_file_count: 32",
+            "checked_in_script_file_count: 84",
+            "visible_cache_template_file_count: 34",
+            "checked_in_template_file_count: 202",
+            "cache_refresh_approval_received",
+            "plugin_cache_refresh_attempt_status: blocked_sandbox_cache_write_denied_after_backup_stage",
+            "cache_backup_path",
+            "cache_stage_path",
+            "stage_tracked_source_file_count: 586",
+            "local_cache_refresh_result: REFRESH_OK",
+            "local_cache_backup_path: tmp/product-agent-os-cache-backup-local-20260608-180210",
+            "local_cache_moved_aside_target: local-product-agent-plugins/product-agent-os/0.1.0.pre-refresh-20260608-180210",
+            "plugin_cache_refresh_final_status: completed_local_cache_refresh_from_prepared_stage",
+            "target_cache_files_after_refresh: 586",
+            "target_cache_skill_count_after_refresh: 11",
+            "target_cache_docs_maintainer_present_after_refresh: true",
+            "target_cache_still_stale: false",
+            "plugin_cache_refresh_completed",
+            "plugin_cache_refresh_completed_from_prepared_stage",
+            "no_git_stage_commit_push_pr",
+            "agent_team_design_packet_present",
+            "roles_have_disjoint_ownership",
+            "handoff_packet_fields_present",
+            "agent_skill_stop_conditions_present",
+        ]:
+            with self.subTest(track10=expected):
+                self.assertIn(expected, track10)
+                self.assertIn(expected, track10_en)
+
+        for expected in [
+            "`B38-PROD-M04` | P0 | Run full pre-install verification.",
+            "`B38-PROD-M05` | P0 | Refresh or install the new plugin version and prove no stale plugin cache is used.",
+            "M04 `implemented`",
+            "M05 `implemented`",
+            "blocked_sandbox_cache_write_denied_after_backup_stage",
+            "plugin_cache_refresh_final_status: completed_local_cache_refresh_from_prepared_stage",
+            "B38-S2 `B38-PROD-M04..M05`",
+            "Next release/install/cache action: no remaining M05 cache refresh action is required",
+        ]:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+
+        m04_rows = [
+            line for line in plan.splitlines() if line.startswith("| `B38-PROD-M04` |")
+        ]
+        m05_rows = [
+            line for line in plan.splitlines() if line.startswith("| `B38-PROD-M05` |")
+        ]
+        self.assertEqual(1, len(m04_rows))
+        self.assertEqual(1, len(m05_rows))
+        self.assertIn("`implemented`", m04_rows[0])
+        self.assertIn("`implemented`", m05_rows[0])
+        self.assertNotIn("`planned`; `pending_execution_timestamp`", m04_rows[0])
+        self.assertNotIn("`planned`; `pending_execution_timestamp`", m05_rows[0])
+
+        for expected in [
+            "Product-Agent OS T10-LIVE-M41 owner no-op closure and B38-S2 verification/install smoke",
+            "B38-S2 `B38-PROD-M04..M05`",
+            "blocked_pending_explicit_cache_mutation_approval",
+            "blocked_sandbox_cache_write_denied_after_backup_stage",
+            "plugin_cache_refresh_final_status: completed_local_cache_refresh_from_prepared_stage",
+            "trust_level: \"high\"",
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+                self.assertIn(expected, registry_en)
+
+        for expected in [
+            "B38-S2 verification/install smoke run",
+            "full unittest ran 846 tests with `OK`",
+            "fixture eval exited `0`",
+            "transcript eval exited `0` with 19 sessions and 0 failures",
+            "plugin cache inspection found stale installed cache",
+            "plugin_cache_refresh_attempt_status: blocked_sandbox_cache_write_denied_after_backup_stage",
+            "local_cache_refresh_result: REFRESH_OK",
+            "target_cache_still_stale: false",
+        ]:
+            with self.subTest(test_plan=expected):
+                self.assertIn(expected, test_plan)
+
+        for document_name, document in [
+            ("runlog", runlog),
+            ("evals", evals),
+            ("requirements", requirements),
+            ("agents", agents),
+            ("track10_plan", track10_plan),
+        ]:
+            with self.subTest(document=document_name):
+                self.assertIn("owner_closed_no_op_git_release_pr", document)
+                self.assertIn("B38-S2", document)
+                self.assertIn("blocked_sandbox_cache_write_denied_after_backup_stage", document)
+                self.assertIn(
+                    "plugin_cache_refresh_final_status: completed_local_cache_refresh_from_prepared_stage",
+                    document,
+                )
+
+
+    def test_batch38_s3_real_project_pilot_design_is_source_owned(self):
+        plan = PLAN.read_text(encoding="utf-8")
+        runlog = RUNLOG.read_text(encoding="utf-8")
+        test_plan = TEST.read_text(encoding="utf-8")
+        evals = EVALS.read_text(encoding="utf-8")
+        requirements = REQUIREMENTS.read_text(encoding="utf-8")
+        agents = AGENTS.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        registry_en = SOURCE_REGISTRY_EN.read_text(encoding="utf-8")
+        track10 = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        track10_en = TRACK10_BACKLOG_EN.read_text(encoding="utf-8")
+        track10_plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        nav = MKDOCS.read_text(encoding="utf-8")
+        check_docs = CHECK_DOCS.read_text(encoding="utf-8")
+        pilot = (PRODUCT_AGENT_OS / "real-project-pilot.md").read_text(encoding="utf-8")
+        pilot_en = (PRODUCT_AGENT_OS / "real-project-pilot.en.md").read_text(encoding="utf-8")
+        pilot_pair = pilot + "\n" + pilot_en
+        index_pair = "\n".join(
+            [
+                (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
+                (PRODUCT_AGENT_OS / "index.en.md").read_text(encoding="utf-8"),
+            ]
+        )
+
+        for expected in [
+            "First-Run Operator Packet",
+            "Target Consent Matrix",
+            "Success Criteria And Metrics",
+            "Pilot Harness And Evidence Ledger",
+            "What Not To Expect",
+            "lifecycle_state",
+            "usage_mode",
+            "source_boundary",
+            "staged_artifact_route",
+            "verification_route",
+            "approval_boundary",
+            "rollback_remove_path",
+            "safe_next_action",
+            "web/frontend",
+            "backend/API",
+            "docs-only",
+            "AI/RAG",
+            "data/migration",
+            "PR/review",
+            "automation/release",
+            "time_to_first_route",
+            "route_accuracy",
+            "artifact_usefulness",
+            "methodology_selection_precision",
+            "owner_question_usefulness",
+            "false_positive_rate",
+            "evidence_sufficiency",
+            "read_only_pilot_commands",
+            "staged_output_locations",
+            "runlog_evidence_schema",
+            "screenshot_log_redaction",
+            "cleanup_steps",
+            "approval_checks",
+            "No live server launch",
+            "No browser automation",
+            "No provider/API calls",
+            "No canonical graph mutation",
+            "No git stage/commit/push/PR",
+        ]:
+            with self.subTest(pilot_page=expected):
+                self.assertIn(expected, pilot_pair)
+
+        public_forbidden_pattern = re.compile(
+            r"\b(Task|Track|Batch)\b|T[0-9]+-[A-Z0-9-]+|B[0-9]+-[A-Z]+-M[0-9]+"
+        )
+        for path in [
+            PRODUCT_AGENT_OS / "real-project-pilot.md",
+            PRODUCT_AGENT_OS / "real-project-pilot.en.md",
+        ]:
+            text = path.read_text(encoding="utf-8")
+            with self.subTest(public_forbidden_terms=path.name):
+                self.assertIsNone(public_forbidden_pattern.search(text), path)
+
+        for expected in [
+            "product-agent-os/real-project-pilot.md",
+            "Real-Project Pilot",
+        ]:
+            with self.subTest(nav_or_check_docs=expected):
+                self.assertTrue(expected in nav or expected in check_docs or expected in index_pair)
+
+        for expected in [
+            "Batch 38 S3 Pilot Design Addendum",
+            "B38-S3 Pilot design",
+            "B38-PROD-M06",
+            "B38-PROD-M07",
+            "B38-PROD-M08",
+            "B38-PROD-M09",
+            "b38_s3_real_project_pilot_design",
+            "first_run_operator_packet_present",
+            "expected_first_response_fields_present",
+            "staged_artifact_route_defined",
+            "approval_boundary_defined",
+            "rollback_remove_path_defined",
+            "what_not_to_expect_section_present",
+            "b38_s3_real_project_pilot_target_consent_matrix",
+            "pilot_target_count: 7",
+            "pilot_archetypes_covered: web_frontend, backend_api, docs_only, ai_rag, data_migration, pr_review, automation_release",
+            "owner_consent_required_per_target: true",
+            "target_repo_class_required_per_target: true",
+            "data_policy_required_per_target: true",
+            "allowed_commands_required_per_target: true",
+            "blocked_commands_required_per_target: true",
+            "evidence_destination_required_per_target: true",
+            "stop_condition_required_per_target: true",
+            "evidence_destination_policy: approved_stage_root_outside_target_workspace",
+            "production_data_access_allowed: false",
+            "external_writes_allowed: false",
+            "live_provider_calls_allowed: false",
+            "browser_automation_allowed_without_target_specific_approval: false",
+            "runtime_launch_allowed_without_target_specific_approval: false",
+            "target_workspace_mutation_allowed: false",
+            "pilot_success_metrics_defined",
+            "accepted_gap_rules_present",
+            "pilot_harness_evidence_ledger_present",
+            "pilot_execution_status: design_only_not_run",
+            "no_real_project_execution_performed",
+            "no_live_server_browser_provider_canonical_git",
+            "agent_read_only_audits_completed",
+        ]:
+            with self.subTest(track10=expected):
+                self.assertIn(expected, track10)
+                self.assertIn(expected, track10_en)
+
+        for expected in [
+            "`B38-PROD-M06` | P1 | Create first-run operator packet for real users.",
+            "`B38-PROD-M07` | P1 | Build real-project pilot target and consent matrix.",
+            "`B38-PROD-M08` | P1 | Define pilot success criteria and product metrics.",
+            "`B38-PROD-M09` | P1 | Prepare pilot harness and evidence ledger.",
+            "B38-S3 `B38-PROD-M06..M09`",
+            "M06 `implemented`",
+            "M07 `implemented`",
+            "M08 `implemented`",
+            "M09 `implemented`",
+        ]:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+
+        for task_id in ["M06", "M07", "M08", "M09"]:
+            rows = [
+                line for line in plan.splitlines() if line.startswith(f"| `B38-PROD-{task_id}` |")
+            ]
+            self.assertEqual(1, len(rows), task_id)
+            self.assertIn("`implemented`", rows[0])
+            self.assertNotIn("`planned`; `pending_execution_timestamp`", rows[0])
+
+        for expected in [
+            "Product-Agent OS Batch 38 S3 real-project pilot design",
+            "B38-S3 `B38-PROD-M06..M09`",
+            "pilot_target_count: 7",
+            "design_only_not_run",
+            "trust_level: \"high\"",
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+                self.assertIn(expected, registry_en)
+
+        for expected in [
+            "B38-S3 real-project pilot design run",
+            "docs contract",
+            "strict MkDocs",
+            "real project pilot execution was not run",
+        ]:
+            with self.subTest(test_plan=expected):
+                self.assertIn(expected, test_plan)
+
+        for document_name, document in [
+            ("runlog", runlog),
+            ("evals", evals),
+            ("requirements", requirements),
+            ("agents", agents),
+            ("track10_plan", track10_plan),
+        ]:
+            with self.subTest(document=document_name):
+                self.assertIn("B38-S3", document)
+                self.assertIn("B38-PROD-M06..M09", document)
+                self.assertIn("no_real_project_execution_performed", document)
+
+
+    def test_batch38_s4_safety_and_rollback_is_source_owned(self):
+        plan = PLAN.read_text(encoding="utf-8")
+        runlog = RUNLOG.read_text(encoding="utf-8")
+        test_plan = TEST.read_text(encoding="utf-8")
+        evals = EVALS.read_text(encoding="utf-8")
+        requirements = REQUIREMENTS.read_text(encoding="utf-8")
+        agents = AGENTS.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        registry_en = SOURCE_REGISTRY_EN.read_text(encoding="utf-8")
+        track10 = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        track10_en = TRACK10_BACKLOG_EN.read_text(encoding="utf-8")
+        track10_plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        pilot = (PRODUCT_AGENT_OS / "real-project-pilot.md").read_text(encoding="utf-8")
+        pilot_en = (PRODUCT_AGENT_OS / "real-project-pilot.en.md").read_text(
+            encoding="utf-8"
+        )
+        pilot_pair = pilot + "\n" + pilot_en
+
+        for expected in [
+            "Rollback And Cache Recovery Procedure",
+            "pre_rollback_read_only_inspection",
+            "rollback_evidence_preservation",
+            "installed_plugin_remove_path",
+            "stale_cache_restore_path",
+            "cache_clear_recovery_path",
+            "disable_hooks_automations_if_ever_approved",
+            "post_restore_verification",
+            "destructive delete request",
+            "git stage/commit/push/PR request",
+        ]:
+            with self.subTest(pilot_page=expected):
+                self.assertIn(expected, pilot_pair)
+
+        for expected in [
+            "Batch 38 S4 Safety And Rollback Addendum",
+            "B38-S4 Safety and rollback",
+            "B38-PROD-M10",
+            "B38-PROD-M11",
+            "b38_s4_safety_and_rollback",
+            "B38-PROD-M10 status: `reviewed_gap_recorded`",
+            "B38-PROD-M11 status: `implemented`",
+            "source_policy_status: `ok`",
+            "system_file_hygiene_status: `blocked`",
+            "system_file_hygiene_secret_like_findings: 6",
+            "no_secrets_status: `blocked`",
+            "active_schedule_markers: 0",
+            "schedule_status: `not_created`",
+            "hygiene_known_findings_accepted_gap",
+            "mcp_boundary: `approval_required_unpinned_npx_context7`",
+            "fixture_dependency_boundary: `synthetic_non_install_fixtures_unpinned_dependencies`",
+            "release_readiness_claim: false",
+            "security_certification_claim: false",
+            "plugin_rollback_remove_procedure_present",
+            "cache_global_config_mutation_requires_explicit_approval",
+            "no_destructive_cache_delete_without_exact_approval",
+            "no_cache_global_config_mutation_performed",
+            "production_pilot_blocked_until_target_specific_approval",
+            "agent_read_only_audits_completed",
+        ]:
+            with self.subTest(track10=expected):
+                self.assertIn(expected, track10)
+                self.assertIn(expected, track10_en)
+
+        for expected in [
+            "`B38-PROD-M10` | P1 | Reconfirm security, privacy and supply-chain readiness.",
+            "`B38-PROD-M11` | P2 | Define rollback, removal and cache-recovery procedure.",
+            "B38-S4 `B38-PROD-M10..M11`",
+            "M10 `reviewed_gap_recorded`",
+            "M11 `implemented`",
+            "source_policy_status ok",
+            "system_file_hygiene_status blocked",
+            "fixture_dependency_boundary synthetic_non_install_fixtures_unpinned_dependencies",
+        ]:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+
+        for task_id, status in [
+            ("M10", "`reviewed_gap_recorded`"),
+            ("M11", "`implemented`"),
+        ]:
+            rows = [
+                line for line in plan.splitlines() if line.startswith(f"| `B38-PROD-{task_id}` |")
+            ]
+            self.assertEqual(1, len(rows), task_id)
+            self.assertIn(status, rows[0])
+            self.assertNotIn("`planned`; `pending_execution_timestamp`", rows[0])
+
+        for expected in [
+            "Product-Agent OS Batch 38 S4 safety and rollback",
+            "B38-S4 `B38-PROD-M10..M11`",
+            "reviewed_gap_recorded",
+            "rollback/remove/cache recovery",
+            "trust_level: \"high\"",
+            "No release security certification",
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+                self.assertIn(expected, registry_en)
+
+        for expected in [
+            "B38-S4 safety and rollback run",
+            "validate_source_policy.py",
+            "validate_system_file_hygiene.py",
+            "secret_like_findings: 6",
+            "validate_codex_compatibility.py",
+            "not a security certification",
+            "No cache/global config mutation",
+        ]:
+            with self.subTest(test_plan=expected):
+                self.assertIn(expected, test_plan)
+
+        for document_name, document in [
+            ("runlog", runlog),
+            ("evals", evals),
+            ("requirements", requirements),
+            ("agents", agents),
+            ("track10_plan", track10_plan),
+        ]:
+            with self.subTest(document=document_name):
+                self.assertIn("B38-S4", document)
+                self.assertIn("B38-PROD-M10..M11", document)
+                self.assertIn("reviewed_gap_recorded", document)
+                self.assertIn("rollback", document)
+
+
+    def test_batch38_neural_flow_target_pilot_is_source_owned(self):
+        plan = PLAN.read_text(encoding="utf-8")
+        test_plan = TEST.read_text(encoding="utf-8")
+        runlog = RUNLOG.read_text(encoding="utf-8")
+        evals = EVALS.read_text(encoding="utf-8")
+        requirements = REQUIREMENTS.read_text(encoding="utf-8")
+        agents = AGENTS.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        registry_en = SOURCE_REGISTRY_EN.read_text(encoding="utf-8")
+        track10 = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        track10_en = TRACK10_BACKLOG_EN.read_text(encoding="utf-8")
+        track10_plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        pilot = (PRODUCT_AGENT_OS / "real-project-pilot.md").read_text(encoding="utf-8")
+        pilot_en = (PRODUCT_AGENT_OS / "real-project-pilot.en.md").read_text(
+            encoding="utf-8"
+        )
+        pilot_pair = pilot + "\n" + pilot_en
+
+        for expected in [
+            "Private Sample Pilot Evidence",
+            "private sample workspace",
+            "Reader-facing docs do not expose internal execution labels",
+            "точные labels и staged evidence paths остаются только в source-owned ledgers",
+            "source_policy_status",
+            "blocked",
+            "target_workspace_mutation_performed",
+            "false",
+            "target_apply_status",
+            "staged_evidence_root",
+            "recorded in source-owned ledger",
+        ]:
+            with self.subTest(pilot_page=expected):
+                self.assertIn(expected, pilot_pair)
+
+        for forbidden in [
+            "B38-PILOT-NF01",
+            "Neural_Flow",
+            "tmp/neural-flow-product-agent-os-pilot-20260608-191510",
+        ]:
+            with self.subTest(public_pilot_forbidden=forbidden):
+                self.assertNotIn(forbidden, pilot_pair)
+
+        for expected in [
+            "Batch 38 Target-Specific Neural_Flow Pilot Execution Addendum",
+            "b38_pilot_nf01_read_only_pilot_executed_blocked_on_target_source_policy",
+            "target_file_count: 13",
+            "target_control_plane_status: `applicable_missing`",
+            "runtime_usage_mode: `legacy_onboarding`",
+            "initial_runtime_usage_mode: `pr_review`",
+            "route_quality_note: `clean_docs_only_intent_routes_legacy_onboarding`",
+            "methodology_recommendation_p0: `quality-strategy.md`",
+            "methodology_recommendation_p1: `architecture-overview.md`",
+            "runtime_clean_hint_status: `blocked`",
+            "source_policy_status: `blocked`",
+            "status_dashboard_stage_validated: true",
+            "status_dashboard_aggregation_status: `incomplete`",
+            "project_graph_stage_validated: true",
+            "project_graph_node_count: 481",
+            "project_graph_edge_count: 480",
+            "project_graph_observation_count: 961",
+            "staged_control_plane_template_status: `blank_template_review_required`",
+            "staged_hooks_activation_boundary: `exact_owner_approval_required_before_apply`",
+            "system_file_hygiene_secret_like_findings: 0",
+            "citation_registry_rows: 277",
+            "target_apply_blocked_until_source_policy_cleanup: true",
+            "target_workspace_mutation_performed: false",
+            "live_server_browser_provider_canonical_git_performed: false",
+        ]:
+            with self.subTest(track10=expected):
+                self.assertIn(expected, track10)
+                self.assertIn(expected, track10_en)
+
+        for expected in [
+            "Product-Agent OS B38-PILOT-NF01 Neural_Flow target-specific pilot",
+            "internal target-specific pilot evidence",
+            "usage_mode: legacy_onboarding",
+            "source_policy_status: blocked",
+            "false `pr_review` route",
+            "dashboard aggregation is incomplete",
+            "staged hooks require exact owner approval",
+            "No target workspace mutation",
+            "trust_level: \"high\"",
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+                self.assertIn(expected, registry_en)
+
+        for expected in [
+            "B38-PILOT-NF01 `Neural_Flow` target pilot run",
+            "detect_project.py",
+            "run_methodology_audit.py",
+            "run_codex_runtime_runner.py",
+            "render_infrastructure.py --stage",
+            "scan_project_code_graph.py --stage",
+            "validate_source_policy.py",
+            "source_policy_status: blocked",
+            "false `pr_review` route",
+            "481 nodes",
+            "Dashboard aggregation remains incomplete",
+            "staged hooks require exact approval",
+            "secret_like_findings: 0",
+            "No target mutation",
+        ]:
+            with self.subTest(test_plan=expected):
+                self.assertIn(expected, test_plan)
+
+        for expected in [
+            "B38-PILOT-NF01",
+            "read_only_pilot_executed_blocked_on_target_source_policy",
+            "usage_mode: legacy_onboarding",
+            "source_policy_status: blocked",
+            "staged outputs validated",
+            "target_workspace_mutation false",
+        ]:
+            with self.subTest(track10_plan=expected):
+                self.assertIn(expected, track10_plan)
+
+        for document_name, document in [
+            ("plan", plan),
+            ("runlog", runlog),
+            ("evals", evals),
+            ("requirements", requirements),
+            ("agents", agents),
+        ]:
+            with self.subTest(document=document_name):
+                self.assertIn("B38-PILOT-NF01", document)
+                self.assertIn("Neural_Flow", document)
+                self.assertIn("source_policy_status", document)
+                self.assertIn("blocked", document)
+                self.assertNotIn("production-ready target pilot", document)
+
+
+    def test_system_file_hygiene_audit_contract_is_documented_and_source_owned(self):
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
+            "technical_en": (PRODUCT_AGENT_OS / "technical.en.md").read_text(encoding="utf-8"),
+            "artifact_contracts": (PRODUCT_AGENT_OS / "artifact-contracts.md").read_text(encoding="utf-8"),
+            "artifact_contracts_en": (PRODUCT_AGENT_OS / "artifact-contracts.en.md").read_text(encoding="utf-8"),
+            "runtime_automations": (DOCS / "runtime" / "automations-github.md").read_text(encoding="utf-8"),
+            "runtime_automations_en": (DOCS / "runtime" / "automations-github.en.md").read_text(encoding="utf-8"),
+            "track10_plan": TRACK10_PLAN.read_text(encoding="utf-8"),
+            "track10_backlog": TRACK10_BACKLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+        }
+        combined = "\n".join(documents.values())
+
+        for expected in [
+            "system_file_hygiene_audit",
+            "validate_system_file_hygiene.py",
+            "system-file-hygiene-audit.md",
+            "system-file-hygiene-report.md",
+            ".codex/automation-candidates/system-file-hygiene-audit.md",
+            "weekly full",
+            "monthly deep ownership review",
+            "on-change",
+            "size",
+            "release/automation",
+            "schedule_status: not_created",
+            "read_only",
+            "active schedules remain out of scope",
+            "root control-plane files",
+            "nested `AGENTS.md`",
+            ".codex/agents",
+            ".codex/skills",
+            ".codex/workflows",
+            ".codex/hooks",
+            ".codex/evals",
+            "docs source-control files",
+            ".github/workflows",
+            "plugin package control files",
+            "done_through_m06",
+            "T10-HYG-M04..M06",
+            "done_through_m07",
+            "T10-HYG-M07",
+            "workflow-system-file-hygiene-audit",
+            "artifact-system-file-hygiene-report",
+            "automation-system-file-hygiene-audit",
+            "Renderer stages `.codex/workflows/system-file-hygiene-audit.md`",
+            "done_through_m09",
+            "T10-HYG-M08..M09",
+            "Product-Agent OS technical docs",
+            "runtime automation docs",
+            "root README",
+            "source registry/backlog",
+            "activation approval requirements",
+            "renderer_file_count: 194",
+            "maintained file classes",
+            "read-only boundary",
+            "candidate-only automation",
+            "docs contract",
+            "done_through_m12",
+            "T10-HYG-M10..M12",
+            "activation_gate",
+            "accepted_residual_risks_present",
+            "future_activation_handoff_required",
+            "schedule text for non-metrics candidates",
+            "done_through_m13",
+            "T10-HYG-M13",
+            "file_statuses",
+            "mtime_utc",
+            "age_days",
+            "content_digest",
+            "last_audit_at",
+            "status_dashboard_projection",
+            "system file hygiene projection is generated status evidence, not source of truth",
+            "done_through_m15",
+            "T10-HYG-M14..M15",
+            "System Hygiene",
+            "system-file-hygiene",
+            "status_dashboard.py",
+            "status-dashboard/status.html",
+            "status-dashboard/status.css",
+            "top_finding",
+            "missing",
+            "unreadable",
+            "stale",
+            "owner_unknown",
+            "done_through_m17",
+            "T10-HYG-M16..M17",
+            "system_file_hygiene_dashboard_present",
+            "system_file_status_dates_present",
+            "agent_skill_file_status_present",
+            "system_hygiene_dashboard_not_source_of_truth",
+            "filesystem metadata",
+            "freshness hints",
+            "not semantic proof",
+            "batch36_final_closure",
+            "strict_mkdocs_environment_gap",
+            "No module named mkdocs",
+            "audit_trigger",
+            "no_secrets_status",
+            "active_schedule_markers",
+            "finding_type",
+            "compaction_decision",
+            "approval_boundary",
+            "--trigger",
+            "owner-approved slice",
+        ]:
+            with self.subTest(system_file_hygiene_contract=expected):
+                self.assertIn(expected, combined)
+
+
+    def test_t8h_dedicated_docs_pages_exist_with_operating_contracts(self):
+        expected_pages = {
+            "scenarios.md": [
+                "usage_mode",
+                "first response",
+                "minimum artifacts",
+                "approval boundary",
+                "verification gates",
+                "bug_rescue",
+                "greenfield_idea",
+                "complex_system_acceleration",
+                "release_packaging",
+            ],
+            "behavioral-evals.md": [
+                "behavioral-workflows.json",
+                "expected behavior",
+                "forbidden behavior",
+                "fixture eval",
+                "transcript/session eval runner",
+                "evidence-before-completion",
+                "residual risk",
+            ],
+            "codex-compatibility.md": [
+                "Codex App",
+                "CLI",
+                "IDE extension",
+                ".codex-plugin/plugin.json",
+                "skills",
+                "MCP",
+                "staged hooks",
+                "validate_codex_compatibility.py",
+                "no standalone Agents SDK",
+                "no separate OpenAI API key",
+            ],
+        }
+
+        for filename, terms in expected_pages.items():
+            with self.subTest(filename=filename):
+                path = PRODUCT_AGENT_OS / filename
+                self.assertTrue(path.exists(), path)
+                text = self._localized_contract_text(path)
+                self.assertIn("Source status:", text)
+                self.assertIn("Inputs", text)
+                self.assertIn("Outputs", text)
+                self.assertIn("Verification", text)
+                self.assertIn("Risks", text)
+                for term in terms:
+                    self.assertIn(term, text)
+
+
+    def test_t8h_docs_are_in_nav_and_required_docs_check(self):
+        nav = MKDOCS.read_text(encoding="utf-8")
+        check_docs = CHECK_DOCS.read_text(encoding="utf-8")
+
+        for path in [
+            "product-agent-os/scenarios.md",
+            "product-agent-os/behavioral-evals.md",
+            "product-agent-os/codex-compatibility.md",
+        ]:
+            with self.subTest(path=path):
+                self.assertIn(path, nav)
+                self.assertIn(path.replace("/", '" / "'), check_docs)
+
+
+    def test_track9_methodology_intelligence_docs_exist(self):
+        path = PRODUCT_AGENT_OS / "methodology-intelligence.md"
+        self.assertTrue(path.exists(), path)
+
+        text = self._localized_contract_text(path)
+        self.assertIn("Source status:", text)
+        self.assertIn("Inputs", text)
+        self.assertIn("Outputs", text)
+        self.assertIn("Verification", text)
+        self.assertIn("Risks", text)
+
+        nav = MKDOCS.read_text(encoding="utf-8")
+        check_docs = CHECK_DOCS.read_text(encoding="utf-8")
+        self.assertIn("methodology-intelligence.md", nav)
+        self.assertIn('product-agent-os" / "methodology-intelligence.md', check_docs)
+
+
+    def test_track10_guided_question_status_dashboard_docs_are_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        behavioral_evals = self._localized_contract_text(PRODUCT_AGENT_OS / "behavioral-evals.md")
+        scenarios = self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md")
+        root_readme = ROOT_README.read_text(encoding="utf-8")
+        plugin_readme = PLUGIN_README.read_text(encoding="utf-8")
+        control_plane = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in [REQUIREMENTS]
+        )
+
+        for expected in [
+            "Product-Agent OS Track 10 guided question and status dashboard coverage",
+            "T10-Q-M15..M22",
+            "T10-Q-M23..M25",
+            "question_queue_contract_present",
+            "status_snapshot_present",
+            "status_dashboard_present",
+            "dashboard_no_external_assets",
+            "dashboard_not_source_of_truth",
+            "stale_evidence_no_success_claim",
+            "verification_status:",
+        ]:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        for expected in [
+            "guided-question-smallest-blocking-question",
+            "guided-question-no-broad-methodology-interview",
+            "status-dashboard-generated-view-only",
+            "status-dashboard-stale-evidence-no-success-claim",
+            "runtime-first-response-no-question-dump",
+            "one blocking question maximum",
+            "dashboard is a generated view",
+            "no success claim from stale evidence",
+        ]:
+            with self.subTest(behavioral_evals=expected):
+                self.assertIn(expected, behavioral_evals)
+
+        for expected in [
+            "Guided question protocol",
+            "status snapshot",
+            ".codex/product-agent-os/status.html",
+            ".codex/product-agent-os/status.json",
+            "generated view only",
+            "underlying artifacts",
+        ]:
+            with self.subTest(scenarios=expected):
+                self.assertIn(expected, scenarios)
+                self.assertIn(expected, plugin_readme)
+
+        for expected in [
+            "Task 23 guided question protocol and status dashboard",
+            "question_queue_contract_present",
+            "status_snapshot_present",
+            "status_dashboard_present",
+            "dashboard_not_source_of_truth",
+            "stale_evidence_no_success_claim",
+        ]:
+            with self.subTest(control_plane=expected):
+                self.assertIn(expected, control_plane)
+
+        for expected in [
+            "Guided question protocol",
+            "one blocking question maximum",
+            ".codex/product-agent-os/status.html",
+            ".codex/product-agent-os/status.json",
+            "dashboard is a generated view",
+            "no success claim from stale evidence",
+        ]:
+            with self.subTest(root_readme=expected):
+                self.assertIn(expected, root_readme)
+
+
+    def test_track10_task24_self_verification_docs_and_control_plane_are_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+            "behavioral_evals": self._localized_contract_text(PRODUCT_AGENT_OS / "behavioral-evals.md"),
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        for expected in [
+            "Product-Agent OS Track 10 self-verification metrics-loop final closure",
+            "T10-SV-M58..M62",
+            "agent_skill_metrics_loop_contract_present",
+            "metrics_report_redacted",
+            "trace_normalization_contract_present",
+            "judge_calibration_gate_present",
+            "scorecard_ledger_contract_present",
+            "source_priority_contract_present",
+            "metrics_packet_bounds_present",
+            "trace_data_classification_gate_present",
+            "offline_artifact_safety_shared",
+            "no_baseline_renderer_pollution",
+            "active_metrics_automation_blocked",
+            "update_candidate_rollback_required",
+            "metrics_loop_runtime_route_contract_present",
+            "metrics_loop_lifecycle_contract_present",
+            "metrics_loop_false_positive_guards_present",
+            "verification_status:",
+        ]:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        docs_contract_terms = [
+            "agent_skill_metrics_loop",
+            "target registry",
+            "trace intake",
+            "dataset quality",
+            "grader/judge calibration",
+            "cadence recommendation",
+            "scorecard ledger",
+            "agent-skill-evaluation-report.html",
+            "modernization candidates",
+            "approval boundary",
+            "control-plane artifacts",
+            "staged evidence",
+            "report",
+            "live eval/model/API calls",
+            "active schedules",
+            "self-applied updates",
+            "L0",
+            "L1",
+            "L2",
+            "L3",
+        ]
+        for document in ["technical", "scenarios", "behavioral_evals"]:
+            for expected in docs_contract_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, documents[document])
+
+        overview_terms = [
+            "Self-Verification And Modernization Loop",
+            "self-verification metrics loop",
+            "agent_skill_metrics_loop",
+            "staged evidence only",
+            "no live eval/model/API calls",
+            "no active schedules",
+            "no self-applied updates",
+        ]
+        for document in ["index", "root_readme", "plugin_readme"]:
+            for expected in overview_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, documents[document])
+
+        for expected in [
+            "| `done` | `T10-SV-M58..M62` final docs/control-plane verification closure |",
+            "Task 24 Batch 12",
+            "full unittest must use `timeout_ms: 1200000`",
+            "explicit-only git boundary",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for filename, text in control_plane.items():
+            for expected in [
+                "Task 24 Batch 12",
+                "T10-SV-M58..M62",
+                "agent_skill_metrics_loop",
+                "timeout_ms: 1200000",
+                "explicit-only",
+            ]:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+
+    def test_track10_task25_project_graph_batch16_docs_and_control_plane_are_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 project code graph Batch 16 cockpit visualization",
+            "T10-CG-V2-M19..M26",
+            "project_cockpit_model.py",
+            "project_graph_visual_model.py",
+            "project_graph_renderer.py",
+            "project-cockpit.html",
+            "Graphology-compatible static visual projection",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "| `done` | `T10-CG-V2-M19..M26` cockpit visualization |",
+            "Code Flow inside `Code Intelligence`",
+            "local Graphology/Sigma vendor boundary",
+            "full unittest must continue to use `timeout_ms: 1200000`",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 25 Batch 13, Batch 14, Batch 15 and Batch 16",
+            ".codex/product-agent-os/project-cockpit.html",
+            ".codex/product-agent-os/project-cockpit.json",
+            "exactly eight top-level pages",
+            "Code Flow",
+            "Code Intelligence",
+            "Graphology-compatible static projection",
+            "local Graphology/Sigma",
+            "selected-node evidence",
+            "fallback",
+            "no external assets",
+            "not source of truth",
+        ]
+        for document, text in self._internal_history_documents(documents).items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 25 Batch 16",
+            "T10-CG-V2-M19..M26",
+            "Code Flow inside `Code Intelligence`",
+            "Graphology-compatible static",
+            "local Graphology/Sigma",
+            "selected-node evidence",
+            "fallback static",
+            "timeout_ms: 1200000",
+            "explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+
+    def test_track10_task25_project_graph_batch17_docs_and_control_plane_are_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 project code graph Batch 17 evals and future gates",
+            "T10-CG-V2-M27..M30",
+            "project_graph_search_quality.py",
+            "project_graph_search_quality_present",
+            "project_graph_future_backend_semantic_gates_present",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "| `done` | `T10-CG-V2-M27..M30` evals/docs/future gates |",
+            "search-quality eval loop",
+            "fixture structural fields",
+            "future backend and semantic gates",
+            "static search index",
+            "live database/server",
+            "semantic extraction and rationale/comment extraction",
+            "LLM semantic extraction",
+            "redaction, cache, token budget, eval threshold and rollback path",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 25 Batch 17",
+            "fixture structural fields",
+            "search-quality eval loop",
+            "symbol recall",
+            "top-k/MRR",
+            "affected-test precision",
+            "future backend and semantic gates",
+            "static search index",
+            "live database/server",
+            "LLM semantic extraction",
+            "explicit approval",
+            "redaction, cache, token budget, eval threshold and rollback path",
+        ]
+        for document, text in self._internal_history_documents(documents).items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 25 Batch 17",
+            "T10-CG-V2-M27..M30",
+            "fixture structural fields",
+            "search-quality eval loop",
+            "project_graph_future_backend_semantic_gates_present",
+            "static search index",
+            "live database/server",
+            "semantic extraction and rationale/comment extraction",
+            "LLM semantic extraction",
+            "redaction, cache, token budget, eval threshold and rollback path",
+            "explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+
+    def test_track10_task25_future_gated_extension_matrix_is_staged(self):
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        control_plane = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in [REQUIREMENTS]
+        )
+
+        plan_terms = [
+            "Task 25 future-gated extension analysis",
+            "Task 25 future-gated extension matrix",
+            "T10-CG-V2-M39",
+            "T10-CG-V2-M62",
+            "Batch 20: Local Query Backend And Live Database/Server Gate",
+            "Batch 21: Semantic Retrieval, Embeddings And Cross-Encoder Eval",
+            "Batch 22: LLM Semantic Extraction And Rationale/Comment Proposals",
+            "Batch 23: Future Extension Verification, Rollback And Closure",
+            "approval_required",
+            "redaction boundary, cache policy, token budget, eval threshold, rollback/disable path",
+            "Planning matrix presence is not implementation evidence",
+        ]
+        for expected in plan_terms:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+
+        backlog_terms = [
+            "Task 25 Future-Gated Extension Matrix",
+            "| `done` | `T10-CG-V2-M33..M38` offline static search index |",
+            "| `done` | `T10-CG-V2-M39..M44` local query backend and live database/server gate |",
+            "| `done` | `T10-CG-V2-M45..M51` semantic retrieval, embeddings and cross-encoder eval |",
+            "| `done` | `T10-CG-V2-M52..M57` LLM semantic extraction and rationale/comment proposals |",
+            "| `done` | `T10-CG-V2-M58..M62` future extension verification, rollback and closure |",
+            "Generated semantic nodes, rationale and comments are staged proposals, not canonical graph facts.",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        control_terms = [
+            "extension matrix `T10-CG-V2-M39..M62`",
+            "Batch 19 offline static search index",
+            "approved offline static search index",
+            "Batch 20 local backend gate",
+            "Batch 21 semantic retrieval gate",
+            "Batch 22 local deterministic LLM proposal gate",
+            "Batch 23 extension",
+            "project_graph_extension_closure.py",
+            "planning matrix presence remains not implementation evidence",
+            "explicit approval with redaction, cache, token budget, eval threshold and rollback path",
+        ]
+        for expected in control_terms:
+            with self.subTest(control_plane=expected):
+                self.assertIn(expected, control_plane)
+
+
+    def test_track10_task25_batch22_llm_extraction_proposals_are_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 project code graph Batch 22 LLM semantic extraction",
+            "T10-CG-V2-M52..M57",
+            "project_graph_llm_extraction.py",
+            "project_graph_llm_extraction_gate_present",
+            "rationale/comment proposals",
+            "staged proposals, not canonical graph facts",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "| `done` | `T10-CG-V2-M52..M57` LLM semantic extraction and rationale/comment proposals |",
+            "Batch 22 explicit approval",
+            "project_graph_llm_extraction.py",
+            "prompt/model policy",
+            "structured JSON with provenance, uncertainty and unsupported-claim labels",
+            "semantic node and edge proposals",
+            "rationale/comment proposals",
+            "human review can accept, reject or mark accepted_gap",
+            "AI incident workflow",
+            "rollback/disable path is deleting `.codex/product-agent-os/project-code-graph-llm-proposals.json`",
+            "Batch 23 is closed separately as generated extension verification/rollback evidence",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 25 Batch 22",
+            "T10-CG-V2-M52..M57",
+            "project_graph_llm_extraction.py",
+            "project_graph_llm_extraction_gate_present",
+            "prompt/model policy",
+            "structured JSON",
+            "semantic node and edge proposals",
+            "rationale/comment proposals",
+            "staged proposals, not canonical graph facts",
+            "no canonical graph mutation",
+            "AI incident workflow",
+            "rollback/disable path",
+            "Batch 23",
+        ]
+        for document, text in self._internal_history_documents(documents).items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 25 Batch 22",
+            "T10-CG-V2-M52..M57",
+            "project_graph_llm_extraction.py",
+            "project_graph_llm_extraction_gate_present",
+            "project_graph_llm_proposal_schema_present",
+            "project_graph_rationale_comment_proposals_present",
+            "project_graph_llm_extraction_eval_present",
+            "prompt/model policy",
+            "staged proposals, not canonical graph facts",
+            "no canonical graph mutation",
+            "AI incident workflow",
+            "Batch 23",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+
+    def test_track10_task25_batch23_future_extension_closure_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 project code graph Batch 23 future extension verification",
+            "T10-CG-V2-M58..M62",
+            "project_graph_extension_closure.py",
+            "project_graph_future_extension_closure_present",
+            "project_graph_extension_rollback_deletion_present",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "| `done` | `T10-CG-V2-M58..M62` future extension verification, rollback and closure |",
+            "Batch 23 explicit approval",
+            "project_graph_extension_closure.py",
+            "verify-extensions",
+            "disable-extensions",
+            "deletion proof",
+            "graph-only fallback",
+            "blocked_without_new_explicit_approval",
+            "full verification with `timeout_ms: 1200000`",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 25 Batch 23",
+            "T10-CG-V2-M58..M62",
+            "project_graph_extension_closure.py",
+            "verify-extensions",
+            "disable-extensions",
+            "rollback/data deletion proof",
+            "graph-only fallback",
+            "blocked_without_new_explicit_approval",
+            "no live external model/API calls",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for document, text in self._internal_history_documents(documents).items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 25 Batch 23",
+            "T10-CG-V2-M58..M62",
+            "project_graph_extension_closure.py",
+            "project_graph_future_extension_closure_present",
+            "project_graph_extension_rollback_deletion_present",
+            "project_graph_unapproved_surface_blocking_present",
+            "project_graph_extension_full_verification_contract_present",
+            "rollback/data deletion proof",
+            "graph-only fallback",
+            "blocked_without_new_explicit_approval",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+
+    def test_track10_task26_batch24_live_governance_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 Task 26 Batch 24 live governance",
+            "T10-LIVE-M01..M06",
+            "project_graph_live_governance.py",
+            "project_graph_live_approval_packet_present",
+            "project_graph_live_redaction_guard_present",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "Task 26 Batch 24 Closure",
+            "| `done` | `T10-LIVE-M01..M06` approval, data classification, redaction, credentials, cache and budget governance |",
+            "Batch 24 explicit approval",
+            "project_graph_live_governance.py",
+            "No complete approval packet means no live action",
+            "Secrets, raw source bodies and absolute paths are blocked",
+            "Provider call is impossible without sanitizer pass",
+            "Cache can be deleted without graph loss",
+            "Budget exceed routes to blocked or degraded mode",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 26 Batch 24",
+            "T10-LIVE-M01..M06",
+            "Approval, Data Classification, Redaction, Credentials, Cache And Budget Governance",
+            "project_graph_live_governance.py",
+            "project_graph_live_approval_packet_present",
+            "project_graph_live_data_classification_policy_present",
+            "project_graph_live_redaction_guard_present",
+            "project_graph_provider_credentials_boundary_present",
+            "project_graph_live_cache_deletion_policy_present",
+            "project_graph_live_budget_guard_present",
+            "project_graph_live_governance_no_live_calls_present",
+            "no live server",
+            "no provider calls",
+            "no canonical graph mutation",
+            "staged evidence only",
+            "not source of truth",
+        ]
+        for document, text in self._internal_history_documents(documents).items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 26 Batch 24",
+            "T10-LIVE-M01..M06",
+            "project_graph_live_governance.py",
+            "project_graph_live_approval_packet_present",
+            "project_graph_live_data_classification_policy_present",
+            "project_graph_live_redaction_guard_present",
+            "project_graph_provider_credentials_boundary_present",
+            "project_graph_live_cache_deletion_policy_present",
+            "project_graph_live_budget_guard_present",
+            "project_graph_live_governance_no_live_calls_present",
+            "no live server",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+
+    def test_track10_task26_batch25_live_runtime_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 Task 26 Batch 25 live runtime",
+            "T10-LIVE-M07..M10",
+            "project_graph_live_runtime.py",
+            "project_graph_live_runtime_contract_present",
+            "project_graph_live_runtime_auth_policy_present",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "Task 26 Batch 25 Closure",
+            "| `done` | `T10-LIVE-M07..M10` live local read-only runtime, auth and fallback |",
+            "Batch 25 explicit approval",
+            "project_graph_live_runtime.py",
+            "No write endpoints and no canonical mutation",
+            "Starts only after approval; cleanup is verified",
+            "Runtime is not public by default and rejects unauthorized access",
+            "Fallback works after disabling live layer",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 26 Batch 25",
+            "T10-LIVE-M07..M10",
+            "Live Local Read-Only Runtime, Auth And Fallback",
+            "project_graph_live_runtime.py",
+            "project_graph_live_runtime_contract_present",
+            "project_graph_live_runtime_governance_prerequisite_present",
+            "project_graph_live_runtime_read_only_routes_present",
+            "project_graph_live_runtime_lifecycle_controls_present",
+            "project_graph_live_runtime_auth_policy_present",
+            "project_graph_live_runtime_graph_only_fallback_present",
+            "project_graph_live_runtime_no_public_or_mutation_surface_present",
+            "disabled_by_default_not_started",
+            "local-only access",
+            "rejects unauthorized access",
+            "no write endpoints",
+            "graph_only_query_mode",
+            "no canonical graph mutation",
+            "staged evidence only",
+            "not source of truth",
+        ]
+        for document, text in self._internal_history_documents(documents).items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 26 Batch 25",
+            "T10-LIVE-M07..M10",
+            "project_graph_live_runtime.py",
+            "project_graph_live_runtime_contract_present",
+            "project_graph_live_runtime_governance_prerequisite_present",
+            "project_graph_live_runtime_read_only_routes_present",
+            "project_graph_live_runtime_lifecycle_controls_present",
+            "project_graph_live_runtime_auth_policy_present",
+            "project_graph_live_runtime_graph_only_fallback_present",
+            "project_graph_live_runtime_no_public_or_mutation_surface_present",
+            "disabled_by_default_not_started",
+            "no write endpoints",
+            "local-only access",
+            "rejects unauthorized access",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+
+    def test_track10_task26_batch26_external_embedding_provider_gate_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 Task 26 Batch 26 external embedding provider gate and eval",
+            "T10-LIVE-M11..M12",
+            "project_graph_embedding_provider.py",
+            "project_graph_external_embedding_provider_gate_present",
+            "project_graph_external_embedding_eval_baseline_present",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "Task 26 Batch 26 Closure",
+            "| `done` | `T10-LIVE-M11..M12` external embedding provider gate and eval |",
+            "Batch 26 explicit approval",
+            "project_graph_embedding_provider.py",
+            "No external call without approval/redaction/cache/budget",
+            "Must beat approved threshold or stay disabled",
+            "semantic_retrieval_or_graph_only",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 26 Batch 26",
+            "T10-LIVE-M11..M12",
+            "External Embedding Provider Gate And Eval",
+            "project_graph_embedding_provider.py",
+            "project_graph_external_embedding_provider_gate_present",
+            "project_graph_external_embedding_governance_prerequisite_present",
+            "project_graph_external_embedding_redaction_cache_budget_present",
+            "project_graph_external_embedding_eval_baseline_present",
+            "project_graph_external_embedding_threshold_fallback_present",
+            "project_graph_external_embedding_no_live_calls_present",
+            "No external call without approval/redaction/cache/budget",
+            "Must beat approved threshold or stay disabled",
+            "semantic_retrieval_or_graph_only",
+            "provider_call_allowed",
+            "external_call_performed",
+            "staged evidence only",
+            "not source of truth",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+        ]
+        for document, text in self._internal_history_documents(documents).items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 26 Batch 26",
+            "T10-LIVE-M11..M12",
+            "project_graph_embedding_provider.py",
+            "project_graph_external_embedding_provider_gate_present",
+            "project_graph_external_embedding_governance_prerequisite_present",
+            "project_graph_external_embedding_redaction_cache_budget_present",
+            "project_graph_external_embedding_eval_baseline_present",
+            "project_graph_external_embedding_threshold_fallback_present",
+            "project_graph_external_embedding_no_live_calls_present",
+            "No external call without approval/redaction/cache/budget",
+            "Must beat approved threshold or stay disabled",
+            "semantic_retrieval_or_graph_only",
+            "provider_call_allowed",
+            "external_call_performed",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+
+    def test_track10_task26_batch27_reranker_and_hybrid_retrieval_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 Task 26 Batch 27 cross-encoder reranker and hybrid retrieval",
+            "T10-LIVE-M13..M14",
+            "project_graph_reranker_provider.py",
+            "project_graph_hybrid_retrieval.py",
+            "reranker_provider.py",
+            "hybrid_retrieval.py",
+            "project_graph_external_reranker_provider_gate_present",
+            "project_graph_hybrid_retrieval_pipeline_present",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "Task 26 Batch 27 Closure",
+            "| `done` | `T10-LIVE-M13..M14` cross-encoder reranker and hybrid retrieval |",
+            "Batch 27 explicit approval",
+            "project_graph_reranker_provider.py",
+            "project_graph_hybrid_retrieval.py",
+            "Precision/MRR improves or fallback remains active",
+            "source-backed, bounded and explainable",
+            "semantic_retrieval_or_graph_only",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 26 Batch 27",
+            "T10-LIVE-M13..M14",
+            "Cross-Encoder Reranker And Hybrid Retrieval",
+            "project_graph_reranker_provider.py",
+            "project_graph_hybrid_retrieval.py",
+            "reranker_provider.py",
+            "hybrid_retrieval.py",
+            "project_graph_external_reranker_provider_gate_present",
+            "project_graph_external_reranker_governance_prerequisite_present",
+            "project_graph_external_reranker_redaction_cache_budget_present",
+            "project_graph_external_reranker_eval_baseline_present",
+            "project_graph_external_reranker_threshold_fallback_present",
+            "project_graph_external_reranker_no_live_calls_present",
+            "project_graph_hybrid_retrieval_pipeline_present",
+            "project_graph_hybrid_retrieval_explainable_fusion_present",
+            "project_graph_hybrid_retrieval_fallback_present",
+            "project_graph_hybrid_retrieval_no_canonical_mutation_present",
+            "approval_required",
+            "Precision/MRR improves or fallback remains active",
+            "source-backed, bounded and explainable",
+            "semantic_retrieval_or_graph_only",
+            "provider_call_allowed",
+            "external_call_performed",
+            "staged evidence only",
+            "not source of truth",
+            "No live provider calls",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+        ]
+        for document, text in self._internal_history_documents(documents).items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 26 Batch 27",
+            "T10-LIVE-M13..M14",
+            "project_graph_reranker_provider.py",
+            "project_graph_hybrid_retrieval.py",
+            "reranker_provider.py",
+            "hybrid_retrieval.py",
+            "project_graph_external_reranker_provider_gate_present",
+            "project_graph_external_reranker_governance_prerequisite_present",
+            "project_graph_external_reranker_redaction_cache_budget_present",
+            "project_graph_external_reranker_eval_baseline_present",
+            "project_graph_external_reranker_threshold_fallback_present",
+            "project_graph_external_reranker_no_live_calls_present",
+            "project_graph_hybrid_retrieval_pipeline_present",
+            "project_graph_hybrid_retrieval_explainable_fusion_present",
+            "project_graph_hybrid_retrieval_fallback_present",
+            "project_graph_hybrid_retrieval_no_canonical_mutation_present",
+            "Precision/MRR improves or fallback remains active",
+            "source-backed, bounded and explainable",
+            "semantic_retrieval_or_graph_only",
+            "provider_call_allowed",
+            "external_call_performed",
+            "No live provider calls",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+
+    def test_track10_task26_batch28_llm_proposal_adapter_and_safety_eval_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 Task 26 Batch 28 live LLM proposal adapter and safety eval",
+            "T10-LIVE-M15..M16",
+            "project_graph_llm_proposal_provider.py",
+            "llm_proposal_provider.py",
+            "llm-proposal-eval.json",
+            "project_graph_live_llm_proposal_provider_gate_present",
+            "project_graph_live_llm_proposal_safety_eval_present",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "Task 26 Batch 28 Closure",
+            "| `done` | `T10-LIVE-M15..M16` live LLM proposal adapter and safety eval |",
+            "Batch 28 explicit approval",
+            "project_graph_llm_proposal_provider.py",
+            "llm_proposal_provider.py",
+            "llm-proposal-eval.json",
+            "proposal-only, never canonical fact",
+            "hallucination, privacy, grounding and stale-context tests",
+            "incident_blocked",
+            "local_llm_proposals_or_semantic_retrieval_or_graph_only",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 26 Batch 28",
+            "T10-LIVE-M15..M16",
+            "Live LLM Proposal Adapter And Safety Eval",
+            "project_graph_llm_proposal_provider.py",
+            "llm_proposal_provider.py",
+            "llm-proposal-eval.json",
+            "project_graph_live_llm_proposal_provider_gate",
+            "batch28_live_llm_proposal_adapter_and_safety_eval",
+            "external_llm",
+            "external_llm_proposal_adapter",
+            "llm_proposal_safety_eval",
+            "structured_json",
+            "unsupported_claim",
+            "proposal-only, never canonical fact",
+            "hallucination, privacy, grounding and stale-context tests",
+            "incident_blocked",
+            "AI incident workflow",
+            "local_llm_proposals_or_semantic_retrieval_or_graph_only",
+            "provider_call_allowed",
+            "external_call_performed",
+            "staged evidence only",
+            "not source of truth",
+            "No live provider calls",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+        ]
+        for document, text in self._internal_history_documents(documents).items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 26 Batch 28",
+            "T10-LIVE-M15..M16",
+            "project_graph_llm_proposal_provider.py",
+            "llm_proposal_provider.py",
+            "llm-proposal-eval.json",
+            "project_graph_live_llm_proposal_provider_gate_present",
+            "project_graph_live_llm_proposal_governance_prerequisite_present",
+            "project_graph_live_llm_proposal_prompt_schema_present",
+            "project_graph_live_llm_proposal_redaction_cache_budget_present",
+            "project_graph_live_llm_proposal_safety_eval_present",
+            "project_graph_live_llm_proposal_threshold_fallback_present",
+            "project_graph_live_llm_proposal_incident_path_present",
+            "project_graph_live_llm_proposal_no_live_calls_present",
+            "project_graph_live_llm_proposal_no_canonical_mutation_present",
+            "proposal-only, never canonical fact",
+            "hallucination, privacy, grounding and stale-context tests",
+            "incident_blocked",
+            "local_llm_proposals_or_semantic_retrieval_or_graph_only",
+            "provider_call_allowed",
+            "external_call_performed",
+            "No live provider calls",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+
+    def test_track10_task26_batch29_human_review_ledger_and_diff_preview_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 Task 26 Batch 29 human review ledger and proposal diff preview",
+            "T10-LIVE-M17..M18",
+            "project_graph_review_ledger.py",
+            "graph-review-ledger.json",
+            "proposal-diff.json",
+            "project_graph_human_review_ledger_present",
+            "project_graph_proposal_diff_preview_present",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "Task 26 Batch 29 Closure",
+            "| `done` | `T10-LIVE-M17..M18` human review ledger and proposal diff preview |",
+            "Batch 29 explicit approval",
+            "project_graph_review_ledger.py",
+            "graph-review-ledger.json",
+            "proposal-diff.json",
+            "No accepted proposal without owner decision",
+            "Accept, reject or accepted_gap decisions with evidence refs",
+            "Human can inspect before mutation",
+            "proposal-only until Batch 30 dry-run mutation",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 26 Batch 29",
+            "T10-LIVE-M17..M18",
+            "Human Review Ledger And Proposal Diff Preview",
+            "project_graph_review_ledger.py",
+            "graph-review-ledger.json",
+            "proposal-diff.json",
+            "project_graph_human_review_ledger",
+            "project_graph_proposal_diff_preview",
+            "batch29_human_review_ledger_and_proposal_diff_preview",
+            "human_review_ledger",
+            "proposal_diff_preview",
+            "accepted",
+            "rejected",
+            "accepted_gap",
+            "No accepted proposal without owner decision",
+            "Accept, reject or accepted_gap decisions with evidence refs",
+            "Human can inspect before mutation",
+            "proposal-only until Batch 30 dry-run mutation",
+            "provider_call_allowed",
+            "external_call_performed",
+            "staged evidence only",
+            "not source of truth",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+        ]
+        for document, text in self._internal_history_documents(documents).items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 26 Batch 29",
+            "T10-LIVE-M17..M18",
+            "project_graph_review_ledger.py",
+            "graph-review-ledger.json",
+            "proposal-diff.json",
+            "project_graph_human_review_ledger_present",
+            "project_graph_human_review_ledger_governance_prerequisite_present",
+            "project_graph_human_review_ledger_owner_decision_required_present",
+            "project_graph_human_review_ledger_evidence_refs_present",
+            "project_graph_human_review_accepted_gap_present",
+            "project_graph_proposal_diff_preview_present",
+            "project_graph_proposal_diff_inspectable_changes_present",
+            "project_graph_proposal_diff_no_canonical_mutation_present",
+            "project_graph_human_review_ledger_no_live_calls_present",
+            "No accepted proposal without owner decision",
+            "Accept, reject or accepted_gap decisions with evidence refs",
+            "Human can inspect before mutation",
+            "proposal-only until Batch 30 dry-run mutation",
+            "provider_call_allowed",
+            "external_call_performed",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+
+    def test_track10_task26_batch30_canonical_mutation_journal_and_rollback_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 Task 26 Batch 30 canonical graph mutation journal and rollback",
+            "T10-LIVE-M19..M22",
+            "project_graph_canonical_mutation.py",
+            "canonical_graph_mutation.py",
+            "graph_rollback.py",
+            "mutation_plan.json",
+            "graph-mutation-journal.jsonl",
+            "project_graph_canonical_mutation_dry_run_plan_present",
+            "project_graph_rollback_previous_digest_restore_present",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "Task 26 Batch 30 Closure",
+            "| `done` | `T10-LIVE-M19..M22` canonical graph mutation journal and rollback |",
+            "Batch 30 explicit approval",
+            "project_graph_canonical_mutation.py",
+            "mutation_plan.json",
+            "graph-mutation-journal.jsonl",
+            "No mutation without dry-run plan",
+            "Every mutation has rollback patch",
+            "Only accepted proposals mutate graph",
+            "Rollback restores previous graph digest",
+            "accepted_gap remains non-mutating",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 26 Batch 30",
+            "T10-LIVE-M19..M22",
+            "Canonical Graph Mutation, Journal And Rollback Engine",
+            "project_graph_canonical_mutation.py",
+            "canonical_graph_mutation.py",
+            "graph_rollback.py",
+            "mutation_plan.json",
+            "graph-mutation-journal.jsonl",
+            "project_graph_canonical_mutation_plan",
+            "project_graph_mutation_journal",
+            "project_graph_rollback_proof",
+            "batch30_canonical_graph_mutation_journal_and_rollback",
+            "canonical_mutation_dry_run",
+            "mutation_journal",
+            "accepted_mutation_apply",
+            "rollback_engine",
+            "No mutation without dry-run plan",
+            "Every mutation has rollback patch",
+            "Only accepted proposals mutate graph",
+            "Rollback restores previous graph digest",
+            "accepted_gap remains non-mutating",
+            "stage-root generated graph copy only",
+            "provider_call_allowed",
+            "external_call_performed",
+            "staged evidence only",
+            "not source of truth",
+            "no provider calls",
+            "no live external model/API calls",
+        ]
+        for document, text in self._internal_history_documents(documents).items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 26 Batch 30",
+            "T10-LIVE-M19..M22",
+            "project_graph_canonical_mutation.py",
+            "mutation_plan.json",
+            "graph-mutation-journal.jsonl",
+            "project_graph_canonical_mutation_dry_run_plan_present",
+            "project_graph_canonical_mutation_governance_prerequisite_present",
+            "project_graph_canonical_mutation_conflict_checks_present",
+            "project_graph_mutation_journal_append_only_present",
+            "project_graph_mutation_journal_rollback_patch_present",
+            "project_graph_canonical_mutation_only_accepted_proposals_present",
+            "project_graph_canonical_mutation_apply_digest_present",
+            "project_graph_rollback_previous_digest_restore_present",
+            "project_graph_canonical_mutation_no_live_calls_present",
+            "No mutation without dry-run plan",
+            "Every mutation has rollback patch",
+            "Only accepted proposals mutate graph",
+            "Rollback restores previous graph digest",
+            "accepted_gap remains non-mutating",
+            "provider_call_allowed",
+            "external_call_performed",
+            "no provider calls",
+            "no live external model/API calls",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+
+    def test_track10_task26_batch31_audit_security_observability_and_handoff_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 Task 26 Batch 31 audit logging security privacy observability and agent skill routing",
+            "T10-LIVE-M23..M26",
+            "project_graph_live_audit.py",
+            "audit-log.jsonl",
+            "runtime-observability.json",
+            "agent-skill-handoff.json",
+            "project_graph_live_audit_log_present",
+            "project_graph_live_audit_no_live_calls_present",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "Task 26 Batch 31 Closure",
+            "| `done` | `T10-LIVE-M23..M26` audit logging security/privacy observability and agent/skill routing |",
+            "Batch 31 explicit approval",
+            "project_graph_live_audit.py",
+            "audit-log.jsonl",
+            "security-privacy.json",
+            "runtime-observability.json",
+            "agent-skill-handoff.json",
+            "redacted append-only audit evidence",
+            "Unsafe secret/path/raw-source/prompt-injection cases are blocked",
+            "Runtime health, latency, provider errors, budget usage and degraded graph-only mode",
+            "ownership, verification evidence, fresh context and stop conditions",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 26 Batch 31",
+            "T10-LIVE-M23..M26",
+            "Audit Logging, Security/Privacy Tests, Observability And Agent/Skill Routing",
+            "project_graph_live_audit.py",
+            "audit-log.jsonl",
+            "security-privacy.json",
+            "runtime-observability.json",
+            "agent-skill-handoff.json",
+            "project_graph_live_audit_log",
+            "project_graph_live_security_privacy_tests",
+            "project_graph_runtime_observability",
+            "project_graph_agent_skill_handoff_routing",
+            "batch31_audit_security_observability_agent_skill_routing",
+            "audit_logging",
+            "security_privacy_tests",
+            "runtime_observability",
+            "agent_skill_handoff_routing",
+            "redacted append-only audit event",
+            "unsafe secret/path/raw-source/prompt-injection cases are blocked",
+            "runtime health, latency, provider errors, budget usage and degraded graph-only mode",
+            "ownership, verification evidence, fresh context and stop conditions",
+            "provider_call_allowed",
+            "external_call_performed",
+            "staged evidence only",
+            "not source of truth",
+            "no live server",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+        ]
+        for document, text in self._internal_history_documents(documents).items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 26 Batch 31",
+            "T10-LIVE-M23..M26",
+            "project_graph_live_audit.py",
+            "audit-log.jsonl",
+            "security-privacy.json",
+            "runtime-observability.json",
+            "agent-skill-handoff.json",
+            "project_graph_live_audit_log_present",
+            "project_graph_live_audit_governance_prerequisite_present",
+            "project_graph_live_audit_event_coverage_present",
+            "project_graph_live_audit_redaction_append_only_present",
+            "project_graph_live_security_privacy_tests_present",
+            "project_graph_live_security_privacy_negative_cases_blocked_present",
+            "project_graph_live_runtime_observability_present",
+            "project_graph_live_runtime_observability_degraded_mode_visible_present",
+            "project_graph_live_agent_skill_handoff_routing_present",
+            "project_graph_live_agent_skill_handoff_stop_conditions_present",
+            "project_graph_live_audit_operability_stage_disable_present",
+            "project_graph_live_audit_no_live_calls_present",
+            "redacted append-only audit event",
+            "unsafe secret/path/raw-source/prompt-injection cases are blocked",
+            "runtime health, latency, provider errors, budget usage",
+            "degraded graph-only mode",
+            "ownership",
+            "verification evidence",
+            "fresh context",
+            "stop conditions",
+            "provider_call_allowed",
+            "external_call_performed",
+            "no live server",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+
+    def test_track10_task26_batch32_real_testing_readiness_and_pilot_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 Task 26 Batch 32 real testing readiness target consent pilot harness and Codex surface smoke",
+            "T10-LIVE-M27..M31",
+            "project_graph_real_testing.py",
+            "real-testing-readiness.json",
+            "pilot-harness.json",
+            "codex-surface-smoke.json",
+            "real-testing-pilot-matrix.json",
+            "project_graph_real_testing_readiness_present",
+            "project_graph_real_testing_stage_disable_present",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "Task 26 Batch 32 Closure",
+            "| `done` | `T10-LIVE-M27..M31` real testing readiness target consent pilot harness and Codex surface smoke |",
+            "Batch 32 explicit approval",
+            "project_graph_real_testing.py",
+            "real-testing-readiness.json",
+            "real-testing-targets.json",
+            "pilot-harness.json",
+            "codex-surface-smoke.json",
+            "real-testing-pilot-matrix.json",
+            "No real project test without owner-approved target and data policy",
+            "Pilot harness remains dry-run and stage-only",
+            "Codex App, CLI and IDE extension smoke",
+            "Track 8 archetypes",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 26 Batch 32",
+            "T10-LIVE-M27..M31",
+            "Real Testing Readiness, Target Consent, Pilot Harness And Codex Surface Smoke",
+            "project_graph_real_testing.py",
+            "real-testing-readiness.json",
+            "real-testing-targets.json",
+            "pilot-harness.json",
+            "codex-surface-smoke.json",
+            "real-testing-pilot-matrix.json",
+            "project_graph_real_testing_readiness",
+            "project_graph_real_testing_targets",
+            "project_graph_pilot_harness",
+            "project_graph_codex_surface_smoke",
+            "project_graph_real_testing_pilot_matrix",
+            "batch32_real_testing_readiness_target_consent_pilot_harness_codex_surface_smoke",
+            "real_testing_readiness",
+            "real_project_target_selection",
+            "pilot_harness",
+            "codex_surface_smoke",
+            "use_case_pilot_matrix",
+            "no hidden unresolved Track 10 gates",
+            "owner-approved target and data policy",
+            "dry-run pilot harness",
+            "Codex App, CLI and IDE extension",
+            "Track 8 archetypes",
+            "staged evidence only",
+            "not source of truth",
+            "no live server",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+        ]
+        for document, text in self._internal_history_documents(documents).items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 26 Batch 32",
+            "T10-LIVE-M27..M31",
+            "project_graph_real_testing.py",
+            "real-testing-readiness.json",
+            "real-testing-targets.json",
+            "pilot-harness.json",
+            "codex-surface-smoke.json",
+            "real-testing-pilot-matrix.json",
+            "project_graph_real_testing_readiness_present",
+            "project_graph_real_testing_target_consent_present",
+            "project_graph_real_testing_pilot_harness_present",
+            "project_graph_real_testing_codex_surface_smoke_present",
+            "project_graph_real_testing_use_case_pilot_matrix_present",
+            "project_graph_real_testing_no_hidden_track10_gates_present",
+            "project_graph_real_testing_no_unapproved_actions_present",
+            "project_graph_real_testing_stage_disable_present",
+            "no hidden unresolved Track 10 gates",
+            "owner-approved target and data policy",
+            "dry-run pilot harness",
+            "Codex App, CLI and IDE extension",
+            "Track 8 archetypes",
+            "provider_call_allowed",
+            "external_call_performed",
+            "no live server",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+
+    def test_track10_task26_batch33_runtime_qa_performance_stabilization_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 Task 26 Batch 33 runtime browser QA performance and stabilization",
+            "T10-LIVE-M32..M34",
+            "project_graph_runtime_qa.py",
+            "runtime-browser-qa.json",
+            "performance-budget.json",
+            "stabilization-ledger.json",
+            "project_graph_runtime_browser_qa_present",
+            "project_graph_performance_budget_threshold_fallback_present",
+            "project_graph_stabilization_no_open_p0_p1_present",
+            "project_graph_runtime_qa_stage_disable_present",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "Task 26 Batch 33 Closure",
+            "| `done` | `T10-LIVE-M32..M34` runtime browser QA performance and stabilization |",
+            "Batch 33 explicit approval",
+            "browser smoke",
+            "console/network checks",
+            "mobile overflow",
+            "generated-view labels",
+            "source-boundary labels",
+            "budget breach disables live layer or records accepted gap",
+            "No open P0/P1",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 26 Batch 33",
+            "T10-LIVE-M32..M34",
+            "Runtime Browser QA, Performance And Stabilization",
+            "project_graph_runtime_qa.py",
+            "project-code-graph-runtime-browser-qa.json",
+            "project-code-graph-performance-budget.json",
+            "project-code-graph-stabilization-ledger.json",
+            "project_graph_runtime_browser_qa",
+            "project_graph_performance_budget",
+            "project_graph_stabilization_ledger",
+            "batch33_runtime_browser_qa_performance_stabilization",
+            "runtime_browser_qa",
+            "runtime_performance_budget",
+            "runtime_stabilization_loop",
+            "browser smoke",
+            "console/network checks",
+            "mobile overflow",
+            "generated-view labels",
+            "source-boundary labels",
+            "budget breach disables live layer or records accepted gap",
+            "No open P0/P1",
+            "staged evidence only",
+            "not source of truth",
+            "no live server",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+        ]
+        for document, text in self._internal_history_documents(documents).items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 26 Batch 33",
+            "T10-LIVE-M32..M34",
+            "project_graph_runtime_qa.py",
+            "runtime-browser-qa.json",
+            "performance-budget.json",
+            "stabilization-ledger.json",
+            "project_graph_runtime_browser_qa_present",
+            "project_graph_runtime_browser_qa_console_network_checks_present",
+            "project_graph_runtime_browser_qa_mobile_overflow_labels_present",
+            "project_graph_performance_budget_present",
+            "project_graph_performance_budget_threshold_fallback_present",
+            "project_graph_stabilization_ledger_present",
+            "project_graph_stabilization_no_open_p0_p1_present",
+            "project_graph_runtime_qa_no_unapproved_actions_present",
+            "project_graph_runtime_qa_stage_disable_present",
+            "browser smoke",
+            "console/network checks",
+            "mobile overflow",
+            "generated-view labels",
+            "source-boundary labels",
+            "budget breach disables live layer or records accepted gap",
+            "No open P0/P1",
+            "provider_call_allowed",
+            "external_call_performed",
+            "no live server",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+
+    def test_track10_task26_batch34_docs_packaging_closure_matrix_is_planned(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        matrix_terms = [
+            "Task 26 Batch 34",
+            "T10-LIVE-M35..M36",
+            "Batch 34 Detailed Task Matrix",
+            "B34-DOC-M01",
+            "B34-DOC-M15",
+            "docs/product-agent-os/project-code-graph.md",
+            "docs/product-agent-os/live-runtime-governance.md",
+            "docs/product-agent-os/approval-bound-real-testing.md",
+            "docs/product-agent-os/agent-skill-modernization-loop.md",
+            "docs/product-agent-os/cli-reference.md",
+            "docs/product-agent-os/artifact-contracts.md",
+            "docs/product-agent-os/packaging-and-closure.md",
+            "project_graph_sanitization.py",
+            "docs/product-agent/product-agent-os-plugin-spec.md",
+            "python -m mkdocs build --strict",
+            "site/",
+            "docs-maintainer plugin-cache gap",
+            "Mermaid external asset gap",
+            "staged evidence only",
+            "not source of truth",
+            "no live server",
+            "no browser automation",
+            "no provider/live external model/API calls",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]
+        for expected in matrix_terms:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+
+        backlog_terms = [
+            "Task 26 Batch 34 Planned Matrix",
+            "| `approval_required` | `T10-LIVE-M35..M36` docs packaging source registry site closure and Batch 35 handoff |",
+            "Batch 34 implements the documentation and packaging closure plan",
+            "B34-DOC-M01..M15",
+            "source docs -> registry -> docs tests -> check_docs.py -> strict MkDocs -> optional full closure",
+            "site/ must be rebuilt with the regular MkDocs site_dir",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        registry_terms = [
+            "Product-Agent OS Track 10 Task 26 Batch 34 docs packaging closure matrix",
+            "T10-LIVE-M35..M36",
+            "B34-DOC-M01..M15",
+            "project-authored docs pages",
+            "`site/` rebuild",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        docs_terms = [
+            "Task 26 Batch 34",
+            "T10-LIVE-M35..M36",
+            "Packaging, Docs, Source Registry, Closure And Batch 35 Handoff",
+            "B34-DOC-M01..M15",
+            "project-code-graph.md",
+            "live-runtime-governance.md",
+            "approval-bound-real-testing.md",
+            "agent-skill-modernization-loop.md",
+            "cli-reference.md",
+            "artifact-contracts.md",
+            "packaging-and-closure.md",
+            "site/",
+            "planned, not implemented",
+        ]
+        for document, text in self._internal_history_documents(documents).items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 26 Batch 34",
+            "T10-LIVE-M35..M36",
+            "Batch 34 Detailed Task Matrix",
+            "B34-DOC-M01..M15",
+            "source docs -> registry -> docs tests -> check_docs.py -> strict MkDocs -> optional full closure",
+            "docs-maintainer plugin-cache gap",
+            "Mermaid external asset gap",
+            "packaging/install smoke",
+            "Batch 35 approval packet draft",
+            "staged evidence only",
+            "not source of truth",
+            "no live server",
+            "no browser automation",
+            "no provider/live external model/API calls",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+
+    def test_track10_task26_batch34_docs_packet_is_implemented(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        nav = MKDOCS.read_text(encoding="utf-8")
+        check_docs = CHECK_DOCS.read_text(encoding="utf-8")
+        control_plane = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in [ROOT_README, PLUGIN_README, REQUIREMENTS]
+        )
+
+        pages = {
+            "project-code-graph.md": [
+                "Generated graph artifacts are not source of truth",
+                "orientation evidence",
+                "provider/API calls",
+                "canonical graph mutation",
+                "git stage/commit/push/PR",
+            ],
+            "live-runtime-governance.md": [
+                "approval packet",
+                "data classification",
+                "redaction",
+                "generated artifacts are labeled as staged evidence and not source of truth",
+                "no live server launch during docs/governance preparation",
+                "no browser automation during docs/governance preparation",
+                "no canonical graph mutation",
+                "no git stage/commit/push/PR",
+            ],
+            "approval-bound-real-testing.md": [
+                "M37-M41",
+                "owner_closed_no_op_git_release_pr",
+                "separately scoped",
+                "approved_local_runtime_launch",
+                "actual_browser_automation_smoke",
+                "approved_provider_api_pilot",
+                "approved_canonical_mutation_pilot",
+                "explicit_git_release_pr_action",
+                "approval_required",
+            ],
+            "agent-skill-modernization-loop.md": [
+                "agent_skill_metrics_loop",
+                "staged candidate-only pipeline",
+                "self-applied updates",
+                "active schedules",
+                "live eval/model/API calls",
+                "target registry",
+                "scorecards",
+                "modernization candidates",
+            ],
+            "cli-reference.md": [
+                "Generated outputs are not source of truth",
+                "render_infrastructure.py",
+                "scan_project_code_graph.py",
+                "--build-index",
+                "--build-backend",
+                "--build-semantic-index",
+                "--build-llm-proposals",
+                "--validate-live-governance",
+                "--build-live-audit",
+                "--build-real-testing-readiness",
+                "--build-runtime-qa",
+            ],
+            "artifact-contracts.md": [
+                "Generated artifacts are staged evidence only",
+                ".codex/product-agent-os/project-code-graph.json",
+                ".codex/product-agent-os/project-cockpit.html",
+                "project-code-graph-runtime-browser-qa.json",
+                "live-server-run-evidence.json",
+                "browser-automation-smoke.json",
+                "provider-call-evidence.json",
+                "canonical-mutation-run.json",
+                "git-release-pr-evidence.md",
+            ],
+            "packaging-and-closure.md": [
+                "python -m mkdocs build --strict",
+                "approved_local_runtime_launch",
+                "actual_browser_automation_smoke",
+                "approved_provider_api_pilot",
+                "approved_canonical_mutation_pilot",
+                "explicit_git_release_pr_action",
+                "Packaging and closure work does not perform these actions without a separate explicit owner approval",
+                "no live server launch",
+                "no browser automation",
+                "no provider calls",
+                "no live external model/API calls",
+                "no canonical graph mutation",
+                "no `git add`, commit, push or PR",
+            ],
+        }
+
+        for filename, terms in pages.items():
+            path = PRODUCT_AGENT_OS / filename
+            with self.subTest(page=filename, exists=True):
+                self.assertTrue(path.exists(), path)
+            text = self._localized_contract_text(path)
+            with self.subTest(page=filename, source_status=True):
+                self.assertIn("Source status: `official + experiment`", text)
+            for required_heading in ["Verification", "Risks"]:
+                with self.subTest(page=filename, heading=required_heading):
+                    self.assertIn(required_heading, text)
+            for term in terms:
+                with self.subTest(page=filename, term=term):
+                    self.assertIn(term, text)
+
+            nav_path = f"product-agent-os/{filename}"
+            with self.subTest(nav=nav_path):
+                self.assertIn(nav_path, nav)
+            with self.subTest(check_docs=nav_path):
+                self.assertIn(nav_path.replace("/", '" / "'), check_docs)
+
+        for path in [
+            "product-agent/product-agent-os-plugin-spec.md",
+            "product-agent-os/project-code-graph.md",
+            "product-agent-os/live-runtime-governance.md",
+            "product-agent-os/approval-bound-real-testing.md",
+            "product-agent-os/agent-skill-modernization-loop.md",
+            "product-agent-os/cli-reference.md",
+            "product-agent-os/artifact-contracts.md",
+            "product-agent-os/packaging-and-closure.md",
+        ]:
+            with self.subTest(required_nav_path=path):
+                self.assertIn(path, nav)
+                self.assertIn(path, check_docs)
+
+        for expected in [
+            "Product-Agent OS Track 10 Task 26 Batch 34 docs packaging closure matrix",
+            "Product-Agent OS Batch 34 project-authored docs packet",
+            "docs/product-agent-os/project-code-graph.md",
+            "docs/product-agent-os/live-runtime-governance.md",
+            "docs/product-agent-os/approval-bound-real-testing.md",
+            "docs/product-agent-os/agent-skill-modernization-loop.md",
+            "docs/product-agent-os/cli-reference.md",
+            "docs/product-agent-os/artifact-contracts.md",
+            "docs/product-agent-os/packaging-and-closure.md",
+            "Product-Agent OS Batch 34 packaging/install smoke packet",
+            "Product-Agent OS Batch 35 approval packet draft",
+            "B34-DOC-M15",
+            "Generated `site/` pages are review output and not source of truth",
+            "no live server",
+            "no browser automation",
+            "no provider/live external model/API calls",
+            "no canonical graph mutation",
+            "no git staging/commit/push/PR",
+            "verification_status:",
+        ]:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        for expected in [
+            "Task 26 Batch 34 Planned Matrix And Closure Status",
+            "`done_through_m15`",
+            "`blocked_without_approval` | Batch 35 execution from Batch 34 handoff",
+            "B34-DOC-M15",
+            "Batch 35 approval packet draft",
+            "site/ must be rebuilt with the regular MkDocs site_dir",
+            "staged evidence only",
+            "not source of truth",
+            "no live server",
+            "no browser automation",
+            "no provider/live external model/API calls",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for expected in [
+            "B34-DOC-M15",
+            "packaging/install smoke",
+            "Batch 35 approval packet draft",
+            "docs-maintainer plugin-cache gap",
+            "accepted Mermaid external asset gap",
+            "staged evidence only",
+            "not source of truth",
+            "no live server",
+            "no browser automation",
+            "no provider/live external model/API calls",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]:
+            with self.subTest(control_plane=expected):
+                self.assertIn(expected, control_plane)
+
+
+    def test_track10_task26_batch34_packaging_handoff_is_recorded(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        smoke = BATCH34_PACKAGING_SMOKE.read_text(encoding="utf-8")
+        approval = BATCH35_APPROVAL_DRAFT.read_text(encoding="utf-8")
+        control_plane = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in [ROOT_README, PLUGIN_README, REQUIREMENTS]
+        )
+
+        smoke_terms = [
+            "Source status: `internal`",
+            "B34-DOC-M15",
+            "validate_codex_compatibility.py",
+            "status: compatible",
+            "checked_docs_maintainer_present: true",
+            "cache_docs_maintainer_present: false",
+            "checked_skill_count: 12",
+            "cache_skill_count: 11",
+            "docs-maintainer plugin-cache gap",
+            "plugin publication",
+            "external writes",
+            "hook activation",
+            "active schedules or automations",
+            "live server launch",
+            "browser automation",
+            "provider/live external model/API calls",
+            "canonical graph mutation",
+            "git stage/commit/push/PR",
+        ]
+        for expected in smoke_terms:
+            with self.subTest(packaging_smoke=expected):
+                self.assertIn(expected, smoke)
+
+        approval_terms = [
+            "Source status: `internal`",
+            "T10-LIVE-M37..M41",
+            "approval_status: approval_required",
+            "approved_local_runtime_launch",
+            "actual_browser_automation_smoke",
+            "approved_provider_api_pilot",
+            "approved_canonical_mutation_pilot",
+            "explicit_git_release_pr_action",
+            "No local live server launch",
+            "No browser automation",
+            "No provider/live external model/API calls",
+            "No canonical graph mutation",
+            "No git stage/commit/push/PR",
+        ]
+        for expected in approval_terms:
+            with self.subTest(batch35_approval=expected):
+                self.assertIn(expected, approval)
+
+        registry_terms = [
+            "Product-Agent OS Batch 34 packaging/install smoke packet",
+            "Product-Agent OS Batch 35 approval packet draft",
+            "checked-in `docs-maintainer` presence",
+            "installed-cache `docs-maintainer` absence",
+            "Batch 35 approval packet draft for `T10-LIVE-M37..M41`",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        for expected in [
+            "done_through_m15",
+            "B34-DOC-M15",
+            "packaging/install smoke",
+            "Batch 35 approval packet draft",
+            "blocked_without_approval",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for expected in [
+            "B34-DOC-M15",
+            "packaging/install smoke",
+            "docs-maintainer plugin-cache gap",
+            "Batch 35 approval packet draft",
+            "no live server",
+            "no browser automation",
+            "no provider/live external model/API calls",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]:
+            with self.subTest(control_plane=expected):
+                self.assertIn(expected, control_plane)
+
+
+    def test_track10_task26_batch34a_product_docs_boundary_is_recorded(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        check_docs = CHECK_DOCS.read_text(encoding="utf-8")
+        boundary = BATCH34A_PUBLIC_DOCS_BOUNDARY.read_text(encoding="utf-8")
+
+        boundary_terms = [
+            "Source status: `internal`",
+            "B34-PROD-M16",
+            "B34-PROD-M17",
+            "B34-PROD-M18",
+            "public_product_candidates",
+            "internal_evidence",
+            "docs/sources/",
+            "docs/superpowers/",
+            "root control-plane",
+            "Product-Agent OS",
+            "Proposed public navigation shape",
+            "Reader journey map",
+            "Page ownership map",
+            "Product Docs Lead",
+            "Architect",
+            "Builder",
+            "Tester / Reviewer",
+            "public_forbidden_terms",
+            "public_ready_pages: []",
+            "cleanup_pending_public_candidates",
+            "test_policy",
+            "activation_condition",
+            "staged evidence only",
+            "not source of truth",
+            "no live server",
+            "no browser automation",
+            "no provider/API call",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]
+        for expected in boundary_terms:
+            with self.subTest(boundary=expected):
+                self.assertIn(expected, boundary)
+
+        public_candidate_paths = [
+            "docs/product-agent-os/index.md",
+            "docs/product-agent-os/project-code-graph.md",
+            "docs/product-agent-os/live-runtime-governance.md",
+            "docs/product-agent-os/approval-bound-real-testing.md",
+            "docs/product-agent-os/agent-skill-modernization-loop.md",
+            "docs/product-agent-os/cli-reference.md",
+            "docs/product-agent-os/artifact-contracts.md",
+            "docs/product-agent-os/packaging-and-closure.md",
+            "docs/product-agent/product-agent-os-plugin-spec.md",
+            "docs/diagrams/index.md",
+            "docs/runtime/overview.md",
+            "docs/agent-systems/subagents-skills.md",
+            "docs/playbooks/docs-update.md",
+        ]
+        for doc_path in public_candidate_paths:
+            with self.subTest(public_candidate=doc_path):
+                self.assertIn(doc_path, boundary)
+
+        registry_terms = [
+            "Product-Agent OS Batch 34A public docs boundary and IA packet",
+            "B34-PROD-M16..M18",
+            "public documentation boundary",
+            "internal evidence inventory",
+            "proposed presentation IA",
+            "public-docs forbidden-term policy",
+            "cleanup_pending",
+            "public_ready",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "`done_through_m18` | Batch 34A product documentation boundary and IA |",
+            "B34-PROD-M16..M18",
+            "public_product_candidates",
+            "internal_evidence",
+            "public_forbidden_terms",
+            "cleanup_pending",
+            "public_ready_pages",
+            "Batch 34B public copy rewrite",
+            "Batch 34C RU/EN localization",
+            "Batch 34D product docs QA and closure",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        plan_terms = [
+            "Batch 34A: Product Documentation Boundary And IA",
+            "B34-PROD-M16",
+            "B34-PROD-M17",
+            "B34-PROD-M18",
+            "Product-facing pages are listed separately from evidence/control-plane pages",
+            "Public pages fail tests if they contain `Task`, `Track`, `Batch`, `T10-*`, `B34-*`",
+        ]
+        for expected in plan_terms:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+
+        self.assertIn(
+            'sources" / "product-agent-os-batch34a-public-docs-boundary.md',
+            check_docs,
+        )
+
+
+    def test_track10_task26_batch34a_forbidden_term_policy_is_staged(self):
+        boundary = BATCH34A_PUBLIC_DOCS_BOUNDARY.read_text(encoding="utf-8")
+
+        forbidden_pattern = re.compile(
+            r"\b(Task|Track|Batch)\b|T[0-9]+-[A-Z0-9-]+|B[0-9]+-[A-Z]+-M[0-9]+"
+        )
+
+        self.assertRegex("Task 26 Batch 34 T10-LIVE-M35 B34-PROD-M18", forbidden_pattern)
+        self.assertIsNone(forbidden_pattern.search("Product-Agent OS delivery lifecycle"))
+
+        for expected in [
+            'exact_words:',
+            '- "Task"',
+            '- "Track"',
+            '- "Batch"',
+            'ledger_patterns:',
+            '- "T[0-9]+-[A-Z0-9-]+"',
+            '- "B[0-9]+-[A-Z]+-M[0-9]+"',
+            "Allowed contexts:",
+            "internal evidence paths listed in `internal_evidence`",
+            "code identifiers, commands, filenames, JSON field names and literal artifact ids",
+            "official OpenAI terms",
+            "Codex App",
+            "CLI",
+            "IDE extension",
+            "subagents",
+            "skills",
+            "`AGENTS.md`",
+            "memory",
+            "sandbox",
+            "approvals",
+            "MCP",
+            "Agents SDK",
+        ]:
+            with self.subTest(policy=expected):
+                self.assertIn(expected, boundary)
+
+        cleanup_pending_pages = [
+            PRODUCT_AGENT_OS / "index.md",
+            PRODUCT_AGENT_OS / "project-code-graph.md",
+            PRODUCT_AGENT_OS / "live-runtime-governance.md",
+            PRODUCT_AGENT_OS / "approval-bound-real-testing.md",
+            PRODUCT_AGENT_OS / "agent-skill-modernization-loop.md",
+            PRODUCT_AGENT_OS / "cli-reference.md",
+            PRODUCT_AGENT_OS / "artifact-contracts.md",
+            PRODUCT_AGENT_OS / "packaging-and-closure.md",
+        ]
+        for path in cleanup_pending_pages:
+            with self.subTest(cleanup_pending_page=path.name):
+                self.assertTrue(path.exists(), path)
+                self.assertIn(f"docs/product-agent-os/{path.name}", boundary)
+                self.assertIn("cleanup_pending", boundary)
+
+        public_ready_pages = []
+        self.assertEqual(public_ready_pages, [])
+        for path in public_ready_pages:
+            text = path.read_text(encoding="utf-8")
+            with self.subTest(public_ready_page=path.name):
+                self.assertIsNone(forbidden_pattern.search(text), path)
+
+
+    def test_track10_task26_batch34b_public_copy_is_product_ready(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        boundary = BATCH34A_PUBLIC_DOCS_BOUNDARY.read_text(encoding="utf-8")
+        rewrite = BATCH34B_PUBLIC_COPY_REWRITE.read_text(encoding="utf-8")
+
+        public_ready_pages = self._batch34_public_ready_pages()
+
+        forbidden_pattern = re.compile(
+            r"\b(Task|Track|Batch)\b|T[0-9]+-[A-Z0-9-]+|B[0-9]+-[A-Z]+-M[0-9]+"
+        )
+        allowed_public_matches = {}
+
+        for path in public_ready_pages:
+            with self.subTest(public_ready_exists=path):
+                self.assertTrue(path.exists(), path)
+
+            rel_path = path.relative_to(ROOT).as_posix()
+            text = path.read_text(encoding="utf-8")
+            with self.subTest(source_status=rel_path):
+                self.assertIn("Source status:", text)
+
+            unexpected = []
+            allowed = allowed_public_matches.get(path, [])
+            for line in text.splitlines():
+                if forbidden_pattern.search(line) and line not in allowed:
+                    unexpected.append(line)
+            with self.subTest(forbidden_terms=rel_path):
+                self.assertEqual([], unexpected)
+
+            with self.subTest(packet_lists_ready_page=rel_path):
+                self.assertIn(rel_path, rewrite)
+
+        for expected in [
+            "Source status: `internal`",
+            "B34-PROD-M19..M23",
+            "public_ready_pages",
+            "Product-Agent OS overview",
+            "core concept pages",
+            "reference pages",
+            "scenario and quality pages",
+            "diagram and bridge pages",
+            "internal ledger language removed",
+            "Source status preserved",
+            "no live server",
+            "no browser automation",
+            "no provider/live external model/API calls",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]:
+            with self.subTest(rewrite_packet=expected):
+                self.assertIn(expected, rewrite)
+
+        for expected in [
+            "Product-Agent OS Batch 34B public copy rewrite packet",
+            "B34-PROD-M19..M23",
+            "internal ledger language removed from public-ready pages",
+            "verification_status:",
+        ]:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        for expected in [
+            "`done_through_m23` | Batch 34B public copy rewrite |",
+            "B34-PROD-M19..M23",
+            "public_ready_pages",
+            "internal ledger language removed",
+            "Batch 34C RU/EN localization",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        self.assertIn("public_ready_pages:", boundary)
+        self.assertIn("cleanup_pending_public_candidates: []", boundary)
+
+
+    def test_track10_task26_batch34c_ru_en_i18n_localization_is_enabled(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        config = MKDOCS.read_text(encoding="utf-8")
+        check_docs = CHECK_DOCS.read_text(encoding="utf-8")
+        requirements = (ROOT / "requirements.txt").read_text(encoding="utf-8")
+        packet = BATCH34C_I18N_LOCALIZATION.read_text(encoding="utf-8")
+        control_plane = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in [REQUIREMENTS]
+        )
+
+        for expected in [
+            "mkdocs-static-i18n",
+            "B34-I18N-M24",
+            "B34-I18N-M25",
+            "B34-I18N-M26",
+            "B34-I18N-M27",
+            "B34-I18N-M28",
+            "B34-I18N-M29",
+            "B34-I18N-M30",
+            "RU default at site root",
+            "EN under /en/",
+            "fallback_to_default: false",
+            "reconfigure_material: true",
+            "reconfigure_search: false",
+            "terminology_allowlist",
+            "localized_page_parity",
+            "no live server",
+            "no browser automation",
+            "no provider/live external model/API calls",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]:
+            with self.subTest(packet=expected):
+                self.assertIn(expected, packet)
+
+        for expected in [
+            "mkdocs-static-i18n",
+            "- i18n:",
+            "docs_structure: suffix",
+            "fallback_to_default: false",
+            "reconfigure_material: true",
+            "reconfigure_search: false",
+            "locale: ru",
+            "default: true",
+            "locale: en",
+            "link: /en/",
+            "theme:",
+            "language: en",
+            "site_name: Product-Agent OS Documentation",
+            "site_description: Product documentation for Product-Agent OS.",
+        ]:
+            with self.subTest(mkdocs=expected):
+                self.assertIn(expected, config)
+
+        self.assertIn("mkdocs-static-i18n", requirements)
+        self.assertIn('sources" / "product-agent-os-batch34c-i18n-localization.md', check_docs)
+
+        public_forbidden_pattern = re.compile(
+            r"\b(Task|Track|Batch)\b|T[0-9]+-[A-Z0-9-]+|B[0-9]+-[A-Z]+-M[0-9]+"
+        )
+        for path in self._batch34_public_ready_pages():
+            rel_path = path.relative_to(ROOT).as_posix()
+            text = path.read_text(encoding="utf-8")
+            en_path = path.with_name(path.stem + ".en" + path.suffix)
+            en_rel_path = en_path.relative_to(ROOT).as_posix()
+
+            with self.subTest(ru_source_status=rel_path):
+                self.assertIn("Source status:", text)
+            with self.subTest(en_exists=en_rel_path):
+                self.assertTrue(en_path.exists(), en_path)
+
+            en_text = en_path.read_text(encoding="utf-8")
+            with self.subTest(en_source_status=en_rel_path):
+                self.assertIn("Source status:", en_text)
+            with self.subTest(packet_lists_page=rel_path):
+                self.assertIn(rel_path, packet)
+                self.assertIn(en_rel_path, packet)
+            with self.subTest(en_is_english=en_rel_path):
+                self.assertIn("Source status:", en_text)
+                self.assertIn("Inputs", en_text)
+                self.assertIn("Outputs", en_text)
+                self.assertIn("Verification", en_text)
+                self.assertIn("Risks", en_text)
+                self.assertNotRegex(en_text, r"[А-Яа-яЁё]{4,}")
+            with self.subTest(public_forbidden_terms=rel_path):
+                self.assertIsNone(public_forbidden_pattern.search(text), rel_path)
+                self.assertIsNone(public_forbidden_pattern.search(en_text), en_rel_path)
+
+        for expected in [
+            "Approved terms that may remain English in RU pages:",
+            "Product-Agent OS",
+            "Codex App",
+            "CLI",
+            "IDE extension",
+            "subagents",
+            "skills",
+            "`AGENTS.md`",
+            "memory",
+            "sandbox",
+            "approvals",
+            "MCP",
+            "Agents SDK",
+            "Forbidden non-term English prose examples in RU pages:",
+        ]:
+            with self.subTest(terminology_policy=expected):
+                self.assertIn(expected, packet)
+
+        for expected in [
+            "Product-Agent OS Batch 34C RU/EN I18N localization packet",
+            "B34-I18N-M24..M30",
+            "mkdocs-static-i18n",
+            "localized_page_parity",
+            "verification_status:",
+        ]:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        for expected in [
+            "`done_through_m30` | Batch 34C RU/EN localization |",
+            "B34-I18N-M24..M30",
+            "RU default at site root",
+            "EN under `/en/`",
+            "localized_page_parity",
+            "Batch 34D product docs QA and closure",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for expected in [
+            "Batch 34C: RU/EN I18N And L10N Enablement",
+            "B34-I18N-M24",
+            "B34-I18N-M30",
+            "Execution status through Batch 34C",
+        ]:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+
+        for expected in [
+            "Batch 34C RU/EN localization",
+            "B34-I18N-M24..M30",
+            "mkdocs-static-i18n",
+            "localized_page_parity",
+            "no live server",
+            "no browser automation",
+            "no provider/live external model/API calls",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]:
+            with self.subTest(control_plane=expected):
+                self.assertIn(expected, control_plane)
+
+
+    def test_track10_task26_batch34d_product_docs_qa_and_closure_is_recorded(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        config = MKDOCS.read_text(encoding="utf-8")
+        check_docs = CHECK_DOCS.read_text(encoding="utf-8")
+        packet = BATCH34D_QA_CLOSURE.read_text(encoding="utf-8")
+        control_plane = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in [REQUIREMENTS]
+        )
+
+        for expected in [
+            "B34-QA-M31",
+            "B34-QA-M32",
+            "B34-QA-M33",
+            "public_forbidden_terms",
+            "localized_page_parity",
+            "Source status",
+            "localized_nav_coverage",
+            "static_html_language_switcher_evidence",
+            "regular site/ rebuild evidence",
+            "no live server",
+            "no browser automation",
+            "no provider/live external model/API calls",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]:
+            with self.subTest(packet=expected):
+                self.assertIn(expected, packet)
+
+        public_forbidden_pattern = re.compile(
+            r"\b(Task|Track|Batch)\b|T[0-9]+-[A-Z0-9-]+|B[0-9]+-[A-Z]+-M[0-9]+"
+        )
+        for path in self._batch34_public_ready_pages():
+            rel_path = path.relative_to(ROOT).as_posix()
+            en_path = path.with_name(path.stem + ".en" + path.suffix)
+            en_rel_path = en_path.relative_to(ROOT).as_posix()
+            text = path.read_text(encoding="utf-8")
+            en_text = en_path.read_text(encoding="utf-8")
+
+            with self.subTest(source_status=rel_path):
+                self.assertIn("Source status:", text)
+                self.assertIn("Source status:", en_text)
+            with self.subTest(public_forbidden_terms=rel_path):
+                self.assertIsNone(public_forbidden_pattern.search(text), rel_path)
+                self.assertIsNone(public_forbidden_pattern.search(en_text), en_rel_path)
+            with self.subTest(localized_page_parity=rel_path):
+                self.assertTrue(en_path.exists(), en_path)
+                self.assertIn(rel_path, packet)
+                self.assertIn(en_rel_path, packet)
+            with self.subTest(en_has_no_cyrillic=en_rel_path):
+                self.assertIsNone(re.search(r"[\u0400-\u04FF]", en_text), en_rel_path)
+
+        for expected in [
+            "plugins:",
+            "- i18n:",
+            "docs_structure: suffix",
+            "fallback_to_default: false",
+            "reconfigure_material: true",
+            "reconfigure_search: false",
+            "locale: ru",
+            "locale: en",
+            "link: /en/",
+            "name: RU",
+            "name: EN",
+        ]:
+            with self.subTest(localized_nav_coverage=expected):
+                self.assertIn(expected, config)
+
+        self.assertIn('sources" / "product-agent-os-batch34d-product-docs-qa-closure.md', check_docs)
+
+        for expected in [
+            "Product-Agent OS Batch 34D product docs QA and closure packet",
+            "B34-QA-M31..M33",
+            "static_html_language_switcher_evidence",
+            "regular site/ rebuild evidence",
+            "verification_status:",
+        ]:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        for expected in [
+            "`done_through_m33` | Batch 34D product docs QA and closure |",
+            "B34-QA-M31..M33",
+            "public_forbidden_terms",
+            "localized_page_parity",
+            "static_html_language_switcher_evidence",
+            "regular site/ rebuild evidence",
+            "Batch 35 execution remains separate and approval-required",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for expected in [
+            "Batch 34D: Product Docs QA And Closure",
+            "B34-QA-M31",
+            "B34-QA-M33",
+            "done_through_m33",
+            "Execution status through Batch 34D",
+        ]:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+
+        for expected in [
+            "Batch 34D product docs QA and closure",
+            "B34-QA-M31..M33",
+            "public_forbidden_terms",
+            "localized_page_parity",
+            "static_html_language_switcher_evidence",
+            "regular site/ rebuild evidence",
+            "no live server",
+            "no browser automation",
+            "no provider/live external model/API calls",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]:
+            with self.subTest(control_plane=expected):
+                self.assertIn(expected, control_plane)
+
+
+    def test_track10_task26_ru_localized_pages_do_not_use_english_explanatory_copy(self):
+        localized_ru_pages = sorted(
+            path
+            for path in self._batch34_public_ready_pages()
+            if path.exists()
+            and path.with_name(path.stem + ".en" + path.suffix).exists()
+        )
+
+        english_markers = {
+            "a",
+            "an",
+            "and",
+            "are",
+            "as",
+            "at",
+            "be",
+            "before",
+            "by",
+            "can",
+            "default",
+            "do",
+            "does",
+            "each",
+            "for",
+            "from",
+            "has",
+            "have",
+            "in",
+            "into",
+            "is",
+            "it",
+            "its",
+            "no",
+            "not",
+            "of",
+            "on",
+            "only",
+            "or",
+            "over",
+            "path",
+            "remain",
+            "remains",
+            "run",
+            "runs",
+            "start",
+            "starts",
+            "support",
+            "supports",
+            "that",
+            "the",
+            "this",
+            "through",
+            "to",
+            "under",
+            "use",
+            "used",
+            "uses",
+            "validate",
+            "validates",
+            "when",
+            "where",
+            "with",
+            "without",
+            "write",
+            "writes",
+        }
+        forbidden_phrases = [
+            "Target users",
+            "Supported surfaces",
+            "Plugin package",
+            "Lifecycle state machine",
+            "Generated project files",
+            "System file update policy",
+            "Failure modes",
+            "Acceptance criteria",
+            "Definition of ready",
+            "Current operating boundary",
+            "Inputs",
+            "Outputs",
+            "Verification",
+            "Risks",
+            "Expected behavior",
+            "Forbidden behavior",
+            "Source of truth",
+            "Not source of truth",
+            "Generated artifacts are",
+            "This page",
+            "This order",
+            "The loop",
+            "Expected artifacts",
+            "Navigation and docs tooling",
+        ]
+        allowed_line_prefixes = ("Source status:", "Источники:")
+        word_pattern = re.compile(r"[A-Za-z][A-Za-z0-9_./-]*")
+
+        unexpected = {}
+        for path in localized_ru_pages:
+            in_code = False
+            page_hits = []
+            for line_no, line in enumerate(path.read_text(encoding="utf-8-sig").splitlines(), 1):
+                stripped = line.strip().lstrip("\ufeff")
+                if stripped.startswith("```"):
+                    in_code = not in_code
+                    continue
+                if in_code or not stripped or stripped.startswith("| ---"):
+                    continue
+                if stripped.startswith(allowed_line_prefixes):
+                    continue
+
+                cleaned = re.sub(r"https?://\S+", " ", stripped)
+                cleaned = re.sub(r"`[^`]*`", " ", cleaned)
+                cleaned = re.sub(r"\buse cases?\b", " ", cleaned, flags=re.I)
+                words = word_pattern.findall(cleaned)
+                marker_count = sum(
+                    1 for word in words if word.lower().strip("./-") in english_markers
+                )
+                phrase_hit = next(
+                    (phrase for phrase in forbidden_phrases if phrase in cleaned), None
+                )
+                if marker_count >= 2 or phrase_hit:
+                    page_hits.append(f"{line_no}: {stripped}")
+
+            if page_hits:
+                unexpected[path.relative_to(ROOT).as_posix()] = page_hits[:10]
+
+        self.assertEqual({}, unexpected)
+
+
+    def test_track10_task26_batch34e_m45_full_site_ru_quality_red_gate(self):
+        packet = BATCH34E_FULL_SITE_INVENTORY.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        for expected in [
+            "B34E-I18N-M45",
+            "done_through_m45",
+            "full_site_ru_quality_sweep",
+            "ru_source_forbidden_english_phrase_hits: 0",
+        ]:
+            with self.subTest(packet=expected):
+                self.assertIn(expected, packet)
+
+        for expected in [
+            "| `done_through_m45` | Batch 34E M45 RU quality sweep |",
+            "full_site_ru_quality_sweep",
+            "B34E-I18N-M46..M49",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for expected in [
+            "Product-Agent OS Batch 34E M45 RU quality sweep",
+            "full_site_ru_quality_sweep",
+            "verification_status:",
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+
+        self.assertIn("Execution status through Batch 34E M45", plan)
+
+        for filename, text in control_plane.items():
+            for expected in [
+                "B34E-I18N-M45",
+                "done_through_m45",
+                "full_site_ru_quality_sweep",
+                "B34E-I18N-M46..M49",
+                "no live server",
+                "no browser automation",
+                "no provider/live external model/API calls",
+                "no canonical graph mutation",
+                "no git stage/commit/push/PR",
+            ]:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+        localized_ru_pages = self._localized_markdown_pages()
+        self.assertEqual([], self._missing_localized_en_siblings())
+
+        forbidden_phrases = [
+            "Target users",
+            "Supported surfaces",
+            "Plugin package",
+            "Lifecycle state machine",
+            "Generated project files",
+            "System file update policy",
+            "Failure modes",
+            "Acceptance criteria",
+            "Definition of ready",
+            "Current operating boundary",
+            "Expected behavior",
+            "Forbidden behavior",
+            "Source of truth",
+            "Not source of truth",
+            "Generated artifacts are",
+            "This page",
+            "This order",
+            "The loop",
+            "Expected artifacts",
+            "Navigation and docs tooling",
+        ]
+        unexpected = {}
+        for path in localized_ru_pages:
+            hits = []
+            in_code = False
+            text = path.read_text(encoding="utf-8-sig")
+            is_task_matrix_plan = "Schema version: task_matrix_plan_v1" in text
+            for line_no, line in enumerate(text.splitlines(), 1):
+                stripped = line.strip().lstrip("\ufeff")
+                if stripped.startswith("```"):
+                    in_code = not in_code
+                    continue
+                if in_code or not stripped:
+                    continue
+                cleaned = re.sub(r"https?://\S+", " ", stripped)
+                cleaned = re.sub(r"`[^`]*`", " ", cleaned)
+                if is_task_matrix_plan and stripped.startswith("- Acceptance criteria:"):
+                    cleaned = cleaned.replace("Acceptance criteria", "", 1)
+                phrase_hit = next(
+                    (phrase for phrase in forbidden_phrases if phrase in cleaned), None
+                )
+                if phrase_hit:
+                    hits.append(f"{line_no}: {stripped}")
+            if hits:
+                unexpected[path.relative_to(ROOT).as_posix()] = hits[:10]
+
+        self.assertEqual({}, unexpected)
+
+
+    def test_track10_task26_batch34e_m46_language_switcher_parity_is_recorded(self):
+        packet = BATCH34E_FULL_SITE_INVENTORY.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        for expected in [
+            "B34E-I18N-M46",
+            "done_through_m46",
+            "full_site_language_switcher_parity",
+            "static_language_switcher_pairs_checked: 121",
+            "english_original_pages_total: 7",
+            "language_switcher_pair_failures: 0",
+            "file_url_escape_failures: 0",
+        ]:
+            with self.subTest(packet=expected):
+                self.assertIn(expected, packet)
+
+        for expected in [
+            "| `done_through_m46` | Batch 34E M46 full-site language switcher parity |",
+            "full_site_language_switcher_parity",
+            "B34E-I18N-M47..M49",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for expected in [
+            "Product-Agent OS Batch 34E M46 language switcher parity",
+            "full_site_language_switcher_parity",
+            "verification_status:",
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+
+        self.assertIn("Execution status through Batch 34E M46", plan)
+
+        for filename, text in control_plane.items():
+            for expected in [
+                "B34E-I18N-M46",
+                "done_through_m46",
+                "full_site_language_switcher_parity",
+                "B34E-I18N-M47..M49",
+                "no live server",
+                "no browser automation",
+                "no provider/live external model/API calls",
+                "no canonical graph mutation",
+                "no git stage/commit/push/PR",
+            ]:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+
+
+    def test_track10_task26_batch34e_m47_search_sitemap_parity_is_recorded(self):
+        packet = BATCH34E_FULL_SITE_INVENTORY.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        for expected in [
+            "B34E-I18N-M47",
+            "done_through_m47",
+            "full_site_search_sitemap_parity",
+            "strict_mkdocs_build_exit_code: 0",
+            "search_index_ru_pages_present: 121",
+            "search_index_en_pages_present: 121",
+            "sitemap_ru_pages_present: 121",
+            "sitemap_en_pages_present: 121",
+            "english_original_pages_total: 7",
+            "search_index_ru_fallback_pollution: 0",
+            "sitemap_ru_fallback_pollution: 0",
+        ]:
+            with self.subTest(packet=expected):
+                self.assertIn(expected, packet)
+
+        for expected in [
+            "| `done_through_m47` | Batch 34E M47 search, sitemap and strict build parity |",
+            "full_site_search_sitemap_parity",
+            "B34E-I18N-M48..M49",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for expected in [
+            "Product-Agent OS Batch 34E M47 search sitemap and strict build parity",
+            "full_site_search_sitemap_parity",
+            "verification_status:",
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+
+        self.assertIn("Execution status through Batch 34E M47", plan)
+
+        for filename, text in control_plane.items():
+            for expected in [
+                "B34E-I18N-M47",
+                "done_through_m47",
+                "full_site_search_sitemap_parity",
+                "B34E-I18N-M48..M49",
+                "no live server",
+                "no browser automation",
+                "no provider/live external model/API calls",
+                "no canonical graph mutation",
+                "no git stage/commit/push/PR",
+            ]:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+
+
+    def test_track10_task26_batch34e_m48_m49_final_closure_is_recorded(self):
+        packet = BATCH34E_FULL_SITE_INVENTORY.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        for expected in [
+            "B34E-I18N-M48",
+            "B34E-I18N-M49",
+            "done_through_m48",
+            "done_through_m49",
+            "full_site_i18n_closure",
+            "full_site_i18n_final_evidence",
+            "strict_mkdocs_final_closure_exit_code: 0",
+            "docs_ru_pages_total: 128",
+            "english_original_pages_total: 7",
+            "localized_ru_pages_total: 121",
+            "existing_en_siblings: 121",
+            "missing_localized_en_siblings: 0",
+            "rendered_ru_pages_checked: 121",
+            "rendered_en_pages_checked: 121",
+            "static_language_switcher_pairs_checked: 121",
+            "language_switcher_pair_failures: 0",
+            "file_url_escape_failures: 0",
+            "search_index_ru_pages_present: 121",
+            "search_index_en_pages_present: 121",
+            "sitemap_ru_pages_present: 121",
+            "sitemap_en_pages_present: 121",
+            "en_source_cyrillic_hits: 0",
+            "ru_source_forbidden_english_phrase_hits: 0",
+        ]:
+            with self.subTest(packet=expected):
+                self.assertIn(expected, packet)
+
+        for expected in [
+            "| `done_through_m49` | Batch 34E M48-M49 final full-site i18n closure |",
+            "full_site_i18n_closure",
+            "full_site_i18n_final_evidence",
+            "B34E-I18N-M48..M49",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+        self.assertNotIn("| `planned` | Batch 34E remaining build and closure gates |", backlog)
+
+        for expected in [
+            "Product-Agent OS Batch 34E M48-M49 final full-site i18n closure",
+            "full_site_i18n_closure",
+            "full_site_i18n_final_evidence",
+            "verification_status:",
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+
+        self.assertIn("Execution status through Batch 34E M49", plan)
+
+        for document, text in self._internal_history_documents(documents).items():
+            for expected in [
+                "Batch 34E full-site i18n parity",
+                "B34E-I18N-M48..M49",
+                "done_through_m49",
+                "full_site_i18n_closure",
+                "full_site_i18n_final_evidence",
+                "no remaining Batch 34E gates",
+                "Batch 35",
+            ]:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        for filename, text in control_plane.items():
+            for expected in [
+                "B34E-I18N-M48..M49",
+                "done_through_m49",
+                "full_site_i18n_closure",
+                "full_site_i18n_final_evidence",
+                "strict_mkdocs_final_closure_exit_code: 0",
+                "no remaining Batch 34E gates",
+                "Batch 35",
+                "no live server",
+                "no browser automation",
+                "no provider/live external model/API calls",
+                "no canonical graph mutation",
+                "no git stage/commit/push/PR",
+            ]:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+        base_pages = self._base_markdown_pages()
+        source_pages = self._localized_markdown_pages()
+        english_original_pages = self._english_original_markdown_pages()
+        paired_pages = [
+            path
+            for path in source_pages
+            if self._en_sibling_for(path).exists()
+        ]
+        missing_pages = self._missing_localized_en_siblings()
+        self.assertEqual([], [path.relative_to(DOCS).as_posix() for path in missing_pages])
+        self.assertEqual(
+            [],
+            [
+                self._en_sibling_for(path).relative_to(DOCS).as_posix()
+                for path in english_original_pages
+                if self._en_sibling_for(path).exists()
+            ],
+        )
+
+        en_cyrillic = [
+            path.relative_to(DOCS).as_posix()
+            for path in DOCS.rglob("*.en.md")
+            if re.search(r"[\u0400-\u04FF]", path.read_text(encoding="utf-8-sig"))
+        ]
+        self.assertEqual([], en_cyrillic[:20])
+
+
+    def test_track10_task26_batch34e_full_site_i18n_parity_is_planned(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        ru_pages = self._base_markdown_pages()
+        localized_pages = self._localized_markdown_pages()
+        english_original_pages = self._english_original_markdown_pages()
+        paired_pages = [
+            path
+            for path in localized_pages
+            if self._en_sibling_for(path).exists()
+        ]
+        missing_pages = self._missing_localized_en_siblings()
+
+        self.assertEqual(0, len(missing_pages))
+
+        for expected in [
+            "Batch 34E: Full-Site I18N Parity Corrective Plan",
+            "B34E-I18N-M34..M49",
+            "docs_ru_pages_total: 128",
+            "english_original_pages_total: 7",
+            "localized_ru_pages_total: 121",
+            "existing_en_siblings: 121",
+            "missing_localized_en_siblings: 0",
+            "every localized RU Markdown page has a `.en.md` sibling",
+            "full EN navigation/search/sitemap coverage",
+            "no missing-page language-switcher fallback",
+            "Batch 34C remains valid only for the promoted public-ready page set",
+        ]:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+
+        for marker in [f"B34E-I18N-M{number:02d}" for number in range(34, 50)]:
+            with self.subTest(matrix_id=marker):
+                self.assertIn(marker, plan)
+
+        for expected in [
+            "| `done_through_m37` | Batch 34E M34-M37 full-site i18n inventory and nav gate |",
+            "| `done_through_m43` | Batch 34E M38-M43 EN sibling translation pass |",
+            "| `done_through_m44` | Batch 34E M44 EN editorial quality sweep |",
+            "| `done_through_m45` | Batch 34E M45 RU quality sweep |",
+            "| `done_through_m46` | Batch 34E M46 full-site language switcher parity |",
+            "| `done_through_m47` | Batch 34E M47 search, sitemap and strict build parity |",
+            "| `done_through_m49` | Batch 34E M48-M49 final full-site i18n closure |",
+            "B34E-I18N-M34..M37",
+            "B34E-I18N-M38..M43",
+            "B34E-I18N-M44",
+            "B34E-I18N-M45",
+            "B34E-I18N-M46",
+            "B34E-I18N-M47",
+            "B34E-I18N-M48..M49",
+            "done_through_m49",
+            "B34E-I18N-M45..M49",
+            "B34E-I18N-M46..M49",
+            "B34E-I18N-M47..M49",
+            "docs_ru_pages_total: 128",
+            "english_original_pages_total: 7",
+            "localized_ru_pages_total: 121",
+            "existing_en_siblings: 121",
+            "missing_localized_en_siblings: 0",
+            "full_site_en_nav_configured",
+            "full_site_en_siblings_created",
+            "full_site_en_editorial_quality_sweep",
+            "full_site_ru_quality_sweep",
+            "full_site_language_switcher_parity",
+            "full_site_search_sitemap_parity",
+            "full_site_i18n_closure",
+            "full_site_i18n_final_evidence",
+            "no remaining Batch 34E gates",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        self.assertNotIn("| `planned` | Batch 34E remaining build and closure gates |", backlog)
+
+        for expected in [
+            "Product-Agent OS Batch 34E full-site i18n parity corrective matrix",
+            "Product-Agent OS Batch 34E M48-M49 final full-site i18n closure",
+            "B34E-I18N-M34..M49",
+            "full-site bilingual documentation",
+            "docs_ru_pages_total: 128",
+            "english_original_pages_total: 7",
+            "localized_ru_pages_total: 121",
+            "existing_en_siblings: 121",
+            "missing_localized_en_siblings: 0",
+            "full_site_en_siblings_created",
+            "full_site_search_sitemap_parity",
+            "full_site_i18n_closure",
+            "full_site_i18n_final_evidence",
+            "verification_status:",
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+
+        for document, text in self._internal_history_documents(documents).items():
+            for expected in [
+                "Batch 34E full-site i18n parity",
+                "B34E-I18N-M34..M37",
+                "B34E-I18N-M38..M43",
+                "B34E-I18N-M44",
+                "B34E-I18N-M45",
+                "B34E-I18N-M47",
+                "B34E-I18N-M48..M49",
+                "done_through_m49",
+                "B34E-I18N-M47..M49",
+                "Batch 34C localized the public-ready set only",
+                "docs_ru_pages_total: 128",
+                "english_original_pages_total: 7",
+                "localized_ru_pages_total: 121",
+                "existing_en_siblings: 121",
+                "missing_localized_en_siblings: 0",
+                "full_site_i18n_closure",
+                "full_site_i18n_final_evidence",
+                "no remaining Batch 34E gates",
+                "complete through",
+            ]:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        for filename, text in control_plane.items():
+            for expected in [
+                "B34E-I18N-M34..M37",
+                "B34E-I18N-M38..M43",
+                "B34E-I18N-M44",
+                "B34E-I18N-M45",
+                "B34E-I18N-M45..M49",
+                "B34E-I18N-M46..M49",
+                "B34E-I18N-M47",
+                "B34E-I18N-M47..M49",
+                "B34E-I18N-M48..M49",
+                "done_through_m49",
+                "full_site_search_sitemap_parity",
+                "full_site_i18n_closure",
+                "full_site_i18n_final_evidence",
+                "full-site i18n parity",
+                "docs_ru_pages_total: 128",
+                "english_original_pages_total: 7",
+                "localized_ru_pages_total: 121",
+                "existing_en_siblings: 121",
+                "missing_localized_en_siblings: 0",
+                "full_site_en_siblings_created",
+                "full_site_en_editorial_quality_sweep",
+                "full_site_ru_quality_sweep",
+                "no remaining Batch 34E gates",
+                "no live server",
+                "no browser automation",
+                "no provider/live external model/API calls",
+                "no canonical graph mutation",
+                "no git stage/commit/push/PR",
+            ]:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+
+    def test_track10_task26_batch34e_m34_m37_inventory_and_nav_are_recorded(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        check_docs = CHECK_DOCS.read_text(encoding="utf-8")
+        config = MKDOCS.read_text(encoding="utf-8")
+        self.assertTrue(BATCH34E_FULL_SITE_INVENTORY.exists(), BATCH34E_FULL_SITE_INVENTORY)
+        packet = BATCH34E_FULL_SITE_INVENTORY.read_text(encoding="utf-8")
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        ru_pages = self._base_markdown_pages()
+        localized_pages = self._localized_markdown_pages()
+        english_original_pages = self._english_original_markdown_pages()
+        paired_pages = [
+            path
+            for path in localized_pages
+            if self._en_sibling_for(path).exists()
+        ]
+        missing_pages = self._missing_localized_en_siblings()
+
+        self.assertEqual(0, len(missing_pages))
+
+        for expected in [
+            "Source status:",
+            "B34E-I18N-M34..M37",
+            "full_site_i18n_inventory",
+            "full_site_i18n_red_gate",
+            "full_site_en_nav_configured",
+            "full_site_en_siblings_created",
+            "docs_ru_pages_total: 128",
+            "english_original_pages_total: 7",
+            "localized_ru_pages_total: 121",
+            "existing_en_siblings: 121",
+            "missing_localized_en_siblings: 0",
+            "initial_m35_existing_en_siblings: 37",
+            "initial_m35_missing_en_siblings: 90",
+            "expected_red_full_site_i18n_parity",
+            "fallback_to_default: false",
+            "no missing-page language-switcher fallback",
+        ]:
+            with self.subTest(packet=expected):
+                self.assertIn(expected, packet)
+
+        for path in missing_pages:
+            rel_path = path.relative_to(DOCS).as_posix()
+            with self.subTest(missing_page_inventory=rel_path):
+                self.assertIn(rel_path, packet)
+
+        for expected in [
+            'sources" / "product-agent-os-batch34e-full-site-i18n-inventory.md',
+            "Product-Agent OS Batch 34E M34-M37 full-site i18n inventory and nav gate",
+            "`done_through_m37` | Batch 34E M34-M37 full-site i18n inventory and nav gate |",
+            "`done_through_m43` | Batch 34E M38-M43 EN sibling translation pass |",
+            "Execution status through Batch 34E M34-M37",
+            "Execution status through Batch 34E M38-M43",
+        ]:
+            with self.subTest(sync_term=expected):
+                self.assertTrue(
+                    expected in check_docs
+                    or expected in registry
+                    or expected in backlog
+                    or expected in plan,
+                    expected,
+                )
+
+        for expected in [
+            "- Sources:",
+            "- Codex:",
+            "- Prompt And Context Engineering:",
+            "- Product-Agent Workflows:",
+            "- Product-Agent OS Plugin:",
+            "- Methodologies For Large Projects:",
+            "- Agent Systems:",
+            "- Playbooks:",
+            "- Templates:",
+            "- Insights:",
+            "sources/registry.md",
+            "codex/overview.md",
+            "prompting/overview.md",
+            "product-agent-os/index.md",
+            "methodologies/index.md",
+            "agent-systems/overview.md",
+            "playbooks/research-loop.md",
+            "artifact-templates/prompt-packet.md",
+            "insights/index.md",
+        ]:
+            with self.subTest(full_en_nav=expected):
+                self.assertIn(expected, config)
+
+        for filename, text in control_plane.items():
+            for expected in [
+                "B34E-I18N-M34..M37",
+                "full_site_i18n_inventory",
+                "full_site_i18n_red_gate",
+                "full_site_en_nav_configured",
+                "full_site_en_siblings_created",
+                "expected_red_full_site_i18n_parity",
+                "done_through_m44",
+                "no live server",
+                "no browser automation",
+                "no provider/live external model/API calls",
+                "no canonical graph mutation",
+                "no git stage/commit/push/PR",
+            ]:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+
+    def test_track10_task26_batch34e_english_original_plan_files_are_not_translation_gaps(self):
+        packet = BATCH34E_FULL_SITE_INVENTORY.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        english_original_pages = [
+            DOCS / "superpowers" / "plans" / "2026-05-14-product-agent-os-generated-infrastructure.md",
+            DOCS / "superpowers" / "plans" / "2026-05-14-product-agent-os-lifecycle-skills.md",
+            DOCS / "superpowers" / "plans" / "2026-05-14-product-agent-os-plugin-core.md",
+            DOCS / "superpowers" / "plans" / "2026-05-14-product-agent-os-production-hardening.md",
+            DOCS / "superpowers" / "plans" / "2026-05-15-product-agent-os-codex-runtime-runner.md",
+            DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md",
+            DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md",
+            DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md",
+            DOCS / "superpowers" / "plans" / "2026-08-05-gpt56-r1-r6-remediation.md",
+            DOCS / "superpowers" / "plans" / "2026-08-10-batch45-s9-0-team-readiness.md",
+        ]
+        base_pages = sorted(
+            path
+            for path in DOCS.rglob("*.md")
+            if not path.name.endswith(".en.md")
+        )
+        localized_pages = [
+            path for path in base_pages if path not in set(english_original_pages)
+        ]
+        missing_localized_siblings = [
+            path.relative_to(DOCS).as_posix()
+            for path in localized_pages
+            if not path.with_name(path.stem + ".en" + path.suffix).exists()
+        ]
+
+        self.assertEqual([], missing_localized_siblings)
+        self.assertTrue(
+            all(
+                page.exists()
+                and not page.with_name(page.stem + ".en" + page.suffix).exists()
+                for page in english_original_pages
+            )
+        )
+
+        for text in [packet, registry, backlog, plan]:
+            for expected in [
+                "english_original_pages_total: 7",
+                "localized_ru_pages_total: 121",
+                "existing_en_siblings: 121",
+                "missing_localized_en_siblings: 0",
+            ]:
+                with self.subTest(expected=expected):
+                    self.assertIn(expected, text)
+
+
+    def test_track10_task26_batch34e_m38_m43_en_translations_exist(self):
+        expected_pages = [
+            "agent-systems/evals-observability.md",
+            "agent-systems/memory.md",
+            "agent-systems/overview.md",
+            "agent-systems/sdk-patterns.md",
+            "agent-systems/session-control.md",
+            "agent-systems/templates.md",
+            "artifact-templates/control-plane-files.md",
+            "artifact-templates/plugin-blueprint.md",
+            "artifact-templates/product-skill.md",
+            "artifact-templates/prompt-packet.md",
+            "artifact-templates/runlog.md",
+            "codex/configuration.md",
+            "codex/overview.md",
+            "codex/security.md",
+            "codex/surfaces.md",
+            "codex/use-cases-deep-analysis.md",
+            "codex/workflows.md",
+            "insights/index.md",
+            "insights/insight-card-template.md",
+            "insights/seed-insights.md",
+            "methodologies/api-integrations.md",
+            "methodologies/backend.md",
+            "methodologies/business-product.md",
+            "methodologies/codex-agentic-workflow.md",
+            "methodologies/database-data.md",
+            "methodologies/delivery-release-operations.md",
+            "methodologies/frontend.md",
+            "methodologies/index.md",
+            "methodologies/llm-ai-rag.md",
+            "methodologies/quality-testing-evals.md",
+            "methodologies/requirements-domain.md",
+            "methodologies/security-privacy-compliance.md",
+            "methodologies/solution-architecture.md",
+            "playbooks/ai-team-design.md",
+            "playbooks/build-full-feature.md",
+            "playbooks/code-review.md",
+            "playbooks/context7-deep-research.md",
+            "playbooks/eval-driven-improvement.md",
+            "playbooks/grounded-answering.md",
+            "playbooks/maintain-agent-operating-docs.md",
+            "playbooks/product-ready-pr.md",
+            "playbooks/research-loop.md",
+            "playbooks/workflow-to-skill.md",
+            "prompting/anti-hallucination.md",
+            "prompting/context-engineering.md",
+            "prompting/overview.md",
+            "prompting/question-design.md",
+            "sources/add-ddd-tdd-fsd-llm-development.md",
+            "sources/context7-research.md",
+            "sources/deep-research-report.md",
+            "sources/development-methodology-gap-matrix.md",
+            "sources/development-methodology-research-log.md",
+            "sources/methodology-research/api-integrations.md",
+            "sources/methodology-research/backend.md",
+            "sources/methodology-research/business-product.md",
+            "sources/methodology-research/codex-agentic-workflow.md",
+            "sources/methodology-research/database-data.md",
+            "sources/methodology-research/delivery-release-operations.md",
+            "sources/methodology-research/frontend.md",
+            "sources/methodology-research/llm-ai-rag.md",
+            "sources/methodology-research/quality-testing-evals.md",
+            "sources/methodology-research/requirements-domain.md",
+            "sources/methodology-research/security-privacy-compliance.md",
+            "sources/methodology-research/solution-architecture.md",
+            "sources/product-agent-os-batch34-packaging-install-smoke.md",
+            "sources/product-agent-os-batch34a-public-docs-boundary.md",
+            "sources/product-agent-os-batch34b-public-copy-rewrite.md",
+            "sources/product-agent-os-batch34c-i18n-localization.md",
+            "sources/product-agent-os-batch34d-product-docs-qa-closure.md",
+            "sources/product-agent-os-batch35-approval-packet-draft.md",
+            "sources/product-agent-os-final-predevelopment-review.md",
+            "sources/product-agent-os-pre-track-8-implementation-inventory.md",
+            "sources/product-agent-os-track-10-backlog.md",
+            "sources/product-agent-os-track-8-detailed-backlog.md",
+            "sources/product-agent-os-track-9-backlog.md",
+            "sources/registry.md",
+            "sources/source-card-template.md",
+            "superpowers/specs/2026-05-14-product-agent-os-agents-sdk-runner-design.md",
+            "superpowers/specs/2026-05-14-product-agent-os-generated-infrastructure-design.md",
+            "superpowers/specs/2026-05-14-product-agent-os-lifecycle-skills-design.md",
+            "superpowers/specs/2026-05-14-product-agent-os-production-hardening-design.md",
+            "superpowers/specs/2026-05-15-product-agent-os-codex-runtime-runner-design.md",
+            "superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md",
+        ]
+
+        missing = []
+        cyrillic_hits = []
+        for rel_path in expected_pages:
+            source = DOCS / rel_path
+            en_path = source.with_name(source.stem + ".en" + source.suffix)
+            if not en_path.exists():
+                missing.append(en_path.relative_to(DOCS).as_posix())
+                continue
+
+            text = en_path.read_text(encoding="utf-8-sig")
+            if "Source status:" not in text:
+                cyrillic_hits.append(f"{en_path.relative_to(DOCS).as_posix()}: missing Source status")
+            if re.search(r"[\u0400-\u04FF]", text):
+                cyrillic_hits.append(en_path.relative_to(DOCS).as_posix())
+
+        self.assertEqual([], missing)
+        self.assertEqual([], cyrillic_hits)
+
+        packet = BATCH34E_FULL_SITE_INVENTORY.read_text(encoding="utf-8")
+        for path in self._english_original_markdown_pages():
+            rel_path = path.relative_to(DOCS).as_posix()
+            with self.subTest(english_original_plan=rel_path):
+                self.assertIn(rel_path, packet)
+                self.assertFalse(self._en_sibling_for(path).exists())
+
+
+    def test_track10_task26_batch34e_m44_en_editorial_quality_sweep_is_recorded(self):
+        packet = BATCH34E_FULL_SITE_INVENTORY.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        for expected in [
+            "B34E-I18N-M44",
+            "done_through_m44",
+            "full_site_en_editorial_quality_sweep",
+            "en_source_cyrillic_hits: 0",
+            "en_source_mojibake_hits: 0",
+            "en_source_transliteration_hits: 0",
+            "en_internal_link_failures: 0",
+        ]:
+            with self.subTest(packet=expected):
+                self.assertIn(expected, packet)
+
+        for expected in [
+            "| `done_through_m44` | Batch 34E M44 EN editorial quality sweep |",
+            "full_site_en_editorial_quality_sweep",
+            "B34E-I18N-M45..M49",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for expected in [
+            "Product-Agent OS Batch 34E M44 EN editorial quality sweep",
+            "full_site_en_editorial_quality_sweep",
+            "verification_status:",
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+
+        self.assertIn("Execution status through Batch 34E M44", plan)
+
+        for filename, text in control_plane.items():
+            for expected in [
+                "B34E-I18N-M44",
+                "done_through_m44",
+                "full_site_en_editorial_quality_sweep",
+                "B34E-I18N-M45..M49",
+                "no live server",
+                "no browser automation",
+                "no provider/live external model/API calls",
+                "no canonical graph mutation",
+                "no git stage/commit/push/PR",
+            ]:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+        transliteration_terms = [
+            "sdelat",
+            "dolzhen",
+            "dolzhna",
+            "dolzhny",
+            "dokumentats",
+            "istochnik",
+            "istochniki",
+            "istochnikov",
+            "razrabot",
+            "metodologiya",
+            "metodologiy",
+            "ispolz",
+            "vyvod",
+            "gotov",
+            "tolko",
+            "posle",
+            "rasshireniya",
+            "stsenar",
+            "matrits",
+            "proekta",
+            "proveryat",
+            "proverki",
+            "proverku",
+            "proveryaetsya",
+            "proveryaemuyu",
+            "proveryaet",
+            "artefakt",
+            "trebuet",
+            "chelovechesk",
+            "ponyat",
+            "vazhny",
+            "sobstvennyy",
+            "kazhdaya",
+            "statusov",
+            "sokhranen",
+            "zafiksirovat",
+            "primenyaetsya",
+            "izbytochna",
+            "poka",
+            "sredniy",
+            "nizhe",
+            "issledovaniya",
+            "sostavit",
+            "opisanie",
+            "pervichnye",
+            "ozhidaemyy",
+            "kogda",
+            "primenyat",
+            "nuzh",
+            "mozhno",
+            "nelzya",
+            "esli",
+            "dlya",
+            "kakie",
+            "kakikh",
+            "chto",
+            "zhivut",
+            "stranits",
+            "bazovyy",
+            "luchshe",
+            "vybrat",
+            "universalnyy",
+        ]
+        transliteration_re = re.compile(
+            r"\b(?:"
+            + "|".join(re.escape(term) for term in transliteration_terms)
+            + r")\w*\b",
+            re.IGNORECASE,
+        )
+        link_re = re.compile(
+            r"!\[[^\]]*\]\(([^)]+)\)|(?<!!)\[[^\]]+\]\(([^)]+)\)"
+        )
+
+        content_issues = []
+        link_issues = []
+        for path in sorted(DOCS.rglob("*.en.md")):
+            text = path.read_text(encoding="utf-8-sig")
+            rel_path = path.relative_to(DOCS).as_posix()
+            if re.search(r"[\u0400-\u04FF]", text):
+                content_issues.append(f"{rel_path}: cyrillic")
+            if any(marker in text for marker in ["\ufffd", "\u00d0", "\u00d1"]):
+                content_issues.append(f"{rel_path}: mojibake")
+            if transliteration_re.search(text):
+                content_issues.append(f"{rel_path}: transliteration")
+            lowered = text.lower()
+            if "???" in text or "translation pending" in lowered:
+                content_issues.append(f"{rel_path}: placeholder")
+
+            link_scan_text = re.sub(r"(?ms)^```.*?^```", "", text)
+            for match in link_re.finditer(link_scan_text):
+                raw_link = (match.group(1) or match.group(2) or "").strip()
+                if not raw_link or raw_link.startswith("#"):
+                    continue
+                if re.match(r"^[a-zA-Z][a-zA-Z0-9+.-]*:", raw_link):
+                    continue
+
+                target = raw_link.split("#", 1)[0].split("?", 1)[0].strip()
+                target = target.strip("<>")
+                if not target:
+                    continue
+
+                resolved = (path.parent / unquote(target)).resolve()
+                if target.endswith("/"):
+                    candidates = [resolved / "index.md", resolved / "index.en.md"]
+                elif resolved.suffix:
+                    candidates = [resolved]
+                    if resolved.suffix == ".md" and not resolved.name.endswith(".en.md"):
+                        candidates.append(
+                            resolved.with_name(resolved.stem + ".en" + resolved.suffix)
+                        )
+                else:
+                    candidates = [
+                        resolved,
+                        resolved.with_suffix(".md"),
+                        resolved.with_name(resolved.name + ".en.md"),
+                    ]
+
+                if not any(candidate.exists() for candidate in candidates):
+                    link_issues.append(f"{rel_path}: {raw_link}")
+
+        self.assertEqual([], content_issues)
+        self.assertEqual([], link_issues)
+
+
+    def test_track10_task26_batch35_real_testing_execution_matrix_is_planned(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        batch35_packet = BATCH35_APPROVAL_DRAFT.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 Task 26 Batch 35 approval-bound real testing execution matrix",
+            "Product-Agent OS Batch 35 M37 approved local runtime launch evidence",
+            "Product-Agent OS Batch 35 M38 actual browser automation smoke evidence",
+            "Product-Agent OS Batch 35 M39 Codex session provider pilot evidence",
+            "Product-Agent OS Batch 35 M40 canonical mutation pilot evidence",
+            "Product-Agent OS Batch 35 M41 git release/PR preflight evidence",
+            "T10-LIVE-M37..M41",
+            "T10-LIVE-M37",
+            "T10-LIVE-M38",
+            "T10-LIVE-M39",
+            "T10-LIVE-M40",
+            "T10-LIVE-M41",
+            "batch35_approval_bound_real_testing_execution",
+            "approved_local_runtime_launch",
+            "actual_browser_automation_smoke",
+            "approved_provider_api_pilot",
+            "approved_canonical_mutation_pilot",
+            "explicit_git_release_pr_action",
+            "live-server-run-evidence.json",
+            "browser-automation-smoke.json",
+            "provider-call-evidence.json",
+            "provider-eval-report.json",
+            "canonical-mutation-run.json",
+            "graph-mutation-journal.jsonl",
+            "rollback-proof.json",
+            "git-release-pr-evidence.md",
+            "owner_closed_no_op_git_release_pr",
+            "Playwright Chromium",
+            "codex_user_session",
+            "desktop.png",
+            "mobile.png",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "Task 26 Batch 35 Execution Matrix",
+            "| `done_through_m37` | `T10-LIVE-M37` approved local runtime launch |",
+            "| `done_through_m38` | `T10-LIVE-M38` actual browser automation smoke |",
+            "| `done_through_m39` | `T10-LIVE-M39` Codex session provider pilot |",
+            "| `done_through_m40` | `T10-LIVE-M40` canonical mutation pilot |",
+            "| `owner_closed_no_op_git_release_pr` | `T10-LIVE-M41` git release/PR action |",
+            "approved_local_runtime_launch",
+            "actual_browser_automation_smoke",
+            "approved_provider_api_pilot",
+            "approved_canonical_mutation_pilot",
+            "explicit_git_release_pr_action",
+            "short-lived local server bound to `127.0.0.1`",
+            "Playwright Chromium",
+            "browser-automation-smoke.json",
+            "desktop/mobile screenshots",
+            "console_errors: 0",
+            "network_failures: 0",
+            "mobile_overflow: false",
+            "generated-view labels",
+            "source-boundary labels",
+            "provider-call-evidence.json",
+            "provider-eval-report.json",
+            "codex_user_session",
+            "OPENAI_API_KEY used: false",
+            "direct API call from workspace shell: false",
+            "canonical-mutation-run.json",
+            "graph-mutation-journal.jsonl",
+            "rollback-proof.json",
+            "stage_root_only",
+            "canonical_graph_source_mutated: false",
+            "rollback_restores_previous_graph_digest: true",
+            "git-release-pr-evidence.md",
+            "missing_required_fields",
+            "performs no canonical graph mutation",
+            "performs no git stage/commit/push/PR",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 26 Batch 35",
+            "T10-LIVE-M37..M41",
+            "T10-LIVE-M37",
+            "T10-LIVE-M38",
+            "T10-LIVE-M39",
+            "T10-LIVE-M40",
+            "T10-LIVE-M41",
+            "Approval-Bound Real Testing Execution Matrix",
+            "done_through_m40",
+            "approved_local_runtime_launch",
+            "actual_browser_automation_smoke",
+            "browser-automation-smoke.json",
+            "Playwright Chromium",
+            "server_shutdown_complete: true",
+            "approved_provider_api_pilot",
+            "provider-call-evidence.json",
+            "provider-eval-report.json",
+            "codex_user_session",
+            "OPENAI_API_KEY used: false",
+            "approved_canonical_mutation_pilot",
+            "canonical-mutation-run.json",
+            "graph-mutation-journal.jsonl",
+            "rollback-proof.json",
+            "stage_root_only",
+            "owner_closed_no_op_git_release_pr",
+            "explicit_git_release_pr_action",
+            "batch35_approval_bound_real_testing_execution",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]
+        for document, text in self._internal_history_documents(documents).items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 26 Batch 35",
+            "T10-LIVE-M37..M41",
+            "T10-LIVE-M37",
+            "T10-LIVE-M38",
+            "T10-LIVE-M39",
+            "T10-LIVE-M40",
+            "T10-LIVE-M41",
+            "Approval-Bound Real Testing Execution Matrix",
+            "batch35_approval_bound_real_testing_execution",
+            "approved_local_runtime_launch",
+            "done_through_m40",
+            "actual_browser_automation_smoke",
+            "browser-automation-smoke.json",
+            "Playwright Chromium",
+            "server_shutdown_complete: true",
+            "approved_provider_api_pilot",
+            "provider-call-evidence.json",
+            "provider-eval-report.json",
+            "codex_user_session",
+            "OPENAI_API_KEY used: false",
+            "approved_canonical_mutation_pilot",
+            "canonical-mutation-run.json",
+            "graph-mutation-journal.jsonl",
+            "rollback-proof.json",
+            "stage_root_only",
+            "owner_closed_no_op_git_release_pr",
+            "explicit_git_release_pr_action",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+        batch35_packet_terms = [
+            "Source status: `internal`",
+            "T10-LIVE-M37",
+            "approved_local_runtime_launch",
+            "T10-LIVE-M38",
+            "actual_browser_automation_smoke",
+            "T10-LIVE-M39",
+            "approved_provider_api_pilot",
+            "T10-LIVE-M40",
+            "approved_canonical_mutation_pilot",
+            "T10-LIVE-M41",
+            "explicit_git_release_pr_action",
+            "batch35_approval_bound_real_testing_execution",
+            "live-server-run-evidence.json",
+            "browser-automation-smoke.json",
+            "provider-call-evidence.json",
+            "provider-eval-report.json",
+            "canonical-mutation-run.json",
+            "graph-mutation-journal.jsonl",
+            "rollback-proof.json",
+            "git-release-pr-evidence.md",
+            "status: `passed`",
+            "blocked_pending_explicit_git_release_fields",
+            "127.0.0.1",
+            "health_check",
+            "auth_rejection",
+            "public_bind_rejection",
+            "query_check",
+            "write_endpoint_rejection",
+            "server_shutdown_complete: true",
+            "redaction.ok: true",
+            "Playwright Chromium",
+            "desktop.png",
+            "mobile.png",
+            "console_errors: 0",
+            "network_failures: 0",
+            "mobile_overflow: false",
+            "generated-view labels",
+            "source-boundary labels",
+            "codex_user_session",
+            "OPENAI_API_KEY used: false",
+            "direct API call from workspace shell: false",
+            "provider_secret_stored: false",
+            "canonical_graph_source_mutated: false",
+            "operation_count: 1",
+            "journal_entry_count: 1",
+            "rollback_restores_previous_graph_digest: true",
+            "git_stage_commit_push_pr_performed: false",
+            "missing_required_fields",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]
+        for expected in batch35_packet_terms:
+            with self.subTest(batch35_packet=expected):
+                self.assertIn(expected, batch35_packet)
+
+
+    def test_track10_task25_batch20_local_backend_gate_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 project code graph Batch 20 local query backend gate",
+            "T10-CG-V2-M39..M44",
+            "project_graph_backend.py",
+            "project_graph_local_backend_gate_present",
+            "disabled by default",
+            "graph-only fallback",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "| `done` | `T10-CG-V2-M39..M44` local query backend and live database/server gate |",
+            "Batch 20 explicit approval",
+            "generated local file-store",
+            "not source of truth",
+            "server mode is disabled by default",
+            "no production server",
+            "graph-only fallback",
+            "rollback/disable path is deleting `.codex/product-agent-os/project-code-graph-backend.json`",
+            "Batch 21, Batch 22 and Batch 23 are now implemented separately as generated, approval-bound extension slices",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 25 Batch 20",
+            "T10-CG-V2-M39..M44",
+            "project_graph_backend.py",
+            "project_graph_local_backend_gate_present",
+            "approval decision packet",
+            "storage path, port policy, process lifecycle, auth boundary, cleanup, logging, performance threshold and rollback path",
+            "disabled by default",
+            "generated local file-store",
+            "not source of truth",
+            "graph-only fallback",
+            "no production server",
+        ]
+        for document, text in self._internal_history_documents(documents).items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 25 Batch 20",
+            "T10-CG-V2-M39..M44",
+            "project_graph_backend.py",
+            "project_graph_local_backend_gate_present",
+            "approval decision packet",
+            "storage path, port policy, process lifecycle, auth boundary, cleanup, logging, performance threshold and rollback path",
+            "disabled by default",
+            "generated local file-store",
+            "not source of truth",
+            "graph-only fallback",
+            "no production server",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+
+    def test_track10_task25_batch21_semantic_retrieval_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 project code graph Batch 21 semantic retrieval",
+            "T10-CG-V2-M45..M51",
+            "project_graph_semantic.py",
+            "project_graph_semantic_retrieval_gate_present",
+            "cross-encoder eval",
+            "present_unverified",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "| `done` | `T10-CG-V2-M45..M51` semantic retrieval, embeddings and cross-encoder eval |",
+            "Batch 21 explicit approval",
+            "semantic corpus and chunk policy",
+            "embeddings cache metadata",
+            "semantic query packets",
+            "cross-encoder reranking gate",
+            "semantic retrieval eval suite",
+            "present_unverified orientation evidence",
+            "no canonical graph edge rewrites",
+            "rollback/disable path is deleting `.codex/product-agent-os/project-code-graph-semantic-index.json`",
+            "Batch 22 and Batch 23 are now implemented separately as generated, approval-bound extension slices",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 25 Batch 21",
+            "T10-CG-V2-M45..M51",
+            "project_graph_semantic.py",
+            "project_graph_semantic_retrieval_gate_present",
+            "semantic corpus and chunk policy",
+            "embeddings cache metadata",
+            "semantic query packets",
+            "cross-encoder eval",
+            "present_unverified",
+            "no canonical graph edge rewrites",
+            "rollback/disable path",
+            "Batch 23",
+        ]
+        for document, text in self._internal_history_documents(documents).items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 25 Batch 21",
+            "T10-CG-V2-M45..M51",
+            "project_graph_semantic.py",
+            "project_graph_semantic_retrieval_gate_present",
+            "semantic corpus and chunk policy",
+            "embeddings cache metadata",
+            "semantic query packets",
+            "cross-encoder eval",
+            "present_unverified orientation evidence",
+            "no canonical graph edge rewrites",
+            "Batch 23",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+
+    def test_track10_task25_batch18_final_closure_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 project code graph Batch 18 final verification closure",
+            "T10-CG-V2-M31..M32",
+            "focused/full verification",
+            "explicit-only git boundary",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "| `done` | `T10-CG-V2-M31..M32` final verification and closure |",
+            "Task 25 Batch 18",
+            "full unittest ran 664 tests with `OK`",
+            "fixture eval exited `0` for 91 fixture directories",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 25 Batch 18",
+            "T10-CG-V2-M31..M32",
+            "focused/full verification",
+            "full unittest ran 664 tests with `OK`",
+            "fixture eval exited `0` for 91 fixture directories",
+            "explicit-only git boundary",
+            "Batch 23",
+        ]
+        for document, text in self._internal_history_documents(documents).items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 25 Batch 18",
+            "T10-CG-V2-M31..M32",
+            "focused/full verification",
+            "full unittest ran 664 tests with `OK`",
+            "fixture eval exited `0` for 91 fixture directories",
+            "transcript eval exited `0` with 17 sessions and 0 failures",
+            "Codex compatibility returned `status: compatible`",
+            "strict MkDocs",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+
+    def test_track10_task25_batch19_static_search_index_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 project code graph Batch 19 offline static search index",
+            "T10-CG-V2-M33..M38",
+            "project_graph_index.py",
+            "project_graph_static_search_index_present",
+            "offline static search index",
+            "explicit user approval",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "| `done` | `T10-CG-V2-M33..M38` offline static search index |",
+            "Batch 19 explicit approval",
+            "generated, cache-bound and not source of truth",
+            "no live database/server, LLM, embedding or cross-encoder",
+            "rollback/disable path is deleting `.codex/product-agent-os/project-code-graph-search-index.json`",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 25 Batch 19",
+            "T10-CG-V2-M33..M38",
+            "offline static search index",
+            ".codex/product-agent-os/project-code-graph-search-index.json",
+            "generated, cache-bound and not source of truth",
+            "graph artifact only",
+            "no live database/server, LLM, embedding or cross-encoder",
+            "rollback/disable path",
+        ]
+        for document, text in self._internal_history_documents(documents).items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 25 Batch 19",
+            "T10-CG-V2-M33..M38",
+            "explicit user approval",
+            "project_graph_index.py",
+            "project_graph_static_search_index_present",
+            "offline static search index",
+            "generated, cache-bound and not source of truth",
+            "graph artifact only",
+            "rollback/disable path",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+
+    def test_t8h_and_t8gy_source_and_backlog_closure_are_documented(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK_BACKLOG.read_text(encoding="utf-8")
+
+        self.assertIn("Product-Agent OS Track 8 scenario, eval and transcript docs", registry)
+        self.assertIn("docs/product-agent-os/scenarios.md", registry)
+        self.assertIn("docs/product-agent-os/behavioral-evals.md", registry)
+        self.assertIn("docs/product-agent-os/codex-compatibility.md", registry)
+        self.assertIn("plugins/product-agent-os/scripts/product_agent_os/discovery.py", registry)
+        self.assertIn("plugins/product-agent-os/scripts/run_transcript_eval.py", registry)
+        self.assertIn("T8-D", registry)
+        self.assertIn("verification_status:", registry)
+
+        self.assertIn("| `done` | `T8-H` system docs and control-plane sync |", backlog)
+        self.assertIn("dedicated scenario, behavioral eval and Codex compatibility docs", backlog)
+        self.assertIn("| `T8-GY` behavioral workflow evals | `done` |", backlog)
+        self.assertIn("deterministic transcript/session runner", backlog)
+        self.assertIn("| `T8-D` discovery model | `done` |", backlog)
+        self.assertIn("methodology_applicability", backlog)
+
+
+    def test_track9_backend_docs_and_source_registry_are_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK9_BACKLOG.read_text(encoding="utf-8")
+        behavioral_evals = self._localized_contract_text(PRODUCT_AGENT_OS / "behavioral-evals.md")
+        scenarios = self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md")
+        readme = (ROOT / "plugins" / "product-agent-os" / "README.md").read_text(encoding="utf-8")
+
+        for expected in [
+            "Product-Agent OS Track 9 backend methodology coverage",
+            "T9-D7",
+            "backend_contract_present",
+            "docs/product-agent-os/behavioral-evals.md",
+            "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+            "verification_status:",
+        ]:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        for expected in [
+            "backend_contract_present",
+            "Backend eval",
+            "runtime/failure/observability/security/rollback evidence",
+            "owner reviewed test/eval/runtime evidence sufficiency",
+        ]:
+            with self.subTest(behavioral_evals=expected):
+                self.assertIn(expected, behavioral_evals)
+
+        for expected in [
+            "Backend methodology routing",
+            "backend-service-overview.md",
+            "backend-runtime-behavior.md",
+            "runtime/failure evidence",
+        ]:
+            with self.subTest(scenarios=expected):
+                self.assertIn(expected, scenarios)
+
+        for expected in [
+            "Backend methodology",
+            "backend_contract_present",
+            "backend_service_boundary_present",
+            "owner reviewed test/eval/runtime evidence sufficiency",
+        ]:
+            with self.subTest(readme=expected):
+                self.assertIn(expected, readme)
+
+        self.assertIn("T9-D7-M40..M45", backlog)
+        self.assertIn("stack-specific backend snippets deferred", backlog)
+        self.assertIn("cross-domain semantic sufficiency backlog", backlog)
+
+
+    def test_track9_api_integrations_docs_and_source_registry_are_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK9_BACKLOG.read_text(encoding="utf-8")
+        behavioral_evals = self._localized_contract_text(PRODUCT_AGENT_OS / "behavioral-evals.md")
+        scenarios = self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md")
+        readme = (ROOT / "plugins" / "product-agent-os" / "README.md").read_text(encoding="utf-8")
+
+        for expected in [
+            "Product-Agent OS Track 9 API & Integrations methodology coverage",
+            "T9-D8",
+            "api_integrations_contract_present",
+            "docs/product-agent-os/behavioral-evals.md",
+            "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+            "verification_status:",
+        ]:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        for expected in [
+            "api_integrations_contract_present",
+            "API & Integrations eval",
+            "Swagger UI is not source of truth",
+            "external writes are approval_required",
+        ]:
+            with self.subTest(behavioral_evals=expected):
+                self.assertIn(expected, behavioral_evals)
+
+        for expected in [
+            "API & Integrations methodology routing",
+            "api-inventory.md",
+            "api-contract-test-matrix.md",
+            "external-integration-approval.md",
+        ]:
+            with self.subTest(scenarios=expected):
+                self.assertIn(expected, scenarios)
+
+        for expected in [
+            "API & Integrations methodology",
+            "api_integrations_contract_present",
+            "api_contract_source_present",
+            "external_write_approval_present",
+        ]:
+            with self.subTest(readme=expected):
+                self.assertIn(expected, readme)
+
+        self.assertIn("T9-D8", backlog)
+        self.assertIn("API lint tooling", backlog)
+        self.assertIn("multi-repository generated clients deferred", backlog)
+
+
+    def test_track9_database_data_docs_and_source_registry_are_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK9_BACKLOG.read_text(encoding="utf-8")
+        behavioral_evals = self._localized_contract_text(PRODUCT_AGENT_OS / "behavioral-evals.md")
+        scenarios = self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md")
+        readme = (ROOT / "plugins" / "product-agent-os" / "README.md").read_text(encoding="utf-8")
+
+        for expected in [
+            "Product-Agent OS Track 9 Database & Data methodology coverage",
+            "T9-D9",
+            "database_data_contract_present",
+            "docs/product-agent-os/behavioral-evals.md",
+            "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+            "verification_status:",
+        ]:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        for expected in [
+            "database_data_contract_present",
+            "Database & Data eval",
+            "schema-only artifact is not safety proof",
+            "production access approval_required",
+        ]:
+            with self.subTest(behavioral_evals=expected):
+                self.assertIn(expected, behavioral_evals)
+
+        for expected in [
+            "Database & Data methodology routing",
+            "database-inventory.md",
+            "database-migration-plan.md",
+            "database-production-access-approval.md",
+        ]:
+            with self.subTest(scenarios=expected):
+                self.assertIn(expected, scenarios)
+
+        for expected in [
+            "Database & Data methodology",
+            "database_data_contract_present",
+            "database_migration_plan_present",
+            "database_production_access_approval_present",
+        ]:
+            with self.subTest(readme=expected):
+                self.assertIn(expected, readme)
+
+        self.assertIn("T9-D9", backlog)
+        self.assertIn("schema-diff tooling deferred", backlog)
+        self.assertIn("runtime/pipeline/RAG signals stay `present_unverified`", backlog)
+
+
+    def test_track9_llm_ai_rag_docs_and_backlog_are_synced_through_m36(self):
+        backlog = TRACK9_BACKLOG.read_text(encoding="utf-8")
+        behavioral_evals = self._localized_contract_text(PRODUCT_AGENT_OS / "behavioral-evals.md")
+        scenarios = self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md")
+        development_standards = self._localized_contract_text(PRODUCT_AGENT_OS / "development-standards.md")
+        readme = (ROOT / "plugins" / "product-agent-os" / "README.md").read_text(encoding="utf-8")
+
+        for expected in [
+            "Batch `M20..M29` completed scope",
+            "Batch `M30..M36` completed scope",
+            "llm_ai_rag_contract_present",
+            "renderer file count increased from 142 to 157",
+            "diff_signal_policy",
+            "AI incident workflow",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for expected in [
+            "LLM / AI / RAG eval",
+            "llm_ai_rag_contract_present",
+            "Prompt inspection is not enough",
+            "citations alone do not prove grounding",
+            "eval tooling selector",
+            "AI incident workflow",
+        ]:
+            with self.subTest(behavioral_evals=expected):
+                self.assertIn(expected, behavioral_evals)
+
+        for expected in [
+            "LLM / AI / RAG methodology routing",
+            "ai-behavior-spec.md",
+            "rag-retrieval-config.md",
+            "live model calls",
+            "agent-handoff-contract.md",
+            "filename-only diffs",
+        ]:
+            with self.subTest(scenarios=expected):
+                self.assertIn(expected, scenarios)
+
+        for expected in [
+            "LLM / AI / RAG methodology",
+            "llm_ai_rag_contract_present",
+            "ai-cost-latency-budget.md",
+            "live model calls",
+            "agent-task-packet.md",
+            "eval tooling selector",
+        ]:
+            with self.subTest(readme=expected):
+                self.assertIn(expected, readme)
+
+        self.assertIn("llm_ai_rag_readiness_when_ai_behavior_changes", development_standards)
+        self.assertIn("AI/RAG behavior changes record `llm_ai_rag` evidence", development_standards)
+
+
+    def test_track9_security_privacy_compliance_docs_and_backlog_are_synced(self):
+        backlog = TRACK9_BACKLOG.read_text(encoding="utf-8")
+        behavioral_evals = self._localized_contract_text(PRODUCT_AGENT_OS / "behavioral-evals.md")
+        scenarios = self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md")
+        methodology_intelligence = self._localized_contract_text(PRODUCT_AGENT_OS / "methodology-intelligence.md")
+        development_standards = self._localized_contract_text(PRODUCT_AGENT_OS / "development-standards.md")
+        readme = (ROOT / "plugins" / "product-agent-os" / "README.md").read_text(encoding="utf-8")
+
+        for expected in [
+            "T9-D11",
+            "Security, Privacy & Compliance",
+            "security_privacy_compliance_contract_present",
+            "renderer file count increased from 157 to 173",
+            "Codex Security scan status",
+            "docs-only security article",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for expected in [
+            "Security, Privacy & Compliance eval",
+            "security_privacy_compliance_contract_present",
+            "security_sensitive_classification_present",
+            "Codex Security scan is implied",
+            "privacy compliance is universal",
+        ]:
+            with self.subTest(behavioral_evals=expected):
+                self.assertIn(expected, behavioral_evals)
+
+        for expected in [
+            "Security, Privacy & Compliance methodology routing",
+            "threat-surface.md",
+            "asvs-ssdf-mapping.md",
+            "approval-record.md",
+            "Codex Security scans",
+        ]:
+            with self.subTest(scenarios=expected):
+                self.assertIn(expected, scenarios)
+
+        for expected in [
+            "Security/Privacy/Compliance",
+            "security_privacy_compliance_contract_present",
+            "data-classification-register.md",
+            "vulnerability-response-record.md",
+        ]:
+            with self.subTest(methodology_intelligence=expected):
+                self.assertIn(expected, methodology_intelligence)
+
+        for expected in [
+            "security_privacy_compliance_when_sensitive_surface",
+            "Security/Privacy/Compliance-sensitive slices record `security_privacy_compliance` evidence",
+        ]:
+            with self.subTest(development_standards=expected):
+                self.assertIn(expected, development_standards)
+
+        for expected in [
+            "Security, Privacy & Compliance methodology",
+            "security_privacy_compliance_contract_present",
+            "threat-surface.md",
+            "Codex Security scan status",
+            "approval_required",
+        ]:
+            with self.subTest(readme=expected):
+                self.assertIn(expected, readme)
+
+
+    def test_track9_delivery_release_operations_docs_and_backlog_are_synced(self):
+        backlog = TRACK9_BACKLOG.read_text(encoding="utf-8")
+        behavioral_evals = self._localized_contract_text(PRODUCT_AGENT_OS / "behavioral-evals.md")
+        scenarios = self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md")
+        methodology_intelligence = self._localized_contract_text(PRODUCT_AGENT_OS / "methodology-intelligence.md")
+        development_standards = self._localized_contract_text(PRODUCT_AGENT_OS / "development-standards.md")
+        readme = (ROOT / "plugins" / "product-agent-os" / "README.md").read_text(encoding="utf-8")
+
+        for expected in [
+            "T9-D12",
+            "Implemented scope in batch `M20..M29`",
+            "Implemented scope in batch `M30..M40`",
+            "delivery_release_operations_contract_present",
+            "renderer file count increased from 173 to 186",
+            "package-release-approval",
+            "release-mobile-signing-only",
+            "release-tooling-only",
+            "owner-reviewed release evidence sufficiency",
+            "active schedules remain out of scope",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for expected in [
+            "Delivery, Release & Operations eval",
+            "delivery_release_operations_contract_present",
+            "automation_manual_stability_present",
+            "release mode policy",
+            "build-release-run boundary",
+            "DORA metrics prove individual performance",
+            "single observability tool is mandatory",
+            "owner-reviewed release evidence sufficiency",
+            "GitOps is automatically safe",
+            "repeatable automation is automatically safe",
+        ]:
+            with self.subTest(behavioral_evals=expected):
+                self.assertIn(expected, behavioral_evals)
+
+        for expected in [
+            "Delivery, Release & Operations methodology routing",
+            "release-artifact-manifest.md",
+            "rollback-recovery-plan.md",
+            "automation-candidate.md",
+            "release mode policy",
+            "platform distribution evidence",
+            "observability/on-call tooling",
+            "active automation are not automatic actions",
+        ]:
+            with self.subTest(scenarios=expected):
+                self.assertIn(expected, scenarios)
+
+        for expected in [
+            "Delivery/Release/Operations",
+            "delivery_release_operations_contract_present",
+            "release-artifact-manifest.md",
+            "operations-runbook.md",
+            "post-release-review.md",
+            "release mode policy",
+            "owner-reviewed release evidence sufficiency",
+        ]:
+            with self.subTest(methodology_intelligence=expected):
+                self.assertIn(expected, methodology_intelligence)
+
+        for expected in [
+            "delivery_release_operations_readiness_when_release_or_operations_changes",
+            "Delivery/Release/Operations slices record `delivery_release_operations` evidence",
+            "automation_manual_stability_present",
+            "release_evidence_sufficiency_owner_reviewed",
+            "DORA metrics prove individual performance",
+        ]:
+            with self.subTest(development_standards=expected):
+                self.assertIn(expected, development_standards)
+
+        for expected in [
+            "Delivery, Release & Operations methodology",
+            "delivery_release_operations_contract_present",
+            "release-artifact-manifest.md",
+            "automation_manual_stability_present",
+            "release_mode_policy_present",
+            "release_evidence_sufficiency_owner_reviewed",
+            "approval_required",
+        ]:
+            with self.subTest(readme=expected):
+                self.assertIn(expected, readme)
+
+
+    def test_track9_cross_domain_synthesis_docs_and_backlog_are_synced(self):
+        backlog = TRACK9_BACKLOG.read_text(encoding="utf-8")
+        behavioral_evals = self._localized_contract_text(PRODUCT_AGENT_OS / "behavioral-evals.md")
+        methodology_intelligence = self._localized_contract_text(PRODUCT_AGENT_OS / "methodology-intelligence.md")
+        development_standards = self._localized_contract_text(PRODUCT_AGENT_OS / "development-standards.md")
+
+        for expected in [
+            "T9-S-M10..M14",
+            "cross_domain_synthesis_contract_present",
+            "safe_next_action_risk_ordered",
+            "source_artifact_mapping_contract_present",
+            "cross_domain_false_positive_guards_present",
+            "semantic evidence sufficiency review ownership",
+            "source artifact alias/deferred decisions",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for expected in [
+            "Cross-domain synthesis eval",
+            "cross_domain_synthesis_contract_present",
+            "safe_next_action_risk_ordered",
+            "source_artifact_mapping_contract_present",
+            "cross_domain_false_positive_guards_present",
+            "generic quality strategy hides security approval",
+        ]:
+            with self.subTest(behavioral_evals=expected):
+                self.assertIn(expected, behavioral_evals)
+
+        for expected in [
+            "Cross-Domain Synthesis",
+            "recommendation_groups",
+            "methodology_synthesis",
+            "source_artifact_ledger",
+            "risk-aware safe next action",
+            "owner domains",
+            "consumer domains",
+            "semantic evidence sufficiency",
+            "approval-bound behavior",
+        ]:
+            with self.subTest(methodology_intelligence=expected):
+                self.assertIn(expected, methodology_intelligence)
+
+        for expected in [
+            "semantic evidence sufficiency",
+            "owner_reviewed_evidence_sufficient_for_real_project_risk",
+            "explicit_gap_accepted",
+            "Detection alone остается `present_unverified`",
+            "grouped methodology recommendations",
+            "approval-bound behavior",
+        ]:
+            with self.subTest(development_standards=expected):
+                self.assertIn(expected, development_standards)
+
+
+    def test_task22_final_docs_sync_user_facing_stack_is_closed(self):
+        documents = {
+            "index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "architecture": self._localized_contract_text(PRODUCT_AGENT_OS / "architecture.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "methodology": self._localized_contract_text(PRODUCT_AGENT_OS / "methodology-intelligence.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+            "behavioral_evals": self._localized_contract_text(PRODUCT_AGENT_OS / "behavioral-evals.md"),
+            "codex_compatibility": self._localized_contract_text(PRODUCT_AGENT_OS / "codex-compatibility.md"),
+            "development_standards": self._localized_contract_text(PRODUCT_AGENT_OS / "development-standards.md"),
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+        }
+
+        expected_terms = {
+            "index": [
+                "Executive overview",
+                "Current operating boundary",
+                "read-only workspace audit",
+                "staged infrastructure",
+                "generated evidence",
+                "source of truth",
+                "approval",
+                "evidence-before-completion",
+            ],
+            "architecture": [
+                "Layered Model",
+                "Plugin package",
+                "Lifecycle skills",
+                "Staged infrastructure",
+                "Approved merge",
+                "Codex runtime runner",
+                "Engineering standards",
+                "Scenario routes",
+                "Methodology intelligence",
+            ],
+            "technical": [
+                "base workspace audit profile",
+                "methodology audit complexity",
+                "schema v1 additive compatibility",
+                "codex_runner_result",
+                "renderer_file_count",
+                "run_methodology_audit.py",
+                "run_transcript_eval.py",
+            ],
+            "methodology": [
+                "Methodology intelligence is the read-only layer",
+                "methodology_packet",
+                "finish_options",
+                "owner_questions",
+                "safe_next_action",
+                "source_artifact_ledger",
+                "staged proposal",
+            ],
+            "scenarios": [
+                "Operator Route Map",
+                "finish_options",
+                "safe_next_action",
+                "bug_rescue",
+                "greenfield_idea",
+                "api_migration",
+                "ai_eval_regression",
+                "security_sensitive_change",
+                "release_packaging",
+            ],
+            "behavioral_evals": [
+                "Runtime Packet Safety",
+                "Fixture eval proves expected structure",
+                "route safety",
+                "transcript/session replay",
+                "not deep semantic quality of a real product decision",
+            ],
+            "codex_compatibility": [
+                "Canonical Safety Boundary",
+                "no live model call",
+                "no global config mutation",
+                "no readiness claims from detection",
+                "no hosted docs or DB introspection bypass",
+            ],
+            "development_standards": [
+                "Development standards turn methodology into concrete reviewable artifacts",
+                "Artifact Templates",
+                "Red-Green-Refactor evidence",
+                "no-forced-ceremony",
+                "mechanical edits can be not_applicable",
+                "owner_reviewed_evidence_sufficient_for_real_project_risk",
+            ],
+            "root_readme": [
+                "Product-Agent OS full stack",
+                "Codex-only runtime",
+                "methodology intelligence",
+                "staged evidence only",
+            ],
+            "plugin_readme": [
+                "Product-Agent OS full stack",
+                "schema v1 additive compatibility",
+                "staged artifact boundary",
+                "Codex App, CLI, and IDE extension",
+            ],
+        }
+
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+
+    def test_task22_source_registry_and_control_plane_closure_are_documented(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "track9_plan": TRACK9_PLAN.read_text(encoding="utf-8"),
+            "track10_plan": TRACK10_PLAN.read_text(encoding="utf-8"),
+        }
+
+        for expected in [
+            "Product-Agent OS Track 1-9 final documentation closure",
+            "Task 22 final documentation sync closure",
+            "Product-Agent OS pre-Track 8 implemented plans and specs inventory",
+            "Product-Agent OS Track 9 methodology intelligence design and backlog",
+            "docs/product-agent-os/methodology-intelligence.md",
+            "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+            "plugins/product-agent-os/scripts/codex_runtime_runner/contracts.py",
+            "OpenAPI v3.2.0 freshness claim",
+            "verification_status:",
+        ]:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        expected_by_file = {
+            "requirements": [
+                "Task 22 final documentation sync closure",
+                "Track 1-9 acceptance",
+                "legacy Track 9 `Task 23: Final Verification Baseline` is absorbed into Task 22",
+            ],
+            "track9_plan": [
+                "### Legacy Track 9 Final Verification Baseline (absorbed into Task 22)",
+                "`T22-U-M23`",
+            ],
+            "track10_plan": [
+                "Task 22 absorbs that verification baseline into `T22-U-M23`",
+                "Track 10 uses `Task 23` for the next product capability",
+            ],
+        }
+
+        for filename, terms in expected_by_file.items():
+            for term in terms:
+                with self.subTest(control_plane=filename, term=term):
+                    self.assertIn(term, control_plane[filename])
+
+        self.assertNotIn(
+            "The current Track 9 plan still contains a legacy `Task 23: Final Verification Baseline`",
+            control_plane["track10_plan"],
+        )
+
+
+    def test_batch40_s4_doubt_verifier_docs_site_and_source_transfer_are_synced(self):
+        playbook = DOCS / "playbooks" / "doubt-verification-loop.md"
+        source_transfer = (
+            DOCS
+            / "sources"
+            / "product-agent-os-batch40-doubt-verifier-source-transfer.md"
+        )
+
+        for path in [playbook, self._en_sibling_for(playbook), source_transfer, self._en_sibling_for(source_transfer)]:
+            with self.subTest(required_path=path.relative_to(ROOT).as_posix()):
+                self.assertTrue(path.exists())
+
+        documents = {
+            "playbook": self._localized_contract_text(playbook),
+            "source_transfer": self._localized_contract_text(source_transfer),
+            "architecture": self._localized_contract_text(PRODUCT_AGENT_OS / "architecture.md"),
+            "artifact_contracts": self._localized_contract_text(PRODUCT_AGENT_OS / "artifact-contracts.md"),
+            "artifact_gallery": self._localized_contract_text(PRODUCT_AGENT_OS / "artifact-gallery.md"),
+            "behavioral_evals": self._localized_contract_text(PRODUCT_AGENT_OS / "behavioral-evals.md"),
+            "anti_hallucination": self._localized_contract_text(DOCS / "prompting" / "anti-hallucination.md"),
+            "context_engineering": self._localized_contract_text(DOCS / "prompting" / "context-engineering.md"),
+            "subagents_skills": self._localized_contract_text(DOCS / "agent-systems" / "subagents-skills.md"),
+            "workflow_to_skill": self._localized_contract_text(DOCS / "playbooks" / "workflow-to-skill.md"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "mkdocs": MKDOCS.read_text(encoding="utf-8"),
+            "check_docs": CHECK_DOCS.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track10_backlog": TRACK10_BACKLOG.read_text(encoding="utf-8"),
+            "track10_backlog_en": TRACK10_BACKLOG_EN.read_text(encoding="utf-8"),
+            "track10_plan": TRACK10_PLAN.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "test_plan": TEST.read_text(encoding="utf-8"),
+        }
+
+        expected_terms = {
+            "playbook": [
+                "Source status:",
+                "completion-skeptic",
+                "doubt_verification_packet",
+                "worker_output -> doubt_verification_packet -> completion-skeptic -> revise_or_pass",
+                "do not rewrite first",
+                "pass | revise | needs_more_context | blocked_by_approval | accepted_risk",
+                "accepted_gap",
+                "No active hook, automation, MCP server, Agents SDK runner or provider call",
+            ],
+            "source_transfer": [
+                "B40-S4 source-transfer packet",
+                "Chain-of-Verification",
+                "CRITIC",
+                "Self-Refine",
+                "intrinsic self-correction limitations",
+                "OpenAI Agents SDK guardrails",
+                "trust_level:",
+                "verification_status:",
+                "transfer_target:",
+            ],
+            "architecture": [
+                "Completion-skeptic route",
+                "claim ledger",
+                "requirement ledger",
+                "evidence ledger",
+                "reviser changes only confirmed gaps",
+                "Agents SDK output guardrail candidate",
+                "does not create an Agents SDK runner",
+                "tripwire",
+            ],
+            "artifact_contracts": [
+                ".codex/artifact-templates/doubt-verification-packet.md",
+                "doubt_verification_packet_v1",
+                "generated-view boundary",
+                "pass without evidence",
+                "accepted_gap",
+            ],
+            "artifact_gallery": [
+                "completion-skeptic examples",
+                "docs_research_example",
+                "code_check_example",
+                "architecture_review_example",
+                "product_planning_example",
+                "security_release_example",
+                "ai_eval_example",
+            ],
+            "behavioral_evals": [
+                "completion-skeptic-check-again-trigger",
+                "completion-skeptic-false-pass-blocked",
+                "completion-skeptic-fake-evidence-adversarial",
+                "Scorecard thresholds remain manual-only",
+            ],
+            "anti_hallucination": [
+                "doubt_verification_packet",
+                "claim ledger",
+                "supported | unsupported | contradicted | needs_fresh_check",
+                "Verifier must not repair before evidence",
+            ],
+            "context_engineering": [
+                "claim ledger",
+                "requirement ledger",
+                "evidence ledger",
+                "missing_context",
+                "accepted_gap",
+            ],
+            "subagents_skills": [
+                "manual -> playbook -> skill -> plugin -> automation candidate",
+                "completion-skeptic",
+                "owner review",
+                "rollback",
+                "candidate-only",
+            ],
+            "workflow_to_skill": [
+                "manual -> playbook -> skill -> plugin -> automation candidate",
+                "failure log",
+                "eval cases",
+                "automation blockers",
+            ],
+            "product_index": [
+                "Doubt / verifier loop",
+                "completion-skeptic",
+                "doubt-verification-loop.md",
+            ],
+            "mkdocs": [
+                "playbooks/doubt-verification-loop.md",
+                "sources/product-agent-os-batch40-doubt-verifier-source-transfer.md",
+            ],
+            "check_docs": [
+                "playbooks\" / \"doubt-verification-loop.md",
+                "sources\" / \"product-agent-os-batch40-doubt-verifier-source-transfer.md",
+            ],
+            "registry": [
+                "Product-Agent OS Batch 40 S4 Doubt verifier loop docs and site",
+                "Product-Agent OS Batch 40 S4 source-transfer packet",
+                "docs/playbooks/doubt-verification-loop.md",
+                "docs/sources/product-agent-os-batch40-doubt-verifier-source-transfer.md",
+                "strict MkDocs",
+                "generated `site/` is not source of truth",
+            ],
+            "registry_en": [
+                "Product-Agent OS Batch 40 S4 Doubt verifier loop docs and site",
+                "Product-Agent OS Batch 40 S4 source-transfer packet",
+                "docs/playbooks/doubt-verification-loop.md",
+                "docs/sources/product-agent-os-batch40-doubt-verifier-source-transfer.md",
+                "strict MkDocs",
+                "generated `site/` is not source of truth",
+            ],
+            "track10_backlog": [
+                "Task 26 Batch 40 Doubt / Verifier Loop S4 Docs and Site Addendum",
+                "implemented_docs_site_source_transfer",
+                "B40-DVL-M16",
+                "B40-DVL-M21",
+                "B40-DVL-M38",
+                "future_rows_still_planned_after_s4: `B40-DVL-M22..M24`",
+            ],
+            "track10_backlog_en": [
+                "Task 26 Batch 40 Doubt / Verifier Loop S4 Docs and Site Addendum",
+                "implemented_docs_site_source_transfer",
+                "B40-DVL-M16",
+                "B40-DVL-M21",
+                "B40-DVL-M38",
+                "future_rows_still_planned_after_s4: `B40-DVL-M22..M24`",
+            ],
+            "track10_plan": [
+                "B40-S4 implementation contract",
+                "implemented_docs_site_source_transfer",
+                "`B40-DVL-M16`: status `implemented`",
+                "`B40-DVL-M38`: status `implemented`",
+            ],
+            "runlog": [
+                "B40-S4 docs/site/source-transfer run",
+                "implemented_docs_site_source_transfer",
+            ],
+            "test_plan": [
+                "B40-S4 implements Doubt / verifier loop docs/site/source-transfer",
+                "strict MkDocs",
+            ],
+        }
+
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+
+    def test_batch40_s5_doubt_verifier_pilot_metrics_and_closure_are_synced(self):
+        for path in [BATCH40_DOUBT_VERIFIER_CLOSURE, BATCH40_DOUBT_VERIFIER_CLOSURE_EN]:
+            with self.subTest(required_path=path.relative_to(ROOT).as_posix()):
+                self.assertTrue(path.exists())
+
+        documents = {
+            "closure": self._localized_contract_text(BATCH40_DOUBT_VERIFIER_CLOSURE),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track10_backlog": TRACK10_BACKLOG.read_text(encoding="utf-8"),
+            "track10_backlog_en": TRACK10_BACKLOG_EN.read_text(encoding="utf-8"),
+            "track10_plan": TRACK10_PLAN.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "test_plan": TEST.read_text(encoding="utf-8"),
+        }
+
+        expected_terms = {
+            "closure": [
+                "Source status:",
+                "B40-S5 pilot metrics and closure packet",
+                "completion_skeptic_manual_pilot_ledger",
+                "completion_skeptic_scorecard_calibration",
+                "completion_skeptic_go_no_go_closure",
+                "docs_research",
+                "code_check",
+                "expected_block",
+                "attempt/failure/fix/retest",
+                "pilot_denominators",
+                "false_pass_rate",
+                "false_rewrite_rate",
+                "evidence_sufficiency_rate",
+                "missing_check_catch_rate",
+                "accepted_gap_rate",
+                "user_revision_acceptance_rate",
+                "revision_usefulness_rate",
+                "manual_only",
+                "no_unapproved_actions",
+                "rollback_disable_path",
+                "exact_owner_approval_for_release_or_automation",
+            ],
+            "registry": [
+                "Product-Agent OS Batch 40 S5 Doubt verifier pilot metrics and closure",
+                "docs/sources/product-agent-os-batch40-doubt-verifier-pilot-closure.md",
+                "manual_only",
+                "generated `site/` was rebuilt for S5",
+            ],
+            "registry_en": [
+                "Product-Agent OS Batch 40 S5 Doubt verifier pilot metrics and closure",
+                "docs/sources/product-agent-os-batch40-doubt-verifier-pilot-closure.md",
+                "manual_only",
+                "generated `site/` was rebuilt for S5",
+            ],
+            "track10_backlog": [
+                "Task 26 Batch 40 Doubt / Verifier Loop S5 Pilot Metrics and Closure Addendum",
+                "implemented_pilot_metrics_closure_manual_only",
+                "B40-DVL-M22",
+                "B40-DVL-M23",
+                "B40-DVL-M24",
+                "completion_skeptic_manual_pilot_ledger",
+                "completion_skeptic_go_no_go_closure",
+                "manual_only",
+            ],
+            "track10_backlog_en": [
+                "Task 26 Batch 40 Doubt / Verifier Loop S5 Pilot Metrics and Closure Addendum",
+                "implemented_pilot_metrics_closure_manual_only",
+                "B40-DVL-M22",
+                "B40-DVL-M23",
+                "B40-DVL-M24",
+                "completion_skeptic_manual_pilot_ledger",
+                "completion_skeptic_go_no_go_closure",
+                "manual_only",
+            ],
+            "track10_plan": [
+                "B40-S5 implementation contract",
+                "`B40-DVL-M22`: status `implemented`",
+                "`B40-DVL-M23`: status `implemented`",
+                "`B40-DVL-M24`: status `implemented`",
+                "implemented_pilot_metrics_closure_manual_only",
+            ],
+            "runlog": [
+                "B40-S5 pilot/metrics/closure run",
+                "implemented_pilot_metrics_closure_manual_only",
+                "manual_only",
+            ],
+            "test_plan": [
+                "B40-S5 implements Doubt / verifier loop pilot metrics and closure",
+                "completion_skeptic_manual_pilot_ledger",
+                "completion_skeptic_go_no_go_closure",
+            ],
+        }
+
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+
+    def test_documentation_refresh_g1_source_site_parity_is_recorded(self):
+        self.assertTrue(DOCUMENTATION_REFRESH_G1.exists(), DOCUMENTATION_REFRESH_G1)
+        packet = json.loads(DOCUMENTATION_REFRESH_G1.read_text(encoding="utf-8"))
+        documents = {
+            "packet": json.dumps(packet, ensure_ascii=False),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track10_backlog": TRACK10_BACKLOG.read_text(encoding="utf-8"),
+            "track10_backlog_en": TRACK10_BACKLOG_EN.read_text(encoding="utf-8"),
+            "track11_plan": (DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md").read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual("documentation_refresh_g1_source_site_parity_summary_v1", packet["schema_version"])
+        self.assertEqual("closed_source_records_site_rebuild_blocked", packet["status"])
+        for item_id in ["DOC-M02", "DOC-M13", "DOC-M14", "DOC-M16", "DOC-M17"]:
+            with self.subTest(work_item=item_id):
+                self.assertIn(item_id, packet["work_item_status"])
+                self.assertTrue(packet["work_item_status"][item_id]["status"].startswith("closed"))
+        self.assertEqual("blocked_mkdocs_unavailable", packet["work_item_status"]["DOC-M25"]["status"])
+
+        expected_terms = {
+            "packet": [
+                "pre-G1 generated site output was stale and orientation-only",
+                "docs/product-agent-os/cli-reference.md",
+                "docs/product-agent-os/artifact-contracts.md",
+                "docs/sources/registry.md",
+                "blocked_active_python_no_module_named_mkdocs_historical_targets_not_currently_runnable",
+                "C:\\\\tmp\\\\codex_docs_mkdocs",
+                "tmp\\\\mkdocs_deps_b40s4",
+                "Publication readiness is not claimed",
+                "Local lifecycle marker creation remains blocked",
+            ],
+            "registry": [
+                "Product-Agent OS Track 11 G1 source records, registry and generated-site parity",
+                "Product-Agent OS Batch 41 first-run orchestration S1-S6 evidence",
+                "Product-Agent OS Batch 41 cockpit, architecture dossier and HTML modernization S7-S9 evidence",
+                "Product-Agent OS Batch 42 instruction/tool-use compliance planning matrix",
+                "Product-Agent OS Track 11 documentation refresh G0 governance packet",
+                "documentation_refresh_G1-A01",
+                "docs/superpowers/specs/documentation-refresh-g1-source-site-parity-summary.json",
+                "pre-G1 generated `site/` stale orientation evidence",
+                "historical dependency targets found at C:\\tmp\\codex_docs_mkdocs and tmp\\mkdocs_deps_b40s4",
+                "Product-Agent OS Track 11 G1.1 project-local documentation toolchain planning matrix",
+                "documentation_refresh_G1_1-PLANNING-A01",
+                "documentation_refresh_G1_1-SYSTEM-FILES-A01",
+                "documentation_refresh_G1_1-DOC-M34-A01",
+                "docs/superpowers/specs/documentation-refresh-g1-1-doc-m34-folder-contract-summary.json",
+                ".venv-docs/",
+                ".docs-tools/node/",
+                "Redocly CLI",
+                "Vale",
+                "lychee",
+                "gitleaks",
+            ],
+            "registry_en": [
+                "Product-Agent OS Track 11 G1 source records, registry and generated-site parity",
+                "Product-Agent OS Batch 41 first-run orchestration S1-S6 evidence",
+                "Product-Agent OS Batch 41 cockpit, architecture dossier and HTML modernization S7-S9 evidence",
+                "Product-Agent OS Batch 42 instruction/tool-use compliance planning matrix",
+                "Product-Agent OS Track 11 documentation refresh G0 governance packet",
+                "documentation_refresh_G1-A01",
+                "docs/superpowers/specs/documentation-refresh-g1-source-site-parity-summary.json",
+                "pre-G1 generated `site/` stale orientation evidence",
+                "historical dependency targets found at C:\\tmp\\codex_docs_mkdocs and tmp\\mkdocs_deps_b40s4",
+                "Product-Agent OS Track 11 G1.1 project-local documentation toolchain planning matrix",
+                "documentation_refresh_G1_1-PLANNING-A01",
+                "documentation_refresh_G1_1-SYSTEM-FILES-A01",
+                "documentation_refresh_G1_1-DOC-M34-A01",
+                "docs/superpowers/specs/documentation-refresh-g1-1-doc-m34-folder-contract-summary.json",
+                ".venv-docs/",
+                ".docs-tools/node/",
+                "Redocly CLI",
+                "Vale",
+                "lychee",
+                "gitleaks",
+            ],
+            "track10_backlog": [
+                "Batch 41 First-Run Orchestration And Architecture Cockpit Executed Addendum",
+                "implemented_local_read_only_staged_evidence_not_release_ready",
+                "B41-S1-M01..M05",
+                "B41-S9-M48..M57",
+                "architecture_intelligence_design_contract_v1",
+                "orientation_only_not_proof",
+            ],
+            "track10_backlog_en": [
+                "Batch 41 First-Run Orchestration And Architecture Cockpit Executed Addendum",
+                "implemented_local_read_only_staged_evidence_not_release_ready",
+                "B41-S1-M01..M05",
+                "B41-S9-M48..M57",
+                "architecture_intelligence_design_contract_v1",
+                "orientation_only_not_proof",
+            ],
+            "track11_plan": [
+                "`DOC-M02` | `G1`",
+                "`DOC-M25` | `G5`",
+                "`DOC-M34` | `G1.1`",
+                "`DOC-M41` | `G1.1`",
+                "`closed_no_new_public_page_required`",
+                "g1_1_doc_m34_contract_doc_m35_m36_m37_m38_m39_m40_m41_toolchain_governance_recorded",
+                "runtime_available_site_rebuild_deferred_final",
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
+                "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+                "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
+                ".venv-docs/",
+                ".docs-tools/node/",
+                "markdownlint-cli2",
+                "@redocly/cli",
+                "Vale",
+                "lychee",
+                "gitleaks",
+                "Docusaurus",
+                "Storybook",
+                "Structurizr DSL",
+            ],
+            "runlog": [
+                "documentation_refresh_G1-A01",
+                "documentation_refresh_G1_1-PLANNING-A01",
+                "documentation_refresh_G1_1-SYSTEM-FILES-A01",
+                "documentation_refresh_G1_1-DOC-M34-A01",
+                "docs/superpowers/specs/documentation-refresh-g1-source-site-parity-summary.json",
+                "generated site/search/sitemap freshness is not claimed",
+                "`TEST.md` records the future docs-runtime route",
+                "planned-only",
+                ".docs-tools/bin/",
+            ],
+        }
+
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+
+    def test_documentation_refresh_g1_1_system_files_are_synced(self):
+        documents = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "agents": AGENTS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+        }
+
+        expected_terms = {
+            "requirements": [
+                "Track 11 G1.1 as the project-local documentation toolchain route",
+                "Track 11 G1.1 documentation toolchain",
+                "Do not install further documentation dependencies",
+                "G1.1 acceptance: root control-plane files name the local docs-toolchain route",
+                "DOC-M36",
+            ],
+            "plan": [
+                "Track 11 G1.1 documentation toolchain",
+                "`DOC-M34..DOC-M41`",
+                "`.venv-docs/`",
+                "documentation_refresh_G1_1-SYSTEM-FILES-A01",
+                "documentation_refresh_G1_1-DOC-M34-A01",
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
+                "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+                "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
+                "implemented_deferred_platform_trigger_governance_no_install_no_site_rebuild",
+            ],
+            "test": [
+                "Track 11 G1.1 Project-Local Docs Toolchain Checks",
+                ".docs-tools/node/",
+                "redocly:version",
+                "gitleaks.exe version",
+                ".docs-tools\\bin\\lychee.exe --offline --no-progress .docs-tools\\link-secret\\fixtures\\doc-m38-links.md",
+                ".docs-tools\\bin\\gitleaks.exe dir .docs-tools\\link-secret\\fixtures --config .gitleaks.toml --redact",
+                "tools\\docs_mermaid_install.ps1 -Install -AllowNetwork -Force",
+                "tools\\docs_dependency_audit.ps1",
+                "mkdocs-strict-smoke-doc-m39-2026-06-21",
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                "DOC-M36",
+                "`DOC-M34..DOC-M41`",
+            ],
+            "evals": [
+                "Docs-toolchain evidence",
+                "Track 11 G1.1 docs-toolchain system-file sync",
+                "documentation_refresh_G1_1-SYSTEM-FILES-A01",
+                "documentation_refresh_G1_1-DOC-M34-A01",
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
+                "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+                "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
+                "strict MkDocs smoke passed under `.docs-tools/reports/mkdocs-strict-smoke-2026-06-21`",
+            ],
+            "agents": [
+                "Project-local documentation tooling belongs under `.venv-docs/`",
+                "Do not install documentation dependencies",
+                "claim generated `site/` freshness",
+                "project-local smoke/build evidence",
+            ],
+            "runlog": [
+                "documentation_refresh_G1_1-SYSTEM-FILES-A01",
+                "documentation_refresh_G1_1-DOC-M34-A01",
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
+                "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+                "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
+                "root system files for G1.1 implementation",
+                "successful project-local MkDocs runtime retry",
+            ],
+            "registry": [
+                "documentation_refresh_G1_1-SYSTEM-FILES-A01",
+                "documentation_refresh_G1_1-DOC-M34-A01",
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
+                "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+                "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
+                "root control-plane system files synced for G1.1 implementation route",
+            ],
+            "registry_en": [
+                "documentation_refresh_G1_1-SYSTEM-FILES-A01",
+                "documentation_refresh_G1_1-DOC-M34-A01",
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
+                "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+                "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
+                "root control-plane system files synced for G1.1 implementation route",
+            ],
+        }
+
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+
+    def test_documentation_refresh_g1_1_doc_m34_folder_contract_is_implemented(self):
+        packet = json.loads(DOCUMENTATION_REFRESH_G1_1_DOC_M34.read_text(encoding="utf-8"))
+        gitignore = (ROOT / ".gitignore").read_text(encoding="utf-8")
+        docs_tools_readme = (ROOT / ".docs-tools" / "README.md").read_text(encoding="utf-8")
+
+        self.assertEqual(
+            "documentation_refresh_g1_1_doc_m34_folder_contract_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual("documentation_refresh_G1_1-DOC-M34-A01", packet["evidence_id"])
+        self.assertEqual("implemented_contract_only_no_install", packet["status"])
+        self.assertEqual("DOC-M34", packet["work_item"])
+
+        for path in [
+            ".gitignore",
+            ".docs-tools/README.md",
+            ".docs-tools/node/README.md",
+            ".docs-tools/bin/README.md",
+            ".docs-tools/reports/README.md",
+        ]:
+            with self.subTest(implemented_path=path):
+                self.assertIn(path, packet["implemented_paths"])
+                self.assertTrue((ROOT / path).exists())
+
+        for path in [
+            ".venv-docs/",
+            ".docs-tools/node/node_modules/",
+            ".docs-tools/node/.npm/",
+            ".docs-tools/node/.cache/",
+            ".docs-tools/bin/*.exe",
+            ".docs-tools/reports/*",
+        ]:
+            with self.subTest(ignored_path=path):
+                self.assertIn(path, packet["ignored_local_paths"])
+                self.assertIn(path, gitignore)
+
+        for term in [
+            "Allowed Checked-In Content",
+            "Forbidden Content",
+            "Approval Boundaries",
+            "Generated `site/` freshness claims without current strict MkDocs evidence",
+            "Dependency installation, network download, binary vendoring",
+        ]:
+            with self.subTest(term=term):
+                self.assertIn(term, docs_tools_readme)
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(value)
+
+
+    def test_documentation_refresh_g1_1_doc_m35_install_is_recorded(self):
+        packet = json.loads(DOCUMENTATION_REFRESH_G1_1_DOC_M35_INSTALL.read_text(encoding="utf-8"))
+        documents = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual(
+            "documentation_refresh_g1_1_doc_m35_install_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual("documentation_refresh_G1_1-DOC-M35-INSTALL-A01", packet["evidence_id"])
+        self.assertEqual("installed_smoke_passed", packet["status"])
+        self.assertEqual("DOC-M35", packet["work_item"])
+
+        expected_versions = {
+            "mkdocs": "1.6.1",
+            "mkdocs-material": "9.5.50",
+            "mkdocs-static-i18n": "1.2.3",
+        }
+        for package_name, version in expected_versions.items():
+            with self.subTest(package_name=package_name):
+                self.assertEqual(version, packet["installed_runtime"][package_name])
+
+        self.assertTrue(packet["approved_actions_performed"]["venv_dependency_install"])
+        self.assertTrue(packet["approved_actions_performed"]["network_download_from_requirements"])
+        self.assertTrue(packet["approved_actions_performed"]["project_local_mkdocs_smoke_build"])
+        self.assertEqual(
+            ".docs-tools/reports/mkdocs-strict-smoke-2026-06-21",
+            packet["smoke_build_output"]["site_dir"],
+        )
+        self.assertEqual(0, packet["smoke_build_output"]["exit_code"])
+        self.assertFalse(packet["smoke_build_output"]["main_site_rebuilt"])
+
+        for claim in [
+            "generated root site/ freshness verified",
+            "dependency safety reviewed",
+            "SBOM generated",
+            "browser/runtime visual proof",
+        ]:
+            with self.subTest(unsupported_claim=claim):
+                self.assertIn(claim, packet["unsupported_claims"])
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(value)
+
+        document_terms = {
+            "requirements": [
+                "documentation-refresh-g1-1-doc-m35-install-summary.json",
+                "strict smoke build under `.docs-tools/reports/`",
+            ],
+            "plan": [
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                "installed_smoke_passed",
+                "DOC-M36",
+            ],
+            "test": [
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                ".docs-tools\\reports\\mkdocs-strict-smoke-2026-06-21",
+            ],
+            "evals": [
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                "strict MkDocs smoke passed under `.docs-tools/reports/mkdocs-strict-smoke-2026-06-21`",
+            ],
+            "runlog": [
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                ".docs-tools/reports/mkdocs-strict-smoke-2026-06-21",
+            ],
+            "registry": [
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                "installed_smoke_passed",
+            ],
+            "registry_en": [
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                "installed_smoke_passed",
+            ],
+        }
+
+        for document, terms in document_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+
+    def test_documentation_refresh_g1_1_doc_m36_node_tooling_is_recorded(self):
+        packet = json.loads(DOCUMENTATION_REFRESH_G1_1_DOC_M36_NODE.read_text(encoding="utf-8"))
+        node_package = json.loads((ROOT / ".docs-tools" / "node" / "package.json").read_text(encoding="utf-8"))
+        documents = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track11_plan": (
+                DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            ).read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual(
+            "documentation_refresh_g1_1_doc_m36_node_tooling_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual("documentation_refresh_G1_1-DOC-M36-NODE-A01", packet["evidence_id"])
+        self.assertEqual("installed_smoke_passed", packet["status"])
+        self.assertEqual("DOC-M36", packet["work_item"])
+
+        expected_versions = {
+            "markdownlint-cli2": "0.22.1",
+            "prettier": "3.8.4",
+            "@redocly/cli": "2.34.0",
+        }
+        for package_name, version in expected_versions.items():
+            with self.subTest(package_name=package_name):
+                self.assertEqual(version, packet["installed_runtime"][package_name])
+                self.assertEqual(version, node_package["devDependencies"][package_name])
+
+        for path in [
+            ".docs-tools/node/package.json",
+            ".docs-tools/node/package-lock.json",
+            "tools/docs_node_install.ps1",
+        ]:
+            with self.subTest(path=path):
+                self.assertTrue((ROOT / path).exists())
+
+        self.assertTrue(packet["approved_actions_performed"]["node_dependency_install"])
+        self.assertTrue(packet["approved_actions_performed"]["network_download_from_npm_registry"])
+        self.assertTrue(packet["approved_actions_performed"]["project_local_tool_smoke"])
+        self.assertEqual(3, packet["npm_install_notes"]["moderate_vulnerabilities_reported_by_install"])
+        self.assertFalse(packet["npm_install_notes"]["audit_fix_performed"])
+        self.assertEqual("DOC-M40", packet["npm_install_notes"]["audit_governance_owner"])
+        self.assertEqual(
+            "not_applicable_until_openapi_source_contract_exists",
+            packet["redocly_boundary"]["enforcement_status"],
+        )
+
+        for claim in [
+            "broad Markdown lint passed",
+            "broad Prettier check passed",
+            "OpenAPI or Redocly contract validation passed",
+            "dependency safety reviewed",
+            "npm audit clean",
+        ]:
+            with self.subTest(unsupported_claim=claim):
+                self.assertIn(claim, packet["unsupported_claims"])
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(value)
+
+        document_terms = {
+            "requirements": [
+                "documentation-refresh-g1-1-doc-m36-node-tooling-summary.json",
+                "DOC-M36",
+            ],
+            "plan": [
+                "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
+            ],
+            "test": [
+                "documentation-refresh-g1-1-doc-m36-node-tooling-summary.json",
+                "npm.cmd --prefix .docs-tools\\node run markdownlint:smoke",
+            ],
+            "evals": [
+                "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "broad docs lint/format",
+            ],
+            "runlog": [
+                "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "3 moderate vulnerabilities",
+            ],
+            "registry": [
+                "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "DOC-M36 installed_smoke_passed",
+            ],
+            "registry_en": [
+                "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "DOC-M36 installed_smoke_passed",
+            ],
+            "track11_plan": [
+                "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "`installed_smoke_passed`",
+            ],
+        }
+
+        for document, terms in document_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+
+    def test_documentation_refresh_g1_1_doc_m37_vale_language_guard_is_recorded(self):
+        packet = json.loads(DOCUMENTATION_REFRESH_G1_1_DOC_M37_VALE.read_text(encoding="utf-8"))
+        documents = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track11_plan": (
+                DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            ).read_text(encoding="utf-8"),
+            "docs_tools_readme": (ROOT / ".docs-tools" / "README.md").read_text(encoding="utf-8"),
+            "bin_readme": (ROOT / ".docs-tools" / "bin" / "README.md").read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual(
+            "documentation_refresh_g1_1_doc_m37_vale_language_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual("documentation_refresh_G1_1-DOC-M37-VALE-A01", packet["evidence_id"])
+        self.assertEqual("installed_advisory_smoke_passed", packet["status"])
+        self.assertEqual("DOC-M37", packet["work_item"])
+        self.assertEqual("3.15.1", packet["installed_runtime"]["vale"])
+        self.assertEqual(
+            "103e18687f59f860c6fdbf9ef7edfaa116092542db968039bab6105fb8906aae",
+            packet["installed_runtime"]["sha256"],
+        )
+        self.assertEqual("advisory_only", packet["advisory_boundary"]["enforcement_status"])
+        self.assertEqual("not_claimed", packet["advisory_boundary"]["broad_docs_scan_status"])
+
+        for path in [
+            ".vale.ini",
+            ".docs-tools/bin/vale.sha256",
+            ".docs-tools/vale/README.md",
+            ".docs-tools/vale/ProductAgentOS/ApprovalBoundary.yml",
+            ".docs-tools/vale/ProductAgentOS/CanonicalTerms.yml",
+            ".docs-tools/vale/ProductAgentOS/GeneratedViewClaims.yml",
+            ".docs-tools/vale/ProductAgentOS/ReadinessClaims.yml",
+            ".docs-tools/vale/ProductAgentOS/SourceStatusLabel.yml",
+            ".docs-tools/vale/config/vocabularies/ProductAgentOS/accept.txt",
+            ".docs-tools/vale/fixtures/doc-m37-smoke.md",
+            "tools/docs_vale_install.ps1",
+        ]:
+            with self.subTest(path=path):
+                self.assertTrue((ROOT / path).exists(), path)
+
+        vale_ini = (ROOT / ".vale.ini").read_text(encoding="utf-8")
+        self.assertIn("StylesPath = .docs-tools/vale", vale_ini)
+        self.assertIn("BasedOnStyles = ProductAgentOS", vale_ini)
+
+        for claim in [
+            "Vale proves source correctness",
+            "Vale proves legal or compliance review",
+            "broad docs language scan passed",
+            "Vale warnings are enforced in CI or hooks",
+        ]:
+            with self.subTest(unsupported_claim=claim):
+                self.assertIn(claim, packet["unsupported_claims"])
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(value)
+
+        document_terms = {
+            "requirements": [
+                "documentation-refresh-g1-1-doc-m37-vale-language-summary.json",
+                "broad Vale enforcement",
+            ],
+            "plan": [
+                "documentation_refresh_G1_1-DOC-M37-VALE-A01",
+                "installed_advisory_smoke_passed",
+            ],
+            "test": [
+                ".docs-tools\\bin\\vale.exe --config=.vale.ini .docs-tools\\vale\\fixtures\\doc-m37-smoke.md",
+                "DOC-M37",
+            ],
+            "evals": [
+                "documentation_refresh_G1_1-DOC-M37-VALE-A01",
+                "broad Vale enforcement",
+            ],
+            "runlog": [
+                "documentation_refresh_G1_1-DOC-M37-VALE-A01",
+                "negative readiness-wording smoke",
+            ],
+            "registry": [
+                "documentation_refresh_G1_1-DOC-M37-VALE-A01",
+                "DOC-M37 installed_advisory_smoke_passed",
+            ],
+            "registry_en": [
+                "documentation_refresh_G1_1-DOC-M37-VALE-A01",
+                "DOC-M37 installed_advisory_smoke_passed",
+            ],
+            "track11_plan": [
+                "documentation_refresh_G1_1-DOC-M37-VALE-A01",
+                "`installed_advisory_smoke_passed`",
+            ],
+            "docs_tools_readme": [
+                "DOC-M37",
+                "Vale warnings are not enforcement",
+            ],
+            "bin_readme": [
+                "Vale `3.15.1`",
+                "vale.sha256",
+            ],
+        }
+        for document, terms in document_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+
+    def test_documentation_refresh_g1_1_doc_m38_link_secret_hygiene_is_recorded(self):
+        packet = json.loads(DOCUMENTATION_REFRESH_G1_1_DOC_M38_LINK_SECRET.read_text(encoding="utf-8"))
+        documents = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track11_plan": (
+                DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            ).read_text(encoding="utf-8"),
+            "docs_tools_readme": (ROOT / ".docs-tools" / "README.md").read_text(encoding="utf-8"),
+            "bin_readme": (ROOT / ".docs-tools" / "bin" / "README.md").read_text(encoding="utf-8"),
+            "link_secret_readme": (ROOT / ".docs-tools" / "link-secret" / "README.md").read_text(
+                encoding="utf-8"
+            ),
+            "gitleaks_toml": (ROOT / ".gitleaks.toml").read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual(
+            "documentation_refresh_g1_1_doc_m38_link_secret_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual("documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01", packet["evidence_id"])
+        self.assertEqual("installed_scoped_smoke_passed", packet["status"])
+        self.assertEqual("DOC-M38", packet["work_item"])
+        self.assertEqual("0.24.2", packet["installed_runtime"]["lychee"]["version"])
+        self.assertEqual("8.30.0", packet["installed_runtime"]["gitleaks"]["version"])
+        self.assertEqual(
+            "2d15a3f78ac680103720b0c59667dc6f1da7de35f7e9c95171bdf4b76fb6829b",
+            packet["installed_runtime"]["lychee"]["sha256"],
+        )
+        self.assertEqual(
+            "9d08e3f5cfb35a98f230b97bcda24f8d3fc66363c91868ffc98dac0afebdcb72",
+            packet["installed_runtime"]["gitleaks"]["sha256"],
+        )
+        self.assertEqual("offline_local_fixture_only", packet["scope_boundary"]["lychee_scope"])
+        self.assertEqual(
+            "synthetic_fixture_only_redacted_stdout_no_report_file",
+            packet["scope_boundary"]["gitleaks_scope"],
+        )
+        self.assertEqual("not_enabled", packet["scope_boundary"]["external_url_crawl_status"])
+        self.assertEqual("not_claimed", packet["scope_boundary"]["broad_docs_link_scan_status"])
+        self.assertEqual("not_claimed", packet["scope_boundary"]["broad_repository_secret_scan_status"])
+        self.assertEqual("not_enabled", packet["scope_boundary"]["report_retention_status"])
+
+        for path in [
+            ".gitleaks.toml",
+            ".docs-tools/bin/lychee.sha256",
+            ".docs-tools/bin/gitleaks.sha256",
+            ".docs-tools/link-secret/README.md",
+            ".docs-tools/link-secret/fixtures/doc-m38-links.md",
+            ".docs-tools/link-secret/fixtures/doc-m38-clean-secret-smoke.md",
+            ".docs-tools/link-secret/fixtures/target.md",
+            "tools/docs_link_secret_install.ps1",
+        ]:
+            with self.subTest(path=path):
+                self.assertTrue((ROOT / path).exists(), path)
+
+        self.assertIn("[extend]", documents["gitleaks_toml"])
+        self.assertIn("useDefault = true", documents["gitleaks_toml"])
+
+        for claim in [
+            "external links are healthy",
+            "broad docs link scan passed",
+            "broad repository secret scan passed",
+            "docs are secret-free",
+            "report retention is approved",
+        ]:
+            with self.subTest(unsupported_claim=claim):
+                self.assertIn(claim, packet["unsupported_claims"])
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(value)
+
+        document_terms = {
+            "requirements": [
+                "documentation-refresh-g1-1-doc-m38-link-secret-summary.json",
+                "broad link/secret scans",
+            ],
+            "plan": [
+                "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
+                "installed_scoped_smoke_passed",
+            ],
+            "test": [
+                ".docs-tools\\bin\\lychee.exe --offline --no-progress .docs-tools\\link-secret\\fixtures\\doc-m38-links.md",
+                ".docs-tools\\bin\\gitleaks.exe dir .docs-tools\\link-secret\\fixtures --config .gitleaks.toml --redact",
+            ],
+            "evals": [
+                "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
+                "external URL crawling",
+            ],
+            "runlog": [
+                "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
+                "redacted clean secret fixture",
+            ],
+            "registry": [
+                "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
+                "DOC-M38 installed_scoped_smoke_passed",
+            ],
+            "registry_en": [
+                "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
+                "DOC-M38 installed_scoped_smoke_passed",
+            ],
+            "track11_plan": [
+                "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
+                "`installed_scoped_smoke_passed`",
+            ],
+            "docs_tools_readme": [
+                "DOC-M38",
+                "External URL crawling",
+            ],
+            "bin_readme": [
+                "lychee `0.24.2`",
+                "gitleaks `8.30.0`",
+            ],
+            "link_secret_readme": [
+                "DOC-M38",
+                "`--redact`",
+            ],
+        }
+        for document, terms in document_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+
+    def test_documentation_refresh_g1_1_doc_m39_mermaid_vendor_is_recorded(self):
+        packet = json.loads(DOCUMENTATION_REFRESH_G1_1_DOC_M39_MERMAID.read_text(encoding="utf-8"))
+        mermaid_package = json.loads(
+            (ROOT / "docs" / "assets" / "javascripts" / "vendor" / "mermaid-10.9.6.package.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        documents = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track11_plan": (
+                DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            ).read_text(encoding="utf-8"),
+            "docs_tools_readme": (ROOT / ".docs-tools" / "README.md").read_text(encoding="utf-8"),
+            "vendor_readme": (
+                ROOT / "docs" / "assets" / "javascripts" / "vendor" / "README.txt"
+            ).read_text(encoding="utf-8"),
+            "mkdocs": MKDOCS.read_text(encoding="utf-8"),
+            "check_docs": CHECK_DOCS.read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual(
+            "documentation_refresh_g1_1_doc_m39_mermaid_vendor_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual("documentation_refresh_G1_1-DOC-M39-MERMAID-A01", packet["evidence_id"])
+        self.assertEqual("installed_offline_vendor_smoke_passed", packet["status"])
+        self.assertEqual("DOC-M39", packet["work_item"])
+        self.assertEqual("10.9.6", packet["installed_runtime"]["mermaid"]["version"])
+        self.assertEqual("10.9.6", mermaid_package["version"])
+        self.assertEqual("MIT", packet["installed_runtime"]["mermaid"]["license"])
+        self.assertEqual("MIT", mermaid_package["license"])
+        self.assertEqual(
+            "eda3a0ad572bbe69a318c1be0163e8233dd824f3f12939e5168feba207767151",
+            packet["installed_runtime"]["mermaid"]["sha256"],
+        )
+        self.assertEqual("passed", packet["scope_boundary"]["strict_mkdocs_smoke_status"])
+        self.assertEqual("not_run_approval_required", packet["scope_boundary"]["browser_runtime_proof_status"])
+        self.assertEqual("not_claimed", packet["scope_boundary"]["root_site_freshness_status"])
+
+        for path in [
+            "tools/docs_mermaid_install.ps1",
+            "docs/assets/javascripts/vendor/README.txt",
+            "docs/assets/javascripts/vendor/mermaid-10.9.6.min.js",
+            "docs/assets/javascripts/vendor/mermaid-10.9.6.min.js.sha256",
+            "docs/assets/javascripts/vendor/mermaid-10.9.6.LICENSE.txt",
+            "docs/assets/javascripts/vendor/mermaid-10.9.6.package.json",
+        ]:
+            with self.subTest(path=path):
+                self.assertTrue((ROOT / path).exists(), path)
+
+        self.assertIn("assets/javascripts/vendor/mermaid-10.9.6.min.js", documents["mkdocs"])
+        self.assertNotIn("https://unpkg.com/mermaid@10/dist/mermaid.min.js", documents["mkdocs"])
+        self.assertIn("mkdocs Mermaid external CDN asset is no longer allowed after DOC-M39", documents["check_docs"])
+        self.assertIn("MERMAID_VENDOR_EVIDENCE", documents["check_docs"])
+
+        for claim in [
+            "Mermaid diagrams rendered visually in a browser",
+            "browser console and network are clean",
+            "generated root site/ freshness verified",
+            "dependency safety reviewed",
+            "SBOM generated",
+        ]:
+            with self.subTest(unsupported_claim=claim):
+                self.assertIn(claim, packet["unsupported_claims"])
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(value)
+
+        document_terms = {
+            "requirements": [
+                "documentation-refresh-g1-1-doc-m39-mermaid-summary.json",
+                "browser Mermaid rendering proof",
+            ],
+            "plan": [
+                "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+                "installed_offline_vendor_smoke_passed",
+            ],
+            "test": [
+                "tools\\docs_mermaid_install.ps1 -Install -AllowNetwork -Force",
+                "mkdocs-strict-smoke-doc-m39-2026-06-21",
+            ],
+            "evals": [
+                "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+                "browser Mermaid rendering",
+            ],
+            "runlog": [
+                "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+                "strict MkDocs/static external-runtime smoke passed",
+            ],
+            "registry": [
+                "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+                "DOC-M39 installed_offline_vendor_smoke_passed",
+            ],
+            "registry_en": [
+                "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+                "DOC-M39 installed_offline_vendor_smoke_passed",
+            ],
+            "track11_plan": [
+                "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+                "`installed_offline_vendor_smoke_passed`",
+            ],
+            "docs_tools_readme": [
+                "DOC-M39",
+                "Strict MkDocs and static external-runtime audits are not browser proof",
+            ],
+            "vendor_readme": [
+                "DOC-M39",
+                "checksum file",
+            ],
+        }
+        for document, terms in document_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+
+    def test_documentation_refresh_g1_1_doc_m40_dependency_audit_is_recorded(self):
+        packet = json.loads(DOCUMENTATION_REFRESH_G1_1_DOC_M40_AUDIT.read_text(encoding="utf-8"))
+        documents = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track11_plan": (
+                DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            ).read_text(encoding="utf-8"),
+            "docs_tools_readme": (ROOT / ".docs-tools" / "README.md").read_text(encoding="utf-8"),
+            "check_docs": CHECK_DOCS.read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual(
+            "documentation_refresh_g1_1_doc_m40_dependency_audit_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual("documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01", packet["evidence_id"])
+        self.assertEqual("implemented_audit_sbom_governance_current_findings_recorded", packet["status"])
+        self.assertEqual("DOC-M40", packet["work_item"])
+        self.assertEqual(31, packet["python_dependency_inventory"]["package_count"])
+        self.assertEqual("passed", packet["python_dependency_inventory"]["pip_check"]["status"])
+        self.assertEqual(
+            "not_installed_approval_required",
+            packet["python_dependency_inventory"]["pip_audit"]["status"],
+        )
+        self.assertEqual(
+            "not_generated_tool_not_installed_approval_required",
+            packet["python_dependency_inventory"]["python_sbom"]["status"],
+        )
+
+        direct_deps = packet["node_dependency_inventory"]["direct_dependencies"]
+        self.assertEqual("2.34.0", direct_deps["@redocly/cli"])
+        self.assertEqual("0.22.1", direct_deps["markdownlint-cli2"])
+        self.assertEqual("3.8.4", direct_deps["prettier"])
+        self.assertEqual("CycloneDX", packet["node_dependency_inventory"]["cyclonedx_sbom"]["bom_format"])
+        self.assertEqual("1.5", packet["node_dependency_inventory"]["cyclonedx_sbom"]["spec_version"])
+        self.assertEqual(88, packet["node_dependency_inventory"]["cyclonedx_sbom"]["component_count"])
+
+        vulnerability_counts = packet["node_dependency_inventory"]["npm_audit"]["vulnerability_counts"]
+        self.assertEqual(3, vulnerability_counts["moderate"])
+        self.assertEqual(0, vulnerability_counts["high"])
+        self.assertEqual(0, vulnerability_counts["critical"])
+        self.assertEqual("passed_no_high_or_critical_findings", packet["node_dependency_inventory"]["npm_audit"]["audit_level_high_status"])
+
+        self.assertEqual(
+            "passed_recorded_hashes_match_current_files",
+            packet["binary_and_vendor_integrity"]["status"],
+        )
+        for finding in ["js-yaml", "markdown-it", "markdownlint-cli2"]:
+            with self.subTest(finding=finding):
+                self.assertIn(
+                    finding,
+                    [item["name"] for item in packet["node_dependency_inventory"]["npm_audit"]["tracked_moderate_findings"]],
+                )
+
+        for gap in [
+            "pip-audit and Python SBOM tools are not installed",
+            "raw audit and SBOM reports are not retained under .docs-tools/reports",
+            "moderate npm findings remain unresolved",
+        ]:
+            with self.subTest(gap=gap):
+                self.assertIn(gap, [item["gap"] for item in packet["accepted_gaps"]])
+
+        for claim in [
+            "Python vulnerability audit is clean",
+            "complete repository SBOM exists",
+            "dependency remediation was performed",
+            "release readiness",
+            "root site freshness",
+            "browser/runtime behavior",
+        ]:
+            with self.subTest(unsupported_claim=claim):
+                self.assertIn(claim, packet["unsupported_claims"])
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(value)
+
+        for path in [
+            "tools/docs_dependency_audit.ps1",
+            "docs/superpowers/specs/documentation-refresh-g1-1-doc-m40-dependency-audit-summary.json",
+            ".docs-tools/node/package.json",
+            ".docs-tools/node/package-lock.json",
+            ".docs-tools/bin/vale.sha256",
+            ".docs-tools/bin/lychee.sha256",
+            ".docs-tools/bin/gitleaks.sha256",
+            "docs/assets/javascripts/vendor/mermaid-10.9.6.min.js.sha256",
+        ]:
+            with self.subTest(path=path):
+                self.assertTrue((ROOT / path).exists(), path)
+
+        self.assertIn("DOC_M40_AUDIT_EVIDENCE", documents["check_docs"])
+        self.assertIn("DOC-M40 dependency audit helper is missing", documents["check_docs"])
+        self.assertNotIn("npm.cmd --prefix .docs-tools\\node audit --json", documents["check_docs"])
+
+        document_terms = {
+            "requirements": [
+                "documentation-refresh-g1-1-doc-m40-dependency-audit-summary.json",
+                "Python vulnerability audit",
+            ],
+            "plan": [
+                "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
+                "implemented_audit_sbom_governance_current_findings_recorded",
+            ],
+            "test": [
+                "tools\\docs_dependency_audit.ps1",
+                "npm.cmd --prefix .docs-tools\\node audit --audit-level=high",
+            ],
+            "evals": [
+                "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
+                "3 moderate Node findings",
+            ],
+            "runlog": [
+                "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
+                "3 moderate / 0 high / 0 critical findings",
+            ],
+            "registry": [
+                "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
+                "DOC-M40 implemented_audit_sbom_governance_current_findings_recorded",
+            ],
+            "registry_en": [
+                "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
+                "DOC-M40 implemented_audit_sbom_governance_current_findings_recorded",
+            ],
+            "track11_plan": [
+                "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
+                "`implemented_audit_sbom_governance_current_findings_recorded`",
+            ],
+            "docs_tools_readme": [
+                "DOC-M40",
+                "Raw report retention",
+            ],
+        }
+        for document, terms in document_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+
+    def test_documentation_refresh_g1_1_doc_m41_deferred_platform_triggers_are_recorded(self):
+        packet = json.loads(DOCUMENTATION_REFRESH_G1_1_DOC_M41_DEFERRED_PLATFORMS.read_text(encoding="utf-8"))
+        documents = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track11_plan": (
+                DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            ).read_text(encoding="utf-8"),
+            "check_docs": CHECK_DOCS.read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual(
+            "documentation_refresh_g1_1_doc_m41_deferred_platform_triggers_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual(
+            "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
+            packet["evidence_id"],
+        )
+        self.assertEqual(
+            "implemented_deferred_platform_trigger_governance_no_install_no_site_rebuild",
+            packet["status"],
+        )
+        self.assertEqual("DOC-M41", packet["work_item"])
+        self.assertEqual("G1.1", packet["group"])
+        self.assertEqual(
+            "deferred_until_trigger_evidence_exists",
+            packet["decision_summary"]["deferred_status"],
+        )
+        self.assertEqual(
+            "not_installed_no_download_no_scaffold",
+            packet["decision_summary"]["installation_status"],
+        )
+        self.assertEqual("root_site_rebuild_not_run", packet["decision_summary"]["site_status"])
+
+        platform_records = {record["tool"]: record for record in packet["platform_trigger_records"]}
+        self.assertEqual({"Docusaurus", "Storybook", "Structurizr DSL"}, set(platform_records))
+        self.assertIn("React or MDX-heavy", " ".join(platform_records["Docusaurus"]["trigger_evidence_required"]))
+        self.assertIn("component", " ".join(platform_records["Storybook"]["trigger_evidence_required"]).lower())
+        self.assertIn("model-driven C4", " ".join(platform_records["Structurizr DSL"]["trigger_evidence_required"]))
+
+        for record in platform_records.values():
+            with self.subTest(tool=record["tool"]):
+                self.assertEqual("deferred", record["deferred_status"])
+                self.assertTrue(record["proposed_project_local_install_folder"])
+                self.assertTrue(record["acceptance_criteria"])
+                self.assertTrue(record["approval_required_actions"])
+
+        for claim in [
+            "DOC-M41 records trigger criteria for deferred documentation platforms and architecture tooling.",
+            "Docusaurus, Storybook and Structurizr DSL remain deferred until concrete trigger evidence exists.",
+            "No DOC-M41 install, download, scaffold, root site rebuild, browser proof or publication action was performed.",
+        ]:
+            with self.subTest(supported_claim=claim):
+                self.assertIn(claim, packet["supported_claims"])
+
+        for claim in [
+            "Docusaurus is installed or verified",
+            "Storybook is installed or verified",
+            "Structurizr DSL is installed or verified",
+            "root site freshness",
+            "browser/runtime behavior",
+            "release readiness",
+            "publication readiness",
+        ]:
+            with self.subTest(unsupported_claim=claim):
+                self.assertIn(claim, packet["unsupported_claims"])
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(value)
+
+        self.assertIn("DOC_M41_DEFERRED_PLATFORM_EVIDENCE", documents["check_docs"])
+        self.assertIn("DOC-M41 deferred platform trigger evidence packet is missing", documents["check_docs"])
+        self.assertNotIn("npm install docusaurus", documents["check_docs"].lower())
+        self.assertNotIn("storybook build", documents["check_docs"].lower())
+        self.assertNotIn("structurizr", documents["check_docs"].lower())
+
+        document_terms = {
+            "requirements": [
+                "documentation-refresh-g1-1-doc-m41-deferred-platform-triggers-summary.json",
+                "Docusaurus, Storybook and Structurizr DSL remain deferred",
+            ],
+            "plan": [
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
+                "implemented_deferred_platform_trigger_governance_no_install_no_site_rebuild",
+            ],
+            "test": [
+                "DOC-M41",
+                "deferred platform trigger",
+            ],
+            "evals": [
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
+                "Docusaurus, Storybook and Structurizr DSL",
+            ],
+            "runlog": [
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
+                "No Docusaurus, Storybook or Structurizr install",
+            ],
+            "registry": [
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
+                "DOC-M41 implemented_deferred_platform_trigger_governance_no_install_no_site_rebuild",
+            ],
+            "registry_en": [
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
+                "DOC-M41 implemented_deferred_platform_trigger_governance_no_install_no_site_rebuild",
+            ],
+            "track11_plan": [
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
+                "`implemented_deferred_platform_trigger_governance_no_install_no_site_rebuild`",
+            ],
+        }
+        for document, terms in document_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+
+    def test_documentation_refresh_g1_1_residual_followups_are_routed(self):
+        track11_plan = (
+            DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md"
+        ).read_text(encoding="utf-8")
+        runlog = RUNLOG.read_text(encoding="utf-8")
+
+        for term in [
+            "## G1.1 Residual Follow-Up Routing",
+            "Root `site` rebuild, search/sitemap freshness and generated-site evidence.",
+            "`DOC-M25`",
+            "final generated-site freshness gate after G2-G5 source updates",
+            "Mermaid browser proof and visual diagram screenshot evidence.",
+            "`DOC-M08`, `DOC-M23`",
+            "Structurizr DSL trigger for model-driven C4 or architecture-as-code diagrams.",
+            "Broad docs lint/format enforcement with markdownlint and Prettier beyond scoped smokes.",
+            "Broad Vale enforcement for terminology, readiness wording and claim ceilings.",
+            "Broad lychee/gitleaks scans, external URL crawling and raw report retention.",
+            "Redocly enforcement for API documentation.",
+            "Python vulnerability audit / Python SBOM and complete repository SBOM.",
+            "Node dependency remediation for the current moderate audit findings.",
+            "Docusaurus trigger for a future docs platform decision record.",
+            "Storybook trigger for component or generated-artifact visual acceptance.",
+            "`planned_g1_1_residual_handoff`",
+            "No item in this table authorizes installation, root `site` rebuild, browser proof",
+        ]:
+            with self.subTest(term=term):
+                self.assertIn(term, track11_plan)
+
+        self.assertLess(
+            track11_plan.index("`DOC-M30` | `G5`"),
+            track11_plan.index("`DOC-M25` | `G5`"),
+        )
+
+        for term in [
+            "documentation_refresh_G1_1-RESIDUAL-ROUTING-A01",
+            "Root `site` rebuild routes to final `DOC-M25` after G2-G5 source updates",
+            "Mermaid/browser/Structurizr proof routes to `DOC-M08` and `DOC-M23`",
+            "supply-chain, Python vulnerability audit, complete repository SBOM, Node remediation",
+            "No install, root site rebuild, browser proof, dependency remediation",
+        ]:
+            with self.subTest(runlog_term=term):
+                self.assertIn(term, runlog)
+
+        for term in [
+            "`DOC-M04` | `G2` | P0 | Add reader-facing Architecture Intelligence Cockpit page.",
+            "`planned_g1_1_residual_hooked`",
+            "final `DOC-M25` site-freshness route",
+            "`DOC-M06` | `G2` | P0 | Update code graph and CLI docs for cockpit surfaces.",
+            "broad tooling commands stay with `DOC-M26`",
+            "`DOC-M08` | `G3` | P0 | Add diagram atlas page for first-run cockpit architecture.",
+            "optional browser/screenshot proof only with separate approval",
+            "`DOC-M23` | `G3` | P2 | Add an Architecture Intelligence diagram atlas page.",
+            "deferred Structurizr DSL trigger criteria",
+            "`DOC-M12` | `G4` | P1 | Update Product-Agent OS index and scenarios with new routes.",
+            "final `DOC-M25` generated-site freshness route",
+            "`DOC-M26` | `G4` | P0 | Document first-run CLI modes and safe docs-tooling command matrix.",
+            "markdownlint/Prettier/Vale/lychee/gitleaks/Redocly command modes",
+            "`DOC-M31` | `G4` | P1 | Update methodology integration map.",
+            "Redocly `not_applicable` / OpenAPI-trigger status",
+            "`DOC-M21` | `G5` | P1 | Add generated artifact UX acceptance criteria.",
+            "conditional Storybook trigger",
+            "`DOC-M24` | `G5` | P2 | Add source, cache, session, supply-chain and report-retention docs.",
+            "Python vulnerability audit / Python SBOM",
+            "`DOC-M29` | `G5` | P0 | Document local HTML interaction and browser-proof approval boundary.",
+            "console/network evidence requirements",
+            "row-level G2-G5 hook review",
+            "G2-G5 row-level hooks now carry those residuals directly",
+        ]:
+            with self.subTest(row_level_term=term):
+                self.assertIn(term, track11_plan)
+
+        for term in [
+            "documentation_refresh_G2_G5-G1_1-RESIDUAL-HOOKS-A01",
+            "G2-G5 task rows now carry G1.1 residual hooks directly",
+            "`DOC-M30` checks row-level residual closure before final `DOC-M25`",
+            "No root site rebuild, browser proof, dependency remediation",
+        ]:
+            with self.subTest(runlog_row_level_term=term):
+                self.assertIn(term, runlog)
+
+
+    def test_documentation_refresh_g2_first_run_cockpit_artifact_docs_are_synced(self):
+        self.assertTrue(DOCUMENTATION_REFRESH_G2.exists(), DOCUMENTATION_REFRESH_G2)
+        packet = json.loads(DOCUMENTATION_REFRESH_G2.read_text(encoding="utf-8"))
+        documents = {
+            "cockpit": self._localized_contract_text(PRODUCT_AGENT_OS / "first-run-architecture-cockpit.md"),
+            "artifact_contracts": self._localized_contract_text(PRODUCT_AGENT_OS / "artifact-contracts.md"),
+            "artifact_gallery": self._localized_contract_text(PRODUCT_AGENT_OS / "artifact-gallery.md"),
+            "project_code_graph": self._localized_contract_text(PRODUCT_AGENT_OS / "project-code-graph.md"),
+            "cli_reference": self._localized_contract_text(PRODUCT_AGENT_OS / "cli-reference.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "mkdocs": MKDOCS.read_text(encoding="utf-8"),
+            "check_docs": CHECK_DOCS.read_text(encoding="utf-8"),
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track11_plan": (
+                DOCS
+                / "superpowers"
+                / "plans"
+                / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            ).read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual(
+            "documentation_refresh_g2_first_run_cockpit_artifact_docs_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual("documentation_refresh_G2-A01", packet["evidence_id"])
+        self.assertEqual("implemented_source_docs_no_site_rebuild", packet["status"])
+
+        for work_item in ["DOC-M04", "DOC-M05", "DOC-M06", "DOC-M19", "DOC-M20", "DOC-M33"]:
+            with self.subTest(work_item=work_item):
+                self.assertEqual(
+                    "implemented_source_docs_no_site_rebuild",
+                    packet["work_item_status"][work_item]["status"],
+                )
+                self.assertIn(
+                    f"`{work_item}`",
+                    documents["track11_plan"],
+                )
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(no_unapproved_action=action):
+                self.assertFalse(value)
+
+        self.assertEqual(134, packet["test_contract"]["source_markdown_page_count"])
+        self.assertEqual(126, packet["test_contract"]["localized_markdown_page_count"])
+        self.assertEqual(125, packet["test_contract"]["site_promoted_localized_markdown_page_count"])
+        self.assertEqual(
+            ["docs/product-agent-os/first-run-architecture-cockpit.md"],
+            packet["test_contract"]["pending_site_pages_until_doc_m25"],
+        )
+        self.assertIn(
+            DOCS / "product-agent-os" / "first-run-architecture-cockpit.md",
+            DOC_M25_HISTORICAL_PENDING_SITE_PAGES,
+        )
+
+        expected_terms = {
+            "cockpit": [
+                "Source status:",
+                "orientation_only_not_proof",
+                "architecture_intelligence_design_contract_v1",
+                "Local-JS Boundary",
+                "Workspace Detection And Routing",
+                "Screenshot And Browser Proof Boundary",
+                "DOC-M25",
+                "not_run_approval_required",
+            ],
+            "artifact_contracts": [
+                "First-run analysis artifact",
+                "first_run_cockpit_artifact_v1",
+                "first_run_cockpit_artifact_contract_v1",
+                "architecture_intelligence_design_contract_v1",
+                "first_run_schema_contract_surface_v1",
+                "first_run_graph_file_code_surface_v1",
+                "first_run_artifact_cleanup_guidance_v1",
+                "first_run_redaction_report_v1",
+                "answer-ledger-template.json",
+                "not a complete JSON Schema",
+            ],
+            "artifact_gallery": [
+                "First-run Packet",
+                "analysis-manifest.json",
+                "Primary HTML cockpit",
+                "Generated-view Policy",
+                "first_run_artifact_cleanup_guidance_v1",
+                "Generated `site/` freshness",
+                "DOC-M25",
+            ],
+            "project_code_graph": [
+                "Cockpit Surfaces",
+                "Project Map",
+                "Code Intelligence",
+                "Static Visual Boundary",
+                "Cosmos.gl/WebGL",
+                "generated `site` freshness",
+            ],
+            "cli_reference": [
+                "Safe operator examples",
+                "Cockpit Query Surface",
+                "--query read_order",
+                "DOC-M26",
+                "root `site` rebuild",
+            ],
+            "technical": [
+                "DOC-M26",
+                "DOC-M25",
+                "Project Map",
+                "Proposal Ledger",
+                "release readiness",
+            ],
+        }
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+        for document in ["mkdocs", "check_docs"]:
+            with self.subTest(document=document):
+                self.assertIn("product-agent-os/first-run-architecture-cockpit.md", documents[document])
+
+        sync_terms = {
+            "requirements": [
+                "documentation_refresh_G2-A01",
+                "DOC_M25_PENDING_SITE_PAGES",
+                "search and sitemap freshness remain deferred to final `DOC-M25`",
+            ],
+            "plan": [
+                "Track 11 G2 first-run cockpit and artifact docs",
+                "documentation-refresh-g2-first-run-cockpit-artifact-docs-summary.json",
+                "Continue with G3-G5 source/docs slices",
+            ],
+            "test": [
+                "documentation_refresh_G2-A01",
+                ".docs-tools\\reports\\mkdocs-strict-smoke-g2-2026-06-21",
+                "do not claim root `site`/search/sitemap freshness until final `DOC-M25`",
+            ],
+            "evals": [
+                "documentation_refresh_G2-A01",
+                "Track 11 G2 source/nav docs",
+                "root `site` freshness remains a `DOC-M25` eval gate",
+            ],
+            "runlog": [
+                "documentation_refresh_G2-A01",
+                "DOC_M25_PENDING_SITE_PAGES",
+                "No root site, browser/runtime/provider, target, git, release or automation action.",
+            ],
+            "registry": [
+                "Product-Agent OS Track 11 G2 first-run cockpit and artifact docs packet",
+                "documentation_refresh_G2-A01",
+                "implemented_source_docs_no_site_rebuild",
+            ],
+            "registry_en": [
+                "Product-Agent OS Track 11 G2 first-run cockpit and artifact docs packet",
+                "documentation_refresh_G2-A01",
+                "implemented_source_docs_no_site_rebuild",
+            ],
+            "track11_plan": [
+                "G2 source docs are implemented through `DOC-M04`, `DOC-M05`, `DOC-M06`, `DOC-M19`, `DOC-M20` and `DOC-M33`",
+                "Generated root `site/` freshness is not claimed",
+                "No dependency upgrade",
+            ],
+        }
+        for document, terms in sync_terms.items():
+            for term in terms:
+                with self.subTest(sync_document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+
+    def test_documentation_refresh_g3_diagram_atlas_architecture_maps_are_synced(self):
+        self.assertTrue(DOCUMENTATION_REFRESH_G3.exists(), DOCUMENTATION_REFRESH_G3)
+        packet = json.loads(DOCUMENTATION_REFRESH_G3.read_text(encoding="utf-8"))
+        diagrams = {
+            "source_boundary": self._localized_contract_text(
+                DOCS / "diagrams" / "source-generated-trust-boundary.md"
+            ),
+            "cockpit_architecture": self._localized_contract_text(
+                DOCS / "diagrams" / "first-run-cockpit-architecture.md"
+            ),
+            "evidence_risk": self._localized_contract_text(
+                DOCS / "diagrams" / "evidence-risk-lifecycle.md"
+            ),
+            "skill_exposure": self._localized_contract_text(
+                DOCS / "diagrams" / "skill-exposure-and-invocation.md"
+            ),
+            "architecture_intelligence": self._localized_contract_text(
+                DOCS / "diagrams" / "architecture-intelligence-diagram-atlas.md"
+            ),
+            "diagram_index": self._localized_contract_text(DOCS / "diagrams" / "index.md"),
+        }
+        documents = {
+            "mkdocs": MKDOCS.read_text(encoding="utf-8"),
+            "check_docs": CHECK_DOCS.read_text(encoding="utf-8"),
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track11_plan": (
+                DOCS
+                / "superpowers"
+                / "plans"
+                / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            ).read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual(
+            "documentation_refresh_g3_diagram_atlas_architecture_maps_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual("documentation_refresh_G3-A01", packet["evidence_id"])
+        self.assertEqual("implemented_source_docs_no_site_rebuild", packet["status"])
+
+        for work_item in ["DOC-M07", "DOC-M08", "DOC-M09", "DOC-M10", "DOC-M23"]:
+            with self.subTest(work_item=work_item):
+                self.assertEqual(
+                    "implemented_source_docs_no_site_rebuild",
+                    packet["work_item_status"][work_item]["status"],
+                )
+                self.assertIn(f"`{work_item}`", documents["track11_plan"])
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(no_unapproved_action=action):
+                self.assertFalse(value)
+
+        self.assertEqual(139, packet["test_contract"]["source_markdown_page_count"])
+        self.assertEqual(131, packet["test_contract"]["localized_markdown_page_count"])
+        self.assertEqual(125, packet["test_contract"]["site_promoted_localized_markdown_page_count"])
+        self.assertEqual(
+            [
+                "docs/product-agent-os/first-run-architecture-cockpit.md",
+                "docs/diagrams/source-generated-trust-boundary.md",
+                "docs/diagrams/first-run-cockpit-architecture.md",
+                "docs/diagrams/evidence-risk-lifecycle.md",
+                "docs/diagrams/skill-exposure-and-invocation.md",
+                "docs/diagrams/architecture-intelligence-diagram-atlas.md",
+            ],
+            packet["test_contract"]["pending_site_pages_until_doc_m25"],
+        )
+
+        expected_terms = {
+            "source_boundary": [
+                "Source status:",
+                "generated-view-only",
+                "orientation evidence",
+                "source truth",
+                "current command evidence",
+                "owner approval",
+                "accepted gap",
+                "DOC-M25",
+                "browser proof approval_required",
+                "generated `site` freshness deferred",
+            ],
+            "cockpit_architecture": [
+                "first_run_cockpit_artifact_v1",
+                "architecture_intelligence_design_contract_v1",
+                "strict MkDocs",
+                "browser screenshot proof",
+                "browser proof approval_required",
+                "Cosmos.gl/WebGL",
+                "DOC-M25",
+                "unsupported claims",
+            ],
+            "evidence_risk": [
+                "evidence_before_completion",
+                "generated-view-only",
+                "accepted gap",
+                "owner approval",
+                "unsupported claims",
+                "DOC-M25",
+            ],
+            "skill_exposure": [
+                "Source bundle",
+                "Installed plugin cache",
+                "Fresh Codex session",
+                "planned-only",
+                "active session behavior",
+                "DOC-M25",
+            ],
+            "architecture_intelligence": [
+                "architecture_intelligence_design_contract_v1",
+                "first_run_cockpit_artifact_v1",
+                "source registry loop",
+                "local Mermaid",
+                "Structurizr DSL",
+                "generated `site` freshness deferred",
+                "browser proof approval_required",
+            ],
+            "diagram_index": [
+                "Source/generated trust boundary",
+                "First-Run Cockpit Architecture",
+                "Evidence And Risk Lifecycle",
+                "Skill Exposure And Invocation Boundary",
+                "Architecture Intelligence Diagram Atlas",
+            ],
+        }
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, diagrams[document])
+
+        for path in [
+            "diagrams/source-generated-trust-boundary.md",
+            "diagrams/first-run-cockpit-architecture.md",
+            "diagrams/evidence-risk-lifecycle.md",
+            "diagrams/skill-exposure-and-invocation.md",
+            "diagrams/architecture-intelligence-diagram-atlas.md",
+        ]:
+            with self.subTest(nav_path=path):
+                self.assertIn(path, documents["mkdocs"])
+                self.assertIn(path, documents["check_docs"])
+
+        sync_terms = {
+            "requirements": [
+                "documentation_refresh_G3-A01",
+                "source/generated trust boundary",
+                "search and sitemap freshness remain deferred to final `DOC-M25`",
+            ],
+            "plan": [
+                "Track 11 G3 diagram atlas and architecture maps",
+                "documentation-refresh-g3-diagram-atlas-architecture-maps-summary.json",
+                "Continue with G4-G5 source/docs slices",
+            ],
+            "test": [
+                "documentation_refresh_G3-A01",
+                ".docs-tools\\reports\\mkdocs-strict-smoke-g3-2026-06-21",
+                "do not claim root `site`/search/sitemap freshness until final `DOC-M25`",
+            ],
+            "evals": [
+                "documentation_refresh_G3-A01",
+                "Track 11 G3 diagram atlas source/nav docs",
+                "browser proof remains approval_required",
+            ],
+            "runlog": [
+                "documentation_refresh_G3-A01",
+                "DOC_M25_PENDING_SITE_PAGES",
+                "No root site, browser/runtime/provider, target, git, release or automation action.",
+            ],
+            "registry": [
+                "Product-Agent OS Track 11 G3 diagram atlas and architecture maps packet",
+                "documentation_refresh_G3-A01",
+                "implemented_source_docs_no_site_rebuild",
+            ],
+            "registry_en": [
+                "Product-Agent OS Track 11 G3 diagram atlas and architecture maps packet",
+                "documentation_refresh_G3-A01",
+                "implemented_source_docs_no_site_rebuild",
+            ],
+            "track11_plan": [
+                "G3 source docs are implemented through `DOC-M07`, `DOC-M08`, `DOC-M09`, `DOC-M10` and `DOC-M23`",
+                "Generated root `site/` freshness is not claimed",
+                "No Structurizr DSL install",
+            ],
+        }
+        for document, terms in sync_terms.items():
+            for term in terms:
+                with self.subTest(sync_document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+
+    def test_documentation_refresh_g4_operator_flows_system_behavior_are_synced(self):
+        self.assertTrue(DOCUMENTATION_REFRESH_G4.exists(), DOCUMENTATION_REFRESH_G4)
+        packet = json.loads(DOCUMENTATION_REFRESH_G4.read_text(encoding="utf-8"))
+        product_docs = {
+            "instruction_tool_use": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "instruction-tool-use-compliance.md"
+            ),
+            "operator_matrix": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "operator-command-matrix.md"
+            ),
+            "guided_questions": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "guided-questions-answer-ledger.md"
+            ),
+            "source_cache_session": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "source-cache-session-state.md"
+            ),
+            "index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+            "cli_reference": self._localized_contract_text(PRODUCT_AGENT_OS / "cli-reference.md"),
+            "methodology": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "methodology-intelligence.md"
+            ),
+        }
+        documents = {
+            "mkdocs": MKDOCS.read_text(encoding="utf-8"),
+            "check_docs": CHECK_DOCS.read_text(encoding="utf-8"),
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track11_plan": (
+                DOCS
+                / "superpowers"
+                / "plans"
+                / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            ).read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual(
+            "documentation_refresh_g4_operator_flows_system_behavior_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual("documentation_refresh_G4-A01", packet["evidence_id"])
+        self.assertEqual("implemented_source_docs_no_site_rebuild", packet["status"])
+
+        for work_item in ["DOC-M11", "DOC-M12", "DOC-M26", "DOC-M27", "DOC-M31", "DOC-M32"]:
+            with self.subTest(work_item=work_item):
+                self.assertEqual(
+                    "implemented_source_docs_no_site_rebuild",
+                    packet["work_item_status"][work_item]["status"],
+                )
+                self.assertIn(f"`{work_item}`", documents["track11_plan"])
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(no_unapproved_action=action):
+                self.assertFalse(value)
+
+        self.assertEqual(143, packet["test_contract"]["source_markdown_page_count"])
+        self.assertEqual(135, packet["test_contract"]["localized_markdown_page_count"])
+        self.assertEqual(125, packet["test_contract"]["site_promoted_localized_markdown_page_count"])
+        self.assertEqual(
+            [
+                "docs/product-agent-os/first-run-architecture-cockpit.md",
+                "docs/diagrams/source-generated-trust-boundary.md",
+                "docs/diagrams/first-run-cockpit-architecture.md",
+                "docs/diagrams/evidence-risk-lifecycle.md",
+                "docs/diagrams/skill-exposure-and-invocation.md",
+                "docs/diagrams/architecture-intelligence-diagram-atlas.md",
+                "docs/product-agent-os/instruction-tool-use-compliance.md",
+                "docs/product-agent-os/operator-command-matrix.md",
+                "docs/product-agent-os/guided-questions-answer-ledger.md",
+                "docs/product-agent-os/source-cache-session-state.md",
+            ],
+            packet["test_contract"]["pending_site_pages_until_doc_m25"],
+        )
+
+        expected_terms = {
+            "instruction_tool_use": [
+                "Source status:",
+                "official + project evidence",
+                "allow_implicit_invocation",
+                "explicit_only",
+                "narrow_implicit",
+                "blocked_implicit",
+                "no_unapproved_actions",
+                "planned-only",
+                "self-learning-loop",
+                "auto-engagement is fixed",
+            ],
+            "operator_matrix": [
+                "--full-dry-run",
+                "--stage <dir>",
+                "--write-analysis",
+                "stage-inside-target is blocked",
+                "Redocly",
+                "not_applicable",
+                "broad repository scans",
+                "root `site` rebuild",
+            ],
+            "guided_questions": [
+                "next_blocking_question",
+                "policy.max_blocking_questions_in_first_response",
+                "policy.max_total_questions",
+                "staged_only",
+                "answer-ledger-template.json",
+                "question_counts",
+                "not_claimed",
+            ],
+            "source_cache_session": [
+                "source_skill_count",
+                "cache_skill_count",
+                "active_session_exposure",
+                "allow_implicit_invocation",
+                "No Auto-Repair",
+                "Fresh-session proof",
+            ],
+            "index": [
+                "Instruction and tool-use compliance",
+                "Operator command matrix",
+                "Guided questions and answer ledger",
+                "Source, cache and active-session state",
+                "DOC-M25",
+                "documentation_refresh_G4-A01",
+            ],
+            "scenarios": [
+                "instruction_tool_use_compliance",
+                "operator_command_matrix",
+                "guided_question_answer_ledger",
+                "source_cache_session_state",
+                "one blocking question maximum",
+                "answers_require_staged_ledger_and_owner_review",
+                "fresh-session proof",
+            ],
+            "cli_reference": [
+                "--full-dry-run",
+                "--stage <dir>",
+                "--write-analysis",
+                "stage-inside-target is blocked",
+                "DOC-M26",
+                "Redocly `not_applicable`",
+            ],
+            "methodology": [
+                "Methodology Integration Map",
+                "recommendation_groups",
+                "source_artifact_ledger",
+                "owner_questions",
+                "safe_next_action",
+                "present_unverified",
+                "Redocly `not_applicable` / OpenAPI-trigger status",
+            ],
+        }
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, product_docs[document])
+
+        for path in [
+            "product-agent-os/instruction-tool-use-compliance.md",
+            "product-agent-os/operator-command-matrix.md",
+            "product-agent-os/guided-questions-answer-ledger.md",
+            "product-agent-os/source-cache-session-state.md",
+        ]:
+            with self.subTest(nav_path=path):
+                self.assertIn(path, documents["mkdocs"])
+                self.assertIn(path, documents["check_docs"])
+
+        sync_terms = {
+            "requirements": [
+                "documentation_refresh_G4-A01",
+                "instruction/tool-use compliance",
+                "search and sitemap freshness remain deferred to final `DOC-M25`",
+            ],
+            "plan": [
+                "Track 11 G4 operator flows and system behavior docs",
+                "documentation-refresh-g4-operator-flows-system-behavior-summary.json",
+                "Continue with G5 source/docs slices",
+            ],
+            "test": [
+                "documentation_refresh_G4-A01",
+                ".docs-tools\\reports\\mkdocs-strict-smoke-g4-2026-06-22",
+                "do not claim root `site`/search/sitemap freshness until final `DOC-M25`",
+            ],
+            "evals": [
+                "documentation_refresh_G4-A01",
+                "Track 11 G4 operator-flow source/nav docs",
+                "auto-engagement/cache/global config/fresh-session proof remains unsupported",
+            ],
+            "runlog": [
+                "documentation_refresh_G4-A01",
+                "DOC_M25_PENDING_SITE_PAGES",
+                "No root site, cache refresh, global config, browser/runtime/provider, target, git, release or automation action.",
+            ],
+            "registry": [
+                "Product-Agent OS Track 11 G4 operator flows and system behavior docs packet",
+                "documentation_refresh_G4-A01",
+                "implemented_source_docs_no_site_rebuild",
+            ],
+            "registry_en": [
+                "Product-Agent OS Track 11 G4 operator flows and system behavior docs packet",
+                "documentation_refresh_G4-A01",
+                "implemented_source_docs_no_site_rebuild",
+            ],
+            "track11_plan": [
+                "G4 source docs are implemented through `DOC-M11`, `DOC-M12`, `DOC-M26`, `DOC-M27`, `DOC-M31` and `DOC-M32`",
+                "Generated root `site/` freshness is not claimed",
+                "No cache refresh",
+            ],
+        }
+        for document, terms in sync_terms.items():
+            for term in terms:
+                with self.subTest(sync_document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+
+    def test_documentation_refresh_g5_evidence_quality_site_gate_are_synced(self):
+        self.assertTrue(DOCUMENTATION_REFRESH_G5.exists(), DOCUMENTATION_REFRESH_G5)
+        packet = json.loads(DOCUMENTATION_REFRESH_G5.read_text(encoding="utf-8"))
+        product_docs = {
+            "generated_artifact_ux": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "generated-artifact-ux-criteria.md"
+            ),
+            "graph_intelligence": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "graph-intelligence-contract.md"
+            ),
+            "privacy_supply_chain": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "privacy-supply-chain-retention.md"
+            ),
+            "local_html_boundary": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "local-html-interaction-boundary.md"
+            ),
+            "residual_site_freshness": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "residual-follow-up-site-freshness.md"
+            ),
+            "index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+        }
+        documents = {
+            "mkdocs": MKDOCS.read_text(encoding="utf-8"),
+            "check_docs": CHECK_DOCS.read_text(encoding="utf-8"),
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track11_plan": (
+                DOCS
+                / "superpowers"
+                / "plans"
+                / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            ).read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual(
+            "documentation_refresh_g5_evidence_quality_site_gate_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual("documentation_refresh_G5-A01", packet["evidence_id"])
+        self.assertEqual("implemented_source_docs_no_site_rebuild", packet["status"])
+
+        for work_item in ["DOC-M21", "DOC-M24", "DOC-M28", "DOC-M29", "DOC-M30"]:
+            with self.subTest(work_item=work_item):
+                self.assertEqual(
+                    "implemented_source_docs_no_site_rebuild",
+                    packet["work_item_status"][work_item]["status"],
+                )
+                self.assertIn(f"`{work_item}`", documents["track11_plan"])
+
+        self.assertEqual(
+            "approval_required_not_run",
+            packet["work_item_status"]["DOC-M25"]["status"],
+        )
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(no_unapproved_action=action):
+                self.assertFalse(value)
+
+        self.assertEqual(148, packet["test_contract"]["source_markdown_page_count"])
+        self.assertEqual(140, packet["test_contract"]["localized_markdown_page_count"])
+        self.assertEqual(125, packet["test_contract"]["site_promoted_localized_markdown_page_count"])
+        self.assertEqual(
+            [
+                "docs/product-agent-os/first-run-architecture-cockpit.md",
+                "docs/diagrams/source-generated-trust-boundary.md",
+                "docs/diagrams/first-run-cockpit-architecture.md",
+                "docs/diagrams/evidence-risk-lifecycle.md",
+                "docs/diagrams/skill-exposure-and-invocation.md",
+                "docs/diagrams/architecture-intelligence-diagram-atlas.md",
+                "docs/product-agent-os/instruction-tool-use-compliance.md",
+                "docs/product-agent-os/operator-command-matrix.md",
+                "docs/product-agent-os/guided-questions-answer-ledger.md",
+                "docs/product-agent-os/source-cache-session-state.md",
+                "docs/product-agent-os/generated-artifact-ux-criteria.md",
+                "docs/product-agent-os/graph-intelligence-contract.md",
+                "docs/product-agent-os/privacy-supply-chain-retention.md",
+                "docs/product-agent-os/local-html-interaction-boundary.md",
+                "docs/product-agent-os/residual-follow-up-site-freshness.md",
+            ],
+            packet["test_contract"]["pending_site_pages_until_doc_m25"],
+        )
+
+        expected_terms = {
+            "generated_artifact_ux": [
+                "Source status:",
+                "Storybook remains deferred",
+                "Local Vale is currently advisory",
+                "Generated artifacts are review surfaces",
+                "Browser proof, screenshots, broad Vale enforcement, and Storybook remain approval-required",
+            ],
+            "graph_intelligence": [
+                "graph ontology",
+                "rejected-link ledger",
+                "freshness gates",
+                "bounded queries",
+                "Graph packets remain orientation evidence",
+            ],
+            "privacy_supply_chain": [
+                "raw findings",
+                "complete repository SBOM",
+                "dependency remediation",
+                "report retention",
+                "redaction policy",
+            ],
+            "local_html_boundary": [
+                "local tabs, search, filters, diagrams",
+                "no external scripts",
+                "JS-disabled fallback",
+                "status remains `static_docs_only`",
+            ],
+            "residual_site_freshness": [
+                "G5 residual routing",
+                "approval_required_not_run",
+                "Final `DOC-M25`",
+                "generated `site`, search index, and sitemap remain stale/unsupported",
+            ],
+            "index": [
+                "Generated artifact UX criteria",
+                "Graph intelligence contract",
+                "Privacy, supply-chain and retention",
+                "Local HTML interaction boundary",
+                "Residual follow-up and site freshness",
+                "documentation_refresh_G5-A01",
+            ],
+            "scenarios": [
+                "generated_artifact_ux_criteria",
+                "graph_intelligence_contract",
+                "privacy_supply_chain_retention",
+                "local_html_interaction_boundary",
+                "residual_follow_up_site_freshness",
+            ],
+        }
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, product_docs[document])
+
+        for path in [
+            "product-agent-os/generated-artifact-ux-criteria.md",
+            "product-agent-os/graph-intelligence-contract.md",
+            "product-agent-os/privacy-supply-chain-retention.md",
+            "product-agent-os/local-html-interaction-boundary.md",
+            "product-agent-os/residual-follow-up-site-freshness.md",
+        ]:
+            with self.subTest(nav_path=path):
+                self.assertIn(path, documents["mkdocs"])
+                self.assertIn(path, documents["check_docs"])
+
+        sync_terms = {
+            "requirements": [
+                "documentation_refresh_G5-A01",
+                "generated artifact UX",
+                "search and sitemap freshness remain deferred to final `DOC-M25`",
+            ],
+            "plan": [
+                "Track 11 G5 evidence quality and final site gate docs",
+                "documentation-refresh-g5-evidence-quality-site-gate-summary.json",
+                "DOC-M25 remains approval_required_not_run",
+            ],
+            "test": [
+                "documentation_refresh_G5-A01",
+                ".docs-tools\\reports\\mkdocs-strict-smoke-g5-2026-06-22",
+                "do not claim root `site`/search/sitemap freshness until final `DOC-M25`",
+            ],
+            "evals": [
+                "documentation_refresh_G5-A01",
+                "Track 11 G5 evidence-quality/source-nav docs",
+                "root `site` freshness remains a `DOC-M25` eval gate",
+            ],
+            "runlog": [
+                "documentation_refresh_G5-A01",
+                "DOC_M25_PENDING_SITE_PAGES",
+                "No root site, browser/runtime/provider, target, dependency remediation, raw report retention, git, release or automation action.",
+            ],
+            "registry": [
+                "Product-Agent OS Track 11 G5 evidence quality and final site gate docs packet",
+                "documentation_refresh_G5-A01",
+                "implemented_source_docs_no_site_rebuild",
+            ],
+            "registry_en": [
+                "Product-Agent OS Track 11 G5 evidence quality and final site gate docs packet",
+                "documentation_refresh_G5-A01",
+                "implemented_source_docs_no_site_rebuild",
+            ],
+            "track11_plan": [
+                "G5 source docs are implemented through `DOC-M21`, `DOC-M24`, `DOC-M28`, `DOC-M29` and `DOC-M30`",
+                "`DOC-M25` remains `approval_required_not_run`",
+                "No root `site` rebuild",
+            ],
+        }
+        for document, terms in sync_terms.items():
+            for term in terms:
+                with self.subTest(sync_document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+
+    def test_documentation_refresh_doc_m25_site_freshness_is_recorded(self):
+        self.assertTrue(DOCUMENTATION_REFRESH_DOC_M25.exists(), DOCUMENTATION_REFRESH_DOC_M25)
+        packet = json.loads(DOCUMENTATION_REFRESH_DOC_M25.read_text(encoding="utf-8"))
+        documents = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track11_plan": (
+                DOCS
+                / "superpowers"
+                / "plans"
+                / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            ).read_text(encoding="utf-8"),
+            "residual_site_freshness": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "residual-follow-up-site-freshness.md"
+            ),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+        }
+
+        self.assertEqual("documentation_refresh_doc_m25_site_freshness_v1", packet["schema_version"])
+        self.assertEqual("documentation_refresh_DOC-M25-A01", packet["evidence_id"])
+        self.assertEqual("implemented_root_site_search_sitemap_freshness", packet["status"])
+        self.assertEqual("documentation_refresh_DOC-M25-A02", packet["latest_refresh"]["evidence_id"])
+        self.assertEqual(
+            "Generated root site/search/sitemap freshness only; no browser/runtime/publication/release/provider/target/git proof.",
+            packet["latest_refresh"]["claim_ceiling"],
+        )
+        self.assertIn(
+            "docs/superpowers/specs/batch45-postq4-t15-model-change-decision-packet.json",
+            packet["latest_refresh"]["included_source_updates"],
+        )
+        self.assertEqual(
+            "implemented_root_site_search_sitemap_freshness",
+            packet["work_item_status"]["DOC-M25"]["status"],
+        )
+        self.assertEqual([], packet["test_contract"]["pending_site_pages_after_doc_m25"])
+        self.assertEqual(
+            sorted(
+                f"docs/{path.relative_to(DOCS).as_posix()}"
+                for path in DOC_M25_HISTORICAL_PENDING_SITE_PAGES
+            ),
+            sorted(packet["test_contract"]["promoted_pages_from_former_doc_m25_pending"]),
+        )
+        self.assertEqual(
+            LOCALIZED_MARKDOWN_PAGE_COUNT - len(DOC_M25_PENDING_SITE_PAGES),
+            SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT,
+        )
+        self.assertEqual(
+            [
+                "docs/codex/models-and-reasoning.md",
+                "docs/playbooks/model-migration.md",
+                "docs/product-agent-os/coding-standards.md",
+            "docs/product-agent-os/project-formation.md",
+                "docs/product-agent-os/self-learning-loop.md",
+                "docs/superpowers/plans/2026-08-10-batch45-s9-a-durable-contract-recovery.md",
+                "docs/superpowers/plans/2026-08-11-batch45-s9-b-compact-authoring-runtime.md",
+                "docs/superpowers/plans/2026-11-03-gpt6-documentation-refresh.md",
+            ],
+            sorted(f"docs/{path.relative_to(DOCS).as_posix()}" for path in DOC_M25_PENDING_SITE_PAGES),
+        )
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(no_unapproved_action=action):
+                if action in {"root_site_rebuild", "search_sitemap_refresh"}:
+                    self.assertTrue(value)
+                else:
+                    self.assertFalse(value)
+
+        sync_terms = {
+            "requirements": [
+                "documentation_refresh_DOC-M25-A01",
+                "root `site`, search and sitemap freshness are current",
+            ],
+            "plan": [
+                "Track 11 DOC-M25 generated site freshness",
+                "documentation-refresh-doc-m25-site-freshness-summary.json",
+            ],
+            "test": [
+                "documentation_refresh_DOC-M25-A01",
+                ".venv-docs\\Scripts\\python.exe -m mkdocs build --strict",
+            ],
+            "evals": [
+                "documentation_refresh_DOC-M25-A01",
+                "root `site`, search and sitemap freshness current",
+            ],
+            "runlog": [
+                "documentation_refresh_DOC-M25-A01",
+                "Root `site`/search/sitemap freshness now covers the former `DOC_M25_PENDING_SITE_PAGES` set",
+            ],
+            "registry": [
+                "Product-Agent OS Track 11 DOC-M25 root site freshness packet",
+                "documentation_refresh_DOC-M25-A01",
+                "documentation_refresh_DOC-M25-A02",
+                "implemented_root_site_search_sitemap_freshness",
+            ],
+            "registry_en": [
+                "Product-Agent OS Track 11 DOC-M25 root site freshness packet",
+                "documentation_refresh_DOC-M25-A01",
+                "documentation_refresh_DOC-M25-A02",
+                "implemented_root_site_search_sitemap_freshness",
+            ],
+            "track11_plan": [
+                "`DOC-M25` is implemented through `documentation_refresh_DOC-M25-A01`",
+                "documentation_refresh_DOC-M25-A02",
+                "former `DOC_M25_PENDING_SITE_PAGES` are now rendered",
+            ],
+            "residual_site_freshness": [
+                "implemented_root_site_search_sitemap_freshness",
+                "documentation_refresh_DOC-M25-A01",
+                "documentation_refresh_DOC-M25-A02",
+            ],
+            "scenarios": [
+                "Root `site`, search and sitemap are current after `documentation_refresh_DOC-M25-A01`",
+                "documentation_refresh_DOC-M25-A02",
+            ],
+        }
+        for document, terms in sync_terms.items():
+            for term in terms:
+                with self.subTest(sync_document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+
+    def test_product_agent_os_lifecycle_hooks_local_activation_is_recorded(self):
+        self.assertTrue(
+            PRODUCT_AGENT_OS_LIFECYCLE_HOOKS_LOCAL_ACTIVATION.exists(),
+            PRODUCT_AGENT_OS_LIFECYCLE_HOOKS_LOCAL_ACTIVATION,
+        )
+        packet = json.loads(PRODUCT_AGENT_OS_LIFECYCLE_HOOKS_LOCAL_ACTIVATION.read_text(encoding="utf-8"))
+        documents = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+        }
+        hooks_json = json.loads((ROOT / ".codex" / "hooks.json").read_text(encoding="utf-8"))
+
+        self.assertEqual("product_agent_os_lifecycle_hooks_local_activation_v1", packet["schema_version"])
+        self.assertEqual("product_agent_os_LIFECYCLE-HOOKS-A01", packet["evidence_id"])
+        self.assertEqual("project_local_hooks_installed_pending_codex_trust_review", packet["status"])
+        self.assertIn("hooks", hooks_json)
+
+        for event in ["SessionStart", "PreToolUse", "PermissionRequest", "PostToolUse", "Stop"]:
+            with self.subTest(event=event):
+                self.assertIn(event, packet["installed_project_hooks"]["events"])
+                self.assertIn(event, hooks_json["hooks"])
+
+        for path in [
+            ".codex/hooks/hooks.json",
+            ".codex/hooks.json",
+            ".codex/hooks/pre_tool_use_policy.py",
+            ".codex/product-agent-os/lifecycle-state.json",
+            "plugins/product-agent-os/assets/templates/hooks/hooks.json",
+            "plugins/product-agent-os/scripts/product_agent_os/validators.py",
+        ]:
+            with self.subTest(path=path):
+                self.assertTrue((ROOT / path).exists())
+
+        self.assertEqual(".codex/hooks.json", packet["installed_project_hooks"]["hooks_json"])
+        self.assertEqual(".codex/product-agent-os/lifecycle-state.json", packet["installed_project_hooks"]["lifecycle_marker"])
+        self.assertEqual("https://developers.openai.com/codex/hooks", packet["official_codex_hook_docs"]["url"])
+        self.assertTrue(packet["approval_and_acl"]["owner_approval"])
+        self.assertFalse(packet["approval_and_acl"]["global_config_changed"])
+        self.assertFalse(packet["approval_and_acl"]["automation_created"])
+
+        for claim in [
+            "Codex has already trusted the new project-local hooks.",
+            "A fresh Codex session has already executed the installed hooks.",
+            "Hooks alone guarantee that future agents will produce semantically useful briefs.",
+        ]:
+            with self.subTest(unsupported_claim=claim):
+                self.assertIn(claim, packet["unsupported_claims"])
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(value)
+
+        document_terms = {
+            "requirements": [
+                "product_agent_os_LIFECYCLE-HOOKS-A01",
+                "Codex hook trust review / fresh-session execution",
+            ],
+            "plan": [
+                "product_agent_os_LIFECYCLE-HOOKS-A01",
+                "Codex may require `/hooks` trust review",
+            ],
+            "test": [
+                "validate_hooks.py .codex\\hooks",
+                "Codex hook trust review / new-session execution",
+            ],
+            "evals": [
+                "product_agent_os_LIFECYCLE-HOOKS-A01",
+                "hook output is reminder/evidence context only",
+            ],
+            "runlog": [
+                "product_agent_os_LIFECYCLE-HOOKS-A01",
+                "DOC-M36 Task Brief miss",
+            ],
+            "registry": [
+                "product_agent_os_LIFECYCLE-HOOKS-A01",
+                "Codex hook trust review / fresh-session execution remains unclaimed",
+            ],
+            "registry_en": [
+                "product_agent_os_LIFECYCLE-HOOKS-A01",
+                "Codex hook trust review / fresh-session execution remains unclaimed",
+            ],
+        }
+        for document, terms in document_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+
+    def test_batch44_s6_self_learning_docs_contracts_and_closure_are_synced(self):
+        packet_path = (
+            DOCS
+            / "superpowers"
+            / "specs"
+            / "batch44-self-learning-loop-docs-contracts-closure-summary.json"
+        )
+        self.assertTrue(packet_path.exists(), packet_path)
+        packet = json.loads(packet_path.read_text(encoding="utf-8"))
+        documents = {
+            "modernization_loop": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "agent-skill-modernization-loop.md"
+            ),
+            "artifact_contracts": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "artifact-contracts.md"
+            ),
+            "behavioral_evals": self._localized_contract_text(PRODUCT_AGENT_OS / "behavioral-evals.md"),
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track11_plan": (
+                DOCS
+                / "superpowers"
+                / "plans"
+                / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            ).read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual("batch44_self_learning_loop_docs_contracts_closure_v1", packet["schema_version"])
+        self.assertEqual("B44-SLL-M15-M16-A01", packet["evidence_id"])
+        self.assertEqual("implemented", packet["status"])
+        self.assertEqual(["B44-SLL-M15", "B44-SLL-M16"], packet["work_items"])
+        self.assertEqual("candidate_only", packet["automation_promotion_gate"]["status"])
+        self.assertEqual(3, packet["automation_promotion_gate"]["minimum_manual_successful_runs"])
+        self.assertEqual(
+            "required_before_activation",
+            packet["automation_promotion_gate"]["owner_approval_record"],
+        )
+        self.assertEqual("not_created", packet["automation_promotion_gate"]["active_schedule_status"])
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(no_unapproved_action=action):
+                self.assertFalse(value)
+
+        expected_terms = {
+            "modernization_loop": [
+                "Self-Learning Loop Docs Contracts And Closure",
+                "self_learning_docs_contracts_closure_v1",
+                "self-learning-automation-candidate.md",
+                "minimum_manual_successful_runs: 3",
+                "candidate_only",
+                "real Codex App session export",
+                "no active scheduler",
+            ],
+            "artifact_contracts": [
+                ".codex/automation-candidates/self-learning-automation-candidate.md",
+                "self_learning_docs_contracts_closure_v1",
+                "self_learning_candidate_packet_v1",
+                "self_learning_forbidden_action_report_v1",
+                "owner approval record",
+                "minimum_manual_successful_runs",
+                "active schedule remains not_created",
+            ],
+            "behavioral_evals": [
+                "self_learning_loop_docs_contracts_closure",
+                "automation promotion remains candidate_only",
+                "no real Codex App session export import",
+                "no hidden telemetry",
+                "no auto-apply",
+            ],
+            "requirements": [
+                "B44-S6",
+                "docs/contracts/closure",
+                "automation promotion gate is candidate-only",
+                "minimum manual successful runs: 3",
+            ],
+            "plan": [
+                "`B44-S0` through `B44-S7` are implemented",
+                "B44-S7-SELF-LEARNING-MANUAL-PILOT-A01",
+                "Continue with `B44-S8`",
+            ],
+            "test": [
+                "B44-SLL-M15-M16-A01",
+                "self_learning_docs_contracts_closure_v1",
+                "no active automation marker check",
+            ],
+            "evals": [
+                "B44 Self-Learning Loop S6 evidence",
+                "B44-SLL-M15-M16-A01",
+                "candidate-only automation promotion",
+            ],
+            "runlog": [
+                "B44-SLL-M15-M16-A01",
+                "S6 docs/contracts/closure",
+                "no real session import",
+            ],
+            "registry": [
+                "Product-Agent OS Track 11 Batch 44 Self-Learning Loop docs/contracts/closure packet",
+                "B44-SLL-M15-M16-A01",
+                "self-learning-automation-candidate.md",
+            ],
+            "registry_en": [
+                "Product-Agent OS Track 11 Batch 44 Self-Learning Loop docs/contracts/closure packet",
+                "B44-SLL-M15-M16-A01",
+                "self-learning-automation-candidate.md",
+            ],
+            "track11_plan": [
+                "`B44-SLL-M16` | `B44-S6`",
+                "`B44-S6-Docs-Contracts-And-Closure`",
+                "`implemented_B44_S6_evidence: B44-SLL-M15-M16-A01`",
+            ],
+        }
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+
+    def test_batch39_m20_first_run_artifact_docs_and_registry_are_synced(self):
+        documents = {
+            "artifact_contracts": (PRODUCT_AGENT_OS / "artifact-contracts.md").read_text(encoding="utf-8"),
+            "cli_reference": (PRODUCT_AGENT_OS / "cli-reference.md").read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track10_plan": TRACK10_PLAN.read_text(encoding="utf-8"),
+        }
+
+        expected_terms = {
+            "artifact_contracts": [
+                "First-run analysis artifact",
+                ".codex/product-agent-os/analysis/first-run-analysis-packet.json",
+                ".codex/product-agent-os/analysis/analysis-manifest.json",
+                "orientation_only_not_proof",
+                "redaction_report",
+                "source_policy_gate",
+                "first_run_artifact_scorecard_v1",
+                "not release approval",
+            ],
+            "cli_reference": [
+                "run_first_project_analysis.py",
+                "--dry-run",
+                "--write",
+                "--stage <dir>",
+                "--write-analysis",
+                ".codex/product-agent-os/analysis/",
+                "stage-inside-target is blocked",
+            ],
+            "registry": [
+                "Product-Agent OS Batch 39 M20 first-run analysis artifact contract",
+                "docs/product-agent-os/artifact-contracts.md",
+                "docs/product-agent-os/cli-reference.md",
+                "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+                "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+                "B39-FRIA-M20.9",
+            ],
+            "registry_en": [
+                "Product-Agent OS Batch 39 M20 first-run analysis artifact contract",
+                "docs/product-agent-os/artifact-contracts.md",
+                "docs/product-agent-os/cli-reference.md",
+                "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+                "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+                "B39-FRIA-M20.9",
+            ],
+            "track10_plan": [
+                "`B39-FRIA-M20.9`",
+                "docs, artifact contracts and source registry sync",
+            ],
+        }
+
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+
+    def test_batch39_m20_first_run_completion_verification_is_recorded(self):
+        packet = DOCS / "superpowers" / "specs" / "batch39-m20-first-run-doubt-verification-packet.json"
+        documents = {
+            "packet": packet.read_text(encoding="utf-8"),
+            "prod_test": (ROOT / "prod_test.md").read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "agents": AGENTS.read_text(encoding="utf-8"),
+            "track10_plan": TRACK10_PLAN.read_text(encoding="utf-8"),
+        }
+
+        expected_terms = {
+            "packet": [
+                "doubt_verification_packet_v1",
+                "accepted_risk",
+                "claim-m20-local-contracts",
+                "claim-release-readiness",
+                "ev-focused-first-run-unittest",
+                "ev-docs-unittest",
+                "ev-fixture-eval",
+                "ev-transcript-eval",
+                "no_unapproved_actions",
+            ],
+            "prod_test": [
+                "B39-FRIA-M20.10-A01",
+                "batch39-m20-first-run-doubt-verification-packet.json",
+                "accepted_risk",
+                "no_unapproved_actions",
+                "python -m unittest tests.product_agent_os.test_first_run_analysis tests.product_agent_os.test_batch39_s1_contracts -v",
+                "python plugins\\product-agent-os\\scripts\\run_fixture_eval.py",
+            ],
+            "plan": ["`B39-TEST-M22-A01..A03`", "`B39-TEST-M23..M33`", "`B39-S4` hardening"],
+            "test": ["`B39-TEST-M21-A01..A03`", "`B39-TEST-M22-A01..A03`", "`B39-TEST-M23..M33`"],
+            "evals": ["`B39-FRIA-M20.1..M20.10`", "accepted_risk"],
+            "runlog": ["`B39-TEST-M21-A01..A03`", "`B39-TEST-M22-A01..A03`", "`B39-TEST-M23..M33`"],
+            "agents": ["`B39-FRIA-M20.1..M20.10`", "`B39-S4-REMAINING-GATES-A01`"],
+            "track10_plan": ["`B39-FRIA-M20.10`", "`implemented`; `2026-06-18`"],
+        }
+
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+
+    def test_batch39_future_matrix_includes_first_run_artifact_followups(self):
+        documents = {
+            "prod_test": (ROOT / "prod_test.md").read_text(encoding="utf-8"),
+            "track10_plan": TRACK10_PLAN.read_text(encoding="utf-8"),
+        }
+
+        expected_terms = {
+            "prod_test": [
+                "M21 recorded three variants",
+                "generated orientation evidence",
+                "stable manifest baseline",
+                "time-to-first-safe-action",
+                "malformed first-run packet",
+            ],
+            "track10_plan": [
+                "`run_first_project_analysis.py --dry-run`",
+                "synthetic temp-copy rendering",
+                "11 generated pages",
+                "read-only real-target packet usefulness",
+                "generated orientation evidence",
+                "stable manifest baseline",
+                "ignore `generated_at`",
+                "first_run_analysis_ref",
+                "time-to-first-safe-action",
+                "malformed first-run packet",
+            ],
+        }
+
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+

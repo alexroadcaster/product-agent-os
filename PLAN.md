@@ -2,7 +2,7 @@
 
 ## Функциональный backlog после V3 — 15.11.2026
 
-[Матрица PAOS-FUNC-01–29](research/functional-remediation-2026-11-15.md): 29 planned и 3 ссылки M5; [JSON](research/functional-remediation-2026-11-15.json) владеет состоянием. Новая ветка: F28 → F26/F27 → F29; дерево независимо от карты кода. F10/F18/F24 интегрируют новые contracts; F19/F20/F23 проверяют Add/files/scan/discovery. F20 предшествует F09; F14 использует F27/F28. F01 и core fixes сохраняются; F25 синхронизирует claims. Старые 56 карточек неизменны. Разрешено только планирование. Shared API/storage/UI edits — последовательные slices; rollback этого обновления — только свои hunks после проверки drift.
+[Матрица PAOS-FUNC-01–34](research/functional-remediation-2026-11-15.md): 34 planned + 3 M5 references; [JSON](research/functional-remediation-2026-11-15.json) — владелец статусов и семи delivery groups. G01 стабильность/contracts; G02 PoC; G03 Files/scan/discovery; G04 performance/code/DB; G05 agents/documents/autonomy; G06 recovery/distribution; G07 UI coherence/E2E/human/docs. Старт по dependencies отдельных задач, не по завершению всей предыдущей группы: F28 и PoC независимы, F33 не ждёт F14, F25 идёт постоянно. F20 → F09 сохранено. Полное G07 closure требует G01–G06; M5 отдельно. Shared API/storage/navigation edits последовательны. Только планирование; все исходные карточки/AC/оценки сохранены.
 
 ## MD-отчёты и чтение — 15.11.2026
 

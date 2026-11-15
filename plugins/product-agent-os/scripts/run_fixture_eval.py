@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import shutil
@@ -9706,13 +9707,26 @@ def evaluate_all(fixtures_root: Path = FIXTURES) -> list[dict[str, Any]]:
     ]
 
 
-def main() -> int:
-    if any(arg in {"-h", "--help"} for arg in sys.argv[1:]):
-        print("usage: run_fixture_eval.py")
-        return 0
-    results = evaluate_all()
-    print(json.dumps(results, indent=2, sort_keys=True))
-    return 0 if results and all(item["ok"] for item in results) else 1
+def main(argv: list[str] | None = None) -> int:
+    """Evaluate once, with optional bounded input and compact reporting."""
+    parser = argparse.ArgumentParser(description="Run local synthetic fixture evaluations.")
+    parser.add_argument("--fixtures-root", type=Path, default=FIXTURES)
+    parser.add_argument("--summary", action="store_true", help="Print counts and failed fixture names only.")
+    args = parser.parse_args(argv)
+    results = evaluate_all(args.fixtures_root)
+    ok = bool(results) and all(item["ok"] for item in results)
+    payload = results
+    if args.summary:
+        failed = [item["fixture"] for item in results if not item["ok"]]
+        payload = {
+            "ok": ok,
+            "total": len(results),
+            "passed": len(results) - len(failed),
+            "failed": len(failed),
+            "failed_fixtures": failed,
+        }
+    print(json.dumps(payload, indent=2, sort_keys=True))
+    return 0 if ok else 1
 
 
 if __name__ == "__main__":

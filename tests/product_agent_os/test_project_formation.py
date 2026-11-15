@@ -325,8 +325,18 @@ class ProjectFormationTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root, stage = Path(tmp) / 'project', Path(tmp) / 'stage'; root.mkdir()
             packet = request(); packet['document_facts'] = {'architecture': {'source': 'fixture', 'sections': {'facts': 'x'*41000}}}
-            with self.assertRaisesRegex(Exception, 'budget'): form_project(root, packet)
+            preview = form_project(root, packet)
             self.assertFalse(stage.exists())
+            config = root / '.codex/config.toml'
+            config.parent.mkdir()
+            owner = preview['formation']['owners']['architecture']
+            config.write_text('[product_agent_os.documents.limits]\n' + json.dumps(owner) + ' = 40000\n', encoding='utf-8')
+            with self.assertRaisesRegex(Exception, 'configured project limit'):
+                form_project(root, packet)
+            self.assertFalse(stage.exists())
+            packet['document_facts']['architecture']['sections']['facts'] = 'x' * 256000
+            with self.assertRaisesRegex(ValueError, 'request exceeds budget'):
+                form_project(root, packet)
             packet = request(); preview = form_project(root, packet)
             with self.assertRaises(ValueError):
                 form_project(root, packet, stage=stage, approved_preview_digest=preview['formation']['digest'], previous=[])

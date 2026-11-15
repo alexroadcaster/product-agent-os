@@ -36,9 +36,10 @@ class SystemFileHygieneTest(unittest.TestCase):
             self.assertTrue(records['docs/planning/feature/tasks.md']['size_exempt'])
             self.assertFalse(records['docs/planning/index.md']['size_exempt'])
             self.assertFalse(records['PLAN.md']['size_exempt'])
-            hard = {f['path'] for f in result['findings'] if f['code'] == 'hard_size_limit_exceeded'}
-            self.assertNotIn('docs/planning/feature/tasks.md', hard)
-            self.assertTrue({'PLAN.md', 'docs/planning/index.md'} <= hard)
+            size = {f['path'] for f in result['findings'] if f['code'] == 'soft_size_limit_exceeded'}
+            self.assertNotIn('docs/planning/feature/tasks.md', size)
+            self.assertTrue({'PLAN.md', 'docs/planning/index.md'} <= size)
+            self.assertFalse(any(f['code'] == 'hard_size_limit_exceeded' for f in result['findings']))
             self.assertEqual((root / 'docs/planning/feature/tasks.md').read_bytes(), matrix.encode())
             from product_agent_os.document_navigation import check_local_links
             with (root / 'docs/planning/feature/tasks.md').open('ab') as handle:
@@ -54,7 +55,7 @@ class SystemFileHygieneTest(unittest.TestCase):
             self.assertTrue(any(f['code'] == 'hard_size_limit_exceeded' and f['path'] == 'docs/planning/feature/tasks.md'
                                 for f in strict['findings']))
 
-    def test_utf8_budget_is_bytes_and_exact_hard_boundary_is_allowed(self):
+    def test_utf8_default_size_is_advisory_at_and_above_target(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             _write_minimal_control_plane(root)
@@ -66,9 +67,29 @@ class SystemFileHygieneTest(unittest.TestCase):
                     (root / 'PLAN.md').write_bytes(content)
                     result = build_system_file_hygiene_audit(root)
                     codes = [f['code'] for f in result['findings'] if f['path'] == 'PLAN.md']
-                    self.assertEqual('hard_size_limit_exceeded' in codes, size > 40000)
+                    self.assertNotIn('hard_size_limit_exceeded', codes)
+                    self.assertIn('soft_size_limit_exceeded', codes)
+                    self.assertFalse(any(f['severity'] == 'error' and f['path'] == 'PLAN.md' for f in result['findings']))
                     record = next(r for r in result['inventory'] if r['path'] == 'PLAN.md')
                     self.assertEqual(record['bytes'], size)
+                    self.assertEqual(record['size_limit_policy'], 'advisory')
+
+    def test_explicit_size_limit_honors_configured_boundary_above_default(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            _write_minimal_control_plane(root)
+            (root / '.codex').mkdir()
+            (root / '.codex/config.toml').write_text(
+                '[product_agent_os.documents.limits]\n"PLAN.md" = 50000\n', encoding='utf-8')
+            for size in (40001, 50000, 50001):
+                with self.subTest(size=size):
+                    (root / 'PLAN.md').write_bytes(b'x' * size)
+                    report = build_system_file_hygiene_audit(root)
+                    errors = [f for f in report['findings'] if f['path'] == 'PLAN.md' and f['severity'] == 'error']
+                    self.assertEqual(bool(errors), size > 50000)
+                    record = next(r for r in report['inventory'] if r['path'] == 'PLAN.md')
+                    self.assertEqual(record['hard_limit_bytes'], 50000)
+                    self.assertEqual(record['size_limit_policy'], 'explicit_project_limit')
 
     def test_stricter_project_byte_budget_is_preserved(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -95,6 +116,11 @@ class SystemFileHygieneTest(unittest.TestCase):
                 'kind="history"\nowner="maintainer"\nreason="closed cycle"\nindex="docs/index.md"\n', encoding='utf-8')
             result = build_system_file_hygiene_audit(root)
             self.assertTrue(next(r for r in result['inventory'] if r['path'] == 'docs/plans/history.md')['size_exempt'])
+            with (root / '.codex/config.toml').open('a', encoding='utf-8') as config:
+                config.write('\n[product_agent_os.documents.limits]\n"docs/plans/history.md" = 20000\n')
+            limited = build_system_file_hygiene_audit(root)
+            self.assertTrue(any(f['code'] == 'hard_size_limit_exceeded' and f['path'] == 'docs/plans/history.md'
+                                for f in limited['findings']))
             with (root / 'docs/plans/history.md').open('ab') as handle:
                 handle.write(b'\n- Status: planned\n')
             result = build_system_file_hygiene_audit(root)
@@ -110,7 +136,7 @@ class SystemFileHygieneTest(unittest.TestCase):
             "monthly_deep_ownership_review",
             "after changes to AGENTS.md",
             "soft_size_review",
-            "hard_size_compaction_required",
+            "explicit_hard_size_resolution",
         ]:
             with self.subTest(expected=expected):
                 self.assertIn(expected, rendered)
@@ -508,7 +534,7 @@ class SystemFileHygieneTest(unittest.TestCase):
 
         codes = {finding["code"] for finding in packet["findings"]}
         self.assertEqual(packet["status"], "blocked")
-        self.assertIn("hard_size_limit_exceeded", codes)
+        self.assertIn("soft_size_limit_exceeded", codes)
         self.assertIn("historical_ledger_density", codes)
         self.assertIn("active_schedule_in_candidate", codes)
         self.assertEqual(cli.returncode, 1)

@@ -178,8 +178,15 @@ def _emit_system_message(message: str) -> None:
     print(json.dumps({"systemMessage": message}, sort_keys=True))
 
 
-def main() -> int:
-    """Run changed-file comment-sufficiency checks as a non-blocking PostToolUse signal."""
+def main(argv: list[str] | None = None) -> int:
+    """Review changed code only on explicit request, never after each patch.
+
+    The quiet default also covers sessions caching the former PostToolUse hook.
+    Use --review with a scoped payload for an optional non-blocking review.
+    """
+    arguments = sys.argv[1:] if argv is None else argv
+    if arguments != ['--review']:
+        return 0
     raw_payload = sys.stdin.read()
     try:
         parsed_payload = json.loads(raw_payload) if raw_payload.strip() else {}

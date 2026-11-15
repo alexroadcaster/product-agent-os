@@ -92,16 +92,16 @@ TRIGGER_POLICY: dict[str, Any] = {
             "id": "soft_size_review",
             "scope": "file that crossed its soft limit plus likely destination artifacts",
             "write_policy": "read_only",
-            "action": "review ownership and duplicate content",
+            "action": "record a separate hygiene follow-up; size alone does not block the current task",
             "stop_conditions": [
                 "continued edits would add implementation history to the wrong owner file",
             ],
         },
         {
-            "id": "hard_size_compaction_required",
-            "scope": "file that crossed its hard limit plus required owner routing",
+            "id": "explicit_hard_size_resolution",
+            "scope": "file that crossed an explicit per-file project limit plus required owner routing",
             "write_policy": "read_only",
-            "action": "stage compaction proposal before adding more history",
+            "action": "record a blocker or prepare a preservation-safe resolution within authorized scope",
             "stop_conditions": [
                 "hard-size violation has no owner routing plan",
                 "compaction would delete unique source-backed information",
@@ -449,6 +449,7 @@ def system_file_class_records() -> list[dict[str, Any]]:
             "legacy_char_limits": "deprecated_metadata_only",
             "soft_limit_bytes": min(item.soft_limit_chars, 32000, min(item.hard_limit_chars, 40000) * 4 // 5),
             "hard_limit_bytes": min(item.hard_limit_chars, 40000),
+            "size_limit_policy": "advisory",
             "maintenance_focus": item.maintenance_focus,
         }
         for item in SYSTEM_FILE_CLASSES
@@ -630,7 +631,11 @@ def _is_excluded(relative_path: Path) -> bool:
 
 def _inspect_system_file(root: Path, path: Path, file_class: SystemFileClass,
                          policy: dict[str, Any] | None = None) -> tuple[dict[str, Any], list[dict[str, Any]]]:
-    """Measure exact UTF-8 bytes; exemptions require explicit ownership and an index."""
+    """Report heuristic size warnings; enforce only explicit project byte limits.
+
+    Legacy class sizes describe maintenance targets, not host loading limits.
+    Other safety findings and explicit policy validation remain blocking.
+    """
     relative = path.relative_to(root).as_posix()
     findings: list[dict[str, Any]] = []
     raw = b""
@@ -667,6 +672,7 @@ def _inspect_system_file(root: Path, path: Path, file_class: SystemFileClass,
     soft_bytes = min(file_class.soft_limit_chars, 32000, hard_bytes * 4 // 5)
     classification = "active"
     size_exempt = False
+    explicit_limit = False
     policy = policy or {}
     try:
         limits = policy.get("limits", {})
@@ -675,7 +681,8 @@ def _inspect_system_file(root: Path, path: Path, file_class: SystemFileClass,
         limit = limits.get(relative, hard_bytes)
         if type(limit) is not int or limit < 1:
             raise ValueError("document byte limit must be a positive integer")
-        hard_bytes = min(hard_bytes, limit)
+        explicit_limit = relative in limits
+        hard_bytes = limit
         soft_bytes = min(soft_bytes, hard_bytes * 4 // 5)
         # This is active detail, not an archive exemption. Explicit per-file
         # project limits still override the default size-only exception.
@@ -706,7 +713,7 @@ def _inspect_system_file(root: Path, path: Path, file_class: SystemFileClass,
                 index_text = (root / index).read_text(encoding="utf-8")
                 if Path(relative).name not in index_text:
                     raise ValueError("classification index must reference the retained artifact")
-                size_exempt = True
+                size_exempt = relative not in limits
     except (ValueError, OSError, UnicodeError, AttributeError) as exc:
         findings.append(_finding("error", "document_budget_invalid", relative, str(exc), file_class))
     lines = text.count("\n") + (1 if text else 0)
@@ -718,6 +725,7 @@ def _inspect_system_file(root: Path, path: Path, file_class: SystemFileClass,
         "size_unit": "utf8_bytes",
         "soft_limit_bytes": soft_bytes,
         "hard_limit_bytes": hard_bytes,
+        "size_limit_policy": "explicit_project_limit" if explicit_limit else "advisory",
         "legacy_char_limits": "deprecated_metadata_only",
         "classification": classification,
         "size_exempt": size_exempt,
@@ -728,10 +736,10 @@ def _inspect_system_file(root: Path, path: Path, file_class: SystemFileClass,
         "hard_limit_chars": file_class.hard_limit_chars,
         **_file_metadata(path, raw),
     }
-    if not size_exempt and len(raw) > hard_bytes:
+    if not size_exempt and explicit_limit and len(raw) > hard_bytes:
         findings.append(_finding("error", "hard_size_limit_exceeded", relative, f"{len(raw)} UTF-8 bytes > {hard_bytes}", file_class))
     elif not size_exempt and len(raw) >= soft_bytes:
-        findings.append(_finding("warning", "soft_size_limit_exceeded", relative, f"{len(raw)} UTF-8 bytes >= {soft_bytes}", file_class))
+        findings.append(_finding("warning", "soft_size_limit_exceeded", relative, f"{len(raw)} UTF-8 bytes >= {soft_bytes}; advisory maintenance target", file_class))
     if text.startswith("\ufeff"):
         findings.append(_finding("warning", "utf8_bom_present", relative, "UTF-8 BOM should be removed from system files", file_class))
     if any(marker in text for marker in MOJIBAKE_MARKERS):
@@ -1070,7 +1078,7 @@ def _compaction_decision(code: str) -> str:
     if code in {"utf8_bom_present", "mojibake_marker_present"}:
         return "repair_encoding_before_compaction"
     if code == "soft_size_limit_exceeded":
-        return "review_before_more_edits"
+        return "separate_hygiene_follow_up"
     if code in {"hard_size_limit_exceeded", "historical_ledger_density", "duplicate_markdown_headings"}:
         return "route_to_owner_before_compaction"
     return "owner_review"

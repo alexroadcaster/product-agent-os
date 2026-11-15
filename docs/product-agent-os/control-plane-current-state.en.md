@@ -87,9 +87,11 @@ The current contract routes nine-field Task Start Brief and thirteen-item Comple
 | `TEST.md` | Required command routes, escalation boundaries, current verification state. | Batch-specific command archives and old completed check logs. |
 | `EVALS.md` | Rubrics, thresholds, active eval routes, unsupported-claim rules. | Historical eval evidence narratives and long batch state. |
 
-Size pressure is `overflow_refactor_required`: move cold detail to the owning
-source artifact first, then keep the root file current. It is never permission
-to skip a required control-plane update.
+The 40 000 UTF-8 byte target is advisory, not a prerequisite for an ordinary
+update. Update the owner of the changed fact and record document hygiene
+separately. Explicit project hard limits and technical limits still apply.
+Actual history redistribution preserves original bytes, links, concurrent-edit
+checks and the recovery journal.
 
 ## Current Product-Agent OS State
 

@@ -149,17 +149,24 @@ class TranscriptSessionEvalRunnerTest(unittest.TestCase):
         self.assertNotIn("raw private chat log", serialized)
 
     def test_cli_exit_codes_reflect_transcript_eval_status(self):
-        passing = subprocess.run(
-            [sys.executable, str(WRAPPER), str(TRANSCRIPTS), "--behavioral-template", str(TEMPLATE)],
-            check=False,
-            capture_output=True,
-            text=True,
-        )
-        self.assertEqual(passing.returncode, 0, passing.stdout + passing.stderr)
-        self.assertEqual(passing.stderr, "")
-        self.assertEqual(json.loads(passing.stdout)["status"], "ok")
-
         with tempfile.TemporaryDirectory() as tmp:
+            # Full replay is covered above; CLI integration needs one passing session.
+            passing_path = Path(tmp) / "one-transcript.json"
+            packaged = json.loads(TRANSCRIPTS.read_text(encoding="utf-8"))
+            passing_path.write_text(
+                json.dumps({"name": "synthetic-cli-passing", "synthetic": True, "sessions": packaged["sessions"][:1]}),
+                encoding="utf-8",
+            )
+            passing = subprocess.run(
+                [sys.executable, str(WRAPPER), str(passing_path), "--behavioral-template", str(TEMPLATE)],
+                check=False, capture_output=True, text=True, timeout=30,
+            )
+            self.assertEqual(passing.returncode, 0, passing.stdout + passing.stderr)
+            self.assertEqual(passing.stderr, "")
+            passing_report = json.loads(passing.stdout)
+            self.assertEqual(passing_report["status"], "ok")
+            self.assertEqual(passing_report["session_count"], 1)
+
             path = Path(tmp) / "bad-transcript.json"
             path.write_text(
                 json.dumps(
@@ -190,6 +197,7 @@ class TranscriptSessionEvalRunnerTest(unittest.TestCase):
                 check=False,
                 capture_output=True,
                 text=True,
+                timeout=30,
             )
 
         self.assertEqual(failing.returncode, 1)

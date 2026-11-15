@@ -1,5 +1,11 @@
 # EVALS.md
 
+## Выбор eval и краткий результат — 15.11.2026
+
+Текущий маршрут проверок задаёт только `TEST.md`. Этот файл владеет рубриками, порогами, критериями сравнения и границами выводов; датированные receipts и прежние наборы gates не расширяют маршрут новой задачи. Правка плана, отчёта или control-plane текста сама по себе не требует fixture/transcript eval.
+
+Для выбранного набора выполнять один полный eval на значимых входах. Full unittest discovery уже включает fixture/transcript evals; отдельные runners после него не повторять без изменившихся входов или конкретной причины повторной проверки. CLI wiring проверяется компактными положительным/отрицательным примерами. `run_fixture_eval.py --summary` выдаёт counts, failed fixture names и итоговый exit code из того же прогона; полный JSON запрашивать только для необходимого evidence/диагностики. Краткий вывод не скрывает failures и не заменяет позитивные/негативные проверки разрешений, данных и восстановления.
+
 ## MD-отчёты и чтение — 15.11.2026
 
 Сравнение baseline/fix: отчёт create → update → update без hook reconfiguration; чтение без marker; denied соседний/защищённый путь, foreign/stale/terminal session, mixed patch и shell executor. Положительный сценарий обязателен вместе с отрицательными. Synthetic tests отдельно от current-host и fresh-session activation. [Контракт, проверки и ограничения](research/product-agent-os-report-read-fix-2026-11-15.md).
@@ -147,15 +153,15 @@ Last compacted: 2026-07-07
 
 | Change type | Required eval route |
 | --- | --- |
-| Docs, source registry, control-plane or docs tests | `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v`, `python tools\check_docs.py`, `git diff --check` |
-| MkDocs navigation, Mermaid, localization, search/sitemap or generated `site` evidence | Docs route plus strict MkDocs build |
-| Plugin scripts, templates, lifecycle skills, runtime behavior or CLI contracts | Focused tests, full unittest, fixture eval, transcript eval, Codex compatibility, docs check and diff hygiene as routed by `TEST.md` |
+| Docs, source registry, control-plane or docs tests | Маршрут изменённых источников из `TEST.md`; сайт и исторический архив проверяются отдельно. |
+| MkDocs navigation, Mermaid, localization, search/sitemap or generated `site` evidence | Маршрут сайта из `TEST.md`; исходная документация не зависит от существующего generated output. |
+| Plugin scripts, templates, lifecycle skills, runtime behavior or CLI contracts | Focused regression и затронутая integration по `TEST.md`; расширение только по области риска/явному запросу. Один полный eval; без повторных runners после full discovery. |
 | Batch 39 pilot/hardening matrix | `prod_test.md` attempt/failure/fix/retest ledger review plus focused tests, fixture/transcript eval, redaction/no-mutation proof and docs/diff hygiene |
 | Self-Learning Loop | Focused state/extensions tests, staged initializer/runner/export checks where applicable, docs check and diff hygiene |
 | Batch 45 Professional Code Authoring | Focused comment-sufficiency, coding-standards, behavioral, discovery/status/dashboard/template/fixture, self-learning, automation-policy, docs/source-link, manual-pilot ledger and diff hygiene |
 | AI/RAG behavior, provider gates or model migration | Baseline eval, one focused change, rerun eval, inspect artifacts, record threshold/fallback and approval boundary |
 | Frontend/browser/runtime UX | Build/test/lint where available, browser/runtime evidence, console/network checks, responsive/overflow evidence and screenshot/trace evidence or explicit gap |
-| Release, external write, automation or git action | Explicit owner approval packet, current evidence, rollback/recovery path and no silent stage/commit/push/PR |
+| Release, external write, automation or git action | Действующее explicit approval либо applicable bounded standing authorization, current evidence, rollback/recovery path и no silent stage/commit/push/PR; не запрашивать то же разрешение повторно в неизменных границах. |
 
 ## Methodology Eval Map
 

@@ -12,6 +12,8 @@ Use the full Task Start Brief and Completion Ledger for large/high-risk or finan
 
 First read applicable instructions, the packet template and enough source to identify scope. Show the applicable start packet before broad exploration or edits. Uncertain values must be marked inferred; unavailable metrics need a concrete trace limitation. A heading or merged progress paragraph is not a full packet.
 
+An explicit request to add or update tasks authorizes the named local plan/state edits. Use the ordinary bounded fix/implementation scope and concise note for those writes; do not classify an explicitly requested edit as read-only planning or ask for the same authorization again. Shared-state preservation and host permissions still apply.
+
 ## State Ownership
 
 - The root owns, within its chat, the visible Task Start Brief, session-bound lifecycle marker, terminal Completion Ledger or concise result, and Control-Plane Sync. Independent chats do not share a current-task marker; coordinate only overlapping file ownership.
@@ -68,7 +70,7 @@ New mutation scopes declare `lifecycle_scope`: `work_type` (`implementation`, `f
 ## After Execution
 
 1. Update the same task block and source-owned status. Use an actual Europe/Moscow DD-MM-YYYY HH:mm timestamp and current evidence; do not invent acceptance or review.
-2. Run directly affected tests during changes and the required integrated gate on the combined final state. Repeat only for changed inputs, failures or unresolved material risk; retain original provenance for reused evidence.
+2. Select directly affected tests and integration checks on the combined final state through `TEST.md`. A plan/report/control-plane text edit alone does not trigger product-wide checks. Broaden for an identified risk or explicit request only. Full discovery already covers fixture/transcript evals; do not repeat that eval set afterward. Repeat only for changed inputs, failures or unresolved material risk; retain original provenance for reused evidence.
 3. Complete Control-Plane Sync and record Docs impact as updated, no_change_needed with reason, or accepted_gap with affected document, owner, risk and next step. An accepted docs gap cannot close a parent that requires the document.
 4. Prepare the applicable Completion Ledger with all thirteen list items and `closure_contract: product-agent-os-completion-ledger-v2`, or a concise result/evidence/limits response. Review context must be self_review, separate_reused_context, separate_fresh_context or fresh_blind_review as actually observed. Unavailable counters use not_available with a reason; do not create raw transcripts or scripts only to fill them.
 5. After all writes and checks, set `completion_ready: true` and status `ready_for_completion_ledger` (full route), `ready_for_completion_brief` (legacy or concise route), `blocked` or `stopped_repair_required`. Terminal states deny further mutations. Leave completion_brief_shown false or absent: file state cannot prove delivery.

@@ -185,12 +185,10 @@ if (-not [string]::IsNullOrEmpty($pathValue)) {
 
 ## Verification
 
-- For docs, source-registry, control-plane or test-contract edits, run:
-  - `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v`
-  - `python tools\check_docs.py`
-  - `git diff --check`
-- Run strict MkDocs when navigation, Mermaid diagrams, Markdown extensions, MkDocs config, localized nav, search/sitemap behavior or generated `site/` evidence changes.
-- For plugin/runtime changes, run focused tests first, then route through `TEST.md` for full unittest, fixture eval, transcript eval and Codex compatibility checks.
+- Select checks by the changed contract using the current routing section in `TEST.md`; it is the single verification-route owner. A plan, report or control-plane text edit does not by itself require docs, hooks, infrastructure, runtime or site suites.
+- Validate changed task matrices, links and data preservation where applicable. Check only changed source documentation by default; generated-site and historical evidence checks have separate explicit routes.
+- For implementation changes, run focused regressions and the affected integration checks. Broaden only for demonstrated cross-cutting risk, unknown blast radius, release qualification or an explicit request; record the reason. Full discovery already covers fixture/transcript evals, so do not run the same eval set again afterward.
+- Retain authorization, secret/path, user-file preservation, migration and recovery checks for changes to those boundaries. Verification routing never grants permissions or skips a relevant protection.
 - Do not claim a feature works or a maintenance slice is verified unless the relevant checks ran in the current run and their results are recorded.
 
 ## Rollback

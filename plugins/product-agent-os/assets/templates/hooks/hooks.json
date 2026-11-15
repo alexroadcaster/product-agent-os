@@ -42,32 +42,6 @@
         ]
       }
     ],
-    "PostToolUse": [
-      {
-        "matcher": "apply_patch|Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python \"$(git rev-parse --show-toplevel)/.codex/hooks/post_tool_use_evidence.py\"",
-            "commandWindows": "python \"$(git rev-parse --show-toplevel)/.codex/hooks/post_tool_use_evidence.py\"",
-            "timeout": 5,
-            "statusMessage": "Recording evidence reminder"
-          }
-        ]
-      },
-      {
-        "matcher": "apply_patch|Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python \"$(git rev-parse --show-toplevel)/.codex/hooks/comment_sufficiency_advisory.py\"",
-            "commandWindows": "python \"$(git rev-parse --show-toplevel)/.codex/hooks/comment_sufficiency_advisory.py\"",
-            "timeout": 5,
-            "statusMessage": "Running comment sufficiency advisory"
-          }
-        ]
-      }
-    ],
     "Stop": [
       {
         "hooks": [

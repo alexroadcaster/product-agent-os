@@ -1,22 +1,24 @@
 {
-  "task_id": "PAOS-REPORT-READ-FIX-2026-11-15",
+  "task_id": "PAOS-SCOPED-VERIFICATION-2026-11-15",
   "session_id": "01a1de93-6afa-7971-a8a6-4037a88ed5c0",
-  "scope": "Fix requested Markdown reports and ordinary read classification in active/template hooks; tests, workflow/docs sync and other-rule audit.",
-  "updated_at": "2026-11-15T13:28:05+03:00",
+  "scope": "Simplify verification routing, separate source docs/site/archive checks, deduplicate evals, remove repetitive advisory hooks; preserve permission/data safeguards.",
+  "updated_at": "2026-11-15T14:03:54+03:00",
   "approval_boundary": "User requested scoped guard repair; preserve host sandbox, protected paths, foreign state and Git boundaries.",
-  "status": "ready_for_completion_ledger",
+  "status": "ready_for_completion_brief",
   "completion_ready": true,
-  "task_start_brief_shown": true,
-  "evidence": "research/product-agent-os-report-read-fix-2026-11-15.md; full1453 skip1, final contracts253, fixture91/91, transcript26/26, current-host create/update/update and neighboring deny.",
-  "limits": "Fresh-session activation not verified; preserve parallel functional-remediation work. No hook definition/trust or Git changes.",
-  "brief_schema_version": "task_start_brief_v2",
-  "brief_format": "bold_fields",
+  "task_start_brief_shown": false,
+  "scope_note_shown": true,
+  "previous_closure": "PAOS-REPORT-READ-FIX-2026-11-15: research/product-agent-os-report-read-fix-2026-11-15.md; current-host verified; fresh-session gap retained.",
+  "evidence": "research/product-agent-os-scoped-verification-2026-11-15.md; scoped docs/source, hook44 plus final guard4, validator5, site7 on existing build, eval CLI/shared-cache, preservation35 and hygiene tests passed; changed-link checks and diffcheck passed; independent review findings resolved.",
+  "limits": "No full product suite, full eval rerun or fresh site build. Fresh-session hook trust/discovery not verified. Preserve parallel planning work. No Git operations or host permission changes by this task.",
+  "brief_schema_version": "task_scope_note_v1",
+  "brief_format": "concise",
   "brief_digest": "sha256:684f16119a8dd6655ecc8f3aca5aea10594c8d53a52cca300fe15b9bf9505ded",
-  "brief_fields_present": ["Request", "Goal", "Context", "Scope", "Value", "Execution", "Acceptance", "Risks / approvals", "Next step"],
+  "brief_fields_present": ["Scope", "Evidence", "Limits"],
   "lifecycle_scope": {
-    "work_type": "fix", "size": "bounded", "risk": "high",
+    "work_type": "fix", "size": "bounded", "risk": "medium",
     "financially_material": false, "release_or_readiness": false,
     "explicit_packet_request": false,
-    "reason": "Explicit request to repair report/read guard behavior with positive and negative checks."
+    "reason": "Explicit request for scoped checks and removal of repeated evals/advisories; permission and data enforcement unchanged."
   }
 }

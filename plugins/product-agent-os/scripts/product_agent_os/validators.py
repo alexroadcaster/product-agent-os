@@ -274,7 +274,6 @@ HOOK_JSON_REQUIRED_EVENTS = [
     "SessionStart",
     "PreToolUse",
     "PermissionRequest",
-    "PostToolUse",
     "Stop",
 ]
 TASK_START_PACKET_FIELDS = [
@@ -664,7 +663,9 @@ def validate_hook_json_text(text: str) -> list[str]:
     if not isinstance(hook_events, dict):
         return ["hook json hooks must be an object"]
     errors: list[str] = []
-    for event in HOOK_JSON_REQUIRED_EVENTS:
+    # Advisory output is optional; configured advisories still need valid shape.
+    events = HOOK_JSON_REQUIRED_EVENTS + (["PostToolUse"] if "PostToolUse" in hook_events else [])
+    for event in events:
         value = hook_events.get(event)
         if value is None:
             errors.append(f"missing hook event: {event}")
@@ -672,6 +673,8 @@ def validate_hook_json_text(text: str) -> list[str]:
         if not isinstance(value, list):
             errors.append(f"hook event must be a list: {event}")
             continue
+        if event in HOOK_JSON_REQUIRED_EVENTS and not value:
+            errors.append(f"required hook event must not be empty: {event}")
         for index, group in enumerate(value):
             if not isinstance(group, dict):
                 errors.append(f"hook event group must be an object: {event}[{index}]")

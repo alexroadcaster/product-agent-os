@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import argparse
 import re
 import sys
 from pathlib import Path
+from urllib.parse import unquote, urlsplit
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -344,7 +346,67 @@ def check_source_status() -> None:
             fail(f"{path.relative_to(ROOT)} missing Source status marker")
 
 
-def main() -> None:
+def check_changed_paths(paths: list[str]) -> None:
+    """Validate requested Markdown sources without reading a site or unrelated docs.
+
+    This checks file links, not HTML generation or Markdown anchor semantics.
+    It is a read-only checker; path validation never grants write permission.
+    """
+    root = ROOT.resolve()
+    for supplied in dict.fromkeys(paths):
+        path = (root / supplied).resolve()
+        if not path.is_relative_to(root) or not path.is_file() or path.suffix.lower() not in {'.md', '.markdown'}:
+            fail(f'invalid or missing project Markdown path: {supplied}')
+        try:
+            text = path.read_text(encoding='utf-8-sig')
+        except (OSError, UnicodeError) as error:
+            fail(f'{supplied}: cannot read UTF-8 Markdown ({type(error).__name__})')
+        if '\ufffd' in text or '\x00' in text:
+            fail(f'{supplied}: corrupted text')
+        # Examples are content, not claims that their sample paths exist.
+        prose = re.sub(r'^\s*(`{3,}|~{3,}).*?^\s*\1\s*$', '', text, flags=re.MULTILINE | re.DOTALL)
+        prose = re.sub(r'`+[^`\n]*`+', '', prose)
+        if path.is_relative_to(DOCS.resolve()):
+            relative = path.relative_to(DOCS.resolve())
+            if (relative.parts[0] != 'artifact-templates' and not path.name.startswith('index.')
+                    and relative.as_posix() not in {'sources/registry.md', 'sources/registry.en.md'}
+                    and 'Source status:' not in prose):
+                fail(f'{supplied}: missing Source status marker')
+            for placeholder in BAD_PLACEHOLDERS:
+                if placeholder in prose:
+                    fail(f'{supplied}: contains placeholder {placeholder}')
+        targets = [match.group(1) for match in LINK_RE.finditer(prose)]
+        # Reference definitions are links too; validate them even when unused.
+        # Footnote definitions contain prose and are not file destinations.
+        targets.extend(match.group(1) for match in re.finditer(
+            r'^ {0,3}\[(?!\^)[^\]\n]+\]:\s*(<[^>\n]+>|\S+)', prose, re.MULTILINE
+        ))
+        for raw_target in targets:
+            target = raw_target.strip()
+            if target.startswith('<'):
+                target = target[1:target.find('>')] if '>' in target else target
+            else:
+                target = re.split(r'\s+[\"\']', target, maxsplit=1)[0]
+            if target.startswith('#') or (urlsplit(target).scheme and not re.match(r'^[A-Za-z]:', target)):
+                continue
+            target = unquote(target.split('#', 1)[0].split('?', 1)[0])
+            if not target:
+                continue
+            candidate = (path.parent / target).resolve()
+            if not candidate.is_relative_to(root):
+                fail(f'{supplied}: link outside project: {target}')
+            if not candidate.exists():
+                fail(f'{supplied}: broken internal link: {target}')
+    print(f'OK: {len(set(paths))} changed Markdown source(s); site and archive not checked')
+
+
+def main(argv: list[str] | None = None) -> None:
+    parser = argparse.ArgumentParser(description='Check selected Markdown sources or the explicit full documentation audit.')
+    parser.add_argument('--paths', nargs='+', help='Only these workspace Markdown files; no site/archive prerequisites')
+    args = parser.parse_args(argv)
+    if args.paths:
+        check_changed_paths(args.paths)
+        return
     check_required_paths()
     check_templates()
     check_mermaid()

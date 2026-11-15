@@ -101,6 +101,25 @@ def _exceeds_budget(root: Path, name: str, content: bytes, limit: int) -> bool:
     return budget is not None and len(content) > budget
 
 
+def exceeds_configured_limit(root: Path, name: str, content: bytes) -> bool:
+    """Enforce explicit project limits for normal updates, without a size heuristic.
+
+    The default 40k document target guides maintenance. Reviewed compaction keeps
+    its separate requested hard limit; neither route changes preservation checks.
+    """
+    config = _path(root, '.codex/config.toml')
+    data = tomllib.loads(config.read_text(encoding='utf-8')) if config.is_file() else {}
+    limits = data.get('product_agent_os', {}).get('documents', {}).get('limits', {})
+    if not isinstance(limits, dict):
+        raise ValueError('invalid project budgets')
+    if name not in limits:
+        return False
+    limit = limits[name]
+    if type(limit) is not int or limit < 1:
+        raise ValueError('invalid project budget')
+    return len(content) > limit
+
+
 def _raw(path: Path) -> bytes | None:
     return path.read_bytes() if path.exists() else None
 

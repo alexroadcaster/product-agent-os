@@ -136,6 +136,8 @@ read_only_roles = ["explorer", "reviewer", "release-operator", "completion-skept
 workspace_roles = ["product-manager", "architect", "builder", "tester", "docs-maintainer", "lifecycle-orchestrator", "plugin-runtime-builder", "graph-cockpit-engineer", "learning-loop-engineer"]
 
 [product_agent_os.approval_contract]
+authorization_reuse = "current_request_or_applicable_bounded_standing_authorization"
+host_boundary = "never_override_sandbox_managed_policy_or_host_rejection"
 external_writes = "explicit"
 network_access = "explicit"
 provider_or_model_calls = "explicit"

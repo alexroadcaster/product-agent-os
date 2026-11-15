@@ -196,8 +196,8 @@ class TaskPlanLifecycleTest(unittest.TestCase):
             "scoped_task_start_brief_before_execution",
             "scoped_completion_ledger_after_execution",
             "control_plane_sync_before_completion",
-            "control_plane_overflow_refactor",
-            "overflow_refactor_required",
+            "control_plane_size_advisory",
+            "explicit_hard_limit",
             "Task Start Brief",
             "Completion Ledger",
             "Control-Plane Sync",
@@ -214,16 +214,22 @@ class TaskPlanLifecycleTest(unittest.TestCase):
             "EVALS.md",
             "RUNLOG.md",
             "prod_test.md",
-            "update_required",
-            "not_applicable",
+            "updated",
+            "no_change_needed",
             "handoff_required",
-            "overflow_refactor_required",
-            "budget crossing is a compaction trigger",
-            "not permission to skip",
+            "advisory compactness target",
+            "Explicit per-file hard limits",
+            "separate hygiene follow-up",
             "before the Completion Ledger",
         ]:
             with self.subTest(control_plane_sync=expected):
                 self.assertIn(expected, control_plane_sync)
+
+        contract = json.loads(eval_contract)
+        size_case = next(case for case in contract["cases"] if case["id"] == "control-plane-size-advisory")
+        self.assertEqual(size_case["expected"]["default_size_action"], "update_and_record_hygiene_follow_up")
+        self.assertEqual(size_case["expected"]["explicit_hard_limit_action"], "preservation_safe_resolution_or_blocker")
+        self.assertNotIn("overflow_refactor_required", eval_contract)
 
         for path in (ROOT / ".codex" / "agents").glob("*.toml"):
             text = path.read_text(encoding="utf-8")

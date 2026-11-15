@@ -23,6 +23,19 @@ from product_agent_os.validators import (  # noqa: E402
 
 
 class ValidatorsTest(unittest.TestCase):
+    def test_hook_advisories_are_optional_but_protection_events_are_required(self):
+        from product_agent_os.validators import validate_hook_json_text
+        group = [{"hooks": [{"type": "command", "command": "python guard.py"}]}]
+        events = {name: group for name in ('SessionStart', 'PreToolUse', 'PermissionRequest', 'Stop')}
+        self.assertEqual([], validate_hook_json_text(json.dumps({'hooks': events})))
+        for name in ('PreToolUse', 'PermissionRequest'):
+            with self.subTest(event=name):
+                missing = {key: value for key, value in events.items() if key != name}
+                self.assertIn('missing hook event: ' + name, validate_hook_json_text(json.dumps({'hooks': missing})))
+                empty = {**events, name: []}
+                self.assertTrue(validate_hook_json_text(json.dumps({'hooks': empty})))
+        self.assertTrue(validate_hook_json_text(json.dumps({'hooks': {**events, 'PostToolUse': 'invalid'}})))
+
     def test_lifecycle_packet_contracts_validate_content_and_closure_limits(self):
         from product_agent_os import validators
         validate = getattr(validators, "validate_lifecycle_packet_text", None)

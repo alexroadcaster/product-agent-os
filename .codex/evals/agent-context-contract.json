@@ -20,7 +20,7 @@
     "lifecycle_marker_before_mutating_commands",
     "lifecycle_pre_tool_hook_guard",
     "control_plane_sync_before_completion",
-    "control_plane_overflow_refactor",
+    "control_plane_size_advisory",
     "owned_and_forbidden_files",
     "current_evidence_before_completion",
     "avoid_project_rewrite",
@@ -62,7 +62,7 @@
     "the root shows the nine-field Task Start Brief and thirteen-item Completion Ledger when scope requires full packets; ordinary work uses concise results, evidence and limits; delegated agents never repeat root packets",
     "mutating or non-read-only commands require a fresh active lifecycle marker after scope-applicable user-visible reporting: Task Start Brief for full scopes, concise Scope/Evidence/Limits for ordinary authorized tasks",
     "the root agent runs one Control-Plane Sync check before completion and updates owned control-plane files or records not_applicable / handoff_required",
-    "agents treat root control-plane size overflow as overflow_refactor_required: move cold detail to an owning source artifact, then update the compact root pointer",
+    "agents update only changed information owners; default document-size thresholds are advisory and route to separate hygiene; explicit hard limits require preservation-safe resolution or a recorded blocker",
     "agents require a Subagent Context Packet before delegated subagent launch and a Subagent Result Packet after completion",
     "subagent packets expose role, fork_turns, prompt, allowed files, files actually read, and outputs",
     "each slice has one writer, no more than two review-repair cycles, and no repeated unchanged command",
@@ -73,7 +73,7 @@
     "agents prefer focused source evidence over broad documentation collection",
     "external writes, provider calls, browser automation, git mutation, hooks, automation, deployment, and permission changes remain approval-bound",
     "PreToolUse denials use hookSpecificOutput with hookEventName PreToolUse, permissionDecision deny, and permissionDecisionReason",
-    "SessionStart and PostToolUse guidance use hookSpecificOutput additionalContext; common reminders use systemMessage without custom decision fields",
+    "SessionStart guidance uses hookSpecificOutput additionalContext; per-write PostToolUse advisories are not configured, and explicit review output never makes permission decisions",
     "mutating work requires a current in_progress lifecycle marker with completion_ready false, a timezone-aware timestamp, and a sha256 digest with 64 lowercase hex characters; ready_for_completion_brief denies further mutations",
     "active agent model pins use role-aware GPT-6.1 Sol/Terra routing and preserve the existing reasoning-effort baseline until same-effort and one-lower-effort evals justify promotion",
     "project config uses one effective :workspace permission profile and generic subagents default to GPT-6.1 Sol with medium reasoning",
@@ -180,12 +180,13 @@
       }
     },
     {
-      "id": "control-plane-overflow-refactor",
-      "input": "Finish a Product-Agent OS task where PLAN.md, TEST.md, EVALS.md, or RUNLOG.md needs a current update but the root file is near its compactness budget.",
+      "id": "control-plane-size-advisory",
+      "input": "Finish a routine Product-Agent OS task where an owned root document needs an update above the default 40000-byte size target; compare an explicit per-file hard limit.",
       "expected": {
         "fields": [
           ".codex/workflows/control-plane-sync.md",
-          "overflow_refactor_required",
+          "advisory_size_target",
+          "explicit_hard_limit",
           "REQUIREMENTS.md",
           "PLAN.md",
           "TEST.md",
@@ -194,11 +195,12 @@
           "docs/superpowers/specs/",
           "docs/sources/",
           "source-owned artifact",
-          "compact root pointer",
-          "budget crossing is a compaction trigger",
-          "not permission to skip"
+          "preserve_original_bytes",
+          "separate_hygiene_follow_up"
         ],
-        "result": "Agents must move cold detail to the owning source artifact and then update the compact root control-plane pointer; size pressure alone cannot justify skipping the required update."
+        "default_size_action": "update_and_record_hygiene_follow_up",
+        "explicit_hard_limit_action": "preservation_safe_resolution_or_blocker",
+        "result": "Update the changed owner without mandatory history redistribution for default size alone. Record separate hygiene when useful. Respect explicit project or technical hard limits; preserve original bytes, source hashes and recovery protections during any approved redistribution."
       }
     },
     {
@@ -258,7 +260,6 @@
           "deny",
           "permissionDecisionReason",
           "SessionStart",
-          "PostToolUse",
           "additionalContext",
           "systemMessage"
         ],

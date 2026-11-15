@@ -1,6 +1,7 @@
 import importlib.util
 import io
 import json
+import shutil
 import subprocess
 import sys
 import unittest
@@ -9,12 +10,12 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest import mock
 
+from tests.product_agent_os.fixture_eval_cache import evaluate_all_cached
 
 ROOT = Path(__file__).resolve().parents[2]
 RUNNER_PATH = ROOT / "plugins" / "product-agent-os" / "scripts" / "run_fixture_eval.py"
 FIXTURES = ROOT / "plugins" / "product-agent-os" / "assets" / "fixtures"
 FIXTURE_EVAL_CLI_TIMEOUT_SECONDS = 420
-_EVALUATE_ALL_CACHE = None
 
 
 def load_runner():
@@ -25,14 +26,22 @@ def load_runner():
     return module
 
 
-def evaluate_all_cached(runner):
-    global _EVALUATE_ALL_CACHE
-    if _EVALUATE_ALL_CACHE is None:
-        _EVALUATE_ALL_CACHE = runner.evaluate_all()
-    return _EVALUATE_ALL_CACHE
-
-
 class FixtureEvalRunnerTest(unittest.TestCase):
+    def test_fixture_contract_modules_share_one_full_evaluation(self):
+        from tests.product_agent_os import fixture_eval_cache
+        from tests.product_agent_os import test_codex_runtime_runner_fixture_eval as runtime_tests
+
+        first_runner = mock.Mock()
+        first_runner.evaluate_all.return_value = [{"fixture": "shared", "ok": True}]
+        second_runner = mock.Mock()
+        # Restore any existing baseline so this test cannot contaminate later contracts.
+        with mock.patch.object(fixture_eval_cache, "_results", None):
+            first = evaluate_all_cached(first_runner)
+            second = runtime_tests.evaluate_all_cached(second_runner)
+        self.assertIs(first, second)
+        first_runner.evaluate_all.assert_called_once_with()
+        second_runner.evaluate_all.assert_not_called()
+
     def test_renderer_exception_preserves_failure_instead_of_unbound_runtime_fields(self):
         runner = load_runner()
         fixture = FIXTURES / "python-app"
@@ -46,7 +55,7 @@ class FixtureEvalRunnerTest(unittest.TestCase):
                 self.assertIn(f"renderer failed: {type(failure).__name__}: {failure}", result["risks"])
                 self.assertEqual(set(result), set(runner._failed_result("fixture", "failure")))
                 with mock.patch.object(runner, "evaluate_all", return_value=[result]), redirect_stdout(io.StringIO()) as output:
-                    self.assertEqual(runner.main(), 1)
+                    self.assertEqual(runner.main([]), 1)
                 self.assertFalse(json.loads(output.getvalue())[0]["ok"])
 
     def test_fixture_eval_returns_stable_named_results(self):
@@ -781,19 +790,51 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertFalse(result["ok"])
 
     def test_cli_prints_json_and_exits_zero_when_all_fixtures_are_ok(self):
-        result = subprocess.run(
-            [sys.executable, str(RUNNER_PATH)],
-            check=False,
-            capture_output=True,
-            text=True,
-            timeout=FIXTURE_EVAL_CLI_TIMEOUT_SECONDS,
-        )
+        # CLI wiring needs one representative fixture; the cached suite owns full coverage.
+        with TemporaryDirectory() as temporary:
+            fixture_root = Path(temporary) / "fixtures"
+            shutil.copytree(FIXTURES / "python-app", fixture_root / "python-app")
+            result = subprocess.run(
+                [sys.executable, str(RUNNER_PATH), "--fixtures-root", str(fixture_root)],
+                check=False,
+                capture_output=True,
+                text=True,
+                timeout=FIXTURE_EVAL_CLI_TIMEOUT_SECONDS,
+            )
 
         payload = json.loads(result.stdout)
         self.assertEqual(result.returncode, 0)
         self.assertEqual(result.stderr, "")
         self.assertTrue(all(item["ok"] for item in payload))
-        self.assertIn("node-app", {item["fixture"] for item in payload})
+        self.assertEqual(["python-app"], [item["fixture"] for item in payload])
+
+    def test_summary_evaluates_once_and_preserves_failure_exit_status(self):
+        runner = load_runner()
+        for results, expected_exit in [
+            ([{"fixture": "ok", "ok": True}], 0),
+            ([{"fixture": "ok", "ok": True}, {"fixture": "bad", "ok": False}], 1),
+            ([], 1),
+        ]:
+            with self.subTest(results=results), mock.patch.object(
+                runner, "evaluate_all", return_value=results
+            ) as evaluate, redirect_stdout(io.StringIO()) as output:
+                self.assertEqual(runner.main(["--summary"]), expected_exit)
+                evaluate.assert_called_once()
+                report = json.loads(output.getvalue())
+                self.assertEqual(len(results), report["total"])
+                self.assertEqual(sum(not item["ok"] for item in results), report["failed"])
+                self.assertEqual([item["fixture"] for item in results if not item["ok"]], report["failed_fixtures"])
+                self.assertEqual(expected_exit == 0, report["ok"])
+
+    def test_cli_missing_fixture_root_returns_summary_and_nonzero_exit(self):
+        with TemporaryDirectory() as temporary:
+            result = subprocess.run(
+                [sys.executable, str(RUNNER_PATH), "--fixtures-root", str(Path(temporary) / "missing"), "--summary"],
+                check=False, capture_output=True, text=True, timeout=30,
+            )
+        self.assertEqual(1, result.returncode)
+        self.assertEqual("", result.stderr)
+        self.assertEqual(["missing"], json.loads(result.stdout)["failed_fixtures"])
 
     def test_missing_fixture_root_returns_failed_json_shape(self):
         runner = load_runner()
@@ -864,7 +905,7 @@ class FixtureEvalRunnerTest(unittest.TestCase):
 
     def test_main_exits_one_when_any_result_fails(self):
         runner = load_runner()
-        runner.evaluate_all = lambda: [
+        runner.evaluate_all = lambda fixtures_root: [
             {
                 "fixture": "ok-fixture",
                 "ok": True,
@@ -907,7 +948,7 @@ class FixtureEvalRunnerTest(unittest.TestCase):
 
         stdout = io.StringIO()
         with redirect_stdout(stdout):
-            exit_code = runner.main()
+            exit_code = runner.main([])
 
         payload = json.loads(stdout.getvalue())
         self.assertEqual(exit_code, 1)

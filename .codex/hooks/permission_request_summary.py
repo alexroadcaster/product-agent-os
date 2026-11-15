@@ -5,10 +5,9 @@ import sys
 
 
 MESSAGE = (
-    "Approval remains undecided. Before responding, summarize the requested purpose, exact scope and target, "
-    "risk, rollback or disable path, and verification evidence. Treat external writes, provider/API calls, "
-    "browser automation, git stage/commit/push/PR, hook or automation activation, deployment/publication, and "
-    "permission changes as separate approval boundaries."
+    "Host approval remains undecided. Reuse the current request or applicable bounded standing authorization; "
+    "do not request the same user permission again. Explain only an unresolved scope or host boundary. "
+    "Existing authorization never overrides a sandbox, managed policy or host rejection."
 )
 
 
