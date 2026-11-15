@@ -1,0 +1,25 @@
+# Frontend: accessibility and verification boundaries
+
+Source status: repository_source / static_source_review, historical_bounded_evidence; 2026-11-15.
+
+Owner: frontend owner and accessibility verification owner. Scope: source UI contracts at revision `ad78d5d15aced23febae90d319f2aba00bd64d0b`, the existing guide and dated evidence. Update when keyboard behavior, focus, semantics, themes, localization or verification results change. This page does not declare full application accessibility.
+
+## Implemented source mechanisms
+
+| Scenario | Source mechanism | Check when changing |
+| --- | --- | --- |
+| Dialogs and task detail | [Modal / DetailSurface](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/apps/web/src/ui/Modal.tsx): native dialog, Escape, Tab containment and focus restoration to a connected opener; expanded task detail preserves the same DOM | Open, traverse in both directions, close, preserve input and restore focus. These properties do not automatically apply to every other component. |
+| Tabs | [TaskManager](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/apps/web/src/features/tasks/TaskManager.tsx) and [App settings](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/apps/web/src/ui/App.tsx): `tablist`, selected/tabindex, ArrowLeft/Right and Home/End | Accessible name, tab/panel association and keyboard access to actions. |
+| Sidebar | [Sidebar.tsx](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/apps/web/src/ui/Sidebar.tsx): `aria-current`, button with `aria-expanded`, labels and focus tooltip when collapsed; Escape is passed to the shell | Project and section selection, focus and visible labels in both sidebar widths. |
+| Graph and motion | [GraphViews](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/apps/web/src/features/graph/GraphViews.tsx): named focusable D3 nodes with Enter/Space, separate zoom controls and Mermaid source; [workspace.css](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/apps/web/src/design/workspace.css): reduced motion | Keyboard navigation, labels, text alternative and reduced-motion behavior. A textual list does not prove complete index coverage. |
+| Themes and languages | [preferences.ts](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/apps/web/src/design/preferences.ts): RU/EN, light/dark/system, `lang` and `data-theme`; [theme.css](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/apps/web/src/design/theme.css): `:focus-visible` | Names, contrast and focus in each locale/theme; user content is not automatically translated. |
+
+User instructions for keyboard and available states are in the [existing Web guide](../web/accessibility.md), which also covers recovery from service errors. See [design system](design-system.md) for theme mechanics and [components](components.md) for ownership.
+
+## Evidence, checks and limits
+
+The historical PAOS-0029 guide dated 2026-11-12 references [browser-acceptance.mts](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/accessibility/browser-acceptance.mts): a synthetic local service, states S01–S26 and eight task tabs in RU/EN × Light/Dark at 1440 and 320 CSS px. These are states, not 26 separate URLs. Separate scenarios included System and forced colors in Chromium. Details and limits are preserved in the [PAOS-0029 report](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/research/product-agent-os-web-m4-0029-execution-2026-11-12.md); this is dated evidence, not a new DG04 run.
+
+Historical narrow-width and mobile-navigation checks do not establish support for a complete mobile product: approved V3 scope targets desktop and excludes a mobile version. This receipt is not current V3 acceptance. The RGB/Chromium check excludes some native paint, gradients and placeholder text, and does not cover every browser/OS/assistive-technology combination. Manual screen-reader acceptance and full WCAG conformance are not established. V3 visual evidence separately remains `needs_user_acceptance` ([source](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/design/2026-11-13-v3/implementation-evidence.md)). Planned F26–F34 Files/Map/Database/usages need their own accessibility work and checks when implemented; design and this page do not prove their existence.
+
+For a new UI slice, select applicable source, unit and browser checks from TEST.md; verify both locales and themes, narrow width, keyboard, focus, errors and actual journeys. Do not enable a provider to check appearance. Test links are routes, not results of a current runtime run.

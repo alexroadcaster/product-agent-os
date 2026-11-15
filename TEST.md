@@ -2,6 +2,8 @@
 
 ## Текущий выбор проверок — 15.11.2026
 
+DG04: [frontend documentation evidence](docs/planning/documentation-architecture-2026-11-15.md#dg04-results) — isolated `.docs-tools/reports/dg04/site`, source3 + translation-card regression1, matrices2, site7, HTML/source links, 15-section inventory и 6 RU/EN source sets. Приложение не менялось; новый browser/runtime/a11y прогон не заявлен.
+
 DG03: [source/site/schema/ERD evidence и команды](docs/planning/documentation-architecture-2026-11-15.md#dg03-results) — isolated `.docs-tools/reports/dg03/site`, source3 + translation-card regression1, matrices2, site7, HTML/source links, SQL inventory и Mermaid2. Runtime suites не запускались; ссылки на них — traceability.
 
 DG02: [source/site/diagram evidence](docs/planning/documentation-architecture-2026-11-15.md#dg02-results) — изолированный output `.docs-tools/reports/dg02/site`; source3, site7, RU/EN matrices и card parity, HTML links, Mermaid parse/render2. Verification routes ниже не расширены на product runtime.

@@ -17,3 +17,7 @@ This map locates source and boundary ownership for Web/desktop and the separate 
 ## Backend, API and data
 
 [Local service](../backend/index.md), [HTTP contracts](../api/index.md), [SQLite schema and lifecycle](../db/index.md), [editable PAOS SQLite ERD](../diagrams/paos-sqlite-erd.md). These guides describe current source contracts; target database maps remain planned under FUNC-33.
+
+## Frontend implementation
+
+[Frontend and UI/UX](../frontend/index.md) maps screens, components, API state, design ownership and accessibility evidence to current source.

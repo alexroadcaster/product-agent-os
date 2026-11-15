@@ -1,5 +1,9 @@
 # RUNLOG.md
 
+## DG04 — завершено, 15.11.2026
+
+DOCS-06 implemented / docs_static_verified: 6 RU/EN пар frontend, 15 разделов навигации, components/state/drafts/design/a11y boundaries. [Evidence и команды](docs/planning/documentation-architecture-2026-11-15.md#dg04-results): source3 + card parity1, matrix2, strict build, site7, HTML/pinned-source links passed. Независимый scoped review пройден; desktop/historical narrow-width и human/WCAG gaps разделены. Application/browser/provider checks не выполнялись. Далее DG05; DOCS-13/16 B открыты.
+
 ## DG03 — завершено, 15.11.2026
 
 DOCS-04/05/07 implemented / docs_static_verified: 17 RU/EN пар backend/API/DB и editable ERD. [Результаты и команды](docs/planning/documentation-architecture-2026-11-15.md#dg03-results): source4, matrix2, strict build, site7, HTML/source links и Mermaid2 passed. Scoped independent API review; уточнения action bodies и ERD cardinality исправлены. Приложение, реальные БД и providers не запускались; FUNC/M5 не менялись. Следующий DG04; DOCS-13/16 B открыты.

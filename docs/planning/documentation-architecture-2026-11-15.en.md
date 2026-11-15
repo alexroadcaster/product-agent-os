@@ -1,6 +1,6 @@
 # Product-Agent OS — documentation architecture and backlog
 
-Source status: repository_source / current_source_inspection / owner_requested_planning; subsystem documentation implementation planned, DG01/DG02/DG03 docs_static_verified; remaining subsystem work planned.
+Source status: repository_source / current_source_inspection / owner_requested_planning; subsystem documentation implementation planned, DG01/DG02/DG03/DG04 docs_static_verified; remaining subsystem work planned.
 Date: 15.11.2026. Schema version: task_matrix_plan_v1. Timezone: Europe/Moscow.
 
 ## Analysis results
@@ -73,7 +73,7 @@ The seven groups below own the current execution order: DG01 first, then task-sp
 
 ## Documentation implementation groups — 15.11.2026
 
-Current status: DG01–DG03 **completed / docs_static_verified**; DOCS-01–05/07 **implemented**, DOCS-13/16 **in_progress** until B; other 8 tasks and DG04–DG07 **planned**. IDs, original dependencies, scope and AC preserved.
+Current status: DG01–DG04 **completed / docs_static_verified**; DOCS-01–07 **implemented**, DOCS-13/16 **in_progress** until B; other 7 tasks and DG05–DG07 **planned**. IDs, original dependencies, scope and AC preserved.
 
 ### Stage and dependency rules
 
@@ -114,7 +114,40 @@ This section owns sequencing. The card table below retains original dependencies
 
 Grouping checks on 15.11.2026: validate_task_matrix passed; source-docs unittest 3/3 passed (0.669s); check_docs and git diff --check passed. Comparing before/after cards: 16/16 remained byte-identical after removing only added Delivery group/Execution stages fields; all were planned at that time. Seven groups/18 unique stages and the DAG with mandatory DG01 entry passed. Review: self_review. Control-plane sync: PLAN/RUNLOG updated; REQUIREMENTS/TEST/EVALS/registries no_change_needed because requirements, source claims and verification routes were unchanged. MkDocs/site/archive were not rerun during grouping; earlier results were not promoted.
 
+## DG04 — implementation results {#dg04-results}
+
+Status: **completed / docs_static_verified**; DOCS-06 **implemented**. Date: 15-11-2026 16:57 Europe/Moscow. Source snapshot `ad78d5d15aced23febae90d319f2aba00bd64d0b`. Original AC/Scope/Depends on/Blocks preserved.
+
+| Criterion | Completed |
+| --- | --- |
+| AC1 | [Navigation](../frontend/navigation.md): all 15 App sections, transitions and onboarding; [state](../frontend/state-management.md): API, polling, late responses, message/task drafts and ACK; [components](../frontend/components.md), themes and RU/EN with source/test references |
+| AC2 | [Design system](../frontend/design-system.md) routes to DESIGN and V3 assets; no copied token/screenshot catalog, design ownership preserved |
+| AC3 | Files/Map/Database/usages F26–F34 planned; [accessibility](../frontend/accessibility.md) separates source mechanisms, historical 0029/V3 receipts, desktop scope and human/WCAG gaps |
+| AC4 | [Frontend index](../frontend/index.md) and five guides, 6 complete RU/EN pairs: metadata/owner/scope/version/sources/tests/limits; nav/registry and control plane synchronized |
+
+Current checks: check_docs passed; source suite 3/3 + translation-card regression 1/1; RU/EN matrices passed, 16 cards each; strict isolated MkDocs and i18n postprocess passed; site 7/7; affected HTML links/anchors without errors; pinned source references and all six RU/EN source sets match; all 15 App sections present in both languages; git diff --check passed. Local receipts: .docs-tools/reports/dg04.
+
+Review: self_review + separate_reused_context scoped design/components/accessibility review by dg04_navigation_state; tester_verdict=closed_allowed. Clarified task draft persistence/raw local input, UI policy preflight and historical narrow-width checks. No blocking findings. Browser/runtime/provider, current manual a11y/WCAG and human V3 acceptance were not performed; test links are not new runs. No changes to app code, DESIGN/assets, real profiles, hooks/trust, Git/publication or root site/.
+
+Control-plane sync: REQUIREMENTS/PLAN/TEST/RUNLOG, owning RU/EN plan, registry/nav and product/architecture maps updated; EVALS/prod_test no_change_needed, existing rubrics and production history. Next DG05 by dependencies; DOCS-01–07 implemented, DOCS-13/16 in_progress until B, seven other tasks planned. Historical receipts below retain their original date and scope.
+
+```text
+python -B tools/check_docs.py
+python -B -m unittest tests.product_agent_os.test_product_agent_os_docs tests.product_agent_os.docs_archive_checks.ProductAgentOsDocsArchiveTest.test_dg01_plan_translations_preserve_task_contracts -q
+python -B plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/documentation-architecture-2026-11-15.md
+python -B plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/documentation-architecture-2026-11-15.en.md
+.venv-docs/Scripts/python.exe -m mkdocs build --strict --site-dir .docs-tools/reports/dg04/site
+tools/fix_site_i18n_links.ps1 -SiteDir .docs-tools/reports/dg04/site
+$env:PAOS_DOCS_SITE_DIR=(Resolve-Path .docs-tools/reports/dg04/site).Path
+python -B -m unittest tests.product_agent_os.site_checks -q
+python -B .docs-tools/reports/dg04/check_links.py
+python -B .docs-tools/reports/dg04/check_source_links.py
+git diff --check
+```
+
 ## DG03 — implementation results {#dg03-results}
+
+Historical DG03 receipt; current DG04 status is above.
 
 Status: **completed / docs_static_verified**; DOCS-04/05/07 **implemented**. Date: 15-11-2026 16:46 Europe/Moscow. Original AC, Depends on, Blocks and feature task-state preserved.
 
@@ -220,7 +253,7 @@ The eight EN gaps identified by that migration were: 2026-11-13-ui-implementatio
 
 ## Separate task list
 
-There are 16 documentation tasks: DOCS-01–05/07 implemented, DOCS-13/16 in_progress until B, other 8 planned. This does not change FUNC/M5 status.
+There are 16 documentation tasks: DOCS-01–07 implemented, DOCS-13/16 in_progress until B, other 7 planned. This does not change FUNC/M5 status.
 
 | ID | Task / directory | Deliverables | Dependencies |
 | --- | --- | --- | --- |
@@ -464,13 +497,13 @@ There are 16 documentation tasks: DOCS-01–05/07 implemented, DOCS-13/16 in_pro
 ### Task `PAOS-DOCS-06`
 
 - Task: PAOS-DOCS-06 — Document the frontend, UI/UX and navigation states
-- Status: planned
+- Status: implemented
 - Delivery group: DG04
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: owner requested implementation documentation audit and separate backlog
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 15-11-2026 16:57
 - Priority: P1
 - Depends on: `PAOS-DOCS-01`, `PAOS-DOCS-02`, `PAOS-DOCS-03`
 - Blocks: `PAOS-DOCS-13`, `PAOS-DOCS-16`
@@ -490,20 +523,20 @@ There are 16 documentation tasks: DOCS-01–05/07 implemented, DOCS-13/16 in_pro
 - Skills: documentation-and-adrs; implementation-specific skills only when needed
 - Output artifacts: index.md, navigation.md, state-management.md, components.md, design-system.md, accessibility.md. This card owns status and receipts; RUNLOG owns the concise handoff.
 - Rollback: Only owned changes, preserving source history, backlink map and earlier documents.
-- Next step: Check dependencies and select one documentation slice; do not start the entire backlog automatically.
+- Next step: Maintain the canonical guide with source changes; DG05 follows dependencies.
 
 #### Completion Report
 
-- status: planned
-- what was done: scope and acceptance defined; subsystem documentation has not yet been written.
-- files touched / work locations: the future directory is specified in Scope.
-- technical value delivered: not_implemented
-- product value delivered: not_verified
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: static source comparison; future checks have not been executed.
-- residual risks: source drift and conflating historical/planned/current states and UI/plugin/runtime surfaces.
-- follow-up: select a bounded slice according to dependencies.
-- Documentation impact: the future source-owned section, registry/nav and only affected control-plane owners.
+- status: implemented
+- what was done: All four original AC completed; see DG04 coverage.
+- files touched / work locations: docs/frontend/ six RU/EN pairs; nav/registry/maps/control-plane
+- technical value delivered: source-grounded screen/component/state and design ownership map
+- product value delivered: Current behavior, draft preservation, limits and future capabilities clearly distinguished.
+- actual implementation date and time: 15-11-2026 16:57
+- verification evidence: [DG04](#dg04-results)
+- residual risks: source drift; historical browser evidence; no new human/WCAG acceptance
+- follow-up: DG05 by original dependencies
+- Documentation impact: canonical RU/EN guides, nav, registry, plan and control-plane updated
 
 ### Task `PAOS-DOCS-07`
 

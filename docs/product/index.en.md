@@ -1,6 +1,6 @@
 # Developing Product-Agent OS
 
-Source status: repository_source / current_source_inspection / documentation_implementation; DG02/DG03, 2026-11-15.
+Source status: repository_source / current_source_inspection / documentation_implementation; DG02/DG03/DG04, 2026-11-15.
 
 Owner: docs-maintainer; domain owners below. Scope: documentation routing for Web/desktop, local service and Python plugin at `2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765`. Review this map when a section, contract, task owner or capability changes.
 
@@ -12,11 +12,11 @@ Owner: docs-maintainer; domain owners below. Scope: documentation routing for We
 
 ## Find a subsystem
 
-Existing source-backed entry points are available now. Backend, API and DB guides are provided by DG03; frontend and AI guides remain assigned to later groups. All task IDs below resolve through the [documentation plan](../planning/documentation-architecture-2026-11-15.md) or [functional plan](../planning/functional-remediation-2026-11-15.md).
+Existing source-backed entry points are available now. Backend, API and DB guides are provided by DG03, frontend by DG04; AI guides remain assigned to later groups. All task IDs below resolve through the [documentation plan](../planning/documentation-architecture-2026-11-15.md) or [functional plan](../planning/functional-remediation-2026-11-15.md).
 | Area | Current guide | Source entry | Detailed guide owner / queue |
 | --- | --- | --- | --- |
 | Backend / API | [Local service](../backend/index.md), [API reference](../api/index.md) | [HTTP application](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/http/application.mts) | DOCS-04/05, DG03 |
-| Frontend / UI | [Journeys](user-journeys.md), [capabilities](capabilities.md) | [App.tsx](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/web/src/ui/App.tsx) | DOCS-06, DG04 |
+| Frontend / UI | [Frontend map](../frontend/index.md), [navigation](../frontend/navigation.md) | [App.tsx](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/web/src/ui/App.tsx) | DOCS-06, DG04 |
 | DB / SQLite | [SQLite schema](../db/schema.md), [data lifecycle](../db/index.md) | [Schema](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/storage/migrations/schema.mts) | DOCS-07, DG03 |
 | AI / agents / LLM | [System boundaries](../architecture/system-context.md), [runtime routes](../architecture/decisions/adr-app-agent-routing.md) | [Route selector](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/runtime/route-selector.ts) | DOCS-08/09, DG05 |
 | RAG / retrieval / code intelligence | [Capabilities](capabilities.md), [plugin graph](../product-agent-os/project-code-graph.md) | [FTS search](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/storage/search-queries.mts) | DOCS-10/11, DG05; FUNC-14/26–34 separate |
@@ -28,6 +28,7 @@ Existing source-backed entry points are available now. Backend, API and DB guide
 | `product/` | Current PAOS model, capabilities and journeys | product-manager | Contracts and code; [capabilities](capabilities.md), [tasks](../planning/index.md) | Behavior or capability-status change |
 | `architecture/`, `architecture/decisions/` | Component boundaries and decision rationale | architect | Source, accepted decisions and their evidence; [architecture](../architecture/system-context.md) | Process, authority, storage or route change |
 | `backend/`, `api/`, `db/` | Service lifecycle, HTTP contracts, SQLite schema and recovery | backend/storage owner + docs-maintainer | [Backend](../backend/index.md), [API](../api/index.md), [DB](../db/index.md); linked source and tests | Module, endpoint, schema, transaction or recovery contract changes |
+| `frontend/` | Screens, components, state and design consumption | frontend owner + docs-maintainer | [Frontend](../frontend/index.md), DESIGN, source and related tests | Screen, state, design or accessibility behavior changes |
 | `diagrams/` | Single atlas of execution paths and boundaries | architect + subsystem owner | Linked source-backed guide; [atlas](../diagrams/index.md) | Flow change; check diagram and RU/EN together |
 | `product-agent-os/`, `web/` | Plugin usage, Web accessibility and local pilot | docs-maintainer + implementation owner | [Plugin guides](../product-agent-os/index.md), [pilot](../web/pilot.md), current code and dated receipts | Command, UI, installation or limit change |
 | `product-agent/`, `playbooks/` | Working methods and repeatable user routes | lifecycle-orchestrator | Workflow/skill source; [lifecycle](../product-agent/lifecycle.md) | Route or responsibility change |

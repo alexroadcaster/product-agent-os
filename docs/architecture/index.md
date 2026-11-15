@@ -17,3 +17,7 @@ Source status: repository_source / static_architecture_map; 15.11.2026.
 ## Backend, API и данные
 
 [Локальный сервис](../backend/index.md), [HTTP-контракты](../api/index.md), [SQLite-схема и жизненный цикл](../db/index.md), [редактируемая SQLite ERD PAOS](../diagrams/paos-sqlite-erd.md). Руководства описывают текущие исходные контракты; карта БД целевого проекта остаётся задачей FUNC-33.
+
+## Реализация frontend
+
+[Frontend и UI/UX](../frontend/index.md) связывает экраны, компоненты, API state, владение дизайном и accessibility evidence с текущими исходниками.

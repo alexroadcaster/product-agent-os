@@ -99,6 +99,13 @@ plugins:
                 - Lifecycle: backend/lifecycle.md
                 - Commands and events: backend/commands-events.md
                 - Recovery: backend/recovery.md
+            - Frontend / UI/UX:
+                - Overview: frontend/index.md
+                - Navigation and states: frontend/navigation.md
+                - State management: frontend/state-management.md
+                - Components: frontend/components.md
+                - Design system: frontend/design-system.md
+                - Accessibility: frontend/accessibility.md
             - API:
                 - Overview: api/index.md
                 - HTTP endpoints: api/endpoints.md
@@ -289,6 +296,13 @@ nav:
       - Жизненный цикл: backend/lifecycle.md
       - Команды и события: backend/commands-events.md
       - Восстановление: backend/recovery.md
+  - Frontend / UI/UX:
+      - Обзор: frontend/index.md
+      - Навигация и состояния: frontend/navigation.md
+      - Управление состоянием: frontend/state-management.md
+      - Компоненты: frontend/components.md
+      - Дизайн-система: frontend/design-system.md
+      - Доступность: frontend/accessibility.md
   - API:
       - Обзор: api/index.md
       - HTTP endpoints: api/endpoints.md
