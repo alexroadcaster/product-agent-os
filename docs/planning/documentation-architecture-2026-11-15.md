@@ -1,6 +1,6 @@
 # Product-Agent OS — архитектура документации и backlog
 
-Source status: repository_source / current_source_inspection / owner_requested_planning; subsystem documentation implementation planned; DG01 repair docs_static_verified.
+Source status: repository_source / current_source_inspection / owner_requested_planning; subsystem documentation implementation planned; DG01/DG02/DG03 docs_static_verified; remaining subsystem work planned.
 Дата: 15.11.2026. Schema version: task_matrix_plan_v1. Timezone: Europe/Moscow.
 
 ## Результат анализа
@@ -73,7 +73,7 @@ docs/
 
 ## Группы реализации документации — 15.11.2026
 
-Текущий статус: DG01 — **completed / docs_static_verified**; DOCS-13 и DOCS-16 — **in_progress**; остальные группы и 14 задач — **planned**. Группировка определила последовательность без реализации. Последующий запрос DG01 разрешает исправления ссылок, локализации и проверок; написание документации остальных подсистем не начато. IDs, исходные Depends on / Blocks, scope и AC карточек сохраняются.
+Текущий статус: DG01–DG03 — **completed / docs_static_verified**; DOCS-01–05/07 — **implemented**, DOCS-13/16 — **in_progress** до B; остальные 8 задач и DG04–DG07 — **planned**. IDs, исходные зависимости, scope и AC сохранены.
 
 ### Правила этапов и зависимостей
 
@@ -114,7 +114,67 @@ DOCS-13 и DOCS-16 имеют по два этапа внутри существ
 
 Проверки группировки 15.11.2026: validate_task_matrix — passed; source-docs unittest — 3/3 passed (0.669s); check_docs и git diff --check — passed. Сравнение карточек до/после: 16/16 сохранены побайтно после удаления только добавленных Delivery group/Execution stages полей; все planned. Покрытие 7 групп / 18 уникальных этапов и DAG с обязательным DG01 gate — passed. Review: self_review. Control-plane sync: PLAN/RUNLOG updated; REQUIREMENTS/TEST/EVALS/registries no_change_needed — требования, source claims и verification routes не менялись. MkDocs/site/archive не перезапускались: их исправление входит в будущий DG01, результаты прежнего прохода не повышены.
 
+## DG03 — результаты реализации {#dg03-results}
+
+Статус: **completed / docs_static_verified**; DOCS-04/05/07 — **implemented**. Дата: 15-11-2026 16:46 Europe/Moscow. Исходные AC, Depends on, Blocks и feature task-state сохранены.
+
+| Задача | Выполнение исходных AC |
+| --- | --- |
+| DOCS-04 | AC1: modules/ownership/lifecycle, command/event/outbox, concurrency/idempotency/cancellation/recovery; AC2: реальные source/test links; AC3: Python plugin и Web service разделены, F08 остаётся; AC4: metadata, 5 RU/EN пар, nav/registry |
+| DOCS-05 | AC1: 87 route families и 34 action-level строки request/response/auth/CSRF/errors/cursors/revisions/idempotency/side effects; AC2: handler/client/delegate/contracts/tests и синтетические examples; AC3: JSON polling не SSE, future Files/scan/DB не обещаны; AC4: 4 RU/EN пары, metadata/nav/registry |
+| DOCS-07 | AC1: полный DDL 16 объектов (15 обычных + FTS5), PK/FK/indexes/JSON, editable ERD; AC2: Worker/WAL/transactions/fences/import/snapshot/restore/search recovery без реальной БД; AC3: PAOS SQLite отдельно от F33/M5; AC4: 7 RU/EN пар DB и 1 atlas pair, metadata/nav/registry |
+
+Проверки текущего запуска, receipts: .docs-tools/reports/dg03. Source check passed; source suite + translation-card regression 4/4; matrices RU/EN по 16 карточек passed; strict isolated build и postprocess passed; site 7/7; affected HTML links/anchors passed; pinned source targets 34 страниц найдены. Все 16 CREATE TABLE и 2 CREATE INDEX совпали с source SQL после нормализации пробелов. RU/EN endpoint inventories совпали. Локальный Chrome с disposable profile и Mermaid 10.9.6: parse/render ERD 2/2. git diff --check passed.
+
+Review: self_review + separate_reused_context scoped API review владельцем backend. Исправлены недостаточная детализация action bodies, условие taskCreationApproved и две max-one кардинальности ERD; блокирующих замечаний не осталось. Тесты приложения указаны как source references, не новый runtime-прогон. Real DB, migrations, providers, human acceptance, publication и root site/ не затрагивались.
+
+Control-plane sync: REQUIREMENTS/PLAN/TEST/RUNLOG, RU/EN registry, product/architecture/atlas maps и navigation updated. EVALS/prod_test no_change_needed: рубрики и production history прежние. Следующая группа DG04; DOCS-08/09 также доступны по dependencies, автоматически не запускаются. DOCS-13/16 in_progress до B; остальные восемь задач planned.
+
+```text
+python -B tools/check_docs.py
+python -B -m unittest tests.product_agent_os.test_product_agent_os_docs tests.product_agent_os.docs_archive_checks.ProductAgentOsDocsArchiveTest.test_dg01_plan_translations_preserve_task_contracts -q
+python -B plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/documentation-architecture-2026-11-15.md
+python -B plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/documentation-architecture-2026-11-15.en.md
+.venv-docs/Scripts/python.exe -m mkdocs build --strict --site-dir .docs-tools/reports/dg03/site
+tools/fix_site_i18n_links.ps1 -SiteDir .docs-tools/reports/dg03/site
+$env:PAOS_DOCS_SITE_DIR=(Resolve-Path .docs-tools/reports/dg03/site).Path
+python -B -m unittest tests.product_agent_os.site_checks -q
+python -B .docs-tools/reports/dg03/check_links.py
+python -B .docs-tools/reports/dg03/check_source_links.py
+git diff --check
+```
+
+## DG02 — результаты реализации {#dg02-results}
+
+Исторический receipt DG02; актуальный статус DG03 указан выше.
+
+Статус: **completed / docs_static_verified**; DOCS-01, DOCS-02, DOCS-03 — **implemented**. Дата: 15-11-2026 16:31 Europe/Moscow. Исходные AC, зависимости и feature task-state сохранены.
+
+Созданы 13 полноценных RU/EN-пар (26 страниц): product/index и четыре продуктовых руководства; architecture/index, system-context, containers, data-flow, decisions/index и два ADR; одна схема в существующем diagrams atlas. Главная, README, plugin entrypoints, navigation и registry направляют к текущим владельцам. Исторические PRD/research не удалены и не выданы за сегодняшнее runtime evidence.
+
+| Карточка | Выполненные критерии |
+| --- | --- |
+| DOCS-01 | AC1: purpose/owner/source/update matrix охватывает разделы docs; AC2: три входа и прямые backend/frontend/DB/AI/planning routes в RU/EN; AC3: Web/local service, Python plugin и planned domains разделены; AC4: metadata/source/test/limits, nav/registry синхронизированы |
+| DOCS-02 | AC1: project/task/workflow/run/approval/evidence и инварианты извлечены с PRD provenance; AC2: source-present/historical/planned, F01–F34/M5 и README согласованы; AC3: requirement→code/contract→test/evidence→owner; AC4: четыре полные RU/EN guides с metadata и ограничениями |
+| DOCS-03 | AC1: SPA/service/SQLite Worker thread/launcher/App/API/plugin связаны с кодом; AC2: ADR rationale/alternatives/consequences и W03/W05→App-agent lineage сохранены без новой owner acceptance; AC3: диаграмма только в atlas; AC4: RU/EN, sources/tests/limits, nav/registry согласованы |
+
+| Проверка | Команда / результат |
+| --- | --- |
+| Source docs | `python -B tools/check_docs.py`; `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -q` — passed, 3/3 |
+| Матрица и RU/EN карточки | `python -B plugins/product-agent-os/scripts/validate_task_matrix.py <RU/EN documentation plan>`; `python -B -m unittest tests.product_agent_os.docs_archive_checks.ProductAgentOsDocsArchiveTest.test_dg01_plan_translations_preserve_task_contracts -q` — passed |
+| Strict build | `.venv-docs/Scripts/python.exe -m mkdocs build --strict --site-dir .docs-tools/reports/dg02/site` — exit 0 |
+| Language/site | `tools/fix_site_i18n_links.ps1 -SiteDir .docs-tools/reports/dg02/site`; `PAOS_DOCS_SITE_DIR=.docs-tools/reports/dg02/site`, `python -B -m unittest tests.product_agent_os.site_checks -q` — 7/7 passed |
+| HTML links/anchors | `python -B .docs-tools/reports/dg02/check_links.py` — missing targets/anchors: 0 |
+| Mermaid | Установленный Chrome, disposable profile, локальный Mermaid 10.9.6: parse + render обеих RU/EN схем, 2 SVG, passed; без server/provider и отключения browser sandbox |
+| Preservation/diff | Исходные IDs/AC/dependencies, historical research и feature JSON сохранены; `git diff --check` passed |
+
+Review: separate_reused_context (`dg02_review`) и self_review. Замечание о пропущенном историческом ADR-W05 устранено в RU/EN. Первые Chrome/Edge render attempts аварийно завершились в sandbox (Edge AppContainer error); через reviewed запуск установленного Chrome с ожиданием процесса и новым профилем получен успешный render. Failed receipts сохранены в локальном отчёте, не выданы за parse failure диаграммы.
+
+Control-plane sync: REQUIREMENTS/PLAN/RUNLOG, TEST evidence pointer, registry/nav и README updated; EVALS/prod_test no_change_needed — рубрики и исторические production receipts не менялись. Модель/качество AI, provider activation, фактические app journeys, установка и публикация не проверялись; тесты приложения в guides являются ссылками, не новым прогоном. DOCS-13/16 остаются in_progress до B, остальные 11 задач planned. Следующие независимые ветки: DG03 (backend/API/DB) и DG04 (frontend).
+
 ## DG01 — результаты исправления {#dg01-results}
+
+Исторический receipt DG01; последующий статус DG02 указан выше.
 
 Статус: **completed / docs_static_verified**, 15.11.2026. **DOCS-13/A и DOCS-16/A завершены**; родительские DOCS-13/16 остаются in_progress до B. DG02–DG07 и остальные 14 задач остаются planned.
 
@@ -166,7 +226,7 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 
 ## Отдельный список задач
 
-Всего 16 задач PAOS-DOCS-01–16: DOCS-13/16 — in_progress для DG01, остальные 14 — planned. Они не добавляются к 34 FUNC задачам и не меняют их статусы. Начальный запрос покрывал перенос и backlog; последующий запрос DG01 разрешает repair, но не написание всех новых разделов или реализацию фич.
+Всего 16 документационных задач: DOCS-01–05/07 implemented, DOCS-13/16 in_progress до B, остальные 8 planned. Статусы FUNC/M5 не меняются.
 
 | ID | Задача / каталог | Что сделать | Зависимости |
 | --- | --- | --- | --- |
@@ -190,13 +250,13 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 ### Task `PAOS-DOCS-01`
 
 - Task: PAOS-DOCS-01 — Разделить документацию реализации, руководства и базу знаний
-- Status: planned
+- Status: implemented
 - Delivery group: DG02
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: owner requested implementation documentation audit and separate backlog
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 15-11-2026 16:31
 - Priority: P1
 - Depends on: нет
 - Blocks: `PAOS-DOCS-02`, `PAOS-DOCS-03`, `PAOS-DOCS-06`, `PAOS-DOCS-15`, `PAOS-DOCS-16`
@@ -220,27 +280,27 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 
 #### Completion Report
 
-- status: planned
-- what was done: сформулирован scope и acceptance; документация подсистемы ещё не написана.
-- files touched / work locations: будущий каталог указан в Scope.
-- technical value delivered: not_implemented
-- product value delivered: not_verified
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: статическое сопоставление источников; будущие проверки не выполнены.
-- residual risks: source drift, смешение historical/planned/current и UI/plugin/runtime surfaces.
-- follow-up: выбрать bounded slice по dependencies.
-- Documentation impact: будущий source-owned раздел, registry/nav и только затронутые control-plane owners.
+- status: implemented
+- what was done: Все четыре исходных критерия выполнены в DG02; сопоставление записано в результатах группы.
+- files touched / work locations: docs/index*, docs/product/index*, mkdocs.yml, README.md
+- technical value delivered: Каноническое владение и source/contract/test/task traceability; docs_static_verified.
+- product value delivered: Текущие возможности, границы и следующий шаг доступны на обоих языках.
+- actual implementation date and time: 15-11-2026 16:31
+- verification evidence: [Проверки DG02 и соответствие AC](#dg02-results).
+- residual risks: Source drift; новая runtime/provider/human acceptance приложения не заявлена.
+- follow-up: DG03/DG04 по исходным зависимостям; обновлять каноническую страницу при изменении контракта.
+- Documentation impact: RU/EN, навигация, registry и владеющие control-plane указатели синхронизированы.
 
 ### Task `PAOS-DOCS-02`
 
 - Task: PAOS-DOCS-02 — Собрать актуальную продуктовую спецификацию и доменную модель
-- Status: planned
+- Status: implemented
 - Delivery group: DG02
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: owner requested implementation documentation audit and separate backlog
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 15-11-2026 16:31
 - Priority: P2
 - Depends on: `PAOS-DOCS-01`
 - Blocks: `PAOS-DOCS-03`, `PAOS-DOCS-06`, `PAOS-DOCS-16`
@@ -264,27 +324,27 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 
 #### Completion Report
 
-- status: planned
-- what was done: сформулирован scope и acceptance; документация подсистемы ещё не написана.
-- files touched / work locations: будущий каталог указан в Scope.
-- technical value delivered: not_implemented
-- product value delivered: not_verified
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: статическое сопоставление источников; будущие проверки не выполнены.
-- residual risks: source drift, смешение historical/planned/current и UI/plugin/runtime surfaces.
-- follow-up: выбрать bounded slice по dependencies.
-- Documentation impact: будущий source-owned раздел, registry/nav и только затронутые control-plane owners.
+- status: implemented
+- what was done: Все четыре исходных критерия выполнены в DG02; сопоставление записано в результатах группы.
+- files touched / work locations: docs/product/{overview,domain-model,capabilities,user-journeys}.{md,en.md}
+- technical value delivered: Каноническое владение и source/contract/test/task traceability; docs_static_verified.
+- product value delivered: Текущие возможности, границы и следующий шаг доступны на обоих языках.
+- actual implementation date and time: 15-11-2026 16:31
+- verification evidence: [Проверки DG02 и соответствие AC](#dg02-results).
+- residual risks: Source drift; новая runtime/provider/human acceptance приложения не заявлена.
+- follow-up: DG03/DG04 по исходным зависимостям; обновлять каноническую страницу при изменении контракта.
+- Documentation impact: RU/EN, навигация, registry и владеющие control-plane указатели синхронизированы.
 
 ### Task `PAOS-DOCS-03`
 
 - Task: PAOS-DOCS-03 — Консолидировать архитектуру и журнал решений
-- Status: planned
+- Status: implemented
 - Delivery group: DG02
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: owner requested implementation documentation audit and separate backlog
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 15-11-2026 16:31
 - Priority: P1
 - Depends on: `PAOS-DOCS-01`, `PAOS-DOCS-02`
 - Blocks: `PAOS-DOCS-04`, `PAOS-DOCS-05`, `PAOS-DOCS-06`, `PAOS-DOCS-07`, `PAOS-DOCS-08`, `PAOS-DOCS-11`, `PAOS-DOCS-12`, `PAOS-DOCS-15`, `PAOS-DOCS-16`
@@ -308,27 +368,27 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 
 #### Completion Report
 
-- status: planned
-- what was done: сформулирован scope и acceptance; документация подсистемы ещё не написана.
-- files touched / work locations: будущий каталог указан в Scope.
-- technical value delivered: not_implemented
-- product value delivered: not_verified
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: статическое сопоставление источников; будущие проверки не выполнены.
-- residual risks: source drift, смешение historical/planned/current и UI/plugin/runtime surfaces.
-- follow-up: выбрать bounded slice по dependencies.
-- Documentation impact: будущий source-owned раздел, registry/nav и только затронутые control-plane owners.
+- status: implemented
+- what was done: Все четыре исходных критерия выполнены в DG02; сопоставление записано в результатах группы.
+- files touched / work locations: docs/architecture/, docs/diagrams/paos-application-architecture.{md,en.md}
+- technical value delivered: Каноническое владение и source/contract/test/task traceability; docs_static_verified.
+- product value delivered: Текущие возможности, границы и следующий шаг доступны на обоих языках.
+- actual implementation date and time: 15-11-2026 16:31
+- verification evidence: [Проверки DG02 и соответствие AC](#dg02-results).
+- residual risks: Source drift; новая runtime/provider/human acceptance приложения не заявлена.
+- follow-up: DG03/DG04 по исходным зависимостям; обновлять каноническую страницу при изменении контракта.
+- Documentation impact: RU/EN, навигация, registry и владеющие control-plane указатели синхронизированы.
 
 ### Task `PAOS-DOCS-04`
 
 - Task: PAOS-DOCS-04 — Описать backend и жизненный цикл локального сервиса
-- Status: planned
+- Status: implemented
 - Delivery group: DG03
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: owner requested implementation documentation audit and separate backlog
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 15-11-2026 16:46
 - Priority: P1
 - Depends on: `PAOS-DOCS-03`
 - Blocks: `PAOS-DOCS-05`, `PAOS-DOCS-13`, `PAOS-DOCS-14`, `PAOS-DOCS-16`
@@ -352,27 +412,27 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 
 #### Completion Report
 
-- status: planned
-- what was done: сформулирован scope и acceptance; документация подсистемы ещё не написана.
-- files touched / work locations: будущий каталог указан в Scope.
-- technical value delivered: not_implemented
-- product value delivered: not_verified
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: статическое сопоставление источников; будущие проверки не выполнены.
-- residual risks: source drift, смешение historical/planned/current и UI/plugin/runtime surfaces.
-- follow-up: выбрать bounded slice по dependencies.
-- Documentation impact: будущий source-owned раздел, registry/nav и только затронутые control-plane owners.
+- status: implemented
+- what was done: Все исходные AC выполнены; соответствие в таблице DG03.
+- files touched / work locations: docs/backend/ RU/EN
+- technical value delivered: source-grounded canonical contracts and verification traceability
+- product value delivered: Описаны текущее поведение, ограничения и точки изменения.
+- actual implementation date and time: 15-11-2026 16:46
+- verification evidence: [DG03](#dg03-results)
+- residual risks: source drift; no new runtime/provider/human acceptance
+- follow-up: DG04; other groups follow original dependencies
+- Documentation impact: canonical RU/EN guides, navigation, registry and owning control-plane updated
 
 ### Task `PAOS-DOCS-05`
 
 - Task: PAOS-DOCS-05 — Составить справочник HTTP API, событий и общих контрактов
-- Status: planned
+- Status: implemented
 - Delivery group: DG03
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: owner requested implementation documentation audit and separate backlog
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 15-11-2026 16:46
 - Priority: P1
 - Depends on: `PAOS-DOCS-03`, `PAOS-DOCS-04`
 - Blocks: `PAOS-DOCS-07`, `PAOS-DOCS-08`, `PAOS-DOCS-11`, `PAOS-DOCS-12`, `PAOS-DOCS-13`, `PAOS-DOCS-16`
@@ -396,16 +456,16 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 
 #### Completion Report
 
-- status: planned
-- what was done: сформулирован scope и acceptance; документация подсистемы ещё не написана.
-- files touched / work locations: будущий каталог указан в Scope.
-- technical value delivered: not_implemented
-- product value delivered: not_verified
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: статическое сопоставление источников; будущие проверки не выполнены.
-- residual risks: source drift, смешение historical/planned/current и UI/plugin/runtime surfaces.
-- follow-up: выбрать bounded slice по dependencies.
-- Documentation impact: будущий source-owned раздел, registry/nav и только затронутые control-plane owners.
+- status: implemented
+- what was done: Все исходные AC выполнены; соответствие в таблице DG03.
+- files touched / work locations: docs/api/ RU/EN
+- technical value delivered: source-grounded canonical contracts and verification traceability
+- product value delivered: Описаны текущее поведение, ограничения и точки изменения.
+- actual implementation date and time: 15-11-2026 16:46
+- verification evidence: [DG03](#dg03-results)
+- residual risks: source drift; no new runtime/provider/human acceptance
+- follow-up: DG04; other groups follow original dependencies
+- Documentation impact: canonical RU/EN guides, navigation, registry and owning control-plane updated
 
 ### Task `PAOS-DOCS-06`
 
@@ -454,13 +514,13 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 ### Task `PAOS-DOCS-07`
 
 - Task: PAOS-DOCS-07 — Документировать фактическую SQLite-схему и жизненный цикл данных
-- Status: planned
+- Status: implemented
 - Delivery group: DG03
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: owner requested implementation documentation audit and separate backlog
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 15-11-2026 16:46
 - Priority: P1
 - Depends on: `PAOS-DOCS-03`, `PAOS-DOCS-05`
 - Blocks: `PAOS-DOCS-10`, `PAOS-DOCS-12`, `PAOS-DOCS-13`, `PAOS-DOCS-14`, `PAOS-DOCS-16`
@@ -484,16 +544,16 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 
 #### Completion Report
 
-- status: planned
-- what was done: сформулирован scope и acceptance; документация подсистемы ещё не написана.
-- files touched / work locations: будущий каталог указан в Scope.
-- technical value delivered: not_implemented
-- product value delivered: not_verified
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: статическое сопоставление источников; будущие проверки не выполнены.
-- residual risks: source drift, смешение historical/planned/current и UI/plugin/runtime surfaces.
-- follow-up: выбрать bounded slice по dependencies.
-- Documentation impact: будущий source-owned раздел, registry/nav и только затронутые control-plane owners.
+- status: implemented
+- what was done: Все исходные AC выполнены; соответствие в таблице DG03.
+- files touched / work locations: docs/db/ RU/EN, docs/diagrams/paos-sqlite-erd.md and .en.md
+- technical value delivered: source-grounded canonical contracts and verification traceability
+- product value delivered: Описаны текущее поведение, ограничения и точки изменения.
+- actual implementation date and time: 15-11-2026 16:46
+- verification evidence: [DG03](#dg03-results)
+- residual risks: source drift; no new runtime/provider/human acceptance
+- follow-up: DG04; other groups follow original dependencies
+- Documentation impact: canonical RU/EN guides, navigation, registry and owning control-plane updated
 
 ### Task `PAOS-DOCS-08`
 
@@ -757,7 +817,7 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 - actual implementation date and time: Этап A 15-11-2026; полная задача pending_execution_timestamp.
 - verification evidence: [Результаты DG01](#dg01-results); archive 99/99, source 3/3, site 7/7; matrices, strict build и HTML links passed.
 - residual risks: Зависимости B и исходные AC полной задачи остаются обязательными.
-- follow-up: DG06 / DOCS-13/B после исходных dependencies; следующая общая группа DG02.
+- follow-up: DG06 / DOCS-13/B после исходных dependencies; следующие ветки DG03/DG04.
 - Documentation impact: Этап A синхронизирован с owning plan, каталогом, registries и control plane; domain documentation остаётся planned.
 
 ### Task `PAOS-DOCS-14`
@@ -890,5 +950,5 @@ DOCS-16/A и DOCS-13/A включены в обязательную первую
 - actual implementation date and time: Этап A 15-11-2026; полная задача pending_execution_timestamp.
 - verification evidence: [Результаты DG01](#dg01-results); archive 99/99, source 3/3, site 7/7; matrices, strict build и HTML links passed.
 - residual risks: Зависимости B и исходные AC полной задачи остаются обязательными.
-- follow-up: DG07 / DOCS-16/B после исходных dependencies; следующая общая группа DG02.
+- follow-up: DG07 / DOCS-16/B после исходных dependencies; следующие ветки DG03/DG04.
 - Documentation impact: Этап A синхронизирован с owning plan, каталогом, registries и control plane; domain documentation остаётся planned.

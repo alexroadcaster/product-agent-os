@@ -2,6 +2,8 @@
 
 Source status: `official + experiment`
 
+DG02: [PAOS application architecture](paos-application-architecture.md) maps Web/desktop, local service, SQLite worker and runtime boundaries. [Architecture guides](../architecture/index.md) own the explanations; diagrams remain in this atlas.
+
 This section turns the knowledge base into an implementation map for building projects with Codex, agents, skills, runtime choices and eval loops.
 
 ## Route
@@ -56,3 +58,7 @@ Use the [model matrix](../codex/models-and-reasoning.md) and [migration playbook
 For local package → profile → backup/restore → rollback, use the [operator workflow and agreed Web pilot](../web/pilot.md). Packaging does not change runtime permissions or remove commercial gates.
 
 [Delivery lifecycle](product-delivery-lifecycle.md) starts with size and risk. An ordinary task does not require a team, a worktree or a new file set. Use the full atlas for material dependencies, ownership or release/readiness. Each next diagram should answer a concrete task question.
+
+## Backend, API and data
+
+[Local service](../backend/index.md), [HTTP contracts](../api/index.md), [SQLite schema and lifecycle](../db/index.md), [editable PAOS SQLite ERD](../diagrams/paos-sqlite-erd.md). These guides describe current source contracts; target database maps remain planned under FUNC-33.

@@ -2,6 +2,10 @@
 
 ## Текущий выбор проверок — 15.11.2026
 
+DG03: [source/site/schema/ERD evidence и команды](docs/planning/documentation-architecture-2026-11-15.md#dg03-results) — isolated `.docs-tools/reports/dg03/site`, source3 + translation-card regression1, matrices2, site7, HTML/source links, SQL inventory и Mermaid2. Runtime suites не запускались; ссылки на них — traceability.
+
+DG02: [source/site/diagram evidence](docs/planning/documentation-architecture-2026-11-15.md#dg02-results) — изолированный output `.docs-tools/reports/dg02/site`; source3, site7, RU/EN matrices и card parity, HTML links, Mermaid parse/render2. Verification routes ниже не расширены на product runtime.
+
 DG01: [результаты repair](docs/planning/documentation-architecture-2026-11-15.md#dg01-results) — source/archive/site/matrix/strict build и HTML links verified; translation preservation regression находится в `docs_archive_checks.py`. Текущий маршрут ниже не расширен.
 
 Текущая реализация маршрута и focused evidence: [scoped verification](research/product-agent-os-scoped-verification-2026-11-15.md). Для отдельного полного fixture run используйте `python -B plugins/product-agent-os/scripts/run_fixture_eval.py --summary`; после full discovery повтор не нужен.

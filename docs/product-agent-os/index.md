@@ -2,6 +2,8 @@
 
 Source status: `official + experiment`
 
+Область этого руководства — Python plugin и его delivery contracts. Архитектура реализованного Web/desktop/local-service описана в [отдельном текущем разделе](../architecture/system-context.md), продукт — в [модели продукта](../product/overview.md). Исторические plugin receipts ниже сохраняют свои даты.
+
 ## Executive overview
 
 Product-Agent OS plugin - локальный Codex plugin для проектов, где Codex App, CLI, IDE extension, subagents, skills, `AGENTS.md`, hooks, evals и automation candidates должны работать как управляемая delivery-система, а не как набор разовых prompts.

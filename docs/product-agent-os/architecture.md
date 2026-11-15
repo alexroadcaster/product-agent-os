@@ -4,6 +4,8 @@
 
 Source status: `official + experiment`
 
+Область этого руководства — Python plugin и его delivery contracts. Архитектура реализованного Web/desktop/local-service описана в [отдельном текущем разделе](../architecture/system-context.md), продукт — в [модели продукта](../product/overview.md). Исторические plugin receipts ниже сохраняют свои даты.
+
 Источники: [Codex plugins](https://developers.openai.com/codex/plugins), [Agent Skills](https://developers.openai.com/codex/skills), [Subagents](https://developers.openai.com/codex/subagents), [AGENTS.md](https://developers.openai.com/codex/guides/agents-md), [Codex hooks](https://developers.openai.com/codex/hooks), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Codex workflows](https://developers.openai.com/codex/workflows), [Technical features](technical.md).
 
 Product-Agent OS plugin строит управляемый lifecycle вокруг Codex App, CLI, IDE extension, subagents, skills, `AGENTS.md`, memory, sandbox, approvals, MCP и Agents SDK. Его архитектура не пытается "сразу сделать все": она сначала читает workspace, выбирает route, фиксирует ownership и evidence, затем stage-ит предложения или выполняет разрешенный slice.

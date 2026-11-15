@@ -66,6 +66,8 @@ plugins:
             - Local package and pilot: web/pilot.md
             - Diagrams:
                 - Diagram Atlas: diagrams/index.md
+                - PAOS application: diagrams/paos-application-architecture.md
+                - PAOS SQLite ERD: diagrams/paos-sqlite-erd.md
                 - Architecture: diagrams/architecture.md
                 - Source And Generated Evidence Boundary: diagrams/source-generated-trust-boundary.md
                 - First-Run Cockpit Architecture: diagrams/first-run-cockpit-architecture.md
@@ -77,6 +79,39 @@ plugins:
                 - Runtime Decision Map: diagrams/runtime-decision-map.md
                 - Skill Lifecycle: diagrams/skill-lifecycle.md
                 - Context, Memory, Verification: diagrams/context-memory-verification.md
+            - Develop PAOS:
+                - Documentation map: product/index.md
+                - Product overview: product/overview.md
+                - Domain model: product/domain-model.md
+                - Capabilities and gaps: product/capabilities.md
+                - User journeys: product/user-journeys.md
+            - Application architecture:
+                - Architecture entry: architecture/index.md
+                - System context: architecture/system-context.md
+                - Containers and ownership: architecture/containers.md
+                - Data flows: architecture/data-flow.md
+                - Decision log: architecture/decisions/index.md
+                - Storage authority: architecture/decisions/adr-w03-storage-authority.md
+                - Runtime route selection: architecture/decisions/adr-app-agent-routing.md
+            - Backend:
+                - Overview: backend/index.md
+                - Modules: backend/modules.md
+                - Lifecycle: backend/lifecycle.md
+                - Commands and events: backend/commands-events.md
+                - Recovery: backend/recovery.md
+            - API:
+                - Overview: api/index.md
+                - HTTP endpoints: api/endpoints.md
+                - Events: api/events.md
+                - Errors: api/errors.md
+            - PAOS database:
+                - Overview: db/index.md
+                - SQLite schema: db/schema.md
+                - ERD: db/erd.md
+                - Migrations: db/migrations.md
+                - Transactions: db/transactions.md
+                - Backup / restore: db/backup-restore.md
+                - Search index: db/search-index.md
             - Plans and tasks: planning/index.md
             - Sources:
                 - Source Registry: sources/registry.md
@@ -221,6 +256,8 @@ nav:
   - Локальный пакет и пилот: web/pilot.md
   - Диаграммы:
       - Обзор диаграмм: diagrams/index.md
+      - Приложение PAOS: diagrams/paos-application-architecture.md
+      - SQLite ERD PAOS: diagrams/paos-sqlite-erd.md
       - Архитектура проекта: diagrams/architecture.md
       - Граница source и generated evidence: diagrams/source-generated-trust-boundary.md
       - Архитектура first-run cockpit: diagrams/first-run-cockpit-architecture.md
@@ -232,6 +269,39 @@ nav:
       - Runtime decision map: diagrams/runtime-decision-map.md
       - Skill lifecycle: diagrams/skill-lifecycle.md
       - Context, memory, verification: diagrams/context-memory-verification.md
+  - Разработка PAOS:
+      - Карта документации: product/index.md
+      - Обзор продукта: product/overview.md
+      - Доменная модель: product/domain-model.md
+      - Возможности и пробелы: product/capabilities.md
+      - Пользовательские сценарии: product/user-journeys.md
+  - Архитектура приложения:
+      - Вход в архитектуру: architecture/index.md
+      - Контекст системы: architecture/system-context.md
+      - Компоненты и владение: architecture/containers.md
+      - Потоки данных: architecture/data-flow.md
+      - Журнал решений: architecture/decisions/index.md
+      - Владение хранилищем: architecture/decisions/adr-w03-storage-authority.md
+      - Выбор runtime route: architecture/decisions/adr-app-agent-routing.md
+  - Backend:
+      - Обзор: backend/index.md
+      - Модули: backend/modules.md
+      - Жизненный цикл: backend/lifecycle.md
+      - Команды и события: backend/commands-events.md
+      - Восстановление: backend/recovery.md
+  - API:
+      - Обзор: api/index.md
+      - HTTP endpoints: api/endpoints.md
+      - События: api/events.md
+      - Ошибки: api/errors.md
+  - База данных PAOS:
+      - Обзор: db/index.md
+      - Схема SQLite: db/schema.md
+      - ERD: db/erd.md
+      - Миграции: db/migrations.md
+      - Транзакции: db/transactions.md
+      - Backup / restore: db/backup-restore.md
+      - Поисковый индекс: db/search-index.md
   - Планы и задачи: planning/index.md
   - Источники:
       - Реестр источников: sources/registry.md

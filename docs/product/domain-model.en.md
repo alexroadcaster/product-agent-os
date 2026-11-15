@@ -1,0 +1,23 @@
+# Product domain model
+
+Source status: `repository_source / contract_map / static_review`, 2026-11-15.
+
+**Owner:** product with contracts/local service owners. **Scope/version:** local Web model, DG02/2026-11-15. Update this map and related tests when schemas, transitions, authority or evidence sources change; source contracts and task cards remain normative.
+
+| Concept | Purpose and boundaries | Source contract |
+| --- | --- | --- |
+| Project | Local registration and binding to a canonical workspace root and identity. Source coverage may be available, partial, unavailable or excluded. Registration does not guarantee index completeness. | [project.ts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/packages/contracts/project.ts), [project-sources.ts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/adapters/project-sources.ts) |
+| Task | Belongs to a project; holds an ID, value description, files, criteria, risks, status, links and provenance. M2 adds hierarchy, workflow version, evidence and assignments. | [M1 profile](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/packages/contracts/tasks/m1-task-profile.ts), [M2 profile](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/packages/contracts/issues/task-profile.ts) |
+| Workflow | Versioned states, transitions, guards and recipes attach to tasks. Recipe metadata does not itself grant host permissions. | [workflow.ts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/packages/contracts/workflows/workflow.ts) |
+| Run and session | A session connects messages and actions; a run reflects an execution attempt, outcome and possible recovery. A workflow snapshot and selected route do not prove execution. | [recipe.ts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/packages/contracts/execution-recipes/recipe.ts), [runtime events](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/packages/contracts/runtime/events.ts) |
+| Decision / approval | A question, product decision or runtime permission has a state, scope, source and, when applicable, runtime identity. Permission for an action is not acceptance of its result. | [decision.ts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/packages/contracts/decisions/decision.ts) |
+| Evidence / artifact | An artifact carries source/version/observedAt and coverage, and may be stale/unavailable. Check and owner acceptance are separate. | [catalog.ts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/packages/contracts/artifacts/catalog.ts) |
+
+## Invariants and uncertainty
+
+1. A task ID and its project ownership are not inferred from a filename. Imported provenance preserves source schema, digest and mapping receipt; a local projection does not replace the source plan.
+2. The M2 `ready` transition requires meaningful fields, criteria, estimate, context and risks; dependencies and workflow guards are checked by their contract. Manual routes can have separate rules, so the listed states are not the only possible path.
+3. In [user-commands.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/tasks/user-commands.mts), manual check and owner acceptance are separate records; acceptance has its own conditions, including revision, criteria and a suitable check. A completed run or successful check is not automatic acceptance.
+4. `stale`, partial and unknown are not success; displayed artifacts project observed sources with coverage. Write, import and recovery follow their authority/revision rules, not merely UI status.
+
+Related tests: [project sources](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/tests/web/project-sources.test.mts), [task profile](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/tests/web/task-profile.test.mts), [decision service](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/tests/web/decision-service.test.mts), [recipe runtime](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/tests/web/recipe-runtime.test.mts). These are test references, not current execution results. Actual host/provider availability depends on the current environment and requires separate verification.

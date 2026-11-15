@@ -1,11 +1,13 @@
 {
-  "task_id": "documentation-dg01-repair-2026-11-15",
+  "task_id": "documentation-dg03-backend-api-db-2026-11-15",
   "session_id": "01a1de89-93e2-7d91-88ab-e89a9d0bd894",
-  "scope": "User-authorized DG01 implementation: repair documentation links, localization, MkDocs generation and affected historical/site checks; update owning plan and control-plane evidence. Preserve unrelated dirty work. Isolated local builds and tests allowed; no product implementation, installation, Git/publication, hooks/trust or credential changes.",
-  "updated_at": "2026-11-15T13:16:41.400Z",
-  "approval_boundary": "User explicitly authorizes implementation of DG01 through completion: remaining links, eight complete EN translations, isolated documentation builds and affected checks, followed by accurate plan status updates. No publication, Git, hooks/trust or product runtime changes.",
+  "scope": "DG03 DOCS04/05/07: current backend lifecycle/modules/commands/recovery, HTTP API/events/errors/contracts and SQLite schema/data lifecycle, full RU/EN docs, atlas ERD, navigation/registry and owning plan/control-plane sync; isolated local documentation checks. Preserve DG01/DG02 and unrelated edits. No app code, real user DB access, migrations, target scripts, installation, provider, Git/publication or hooks/trust changes.",
+  "updated_at": "2026-11-15T13:50:03.303Z",
+  "approval_boundary": "Current user explicitly requests full DG03 documentation implementation and checks. Independently owned documentation work and isolated synthetic diagram rendering covered by project standing authorization; own session marker only. No permissions, hooks, trust or external writes.",
   "status": "ready_for_completion_ledger",
   "completion_ready": true,
+  "previous_dg02_closure": "DOCS01-03 implemented docs_static_verified;13 RU/EN pairs, source3+parity1, matrix2, site7, strict build,38routes6229links,Mermaid2 passed; independent review closed_allowed.",
+  "previous_dg01_closure": "DG01 completed docs_static_verified: eight full EN translations, source/archive102, site7, matrices16, strict build and HTML links passed. DOCS13/16 stages A completed; parents remain in_progress until B.",
   "brief_digest": "sha256:1a5fd6579a2d62539e5edc7b052f67f07cc3451c08ad3df9fbada306be1f1254",
   "brief_schema_version": "task_start_brief_v2",
   "brief_format": "bold_fields",
@@ -29,7 +31,7 @@
   "previous_planning_closure": "functional-remediation-planning-2026-11-15: planning_recorded; 25 planned plus 3 M5 references; matrix/check_docs/diff/consistency passed; docs101/105, four existing site parity failures assigned F25; original56 cards preserved.",
   "plan_path": "docs/planning/documentation-architecture-2026-11-15.md",
   "previous_task_id": "functional-audit-2026-11-15",
-  "control_plane_sync": "Updated RU/EN documentation plan, PLAN/RUNLOG, TEST evidence pointer, planning catalogs, RU/EN registries and migration follow-up. REQUIREMENTS/EVALS/prod_test no_change_needed: requirements, eval policy and production-history contract unchanged.",
+  "control_plane_sync": "Updated REQUIREMENTS scope, PLAN sequencing, RUNLOG handoff, TEST evidence pointer, RU/EN canonical docs/navigation/registries and owning plan. EVALS/prod_test no_change_needed: no rubric or historical production-ledger changes.",
   "lifecycle_scope": {
     "work_type": "implementation",
     "size": "large",
@@ -37,15 +39,15 @@
     "financially_material": false,
     "release_or_readiness": false,
     "explicit_packet_request": false,
-    "reason": "Continuing the already shown full DG01 brief: documentation implementation and verification, preserving existing work."
+    "reason": "User-authorized DG03 documentation implementation completed against DOCS04/05/07 AC with source/site/render checks."
   },
   "previous_audit": {
     "task_id": "functional-audit-2026-11-15",
     "evidence": "Current source inspection and SHA-256 comparison: runtime adapter matches; frontend lock differs from qualified manifest. Git diff --check passed. TypeScript command denied by PreToolUse. Application code unchanged.",
     "report_status": "not_created: report write denied by PreToolUse; temporary privilege expansion for grant setup rejected by automatic approval review. No hook or grant configuration applied."
   },
-  "result": "DG01 completed / docs_static_verified. DOCS-13/A and DOCS-16/A completed; parent DOCS-13/16 remain in_progress until B; other fourteen tasks and DG02–DG07 planned. Eight full EN translations and link/anchor repairs verified.",
-  "verification": "Final 102 source/archive tests passed (3.555s), 7 site tests passed (0.892s), 16 matrices passed, check_docs and diff passed; strict isolated build exit0 (14.02s), zero warning/anchor diagnostics; language postprocess passed; 30 routes / 6675 local links and anchors / zero errors. Earlier targeted hook checks 3/3 passed; definitions unchanged. Self-review plus scoped independent translation/test review; findings resolved. Historical relocation data and original task IDs/AC/dependencies preserved.",
-  "remaining_gaps": "No blocking DG01 gaps. DOCS-13/B and DOCS-16/B remain planned with original prerequisites, other domain documentation belongs to DG02–DG07. No product/runtime/provider activation, publication, Git or root-site promotion claimed; every external URL was not individually fetched.",
-  "evidence": "docs/planning/documentation-architecture-2026-11-15.md#dg01-results; .docs-tools/reports/dg01/final-results.json"
+  "result": "DG03 completed / docs_static_verified; DOCS04/05/07 implemented. 17 full RU/EN pairs backend/API/SQLite and ERD; prior DG01/DG02 preserved.",
+  "verification": "Source3 + translation-card regression1, matrices2, check_docs, strict build31.56s without diagnostics, site7, 72 HTML routes/12365 links/0errors, 376 pinned source refs/34 pages, SQL16tables+2indexes, Mermaid2, diff check passed. Original AC/dependencies preserved; 29 non-owned preexisting files unchanged. Scoped independent API review closed_allowed; action detail and ERD cardinality findings resolved.",
+  "remaining_gaps": "No DG03 blocking gaps. DOCS13/16 in_progress until B; eight other tasks planned. Next DG04 and satisfied dependency branches. No new application runtime/provider/real DB/human acceptance or publication.",
+  "evidence": "docs/planning/documentation-architecture-2026-11-15.md#dg03-results; .docs-tools/reports/dg03/final-results.json"
 }

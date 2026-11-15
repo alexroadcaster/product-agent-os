@@ -2,6 +2,8 @@
 
 Source status: `official + experiment`
 
+Scope of this guide: Python plugin and its delivery contracts. For the implemented Web/desktop/local-service system use the [application architecture](../architecture/system-context.md) and [product model](../product/overview.md). Historical plugin evidence below retains its dates.
+
 ## Executive overview
 
 Product-Agent OS plugin is a local Codex plugin for projects where Codex App, CLI, IDE extension, subagents, skills, `AGENTS.md`, hooks, evals and automation candidates need to operate as a governed delivery system instead of a set of one-off prompts.

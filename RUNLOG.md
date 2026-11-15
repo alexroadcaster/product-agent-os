@@ -1,5 +1,13 @@
 # RUNLOG.md
 
+## DG03 — завершено, 15.11.2026
+
+DOCS-04/05/07 implemented / docs_static_verified: 17 RU/EN пар backend/API/DB и editable ERD. [Результаты и команды](docs/planning/documentation-architecture-2026-11-15.md#dg03-results): source4, matrix2, strict build, site7, HTML/source links и Mermaid2 passed. Scoped independent API review; уточнения action bodies и ERD cardinality исправлены. Приложение, реальные БД и providers не запускались; FUNC/M5 не менялись. Следующий DG04; DOCS-13/16 B открыты.
+
+## DG02 — завершено, 15.11.2026
+
+DOCS-01–03 implemented / docs_static_verified: 13 RU/EN пар, три входа/owners, продуктовая модель и traceability, архитектура компонентов/потоков, ADR provenance и схема в atlas. [Результаты](docs/planning/documentation-architecture-2026-11-15.md#dg02-results): source3, matrix2, translation-card regression, strict build, site7, HTML links и Mermaid2 passed; scoped independent review, W05 finding resolved. Продуктовые runtime/provider проверки не выполнялись; ссылки на тесты не выданы за прогон. Следующие DG03/DG04; DOCS-13/16 B остаются открыты.
+
 ## DG01 — завершено, 15.11.2026
 
 DOCS-13/A и DOCS-16/A completed / docs_static_verified. [Evidence](docs/planning/documentation-architecture-2026-11-15.md#dg01-results): links/anchors и восемь полных EN-переводов; 16 matrices, source 3/3, archive 99/99, site 7/7, targeted hooks 3/3, strict isolated build и HTML links passed. Parent DOCS-13/16 in_progress до B, остальные14 planned; следующий DG02. Root site/, hooks/trust, feature JSON/runtime/Git не изменены. Review: self_review + independent scoped translation/test review, findings resolved.

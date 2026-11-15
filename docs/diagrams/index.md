@@ -2,6 +2,8 @@
 
 Source status: `official + experiment`
 
+DG02: [архитектура приложения PAOS](paos-application-architecture.md) показывает Web/desktop, local service, SQLite worker и runtime-границы. [Архитектурные руководства](../architecture/index.md) владеют пояснениями; диаграммы остаются в этом атласе.
+
 Этот раздел превращает базу знаний из набора статей в рабочую карту реализации проектов через Codex, agents, skills, runtime и eval loops.
 
 Используйте диаграммы не как иллюстрации, а как порядок действий:
@@ -60,3 +62,7 @@ flowchart LR
 Для локального package → profile → backup/restore → rollback используйте [операторский маршрут и согласованный Web-пилот](../web/pilot.md). Эта упаковка не меняет runtime permissions и не снимает коммерческие gates.
 
 [Delivery lifecycle](product-delivery-lifecycle.md) начинается с размера и риска. Ordinary task не требует команды, worktree или нового набора файлов. Полный маршрут atlas используется, когда есть существенные зависимости, ownership или release/readiness. Следующая диаграмма должна отвечать на конкретный вопрос задачи.
+
+## Backend, API и данные
+
+[Локальный сервис](../backend/index.md), [HTTP-контракты](../api/index.md), [SQLite-схема и жизненный цикл](../db/index.md), [редактируемая SQLite ERD PAOS](../diagrams/paos-sqlite-erd.md). Руководства описывают текущие исходные контракты; карта БД целевого проекта остаётся задачей FUNC-33.

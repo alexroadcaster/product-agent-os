@@ -1,10 +1,12 @@
 # Product-Agent OS
 
-Product-Agent OS - local Codex plugin for turning Codex App, CLI, IDE extension, subagents, skills, `AGENTS.md`, memory, sandbox, approvals, MCP and product-agent workflows into a governed product engineering system.
+Product-Agent OS is a local engineering system with a Web/desktop application, local service and SQLite storage, plus a separate Codex plugin for governed project workflows. The plugin connects Codex App, CLI, IDE extension, subagents, skills, `AGENTS.md`, memory, sandbox, approvals and MCP through explicit artifacts and evidence.
 
 Product-Agent OS full stack keeps product context, requirements, architecture boundaries, documentation, verification, ownership, release evidence and learning loops in explicit artifacts. Codex still performs the engineering work; Product-Agent OS defines the operating order: understand the project first, record risk and boundaries, then change files only through the approved route.
 
 Source boundary: this README is the compact product and operator entrypoint. It explains what Product-Agent OS is, which modules it contains, how to use them and where deeper documentation lives. It is not a ledger; it should route first run, outputs, methods, approvals and deeper implementation detail to the owning docs. Detailed implementation history and source-backed ledgers live in [docs/sources/registry.md](docs/sources/registry.md), source-owned backlog files and the plugin docs.
+
+Current implementation: [product model and capability boundaries](docs/product/overview.md), [development documentation map](docs/product/index.md), and [application architecture](docs/architecture/system-context.md). Source implementation, dated verification and planned FUNC/M5 work are distinguished in those pages; the plugin guide below remains its own surface.
 
 ## Why Product-Agent OS
 

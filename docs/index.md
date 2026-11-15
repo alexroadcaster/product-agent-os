@@ -2,7 +2,20 @@
 
 [Планы и задачи проекта](planning/index.md): текущие очереди, исторические планы и backlog документации подсистем.
 
-Source status: `official + experiment`
+Source status: repository_source (DG02 routing, 2026-11-15) + official/experiment (dated knowledge guides).
+
+## Входы в документацию
+
+| Цель | Маршрут | Результат |
+| --- | --- | --- |
+| Разрабатывать PAOS | [Карта разработки и владельцы разделов](product/index.md) → [модель продукта](product/overview.md) → [архитектура](architecture/system-context.md) | Текущие контракты, ссылки на код/тесты и владеющие задачи |
+| Использовать PAOS | [Plugin guides](product-agent-os/index.md) и [локальный Web/desktop pilot](web/pilot.md) | Поддерживаемые действия и явные ограничения |
+| Изучать Codex и методы | [Codex](codex/overview.md), [методологии](methodologies/index.md), [агентные системы](agent-systems/overview.md) | Общие руководства со своими источниками |
+
+Backend/frontend/DB/AI доступны через [карту подсистем](product/index.md), текущая очередь — через [планы](planning/index.md), без чтения исторического RUNLOG. Владелец: docs-maintainer; маршрутизация проверена 15.11.2026 для DG02. При изменении раздела или реализованной capability обновляются оба языка и навигация. Связанные проверки: source documentation, strict MkDocs, site language/search и HTML links.
+
+Приведённые ниже учебные маршруты сохраняют датированную проверку источников; DG02 не перепроверяет каждое внешнее platform claim.
+
 
 Документация помогает выполнить задачу с Codex, подключить существующий проект или спроектировать agent application. Проверка пользовательских маршрутов по официальной документации: **05.11.2026**. Доступность функций зависит от client, account, auth и managed policy.
 
@@ -18,7 +31,7 @@ Source status: `official + experiment`
 
 ## Что реализовано и что это доказывает
 
-Product-Agent OS — локальный plugin package: lifecycle skills, staged infrastructure, validators, project graph/cockpit и eval fixtures. Он помогает готовить reviewable artifacts; наличие пакета не доказывает hosted delivery, успешную работу на любом проекте или production readiness.
+В репозитории реализованы Web/desktop, local service с SQLite и явными runtime routes, а также отдельный Python plugin с lifecycle skills, staged infrastructure, validators, graph/cockpit и eval fixtures. [Возможности и границы evidence](product/capabilities.md) разделяют наличие исходников, датированные проверки и планируемую работу. Наличие этих поверхностей не доказывает hosted delivery, успешную работу на любом проекте или production readiness.
 
 Исходные Markdown, current source/configuration, command/runtime evidence и owner decisions определяют факты. Generated `site/`, dashboards, graphs, cockpit и reports помогают навигации, но не заменяют эти доказательства.
 

@@ -2,7 +2,7 @@
 
 ## Документация реализации — 15.11.2026
 
-Owner request: реальные планы и задачи находятся в `docs/planning`, включая исторические; исследования и execution evidence сохраняют свои владельцы. [Documentation backlog](docs/planning/documentation-architecture-2026-11-15.md) отдельно задаёт актуальные domain docs и UI/UX/API/SQLite/AI boundaries. Приёмка переноса: сохранены карточки, статусы и зависимости, исправлены ссылки; новые страницы подсистем запланированы, не выданы за написанные.
+Owner request: реальные планы и задачи находятся в `docs/planning`, включая исторические; исследования и execution evidence сохраняют свои владельцы. [Documentation backlog](docs/planning/documentation-architecture-2026-11-15.md) отдельно задаёт актуальные domain docs и UI/UX/API/SQLite/AI boundaries. Приёмка переноса: сохранены карточки, статусы и зависимости, исправлены ссылки; scope переноса не означал написания новых разделов. Последующий запрос DG02 разрешает DOCS-01–03: три входа/owners, продуктовую модель с traceability и текущую архитектуру/ADR, полные RU/EN и проверку сборки. Текущий запрос DG03 разрешает DOCS-04/05/07: backend lifecycle/modules/recovery, полный справочник текущих HTTP/events/errors и SQLite schema/ERD/migrations/transactions/backup/search, полные RU/EN, source inventory и изолированную сборку. Scope не включает реализацию FUNC/M5, чтение реальной пользовательской БД, migrations или остальных domain guides; критерии принадлежат карточкам плана.
 
 ## Функциональный план после V3 — 15.11.2026
 
