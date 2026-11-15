@@ -10,6 +10,13 @@ Sources: [Codex plugins](https://developers.openai.com/codex/plugins), [Build pl
 
 Product-Agent OS packages a product-delivery operating model for Codex. It combines durable project rules, lifecycle skills, staged artifacts, evals and approval boundaries while keeping live systems disabled until the owner explicitly approves a specific action.
 
+
+## Module and consumer map {#dg07-plugin-module-map}
+
+Source status: repository_source / static_source_review, 2026-11-15, snapshot `259977f3b257ba7fc0e932396f8963262bd327ad`; owner plugin-runtime-builder. Update when imports/consumers, output contracts or write boundaries change. [Discovery](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/product_agent_os/discovery.py) supplies scope to the [manual learning runner](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/run_self_learning_loop.py); [formation](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/product_agent_os/project_formation.py) and [merge](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/product_agent_os/merge_infrastructure.py) are consumed by the [renderer](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/render_infrastructure.py); [validators](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/product_agent_os/validators.py) are invoked by separate CLIs. [Graph and retrieval](../code-intelligence/index.md) are separate read/query surfaces, not write authority.
+
+Staged templates, agents, hooks and learning candidates are proposals; effective configuration and loading require checking the specific host. [Formation](project-formation.md#dg07-preservation) covers preservation; the [owner index](index.md#dg07-plugin-owners) covers updates and related tests. No runtime/provider/target apply was performed.
+
 ## End-to-end ordinary route {#ordinary-route}
 
 | Boundary | Behavior | What the result does not prove |

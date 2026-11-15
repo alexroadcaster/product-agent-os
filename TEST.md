@@ -1,5 +1,9 @@
 # TEST.md
 
+DG07: [operations/plugin/final integration evidence](docs/planning/documentation-architecture-2026-11-15.md#dg07-results) — `.docs-tools/reports/dg07/site`; source4, matrices2, strict build/i18n/site7, implementation-domain/8-plan HTML links, source parity, contracts/FUNC/relocation preservation. Runtime/provider/install не выполнялись; прежний verification route сохранён.
+
+DG06: [security/testing documentation evidence](docs/planning/documentation-architecture-2026-11-15.md#dg06-results) — isolated `.docs-tools/reports/dg06/site`, source3+card parity1, matrices2, site7, HTML/source links, 11 RU/EN source sets. TEST/EVALS routes и thresholds прежние; runtime/provider/security audit не выполнялись.
+
 ## Текущий выбор проверок — 15.11.2026
 
 DG05: [AI/LLM/retrieval/graph documentation evidence](docs/planning/documentation-architecture-2026-11-15.md#dg05-results) — isolated `.docs-tools/reports/dg05/site`, source3+card parity1, matrices2, site7, HTML/source links и source sets 20 RU/EN пар. Runtime/model/provider evals не выполнялись; linked tests — traceability.

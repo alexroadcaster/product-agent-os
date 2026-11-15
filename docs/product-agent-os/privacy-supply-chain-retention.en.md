@@ -32,3 +32,7 @@ This docs slice verifies only the documented boundary: docs unittest, `tools/che
 ## Current retained-data boundaries
 
 Review after plugin script changes is a separate trust check. Local memory stores and cloud network secrets have different retention/delivery semantics; do not promise universal deletion or setup-only credential access. See [hooks](../runtime/worktrees-hooks-rules.md), [memory](../agent-systems/memory.md), [Cloud](../codex/surfaces.md).
+
+## Application implementation
+
+[Security and privacy](../security/index.md) maps the current application guards, filesystem/credential boundaries and limitations. This page retains ownership of evidence retention and supply-chain approval boundaries; the application guide does not expand authority.

@@ -46,3 +46,7 @@ Backend/frontend/DB/AI доступны через [карту подсисте�
 ## Граница public/internal документации
 
 Внутренние evidence pages сохраняют реестр источников, packets, backlogs и verification records. Источником истины остаются Markdown, текущие code/configuration, наблюдаемые checks и owner decisions. Исторические записи не заменяют актуальные руководства.
+
+## Сопровождение реализации
+
+Используйте [эксплуатацию](operations/index.md), [Python plugin](product-agent-os/index.md) и [матрицу владельцев feature documentation](planning/documentation-architecture-2026-11-15.md#feature-doc-owners). [DG07](planning/documentation-architecture-2026-11-15.md#dg07-results) фиксирует финальную интеграцию документации; датированные platform sources и runtime acceptance сохраняют отдельный scope.

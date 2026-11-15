@@ -1,6 +1,6 @@
 # Разработка Product-Agent OS
 
-Source status: repository_source / current_source_inspection / documentation_implementation; DG02/DG03/DG04/DG05, 15.11.2026.
+Source status: repository_source / current_source_inspection / documentation_implementation; DG02/DG03/DG04/DG05/DG06/DG07, 15.11.2026.
 
 Владелец: docs-maintainer; владельцы доменов указаны ниже. Область: маршрутизация документации Web/desktop, local service и Python plugin на `2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765`. Пересматривать карту при изменении раздела, контракта, владельца задачи или capability.
 
@@ -20,6 +20,8 @@ Source status: repository_source / current_source_inspection / documentation_imp
 | DB / SQLite | [Схема SQLite](../db/schema.md), [жизненный цикл данных](../db/index.md) | [Schema](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/storage/migrations/schema.mts) | DOCS-07, DG03 |
 | AI / agents / LLM | [AI/agents](../ai/index.md), [LLM routes](../ai/llm/routes.md) | [Route selector](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/runtime/route-selector.ts) | DOCS-08/09, DG05 |
 | RAG / retrieval / code intelligence | [Retrieval](../ai/rag/index.md), [code intelligence](../code-intelligence/index.md) | [FTS search](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/storage/search-queries.mts) | DOCS-10/11, DG05; FUNC-14/26–34 отдельно |
+| Security / testing | [Безопасность и privacy](../security/index.md), [карта тестов и evidence](../testing/index.md) | Guards и связанные тесты в domain guides | DOCS-12/13, DG06 |
+| Operations / Python plugin | [Эксплуатация](../operations/index.md), [карта модулей plugin](../product-agent-os/architecture.md) | Launcher/distribution и packaged Python sources в guides | DOCS-14/15, DG07 |
 
 ## Владение документацией и обновления
 
@@ -30,6 +32,8 @@ Source status: repository_source / current_source_inspection / documentation_imp
 | `backend/`, `api/`, `db/` | Жизненный цикл сервиса, HTTP-контракты, SQLite и восстановление | backend/storage owner + docs-maintainer | [Backend](../backend/index.md), [API](../api/index.md), [DB](../db/index.md); связанные исходники и тесты | Изменение модуля, endpoint, схемы, транзакции или recovery-контракта |
 | `frontend/` | Экраны, компоненты, состояние и использование дизайна | frontend owner + docs-maintainer | [Frontend](../frontend/index.md), DESIGN, исходники и связанные тесты | Изменение экрана, состояния, дизайна или accessibility поведения |
 | `ai/`, `code-intelligence/` | Исполнение агентов, LLM contracts, retrieval и графы | runtime/graph owner + docs-maintainer | [AI](../ai/index.md), [code intelligence](../code-intelligence/index.md), связанные code/tests | Изменение route, prompt/output, индексации, query, provider gate или evidence |
+| `security/`, `testing/` | Trust boundaries приложения, privacy и маршруты доказательств | security/test owner + docs-maintainer | [Безопасность](../security/index.md), [проверки](../testing/index.md); TEST/EVALS сохраняют владение командами/порогами | Изменение guard, credentials, retention, маршрута тестов или evidence-контракта |
+| `operations/` | Локальный запуск, профили, пакет и восстановление | operations owner + docs-maintainer | [Эксплуатация](../operations/index.md), launcher/distribution и датированные receipts | Изменение CLI, пакета, профиля, restore или границ выпуска |
 | `diagrams/` | Единый атлас исполняемых путей и границ | architect + owner подсистемы | Связанный source-backed guide; [атлас](../diagrams/index.md) | Изменение потока; схема и RU/EN проверяются вместе |
 | `product-agent-os/`, `web/` | Использование plugin, доступность Web и local pilot | docs-maintainer + owner реализации | [Plugin guides](../product-agent-os/index.md), [pilot](../web/pilot.md), текущий код и датированные receipts | Изменение команды, UI, установки или ограничения |
 | `product-agent/`, `playbooks/` | Метод работы и повторяемые пользовательские маршруты | lifecycle-orchestrator | Workflow/skill source; [lifecycle](../product-agent/lifecycle.md) | Изменение маршрута или границ ответственности |
@@ -55,3 +59,5 @@ Source status: repository_source / current_source_inspection / documentation_imp
 DG02 описывает существующую реализацию и создаёт документацию; live providers, все пользовательские journeys, commercial release и реализация FUNC/M5 этим не подтверждаются. Каталог нового домена появляется вместе с содержательными страницами, без пустых placeholders. Исторические research/PRD доступны через provenance обзора и ADR. [Registry источников](../sources/registry.md) и [атлас диаграмм](../diagrams/index.md) сохраняют своё назначение.
 
 Связанные проверки: `tools/check_docs.py`, `tests/product_agent_os/test_product_agent_os_docs.py`, `tests/product_agent_os/site_checks.py`; матрицы и HTML links проверяются в результатах DG02 владеющего плана.
+
+[Матрица владельцев документации FUNC](../planning/documentation-architecture-2026-11-15.md#feature-doc-owners) связывает все семь delivery groups с разделами и событиями обновления. [Проверки DG07](../planning/documentation-architecture-2026-11-15.md#dg07-results) закрывают интеграцию документации; feature/runtime/release status остаётся у своего владельца.

@@ -4,7 +4,7 @@ Source status: repository_source / planning_catalog; 2026-11-15.
 
 `docs/planning` owns standalone project plans, backlogs and task-state files. Root `PLAN.md` provides current routing; research and execution evidence remain in their source folders. Moving a plan does not change task status or prove implementation.
 
-The Russian catalog lists all 42 relocated files and the new 16-task documentation backlog (`documentation-architecture-2026-11-15.md`). Current FUNC and Web plans retain their task IDs, dependencies and acceptance criteria. DG01 added full English counterparts for the eight working plans below. DOCS-16/A is complete; the parent task remains in progress for later integration.
+The Russian catalog lists all 42 relocated files and the new 16-task documentation backlog (`documentation-architecture-2026-11-15.md`). Current FUNC and Web plans retain their task IDs, dependencies and acceptance criteria. DG01 added full English counterparts for the eight working plans below. DG01–DG07 are complete: all DOCS-01–16 implemented / docs_static_verified; stages A/B of DOCS-13/16 are closed.
 
 
 ## Working plans translated in DG01
@@ -28,3 +28,5 @@ See the relocation map (`docs/planning/relocation-2026-11-15.json`) for exact fo
 - [product-agent-os-track-10-backlog.en.md](product-agent-os-track-10-backlog.en.md)
 - [product-agent-os-track-8-detailed-backlog.en.md](product-agent-os-track-8-detailed-backlog.en.md)
 - [product-agent-os-track-9-backlog.en.md](product-agent-os-track-9-backlog.en.md)
+
+[Final DG07 results](documentation-architecture-2026-11-15.md#dg07-results) and [FUNC documentation owners](documentation-architecture-2026-11-15.md#feature-doc-owners) preserve separate feature status. The relocation map is the old→new address reference; no published-site redirect or deployment is implied.

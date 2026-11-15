@@ -4,7 +4,7 @@ Source status: repository_source / planning_catalog; 15.11.2026.
 
 Здесь хранятся самостоятельные планы, backlog и task-state Product-Agent OS. Статус берётся из карточек/JSON владельца; перенос не означает завершения задач. Корневой `PLAN.md` — краткий маршрут к владельцам, `research` — исследования и evidence, `superpowers/specs` — design/evidence.
 
-DG01 завершила исправление ссылок и восемь полных EN-переводов; [результаты проверок](documentation-architecture-2026-11-15.md#dg01-results). DOCS-13/16 остаются in_progress до этапов B.
+DG01 завершила исправление ссылок и восемь полных EN-переводов; [результаты проверок](documentation-architecture-2026-11-15.md#dg01-results). DG01–DG07 завершены: все DOCS-01–16 implemented / docs_static_verified; этапы A/B DOCS-13/16 закрыты.
 
 ## Текущие владельцы
 
@@ -63,3 +63,5 @@ DG01 завершила исправление ссылок и восемь по
 | [2026-11-13-ui-implementation-plan.md](2026-11-13-ui-implementation-plan.md) | `design/2026-11-13` |
 | [batch45-post-q4-next-tasks.json](batch45-post-q4-next-tasks.json) | `docs/superpowers/specs` |
 | [batch45-postq4-architecture-next-actions.json](batch45-postq4-architecture-next-actions.json) | `docs/superpowers/specs` |
+
+[Итоговые результаты DG07](documentation-architecture-2026-11-15.md#dg07-results) и [владельцы документации FUNC](documentation-architecture-2026-11-15.md#feature-doc-owners) сохраняют отдельный feature status. Карта переноса — справочник old→new адресов; redirects опубликованного сайта или deployment не подразумеваются.

@@ -1,11 +1,13 @@
 {
-  "task_id": "documentation-dg05-ai-llm-retrieval-graphs-2026-11-15",
+  "task_id": "documentation-dg07-operations-plugin-integration-2026-11-15",
   "session_id": "01a1de89-93e2-7d91-88ab-e89a9d0bd894",
-  "scope": "DG05 DOCS08-11: full RU/EN AI agents, LLM routes/prompts/budgets, retrieval/RAG boundaries and code-intelligence guides; source verification, navigation/registry/plan/control-plane sync and isolated docs checks. No app code, prompts/config, real profiles/databases, providers, installation, Git/publication or hook/trust changes.",
-  "updated_at": "2026-11-15T14:15:55.510Z",
-  "approval_boundary": "Current user explicitly requests full DG05 documentation implementation and checks. Own session marker only; no hook/trust/permission/external changes.",
+  "scope": "DG07 DOCS14/15/16B: full RU/EN operations, existing Python plugin guides, FUNC documentation ownership and final integration; source verification, navigation/registry/plan/control-plane sync and isolated docs checks. No app code, real profiles/databases, providers, installation, Git/publication or hook/trust changes.",
+  "updated_at": "2026-11-15T14:55:27.934Z",
+  "approval_boundary": "Current user explicitly requests full DG07 documentation implementation and checks. Own-session marker only; no hooks/trust/permissions/external changes.",
   "status": "ready_for_completion_ledger",
   "completion_ready": true,
+  "previous_dg06_closure": "DOCS12/13 docs_static_verified;11RUEN pairs,source4,site7,matrices2,strict build,34HTML/7395links passed.",
+  "previous_dg05_closure": "DOCS08-11 docs_static_verified; 20 RU/EN pairs, source4, site7, matrices2, strict build and links passed.",
   "previous_dg04_closure": "DOCS06 implemented docs_static_verified;6RUENpairs,source4,matrix2,site7,strictbuild,20routes3929links passed.",
   "previous_dg03_closure": "DOCS04/05/07 implemented docs_static_verified;17 RU/EN pairs,source4,matrix2,site7,strict build,72routes/12365links,Mermaid2 passed.",
   "previous_dg02_closure": "DOCS01-03 implemented docs_static_verified;13 RU/EN pairs, source3+parity1, matrix2, site7, strict build,38routes6229links,Mermaid2 passed; independent review closed_allowed.",
@@ -33,7 +35,7 @@
   "previous_planning_closure": "functional-remediation-planning-2026-11-15: planning_recorded; 25 planned plus 3 M5 references; matrix/check_docs/diff/consistency passed; docs101/105, four existing site parity failures assigned F25; original56 cards preserved.",
   "plan_path": "docs/planning/documentation-architecture-2026-11-15.md",
   "previous_task_id": "functional-audit-2026-11-15",
-  "control_plane_sync": "REQUIREMENTS/PLAN/TEST/RUNLOG, owning RU/EN plan, AI/LLM/retrieval/code-intelligence guides, registry/nav and maps updated. EVALS/prod_test no_change_needed: unchanged rubric and production history.",
+  "control_plane_sync": "REQUIREMENTS/PLAN/TEST/RUNLOG, owning RU/EN plan, catalog, product/architecture/main indexes, registry/nav and plugin/operations updated. EVALS/prod_test no_change_needed: unchanged rubrics and production history.",
   "lifecycle_scope": {
     "work_type": "implementation",
     "size": "large",
@@ -41,15 +43,15 @@
     "financially_material": false,
     "release_or_readiness": false,
     "explicit_packet_request": false,
-    "reason": "User-authorized DG05 documentation completed against DOCS08-11 acceptance with current source/site verification."
+    "reason": "User-authorized DG07 operations/plugin/integration documentation completed against all DOCS14/15/16 AC with final source/site verification."
   },
   "previous_audit": {
     "task_id": "functional-audit-2026-11-15",
     "evidence": "Current source inspection and SHA-256 comparison: runtime adapter matches; frontend lock differs from qualified manifest. Git diff --check passed. TypeScript command denied by PreToolUse. Application code unchanged.",
     "report_status": "not_created: report write denied by PreToolUse; temporary privilege expansion for grant setup rejected by automatic approval review. No hook or grant configuration applied."
   },
-  "result": "DG05 complete docs_static_verified; DOCS08-11 implemented; 20 RU/EN pairs / 40 pages.",
-  "verification": "check_docs, source3+translation1, matrixRU/EN, site7, HTML links, pinned-source paths, RU/EN source sets, contract preservation, git diff --check passed; 52 HTML pages / 10289 links; 282 pinned references; strict build exit0; scoped review closed_allowed.",
-  "remaining_gaps": "No DG05 blockers. DOCS01-11 implemented; DOCS13/16 in_progress until B; DOCS12/14/15 planned. Next DG06. Runtime/provider/PoC/human acceptance not performed.",
-  "evidence": "docs/planning/documentation-architecture-2026-11-15.md#dg05-results; .docs-tools/reports/dg05/final-results.json"
+  "result": "DG07 complete docs_static_verified; DOCS14/15/16 implemented. All16 DOCS tasks and7DG groups complete. Six new operations RU/EN pairs, five existing plugin pairs updated, seven FUNC groups/34tasks mapped.",
+  "verification": "source docs4, check_docs, matrices2, strict build exit0/16.98s/zero warnings, site7,178RUEN search/sitemap routes/39429links/0errors,120 pinned source references,11pair parity,64contract fields and protected FUNC/relocation files preserved; diff check and cross-review passed.",
+  "remaining_gaps": "No DG07 documentation blockers. FUNC34tasks/M5, runtime/provider, install/signing/commercial/human acceptance remain separate. Next bounded feature slice by existing dependencies.",
+  "evidence": "docs/planning/documentation-architecture-2026-11-15.md#dg07-results; .docs-tools/reports/dg07/final-results.json"
 }

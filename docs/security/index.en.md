@@ -1,0 +1,11 @@
+# Product security and privacy
+
+Source status: repository_source / static_source_review; 2026-11-15.
+
+Owner: security/runtime owner + docs-maintainer. Scope: PAOS source at `259977f3b257ba7fc0e932396f8963262bd327ad`; update with guards, tests or policy changes. Linked tests are verification routes, not a new run. No real profiles, credentials or provider calls were examined.
+
+## How to use this section
+
+Start with the [threat model](threat-model.md), then select [filesystem boundaries](filesystem.md), [sessions and credentials](auth-credentials.md), [retention and redaction](data-retention.md), or [supply chain](supply-chain.md). This section describes application boundaries, not guarantees of the Codex platform. [Codex security](../codex/security.md) covers platform guidance; configured policy alone does not prove effective enforcement.
+
+[session-gate](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/apps/local-service/src/http/session-gate.mts), [project-sources](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/apps/local-service/src/adapters/project-sources.ts), [profile identity](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/apps/local-service/src/connections/profile-identity.mts), and [persisted redaction](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/apps/local-service/src/redaction/persisted.mts) own local guard contracts. [desktop tests](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/tests/web/desktop-local.test.mts), [project source tests](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/tests/web/project-sources.test.mts), and [profile tests](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/tests/web/profile-identity.test.mts) identify focused verification routes. External approvals, platform policy, and effective configuration require separate assessment; these tests do not establish security of every native host tool or product release.

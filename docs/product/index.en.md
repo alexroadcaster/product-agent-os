@@ -1,6 +1,6 @@
 # Developing Product-Agent OS
 
-Source status: repository_source / current_source_inspection / documentation_implementation; DG02/DG03/DG04/DG05, 2026-11-15.
+Source status: repository_source / current_source_inspection / documentation_implementation; DG02/DG03/DG04/DG05/DG06/DG07, 2026-11-15.
 
 Owner: docs-maintainer; domain owners below. Scope: documentation routing for Web/desktop, local service and Python plugin at `2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765`. Review this map when a section, contract, task owner or capability changes.
 
@@ -20,6 +20,8 @@ Existing source-backed entry points are available now. Backend, API and DB guide
 | DB / SQLite | [SQLite schema](../db/schema.md), [data lifecycle](../db/index.md) | [Schema](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/storage/migrations/schema.mts) | DOCS-07, DG03 |
 | AI / agents / LLM | [AI/agents](../ai/index.md), [LLM routes](../ai/llm/routes.md) | [Route selector](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/runtime/route-selector.ts) | DOCS-08/09, DG05 |
 | RAG / retrieval / code intelligence | [Retrieval](../ai/rag/index.md), [code intelligence](../code-intelligence/index.md) | [FTS search](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/storage/search-queries.mts) | DOCS-10/11, DG05; FUNC-14/26–34 separate |
+| Security / testing | [Security and privacy](../security/index.md), [test/evidence map](../testing/index.md) | Guards and linked tests in domain guides | DOCS-12/13, DG06 |
+| Operations / Python plugin | [Operations](../operations/index.md), [plugin module map](../product-agent-os/architecture.md) | Launcher/distribution and packaged Python sources in the guides | DOCS-14/15, DG07 |
 
 ## Documentation ownership and updates
 
@@ -30,6 +32,8 @@ Existing source-backed entry points are available now. Backend, API and DB guide
 | `backend/`, `api/`, `db/` | Service lifecycle, HTTP contracts, SQLite schema and recovery | backend/storage owner + docs-maintainer | [Backend](../backend/index.md), [API](../api/index.md), [DB](../db/index.md); linked source and tests | Module, endpoint, schema, transaction or recovery contract changes |
 | `frontend/` | Screens, components, state and design consumption | frontend owner + docs-maintainer | [Frontend](../frontend/index.md), DESIGN, source and related tests | Screen, state, design or accessibility behavior changes |
 | `ai/`, `code-intelligence/` | Agent execution, LLM contracts, retrieval and graph boundaries | runtime/graph owner + docs-maintainer | [AI](../ai/index.md), [code intelligence](../code-intelligence/index.md), linked code/tests | Route, prompt/output, indexing, query, provider gate or evidence change |
+| `security/`, `testing/` | Application trust boundaries, privacy and evidence routes | security/test owner + docs-maintainer | [Security](../security/index.md), [testing](../testing/index.md); TEST/EVALS retain operational command/threshold ownership | Guard, credential, retention, test route or evidence-contract change |
+| `operations/` | Local launch, profiles, package and recovery | operations owner + docs-maintainer | [Operations](../operations/index.md), launcher/distribution sources and dated receipts | CLI, package, profile, restore or release boundary change |
 | `diagrams/` | Single atlas of execution paths and boundaries | architect + subsystem owner | Linked source-backed guide; [atlas](../diagrams/index.md) | Flow change; check diagram and RU/EN together |
 | `product-agent-os/`, `web/` | Plugin usage, Web accessibility and local pilot | docs-maintainer + implementation owner | [Plugin guides](../product-agent-os/index.md), [pilot](../web/pilot.md), current code and dated receipts | Command, UI, installation or limit change |
 | `product-agent/`, `playbooks/` | Working methods and repeatable user routes | lifecycle-orchestrator | Workflow/skill source; [lifecycle](../product-agent/lifecycle.md) | Route or responsibility change |
@@ -55,3 +59,5 @@ Roles assign responsibility for this repository; they do not prove an agent is r
 DG02 maps existing implementation and writes documentation; it does not run live providers, prove all journeys, promote commercial release or implement FUNC/M5. New domains get a directory when substantive documents exist, not empty placeholders. Historical research/PRD remains available through the overview and ADR provenance. [Source registry](../sources/registry.md) and [diagram atlas](../diagrams/index.md) retain their authority.
 
 Related checks: `tools/check_docs.py`, `tests/product_agent_os/test_product_agent_os_docs.py`, `tests/product_agent_os/site_checks.py`; documentation task matrices and HTML links are verified in the DG02 result section of the owning plan.
+
+The [FUNC documentation ownership matrix](../planning/documentation-architecture-2026-11-15.md#feature-doc-owners) maps all seven delivery groups to affected sections and update triggers. [DG07 verification](../planning/documentation-architecture-2026-11-15.md#dg07-results) closes the documentation integration; feature/runtime/release status remains with its owner.

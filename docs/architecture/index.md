@@ -25,3 +25,11 @@ Source status: repository_source / static_architecture_map; 15.11.2026.
 ## AI и code intelligence
 
 [Оркестрация агентов](../ai/agents/orchestration.md), [LLM contracts](../ai/llm/index.md), [границы retrieval](../ai/rag/index.md) и [Web/Python graph paths](../code-intelligence/index.md) описывают отдельные текущие surfaces реализации.
+
+## Безопасность и проверяемость
+
+[Trust boundaries приложения](../security/threat-model.md), [допуск к файловой системе](../security/filesystem.md) и [карта тестов подсистем](../testing/test-map.md) связывают guards и маршруты проверки с исходниками. Configured policy, synthetic evidence и live enforcement имеют отдельные границы утверждений.
+
+## Эксплуатация и Python plugin
+
+[Локальная эксплуатация](../operations/index.md), [карта модулей и consumers plugin](../product-agent-os/architecture.md), [CLI contracts](../product-agent-os/cli-reference.md) и [manual learning loop](../product-agent-os/self-learning-loop.md) связывают границы поставки и staged assets с владельцами исходников.

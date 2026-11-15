@@ -4,6 +4,13 @@ Source status: project-local implementation; локальные проверки
 
 Единый маршрут анализирует проект, выбирает документы, согласует пути `docs/` и `.codex/`, показывает preview и создаёт staging. Применение использует существующий merge с отдельным approval record. Корневые документы хранят текущее состояние, `docs/` — проектные материалы, `.codex/` — управляющие предложения и шаблоны.
 
+
+## Сохранность target и проверка {#dg07-preservation}
+
+Source status: repository_source / static_source_review, 15.11.2026, snapshot `259977f3b257ba7fc0e932396f8963262bd327ad`; owner plugin-runtime-builder. Обновлять при изменении planner, merge, approval или rollback. [Formation](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/product_agent_os/project_formation.py) определяет структуру и исходные digests; [renderer](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/render_infrastructure.py) делает preview/stage, [merge](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/product_agent_os/merge_infrastructure.py) проверяет соответствующий план и approval при apply. Существующие пользовательские файлы вне управляемых секций сохраняются, для unmarked assets готовятся companion proposals. Digest привязывает preview к входам, но не является approval; изменение входов требует нового review. Rollback сверяется с текущим состоянием и не должен перезаписывать последующие пользовательские изменения.
+
+Проверки изменений: [formation tests](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/tests/product_agent_os/test_project_formation.py), [merge tests](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/tests/product_agent_os/test_merge_infrastructure.py), [renderer tests](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/tests/product_agent_os/test_infrastructure_renderer.py); ссылка на тест не означает текущий прогон или доказательство записи в реальный target. [Карта владельцев](index.md#dg07-plugin-owners).
+
 ## Вход и выбор файлов
 
 Запрос имеет `schema_version: 1`. Поле `task` использует существующий task context v1. Дополнительные поля:

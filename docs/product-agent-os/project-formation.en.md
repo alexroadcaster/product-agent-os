@@ -4,6 +4,13 @@ Source status: project-local implementation; local checks and synthetic pilots. 
 
 The unified route analyzes a workspace, selects documents, reconciles `docs/` and `.codex/`, previews changes and stages proposals. Applying them uses the existing merge engine with a separate approval record. Root documents own current state, `docs/` owns project material, and `.codex/` holds control proposals and templates.
 
+
+## Target preservation and verification {#dg07-preservation}
+
+Source status: repository_source / static_source_review, 2026-11-15, snapshot `259977f3b257ba7fc0e932396f8963262bd327ad`; owner plugin-runtime-builder. Update when planner, merge, approval or rollback changes. [Formation](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/product_agent_os/project_formation.py) determines structure and input digests; [renderer](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/render_infrastructure.py) provides preview/stage, [merge](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/product_agent_os/merge_infrastructure.py) checks the corresponding plan and approval on apply. Existing user files outside managed sections are preserved; unmarked assets receive companion proposals. A digest binds preview to inputs but is not approval; changed inputs require a new review. Rollback checks current state and must not overwrite later user changes.
+
+Change checks: [formation tests](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/tests/product_agent_os/test_project_formation.py), [merge tests](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/tests/product_agent_os/test_merge_infrastructure.py), [renderer tests](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/tests/product_agent_os/test_infrastructure_renderer.py); links do not imply a current run or proof of mutation in a real target. [Owner map](index.md#dg07-plugin-owners).
+
 ## Input and selection
 
 The request uses `schema_version: 1` and an existing task context v1 under `task`.

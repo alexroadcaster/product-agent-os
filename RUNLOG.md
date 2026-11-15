@@ -1,5 +1,9 @@
 # RUNLOG.md
 
+DG07 завершена: DOCS-14/15/16 implemented / docs_static_verified; все 16 documentation tasks и 7 DG-групп закрыты. Шесть новых RU/EN operations pairs, пять обновлённых plugin pairs; FUNC owner/update matrix покрывает 7 групп/34 задачи. [Evidence](docs/planning/documentation-architecture-2026-11-15.md#dg07-results): source4, matrices2, strict/site7, links/parity/preservation и cross-review passed. Далее bounded FUNC slice; F17/F25/M5 и runtime/human/commercial gates не закрывались. EVALS/prod_test no_change_needed.
+
+DG06 завершена: DOCS-12/13 implemented / docs_static_verified; 11 RU/EN пар security/testing, nav/registry/maps и owning plan synchronized. [Результаты и команды](docs/planning/documentation-architecture-2026-11-15.md#dg06-results). Source4, matrices2, strict build/site7, HTML/source links и source parity passed; перекрёстный static review closed_allowed. Следующий DG07; DOCS-16/B открыт, DOCS-14/15 planned. Runtime/provider/human/release claims не повышены; EVALS/prod_test no_change_needed.
+
 ## DG05 — завершено, 15.11.2026
 
 DOCS-08–11 implemented / docs_static_verified: 20 RU/EN пар AI/agents/LLM/retrieval/code-intelligence. [Evidence и команды](docs/planning/documentation-architecture-2026-11-15.md#dg05-results): source3+card parity1, matrix2, strict build, site7, HTML/pinned-source links passed. Scoped reviews LLM и retrieval/graph пройдены; WebFTS/Python/gates/live разделены. Код, prompts/config и runtime/providers не менялись; новый end-to-end Web RAG и PoC не заявлены. Далее DG06; DOCS-13/16 B открыты.

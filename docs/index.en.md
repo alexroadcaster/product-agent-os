@@ -46,3 +46,7 @@ External writes, Git publication, deployment, provider calls and hook/schedule a
 ## Public/Internal Documentation Boundary
 
 Internal evidence pages preserve the source registry, packets, backlogs and verification records. Source of truth remains in Markdown source files, current code/configuration, observed checks and owner decisions. Historical records do not replace current guides.
+
+## Maintaining the implementation
+
+Use [operations](operations/index.md), [Python plugin](product-agent-os/index.md) and the [feature documentation owner matrix](planning/documentation-architecture-2026-11-15.md#feature-doc-owners). [DG07](planning/documentation-architecture-2026-11-15.md#dg07-results) records final documentation integration; dated platform sources and runtime acceptance retain their separate scope.

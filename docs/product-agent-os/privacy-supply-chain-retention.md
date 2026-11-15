@@ -32,3 +32,7 @@ Docs slice проверяет только documented boundary: docs unittest, `
 ## Актуальные retained-data границы
 
 Review после изменения plugin scripts — отдельная trust проверка. Local memory stores и cloud network secrets имеют разные retention/delivery semantics; не обещайте универсальное удаление или setup-only credential access. [Hooks](../runtime/worktrees-hooks-rules.md), [memory](../agent-systems/memory.md), [Cloud](../codex/surfaces.md).
+
+## Реализация приложения
+
+[Безопасность и privacy](../security/index.md) связывает текущие guards приложения, файловые/credential boundaries и ограничения. Эта страница сохраняет владение правилами хранения evidence и approval boundaries supply chain; руководство приложения не расширяет полномочия.

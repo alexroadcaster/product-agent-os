@@ -2,7 +2,11 @@
 
 ## Документация реализации — 15.11.2026
 
-Текущий запрос DG05 разрешает DOCS-08–11: AI/agents, LLM routes/prompts/budgets, retrieval/RAG и code-intelligence, полные RU/EN и проверки сайта. Web/Python/provider gates и configured/pinned/observed разделены; no silent fallback, missing telemetry и planned F11/F15/F26–34/M5 обозначены. Runtime/provider/model calls, код и prompts/config не изменяются.
+Текущий запрос DG07 разрешает DOCS-14/15/16B: полную RU/EN документацию эксплуатации, переиспользование Python plugin guides и финальную интеграцию документации. Требуются FUNC documentation owners/update matrix, сохранение relocation/history/AC/dependencies, проверка всех domain routes и восьми EN-планов, strict/source/site checks. Runtime/install/provider/publication/Git и изменение feature task-state не входят в scope; закрытие DOCS не закрывает FUNC или release gates.
+
+Предыдущий запрос DG06 разрешает DOCS-12 и DOCS-13/B: security/privacy/trust boundaries и карту тестов/evals/evidence, 11 полных RU/EN пар, навигацию и проверки документации. TEST/EVALS сохраняют владение маршрутами и порогами; исторические результаты DG01/A сохраняют дату. Configured policy, app guards, synthetic/live/human evidence различаются. Код, credentials/profiles, hooks/trust, provider calls, установки и публикация не входят в scope.
+
+Предыдущий запрос DG05 разрешает DOCS-08–11: AI/agents, LLM routes/prompts/budgets, retrieval/RAG и code-intelligence, полные RU/EN и проверки сайта. Web/Python/provider gates и configured/pinned/observed разделены; no silent fallback, missing telemetry и planned F11/F15/F26–34/M5 обозначены. Runtime/provider/model calls, код и prompts/config не изменяются.
 
 Предыдущий запрос DG04 разрешил DOCS-06: шесть полных RU/EN guides frontend/navigation/state/components/design-system/accessibility, source traceability и изолированную сборку. DESIGN/assets сохраняют владение дизайном; future Files/Map/Database/usages остаются planned. Приёмка документации не подтверждает новый browser/runtime/WCAG/human результат.
 

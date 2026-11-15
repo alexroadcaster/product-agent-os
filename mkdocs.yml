@@ -143,6 +143,26 @@ plugins:
                 - Graph model: code-intelligence/graph-model.md
                 - Queries and impact: code-intelligence/queries-impact.md
                 - Adapters: code-intelligence/adapters.md
+            - Security and privacy:
+                - Overview: security/index.md
+                - Threat model: security/threat-model.md
+                - Filesystem: security/filesystem.md
+                - Authentication and credentials: security/auth-credentials.md
+                - Data retention: security/data-retention.md
+                - Supply chain: security/supply-chain.md
+            - Testing and evidence:
+                - Overview: testing/index.md
+                - Test map: testing/test-map.md
+                - Synthetic and live: testing/synthetic-vs-live.md
+                - AI evaluations: testing/ai-evals.md
+                - Documentation checks: testing/documentation-checks.md
+            - Operations:
+                - Overview: operations/index.md
+                - Install, start and stop: operations/install-start-stop.md
+                - Profiles: operations/profiles.md
+                - Upgrade and rollback: operations/upgrade-rollback.md
+                - Troubleshooting: operations/troubleshooting.md
+                - Release boundaries: operations/release-boundaries.md
             - Plans and tasks: planning/index.md
             - Sources:
                 - Source Registry: sources/registry.md
@@ -364,6 +384,26 @@ nav:
       - Модель графа: code-intelligence/graph-model.md
       - Запросы и impact: code-intelligence/queries-impact.md
       - Адаптеры: code-intelligence/adapters.md
+  - Безопасность и privacy:
+      - Обзор: security/index.md
+      - Модель угроз: security/threat-model.md
+      - Файловая система: security/filesystem.md
+      - Аутентификация и credentials: security/auth-credentials.md
+      - Хранение и удаление данных: security/data-retention.md
+      - Цепочка поставки: security/supply-chain.md
+  - Проверки и доказательства:
+      - Обзор: testing/index.md
+      - Карта тестов: testing/test-map.md
+      - Synthetic и live: testing/synthetic-vs-live.md
+      - Оценка AI: testing/ai-evals.md
+      - Проверки документации: testing/documentation-checks.md
+  - Эксплуатация:
+      - Обзор: operations/index.md
+      - Установка, запуск и остановка: operations/install-start-stop.md
+      - Профили: operations/profiles.md
+      - Обновление и откат: operations/upgrade-rollback.md
+      - Диагностика: operations/troubleshooting.md
+      - Границы выпуска: operations/release-boundaries.md
   - Планы и задачи: planning/index.md
   - Источники:
       - Реестр источников: sources/registry.md

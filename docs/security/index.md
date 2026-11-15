@@ -1,0 +1,11 @@
+# Безопасность и privacy продукта
+
+Source status: repository_source / static_source_review; 15.11.2026.
+
+Владелец: security/runtime owner + docs-maintainer. Область: исходники PAOS на `259977f3b257ba7fc0e932396f8963262bd327ad`; обновлять при изменении guards, tests или policy. Ссылки на тесты обозначают маршруты проверки, а не новый прогон. Реальные профили, credentials и provider-вызовы не исследовались.
+
+## Как пользоваться
+
+Начните с [модели угроз](threat-model.md), затем выберите [файловые границы](filesystem.md), [сессии и credentials](auth-credentials.md), [хранение и redaction](data-retention.md) или [supply chain](supply-chain.md). Здесь описаны границы реализации приложения, а не гарантии Codex platform. [Codex security](../codex/security.md) описывает platform guidance; configured policy сама по себе не доказывает действующее enforcement.
+
+[session-gate](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/apps/local-service/src/http/session-gate.mts), [project-sources](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/apps/local-service/src/adapters/project-sources.ts), [profile identity](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/apps/local-service/src/connections/profile-identity.mts) и [persisted redaction](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/apps/local-service/src/redaction/persisted.mts) — владельцы локальных guard-контрактов. [desktop tests](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/tests/web/desktop-local.test.mts), [project source tests](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/tests/web/project-sources.test.mts) и [profile tests](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/tests/web/profile-identity.test.mts) — маршруты выборочных проверок. Внешние разрешения, platform policy и действительная конфигурация оцениваются отдельно; результаты этих тестов не гарантируют безопасность всех native host tools или выпуск продукта.

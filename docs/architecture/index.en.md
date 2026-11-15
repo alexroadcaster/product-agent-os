@@ -25,3 +25,11 @@ This map locates source and boundary ownership for Web/desktop and the separate 
 ## AI and code intelligence
 
 [Agent orchestration](../ai/agents/orchestration.md), [LLM contracts](../ai/llm/index.md), [retrieval boundaries](../ai/rag/index.md) and [Web/Python graph paths](../code-intelligence/index.md) document distinct current implementation surfaces.
+
+## Security and verification
+
+[Application trust boundaries](../security/threat-model.md), [filesystem admission](../security/filesystem.md) and [subsystem test map](../testing/test-map.md) connect each guard and verification route to its owning source. Configured policy, synthetic evidence and live enforcement have separate claim ceilings.
+
+## Operations and Python plugin
+
+[Local operations](../operations/index.md), [plugin module and consumer map](../product-agent-os/architecture.md), [CLI contracts](../product-agent-os/cli-reference.md) and [manual learning loop](../product-agent-os/self-learning-loop.md) link deployment boundaries and staged assets to their source owners.

@@ -188,3 +188,7 @@ Next artifact: use [Scenarios](scenarios.md) to choose the route, [Professional 
 ## Current route and evidence
 
 For relevant changes cover trust changes, skill omission, surface mismatch and changed-scope/pending-tool cases. Do not repeat closed probes without changed state or a new risk. See [skills](../agent-systems/subagents-skills.md) and [session control](../agent-systems/session-control.md).
+
+## Verification map
+
+[Subsystem tests](../testing/test-map.md), [AI evaluation boundaries](../testing/ai-evals.md) and [synthetic versus live evidence](../testing/synthetic-vs-live.md) route changes to checks. TEST/EVALS remain operational owners; historical receipts on this page are not a current run.

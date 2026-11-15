@@ -8,6 +8,13 @@ Source status: `official + experiment`
 
 Главная цель контура - превращать повторяющиеся сбои и обратную связь владельца в ограниченные артефакты: состояние, проверку срока запуска, отчет о ходе, eval cases, таксономию сбоев, staged repair task и recommendation packets для ревью владельца.
 
+
+## Граница обновления и promotion {#dg07-learning-boundary}
+
+Source status: repository_source / static_source_review, 15.11.2026, snapshot `259977f3b257ba7fc0e932396f8963262bd327ad`; owner learning-loop-engineer. Обновлять при изменении state, due evaluation, feedback, candidates или promotion gates. [State](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/product_agent_os/self_learning_state.py) задаёт `manual_only` defaults и проверку схемы; [runner](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/run_self_learning_loop.py) использует state и [progress](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/product_agent_os/self_learning_progress.py) для ручного dry-run или staging. [Candidates](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/product_agent_os/self_learning_candidates.py) остаются review artifacts; cadence field не создаёт scheduler. Реальное применение, hooks, provider calls и automation требуют соответствующей отдельной authority.
+
+[State tests](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/tests/product_agent_os/test_self_learning_state.py) и [extension tests](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/tests/product_agent_os/test_self_learning_extensions.py) — связанные проверки, не текущий прогон. `candidate_only` не означает approved или active; generated report не заменяет owner decision. [Карта владельцев](index.md#dg07-plugin-owners).
+
 ## Быстрый Старт
 
 Первый запуск больше не должен упираться в `state_file:missing`. Создайте предложение состояния вне целевого рабочего каталога:

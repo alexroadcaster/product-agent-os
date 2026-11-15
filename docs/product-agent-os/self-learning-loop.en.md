@@ -6,6 +6,13 @@ An empty ledger, wholly rejected records and zero eligible owner labels yield `p
 
 `Self-Learning Loop` is the manual-first Product-Agent OS improvement loop for local evidence, redacted owner feedback, metrics ledgers and review-only candidates. It is not an autonomous learning system. The default path does not call providers or models, create Codex App automations, enable hooks, write to target workspaces or apply candidates automatically.
 
+
+## Update and promotion boundary {#dg07-learning-boundary}
+
+Source status: repository_source / static_source_review, 2026-11-15, snapshot `259977f3b257ba7fc0e932396f8963262bd327ad`; owner learning-loop-engineer. Update when state, due evaluation, feedback, candidates or promotion gates change. [State](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/product_agent_os/self_learning_state.py) defines `manual_only` defaults and schema checks; the [runner](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/run_self_learning_loop.py) uses state and [progress](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/product_agent_os/self_learning_progress.py) for manual dry-run or staging. [Candidates](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/product_agent_os/self_learning_candidates.py) remain review artifacts; a cadence field does not create a scheduler. Actual apply, hooks, provider calls and automation require applicable separate authority.
+
+[State tests](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/tests/product_agent_os/test_self_learning_state.py) and [extension tests](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/tests/product_agent_os/test_self_learning_extensions.py) are related checks, not a current run. `candidate_only` is not approved or active; a generated report does not replace an owner decision. [Owner map](index.md#dg07-plugin-owners).
+
 ## Quickstart
 
 Create a staged state proposal outside the target workspace:

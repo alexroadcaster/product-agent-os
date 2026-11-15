@@ -12,6 +12,13 @@ Product-Agent OS plugin строит управляемый lifecycle вокру
 
 Главное правило: generated surfaces помогают ориентироваться, но source files, owner decisions и текущий verification evidence остаются сильнее любого dashboard, graph, report или chat memory.
 
+
+## Карта модулей и потребителей {#dg07-plugin-module-map}
+
+Source status: repository_source / static_source_review, 15.11.2026, snapshot `259977f3b257ba7fc0e932396f8963262bd327ad`; owner plugin-runtime-builder. Обновлять при смене import/consumer, output contract или границы записи. [Discovery](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/product_agent_os/discovery.py) поставляет scope в [manual learning runner](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/run_self_learning_loop.py); [formation](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/product_agent_os/project_formation.py) и [merge](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/product_agent_os/merge_infrastructure.py) вызываются через [renderer](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/render_infrastructure.py); [validators](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/plugins/product-agent-os/scripts/product_agent_os/validators.py) вызываются отдельными CLI. [Граф и retrieval](../code-intelligence/index.md) — самостоятельные read/query поверхности, не authority для записи.
+
+Staged templates, agents, hooks и learning candidates — предложения; активная конфигурация и фактическая загрузка устанавливаются только проверкой конкретного host. [Formation](project-formation.md#dg07-preservation) фиксирует сохранение файлов; [индекс владельцев](index.md#dg07-plugin-owners) — актуализацию и связанные тесты. Не выполнялся runtime/provider/target apply.
+
 ## Сквозной ordinary route {#ordinary-route}
 
 | Граница | Что происходит | Что не следует из результата |

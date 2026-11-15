@@ -206,3 +206,7 @@ python tools\check_docs.py
 ## Актуальный маршрут и evidence
 
 При релевантном изменении покрывайте trust changes, skill omission, surface mismatch и changed-scope/pending tool cases. Закрытые probes не повторяются без изменённого state или нового риска. [Skills](../agent-systems/subagents-skills.md), [session control](../agent-systems/session-control.md).
+
+## Карта проверяемости
+
+[Тесты подсистем](../testing/test-map.md), [границы AI evals](../testing/ai-evals.md) и [synthetic/live evidence](../testing/synthetic-vs-live.md) направляют изменения к проверкам. TEST/EVALS сохраняют оперативное владение; исторические receipts на этой странице не являются текущим прогоном.
