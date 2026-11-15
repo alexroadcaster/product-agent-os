@@ -142,3 +142,7 @@ Prior closure evidence recorded focused/full checks for graph/cockpit/search/sta
 - `docs/product-agent-os/cli-reference.md` - script/mode reference when available.
 
 Next action for a maintainer: use this page as the reader-facing Project Code Graph guide, then link it from MkDocs navigation and source registry when the public docs map changes.
+
+## Implementation routing
+
+The [code-intelligence map](../code-intelligence/index.md) distinguishes Web lexical graph from this Python plugin contract; [retrieval](../ai/rag/index.md) describes deterministic and approval-bound paths. This page retains ownership of its existing graph contract.

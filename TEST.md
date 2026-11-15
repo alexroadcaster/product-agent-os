@@ -2,6 +2,8 @@
 
 ## Текущий выбор проверок — 15.11.2026
 
+DG05: [AI/LLM/retrieval/graph documentation evidence](docs/planning/documentation-architecture-2026-11-15.md#dg05-results) — isolated `.docs-tools/reports/dg05/site`, source3+card parity1, matrices2, site7, HTML/source links и source sets 20 RU/EN пар. Runtime/model/provider evals не выполнялись; linked tests — traceability.
+
 DG04: [frontend documentation evidence](docs/planning/documentation-architecture-2026-11-15.md#dg04-results) — isolated `.docs-tools/reports/dg04/site`, source3 + translation-card regression1, matrices2, site7, HTML/source links, 15-section inventory и 6 RU/EN source sets. Приложение не менялось; новый browser/runtime/a11y прогон не заявлен.
 
 DG03: [source/site/schema/ERD evidence и команды](docs/planning/documentation-architecture-2026-11-15.md#dg03-results) — isolated `.docs-tools/reports/dg03/site`, source3 + translation-card regression1, matrices2, site7, HTML/source links, SQL inventory и Mermaid2. Runtime suites не запускались; ссылки на них — traceability.

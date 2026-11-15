@@ -30,3 +30,7 @@ Graph считается stale, если source files изменились по�
 
 Минимальный docs gate для этой страницы: source registry marker, docs tests, `tools/check_docs.py`, strict MkDocs smoke и `git diff --check`. Focused graph tests нужны только если меняется scanner, ontology или query code.
 
+
+## Маршрутизация реализации
+
+[Карта code intelligence](../code-intelligence/index.md) отделяет Web lexical graph от этого Python plugin contract; [retrieval](../ai/rag/index.md) описывает deterministic и approval-bound paths. Эта страница сохраняет владение существующим graph contract.

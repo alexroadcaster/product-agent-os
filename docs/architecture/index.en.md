@@ -21,3 +21,7 @@ This map locates source and boundary ownership for Web/desktop and the separate 
 ## Frontend implementation
 
 [Frontend and UI/UX](../frontend/index.md) maps screens, components, API state, design ownership and accessibility evidence to current source.
+
+## AI and code intelligence
+
+[Agent orchestration](../ai/agents/orchestration.md), [LLM contracts](../ai/llm/index.md), [retrieval boundaries](../ai/rag/index.md) and [Web/Python graph paths](../code-intelligence/index.md) document distinct current implementation surfaces.

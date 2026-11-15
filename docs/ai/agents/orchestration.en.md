@@ -1,0 +1,21 @@
+# Agent orchestration and execution
+
+Source status: repository_source / static_source_review; 2026-11-15.
+
+Owner: runtime/agent owner + docs-maintainer. Scope: PAOS implementation at `61f6cd4cd048be478e88e2406c733f98b60bc434`. Update when the selector, gateway, contracts, execution boundaries or related tests change. Linked tests are verification routes, not new runs; activation and human acceptance need separate evidence.
+
+## Selection and boundary
+
+[main.mts](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/apps/local-service/src/main.mts) creates the App gateway and a second gateway, passing both to [route-selector.ts](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/apps/local-service/src/runtime/route-selector.ts). With neither route nor API key the selector chooses `codex_app_agent`; an `apiKey` without route selects `local_api_byok`. One queue serializes connect/disconnect/dispatch; changing an engaged route requires disconnect. There is no automatic cross-route fallback. [LLM routes](../llm/routes.md) owns details.
+
+## App-agent: from attach to result
+
+1. The UI selects the App route. Opening a draft or Codex App window alone does not attach a worker. [app-agent-channel.mts](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/apps/local-service/src/runtime/app-agent-channel.mts) provides a separate per-instance loopback capability channel; a browser cookie confers no worker authority.
+2. [app-agent-gateway.mts](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/apps/local-service/src/runtime/app-agent-gateway.mts) accepts attach only for the selected route and expected hostIdentity. The worker receives a generation-scoped lease; heartbeat extends it. Host identity is attested by the trusted caller, not cryptographically proven by this protocol.
+3. A project/session binding uses discussion/planning/execution mode. Execution needs a configured broker; project root identity is checked. Send persists a queued job and returns its state. The consumer must claim it; a repeated clientMessageId with a conflicting payload is rejected.
+4. Claim records worker/generation and running; the consumer may send progress and terminal report. Report idempotency is bound to key and digest. An agent_reported result is neither owner acceptance nor proof checks ran.
+5. Stop can mark a queued job interrupted; an active job becomes cancel_requested and broker interruption is requested. An interrupted acknowledgement and settlement of external operations are separate observations. Restart or unknown outcome can require recovery_required without automatic replay.
+
+## Other owners
+
+[execution-recipes/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/apps/local-service/src/execution-recipes/service.mts) manages pinned recipe steps and recovery; [coordinator.ts](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/apps/local-service/src/runtime/codex/coordinator.ts) is a separate coordinator for the other runtime path, not the App gateway. Packaged [workspace-discovery-auditor/SKILL.md](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/plugins/product-agent-os/skills/workspace-discovery-auditor/SKILL.md) and [staged agent templates](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/plugins/product-agent-os/assets/templates/agents/architect.toml) provide lifecycle instructions and templates; their presence does not mean Web runtime selected them. [app-agent-gateway.test.mts](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/tests/web/app-agent-gateway.test.mts), [app-agent-channel.test.mts](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/tests/web/app-agent-channel.test.mts), [recipe-recovery.test.mts](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/tests/web/recipe-recovery.test.mts) identify related scenarios, not a new run.

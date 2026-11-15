@@ -21,3 +21,7 @@ Source status: repository_source / static_architecture_map; 15.11.2026.
 ## Реализация frontend
 
 [Frontend и UI/UX](../frontend/index.md) связывает экраны, компоненты, API state, владение дизайном и accessibility evidence с текущими исходниками.
+
+## AI и code intelligence
+
+[Оркестрация агентов](../ai/agents/orchestration.md), [LLM contracts](../ai/llm/index.md), [границы retrieval](../ai/rag/index.md) и [Web/Python graph paths](../code-intelligence/index.md) описывают отдельные текущие surfaces реализации.

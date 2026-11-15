@@ -142,3 +142,7 @@ Prior closure evidence recorded focused/full checks для graph/cockpit/search/
 - `docs/product-agent-os/cli-reference.md` - script/mode reference когда available.
 
 Следующий action для maintainer: использовать эта page как reader-facing Project Code Graph guide, затем link это из MkDocs navigation и source registry когда public docs map changes.
+
+## Маршрутизация реализации
+
+[Карта code intelligence](../code-intelligence/index.md) отделяет Web lexical graph от этого Python plugin contract; [retrieval](../ai/rag/index.md) описывает deterministic и approval-bound paths. Эта страница сохраняет владение существующим graph contract.

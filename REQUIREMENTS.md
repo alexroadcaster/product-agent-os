@@ -2,7 +2,9 @@
 
 ## Документация реализации — 15.11.2026
 
-Текущий запрос DG04 разрешает DOCS-06: шесть полных RU/EN guides frontend/navigation/state/components/design-system/accessibility, source traceability и изолированную сборку. DESIGN/assets сохраняют владение дизайном; future Files/Map/Database/usages остаются planned. Приёмка документации не подтверждает новый browser/runtime/WCAG/human результат.
+Текущий запрос DG05 разрешает DOCS-08–11: AI/agents, LLM routes/prompts/budgets, retrieval/RAG и code-intelligence, полные RU/EN и проверки сайта. Web/Python/provider gates и configured/pinned/observed разделены; no silent fallback, missing telemetry и planned F11/F15/F26–34/M5 обозначены. Runtime/provider/model calls, код и prompts/config не изменяются.
+
+Предыдущий запрос DG04 разрешил DOCS-06: шесть полных RU/EN guides frontend/navigation/state/components/design-system/accessibility, source traceability и изолированную сборку. DESIGN/assets сохраняют владение дизайном; future Files/Map/Database/usages остаются planned. Приёмка документации не подтверждает новый browser/runtime/WCAG/human результат.
 
 Owner request: реальные планы и задачи находятся в `docs/planning`, включая исторические; исследования и execution evidence сохраняют свои владельцы. [Documentation backlog](docs/planning/documentation-architecture-2026-11-15.md) отдельно задаёт актуальные domain docs и UI/UX/API/SQLite/AI boundaries. Приёмка переноса: сохранены карточки, статусы и зависимости, исправлены ссылки; scope переноса не означал написания новых разделов. Последующий запрос DG02 разрешает DOCS-01–03: три входа/owners, продуктовую модель с traceability и текущую архитектуру/ADR, полные RU/EN и проверку сборки. Предыдущий запрос DG03 разрешил DOCS-04/05/07: backend lifecycle/modules/recovery, полный справочник текущих HTTP/events/errors и SQLite schema/ERD/migrations/transactions/backup/search, полные RU/EN, source inventory и изолированную сборку. Scope не включает реализацию FUNC/M5, чтение реальной пользовательской БД, migrations или остальных domain guides; критерии принадлежат карточкам плана.
 

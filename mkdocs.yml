@@ -119,6 +119,30 @@ plugins:
                 - Transactions: db/transactions.md
                 - Backup / restore: db/backup-restore.md
                 - Search index: db/search-index.md
+            - AI and agents:
+                - AI overview: ai/index.md
+                - Orchestration: ai/agents/orchestration.md
+                - Context: ai/agents/context.md
+                - Tools and approvals: ai/agents/tools-approvals.md
+                - Sessions: ai/agents/sessions.md
+            - LLM:
+                - Overview: ai/llm/index.md
+                - Routes: ai/llm/routes.md
+                - Prompts and outputs: ai/llm/prompts-and-outputs.md
+                - Budgets and observability: ai/llm/budgets-and-observability.md
+            - Retrieval and RAG:
+                - Overview: ai/rag/index.md
+                - Corpus and indexing: ai/rag/corpus-and-indexing.md
+                - Retrieval: ai/rag/retrieval.md
+                - Freshness and provenance: ai/rag/freshness-and-provenance.md
+                - Evaluation: ai/rag/evaluation.md
+            - Code intelligence:
+                - Overview: code-intelligence/index.md
+                - Discovery: code-intelligence/discovery.md
+                - Inventory: code-intelligence/inventory.md
+                - Graph model: code-intelligence/graph-model.md
+                - Queries and impact: code-intelligence/queries-impact.md
+                - Adapters: code-intelligence/adapters.md
             - Plans and tasks: planning/index.md
             - Sources:
                 - Source Registry: sources/registry.md
@@ -316,6 +340,30 @@ nav:
       - Транзакции: db/transactions.md
       - Backup / restore: db/backup-restore.md
       - Поисковый индекс: db/search-index.md
+  - AI и агенты:
+      - Обзор AI: ai/index.md
+      - Оркестрация: ai/agents/orchestration.md
+      - Контекст: ai/agents/context.md
+      - Tools и approvals: ai/agents/tools-approvals.md
+      - Сессии: ai/agents/sessions.md
+  - LLM:
+      - Обзор: ai/llm/index.md
+      - Routes: ai/llm/routes.md
+      - Prompts и outputs: ai/llm/prompts-and-outputs.md
+      - Budgets и observability: ai/llm/budgets-and-observability.md
+  - Retrieval и RAG:
+      - Обзор: ai/rag/index.md
+      - Corpus и индексация: ai/rag/corpus-and-indexing.md
+      - Retrieval: ai/rag/retrieval.md
+      - Freshness и provenance: ai/rag/freshness-and-provenance.md
+      - Оценка качества: ai/rag/evaluation.md
+  - Code intelligence:
+      - Обзор: code-intelligence/index.md
+      - Discovery: code-intelligence/discovery.md
+      - Inventory: code-intelligence/inventory.md
+      - Модель графа: code-intelligence/graph-model.md
+      - Запросы и impact: code-intelligence/queries-impact.md
+      - Адаптеры: code-intelligence/adapters.md
   - Планы и задачи: planning/index.md
   - Источники:
       - Реестр источников: sources/registry.md

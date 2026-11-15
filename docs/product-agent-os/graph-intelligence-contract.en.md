@@ -31,3 +31,7 @@ A graph is stale when source files changed after generation, manifest digests do
 ## Verification
 
 Minimum docs gate for this page: source registry marker, docs tests, `tools/check_docs.py`, strict MkDocs smoke, and `git diff --check`. Focused graph tests are needed only when scanner, ontology, or query code changes.
+
+## Implementation routing
+
+The [code-intelligence map](../code-intelligence/index.md) distinguishes Web lexical graph from this Python plugin contract; [retrieval](../ai/rag/index.md) describes deterministic and approval-bound paths. This page retains ownership of its existing graph contract.

@@ -1,0 +1,11 @@
+# Freshness, provenance and recovery
+
+Source status: repository_source / static_contract_review; 2026-11-15.
+
+Owner: retrieval/graph owner + docs-maintainer. Scope: DG05, revision `61f6cd4cd048be478e88e2406c733f98b60bc434`. Update when index, filters, budgets, provenance or eval contract changes. Test links do not claim a new run.
+
+Web FTS ties indexed_documents to entity revision and index generation. A business command commits before separate index refresh; failure leaves index_jobs and partial coverage but does not undo the receipt. Rebuild is transactional with rollback on cancellation; stream generation after restore differs from index generation. See [DB search](../../db/search-index.md) and [restore](../../db/backup-restore.md).
+
+Python structural observations associate source path/span/fingerprint and extractor; they point to source rather than prove behavior. [semantic](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/plugins/product-agent-os/scripts/product_agent_os/project_graph_semantic.py) stores a graph fingerprint and blocks a query when a supplied graph differs; TTL in policy alone does not establish freshness. Hybrid checks static and semantic fingerprints ([hybrid](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/plugins/product-agent-os/scripts/product_agent_os/project_graph_hybrid_retrieval.py)); an old packet requires fresh source review.
+
+Disabling semantic/hybrid is limited to generated stage artifacts outside the target workspace; graph/lexical fallback is specified. This describes rollback, not permission to delete user data. External gate/cache have separate deletion scope and deletion proof ([embedding gate](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/plugins/product-agent-os/scripts/product_agent_os/project_graph_embedding_provider.py)); no deletion was run here. [semantic tests](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/tests/product_agent_os/test_project_graph_semantic.py), [provider tests](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/tests/product_agent_os/test_project_graph_embedding_provider.py).

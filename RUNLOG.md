@@ -1,5 +1,9 @@
 # RUNLOG.md
 
+## DG05 — завершено, 15.11.2026
+
+DOCS-08–11 implemented / docs_static_verified: 20 RU/EN пар AI/agents/LLM/retrieval/code-intelligence. [Evidence и команды](docs/planning/documentation-architecture-2026-11-15.md#dg05-results): source3+card parity1, matrix2, strict build, site7, HTML/pinned-source links passed. Scoped reviews LLM и retrieval/graph пройдены; WebFTS/Python/gates/live разделены. Код, prompts/config и runtime/providers не менялись; новый end-to-end Web RAG и PoC не заявлены. Далее DG06; DOCS-13/16 B открыты.
+
 ## DG04 — завершено, 15.11.2026
 
 DOCS-06 implemented / docs_static_verified: 6 RU/EN пар frontend, 15 разделов навигации, components/state/drafts/design/a11y boundaries. [Evidence и команды](docs/planning/documentation-architecture-2026-11-15.md#dg04-results): source3 + card parity1, matrix2, strict build, site7, HTML/pinned-source links passed. Независимый scoped review пройден; desktop/historical narrow-width и human/WCAG gaps разделены. Application/browser/provider checks не выполнялись. Далее DG05; DOCS-13/16 B открыты.
