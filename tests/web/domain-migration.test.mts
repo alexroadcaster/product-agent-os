@@ -74,6 +74,17 @@ test('cutover rejects source drift and unmanaged writers, then rehearses restore
     sourceDigest: proposal.sourceDigest, expectedAuthorityEpoch: epoch + 1, idempotencyKey: 'no-auto-reimport' }), { code: 'IMPORT_PROPOSAL_ONLY' });
 });
 
+test('interrupted cutover before promotion preserves legacy authority and retries once without duplicate tasks',async t=>{
+ const {store,root,preview,epoch}=await fixture(t,true);
+ await store.write({projectId:'p',actorId:'fixture',expectedAuthorityEpoch:epoch,idempotencyKey:'stage-interrupted',changes:[{expectedRevision:0,entity:{id:'stage',kind:'document',data:{...preview,category:'import_staging'}}}]});
+ let interrupted=true;const boundary={...store,promoteLegacy:async(input:Parameters<typeof store.promoteLegacy>[0])=>{if(interrupted)throw Object.assign(Error('Synthetic interruption before atomic promotion'),{code:'SYNTHETIC_IMPORT_INTERRUPTED'});return store.promoteLegacy(input);}};
+ const manager=createMigrationManager({store:boundary,profileDirectory:root,inventory:async()=>({complete:true,entries:[{id:'managed-writer',role:'writer',route:'domain_adapter',verified:true,sourceDigest:'a'.repeat(64)}]})});
+ const input={projectId:'p',stageId:'stage',actorId:'fixture',sourceDigest:preview.sourceDigest,expectedAuthorityEpoch:epoch,idempotencyKey:'interrupted-cutover'};
+ await assert.rejects(manager.cutover(input),{code:'SYNTHETIC_IMPORT_INTERRUPTED'});assert.equal(manager.frozen('p'),false);assert.equal((await store.project('p'))!.authorityMode,'legacy_files');assert.equal((await store.project('p'))!.authorityEpoch,epoch);assert.equal((await store.projectEntities('p',{kinds:['task']})).length,0);assert.equal(await store.receipt('p',input.idempotencyKey),null);
+ interrupted=false;const result=await manager.cutover(input),retry=await createMigrationManager({store,profileDirectory:root,inventory:async()=>({complete:false,entries:[]})}).cutover(input);
+ assert.deepEqual(retry.receipt,result.receipt);assert.equal((await store.projectEntities('p',{kinds:['task']})).length,1);assert.equal((await store.project('p'))!.authorityEpoch,epoch+1);assert.equal(await readFile(join(root,'project','fixture.json'),'utf8'),content);
+});
+
 test('legacy committed cutover without a backup receipt stays replayable without inventing its backup', async (t) => {
   const {store,root,preview,epoch}=await fixture(t,true);
   await store.write({projectId:'p',actorId:'user',expectedAuthorityEpoch:epoch,idempotencyKey:'legacy-stage',changes:[

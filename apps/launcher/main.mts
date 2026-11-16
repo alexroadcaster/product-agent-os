@@ -17,6 +17,9 @@ export class NativeLauncherError extends Error {
  constructor(code:string){super('The local launcher operation is unavailable.');this.code=code;}
 }
 const record=(value:unknown):Record<string,unknown>=>value!==null&&typeof value==='object'&&!Array.isArray(value)?value as Record<string,unknown>:{};
+/** Carry explicit user-space discovery/temp roots, never provider secrets, PATH, or NODE_OPTIONS.
+ * A disposable Windows home must survive the launcher→service boundary instead of falling back to the OS account. */
+function serviceEnvironment(){const env:NodeJS.ProcessEnv={SystemRoot:process.env.SystemRoot};for(const name of ['USERPROFILE','HOME','APPDATA','LOCALAPPDATA','TEMP','TMP','CODEX_HOME']){const value=process.env[name];if(value!==undefined){if(!isAbsolute(value)||value.startsWith('\\\\')||value.includes('\0'))throw new NativeLauncherError('service_environment_invalid');env[name]=value;}}return env;}
 
 /** IPC readiness contains a short-lived pairing code; it is never published to the instance record or stdout. */
 export async function startIpcService(options:Readonly<{child:ChildProcess;instanceId:string;build:string;
@@ -132,7 +135,7 @@ export async function runNativeLauncher(options:Readonly<{profileDirectory:strin
  const host={
   async startService(input:{instanceId:string},signal:AbortSignal) {
    const child=fork(options.serviceModule??fileURLToPath(new URL('../local-service/src/main.mts',import.meta.url)),[],{
-    execArgv:[],windowsHide:true,silent:true,env:{SystemRoot:process.env.SystemRoot,
+    execArgv:[],windowsHide:true,silent:true,env:{...serviceEnvironment(),
      PAOS_PROFILE_DIR:options.profileDirectory,PAOS_INSTANCE_ID:input.instanceId}});
    // Service logs are not a transport and must never expose pairing/auth material.
    child.stdout?.resume();child.stderr?.resume();

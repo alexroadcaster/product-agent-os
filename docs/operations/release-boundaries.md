@@ -1,6 +1,6 @@
 # Упаковка и границы выпуска
 
-Source status: repository_source / static_contract_review; 15.11.2026.
+Source status: repository_source / static_contract_review; 15.11.2026.; FUNC-G06 managed contract, locally_verified_with_explicit_limits, 16.11.2026.
 
 Владелец: runtime/operations owner + docs-maintainer. Область: local desktop package на `259977f3b257ba7fc0e932396f8963262bd327ad`; обновлять при изменении launcher, CLI, snapshot или release gates. Ссылки на тесты — маршруты проверки, не новый прогон. Реальные профили, credentials и provider не исследовались.
 
@@ -8,4 +8,10 @@ Source status: repository_source / static_contract_review; 15.11.2026.
 
 [PAOS-0030 manifest](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/docs/release/web-m4-local-release.json) и [отчёт](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/research/product-agent-os-web-m4-0030-execution-2026-11-12.md) фиксируют ограниченный локальный технический pilot от 12.11.2026, включая 88 проверок и отдельное согласование копии проекта. Это исторический результат для указанного окружения. Artifact unsigned; system install, подписанный installer, human acceptance и коммерческий выпуск не подтверждены. Лицензия PAOS, полный transitive native license audit, privacy/account/route/support и иные release gates требуют отдельного решения владельцев. Наличие manifest не даёт права публичной дистрибуции и не подтверждает доступность моделей или качество ответов.
 
-FUNC-17 — отдельная запланированная задача; это руководство не реализует автоматическое обновление или распространение. Текущий статус находится в [функциональном плане](../planning/functional-remediation-2026-11-15.md). [Тесты package](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/tests/web/desktop-local.test.mts) — связанный маршрут, а не новая квалификация, установка или публикация.
+FUNC-17 в FUNC-G06 добавляет managed local delivery; его текущая qualification принадлежит owning matrix. Автоматическое сетевое обновление и публичное распространение не реализованы. Текущий статус находится в [функциональном плане](../planning/functional-remediation-2026-11-15.md). [Тесты package](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/tests/web/desktop-local.test.mts) — связанный маршрут, а не новая квалификация, установка или публикация.
+
+## FUNC-G06 / F17 — выбранная поставка и admission
+
+Выбран канал private_local_pilot: unsigned portable каталог устанавливается managed Node CLI в user space, без MSI/MSIX, registry/PATH и загрузки runtime. Exact host tuple admission выполняется до installation/selection; schema проверяется при restore нового профиля. Один managed-home выводит каталоги versions/profiles/backups/control. Update удерживает reservation текущего профиля через snapshot→restore→selection, сохраняет старые данные и не понижает active DB in place. Rollback использует явно выбранный совместимый snapshot и ещё один новый профиль; для сохранения новых изменений нужен свежий совместимый snapshot.
+
+Fresh Windows acceptance — disposable PAOS profile и fresh home/appdata/temp environment в реальном Windows child process под текущей account. Это не новый OS account/SID, системная установка, signed publisher trust, human acceptance или коммерческий release. Launcher передаёт только whitelist path variables в actual service child; provider secrets/NODE_OPTIONS не наследуются. Hash verification означает content integrity, не authentication или entitlement. AUTH-G1–G6, собственная лицензия, native transitive notices и внешний/публичный release остаются отдельными gates. [FUNC-G06](../planning/functional-remediation-2026-11-15.md#func-g06-results).

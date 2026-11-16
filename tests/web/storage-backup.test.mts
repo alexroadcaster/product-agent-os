@@ -4,6 +4,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve, sep } from 'node:path';
 import { test } from 'node:test';
 import { DatabaseSync } from 'node:sqlite';
+import {createHash} from 'node:crypto';
 import { openLocalStore, pruneManagedBackups, restoreLocalBackup } from '../../apps/local-service/src/storage/local-store.mts';
 import { createSnapshot } from '../../apps/local-service/src/storage/snapshot.mts';
 
@@ -51,6 +52,17 @@ test('restoring an immutable snapshot preserves messages/settings/blobs and inva
     await unlink(join(backup.directory, 'blobs', blob.id));
     await assert.rejects(restoreLocalBackup(backup.directory, join(root, 'missing.sqlite')), { code: 'BLOB_MISSING' });
   } finally { await store.close(); }
+});
+
+test('restore independently rejects invalid foreign keys even when backup hashes are self-consistent',async t=>{
+ const root=await mkdtemp(join(tmpdir(),'paos-backup-fk-'));t.after(async()=>{assert.ok(resolve(root).startsWith(resolve(tmpdir())+sep));await rm(root,{recursive:true,force:true});});
+ const store=await openLocalStore({databasePath:join(root,'source.sqlite')});
+ try{await store.registerProject({id:'p',keyPrefix:'TEST',canonicalRoot:root,rootIdentity:'synthetic',authorityMode:'sql'});await store.write({projectId:'p',actorId:'fixture',expectedAuthorityEpoch:1,idempotencyKey:'seed',changes:[{expectedRevision:0,entity:{id:'s',kind:'session'}},{expectedRevision:0,entity:{id:'m',kind:'message',parentId:'s',body:'Preserved source'}}]});
+ const backup=await store.backup(root),database=join(backup.directory,'database.sqlite');
+ {using altered=new DatabaseSync(database,{enableForeignKeyConstraints:false});altered.prepare('UPDATE entities SET parent_id=? WHERE id=?').run('missing-parent','m');}
+ const hash=(bytes:Buffer|string)=>createHash('sha256').update(bytes).digest('hex'),manifest=JSON.parse(await readFile(join(backup.directory,'manifest.json'),'utf8'));manifest.databaseSha256=hash(await readFile(database));const {manifestSha256:ignored,...body}=manifest;manifest.manifestSha256=hash(JSON.stringify(body));await writeFile(join(backup.directory,'manifest.json'),JSON.stringify(manifest));
+ const destination=join(root,'rejected.sqlite');await assert.rejects(restoreLocalBackup(backup.directory,destination),{code:'FOREIGN_KEY_FAILED'});await assert.rejects(readFile(destination),{code:'ENOENT'});assert.equal((await store.get('p','m'))!.body,'Preserved source');assert.equal((await store.get('p','m'))!.parentId,'s');
+ }finally{await store.close();}
 });
 
 test('managed backup rotation requires preview candidates and preserves five recent snapshots, pinned backups and user exports', async (t) => {

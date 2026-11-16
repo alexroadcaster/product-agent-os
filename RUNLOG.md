@@ -1,5 +1,9 @@
 # RUNLOG.md
 
+## FUNC-G06 — закрыта, 16.11.2026
+
+FUNC-G06 implemented3/3. F21processcrash/ownership20/20; F22import/backup11/11; finalweb694/694,0skip. Managedactualpackage10/10,3installedA/B/Aphases withrealNativeLauncherIPC/service andreadback; nativewindow=false,currentOSaccountfreshfixtureenvonly. Homeenvandhomelock defects actualRED→GREEN; originalfilehashespreserved,newemptyWAL/32KiBSHM explicitlyrecorded. Finalreview separate_reused_context,closed_allowed (.tmp/func-g06/final-review.json);157source/package/distbindings,31foreigncards/JSONperlanguage,141rootsections preserved. RUENvalidatorok=true/errors=[],docs14passed; priorfailedvalidatorreceiptsretained. No provider/realcredentials/Git/systeminstallation/publication. [Решения/evidence](docs/planning/functional-remediation-2026-11-15.md#func-g06-results).
+
 ## FUNC-G05 — закрыта, 16.11.2026
 
 FUNC-G05 implemented,5/5. Fullweb686/686,0fail/skip; browser16/16 source/build bound, typecheck/build/native candidate→default passed. Independent source review нашёл rollback-operation defect, исправленный actual RED→GREEN; browser нашёл Usage wiring defect, исправленный и проверенный. Setup/selector/HTTP fixture failures сохранены. Final review separate_reused_context, closed_allowed (.tmp/func-g05/final-review.json). Preservation check:29foreign cards/JSON,137root sections, AC/groups/M5/history и215source+4dist hashes сохранены; docs28/validators passed. Текущий итог27 implemented/7 planned; M5, остальные29 cards и historical evidence сохраняются. Residual limits: Windows writer, non-atomic external ignore revocation, explicit unknown recovery, no host telemetry/loaded attestation/money enforcement/human acceptance. [Решения и evidence](docs/planning/functional-remediation-2026-11-15.md#func-g05-results).

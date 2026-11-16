@@ -1,5 +1,9 @@
 # REQUIREMENTS.md
 
+## FUNC-G06 — закрыта, 16.11.2026
+
+F21/F22/F17 implemented3/3 по исходным AC в private local synthetic scope. Data/ownership/recovery иmanaged user-space install/update/rollback проверены на currenttuple. FreshWindowsprofile означаетdisposablePAOSprofile/env,currentOSaccount; signing/systeminstall/commercial/provider/human acceptance отдельно. [Решения/evidence](docs/planning/functional-remediation-2026-11-15.md#func-g06-results).
+
 ## FUNC-G05 — закрыта, 16.11.2026
 
 F11/F12/F13/F15/F16 implemented,5/5, с исходными AC и bounded local synthetic acceptance. Metrics и reservation budget разделены, внешние skills импортируются как managed copy, exact-preview document writes/recovery не создают acceptance, configured/pinned/observed и history coverage различаются. Host metering/attestation, денежное enforcement, provider/human/release acceptance отдельно. [Решения и evidence](docs/planning/functional-remediation-2026-11-15.md#func-g05-results).

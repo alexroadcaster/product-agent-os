@@ -5,7 +5,7 @@
   "timezone": "Europe/Moscow",
   "source_plan": "docs/planning/functional-remediation-2026-11-15.md",
   "status": "in_progress",
-  "execution_authority": "owner_authorized_func_g01_g02_g03_g04_g05_local_synthetic",
+  "execution_authority": "owner_authorized_func_g01_g02_g03_g04_g05_g06_local_synthetic",
   "original_group_unchanged": "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json",
   "tasks": [
     {
@@ -1194,10 +1194,10 @@
     {
       "id": "PAOS-FUNC-17",
       "title": "Подготовить удобную установку, обновление и rollback",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "type": "feature",
-      "evidence_level": "bounded_capability_or_missing_extension",
+      "evidence_level": "locally_verified_with_explicit_limits",
       "technical_value": "Поверх переносимого package задать version/digest/signing, compatibility и recovery UX.",
       "product_value": "Обновление не требует ручного подбора каталогов и не ставит данные под угрозу.",
       "acceptance_criteria": [
@@ -1224,8 +1224,8 @@
       "estimate": "8–16 ч design; build после выбора канала",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "unknown_until_design_gate",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "16-11-2026 08:40",
+      "execution_authority": "owner_authorized_func_g06_local_synthetic",
       "source_observation": "Portable CLI есть; signed installer/auto-update не заявлены.",
       "source_paths": [
         "apps/desktop-local/README.md"
@@ -1233,7 +1233,56 @@
       "future_test_commands": [
         "node --test tests/web/desktop-local.test.mts"
       ],
-      "delivery_group_id": "FUNC-G06"
+      "delivery_group_id": "FUNC-G06",
+      "completion_report": {
+        "status": "implemented",
+        "what_was_done": "Реализованы managed setup/update/rollback/status/start с одним home поверх private unsigned portable package. Host tuple admission до записи, home→selection locks и source/target reservations сохраняют profile/version data. Env whitelist исправляет fresh service home; current operation receipt после commit отражается честно. Actual relocated A/B/A CLI/NativeLauncher IPC/service/browser и incompatible-schema rollback проверены без checkout fallback.",
+        "implementation_at": "16-11-2026 08:40",
+        "verification_evidence": [
+          ".tmp/func-g06/f17-cli-red.log",
+          ".tmp/func-g06/f17-fresh-env-red.log",
+          ".tmp/func-g06/f17-fresh-env-green.log",
+          ".tmp/func-g06/f17-home-lock-red.log",
+          ".tmp/func-g06/f17-home-lock-green.log",
+          ".tmp/func-g06/web-native-final.log:694/694,0fail/skip",
+          ".tmp/func-g06/managed-acceptance/evidence-mJ8j5k/result.json:10/10,cleanup=true",
+          ".tmp/func-g06/native-candidate.json:passed",
+          ".tmp/func-g06/native-default.json:passed",
+          ".tmp/func-g06/typecheck-final.log:passed",
+          ".tmp/func-g06/build-final.log:passed",
+          ".tmp/func-g06/final-review.json:separate_reused_context,closed_allowed"
+        ],
+        "docs_impact": {
+          "decision": "updated",
+          "paths": [
+            "apps/desktop-local/README.md",
+            "docs/operations/install-start-stop.md",
+            "docs/operations/install-start-stop.en.md",
+            "docs/operations/release-boundaries.md",
+            "docs/operations/release-boundaries.en.md",
+            "docs/web/pilot.md",
+            "docs/web/pilot.en.md",
+            "docs/db/backup-restore.md",
+            "docs/db/backup-restore.en.md",
+            "docs/sources/registry.md",
+            "docs/sources/registry.en.md"
+          ],
+          "source_revision": "current_g06_source_package_dist_native_bound"
+        },
+        "residual_risks": "Private unsigned user-space delivery on the existing Windows account; no new OS account/SID, actual native GUI/SmartScreen, system installation, signing/commercial/public release, provider/model or human acceptance. Cooperative managed profile reservations do not sandbox arbitrary SQLite writers. Every original file hash is preserved; explicitly recorded new empty WAL/32KiB SHM bookkeeping means whole-directory identity is not claimed. Rollback restores the explicitly selected compatible snapshot; newer work needs a fresh compatible backup.",
+        "files_touched": [
+          "apps/desktop-local/distribution.mts",
+          "apps/desktop-local/main.mts",
+          "apps/desktop-local/README.md",
+          "apps/launcher/main.mts",
+          "tests/web/desktop-local-managed.test.mts",
+          "tests/web/single-window/managed-distribution-acceptance.mts",
+          "tests/web/single-window/managed-distribution.fixture.mts"
+        ],
+        "technical_value_delivered": "Managed paths, exact tuple/selection admission, transfer leases, home→selection launch fence и env isolation проверены на реальных relocated packages.",
+        "product_value_delivered": "Один managed-home заменяет ручной подбор версий/профилей; update/explicit rollback сохраняют данные и дают понятные refusal/recovery состояния.",
+        "follow_up": "Нет незавершённой работы карточки в G06 scope; human/signing/public/commercial release и новый OS account остаются отдельными gates."
+      }
     },
     {
       "id": "PAOS-FUNC-18",
@@ -1489,10 +1538,10 @@
     {
       "id": "PAOS-FUNC-21",
       "title": "Перепроверить очередь, Stop и crash recovery",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "type": "verification",
-      "evidence_level": "verification_gap",
+      "evidence_level": "locally_verified",
       "technical_value": "Проверить identity/CAS/lease/ownership fences и отсутствие replay в отказах.",
       "product_value": "Потеря соединения не запускает задачу дважды и не теряет результат.",
       "acceptance_criteria": [
@@ -1519,8 +1568,8 @@
       "estimate": "8–16 ч",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "rough_range",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "16-11-2026 08:11",
+      "execution_authority": "owner_authorized_func_g06_local_synthetic",
       "source_observation": "Recovery/ownership implemented; необходим current-run regression.",
       "source_paths": [
         "apps/local-service/src/recovery/recipe-checkpoint.mts",
@@ -1529,15 +1578,48 @@
       "future_test_commands": [
         "node --test tests/web/recipe-recovery.test.mts tests/web/recipe-crash.test.mts tests/web/scheduler-runtime.test.mts tests/web/parallel-workspaces.test.mts"
       ],
-      "delivery_group_id": "FUNC-G06"
+      "delivery_group_id": "FUNC-G06",
+      "completion_report": {
+        "status": "implemented",
+        "what_was_done": "Три actual-process SIGKILL boundaries (before dispatch, in-flight/no receipt, terminal receipt) проверены с DB reopen. Run identity/ownership, explicit resume и successor-only dispatch сохраняются; unknown/cancel без ACK не освобождают scope. Root overlap/parallel/selective Stop проверки проходят.",
+        "implementation_at": "16-11-2026 08:11",
+        "verification_evidence": [
+          ".tmp/func-g06/f21-focused-final.log:20/20,0fail/skip",
+          ".tmp/func-g06/web-native-final.log:694/694,0fail/skip",
+          ".tmp/func-g06/managed-acceptance/evidence-mJ8j5k/result.json:10/10,cleanup=true",
+          ".tmp/func-g06/native-candidate.json:passed",
+          ".tmp/func-g06/native-default.json:passed",
+          ".tmp/func-g06/typecheck-final.log:passed",
+          ".tmp/func-g06/build-final.log:passed",
+          ".tmp/func-g06/final-review.json:separate_reused_context,closed_allowed"
+        ],
+        "docs_impact": {
+          "decision": "updated",
+          "paths": [
+            "docs/backend/recovery.md",
+            "docs/backend/recovery.en.md",
+            "docs/sources/registry.md",
+            "docs/sources/registry.en.md"
+          ],
+          "source_revision": "current_g06_working_tree"
+        },
+        "residual_risks": "Private unsigned user-space delivery on the existing Windows account; no new OS account/SID, actual native GUI/SmartScreen, system installation, signing/commercial/public release, provider/model or human acceptance. Cooperative managed profile reservations do not sandbox arbitrary SQLite writers. Every original file hash is preserved; explicitly recorded new empty WAL/32KiB SHM bookkeeping means whole-directory identity is not claimed. Rollback restores the explicitly selected compatible snapshot; newer work needs a fresh compatible backup.",
+        "files_touched": [
+          "tests/web/recipe-crash.test.mts",
+          "tests/web/recipe-crash.fixture.mts"
+        ],
+        "technical_value_delivered": "Actual process crash boundaries подтверждают durable identity, explicit resume, Stop ownership и отсутствие replay.",
+        "product_value_delivered": "Crash/reconnect не создают повторный run; неизвестный исход и отсутствие Stop ACK остаются явными recovery состояниями.",
+        "follow_up": "Нет незавершённой работы карточки в G06 scope; human/signing/public/commercial release и новый OS account остаются отдельными gates."
+      }
     },
     {
       "id": "PAOS-FUNC-22",
       "title": "Перепроверить импорт, backup и restore",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "type": "verification",
-      "evidence_level": "verification_gap",
+      "evidence_level": "locally_verified",
       "technical_value": "Проверить source authority, freeze/CAS, counts/hashes/FK, blobs и идемпотентность.",
       "product_value": "Задачи, история и вложения сохраняются при переносе и восстановлении.",
       "acceptance_criteria": [
@@ -1564,8 +1646,8 @@
       "estimate": "6–12 ч",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "rough_range",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "16-11-2026 08:11",
+      "execution_authority": "owner_authorized_func_g06_local_synthetic",
       "source_observation": "Import/backup контракты есть; current combined verification отсутствует.",
       "source_paths": [
         "apps/local-service/src/import-export/migration.mts",
@@ -1574,7 +1656,40 @@
       "future_test_commands": [
         "node --test tests/web/domain-migration.test.mts tests/web/storage-backup.test.mts"
       ],
-      "delivery_group_id": "FUNC-G06"
+      "delivery_group_id": "FUNC-G06",
+      "completion_report": {
+        "status": "implemented",
+        "what_was_done": "Проверены source drift/unknown writer freeze/CAS, interrupted pre-promotion retry без duplicate tasks, committed-receipt replay, corrupt/missing blob, независимый FK check при self-consistent hashes, new-profile restore и stale approvals/pending outbox/cursors. Source authority/profile/sourcebytes сохраняются.",
+        "implementation_at": "16-11-2026 08:11",
+        "verification_evidence": [
+          ".tmp/func-g06/f22-focused.log:11/11,0fail/skip",
+          ".tmp/func-g06/web-native-final.log:694/694,0fail/skip",
+          ".tmp/func-g06/managed-acceptance/evidence-mJ8j5k/result.json:10/10,cleanup=true",
+          ".tmp/func-g06/native-candidate.json:passed",
+          ".tmp/func-g06/native-default.json:passed",
+          ".tmp/func-g06/typecheck-final.log:passed",
+          ".tmp/func-g06/build-final.log:passed",
+          ".tmp/func-g06/final-review.json:separate_reused_context,closed_allowed"
+        ],
+        "docs_impact": {
+          "decision": "updated",
+          "paths": [
+            "docs/db/backup-restore.md",
+            "docs/db/backup-restore.en.md",
+            "docs/sources/registry.md",
+            "docs/sources/registry.en.md"
+          ],
+          "source_revision": "current_g06_working_tree"
+        },
+        "residual_risks": "Private unsigned user-space delivery on the existing Windows account; no new OS account/SID, actual native GUI/SmartScreen, system installation, signing/commercial/public release, provider/model or human acceptance. Cooperative managed profile reservations do not sandbox arbitrary SQLite writers. Every original file hash is preserved; explicitly recorded new empty WAL/32KiB SHM bookkeeping means whole-directory identity is not claimed. Rollback restores the explicitly selected compatible snapshot; newer work needs a fresh compatible backup.",
+        "files_touched": [
+          "tests/web/domain-migration.test.mts",
+          "tests/web/storage-backup.test.mts"
+        ],
+        "technical_value_delivered": "Freeze/CAS, interrupted-promotion retry и independent integrity/FK/blob checks подтверждены current native synthetic checks.",
+        "product_value_delivered": "Задачи, история, settings и attachments сохраняются при переносе/restore; исходные данные не перезаписываются.",
+        "follow_up": "Нет незавершённой работы карточки в G06 scope; human/signing/public/commercial release и новый OS account остаются отдельными gates."
+      }
     },
     {
       "id": "PAOS-FUNC-23",
@@ -2563,7 +2678,7 @@
     }
   ],
   "verification": {
-    "status": "func_g01_g03_locally_verified_g02_research_verified_g04_measured_limits_g05_locally_verified_with_explicit_limits_remaining_planned",
+    "status": "func_g01_g03_locally_verified_g02_research_verified_g04_measured_limits_g05_g06_locally_verified_with_explicit_limits_remaining_planned",
     "application_checks_run": true,
     "initial": {
       "matrix_exit": 0,
@@ -2576,36 +2691,36 @@
       "remediation": "relocate source-owned matrix to research, preserve site inventory"
     },
     "latest": {
-      "task": "FUNC-G05",
+      "task": "FUNC-G06",
       "status": "locally_verified_with_explicit_limits",
       "counts": {
-        "implemented": 27,
-        "planned": 7
+        "implemented": 30,
+        "planned": 4
       },
+      "started_at": "2026-11-16T05:00:11Z",
+      "completed_at": "2026-11-16T05:47:40.272Z",
       "review": {
         "context_mode": "separate_reused_context",
-        "reviewer": "/root/func_g05_completion_review",
+        "reviewer": "/root/func_g06_completion_review",
         "tester_verdict": "closed_allowed",
-        "evidence": ".tmp/func-g05/final-review.json"
+        "evidence": ".tmp/func-g06/final-review.json"
       },
-      "started_at": "2026-11-16T02:10:36Z",
-      "completed_at": "2026-11-16T04:34:12.722Z",
       "evidence": [
-        ".tmp/func-g05/web-native-final.log:686/686,0fail/skip",
-        ".tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json:16/16",
-        ".tmp/func-g05/typecheck-final.log:passed",
-        ".tmp/func-g05/build-responsive-final.log:passed",
-        ".tmp/func-g05/native-candidate.json:passed",
-        ".tmp/func-g05/native-default.json:passed",
-        ".tmp/func-g05/final-review.json:closed_allowed",
-        ".tmp/func-g05/closure-consistency.json:passed",
-        ".tmp/func-g05/docs-final.log:28 sources",
-        ".tmp/func-g05/matrix-ru.log:passed",
-        ".tmp/func-g05/matrix-en.log:passed"
+        ".tmp/func-g06/web-native-final.log:694/694,0fail/skip",
+        ".tmp/func-g06/managed-acceptance/evidence-mJ8j5k/result.json:10/10,cleanup=true",
+        ".tmp/func-g06/native-candidate.json:passed",
+        ".tmp/func-g06/native-default.json:passed",
+        ".tmp/func-g06/typecheck-final.log:passed",
+        ".tmp/func-g06/build-final.log:passed",
+        ".tmp/func-g06/final-review.json:closed_allowed",
+        ".tmp/func-g06/matrix-ru.log:ok=true,errors=[]",
+        ".tmp/func-g06/matrix-en.log:ok=true,errors=[]",
+        ".tmp/func-g06/docs-final.log:14 sources",
+        ".tmp/func-g06/closure-consistency.json:passed"
       ],
-      "browser": ".tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json",
-      "adapterRevision": "aa9c663dd1df54c6f47258234b5b9e9b5df6e0980e5ff58677e4403e30584bcc",
-      "limits": "Bounded local synthetic acceptance; Windows document writer; external ignore revocation is final-checked, not atomic; unknown partial writes require explicit/manual recovery; active journal limits do not purge historical backups. Complete host history/usage, loaded-profile attestation, monetary/host-tool enforcement, provider/human/release acceptance are unavailable or separate."
+      "managedAcceptance": ".tmp/func-g06/managed-acceptance/evidence-mJ8j5k/result.json",
+      "adapterRevision": "ab195406a2f961c55d90d3a1848d4bcd98b644f10c66da7085cde94d0f584f51",
+      "limits": "Private unsigned user-space delivery on the existing Windows account; no new OS account/SID, actual native GUI/SmartScreen, system installation, signing/commercial/public release, provider/model or human acceptance. Cooperative managed profile reservations do not sandbox arbitrary SQLite writers. Every original file hash is preserved; explicitly recorded new empty WAL/32KiB SHM bookkeeping means whole-directory identity is not claimed. Rollback restores the explicitly selected compatible snapshot; newer work needs a fresh compatible backup."
     },
     "previous_planning": {
       "matrix_exit": 0,
@@ -2931,11 +3046,43 @@
       "provider_model_calls": 0,
       "git_history_operations": false,
       "at": "16-11-2026 00:43"
+    },
+    "previous_func_g05": {
+      "task": "FUNC-G05",
+      "status": "locally_verified_with_explicit_limits",
+      "counts": {
+        "implemented": 27,
+        "planned": 7
+      },
+      "review": {
+        "context_mode": "separate_reused_context",
+        "reviewer": "/root/func_g05_completion_review",
+        "tester_verdict": "closed_allowed",
+        "evidence": ".tmp/func-g05/final-review.json"
+      },
+      "started_at": "2026-11-16T02:10:36Z",
+      "completed_at": "2026-11-16T04:34:12.722Z",
+      "evidence": [
+        ".tmp/func-g05/web-native-final.log:686/686,0fail/skip",
+        ".tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json:16/16",
+        ".tmp/func-g05/typecheck-final.log:passed",
+        ".tmp/func-g05/build-responsive-final.log:passed",
+        ".tmp/func-g05/native-candidate.json:passed",
+        ".tmp/func-g05/native-default.json:passed",
+        ".tmp/func-g05/final-review.json:closed_allowed",
+        ".tmp/func-g05/closure-consistency.json:passed",
+        ".tmp/func-g05/docs-final.log:28 sources",
+        ".tmp/func-g05/matrix-ru.log:passed",
+        ".tmp/func-g05/matrix-en.log:passed"
+      ],
+      "browser": ".tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json",
+      "adapterRevision": "aa9c663dd1df54c6f47258234b5b9e9b5df6e0980e5ff58677e4403e30584bcc",
+      "limits": "Bounded local synthetic acceptance; Windows document writer; external ignore revocation is final-checked, not atomic; unknown partial writes require explicit/manual recovery; active journal limits do not purge historical backups. Complete host history/usage, loaded-profile attestation, monetary/host-tool enforcement, provider/human/release acceptance are unavailable or separate."
     }
   },
   "updated_at": "2026-11-16",
   "planning_revision": 4,
-  "change_scope": "func_g05_production_implementation",
+  "change_scope": "func_g06_recovery_and_distribution",
   "research_sources": [
     {
       "task": "PAOS-FUNC-30",
@@ -3519,5 +3666,5 @@
     "FUNC-G05",
     "FUNC-G07"
   ],
-  "implementation_revision": 5
+  "implementation_revision": 6
 }

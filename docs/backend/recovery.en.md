@@ -1,6 +1,6 @@
 # Backend: stop and recovery
 
-Source status: repository_source / current_source_review; 2026-11-15.; FUNC-G05 locally_verified_with_explicit_limits, 16.11.2026.
+Source status: repository_source / current_source_review; 2026-11-15.; FUNC-G05 locally_verified_with_explicit_limits, 16.11.2026.; FUNC-G06_21_current_native_synthetic_verified, 16.11.2026.
 
 Owner: backend/runtime and storage; scope/version: DG03, `2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765`. Update when cancellation, checkpoints, ownership, backup/restore or shutdown contracts change.
 
@@ -39,3 +39,7 @@ A storage Worker error/exit rejects waiting calls; the service may return `STORA
 F13 reconciles prepared/recovery_required document operations only on explicit request. Current hash matching after means applied; matching before means not_applied with a new preview/retry allowed; any other value or partial UTF-8 means recovery_required and manual repair. Unknown outcomes are never automatically overwritten. Crash/reopen was checked using a killed child process; the journal survives restart. Scratch cleanup requires a proven dead owned writer and matching identity under TEMP. Other applications holding locks cause rejection without forced termination. A durable journal fence rejects conflicting authority/policy/cutover changes until resolution.
 
 Current focused evidence and remaining qualification: [FUNC-G05](../planning/functional-remediation-2026-11-15.en.md#func-g05-results).
+
+## FUNC-G06 / F21 — current qualification
+
+Three actual-process SIGKILL boundaries (before dispatch, in-flight without receipt, terminal receipt) were checked with DB reopen. Run identity/ownership, explicit resume and successor-only dispatch are preserved; unknown/cancel without ACK does not release scope. Root overlap/parallel/selective Stop checks pass. Evidence: .tmp/func-g06/f21-focused-final.log, 20/20,0fail/skip. Owned child processes use SIGKILL and await close before reopen/cleanup; IPC reports the persisted boundary. Injected command execution remains synthetic, not provider activity. New profiles do not inherit runtime credentials; pending effects require explicit recovery. [Group decisions](../planning/functional-remediation-2026-11-15.en.md#func-g06-results).

@@ -1,5 +1,9 @@
 # PLAN.md
 
+## FUNC-G06 — закрыта, 16.11.2026
+
+FUNC-G06 завершена:30implemented/4planned. F21/F22 qualification иF17design→implementation→actualrelocatedA/B/A выполнены. Следующая отдельная группаFUNC-G07; она этим scope не запускается. Rollbackownsourcehunks только; installerrollback использует явно выбранныйсовместимыйsnapshot/новыйprofile, oldversions сохраняются. [Решения/evidence](docs/planning/functional-remediation-2026-11-15.md#func-g06-results).
+
 ## FUNC-G05 — закрыта, 16.11.2026
 
 FUNC-G05 завершена:27 implemented/7 planned, M5 и другие29 карточек сохранены. Следующая отдельная группа — FUNC-G06 (recovery/distribution); её выполнение этим закрытием не начинается. Rollback только точечно по файлам текущего diff; unresolved document journal требует explicit reconcile, без replay. Root compactness — отдельный docs-maintainer follow-up с сохранением исторических evidence. [Решения и evidence](docs/planning/functional-remediation-2026-11-15.md#func-g05-results).

@@ -3,9 +3,17 @@
 Settings, 2026-11-13: Choose project folder opens the native Windows Explorer folder dialog, including New folder. Add project registers the selected root and reports bounded JS/TS/source scanning; partial coverage stays visible. Cancel adds nothing. Connect Codex App opens a prepared draft: explicitly send it in Codex App, then return; only an attached worker changes connection status. Opening a window does not prove model access. Quit the previous service before rebuilding/restarting with the same profile. [Contract and current evidence](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-execution-2026-11-11.md).
 
 
-Source status: project-authored / PAOS-0030 local delivery contract; technical receipts belong to the owning execution report.
+Source status: project-authored / PAOS-0030 local delivery contract; technical receipts belong to the owning execution report.; FUNC-G06 current contract, locally_verified_with_explicit_limits, 16.11.2026.
 
 This package supports local engineering on the pinned Windows/x64 host tuple. It contains the launcher, service, contracts, built Web UI and bounded runtime parser. Node/Codex binaries, profiles, credentials and workspaces remain external. PAOS licensing, admission and commercial terms remain separate gates; a local build grants no external release approval.
+
+## FUNC-G06 / F17 — managed local delivery
+
+The current addition is a private_local_pilot managed installer using setup/update/rollback and one managed-home. The CLI derives version/profile/backup paths, validates expected release/selection identities and preserves old versions and original profile bytes. Maintenance spans the transfer; managed-start shares the home→selection lock order, so an unresolved home operation fences launch. See [installation commands](../operations/install-start-stop.en.md) and [G06 decisions/evidence](../planning/functional-remediation-2026-11-15.en.md#func-g06-results).
+
+Qualification launches actual relocated A/B/A installations with production NativeLauncher IPC and local-service in a fresh disposable user-space environment. The window host is an injected browser callback, not an actual native-window/SmartScreen test. Real HTTP task/comment/attachment/preferences readback, installed HTML markers, distinct profile identities and an explicitly fresh rollback snapshot establish data/path activation; no checkout fallback or provider call is used. SQL session-message preservation is separately qualified by F22.
+
+Original files retain their hashes; newly created empty WAL/derived SHM are recorded separately under the [SQLite backup contract](../db/backup-restore.en.md). This is not a new OS account/SID or commercial/public release. The original 2026-11-12 pilot below remains historical evidence, not a new run.
 
 ## Build and install
 

@@ -80,19 +80,28 @@ export async function selectInstallation(stateInput:string,installInput:string,r
   const install=await checkedPath(installInput,true);await verifyDistribution(install,releaseId);const profile=await checkedPath(profileInput,true);await stopped(profile);
   if(child(install,profile)||child(profile,install)||child(install,state)||child(profile,state)||child(state,profile)||child(state,install))fail('PATH_OVERLAP');
   return withProfileMaintenance(previous?[previous.current.profileDirectory,profile]:[profile],async()=>{
-  if(previous){if(await realpath(profile)===await realpath(previous.current.profileDirectory))fail('RESTORED_PROFILE_REQUIRED');let r;try{r=await boundedJson(join(profile,'desktop-restore.json'));}catch{fail('RESTORED_PROFILE_REQUIRED');}if(r.releaseId!==releaseId||r.databaseSha256!==sha(await readFile(join(profile,'state.sqlite'))))fail('RESTORED_PROFILE_REQUIRED');}
-  const body={schemaVersion:1 as const,current:{installDirectory:install,releaseId,profileDirectory:profile},previous:previous?.current??null},next={...body,digest:sha(JSON.stringify(body))};const temp=join(state,'selection-'+randomUUID()+'.next');await durable(temp,next);try{await rename(temp,join(state,'selection.json'));}finally{await rm(temp,{force:true});}return next;});
+  return commitSelection(state,previous,{installDirectory:install,releaseId,profileDirectory:profile});});
  });
 }
 
+
+async function commitSelection(state:string,previous:Selection|null,target:Target){
+ const {installDirectory:install,releaseId,profileDirectory:profile}=target;
+  if(previous){if(await realpath(profile)===await realpath(previous.current.profileDirectory))fail('RESTORED_PROFILE_REQUIRED');let r;try{r=await boundedJson(join(profile,'desktop-restore.json'));}catch{fail('RESTORED_PROFILE_REQUIRED');}if(r.releaseId!==releaseId||r.databaseSha256!==sha(await readFile(join(profile,'state.sqlite'))))fail('RESTORED_PROFILE_REQUIRED');}
+  const body={schemaVersion:1 as const,current:{installDirectory:install,releaseId,profileDirectory:profile},previous:previous?.current??null},next={...body,digest:sha(JSON.stringify(body))};const temp=join(state,'selection-'+randomUUID()+'.next');await durable(temp,next);try{await rename(temp,join(state,'selection.json'));}finally{await rm(temp,{force:true});}return next;
+}
+
 /** Read-only SQLite snapshot excludes workspace, identity, credentials and runtime auth. */
+async function snapshotProfile(install:string,releaseId:string,profileInput:string,outputInput:string){
+ await verifyDistribution(install,releaseId);const profile=await checkedPath(profileInput,true),output=await checkedPath(outputInput,true);if(child(resolve(install),profile)||child(profile,resolve(install))||child(resolve(install),output)||child(profile,output))fail('PATH_OVERLAP');const dbPath=await checkedPath(join(profile,'state.sqlite'),true);const blobs=join(profile,'state.sqlite.blobs');try{await checkedPath(blobs,true);await walk(blobs);}catch(e){if((e as NodeJS.ErrnoException).code!=='ENOENT')throw e;}
+ const {createSnapshot}=await import(pathToFileURL(join(install,'apps/local-service/src/storage/snapshot.mts')).href);using db=new DatabaseSync(dbPath,{readOnly:true});const result=await createSnapshot(db,dbPath,output);return {...result,sourceReleaseId:releaseId,credentialsIncluded:false};
+}
 export async function backupProfile(install:string,releaseId:string,profileInput:string,outputInput:string){
- await verifyDistribution(install,releaseId);const profile=await checkedPath(profileInput,true),output=await checkedPath(outputInput,true);if(child(resolve(install),profile)||child(profile,resolve(install))||child(resolve(install),output)||child(profile,output))fail('PATH_OVERLAP');await stopped(profile);const dbPath=await checkedPath(join(profile,'state.sqlite'),true);const blobs=join(profile,'state.sqlite.blobs');try{await checkedPath(blobs,true);await walk(blobs);}catch(e){if((e as NodeJS.ErrnoException).code!=='ENOENT')throw e;}
- return withProfileMaintenance([profile],async()=>{const {createSnapshot}=await import(pathToFileURL(join(install,'apps/local-service/src/storage/snapshot.mts')).href);using db=new DatabaseSync(dbPath,{readOnly:true});const result=await createSnapshot(db,dbPath,output);return {...result,sourceReleaseId:releaseId,credentialsIncluded:false};});
+ const profile=await checkedPath(profileInput,true);await stopped(profile);return withProfileMaintenance([profile],()=>snapshotProfile(install,releaseId,profile,outputInput));
 }
 
 /** Restore validates existing snapshot format into a new profile; identity is recreated on first start. */
-export async function restoreProfile(install:string,releaseId:string,backupInput:string,profileInput:string){
+async function restoreAndThen<T>(install:string,releaseId:string,backupInput:string,profileInput:string,afterRestore:(receipt:{schemaVersion:number;releaseId:string;backupId:string;databaseSha256:string;credentialsIncluded:boolean;requiresRestart:boolean;activeProfileChanged:boolean})=>Promise<T>){
  await verifyDistribution(install,releaseId);const backup=await checkedPath(backupInput,true),profile=await checkedPath(profileInput);await fresh(profile);await walk(backup);if(child(backup,profile)||child(profile,backup)||child(resolve(install),profile)||child(profile,resolve(install)))fail('PATH_OVERLAP');const {restoreLocalBackup}=await import(pathToFileURL(join(install,'apps/local-service/src/storage/local-store.mts')).href);await mkdir(profile);
  try{return await withProfileMaintenance([profile],async()=>{const restored=await restoreLocalBackup(backup,join(profile,'state.sqlite'));
   // Only this private bookkeeping scope follows the profile directory; real workspace bindings never move.
@@ -100,16 +109,95 @@ export async function restoreProfile(install:string,releaseId:string,backupInput
    if(row.key_prefix!=='PREF'||row.authority_mode!=='sql'||typeof row.root_identity!=='string'||!row.root_identity.startsWith('profile:')||normalize(row.root_identity.slice(8))!==row.canonical_root)fail('RESTORE_PROFILE_METADATA_INVALID');
    const canonical=await realpath(profile);db.exec('BEGIN IMMEDIATE');try{db.prepare("UPDATE projects SET canonical_root=?,root_identity=?,authority_epoch=authority_epoch+1 WHERE id='_paos_profile'").run(normalize(canonical),'profile:'+canonical);db.exec('COMMIT');}catch(error){db.exec('ROLLBACK');throw error;}
   }}
-  const receipt={schemaVersion:1,releaseId,backupId:restored.backupId,databaseSha256:sha(await readFile(join(profile,'state.sqlite'))),credentialsIncluded:false,requiresRestart:true,activeProfileChanged:false};await durable(join(profile,'desktop-restore.json'),receipt);return receipt;});}catch(e){
+  const receipt={schemaVersion:1,releaseId,backupId:restored.backupId,databaseSha256:sha(await readFile(join(profile,'state.sqlite'))),credentialsIncluded:false,requiresRestart:true,activeProfileChanged:false};await durable(join(profile,'desktop-restore.json'),receipt);return afterRestore(receipt);});}catch(e){
   // A concurrent launcher or a completed partial restore may own data now; remove only an empty new directory.
   try{await rmdir(profile);}catch{}throw e;
  }
 }
 
+export async function restoreProfile(install:string,releaseId:string,backupInput:string,profileInput:string){return restoreAndThen(install,releaseId,backupInput,profileInput,async receipt=>receipt);}
+
+/** Check the actual prerequisite before any managed selection can replace the current version. */
+export async function assertHostPrerequisites(m:Manifest){if(process.version!==m.node.version||sha(await readFile(process.execPath))!==m.node.sha256||process.versions.sqlite!==m.sqliteVersion||platform()!==m.platform||arch()!==m.arch||release()!==m.windowsRelease)fail('HOST_PREREQUISITE_MISMATCH');}
+
 /** Hold the selection lock for the owned launcher lifetime, fencing concurrent switches. */
-export async function startSelection(stateInput:string,showWindow?:Parameters<typeof import('../launcher/main.mts').runNativeLauncher>[0]['showWindow']){
- return locked(stateInput,async state=>{const selection=await readSelection(state);if(!selection)return fail('SELECTION_REQUIRED');const target=selection.current,m=await verifyDistribution(target.installDirectory,target.releaseId);
-  if(process.version!==m.node.version||sha(await readFile(process.execPath))!==m.node.sha256||process.versions.sqlite!==m.sqliteVersion||platform()!==m.platform||arch()!==m.arch||release()!==m.windowsRelease)fail('HOST_PREREQUISITE_MISMATCH');
+async function startSelected(stateInput:string,showWindow:Parameters<typeof import('../launcher/main.mts').runNativeLauncher>[0]['showWindow']|undefined,validate?:(selection:Selection)=>void){
+ return locked(stateInput,async state=>{const selection=await readSelection(state);if(!selection)return fail('SELECTION_REQUIRED');validate?.(selection);const target=selection.current,m=await verifyDistribution(target.installDirectory,target.releaseId);
+  await assertHostPrerequisites(m);
   const {runNativeLauncher}=await import(pathToFileURL(join(target.installDirectory,'apps/launcher/main.mts')).href);return runNativeLauncher({profileDirectory:target.profileDirectory,...(showWindow?{showWindow}:{})});
  });
 }
+export async function startSelection(stateInput:string,showWindow?:Parameters<typeof import('../launcher/main.mts').runNativeLauncher>[0]['showWindow']){return startSelected(stateInput,showWindow);}
+
+type ManagedCommand='setup'|'update'|'rollback';
+type ManagedInput={home:string;expectedId:string;expectedSelection:string|null;packageDirectory?:string;backupDirectory?:string};
+type ManagedOperation={schemaVersion:1;id:string;command:ManagedCommand;state:'running'|'completed'|'failed';phase:string;targetReleaseId:string;expectedSelection:string|null;startedAt:string;finishedAt?:string;error?:string;profileDirectory?:string;backupDirectory?:string;selectionDigest?:string};
+async function replaceMetadata(path:string,value:unknown){const next=path+'.'+randomUUID()+'.next';await durable(next,value);try{await rename(next,path);}finally{await rm(next,{force:true});}}
+async function managedHome(homeInput:string,create=false){
+ const home=await checkedPath(homeInput, !create),marker=join(home,'managed-home.json');let value:any;
+ try{value=await boundedJson(marker);}catch(error){if(!create||(error as any).code!=='ENOENT')throw error;const entries=await readdir(home);if(entries.some(name=>name!=='operation.lock'))fail('MANAGED_HOME_NOT_EMPTY');const info=await lstat(home,{bigint:true});value={schemaVersion:1,channel:'private_local_pilot',directoryIdentity:`${info.dev}:${info.ino}`};await durable(marker,value);}
+ const info=await lstat(home,{bigint:true});if(value.schemaVersion!==1||value.channel!=='private_local_pilot'||value.directoryIdentity!==`${info.dev}:${info.ino}`)fail('MANAGED_HOME_IDENTITY_CHANGED');return home;
+}
+function managedSelection(home:string,selection:Selection|null){
+ // A recomputed metadata hash does not authorize a managed operation to touch a foreign profile or installation.
+ for(const target of [selection?.current,selection?.previous])if(target){if(!id(target.releaseId)||resolve(target.installDirectory)!==join(home,'versions',target.releaseId)||dirname(resolve(target.profileDirectory))!==join(home,'profiles')||!/^[-a-f0-9]{36}$/.test(target.profileDirectory.slice(target.profileDirectory.lastIndexOf(sep)+1)))fail('MANAGED_SELECTION_OUTSIDE_HOME');}return selection;
+}
+
+/** Read-only diagnostics preserve an unresolved process-death lock; no implicit retry or cleanup. */
+export async function managedStatus(homeInput:string){
+ const home=await managedHome(homeInput),selection=managedSelection(home,await readSelection(join(home,'selection')));let operation:ManagedOperation|null=null,busy=false;
+ try{operation=await boundedJson(join(home,'operation.json')) as ManagedOperation;}catch(error){if((error as any).code!=='ENOENT')throw error;}
+ try{await lstat(join(home,'operation.lock'));busy=true;}catch(error){if((error as any).code!=='ENOENT')throw error;}
+ const committed=Boolean(operation&&selection?.current.profileDirectory===operation.profileDirectory&&selection?.current.releaseId===operation.targetReleaseId),receiptPending=committed&&operation?.state!=='completed';
+ return {schemaVersion:'paos_managed_delivery_v1',channel:'private_local_pilot',signed:false,home,selection,operation,state:busy?'recovery_required':receiptPending?'selection_committed_receipt_pending':operation?.state==='failed'?'failed':operation?.state==='running'?'recovery_required':'ready',nextAction:busy?'Review the owned operation and service state; do not delete locks or replay automatically.':receiptPending?'The selected version is committed; review the missing operation receipt and do not replay the previous request.':operation?.state==='failed'?'Review retained staged profiles/backups and the observed selection before a new explicit command.':'Use managed-start to launch the selected installation.',systemInstalled:false};
+}
+
+/** One managed-home replaces manual version/profile directory selection. SHA256 is not publisher authentication.
+ * Both the selection lock and source profile reservation span snapshot, restore and selection commit.
+ * The new profile remains reserved through its commit, preventing a direct launcher race in either profile. */
+export async function managedDelivery(command:ManagedCommand,input:ManagedInput,options:{afterSnapshot?:()=>Promise<void>;afterSelection?:()=>Promise<void>}={}){
+ if(!['setup','update','rollback'].includes(command)||!input||!id(input.expectedId)||input.expectedSelection!==null&&!id(input.expectedSelection)||command==='setup'&&input.expectedSelection!==null||command!=='setup'&&input.expectedSelection===null)fail('MANAGED_INPUT_INVALID');
+ const homePath=await checkedPath(input.home);if(command!=='setup')await managedHome(homePath);
+ // Admit the target tuple before creating a home, copying a package or changing a selection.
+ let manifest:Manifest,packageDirectory:string|undefined;
+ if(command!=='rollback'){packageDirectory=await checkedPath(input.packageDirectory!,true);if(child(homePath,packageDirectory)||child(packageDirectory,homePath))fail('PATH_OVERLAP');manifest=await verifyDistribution(packageDirectory,input.expectedId);}else manifest=await verifyDistribution(join(homePath,'versions',input.expectedId),input.expectedId);
+ await assertHostPrerequisites(manifest);
+ return locked(homePath,async()=>{
+  const home=await managedHome(homePath,command==='setup'),state=join(home,'selection');
+  for(const name of ['versions','profiles','backups']){const path=await checkedPath(join(home,name));await mkdir(path,{recursive:true});}
+  return locked(state,async()=>{
+   const previous=managedSelection(home,await readSelection(state));if((previous?.digest??null)!==input.expectedSelection)fail('SELECTION_CONFLICT');
+   if(command==='setup'&&previous)fail('SELECTION_CONFLICT');if(command!=='setup'&&!previous)fail('SELECTION_REQUIRED');
+   if(command==='update'&&previous!.current.releaseId===input.expectedId)fail('RELEASE_ALREADY_SELECTED');
+   if(command==='rollback'&&previous!.previous?.releaseId!==input.expectedId)fail('ROLLBACK_TARGET_UNAVAILABLE');
+   const install=join(home,'versions',input.expectedId),profile=join(home,'profiles',randomUUID());
+   const operation:ManagedOperation={schemaVersion:1,id:randomUUID(),command,state:'running',phase:'installing',targetReleaseId:input.expectedId,expectedSelection:input.expectedSelection,startedAt:new Date().toISOString(),profileDirectory:profile};
+   const save=()=>replaceMetadata(join(home,'operation.json'),operation);await save();
+   try{
+    try{await lstat(install);await verifyDistribution(install,input.expectedId);}catch(error){if((error as any).code!=='ENOENT')throw error;await installDistribution(packageDirectory!,install,input.expectedId);}
+    let selection:Selection;
+    if(command==='setup'){
+     await fresh(profile);await mkdir(profile);operation.phase='initializing';await save();
+     selection=await withProfileMaintenance([profile],async()=>{const {openLocalStore}=await import(pathToFileURL(join(install,'apps/local-service/src/storage/local-store.mts')).href);const store=await openLocalStore({databasePath:join(profile,'state.sqlite')});await store.close();operation.phase='selecting';await save();return commitSelection(state,null,{installDirectory:install,releaseId:input.expectedId,profileDirectory:profile});});
+    }else{
+     // A service using any selection directory is fenced by the same actual profile reservation.
+     const current=previous!.current;await checkedPath(current.profileDirectory,true);await stopped(current.profileDirectory);
+     selection=await withProfileMaintenance([current.profileDirectory],async()=>{
+      let backup:string;
+      if(command==='update'){operation.phase='backing_up';await save();backup=(await snapshotProfile(current.installDirectory,current.releaseId,current.profileDirectory,join(home,'backups'))).directory;}
+      else{backup=await checkedPath(input.backupDirectory!,true);if(!child(join(home,'backups'),backup)||backup===join(home,'backups'))fail('BACKUP_OUTSIDE_MANAGED_HOME');await verifyDistribution(current.installDirectory,current.releaseId);}
+      operation.backupDirectory=backup;operation.phase='restoring';await save();await options.afterSnapshot?.();
+      return restoreAndThen(install,input.expectedId,backup,profile,async()=>{operation.phase='selecting';await save();return commitSelection(state,previous,{installDirectory:install,releaseId:input.expectedId,profileDirectory:profile});});
+     });
+    }
+    // Selection is the commit point. Losing only the acknowledgement must never claim the old selection is still active.
+    try{await options.afterSelection?.();operation.state='completed';operation.phase='completed';operation.selectionDigest=selection.digest;operation.finishedAt=new Date().toISOString();await save();}
+    catch{return {schemaVersion:'paos_managed_delivery_v1',channel:'private_local_pilot',signed:false,systemInstalled:false,state:'selection_committed_receipt_pending',selection,profileDirectory:profile,backupDirectory:operation.backupDirectory??null,operation};}
+    return {schemaVersion:'paos_managed_delivery_v1',channel:'private_local_pilot',signed:false,systemInstalled:false,state:'completed',selection,profileDirectory:profile,backupDirectory:operation.backupDirectory??null,operation};
+   }catch(error){operation.state='failed';operation.error=typeof (error as any).code==='string'?(error as any).code:'DELIVERY_FAILED';operation.finishedAt=new Date().toISOString();await save();throw error;}
+  });
+ });
+}
+
+/** Match delivery's home → selection lock order; an unresolved home operation also fences launch. */
+export async function startManaged(home:string,showWindow?:Parameters<typeof startSelection>[1]){const path=await managedHome(home);return locked(path,()=>startSelected(join(path,'selection'),showWindow,selection=>{managedSelection(path,selection);}));}

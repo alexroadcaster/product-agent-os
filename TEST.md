@@ -1,5 +1,9 @@
 # TEST.md
 
+## FUNC-G06 — закрыта, 16.11.2026
+
+Final `node --test --test-concurrency=1 tests/web/*.test.mts`:694/694,0fail/skip (.tmp/func-g06/web-native-final.log), после home-lock reviewfix; предыдущий694/694 сохранён как web-native-pre-review.log. F21focused20/20, F22focused11/11, typecheck/buildpassed. `managed-distribution-acceptance.mts --synthetic-managed --playwright-core ABS --chromium ABS`:10/10 actualinstalledCLI/NativeLauncherIPC/service/browserA/B/A, originalfilespreserved,newSQLiteaux recorded. Nativecandidate/defaultpassed currentab195406a2f961c55d90d3a1848d4bcd98b644f10c66da7085cde94d0f584f51. Final gates: RUENmatrixvalidators, changed-sourcecheck_docs, preservation+source/package/dist/nativebindings, diffcheck. No fullPython/site/hooks/provider route: contractsunchanged. [Решения/evidence](docs/planning/functional-remediation-2026-11-15.md#func-g06-results).
+
 ## FUNC-G05 — закрыта, 16.11.2026
 
 Shared HTTP/storage/runtime changes проверены полным native Windows synthetic набором `node --test --test-concurrency=1 tests/web/*.test.mts`:686/686,0fail/skip (.tmp/func-g05/web-native-final.log). `npm run check:web-m1` и `npm run build:web` passed. `agent-capabilities-browser-acceptance.mts --synthetic-browser --playwright-core ABSOLUTE_INSTALLED_PATH --chromium ABSOLUTE_INSTALLED_PATH`: 16/16 (.tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json). `sandbox-broker-acceptance.mts --run-once --binary ABSOLUTE_SYNTHETIC_PATH --candidate-inspection` → reviewed manifest → default passed на текущем adapter aa9c663dd1df54c6f47258234b5b9e9b5df6e0980e5ff58677e4403e30584bcc. Closure gates: RU/EN matrix validators, changed-source check_docs, preservation/source/build/native consistency, git diff --check. EVALS/Python/plugin/site/hooks/provider suites не требуются: соответствующие контракты не менялись. [Решения и evidence](docs/planning/functional-remediation-2026-11-15.md#func-g05-results).

@@ -3,16 +3,16 @@
 Source status: repository_source / current_local_synthetic_implementation; remaining_tasks_planned.
 Дата планирования: 15.11.2026. Timezone: Europe/Moscow. Schema version: task_matrix_plan_v1.
 
-<!-- func-g01-g05-status -->
-FUNC-G01: 7/7 locally_verified; FUNC-G02: 3/3 poc_research_locally_verified; FUNC-G03: 7/7 locally_verified; FUNC-G04: 5/5 implemented, locally_verified_with_measured_limits; FUNC-G05: 5/5 locally_verified_with_explicit_limits; всего27 implemented /7 planned. Три M5 references сохранены.
+<!-- func-g01-g06-status -->
+FUNC-G01: 7/7 locally_verified; FUNC-G02: 3/3 poc_research_locally_verified; FUNC-G03: 7/7 locally_verified; FUNC-G04: 5/5 implemented, locally_verified_with_measured_limits; FUNC-G05: 5/5 locally_verified_with_explicit_limits; FUNC-G06:3/3 locally_verified_with_explicit_limits; всего30 implemented /4 planned. Три M5 references сохранены.
 
 ## Объём и статус
 
-План содержит **34 задачи PAOS-FUNC-01–PAOS-FUNC-34** и ссылки на **3 ранее запланированные задачи M5**. Текущий итог: **27 implemented / 7 planned**, FUNC-G01 закрыта по локальным техническим AC. Итого в этой обзорной матрице 37 позиций; это не общее число задач проекта. Существующие 56 карточек M1–M5, их 53 implemented / 3 planned и оценки сохранены. Новые дефекты не переписывают исторические receipts: они требуют текущего воспроизведения и новой проверки.
+План содержит **34 задачи PAOS-FUNC-01–PAOS-FUNC-34** и ссылки на **3 ранее запланированные задачи M5**. Текущий итог: **30 implemented / 4 planned**, FUNC-G01 закрыта по локальным техническим AC. Итого в этой обзорной матрице 37 позиций; это не общее число задач проекта. Существующие 56 карточек M1–M5, их 53 implemented / 3 planned и оценки сохранены. Новые дефекты не переписывают исторические receipts: они требуют текущего воспроизведения и новой проверки.
 
 Машинное состояние новой группы: [functional-remediation-2026-11-15.json](functional-remediation-2026-11-15.json). Этот MD владеет техническим и продуктовым обоснованием, acceptance и completion evidence. Ссылки M5 не создают второй владеющий статус: их владелец — [docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json](product-agent-os-web-task-manager-task-group-2026-11-09.json) и [docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md](product-agent-os-web-task-manager-plan-2026-11-09.md).
 
-Первоначальный запрос разрешал планирование. Последующий запрос 15.11.2026 разрешил полное выполнение FUNC-G01, необходимые локальные synthetic проверки, статусы и документацию; семь задач группы выполнены. Следующий запрос разрешил FUNC-G02: три исследовательских PoC закрыты измеренными решениями и изолированной UI-приёмкой. Следующие запросы разрешили G03 (7 implemented) и G04 (5 implemented с измеренными ограничениями); последующий запрос разрешил G05 (5 implemented); текущий остаток —7 planned задач и отдельные M5 references. P1 — блокировка исполнения или проверка целостности/recovery; P2 — функциональная ценность, корректность информации и поддерживаемость; P3 — ограниченный дефект отображения. Приоритет проверочной задачи не означает, что отказ уже наблюдался.
+Первоначальный запрос разрешал планирование. Последующий запрос 15.11.2026 разрешил полное выполнение FUNC-G01, необходимые локальные synthetic проверки, статусы и документацию; семь задач группы выполнены. Следующий запрос разрешил FUNC-G02: три исследовательских PoC закрыты измеренными решениями и изолированной UI-приёмкой. Следующие запросы разрешили G03 (7 implemented) и G04 (5 implemented с измеренными ограничениями); последующий запрос разрешил G05 (5 implemented); текущий запрос закрыл G06 (3 implemented); остаток —4 planned задачи и отдельные M5 references. P1 — блокировка исполнения или проверка целостности/recovery; P2 — функциональная ценность, корректность информации и поддерживаемость; P3 — ограниченный дефект отображения. Приоритет проверочной задачи не означает, что отказ уже наблюдался.
 
 ## Исходные основания и границы доказательств
 
@@ -479,6 +479,30 @@ Control-plane sync: REQUIREMENTS/PLAN/TEST/RUNLOG updated; EVALS=no_change_neede
 Status audit: исправлена унаследованная неточность RU overview M5 (там ошибочно повторялись FUNC counts). Текущий owning M5 JSON подтверждает56 карточек,53 implemented/3planned; его содержимое и статусы не изменены.
 
 Независимый final review: context_mode=separate_reused_context; reviewer=/root/func_g05_completion_review; tester_verdict=closed_allowed; closure_level=locally_verified_with_explicit_limits. Evidence .tmp/func-g05/final-review.json, closure-consistency.json, docs-final.log (28sources), matrix-ru.log, matrix-en.log. Независимо пересчитанные source/build/native hashes совпали; открытых implementation/evidence blockers нет. Два ожидаемых bootstrap401 SESSION_REQUIRED сохранены, unexpected HTTP/page errors и external browser requests отсутствуют. Parent Node peak237100KiB не является aggregate OS memory measurement.
+
+## FUNC-G06 — execution и решения {#func-g06-results}
+
+Статус: implemented / locally_verified_with_explicit_limits,3/3. На старте сохранены HEADade8e4c и1159 snapshots; dirty только own marker. Остальные31 задачи, immutable AC/groups/order/M5 и G01–G05 receipts сохранены. Design gate ниже закреплён до реализации; текущие evidence и ограничения приведены далее.
+
+Code-change contract: existing_capability=durable recipe checkpoints/scheduler ownership, migration freeze/CAS, SQL/blob snapshots, portable content-addressed package and profile-maintenance reservations; smallest_safe_patch=distinct crash/import/recovery qualification and managed local delivery orchestration atop existing helpers, no framework rewrite; invariants=source/destination/profile identity, one writable authority, no replay/duplicates, no credential/approval revival, preserve old versions/profiles and unrelated dirty work; dependency_decision=no_new_dependency; risk_selected_tests=public APIs/CLI and owned child-process/native synthetic seams, independent counts/hashes/FK/blob oracles; comment_decision=comment_needed for recovery/admission/journal invariants; performance_applicability=required for bounded copies/process deadlines, no unrelated scale benchmark; evidence_and_gaps=proceed_with_local_synthetic, distribution design must precede build, real installation/signing/publication/new OS account/provider acceptance separate.
+
+### F17 — delivery decision
+
+F17 design gate (до build): канал private_local_pilot; managed user-space installer поверх существующего portable каталога через Node CLI setup/update/rollback и один managed-home. Unsigned, отдельно проверенный releaseId; SHA256 означает integrity, не publisher authentication. Exact Node/Windows/SQLite prerequisites, AUTH-G1–G6/licensing/public/commercial gates сохраняются отдельно. Сценарий чистого Windows-профиля: новый disposable PAOS profile и fresh USERPROFILE/HOME/APPDATA/LOCALAPPDATA/TEMP/CODEX_HOME в child process на существующей Windows account. Новый OS account/SID, системная установка, SmartScreen/signature trust и human acceptance не заявляются. Maintenance текущего профиля охватывает backup→restore→selection (либо DB+WAL freshness CAS внутри lease); tuple admission до selection. Старые profiles/versions/backups сохраняются; прерванная операция остаётся explicit/fenced, без replay или checkout fallback. Architect audit: /root/func_g06_distribution_design, read-only; existing helpers reuse, новых dependencies нет.
+
+Промежуточный checkpoint до реализации F17: F21 qualification:20/20 (.tmp/func-g06/f21-focused-final.log); F22 qualification:11/11 (.tmp/func-g06/f22-focused.log). Characterization tests проверяют существующее production поведение; искусственный RED и несвязанные source changes не создавались. На этом checkpoint build dependency F17 была выполнена; реализация и combined qualification завершены далее.
+
+### Итоговые evidence
+
+F21:20/20, real process crashes before dispatch / in-flight without receipt / terminal receipt; F22:11/11, interrupted promotion retry + independent FK negative; fullweb694/694,0fail/skip; managed package10/10 (.tmp/func-g06/managed-acceptance/evidence-mJ8j5k/result.json); typecheck/build/native candidate→default passed. Current adapter ab195406a2f961c55d90d3a1848d4bcd98b644f10c66da7085cde94d0f584f51. Three actual installed phases A/B/A with distinct profiles and exact served HTML hashes, actual launcher IPC/service, fresh global home canary, public task/comment/blob/preferences and trusted offline installed-Store chat fixture preparation followed by public readback. No serviceModule/inspectRuntime replacement. Three expected bootstrap401 retained; no unexpected HTTP/page/external errors.
+
+Private unsigned user-space delivery on the existing Windows account; no new OS account/SID, actual native GUI/SmartScreen, system installation, signing/commercial/public release, provider/model or human acceptance. Cooperative managed profile reservations do not sandbox arbitrary SQLite writers. Every original file hash is preserved; explicitly recorded new empty WAL/32KiB SHM bookkeeping means whole-directory identity is not claimed. Rollback restores the explicitly selected compatible snapshot; newer work needs a fresh compatible backup.
+
+Сохранены исходные failures: отсутствующий managed CLI и fresh-home propagation actual RED; независимый review home-lock fence actual RED→GREEN; первый acceptance seed получил USER_WRITE_FORBIDDEN; whole-inventory assertion выявил SQLite sidecars. Guards не ослаблялись ради fixture/oracle setup. Промежуточный9/9 pass предшествует schema-negative; final10/10 включает self-consistent incompatible-schema manifest и неизменную selection.
+
+Control-plane sync: REQUIREMENTS/PLAN/TEST/RUNLOG updated; EVALS=no_change_needed (model/prompt/agent-behavior/rubric unchanged); prod_test=no_change_needed (Batch39 ledger unchanged); atlas/navigation=no_change_needed (existing runtime boundaries, no new docs page). Existing root compactness advisories remain a separate docs-maintainer follow-up with preservation. Final independent review/preservation/static gates own parent closure.
+
+Независимый final review: context_mode=separate_reused_context; reviewer=/root/func_g06_completion_review; tester_verdict=closed_allowed; closure_level=locally_verified_with_explicit_limits. Evidence: .tmp/func-g06/final-review.json, closure-consistency.json, docs-final.log(14sources), matrix-ru.log/matrix-en.log(ok=true,errors=[]). Исходные failed validator receipts сохранены как matrix-ru-pre-repair.log/matrix-en-pre-repair.log; после metadata repair source/package/dist inputs не менялись. Открытых implementation/evidence blockers нет.
 
 ## Подробные карточки
 
@@ -1272,15 +1296,15 @@ Status audit: исправлена унаследованная неточнос
 
 - Delivery group: `FUNC-G06`; группа не заменяет Depends on и исходные AC.
 - Task: PAOS-FUNC-17 — Подготовить удобную установку, обновление и rollback
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Расширение; функциональный аудит после V3 redesign и запрос владельца на матрицу задач.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 16-11-2026 08:40
 - Priority: P2
-- Evidence level: bounded_capability_or_missing_extension
-- Execution authority: planning_only; внесение в план не запускает реализацию.
+- Evidence level: locally_verified_with_explicit_limits
+- Execution authority: owner_authorized_func_g06_local_synthetic; 16.11.2026.
 - Depends on: `PAOS-FUNC-01`, `PAOS-FUNC-22`
 - Blocks: нет
 - Source: Portable CLI есть; signed installer/auto-update не заявлены. [apps/desktop-local/README.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/desktop-local/README.md). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
@@ -1303,16 +1327,16 @@ Status audit: исправлена унаследованная неточнос
 
 #### Completion Report
 
-- status: planned
-- what was done: задача сформулирована в плане; реализация и выполнение её приёмочных сценариев не начаты.
-- files touched / work locations: implementation none; планируемые work locations указаны в Scope.
-- technical value delivered: результат реализации ещё не получен.
-- product value delivered: результат для пользователя ещё не подтверждён.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: только исходные ссылки и статические наблюдения в Source; future Verification gates не выполнены этой задачей.
-- residual risks: distribution_signing_commercial_design_required; актуальность исходного состояния повторно проверяется при старте.
-- follow-up: Next step выше; после выполнения синхронизировать статус JSON, эту карточку и только затронутые control-plane claims.
-- Documentation impact: planning_only; пока код и функциональные claims не меняются. При завершении сопоставить changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required и evidence в этом отчёте.
+- status: implemented
+- what was done: Реализованы managed setup/update/rollback/status/start с одним home поверх private unsigned portable package. Host tuple admission до записи, home→selection locks и source/target reservations сохраняют profile/version data. Env whitelist исправляет fresh service home; current operation receipt после commit отражается честно. Actual relocated A/B/A CLI/NativeLauncher IPC/service/browser и incompatible-schema rollback проверены без checkout fallback.
+- files touched / work locations: apps/desktop-local/distribution.mts; apps/desktop-local/main.mts; apps/desktop-local/README.md; apps/launcher/main.mts; tests/web/desktop-local-managed.test.mts; tests/web/single-window/managed-distribution-acceptance.mts; tests/web/single-window/managed-distribution.fixture.mts
+- technical value delivered: Managed paths, exact tuple/selection admission, transfer leases, home→selection launch fence и env isolation проверены на реальных relocated packages.
+- product value delivered: Один managed-home заменяет ручной подбор версий/профилей; update/explicit rollback сохраняют данные и дают понятные refusal/recovery состояния.
+- follow-up: Нет незавершённой работы карточки в G06 scope; human/signing/public/commercial release и новый OS account остаются отдельными gates.
+- actual implementation date and time: 16-11-2026 08:40
+- verification evidence: .tmp/func-g06/web-native-final.log:694/694,0fail/skip; .tmp/func-g06/managed-acceptance/evidence-mJ8j5k/result.json:10/10,cleanup=true; .tmp/func-g06/native-candidate.json:passed; .tmp/func-g06/native-default.json:passed; .tmp/func-g06/typecheck-final.log:passed; .tmp/func-g06/build-final.log:passed
+- residual risks: Private unsigned user-space delivery on the existing Windows account; no new OS account/SID, actual native GUI/SmartScreen, system installation, signing/commercial/public release, provider/model or human acceptance. Cooperative managed profile reservations do not sandbox arbitrary SQLite writers. Every original file hash is preserved; explicitly recorded new empty WAL/32KiB SHM bookkeeping means whole-directory identity is not claimed. Rollback restores the explicitly selected compatible snapshot; newer work needs a fresh compatible backup.
+- Documentation impact: updated; apps/desktop-local/README.md; docs/operations/install-start-stop.md; docs/operations/install-start-stop.en.md; docs/operations/release-boundaries.md; docs/operations/release-boundaries.en.md; docs/web/pilot.md; docs/web/pilot.en.md; docs/db/backup-restore.md; docs/db/backup-restore.en.md; registry RU/EN.
 
 ### Task `PAOS-FUNC-18`
 
@@ -1462,15 +1486,15 @@ Status audit: исправлена унаследованная неточнос
 
 - Delivery group: `FUNC-G06`; группа не заменяет Depends on и исходные AC.
 - Task: PAOS-FUNC-21 — Перепроверить очередь, Stop и crash recovery
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Проверка; функциональный аудит после V3 redesign и запрос владельца на матрицу задач.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 16-11-2026 08:11
 - Priority: P1
-- Evidence level: verification_gap
-- Execution authority: planning_only; внесение в план не запускает реализацию.
+- Evidence level: locally_verified
+- Execution authority: owner_authorized_func_g06_local_synthetic; 16.11.2026.
 - Depends on: `PAOS-FUNC-01`
 - Blocks: `PAOS-FUNC-23`
 - Source: Recovery/ownership implemented; необходим current-run regression. [apps/local-service/src/recovery/recipe-checkpoint.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/recovery/recipe-checkpoint.mts), [apps/local-service/src/scheduler/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/scheduler/service.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
@@ -1493,30 +1517,30 @@ Status audit: исправлена унаследованная неточнос
 
 #### Completion Report
 
-- status: planned
-- what was done: задача сформулирована в плане; реализация и выполнение её приёмочных сценариев не начаты.
-- files touched / work locations: implementation none; планируемые work locations указаны в Scope.
-- technical value delivered: результат реализации ещё не получен.
-- product value delivered: результат для пользователя ещё не подтверждён.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: только исходные ссылки и статические наблюдения в Source; future Verification gates не выполнены этой задачей.
-- residual risks: disposable_profiles_only; актуальность исходного состояния повторно проверяется при старте.
-- follow-up: Next step выше; после выполнения синхронизировать статус JSON, эту карточку и только затронутые control-plane claims.
-- Documentation impact: planning_only; пока код и функциональные claims не меняются. При завершении сопоставить changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required и evidence в этом отчёте.
+- status: implemented
+- what was done: Три actual-process SIGKILL boundaries (before dispatch, in-flight/no receipt, terminal receipt) проверены с DB reopen. Run identity/ownership, explicit resume и successor-only dispatch сохраняются; unknown/cancel без ACK не освобождают scope. Root overlap/parallel/selective Stop проверки проходят.
+- files touched / work locations: tests/web/recipe-crash.test.mts; tests/web/recipe-crash.fixture.mts
+- technical value delivered: Actual process crash boundaries подтверждают durable identity, explicit resume, Stop ownership и отсутствие replay.
+- product value delivered: Crash/reconnect не создают повторный run; неизвестный исход и отсутствие Stop ACK остаются явными recovery состояниями.
+- follow-up: Нет незавершённой работы карточки в G06 scope; human/signing/public/commercial release и новый OS account остаются отдельными gates.
+- actual implementation date and time: 16-11-2026 08:11
+- verification evidence: .tmp/func-g06/f21-focused-final.log:20/20,0fail/skip; .tmp/func-g06/web-native-final.log:694/694,0fail/skip; .tmp/func-g06/managed-acceptance/evidence-mJ8j5k/result.json:10/10,cleanup=true; .tmp/func-g06/native-candidate.json:passed; .tmp/func-g06/native-default.json:passed; .tmp/func-g06/typecheck-final.log:passed; .tmp/func-g06/build-final.log:passed
+- residual risks: Private unsigned user-space delivery on the existing Windows account; no new OS account/SID, actual native GUI/SmartScreen, system installation, signing/commercial/public release, provider/model or human acceptance. Cooperative managed profile reservations do not sandbox arbitrary SQLite writers. Every original file hash is preserved; explicitly recorded new empty WAL/32KiB SHM bookkeeping means whole-directory identity is not claimed. Rollback restores the explicitly selected compatible snapshot; newer work needs a fresh compatible backup.
+- Documentation impact: updated; docs/backend/recovery.md; docs/backend/recovery.en.md; source registry RU/EN.
 
 ### Task `PAOS-FUNC-22`
 
 - Delivery group: `FUNC-G06`; группа не заменяет Depends on и исходные AC.
 - Task: PAOS-FUNC-22 — Перепроверить импорт, backup и restore
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Проверка; функциональный аудит после V3 redesign и запрос владельца на матрицу задач.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 16-11-2026 08:11
 - Priority: P1
-- Evidence level: verification_gap
-- Execution authority: planning_only; внесение в план не запускает реализацию.
+- Evidence level: locally_verified
+- Execution authority: owner_authorized_func_g06_local_synthetic; 16.11.2026.
 - Depends on: `PAOS-FUNC-01`
 - Blocks: `PAOS-FUNC-17`, `PAOS-FUNC-23`
 - Source: Import/backup контракты есть; current combined verification отсутствует. [apps/local-service/src/import-export/migration.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/import-export/migration.mts), [apps/desktop-local/README.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/desktop-local/README.md). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
@@ -1539,16 +1563,16 @@ Status audit: исправлена унаследованная неточнос
 
 #### Completion Report
 
-- status: planned
-- what was done: задача сформулирована в плане; реализация и выполнение её приёмочных сценариев не начаты.
-- files touched / work locations: implementation none; планируемые work locations указаны в Scope.
-- technical value delivered: результат реализации ещё не получен.
-- product value delivered: результат для пользователя ещё не подтверждён.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: только исходные ссылки и статические наблюдения в Source; future Verification gates не выполнены этой задачей.
-- residual risks: synthetic_data_no_real_profile_mutation; актуальность исходного состояния повторно проверяется при старте.
-- follow-up: Next step выше; после выполнения синхронизировать статус JSON, эту карточку и только затронутые control-plane claims.
-- Documentation impact: planning_only; пока код и функциональные claims не меняются. При завершении сопоставить changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required и evidence в этом отчёте.
+- status: implemented
+- what was done: Проверены source drift/unknown writer freeze/CAS, interrupted pre-promotion retry без duplicate tasks, committed-receipt replay, corrupt/missing blob, независимый FK check при self-consistent hashes, new-profile restore и stale approvals/pending outbox/cursors. Source authority/profile/sourcebytes сохраняются.
+- files touched / work locations: tests/web/domain-migration.test.mts; tests/web/storage-backup.test.mts
+- technical value delivered: Freeze/CAS, interrupted-promotion retry и independent integrity/FK/blob checks подтверждены current native synthetic checks.
+- product value delivered: Задачи, история, settings и attachments сохраняются при переносе/restore; исходные данные не перезаписываются.
+- follow-up: Нет незавершённой работы карточки в G06 scope; human/signing/public/commercial release и новый OS account остаются отдельными gates.
+- actual implementation date and time: 16-11-2026 08:11
+- verification evidence: .tmp/func-g06/f22-focused.log:11/11,0fail/skip; .tmp/func-g06/web-native-final.log:694/694,0fail/skip; .tmp/func-g06/managed-acceptance/evidence-mJ8j5k/result.json:10/10,cleanup=true; .tmp/func-g06/native-candidate.json:passed; .tmp/func-g06/native-default.json:passed; .tmp/func-g06/typecheck-final.log:passed; .tmp/func-g06/build-final.log:passed
+- residual risks: Private unsigned user-space delivery on the existing Windows account; no new OS account/SID, actual native GUI/SmartScreen, system installation, signing/commercial/public release, provider/model or human acceptance. Cooperative managed profile reservations do not sandbox arbitrary SQLite writers. Every original file hash is preserved; explicitly recorded new empty WAL/32KiB SHM bookkeeping means whole-directory identity is not claimed. Rollback restores the explicitly selected compatible snapshot; newer work needs a fresh compatible backup.
+- Documentation impact: updated; docs/db/backup-restore.md; docs/db/backup-restore.en.md; source registry RU/EN.
 
 ### Task `PAOS-FUNC-23`
 

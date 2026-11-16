@@ -1,6 +1,6 @@
 # Packaging and release boundaries
 
-Source status: repository_source / static_contract_review; 2026-11-15.
+Source status: repository_source / static_contract_review; 2026-11-15.; FUNC-G06 managed contract, locally_verified_with_explicit_limits, 16.11.2026.
 
 Owner: runtime/operations owner + docs-maintainer. Scope: local desktop package at `259977f3b257ba7fc0e932396f8963262bd327ad`; update when launcher, CLI, snapshot or release gates change. Test links identify verification routes, not a new run. Real profiles, credentials and providers were not examined.
 
@@ -8,4 +8,10 @@ The [package contract](https://github.com/alexroadcaster/product-agent-os/blob/2
 
 The [PAOS-0030 manifest](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/docs/release/web-m4-local-release.json) and [report](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/research/product-agent-os-web-m4-0030-execution-2026-11-12.md) record a bounded local technical pilot on 2026-11-12, including 88 checks and separate authorization for a project copy. This is historical evidence for the stated environment. The artifact is unsigned; system installation, signed installer, human acceptance and commercial release are not established. PAOS licensing, complete transitive native license audit, privacy/account/route/support and other release gates require separate owner decisions. A manifest does not grant public distribution rights or prove model access or answer quality.
 
-FUNC-17 is a separate planned task; this guide does not implement automatic updates or distribution. Current status belongs to the [functional plan](../planning/functional-remediation-2026-11-15.md). [Package tests](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/tests/web/desktop-local.test.mts) are a related route, not a new qualification, installation or publication.
+FUNC-17 in FUNC-G06 adds managed local delivery; the owning matrix records its current qualification. Automatic network updates and public distribution are not implemented. Current status belongs to the [functional plan](../planning/functional-remediation-2026-11-15.md). [Package tests](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/tests/web/desktop-local.test.mts) are a related route, not a new qualification, installation or publication.
+
+## FUNC-G06 / F17 — delivery decision and admission
+
+The selected channel is private_local_pilot: an unsigned portable directory installed into user space by the managed Node CLI, without MSI/MSIX, registry/PATH changes or automatic runtime downloads. Exact host tuple admission happens before installation/selection; schema checks happen while restoring a new profile. One managed-home derives version/profile/backup/control paths. Update holds the current profile reservation through snapshot→restore→selection, keeps all old data and never downgrades the active DB in place. Rollback uses an explicitly selected compatible snapshot and another new profile; retaining newer work requires a fresh compatible snapshot.
+
+Fresh Windows acceptance is a disposable PAOS profile plus fresh home/appdata/temp environment in a real Windows child process under the current account. It does not prove a newly created OS account/SID, system installation, signed publisher trust, human acceptance or commercial release. The launcher propagates only whitelisted path variables to its actual service child; provider secrets/NODE_OPTIONS are not inherited. Hash verification is content integrity, not authentication or entitlement. AUTH-G1–G6, own licensing, native transitive notices and external/public release approvals remain separate. [FUNC-G06](../planning/functional-remediation-2026-11-15.en.md#func-g06-results).

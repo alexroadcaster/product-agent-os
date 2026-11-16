@@ -3,9 +3,17 @@
 Настройки, 13.11.2026: «Выбрать папку проекта» открывает Windows Explorer с выбором/созданием папки. Затем «Добавить проект» регистрирует её и показывает bounded scan JS/TS и project sources; unsupported/partial coverage — на Карте. Отмена ничего не добавляет. «Подключить Codex App» открывает draft: отправьте подготовленный запрос в Codex App и вернитесь; attached worker обновит статус. Одно открытие окна не означает подключение или model access. Для обновления остановите прежний экземпляр штатным Quit, выполните `npm run build:web` и запустите launcher с тем же профилем. [Контракт и текущие проверки](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-m1-execution-2026-11-11.md).
 
 
-Source status: project-authored / PAOS-0030 local delivery contract; technical receipts belong to the owning execution report.
+Source status: project-authored / PAOS-0030 local delivery contract; technical receipts belong to the owning execution report.; FUNC-G06 current contract, locally_verified_with_explicit_limits, 16.11.2026.
 
 Пакет предназначен для локальной инженерной работы на закреплённом Windows/x64 host tuple. Он содержит launcher, local-service, contracts, собранный Web UI и минимальный runtime parser. Node и Codex binaries, профиль, credentials и workspace в него не входят. Собственная лицензия PAOS, admission и коммерческие условия остаются отдельными gates; локальная сборка не разрешает внешний выпуск.
+
+## FUNC-G06 / F17 — управляемая локальная поставка
+
+Текущее дополнение — private_local_pilot managed installer с setup/update/rollback и одним managed-home. CLI выводит каталоги versions/profiles/backups, проверяет ожидаемые release/selection identities и сохраняет старые версии и исходные bytes профилей. Maintenance охватывает transfer; managed-start использует порядок home→selection lock, поэтому unresolved home operation запрещает запуск. См. [команды установки](../operations/install-start-stop.md) и [решения/evidence G06](../planning/functional-remediation-2026-11-15.md#func-g06-results).
+
+Qualification запускает actual relocated installations A/B/A через production NativeLauncher IPC и local-service в fresh disposable user-space environment. Window host — управляемый browser callback, это не actual native-window/SmartScreen test. Real HTTP readback task/comment/attachment/preferences, installed HTML markers, разные profile identities и явно свежий rollback snapshot подтверждают данные и activation выбранного пути; checkout fallback и provider calls отсутствуют. SQL session-message preservation отдельно проверена F22.
+
+Hashes исходных файлов сохраняются; новые empty WAL/derived SHM фиксируются отдельно по [контракту SQLite backup](../db/backup-restore.md). Это не новый OS account/SID и не коммерческий/публичный release. Исходный pilot12.11.2026 ниже остаётся историческим evidence, а не новым прогоном.
 
 ## Подготовка и установка
 

@@ -1,22 +1,39 @@
 {
-  "task_id": "FUNC-G05",
+  "task_id": "FUNC-G06",
   "previous_closure": {
-    "task_id": "FUNC-G04",
+    "task_id": "FUNC-G05",
     "status": "ready_for_completion_ledger",
     "completion_ready": true,
-    "updated_at": "2026-11-15T21:44:54.119Z",
-    "closure_level": "locally_verified_with_measured_limits",
-    "previous_task_id": "FUNC-G03"
+    "updated_at": "2026-11-16T04:35:32.296Z",
+    "closure_level": "locally_verified_with_explicit_limits",
+    "evidence_refs": [
+      "docs/planning/functional-remediation-2026-11-15.md#func-g05-results",
+      ".tmp/func-g05/final-review.json",
+      ".tmp/func-g05/closure-consistency.json",
+      ".tmp/func-g05/web-native-final.log",
+      ".tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json",
+      ".tmp/func-g05/native-candidate.json",
+      ".tmp/func-g05/native-default.json",
+      ".tmp/func-g05/docs-final.log"
+    ],
+    "previous_closure": {
+      "task_id": "FUNC-G04",
+      "status": "ready_for_completion_ledger",
+      "completion_ready": true,
+      "updated_at": "2026-11-15T21:44:54.119Z",
+      "closure_level": "locally_verified_with_measured_limits",
+      "previous_task_id": "FUNC-G03"
+    }
   },
   "session_id": "01a1dfb9-d5d9-7712-85ca-8dad082552b7",
   "plan_path": "docs/planning/functional-remediation-2026-11-15.md",
-  "scope": "Complete FUNC-G05: PAOS-FUNC-11,12,13,15,16 telemetry, skill discovery, document apply, autonomy and observed history; checks and per-task docs/status sync",
-  "updated_at": "2026-11-16T04:35:32.296Z",
+  "scope": "New user-authorized FUNC-G06: PAOS-FUNC-21,22,17 recovery, backup/restore and bounded local distribution. G05 remains closed in previous_closure; no old-task writes authorized",
+  "updated_at": "2026-11-16T05:48:32.333Z",
   "approval_boundary": "User-authorized in-scope local implementation and bounded synthetic verification; preserve other groups and user files; no credentials/providers/models/live target writes/global installation or configuration/Git/publication",
   "status": "ready_for_completion_ledger",
   "completion_ready": true,
   "completion_brief_shown": false,
-  "brief_digest": "sha256:80e1228e0310352aab63bff2f4905d4b127269e688a0bb9ad212338a39b65ccd",
+  "brief_digest": "sha256:ee25f423ebc7314fa481c57dc3620a9b6cfd6ed7431483bfd5d7160d944e1070",
   "brief_schema_version": "task_start_brief_v2",
   "brief_format": "bold_fields",
   "brief_fields_present": [
@@ -38,18 +55,20 @@
     "financially_material": false,
     "release_or_readiness": false,
     "explicit_packet_request": false,
-    "reason": "Five production implementation slices with source/privacy contracts, filesystem write preservation and runtime enforcement boundaries, shared API/UI/storage wiring and per-task docs/status closure"
+    "reason": "New user-authorized G06 after closed G05: data preservation/recovery and design-gated local distribution using disposable profiles; no real installation/publication"
   },
   "closure_level": "locally_verified_with_explicit_limits",
   "evidence_refs": [
-    "docs/planning/functional-remediation-2026-11-15.md#func-g05-results",
-    ".tmp/func-g05/final-review.json",
-    ".tmp/func-g05/closure-consistency.json",
-    ".tmp/func-g05/web-native-final.log",
-    ".tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json",
-    ".tmp/func-g05/native-candidate.json",
-    ".tmp/func-g05/native-default.json",
-    ".tmp/func-g05/docs-final.log"
+    "docs/planning/functional-remediation-2026-11-15.md#func-g06-results",
+    ".tmp/func-g06/final-review.json",
+    ".tmp/func-g06/closure-consistency.json",
+    ".tmp/func-g06/web-native-final.log",
+    ".tmp/func-g06/managed-acceptance/evidence-mJ8j5k/result.json",
+    ".tmp/func-g06/native-candidate.json",
+    ".tmp/func-g06/native-default.json",
+    ".tmp/func-g06/docs-final.log",
+    ".tmp/func-g06/matrix-ru.log",
+    ".tmp/func-g06/matrix-en.log"
   ],
-  "started_at": "2026-11-16T02:10:36Z"
+  "started_at": "2026-11-16T05:00:11Z"
 }

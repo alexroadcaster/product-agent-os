@@ -1,6 +1,6 @@
 # Snapshot, backup and restore
 
-Source status: repository_source / static_contract_review; 2026-11-15.
+Source status: repository_source / static_contract_review; 2026-11-15.; FUNC-G06_22_current_native_synthetic_verified, 16.11.2026.
 
 Owner: backend/storage owner; scope: Product-Agent OS local SQLite, revision `2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765` (DG03). Update when the schema, storage contracts or related tests change. Sources: [schema](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/storage/migrations/schema.mts), [worker](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/storage/sqlite-worker.mts), [storage contract](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/packages/contracts/storage/local-store.ts); checks: [storage tests](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/tests/web/storage.test.mts), [backup tests](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/tests/web/storage-backup.test.mts). Test references do not assert a new run; DG03 did not inspect a user database or a particular profile runtime.
 
@@ -17,3 +17,11 @@ A separate [restore worker](https://github.com/alexroadcaster/product-agent-os/b
 ## Failures and tests
 
 `INVALID_MANIFEST`, `MANIFEST_HASH_MISMATCH`, `DATABASE_HASH_MISMATCH`, `BLOB_MISSING`, `BLOB_HASH_MISMATCH`, `BLOB_COVERAGE_MISMATCH`, `SCHEMA_INCOMPATIBLE`, `INTEGRITY_FAILED`, `FOREIGN_KEY_FAILED` and an existing destination block the respective restore. [Backup/restore tests](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/tests/web/storage-backup.test.mts) and the [contract](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/packages/contracts/storage/local-store.ts) point to synthetic checks; no user database was opened in this task.
+
+## FUNC-G06 / F22 — current qualification
+
+Checked source drift/unknown-writer freeze/CAS, interrupted pre-promotion retry without duplicate tasks, committed-receipt replay, corrupt/missing blobs, independent FK validation despite self-consistent hashes, new-profile restore and stale approvals/pending outbox/cursors. Source authority/profile/source bytes are preserved. Evidence: .tmp/func-g06/f22-focused.log, 11/11,0fail/skip. The interrupted-import case injects a failure at the trusted pre-promotion store port; it is not an OS-process crash claim. FK corruption is introduced only into a disposable backup copy, with hashes recalculated as an independent negative oracle. New profiles do not inherit runtime credentials; pending effects require explicit recovery. [Group decisions](../planning/functional-remediation-2026-11-15.en.md#func-g06-results).
+
+### SQLite WAL bookkeeping — FUNC-G06
+
+A read-only WAL connection can create auxiliary WAL/SHM files in a writable directory. Qualification preserves every original file hash, including any existing sidecars; only newly created empty state.sqlite-wal and the observed32KiB regular single-link state.sqlite-shm are separately recorded for the fixture. Other additions, deletions or hash changes fail. These files are not automatically deleted. [SQLite WAL](https://sqlite.org/wal.html#read_only_databases).
