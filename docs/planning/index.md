@@ -8,7 +8,8 @@ DG01 завершила исправление ссылок и восемь по
 
 ## Текущие владельцы
 
-- [Методологии и постепенный FSD: 18 planned задач](methodology-improvement-2026-11-15.md), [JSON-состояние](methodology-improvement-2026-11-15.json), [полный EN](methodology-improvement-2026-11-15.en.md). Планирование без реализации; FUNC/Web/V3 остаются отдельными владельцами.
+- [A — качество самого Product-Agent OS](methodology-improvement-2026-11-15.md): 17 planned задач, [JSON v2](methodology-improvement-2026-11-15.json); прежняя METH-16 — reference-only.
+- [B — методологии в проектах пользователей](user-project-methodologies-2026-11-15.md): 26 planned задач, [JSON](user-project-methodologies-2026-11-15.json), [полный EN](user-project-methodologies-2026-11-15.en.md). Направления независимы; реализация не начата этим планированием.
 
 - [Документация: анализ структуры и 16 задач](documentation-architecture-2026-11-15.md).
 - [Функциональные задачи F01–F34 и семь групп](functional-remediation-2026-11-15.md), [task-state JSON](functional-remediation-2026-11-15.json).

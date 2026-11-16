@@ -1,6 +1,6 @@
 # Capabilities and requirements traceability
 
-Source status: `repository_source / traceability_map / static_review`, 2026-11-15.
+Source status: `repository_source / traceability_map / static_review`, 2026-11-15.; FUNC-G04: locally_verified_with_measured_limits, 16.11.2026.
 
 **Owner:** product with Web and plugin owners. **Scope/version:** local capabilities, DG02/2026-11-15. Update when the source contract, user journey or owning task changes; status and acceptance are updated only in their owning plans.
 
@@ -18,3 +18,16 @@ Labels: **source-present** means a source contract or route was inspected; it do
 Other [F01–F34 tasks and seven groups](../planning/functional-remediation-2026-11-15.md) retain their own AC, dependencies and source owners; this table routes readers rather than replacing cards. M5 — PAOS-0047 (conditional sign-in), PAOS-0052/0053 (team storage/transfer) — belongs to the [Web plan](../planning/product-agent-os-web-task-manager-plan-2026-11-09.md#paos-m5) and remains planned. F32–F34 do not supply team storage. Product/runtime readiness cannot be inferred from the number of implemented cards.
 
 Requirement sources: historical [PRD](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/research/product-agent-os-web-prd-2026-11-05.md), including later clarifications at its start; the [Web plan](../planning/product-agent-os-web-task-manager-plan-2026-11-09.md) owns later task statuses. Tests listed here were not run merely because they are linked; choose current verification for the changed contract through TEST.md.
+
+## FUNC-G04 — implemented local surfaces, closure verification
+
+The current working tree extends the earlier DG02 snapshot. [Five FUNC-G04 cards](../planning/functional-remediation-2026-11-15.en.md#func-g04-results) own current status/scope; isolated G02 research does not substitute for production integration. F24/F25 and the whole-product end-to-end audit remain separate tasks.
+
+| User outcome | Inputs and outputs | Verification and limits |
+| --- | --- | --- |
+| Dependency and symbol map | F28 inventory, checked JS/TS and safe root tsconfig subset → revision-pinned import/lexical graph, search, direction, bounded paths and source evidence. | G02 ground truth10/10; unsupported aliases/languages/dynamic semantics remain explicit. Imports do not prove calls; restart/eviction requires rebuild. |
+| Project database | Explicitly selected offline SQLite → schema-only snapshot/ERD/list/details and compatible two-snapshot changes. Settings registration never opens SQLite. | Native read lease/authorizer/policy/CAS; no rows/SQL execution/real credentials. Windows/offline SQLite; views/virtual tables partial. Source changes invalidate late replies. |
+| Code and tables | Current code+schema revisions → static source-bound links, confidence/operation filters, bounded agent context/test candidates, Map DB network and Files related tables. | Literal JS/TS SQL and Prisma static subset; equal table names across sources remain distinct. Queries≤32KiB require both pins; dynamic behavior remains uncertain. |
+| Sustained local reads | Measured F20 workload → scoped task reads, frozen history pages, bounded artifact previews and graph LRU. | Original startup failure is retained. F20 owns before/after/final measurements, not reference-hardware or production qualification. |
+
+Private project-query derives the project from a claimed run and repeats lease/scope checks after async reads. Browser cookies do not grant worker capability. The technical roundtrip uses a synthetic caller without a model. Native parsing runs in an owned child, so stack failures must not terminate the HTTP host; JS heap flags do not cap native RSS. Human and provider/live-App acceptance remain separate. Next artifacts are F20 receipts, build-bound browser evidence and final matrix statuses.

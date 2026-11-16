@@ -5,6 +5,7 @@ import type {TeamService} from './service.mts';
 import {validateProposal,teamFail,digest} from './contract.mts';
 import {safePersistedText} from '../redaction/persisted.mts';
 import {bindProject,readProjectSource} from '../adapters/project-sources.ts';
+import {assertCurrentSourceProject} from '../project-inventory/scope.mts';
 type Runtime={snapshot(input:Record<string,unknown>):Promise<unknown>;dispatch(action:string,input:Record<string,unknown>):Promise<unknown>};
 type RequirementRef={id:string;revision:string;relativePath:string|null;startLine:number|null;endLine:number|null;excerpt:string};
 const hash=(s:string)=>createHash('sha256').update(s).digest('hex');
@@ -24,7 +25,7 @@ export function createSkillGeneration(store:LocalStore,team:TeamService,runtime?
   let refs:RequirementRef[]=[];
   if(input.mode==='requirements'){
    const project=await store.project(projectId);if(!project)teamFail('PROJECT_NOT_FOUND');const binding=await bindProject(projectId,project.canonicalRoot);if(binding.directoryIdentity!==project.rootIdentity)teamFail('PROJECT_ROOT_UNAVAILABLE');
-   const source=await readProjectSource(binding,'requirements');if(source.sha256!==input.expectedRevision)teamFail('REQUIREMENT_STALE');
+   const source=await readProjectSource(binding,'requirements',project.inventoryPolicy);await assertCurrentSourceProject(store,project);if(source.sha256!==input.expectedRevision)teamFail('REQUIREMENT_STALE');
    const lines=source.content.split(/\r?\n/),start=input.startLine??1,end=input.endLine??Math.min(lines.length,80);
    if(!Number.isSafeInteger(start)||!Number.isSafeInteger(end)||start<1||end<start||end>lines.length||end-start>=200)teamFail('REQUIREMENT_RANGE_INVALID');
    const excerpt=safePersistedText(lines.slice(start-1,end).join('\n'));if(Buffer.byteLength(excerpt)>16000)teamFail('REQUIREMENT_CONTEXT_LIMIT');if(excerpt.trim().length<16)teamFail('INSUFFICIENT_REQUIREMENTS');
@@ -58,7 +59,7 @@ export function createSkillGeneration(store:LocalStore,team:TeamService,runtime?
  return {requirements,
   async start(projectId:string,input:any){
    const context=await requirements(projectId,input),pendingKey=projectId+':'+context.generationKey;const inFlight=pendingStarts.get(pendingKey);if(inFlight)return inFlight;
-   const operation=(async()=>{const rows=await store.projectEntities(projectId),prior=rows.filter(r=>r.kind==='run').map(r=>r.data.appAgentRun as any).find(r=>r?.proposalContext?.assetKind==='skill'&&r.proposalContext.requirementContext?.generationKey===context.generationKey);
+   const operation=(async()=>{const rows=await store.projectEntities(projectId,{kinds:['settings','run','task']}),prior=rows.filter(r=>r.kind==='run').map(r=>r.data.appAgentRun as any).find(r=>r?.proposalContext?.assetKind==='skill'&&r.proposalContext.requirementContext?.generationKey===context.generationKey);
    // Stable across bindings/restarts: a repeat returns the prior proposal/result instead of paying for another job.
    if(prior)return result(projectId,prior.id);
    if(!runtime)teamFail('APP_GENERATION_UNAVAILABLE');const state=await runtime.snapshot({projectId,sessionId:input.sessionId}) as any;if(state.route!=='codex_app_agent')teamFail('APP_GENERATION_UNAVAILABLE');

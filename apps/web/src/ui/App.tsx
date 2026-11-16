@@ -35,9 +35,14 @@ import { createLatestRequest } from "../api/latest-request.ts";
 import { visibleAssistantDrafts } from "../api/visible-drafts.ts";
 import { ConnectionControls } from "./ConnectionControls.tsx";
 import {ProjectOnboarding} from '../features/projects/ProjectOnboarding.tsx';
+import {ProjectAnalysis} from '../features/projects/ProjectAnalysis.tsx';
+import {ProjectScanStatus} from '../features/projects/ProjectScanStatus.tsx';
 import type {ProjectRegistration} from '../api/client.ts';
 import { TaskRelations } from "./TaskRelations.tsx";
+import {ProjectFiles} from '../features/files/ProjectFiles.tsx';
 import {GraphExplorer} from '../features/graph/GraphExplorer.tsx';
+import {DatabaseExplorer,DatabaseSourceSettings} from '../features/database/DatabaseExplorer.tsx';
+import {CodeDatabaseUsages} from '../features/database/CodeDatabaseUsages.tsx';
 import {DecisionBoard} from '../features/decisions/DecisionBoard.tsx';
 import {AutonomyManager} from '../features/autonomy/AutonomyManager.tsx';
 import type {AutonomySnapshot} from '../../../../packages/contracts/autonomy/policy.ts';
@@ -49,6 +54,7 @@ import type {WorkflowRegistry} from '../../../../packages/contracts/workflows/wo
 import {TaskManager} from '../features/tasks/TaskManager.tsx';
 import {
   SessionContext,
+  FileExecutionPreflight,
   RuntimeSummary,
   RuntimeDiff,
   RuntimeChecks,
@@ -85,7 +91,9 @@ const sections = [
   "sessions",
   "agents",
   "skills",
+  "files",
   "projectMap",
+  "database",
   "documents",
   "checks",
   "autonomy",
@@ -123,7 +131,13 @@ export function App() {
   const [linkedSession,setLinkedSession]=useState<{projectId:string;sessionId:string;messageId?:string}|null>(null);
   const [linkedTask,setLinkedTask]=useState<{projectId:string;id:string;tab?:"summary"|"files"}|null>(null);
   const [linkedAsset,setLinkedAsset]=useState<{projectId:string;id:string;kind:"agent"|"skill"}|null>(null);
+  const [linkedFile,setLinkedFile]=useState<{projectId:string;path:string;line:number}|null>(null);
+  const [linkedDatabase,setLinkedDatabase]=useState<{projectId:string;table:string;tab:'schema'|'changes'|'usages'}|null>(null),[settingsPane,setSettingsPane]=useState('general');
   const [linkedGraph,setLinkedGraph]=useState<{projectId:string;id:string}|null>(null);
+  function openFile(path:string,line:number){setLinkedFile({projectId,path,line});location.hash=new URLSearchParams({project:projectId,file:path,line:String(line)}).toString();setSection('files');}
+  function openTable(table:string){setLinkedDatabase({projectId,table,tab:'schema'});location.hash=new URLSearchParams({project:projectId,database:table,dbtab:'schema'}).toString();setSection('database');}
+  async function openMap(path:string){const own=navigationEpoch.current;try{const status=await api.graphStatus(projectId);if(status.revision){const page=await api.graphPage(projectId,{revision:status.revision,mode:'dependencies',query:path,limit:100});if(own!==navigationEpoch.current)return;const file=page.nodes.find(node=>node.relativePath===path&&node.kind==='file');setLinkedGraph(file?{projectId,id:file.id}:null);}}catch{}if(own===navigationEpoch.current)setSection('projectMap');}
+  const databaseUsages=(path?:string,visual=false)=><CodeDatabaseUsages key={projectId+':'+(path??'')} api={api} projectId={projectId} locale={preferences.locale} initialPath={path} initialVisual={visual} onOpenFile={openFile} onOpenTable={openTable}/>;
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
@@ -189,6 +203,11 @@ export function App() {
   useEffect(()=>{
     if(!ready)return;
     const openAnchor=()=>{if(appliedAnchor.current===location.hash)return;const q=new URLSearchParams(location.hash.slice(1)),p=q.get('project'),session=q.get('session'),message=q.get('message');
+      const file=q.get('file');if(p&&file&&projects.some(project=>project.id===p)&&file.length<=2048&&!/[\\\0\r\n:]/.test(file)){
+        const requested=Number(q.get('line')??1),line=Number.isSafeInteger(requested)&&requested>=1&&requested<=1000000?requested:1;
+        appliedAnchor.current=location.hash;setProjectId(p);setLinkedFile({projectId:p,path:file,line});setSection('files');return;
+      }
+      const database=q.get('database');if(p&&database!==null&&database.length<=256&&!/[\0\r\n]/.test(database)&&projects.some(project=>project.id===p)){const value=q.get('dbtab'),tab=value==='changes'||value==='usages'?value:'schema';appliedAnchor.current=location.hash;setProjectId(p);setLinkedDatabase({projectId:p,table:database,tab});setSection('database');return;}
       if(!p||!session||!message||!projects.some(project=>project.id===p)||[session,message].some(id=>id.length>200||/[\\\0\r\n]/.test(id)))return;
       appliedAnchor.current=location.hash;setProjectId(p);setLinkedSession({projectId:p,sessionId:session,messageId:message});setSection('sessions');
     };openAnchor();window.addEventListener('hashchange',openAnchor);return()=>window.removeEventListener('hashchange',openAnchor);
@@ -258,7 +277,7 @@ export function App() {
           </button></div>
         </header>
         <main id="main" data-section={section} tabIndex={-1}>
-          <div className="page-heading" hidden={ready&&['tasks','overview','portfolio','agents','skills','documents','checks','search','settings','sessions','projectMap'].includes(section)}>
+          <div className="page-heading" hidden={ready&&['tasks','overview','portfolio','agents','skills','documents','checks','search','settings','sessions','projectMap','database'].includes(section)}>
             <div>
               <p className="eyebrow">Product-Agent OS · M2</p>
               <h1>{label(section)}</h1>
@@ -296,6 +315,9 @@ export function App() {
             </section>
           ) : section === "settings" ? (
             <><Settings
+              projectId={projectId}
+              initialSection={settingsPane}
+              onOpenFiles={id=>{navigationEpoch.current++;setProjectId(id);setLinkedFile(null);setSection('files');}}
               projects={projects}
               preferences={preferences}
               onPreferences={setPreferences}
@@ -349,10 +371,14 @@ export function App() {
               onOpenAsset={(kind,id)=>{setLinkedAsset({projectId,id,kind});setSection(kind==='agent'?'agents':'skills');}}
               onOpenSession={sessionId=>{setLinkedSession({projectId,sessionId});setSection('sessions');}}
               onOpenTask={id=>{setLinkedTask({projectId,id});setSection('tasks');}}/></>
+          ) : section === "files" ? (
+            <ProjectFiles key={projectId} api={api} projectId={projectId} locale={preferences.locale} initialPath={linkedFile?.projectId===projectId?linkedFile.path:undefined} initialLine={linkedFile?.projectId===projectId?linkedFile.line:undefined} onOpenMap={path=>void openMap(path)} relatedTables={path=>databaseUsages(path)}/>
           ) : section === "projectMap" ? (
-            <GraphExplorer key={projectId} api={api} projectId={projectId} locale={preferences.locale} initialNodeId={linkedGraph?.projectId===projectId?linkedGraph.id:undefined} onOpenTask={id=>{setLinkedTask({projectId,id});setSection('tasks');}}/>
+            <GraphExplorer key={projectId} api={api} projectId={projectId} locale={preferences.locale} initialNodeId={linkedGraph?.projectId===projectId?linkedGraph.id:undefined} onOpenFile={openFile} databaseUsages={databaseUsages(undefined,true)} onOpenTask={id=>{setLinkedTask({projectId,id});setSection('tasks');}}/>
+          ) : section === "database" ? (
+            <DatabaseExplorer key={projectId} api={api} projectId={projectId} locale={preferences.locale} initialTable={linkedDatabase?.projectId===projectId?linkedDatabase.table:undefined} initialTab={linkedDatabase?.projectId===projectId?linkedDatabase.tab:undefined} onConfigure={()=>{setSettingsPane('database');setSection('settings');}} onOpenFile={openFile} codeUsages={<CodeDatabaseUsages key={projectId+':database'} api={api} projectId={projectId} locale={preferences.locale} initialTable={linkedDatabase?.projectId===projectId?linkedDatabase.table:undefined} onOpenFile={openFile} onOpenTable={openTable}/>}/>
           ) : section === "overview" ? (
-            <section><div className="section-tabs overview-tabs">{[['dashboard',preferences.locale==='ru'?'Обзор':'Overview'],['sources',t('source')],['usage',preferences.locale==='ru'?'Расход':'Usage']].map(([id,name])=><button key={id} data-overview-section={id} aria-pressed={overviewPane===id} onClick={()=>setOverviewPane(id)}>{name}</button>)}</div><div hidden={overviewPane!=='dashboard'}><Dashboard api={api} projects={projects.filter(p=>p.id===projectId)} locale={preferences.locale} onProject={()=>{}} onTask={(id,taskId)=>{setLinkedTask(taskId?{projectId:id,id:taskId}:null);setSection('tasks');}} onAgents={()=>setSection('agents')}/></div><div hidden={overviewPane!=='sources'}><h1>{t('source')}</h1><Sources api={api} projectId={projectId} t={t}/></div><div hidden={overviewPane!=='usage'}><h2>{preferences.locale==='ru'?'Расход ресурсов проекта':'Project resource usage'}</h2><UsageDashboard locale={preferences.locale}/></div></section>
+            <section><div className="section-tabs overview-tabs">{[['dashboard',preferences.locale==='ru'?'Обзор':'Overview'],['sources',t('source')],['usage',preferences.locale==='ru'?'Расход':'Usage']].map(([id,name])=><button key={id} data-overview-section={id} aria-pressed={overviewPane===id} onClick={()=>setOverviewPane(id)}>{name}</button>)}</div><div hidden={overviewPane!=='dashboard'}>{overviewPane==='dashboard'&&<Dashboard api={api} projects={projects.filter(p=>p.id===projectId)} locale={preferences.locale} onProject={()=>{}} onTask={(id,taskId)=>{setLinkedTask(taskId?{projectId:id,id:taskId}:null);setSection('tasks');}} onAgents={()=>setSection('agents')}/>}</div><div hidden={overviewPane!=='sources'}><h1>{t('source')}</h1><Sources api={api} projectId={projectId} t={t}/>{overviewPane==='sources'&&<ProjectScanStatus key={projectId} api={api} projectId={projectId} locale={preferences.locale}/>} {overviewPane==='sources'&&<ProjectAnalysis key={projectId} api={api} projectId={projectId} locale={preferences.locale} onOpenFiles={()=>setSection('files')} onOpenGraph={()=>setSection('projectMap')} onOpenDatabase={()=>setSection('database')}/>}</div><div hidden={overviewPane!=='usage'}><h2>{preferences.locale==='ru'?'Расход ресурсов проекта':'Project resource usage'}</h2><UsageDashboard locale={preferences.locale}/></div></section>
           ) : (
             <Empty text={t("unavailable")} />
           )}
@@ -432,6 +458,7 @@ function Overview({
   );
 }
 function Settings({
+  projectId,onOpenFiles,initialSection,
   projects,
   preferences,
   onPreferences,
@@ -441,6 +468,7 @@ function Settings({
   onConnection,
   processes,
 }: {
+  projectId:string;onOpenFiles:(id:string)=>void;initialSection?:string;
   projects: Project[];
   preferences: UiPreferences;
   onPreferences: (p: UiPreferences) => void;
@@ -450,9 +478,9 @@ function Settings({
   onConnection: (connection: Connection) => void;
   processes: (surface:string)=>ReactNode;
 }) {
-  const [settingsSection,setSettingsSection]=useState("general");
+  const [settingsSection,setSettingsSection]=useState(initialSection??"general");
   const visible=(section:string)=>settingsSection===section||settingsSection==="all";
-  const settingsSections=[["general","Общие","General"],["projects","Проекты","Projects"],["connection","Подключение","Connection"],["processes","Процессы","Processes"],["execution","Выполнение цепочек","Recipe execution"],["queue","Очередь","Queue"],["service","Завершение сервиса","Quit service"],["all","Все разделы","All sections"]];
+  const settingsSections=[["general","Общие","General"],["projects","Проекты","Projects"],["database","База данных","Database"],["connection","Подключение","Connection"],["processes","Процессы","Processes"],["execution","Выполнение цепочек","Recipe execution"],["queue","Очередь","Queue"],["service","Завершение сервиса","Quit service"],["all","Все разделы","All sections"]];
   const [draft, setDraft] = useState(preferences),
     [status, setStatus] = useState(""),
     [busy, setBusy] = useState(false);
@@ -472,6 +500,7 @@ function Settings({
     <section className="settings-workspace"><div className="settings-page-title"><h1>{settingsSection==='processes'?(preferences.locale==='ru'?'Процессы проекта':'Project workflows'):['execution','queue'].includes(settingsSection)?(preferences.locale==='ru'?'Выполнение цепочек':'Recipe execution'):uiLabel(preferences.locale,'nav.settings')}</h1><p className="quiet">{preferences.locale==='ru'?'Рабочая среда и параметры текущего проекта':'Workspace and current project preferences'}</p></div>
       <div className="settings-navigation" data-testid="settings-navigation" role="tablist" aria-label={preferences.locale==='ru'?'Разделы настроек':'Settings sections'} onKeyDown={event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();const tabs=Array.from(event.currentTarget.querySelectorAll<HTMLButtonElement>('[role=tab]')),index=tabs.findIndex(tab=>tab===document.activeElement),next=event.key==='Home'?0:event.key==='End'?tabs.length-1:(index+(event.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;tabs[next]?.focus();tabs[next]?.click();}}>{settingsSections.map(([id,ru,en])=><button type="button" key={id} role="tab" data-settings-section={id} id={'settings-tab-'+id} aria-controls={id==='all'?undefined:'settings-panel-'+id} aria-selected={settingsSection===id} tabIndex={settingsSection===id?0:-1} onClick={()=>setSettingsSection(id)}><Icon name={id==='projects'?'portfolio':id==='connection'?'agents':id==='processes'?'projectMap':id==='execution'?'autonomy':id==='queue'?'tasks':'settings'}/>{preferences.locale==='ru'?ru:en}</button>)}</div>
       <div className="settings-grid">
+      {visible('database')&&<section className="panel settings-local-panel" id="settings-panel-database" aria-labelledby="settings-tab-database">{projectId?<DatabaseSourceSettings key={projectId} api={api} projectId={projectId} locale={preferences.locale}/>:<p>{t('empty')}</p>}</section>}
       <section className="panel settings-local-panel" id="settings-panel-general" data-testid="settings-panel-general" hidden={!visible('general')} aria-labelledby="settings-tab-general">
         <h2>{uiLabel(preferences.locale, "nav.settings")}</h2>
         <form className="appearance-form" onSubmit={save}>
@@ -516,7 +545,7 @@ function Settings({
           <p role="status">{status}</p>
         </form>
       </section>
-      <div className="settings-local-panel" id="settings-panel-projects" data-testid="settings-panel-projects" hidden={!visible('projects')} aria-labelledby="settings-tab-projects"><ProjectOnboarding api={api} t={t} onProject={onProject}/><section className="panel"><h2>{preferences.locale==='ru'?'Подключённые проекты':'Registered projects'}</h2><table className="dashboard-data-table"><thead><tr><th>{t('name')}</th><th>{preferences.locale==='ru'?'Префикс задач':'Task prefix'}</th></tr></thead><tbody>{projects.map(project=><tr key={project.id}><td>{project.name}</td><td>{project.keyPrefix}</td></tr>)}</tbody></table></section></div>
+      <div className="settings-local-panel" id="settings-panel-projects" data-testid="settings-panel-projects" hidden={!visible('projects')} aria-labelledby="settings-tab-projects"><ProjectOnboarding api={api} t={t} onProject={onProject} locale={preferences.locale} onOpenFiles={onOpenFiles}/><ProjectScanStatus api={api} projectId={projectId} locale={preferences.locale} enabled={visible('projects')}/><section className="panel"><h2>{preferences.locale==='ru'?'Подключённые проекты':'Registered projects'}</h2><table className="dashboard-data-table"><thead><tr><th>{t('name')}</th><th>{preferences.locale==='ru'?'Префикс задач':'Task prefix'}</th></tr></thead><tbody>{projects.map(project=><tr key={project.id}><td>{project.name}</td><td>{project.keyPrefix}</td></tr>)}</tbody></table></section></div>
       <div className="settings-local-panel" id="settings-panel-connection" hidden={!visible('connection')} aria-labelledby="settings-tab-connection"><ConnectionControls
         api={api}
         connection={connection}
@@ -1374,6 +1403,7 @@ function Session({
     targetMap.set(linkedTarget.id, linkedTarget);
   const targetChoices = [...targetMap.values()];
   const target = targetChoices.find((task) => task.id === targetId);
+  const [filePreflight,setFilePreflight]=useState<(import('../../../../packages/contracts/runtime/file-preflight.ts').FilePreflight&{taskId:string;taskRevision:number})|null>(null),[filePreflightError,setFilePreflightError]=useState(''),[filePreflightRefresh,setFilePreflightRefresh]=useState(0);
   const modeHydrated = useRef(false);
   const autosave = useRef<DraftLease | null>(null),
     draftText = useRef(""),
@@ -1397,6 +1427,11 @@ function Session({
     [pane, setPane] = useState("chat");
 
   const [autonomySelected,setAutonomySelected]=useState(false);
+  useEffect(()=>{
+    const controller=new AbortController();setFilePreflight(null);setFilePreflightError('');
+    if(mode==='execution'&&target)void api.taskFilePreflight(entity.projectId,target.id,target.revision,controller.signal).then(value=>{if(!controller.signal.aborted)setFilePreflight(value);}).catch(error=>{if(!controller.signal.aborted)setFilePreflightError(String(error));});
+    return()=>controller.abort();
+  },[api,entity.projectId,mode,target?.id,target?.revision,filePreflightRefresh]);
   const [taskCreationApproved,setTaskCreationApproved]=useState(false);
   const [autonomyState,setAutonomyState]=useState<AutonomySnapshot|null>(null);
   useEffect(()=>{
@@ -1632,9 +1667,17 @@ function Session({
         const lease = autosave.current;
         if (!lease || typeof extra.input !== "string")
           throw new Error(t("draftScopeUnavailable"));
+        const sendInput=extra.input;
+        if(mode==='execution'){
+          if(!target||target.id!==linkedTaskId)throw Error('FILE_PREFLIGHT_TASK_REQUIRED');
+          const checked=await api.taskFilePreflight(entity.projectId,target.id,target.revision);if(!mounted.current)return;
+          setFilePreflight(checked);setFilePreflightError('');
+          if(!checked.allowed)throw Error('FILE_PREFLIGHT_BLOCKED: '+checked.reasons.join(', '));
+          extra={...extra,filePreflight:{digest:checked.digest,taskRevision:checked.taskRevision}};
+        }
         const result = await sendWithDraftAck(
           lease,
-          extra.input,
+          sendInput,
           (clientMessageId) =>
             api.runtime(action, {
               projectId: entity.projectId,
@@ -1672,6 +1715,7 @@ function Session({
       }
     } catch (error) {
       if (mounted.current) setNotice(`${t("error")}: ${error}`);
+      try{const current=await api.runtimeState(entity.projectId,entity.id);if(mounted.current)setSnapshot(current);}catch{}
     } finally {
       if (mounted.current) setActionBusy(false);
     }
@@ -1740,6 +1784,7 @@ function Session({
               >
                 {t("attachTask")}
               </button>
+              {mode==='execution'&&target&&<FileExecutionPreflight report={filePreflight?.taskId===target.id?filePreflight:null} error={filePreflightError} locale={locale} onRefresh={()=>{setFilePreflightRefresh(n=>n+1);void tasks.load();}}/>}
               {mode === "execution" &&
                 (!isExecutionTarget(target,workflowRegistry) || targetId !== linkedTaskId) && (
                   <p className="quiet">{t("executionScopeHint")}</p>

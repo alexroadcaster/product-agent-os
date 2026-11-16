@@ -106,7 +106,7 @@ export function createDomainTools({ store,onPendingLink }: { store: LocalStore;o
         const snapshot=await taskManagerSnapshot(store,project.id);
         let sourceId=target.id,targetId=other.id;if(args.relation==='blocked_by')[sourceId,targetId]=[targetId,sourceId];
         const relation=args.relation==='related'?'relates_to' as const:'blocks' as const;
-        const pin=relation==='blocks'?pinBlockingRun(await store.projectEntities(project.id),targetId):undefined;
+        const pin=relation==='blocks'?pinBlockingRun(await store.projectEntities(project.id,{kinds:['settings','run']}),targetId):undefined;
         const link={id:`agent-link-${entityId}`,sourceId,targetId,relation,actorId,createdAt:new Date().toISOString(),reason:'Agent task link',source:`agent:${run.id}`,
           state:pin?'pending' as const:'active' as const,...(pin?{blockedRun:pin,requiredAction:'stop_and_reconcile_then_activate' as const}:{})};
         const receipt=await commit([{expectedRevision:target.revision,entity:{id:target.id,kind:'task',data:target.data}},

@@ -1,12 +1,22 @@
 # RUNLOG.md
 
+## FUNC-G04 — закрыта, 16.11.2026
+
+F20/F09/F14/F33/F34 implemented,5/5; [итоговые решения и evidence](docs/planning/functional-remediation-2026-11-15.md#func-g04-results). Web658/658,0skip, browser18/18/current204source+dist, TS/build/native candidate→default и F20 current133-input protocol выполнены. Review closed_allowed; исходные4 findings и поздний P2 magic table-name dictionary исправлены с regressions, продуктовые/UI failures и sandbox refusals сохранены. Общий итог22 implemented/12planned; остальные29 cards, M5, root foreign sections и baseline HEAD5a9c87b… сохраняются.
+
+Control-plane sync: REQUIREMENTS/PLAN/TEST/RUNLOG updated; EVALS/prod_test no_change_needed (нет AI rubric/Batch39 изменения); atlas/MkDocs no_change_needed. Корневые файлы превышают advisory40KB: deferred_hygiene, исходный материал не сокращался. Residual risks: cold history/catalog выше1s,10k-directory30s timeout, native/aggregate RSS и reference-hardware limits; Windows/offline/static subset, provider/human/release отдельно. Owned synthetic fixtures и binary очищаются с сохранением receipts; чужой session marker не меняется. Другая группа не стартовала.
+
+## FUNC-G03 — завершена, 15.11.2026
+
+Семь карточек implemented / locally_verified; [итоговые решения/evidence](docs/planning/functional-remediation-2026-11-15.md#func-g03-results). Полный Web594/594,0skip; final browser19/19; TS/build и native candidate/default текущего tuple64cd3b58… прошли. Independent review policy-race подтверждён RED, общий final registry fence исправлен, cycle2 проверил5/5 и дал closed_allowed. Docs/statuses/source/build/preservation синхронизированы; temporary browser/core/native fixtures очищены, failed receipts сохранены. Начальный snapshot5a9c87b…, baseline/evidence `.tmp/func-g03/`; прежние G01/G02, прочие27 cards, M5 и чужие planning/marker hunks сохранены. Остаточные границы: packaged core unavailable (F17), performance/RSS (F09/F20), future Map/schema consumers (F14/F33/F34), human/provider/release отдельно. Другой scope не запущен.
+
 ## FUNC-G02 — закрыта как исследование, 15.11.2026
 
 F30/F31/F32 implemented / poc_research_locally_verified,3/3; [источник решений/evidence](docs/planning/functional-remediation-2026-11-15.md#func-g02-results). F30 bounded_adopt imports10/10 vs7/10baseline; F31 reject before-index для текущего Windows profile, downstream unexecuted/null; F32 reject authoritative metadata,23positive/3candidate defects retained, explicit Node alternative. Nullability P2 и два UI P2 независимого review исправлены; root проверил final delta. Combined unit22/22, prototype TS/build, browser22/22, source/build/hash bindings и screenshots подтверждены. Docs/registry/task MD/JSON/control-plane synchronized; общий итог10 implemented/24planned, остальные31 records/3M5 сохранены. Matrices RU/EN, source-docs19, preservation/provenance и diff checks passed. EVALS/prod_test no_change_needed; production tuple, real DB/credentials, provider/model/global config/Git не затрагивались. Rollback только own hunks; human/product integration отдельно.
 
-## METH — подготовлен план без реализации, 15.11.2026
+## METH — план разделён на A и B без реализации, 15.11.2026
 
-Созданы [RU/EN карточки METH-01–18](docs/planning/methodology-improvement-2026-11-15.md) и [JSON](docs/planning/methodology-improvement-2026-11-15.json): все planned, pending_execution_timestamp; Spec-DD/Design-DD/TDD/ADD и постепенный FSD. Текущее FUNC-G01 evidence переиспользовано только как owner baseline, tests/runtime не повторялись. Реализация, active prompts/workflows/hooks, TEST/EVALS, FUNC/Web task-state и release/human gates не менялись. Проверки подготовки плана и ограничения записаны в самом плане; следующий возможный slice — METH-01 после отдельного запроса. Сохранить параллельную работу других чатов.
+[A](docs/planning/methodology-improvement-2026-11-15.md): 17 внутренних planned задач + METH-16 reference-only; [B](docs/planning/user-project-methodologies-2026-11-15.md): 26 planned задач, 104 AC и отдельный JSON owner. Все 18 прежних ID и legacy AC сохранены; два прежних dependency edges к METH-16 сняты с active DAG, критерии METH-05/18 уточнены с сохранением прежнего текста в history. Пользовательский маршрут не ждёт внутреннего FSD. Current static split/parity/preservation evidence — в B-плане; application/runtime/model проверки этим запросом не запускались. Параллельный FUNC-G03 и чужие markers/source edits сохранены; TEST/EVALS/prod_test no_change_needed. Следующий возможный B-slice — PMETH-01 после отдельного запроса.
 
 ## FUNC-G01 — закрыта, 15.11.2026
 

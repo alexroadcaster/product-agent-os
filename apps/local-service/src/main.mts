@@ -103,6 +103,7 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
  // App agents and the legacy API runtime are explicit choices; neither is a fallback for the other.
  let agentChannel:Awaited<ReturnType<typeof createAppAgentChannel>>|undefined;
  const appGateway=createAppAgentGateway({store,profileId:profile.profileId,actorId:'codex-app-agent',assetRoots,redact:(text)=>agentChannel?.redact(text)??text,
+  queryProject:async(projectId,input)=>{if(!application)throw failure('RUNTIME_UNAVAILABLE');return application.queryCodeDatabase(projectId,input);},
   executorFactory:deps.sandboxBrokerFactory===false?undefined:deps.sandboxBrokerFactory??(async(binding)=>{
    await assertProfileIdentity(profile);
    const selectionPath=join(profileDirectory,'runtime-selection.json');
@@ -146,7 +147,7 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
   async connect(input:unknown){const result=await selector.connection.connect(input);return {...(result as Record<string,unknown>),hostTransport};},
   async disconnect(){const result=await selector.connection.disconnect();return {...(result as Record<string,unknown>),hostTransport};}};
  const {runtime}=selector;
- const executionRecipes=(deps.createRecipes??createRecipeService)({store,assetRoots,port:{...appGateway.recipeRuntime,async eligible(projectId,sessionId){await assertProfileIdentity(profile);if(connection.status().route!=='codex_app_agent')throw failure('RECIPE_APP_ROUTE_REQUIRED');for(const project of await store.projects())for(const row of await store.projectEntities(project.id))if(row.kind==='run'&&!['completed','failed','interrupted'].includes(row.status)&&!row.data.appAgentRun)throw failure('FOREIGN_RUNTIME_RECOVERY_REQUIRED');return appGateway.recipeRuntime.eligible(projectId,sessionId);}}});
+ const executionRecipes=(deps.createRecipes??createRecipeService)({store,assetRoots,port:{...appGateway.recipeRuntime,async eligible(projectId,sessionId){await assertProfileIdentity(profile);if(connection.status().route!=='codex_app_agent')throw failure('RECIPE_APP_ROUTE_REQUIRED');for(const project of await store.projects())for(const row of await store.projectEntities(project.id,{kinds:['run']}))if(row.kind==='run'&&!['completed','failed','interrupted'].includes(row.status)&&!row.data.appAgentRun)throw failure('FOREIGN_RUNTIME_RECOVERY_REQUIRED');return appGateway.recipeRuntime.eligible(projectId,sessionId);}}});
  const scheduler=createScheduler({store,recipes:executionRecipes});
  let application:Awaited<ReturnType<typeof createLocalApplication>>|undefined;let origin='';
  const server=(deps.createHttpServer??createServer)(async(incoming,outgoing)=>{
@@ -196,13 +197,13 @@ export async function startLocalService(options:Readonly<{profileDirectory:strin
     }
     // Existing import/restore handlers retain their store until the HTTP server has drained.
     await serverClosing;
-    if(!storeClosed){await store.close();storeClosed=true;}
+    if(!storeClosed){await application?.close?.();await store.close();storeClosed=true;}
     if(failures.length)throw failures[0];
    })().catch((error)=>{shutdown=undefined;throw error;});return shutdown;
   }
   return {port:address.port,instanceId:options.instanceId,build:'paos-m1-0.1.0',pairingCode:application.issuePairingCode(),
    appAgentDescriptorPath:agentChannel.descriptorPath,quit};
- } catch(error){server.close();await scheduler.close();await executionRecipes.close();await Promise.allSettled([appGateway.close(),gateway.close(),agentChannel?.close(),desktop.close()]);await store.close();throw error;}
+ } catch(error){server.close();await application?.close?.();await scheduler.close();await executionRecipes.close();await Promise.allSettled([appGateway.close(),gateway.close(),agentChannel?.close(),desktop.close()]);await store.close();throw error;}
 }
 
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)) {

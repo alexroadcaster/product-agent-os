@@ -7,9 +7,13 @@ Source status: repository_source / planning_catalog; 2026-11-15.
 The Russian catalog lists all 42 relocated files and the new 16-task documentation backlog (`documentation-architecture-2026-11-15.md`). Current FUNC and Web plans retain their task IDs, dependencies and acceptance criteria. DG01 added full English counterparts for the eight working plans below. DG01–DG07 are complete: all DOCS-01–16 implemented / docs_static_verified; stages A/B of DOCS-13/16 are closed.
 
 
+## Current methodology directions
+
+- [A — Product-Agent OS internal quality](methodology-improvement-2026-11-15.en.md): 17 planned tasks, [JSON v2](methodology-improvement-2026-11-15.json); legacy METH-16 is reference-only.
+- [B — methodologies for user projects](user-project-methodologies-2026-11-15.en.md): 26 planned tasks, [JSON](user-project-methodologies-2026-11-15.json), [Russian](user-project-methodologies-2026-11-15.md). Independent directions; planning starts no implementation.
+
 ## Working plans translated in DG01
 
-- [Methodology improvements and incremental FSD: 18 planned tasks](methodology-improvement-2026-11-15.en.md), [JSON state](methodology-improvement-2026-11-15.json), [Russian](methodology-improvement-2026-11-15.md). Added after DG01; planning only, with separate FUNC/Web/V3 ownership.
 
 - [2026-11-13-ui-implementation-plan](2026-11-13-ui-implementation-plan.md)
 - [2026-11-13-v2-ui-implementation-plan](2026-11-13-v2-ui-implementation-plan.md)

@@ -1,13 +1,21 @@
-# Product-Agent OS — methodology improvement plan
+# Product-Agent OS — direction A: internal quality and architecture
 
-Source status: repository_source / owner_requested_planning / proposed_methodology_improvements; implementation_not_started.
+Source status: repository_source / owner_requested_planning / internal_quality_plan; user_project_work_split_to_direction_B; implementation_not_started.
 Date: 2026-11-15. Schema version: task_matrix_plan_v1. Timezone: Europe/Moscow.
+
+## Two directions — revision 2, 2026-11-15
+
+A improves Product-Agent OS and its maintenance process: **17 executable planned tasks**, 8 P1 / 7 P2 / 2 P3. B develops methodology application in user projects: [26 product tasks](user-project-methodologies-2026-11-15.en.md), [JSON](user-project-methodologies-2026-11-15.json). There are no cross-direction hard dependencies.
+
+Retain METH-16 with its ID, title and three legacy AC as a **reference-only** record outside JSON v2's tasks array; it is not scheduled and owns no product implementation status. Canonical owners: PMETH-03/07/10/11/16/17/22/23/26; JSON preserves exact AC mappings and former edges. V-REFERENCE checks B links/coverage without executing code from A. METH-18 decides only on internal METH-14/15 and neither authorizes nor blocks B.
+
+The original source snapshot and initial checks below are historical matrix baselines. This split uses HEAD `5a9c87bea374accc953a8401fa1ac32678ff6e6e` and FUNC owner state of 10 implemented / 24 planned; original FUNC/Web/V3 files remain unchanged. Preserve all 18 old IDs as 17 tasks plus one reference, not 18 independent implementations.
 
 ## Goal, authority and ownership
 
-This plan defines 18 concrete tasks for Spec-Driven Development (Spec-DD), Design-Driven Development (Design-DD), Test-Driven Development (TDD), Agentic-Driven Development (ADD) and incremental Feature-Sliced Design (FSD). Every task is planned with pending_execution_timestamp. Only this plan, JSON, its full English counterpart and planning/control-plane/source pointers are authorized. This request does not authorize implementation, new active instructions, runtime/browser/provider calls, installation, Git or publication.
+Direction A contains 17 internal maintenance tasks using Spec-DD, Design-DD, TDD, ADD and incremental FSD. METH-16 is now a reference-only B record with legacy criteria preserved. All executable tasks remain planned with pending_execution_timestamp. This request authorizes splitting/extending planning artifacts and pointers only, not implementation or active instruction/runtime changes.
 
-[JSON state](methodology-improvement-2026-11-15.json) owns status/priority/dependencies; synchronized RU/EN cards own descriptions and AC. Update them together; tables are indexes, not another queue. [Russian](methodology-improvement-2026-11-15.md). METH improves the development process; FUNC/Web/V3 retain functional scope and status. Authoring this plan completes no METH task.
+[JSON state v2](methodology-improvement-2026-11-15.json) owns status/priority/dependencies for 17 A tasks; cross_track_references separately retains METH-16. Synchronize RU/EN cards with JSON; tables are indexes. [Russian](methodology-improvement-2026-11-15.md). B has its own [detailed plan](user-project-methodologies-2026-11-15.en.md) and owner. Authoring this revision completes no A/B/FUNC/Web/V3 task.
 
 ## Baseline and evidence
 
@@ -34,7 +42,7 @@ P1 protects contracts and acceptance evidence; P2 is the main bounded pilot/proc
 | B. FSD foundation | METH-08–11 | Accepted architecture decision, import ratchet and minimal shared/entity APIs without mass moves |
 | C. Sequential pilots | METH-12, METH-13; then METH-07 | Dashboard → tasks → workflows; reversible checkpoints and an honest outcome-comparison ceiling |
 | D. Acceptance and decision | METH-17 → METH-18 | Bounded pilot verdict and separate go/bounded_go/hold/stop |
-| E. Optional expansion | METH-14–16 | Selected areas after go; not required for pilot acceptance |
+| E. Optional expansion | METH-14–15 | Selected areas after go; not required for pilot acceptance |
 
 Start with METH-01, then independent METH-02 and METH-08 branches. Structural critical chain: 01 → 08/05 → 09 → 10 → 11 → 12 → 13 → 17 → 18. The design branch 02 → 03 → 04 enters 12. The agentic branch 06 + 12 → 07 enters 17. JSON depends_on defines the full DAG; Blocks is its reverse. Only task dependencies gate a start; finishing an entire stage is not another prerequisite.
 
@@ -87,7 +95,7 @@ Mandatory minimum: zero new unauthorized edges, zero unresolved critical pilot r
 
 Stop for draft/data loss, scope/approval violations, unverifiable aliases, missing material baselines, unclear source ownership, concurrent-write conflicts or a need to expand authority. Roll back only owned hunks/checkpoints while preserving public compatibility/user data; no destructive Git or DB operations. Changed pinned runtime sources require qualification through current TEST rather than mechanically replaced hashes.
 
-## Plan-preparation verification — 2026-11-15
+## Initial plan-preparation verification — 2026-11-15
 
 This checks the planning artifact, not execution of METH tasks. Review mode: self_review; no independent review or runtime acceptance is claimed.
 
@@ -97,6 +105,10 @@ This checks the planning artifact, not execution of METH tasks. Review mode: sel
 - Preservation: hashes of 19 existing source/contract owners are unchanged; removing only the inserted planning sections recovers the original bytes of seven updated existing documents. Other session markers and concurrent workstreams were not touched.
 - `git diff --check` — exit 0. No application tests/build/browser/native/provider or generated-site run. All 18 implementation timestamps remain pending_execution_timestamp.
 - Control-plane sync: updated REQUIREMENTS/PLAN/RUNLOG and planning/source pointers; TEST/EVALS/prod_test no_change_needed because active verification policy and historical execution evidence were unchanged.
+
+## Direction-split verification — revision 2
+
+Current static split/parity/preservation results are recorded in direction B; the initial checks above retain their original provenance. All implementation tasks remain planned.
 
 ## Task index
 
@@ -117,7 +129,7 @@ This checks the planning artifact, not execution of METH tasks. Review mode: sel
 | PAOS-METH-13 | P2 | FSD, Design-DD, TDD | Migrate tasks and workflows in separate compatible slices | PAOS-METH-12 |
 | PAOS-METH-14 | P3 | FSD, ADD | Extend FSD to team and skills after a go decision | PAOS-METH-13, PAOS-METH-18 |
 | PAOS-METH-15 | P3 | FSD, Design-DD | Migrate selected remaining screens and finish the composition boundary | PAOS-METH-14 |
-| PAOS-METH-16 | P3 | Spec-DD, FSD, TDD, ADD | Refine conditional methodology support in the Python plugin | PAOS-METH-05, PAOS-METH-18 |
+| PAOS-METH-16 | P3 (legacy) | reference-only B | Refine conditional methodology support in the Python plugin | —; do not execute from A |
 | PAOS-METH-17 | P1 | Spec-DD, Design-DD, TDD, ADD, FSD | Accept the integrated pilot and verify contract preservation | PAOS-METH-07, PAOS-METH-13 |
 | PAOS-METH-18 | P2 | ADD, FSD, Spec-DD | Decide on further rollout and update documentation owners | PAOS-METH-17 |
 
@@ -312,7 +324,7 @@ This checks the planning artifact, not execution of METH tasks. Review mode: sel
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
 - Depends on: PAOS-METH-01, PAOS-METH-02
-- Blocks: PAOS-METH-06, PAOS-METH-09, PAOS-METH-16
+- Blocks: PAOS-METH-06, PAOS-METH-09
 - External references: PAOS-FUNC-21, PAOS-FUNC-22
 - Source: [baseline and source hashes](methodology-improvement-2026-11-15.json); current paths below; external refs are references only.
 - Short description: Separate existing protections, missing regression cases and RED requirements for the next behavior change.
@@ -321,7 +333,7 @@ This checks the planning artifact, not execution of METH tasks. Review mode: sel
 - Scope: `TEST.md`; `tests/web/ui-draft-autosave.test.mts`; `tests/web/contracts-boundaries.test.mts`; `tests/product_agent_os/test_methodology_audit.py`. Future work locations, not files changed now.
 - Non-goals: New product features, provider/credentials, target/Git/publication/production; other FUNC/Web statuses; anything outside this slice.
 - Expected result: Compact risk/test mapping in TEST and existing task evidence; only meaningful missing tests.
-- Acceptance criteria: PAOS-METH-05-AC01: Map risk → invariant → lowest reliable check for draft conflict/lost ACK, import boundaries, Stop/recovery, backup/restore and approval routing; reuse existing tests. PAOS-METH-05-AC02: Define expected RED causes and minimal GREEN for new TS boundary behavior in METH-09 and Python routing behavior in METH-16; record evidence when implementing them. PAOS-METH-05-AC03: Setup/import failures are not RED; behavior-preserving moves use characterization/regression without artificially broken production code; F21/F22 retain full recovery ownership.
+- Acceptance criteria: PAOS-METH-05-AC01: Map risk → invariant → lowest reliable check for draft conflict/lost ACK, import boundaries, Stop/recovery, backup/restore and approval routing; reuse existing tests. PAOS-METH-05-AC02: Define expected RED causes and minimal GREEN for new TS boundary behavior in METH-09 and the next internal Python behavior change; product routing belongs to B and does not block A. PAOS-METH-05-AC03: Setup/import failures are not RED; behavior-preserving moves use characterization/regression without artificially broken production code; F21/F22 retain full recovery ownership.
 - Verification gates: V-TDD; profile above; current TEST routing takes precedence; execute during future implementation.
 - Risks / approval gates: Do not duplicate full recovery suites or require RED for docs or pure moves. The current request authorizes planning only.
 - Complexity: M
@@ -789,43 +801,46 @@ This checks the planning artifact, not execution of METH tasks. Review mode: sel
 - Task name: Refine conditional methodology support in the Python plugin
 - Status: planned
 - Priority: P3
+- Record kind: cross_track_reference
+- Canonical implementation owner: [direction B](user-project-methodologies-2026-11-15.en.md); PAOS-PMETH-03, PAOS-PMETH-07, PAOS-PMETH-10, PAOS-PMETH-11, PAOS-PMETH-16, PAOS-PMETH-17, PAOS-PMETH-22, PAOS-PMETH-23, PAOS-PMETH-26
+- Acceptance semantics: Retain the three AC below as legacy coverage; execute them through canonical B owners. This record has no independent implementation status.
 - Methodologies: Spec-DD, FSD, TDD, ADD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
-- Depends on: PAOS-METH-05, PAOS-METH-18
+- Depends on: None; reference-only.
 - Blocks: None.
-- External references: None; this plan owns the work.
+- External references: PAOS-PMETH-03, PAOS-PMETH-07, PAOS-PMETH-10, PAOS-PMETH-11, PAOS-PMETH-16, PAOS-PMETH-17, PAOS-PMETH-22, PAOS-PMETH-23, PAOS-PMETH-26; reference-only, no hard dependency.
 - Source: [baseline and source hashes](methodology-improvement-2026-11-15.json); current paths below; external refs are references only.
-- Short description: Transfer only demonstrated pilot lessons into plugin recommendations and verification evidence.
+- Short description: Retain the previous ID and AC while transferring implementation ownership to B.
 - Technical value: Transfer only demonstrated pilot lessons into plugin recommendations and verification evidence.
 - Product value: Give target projects proportionate recommendations rather than FSD mandates based on folder names.
-- Scope: `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`; `plugins/product-agent-os/assets/methodology/methodology-catalog.json`; `tests/product_agent_os/test_methodology_audit.py`; `docs/methodologies/frontend.md`. Future work locations, not files changed now.
+- Scope: Cross-track references and AC mapping only; retain former work locations in the JSON reference. Execute no code from this record.
 - Non-goals: New product features, provider/credentials, target/Git/publication/production; other FUNC/Web statuses; anything outside this slice.
-- Expected result: One focused plugin slice with representative eval comparison; no blanket methodology requirement.
+- Expected result: One canonical product owner in B without a duplicate A task.
 - Acceptance criteria: PAOS-METH-16-AC01: Compare baseline/candidate cases for small frontends, growing coupled frontends, backend-only, native-only, misleading features folders, missing source and already-bounded frontends. PAOS-METH-16-AC02: Use RED/GREEN for new detection/routing behavior; distinguish not_applicable/applicable_missing/present_unverified and never treat missing evidence as proof of a violation. PAOS-METH-16-AC03: The proposal does not mutate targets or activate hooks/agents, and folder detection is not import/runtime proof; align RU/EN docs and catalog/evals.
-- Verification gates: V-PLUGIN; profile above; current TEST routing takes precedence; execute during future implementation.
+- Verification gates: V-REFERENCE; links/AC mappings/status ownership and removal of former active edges.
 - Risks / approval gates: This repo pilot does not prove broad usefulness; prompt/routing changes require separate baseline comparison, not installation. The current request authorizes planning only.
 - Complexity: M
 - Estimated execution time: Estimate after current discovery and bounded-slice selection; no calendar commitment.
-- Agents: plugin-runtime-builder + tester; proposed ownership; delegation=0 now.
+- Agents: No execution/delegation from this reference; owners are assigned in B.
 - Skills: python-design-patterns + python-code-style; advisory, for the future Python slice only.
-- Output artifacts: One focused plugin slice with representative eval comparison; no blanket methodology requirement.
-- Next step: Check dependencies and current source owners; obtain a separately authorized implementation scope for the selected task.
+- Output artifacts: Retained references/links to B; B owns implementation artifacts.
+- Next step: Select a separately authorized B PMETH task without waiting for internal METH-18 go.
 
 #### Completion Report
 
 - status: planned
-- what was done: Implementation not started; task card authored.
+- what was done: Planning record reclassified as reference-only; implementation not started.
 - files touched / work locations: No implementation files changed now; future locations are listed in Scope.
 - technical value delivered: Not claimed before implementation.
 - product value delivered: Not claimed before implementation.
 - actual implementation date and time: pending_execution_timestamp
 - verification evidence: Only plan preparation is checked; this task's AC are not claimed as executed.
 - residual risks: This repo pilot does not prove broad usefulness; prompt/routing changes require separate baseline comparison, not installation.
-- follow-up: Select the next authorized slice from the DAG; no automatic start.
+- follow-up: Track B coverage without a second implementation or status authority.
 
 ### Task `PAOS-METH-17`
 
@@ -884,7 +899,7 @@ This checks the planning artifact, not execution of METH tasks. Review mode: sel
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
 - Depends on: PAOS-METH-17
-- Blocks: PAOS-METH-14, PAOS-METH-16
+- Blocks: PAOS-METH-14
 - External references: PAOS-FUNC-25
 - Source: [baseline and source hashes](methodology-improvement-2026-11-15.json); current paths below; external refs are references only.
 - Short description: Choose go/bounded_go/hold/stop for each next area using evidence.
@@ -893,7 +908,7 @@ This checks the planning artifact, not execution of METH tasks. Review mode: sel
 - Scope: `docs/architecture/decisions/`; `docs/frontend/`; `docs/testing/`; `docs/sources/registry.md`; `PLAN.md`; `RUNLOG.md`. Future work locations, not files changed now.
 - Non-goals: New product features, provider/credentials, target/Git/publication/production; other FUNC/Web statuses; anything outside this slice.
 - Expected result: Reviewable rollout decision in the existing ADR/evidence owner and a compact handoff.
-- Acceptance criteria: PAOS-METH-18-AC01: Compare baseline/pilot unauthorized edges, regression findings, change/review effort and available outcome metrics; test counts are not benefit metrics. PAOS-METH-18-AC02: Record separate decisions, scope, owners and rollback for METH-14/15/16; hold/stop retains the working pilot without an indefinite migration mandate. PAOS-METH-18-AC03: Update only affected docs/registry/control-plane owners; change active rules only in a separately authorized slice and preserve existing FUNC/Web status and release gates.
+- Acceptance criteria: PAOS-METH-18-AC01: Compare baseline/pilot unauthorized edges, regression findings, change/review effort and available outcome metrics; test counts are not benefit metrics. PAOS-METH-18-AC02: Record decisions, scope, owners and rollback for internal METH-14/15; hold/stop retains the working pilot. Product direction B decides independently without a METH-18 gate. PAOS-METH-18-AC03: Update only affected docs/registry/control-plane owners; change active rules only in a separately authorized slice and preserve existing FUNC/Web status and release gates.
 - Verification gates: V-PLAN; profile above; current TEST routing takes precedence; execute during future implementation.
 - Risks / approval gates: A go decision does not automatically authorize implementation/provider/install/Git or deployment. The current request authorizes planning only.
 - Complexity: M

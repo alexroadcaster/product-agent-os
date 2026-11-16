@@ -1,6 +1,6 @@
 # Test map by subsystem
 
-Source status: repository_source / static_contract_review; DG06, 2026-11-15.
+Source status: repository_source / static_contract_review; DG06, 2026-11-15.; FUNC-G04: locally_verified_with_measured_limits, 16.11.2026.
 
 Owner: verification owner + subsystem owners. Scope/version: repository `259977f3b257ba7fc0e932396f8963262bd327ad`. Update when contracts, callers or test ownership change. The table routes to checks; it is not evidence of a current pass. [TEST.md](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/TEST.md) owns required selection and escalation; [EVALS.md](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/EVALS.md) owns eval thresholds.
 
@@ -31,3 +31,64 @@ Task/status evidence is owned by [FUNC-G01 results](../planning/functional-remed
 ## FUNC-G02 — isolated PoC regression routes
 
 [Owning decisions/evidence](../planning/functional-remediation-2026-11-15.md#func-g02-results). `node --test tests/web/poc/func-g02/f30-model.test.mts tests/web/poc/func-g02/codebase-memory.test.mts tests/web/poc/func-g02/tbls-poc.test.mts tests/web/poc/func-g02/prototype-model.test.mts tests/web/poc/func-g02/prototype-preview.test.mts` —22/22,0skip. `node tests/web/poc/func-g02/prototype-build.mts` —TypeScript/Vite passed; `prototype-browser.mts --synthetic-browser --playwright-core ABSOLUTE_INSTALLED_PATH --chromium ABSOLUTE_INSTALLED_PATH` —22/22, RU/EN × light/dark,1440/390px. Build/harness/snapshot hashes bind the receipt. F31 post-admission cases remain unexecuted/null; F32 candidate has23 positive observations and3 retained failures. Node alternative nullable regression and baseline-only regeneration do not rewrite native findings. No production/full-product/site/provider/human qualification follows from these checks.
+
+## FUNC-G04 / F20 — synthetic scale measurement
+
+`tests/fixtures/func_g04/protocol.json` pins WEB-NFR-03: 10,000 Tasks, 100,000 visible messages, 1000 documents and approximately 200 MiB text; 1000/1001 files, 10,000/10,001 entries, depth 32/33, 512 KiB and 8 MiB with one-byte overages. Search p95 is 500 ms, command ACK 500 ms, warm view/API event observation 1000 ms; 3 rounds of 12 samples and a bounded 120 s soak. These are comparison criteria, not observed passes.
+
+`node tests/web/single-window/functional-scale-acceptance.mts --synthetic-scale --phase after` runs diagnostic, reference and filesystem sections in separate disposable children, retaining the original 600 s watchdog per child. `--section diagnostic|reference|filesystem` focuses a repeat; `--phase final` uses the same workload. Section splitting followed the retained baseline failure and does not increase product budgets. Synthetic text/task and nearest-rank p95 primitives derive from `workload.mts`, whose top-level side effects prevent safe import. No existing profiles, providers, models or real credentials are used. Before/after source hashes invalidate measurements made during source changes; cleanup is contained within the owned fixture root.
+
+Original baseline: `--phase baseline`, exit 1, 416.342 s; `.tmp/func-g04/scale-baseline/result-1794769715591.json` and `scale-baseline-attempt2.log` are retained. Windows x64 / i7-12700H / 20 logical CPUs / 16,892,026,880 bytes RAM / Node v26.5.0 / SQLite 3.53.3; OS cache was not flushed and reference SSD equivalence was not established. Worker open was 108.571 ms; reopen 100.925 ms. The complete seed loops wrote 209,736,923 text bytes; the SQLite file was 658,968,576 bytes. HTTP application initialization failed with actual `SNAPSHOT_TOO_LARGE`; HTTP activation, search/list/ACK/event samples, soak, filesystem tail, final SQL integrity counts and before/after target hash assertion were therefore **not observed** in this baseline. Progress `insertedTasks`/`insertedMessages` values are intermediate checkpoints, not final SQL count verification.
+
+Before startup failure, graph rebuild for 1000 files took 60,865.383 ms with 199,890 bytes / 6000 `FileHandle.read` calls / 3 inventory walks. Three status requests took 17,609.933 / 19,651.067 / 21,266.028 ms; each repeated 2000 reads / 66,630 bytes / 1 walk. Project nine returned `GRAPH_SNAPSHOT_LIMIT`. These current observations identify F09 bottlenecks without relaxing limits. Bytes/calls are process-local instrumentation of checked source reads, not physical disk I/O; internal ignore-file reads may be excluded. On startup failure, the revised harness continues public Store/manager/artifact/history probes while explicitly retaining HTTP unavailability; service observations do not become HTTP evidence.
+
+The first attempt was a syntax/setup failure retained separately, not product TDD RED. At the baseline stage, revised section routing had only `node --check` evidence. Subsequent after/final and closure receipts below record p95/RSS/soak, exact boundary outcomes, integrity/preservation and HTTP activation; rendered event visibility and human acceptance have separate owners. The original failed baseline receipt is immutable. Timing/RSS semantics were checked through Context7 `/nodejs/node/v26.0.0` against official [process](https://github.com/nodejs/node/blob/v26.0.0/doc/api/process.md) and [performance](https://github.com/nodejs/node/blob/v26.0.0/doc/api/perf_hooks.md) contracts; each receipt records the installed minor version.
+
+## FUNC-G04 / F20 — after/final measurements
+
+The full service workload ran after F09 and repeated after two final backend fixes: `node tests/web/single-window/functional-scale-acceptance.mts --synthetic-scale --phase after` and `--phase final`, both exit 0 with completed_measurement. This means completed measurement with retained deviations, not all-NFR pass. Counts, budgets, 3 rounds ×12 samples, 120 s soak and the 600 s watchdog per diagnostic/reference/filesystem child are unchanged. Real data: 10,000 Tasks /100,000 messages /1000 documents /209,736,923 text bytes. Final SQL integrity retains those counts, one synthetic session, the command-measurement settings row, and zero FK failures. Message edits used to check frozen cursor values were restored.
+
+| Check | After | Final | Budget |
+| --- | --- | --- | --- |
+| Indexed search p95, 36 samples | 156.052 ms | 95.774 ms | 500 ms |
+| Command ACK p95, 36 samples | 412.074 ms | 415.444 ms | 500 ms |
+| Task page 50 p95, 36 samples | 6.054 ms | 8.139 ms | 1000 ms |
+| Commit → next freshness API observation p95 | 422.139 ms | 416.806 ms | 1000 ms |
+| Task Manager snapshot p95, 3 samples | 718.390 ms | 410.102 ms | 1000 ms |
+| HTTP application creation after full seeding | 1071.049 ms | 968.630 ms | 10,000 ms |
+| Graph rebuild, 1000 files | 21,680.391 ms | 11,014.857 ms | 60,000 ms |
+| Graph status, three repeats | 1037.534 /1315.843 /1230.204 ms | 295.280 /292.848 /336.873 ms | 1000 ms |
+
+Baseline graph status reread 66,630 bytes per request and took 17.6–21.3 s. After/final status uses one metadata walk and zero instrumented content reads/bytes; rebuild raw-hash checks remain. Project nine rebuilds successfully in both new runs instead of baseline GRAPH_SNAPSHOT_LIMIT. Final isolated diagnostic: tree 237.436 ms; registration to first tree 244.811 ms; parser child peak 121,704 KiB, separate from benchmark process peak 165,936 KiB. After diagnostic overlapped full Web/browser qualification; final diagnostic ran separately. At entry to the final reference metric window, root reported full Web finished and browser checks paused. The90k notification was missed; complete isolation of the entire reference interval is not established.
+
+Cold-generation deviations retain the original 1000 ms threshold: freezing the complete 100k-message history took after 2.673 /4.419 /4.629 s, final 1.809 /3.857 /4.518 s. The next existing frozen page after a concurrent edit preserved original values: after 6.975 /23.169 /16.405 ms, final 5.939 /8.233 /14.824 ms. Catalog returns total 1000 documents and roughly 31 KiB/page, but new generation took after 1.030–1.681 s, final 1.038–1.084 s. This also exceeds 1000 ms and is not a warm-cursor pass. Measured deviations/bounded scope were handed to the F09 owner; arbitrary cold history refresh is not claimed fast.
+
+After soak: 120.203 s /119 iterations, peak RSS 393,854,976 bytes, change −198,574,080 bytes. Final: 120.078 s /119 iterations, peak RSS 407,646,208 bytes, change −212,344,832 bytes. Whole benchmark process maxRSS: 545,352 /436,356 KiB; SQLite file: 658,997,248 /659,001,344 bytes. This bounded synthetic soak does not prove absence of long-term leaks. Short-lived parser children report separate peaks; parent RSS is not a substitute, and JS heap flags are not native RSS limits. Hardware: Windows x64, i7-12700H, 20 logical CPUs, 16,892,026,880 bytes RAM, Node v26.5.0, SQLite 3.53.3. OS cache was not flushed; SSD equivalence/reference 4-CPU qualification is not claimed. GUI/native-launcher cold start and rendered event visibility are outside this service harness.
+
+Filesystem outcomes are explicit/bounded in both runs: the 10,000/10,001-directory layout reaches INVENTORY_TIMEOUT around 30 s with the unchanged F28 internal timeout, leaving that layout unsupported for a complete traversal within the current time budget. A wide 10,001-file directory returns partial directory_entry_limit at 2000 discovered entries; final page took 413.569 ms. Depth32 is complete/depth33 partial depth_limit; 512 KiB is accepted, +1 byte rejected with INVENTORY_FILE_TOO_LARGE, an expected protection rather than a new defect. Exact8 MiB aggregate indexes16 files; +1 byte keeps16 indexed and1 excluded. At1001 source files,1000 are indexed and inventory is partial inventory_entry_limit. Unsupported/excluded data is never reported fully indexed.
+
+After direct scan retry honestly retained ANALYZER_UNAVAILABLE because application adapters were not connected; it does not prove real code scanning. Final wiring uses actual createLocalApplication.handleRequest: cancel 6.852 ms; retry25,587.297 ms. Inventory completed1090 ms; documents partial1083 ms (no fixture control-plane files); code completed14,630 ms /1000 files; analysis partial4907 ms (projection200, omitted800). Schema/code_database explicitly remain unavailable without a selected database; their200-object/32KiB extensions have separate API/browser qualification. Restart/interrupted/no-replay uses a separately labelled synthetic deferred documents adapter. Target hashes match and owned fixtures were cleaned in all six completed sections. No native permission denial occurred in these runs.
+
+Provenance: baseline and early F09 diagnostic receipts were not rewritten. After: `.tmp/func-g04/scale-after/result-diagnostic-1794774309210.json`, `result-reference-1794774341095.json`, `result-filesystem-1794774726846.json`. Final: `.tmp/func-g04/scale-final/result-diagnostic-1794775064723.json`, `result-reference-1794775080136.json`, `result-filesystem-1794775502257.json`. Full logs are scale-after-complete-1.log /scale-final-complete-1.log under .tmp/func-g04. Each section compares133 inputs before/after: all backend src and contracts .mts/.ts/.ps1/.py, lock, harness and protocol. The three after source maps share SHA256 `09a9325c03ae63fa6f76c7221807d85d14c04858983c0ff24e775c8ec20fc055`; the three final maps share `5bd1a848cc2bf0efaf391d30d18dafc48e05ee2ee9fb5c2ebe5f98ba02d7139d`. Between-phase fixes and harness adapter correction changed the map; no within-run drift occurred. Protocol SHA256 is unchanged: `37c20aadc0d3474ef78cf86928e9ee1727be7bf415152fc393e92c8b079af625`. UI/docs and the parent-only qualification manifest are outside the service fingerprint. Full response size is calculated before compact coverage summaries; instrumented FileHandle reads are not physical disk I/O and may include checked ignore-file bytes.
+
+## FUNC-G04 / F20 — closure rerun, 16.11.2026
+
+After the final F34 table-key dictionary fix, all three sections were repeated with the same protocol and current 133-source fingerprints. The earlier after/final measurements remain historical, bound to their own source revisions. No full Web/browser/build was active during this closure reference metric window. Receipts: .tmp/func-g04/scale-closure/result-diagnostic-1794778219987.json; .tmp/func-g04/scale-closure/result-reference-1794778236139.json; .tmp/func-g04/scale-closure/result-filesystem-1794778628384.json.
+
+| Metric | Current closure run | Comparison |
+| --- | --- | --- |
+| Indexed search p95 / 36 | 159.06 ms | 500 ms |
+| Command ACK p95 / 36 | 403.71 ms | 500 ms |
+| Task page 50 p95 / 36 | 3.33 ms | 1000 ms |
+| Commit → freshness API p95 | 404.80 ms | 1000 ms |
+| Task Manager p95 / 3 | 504.80 ms | 1000 ms |
+| HTTP creation after full seed | 1063.57 ms | 10 000 ms |
+| Graph rebuild / 1000 files | 11475.70 ms | 60 000 ms |
+| Graph status / 3 | 313.49 / 294.86 / 277.69 ms | 1000 ms |
+| Soak | 120.15 s / 119 iterations | 120 s |
+| Browser per-process backend/harness | 253.07 MiB | 1024 MiB |
+| Browser aggregate sampled current | 1101.32 MiB | diagnostic only |
+
+Retained deviations: reference: artifact_catalog, 1361.79 ms / 1000; reference: transcript, 2412.00 ms / 1000; reference: artifact_catalog, 2197.79 ms / 1000; reference: transcript, 5264.94 ms / 1000; reference: artifact_catalog, 2066.49 ms / 1000; reference: transcript, 4022.08 ms / 1000; filesystem: entries_10000, 30003.89 ms / 60000, INVENTORY_TIMEOUT; filesystem: entries_10001, 30004.37 ms / 60000, INVENTORY_TIMEOUT; filesystem: source_bytes_524289, 23.83 ms / bounded outcome, INVENTORY_FILE_TOO_LARGE.
+
+Completed measurement with deviations and bounded unsupported outcomes does not mean all NFRs pass. Protocol: 37c20aadc0d3474ef78cf86928e9ee1727be7bf415152fc393e92c8b079af625. Source preservation, SQL integrity and owned fixture cleanup are recorded in each receipt.

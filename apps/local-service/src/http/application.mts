@@ -1,4 +1,4 @@
-import { createHmac, randomUUID, timingSafeEqual } from 'node:crypto';
+import { createHmac, createHash, randomUUID, timingSafeEqual } from 'node:crypto';
 import { lstat, mkdir, readFile, realpath } from 'node:fs/promises';
 import { basename, join, relative, resolve } from 'node:path';
 import { restoreLocalBackup, pruneManagedBackups, type LocalStore } from '../storage/local-store.mts';
@@ -18,6 +18,16 @@ import {createArtifactCatalog} from '../artifacts/service.mts';
 import {createSkillGeneration} from '../team/skill-generation.mts';
 import {createTeamService} from '../team/service.mts';
 import {createCodeIndex} from '../code-index/service.mts';
+import {createDatabaseMap} from '../database-map/service.mts';
+import {createCodeDatabase} from '../code-database/service.mts';
+import {createProjectFiles} from '../project-files/service.mts';
+import {createProjectAnalysis,unavailableProjectAnalysis} from '../project-analysis/service.mts';
+import {taskFilePreflight} from '../runtime/task-file-preflight.mts';
+import {sameSourceRevision} from '../../../../packages/contracts/project-freshness.ts';
+import {assertCurrentSourceProject} from '../project-inventory/scope.mts';
+import {inventoryForProject} from '../code-index/sources.mts';
+import {createProjectScans,type ScanAnalyzer} from '../project-scans/service.mts';
+import type {ProjectScanStageKind} from '../../../../packages/contracts/project-scan.ts';
 import {autonomyService} from '../autonomy-policy/service.mts';
 import {createRecipeService} from '../execution-recipes/service.mts';
 import {createScheduler} from '../scheduler/service.mts';
@@ -37,6 +47,7 @@ export type ApplicationOptions = {
   agentChannel?: {handle(request: Request): Promise<Response>;descriptorPath?:string};
   desktop?:Pick<DesktopActions,'selectProjectDirectory'|'openCodexDraft'>;
   assetRoots?:AssetRoot[];
+  scanAnalyzers?:Partial<Record<ProjectScanStageKind,ScanAnalyzer>>;
   executionRecipes?:ReturnType<typeof createRecipeService>;
   scheduler?:ReturnType<typeof createScheduler>;
 };
@@ -83,6 +94,21 @@ export async function createLocalApplication(options: ApplicationOptions) {
   const decisions=createDecisions({store,runtime:options.runtime,recipes:executionRecipes,scheduler,route:()=>String((options.connection?.status() as any)?.route??'codex_app_agent')});await decisions.initialized();
   const team=createTeamService(store,options.assetRoots);
   const codeIndex=createCodeIndex(store);
+  const databaseMap=createDatabaseMap({store,profileDatabasePath:join(profileDirectory,'state.sqlite')});
+  const codeDatabase=createCodeDatabase({store,codeIndex,databaseMap});
+  const projectFiles=createProjectFiles(store);
+  const projectAnalysis=createProjectAnalysis({store});
+  const scans=createProjectScans({store,analyzers:{
+    documents:async({project})=>{
+      const binding=await bindProject(project.id,project.canonicalRoot);if(binding.directoryIdentity!==project.rootIdentity)fail('PROJECT_ROOT_UNAVAILABLE');
+      const sources=await inspectProjectSources(binding,project.id,undefined,project.inventoryPolicy),fixed=sources.sources.filter(source=>source.id!=='runtimeHistory');
+      return {state:fixed.some(source=>source.status!=='available')?'partial':'completed',counts:{available:fixed.filter(source=>source.status==='available').length,total:fixed.length},reasons:fixed.some(source=>source.status!=='available')?['CONTROL_PLANE_PARTIAL']:[],data:{sources:sources.sources}};
+    },
+    code:async({project,inventory,signal,publicationGuard,canPublish})=>{
+      const result=await codeIndex.rebuild(project.id,{signal,expectedInventoryRevision:inventory.revision,publicationGuard,canPublish});
+      return {state:result.coverage?.some(row=>row.status!=='indexed')||result.inventory?.coverage==='partial'?'partial':'completed',counts:result.counts,reasons:result.inventory?.reasons??[],data:{revision:result.revision,inventoryRevision:inventory.revision,coverage:result.coverage,limitations:result.limitations}};
+    },analysis:projectAnalysis.analyze,schema:databaseMap.analyzer,code_database:codeDatabase.analyzer,...options.scanAnalyzers
+  }});await scans.initialized();
   const artifacts=createArtifactCatalog(store,codeIndex);
   const skillGeneration=createSkillGeneration(store,team,options.runtime);
   const gate = createSessionGate({ origin, instanceId });
@@ -242,17 +268,11 @@ export async function createLocalApplication(options: ApplicationOptions) {
           if(input.keyPrefix===undefined){const used=new Set((await store.projects()).map(p=>p.keyPrefix));for(let attempt=0;used.has(keyPrefix)&&attempt<16;attempt++)keyPrefix=[...randomUUID().slice(0,4)].map(c=>String.fromCharCode(65+parseInt(c,16))).join('');}
           if (!/^[A-Z]{4}$/.test(keyPrefix)) fail('INVALID_PROJECT_KEY');
           const fresh=await bindProject(binding.projectId,binding.workspaceRoot);if(fresh.directoryIdentity!==binding.directoryIdentity)fail('PROJECT_ROOT_UNAVAILABLE');
-          const project = await store.registerProject({ id: binding.projectId, keyPrefix, displayName: name,
-            canonicalRoot: binding.workspaceRoot, rootIdentity: binding.directoryIdentity,
-            authorityMode: input.legacySource === true ? 'legacy_files' : 'sql' });
-          let scan:Record<string,unknown>|undefined;
-          if(input.scan===true){
-            // A scan failure cannot turn the committed registration into a failed Add/retry.
-            scan={state:'partial',checkedAt:new Date().toISOString(),sources:[]};
-            try{const sources=await inspectProjectSources(binding,binding.projectId);scan.sources=sources.sources;const graph=await codeIndex.rebuild(project.id);scan={...scan,state:graph.coverage?.some(c=>c.status!=='indexed')?'partial':'ready',counts:graph.counts,revision:graph.revision,limitations:graph.limitations};}
-            catch(error){scan.reason=typeof (error as any)?.code==='string'?(error as any).code:'PROJECT_SCAN_UNAVAILABLE';}
-          }
-          return {id:project.id,name,keyPrefix,authorityMode:project.authorityMode,authorityEpoch:project.authorityEpoch,...(scan?{scan}:{})};
+          const requestDigest=createHash('sha256').update(JSON.stringify({name,root:process.platform==='win32'?binding.workspaceRoot.toLowerCase():binding.workspaceRoot,rootIdentity:binding.directoryIdentity,keyPrefix:input.keyPrefix??null,legacySource:input.legacySource===true,scan:input.scan===true})).digest('hex');
+          const project=await store.registerSelectedProject({id:binding.projectId,keyPrefix,displayName:name,canonicalRoot:binding.workspaceRoot,rootIdentity:binding.directoryIdentity,authorityMode:input.legacySource===true?'legacy_files':'sql'},{...(typeof input.requestId==='string'?{requestId:input.requestId}:{}),requestDigest,keyPrefixExplicit:input.keyPrefix!==undefined});
+          let scan:Awaited<ReturnType<typeof scans.start>>|undefined,scanError:string|undefined;
+          if(input.scan===true){try{scan=await scans.start(project.id,{requestId:'registration:'+requestDigest});}catch(error){scanError=typeof(error as any)?.code==='string'?(error as any).code:'PROJECT_SCAN_UNAVAILABLE';}}
+          return {id:project.id,name:project.displayName??name,keyPrefix:project.keyPrefix,authorityMode:project.authorityMode,authorityEpoch:project.authorityEpoch,...(scan?{scan}:{}),...(scanError?{scanError}:{})};
           };
           return json(await(input.requestId===undefined?register():once('project',input,register)),201);
         }
@@ -261,6 +281,51 @@ export async function createLocalApplication(options: ApplicationOptions) {
       if (!route) fail('ROUTE_NOT_FOUND');
       const projectId = decodeURIComponent(route[1]);
       const project = await metadata(projectId);
+      if(route[2]==='runtime/file-preflight'&&request.method==='POST'){
+        const input=await body(request,4096);if(Object.keys(input).some(key=>!['taskId','expectedRevision'].includes(key))||typeof input.taskId!=='string'||input.taskId.length>128||!Number.isSafeInteger(input.expectedRevision)||Number(input.expectedRevision)<0)fail('FILE_PREFLIGHT_INPUT_INVALID');
+        return json(await taskFilePreflight(store,projectId,input.taskId,Number(input.expectedRevision)));
+      }
+      if(route[2]==='analysis'&&request.method==='GET'){
+        const saved=(await scans.status(projectId)),analysis=(saved.latest?.stages.find(stage=>stage.kind==='analysis')?.data as any)?.analysis;
+        const source=await store.project(projectId);if(!source)fail('PROJECT_NOT_FOUND');
+        let inventory;try{inventory=await inventoryForProject(source).snapshot(source);}catch{
+          return json({...unavailableProjectAnalysis(source,{revision:'unavailable',policyVersion:'unavailable'},'ANALYSIS_ROOT_UNAVAILABLE'),stale:true});
+        }
+        if(!analysis||analysis.schemaVersion!=='paos_project_analysis_v1'||analysis.projectId!==projectId)return json(unavailableProjectAnalysis(source,inventory,'ANALYSIS_NOT_OBSERVED'));
+        let adapterCurrent=false;try{adapterCurrent=analysis.adapterSourceRevision===await projectAnalysis.currentRevision();}catch{}
+        let scopeCurrent=true;try{await assertCurrentSourceProject(store,source);}catch{scopeCurrent=false;}
+        const stale=!scopeCurrent||!adapterCurrent||!sameSourceRevision(analysis,{projectId,rootIdentity:source.rootIdentity,policyVersion:inventory.policyVersion,inventoryRevision:inventory.revision});
+        return json({...analysis,stale:analysis.stale||stale,limitations:[...new Set([...analysis.limitations,...(stale?['ANALYSIS_SOURCE_STALE']:[])])]});
+      }
+      if(route[2]==='scans'){
+        if(request.method==='GET')return json(await scans.status(projectId));
+        if(request.method==='POST'){if(migration.frozen(projectId))fail('MIGRATION_BUSY');const input=await body(request,4096);if(Object.keys(input).some(key=>!['requestId','revision'].includes(key)))fail('PROJECT_SCAN_INPUT_INVALID');return json(await scans.start(projectId,input),202);}
+      }
+      const scanAction=/^scans\/([^/]+)\/(cancel|retry)$/.exec(route[2]??'');
+      if(scanAction&&request.method==='POST'){if(migration.frozen(projectId))fail('MIGRATION_BUSY');const input=await body(request,4096);if(Object.keys(input).length)fail('PROJECT_SCAN_INPUT_INVALID');return json(await scans[scanAction[2] as 'cancel'|'retry'](projectId,decodeURIComponent(scanAction[1])),scanAction[2]==='retry'?202:200);}
+      if(route[2]==='files'&&request.method==='GET')return json(await projectFiles.list(projectId,url.searchParams));
+      if(route[2]==='database'&&request.method==='GET')return json(await databaseMap.status(projectId));
+      if(route[2]==='code-database'&&request.method==='GET')return json(await codeDatabase.status(projectId));
+      if(route[2]==='code-database/links'&&request.method==='GET')return json(await codeDatabase.query(projectId,url.searchParams));
+      if(route[2]==='code-database/scan'&&request.method==='POST'){if(migration.frozen(projectId))fail('MIGRATION_BUSY');const input=await body(request,4096);if(Object.keys(input).some(key=>!['requestId','revision'].includes(key)))fail('PROJECT_SCAN_INPUT_INVALID');return json(await scans.start(projectId,{...input,stages:['code_database']}),202);}
+      if(route[2]==='database/source'&&request.method==='POST'){if(migration.frozen(projectId))fail('MIGRATION_BUSY');return json(await databaseMap.selectSource(projectId,await body(request,4096) as any));}
+      if(route[2]==='database/schema'&&request.method==='GET')return json(await databaseMap.snapshot(projectId,url.searchParams));
+      if(route[2]==='database/changes'&&request.method==='GET')return json(await databaseMap.changes(projectId));
+      if(route[2]==='database/scan'&&request.method==='POST'){if(migration.frozen(projectId))fail('MIGRATION_BUSY');const input=await body(request,4096);if(Object.keys(input).some(key=>!['requestId','revision'].includes(key)))fail('PROJECT_SCAN_INPUT_INVALID');return json(await scans.start(projectId,{...input,stages:['schema']}),202);}
+      if(route[2]==='files/read'&&request.method==='GET'){
+        if([...url.searchParams.keys()].some(key=>!['path','revision','line'].includes(key))||[...new Set(url.searchParams.keys())].some(key=>url.searchParams.getAll(key).length!==1))fail('PROJECT_FILES_QUERY_INVALID');
+        return json(await projectFiles.read(projectId,{path:url.searchParams.get('path')??'',...(url.searchParams.has('revision')?{revision:url.searchParams.get('revision')!}:{}),...(url.searchParams.has('line')?{line:Number(url.searchParams.get('line'))}:{})}));
+      }
+      if(route[2]==='files/policy'){
+        if(request.method==='GET'){const state=await store.readProjectState(projectId,'project_inventory_policy_v1');return json({version:state?.version??0,policy:project.inventoryPolicy??{},policyVersion:inventoryForProject(project).policyVersion});}
+        if(request.method==='POST'){
+          if(migration.frozen(projectId))fail('MIGRATION_BUSY');const input=await body(request,32768);
+          if(Object.keys(input).some(key=>!['policy','expectedVersion'].includes(key)))fail('PROJECT_STATE_INVALID');
+          const policy=record(input.policy);inventoryForProject({...project,inventoryPolicy:policy});
+          const saved=await store.writeProjectState(projectId,'project_inventory_policy_v1',integer(input.expectedVersion),{schemaVersion:'paos_inventory_policy_v1',policy});
+          return json({version:saved.version,policyVersion:inventoryForProject((await store.project(projectId))!).policyVersion});
+        }
+      }
       if(route[2]==='decisions'&&request.method==='GET')return json(await decisions.list(projectId,url.searchParams));
       if(route[2]==='decisions'&&request.method==='POST'){if(migration.frozen(projectId))fail('MIGRATION_BUSY');return json(await decisions.create(projectId,principal.actorId,await body(request)));}
       const decisionRoute=/^decisions\/([^/]+)(?:\/(respond))?$/.exec(route[2]??'');if(decisionRoute){const id=decodeURIComponent(decisionRoute[1]);if(request.method==='GET'&&!decisionRoute[2])return json(await decisions.get(projectId,id));if(request.method==='POST'&&decisionRoute[2]){if(migration.frozen(projectId))fail('MIGRATION_BUSY');return json(await decisions.respond(projectId,id,principal.actorId,await body(request)));}}
@@ -296,7 +361,8 @@ export async function createLocalApplication(options: ApplicationOptions) {
         return json(name==='pause'?await autonomy.pause(projectId,principal.actorId,input,options.runtime)
           :await autonomy.command(projectId,principal.actorId,name,input));
       }
-      if(action==='task-manager'&&request.method==='GET')return json(await taskManagerSnapshot(store,projectId));
+      if(action==='freshness'&&request.method==='GET')return json(await store.projectFreshness(projectId));
+      if(action==='task-manager'&&request.method==='GET')return json(await taskManagerSnapshot(store,projectId,{observe:true}));
       if(action==='task-manager/commands'&&request.method==='POST'){
         if(migration.frozen(projectId))fail('MIGRATION_BUSY');
         const input=await body(request,16*1024*1024),result=await taskManagerCommand(store,projectId,principal.actorId,input,{validateWorkflowReferences:definition=>team.validateWorkflowReferences(projectId,definition)});
@@ -327,12 +393,12 @@ export async function createLocalApplication(options: ApplicationOptions) {
       if (action === 'sources' && request.method === 'GET') {
         const binding = await bindProject(projectId, project.canonicalRoot);
         if (binding.directoryIdentity !== project.rootIdentity) fail('PROJECT_ROOT_UNAVAILABLE');
-        return json(await inspectProjectSources(binding, projectId));
+        const result=await inspectProjectSources(binding,projectId,undefined,project.inventoryPolicy);await assertCurrentSourceProject(store,project);return json(result);
       }
       if (action.startsWith('sources/') && request.method === 'GET') {
         const binding = await bindProject(projectId, project.canonicalRoot);
         if (binding.directoryIdentity !== project.rootIdentity) fail('PROJECT_ROOT_UNAVAILABLE');
-        return json(await readProjectSource(binding, decodeURIComponent(action.slice(8))));
+        const result=await readProjectSource(binding,decodeURIComponent(action.slice(8)),project.inventoryPolicy);await assertCurrentSourceProject(store,project);return json(result);
       }
       const runRoute=/^team\/runs\/([^/]+)$/.exec(action);
       if(runRoute&&request.method==='GET'){
@@ -494,5 +560,7 @@ export async function createLocalApplication(options: ApplicationOptions) {
         ?{details:{cyclePath,cyclePathTruncated:(error as any).cyclePathTruncated===true}}:{}) } }, status);
     }
   }
-  return { handleRequest, issuePairingCode: gate.issuePairingCode, revokeSessions: () => {gate.revokeAll();browserLaunch.revoke();} };
+  return { handleRequest, close:()=>scans.close(), issuePairingCode: gate.issuePairingCode, revokeSessions: () => {gate.revokeAll();browserLaunch.revoke();},
+    /** Trusted in-process agent port; browser cookies cannot invoke worker actions. */
+    queryCodeDatabase:(projectId:string,input:Record<string,string|number>)=>input.kind==='status'?codeDatabase.status(projectId):codeDatabase.query(projectId,new URLSearchParams(Object.entries(input).filter(([key])=>key!=='kind').map(([key,value])=>[key,String(value)]))) };
 }

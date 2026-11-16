@@ -1,6 +1,6 @@
 import { Worker } from 'node:worker_threads';
 import { isAbsolute } from 'node:path';
-import type { BackupManifest, BlobReceipt, ListOptions, Project, PromoteLegacy, StoredEntity, StoreEventPage, StoreReceipt, StoreWrite } from '../../../../packages/contracts/storage/local-store.ts';
+import type { BackupManifest, BlobReceipt, ListOptions, Project, PromoteLegacy, StoredEntity, StoreEventPage, StoreReceipt, StoreWrite, EntityKind } from '../../../../packages/contracts/storage/local-store.ts';
 import type { TaskProfile } from '../../../../packages/contracts/issues/task-profile.ts';
 export { pruneManagedBackups } from './snapshot.mts';
 
@@ -46,11 +46,20 @@ export async function openLocalStore(options: { databasePath: string;assetRoots?
   try { await ready; } catch (error) { await worker.terminate(); throw error; }
   return {
     registerProject: (project: Omit<Project, 'authorityEpoch'>) => call<Project>('registerProject', project),
+    registerSelectedProject: (project:Omit<Project,'authorityEpoch'>,options:{requestId?:string;requestDigest:string;keyPrefixExplicit?:boolean}) => call<Project>('registerSelectedProject',{project,...options}),
     projects: () => call<Project[]>('projects', {}),
     project: (projectId: string) => call<Project | null>('project', { projectId }),
+    readProjectState: (projectId:string,namespace:'project_scan_v1'|'project_inventory_policy_v1'|'project_database_schema_v1'|'project_code_database_v1') => call<{version:number;value:Record<string,unknown>}|null>('readProjectState',{projectId,namespace}),
+    writeProjectState: (projectId:string,namespace:'project_scan_v1'|'project_inventory_policy_v1'|'project_database_schema_v1'|'project_code_database_v1',expectedVersion:number,value:Record<string,unknown>) => call<{version:number;value:Record<string,unknown>}>('writeProjectState',{projectId,namespace,expectedVersion,value}),
     compatibility:()=>call<{schemaVersion:1|2|3;appCompatibility:'paos-m1-v1'|'paos-m2-v1'|'paos-m2b-v1';migrationChecksum:string}>('compatibility',{}),
-    projectEntities: (projectId:string)=>call<StoredEntity[]>('projectEntities',{projectId}),
+    projectEntities: (projectId:string,options:{kinds?:readonly EntityKind[];includeManagedAttachments?:true}={})=>call<StoredEntity[]>('projectEntities',{projectId,...options}),
+    projectFreshness: (projectId:string)=>call<import('../../../../packages/contracts/project-freshness.ts').ProjectFreshness>('projectFreshness',{projectId}),
+    runtimeFileScope: (projectId:string,taskId:string)=>call<{project:Project|null;task:StoredEntity|null}>('runtimeFileScope',{projectId,taskId}),
+    projectSnapshot: (projectId:string,options:{kinds?:readonly EntityKind[];includeManagedAttachments?:true}={})=>call<{entities:StoredEntity[];freshness:import('../../../../packages/contracts/project-freshness.ts').ProjectFreshness}>('projectSnapshot',{projectId,...options}),
     historyRows:(projectId:string)=>call<StoredEntity[]>('historyRows',{projectId}),
+    historySnapshotPage:(projectId:string,input:Omit<import('./history-snapshots.mts').HistorySnapshotInput,'projectId'>)=>call<import('./history-snapshots.mts').HistorySnapshotResult>('historySnapshotPage',{projectId,...input}),
+    artifactSummaryRows:(projectId:string,options:{kinds?:readonly EntityKind[]}={})=>call<StoredEntity[]>('artifactSummaryRows',{projectId,...options}),
+    artifactDocumentRow:(projectId:string,id:string)=>call<StoredEntity|null>('artifactDocumentRow',{projectId,id}),
     teamApply:(input:Record<string,unknown>)=>call<{assetId:string;version:number;receipt:StoreReceipt}>('teamApply',input),
     exportTasks: (projectId: string) => call<{ project: Project; tasks: TaskProfile[]; generation: string; throughSeq: number }>('exportTasks', { projectId }),
     write: (command: StoreWrite) => call<StoreReceipt>('write', command),

@@ -4,5 +4,5 @@ export type CatalogItem={id:string;name:string;status:'active'|'archived'};
 export type VersionItem={id:string;name:string;description?:string;status:'unreleased'|'released'|'archived';startDate?:string|null;releaseDate?:string|null};
 export type Board={columns:{id:string;statuses:string[];wipLimit?:number;wipMode?:'soft'|'hard'}[];outOfBoard:boolean;
   releaseRequiredTypes?:string[];releaseRequiredComponents?:string[];attachmentFileBytes:number;attachmentTaskBytes:number;timezone?:string;view?:Record<string,unknown>};
-export type ManagerSnapshot<T>={tasks:T[];components:CatalogItem[];versions:VersionItem[];board:Board;links:IssueLink[];workflows:WorkflowRegistry;
+export type ManagerSnapshot<T>={freshness?:import('../project-freshness.ts').ProjectFreshness;tasks:T[];components:CatalogItem[];versions:VersionItem[];board:Board;links:IssueLink[];workflows:WorkflowRegistry;
   comments:T[];attachments:T[];settingsRevisions:Record<string,number>;quota:{fileBytes:number;taskBytes:number};coverage:'complete'};

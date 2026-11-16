@@ -13,7 +13,7 @@
     "sha256": "119d6fa70e6ae1b15b90688ab6bcc8e3a2819acea021af196895cab1843645af"
   },
   "sqliteVersion": "3.53.3",
-  "adapterRevision": "fc34f72a89cd1a217cc22bd0a160284f9ee8671c453d06531e86e24b69a4c8d5",
+  "adapterRevision": "b7d5d1eb2a129763feacba96735d4ba40c0c0bd00dced861c1d83af6cf94726b",
   "packageLockSha256": "f126e4dceeb06cb9644fe1167cbb5b2b2689fb8022325d54292445398ad30aac",
   "schema": {
     "sha256": "486c7c8daa5dc7f3ab2a1fb56de5316804caf7a4210fda1dc28d3f0f4e90cfe1",
@@ -55,6 +55,8 @@
     "m3DecisionsNativeCandidate": "6d59803d23217c6fcca8fe262ad500804dfe131a150c3e8a3f3e52b1a5a6250c",
     "m4IntegrationNativeCandidate": "9801de72d0406c5fab59679b3198bd47bdf88631bd33f73c1fca4b725616b92a",
     "funcG01NativeCandidateInitial": "dd072f95617b77ae084ef78d37f585dd51b4b6367a4cd158cfd6e2f10f03abf3",
-    "funcG01NativeCandidateFinal": "a2cad642d6f3bc416a04a954f4bbbfa009aae75d5aeacc77bac3f940313dcf4a"
+    "funcG01NativeCandidateFinal": "a2cad642d6f3bc416a04a954f4bbbfa009aae75d5aeacc77bac3f940313dcf4a",
+    "funcG03NativeCandidateFinal": "94643d3bee58f959281c18f9f099896959ab92a64ea6e4fc4d5c2ab05c52b450",
+    "funcG04NativeCandidateReceiptSha256": "b092d6a78799968561613c55b624c0df3a7b61e85ce9618b48e055e6ae1cab62"
   }
 }

@@ -1,8 +1,33 @@
 # Потоки и границы данных
 
-Source status: repository_source / static_architecture_map; 15.11.2026.
+Source status: repository_source / current_source_architecture_map; 15.11.2026.
 
 Владелец: архитектура Product-Agent OS; scope/version: DG02 v1. Обновлять при изменении соответствующих исходников, границ данных или решений; связанные проверки указаны ниже. Проверка исходников не доказывает runtime activation или готовность к выпуску.
+
+## FUNC-G03: асинхронный анализ и актуальность
+
+Текущий flow от 15.11.2026 дополняет исторические DG02/DG03 ссылки: Add сохраняет registry project, затем отдельно запрашивает background scan. Files/fixed sources/graph и execution inspector используют F28 inventory с registry root/policy; metadata visibility не даёт read permission. Scan сохраняет CAS stage outcomes и source provenance. Checkout adapter передаёт allowlisted temporary projection существующему Python core; target code и DB bytes не исполняются/не открываются. Packaged runtime без core явно unavailable, fallback analyzer не подключается.
+
+```mermaid
+flowchart LR
+  Add[Add project] --> Registry[Profile registry]
+  Registry --> Queue[Durable scan queue]
+  Registry --> Inventory[F28 checked inventory]
+  Queue --> Inventory
+  Inventory --> Stages[Documents and code stages]
+  Inventory --> Projection[Owned bounded projection]
+  Projection --> Core[Isolated checkout Python core]
+  Core --> Guard[Owner and source publication guard]
+  Stages --> Guard
+  Guard --> Results[Profile CAS scan outcomes]
+  Results --> View[API observations]
+```
+
+`GET freshness` возвращает дешёвый profile stamp; `GET task-manager` читает entities и stamp в одной SQLite transaction. Numeric stamp policyVersion отличается от строковой source policy identity. Watcher отсутствует: manual refresh/read/scan обнаруживает внешние filesystem changes, source/adapter revision checks помечают анализ stale. Следующий артефакт — актуальный task snapshot или scan result с rootIdentity/policyVersion/inventoryRevision и coverage/reasons.
+
+Execution получает сохранённую task scope через metadata-only file-preflight, включая taskRevision/digest и file pins. Raw SHA256 content revision отделён от metadata/policy fileRevision. Browser guard не даёт execution authority: gateway проверяет admission preflight, root/policy capture перед broker command и существующие approval/ownership fences. SQLite stamp, source pin и command receipt описывают разные observations; ни один сам по себе не доказывает завершение задачи.
+
+Переданное локальное integration evidence: F29 API6/6, file-preflight API1/1, gateway policy28/28, F18focused5/5. Final browser/native acceptance выполняется основным агентом отдельно. [Модули](../backend/modules.md), [recovery](../backend/recovery.md), [API](../api/endpoints.md) указывают следующий контракт проверки.
 
 ## Управление проектом и хранение
 

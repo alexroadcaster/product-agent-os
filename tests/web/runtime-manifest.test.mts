@@ -21,6 +21,13 @@ const current = { platform: manifest.platform, arch: manifest.arch, windowsRelea
   codexSha256: manifest.codex.sha256, node: manifest.node, sqliteVersion: manifest.sqliteVersion,
   adapterRevision: manifest.adapterRevision, packageLockSha256: manifest.packageLockSha256 };
 
+test('executable Python bridge bytes participate in host qualification',async t=>{
+ const root=await mkdtemp(join(tmpdir(),'paos-python-manifest-'));t.after(()=>rm(root,{recursive:true,force:true}));
+ for(const area of ['apps/local-service/src/project-analysis','apps/launcher','packages/contracts'])await mkdir(join(root,area),{recursive:true});
+ const bridge=join(root,'apps/local-service/src/project-analysis/bridge.py');await writeFile(bridge,'print("first")\n');const first=await adapterRevision(root);
+ await writeFile(bridge,'print("changed")\n');assert.notEqual(await adapterRevision(root),first);
+});
+
 test('qualifies only the exact locally observed runtime tuple and all required capabilities', () => {
   assert.deepEqual(inspectRuntimeTuple(manifest, current), []);
   for (const [field, reason] of [['codexSha256', 'runtime_mismatch'], ['adapterRevision', 'adapter_mismatch'],

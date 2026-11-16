@@ -7,9 +7,11 @@ import { join,resolve,dirname,basename } from 'node:path';
 import { openLocalStore, restoreLocalBackup } from '../../apps/local-service/src/storage/local-store.mts';
 import { taskManagerCommand, taskManagerSnapshot, uploadTaskAttachment, downloadTaskAttachment, resolveTaskReference } from '../../apps/local-service/src/task-manager/service.mts';
 import { newM2Task } from '../../packages/contracts/issues/task-profile.ts';
+import {bindProject} from '../../apps/local-service/src/adapters/project-sources.ts';
 
 async function fixture(t:any){const root=await mkdtemp(join(tmpdir(),'paos-m2-'));const store=await openLocalStore({databasePath:join(root,'state.sqlite')});
-  await store.registerProject({id:'p',keyPrefix:'PAOS',canonicalRoot:root,rootIdentity:'fixture',authorityMode:'sql'});
+  const binding=await bindProject('p',root);
+  await store.registerProject({id:'p',keyPrefix:'PAOS',canonicalRoot:binding.workspaceRoot,rootIdentity:binding.directoryIdentity,authorityMode:'sql'});
   t.after(async()=>{await store.close();const target=resolve(root);assert.equal(dirname(target),resolve(tmpdir()));assert.ok(basename(target).startsWith('paos-m2-'));await rm(target,{recursive:true,force:true});});
   const command=(payload:Record<string,any>)=>taskManagerCommand(store,'p','u',{expectedAuthorityEpoch:1,idempotencyKey:randomUUID(),...payload});
   const create=async(title='Task',extra={})=>{const task={...newM2Task('p',randomUUID(),title,'u'),...extra};await command({action:'save',task,expectedRevision:0});return (await store.get('p',task.id))!;};

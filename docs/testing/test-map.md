@@ -1,6 +1,6 @@
 # Карта проверок по подсистемам
 
-Source status: repository_source / static_contract_review; DG06, 2026-11-15.
+Source status: repository_source / static_contract_review; DG06, 2026-11-15.; FUNC-G04: locally_verified_with_measured_limits, 16.11.2026.
 
 Владелец: verification owner + владельцы подсистем. Scope/version: repository `259977f3b257ba7fc0e932396f8963262bd327ad`. Обновлять при изменении contract, callers или test ownership. Таблица — навигация к проверкам, не свидетельство их текущего прохождения. Обязательный выбор и условия расширения принадлежат [TEST.md](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/TEST.md); пороги eval — [EVALS.md](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/EVALS.md).
 
@@ -31,3 +31,64 @@ Source status: repository_source / static_contract_review; DG06, 2026-11-15.
 ## FUNC-G02 — изолированные PoC regression routes
 
 [Владелец решений/evidence](../planning/functional-remediation-2026-11-15.md#func-g02-results). `node --test tests/web/poc/func-g02/f30-model.test.mts tests/web/poc/func-g02/codebase-memory.test.mts tests/web/poc/func-g02/tbls-poc.test.mts tests/web/poc/func-g02/prototype-model.test.mts tests/web/poc/func-g02/prototype-preview.test.mts` —22/22,0skip. `node tests/web/poc/func-g02/prototype-build.mts` —TypeScript/Vite passed; `prototype-browser.mts --synthetic-browser --playwright-core ABSOLUTE_INSTALLED_PATH --chromium ABSOLUTE_INSTALLED_PATH` —22/22, RU/EN × light/dark,1440/390px. Build/harness/snapshot hashes bind the receipt. F31 post-admission cases остаются unexecuted/null; у F32 candidate23 positive observations и3 сохранённых failures. Nullable regression Node alternative и baseline-only regeneration не переписывают native findings. Эти проверки не означают production/full-product/site/provider/human qualification.
+
+## FUNC-G04 / F20 — измерение synthetic scale
+
+Протокол `tests/fixtures/func_g04/protocol.json` закрепляет WEB-NFR-03: 10 000 Tasks, 100 000 visible messages, 1000 documents, около 200 MiB текста; 1000/1001 files, 10 000/10 001 entries, depth 32/33, 512 KiB и 8 MiB с превышением на один byte. Порог search p95 — 500 ms, command ACK — 500 ms, warm view/API event observation — 1000 ms; 3 rounds по 12 samples и bounded soak 120 s. Эти пороги описывают критерии сравнения, а не полученный pass.
+
+Команда `node tests/web/single-window/functional-scale-acceptance.mts --synthetic-scale --phase after` выполняет diagnostic, reference и filesystem в отдельных disposable children с неизменным watchdog 600 s на каждый. `--section diagnostic|reference|filesystem` ограничивает повтор нужным измерением; `--phase final` использует тот же workload. Разделение добавлено после сохранённого baseline failure и не повышает product budgets. Примитивы synthetic text/task и nearest-rank p95 перенесены из `workload.mts`, который содержит top-level side effects и потому не импортируется. Рабочие профили, providers, модели и реальные credentials не используются. Source hashes до/после инвалидируют receipt при изменении измеряемого кода; cleanup ограничен собственным fixture root.
+
+Исходный baseline: `--phase baseline`, exit 1, 416.342 s; `.tmp/func-g04/scale-baseline/result-1794769715591.json` и `scale-baseline-attempt2.log` сохранены. На Windows x64 / i7-12700H / 20 logical CPUs / 16 892 026 880 bytes RAM / Node v26.5.0 / SQLite 3.53.3 OS cache не сбрасывался; соответствие reference SSD не установлено. Worker open — 108.571 ms; reopen — 100.925 ms. После полного цикла seed записано 209 736 923 bytes текста; SQLite file — 658 968 576 bytes. HTTP application initialization завершился реальным `SNAPSHOT_TOO_LARGE`, поэтому HTTP activation, search/list/ACK/event samples, soak, filesystem tail, final SQL integrity counts и before/after target hash assertion в этом baseline **не наблюдались**. Счётчики progress `insertedTasks`/`insertedMessages` — промежуточные checkpoints, не итоговая SQL-проверка количества.
+
+До startup failure graph rebuild 1000 files занял 60 865.383 ms и прочитал 199 890 bytes за 6000 `FileHandle.read` calls / 3 inventory walks. Три status запроса заняли 17 609.933 / 19 651.067 / 21 266.028 ms; каждый повторил 2000 reads / 66 630 bytes / 1 walk. Девятый project дал `GRAPH_SNAPSHOT_LIMIT`. Это текущие наблюдения о bottlenecks для F09; лимиты не ослаблены. Bytes/calls — process-local instrumentation проверенных source reads, а не физический disk I/O; внутренние ignore-file reads могут не входить. При startup failure новый harness продолжает public Store/manager/artifact/history probes, явно сохраняя HTTP unavailable; такие service observations не становятся HTTP evidence.
+
+Первый запуск был syntax/setup failure, его log сохранён отдельно; это не TDD RED продукта. На этапе baseline исправленный section routing имел только `node --check` evidence. Приведённые ниже after/final и closure receipts добавляют: p95/RSS/soak, точные boundary outcomes, integrity и preservation, HTTP activation; rendered event-visible и human acceptance имеют отдельных владельцев. Исходный неуспешный baseline receipt не переписывается. Semantics времени/RSS сверены через Context7 `/nodejs/node/v26.0.0` с официальными [process](https://github.com/nodejs/node/blob/v26.0.0/doc/api/process.md) и [performance](https://github.com/nodejs/node/blob/v26.0.0/doc/api/perf_hooks.md) contracts; установленная minor version фиксируется в каждом receipt.
+
+## FUNC-G04 / F20 — after/final measurements
+
+Полный service workload выполнен после F09 и повторён после двух финальных backend fixes: `node tests/web/single-window/functional-scale-acceptance.mts --synthetic-scale --phase after` и `--phase final`, оба exit 0 со статусом `completed_measurement`. Это завершённое измерение с сохранёнными отклонениями, а не all-NFR pass. Counts, budgets, 3 rounds ×12 samples, 120 s soak и watchdog 600 s на каждый diagnostic/reference/filesystem child не менялись. Проверены реальные 10 000 Tasks / 100 000 messages / 1000 documents / 209 736 923 bytes исходного текста. Final SQL integrity после измерений: те же counts, одна synthetic session, settings row для измеряемых commands, FK failures 0; message edits для frozen-cursor проверки восстановлены.
+
+| Проверка | After | Final | Budget |
+| --- | --- | --- | --- |
+| Indexed search p95, 36 samples | 156.052 ms | 95.774 ms | 500 ms |
+| Command ACK p95, 36 samples | 412.074 ms | 415.444 ms | 500 ms |
+| Task page 50 p95, 36 samples | 6.054 ms | 8.139 ms | 1000 ms |
+| Commit → next freshness API observation p95 | 422.139 ms | 416.806 ms | 1000 ms |
+| Task Manager snapshot p95, 3 samples | 718.390 ms | 410.102 ms | 1000 ms |
+| HTTP application creation после полного seed | 1071.049 ms | 968.630 ms | 10 000 ms |
+| Graph rebuild, 1000 files | 21 680.391 ms | 11 014.857 ms | 60 000 ms |
+| Graph status, три повтора | 1037.534 / 1315.843 / 1230.204 ms | 295.280 / 292.848 / 336.873 ms | 1000 ms |
+
+Baseline graph status читал 66 630 bytes при каждом запросе и занимал 17.6–21.3 s. After/final status выполняет один metadata walk и ноль instrumented content reads/bytes; immutable raw-hash checks при rebuild сохранены. Девятый project в обоих новых runs успешно перестраивается вместо baseline `GRAPH_SNAPSHOT_LIMIT`. Final isolated diagnostic: tree 237.436 ms; registration → first tree 244.811 ms; parser child peak 121 704 KiB, отдельно от benchmark process peak 165 936 KiB. After diagnostic шёл одновременно с full Web/browser qualification; final diagnostic выполнялся отдельно. На входе в final reference metric window root сообщил о завершении full Web и приостановке browser checks. Уведомление на90k checkpoint было пропущено; полная isolation всего reference interval не доказана.
+
+Отклонения cold generation сохранены без повышения порога 1000 ms: новый frozen snapshot всей 100k-message history — after 2.673 / 4.419 / 4.629 s, final 1.809 / 3.857 / 4.518 s. Следующая страница уже существующего frozen snapshot после concurrent edit сохраняет прежние значения: after 6.975 / 23.169 / 16.405 ms, final 5.939 / 8.233 / 14.824 ms. Catalog 1000 documents возвращает total 1000 и около 31 KiB/page, но создание generation заняло after 1.030–1.681 s, final 1.038–1.084 s: это тоже превышение 1000 ms, не warm-cursor pass. Эти measured deviations и bounded scope переданы F09 owner; прогон не означает быстрого cold refresh любой истории.
+
+After soak — 120.203 s /119 iterations, peak RSS 393 854 976 bytes, изменение −198 574 080 bytes. Final — 120.078 s /119 iterations, peak RSS 407 646 208 bytes, изменение −212 344 832 bytes. Whole benchmark process maxRSS: 545 352 /436 356 KiB; SQLite file: 658 997 248 /659 001 344 bytes. Это bounded synthetic soak, не доказательство отсутствия долгосрочной утечки. Short-lived parser child измеряется отдельно: parent RSS не подменяет его peak; JS heap flags не являются native RSS limit. Hardware: Windows x64, i7-12700H, 20 logical CPUs, 16 892 026 880 bytes RAM, Node v26.5.0, SQLite 3.53.3; OS cache не сбрасывался, SSD equivalence и reference 4-CPU hardware qualification не заявлены. GUI/native launcher cold start и rendered event-visible этим service harness не измеряются.
+
+Filesystem outcomes в обоих runs bounded и явные: 10 000/10 001-directory layout достигает `INVENTORY_TIMEOUT` около 30 s при неизменном внутреннем F28 timeout; это неподдержанный для полного прохода layout в текущем time budget. Wide 10 001-file directory даёт partial `directory_entry_limit` на 2000 discovered entries; final page — 413.569 ms. Depth32 complete/depth33 partial `depth_limit`; 512 KiB read accepted, +1 byte rejected `INVENTORY_FILE_TOO_LARGE` (ожидаемая защита, не новый defect). Exact8 MiB aggregate индексирует16 files; +1 byte оставляет16 indexed и1 excluded. При1001 source files индексируются1000, inventory остаётся partial `inventory_entry_limit`. Запрещённые/unsupported данные не объявлены полностью проиндексированными.
+
+After direct scan retry честно сохранил `ANALYZER_UNAVAILABLE`: harness тогда не подключал application adapters, поэтому этот receipt не является proof реального code scan. В final wiring исправлен на реальный `createLocalApplication.handleRequest`: cancel 6.852 ms, retry 25 587.297 ms; inventory completed 1090 ms, documents partial 1083 ms (fixture не содержит control-plane files), code completed 14 630 ms /1000 files, analysis partial 4907 ms (projection200, omitted800). Schema/code_database явно unavailable при невыбранной БД; их200-object/32KiB extensions принадлежат отдельной API/browser приёмке. Restart/interrupted/no-replay проверен отдельно с явно synthetic deferred documents adapter. Target hashes неизменны, own fixtures очищены во всех шести completed sections; native permission denial в этих runs не наблюдался.
+
+Provenance: baseline receipt и ранний F09 diagnostic не переписаны. After receipts: `.tmp/func-g04/scale-after/result-diagnostic-1794774309210.json`, `result-reference-1794774341095.json`, `result-filesystem-1794774726846.json`. Final: `.tmp/func-g04/scale-final/result-diagnostic-1794775064723.json`, `result-reference-1794775080136.json`, `result-filesystem-1794775502257.json`. Полные logs — `scale-after-complete-1.log` / `scale-final-complete-1.log` в `.tmp/func-g04/`. Каждый section сверяет133 inputs до/после: весь `apps/local-service/src` и `packages/contracts` с `.mts/.ts/.ps1/.py`, lock, harness, protocol. Все три after source maps имеют SHA256 `09a9325c03ae63fa6f76c7221807d85d14c04858983c0ff24e775c8ec20fc055`; все три final — `5bd1a848cc2bf0efaf391d30d18dafc48e05ee2ee9fb5c2ebe5f98ba02d7139d`. Between-phase fixes и harness adapter correction изменили source map; внутри каждого run drift отсутствует. Protocol SHA256 одинаков: `37c20aadc0d3474ef78cf86928e9ee1727be7bf415152fc393e92c8b079af625`. UI/docs и parent-only qualification manifest не входят в service fingerprint. Raw response size вычисляется до compact coverage summary; instrumented FileHandle reads не являются физическим disk I/O и могут включать checked ignore-file bytes.
+
+## FUNC-G04 / F20 — closure rerun, 16.11.2026
+
+После последнего исправления F34 table-key dictionary все три section повторены на прежнем protocol с текущими133 source fingerprints. Предыдущие after/final measurements сохранены как исторические, с собственными source revisions. Во время closure reference metric window полный Web/browser/build не выполнялись. Receipts: .tmp/func-g04/scale-closure/result-diagnostic-1794778219987.json; .tmp/func-g04/scale-closure/result-reference-1794778236139.json; .tmp/func-g04/scale-closure/result-filesystem-1794778628384.json.
+
+| Metric | Current closure run | Comparison |
+| --- | --- | --- |
+| Indexed search p95 / 36 | 159.06 ms | 500 ms |
+| Command ACK p95 / 36 | 403.71 ms | 500 ms |
+| Task page 50 p95 / 36 | 3.33 ms | 1000 ms |
+| Commit → freshness API p95 | 404.80 ms | 1000 ms |
+| Task Manager p95 / 3 | 504.80 ms | 1000 ms |
+| HTTP creation after full seed | 1063.57 ms | 10 000 ms |
+| Graph rebuild / 1000 files | 11475.70 ms | 60 000 ms |
+| Graph status / 3 | 313.49 / 294.86 / 277.69 ms | 1000 ms |
+| Soak | 120.15 s / 119 iterations | 120 s |
+| Browser per-process backend/harness | 253.07 MiB | 1024 MiB |
+| Browser aggregate sampled current | 1101.32 MiB | diagnostic only |
+
+Сохранённые отклонения: reference: artifact_catalog, 1361.79 ms / 1000; reference: transcript, 2412.00 ms / 1000; reference: artifact_catalog, 2197.79 ms / 1000; reference: transcript, 5264.94 ms / 1000; reference: artifact_catalog, 2066.49 ms / 1000; reference: transcript, 4022.08 ms / 1000; filesystem: entries_10000, 30003.89 ms / 60000, INVENTORY_TIMEOUT; filesystem: entries_10001, 30004.37 ms / 60000, INVENTORY_TIMEOUT; filesystem: source_bytes_524289, 23.83 ms / bounded outcome, INVENTORY_FILE_TOO_LARGE.
+
+Completed measurement с отклонениями и bounded unsupported outcomes не означает all-NFR pass. Protocol: 37c20aadc0d3474ef78cf86928e9ee1727be7bf415152fc393e92c8b079af625. Source preservation, SQL integrity and owned fixture cleanup are recorded in each receipt.

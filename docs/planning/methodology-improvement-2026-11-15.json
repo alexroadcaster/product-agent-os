@@ -1,5 +1,5 @@
 {
-  "schema_version": "methodology_improvement_task_group_v1",
+  "schema_version": "methodology_improvement_task_group_v2",
   "task_matrix_schema": "task_matrix_plan_v1",
   "created_at": "2026-11-15",
   "timezone": "Europe/Moscow",
@@ -7,7 +7,7 @@
   "english_plan": "docs/planning/methodology-improvement-2026-11-15.en.md",
   "status": "planned",
   "execution_authority": "planning_only_no_implementation_authorized",
-  "scope": "Product-Agent OS methodology improvements and incremental frontend FSD",
+  "scope": "Internal Product-Agent OS development quality and frontend architecture; user-project capabilities are owned by direction B.",
   "source_snapshot": {
     "git_head": "35458110145d928b9b14d9312b60d852f11f6e88",
     "implementation_source_sha256": {
@@ -27,8 +27,7 @@
   ],
   "optional_tasks": [
     "PAOS-METH-14",
-    "PAOS-METH-15",
-    "PAOS-METH-16"
+    "PAOS-METH-15"
   ],
   "tasks": [
     {
@@ -85,7 +84,8 @@
       ],
       "verification_profile": "V-PLAN",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "not_authorized_by_this_plan",
+      "direction_id": "A"
     },
     {
       "id": "PAOS-METH-02",
@@ -136,7 +136,8 @@
       ],
       "verification_profile": "V-PLAN",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "not_authorized_by_this_plan",
+      "direction_id": "A"
     },
     {
       "id": "PAOS-METH-03",
@@ -186,7 +187,8 @@
       ],
       "verification_profile": "V-PLAN",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "not_authorized_by_this_plan",
+      "direction_id": "A"
     },
     {
       "id": "PAOS-METH-04",
@@ -236,7 +238,8 @@
       ],
       "verification_profile": "V-WEB",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "not_authorized_by_this_plan",
+      "direction_id": "A"
     },
     {
       "id": "PAOS-METH-05",
@@ -255,8 +258,7 @@
       ],
       "blocks": [
         "PAOS-METH-06",
-        "PAOS-METH-09",
-        "PAOS-METH-16"
+        "PAOS-METH-09"
       ],
       "external_refs": [
         "PAOS-FUNC-21",
@@ -278,8 +280,8 @@
         },
         {
           "id": "PAOS-METH-05-AC02",
-          "ru": "Для нового TS boundary behavior METH-09 и нового Python routing behavior METH-16 определены ожидаемые RED причины и минимальный GREEN; evidence записывается при их реализации.",
-          "en": "Define expected RED causes and minimal GREEN for new TS boundary behavior in METH-09 and Python routing behavior in METH-16; record evidence when implementing them."
+          "ru": "Для нового TS boundary behavior METH-09 и следующего внутреннего Python behavior change определены ожидаемые RED причины и минимальный GREEN; продуктовый routing принадлежит B и не блокирует A.",
+          "en": "Define expected RED causes and minimal GREEN for new TS boundary behavior in METH-09 and the next internal Python behavior change; product routing belongs to B and does not block A."
         },
         {
           "id": "PAOS-METH-05-AC03",
@@ -289,7 +291,8 @@
       ],
       "verification_profile": "V-TDD",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "not_authorized_by_this_plan",
+      "direction_id": "A"
     },
     {
       "id": "PAOS-METH-06",
@@ -338,7 +341,8 @@
       ],
       "verification_profile": "V-ADD",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "not_authorized_by_this_plan",
+      "direction_id": "A"
     },
     {
       "id": "PAOS-METH-07",
@@ -387,7 +391,8 @@
       ],
       "verification_profile": "V-ADD",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "not_authorized_by_this_plan",
+      "direction_id": "A"
     },
     {
       "id": "PAOS-METH-08",
@@ -437,7 +442,8 @@
       ],
       "verification_profile": "V-PLAN",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "not_authorized_by_this_plan",
+      "direction_id": "A"
     },
     {
       "id": "PAOS-METH-09",
@@ -487,7 +493,8 @@
       ],
       "verification_profile": "V-BOUNDARY",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "not_authorized_by_this_plan",
+      "direction_id": "A"
     },
     {
       "id": "PAOS-METH-10",
@@ -534,7 +541,8 @@
       ],
       "verification_profile": "V-WEB",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "not_authorized_by_this_plan",
+      "direction_id": "A"
     },
     {
       "id": "PAOS-METH-11",
@@ -583,7 +591,8 @@
       ],
       "verification_profile": "V-WEB",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "not_authorized_by_this_plan",
+      "direction_id": "A"
     },
     {
       "id": "PAOS-METH-12",
@@ -639,7 +648,8 @@
       ],
       "verification_profile": "V-WEB",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "not_authorized_by_this_plan",
+      "direction_id": "A"
     },
     {
       "id": "PAOS-METH-13",
@@ -693,7 +703,8 @@
       ],
       "verification_profile": "V-WEB",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "not_authorized_by_this_plan",
+      "direction_id": "A"
     },
     {
       "id": "PAOS-METH-14",
@@ -743,7 +754,8 @@
       ],
       "verification_profile": "V-WEB",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "not_authorized_by_this_plan",
+      "direction_id": "A"
     },
     {
       "id": "PAOS-METH-15",
@@ -795,55 +807,8 @@
       ],
       "verification_profile": "V-WEB",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
-    },
-    {
-      "id": "PAOS-METH-16",
-      "title": "Уточнить условную поддержку методологий в Python plugin",
-      "title_en": "Refine conditional methodology support in the Python plugin",
-      "status": "planned",
-      "priority": "P3",
-      "methodologies": [
-        "Spec-DD",
-        "FSD",
-        "TDD",
-        "ADD"
-      ],
-      "delivery_group_id": "optional-scale",
-      "depends_on": [
-        "PAOS-METH-05",
-        "PAOS-METH-18"
-      ],
-      "blocks": [],
-      "external_refs": [],
-      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
-      "proposed_owner": "plugin-runtime-builder + tester",
-      "work_locations": [
-        "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
-        "plugins/product-agent-os/assets/methodology/methodology-catalog.json",
-        "tests/product_agent_os/test_methodology_audit.py",
-        "docs/methodologies/frontend.md"
-      ],
-      "acceptance_criteria": [
-        {
-          "id": "PAOS-METH-16-AC01",
-          "ru": "Baseline/candidate cases: small frontend, growing coupled frontend, backend-only, native-only, misleading features folders, missing source и already-bounded frontend.",
-          "en": "Compare baseline/candidate cases for small frontends, growing coupled frontends, backend-only, native-only, misleading features folders, missing source and already-bounded frontends."
-        },
-        {
-          "id": "PAOS-METH-16-AC02",
-          "ru": "RED/GREEN нового detection/routing behavior; рекомендации различают not_applicable/applicable_missing/present_unverified; отсутствие сведений не становится доказательством нарушения.",
-          "en": "Use RED/GREEN for new detection/routing behavior; distinguish not_applicable/applicable_missing/present_unverified and never treat missing evidence as proof of a violation."
-        },
-        {
-          "id": "PAOS-METH-16-AC03",
-          "ru": "Proposal не мутирует target, не активирует hooks/agents и не выдаёт folder detection за import/runtime proof; docs RU/EN и catalog/evals согласованы.",
-          "en": "The proposal does not mutate targets or activate hooks/agents, and folder detection is not import/runtime proof; align RU/EN docs and catalog/evals."
-        }
-      ],
-      "verification_profile": "V-PLUGIN",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "not_authorized_by_this_plan",
+      "direction_id": "A"
     },
     {
       "id": "PAOS-METH-17",
@@ -900,7 +865,8 @@
       ],
       "verification_profile": "V-INTEGRATED",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "not_authorized_by_this_plan",
+      "direction_id": "A"
     },
     {
       "id": "PAOS-METH-18",
@@ -918,8 +884,7 @@
         "PAOS-METH-17"
       ],
       "blocks": [
-        "PAOS-METH-14",
-        "PAOS-METH-16"
+        "PAOS-METH-14"
       ],
       "external_refs": [
         "PAOS-FUNC-25"
@@ -942,8 +907,8 @@
         },
         {
           "id": "PAOS-METH-18-AC02",
-          "ru": "Для METH-14/15/16 записаны отдельные решения, scope, owner и rollback; hold/stop сохраняет рабочий пилот и не создаёт бессрочного migration mandate.",
-          "en": "Record separate decisions, scope, owners and rollback for METH-14/15/16; hold/stop retains the working pilot without an indefinite migration mandate."
+          "ru": "Для внутренних METH-14/15 записаны отдельные решения, scope, owner и rollback; hold/stop сохраняет рабочий пилот. Продуктовый B принимает независимое решение без gate METH-18.",
+          "en": "Record decisions, scope, owners and rollback for internal METH-14/15; hold/stop retains the working pilot. Product direction B decides independently without a METH-18 gate."
         },
         {
           "id": "PAOS-METH-18-AC03",
@@ -953,7 +918,153 @@
       ],
       "verification_profile": "V-PLAN",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "not_authorized_by_this_plan",
+      "direction_id": "A"
     }
-  ]
+  ],
+  "plan_revision": 2,
+  "direction_id": "A",
+  "cross_track_references": [
+    {
+      "id": "PAOS-METH-16",
+      "title": "Уточнить условную поддержку методологий в Python plugin",
+      "title_en": "Refine conditional methodology support in the Python plugin",
+      "status": "planned",
+      "priority": "P3",
+      "methodologies": [
+        "Spec-DD",
+        "FSD",
+        "TDD",
+        "ADD"
+      ],
+      "delivery_group_id": "optional-scale",
+      "depends_on": [],
+      "blocks": [],
+      "external_refs": [],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "plugin-runtime-builder + tester",
+      "work_locations": [
+        "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+        "plugins/product-agent-os/assets/methodology/methodology-catalog.json",
+        "tests/product_agent_os/test_methodology_audit.py",
+        "docs/methodologies/frontend.md"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-METH-16-AC01",
+          "ru": "Baseline/candidate cases: small frontend, growing coupled frontend, backend-only, native-only, misleading features folders, missing source и already-bounded frontend.",
+          "en": "Compare baseline/candidate cases for small frontends, growing coupled frontends, backend-only, native-only, misleading features folders, missing source and already-bounded frontends."
+        },
+        {
+          "id": "PAOS-METH-16-AC02",
+          "ru": "RED/GREEN нового detection/routing behavior; рекомендации различают not_applicable/applicable_missing/present_unverified; отсутствие сведений не становится доказательством нарушения.",
+          "en": "Use RED/GREEN for new detection/routing behavior; distinguish not_applicable/applicable_missing/present_unverified and never treat missing evidence as proof of a violation."
+        },
+        {
+          "id": "PAOS-METH-16-AC03",
+          "ru": "Proposal не мутирует target, не активирует hooks/agents и не выдаёт folder detection за import/runtime proof; docs RU/EN и catalog/evals согласованы.",
+          "en": "The proposal does not mutate targets or activate hooks/agents, and folder detection is not import/runtime proof; align RU/EN docs and catalog/evals."
+        }
+      ],
+      "verification_profile": "V-REFERENCE",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "reference_only_do_not_schedule",
+      "record_kind": "cross_track_reference",
+      "canonical_owner": "docs/planning/user-project-methodologies-2026-11-15.md",
+      "canonical_state_owner": "docs/planning/user-project-methodologies-2026-11-15.json",
+      "canonical_task_refs": [
+        "PAOS-PMETH-03",
+        "PAOS-PMETH-07",
+        "PAOS-PMETH-10",
+        "PAOS-PMETH-11",
+        "PAOS-PMETH-16",
+        "PAOS-PMETH-17",
+        "PAOS-PMETH-22",
+        "PAOS-PMETH-23",
+        "PAOS-PMETH-26"
+      ],
+      "historical_depends_on": [
+        "PAOS-METH-05",
+        "PAOS-METH-18"
+      ],
+      "status_semantics": "legacy_planned_reference_not_canonical_implementation_status"
+    }
+  ],
+  "executable_task_count": 17,
+  "reference_record_count": 1,
+  "cross_direction_hard_dependencies": [],
+  "direction_split": {
+    "updated_at": "2026-11-15",
+    "source_head": "5a9c87bea374accc953a8401fa1ac32678ff6e6e",
+    "internal_plan": "docs/planning/methodology-improvement-2026-11-15.md",
+    "user_project_plan": "docs/planning/user-project-methodologies-2026-11-15.md",
+    "user_project_state": "docs/planning/user-project-methodologies-2026-11-15.json",
+    "preserved_original_ids": [
+      "PAOS-METH-01",
+      "PAOS-METH-02",
+      "PAOS-METH-03",
+      "PAOS-METH-04",
+      "PAOS-METH-05",
+      "PAOS-METH-06",
+      "PAOS-METH-07",
+      "PAOS-METH-08",
+      "PAOS-METH-09",
+      "PAOS-METH-10",
+      "PAOS-METH-11",
+      "PAOS-METH-12",
+      "PAOS-METH-13",
+      "PAOS-METH-14",
+      "PAOS-METH-15",
+      "PAOS-METH-16",
+      "PAOS-METH-17",
+      "PAOS-METH-18"
+    ],
+    "removed_active_edges": [
+      {
+        "from": "PAOS-METH-05",
+        "to": "PAOS-METH-16"
+      },
+      {
+        "from": "PAOS-METH-18",
+        "to": "PAOS-METH-16"
+      }
+    ],
+    "superseded_acceptance": [
+      {
+        "task_id": "PAOS-METH-05",
+        "criterion": {
+          "id": "PAOS-METH-05-AC02",
+          "ru": "Для нового TS boundary behavior METH-09 и нового Python routing behavior METH-16 определены ожидаемые RED причины и минимальный GREEN; evidence записывается при их реализации.",
+          "en": "Define expected RED causes and minimal GREEN for new TS boundary behavior in METH-09 and Python routing behavior in METH-16; record evidence when implementing them."
+        },
+        "reason": "Direction split; retain previous criterion wording as historical, not active scope."
+      },
+      {
+        "task_id": "PAOS-METH-18",
+        "criterion": {
+          "id": "PAOS-METH-18-AC02",
+          "ru": "Для METH-14/15/16 записаны отдельные решения, scope, owner и rollback; hold/stop сохраняет рабочий пилот и не создаёт бессрочного migration mandate.",
+          "en": "Record separate decisions, scope, owners and rollback for METH-14/15/16; hold/stop retains the working pilot without an indefinite migration mandate."
+        },
+        "reason": "Direction split; retain previous criterion wording as historical, not active scope."
+      }
+    ],
+    "legacy_criteria_mapping": {
+      "PAOS-METH-16-AC01": [
+        "PAOS-PMETH-10",
+        "PAOS-PMETH-22"
+      ],
+      "PAOS-METH-16-AC02": [
+        "PAOS-PMETH-03",
+        "PAOS-PMETH-07",
+        "PAOS-PMETH-11"
+      ],
+      "PAOS-METH-16-AC03": [
+        "PAOS-PMETH-16",
+        "PAOS-PMETH-17",
+        "PAOS-PMETH-23",
+        "PAOS-PMETH-26"
+      ]
+    }
+  }
 }

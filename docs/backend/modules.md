@@ -1,6 +1,6 @@
 # Backend: модули и владельцы
 
-Source status: repository_source / static_source_review + bounded_native_synthetic_verified; 15.11.2026.
+Source status: repository_source / static_source_review + bounded_native_synthetic_verified; 15.11.2026.; FUNC-G04: locally_verified_with_measured_limits, 16.11.2026.
 
 Владелец: backend/local-service; storage и runtime отвечают за свои контракты. Scope/version: DG03, `2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765`. Обновлять при изменении wiring, зависимости, контракта или владельца модуля.
 
@@ -13,6 +13,20 @@ Source status: repository_source / static_source_review + bounded_native_synthet
 | [execution-recipes/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/execution-recipes/service.mts), [recipe-checkpoint.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/recovery/recipe-checkpoint.mts) | Frozen plan, attempts, pause/cancel/reconcile и recovery checkpoint | Без подтверждения исхода повторный dispatch не разрешается |
 | [route-selector.ts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/runtime/route-selector.ts) | Выбор App-agent или local API BYOK через один сериализованный selector | Между routes нет implicit fallback; route не подтверждает активного consumer |
 | [code-index/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/code-index/service.mts), [parser-worker.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/code-index/parser-worker.mts) | Ограниченное построение code index и parser Worker | Graph coverage и source access не равны полному файловому дереву или семантике всех языков |
+
+## FUNC-G03: inventory, scan и projection
+
+Текущий source review от 15.11.2026 дополняет историческую DG03-таблицу. `project-inventory/service.mts` владеет проверенным root, нормализацией paths, policy/ignore classification, ленивым listing, bounded snapshot и checked reads. `code-index/sources.mts` создаёт inventory из registry policy; fixed sources, Files, graph и execution inspector используют эту границу. Видимость metadata не даёт права чтения или indexing; hard sensitive/link/root deny имеет приоритет над include. `project-files/service.mts` добавляет display-only redaction и discriminated read states. `fileRevision` отделён от raw SHA256 `hash`.
+
+`project-scans/service.mts` владеет profile state `project_scan_v1`, CAS, очередью и stage progress. Defaults: один scan worker, очередь20, job60s/stage30s, result256KiB. Inventory → documents → code → analysis выполняются фоново после durable Add; optional schema/code_database adapters без wiring дают unavailable. Publication guard проверяет владельца scan, отмену, root/policy/inventory revision перед сохранением. Следующий артефакт — сохранённые stage outcomes и provenance; partial не означает полный анализ.
+
+`project-analysis/service.mts` вызывает существующий Python core `product_agent_os.discovery.analyze_workspace` через fixed `bridge.py` в отдельном процессе `-I -S -B`. Core получает ограниченную allowlisted projection во временном каталоге вне target, а не target root. Target code не импортируется; DB files не открываются. Defaults:200files/2MiB projection,64KiB/file,15s,128KiB subprocess output. Timeout/cancel завершает только собственный child. RSS не ограничен OS hard limit. Реальная интеграция доступна из checkout с core scripts; packaged payload без них возвращает `ANALYSIS_CORE_UNAVAILABLE`, без установки или скрытой замены analyzer. Результаты — candidates и present_unverified, не runtime proof.
+
+`runtime/task-file-preflight.mts` связывает сохранённую task revision с общим inspector `runtime/app-agent-files.mts`: metadata-only report и digest, максимум32paths/64KiB raw per file/512KiB raw total. Rename учитывает два пути; create допускает отсутствующий target, modify/delete/read требуют существующий. Gateway admission использует report, capture проверяет актуальные root/policy перед broker command. Это дополняет approval/native sandbox, а не заменяет их.
+
+`storage/sqlite-worker.mts` владеет дешёвым `projectFreshness` и атомарным `projectSnapshot`; HTTP task-manager использует snapshot вместе со stamp. `generation/throughSeq/scanVersion/policyVersion/rootIdentity` показывают profile changes. Filesystem watcher не добавлен: внешние изменения файлов обнаруживаются manual refresh/read/scan и source revision checks. Следующий артефакт — обновлённый snapshot либо явно stale/unavailable source result.
+
+Переданное основным агентом local evidence: F29 API6/6, preflight API1/1, gateway policy28/28, F18focused5/5; final browser/native verification остаётся отдельным шагом. См. [API](../api/endpoints.md), [recovery](recovery.md) и [data flow](../architecture/data-flow.md).
 
 ## Текущие зависимости между слоями
 
@@ -27,3 +41,9 @@ FUNC-08, 15.11.2026: `application.mts` загружает и сохраняет 
 ## Проверки и ограничения
 
 [scheduler-runtime.test.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/tests/web/scheduler-runtime.test.mts), [runtime-route-selector.test.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/tests/web/runtime-route-selector.test.mts), [recipe-runtime.test.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/tests/web/recipe-runtime.test.mts) — связанные тесты, без утверждения о новом прогоне. Local service и [Python plugin](../product-agent-os/architecture.md) имеют разные entrypoints и контракты; их совместное описание не означает обязательного запуска Python при HTTP-вызове. Реальный профиль, provider и производительность здесь не измерялись.
+
+## FUNC-G04 — owners карты и схемы
+
+code-index/service.mts владеет graph revisions/LRU/filters и checked source manifests; lexical/module-resolver не читают target config или filesystem самостоятельно. parser-runner запускает fixed parser child с watchdog из process/child-watchdog.mts. database-map владеет explicit source admission, native read lease, metadata child и compatible schema diff; code-database — static SQL/Prisma analysis, both-revision links и bounded queries. HTTP owner связывает их с F27 stages и authenticated routes; private agent gateway использует только trusted query port с project из claimed run.
+
+Shared contracts остаются в packages/contracts; frontend не является implementation dependency contracts/backend. Rolldown используется через installed public parser entry, не временный PoC engine и не target executable config. В packaged среде без этого adapter результат unavailable, без скрытого fallback. Установки, provider/model calls и публичной поставки этот slice не выполняет.

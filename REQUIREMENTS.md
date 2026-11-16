@@ -1,12 +1,20 @@
 # REQUIREMENTS.md
 
+## FUNC-G04 — закрыта, 16.11.2026
+
+F20/F09/F14/F33/F34 выполнены в разрешённом local synthetic scope: измерение масштаба, оптимизация снимков, production Map, explicit offline SQLite schema и статические code-to-table queries. AC сохранены. Приёмка ограничена проверенными JS/TS/SQL/Prisma subset и Windows SQLite read lease; cold history/catalog deviations, directory timeouts и aggregate memory diagnostics записаны явно. Real DB/credentials/providers/Git/publication, human/release acceptance остаются отдельными границами. [итоговые решения и evidence](docs/planning/functional-remediation-2026-11-15.md#func-g04-results).
+
+## FUNC-G03 — выполненный scope, 15.11.2026
+
+F28/F26/F27/F02/F29/F10/F18 выполнены: общий inventory policy, Files/reader, durable scan, настоящий core discovery через read-only projection, artifact references, execution preflight и snapshot freshness. Приёмка bounded local synthetic; source policy остаётся authority после asynchronous work, dirty drafts сохраняются. Checkout-only core/packaged unavailable и отсутствие watcher описаны явно; future Map/schema consumers и packaging отдельно. Real target/provider/global/Git/release/human gates не расширены. Исходные AC и evidence — [план](docs/planning/functional-remediation-2026-11-15.md#func-g03-results).
+
 ## FUNC-G02 — выполненный scope, 15.11.2026
 
 F30/F31/F32 закрыты в разрешённом isolated synthetic PoC scope: общий pinned protocol/ground truth, draft F28 inventory/F20 budgets, measured decisions, versioned adapter proposals, V3 UI acceptance, review и per-task docs/status sync. Обоснованные reject F31/F32 закрывают исследования; пропущенные после admission refusal cases остаются unexecuted/null. Production F14/F33/F34, реальные БД/credentials/providers/models, global installation/config/ACL, Git/publication и human acceptance остаются вне выполненного scope. [Результаты](docs/planning/functional-remediation-2026-11-15.md#func-g02-results).
 
-## Методологии и постепенный FSD — планирование, 15.11.2026
+## Два направления методологий — планирование, 15.11.2026
 
-Текущий запрос разрешает только [план METH-01–18](docs/planning/methodology-improvement-2026-11-15.md), [JSON](docs/planning/methodology-improvement-2026-11-15.json), полный EN и planning/source pointers. Spec-DD, Design-DD, TDD и ADD дополняются поэтапным frontend FSD: boundaries → shared/entities → dashboard → tasks/workflows → evidence-based go/hold. Все 18 задач planned; implementation/runtime/browser/provider/install/active instructions/Git/publication не начаты и не разрешены этим планом. FUNC-G01 остаётся выполненной, другие FUNC/Web/V3 сохраняют scope/status/AC; приёмка пилота, human и release разделены.
+Текущий запрос разрешает разделение planning artifacts: [A — внутреннее качество](docs/planning/methodology-improvement-2026-11-15.md), 17 planned задач; [B — методологии для проектов пользователей](docs/planning/user-project-methodologies-2026-11-15.md), 26 planned задач и [JSON](docs/planning/user-project-methodologies-2026-11-15.json). Прежняя METH-16 сохранена reference-only вне очереди A; все исходные ID/legacy AC доступны. B охватывает profile/selection → Spec/Design/TDD/FSD/ADD → staged delivery/evidence → API/UI → pilots/rollout и не ждёт внутреннюю FSD-миграцию A. Только запись RU/EN планов/JSON/pointers; код, active skills/workflows/hooks, TEST/EVALS, target/runtime/provider/install/Git/publication не входят в этот запрос. Параллельный FUNC-G03 сохраняет свой отдельный scope и source-owned статусы.
 
 ## FUNC-G01 — выполненный scope, 15.11.2026
 

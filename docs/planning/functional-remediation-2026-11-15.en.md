@@ -3,16 +3,16 @@
 Source status: repository_source / current_local_synthetic_implementation; remaining_tasks_planned.
 Planning date: 15.11.2026. Timezone: Europe/Moscow. Schema version: task_matrix_plan_v1.
 
-<!-- func-g01-g02-status -->
-FUNC-G01: 7/7 implemented / locally_verified; FUNC-G02: 3/3 implemented / poc_research_locally_verified; overall 10 implemented / 24 planned; other groups and 3 M5 references preserved.
+<!-- func-g01-g04-status -->
+FUNC-G01: 7/7 locally_verified; FUNC-G02: 3/3 poc_research_locally_verified; FUNC-G03: 7/7 locally_verified; FUNC-G04: 5/5 implemented, locally_verified_with_measured_limits; overall 22 implemented / 12 planned. Three M5 references preserved.
 
 ## Scope and status
 
-The plan contains **34 tasks PAOS-FUNC-01–PAOS-FUNC-34** and references to **3 previously planned M5 tasks**. Current total: **10 implemented / 24 planned**; FUNC-G01 is closed against its local technical AC. The overview matrix therefore contains 37 entries; this is not the total number of project tasks. The existing 56 M1–M5 cards, their 53 implemented / 3 planned statuses, and estimates are preserved. New findings do not rewrite historical receipts: they require current reproduction and a new verification.
+The plan contains **34 tasks PAOS-FUNC-01–PAOS-FUNC-34** and references to **3 previously planned M5 tasks**. Current total: **22 implemented / 12 planned**; FUNC-G01 is closed against its local technical AC. The overview matrix therefore contains 37 entries; this is not the total number of project tasks. The existing 56 M1–M5 cards, their 53 implemented / 3 planned statuses, and estimates are preserved. New findings do not rewrite historical receipts: they require current reproduction and a new verification.
 
 Machine-state owner for the current checkout: `docs/planning/functional-remediation-2026-11-15.json`. The [original planning snapshot](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/docs/planning/functional-remediation-2026-11-15.json) is historical and does not carry the updated local statuses. This Markdown file owns technical and product rationale, acceptance and completion evidence. M5 references do not create a second owner for status: the owners are [docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json) and [docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md](product-agent-os-web-task-manager-plan-2026-11-09.md).
 
-The original request authorized planning. A subsequent 2026-11-15 owner request authorized complete FUNC-G01 implementation, necessary local synthetic checks, statuses and documentation; all seven group tasks are implemented. A further owner request authorized FUNC-G02: its three research PoCs are closed with measured decisions and isolated UI acceptance. The remaining24 tasks and M5 stay outside this implementation. P1 means an execution blocker or an integrity/recovery check; P2 means functional value, information correctness and maintainability; P3 means a limited display defect. The priority of a verification task does not mean a failure has already been observed.
+The original request authorized planning. A subsequent 2026-11-15 owner request authorized complete FUNC-G01 implementation, necessary local synthetic checks, statuses and documentation; all seven group tasks are implemented. A further owner request authorized FUNC-G02: its three research PoCs are closed with measured decisions and isolated UI acceptance. Further requests authorized G03 (7 implemented) and G04 (5 implemented with measured limits); 12 tasks and the separate M5 references remain planned. P1 means an execution blocker or an integrity/recovery check; P2 means functional value, information correctness and maintainability; P3 means a limited display defect. The priority of a verification task does not mean a failure has already been observed.
 
 ## Original evidence basis and limits
 
@@ -343,6 +343,105 @@ Closure commands: combined22-unit command recorded in machine state, `node tests
 
 Final static closure: both task-matrix validators passed; source-docs19 passed;31 unrelated task objects and31 cards per language, all original AC/priorities/estimates/dependencies/groups and M5 preserved; current production sources unchanged. Preservation and source/build/harness binding receipt: `.tmp/func-g02/closure-consistency.json`; diff check passed. The historical pre-relocation M5 hash was not the current baseline: corrected verification compared the unchanged task-start Git source. No M5 file was changed.
 
+## FUNC-G03 — execution and decisions {#func-g03-results}
+
+Status: implemented / locally_verified,7/7; group exit passed. Owner authorized F28/F26/F27/F02/F29/F10/F18 implementation; original planning_only phrases refer to prior planning. Root owns shared HTTP/API/storage and task/docs integration; a separate owner implements the lower inventory. Other27 task records, closed G01/G02 and M5 are preserved.
+
+F28: independent read-only inventory below project-sources; separate listing/read/index permissions and stage counts, explicit partial coverage, parser-independent metadata tree. Hard root/link/sensitive denial precedes exclude/include/gitignore. Root/policy/revision changes invalidate snapshots; lazy direct listing and bounded recursion.
+
+F27: registration does not await scan. Versioned JSON+CAS in profile-owned store_meta reuses the immutable SQL schema, never task/document pseudo-entities. Cancellation fences analyzer publication; an outer timeout race alone is insufficient. Restart interrupts unfinished jobs and late results cannot publish.
+
+F29: existing Python core receives only an allowlisted F28 projection in an owned temporary profile. It does not rescan the real root. Output is target root/policy/revision bound and explicitly partial; unavailable Python/version/timeout never triggers installation or another scanner.
+
+Accepted test seams: inventory metadata/checked read/exclusions; authenticated directory/read/scan/analysis API; durable scan CAS/cancel/restart; artifact path normalization; execution file preflight; UI navigation/late-response/freshness/dirty-draft protection. Original AC and assigned tests map each task to scenarios and evidence owner; root owns combined API/browser/native activation evidence.
+
+Code contract: existing_capability=checked-handle readers/codeIndex worker/core discovery/LocalStore store_meta/createLatestRequest/V3 UI; smallest_safe_patch=lower inventory and bounded directory/job/analysis adapters with sequential shared wiring; invariants=root/policy/revision isolation, no target mutation or secret disclosure, cancellation before publication, dirty drafts preserved; dependency_decision=no_new_dependency; risk_selected_tests=public seams/security/recovery/browser; comment_decision=policy/CAS/publication intent; performance_applicability=bounded metadata/workers/projection/polling; evidence_and_gaps=current synthetic checks passed, no provider/human/release claims.
+
+### Final evidence and boundaries
+
+All seven members F28/F26/F27/F02/F29/F10/F18 are implemented and checked against their original AC. Other27 task objects/cards, original priorities/estimates/dependencies/order/groups and3 M5 references remain unchanged. Global task total:17 implemented /17 planned. Group closure is derived from members and exit evidence; it does not start another group.
+
+| Contract | Current evidence |
+| --- | --- |
+| F28 inventory / F26 Files | lower16 plus Files9, policy/CAS/consumer regressions; Add→immediate tree→plain reader→line/hash/copy/back; actual link/root/policy denial |
+| F27 lifecycle | persisted queued/CAS/cancel/retry/restart; registration replay and late graph-publication rejection; real inventory/documents/code/analysis stages |
+| F02 references | structured artifacts + legacy paths/backlinks/task filters, stale raw pins, excluded/deleted source denial; production UI backlink→task |
+| F29 core | real isolated Python/core9 focused cases plus HTTP restart/stale proof; allowlisted projection, source/confidence/candidates, no target scripts/DB open |
+| F10 preflight |32/33 paths,65536/65537 and524288/524289 raw bytes; operations/rename/pins; UI blocked Send retains draft; server and native policy fences |
+| F18 freshness | atomic snapshot/stamp, second-channel stale, overlay refresh, dirty draft/original CAS409, disposed polling; modified/renamed source and stale analysis |
+
+Final mandatory Web suite `npm run test:web-m1`: **594/594,0skip**, `.tmp/func-g03/full-web-native.log`. Native environment was selected for the full run because the sandbox had rejected exact synthetic link/junction setup. Earlier setup failures remain in their original receipts; they are not behavior RED. `npm run check:web-m1` and `npm run build:web` passed; the existing >500kB chunk warning remains (performance owners F09/F20). Production UI browser **19/19**, RU/EN × light/dark Files at1440/390px, source/build hashes and screenshots: `.tmp/func-g03/browser-final/evidence-IfLiEa/result.json`. Clipboard, deferred response delivery and the UI no-Send runtime boundary are labelled fixtures; core/HTTP/SQLite/FS are actual local implementations. No external requests/page errors; target hashes preserved.
+
+Native candidate and production-default inspector both passed on adapterRevision `64cd3b58c5688e0673cb3bea5ea250817e10eb281d07c9a4e293ade759f0d33e`; candidate receipt SHA256 `94643d3bee58f959281c18f9f099896959ab92a64ea6e4fc4d5c2ab05c52b450`. Receipts: `.tmp/func-g03/native-candidate-reviewed.log`, `native-default-reviewed.log`; production default uses no candidate exception. Discussion/planning deny writes, execution permits owned workspace writes while outside/temp writes are denied; drift rejects before child spawn, interrupt, broker recreation and isolated-home cleanup passed. `.py` bridge bytes now participate in executable source qualification (observed RED/GREEN). The initial sandbox rpc_rejected receipt is retained. No provider/model/auth credential operations were used.
+
+Independent review `/root/func_g03_review`: cycle1 separate_fresh_context reproduced a P2 captured-policy race; root fixed the common cause in final registry fences and atomic task/registry observation. Deterministic RED2/2 and consumer RED3/3 are retained; cycle2 separate_reused_context independently verified5/5, tester_verdict=closed_allowed. Root repair regression30/30 and affected consumer/API20/20 passed; broader affected58 had57pass/1sandbox link setup failure, exact native retest1/1, followed by full native594/594. Failed setup/probe directories and the temporary executable are cleaned within owned containment; receipts remain. No source/diff protections were waived.
+
+Documentation: changed canonical API/events/backend/recovery/data-flow/inventory/discovery/queries/security/transactions/frontend/navigation/state/components and RU/EN registry updated; source-docs30 and both matrix validators passed. Root REQUIREMENTS/PLAN/TEST/RUNLOG synchronized. EVALS/prod_test no_change_needed: no rubric, model/prompt or Batch39 evidence changed. Atlas/MkDocs no_change_needed: existing architecture data-flow owns this runtime boundary; no lifecycle route or navigation page was added. Final preservation/source/build/native bindings are recorded in `.tmp/func-g03/closure-consistency.json`.
+
+Accepted limits: existing desktop distribution omits checkout core/catalog and explicitly returns unavailable; packaging belongs to F17. Projection/output/time are bounded, portable OS RSS hard cap and broad performance qualification belong to F09/F20. F14/F33/F34 own future Map/schema/code-table consumers. Synthetic local closure does not establish provider execution, human acceptance, mass-project or commercial release readiness. No dependencies were installed; real profiles/credentials/targets, global configuration and Git/publication were not changed. Rollback only this slice's hunks; after executable changes requalify the manifest, preserve user files and earlier G01/G02/M5 evidence.
+
+## FUNC-G04 — execution and decisions {#func-g04-results}
+
+Status: implemented / locally_verified_with_measured_limits. Owner authorized F20/F09/F14/F33/F34. G03 working source is the preserved dirty baseline193files, HEAD5a9c87b; other29task records and M5 remain owned by their existing reports. Root owns shared storage/HTTP/API/App and status/control-plane synchronization; independent owners use explicit file boundaries.
+
+Sequence: F20 protocol/baseline before F09 source fixes; F14 after measured fixes; F33 after explicit source/adapter design; F34 after compatible code/schema consumers. At most root+two specialists, then independent review. No Git/publication/providers/live databases/global installation/configuration.
+
+F33 design decision: Node26 SQLite readOnly schema-only extraction of an explicitly selected project-local offline SQLite file, distinct from PAOS profile DB. No automatic candidate opening, copied DB bytes, rows, project SQL/scripts/extensions or PostgreSQL inference from tbls. Hard-link/reparse/root/policy/private checks and dedicated admission precede access. Windows native read lease holds target and root-to-target ancestors against write/delete while SQLite owns its second handle; fixed trusted PowerShell/C# helper, no policy bypass or installation. Node validates root/identity/policy after readiness; extraction closes before lease release. Existing sidecars, WAL header, busy lease or unsupported host fail closed. This avoids claiming pre/post path checks alone prevent ABA. SQL metadata uses bounded trusted statements/authorizer, time/output/SQLite limits; JS heap limits are not native-memory guarantees. Source hashes/policy rechecked before publication; Windows lease conformance must pass before feature closure.
+
+F14/F34 language/backend and UI gates will be recorded here before their build, preserving F30/F31/F32 measured adopt/reject decisions and V3 design. Test seams are existing public APIs, source/scan snapshots, source selection, graph/schema/links queries and rendered navigation; synthetic native/browser fixtures are authorized, provider/human acceptance stays separate.
+
+Code-change contract: existing_capability=F28checkedinventory/F27CAS/NodeSQLite/rolldown+TypeScript/V3D3Mermaid/LocalStore; smallest_safe_patch=measured read/cache fixes plus bounded source adapters and consumers; invariants=project/root/policy/revision/late-publication isolation and preservation; dependency_decision=no_new_dependency, installed/native capabilities first; risk_selected_tests=protocol/groundtruth, auth/path/read-only/recovery/cancel, API/browser/native; comment_decision=authority/lease/cache/semantic limits; performance_applicability=required F20 before/after; evidence_and_gaps=current measurements pending, no readiness claim.
+
+### Production navigation and wireframes — selected before build
+
+Technical design uses existing V3 tokens/components, D3, escaped Mermaid and a useful table/list alternative. It is selected for implementation; it does not claim human acceptance. Files, Map and Database are independent project navigation entries; Settings owns registration/source selection only.
+
+| Surface | Desktop wireframe | Mobile and states |
+| --- | --- | --- |
+| Map | Dependencies/Symbols → search/direction/edge filters + revision/coverage → object list / graph-list-Mermaid / evidence drawer; incoming/outgoing, bounded path/impact, source line and Files links | List first; collapsible evidence; keyboard node selection and focus return; explicit zoom/reset; loading/empty/partial/error/unavailable/stale |
+| Database/Schema | Source/revision/coverage + scan/cancel/retry → bounded ERD/table from one page → selected table columns/PK/FK/index/views; safe export and source definition where observed | Table alternative, search/type filters, selected object retained per project; no auto-opening candidates |
+| Database/Changes | Compatible baseline/current revisions → added/removed/changed objects; rename remains add/remove without evidence | Explicit no-baseline/incompatible/stale; source switch never compares different databases |
+| Database/Code usages | Table→read/write/unknown and confirmed/inferred/unresolved→file/span/evidence; compatible code+schema revisions, truncation/cursor, bounded agent context | Accessible result list and source line; Files reader links back to related tables, Map has DB-relationship filter and incomplete impact |
+| Settings/Project | Explicit relative source + observed metadata pin + settings CAS → Select/Clear, then separate scan action | not_configured/none_found/unavailable/forbidden explained; no DSN/credentials or target scripts |
+
+F20 protocol is pinned in tests/fixtures/func_g04/protocol.json before measurements: unchanged WEB-NFR thresholds, three rounds and bounded soak, real hardware/cache separately from reference4-core machine, full10k tasks/100k messages/~200MiB/1k files and exact boundary cases. API-visible latency is separate from rendered UI visibility/cold GUI. Budget failures remain observations and become measured F09 inputs.
+
+### F14/F34 — production composition selected before build
+
+- F14 uses installed public rolldown/utils.parseSync1.2.18 (OXC AST) for JS/TS/JSX/TSX/MJS/CJS/MTS/CTS and in-file lexical define/read/write/reference/call. Cross-file edges are imports/reexports, literal dynamic imports and unshadowed literal require, never runtime calls. A pure allowlist resolver uses F28-admitted paths and safely read root tsconfig baseUrl/paths only. JSON comments/extends/references/package exports/unknown aliases remain explicit partial/unresolved; target code/config is not executed. G02 ground truth target is precision1/recall≥0.9 for10 imports. Other languages remain unsupported.
+- G02 dependency-cruiser18.6.0 retains its bounded_adopt import-only PoC decision; its isolated .tmp installation and TypeScript5.9.2 are not shipped product dependencies. Installed TypeScript7.0.2 does not expose legacy createSourceFile/resolveModuleName APIs. CBM reject remains. A public rolldown/experimental ResolverFactory probe rejected valid Windows paths under restriction and discovered parent package.json outside the projection without restriction, so it is not selected. The explicit production alternative is the installed AST plus a conservative deterministic allowlist resolver, with no silent backend fallback.
+- Restart/eviction explicitly invalidates the memory graph; cursors bind cache generation and filters. Files stays independent. Rollback only reverts G04 parser/resolver/UI hunks while retaining F28 guards and G03 scans.
+- F34 supports JS/TS+SQL literal SELECT FROM/JOIN, INSERT INTO, UPDATE, DELETE FROM and CREATE/ALTER/DROP TABLE, plus one Prisma static subset (schema.prisma model/@@map and literal file: datasource, traced PrismaClient/delegate). Tokenizer/AST separates comments/strings/aliases. Confirmed links require selected source binding through literal node:sqlite new URL(...,import.meta.url) or literal Prisma datasource. Cwd/env/dynamic/untraced/table-name-only matches stay inferred/unresolved.
+- Evidence binds file/span/symbol/query/model/table/source/operation/method/confidence/reason to both code and schema revisions. Equal table names across sources remain separate. No SQL/Prisma/project execution, row reads, DSNs or runtime call-graph claims. Promotion requires per-kind ground truth, scope/revision/cancel fences, context≤32KiB and measured correctness/missed files/tests/context/time against static manual-search tasks.
+
+Text-integrity note: the pre-build decision text was restored from its original temporary design packet after correcting inter-character Markdown escaping; original cards and AC are unchanged.
+
+### FUNC-G04 — final evidence
+
+All five cards (F20/F09/F14/F33/F34) are implemented; overall matrix: 22 implemented / 12 planned. Original acceptance criteria, estimates, dependencies, groups and M5 references are preserved. Closure is bounded local synthetic verification with measured limits; it does not claim all NFRs pass. Review: separate_reused_context, /root/func_g04_review, tester_verdict=closed_allowed.
+
+Web: 658/658, 0 fail/skip (.tmp/func-g04/web-closure-native-final.log); typecheck and current-UI build passed. Browser: 18/18 with 204 source hashes, dist binding, 30 screenshots, four pages covering 200 objects, real API/native lease and service/profile restart; .tmp/func-g04/browser-acceptance/evidence-m9Vcjh/result.json. Native candidate and production-default passed for adapter b7d5d1eb2a129763feacba96735d4ba40c0c0bd00dced861c1d83af6cf94726b, with zero provider/model/credential operations. The current three F20 receipts are .tmp/func-g04/scale-closure/result-diagnostic-1794778219987.json; .tmp/func-g04/scale-closure/result-reference-1794778236139.json; .tmp/func-g04/scale-closure/result-filesystem-1794778628384.json. Their 133 inputs match current source; protocol 37c20aadc0d3474ef78cf86928e9ee1727be7bf415152fc393e92c8b079af625 is unchanged.
+
+| Metric | Current closure run | Comparison |
+| --- | --- | --- |
+| Indexed search p95 / 36 | 159.06 ms | 500 ms |
+| Command ACK p95 / 36 | 403.71 ms | 500 ms |
+| Task page 50 p95 / 36 | 3.33 ms | 1000 ms |
+| Commit → freshness API p95 | 404.80 ms | 1000 ms |
+| Task Manager p95 / 3 | 504.80 ms | 1000 ms |
+| HTTP creation after full seed | 1063.57 ms | 10 000 ms |
+| Graph rebuild / 1000 files | 11475.70 ms | 60 000 ms |
+| Graph status / 3 | 313.49 / 294.86 / 277.69 ms | 1000 ms |
+| Soak | 120.15 s / 119 iterations | 120 s |
+| Browser per-process backend/harness | 253.07 MiB | 1024 MiB |
+| Browser aggregate sampled current | 1101.32 MiB | diagnostic only |
+
+Cold history/catalog generations retain recorded 1000 ms deviations. Full 10k/10001-directory traversal ends in an explicit bounded 30 s timeout; lazy listing is bounded/partial. Native JS heap is not an OS RSS cap. Browser aggregate current/lifetime peaks remain diagnostics, not a whole-system pass. Actual hardware is i7-12700H/20 logical CPUs/15.73 GiB/Node26.5/SQLite3.53.3; reference 4-core hardware, cold GUI, long-term leak freedom, human/provider/production/commercial acceptance are not qualified.
+
+Retained failures: baseline oversized startup and repeated graph reads; the initial 656/657 authority-contract failure; parser native stack exits; 100-object ERD 1969 ms; anchor/filter and mobile-heading bugs; incorrect aggregate RSS assertion; final P2 __proto__ dictionary RED. Each relevant product failure has a focused fix and current regression. A later ordinary sandbox run had lease/symlink denials (631 pass/16 fail/3 skip, one owned stalled test child terminated); its receipt is retained, and the authorized native repeat passed all 658. Attempt10 browser passed against the pre-promotion manifest; attempt11 is the current binding. No failed receipt was rewritten.
+
+Docs: 26 domain Markdown files plus RU/EN matrix and four root control-plane files, 32 in total. Source registry RU/EN includes Context7 primary sources. Repaired a temporary helper's damaged G04 design block and registry heading before final source checks; original cards/AC remain preserved. EVALS/prod_test and diagram/MkDocs routes: no_change_needed, because no AI rubric, Batch39 or atlas/navigation contract changed. No site build/freshness claim. Cleanup removes owned fixtures and the copied test executable; existing cache/runtime and user files are preserved. Rollback only own hunks, followed by native requalification for executable source changes.
+
 ## Detailed cards
 
 ### Task `PAOS-FUNC-01`
@@ -395,15 +494,15 @@ Final static closure: both task-matrix validators passed; source-docs19 passed;3
 
 - Delivery group: `FUNC-G03`; the group does not replace Depends on or the original AC.
 - Task: PAOS-FUNC-02 — Restore links between structured artifacts and tasks
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Defect; functional audit after V3 redesign and owner request for a task matrix.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 15-11-2026 21:00
 - Priority: P2
-- Evidence level: static_finding_reproduction_required
-- Execution authority: planning_only; inclusion in the plan does not start implementation.
+- Evidence level: locally_verified
+- Execution authority: owner_authorized_func_g03_local_synthetic; 15.11.2026.
 - Depends on: `PAOS-FUNC-28`
 - Blocks: `PAOS-FUNC-13`, `PAOS-FUNC-14`, `PAOS-FUNC-19`
 - Source: taskPaths reads files/artifactReferences; Editor saves artifacts separately. [apps/local-service/src/artifacts/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/artifacts/service.mts), [apps/web/src/features/tasks/Editor.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/tasks/Editor.tsx). Provenance: 15.11.2026 static audit; no new runtime results are claimed.
@@ -423,20 +522,20 @@ Final static closure: both task-matrix validators passed; source-docs19 passed;3
 - Output artifacts: scoped diff in listed work locations; check results and Documentation impact in this Completion Report; status in this group's JSON; short handoff in RUNLOG.md.
 - Rollback: undo only own hunks after checking drift; for data use retained synthetic backup and agreed recovery contract; destructive Git is not allowed.
 - Planning update 15.11.2026: acceptance and links to F26–F29 expanded; execution has not started.
-- Next step: Verify that the finding remains current. Assign an owner and refine the smallest verifiable slice.
+- Next step: Complete F29/F10/F18 and final FUNC-G03 gates.
 
 #### Completion Report
 
-- status: planned
-- what was done: task formulated in the plan; implementation and its acceptance scenarios have not started.
-- files touched / work locations: implementation none; planned work locations are listed in Scope.
-- technical value delivered: implementation result not yet obtained.
-- product value delivered: user outcome not yet confirmed.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: only original links and static observations in Source; future Verification gates were not executed by this task.
-- residual risks: reproduce_then_fix; current source state is rechecked at start.
-- follow-up: Next step above; after execution synchronize JSON status, this card and only affected control-plane claims.
-- Documentation impact: planning_only; code and functional claims do not change yet. On completion reconcile changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required and evidence in this report.
+- status: implemented
+- what was done: Shared explicit task-reference normalization connects structured artifacts and legacy paths with catalog/backlinks; stale pins remain separate from current document availability and read authority.
+- files touched / work locations: apps/local-service/src/artifacts/references.mts; apps/local-service/src/artifacts/service.mts; apps/local-service/src/task-manager/service.mts; apps/web/src/features/artifacts/ArtifactExplorer.tsx; tests/web/skill-generation-artifacts.test.mts
+- technical value delivered: Registry/root/policy/revision contracts verified through actual HTTP/SQLite/FS and production React.
+- product value delivered: Project sources are available with explicit unavailable reasons and preserved navigation.
+- actual implementation date and time: 15-11-2026 21:00
+- verification evidence: .tmp/func-g03/browser-foundation/evidence-q8ECT0/result.json:15/15; .tmp/func-g03/f26-f27-api-integration.log:13/13; .tmp/func-g03/check-foundation.log:exit0; .tmp/func-g03/build-foundation.log:exit0; .tmp/func-g03/f02-focused-final.log:21/21
+- residual risks: Bounded synthetic local verification; no provider calls, native clipboard or human/release acceptance. Final shared regression/native qualification follows.
+- follow-up: Complete F29/F10/F18 and final FUNC-G03 gates.
+- Documentation impact: updated; docs/code-intelligence/queries-impact.md; docs/code-intelligence/queries-impact.en.md; docs/frontend/components.md; docs/frontend/components.en.md; docs/sources/registry.md; docs/sources/registry.en.md; scoped source checks passed.
 
 ### Task `PAOS-FUNC-03`
 
@@ -718,15 +817,15 @@ Final static closure: both task-matrix validators passed; source-docs19 passed;3
 
 - Delivery group: `FUNC-G04`; the group does not replace Depends on or the original AC.
 - Task: PAOS-FUNC-09 — Optimize snapshot reads and lifecycle
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Architecture; functional audit after V3 redesign and owner request for a task matrix.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 16-11-2026 00:43
 - Priority: P2
-- Evidence level: static_observation
-- Execution authority: planning_only; inclusion in the plan does not start implementation.
+- Evidence level: locally_verified
+- Execution authority: owner_authorized_func_g04_local_synthetic; 15.11.2026.
 - Depends on: `PAOS-FUNC-08`, `PAOS-FUNC-20`
 - Blocks: `PAOS-FUNC-14`
 - Source: Full projectEntities; graph memory cap 8; catalog snapshot limits. [apps/local-service/src/code-index/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/code-index/service.mts), [apps/local-service/src/artifacts/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/artifacts/service.mts), [apps/local-service/src/task-manager/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/task-manager/service.mts). Provenance: 15.11.2026 static audit; no new runtime results are claimed.
@@ -746,34 +845,34 @@ Final static closure: both task-matrix validators passed; source-docs19 passed;3
 - Output artifacts: scoped diff in listed work locations; check results and Documentation impact in this Completion Report; status in this group’s JSON; short handoff in RUNLOG.md.
 - Rollback: undo only own hunks after checking drift; for data use retained synthetic backup and agreed recovery contract; destructive Git is not allowed.
 - Planning update 15.11.2026: acceptance and links to F26–F29 expanded; execution has not started.
-- Next step: Check dependencies and whether the finding remains current. Assign an owner and refine the smallest verifiable slice.
+- Next step: No required work remains within this card; measured limits are retained. The next group and human/release acceptance remain separate.
 
 #### Completion Report
 
-- status: planned
-- what was done: task formulated in the plan; implementation and its acceptance scenarios have not started.
-- files touched / work locations: implementation none; planned work locations are listed in Scope.
-- technical value delivered: implementation result not yet obtained.
-- product value delivered: user outcome not yet confirmed.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: only original links and static observations in Source; future Verification gates were not executed by this task.
-- residual risks: measured_bottleneck_required; current source state is rechecked at start.
-- follow-up: Next step above; after execution synchronize JSON status, this card and only affected control-plane claims.
-- Documentation impact: planning_only; code and functional claims do not change yet. On completion reconcile changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required and evidence in this report.
+- status: implemented
+- what was done: Implemented measured F20 fixes: metadata-only graph status,8-entry LRU/generation-bound cursors,8 checked parallel source handles with unchanged8MiB cap, SQL kind filtering before64MiB cap, frozen TEMP history and SQL artifact previews with bounded raw reads.
+- files touched / work locations: apps/local-service/src/code-index/service.mts; apps/local-service/src/storage/; apps/local-service/src/sessions/service.mts; apps/local-service/src/artifacts/service.mts; apps/local-service/src/task-manager/service.mts; apps/local-service/src/main.mts; tests/web/snapshot-lifecycle.test.mts; tests/web/snapshot-history-scale.test.mts
+- technical value delivered: Removed startup SNAPSHOT_TOO_LARGE, repeated body reads on status and ninth-project refusal while preserving raw SHA256/authority guards and immutable history.
+- product value delivered: Large history/documents do not block task reads; eviction requires no restart and never hides Files.
+- actual implementation date and time: 16-11-2026 00:43
+- verification evidence: node --test --test-concurrency=1 tests/web/*.test.mts: 658/658, 0 fail, 0 skip; .tmp/func-g04/web-closure-native-final.log (authorized native synthetic executor); npm run check:web-m1: passed, .tmp/func-g04/typecheck-closure.log; npm run build:web: passed, .tmp/func-g04/build-responsive-final.log; UI/build hashes unchanged and verified by current browser receipt; production browser 18/18, 204 current source hashes and dist binding; .tmp/func-g04/browser-acceptance/evidence-m9Vcjh/result.json; native candidate/default passed, 0 provider/model/credential operations; .tmp/func-g04/native-closure-candidate.json + native-closure-default.json; adapter b7d5d1eb2a129763feacba96735d4ba40c0c0bd00dced861c1d83af6cf94726b; 32 changed Markdown sources + RU/EN matrices + preservation/source/build/native checks: see .tmp/func-g04/docs-closure.log, matrix-closure.log and closure-consistency.json; final audit result is owned by verification.latest; observable RED3/3→GREEN3/3 plus real100k-message frozen/1000-large-document regressions; full658 includes current guards; Baseline graph 60.865 s/status 17.6–21.3 s/ninth LIMIT; current closure graph 11475.70 ms/status 313.49/294.86/277.69 ms, 0 content reads/bytes and one metadata walk; ninth project succeeds; final cold-generation deviations and fast existing cursors retained in F20 receipts; no threshold raised
+- residual risks: A new large cold snapshot does not meet the1s warm SLO; partial/recovery and230MiB payload/256MiB TEMP caps remain. History expiry15min/eviction/restart requires refresh. Status checks metadata; excerpts verify raw hashes. JS heap does not cap native RSS.
+- follow-up: No required work remains within this card; measured limits are retained. The next group and human/release acceptance remain separate.
+- Documentation impact: updated; docs/api/endpoints.md; docs/api/endpoints.en.md; docs/backend/lifecycle.md; docs/backend/lifecycle.en.md; docs/db/transactions.md; docs/db/transactions.en.md; docs/testing/test-map.md; docs/testing/test-map.en.md; scoped source checks passed.
 
 ### Task `PAOS-FUNC-10`
 
 - Delivery group: `FUNC-G03`; the group does not replace Depends on or the original AC.
 - Task: PAOS-FUNC-10 — Show file-scope limitations before execution
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Improvement; functional audit after V3 redesign and owner request for a task matrix.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 15-11-2026 21:41
 - Priority: P2
-- Evidence level: static_observation
-- Execution authority: planning_only; inclusion in the plan does not start implementation.
+- Evidence level: locally_verified
+- Execution authority: owner_authorized_func_g03_local_synthetic; 15.11.2026.
 - Depends on: `PAOS-FUNC-01`, `PAOS-FUNC-26`, `PAOS-FUNC-28`
 - Blocks: `PAOS-FUNC-15`, `PAOS-FUNC-19`, `PAOS-FUNC-24`
 - Source: Capture is limited to 32 files, 64KiB/file, 512KiB total. [apps/local-service/src/runtime/app-agent-files.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/runtime/app-agent-files.mts). Provenance: 15.11.2026 static audit; no new runtime results are claimed.
@@ -793,20 +892,20 @@ Final static closure: both task-matrix validators passed; source-docs19 passed;3
 - Output artifacts: scoped diff in listed work locations; check results and Documentation impact in this Completion Report; status in this group’s JSON; short handoff in RUNLOG.md.
 - Rollback: undo only own hunks after checking drift; for data use retained synthetic backup and agreed recovery contract; destructive Git is not allowed.
 - Planning update 15.11.2026: acceptance and links to F26–F29 expanded; execution has not started.
-- Next step: Check dependencies and whether the finding remains current. Assign an owner and refine the smallest verifiable slice.
+- Next step: No remaining work in this task; future consumers/packaging/performance retain their own tasks.
 
 #### Completion Report
 
-- status: planned
-- what was done: task formulated in the plan; implementation and its acceptance scenarios have not started.
-- files touched / work locations: implementation none; planned work locations are listed in Scope.
-- technical value delivered: implementation result not yet obtained.
-- product value delivered: user outcome not yet confirmed.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: only original links and static observations in Source; future Verification gates were not executed by this task.
-- residual risks: shared_preflight_contract_required; current source state is rechecked at start.
-- follow-up: Next step above; after execution synchronize JSON status, this card and only affected control-plane claims.
-- Documentation impact: planning_only; code and functional claims do not change yet. On completion reconcile changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required and evidence in this report.
+- status: implemented
+- what was done: One metadata-only preflight checks saved scope, original32/64KiB/512KiB budgets, operations/rename/pins/policy/root before Send; the server repeats authority checks and native dispatch rechecks policy after waits. Blocked UI retains its draft and creates no run.
+- files touched / work locations: apps/local-service/src/runtime/app-agent-files.mts; apps/local-service/src/runtime/task-file-preflight.mts; apps/local-service/src/runtime/app-agent-gateway.mts; apps/local-service/src/runtime/live-gateway.mts; apps/web/src/ui/SessionContext.tsx; apps/web/src/ui/App.tsx; tests/web/file-preflight.test.mts
+- technical value delivered: Shared root/policy/revision contracts and final authority fences verified on current API/SQLite/FS/build/native fixtures.
+- product value delivered: Partial and stale observations are explicit; execution limits are explained before dispatch while source data and drafts are preserved.
+- actual implementation date and time: 15-11-2026 21:41
+- verification evidence: npm run test:web-m1:594/594,0skip; .tmp/func-g03/full-web-native.log; .tmp/func-g03/browser-final/evidence-IfLiEa/result.json:19/19; .tmp/func-g03/native-candidate-reviewed.log:passed; .tmp/func-g03/native-default-reviewed.log:passed; independent review cycle2:5/5,closed_allowed
+- residual risks: Local synthetic engineering acceptance; checkout-only core with explicit packaged unavailable; bounded projection/output without portable OS RSS cap. No provider/human/release acceptance. F14/F33/F34 own future consumers.
+- follow-up: No remaining work in this task; future consumers/packaging/performance retain their own tasks.
+- Documentation impact: updated; docs/security/filesystem.md; docs/security/filesystem.en.md; docs/db/transactions.md; docs/db/transactions.en.md; docs/api/endpoints.md; docs/api/endpoints.en.md; docs/sources/registry.md; docs/sources/registry.en.md; scoped source checks passed.
 
 ### Task `PAOS-FUNC-11`
 
@@ -950,15 +1049,15 @@ Final static closure: both task-matrix validators passed; source-docs19 passed;3
 
 - Delivery group: `FUNC-G04`; the group does not replace Depends on or the original AC.
 - Task: PAOS-FUNC-14 — Improve usefulness and resilience of the project map
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Extension; functional audit after V3 redesign and owner request for a task matrix.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 16-11-2026 00:43
 - Priority: P2
-- Evidence level: bounded_capability_or_missing_extension
-- Execution authority: planning_only; inclusion in the plan does not start implementation.
+- Evidence level: locally_verified
+- Execution authority: owner_authorized_func_g04_local_synthetic; 15.11.2026.
 - Depends on: `PAOS-FUNC-02`, `PAOS-FUNC-09`, `PAOS-FUNC-27`, `PAOS-FUNC-28`, `PAOS-FUNC-30`, `PAOS-FUNC-31`
 - Blocks: `PAOS-FUNC-19`, `PAOS-FUNC-24`, `PAOS-FUNC-34`
 - Source: lexical_subset_only, imports unresolved, memory-only index. [apps/local-service/src/code-index/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/code-index/service.mts). Provenance: 15.11.2026 static audit; no new runtime results are claimed.
@@ -979,20 +1078,20 @@ Final static closure: both task-matrix validators passed; source-docs19 passed;3
 - Rollback: undo only own hunks after checking drift; for data use retained synthetic backup and agreed recovery contract; destructive Git is not allowed.
 - Planning update 15.11.2026: acceptance and links to F26–F29 expanded; execution has not started.
 - Planning update GitHub/UI 15.11.2026: AC and dependencies F30–F34 updated; the addendum's shared UI/UX contract applies within affected scope, implementation has not started.
-- Next step: Check dependencies and whether the finding remains current. Prepare and agree the design gate; do not start build before it.
+- Next step: No required work remains within this card; measured limits are retained. The next group and human/release acceptance remain separate.
 
 #### Completion Report
 
-- status: planned
-- what was done: task formulated in the plan; implementation and its acceptance scenarios have not started.
-- files touched / work locations: implementation none; planned work locations are listed in Scope.
-- technical value delivered: implementation result not yet obtained.
-- product value delivered: user outcome not yet confirmed.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: only original links and static observations in Source; future Verification gates were not executed by this task.
-- residual risks: language_semantics_storage_design_required; current source state is rechecked at start.
-- follow-up: Next step above; after execution synchronize JSON status, this card and only affected control-plane claims.
-- Documentation impact: planning_only; code and functional claims do not change yet. On completion reconcile changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required and evidence in this report.
+- status: implemented
+- what was done: Selected an explicit installed-parser/pure-allowlist-resolver composition; added aliases/baseUrl, literal dynamic imports/unshadowed require, dependency/symbol modes, direction/bounded paths and source evidence→Files with one graph/list/Mermaid revision. Native parsing is contained in an owned child/watchdog.
+- files touched / work locations: apps/local-service/src/code-index/; apps/local-service/src/process/child-watchdog.mts; packages/contracts/graph/code-graph.ts; apps/web/src/features/graph/; apps/web/src/ui/App.tsx; tests/web/graph-imports.test.mts; tests/web/graph-query-modes.test.mts; tests/web/graph-parser-isolation.test.mts
+- technical value delivered: Ground truth imports10/10 without fake cross-file calls; unsupported/dynamic/unresolved and parser failures stay explicit, and Files remains independent.
+- product value delivered: Map locates dependencies and source file/line with inspectable evidence and an accessible list.
+- actual implementation date and time: 16-11-2026 00:43
+- verification evidence: node --test --test-concurrency=1 tests/web/*.test.mts: 658/658, 0 fail, 0 skip; .tmp/func-g04/web-closure-native-final.log (authorized native synthetic executor); npm run check:web-m1: passed, .tmp/func-g04/typecheck-closure.log; npm run build:web: passed, .tmp/func-g04/build-responsive-final.log; UI/build hashes unchanged and verified by current browser receipt; production browser 18/18, 204 current source hashes and dist binding; .tmp/func-g04/browser-acceptance/evidence-m9Vcjh/result.json; native candidate/default passed, 0 provider/model/credential operations; .tmp/func-g04/native-closure-candidate.json + native-closure-default.json; adapter b7d5d1eb2a129763feacba96735d4ba40c0c0bd00dced861c1d83af6cf94726b; 32 changed Markdown sources + RU/EN matrices + preservation/source/build/native checks: see .tmp/func-g04/docs-closure.log, matrix-closure.log and closure-consistency.json; final audit result is owned by verification.latest; G02 corpus7/10→10/10 imports,fixture precision1/recall1; aliases/config drift/shadowing/cycles/Unicode/no config execution; native deep input failure contained; graph owner remains usable; actual child timeout/cancel cleanup; actual browser dependencies/direction/path/keyboard/source/Files and fresh nonempty Map in4locale/theme×2viewport states
+- residual risks: JS/TS lexical/import subset only; no package exports/config inheritance/full TS linker/runtime calls or invented C4 facts. Restart/eviction requires rebuild.1k files/8MiB/512KiB and8-hop/1000-visited path limits remain.
+- follow-up: No required work remains within this card; measured limits are retained. The next group and human/release acceptance remain separate.
+- Documentation impact: updated; docs/code-intelligence/graph-model.md; docs/code-intelligence/graph-model.en.md; docs/frontend/navigation.md; docs/frontend/navigation.en.md; docs/frontend/components.md; docs/frontend/components.en.md; docs/backend/modules.md; docs/backend/modules.en.md; scoped source checks passed.
 
 ### Task `PAOS-FUNC-15`
 
@@ -1136,15 +1235,15 @@ Final static closure: both task-matrix validators passed; source-docs19 passed;3
 
 - Delivery group: `FUNC-G03`; the group does not replace Depends on or the original AC.
 - Task: PAOS-FUNC-18 — Align task and dashboard snapshot refresh
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Improvement; functional audit after V3 redesign and owner request for a task matrix.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 15-11-2026 21:41
 - Priority: P2
-- Evidence level: static_observation
-- Execution authority: planning_only; inclusion in the plan does not start implementation.
+- Evidence level: locally_verified
+- Execution authority: owner_authorized_func_g03_local_synthetic; 15.11.2026.
 - Depends on: `PAOS-FUNC-05`, `PAOS-FUNC-07`, `PAOS-FUNC-26`, `PAOS-FUNC-27`
 - Blocks: `PAOS-FUNC-19`
 - Source: Task/dashboard use mainly initial/manual snapshots, queue polling is separate. [apps/web/src/features/tasks/TaskManager.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/tasks/TaskManager.tsx), [apps/web/src/features/dashboard/Dashboard.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/dashboard/Dashboard.tsx). Provenance: 15.11.2026 static audit; no new runtime results are claimed.
@@ -1165,20 +1264,20 @@ Final static closure: both task-matrix validators passed; source-docs19 passed;3
 - Rollback: undo only own hunks after checking drift; for data use retained synthetic backup and agreed recovery contract; destructive Git is not allowed.
 - Planning update 15.11.2026: acceptance and links to F26–F29 expanded; execution has not started.
 - Planning update GitHub/UI 15.11.2026: AC and dependencies F30–F34 updated; the addendum's shared UI/UX contract applies within affected scope, implementation has not started.
-- Next step: Check dependencies and whether the finding remains current. Assign an owner and refine the smallest verifiable slice.
+- Next step: No remaining work in this task; future consumers/packaging/performance retain their own tasks.
 
 #### Completion Report
 
-- status: planned
-- what was done: task formulated in the plan; implementation and its acceptance scenarios have not started.
-- files touched / work locations: implementation none; planned work locations are listed in Scope.
-- technical value delivered: implementation result not yet obtained.
-- product value delivered: user outcome not yet confirmed.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: only original links and static observations in Source; future Verification gates were not executed by this task.
-- residual risks: freshness_contract_before_build; current source state is rechecked at start.
-- follow-up: Next step above; after execution synchronize JSON status, this card and only affected control-plane claims.
-- Documentation impact: planning_only; code and functional claims do not change yet. On completion reconcile changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required and evidence in this report.
+- status: implemented
+- what was done: Atomic task snapshot/profile stamp, bounded single-flight polling, explicit stale/refresh in Dashboard/Task Manager/overlay and dirty CAS conflicts are implemented; explicit file refresh and shared provenance invalidation do not claim a live watcher. Scan attempt/request scopes reject late events.
+- files touched / work locations: packages/contracts/project-freshness.ts; apps/local-service/src/storage/sqlite-worker.mts; apps/web/src/api/project-freshness.ts; apps/web/src/ui/ProjectFreshness.tsx; apps/web/src/features/tasks/Editor.tsx; apps/web/src/features/dashboard/Dashboard.tsx; tests/web/project-freshness.test.mts; tests/web/project-freshness-poll.test.mts
+- technical value delivered: Shared root/policy/revision contracts and final authority fences verified on current API/SQLite/FS/build/native fixtures.
+- product value delivered: Partial and stale observations are explicit; execution limits are explained before dispatch while source data and drafts are preserved.
+- actual implementation date and time: 15-11-2026 21:41
+- verification evidence: npm run test:web-m1:594/594,0skip; .tmp/func-g03/full-web-native.log; .tmp/func-g03/browser-final/evidence-IfLiEa/result.json:19/19; .tmp/func-g03/native-candidate-reviewed.log:passed; .tmp/func-g03/native-default-reviewed.log:passed; independent review cycle2:5/5,closed_allowed
+- residual risks: Local synthetic engineering acceptance; checkout-only core with explicit packaged unavailable; bounded projection/output without portable OS RSS cap. No provider/human/release acceptance. F14/F33/F34 own future consumers.
+- follow-up: No remaining work in this task; future consumers/packaging/performance retain their own tasks.
+- Documentation impact: updated; docs/frontend/state-management.md; docs/frontend/state-management.en.md; docs/api/events.md; docs/api/events.en.md; docs/backend/recovery.md; docs/backend/recovery.en.md; docs/api/endpoints.md; docs/api/endpoints.en.md; docs/sources/registry.md; docs/sources/registry.en.md; scoped source checks passed.
 
 ### Task `PAOS-FUNC-19`
 
@@ -1232,15 +1331,15 @@ Final static closure: both task-matrix validators passed; source-docs19 passed;3
 
 - Delivery group: `FUNC-G04`; the group does not replace Depends on or the original AC.
 - Task: PAOS-FUNC-20 — Measure scaling and long-running behavior
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Verification; functional audit after V3 redesign and owner request for a task matrix.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 16-11-2026 00:43
 - Priority: P2
-- Evidence level: verification_gap
-- Execution authority: planning_only; inclusion in the plan does not start implementation.
+- Evidence level: locally_verified
+- Execution authority: owner_authorized_func_g04_local_synthetic; 15.11.2026.
 - Depends on: `PAOS-FUNC-01`, `PAOS-FUNC-26`, `PAOS-FUNC-27`, `PAOS-FUNC-29`
 - Blocks: `PAOS-FUNC-09`
 - Source: Large projects/long-running behavior after redesign have not been measured; runtime index/cache caps. [research/product-agent-os-web-prd-2026-11-05.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-prd-2026-11-05.md), [apps/local-service/src/code-index/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/code-index/service.mts). Provenance: 15.11.2026 static audit; no new runtime results are claimed.
@@ -1261,20 +1360,20 @@ Final static closure: both task-matrix validators passed; source-docs19 passed;3
 - Rollback: undo only own hunks after checking drift; for data use retained synthetic backup and agreed recovery contract; destructive Git is not allowed.
 - Planning update 15.11.2026: acceptance and links to F26–F29 expanded; execution has not started.
 - Planning update GitHub/UI 15.11.2026: AC and dependencies F30–F34 updated; the addendum's shared UI/UX contract applies within affected scope, implementation has not started.
-- Next step: Check dependencies and whether the finding remains current. Prepare a reproducible scenario and record the initial state.
+- Next step: No required work remains within this card; measured limits are retained. The next group and human/release acceptance remain separate.
 
 #### Completion Report
 
-- status: planned
-- what was done: task formulated in the plan; implementation and its acceptance scenarios have not started.
-- files touched / work locations: implementation none; planned work locations are listed in Scope.
-- technical value delivered: implementation result not yet obtained.
-- product value delivered: user outcome not yet confirmed.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: only original links and static observations in Source; future Verification gates were not executed by this task.
-- residual risks: benchmark_protocol_and_thresholds_required; current source state is rechecked at start.
-- follow-up: Next step above; after execution synchronize JSON status, this card and only affected control-plane claims.
-- Documentation impact: planning_only; code and functional claims do not change yet. On completion reconcile changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required and evidence in this report.
+- status: implemented
+- what was done: Pinned protocol/hardware/cache/ground truth before measurement; retained baseline failure and repeated after/final on10k tasks/100k messages/1000 documents/1000 code files with120ssoak and exact boundaries. Outcome is measured_with_deviations/bounded_outcomes, not all-NFR pass.
+- files touched / work locations: tests/fixtures/func_g04/protocol.json; tests/web/single-window/functional-scale-acceptance.mts; tests/web/single-window/graph-database-browser-acceptance.mts
+- technical value delivered: Reproducible source-bound measurements, SQL integrity, bytes/walks/RSS and actual application scan/recovery replace assumptions.
+- product value delivered: Supported flows, waiting time and scale limits are explicit without hidden data loss.
+- actual implementation date and time: 16-11-2026 00:43
+- verification evidence: node --test --test-concurrency=1 tests/web/*.test.mts: 658/658, 0 fail, 0 skip; .tmp/func-g04/web-closure-native-final.log (authorized native synthetic executor); npm run check:web-m1: passed, .tmp/func-g04/typecheck-closure.log; npm run build:web: passed, .tmp/func-g04/build-responsive-final.log; UI/build hashes unchanged and verified by current browser receipt; production browser 18/18, 204 current source hashes and dist binding; .tmp/func-g04/browser-acceptance/evidence-m9Vcjh/result.json; native candidate/default passed, 0 provider/model/credential operations; .tmp/func-g04/native-closure-candidate.json + native-closure-default.json; adapter b7d5d1eb2a129763feacba96735d4ba40c0c0bd00dced861c1d83af6cf94726b; 32 changed Markdown sources + RU/EN matrices + preservation/source/build/native checks: see .tmp/func-g04/docs-closure.log, matrix-closure.log and closure-consistency.json; final audit result is owned by verification.latest; Current closure diagnostic/reference/filesystem: .tmp/func-g04/scale-closure/result-diagnostic-1794778219987.json; .tmp/func-g04/scale-closure/result-reference-1794778236139.json; .tmp/func-g04/scale-closure/result-filesystem-1794778628384.json; 133 current source hashes; SQL 10k/100k/1k integrity/FK0; soak 120.15 s / 119 iterations; preserved targets + cleanup; unchanged protocol 37c20aadc0d3474ef78cf86928e9ee1727be7bf415152fc393e92c8b079af625
+- residual risks: Cold history/catalog generations exceed the 1000 ms comparison in retained runs; exact samples/deviations are in the F20 receipts. 10k/10001 directories yield a bounded 30 s timeout. Reference 4-core/GUI cold launch/whole-system RSS are not qualified. Browser sampled aggregate 1101.32 MiB is diagnostic, not a per-process peak. Human/provider/release remain separate.
+- follow-up: No required work remains within this card; measured limits are retained. The next group and human/release acceptance remain separate.
+- Documentation impact: updated; docs/testing/test-map.md; docs/testing/test-map.en.md; docs/sources/registry.md; docs/sources/registry.en.md; scoped source checks passed.
 
 ### Task `PAOS-FUNC-21`
 
@@ -1517,15 +1616,15 @@ Final static closure: both task-matrix validators passed; source-docs19 passed;3
 
 - Delivery group: `FUNC-G03`; the group does not replace Depends on or the original AC.
 - Task: PAOS-FUNC-26 — Add a project file browser
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: owner request for project file directory and managed scanning; multi-stage functional scope.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 15-11-2026 21:00
 - Priority: P2
-- Evidence level: static_observation
-- Execution authority: planning_only; plan writing is authorized, build has not started.
+- Evidence level: locally_verified
+- Execution authority: owner_authorized_func_g03_local_synthetic; 15.11.2026.
 - Depends on: `PAOS-FUNC-28`
 - Blocks: `PAOS-FUNC-10`, `PAOS-FUNC-18`, `PAOS-FUNC-19`, `PAOS-FUNC-20`, `PAOS-FUNC-24`, `PAOS-FUNC-33`
 - Source: Sources shows six fixed Control-plane files; catalog reads .md/.txt, graph selected sources. Checked onboarding has no unified tree or independent directory API. [apps/local-service/src/adapters/project-sources.ts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/adapters/project-sources.ts), [apps/web/src/ui/Operations.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/ui/Operations.tsx), [apps/local-service/src/artifacts/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/artifacts/service.mts), [apps/web/src/features/graph/GraphExplorer.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/graph/GraphExplorer.tsx). Sources were read in the 15.11.2026 analysis; runtime was not run.
@@ -1546,34 +1645,34 @@ Final static closure: both task-matrix validators passed; source-docs19 passed;3
 - Output artifacts: Verifiable tree and read-only reader, typed API, focused/browser receipts in this card. Status is this group's JSON; evidence and Documentation impact are in this Completion Report; compact handoff is RUNLOG.md.
 - Rollback: only own changes after checking drift; test schema/recovery changes on a disposable profile. Do not change target files; retain the old successful snapshot until atomic publication of the new one.
 - Planning update GitHub/UI 15.11.2026: AC and dependencies F30–F34 updated; the addendum's shared UI/UX contract applies within affected scope, implementation has not started.
-- Next step: check dependencies, current source and directory_api_ui_contract_review_required; agree the smallest slice and budgets, then reproducible checks.
+- Next step: Complete F29/F10/F18 and final FUNC-G03 gates.
 
 #### Completion Report
 
-- status: planned
-- what was done: task and criteria added to the plan; implementation not started.
-- files touched / work locations: implementation none; future work locations are listed in Scope.
-- technical value delivered: implementation result not yet obtained.
-- product value delivered: user scenario is not yet implemented or accepted.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: original static analysis; Verification gates commands are future checks, not receipts.
-- residual risks: directory_api_ui_contract_review_required; scanner completeness, data safety and runtime require implementation and current evidence.
-- follow-up: Next step above; do not close the task with design review alone.
-- Documentation impact: when contracts/coverage/recovery change, synchronize existing PRD/architecture, plan, registry and only affected control-plane owners; current scope is planning_only.
+- status: implemented
+- what was done: Implemented lazy project Files, bounded directory search/paging, checked reader, source/metadata pins, copy and deep links in RU/EN and both themes.
+- files touched / work locations: apps/local-service/src/project-files/service.mts; apps/web/src/features/files/ProjectFiles.tsx; apps/local-service/src/http/application.mts; apps/web/src/ui/App.tsx; tests/web/project-files-api.test.mts
+- technical value delivered: Registry/root/policy/revision contracts verified through actual HTTP/SQLite/FS and production React.
+- product value delivered: Project sources are available with explicit unavailable reasons and preserved navigation.
+- actual implementation date and time: 15-11-2026 21:00
+- verification evidence: .tmp/func-g03/browser-foundation/evidence-q8ECT0/result.json:15/15; .tmp/func-g03/f26-f27-api-integration.log:13/13; .tmp/func-g03/check-foundation.log:exit0; .tmp/func-g03/build-foundation.log:exit0
+- residual risks: Bounded synthetic local verification; no provider calls, native clipboard or human/release acceptance. Final shared regression/native qualification follows.
+- follow-up: Complete F29/F10/F18 and final FUNC-G03 gates.
+- Documentation impact: updated; docs/frontend/navigation.md; docs/frontend/navigation.en.md; docs/sources/registry.md; docs/sources/registry.en.md; scoped source checks passed.
 
 ### Task `PAOS-FUNC-27`
 
 - Delivery group: `FUNC-G03`; the group does not replace Depends on or the original AC.
 - Task: PAOS-FUNC-27 — Make scanning a managed background job
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: owner request for project file directory and managed scanning; multi-stage functional scope.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 15-11-2026 21:00
 - Priority: P2
-- Evidence level: static_observation
-- Execution authority: planning_only; plan writing is authorized, build has not started.
+- Evidence level: locally_verified
+- Execution authority: owner_authorized_func_g03_local_synthetic; 15.11.2026.
 - Depends on: `PAOS-FUNC-28`
 - Blocks: `PAOS-FUNC-14`, `PAOS-FUNC-18`, `PAOS-FUNC-19`, `PAOS-FUNC-20`, `PAOS-FUNC-24`, `PAOS-FUNC-29`, `PAOS-FUNC-33`
 - Source: POST /projects commits registration then awaits inspectProjectSources/codeIndex.rebuild. Scan summary is not a durable job; once receipts are in memory and expire after 10 minutes. [apps/local-service/src/http/application.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/http/application.mts), [apps/local-service/src/storage/sqlite-worker.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/storage/sqlite-worker.mts), [apps/web/src/features/projects/ProjectOnboarding.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/projects/ProjectOnboarding.tsx), [tests/web/settings-desktop.test.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/tests/web/settings-desktop.test.mts). Sources were read in the 15.11.2026 analysis; runtime was not run.
@@ -1594,34 +1693,34 @@ Final static closure: both task-matrix validators passed; source-docs19 passed;3
 - Output artifacts: Durable scan lifecycle and progress UI; schema compatibility/rollback and crash/cancel/retry receipts. Status is this group's JSON; evidence and Documentation impact are in this Completion Report; compact handoff is RUNLOG.md.
 - Rollback: only own changes after checking drift; test schema/recovery changes on a disposable profile. Do not change target files; retain the old successful snapshot until atomic publication of the new one.
 - Planning update GitHub/UI 15.11.2026: AC and dependencies F30–F34 updated; the addendum's shared UI/UX contract applies within affected scope, implementation has not started.
-- Next step: check dependencies, current source and persisted_scan_state_recovery_schema_design_required; agree the smallest slice and budgets, then reproducible checks.
+- Next step: Complete F29/F10/F18 and final FUNC-G03 gates.
 
 #### Completion Report
 
-- status: planned
-- what was done: task and criteria added to the plan; implementation not started.
-- files touched / work locations: implementation none; future work locations are listed in Scope.
-- technical value delivered: implementation result not yet obtained.
-- product value delivered: user scenario is not yet implemented or accepted.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: original static analysis; Verification gates commands are future checks, not receipts.
-- residual risks: persisted_scan_state_recovery_schema_design_required; scanner completeness, data safety and runtime require implementation and current evidence.
-- follow-up: Next step above; do not close the task with design review alone.
-- Documentation impact: when contracts/coverage/recovery change, synchronize existing PRD/architecture, plan, registry and only affected control-plane owners; current scope is planning_only.
+- status: implemented
+- what was done: Idempotent registration returns queued before traversal; profile-owned CAS persists stages/progress/restart/retry/cancel, publication guards retain the previous graph. Persisted status UI is mounted.
+- files touched / work locations: apps/local-service/src/project-scans/service.mts; apps/local-service/src/storage/sqlite-worker.mts; apps/local-service/src/http/application.mts; apps/web/src/features/projects/ProjectScanStatus.tsx; tests/web/project-scans-api.test.mts
+- technical value delivered: Registry/root/policy/revision contracts verified through actual HTTP/SQLite/FS and production React.
+- product value delivered: Project sources are available with explicit unavailable reasons and preserved navigation.
+- actual implementation date and time: 15-11-2026 21:00
+- verification evidence: .tmp/func-g03/browser-foundation/evidence-q8ECT0/result.json:15/15; .tmp/func-g03/f26-f27-api-integration.log:13/13; .tmp/func-g03/check-foundation.log:exit0; .tmp/func-g03/build-foundation.log:exit0
+- residual risks: Bounded synthetic local verification; no provider calls, native clipboard or human/release acceptance. Final shared regression/native qualification follows.
+- follow-up: Complete F29/F10/F18 and final FUNC-G03 gates.
+- Documentation impact: updated; docs/backend/lifecycle.md; docs/backend/lifecycle.en.md; docs/sources/registry.md; docs/sources/registry.en.md; scoped source checks passed.
 
 ### Task `PAOS-FUNC-28`
 
 - Delivery group: `FUNC-G03`; the group does not replace Depends on or the original AC.
 - Task: PAOS-FUNC-28 — Unify inventory, coverage and exclusions
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: owner request for project file directory and managed scanning; multi-stage functional scope.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 15-11-2026 20:10
 - Priority: P2
-- Evidence level: static_observation
-- Execution authority: planning_only; plan writing is authorized, build has not started.
+- Evidence level: locally_verified
+- Execution authority: owner_authorized_func_g03_local_synthetic; 15.11.2026.
 - Depends on: none
 - Blocks: `PAOS-FUNC-02`, `PAOS-FUNC-10`, `PAOS-FUNC-14`, `PAOS-FUNC-26`, `PAOS-FUNC-27`, `PAOS-FUNC-29`, `PAOS-FUNC-33`
 - Source: scanCheckedSources uses a hard denylist and extension filter, does not return all skips or read .gitignore; a limit on eligible files can interrupt traversal. Metadata, read and indexing coverage require separate contracts. [apps/local-service/src/code-index/sources.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/code-index/sources.mts), [apps/local-service/src/code-index/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/code-index/service.mts), [apps/local-service/src/artifacts/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/artifacts/service.mts), [apps/local-service/src/adapters/project-sources.ts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/adapters/project-sources.ts). Sources were read in the 15.11.2026 analysis; runtime was not run.
@@ -1642,34 +1741,34 @@ Final static closure: both task-matrix validators passed; source-docs19 passed;3
 - Output artifacts: Shared inventory/coverage contract and consumer migration without weakening guards; fixture evidence. Status is this group's JSON; evidence and Documentation impact are in this Completion Report; compact handoff is RUNLOG.md.
 - Rollback: only own changes after checking drift; test schema/recovery changes on a disposable profile. Do not change target files; retain the old successful snapshot until atomic publication of the new one.
 - Planning update GitHub/UI 15.11.2026: AC and dependencies F30–F34 updated; the addendum's shared UI/UX contract applies within affected scope, implementation has not started.
-- Next step: check dependencies, current source and inventory_policy_security_boundary_design_required; agree the smallest slice and budgets, then reproducible checks.
+- Next step: F26/F27/F02 consume this contract; final combined browser/native qualification remains a FUNC-G03 gate.
 
 #### Completion Report
 
-- status: planned
-- what was done: task and criteria added to the plan; implementation not started.
-- files touched / work locations: implementation none; future work locations are listed in Scope.
-- technical value delivered: implementation result not yet obtained.
-- product value delivered: user scenario is not yet implemented or accepted.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: original static analysis; Verification gates commands are future checks, not receipts.
-- residual risks: inventory_policy_security_boundary_design_required; scanner completeness, data safety and runtime require implementation and current evidence.
-- follow-up: Next step above; do not close the task with design review alone.
-- Documentation impact: when contracts/coverage/recovery change, synchronize existing PRD/architecture, plan, registry and only affected control-plane owners; current scope is planning_only.
+- status: implemented
+- what was done: Shared lower inventory is integrated into graph, artifact catalog and fixed control-plane consumers: independent metadata tree and listing/read/index eligibility, gitignore/project policy precedence, versioned pins/cursors, profile-owned policy CAS, partial per-file failures and opt-in redacted display reads. Default analyzers and hard sensitive/link/root/private-key guards remain denied. The finite G02 projection is verified as a stricter subset of F28 authority.
+- files touched / work locations: packages/contracts/project-inventory.ts; apps/local-service/src/project-inventory/service.mts; apps/local-service/src/code-index/sources.mts; apps/local-service/src/code-index/service.mts; apps/local-service/src/adapters/project-sources.ts; apps/local-service/src/artifacts/service.mts; apps/local-service/src/storage/local-store.mts; apps/local-service/src/storage/sqlite-worker.mts; tests/web/project-inventory*.test.mts
+- technical value delivered: One root/policy/revision and checked-read contract without duplicated scanner policy; metadata is not claimed as successful indexing.
+- product value delivered: A per-file failure retains other permitted sources with explicit exclusions and partial coverage. Group UI acceptance follows in dependent slices.
+- actual implementation date and time: 15-11-2026 20:10
+- verification evidence: .tmp/func-g03/f28-verified-final.log:57/57,0skip; .tmp/func-g03/f28-final-typecheck.log:exit0; .tmp/func-g03/f28-lower-evidence.json:current lower15/15/source hashes; .tmp/func-g03/f28-consumer-red.log -> f28-consumer-green.log; .tmp/func-g03/f28-state-red.log -> f28-state-green.log; .tmp/func-g03/f28-cursor-red.log -> f28-consumers-final.log
+- residual risks: Known credential filtering is bounded; git global/info excludes and tracked state are not git-status parity. Production browser/native tuple qualification and human acceptance are separate group/follow-up gates.
+- follow-up: F26/F27/F02 consume this contract; final combined browser/native qualification remains a FUNC-G03 gate.
+- Documentation impact: updated; docs/code-intelligence/inventory.md; docs/code-intelligence/inventory.en.md; docs/security/filesystem.md; docs/security/filesystem.en.md; docs/sources/registry.md; docs/sources/registry.en.md; scoped source checks passed.
 
 ### Task `PAOS-FUNC-29`
 
 - Delivery group: `FUNC-G03`; the group does not replace Depends on or the original AC.
 - Task: PAOS-FUNC-29 — Connect core discovery to project onboarding
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: owner request for project file directory and managed scanning; multi-stage functional scope.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 15-11-2026 21:41
 - Priority: P2
-- Evidence level: static_observation
-- Execution authority: planning_only; plan writing is authorized, build has not started.
+- Evidence level: locally_verified
+- Execution authority: owner_authorized_func_g03_local_synthetic; 15.11.2026.
 - Depends on: `PAOS-FUNC-27`, `PAOS-FUNC-28`
 - Blocks: `PAOS-FUNC-19`, `PAOS-FUNC-20`, `PAOS-FUNC-24`
 - Source: Core analyze_workspace and run_first_project_analysis provide discovery/first-run composition. The checked POST /projects does not call them: it currently uses only source inventory and code graph. [apps/local-service/src/http/application.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/http/application.mts), [plugins/product-agent-os/scripts/product_agent_os/discovery.py](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/discovery.py), [plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py). Sources were read in the 15.11.2026 analysis; runtime was not run.
@@ -1690,53 +1789,20 @@ Final static closure: both task-matrix validators passed; source-docs19 passed;3
 - Output artifacts: Read-only discovery integration and source-backed summary, capability/timeout/stale fixtures; reuse contract in existing architecture. Status is this group's JSON; evidence and Documentation impact are in this Completion Report; compact handoff is RUNLOG.md.
 - Rollback: only own changes after checking drift; test schema/recovery changes on a disposable profile. Do not change target files; retain the old successful snapshot until atomic publication of the new one.
 - Planning update GitHub/UI 15.11.2026: AC and dependencies F30–F34 updated; the addendum's shared UI/UX contract applies within affected scope, implementation has not started.
-- Next step: check dependencies, current source and core_adapter_capability_contract_and_readonly_review_required; agree the smallest slice and budgets, then reproducible checks.
+- Next step: No remaining work in this task; future consumers/packaging/performance retain their own tasks.
 
 #### Completion Report
 
-- status: planned
-- what was done: task and criteria added to the plan; implementation not started.
-- files touched / work locations: implementation none; future work locations are listed in Scope.
-- technical value delivered: implementation result not yet obtained.
-- product value delivered: user scenario is not yet implemented or accepted.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: original static analysis; Verification gates commands are future checks, not receipts.
-- residual risks: core_adapter_capability_contract_and_readonly_review_required; scanner completeness, data safety and runtime require implementation and current evidence.
-- follow-up: Next step above; do not close the task with design review alone.
-- Documentation impact: when contracts/coverage/recovery change, synchronize existing PRD/architecture, plan, registry and only affected control-plane owners; current scope is planning_only.
-
-
-## Addendum: GitHub PoC, DB map and UI/UX — 15.11.2026
-
-Status: planning_only / upstream_documentation_review_not_locally_verified. GitHub research checked README and license information; no local installation, measurement or activation. Upstream claims are PoC candidates, not verified PAOS behavior. SQLite driver and Mermaid already exist in the app; driver migration is not a goal of this addendum.
-
-| Source | Confirmed README scope / license | Plan decision |
-| --- | --- | --- |
-| [dependency-cruiser](https://github.com/sverweij/dependency-cruiser) | JS/TS dependencies, JSON/Mermaid; MIT | F30 tests import graph; CALLS is not established by this |
-| [codebase-memory-mcp](https://github.com/DeusData/codebase-memory-mcp) | SQLite-backed code index, CLI/MCP, daemon; MIT | F31 tests quality and isolation; installer/hooks are not automatically activated |
-| [tbls](https://github.com/k1LoW/tbls) | SQLite and other DSNs, JSON/Mermaid schema; MIT | F32 compares with [SQLite metadata introspection](https://www.sqlite.org/pragma.html); F33 implements the chosen option |
-
-Before execution pin exact version/commit, dependency licenses and platform tuple. MIT applies to upstream; it is not a review of the whole distribution. Ready-made libraries do not remove PAOS responsibility for guards, revisions, job lifecycle and understandable UI. Neither PoC pass nor reject alone closes integration or product acceptance.
-
-### Shared UI/UX contract F30–F34
-
-Before build prepare and agree wireframes and navigation map in the existing V3 design: project → Files, Map, Database; labels are refined during design review. For the affected screen define loading/empty/partial/error/unavailable/stale, progress/cancel/retry by capabilities, RU/EN, both themes, keyboard/focus, readable labels and an accessible table instead of requiring diagram reading. Project switch, back, filter and selected object do not mix data; source/revision/coverage are visible. PoC uses an isolated prototype; production UI is accepted in F14/F33/F34.
-
-| Surface | Owner | Required display and navigation |
-| --- | --- | --- |
-| Settings / project overview | F27/F29/F24 | Registration, permitted source selection, independent scan/capability states; navigation to Files/Map/Database |
-| Files | F26 | Independent tree/reader; source-line navigation and return; available without graph and DB |
-| Map | F30/F31 prototypes → F14 production | Dependencies/symbols by capabilities, search, filters, incoming/outgoing, path/impact, evidence; graph/list/Mermaid |
-| Database: Schema, Changes | F32 prototype → F33 production | Source selection, ERD/table, object details, snapshots/diff, Mermaid export |
-| Code usage and DB impact filter | F34 | table→read/write/unknown usages→file/line, reverse navigation, evidence/confidence and compatible revisions |
-
-New tabs do not duplicate existing navigation. Final information architecture is agreed before build in the existing V3 design; material scope change is reflected in this matrix. No separate mandatory design project or replacement of D3/Mermaid is assumed. PoC mock stays isolated and explicitly experimental; screenshots/mock do not replace working production browser checks.
-
-### Verification and limitations of new tasks
-
-PoCs run on shared known fixtures; ground truth, thresholds, hardware/cache, versions and commands are fixed before measurement. Compare relation correctness and completeness, cold/incremental scan, memory/disk, bounded latency/context and UI responsiveness. F23 verifies actual human effect. Project files and source DBs remain read-only; migrations/scripts/hooks do not run, global MCP/skills/PATH are not changed, real credentials/provider calls are not used and no auto-download occurs. An external daemon is treated as a separate runtime with its own ownership and stop/cleanup contract.
-
-An acceptable reject closes the research task with evidence; the integration task stays planned/blocked until a suitable adapter is selected. Implementation is deferred; new APIs, handlers, components, tests and tabs are not created now.
+- status: implemented
+- what was done: Core discovery runs as a durable scan stage through fixed Python -I -S -B and a bounded F28 projection; overview exposes actual core identity/source revision, stack/languages/control-plane/schema candidates, capabilities and stale/unavailable states. No target scripts, DB or providers execute.
+- files touched / work locations: apps/local-service/src/project-analysis/service.mts; apps/local-service/src/project-analysis/bridge.py; apps/local-service/src/http/application.mts; apps/web/src/features/projects/ProjectAnalysis.tsx; tests/web/project-analysis.test.mts; tests/web/project-analysis-api.test.mts
+- technical value delivered: Shared root/policy/revision contracts and final authority fences verified on current API/SQLite/FS/build/native fixtures.
+- product value delivered: Partial and stale observations are explicit; execution limits are explained before dispatch while source data and drafts are preserved.
+- actual implementation date and time: 15-11-2026 21:41
+- verification evidence: npm run test:web-m1:594/594,0skip; .tmp/func-g03/full-web-native.log; .tmp/func-g03/browser-final/evidence-IfLiEa/result.json:19/19; .tmp/func-g03/native-candidate-reviewed.log:passed; .tmp/func-g03/native-default-reviewed.log:passed; independent review cycle2:5/5,closed_allowed
+- residual risks: Local synthetic engineering acceptance; checkout-only core with explicit packaged unavailable; bounded projection/output without portable OS RSS cap. No provider/human/release acceptance. F14/F33/F34 own future consumers.
+- follow-up: No remaining work in this task; future consumers/packaging/performance retain their own tasks.
+- Documentation impact: updated; docs/code-intelligence/discovery.md; docs/code-intelligence/discovery.en.md; docs/architecture/data-flow.md; docs/architecture/data-flow.en.md; docs/api/endpoints.md; docs/api/endpoints.en.md; docs/sources/registry.md; docs/sources/registry.en.md; scoped source checks passed.
 
 ### Task `PAOS-FUNC-30`
 
@@ -1886,15 +1952,15 @@ An acceptable reject closes the research task with evidence; the integration tas
 
 - Delivery group: `FUNC-G04`; the group does not replace Depends on or the original AC.
 - Task: PAOS-FUNC-33 — Add a DB map and project Database section
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: owner request to move GitHub research into the plan with UI/UX and dependencies; planning_only
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 16-11-2026 00:43
 - Priority: P2
-- Evidence level: upstream_documentation_review_not_locally_verified
-- Execution authority: planning_only; PoC/build/installation not started
+- Evidence level: locally_verified
+- Execution authority: owner_authorized_func_g04_local_synthetic; 15.11.2026.
 - Depends on: `PAOS-FUNC-26`, `PAOS-FUNC-27`, `PAOS-FUNC-28`, `PAOS-FUNC-32`
 - Blocks: `PAOS-FUNC-19`, `PAOS-FUNC-24`, `PAOS-FUNC-34`
 - Source: GitHub research 15.11.2026: upstream README/license review; integration, performance and compatibility not verified locally. [k1LoW/tbls](https://github.com/k1LoW/tbls), [www.sqlite.org/pragma.html](https://www.sqlite.org/pragma.html)
@@ -1915,34 +1981,34 @@ An acceptable reject closes the research task with evidence; the integration tas
 - Skills: Choose task-matching skills at start; current planning does not install or activate skills/plugins.
 - Output artifacts: Result and receipts belong in this Completion Report, status in group JSON; update existing architecture/design/help according to actual scope.
 - Rollback: Only own hunks after checking drift; disposable PoC artifacts are cleaned within agreed bounds, user processes are not terminated; prior snapshots remain until successful publication.
-- Next step: Pin protocol/versions/UI wireframes and check dependencies; run only after authorization of the next execution slice.
+- Next step: No required work remains within this card; measured limits are retained. The next group and human/release acceptance remain separate.
 
 #### Completion Report
 
-- status: planned
-- what was done: task and UI/UX acceptance added to the plan; execution not started.
-- files touched / work locations: implementation none; future paths are listed in Scope.
-- technical value delivered: not yet confirmed by task execution.
-- product value delivered: not yet confirmed by the user.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: upstream documentation review; future checks were not performed.
-- residual risks: database_source_adapter_and_ui_design_required; versions and suitability are checked in execution.
-- follow-up: Next step above; decide and synchronize MD/JSON.
-- Documentation impact: planning_only; during execution update source-owned architecture/design/help/registry for changed claims.
+- status: implemented
+- what was done: Added explicit SQLite source Settings, purpose-specific admission, native SHARE_READ lease, schema-only authorizer/extractor, profile CAS/two snapshots/diff, an independent F27schema stage and production Database Schema/Changes/ERD/list/details UI.
+- files touched / work locations: packages/contracts/database-map.ts; apps/local-service/src/database-map/; apps/local-service/src/project-inventory/service.mts; apps/local-service/src/project-scans/service.mts; apps/local-service/src/http/application.mts; apps/web/src/features/database/; apps/web/src/ui/App.tsx; tests/web/database-map.test.mts; tests/web/database-source-admission.test.mts; tests/web/database-map-api.test.mts
+- technical value delivered: Native write/rename/reparse/WAL/row/extension guards, late-selection fences and retained stale metadata are verified without target mutation.
+- product value delivered: Selected schema, keys, indexes, views and changes are accessible through RU/EN UI/API without row reads.
+- actual implementation date and time: 16-11-2026 00:43
+- verification evidence: node --test --test-concurrency=1 tests/web/*.test.mts: 658/658, 0 fail, 0 skip; .tmp/func-g04/web-closure-native-final.log (authorized native synthetic executor); npm run check:web-m1: passed, .tmp/func-g04/typecheck-closure.log; npm run build:web: passed, .tmp/func-g04/build-responsive-final.log; UI/build hashes unchanged and verified by current browser receipt; production browser 18/18, 204 current source hashes and dist binding; .tmp/func-g04/browser-acceptance/evidence-m9Vcjh/result.json; native candidate/default passed, 0 provider/model/credential operations; .tmp/func-g04/native-closure-candidate.json + native-closure-default.json; adapter b7d5d1eb2a129763feacba96735d4ba40c0c0bd00dced861c1d83af6cf94726b; 32 changed Markdown sources + RU/EN matrices + preservation/source/build/native checks: see .tmp/func-g04/docs-closure.log, matrix-closure.log and closure-consistency.json; final audit result is owned by verification.latest; native34/34 initial backend, final full658 includes new late-source-revocation regression and shared watchdog; actual readOnly adapter/API/private-source stages; profile DB excluded; target hashes and directory contents preserved; 200 unique objects, four revision-consistent pages of 50; current ERD timings in .tmp/func-g04/browser-acceptance/evidence-m9Vcjh/result.json; prior 100-object/1969 ms failure retained; browser realcancel/retry/writerfailure/staleDDLdiff/restart/2projectlatefence/deepanchor; corrected390px header/scroll table actualscreenshots
+- residual risks: Windows/offline project-local SQLite only, no WAL/sidecars/real credentials/remote DB/rows. Views/virtual tables partial; rename means add/remove.128MiB stat/200 objects/512KiB output; UI50 per page. Browser aggregate RSS is not a qualified whole-system peak.
+- follow-up: No required work remains within this card; measured limits are retained. The next group and human/release acceptance remain separate.
+- Documentation impact: updated; docs/db/erd.md; docs/db/erd.en.md; docs/code-intelligence/adapters.md; docs/code-intelligence/adapters.en.md; docs/api/endpoints.md; docs/api/endpoints.en.md; docs/frontend/components.md; docs/frontend/components.en.md; docs/product/capabilities.md; docs/product/capabilities.en.md; scoped source checks passed.
 
 ### Task `PAOS-FUNC-34`
 
 - Delivery group: `FUNC-G04`; the group does not replace Depends on or the original AC.
 - Task: PAOS-FUNC-34 — Link code to tables and show change impact
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: owner request to move GitHub research into the plan with UI/UX and dependencies; planning_only
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 16-11-2026 00:43
 - Priority: P2
-- Evidence level: upstream_documentation_review_not_locally_verified
-- Execution authority: planning_only; PoC/build/installation not started
+- Evidence level: locally_verified
+- Execution authority: owner_authorized_func_g04_local_synthetic; 15.11.2026.
 - Depends on: `PAOS-FUNC-14`, `PAOS-FUNC-33`
 - Blocks: `PAOS-FUNC-19`, `PAOS-FUNC-24`
 - Source: GitHub research 15.11.2026: upstream README/license review; integration, performance and compatibility not verified locally. [sverweij/dependency-cruiser](https://github.com/sverweij/dependency-cruiser), [DeusData/codebase-memory-mcp](https://github.com/DeusData/codebase-memory-mcp), [k1LoW/tbls](https://github.com/k1LoW/tbls)
@@ -1963,103 +2029,17 @@ An acceptable reject closes the research task with evidence; the integration tas
 - Skills: Choose task-matching skills at start; current planning does not install or activate skills/plugins.
 - Output artifacts: Result and receipts belong in this Completion Report, status in group JSON; update existing architecture/design/help according to actual scope.
 - Rollback: Only own hunks after checking drift; disposable PoC artifacts are cleaned within agreed bounds, user processes are not terminated; prior snapshots remain until successful publication.
-- Next step: Pin protocol/versions/UI wireframes and check dependencies; run only after authorization of the next execution slice.
+- Next step: No required work remains within this card; measured limits are retained. The next group and human/release acceptance remain separate.
 
 #### Completion Report
 
-- status: planned
-- what was done: task and UI/UX acceptance added to the plan; execution not started.
-- files touched / work locations: implementation none; future paths are listed in Scope.
-- technical value delivered: not yet confirmed by task execution.
-- product value delivered: not yet confirmed by the user.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: upstream documentation review; future checks were not performed.
-- residual risks: code_database_semantics_and_impact_ui_design_required; versions and suitability are checked in execution.
-- follow-up: Next step above; decide and synchronize MD/JSON.
-- Documentation impact: planning_only; during execution update source-owned architecture/design/help/registry for changed claims.
-
-
-## Previous planning verification — original 25 tasks
-
-Plan recorded 15.11.2026. Checks concern planning, not execution of PAOS-FUNC tasks. Original Git HEAD: `8d556bf38f1398081032523785da224807948136`; worktree contains preserved changes from other chats. Context mode: `self_review`; no independent external review is claimed.
-
-Initial recording in docs/planning added a page to docs-site inventory. First current run: matrix validator exit0; check_docs exit0; git diff --check exit0; docs unittest exit1, 105 tests / 13 failures (page counts / missing EN sibling / site parity). This is a real failed receipt. The matrix was moved to research next to the existing Web plan; tests, navigation and generated site were not changed by that task. Detailed cards were preserved in full, root/control-plane contains only compact pointers.
-
-| Current check | Result and limit |
-| --- | --- |
-| `python plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/functional-remediation-2026-11-15.md` | exit0, errors=[]; 25 detailed cards |
-| `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v` | exit1; 105 tests, 101 passed, 4 failures; 9 placement errors resolved |
-| `python tools/check_docs.py` | exit0 |
-| `git diff --check` | exit0; only CRLF→LF warnings, not whitespace errors |
-| Read-only Node consistency check | 25 unique IDs / 25 planned; 3 reference-only M5; DAG without cycles; AC present in MD and JSON; source/work paths and links exist, new benchmark harness explicitly planned |
-| Preservation check | original M1–M5 JSON preserved byte-for-byte, SHA-256 `23b013be2f01f088a2de53c1748693820aa8210ed382cd22fe65ce46f3a27ef1`; original 56 MD cards and all previous text of 7 supplemented documents preserved after CRLF/LF normalization |
-| Fingerprint read | current frontend lock SHA-256 again matched F01 initial observation; manifest unchanged |
-
-Four remaining failures:
-
-1. `test_track10_task26_batch34e_full_site_parity_red_gate`: missing `en/web/accessibility.html`, `en/web/pilot.html`.
-2. `test_track10_task26_batch34e_m46_language_switcher_parity_is_recorded`: both pages missing in RU and EN.
-3. `test_track10_task26_batch34e_m47_search_sitemap_parity_is_recorded`: those RU pages absent from search; later assertions are not established.
-4. `test_track10_task26_batch34e_m48_m49_final_closure_is_recorded`: same four rendered artifacts missing.
-
-The gap was assigned to F25; full docs suite is not claimed as passed. The baseline suite was not run before current plan changes, so prior suite status is not reconstructed. Existing site was not generated by this task or declared fresh. Strict MkDocs was not run: navigation, Mermaid, extensions and source site pages were unchanged; the new plan was outside docs-tree. Runtime/browser/native/provider/human acceptance were not run.
-
-Control-plane sync: REQUIREMENTS — planning-only scope; PLAN — link and order; TEST — compact link to plan checks; RUNLOG — result and limits; RU/EN registry — local source and partial documentation verification. EVALS — no_change_needed, eval policy and thresholds unchanged; prod_test — not_applicable, Batch39 unaffected. Previous sections and others' edits preserved. Root control-plane after additions remains within 40 000 UTF-8 bytes; TEST is near the boundary and does not receive a detailed log.
-
-Result: `planning_recorded`, `docs_partially_verified`; backlog formed, no new task implemented. Each task needs current scope/reproduction/design gate before start. No separate `plan_ready` for all extensions or product readiness.
-
-## Previous verification of F26–F29 update
-
-Status: planning_recorded / docs_partially_verified. This pass added F26–F29, changed AC of ten previous tasks and hard dependencies of seven; Blocks and execution_order reconciled for all 29. All tasks planned, implementation timestamps pending_execution_timestamp. Context mode: self_review; no separate reviewer/subagent started.
-
-| Command / check in that pass | Observed result |
-| --- | --- |
-| `python plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/functional-remediation-2026-11-15.md` | exit0, ok=true, errors=[]; 29 cards |
-| `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v` | exit1; 105 tests in 12.518s, 101 passed / 4 failures |
-| `python tools/check_docs.py` | exit0 |
-| `git diff --check` | exit0; CRLF/LF warnings, no whitespace errors |
-| Read-only consistency / preservation | 29 unique planned IDs, 3 M5 refs, DAG without cycles; Depends on/Blocks/AC of each MD block match JSON; execution_order respects dependencies; original title/status/value/estimate/date retained |
-| Sources / work locations | Source and Markdown links exist; new code/test paths explicitly planned and not created. Schema/protocol design remains a gate before build |
-| Old Web plan | M1–M5 group JSON preserved byte-for-byte; original 56 MD cards and text after changed top pointer retained, including original line endings |
-| Ownership | Only 8 documents/JSON and own lifecycle marker changed. Previous and parallel report/read sections retained; CAS stopped first write attempt on concurrent drift, then only own section applied |
-| Control-plane budget | PLAN/REQUIREMENTS/RUNLOG/TEST/EVALS below 40 000 UTF-8 bytes; TEST.md unchanged, 39 985 bytes |
-
-Four current failures match the previous run by scenario: full_site_parity_red_gate, m46_language_switcher, m47_search_sitemap and m48_m49_final_closure. Cause: missing rendered `web/accessibility.html` and `web/pilot.html` in RU/EN and related search entries. Exact full names and missing paths are preserved above; the current failure is not called pass and does not close F25. Generated site, tests and apps were not changed by that task; build/site promotion was not performed.
-
-Before writing the own marker automatic review required separate reopening approval; owner granted it for this documentation task. Previous marker result retained; hook/trust/permissions unchanged. This is a procedural receipt, not proof of implementation. Application, future fixtures and new APIs were not implemented.
-
-Control-plane sync: REQUIREMENTS/PLAN/RUNLOG and RU/EN registry updated in existing sections. TEST.md no_change_needed: verification commands and matrix link already exist; EVALS no_change_needed: rubrics and thresholds unchanged; prod_test not_applicable: Batch39 unaffected. Application tests, browser/native/provider and human acceptance were not run in this planning-only pass.
-
-## Previous verification of F30–F34 update
-
-Status: planning_recorded / docs_static_verified. Five tasks added; AC of eleven previous tasks and F14/F19/F24 dependencies expanded, Blocks/order recalculated for 34. All 34 planned, 3 M5 reference-only; original 56 cards preserved. UI/UX included separately in PoC and production acceptance. Context mode: self_review; no independent reviewer started.
-
-| Check | Observed result |
-| --- | --- |
-| `python -B plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/functional-remediation-2026-11-15.md` | exit0, ok=true, errors=[] |
-| `python -B tools/check_docs.py` | exit0 |
-| `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -v` | exit0, 3 tests / 3 passed, 0.822s; current source-docs suite version |
-| `git diff --check` | exit0; CRLF→LF warnings without whitespace errors |
-| Read-only consistency | 34 unique planned, 3 reference-only M5; MD/JSON AC in table and cards, Depends/Blocks, DAG and execution_order match; 67 local links resolve; future paths declared |
-| Preservation | Original fields of 29 tasks, historical receipts and text outside own pointers retained; source-owned M1–M5 JSON preserved byte-for-byte, SHA-256 `23b013be2f01f088a2de53c1748693820aa8210ed382cd22fe65ce46f3a27ef1`; old 56 MD cards retained |
-
-The current test_product_agent_os_docs has 3 source-docs checks after another chat's changes already present at start; this is not a rerun of the old 105 suite and does not prove the four historical site failures fixed. Old receipts above retained; generated site not checked/rebuilt, F25 remains planned. New tests, APIs, tabs and adapters are future scope only; PoC, installation, product/runtime/browser/provider/human checks were not run.
-
-Control-plane sync: updated — existing REQUIREMENTS/PLAN/RUNLOG, Web-plan pointer and RU/EN registry. TEST no_change_needed: current route and matrix link already exist; EVALS no_change_needed: new eval thresholds will be set by future PoCs before measurement, current eval contract unchanged; prod_test not_applicable. Hook/trust/permissions/Git unchanged. Own session marker retains prior result and current docs-only scope; other markers untouched.
-
-Final scoped recheck: matrix validator and scoped diff exit0. First `check_docs.py --paths` incorrectly included JSON and exited 1 (`invalid or missing project Markdown path`); after excluding JSON the same scoped checker exited 0, 7 Markdown sources, site/archive not checked. JSON separately checked for parse/MD parity/DAG; command error was not a document defect.
-
-## Grouping verification G01–G07 — that pass
-
-Status: planning_recorded / docs_static_verified. Seven groups cover all 34 tasks exactly once; three M5 references are separate. Original acceptance, Depends on/Blocks, execution_order, estimates and statuses retained. Only delivery_group_id and group execution contract with ownership/entry/exit/UI outcomes added; prior receipts retained. Context mode: self_review; subagents not started.
-
-| Check | Result of that pass |
-| --- | --- |
-| `python -B plugins/product-agent-os/scripts/validate_task_matrix.py docs/planning/functional-remediation-2026-11-15.md` | exit0, ok=true, errors=[] |
-| `python -B tools/check_docs.py --paths docs/planning/functional-remediation-2026-11-15.md PLAN.md RUNLOG.md docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md` | exit0, 4 Markdown sources; site/archive not checked |
-| `python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -v` | exit0, 3/3 source-docs checks, 0.733s; not historical 105 suite |
-| `git diff --check` | exit0, CRLF→LF warnings only |
-| Read-only grouping consistency | 7 groups / 34 unique members; MD/JSON membership and names match; exact cross-group task edges; task DAG and group DAG with completion gates have no cycles |
-| Preservation | All fields of 34 original task objects preserved except delivery_group_id addition; original MD recovered by removing grouping; text outside own pointers preserved; M5 references unchanged; source M1–M5 JSON SHA-256 `23b013be2f01f088a2de53c1748693820aa8210ed382cd22fe65ce46f3a27ef1` |
-
-Control-plane sync: updated — matrix MD/JSON, PLAN/RUNLOG and existing Web-plan pointer. REQUIREMENTS/TEST/EVALS/registry no_change_needed: product scope, acceptance, verification route and external source-backed claims unchanged; grouping is local organization of the existing plan. prod_test not_applicable. Implementation, PoC, installation, runtime/browser/providers, Git and hooks/permissions were not started/changed. Feature readiness and human-pilot pass are not claimed.
+- status: implemented
+- what was done: Added static literal JS/TS/SQL and a Prisma subset, selected-source-only confirmation, both-revision/HMAC/32KiB queries, an independent F27code_database stage, Database Code usages/Map DB network/Files related tables and a claimed App-agent project-query port.
+- files touched / work locations: packages/contracts/code-database.ts; apps/local-service/src/code-database/; apps/local-service/src/runtime/app-agent-channel.mts; apps/local-service/src/runtime/app-agent-gateway.mts; apps/local-service/src/http/application.mts; apps/local-service/src/main.mts; apps/web/src/features/database/CodeDatabaseUsages.tsx; apps/web/src/features/files/ProjectFiles.tsx; tests/web/code-database-*.test.mts; tests/web/database-map-api.test.mts
+- technical value delivered: Precise source/confidence/operation/span pins, native child containment, late-CAS/lease guards and bounded safe context replace guessed relationships.
+- product value delivered: Users can find code/test candidates for a table, navigate source evidence and distinguish confirmed from inferred/unresolved.
+- actual implementation date and time: 16-11-2026 00:43
+- verification evidence: node --test --test-concurrency=1 tests/web/*.test.mts: 658/658, 0 fail, 0 skip; .tmp/func-g04/web-closure-native-final.log (authorized native synthetic executor); npm run check:web-m1: passed, .tmp/func-g04/typecheck-closure.log; npm run build:web: passed, .tmp/func-g04/build-responsive-final.log; UI/build hashes unchanged and verified by current browser receipt; production browser 18/18, 204 current source hashes and dist binding; .tmp/func-g04/browser-acceptance/evidence-m9Vcjh/result.json; native candidate/default passed, 0 provider/model/credential operations; .tmp/func-g04/native-closure-candidate.json + native-closure-default.json; adapter b7d5d1eb2a129763feacba96735d4ba40c0c0bd00dced861c1d83af6cf94726b; 32 changed Markdown sources + RU/EN matrices + preservation/source/build/native checks: see .tmp/func-g04/docs-closure.log, matrix-closure.log and closure-consistency.json; final audit result is owned by verification.latest; ground truth24/24; confirmed literalSQL8/8 andPrisma2/2 precision1/recall1 forliteraldenominators; rootshadowURL/TSparam/nestedDELETE regressions included; actual owned childnative stackfailure3221225725 contained,parentalive; deadline/cancel/bothpins/HMAC/source/policy/CAS/400-link32KiB pagination; production API + private claimed synthetic worker roundtrip; post-read/post-scope lease expiry rejects; no model/provider/credentials; static-search comparison finds missed ORM files; structured context/time notgenerally smaller/faster; literalproxy limits recorded; P2 arbitrary SQLite table names: actual __proto__/constructor/toString persistence+restart RED→GREEN; reject array candidates. .tmp/func-g04/prototype-red.log + full658 current regression.; P2 arbitrary SQLite table names: actual __proto__/constructor/toString persistence+restart RED→GREEN; reject array candidates. .tmp/func-g04/prototype-red.log + full658 current regression.; P2 arbitrary SQLite table names: actual __proto__/constructor/toString persistence+restart RED→GREEN; reject array candidates. .tmp/func-g04/prototype-red.log + full658 current regression.
+- residual risks: Prisma v6 static subset/JS/TS/SQL only; dynamic/env/untraced/foreign-source cases remain uncertain. No SQL/ORM execution, rows/DSNs or runtime call graphs. Queries require current code+schema pins. No human/model-superiority or general time/context-saving claim.
+- follow-up: No required work remains within this card; measured limits are retained. The next group and human/release acceptance remain separate.
+- Documentation impact: updated; docs/code-intelligence/queries-impact.md; docs/code-intelligence/queries-impact.en.md; docs/api/endpoints.md; docs/api/endpoints.en.md; docs/backend/modules.md; docs/backend/modules.en.md; docs/frontend/navigation.md; docs/frontend/navigation.en.md; docs/product/capabilities.md; docs/product/capabilities.en.md; scoped source checks passed.

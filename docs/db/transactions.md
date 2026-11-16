@@ -1,6 +1,6 @@
 # Транзакции, authority и idempotency
 
-Source status: repository_source / static_contract_review; 15.11.2026.
+Source status: repository_source / static_contract_review; 15.11.2026.; FUNC-G04: locally_verified_with_measured_limits, 16.11.2026.
 
 Владелец: backend/storage owner; область: local SQLite Product-Agent OS, ревизия `2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765` (DG03). Обновлять при изменении схемы, контрактов хранения или связанных тестов. Источники: [schema](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/storage/migrations/schema.mts), [worker](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/storage/sqlite-worker.mts), [storage contract](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/packages/contracts/storage/local-store.ts); проверки: [storage tests](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/tests/web/storage.test.mts), [backup tests](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/tests/web/storage-backup.test.mts). Ссылки на тесты не означают их новый запуск; runtime конкретного профиля и пользовательские БД в DG03 не исследовались.
 
@@ -17,3 +17,15 @@ Source status: repository_source / static_contract_review; 15.11.2026.
 ## Сбои и проверка
 
 Разные payload под одним ключом, stale revision/epoch и нарушенные связи отклоняются; повтор с тем же содержимым возвращает receipt. [storage tests](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/tests/web/storage.test.mts), [import preview](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/tests/web/import-preview.test.mts) и [local-store contract](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/packages/contracts/storage/local-store.ts) описывают проверяемые сценарии. Их наличие не гарантирует exactly-once выполнения внешней side effect.
+
+## FUNC-G03 — read snapshots и profile CAS
+
+Новые SQL migrations не добавлены и прежние checksums не изменены. Durable scan и inventory policy используют versioned JSON в profile-owned `store_meta`, expectedVersion CAS и собственные namespaces. Durable registration receipt связывает request digest и project ID в той же registration transaction; повтор после restart не создаёт второй проект.
+
+`projectSnapshot` читает rows и freshness stamp одной read transaction. `runtimeFileScope` так же читает registry/policy и saved task после file I/O: изменившиеся root/policy/task revision запрещают старый preflight. Общий `inventoryScopeFingerprint` проверяется перед source plaintext, cached preview и graph publication; native command повторяет registry fence после dependency/autonomy waits. Изменение policy после уже начавшейся команды не означает отмену совершённого side effect. Regressions policy-race воспроизведены RED и подтверждены GREEN; полный Web594/594,0skip.
+
+## FUNC-G04 — profile CAS и read models
+
+Новые profile-owned namespaces не являются миграцией target DB: project_database_schema_v1 ограничен2MiB (registration/status + два metadata snapshots), project_code_database_v1 —1MiB (source-backed static links/pins). Прежние project_scan_v1 (1MiB) и project_inventory_policy_v1 (32KiB) сохраняют caps. Каждый write проверяет expectedVersion и увеличивает monotonic version; исходные SQL migrations/checksums не менялись. Перед поздним schema/status/diff response повторно проверяются source/version/snapshot identities.
+
+projectEntities/projectSnapshot выбирают consumer kinds до неизменного100k rows/64MiB safety budget; Task Manager дополнительно включает только managed attachments и сохраняет atomic freshness stamp с rows. History SQL TEMP snapshots замораживают membership/values/ordinal, сохраняют старые cursor values после edit/archive и отдают только bounded page. TEMP payload230MiB/mainfile256MiB,100 snapshots/15min expiry/LRU и page100/1MiB ограничивают работу; transient journal/sort disk и native RSS этим не сертифицированы. Cold generation latency остаётся измеренным F20 ограничением.

@@ -1,0 +1,258 @@
+{
+  "schemaVersion": "paos_code_database_ground_truth_v1",
+  "pinnedBeforeImplementation": "2026-11-15",
+  "matrix": {
+    "javascriptTypescript": "rolldown 1.2.18 public parseSync ESTree AST; literal node:sqlite constructor/calls; lexical shadowing respected; no project resolution/config/execution",
+    "sql": "tokenized literal SELECT FROM/JOIN, INSERT INTO, UPDATE, DELETE FROM, CREATE TABLE/VIEW, ALTER TABLE RENAME, DROP TABLE/VIEW; comments and value strings excluded; quoted identifiers retained; CTE/dynamic/qualified foreign source unresolved",
+    "prisma": "Prisma v6 grammar: default prisma-client-js generator + static schema.prisma datasource sqlite literal file URL + model/@@map + same-file traced @prisma/client constructor/delegate; env/config/constructor overrides/multiple schemas/untraced imports unresolved",
+    "unsupported": "Python and all other language/ORM semantics are unsupported; no inferred absence",
+    "minimumConfirmedPrecision": 1,
+    "minimumConfirmedRecall": 0.9,
+    "manualSearchComparison": "automated literal string-search baseline is a reproducible proxy for static manual search; no human time claim",
+    "budgets": {
+      "fileBytes": 524288,
+      "aggregateBytes": 8388608,
+      "files": 1000,
+      "links": 1000,
+      "contextBytes": 32768,
+      "milliseconds": 30000
+    },
+    "parserSelectionCorrection": "Installed TypeScript7.0.2 lacks compiler API; setupfailure retained. Before service measurement selected existing production rolldown1.2.18 public parseSync. Groundtruth expectations unchanged."
+  },
+  "sourcePath": "app.sqlite",
+  "tables": [
+    "users",
+    "orders",
+    "user items",
+    "old_table"
+  ],
+  "files": [
+    {
+      "relativePath": "src/native.ts",
+      "content": "import { DatabaseSync } from 'node:sqlite';\nconst db = new DatabaseSync(new URL('../app.sqlite', import.meta.url));\ndb.prepare('SELECT u.id FROM users AS u JOIN orders AS o ON o.user_id=u.id');\ndb.exec('INSERT INTO \"user items\" (id) VALUES (1)');\ndb.prepare('UPDATE users SET name = ?');\ndb.exec('DELETE FROM orders WHERE id=1');\ndb.exec('CREATE TABLE future_table (id INTEGER)');\ndb.exec('ALTER TABLE users RENAME TO users_v2');\ndb.exec('DROP TABLE old_table');\n// db.exec('SELECT * FROM comment_only');\nconst prose = 'SELECT * FROM string_only';\ndb.exec(\"SELECT 'FROM secret_value' AS text FROM users\");\nconst other = new DatabaseSync(new URL('../other.sqlite', import.meta.url));\nother.prepare('SELECT * FROM users');\nconst dynamic = new DatabaseSync(process.env.DB_PATH);\ndynamic.prepare('SELECT * FROM users');\ndb.prepare(`SELECT * FROM ${tableName}`);\nfunction shadow(db: any) { db.prepare('SELECT * FROM orders'); }\ndb.prepare('SELECT * FROM other.users');\n"
+    },
+    {
+      "relativePath": "src/orm.ts",
+      "content": "import { PrismaClient } from '@prisma/client';\nconst client = new PrismaClient();\nclient.user.findMany();\nclient.order.create({data:{id:1}});\nuntraced.user.findMany();\nconst overridden = new PrismaClient({datasources:{db:{url:'file:other.sqlite'}}});\noverridden.user.deleteMany();\n"
+    },
+    {
+      "relativePath": "prisma/schema.prisma",
+      "content": "generator client {\n provider = \"prisma-client-js\"\n}\ndatasource db {\n provider = \"sqlite\"\n url = \"file:../app.sqlite\"\n}\nmodel User {\n id Int @id\n @@map(\"users\")\n}\nmodel Order {\n id Int @id\n @@map(\"orders\")\n}\n"
+    },
+    {
+      "relativePath": "queries/migration.sql",
+      "content": "-- FROM ignored_table\nSELECT 'JOIN secret_value' AS label FROM orders;\nALTER TABLE old_table RENAME TO renamed_table;\nDROP TABLE IF EXISTS old_table;\n"
+    },
+    {
+      "relativePath": "src/cwd.ts",
+      "content": "import { DatabaseSync } from 'node:sqlite';\nconst db = new DatabaseSync('./app.sqlite');\ndb.prepare('SELECT * FROM users');\n"
+    },
+    {
+      "relativePath": "src/unsupported.py",
+      "content": "# Unsupported language: do not execute\ncursor.execute('SELECT * FROM users')\n"
+    },
+    {
+      "relativePath": "tests/users.test.ts",
+      "content": "// Static candidate only: users and orders assertions belong here.\nexport const fixture = 'users';\n"
+    }
+  ],
+  "expected": [
+    {
+      "relativePath": "src/native.ts",
+      "line": 3,
+      "table": "users",
+      "operation": "read",
+      "confidence": "confirmed"
+    },
+    {
+      "relativePath": "src/native.ts",
+      "line": 3,
+      "table": "orders",
+      "operation": "read",
+      "confidence": "confirmed"
+    },
+    {
+      "relativePath": "src/native.ts",
+      "line": 4,
+      "table": "user items",
+      "operation": "write",
+      "confidence": "confirmed"
+    },
+    {
+      "relativePath": "src/native.ts",
+      "line": 5,
+      "table": "users",
+      "operation": "write",
+      "confidence": "confirmed"
+    },
+    {
+      "relativePath": "src/native.ts",
+      "line": 6,
+      "table": "orders",
+      "operation": "write",
+      "confidence": "confirmed"
+    },
+    {
+      "relativePath": "src/native.ts",
+      "line": 7,
+      "table": "future_table",
+      "operation": "schema",
+      "confidence": "unresolved"
+    },
+    {
+      "relativePath": "src/native.ts",
+      "line": 8,
+      "table": "users",
+      "operation": "schema",
+      "confidence": "confirmed"
+    },
+    {
+      "relativePath": "src/native.ts",
+      "line": 8,
+      "table": "users_v2",
+      "operation": "schema",
+      "confidence": "unresolved"
+    },
+    {
+      "relativePath": "src/native.ts",
+      "line": 9,
+      "table": "old_table",
+      "operation": "schema",
+      "confidence": "confirmed"
+    },
+    {
+      "relativePath": "src/native.ts",
+      "line": 12,
+      "table": "users",
+      "operation": "read",
+      "confidence": "confirmed"
+    },
+    {
+      "relativePath": "src/native.ts",
+      "line": 14,
+      "table": "users",
+      "operation": "read",
+      "confidence": "inferred"
+    },
+    {
+      "relativePath": "src/native.ts",
+      "line": 16,
+      "table": "users",
+      "operation": "read",
+      "confidence": "unresolved"
+    },
+    {
+      "relativePath": "src/native.ts",
+      "line": 17,
+      "table": "?",
+      "operation": "unknown",
+      "confidence": "unresolved"
+    },
+    {
+      "relativePath": "src/native.ts",
+      "line": 18,
+      "table": "orders",
+      "operation": "read",
+      "confidence": "unresolved"
+    },
+    {
+      "relativePath": "src/native.ts",
+      "line": 19,
+      "table": "users",
+      "operation": "read",
+      "confidence": "unresolved"
+    },
+    {
+      "relativePath": "src/orm.ts",
+      "line": 3,
+      "table": "users",
+      "operation": "read",
+      "confidence": "confirmed"
+    },
+    {
+      "relativePath": "src/orm.ts",
+      "line": 4,
+      "table": "orders",
+      "operation": "write",
+      "confidence": "confirmed"
+    },
+    {
+      "relativePath": "src/orm.ts",
+      "line": 5,
+      "table": "users",
+      "operation": "read",
+      "confidence": "unresolved"
+    },
+    {
+      "relativePath": "src/orm.ts",
+      "line": 7,
+      "table": "users",
+      "operation": "write",
+      "confidence": "unresolved"
+    },
+    {
+      "relativePath": "queries/migration.sql",
+      "line": 2,
+      "table": "orders",
+      "operation": "read",
+      "confidence": "inferred"
+    },
+    {
+      "relativePath": "queries/migration.sql",
+      "line": 3,
+      "table": "old_table",
+      "operation": "schema",
+      "confidence": "inferred"
+    },
+    {
+      "relativePath": "queries/migration.sql",
+      "line": 3,
+      "table": "renamed_table",
+      "operation": "schema",
+      "confidence": "unresolved"
+    },
+    {
+      "relativePath": "queries/migration.sql",
+      "line": 4,
+      "table": "old_table",
+      "operation": "schema",
+      "confidence": "inferred"
+    },
+    {
+      "relativePath": "src/cwd.ts",
+      "line": 3,
+      "table": "users",
+      "operation": "read",
+      "confidence": "unresolved"
+    }
+  ],
+  "comparisonTasks": [
+    {
+      "table": "users",
+      "confirmedFiles": [
+        "src/native.ts",
+        "src/orm.ts"
+      ],
+      "staticTestCandidates": [
+        "tests/users.test.ts"
+      ]
+    },
+    {
+      "table": "orders",
+      "confirmedFiles": [
+        "src/native.ts",
+        "src/orm.ts"
+      ],
+      "staticTestCandidates": [
+        "tests/users.test.ts"
+      ]
+    },
+    {
+      "table": "old_table",
+      "confirmedFiles": [
+        "src/native.ts"
+      ],
+      "staticTestCandidates": []
+    }
+  ]
+}

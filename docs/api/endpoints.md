@@ -1,6 +1,6 @@
 # Справочник endpoints
 
-Source status: repository_source / static_contract_inventory; 15.11.2026.
+Source status: repository_source / current_source_contract_review; 15.11.2026.; FUNC-G04: locally_verified_with_measured_limits, 16.11.2026.
 
 Владелец: maintainers local-service/API; scope/version: DG03, commit `2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765`. Обновлять при изменении handler, client, delegate service или тестов. [Backend](../backend/index.md); [доступ и ошибки](errors.md); [события](events.md).
 
@@ -99,6 +99,30 @@ Source status: repository_source / static_contract_inventory; 15.11.2026.
 | `POST /api/v1/projects/{projectId}/artifacts/proposals` | параметры proposal | proposal result | сохранение proposal; migration freeze |
 
 
+## FUNC-G03: текущий локальный контракт
+
+Дополнение от 15.11.2026 описывает текущие `http/application.mts`, `project-files/service.mts`, `project-scans/service.mts` и `runtime/task-file-preflight.mts`; pinned DG03-ссылки ниже сохраняют историческую версию.
+
+| Метод и путь `/api/v1` | Вход | Результат и граница |
+| --- | --- | --- |
+| `GET /projects/{id}/files` | `path`, `cursor?`, `limit?`, `filter?`, `query?` | Ленивая страница одной директории; `filter=all/control_plane`, поиск в текущей директории, default100/max200; coverage/reasons и access metadata |
+| `GET /projects/{id}/files/read` | `path`, `revision?`, `line?` | `available/stale/forbidden/binary/too_large/unsupported/unavailable`; текст только для `available`, plain text с display redaction |
+| `GET /projects/{id}/files/policy` | — | `version`, `policy`, `policyVersion` |
+| `POST /projects/{id}/files/policy` | `policy`, `expectedVersion` | Profile-owned CAS; include/exclude/respectGitignore не отменяют hard deny |
+| `GET /projects/{id}/scans` | — | Сохранённые latest/lastSuccessful и stage outcomes |
+| `POST /projects/{id}/scans` | `requestId?`, `revision?` | 202; bounded background scan, request replay/coalescing и scope fences |
+| `POST /projects/{id}/scans/{scanId}/cancel` | пустой JSON object | Отмена принадлежащего проекту scan |
+| `POST /projects/{id}/scans/{scanId}/retry` | пустой JSON object | 202; новая попытка через idempotent retry key |
+| `GET /projects/{id}/analysis` | — | Сохранённый core analysis с проверкой текущих source/adapter revisions; explicit unavailable/stale |
+| `POST /projects/{id}/runtime/file-preflight` | `taskId`, обязательный integer `expectedRevision` | Metadata-only `allowed`, limits/counts/items/reasons, digest/taskRevision и source pins; без content/diff |
+| `GET /projects/{id}/freshness` | — | Дешёвый profile stamp без обхода filesystem |
+
+`POST /projects` сначала сохраняет регистрацию. `scan:true` запрашивает фоновый scan; ответ может содержать `scan` либо `scanError`, регистрация при ошибке scan сохраняется. Повтор `requestId` требует того же registration payload. `GET task-manager` возвращает entities и freshness из одного SQLite read transaction.
+
+Registry владеет root и policy; browser не передаёт произвольный root. `fileRevision` — metadata/policy pin, `hash` и reference `revisionKind=sha256` — raw-byte content pin. Их нельзя подменять друг другом. Freshness `policyVersion` — integer CAS version, source `policyVersion` — строковая identity. Preflight читает сохранённую task scope, отвергает stale task revision; optional execution client guard `{digest,taskRevision}` не даёт разрешения на выполнение. Gateway проверяет preflight при admission и повторно проверяет доступ при capture перед native command; approvals и broker restrictions сохраняются.
+
+Текущие bounded integration receipts основного агента: F29 API 6/6, file-preflight API 1/1, gateway policy 28/28, F18 5/5. Это переданное локальное evidence; новый browser/native final и human acceptance здесь не заявлены. Следующий артефакт — результат конкретного API/scan с provenance, затем соответствующая проверка пользователя.
+
 ## Поля и ограничения отдельных действий
 
 Ниже минимальные поля и формы результатов для App-agent route и перечисленных service implementations. API BYOK имеет отдельный [live gateway](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/runtime/live-gateway.mts); нельзя предполагать, что его input и доступные действия идентичны. Знак вопроса обозначает условно необязательные значения. Private agent channel использует общие workerId/generation/leaseToken кроме attach; это не browser API.
@@ -171,3 +195,23 @@ Graph query требует существующую совпадающую `revi
 `scan=true` при добавлении проекта выполняет текущую ограниченную проверку источников и перестроение графа, сообщая partial failures после зафиксированной регистрации. Это не полный файловый браузер или запланированное управляемое фоновое сканирование F26–F29. PoC и endpoints target DB/schema/code-table F30–F34 не реализованы этим API. Владелец будущих возможностей — [функциональный backlog](../planning/functional-remediation-2026-11-15.md).
 
 Ограничения: изучены исходники и указанные тесты; provider, реальный профиль/БД, сетевой сервер и runtime приложения не запускались. [Registry](../sources/registry.md); [план Web](../planning/product-agent-os-web-task-manager-plan-2026-11-09.md).
+
+## FUNC-G04 / F09 — bounded history и artifact summaries
+
+Session catalog выбирает только sessions и связанные task/run attribution в SQLite. Transcript фильтрует `kind`, `parent_id`, hidden/analysis/reasoning до materialization; search сохраняет Unicode case folding. Worker замораживает membership и значения в connection-private SQLite TEMP tables: правка, вставка, удаление или archive после первой страницы не меняют последующие страницы. `journalOrder` сохраняет исходный insertion ordinal. В JavaScript переводится только текущая страница, где действует прежний redaction mapper; source bodies всей истории не передаются в LocalStore caller.
+
+Cursor действует до 15 минут и может быть вытеснен LRU при storage pressure. Scope включает project/root identity, authority epoch, inventory policy и query/filters; несовпадение, expiry, eviction и restart дают `CURSOR_STALE`. `limit` — 1–100; byte cap может уменьшить страницу до числа меньше `limit`, после чего `nextCursor` продолжает без пропусков. Response budget — 1 MiB с резервом metadata. Один oversized item даёт `HISTORY_ITEM_TOO_LARGE`; snapshot больше 200 000 rows или payload budget — `HISTORY_SNAPSHOT_BUSY`. Перед freeze выполняется SQL size preflight, eviction — до insert, rollback сохраняет прежние cursors. Payload aggregate ограничен 230 MiB, оставляя резерв для indexes/page metadata; `temp.max_page_count` также ограничивает основной TEMP database file 256 MiB. Это не лимит RSS или общего disk I/O: transient SQLite sort/journal overhead учитывается отдельно. Persistent schema/migration не меняются.
+
+Artifact catalog получает `substr(body,1,280)` и выбранные kinds из SQL, сохраняя frozen summaries/cursors и root/policy checks. Для длинного persisted body reason `persisted_body_preview_only_search` означает поиск только по title/preview; отсутствие совпадения в остальной части body не считается проверенным. Projection выше 6 MiB даёт partial reason `artifact_projection_byte_limit`; существующие catalog snapshot budgets остаются активны. Raw persisted document read проверяет SQL byte lengths до загрузки: body до 512 KiB, metadata до 256 KiB, иначе `DOCUMENT_TOO_LARGE`. Workspace document read сохраняет существующие checked-source guards.
+
+Текущие synthetic regression checks: `node --test tests/web/snapshot-history-scale.test.mts` — 9/9: 100 000 messages около 100 MiB, 1000 documents по 107 315 bytes, page-only mapper, immutable edit/archive values, LRU/expiry/scope drift, rollback, byte caps, Unicode и oversized-read rejection. Existing session/source-policy/code-index integration проверялась отдельно; native-junction skips остаются gaps. Эти проверки не заменяют F20 after/final p95/soak или human acceptance. Node `DatabaseSync.function` сверена через Context7 `/nodejs/node/v26.0.0` с [официальной документацией](https://github.com/nodejs/node/blob/v26.0.0/doc/api/sqlite.md); установленная версия — Node v26.5.0.
+
+## FUNC-G04 — карта кода, схема и static queries
+
+GET graph принимает mode=all|dependencies|symbols, direction=both|incoming|outgoing и nodeId/pathTo для bounded static path (до8 hops/1000 visited nodes). Поиск/filters/cursor привязаны к revision и cache generation; restart/eviction требует rebuild. Это imports/lexical occurrences, не runtime call graph.
+
+GET /projects/:id/database возвращает только registration/status/candidates; POST database/source выбирает relativePath+expectedFileRevision+expectedVersion либо clear. Он не открывает SQLite. POST database/scan запускает F27 inventory+schema; отмена/повтор используют обычные scans/:scanId/cancel|retry, повтор сохраняет selected stages. GET database/schema выдаёт bounded page, escaped Mermaid и diagramEntities из того же snapshot; GET database/changes сравнивает два совместимых metadata snapshots. Current/stale/incompatible и отсутствие baseline различаются. Source admission не разрешает generic Files DB read. Windows native read lease и offline SQLite — текущий adapter scope; PostgreSQL/credentials/rows/project SQL не поддержаны.
+
+GET /projects/:id/code-database и GET code-database/links выдают status и static source evidence; POST code-database/scan запускает inventory+code_database. Links требуют оба codeRevision/schemaRevision, поддерживают table/path/operation/confidence/limit/cursor и ограничены32KiB. Confirmed требует source binding; inferred/unresolved не становятся runtime facts. SQL values/rows не возвращаются.
+
+POST /agent/v1/project-query — private App-agent action с channel capability и worker lease, runId, kind=status|links и теми же query fields. Project берётся из claimed run; projectId из payload запрещён. Lease/run/scope проверяются до и после async read; ответ≤32KiB. Browser cookie не даёт эту capability. Claimed job объявляет наличие query port; старый model/provider route не включается. Проверка использует synthetic worker без вызова модели.

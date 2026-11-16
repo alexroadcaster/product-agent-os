@@ -6,6 +6,7 @@ import {bindProject} from '../../apps/local-service/src/adapters/project-sources
 import {createHash} from 'node:crypto';
 import {m2Fixture} from './m2-fixture.mts';
 import {createLocalApplication} from '../../apps/local-service/src/http/application.mts';
+import {createCodeIndex} from '../../apps/local-service/src/code-index/service.mts';
 
 async function paired(f:Awaited<ReturnType<typeof m2Fixture>>){
  const origin='http://127.0.0.1:49831',app=await createLocalApplication({store:f.store,origin,instanceId:'code-index',profileDirectory:join(f.root,'profile')});
@@ -13,6 +14,15 @@ async function paired(f:Awaited<ReturnType<typeof m2Fixture>>){
  const cookie=r.headers.get('set-cookie')!.split(';')[0],csrf=(await r.json() as any).csrfToken;
  return async(path:string,input?:unknown,project='p')=>{const response=await app.handleRequest(new Request(origin+'/api/v1/projects/'+project+path,{method:input===undefined?'GET':'POST',headers:{host:'127.0.0.1:49831',origin,cookie,'x-paos-csrf':csrf,'content-type':'application/json'},...(input===undefined?{}:{body:JSON.stringify(input)})}));return {status:response.status,body:await response.json() as any};};
 }
+
+test('cancelled rebuild cannot replace the last successful graph at the publication fence',async t=>{
+ const f=await m2Fixture(t);await writeFile(join(f.root,'cancel.ts'),'export const before=1;');
+ const index=createCodeIndex(f.store),previous=await index.rebuild('p');
+ await assert.rejects(index.rebuild('p',{signal:AbortSignal.abort()} as any),{code:'GRAPH_BUILD_CANCELLED'});
+ await writeFile(join(f.root,'cancel.ts'),'export const after=2;');const controller=new AbortController();
+ await assert.rejects(index.rebuild('p',{signal:controller.signal,publicationGuard:async()=>controller.abort(),canPublish:()=>!controller.signal.aborted} as any),{code:'GRAPH_BUILD_CANCELLED'});
+ assert.equal((await index.status('p')).revision,previous.revision);assert.equal((await index.status('p')).state,'stale');
+});
 test('authenticated graph status and immutable read-only rebuild',async t=>{
  const f=await m2Fixture(t),request=await paired(f);
  assert.equal((await request('/graph/status')).status,200);
@@ -50,9 +60,14 @@ test('impact keeps matching and stale source pins distinct from the graph revisi
  const built=(await request('/graph/rebuild',{})).body,g=(await request('/graph?revision='+built.revision)).body,node=g.nodes.find((n:any)=>n.kind==='symbol'),impact=(await request('/graph/nodes/'+node.id+'/impact?revision='+built.revision)).body;
  assert.equal(impact.tasks.find((r:any)=>r.id===matching.id).sourceState,'matching');assert.equal(impact.tasks.find((r:any)=>r.id===stale.id).sourceState,'stale');assert.equal(impact.tasks.find((r:any)=>r.id===artifact.id).sourceState,'unknown');assert.equal(impact.tasks.find((r:any)=>r.id===stale.id).actualSourceRevision,hash);
 });
-test('source byte budget rejects oversized build without replacing a valid snapshot',async t=>{
+test('one oversized source preserves other permitted files with explicit partial coverage',async t=>{
  const f=await m2Fixture(t),request=await paired(f);await writeFile(join(f.root,'small.ts'),'let small=1');const old=(await request('/graph/rebuild',{})).body;
- await writeFile(join(f.root,'large.ts'),' '.repeat(512*1024+1));const failed=await request('/graph/rebuild',{});assert.equal(failed.status,400);assert.equal(failed.body.error.code,'GRAPH_SOURCE_LIMIT');assert.equal((await request('/graph/status')).body.revision,old.revision);assert.equal((await request('/graph/status')).body.state,'stale');
+ await writeFile(join(f.root,'large.ts'),' '.repeat(512*1024+1));const rebuilt=await request('/graph/rebuild',{});
+ assert.equal(rebuilt.status,200);assert.notEqual(rebuilt.body.revision,old.revision);
+ assert.ok(rebuilt.body.coverage.some((row:any)=>row.relativePath==='large.ts'&&row.status==='excluded'&&row.reason==='GRAPH_SOURCE_LIMIT'));
+ const graph=(await request('/graph?revision='+rebuilt.body.revision)).body;
+ assert.ok(graph.nodes.some((node:any)=>node.name==='small'));assert.ok(!graph.nodes.some((node:any)=>node.name==='large.ts'));
+ assert.equal((await request('/graph/status')).body.state,'fresh');
 });
 test('two-pass scopes, destructuring, hoisting and Unicode CRLF anchors distinguish read/write/reference',async t=>{
  const f=await m2Fixture(t),request=await paired(f);
@@ -64,7 +79,7 @@ test('two-pass scopes, destructuring, hoisting and Unicode CRLF anchors distingu
  for(const n of same)assert.equal(source.slice(n.anchor.start,n.anchor.end),'имя');
  assert.ok(g.nodes.some((n:any)=>n.name==='alias'&&n.kind==='symbol'));assert.ok(!g.nodes.some((n:any)=>n.name==='property'&&n.kind==='unresolved'));
  const before=g.nodes.find((n:any)=>n.name==='before'&&n.kind==='symbol');assert.ok(g.edges.some((e:any)=>e.type==='call'&&e.to===before.id));
- assert.ok(g.nodes.some((n:any)=>n.reason==='dynamic_import'));assert.ok(g.nodes.some((n:any)=>n.reason==='eval'));
+ assert.ok(g.nodes.some((n:any)=>n.reason==='module_not_resolved'));assert.ok(g.nodes.some((n:any)=>n.reason==='eval'));
  assert.ok(!JSON.stringify(g).includes('private literal'));assert.ok(!JSON.stringify(g).includes('./dynamic'));
  assert.deepEqual(await readFile(join(f.root,'scope.ts'),'utf8'),source);
 });
@@ -78,11 +93,13 @@ test('manifest notices added, modified, deleted sources and pins revision/source
  await writeFile(join(f.root,'a.ts'),'let x=3;');assert.equal((await request('/graph/status')).body.state,'stale');await request('/graph/rebuild',{});await unlink(join(f.root,'b.ts'));assert.equal((await request('/graph/status')).body.state,'stale');
 });
 test('parse failures, unsupported source, type-only names, secrets and linked files stay explicit',async t=>{
- const f=await m2Fixture(t),request=await paired(f);await writeFile(join(f.root,'ok.ts'),'type T = MissingType; const token="syntheticCredentialCanaryXYZ"; const object={key: 1}; object.key;');
+ const f=await m2Fixture(t),request=await paired(f);await writeFile(join(f.root,'ok.ts'),'type T = MissingType; const object={key: 1}; object.key;');
+ await writeFile(join(f.root,'private.ts'),'const token="syntheticCredentialCanaryXYZ";');
  await writeFile(join(f.root,'broken.ts'),'const = ;');await writeFile(join(f.root,'other.py'),'answer=42');await writeFile(join(f.root,'.env.ts'),'const privateValue=1');await link(join(f.root,'ok.ts'),join(f.root,'hard.ts'));
  let built=(await request('/graph/rebuild',{})).body;assert.ok(built.coverage.some((c:any)=>c.status==='excluded'));await unlink(join(f.root,'hard.ts'));built=(await request('/graph/rebuild',{})).body;
- assert.ok(built.coverage.some((c:any)=>c.status==='parse_error'));assert.ok(built.coverage.some((c:any)=>c.status==='unsupported'));assert.ok(!built.coverage.some((c:any)=>c.relativePath==='.env.ts'));
- const g=(await request('/graph?revision='+built.revision)).body;assert.ok(!g.nodes.some((n:any)=>n.name==='MissingType'));const file=g.nodes.find((n:any)=>n.kind==='file');const excerpt=(await request('/graph/source?revision='+built.revision+'&fileId='+file.id)).body;assert.equal(excerpt.redacted,true);assert.ok(!JSON.stringify(excerpt).includes('syntheticCredentialCanaryXYZ'));
+ assert.ok(built.coverage.some((c:any)=>c.status==='parse_error'));assert.ok(built.coverage.some((c:any)=>c.status==='unsupported'));assert.ok(built.coverage.some((c:any)=>c.relativePath==='.env.ts'&&c.status==='excluded'&&c.reason==='sensitive_path'));
+ assert.ok(built.coverage.some((c:any)=>c.relativePath==='private.ts'&&c.status==='excluded'&&c.reason==='GRAPH_SOURCE_FORBIDDEN'));
+ const g=(await request('/graph?revision='+built.revision)).body;assert.ok(!g.nodes.some((n:any)=>n.name==='MissingType'));const file=g.nodes.find((n:any)=>n.kind==='file'&&n.relativePath==='ok.ts');const excerpt=(await request('/graph/source?revision='+built.revision+'&fileId='+file.id)).body;assert.equal(excerpt.redacted,false);assert.ok(!JSON.stringify([g,excerpt]).includes('syntheticCredentialCanaryXYZ'));
 });
 test('pagination binds revision and all filters and impact matches explicit task paths',async t=>{
  const f=await m2Fixture(t),request=await paired(f);await writeFile(join(f.root,'many.ts'),Array.from({length:120},(_,i)=>`let item${i}=${i}; item${i}++;`).join('\n'));

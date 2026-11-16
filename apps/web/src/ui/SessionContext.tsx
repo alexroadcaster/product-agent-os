@@ -3,6 +3,12 @@ import type { M1Api, RuntimeState, StoredEntity } from "../api/client.ts";
 import type { AppLabel } from "../locales/app.ts";
 import { Sources } from "./Operations.tsx";
 type Text = (key: AppLabel) => string;
+/** Inventory visibility and execution budgets remain separate user decisions. */
+export function FileExecutionPreflight({report,error,locale,onRefresh}:{report?:import('../../../../packages/contracts/runtime/file-preflight.ts').FilePreflight|null;error?:string;locale:'ru'|'en';onRefresh:()=>void}){
+ const w=(ru:string,en:string)=>locale==='ru'?ru:en;
+ return <section className="panel" data-testid="file-execution-preflight"><h3>{w('Файлы перед выполнением','Files before execution')}</h3><p>{w('Видимость и чтение в Files определяются inventory policy. Выполнение отдельно ограничено32 путями,64KiB на файл и512KiB суммарно; rename занимает два пути. Проверка повторяется сервером перед dispatch.','Files visibility and reading follow inventory policy. Execution separately allows32 paths,64KiB per file and512KiB total; rename uses two paths. The server repeats validation before dispatch.')}</p>
+  {error&&<p role="alert">{error}</p>}{report?<><p role="status" data-testid="file-preflight-state" data-allowed={report.allowed}>{report.allowed?w('Scope разрешён текущей проверкой','Scope allowed at this observation'):w('Выполнение заблокировано','Execution blocked')} · {report.counts.paths}/{report.limits.files} · {report.counts.totalBytes}/{report.limits.totalBytes} B {report.counts.bytesComplete?'':w('(известная часть)','(known portion)')}</p><ul>{report.items.filter(item=>!item.allowed).map((item,i)=><li key={i}><code>{item.path}</code> · {item.reason}</li>)}</ul><p>{report.reasons.join(' · ')}</p><details><summary>{w('Версия проверки','Check provenance')}</summary><p>{report.observedAt}</p><code>{report.policyVersion}</code><p className="mono">{report.digest}</p></details></>:<p role="status">{w('Проверка ещё не получена; dispatch всё равно повторит её.','No preflight observation yet; dispatch still repeats it.')}</p>}<button type="button" data-testid="file-preflight-refresh" onClick={onRefresh}>{w('Обновить проверку файлов','Refresh file preflight')}</button></section>;
+}
 export function RuntimeSummary({
   state,
   t,

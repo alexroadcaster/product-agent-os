@@ -1,6 +1,6 @@
 # Backend: modules and ownership
 
-Source status: repository_source / static_source_review + bounded_native_synthetic_verified; 2026-11-15.
+Source status: repository_source / static_source_review + bounded_native_synthetic_verified; 2026-11-15.; FUNC-G04: locally_verified_with_measured_limits, 16.11.2026.
 
 Owner: backend/local-service; storage and runtime own their respective contracts. Scope/version: DG03, `2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765`. Update when wiring, a dependency, contract or module owner changes.
 
@@ -13,6 +13,20 @@ Owner: backend/local-service; storage and runtime own their respective contracts
 | [execution-recipes/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/execution-recipes/service.mts), [recipe-checkpoint.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/recovery/recipe-checkpoint.mts) | Frozen plan, attempts, pause/cancel/reconcile and recovery checkpoint | A dispatch with unconfirmed outcome is not replayed automatically |
 | [route-selector.ts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/runtime/route-selector.ts) | Selects App-agent or local API BYOK through one serialized selector | No implicit fallback between routes; route selection does not prove an active consumer |
 | [code-index/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/code-index/service.mts), [parser-worker.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/code-index/parser-worker.mts) | Bounded code-index construction and parser Worker | Graph coverage and source access do not imply a full file tree or semantic coverage of every language |
+
+## FUNC-G03: inventory, scans and projection
+
+The current 2026-11-15 source review supplements the historical DG03 table. `project-inventory/service.mts` owns checked roots, path normalization, policy/ignore classification, lazy listing, bounded snapshots and checked reads. `code-index/sources.mts` constructs inventory from registry policy; fixed sources, Files, graph and execution inspection share this boundary. Visible metadata grants neither read nor index permission; hard sensitive/link/root denial precedes include. `project-files/service.mts` adds display-only redaction and discriminated read states. `fileRevision` stays separate from the raw SHA256 `hash`.
+
+`project-scans/service.mts` owns profile state `project_scan_v1`, CAS, queueing and stage progress. Defaults: one scan worker, queue20, job60s/stage30s, result256KiB. Inventory → documents → code → analysis runs in the background after durable Add; optional schema/code_database adapters without wiring report unavailable. Publication guards check scan ownership, cancellation and root/policy/inventory revision before saving. The next artifact is persisted stage outcomes with provenance; partial does not mean complete analysis.
+
+`project-analysis/service.mts` calls the existing Python core `product_agent_os.discovery.analyze_workspace` through fixed `bridge.py` in a separate `-I -S -B` process. The core receives a bounded allowlisted projection in a temporary directory outside the target, not the target root. Target code is not imported; DB files are not opened. Defaults:200files/2MiB projection,64KiB/file,15s,128KiB subprocess output. Timeout/cancel terminates only the owned child. There is no OS hard RSS limit. The real integration works from a checkout with core scripts; a packaged payload without them returns `ANALYSIS_CORE_UNAVAILABLE`, with no installation or hidden analyzer replacement. Results are candidates and present_unverified, not runtime proof.
+
+`runtime/task-file-preflight.mts` binds saved task revision to the shared `runtime/app-agent-files.mts` inspector: a metadata-only report and digest, maximum32paths/64KiB raw per file/512KiB raw total. Rename counts two paths; create permits a missing target, while modify/delete/read require an existing file. Gateway admission uses the report; capture checks current root/policy before broker commands. This supplements approvals/native sandboxing.
+
+`storage/sqlite-worker.mts` owns cheap `projectFreshness` and atomic `projectSnapshot`; HTTP task-manager uses the snapshot with its stamp. `generation/throughSeq/scanVersion/policyVersion/rootIdentity` observe profile changes. No filesystem watcher was added: manual refresh/read/scan and source revision checks detect external file changes. The next artifact is an updated snapshot or an explicitly stale/unavailable source result.
+
+Parent-provided local evidence: F29 API6/6, preflight API1/1, gateway policy28/28, F18focused5/5; final browser/native verification remains separate. See [API](../api/endpoints.md), [recovery](recovery.md) and [data flow](../architecture/data-flow.md).
 
 ## Current cross-layer dependencies
 
@@ -27,3 +41,9 @@ After moving pinned sources, native qualification was repeated: adapter `fc34f72
 ## Checks and limits
 
 [scheduler-runtime.test.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/tests/web/scheduler-runtime.test.mts), [runtime-route-selector.test.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/tests/web/runtime-route-selector.test.mts), [recipe-runtime.test.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/tests/web/recipe-runtime.test.mts) are related tests, not claims of a new run. The local service and [Python plugin](../product-agent-os/architecture.md) have different entrypoints and contracts; describing both does not mean HTTP calls start Python. Real profiles, providers and performance were not measured here.
+
+## FUNC-G04 — graph and schema owners
+
+code-index/service.mts owns graph revisions/LRU/filters and checked source manifests; lexical/module-resolver do not independently read target config or filesystem. parser-runner launches the fixed parser child with process/child-watchdog.mts. database-map owns explicit source admission, native read lease, metadata child and compatible schema diffs. code-database owns static SQL/Prisma analysis, both-revision links and bounded queries. The HTTP owner integrates F27 stages and authenticated routes; the private agent gateway uses only a trusted query port scoped to its claimed run.
+
+Shared contracts stay in packages/contracts; frontend source is not an implementation dependency of contracts/backend. Rolldown uses its installed public parser entry, not a temporary PoC engine or target executable config. A packaged environment missing the adapter reports unavailable without silent fallback. This slice performs no installations, provider/model calls or publication.

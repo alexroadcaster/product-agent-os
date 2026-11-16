@@ -43,8 +43,8 @@ export type Project = {
   streamGeneration: string;
 };
 export type Page = { items: StoredEntity[]; hasMore: boolean };
-export type ProjectScan={state:'ready'|'partial';checkedAt:string;sources:{id:string;status:string;relativePath?:string;reason?:string}[];counts?:{files:number;nodes:number;edges:number};reason?:string;limitations?:string[]};
-export type ProjectRegistration={id:string;name:string;keyPrefix:string;authorityMode:'legacy_files'|'sql';authorityEpoch:number;scan?:ProjectScan};
+export type ProjectScan=import('../../../../packages/contracts/project-scan.ts').ProjectScanView;
+export type ProjectRegistration={id:string;name:string;keyPrefix:string;authorityMode:'legacy_files'|'sql';authorityEpoch:number;scan?:ProjectScan;scanError?:string};
 export type ConnectionRoute = "codex_app_agent" | "local_api_byok";
 export type Connection = {
   verified: boolean;
@@ -189,6 +189,23 @@ export interface M1Api {
   autonomyPreview(projectId:string,input:Record<string,unknown>):Promise<import('../../../../packages/contracts/autonomy/policy.ts').AutonomyPreview>;
   autonomyAction(projectId:string,action:'save'|'pause'|'resume',input:Record<string,unknown>):Promise<import('../../../../packages/contracts/autonomy/policy.ts').AutonomySnapshot & {interrupts?:{runId:string;status:string;reason?:string}[]}>;
   graphStatus(projectId:string):Promise<import('../../../../packages/contracts/graph/code-graph.ts').GraphStatus>;
+  databaseStatus(projectId:string,signal?:AbortSignal):Promise<import('../../../../packages/contracts/database-map.ts').DatabaseMapStatus>;
+  selectDatabaseSource(projectId:string,input:{relativePath:string;expectedFileRevision:string;expectedVersion:number}|{clear:true;expectedVersion:number}):Promise<import('../../../../packages/contracts/database-map.ts').DatabaseMapStatus>;
+  databaseSchema(projectId:string,query?:Record<string,string|number>,signal?:AbortSignal):Promise<import('../../../../packages/contracts/database-map.ts').DatabaseMapPage>;
+  databaseChanges(projectId:string,signal?:AbortSignal):Promise<import('../../../../packages/contracts/database-map.ts').DatabaseSchemaChanges>;
+  scanDatabase(projectId:string,input?:{requestId?:string}):Promise<ProjectScan>;
+  codeDatabaseStatus(projectId:string,signal?:AbortSignal):Promise<import('../../../../packages/contracts/code-database.ts').CodeDatabaseStatus>;
+  codeDatabaseLinks(projectId:string,query:Record<string,string|number>,signal?:AbortSignal):Promise<import('../../../../packages/contracts/code-database.ts').CodeDatabasePage>;
+  scanCodeDatabase(projectId:string,input?:{requestId?:string}):Promise<ProjectScan>;
+  projectFiles(projectId:string,query:Record<string,string|number>,signal?:AbortSignal):Promise<import('../../../../packages/contracts/project-files.ts').ProjectFilesPage>;
+  projectFile(projectId:string,input:{path:string;revision?:string;line?:number},signal?:AbortSignal):Promise<import('../../../../packages/contracts/project-files.ts').ProjectFileRead>;
+  projectInventoryPolicy(projectId:string):Promise<{version:number;policy:import('../../../../packages/contracts/project-inventory.ts').InventoryPolicy;policyVersion:string}>;
+  projectScans(projectId:string,signal?:AbortSignal):Promise<ProjectScan>;
+  projectAnalysis(projectId:string,signal?:AbortSignal):Promise<import('../../../../packages/contracts/project-analysis.ts').ProjectAnalysisView>;
+  startProjectScan(projectId:string,input?:{requestId?:string;revision?:string}):Promise<ProjectScan>;
+  cancelProjectScan(projectId:string,scanId:string):Promise<ProjectScan>;
+  retryProjectScan(projectId:string,scanId:string):Promise<ProjectScan>;
+  saveProjectInventoryPolicy(projectId:string,policy:import('../../../../packages/contracts/project-inventory.ts').InventoryPolicy,expectedVersion:number):Promise<{version:number;policyVersion:string}>;
   rebuildGraph(projectId:string):Promise<import('../../../../packages/contracts/graph/code-graph.ts').GraphStatus>;
   graphPage(projectId:string,query:Record<string,string|number>):Promise<import('../../../../packages/contracts/graph/code-graph.ts').GraphPage>;
   graphNode(projectId:string,id:string,revision:string):Promise<import('../../../../packages/contracts/graph/code-graph.ts').GraphNodeDetail>;
@@ -220,6 +237,8 @@ export interface M1Api {
   teamGeneration(projectId:string,id:string):Promise<any>;
 
   taskManager(projectId:string,signal?:AbortSignal):Promise<ManagerSnapshot<StoredEntity>>;
+  projectFreshness(projectId:string,signal?:AbortSignal):Promise<import('../../../../packages/contracts/project-freshness.ts').ProjectFreshness>;
+  taskFilePreflight(projectId:string,taskId:string,expectedRevision:number,signal?:AbortSignal):Promise<import('../../../../packages/contracts/runtime/file-preflight.ts').FilePreflight&{taskId:string;taskRevision:number}>;
   taskManagerCommand(projectId:string,input:Record<string,unknown>,idempotencyKey?:string):Promise<Record<string,unknown>>;
   stopPendingLink(projectId:string,linkId:string):Promise<{stopRequested:boolean}>;
   uploadAttachment(projectId:string,taskId:string,revision:number,file:{filename:string;mediaType:string;base64:string},idempotencyKey?:string):Promise<unknown>;
@@ -437,7 +456,7 @@ export function createHttpApi(fetcher: typeof fetch = fetch): M1Api {
     if (response.status === 204) return undefined as T;
     return response.json() as Promise<T>;
   }
-  const params=(q:Record<string,string|number>)=>new URLSearchParams(Object.entries(q).map(([k,v])=>[k,String(v)]));
+  const params=(q:Record<string,string|number|undefined>)=>new URLSearchParams(Object.entries(q).flatMap(([k,v])=>v===undefined?[]:[[k,String(v)]]));
   const projectPath = (id: string) => `/projects/${encodeURIComponent(id)}`;
   function authority(projectId: string, revision: number) {
     if (!epochs.has(projectId))
@@ -481,6 +500,23 @@ export function createHttpApi(fetcher: typeof fetch = fetch): M1Api {
     startTeamGeneration:(id,input)=>request(`${projectPath(id)}/team/generation`,input),
     teamGeneration:(id,generation)=>request(`${projectPath(id)}/team/generation/${encodeURIComponent(generation)}`),
     graphStatus:id=>request(`${projectPath(id)}/graph/status`),
+    databaseStatus:(id,signal)=>request(`${projectPath(id)}/database`,undefined,'GET',signal),
+    selectDatabaseSource:(id,input)=>request(`${projectPath(id)}/database/source`,input),
+    databaseSchema:(id,query={},signal)=>request(`${projectPath(id)}/database/schema?${params(query)}`,undefined,'GET',signal),
+    databaseChanges:(id,signal)=>request(`${projectPath(id)}/database/changes`,undefined,'GET',signal),
+    scanDatabase:(id,input={})=>request(`${projectPath(id)}/database/scan`,input),
+    codeDatabaseStatus:(id,signal)=>request(`${projectPath(id)}/code-database`,undefined,'GET',signal),
+    codeDatabaseLinks:(id,query,signal)=>request(`${projectPath(id)}/code-database/links?${params(query)}`,undefined,'GET',signal),
+    scanCodeDatabase:(id,input={})=>request(`${projectPath(id)}/code-database/scan`,input),
+    projectFiles:(id,q,signal)=>request(`${projectPath(id)}/files?${params(q)}`,undefined,'GET',signal),
+    projectFile:(id,input,signal)=>request(`${projectPath(id)}/files/read?${params(input)}`,undefined,'GET',signal),
+    projectInventoryPolicy:id=>request(`${projectPath(id)}/files/policy`),
+    projectScans:(id,signal)=>request(`${projectPath(id)}/scans`,undefined,'GET',signal),
+    projectAnalysis:(id,signal)=>request(`${projectPath(id)}/analysis`,undefined,'GET',signal),
+    startProjectScan:(id,input={})=>request(`${projectPath(id)}/scans`,input),
+    cancelProjectScan:(id,scanId)=>request(`${projectPath(id)}/scans/${encodeURIComponent(scanId)}/cancel`,{}),
+    retryProjectScan:(id,scanId)=>request(`${projectPath(id)}/scans/${encodeURIComponent(scanId)}/retry`,{}),
+    saveProjectInventoryPolicy:(id,policy,expectedVersion)=>request(`${projectPath(id)}/files/policy`,{policy,expectedVersion}),
     rebuildGraph:id=>request(`${projectPath(id)}/graph/rebuild`,{}),
     graphPage:(id,q)=>request(`${projectPath(id)}/graph?${params(q)}`),
     graphNode:(id,node,revision)=>request(`${projectPath(id)}/graph/nodes/${encodeURIComponent(node)}?${params({revision})}`),
@@ -494,6 +530,8 @@ export function createHttpApi(fetcher: typeof fetch = fetch): M1Api {
     skillGeneration:(id,job)=>request(`${projectPath(id)}/team/skills/generation/${encodeURIComponent(job)}`),
     applySkillGeneration:(id,job,input)=>request(`${projectPath(id)}/team/skills/generation/${encodeURIComponent(job)}/apply`,{...input,...authority(id,0),epoch:epochs.get(id)}),
     taskManager:(projectId,signal)=>request(`${projectPath(projectId)}/task-manager`,undefined,'GET',signal),
+    projectFreshness:(projectId,signal)=>request(`${projectPath(projectId)}/freshness`,undefined,'GET',signal),
+    taskFilePreflight:(projectId,taskId,expectedRevision,signal)=>request(`${projectPath(projectId)}/runtime/file-preflight`,{taskId,expectedRevision},'POST',signal),
     stopPendingLink:(projectId,linkId)=>request(`${projectPath(projectId)}/task-manager/links/${encodeURIComponent(linkId)}/stop`,{}),
     taskManagerCommand:(projectId,input,idempotencyKey=crypto.randomUUID())=>{
       if(!epochs.has(projectId))return Promise.reject(new Error('Project authority is unverified'));

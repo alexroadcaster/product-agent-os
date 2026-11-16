@@ -9,7 +9,7 @@ import {bindProject} from '../adapters/project-sources.ts';
 export function createTeamService(store:LocalStore,configuredRoots:AssetRoot[]=[]){
  async function roots(projectId:string){const p=await store.project(projectId);if(!p)teamFail('PROJECT_NOT_FOUND');const binding=await bindProject(projectId,p.canonicalRoot);if(binding.directoryIdentity!==p.rootIdentity)teamFail('PROJECT_ROOT_UNAVAILABLE');return [...projectAssetRoots(binding.workspaceRoot),...configuredRoots];}
  async function registry(projectId:string):Promise<TeamRegistry>{return (await store.get(projectId,teamId))?.data as unknown as TeamRegistry??{category:'team_registry',assets:[]};}
- async function runs(projectId:string){return (await store.projectEntities(projectId)).filter(r=>r.kind==='run').map(r=>({entity:r,run:(r.data.appAgentRun??r.data.runtimeRun) as any}));}
+ async function runs(projectId:string){return (await store.projectEntities(projectId,{kinds:['settings','run','task']})).filter(r=>r.kind==='run').map(r=>({entity:r,run:(r.data.appAgentRun??r.data.runtimeRun) as any}));}
  async function preview(projectId:string,input:any){const reg=await registry(projectId),active=(await runs(projectId)).filter(({entity})=>!['completed','failed','interrupted'].includes(entity.status)).map(({entity,run})=>({id:entity.id,assetIds:(run?.assetPins??run?.taskContext?.assetPins??[]).map((p:any)=>p.assetId)}));
   const available=(await catalog(projectId)).assets;const p=previewAsset(reg,input.proposal,input.expectedRevision,active,available);
   for(const dep of p.proposal.dependencies)if(!available.some(a=>a.id===dep&&!a.archived&&!a.deleted))teamFail('ASSET_DEPENDENCY_UNAVAILABLE');return p;

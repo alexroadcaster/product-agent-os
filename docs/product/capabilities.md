@@ -1,6 +1,6 @@
 # Возможности и трассировка требований
 
-Source status: `repository_source / traceability_map / static_review`, 15.11.2026.
+Source status: `repository_source / traceability_map / static_review`, 15.11.2026.; FUNC-G04: locally_verified_with_measured_limits, 16.11.2026.
 
 **Владелец:** product совместно с владельцами Web и plugin. **Scope/version:** local capabilities, DG02/2026-11-15. Обновлять при изменении исходного контракта, пользовательского пути или owning task; статусы и acceptance обновляются только в их планах.
 
@@ -18,3 +18,16 @@ Source status: `repository_source / traceability_map / static_review`, 15.11.202
 Остальные задачи [F01–F34 и семь групп](../planning/functional-remediation-2026-11-15.md) сохраняют собственные AC, dependencies и source owners; эта таблица маршрутизирует, а не заменяет карточки. M5 — PAOS-0047 (conditional sign-in), PAOS-0052/0053 (team storage/transfer) — принадлежит [Web-плану](../planning/product-agent-os-web-task-manager-plan-2026-11-09.md#paos-m5) и остаётся planned. F32–F34 не предоставляют team storage. Product/runtime readiness нельзя вывести из числа реализованных карточек.
 
 Источники требований: исторический [PRD](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/research/product-agent-os-web-prd-2026-11-05.md), с последующими уточнениями на его первой странице; [Web-план](../planning/product-agent-os-web-task-manager-plan-2026-11-09.md) владеет позднейшими task statuses. Указанные tests не запускались только потому, что на них есть ссылки; актуальную проверку выбирают по изменённому контракту в TEST.md.
+
+## FUNC-G04 — реализованные local surfaces, проверка закрытия
+
+Текущий working tree расширяет прежний snapshot DG02. Источник текущего статуса и scope: [пять карточек FUNC-G04](../planning/functional-remediation-2026-11-15.md#func-g04-results). Изолированное G02 research evidence не подменяет production integration. F24/F25 и общий end-to-end продуктовый аудит остаются у своих задач.
+
+| Пользовательский результат | Вход и выход | Проверка и границы |
+| --- | --- | --- |
+| Карта зависимостей и символов | F28 inventory + checked JS/TS и безопасный root tsconfig subset → revision-pinned imports/lexical graph, поиск, направления, bounded path, evidence/source. | G02 ground truth10/10; unknown aliases/languages/dynamic semantics явные. Imports не доказывают calls; restart/eviction требует rebuild. |
+| База данных проекта | Явный selected offline SQLite → schema-only snapshot/ERD/table/details и compatible two-snapshot changes. Settings registration не открывает БД. | Native read lease/authorizer/policy/CAS; без rows/SQL execution/real credentials. Windows/offline SQLite; views/virtual partial. Смена source отменяет пригодность позднего ответа. |
+| Код и таблицы | Current code+schema revisions → static source-bound links, confidence/op filters, bounded agent context/test candidates, Map DB network, Files related tables. | Literal JS/TS SQL и Prisma static subset; одинаковые table names разных DB не сливаются. Query≤32KiB, обоих pins нет → отказ. Динамика остаётся uncertain. |
+| Длительное локальное чтение | Измеренный F20 workload → scoped task reads, frozen history pages, bounded artifact previews и graph LRU. | Исходный startup failure сохранён. Before/after и final measurements принадлежат F20; это не reference-hardware или production qualification. |
+
+Для агента private project-query получает project из claimed run и повторяет lease/scope checks после async read; Browser cookies не дают worker capability. Проверка technical roundtrip использует synthetic caller без модели. Native parser работает в owned child: native stack failure не должен завершать HTTP host; JS heap flags не ограничивают native RSS. Human acceptance и provider/live-App acceptance не выводятся из технических fixtures. Следующие артефакты — F20 receipts, build-bound browser evidence и итоговые статусы в матрице.

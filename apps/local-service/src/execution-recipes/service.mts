@@ -16,7 +16,7 @@ export type {RecipePreview} from '../../../../packages/contracts/execution-recip
 export function createRecipeService(options:{store:LocalStore;port?:RecipePort;assetRoots?:AssetRoot[];now?:()=>number;automatic?:boolean}){
  const {store,port}=options,now=options.now??Date.now,autonomy=autonomyService(store,now);let queue:Promise<unknown>=Promise.resolve(),closed=false;
  const serial=<T,>(fn:()=>Promise<T>)=>{const work=queue.then(async()=>{if(closed)fail('RECIPE_SERVICE_CLOSED');await ready;return fn();});queue=work.catch(()=>{});return work;};
- const rows=async(projectId:string)=>(await store.projectEntities(projectId)).filter(r=>r.kind==='settings'&&r.data.category==='recipe_execution');
+ const rows=async(projectId:string)=>(await store.projectEntities(projectId,{kinds:['settings','run','task']})).filter(r=>r.kind==='settings'&&r.data.category==='recipe_execution');
  const read=async(projectId:string,id:string)=>{const row=await store.get(projectId,id);if(!row||row.data.category!=='recipe_execution')fail('RECIPE_NOT_FOUND');return row!;};
  async function checkpoint(e:Execution){
   const last=e.attempts.at(-1);

@@ -1,0 +1,1549 @@
+{
+  "schema_version": "user_project_methodology_task_group_v1",
+  "task_matrix_schema": "task_matrix_plan_v1",
+  "created_at": "2026-11-15",
+  "timezone": "Europe/Moscow",
+  "direction_id": "B",
+  "source_plan": "docs/planning/user-project-methodologies-2026-11-15.md",
+  "english_plan": "docs/planning/user-project-methodologies-2026-11-15.en.md",
+  "status": "planned",
+  "execution_authority": "planning_only_no_implementation_authorized",
+  "internal_plan_reference": "docs/planning/methodology-improvement-2026-11-15.json",
+  "internal_plan_reference_semantics": "independent_direction_no_hard_dependency",
+  "source_snapshot": {
+    "git_head": "5a9c87bea374accc953a8401fa1ac32678ff6e6e",
+    "source_sha256": {
+      "plugins/product-agent-os/scripts/product_agent_os/discovery.py": "38311ab28a2b80f9fd61f73c6b39c9b38bae1e139c5e32044e5260aec16aa6e8",
+      "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py": "08a383b7b975370371df7cd49cdf367ab7f631200439b31fe4b4c153f5ee774c",
+      "plugins/product-agent-os/scripts/product_agent_os/methodology_catalog.py": "6489dfe7983a694ccf2875403dc9a51af359e9a8df168893515b93110b974c9a",
+      "plugins/product-agent-os/scripts/product_agent_os/methodology_synthesis.py": "85b5a8c634eaa3dbbd512df979d4a98c024fbe1048d9bb7acc38073399ea093b",
+      "plugins/product-agent-os/scripts/product_agent_os/task_routing.py": "705e5fd2a21c030b2284d117a4d11ea632daa73156690ccde8086b6b1206e314",
+      "plugins/product-agent-os/scripts/product_agent_os/infrastructure.py": "6b8ea56412a6977eb8fc9dbdbd452387b2751f89719d97982b4dd2975b9740dc",
+      "plugins/product-agent-os/scripts/product_agent_os/merge_infrastructure.py": "34ad32b8c974d295c46e34d4c5b331a1d894013c54873df76d017d7efb6914a1",
+      "plugins/product-agent-os/scripts/codex_runtime_runner/routes.py": "88a9b1b70fec080926165d850e97cecfb341122a1ebf57247bb998eaf76655ba",
+      "plugins/product-agent-os/scripts/codex_runtime_runner/contracts.py": "6b148385b7590f04c1c8bd6d2248a91ddbdc028a3966b8fa575177afd604e64b",
+      "plugins/product-agent-os/skills/project-lifecycle-orchestrator/SKILL.md": "4b80f55fc609062c9d74108b23a7081d6f6f5c59a33b2f7f10acb5ca12b5c0ea",
+      "plugins/product-agent-os/skills/requirements-author/SKILL.md": "50c13a4f52ed81f0d6bfa459620b48f13619312827c92c3f35c5bb45bf1b1e82",
+      "plugins/product-agent-os/skills/test-eval-designer/SKILL.md": "4c7f6e5c7b4a4f31e893f5c207f00480aa59395070aad3e033110e54c1b0a171",
+      "apps/local-service/src/http/application.mts": "fd303bf398b03499bb698842e88b20f18e3f05b14420b009c62eccad7744d8cd",
+      "apps/web/src/ui/App.tsx": "589eba6ef96dee517eb97de05a0b947aa665fdb18937185332a2dd88aefb5fb0",
+      "packages/contracts/tasks/m1-task-profile.ts": "8b6a4c2d1eda1a39c5d6edf8c472f2678b05b269032debfb6176535fdafb7cb2"
+    },
+    "func_owner_snapshot": {
+      "implemented": 10,
+      "planned": 24
+    },
+    "provenance": "Source inspection only; historical receipts not rerun."
+  },
+  "legacy_reference": {
+    "id": "PAOS-METH-16",
+    "reference_owner": "docs/planning/methodology-improvement-2026-11-15.json",
+    "mapping": {
+      "PAOS-METH-16-AC01": [
+        "PAOS-PMETH-10",
+        "PAOS-PMETH-22"
+      ],
+      "PAOS-METH-16-AC02": [
+        "PAOS-PMETH-03",
+        "PAOS-PMETH-07",
+        "PAOS-PMETH-11"
+      ],
+      "PAOS-METH-16-AC03": [
+        "PAOS-PMETH-16",
+        "PAOS-PMETH-17",
+        "PAOS-PMETH-23",
+        "PAOS-PMETH-26"
+      ]
+    },
+    "does_not_copy_status": true
+  },
+  "tasks": [
+    {
+      "id": "PAOS-PMETH-01",
+      "title": "Проверить существующий путь методологий и назначить владельцев",
+      "title_en": "Audit the existing methodology path and assign owners",
+      "status": "planned",
+      "priority": "P1",
+      "direction_id": "B",
+      "delivery_group_id": "B0",
+      "methodologies": [
+        "Spec-DD",
+        "ADD"
+      ],
+      "depends_on": [],
+      "blocks": [
+        "PAOS-PMETH-02",
+        "PAOS-PMETH-22"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-25"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "architect + explorer",
+      "work_locations": [
+        "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+        "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+        "plugins/product-agent-os/scripts/product_agent_os/task_routing.py",
+        "plugins/product-agent-os/scripts/codex_runtime_runner/routes.py"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-01-AC01",
+          "ru": "Карта reuse/extend/missing: discovery → audit/catalog/synthesis → task routing → runner/skills → stage/merge → Web; каждый переход подтверждён источником.",
+          "en": "Map reuse/extend/missing from discovery to audit/catalog/synthesis, task routing, runner/skills, stage/merge and Web; substantiate each edge with source."
+        },
+        {
+          "id": "PAOS-PMETH-01-AC02",
+          "ru": "Readiness/detection, staged proposal и реальное выполнение разделены; отсутствие keyword в Web не выдается за доказательство отсутствия интеграции.",
+          "en": "Separate readiness/detection, staged proposals and execution; a missing Web keyword is not proof of missing integration."
+        },
+        {
+          "id": "PAOS-PMETH-01-AC03",
+          "ru": "Для каждого нового контракта выбран один owner и существующий entrypoint; дублирующий движок не создаётся.",
+          "en": "Choose one owner and an existing entrypoint for every new contract; do not create a duplicate engine."
+        },
+        {
+          "id": "PAOS-PMETH-01-AC04",
+          "ru": "Baseline fixtures, команды, revision и compatibility consumers перечислены; активные target assets не изменены аудитом.",
+          "en": "List baseline fixtures, commands, revision and compatibility consumers; the audit does not change active target assets."
+        }
+      ],
+      "verification_profile": "PV-PLAN",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-02",
+      "title": "Нормализовать профиль проекта и намерение пользователя",
+      "title_en": "Normalize project profiles and user intent",
+      "status": "planned",
+      "priority": "P1",
+      "direction_id": "B",
+      "delivery_group_id": "B0",
+      "methodologies": [
+        "Spec-DD",
+        "ADD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-01"
+      ],
+      "blocks": [
+        "PAOS-PMETH-03",
+        "PAOS-PMETH-22"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-28"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "product-manager + plugin-runtime-builder",
+      "work_locations": [
+        "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+        "plugins/product-agent-os/scripts/product_agent_os/task_routing.py",
+        "plugins/product-agent-os/scripts/product_agent_os/question_protocol.py"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-02-AC01",
+          "ru": "Профиль различает greenfield/legacy, тип поверхности, масштаб/связанность, риск, change mode, доступные проверки и ограничения среды; размер repo не равен риску.",
+          "en": "Distinguish greenfield/legacy, surface, scale/coupling, risk, change mode, available checks and environment limits; repository size is not risk."
+        },
+        {
+          "id": "PAOS-PMETH-02-AC02",
+          "ru": "Реальный intent/AC доходит до audit/route; file-free intake и прежний task_context сохраняются, mixed/malformed input отклонён явно.",
+          "en": "Pass actual intent/AC to audit/route; preserve file-free intake and task_context while explicitly rejecting mixed/malformed inputs."
+        },
+        {
+          "id": "PAOS-PMETH-02-AC03",
+          "ru": "Факты имеют provenance/revision, assumptions и missing context отдельны; один существенный blocking question не заменяет доступное чтение.",
+          "en": "Give facts provenance/revision and separate assumptions/missing context; a material blocking question does not replace available reads."
+        },
+        {
+          "id": "PAOS-PMETH-02-AC04",
+          "ru": "Docs-only, небольшой bugfix и backend-only не получают полную продуктовую церемонию или frontend gates.",
+          "en": "Docs-only, small bugfix and backend-only work do not receive full product ceremony or frontend gates."
+        }
+      ],
+      "verification_profile": "PV-ENGINE",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-03",
+      "title": "Выбирать методологии соразмерно задаче и объяснять выбор",
+      "title_en": "Select proportionate methodologies and explain decisions",
+      "status": "planned",
+      "priority": "P1",
+      "direction_id": "B",
+      "delivery_group_id": "B0",
+      "methodologies": [
+        "Spec-DD",
+        "Design-DD",
+        "TDD",
+        "ADD",
+        "FSD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-02",
+        "PAOS-PMETH-22"
+      ],
+      "blocks": [
+        "PAOS-PMETH-04"
+      ],
+      "external_refs": [],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "architect + plugin-runtime-builder",
+      "work_locations": [
+        "plugins/product-agent-os/scripts/product_agent_os/methodology_catalog.py",
+        "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+        "plugins/product-agent-os/scripts/product_agent_os/methodology_synthesis.py"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-03-AC01",
+          "ru": "Для каждой из пяти методологий возвращаются applicability, reason, evidence refs, требуемая глубина, owner и smallest next action; существующие 12 domains не заменяются.",
+          "en": "For each methodology return applicability, reason, evidence refs, depth, owner and smallest next action; retain the existing 12 domains."
+        },
+        {
+          "id": "PAOS-PMETH-03-AC02",
+          "ru": "TDD включается для изменяемого тестируемого поведения; Design-DD для journey/UI; FSD условен по frontend coupling; Spec-DD имеет compact/full варианты.",
+          "en": "Use TDD for changed testable behavior and Design-DD for journeys/UI; condition FSD on frontend coupling and provide compact/full Spec-DD variants."
+        },
+        {
+          "id": "PAOS-PMETH-03-AC03",
+          "ru": "Missing evidence даёт вопрос/gap/present_unverified, не нарушение или present_verified; user override сохраняет причину и не отменяет permissions/обязательные invariants.",
+          "en": "Missing evidence produces a question/gap/present_unverified rather than a violation or present_verified; record override reasons without relaxing permissions/invariants."
+        },
+        {
+          "id": "PAOS-PMETH-03-AC04",
+          "ru": "Baseline/candidate cases PMETH-22 подтверждают отсутствие blanket FSD/DDD/TDD mandate, скрытых новых gates и ложной готовности.",
+          "en": "PMETH-22 baseline/candidate cases show no blanket FSD/DDD/TDD mandate, hidden new gates or false readiness."
+        }
+      ],
+      "verification_profile": "PV-ENGINE",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-04",
+      "title": "Согласовать версионированный methodology contract",
+      "title_en": "Define a versioned methodology contract",
+      "status": "planned",
+      "priority": "P1",
+      "direction_id": "B",
+      "delivery_group_id": "B0",
+      "methodologies": [
+        "Spec-DD",
+        "ADD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-03"
+      ],
+      "blocks": [
+        "PAOS-PMETH-05",
+        "PAOS-PMETH-10",
+        "PAOS-PMETH-13",
+        "PAOS-PMETH-18"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-08"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "architect",
+      "work_locations": [
+        "plugins/product-agent-os/scripts/product_agent_os/methodology_catalog.py",
+        "plugins/product-agent-os/scripts/codex_runtime_runner/contracts.py",
+        "plugins/product-agent-os/scripts/product_agent_os/task_routing.py",
+        "packages/contracts/"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-04-AC01",
+          "ru": "Выбран один canonical schema owner и adapters Python/TypeScript; decision/profile, project/task identity, revisions и evidence refs имеют проверяемые поля.",
+          "en": "Choose one canonical schema owner and Python/TypeScript adapters; validate decision/profile, project/task identity, revisions and evidence references."
+        },
+        {
+          "id": "PAOS-PMETH-04-AC02",
+          "ru": "Существующие readiness statuses, domain packets и legacy consumers поддержаны explicit compatibility mapping; unknown/newer versions не превращаются в default success.",
+          "en": "Provide explicit compatibility mappings for current readiness states, packets and legacy consumers; unknown/newer versions do not default to success."
+        },
+        {
+          "id": "PAOS-PMETH-04-AC03",
+          "ru": "Decision, plan, execution receipt и acceptance verdict различаются; contract не хранит raw private chat, secrets или полномочия, выведенные из рекомендации.",
+          "en": "Separate decisions, plans, execution receipts and acceptance verdicts; store no private raw chat/secrets or authority inferred from recommendations."
+        },
+        {
+          "id": "PAOS-PMETH-04-AC04",
+          "ru": "Contract tests покрывают roundtrip, malformed input, wrong project/task/revision и adapter parity; добавление schema не означает runtime activation.",
+          "en": "Contract tests cover roundtrip, malformed input, wrong project/task/revision and adapter parity; schema presence is not activation."
+        }
+      ],
+      "verification_profile": "PV-CONTRACT",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-05",
+      "title": "Встроить Spec-Driven маршрут от запроса к проверяемой спецификации",
+      "title_en": "Integrate a Spec-Driven route from intent to verifiable specification",
+      "status": "planned",
+      "priority": "P1",
+      "direction_id": "B",
+      "delivery_group_id": "B1",
+      "methodologies": [
+        "Spec-DD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-04",
+        "PAOS-PMETH-22"
+      ],
+      "blocks": [
+        "PAOS-PMETH-06",
+        "PAOS-PMETH-07",
+        "PAOS-PMETH-08",
+        "PAOS-PMETH-15"
+      ],
+      "external_refs": [],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "plugin-runtime-builder + product-manager",
+      "work_locations": [
+        "plugins/product-agent-os/skills/requirements-author/SKILL.md",
+        "plugins/product-agent-os/skills/implementation-planner/SKILL.md",
+        "plugins/product-agent-os/assets/templates/artifact-templates/",
+        "plugins/product-agent-os/scripts/product_agent_os/templates.py"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-05-AC01",
+          "ru": "Для небольшой задачи формируется concise scope/AC в существующем owner, для сложной — требования/non-goals/invariants и сценарии; пустой mandatory документ не создаётся.",
+          "en": "Use concise scope/AC in an existing owner for small work and requirements/non-goals/invariants/scenarios for complex work; create no empty mandatory document."
+        },
+        {
+          "id": "PAOS-PMETH-05-AC02",
+          "ru": "Каждый AC связан с observable scenario/check/evidence owner либо explicit gap; неоднозначность и предположения вынесены до build.",
+          "en": "Link every AC to an observable scenario/check/evidence owner or explicit gap; expose ambiguity/assumptions before build."
+        },
+        {
+          "id": "PAOS-PMETH-05-AC03",
+          "ru": "Существующие user-authored требования дополняются staged proposal/diff, не перезаписываются и не дублируются вторым source of truth.",
+          "en": "Extend user-authored requirements through staged proposals/diffs without overwriting or creating another source of truth."
+        },
+        {
+          "id": "PAOS-PMETH-05-AC04",
+          "ru": "Greenfield не scaffold-ится до выбранного первого vertical slice и соответствующей authority; изменение спецификации не доказывает работоспособность кода.",
+          "en": "Do not scaffold greenfield work before selecting the first vertical slice and obtaining applicable authority; specification changes are not working-code proof."
+        }
+      ],
+      "verification_profile": "PV-ENGINE",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-06",
+      "title": "Отслеживать изменения спецификации и устаревший контекст",
+      "title_en": "Track specification changes and stale context",
+      "status": "planned",
+      "priority": "P1",
+      "direction_id": "B",
+      "delivery_group_id": "B1",
+      "methodologies": [
+        "Spec-DD",
+        "ADD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-05"
+      ],
+      "blocks": [
+        "PAOS-PMETH-12",
+        "PAOS-PMETH-16"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-02",
+        "PAOS-FUNC-25"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "plugin-runtime-builder + tester",
+      "work_locations": [
+        "plugins/product-agent-os/scripts/product_agent_os/task_routing.py",
+        "plugins/product-agent-os/scripts/product_agent_os/control_plane_documents.py",
+        "plugins/product-agent-os/scripts/product_agent_os/documentation_sync.py"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-06-AC01",
+          "ru": "Изменения AC/API/schema/source revision находят затронутые slices/checks и владельцев; текстовый diff не выдаётся за полную semantic impact proof.",
+          "en": "Map AC/API/schema/source changes to affected slices/checks/owners; textual diffs are not complete semantic-impact proof."
+        },
+        {
+          "id": "PAOS-PMETH-06-AC02",
+          "ru": "Stale plan/proposal/receipt не повышает readiness; resume требует актуального context/authority, прежняя история сохранена.",
+          "en": "Stale plans/proposals/receipts cannot promote readiness; resume requires current context/authority and preserves history."
+        },
+        {
+          "id": "PAOS-PMETH-06-AC03",
+          "ru": "Повторная оценка unchanged inputs не пишет документы повторно; conflicting owner edits дают review/handoff, не overwrite.",
+          "en": "Reassessment of unchanged inputs performs no repeated writes; conflicting edits require review/handoff rather than overwrite."
+        },
+        {
+          "id": "PAOS-PMETH-06-AC04",
+          "ru": "Synthetic concurrent edit, renamed artifact, missing owner и changed acceptance имеют явные outcomes и проверку сохранности.",
+          "en": "Synthetic concurrent edits, renamed artifacts, missing owners and changed acceptance have explicit outcomes and preservation checks."
+        }
+      ],
+      "verification_profile": "PV-ENGINE",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-07",
+      "title": "Встроить TDD и воспроизведение ошибок в выполнение slices",
+      "title_en": "Integrate TDD and bug reproduction into slice execution",
+      "status": "planned",
+      "priority": "P1",
+      "direction_id": "B",
+      "delivery_group_id": "B1",
+      "methodologies": [
+        "TDD",
+        "Spec-DD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-05",
+        "PAOS-PMETH-22"
+      ],
+      "blocks": [
+        "PAOS-PMETH-09",
+        "PAOS-PMETH-15"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-21",
+        "PAOS-FUNC-22"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "plugin-runtime-builder + tester",
+      "work_locations": [
+        "plugins/product-agent-os/skills/test-eval-designer/SKILL.md",
+        "plugins/product-agent-os/scripts/product_agent_os/test_strategy_selector.py",
+        "plugins/product-agent-os/scripts/product_agent_os/task_routing.py",
+        "plugins/product-agent-os/assets/templates/workflows/"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-07-AC01",
+          "ru": "Для changed testable behavior требуется observable RED по нужной причине, minimal GREEN и scoped refactor; команда, revision и expected/actual сохранены в существующем evidence.",
+          "en": "For changed testable behavior require observable RED for the intended reason, minimal GREEN and scoped refactor; record command, revision and expected/actual in existing evidence."
+        },
+        {
+          "id": "PAOS-PMETH-07-AC02",
+          "ru": "Setup/import/tool-missing failures не засчитываются как RED; исходный воспроизводимый failure сохраняется при последующем успехе.",
+          "en": "Setup/import/tool-missing failures are not RED; retain the original reproducible failure after success."
+        },
+        {
+          "id": "PAOS-PMETH-07-AC03",
+          "ru": "Behavior-preserving refactor использует characterization/regression; docs/config/subjective LLM outputs получают подходящие static checks/evals без искусственного RED.",
+          "en": "Use characterization/regression for preserving refactors and appropriate static checks/evals for docs/config/subjective LLM outputs without artificial RED."
+        },
+        {
+          "id": "PAOS-PMETH-07-AC04",
+          "ru": "Недоступная проверка остаётся explicit gap; нельзя переписать/удалить assertion ради green или сделать test count доказательством correctness.",
+          "en": "Unavailable checks remain explicit gaps; do not rewrite/delete assertions for green or use test counts as correctness proof."
+        }
+      ],
+      "verification_profile": "PV-TDD",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-08",
+      "title": "Встроить Design-Driven сценарии и матрицу состояний",
+      "title_en": "Integrate Design-Driven journeys and state matrices",
+      "status": "planned",
+      "priority": "P1",
+      "direction_id": "B",
+      "delivery_group_id": "B1",
+      "methodologies": [
+        "Design-DD",
+        "Spec-DD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-05",
+        "PAOS-PMETH-22"
+      ],
+      "blocks": [
+        "PAOS-PMETH-09",
+        "PAOS-PMETH-15"
+      ],
+      "external_refs": [
+        "UI-12"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "product-manager + plugin-runtime-builder",
+      "work_locations": [
+        "plugins/product-agent-os/assets/templates/artifact-templates/",
+        "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+        "plugins/product-agent-os/skills/requirements-author/SKILL.md"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-08-AC01",
+          "ru": "Для изменяемого journey определены пользовательская цель, шаги, данные, interaction/error/empty/loading/dirty states и accessibility; backend-only получает not_applicable.",
+          "en": "Define the user goal, steps, data, interaction/error/empty/loading/dirty states and accessibility for changed journeys; backend-only work gets not_applicable."
+        },
+        {
+          "id": "PAOS-PMETH-08-AC02",
+          "ru": "Существующий дизайн и design system переиспользованы, missing states предложены отдельно; новый макет не объявлен утверждённым пользователем.",
+          "en": "Reuse existing design/system and propose missing states separately; a new mockup is not user-approved by default."
+        },
+        {
+          "id": "PAOS-PMETH-08-AC03",
+          "ru": "Прототип различает synthetic/current/unavailable data и реальные API ограничения; невозможные состояния не обещаны как доступная функция.",
+          "en": "Distinguish synthetic/current/unavailable data and real API constraints; do not promise unsupported states as available functions."
+        },
+        {
+          "id": "PAOS-PMETH-08-AC04",
+          "ru": "Design artifacts, implementation и human acceptance имеют отдельные owners/evidence; небольшая UI правка не требует redesign всего проекта.",
+          "en": "Separate design, implementation and human-acceptance ownership/evidence; small UI changes do not require full-project redesign."
+        }
+      ],
+      "verification_profile": "PV-ENGINE",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-09",
+      "title": "Проверять пользовательский интерфейс по принятому design-контракту",
+      "title_en": "Verify UI against the accepted design contract",
+      "status": "planned",
+      "priority": "P1",
+      "direction_id": "B",
+      "delivery_group_id": "B1",
+      "methodologies": [
+        "Design-DD",
+        "TDD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-07",
+        "PAOS-PMETH-08"
+      ],
+      "blocks": [
+        "PAOS-PMETH-17"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-19",
+        "UI-12"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "tester + plugin-runtime-builder",
+      "work_locations": [
+        "plugins/product-agent-os/skills/test-eval-designer/SKILL.md",
+        "plugins/product-agent-os/skills/risk-reviewer/SKILL.md",
+        "plugins/product-agent-os/assets/templates/artifact-templates/"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-09-AC01",
+          "ru": "План проверки выбирает доступные component/browser/visual/keyboard checks изменённого journey, viewport/theme/long-content состояния и source/build/harness provenance.",
+          "en": "Select available component/browser/visual/keyboard checks for the changed journey, viewport/theme/long-content states and source/build/harness provenance."
+        },
+        {
+          "id": "PAOS-PMETH-09-AC02",
+          "ru": "Композиция и действия проверяются помимо overflow/contrast; intentional fixture mismatch выявляется, baseline updates явно reviewable.",
+          "en": "Check composition/actions beyond overflow/contrast; detect intentional fixture mismatch and make baseline updates reviewable."
+        },
+        {
+          "id": "PAOS-PMETH-09-AC03",
+          "ru": "Screenshot/prototype pass не объявляется human usability acceptance, WCAG certification или доказательством API side effect.",
+          "en": "Screenshot/prototype passes are not human-usability acceptance, WCAG certification or API-side-effect proof."
+        },
+        {
+          "id": "PAOS-PMETH-09-AC04",
+          "ru": "Если runtime/browser не разрешён или недоступен, возвращается gap с безопасным next action без обхода ограничений и подмены старым screenshot.",
+          "en": "If runtime/browser is unavailable or unauthorized, return a gap and safe next action without bypassing limits or substituting old screenshots."
+        }
+      ],
+      "verification_profile": "PV-DESIGN",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-10",
+      "title": "Определять применимость FSD и предлагать архитектурный выбор",
+      "title_en": "Determine FSD applicability and propose architecture choices",
+      "status": "planned",
+      "priority": "P1",
+      "direction_id": "B",
+      "delivery_group_id": "B2",
+      "methodologies": [
+        "FSD",
+        "Spec-DD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-04",
+        "PAOS-PMETH-22"
+      ],
+      "blocks": [
+        "PAOS-PMETH-11",
+        "PAOS-PMETH-15"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-30"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "architect + plugin-runtime-builder",
+      "work_locations": [
+        "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+        "plugins/product-agent-os/assets/methodology/methodology-catalog.json",
+        "plugins/product-agent-os/assets/templates/artifact-templates/"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-10-AC01",
+          "ru": "Small/static frontend, backend/native-only, растущий frontend и уже модульный legacy получают разные рекомендации с подтверждёнными signals.",
+          "en": "Produce evidence-based distinct recommendations for small/static frontends, backend/native-only work, growing frontends and already-modular legacy."
+        },
+        {
+          "id": "PAOS-PMETH-10-AC02",
+          "ru": "Сравниваются сохранить архитектуру, усилить boundaries и gradual FSD; выбор учитывает coupling, change frequency, ownership и migration cost.",
+          "en": "Compare preserving architecture, strengthening boundaries and gradual FSD using coupling, change frequency, ownership and migration cost."
+        },
+        {
+          "id": "PAOS-PMETH-10-AC03",
+          "ru": "Предлагаются только нужные layers/slices/public APIs; whole-screen folders не автоматически features, backend/Python не получают frontend FSD.",
+          "en": "Propose only useful layers/slices/public APIs; whole-screen folders are not automatically features and backend/Python do not receive frontend FSD."
+        },
+        {
+          "id": "PAOS-PMETH-10-AC04",
+          "ru": "Архитектурный proposal требует соответствующего решения владельца перед migration; отсутствие FSD не является дефектом само по себе.",
+          "en": "An architecture proposal requires an applicable owner decision before migration; absence of FSD is not itself a defect."
+        }
+      ],
+      "verification_profile": "PV-ENGINE",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-11",
+      "title": "Проверять frontend-зависимости по исходникам",
+      "title_en": "Verify frontend dependencies from source",
+      "status": "planned",
+      "priority": "P1",
+      "direction_id": "B",
+      "delivery_group_id": "B2",
+      "methodologies": [
+        "FSD",
+        "TDD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-10"
+      ],
+      "blocks": [
+        "PAOS-PMETH-12",
+        "PAOS-PMETH-17"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-30"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "plugin-runtime-builder + tester",
+      "work_locations": [
+        "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+        "plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py",
+        "tests/product_agent_os/test_methodology_audit.py"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-11-AC01",
+          "ru": "Статическая проверка поддерживаемых JS/TS/TSX imports и public APIs привязана к source revision; aliases/reexports/type/literal dynamic imports не пропускаются молча.",
+          "en": "Bind supported JS/TS/TSX import/public-API checks to source revisions; do not silently skip aliases/reexports/type/literal dynamic imports."
+        },
+        {
+          "id": "PAOS-PMETH-11-AC02",
+          "ru": "Unsupported syntax/alias/symlink/out-of-scope source означает partial/unknown с coverage; graph и folder names не дают present_verified.",
+          "en": "Unsupported syntax/aliases/symlinks/out-of-scope sources produce partial/unknown coverage; graphs/folder names do not establish present_verified."
+        },
+        {
+          "id": "PAOS-PMETH-11-AC03",
+          "ru": "Нарушения имеют путь/строку/rule/owner и отделены от допустимого entity public API и legacy exceptions.",
+          "en": "Report path/line/rule/owner for violations and distinguish valid entity public APIs and legacy exceptions."
+        },
+        {
+          "id": "PAOS-PMETH-11-AC04",
+          "ru": "RED/GREEN parser/boundary cases и no-source-mutation hashes проходят; существующие parser/adapters и F30 решение переиспользованы без обязательной установки.",
+          "en": "Pass RED/GREEN parser/boundary and no-source-mutation checks; reuse current parsers/adapters and the F30 decision without mandatory installation."
+        }
+      ],
+      "verification_profile": "PV-FSD",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-12",
+      "title": "Создавать поэтапный FSD migration proposal для проекта пользователя",
+      "title_en": "Create incremental FSD migration proposals for user projects",
+      "status": "planned",
+      "priority": "P2",
+      "direction_id": "B",
+      "delivery_group_id": "B2",
+      "methodologies": [
+        "FSD",
+        "Spec-DD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-06",
+        "PAOS-PMETH-11"
+      ],
+      "blocks": [
+        "PAOS-PMETH-16"
+      ],
+      "external_refs": [],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "architect + plugin-runtime-builder",
+      "work_locations": [
+        "plugins/product-agent-os/skills/implementation-planner/SKILL.md",
+        "plugins/product-agent-os/scripts/product_agent_os/infrastructure.py",
+        "plugins/product-agent-os/assets/templates/artifact-templates/"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-12-AC01",
+          "ru": "Proposal содержит baseline imports, минимальный pilot, AC, owners, dependencies, compatibility bridges и rollback; нет mandatory full rewrite.",
+          "en": "Include baseline imports, a minimal pilot, AC, owners, dependencies, compatibility bridges and rollback; no mandatory full rewrite."
+        },
+        {
+          "id": "PAOS-PMETH-12-AC02",
+          "ru": "Сначала public API/import ratchet, затем selected shared/entities и один screen; каждое следующее расширение зависит от принятого предыдущего checkpoint.",
+          "en": "Define public APIs/import ratchet before selected shared/entities and one screen; gate expansion on accepted checkpoints."
+        },
+        {
+          "id": "PAOS-PMETH-12-AC03",
+          "ru": "Existing architecture/user files/dirty changes сохранены; moved code не меняет business/API semantics и new code не импортирует legacy internals.",
+          "en": "Preserve existing architecture/user files/dirty changes; moved code retains business/API semantics and new code does not import legacy internals."
+        },
+        {
+          "id": "PAOS-PMETH-12-AC04",
+          "ru": "Read-only scan пишет только report/proposal в разрешённый stage; target apply и hook activation требуют своей authority и не выполняются рекомендацией.",
+          "en": "Read-only scanning writes reports/proposals only to authorized staging; target apply and hook activation require their own authority."
+        }
+      ],
+      "verification_profile": "PV-STAGE",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-13",
+      "title": "Встроить ADD-контракт исполнения и ownership",
+      "title_en": "Integrate ADD execution and ownership contracts",
+      "status": "planned",
+      "priority": "P1",
+      "direction_id": "B",
+      "delivery_group_id": "B3",
+      "methodologies": [
+        "ADD",
+        "Spec-DD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-04",
+        "PAOS-PMETH-22"
+      ],
+      "blocks": [
+        "PAOS-PMETH-14",
+        "PAOS-PMETH-15",
+        "PAOS-PMETH-17"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-15",
+        "PAOS-FUNC-16"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "lifecycle-orchestrator + plugin-runtime-builder",
+      "work_locations": [
+        "plugins/product-agent-os/skills/project-lifecycle-orchestrator/SKILL.md",
+        "plugins/product-agent-os/skills/agent-team-designer/SKILL.md",
+        "plugins/product-agent-os/scripts/codex_runtime_runner/contracts.py",
+        "plugins/product-agent-os/scripts/codex_runtime_runner/guards.py"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-13-AC01",
+          "ru": "Slice передаёт goal/AC/source revision, allowed/forbidden paths, checks, stop/handoff; обычная задача использует concise route.",
+          "en": "Pass goal/AC/source revision, allowed/forbidden paths, checks and stop/handoff; use concise routing for ordinary work."
+        },
+        {
+          "id": "PAOS-PMETH-13-AC02",
+          "ru": "Один агент — default; parallel work только при независимом ownership и разрешённом host capability; overlapping files сериализуются.",
+          "en": "Default to one agent; parallelize only independent ownership with permitted host capabilities and serialize overlapping files."
+        },
+        {
+          "id": "PAOS-PMETH-13-AC03",
+          "ru": "Model/reasoning/tool budgets следуют действующей конфигурации; profile не предоставляет отдельный sandbox, escalation/provider selection не выводятся из роли.",
+          "en": "Follow current configured model/reasoning/tool budgets; a role does not create a sandbox or imply escalation/provider selection."
+        },
+        {
+          "id": "PAOS-PMETH-13-AC04",
+          "ru": "Unknown capability, timeout, partial child и stale handoff не становятся success; no silent fallback и bounded retry имеют явные receipts.",
+          "en": "Unknown capabilities, timeouts, partial children and stale handoffs are not success; record no-silent-fallback decisions and bounded retries."
+        }
+      ],
+      "verification_profile": "PV-ADD",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-14",
+      "title": "Связать выбранные методологии с доступными skills и инструментами",
+      "title_en": "Connect methodology decisions to available skills and tools",
+      "status": "planned",
+      "priority": "P2",
+      "direction_id": "B",
+      "delivery_group_id": "B3",
+      "methodologies": [
+        "ADD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-13"
+      ],
+      "blocks": [
+        "PAOS-PMETH-16"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-12"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "plugin-runtime-builder",
+      "work_locations": [
+        "plugins/product-agent-os/scripts/product_agent_os/plugin_components.py",
+        "plugins/product-agent-os/scripts/product_agent_os/task_routing.py",
+        "plugins/product-agent-os/skills/references/",
+        "plugins/product-agent-os/scripts/codex_runtime_runner/routes.py"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-14-AC01",
+          "ru": "Для каждого метода выбраны существующий canonical skill/workflow и task-relevant inputs; нет загрузки всех skills или выдуманного доступного tool.",
+          "en": "Map each method to existing canonical skills/workflows and relevant inputs; do not load all skills or invent tool availability."
+        },
+        {
+          "id": "PAOS-PMETH-14-AC02",
+          "ru": "Installed/staged/exposed/invoked различаются; missing skill/tool даёт safe manual/staged next action и gap.",
+          "en": "Distinguish installed/staged/exposed/invoked states; missing skills/tools produce safe manual/staged next actions and gaps."
+        },
+        {
+          "id": "PAOS-PMETH-14-AC03",
+          "ru": "Skills/MCP/docs содержимое не повышает полномочия; embedded instructions, malicious commands и external writes не исполняются как рекомендации.",
+          "en": "Skill/MCP/doc content cannot increase authority; do not execute embedded instructions, malicious commands or external writes as recommendations."
+        },
+        {
+          "id": "PAOS-PMETH-14-AC04",
+          "ru": "Новые install/connect/activation остаются отдельными разрешёнными действиями; модельный prompt не копирует секреты и raw private chats.",
+          "en": "Keep install/connect/activation separately authorized; model prompts contain no secrets or raw private chats."
+        }
+      ],
+      "verification_profile": "PV-ADD",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-15",
+      "title": "Объединить методологии в один соразмерный delivery plan",
+      "title_en": "Compose methodologies into one proportionate delivery plan",
+      "status": "planned",
+      "priority": "P1",
+      "direction_id": "B",
+      "delivery_group_id": "B3",
+      "methodologies": [
+        "Spec-DD",
+        "Design-DD",
+        "TDD",
+        "ADD",
+        "FSD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-05",
+        "PAOS-PMETH-07",
+        "PAOS-PMETH-08",
+        "PAOS-PMETH-10",
+        "PAOS-PMETH-13"
+      ],
+      "blocks": [
+        "PAOS-PMETH-16",
+        "PAOS-PMETH-18"
+      ],
+      "external_refs": [],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "architect + plugin-runtime-builder",
+      "work_locations": [
+        "plugins/product-agent-os/scripts/product_agent_os/methodology_synthesis.py",
+        "plugins/product-agent-os/scripts/product_agent_os/task_routing.py",
+        "plugins/product-agent-os/scripts/codex_runtime_runner/routes.py",
+        "plugins/product-agent-os/skills/implementation-planner/SKILL.md"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-15-AC01",
+          "ru": "Один DAG объединяет requirement/design/architecture/test/build/review; aliases артефактов сводятся к canonical owner, нет пяти независимых очередей.",
+          "en": "Use one DAG for requirements/design/architecture/test/build/review; resolve artifact aliases to canonical owners rather than five independent queues."
+        },
+        {
+          "id": "PAOS-PMETH-15-AC02",
+          "ru": "Dependencies — реальные contract prerequisites; маленький bugfix не ждёт полного PRD, всех control-plane docs, team setup или FSD migration.",
+          "en": "Use actual contract prerequisites; small bugfixes do not wait for a full PRD, every control-plane document, team setup or FSD migration."
+        },
+        {
+          "id": "PAOS-PMETH-15-AC03",
+          "ru": "Каждый slice имеет input/output/owner/AC/checks/stop; backend/API/AI paths получают только релевантные gates, subjective AI quality использует evals.",
+          "en": "Each slice has input/output/owner/AC/checks/stop; apply relevant gates to backend/API/AI paths and evals to subjective AI quality."
+        },
+        {
+          "id": "PAOS-PMETH-15-AC04",
+          "ru": "Cycle/conflict/accepted-gap cases дают объяснимый next action; methodology advice не расширяет авторизацию и не запускает plan автоматически.",
+          "en": "Cycles/conflicts/accepted gaps produce explainable next actions; methodology advice neither expands authority nor starts execution automatically."
+        }
+      ],
+      "verification_profile": "PV-ENGINE",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-16",
+      "title": "Подключить безопасные staging, preview и разрешённое применение",
+      "title_en": "Integrate safe staging, previews and authorized application",
+      "status": "planned",
+      "priority": "P1",
+      "direction_id": "B",
+      "delivery_group_id": "B3",
+      "methodologies": [
+        "Spec-DD",
+        "ADD",
+        "FSD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-06",
+        "PAOS-PMETH-12",
+        "PAOS-PMETH-14",
+        "PAOS-PMETH-15"
+      ],
+      "blocks": [
+        "PAOS-PMETH-17",
+        "PAOS-PMETH-19"
+      ],
+      "external_refs": [],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "plugin-runtime-builder + tester",
+      "work_locations": [
+        "plugins/product-agent-os/scripts/product_agent_os/infrastructure.py",
+        "plugins/product-agent-os/scripts/product_agent_os/stage_manifest.py",
+        "plugins/product-agent-os/scripts/product_agent_os/merge_infrastructure.py",
+        "plugins/product-agent-os/scripts/merge_infrastructure.py"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-16-AC01",
+          "ru": "Используется существующий dry-run/stage/manifest/merge pipeline; stage находится вне target, target write отсутствует до применимой точной authority.",
+          "en": "Reuse dry-run/stage/manifest/merge; keep staging outside the target and perform no target writes without applicable exact authority."
+        },
+        {
+          "id": "PAOS-PMETH-16-AC02",
+          "ru": "Preview показывает owned paths, user-file handling, method/AC links и side effects; existing unmarked AGENTS/config/hooks не перезаписываются.",
+          "en": "Preview owned paths, user-file handling, method/AC links and side effects; do not overwrite existing unmarked AGENTS/config/hooks."
+        },
+        {
+          "id": "PAOS-PMETH-16-AC03",
+          "ru": "Drift, wrong root/project, traversal/symlink и stale approval отклоняются; partial apply recovery сохраняет пользовательские изменения.",
+          "en": "Reject drift, wrong root/project, traversal/symlinks and stale approvals; preserve user changes during partial-apply recovery."
+        },
+        {
+          "id": "PAOS-PMETH-16-AC04",
+          "ru": "Synthetic apply/rollback проверяет только fixture target и byte preservation; создание proposal не включает hooks/automation/install/provider.",
+          "en": "Synthetic apply/rollback uses fixture targets and verifies byte preservation; proposals do not activate hooks/automation/install/providers."
+        }
+      ],
+      "verification_profile": "PV-STAGE",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-17",
+      "title": "Собирать evidence и вычислять готовность по критериям",
+      "title_en": "Collect evidence and compute criterion-based readiness",
+      "status": "planned",
+      "priority": "P1",
+      "direction_id": "B",
+      "delivery_group_id": "B3",
+      "methodologies": [
+        "Spec-DD",
+        "TDD",
+        "Design-DD",
+        "ADD",
+        "FSD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-09",
+        "PAOS-PMETH-11",
+        "PAOS-PMETH-13",
+        "PAOS-PMETH-16"
+      ],
+      "blocks": [
+        "PAOS-PMETH-18",
+        "PAOS-PMETH-19",
+        "PAOS-PMETH-21",
+        "PAOS-PMETH-23"
+      ],
+      "external_refs": [],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "tester + plugin-runtime-builder",
+      "work_locations": [
+        "plugins/product-agent-os/scripts/product_agent_os/methodology_synthesis.py",
+        "plugins/product-agent-os/scripts/codex_runtime_runner/contracts.py",
+        "plugins/product-agent-os/skills/completion-skeptic/SKILL.md",
+        "plugins/product-agent-os/skills/risk-reviewer/SKILL.md"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-17-AC01",
+          "ru": "Requirement → scenario → check → receipt → verdict имеет owner, revision/environment и применимость; accepted gap отделён от passed.",
+          "en": "Link requirement → scenario → check → receipt → verdict with owners, revision/environment and applicability; accepted gaps are not passed checks."
+        },
+        {
+          "id": "PAOS-PMETH-17-AC02",
+          "ru": "Detection, generated files, test count и report formatting не повышают readiness сами по себе; missing/stale/failed receipts остаются видимыми.",
+          "en": "Detection/generated files/test counts/report formatting cannot independently promote readiness; keep missing/stale/failed receipts visible."
+        },
+        {
+          "id": "PAOS-PMETH-17-AC03",
+          "ru": "Expected implementation/provider path проверяется runtime evidence только когда claim это требует и действие разрешено; unit smoke не объявляет activation.",
+          "en": "Use runtime evidence for implementation/provider-path claims when required and authorized; unit smoke is not activation."
+        },
+        {
+          "id": "PAOS-PMETH-17-AC04",
+          "ru": "CLI core pilot связывает применимые методы с checks на одном fixture revision; technical, human и release acceptance остаются раздельными.",
+          "en": "The CLI core pilot links applicable methods/checks on one fixture revision; separate technical, human and release acceptance."
+        }
+      ],
+      "verification_profile": "PV-EVIDENCE",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-18",
+      "title": "Определить durable state методологий в Web/desktop",
+      "title_en": "Define durable methodology state in Web/desktop",
+      "status": "planned",
+      "priority": "P2",
+      "direction_id": "B",
+      "delivery_group_id": "B4",
+      "methodologies": [
+        "Spec-DD",
+        "ADD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-04",
+        "PAOS-PMETH-15",
+        "PAOS-PMETH-17"
+      ],
+      "blocks": [
+        "PAOS-PMETH-19"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-08",
+        "PAOS-FUNC-22"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "architect + builder — storage/contracts",
+      "work_locations": [
+        "packages/contracts/",
+        "apps/local-service/src/storage/",
+        "apps/local-service/src/task-manager/service.mts",
+        "apps/local-service/src/artifacts/service.mts"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-18-AC01",
+          "ru": "Определены project/task scope и canonical owners profile/decision/plan/evidence; SQLite и imported MD/JSON не становятся конкурирующими статусами.",
+          "en": "Define project/task scope and canonical profile/decision/plan/evidence owners; SQLite and imported MD/JSON do not become competing status authorities."
+        },
+        {
+          "id": "PAOS-PMETH-18-AC02",
+          "ru": "Version/revision/CAS, history, project isolation и explicit unknown поддержаны; older clients/newer schema не теряют данные.",
+          "en": "Support version/revision/CAS, history, project isolation and explicit unknowns; older clients/newer schemas do not lose data."
+        },
+        {
+          "id": "PAOS-PMETH-18-AC03",
+          "ru": "Если нужна migration, она additive/recoverable на synthetic backup/restore с compatibility checks; не читать/мигрировать реальную user DB этим slice.",
+          "en": "If needed, validate additive/recoverable migrations with synthetic backup/restore and compatibility checks; do not access/migrate real user DBs in this slice."
+        },
+        {
+          "id": "PAOS-PMETH-18-AC04",
+          "ru": "Schema не хранит secrets/raw private chat; отсутствие token/cost telemetry остаётся null/unavailable, не создаёт F11 scope.",
+          "en": "Store no secrets/private raw chat; missing token/cost telemetry remains null/unavailable without expanding into F11."
+        }
+      ],
+      "verification_profile": "PV-STORAGE",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-19",
+      "title": "Связать Python methodology engine с API и runtime приложения",
+      "title_en": "Connect the Python methodology engine to application API/runtime",
+      "status": "planned",
+      "priority": "P2",
+      "direction_id": "B",
+      "delivery_group_id": "B4",
+      "methodologies": [
+        "ADD",
+        "Spec-DD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-16",
+        "PAOS-PMETH-17",
+        "PAOS-PMETH-18"
+      ],
+      "blocks": [
+        "PAOS-PMETH-20",
+        "PAOS-PMETH-21"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-01",
+        "PAOS-FUNC-08"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "builder — local-service + plugin-runtime-builder",
+      "work_locations": [
+        "apps/local-service/src/http/application.mts",
+        "apps/local-service/src/runtime/",
+        "packages/contracts/",
+        "plugins/product-agent-os/scripts/product_agent_os/"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-19-AC01",
+          "ru": "Выбранный PMETH-01 bridge использует versioned contract; HTTP/Python/runner parity проверена через реальные adapters, не mock-only echo.",
+          "en": "Use the PMETH-01 selected bridge and versioned contract; verify HTTP/Python/runner parity through actual adapters rather than mock-only echoes."
+        },
+        {
+          "id": "PAOS-PMETH-19-AC02",
+          "ru": "Read-only recommendation и authorized apply различаются; session/origin/CSRF/project scope/input bounds/cancellation проверены отрицательными случаями.",
+          "en": "Separate read-only recommendations from authorized apply; negatively test session/origin/CSRF/project scope/input bounds/cancellation."
+        },
+        {
+          "id": "PAOS-PMETH-19-AC03",
+          "ru": "Intended path и selector видны в diagnostic receipt; old path/fallback не маскируют сценарий, no silent fallback при bridge failure.",
+          "en": "Expose the intended path/selector in diagnostic receipts; prevent old paths/fallbacks masking the scenario and disallow silent bridge fallback."
+        },
+        {
+          "id": "PAOS-PMETH-19-AC04",
+          "ru": "Bridge не вызывает model/provider, не запускает произвольный repo command и не использует реальные credentials; pinned-source изменения следуют TEST qualification route.",
+          "en": "The bridge calls no model/provider, runs no arbitrary repo command and uses no real credentials; pinned-source changes follow TEST qualification."
+        }
+      ],
+      "verification_profile": "PV-BRIDGE",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-20",
+      "title": "Показать пользователю выбор, план и доказательства в интерфейсе",
+      "title_en": "Expose methodology choices, plans and evidence in the UI",
+      "status": "planned",
+      "priority": "P2",
+      "direction_id": "B",
+      "delivery_group_id": "B4",
+      "methodologies": [
+        "Design-DD",
+        "Spec-DD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-19"
+      ],
+      "blocks": [
+        "PAOS-PMETH-21",
+        "PAOS-PMETH-26"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-24",
+        "UI-12"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "product-manager + builder — web",
+      "work_locations": [
+        "apps/web/src/ui/App.tsx",
+        "apps/web/src/features/tasks/",
+        "apps/web/src/features/projects/",
+        "apps/web/src/locales/",
+        "docs/frontend/"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-20-AC01",
+          "ru": "До build согласованы placement в существующем project/task flow, prototype и states; UI объясняет зачем метод, required/optional/not-applicable и следующий шаг.",
+          "en": "Agree placement in existing project/task flows, prototype and states before build; explain why a method applies, its required/optional/not-applicable status and the next step."
+        },
+        {
+          "id": "PAOS-PMETH-20-AC02",
+          "ru": "Пользователь видит source/coverage/unknown, scope/diff/permissions и причины остановки; выбор рекомендации не выглядит как apply или successful build.",
+          "en": "Show source/coverage/unknown, scope/diffs/permissions and stop reasons; choosing advice does not look like apply or a successful build."
+        },
+        {
+          "id": "PAOS-PMETH-20-AC03",
+          "ru": "Есть loading/empty/error/stale/conflict/permission-required, RU/EN, themes и keyboard/focus; backend unavailable не подменяется fixture success.",
+          "en": "Provide loading/empty/error/stale/conflict/permission-required states, RU/EN, themes and keyboard/focus; backend unavailability is not fixture success."
+        },
+        {
+          "id": "PAOS-PMETH-20-AC04",
+          "ru": "Synthetic browser journey проходит через PMETH-19 API; manual override/disposition/audit сохраняются, internal FSD migration не является prerequisite.",
+          "en": "A synthetic browser journey uses the PMETH-19 API; preserve manual overrides/dispositions/audit without requiring internal FSD migration."
+        }
+      ],
+      "verification_profile": "PV-UI",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-21",
+      "title": "Обрабатывать drift, остановку, возобновление и аудит",
+      "title_en": "Handle drift, stopping, resumption and audit",
+      "status": "planned",
+      "priority": "P1",
+      "direction_id": "B",
+      "delivery_group_id": "B4",
+      "methodologies": [
+        "ADD",
+        "Spec-DD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-17",
+        "PAOS-PMETH-19",
+        "PAOS-PMETH-20"
+      ],
+      "blocks": [
+        "PAOS-PMETH-23"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-21"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "builder — runtime + tester",
+      "work_locations": [
+        "apps/local-service/src/runtime/",
+        "apps/local-service/src/sessions/",
+        "apps/local-service/src/storage/",
+        "plugins/product-agent-os/scripts/codex_runtime_runner/"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-21-AC01",
+          "ru": "Изменение task/source/profile/permission revision инвалидирует зависимую authority/readiness; replan объясняет затронутый scope без автозаписи в target.",
+          "en": "Task/source/profile/permission revision changes invalidate dependent authority/readiness; replans explain affected scope without automatic target writes."
+        },
+        {
+          "id": "PAOS-PMETH-21-AC02",
+          "ru": "Stop/cancel и unknown outcome не replay-ят эффект; resume требует matching project/task/checkpoint и текущие permissions.",
+          "en": "Stop/cancel and unknown outcomes do not replay effects; resume requires matching project/task/checkpoint and current permissions."
+        },
+        {
+          "id": "PAOS-PMETH-21-AC03",
+          "ru": "Audit хранит минимальные decisions/receipts/reasons с redaction, ownership и временем; partial/failed attempts не удаляются при следующем успехе.",
+          "en": "Audit minimal decisions/receipts/reasons with redaction, ownership and time; retain partial/failed attempts after later success."
+        },
+        {
+          "id": "PAOS-PMETH-21-AC04",
+          "ru": "Restart/bridge failure/concurrent edit/budget exhaustion имеют synthetic tests и visible next action; unattended automation и closed-App operation не заявлены.",
+          "en": "Synthetic-test restart/bridge failure/concurrent edits/budget exhaustion with visible next actions; claim no unattended automation or closed-App operation."
+        }
+      ],
+      "verification_profile": "PV-RECOVERY",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-22",
+      "title": "Подготовить baseline и acceptance eval matrix пользовательских проектов",
+      "title_en": "Prepare user-project baseline and acceptance eval matrices",
+      "status": "planned",
+      "priority": "P1",
+      "direction_id": "B",
+      "delivery_group_id": "B0",
+      "methodologies": [
+        "Spec-DD",
+        "Design-DD",
+        "TDD",
+        "ADD",
+        "FSD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-01",
+        "PAOS-PMETH-02"
+      ],
+      "blocks": [
+        "PAOS-PMETH-03",
+        "PAOS-PMETH-05",
+        "PAOS-PMETH-07",
+        "PAOS-PMETH-08",
+        "PAOS-PMETH-10",
+        "PAOS-PMETH-13",
+        "PAOS-PMETH-23"
+      ],
+      "external_refs": [],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "tester",
+      "work_locations": [
+        "tests/product_agent_os/test_methodology_audit.py",
+        "tests/product_agent_os/test_methodology_synthesis.py",
+        "tests/product_agent_os/test_codex_runtime_runner_fixture_eval.py",
+        "plugins/product-agent-os/assets/fixtures/"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-22-AC01",
+          "ru": "Набор включает tiny CLI/docs-only, backend/API bug, greenfield frontend, coupled legacy frontend, already-bounded frontend, native и AI/RAG; ожидаемый метод/глубина/gap заданы до candidate.",
+          "en": "Cover tiny CLI/docs-only, backend/API bugs, greenfield frontend, coupled legacy, already-bounded frontend, native and AI/RAG; specify methods/depth/gaps before candidates."
+        },
+        {
+          "id": "PAOS-PMETH-22-AC02",
+          "ru": "Негативы: misleading folders, alias unknown, stale spec, forged success, missing tests, prompt injection, dirty user files, denied write, wrong project/revision и unavailable tool.",
+          "en": "Include misleading folders, unknown aliases, stale specs, forged success, missing tests, prompt injection, dirty user files, denied writes, wrong project/revision and unavailable tools."
+        },
+        {
+          "id": "PAOS-PMETH-22-AC03",
+          "ru": "Baseline actual results и известные failures сохранены; expected future capability не отмечена passed до implementation, setup failure не считается продуктовым RED.",
+          "en": "Retain actual baseline results/known failures; do not pass expected future capabilities before implementation or treat setup failure as product RED."
+        },
+        {
+          "id": "PAOS-PMETH-22-AC04",
+          "ru": "Fixtures synthetic/reproducible, no provider/PII; каждый изменённый routing/prompt/contract slice выбирает relevant cases, не повторяет весь eval без причины.",
+          "en": "Use synthetic reproducible fixtures without providers/PII; select relevant cases per routing/prompt/contract change rather than repeatedly running everything."
+        }
+      ],
+      "verification_profile": "PV-EVAL",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-23",
+      "title": "Провести сквозную synthetic приёмку методологического пути",
+      "title_en": "Run end-to-end synthetic acceptance of the methodology path",
+      "status": "planned",
+      "priority": "P1",
+      "direction_id": "B",
+      "delivery_group_id": "B5",
+      "methodologies": [
+        "Spec-DD",
+        "Design-DD",
+        "TDD",
+        "ADD",
+        "FSD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-17",
+        "PAOS-PMETH-21",
+        "PAOS-PMETH-22"
+      ],
+      "blocks": [
+        "PAOS-PMETH-24",
+        "PAOS-PMETH-26"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-19",
+        "PAOS-FUNC-21",
+        "PAOS-FUNC-22"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "tester + reviewer",
+      "work_locations": [
+        "tests/product_agent_os/",
+        "tests/web/single-window/",
+        "tests/fixtures/",
+        "docs/testing/"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-23-AC01",
+          "ru": "На current source проходят read-only scan → reasoned selection → staged plan → authorized fixture apply/build/check → evidence/verdict для применимых сценариев PMETH-22.",
+          "en": "On current sources verify read-only scan → reasoned selection → staged plan → authorized fixture apply/build/check → evidence/verdict for applicable PMETH-22 scenarios."
+        },
+        {
+          "id": "PAOS-PMETH-23-AC02",
+          "ru": "Frontend pilot демонстрирует incremental FSD и design states; backend/CLI не получают FSD; AI quality остаётся eval/gap без скрытого provider call.",
+          "en": "Frontend pilots demonstrate incremental FSD/design states; backend/CLI receive no FSD and AI quality stays eval/gap without hidden provider calls."
+        },
+        {
+          "id": "PAOS-PMETH-23-AC03",
+          "ru": "Все critical privacy/authority/user-file/isolation/false-ready negatives проходят; source/build/harness hashes и cleanup подтверждены, unresolved critical gap запрещает closure.",
+          "en": "Pass all critical privacy/authority/user-file/isolation/false-readiness negatives; verify source/build/harness hashes and cleanup, with critical unresolved gaps blocking closure."
+        },
+        {
+          "id": "PAOS-PMETH-23-AC04",
+          "ru": "API/runner intended paths активированы в наблюдаемом synthetic scope, old/fallback paths не маскируют результат; model quality/human acceptance отдельно.",
+          "en": "Observe activation of API/runner intended paths in synthetic scope without old/fallback masking; model quality/human acceptance remain separate."
+        }
+      ],
+      "verification_profile": "PV-E2E",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-24",
+      "title": "Оценить полезность маршрута на сопоставимых actual-agent пилотах",
+      "title_en": "Evaluate usefulness with comparable actual-agent pilots",
+      "status": "planned",
+      "priority": "P2",
+      "direction_id": "B",
+      "delivery_group_id": "B5",
+      "methodologies": [
+        "ADD",
+        "Spec-DD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-23"
+      ],
+      "blocks": [
+        "PAOS-PMETH-25"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-11",
+        "PAOS-FUNC-23"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "product-manager + tester",
+      "work_locations": [
+        "docs/product-agent-os/real-project-pilot.md",
+        "docs/testing/",
+        "docs/planning/user-project-methodologies-2026-11-15.md"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-24-AC01",
+          "ru": "Baseline и candidate выполняют одинаковые задачи/AC при сопоставимых source/runtime/model conditions; различия зафиксированы до сравнения.",
+          "en": "Run baseline/candidate on the same tasks/AC under comparable source/runtime/model conditions; record differences before comparison."
+        },
+        {
+          "id": "PAOS-PMETH-24-AC02",
+          "ru": "Измерены accepted outcomes, defects/reopens, repair effort, owner interventions, elapsed и доступные token/cost данные; нет выдуманных нулей или productivity процентов.",
+          "en": "Measure accepted outcomes, defects/reopens, repair effort, owner interventions, elapsed and available token/cost data; invent no zeros or productivity percentages."
+        },
+        {
+          "id": "PAOS-PMETH-24-AC03",
+          "ru": "Actual-agent/provider/real-project access только в отдельно разрешённом scope; при его отсутствии deterministic proof остаётся ограниченным, широкая польза insufficient_evidence.",
+          "en": "Use separately authorized actual-agent/provider/real-project scope; without it retain bounded deterministic proof and insufficient_evidence for broad usefulness."
+        },
+        {
+          "id": "PAOS-PMETH-24-AC04",
+          "ru": "Результат содержит benefit/no-benefit/insufficient-evidence по типам проектов и ограничения; неудачный опыт сохранён и не превращён в broad readiness.",
+          "en": "Report benefit/no-benefit/insufficient-evidence per project type and limits; retain failures without promoting broad readiness."
+        }
+      ],
+      "verification_profile": "PV-ACTUAL",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-25",
+      "title": "Принять ограниченное решение о поставке и rollout",
+      "title_en": "Make a bounded delivery and rollout decision",
+      "status": "planned",
+      "priority": "P2",
+      "direction_id": "B",
+      "delivery_group_id": "B5",
+      "methodologies": [
+        "ADD",
+        "Spec-DD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-24",
+        "PAOS-PMETH-26"
+      ],
+      "blocks": [],
+      "external_refs": [
+        "PAOS-FUNC-17"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "release-operator + product-manager; owner decision",
+      "work_locations": [
+        "docs/product-agent-os/packaging-and-closure.md",
+        "docs/operations/",
+        "PLAN.md",
+        "RUNLOG.md"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-25-AC01",
+          "ru": "Owner-reviewed go/bounded_go/hold/no-go привязан к поддержанным типам проектов, gates и evidence; не обещает autonomous production delivery.",
+          "en": "Bind owner-reviewed go/bounded_go/hold/no-go to supported project types/gates/evidence without promising autonomous production delivery."
+        },
+        {
+          "id": "PAOS-PMETH-25-AC02",
+          "ru": "Compatibility/update/rollback, disable route и сохранение user-authored target files описаны; migration/install/distribution не выполняются решением.",
+          "en": "Document compatibility/update/rollback, disabling and preservation of user-authored target files; the decision performs no migration/install/distribution."
+        },
+        {
+          "id": "PAOS-PMETH-25-AC03",
+          "ru": "Provider cost, privacy/licensing и host activation gaps имеют владельца и disposition; отсутствующие необходимые evidence не обходятся accepted wording.",
+          "en": "Assign owners/dispositions to provider-cost/privacy/licensing/host-activation gaps; wording cannot bypass missing necessary evidence."
+        },
+        {
+          "id": "PAOS-PMETH-25-AC04",
+          "ru": "Публикация, active hooks/automation и новые target permissions остаются отдельными действиями; internal A milestones не являются gate продуктового B.",
+          "en": "Keep publication/active hooks/automation/new target permissions separate; internal A milestones do not gate product B."
+        }
+      ],
+      "verification_profile": "PV-DECISION",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    },
+    {
+      "id": "PAOS-PMETH-26",
+      "title": "Подготовить пользовательское объяснение и operator документацию",
+      "title_en": "Prepare user guidance and operator documentation",
+      "status": "planned",
+      "priority": "P2",
+      "direction_id": "B",
+      "delivery_group_id": "B5",
+      "methodologies": [
+        "Spec-DD",
+        "Design-DD"
+      ],
+      "depends_on": [
+        "PAOS-PMETH-20",
+        "PAOS-PMETH-23"
+      ],
+      "blocks": [
+        "PAOS-PMETH-25"
+      ],
+      "external_refs": [
+        "PAOS-FUNC-25"
+      ],
+      "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
+      "proposed_owner": "docs-maintainer + product-manager",
+      "work_locations": [
+        "docs/product-agent-os/methodology-intelligence.md",
+        "docs/product-agent-os/operator-command-matrix.md",
+        "docs/operations/",
+        "docs/sources/registry.md",
+        "docs/sources/registry.en.md"
+      ],
+      "acceptance_criteria": [
+        {
+          "id": "PAOS-PMETH-26-AC01",
+          "ru": "RU/EN объясняют входы, выбор, следующий artifact/action, проверки, permissions, gaps и остановку на подтверждённых примерах из PMETH-22/PMETH-23.",
+          "en": "RU/EN guidance explains inputs, selection, next artifacts/actions, checks, permissions, gaps and stopping through confirmed PMETH-22/PMETH-23 examples."
+        },
+        {
+          "id": "PAOS-PMETH-26-AC02",
+          "ru": "Есть small-task shortcut, legacy/FSD opt-in, design acceptance и TDD failure explanation; рекомендации не представлены как гарантия успешного проекта.",
+          "en": "Explain small-task shortcuts, legacy/FSD opt-in, design acceptance and TDD failures without guaranteeing project success."
+        },
+        {
+          "id": "PAOS-PMETH-26-AC03",
+          "ru": "CLI и Web current/staged/unsupported различаются; команды/links/source registry соответствуют actual implementation и проверены по TEST.",
+          "en": "Distinguish current/staged/unsupported CLI/Web behavior; validate commands/links/source registry against implementation through TEST."
+        },
+        {
+          "id": "PAOS-PMETH-26-AC04",
+          "ru": "Повторно используются canonical guides/templates; screenshots/reports не подменяют runtime evidence, metadata-only docs update не заявляет activation.",
+          "en": "Reuse canonical guides/templates; screenshots/reports do not replace runtime evidence and metadata-only updates do not claim activation."
+        }
+      ],
+      "verification_profile": "PV-DOCS",
+      "implementation_at": "pending_execution_timestamp",
+      "execution_authority": "not_authorized_by_this_plan"
+    }
+  ]
+}

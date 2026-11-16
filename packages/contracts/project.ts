@@ -20,7 +20,7 @@ export type ProjectSourceCoverage = Readonly<{
 } & (
   | { status: 'available' }
   | { status: 'unavailable'; reason: 'missing' | 'unreadable' | 'runtime_not_connected' | 'runtime_history_unreadable' }
-  | { status: 'excluded'; reason: 'linked_file' | 'unsupported_file' }
+  | { status: 'excluded'; reason: 'linked_file' | 'unsupported_file' | 'policy_excluded'; policyReason?:string }
   | { status: 'partial'; reason: 'persisted_threads_only' | 'runtime_scope_mismatch'; visibleThreadCount: number; hasMore: boolean }
 )>;
 

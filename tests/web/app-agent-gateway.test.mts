@@ -8,6 +8,43 @@ import {openLocalStore} from '../../apps/local-service/src/storage/local-store.m
 import {bindProject} from '../../apps/local-service/src/adapters/project-sources.ts';
 import {createAppAgentGateway} from '../../apps/local-service/src/runtime/app-agent-gateway.mts';
 import {fixtureTask,runtimeTaskId} from './runtime-adapter-time.fixture.mts';
+import {taskFilePreflight} from '../../apps/local-service/src/runtime/task-file-preflight.mts';
+
+test('gateway repeats reviewed file preflight and refuses a revoked policy before creating a run',async t=>{
+ const f=await setup(t,{executorFactory:brokerFactory(async()=>assert.fail('no command permitted'))});
+ try{
+  await writeFile(join(f.root,'scope.txt'),'safe');await f.store.write({projectId:'p',actorId:'user',idempotencyKey:'preflight-task',expectedAuthorityEpoch:1,changes:[{expectedRevision:0,entity:{id:runtimeTaskId,kind:'task',data:{...fixtureTask(),files:[{relativePath:'scope.txt',plannedOperation:'modify',actualOperation:null}]}}}]});
+  const binding=await f.gateway.runtime.dispatch('bindings',{projectId:'p',sessionId:'s',mode:'execution'}),observed=await taskFilePreflight(f.store,'p',runtimeTaskId,1);assert.equal(observed.allowed,true);
+  await f.store.writeProjectState('p','project_inventory_policy_v1',0,{schemaVersion:'paos_inventory_policy_v1',policy:{exclude:['scope.txt']}});
+  await assert.rejects(f.gateway.runtime.dispatch('send',{...f.input,bindingId:binding.bindingId,taskId:runtimeTaskId,filePreflight:{digest:observed.digest,taskRevision:1}}),{code:'FILE_PREFLIGHT_BLOCKED'});
+  assert.equal((await f.store.list('p',{kind:'run'})).length,0);
+ }finally{await f.gateway.close();}
+});
+test('policy revocation after admission prevents the native command side effect',async t=>{
+ let calls=0;const f=await setup(t,{executorFactory:brokerFactory(async()=>{calls++;return {exitCode:0,stdout:'',stderr:''};})});
+ try{
+  await writeFile(join(f.root,'scope.txt'),'safe');await f.store.write({projectId:'p',actorId:'user',idempotencyKey:'command-policy-task',expectedAuthorityEpoch:1,changes:[{expectedRevision:0,entity:{id:runtimeTaskId,kind:'task',data:{...fixtureTask(),files:[{relativePath:'scope.txt',plannedOperation:'modify',actualOperation:null}]}}}]});
+  const binding=await f.gateway.runtime.dispatch('bindings',{projectId:'p',sessionId:'s',mode:'execution'}),run=await f.gateway.runtime.dispatch('send',{...f.input,bindingId:binding.bindingId,taskId:runtimeTaskId});await f.gateway.agent('claim',f.auth);
+  await f.gateway.agent('command',{...f.auth,runId:run.id,operationId:'revoked',argv:['synthetic']});
+  await f.store.writeProjectState('p','project_inventory_policy_v1',0,{schemaVersion:'paos_inventory_policy_v1',policy:{exclude:['scope.txt']}});
+  await f.gateway.runtime.dispatch('approve',{projectId:'p',sessionId:'s',bindingId:binding.bindingId,runId:run.id,requestId:'revoked',generation:'generation',decision:'accept'});
+  const deadline=Date.now()+3000;while((await f.gateway.agent('operation',{...f.auth,runId:run.id,operationId:'revoked'})).state!=='recovery_required'){if(Date.now()>deadline)assert.fail('revoked command did not settle');await new Promise(done=>setTimeout(done,10));}
+  assert.equal(calls,0);
+ }finally{await f.gateway.close();}
+});
+test('policy revoked during the final dependency read cannot reach native dispatch',async t=>{
+ let calls=0;const f=await setup(t,{executorFactory:brokerFactory(async()=>{calls++;return {exitCode:0,stdout:'',stderr:''};})});
+ const all=f.store.projectEntities;let crossed=false;
+ try{
+  await writeFile(join(f.root,'scope.txt'),'safe');await f.store.write({projectId:'p',actorId:'user',idempotencyKey:'late-policy-task',expectedAuthorityEpoch:1,changes:[{expectedRevision:0,entity:{id:runtimeTaskId,kind:'task',data:{...fixtureTask(),files:[{relativePath:'scope.txt',plannedOperation:'modify',actualOperation:null}]}}}]});
+  const binding=await f.gateway.runtime.dispatch('bindings',{projectId:'p',sessionId:'s',mode:'execution'}),run=await f.gateway.runtime.dispatch('send',{...f.input,bindingId:binding.bindingId,taskId:runtimeTaskId});await f.gateway.agent('claim',f.auth);
+  await f.gateway.agent('command',{...f.auth,runId:run.id,operationId:'late-revoked',argv:['synthetic']});
+  f.store.projectEntities=async id=>{const rows=await all(id),saved=await f.store.get('p',run.id);if(!crossed&&(saved?.data.appAgentRun as any)?.operations?.some((op:any)=>op.state==='dispatching')){crossed=true;await f.store.writeProjectState('p','project_inventory_policy_v1',0,{schemaVersion:'paos_inventory_policy_v1',policy:{exclude:['scope.txt']}});}return rows;};
+  await f.gateway.runtime.dispatch('approve',{projectId:'p',sessionId:'s',bindingId:binding.bindingId,runId:run.id,requestId:'late-revoked',generation:'generation',decision:'accept'});
+  const deadline=Date.now()+3000;while(!['recovery_required','cancelled','completed'].includes((await f.gateway.agent('operation',{...f.auth,runId:run.id,operationId:'late-revoked'})).state)){if(Date.now()>deadline)assert.fail('late policy command did not settle');await new Promise(done=>setTimeout(done,10));}
+  assert.equal(crossed,true);assert.equal(calls,0);
+ }finally{f.store.projectEntities=all;await f.gateway.close();}
+});
 
 async function setup(t:TestContext,extra:Record<string,any>={}){
  const root=await mkdtemp(join(tmpdir(),'paos-app-agent-'));const pin=await bindProject('p',root);
@@ -23,6 +60,21 @@ async function setup(t:TestContext,extra:Record<string,any>={}){
  const input={projectId:'p',sessionId:'s',bindingId:binding.bindingId,clientMessageId:randomUUID(),input:'Explain only this synthetic request.'};
  return {root,store,gateway,worker,auth,input,advance:(milliseconds:number)=>{time+=milliseconds;}};
 }
+
+test('claimed App-agent project queries derive scope and reject expired leases after a delayed read',async t=>{
+ let release!:(value:unknown)=>void;const deferred=new Promise(resolve=>release=resolve);let calls=0;
+ const f=await setup(t,{queryProject:async(projectId:string,input:Record<string,unknown>)=>{assert.equal(projectId,'p');assert.equal(input.kind,'status');calls++;return calls===1?{state:'unavailable'}:deferred;}});
+ try{const run=await f.gateway.runtime.dispatch('send',f.input);await f.gateway.agent('claim',f.auth);
+  assert.deepEqual(await f.gateway.agent('project-query',{...f.auth,runId:run.id,kind:'status'}),{state:'unavailable'});
+  await assert.rejects(f.gateway.agent('project-query',{...f.auth,runId:run.id,kind:'status',projectId:'other'}),{code:'app_agent_input_invalid'});
+  const pending=f.gateway.agent('project-query',{...f.auth,runId:run.id,kind:'status'});while(calls<2)await new Promise(done=>setTimeout(done,1));f.advance(30001);release({state:'fresh'});await assert.rejects(pending,{code:'app_agent_lease_expired'});
+ }finally{release?.({});await f.gateway.close();}
+});
+test('App-agent query lease is rechecked after the final asynchronous scope lookup',async t=>{
+ let finalRead=false;const f=await setup(t,{queryProject:async()=>{finalRead=true;return {state:'unavailable'};}}),original=f.store.project;
+ f.store.project=async(id:string)=>{const value=await original(id);if(finalRead)f.advance(30001);return value;};
+ try{const run=await f.gateway.runtime.dispatch('send',f.input);await f.gateway.agent('claim',f.auth);await assert.rejects(f.gateway.agent('project-query',{...f.auth,runId:run.id,kind:'status'}),{code:'app_agent_lease_expired'});}finally{await f.gateway.close();}
+});
 
 test('actual App pull lease claims a durable job once and reports a final visible answer idempotently',async(t)=>{
  const f=await setup(t);const run=await f.gateway.runtime.dispatch('send',f.input);
@@ -90,7 +142,7 @@ test('failed new execution binding persistence closes only its newly created bro
 test('observed task file operations are projected atomically with the command receipt without automatic Done',async(t)=>{
  let root='';const f=await setup(t,{executorFactory:brokerFactory(async()=>{await writeFile(join(root,'added.txt'),'new');await writeFile(join(root,'changed.txt'),'after');await rm(join(root,'removed.txt'));return {exitCode:0,stdout:'done',stderr:''};})});root=f.root;
  await writeFile(join(root,'changed.txt'),'before');await writeFile(join(root,'removed.txt'),'before');
- const files=['added.txt','changed.txt','removed.txt'].map(relativePath=>({relativePath,plannedOperation:null,actualOperation:null}));
+ const files=[['added.txt','create'],['changed.txt','modify'],['removed.txt','delete']].map(([relativePath,plannedOperation])=>({relativePath,plannedOperation,actualOperation:null}));
  await f.store.write({projectId:'p',actorId:'user',idempotencyKey:'file-task',expectedAuthorityEpoch:1,changes:[{expectedRevision:0,entity:{id:runtimeTaskId,kind:'task',data:{...fixtureTask(),files}}}]});
  const binding=await f.gateway.runtime.dispatch('bindings',{projectId:'p',sessionId:'s',mode:'execution'});
  const run=await f.gateway.runtime.dispatch('send',{...f.input,bindingId:binding.bindingId,taskId:runtimeTaskId});await f.gateway.agent('claim',f.auth);

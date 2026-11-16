@@ -6,6 +6,7 @@ import {decodeTaskProfile as decodeM1TaskProfile} from '../../../../packages/con
 import {taskScopeDigest} from './storage-ports.mts';
 import type {SandboxBroker} from './sandbox-broker.mts';
 import {captureTaskFiles,compareTaskFiles,type FileChange} from './app-agent-files.mts';
+import {taskFilePreflight,assertFilePreflight,fileScopeFingerprint} from './task-file-preflight.mts';
 import {projectTaskTime} from '../events/task-time.ts';
 import type {TaskTimeEvent} from '../../../../packages/contracts/time/task-time.ts';
 import {newM2Task} from '../../../../packages/contracts/issues/task-profile.ts';
@@ -42,7 +43,7 @@ function text(row:Input,key:string,max=200):string {const value=row[key];if(type
  * Public browser calls never receive worker capabilities. Optional offline native broker enforces mediated command scope;
  * it does not constrain the App host's own tools and never supplies model authentication.
  * One owner service serializes operations; profile instance reservation remains the cross-process boundary. */
-export function createAppAgentGateway(options:{store:LocalStore;profileId:string;actorId:string;now?:()=>number;redact?:(text:string)=>string;executorFactory?:(binding:AppAgentBinding)=>Promise<SandboxBroker>;assetRoots?:AssetRoot[]}) {
+export function createAppAgentGateway(options:{store:LocalStore;profileId:string;actorId:string;now?:()=>number;redact?:(text:string)=>string;executorFactory?:(binding:AppAgentBinding)=>Promise<SandboxBroker>;assetRoots?:AssetRoot[];queryProject?:(projectId:string,input:Record<string,string|number>)=>Promise<unknown>}) {
  const {store}=options;const now=options.now??Date.now;const bindings=new Map<string,Binding>();
  const autonomy=autonomyService(store,now);
  const team=createTeamService(store,options.assetRoots);
@@ -192,17 +193,21 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
  function startCommand(job:Job,operation:Operation,broker:SandboxBroker){
   // Deliberately outside the admission queue: heartbeats, approvals and Stop must remain responsive.
   const pending=Promise.resolve().then(async()=>{
-   const binding=bindings.get(job.bindingId)!;const files=(job.taskContext?.files??[]) as {relativePath:string}[];const scope={workspaceRoot:binding.workspaceRoot,directoryIdentity:binding.rootIdentity};
+   const binding=bindings.get(job.bindingId)!;const files=(job.taskContext?.files??[]) as {relativePath:string}[];
+   const canonical=(path:string)=>process.platform==='win32'?resolve(path).toLowerCase():resolve(path);
+   const currentProject=async()=>{const project=await store.project(job.projectId);if(!project||project.rootIdentity!==binding.rootIdentity||canonical(project.canonicalRoot)!==canonical(binding.workspaceRoot))fail('project_root_changed');return project;};
+   const scope=await currentProject();
    const before=await captureTaskFiles(scope,files,redact);if(before.some(file=>file.kind==='excluded'))fail('task_file_ownership_unavailable');
    // Stop may arrive during file capture. Recheck the durable in-memory owner before admitting the native side effect.
    if(closing||activeJobs.get(job.id)?.state!=='running')return {exitCode:130,stdout:'',stderr:'Command cancelled before native dispatch.',fileChanges:[] as FileChange[],cancelled:true};
    try{await assertTaskCommandBoundary(job);if(job.autonomy)await autonomy.assertAllowed(job.projectId,job.id,'command');}
    catch{return {exitCode:130,stdout:'',stderr:'Task dependency or autonomy boundary changed before native dispatch.',fileChanges:[] as FileChange[],cancelled:true};}
+   if(fileScopeFingerprint(await currentProject())!==fileScopeFingerprint(scope))return {exitCode:130,stdout:'',stderr:'File policy changed before native dispatch.',fileChanges:[] as FileChange[],cancelled:true};
    if(closing||activeJobs.get(job.id)?.state!=='running')return {exitCode:130,stdout:'',stderr:'Command cancelled before native dispatch.',fileChanges:[] as FileChange[],cancelled:true};
    // An accepted intent is not permission to begin an operation after its approval/worker lease expires.
    if(now()>=operation.expiresAt||!worker||worker.expiresAt<=now()||worker.generation!==operation.generation)return {exitCode:130,stdout:'',stderr:'Approval expired before native dispatch.',fileChanges:[] as FileChange[],cancelled:true};
    const result=await broker.execute({operationId:brokerOperationId(job,operation),argv:operation.argv,timeoutMs:operation.timeoutMs});
-   const after=await captureTaskFiles(scope,files,redact);return {...result,fileChanges:compareTaskFiles(before,after),cancelled:false};
+   const after=await captureTaskFiles(await currentProject(),files,redact);return {...result,fileChanges:compareTaskFiles(before,after),cancelled:false};
   }).then(result=>({result}),()=>({result:null})).then(async({result})=>{
    const settle=queue.then(async()=>{const previous=await store.get(job.projectId,job.id);const current=previous?.data.appAgentRun as Job|undefined;if(!current)return;
     const op=current.operations?.find(item=>item.operationId===operation.operationId);if(!op||op.state!=='dispatching')return;
@@ -230,7 +235,7 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
    ||!timingSafeEqual(Buffer.from(token),Buffer.from(worker.leaseToken)))fail('app_agent_lease_invalid');return worker;
  }
  function publicJob(job:Job){return {id:job.id,bindingId:job.bindingId,projectId:job.projectId,sessionId:job.sessionId,state:job.state,mode:job.mode,route,...(job.autonomy?{autonomy:job.autonomy,autonomyStopReason:job.autonomyStopReason}: {})};}
- function claimed(job:Job){return {runId:job.id,bindingId:job.bindingId,projectId:job.projectId,sessionId:job.sessionId,mode:job.mode,input:redact(job.input),clientMessageId:job.clientMessageId,cancelRequested:job.state==='cancel_requested',taskContext:job.taskContext,workflowSnapshot:job.workflowSnapshot,assetPins:job.assetPins,purpose:job.purpose,proposalContext:job.proposalContext,autonomy:job.autonomy,taskCreationAllowed:!!job.taskCreationInitiator};}
+ function claimed(job:Job){return {runId:job.id,bindingId:job.bindingId,projectId:job.projectId,sessionId:job.sessionId,mode:job.mode,input:redact(job.input),clientMessageId:job.clientMessageId,cancelRequested:job.state==='cancel_requested',taskContext:job.taskContext,workflowSnapshot:job.workflowSnapshot,assetPins:job.assetPins,purpose:job.purpose,proposalContext:job.proposalContext,autonomy:job.autonomy,taskCreationAllowed:!!job.taskCreationInitiator,...(options.queryProject?{projectQueries:{action:"project-query",kinds:["status","links"],maxContextBytes:32768,scope:"claimed_run_project",requiresCodeAndSchemaRevisions:true}}:{})};}
  const connection={status,
   connect: (value:unknown)=>serial(async()=>{input(value,['connectionId']);selected=true;return status();}),
   disconnect:()=>serial(async()=>{for(const active of [...activeJobs.values()]){const changed={...active,state:'recovery_required' as const};await save(changed);stopCommands(changed);}worker=undefined;selected=false;return status();})};
@@ -253,7 +258,8 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
   }),
   dispatch:(action:string,value:Input)=>serial(async()=>{
    const executionId=recipeAdmissions.get(value);recipeAdmissions.delete(value);
-   const row=input(value,['projectId','sessionId','bindingId','clientMessageId','input','mode','taskId','runId','generation','requestId','decision','resolution','targetAssetId','autonomy','taskCreationApproved','taskCreationInitiator',...(action==='team-proposal'?['assetKind','requirementContext']:[])]);const scope=await scoped(row);
+   const row=input(value,['projectId','sessionId','bindingId','clientMessageId','input','mode','taskId','runId','generation','requestId','decision','resolution','targetAssetId','autonomy','taskCreationApproved','taskCreationInitiator','filePreflight',...(action==='team-proposal'?['assetKind','requirementContext']:[])]);const scope=await scoped(row);
+   if(row.filePreflight!==undefined&&(action!=='send'||scope.binding?.mode!=='execution'))fail('app_agent_input_invalid');
    if(row.autonomy!==undefined&&(typeof row.autonomy!=='boolean'||action!=='send'))fail('app_agent_input_invalid');
     if(row.taskCreationApproved!==undefined&&(row.taskCreationApproved!==true||action!=='send'||scope.binding?.mode!=='execution'||row.autonomy===true||typeof row.taskCreationInitiator!=='string'||!row.taskCreationInitiator.trim()))fail('app_agent_creation_forbidden');
     if(row.taskCreationInitiator!==undefined&&row.taskCreationApproved!==true)fail('app_agent_creation_forbidden');
@@ -303,7 +309,7 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
      if(!brokers.has(binding.id))fail('execution_boundary_unverified');const task=await store.get(scope.projectId,text(row,'taskId'));
      if(!task||task.deleted||task.kind!=='task')fail('task_scope_mismatch');const profile=decodeM1TaskProfile(task.data);
      if(profile.schemaVersion==='m2_task_profile_v1'&&profile.type==='epic')fail('runtime_epic_not_executable');
-     const reserved=(await store.projectEntities(scope.projectId)).find(r=>r.kind==='settings'&&r.data.category==='scheduler_entry'&&['queued','paused','needs_review','running','recovery_required'].includes(String(r.data.state))&&(r.data.plan as any)?.taskId===task.id);
+     const reserved=(await store.projectEntities(scope.projectId,{kinds:['settings','run']})).find(r=>r.kind==='settings'&&r.data.category==='scheduler_entry'&&['queued','paused','needs_review','running','recovery_required'].includes(String(r.data.state))&&(r.data.plan as any)?.taskId===task.id);
      if(reserved&&reserved.data.executionId!==executionId)fail('QUEUE_TASK_RESERVED');
      const workflow=await runtimeWorkflow(store,scope.projectId,profile);job.workflowSnapshot=workflow.snapshot;
      if(executionId){const saved=await store.get(scope.projectId,executionId),e=saved?.data as unknown as Execution,attempt=e?.attempts.at(-1);
@@ -311,7 +317,7 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
       const policy=await autonomy.snapshot(scope.projectId);if(policy.budgetId!==e.budgetId||recipeHash(policy.policy)!==e.policyHash)fail('AUTONOMY_RESERVATION_CONFLICT');
       job.recipeExecution=e.id;job.assetPins=e.pins[attempt.stepId];job.workflowSnapshot={...e.workflowSnapshot,executionRecipe:{id:e.recipe.id,version:String(e.workflowSnapshot.ref.version)}};
      }else {job.assetPins=await team.assignmentPins(scope.projectId,profile.agentAssignments);if(workflow.category!=='ready')fail('task_scope_review_required');}
-     if((await captureTaskFiles({workspaceRoot:binding.workspaceRoot,directoryIdentity:binding.rootIdentity},profile.files,redact)).some(file=>file.kind==='excluded'))fail('task_file_ownership_unavailable');
+     const preflight=await taskFilePreflight(store,scope.projectId,task.id,task.revision);assertFilePreflight(preflight,row.filePreflight);
      if(profile.risks.includes('recovery_review'))fail('task_scope_review_required');if(!profile.acceptanceCriteria.length||!profile.acceptanceCriteria.every(item=>item.trim()))fail('saved_criteria_required');
      job.taskContext={taskId:task.id,revision:task.revision,scopeDigest:taskScopeDigest(task),workspaceRoot:binding.workspaceRoot,rootIdentity:binding.rootIdentity,key:profile.key,title:profile.title,files:profile.files,acceptanceCriteria:profile.acceptanceCriteria,risks:profile.risks};
      if(!executionId)extra.push({expectedRevision:task.revision,entity:{id:task.id,kind:'task',data:{...profile,status:workflow.executionState(),sessionIds:[...new Set([...profile.sessionIds,job.sessionId])]}}});
@@ -359,7 +365,7 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
    if(leaseSecrets.size>=64)fail('app_agent_restart_required');
    worker={workerId:text(row,'workerId'),generation:text(row,'generation'),leaseToken:randomBytes(32).toString('hex'),expiresAt:now()+leaseMs};leaseSecrets.add(worker.leaseToken);return {...worker};
   }
-  const fields:Record<string,string[]>={'task-create':['runId','operationId','title','summary','acceptanceCriteria'],claim:['runId'],report:['runId','seq','idempotencyKey','status','text'],command:['runId','operationId','argv','timeoutMs'],operation:['runId','operationId'],progress:['runId','seq','text','phase'],reconcile:['runId']};
+  const fields:Record<string,string[]>={'project-query':['runId','kind','codeRevision','schemaRevision','table','path','operation','confidence','limit','cursor'],'task-create':['runId','operationId','title','summary','acceptanceCriteria'],claim:['runId'],report:['runId','seq','idempotencyKey','status','text'],command:['runId','operationId','argv','timeoutMs'],operation:['runId','operationId'],progress:['runId','seq','text','phase'],reconcile:['runId']};
   const row=input(value,['workerId','generation','leaseToken',...(fields[action]??[])]);const current=authenticated(row);
   if(action==='heartbeat'){current.expiresAt=now()+leaseMs;const jobs=[...activeJobs.values()].filter(job=>job.workerId===current.workerId&&job.generation===current.generation).map(job=>({runId:job.id,cancelRequested:job.state==='cancel_requested',state:job.state}));return {expiresAt:current.expiresAt,job:jobs[0]??null,jobs};}
   if(action==='claim') {
@@ -373,12 +379,20 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
    if(active.state==='queued'){const changed={...active,state:'running' as const,observedStartedAt:new Date(now()).toISOString(),workerId:current.workerId,generation:current.generation};await save(changed);active=changed;}
    if(active.workerId!==current.workerId||active.generation!==current.generation)fail('app_agent_generation_mismatch');return {job:claimed(active)};
   }
-  if(['command','operation','progress','reconcile','task-create'].includes(action)){
+  if(['command','operation','progress','reconcile','task-create','project-query'].includes(action)){
    const runId=text(row,'runId');let job:Job|undefined;for(const project of await store.projects()){const saved=await store.get(project.id,runId);if(saved?.data.appAgentRun){if(job)fail('app_agent_run_ambiguous');job=saved.data.appAgentRun as Job;}}
    if(!job||job.workerId!==current.workerId||job.generation!==current.generation)fail('app_agent_generation_mismatch');await scoped({projectId:job.projectId,sessionId:job.sessionId,bindingId:job.bindingId});
    if(action==='reconcile')return job.lastReport?.receipt??publicJob(job);
    if(action==='operation'){const op=job.operations?.find(item=>item.operationId===text(row,'operationId'));if(!op)fail('app_agent_operation_missing');return operationView(job,op);}
    if(!activeJobs.has(job.id)||['cancel_requested','recovery_required'].includes(job.state)||terminal.has(job.state))fail('app_agent_report_stale');
+   if(action==='project-query'){
+    if(!options.queryProject)fail('app_agent_project_query_unavailable');if(!['status','links'].includes(String(row.kind)))fail('app_agent_input_invalid');
+    const query:Record<string,string|number>={};for(const [key,value] of Object.entries(row)){if(['workerId','generation','leaseToken','runId'].includes(key))continue;if(key==='limit'){if(!Number.isSafeInteger(value)||Number(value)<1||Number(value)>100)fail('app_agent_input_invalid');query[key]=Number(value);}else{if(typeof value!=='string'||Buffer.byteLength(value)>2048||/[\0\r\n]/.test(value))fail('app_agent_input_invalid');query[key]=value;}}
+    if(query.kind==='status'&&Object.keys(query).length!==1)fail('app_agent_input_invalid');
+    const result=await options.queryProject(job.projectId,query);
+    if(worker!==current||now()>=current.expiresAt)fail('app_agent_lease_expired');if(!activeJobs.has(job.id)||activeJobs.get(job.id)?.state!=='running')fail('app_agent_report_stale');await scoped({projectId:job.projectId,sessionId:job.sessionId,bindingId:job.bindingId});
+    if(worker!==current||now()>=current.expiresAt)fail('app_agent_lease_expired');if(!activeJobs.has(job.id)||activeJobs.get(job.id)?.state!=='running')fail('app_agent_report_stale');if(Buffer.byteLength(JSON.stringify(result))>32768)fail('app_agent_project_query_limit');return result;
+   }
    if(action==='task-create'){
     // Explicit owner opt-in belongs to this claimed run. It grants only creation of a Backlog Bug.
     if(job.mode!=='execution'||job.state!=='running'||!job.taskCreationInitiator||job.autonomy)fail('app_agent_creation_forbidden');

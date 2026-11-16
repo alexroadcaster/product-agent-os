@@ -1,6 +1,6 @@
 # Endpoint inventory
 
-Source status: repository_source / static_contract_inventory; 2026-11-15.
+Source status: repository_source / current_source_contract_review; 2026-11-15.; FUNC-G04: locally_verified_with_measured_limits, 16.11.2026.
 
 Owner: local-service/API maintainers; scope/version: DG03, commit `2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765`. Update when handler, client, delegate service or tests change. [Backend](../backend/index.md); [authentication/errors](errors.md); [events](events.md).
 
@@ -99,6 +99,30 @@ Each row applies only its explicitly listed pagination, revision or idempotency 
 | `POST /api/v1/projects/{projectId}/artifacts/proposals` | proposal input | proposal result | persist proposal; migration freeze |
 
 
+## FUNC-G03: current local contract
+
+This 2026-11-15 addition describes current `http/application.mts`, `project-files/service.mts`, `project-scans/service.mts` and `runtime/task-file-preflight.mts`; the pinned DG03 links below retain their historical version.
+
+| Method and path under `/api/v1` | Input | Result and boundary |
+| --- | --- | --- |
+| `GET /projects/{id}/files` | `path`, `cursor?`, `limit?`, `filter?`, `query?` | Lazy single-directory page; `filter=all/control_plane`, current-directory search, default100/max200; coverage/reasons and access metadata |
+| `GET /projects/{id}/files/read` | `path`, `revision?`, `line?` | `available/stale/forbidden/binary/too_large/unsupported/unavailable`; content only for `available`, plain text with display redaction |
+| `GET /projects/{id}/files/policy` | — | `version`, `policy`, `policyVersion` |
+| `POST /projects/{id}/files/policy` | `policy`, `expectedVersion` | Profile-owned CAS; include/exclude/respectGitignore cannot override hard deny |
+| `GET /projects/{id}/scans` | — | Persisted latest/lastSuccessful and stage outcomes |
+| `POST /projects/{id}/scans` | `requestId?`, `revision?` | 202; bounded background scan, request replay/coalescing and scope fences |
+| `POST /projects/{id}/scans/{scanId}/cancel` | empty JSON object | Cancel the project's owned scan |
+| `POST /projects/{id}/scans/{scanId}/retry` | empty JSON object | 202; new attempt using an idempotent retry key |
+| `GET /projects/{id}/analysis` | — | Persisted core analysis checked against current source/adapter revisions; explicit unavailable/stale |
+| `POST /projects/{id}/runtime/file-preflight` | `taskId`, required integer `expectedRevision` | Metadata-only `allowed`, limits/counts/items/reasons, digest/taskRevision and source pins; no content/diff |
+| `GET /projects/{id}/freshness` | — | Cheap profile stamp without filesystem traversal |
+
+`POST /projects` persists registration first. `scan:true` requests a background scan; the response may include `scan` or `scanError`, and scan failure preserves registration. Replaying `requestId` requires the same registration payload. `GET task-manager` returns entities and freshness from one SQLite read transaction.
+
+The registry owns root and policy; the browser cannot supply an arbitrary root. `fileRevision` is a metadata/policy pin; `hash` and reference `revisionKind=sha256` pin raw-byte content. They are not interchangeable. Freshness `policyVersion` is an integer CAS version; source `policyVersion` is a string identity. Preflight reads saved task scope and rejects stale task revision; the optional execution client guard `{digest,taskRevision}` does not authorize execution. The gateway checks preflight at admission and rechecks access during capture before a native command; approvals and broker restrictions remain applicable.
+
+The parent agent's current bounded integration receipts are F29 API 6/6, file-preflight API 1/1, gateway policy 28/28 and F18 5/5. These are handed-off local results; this page does not claim a new final browser/native run or human acceptance. The next artifact is the concrete API/scan result with provenance, followed by its applicable user check.
+
 ## Action-level fields and fences
 
 The following minimum fields and result shapes apply to the App-agent route and listed service implementations. API BYOK has a separate [live gateway](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/apps/local-service/src/runtime/live-gateway.mts); do not assume that its input or available actions are identical. Question marks mark conditionally optional values. The private agent channel uses the common workerId/generation/leaseToken except attach; it is not a browser API.
@@ -171,3 +195,23 @@ Graph queries require an existing matching `revision`; pagination cursor is scop
 `scan=true` on project creation performs bounded existing source inspection and graph rebuild, reporting partial failures after committed registration. It is not a full directory browser or the planned managed background scan F26–F29. PoC and target database/schema/code-table endpoints F30–F34 are not represented by this API. [Functional backlog](../planning/functional-remediation-2026-11-15.md) owns those future capabilities.
 
 Limits: only source and listed tests were inspected; no provider, real profile/database, network server or application runtime was exercised. [Source registry](../sources/registry.md); [Web task plan](../planning/product-agent-os-web-task-manager-plan-2026-11-09.md).
+
+## FUNC-G04 / F09 — bounded history and artifact summaries
+
+Session catalog selects sessions and related task/run attribution in SQLite. Transcript filters kind, parent and hidden/analysis/reasoning before materialization; search preserves Unicode case folding. The Worker freezes membership and values in connection-private SQLite TEMP tables: edits, inserts, deletions or archival after page one do not alter later pages. `journalOrder` retains the insertion ordinal. Only the current page enters JavaScript and uses the existing redaction mapper; whole history bodies are not transferred to the LocalStore caller.
+
+Cursors last up to 15 minutes and may be evicted by LRU storage pressure. Scope includes project/root identity, authority epoch, inventory policy and query/filters; mismatch, expiry, eviction or restart returns `CURSOR_STALE`. `limit` is 1–100; the byte cap may return fewer items, and `nextCursor` continues without skipping values. Response budget is 1 MiB with metadata headroom. An oversized item returns `HISTORY_ITEM_TOO_LARGE`; over 200,000 rows or payload budget returns `HISTORY_SNAPSHOT_BUSY`. SQL size preflight precedes freezing, eviction precedes insert, and rollback retains existing cursors. Aggregate payload is bounded at 230 MiB, leaving room for indexes/page metadata; `temp.max_page_count` also caps the main TEMP database file at 256 MiB. This does not cap RSS or all disk I/O: transient SQLite sorting/journal overhead is separate. No persistent schema or migration changes.
+
+Artifact catalog receives SQL `substr(body,1,280)` and selected kinds while retaining frozen summaries/cursors and root/policy checks. For longer persisted bodies, reason `persisted_body_preview_only_search` means title/preview-only search; absence in the rest of the body is not established. Projection over 6 MiB reports partial reason `artifact_projection_byte_limit`; existing catalog snapshot budgets remain active. Raw persisted document reads check SQL byte lengths before loading: body up to 512 KiB, metadata up to 256 KiB, otherwise `DOCUMENT_TOO_LARGE`. Workspace document reads retain existing checked-source guards.
+
+Current synthetic regression route: `node --test tests/web/snapshot-history-scale.test.mts` — 9/9: 100,000 messages around 100 MiB, 1000 documents of 107,315 bytes, page-only mapping, immutable edit/archive values, LRU/expiry/scope drift, rollback, byte caps, Unicode and oversized-read rejection. Existing session/source-policy/code-index integration was checked separately; native-junction skips remain gaps. These checks do not replace F20 after/final p95/soak or human acceptance. Node `DatabaseSync.function` was verified through Context7 `/nodejs/node/v26.0.0` against [official documentation](https://github.com/nodejs/node/blob/v26.0.0/doc/api/sqlite.md); installed Node is v26.5.0.
+
+## FUNC-G04 — code graph, schema and static queries
+
+GET graph accepts mode=all|dependencies|symbols, direction=both|incoming|outgoing and nodeId/pathTo for bounded static paths (8 hops/1000 visited nodes). Search, filters and cursors bind revision and cache generation; restart/eviction requires rebuild. These are imports/lexical occurrences, not runtime calls.
+
+GET /projects/:id/database returns registration/status/candidates only. POST database/source selects relativePath+expectedFileRevision+expectedVersion or clears selection without opening SQLite. POST database/scan runs F27 inventory+schema; standard cancel/retry routes preserve selected stages. GET database/schema returns a bounded page, escaped Mermaid and diagramEntities from one snapshot. GET database/changes compares two compatible metadata snapshots; current/stale/incompatible and missing baseline remain distinct. Source admission does not permit generic Files DB reads. The adapter is Windows/offline SQLite; no PostgreSQL, credentials, row reads or project SQL.
+
+GET /projects/:id/code-database and GET code-database/links return status and static source evidence; POST code-database/scan runs inventory+code_database. Links require codeRevision and schemaRevision, support table/path/operation/confidence/limit/cursor, and are bounded to32KiB. Confirmed requires source binding; inferred/unresolved do not become runtime facts. SQL values and rows are not returned.
+
+POST /agent/v1/project-query is a private App-agent action requiring channel capability, worker lease, runId, kind=status|links and the same query fields. Project scope comes from the claimed run; payload projectId is rejected. Lease/run/scope are checked before and after the async read; response≤32KiB. Browser cookies do not grant this capability. Claimed jobs advertise the query port. Verification uses a synthetic worker without a model/provider call.

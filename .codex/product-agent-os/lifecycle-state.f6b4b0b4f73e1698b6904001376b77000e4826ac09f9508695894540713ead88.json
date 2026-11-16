@@ -1,21 +1,30 @@
 {
   "session_id": "01a1dfcd-8ba0-7952-8b4c-b6e642f0a1b2",
-  "task_id": "PAOS-METH-PLAN-2026-11-15",
-  "plan_path": "docs/planning/methodology-improvement-2026-11-15.md",
-  "scope": "Author the requested methodology improvement plan, bilingual task cards and JSON state; update catalog, source registry and compact control-plane pointers only.",
-  "updated_at": "2026-11-15T19:04:23+03:00",
+  "task_id": "PAOS-METH-SPLIT-2026-11-15",
+  "plan_path": "docs/planning/user-project-methodologies-2026-11-15.md",
+  "scope": "Split internal maintenance and user-project methodology directions; author detailed bilingual product task plan and JSON; update existing plan and compact planning/source/control-plane pointers only.",
+  "updated_at": "2026-11-15T20:14:39+03:00",
   "approval_boundary": "Planning artifacts and local static validation only. No product implementation, active instructions/workflows/hooks, runtime, provider, installation, Git, publication or foreign-session changes.",
   "status": "ready_for_completion_brief",
   "completion_ready": true,
-  "brief_digest": "sha256:235502a8fb84d5bc2857a42267a8560f8e9f480f20d96a309d31eb7d66bc6dd3",
+  "brief_digest": "sha256:dcfce3e25d19d013376e6868ae139d28b18cbe8560082d2fedd950738b10d32b",
   "brief_schema_version": "task_scope_note_v1",
   "brief_format": "concise",
   "brief_fields_present": ["Scope", "Evidence", "Limits"],
   "scope_note_shown": true,
-  "result": "Planning artifacts authored; all 18 implementation tasks remain planned with pending_execution_timestamp.",
-  "verification": "RU/EN matrices passed; 18 tasks, 54 AC, 27 reciprocal acyclic dependency edges; RU/EN/JSON parity passed; changed-source docs checks passed; diff check passed; protected sources and existing document content preserved.",
-  "control_plane_sync": "updated planning/catalog/registry and REQUIREMENTS/PLAN/RUNLOG pointers; TEST/EVALS/prod_test no_change_needed",
-  "review_context": "self_review; no independent or runtime acceptance claim",
+  "result": "Split direction A into17 executable tasks plus legacy METH-16 reference; authored direction B with26 planned tasks and104 AC. No implementation performed.",
+  "verification": "Four RU/EN matrices passed; changed-source docs11 plus final affected3 passed; split helper verified43 executable tasks,155 active AC plus3 legacy, independent acyclic A25/B54 edges, parity, source-owner/reference mappings and preservation. Scoped diff check passed. Concurrent G03 edits retained.",
+  "control_plane_sync": "updated exact METH sections in REQUIREMENTS/PLAN/RUNLOG and planning/source pointers; TEST/EVALS/prod_test no_change_needed for this task",
+  "review_context": "self_review; no independent/runtime/model/human acceptance claimed",
+  "previous_closure": {
+    "task_id": "PAOS-METH-PLAN-2026-11-15",
+    "status": "ready_for_completion_brief",
+    "completion_ready": true,
+    "updated_at": "2026-11-15T19:04:23+03:00",
+    "result": "Planning artifacts authored; all 18 implementation tasks remained planned.",
+    "verification": "RU/EN matrices and source-doc checks passed; 18 tasks, 54 AC, 27 acyclic edges; parity and preservation passed.",
+    "review_context": "self_review; no independent or runtime acceptance claim"
+  },
   "lifecycle_scope": {
     "work_type": "fix",
     "size": "bounded",
@@ -23,6 +32,6 @@
     "financially_material": false,
     "release_or_readiness": false,
     "explicit_packet_request": false,
-    "reason": "Explicit owner request to create concrete local plan/tasks; authoring does not execute the planned improvements."
+    "reason": "New explicit owner request to split and extend planning artifacts; no planned product or instruction change is executed."
   }
 }

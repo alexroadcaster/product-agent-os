@@ -4,7 +4,8 @@ type Ast=any;
 type Scope={id:string;kind:string;parent?:Scope;bindings:Map<string,GraphNode>};
 const hash=(s:string)=>createHash('sha256').update(s).digest('hex');
 /** Two passes collect declarations before resolving references, including var hoisting and nearest shadowing.
- * This is lexical source evidence, not type, alias, module-linker or runtime resolution. */
+ * This is lexical source evidence, not type, cross-file symbol, runtime alias or execution resolution. Literal
+ * module references are handed to the admitted-path resolver separately. */
 export function buildLexicalGraph(file:{relativePath:string;text:string;language:string},program:Ast){
  const fileId=hash(file.relativePath),nodes:GraphNode[]=[],edges:GraphEdge[]=[],imports:{specifier:string;anchor:GraphAnchor}[]=[],scopeAt=new WeakMap<object,Scope>(),definitions=new WeakSet<object>();
  let visited=0;const root:Scope={id:'module:0',kind:'module',bindings:new Map()};
@@ -13,7 +14,7 @@ export function buildLexicalGraph(file:{relativePath:string;text:string;language
  nodes.push({id:fileId,kind:'file',name:file.relativePath,...base,scope:root.id,namespace:'module'});
  const children=(n:Ast)=>Object.entries(n).filter(([k])=>!['parent','typeAnnotation','returnType','typeParameters','superTypeParameters','implements','decorators'].includes(k)).flatMap(([key,value])=>Array.isArray(value)?value.filter(v=>v&&typeof v.type==='string').map(v=>({key,node:v})):value&&typeof value==='object'&&typeof (value as Ast).type==='string'?[{key,node:value}]:[]);
  const declare=(n:Ast,s:Scope)=>{if(!n)return;if(n.type==='Identifier'){definitions.add(n);let symbol=s.bindings.get(n.name);if(!symbol){symbol={id:hash(`${fileId}|${file.language}|${s.id}|${n.start}|value|${n.name}`),kind:'symbol',name:n.name,...base,scope:s.id,namespace:'value',anchor:anchor(n)};s.bindings.set(n.name,symbol);nodes.push(symbol);}edges.push({id:hash(`define|${symbol.id}|${n.start}`),type:'define',from:fileId,to:symbol.id,anchor:anchor(n),resolution:'lexical'});return;}
-  if(n.type==='AssignmentPattern')declare(n.left,s);else if(n.type==='RestElement')declare(n.argument,s);else if(n.type==='ObjectPattern')for(const p of n.properties)declare(p.type==='RestElement'?p.argument:p.value,s);else if(n.type==='ArrayPattern')for(const e of n.elements)declare(e,s);
+  if(n.type==='TSParameterProperty')declare(n.parameter,s);else if(n.type==='AssignmentPattern')declare(n.left,s);else if(n.type==='RestElement')declare(n.argument,s);else if(n.type==='ObjectPattern')for(const p of n.properties)declare(p.type==='RestElement'?p.argument:p.value,s);else if(n.type==='ArrayPattern')for(const e of n.elements)declare(e,s);
  };
  function first(n:Ast,s:Scope,depth=0){if(++visited>150000||depth>200)throw Error('limit');if(!n||n.type?.startsWith('TS')&&!['TSAsExpression','TSSatisfiesExpression','TSNonNullExpression'].includes(n.type))return;
   const outer=s;
@@ -45,10 +46,22 @@ export function buildLexicalGraph(file:{relativePath:string;text:string;language
   if(n.type==='Property'){if(n.computed)second(n.key,n,'key','read');second(n.value,n,'value',mode);return;}
   if(n.type==='UpdateExpression'){second(n.argument,n,'argument','read');second(n.argument,n,'argument','write');return;}
   if(n.type==='ForInStatement'||n.type==='ForOfStatement'){second(n.left,n,'left',n.left.type==='VariableDeclaration'?'read':'write');second(n.right,n,'right');second(n.body,n,'body');return;}
+  // CommonJS imports require the ambient identifier: a parameter, import,
+  // function or hoisted local named require remains an ordinary local call.
+  if(n.type==='CallExpression'&&n.callee.type==='Identifier'&&n.callee.name==='require'&&!resolve(s,'require')){
+   const source=n.arguments?.[0];
+   if(n.arguments.length===1&&['Literal','StringLiteral'].includes(source?.type)&&typeof source.value==='string')imports.push({specifier:source.value,anchor:anchor(n)});
+   else edge(n,s,'import','dynamic_require');
+   for(const argument of n.arguments??[])second(argument,n,'arguments');return;
+  }
   if(['CallExpression','NewExpression'].includes(n.type)){if(n.callee.type==='Identifier')edge(n.callee,s,'call',n.callee.name==='eval'?'eval':undefined);else edge(n.callee,s,'call','member_or_dynamic_call');second(n.callee,n,'callee','reference');for(const a of n.arguments)second(a,n,'arguments');return;}
   if(n.type==='ImportDeclaration'){imports.push({specifier:n.source.value,anchor:anchor(n)});return;}
   if((n.type==='ExportNamedDeclaration'||n.type==='ExportAllDeclaration')&&n.source)imports.push({specifier:n.source.value,anchor:anchor(n)});
-  if(n.type==='ImportExpression')edge(n,s,'import','dynamic_import');
+  if(n.type==='ImportExpression'){
+   if(['Literal','StringLiteral'].includes(n.source?.type)&&typeof n.source.value==='string')imports.push({specifier:n.source.value,anchor:anchor(n)});
+   else edge(n,s,'import','dynamic_import');
+   for(const child of children(n))second(child.node,n,child.key);return;
+  }
   if(n.type==='MemberExpression'||n.type==='OptionalMemberExpression'){second(n.object,n,'object','reference');if(n.computed)second(n.property,n,'property');if(mode==='write')edge(n,s,'write','member_write');return;}
   for(const c of children(n))second(c.node,n,c.key,mode);
  }

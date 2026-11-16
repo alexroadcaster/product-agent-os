@@ -8,13 +8,14 @@ import {createLocalApplication} from '../../apps/local-service/src/http/applicat
 import {createNativeDesktop} from '../../apps/local-service/src/desktop/native-desktop.mts';
 import {EventEmitter} from 'node:events';
 import {PassThrough} from 'node:stream';
+import {until} from './project-g03-fixture.mts';
 
 const origin='http://127.0.0.1:43128';
 async function fixture(t:any,cancel=false){
  const root=await mkdtemp(join(tmpdir(),'paos-settings-')),workspace=join(root,'workspace');await mkdir(workspace);
  await writeFile(join(workspace,'main.ts'),'export const value = 3;\n');await writeFile(join(workspace,'REQUIREMENTS.md'),'# Requirements\n\nR-1: Preserve source.\n');
  const store=await openLocalStore({databasePath:join(root,'state.sqlite')});
- t.after(async()=>{await store.close();await rm(root,{recursive:true,force:true});});
+ t.after(async()=>{await app.close();await store.close();await rm(root,{recursive:true,force:true});});
  let selections=0,opened=0,connects=0;const urls:string[]=[];let connectionState:any={route:'codex_app_agent',state:'waiting_for_worker',verified:false};
  const app=await createLocalApplication({store,origin,instanceId:'settings-fixture',profileDirectory:root,
   agentChannel:{handle:async()=>new Response('{}'),descriptorPath:join(root,'app-agent-fixture.json')},
@@ -45,7 +46,8 @@ test('cancel and foreign-origin desktop requests never create or inspect a proje
 test('committed registration survives scan limits and exact retry without duplicate projects',async t=>{
  const f=await fixture(t);await writeFile(join(f.workspace,'large.ts'),'a'.repeat(600000));
  const input={name:'Partial fixture',workspaceRoot:f.workspace,requestId:'scan-limit',scan:true};
- const response=await f.request('/projects',input);assert.equal(response.status,201);const project=await response.json();assert.equal(project.scan.state,'partial');assert.ok(project.scan.reason);
+ const response=await f.request('/projects',input);assert.equal(response.status,201);const project=await response.json();assert.equal(project.scan.latest.state,'queued');
+ const observed=await until(async()=>await(await f.request('/projects/'+project.id+'/scans')).json(),view=>['completed','partial','failed'].includes(view.latest?.state));assert.equal(observed.latest.state,'partial');assert.ok(observed.latest.stages.some((stage:any)=>stage.reasons.length||stage.state==='partial'));
  assert.equal((await(await f.request('/projects',input)).json()).id,project.id);assert.equal((await(await f.request('/projects')).json()).items.length,1);
  const conflict=await f.request('/projects',{...input,name:'Changed envelope'});assert.equal(conflict.status,409);
 });
@@ -53,8 +55,8 @@ test('committed registration survives scan limits and exact retry without duplic
 test('parser-excluded source reports partial instead of claiming a complete index',async t=>{
  const f=await fixture(t);await writeFile(join(f.workspace,'deep.ts'),'export const deep = '+ '{x:'.repeat(240)+'1'+'}'.repeat(240)+';');
  const response=await f.request('/projects',{name:'Deep fixture',workspaceRoot:f.workspace,requestId:'deep',scan:true});assert.equal(response.status,201);
- const project=await response.json(),graph=await(await f.request('/projects/'+project.id+'/graph/status')).json();
- assert.equal(graph.coverage.find((c:any)=>c.relativePath==='deep.ts').status,'excluded');assert.equal(project.scan.state,'partial');
+ const project=await response.json(),view=await until(async()=>await(await f.request('/projects/'+project.id+'/scans')).json(),value=>['completed','partial','failed'].includes(value.latest?.state)),graph=await(await f.request('/projects/'+project.id+'/graph/status')).json();
+ assert.equal(graph.coverage.find((c:any)=>c.relativePath==='deep.ts').status,'excluded');assert.equal(view.latest.state,'partial');
 });
 
 test('App handoff preserves an attached worker and refuses to replace an active BYOK route',async t=>{
@@ -70,10 +72,12 @@ test('native shutdown is bounded and preserves unresolved ownership when kill is
  await assert.rejects(desktop.close(),{code:'DESKTOP_SHUTDOWN_UNRESOLVED'});helper.emit('close',1);await result;
 });
 
-test('adding a project returns bounded source/code scan and exposes its ready graph',async t=>{
+test('adding a project queues a persisted scan and exposes its graph after the code stage',async t=>{
  const f=await fixture(t),response=await f.request('/projects',{name:'Picker fixture',workspaceRoot:f.workspace,requestId:'create-project-fixture',scan:true});
- assert.equal(response.status,201);const project=await response.json();assert.equal(project.scan.state,'ready');assert.ok(project.scan.counts.files>=1);
- assert.equal(project.scan.sources.find((s:any)=>s.id==='requirements').status,'available');
+ assert.equal(response.status,201);const project=await response.json();assert.equal(project.scan.latest.state,'queued');
+ const view=await until(async()=>await(await f.request('/projects/'+project.id+'/scans')).json(),value=>['completed','partial','failed'].includes(value.latest?.state));
+ assert.ok(view.latest.stages.find((stage:any)=>stage.kind==='code').counts.files>=1);
+ assert.equal(view.latest.stages.find((stage:any)=>stage.kind==='documents').data.sources.find((s:any)=>s.id==='requirements').status,'available');
  const graph=await(await f.request('/projects/'+project.id+'/graph/status')).json();assert.equal(graph.state,'fresh');
  const repeat=await f.request('/projects',{name:'Picker fixture',workspaceRoot:f.workspace,requestId:'create-project-fixture',scan:true});
  assert.equal(repeat.status,201);assert.equal((await repeat.json()).id,project.id);

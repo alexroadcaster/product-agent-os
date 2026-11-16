@@ -6,6 +6,8 @@ export type Coverage = 'complete' | 'partial' | 'unavailable';
 export type Project = Readonly<{
   id: string; keyPrefix: string; canonicalRoot: string; rootIdentity: string; displayName?: string;
   authorityMode: 'legacy_files' | 'sql'; authorityEpoch: number;
+  /** Profile-owned read/index policy; it never grants execution or overrides hard exclusions. */
+  inventoryPolicy?: import('../project-inventory.ts').InventoryPolicy;
 }>;
 export type EntityInput = Readonly<{
   id: string; kind: EntityKind; parentId?: string | null; title?: string; body?: string;

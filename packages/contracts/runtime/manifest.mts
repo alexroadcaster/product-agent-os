@@ -42,7 +42,7 @@ export async function adapterRevision(root = sourceRoot): Promise<string> {
       const entry = join(path, item.name);
       if (item.isSymbolicLink()) throw new Error('Linked runtime source is unsupported');
       if (item.isDirectory()) await visit(entry);
-      else if (/\.(?:mts|ts|ps1)$/.test(item.name)) paths.push(entry);
+      else if (/\.(?:mts|ts|ps1|py)$/.test(item.name)) paths.push(entry);
     }
   }
   for (const area of ['apps/local-service/src', 'apps/launcher', 'packages/contracts']) {

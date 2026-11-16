@@ -1,6 +1,8 @@
+import {taskPathReferences,sameRelativePath} from '../artifacts/references.mts';
+import {inventoryForProject} from '../code-index/sources.mts';
+import {assertCurrentSourceProject} from '../project-inventory/scope.mts';
+import {normaliseRelativePath,classifyInventoryPath} from '../project-inventory/service.mts';
 import { createHash, randomUUID } from 'node:crypto';
-import { readFile, realpath, lstat, open } from 'node:fs/promises';
-import { resolve, relative } from 'node:path';
 import type { LocalStore } from '../storage/local-store.mts';
 import type { StoreWrite, StoredEntity, EntityInput } from '../../../../packages/contracts/storage/local-store.ts';
 import { DEFAULT_COMPONENTS, STATUS_COLUMNS, decodeTaskProfile, newM2Task, upgradeM1Task, canonicalIssueLinks, issueFail as fail,
@@ -28,14 +30,16 @@ export function pinBlockingRun(rows:readonly StoredEntity[],targetId:string):Blo
   if(!nonempty(run.bindingId)||!nonempty(run.sessionId))fail('ACTIVE_RUN_SCOPE_UNAVAILABLE');
   return {runId:active.id,bindingId:run.bindingId,sessionId:run.sessionId,generation:run.generation??null,kind:active.data.appAgentRun?'app':'runtime'};
 }
-export async function taskManagerSnapshot(store:LocalStore,projectId:string){
-  const rows=await store.projectEntities(projectId);const setting=(name:string)=>rows.find(e=>e.id===`m2-${name}`&&e.kind==='settings');
+export async function taskManagerSnapshot(store:LocalStore,projectId:string,options:{observe?:boolean}={}){
+  const scope={kinds:['task','settings','comment'] as const,includeManagedAttachments:true as const};
+  const captured=options.observe?await store.projectSnapshot(projectId,scope):undefined;
+  const rows=captured?.entities??await store.projectEntities(projectId,scope);const setting=(name:string)=>rows.find(e=>e.id===`m2-${name}`&&e.kind==='settings');
   const board=(setting('board')?.data.value??defaultBoard) as Board;
   return {tasks:rows.filter(e=>e.kind==='task'),components:(setting('components')?.data.items??defaults()) as CatalogItem[],
     versions:(setting('versions')?.data.items??[]) as VersionItem[],workflows:validateRegistry(setting('workflows')?.data??defaultRegistry()),board,links:canonicalIssueLinks(rows.filter(e=>e.kind==='task').map(e=>decodeTaskProfile(e.data)),(setting('links')?.data.items??[]) as IssueLink[]),
     comments:rows.filter(e=>e.kind==='comment'),attachments:rows.filter(e=>e.kind==='document'&&e.data.category==='managed_attachment'),
     settingsRevisions:Object.fromEntries(['components','versions','board','links','workflows'].map(n=>[n,setting(n)?.revision??0])),
-    quota:{fileBytes:board.attachmentFileBytes,taskBytes:board.attachmentTaskBytes},coverage:'complete' as const};
+    quota:{fileBytes:board.attachmentFileBytes,taskBytes:board.attachmentTaskBytes},coverage:'complete' as const,...(captured?{freshness:captured.freshness}:{})};
 }
 function safeName(name:unknown){
   if(!nonempty(name)||name.length>240||/[\\/:<>"|?*\x00-\x1f]/.test(name)||/[. ]$/.test(name)||name==='.'||name==='..'
@@ -291,30 +295,21 @@ export async function downloadTaskAttachment(store:LocalStore,projectId:string,t
 export async function resolveTaskReference(store:LocalStore,projectId:string,input:Record<string,any>){
   const task=await store.get(projectId,input.taskId),project=await store.project(projectId);
   if(!task||task.kind!=='task'||!project)fail('TASK_NOT_FOUND');
-  const path=input.relativePath;
-  if(!nonempty(path)||path.split(/[\\/]/).some(p=>!p||p==='.'||p==='..'||/[\x00-\x1f:<>"|?*]/.test(p)||/[. ]$/.test(p)
-    ||/^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\.|$)/i.test(p)))fail('REFERENCE_PATH_FORBIDDEN');
-  if(/(?:^|[\\/])(?:\.env(?:\.|$)|\.git|\.aws|credentials|auth\.json|id_rsa|id_ed25519)/i.test(path)||/\.(?:pem|key|pfx|p12)$/i.test(path))fail('REFERENCE_PATH_FORBIDDEN');
-  const files=(task.data.files??[]) as any[],artifacts=(task.data.artifacts??[]) as any[];
-  if(!files.some(f=>f.relativePath===path||f.previousRelativePath===path)&&!artifacts.some(a=>a.reference===path))fail('REFERENCE_OUT_OF_SCOPE');
-  const root=await realpath(project.canonicalRoot),candidate=resolve(root,path);
-  if(relative(root,candidate).startsWith('..'))fail('REFERENCE_PATH_FORBIDDEN');
+  let path:string;try{path=normaliseRelativePath(input.relativePath);}catch{fail('REFERENCE_PATH_FORBIDDEN');}
+  if(classifyInventoryPath(path).reason==='sensitive_path')fail('REFERENCE_PATH_FORBIDDEN');
+  const references=taskPathReferences(task.data).filter(reference=>sameRelativePath(reference.relativePath,path));
+  if(!references.length)fail('REFERENCE_OUT_OF_SCOPE');
   try{
-    const final=await realpath(candidate);if(relative(root,final).startsWith('..'))fail('REFERENCE_PATH_FORBIDDEN');
-    const before=await lstat(candidate,{bigint:true});if(!before.isFile()||before.isSymbolicLink()||before.nlink!==1n||before.size>1048576n)return {availability:'unavailable',reason:'unsupported_source',relativePath:path};
-    const file=await open(candidate,'r');try{
-      const opened=await file.stat({bigint:true});if(opened.ino!==before.ino||opened.dev!==before.dev||opened.nlink!==1n)fail('REFERENCE_SOURCE_CHANGED');
-      const buffer=Buffer.alloc(1048577);let size=0;
-      while(size<buffer.length){const part=await file.read(buffer,size,buffer.length-size,size);if(!part.bytesRead)break;size+=part.bytesRead;}
-      const after=await file.stat({bigint:true});if(size>1048576||after.mtimeNs!==before.mtimeNs||after.ctimeNs!==before.ctimeNs||after.size!==BigInt(size))fail('REFERENCE_SOURCE_CHANGED');
-      if(await realpath(candidate)!==final)fail('REFERENCE_SOURCE_CHANGED');
-      const bytes=buffer.subarray(0,size),revision=createHash('sha256').update(bytes).digest('hex');
-      const expected=input.revision??((task.data.fileContexts??[]) as any[]).find(c=>c.relativePath===path)?.revision;
-      if(!expected)return {availability:'unavailable',reason:'revision_required',relativePath:path,revision};
-      if(expected!==revision)return {availability:'stale',relativePath:path,expectedRevision:expected,revision};
-      const text=new TextDecoder('utf-8',{fatal:true}).decode(bytes),content=text.replace(/sk-[A-Za-z0-9_-]+/g,'[REDACTED]')
-        .replace(/^(\s*(?:[A-Z_]*(?:TOKEN|PASSWORD|SECRET|API_KEY)|PRIVATE_KEY)\s*[:=]).+$/gim,'$1 [REDACTED]');
-      return {availability:'available',relativePath:path,revision,content,redacted:content!==text};
-    }finally{await file.close();}
-  }catch(error){if((error as any).code==='REFERENCE_PATH_FORBIDDEN')throw error;return {availability:'unavailable',relativePath:path,reason:'source_unavailable'};}
+    const file=await inventoryForProject(project).read(project,{path,redactSensitive:true});
+    await assertCurrentSourceProject(store,project,task);
+    const expected=input.revision??references.find(reference=>reference.revision)?.revision;
+    const identity={relativePath:file.relativePath,rootIdentity:project.rootIdentity,policyVersion:file.policyVersion,fileRevision:file.fileRevision,revision:file.hash};
+    if(!expected)return {availability:'unavailable',reason:'revision_required',...identity};
+    if(expected!==file.hash||input.fileRevision&&input.fileRevision!==file.fileRevision)return {availability:'stale',...identity,expectedRevision:expected};
+    return {availability:'available',...identity,content:file.text,redacted:file.redacted};
+  }catch(error){
+    const code=(error as {code?:string}).code;
+    if(code==='INVENTORY_PATH_FORBIDDEN')fail('REFERENCE_PATH_FORBIDDEN');
+    return {availability:'unavailable',relativePath:path,reason:code??'source_unavailable'};
+  }
 }

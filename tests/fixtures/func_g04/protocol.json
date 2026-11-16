@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "paos_func_g04_scale_protocol_v1",
+  "createdAt": "2026-11-15",
+  "scope": "local_synthetic_measurement_only",
+  "referenceHardware": {
+    "os": "Windows11 x64",
+    "logicalCpus": 4,
+    "memoryGiB": 16,
+    "storage": "local SSD",
+    "cache": "OS cache not flushed; fresh Worker and warmed repetitions are distinct"
+  },
+  "workload": {
+    "tasks": 10000,
+    "visibleMessages": 100000,
+    "documents": 1000,
+    "messageBytes": 1024,
+    "documentBytes": 107315,
+    "approximateTextMiB": 200,
+    "codeFiles": 1000,
+    "projectsBoundary": 9,
+    "sampleCountPerRound": 12,
+    "repeatCount": 3,
+    "soakMilliseconds": 120000
+  },
+  "budgets": {
+    "phaseMilliseconds": 600000,
+    "searchP95Ms": 500,
+    "commandAckP95Ms": 500,
+    "warmViewP95Ms": 1000,
+    "eventApiObservedP95Ms": 1000,
+    "coldServiceMs": 10000,
+    "scanMs": 60000,
+    "cancelMs": 2000,
+    "metadataDirectoryMs": 1500,
+    "browserInteractionMs": 1500,
+    "maxPeakRssMiB": 1024,
+    "maxResponseBytes": 1048576,
+    "largeSchemaObjects": 200,
+    "schemaExtractionMs": 30000,
+    "graphVisibleNodes": 100,
+    "graphVisibleEdges": 100,
+    "agentContextBytes": 32768
+  },
+  "boundaries": {
+    "files": [
+      1000,
+      1001
+    ],
+    "entries": [
+      10000,
+      10001
+    ],
+    "depth": [
+      32,
+      33
+    ],
+    "fileBytes": [
+      524288,
+      524289
+    ],
+    "codeAggregateBytes": [
+      8388608,
+      8388609
+    ],
+    "directoryDefaultLimit": 2000,
+    "entriesDataset": "ten parent directories with999 empty children each =10000; one additional child =10001; existing response/time budgets remain active"
+  },
+  "groundTruth": {
+    "imports": "tests/fixtures/func_g02/corpus.json expectedImports",
+    "schema": "tests/web/poc/func-g02/tbls-fixture.sql; literal PK/FK/index/view metadata",
+    "minimumImportPrecision": 1,
+    "minimumImportRecall": 0.9,
+    "codeDatabaseConfirmedPrecision": 1,
+    "codeDatabaseConfirmedRecall": 0.9,
+    "interpretation": "Unresolved/inferred are not counted as confirmed; supported kinds report separate denominators"
+  },
+  "invariants": [
+    "No providers/models/network/global configuration or credentials",
+    "Only disposable synthetic workspace/profile roots",
+    "Before/after target hashes match",
+    "No target script/config/migration execution",
+    "Boundaries yield explicit partial/error, never silent completeness",
+    "Captured project/root/policy/revision stays isolated",
+    "Do not loosen budgets after measuring a deviation"
+  ],
+  "measurement": {
+    "execution": "After retained monolithic baseline startup failure: separate diagnostic/reference/filesystem disposable children, each retaining the original 600000ms watchdog; --section permits focused retries. Counts, samples, soak and target budgets are unchanged. Original baseline receipt keeps its original protocol/source hashes.",
+    "timing": "performance.now monotonic; p95 nearest-rank",
+    "rss": "process.memoryUsage.rss sampled process-wide including Workers; maxRSS KiB from process.resourceUsage",
+    "io": "process-local FileHandle.read instrumentation counts actual checked-source bytes/calls; F28 snapshot/list methods count traversal calls; not OS physical disk I/O",
+    "startup": "fresh SQLite Worker + HTTP application creation; GUI/native launcher cold start is separately unmeasured",
+    "event": "commit ACK to next freshness/event API observation; rendered event-visible is root browser verification",
+    "cache": "same dataset and repeated public operations; OS page cache deliberately not flushed"
+  },
+  "sourceOwners": [
+    "research/product-agent-os-web-prd-2026-11-05.md WEB-NFR-03",
+    "research/product-agent-os-web-architecture-2026-11-05.md reference workload",
+    "docs/planning/functional-remediation-2026-11-15.md PAOS-FUNC-20",
+    "tests/fixtures/func_g02/protocol.json"
+  ],
+  "documentation": "docs/testing/test-map.md and RU/EN parity; owning task completion report records measured deviations and F09 disposition"
+}

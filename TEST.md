@@ -1,5 +1,19 @@
 # TEST.md
 
+## FUNC-G04 — закрыта, 16.11.2026
+
+Текущий полный native synthetic run: `node --test --test-concurrency=1 tests/web/*.test.mts` —658/658,0fail/skip (.tmp/func-g04/web-closure-native-final.log). Обычный sandbox attempt631pass/16fail/3skip и owned-child stop receipt сохранены отдельно; lease/symlink отказы не выданы за product RED. `npm run check:web-m1` passed (.tmp/func-g04/typecheck-closure.log); `npm run build:web` passed (.tmp/func-g04/build-responsive-final.log), UI source/build hashes текущие по browser receipt.
+
+`node tests/web/single-window/functional-scale-acceptance.mts --synthetic-scale --phase final` даёт три текущих completed_measurement receipts на неизменном protocol: .tmp/func-g04/scale-closure/result-diagnostic-1794778219987.json; .tmp/func-g04/scale-closure/result-reference-1794778236139.json; .tmp/func-g04/scale-closure/result-filesystem-1794778628384.json. Это measured_with_deviations/bounded_outcomes. `graph-database-browser-acceptance.mts --synthetic-browser --playwright-core ABSOLUTE_INSTALLED_PATH --chromium ABSOLUTE_INSTALLED_PATH` —18/18 (.tmp/func-g04/browser-acceptance/evidence-m9Vcjh/result.json). `sandbox-broker-acceptance.mts --run-once --binary ABSOLUTE_SYNTHETIC_PATH --candidate-inspection` → local manifest → production-default run passed; current adapter b7d5d1eb2a129763feacba96735d4ba40c0c0bd00dced861c1d83af6cf94726b. No provider/model/credentials.
+
+Closure gates: RU/EN task validators, `python -B tools/check_docs.py --paths ...` для32 changed Markdown sources, `node .tmp/func-g04/closure-consistency.mts` и `git diff --check`. Они проверяют AC/29foreign records/groups/M5/history/source/build/native preservation. [итоговые решения и evidence](docs/planning/functional-remediation-2026-11-15.md#func-g04-results). Full Python/site/hooks/provider routes не применяются: соответствующие контракты не менялись.
+
+## FUNC-G03 — текущая проверка, 15.11.2026
+
+Shared HTTP/storage/runtime wiring обосновывает полный `npm run test:web-m1`:594/594,0skip на owned native synthetic environment; `npm run check:web-m1` и `npm run build:web` прошли. Focused policy-race RED/GREEN и независимый review5/5; current source-bound `project-files-browser-acceptance.mts --synthetic-browser --playwright-core ABSOLUTE_INSTALLED_PATH --chromium ABSOLUTE_INSTALLED_PATH --phase final`:19/19. `sandbox-broker-acceptance.mts --run-once --binary ABSOLUTE_SYNTHETIC_PATH --candidate-inspection` → reviewed local manifest → production-default run без candidate flag прошли write/deny/drift/interrupt. Binary был взят из проверенного существующего cache и удалён; не устанавливался.
+
+Matrix validators RU/EN, source-docs30, MD/JSON/AC/M5 preservation и source/build/native bindings обязательны для closure; [receipts/ограничения](docs/planning/functional-remediation-2026-11-15.md#func-g03-results). Первоначальные sandbox link/rpc setup failures сохраняются; точные native retests и полный native run их не превращают в green sandbox attempt. При source drift повторить affected checks и qualification; broad plugin/site/provider suites этим runtime slice не требуются: core Python не менялся, `site/` freshness и provider/human acceptance не заявлены.
+
 ## FUNC-G02 — scoped verification routes, 15.11.2026
 
 Combined command: `node --test tests/web/poc/func-g02/f30-model.test.mts tests/web/poc/func-g02/codebase-memory.test.mts tests/web/poc/func-g02/tbls-poc.test.mts tests/web/poc/func-g02/prototype-model.test.mts tests/web/poc/func-g02/prototype-preview.test.mts` —22/22,0skip. `node tests/web/poc/func-g02/prototype-build.mts` —TypeScript/Vite passed; `prototype-browser.mts --synthetic-browser --playwright-core ABSOLUTE_INSTALLED_PATH --chromium ABSOLUTE_INSTALLED_PATH` —22/22. Evidence `.tmp/func-g02/` source/build/harness bound; UI P2 isolation/filter regressions включены.

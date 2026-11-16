@@ -3,7 +3,8 @@ import {HttpApiError,type M1Api,type ProjectRegistration} from '../../api/client
 import type {AppLabel} from '../../locales/app.ts';
 
 /** User-selected filesystem root stays a draft until Add; retry keeps the exact registration envelope. */
-export function ProjectOnboarding({api,t,onProject}:{api:M1Api;t:(key:AppLabel)=>string;onProject:(name:string,root:string,requestId:string)=>Promise<ProjectRegistration>}){
+export function ProjectOnboarding({api,t,onProject,locale='ru',onOpenFiles}:{api:M1Api;t:(key:AppLabel)=>string;locale?:'ru'|'en';onOpenFiles?:(id:string)=>void;onProject:(name:string,root:string,requestId:string)=>Promise<ProjectRegistration>}){
+ const w=(ru:string,en:string)=>locale==='ru'?ru:en;
  const [name,setName]=useState(''),[root,setRoot]=useState(''),[busy,setBusy]=useState(false),[notice,setNotice]=useState(''),[error,setError]=useState(''),[result,setResult]=useState<ProjectRegistration>();
  const selectButton=useRef<HTMLButtonElement>(null),selection=useRef<string|undefined>(undefined),pending=useRef<{id:string;name:string;root:string}|undefined>(undefined);
  const selectionAbort=useRef<AbortController|undefined>(undefined),mounted=useRef(true);
@@ -28,10 +29,11 @@ export function ProjectOnboarding({api,t,onProject}:{api:M1Api;t:(key:AppLabel)=
    <label>{t('root')}<input name="root" required autoComplete="off" disabled={busy||!!pending.current} value={root} onChange={e=>{setRoot(e.target.value);setResult(undefined);}} placeholder={t('chooseProjectFolder')}/></label>
    <button disabled={busy||!name.trim()||!root.trim()}>{pending.current&&!busy?t('retryProjectAdd'):t('addProject')}</button>
   </form><p role="status" aria-live="polite">{notice}</p>{error&&<p role="alert">{error}</p>}
-  {result?.scan&&<section data-testid="project-scan-summary"><h3>{t('projectScanSummary')}</h3><p>{result.name} · {t(result.scan.state==='ready'?'projectScanReady':'projectScanPartial')}</p>
-   {result.scan.counts&&<p>{t('indexedFiles')}: {result.scan.counts.files} · {t('indexedSymbols')}: {result.scan.counts.nodes}</p>}
-   <p>{t('projectSourceCount')}: {result.scan.sources.filter(s=>s.status==='available').length}/{result.scan.sources.length}</p>
-   <p className="quiet">{t('projectScanBoundary')}</p>{result.scan.reason&&<details><summary>{t('scanDetails')}</summary><code>{result.scan.reason}</code></details>}
+  {result&&<section data-testid="project-scan-summary"><h3>{t('projectScanSummary')}</h3><p>{result.name} · {w('Проект зарегистрирован. Сканирование выполняется отдельно.','Project registered. Scanning runs separately.')}</p>
+   <p>{result.scan?.latest?.state??(result.scanError?w('Сканирование недоступно','Scan unavailable'):w('Сканирование не запрошено','Scan not requested'))}</p>
+   {result.scanError&&<p role="alert">{result.scanError}</p>}
+   {onOpenFiles&&<button type="button" data-testid="onboarding-files" onClick={()=>onOpenFiles(result.id)}>{w('Открыть файлы','Open files')}</button>}
+   <p className="quiet">{w('Файлы доступны до готовности индекса. Последний сохранённый статус, отмена и повтор показаны ниже.','Files are available before indexing. The persisted status, cancel and retry controls are shown below.')}</p>
   </section>}
  </section>;
 }

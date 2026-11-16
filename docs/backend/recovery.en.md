@@ -1,8 +1,20 @@
 # Backend: stop and recovery
 
-Source status: repository_source / static_source_review; 2026-11-15.
+Source status: repository_source / current_source_review; 2026-11-15.
 
 Owner: backend/runtime and storage; scope/version: DG03, `2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765`. Update when cancellation, checkpoints, ownership, backup/restore or shutdown contracts change.
+
+## FUNC-G03: background scans and source freshness
+
+Current `project-scans/service.mts` persists queued/running/stage progress through profile CAS. After restart, unfinished queued/running scans become `interrupted` with `SERVICE_RESTART_NO_REPLAY`; analysis is not replayed automatically. `application.close()` closes scans before the store: owned controllers are aborted, owned live scans become `interrupted`/`SERVICE_SHUTDOWN_NO_REPLAY`, and owned work promises are awaited. This is a local read-only scan; its cancellation does not prove a provider run stopped.
+
+Cancel checks project/scan ownership, removes queued work, fences late publication and persists cancelled. Retry creates a new attempt using `retry:{scanId}`; replaying a request does not create independent duplicates. Stage timeouts bound waiting; failures may yield partial, while inventory failure ends the scan. Scope drift, unavailable roots or changed inventory revisions interrupt publication. `lastSuccessful` retains the last finished scan (including partial), so state/coverage/reasons and provenance must still be checked.
+
+Scan errors do not roll back durable Add. After interrupted/failed/unavailable, inspect reasons, repair the root/policy/runtime prerequisite and explicitly retry. The existing checkout Python core works on an owned projection; missing packaged core reports unavailable. Cleanup only affects the owned temporary projection/child; the target workspace is unchanged.
+
+`freshness` reads a profile stamp, while task-manager obtains entities+stamp atomically. This is not a watcher or a guarantee that filesystem contents remain unchanged. External changes require manual refresh/read/scan; stale root/policy/file pins require a new observation/preflight. Preflight does not reserve files or replace approval: the gateway checks admission and fresh capture before broker operations. Missing/excluded/moved paths cannot grant source reads.
+
+Source review covers current scan/analysis/storage/gateway files; parent-provided F29 API6/6, preflight API1/1, gateway policy28/28 and F18focused5/5 results cover local synthetic integration. Final browser/native verification and human acceptance remain outside this page. See [endpoints](../api/endpoints.md).
 
 ## Cancellation is not a confirmed outcome
 

@@ -5,7 +5,7 @@
   "timezone": "Europe/Moscow",
   "source_plan": "docs/planning/functional-remediation-2026-11-15.md",
   "status": "in_progress",
-  "execution_authority": "owner_authorized_func_g01_and_func_g02_local_synthetic",
+  "execution_authority": "owner_authorized_func_g01_g02_g03_g04_local_synthetic",
   "original_group_unchanged": "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json",
   "tasks": [
     {
@@ -84,10 +84,10 @@
     {
       "id": "PAOS-FUNC-02",
       "title": "Восстановить связи структурированных артефактов с задачами",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "type": "fix",
-      "evidence_level": "static_finding_reproduction_required",
+      "evidence_level": "locally_verified",
       "technical_value": "Унифицировать нормализацию files, artifactReferences, artifacts и fileContexts.",
       "product_value": "Документ находится из задачи, а задача — из документа и поиска.",
       "acceptance_criteria": [
@@ -116,8 +116,8 @@
       "estimate": "4–8 ч",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "rough_range",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "15-11-2026 21:00",
+      "execution_authority": "owner_authorized_func_g03_local_synthetic",
       "source_observation": "taskPaths читает files/artifactReferences; Editor отдельно сохраняет artifacts.",
       "source_paths": [
         "apps/local-service/src/artifacts/service.mts",
@@ -126,7 +126,32 @@
       "future_test_commands": [
         "node --test tests/web/skill-generation-artifacts.test.mts"
       ],
-      "delivery_group_id": "FUNC-G03"
+      "delivery_group_id": "FUNC-G03",
+      "completion_report": {
+        "status": "implemented",
+        "what_was_done": "Единая нормализация explicit task references связала structured artifacts и legacy paths с каталогом и backlinks; stale pin отделён от доступности текущего документа и read authority.",
+        "verification_evidence": [
+          ".tmp/func-g03/browser-foundation/evidence-q8ECT0/result.json:15/15",
+          ".tmp/func-g03/f26-f27-api-integration.log:13/13",
+          ".tmp/func-g03/check-foundation.log:exit0",
+          ".tmp/func-g03/build-foundation.log:exit0",
+          ".tmp/func-g03/f02-focused-final.log:21/21"
+        ],
+        "docs_impact": {
+          "decision": "updated",
+          "paths": [
+            "docs/code-intelligence/queries-impact.md",
+            "docs/code-intelligence/queries-impact.en.md",
+            "docs/frontend/components.md",
+            "docs/frontend/components.en.md",
+            "docs/sources/registry.md",
+            "docs/sources/registry.en.md"
+          ],
+          "source_revision": "current_working_tree_verified"
+        },
+        "residual_risks": "Bounded synthetic local verification; no provider calls, native clipboard or human/release acceptance. Final shared regression/native qualification follows.",
+        "implementation_at": "15-11-2026 21:00"
+      }
     },
     {
       "id": "PAOS-FUNC-03",
@@ -521,10 +546,10 @@
     {
       "id": "PAOS-FUNC-09",
       "title": "Оптимизировать чтение и жизненный цикл снимков",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "type": "architecture",
-      "evidence_level": "static_observation",
+      "evidence_level": "locally_verified",
       "technical_value": "По измерениям устранить лишние полные сканы и добавить ограниченное освобождение cache.",
       "product_value": "Длительная работа и большие проекты не упираются в задержки и накопленные snapshots.",
       "acceptance_criteria": [
@@ -555,8 +580,8 @@
       "estimate": "12–24 ч после benchmark",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "rough_range",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "16-11-2026 00:43",
+      "execution_authority": "owner_authorized_func_g04_local_synthetic",
       "source_observation": "Полные projectEntities; graph memory cap8; catalog snapshot limits.",
       "source_paths": [
         "apps/local-service/src/code-index/service.mts",
@@ -567,15 +592,45 @@
         "npm run test:web-m1",
         "npm run check:web-m1"
       ],
-      "delivery_group_id": "FUNC-G04"
+      "delivery_group_id": "FUNC-G04",
+      "completion_report": {
+        "status": "implemented",
+        "what_was_done": "По воспроизведённым F20 bottlenecks внедрены metadata-only graph status,8-entry LRU/generation-bound cursors,8 checked parallel source handles с прежним8MiB cap, SQL kind filtering до64MiB cap, frozen TEMP history и SQL preview artifacts с bounded raw reads.",
+        "verification_evidence": [
+          "node --test --test-concurrency=1 tests/web/*.test.mts: 658/658, 0 fail, 0 skip; .tmp/func-g04/web-closure-native-final.log (authorized native synthetic executor)",
+          "npm run check:web-m1: passed, .tmp/func-g04/typecheck-closure.log; npm run build:web: passed, .tmp/func-g04/build-responsive-final.log; UI/build hashes unchanged and verified by current browser receipt",
+          "production browser 18/18, 204 current source hashes and dist binding; .tmp/func-g04/browser-acceptance/evidence-m9Vcjh/result.json",
+          "native candidate/default passed, 0 provider/model/credential operations; .tmp/func-g04/native-closure-candidate.json + native-closure-default.json; adapter b7d5d1eb2a129763feacba96735d4ba40c0c0bd00dced861c1d83af6cf94726b",
+          "32 changed Markdown sources + RU/EN matrices + preservation/source/build/native checks: see .tmp/func-g04/docs-closure.log, matrix-closure.log and closure-consistency.json; final audit result is owned by verification.latest",
+          "observable RED3/3→GREEN3/3 plus real100k-message frozen/1000-large-document regressions; full658 includes current guards",
+          "Baseline graph 60.865 s/status 17.6–21.3 s/ninth LIMIT; current closure graph 11475.70 ms/status 313.49/294.86/277.69 ms, 0 content reads/bytes and one metadata walk; ninth project succeeds",
+          "final cold-generation deviations and fast existing cursors retained in F20 receipts; no threshold raised"
+        ],
+        "docs_impact": {
+          "decision": "updated",
+          "paths": [
+            "docs/api/endpoints.md",
+            "docs/api/endpoints.en.md",
+            "docs/backend/lifecycle.md",
+            "docs/backend/lifecycle.en.md",
+            "docs/db/transactions.md",
+            "docs/db/transactions.en.md",
+            "docs/testing/test-map.md",
+            "docs/testing/test-map.en.md"
+          ],
+          "source_revision": "current_working_tree_verified"
+        },
+        "residual_risks": "Новый большой cold snapshot не имеет warm-SLO1s; partial/recovery и caps230MiB payload/256MiB TEMP сохранены. History cursor expiry15min/eviction/restart требует refresh. Статус проверяет metadata; отдельный excerpt сверяет raw hash. Native RSS не ограничен JS heap.",
+        "implementation_at": "16-11-2026 00:43"
+      }
     },
     {
       "id": "PAOS-FUNC-10",
       "title": "Показывать ограничения файлового scope до запуска",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "type": "improvement",
-      "evidence_level": "static_observation",
+      "evidence_level": "locally_verified",
       "technical_value": "Общий preflight для числа файлов, размеров, excluded paths и границ actual diff.",
       "product_value": "Пользователь заранее понимает, почему задача не стартует и как её разделить.",
       "acceptance_criteria": [
@@ -610,8 +665,8 @@
       "estimate": "6–12 ч",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "rough_range",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "15-11-2026 21:41",
+      "execution_authority": "owner_authorized_func_g03_local_synthetic",
       "source_observation": "Capture ограничен32 файлами,64KiB/файл,512KiB суммарно.",
       "source_paths": [
         "apps/local-service/src/runtime/app-agent-files.mts"
@@ -620,7 +675,35 @@
         "npm run test:web-m1",
         "npm run check:web-m1"
       ],
-      "delivery_group_id": "FUNC-G03"
+      "delivery_group_id": "FUNC-G03",
+      "completion_report": {
+        "status": "implemented",
+        "what_was_done": "Единый metadata-only preflight проверяет saved scope и исходные32/64KiB/512KiB limits, operations/rename/pins/policy/root до Send; server повторяет authority checks, native boundary rechecks policy после waits. Blocked UI сохраняет draft и не dispatch-ит run.",
+        "verification_evidence": [
+          "npm run test:web-m1:594/594,0skip",
+          ".tmp/func-g03/full-web-native.log",
+          ".tmp/func-g03/browser-final/evidence-IfLiEa/result.json:19/19",
+          ".tmp/func-g03/native-candidate-reviewed.log:passed",
+          ".tmp/func-g03/native-default-reviewed.log:passed",
+          "independent review cycle2:5/5,closed_allowed"
+        ],
+        "docs_impact": {
+          "decision": "updated",
+          "paths": [
+            "docs/security/filesystem.md",
+            "docs/security/filesystem.en.md",
+            "docs/db/transactions.md",
+            "docs/db/transactions.en.md",
+            "docs/api/endpoints.md",
+            "docs/api/endpoints.en.md",
+            "docs/sources/registry.md",
+            "docs/sources/registry.en.md"
+          ],
+          "source_revision": "current_working_tree_verified"
+        },
+        "residual_risks": "Local synthetic engineering acceptance; checkout-only core with explicit packaged unavailable; bounded projection/output without portable OS RSS cap. No provider/human/release acceptance. F14/F33/F34 own future consumers.",
+        "implementation_at": "15-11-2026 21:41"
+      }
     },
     {
       "id": "PAOS-FUNC-11",
@@ -753,10 +836,10 @@
     {
       "id": "PAOS-FUNC-14",
       "title": "Расширить полезность и устойчивость карты проекта",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "type": "feature",
-      "evidence_level": "bounded_capability_or_missing_extension",
+      "evidence_level": "locally_verified",
       "technical_value": "Выбрать поддержку языков/связей; durable revision index, imports resolution и честный coverage.",
       "product_value": "Карта помогает оценить влияние изменения, а не создаёт видимость полного анализа.",
       "acceptance_criteria": [
@@ -800,8 +883,8 @@
       "estimate": "8–16 ч design; build после выбора языков",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "unknown_until_design_gate",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "16-11-2026 00:43",
+      "execution_authority": "owner_authorized_func_g04_local_synthetic",
       "source_observation": "lexical_subset_only, imports unresolved, memory-only index.",
       "source_paths": [
         "apps/local-service/src/code-index/service.mts"
@@ -810,7 +893,37 @@
         "npm run test:web-m1",
         "node --test tests/web/ui-v3-diagram.test.mts"
       ],
-      "delivery_group_id": "FUNC-G04"
+      "delivery_group_id": "FUNC-G04",
+      "completion_report": {
+        "status": "implemented",
+        "what_was_done": "Выбрана явная installed parser+pure allowlist resolver композиция; добавлены aliases/baseUrl, literal dynamic import/unshadowed require, dependencies/symbols, direction/bounded path, source evidence→Files, общий revision дляgraph/list/Mermaid. Native parser изолирован owned child с watchdog.",
+        "verification_evidence": [
+          "node --test --test-concurrency=1 tests/web/*.test.mts: 658/658, 0 fail, 0 skip; .tmp/func-g04/web-closure-native-final.log (authorized native synthetic executor)",
+          "npm run check:web-m1: passed, .tmp/func-g04/typecheck-closure.log; npm run build:web: passed, .tmp/func-g04/build-responsive-final.log; UI/build hashes unchanged and verified by current browser receipt",
+          "production browser 18/18, 204 current source hashes and dist binding; .tmp/func-g04/browser-acceptance/evidence-m9Vcjh/result.json",
+          "native candidate/default passed, 0 provider/model/credential operations; .tmp/func-g04/native-closure-candidate.json + native-closure-default.json; adapter b7d5d1eb2a129763feacba96735d4ba40c0c0bd00dced861c1d83af6cf94726b",
+          "32 changed Markdown sources + RU/EN matrices + preservation/source/build/native checks: see .tmp/func-g04/docs-closure.log, matrix-closure.log and closure-consistency.json; final audit result is owned by verification.latest",
+          "G02 corpus7/10→10/10 imports,fixture precision1/recall1; aliases/config drift/shadowing/cycles/Unicode/no config execution",
+          "native deep input failure contained; graph owner remains usable; actual child timeout/cancel cleanup",
+          "actual browser dependencies/direction/path/keyboard/source/Files and fresh nonempty Map in4locale/theme×2viewport states"
+        ],
+        "docs_impact": {
+          "decision": "updated",
+          "paths": [
+            "docs/code-intelligence/graph-model.md",
+            "docs/code-intelligence/graph-model.en.md",
+            "docs/frontend/navigation.md",
+            "docs/frontend/navigation.en.md",
+            "docs/frontend/components.md",
+            "docs/frontend/components.en.md",
+            "docs/backend/modules.md",
+            "docs/backend/modules.en.md"
+          ],
+          "source_revision": "current_working_tree_verified"
+        },
+        "residual_risks": "Только JS/TS lexical/import subset; без package exports/config inheritance/full TS linker/runtime calls/C4 business facts. Restart/eviction явно требует rebuild.1k files/8MiB/512KiB и bounded path8hops/1000visited сохранены.",
+        "implementation_at": "16-11-2026 00:43"
+      }
     },
     {
       "id": "PAOS-FUNC-15",
@@ -947,10 +1060,10 @@
     {
       "id": "PAOS-FUNC-18",
       "title": "Согласовать обновление снимков задач и dashboard",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "type": "improvement",
-      "evidence_level": "static_observation",
+      "evidence_level": "locally_verified",
       "technical_value": "Определить refresh/invalidation contract при фоне, мутациях и смене проекта.",
       "product_value": "После выполнения пользователь видит актуальный статус без угадывания, какой экран обновить.",
       "acceptance_criteria": [
@@ -988,8 +1101,8 @@
       "estimate": "6–12 ч",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "rough_range",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "15-11-2026 21:41",
+      "execution_authority": "owner_authorized_func_g03_local_synthetic",
       "source_observation": "Task/dashboard преимущественно initial/manual snapshots, queue polling отдельно.",
       "source_paths": [
         "apps/web/src/features/tasks/TaskManager.tsx",
@@ -999,7 +1112,37 @@
         "npm run test:web-m1",
         "npm run check:web-m1"
       ],
-      "delivery_group_id": "FUNC-G03"
+      "delivery_group_id": "FUNC-G03",
+      "completion_report": {
+        "status": "implemented",
+        "what_was_done": "Atomic task snapshot/profile stamp, bounded single-flight polling, явный stale/refresh в Dashboard/Task Manager/overlay и dirty CAS conflict внедрены; explicit file refresh и общий provenance invalidation не обещают live watcher. Scan attempt/request scopes отвергают late events.",
+        "verification_evidence": [
+          "npm run test:web-m1:594/594,0skip",
+          ".tmp/func-g03/full-web-native.log",
+          ".tmp/func-g03/browser-final/evidence-IfLiEa/result.json:19/19",
+          ".tmp/func-g03/native-candidate-reviewed.log:passed",
+          ".tmp/func-g03/native-default-reviewed.log:passed",
+          "independent review cycle2:5/5,closed_allowed"
+        ],
+        "docs_impact": {
+          "decision": "updated",
+          "paths": [
+            "docs/frontend/state-management.md",
+            "docs/frontend/state-management.en.md",
+            "docs/api/events.md",
+            "docs/api/events.en.md",
+            "docs/backend/recovery.md",
+            "docs/backend/recovery.en.md",
+            "docs/api/endpoints.md",
+            "docs/api/endpoints.en.md",
+            "docs/sources/registry.md",
+            "docs/sources/registry.en.md"
+          ],
+          "source_revision": "current_working_tree_verified"
+        },
+        "residual_risks": "Local synthetic engineering acceptance; checkout-only core with explicit packaged unavailable; bounded projection/output without portable OS RSS cap. No provider/human/release acceptance. F14/F33/F34 own future consumers.",
+        "implementation_at": "15-11-2026 21:41"
+      }
     },
     {
       "id": "PAOS-FUNC-19",
@@ -1080,10 +1223,10 @@
     {
       "id": "PAOS-FUNC-20",
       "title": "Измерить масштабирование и длительную работу",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "type": "verification",
-      "evidence_level": "verification_gap",
+      "evidence_level": "locally_verified",
       "technical_value": "Воспроизводимый workload с hardware/cache profile, latency/RSS/queue-depth и error budgets.",
       "product_value": "Большой проект и длительная сессия остаются управляемыми.",
       "acceptance_criteria": [
@@ -1128,8 +1271,8 @@
       "estimate": "8–16 ч",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "rough_range",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "16-11-2026 00:43",
+      "execution_authority": "owner_authorized_func_g04_local_synthetic",
       "source_observation": "Большие проекты/long-running после redesign не измерены; runtime index/cache caps.",
       "source_paths": [
         "research/product-agent-os-web-prd-2026-11-05.md",
@@ -1138,7 +1281,32 @@
       "future_test_commands": [
         "npm run test:web-m1"
       ],
-      "delivery_group_id": "FUNC-G04"
+      "delivery_group_id": "FUNC-G04",
+      "completion_report": {
+        "status": "implemented",
+        "what_was_done": "Зафиксирован до замеров protocol/hardware/cache/ground truth; baseline failure сохранён; after/final повторены на10k задач/100k сообщений/1000 документов и1000 code files с120ssoak и точными boundaries. Итог measured_with_deviations/bounded_outcomes, не all-NFR pass.",
+        "verification_evidence": [
+          "node --test --test-concurrency=1 tests/web/*.test.mts: 658/658, 0 fail, 0 skip; .tmp/func-g04/web-closure-native-final.log (authorized native synthetic executor)",
+          "npm run check:web-m1: passed, .tmp/func-g04/typecheck-closure.log; npm run build:web: passed, .tmp/func-g04/build-responsive-final.log; UI/build hashes unchanged and verified by current browser receipt",
+          "production browser 18/18, 204 current source hashes and dist binding; .tmp/func-g04/browser-acceptance/evidence-m9Vcjh/result.json",
+          "native candidate/default passed, 0 provider/model/credential operations; .tmp/func-g04/native-closure-candidate.json + native-closure-default.json; adapter b7d5d1eb2a129763feacba96735d4ba40c0c0bd00dced861c1d83af6cf94726b",
+          "32 changed Markdown sources + RU/EN matrices + preservation/source/build/native checks: see .tmp/func-g04/docs-closure.log, matrix-closure.log and closure-consistency.json; final audit result is owned by verification.latest",
+          "Current closure diagnostic/reference/filesystem: .tmp/func-g04/scale-closure/result-diagnostic-1794778219987.json; .tmp/func-g04/scale-closure/result-reference-1794778236139.json; .tmp/func-g04/scale-closure/result-filesystem-1794778628384.json",
+          "133 current source hashes; SQL 10k/100k/1k integrity/FK0; soak 120.15 s / 119 iterations; preserved targets + cleanup; unchanged protocol 37c20aadc0d3474ef78cf86928e9ee1727be7bf415152fc393e92c8b079af625"
+        ],
+        "docs_impact": {
+          "decision": "updated",
+          "paths": [
+            "docs/testing/test-map.md",
+            "docs/testing/test-map.en.md",
+            "docs/sources/registry.md",
+            "docs/sources/registry.en.md"
+          ],
+          "source_revision": "current_working_tree_verified"
+        },
+        "residual_risks": "Холодные history/catalog generations превышают comparison 1000 ms в сохранённых runs; подробные значения и все отклонения — в F20 receipts. 10k/10001 directories дают bounded 30 s INVENTORY_TIMEOUT. Reference 4-core/GUI cold launch/whole-system RSS не квалифицированы. Browser sampled aggregate 1101.32 MiB — diagnostic, не per-process peak. Human/provider/release отдельно.",
+        "implementation_at": "16-11-2026 00:43"
+      }
     },
     {
       "id": "PAOS-FUNC-21",
@@ -1451,8 +1619,8 @@
       "non_goals": "Редактирование, удаление и перемещение файлов; terminal; выполнение preview-кода; автоматическая передача содержимого модели.",
       "output": "Проверяемое дерево и read-only reader, typed API, focused/browser receipts в этой карточке.",
       "id": "PAOS-FUNC-26",
-      "status": "planned",
-      "evidence_level": "static_observation",
+      "status": "implemented",
+      "evidence_level": "locally_verified",
       "blocks": [
         "PAOS-FUNC-10",
         "PAOS-FUNC-18",
@@ -1463,10 +1631,32 @@
       ],
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "rough_range_refine_after_design",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "15-11-2026 21:00",
+      "execution_authority": "owner_authorized_func_g03_local_synthetic",
       "execution_order": 18,
-      "delivery_group_id": "FUNC-G03"
+      "delivery_group_id": "FUNC-G03",
+      "completion_report": {
+        "status": "implemented",
+        "what_was_done": "Реализованы lazy project Files, bounded directory search/pagination, безопасный reader, source/metadata pins, copy и deep links с RU/EN и двумя темами.",
+        "verification_evidence": [
+          ".tmp/func-g03/browser-foundation/evidence-q8ECT0/result.json:15/15",
+          ".tmp/func-g03/f26-f27-api-integration.log:13/13",
+          ".tmp/func-g03/check-foundation.log:exit0",
+          ".tmp/func-g03/build-foundation.log:exit0"
+        ],
+        "docs_impact": {
+          "decision": "updated",
+          "paths": [
+            "docs/frontend/navigation.md",
+            "docs/frontend/navigation.en.md",
+            "docs/sources/registry.md",
+            "docs/sources/registry.en.md"
+          ],
+          "source_revision": "current_working_tree_verified"
+        },
+        "residual_risks": "Bounded synthetic local verification; no provider calls, native clipboard or human/release acceptance. Final shared regression/native qualification follows.",
+        "implementation_at": "15-11-2026 21:00"
+      }
     },
     {
       "n": 27,
@@ -1523,8 +1713,8 @@
       "non_goals": "Запуск задач/агентов, provider calls, автоматическое выполнение команд проекта и изменение target-файлов; бесконечный watchdog.",
       "output": "Durable scan lifecycle и UI прогресса; schema compatibility/rollback и crash/cancel/retry receipts.",
       "id": "PAOS-FUNC-27",
-      "status": "planned",
-      "evidence_level": "static_observation",
+      "status": "implemented",
+      "evidence_level": "locally_verified",
       "blocks": [
         "PAOS-FUNC-14",
         "PAOS-FUNC-18",
@@ -1536,10 +1726,32 @@
       ],
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "rough_range_refine_after_design",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "15-11-2026 21:00",
+      "execution_authority": "owner_authorized_func_g03_local_synthetic",
       "execution_order": 19,
-      "delivery_group_id": "FUNC-G03"
+      "delivery_group_id": "FUNC-G03",
+      "completion_report": {
+        "status": "implemented",
+        "what_was_done": "Регистрация идемпотентна и возвращает queued до scan; profile-owned CAS хранит стадии/progress/restart/retry/cancel, publication guards сохраняют предыдущий graph. Persisted status UI подключён.",
+        "verification_evidence": [
+          ".tmp/func-g03/browser-foundation/evidence-q8ECT0/result.json:15/15",
+          ".tmp/func-g03/f26-f27-api-integration.log:13/13",
+          ".tmp/func-g03/check-foundation.log:exit0",
+          ".tmp/func-g03/build-foundation.log:exit0"
+        ],
+        "docs_impact": {
+          "decision": "updated",
+          "paths": [
+            "docs/backend/lifecycle.md",
+            "docs/backend/lifecycle.en.md",
+            "docs/sources/registry.md",
+            "docs/sources/registry.en.md"
+          ],
+          "source_revision": "current_working_tree_verified"
+        },
+        "residual_risks": "Bounded synthetic local verification; no provider calls, native clipboard or human/release acceptance. Final shared regression/native qualification follows.",
+        "implementation_at": "15-11-2026 21:00"
+      }
     },
     {
       "n": 28,
@@ -1592,8 +1804,8 @@
       "non_goals": "Безусловное снятие существующих лимитов или denylist; полный обход excluded directories; секреты в индексах; новый независимый scanner без оценки reuse.",
       "output": "Общий inventory/coverage contract и миграция потребителей без ослабления guards; fixture evidence.",
       "id": "PAOS-FUNC-28",
-      "status": "planned",
-      "evidence_level": "static_observation",
+      "status": "implemented",
+      "evidence_level": "locally_verified",
       "blocks": [
         "PAOS-FUNC-02",
         "PAOS-FUNC-10",
@@ -1605,10 +1817,36 @@
       ],
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "rough_range_refine_after_design",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "15-11-2026 20:10",
+      "execution_authority": "owner_authorized_func_g03_local_synthetic",
       "execution_order": 9,
-      "delivery_group_id": "FUNC-G03"
+      "delivery_group_id": "FUNC-G03",
+      "completion_report": {
+        "status": "implemented",
+        "what_was_done": "Общий нижний inventory boundary внедрён в graph, artifact catalog и fixed control-plane consumers. Реализованы metadata tree, отдельные listing/read/index права, gitignore/project policy precedence, versioned pins/cursors, profile-owned policy CAS, partial per-file failures и redacted display-only read. Default analyzer read и hard sensitive/link/root/private-key guards сохраняют отказ. Проверена совместимость finite G02 projection с F28 authority.",
+        "verification_evidence": [
+          ".tmp/func-g03/f28-verified-final.log:57/57,0skip",
+          ".tmp/func-g03/f28-final-typecheck.log:exit0",
+          ".tmp/func-g03/f28-lower-evidence.json:current lower15/15/source hashes",
+          ".tmp/func-g03/f28-consumer-red.log -> f28-consumer-green.log",
+          ".tmp/func-g03/f28-state-red.log -> f28-state-green.log",
+          ".tmp/func-g03/f28-cursor-red.log -> f28-consumers-final.log"
+        ],
+        "docs_impact": {
+          "decision": "updated",
+          "paths": [
+            "docs/code-intelligence/inventory.md",
+            "docs/code-intelligence/inventory.en.md",
+            "docs/security/filesystem.md",
+            "docs/security/filesystem.en.md",
+            "docs/sources/registry.md",
+            "docs/sources/registry.en.md"
+          ],
+          "source_revision": "current_working_tree_verified"
+        },
+        "residual_risks": "Known credential filtering is bounded; git global/info excludes and tracked state are not git-status parity. Production browser/native tuple qualification and human acceptance are separate group/follow-up gates.",
+        "implementation_at": "15-11-2026 20:10"
+      }
     },
     {
       "n": 29,
@@ -1668,8 +1906,8 @@
       "non_goals": "Автоматический ремонт проекта, создание Control-plane, LLM-аудит, сборка/тесты target и публикация; неподтверждённые обещания полноты.",
       "output": "Read-only discovery integration и source-backed summary, capability/timeout/stale fixtures; reuse contract в существующей architecture.",
       "id": "PAOS-FUNC-29",
-      "status": "planned",
-      "evidence_level": "static_observation",
+      "status": "implemented",
+      "evidence_level": "locally_verified",
       "blocks": [
         "PAOS-FUNC-19",
         "PAOS-FUNC-20",
@@ -1677,10 +1915,38 @@
       ],
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "rough_range_refine_after_design",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "15-11-2026 21:41",
+      "execution_authority": "owner_authorized_func_g03_local_synthetic",
       "execution_order": 25,
-      "delivery_group_id": "FUNC-G03"
+      "delivery_group_id": "FUNC-G03",
+      "completion_report": {
+        "status": "implemented",
+        "what_was_done": "Core discovery подключён отдельной durable scan стадией через фиксированный Python -I -S -B bridge и bounded F28 projection; real core identity/source revision, stack/languages/control-plane/schema candidates, capabilities и stale/unavailable доступны в overview. Target scripts, DB и providers не запускаются.",
+        "verification_evidence": [
+          "npm run test:web-m1:594/594,0skip",
+          ".tmp/func-g03/full-web-native.log",
+          ".tmp/func-g03/browser-final/evidence-IfLiEa/result.json:19/19",
+          ".tmp/func-g03/native-candidate-reviewed.log:passed",
+          ".tmp/func-g03/native-default-reviewed.log:passed",
+          "independent review cycle2:5/5,closed_allowed"
+        ],
+        "docs_impact": {
+          "decision": "updated",
+          "paths": [
+            "docs/code-intelligence/discovery.md",
+            "docs/code-intelligence/discovery.en.md",
+            "docs/architecture/data-flow.md",
+            "docs/architecture/data-flow.en.md",
+            "docs/api/endpoints.md",
+            "docs/api/endpoints.en.md",
+            "docs/sources/registry.md",
+            "docs/sources/registry.en.md"
+          ],
+          "source_revision": "current_working_tree_verified"
+        },
+        "residual_risks": "Local synthetic engineering acceptance; checkout-only core with explicit packaged unavailable; bounded projection/output without portable OS RSS cap. No provider/human/release acceptance. F14/F33/F34 own future consumers.",
+        "implementation_at": "15-11-2026 21:41"
+      }
     },
     {
       "id": "PAOS-FUNC-30",
@@ -1888,10 +2154,10 @@
     {
       "id": "PAOS-FUNC-33",
       "title": "Добавить карту БД и раздел «База данных» проекта",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "type": "extension",
-      "evidence_level": "upstream_documentation_review_not_locally_verified",
+      "evidence_level": "locally_verified",
       "technical_value": "Версионированные schema snapshots, schema diff и read-only адаптер выбранного источника с provenance и freshness.",
       "product_value": "Пользователь просматривает таблицы и связи, понимает источник и актуальность схемы и переходит к её определению.",
       "acceptance_criteria": [
@@ -1945,8 +2211,8 @@
       "estimate": "16–24 ч design; build уточнить после F32",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "design_only_build_after_gate",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "16-11-2026 00:43",
+      "execution_authority": "owner_authorized_func_g04_local_synthetic",
       "source_observation": "GitHub research 15.11.2026: upstream README/license review; integration, performance and compatibility not verified locally.",
       "source_paths": [
         "https://github.com/k1LoW/tbls",
@@ -1956,15 +2222,48 @@
       "ui_ux_scope": "До build подготовлены и согласованы wireframes и карта навигации в существующем V3 design: проект → «Файлы», «Карта», «База данных»; названия уточняются на design review. Для затронутого экрана определены loading/empty/partial/error/unavailable/stale, progress/cancel/retry по capabilities, RU/EN, обе темы, keyboard/focus, читаемые подписи и доступная таблица вместо обязательного чтения диаграммы. Смена проекта, возврат назад, фильтр и выбранный объект не смешивают данные; видны source/revision/coverage. PoC использует изолированный прототип, production UI принимается в F14/F33/F34.",
       "decision_gate": "После PoC выбрать backend и согласовать architecture/UI contract; без этого build не начинается.",
       "verification_protocol": "Adapter/API tests, UI type-check/build и synthetic browser acceptance на выбранном runtime; exact commands фиксируются до build. Новый harness сейчас не существует.",
-      "delivery_group_id": "FUNC-G04"
+      "delivery_group_id": "FUNC-G04",
+      "completion_report": {
+        "status": "implemented",
+        "what_was_done": "Добавлены явный SQLite source в Settings, purpose-specific admission, native SHARE_READ lease, schema-only authorizer/extractor, profile CAS/two snapshots/diff, независимый F27schema stage и production Database Schema/Changes/ERD/table/details UI.",
+        "verification_evidence": [
+          "node --test --test-concurrency=1 tests/web/*.test.mts: 658/658, 0 fail, 0 skip; .tmp/func-g04/web-closure-native-final.log (authorized native synthetic executor)",
+          "npm run check:web-m1: passed, .tmp/func-g04/typecheck-closure.log; npm run build:web: passed, .tmp/func-g04/build-responsive-final.log; UI/build hashes unchanged and verified by current browser receipt",
+          "production browser 18/18, 204 current source hashes and dist binding; .tmp/func-g04/browser-acceptance/evidence-m9Vcjh/result.json",
+          "native candidate/default passed, 0 provider/model/credential operations; .tmp/func-g04/native-closure-candidate.json + native-closure-default.json; adapter b7d5d1eb2a129763feacba96735d4ba40c0c0bd00dced861c1d83af6cf94726b",
+          "32 changed Markdown sources + RU/EN matrices + preservation/source/build/native checks: see .tmp/func-g04/docs-closure.log, matrix-closure.log and closure-consistency.json; final audit result is owned by verification.latest",
+          "native34/34 initial backend, final full658 includes new late-source-revocation regression and shared watchdog",
+          "actual readOnly adapter/API/private-source stages; profile DB excluded; target hashes and directory contents preserved",
+          "200 unique objects, four revision-consistent pages of 50; current ERD timings in .tmp/func-g04/browser-acceptance/evidence-m9Vcjh/result.json; prior 100-object/1969 ms failure retained",
+          "browser realcancel/retry/writerfailure/staleDDLdiff/restart/2projectlatefence/deepanchor; corrected390px header/scroll table actualscreenshots"
+        ],
+        "docs_impact": {
+          "decision": "updated",
+          "paths": [
+            "docs/db/erd.md",
+            "docs/db/erd.en.md",
+            "docs/code-intelligence/adapters.md",
+            "docs/code-intelligence/adapters.en.md",
+            "docs/api/endpoints.md",
+            "docs/api/endpoints.en.md",
+            "docs/frontend/components.md",
+            "docs/frontend/components.en.md",
+            "docs/product/capabilities.md",
+            "docs/product/capabilities.en.md"
+          ],
+          "source_revision": "current_working_tree_verified"
+        },
+        "residual_risks": "Windows/offline project-local SQLite, без WAL/sidecars/real credentials/remote DB/rows. Views/virtual partial; rename какadd/remove. Schema128MiB stat/200objects/512KiB output, UI50objects perpage. Browser groupaggregate RSS не квалифицирован как whole-system peak.",
+        "implementation_at": "16-11-2026 00:43"
+      }
     },
     {
       "id": "PAOS-FUNC-34",
       "title": "Связать код с таблицами и показать влияние изменений",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "type": "extension",
-      "evidence_level": "upstream_documentation_review_not_locally_verified",
+      "evidence_level": "locally_verified",
       "technical_value": "Добавить provenance-aware рёбра code→query/ORM→table с разрешением в совместимых code/schema revisions и bounded impact queries.",
       "product_value": "Пользователь и агент видят, какой код читает или меняет таблицу и какие участки нужно проверить при изменении схемы.",
       "acceptance_criteria": [
@@ -2014,8 +2313,8 @@
       "estimate": "20–32 ч design; build после language/ORM scope",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "design_only_build_after_gate",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "16-11-2026 00:43",
+      "execution_authority": "owner_authorized_func_g04_local_synthetic",
       "source_observation": "GitHub research 15.11.2026: upstream README/license review; integration, performance and compatibility not verified locally.",
       "source_paths": [
         "https://github.com/sverweij/dependency-cruiser",
@@ -2026,7 +2325,43 @@
       "ui_ux_scope": "До build подготовлены и согласованы wireframes и карта навигации в существующем V3 design: проект → «Файлы», «Карта», «База данных»; названия уточняются на design review. Для затронутого экрана определены loading/empty/partial/error/unavailable/stale, progress/cancel/retry по capabilities, RU/EN, обе темы, keyboard/focus, читаемые подписи и доступная таблица вместо обязательного чтения диаграммы. Смена проекта, возврат назад, фильтр и выбранный объект не смешивают данные; видны source/revision/coverage. PoC использует изолированный прототип, production UI принимается в F14/F33/F34.",
       "decision_gate": "После PoC выбрать backend и согласовать architecture/UI contract; без этого build не начинается.",
       "verification_protocol": "Adapter/API tests, UI type-check/build и synthetic browser acceptance на выбранном runtime; exact commands фиксируются до build. Новый harness сейчас не существует.",
-      "delivery_group_id": "FUNC-G04"
+      "delivery_group_id": "FUNC-G04",
+      "completion_report": {
+        "status": "implemented",
+        "what_was_done": "Добавлены static literal JS/TS/SQL и Prisma subset, подтверждение только selected-source binding, both-revision/HMAC/32KiB queries, независимый F27code_database stage, Database Code usages/Map DB network/Files relatedtables и claimed App-agent project-query port.",
+        "verification_evidence": [
+          "node --test --test-concurrency=1 tests/web/*.test.mts: 658/658, 0 fail, 0 skip; .tmp/func-g04/web-closure-native-final.log (authorized native synthetic executor)",
+          "npm run check:web-m1: passed, .tmp/func-g04/typecheck-closure.log; npm run build:web: passed, .tmp/func-g04/build-responsive-final.log; UI/build hashes unchanged and verified by current browser receipt",
+          "production browser 18/18, 204 current source hashes and dist binding; .tmp/func-g04/browser-acceptance/evidence-m9Vcjh/result.json",
+          "native candidate/default passed, 0 provider/model/credential operations; .tmp/func-g04/native-closure-candidate.json + native-closure-default.json; adapter b7d5d1eb2a129763feacba96735d4ba40c0c0bd00dced861c1d83af6cf94726b",
+          "32 changed Markdown sources + RU/EN matrices + preservation/source/build/native checks: see .tmp/func-g04/docs-closure.log, matrix-closure.log and closure-consistency.json; final audit result is owned by verification.latest",
+          "ground truth24/24; confirmed literalSQL8/8 andPrisma2/2 precision1/recall1 forliteraldenominators; rootshadowURL/TSparam/nestedDELETE regressions included",
+          "actual owned childnative stackfailure3221225725 contained,parentalive; deadline/cancel/bothpins/HMAC/source/policy/CAS/400-link32KiB pagination",
+          "production API + private claimed synthetic worker roundtrip; post-read/post-scope lease expiry rejects; no model/provider/credentials",
+          "static-search comparison finds missed ORM files; structured context/time notgenerally smaller/faster; literalproxy limits recorded",
+          "P2 arbitrary SQLite table names: actual __proto__/constructor/toString persistence+restart RED→GREEN; reject array candidates. .tmp/func-g04/prototype-red.log + full658 current regression.",
+          "P2 arbitrary SQLite table names: actual __proto__/constructor/toString persistence+restart RED→GREEN; reject array candidates. .tmp/func-g04/prototype-red.log + full658 current regression.",
+          "P2 arbitrary SQLite table names: actual __proto__/constructor/toString persistence+restart RED→GREEN; reject array candidates. .tmp/func-g04/prototype-red.log + full658 current regression."
+        ],
+        "docs_impact": {
+          "decision": "updated",
+          "paths": [
+            "docs/code-intelligence/queries-impact.md",
+            "docs/code-intelligence/queries-impact.en.md",
+            "docs/api/endpoints.md",
+            "docs/api/endpoints.en.md",
+            "docs/backend/modules.md",
+            "docs/backend/modules.en.md",
+            "docs/frontend/navigation.md",
+            "docs/frontend/navigation.en.md",
+            "docs/product/capabilities.md",
+            "docs/product/capabilities.en.md"
+          ],
+          "source_revision": "current_working_tree_verified"
+        },
+        "residual_risks": "Prisma v6 static subset/JS/TS/SQL only; dynamic/env/untraced/other-source остаются uncertain. Нет выполненияSQL/ORM, rows/DSN/runtime callgraph. Snapshot/agentqueries требуют currentcode+schema pins. Human agent/model superiority и общий выигрыш времени/контекста не заявлены.",
+        "implementation_at": "16-11-2026 00:43"
+      }
     }
   ],
   "linked_existing_tasks": [
@@ -2050,7 +2385,7 @@
     }
   ],
   "verification": {
-    "status": "func_g01_locally_verified_func_g02_poc_research_verified_remaining_planned",
+    "status": "func_g01_g03_locally_verified_g02_research_verified_g04_measured_limits_remaining_planned",
     "application_checks_run": true,
     "initial": {
       "matrix_exit": 0,
@@ -2063,59 +2398,75 @@
       "remediation": "relocate source-owned matrix to research, preserve site inventory"
     },
     "latest": {
-      "task": "FUNC-G02",
-      "status": "poc_research_locally_verified",
-      "implemented_task_count": 10,
-      "remaining_planned_task_count": 24,
-      "linked_existing_count": 3,
-      "unit_command": "node --test tests/web/poc/func-g02/f30-model.test.mts tests/web/poc/func-g02/codebase-memory.test.mts tests/web/poc/func-g02/tbls-poc.test.mts tests/web/poc/func-g02/prototype-model.test.mts tests/web/poc/func-g02/prototype-preview.test.mts",
-      "unit_passed": 22,
-      "unit_failed": 0,
-      "unit_skipped": 0,
-      "engine_decisions": {
-        "PAOS-FUNC-30": "bounded_adopt_import_only",
-        "PAOS-FUNC-31": "reject_current_windows_workspace_profile",
-        "PAOS-FUNC-32": "reject_authoritative_sqlite_metadata"
+      "task": "FUNC-G04",
+      "status": "implemented_locally_verified_with_measured_limits",
+      "group_exit": "passed_bounded_scope",
+      "closure_level": "locally_verified_with_measured_limits",
+      "member_statuses": {
+        "PAOS-FUNC-09": "implemented",
+        "PAOS-FUNC-14": "implemented",
+        "PAOS-FUNC-20": "implemented",
+        "PAOS-FUNC-33": "implemented",
+        "PAOS-FUNC-34": "implemented"
       },
-      "engine_receipts": [
-        ".tmp/func-g02/f30/result.json",
-        ".tmp/func-g02/f31/result.json",
-        ".tmp/func-g02/f32/result.json"
-      ],
-      "prototype_typecheck_exit": 0,
-      "prototype_build_exit": 0,
-      "browser_passed": 22,
-      "prototype_build_receipt": ".tmp/func-g02/prototype-build.json",
-      "prototype_browser_receipt": ".tmp/func-g02/prototype-browser/result.json",
-      "review_mode": "separate_reused_context",
-      "reviewer": "/root/func_g02_review",
-      "review_cycles": 2,
-      "reviewer_last_verdict": "partial_only_with_two_bounded_UI_repairs",
-      "root_delta_verdict": "closed_allowed",
-      "resolved_findings": [
-        "effective SQLite nullability",
-        "project-bound direct URL source/export",
-        "filtered ER Mermaid/export parity"
-      ],
-      "human_acceptance": false,
-      "production_integration": false,
-      "provider_calls": false,
-      "real_credentials": false,
+      "counts": {
+        "implemented": 22,
+        "planned": 12
+      },
+      "web": {
+        "receipt": ".tmp/func-g04/web-closure-native-final.log",
+        "tests": 658,
+        "passed": 658,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 133.627
+      },
+      "browser": {
+        "receipt": ".tmp/func-g04/browser-acceptance/evidence-m9Vcjh/result.json",
+        "passed": 18,
+        "source_files_bound": 204,
+        "aggregate_rss_scope": "diagnostic_only",
+        "human_acceptance": false
+      },
+      "native": {
+        "candidate": ".tmp/func-g04/native-closure-candidate.json",
+        "default": ".tmp/func-g04/native-closure-default.json",
+        "adapter_revision": "b7d5d1eb2a129763feacba96735d4ba40c0c0bd00dced861c1d83af6cf94726b"
+      },
+      "scale": {
+        "receipts": [
+          ".tmp/func-g04/scale-closure/result-diagnostic-1794778219987.json",
+          ".tmp/func-g04/scale-closure/result-reference-1794778236139.json",
+          ".tmp/func-g04/scale-closure/result-filesystem-1794778628384.json"
+        ],
+        "outcome": "measured_with_deviations_and_bounded_outcomes",
+        "protocol_sha256": "37c20aadc0d3474ef78cf86928e9ee1727be7bf415152fc393e92c8b079af625",
+        "source_files_bound": 133,
+        "thresholds_unchanged": true
+      },
+      "review": {
+        "context_mode": "separate_reused_context",
+        "reviewer": "/root/func_g04_review",
+        "tester_verdict": "closed_allowed",
+        "findings": "four initial code findings + final P2 table-key dictionary fixed; additional UI/authority failures retained and repaired"
+      },
+      "static_gates": {
+        "matrix": ".tmp/func-g04/matrix-closure.log",
+        "docs": ".tmp/func-g04/docs-closure.log",
+        "consistency": ".tmp/func-g04/closure-consistency.json",
+        "diff": ".tmp/func-g04/diff-closure.log",
+        "status": "passed"
+      },
+      "preservation": {
+        "other_task_records": 29,
+        "own_original_acceptance_criteria": true,
+        "groups_and_m5": true,
+        "foreign_work_preserved": true
+      },
       "site_build_performed": false,
-      "full_product_suites_repeated": false,
-      "control_plane_sync": "updated_REQUIREMENTS_PLAN_TEST_RUNLOG; no_change_needed_EVALS_prod_test",
-      "static_closure_checks": "passed",
-      "matrix_ru_exit": 0,
-      "matrix_en_exit": 0,
-      "source_docs_exit": 0,
-      "source_markdown_count": 19,
-      "state_consistency_exit": 0,
-      "diff_exit": 0,
-      "unrelated_31_cards_and_records_preserved": true,
-      "all_original_ac_dependencies_estimates_groups_m5_preserved": true,
-      "production_sources_unchanged": true,
-      "build_snapshot_harness_binding": true,
-      "consistency_receipt": ".tmp/func-g02/closure-consistency.json"
+      "provider_model_calls": 0,
+      "git_history_operations": false,
+      "at": "16-11-2026 00:43"
     },
     "previous_planning": {
       "matrix_exit": 0,
@@ -2277,11 +2628,104 @@
       "provider_calls": false,
       "real_credentials": false,
       "human_acceptance": false
+    },
+    "previous_func_g02": {
+      "task": "FUNC-G02",
+      "status": "poc_research_locally_verified",
+      "implemented_task_count": 10,
+      "remaining_planned_task_count": 24,
+      "linked_existing_count": 3,
+      "unit_command": "node --test tests/web/poc/func-g02/f30-model.test.mts tests/web/poc/func-g02/codebase-memory.test.mts tests/web/poc/func-g02/tbls-poc.test.mts tests/web/poc/func-g02/prototype-model.test.mts tests/web/poc/func-g02/prototype-preview.test.mts",
+      "unit_passed": 22,
+      "unit_failed": 0,
+      "unit_skipped": 0,
+      "engine_decisions": {
+        "PAOS-FUNC-30": "bounded_adopt_import_only",
+        "PAOS-FUNC-31": "reject_current_windows_workspace_profile",
+        "PAOS-FUNC-32": "reject_authoritative_sqlite_metadata"
+      },
+      "engine_receipts": [
+        ".tmp/func-g02/f30/result.json",
+        ".tmp/func-g02/f31/result.json",
+        ".tmp/func-g02/f32/result.json"
+      ],
+      "prototype_typecheck_exit": 0,
+      "prototype_build_exit": 0,
+      "browser_passed": 22,
+      "prototype_build_receipt": ".tmp/func-g02/prototype-build.json",
+      "prototype_browser_receipt": ".tmp/func-g02/prototype-browser/result.json",
+      "review_mode": "separate_reused_context",
+      "reviewer": "/root/func_g02_review",
+      "review_cycles": 2,
+      "reviewer_last_verdict": "partial_only_with_two_bounded_UI_repairs",
+      "root_delta_verdict": "closed_allowed",
+      "resolved_findings": [
+        "effective SQLite nullability",
+        "project-bound direct URL source/export",
+        "filtered ER Mermaid/export parity"
+      ],
+      "human_acceptance": false,
+      "production_integration": false,
+      "provider_calls": false,
+      "real_credentials": false,
+      "site_build_performed": false,
+      "full_product_suites_repeated": false,
+      "control_plane_sync": "updated_REQUIREMENTS_PLAN_TEST_RUNLOG; no_change_needed_EVALS_prod_test",
+      "static_closure_checks": "passed",
+      "matrix_ru_exit": 0,
+      "matrix_en_exit": 0,
+      "source_docs_exit": 0,
+      "source_markdown_count": 19,
+      "state_consistency_exit": 0,
+      "diff_exit": 0,
+      "unrelated_31_cards_and_records_preserved": true,
+      "all_original_ac_dependencies_estimates_groups_m5_preserved": true,
+      "production_sources_unchanged": true,
+      "build_snapshot_harness_binding": true,
+      "consistency_receipt": ".tmp/func-g02/closure-consistency.json"
+    },
+    "previous_func_g03": {
+      "task": "FUNC-G03",
+      "status": "implemented",
+      "started_at": "2026-11-15T16:39:53Z",
+      "checks_pending": true,
+      "member_statuses": {
+        "PAOS-FUNC-02": "implemented",
+        "PAOS-FUNC-10": "implemented",
+        "PAOS-FUNC-18": "implemented",
+        "PAOS-FUNC-26": "implemented",
+        "PAOS-FUNC-27": "implemented",
+        "PAOS-FUNC-28": "implemented",
+        "PAOS-FUNC-29": "implemented"
+      },
+      "counts": {
+        "implemented": 17,
+        "in_progress": 0,
+        "planned": 17
+      },
+      "closure_level": "locally_verified",
+      "group_exit": "passed",
+      "full_web": {
+        "passed": 594,
+        "failed": 0,
+        "skipped": 0,
+        "receipt": ".tmp/func-g03/full-web-native.log"
+      },
+      "browser": {
+        "passed": 19,
+        "receipt": ".tmp/func-g03/browser-final/evidence-IfLiEa/result.json"
+      },
+      "review": {
+        "agent": "/root/func_g03_review",
+        "cycles": 2,
+        "tester_verdict": "closed_allowed"
+      },
+      "preservation_receipt": ".tmp/func-g03/closure-consistency.json"
     }
   },
-  "updated_at": "2026-11-15T19:24:41+03:00",
+  "updated_at": "2026-11-16",
   "planning_revision": 4,
-  "change_scope": "func_g02_isolated_poc_research_closed",
+  "change_scope": "func_g04_production_implementation",
   "research_sources": [
     {
       "task": "PAOS-FUNC-30",
@@ -2865,5 +3309,5 @@
     "FUNC-G05",
     "FUNC-G07"
   ],
-  "implementation_revision": 2
+  "implementation_revision": 4
 }

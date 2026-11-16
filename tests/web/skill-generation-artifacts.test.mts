@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {writeFile,readFile} from 'node:fs/promises';
+import {writeFile,readFile,mkdir,unlink} from 'node:fs/promises';
 import {join} from 'node:path';
 import {createHash} from 'node:crypto';
 import {m2Fixture} from './m2-fixture.mts';
@@ -11,6 +11,31 @@ async function paired(f:any,runtime?:any){const origin='http://127.0.0.1:49833',
 test('artifact catalog reads pinned documents, shows source time and rejects stale document proposals',async t=>{
  const f=await m2Fixture(t),content='# Plan\n\nReview the synthetic deployment scope.\n';await writeFile(join(f.root,'PLAN.md'),content);const request=await paired(f);const page=await request('/artifacts?kind=documents');assert.equal(page.status,200);const item=page.body.items.find((i:any)=>i.title==='PLAN.md');assert.ok(item);assert.equal(item.source.version,createHash('sha256').update(content).digest('hex'));assert.ok(item.source.modifiedAt);const read=await request('/artifacts/'+item.id+'?version='+item.source.version);assert.equal(read.body.body,content);assert.equal(read.body.outline[0].line,1);
  const preview=await request('/artifacts/proposals/preview',{documentId:item.id,sourceVersion:item.source.version,body:content+'Reviewed.\n'});assert.equal(preview.status,200);assert.equal(preview.body.applied,false);await writeFile(join(f.root,'PLAN.md'),content+'Concurrent edit.');const stale=await request('/artifacts/proposals',{...preview.body,body:content+'Reviewed.\n',epoch:1,idempotencyKey:'stale-document'});assert.equal(stale.status,409);assert.equal(await readFile(join(f.root,'PLAN.md'),'utf8'),content+'Concurrent edit.');
+});
+
+test('structured artifact references and legacy paths link the same document without treating URLs as files',async t=>{
+ const f=await m2Fixture(t),content='# Guide\n';await mkdir(join(f.root,'docs'));await writeFile(join(f.root,'docs','Guide.md'),content);
+ const revision=createHash('sha256').update(content).digest('hex');
+ const structured=await f.create('Structured only',{artifacts:[{type:'document',reference:'docs\\Guide.md',revision,provenance:'fixture',availability:'available'}]});
+ const legacy=await f.create('Legacy',{artifactReferences:['docs/Guide.md'],files:[{relativePath:'docs\\Guide.md',plannedOperation:'modify',actualOperation:null}]});
+ const external=await f.create('External URL',{artifacts:[{type:'link',reference:'https://example.invalid/docs/Guide.md',revision:null,provenance:'fixture',availability:'unverified'}]});
+ const request=await paired(f),page=await request('/artifacts?kind=documents&taskId='+structured.id);
+ assert.equal(page.status,200);const item=page.body.items.find((row:any)=>row.source.path==='docs/Guide.md');assert.ok(item);
+ assert.deepEqual(item.taskIds.sort(),[structured.id,legacy.id].sort());assert.ok(!item.taskIds.includes(external.id));
+ const document=await request('/artifacts/'+item.id+'?version='+revision);assert.deepEqual(document.body.item.taskIds.sort(),[structured.id,legacy.id].sort());
+ assert.equal((await request('/artifacts?kind=documents&taskId='+external.id)).body.items.length,0);
+});
+
+test('task document relationships expose stale pins and share inventory policy on read',async t=>{
+ const f=await m2Fixture(t),content='# Bound document\n';await writeFile(join(f.root,'BOUND.md'),content);
+ const task=await f.create('Old document pin',{artifacts:[{type:'document',reference:'BOUND.md',revision:'0'.repeat(64),provenance:'fixture',availability:'available'}]});
+ const request=await paired(f),item=(await request('/artifacts?kind=documents&taskId='+task.id)).body.items[0];
+ assert.equal(item.taskReferences[0].state,'stale');assert.equal(item.taskReferences[0].expectedRevision,'0'.repeat(64));
+ assert.equal(item.source.rootIdentity,(await f.store.project('p'))!.rootIdentity);assert.ok(item.source.policyVersion);
+ const stale=await request('/task-manager/reference',{taskId:task.id,relativePath:'BOUND.md'});assert.equal(stale.body.availability,'stale');assert.equal('content' in stale.body,false);
+ await f.store.writeProjectState('p','project_inventory_policy_v1',0,{schemaVersion:'paos_inventory_policy_v1',policy:{exclude:['BOUND.md']}});
+ const denied=await request('/task-manager/reference',{taskId:task.id,relativePath:'BOUND.md',revision:createHash('sha256').update(content).digest('hex')});assert.equal(denied.body.availability,'unavailable');assert.equal('content' in denied.body,false);
+ await unlink(join(f.root,'BOUND.md'));assert.equal((await request('/artifacts/'+item.id+'?version='+item.source.version)).body.state,'unavailable');
 });
 
 test('skill generation requires meaningful grounding even without an App worker',async t=>{const f=await m2Fixture(t),request=await paired(f);const result=await request('/team/skills/generation',{mode:'description',description:''});assert.equal(result.status,400);assert.equal(result.body.error.code,'INSUFFICIENT_REQUIREMENTS');});

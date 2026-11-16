@@ -7,6 +7,7 @@ import {decodeTaskProfile as decodeM1TaskProfile} from '../../../../packages/con
 import {runtimeWorkflow} from '../workflows/runtime.mts';
 import {createTeamService} from '../team/service.mts';
 import {safePersistedText} from '../redaction/persisted.mts';
+import {taskFilePreflight,assertFilePreflight} from './task-file-preflight.mts';
 import { bindProject } from '../adapters/project-sources.ts';
 import type {SavedTaskContext} from './m1-recipe.mts';
 
@@ -113,6 +114,7 @@ export function createLiveGateway(options: Readonly<{
           const workflow=await runtimeWorkflow(options.store,found.projectId,profile);
           if(profile.schemaVersion==='m2_task_profile_v1'&&profile.type==='epic')throw new LiveGatewayError('runtime_epic_not_executable');
           const previous=await persistence.findRun(found.id,requiredText(input,'clientMessageId'));
+          if(!previous)assertFilePreflight(await taskFilePreflight(options.store,found.projectId,taskId,task.revision),input.filePreflight);
           if(!previous&&(workflow.category!=='ready'||profile.risks.includes('recovery_review')))throw new LiveGatewayError('task_scope_review_required');
           if(!profile.acceptanceCriteria.length||!profile.acceptanceCriteria.every((criterion)=>criterion.trim()))throw new LiveGatewayError('saved_criteria_required');
           const pinKey=`${found.id}:${requiredText(input,'clientMessageId')}`;const cached=sendPins.get(pinKey);

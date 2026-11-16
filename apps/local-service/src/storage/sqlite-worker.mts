@@ -11,6 +11,7 @@ import {validateSchedulerWrite,type WorkspaceLock} from '../scheduler/storage-gu
 import {workflowCategory} from '../workflows/registry.mts';
 import { createSnapshot, writeBlob, readManagedBlob,blobDirectory } from './snapshot.mts';
 import { RANKED_SEARCH_SQL } from './search-queries.mts';
+import {historySnapshotPage,artifactSummaryRows,artifactDocumentRow} from './history-snapshots.mts';
 import {safePersistedText,safeVisibleValue,safeRuntimeData,isHiddenMessage} from '../redaction/persisted.mts';
 import {teamId,previewAsset,applyAsset} from '../team/contract.mts';
 import type {TeamRegistry} from '../../../../packages/contracts/team/assets.ts';
@@ -37,9 +38,12 @@ function page(limit = 50, offset = 0) {
 let db: DatabaseSync;
 function project(projectId: string): Project | null {
   const row = db.prepare('SELECT * FROM projects WHERE id=?').get(projectId);
+  const policyRow=row?db.prepare('SELECT value FROM store_meta WHERE key=?').get(`project_inventory_policy_v1:${projectId}`):null;
+  let inventoryPolicy:Project['inventoryPolicy'];
+  if(policyRow){try{const saved=JSON.parse(String(policyRow.value));if(!Number.isSafeInteger(saved.version)||!saved.value||saved.value.schemaVersion!=='paos_inventory_policy_v1')fail('PROJECT_POLICY_UNAVAILABLE');inventoryPolicy=saved.value.policy;}catch{fail('PROJECT_POLICY_UNAVAILABLE');}}
   return row ? { id: row.id as string, keyPrefix: row.key_prefix as string, canonicalRoot: row.canonical_root as string,
     displayName: row.display_name as string, rootIdentity: row.root_identity as string,
-    authorityMode: row.authority_mode as Project['authorityMode'], authorityEpoch: row.authority_epoch as number } : null;
+    authorityMode: row.authority_mode as Project['authorityMode'], authorityEpoch: row.authority_epoch as number,...(inventoryPolicy?{inventoryPolicy}:{}) } : null;
 }
 function entity(row: Record<string, any>): StoredEntity {
   if(row.kind==='message'&&isHiddenMessage(JSON.parse(row.data)))row={...row,title:'',body:'',coverage:'unavailable',data:JSON.stringify({visibility:'hidden',unavailable:'hidden_content_excluded'})};
@@ -51,6 +55,20 @@ function entity(row: Record<string, any>): StoredEntity {
 function get(projectId: string, id: string) {
   const row = db.prepare('SELECT * FROM entities WHERE project_id=? AND id=? AND deleted=0').get(projectId, id);
   return row ? entity(row) : null;
+}
+function projectFreshness(projectId:string){
+  const scope=project(projectId);if(!scope)fail('PROJECT_NOT_FOUND');
+  const version=(namespace:string)=>{const row=db.prepare('SELECT value FROM store_meta WHERE key=?').get(`${namespace}:${projectId}`);if(!row)return 0;let saved:any;try{saved=JSON.parse(String(row.value));}catch{fail('PROJECT_STATE_UNAVAILABLE');}if(!Number.isSafeInteger(saved.version)||saved.version<1)fail('PROJECT_STATE_UNAVAILABLE');return saved.version as number;};
+  return {schemaVersion:'paos_project_freshness_v1' as const,projectId,generation:String(db.prepare("SELECT value FROM store_meta WHERE key='stream_generation'").get()!.value),throughSeq:Number(db.prepare('SELECT COALESCE(MAX(seq),0) AS seq FROM events WHERE project_id=?').get(projectId)!.seq),scanVersion:version('project_scan_v1'),policyVersion:version('project_inventory_policy_v1'),rootIdentity:scope!.rootIdentity};
+}
+function projectRows(projectId:string,options:{kinds?:string[];includeManagedAttachments?:true}={}){
+  const kinds=options.kinds;
+  if(kinds!==undefined&&(!Array.isArray(kinds)||!kinds.length||kinds.length>10||kinds.some(k=>!['task','session','message','draft','comment','settings','document','run','approval','evidence'].includes(k)))||options.includeManagedAttachments!==undefined&&options.includeManagedAttachments!==true)fail('INVALID_QUERY');
+  const filter=kinds?` AND (kind IN (${kinds.map(()=>'?').join(',')})${options.includeManagedAttachments?" OR (kind='document' AND json_extract(data,'$.category')='managed_attachment')":''})`:'';
+  // Select the consumer's kinds before applying the unchanged safety budget.
+  const rows=db.prepare('SELECT * FROM entities WHERE project_id=? AND deleted=0'+filter+' ORDER BY id LIMIT 100001').all(projectId,...(kinds??[]));
+  if(rows.length>100000||rows.reduce((n,r)=>n+Buffer.byteLength(r.data as string)+Buffer.byteLength(r.body as string),0)>64*1024*1024)fail('SNAPSHOT_TOO_LARGE');
+  return rows.map(entity);
 }
 function transaction<T>(operation: () => T): T {
   db.exec('BEGIN IMMEDIATE');
@@ -576,7 +594,55 @@ function dispatch(method: string, params: any, requestId: number): unknown {
       transaction(() => initializeSearchCounts(params.id));
       return project(params.id);
     }
+    case 'registerSelectedProject': return transaction(()=>{
+      const selected=params.project;
+      for(const value of [selected.id,selected.canonicalRoot,selected.rootIdentity,selected.displayName])text(value);
+      if(!/^[A-Z]{4}$/.test(selected.keyPrefix)||!['legacy_files','sql'].includes(selected.authorityMode)||!/^[-a-f0-9]{64}$/.test(params.requestDigest)
+        ||params.requestId!==undefined&&(typeof params.requestId!=='string'||!/^[-A-Za-z0-9_]{1,100}$/.test(params.requestId)))fail('INVALID_PROJECT');
+      const root=process.platform==='win32'?selected.canonicalRoot.toLowerCase():selected.canonicalRoot;
+      const receiptKey=params.requestId?`project_registration_v1:${params.requestId}`:null;
+      if(receiptKey){const receipt=db.prepare('SELECT value FROM store_meta WHERE key=?').get(receiptKey);if(receipt){let previous:any;try{previous=JSON.parse(String(receipt.value));}catch{fail('PROJECT_REGISTRATION_UNAVAILABLE');}if(previous.digest!==params.requestDigest)fail('REQUEST_CONFLICT');const saved=project(previous.projectId);if(!saved||saved.rootIdentity!==selected.rootIdentity||saved.canonicalRoot!==root)fail('PROJECT_IDENTITY_CONFLICT');return saved;}}
+      const old=db.prepare('SELECT id FROM projects WHERE canonical_root=? OR root_identity=?').get(root,selected.rootIdentity);
+      let saved:Project|null;
+      if(old){saved=project(String(old.id));if(!saved||saved.canonicalRoot!==root||saved.rootIdentity!==selected.rootIdentity||saved.displayName!==selected.displayName||saved.authorityMode!==selected.authorityMode||params.keyPrefixExplicit&&saved.keyPrefix!==selected.keyPrefix)fail('PROJECT_IDENTITY_CONFLICT');}
+      else{
+        if(db.prepare('SELECT 1 FROM projects WHERE id=? OR key_prefix=?').get(selected.id,selected.keyPrefix))fail('PROJECT_IDENTITY_CONFLICT');
+        db.prepare('INSERT INTO projects(id,key_prefix,display_name,canonical_root,root_identity,authority_mode,authority_epoch) VALUES (?,?,?,?,?,?,1)').run(selected.id,selected.keyPrefix,selected.displayName,root,selected.rootIdentity,selected.authorityMode);
+        initializeSearchCounts(selected.id);saved=project(selected.id);
+      }
+      // Bounded durable Add receipts survive service restart without task/search entities.
+      if(receiptKey){const oldest=db.prepare("SELECT key FROM store_meta WHERE key LIKE 'project_registration_v1:%' ORDER BY rowid").all();if(oldest.length>=1024)db.prepare('DELETE FROM store_meta WHERE key=?').run(oldest[0].key);db.prepare('INSERT INTO store_meta VALUES (?,?)').run(receiptKey,JSON.stringify({schemaVersion:'paos_project_registration_v1',digest:params.requestDigest,projectId:saved!.id}));}
+      return saved;
+    });
     case 'projects': return db.prepare('SELECT id FROM projects ORDER BY id').all().map(row => project(row.id as string));
+    case 'readProjectState': {
+      if(!project(params.projectId))fail('PROJECT_NOT_FOUND');
+      if(!['project_scan_v1','project_inventory_policy_v1','project_database_schema_v1','project_code_database_v1'].includes(params.namespace))fail('PROJECT_STATE_INVALID');
+      const row=db.prepare('SELECT value FROM store_meta WHERE key=?').get(`${params.namespace}:${params.projectId}`);
+      if(!row)return null;
+      let saved:any;try{saved=JSON.parse(String(row.value));}catch{fail('PROJECT_STATE_UNAVAILABLE');}
+      if(!Number.isSafeInteger(saved.version)||saved.version<1||!saved.value||typeof saved.value!=='object'||Array.isArray(saved.value))fail('PROJECT_STATE_UNAVAILABLE');
+      return saved;
+    }
+    case 'writeProjectState': return transaction(()=>{
+      if(!project(params.projectId))fail('PROJECT_NOT_FOUND');
+      if(!['project_scan_v1','project_inventory_policy_v1','project_database_schema_v1','project_code_database_v1'].includes(params.namespace)||!Number.isSafeInteger(params.expectedVersion)||params.expectedVersion<0||!params.value||typeof params.value!=='object'||Array.isArray(params.value))fail('PROJECT_STATE_INVALID');
+      if(params.namespace==='project_inventory_policy_v1'){
+        const policy=params.value.policy;
+        if(params.value.schemaVersion!=='paos_inventory_policy_v1'||!policy||typeof policy!=='object'||Array.isArray(policy)
+          ||Object.keys(policy).some(key=>!['version','include','exclude','respectGitignore'].includes(key))
+          ||policy.version!==undefined&&(typeof policy.version!=='string'||policy.version.length>64)
+          ||policy.respectGitignore!==undefined&&typeof policy.respectGitignore!=='boolean'
+          ||[policy.include,policy.exclude].some(patterns=>patterns!==undefined&&(!Array.isArray(patterns)||patterns.length>200||patterns.some((pattern:unknown)=>typeof pattern!=='string'||pattern.length>1024||/[\\\x00-\x1f:]/.test(pattern)||pattern.includes('..')||pattern.startsWith('/')))))fail('PROJECT_STATE_INVALID');
+      }
+      const key=`${params.namespace}:${params.projectId}`,old=db.prepare('SELECT value FROM store_meta WHERE key=?').get(key);
+      let version=0;if(old){try{version=JSON.parse(String(old.value)).version;}catch{fail('PROJECT_STATE_UNAVAILABLE');}}
+      if(version!==params.expectedVersion)fail('PROJECT_STATE_CONFLICT');
+      const saved={version:version+1,value:params.value},encoded=JSON.stringify(saved);
+      if(Buffer.byteLength(encoded)>(params.namespace==='project_database_schema_v1'?2*1024*1024:['project_scan_v1','project_code_database_v1'].includes(params.namespace)?1024*1024:32768))fail('PROJECT_STATE_LIMIT');
+      db.prepare('INSERT INTO store_meta VALUES (?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value').run(key,encoded);
+      return saved;
+    });
     case 'project': return project(params.projectId);
     case 'compatibility': return databaseCompatibility(db);
     case 'historyRows': {
@@ -584,10 +650,22 @@ function dispatch(method: string, params: any, requestId: number): unknown {
       if(rows.length>100000||rows.reduce((n,r)=>n+Buffer.byteLength(r.data as string)+Buffer.byteLength(r.body as string),0)>64*1024*1024)fail('HISTORY_TOO_LARGE');
       return rows.map(row=>({...entity(row),journalOrder:row.journal_order}));
     }
+    case 'historySnapshotPage': return historySnapshotPage(db,entity,params);
+    case 'artifactSummaryRows': return artifactSummaryRows(db,entity,params.projectId,params);
+    case 'artifactDocumentRow': return artifactDocumentRow(db,entity,params.projectId,params.id);
     case 'projectEntities': {
-      const rows=db.prepare('SELECT * FROM entities WHERE project_id=? AND deleted=0 ORDER BY id LIMIT 100001').all(params.projectId);
-      if(rows.length>100000||rows.reduce((n,r)=>n+Buffer.byteLength(r.data as string)+Buffer.byteLength(r.body as string),0)>64*1024*1024)fail('SNAPSHOT_TOO_LARGE');
-      return rows.map(entity);
+      return projectRows(params.projectId,params);
+    }
+    case 'projectFreshness': return projectFreshness(params.projectId);
+    case 'runtimeFileScope': {
+      db.exec('BEGIN');
+      try{const scope={project:project(params.projectId),task:get(params.projectId,params.taskId)};db.exec('COMMIT');return scope;}
+      catch(error){db.exec('ROLLBACK');throw error;}
+    }
+    case 'projectSnapshot': {
+      db.exec('BEGIN');
+      try{const freshness=projectFreshness(params.projectId),entities=projectRows(params.projectId,params);db.exec('COMMIT');return {entities,freshness};}
+      catch(error){db.exec('ROLLBACK');throw error;}
     }
     case 'exportTasks': {
       db.exec('BEGIN');
