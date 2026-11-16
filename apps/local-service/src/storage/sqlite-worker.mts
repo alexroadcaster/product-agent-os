@@ -17,6 +17,8 @@ import {teamId,previewAsset,applyAsset} from '../team/contract.mts';
 import type {TeamRegistry} from '../../../../packages/contracts/team/assets.ts';
 import {sourceCatalog,sourceAsset,projectAssetRoots,type AssetRoot} from '../team/sources.mts';
 import type { EntityKind, Project, PromoteLegacy, StoreWrite, StoredEntity } from '../../../../packages/contracts/storage/local-store.ts';
+import {inventoryScopeFingerprint} from '../project-inventory/scope.mts';
+import type {DocumentApplyJournal,DocumentApplyRecord} from '../../../../packages/contracts/artifacts/document-apply.ts';
 
 function fail(code: string, message = code): never { throw Object.assign(new Error(message), { code }); }
 function text(value: unknown): asserts value is string {
@@ -75,7 +77,30 @@ function transaction<T>(operation: () => T): T {
   try { const value = operation(); db.exec('COMMIT'); return value; }
   catch (error) { db.exec('ROLLBACK'); throw error; }
 }
-function assertIdle(projectId: string, code = 'ACTIVE_RUN_RECONCILIATION_REQUIRED') {
+function documentJournal(projectId:string):DocumentApplyJournal {
+  const row=db.prepare('SELECT value FROM store_meta WHERE key=?').get(`document_apply_journal_v1:${projectId}`);
+  if(!row)return {version:0,records:[]};
+  try{const value=JSON.parse(String(row.value));if(!Number.isSafeInteger(value.version)||!Array.isArray(value.records)||value.records.length>4)fail('DOCUMENT_JOURNAL_UNAVAILABLE');return value;}catch{fail('DOCUMENT_JOURNAL_UNAVAILABLE');}
+}
+function assertDocumentIdle(projectId:string){if(documentJournal(projectId).records.some(record=>record.source.origin==='workspace_file'&&['prepared','recovery_required'].includes(record.state)))fail('DOCUMENT_WRITE_RECONCILIATION_REQUIRED');}
+function saveDocumentJournal(scope:Project,input:{expectedJournalVersion:number;records:DocumentApplyRecord[];scopeFingerprint:string;generation:string}){
+  if(input.scopeFingerprint!==inventoryScopeFingerprint(scope)||input.generation!==String(db.prepare("SELECT value FROM store_meta WHERE key='stream_generation'").get()!.value))fail('DOCUMENT_SCOPE_STALE');
+  const old=documentJournal(scope.id);if(old.version!==input.expectedJournalVersion)fail('DOCUMENT_JOURNAL_CONFLICT');
+  if(!Array.isArray(input.records)||input.records.length>4)fail('DOCUMENT_JOURNAL_LIMIT');
+  const ids=new Set<string>();
+  for(const record of input.records){
+    if(!record||typeof record.operationId!=='string'||ids.has(record.operationId)||!['prepared','applied','not_applied','recovery_required','rolled_back'].includes(record.state)||!['local_store','workspace_file'].includes(record.source?.origin))fail('DOCUMENT_JOURNAL_INVALID');ids.add(record.operationId);
+    if(Buffer.byteLength(JSON.stringify(record))>2*1024*1024)fail('DOCUMENT_JOURNAL_LIMIT');
+    for(const side of ['before','after'] as const){const bytes=Buffer.from(record[side+'Base64' as 'beforeBase64'|'afterBase64'],'base64');if(bytes.length>512*1024||createHash('sha256').update(bytes).digest('hex')!==record[side+'Hash' as 'beforeHash'|'afterHash'])fail('DOCUMENT_JOURNAL_INVALID');}
+    const previous=old.records.find(r=>r.operationId===record.operationId);if(!previous&&(record.authorityEpoch!==scope.authorityEpoch||record.scopeFingerprint!==input.scopeFingerprint||record.generation!==input.generation))fail('DOCUMENT_JOURNAL_INVALID');if(previous){const immutable=(r:DocumentApplyRecord)=>{const {state,result,...rest}=r;return rest;};if(hash(immutable(previous))!==hash(immutable(record)))fail('DOCUMENT_JOURNAL_CONFLICT');}
+  }
+  for(const record of old.records)if(['prepared','recovery_required'].includes(record.state)&&!ids.has(record.operationId))fail('DOCUMENT_WRITE_RECONCILIATION_REQUIRED');
+  if(input.records.filter(record=>record.source.origin==='workspace_file'&&['prepared','recovery_required'].includes(record.state)).length>1)fail('DOCUMENT_WRITE_BUSY');
+  const value={version:old.version+1,records:input.records},encoded=JSON.stringify(value);if(Buffer.byteLength(encoded)>8*1024*1024)fail('DOCUMENT_JOURNAL_LIMIT');
+  db.prepare('INSERT INTO store_meta VALUES (?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value').run(`document_apply_journal_v1:${scope.id}`,encoded);
+}
+function assertIdle(projectId: string, code = 'ACTIVE_RUN_RECONCILIATION_REQUIRED',ignoreDocumentFence=false) {
+  if(!ignoreDocumentFence)assertDocumentIdle(projectId);
   if (db.prepare(`SELECT 1 FROM entities WHERE project_id=? AND deleted=0 AND
     ((kind='run' AND status NOT IN ('completed','failed','interrupted')) OR
     (kind='approval' AND status NOT IN ('stale','denied','resolved','expired'))) LIMIT 1`).get(projectId)) fail(code);
@@ -181,7 +206,7 @@ function publicAuditPayload(raw:string):unknown {
   });
   return safeVisibleValue(payload);
 }
-function write(command: StoreWrite, promotion?: PromoteLegacy,teamOperation?:any,trustedSourceAssets:any[]=[]) {
+function write(command: StoreWrite, promotion?: PromoteLegacy,teamOperation?:any,trustedSourceAssets:any[]=[],documentOperation?:{trusted:true;journal?:{expectedJournalVersion:number;records:DocumentApplyRecord[];scopeFingerprint:string;generation:string};outcome?:NonNullable<import('../../../../packages/contracts/storage/local-store.ts').StoreReceipt['documentApply']>}) {
   text(command.projectId); text(command.actorId); text(command.idempotencyKey);
   if (!Array.isArray(command.changes) || command.changes.length === 0 || command.changes.length > (promotion ? 10000 : 100)) fail('INVALID_COMMAND');
   if (command.outbox && (!Array.isArray(command.outbox) || command.outbox.length > 100)) fail('INVALID_COMMAND');
@@ -197,6 +222,9 @@ function write(command: StoreWrite, promotion?: PromoteLegacy,teamOperation?:any
     const scope = project(command.projectId);
     if (!scope) fail('PROJECT_NOT_FOUND');
     if (scope.authorityEpoch !== command.expectedAuthorityEpoch) fail('AUTHORITY_CONFLICT');
+    for(const change of command.changes){const previous=get(scope.id,change.entity.id);if((previous?.data.category==='document_proposal'||(change.entity.data as any)?.category==='document_proposal')&&!documentOperation?.trusted)fail('DOCUMENT_PROPOSAL_WRITE_AUTHORITY_REQUIRED');}
+    if(promotion)assertDocumentIdle(scope.id);
+    if(documentOperation?.journal){if(command.requireIdle)assertIdle(scope.id);saveDocumentJournal(scope,documentOperation.journal);}
     if(command.agentTaskCreation){const pin=command.agentTaskCreation,job=get(scope.id,pin.runId)?.data.appAgentRun as any;
       const bugs=command.changes.filter(c=>c.entity.kind==='task'),bug=bugs[0]?.entity.data as M2TaskProfile|undefined;
       if(!job||job.mode!=='execution'||job.state!=='running'||job.workerId!==pin.workerId||job.generation!==pin.generation||job.taskCreationInitiator!==pin.initiatedBy||job.autonomy||!pin.actorId.startsWith('agent:')||(pin.validationTime??Date.now())>=pin.leaseExpiresAt)fail('AGENT_CREATION_FORBIDDEN');
@@ -259,7 +287,7 @@ function write(command: StoreWrite, promotion?: PromoteLegacy,teamOperation?:any
         ||run.generation!==pin.generation||taskId!==pin.taskId||!command.actorId.startsWith('agent:')
         ||!command.actorId.endsWith(`:${pin.id}`)||command.changes.some(c=>c.entity.kind==='task'&&(c.entity.id!==pin.taskId||['done','cancelled'].includes(String(c.entity.data?.status)))))fail('TOOL_SCOPE_INVALID');
     }
-    if (command.requireIdle || (command.taskManagerAction&&!command.taskManagerRun)) assertIdle(scope.id);
+    if (command.requireIdle || (command.taskManagerAction&&!command.taskManagerRun)) assertIdle(scope.id,'ACTIVE_RUN_RECONCILIATION_REQUIRED',Boolean(documentOperation?.journal));
     validateSchedulerWrite(command,settingsRows,id=>get(scope.id,id),scope.canonicalRoot,workspaceLocks);
     const workflowRows=db.prepare("SELECT * FROM entities WHERE project_id=? AND deleted=0 AND kind IN ('task','settings','run')").all(scope.id).map(row=>entity(row));
     const workflowContext=workflowWriteContext(command,workflowRows);
@@ -537,7 +565,7 @@ function write(command: StoreWrite, promotion?: PromoteLegacy,teamOperation?:any
       revisions.push({ id, revision: 1 });
     }
     const seq = (db.prepare('SELECT COALESCE(MAX(seq),0) AS seq FROM events WHERE project_id=?').get(scope.id)!.seq as number) + 1;
-    const receipt = { commandId, projectId: scope.id, seq, revisions,...(promotion?.cutoverBackupId?{cutoverBackupId:promotion.cutoverBackupId}:{}) };
+    const receipt = { commandId, projectId: scope.id, seq, revisions,...(promotion?.cutoverBackupId?{cutoverBackupId:promotion.cutoverBackupId}:{}),...(documentOperation?.outcome?{documentApply:documentOperation.outcome}:{}) };
     db.prepare('INSERT INTO commands VALUES (?,?,?,?,?)').run(scope.id, commandId, command.idempotencyKey, payloadHash, JSON.stringify(receipt));
     const payload = JSON.stringify({ schemaVersion: 1,commandId, revisions, commentChanges,taskChanges,...(managerChanges.length?{managerChanges}:{}) });
     if (Buffer.byteLength(payload) > 16 * 1024 * 1024) fail('AUDIT_TOO_LARGE');
@@ -575,8 +603,15 @@ function dispatch(method: string, params: any, requestId: number): unknown {
       const sourceAssets=(await sourceCatalog(sourceRoots)).assets;
       if(params.proposal.source&&params.proposal.action==='create'){const source=params.proposal.source;
        if(source.rootId===teamId){const original=(get(params.projectId,teamId)?.data as unknown as TeamRegistry)?.assets.find(a=>a.id===source.relativePath);if(!original||original.versions.at(-1)?.hash!==source.hash)fail('ASSET_SOURCE_DRIFT');}
+       else if(source.rootId==='openai-plugins-superpowers'){
+        // Only TeamService supplies this port field after its cached immutable-source check; HTTP payloads never forward it.
+        const proof=params.remoteSourceProof,revision='d420d13051bffe4543ed39e30fa46b87148e47dd',resources=params.proposal.resources??[];
+        const digest=(value:string)=>createHash('sha256').update(value).digest('hex');
+        const bundle=digest(JSON.stringify([revision,digest(params.proposal.content),resources.map((r:any)=>[r.path,r.hash]).sort(([a]:any,[b]:any)=>a.localeCompare(b))]));
+        if(!proof||proof.revision!==revision||proof.sourceHash!==source.hash||source.revision!==revision||source.hash!==bundle||source.origin!=='github_public_readonly'||source.license!=='MIT'||!/^plugins\/superpowers\/skills\/[A-Za-z0-9_-]{1,128}$/.test(source.relativePath)||!resources.some((r:any)=>r.path==='LICENSE.source.txt'&&r.hash===source.licenseHash))fail('REMOTE_SOURCE_DRIFT');
+       }
        else{const root=sourceRoots.find(r=>r.id===source.rootId);if(!root)fail('ASSET_SOURCE_ROOT_INVALID');const actual=await sourceAsset(root,source.relativePath,true);if(JSON.stringify(actual.source)!==JSON.stringify(source)||JSON.stringify(actual.resources.map(({path,hash,byteSize})=>({path,hash,byteSize})))!==JSON.stringify((params.proposal.resources??[]).map(({path,hash,byteSize}:any)=>({path,hash,byteSize}))))fail('ASSET_SOURCE_DRIFT');}}
-      for(const r of params.proposal.resources??[]){const blob=db.prepare('SELECT * FROM blobs WHERE project_id=? AND id=?').get(params.projectId,r.blobId??'');if(!blob)fail('ASSET_RESOURCE_INVALID');const bytes=await readManagedBlob(workerData.databasePath,{id:String(blob.id),projectId:params.projectId,sha256:String(blob.sha256),byteSize:Number(blob.byte_size)});if(safePersistedText(Buffer.from(bytes).toString('utf8'))!==Buffer.from(bytes).toString('utf8'))fail('SENSITIVE_ASSET_CONTENT');}
+      for(const r of params.proposal.resources??[]){const blob=db.prepare('SELECT * FROM blobs WHERE project_id=? AND id=?').get(params.projectId,r.blobId??'');if(!blob)fail('ASSET_RESOURCE_INVALID');const bytes=await readManagedBlob(workerData.databasePath,{id:String(blob.id),projectId:params.projectId,sha256:String(blob.sha256),byteSize:Number(blob.byte_size)});if(params.proposal.source?.rootId==='openai-plugins-superpowers'&&(r.hash!==String(blob.sha256)||r.byteSize!==Number(blob.byte_size)))fail('REMOTE_SOURCE_DRIFT');if(safePersistedText(Buffer.from(bytes).toString('utf8'))!==Buffer.from(bytes).toString('utf8'))fail('SENSITIVE_ASSET_CONTENT');}
       return result(write(command,undefined,{...params,sourceAssets}));
     })();
     case 'registerProject': {
@@ -615,6 +650,12 @@ function dispatch(method: string, params: any, requestId: number): unknown {
       return saved;
     });
     case 'projects': return db.prepare('SELECT id FROM projects ORDER BY id').all().map(row => project(row.id as string));
+    case 'documentJournal': {if(!project(params.projectId))fail('PROJECT_NOT_FOUND');return documentJournal(params.projectId);}
+    case 'stageDocumentProposal': {
+      if(!params.command?.changes?.every((change:any)=>change.expectedRevision===0&&change.entity.kind==='document'&&change.entity.data?.category==='document_proposal'))fail('DOCUMENT_PROPOSAL_INVALID');
+      return write(params.command,undefined,undefined,[],{trusted:true});
+    }
+    case 'documentWrite': return write(params.command,undefined,undefined,[],{trusted:true,journal:params,outcome:params.outcome});
     case 'readProjectState': {
       if(!project(params.projectId))fail('PROJECT_NOT_FOUND');
       if(!['project_scan_v1','project_inventory_policy_v1','project_database_schema_v1','project_code_database_v1'].includes(params.namespace))fail('PROJECT_STATE_INVALID');
@@ -628,6 +669,7 @@ function dispatch(method: string, params: any, requestId: number): unknown {
       if(!project(params.projectId))fail('PROJECT_NOT_FOUND');
       if(!['project_scan_v1','project_inventory_policy_v1','project_database_schema_v1','project_code_database_v1'].includes(params.namespace)||!Number.isSafeInteger(params.expectedVersion)||params.expectedVersion<0||!params.value||typeof params.value!=='object'||Array.isArray(params.value))fail('PROJECT_STATE_INVALID');
       if(params.namespace==='project_inventory_policy_v1'){
+        assertDocumentIdle(params.projectId);
         const policy=params.value.policy;
         if(params.value.schemaVersion!=='paos_inventory_policy_v1'||!policy||typeof policy!=='object'||Array.isArray(policy)
           ||Object.keys(policy).some(key=>!['version','include','exclude','respectGitignore'].includes(key))

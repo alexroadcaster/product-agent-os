@@ -51,6 +51,8 @@ export type StoreReceipt = Readonly<{
   commandId: string; projectId: string; seq: number; revisions: readonly { id: string; revision: number }[];
   /** Original pre-cutover backup, atomically retained for lost-ACK retries. Legacy receipts may omit it. */
   cutoverBackupId?: string;
+  /** Immutable metadata-only outcome; raw document recovery bytes never enter commands/events. */
+  documentApply?: {requestDigest:string;result:import('../artifacts/document-apply.ts').DocumentApplyOutcome};
 }>;
 export type StoreEventPage = Readonly<{
   generation: string;

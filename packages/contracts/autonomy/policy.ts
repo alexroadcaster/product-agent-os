@@ -6,6 +6,8 @@ export type AutonomyPolicy = Readonly<{
   allowedActions: readonly ('execution' | 'command')[];
   maxRuns: number;
   maxCommandsPerRun: number;
+  /** Optional policy-window reservation cap; absent preserves the v1 per-run-only behavior. */
+  maxCommandsTotal?: number;
   maxRunSeconds: number;
   concurrency: 1;
   stopOnFailedCommand: boolean;
@@ -17,6 +19,7 @@ export type AutonomyReservation = {
 export type AutonomySnapshot = {
   revision: number; policy: AutonomyPolicy | null; paused: boolean; budgetId: string;
   runs: AutonomyReservation[]; usedRuns: number;
+  usedCommands: number; commandLimit: number | null; remainingCommands: number | null;
   enforcement: 'paos_mediated_commands';
   hostToolsConstrained: false; perFileSandbox: false;
 };
@@ -36,7 +39,7 @@ export function decodeAutonomyPolicy(value: unknown): AutonomyPolicy {
   if (!value || typeof value !== 'object' || Array.isArray(value)) fail();
   const v = value as Record<string, unknown>;
   const keys = Object.keys(defaultAutonomyPolicy());
-  if (Object.keys(v).length !== keys.length || Object.keys(v).some(key => !keys.includes(key))) fail();
+  if (keys.some(key => !Object.hasOwn(v,key)) || Object.keys(v).some(key => !keys.includes(key)&&key!=='maxCommandsTotal')) fail();
   const strings = (raw: unknown, max: number): string[] => {
     if (!Array.isArray(raw) || raw.length > max || raw.some(s => typeof s !== 'string' || !s || s.length > 200 || /[\0\r\n]/.test(s))
       || new Set(raw).size !== raw.length) fail();
@@ -55,6 +58,6 @@ export function decodeAutonomyPolicy(value: unknown): AutonomyPolicy {
   if (!actions.includes('command') && commands !== 0) fail();
   return { schemaVersion: 'autonomy_policy_v1', allowedTaskIds: tasks, allowedPaths: paths,
     allowedActions: actions as ('execution' | 'command')[], maxRuns: bounded(v.maxRuns, 1, 1000),
-    maxCommandsPerRun: commands, maxRunSeconds: bounded(v.maxRunSeconds, 1, 3600),
+    maxCommandsPerRun: commands, ...(Object.hasOwn(v,'maxCommandsTotal')?{maxCommandsTotal:bounded(v.maxCommandsTotal,0,64000)}:{}), maxRunSeconds: bounded(v.maxRunSeconds, 1, 3600),
     concurrency: 1, stopOnFailedCommand: v.stopOnFailedCommand as boolean };
 }

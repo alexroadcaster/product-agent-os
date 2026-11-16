@@ -61,6 +61,10 @@ export async function openLocalStore(options: { databasePath: string;assetRoots?
     artifactSummaryRows:(projectId:string,options:{kinds?:readonly EntityKind[]}={})=>call<StoredEntity[]>('artifactSummaryRows',{projectId,...options}),
     artifactDocumentRow:(projectId:string,id:string)=>call<StoredEntity|null>('artifactDocumentRow',{projectId,id}),
     teamApply:(input:Record<string,unknown>)=>call<{assetId:string;version:number;receipt:StoreReceipt}>('teamApply',input),
+    /** Service-only document port. Generic browser StoreWrite never grants proposal/journal authority. */
+    documentJournal:(projectId:string)=>call<import('../../../../packages/contracts/artifacts/document-apply.ts').DocumentApplyJournal>('documentJournal',{projectId}),
+    documentWrite:(input:{command:StoreWrite;expectedJournalVersion:number;records:import('../../../../packages/contracts/artifacts/document-apply.ts').DocumentApplyRecord[];scopeFingerprint:string;generation:string;outcome?:NonNullable<StoreReceipt['documentApply']>})=>call<StoreReceipt>('documentWrite',input),
+    stageDocumentProposal:(command:StoreWrite)=>call<StoreReceipt>('stageDocumentProposal',{command}),
     exportTasks: (projectId: string) => call<{ project: Project; tasks: TaskProfile[]; generation: string; throughSeq: number }>('exportTasks', { projectId }),
     write: (command: StoreWrite) => call<StoreReceipt>('write', command),
     receipt: (projectId: string, idempotencyKey: string) => call<StoreReceipt | null>('receipt', { projectId, idempotencyKey }),

@@ -1,6 +1,6 @@
 # Frontend: компоненты и границы
 
-Source status: repository_source / static_source_review + FUNC-02_service_API_verified; FUNC-02_UI_browser_verified; 15.11.2026.; FUNC-G04: locally_verified_with_measured_limits, 16.11.2026.
+Source status: repository_source / static_source_review + FUNC-02_service_API_verified; FUNC-02_UI_browser_verified; 15.11.2026.; FUNC-G04: locally_verified_with_measured_limits, 16.11.2026.; FUNC-G05 locally_verified_with_explicit_limits, 16.11.2026.
 
 Владелец: frontend owner и docs-maintainer. Область: Web UI на revision `ad78d5d15aced23febae90d319f2aba00bd64d0b`. Обновлять при изменении компоновки, API-контракта, компонентов или их тестов. Ссылки на тесты ниже — маршруты проверки, не утверждение об их запуске в DG04.
 
@@ -54,3 +54,9 @@ Production App/API путь проверен: асинхронный сохра�
 DatabaseExplorer владеет Schema/Changes/Code usages, status/revision/coverage, scoped search, list/ERD pages по50 objects и column/PK/FK/index/view details. DatabaseSourceSettings выбирает только observed relative path +metadata pin+CAS version; открытие SQLite выполняется отдельным scan. CodeDatabaseUsages предоставляет confidence/op/table/path filters, bounded code→table network/evidence, test candidates и source/table navigation; foreign-source jump не открывает одноимённую таблицу выбранной БД как подтверждённую.
 
 GraphExplorer добавляет dependencies/symbols, direction/path и source→Files. ProjectFiles монтирует related-table query только при раскрытии панели; Map DB panel и Database Code usages тоже lazy. Per-project component keys/request epochs/AbortSignal отбрасывают поздние ответы; external table anchor отменяет несовместимый локальный search. MermaidView использует stable encoded entity IDs и keyboard selection в те же table details, локальный strict renderer и доступный список. Graph renderer принимает presentation primitives без вымышленных source offsets. Проверка: build-bound browser runner graph-database-browser-acceptance.mts; human acceptance отдельно.
+
+## FUNC-G05 — текущие контракты
+
+F11 RunUsage переиспользует team/metrics для Dashboard, Usage проекта, задачи, сессии и агента. Показывает наблюдаемые секунды, подтверждённые миллисекунды и PAOS-mediated command counts; tokens/cost/host tools остаются неизвестными. Period [from,to) задан явно в UTC, строки выводятся порциями50, stale async result от другого scope отклоняется. F12 добавляет явный opt-in внешнего каталога, provenance/license preview и существующий managed-copy Apply. F13 DocumentApply отделяет preview, checkbox, Apply, rollback и recovery; потерянный ACK сохраняет исходный idempotency key. F16 показывает configured/pinned/observed и source capabilities. F15 optional command cap вводится пустым/целым полем, объясняет reservation semantics. Browser qualification относится к конкретному source/build и хранится в group evidence; human acceptance отдельно.
+
+F13 mobile visual QA выявила сжатый reader при сохранённой280px origin column; при viewport≤1100px content и provenance теперь идут вертикально, content первым. Geometry/overflow checks дополняются minimum-readable-width и screenshots; отсутствие global overflow само по себе не доказывает читаемость.

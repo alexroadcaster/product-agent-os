@@ -1,9 +1,10 @@
 export type AssetKind='agent'|'skill';
+export type ProfileExecutionEvidence={schemaVersion:'paos_profile_evidence_v1';configured:{model:string|null;effort:string|null;version:number|null;hash:string|null};pinned:{runId:string;sessionId:string|null;version:number|null;hash:string;requestedModel:string|null;requestedEffort:string|null;status:string}[];observed:null;reason:'selected_route_has_no_loaded_profile_attestation'};
 export type AssetAction='create'|'update'|'archive'|'delete'|'restore';
 export type AssetResource={path:string;hash:string;byteSize:number;blobId?:string;base64?:string};
-export type AssetSource={rootId:string;relativePath:string;hash:string;origin:string;license:string|null};
+export type AssetSource={rootId:string;relativePath:string;hash:string;origin:string;license:string|null;revision?:string;licenseHash?:string};
 export type AssetVersion={version:number;hash:string;createdAt:string;actorId:string;action:AssetAction;name:string;description:string;content:string;dependencies:string[];resources:AssetResource[];source:AssetSource|null};
-export type AssetProfile={id:string;kind:AssetKind;name:string;description:string;scope:'project'|'global'|'vendor';source:AssetSource|null;content:string;resources:AssetResource[];dependencies:string[];revision:number;effectiveVersion:number|null;loadedVersion:number|null;loadedCoverage:'unavailable';observedPins?:{version:number|null;hash:string;runId:string;sessionId:string;status:string}[];archived:boolean;deleted:boolean;versions:AssetVersion[];redacted:boolean;management:'source_read_only'|'paos_managed'};
+export type AssetProfile={id:string;kind:AssetKind;name:string;description:string;scope:'project'|'global'|'vendor';source:AssetSource|null;content:string;resources:AssetResource[];dependencies:string[];revision:number;effectiveVersion:number|null;loadedVersion:number|null;loadedCoverage:'unavailable';executionEvidence?:ProfileExecutionEvidence;observedPins?:{version:number|null;hash:string;runId:string;sessionId:string;status:string}[];archived:boolean;deleted:boolean;versions:AssetVersion[];redacted:boolean;management:'source_read_only'|'paos_managed'};
 export type AssetSummary=Omit<AssetProfile,'content'|'resources'|'versions'> & {versionHash:string|null};
 export type AssetScope={id:string;scope:'project'|'global'|'vendor';availability:'available'|'unavailable';reason?:string};
 export type TeamCatalog={assets:AssetSummary[];scopes:AssetScope[];coverage:'complete'|'partial'};

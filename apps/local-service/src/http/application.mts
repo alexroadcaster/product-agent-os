@@ -47,6 +47,8 @@ export type ApplicationOptions = {
   agentChannel?: {handle(request: Request): Promise<Response>;descriptorPath?:string};
   desktop?:Pick<DesktopActions,'selectProjectDirectory'|'openCodexDraft'>;
   assetRoots?:AssetRoot[];
+  /** Trusted anonymous source transport for synthetic checks; never selected by browser payloads. */
+  externalSkillFetch?:typeof fetch;
   scanAnalyzers?:Partial<Record<ProjectScanStageKind,ScanAnalyzer>>;
   executionRecipes?:ReturnType<typeof createRecipeService>;
   scheduler?:ReturnType<typeof createScheduler>;
@@ -92,7 +94,7 @@ export async function createLocalApplication(options: ApplicationOptions) {
   await scheduler.initialized();
   const sessionHistory=createSessionHistory(store);
   const decisions=createDecisions({store,runtime:options.runtime,recipes:executionRecipes,scheduler,route:()=>String((options.connection?.status() as any)?.route??'codex_app_agent')});await decisions.initialized();
-  const team=createTeamService(store,options.assetRoots);
+  const team=createTeamService(store,options.assetRoots,{externalFetch:options.externalSkillFetch});
   const codeIndex=createCodeIndex(store);
   const databaseMap=createDatabaseMap({store,profileDatabasePath:join(profileDirectory,'state.sqlite')});
   const codeDatabase=createCodeDatabase({store,codeIndex,databaseMap});
@@ -405,7 +407,7 @@ export async function createLocalApplication(options: ApplicationOptions) {
         const row=await store.get(projectId,decodeURIComponent(runRoute[1])),run=(row?.data.appAgentRun??row?.data.runtimeRun) as any;
         if(!row||row.kind!=='run'||!run||run.projectId!==projectId)fail('TEAM_RUN_NOT_FOUND');
         // Deliberate allowlist: navigating a run never exposes its lease, input or full instructions.
-        return json({id:row.id,sessionId:run.sessionId??null,taskId:run.taskContext?.taskId??run.taskId??null,status:run.state??row.status,mode:run.mode??null,route:run.route??(row.data.appAgentRun?'codex_app_agent':null),startedAt:run.observedStartedAt??run.startedAt??null,endedAt:run.endedAt??null,assetPins:(run.assetPins??[]).map((p:any)=>({assetId:p.assetId,kind:p.kind,version:p.version,hash:p.hash})),workflow:run.workflowSnapshot?{ref:run.workflowSnapshot.ref,definitionHash:run.workflowSnapshot.definitionHash}:null,coverage:'partial',source:'persisted_runtime'});
+        return json({id:row.id,sessionId:run.sessionId??null,taskId:run.taskContext?.taskId??run.taskId??null,status:run.state??row.status,mode:run.mode??null,route:run.route??(row.data.appAgentRun?'codex_app_agent':null),startedAt:run.observedStartedAt??run.startedAt??null,endedAt:run.endedAt??null,assetPins:(run.assetPins??run.taskContext?.assetPins??[]).map((p:any)=>({assetId:p.assetId,kind:p.kind,version:p.version,hash:p.hash,requestedModel:p.requestedModel??null,requestedEffort:p.requestedEffort??null,observedModel:null,observedEffort:null,loadedVersion:null})),workflow:run.workflowSnapshot?{ref:run.workflowSnapshot.ref,definitionHash:run.workflowSnapshot.definitionHash}:null,coverage:'partial',source:'persisted_runtime'});
       }
       if(action==='team/skills/generation'&&request.method==='POST')return json(await skillGeneration.start(projectId,await body(request)));
       const skillGenerationRoute=/^team\/skills\/generation\/([^/]+)(?:\/(apply))?$/.exec(action);
@@ -413,15 +415,26 @@ export async function createLocalApplication(options: ApplicationOptions) {
       if(action==='artifacts'&&request.method==='GET')return json(await artifacts.catalog(projectId,url.searchParams));
       if(action==='artifacts/proposals/preview'&&request.method==='POST')return json(await artifacts.preview(projectId,await body(request)));
       if(action==='artifacts/proposals'&&request.method==='POST'){if(migration.frozen(projectId))fail('MIGRATION_BUSY');return json(await artifacts.saveProposal(projectId,principal.actorId,await body(request)));}
+      const documentAction=/^artifacts\/proposals\/(apply-preview|apply|recover|rollback-preview|rollback)$/.exec(action);
+      if(documentAction&&request.method==='POST'){
+        const input=await body(request),selected=documentAction[1];
+        if(!selected.endsWith('-preview')&&migration.frozen(projectId))fail('MIGRATION_BUSY');
+        // The writer validates the complete untrusted payload, including unknown fields, before any side effect.
+        if(selected==='apply-preview')return json(await artifacts.applyPreview(projectId,input as Parameters<typeof artifacts.applyPreview>[1]));
+        if(selected==='rollback-preview')return json(await artifacts.rollbackPreview(projectId,input as Parameters<typeof artifacts.rollbackPreview>[1]));
+        if(selected==='recover')return json(await artifacts.recover(projectId,principal.actorId,input as Parameters<typeof artifacts.recover>[2]));
+        return json(await (selected==='apply'?artifacts.apply:artifacts.rollback)(projectId,principal.actorId,input as Parameters<typeof artifacts.apply>[2]));
+      }
       const artifactRoute=/^artifacts\/([^/]+)$/.exec(action);if(artifactRoute&&request.method==='GET')return json(await artifacts.read(projectId,decodeURIComponent(artifactRoute[1]),url.searchParams.get('version')??undefined));
       if(action==='team/catalog'&&request.method==='GET')return json(await team.catalog(projectId));
       if(action==='team/generation'&&request.method==='POST')return json(await startTeamGeneration(store,options.runtime,projectId,await body(request)));
       if(action.startsWith('team/generation/')&&request.method==='GET')return json(await teamGenerationResult(store,team,projectId,decodeURIComponent(action.slice('team/generation/'.length))));
-      if(action==='team/skills/discovery'&&request.method==='GET')return json(await team.discovery(projectId,url.searchParams.get('q')??''));
+      if(action==='team/skills/discovery'&&request.method==='GET')return json(await team.discovery(projectId,url.searchParams.get('q')??'',{external:url.searchParams.get('external')==='1'}));
+      if(action==='team/skills/remote-preview'&&request.method==='POST')return json(await team.remotePreview(projectId,await body(request) as Parameters<typeof team.remotePreview>[1]));
       if(action==='team/skills/source-preview'&&request.method==='POST')return json(await team.sourcePreview(projectId,await body(request)));
       if(action==='team/proposals/preview'&&request.method==='POST')return json(await team.preview(projectId,await body(request,8*1024*1024)));
       if(action==='team/proposals/apply'&&request.method==='POST'){if(migration.frozen(projectId))fail('MIGRATION_BUSY');return json(await team.apply(projectId,principal.actorId,await body(request,8*1024*1024)));}
-      if(action==='team/metrics'&&request.method==='GET')return json(await team.metrics(projectId,url.searchParams.get('from')??'',url.searchParams.get('to')??''));
+      if(action==='team/metrics'&&request.method==='GET')return json(await team.metrics(projectId,url.searchParams.get('from')??'',url.searchParams.get('to')??'',Object.fromEntries(['taskId','sessionId','agentId'].filter(k=>url.searchParams.has(k)).map(k=>[k,url.searchParams.get(k)!]))));
       const copyRoute=/^team\/assets\/([^/]+)\/copy-preview$/.exec(action);if(copyRoute&&request.method==='POST'){await body(request);return json(await team.copyPreview(projectId,decodeURIComponent(copyRoute[1])));}
       const assetRoute=/^team\/assets\/([^/]+)(?:\/(history|export|resources)(?:\/(.+))?)?$/.exec(action);
       if(assetRoute&&request.method==='GET'){
@@ -554,7 +567,7 @@ export async function createLocalApplication(options: ApplicationOptions) {
       const status = ['SESSION_REQUIRED', 'PAIRING_INVALID'].includes(category) ? 401
         : ['ORIGIN_REJECTED', 'CSRF_INVALID', 'LAUNCH_REJECTED'].includes(category) ? 403 : category === 'JSON_REQUIRED' ? 415
         : /NOT_FOUND/.test(category) ? 404 : category === 'REQUEST_TOO_LARGE' ? 413
-        : /CONFLICT|REQUIRED|UNAVAILABLE|AUTHORITY|FORBIDDEN|BLOCKED|UNVERIFIED|UNQUALIFIED|DRIFT|BUSY|STALE|PRIVATE/.test(category) ? 409 : 400;
+        : category==='AUTONOMY_TOTAL_COMMAND_BUDGET_EXHAUSTED'||/CONFLICT|REQUIRED|UNAVAILABLE|AUTHORITY|FORBIDDEN|BLOCKED|UNVERIFIED|UNQUALIFIED|DRIFT|BUSY|STALE|PRIVATE/.test(category) ? 409 : 400;
       const cyclePath=(error as any)?.cyclePath;
       return json({ error: { code,...(Array.isArray(cyclePath)&&cyclePath.length<=100&&cyclePath.every(id=>typeof id==='string'&&/^[0-9a-f-]{36}$/.test(id))
         ?{details:{cyclePath,cyclePathTruncated:(error as any).cyclePathTruncated===true}}:{}) } }, status);

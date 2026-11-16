@@ -1,6 +1,6 @@
 # Данные, redaction и retention
 
-Source status: repository_source / static_source_review; 15.11.2026.
+Source status: repository_source / static_source_review; 15.11.2026.; FUNC-G05 locally_verified_with_explicit_limits, 16.11.2026.
 
 Владелец: security/runtime owner + docs-maintainer. Область: исходники PAOS на `259977f3b257ba7fc0e932396f8963262bd327ad`; обновлять при изменении guards, tests или policy. Ссылки на тесты обозначают маршруты проверки, а не новый прогон. Реальные профили, credentials и provider-вызовы не исследовались.
 
@@ -11,3 +11,9 @@ Source status: repository_source / static_source_review; 15.11.2026.
 [snapshot](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/apps/local-service/src/storage/snapshot.mts) создаёт проверяемый backup БД и связанных blobs, но исключает credentials, repository files, runtime threads и runtime auth store. Rotation candidates не означают удаление; restore и отдельное prune имеют самостоятельные условия. Подробнее [backup/restore](../db/backup-restore.md); [backup tests](https://github.com/alexroadcaster/product-agent-os/blob/259977f3b257ba7fc0e932396f8963262bd327ad/tests/web/storage-backup.test.mts) — synthetic тестовый маршрут.
 
 [Privacy/supply-chain/retention](../product-agent-os/privacy-supply-chain-retention.md) — владелец правил evidence: только минимальные сведения; raw scanner findings по умолчанию не сохраняются без решения о сроке, redaction и cleanup. Эта политика evidence не определяет автоматический срок удаления всех пользовательских данных. Резервные копии, local DB, OS credentials и внешние провайдеры имеют разные границы; для удаления и retention конкретного deployment нужны отдельные evidence и authority. Реальные профили не исследовались.
+
+## FUNC-G05 — реализованные контракты
+
+F13 хранит точные recovery before/after Base64 bytes только в защищённом service-private store_meta journal, не в публичных settings/documents/events. Display before/after texts proposal остаются в доступном проекту document staging и preview согласно F02. Лимиты:4 активных journal records на проект,2MiB на record,8MiB на проект; вытесняются только terminal records, unresolved сохраняются и блокируют новое действие при исчерпании capacity. Это лимит активного хранилища: исторические database backups могут сохранять journal дольше и требуют отдельной retention policy. Public receipt содержит hashes/status, без beforeBase64/afterBase64. F11 выводит numeric projections из retained runs без новых raw prompt/argv/output logs; tokens/cost неизвестны. Эти меры не гарантируют универсального удаления secrets из всех профилей/резервных копий.
+
+Текущие focused evidence и оставшаяся квалификация: [FUNC-G05](../planning/functional-remediation-2026-11-15.md#func-g05-results).

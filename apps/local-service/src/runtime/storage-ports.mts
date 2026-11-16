@@ -1,3 +1,5 @@
+import {appendRunInterval} from './run-intervals.mts';
+import type {RunIntervalReceipt} from '../../../../packages/contracts/telemetry/run-metrics.ts';
 import { createHash } from 'node:crypto';
 import type { LocalStore } from '../storage/local-store.mts';
 import type { EntityInput } from '../../../../packages/contracts/storage/local-store.ts';
@@ -51,10 +53,12 @@ export function createRuntimeStoragePorts(store: LocalStore, options: Readonly<{
     if(sourceId)run={...run,canonicalUserMessageSourceId:sourceId};
     const messageChanges=visibleUserMessage?[{expectedRevision:0,entity:messageEntity(visibleUserMessage)}]:[];
     if(!run.taskId) {
-      if(!append){await write(run.projectId,{id:run.id,kind:'run',status:run.state,data:{runtimeRun:run}});return;}
+      const runTimeline=appendRunInterval(Array.isArray(previous?.data.runTimeline)?previous.data.runTimeline as RunIntervalReceipt[]:[],run.projectId,run.id,options.actorId,(previous?.data.runtimeRun as RuntimeRun|undefined)?.state,run.state,(options.now??Date.now)());
+      const data={runtimeRun:run,...(runTimeline.length?{runTimeline}:{})};
+      if(!append){await write(run.projectId,{id:run.id,kind:'run',status:run.state,data});return;}
       await store.write({projectId:run.projectId,actorId:options.actorId,expectedAuthorityEpoch:project.authorityEpoch,
         idempotencyKey:`runtime-intent:${run.id}:${hash(JSON.stringify({run,visibleUserMessage}))}`,requireIdle:true,
-        changes:[{expectedRevision:0,entity:{id:run.id,kind:'run',status:run.state,data:{runtimeRun:run}}},...messageChanges]});return;
+        changes:[{expectedRevision:0,entity:{id:run.id,kind:'run',status:run.state,data}},...messageChanges]});return;
     }
     const task=await store.get(run.projectId,run.taskId);const session=await store.get(run.projectId,run.sessionId);
     if(!task||task.kind!=='task'||!session||session.kind!=='session')throw Object.assign(new Error('Task/session is unavailable.'),{code:'runtime_target_missing'});

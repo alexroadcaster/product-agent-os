@@ -3,16 +3,16 @@
 Source status: repository_source / current_local_synthetic_implementation; remaining_tasks_planned.
 Planning date: 15.11.2026. Timezone: Europe/Moscow. Schema version: task_matrix_plan_v1.
 
-<!-- func-g01-g04-status -->
-FUNC-G01: 7/7 locally_verified; FUNC-G02: 3/3 poc_research_locally_verified; FUNC-G03: 7/7 locally_verified; FUNC-G04: 5/5 implemented, locally_verified_with_measured_limits; overall 22 implemented / 12 planned. Three M5 references preserved.
+<!-- func-g01-g05-status -->
+FUNC-G01: 7/7 locally_verified; FUNC-G02: 3/3 poc_research_locally_verified; FUNC-G03: 7/7 locally_verified; FUNC-G04: 5/5 implemented, locally_verified_with_measured_limits; FUNC-G05: 5/5 locally_verified_with_explicit_limits; overall27 implemented /7 planned. Three M5 references preserved.
 
 ## Scope and status
 
-The plan contains **34 tasks PAOS-FUNC-01–PAOS-FUNC-34** and references to **3 previously planned M5 tasks**. Current total: **22 implemented / 12 planned**; FUNC-G01 is closed against its local technical AC. The overview matrix therefore contains 37 entries; this is not the total number of project tasks. The existing 56 M1–M5 cards, their 53 implemented / 3 planned statuses, and estimates are preserved. New findings do not rewrite historical receipts: they require current reproduction and a new verification.
+The plan contains **34 tasks PAOS-FUNC-01–PAOS-FUNC-34** and references to **3 previously planned M5 tasks**. Current total: **27 implemented / 7 planned**; FUNC-G01 is closed against its local technical AC. The overview matrix therefore contains 37 entries; this is not the total number of project tasks. The existing 56 M1–M5 cards, their 53 implemented / 3 planned statuses, and estimates are preserved. New findings do not rewrite historical receipts: they require current reproduction and a new verification.
 
 Machine-state owner for the current checkout: `docs/planning/functional-remediation-2026-11-15.json`. The [original planning snapshot](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/docs/planning/functional-remediation-2026-11-15.json) is historical and does not carry the updated local statuses. This Markdown file owns technical and product rationale, acceptance and completion evidence. M5 references do not create a second owner for status: the owners are [docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json) and [docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md](product-agent-os-web-task-manager-plan-2026-11-09.md).
 
-The original request authorized planning. A subsequent 2026-11-15 owner request authorized complete FUNC-G01 implementation, necessary local synthetic checks, statuses and documentation; all seven group tasks are implemented. A further owner request authorized FUNC-G02: its three research PoCs are closed with measured decisions and isolated UI acceptance. Further requests authorized G03 (7 implemented) and G04 (5 implemented with measured limits); 12 tasks and the separate M5 references remain planned. P1 means an execution blocker or an integrity/recovery check; P2 means functional value, information correctness and maintainability; P3 means a limited display defect. The priority of a verification task does not mean a failure has already been observed.
+The original request authorized planning. A subsequent 2026-11-15 owner request authorized complete FUNC-G01 implementation, necessary local synthetic checks, statuses and documentation; all seven group tasks are implemented. A further owner request authorized FUNC-G02: its three research PoCs are closed with measured decisions and isolated UI acceptance. Further requests authorized G03 (7 implemented) and G04 (5 implemented with measured limits); G05 is now implemented (five tasks); seven FUNC tasks and the separate M5 references remain planned. P1 means an execution blocker or an integrity/recovery check; P2 means functional value, information correctness and maintainability; P3 means a limited display defect. The priority of a verification task does not mean a failure has already been observed.
 
 ## Original evidence basis and limits
 
@@ -441,6 +441,43 @@ Cold history/catalog generations retain recorded 1000 ms deviations. Full 10k/10
 Retained failures: baseline oversized startup and repeated graph reads; the initial 656/657 authority-contract failure; parser native stack exits; 100-object ERD 1969 ms; anchor/filter and mobile-heading bugs; incorrect aggregate RSS assertion; final P2 __proto__ dictionary RED. Each relevant product failure has a focused fix and current regression. A later ordinary sandbox run had lease/symlink denials (631 pass/16 fail/3 skip, one owned stalled test child terminated); its receipt is retained, and the authorized native repeat passed all 658. Attempt10 browser passed against the pre-promotion manifest; attempt11 is the current binding. No failed receipt was rewritten.
 
 Docs: 26 domain Markdown files plus RU/EN matrix and four root control-plane files, 32 in total. Source registry RU/EN includes Context7 primary sources. Repaired a temporary helper's damaged G04 design block and registry heading before final source checks; original cards/AC remain preserved. EVALS/prod_test and diagram/MkDocs routes: no_change_needed, because no AI rubric, Batch39 or atlas/navigation contract changed. No site build/freshness claim. Cleanup removes owned fixtures and the copied test executable; existing cache/runtime and user files are preserved. Rollback only own hunks, followed by native requalification for executable source changes.
+
+## FUNC-G05 — execution and decisions {#func-g05-results}
+
+Status: implemented / locally_verified_with_explicit_limits,5/5. Scope F11/F12/F13/F15/F16. At task start HEAD8c2fbd4 and1120 source snapshots were captured; the only dirty file was the own lifecycle marker. Other29 task records, original AC/groups/M5 and G01–G04 receipts are preserved. Root integrated shared files; independently owned autonomy implementation and read-only source/design/review work used the documented ownership refinement. Current checks and claim limits follow below.
+
+F11/F16 source gate: current selected App-agent bridge exposes local PAOS history, server-observed intervals and mediated operations; it has no host-history/model/effort/loaded-asset/token attestation port. Official App Server supports history/usage methods, which are a different capability and pinned-version admission boundary. No private host-store scrape, new API-key route or fabricated observations. Open/unresolved intervals remain unknown; separate task elapsed/agent effort and mediated commands/all host tools; tokens/cost remain unknown without a supported source. F12 external source and F15 extension contracts will be pinned before their build.
+
+Code-change contract: existing_capability=F28 checked sources, LocalStore CAS, G04 fixed native lease, existing Team/Sessions/Artifact/Autonomy and V3 UI; smallest_safe_patch=route-aware projections and bounded adapters/writer, preserve unrelated routes; invariants=project/profile/root/policy isolation, raw source pins, idempotency, no invented attestation or metrics, no lost user edits; dependency_decision=no_new_dependency, installed/native capabilities first; risk_selected_tests=existing public HTTP/service/worker seams plus real synthetic native/browser conflict/recovery/isolation tests; comment_decision=comment_needed for authority, retention, journal and metric semantics; performance_applicability=required for bounded query/output/journal/fetch paths, no unrelated full F20 rerun; evidence_and_gaps=proceed with local source/synthetic evidence, host/provider/real-target acceptance separate.
+
+F13 design gate: server-derived origin determines source-vs-SQL ownership. SQL document apply updates target, proposal and outcome in one Store CAS transaction. Workspace apply accepts only existing readable regular .md/.txt up to512KiB after F28 admission; AGENTS.md, SKILL.md, .codex/config/hooks/rules/plugin/skill instruction paths, ignored/generated/private/link/hardlink/reparse sources and redacted before/after are denied. Apply-preview binds project/profile/root/policy/epoch, proposal revision, raw before identity/hash and persisted after hash; final apply accepts neither client paths nor a replacement body. New proposals retain server-derived source pins; legacy proposals require refresh/restage. A fixed trusted Windows helper holds root→parent handles plus an exclusive existing-target handle, validates raw hash, waits for durable private prepared journal and final scope/policy fence, then writes/flushes/rehashes through that handle. This is protected in-place writing with recovery, not atomic replacement. A SQLite fence blocks policy/authority/cutover changes before writing; unresolved outcomes block new writes without replay. Current=after reconciles applied, current=before permits explicit retry, otherwise recovery_required without overwrite. Rollback requires a separate preview/current-hash CAS. Protected profile metadata journal is outside public document/settings snapshots: at most4 records/project,2MiB/record and8MiB/project; only terminal records may be evicted, unresolved records remain, quota fails closed. Public events/API expose metadata/hashes, no journal bytes. Existing readers/writers cause busy; user processes are never closed. Root control-plane documents except AGENTS require exact-file preview; source and SQL are never synchronized implicitly.
+
+### F12 source gate before build
+
+The deprecated openai/skills default was rejected in favor of the current public openai/plugins package superpowers, pinned to d420d13051bffe4543ed39e30fa46b87148e47dd (manifest6.3.0 and actual MIT LICENSE verified). This adapter searches only that explicit package, not the whole marketplace. Fixed anonymous api.github.com GETs traverse commit/root/plugins/package trees; no query/project context, credentials, redirects, foreign repositories, scripts/hooks/installation or provider calls. Limits:10s operation deadline,2MiB JSON/body,1000 package tree entries,256KiB SKILL,32 skill-local Markdown/text resources,1MiB bundle,15min catalog cache/four bundle cache entries. Blob bytes verify Git blob SHA separately from raw SHA256. Preview includes actual license/provenance and complete supported resources; links/submodules/outside-skill references/unknown licenses/executable or unsupported resources fail closed. Search never installs; managed copy uses existing preview/apply/CAS, including dependency checks and cached immutable source proof. Timeout/offline/rate limit never replaces or breaks local sources. Native plugin bindings remain unavailable and require owner compatibility review.
+
+
+Live index inspection found agents/openai.yaml in every current skill, so the text-only subset was not useful. Before extending support, pin the exact exception: skill-local agents/openai.yaml is retained as opaque UTF-8 text, never parsed as executable host configuration or activated. All other unsupported resource rules remain; failed initial anonymous receipt is retained.
+
+### FUNC-F15 — implementation boundary
+
+Optional `maxCommandsTotal` limits durable command reservations across the policy window; omission preserves the v1 contract. Repeated operation IDs do not consume twice; uncertain outcomes do not refund reservations. The final admitted command may finish; subsequent commands/runs are denied. Reservations differ from F11 observed commands; tokens/cost and host tools remain unavailable and are not claimed to be constrained. Narrow allowedPaths retain their existing rejection. During F15 implementation the document_apply agent is the sole code writer for autonomy contracts/service/UI/tests; root handles documentation and read-only preparation.
+
+Intermediate checkpoint before final qualification: F11 lifecycle/scope/recovery3/3; F12 source/negative cases3/3 and anonymous upstream8GET; F13 native13 cases (latest rollback regression1/1), pairedAPI1/1; F15 policy/runtime20/20; F16 identity/cursor2/2; cross-capability pairedAPI1/1. Independent source review found and verified the F13 rollback-operation fix. Native candidate and production-default qualification passed on adapter aa9c663dd1df54c6f47258234b5b9e9b5df6e0980e5ff58677e4403e30584bcc with zero provider/model/credential operations; final fullsuite/browser/status checks were pending at that checkpoint; see the closure result below.
+
+<!-- FUNC-G05 ownership refinement: After read-only boundary review ownership is refined: the agent owns only autonomy contract/service/UI/tests, root owns team/history/metrics/dashboard. Files do not overlap; the full build/suite follows a shared freeze. -->
+
+### Closure evidence
+
+Five tasks implemented; group closed against local technical AC. Fullweb686/686,0fail/skip; typecheck/build passed; browser16/16 (.tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json); native candidate→qualified default passed, adapter aa9c663dd1df54c6f47258234b5b9e9b5df6e0980e5ff58677e4403e30584bcc. Earlier actual RED/setup/selector receipts are retained; no failure is relabelled as a passed attempt.
+
+Bounded local synthetic acceptance; Windows document writer; external ignore revocation is final-checked, not atomic; unknown partial writes require explicit/manual recovery; active journal limits do not purge historical backups. Complete host history/usage, loaded-profile attestation, monetary/host-tool enforcement, provider/human/release acceptance are unavailable or separate.
+
+Control-plane sync: REQUIREMENTS/PLAN/TEST/RUNLOG updated; EVALS=no_change_needed (no model/prompt/route/rubric changes); prod_test=no_change_needed (Batch39 ledger unchanged); atlas/navigation=no_change_needed (existing lifecycle boundaries, no new docs page/workflow). Root size advisories predate this slice; docs-maintainer owns a separate preservation-safe compactness follow-up. Git/publication/install/provider/real-profile operations absent. Final independent evidence review and preservation gates are recorded in latest verification.
+
+Status audit: corrected the inherited RU overview M5 count, which had repeated FUNC totals. The current owning M5 JSON confirms56 cards,53 implemented/3planned; its content and statuses are unchanged.
+
+Independent final review: context_mode=separate_reused_context; reviewer=/root/func_g05_completion_review; tester_verdict=closed_allowed; closure_level=locally_verified_with_explicit_limits. Evidence .tmp/func-g05/final-review.json, closure-consistency.json, docs-final.log (28sources), matrix-ru.log, matrix-en.log. Independently recomputed source/build/native hashes match; no open implementation/evidence blockers. Two expected SESSION_REQUIRED bootstrap401 responses are retained, with no unexpected HTTP/page errors or external browser requests. Parent Node peak237100KiB is not an aggregate OS memory measurement.
 
 ## Detailed cards
 
@@ -911,15 +948,15 @@ Docs: 26 domain Markdown files plus RU/EN matrix and four root control-plane fil
 
 - Delivery group: `FUNC-G05`; the group does not replace Depends on or the original AC.
 - Task: PAOS-FUNC-11 — Introduce measurable run and consumption statistics
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Extension; functional audit after V3 redesign and owner request for a task matrix.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 16-11-2026 07:29
 - Priority: P2
-- Evidence level: bounded_capability_or_missing_extension
-- Execution authority: planning_only; inclusion in the plan does not start implementation.
+- Evidence level: locally_verified_with_explicit_limits
+- Execution authority: owner_authorized_func_g05_local_synthetic; 16.11.2026.
 - Depends on: `PAOS-FUNC-05`, `PAOS-FUNC-08`
 - Blocks: `PAOS-FUNC-15`
 - Source: Metrics durationSeconds/tokenCount/cost=null; tool_use is not measured. [apps/local-service/src/team/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/team/service.mts), [apps/web/src/features/dashboard/Dashboard.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/dashboard/Dashboard.tsx). Provenance: 15.11.2026 static audit; no new runtime results are claimed.
@@ -953,19 +990,28 @@ Docs: 26 domain Markdown files plus RU/EN matrix and four root control-plane fil
 - follow-up: Next step above; after execution synchronize JSON status, this card and only affected control-plane claims.
 - Documentation impact: planning_only; code and functional claims do not change yet. On completion reconcile changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required and evidence in this report.
 
+#### Completion report
+
+- status: implemented
+- what was done: Versioned numeric telemetry measures run intervals and mediated commands, excludes approval waits, deduplicates retries and preserves unknown values on recovery. One scoped endpoint and RunUsage show consistent values across Dashboard/project/task/session/agent; tokens/cost/host tools remain unknown.
+- verification evidence: .tmp/func-g05/web-native-final.log:686/686,0fail/skip; .tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json:16/16; .tmp/func-g05/typecheck-final.log:passed; .tmp/func-g05/build-responsive-final.log:passed; .tmp/func-g05/native-candidate.json:passed; .tmp/func-g05/native-default.json:passed
+- actual implementation date and time: 16-11-2026 07:29
+- residual risks: Bounded local synthetic acceptance; Windows document writer; external ignore revocation is final-checked, not atomic; unknown partial writes require explicit/manual recovery; active journal limits do not purge historical backups. Complete host history/usage, loaded-profile attestation, monetary/host-tool enforcement, provider/human/release acceptance are unavailable or separate.
+- Documentation impact: updated; docs/ai/llm/budgets-and-observability.en.md; docs/api/endpoints.en.md; docs/frontend/components.en.md; docs/security/data-retention.en.md; registry and scoped source checks.
+
 ### Task `PAOS-FUNC-12`
 
 - Delivery group: `FUNC-G05`; the group does not replace Depends on or the original AC.
 - Task: PAOS-FUNC-12 — Design and connect external skills search
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Extension; functional audit after V3 redesign and owner request for a task matrix.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 16-11-2026 07:29
 - Priority: P2
-- Evidence level: bounded_capability_or_missing_extension
-- Execution authority: planning_only; inclusion in the plan does not start implementation.
+- Evidence level: locally_verified_with_explicit_limits
+- Execution authority: owner_authorized_func_g05_local_synthetic; 16.11.2026.
 - Depends on: none
 - Blocks: none
 - Source: remote_discovery_adapter_not_configured. [apps/local-service/src/team/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/team/service.mts). Provenance: 15.11.2026 static audit; no new runtime results are claimed.
@@ -999,19 +1045,28 @@ Docs: 26 domain Markdown files plus RU/EN matrix and four root control-plane fil
 - follow-up: Next step above; after execution synchronize JSON status, this card and only affected control-plane claims.
 - Documentation impact: planning_only; code and functional claims do not change yet. On completion reconcile changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required and evidence in this report.
 
+#### Completion report
+
+- status: implemented
+- what was done: Explicit anonymous fixed-source discovery for pinned openai/plugins superpowers checks Git/raw hashes, actual MIT license and path/mode/dependency/byte/deadline limits. Queries stay local; preview→Apply creates a managed copy with resources/provenance/license without native activation. External failures preserve the local catalog.
+- verification evidence: .tmp/func-g05/web-native-final.log:686/686,0fail/skip; .tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json:16/16; .tmp/func-g05/typecheck-final.log:passed; .tmp/func-g05/build-responsive-final.log:passed; .tmp/func-g05/native-candidate.json:passed; .tmp/func-g05/native-default.json:passed
+- actual implementation date and time: 16-11-2026 07:29
+- residual risks: Bounded local synthetic acceptance; Windows document writer; external ignore revocation is final-checked, not atomic; unknown partial writes require explicit/manual recovery; active journal limits do not purge historical backups. Complete host history/usage, loaded-profile attestation, monetary/host-tool enforcement, provider/human/release acceptance are unavailable or separate.
+- Documentation impact: updated; docs/security/supply-chain.en.md; docs/api/endpoints.en.md; docs/frontend/components.en.md; docs/product/capabilities.en.md; registry and scoped source checks.
+
 ### Task `PAOS-FUNC-13`
 
 - Delivery group: `FUNC-G05`; the group does not replace Depends on or the original AC.
 - Task: PAOS-FUNC-13 — Add safe application of document proposals
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Extension; functional audit after V3 redesign and owner request for a task matrix.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 16-11-2026 07:29
 - Priority: P2
-- Evidence level: bounded_capability_or_missing_extension
-- Execution authority: planning_only; inclusion in the plan does not start implementation.
+- Evidence level: locally_verified_with_explicit_limits
+- Execution authority: owner_authorized_func_g05_local_synthetic; 16.11.2026.
 - Depends on: `PAOS-FUNC-02`, `PAOS-FUNC-08`
 - Blocks: none
 - Source: Current policy is staged_only, applied:false. [apps/local-service/src/artifacts/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/artifacts/service.mts). Provenance: 15.11.2026 static audit; no new runtime results are claimed.
@@ -1044,6 +1099,15 @@ Docs: 26 domain Markdown files plus RU/EN matrix and four root control-plane fil
 - residual risks: document_write_authority_design_required; current source state is rechecked at start.
 - follow-up: Next step above; after execution synchronize JSON status, this card and only affected control-plane claims.
 - Documentation impact: planning_only; code and functional claims do not change yet. On completion reconcile changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required and evidence in this report.
+
+#### Completion report
+
+- status: implemented
+- what was done: Preview/ack/CAS Apply, exact-current-preview rollback and explicit recovery support SQL and existing admitted Windows files. A protected durable journal, immutable outcome receipts, exclusive native handle/root pins, raw hash/file revision and bounded retention preserve bytes and unknown outcomes. Current rollback operation identity is fixed; writes do not create acceptance.
+- verification evidence: .tmp/func-g05/web-native-final.log:686/686,0fail/skip; .tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json:16/16; .tmp/func-g05/typecheck-final.log:passed; .tmp/func-g05/build-responsive-final.log:passed; .tmp/func-g05/native-candidate.json:passed; .tmp/func-g05/native-default.json:passed
+- actual implementation date and time: 16-11-2026 07:29
+- residual risks: Bounded local synthetic acceptance; Windows document writer; external ignore revocation is final-checked, not atomic; unknown partial writes require explicit/manual recovery; active journal limits do not purge historical backups. Complete host history/usage, loaded-profile attestation, monetary/host-tool enforcement, provider/human/release acceptance are unavailable or separate.
+- Documentation impact: updated; docs/db/transactions.en.md; docs/backend/recovery.en.md; docs/security/filesystem.en.md; docs/security/data-retention.en.md; docs/ai/llm/prompts-and-outputs.en.md; docs/frontend/components.en.md; docs/api/endpoints.en.md; registry and scoped source checks.
 
 ### Task `PAOS-FUNC-14`
 
@@ -1097,15 +1161,15 @@ Docs: 26 domain Markdown files plus RU/EN matrix and four root control-plane fil
 
 - Delivery group: `FUNC-G05`; the group does not replace Depends on or the original AC.
 - Task: PAOS-FUNC-15 — Clarify and extend autonomy boundaries
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Extension; functional audit after V3 redesign and owner request for a task matrix.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 16-11-2026 07:29
 - Priority: P2
-- Evidence level: bounded_capability_or_missing_extension
-- Execution authority: planning_only; inclusion in the plan does not start implementation.
+- Evidence level: locally_verified_with_explicit_limits
+- Execution authority: owner_authorized_func_g05_local_synthetic; 16.11.2026.
 - Depends on: `PAOS-FUNC-01`, `PAOS-FUNC-10`, `PAOS-FUNC-11`
 - Blocks: none
 - Source: Executable scope is only '.', hostToolsConstrained=false, tokenCostMetering unavailable. [apps/local-service/src/autonomy-policy/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/autonomy-policy/service.mts). Provenance: 15.11.2026 static audit; no new runtime results are claimed.
@@ -1139,19 +1203,28 @@ Docs: 26 domain Markdown files plus RU/EN matrix and four root control-plane fil
 - follow-up: Next step above; after execution synchronize JSON status, this card and only affected control-plane claims.
 - Documentation impact: planning_only; code and functional claims do not change yet. On completion reconcile changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required and evidence in this report.
 
+#### Completion report
+
+- status: implemented
+- what was done: Optional maxCommandsTotal adds a backward-compatible v1 policy-wide command reservation budget. Durable counting does not double-charge retries or refund unknown reservations, rejects new dispatch/runs/resume at the cap and allows the final admitted command to finish. UI separates reservations from observed counts; narrow paths and monetary/host-tool claims remain unsupported.
+- verification evidence: .tmp/func-g05/web-native-final.log:686/686,0fail/skip; .tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json:16/16; .tmp/func-g05/typecheck-final.log:passed; .tmp/func-g05/build-responsive-final.log:passed; .tmp/func-g05/native-candidate.json:passed; .tmp/func-g05/native-default.json:passed
+- actual implementation date and time: 16-11-2026 07:29
+- residual risks: Bounded local synthetic acceptance; Windows document writer; external ignore revocation is final-checked, not atomic; unknown partial writes require explicit/manual recovery; active journal limits do not purge historical backups. Complete host history/usage, loaded-profile attestation, monetary/host-tool enforcement, provider/human/release acceptance are unavailable or separate.
+- Documentation impact: updated; docs/ai/llm/budgets-and-observability.en.md; docs/api/endpoints.en.md; docs/frontend/components.en.md; registry and scoped source checks.
+
 ### Task `PAOS-FUNC-16`
 
 - Delivery group: `FUNC-G05`; the group does not replace Depends on or the original AC.
 - Task: PAOS-FUNC-16 — Confirm available history and actually loaded profiles
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Extension; functional audit after V3 redesign and owner request for a task matrix.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 16-11-2026 07:29
 - Priority: P2
-- Evidence level: bounded_capability_or_missing_extension
-- Execution authority: planning_only; inclusion in the plan does not start implementation.
+- Evidence level: locally_verified_with_explicit_limits
+- Execution authority: owner_authorized_func_g05_local_synthetic; 16.11.2026.
 - Depends on: `PAOS-FUNC-01`
 - Blocks: none
 - Source: host_history_not_exposed; loadedVersion/observedModel/observedEffort unknown. [apps/local-service/src/sessions/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/sessions/service.mts), [apps/local-service/src/team/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/team/service.mts). Provenance: 15.11.2026 static audit; no new runtime results are claimed.
@@ -1184,6 +1257,15 @@ Docs: 26 domain Markdown files plus RU/EN matrix and four root control-plane fil
 - residual risks: supported_host_capability_required; current source state is rechecked at start.
 - follow-up: Next step above; after execution synchronize JSON status, this card and only affected control-plane claims.
 - Documentation impact: planning_only; code and functional claims do not change yet. On completion reconcile changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required and evidence in this report.
+
+#### Completion report
+
+- status: implemented
+- what was done: The official host contract was checked; paos_history_capability_v1 binds adapter/project/generation and separates available local history from host not_connected. Profile executionEvidence separates current configured and immutable run-pinned model/effort/version/hash; observed/loaded stay unavailable without attestation. Foreign profile cursors, project switches/late responses/restart were checked without private host scraping.
+- verification evidence: .tmp/func-g05/web-native-final.log:686/686,0fail/skip; .tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json:16/16; .tmp/func-g05/typecheck-final.log:passed; .tmp/func-g05/build-responsive-final.log:passed; .tmp/func-g05/native-candidate.json:passed; .tmp/func-g05/native-default.json:passed
+- actual implementation date and time: 16-11-2026 07:29
+- residual risks: Bounded local synthetic acceptance; Windows document writer; external ignore revocation is final-checked, not atomic; unknown partial writes require explicit/manual recovery; active journal limits do not purge historical backups. Complete host history/usage, loaded-profile attestation, monetary/host-tool enforcement, provider/human/release acceptance are unavailable or separate.
+- Documentation impact: updated; docs/ai/agents/context.en.md; docs/ai/agents/sessions.en.md; docs/api/endpoints.en.md; docs/frontend/components.en.md; registry and scoped source checks.
 
 ### Task `PAOS-FUNC-17`
 

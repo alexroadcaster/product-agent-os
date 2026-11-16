@@ -22,7 +22,10 @@ function createService(store:LocalStore,now:()=>number){
     const row=await store.get(projectId,id);
     return {revision:row?.revision??0,state:row?structuredClone(row.data) as unknown as State:empty()};
   }
-  function view(revision:number,state:State):AutonomySnapshot{return {...structuredClone(state),revision,usedRuns:state.runs.length,
+  const usedCommands=(state:State)=>state.runs.reduce((total,run)=>total+run.operationIds.length,0);
+  const commandLimitReached=(state:State)=>state.policy?.maxCommandsTotal!==undefined&&usedCommands(state)>=state.policy.maxCommandsTotal;
+  function view(revision:number,state:State):AutonomySnapshot{const used=usedCommands(state),limit=state.policy?.maxCommandsTotal??null;return {...structuredClone(state),revision,usedRuns:state.runs.length,
+    usedCommands:used,commandLimit:limit,remainingCommands:limit===null?null:Math.max(0,limit-used),
     enforcement:'paos_mediated_commands',hostToolsConstrained:false,perFileSandbox:false};}
   async function snapshot(projectId:string){const {revision,state}=await read(projectId);return view(revision,state);}
   async function preview(projectId:string,value:unknown,expectedRevision:unknown):Promise<AutonomyPreview>{
@@ -55,6 +58,7 @@ function createService(store:LocalStore,now:()=>number){
       if(!state.policy)fail('AUTONOMY_POLICY_REQUIRED');
       if(!(await preview(projectId,state.policy,revision)).executable)fail('AUTONOMY_SCOPE_UNAVAILABLE');
       if(state.runs.length>=state.policy.maxRuns)fail('AUTONOMY_BUDGET_EXHAUSTED');
+      if(commandLimitReached(state))fail('AUTONOMY_TOTAL_COMMAND_BUDGET_EXHAUSTED');
       state.paused=false;
     }else if(action==='pause')state.paused=true;
     else fail('AUTONOMY_ACTION_INVALID');
@@ -82,6 +86,7 @@ function createService(store:LocalStore,now:()=>number){
     if(!state.policy.allowedTaskIds.includes(input.taskId))fail('AUTONOMY_TASK_FORBIDDEN');
     if(state.policy.allowedPaths.length!==1||state.policy.allowedPaths[0]!=='.')fail('AUTONOMY_PATH_BOUNDARY_UNAVAILABLE');
     if(state.runs.length>=state.policy.maxRuns)fail('AUTONOMY_BUDGET_EXHAUSTED');
+    if(commandLimitReached(state))fail('AUTONOMY_TOTAL_COMMAND_BUDGET_EXHAUSTED');
     // Reservations count uncertain dispatches conservatively. A failed send never silently refunds or replays work.
     state.runs.push({...input,startedAt:now(),deadlineAt:now()+state.policy.maxRunSeconds*1000,operationIds:[]});
     await write(projectId,revision,state,`autonomy-reserve:${state.budgetId}:${input.runId}`,undefined,true);
@@ -98,6 +103,9 @@ function createService(store:LocalStore,now:()=>number){
     }
     const run=state.runs.find(r=>r.runId===runId)!;
     if(run.operationIds.includes(operationId))return;
+    // Reserve before dispatch, without refunds for unknown outcomes. Do not pause or
+    // poison the run on exhaustion: its already-reserved final command must still pass approval.
+    if(commandLimitReached(state))fail('AUTONOMY_TOTAL_COMMAND_BUDGET_EXHAUSTED');
     if(run.operationIds.length>=state.policy!.maxCommandsPerRun){
       run.stopReason='AUTONOMY_COMMAND_BUDGET_EXHAUSTED';
       await write(projectId,revision,state,`autonomy-command-limit:${state.budgetId}:${runId}`);

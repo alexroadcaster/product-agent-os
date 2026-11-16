@@ -1,22 +1,22 @@
 {
-  "task_id": "FUNC-G04",
+  "task_id": "FUNC-G05",
   "previous_closure": {
-    "task_id": "FUNC-G03",
+    "task_id": "FUNC-G04",
     "status": "ready_for_completion_ledger",
     "completion_ready": true,
-    "updated_at": "2026-11-15T21:49:11+03:00",
-    "closure_level": "locally_verified",
-    "previous_task_id": "FUNC-G02"
+    "updated_at": "2026-11-15T21:44:54.119Z",
+    "closure_level": "locally_verified_with_measured_limits",
+    "previous_task_id": "FUNC-G03"
   },
   "session_id": "01a1dfb9-d5d9-7712-85ca-8dad082552b7",
   "plan_path": "docs/planning/functional-remediation-2026-11-15.md",
-  "scope": "Complete FUNC-G04: PAOS-FUNC-20,09,14,33,34 performance, Map, Database schema and code usages; checks and per-task docs/status sync",
-  "updated_at": "2026-11-15T21:44:54.119Z",
+  "scope": "Complete FUNC-G05: PAOS-FUNC-11,12,13,15,16 telemetry, skill discovery, document apply, autonomy and observed history; checks and per-task docs/status sync",
+  "updated_at": "2026-11-16T04:35:32.296Z",
   "approval_boundary": "User-authorized in-scope local implementation and bounded synthetic verification; preserve other groups and user files; no credentials/providers/models/live target writes/global installation or configuration/Git/publication",
   "status": "ready_for_completion_ledger",
   "completion_ready": true,
-  "completion_brief_shown": true,
-  "brief_digest": "sha256:8d2a8e336f8ee7b583e66375ecef87ad99e98f8b0cc526b592adc8f16cf87c40",
+  "completion_brief_shown": false,
+  "brief_digest": "sha256:80e1228e0310352aab63bff2f4905d4b127269e688a0bb9ad212338a39b65ccd",
   "brief_schema_version": "task_start_brief_v2",
   "brief_format": "bold_fields",
   "brief_fields_present": [
@@ -38,13 +38,18 @@
     "financially_material": false,
     "release_or_readiness": false,
     "explicit_packet_request": false,
-    "reason": "Five production implementation and measurement slices with large datasets, graph/schema boundaries, shared API/UI/storage wiring and per-task docs/status closure"
+    "reason": "Five production implementation slices with source/privacy contracts, filesystem write preservation and runtime enforcement boundaries, shared API/UI/storage wiring and per-task docs/status closure"
   },
-  "closure_level": "locally_verified_with_measured_limits",
+  "closure_level": "locally_verified_with_explicit_limits",
   "evidence_refs": [
-    "docs/planning/functional-remediation-2026-11-15.md#func-g04-results",
-    ".tmp/func-g04/closure-consistency.json",
-    ".tmp/func-g04/review-final.json"
+    "docs/planning/functional-remediation-2026-11-15.md#func-g05-results",
+    ".tmp/func-g05/final-review.json",
+    ".tmp/func-g05/closure-consistency.json",
+    ".tmp/func-g05/web-native-final.log",
+    ".tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json",
+    ".tmp/func-g05/native-candidate.json",
+    ".tmp/func-g05/native-default.json",
+    ".tmp/func-g05/docs-final.log"
   ],
-  "elapsed_seconds": 10277
+  "started_at": "2026-11-16T02:10:36Z"
 }

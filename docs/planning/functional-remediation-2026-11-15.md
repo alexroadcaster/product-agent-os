@@ -3,16 +3,16 @@
 Source status: repository_source / current_local_synthetic_implementation; remaining_tasks_planned.
 Дата планирования: 15.11.2026. Timezone: Europe/Moscow. Schema version: task_matrix_plan_v1.
 
-<!-- func-g01-g04-status -->
-FUNC-G01: 7/7 locally_verified; FUNC-G02: 3/3 poc_research_locally_verified; FUNC-G03: 7/7 locally_verified; FUNC-G04: 5/5 implemented, locally_verified_with_measured_limits; всего22 implemented /12 planned. Три M5 references сохранены.
+<!-- func-g01-g05-status -->
+FUNC-G01: 7/7 locally_verified; FUNC-G02: 3/3 poc_research_locally_verified; FUNC-G03: 7/7 locally_verified; FUNC-G04: 5/5 implemented, locally_verified_with_measured_limits; FUNC-G05: 5/5 locally_verified_with_explicit_limits; всего27 implemented /7 planned. Три M5 references сохранены.
 
 ## Объём и статус
 
-План содержит **34 задачи PAOS-FUNC-01–PAOS-FUNC-34** и ссылки на **3 ранее запланированные задачи M5**. Текущий итог: **22 implemented / 12 planned**, FUNC-G01 закрыта по локальным техническим AC. Итого в этой обзорной матрице 37 позиций; это не общее число задач проекта. Существующие 56 карточек M1–M5, их 22 implemented / 12 planned и оценки сохранены. Новые дефекты не переписывают исторические receipts: они требуют текущего воспроизведения и новой проверки.
+План содержит **34 задачи PAOS-FUNC-01–PAOS-FUNC-34** и ссылки на **3 ранее запланированные задачи M5**. Текущий итог: **27 implemented / 7 planned**, FUNC-G01 закрыта по локальным техническим AC. Итого в этой обзорной матрице 37 позиций; это не общее число задач проекта. Существующие 56 карточек M1–M5, их 53 implemented / 3 planned и оценки сохранены. Новые дефекты не переписывают исторические receipts: они требуют текущего воспроизведения и новой проверки.
 
 Машинное состояние новой группы: [functional-remediation-2026-11-15.json](functional-remediation-2026-11-15.json). Этот MD владеет техническим и продуктовым обоснованием, acceptance и completion evidence. Ссылки M5 не создают второй владеющий статус: их владелец — [docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json](product-agent-os-web-task-manager-task-group-2026-11-09.json) и [docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md](product-agent-os-web-task-manager-plan-2026-11-09.md).
 
-Первоначальный запрос разрешал планирование. Последующий запрос 15.11.2026 разрешил полное выполнение FUNC-G01, необходимые локальные synthetic проверки, статусы и документацию; семь задач группы выполнены. Следующий запрос разрешил FUNC-G02: три исследовательских PoC закрыты измеренными решениями и изолированной UI-приёмкой. Следующие запросы разрешили G03 (7 implemented) и G04 (5 implemented с измеренными ограничениями); текущий остаток —12 planned задач и отдельные M5 references. P1 — блокировка исполнения или проверка целостности/recovery; P2 — функциональная ценность, корректность информации и поддерживаемость; P3 — ограниченный дефект отображения. Приоритет проверочной задачи не означает, что отказ уже наблюдался.
+Первоначальный запрос разрешал планирование. Последующий запрос 15.11.2026 разрешил полное выполнение FUNC-G01, необходимые локальные synthetic проверки, статусы и документацию; семь задач группы выполнены. Следующий запрос разрешил FUNC-G02: три исследовательских PoC закрыты измеренными решениями и изолированной UI-приёмкой. Следующие запросы разрешили G03 (7 implemented) и G04 (5 implemented с измеренными ограничениями); последующий запрос разрешил G05 (5 implemented); текущий остаток —7 planned задач и отдельные M5 references. P1 — блокировка исполнения или проверка целостности/recovery; P2 — функциональная ценность, корректность информации и поддерживаемость; P3 — ограниченный дефект отображения. Приоритет проверочной задачи не означает, что отказ уже наблюдался.
 
 ## Исходные основания и границы доказательств
 
@@ -442,6 +442,43 @@ Web: 658/658, 0 fail/skip (.tmp/func-g04/web-closure-native-final.log); typechec
 Сохранены неуспешные попытки: baseline oversized startup/repeated graph reads; первый Web656/657 с authority error contract; native stack exits; ERD100objects/1969ms; anchor/filter и mobile-heading bugs; ошибочный aggregate RSS assertion; последний P2 __proto__ dictionary RED. Для продуктовых ошибок выполнены focused fixes и текущие regressions. Поздний обычный sandbox run получил lease/symlink denials: 631 pass/16 fail/3 skip, один зависший owned test child остановлен; receipt сохранён, разрешённый native repeat прошёл все658. Browser attempt10 прошёл на manifest до promotion; current binding — attempt11. Failed receipts не переписывались.
 
 Docs: 26 domain Markdown sources, RU/EN матрица и четыре root control-plane файла — всего32. Registry RU/EN ссылается на Context7 primary sources. Повреждённые временным helper G04 design block и registry heading исправлены до финальных source checks; исходные cards/AC сохранены. EVALS/prod_test и diagram/MkDocs routes: no_change_needed, поскольку AI rubric, Batch39 и atlas/navigation contract не менялись. Site freshness не заявлена. Cleanup удаляет owned fixtures и копию test executable, сохраняя существующие cache/runtime и user files. Rollback — только own hunks; executable drift требует повторной native qualification.
+
+## FUNC-G05 — execution и решения {#func-g05-results}
+
+Статус: implemented / locally_verified_with_explicit_limits,5/5. Scope F11/F12/F13/F15/F16. На старте сохранены HEAD8c2fbd4 и1120 source snapshots; dirty был только own lifecycle marker. Остальные29 task records, исходные AC/groups/M5 и receipts G01–G04 сохранены. Root интегрировал shared files; независимая autonomy implementation и read-only source/design/review выполнялись по уточнённому ownership. Текущие проверки и пределы claims приведены ниже.
+
+F11/F16 source gate: выбранный App-agent bridge предоставляет local PAOS history, server-observed intervals и mediated operations, но не host-history/model/effort/loaded-asset/token attestation. Официальный App Server поддерживает history/usage methods; это другая capability с отдельным pinned-version admission. Private host stores не читаются, новый API-key route не выбирается, наблюдения не выдумываются. Open/unresolved intervals остаются unknown; task elapsed/agent effort и mediated commands/all host tools различаются; tokens/cost остаются unknown без поддержанного источника. F12 external source и F15 extension contracts закрепляются до соответствующего build.
+
+Code-change contract: existing_capability=F28 checked sources, LocalStore CAS, G04 fixed native lease, existing Team/Sessions/Artifact/Autonomy and V3 UI; smallest_safe_patch=route-aware projections and bounded adapters/writer, preserve unrelated routes; invariants=project/profile/root/policy isolation, raw source pins, idempotency, no invented attestation or metrics, no lost user edits; dependency_decision=no_new_dependency, installed/native capabilities first; risk_selected_tests=existing public HTTP/service/worker seams plus real synthetic native/browser conflict/recovery/isolation tests; comment_decision=comment_needed for authority, retention, journal and metric semantics; performance_applicability=required for bounded query/output/journal/fetch paths, no unrelated full F20 rerun; evidence_and_gaps=proceed with local source/synthetic evidence, host/provider/real-target acceptance separate.
+
+F13 design gate: source-vs-SQL ownership определяется server-derived origin. SQL document apply выполняется одним Store CAS transaction вместе с proposal/outcome. Workspace apply допускает только существующие readable regular .md/.txt до512KiB после F28 admission; AGENTS.md, SKILL.md, .codex/config/hooks/rules/plugin/skill instruction paths, ignored/generated/private/link/hardlink/reparse и redacted before/after запрещены. Apply-preview закрепляет project/profile/root/policy/epoch, proposal revision, raw before identity/hash и persisted after hash; final apply не принимает путь или новый body от клиента. Новые staged proposals сохраняют server-derived source pins; legacy без pins требует refresh/restage. Windows fixed trusted helper держит root→parent handles и exclusive existing-target handle, проверяет raw hash, ждёт durable private prepared journal и final scope/policy fence, затем пишет/flushes/rehashes через тот же handle. Это защищённая in-place запись с recovery, не atomic replace. До записи устанавливается SQLite fence против смены policy/authority/cutover; unresolved outcome блокирует новые записи и не получает автоматический replay. Current=after → applied, current=before → явный retry, иное → recovery_required без overwrite. Rollback требует отдельного preview и CAS текущего hash. Journal хранится в protected profile metadata вне public document/settings snapshots: ≤4 records/project, ≤2MiB/record и ≤8MiB/project; evict только terminal, unresolved не удаляется, quota fail closed. Public events/API содержат metadata/hashes, без raw journal bytes. Существующие readers/writers дают busy; пользовательские процессы не закрываются. Root control-plane docs кроме AGENTS допустимы только через exact-file preview; source и SQL не синхронизируются автоматически.
+
+### F12 source gate до build
+
+Deprecated default openai/skills отклонён. Выбран актуальный public package superpowers в openai/plugins, pin d420d13051bffe4543ed39e30fa46b87148e47dd: manifest6.3.0 и фактический MIT LICENSE проверены. Поиск ограничен этим явным package, не всем marketplace. Только fixed anonymous api.github.com GET commit/root/plugins/package trees; query/project context, credentials, redirects, чужие repositories, scripts/hooks/installation и provider calls исключены. Limits:10s deadline,2MiB JSON/body,1000 entries package tree,256KiB SKILL,32 skill-local Markdown/text resources,1MiB bundle,15min catalog cache/четыре bundle cache entries. Git blob SHA проверяет bytes отдельно от raw SHA256. Preview сохраняет license/provenance и весь поддержанный resource set; links/submodules/outside-skill references/unknown licenses/executable или unsupported resources fail closed. Поиск не устанавливает; managed copy проходит existing preview/apply/CAS с dependency checks и cached immutable source proof. Timeout/offline/rate limit сохраняют local sources. Native plugin bindings не подключаются; нужна проверка совместимости владельцем.
+
+
+Live index inspection выявила agents/openai.yaml в каждом текущем skill: исходный text-only subset не давал пригодного импорта. До расширения поддержки закреплено точное исключение: skill-local agents/openai.yaml сохраняется как opaque UTF-8 text, не разбирается как исполнимая host configuration и не активируется. Остальные unsupported resource guards сохранены; исходный failed anonymous receipt не переписывается.
+
+### FUNC-F15 — граница реализации
+
+Optional `maxCommandsTotal` ограничивает суммарные durable reservations команд за окно policy; отсутствие поля сохраняет прежний v1 контракт. Повторы operationId не расходуют лимит повторно; неопределённые исходы не возвращают резерв. Последняя разрешённая команда может завершиться, новые команды/runs после исчерпания не допускаются. Счётчик reservations отличается от наблюдаемых команд F11; tokens/cost и host tools остаются unavailable и не объявляются ограниченными. Узкие allowedPaths сохраняют существующий запрет. На интервал реализации F15 единственный code writer — агент document_apply, только autonomy contracts/service/UI/tests; root выполняет документацию и read-only подготовку.
+
+Промежуточный checkpoint перед final qualification: F11 lifecycle/scope/recovery3/3; F12 source/negative cases3/3 и anonymous upstream8GET; F13 native13 cases (последняя rollback regression1/1), pairedAPI1/1; F15 policy/runtime20/20; F16 identity/cursor2/2; cross-capability pairedAPI1/1. Независимый review обнаружил и проверил исправление F13 rollback-operation. Native candidate и production-default qualification прошли на adapter aa9c663dd1df54c6f47258234b5b9e9b5df6e0980e5ff58677e4403e30584bcc без provider/model/credential operations; на том checkpoint итоговые fullsuite/browser/status checks ещё выполнялись; итог ниже.
+
+<!-- FUNC-G05 ownership refinement: После read-only сверки границ ownership уточнён: агент владеет только autonomy contract/service/UI/tests, root — team/history/metrics/dashboard. Пересекающихся файлов нет; full build/suite выполняются после общего freeze. -->
+
+### Итоговые evidence
+
+Пять задач implemented; группа закрыта по локальным техническим AC. Fullweb686/686,0fail/skip; typecheck/build passed; browser16/16 (.tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json); native candidate→qualified default passed, adapter aa9c663dd1df54c6f47258234b5b9e9b5df6e0980e5ff58677e4403e30584bcc. Исходные actual RED/setup/selector receipts сохранены; failed attempts не переименованы в passed.
+
+Bounded local synthetic acceptance; Windows document writer; external ignore revocation is final-checked, not atomic; unknown partial writes require explicit/manual recovery; active journal limits do not purge historical backups. Complete host history/usage, loaded-profile attestation, monetary/host-tool enforcement, provider/human/release acceptance are unavailable or separate.
+
+Control-plane sync: REQUIREMENTS/PLAN/TEST/RUNLOG updated; EVALS=no_change_needed (no model/prompt/route/rubric changes); prod_test=no_change_needed (Batch39 ledger unchanged); atlas/navigation=no_change_needed (existing lifecycle boundaries, no new docs page/workflow). Root size advisories predate this slice; docs-maintainer owns a separate preservation-safe compactness follow-up. Git/publication/install/provider/real-profile operations absent. Final independent evidence review and preservation gates are recorded in latest verification.
+
+Status audit: исправлена унаследованная неточность RU overview M5 (там ошибочно повторялись FUNC counts). Текущий owning M5 JSON подтверждает56 карточек,53 implemented/3planned; его содержимое и статусы не изменены.
+
+Независимый final review: context_mode=separate_reused_context; reviewer=/root/func_g05_completion_review; tester_verdict=closed_allowed; closure_level=locally_verified_with_explicit_limits. Evidence .tmp/func-g05/final-review.json, closure-consistency.json, docs-final.log (28sources), matrix-ru.log, matrix-en.log. Независимо пересчитанные source/build/native hashes совпали; открытых implementation/evidence blockers нет. Два ожидаемых bootstrap401 SESSION_REQUIRED сохранены, unexpected HTTP/page errors и external browser requests отсутствуют. Parent Node peak237100KiB не является aggregate OS memory measurement.
 
 ## Подробные карточки
 
@@ -912,15 +949,15 @@ Docs: 26 domain Markdown sources, RU/EN матрица и четыре root cont
 
 - Delivery group: `FUNC-G05`; группа не заменяет Depends on и исходные AC.
 - Task: PAOS-FUNC-11 — Ввести измеряемую статистику runs и расхода
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Расширение; функциональный аудит после V3 redesign и запрос владельца на матрицу задач.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 16-11-2026 07:29
 - Priority: P2
-- Evidence level: bounded_capability_or_missing_extension
-- Execution authority: planning_only; внесение в план не запускает реализацию.
+- Evidence level: locally_verified_with_explicit_limits
+- Execution authority: owner_authorized_func_g05_local_synthetic; 16.11.2026.
 - Depends on: `PAOS-FUNC-05`, `PAOS-FUNC-08`
 - Blocks: `PAOS-FUNC-15`
 - Source: Metrics durationSeconds/tokenCount/cost=null; tool_use не измеряется. [apps/local-service/src/team/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/team/service.mts), [apps/web/src/features/dashboard/Dashboard.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/dashboard/Dashboard.tsx). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
@@ -954,19 +991,28 @@ Docs: 26 domain Markdown sources, RU/EN матрица и четыре root cont
 - follow-up: Next step выше; после выполнения синхронизировать статус JSON, эту карточку и только затронутые control-plane claims.
 - Documentation impact: planning_only; пока код и функциональные claims не меняются. При завершении сопоставить changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required и evidence в этом отчёте.
 
+#### Completion report
+
+- status: implemented
+- what was done: Versioned numeric telemetry измеряет run intervals и mediated commands, исключает approval wait, дедуплицирует retries и сохраняет unknown при recovery. Один scoped endpoint и RunUsage показывают согласованные значения в Dashboard/проекте/задаче/сессии/агенте; tokens/cost/host tools остаются unknown.
+- verification evidence: .tmp/func-g05/web-native-final.log:686/686,0fail/skip; .tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json:16/16; .tmp/func-g05/typecheck-final.log:passed; .tmp/func-g05/build-responsive-final.log:passed; .tmp/func-g05/native-candidate.json:passed; .tmp/func-g05/native-default.json:passed
+- actual implementation date and time: 16-11-2026 07:29
+- residual risks: Bounded local synthetic acceptance; Windows document writer; external ignore revocation is final-checked, not atomic; unknown partial writes require explicit/manual recovery; active journal limits do not purge historical backups. Complete host history/usage, loaded-profile attestation, monetary/host-tool enforcement, provider/human/release acceptance are unavailable or separate.
+- Documentation impact: updated; docs/ai/llm/budgets-and-observability.md; docs/api/endpoints.md; docs/frontend/components.md; docs/security/data-retention.md; registry and scoped source checks.
+
 ### Task `PAOS-FUNC-12`
 
 - Delivery group: `FUNC-G05`; группа не заменяет Depends on и исходные AC.
 - Task: PAOS-FUNC-12 — Спроектировать и подключить внешний поиск skills
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Расширение; функциональный аудит после V3 redesign и запрос владельца на матрицу задач.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 16-11-2026 07:29
 - Priority: P2
-- Evidence level: bounded_capability_or_missing_extension
-- Execution authority: planning_only; внесение в план не запускает реализацию.
+- Evidence level: locally_verified_with_explicit_limits
+- Execution authority: owner_authorized_func_g05_local_synthetic; 16.11.2026.
 - Depends on: нет
 - Blocks: нет
 - Source: remote_discovery_adapter_not_configured. [apps/local-service/src/team/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/team/service.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
@@ -1000,19 +1046,28 @@ Docs: 26 domain Markdown sources, RU/EN матрица и четыре root cont
 - follow-up: Next step выше; после выполнения синхронизировать статус JSON, эту карточку и только затронутые control-plane claims.
 - Documentation impact: planning_only; пока код и функциональные claims не меняются. При завершении сопоставить changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required и evidence в этом отчёте.
 
+#### Completion report
+
+- status: implemented
+- what was done: Явный anonymous fixed-source reader openai/plugins superpowers по pinned commit проверяет Git/raw hashes, фактическую MIT license, path/mode/dependency/byte/deadline limits. Query остаётся локально; preview→Apply создаёт managed copy с resources/provenance/license, без native activation. Локальный каталог сохраняется при внешнем отказе.
+- verification evidence: .tmp/func-g05/web-native-final.log:686/686,0fail/skip; .tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json:16/16; .tmp/func-g05/typecheck-final.log:passed; .tmp/func-g05/build-responsive-final.log:passed; .tmp/func-g05/native-candidate.json:passed; .tmp/func-g05/native-default.json:passed
+- actual implementation date and time: 16-11-2026 07:29
+- residual risks: Bounded local synthetic acceptance; Windows document writer; external ignore revocation is final-checked, not atomic; unknown partial writes require explicit/manual recovery; active journal limits do not purge historical backups. Complete host history/usage, loaded-profile attestation, monetary/host-tool enforcement, provider/human/release acceptance are unavailable or separate.
+- Documentation impact: updated; docs/security/supply-chain.md; docs/api/endpoints.md; docs/frontend/components.md; docs/product/capabilities.md; registry and scoped source checks.
+
 ### Task `PAOS-FUNC-13`
 
 - Delivery group: `FUNC-G05`; группа не заменяет Depends on и исходные AC.
 - Task: PAOS-FUNC-13 — Добавить безопасное применение document proposals
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Расширение; функциональный аудит после V3 redesign и запрос владельца на матрицу задач.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 16-11-2026 07:29
 - Priority: P2
-- Evidence level: bounded_capability_or_missing_extension
-- Execution authority: planning_only; внесение в план не запускает реализацию.
+- Evidence level: locally_verified_with_explicit_limits
+- Execution authority: owner_authorized_func_g05_local_synthetic; 16.11.2026.
 - Depends on: `PAOS-FUNC-02`, `PAOS-FUNC-08`
 - Blocks: нет
 - Source: Текущая политика staged_only, applied:false. [apps/local-service/src/artifacts/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/artifacts/service.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
@@ -1045,6 +1100,15 @@ Docs: 26 domain Markdown sources, RU/EN матрица и четыре root cont
 - residual risks: document_write_authority_design_required; актуальность исходного состояния повторно проверяется при старте.
 - follow-up: Next step выше; после выполнения синхронизировать статус JSON, эту карточку и только затронутые control-plane claims.
 - Documentation impact: planning_only; пока код и функциональные claims не меняются. При завершении сопоставить changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required и evidence в этом отчёте.
+
+#### Completion report
+
+- status: implemented
+- what was done: Preview/ack/CAS Apply, exact-current-preview rollback и явное recovery реализованы для SQL и существующих разрешённых Windows files. Protected durable journal, immutable outcome receipts, exclusive native handle/root pins, raw hash/file revision и bounded retention сохраняют bytes и unknown outcomes. Исправлен текущий rollback operation ID; запись не создаёт acceptance.
+- verification evidence: .tmp/func-g05/web-native-final.log:686/686,0fail/skip; .tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json:16/16; .tmp/func-g05/typecheck-final.log:passed; .tmp/func-g05/build-responsive-final.log:passed; .tmp/func-g05/native-candidate.json:passed; .tmp/func-g05/native-default.json:passed
+- actual implementation date and time: 16-11-2026 07:29
+- residual risks: Bounded local synthetic acceptance; Windows document writer; external ignore revocation is final-checked, not atomic; unknown partial writes require explicit/manual recovery; active journal limits do not purge historical backups. Complete host history/usage, loaded-profile attestation, monetary/host-tool enforcement, provider/human/release acceptance are unavailable or separate.
+- Documentation impact: updated; docs/db/transactions.md; docs/backend/recovery.md; docs/security/filesystem.md; docs/security/data-retention.md; docs/ai/llm/prompts-and-outputs.md; docs/frontend/components.md; docs/api/endpoints.md; registry and scoped source checks.
 
 ### Task `PAOS-FUNC-14`
 
@@ -1098,15 +1162,15 @@ Docs: 26 domain Markdown sources, RU/EN матрица и четыре root cont
 
 - Delivery group: `FUNC-G05`; группа не заменяет Depends on и исходные AC.
 - Task: PAOS-FUNC-15 — Уточнить и расширить границы автономности
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Расширение; функциональный аудит после V3 redesign и запрос владельца на матрицу задач.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 16-11-2026 07:29
 - Priority: P2
-- Evidence level: bounded_capability_or_missing_extension
-- Execution authority: planning_only; внесение в план не запускает реализацию.
+- Evidence level: locally_verified_with_explicit_limits
+- Execution authority: owner_authorized_func_g05_local_synthetic; 16.11.2026.
 - Depends on: `PAOS-FUNC-01`, `PAOS-FUNC-10`, `PAOS-FUNC-11`
 - Blocks: нет
 - Source: Scope executable только '.', hostToolsConstrained=false, tokenCostMetering unavailable. [apps/local-service/src/autonomy-policy/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/autonomy-policy/service.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
@@ -1140,19 +1204,28 @@ Docs: 26 domain Markdown sources, RU/EN матрица и четыре root cont
 - follow-up: Next step выше; после выполнения синхронизировать статус JSON, эту карточку и только затронутые control-plane claims.
 - Documentation impact: planning_only; пока код и функциональные claims не меняются. При завершении сопоставить changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required и evidence в этом отчёте.
 
+#### Completion report
+
+- status: implemented
+- what was done: Optional maxCommandsTotal расширяет совместимый v1 policy-wide command reservation budget. Durable counting не удваивает retry, не возвращает unknown reservations, останавливает новые dispatch/runs/resume после cap и допускает завершение последней команды. UI различает reservation/observed count; narrow paths и денежные/host-tool обещания отклоняются.
+- verification evidence: .tmp/func-g05/web-native-final.log:686/686,0fail/skip; .tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json:16/16; .tmp/func-g05/typecheck-final.log:passed; .tmp/func-g05/build-responsive-final.log:passed; .tmp/func-g05/native-candidate.json:passed; .tmp/func-g05/native-default.json:passed
+- actual implementation date and time: 16-11-2026 07:29
+- residual risks: Bounded local synthetic acceptance; Windows document writer; external ignore revocation is final-checked, not atomic; unknown partial writes require explicit/manual recovery; active journal limits do not purge historical backups. Complete host history/usage, loaded-profile attestation, monetary/host-tool enforcement, provider/human/release acceptance are unavailable or separate.
+- Documentation impact: updated; docs/ai/llm/budgets-and-observability.md; docs/api/endpoints.md; docs/frontend/components.md; registry and scoped source checks.
+
 ### Task `PAOS-FUNC-16`
 
 - Delivery group: `FUNC-G05`; группа не заменяет Depends on и исходные AC.
 - Task: PAOS-FUNC-16 — Подтверждать доступную историю и реально загруженные профили
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Расширение; функциональный аудит после V3 redesign и запрос владельца на матрицу задач.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 16-11-2026 07:29
 - Priority: P2
-- Evidence level: bounded_capability_or_missing_extension
-- Execution authority: planning_only; внесение в план не запускает реализацию.
+- Evidence level: locally_verified_with_explicit_limits
+- Execution authority: owner_authorized_func_g05_local_synthetic; 16.11.2026.
 - Depends on: `PAOS-FUNC-01`
 - Blocks: нет
 - Source: host_history_not_exposed; loadedVersion/observedModel/observedEffort unknown. [apps/local-service/src/sessions/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/sessions/service.mts), [apps/local-service/src/team/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/local-service/src/team/service.mts). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
@@ -1185,6 +1258,15 @@ Docs: 26 domain Markdown sources, RU/EN матрица и четыре root cont
 - residual risks: supported_host_capability_required; актуальность исходного состояния повторно проверяется при старте.
 - follow-up: Next step выше; после выполнения синхронизировать статус JSON, эту карточку и только затронутые control-plane claims.
 - Documentation impact: planning_only; пока код и функциональные claims не меняются. При завершении сопоставить changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required и evidence в этом отчёте.
+
+#### Completion report
+
+- status: implemented
+- what was done: Официальный host contract проверен; paos_history_capability_v1 связывает adapter/project/generation, разделяет local available и host not_connected. Profile executionEvidence показывает текущий configured и immutable run-pinned model/effort/version/hash; observed/loaded остаются unavailable без attestation. Foreign profile cursors, project switch/late responses/restart проверены без private host scraping.
+- verification evidence: .tmp/func-g05/web-native-final.log:686/686,0fail/skip; .tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json:16/16; .tmp/func-g05/typecheck-final.log:passed; .tmp/func-g05/build-responsive-final.log:passed; .tmp/func-g05/native-candidate.json:passed; .tmp/func-g05/native-default.json:passed
+- actual implementation date and time: 16-11-2026 07:29
+- residual risks: Bounded local synthetic acceptance; Windows document writer; external ignore revocation is final-checked, not atomic; unknown partial writes require explicit/manual recovery; active journal limits do not purge historical backups. Complete host history/usage, loaded-profile attestation, monetary/host-tool enforcement, provider/human/release acceptance are unavailable or separate.
+- Documentation impact: updated; docs/ai/agents/context.md; docs/ai/agents/sessions.md; docs/api/endpoints.md; docs/frontend/components.md; registry and scoped source checks.
 
 ### Task `PAOS-FUNC-17`
 

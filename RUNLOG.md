@@ -1,5 +1,9 @@
 # RUNLOG.md
 
+## FUNC-G05 — закрыта, 16.11.2026
+
+FUNC-G05 implemented,5/5. Fullweb686/686,0fail/skip; browser16/16 source/build bound, typecheck/build/native candidate→default passed. Independent source review нашёл rollback-operation defect, исправленный actual RED→GREEN; browser нашёл Usage wiring defect, исправленный и проверенный. Setup/selector/HTTP fixture failures сохранены. Final review separate_reused_context, closed_allowed (.tmp/func-g05/final-review.json). Preservation check:29foreign cards/JSON,137root sections, AC/groups/M5/history и215source+4dist hashes сохранены; docs28/validators passed. Текущий итог27 implemented/7 planned; M5, остальные29 cards и historical evidence сохраняются. Residual limits: Windows writer, non-atomic external ignore revocation, explicit unknown recovery, no host telemetry/loaded attestation/money enforcement/human acceptance. [Решения и evidence](docs/planning/functional-remediation-2026-11-15.md#func-g05-results).
+
 ## FUNC-G04 — закрыта, 16.11.2026
 
 F20/F09/F14/F33/F34 implemented,5/5; [итоговые решения и evidence](docs/planning/functional-remediation-2026-11-15.md#func-g04-results). Web658/658,0skip, browser18/18/current204source+dist, TS/build/native candidate→default и F20 current133-input protocol выполнены. Review closed_allowed; исходные4 findings и поздний P2 magic table-name dictionary исправлены с regressions, продуктовые/UI failures и sandbox refusals сохранены. Общий итог22 implemented/12planned; остальные29 cards, M5, root foreign sections и baseline HEAD5a9c87b… сохраняются.

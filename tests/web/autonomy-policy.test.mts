@@ -50,3 +50,16 @@ test('save requires reviewed digest, CAS and authority; pause is durably stored'
   assert.equal((await f.command('resume',{expectedAuthorityEpoch:99})).status,409);
   const forged=await f.request('/projects/p/commands',{expectedAuthorityEpoch:1,idempotencyKey:randomUUID(),changes:[{expectedRevision:0,entity:{id:'autonomy-policy',kind:'settings',data:{paused:false}}}]});assert.equal(forged.status,409);
 });
+
+test('optional policy-wide command cap is strict, legacy compatible and visible through the public preview API',async t=>{
+ const f=await fixture(t),legacy={...defaultAutonomyPolicy(),allowedTaskIds:['selected-task']};assert.deepEqual(decodeAutonomyPolicy(legacy),legacy);
+ for(const maxCommandsTotal of [0,1,64000]){const policy={...legacy,maxCommandsTotal};assert.deepEqual(decodeAutonomyPolicy(policy),policy);const response=await f.request('/projects/p/autonomy/preview',{policy,expectedRevision:0});assert.equal(response.status,200);assert.equal((await response.json()).policy.maxCommandsTotal,maxCommandsTotal);}
+ for(const maxCommandsTotal of [-1,64001,1.5,null,'2',NaN,undefined])assert.throws(()=>decodeAutonomyPolicy({...legacy,maxCommandsTotal}),{code:'AUTONOMY_POLICY_INVALID'});
+ assert.throws(()=>decodeAutonomyPolicy({...legacy,maxCommandsTotal:1,maxCost:2}),{code:'AUTONOMY_POLICY_INVALID'});
+});
+
+test('zero policy-wide command cap remains saved paused and refuses public resume without changing host boundaries',async t=>{
+ const f=await fixture(t),policy={...defaultAutonomyPolicy(),allowedTaskIds:['selected-task'],maxCommandsTotal:0};const preview=await(await f.request('/projects/p/autonomy/preview',{policy,expectedRevision:0})).json();
+ assert.equal((await f.command('save',{policy,previewDigest:preview.previewDigest})).status,200);const response=await f.command('resume');assert.equal(response.status,409);assert.equal((await response.json()).error.code,'AUTONOMY_TOTAL_COMMAND_BUDGET_EXHAUSTED');
+ const snapshot=await f.read();assert.equal(snapshot.paused,true);assert.equal(snapshot.usedCommands,0);assert.equal(snapshot.commandLimit,0);assert.equal(snapshot.remainingCommands,0);assert.equal(snapshot.hostToolsConstrained,false);assert.equal(snapshot.perFileSandbox,false);
+});

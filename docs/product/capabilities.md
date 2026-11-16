@@ -1,6 +1,6 @@
 # Возможности и трассировка требований
 
-Source status: `repository_source / traceability_map / static_review`, 15.11.2026.; FUNC-G04: locally_verified_with_measured_limits, 16.11.2026.
+Source status: `repository_source / traceability_map / static_review`, 15.11.2026.; FUNC-G04: locally_verified_with_measured_limits, 16.11.2026.; FUNC-G05 locally_verified_with_explicit_limits, 16.11.2026.
 
 **Владелец:** product совместно с владельцами Web и plugin. **Scope/version:** local capabilities, DG02/2026-11-15. Обновлять при изменении исходного контракта, пользовательского пути или owning task; статусы и acceptance обновляются только в их планах.
 
@@ -31,3 +31,7 @@ Source status: `repository_source / traceability_map / static_review`, 15.11.202
 | Длительное локальное чтение | Измеренный F20 workload → scoped task reads, frozen history pages, bounded artifact previews и graph LRU. | Исходный startup failure сохранён. Before/after и final measurements принадлежат F20; это не reference-hardware или production qualification. |
 
 Для агента private project-query получает project из claimed run и повторяет lease/scope checks после async read; Browser cookies не дают worker capability. Проверка technical roundtrip использует synthetic caller без модели. Native parser работает в owned child: native stack failure не должен завершать HTTP host; JS heap flags не ограничивают native RSS. Human acceptance и provider/live-App acceptance не выводятся из технических fixtures. Следующие артефакты — F20 receipts, build-bound browser evidence и итоговые статусы в матрице.
+
+## FUNC-G05 — текущие контракты
+
+FUNC-G05 реализует measured PAOS run durations/commands, фиксированный внешний skills reader с managed copies, безопасный document Apply/rollback/recovery, общий command reservation cap и source/profile capability evidence. Это bounded local functionality: полный host расход, фактическая model/effort/loaded-profile attestation, денежное ограничение и native skill activation не подтверждаются и не выдаются за реализованные возможности. Пять задач и актуальные проверки принадлежат matrix; последующие FUNC-G06/G07 остаются отдельной очередью.

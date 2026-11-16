@@ -1,5 +1,9 @@
 # TEST.md
 
+## FUNC-G05 — закрыта, 16.11.2026
+
+Shared HTTP/storage/runtime changes проверены полным native Windows synthetic набором `node --test --test-concurrency=1 tests/web/*.test.mts`:686/686,0fail/skip (.tmp/func-g05/web-native-final.log). `npm run check:web-m1` и `npm run build:web` passed. `agent-capabilities-browser-acceptance.mts --synthetic-browser --playwright-core ABSOLUTE_INSTALLED_PATH --chromium ABSOLUTE_INSTALLED_PATH`: 16/16 (.tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json). `sandbox-broker-acceptance.mts --run-once --binary ABSOLUTE_SYNTHETIC_PATH --candidate-inspection` → reviewed manifest → default passed на текущем adapter aa9c663dd1df54c6f47258234b5b9e9b5df6e0980e5ff58677e4403e30584bcc. Closure gates: RU/EN matrix validators, changed-source check_docs, preservation/source/build/native consistency, git diff --check. EVALS/Python/plugin/site/hooks/provider suites не требуются: соответствующие контракты не менялись. [Решения и evidence](docs/planning/functional-remediation-2026-11-15.md#func-g05-results).
+
 ## FUNC-G04 — закрыта, 16.11.2026
 
 Текущий полный native synthetic run: `node --test --test-concurrency=1 tests/web/*.test.mts` —658/658,0fail/skip (.tmp/func-g04/web-closure-native-final.log). Обычный sandbox attempt631pass/16fail/3skip и owned-child stop receipt сохранены отдельно; lease/symlink отказы не выданы за product RED. `npm run check:web-m1` passed (.tmp/func-g04/typecheck-closure.log); `npm run build:web` passed (.tmp/func-g04/build-responsive-final.log), UI source/build hashes текущие по browser receipt.

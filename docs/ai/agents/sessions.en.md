@@ -1,6 +1,6 @@
 # Sessions, messages and recovery
 
-Source status: repository_source / static_source_review; 2026-11-15.
+Source status: repository_source / static_source_review; 2026-11-15.; FUNC-G05 locally_verified_with_explicit_limits, 16.11.2026.
 
 Owner: runtime/agent owner + docs-maintainer. Scope: PAOS implementation at `61f6cd4cd048be478e88e2406c733f98b60bc434`. Update when the selector, gateway, contracts, execution boundaries or related tests change. Linked tests are verification routes, not new runs; activation and human acceptance need separate evidence.
 
@@ -17,3 +17,7 @@ The [draft-registry.ts](https://github.com/alexroadcaster/product-agent-os/blob/
 ## After stop and restart
 
 On recovery [app-agent-gateway.mts](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/apps/local-service/src/runtime/app-agent-gateway.mts) moves unfinished App jobs to recovery_required; pending approvals are cancelled and unknown dispatch remains uncertain. For recipes [execution-recipes/service.mts](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/apps/local-service/src/execution-recipes/service.mts) and [backend recovery](../../backend/recovery.md) own checkpoint/reconcile. A new session or visible window does not prove attach, model activity, settlement of an external operation or owner acceptance. [recipe-recovery.test.mts](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/tests/web/recipe-recovery.test.mts) and [app-agent-gateway.test.mts](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/tests/web/app-agent-gateway.test.mts) are related tests. Runtime was not started for this documentation task.
+
+## FUNC-G05 — current contracts
+
+F16 paos_history_capability_v1 binds the paos_local_store source adapter, projectId and frozen snapshot generation. localHistory=available, hostHistory=not_connected and loadedProfiles=unavailable. This limitation belongs to the selected route, not every Codex capability. Cursors from another profile/project are rejected; reconnect does not turn local messages into full host history. Session F11 Usage uses the same numeric endpoint, sessionId filter and explicit UTC period as project/task/agent views.

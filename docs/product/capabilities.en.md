@@ -1,6 +1,6 @@
 # Capabilities and requirements traceability
 
-Source status: `repository_source / traceability_map / static_review`, 2026-11-15.; FUNC-G04: locally_verified_with_measured_limits, 16.11.2026.
+Source status: `repository_source / traceability_map / static_review`, 2026-11-15.; FUNC-G04: locally_verified_with_measured_limits, 16.11.2026.; FUNC-G05 locally_verified_with_explicit_limits, 16.11.2026.
 
 **Owner:** product with Web and plugin owners. **Scope/version:** local capabilities, DG02/2026-11-15. Update when the source contract, user journey or owning task changes; status and acceptance are updated only in their owning plans.
 
@@ -31,3 +31,7 @@ The current working tree extends the earlier DG02 snapshot. [Five FUNC-G04 cards
 | Sustained local reads | Measured F20 workload → scoped task reads, frozen history pages, bounded artifact previews and graph LRU. | Original startup failure is retained. F20 owns before/after/final measurements, not reference-hardware or production qualification. |
 
 Private project-query derives the project from a claimed run and repeats lease/scope checks after async reads. Browser cookies do not grant worker capability. The technical roundtrip uses a synthetic caller without a model. Native parsing runs in an owned child, so stack failures must not terminate the HTTP host; JS heap flags do not cap native RSS. Human and provider/live-App acceptance remain separate. Next artifacts are F20 receipts, build-bound browser evidence and final matrix statuses.
+
+## FUNC-G05 — current contracts
+
+FUNC-G05 implements measured PAOS run durations/commands, a fixed external skills reader with managed copies, safe document Apply/rollback/recovery, a policy-wide command reservation cap and source/profile capability evidence. These are bounded local features: complete host usage, actual model/effort/loaded-profile attestation, monetary enforcement and native skill activation are not proven or presented as implemented. The matrix owns the five tasks and current checks; FUNC-G06/G07 remain separate queued work.

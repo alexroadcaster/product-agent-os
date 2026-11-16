@@ -1,6 +1,6 @@
 # Prompt и output contracts
 
-Source status: repository_source / current_source_inspection; DG05, 2026-11-15.
+Source status: repository_source / current_source_inspection; DG05, 2026-11-15.; FUNC-G05 locally_verified_with_explicit_limits, 16.11.2026.
 
 Владелец: runtime/LLM owner + docs-maintainer. Область: реализация PAOS на `61f6cd4cd048be478e88e2406c733f98b60bc434`. Обновлять при изменении route, prompt/output, credentials, budget или telemetry контрактов. Ссылки на тесты — маршруты проверки, не новый runtime-прогон.
 
@@ -26,3 +26,9 @@ Python extraction проверяет approval, graph/semantic fingerprints и г
 Packaged [prompt-contract template](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/plugins/product-agent-os/assets/templates/artifact-templates/prompt-contract.md) — шаблон целевого проекта, а не активный Web prompt. Fixture prompts также не доказывают production model call. Не копируйте полные инструкции в документацию как второго владельца; меняйте source и связанные evals в отдельном согласованном срезе.
 
 Проверки: [M1 recipe](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/tests/web/runtime-adapter-gateway.test.mts), [skill generation](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/tests/web/skill-generation-artifacts.test.mts), [local extraction](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/tests/product_agent_os/test_project_graph_llm_extraction.py), [provider gate](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/tests/product_agent_os/test_project_graph_llm_proposal_provider.py). Ссылки — verification map; новые model/eval вызовы не выполнялись.
+
+## FUNC-G05 — реализованные контракты
+
+F13 расширяет document proposals: preview показывает origin, before/after и digest; checkbox подтверждает точное изменение, после чего отдельный Apply выполняет CAS. Staging и generation не пишут target. После успешного Apply reader перечитывает текущую версию; rollback требует нового preview и подтверждения. Recovery не запускается при открытии страницы. AI output остаётся proposal; результат записи не равен check или acceptance.
+
+Текущие focused evidence и оставшаяся квалификация: [FUNC-G05](../../planning/functional-remediation-2026-11-15.md#func-g05-results).

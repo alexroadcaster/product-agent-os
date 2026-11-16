@@ -1,5 +1,9 @@
 # REQUIREMENTS.md
 
+## FUNC-G05 — закрыта, 16.11.2026
+
+F11/F12/F13/F15/F16 implemented,5/5, с исходными AC и bounded local synthetic acceptance. Metrics и reservation budget разделены, внешние skills импортируются как managed copy, exact-preview document writes/recovery не создают acceptance, configured/pinned/observed и history coverage различаются. Host metering/attestation, денежное enforcement, provider/human/release acceptance отдельно. [Решения и evidence](docs/planning/functional-remediation-2026-11-15.md#func-g05-results).
+
 ## FUNC-G04 — закрыта, 16.11.2026
 
 F20/F09/F14/F33/F34 выполнены в разрешённом local synthetic scope: измерение масштаба, оптимизация снимков, production Map, explicit offline SQLite schema и статические code-to-table queries. AC сохранены. Приёмка ограничена проверенными JS/TS/SQL/Prisma subset и Windows SQLite read lease; cold history/catalog deviations, directory timeouts и aggregate memory diagnostics записаны явно. Real DB/credentials/providers/Git/publication, human/release acceptance остаются отдельными границами. [итоговые решения и evidence](docs/planning/functional-remediation-2026-11-15.md#func-g04-results).

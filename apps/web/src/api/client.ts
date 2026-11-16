@@ -215,6 +215,9 @@ export interface M1Api {
   artifactDocument(projectId:string,id:string,version?:string):Promise<import('../../../../packages/contracts/artifacts/catalog.ts').ArtifactDocument>;
   previewDocumentProposal(projectId:string,input:Record<string,unknown>):Promise<any>;
   saveDocumentProposal(projectId:string,input:Record<string,unknown>,key?:string):Promise<any>;
+  documentApplyPreview(projectId:string,input:{proposalId:string;proposalRevision:number},action?:'apply'|'rollback'):Promise<import('../../../../packages/contracts/artifacts/document-apply.ts').DocumentApplyPreview>;
+  documentApply(projectId:string,input:import('../../../../packages/contracts/artifacts/document-apply.ts').DocumentApplyInput,action?:'apply'|'rollback'):Promise<import('../../../../packages/contracts/artifacts/document-apply.ts').DocumentApplyOutcome>;
+  documentRecover(projectId:string,input:{proposalId:string;operationId:string;epoch:number}):Promise<import('../../../../packages/contracts/artifacts/document-apply.ts').DocumentApplyOutcome>;
   startSkillGeneration(projectId:string,input:Record<string,unknown>):Promise<any>;
   skillGeneration(projectId:string,id:string):Promise<any>;
   applySkillGeneration(projectId:string,id:string,input:Record<string,unknown>):Promise<any>;
@@ -230,9 +233,10 @@ export interface M1Api {
   assetCopyPreview(projectId:string,id:string):Promise<unknown>;
   assetResourceUrl(projectId:string,id:string,path:string):string;
   assetExportUrl(projectId:string,id:string):string;
-  skillDiscovery(projectId:string,query:string):Promise<unknown>;
+  skillDiscovery(projectId:string,query:string,external?:boolean):Promise<unknown>;
+  skillRemotePreview(projectId:string,input:{candidateId:string;revision:string}):Promise<unknown>;
   skillSourcePreview(projectId:string,sourceRootId:string,relativePath:string):Promise<unknown>;
-  teamMetrics(projectId:string,from:string,to:string):Promise<unknown>;
+  teamMetrics(projectId:string,from:string,to:string,scope?:{taskId?:string;sessionId?:string;agentId?:string}):Promise<unknown>;
   startTeamGeneration(projectId:string,input:Record<string,unknown>):Promise<any>;
   teamGeneration(projectId:string,id:string):Promise<any>;
 
@@ -494,9 +498,10 @@ export function createHttpApi(fetcher: typeof fetch = fetch): M1Api {
     assetCopyPreview:(id,asset)=>request(`${projectPath(id)}/team/assets/${encodeURIComponent(asset)}/copy-preview`,{}),
     assetResourceUrl:(id,asset,path)=>`/api/v1${projectPath(id)}/team/assets/${encodeURIComponent(asset)}/resources/${path.split('/').map(encodeURIComponent).join('/')}`,
     assetExportUrl:(id,asset)=>`/api/v1${projectPath(id)}/team/assets/${encodeURIComponent(asset)}/export`,
-    skillDiscovery:(id,q)=>request(`${projectPath(id)}/team/skills/discovery?${new URLSearchParams({q})}`),
+    skillDiscovery:(id,q,external=false)=>request(`${projectPath(id)}/team/skills/discovery?${new URLSearchParams({q,...(external?{external:'1'}:{})})}`),
+    skillRemotePreview:(id,input)=>request(`${projectPath(id)}/team/skills/remote-preview`,input),
     skillSourcePreview:(id,sourceRootId,relativePath)=>request(`${projectPath(id)}/team/skills/source-preview`,{sourceRootId,relativePath}),
-    teamMetrics:(id,from,to)=>request(`${projectPath(id)}/team/metrics?${new URLSearchParams({from,to})}`),
+    teamMetrics:(id,from,to,scope={})=>request(`${projectPath(id)}/team/metrics?${new URLSearchParams({from,to,...scope})}`),
     startTeamGeneration:(id,input)=>request(`${projectPath(id)}/team/generation`,input),
     teamGeneration:(id,generation)=>request(`${projectPath(id)}/team/generation/${encodeURIComponent(generation)}`),
     graphStatus:id=>request(`${projectPath(id)}/graph/status`),
@@ -526,6 +531,9 @@ export function createHttpApi(fetcher: typeof fetch = fetch): M1Api {
     artifactDocument:(id,document,version)=>request(`${projectPath(id)}/artifacts/${encodeURIComponent(document)}${version?'?'+params({version}):''}`),
     previewDocumentProposal:(id,input)=>request(`${projectPath(id)}/artifacts/proposals/preview`,input),
     saveDocumentProposal:(id,input,key=crypto.randomUUID())=>request(`${projectPath(id)}/artifacts/proposals`,{...input,...authority(id,0),epoch:epochs.get(id),idempotencyKey:key}),
+    documentApplyPreview:(id,input,action='apply')=>request(`${projectPath(id)}/artifacts/proposals/${action}-preview`,input),
+    documentApply:(id,input,action='apply')=>request(`${projectPath(id)}/artifacts/proposals/${action}`,input),
+    documentRecover:(id,input)=>request(`${projectPath(id)}/artifacts/proposals/recover`,input),
     startSkillGeneration:(id,input)=>request(`${projectPath(id)}/team/skills/generation`,input),
     skillGeneration:(id,job)=>request(`${projectPath(id)}/team/skills/generation/${encodeURIComponent(job)}`),
     applySkillGeneration:(id,job,input)=>request(`${projectPath(id)}/team/skills/generation/${encodeURIComponent(job)}/apply`,{...input,...authority(id,0),epoch:epochs.get(id)}),

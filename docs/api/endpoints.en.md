@@ -1,6 +1,6 @@
 # Endpoint inventory
 
-Source status: repository_source / current_source_contract_review; 2026-11-15.; FUNC-G04: locally_verified_with_measured_limits, 16.11.2026.
+Source status: repository_source / current_source_contract_review; 2026-11-15.; FUNC-G04: locally_verified_with_measured_limits, 16.11.2026.; FUNC-G05 locally_verified_with_explicit_limits, 16.11.2026.
 
 Owner: local-service/API maintainers; scope/version: DG03, commit `2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765`. Update when handler, client, delegate service or tests change. [Backend](../backend/index.md); [authentication/errors](errors.md); [events](events.md).
 
@@ -215,3 +215,7 @@ GET /projects/:id/database returns registration/status/candidates only. POST dat
 GET /projects/:id/code-database and GET code-database/links return status and static source evidence; POST code-database/scan runs inventory+code_database. Links require codeRevision and schemaRevision, support table/path/operation/confidence/limit/cursor, and are bounded to32KiB. Confirmed requires source binding; inferred/unresolved do not become runtime facts. SQL values and rows are not returned.
 
 POST /agent/v1/project-query is a private App-agent action requiring channel capability, worker lease, runId, kind=status|links and the same query fields. Project scope comes from the claimed run; payload projectId is rejected. Lease/run/scope are checked before and after the async read; response≤32KiB. Browser cookies do not grant this capability. Claimed jobs advertise the query port. Verification uses a synthetic worker without a model/provider call.
+
+## FUNC-G05 — current contracts
+
+F11 GET /team/metrics requires ISO from/to with a timezone and from<to, accepts taskId/sessionId/agentId and selects runs started in [from,to). More than1000runs or a1MiB response raises METRICS_PERIOD_TOO_BROAD without silent truncation. F12 GET /team/skills/discovery?external=1 enables the fixed-source external reader; POST /team/skills/remote-preview accepts only candidateId/revision. F13 POST /artifacts/proposals/{apply-preview,apply,recover,rollback-preview,rollback} uses strict DTOs, paired session/CSRF and authority checks. Preview/recovery are not acceptance. F16 GET /sessions/{catalog,search} and transcript add source capabilities; /team/assets/:id adds executionEvidence and /team/runs/:id separates requested/observed values. F15 policy remains autonomy_policy_v1 with optional maxCommandsTotal; exhaustion returns AUTONOMY_TOTAL_COMMAND_BUDGET_EXHAUSTED/409. Unsupported budget fields are rejected.

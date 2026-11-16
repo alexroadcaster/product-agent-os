@@ -1,0 +1,2 @@
+export type RemoteSkillCandidate={id:string;name:string;path:string;origin:string;revision:string;license:string;licenseVerified:boolean;importable:boolean;reason?:string};
+export type RemoteSkillSearch={availability:'available'|'unavailable';reason?:string;source:{id:string;repository:string;revision:string;package:string;license:string;fetchedAt:string|null};candidates:RemoteSkillCandidate[];querySentToRemote:false};

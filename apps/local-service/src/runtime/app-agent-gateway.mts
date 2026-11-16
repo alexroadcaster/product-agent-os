@@ -1,3 +1,5 @@
+import {appendRunInterval} from './run-intervals.mts';
+import type {RunIntervalReceipt} from '../../../../packages/contracts/telemetry/run-metrics.ts';
 import {resolve,relative,isAbsolute} from 'node:path';
 import {createHash,randomBytes,randomUUID,timingSafeEqual} from 'node:crypto';
 import type {LocalStore,StoredEntity} from '../storage/local-store.mts';
@@ -118,12 +120,13 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
     else projectedChanges.push({expectedRevision:task.revision,entity:{id:taskId,kind:'task',data:{...profile,actual,files}}});
    }
   }
+  const runTimeline=taskId?[]:appendRunInterval(Array.isArray(previous?.data.runTimeline)?previous.data.runTimeline as RunIntervalReceipt[]:[],job.projectId,job.id,options.actorId,previousJob?.state,job.state,now());
   await store.write({projectId:job.projectId,actorId:options.actorId,expectedAuthorityEpoch:project.authorityEpoch,
    ...(recipeRow?{recipeExecution:{id:recipeRow.id,revision:recipeRow.revision}}:{}),
    idempotencyKey:`app-agent:${job.id}:${previous?.revision??0}:${hash(JSON.stringify(job))}`,...(requireIdle?{requireIdle:true as const}:{}),
    ...(requireIdle&&projectedChanges.some(change=>change.entity.kind==='task'&&change.entity.data?.schemaVersion==='m2_task_profile_v1')
      ?{taskManagerAction:'transition' as const,taskManagerReason:'App runtime dispatch'}:{}),
-   changes:[{expectedRevision:previous?.revision??0,entity:{id:job.id,kind:'run',status:job.state,data:{appAgentRun:job,...(taskId?{timeline}:{})}}},
+   changes:[{expectedRevision:previous?.revision??0,entity:{id:job.id,kind:'run',status:job.state,data:{appAgentRun:job,...(taskId?{timeline}:runTimeline.length?{runTimeline}:{})}}},
     {expectedRevision:bindingRow.revision,entity:{id:bindingRow.id,kind:'settings',data:{...bindingRow.data,lastRunId:job.id}}},...projectedChanges]});
   latest.set(job.bindingId,job);
   if(terminal.has(job.state))activeJobs.delete(job.id);else activeJobs.set(job.id,job);

@@ -1,5 +1,9 @@
 # PLAN.md
 
+## FUNC-G05 — закрыта, 16.11.2026
+
+FUNC-G05 завершена:27 implemented/7 planned, M5 и другие29 карточек сохранены. Следующая отдельная группа — FUNC-G06 (recovery/distribution); её выполнение этим закрытием не начинается. Rollback только точечно по файлам текущего diff; unresolved document journal требует explicit reconcile, без replay. Root compactness — отдельный docs-maintainer follow-up с сохранением исторических evidence. [Решения и evidence](docs/planning/functional-remediation-2026-11-15.md#func-g05-results).
+
 ## FUNC-G04 — закрыта, 16.11.2026
 
 Пять задач implemented / locally_verified_with_measured_limits; [итоговые решения и evidence](docs/planning/functional-remediation-2026-11-15.md#func-g04-results). Общий итог22 implemented /12 planned. F20 baseline → F09 measured fixes → F14; F33 source/adapter design → F34 compatible revisions выполнены. Review closed_allowed, Web658/658, browser18/18, native candidate/default и текущие133-input F20 measurements. Остальные29 records, группы/M5 и чужие planning hunks сохраняются. Следующая группа не запущена. Rollback только own hunks; после executable drift повторить native qualification.

@@ -1,6 +1,6 @@
 # Backend: остановка и восстановление
 
-Source status: repository_source / current_source_review; 15.11.2026.
+Source status: repository_source / current_source_review; 15.11.2026.; FUNC-G05 locally_verified_with_explicit_limits, 16.11.2026.
 
 Владелец: backend/runtime и storage; scope/version: DG03, `2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765`. Обновлять при изменении cancellation, checkpoints, ownership, backup/restore или shutdown contract.
 
@@ -33,3 +33,9 @@ Storage Worker при error/exit отклоняет ожидающие вызо�
 ## Проверки и ограничения
 
 [recipe-recovery.test.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/tests/web/recipe-recovery.test.mts), [runtime-adapter-shutdown.test.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/tests/web/runtime-adapter-shutdown.test.mts), [scheduler-runtime.test.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/tests/web/scheduler-runtime.test.mts) и [runtime-sqlite.test.mts](https://github.com/alexroadcaster/product-agent-os/blob/2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765/tests/web/runtime-sqlite.test.mts) — связанные сценарии restart, ограничения очереди и recovery. Они приведены как маршруты проверки; новый прогон live runtime, фактическое завершение child, provider и human acceptance этим документом не подтверждаются. Для применимых команд и истории проверок используйте TEST и task owner.
+
+## FUNC-G05 — реализованные контракты
+
+F13 reconciles prepared/recovery_required document operations только по явному запросу. Текущий hash равен after → applied; равен before → not_applied, разрешён новый preview/retry; иной или неполный UTF-8 → recovery_required и ручное исправление. Неизвестный исход не перезаписывается автоматически. Crash/reopen проверен отдельным killed child process; journal переживает restart. Scratch cleanup допускается только для доказанно завершённого собственного writer и совпадающей identity под TEMP. Блокировки других приложений дают отказ, без forced termination. Durable journal fence запрещает конфликтующие authority/policy/cutover изменения, пока операция не разрешена.
+
+Текущие focused evidence и оставшаяся квалификация: [FUNC-G05](../planning/functional-remediation-2026-11-15.md#func-g05-results).

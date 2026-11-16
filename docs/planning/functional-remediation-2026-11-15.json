@@ -5,7 +5,7 @@
   "timezone": "Europe/Moscow",
   "source_plan": "docs/planning/functional-remediation-2026-11-15.md",
   "status": "in_progress",
-  "execution_authority": "owner_authorized_func_g01_g02_g03_g04_local_synthetic",
+  "execution_authority": "owner_authorized_func_g01_g02_g03_g04_g05_local_synthetic",
   "original_group_unchanged": "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json",
   "tasks": [
     {
@@ -708,10 +708,10 @@
     {
       "id": "PAOS-FUNC-11",
       "title": "Ввести измеряемую статистику runs и расхода",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "type": "feature",
-      "evidence_level": "bounded_capability_or_missing_extension",
+      "evidence_level": "locally_verified_with_explicit_limits",
       "technical_value": "Versioned telemetry с provenance, дедупликацией и агрегацией session→run→task→agent.",
       "product_value": "Длительность и расход помогают сравнивать результат работы без выдуманных чисел.",
       "acceptance_criteria": [
@@ -739,8 +739,8 @@
       "estimate": "8–16 ч discovery/design; build после выбора источников",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "unknown_until_design_gate",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "16-11-2026 07:29",
+      "execution_authority": "owner_authorized_func_g05_local_synthetic",
       "source_observation": "Metrics durationSeconds/tokenCount/cost=null; tool_use не измеряется.",
       "source_paths": [
         "apps/local-service/src/team/service.mts",
@@ -749,15 +749,50 @@
       "future_test_commands": [
         "node --test tests/web/sessions-team.test.mts tests/web/task-time.test.mts tests/web/ui-v3-dashboard.test.mts"
       ],
-      "delivery_group_id": "FUNC-G05"
+      "delivery_group_id": "FUNC-G05",
+      "completion_report": {
+        "status": "implemented",
+        "what_was_done": "Versioned numeric telemetry измеряет run intervals и mediated commands, исключает approval wait, дедуплицирует retries и сохраняет unknown при recovery. Один scoped endpoint и RunUsage показывают согласованные значения в Dashboard/проекте/задаче/сессии/агенте; tokens/cost/host tools остаются unknown.",
+        "verification_evidence": [
+          ".tmp/func-g05/f11-red.log",
+          ".tmp/func-g05/f11-scope-red.log",
+          ".tmp/func-g05/f11-recovery.log",
+          ".tmp/func-g05/f11-f12-f16-green.log",
+          ".tmp/func-g05/web-native-final.log:686/686,0fail/skip",
+          ".tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json:16/16",
+          ".tmp/func-g05/typecheck-final.log:passed",
+          ".tmp/func-g05/build-responsive-final.log:passed",
+          ".tmp/func-g05/native-candidate.json:passed",
+          ".tmp/func-g05/native-default.json:passed",
+          ".tmp/func-g05/final-review.json:separate_reused_context,closed_allowed"
+        ],
+        "docs_impact": {
+          "decision": "updated",
+          "paths": [
+            "docs/ai/llm/budgets-and-observability.md",
+            "docs/ai/llm/budgets-and-observability.en.md",
+            "docs/api/endpoints.md",
+            "docs/api/endpoints.en.md",
+            "docs/frontend/components.md",
+            "docs/frontend/components.en.md",
+            "docs/security/data-retention.md",
+            "docs/security/data-retention.en.md",
+            "docs/sources/registry.md",
+            "docs/sources/registry.en.md"
+          ],
+          "source_revision": "current_working_tree_source_build_native_bound"
+        },
+        "residual_risks": "Bounded local synthetic acceptance; Windows document writer; external ignore revocation is final-checked, not atomic; unknown partial writes require explicit/manual recovery; active journal limits do not purge historical backups. Complete host history/usage, loaded-profile attestation, monetary/host-tool enforcement, provider/human/release acceptance are unavailable or separate.",
+        "implementation_at": "16-11-2026 07:29"
+      }
     },
     {
       "id": "PAOS-FUNC-12",
       "title": "Спроектировать и подключить внешний поиск skills",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "type": "feature",
-      "evidence_level": "bounded_capability_or_missing_extension",
+      "evidence_level": "locally_verified_with_explicit_limits",
       "technical_value": "Отдельный read-only discovery adapter с provenance, лицензией, pin и preview.",
       "product_value": "Нужный skill можно найти вне локального каталога и осознанно добавить.",
       "acceptance_criteria": [
@@ -779,8 +814,8 @@
       "estimate": "4–8 ч design; build после выбора адаптера",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "unknown_until_design_gate",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "16-11-2026 07:29",
+      "execution_authority": "owner_authorized_func_g05_local_synthetic",
       "source_observation": "remote_discovery_adapter_not_configured.",
       "source_paths": [
         "apps/local-service/src/team/service.mts"
@@ -788,15 +823,50 @@
       "future_test_commands": [
         "node --test tests/web/sessions-team.test.mts tests/web/team-review-repair.test.mts"
       ],
-      "delivery_group_id": "FUNC-G05"
+      "delivery_group_id": "FUNC-G05",
+      "completion_report": {
+        "status": "implemented",
+        "what_was_done": "Явный anonymous fixed-source reader openai/plugins superpowers по pinned commit проверяет Git/raw hashes, фактическую MIT license, path/mode/dependency/byte/deadline limits. Query остаётся локально; preview→Apply создаёт managed copy с resources/provenance/license, без native activation. Локальный каталог сохраняется при внешнем отказе.",
+        "verification_evidence": [
+          ".tmp/func-g05/f12-red.log",
+          ".tmp/func-g05/f12-negative-green.log",
+          ".tmp/func-g05/f12-anonymous-network-supported.json",
+          ".tmp/func-g05/g05-api-green.log",
+          ".tmp/func-g05/web-native-final.log:686/686,0fail/skip",
+          ".tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json:16/16",
+          ".tmp/func-g05/typecheck-final.log:passed",
+          ".tmp/func-g05/build-responsive-final.log:passed",
+          ".tmp/func-g05/native-candidate.json:passed",
+          ".tmp/func-g05/native-default.json:passed",
+          ".tmp/func-g05/final-review.json:separate_reused_context,closed_allowed"
+        ],
+        "docs_impact": {
+          "decision": "updated",
+          "paths": [
+            "docs/security/supply-chain.md",
+            "docs/security/supply-chain.en.md",
+            "docs/api/endpoints.md",
+            "docs/api/endpoints.en.md",
+            "docs/frontend/components.md",
+            "docs/frontend/components.en.md",
+            "docs/product/capabilities.md",
+            "docs/product/capabilities.en.md",
+            "docs/sources/registry.md",
+            "docs/sources/registry.en.md"
+          ],
+          "source_revision": "current_working_tree_source_build_native_bound"
+        },
+        "residual_risks": "Bounded local synthetic acceptance; Windows document writer; external ignore revocation is final-checked, not atomic; unknown partial writes require explicit/manual recovery; active journal limits do not purge historical backups. Complete host history/usage, loaded-profile attestation, monetary/host-tool enforcement, provider/human/release acceptance are unavailable or separate.",
+        "implementation_at": "16-11-2026 07:29"
+      }
     },
     {
       "id": "PAOS-FUNC-13",
       "title": "Добавить безопасное применение document proposals",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "type": "feature",
-      "evidence_level": "bounded_capability_or_missing_extension",
+      "evidence_level": "locally_verified_with_explicit_limits",
       "technical_value": "Preview-bound compare-and-swap writer с сохранением пользовательских правок и recovery.",
       "product_value": "Согласованное предложение можно довести до изменения документа внутри приложения.",
       "acceptance_criteria": [
@@ -821,8 +891,8 @@
       "estimate": "8–16 ч design; build после утверждения write contract",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "unknown_until_design_gate",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "16-11-2026 07:29",
+      "execution_authority": "owner_authorized_func_g05_local_synthetic",
       "source_observation": "Текущая политика staged_only, applied:false.",
       "source_paths": [
         "apps/local-service/src/artifacts/service.mts"
@@ -831,7 +901,49 @@
         "node --test tests/web/skill-generation-artifacts.test.mts",
         "npm run check:web-m1"
       ],
-      "delivery_group_id": "FUNC-G05"
+      "delivery_group_id": "FUNC-G05",
+      "completion_report": {
+        "status": "implemented",
+        "what_was_done": "Preview/ack/CAS Apply, exact-current-preview rollback и явное recovery реализованы для SQL и существующих разрешённых Windows files. Protected durable journal, immutable outcome receipts, exclusive native handle/root pins, raw hash/file revision и bounded retention сохраняют bytes и unknown outcomes. Исправлен текущий rollback operation ID; запись не создаёт acceptance.",
+        "verification_evidence": [
+          ".tmp/func-g05/f13-metadata-red.log",
+          ".tmp/func-g05/f13-metadata-green.log",
+          ".tmp/func-g05/f13-rollback-red.log",
+          ".tmp/func-g05/f13-rollback-green.log",
+          ".tmp/func-g05/f13-api-green.log",
+          ".tmp/func-g05/web-native-final.log:686/686,0fail/skip",
+          ".tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json:16/16",
+          ".tmp/func-g05/typecheck-final.log:passed",
+          ".tmp/func-g05/build-responsive-final.log:passed",
+          ".tmp/func-g05/native-candidate.json:passed",
+          ".tmp/func-g05/native-default.json:passed",
+          ".tmp/func-g05/final-review.json:separate_reused_context,closed_allowed"
+        ],
+        "docs_impact": {
+          "decision": "updated",
+          "paths": [
+            "docs/db/transactions.md",
+            "docs/db/transactions.en.md",
+            "docs/backend/recovery.md",
+            "docs/backend/recovery.en.md",
+            "docs/security/filesystem.md",
+            "docs/security/filesystem.en.md",
+            "docs/security/data-retention.md",
+            "docs/security/data-retention.en.md",
+            "docs/ai/llm/prompts-and-outputs.md",
+            "docs/ai/llm/prompts-and-outputs.en.md",
+            "docs/frontend/components.md",
+            "docs/frontend/components.en.md",
+            "docs/api/endpoints.md",
+            "docs/api/endpoints.en.md",
+            "docs/sources/registry.md",
+            "docs/sources/registry.en.md"
+          ],
+          "source_revision": "current_working_tree_source_build_native_bound"
+        },
+        "residual_risks": "Bounded local synthetic acceptance; Windows document writer; external ignore revocation is final-checked, not atomic; unknown partial writes require explicit/manual recovery; active journal limits do not purge historical backups. Complete host history/usage, loaded-profile attestation, monetary/host-tool enforcement, provider/human/release acceptance are unavailable or separate.",
+        "implementation_at": "16-11-2026 07:29"
+      }
     },
     {
       "id": "PAOS-FUNC-14",
@@ -928,10 +1040,10 @@
     {
       "id": "PAOS-FUNC-15",
       "title": "Уточнить и расширить границы автономности",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "type": "feature",
-      "evidence_level": "bounded_capability_or_missing_extension",
+      "evidence_level": "locally_verified_with_explicit_limits",
       "technical_value": "Capability-based file/operation/cost policy без обещаний ограничения всего App host.",
       "product_value": "Пользователь понимает и контролирует допустимую самостоятельность агента.",
       "acceptance_criteria": [
@@ -958,8 +1070,8 @@
       "estimate": "8–16 ч design; build после подтверждения enforcement",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "unknown_until_design_gate",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "16-11-2026 07:29",
+      "execution_authority": "owner_authorized_func_g05_local_synthetic",
       "source_observation": "Scope executable только '.', hostToolsConstrained=false, tokenCostMetering unavailable.",
       "source_paths": [
         "apps/local-service/src/autonomy-policy/service.mts"
@@ -967,15 +1079,47 @@
       "future_test_commands": [
         "node --test tests/web/autonomy-policy.test.mts tests/web/autonomy-runtime.test.mts"
       ],
-      "delivery_group_id": "FUNC-G05"
+      "delivery_group_id": "FUNC-G05",
+      "completion_report": {
+        "status": "implemented",
+        "what_was_done": "Optional maxCommandsTotal расширяет совместимый v1 policy-wide command reservation budget. Durable counting не удваивает retry, не возвращает unknown reservations, останавливает новые dispatch/runs/resume после cap и допускает завершение последней команды. UI различает reservation/observed count; narrow paths и денежные/host-tool обещания отклоняются.",
+        "verification_evidence": [
+          ".tmp/func-g05/f15-total-red.log",
+          ".tmp/func-g05/f15-total-green.log",
+          ".tmp/func-g05/f15-focused-final.log",
+          ".tmp/func-g05/web-native-final.log:686/686,0fail/skip",
+          ".tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json:16/16",
+          ".tmp/func-g05/typecheck-final.log:passed",
+          ".tmp/func-g05/build-responsive-final.log:passed",
+          ".tmp/func-g05/native-candidate.json:passed",
+          ".tmp/func-g05/native-default.json:passed",
+          ".tmp/func-g05/final-review.json:separate_reused_context,closed_allowed"
+        ],
+        "docs_impact": {
+          "decision": "updated",
+          "paths": [
+            "docs/ai/llm/budgets-and-observability.md",
+            "docs/ai/llm/budgets-and-observability.en.md",
+            "docs/api/endpoints.md",
+            "docs/api/endpoints.en.md",
+            "docs/frontend/components.md",
+            "docs/frontend/components.en.md",
+            "docs/sources/registry.md",
+            "docs/sources/registry.en.md"
+          ],
+          "source_revision": "current_working_tree_source_build_native_bound"
+        },
+        "residual_risks": "Bounded local synthetic acceptance; Windows document writer; external ignore revocation is final-checked, not atomic; unknown partial writes require explicit/manual recovery; active journal limits do not purge historical backups. Complete host history/usage, loaded-profile attestation, monetary/host-tool enforcement, provider/human/release acceptance are unavailable or separate.",
+        "implementation_at": "16-11-2026 07:29"
+      }
     },
     {
       "id": "PAOS-FUNC-16",
       "title": "Подтверждать доступную историю и реально загруженные профили",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "type": "feature",
-      "evidence_level": "bounded_capability_or_missing_extension",
+      "evidence_level": "locally_verified_with_explicit_limits",
       "technical_value": "Развести configured/pinned/observed model, effort и asset version; capability-based history adapter.",
       "product_value": "Пользователь знает, какой агент фактически работал и какая часть истории доступна.",
       "acceptance_criteria": [
@@ -1001,8 +1145,8 @@
       "estimate": "6–12 ч capability review; build после подтверждения API",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "unknown_until_design_gate",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "16-11-2026 07:29",
+      "execution_authority": "owner_authorized_func_g05_local_synthetic",
       "source_observation": "host_history_not_exposed; loadedVersion/observedModel/observedEffort unknown.",
       "source_paths": [
         "apps/local-service/src/sessions/service.mts",
@@ -1011,7 +1155,41 @@
       "future_test_commands": [
         "node --test tests/web/sessions-team.test.mts tests/web/team-run-navigation.test.mts"
       ],
-      "delivery_group_id": "FUNC-G05"
+      "delivery_group_id": "FUNC-G05",
+      "completion_report": {
+        "status": "implemented",
+        "what_was_done": "Официальный host contract проверен; paos_history_capability_v1 связывает adapter/project/generation, разделяет local available и host not_connected. Profile executionEvidence показывает текущий configured и immutable run-pinned model/effort/version/hash; observed/loaded остаются unavailable без attestation. Foreign profile cursors, project switch/late responses/restart проверены без private host scraping.",
+        "verification_evidence": [
+          ".tmp/func-g05/f16-observable-red.log",
+          ".tmp/func-g05/f16-green.log",
+          ".tmp/func-g05/g05-api-green.log",
+          ".tmp/func-g05/web-native-final.log:686/686,0fail/skip",
+          ".tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json:16/16",
+          ".tmp/func-g05/typecheck-final.log:passed",
+          ".tmp/func-g05/build-responsive-final.log:passed",
+          ".tmp/func-g05/native-candidate.json:passed",
+          ".tmp/func-g05/native-default.json:passed",
+          ".tmp/func-g05/final-review.json:separate_reused_context,closed_allowed"
+        ],
+        "docs_impact": {
+          "decision": "updated",
+          "paths": [
+            "docs/ai/agents/context.md",
+            "docs/ai/agents/context.en.md",
+            "docs/ai/agents/sessions.md",
+            "docs/ai/agents/sessions.en.md",
+            "docs/api/endpoints.md",
+            "docs/api/endpoints.en.md",
+            "docs/frontend/components.md",
+            "docs/frontend/components.en.md",
+            "docs/sources/registry.md",
+            "docs/sources/registry.en.md"
+          ],
+          "source_revision": "current_working_tree_source_build_native_bound"
+        },
+        "residual_risks": "Bounded local synthetic acceptance; Windows document writer; external ignore revocation is final-checked, not atomic; unknown partial writes require explicit/manual recovery; active journal limits do not purge historical backups. Complete host history/usage, loaded-profile attestation, monetary/host-tool enforcement, provider/human/release acceptance are unavailable or separate.",
+        "implementation_at": "16-11-2026 07:29"
+      }
     },
     {
       "id": "PAOS-FUNC-17",
@@ -2385,7 +2563,7 @@
     }
   ],
   "verification": {
-    "status": "func_g01_g03_locally_verified_g02_research_verified_g04_measured_limits_remaining_planned",
+    "status": "func_g01_g03_locally_verified_g02_research_verified_g04_measured_limits_g05_locally_verified_with_explicit_limits_remaining_planned",
     "application_checks_run": true,
     "initial": {
       "matrix_exit": 0,
@@ -2398,75 +2576,36 @@
       "remediation": "relocate source-owned matrix to research, preserve site inventory"
     },
     "latest": {
-      "task": "FUNC-G04",
-      "status": "implemented_locally_verified_with_measured_limits",
-      "group_exit": "passed_bounded_scope",
-      "closure_level": "locally_verified_with_measured_limits",
-      "member_statuses": {
-        "PAOS-FUNC-09": "implemented",
-        "PAOS-FUNC-14": "implemented",
-        "PAOS-FUNC-20": "implemented",
-        "PAOS-FUNC-33": "implemented",
-        "PAOS-FUNC-34": "implemented"
-      },
+      "task": "FUNC-G05",
+      "status": "locally_verified_with_explicit_limits",
       "counts": {
-        "implemented": 22,
-        "planned": 12
-      },
-      "web": {
-        "receipt": ".tmp/func-g04/web-closure-native-final.log",
-        "tests": 658,
-        "passed": 658,
-        "failed": 0,
-        "skipped": 0,
-        "seconds": 133.627
-      },
-      "browser": {
-        "receipt": ".tmp/func-g04/browser-acceptance/evidence-m9Vcjh/result.json",
-        "passed": 18,
-        "source_files_bound": 204,
-        "aggregate_rss_scope": "diagnostic_only",
-        "human_acceptance": false
-      },
-      "native": {
-        "candidate": ".tmp/func-g04/native-closure-candidate.json",
-        "default": ".tmp/func-g04/native-closure-default.json",
-        "adapter_revision": "b7d5d1eb2a129763feacba96735d4ba40c0c0bd00dced861c1d83af6cf94726b"
-      },
-      "scale": {
-        "receipts": [
-          ".tmp/func-g04/scale-closure/result-diagnostic-1794778219987.json",
-          ".tmp/func-g04/scale-closure/result-reference-1794778236139.json",
-          ".tmp/func-g04/scale-closure/result-filesystem-1794778628384.json"
-        ],
-        "outcome": "measured_with_deviations_and_bounded_outcomes",
-        "protocol_sha256": "37c20aadc0d3474ef78cf86928e9ee1727be7bf415152fc393e92c8b079af625",
-        "source_files_bound": 133,
-        "thresholds_unchanged": true
+        "implemented": 27,
+        "planned": 7
       },
       "review": {
         "context_mode": "separate_reused_context",
-        "reviewer": "/root/func_g04_review",
+        "reviewer": "/root/func_g05_completion_review",
         "tester_verdict": "closed_allowed",
-        "findings": "four initial code findings + final P2 table-key dictionary fixed; additional UI/authority failures retained and repaired"
+        "evidence": ".tmp/func-g05/final-review.json"
       },
-      "static_gates": {
-        "matrix": ".tmp/func-g04/matrix-closure.log",
-        "docs": ".tmp/func-g04/docs-closure.log",
-        "consistency": ".tmp/func-g04/closure-consistency.json",
-        "diff": ".tmp/func-g04/diff-closure.log",
-        "status": "passed"
-      },
-      "preservation": {
-        "other_task_records": 29,
-        "own_original_acceptance_criteria": true,
-        "groups_and_m5": true,
-        "foreign_work_preserved": true
-      },
-      "site_build_performed": false,
-      "provider_model_calls": 0,
-      "git_history_operations": false,
-      "at": "16-11-2026 00:43"
+      "started_at": "2026-11-16T02:10:36Z",
+      "completed_at": "2026-11-16T04:34:12.722Z",
+      "evidence": [
+        ".tmp/func-g05/web-native-final.log:686/686,0fail/skip",
+        ".tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json:16/16",
+        ".tmp/func-g05/typecheck-final.log:passed",
+        ".tmp/func-g05/build-responsive-final.log:passed",
+        ".tmp/func-g05/native-candidate.json:passed",
+        ".tmp/func-g05/native-default.json:passed",
+        ".tmp/func-g05/final-review.json:closed_allowed",
+        ".tmp/func-g05/closure-consistency.json:passed",
+        ".tmp/func-g05/docs-final.log:28 sources",
+        ".tmp/func-g05/matrix-ru.log:passed",
+        ".tmp/func-g05/matrix-en.log:passed"
+      ],
+      "browser": ".tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json",
+      "adapterRevision": "aa9c663dd1df54c6f47258234b5b9e9b5df6e0980e5ff58677e4403e30584bcc",
+      "limits": "Bounded local synthetic acceptance; Windows document writer; external ignore revocation is final-checked, not atomic; unknown partial writes require explicit/manual recovery; active journal limits do not purge historical backups. Complete host history/usage, loaded-profile attestation, monetary/host-tool enforcement, provider/human/release acceptance are unavailable or separate."
     },
     "previous_planning": {
       "matrix_exit": 0,
@@ -2721,11 +2860,82 @@
         "tester_verdict": "closed_allowed"
       },
       "preservation_receipt": ".tmp/func-g03/closure-consistency.json"
+    },
+    "previous_func_g04": {
+      "task": "FUNC-G04",
+      "status": "implemented_locally_verified_with_measured_limits",
+      "group_exit": "passed_bounded_scope",
+      "closure_level": "locally_verified_with_measured_limits",
+      "member_statuses": {
+        "PAOS-FUNC-09": "implemented",
+        "PAOS-FUNC-14": "implemented",
+        "PAOS-FUNC-20": "implemented",
+        "PAOS-FUNC-33": "implemented",
+        "PAOS-FUNC-34": "implemented"
+      },
+      "counts": {
+        "implemented": 22,
+        "planned": 12
+      },
+      "web": {
+        "receipt": ".tmp/func-g04/web-closure-native-final.log",
+        "tests": 658,
+        "passed": 658,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 133.627
+      },
+      "browser": {
+        "receipt": ".tmp/func-g04/browser-acceptance/evidence-m9Vcjh/result.json",
+        "passed": 18,
+        "source_files_bound": 204,
+        "aggregate_rss_scope": "diagnostic_only",
+        "human_acceptance": false
+      },
+      "native": {
+        "candidate": ".tmp/func-g04/native-closure-candidate.json",
+        "default": ".tmp/func-g04/native-closure-default.json",
+        "adapter_revision": "b7d5d1eb2a129763feacba96735d4ba40c0c0bd00dced861c1d83af6cf94726b"
+      },
+      "scale": {
+        "receipts": [
+          ".tmp/func-g04/scale-closure/result-diagnostic-1794778219987.json",
+          ".tmp/func-g04/scale-closure/result-reference-1794778236139.json",
+          ".tmp/func-g04/scale-closure/result-filesystem-1794778628384.json"
+        ],
+        "outcome": "measured_with_deviations_and_bounded_outcomes",
+        "protocol_sha256": "37c20aadc0d3474ef78cf86928e9ee1727be7bf415152fc393e92c8b079af625",
+        "source_files_bound": 133,
+        "thresholds_unchanged": true
+      },
+      "review": {
+        "context_mode": "separate_reused_context",
+        "reviewer": "/root/func_g04_review",
+        "tester_verdict": "closed_allowed",
+        "findings": "four initial code findings + final P2 table-key dictionary fixed; additional UI/authority failures retained and repaired"
+      },
+      "static_gates": {
+        "matrix": ".tmp/func-g04/matrix-closure.log",
+        "docs": ".tmp/func-g04/docs-closure.log",
+        "consistency": ".tmp/func-g04/closure-consistency.json",
+        "diff": ".tmp/func-g04/diff-closure.log",
+        "status": "passed"
+      },
+      "preservation": {
+        "other_task_records": 29,
+        "own_original_acceptance_criteria": true,
+        "groups_and_m5": true,
+        "foreign_work_preserved": true
+      },
+      "site_build_performed": false,
+      "provider_model_calls": 0,
+      "git_history_operations": false,
+      "at": "16-11-2026 00:43"
     }
   },
   "updated_at": "2026-11-16",
   "planning_revision": 4,
-  "change_scope": "func_g04_production_implementation",
+  "change_scope": "func_g05_production_implementation",
   "research_sources": [
     {
       "task": "PAOS-FUNC-30",
@@ -3309,5 +3519,5 @@
     "FUNC-G05",
     "FUNC-G07"
   ],
-  "implementation_revision": 4
+  "implementation_revision": 5
 }

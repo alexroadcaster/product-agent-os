@@ -1,6 +1,6 @@
 # Справочник endpoints
 
-Source status: repository_source / current_source_contract_review; 15.11.2026.; FUNC-G04: locally_verified_with_measured_limits, 16.11.2026.
+Source status: repository_source / current_source_contract_review; 15.11.2026.; FUNC-G04: locally_verified_with_measured_limits, 16.11.2026.; FUNC-G05 locally_verified_with_explicit_limits, 16.11.2026.
 
 Владелец: maintainers local-service/API; scope/version: DG03, commit `2f8a0cb8b428ba4499d9d7bd35f1f4b42b2be765`. Обновлять при изменении handler, client, delegate service или тестов. [Backend](../backend/index.md); [доступ и ошибки](errors.md); [события](events.md).
 
@@ -215,3 +215,7 @@ GET /projects/:id/database возвращает только registration/status
 GET /projects/:id/code-database и GET code-database/links выдают status и static source evidence; POST code-database/scan запускает inventory+code_database. Links требуют оба codeRevision/schemaRevision, поддерживают table/path/operation/confidence/limit/cursor и ограничены32KiB. Confirmed требует source binding; inferred/unresolved не становятся runtime facts. SQL values/rows не возвращаются.
 
 POST /agent/v1/project-query — private App-agent action с channel capability и worker lease, runId, kind=status|links и теми же query fields. Project берётся из claimed run; projectId из payload запрещён. Lease/run/scope проверяются до и после async read; ответ≤32KiB. Browser cookie не даёт эту capability. Claimed job объявляет наличие query port; старый model/provider route не включается. Проверка использует synthetic worker без вызова модели.
+
+## FUNC-G05 — текущие контракты
+
+F11 GET /team/metrics требует ISO from/to с timezone и from<to, принимает taskId/sessionId/agentId; выборка runs по времени старта [from,to). Лимит1000runs/1MiB response: превышение возвращает METRICS_PERIOD_TOO_BROAD, без тихого truncation. F12 GET /team/skills/discovery?external=1 включает внешний fixed-source reader; POST /team/skills/remote-preview принимает только candidateId/revision. F13 POST /artifacts/proposals/{apply-preview,apply,recover,rollback-preview,rollback} использует строгие DTO, paired session/CSRF и authority checks. Preview/recovery не являются acceptance. F16 GET /sessions/{catalog,search} и transcript добавляют source capabilities; /team/assets/:id добавляет executionEvidence, /team/runs/:id показывает requested/observed отдельно. F15 policy остаётся autonomy_policy_v1 с optional maxCommandsTotal; исчерпание даёт AUTONOMY_TOTAL_COMMAND_BUDGET_EXHAUSTED/409. Неподдерживаемые budget fields отклоняются.

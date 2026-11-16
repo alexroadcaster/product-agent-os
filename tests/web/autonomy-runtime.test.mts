@@ -129,3 +129,32 @@ test('legacy API route refuses opt-in before opening RPC and never falls back si
   await assert.rejects(gateway.runtime.dispatch('send',{autonomy:true}),{code:'AUTONOMY_ROUTE_UNAVAILABLE'});
   assert.equal(processes,0);await gateway.close();
 });
+
+test('policy-wide command reservations span runs, keep duplicate retries free and allow the last reserved approval',async t=>{
+ const f=await setup(t,{maxRuns:3,maxCommandsPerRun:2,maxCommandsTotal:2}),first=await f.gateway.runtime.dispatch('send',f.input);await f.gateway.agent('claim',f.auth);
+ await f.command(first.id);await f.approve(first.id);await f.settle(first.id);await f.report(first.id,'completed');
+ const second=await f.gateway.runtime.dispatch('send',{...f.input,taskId:f.nextTask.id,clientMessageId:'second'});await f.gateway.agent('claim',f.auth);await f.command(second.id);
+ let snapshot=await f.policy.snapshot('p');assert.equal(snapshot.usedCommands,2);assert.equal(snapshot.commandLimit,2);assert.equal(snapshot.remainingCommands,0);assert.equal(snapshot.paused,false);
+ await f.policy.reserveCommand('p',second.id,'operation');assert.equal((await f.policy.snapshot('p')).usedCommands,2);
+ await assert.rejects(f.policy.reserveCommand('p',second.id,'overflow'),{code:'AUTONOMY_TOTAL_COMMAND_BUDGET_EXHAUSTED'});
+ await f.policy.assertAllowed('p',second.id,'command');await f.approve(second.id);await f.settle(second.id);assert.equal(f.calls(),2);
+ await f.report(second.id,'completed');
+ await assert.rejects(f.policy.reserve('p',{runId:'third',bindingId:f.scope.bindingId,sessionId:'s',taskId:f.task.id}),{code:'AUTONOMY_TOTAL_COMMAND_BUDGET_EXHAUSTED'});
+ await assert.rejects(f.mutate('resume'),{code:'AUTONOMY_TOTAL_COMMAND_BUDGET_EXHAUSTED'});snapshot=await f.policy.snapshot('p');assert.equal(snapshot.usedCommands,2);
+});
+
+test('policy-window command reservations survive SQLite reopen and unknown outcomes are never refunded',async t=>{
+ const f=await m2Fixture(t),task=await f.ready(),service=autonomyService(f.store,()=>1000),policy={...defaultAutonomyPolicy(),allowedTaskIds:[task.id],allowedActions:['execution','command'] as const,maxRuns:3,maxCommandsPerRun:2,maxCommandsTotal:2};
+ const preview=await service.preview('p',policy,0);await service.command('p','local-user','save',{policy,previewDigest:preview.previewDigest,expectedRevision:0,expectedAuthorityEpoch:1,idempotencyKey:'save-total'});await service.command('p','local-user','resume',{expectedRevision:1,expectedAuthorityEpoch:1,idempotencyKey:'resume-total'});
+ await service.reserve('p',{runId:'reserved-one',bindingId:'binding',sessionId:'s',taskId:task.id});await service.reserveCommand('p','reserved-one','unknown-operation');await f.store.close();
+ const reopened=await openLocalStore({databasePath:join(f.root,'state.sqlite')});f.beforeClose(()=>reopened.close());const current=autonomyService(reopened,()=>1000);
+ assert.equal((await current.snapshot('p')).usedCommands,1);assert.equal((await current.snapshot('p')).remainingCommands,1);await current.reserveCommand('p','reserved-one','unknown-operation');assert.equal((await current.snapshot('p')).usedCommands,1);
+ await current.reserve('p',{runId:'reserved-two',bindingId:'binding',sessionId:'s',taskId:task.id});await current.reserveCommand('p','reserved-two','next-operation');assert.equal((await current.snapshot('p')).remainingCommands,0);
+ await assert.rejects(current.reserve('p',{runId:'reserved-three',bindingId:'binding',sessionId:'s',taskId:task.id}),{code:'AUTONOMY_TOTAL_COMMAND_BUDGET_EXHAUSTED'});await current.assertAllowed('p','reserved-two','command');
+});
+
+test('two simultaneous commands cannot spend the final policy-wide reservation twice',async t=>{
+ const f=await setup(t,{maxRuns:2,maxCommandsPerRun:2,maxCommandsTotal:1});
+ for(const runId of ['one','two'])await f.policy.reserve('p',{runId,bindingId:f.scope.bindingId,sessionId:'s',taskId:f.task.id});
+ const results=await Promise.allSettled(['one','two'].map(runId=>f.policy.reserveCommand('p',runId,'operation')));assert.equal(results.filter(r=>r.status==='fulfilled').length,1);assert.equal((results.find(r=>r.status==='rejected') as PromiseRejectedResult).reason.code,'AUTONOMY_TOTAL_COMMAND_BUDGET_EXHAUSTED');assert.equal((await f.policy.snapshot('p')).usedCommands,1);
+});

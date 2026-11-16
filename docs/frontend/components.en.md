@@ -1,6 +1,6 @@
 # Frontend: components and boundaries
 
-Source status: repository_source / static_source_review + FUNC-02_service_API_verified; FUNC-02_UI_browser_verified; 2026-11-15.; FUNC-G04: locally_verified_with_measured_limits, 16.11.2026.
+Source status: repository_source / static_source_review + FUNC-02_service_API_verified; FUNC-02_UI_browser_verified; 2026-11-15.; FUNC-G04: locally_verified_with_measured_limits, 16.11.2026.; FUNC-G05 locally_verified_with_explicit_limits, 16.11.2026.
 
 Owner: frontend owner and docs-maintainer. Scope: Web UI at revision `ad78d5d15aced23febae90d319f2aba00bd64d0b`. Update when composition, API contract, components or their tests change. Test links below identify verification routes, not test runs in DG04.
 
@@ -54,3 +54,9 @@ Current integrated source, not the initial lower-module handoff: browser19/19; f
 DatabaseExplorer owns Schema/Changes/Code usages, status/revision/coverage, scoped search,50-object list/ERD pages and column/PK/FK/index/view details. DatabaseSourceSettings selects only an observed relative path, metadata pin and CAS version; SQLite opens only on a separate scan. CodeDatabaseUsages provides confidence/operation/table/path filters, a bounded code→table network/evidence, test candidates and source/table navigation. Foreign-source links never open an equal-name table in the selected DB as a confirmed match.
 
 GraphExplorer adds dependency/symbol modes, direction/path and source→Files navigation. ProjectFiles mounts related-table queries only when expanded; Map DB and Database Code usages are lazy as well. Per-project keys/request epochs/AbortSignal reject late responses; an external table anchor supersedes an incompatible local search. MermaidView uses stable encoded entity IDs and keyboard selection into the same table details, a local strict renderer and an accessible list. Graph rendering accepts presentation primitives without fabricated source offsets. Verification uses build-bound graph-database-browser-acceptance.mts; human acceptance remains separate.
+
+## FUNC-G05 — current contracts
+
+F11 RunUsage reuses team/metrics for Dashboard and project/task/session/agent Usage. It shows observed seconds, confirmed milliseconds and PAOS-mediated command counts; tokens/cost/host tools remain unknown. The [from,to) period is explicit in UTC, rows render in batches of50 and stale async results from another scope are rejected. F12 adds explicit external-catalog opt-in, provenance/license preview and the existing managed-copy Apply. F13 DocumentApply separates preview, checkbox, Apply, rollback and recovery; a lost ACK preserves its original idempotency key. F16 shows configured/pinned/observed and source capabilities. F15 accepts a blank/integer optional command cap and explains reservation semantics. Browser qualification is tied to a particular source/build in group evidence; human acceptance remains separate.
+
+F13 mobile visual QA found a compressed reader caused by the retained280px origin column. At viewport≤1100px content and provenance now stack with content first. Geometry/overflow checks are supplemented by minimum readable width and screenshots; absence of global overflow alone does not prove readability.

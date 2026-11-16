@@ -1,6 +1,6 @@
 # Файловая система и идентичность корня
 
-Source status: repository_source / static_source_review + FUNC-10_inspector_focused_verified; API_gateway_UI_locally_verified; 15.11.2026.
+Source status: repository_source / static_source_review + FUNC-10_inspector_focused_verified; API_gateway_UI_locally_verified; 15.11.2026.; FUNC-G05 locally_verified_with_explicit_limits, 16.11.2026.
 
 Владелец: security/runtime owner + docs-maintainer. Область: исходники PAOS на `259977f3b257ba7fc0e932396f8963262bd327ad`; обновлять при изменении guards, tests или policy. Ссылки на тесты обозначают маршруты проверки, а не новый прогон. Реальные профили, credentials и provider-вызовы не исследовались.
 
@@ -45,3 +45,9 @@ Current focused evidence: `node --test tests/web/file-preflight.test.mts tests/w
 Захваченный project/policy не считается текущим после asynchronous I/O. Task preflight в конце атомарно перечитывает task и registry; перед native dispatch scope сверяется после dependency/autonomy waits. Task references, Files, artifact body/cursor previews, direct graph rebuild/source, control-plane HTTP reads и requirement grounding используют общий final registry fence. Отзыв policy во время чтения не выдаёт body и не заменяет предыдущий graph. Найденная independent review гонка подтверждена RED и исправлена; reviewer cycle2 проверил5/5 regressions, closed_allowed.
 
 API/gateway/production UI integration завершена: blocked preflight сохраняет draft и не вызывает runtime Send. Final browser19/19 (`.tmp/func-g03/browser-final/evidence-IfLiEa/result.json`); полный Web594/594,0skip. Текущий native tuple64cd3b58… прошёл candidate и production-default offline проверки write/deny/drift/interrupt; Python bridge теперь входит в executable source pin. Это не provider/human acceptance.
+
+## FUNC-G05 — реализованные контракты
+
+F13 разрешает изменение только существующих readable .md/.txt до512KiB по F28, без create/delete/rename. Linked/hardlinked/reparse paths, ignored/private/generated/redacted content и durable instruction/config/hook/rule/skill/plugin targets отклоняются. PLAN/REQUIREMENTS/TEST/EVALS/RUNLOG допускаются только через точный document preview. Preview связывает rootIdentity, policyVersion, fileRevision и raw SHA256; перед native commit metadata перепроверяется после получения эксклюзивного handle. Внешнее изменение .gitignore проверяется непосредственно перед записью, но не является атомарным механизмом отзыва уже начавшейся операции. SQL-origin не зеркалируется в workspace, filesystem-origin не меняет параллельный SQL-документ.
+
+Текущие focused evidence и оставшаяся квалификация: [FUNC-G05](../planning/functional-remediation-2026-11-15.md#func-g05-results).

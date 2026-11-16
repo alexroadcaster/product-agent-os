@@ -1,6 +1,6 @@
 # Filesystem and root identity
 
-Source status: repository_source / static_source_review + FUNC-10_inspector_focused_verified; API_gateway_UI_locally_verified; 2026-11-15.
+Source status: repository_source / static_source_review + FUNC-10_inspector_focused_verified; API_gateway_UI_locally_verified; 2026-11-15.; FUNC-G05 locally_verified_with_explicit_limits, 16.11.2026.
 
 Owner: security/runtime owner + docs-maintainer. Scope: PAOS source at `259977f3b257ba7fc0e932396f8963262bd327ad`; update with guards, tests or policy changes. Linked tests are verification routes, not a new run. No real profiles, credentials or provider calls were examined.
 
@@ -45,3 +45,9 @@ Current focused evidence: `node --test tests/web/file-preflight.test.mts tests/w
 A captured project/policy is not assumed current after asynchronous I/O. Task preflight atomically rereads task and registry at completion; native dispatch compares scope after dependency/autonomy waits. Task references, Files, artifact body/cursor previews, direct graph rebuild/source, control-plane HTTP and requirement grounding use a shared final registry fence. Policy revocation during a read cannot return plaintext or replace the prior graph. Independent review reproduced the race as RED; cycle2 verified5/5 fixed regressions, closed_allowed.
 
 API/gateway/production UI integration is complete: blocked preflight preserves the draft and never calls runtime Send. Final browser19/19 (`.tmp/func-g03/browser-final/evidence-IfLiEa/result.json`); full Web594/594,0skip. Native tuple64cd3b58… passed candidate and production-default offline write/deny/drift/interrupt checks; executable source pins now include the Python bridge. This does not establish provider or human acceptance.
+
+## FUNC-G05 — implemented contracts
+
+F13 modifies only existing readable .md/.txt up to512KiB admitted by F28, without create/delete/rename. Linked/hardlinked/reparse paths, ignored/private/generated/redacted content and durable instruction/config/hook/rule/skill/plugin targets are rejected. PLAN/REQUIREMENTS/TEST/EVALS/RUNLOG require an exact document preview. The preview binds rootIdentity, policyVersion, fileRevision and raw SHA256; metadata is checked again after obtaining the exclusive handle and before native commit. External .gitignore changes are checked immediately before writing but are not an atomic revocation mechanism for an operation already starting. SQL origin is not mirrored into the workspace, and filesystem origin does not modify a parallel SQL document.
+
+Current focused evidence and remaining qualification: [FUNC-G05](../planning/functional-remediation-2026-11-15.en.md#func-g05-results).

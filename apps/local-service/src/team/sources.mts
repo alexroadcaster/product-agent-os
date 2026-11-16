@@ -17,7 +17,7 @@ async function safe(root:AssetRoot,path:string,directory=false){
 }
 async function bytes(root:AssetRoot,path:string){const {target,stat}=await safe(root,path);if(stat.size>5*1024*1024)teamFail('ASSET_RESOURCE_LIMIT');const file=await open(target,constants.O_RDONLY|(constants.O_NOFOLLOW??0));try{const current=await file.stat();if(current.ino!==stat.ino||current.dev!==stat.dev||current.nlink>1||current.size!==stat.size)teamFail('ASSET_SOURCE_DRIFT');const data=await file.readFile();if(data.length!==stat.size)teamFail('ASSET_SOURCE_DRIFT');return data;}finally{await file.close();}}
 /** Only the documented scalar YAML header subset is projected; unsupported structures stay explicit. */
-function metadata(content:string,kind:'agent'|'skill'){
+export function metadata(content:string,kind:'agent'|'skill'){
  const header=kind==='skill'?/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/.exec(content)?.[1]:content.split(/^developer_instructions\s*=/m)[0];
  const field=(name:string)=>new RegExp(`^${name}\\s*${kind==='skill'?':':'='}\\s*["']?(.*?)["']?\\s*$`,'m').exec(header??'')?.[1]??'';
  const unsupported=kind==='skill'&&(!header||/^\s+(?:-|\w)|[&*!]|:\s*[\[{>|]/m.test(header));

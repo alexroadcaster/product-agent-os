@@ -1,6 +1,6 @@
 # Prompt and output contracts
 
-Source status: repository_source / current_source_inspection; DG05, 2026-11-15.
+Source status: repository_source / current_source_inspection; DG05, 2026-11-15.; FUNC-G05 locally_verified_with_explicit_limits, 16.11.2026.
 
 Owner: runtime/LLM owner + docs-maintainer. Scope: PAOS implementation at `61f6cd4cd048be478e88e2406c733f98b60bc434`. Update with route, prompt/output, credential, budget or telemetry contracts. Test links identify verification routes, not a new runtime run.
 
@@ -26,3 +26,9 @@ Python extraction checks approval and graph/semantic fingerprints, then produces
 The packaged [prompt-contract template](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/plugins/product-agent-os/assets/templates/artifact-templates/prompt-contract.md) is a target-project template, not an active Web prompt. Fixture prompts do not establish production model calls either. Do not duplicate complete instructions in documentation as a second owner; change source and related evals in a separately scoped change.
 
 Checks: [M1 recipe](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/tests/web/runtime-adapter-gateway.test.mts), [skill generation](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/tests/web/skill-generation-artifacts.test.mts), [local extraction](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/tests/product_agent_os/test_project_graph_llm_extraction.py), [provider gate](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/tests/product_agent_os/test_project_graph_llm_proposal_provider.py). These are verification references; no new model/eval calls were made.
+
+## FUNC-G05 — implemented contracts
+
+F13 extends document proposals: preview shows origin, before/after and digest; a checkbox acknowledges the exact change, followed by a separate CAS Apply. Staging and generation do not write the target. After Apply the reader reloads the current version; rollback requires a new preview and confirmation. Opening the page does not trigger recovery. AI output remains a proposal; a write receipt is not a check or acceptance.
+
+Current focused evidence and remaining qualification: [FUNC-G05](../../planning/functional-remediation-2026-11-15.en.md#func-g05-results).

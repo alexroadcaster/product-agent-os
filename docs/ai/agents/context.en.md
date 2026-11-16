@@ -1,6 +1,6 @@
 # Agent context and pinning
 
-Source status: repository_source / static_source_review; 2026-11-15.
+Source status: repository_source / static_source_review; 2026-11-15.; FUNC-G05 locally_verified_with_explicit_limits, 16.11.2026.
 
 Owner: runtime/agent owner + docs-maintainer. Scope: PAOS implementation at `61f6cd4cd048be478e88e2406c733f98b60bc434`. Update when the selector, gateway, contracts, execution boundaries or related tests change. Linked tests are verification routes, not new runs; activation and human acceptance need separate evidence.
 
@@ -18,8 +18,12 @@ Preflight in [team/service.mts](https://github.com/alexroadcaster/product-agent-
 | pinned | Version/hash and resource content included in the frozen run context | Execution or outcome |
 | observed | Separately recorded observation with stated coverage/source | Full host history or unsupported metrics |
 
-The source sets `requestedModel`/`requestedEffort` where available and `observedModel`/`observedEffort` to null in pins. Team analytics marks partial coverage and unavailable duration/token/cost telemetry. Do not turn unknown into zero.
+The source sets `requestedModel`/`requestedEffort` where available and `observedModel`/`observedEffort` to null in pins. Current F11 analytics measures PAOS run intervals/mediated commands and marks partial coverage; host token/cost telemetry remains unavailable. Do not turn unknown into zero.
 
 ## Instruction/data boundary
 
 For the separate coordinator route, [m1-recipe.mts](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/apps/local-service/src/runtime/m1-recipe.mts) quotes saved task context and user request as untrusted JSON, bounds saved context to 64 KiB and applies supplied redaction. This local source contract is not a guarantee against prompt injection. [persisted.mts](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/apps/local-service/src/redaction/persisted.mts) and [privacy guidance](../../product-agent-os/privacy-supply-chain-retention.md) describe persistence boundaries; examples contain no secrets. See [app-agent-gateway.test.mts](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/tests/web/app-agent-gateway.test.mts) and [sessions-team.test.mts](https://github.com/alexroadcaster/product-agent-os/blob/61f6cd4cd048be478e88e2406c733f98b60bc434/tests/web/sessions-team.test.mts); runtime/providers were not run here.
+
+## FUNC-G05 — current contracts
+
+F16 returns paos_profile_evidence_v1: configured describes current model/effort/version/hash, pinned records immutable requested model/effort/version/hash per retained run, and observed=null explains selected_route_has_no_loaded_profile_attestation. loadedVersion remains null after claim/report, import or managed-asset updates. PAOS pins are not host attestation; updating the current profile does not rewrite old pins. The public run DTO exposes allowlisted metadata without content/lease/input. The supported OpenAI App Server has separate thread/turn/skills APIs; the selected App-agent bridge does not connect those history/attestation APIs. Private host JSONL/credential stores are not read. [Official App Server](https://learn.chatgpt.com/docs/app-server).
