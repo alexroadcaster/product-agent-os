@@ -2,6 +2,7 @@ import {Icon} from './Icon.tsx';
 import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import {gsap} from "gsap";
 import {Sidebar} from "./Sidebar.tsx";
+import {parseAppAnchor} from './app-anchor.ts';
 import {Dashboard} from "../features/dashboard/Dashboard.tsx";
 import {RunUsage} from "../features/usage/RunUsage.tsx";
 import type { FormEvent, ReactNode } from "react";
@@ -202,16 +203,37 @@ export function App() {
     void initialise();
   }, []);
   useEffect(()=>{
-    if(!ready)return;
-    const openAnchor=()=>{if(appliedAnchor.current===location.hash)return;const q=new URLSearchParams(location.hash.slice(1)),p=q.get('project'),session=q.get('session'),message=q.get('message');
-      const file=q.get('file');if(p&&file&&projects.some(project=>project.id===p)&&file.length<=2048&&!/[\\\0\r\n:]/.test(file)){
-        const requested=Number(q.get('line')??1),line=Number.isSafeInteger(requested)&&requested>=1&&requested<=1000000?requested:1;
-        appliedAnchor.current=location.hash;setProjectId(p);setLinkedFile({projectId:p,path:file,line});setSection('files');return;
+    if(!ready){
+      appliedAnchor.current='';
+      return;
+    }
+    function openAnchor(fromHistory=false){
+      const hash=location.hash;
+      // Keep project-list refreshes from reopening a route the user has already left.
+      if(!fromHistory&&appliedAnchor.current===hash)return;
+      const anchor=parseAppAnchor(hash,projects);
+      appliedAnchor.current=anchor?hash:'';
+      if(!anchor)return;
+
+      const projectId=anchor.projectId;
+      setProjectId(projectId);
+      switch(anchor.section){
+        case 'files':
+          setLinkedFile({projectId,path:anchor.path,line:anchor.line});
+          break;
+        case 'database':
+          setLinkedDatabase({projectId,table:anchor.table,tab:anchor.tab});
+          break;
+        case 'sessions':
+          setLinkedSession({projectId,sessionId:anchor.sessionId,messageId:anchor.messageId});
+          break;
       }
-      const database=q.get('database');if(p&&database!==null&&database.length<=256&&!/[\0\r\n]/.test(database)&&projects.some(project=>project.id===p)){const value=q.get('dbtab'),tab=value==='changes'||value==='usages'?value:'schema';appliedAnchor.current=location.hash;setProjectId(p);setLinkedDatabase({projectId:p,table:database,tab});setSection('database');return;}
-      if(!p||!session||!message||!projects.some(project=>project.id===p)||[session,message].some(id=>id.length>200||/[\\\0\r\n]/.test(id)))return;
-      appliedAnchor.current=location.hash;setProjectId(p);setLinkedSession({projectId:p,sessionId:session,messageId:message});setSection('sessions');
-    };openAnchor();window.addEventListener('hashchange',openAnchor);return()=>window.removeEventListener('hashchange',openAnchor);
+      setSection(anchor.section);
+    }
+    const onHashChange=()=>openAnchor(true);
+    openAnchor();
+    window.addEventListener('hashchange',onHashChange);
+    return()=>window.removeEventListener('hashchange',onHashChange);
   },[ready,projects]);
   useEffect(() => {
     if (!ready) return;

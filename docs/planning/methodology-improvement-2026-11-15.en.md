@@ -272,7 +272,32 @@ Early baseline attempts stopped at the row locator (`.tmp/func-g01-dashboard/evi
 
 The first full Web run exited 1, 709/710. `project-scans.test.mts` did not find `PROJECT_SCAN_SOURCE_STALE`. The full log is `.tmp/meth-14-web-final.log`. The isolated rerun passed 12/12 (`.tmp/meth-14-project-scans-retry.log`). METH-14 preserved service, contract and scan-test sources. The full Web rerun passed 710/710 with zero skips (`.tmp/meth-14-web-retry.log`).
 
-Skills keeps its separate `hold` on the current `SkillGenerator` entry. METH-15 remains on `hold`. Commands are in `TEST.md`.
+At METH-14 closure, Skills and METH-15 were on separate holds. Commands are in `TEST.md`.
+
+### METH-15 — App composition and screen boundaries {#meth-15-results}
+
+METH-18 selected four narrow slices. App chooses the project and screen from URL anchors. Sessions, Artifacts, and Graph use the existing implementations through the named `tasks/read.ts` entry. `DocumentApply` receives its locale type from `locales/messages.ts`. Four exceptions were removed, 9 → 5. Screen state and service contracts retain their owners. App retains bootstrap, pairing, and global project selection. `Operations.tsx` has no independently demonstrated migration benefit. [Decision and rollback](../architecture/decisions/adr-dashboard-task-boundary.en.md#a2-rollout)
+
+| Slice | Owner and verified route |
+| --- | --- |
+| App | `ui/app-anchor.ts` parses the fragment. App selects a known project and screen, then passes route parameters. Back restores the same permalink. An unknown fragment leaves the active screen. Files, Database, and Sessions retain their keys, priority and limits. |
+| Sessions | `SessionsCatalog` and Transcript own filters, paging and message selection. Checks cover permalinks after reload and Back, an anchor beyond the first pages, Markdown, redaction and a Usage request with `sessionId`. |
+| Artifacts | Artifacts owns catalog state, document drafts and confirmation. Checks cover Markdown, the task backlink, preview, apply and rollback on a disposable document. |
+| Graph | Graph owns revision, filters, node selection and source reads. Checks cover dependency paths, Mermaid, selection and Graph → Files → Graph. |
+
+In the baseline RED, Back restored the correct URL but App left Overview visible because it had already applied the same anchor. `browser_back_reopens_same_session_anchor` failed after 18 successful checks (`.tmp/paos-m2b/browser-evidence-jwTETy/result.json`). Native `hashchange` now applies the current valid route. The current fragment still deduplicates project-list refreshes. The import boundary RED is in `.tmp/meth-15-boundary-red.log`.
+
+| Runner under `tests/web/single-window/` | Checks | Baseline report | Final report |
+| --- | ---: | --- | --- |
+| `m2b-browser-acceptance.mts` | 53 → 55 | `.tmp/paos-m2b/browser-evidence-4ewTFK/result.json` | `.tmp/paos-m2b/browser-evidence-jWp1tR/result.json` |
+| `project-files-browser-acceptance.mts --phase final` | 19 | `.tmp/func-g03/browser-final/evidence-CY9fwo/result.json` | `.tmp/func-g03/browser-final/evidence-3RbLJC/result.json` |
+| `agent-capabilities-browser-acceptance.mts` | 16 | `.tmp/func-g05/browser-acceptance/evidence-0Yu2Mi/result.json` | `.tmp/func-g05/browser-acceptance/evidence-Rw5OFg/result.json` |
+| `graph-database-browser-acceptance.mts --scope renderers` | 12 | `.tmp/func-g04/browser-acceptance/evidence-3Kryuf/result.json` | `.tmp/func-g04/browser-acceptance/evidence-YEw2uG/result.json` |
+| `func-g01-dashboard-acceptance.mts` | 61 | `.tmp/func-g01-dashboard/evidence-64vAdN/result.json` | `.tmp/func-g01-dashboard/evidence-hCNHg6/result.json` |
+
+All 161 existing browser checks passed. Final 163/163 includes the two new App checks. METH-14 Sessions and Dashboard baseline reports were reused after matching build SHA-256. Artifacts, Files, and Graph have fresh baseline reports. The main JS SHA-256 before and after is `2c6919be2a8c3a915bbc190fea6a60e5192bac0bf2456a3cc04906bff9a036e6` and `527fbbe94e18e763d33af23d6549b2d151e971cda1b0f781dfb352dc5c896b9b`. Screenshot `history-back-anchor.png` is alongside the final Sessions report. Commands are in `TEST.md`.
+
+The five remaining exceptions belong to ProjectFiles, SkillGenerator and three Workflows consumers. Their statuses and separate entry conditions remain in force. FUNC statuses and plan B have their own owners.
 
 ## Task index
 
@@ -933,15 +958,15 @@ Skills keeps its separate `hold` on the current `SkillGenerator` entry. METH-15 
 
 - Task: PAOS-METH-15
 - Task name: Migrate selected remaining screens and finish the composition boundary
-- Status: planned
+- Status: implemented
 - Priority: P3
 - Delivery group: A4
 - Methodologies: FSD, Design-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Owner-requested implementation of four local slices after ADR verification.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 20:14
 - Depends on: PAOS-METH-18
 - Blocks: None.
 - External references: PAOS-FUNC-02, PAOS-FUNC-14, PAOS-FUNC-26, PAOS-FUNC-33, PAOS-FUNC-34
@@ -949,30 +974,30 @@ Skills keeps its separate `hold` on the current `SkillGenerator` entry. METH-15 
 - Short description: Continue only approved screen moves and retain App ownership of composition/session scope.
 - Technical value: Continue only approved screen moves and retain App ownership of composition/session scope.
 - Product value: Reduce overall import coupling without losing history, document or graph context.
-- Scope: `apps/web/src/features/sessions/SessionsCatalog.tsx`; `apps/web/src/features/artifacts/ArtifactExplorer.tsx`; `apps/web/src/features/graph/GraphExplorer.tsx`; `apps/web/src/ui/App.tsx`; `apps/web/src/ui/Operations.tsx`. Future work locations, not files changed now.
+- Scope: `apps/web/src/ui/App.tsx`; `apps/web/src/ui/app-anchor.ts`; `apps/web/src/features/sessions/SessionsCatalog.tsx`; `apps/web/src/features/artifacts/ArtifactExplorer.tsx`; `apps/web/src/features/artifacts/DocumentApply.tsx`; `apps/web/src/features/graph/GraphExplorer.tsx`; `tests/web/contracts-boundaries.test.mts`; `tests/web/fixtures/dashboard-import-baseline.json`; `tests/web/ui-app-anchor.test.mts`; `tests/web/single-window/m2b-browser-acceptance.mts`.
 - Non-goals: New product features, provider/credentials, target/Git/publication/production; other FUNC/Web statuses; anything outside this slice.
-- Expected result: Selected-screen checkpoints, App composition map and dispositions for remaining legacy exceptions.
+- Expected result: App owns URL anchors, Back reopens the permalink, selected screens use explicit entries, and four exceptions are removed.
 - Acceptance criteria: PAOS-METH-15-AC01: Deliver METH-18-selected Sessions, Artifacts, Graph or composition changes one at a time in demonstrated dependency order. Keep new Files/Database/usages features outside scope and resolve FUNC ownership conflicts before edits. PAOS-METH-15-AC02: Keep composition/global providers/session selection in App; move feature-local state only when justified and preserve behavior/route IDs. PAOS-METH-15-AC03: Allow no unauthorized legacy/deep/upward imports in the selected migrated scope; remove compatibility adapters only after consumer inventory and regression checks.
-- Verification gates: V-WEB; profile above; current TEST routing takes precedence; execute during future implementation.
-- Risks / approval gates: Do not claim full FSD from folders alone; unselected scope remains explicitly bounded legacy. The current request authorizes planning only.
+- Verification gates: V-WEB. Focused and full Web, type-check, build and five synthetic browser routes. [Results](#meth-15-results)
+- Risks / approval gates: Local verification on disposable projects. Preserve URL keys, current project selection, and write confirmation.
 - Complexity: L
 - Estimated execution time: Estimate after current discovery and bounded-slice selection; no calendar commitment.
-- Agents: builder — one screen owner at a time; proposed ownership; delegation=0 now.
-- Skills: build-web-apps:frontend-testing-debugging; for future UI verification only; architecture follows the ADR.
-- Output artifacts: Selected-screen checkpoints, App composition map and dispositions for remaining legacy exceptions.
-- Next step: METH-18 selected specific screens or a composition change. Order follows each screen's demonstrated dependencies. Confirm the selected scope and obtain separate implementation authority.
+- Agents: Primary agent, App and selected screen boundary ownership, delegation=0.
+- Skills: documentation-and-adrs; tdd; build-web-apps:frontend-testing-debugging; build-web-apps:react-best-practices. FSD rules checked through Context7.
+- Output artifacts: Composition map, URL anchor parser, explicit imports, and regression reports.
+- Next step: Plan A is complete in the selected scope. Five remaining exceptions retain their separate hold.
 
 #### Completion Report
 
-- status: planned
-- what was done: Implementation not started; task card authored.
-- files touched / work locations: No implementation files changed now; future locations are listed in Scope.
-- technical value delivered: Not claimed before implementation.
-- product value delivered: Not claimed before implementation.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Only plan preparation is checked; this task's AC are not claimed as executed.
-- residual risks: Do not claim full FSD from folders alone; unselected scope remains explicitly bounded legacy.
-- follow-up: Select the next authorized slice from the DAG; no automatic start.
+- status: implemented
+- what was done: Moved URL parsing into an App module and fixed replay of the same anchor. Switched the selected screens to explicit entries.
+- files touched / work locations: See Scope and the [slice map](#meth-15-results).
+- technical value delivered: Removed four legacy Tasks imports. Verified state ownership in each screen.
+- product value delivered: Back restores the message. Document reading, proposal apply and rollback, and Graph-to-source navigation were verified.
+- actual implementation date and time: 18-11-2026 20:14
+- verification evidence: Full Web 714/714 with zero skips (`.tmp/meth-15-web-final.log`), focused tests 30/30 and browser checks 163/163. Type-check and build passed. [Reports](#meth-15-results)
+- residual risks: Five previous exceptions belong to ProjectFiles, SkillGenerator and Workflows. Acceptance covers local synthetic scenarios.
+- follow-up: The ADR retains the remaining exception decisions. Direction B has its own plan.
 
 ### Task `PAOS-METH-16`
 

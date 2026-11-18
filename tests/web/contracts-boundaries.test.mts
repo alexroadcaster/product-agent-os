@@ -77,6 +77,10 @@ const runUsage=webRoot+'features/usage/RunUsage.tsx';
 const usageEntries=[runUsage,webRoot+'features/usage/UsageSummary.tsx',webRoot+'features/usage/observed-period.ts'];
 const teamManager=webRoot+'features/team/TeamManager.tsx';
 const agentDashboard=webRoot+'features/team/AgentDashboard.tsx';
+const tasksReadConsumers=[
+ teamManager,agentDashboard,
+ ...['sessions/SessionsCatalog.tsx','artifacts/ArtifactExplorer.tsx','graph/GraphExplorer.tsx'].map(path=>webRoot+'features/'+path),
+];
 const app=webRoot+'ui/App.tsx';
 const sharedPresentation=['MarkdownBody.tsx','markdown.ts','external-url.ts','MermaidView.tsx','NetworkView.tsx','MetricViews.tsx'].map(name=>webRoot+'ui/'+name);
 const sharedUi=['CapabilityNotice.tsx','Icon.tsx','Modal.tsx','ProjectFreshness.tsx','MarkdownBody.tsx','external-url.ts','MetricViews.tsx'].map(name=>webRoot+'ui/'+name);
@@ -92,7 +96,7 @@ function boundaryRule({from,to}:Edge){
  if(!inPilot(from)&&!inPilot(to))return;
  if(fromDashboard&&toDashboard||fromTasks&&toTasks)return;
  if(from===app&&(to===dashboard+'Dashboard.tsx'||to===tasks+'TaskManager.tsx'))return;
- if((fromDashboard||from===teamManager||from===agentDashboard)&&to===tasksReadApi)return;
+ if((fromDashboard||tasksReadConsumers.includes(from))&&to===tasksReadApi)return;
  if(fromDashboard&&usageEntries.includes(to)||fromTasks&&to===runUsage)return;
  if(inPilot(from)&&to.startsWith(webRoot+'ui/')&&!sharedUi.includes(to))return 'upward import';
  if(fromTasks&&toDashboard)return 'upward import';
@@ -259,6 +263,15 @@ test('team dashboard uses the public assignment and usage entries with no depend
   metricUi+' -> '+teamPrivate+' [shared view depends on feature]',
   observedPeriod+' -> '+teamPrivate+' [usage depends on screen]',
  ].sort());
+});
+
+test('Sessions, Artifacts and Graph use named task reads and keep deep imports fenced',()=>{
+ const callers=['sessions/SessionsCatalog.tsx','artifacts/ArtifactExplorer.tsx','graph/GraphExplorer.tsx'].map(path=>webRoot+'features/'+path);
+ const labels=tasks+'labels.ts';
+ const files=new Map(callers.map(file=>[file,"import '../tasks/read.ts'; import '../tasks/labels.ts';"]));
+ const actual=inspectWebImports(files,[...files.keys(),tasksReadApi,labels],{},()=>false);
+ assert.deepEqual(actual.diagnostics,[]);
+ assert.deepEqual(actual.rules,callers.map(file=>file+' -> '+labels+' [non-public consumer]').sort());
 });
 
 test('the Tasks read entry exposes the existing selectors and labels through named exports',async()=>{

@@ -1,5 +1,9 @@
 # TEST.md
 
+## PAOS-METH-15 — URL-якоря и границы экранов, 18.11.2026 {#meth-15-verification}
+
+`node --test tests/web/ui-app-anchor.test.mts tests/web/contracts-boundaries.test.mts tests/web/sessions-team.test.mts tests/web/project-files-ui-model.test.mts tests/web/graph-query-modes.test.mts tests/web/agent-capabilities-api.test.mts` проверяет грамматику URL, точные импорты и контракты экранов. Полный Web — `node --test --test-concurrency=1 tests/web/*.test.mts`. Пять браузерных маршрутов запускаются с `--synthetic-browser --playwright-core <installed-path> --chromium <installed-path>` и указанными вариантами. [RED/GREEN, маршруты и отчёты](docs/planning/methodology-improvement-2026-11-15.md#meth-15-results)
+
 ## PAOS-METH-14 — команда и профиль агента, 18.11.2026 {#meth-14-verification}
 
 `node --test tests/web/contracts-boundaries.test.mts tests/web/ui-v3-dashboard.test.mts tests/web/ui-m2-manager.test.mts tests/web/sessions-team.test.mts tests/web/agent-capabilities-api.test.mts` проверяет входы чтения, проекцию назначений, метрики и каталог. `func-g01-dashboard-acceptance.mts` и `m2b-browser-acceptance.mts` запускаются из `tests/web/single-window/` с `--synthetic-browser --playwright-core <installed-path> --chromium <installed-path>`. Проверяются командный итог, переход к агенту по Enter, `agentId`, возврат, каталог и история. Полный Web — `node --test --test-concurrency=1 tests/web/*.test.mts`. [Отчёты](docs/planning/methodology-improvement-2026-11-15.md#meth-14-results)

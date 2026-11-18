@@ -28,7 +28,7 @@ F30/F31/F32 implemented / poc_research_locally_verified,3/3; [решения и 
 
 ## Методологии — выбранный объём A4 выполнен, 18.11.2026
 
-Выполнены A1–A3 и четыре выбранных среза A4. METH-11 перевела TeamManager на публичный вход Tasks, METH-10 выделила общие Markdown, Mermaid и D3. METH-13 выделила RunUsage и закрыла возврат к задаче. METH-14 передала AgentDashboard в Team. Workflows, Skills и METH-15 остаются на `hold` по своим критериям. Кандидат handoff из A3 сохраняет отдельный `hold`. METH-16 ссылается на B. [Результаты A4](docs/planning/methodology-improvement-2026-11-15.md#a4-results) · [Решения A4](docs/architecture/decisions/adr-dashboard-task-boundary.md#a2-rollout) · [JSON A](docs/planning/methodology-improvement-2026-11-15.json)
+Выполнены все 17 исполняемых задач A в выбранном объёме. METH-15 закрыла четыре границы Sessions, Artifacts, Graph и App. Workflows, Skills, кандидат handoff и пять прежних исключений сохраняют отдельные решения `hold`. METH-16 ссылается на B. [Результаты A4](docs/planning/methodology-improvement-2026-11-15.md#a4-results) · [Решения A4](docs/architecture/decisions/adr-dashboard-task-boundary.md#a2-rollout) · [JSON A](docs/planning/methodology-improvement-2026-11-15.json)
 
 В B первый пользовательский результат — объяснимый совет в режиме чтения для backend-ошибки и правки документа в одном проекте, доступный через CLI и Web. Сохранение решения, запись в проект, FSD и расширенная приёмка имеют отдельные условия входа. Точный порядок задают `depends_on` карточек. [26 запланированных задач B](docs/planning/user-project-methodologies-2026-11-15.md) · [JSON B](docs/planning/user-project-methodologies-2026-11-15.json)
 

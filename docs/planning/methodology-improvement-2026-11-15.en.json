@@ -5,7 +5,7 @@
   "timezone": "Europe/Moscow",
   "source_plan": "docs/planning/methodology-improvement-2026-11-15.md",
   "english_plan": "docs/planning/methodology-improvement-2026-11-15.en.md",
-  "status": "in_progress",
+  "status": "implemented",
   "execution_authority": "owner_authorized_a1_a2_a3_a4_bounded_local_implementation",
   "scope": "Internal Product-Agent OS development quality and frontend architecture; user-project capabilities are owned by direction B.",
   "source_snapshot": {
@@ -851,7 +851,7 @@
       "id": "PAOS-METH-15",
       "title": "Перенести оставшиеся выбранные экраны и завершить composition boundary",
       "title_en": "Migrate selected remaining screens and finish the composition boundary",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P3",
       "methodologies": [
         "FSD",
@@ -872,11 +872,16 @@
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
       "proposed_owner": "builder — один screen owner за раз",
       "work_locations": [
+        "apps/web/src/ui/App.tsx",
+        "apps/web/src/ui/app-anchor.ts",
         "apps/web/src/features/sessions/SessionsCatalog.tsx",
         "apps/web/src/features/artifacts/ArtifactExplorer.tsx",
+        "apps/web/src/features/artifacts/DocumentApply.tsx",
         "apps/web/src/features/graph/GraphExplorer.tsx",
-        "apps/web/src/ui/App.tsx",
-        "apps/web/src/ui/Operations.tsx"
+        "tests/web/contracts-boundaries.test.mts",
+        "tests/web/fixtures/dashboard-import-baseline.json",
+        "tests/web/ui-app-anchor.test.mts",
+        "tests/web/single-window/m2b-browser-acceptance.mts"
       ],
       "acceptance_criteria": [
         {
@@ -896,8 +901,8 @@
         }
       ],
       "verification_profile": "V-WEB",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan",
+      "implementation_at": "18-11-2026 20:14",
+      "execution_authority": "owner_authorized_a4_bounded_local_implementation",
       "direction_id": "A",
       "activation_condition": {
         "ru": "METH-18 выбрала конкретные экраны или изменение composition. Порядок определяется подтверждёнными зависимостями каждого экрана.",

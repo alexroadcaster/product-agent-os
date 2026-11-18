@@ -6,11 +6,7 @@
       "removal_task": "PAOS-METH-11",
       "status": "hold",
       "edges": [
-        "features/artifacts/ArtifactExplorer.tsx -> features/tasks/labels.ts [non-public consumer]",
-        "features/artifacts/DocumentApply.tsx -> features/tasks/labels.ts [non-public consumer]",
         "features/files/ProjectFiles.tsx -> features/tasks/labels.ts [non-public consumer]",
-        "features/graph/GraphExplorer.tsx -> features/tasks/labels.ts [non-public consumer]",
-        "features/sessions/SessionsCatalog.tsx -> features/tasks/labels.ts [non-public consumer]",
         "features/skills/SkillGenerator.tsx -> features/tasks/labels.ts [non-public consumer]",
         "features/workflows/WorkflowManager.tsx -> features/tasks/labels.ts [non-public consumer]",
         "features/workflows/recipes/QueueManager.tsx -> features/tasks/labels.ts [non-public consumer]",

@@ -272,7 +272,32 @@ METH-18 выбрала срез Team после проверки командн�
 
 Первый полный Web-прогон завершился с кодом 1, 709/710. В `project-scans.test.mts` не найден код `PROJECT_SCAN_SOURCE_STALE`, полный лог в `.tmp/meth-14-web-final.log`. Изолированный повтор файла прошёл 12/12 (`.tmp/meth-14-project-scans-retry.log`). Срез METH-14 сохранил файлы сервиса, контрактов и этого теста. Повторный полный Web прошёл 710/710 без пропусков (`.tmp/meth-14-web-retry.log`).
 
-Skills сохраняет отдельное решение `hold` по текущему входу `SkillGenerator`. METH-15 остаётся на `hold`. Команды описаны в `TEST.md`.
+При закрытии METH-14 действовал отдельный `hold` для Skills и METH-15. Команды описаны в `TEST.md`.
+
+### METH-15 — композиция App и границы экранов {#meth-15-results}
+
+METH-18 выбрала четыре узких среза. App управляет проектом и экраном по URL. Sessions, Artifacts и Graph используют прежние реализации через именованный `tasks/read.ts`, а `DocumentApply` берёт тип локали из `locales/messages.ts`. Четыре исключения удалены, 9 → 5. Состояние экранов и контракты сервиса остаются у своих владельцев. App сохраняет инициализацию, pairing и выбор глобального проекта. Для переноса `Operations.tsx` не выявлено самостоятельного сценария или выигрыша. [Решение и откат](../architecture/decisions/adr-dashboard-task-boundary.md#a2-rollout)
+
+| Срез | Владелец и проверенный маршрут |
+| --- | --- |
+| App | `ui/app-anchor.ts` разбирает фрагмент. App выбирает известный проект, экран и передаёт параметры. Back восстанавливает тот же permalink. Неизвестный фрагмент оставляет экран. Files, Database и Sessions сохраняют ключи, приоритет и ограничения. |
+| Sessions | `SessionsCatalog` и Transcript ведут фильтры, страницы и выбор сообщения. Проверены permalink после reload и Back, anchor за пределами первых страниц, Markdown, маскирование чувствительного текста и запрос Usage с `sessionId`. |
+| Artifacts | Artifacts владеет каталогом, черновиком и подтверждением. Проверены Markdown, обратная ссылка к задаче, preview, применение и откат на одноразовом документе. |
+| Graph | Graph ведёт ревизию, фильтры, выбранный узел и чтение исходника. Проверены путь по зависимостям, Mermaid, выбор и переход Graph → Files → Graph. |
+
+В исходном RED кнопка Back вернула корректный URL, но App оставил «Обзор», поскольку тот же якорь уже был применён. Ошибка `browser_back_reopens_same_session_anchor` воспроизведена после 18 успешных проверок (`.tmp/paos-m2b/browser-evidence-jwTETy/result.json`). Событие `hashchange` теперь применяет актуальный валидный маршрут. Дедупликация по текущему фрагменту сохраняется для обновления списка проектов. RED проверки импортов сохранён в `.tmp/meth-15-boundary-red.log`.
+
+| Маршрут в `tests/web/single-window/` | Проверок | Исходный отчёт | Итоговый отчёт |
+| --- | ---: | --- | --- |
+| `m2b-browser-acceptance.mts` | 53 → 55 | `.tmp/paos-m2b/browser-evidence-4ewTFK/result.json` | `.tmp/paos-m2b/browser-evidence-jWp1tR/result.json` |
+| `project-files-browser-acceptance.mts --phase final` | 19 | `.tmp/func-g03/browser-final/evidence-CY9fwo/result.json` | `.tmp/func-g03/browser-final/evidence-3RbLJC/result.json` |
+| `agent-capabilities-browser-acceptance.mts` | 16 | `.tmp/func-g05/browser-acceptance/evidence-0Yu2Mi/result.json` | `.tmp/func-g05/browser-acceptance/evidence-Rw5OFg/result.json` |
+| `graph-database-browser-acceptance.mts --scope renderers` | 12 | `.tmp/func-g04/browser-acceptance/evidence-3Kryuf/result.json` | `.tmp/func-g04/browser-acceptance/evidence-YEw2uG/result.json` |
+| `func-g01-dashboard-acceptance.mts` | 61 | `.tmp/func-g01-dashboard/evidence-64vAdN/result.json` | `.tmp/func-g01-dashboard/evidence-hCNHg6/result.json` |
+
+Все 161 прежние браузерные проверки сохранены, итоговые 163/163 включают две новые проверки App. Исходные отчёты Sessions и Dashboard переиспользованы с METH-14 при совпадающем SHA-256 сборки. Для Artifacts, Files и Graph сняты свежие исходные отчёты. SHA-256 основного JS до и после — `2c6919be2a8c3a915bbc190fea6a60e5192bac0bf2456a3cc04906bff9a036e6` и `527fbbe94e18e763d33af23d6549b2d151e971cda1b0f781dfb352dc5c896b9b`. Снимок `history-back-anchor.png` находится рядом с итоговым отчётом Sessions. Команды в `TEST.md`.
+
+Пять оставшихся исключений относятся к ProjectFiles, SkillGenerator и трём потребителям Workflows. Их статусы и отдельные условия сохраняются. Продуктовые статусы FUNC и план B ведутся у своих владельцев.
 
 ## Индекс задач
 
@@ -933,15 +958,15 @@ Skills сохраняет отдельное решение `hold` по теку
 
 - Task: PAOS-METH-15
 - Task name: Перенести оставшиеся выбранные экраны и завершить composition boundary
-- Status: planned
+- Status: implemented
 - Priority: P3
 - Delivery group: A4
 - Methodologies: FSD, Design-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Реализация четырёх локальных срезов по запросу владельца после сверки ADR.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 20:14
 - Depends on: PAOS-METH-18
 - Blocks: Нет.
 - External references: PAOS-FUNC-02, PAOS-FUNC-14, PAOS-FUNC-26, PAOS-FUNC-33, PAOS-FUNC-34
@@ -949,30 +974,30 @@ Skills сохраняет отдельное решение `hold` по теку
 - Short description: Продолжить только одобренные screen moves и оставить App владельцем composition/session scope.
 - Technical value: Продолжить только одобренные screen moves и оставить App владельцем composition/session scope.
 - Product value: Снизить общий import coupling без потери history, documents и graph contexts.
-- Scope: `apps/web/src/features/sessions/SessionsCatalog.tsx`; `apps/web/src/features/artifacts/ArtifactExplorer.tsx`; `apps/web/src/features/graph/GraphExplorer.tsx`; `apps/web/src/ui/App.tsx`; `apps/web/src/ui/Operations.tsx`. Будущие work locations, не список изменённых сейчас файлов.
+- Scope: `apps/web/src/ui/App.tsx`; `apps/web/src/ui/app-anchor.ts`; `apps/web/src/features/sessions/SessionsCatalog.tsx`; `apps/web/src/features/artifacts/ArtifactExplorer.tsx`; `apps/web/src/features/artifacts/DocumentApply.tsx`; `apps/web/src/features/graph/GraphExplorer.tsx`; `tests/web/contracts-boundaries.test.mts`; `tests/web/fixtures/dashboard-import-baseline.json`; `tests/web/ui-app-anchor.test.mts`; `tests/web/single-window/m2b-browser-acceptance.mts`.
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
-- Expected result: Selected-screen checkpoints, App composition map и disposition остальных legacy exceptions.
+- Expected result: Владение URL в App, рабочий Back на permalink, явные входы выбранных экранов, четыре снятых исключения.
 - Acceptance criteria: PAOS-METH-15-AC01: Выбранные METH-18 Sessions, Artifacts, Graph или composition изменения выполняются по одному и в порядке подтверждённых зависимостей. Scope исключает новые Files/Database/usages функции, ownership conflicts с FUNC разрешаются до edits. PAOS-METH-15-AC02: App содержит composition/global providers/session selection, feature-local state вынесен только по подтверждённой необходимости; behavior и route IDs сохранены. PAOS-METH-15-AC03: В выбранном migrated scope нет неразрешённых legacy/deep/upward imports; compatibility adapters удаляются лишь после consumer inventory и regression checks.
-- Verification gates: V-WEB; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
-- Risks / approval gates: Не обещать full FSD по наличию папок; весь невыбранный scope остаётся legacy с явными границами. Текущий запрос разрешает только планирование.
+- Verification gates: V-WEB. Целевые тесты, полный Web, проверка типов, сборка и пять синтетических браузерных сценариев. [Результаты](#meth-15-results)
+- Risks / approval gates: Локальная проверка с одноразовыми проектами. Сохраняются ключи URL, выбор текущего проекта и подтверждение записи.
 - Complexity: L
 - Estimated execution time: Оценить после актуального discovery и выбора bounded slice; календарное обещание не дано.
-- Agents: builder — один screen owner за раз; proposed ownership, сейчас delegation=0.
-- Skills: build-web-apps:frontend-testing-debugging; только для будущей UI проверки; архитектурные решения по ADR.
-- Output artifacts: Selected-screen checkpoints, App composition map и disposition остальных legacy exceptions.
-- Next step: METH-18 выбрала конкретные экраны или изменение composition. Порядок определяется подтверждёнными зависимостями каждого экрана. Сверить выбранный scope и отдельно подтвердить полномочия на реализацию.
+- Agents: Основной агент с ответственностью за App и выбранные экранные границы, delegation=0.
+- Skills: documentation-and-adrs; tdd; build-web-apps:frontend-testing-debugging; build-web-apps:react-best-practices. FSD сверена через Context7.
+- Output artifacts: Карта композиции, парсер якорей, явные импорты и отчёты регрессий.
+- Next step: План A выполнен в выбранном объёме. Пять оставшихся исключений сохраняют отдельный hold.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не начата; сформирована карточка.
-- files touched / work locations: Сейчас implementation files не менялись; будущие locations указаны в Scope.
-- technical value delivered: Не заявлена до реализации.
-- product value delivered: Не заявлена до реализации.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Проверяется только подготовка плана; выполнение AC этой задачи не заявлено.
-- residual risks: Не обещать full FSD по наличию папок; весь невыбранный scope остаётся legacy с явными границами.
-- follow-up: Выбор следующего разрешённого slice по DAG; автоматический старт запрещён.
+- status: implemented
+- what was done: Выделен парсер URL в App, исправлено применение повторного якоря. Экраны переведены на явные входы.
+- files touched / work locations: См. Scope и [карту срезов](#meth-15-results).
+- technical value delivered: Удалены четыре наследуемых импорта Tasks. Владение состоянием подтверждено по каждому экрану.
+- product value delivered: Back снова возвращает к сообщению. Проверены чтение документов, применения и отката предложения, путь от графа к исходнику.
+- actual implementation date and time: 18-11-2026 20:14
+- verification evidence: Полный Web 714/714 без пропусков (`.tmp/meth-15-web-final.log`), 30/30 целевых тестов, 163/163 браузерных проверок, проверка типов и сборка. [Отчёты](#meth-15-results)
+- residual risks: Пять прежних исключений принадлежат ProjectFiles, SkillGenerator и Workflows. Приёмка относится к локальным синтетическим сценариям.
+- follow-up: Диспозиция остальных исключений остаётся в ADR. Направление B ведётся отдельно.
 
 ### Task `PAOS-METH-16`
 

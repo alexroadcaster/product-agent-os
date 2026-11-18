@@ -52,6 +52,18 @@ try{
  check('anchored_message_renders_markdown',await transcript.locator('[data-message-id="m110"] .m2-comment-body strong').innerText()==='Anchor searchable');
  const anchorLink=page.locator('[data-message-id="m110"] a').first();await anchorLink.click();await page.reload();await page.locator('[data-message-id="m110"]').waitFor();check('permalink_reload_anchor',page.url().includes('message=m110'));check('no_credential_in_permalink',!page.url().includes('csrf'));
  await page.locator('.session-history-search>summary').click();await page.getByTestId('session-history-search').locator('input').fill('Anchor searchable');await page.getByTestId('session-history-search').getByRole('button').click();await page.locator('[data-search-message-id="m110"]').waitFor();check('search_redacted',!(await page.getByTestId('sessions-catalog').innerText()).includes('syntheticCanary1234567890'));await page.locator('[data-search-message-id="m110"]').click();await shot('history-anchor.png');await geometry('history_desktop_no_overflow');
+ step='session_anchor_replay';
+ const permalink=page.url();
+ await nav('overview');await page.getByTestId('project-dashboard').waitFor();
+ await page.evaluate(()=>{window.location.hash='unsupported-route';});
+ await page.waitForURL((url:URL)=>url.hash==='#unsupported-route');
+ check('unsupported_hash_keeps_active_screen',await page.getByTestId('project-dashboard').isVisible());
+ await page.goBack();
+ await page.waitForURL(permalink);
+ await until('browser_back_reopens_same_session_anchor',async()=>
+  await page.locator('[data-message-id="m110"][aria-current="true"]').isVisible()&&
+  await page.locator('.navigation select').inputValue()===project.id);
+ await shot('history-back-anchor.png');
  step='workflows';await nav('settings');const workflow=page.getByTestId('workflow-manager');await workflow.locator('[name=workflow-new-id]').fill('review-flow');await workflow.getByRole('button',{name:'Создать копию',exact:true}).click();await workflow.locator('[data-workflow-section=states]').click();const properties=workflow.locator('.workflow-properties');if(!await properties.evaluate((el:HTMLDetailsElement)=>el.open))await properties.locator('summary').click();await workflow.locator('[name=workflow-name]').fill('Review delivery');await workflow.getByTestId('workflow-editor').getByRole('button',{name:label('ru','save'),exact:true}).click();await until('workflow_draft_saved',async()=>(await snap()).workflows.workflows.some((w:any)=>w.id==='review-flow'&&w.draft?.name==='Review delivery'));
  await workflow.locator('[data-workflow-section=publication]').click();await workflow.getByRole('button',{name:'Предпросмотр публикации',exact:true}).click();await workflow.getByRole('button',{name:'Опубликовать проверенную версию',exact:true}).click();await until('workflow_published',async()=>(await snap()).workflows.workflows.find((w:any)=>w.id==='review-flow')?.activeVersion===1);
  // Custom IDs are source fixture configuration; subsequent selection and transitions are exercised in UI.

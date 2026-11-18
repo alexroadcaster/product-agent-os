@@ -4,7 +4,7 @@ import {useEffect,useRef,useState} from 'react';
 import {HttpApiError,type M1Api} from '../../api/client.ts';
 import type {ArtifactItem,ArtifactPage,ArtifactDocument} from '../../../../../packages/contracts/artifacts/catalog.ts';
 import {MarkdownBody} from '../../ui/MarkdownBody.tsx';
-import {label,errorText,type Locale} from '../tasks/labels.ts';
+import {label,errorText,type Locale} from '../tasks/read.ts';
 type View={query:string;taskId:string;filter:string;selected?:ArtifactItem};
 const views=new Map<string,View>(),drafts=new Map<string,{body:string;version:string}>(),pending=new Map<string,{input:Record<string,unknown>;key:string}>();
 /** Read-only sources, staged document proposals, test observations and explicit owner decisions stay distinct. */

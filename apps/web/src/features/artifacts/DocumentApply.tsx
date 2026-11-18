@@ -2,7 +2,7 @@ import {useEffect,useRef,useState} from 'react';
 import {HttpApiError,type M1Api} from '../../api/client.ts';
 import type {ArtifactDocument} from '../../../../../packages/contracts/artifacts/catalog.ts';
 import type {DocumentApplyPreview,DocumentApplyInput} from '../../../../../packages/contracts/artifacts/document-apply.ts';
-import type {Locale} from '../tasks/labels.ts';
+import type {UiLocale as Locale} from '../../locales/messages.ts';
 
 /** Explicit exact-document writes. A lost ACK keeps its immutable request; a known rejection requires a fresh preview. */
 export function DocumentApply({api,projectId,document,locale,onChanged}:{api:M1Api;projectId:string;document:ArtifactDocument;locale:Locale;onChanged:()=>Promise<void>}){

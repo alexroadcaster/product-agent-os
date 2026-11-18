@@ -6,7 +6,7 @@ import {diagramSource} from './diagram-source.ts';
 import {useEffect,useRef,useState} from 'react';
 import {HttpApiError,type M1Api} from '../../api/client.ts';
 import type {GraphNode,GraphPage,GraphStatus,GraphEdgeType} from '../../../../../packages/contracts/graph/code-graph.ts';
-import {label,errorText,type Locale} from '../tasks/labels.ts';
+import {label,errorText,type Locale} from '../tasks/read.ts';
 const edgeTypes:GraphEdgeType[]=['import','call','define','read','write','reference'];
 const views=new Map<string,{query:string;depth:number;types:string[];selected?:string;neighborhood:boolean;mode?:string;direction?:string;pathTo?:string}>();
 /** A bounded static graph and its keyboard-accessible list share the same revision-pinned API page. */

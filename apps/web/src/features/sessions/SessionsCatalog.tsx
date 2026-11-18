@@ -3,7 +3,7 @@ import {RunUsage} from '../usage/RunUsage.tsx';
 import {useEffect,useRef,useState,type ReactNode} from 'react';
 import type {M1Api,StoredEntity} from '../../api/client.ts';
 import {MarkdownBody} from '../../ui/MarkdownBody.tsx';
-import {label,errorText,type Locale} from '../tasks/labels.ts';
+import {label,errorText,type Locale} from '../tasks/read.ts';
 
 type Coverage={status:string;reasons:string[]};
 type HistoryPage<T>={items:T[];nextCursor:string|null;previousCursor?:string|null;snapshot:{generation:string;createdAt:string;total:number};coverage:Coverage;source?:import('../../../../../packages/contracts/sessions/history.ts').HistorySource;retention:{policy:string;truncated:boolean;omittedCount:number};anchorId?:string;anchorFound?:boolean};
