@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {summarizeTasks,aggregateSnapshots,assignedWork,recentTasks} from '../../apps/web/src/features/dashboard/model.ts';
+import {summarizeTasks,aggregateSnapshots,recentTasks} from '../../apps/web/src/features/dashboard/model.ts';
+import {assignedWork} from '../../apps/web/src/features/tasks/read.ts';
 test('dashboard uses complete task snapshots and excludes cancelled from progress denominator',()=>{
  const tasks=['done','backlog','in_progress','cancelled'].map((status,i)=>({id:String(i),status,data:{},revision:1}));
  const result=summarizeTasks({tasks,links:[],workflows:{workflows:[]}} as any);

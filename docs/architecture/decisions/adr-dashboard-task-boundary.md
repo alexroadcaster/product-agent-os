@@ -6,13 +6,15 @@ Source status: repository_source / bounded_internal_architecture_decision; 18.11
 
 Владелец: frontend Product-Agent OS. Для [пилота Dashboard](../../planning/methodology-improvement-2026-11-15.md#a1-results) усиливаем границы в существующей структуре. Dashboard играет роль страницы, App владеет навигацией и композицией, Tasks владеет семантикой статусов и блокировок. Local service сохраняет право записи и владение снимками. Действующие входы App — `Dashboard.tsx` и `TaskManager.tsx`.
 
-Dashboard и `TeamManager.tsx` используют `features/tasks/read.ts`. Вход явно экспортирует `semanticStatus`, `isBlocked`, `statusText`, `errorText`, `durationText`, `label` и тип `Locale`. Единственные реализации остаются в `model.ts` и `labels.ts` внутри Tasks. Граница отделяет чтение от редактора, команд и композиции экранов. [Верификация A2](../../planning/methodology-improvement-2026-11-15.md#a2-results) · [Верификация METH-11](../../planning/methodology-improvement-2026-11-15.md#a4-results)
+Dashboard, `TeamManager.tsx` и `AgentDashboard.tsx` используют `features/tasks/read.ts`. Вход явно экспортирует `assignedWork`, `semanticStatus`, `isBlocked`, `statusText`, `errorText`, `durationText`, `label` и тип `Locale`. Единственные реализации находятся в `model.ts` и `labels.ts` внутри Tasks. Граница отделяет чтение от редактора, команд и композиции экранов. [Верификация A2](../../planning/methodology-improvement-2026-11-15.md#a2-results) · [Верификация METH-11](../../planning/methodology-improvement-2026-11-15.md#a4-results)
 
 Tasks, Artifacts и Sessions используют `ui/MarkdownBody.tsx`. Парсер и проверка URL находятся в том же слое. Граница сохраняет допустимый Markdown, разрешённые HTTP(S)-ссылки без встроенных учётных данных и вывод неподдерживаемой разметки текстом. [Верификация METH-10](../../planning/methodology-improvement-2026-11-15.md#meth-10-results)
 
 Graph, Workflows и Database передают подготовленный текст в `ui/MermaidView.tsx`. Graph и Database передают узлы и связи в `ui/NetworkView.tsx`. Правило Graph → Mermaid принадлежит `features/graph/diagram-source.ts`. Workflows и Database сохраняют свои преобразования.
 
 `features/usage/RunUsage.tsx` владеет чтением измерений, периодом UTC и отображением покрытия. Tasks передаёт `taskId`, Sessions — `sessionId`, обзор проекта — `projectId`, представление агента — `agentId` в рамках проекта. У панели есть собственное состояние и чтение `M1Api.teamMetrics`, поэтому она имеет отдельный feature-вход. App и страницы сохраняют навигацию. Сервис сохраняет контракт и хранение. [Проверки METH-13](../../planning/methodology-improvement-2026-11-15.md#meth-13-results)
+
+Team владеет `features/team/AgentDashboard.tsx` и выбором агента. Dashboard и Team используют проекцию Tasks `assignedWork`, период и сводку Usage и общие `Metric` и `Bars` из `ui/MetricViews.tsx`. Существующий контракт `RunMetrics` задаёт тип измерений для обоих экранов. [Проверки METH-14](../../planning/methodology-improvement-2026-11-15.md#meth-14-results)
 
 ## Альтернативы
 
@@ -21,14 +23,16 @@ Graph, Workflows и Database передают подготовленный те�
 ## Проверяемые правила
 
 - Модули одного участка могут ссылаться друг на друга. App использует действующие входы экранов. Другие потребители обращаются к явно утверждённым публичным входам.
-- Dashboard и Tasks используют API, локализацию, общие контракты и UI-примитивы `Icon`, `CapabilityNotice`, `Modal` и `ProjectFreshness`. Правило разрешает `tasks/read.ts` для Dashboard и ровно одного файла Team — `TeamManager.tsx`. Тест границ проверяет доступ других потребителей, прямые импорты внутренних модулей Tasks и импорты App или соседних экранов.
+- Dashboard и Tasks используют API, локализацию, общие контракты и разрешённые UI-примитивы. Правило разрешает `tasks/read.ts` для Dashboard и двух явных потребителей Team — `TeamManager.tsx` и `AgentDashboard.tsx`. Тест границ проверяет доступ других потребителей, прямые импорты внутренних модулей Tasks и импорты App или соседних экранов.
 - Цикл с участием Dashboard или Tasks блокирует проверку, включая путь через промежуточные frontend-модули. Действующие запреты contracts → apps и local service → frontend продолжают проверяться.
 - Тест отклоняет прямые импорты feature-модулей и App из файлов общего Markdown, парсера, валидатора URL, Mermaid и D3. Tasks может импортировать именованные входы `MarkdownBody` и `safeExternalUrl`.
-- `RunUsage.tsx` — именованный вход Usage. Тест разрешает его Tasks и Dashboard и отклоняет импорты App или feature-модулей из Usage.
-- Исходные исключения зафиксированы на ревизии `bd7d9135f994201170277171eb54e4040cef4fa8`. A2 сняла три связи Dashboard → Tasks, METH-11 две TeamManager → Tasks, METH-10 две Artifacts/Sessions → Tasks, METH-13 две Tasks/Sessions → Dashboard. В `tests/web/fixtures/dashboard-import-baseline.json` осталось 10 исходных исключений, включая девять на `hold` из группы METH-11. Тест требует удалять запись вместе со связью.
+- Тест разрешает `RunUsage.tsx` для Tasks и Dashboard, а `UsageSummary.tsx` и `observed-period.ts` для Dashboard. Импорты App или feature-модулей из этих входов Usage и `MetricViews.tsx` отклоняются.
+- Исходные исключения зафиксированы на ревизии `bd7d9135f994201170277171eb54e4040cef4fa8`. A2 сняла три связи Dashboard → Tasks, METH-11 две TeamManager → Tasks, METH-10 две Artifacts/Sessions → Tasks, METH-13 две Tasks/Sessions → Dashboard, METH-14 одну Team → Dashboard. Все девять исключений в `tests/web/fixtures/dashboard-import-baseline.json` относятся к прежнему `hold` METH-11. Тест требует удалять запись вместе со связью.
 - `node --test tests/web/contracts-boundaries.test.mts` разбирает TS, TSX и MTS. Буквальные импорты разрешаются по исходникам и поддерживаемым `baseUrl`/`paths` из Web tsconfig. Неизвестный alias или вычисляемая цель выдаёт отдельную диагностику. Проверка распространяется на указанную frontend-границу, а общие контракты и backend имеют свои правила.
 
 ## Откат и критерий достаточности
+
+Для отката METH-14 возвращаем `AgentDashboard`, отображение метрик и проекцию назначений в Dashboard. Восстанавливаем импорт Team, прежний вход Tasks, одно исключение и правило проверки. Повторяем сценарии Dashboard, команды и выбранного агента.
 
 Для отката METH-13 возвращаем панель и прежний вход `UsageDashboard` в Dashboard, исходные импорты потребителей, обработчики фокуса Tasks и прежнее форматирование ошибок. Восстанавливаем два исключения и правило проверки. Повторяем сценарии Tasks, Sessions и обзора проекта.
 
@@ -45,10 +49,10 @@ Graph, Workflows и Database передают подготовленный те�
 | METH-10 | `bounded_go` для Markdown, Mermaid и D3. Владелец — frontend shared UI. Markdown используют Tasks, Artifacts и Sessions. Mermaid используют Graph, Workflows и Database, сетевое представление D3 — Graph и Database. Цель — убрать два импорта внутренних модулей Tasks и три импорта представлений Graph из Workflows/Database, сохранить рендер и разделить вывод и подготовку данных. |
 | METH-11 | `bounded_go` для одного потребителя, `TeamManager.tsx`. Владельцы — frontend Tasks и Team. Вход Tasks может явно предоставить уже используемые `durationText`, `label`, `errorText` и тип `Locale`. Измеримый результат — два deep imports Team → Tasks исчезают, новые нарушения не появляются, существенные сценарии Team и Dashboard проходят. Откат возвращает два импорта, исключения Team и прежний список экспортов. |
 | METH-13 | `bounded_go` для Tasks. Владелец панели измерений — frontend Usage. Tasks владеет входом из карточки и возвратом. Исходная проверка подтвердила фильтр задачи, сохранение карточки, вкладки и черновиков, а также выявила потерю фокуса при обоих переходах. Цель — восстановить фокус и убрать два импорта Tasks/Sessions из Dashboard. Workflows сохраняет `hold` до выбора своего среза с проверками черновиков, CAS, фокуса и очереди. |
-| METH-14 | `hold`. `AgentDashboard` вызывается только из Team, но использует проекции назначений и представления метрик Dashboard. `SkillGenerator` уже имеет свой вход. Для выбора Team нужен самостоятельный шов для метрик с проверками команды и профиля, для Skills — подтверждённая проблема текущего входа. |
+| METH-14 | `bounded_go` для Team. `AgentDashboard` имеет единственного владельца Team. Tasks предоставляет проекцию открытых назначений, Usage — показ покрытия и период наблюдения, `ui` — карточку числа и шкалу. Исходный браузер подтвердил командный итог, профиль и фильтр `agentId`. Цель — снять Team → Dashboard и сохранить эти проверки. Skills остаётся на `hold` до подтверждения проблемы с текущим входом. |
 | METH-15 | `hold`. METH-13 переводит Sessions на общий вход Usage с сохранением `sessionId`. Для дальнейшего переноса Sessions, Artifacts, Graph или App нужен отдельный сценарий с измеримой пользой и проверкой маршрутизации и владения состоянием. |
 
-Выбранные срезы METH-10, METH-11 и METH-13 выполнены. Для METH-10 проверены потребители и браузерные сценарии каждого рендерера. Продуктовое направление B имеет отдельный план. [Результаты A4](../../planning/methodology-improvement-2026-11-15.md#a4-results)
+Выбранные срезы METH-10, METH-11, METH-13 и METH-14 выполнены. Продуктовое направление B имеет отдельный план. [Результаты A4](../../planning/methodology-improvement-2026-11-15.md#a4-results)
 
 Правила импортов и публичных API сверены через Context7. [FSD layers](https://feature-sliced.design/docs/reference/layers) · [FSD public API](https://feature-sliced.design/docs/reference/public-api)
 

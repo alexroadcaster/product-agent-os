@@ -28,11 +28,13 @@ Source status: repository_source / current_source_inspection / documentation_imp
 
 ## Проверка и обновление
 
-Dashboard и TeamManager обращаются к Tasks через `features/tasks/read.ts`. Границу и откат описывает [ADR](../architecture/decisions/adr-dashboard-task-boundary.md). [Критерии и маршруты проверки](../testing/test-map.md#dashboard-a1-criteria) · [Приёмка METH-11](../planning/methodology-improvement-2026-11-15.md#a4-results)
+Dashboard, TeamManager и AgentDashboard обращаются к Tasks через `features/tasks/read.ts`. Границу и откат описывает [ADR](../architecture/decisions/adr-dashboard-task-boundary.md). [Критерии и маршруты проверки](../testing/test-map.md#dashboard-a1-criteria) · [Приёмка METH-11](../planning/methodology-improvement-2026-11-15.md#a4-results)
 
 Общий вход `ui/MarkdownBody.tsx` отображает комментарии Tasks, документы Artifacts и сообщения Sessions. Он использует ограниченный парсер и общее правило HTTP(S)-ссылок. Graph, Database и Workflows используют `ui/MermaidView.tsx`, Graph и Database также используют `ui/NetworkView.tsx`. Подготовка данных принадлежит feature-модулям. [Контракт и проверка METH-10](../planning/methodology-improvement-2026-11-15.md#meth-10-results)
 
 `features/usage/RunUsage.tsx` отображает измерения в областях проекта, задачи, сессии и агента. Tasks владеет навигацией и восстановлением фокуса. [Граница и проверка Usage](../planning/methodology-improvement-2026-11-15.md#meth-13-results)
+
+`features/team/AgentDashboard.tsx` владеет командным и персональным представлениями. Общие числовая карточка и шкала находятся в `ui/MetricViews.tsx`. [Граница и проверка Team](../planning/methodology-improvement-2026-11-15.md#meth-14-results)
 
 Для изменения поведения найдите соответствующий source и тест по страницам раздела. [UI policy tests](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/ui-policy.test.mts), [draft tests](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/ui-draft-registry.test.mts), [theme/locale tests](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/theme-locale.test.mts) и [browser accessibility checks](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/accessibility/browser-acceptance.mts) — маршруты проверки, не утверждение о новом прогоне.
 

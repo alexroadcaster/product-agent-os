@@ -18,14 +18,3 @@ export function recentTasks(tasks:readonly StoredEntity[]){
  const time=(task:StoredEntity)=>{const value=Date.parse(task.updatedAt??'');return Number.isFinite(value)?value:Number.NEGATIVE_INFINITY;};
  return [...tasks].sort((a,b)=>{const left=time(a),right=time(b);return left!==right?(left>right?-1:1):a.id<b.id?-1:a.id>b.id?1:0;}).slice(0,3);
 }
-
-/** Declared open task assignments, not observed CPU utilization or proof of a running agent. */
-export function assignedWork(snapshot:ManagerSnapshot<StoredEntity>):Record<string,string[]> {
- const result=new Map<string,string[]>();
- for(const task of snapshot.tasks){if(['done','cancelled'].includes(semanticStatus(task,snapshot.workflows)))continue;
-  const declared=Array.isArray(task.data?.agentAssignments)?task.data.agentAssignments.filter((a):a is string=>typeof a==='string'&&Boolean(a)):[];
-  const active=Array.isArray(task.data?.assignments)?task.data.assignments.filter(a=>a&&typeof a==='object'&&!a.endedAt&&typeof a.agentId==='string').map(a=>a.agentId as string):[];
-  for(const id of new Set([...declared,...active])){const ids=result.get(id)??[];ids.push(task.id);result.set(id,ids);}
- }
- return Object.fromEntries(result);
-}

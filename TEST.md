@@ -1,5 +1,9 @@
 # TEST.md
 
+## PAOS-METH-14 — команда и профиль агента, 18.11.2026 {#meth-14-verification}
+
+`node --test tests/web/contracts-boundaries.test.mts tests/web/ui-v3-dashboard.test.mts tests/web/ui-m2-manager.test.mts tests/web/sessions-team.test.mts tests/web/agent-capabilities-api.test.mts` проверяет входы чтения, проекцию назначений, метрики и каталог. `func-g01-dashboard-acceptance.mts` и `m2b-browser-acceptance.mts` запускаются из `tests/web/single-window/` с `--synthetic-browser --playwright-core <installed-path> --chromium <installed-path>`. Проверяются командный итог, переход к агенту по Enter, `agentId`, возврат, каталог и история. Полный Web — `node --test --test-concurrency=1 tests/web/*.test.mts`. [Отчёты](docs/planning/methodology-improvement-2026-11-15.md#meth-14-results)
+
 ## PAOS-METH-13 — Usage и возврат к задаче, 18.11.2026 {#meth-13-verification}
 
 `node --test tests/web/contracts-boundaries.test.mts tests/web/ui-m2-manager.test.mts tests/web/ui-v3-dashboard.test.mts tests/web/ui-draft-autosave.test.mts tests/web/ui-draft-registry.test.mts tests/web/recipe-recovery.test.mts tests/web/agent-capabilities-api.test.mts` проверяет вход Usage, формат ошибок, CAS, черновики и очередь. Полный Web — `node --test --test-concurrency=1 tests/web/*.test.mts`. Браузерные маршруты запускаются с `--synthetic-browser --playwright-core <installed-path> --chromium <installed-path>`. `--scenario task-usage` проверяет вход с клавиатуры, GET с `taskId`, сохранение черновика, возврат фокуса и чистый новый редактор. [Остальные маршруты и отчёты](docs/planning/methodology-improvement-2026-11-15.md#meth-13-results)

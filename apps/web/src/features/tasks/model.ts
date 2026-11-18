@@ -1,3 +1,4 @@
+import type {ManagerSnapshot} from '../../../../../packages/contracts/issues/manager.ts';
 import type {WorkflowRegistry} from '../../../../../packages/contracts/workflows/workflow.ts';
 import {workflowCategory,workflowSnapshot} from '../../../../../packages/contracts/workflows/helpers.ts';
 import type {StoredEntity} from '../../api/client.ts';
@@ -90,3 +91,14 @@ export function semanticStatus(task:StoredEntity|undefined,registry?:WorkflowReg
 export function stateName(task:StoredEntity,registry:WorkflowRegistry|undefined,status=task.status??''):string|undefined {if(!registry||!isM2(task))return undefined;return workflowSnapshot(registry,profile(task).workflow).definition.states.find(s=>s.id===status)?.name;}
 export function userTargets(task:StoredEntity,registry?:WorkflowRegistry):string[]{if(!registry||!isM2(task))return targetStatuses(task.status??'');const d=workflowSnapshot(registry,profile(task).workflow).definition;return [...new Set(d.transitions.filter(t=>t.from===task.status&&t.actors.includes('user')).map(t=>t.to))];}
 export function categoryTargets(task:StoredEntity,registry:WorkflowRegistry|undefined,category:string):string[]{if(!registry||!isM2(task))return [category];return workflowSnapshot(registry,profile(task).workflow).definition.states.filter(s=>s.category===category).map(s=>s.id);}
+
+/** Declared open task assignments, not observed CPU utilization or proof of a running agent. */
+export function assignedWork(snapshot:ManagerSnapshot<StoredEntity>):Record<string,string[]> {
+ const result=new Map<string,string[]>();
+ for(const task of snapshot.tasks){if(['done','cancelled'].includes(semanticStatus(task,snapshot.workflows)))continue;
+  const declared=Array.isArray(task.data?.agentAssignments)?task.data.agentAssignments.filter((a):a is string=>typeof a==='string'&&Boolean(a)):[];
+  const active=Array.isArray(task.data?.assignments)?task.data.assignments.filter(a=>a&&typeof a==='object'&&!a.endedAt&&typeof a.agentId==='string').map(a=>a.agentId as string):[];
+  for(const id of new Set([...declared,...active])){const ids=result.get(id)??[];ids.push(task.id);result.set(id,ids);}
+ }
+ return Object.fromEntries(result);
+}

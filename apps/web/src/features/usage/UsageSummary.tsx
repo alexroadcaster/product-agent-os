@@ -1,0 +1,3 @@
+import type {UiLocale} from '../../locales/messages.ts';
+
+export function UsageSummary({locale,scope}:{locale:UiLocale;scope?:string}){const ru=locale==='ru';return <section className="ui-usage" aria-label={ru?'Расход ресурсов':'Resource usage'}><strong>{ru?'Расход ресурсов':'Resource usage'}{scope?' · '+scope:''}</strong><dl>{['Tokens',ru?'Стоимость':'Cost','tool_use'].map(name=><div key={name}><dt>{name}</dt><dd>{ru?'Нет данных':'Unavailable'}</dd></div>)}</dl><p>{ru?'Источник: доступные записи PAOS. Измерения расхода не предоставлены; неизвестное значение не равно нулю.':'Source: available PAOS records. Usage measurements are not exposed; unknown is not zero.'}</p></section>;}

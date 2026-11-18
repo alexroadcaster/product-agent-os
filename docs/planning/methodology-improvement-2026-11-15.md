@@ -255,6 +255,25 @@ METH-18 выбрала узкий срез Tasks. Frontend Usage владеет 
 
 Снимки Tasks фиксируют панель аналитики и возврат с фокусом и видимым черновиком комментария. SHA-256 основного JS до и после: `93a317adde4841d0a1181a42a55f1137c498524ffd43a20413ff1289803c3ae4` и `d33b602822c02d9288672de72461b699e3e07c157132bb30ade365e9de46727d`. Браузерные проверки выполнялись на локальных синтетических данных. Команды в `TEST.md`.
 
+### METH-14 — граница Team и профиль агента {#meth-14-results}
+
+METH-18 выбрала срез Team после проверки командного экрана и перехода к выбранному агенту. `features/team/AgentDashboard.tsx` принадлежит Team. `assignedWork` переехал в Tasks и читается через `read.ts`. Общие числовая карточка и шкала принадлежат `ui/MetricViews.tsx`, период и сводка измерений — Usage. Опрос `M1Api.teamMetrics` сохраняет контракт `RunMetrics`. Одно исключение Team → Dashboard удалено, 10 → 9.
+
+Командный сценарий различает назначенные задачи и наблюдаемые запуски. В браузере два агента имеют один общий запуск и один отдельный. Командный итог показывает 2 уникальных запуска, строки агентов показывают 1 и 2. Enter открывает выбранного агента. Запрос измерений передаёт его `agentId`, профиль показывает его назначение и общий запуск, а кнопка Dashboard возвращает к команде. Неизвестные токены и стоимость сохраняются. Каталог, назначения и HTTP работают через локальный сервис. Ответ измерений дополняет синтетическая фикстура из двух запусков. [Решение и откат](../architecture/decisions/adr-dashboard-task-boundary.md#a2-rollout)
+
+| Маршрут в `tests/web/single-window/` | Проверок | До переноса | После переноса |
+| --- | ---: | --- | --- |
+| `func-g01-dashboard-acceptance.mts` | 61 | `.tmp/func-g01-dashboard/evidence-F2Q5nF/result.json` | `.tmp/func-g01-dashboard/evidence-64vAdN/result.json` |
+| `m2b-browser-acceptance.mts` | 53 | `.tmp/paos-m2b/browser-evidence-zd3vgA/result.json` | `.tmp/paos-m2b/browser-evidence-4ewTFK/result.json` |
+
+На обеих сборках прошли одинаковые 114/114 проверок. M2b покрыл создание агента через preview, версии, архивирование, восстановление, защиту от повторного применения и операции Skills. Локальные API-тесты покрыли подготовку предложения, CAS, историю и маршрутизацию draft от App-consumer. RED границы на исходном коде записан в `.tmp/meth-14-boundary-red.log`. Проверка отклоняет импорты Dashboard и внутренних модулей Tasks из Team, а также обратные зависимости общих компонентов.
+
+На исходной сборке ранние попытки остановились из-за относительного локатора строки (`.tmp/func-g01-dashboard/evidence-vTWeN7/result.json`) и ожидания данных уже смонтированного профиля (`.tmp/func-g01-dashboard/evidence-esmRZ0/result.json`, `.tmp/func-g01-dashboard/evidence-as8M6I/result.json`). Сценарий использует локатор относительно строки и штатные кнопки обновления статистики и измерений. Снимок команды совпал по SHA-256. Различающиеся пиксели снимка агента лежат у правого края в прямоугольнике 2 × 67. Снимки находятся рядом с JSON. Обе сборки использовали Chromium 1440 × 1000 для Team и профиля.
+
+Первый полный Web-прогон завершился с кодом 1, 709/710. В `project-scans.test.mts` не найден код `PROJECT_SCAN_SOURCE_STALE`, полный лог в `.tmp/meth-14-web-final.log`. Изолированный повтор файла прошёл 12/12 (`.tmp/meth-14-project-scans-retry.log`). Срез METH-14 сохранил файлы сервиса, контрактов и этого теста. Повторный полный Web прошёл 710/710 без пропусков (`.tmp/meth-14-web-retry.log`).
+
+Skills сохраняет отдельное решение `hold` по текущему входу `SkillGenerator`. METH-15 остаётся на `hold`. Команды описаны в `TEST.md`.
+
 ## Индекс задач
 
 | ID | Приоритет | Группа / методы | Задача | Depends on |
@@ -869,15 +888,15 @@ METH-18 выбрала узкий срез Tasks. Frontend Usage владеет 
 
 - Task: PAOS-METH-14
 - Task name: Расширить FSD на team и skills после go-решения
-- Status: planned
+- Status: implemented
 - Priority: P3
 - Delivery group: A4
 - Methodologies: FSD, ADD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Локальный срез Team по запросу владельца после подтверждения сценариев команды и профиля.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 19:52
 - Depends on: PAOS-METH-18
 - Blocks: Нет.
 - External references: PAOS-FUNC-11, PAOS-FUNC-12, PAOS-FUNC-16
@@ -885,30 +904,30 @@ METH-18 выбрала узкий срез Tasks. Frontend Usage владеет 
 - Short description: Применить проверенные boundaries к team/skills без реализации новых capabilities.
 - Technical value: Применить проверенные boundaries к team/skills без реализации новых capabilities.
 - Product value: Упростить использование task/dashboard primitives и безопасные следующие изменения каталогов.
-- Scope: `apps/web/src/features/team/TeamManager.tsx`; `apps/web/src/features/skills/SkillGenerator.tsx`. Будущие work locations, не список изменённых сейчас файлов.
+- Scope: `apps/web/src/features/team/AgentDashboard.tsx`; `apps/web/src/features/team/TeamManager.tsx`; `apps/web/src/features/dashboard/Dashboard.tsx`; `apps/web/src/features/dashboard/model.ts`; `apps/web/src/features/tasks/model.ts`; `apps/web/src/features/tasks/read.ts`; `apps/web/src/features/usage/UsageSummary.tsx`; `apps/web/src/features/usage/observed-period.ts`; `apps/web/src/ui/MetricViews.tsx`; `tests/web/contracts-boundaries.test.mts`; `tests/web/fixtures/dashboard-import-baseline.json`; `tests/web/ui-v3-dashboard.test.mts`; `tests/web/single-window/func-g01-dashboard-acceptance.mts`.
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
-- Expected result: Migrated team/skills по одному checkpoint; без обязательства мигрировать весь frontend.
+- Expected result: Team владеет AgentDashboard. Общие назначения, Usage и представления метрик имеют явных владельцев. Исключение Team → Dashboard снято.
 - Acceptance criteria: PAOS-METH-14-AC01: Начало после go/bounded_go METH-18 для подтверждённого scope. Выбранные Team и Skills имеют собственные checkpoints и владельцев. PAOS-METH-14-AC02: Catalog/profile/edit/history/generation preview и unavailable usage сохранены; F11/F12/F16 остаются своими задачами, provider search не вызывается. PAOS-METH-14-AC03: Public APIs/boundary tests и scoped UI checks проходят; отчёт показывает удалённые legacy edges и оставшиеся exceptions.
-- Verification gates: V-WEB; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
-- Risks / approval gates: P3 необязательна для принятия пилота; не включать provider calls или asset promotion. Текущий запрос разрешает только планирование.
+- Verification gates: V-WEB. Целевой и полный Web, проверка типов, сборка и парные браузерные проверки. [Маршруты](#meth-14-results)
+- Risks / approval gates: Локальный перенос UI с синтетической приёмкой, существующим read API и сохранением каталога, истории и proposal flow.
 - Complexity: M
 - Estimated execution time: Оценить после актуального discovery и выбора bounded slice; календарное обещание не дано.
-- Agents: builder — team/skills ownership; proposed ownership, сейчас delegation=0.
-- Skills: build-web-apps:frontend-testing-debugging; только для будущей UI проверки; архитектурные решения по ADR.
-- Output artifacts: Migrated team/skills по одному checkpoint; без обязательства мигрировать весь frontend.
-- Next step: METH-18 выбрала Team и/или Skills по подтверждённой локальной проблеме. METH-13 учитывается только при фактической зависимости, выявленной в ADR. Сверить выбранный scope и отдельно подтвердить полномочия на реализацию.
+- Agents: Основной агент, владение срезом Team и общими зависимостями, delegation=0.
+- Skills: documentation-and-adrs; tdd; build-web-apps:frontend-testing-debugging; build-web-apps:react-best-practices. Граница FSD сверена через Context7.
+- Output artifacts: AgentDashboard в Team, общие входы и проверка границ, парные браузерные отчёты, ADR.
+- Next step: Skills сохраняет отдельный hold по своим критериям. METH-15 имеет собственное решение о выходе.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не начата; сформирована карточка.
-- files touched / work locations: Сейчас implementation files не менялись; будущие locations указаны в Scope.
-- technical value delivered: Не заявлена до реализации.
-- product value delivered: Не заявлена до реализации.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Проверяется только подготовка плана; выполнение AC этой задачи не заявлено.
-- residual risks: P3 необязательна для принятия пилота; не включать provider calls или asset promotion.
-- follow-up: Выбор следующего разрешённого slice по DAG; автоматический старт запрещён.
+- status: implemented
+- what was done: AgentDashboard перенесён в Team. Общие зависимости получили владельцев в Tasks, Usage и ui.
+- files touched / work locations: См. Scope и [результаты](#meth-14-results).
+- technical value delivered: Удалено исключение Team → Dashboard. Новые обратные и глубокие импорты отклоняет тест.
+- product value delivered: Сохранены командная статистика, клавиатурный переход к агенту, его назначения и область измерений.
+- actual implementation date and time: 18-11-2026 19:52
+- verification evidence: 710/710 Web без пропусков, 36/36 целевых проверок, 114/114 в каждой браузерной сборке, проверка типов и Web-сборка. [Отчёты](#meth-14-results)
+- residual risks: Приёмка ограничена локальными синтетическими сценариями. Skills, F11/F12/F16 и METH-15 имеют свои условия.
+- follow-up: Сверять решение о Skills по проверяемой проблеме текущего входа.
 
 ### Task `PAOS-METH-15`
 

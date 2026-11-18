@@ -788,7 +788,7 @@
       "id": "PAOS-METH-14",
       "title": "Расширить FSD на team и skills после go-решения",
       "title_en": "Extend FSD to team and skills after a go decision",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P3",
       "methodologies": [
         "FSD",
@@ -807,8 +807,19 @@
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
       "proposed_owner": "builder — team/skills ownership",
       "work_locations": [
+        "apps/web/src/features/team/AgentDashboard.tsx",
         "apps/web/src/features/team/TeamManager.tsx",
-        "apps/web/src/features/skills/SkillGenerator.tsx"
+        "apps/web/src/features/dashboard/Dashboard.tsx",
+        "apps/web/src/features/dashboard/model.ts",
+        "apps/web/src/features/tasks/model.ts",
+        "apps/web/src/features/tasks/read.ts",
+        "apps/web/src/features/usage/UsageSummary.tsx",
+        "apps/web/src/features/usage/observed-period.ts",
+        "apps/web/src/ui/MetricViews.tsx",
+        "tests/web/contracts-boundaries.test.mts",
+        "tests/web/fixtures/dashboard-import-baseline.json",
+        "tests/web/ui-v3-dashboard.test.mts",
+        "tests/web/single-window/func-g01-dashboard-acceptance.mts"
       ],
       "acceptance_criteria": [
         {
@@ -828,8 +839,8 @@
         }
       ],
       "verification_profile": "V-WEB",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan",
+      "implementation_at": "18-11-2026 19:52",
+      "execution_authority": "owner_authorized_a4_bounded_local_implementation",
       "direction_id": "A",
       "activation_condition": {
         "ru": "METH-18 выбрала Team и/или Skills по подтверждённой локальной проблеме. METH-13 учитывается только при фактической зависимости, выявленной в ADR.",

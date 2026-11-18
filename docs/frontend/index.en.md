@@ -28,11 +28,13 @@ The current project Map, bounded Sources and project registration settings do no
 
 ## Verification and maintenance
 
-Dashboard and TeamManager access Tasks through `features/tasks/read.ts`. The [ADR](../architecture/decisions/adr-dashboard-task-boundary.en.md) covers the boundary and rollback. [Criteria and verification routes](../testing/test-map.en.md#dashboard-a1-criteria) · [METH-11 acceptance](../planning/methodology-improvement-2026-11-15.en.md#a4-results)
+Dashboard, TeamManager, and AgentDashboard access Tasks through `features/tasks/read.ts`. The [ADR](../architecture/decisions/adr-dashboard-task-boundary.en.md) covers the boundary and rollback. [Criteria and verification routes](../testing/test-map.en.md#dashboard-a1-criteria) · [METH-11 acceptance](../planning/methodology-improvement-2026-11-15.en.md#a4-results)
 
 The shared `ui/MarkdownBody.tsx` entry renders Tasks comments, Artifacts documents, and Sessions messages with a bounded parser and a common HTTP(S) link policy. Graph, Database and Workflows use `ui/MermaidView.tsx`. Graph and Database also use `ui/NetworkView.tsx`. Each feature owns its data preparation. [METH-10 contract and verification](../planning/methodology-improvement-2026-11-15.en.md#meth-10-results)
 
 `features/usage/RunUsage.tsx` presents project, task, session and agent measurements. Tasks owns navigation and focus restoration. [Usage boundary and verification](../planning/methodology-improvement-2026-11-15.en.md#meth-13-results)
+
+`features/team/AgentDashboard.tsx` owns the team and individual agent views. Shared metric tiles and scales are in `ui/MetricViews.tsx`. [Team boundary and verification](../planning/methodology-improvement-2026-11-15.en.md#meth-14-results)
 
 Find relevant source and tests through the pages above when changing behavior. [UI policy tests](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/ui-policy.test.mts), [draft tests](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/ui-draft-registry.test.mts), [theme/locale tests](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/theme-locale.test.mts) and [browser accessibility checks](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/accessibility/browser-acceptance.mts) are verification routes, not claims of a new run.
 

@@ -4,6 +4,7 @@ import {pathToFileURL} from 'node:url';
 import {randomUUID,createHash} from 'node:crypto';
 import {startLocalService} from '../../../apps/local-service/src/main.mts';
 import {newM2Task} from '../../../packages/contracts/issues/task-profile.ts';
+import type {RunMetric,RunMetrics} from '../../../packages/contracts/telemetry/run-metrics.ts';
 import {appLabel} from '../../../apps/web/src/locales/app.ts';
 import {uiLabel} from '../../../apps/web/src/locales/messages.ts';
 
@@ -19,6 +20,7 @@ await Promise.all([workspace,otherRoot,profile,home].map(p=>mkdir(p)));
 const agentSource=join(workspace,'.codex','agents');
 await mkdir(agentSource,{recursive:true});
 await writeFile(join(agentSource,'a4-reader.toml'),'name = "A4 synthetic reader"\ndescription = "Synthetic Team profile"\ndeveloper_instructions = "Read synthetic tasks."\n');
+await writeFile(join(agentSource,'m14-observer.toml'),'name = "Team synthetic observer"\ndescription = "Second synthetic Team profile"\ndeveloper_instructions = "Observe synthetic tasks."\n');
 const report:any={startedAt:new Date().toISOString(),syntheticOnly:true,providerCalls:false,realCredentials:false,browserPlugin:'not_available',checks:[],pageErrors:[],consoleErrors:[],screenshots:[],externalRequests:[]};
 const check=(name:string,passed:boolean,detail?:unknown)=>report.checks.push({name,passed,...(detail===undefined?{}:{detail})});
 let service:any,context:any,page:any,timer:any,csrf='',locale:'ru'|'en'='ru',stage='setup';
@@ -149,7 +151,10 @@ try{
  const team=page.getByTestId('agent-manager');
  await team.getByRole('button',{name:'Profiles',exact:true}).click();
  const asset=team.locator('button[data-asset-id]').filter({hasText:'A4 synthetic reader'});
+ const peer=team.locator('button[data-asset-id]').filter({hasText:'Team synthetic observer'});
  const assetId=await asset.getAttribute('data-asset-id');
+ const peerId=await peer.getAttribute('data-asset-id');
+ if(!assetId||!peerId||assetId===peerId)throw Error('TEAM_ASSETS_NOT_DISTINCT');
  await asset.click();
  const teamProfile=team.getByTestId('asset-profile');
  await teamProfile.waitFor();
@@ -157,12 +162,30 @@ try{
  await team.getByRole('button',{name:'Usage',exact:true}).click();
  const metrics=team.getByTestId('agent-metrics');
  const metricsPath='**/api/v1/projects/'+project.id+'/team/metrics?*';
- // Known transport values prove Team formatting while the catalog still uses the real local service.
- const measuredUsage=(route:any)=>route.fulfill({json:{
-  period:{from:'2026-11-11T00:00:00Z',to:'2026-11-19T00:00:00Z'},
-  denominator:1,source:'synthetic_a4',coverage:{status:'partial',reasons:[]},
-  agents:[{agentId:assetId,startedRuns:1,durationSeconds:61,tokenCount:null,cost:null,outcomes:{completed:1},taskIds:[],sessionIds:[],runIds:[]}],
- }});
+ // Keep the local HTTP route and its payload shape. A shared run plus a second run
+ // give deterministic UI expectations, with no provider or paid workload.
+ const scopedRequests=new Set<string>();
+ const measuredUsage=async(route:any)=>{
+  const response=await route.fetch(),original:RunMetrics=await response.json();
+  const selected=new URL(route.request().url()).searchParams.get('agentId');
+  if(selected)scopedRequests.add(selected);
+  const run=(runId:string,taskId:string,agentIds:string[]):RunMetric=>({
+   runId,taskId,agentIds,sessionId:null,route:'synthetic_team',status:'completed',startedAt:original.period.from,sourceRevision:1,
+   duration:{seconds:61,confirmedMilliseconds:61000,complete:true,openIntervals:0,unresolvedIntervals:0},
+   mediatedCommands:original.totals.mediatedCommands,
+  });
+  const shared=run('team-shared-run',ids[0],[assetId,peerId]),other=run('team-peer-run',ids[1],[peerId]);
+  const agents=[assetId,peerId].map(agentId=>{
+   const runs=[shared,other].filter(row=>row.agentIds.includes(agentId));
+   return {agentId,startedRuns:runs.length,durationSeconds:61*runs.length,confirmedMilliseconds:61000*runs.length,
+    tokenCount:null,cost:null,mediatedCommands:original.totals.mediatedCommands,
+    outcomes:{completed:runs.length,failed:0,cancelled:0,needsDecision:0,acceptedTasks:0},
+    taskIds:runs.map(row=>row.taskId!),sessionIds:[],runIds:runs.map(row=>row.runId)};
+  });
+  const runs=[shared,other].filter(row=>!selected||row.agentIds.includes(selected));
+  await route.fulfill({response,json:{...original,denominator:runs.length,agents:agents.filter(agent=>!selected||agent.agentId===selected),runs,
+   totals:{...original.totals,durationSeconds:61*runs.length,confirmedMilliseconds:61000*runs.length}}});
+ };
  await page.route(metricsPath,measuredUsage);
  try{
   await metrics.getByRole('button',{name:'Show metrics',exact:true}).click();
@@ -171,6 +194,46 @@ try{
   check('team_duration_uses_task_format',await summary.isVisible());
   check('team_missing_telemetry_stays_unknown',/Tokens: Unknown · Cost: Unknown/.test(await summary.innerText()));
   await shot('en-team-usage');
+
+  stage='team_dashboard_and_agent';
+  const saved=await api('/projects/'+project.id+'/task-manager');
+  for(const [index,agentId] of [assetId,peerId].entries()){
+   const task=saved.body.tasks.find((item:any)=>item.id===ids[index]);
+   if((await save({...task.data,agentAssignments:[agentId]},task.revision)).status!==200)throw Error('TEAM_ASSIGNMENT_SETUP_FAILED');
+  }
+  await team.getByRole('button',{name:'Dashboard',exact:true}).click();
+  const teamSummary=team.getByTestId('team-dashboard');
+  await teamSummary.getByRole('button',{name:'Refresh metrics',exact:true}).click();
+  const reader=teamSummary.getByRole('button',{name:'A4 synthetic reader',exact:true});
+  const readerRow=teamSummary.getByRole('row').filter({has:page.getByRole('button',{name:'A4 synthetic reader',exact:true})});
+  const peerRow=teamSummary.getByRole('row').filter({has:page.getByRole('button',{name:'Team synthetic observer',exact:true})});
+  await readerRow.getByRole('cell',{name:'1',exact:true}).first().waitFor();
+  const runCount=teamSummary.locator('.ui-metric').filter({hasText:'Observed runs'}).locator('strong').filter({hasText:/^2$/});
+  await runCount.waitFor();
+  await peerRow.getByRole('cell',{name:'1',exact:true}).waitFor();
+  check('team_assigned_and_observed_runs_remain_distinct',
+   JSON.stringify(await readerRow.getByRole('cell').allTextContents())===JSON.stringify(['A4 synthetic reader','1','1','—'])&&
+   JSON.stringify(await peerRow.getByRole('cell').allTextContents())===JSON.stringify(['Team synthetic observer','1','2','—']));
+  check('team_counts_unique_runs_and_renders_chart',(await runCount.innerText())==='2'&&await teamSummary.locator('[data-renderer=d3-scale] .ui-chart-row').count()===2);
+  await readerRow.scrollIntoViewIfNeeded();
+  await shot('en-team-dashboard');
+
+  await reader.press('Enter');
+  const agentDashboard=team.getByTestId('agent-dashboard');
+  await agentDashboard.getByRole('heading',{name:'A4 synthetic reader',exact:true}).waitFor();
+  await agentDashboard.getByRole('button',{name:'Refresh metrics',exact:true}).click();
+  const agentUsage=agentDashboard.getByTestId('run-usage');
+  await agentUsage.getByRole('button',{name:'Refresh measurements',exact:true}).click();
+  await agentUsage.locator('[data-run-id=team-shared-run]').waitFor();
+  const assignmentList=agentDashboard.locator('.usage-charts .records');
+  await assignmentList.getByText('Newest',{exact:true}).waitFor();
+  check('agent_keyboard_drill_down_shows_only_selected_assignments',!await teamSummary.isVisible()&&await assignmentList.locator('li').count()===1);
+  check('agent_usage_request_and_rows_are_scoped',scopedRequests.has(assetId)&&await agentUsage.locator('[data-run-id]').count()===1&&await agentDashboard.getByText('team-shared-run',{exact:true}).count()===1&&await agentDashboard.getByText('team-peer-run',{exact:true}).count()===0);
+  check('agent_unknown_usage_preserved',(await agentUsage.innerText()).includes('Tokens / cost / host tools')&&(await agentUsage.innerText()).includes('Unavailable'));
+  await assignmentList.scrollIntoViewIfNeeded();
+  await shot('en-agent-dashboard');
+  await team.getByRole('button',{name:'Dashboard',exact:true}).press('Enter');
+  check('agent_returns_to_team_summary',await teamSummary.isVisible()&&!await agentDashboard.isVisible());
  }finally{
   await page.unroute(metricsPath,measuredUsage);
  }
@@ -197,6 +260,10 @@ finally{
   'apps/web/src/features/tasks/model.ts',
   'apps/web/src/features/tasks/labels.ts',
   'apps/web/src/features/team/TeamManager.tsx',
+  'apps/web/src/features/team/AgentDashboard.tsx',
+  'apps/web/src/features/usage/UsageSummary.tsx',
+  'apps/web/src/features/usage/observed-period.ts',
+  'apps/web/src/ui/MetricViews.tsx',
   'apps/web/src/ui/App.tsx',
   'apps/web/src/ui/ProjectFreshness.tsx',
   'apps/web/src/api/project-freshness.ts',

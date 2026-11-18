@@ -74,24 +74,26 @@ const dashboard=webRoot+'features/dashboard/';
 const tasks=webRoot+'features/tasks/';
 const tasksReadApi=tasks+'read.ts';
 const runUsage=webRoot+'features/usage/RunUsage.tsx';
+const usageEntries=[runUsage,webRoot+'features/usage/UsageSummary.tsx',webRoot+'features/usage/observed-period.ts'];
 const teamManager=webRoot+'features/team/TeamManager.tsx';
+const agentDashboard=webRoot+'features/team/AgentDashboard.tsx';
 const app=webRoot+'ui/App.tsx';
-const sharedPresentation=['MarkdownBody.tsx','markdown.ts','external-url.ts','MermaidView.tsx','NetworkView.tsx'].map(name=>webRoot+'ui/'+name);
-const sharedUi=['CapabilityNotice.tsx','Icon.tsx','Modal.tsx','ProjectFreshness.tsx','MarkdownBody.tsx','external-url.ts'].map(name=>webRoot+'ui/'+name);
+const sharedPresentation=['MarkdownBody.tsx','markdown.ts','external-url.ts','MermaidView.tsx','NetworkView.tsx','MetricViews.tsx'].map(name=>webRoot+'ui/'+name);
+const sharedUi=['CapabilityNotice.tsx','Icon.tsx','Modal.tsx','ProjectFreshness.tsx','MarkdownBody.tsx','external-url.ts','MetricViews.tsx'].map(name=>webRoot+'ui/'+name);
 const inPilot=(file:string)=>file.startsWith(dashboard)||file.startsWith(tasks);
 const relativePath=(path:string)=>relative(root,path).replaceAll('\\','/');
 type Edge={from:string;to:string};
 
 function boundaryRule({from,to}:Edge){
  if(sharedPresentation.includes(from)&&(to.startsWith(webRoot+'features/')||to===app))return 'shared view depends on feature';
- if(from===runUsage&&(to.startsWith(webRoot+'features/')||to===app))return 'usage depends on screen';
+ if(usageEntries.includes(from)&&(to.startsWith(webRoot+'features/')||to===app))return 'usage depends on screen';
  const fromDashboard=from.startsWith(dashboard),toDashboard=to.startsWith(dashboard);
  const fromTasks=from.startsWith(tasks),toTasks=to.startsWith(tasks);
  if(!inPilot(from)&&!inPilot(to))return;
  if(fromDashboard&&toDashboard||fromTasks&&toTasks)return;
  if(from===app&&(to===dashboard+'Dashboard.tsx'||to===tasks+'TaskManager.tsx'))return;
- if((fromDashboard||from===teamManager)&&to===tasksReadApi)return;
- if((fromDashboard||fromTasks)&&to===runUsage)return;
+ if((fromDashboard||from===teamManager||from===agentDashboard)&&to===tasksReadApi)return;
+ if(fromDashboard&&usageEntries.includes(to)||fromTasks&&to===runUsage)return;
  if(inPilot(from)&&to.startsWith(webRoot+'ui/')&&!sharedUi.includes(to))return 'upward import';
  if(fromTasks&&toDashboard)return 'upward import';
  if(inPilot(from)&&to.startsWith(webRoot+'features/')&&!toTasks)return 'cross-feature import';
@@ -239,11 +241,32 @@ test('run usage has its own entry and cannot import screen internals',()=>{
  assert.deepEqual(actual.rules,[usage+' -> '+team+' [usage depends on screen]']);
 });
 
+test('team dashboard uses the public assignment and usage entries with no dependency on the Dashboard screen',()=>{
+ const teamView=webRoot+'features/team/AgentDashboard.tsx',dashboardView=dashboard+'Dashboard.tsx';
+ const metricUi=webRoot+'ui/MetricViews.tsx',usageSummary=webRoot+'features/usage/UsageSummary.tsx';
+ const observedPeriod=webRoot+'features/usage/observed-period.ts',teamPrivate=webRoot+'features/team/private-model.ts';
+ const files=new Map([
+  [teamView,"import '../tasks/read.ts'; import '../usage/UsageSummary.tsx'; import '../usage/observed-period.ts'; import '../../ui/MetricViews.tsx'; import '../dashboard/Dashboard.tsx'; import '../tasks/model.ts';"],
+  [dashboardView,"import '../tasks/read.ts'; import '../usage/UsageSummary.tsx'; import '../usage/observed-period.ts'; import '../../ui/MetricViews.tsx';"],
+  [metricUi,"import '../features/team/private-model.ts';"],
+  [observedPeriod,"import '../team/private-model.ts';"],
+ ]);
+ const actual=inspectWebImports(files,[...files.keys(),tasksReadApi,tasks+'model.ts',usageSummary,teamPrivate],{},()=>false);
+ assert.deepEqual(actual.diagnostics,[]);
+ assert.deepEqual(actual.rules,[
+  teamView+' -> '+dashboardView+' [non-public consumer]',
+  teamView+' -> '+tasks+'model.ts [non-public consumer]',
+  metricUi+' -> '+teamPrivate+' [shared view depends on feature]',
+  observedPeriod+' -> '+teamPrivate+' [usage depends on screen]',
+ ].sort());
+});
+
 test('the Tasks read entry exposes the existing selectors and labels through named exports',async()=>{
  const entry=await import(pathToFileURL(join(root,tasksReadApi)).href);
  const model=await import('../../apps/web/src/features/tasks/model.ts');
  const labels=await import('../../apps/web/src/features/tasks/labels.ts');
- assert.deepEqual(Object.keys(entry).sort(),['durationText','errorText','isBlocked','label','semanticStatus','statusText']);
+ assert.deepEqual(Object.keys(entry).sort(),['assignedWork','durationText','errorText','isBlocked','label','semanticStatus','statusText']);
+ assert.equal(entry.assignedWork,model.assignedWork);
  assert.equal(entry.durationText,model.durationText);
  assert.equal(entry.isBlocked,model.isBlocked);
  assert.equal(entry.semanticStatus,model.semanticStatus);

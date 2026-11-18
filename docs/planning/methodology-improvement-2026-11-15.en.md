@@ -255,6 +255,25 @@ Baseline keyboard RED: `.tmp/paos-m2/browser-evidence-0vKqEJ/m2-browser-result.j
 
 The Tasks screenshots capture the analytics panel and the restored focus with a visible unsaved comment. Baseline and final main JS SHA-256: `93a317adde4841d0a1181a42a55f1137c498524ffd43a20413ff1289803c3ae4` and `d33b602822c02d9288672de72461b699e3e07c157132bb30ade365e9de46727d`. Browser checks use local synthetic data. See `TEST.md`.
 
+### METH-14 — Team boundary and agent profile {#meth-14-results}
+
+METH-18 selected Team after checking the team dashboard and navigation to the selected agent. Team owns `features/team/AgentDashboard.tsx`. Tasks owns `assignedWork` and exposes it via `read.ts`. The shared metric tile and scale live in `ui/MetricViews.tsx`. Usage owns the measurement period and summary. `M1Api.teamMetrics` keeps its `RunMetrics` contract. One Team → Dashboard exception was removed, 10 → 9.
+
+The browser scenario distinguishes assigned tasks from observed runs. Its two agents share one run and one has a separate run. The team shows 2 unique runs while its rows show 1 and 2. Enter opens the selected agent. The measurements request passes the selected `agentId`, the profile shows that agent’s assignment and shared run, and Dashboard returns to the team. Unknown tokens and cost are preserved. The catalog, assignments, and HTTP use the local service. A two-run synthetic fixture supplies measurement values. [Decision and rollback](../architecture/decisions/adr-dashboard-task-boundary.en.md#a2-rollout)
+
+| Runner under `tests/web/single-window/` | Checks | Before | After |
+| --- | ---: | --- | --- |
+| `func-g01-dashboard-acceptance.mts` | 61 | `.tmp/func-g01-dashboard/evidence-F2Q5nF/result.json` | `.tmp/func-g01-dashboard/evidence-64vAdN/result.json` |
+| `m2b-browser-acceptance.mts` | 53 | `.tmp/paos-m2b/browser-evidence-zd3vgA/result.json` | `.tmp/paos-m2b/browser-evidence-4ewTFK/result.json` |
+
+The same 114/114 checks passed in both builds. M2b covers agent creation through preview, versions, archive, restore, duplicate-apply protection, and Skills operations. Local API tests cover proposal preparation, CAS, history, and App-consumer draft routing. The baseline boundary RED is in `.tmp/meth-14-boundary-red.log`. The test rejects Team imports of Dashboard and Tasks internals, along with reverse dependencies in the shared modules.
+
+Early baseline attempts stopped at the row locator (`.tmp/func-g01-dashboard/evidence-vTWeN7/result.json`) and while waiting for data in a previously mounted profile (`.tmp/func-g01-dashboard/evidence-esmRZ0/result.json`, `.tmp/func-g01-dashboard/evidence-as8M6I/result.json`). The scenario now uses a row-relative locator and the existing metrics and measurements refresh controls. The team screenshot has the same SHA-256. The agent screenshots differ only in a 2 × 67 bounding box at the right edge. Screenshots are alongside the JSON reports. Both builds used Chromium at 1440 × 1000 for Team and agent detail.
+
+The first full Web run exited 1, 709/710. `project-scans.test.mts` did not find `PROJECT_SCAN_SOURCE_STALE`. The full log is `.tmp/meth-14-web-final.log`. The isolated rerun passed 12/12 (`.tmp/meth-14-project-scans-retry.log`). METH-14 preserved service, contract and scan-test sources. The full Web rerun passed 710/710 with zero skips (`.tmp/meth-14-web-retry.log`).
+
+Skills keeps its separate `hold` on the current `SkillGenerator` entry. METH-15 remains on `hold`. Commands are in `TEST.md`.
+
 ## Task index
 
 | ID | Priority | Group / methods | Task | Depends on |
@@ -869,15 +888,15 @@ The Tasks screenshots capture the analytics panel and the restored focus with a 
 
 - Task: PAOS-METH-14
 - Task name: Extend FSD to team and skills after a go decision
-- Status: planned
+- Status: implemented
 - Priority: P3
 - Delivery group: A4
 - Methodologies: FSD, ADD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Owner-requested local Team slice after confirming team and agent scenarios.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 19:52
 - Depends on: PAOS-METH-18
 - Blocks: None.
 - External references: PAOS-FUNC-11, PAOS-FUNC-12, PAOS-FUNC-16
@@ -885,30 +904,30 @@ The Tasks screenshots capture the analytics panel and the restored focus with a 
 - Short description: Apply validated boundaries to team/skills without implementing new capabilities.
 - Technical value: Apply validated boundaries to team/skills without implementing new capabilities.
 - Product value: Simplify reuse of task/dashboard primitives and safe future catalog changes.
-- Scope: `apps/web/src/features/team/TeamManager.tsx`; `apps/web/src/features/skills/SkillGenerator.tsx`. Future work locations, not files changed now.
+- Scope: `apps/web/src/features/team/AgentDashboard.tsx`; `apps/web/src/features/team/TeamManager.tsx`; `apps/web/src/features/dashboard/Dashboard.tsx`; `apps/web/src/features/dashboard/model.ts`; `apps/web/src/features/tasks/model.ts`; `apps/web/src/features/tasks/read.ts`; `apps/web/src/features/usage/UsageSummary.tsx`; `apps/web/src/features/usage/observed-period.ts`; `apps/web/src/ui/MetricViews.tsx`; `tests/web/contracts-boundaries.test.mts`; `tests/web/fixtures/dashboard-import-baseline.json`; `tests/web/ui-v3-dashboard.test.mts`; `tests/web/single-window/func-g01-dashboard-acceptance.mts`.
 - Non-goals: New product features, provider/credentials, target/Git/publication/production; other FUNC/Web statuses; anything outside this slice.
-- Expected result: Migrated team/skills one checkpoint at a time; no commitment to migrate the entire frontend.
+- Expected result: Team owns AgentDashboard. Shared assignments, Usage, and metric views have explicit owners. Remove the Team → Dashboard exception.
 - Acceptance criteria: PAOS-METH-14-AC01: Start after a METH-18 go/bounded_go decision for the demonstrated scope. Each selected Team or Skills area has its own checkpoint and owner. PAOS-METH-14-AC02: Preserve catalog/profile/edit/history/generation preview and unavailable usage; F11/F12/F16 retain ownership and no provider search is invoked. PAOS-METH-14-AC03: Pass public API/boundary tests and scoped UI checks; report removed legacy edges and remaining exceptions.
-- Verification gates: V-WEB; profile above; current TEST routing takes precedence; execute during future implementation.
-- Risks / approval gates: P3 is optional for pilot acceptance; do not add provider calls or asset promotion. The current request authorizes planning only.
+- Verification gates: V-WEB. Focused and full Web, type-check, build, and paired browser verification. [Routes](#meth-14-results)
+- Risks / approval gates: Local UI extraction with synthetic acceptance, the existing read API, and preserved catalog, history and proposal flow.
 - Complexity: M
 - Estimated execution time: Estimate after current discovery and bounded-slice selection; no calendar commitment.
-- Agents: builder — team/skills ownership; proposed ownership; delegation=0 now.
-- Skills: build-web-apps:frontend-testing-debugging; for future UI verification only; architecture follows the ADR.
-- Output artifacts: Migrated team/skills one checkpoint at a time; no commitment to migrate the entire frontend.
-- Next step: METH-18 selected Team and/or Skills for a demonstrated local problem. METH-13 matters only if the ADR identifies an actual dependency. Confirm the selected scope and obtain separate implementation authority.
+- Agents: Primary agent, Team slice and shared dependency ownership, delegation=0.
+- Skills: documentation-and-adrs; tdd; build-web-apps:frontend-testing-debugging; build-web-apps:react-best-practices. FSD boundary checked through Context7.
+- Output artifacts: Team-owned AgentDashboard, shared entry points and boundary check, paired browser reports, and ADR.
+- Next step: Skills retains its separate hold under its own criteria. METH-15 has its own rollout decision.
 
 #### Completion Report
 
-- status: planned
-- what was done: Implementation not started; task card authored.
-- files touched / work locations: No implementation files changed now; future locations are listed in Scope.
-- technical value delivered: Not claimed before implementation.
-- product value delivered: Not claimed before implementation.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Only plan preparation is checked; this task's AC are not claimed as executed.
-- residual risks: P3 is optional for pilot acceptance; do not add provider calls or asset promotion.
-- follow-up: Select the next authorized slice from the DAG; no automatic start.
+- status: implemented
+- what was done: Moved AgentDashboard into Team. Tasks, Usage, and ui own their shared dependencies.
+- files touched / work locations: See Scope and the [results](#meth-14-results).
+- technical value delivered: Removed the Team → Dashboard exception. The boundary check rejects new reverse and deep imports.
+- product value delivered: Preserved team statistics, keyboard navigation to the agent, assignments, and measurement scope.
+- actual implementation date and time: 18-11-2026 19:52
+- verification evidence: 710/710 Web with zero skips, 36/36 focused checks, 114/114 in each browser build, type-check and Web build passed. [Reports](#meth-14-results)
+- residual risks: Acceptance covers local synthetic scenarios. Skills, F11/F12/F16 and METH-15 retain their own criteria.
+- follow-up: Reconsider Skills only after demonstrating a problem with its existing entry.
 
 ### Task `PAOS-METH-15`
 

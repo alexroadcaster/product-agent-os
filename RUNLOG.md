@@ -1,8 +1,12 @@
 # RUNLOG.md
 
+## PAOS-METH-14 — выбранный срез Team, 18.11.2026
+
+AgentDashboard перенесён в Team. Снято последнее исключение с импортом Dashboard из Team. Web 710/710 без пропусков. Браузер сохранил командную статистику, профиль и каталог, 114/114 до и после. Skills и METH-15 сохраняют `hold`. [Приёмка и откат](docs/planning/methodology-improvement-2026-11-15.md#meth-14-results)
+
 ## PAOS-METH-13 — выбранный срез Tasks, 18.11.2026
 
-Панель передана владельцу Usage, два исключения удалены. Проверены возврат к той же задаче, черновики и фокус. Web 709/709 без пропусков, браузер 212/212. Workflows, METH-14 и METH-15 сохраняют `hold`. [Приёмка и откат](docs/planning/methodology-improvement-2026-11-15.md#meth-13-results)
+Панель передана владельцу Usage, два исключения удалены. Проверены возврат к той же задаче, черновики и фокус. Web 709/709 без пропусков, браузер 212/212. На момент METH-13 действовал `hold` для Workflows, METH-14 и METH-15. [Приёмка и откат](docs/planning/methodology-improvement-2026-11-15.md#meth-13-results)
 
 ## PAOS-METH-10 — общие Markdown и диаграммы, 18.11.2026
 

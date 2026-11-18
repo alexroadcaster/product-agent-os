@@ -16,13 +16,6 @@
         "features/workflows/recipes/QueueManager.tsx -> features/tasks/labels.ts [non-public consumer]",
         "features/workflows/recipes/RecipeRunner.tsx -> features/tasks/labels.ts [non-public consumer]"
       ]
-    },
-    {
-      "owner": "Dashboard and Team frontend maintainers",
-      "removal_task": "PAOS-METH-14",
-      "edges": [
-        "features/team/TeamManager.tsx -> features/dashboard/Dashboard.tsx [non-public consumer]"
-      ]
     }
   ]
 }

@@ -1,6 +1,6 @@
 import {CapabilityNotice} from '../../ui/CapabilityNotice.tsx';
 import {SkillGenerator} from '../skills/SkillGenerator.tsx';
-import {AgentDashboard} from '../dashboard/Dashboard.tsx';
+import {AgentDashboard} from './AgentDashboard.tsx';
 import {useEffect,useRef,useState} from 'react';
 import {HttpApiError,type M1Api} from '../../api/client.ts';
 import {durationText,errorText,label,type Locale} from '../tasks/read.ts';
