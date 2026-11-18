@@ -1,5 +1,15 @@
 # RUNLOG.md
 
+## Методологии — пересмотр планов A и B, 18.11.2026
+
+В A технический пилот заканчивается проверкой границы Dashboard. В B первым результатом запланирован совет в CLI и Web для двух задач одного проекта, с объяснением выбора и следующего шага. В карточках указаны владельцы анализа, решений, доказательств по критериям и операций записи. Дальнейшее выполнение требует отдельного запроса. [План A](docs/planning/methodology-improvement-2026-11-15.md) · [План B](docs/planning/user-project-methodologies-2026-11-15.md) · [Основания изменений](research/methodology-plan-review-2026-11-18.md)
+
+При сверке четырёх RU/EN-матриц подтверждены 43 исполняемые карточки в статусе `planned`, 155 ID критериев и отдельная справочная METH-16. В A осталось 17 обязательных рёбер, в B — 31. Обе пары JSON-зеркал побайтно совпадают. Графы ацикличны, обратные `blocks` согласованы. Перед расширением поставки B выбранные возможности проходят профильную проверку PMETH-23, решение о расширении принадлежит PMETH-25.
+
+## F23 — ожидание решения пользователя, 16.11.2026
+
+По прямому запросу владельца F23 переведена в awaiting_user_decision / «Ожидание решения пользователя». Проверку и обратную связь выполняет пользователь; дальнейшее действие — после его решения. F24/F19/F25 implemented, FUNC-G07 открыта, общий итог33implemented/1awaiting_user_decision. Прежние technical receipts сохранены в verification.previous_func_g07; новые Web/native/site прогоны этим изменением статуса не заявляются. Control-plane sync updated REQUIREMENTS/PLAN/RUNLOG/TEST; EVALS/prod_test no_change_needed: исходные AC, thresholds и Batch39 не менялись. [Карточка и evidence](docs/planning/functional-remediation-2026-11-15.md#func-g07-results).
+
 ## FUNC-G06 — закрыта, 16.11.2026
 
 FUNC-G06 implemented3/3. F21processcrash/ownership20/20; F22import/backup11/11; finalweb694/694,0skip. Managedactualpackage10/10,3installedA/B/Aphases withrealNativeLauncherIPC/service andreadback; nativewindow=false,currentOSaccountfreshfixtureenvonly. Homeenvandhomelock defects actualRED→GREEN; originalfilehashespreserved,newemptyWAL/32KiBSHM explicitlyrecorded. Finalreview separate_reused_context,closed_allowed (.tmp/func-g06/final-review.json);157source/package/distbindings,31foreigncards/JSONperlanguage,141rootsections preserved. RUENvalidatorok=true/errors=[],docs14passed; priorfailedvalidatorreceiptsretained. No provider/realcredentials/Git/systeminstallation/publication. [Решения/evidence](docs/planning/functional-remediation-2026-11-15.md#func-g06-results).

@@ -1,3 +1,5 @@
+import {CapabilityNotice} from './CapabilityNotice.tsx';
+import {runtimeConnectionState} from './capability.ts';
 import { useRef,useState } from "react";
 import {HttpApiError,type Connection,type M1Api,type ConnectionRoute} from '../api/client.ts';
 import type { AppLabel } from "../locales/app.ts";
@@ -10,15 +12,19 @@ import {
 /** Secret input lives only in the native control and is cleared after each submission. */
 export function ConnectionControls({
   api,
+  locale,
   connection,
   onConnection,
   t,
 }: {
   api: M1Api;
+  locale: "ru" | "en";
   connection: Connection | null;
   onConnection: (connection: Connection) => void;
   t: (key: AppLabel) => string;
 }) {
+  const w=(ru:string,en:string)=>locale==='ru'?ru:en;
+  const connectionState=runtimeConnectionState(connection);
   const [busy, setBusy] = useState(false),
     [error, setError] = useState("");
   const [handoff,setHandoff]=useState(false);
@@ -67,6 +73,10 @@ export function ConnectionControls({
             : t("unverified")}{" "}
         {!isApp&&<> · {t("modelAccess")}: {t("unverified")}</>}
       </p>
+      {isApp&&<CapabilityNotice testId="capability-runtime" locale={locale} state={connectionState}
+        scope={w('Подключение канала PAOS; готовность выполнения проверяется для выбранной сессии','PAOS channel connection; execution readiness is checked for the selected session')}
+        reason={connectionState==='connected'?w('Worker подключён. Это не свидетельство квалификации broker, model access или sandbox собственных tools Codex App.','The worker is attached. This does not attest broker qualification, model access or a sandbox for Codex App host tools.'):w('Канал Codex App worker не подключён. Endpoint и открытое окно не подтверждают attached worker.','The Codex App worker channel is not connected. An endpoint or an open window does not attest an attached worker.')}
+        next={connectionState==='connected'?w('Выберите задачу и execution-сессию: её preflight и runtime snapshot показывают scope broker. Используйте действующий approval без нового запроса.','Select a task and execution session: its preflight and runtime snapshot show broker scope. Use existing approval without a new request.'):isApp?t(handoff?'appHandoffOpened':waiting?'appWaitingInstruction':'appConnectInstruction'):t('credentialHint')}/>}
       {isApp ? (
         <>
           {!appAttached&&<p className="notice" role="status" data-testid="app-connection-next-step">{t(handoff?'appHandoffOpened':waiting?'appWaitingInstruction':'appConnectInstruction')}</p>}

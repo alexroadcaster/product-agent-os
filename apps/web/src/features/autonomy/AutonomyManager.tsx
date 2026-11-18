@@ -1,3 +1,4 @@
+import {CapabilityNotice} from '../../ui/CapabilityNotice.tsx';
 import {useEffect,useRef,useState} from 'react';
 import type {M1Api,StoredEntity} from '../../api/client.ts';
 import type {UiLocale} from '../../locales/messages.ts';
@@ -41,6 +42,7 @@ export function AutonomyManager({api,projectId,locale}:{api:M1Api;projectId:stri
   {notice&&<p role="status">{notice}</p>}
   {interrupts.length>0&&<ul aria-label={w('Запросы остановки','Stop requests')}>{interrupts.map(item=><li key={item.runId}>{item.runId}: {item.status==='stop_requested'?w('Остановка запрошена','Stop requested'):w('Нужна сверка с runtime','Runtime reconciliation required')}{item.reason?` (${item.reason})`:''}</li>)}</ul>}
   <button disabled={busy||loading} onClick={()=>void act('refresh')}>{w('Обновить состояние, сохранив черновик','Refresh state, keeping draft')}</button>
+  <CapabilityNotice testId="capability-autonomy" locale={locale} state={error?'failed':!snapshot?.policy?'not_configured':'partial'} scope={w('Политика текущего проекта; только PAOS-mediated execution','Current project policy; PAOS-mediated execution only')} reason={w('Узкие файловые sandbox scopes, token/cost limits и ограничение собственных host tools недоступны. Сохранение и допуск не запускают задачу.','Narrow file sandbox scopes, token/cost caps and App-host tool restrictions are unavailable. Saving or enabling admission does not start a task.')} next={w('Выберите задачи и границы, выполните предпросмотр и сохраните на паузе. Используйте действующий допуск в выбранной execution-сессии.','Choose tasks and boundaries, preview and save paused. Use existing admission in the selected execution session.')}/>
   {snapshot&&<>
    <p role="status">{!snapshot.policy?w('Политика не настроена','No policy configured'):snapshot.paused?w('На паузе','Paused'):w('Допуск включён','Admission enabled')} · {w('Запусков использовано','Runs used')}: {snapshot.usedRuns}/{snapshot.policy?.maxRuns??0}</p>
    <p data-testid="autonomy-command-budget">{w('Команд зарезервировано','Commands reserved')}: {snapshot.usedCommands} · {w('Общий лимит','Policy-window limit')}: {snapshot.commandLimit??w('Не задан','Not set')} · {w('Осталось резервирований','Reservations remaining')}: {snapshot.remainingCommands??'—'}</p>

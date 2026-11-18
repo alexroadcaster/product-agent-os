@@ -5,7 +5,7 @@
   "timezone": "Europe/Moscow",
   "source_plan": "docs/planning/functional-remediation-2026-11-15.md",
   "status": "in_progress",
-  "execution_authority": "owner_authorized_func_g01_g02_g03_g04_g05_g06_local_synthetic",
+  "execution_authority": "owner_authorized_func_g01_g02_g03_g04_g05_g06_g07_local_synthetic_and_docs_human_pilot_requires_explicit_consent",
   "original_group_unchanged": "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json",
   "tasks": [
     {
@@ -1374,10 +1374,10 @@
     {
       "id": "PAOS-FUNC-19",
       "title": "Проверить сквозной функционал на текущей сборке",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "type": "verification",
-      "evidence_level": "verification_gap",
+      "evidence_level": "implemented_locally_verified_with_explicit_limits",
       "technical_value": "Связать real UI/API/storage/native receipts с одним revision без подмены execution mock-данными.",
       "product_value": "Пользователь проходит весь рабочий путь и получает проверяемый результат.",
       "acceptance_criteria": [
@@ -1433,8 +1433,8 @@
       "estimate": "8–16 ч без ожидания live approval",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "rough_range",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "16-11-2026 11:34",
+      "execution_authority": "owner_authorized_func_g07_local_synthetic_and_docs_human_pilot_requires_explicit_consent",
       "source_observation": "Redesign receipts visual/synthetic не доказывают новый native full path.",
       "source_paths": [
         "design/2026-11-13-v3/implementation-evidence.md",
@@ -1445,7 +1445,48 @@
         "npm run check:web-m1",
         "npm run build:web"
       ],
-      "delivery_group_id": "FUNC-G07"
+      "delivery_group_id": "FUNC-G07",
+      "completion_report": {
+        "status": "implemented",
+        "what_was_done": "На текущем build проверены Add→Files→source line→pinned task reference, persisted agent assignment/profile pin, planning без записи, execution→approval→actual default native command→diff/checks UI→отдельный synthetic technical-owner done. Stop запрещает преждевременный task cancel, затем ACK/restart сохраняют историю. Forms/custom workflow publish/assignment/old pins/RUEN/themes/keyboard и Files/Map/DB/usages/partial/error/recovery покрыты связанными current receipts. UI schema page уменьшена50→25 после real1500ms RED1850ms; API default50/max200 не менялись. Все200объектов подтверждены через8страниц без пропусков, текущий first25ERD1347ms/next671–795ms.",
+        "files_touched": [
+          "tests/web/single-window/m4-integration-acceptance.mts",
+          "tests/web/single-window/m2-task-manager-browser-acceptance.mts",
+          "tests/web/single-window/project-files-browser-acceptance.mts",
+          "apps/web/src/features/database/DatabaseExplorer.tsx",
+          "tests/web/single-window/graph-database-browser-acceptance.mts"
+        ],
+        "technical_value_delivered": "Наблюдаемая actual native цепочка связана task/session/run/operation/diff/check IDs, source/build/manifest hashes; selected-binding qualification отделена от global attachment. Expected CAS failures допускаются только по exact path/code и доказанному superseded revision.",
+        "product_value_delivered": "Основные действия, формы, источники и восстановление проверены на одной итоговой сборке без реальных учётных данных; human convenience/acceptance не выводятся из автоматизации.",
+        "verification_evidence": [
+          ".tmp/func-g07/integration/browser-evidence-oVuLNF/result.json:68/68,actualNativeBroker=true,cleanup=true",
+          ".tmp/paos-m2/browser-evidence-RuLrrM/m2-browser-result.json:33/33,func-g07,current custom workflow",
+          ".tmp/func-g03/browser-final/evidence-FAq6dz/result.json:19/19,current final build",
+          ".tmp/func-g04/browser-acceptance/evidence-U0CmeI/result.json:18/18",
+          ".tmp/func-g05/browser-acceptance/evidence-PZejGw/result.json:16/16",
+          ".tmp/func-g06/managed-acceptance/evidence-xyiUSA/result.json:10/10",
+          ".tmp/func-g07/native-default.json:passed,production default,no candidate",
+          ".tmp/func-g07/web-certified-final.log:697/697,0fail/skip",
+          ".tmp/func-g07/binary-cleanup-final.json:passed",
+          ".tmp/func-g04/browser-acceptance/evidence-U0CmeI/result.json:UI25,8pages,200unique; unchanged1500ms budget"
+        ],
+        "follow_up": "Live App/model roundtrip и generation требуют отдельной exact authority и остаются not_observed по AC3. F23 human acceptance отдельно. Legacy M2 --scenario integration сохранил obsolete-catalog failure; bounded current --scenario func-g07 проверен, старый route не объявляется green.",
+        "docs_impact": {
+          "decision": "updated",
+          "paths": [
+            "docs/planning/functional-remediation-2026-11-15.md",
+            "docs/planning/functional-remediation-2026-11-15.en.md",
+            "docs/web/accessibility.md",
+            "docs/web/accessibility.en.md",
+            "TEST.md",
+            "docs/db/erd.md",
+            "docs/db/erd.en.md"
+          ],
+          "source_revision": "current_func_g07_working_tree"
+        },
+        "implementation_at": "16-11-2026 11:34",
+        "residual_risks": "Local synthetic scope on the pinned Windows tuple. No provider/model roundtrip, real credentials/profiles, human acceptance, new OS account, system installation, publication or commercial readiness. F23 participants/consent/14-day reuse/owner decision remain absent."
+      }
     },
     {
       "id": "PAOS-FUNC-20",
@@ -1694,10 +1735,10 @@
     {
       "id": "PAOS-FUNC-23",
       "title": "Провести продуктовую приёмку ключевых сценариев",
-      "status": "planned",
+      "status": "awaiting_user_decision",
       "priority": "P2",
       "type": "verification",
-      "evidence_level": "verification_gap",
+      "evidence_level": "protocol_prepared_human_pilot_not_started",
       "technical_value": "Связать acceptance с наблюдаемой корректностью решений, а не числом кликов.",
       "product_value": "Пользователь без подсказки понимает статус, blocker, evidence и следующий шаг.",
       "acceptance_criteria": [
@@ -1726,22 +1767,63 @@
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "rough_range",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "execution_authority": "owner_authorized_func_g07_local_synthetic_and_docs_human_pilot_requires_explicit_consent",
       "source_observation": "PRD pilot metrics и UI-12 acceptance остаются отдельными gates.",
       "source_paths": [
         "research/product-agent-os-web-prd-2026-11-05.md",
         "docs/planning/2026-11-13-v3-ui-implementation-plan.md"
       ],
       "future_test_commands": [],
-      "delivery_group_id": "FUNC-G07"
+      "delivery_group_id": "FUNC-G07",
+      "completion_report": {
+        "status": "awaiting_user_decision",
+        "what_was_done": "Подготовлен revision1 протокола F23: пять будущих псевдонимных слотов, neutral MD-before-UI A/B baseline, первая попытка/180секунд,14дней distinct-real-task reuse, ошибки/потери, consent/retention/withdrawal и отдельная owner form. Владелец подтвердил: участники пока не определены. Пилот не начат. По запросу пользователя 16.11.2026 задача передана ему для самостоятельной проверки и обратной связи; статус «Ожидание решения пользователя». Это не приёмка и не закрытие.",
+        "files_touched": [
+          "docs/web/pilot.md",
+          "docs/web/pilot.en.md"
+        ],
+        "technical_value_delivered": "Есть конкретный reviewable протокол и схема будущих receipts; null не подменяется нулём, согласием или успехом.",
+        "product_value_delivered": "Подготовлены нейтральные сценарии первого открытия/возвращения, файлов, Map/DB/usages, stale/partial/conflict/cancel/restart; полезность для людей пока не измерена.",
+        "implementation_at": "pending_execution_timestamp",
+        "verification_evidence": [
+          "docs/web/pilot.md#func-g07-pilot-protocol",
+          "docs/web/pilot.en.md#func-g07-pilot-protocol",
+          ".tmp/func-g07/docs-pilot-f24.log:passed",
+          "owner_reply:participants_not_defined",
+          "owner_request:awaiting_user_decision_self_check_and_feedback_2026-11-16"
+        ],
+        "residual_risks": "Участники, observer/data owner, согласованный baseline, opt-in/retention, реальные timed attempts,14-day reuse и owner acceptance отсутствуют. Исходные цели4/5 и3/5 не изменены.",
+        "follow_up": "Дождаться самостоятельной проверки, обратной связи и решения пользователя. Исходные AC и предложенный протокол сохранены; изменение критериев или закрытие F23/G07 требует отдельного решения и соответствующего evidence.",
+        "docs_impact": {
+          "decision": "updated",
+          "paths": [
+            "docs/web/pilot.md",
+            "docs/web/pilot.en.md",
+            "docs/sources/registry.md",
+            "docs/sources/registry.en.md"
+          ],
+          "source_revision": "current_f23_owner_handoff_working_tree",
+          "human_evidence": "not_observed"
+        }
+      },
+      "status_label": "Ожидание решения пользователя",
+      "status_changed_at": "2026-11-16T10:42:36Z",
+      "owner_handoff": {
+        "owner": "user",
+        "mode": "owner_self_check_and_feedback",
+        "reason": "Пользователь самостоятельно проверяет результат и даёт обратную связь.",
+        "next_action": "Дождаться обратной связи пользователя и его решения о дальнейших действиях.",
+        "acceptance": "not_observed",
+        "original_acceptance_criteria": "preserved_pending_explicit_owner_decision"
+      }
     },
     {
       "id": "PAOS-FUNC-24",
       "title": "Объяснять доступность функций в момент действия",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "type": "improvement",
-      "evidence_level": "static_observation",
+      "evidence_level": "implemented_locally_verified_with_explicit_limits",
       "technical_value": "Единый capability vocabulary для staged/unsupported/partial/connected/qualified/accepted.",
       "product_value": "Пользователь отличает доступную функцию от экрана с будущей возможностью.",
       "acceptance_criteria": [
@@ -1791,8 +1873,8 @@
       "estimate": "8–16 ч",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "rough_range",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "16-11-2026 11:34",
+      "execution_authority": "owner_authorized_func_g07_local_synthetic_and_docs_human_pilot_requires_explicit_consent",
       "source_observation": "Ряд экранов уже отображает unknown/staged; нужна единая journey-проверка.",
       "source_paths": [
         "apps/web/src/ui/ConnectionControls.tsx",
@@ -1802,15 +1884,62 @@
         "npm run check:web-m1",
         "npm run test:web-m1"
       ],
-      "delivery_group_id": "FUNC-G07"
+      "delivery_group_id": "FUNC-G07",
+      "completion_report": {
+        "status": "implemented",
+        "what_was_done": "Добавлен общий display vocabulary и именованные capability notes с scope/reason/next step для runtime, usage, Map/DB/usages, proposals/discovery/history/autonomy. Global channel всегда attests attachment; broker qualification только per-session. Исправлены mobile autonomy grid и ambiguous global badges; file rejection объясняет следующий шаг. Authority/approval логика не менялась. App-channel note ограничен isApp; BYOK не наследует чужой scope, meaningful RED/GREEN подтверждены.",
+        "files_touched": [
+          "apps/web/src/ui/capability.ts",
+          "apps/web/src/ui/CapabilityNotice.tsx",
+          "apps/web/src/ui/ConnectionControls.tsx",
+          "apps/web/src/ui/App.tsx",
+          "apps/web/src/design/parity.css",
+          "apps/web/src/features/team/TeamManager.tsx",
+          "apps/web/src/features/skills/SkillGenerator.tsx",
+          "apps/web/src/features/dashboard/RunUsage.tsx",
+          "apps/web/src/features/sessions/SessionsCatalog.tsx",
+          "apps/web/src/features/autonomy/AutonomyManager.tsx",
+          "apps/web/src/features/graph/GraphExplorer.tsx",
+          "apps/web/src/features/database/DatabaseExplorer.tsx",
+          "apps/web/src/features/database/CodeDatabaseUsages.tsx",
+          "apps/web/src/features/files/ProjectFiles.tsx",
+          "tests/web/ui-capability.test.mts",
+          "tests/web/single-window/capability-browser-acceptance.mts"
+        ],
+        "technical_value_delivered": "Состояния разделяют подключение, квалификацию сессии, сохранённый partial индекс, неподдерживаемую семантику и owner acceptance; unknown не становится loading/ready.",
+        "product_value_delivered": "Рядом с действием видны доступный scope, ограничение и следующий шаг; мобильное пояснение читается на полной ширине, существующие подтверждения не дублируются.",
+        "verification_evidence": [
+          ".tmp/func-g07/f24-browser-red-assertion.log:intended RED",
+          ".tmp/func-g07/f24-global-connection-state-red.log:RED",
+          ".tmp/func-g07/f24-global-connection-focused-green.log:7/7",
+          ".tmp/func-g07/browser-acceptance/evidence-mO7W5K/result.json:7/7,current build,cleanup=true",
+          ".tmp/func-g07/build-final-erd25.log:passed",
+          ".tmp/func-g07/typecheck-certified-final.log:passed",
+          ".tmp/func-g07/web-certified-final.log:697/697,0fail/skip",
+          ".tmp/func-g07/f24-byok-browser-red.log:RED; current capability7/7 includes BYOK negative case"
+        ],
+        "follow_up": "Human comprehension проверяется по F23; глобальное connection API не должно заменять выбранный runtime snapshot.",
+        "docs_impact": {
+          "decision": "updated",
+          "paths": [
+            "docs/web/accessibility.md",
+            "docs/web/accessibility.en.md",
+            "docs/sources/registry.md",
+            "docs/sources/registry.en.md"
+          ],
+          "source_revision": "current_func_g07_working_tree"
+        },
+        "implementation_at": "16-11-2026 11:34",
+        "residual_risks": "Local synthetic scope on the pinned Windows tuple. No provider/model roundtrip, real credentials/profiles, human acceptance, new OS account, system installation, publication or commercial readiness. F23 participants/consent/14-day reuse/owner decision remain absent."
+      }
     },
     {
       "id": "PAOS-FUNC-25",
       "title": "Согласовать текущие продуктовые статусы и критерии",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "type": "documentation",
-      "evidence_level": "static_observation",
+      "evidence_level": "docs_static_verified_with_explicit_limits",
       "technical_value": "Один актуальный указатель PRD/architecture/plan/registry с сохранённой историей.",
       "product_value": "План и документация ясно показывают, что работает, ограничено и ждёт проверки.",
       "acceptance_criteria": [
@@ -1841,8 +1970,8 @@
       "estimate": "4–8 ч",
       "estimate_status": "rough_range_not_commitment",
       "implementation_budget": "rough_range",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "planning_only",
+      "implementation_at": "16-11-2026 11:34",
+      "execution_authority": "owner_authorized_func_g07_local_synthetic_and_docs_human_pilot_requires_explicit_consent",
       "source_observation": "Датированные addenda сосуществуют с ранними status blocks; нужен current-state entry. Текущий docs unittest: 4 failures из-за отсутствующих rendered accessibility/pilot RU/EN и search/sitemap parity.",
       "source_paths": [
         "research/product-agent-os-web-prd-2026-11-05.md",
@@ -1853,7 +1982,67 @@
         "python tools/check_docs.py",
         "git diff --check"
       ],
-      "delivery_group_id": "FUNC-G07"
+      "delivery_group_id": "FUNC-G07",
+      "completion_report": {
+        "status": "implemented",
+        "what_was_done": "PRD/architecture/plan указывают на current FUNC/M5 owners, ранние implementation_not_started/API-only блоки явно датированы как история. Исправлены cross-locale/outside-docs links, две пропущенные EN фразы и выдача двух JSON через byte-identical EN mirrors. Accessibility/pilot RUEN обновляются по F24/F23. Strict preclosure build, штатный postprocess и site7/7 прошли; итоговый output обновляется после closing metadata. Current F19 UI25/APIdefault50/max200 описаны в ERD RU/EN.",
+        "files_touched": [
+          "research/product-agent-os-web-prd-2026-11-05.md",
+          "research/product-agent-os-web-architecture-2026-11-05.md",
+          "docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md",
+          "docs/planning/index.md",
+          "docs/planning/methodology-improvement-2026-11-15.md",
+          "docs/planning/methodology-improvement-2026-11-15.en.md",
+          "docs/planning/methodology-improvement-2026-11-15.en.json",
+          "docs/planning/user-project-methodologies-2026-11-15.md",
+          "docs/planning/user-project-methodologies-2026-11-15.en.json",
+          "docs/web/accessibility.md",
+          "docs/web/accessibility.en.md",
+          "docs/web/pilot.md",
+          "docs/web/pilot.en.md",
+          "docs/sources/registry.md",
+          "docs/sources/registry.en.md",
+          "docs/db/erd.md",
+          "docs/db/erd.en.md"
+        ],
+        "technical_value_delivered": "Устранён nested strict-build abort до объединения search RU/EN; source JSON остаются единственными owners, mirror regeneration/SHA записаны в planning/index.",
+        "product_value_delivered": "Текущие статусы и ограничения доступны через единый owner; technical implementation, исторические receipts и незавершённая human acceptance различаются.",
+        "verification_evidence": [
+          ".tmp/func-g07/docs-source-tests.log:3/3",
+          ".tmp/func-g07/docs-all-source.log:passed",
+          ".docs-tools/reports/func-g07/mkdocs-interim.log:failed,retained",
+          ".docs-tools/reports/func-g07/mkdocs-fix1.log:passed",
+          ".docs-tools/reports/func-g07/site-checks-fix1.log:7/7,interim build",
+          ".docs-tools/reports/func-g07/mkdocs-preclosure.log:passed",
+          ".docs-tools/reports/func-g07/postprocess-preclosure.log:488files",
+          ".docs-tools/reports/func-g07/site-checks-preclosure-after-postprocess.log:7/7",
+          ".tmp/func-g07/matrix-ru-preclosure.json:ok=true,errors=[]",
+          ".tmp/func-g07/matrix-en-preclosure.json:ok=true,errors=[]",
+          ".docs-tools/reports/func-g07/mkdocs-final.log:strict passed",
+          ".docs-tools/reports/func-g07/site-checks-final.log:7/7",
+          ".tmp/func-g07/docs-all-final.log:passed",
+          ".tmp/func-g07/docs-source-final.log:3/3",
+          ".tmp/func-g07/closure-consistency.json:passed",
+          ".tmp/func-g07/diff-check-clean.log:passed"
+        ],
+        "follow_up": "Нет незавершённой реализации F25. Final metadata/site refresh сохраняет текущие статусы и receipts; human F23 остаётся отдельным незакрытым gate.",
+        "docs_impact": {
+          "decision": "updated",
+          "paths": [
+            "docs/planning/functional-remediation-2026-11-15.md",
+            "docs/planning/functional-remediation-2026-11-15.en.md",
+            "docs/sources/registry.md",
+            "docs/sources/registry.en.md",
+            "docs/web/accessibility.md",
+            "docs/web/accessibility.en.md",
+            "docs/web/pilot.md",
+            "docs/web/pilot.en.md"
+          ],
+          "source_revision": "current_func_g07_working_tree"
+        },
+        "implementation_at": "16-11-2026 11:34",
+        "residual_risks": "Local synthetic scope on the pinned Windows tuple. No provider/model roundtrip, real credentials/profiles, human acceptance, new OS account, system installation, publication or commercial readiness. F23 participants/consent/14-day reuse/owner decision remain absent."
+      }
     },
     {
       "n": 26,
@@ -2678,7 +2867,7 @@
     }
   ],
   "verification": {
-    "status": "func_g01_g03_locally_verified_g02_research_verified_g04_measured_limits_g05_g06_locally_verified_with_explicit_limits_remaining_planned",
+    "status": "func_g01_g06_verified_g07_technical_3_of_4_awaiting_user_decision",
     "application_checks_run": true,
     "initial": {
       "matrix_exit": 0,
@@ -2691,36 +2880,51 @@
       "remediation": "relocate source-owned matrix to research, preserve site inventory"
     },
     "latest": {
-      "task": "FUNC-G06",
-      "status": "locally_verified_with_explicit_limits",
+      "task": "PAOS-FUNC-23_status_handoff",
+      "status": "docs_static_verified",
+      "changed_at": "2026-11-16T10:42:36Z",
       "counts": {
-        "implemented": 30,
-        "planned": 4
+        "implemented": 33,
+        "awaiting_user_decision": 1
       },
-      "started_at": "2026-11-16T05:00:11Z",
-      "completed_at": "2026-11-16T05:47:40.272Z",
+      "group_status": "in_progress",
+      "owner_handoff": "owner_self_check_and_feedback",
+      "human_acceptance": "not_observed",
+      "application_checks_run": false,
+      "site_build_performed": false,
+      "previous_technical_evidence": "verification.previous_func_g07",
+      "checks": {
+        "validators": {
+          "command": "python -B -m unittest tests.product_agent_os.test_validators -q",
+          "passed": 38
+        },
+        "task_plan_lifecycle": {
+          "command": "python -B -m unittest tests.product_agent_os.test_task_plan_lifecycle -q",
+          "passed": 8
+        },
+        "task_matrix_ru_en": "passed",
+        "changed_markdown_sources": 11,
+        "preservation": ".tmp/f23-owner-decision/consistency.json",
+        "git_diff_check": "passed",
+        "tdd": "new waiting-status regression RED invalid status, then GREEN after enum support"
+      },
       "review": {
-        "context_mode": "separate_reused_context",
-        "reviewer": "/root/func_g06_completion_review",
-        "tester_verdict": "closed_allowed",
-        "evidence": ".tmp/func-g06/final-review.json"
+        "mode": "explicit_self_review",
+        "result": "status_handoff_consistent_original_acceptance_not_claimed"
       },
-      "evidence": [
-        ".tmp/func-g06/web-native-final.log:694/694,0fail/skip",
-        ".tmp/func-g06/managed-acceptance/evidence-mJ8j5k/result.json:10/10,cleanup=true",
-        ".tmp/func-g06/native-candidate.json:passed",
-        ".tmp/func-g06/native-default.json:passed",
-        ".tmp/func-g06/typecheck-final.log:passed",
-        ".tmp/func-g06/build-final.log:passed",
-        ".tmp/func-g06/final-review.json:closed_allowed",
-        ".tmp/func-g06/matrix-ru.log:ok=true,errors=[]",
-        ".tmp/func-g06/matrix-en.log:ok=true,errors=[]",
-        ".tmp/func-g06/docs-final.log:14 sources",
-        ".tmp/func-g06/closure-consistency.json:passed"
-      ],
-      "managedAcceptance": ".tmp/func-g06/managed-acceptance/evidence-mJ8j5k/result.json",
-      "adapterRevision": "ab195406a2f961c55d90d3a1848d4bcd98b644f10c66da7085cde94d0f584f51",
-      "limits": "Private unsigned user-space delivery on the existing Windows account; no new OS account/SID, actual native GUI/SmartScreen, system installation, signing/commercial/public release, provider/model or human acceptance. Cooperative managed profile reservations do not sandbox arbitrary SQLite writers. Every original file hash is preserved; explicitly recorded new empty WAL/32KiB SHM bookkeeping means whole-directory identity is not claimed. Rollback restores the explicitly selected compatible snapshot; newer work needs a fresh compatible backup."
+      "control_plane_sync": {
+        "updated": [
+          "REQUIREMENTS.md",
+          "PLAN.md",
+          "TEST.md",
+          "RUNLOG.md"
+        ],
+        "no_change_needed": [
+          "EVALS.md",
+          "prod_test.md"
+        ],
+        "reason": "Status/next-owner/validator route changed; original acceptance thresholds and historical Batch39 unchanged"
+      }
     },
     "previous_planning": {
       "matrix_exit": 0,
@@ -3078,11 +3282,141 @@
       "browser": ".tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json",
       "adapterRevision": "aa9c663dd1df54c6f47258234b5b9e9b5df6e0980e5ff58677e4403e30584bcc",
       "limits": "Bounded local synthetic acceptance; Windows document writer; external ignore revocation is final-checked, not atomic; unknown partial writes require explicit/manual recovery; active journal limits do not purge historical backups. Complete host history/usage, loaded-profile attestation, monetary/host-tool enforcement, provider/human/release acceptance are unavailable or separate."
+    },
+    "previous_func_g06": {
+      "task": "FUNC-G06",
+      "status": "locally_verified_with_explicit_limits",
+      "counts": {
+        "implemented": 30,
+        "planned": 4
+      },
+      "started_at": "2026-11-16T05:00:11Z",
+      "completed_at": "2026-11-16T05:47:40.272Z",
+      "review": {
+        "context_mode": "separate_reused_context",
+        "reviewer": "/root/func_g06_completion_review",
+        "tester_verdict": "closed_allowed",
+        "evidence": ".tmp/func-g06/final-review.json"
+      },
+      "evidence": [
+        ".tmp/func-g06/web-native-final.log:694/694,0fail/skip",
+        ".tmp/func-g06/managed-acceptance/evidence-mJ8j5k/result.json:10/10,cleanup=true",
+        ".tmp/func-g06/native-candidate.json:passed",
+        ".tmp/func-g06/native-default.json:passed",
+        ".tmp/func-g06/typecheck-final.log:passed",
+        ".tmp/func-g06/build-final.log:passed",
+        ".tmp/func-g06/final-review.json:closed_allowed",
+        ".tmp/func-g06/matrix-ru.log:ok=true,errors=[]",
+        ".tmp/func-g06/matrix-en.log:ok=true,errors=[]",
+        ".tmp/func-g06/docs-final.log:14 sources",
+        ".tmp/func-g06/closure-consistency.json:passed"
+      ],
+      "managedAcceptance": ".tmp/func-g06/managed-acceptance/evidence-mJ8j5k/result.json",
+      "adapterRevision": "ab195406a2f961c55d90d3a1848d4bcd98b644f10c66da7085cde94d0f584f51",
+      "limits": "Private unsigned user-space delivery on the existing Windows account; no new OS account/SID, actual native GUI/SmartScreen, system installation, signing/commercial/public release, provider/model or human acceptance. Cooperative managed profile reservations do not sandbox arbitrary SQLite writers. Every original file hash is preserved; explicitly recorded new empty WAL/32KiB SHM bookkeeping means whole-directory identity is not claimed. Rollback restores the explicitly selected compatible snapshot; newer work needs a fresh compatible backup."
+    },
+    "previous_func_g07": {
+      "task": "FUNC-G07",
+      "status": "technical_tasks_implemented_human_acceptance_pending",
+      "started_at": "2026-11-16T06:53:23Z",
+      "counts": {
+        "implemented": 33,
+        "in_progress": 1,
+        "planned": 0
+      },
+      "review": {
+        "context_mode": "separate_fresh_context",
+        "reviewer": "/root/func_g07_assurance",
+        "verdict": "partial_only",
+        "technical_verdicts": {
+          "F19": "closed_allowed",
+          "F24": "closed_allowed",
+          "F25": "closed_allowed_after_final_metadata_site_gate",
+          "FUNC-G07": "partial_only"
+        },
+        "evidence": ".tmp/func-g07/final-review.json"
+      },
+      "human_pilot": {
+        "status": "not_started",
+        "participants": "not_defined_owner_confirmed",
+        "consent": "not_observed",
+        "observation14Days": "not_observed",
+        "ownerAcceptance": "not_observed",
+        "protocol": "docs/web/pilot.md#func-g07-pilot-protocol"
+      },
+      "closure_level": "needs_user_acceptance",
+      "evidence": {
+        "capability": {
+          "path": ".tmp/func-g07/browser-acceptance/evidence-mO7W5K/result.json",
+          "checks": 7,
+          "sourceBindings": 217
+        },
+        "files": {
+          "path": ".tmp/func-g03/browser-final/evidence-FAq6dz/result.json",
+          "checks": 19,
+          "sourceBindings": 35
+        },
+        "graph": {
+          "path": ".tmp/func-g04/browser-acceptance/evidence-U0CmeI/result.json",
+          "checks": 18,
+          "sourceBindings": 217
+        },
+        "forms": {
+          "path": ".tmp/paos-m2/browser-evidence-RuLrrM/m2-browser-result.json",
+          "checks": 33,
+          "sourceBindings": 8
+        },
+        "agents": {
+          "path": ".tmp/func-g05/browser-acceptance/evidence-PZejGw/result.json",
+          "checks": 16,
+          "sourceBindings": 217
+        },
+        "managed": {
+          "path": ".tmp/func-g06/managed-acceptance/evidence-xyiUSA/result.json",
+          "checks": 10,
+          "sourceBindings": 157
+        },
+        "native": {
+          "path": ".tmp/func-g07/integration/browser-evidence-oVuLNF/result.json",
+          "checks": 68,
+          "sourceBindings": 225
+        }
+      },
+      "web_final": {
+        "status": "passed",
+        "tests": 697,
+        "failed": 0,
+        "skipped": 0,
+        "path": ".tmp/func-g07/web-certified-final.log"
+      },
+      "site_final": {
+        "output": ".docs-tools/reports/func-g07/site-final",
+        "strict_receipt": ".docs-tools/reports/func-g07/mkdocs-final.log",
+        "checks_receipt": ".docs-tools/reports/func-g07/site-checks-final.log"
+      },
+      "preservation_final": {
+        "evidence": ".tmp/func-g07/closure-consistency.json",
+        "baseline": ".tmp/func-g07/baseline.json"
+      },
+      "erd": {
+        "uiPageSize": 25,
+        "apiDefault": 50,
+        "apiMaximum": 200,
+        "fixtureTables": 200,
+        "pages": 8,
+        "uniqueTables": 200,
+        "interactionBudgetMs": 1500,
+        "currentFirst25RenderMs": 1347.1711,
+        "currentNextPageRangeMs": [
+          671.0394,
+          794.6671
+        ]
+      }
     }
   },
   "updated_at": "2026-11-16",
   "planning_revision": 4,
-  "change_scope": "func_g06_recovery_and_distribution",
+  "change_scope": "func_g07_capability_end_to_end_docs_and_human_acceptance",
   "research_sources": [
     {
       "task": "PAOS-FUNC-30",

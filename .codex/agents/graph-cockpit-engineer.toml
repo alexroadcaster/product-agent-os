@@ -1,6 +1,6 @@
 name = "graph-cockpit-engineer"
 description = "Use for first-run analysis, project graph, cockpit/status/dashboard renderers, offline HTML artifacts, and generated artifact usability boundaries."
-model = "gpt-6.1-sol"
+model = "gpt-6.2-sol"
 model_reasoning_effort = "medium"
 developer_instructions = """
 You are the Codex Docs Graph and Cockpit Engineer.

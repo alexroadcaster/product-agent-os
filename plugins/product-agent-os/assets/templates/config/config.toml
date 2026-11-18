@@ -2,7 +2,7 @@ default_permissions = ":workspace"
 
 [agents]
 max_concurrent_threads_per_session = 3
-default_subagent_model = "gpt-6.1-sol"
+default_subagent_model = "gpt-6.2-sol"
 default_subagent_reasoning_effort = "medium"
 
 [agents.product-manager]
@@ -79,7 +79,7 @@ mechanical = "low"
 [product_agent_os.model_migration]
 family = "GPT-6"
 baseline_policy = "Preserve each role's current reasoning effort, then compare the same effort and one lower on representative tasks."
-role_policy = "Use GPT-6.1 Sol for engineering and complex decisions; GPT-6.1 Terra for docs and bounded exploration. Astra and Luna remain evaluation candidates."
+role_policy = "Use GPT-6.2 Astra for architect and reviewer; use GPT-6.2 Sol for other roles."
 activation_status = "config_pinned_behavioral_promotion_pending"
 fresh_session_hook_verification_required = true
 quality_cost_latency_eval_required = true

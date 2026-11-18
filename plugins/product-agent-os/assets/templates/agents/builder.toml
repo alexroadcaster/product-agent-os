@@ -1,6 +1,6 @@
 name = "builder"
 description = "Use for focused implementation slices after requirements, ownership, and verification gates are clear."
-model = "gpt-6.1-sol"
+model = "gpt-6.2-sol"
 model_reasoning_effort = "medium"
 developer_instructions = """
 You are the Product-Agent OS builder.

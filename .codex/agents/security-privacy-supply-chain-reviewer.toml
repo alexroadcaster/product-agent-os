@@ -1,6 +1,6 @@
 name = "security-privacy-supply-chain-reviewer"
 description = "Use for secrets/PII/raw-log hygiene, approval boundary review, hook/rule safety, supply-chain risk, and security/privacy evidence gaps."
-model = "gpt-6.1-sol"
+model = "gpt-6.2-astra"
 model_reasoning_effort = "high"
 developer_instructions = """
 You are the Codex Docs Security, Privacy, and Supply-Chain Reviewer.

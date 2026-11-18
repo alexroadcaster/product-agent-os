@@ -1,6 +1,6 @@
 name = "tester"
 description = "Use for verification engineering: focused tests, evals, contract checks, failure reproduction, visual/runtime evidence, and evidence-before-completion."
-model = "gpt-6.1-sol"
+model = "gpt-6.2-sol"
 model_reasoning_effort = "high"
 developer_instructions = """
 You are the verification agent.

@@ -1,5 +1,9 @@
 # REQUIREMENTS.md
 
+## FUNC-G07 — проверка передана пользователю, 16.11.2026
+
+F24/F19/F25 implemented; F23 awaiting_user_decision / «Ожидание решения пользователя». Пользователь самостоятельно проверяет результат и даёт обратную связь. Этот запрос меняет статус и владельца следующего шага; исходные AC не отменены и приёмка не заявлена. Предложенный протокол и исходные human thresholds сохранены для решения владельца. [Scope/evidence](docs/planning/functional-remediation-2026-11-15.md#func-g07-results).
+
 ## FUNC-G06 — закрыта, 16.11.2026
 
 F21/F22/F17 implemented3/3 по исходным AC в private local synthetic scope. Data/ownership/recovery иmanaged user-space install/update/rollback проверены на currenttuple. FreshWindowsprofile означаетdisposablePAOSprofile/env,currentOSaccount; signing/systeminstall/commercial/provider/human acceptance отдельно. [Решения/evidence](docs/planning/functional-remediation-2026-11-15.md#func-g06-results).
@@ -20,9 +24,11 @@ F28/F26/F27/F02/F29/F10/F18 выполнены: общий inventory policy, Fil
 
 F30/F31/F32 закрыты в разрешённом isolated synthetic PoC scope: общий pinned protocol/ground truth, draft F28 inventory/F20 budgets, measured decisions, versioned adapter proposals, V3 UI acceptance, review и per-task docs/status sync. Обоснованные reject F31/F32 закрывают исследования; пропущенные после admission refusal cases остаются unexecuted/null. Production F14/F33/F34, реальные БД/credentials/providers/models, global installation/config/ACL, Git/publication и human acceptance остаются вне выполненного scope. [Результаты](docs/planning/functional-remediation-2026-11-15.md#func-g02-results).
 
-## Два направления методологий — планирование, 15.11.2026
+## Два направления методологий — планирование, 18.11.2026
 
-Текущий запрос разрешает разделение planning artifacts: [A — внутреннее качество](docs/planning/methodology-improvement-2026-11-15.md), 17 planned задач; [B — методологии для проектов пользователей](docs/planning/user-project-methodologies-2026-11-15.md), 26 planned задач и [JSON](docs/planning/user-project-methodologies-2026-11-15.json). Прежняя METH-16 сохранена reference-only вне очереди A; все исходные ID/legacy AC доступны. B охватывает profile/selection → Spec/Design/TDD/FSD/ADD → staged delivery/evidence → API/UI → pilots/rollout и не ждёт внутреннюю FSD-миграцию A. Только запись RU/EN планов/JSON/pointers; код, active skills/workflows/hooks, TEST/EVALS, target/runtime/provider/install/Git/publication не входят в этот запрос. Параллельный FUNC-G03 сохраняет свой отдельный scope и source-owned статусы.
+Объём этой редакции ограничен планами, их JSON, переводами, указателями и статической проверкой. Реализация требует отдельного запроса.
+
+У внутреннего архитектурного пилота A есть самостоятельный результат на Dashboard. Для B пользователь должен получить первый совет по задаче в режиме чтения. Совет учитывает цель задачи, актуальные критерии и покрытие анализа проекта. Решение владельца, отдельная техническая проверка критерия и разрешение на запись имеют разные основания. Полные критерии и условия расширения принадлежат двум матрицам. Все 43 задачи запланированы, прежняя METH-16 сохранена как справочная запись. [17 внутренних задач A](docs/planning/methodology-improvement-2026-11-15.md) · [26 пользовательских задач B](docs/planning/user-project-methodologies-2026-11-15.md)
 
 ## FUNC-G01 — выполненный scope, 15.11.2026
 

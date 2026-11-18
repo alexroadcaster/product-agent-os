@@ -112,7 +112,7 @@ def _capability_matrix(diagnostics: dict[str, Any]) -> dict[str, Any]:
     return matrix
 
 
-_MODEL_IDS = {"gpt-6-astra", "gpt-6.1-sol", "gpt-6.1-terra", "gpt-6-luna"}
+_MODEL_IDS = {"gpt-6.2-astra", "gpt-6.2-sol", "gpt-6-astra", "gpt-6.1-sol", "gpt-6.1-terra", "gpt-6-luna"}
 _OBSERVATION_KEYS = {"surface", "client_version", "configured_model", "observed_model", "trust",
                      "native_plugin_observed", "standalone_skills_observed"}
 _VERSION = re.compile(r"[0-9]{1,4}\.[0-9]{1,4}\.[0-9]{1,4}")

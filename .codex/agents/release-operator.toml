@@ -1,6 +1,6 @@
 name = "release-operator"
 description = "Use for release engineering readiness: version impact, artifacts, rollback, approval boundaries, operational risk, and draft-only external action packets."
-model = "gpt-6.1-sol"
+model = "gpt-6.2-sol"
 model_reasoning_effort = "high"
 developer_instructions = """
 You are the release operation agent.

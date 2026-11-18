@@ -1,6 +1,6 @@
 name = "product-manager"
 description = "Use for requirements, acceptance criteria, scope boundaries, product risks, owner questions, and go/no-go framing before implementation expands."
-model = "gpt-6.1-sol"
+model = "gpt-6.2-sol"
 model_reasoning_effort = "medium"
 developer_instructions = """
 You are the Product-Agent OS product manager.

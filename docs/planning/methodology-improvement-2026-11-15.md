@@ -1,32 +1,32 @@
 # Product-Agent OS — направление A: внутреннее качество и архитектура
 
 Source status: repository_source / owner_requested_planning / internal_quality_plan; user_project_work_split_to_direction_B; implementation_not_started.
-Дата: 15.11.2026. Schema version: task_matrix_plan_v1. Timezone: Europe/Moscow.
+Создан 15.11.2026, редакция 18.11.2026. Schema version: task_matrix_plan_v1. Timezone: Europe/Moscow.
 
-## Два направления — редакция 2, 15.11.2026
+## Два направления — редакция 3, 18.11.2026
 
 A улучшает сам Product-Agent OS и процесс его сопровождения: **17 исполняемых planned задач**, 8 P1 / 7 P2 / 2 P3. B развивает применение методологий в проектах пользователей: [26 продуктовых задач](user-project-methodologies-2026-11-15.md), [JSON](user-project-methodologies-2026-11-15.json). Между направлениями нет hard dependencies.
 
-Прежняя METH-16 сохранена с ID, названием и тремя legacy AC как **reference-only**, вне массива tasks в JSON v2; она не запускается и не владеет продуктовым status. Canonical owners: PMETH-03/07/10/11/16/17/22/23/26; точное соответствие AC и прежние edges сохранены в JSON. Для неё V-REFERENCE означает проверить ссылки/покрытие у B, без выполнения кода из A. METH-18 решает только о внутренних METH-14/15; он не разрешает и не блокирует B.
+Прежняя METH-16 сохранена с ID, названием и тремя legacy AC как **reference-only**, вне массива tasks в JSON v2; она не запускается и не владеет продуктовым status. Canonical owners: PMETH-03/07/10/11/16/17/22/23/26; точное соответствие AC и прежние edges сохранены в JSON. Для неё V-REFERENCE означает проверить ссылки/покрытие у B, без выполнения кода из A. METH-18 оценивает только варианты расширения A в METH-10/11/13–15. Направление B поставляется по своему плану.
 
-Исходный source snapshot и результаты первой проверки ниже — исторический baseline этой матрицы. Текущий split опирается на HEAD `5a9c87bea374accc953a8401fa1ac32678ff6e6e` и owner state FUNC 10 implemented / 24 planned; исходные FUNC/Web/V3 файлы не меняются. Сохранены все 18 прежних ID: 17 задач + одна ссылка, а не 18 независимых реализаций.
+Редакция 2 опиралась на HEAD `5a9c87bea374accc953a8401fa1ac32678ff6e6e` и состояние FUNC 10 implemented / 24 planned. Редакция 3 использует текущую сверку владельца FUNC от 18.11.2026. Сохранены все 18 ID, включая METH-16 как ссылку.
 
 ## Цель, полномочия и владельцы
 
-Направление A содержит 17 задач сопровождения самого продукта по Spec-DD, Design-DD, TDD, ADD и постепенному FSD. METH-16 теперь reference-only B, её legacy критерии сохранены. Все исполняемые задачи planned с pending_execution_timestamp. Текущий запрос разрешает только разделение/расширение planning artifacts и их pointers, без реализации или изменения активных instructions/runtime.
+Направление A развивает Spec-DD, Design-DD, TDD, ADD и границы frontend. Первый технический пилот ограничен Dashboard и доработкой проверки импортов. Все 17 исполняемых записей имеют status planned и `pending_execution_timestamp`.
 
-[JSON-состояние v2](methodology-improvement-2026-11-15.json) владеет status/priority/dependencies 17 задач A; cross_track_references отдельно хранит METH-16. RU/EN карточки согласуются с JSON; таблицы — индекс. [English](methodology-improvement-2026-11-15.en.md). B имеет отдельного владельца и [подробный план](user-project-methodologies-2026-11-15.md). Создание этой редакции не закрывает A/B/FUNC/Web/V3.
+[JSON-состояние v2](methodology-improvement-2026-11-15.json) владеет status/priority/dependencies 17 задач A; cross_track_references отдельно хранит METH-16. RU/EN карточки согласуются с JSON; таблицы — индекс. English доступен через переключатель языка. B имеет отдельного владельца и [подробный план](user-project-methodologies-2026-11-15.md). Создание этой редакции не закрывает A/B/FUNC/Web/V3.
 
 ## Исходное состояние и доказательства
 
-Source snapshot: git HEAD `35458110145d928b9b14d9312b60d852f11f6e88`; hashes семи прочитанных implementation/test owners находятся в JSON. Снимок не является release qualification. Во время планирования выполнено чтение исходников/владельцев; прежние tests/browser/native receipts заново не выполнялись.
+Source snapshot: git HEAD `35458110145d928b9b14d9312b60d852f11f6e88`; hashes семи прочитанных implementation/test owners находятся в JSON. Снимок относится к первоначальному планированию. Во время планирования выполнено чтение исходников/владельцев; прежние tests/browser/native receipts заново не выполнялись.
 
-- [FUNC-G01](functional-remediation-2026-11-15.md#func-g01-results) на этом baseline содержит 7 implemented: F01/F03–F08; другие 27 FUNC planned. Это состояние владельца, не новый результат текущего запуска. Повторно планировать исправления drafts/dashboard/contracts не требуется.
-- Spec-DD уже отражён в [требованиях и capability model](../product/capabilities.md) и конкретных task matrices; [TEST](../../TEST.md) и [EVALS](../../EVALS.md) владеют выбором проверок и claim ceiling.
-- Design-DD имеет [DESIGN](../../DESIGN.md), V3 coverage и [план внедрения](2026-11-13-v3-ui-implementation-plan.md). Исторический V3 review выявил разрыв composition coverage; это не утверждение о новом дефекте текущего build.
+- [Владелец FUNC](functional-remediation-2026-11-15.json) и [результаты G07](functional-remediation-2026-11-15.md#func-g07-results) на 18.11.2026 фиксируют 33 implemented / 1 awaiting_user_decision (F23). Для F05–F08, F14, F19 и F24 используем уже проверенные контракты и сценарии в пределах их доказательств. Human pilot F23 остаётся открытым. Срез [G01](functional-remediation-2026-11-15.md#func-g01-results) 7/27 относится к первой редакции.
+- Spec-DD уже отражён в [требованиях и capability model](../product/capabilities.md) и конкретных task matrices; файлы workspace `TEST.md` и `EVALS.md` владеют выбором проверок и claim ceiling.
+- Design-DD имеет файл workspace `DESIGN.md`, V3 coverage и [план внедрения](2026-11-13-v3-ui-implementation-plan.md). Исторический V3 review выявил разрыв composition coverage; это не утверждение о новом дефекте текущего build.
 - TDD поддержан правилами и отдельными historical RED/GREEN receipts; готовый набор тестов не доказывает test-first для каждой задачи.
 - ADD имеет build/review/handoff contracts и разделение ownership. Улучшение качества/стоимости agentic работы требует сопоставимого baseline, а не подсчёта ролей.
-- Frontend сгруппирован по features, но dashboard/tasks/team/workflows используют внутренние соседние модули. Строгий FSD не доказан; [contracts-boundaries test](../../tests/web/contracts-boundaries.test.mts) защищает application boundary, а не все FSD imports. METH-09 должен явно включить TSX и aliases, чтобы новая проверка не имела скрытого coverage gap.
+- Frontend сгруппирован по features, но dashboard/tasks/team/workflows используют внутренние соседние модули. Строгий FSD не доказан; тест workspace `tests/web/contracts-boundaries.test.mts` защищает application boundary, а не все FSD imports. METH-09 должен явно включить TSX и aliases, чтобы новая проверка не имела скрытого coverage gap.
 
 Исходники: `apps/web/src/features/dashboard/model.ts`, `tasks/TaskManager.tsx`, `workflows/WorkflowManager.tsx`, `team/TeamManager.tsx`, `apps/web/src/ui/App.tsx`; Python owner `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`. Перед будущими edits перечитать их актуальное состояние.
 
@@ -36,40 +36,45 @@ Source snapshot: git HEAD `35458110145d928b9b14d9312b60d852f11f6e88`; hashes с�
 
 P1 — защита контрактов и достоверность приёмки; P2 — основной ограниченный пилот и улучшение процесса; P3 — optional scale после evidence. P1 не означает production incident. Номер задачи не задаёт порядок.
 
-| Этап | Задачи | Условие выхода |
-| --- | --- | --- |
-| A. Baseline и контракты | METH-01–06 | Владельцы/AC/states/TDD gaps и bounded agent contract определены; активные правила меняются лишь в будущих отдельных slices |
-| B. FSD foundation | METH-08–11 | Принятое архитектурное решение, import ratchet, минимальные shared/entity APIs; без массового move |
-| C. Два последовательных пилота | METH-12, METH-13; затем METH-07 | Dashboard → tasks → workflows; каждый checkpoint обратим; outcome comparison имеет честный ceiling |
-| D. Проверка и решение | METH-17 → METH-18 | Bounded pilot verdict и отдельное go/bounded_go/hold/stop |
-| E. Необязательное расширение | METH-14–15 | Только выбранная область после go; не блокирует приёмку пилота |
+### Группы задач
 
-Ранний старт: METH-01; затем независимые ветки METH-02 и METH-08. Критическая структурная цепочка: 01 → 08/05 → 09 → 10 → 11 → 12 → 13 → 17 → 18. Design-ветка 02 → 03 → 04 входит в 12. Agentic-ветка 06 + 12 → 07 входит в 17. Полный DAG определяется depends_on в JSON; Blocks — обратное ребро. Для начала задачи достаточно её task dependencies, завершение целого этапа не является новым prerequisite.
+Группы объединяют задачи по результату. Каждую задачу можно начинать после выполнения её `depends_on` и применимых условий выбора.
+
+| Группа | Задачи | Условие старта и результат |
+| --- | --- | --- |
+| **A1. Критерии и границы Dashboard** | 01, 02, 03, 04, 08, 09 | После 01 ветка 02 → 03 → 04 фиксирует поведение и состояния Dashboard, ветка 08 → 09 — допустимые импорты и способы их проверки. |
+| **A2. Пилот Dashboard и решение о расширении** | 12, 17, 18 | После 04 и 09 задача 12 проверяет границу Dashboard и Tasks. Задача 17 принимает технический результат, а 18 решает, стоит ли расширять пилот. Допустима остановка на Dashboard. |
+| **A3. Качество тестирования и работы агентов** | 05, 06, 07 | После 02 можно параллельно пилоту выполнить 05 → 06 → 07. Результаты — карта пробелов в проверках, проверенный порядок передачи задач и отдельная оценка работы агентов. Для реальных запусков в 07 нужны разрешение и сопоставимые условия. |
+| **A4. Выборочное расширение архитектурных границ** | 10, 11, 13, 14, 15 | После 18 выбираются обоснованные изменения для общих UI-компонентов, API Tasks или отдельных экранов. Для каждого выбранного участка фиксируются ожидаемая польза, проверка и способ отката. |
+
+После METH-01 идут две ветки. METH-02 → 03 → 04 задаёт критерии и состояния Dashboard. METH-08 → 09 задаёт ADR и проверку импортов. Они сходятся в METH-12 → 17 → 18. METH-05/06/07 идут отдельно и не задерживают техническую приёмку. Каждое расширение METH-10/11/13–15 требует решения METH-18 по конкретному scope. `depends_on` в JSON задаёт обязательные рёбра, `blocks` хранит обратные. Условия выбора записаны в `activation_condition`.
 
 ## Совмещение с действующим backlog
 
 | Existing owner | Как используется | Что не дублируется |
 | --- | --- | --- |
 | F01/F03–F08, FUNC-G01 | Baseline и regression protections | Исправления, native qualification и их completion statuses |
-| F02/F28 | Reference для будущих artifact traceability/canonical paths | Реализация task↔artifact links и inventory; METH-02 не ждёт F28 |
+| F02/F28 | Reference для будущих artifact traceability/canonical paths | Реализация task↔artifact links и inventory; METH-02 не зависит от F28 |
 | F11/F12/F16 | Ограничения metrics/team/skills | Telemetry, external search и real loaded-profile proof |
-| F18/F20/F30 | Data-refresh/performance/engine boundaries | Изменение refresh semantics, benchmark или обязательный dependency-cruiser install |
+| F18/F20 | Refresh semantics и бюджеты производительности | Изменение refresh и повторные benchmarks |
+| F14/F30 | F14 использует Rolldown AST и ограниченный resolver; сверяем семантику импортов и reuse fixtures | Повторный runtime graph и установка PoC dependency-cruiser |
 | F19/F21/F22/F23/F24, UI-12 | Переиспользуемые сценарии/evidence и отдельная full/human приёмка | Полный E2E, recovery, backup/restore, feature availability и human acceptance |
 | F25, DOCS-01–16 | Canonical docs/status ownership | Повторное создание guides или изменение feature task-state |
-| F14/F26–34, M5 | Запрет расширить migration scope | Новые Files/Map/Database/usages, hosting/auth/team capabilities |
+| F26–29/F31–34, M5 | Запрет расширить migration scope | Новые Files/Map/Database/usages, hosting/auth/team capabilities |
 
-Ссылки external_refs — references и ownership constraints, а не новые рёбра чужого DAG. Hard prerequisite текущего FSD pilot: F08 уже implemented; перед edits проверить это и актуальность F01 только при затрагивании pinned runtime sources. Shared file conflict — последовательная запись, не новая функциональная зависимость.
+Ссылки `external_refs` указывают владельцев и evidence. F08 защищает application-independent contracts, F18 владеет refresh semantics. Актуальность F01 проверяется при изменении pinned runtime sources. Общие файлы правятся последовательно.
 
 ## Предлагаемые границы постепенного FSD
 
-Это proposal для METH-08, а не уже принятый ADR:
+В METH-08 сравнить сохранение текущих модулей, усиление их границ и локальный FSD. Предпочтителен минимальный вариант, который убирает обнаруженную проблему Dashboard и допускает простой откат.
 
-- `app` — composition/global providers/session/project scope; `pages` — screen composition; `widgets` — только повторно используемые самостоятельные блоки.
-- `features` — реальные пользовательские interactions; `entities/task` — task projection/selectors/presentation; `shared` — недоменные primitives/infrastructure.
-- Не создавать пустые слои; сначала выделить public APIs и разрешённые imports, затем перемещать подтверждённый scope. Общие business contracts сохраняются в `packages/contracts`, FSD не применяется к Python/backend.
-- Legacy→new compatibility bridges допустимы с одним implementation/state и removal owner; migrated code не импортирует legacy internals. Нет blanket exceptions и wildcard exports.
-- Начальная enforcement — no new violations относительно revision-pinned legacy baseline; migrated scope имеет zero unresolved violations. Ratchet ужесточается после каждого принятого checkpoint.
-- Возможен stop после dashboard или после tasks/workflows: сохранить работающий пилот и явный legacy remainder. Миграция остальных экранов не является условием выпуска функциональных исправлений.
+- Сохранить `App.tsx` владельцем composition/session/project scope. Начать с явного API для востребованных селекторов Tasks (`semanticStatus`, `isBlocked`) и одного источника логики. При выборе FSD допустим pages-first.
+
+- Выделять widgets, entities/task и shared только при подтверждённой потребности. Пригодность API и регрессии проверяются до переноса других экранов. Общие business contracts остаются в `packages/contracts`.
+
+- Разрешённые compatibility bridges используют одну реализацию и имеют владельца удаления. Новые нарушения проверяются относительно привязанного к revision baseline. Для выбранной границы Dashboard фиксируются и закрываются неразрешённые нарушения.
+
+- Dashboard может стать конечным результатом. Для очередного выбранного экрана фиксируются самостоятельные guards и откат. При затронутых общих путях повторно проверяются draft/CAS, project/session isolation, focus и действующие state semantics.
 
 ## Проверка будущих задач
 
@@ -108,30 +113,30 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 
 ## Проверка разделения — редакция 2
 
-Текущие static split/parity/preservation результаты записываются в направлении B; прежняя проверка выше сохраняет исходный provenance. All implementation tasks remain planned.
+Static split/parity/preservation evidence редакции 2 хранится в направлении B. Редакция 3 сохраняет прежние формулировки изменённых AC и снятые рёбра в `pilot_revision` JSON. Даты и результаты первоначальной проверки выше относятся к исходной редакции.
 
 ## Индекс задач
 
-| ID | Приоритет | Подход | Задача | Depends on |
+| ID | Приоритет | Группа / методы | Задача | Depends on |
 | --- | --- | --- | --- | --- |
-| PAOS-METH-01 | P1 | Spec-DD, ADD | Зафиксировать baseline и владельцев улучшений | — |
-| PAOS-METH-02 | P1 | Spec-DD | Связать требования, исходники и проверки в двух пилотных сценариях | PAOS-METH-01 |
-| PAOS-METH-03 | P1 | Design-DD, Spec-DD | Уточнить design-контракт состояний пилота | PAOS-METH-02 |
-| PAOS-METH-04 | P1 | Design-DD, TDD | Проверять композицию и поведение интерфейса по design-контракту | PAOS-METH-03 |
-| PAOS-METH-05 | P1 | TDD, Spec-DD | Закрыть пробелы TDD и regression evidence для критических контрактов | PAOS-METH-01, PAOS-METH-02 |
-| PAOS-METH-06 | P2 | ADD, Spec-DD | Упростить контракты agent slice и handoff по baseline eval | PAOS-METH-01, PAOS-METH-02, PAOS-METH-05 |
-| PAOS-METH-07 | P2 | ADD | Измерить результат agentic-пилота на сопоставимых задачах | PAOS-METH-06, PAOS-METH-12 |
-| PAOS-METH-08 | P1 | FSD, Design-DD | Спроектировать постепенные границы FSD и переходный ADR | PAOS-METH-01 |
-| PAOS-METH-09 | P1 | FSD, TDD | Добавить инкрементальную проверку frontend imports | PAOS-METH-05, PAOS-METH-08 |
-| PAOS-METH-10 | P2 | FSD | Выделить необходимые shared UI и инфраструктурные модули | PAOS-METH-09 |
-| PAOS-METH-11 | P2 | FSD, Spec-DD | Выделить frontend entities/task и публичные интерфейсы домена | PAOS-METH-10 |
-| PAOS-METH-12 | P2 | FSD, Design-DD, Spec-DD | Перевести dashboard на FSD-пилот | PAOS-METH-02, PAOS-METH-04, PAOS-METH-11 |
-| PAOS-METH-13 | P2 | FSD, Design-DD, TDD | Перевести tasks и workflows отдельными совместимыми срезами | PAOS-METH-12 |
-| PAOS-METH-14 | P3 | FSD, ADD | Расширить FSD на team и skills после go-решения | PAOS-METH-13, PAOS-METH-18 |
-| PAOS-METH-15 | P3 | FSD, Design-DD | Перенести оставшиеся выбранные экраны и завершить composition boundary | PAOS-METH-14 |
+| PAOS-METH-01 | P1 | A1; Spec-DD, ADD | Зафиксировать baseline и владельцев улучшений | — |
+| PAOS-METH-02 | P1 | A1; Spec-DD | Связать критерии Dashboard с исходниками и проверками | PAOS-METH-01 |
+| PAOS-METH-03 | P1 | A1; Design-DD, Spec-DD | Уточнить design-контракт состояний пилота | PAOS-METH-02 |
+| PAOS-METH-04 | P1 | A1; Design-DD, TDD | Проверять композицию и поведение интерфейса по design-контракту | PAOS-METH-03 |
+| PAOS-METH-05 | P1 | A3; TDD, Spec-DD | Закрыть пробелы TDD и regression evidence для критических контрактов | PAOS-METH-02 |
+| PAOS-METH-06 | P2 | A3; ADD, Spec-DD | Упростить контракты agent slice и handoff по baseline eval | PAOS-METH-05 |
+| PAOS-METH-07 | P2 | A3; ADD | Измерить результат agentic-пилота на сопоставимых задачах | PAOS-METH-06 |
+| PAOS-METH-08 | P1 | A1; FSD, Design-DD | Спроектировать постепенные границы FSD и переходный ADR | PAOS-METH-01 |
+| PAOS-METH-09 | P1 | A1; FSD, TDD | Добавить инкрементальную проверку frontend imports | PAOS-METH-08 |
+| PAOS-METH-10 | P2 | A4; FSD | Выделить необходимые shared UI и инфраструктурные модули | PAOS-METH-18 |
+| PAOS-METH-11 | P2 | A4; FSD, Spec-DD | Стабилизировать публичные интерфейсы домена Tasks | PAOS-METH-18 |
+| PAOS-METH-12 | P2 | A2; FSD, Design-DD, Spec-DD | Проверить архитектурные границы на Dashboard | PAOS-METH-04, PAOS-METH-09 |
+| PAOS-METH-13 | P2 | A4; FSD, Design-DD, TDD | При подтверждённой пользе улучшить границы Tasks и Workflows | PAOS-METH-18 |
+| PAOS-METH-14 | P3 | A4; FSD, ADD | Расширить FSD на team и skills после go-решения | PAOS-METH-18 |
+| PAOS-METH-15 | P3 | A4; FSD, Design-DD | Перенести оставшиеся выбранные экраны и завершить composition boundary | PAOS-METH-18 |
 | PAOS-METH-16 | P3 (legacy) | reference-only B | Уточнить условную поддержку методологий в Python plugin | —; не исполнять из A |
-| PAOS-METH-17 | P1 | Spec-DD, Design-DD, TDD, ADD, FSD | Принять интегрированный пилот и проверить сохранность контрактов | PAOS-METH-07, PAOS-METH-13 |
-| PAOS-METH-18 | P2 | ADD, FSD, Spec-DD | Принять решение о дальнейшем rollout и обновить владельцев документации | PAOS-METH-17 |
+| PAOS-METH-17 | P1 | A2; Spec-DD, Design-DD, TDD, ADD, FSD | Принять технический пилот Dashboard и проверить контракты | PAOS-METH-12 |
+| PAOS-METH-18 | P2 | A2; ADD, FSD, Spec-DD | Принять решение о дальнейшем rollout и обновить владельцев документации | PAOS-METH-17 |
 
 ## Подробные карточки задач
 
@@ -141,6 +146,7 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Task name: Зафиксировать baseline и владельцев улучшений
 - Status: planned
 - Priority: P1
+- Delivery group: A1
 - Methodologies: Spec-DD, ADD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
@@ -148,8 +154,8 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
 - Depends on: Нет.
-- Blocks: PAOS-METH-02, PAOS-METH-05, PAOS-METH-06, PAOS-METH-08
-- External references: PAOS-FUNC-01, PAOS-FUNC-03, PAOS-FUNC-04, PAOS-FUNC-05, PAOS-FUNC-06, PAOS-FUNC-07, PAOS-FUNC-08, PAOS-FUNC-25
+- Blocks: PAOS-METH-02, PAOS-METH-08
+- External references: PAOS-FUNC-01, PAOS-FUNC-02, PAOS-FUNC-03, PAOS-FUNC-04, PAOS-FUNC-05, PAOS-FUNC-06, PAOS-FUNC-07, PAOS-FUNC-08, PAOS-FUNC-14, PAOS-FUNC-19, PAOS-FUNC-23, PAOS-FUNC-24, PAOS-FUNC-25, PAOS-FUNC-30
 - Source: [baseline и source hashes](methodology-improvement-2026-11-15.json); актуальные пути ниже; external refs — только references.
 - Short description: Снять актуальный source/contract/test baseline и устранить дублирование с FUNC, Web и V3.
 - Technical value: Снять актуальный source/contract/test baseline и устранить дублирование с FUNC, Web и V3.
@@ -157,7 +163,7 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Scope: `docs/planning/methodology-improvement-2026-11-15.md`; `docs/planning/methodology-improvement-2026-11-15.json`; `docs/frontend/index.md`. Будущие work locations, не список изменённых сейчас файлов.
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
 - Expected result: Baseline и карта ownership в этой карточке; без нового глобального реестра.
-- Acceptance criteria: PAOS-METH-01-AC01: Зафиксированы revision, локальные изменения, imports и действующие проверки web/plugin; прежние receipts помечены своей датой. PAOS-METH-01-AC02: Для каждой METH-карточки указано own/reuse/reference относительно FUNC/Web/V3; существующие AC и статусы не скопированы в новую владеющую очередь. PAOS-METH-01-AC03: Назначены file/subsystem owners и точки последовательной работы; исходные F01/F03–F08 проверены по текущему владельцу, а не переоткрыты автоматически.
+- Acceptance criteria: PAOS-METH-01-AC01: Зафиксированы revision, локальные изменения, imports и действующие проверки web/plugin; прежние receipts помечены своей датой. PAOS-METH-01-AC02: Для каждой METH-карточки указано own/reuse/reference относительно FUNC/Web/V3; существующие AC и статусы не скопированы в новую владеющую очередь. PAOS-METH-01-AC03: Назначены владельцы файлов и очередность общих правок. Текущий FUNC JSON и раздел G07 задают baseline 33 implemented / 1 awaiting_user_decision (F23) на 18.11.2026. F01/F03–F08 и F14/F19/F24/F25 используются в пределах подтверждённого evidence.
 - Verification gates: V-PLAN; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
 - Risks / approval gates: Concurrent planning edits; перед записью сверить revision. Текущий запрос разрешает только планирование.
 - Complexity: M
@@ -182,9 +188,10 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 ### Task `PAOS-METH-02`
 
 - Task: PAOS-METH-02
-- Task name: Связать требования, исходники и проверки в двух пилотных сценариях
+- Task name: Связать критерии Dashboard с исходниками и проверками
 - Status: planned
 - Priority: P1
+- Delivery group: A1
 - Methodologies: Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
@@ -192,23 +199,23 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
 - Depends on: PAOS-METH-01
-- Blocks: PAOS-METH-03, PAOS-METH-05, PAOS-METH-06, PAOS-METH-12
-- External references: PAOS-FUNC-02, PAOS-FUNC-25
+- Blocks: PAOS-METH-03, PAOS-METH-05
+- External references: PAOS-FUNC-05, PAOS-FUNC-06, PAOS-FUNC-07, PAOS-FUNC-19, PAOS-FUNC-25
 - Source: [baseline и source hashes](methodology-improvement-2026-11-15.json); актуальные пути ниже; external refs — только references.
-- Short description: Использовать существующие владельцы требований для dashboard coverage и сохранения task/workflow drafts.
-- Technical value: Использовать существующие владельцы требований для dashboard coverage и сохранения task/workflow drafts.
+- Short description: Сопоставить состояния Dashboard с действующими критериями F05–F07 и существующими проверками. Затронутые контракты редактора учитывать как защиту от регрессии.
+- Technical value: Сопоставить состояния Dashboard с действующими критериями F05–F07 и существующими проверками. Затронутые контракты редактора учитывать как защиту от регрессии.
 - Product value: Проверять результат по пользовательскому контракту и быстро находить недостающую проверку.
-- Scope: `docs/product/capabilities.md`; `docs/testing/index.md`; `docs/planning/methodology-improvement-2026-11-15.md`. Будущие work locations, не список изменённых сейчас файлов.
+- Scope: `docs/planning/methodology-improvement-2026-11-15.md`; `docs/testing/index.md`. Будущие участки работы, точные файлы уточняются по выбранному scope.
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
-- Expected result: Две traceability-таблицы в существующих product/testing owners и ссылки на AC в плане.
-- Acceptance criteria: PAOS-METH-02-AC01: В каждой из двух цепочек criterion → canonical owner → source → test/browser scenario → receipt либо explicit gap; все применимые критерии пилота покрыты строкой. PAOS-METH-02-AC02: Неполное portfolio не выглядит полным, draft не теряется и не переносится в новый объект; пустые/error/stale сценарии названы явно. PAOS-METH-02-AC03: Одна изменённая предпосылка API/данных отражена в основном владельце, mirrors согласованы; traceability не реализует F02 и не ждёт её F28.
+- Expected result: Одна таблица критериев Dashboard и указатели на существующие проверки и пробелы.
+- Acceptance criteria: PAOS-METH-02-AC01: Для применимых критериев Dashboard записана связь criterion → canonical owner → source → existing test/browser scenario → receipt или явный gap. Использованы F05–F07 и действующие TEST checks. PAOS-METH-02-AC02: Частичное portfolio явно помечено. Empty/error/stale покрыты по применимости. Если меняется общий путь навигации или состояния редактора, действующая проверка подтверждает сохранность и изоляцию draft. PAOS-METH-02-AC03: Одна изменённая предпосылка API/данных отражена в основном владельце, mirrors согласованы; traceability не реализует F02 и не ждёт её F28.
 - Verification gates: V-PLAN; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
 - Risks / approval gates: Не менять продуктовый scope и статусы FUNC; gaps не выдавать за passed. Текущий запрос разрешает только планирование.
 - Complexity: M
 - Estimated execution time: Оценить после актуального discovery и выбора bounded slice; календарное обещание не дано.
 - Agents: product-manager + tester; proposed ownership, сейчас delegation=0.
 - Skills: documentation-and-adrs; дополнительные skills выбирать по фактическому изменению.
-- Output artifacts: Две traceability-таблицы в существующих product/testing owners и ссылки на AC в плане.
+- Output artifacts: Одна таблица критериев Dashboard и указатели на существующие проверки и пробелы.
 - Next step: Проверить dependencies и текущие source owners; запросить/получить отдельный scope реализации выбранной задачи.
 
 #### Completion Report
@@ -229,6 +236,7 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Task name: Уточнить design-контракт состояний пилота
 - Status: planned
 - Priority: P1
+- Delivery group: A1
 - Methodologies: Design-DD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
@@ -237,15 +245,15 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Date and time of task implementation: pending_execution_timestamp
 - Depends on: PAOS-METH-02
 - Blocks: PAOS-METH-04
-- External references: PAOS-FUNC-24, UI-12
+- External references: PAOS-FUNC-05, PAOS-FUNC-19, PAOS-FUNC-24, UI-12
 - Source: [baseline и source hashes](methodology-improvement-2026-11-15.json); актуальные пути ниже; external refs — только references.
-- Short description: Сопоставить dashboard и task/workflow editing с утверждённым V3 и реальными возможностями API.
-- Technical value: Сопоставить dashboard и task/workflow editing с утверждённым V3 и реальными возможностями API.
+- Short description: Уточнить применимые состояния Dashboard по действующему V3, F05 и доступным данным API.
+- Technical value: Уточнить применимые состояния Dashboard по действующему V3, F05 и доступным данным API.
 - Product value: Устранить разрыв между утверждённым макетом, данными и реальным сценарием пользователя.
-- Scope: `DESIGN.md`; `design/2026-11-13-v3/coverage.json`; `design/2026-11-13-v3/task-field-map.md`; `docs/frontend/state-management.md`. Будущие work locations, не список изменённых сейчас файлов.
+- Scope: `DESIGN.md`; `design/2026-11-13-v3/coverage.json`; `docs/frontend/state-management.md`. Будущие участки работы, точные файлы уточняются по выбранному scope.
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
 - Expected result: Дополнение существующих state/coverage owners; новые макеты только для отсутствующего необходимого состояния.
-- Acceptance criteria: PAOS-METH-03-AC01: Для пилота описаны default/loading/empty/error/partial/stale/dirty/validation/confirmation с обоими themes и keyboard/focus, либо обоснованное not_applicable. PAOS-METH-03-AC02: Источник, единицы и unavailable для показателей явные; synthetic usage не становится данными приложения, F11 не реализуется этой задачей. PAOS-METH-03-AC03: Design differences получают disposition: исправить/предложить владельцу/принятый gap; согласование макета не закрывает UI-12 или human acceptance.
+- Acceptance criteria: PAOS-METH-03-AC01: Для Dashboard отмечены применимые default/loading/empty/error/partial/stale и keyboard/focus в обеих темах. Dirty/validation/confirmation проверяются при затронутом контракте, остальные состояния имеют обоснованный not_applicable. PAOS-METH-03-AC02: Источник, единицы и unavailable для показателей явные; synthetic usage не становится данными приложения, F11 не реализуется этой задачей. PAOS-METH-03-AC03: Design differences получают disposition: исправить/предложить владельцу/принятый gap; согласование макета не закрывает UI-12 или human acceptance.
 - Verification gates: V-PLAN; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
 - Risks / approval gates: Новый пользовательский сценарий требует отдельного решения владельца; текущий V3 не переутверждается молча. Текущий запрос разрешает только планирование.
 - Complexity: M
@@ -273,6 +281,7 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Task name: Проверять композицию и поведение интерфейса по design-контракту
 - Status: planned
 - Priority: P1
+- Delivery group: A1
 - Methodologies: Design-DD, TDD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
@@ -281,15 +290,15 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Date and time of task implementation: pending_execution_timestamp
 - Depends on: PAOS-METH-03
 - Blocks: PAOS-METH-12
-- External references: PAOS-FUNC-19, PAOS-FUNC-24, UI-12
+- External references: PAOS-FUNC-05, PAOS-FUNC-19, PAOS-FUNC-24, UI-12
 - Source: [baseline и source hashes](methodology-improvement-2026-11-15.json); актуальные пути ниже; external refs — только references.
 - Short description: Расширить существующий UI harness для пилота без второй системы screenshot/evidence.
 - Technical value: Расширить существующий UI harness для пилота без второй системы screenshot/evidence.
 - Product value: Ловить композиционные и интерактивные регрессии, которые не выявляет один overflow/contrast check.
-- Scope: `tests/web/single-window/ui-v3-scenario.mts`; `tests/web/ui-v3-dashboard.test.mts`; `design/2026-11-13-v3/implementation-evidence.md`. Будущие work locations, не список изменённых сейчас файлов.
+- Scope: `tests/web/single-window/func-g01-dashboard-acceptance.mts`; `tests/web/single-window/ui-v3-scenario.mts`; `tests/web/ui-v3-dashboard.test.mts`; `design/2026-11-13-v3/implementation-evidence.md`. Будущие участки работы, точные файлы уточняются по выбранному scope.
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
 - Expected result: Пилотные проверки в существующем harness и evidence в прежнем владельце.
-- Acceptance criteria: PAOS-METH-04-AC01: Проверяются current-build screenshots пилота в двух themes, открытие/закрытие редактора, focus return, сохранение draft при навигации и partial/error feedback. PAOS-METH-04-AC02: Проверки обнаруживают намеренно изменённую fixture геометрию/состояние; thresholds и стабильные области обоснованы, обновление baseline явно reviewable. PAOS-METH-04-AC03: Расхождения сравниваются с design owner; automated technical pass отделён от human acceptance, receipt привязан к hashes build/harness.
+- Acceptance criteria: PAOS-METH-04-AC01: На текущей сборке проверены обе темы, partial/error и применимые keyboard/focus-состояния Dashboard. Если пилот меняет общий overlay/navigation, действующий сценарий проверяет focus return и сохранение draft. PAOS-METH-04-AC02: Проверки обнаруживают намеренно изменённую fixture геометрию/состояние; thresholds и стабильные области обоснованы, обновление baseline явно reviewable. PAOS-METH-04-AC03: Расхождения сравниваются с design owner; automated technical pass отделён от human acceptance, receipt привязан к hashes build/harness.
 - Verification gates: V-WEB; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
 - Risks / approval gates: Synthetic profiles only; без provider/credentials, без снимков реальных пользовательских данных. Текущий запрос разрешает только планирование.
 - Complexity: M
@@ -317,14 +326,15 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Task name: Закрыть пробелы TDD и regression evidence для критических контрактов
 - Status: planned
 - Priority: P1
+- Delivery group: A3
 - Methodologies: TDD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
-- Depends on: PAOS-METH-01, PAOS-METH-02
-- Blocks: PAOS-METH-06, PAOS-METH-09
+- Depends on: PAOS-METH-02
+- Blocks: PAOS-METH-06
 - External references: PAOS-FUNC-21, PAOS-FUNC-22
 - Source: [baseline и source hashes](methodology-improvement-2026-11-15.json); актуальные пути ниже; external refs — только references.
 - Short description: Разделить текущие защиты, недостающие regression cases и правила RED для следующего изменения поведения.
@@ -333,7 +343,7 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Scope: `TEST.md`; `tests/web/ui-draft-autosave.test.mts`; `tests/web/contracts-boundaries.test.mts`; `tests/product_agent_os/test_methodology_audit.py`. Будущие work locations, не список изменённых сейчас файлов.
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
 - Expected result: Компактная risk/test карта в TEST и текущих task evidence; только недостающие meaningful tests.
-- Acceptance criteria: PAOS-METH-05-AC01: Карта risk → invariant → lowest reliable check покрывает draft conflict/lost ACK, import boundary, Stop/recovery, backup/restore и approval routing; существующие тесты переиспользованы. PAOS-METH-05-AC02: Для нового TS boundary behavior METH-09 и следующего внутреннего Python behavior change определены ожидаемые RED причины и минимальный GREEN; продуктовый routing принадлежит B и не блокирует A. PAOS-METH-05-AC03: Setup/import failures не считаются RED; behavior-preserving moves используют characterization/regression без искусственно сломанного production code; F21/F22 остаются отдельными владельцами полного recovery scope.
+- Acceptance criteria: PAOS-METH-05-AC01: Карта risk → invariant → lowest reliable check покрывает draft conflict/lost ACK, import boundary, Stop/recovery, backup/restore и approval routing; существующие тесты переиспользованы. PAOS-METH-05-AC02: До нового проверяемого изменения определены ожидаемая причина RED и минимальный GREEN. METH-09 владеет своими import fixtures и может стартовать по ADR независимо от этой карты. Продуктовый Python routing принадлежит B. PAOS-METH-05-AC03: Setup/import failures не считаются RED; behavior-preserving moves используют characterization/regression без искусственно сломанного production code; F21/F22 остаются отдельными владельцами полного recovery scope.
 - Verification gates: V-TDD; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
 - Risks / approval gates: Не дублировать full recovery suites и не требовать RED для docs или чистого перемещения. Текущий запрос разрешает только планирование.
 - Complexity: M
@@ -361,13 +371,14 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Task name: Упростить контракты agent slice и handoff по baseline eval
 - Status: planned
 - Priority: P2
+- Delivery group: A3
 - Methodologies: ADD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
-- Depends on: PAOS-METH-01, PAOS-METH-02, PAOS-METH-05
+- Depends on: PAOS-METH-05
 - Blocks: PAOS-METH-07
 - External references: Нет; текущий план — владелец.
 - Source: [baseline и source hashes](methodology-improvement-2026-11-15.json); актуальные пути ниже; external refs — только references.
@@ -405,14 +416,15 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Task name: Измерить результат agentic-пилота на сопоставимых задачах
 - Status: planned
 - Priority: P2
+- Delivery group: A3
 - Methodologies: ADD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
-- Depends on: PAOS-METH-06, PAOS-METH-12
-- Blocks: PAOS-METH-17
+- Depends on: PAOS-METH-06
+- Blocks: Нет.
 - External references: PAOS-FUNC-11, PAOS-FUNC-23
 - Source: [baseline и source hashes](methodology-improvement-2026-11-15.json); актуальные пути ниже; external refs — только references.
 - Short description: Сравнить baseline и candidate на одном наборе задач, отделив orchestration correctness от качества решения.
@@ -421,7 +433,7 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Scope: `EVALS.md`; `docs/testing/index.md`; `docs/planning/methodology-improvement-2026-11-15.md`. Будущие work locations, не список изменённых сейчас файлов.
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
 - Expected result: Сравнение baseline/candidate в evidence карточки; отдельный verdict correctness/quality/cost.
-- Acceptance criteria: PAOS-METH-07-AC01: Одинаковые task inputs/AC/revision и доступный runtime; фиксируются accepted/reopened, repair cycles, owner interventions и elapsed с provenance. PAOS-METH-07-AC02: Tokens/cost приводятся только при достоверном источнике; unavailable не заменяется нулём; F11 telemetry не реализуется ради этого пилота. PAOS-METH-07-AC03: Если actual-agent сравнение недоступно без нового разрешения, результат ограничен deterministic routing; model-quality benefit остаётся insufficient_evidence и не разрешает promotion.
+- Acceptance criteria: PAOS-METH-07-AC01: Зафиксированы одинаковые task inputs/AC/revision, разрешения и инструменты, сопоставимые модель и reasoning effort при actual-agent сравнении. Accepted/reopened, repair cycles, owner interventions и elapsed имеют provenance. PAOS-METH-07-AC02: Tokens/cost приводятся только при достоверном источнике; unavailable не заменяется нулём; F11 telemetry не реализуется ради этого пилота. PAOS-METH-07-AC03: Если actual-agent сравнение недоступно без нового разрешения, результат ограничен deterministic routing; model-quality benefit остаётся insufficient_evidence и не разрешает promotion.
 - Verification gates: V-ADD; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
 - Risks / approval gates: Без автоматических provider calls, raw private chats и неподтверждённых productivity claims; human acceptance остаётся отдельной. Текущий запрос разрешает только планирование.
 - Complexity: M
@@ -429,7 +441,7 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Agents: tester + product-manager; proposed ownership, сейчас delegation=0.
 - Skills: documentation-and-adrs; дополнительные skills выбирать по фактическому изменению.
 - Output artifacts: Сравнение baseline/candidate в evidence карточки; отдельный verdict correctness/quality/cost.
-- Next step: Проверить dependencies и текущие source owners; запросить/получить отдельный scope реализации выбранной задачи.
+- Next step: По отдельному разрешению и при зафиксированных сопоставимых условиях эксперимента. Допустим отдельный deterministic-only результат. Сверить выбранный scope и отдельно подтвердить полномочия на реализацию.
 
 #### Completion Report
 
@@ -449,6 +461,7 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Task name: Спроектировать постепенные границы FSD и переходный ADR
 - Status: planned
 - Priority: P1
+- Delivery group: A1
 - Methodologies: FSD, Design-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
@@ -457,22 +470,22 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Date and time of task implementation: pending_execution_timestamp
 - Depends on: PAOS-METH-01
 - Blocks: PAOS-METH-09
-- External references: PAOS-FUNC-08, PAOS-FUNC-30
+- External references: PAOS-FUNC-08, PAOS-FUNC-14, PAOS-FUNC-30
 - Source: [baseline и source hashes](methodology-improvement-2026-11-15.json); актуальные пути ниже; external refs — только references.
-- Short description: Выбрать минимальные слои и владельцев по реальным imports и продуктовым сценариям.
-- Technical value: Выбрать минимальные слои и владельцев по реальным imports и продуктовым сценариям.
+- Short description: Сравнить сохранение структуры, усиление границ текущих feature modules и ограниченный FSD. Выбрать минимальный способ исправить подтверждённую связанность.
+- Technical value: Сравнить сохранение структуры, усиление границ текущих feature modules и ограниченный FSD. Выбрать минимальный способ исправить подтверждённую связанность.
 - Product value: Сделать следующую миграцию проверяемой без полного rewrite и лишних папок.
 - Scope: `docs/architecture/decisions/`; `docs/frontend/index.md`; `apps/web/src/ui/App.tsx`; `apps/web/src/features/`. Будущие work locations, не список изменённых сейчас файлов.
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
-- Expected result: Один proposed ADR в существующем decisions-каталоге и migration map; номер выбрать после актуального inventory.
-- Acceptance criteria: PAOS-METH-08-AC01: ADR сравнивает оставить feature folders, улучшить только boundaries и частично внедрить FSD; решение опирается на coupling, тестируемость и стоимость переноса. PAOS-METH-08-AC02: Предложена карта App composition → pages/widgets при необходимости → interaction features → entities → shared; whole-screen TaskManager/Dashboard не названы features автоматически. PAOS-METH-08-AC03: Зафиксированы public APIs, legacy exception list с owner/removal task, направление bridge legacy→new, fallback/rollback и критерий достаточности; FSD не распространяется на backend/Python.
+- Expected result: Один ADR с выбором scope проверки и границы Dashboard, стоимостью и условиями отката.
+- Acceptance criteria: PAOS-METH-08-AC01: ADR сравнивает оставить feature folders, улучшить только boundaries и частично внедрить FSD; решение опирается на coupling, тестируемость и стоимость переноса. PAOS-METH-08-AC02: Определены владелец текущей композиции Dashboard и минимальный публичный API. При выборе FSD допустим pages-first; widgets, entities и shared выделяются при доказанной потребности. Whole-screen TaskManager/Dashboard не становятся interaction features по имени. PAOS-METH-08-AC03: Зафиксированы public APIs, legacy exception list с owner/removal task, направление bridge legacy→new, fallback/rollback и критерий достаточности; FSD не распространяется на backend/Python.
 - Verification gates: V-PLAN; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
 - Risks / approval gates: ADR в этом плане — будущий deliverable, не уже принятое архитектурное решение; F30 не является обязательной зависимостью. Текущий запрос разрешает только планирование.
 - Complexity: M
 - Estimated execution time: Оценить после актуального discovery и выбора bounded slice; календарное обещание не дано.
 - Agents: architect; proposed ownership, сейчас delegation=0.
 - Skills: documentation-and-adrs; дополнительные skills выбирать по фактическому изменению.
-- Output artifacts: Один proposed ADR в существующем decisions-каталоге и migration map; номер выбрать после актуального inventory.
+- Output artifacts: Один ADR с выбором scope проверки и границы Dashboard, стоимостью и условиями отката.
 - Next step: Проверить dependencies и текущие source owners; запросить/получить отдельный scope реализации выбранной задачи.
 
 #### Completion Report
@@ -493,30 +506,31 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Task name: Добавить инкрементальную проверку frontend imports
 - Status: planned
 - Priority: P1
+- Delivery group: A1
 - Methodologies: FSD, TDD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
-- Depends on: PAOS-METH-05, PAOS-METH-08
-- Blocks: PAOS-METH-10
-- External references: PAOS-FUNC-08, PAOS-FUNC-30
+- Depends on: PAOS-METH-08
+- Blocks: PAOS-METH-12
+- External references: PAOS-FUNC-08, PAOS-FUNC-14, PAOS-FUNC-30
 - Source: [baseline и source hashes](methodology-improvement-2026-11-15.json); актуальные пути ниже; external refs — только references.
-- Short description: Развить существующий AST boundary check для migrated scopes и запрета новых нарушений.
-- Technical value: Развить существующий AST boundary check для migrated scopes и запрета новых нарушений.
+- Short description: Расширить существующий тест границ установленным AST parser и правилами ADR. Проверка работает без запуска F14 или установки dependency-cruiser.
+- Technical value: Расширить существующий тест границ установленным AST parser и правилами ADR. Проверка работает без запуска F14 или установки dependency-cruiser.
 - Product value: Остановить рост связанности до начала перемещений, не блокируя весь legacy.
-- Scope: `tests/web/contracts-boundaries.test.mts`; `apps/web/package.json`; `apps/web/src/`. Будущие work locations, не список изменённых сейчас файлов.
+- Scope: `tests/web/contracts-boundaries.test.mts`; `tests/web/graph-imports.test.mts`; `tsconfig.web-m1.json`; `apps/web/src/`. Будущие участки работы, точные файлы уточняются по выбранному scope.
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
-- Expected result: Расширение существующего parser/check и synthetic cases; новая dependency только при доказанной необходимости.
-- Acceptance criteria: PAOS-METH-09-AC01: RED/GREEN fixtures покрывают .ts/.tsx/.mts, type imports/reexports/literal dynamic imports и настроенные aliases; unmapped alias является явным gap/failure, не silently skipped. PAOS-METH-09-AC02: В migrated scopes отклоняются upward/same-layer/deep imports и циклы по принятому ADR; допустимые entity cross-imports только через согласованный API, не blanket exception. PAOS-METH-09-AC03: Текущие legacy edges revision-pinned и не растут; перенесённый модуль удаляется из exceptions; действующие contracts→apps и backend→frontend запреты сохраняются.
+- Expected result: Существующая команда проверяет frontend scope и прежние backend/contracts границы. Примеры resolution переиспользуют действующие fixtures, где семантика совпадает.
+- Acceptance criteria: PAOS-METH-09-AC01: Расширенный tests/web/contracts-boundaries.test.mts проверяет .ts/.tsx/.mts, type imports/reexports/literal dynamic imports и поддерживаемые aliases. RED/GREEN отличает запрещённый edge от ошибки resolution. Неподдерживаемый alias или динамическая цель явно диагностируются. PAOS-METH-09-AC02: В пилотном scope соблюдаются public API и согласованные ADR правила upward/same-layer/deep imports и циклов. Entity cross-imports разрешаются через конкретный API, только если эта структура выбрана. PAOS-METH-09-AC03: Текущие legacy edges revision-pinned и не растут; перенесённый модуль удаляется из exceptions; действующие contracts→apps и backend→frontend запреты сохраняются.
 - Verification gates: V-BOUNDARY; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
 - Risks / approval gates: Не прятать реальные imports за exclusions; baseline обновлять reviewable. Не устанавливать dependency-cruiser автоматически. Текущий запрос разрешает только планирование.
 - Complexity: M
 - Estimated execution time: Оценить после актуального discovery и выбора bounded slice; календарное обещание не дано.
 - Agents: tester + builder; proposed ownership, сейчас delegation=0.
 - Skills: documentation-and-adrs; дополнительные skills выбирать по фактическому изменению.
-- Output artifacts: Расширение существующего parser/check и synthetic cases; новая dependency только при доказанной необходимости.
+- Output artifacts: Существующая команда проверяет frontend scope и прежние backend/contracts границы. Примеры resolution переиспользуют действующие fixtures, где семантика совпадает.
 - Next step: Проверить dependencies и текущие source owners; запросить/получить отдельный scope реализации выбранной задачи.
 
 #### Completion Report
@@ -537,23 +551,24 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Task name: Выделить необходимые shared UI и инфраструктурные модули
 - Status: planned
 - Priority: P2
+- Delivery group: A4
 - Methodologies: FSD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
-- Depends on: PAOS-METH-09
-- Blocks: PAOS-METH-11
+- Depends on: PAOS-METH-18
+- Blocks: Нет.
 - External references: Нет; текущий план — владелец.
 - Source: [baseline и source hashes](methodology-improvement-2026-11-15.json); актуальные пути ниже; external refs — только references.
-- Short description: Извлечь переиспользуемые недоменные primitives и infrastructure, нужные пилоту.
-- Technical value: Извлечь переиспользуемые недоменные primitives и infrastructure, нужные пилоту.
+- Short description: Выделить подтверждённый недоменный компонент после решения METH-18 и проверки существующего владельца.
+- Technical value: Выделить подтверждённый недоменный компонент после решения METH-18 и проверки существующего владельца.
 - Product value: Убрать зависимость общих представлений от внутренних task/graph screens.
 - Scope: `apps/web/src/ui/Icon.tsx`; `apps/web/src/ui/Modal.tsx`; `apps/web/src/features/tasks/CommentMarkdown.tsx`; `apps/web/src/locales/`; `apps/web/src/features/graph/GraphViews.tsx`. Будущие work locations, не список изменённых сейчас файлов.
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
 - Expected result: Минимальный shared public API, compatibility bridges и обновлённая migration map.
-- Acceptance criteria: PAOS-METH-10-AC01: В shared попадают только используемые primitives, safe Markdown/rendering и i18n infrastructure; task status rules и task-specific labels остаются у домена. PAOS-METH-10-AC02: Mermaid/graph renderer разделён на generic rendering и domain mapping только при подтверждённом reuse; no wildcard public exports, frontend→backend зависимости не добавлены. PAOS-METH-10-AC03: Compatibility reexports однонаправленные, implementation/state единственные; прежние theme/focus/Markdown-safety/reduced-motion regressions проходят.
+- Acceptance criteria: PAOS-METH-10-AC01: Каждое выделение привязано к выбранной METH-18 проблеме и актуальным потребителям. В shared попадают только востребованные primitives, safe Markdown/rendering или i18n infrastructure. Task status rules и task labels остаются у домена. PAOS-METH-10-AC02: Mermaid/graph renderer разделён на generic rendering и domain mapping только при подтверждённом reuse; no wildcard public exports, frontend→backend зависимости не добавлены. PAOS-METH-10-AC03: Compatibility reexports однонаправленные, implementation/state единственные; прежние theme/focus/Markdown-safety/reduced-motion regressions проходят.
 - Verification gates: V-WEB; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
 - Risks / approval gates: Это behavior-preserving move; не менять visual design, sanitize policy, API или данные. Текущий запрос разрешает только планирование.
 - Complexity: M
@@ -561,7 +576,7 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Agents: builder — shared frontend ownership; proposed ownership, сейчас delegation=0.
 - Skills: build-web-apps:frontend-testing-debugging; только для будущей UI проверки; архитектурные решения по ADR.
 - Output artifacts: Минимальный shared public API, compatibility bridges и обновлённая migration map.
-- Next step: Проверить dependencies и текущие source owners; запросить/получить отдельный scope реализации выбранной задачи.
+- Next step: METH-18 выбрала эту работу и подтверждён конкретный повторно используемый недоменный компонент либо затруднение сопровождения. Сверить выбранный scope и отдельно подтвердить полномочия на реализацию.
 
 #### Completion Report
 
@@ -578,34 +593,35 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 ### Task `PAOS-METH-11`
 
 - Task: PAOS-METH-11
-- Task name: Выделить frontend entities/task и публичные интерфейсы домена
+- Task name: Стабилизировать публичные интерфейсы домена Tasks
 - Status: planned
 - Priority: P2
+- Delivery group: A4
 - Methodologies: FSD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
-- Depends on: PAOS-METH-10
-- Blocks: PAOS-METH-12
+- Depends on: PAOS-METH-18
+- Blocks: Нет.
 - External references: PAOS-FUNC-08
 - Source: [baseline и source hashes](methodology-improvement-2026-11-15.json); актуальные пути ниже; external refs — только references.
-- Short description: Разделить task presentation/model selectors, interaction state и server-owned contracts.
-- Technical value: Разделить task presentation/model selectors, interaction state и server-owned contracts.
+- Short description: Расширить существующую границу Tasks по подтверждённой необходимости. Выделение entities/task требует прозрачной пользы для потребителей.
+- Technical value: Расширить существующую границу Tasks по подтверждённой необходимости. Выделение entities/task требует прозрачной пользы для потребителей.
 - Product value: Dashboard и team используют стабильный task API вместо deep imports в task screen.
 - Scope: `apps/web/src/features/tasks/model.ts`; `apps/web/src/features/tasks/labels.ts`; `apps/web/src/features/dashboard/model.ts`; `packages/contracts/issues/task-profile.ts`. Будущие work locations, не список изменённых сейчас файлов.
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
-- Expected result: entities/task public API по ADR, переходные adapters и domain regression evidence.
-- Acceptance criteria: PAOS-METH-11-AC01: Reusable selectors/status presentation/task labels имеют один frontend domain owner; editor draft и commands остаются interaction-owned, backend authority не дублируется. PAOS-METH-11-AC02: packages/contracts остаётся application-independent, не импортирует React/UI; типы и decode/persistence semantics F08 сохраняются. PAOS-METH-11-AC03: Потребители пилота используют явный public API; tests semanticStatus/isBlocked/aggregation и contracts boundaries проходят, legacy bridges имеют removal owner.
+- Expected result: Поддержанный ADR публичный API, переходные адаптеры при необходимости и regression evidence.
+- Acceptance criteria: PAOS-METH-11-AC01: Повторно используемые selectors/status presentation/task labels имеют одного владельца и подтверждённых потребителей. Entities/task выделяется только при доказанной пользе. Draft и commands остаются у interaction, backend authority сохраняется. PAOS-METH-11-AC02: packages/contracts остаётся application-independent, не импортирует React/UI; типы и decode/persistence semantics F08 сохраняются. PAOS-METH-11-AC03: Потребители пилота используют явный public API; tests semanticStatus/isBlocked/aggregation и contracts boundaries проходят, legacy bridges имеют removal owner.
 - Verification gates: V-WEB; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
 - Risks / approval gates: Не копировать business rules между сервисом и UI и не менять подсчёт прогресса/blocked ради структуры. Текущий запрос разрешает только планирование.
 - Complexity: M
 - Estimated execution time: Оценить после актуального discovery и выбора bounded slice; календарное обещание не дано.
 - Agents: architect + builder — task domain; proposed ownership, сейчас delegation=0.
 - Skills: build-web-apps:frontend-testing-debugging; только для будущей UI проверки; архитектурные решения по ADR.
-- Output artifacts: entities/task public API по ADR, переходные adapters и domain regression evidence.
-- Next step: Проверить dependencies и текущие source owners; запросить/получить отдельный scope реализации выбранной задачи.
+- Output artifacts: Поддержанный ADR публичный API, переходные адаптеры при необходимости и regression evidence.
+- Next step: METH-18 выбрала эту работу после подтверждения повторного использования или сложности сопровождения существующего API Tasks. Сверить выбранный scope и отдельно подтвердить полномочия на реализацию.
 
 #### Completion Report
 
@@ -622,33 +638,34 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 ### Task `PAOS-METH-12`
 
 - Task: PAOS-METH-12
-- Task name: Перевести dashboard на FSD-пилот
+- Task name: Проверить архитектурные границы на Dashboard
 - Status: planned
 - Priority: P2
+- Delivery group: A2
 - Methodologies: FSD, Design-DD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
-- Depends on: PAOS-METH-02, PAOS-METH-04, PAOS-METH-11
-- Blocks: PAOS-METH-07, PAOS-METH-13
+- Depends on: PAOS-METH-04, PAOS-METH-09
+- Blocks: PAOS-METH-17
 - External references: PAOS-FUNC-05, PAOS-FUNC-06, PAOS-FUNC-07, PAOS-FUNC-18
 - Source: [baseline и source hashes](methodology-improvement-2026-11-15.json); актуальные пути ниже; external refs — только references.
-- Short description: Перенести dashboard composition в минимальные pages/widgets по ADR, сохранив существующий data flow.
-- Technical value: Перенести dashboard composition в минимальные pages/widgets по ADR, сохранив существующий data flow.
+- Short description: Улучшить границу Dashboard одним обратимым изменением по ADR. Сохранить data flow и состав экранов, если для результата достаточно публичного API Tasks.
+- Technical value: Улучшить границу Dashboard одним обратимым изменением по ADR. Сохранить data flow и состав экранов, если для результата достаточно публичного API Tasks.
 - Product value: Проверить FSD на реальном ограниченном экране с измеряемыми контрактами.
-- Scope: `apps/web/src/features/dashboard/Dashboard.tsx`; `apps/web/src/features/dashboard/model.ts`; `apps/web/src/ui/App.tsx`; `tests/web/ui-v3-dashboard.test.mts`. Будущие work locations, не список изменённых сейчас файлов.
+- Scope: `apps/web/src/features/dashboard/Dashboard.tsx`; `apps/web/src/features/dashboard/model.ts`; `apps/web/src/features/tasks/model.ts`; `apps/web/src/ui/App.tsx`; `tests/web/ui-v3-dashboard.test.mts`; `tests/web/single-window/func-g01-dashboard-acceptance.mts`. Будущие участки работы, точные файлы уточняются по выбранному scope.
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
-- Expected result: Один migrated dashboard, evidence в этой карточке и frontend owner docs.
-- Acceptance criteria: PAOS-METH-12-AC01: У migrated dashboard нет imports в legacy feature internals; selectors берутся из domain public API, services и F18 refresh behavior не меняются. PAOS-METH-12-AC02: F05 partial coverage, F06 queue numbering и F07 recent-task ordering сохранены на current source; обе themes и state matrix METH-03 проходят. PAOS-METH-12-AC03: Записаны before/after boundary edges, touched files, regression/visual results и rollback; отрицательный результат позволяет остановить rollout без переписывания остальных экранов.
+- Expected result: Dashboard checkpoint с результатом import ratchet, измеренным изменением границ и evidence в существующем владельце.
+- Acceptance criteria: PAOS-METH-12-AC01: Изменённая граница Dashboard использует минимальный явный API Tasks для востребованных селекторов, в том числе semanticStatus/isBlocked, с одной реализацией. Новые pages/widgets или entities/task появляются только по ADR и при доказанной необходимости. Services и F18 refresh semantics сохранены. PAOS-METH-12-AC02: F05 partial coverage, F06 queue numbering и F07 recent-task ordering сохранены на current source; обе themes и state matrix METH-03 проходят. PAOS-METH-12-AC03: Записаны before/after boundary edges, touched files, regression/visual results и rollback; отрицательный результат позволяет остановить rollout без переписывания остальных экранов.
 - Verification gates: V-WEB; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
 - Risks / approval gates: Никаких новых metrics/synthetic numbers, API requests или performance claims без измерений; native qualification только если затронуты pinned sources. Текущий запрос разрешает только планирование.
 - Complexity: M
 - Estimated execution time: Оценить после актуального discovery и выбора bounded slice; календарное обещание не дано.
 - Agents: builder — dashboard ownership; proposed ownership, сейчас delegation=0.
 - Skills: build-web-apps:frontend-testing-debugging; только для будущей UI проверки; архитектурные решения по ADR.
-- Output artifacts: Один migrated dashboard, evidence в этой карточке и frontend owner docs.
+- Output artifacts: Dashboard checkpoint с результатом import ratchet, измеренным изменением границ и evidence в существующем владельце.
 - Next step: Проверить dependencies и текущие source owners; запросить/получить отдельный scope реализации выбранной задачи.
 
 #### Completion Report
@@ -666,34 +683,35 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 ### Task `PAOS-METH-13`
 
 - Task: PAOS-METH-13
-- Task name: Перевести tasks и workflows отдельными совместимыми срезами
+- Task name: При подтверждённой пользе улучшить границы Tasks и Workflows
 - Status: planned
 - Priority: P2
+- Delivery group: A4
 - Methodologies: FSD, Design-DD, TDD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
-- Depends on: PAOS-METH-12
-- Blocks: PAOS-METH-14, PAOS-METH-17
+- Depends on: PAOS-METH-18
+- Blocks: Нет.
 - External references: PAOS-FUNC-03, PAOS-FUNC-04, PAOS-FUNC-21
 - Source: [baseline и source hashes](methodology-improvement-2026-11-15.json); актуальные пути ниже; external refs — только references.
-- Short description: Отделить screen composition от editing/queue interactions без изменения task/workflow semantics.
-- Technical value: Отделить screen composition от editing/queue interactions без изменения task/workflow semantics.
+- Short description: Вынести выбранные METH-18 изменения в самостоятельные checkpoints и сохранить semantics редактора и очереди.
+- Technical value: Вынести выбранные METH-18 изменения в самостоятельные checkpoints и сохранить semantics редактора и очереди.
 - Product value: Изолировать два наиболее связанных пользовательских сценария и сохранить незавершённую работу.
 - Scope: `apps/web/src/features/tasks/TaskManager.tsx`; `apps/web/src/features/tasks/Editor.tsx`; `apps/web/src/features/workflows/WorkflowManager.tsx`; `apps/web/src/features/workflows/recipes/`; `apps/web/src/ui/App.tsx`. Будущие work locations, не список изменённых сейчас файлов.
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
-- Expected result: Два последовательных migrated checkpoints и обновлённые domain/state docs.
-- Acceptance criteria: PAOS-METH-13-AC01: Сначала tasks checkpoint, затем workflows checkpoint; каждый имеет собственные source hashes, affected tests, visual evidence и обратимые hunks. PAOS-METH-13-AC02: Сохранены F03 new-task reset, F04 workflow drafts/CAS, dialog focus/8 tabs, preview/confirmation и queue controls; full F21 recovery не объявляется закрытой. PAOS-METH-13-AC03: Migrated consumers не зависят от соседних screen internals; перенесённые edges удалены из baseline exceptions, новые interaction features создаются только при реальной ответственности.
+- Expected result: Выбранные Tasks и/или Workflows checkpoints с guards и обновлёнными owner docs при необходимости.
+- Acceptance criteria: PAOS-METH-13-AC01: METH-18 явно выбрала Tasks и/или Workflows. Каждый экран имеет отдельные source hashes, проверки, visual evidence и обратимые изменения. Если выбраны оба и выявлена зависимость, Tasks идёт первым. PAOS-METH-13-AC02: Сохранены F03 new-task reset, F04 workflow drafts/CAS, dialog focus/8 tabs, preview/confirmation и queue controls; full F21 recovery не объявляется закрытой. PAOS-METH-13-AC03: Migrated consumers не зависят от соседних screen internals; перенесённые edges удалены из baseline exceptions, новые interaction features создаются только при реальной ответственности.
 - Verification gates: V-WEB; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
 - Risks / approval gates: Shared App/navigation/labels changes последовательны; без новых workflow rules, DB migrations и scope расширения. Текущий запрос разрешает только планирование.
 - Complexity: L
 - Estimated execution time: Оценить после актуального discovery и выбора bounded slice; календарное обещание не дано.
 - Agents: builder — tasks, затем builder — workflows; sequential; proposed ownership, сейчас delegation=0.
 - Skills: build-web-apps:frontend-testing-debugging; только для будущей UI проверки; архитектурные решения по ADR.
-- Output artifacts: Два последовательных migrated checkpoints и обновлённые domain/state docs.
-- Next step: Проверить dependencies и текущие source owners; запросить/получить отдельный scope реализации выбранной задачи.
+- Output artifacts: Выбранные Tasks и/или Workflows checkpoints с guards и обновлёнными owner docs при необходимости.
+- Next step: METH-18 выбрала Tasks и/или Workflows после оценки Dashboard. Для каждого выбранного экрана отдельный checkpoint с сохранением draft, CAS, navigation и focus. Сверить выбранный scope и отдельно подтвердить полномочия на реализацию.
 
 #### Completion Report
 
@@ -713,14 +731,15 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Task name: Расширить FSD на team и skills после go-решения
 - Status: planned
 - Priority: P3
+- Delivery group: A4
 - Methodologies: FSD, ADD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
-- Depends on: PAOS-METH-13, PAOS-METH-18
-- Blocks: PAOS-METH-15
+- Depends on: PAOS-METH-18
+- Blocks: Нет.
 - External references: PAOS-FUNC-11, PAOS-FUNC-12, PAOS-FUNC-16
 - Source: [baseline и source hashes](methodology-improvement-2026-11-15.json); актуальные пути ниже; external refs — только references.
 - Short description: Применить проверенные boundaries к team/skills без реализации новых capabilities.
@@ -729,7 +748,7 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Scope: `apps/web/src/features/team/TeamManager.tsx`; `apps/web/src/features/skills/SkillGenerator.tsx`. Будущие work locations, не список изменённых сейчас файлов.
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
 - Expected result: Migrated team/skills по одному checkpoint; без обязательства мигрировать весь frontend.
-- Acceptance criteria: PAOS-METH-14-AC01: Начало только после METH-18 go для этой области; team и skills имеют отдельные checkpoints и owners. PAOS-METH-14-AC02: Catalog/profile/edit/history/generation preview и unavailable usage сохранены; F11/F12/F16 остаются своими задачами, provider search не вызывается. PAOS-METH-14-AC03: Public APIs/boundary tests и scoped UI checks проходят; отчёт показывает удалённые legacy edges и оставшиеся exceptions.
+- Acceptance criteria: PAOS-METH-14-AC01: Начало после go/bounded_go METH-18 для подтверждённого scope. Выбранные Team и Skills имеют собственные checkpoints и владельцев. PAOS-METH-14-AC02: Catalog/profile/edit/history/generation preview и unavailable usage сохранены; F11/F12/F16 остаются своими задачами, provider search не вызывается. PAOS-METH-14-AC03: Public APIs/boundary tests и scoped UI checks проходят; отчёт показывает удалённые legacy edges и оставшиеся exceptions.
 - Verification gates: V-WEB; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
 - Risks / approval gates: P3 необязательна для принятия пилота; не включать provider calls или asset promotion. Текущий запрос разрешает только планирование.
 - Complexity: M
@@ -737,7 +756,7 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Agents: builder — team/skills ownership; proposed ownership, сейчас delegation=0.
 - Skills: build-web-apps:frontend-testing-debugging; только для будущей UI проверки; архитектурные решения по ADR.
 - Output artifacts: Migrated team/skills по одному checkpoint; без обязательства мигрировать весь frontend.
-- Next step: Проверить dependencies и текущие source owners; запросить/получить отдельный scope реализации выбранной задачи.
+- Next step: METH-18 выбрала Team и/или Skills по подтверждённой локальной проблеме. METH-13 учитывается только при фактической зависимости, выявленной в ADR. Сверить выбранный scope и отдельно подтвердить полномочия на реализацию.
 
 #### Completion Report
 
@@ -757,13 +776,14 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Task name: Перенести оставшиеся выбранные экраны и завершить composition boundary
 - Status: planned
 - Priority: P3
+- Delivery group: A4
 - Methodologies: FSD, Design-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
-- Depends on: PAOS-METH-14
+- Depends on: PAOS-METH-18
 - Blocks: Нет.
 - External references: PAOS-FUNC-02, PAOS-FUNC-14, PAOS-FUNC-26, PAOS-FUNC-33, PAOS-FUNC-34
 - Source: [baseline и source hashes](methodology-improvement-2026-11-15.json); актуальные пути ниже; external refs — только references.
@@ -773,7 +793,7 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Scope: `apps/web/src/features/sessions/SessionsCatalog.tsx`; `apps/web/src/features/artifacts/ArtifactExplorer.tsx`; `apps/web/src/features/graph/GraphExplorer.tsx`; `apps/web/src/ui/App.tsx`; `apps/web/src/ui/Operations.tsx`. Будущие work locations, не список изменённых сейчас файлов.
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
 - Expected result: Selected-screen checkpoints, App composition map и disposition остальных legacy exceptions.
-- Acceptance criteria: PAOS-METH-15-AC01: sessions → artifacts → graph выполняются по одному; новый Files/Database/usages функционал не включается, ownership conflicts с FUNC разрешаются до edits. PAOS-METH-15-AC02: App содержит composition/global providers/session selection, feature-local state вынесен только по подтверждённой необходимости; behavior и route IDs сохранены. PAOS-METH-15-AC03: В выбранном migrated scope нет неразрешённых legacy/deep/upward imports; compatibility adapters удаляются лишь после consumer inventory и regression checks.
+- Acceptance criteria: PAOS-METH-15-AC01: Выбранные METH-18 Sessions, Artifacts, Graph или composition изменения выполняются по одному и в порядке подтверждённых зависимостей. Scope исключает новые Files/Database/usages функции, ownership conflicts с FUNC разрешаются до edits. PAOS-METH-15-AC02: App содержит composition/global providers/session selection, feature-local state вынесен только по подтверждённой необходимости; behavior и route IDs сохранены. PAOS-METH-15-AC03: В выбранном migrated scope нет неразрешённых legacy/deep/upward imports; compatibility adapters удаляются лишь после consumer inventory и regression checks.
 - Verification gates: V-WEB; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
 - Risks / approval gates: Не обещать full FSD по наличию папок; весь невыбранный scope остаётся legacy с явными границами. Текущий запрос разрешает только планирование.
 - Complexity: L
@@ -781,7 +801,7 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Agents: builder — один screen owner за раз; proposed ownership, сейчас delegation=0.
 - Skills: build-web-apps:frontend-testing-debugging; только для будущей UI проверки; архитектурные решения по ADR.
 - Output artifacts: Selected-screen checkpoints, App composition map и disposition остальных legacy exceptions.
-- Next step: Проверить dependencies и текущие source owners; запросить/получить отдельный scope реализации выбранной задачи.
+- Next step: METH-18 выбрала конкретные экраны или изменение composition. Порядок определяется подтверждёнными зависимостями каждого экрана. Сверить выбранный scope и отдельно подтвердить полномочия на реализацию.
 
 #### Completion Report
 
@@ -845,26 +865,27 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 ### Task `PAOS-METH-17`
 
 - Task: PAOS-METH-17
-- Task name: Принять интегрированный пилот и проверить сохранность контрактов
+- Task name: Принять технический пилот Dashboard и проверить контракты
 - Status: planned
 - Priority: P1
+- Delivery group: A2
 - Methodologies: Spec-DD, Design-DD, TDD, ADD, FSD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
-- Depends on: PAOS-METH-07, PAOS-METH-13
+- Depends on: PAOS-METH-12
 - Blocks: PAOS-METH-18
 - External references: PAOS-FUNC-19, PAOS-FUNC-21, PAOS-FUNC-22, PAOS-FUNC-23, UI-12
 - Source: [baseline и source hashes](methodology-improvement-2026-11-15.json); актуальные пути ниже; external refs — только references.
-- Short description: Свести evidence dashboard/tasks/workflows и методологического процесса на одном состоянии исходников.
-- Technical value: Свести evidence dashboard/tasks/workflows и методологического процесса на одном состоянии исходников.
+- Short description: Свести evidence Dashboard и import ratchet к одной проверенной сборке и её исходникам. Учесть изменённые общие контракты и владельцев их проверок.
+- Technical value: Свести evidence Dashboard и import ratchet к одной проверенной сборке и её исходникам. Учесть изменённые общие контракты и владельцев их проверок.
 - Product value: Принять полезный ограниченный результат с честными gaps до масштабирования.
-- Scope: `tests/web/`; `docs/testing/index.md`; `docs/frontend/`; `docs/planning/methodology-improvement-2026-11-15.md`. Будущие work locations, не список изменённых сейчас файлов.
+- Scope: `tests/web/contracts-boundaries.test.mts`; `tests/web/ui-v3-dashboard.test.mts`; `tests/web/single-window/func-g01-dashboard-acceptance.mts`; `docs/planning/methodology-improvement-2026-11-15.md`. Будущие участки работы, точные файлы уточняются по выбранному scope.
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
 - Expected result: AC/evidence reconciliation и verdict pilot_accepted/partial/blocked с причинами.
-- Acceptance criteria: PAOS-METH-17-AC01: Каждый pilot AC имеет current check/receipt либо явный unresolved gap; все обязательные checks affected contracts проходят, findings имеют disposition. PAOS-METH-17-AC02: Проверены scope/session selection, drafts, partial data, navigation/focus и contracts independence; runtime recovery/backup evidence переиспользуется только при неизменном релевантном состоянии. PAOS-METH-17-AC03: Review и техническая приёмка ограничены пилотом; UI-12/F23 human acceptance и F19 full product E2E сохраняют своих owners; P3 задачи не блокируют bounded pilot closure.
+- Acceptance criteria: PAOS-METH-17-AC01: Каждый обязательный Dashboard AC и import rule имеет текущий check/receipt либо явный gap. Обязательные проверки затронутых контрактов проходят, findings имеют disposition. PAOS-METH-17-AC02: Проверены partial/error Dashboard, navigation/focus и contracts independence в затронутом scope. При изменении общих paths проверены scope/session и drafts. Recovery/backup receipts переиспользуются при неизменном релевантном состоянии. PAOS-METH-17-AC03: Review и решение ограничены техническим пилотом Dashboard. METH-07 и METH-10/11/13–15 не входят в условия приёмки. UI-12/F23 human acceptance и F19 full product E2E сохраняют своих владельцев.
 - Verification gates: V-INTEGRATED; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
 - Risks / approval gates: Без release-readiness или full product acceptance claims; unresolved critical pilot gap запрещает accepted verdict. Текущий запрос разрешает только планирование.
 - Complexity: M
@@ -892,6 +913,7 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Task name: Принять решение о дальнейшем rollout и обновить владельцев документации
 - Status: planned
 - Priority: P2
+- Delivery group: A2
 - Methodologies: ADD, FSD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
@@ -899,7 +921,7 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
 - Depends on: PAOS-METH-17
-- Blocks: PAOS-METH-14
+- Blocks: PAOS-METH-10, PAOS-METH-11, PAOS-METH-13, PAOS-METH-14, PAOS-METH-15
 - External references: PAOS-FUNC-25
 - Source: [baseline и source hashes](methodology-improvement-2026-11-15.json); актуальные пути ниже; external refs — только references.
 - Short description: Выбрать go/bounded_go/hold/stop отдельно для каждого следующего направления по evidence.
@@ -908,7 +930,7 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 - Scope: `docs/architecture/decisions/`; `docs/frontend/`; `docs/testing/`; `docs/sources/registry.md`; `PLAN.md`; `RUNLOG.md`. Будущие work locations, не список изменённых сейчас файлов.
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
 - Expected result: Reviewable rollout decision в существующем ADR/evidence owner и компактный handoff.
-- Acceptance criteria: PAOS-METH-18-AC01: Сравнены baseline/pilot по unauthorized edges, regression findings, change/review effort и доступным outcome metrics; размер тестового набора не используется как benefit metric. PAOS-METH-18-AC02: Для внутренних METH-14/15 записаны отдельные решения, scope, owner и rollback; hold/stop сохраняет рабочий пилот. Продуктовый B принимает независимое решение без gate METH-18. PAOS-METH-18-AC03: Обновлены только изменившиеся docs/registry/control-plane owners; active rules изменяются только отдельным разрешённым slice, existing FUNC/Web статусы и release gates сохранены.
+- Acceptance criteria: PAOS-METH-18-AC01: Сравнены baseline и Dashboard pilot по unauthorized edges, regression findings и change/review effort. ADD outcome metrics учитываются отдельно только при доступном сопоставимом METH-07 evidence. PAOS-METH-18-AC02: Для выбранных METH-10/11/13–15 записаны собственные scope, owner, measurable benefit, go/bounded_go/hold/stop и rollback. Без измеренного основания расширение можно остановить на Dashboard. B принимает независимое решение. PAOS-METH-18-AC03: Обновлены только изменившиеся docs/registry/control-plane owners; active rules изменяются только отдельным разрешённым slice, existing FUNC/Web статусы и release gates сохранены.
 - Verification gates: V-PLAN; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
 - Risks / approval gates: Go-решение не является автоматической авторизацией implementation/provider/install/Git или deployment. Текущий запрос разрешает только планирование.
 - Complexity: M

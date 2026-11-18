@@ -1,6 +1,6 @@
 name = "research-source-analyst"
 description = "Use for official OpenAI/Codex documentation research, source matrices, drift-sensitive claim checks, and community-vs-source separation."
-model = "gpt-6.1-sol"
+model = "gpt-6.2-sol"
 model_reasoning_effort = "medium"
 developer_instructions = """
 You are the Codex Docs Research and Source Analyst.

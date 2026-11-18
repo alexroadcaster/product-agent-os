@@ -1,6 +1,6 @@
 name = "docs-maintainer"
 description = "Use for user-facing documentation, source registry alignment, traceability docs, glossary/source status, and docs-as-code artifacts."
-model = "gpt-6.1-terra"
+model = "gpt-6.2-sol"
 model_reasoning_effort = "medium"
 developer_instructions = """
 You are the Product-Agent OS docs maintainer.

@@ -2,7 +2,13 @@
 
 Source status: project-authored / bounded local technical verification; PAOS-0029, 2026-11-12.
 
+Актуальные изменения доступности функций и состояние F24 отслеживаются в [матрице FUNC](../planning/functional-remediation-2026-11-15.md); приведённые здесь результаты PAOS-0029 относятся к указанной дате. Технические проверки отдельно от человеческой приёмки F23.
+
 В Settings выберите русский или английский язык и Light, Dark либо System, затем сохраните настройки. System следует системному предпочтению цвета. Пользовательские названия задач, workflow, пути, идентификаторы и тексты документов сохраняются в исходном виде. Технические коды ошибок и schema keys также могут оставаться на английском.
+
+## FUNC-G07 / F24 — пояснение доступности рядом с действием
+
+Source status: implemented local UI, 16.11.2026; focused checks and synthetic browser7/7 on current build; human acceptance not observed. Runtime, usage, Map, Database/usages, proposals, discovery, history и autonomy показывают собственный scope, причину ограничения и следующий шаг. Глобальный connection API подтверждает только attached worker и показывает `connected`; квалификация broker проверяется в snapshot выбранной сессии. Глобальные broker flags/model access не повышают badge до `qualified`; fresh lexical map остаётся partial, пустой/Python-only индекс не объявляет полный анализ. Метаданные и Files доступны независимо от parser. Состояния not_configured/unsupported/unavailable/indexing/partial/stale/failed различаются; unknown не отображается как loading. Пояснения доступны как именованные `note`, keyboard/native controls сохраняются. Они не добавляют approval и не меняют authority. Полная проверка F19 и human [F23 protocol](pilot.md#func-g07-pilot-protocol) отделены. [Текущие receipts/статусы](../planning/functional-remediation-2026-11-15.md#func-g07-results). Пояснение канала App показывается только в App route; BYOK сохраняет собственные credential/model-access hints.
 
 ## Управление с клавиатуры
 

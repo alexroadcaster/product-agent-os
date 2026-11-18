@@ -1,5 +1,9 @@
 # PLAN.md
 
+## FUNC-G07 — техническая часть завершена; F23 ожидает решения пользователя, 16.11.2026
+
+F24/F19/F25 implemented; общий FUNC33implemented/1awaiting_user_decision. F23 — «Ожидание решения пользователя»: владелец самостоятельно проверяет результат и даёт обратную связь. Следующий шаг — его обратная связь и решение; автоматическое продолжение приёмки не запускается. Исходные AC и протокол сохранены, FUNC-G07 остаётся открыта. [Карточка и результаты](docs/planning/functional-remediation-2026-11-15.md#func-g07-results).
+
 ## FUNC-G06 — закрыта, 16.11.2026
 
 FUNC-G06 завершена:30implemented/4planned. F21/F22 qualification иF17design→implementation→actualrelocatedA/B/A выполнены. Следующая отдельная группаFUNC-G07; она этим scope не запускается. Rollbackownsourcehunks только; installerrollback использует явно выбранныйсовместимыйsnapshot/новыйprofile, oldversions сохраняются. [Решения/evidence](docs/planning/functional-remediation-2026-11-15.md#func-g06-results).
@@ -22,9 +26,11 @@ Control-plane compactness follow-up: корневые REQUIREMENTS/PLAN/TEST/RUN
 
 F30/F31/F32 implemented / poc_research_locally_verified,3/3; [решения и evidence](docs/planning/functional-remediation-2026-11-15.md#func-g02-results). F30 bounded_adopt import-only; F31 reject текущего Windows profile после admission refusal; F32 reject authoritative metadata, explicit Node read-only alternative. V3 prototype/typecheck/build, browser22/22 и combined unit22/22 прошли. Два UI P2 финального review исправлены, root delta verified; rejected capabilities не считаются реализованными. Текущий общий итог10 implemented /24 planned; остальные31 task records и3 M5 references сохранены. Следующие возможные slices — F28/F20/G03 по собственным dependencies; production F14/F33/F34 остаётся planned. Rollback: только own PoC/docs hunks, сохранить чужие METH и закрытый G01; production tuple не менялся.
 
-## Методологии — независимые направления A и B, 15.11.2026
+## Методологии — независимые направления A и B, редакция 18.11.2026
 
-[A: 17 внутренних задач](docs/planning/methodology-improvement-2026-11-15.md), [JSON v2](docs/planning/methodology-improvement-2026-11-15.json): 8 P1 / 7 P2 / 2 P3, planned; METH-16 — только cross-track reference. [B: 26 продуктовых задач](docs/planning/user-project-methodologies-2026-11-15.md), [JSON](docs/planning/user-project-methodologies-2026-11-15.json): 18 P1 / 8 P2, planned. B-start: PMETH-01→02→22→03→04; затем Spec/Design/TDD, FSD и ADD → unified plan/stage/evidence → Web/API/UI/recovery → synthetic/actual pilots/docs/rollout decision. B не зависит от METH-18 и внутреннего переноса экранов. Общие файлы редактируются последовательно по exact ownership; FUNC/Web/V3 не перепланированы. Выбор/реализация slice — отдельный запрос, автоматического старта нет.
+В A первый архитектурный пилот ограничен связью Dashboard и Tasks. После проверки публичной границы возможна техническая приёмка этого результата. Решения о новых слоях, переносе следующих экранов и оценке пользы ADD принимаются по своим основаниям. METH-16 сохраняет ссылку на B. [17 запланированных задач A](docs/planning/methodology-improvement-2026-11-15.md) · [JSON A](docs/planning/methodology-improvement-2026-11-15.json)
+
+В B первый пользовательский результат — объяснимый совет в режиме чтения для backend-ошибки и правки документа в одном проекте, доступный через CLI и Web. Сохранение решения, запись в проект, FSD и расширенная приёмка имеют отдельные условия входа. Точный порядок задают `depends_on` карточек. Оба направления остаются в планировании. [26 запланированных задач B](docs/planning/user-project-methodologies-2026-11-15.md) · [JSON B](docs/planning/user-project-methodologies-2026-11-15.json)
 
 ## FUNC-G01 — закрыта, 15.11.2026
 

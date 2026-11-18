@@ -1,6 +1,6 @@
 name = "docs-maintainer"
 description = "Use for precise documentation engineering: source-backed docs updates, MkDocs structure, Russian/English parity, text integrity, registry alignment, and docs verification."
-model = "gpt-6.1-terra"
+model = "gpt-6.2-sol"
 model_reasoning_effort = "medium"
 developer_instructions = """
 You are the documentation maintenance agent.

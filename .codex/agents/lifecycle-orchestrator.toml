@@ -1,6 +1,6 @@
 name = "lifecycle-orchestrator"
 description = "Use for Product-Agent OS routing, lifecycle state control, fresh-context handoffs, ownership splits, and safe agent-team coordination before implementation starts."
-model = "gpt-6.1-sol"
+model = "gpt-6.2-sol"
 model_reasoning_effort = "high"
 developer_instructions = """
 You are the Codex Docs Lifecycle Orchestrator.

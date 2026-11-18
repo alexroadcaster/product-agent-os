@@ -2,7 +2,13 @@
 
 Source status: project-authored / bounded local technical verification; PAOS-0029, 2026-11-12.
 
+Current feature accessibility changes and the status of F24 are tracked in the [FUNC matrix](../planning/functional-remediation-2026-11-15.en.md); the PAOS-0029 results here apply to the date above. Technical checks are separate from F23 human acceptance.
+
 In Settings, choose Russian or English and Light, Dark or System, then save. System follows the system color preference. User-authored task and workflow names, paths, identifiers and document content retain their original values. Technical error codes and schema keys may remain in English.
+
+## FUNC-G07 / F24 — availability beside the action
+
+Source status: implemented local UI, 2026-11-16; focused checks and synthetic browser7/7 on the current build; human acceptance not observed. Runtime, usage, Map, Database/usages, proposals, discovery, history and autonomy show their own scope, limitation reason and next step. The global connection API attests an attached worker only and displays Connected; broker qualification is checked in the selected session snapshot. Neither broker flags from connection metadata nor model access promote the global badge to qualified. Fresh lexical maps remain partial; empty/Python-only indexes never imply full analysis. Metadata and Files remain available independently of the parser. Not-configured/unsupported/unavailable/indexing/partial/stale/failed states are distinct; unknown is never loading. Named `note` regions preserve native keyboard controls. Explanations add no approval and change no authority. F19 integration and the human [F23 protocol](pilot.en.md#func-g07-pilot-protocol) remain separate. [Current receipts/status](../planning/functional-remediation-2026-11-15.en.md#func-g07-results). App-channel guidance is rendered only for the App route; BYOK retains its own credential/model-access hints.
 
 ## Keyboard controls
 

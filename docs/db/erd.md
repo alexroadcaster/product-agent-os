@@ -8,6 +8,10 @@ Source status: repository_source / bounded_f33_backend_native_verified + static_
 
 Кардинальности отражают только nullable/unique ограничения схемы; бизнес-guards и существование фактических данных проверяются отдельно. Чужой target DB F33, migration readiness, graph-to-table и PostgreSQL M5 этой ERD не подтверждаются.
 
+## FUNC-G07 / F19 — ограниченные страницы UI
+
+Source status: current local implementation, 16.11.2026; locally_verified_bounded_UI_on_current_host; no reference-hardware qualification. Database UI запрашивает25 объектов на страницу; API сохраняет default50 и максимум200. Все200таблиц fixture должны сохраняться на восьми страницах с actual Mermaid ERD и прежним бюджетом1500ms. Исходные50объектов превышали бюджет в сохранённых receipts; уменьшение UI batch обменивает дополнительные переходы на ограниченную стоимость отрисовки, без изменения семантики или скрытия объектов. Поиск, список/ERD, source references и следующая страница используют один pinned revision. Исторические результаты четырёх страниц по50объектов ниже относятся к прежней сборке. Новых dependencies/server limits нет.
+
 ## FUNC-32: PoC tbls и выбранный metadata adapter {#func-32-poc}
 
 [PAOS-FUNC-32](../planning/functional-remediation-2026-11-15.md#task-paos-func-32) проверяет отдельный synthetic target schema, а не расширяет схему PAOS выше. Решение engine PoC 15.11.2026: **`reject` tbls 1.96.1 как authoritative SQLite metadata adapter**. Для последующего design F33 явно выбран вариант **Node 26 `node:sqlite`, read-only `table_xinfo` / `foreign_key_list` / `index_list`**. Это решение PoC; production подключение target DB не реализовано, скрытого fallback нет.

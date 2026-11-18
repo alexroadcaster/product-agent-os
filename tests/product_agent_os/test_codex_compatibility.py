@@ -69,6 +69,21 @@ class CodexCompatibilityTest(unittest.TestCase):
         self.assertNotIn("secret-canary", json.dumps(report))
         self.assertIn("unrecognized_observation_fields", report["host_diagnostics"]["issues"])
 
+    def test_gpt62_observations_preserve_model_without_certifying_access(self):
+        for model in ("gpt-6.2-sol", "gpt-6.2-astra"):
+            with self.subTest(model=model):
+                report = validate_codex_compatibility(
+                    PLUGIN_ROOT,
+                    observations={"surface": "CLI", "client_version": "0.170.0",
+                                  "configured_model": model, "observed_model": model},
+                )
+                diagnostics = report["host_diagnostics"]
+                self.assertEqual(diagnostics["model"]["status"], "match")
+                self.assertEqual(diagnostics["model"]["observed_model"], model)
+                self.assertEqual(diagnostics["model"]["promotion"], "not_assessed")
+                self.assertEqual(diagnostics["account_access"], "not_verified")
+                self.assertIsNone(diagnostics["client"]["documented_minimum"])
+
     def test_canonical_cache_missing_match_drift_and_invalid(self):
         import shutil
         with tempfile.TemporaryDirectory() as tmp:

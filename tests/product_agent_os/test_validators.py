@@ -211,8 +211,10 @@ class ValidatorsTest(unittest.TestCase):
                     'Stop conditions: missing evidence. Handoff: risks."\n'
                     '[features]\napps = false\n'
                     '[[skills.config]]\nname = "unused-skill"\nenabled = false\n')
-            path.write_text(text, encoding="utf-8")
-            self.assertEqual(validate_agent_file(path), [])
+            for model in ("gpt-6.1-sol", "gpt-6.2-sol", "gpt-6.2-astra"):
+                with self.subTest(model=model):
+                    path.write_text(text.replace("gpt-6.1-sol", model), encoding="utf-8")
+                    self.assertEqual(validate_agent_file(path), [])
             path.write_text(text.replace('apps = false', 'apps = true'), encoding="utf-8")
             self.assertIn("custom agent feature must disable a supported capability: apps", validate_agent_file(path))
 
@@ -237,16 +239,26 @@ class ValidatorsTest(unittest.TestCase):
             self.assertIn("parent workspace skills lack explicit task write authority", errors)
             skill.write_text("workspace_apply: explicit_task_authority\n", encoding="utf-8")
             text += '\n[mcp_servers.openaiDeveloperDocs]\nurl = "https://developers.openai.com/mcp"\n'
-            config.write_text(text, encoding="utf-8")
-            self.assertEqual(validate_agent_project_config(config), [])
+            for model in ("gpt-6.1-sol", "gpt-6.2-sol"):
+                with self.subTest(model=model):
+                    config.write_text(text.replace("gpt-6.1-sol", model), encoding="utf-8")
+                    self.assertEqual(validate_agent_project_config(config), [])
+            config.write_text(text.replace("gpt-6.1-sol", "gpt-6.2-astra"), encoding="utf-8")
+            self.assertIn(
+                "generic subagents must default to gpt-6.2-sol or gpt-6.1-sol",
+                validate_agent_project_config(config),
+            )
+            config.write_text(text.replace("gpt-6.1-sol", "gpt-6.2-sol"), encoding="utf-8")
             skill.unlink()
             self.assertTrue(any(e.startswith("skill path does not exist:") for e in validate_agent_project_config(config)))
 
     def test_model_policy_rejects_unsupported_model_effort_pair(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "agent.toml"
-            path.write_text('model = "gpt-6.1-sol"\nmodel_reasoning_effort = "none"\n', encoding="utf-8")
-            self.assertIn("unsupported model_reasoning_effort for gpt-6.1-sol: none", validate_agent_file(path))
+            for model in ("gpt-6.1-sol", "gpt-6.2-sol", "gpt-6.2-astra"):
+                with self.subTest(model=model):
+                    path.write_text(f'model = "{model}"\nmodel_reasoning_effort = "none"\n', encoding="utf-8")
+                    self.assertIn(f"unsupported model_reasoning_effort for {model}: none", validate_agent_file(path))
 
     def test_hook_file_rejects_secret_literal(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -302,6 +314,23 @@ class ValidatorsTest(unittest.TestCase):
         errors = validate_task_matrix_text(VALID_TASK_MATRIX)
 
         self.assertEqual(errors, [])
+
+    def test_task_matrix_validator_accepts_awaiting_user_decision_without_completion(self):
+        waiting = VALID_TASK_MATRIX.replace(
+            "- Status: planned", "- Status: awaiting_user_decision", 1
+        ).replace("- status: planned", "- status: awaiting_user_decision", 1)
+
+        self.assertEqual(validate_task_matrix_text(waiting), [])
+
+    def test_task_matrix_validator_rejects_waiting_report_status_mismatch(self):
+        waiting = VALID_TASK_MATRIX.replace(
+            "- Status: planned", "- Status: awaiting_user_decision", 1
+        )
+
+        self.assertIn(
+            "T10-PLAN-M10: completion report status must match task status",
+            validate_task_matrix_text(waiting),
+        )
 
     def test_task_matrix_validator_rejects_summary_table_without_detailed_blocks(self):
         errors = validate_task_matrix_text(

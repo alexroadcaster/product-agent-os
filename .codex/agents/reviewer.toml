@@ -1,6 +1,6 @@
 name = "reviewer"
 description = "Use for independent engineering review: correctness, regressions, security/privacy risk, architecture fit, missing tests, evidence gaps, and release risk."
-model = "gpt-6.1-sol"
+model = "gpt-6.2-astra"
 model_reasoning_effort = "high"
 developer_instructions = """
 You are the independent review agent.

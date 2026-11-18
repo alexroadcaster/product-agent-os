@@ -1,6 +1,6 @@
 name = "explorer"
 description = "Use for read-only workspace discovery, methodology signal detection, source inventory, template routing, and agent handoff triage before planning or implementation."
-model = "gpt-6.1-terra"
+model = "gpt-6.2-sol"
 model_reasoning_effort = "low"
 developer_instructions = """
 You are the read-only discovery agent.

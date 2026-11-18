@@ -1,18 +1,18 @@
 # Product-Agent OS — функциональные доработки после V3
 
-Source status: repository_source / current_local_synthetic_implementation; remaining_tasks_planned.
+Source status: repository_source / current_local_synthetic_implementation; FUNC-G07 in_progress; F23 awaiting_user_decision; human_pilot_not_started.
 Дата планирования: 15.11.2026. Timezone: Europe/Moscow. Schema version: task_matrix_plan_v1.
 
 <!-- func-g01-g06-status -->
-FUNC-G01: 7/7 locally_verified; FUNC-G02: 3/3 poc_research_locally_verified; FUNC-G03: 7/7 locally_verified; FUNC-G04: 5/5 implemented, locally_verified_with_measured_limits; FUNC-G05: 5/5 locally_verified_with_explicit_limits; FUNC-G06:3/3 locally_verified_with_explicit_limits; всего30 implemented /4 planned. Три M5 references сохранены.
+Исторический итог закрытия G06, до запуска G07: FUNC-G01: 7/7 locally_verified; FUNC-G02: 3/3 poc_research_locally_verified; FUNC-G03: 7/7 locally_verified; FUNC-G04: 5/5 implemented, locally_verified_with_measured_limits; FUNC-G05: 5/5 locally_verified_with_explicit_limits; FUNC-G06:3/3 locally_verified_with_explicit_limits; всего30 implemented /4 planned. Три M5 references сохранены.
 
 ## Объём и статус
 
-План содержит **34 задачи PAOS-FUNC-01–PAOS-FUNC-34** и ссылки на **3 ранее запланированные задачи M5**. Текущий итог: **30 implemented / 4 planned**, FUNC-G01 закрыта по локальным техническим AC. Итого в этой обзорной матрице 37 позиций; это не общее число задач проекта. Существующие 56 карточек M1–M5, их 53 implemented / 3 planned и оценки сохранены. Новые дефекты не переписывают исторические receipts: они требуют текущего воспроизведения и новой проверки.
+План содержит **34 задачи PAOS-FUNC-01–PAOS-FUNC-34** и ссылки на **3 ранее запланированные задачи M5**. Текущий итог: **33 implemented / 1 awaiting_user_decision**, FUNC-G01 закрыта по локальным техническим AC. Итого в этой обзорной матрице 37 позиций; это не общее число задач проекта. Существующие 56 карточек M1–M5, их 53 implemented / 3 planned и оценки сохранены. Новые дефекты не переписывают исторические receipts: они требуют текущего воспроизведения и новой проверки.
 
 Машинное состояние новой группы: [functional-remediation-2026-11-15.json](functional-remediation-2026-11-15.json). Этот MD владеет техническим и продуктовым обоснованием, acceptance и completion evidence. Ссылки M5 не создают второй владеющий статус: их владелец — [docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json](product-agent-os-web-task-manager-task-group-2026-11-09.json) и [docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md](product-agent-os-web-task-manager-plan-2026-11-09.md).
 
-Первоначальный запрос разрешал планирование. Последующий запрос 15.11.2026 разрешил полное выполнение FUNC-G01, необходимые локальные synthetic проверки, статусы и документацию; семь задач группы выполнены. Следующий запрос разрешил FUNC-G02: три исследовательских PoC закрыты измеренными решениями и изолированной UI-приёмкой. Следующие запросы разрешили G03 (7 implemented) и G04 (5 implemented с измеренными ограничениями); последующий запрос разрешил G05 (5 implemented); текущий запрос закрыл G06 (3 implemented); остаток —4 planned задачи и отдельные M5 references. P1 — блокировка исполнения или проверка целостности/recovery; P2 — функциональная ценность, корректность информации и поддерживаемость; P3 — ограниченный дефект отображения. Приоритет проверочной задачи не означает, что отказ уже наблюдался.
+Первоначальный запрос разрешал планирование. Последующий запрос 15.11.2026 разрешил полное выполнение FUNC-G01, необходимые локальные synthetic проверки, статусы и документацию; семь задач группы выполнены. Следующий запрос разрешил FUNC-G02: три исследовательских PoC закрыты измеренными решениями и изолированной UI-приёмкой. Следующие запросы разрешили G03 (7 implemented) и G04 (5 implemented с измеренными ограничениями); последующий запрос разрешил G05 (5 implemented); предыдущий запрос закрыл G06 (3 implemented). Запрос на G07 реализовал F24/F19/F25; F23 переведена в «Ожидание решения пользователя» для его самостоятельной проверки и обратной связи. Исторический остаток после G06 —4 planned задачи и отдельные M5 references. P1 — блокировка исполнения или проверка целостности/recovery; P2 — функциональная ценность, корректность информации и поддерживаемость; P3 — ограниченный дефект отображения. Приоритет проверочной задачи не означает, что отказ уже наблюдался.
 
 ## Исходные основания и границы доказательств
 
@@ -25,7 +25,7 @@ FUNC-G01: 7/7 locally_verified; FUNC-G02: 3/3 poc_research_locally_verified; FUN
 
 ## Рекомендуемая последовательность
 
-1. F01/core fixes и F28 сохраняют свои ветки. F30/F31/F32 — независимые PoC на synthetic fixtures: сначала общий протокол, версии и UI wireframes, затем измерения. Они не ждут внедрения F28/F27/F20; используют согласованные draft contracts и единый baseline protocol. Нынешний запрос не запускает PoC.
+1. F01/core fixes и F28 сохраняют свои ветки. F30/F31/F32 — независимые PoC на synthetic fixtures: сначала общий протокол, версии и UI wireframes, затем измерения. Они не ждут внедрения F28/F27/F20; используют согласованные draft contracts и единый baseline protocol. Исходный planning-запрос не запускал PoC; фактические поздние результаты приведены в G02.
 2. F28 → F26/F27 → F29. Файловый браузер доступен до графа/БД и не зависит от F30–F34. Общие HTTP/API/storage/UI файлы изменяются последовательными slices с явным владельцем. F18 задаёт freshness contract, новые consumers реализуют его в своих задачах.
 3. F20 сохраняет baseline и проверяет уже внедрённые файлы/scan/discovery. F20 → F09; F14 использует F09/F27/F28 и решения обоих F30/F31. Обоснованный reject завершает PoC, но downstream build требует выбора альтернативы или явного blocker.
 4. F32 + F26/F27/F28 → F33 (DB schema и полноценный раздел UI); F14 + F33 → F34 (code-to-table связи и usage/impact UI). Новые adapters повторяют benchmark protocol F20 в своих AC; F20 не зависит от F14/F33/F34 и цикла нет.
@@ -503,6 +503,45 @@ Private unsigned user-space delivery on the existing Windows account; no new OS 
 Control-plane sync: REQUIREMENTS/PLAN/TEST/RUNLOG updated; EVALS=no_change_needed (model/prompt/agent-behavior/rubric unchanged); prod_test=no_change_needed (Batch39 ledger unchanged); atlas/navigation=no_change_needed (existing runtime boundaries, no new docs page). Existing root compactness advisories remain a separate docs-maintainer follow-up with preservation. Final independent review/preservation/static gates own parent closure.
 
 Независимый final review: context_mode=separate_reused_context; reviewer=/root/func_g06_completion_review; tester_verdict=closed_allowed; closure_level=locally_verified_with_explicit_limits. Evidence: .tmp/func-g06/final-review.json, closure-consistency.json, docs-final.log(14sources), matrix-ru.log/matrix-en.log(ok=true,errors=[]). Исходные failed validator receipts сохранены как matrix-ru-pre-repair.log/matrix-en-pre-repair.log; после metadata repair source/package/dist inputs не менялись. Открытых implementation/evidence blockers нет.
+
+## FUNC-G07 — execution и решения {#func-g07-results}
+
+Статус: in_progress. F24 → F19 → F23, параллельно F25 documentation reconciliation. Baseline HEAD54dc03d,1408 source snapshots, изначально dirty только own marker. Остальные30 FUNCtaskobjects/cards, AC/groups/order/M5 и G01–G06 receipts сохраняются. F23 требует согласованных realparticipants/consent/baseline, actualunderstanding observations и14dayreuse evidence с owneracceptance; synthetic substitute отсутствует. После технических проверок пользователь выбрал самостоятельную проверку и обратную связь; F23 awaiting_user_decision.
+
+Code-change contract: existing_capability=implementedG01–G06 UI/API/storage/native contracts, saved capability/source states and project-local docs tooling; smallest_safe_patch=shared action-local vocabulary/explanations only where audit proves gaps, extend combined acceptance using current publicports, route historical docs to current owners; invariants=no false-ready/qualified/accepted labels, stable project/profile/selection scope, no secret/provider/target mutation, human consent/observations never fabricated, preserve originals and history; dependency_decision=no_new_dependency, reuseinstalledReact/MkDocs/runtime; risk_selected_tests=purecapabilityprojection plus actualUI/API/native journey, error/cancel/stale/partial/rootisolation, selected multilingualdocsbuild; comment_decision=comment_needed for capability/evidence boundaries; performance_applicability=bounded UI rendering andexistingpagination only, no unrelated benchmark; evidence_and_gaps=proceed_with_technical_scope, actualmodelroute andhumanpilot are separate gates.
+
+Передача владельцу 16.11.2026: пользователь самостоятельно проверяет результат и даёт обратную связь. Исходные AC и предложенный протокол сохранены; приёмка и закрытие не заявлены.
+
+### Текущие результаты и границы
+
+F24/F19/F25 implemented; F23 awaiting_user_decision / human_pilot_not_started. FUNC-G07 остаётся открыта, technical tasks3/4, closure_level=needs_user_acceptance. Baseline HEAD `54dc03da5b54472fc457086f086ed1ac79153217`,1408 text snapshots; исходно dirty был только own lifecycle marker. Тридцать foreign FUNC records/cards, исходные34AC/groups/topology,56M5 и прежние verification receipts сохраняются. Статус G07 выводится из карточек: обязательный F23 запрещает закрытие группы.
+
+F24 — display-only vocabulary и named notes рядом с действиями, без новых approvals/authority. Global connection attests App-agent lease, поэтому badge говорит Agent attached/connected; реальная qualification существует только в выбранном binding snapshot. Независимый review P2 воспроизведён unit/browser RED и исправлен; неполный global nativeSandbox=false не выдаётся ни за готовность broker, ни за доказанный отказ конкретной сессии. Fresh lexical graph остаётся partial; unsupported/empty не равняется полному анализу. Mobile autonomy190px sidebar заменён горизонтальными tabs и полной шириной при<=700px; geometry проверена, screenshot просмотрен. Context7 React useId/ARIA поддерживает accessible associations, а не функциональные claims PAOS.
+
+| F19 AC | Текущее свидетельство |
+| --- | --- |
+| AC1: полный technical path | `.tmp/func-g07/integration/browser-evidence-oVuLNF/result.json`:68/68, actual default native broker, persisted assignment/profile pin, source/task ref, planning без записи, approval/argv, exit0, actual diff и Checks UI, отдельный synthetic technical-owner done |
+| AC2: forms/workflows/appearance | `.tmp/paos-m2/browser-evidence-RuLrrM/m2-browser-result.json`:33/33; actual custom draft/edit/publish/type assignment, old pins, incomplete-transition rejection, RUEN/themes/keyboard |
+| AC3: App/model/generation | `not_observed`, отдельная exact authority отсутствует; synthetic worker и native command не подменяют real App/model roundtrip |
+| AC4–6: Files/scan/safety/reading | `.tmp/func-g03/browser-final/evidence-FAq6dz/result.json`:19/19; current Web697/697 включает Files/policy/root/link/UTF8/binary/limits/source-drift/cancel/restart/retry/project-isolation regressions |
+| AC7–8: Map/DB/usages/real failures | `.tmp/func-g04/browser-acceptance/evidence-U0CmeI/result.json`:18/18; source anchors/task reference дополняются native combined receipt. Реальный SQLite writer conflict/cancel/restart, bounded pages/graphs, confirmed/inferred/unresolved; это составное покрытие, не одна human journey |
+| G05/G06 cross-group exit | `.tmp/func-g05/browser-acceptance/evidence-PZejGw/result.json`:16/16; `.tmp/func-g06/managed-acceptance/evidence-xyiUSA/result.json`:10/10, current installed A/B/A Launcher IPC/service, без system install/native-window proof |
+
+Текущий build: `.tmp/func-g07/build-final-erd25.log`; typecheck `.tmp/func-g07/typecheck-certified-final.log`; full suite `.tmp/func-g07/web-certified-final.log`:697/697,0fail/skip. F24 focused7/7; `.tmp/func-g07/browser-acceptance/evidence-mO7W5K/result.json`:6/6 RUEN/themes/mobile/keyboard/badges/scope,217 source bindings. `.tmp/func-g07/native-default.json`:passed на неизменном adapter `ab195406a2f961c55d90d3a1848d4bcd98b644f10c66da7085cde94d0f584f51`, candidateInspection=false, prequalificationReasons=[], provider/model/credential operations0; manifest не переписывался. Native executable — проверенная копия существующего cache, без installation; `.tmp/func-g07/binary-cleanup-final.json`:копия удалена, cache сохранён. Profiles/workspaces/browser home disposable, pairing/session material не записывалось в URL/receipts.
+
+Неуспешные попытки сохраняются. Browser RED F24 — отсутствие action-local explanation; отдельные RED проверили mobile geometry, generic badge и global/session evidence mismatch. Ранние syntax/setup/obsolete-navigation failures не названы product RED. Старый M2 `--scenario integration` остановился на прежнем summary catalog; новый bounded `--scenario func-g07` использует actual current controls и не выдаёт старый route за green. Native m4 attempts dXORLU/PAlHRs/aeeKBw/vZU2Jj overall failed: прежняя modal/tab navigation и неполный учёт ожидаемого CAS. В итоговом run FILE_PREFLIGHT_STALE допускается только для exact declared task/path/code с captured requested revision и observedRevision выше неё; произвольные409 не допускаются. Ожидаемый ACTIVE_RUN_RECONCILIATION_REQUIRED до Stop и SESSION_REQUIRED при pairing отдельно подтверждены. Generic resource console errors сверяются с этими HTTP observations, остальные отказы проваливают run.
+
+F25 сохранила dated PRD/architecture/M1–M5 history и дала current-owner pointers. Strict interim nested EN build прерывался с56warnings (64заобаlocale) до search merge:52EN JSON links,4RU cross-locale и8outside-docs links. Cross-locale ссылки заменены штатным switcher guidance, workspace paths обозначены локальными. Два `.en.json` — byte-identical generated mirrors, original JSON owners не меняются; manual regeneration/SHA route в planning/index.md. Fix1 strict/postprocess/site7 прошли,3114RU/2795EN search entries и4accessibility/pilot pages; это промежуточный receipt. Итоговый build выбирается явно, canonical `site/` не promoted; docs dependencies не устанавливались, language fallback/tests не ослаблялись.
+
+F23: владелец ответил «Участники пока не определены». В [протоколе revision1](../web/pilot.md#func-g07-pilot-protocol) заданы prospective five-slot cohort, neutral baseline до UI, first unassisted attempt/180секунд, errors/missing denominator,14-day distinct-real-task reuse, consent/retention/withdrawal и separate owner decision. Все человеческие результаты not_observed;4/5 и3/5 не пересчитаны, реальные окна не симулировались. Participant IDs/receipts не создавались. Следующий шаг зависит от определения cohort/observer/data owner и согласования opt-in/protocol; до фактических наблюдений F23 и G07 остаются открыты.
+
+Control-plane sync: REQUIREMENTS/PLAN/TEST/RUNLOG updated по текущим scope/sequence/evidence/handoff; EVALS no_change_needed — исходные subjective/human thresholds не меняются; prod_test no_change_needed — Batch39 вне scope. MkDocs/atlas navigation no_change_needed — новых пользовательских маршрутов документации нет, исправлены existing links/assets; active hooks/config/skills/providers не менялись. Rollback — только own source/doc hunks с проверкой drift; source JSON mirrors регенерируются побайтово, пользовательские данные не откатываются destructive Git.
+
+### Дополнение итогового F19 build
+
+UI Database запрашивает25объектов на страницу, API сохраняет default50/max200. Real RED50-table ERD1850ms превышал прежний1500ms budget даже после завершения concurrent suite; BYOKguard как причина не доказан. Renderer effect уже стабилен поsource/theme/id, поэтому новый cache не вводился. Выбран меньший UI batch; actual200tables/8pages/200unique, first25render1347ms и next671–795ms прошли прежний budget. Все8страниц сохранили revision/selection/источники; это local bounded measurement, не reference-hardware или human convenience. CAS trace различает bare `/database` status и `/database/schema|changes`; ожидаемый DATABASE_SOURCE_SELECTION_STALE допускается только при exactproject/path/code/method и реальном увеличении persisted version между началом и концом чтения. Прежние failed HTTP/NFR/metadata receipts сохраняются, guards/fixtures/budgets не ослаблялись.
+
+Независимая assurance: context_mode=separate_fresh_context, reviewer=/root/func_g07_assurance, одно review window/два исправления. P2 global/session и P3 BYOK устранены; независимый пересчёт source/build hashes дал0расхождений. F19/F24 closed_allowed; F25 closed_allowed после final metadata/site gate. Parent G07 остаётся partial_only / needs_user_acceptance. Root выполняет окончательный source/site/preservation gate и compact control-plane sync; `.tmp/func-g07/final-review.json` отделяет условный verdict reviewer от фактически выполненного root gate.
 
 ## Подробные карточки
 
@@ -1390,15 +1429,15 @@ Control-plane sync: REQUIREMENTS/PLAN/TEST/RUNLOG updated; EVALS=no_change_neede
 
 - Delivery group: `FUNC-G07`; группа не заменяет Depends on и исходные AC.
 - Task: PAOS-FUNC-19 — Проверить сквозной функционал на текущей сборке
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Проверка; функциональный аудит после V3 redesign и запрос владельца на матрицу задач.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 16-11-2026 11:34
 - Priority: P1
-- Evidence level: verification_gap
-- Execution authority: planning_only; внесение в план не запускает реализацию.
+- Evidence level: implemented_locally_verified_with_explicit_limits
+- Execution authority: owner_authorized_func_g07_local_synthetic_and_docs_human_pilot_requires_explicit_consent; 16.11.2026.
 - Depends on: `PAOS-FUNC-01`, `PAOS-FUNC-02`, `PAOS-FUNC-03`, `PAOS-FUNC-04`, `PAOS-FUNC-05`, `PAOS-FUNC-06`, `PAOS-FUNC-07`, `PAOS-FUNC-10`, `PAOS-FUNC-18`, `PAOS-FUNC-24`, `PAOS-FUNC-26`, `PAOS-FUNC-27`, `PAOS-FUNC-29`, `PAOS-FUNC-14`, `PAOS-FUNC-33`, `PAOS-FUNC-34`
 - Blocks: `PAOS-FUNC-23`
 - Source: Redesign receipts visual/synthetic не доказывают новый native full path. [design/2026-11-13-v3/implementation-evidence.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/design/2026-11-13-v3/implementation-evidence.md), [TEST.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/TEST.md). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
@@ -1423,16 +1462,17 @@ Control-plane sync: REQUIREMENTS/PLAN/TEST/RUNLOG updated; EVALS=no_change_neede
 
 #### Completion Report
 
-- status: planned
-- what was done: задача сформулирована в плане; реализация и выполнение её приёмочных сценариев не начаты.
-- files touched / work locations: implementation none; планируемые work locations указаны в Scope.
-- technical value delivered: результат реализации ещё не получен.
-- product value delivered: результат для пользователя ещё не подтверждён.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: только исходные ссылки и статические наблюдения в Source; future Verification gates не выполнены этой задачей.
-- residual risks: separate_synthetic_and_actual_runtime_receipts; актуальность исходного состояния повторно проверяется при старте.
-- follow-up: Next step выше; после выполнения синхронизировать статус JSON, эту карточку и только затронутые control-plane claims.
-- Documentation impact: planning_only; пока код и функциональные claims не меняются. При завершении сопоставить changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required и evidence в этом отчёте.
+- status: implemented
+- what was done: На текущем build проверены Add→Files→source line→pinned task reference, persisted agent assignment/profile pin, planning без записи, execution→approval→actual default native command→diff/checks UI→отдельный synthetic technical-owner done. Stop запрещает преждевременный task cancel, затем ACK/restart сохраняют историю. Forms/custom workflow publish/assignment/old pins/RUEN/themes/keyboard и Files/Map/DB/usages/partial/error/recovery покрыты связанными current receipts. UI schema page уменьшена50→25 после real1500ms RED1850ms; API default50/max200 не менялись. Все200объектов подтверждены через8страниц без пропусков, текущий first25ERD1347ms/next671–795ms.
+- files touched / work locations: tests/web/single-window/m4-integration-acceptance.mts; tests/web/single-window/m2-task-manager-browser-acceptance.mts; tests/web/single-window/project-files-browser-acceptance.mts; apps/web/src/features/database/DatabaseExplorer.tsx; tests/web/single-window/graph-database-browser-acceptance.mts
+- technical value delivered: Наблюдаемая actual native цепочка связана task/session/run/operation/diff/check IDs, source/build/manifest hashes; selected-binding qualification отделена от global attachment. Expected CAS failures допускаются только по exact path/code и доказанному superseded revision.
+- product value delivered: Основные действия, формы, источники и восстановление проверены на одной итоговой сборке без реальных учётных данных; human convenience/acceptance не выводятся из автоматизации.
+- actual implementation date and time: 16-11-2026 11:34
+- verification evidence: .tmp/func-g07/integration/browser-evidence-oVuLNF/result.json:68/68,actualNativeBroker=true,cleanup=true; .tmp/paos-m2/browser-evidence-RuLrrM/m2-browser-result.json:33/33,func-g07,current custom workflow; .tmp/func-g03/browser-final/evidence-FAq6dz/result.json:19/19,current final build; .tmp/func-g04/browser-acceptance/evidence-U0CmeI/result.json:18/18; .tmp/func-g05/browser-acceptance/evidence-PZejGw/result.json:16/16; .tmp/func-g06/managed-acceptance/evidence-xyiUSA/result.json:10/10; .tmp/func-g07/native-default.json:passed,production default,no candidate; .tmp/func-g07/web-certified-final.log:697/697,0fail/skip; .tmp/func-g07/binary-cleanup-final.json:passed; .tmp/func-g04/browser-acceptance/evidence-U0CmeI/result.json:UI25,8pages,200unique; unchanged1500ms budget
+- residual risks: Local synthetic scope on the pinned Windows tuple. No provider/model roundtrip, real credentials/profiles, human acceptance, new OS account, system installation, publication or commercial readiness. F23 participants/consent/14-day reuse/owner decision remain absent.
+- follow-up: Live App/model roundtrip и generation требуют отдельной exact authority и остаются not_observed по AC3. F23 human acceptance отдельно. Legacy M2 --scenario integration сохранил obsolete-catalog failure; bounded current --scenario func-g07 проверен, старый route не объявляется green.
+- Documentation impact: updated; docs/planning/functional-remediation-2026-11-15.md; docs/planning/functional-remediation-2026-11-15.en.md; docs/web/accessibility.md; docs/web/accessibility.en.md; TEST.md; docs/db/erd.md; docs/db/erd.en.md; current_func_g07_working_tree.
+
 
 ### Task `PAOS-FUNC-20`
 
@@ -1578,15 +1618,16 @@ Control-plane sync: REQUIREMENTS/PLAN/TEST/RUNLOG updated; EVALS=no_change_neede
 
 - Delivery group: `FUNC-G07`; группа не заменяет Depends on и исходные AC.
 - Task: PAOS-FUNC-23 — Провести продуктовую приёмку ключевых сценариев
-- Status: planned
+- Status: awaiting_user_decision
+- Status label: Ожидание решения пользователя
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Проверка; функциональный аудит после V3 redesign и запрос владельца на матрицу задач.
 - Validator target: detailed task blocks
 - Date and time of task implementation: pending_execution_timestamp
 - Priority: P2
-- Evidence level: verification_gap
-- Execution authority: planning_only; внесение в план не запускает реализацию.
+- Evidence level: protocol_prepared_human_pilot_not_started
+- Execution authority: owner_authorized_func_g07_local_synthetic_and_docs_human_pilot_requires_explicit_consent; 16.11.2026.
 - Depends on: `PAOS-FUNC-19`, `PAOS-FUNC-21`, `PAOS-FUNC-22`, `PAOS-FUNC-24`
 - Blocks: нет
 - Source: PRD pilot metrics и UI-12 acceptance остаются отдельными gates. [research/product-agent-os-web-prd-2026-11-05.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-prd-2026-11-05.md), [docs/planning/2026-11-13-v3-ui-implementation-plan.md](2026-11-13-v3-ui-implementation-plan.md). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
@@ -1607,34 +1648,37 @@ Control-plane sync: REQUIREMENTS/PLAN/TEST/RUNLOG updated; EVALS=no_change_neede
 - Rollback: отменить только собственные hunks после проверки drift; для данных — сохранённый synthetic backup и согласованный recovery contract; destructive Git не допускается.
 - Planning update 15.11.2026: расширены acceptance и связи с F26–F29; исполнение не начато.
 - Planning update GitHub/UI 15.11.2026: обновлены AC и зависимости F30–F34; общий UI/UX-контракт дополнения применяется в затронутом scope, реализация не начата.
-- Next step: Проверить зависимости и актуальность находки. Подготовить воспроизводимый сценарий и записать исходное состояние.
+- Next step: Дождаться самостоятельной проверки, обратной связи и решения пользователя. Исходные AC и предложенный протокол сохранены; изменение критериев или закрытие F23/G07 требует отдельного решения и соответствующего evidence.
+
+Передача владельцу 16.11.2026: пользователь самостоятельно проверяет результат и даёт обратную связь. Исходные AC и предложенный протокол сохранены; приёмка и закрытие не заявлены.
 
 #### Completion Report
 
-- status: planned
-- what was done: задача сформулирована в плане; реализация и выполнение её приёмочных сценариев не начаты.
-- files touched / work locations: implementation none; планируемые work locations указаны в Scope.
-- technical value delivered: результат реализации ещё не получен.
-- product value delivered: результат для пользователя ещё не подтверждён.
+- status: awaiting_user_decision
+- what was done: Подготовлен revision1 протокола F23: пять будущих псевдонимных слотов, neutral MD-before-UI A/B baseline, первая попытка/180секунд,14дней distinct-real-task reuse, ошибки/потери, consent/retention/withdrawal и отдельная owner form. Владелец подтвердил: участники пока не определены. Пилот не начат. По запросу пользователя 16.11.2026 задача передана ему для самостоятельной проверки и обратной связи; статус «Ожидание решения пользователя». Это не приёмка и не закрытие.
+- files touched / work locations: docs/web/pilot.md; docs/web/pilot.en.md
+- technical value delivered: Есть конкретный reviewable протокол и схема будущих receipts; null не подменяется нулём, согласием или успехом.
+- product value delivered: Подготовлены нейтральные сценарии первого открытия/возвращения, файлов, Map/DB/usages, stale/partial/conflict/cancel/restart; полезность для людей пока не измерена.
 - actual implementation date and time: pending_execution_timestamp
-- verification evidence: только исходные ссылки и статические наблюдения в Source; future Verification gates не выполнены этой задачей.
-- residual risks: human_pilot_protocol_and_consent_required; актуальность исходного состояния повторно проверяется при старте.
-- follow-up: Next step выше; после выполнения синхронизировать статус JSON, эту карточку и только затронутые control-plane claims.
-- Documentation impact: planning_only; пока код и функциональные claims не меняются. При завершении сопоставить changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required и evidence в этом отчёте.
+- verification evidence: docs/web/pilot.md#func-g07-pilot-protocol; docs/web/pilot.en.md#func-g07-pilot-protocol; .tmp/func-g07/docs-pilot-f24.log:passed; owner_reply:participants_not_defined
+- residual risks: Участники, observer/data owner, согласованный baseline, opt-in/retention, реальные timed attempts,14-day reuse и owner acceptance отсутствуют. Исходные цели4/5 и3/5 не изменены.
+- follow-up: Дождаться самостоятельной проверки, обратной связи и решения пользователя. Исходные AC и предложенный протокол сохранены; изменение критериев или закрытие F23/G07 требует отдельного решения и соответствующего evidence.
+- Documentation impact: updated; docs/web/pilot.md; docs/web/pilot.en.md; docs/sources/registry.md; docs/sources/registry.en.md; human_pilot_not_started.
+
 
 ### Task `PAOS-FUNC-24`
 
 - Delivery group: `FUNC-G07`; группа не заменяет Depends on и исходные AC.
 - Task: PAOS-FUNC-24 — Объяснять доступность функций в момент действия
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Доработка; функциональный аудит после V3 redesign и запрос владельца на матрицу задач.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 16-11-2026 11:34
 - Priority: P2
-- Evidence level: static_observation
-- Execution authority: planning_only; внесение в план не запускает реализацию.
+- Evidence level: implemented_locally_verified_with_explicit_limits
+- Execution authority: owner_authorized_func_g07_local_synthetic_and_docs_human_pilot_requires_explicit_consent; 16.11.2026.
 - Depends on: `PAOS-FUNC-05`, `PAOS-FUNC-10`, `PAOS-FUNC-26`, `PAOS-FUNC-27`, `PAOS-FUNC-29`, `PAOS-FUNC-14`, `PAOS-FUNC-33`, `PAOS-FUNC-34`
 - Blocks: `PAOS-FUNC-19`, `PAOS-FUNC-23`
 - Source: Ряд экранов уже отображает unknown/staged; нужна единая journey-проверка. [apps/web/src/ui/ConnectionControls.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/ui/ConnectionControls.tsx), [apps/web/src/features/artifacts/ArtifactExplorer.tsx](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/apps/web/src/features/artifacts/ArtifactExplorer.tsx). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
@@ -1659,30 +1703,31 @@ Control-plane sync: REQUIREMENTS/PLAN/TEST/RUNLOG updated; EVALS=no_change_neede
 
 #### Completion Report
 
-- status: planned
-- what was done: задача сформулирована в плане; реализация и выполнение её приёмочных сценариев не начаты.
-- files touched / work locations: implementation none; планируемые work locations указаны в Scope.
-- technical value delivered: результат реализации ещё не получен.
-- product value delivered: результат для пользователя ещё не подтверждён.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: только исходные ссылки и статические наблюдения в Source; future Verification gates не выполнены этой задачей.
-- residual risks: capability_wording_review_required; актуальность исходного состояния повторно проверяется при старте.
-- follow-up: Next step выше; после выполнения синхронизировать статус JSON, эту карточку и только затронутые control-plane claims.
-- Documentation impact: planning_only; пока код и функциональные claims не меняются. При завершении сопоставить changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required и evidence в этом отчёте.
+- status: implemented
+- what was done: Добавлен общий display vocabulary и именованные capability notes с scope/reason/next step для runtime, usage, Map/DB/usages, proposals/discovery/history/autonomy. Global channel всегда attests attachment; broker qualification только per-session. Исправлены mobile autonomy grid и ambiguous global badges; file rejection объясняет следующий шаг. Authority/approval логика не менялась. App-channel note ограничен isApp; BYOK не наследует чужой scope, meaningful RED/GREEN подтверждены.
+- files touched / work locations: apps/web/src/ui/capability.ts; apps/web/src/ui/CapabilityNotice.tsx; apps/web/src/ui/ConnectionControls.tsx; apps/web/src/ui/App.tsx; apps/web/src/design/parity.css; apps/web/src/features/team/TeamManager.tsx; apps/web/src/features/skills/SkillGenerator.tsx; apps/web/src/features/dashboard/RunUsage.tsx; apps/web/src/features/sessions/SessionsCatalog.tsx; apps/web/src/features/autonomy/AutonomyManager.tsx; apps/web/src/features/graph/GraphExplorer.tsx; apps/web/src/features/database/DatabaseExplorer.tsx; apps/web/src/features/database/CodeDatabaseUsages.tsx; apps/web/src/features/files/ProjectFiles.tsx; tests/web/ui-capability.test.mts; tests/web/single-window/capability-browser-acceptance.mts
+- technical value delivered: Состояния разделяют подключение, квалификацию сессии, сохранённый partial индекс, неподдерживаемую семантику и owner acceptance; unknown не становится loading/ready.
+- product value delivered: Рядом с действием видны доступный scope, ограничение и следующий шаг; мобильное пояснение читается на полной ширине, существующие подтверждения не дублируются.
+- actual implementation date and time: 16-11-2026 11:34
+- verification evidence: .tmp/func-g07/f24-browser-red-assertion.log:intended RED; .tmp/func-g07/f24-global-connection-state-red.log:RED; .tmp/func-g07/f24-global-connection-focused-green.log:7/7; .tmp/func-g07/browser-acceptance/evidence-mO7W5K/result.json:7/7,current build,cleanup=true; .tmp/func-g07/build-final-erd25.log:passed; .tmp/func-g07/typecheck-certified-final.log:passed; .tmp/func-g07/web-certified-final.log:697/697,0fail/skip; .tmp/func-g07/f24-byok-browser-red.log:RED; current capability7/7 includes BYOK negative case
+- residual risks: Local synthetic scope on the pinned Windows tuple. No provider/model roundtrip, real credentials/profiles, human acceptance, new OS account, system installation, publication or commercial readiness. F23 participants/consent/14-day reuse/owner decision remain absent.
+- follow-up: Human comprehension проверяется по F23; глобальное connection API не должно заменять выбранный runtime snapshot.
+- Documentation impact: updated; docs/web/accessibility.md; docs/web/accessibility.en.md; docs/sources/registry.md; docs/sources/registry.en.md; current_func_g07_working_tree.
+
 
 ### Task `PAOS-FUNC-25`
 
 - Delivery group: `FUNC-G07`; группа не заменяет Depends on и исходные AC.
 - Task: PAOS-FUNC-25 — Согласовать текущие продуктовые статусы и критерии
-- Status: planned
+- Status: implemented
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
 - Plan trigger: Документация; функциональный аудит после V3 redesign и запрос владельца на матрицу задач.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 16-11-2026 11:34
 - Priority: P2
-- Evidence level: static_observation
-- Execution authority: planning_only; внесение в план не запускает реализацию.
+- Evidence level: docs_static_verified_with_explicit_limits
+- Execution authority: owner_authorized_func_g07_local_synthetic_and_docs_human_pilot_requires_explicit_consent; 16.11.2026.
 - Depends on: нет
 - Blocks: нет
 - Source: Датированные addenda сосуществуют с ранними status blocks; нужен current-state entry. Текущий docs unittest: 4 failures из-за отсутствующих rendered accessibility/pilot RU/EN и search/sitemap parity. [research/product-agent-os-web-prd-2026-11-05.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/research/product-agent-os-web-prd-2026-11-05.md), [PLAN.md](https://github.com/alexroadcaster/product-agent-os/blob/33ed0350738e549f932a9fffdeeff9d4908ca94c/PLAN.md). Provenance: статический аудит 15.11.2026; новые runtime результаты не заявлены.
@@ -1707,16 +1752,16 @@ Control-plane sync: REQUIREMENTS/PLAN/TEST/RUNLOG updated; EVALS=no_change_neede
 
 #### Completion Report
 
-- status: planned
-- what was done: задача сформулирована в плане; реализация и выполнение её приёмочных сценариев не начаты.
-- files touched / work locations: implementation none; планируемые work locations указаны в Scope.
-- technical value delivered: результат реализации ещё не получен.
-- product value delivered: результат для пользователя ещё не подтверждён.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: только исходные ссылки и статические наблюдения в Source; future Verification gates не выполнены этой задачей.
-- residual risks: source_reconciliation_not_history_deletion; актуальность исходного состояния повторно проверяется при старте.
-- follow-up: Next step выше; после выполнения синхронизировать статус JSON, эту карточку и только затронутые control-plane claims.
-- Documentation impact: planning_only; пока код и функциональные claims не меняются. При завершении сопоставить changed fact, source revision, canonical owner, updated/no_change_needed/handoff_required и evidence в этом отчёте.
+- status: implemented
+- what was done: PRD/architecture/plan указывают на current FUNC/M5 owners, ранние implementation_not_started/API-only блоки явно датированы как история. Исправлены cross-locale/outside-docs links, две пропущенные EN фразы и выдача двух JSON через byte-identical EN mirrors. Accessibility/pilot RUEN обновляются по F24/F23. Strict preclosure build, штатный postprocess и site7/7 прошли; итоговый output обновляется после closing metadata. Current F19 UI25/APIdefault50/max200 описаны в ERD RU/EN.
+- files touched / work locations: research/product-agent-os-web-prd-2026-11-05.md; research/product-agent-os-web-architecture-2026-11-05.md; docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md; docs/planning/index.md; docs/planning/methodology-improvement-2026-11-15.md; docs/planning/methodology-improvement-2026-11-15.en.md; docs/planning/methodology-improvement-2026-11-15.en.json; docs/planning/user-project-methodologies-2026-11-15.md; docs/planning/user-project-methodologies-2026-11-15.en.json; docs/web/accessibility.md; docs/web/accessibility.en.md; docs/web/pilot.md; docs/web/pilot.en.md; docs/sources/registry.md; docs/sources/registry.en.md; docs/db/erd.md; docs/db/erd.en.md
+- technical value delivered: Устранён nested strict-build abort до объединения search RU/EN; source JSON остаются единственными owners, mirror regeneration/SHA записаны в planning/index.
+- product value delivered: Текущие статусы и ограничения доступны через единый owner; technical implementation, исторические receipts и незавершённая human acceptance различаются.
+- actual implementation date and time: 16-11-2026 11:34
+- verification evidence: .tmp/func-g07/docs-source-tests.log:3/3; .tmp/func-g07/docs-all-source.log:passed; .docs-tools/reports/func-g07/mkdocs-interim.log:failed,retained; .docs-tools/reports/func-g07/mkdocs-fix1.log:passed; .docs-tools/reports/func-g07/site-checks-fix1.log:7/7,interim build; .docs-tools/reports/func-g07/mkdocs-preclosure.log:passed; .docs-tools/reports/func-g07/postprocess-preclosure.log:488files; .docs-tools/reports/func-g07/site-checks-preclosure-after-postprocess.log:7/7; .tmp/func-g07/matrix-ru-preclosure.json:ok=true,errors=[]; .tmp/func-g07/matrix-en-preclosure.json:ok=true,errors=[]; .docs-tools/reports/func-g07/mkdocs-final.log:strict passed; .docs-tools/reports/func-g07/site-checks-final.log:7/7; .tmp/func-g07/docs-all-final.log:passed; .tmp/func-g07/docs-source-final.log:3/3; .tmp/func-g07/closure-consistency.json:passed; .tmp/func-g07/diff-check-clean.log:passed
+- residual risks: Local synthetic scope on the pinned Windows tuple. No provider/model roundtrip, real credentials/profiles, human acceptance, new OS account, system installation, publication or commercial readiness. F23 participants/consent/14-day reuse/owner decision remain absent.
+- follow-up: Нет незавершённой реализации F25. Final metadata/site refresh сохраняет текущие статусы и receipts; human F23 остаётся отдельным незакрытым gate.
+- Documentation impact: updated; docs/planning/functional-remediation-2026-11-15.md; docs/planning/functional-remediation-2026-11-15.en.md; docs/sources/registry.md; docs/sources/registry.en.md; docs/web/accessibility.md; docs/web/accessibility.en.md; docs/web/pilot.md; docs/web/pilot.en.md; current_func_g07_working_tree.
 
 
 ### Task `PAOS-FUNC-26`

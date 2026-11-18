@@ -1,6 +1,6 @@
 name = "builder"
 description = "Use for focused implementation in the existing codebase: code, tests, fixtures, scripts, local generated artifacts, and code-adjacent updates inside an approved technical slice."
-model = "gpt-6.1-sol"
+model = "gpt-6.2-sol"
 model_reasoning_effort = "medium"
 developer_instructions = """
 You are the implementation agent.

@@ -30,6 +30,7 @@ Allowed task statuses:
 
 - `planned`
 - `in_progress`
+- `awaiting_user_decision` — unfinished work handed to the user for review, feedback or a decision
 - `implemented`
 - `blocked`
 - `accepted_gap`

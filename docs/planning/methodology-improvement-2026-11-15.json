@@ -26,8 +26,59 @@
     "docs/planning/product-agent-os-web-task-manager-task-group-2026-11-09.json"
   ],
   "optional_tasks": [
+    "PAOS-METH-07",
+    "PAOS-METH-10",
+    "PAOS-METH-11",
+    "PAOS-METH-13",
     "PAOS-METH-14",
     "PAOS-METH-15"
+  ],
+  "delivery_groups": [
+    {
+      "id": "A1",
+      "title": "Критерии и границы Dashboard",
+      "title_en": "Dashboard criteria and boundaries",
+      "task_ids": [
+        "PAOS-METH-01",
+        "PAOS-METH-02",
+        "PAOS-METH-03",
+        "PAOS-METH-04",
+        "PAOS-METH-08",
+        "PAOS-METH-09"
+      ]
+    },
+    {
+      "id": "A2",
+      "title": "Пилот Dashboard и решение о расширении",
+      "title_en": "Dashboard pilot and expansion decision",
+      "task_ids": [
+        "PAOS-METH-12",
+        "PAOS-METH-17",
+        "PAOS-METH-18"
+      ]
+    },
+    {
+      "id": "A3",
+      "title": "Качество тестирования и работы агентов",
+      "title_en": "Testing quality and agent workflows",
+      "task_ids": [
+        "PAOS-METH-05",
+        "PAOS-METH-06",
+        "PAOS-METH-07"
+      ]
+    },
+    {
+      "id": "A4",
+      "title": "Выборочное расширение архитектурных границ",
+      "title_en": "Selective expansion of architectural boundaries",
+      "task_ids": [
+        "PAOS-METH-10",
+        "PAOS-METH-11",
+        "PAOS-METH-13",
+        "PAOS-METH-14",
+        "PAOS-METH-15"
+      ]
+    }
   ],
   "tasks": [
     {
@@ -40,23 +91,27 @@
         "Spec-DD",
         "ADD"
       ],
-      "delivery_group_id": "foundation",
+      "delivery_group_id": "A1",
       "depends_on": [],
       "blocks": [
         "PAOS-METH-02",
-        "PAOS-METH-05",
-        "PAOS-METH-06",
         "PAOS-METH-08"
       ],
       "external_refs": [
         "PAOS-FUNC-01",
+        "PAOS-FUNC-02",
         "PAOS-FUNC-03",
         "PAOS-FUNC-04",
         "PAOS-FUNC-05",
         "PAOS-FUNC-06",
         "PAOS-FUNC-07",
         "PAOS-FUNC-08",
-        "PAOS-FUNC-25"
+        "PAOS-FUNC-14",
+        "PAOS-FUNC-19",
+        "PAOS-FUNC-23",
+        "PAOS-FUNC-24",
+        "PAOS-FUNC-25",
+        "PAOS-FUNC-30"
       ],
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
       "proposed_owner": "architect + product-manager",
@@ -78,8 +133,8 @@
         },
         {
           "id": "PAOS-METH-01-AC03",
-          "ru": "Назначены file/subsystem owners и точки последовательной работы; исходные F01/F03–F08 проверены по текущему владельцу, а не переоткрыты автоматически.",
-          "en": "Assign file/subsystem owners and sequential work points; inspect the current owner of F01/F03–F08 without automatically reopening them."
+          "ru": "Назначены владельцы файлов и очередность общих правок. Текущий FUNC JSON и раздел G07 задают baseline 33 implemented / 1 awaiting_user_decision (F23) на 18.11.2026. F01/F03–F08 и F14/F19/F24/F25 используются в пределах подтверждённого evidence.",
+          "en": "Assign file owners and sequence shared edits. The current FUNC JSON and G07 results give the 2026-11-18 baseline of 33 implemented and one awaiting_user_decision (F23). Reuse F01/F03–F08 and F14/F19/F24/F25 within their verified limits."
         }
       ],
       "verification_profile": "V-PLAN",
@@ -89,44 +144,44 @@
     },
     {
       "id": "PAOS-METH-02",
-      "title": "Связать требования, исходники и проверки в двух пилотных сценариях",
-      "title_en": "Trace requirements to source and checks in two pilot scenarios",
+      "title": "Связать критерии Dashboard с исходниками и проверками",
+      "title_en": "Trace Dashboard criteria to source and checks",
       "status": "planned",
       "priority": "P1",
       "methodologies": [
         "Spec-DD"
       ],
-      "delivery_group_id": "foundation",
+      "delivery_group_id": "A1",
       "depends_on": [
         "PAOS-METH-01"
       ],
       "blocks": [
         "PAOS-METH-03",
-        "PAOS-METH-05",
-        "PAOS-METH-06",
-        "PAOS-METH-12"
+        "PAOS-METH-05"
       ],
       "external_refs": [
-        "PAOS-FUNC-02",
+        "PAOS-FUNC-05",
+        "PAOS-FUNC-06",
+        "PAOS-FUNC-07",
+        "PAOS-FUNC-19",
         "PAOS-FUNC-25"
       ],
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
       "proposed_owner": "product-manager + tester",
       "work_locations": [
-        "docs/product/capabilities.md",
-        "docs/testing/index.md",
-        "docs/planning/methodology-improvement-2026-11-15.md"
+        "docs/planning/methodology-improvement-2026-11-15.md",
+        "docs/testing/index.md"
       ],
       "acceptance_criteria": [
         {
           "id": "PAOS-METH-02-AC01",
-          "ru": "В каждой из двух цепочек criterion → canonical owner → source → test/browser scenario → receipt либо explicit gap; все применимые критерии пилота покрыты строкой.",
-          "en": "For each of the two chains, map criterion → canonical owner → source → test/browser scenario → receipt or explicit gap; cover every applicable pilot criterion."
+          "ru": "Для применимых критериев Dashboard записана связь criterion → canonical owner → source → existing test/browser scenario → receipt или явный gap. Использованы F05–F07 и действующие TEST checks.",
+          "en": "For applicable Dashboard criteria, record criterion → canonical owner → source → existing test/browser scenario → receipt or explicit gap. Reuse F05–F07 and current TEST checks."
         },
         {
           "id": "PAOS-METH-02-AC02",
-          "ru": "Неполное portfolio не выглядит полным, draft не теряется и не переносится в новый объект; пустые/error/stale сценарии названы явно.",
-          "en": "Specify partial portfolio, preserved drafts and new-object reset behavior; name empty/error/stale scenarios explicitly."
+          "ru": "Частичное portfolio явно помечено. Empty/error/stale покрыты по применимости. Если меняется общий путь навигации или состояния редактора, действующая проверка подтверждает сохранность и изоляцию draft.",
+          "en": "Show partial portfolio explicitly and cover applicable empty/error/stale states. If shared navigation or editor state changes, an existing check verifies that drafts remain intact and isolated."
         },
         {
           "id": "PAOS-METH-02-AC03",
@@ -149,7 +204,7 @@
         "Design-DD",
         "Spec-DD"
       ],
-      "delivery_group_id": "foundation",
+      "delivery_group_id": "A1",
       "depends_on": [
         "PAOS-METH-02"
       ],
@@ -157,6 +212,8 @@
         "PAOS-METH-04"
       ],
       "external_refs": [
+        "PAOS-FUNC-05",
+        "PAOS-FUNC-19",
         "PAOS-FUNC-24",
         "UI-12"
       ],
@@ -165,14 +222,13 @@
       "work_locations": [
         "DESIGN.md",
         "design/2026-11-13-v3/coverage.json",
-        "design/2026-11-13-v3/task-field-map.md",
         "docs/frontend/state-management.md"
       ],
       "acceptance_criteria": [
         {
           "id": "PAOS-METH-03-AC01",
-          "ru": "Для пилота описаны default/loading/empty/error/partial/stale/dirty/validation/confirmation с обоими themes и keyboard/focus, либо обоснованное not_applicable.",
-          "en": "Specify default/loading/empty/error/partial/stale/dirty/validation/confirmation states with both themes and keyboard/focus, or justified not_applicable."
+          "ru": "Для Dashboard отмечены применимые default/loading/empty/error/partial/stale и keyboard/focus в обеих темах. Dirty/validation/confirmation проверяются при затронутом контракте, остальные состояния имеют обоснованный not_applicable.",
+          "en": "Identify applicable Dashboard default/loading/empty/error/partial/stale and keyboard/focus states in both themes. Check dirty/validation/confirmation when the affected contract warrants it and record reasons for remaining not_applicable states."
         },
         {
           "id": "PAOS-METH-03-AC02",
@@ -200,7 +256,7 @@
         "Design-DD",
         "TDD"
       ],
-      "delivery_group_id": "foundation",
+      "delivery_group_id": "A1",
       "depends_on": [
         "PAOS-METH-03"
       ],
@@ -208,6 +264,7 @@
         "PAOS-METH-12"
       ],
       "external_refs": [
+        "PAOS-FUNC-05",
         "PAOS-FUNC-19",
         "PAOS-FUNC-24",
         "UI-12"
@@ -215,6 +272,7 @@
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
       "proposed_owner": "tester + frontend owner",
       "work_locations": [
+        "tests/web/single-window/func-g01-dashboard-acceptance.mts",
         "tests/web/single-window/ui-v3-scenario.mts",
         "tests/web/ui-v3-dashboard.test.mts",
         "design/2026-11-13-v3/implementation-evidence.md"
@@ -222,8 +280,8 @@
       "acceptance_criteria": [
         {
           "id": "PAOS-METH-04-AC01",
-          "ru": "Проверяются current-build screenshots пилота в двух themes, открытие/закрытие редактора, focus return, сохранение draft при навигации и partial/error feedback.",
-          "en": "Check current-build pilot screenshots in both themes, editor open/close, focus return, draft preservation during navigation and partial/error feedback."
+          "ru": "На текущей сборке проверены обе темы, partial/error и применимые keyboard/focus-состояния Dashboard. Если пилот меняет общий overlay/navigation, действующий сценарий проверяет focus return и сохранение draft.",
+          "en": "Check both themes, partial/error and applicable Dashboard keyboard/focus states on the current build. If the pilot changes shared overlay/navigation, reuse the existing scenario for focus return and draft preservation."
         },
         {
           "id": "PAOS-METH-04-AC02",
@@ -251,14 +309,12 @@
         "TDD",
         "Spec-DD"
       ],
-      "delivery_group_id": "foundation",
+      "delivery_group_id": "A3",
       "depends_on": [
-        "PAOS-METH-01",
         "PAOS-METH-02"
       ],
       "blocks": [
-        "PAOS-METH-06",
-        "PAOS-METH-09"
+        "PAOS-METH-06"
       ],
       "external_refs": [
         "PAOS-FUNC-21",
@@ -280,8 +336,8 @@
         },
         {
           "id": "PAOS-METH-05-AC02",
-          "ru": "Для нового TS boundary behavior METH-09 и следующего внутреннего Python behavior change определены ожидаемые RED причины и минимальный GREEN; продуктовый routing принадлежит B и не блокирует A.",
-          "en": "Define expected RED causes and minimal GREEN for new TS boundary behavior in METH-09 and the next internal Python behavior change; product routing belongs to B and does not block A."
+          "ru": "До нового проверяемого изменения определены ожидаемая причина RED и минимальный GREEN. METH-09 владеет своими import fixtures и может стартовать по ADR независимо от этой карты. Продуктовый Python routing принадлежит B.",
+          "en": "Define the expected RED reason and minimal GREEN before each new testable change. METH-09 owns its import fixtures and can start from the ADR independently of this map. Product Python routing belongs to B."
         },
         {
           "id": "PAOS-METH-05-AC03",
@@ -304,10 +360,8 @@
         "ADD",
         "Spec-DD"
       ],
-      "delivery_group_id": "foundation",
+      "delivery_group_id": "A3",
       "depends_on": [
-        "PAOS-METH-01",
-        "PAOS-METH-02",
         "PAOS-METH-05"
       ],
       "blocks": [
@@ -353,14 +407,11 @@
       "methodologies": [
         "ADD"
       ],
-      "delivery_group_id": "pilot",
+      "delivery_group_id": "A3",
       "depends_on": [
-        "PAOS-METH-06",
-        "PAOS-METH-12"
+        "PAOS-METH-06"
       ],
-      "blocks": [
-        "PAOS-METH-17"
-      ],
+      "blocks": [],
       "external_refs": [
         "PAOS-FUNC-11",
         "PAOS-FUNC-23"
@@ -375,8 +426,8 @@
       "acceptance_criteria": [
         {
           "id": "PAOS-METH-07-AC01",
-          "ru": "Одинаковые task inputs/AC/revision и доступный runtime; фиксируются accepted/reopened, repair cycles, owner interventions и elapsed с provenance.",
-          "en": "Use identical task inputs/AC/revision and an available runtime; record accepted/reopened outcomes, repair cycles, owner interventions and elapsed time with provenance."
+          "ru": "Зафиксированы одинаковые task inputs/AC/revision, разрешения и инструменты, сопоставимые модель и reasoning effort при actual-agent сравнении. Accepted/reopened, repair cycles, owner interventions и elapsed имеют provenance.",
+          "en": "Record identical task inputs/AC/revision, permissions and tools, plus comparable model and reasoning effort for an actual-agent comparison. Record provenance for accepted/reopened, repair cycles, owner interventions and elapsed time."
         },
         {
           "id": "PAOS-METH-07-AC02",
@@ -392,7 +443,11 @@
       "verification_profile": "V-ADD",
       "implementation_at": "pending_execution_timestamp",
       "execution_authority": "not_authorized_by_this_plan",
-      "direction_id": "A"
+      "direction_id": "A",
+      "activation_condition": {
+        "ru": "По отдельному разрешению и при зафиксированных сопоставимых условиях эксперимента. Допустим отдельный deterministic-only результат.",
+        "en": "With separate authorization and recorded comparable experiment conditions. A separate deterministic-only result is valid."
+      }
     },
     {
       "id": "PAOS-METH-08",
@@ -404,7 +459,7 @@
         "FSD",
         "Design-DD"
       ],
-      "delivery_group_id": "fsd-foundation",
+      "delivery_group_id": "A1",
       "depends_on": [
         "PAOS-METH-01"
       ],
@@ -413,6 +468,7 @@
       ],
       "external_refs": [
         "PAOS-FUNC-08",
+        "PAOS-FUNC-14",
         "PAOS-FUNC-30"
       ],
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
@@ -431,8 +487,8 @@
         },
         {
           "id": "PAOS-METH-08-AC02",
-          "ru": "Предложена карта App composition → pages/widgets при необходимости → interaction features → entities → shared; whole-screen TaskManager/Dashboard не названы features автоматически.",
-          "en": "Map App composition → pages/widgets when useful → interaction features → entities → shared; do not automatically classify whole-screen TaskManager/Dashboard as features."
+          "ru": "Определены владелец текущей композиции Dashboard и минимальный публичный API. При выборе FSD допустим pages-first; widgets, entities и shared выделяются при доказанной потребности. Whole-screen TaskManager/Dashboard не становятся interaction features по имени.",
+          "en": "Identify the current Dashboard composition owner and minimum public API. A pages-first design is valid if FSD is selected. Extract widgets, entities and shared only for demonstrated needs. Whole-screen TaskManager/Dashboard do not become interaction features by name."
         },
         {
           "id": "PAOS-METH-08-AC03",
@@ -455,35 +511,36 @@
         "FSD",
         "TDD"
       ],
-      "delivery_group_id": "fsd-foundation",
+      "delivery_group_id": "A1",
       "depends_on": [
-        "PAOS-METH-05",
         "PAOS-METH-08"
       ],
       "blocks": [
-        "PAOS-METH-10"
+        "PAOS-METH-12"
       ],
       "external_refs": [
         "PAOS-FUNC-08",
+        "PAOS-FUNC-14",
         "PAOS-FUNC-30"
       ],
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
       "proposed_owner": "tester + builder",
       "work_locations": [
         "tests/web/contracts-boundaries.test.mts",
-        "apps/web/package.json",
+        "tests/web/graph-imports.test.mts",
+        "tsconfig.web-m1.json",
         "apps/web/src/"
       ],
       "acceptance_criteria": [
         {
           "id": "PAOS-METH-09-AC01",
-          "ru": "RED/GREEN fixtures покрывают .ts/.tsx/.mts, type imports/reexports/literal dynamic imports и настроенные aliases; unmapped alias является явным gap/failure, не silently skipped.",
-          "en": "RED/GREEN fixtures cover .ts/.tsx/.mts, type imports/reexports/literal dynamic imports and configured aliases; an unmapped alias is an explicit gap/failure, not silently skipped."
+          "ru": "Расширенный tests/web/contracts-boundaries.test.mts проверяет .ts/.tsx/.mts, type imports/reexports/literal dynamic imports и поддерживаемые aliases. RED/GREEN отличает запрещённый edge от ошибки resolution. Неподдерживаемый alias или динамическая цель явно диагностируются.",
+          "en": "The extended tests/web/contracts-boundaries.test.mts checks .ts/.tsx/.mts, type imports/re-exports/literal dynamic imports and supported aliases. RED/GREEN distinguishes a denied edge from resolution failure. Report unsupported aliases or dynamic targets explicitly."
         },
         {
           "id": "PAOS-METH-09-AC02",
-          "ru": "В migrated scopes отклоняются upward/same-layer/deep imports и циклы по принятому ADR; допустимые entity cross-imports только через согласованный API, не blanket exception.",
-          "en": "Reject upward/same-layer/deep imports and cycles in migrated scopes under the accepted ADR; permit entity cross-imports only through an agreed API, not a blanket exception."
+          "ru": "В пилотном scope соблюдаются public API и согласованные ADR правила upward/same-layer/deep imports и циклов. Entity cross-imports разрешаются через конкретный API, только если эта структура выбрана.",
+          "en": "Enforce public APIs and ADR-defined rules for upward/same-layer/deep imports and cycles in the pilot scope. Permit entity cross-imports through a specific API only if that structure is selected."
         },
         {
           "id": "PAOS-METH-09-AC03",
@@ -505,13 +562,11 @@
       "methodologies": [
         "FSD"
       ],
-      "delivery_group_id": "fsd-foundation",
+      "delivery_group_id": "A4",
       "depends_on": [
-        "PAOS-METH-09"
+        "PAOS-METH-18"
       ],
-      "blocks": [
-        "PAOS-METH-11"
-      ],
+      "blocks": [],
       "external_refs": [],
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
       "proposed_owner": "builder — shared frontend ownership",
@@ -525,8 +580,8 @@
       "acceptance_criteria": [
         {
           "id": "PAOS-METH-10-AC01",
-          "ru": "В shared попадают только используемые primitives, safe Markdown/rendering и i18n infrastructure; task status rules и task-specific labels остаются у домена.",
-          "en": "Place only used primitives, safe Markdown/rendering and i18n infrastructure in shared; retain task status rules and task-specific labels with their domain."
+          "ru": "Каждое выделение привязано к выбранной METH-18 проблеме и актуальным потребителям. В shared попадают только востребованные primitives, safe Markdown/rendering или i18n infrastructure. Task status rules и task labels остаются у домена.",
+          "en": "Tie each extraction to the problem selected in METH-18 and current consumers. Shared may contain only needed primitives, safe Markdown/rendering or i18n infrastructure. Keep task status rules and task labels with their domain."
         },
         {
           "id": "PAOS-METH-10-AC02",
@@ -542,25 +597,27 @@
       "verification_profile": "V-WEB",
       "implementation_at": "pending_execution_timestamp",
       "execution_authority": "not_authorized_by_this_plan",
-      "direction_id": "A"
+      "direction_id": "A",
+      "activation_condition": {
+        "ru": "METH-18 выбрала эту работу и подтверждён конкретный повторно используемый недоменный компонент либо затруднение сопровождения.",
+        "en": "METH-18 selected this work and identified a specific reusable non-domain component or maintenance problem."
+      }
     },
     {
       "id": "PAOS-METH-11",
-      "title": "Выделить frontend entities/task и публичные интерфейсы домена",
-      "title_en": "Extract frontend entities/task and domain public interfaces",
+      "title": "Стабилизировать публичные интерфейсы домена Tasks",
+      "title_en": "Stabilize the public interfaces of the Tasks domain",
       "status": "planned",
       "priority": "P2",
       "methodologies": [
         "FSD",
         "Spec-DD"
       ],
-      "delivery_group_id": "fsd-foundation",
+      "delivery_group_id": "A4",
       "depends_on": [
-        "PAOS-METH-10"
+        "PAOS-METH-18"
       ],
-      "blocks": [
-        "PAOS-METH-12"
-      ],
+      "blocks": [],
       "external_refs": [
         "PAOS-FUNC-08"
       ],
@@ -575,8 +632,8 @@
       "acceptance_criteria": [
         {
           "id": "PAOS-METH-11-AC01",
-          "ru": "Reusable selectors/status presentation/task labels имеют один frontend domain owner; editor draft и commands остаются interaction-owned, backend authority не дублируется.",
-          "en": "Give reusable selectors/status presentation/task labels one frontend domain owner; keep editor drafts and commands interaction-owned without duplicating backend authority."
+          "ru": "Повторно используемые selectors/status presentation/task labels имеют одного владельца и подтверждённых потребителей. Entities/task выделяется только при доказанной пользе. Draft и commands остаются у interaction, backend authority сохраняется.",
+          "en": "Reusable selectors/status presentation/task labels have one owner and confirmed consumers. Extract entities/task only with demonstrated value. Drafts and commands remain interaction-owned and backend authority is preserved."
         },
         {
           "id": "PAOS-METH-11-AC02",
@@ -592,12 +649,16 @@
       "verification_profile": "V-WEB",
       "implementation_at": "pending_execution_timestamp",
       "execution_authority": "not_authorized_by_this_plan",
-      "direction_id": "A"
+      "direction_id": "A",
+      "activation_condition": {
+        "ru": "METH-18 выбрала эту работу после подтверждения повторного использования или сложности сопровождения существующего API Tasks.",
+        "en": "METH-18 selected this work after confirming reuse or a maintenance problem with the existing Tasks API."
+      }
     },
     {
       "id": "PAOS-METH-12",
-      "title": "Перевести dashboard на FSD-пилот",
-      "title_en": "Migrate the dashboard as an FSD pilot",
+      "title": "Проверить архитектурные границы на Dashboard",
+      "title_en": "Pilot the architecture boundaries on Dashboard",
       "status": "planned",
       "priority": "P2",
       "methodologies": [
@@ -605,15 +666,13 @@
         "Design-DD",
         "Spec-DD"
       ],
-      "delivery_group_id": "pilot",
+      "delivery_group_id": "A2",
       "depends_on": [
-        "PAOS-METH-02",
         "PAOS-METH-04",
-        "PAOS-METH-11"
+        "PAOS-METH-09"
       ],
       "blocks": [
-        "PAOS-METH-07",
-        "PAOS-METH-13"
+        "PAOS-METH-17"
       ],
       "external_refs": [
         "PAOS-FUNC-05",
@@ -626,14 +685,16 @@
       "work_locations": [
         "apps/web/src/features/dashboard/Dashboard.tsx",
         "apps/web/src/features/dashboard/model.ts",
+        "apps/web/src/features/tasks/model.ts",
         "apps/web/src/ui/App.tsx",
-        "tests/web/ui-v3-dashboard.test.mts"
+        "tests/web/ui-v3-dashboard.test.mts",
+        "tests/web/single-window/func-g01-dashboard-acceptance.mts"
       ],
       "acceptance_criteria": [
         {
           "id": "PAOS-METH-12-AC01",
-          "ru": "У migrated dashboard нет imports в legacy feature internals; selectors берутся из domain public API, services и F18 refresh behavior не меняются.",
-          "en": "The migrated dashboard has no imports into legacy feature internals; selectors use domain public APIs and services/F18 refresh behavior remain unchanged."
+          "ru": "Изменённая граница Dashboard использует минимальный явный API Tasks для востребованных селекторов, в том числе semanticStatus/isBlocked, с одной реализацией. Новые pages/widgets или entities/task появляются только по ADR и при доказанной необходимости. Services и F18 refresh semantics сохранены.",
+          "en": "Use a minimal explicit Tasks API for required selectors, including semanticStatus/isBlocked, with a single implementation. Add pages/widgets or entities/task only where justified by the ADR and actual need. Preserve services and F18 refresh semantics."
         },
         {
           "id": "PAOS-METH-12-AC02",
@@ -653,8 +714,8 @@
     },
     {
       "id": "PAOS-METH-13",
-      "title": "Перевести tasks и workflows отдельными совместимыми срезами",
-      "title_en": "Migrate tasks and workflows in separate compatible slices",
+      "title": "При подтверждённой пользе улучшить границы Tasks и Workflows",
+      "title_en": "Improve Tasks and Workflows boundaries where value is demonstrated",
       "status": "planned",
       "priority": "P2",
       "methodologies": [
@@ -662,14 +723,11 @@
         "Design-DD",
         "TDD"
       ],
-      "delivery_group_id": "pilot",
+      "delivery_group_id": "A4",
       "depends_on": [
-        "PAOS-METH-12"
+        "PAOS-METH-18"
       ],
-      "blocks": [
-        "PAOS-METH-14",
-        "PAOS-METH-17"
-      ],
+      "blocks": [],
       "external_refs": [
         "PAOS-FUNC-03",
         "PAOS-FUNC-04",
@@ -687,8 +745,8 @@
       "acceptance_criteria": [
         {
           "id": "PAOS-METH-13-AC01",
-          "ru": "Сначала tasks checkpoint, затем workflows checkpoint; каждый имеет собственные source hashes, affected tests, visual evidence и обратимые hunks.",
-          "en": "Complete a tasks checkpoint before a workflows checkpoint, each with source hashes, affected tests, visual evidence and reversible hunks."
+          "ru": "METH-18 явно выбрала Tasks и/или Workflows. Каждый экран имеет отдельные source hashes, проверки, visual evidence и обратимые изменения. Если выбраны оба и выявлена зависимость, Tasks идёт первым.",
+          "en": "METH-18 explicitly selected Tasks and/or Workflows. Each selected screen has separate source hashes, checks, visual evidence and reversible changes. If both are selected and a dependency exists, do Tasks first."
         },
         {
           "id": "PAOS-METH-13-AC02",
@@ -704,7 +762,11 @@
       "verification_profile": "V-WEB",
       "implementation_at": "pending_execution_timestamp",
       "execution_authority": "not_authorized_by_this_plan",
-      "direction_id": "A"
+      "direction_id": "A",
+      "activation_condition": {
+        "ru": "METH-18 выбрала Tasks и/или Workflows после оценки Dashboard. Для каждого выбранного экрана отдельный checkpoint с сохранением draft, CAS, navigation и focus.",
+        "en": "METH-18 selected Tasks and/or Workflows after evaluating Dashboard. Each selected screen has a separate checkpoint protecting drafts, CAS, navigation and focus."
+      }
     },
     {
       "id": "PAOS-METH-14",
@@ -716,14 +778,11 @@
         "FSD",
         "ADD"
       ],
-      "delivery_group_id": "optional-scale",
+      "delivery_group_id": "A4",
       "depends_on": [
-        "PAOS-METH-13",
         "PAOS-METH-18"
       ],
-      "blocks": [
-        "PAOS-METH-15"
-      ],
+      "blocks": [],
       "external_refs": [
         "PAOS-FUNC-11",
         "PAOS-FUNC-12",
@@ -738,8 +797,8 @@
       "acceptance_criteria": [
         {
           "id": "PAOS-METH-14-AC01",
-          "ru": "Начало только после METH-18 go для этой области; team и skills имеют отдельные checkpoints и owners.",
-          "en": "Start only after a METH-18 go decision for this area; team and skills have separate checkpoints and owners."
+          "ru": "Начало после go/bounded_go METH-18 для подтверждённого scope. Выбранные Team и Skills имеют собственные checkpoints и владельцев.",
+          "en": "Start after a METH-18 go/bounded_go decision for the demonstrated scope. Each selected Team or Skills area has its own checkpoint and owner."
         },
         {
           "id": "PAOS-METH-14-AC02",
@@ -755,7 +814,11 @@
       "verification_profile": "V-WEB",
       "implementation_at": "pending_execution_timestamp",
       "execution_authority": "not_authorized_by_this_plan",
-      "direction_id": "A"
+      "direction_id": "A",
+      "activation_condition": {
+        "ru": "METH-18 выбрала Team и/или Skills по подтверждённой локальной проблеме. METH-13 учитывается только при фактической зависимости, выявленной в ADR.",
+        "en": "METH-18 selected Team and/or Skills for a demonstrated local problem. METH-13 matters only if the ADR identifies an actual dependency."
+      }
     },
     {
       "id": "PAOS-METH-15",
@@ -767,9 +830,9 @@
         "FSD",
         "Design-DD"
       ],
-      "delivery_group_id": "optional-scale",
+      "delivery_group_id": "A4",
       "depends_on": [
-        "PAOS-METH-14"
+        "PAOS-METH-18"
       ],
       "blocks": [],
       "external_refs": [
@@ -791,8 +854,8 @@
       "acceptance_criteria": [
         {
           "id": "PAOS-METH-15-AC01",
-          "ru": "sessions → artifacts → graph выполняются по одному; новый Files/Database/usages функционал не включается, ownership conflicts с FUNC разрешаются до edits.",
-          "en": "Migrate sessions → artifacts → graph one at a time; exclude new Files/Database/usages features and resolve FUNC ownership conflicts before edits."
+          "ru": "Выбранные METH-18 Sessions, Artifacts, Graph или composition изменения выполняются по одному и в порядке подтверждённых зависимостей. Scope исключает новые Files/Database/usages функции, ownership conflicts с FUNC разрешаются до edits.",
+          "en": "Deliver METH-18-selected Sessions, Artifacts, Graph or composition changes one at a time in demonstrated dependency order. Keep new Files/Database/usages features outside scope and resolve FUNC ownership conflicts before edits."
         },
         {
           "id": "PAOS-METH-15-AC02",
@@ -808,12 +871,16 @@
       "verification_profile": "V-WEB",
       "implementation_at": "pending_execution_timestamp",
       "execution_authority": "not_authorized_by_this_plan",
-      "direction_id": "A"
+      "direction_id": "A",
+      "activation_condition": {
+        "ru": "METH-18 выбрала конкретные экраны или изменение composition. Порядок определяется подтверждёнными зависимостями каждого экрана.",
+        "en": "METH-18 selected specific screens or a composition change. Order follows each screen's demonstrated dependencies."
+      }
     },
     {
       "id": "PAOS-METH-17",
-      "title": "Принять интегрированный пилот и проверить сохранность контрактов",
-      "title_en": "Accept the integrated pilot and verify contract preservation",
+      "title": "Принять технический пилот Dashboard и проверить контракты",
+      "title_en": "Accept the technical Dashboard pilot and verify its contracts",
       "status": "planned",
       "priority": "P1",
       "methodologies": [
@@ -823,10 +890,9 @@
         "ADD",
         "FSD"
       ],
-      "delivery_group_id": "pilot-acceptance",
+      "delivery_group_id": "A2",
       "depends_on": [
-        "PAOS-METH-07",
-        "PAOS-METH-13"
+        "PAOS-METH-12"
       ],
       "blocks": [
         "PAOS-METH-18"
@@ -841,26 +907,26 @@
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
       "proposed_owner": "tester + reviewer",
       "work_locations": [
-        "tests/web/",
-        "docs/testing/index.md",
-        "docs/frontend/",
+        "tests/web/contracts-boundaries.test.mts",
+        "tests/web/ui-v3-dashboard.test.mts",
+        "tests/web/single-window/func-g01-dashboard-acceptance.mts",
         "docs/planning/methodology-improvement-2026-11-15.md"
       ],
       "acceptance_criteria": [
         {
           "id": "PAOS-METH-17-AC01",
-          "ru": "Каждый pilot AC имеет current check/receipt либо явный unresolved gap; все обязательные checks affected contracts проходят, findings имеют disposition.",
-          "en": "Every pilot AC has a current check/receipt or explicit unresolved gap; pass all required affected-contract checks and give findings a disposition."
+          "ru": "Каждый обязательный Dashboard AC и import rule имеет текущий check/receipt либо явный gap. Обязательные проверки затронутых контрактов проходят, findings имеют disposition.",
+          "en": "Each mandatory Dashboard criterion and import rule has a current check/receipt or explicit gap. Required checks for affected contracts pass and findings have dispositions."
         },
         {
           "id": "PAOS-METH-17-AC02",
-          "ru": "Проверены scope/session selection, drafts, partial data, navigation/focus и contracts independence; runtime recovery/backup evidence переиспользуется только при неизменном релевантном состоянии.",
-          "en": "Check scope/session selection, drafts, partial data, navigation/focus and contract independence; reuse recovery/backup evidence only while relevant state is unchanged."
+          "ru": "Проверены partial/error Dashboard, navigation/focus и contracts independence в затронутом scope. При изменении общих paths проверены scope/session и drafts. Recovery/backup receipts переиспользуются при неизменном релевантном состоянии.",
+          "en": "Verify partial/error Dashboard, navigation/focus and contract independence in the affected scope. Verify scope/session and drafts if shared paths change. Reuse recovery/backup receipts only if relevant state is unchanged."
         },
         {
           "id": "PAOS-METH-17-AC03",
-          "ru": "Review и техническая приёмка ограничены пилотом; UI-12/F23 human acceptance и F19 full product E2E сохраняют своих owners; P3 задачи не блокируют bounded pilot closure.",
-          "en": "Limit review and technical acceptance to the pilot; UI-12/F23 human acceptance and F19 full-product E2E retain owners, and P3 tasks do not block bounded pilot closure."
+          "ru": "Review и решение ограничены техническим пилотом Dashboard. METH-07 и METH-10/11/13–15 не входят в условия приёмки. UI-12/F23 human acceptance и F19 full product E2E сохраняют своих владельцев.",
+          "en": "Review and verdict cover the technical Dashboard pilot. METH-07 and METH-10/11/13–15 do not gate acceptance. UI-12/F23 human acceptance and F19 full product E2E retain their owners."
         }
       ],
       "verification_profile": "V-INTEGRATED",
@@ -879,12 +945,16 @@
         "FSD",
         "Spec-DD"
       ],
-      "delivery_group_id": "rollout-decision",
+      "delivery_group_id": "A2",
       "depends_on": [
         "PAOS-METH-17"
       ],
       "blocks": [
-        "PAOS-METH-14"
+        "PAOS-METH-10",
+        "PAOS-METH-11",
+        "PAOS-METH-13",
+        "PAOS-METH-14",
+        "PAOS-METH-15"
       ],
       "external_refs": [
         "PAOS-FUNC-25"
@@ -902,13 +972,13 @@
       "acceptance_criteria": [
         {
           "id": "PAOS-METH-18-AC01",
-          "ru": "Сравнены baseline/pilot по unauthorized edges, regression findings, change/review effort и доступным outcome metrics; размер тестового набора не используется как benefit metric.",
-          "en": "Compare baseline/pilot unauthorized edges, regression findings, change/review effort and available outcome metrics; test counts are not benefit metrics."
+          "ru": "Сравнены baseline и Dashboard pilot по unauthorized edges, regression findings и change/review effort. ADD outcome metrics учитываются отдельно только при доступном сопоставимом METH-07 evidence.",
+          "en": "Compare baseline and Dashboard pilot using unauthorized edges, regression findings and change/review effort. Consider ADD outcome metrics separately when comparable METH-07 evidence exists."
         },
         {
           "id": "PAOS-METH-18-AC02",
-          "ru": "Для внутренних METH-14/15 записаны отдельные решения, scope, owner и rollback; hold/stop сохраняет рабочий пилот. Продуктовый B принимает независимое решение без gate METH-18.",
-          "en": "Record decisions, scope, owners and rollback for internal METH-14/15; hold/stop retains the working pilot. Product direction B decides independently without a METH-18 gate."
+          "ru": "Для выбранных METH-10/11/13–15 записаны собственные scope, owner, measurable benefit, go/bounded_go/hold/stop и rollback. Без измеренного основания расширение можно остановить на Dashboard. B принимает независимое решение.",
+          "en": "Record separate scope, owner, measurable benefit, go/bounded_go/hold/stop and rollback decisions for METH-10/11/13–15. If the case for expansion is unproven, stop after Dashboard. B makes its own decision."
         },
         {
           "id": "PAOS-METH-18-AC03",
@@ -922,7 +992,7 @@
       "direction_id": "A"
     }
   ],
-  "plan_revision": 2,
+  "plan_revision": 3,
   "direction_id": "A",
   "cross_track_references": [
     {
@@ -1066,5 +1136,257 @@
         "PAOS-PMETH-26"
       ]
     }
+  },
+  "pilot_revision": {
+    "updated_at": "2026-11-18",
+    "baseline_owner": "docs/planning/functional-remediation-2026-11-15.json",
+    "observed_func_state": {
+      "implemented": 33,
+      "awaiting_user_decision": 1,
+      "awaiting_task": "PAOS-FUNC-23"
+    },
+    "mandatory_dashboard_tasks": [
+      "PAOS-METH-01",
+      "PAOS-METH-02",
+      "PAOS-METH-03",
+      "PAOS-METH-04",
+      "PAOS-METH-08",
+      "PAOS-METH-09",
+      "PAOS-METH-12",
+      "PAOS-METH-17"
+    ],
+    "optional_add_tasks": [
+      "PAOS-METH-06",
+      "PAOS-METH-07"
+    ],
+    "rollout_decision": "PAOS-METH-18",
+    "removed_active_edges": [
+      {
+        "from": "PAOS-METH-01",
+        "to": "PAOS-METH-05"
+      },
+      {
+        "from": "PAOS-METH-01",
+        "to": "PAOS-METH-06"
+      },
+      {
+        "from": "PAOS-METH-02",
+        "to": "PAOS-METH-06"
+      },
+      {
+        "from": "PAOS-METH-12",
+        "to": "PAOS-METH-07"
+      },
+      {
+        "from": "PAOS-METH-05",
+        "to": "PAOS-METH-09"
+      },
+      {
+        "from": "PAOS-METH-09",
+        "to": "PAOS-METH-10"
+      },
+      {
+        "from": "PAOS-METH-10",
+        "to": "PAOS-METH-11"
+      },
+      {
+        "from": "PAOS-METH-02",
+        "to": "PAOS-METH-12"
+      },
+      {
+        "from": "PAOS-METH-11",
+        "to": "PAOS-METH-12"
+      },
+      {
+        "from": "PAOS-METH-12",
+        "to": "PAOS-METH-13"
+      },
+      {
+        "from": "PAOS-METH-13",
+        "to": "PAOS-METH-14"
+      },
+      {
+        "from": "PAOS-METH-14",
+        "to": "PAOS-METH-15"
+      },
+      {
+        "from": "PAOS-METH-07",
+        "to": "PAOS-METH-17"
+      },
+      {
+        "from": "PAOS-METH-13",
+        "to": "PAOS-METH-17"
+      }
+    ],
+    "superseded_acceptance": [
+      {
+        "task_id": "PAOS-METH-01",
+        "criterion": {
+          "id": "PAOS-METH-01-AC03",
+          "ru": "Назначены file/subsystem owners и точки последовательной работы; исходные F01/F03–F08 проверены по текущему владельцу, а не переоткрыты автоматически.",
+          "en": "Assign file/subsystem owners and sequential work points; inspect the current owner of F01/F03–F08 without automatically reopening them."
+        }
+      },
+      {
+        "task_id": "PAOS-METH-02",
+        "criterion": {
+          "id": "PAOS-METH-02-AC01",
+          "ru": "В каждой из двух цепочек criterion → canonical owner → source → test/browser scenario → receipt либо explicit gap; все применимые критерии пилота покрыты строкой.",
+          "en": "For each of the two chains, map criterion → canonical owner → source → test/browser scenario → receipt or explicit gap; cover every applicable pilot criterion."
+        }
+      },
+      {
+        "task_id": "PAOS-METH-02",
+        "criterion": {
+          "id": "PAOS-METH-02-AC02",
+          "ru": "Неполное portfolio не выглядит полным, draft не теряется и не переносится в новый объект; пустые/error/stale сценарии названы явно.",
+          "en": "Specify partial portfolio, preserved drafts and new-object reset behavior; name empty/error/stale scenarios explicitly."
+        }
+      },
+      {
+        "task_id": "PAOS-METH-03",
+        "criterion": {
+          "id": "PAOS-METH-03-AC01",
+          "ru": "Для пилота описаны default/loading/empty/error/partial/stale/dirty/validation/confirmation с обоими themes и keyboard/focus, либо обоснованное not_applicable.",
+          "en": "Specify default/loading/empty/error/partial/stale/dirty/validation/confirmation states with both themes and keyboard/focus, or justified not_applicable."
+        }
+      },
+      {
+        "task_id": "PAOS-METH-04",
+        "criterion": {
+          "id": "PAOS-METH-04-AC01",
+          "ru": "Проверяются current-build screenshots пилота в двух themes, открытие/закрытие редактора, focus return, сохранение draft при навигации и partial/error feedback.",
+          "en": "Check current-build pilot screenshots in both themes, editor open/close, focus return, draft preservation during navigation and partial/error feedback."
+        }
+      },
+      {
+        "task_id": "PAOS-METH-05",
+        "criterion": {
+          "id": "PAOS-METH-05-AC02",
+          "ru": "Для нового TS boundary behavior METH-09 и следующего внутреннего Python behavior change определены ожидаемые RED причины и минимальный GREEN; продуктовый routing принадлежит B и не блокирует A.",
+          "en": "Define expected RED causes and minimal GREEN for new TS boundary behavior in METH-09 and the next internal Python behavior change; product routing belongs to B and does not block A."
+        }
+      },
+      {
+        "task_id": "PAOS-METH-07",
+        "criterion": {
+          "id": "PAOS-METH-07-AC01",
+          "ru": "Одинаковые task inputs/AC/revision и доступный runtime; фиксируются accepted/reopened, repair cycles, owner interventions и elapsed с provenance.",
+          "en": "Use identical task inputs/AC/revision and an available runtime; record accepted/reopened outcomes, repair cycles, owner interventions and elapsed time with provenance."
+        }
+      },
+      {
+        "task_id": "PAOS-METH-08",
+        "criterion": {
+          "id": "PAOS-METH-08-AC02",
+          "ru": "Предложена карта App composition → pages/widgets при необходимости → interaction features → entities → shared; whole-screen TaskManager/Dashboard не названы features автоматически.",
+          "en": "Map App composition → pages/widgets when useful → interaction features → entities → shared; do not automatically classify whole-screen TaskManager/Dashboard as features."
+        }
+      },
+      {
+        "task_id": "PAOS-METH-09",
+        "criterion": {
+          "id": "PAOS-METH-09-AC01",
+          "ru": "RED/GREEN fixtures покрывают .ts/.tsx/.mts, type imports/reexports/literal dynamic imports и настроенные aliases; unmapped alias является явным gap/failure, не silently skipped.",
+          "en": "RED/GREEN fixtures cover .ts/.tsx/.mts, type imports/reexports/literal dynamic imports and configured aliases; an unmapped alias is an explicit gap/failure, not silently skipped."
+        }
+      },
+      {
+        "task_id": "PAOS-METH-09",
+        "criterion": {
+          "id": "PAOS-METH-09-AC02",
+          "ru": "В migrated scopes отклоняются upward/same-layer/deep imports и циклы по принятому ADR; допустимые entity cross-imports только через согласованный API, не blanket exception.",
+          "en": "Reject upward/same-layer/deep imports and cycles in migrated scopes under the accepted ADR; permit entity cross-imports only through an agreed API, not a blanket exception."
+        }
+      },
+      {
+        "task_id": "PAOS-METH-10",
+        "criterion": {
+          "id": "PAOS-METH-10-AC01",
+          "ru": "В shared попадают только используемые primitives, safe Markdown/rendering и i18n infrastructure; task status rules и task-specific labels остаются у домена.",
+          "en": "Place only used primitives, safe Markdown/rendering and i18n infrastructure in shared; retain task status rules and task-specific labels with their domain."
+        }
+      },
+      {
+        "task_id": "PAOS-METH-11",
+        "criterion": {
+          "id": "PAOS-METH-11-AC01",
+          "ru": "Reusable selectors/status presentation/task labels имеют один frontend domain owner; editor draft и commands остаются interaction-owned, backend authority не дублируется.",
+          "en": "Give reusable selectors/status presentation/task labels one frontend domain owner; keep editor drafts and commands interaction-owned without duplicating backend authority."
+        }
+      },
+      {
+        "task_id": "PAOS-METH-12",
+        "criterion": {
+          "id": "PAOS-METH-12-AC01",
+          "ru": "У migrated dashboard нет imports в legacy feature internals; selectors берутся из domain public API, services и F18 refresh behavior не меняются.",
+          "en": "The migrated dashboard has no imports into legacy feature internals; selectors use domain public APIs and services/F18 refresh behavior remain unchanged."
+        }
+      },
+      {
+        "task_id": "PAOS-METH-13",
+        "criterion": {
+          "id": "PAOS-METH-13-AC01",
+          "ru": "Сначала tasks checkpoint, затем workflows checkpoint; каждый имеет собственные source hashes, affected tests, visual evidence и обратимые hunks.",
+          "en": "Complete a tasks checkpoint before a workflows checkpoint, each with source hashes, affected tests, visual evidence and reversible hunks."
+        }
+      },
+      {
+        "task_id": "PAOS-METH-14",
+        "criterion": {
+          "id": "PAOS-METH-14-AC01",
+          "ru": "Начало только после METH-18 go для этой области; team и skills имеют отдельные checkpoints и owners.",
+          "en": "Start only after a METH-18 go decision for this area; team and skills have separate checkpoints and owners."
+        }
+      },
+      {
+        "task_id": "PAOS-METH-15",
+        "criterion": {
+          "id": "PAOS-METH-15-AC01",
+          "ru": "sessions → artifacts → graph выполняются по одному; новый Files/Database/usages функционал не включается, ownership conflicts с FUNC разрешаются до edits.",
+          "en": "Migrate sessions → artifacts → graph one at a time; exclude new Files/Database/usages features and resolve FUNC ownership conflicts before edits."
+        }
+      },
+      {
+        "task_id": "PAOS-METH-17",
+        "criterion": {
+          "id": "PAOS-METH-17-AC01",
+          "ru": "Каждый pilot AC имеет current check/receipt либо явный unresolved gap; все обязательные checks affected contracts проходят, findings имеют disposition.",
+          "en": "Every pilot AC has a current check/receipt or explicit unresolved gap; pass all required affected-contract checks and give findings a disposition."
+        }
+      },
+      {
+        "task_id": "PAOS-METH-17",
+        "criterion": {
+          "id": "PAOS-METH-17-AC02",
+          "ru": "Проверены scope/session selection, drafts, partial data, navigation/focus и contracts independence; runtime recovery/backup evidence переиспользуется только при неизменном релевантном состоянии.",
+          "en": "Check scope/session selection, drafts, partial data, navigation/focus and contract independence; reuse recovery/backup evidence only while relevant state is unchanged."
+        }
+      },
+      {
+        "task_id": "PAOS-METH-17",
+        "criterion": {
+          "id": "PAOS-METH-17-AC03",
+          "ru": "Review и техническая приёмка ограничены пилотом; UI-12/F23 human acceptance и F19 full product E2E сохраняют своих owners; P3 задачи не блокируют bounded pilot closure.",
+          "en": "Limit review and technical acceptance to the pilot; UI-12/F23 human acceptance and F19 full-product E2E retain owners, and P3 tasks do not block bounded pilot closure."
+        }
+      },
+      {
+        "task_id": "PAOS-METH-18",
+        "criterion": {
+          "id": "PAOS-METH-18-AC01",
+          "ru": "Сравнены baseline/pilot по unauthorized edges, regression findings, change/review effort и доступным outcome metrics; размер тестового набора не используется как benefit metric.",
+          "en": "Compare baseline/pilot unauthorized edges, regression findings, change/review effort and available outcome metrics; test counts are not benefit metrics."
+        }
+      },
+      {
+        "task_id": "PAOS-METH-18",
+        "criterion": {
+          "id": "PAOS-METH-18-AC02",
+          "ru": "Для внутренних METH-14/15 записаны отдельные решения, scope, owner и rollback; hold/stop сохраняет рабочий пилот. Продуктовый B принимает независимое решение без gate METH-18.",
+          "en": "Record decisions, scope, owners and rollback for internal METH-14/15; hold/stop retains the working pilot. Product direction B decides independently without a METH-18 gate."
+        }
+      }
+    ]
   }
 }

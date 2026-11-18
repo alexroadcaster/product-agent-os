@@ -57,6 +57,62 @@
     },
     "does_not_copy_status": true
   },
+  "delivery_groups": [
+    {
+      "id": "B1",
+      "title": "Выбор методологии и первый совет в CLI",
+      "title_en": "Method selection and first CLI recommendation",
+      "task_ids": [
+        "PAOS-PMETH-01",
+        "PAOS-PMETH-02",
+        "PAOS-PMETH-22",
+        "PAOS-PMETH-03",
+        "PAOS-PMETH-04",
+        "PAOS-PMETH-05",
+        "PAOS-PMETH-07"
+      ]
+    },
+    {
+      "id": "B2",
+      "title": "Совет в Web, проверка пользы и решение о поставке",
+      "title_en": "Web recommendation, usefulness evaluation and rollout decision",
+      "task_ids": [
+        "PAOS-PMETH-19",
+        "PAOS-PMETH-20",
+        "PAOS-PMETH-26",
+        "PAOS-PMETH-23",
+        "PAOS-PMETH-24",
+        "PAOS-PMETH-25"
+      ]
+    },
+    {
+      "id": "B3",
+      "title": "Методологии для интерфейса и frontend-архитектуры",
+      "title_en": "Methods for UI design and frontend architecture",
+      "task_ids": [
+        "PAOS-PMETH-08",
+        "PAOS-PMETH-09",
+        "PAOS-PMETH-10",
+        "PAOS-PMETH-11",
+        "PAOS-PMETH-12"
+      ]
+    },
+    {
+      "id": "B4",
+      "title": "Исполнение, доказательства и восстановление",
+      "title_en": "Execution, evidence and recovery",
+      "task_ids": [
+        "PAOS-PMETH-06",
+        "PAOS-PMETH-13",
+        "PAOS-PMETH-14",
+        "PAOS-PMETH-15",
+        "PAOS-PMETH-16",
+        "PAOS-PMETH-17",
+        "PAOS-PMETH-18",
+        "PAOS-PMETH-21"
+      ]
+    }
+  ],
   "tasks": [
     {
       "id": "PAOS-PMETH-01",
@@ -65,15 +121,14 @@
       "status": "planned",
       "priority": "P1",
       "direction_id": "B",
-      "delivery_group_id": "B0",
+      "delivery_group_id": "B1",
       "methodologies": [
         "Spec-DD",
         "ADD"
       ],
       "depends_on": [],
       "blocks": [
-        "PAOS-PMETH-02",
-        "PAOS-PMETH-22"
+        "PAOS-PMETH-02"
       ],
       "external_refs": [
         "PAOS-FUNC-25"
@@ -84,18 +139,20 @@
         "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
         "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
         "plugins/product-agent-os/scripts/product_agent_os/task_routing.py",
-        "plugins/product-agent-os/scripts/codex_runtime_runner/routes.py"
+        "plugins/product-agent-os/scripts/codex_runtime_runner/routes.py",
+        "apps/local-service/src/project-analysis/bridge.py",
+        "apps/local-service/src/http/application.mts"
       ],
       "acceptance_criteria": [
         {
           "id": "PAOS-PMETH-01-AC01",
-          "ru": "Карта reuse/extend/missing: discovery → audit/catalog/synthesis → task routing → runner/skills → stage/merge → Web; каждый переход подтверждён источником.",
-          "en": "Map reuse/extend/missing from discovery to audit/catalog/synthesis, task routing, runner/skills, stage/merge and Web; substantiate each edge with source."
+          "ru": "Карта reuse/extend/missing прослеживает CLI intake → discovery/audit/synthesis/task routing и Project Analysis → Python bridge → Sources/Teams & Tasks; для записи отдельно G9/F13. У каждого звена указан фактический вход, владелец и существующие тесты.",
+          "en": "Trace CLI intake through discovery/audit/synthesis/task routing, Project Analysis through its Python bridge to Sources/Teams & Tasks, and G9/F13 separately for writes. Identify the real entry point, owner and existing tests at each edge."
         },
         {
           "id": "PAOS-PMETH-01-AC02",
-          "ru": "Readiness/detection, staged proposal и реальное выполнение разделены; отсутствие keyword в Web не выдается за доказательство отсутствия интеграции.",
-          "en": "Separate readiness/detection, staged proposals and execution; a missing Web keyword is not proof of missing integration."
+          "ru": "Зафиксированы два существующих обхода discovery/audit, их фильтры и пример разного покрытия; используется существующая инвентаризация. Detection, observed projection, proposal и execution различаются.",
+          "en": "Record the two existing discovery/audit traversals, their filters and a coverage difference. Reuse existing inventories and distinguish detection, observed projection, proposals and execution."
         },
         {
           "id": "PAOS-PMETH-01-AC03",
@@ -119,7 +176,7 @@
       "status": "planned",
       "priority": "P1",
       "direction_id": "B",
-      "delivery_group_id": "B0",
+      "delivery_group_id": "B1",
       "methodologies": [
         "Spec-DD",
         "ADD"
@@ -128,7 +185,6 @@
         "PAOS-PMETH-01"
       ],
       "blocks": [
-        "PAOS-PMETH-03",
         "PAOS-PMETH-22"
       ],
       "external_refs": [
@@ -139,7 +195,10 @@
       "work_locations": [
         "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
         "plugins/product-agent-os/scripts/product_agent_os/task_routing.py",
-        "plugins/product-agent-os/scripts/product_agent_os/question_protocol.py"
+        "plugins/product-agent-os/scripts/product_agent_os/question_protocol.py",
+        "plugins/product-agent-os/scripts/codex_runtime_runner/cli.py",
+        "plugins/product-agent-os/scripts/run_methodology_audit.py",
+        "apps/local-service/src/project-analysis/bridge.py"
       ],
       "acceptance_criteria": [
         {
@@ -149,8 +208,8 @@
         },
         {
           "id": "PAOS-PMETH-02-AC02",
-          "ru": "Реальный intent/AC доходит до audit/route; file-free intake и прежний task_context сохраняются, mixed/malformed input отклонён явно.",
-          "en": "Pass actual intent/AC to audit/route; preserve file-free intake and task_context while explicitly rejecting mixed/malformed inputs."
+          "ru": "Один нормализованный intent и применимые AC доходят до audit/route. Приоритет task_context и intent_hint явно определён; конфликтный, смешанный или ошибочный ввод отклоняется либо даёт явный gap. Проверены desktop/Python adapter input и CLI intake на эквивалентных bug/docs; parity результата в рабочем HTTP path проверяет PMETH-19, staging — PMETH-16. Repository-only audit сохранён.",
+          "en": "Pass one normalized intent and applicable AC to audit and routing. Define precedence between task_context and intent_hint and reject conflicting, mixed or malformed input or expose an explicit gap. Verify desktop/Python adapter input and CLI intake with equivalent bug/docs tasks. PMETH-19 verifies parity on the real HTTP path and PMETH-16 verifies staging. Preserve repository-only audit."
         },
         {
           "id": "PAOS-PMETH-02-AC03",
@@ -174,7 +233,7 @@
       "status": "planned",
       "priority": "P1",
       "direction_id": "B",
-      "delivery_group_id": "B0",
+      "delivery_group_id": "B1",
       "methodologies": [
         "Spec-DD",
         "Design-DD",
@@ -183,7 +242,6 @@
         "FSD"
       ],
       "depends_on": [
-        "PAOS-PMETH-02",
         "PAOS-PMETH-22"
       ],
       "blocks": [
@@ -210,8 +268,8 @@
         },
         {
           "id": "PAOS-PMETH-03-AC03",
-          "ru": "Missing evidence даёт вопрос/gap/present_unverified, не нарушение или present_verified; user override сохраняет причину и не отменяет permissions/обязательные invariants.",
-          "en": "Missing evidence produces a question/gap/present_unverified rather than a violation or present_verified; record override reasons without relaxing permissions/invariants."
+          "ru": "Missing evidence даёт вопрос/gap/present_unverified. В read-only пути пользователь уточняет вход и пересчитывает совет без записи. Durable override с причиной и областью применения закреплён за PMETH-18/21 и сохраняет обязательные проверки.",
+          "en": "Missing evidence yields a question, gap or present_unverified. In the read-only path users refine input and recompute advice without a write. PMETH-18/21 own durable overrides with rationale and scope and preserve mandatory checks."
         },
         {
           "id": "PAOS-PMETH-03-AC04",
@@ -230,7 +288,7 @@
       "status": "planned",
       "priority": "P1",
       "direction_id": "B",
-      "delivery_group_id": "B0",
+      "delivery_group_id": "B1",
       "methodologies": [
         "Spec-DD",
         "ADD"
@@ -241,8 +299,7 @@
       "blocks": [
         "PAOS-PMETH-05",
         "PAOS-PMETH-10",
-        "PAOS-PMETH-13",
-        "PAOS-PMETH-18"
+        "PAOS-PMETH-13"
       ],
       "external_refs": [
         "PAOS-FUNC-08"
@@ -253,13 +310,15 @@
         "plugins/product-agent-os/scripts/product_agent_os/methodology_catalog.py",
         "plugins/product-agent-os/scripts/codex_runtime_runner/contracts.py",
         "plugins/product-agent-os/scripts/product_agent_os/task_routing.py",
-        "packages/contracts/"
+        "packages/contracts/",
+        "packages/contracts/project-analysis.ts",
+        "packages/contracts/issues/task-profile.ts"
       ],
       "acceptance_criteria": [
         {
           "id": "PAOS-PMETH-04-AC01",
-          "ru": "Выбран один canonical schema owner и adapters Python/TypeScript; decision/profile, project/task identity, revisions и evidence refs имеют проверяемые поля.",
-          "en": "Choose one canonical schema owner and Python/TypeScript adapters; validate decision/profile, project/task identity, revisions and evidence references."
+          "ru": "Выбран один schema owner и минимальные Python/TypeScript adapters к существующим контрактам. Project-only facts и task-scoped advice различаются; project/task identity, source/task revisions и evidence refs проверяются на границе.",
+          "en": "Choose a single schema owner and minimal Python/TypeScript adapters over existing contracts. Distinguish project-only facts from task-scoped advice and validate project/task identity, source/task revisions and evidence references at the boundary."
         },
         {
           "id": "PAOS-PMETH-04-AC02",
@@ -293,14 +352,12 @@
         "Spec-DD"
       ],
       "depends_on": [
-        "PAOS-PMETH-04",
-        "PAOS-PMETH-22"
+        "PAOS-PMETH-04"
       ],
       "blocks": [
         "PAOS-PMETH-06",
         "PAOS-PMETH-07",
-        "PAOS-PMETH-08",
-        "PAOS-PMETH-15"
+        "PAOS-PMETH-08"
       ],
       "external_refs": [],
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
@@ -309,13 +366,15 @@
         "plugins/product-agent-os/skills/requirements-author/SKILL.md",
         "plugins/product-agent-os/skills/implementation-planner/SKILL.md",
         "plugins/product-agent-os/assets/templates/artifact-templates/",
-        "plugins/product-agent-os/scripts/product_agent_os/templates.py"
+        "plugins/product-agent-os/scripts/product_agent_os/templates.py",
+        "plugins/product-agent-os/scripts/product_agent_os/control_plane_documents.py",
+        "plugins/product-agent-os/scripts/product_agent_os/project_formation.py"
       ],
       "acceptance_criteria": [
         {
           "id": "PAOS-PMETH-05-AC01",
-          "ru": "Для небольшой задачи формируется concise scope/AC в существующем owner, для сложной — требования/non-goals/invariants и сценарии; пустой mandatory документ не создаётся.",
-          "en": "Use concise scope/AC in an existing owner for small work and requirements/non-goals/invariants/scenarios for complex work; create no empty mandatory document."
+          "ru": "Небольшая задача получает concise scope/AC в существующей задаче или read-only проекции без генерации файла. Сложная получает требования/non-goals/invariants и сценарии через существующего владельца.",
+          "en": "Give a small task concise scope/AC in the existing task or read-only projection without generating files. Route complex requirements, non-goals, invariants and scenarios to the existing owner."
         },
         {
           "id": "PAOS-PMETH-05-AC02",
@@ -324,8 +383,8 @@
         },
         {
           "id": "PAOS-PMETH-05-AC03",
-          "ru": "Существующие user-authored требования дополняются staged proposal/diff, не перезаписываются и не дублируются вторым source of truth.",
-          "en": "Extend user-authored requirements through staged proposals/diffs without overwriting or creating another source of truth."
+          "ru": "Существующие user-authored требования и их владелец сохраняются. Read-only путь показывает следующий шаг текстом/ссылкой. Staged proposal/diff и применение принадлежат PMETH-16.",
+          "en": "Preserve user-authored requirements and their owner. The read-only path shows the next step as text or a link. PMETH-16 owns staged proposals, diffs and application."
         },
         {
           "id": "PAOS-PMETH-05-AC04",
@@ -344,7 +403,7 @@
       "status": "planned",
       "priority": "P1",
       "direction_id": "B",
-      "delivery_group_id": "B1",
+      "delivery_group_id": "B4",
       "methodologies": [
         "Spec-DD",
         "ADD"
@@ -353,8 +412,8 @@
         "PAOS-PMETH-05"
       ],
       "blocks": [
-        "PAOS-PMETH-12",
-        "PAOS-PMETH-16"
+        "PAOS-PMETH-16",
+        "PAOS-PMETH-17"
       ],
       "external_refs": [
         "PAOS-FUNC-02",
@@ -365,7 +424,8 @@
       "work_locations": [
         "plugins/product-agent-os/scripts/product_agent_os/task_routing.py",
         "plugins/product-agent-os/scripts/product_agent_os/control_plane_documents.py",
-        "plugins/product-agent-os/scripts/product_agent_os/documentation_sync.py"
+        "plugins/product-agent-os/scripts/product_agent_os/documentation_sync.py",
+        "plugins/product-agent-os/scripts/product_agent_os/project_formation.py"
       ],
       "acceptance_criteria": [
         {
@@ -406,12 +466,11 @@
         "Spec-DD"
       ],
       "depends_on": [
-        "PAOS-PMETH-05",
-        "PAOS-PMETH-22"
+        "PAOS-PMETH-05"
       ],
       "blocks": [
-        "PAOS-PMETH-09",
-        "PAOS-PMETH-15"
+        "PAOS-PMETH-15",
+        "PAOS-PMETH-19"
       ],
       "external_refs": [
         "PAOS-FUNC-21",
@@ -423,13 +482,14 @@
         "plugins/product-agent-os/skills/test-eval-designer/SKILL.md",
         "plugins/product-agent-os/scripts/product_agent_os/test_strategy_selector.py",
         "plugins/product-agent-os/scripts/product_agent_os/task_routing.py",
-        "plugins/product-agent-os/assets/templates/workflows/"
+        "plugins/product-agent-os/assets/templates/workflows/",
+        "tests/product_agent_os/test_codex_runtime_runner_cli.py"
       ],
       "acceptance_criteria": [
         {
           "id": "PAOS-PMETH-07-AC01",
-          "ru": "Для changed testable behavior требуется observable RED по нужной причине, minimal GREEN и scoped refactor; команда, revision и expected/actual сохранены в существующем evidence.",
-          "en": "For changed testable behavior require observable RED for the intended reason, minimal GREEN and scoped refactor; record command, revision and expected/actual in existing evidence."
+          "ru": "Read-only маршрут показывает следующий тест для backend bug и source check для docs-only. Synthetic fixture подтверждает один regression check с observable intended RED, minimal GREEN и scoped refactor disposition. Команда, revision и expected/actual сохранены в имеющемся evidence без записи в целевой проект.",
+          "en": "Show the next test for a backend bug and a source check for docs-only in the read-only path. Substantiate one regression check on a synthetic fixture with intended observable RED, minimal GREEN and scoped refactor disposition. Capture command, revision and expected/actual in existing evidence without writing to the target."
         },
         {
           "id": "PAOS-PMETH-07-AC02",
@@ -458,18 +518,16 @@
       "status": "planned",
       "priority": "P1",
       "direction_id": "B",
-      "delivery_group_id": "B1",
+      "delivery_group_id": "B3",
       "methodologies": [
         "Design-DD",
         "Spec-DD"
       ],
       "depends_on": [
-        "PAOS-PMETH-05",
-        "PAOS-PMETH-22"
+        "PAOS-PMETH-05"
       ],
       "blocks": [
-        "PAOS-PMETH-09",
-        "PAOS-PMETH-15"
+        "PAOS-PMETH-09"
       ],
       "external_refs": [
         "UI-12"
@@ -484,8 +542,8 @@
       "acceptance_criteria": [
         {
           "id": "PAOS-PMETH-08-AC01",
-          "ru": "Для изменяемого journey определены пользовательская цель, шаги, данные, interaction/error/empty/loading/dirty states и accessibility; backend-only получает not_applicable.",
-          "en": "Define the user goal, steps, data, interaction/error/empty/loading/dirty states and accessibility for changed journeys; backend-only work gets not_applicable."
+          "ru": "Изменяемый journey определяет цель, шаги, данные, interaction/error/empty/loading/dirty states и accessibility. Для существенного или неясного journey фиксируются гипотеза о проблеме и наблюдение с представительным пользователем либо evidence gap. Backend-only получает not_applicable.",
+          "en": "Define the goal, steps, data, interaction/error/empty/loading/dirty states and accessibility for changed journeys. Record a problem hypothesis and representative user observation or evidence gap for substantial or uncertain journeys. Backend-only is not_applicable."
         },
         {
           "id": "PAOS-PMETH-08-AC02",
@@ -514,18 +572,15 @@
       "status": "planned",
       "priority": "P1",
       "direction_id": "B",
-      "delivery_group_id": "B1",
+      "delivery_group_id": "B3",
       "methodologies": [
         "Design-DD",
         "TDD"
       ],
       "depends_on": [
-        "PAOS-PMETH-07",
         "PAOS-PMETH-08"
       ],
-      "blocks": [
-        "PAOS-PMETH-17"
-      ],
+      "blocks": [],
       "external_refs": [
         "PAOS-FUNC-19",
         "UI-12"
@@ -570,18 +625,16 @@
       "status": "planned",
       "priority": "P1",
       "direction_id": "B",
-      "delivery_group_id": "B2",
+      "delivery_group_id": "B3",
       "methodologies": [
         "FSD",
         "Spec-DD"
       ],
       "depends_on": [
-        "PAOS-PMETH-04",
-        "PAOS-PMETH-22"
+        "PAOS-PMETH-04"
       ],
       "blocks": [
-        "PAOS-PMETH-11",
-        "PAOS-PMETH-15"
+        "PAOS-PMETH-11"
       ],
       "external_refs": [
         "PAOS-FUNC-30"
@@ -606,8 +659,8 @@
         },
         {
           "id": "PAOS-PMETH-10-AC03",
-          "ru": "Предлагаются только нужные layers/slices/public APIs; whole-screen folders не автоматически features, backend/Python не получают frontend FSD.",
-          "en": "Propose only useful layers/slices/public APIs; whole-screen folders are not automatically features and backend/Python do not receive frontend FSD."
+          "ru": "Предложение начинается со страниц и подтверждённого coupling. Public APIs и нижние layers/slices появляются при подтверждённой потребности. Backend/Python и native получают применимую архитектурную политику.",
+          "en": "Start with pages and demonstrated coupling. Introduce public APIs and lower layers/slices where a need is demonstrated. Apply the relevant architecture policy to backend, Python and native targets."
         },
         {
           "id": "PAOS-PMETH-10-AC04",
@@ -626,7 +679,7 @@
       "status": "planned",
       "priority": "P1",
       "direction_id": "B",
-      "delivery_group_id": "B2",
+      "delivery_group_id": "B3",
       "methodologies": [
         "FSD",
         "TDD"
@@ -635,10 +688,10 @@
         "PAOS-PMETH-10"
       ],
       "blocks": [
-        "PAOS-PMETH-12",
-        "PAOS-PMETH-17"
+        "PAOS-PMETH-12"
       ],
       "external_refs": [
+        "PAOS-FUNC-14",
         "PAOS-FUNC-30"
       ],
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
@@ -646,18 +699,21 @@
       "work_locations": [
         "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
         "plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py",
-        "tests/product_agent_os/test_methodology_audit.py"
+        "tests/product_agent_os/test_methodology_audit.py",
+        "apps/local-service/src/code-index/service.mts",
+        "apps/local-service/src/code-index/lexical.mts",
+        "tests/web/graph-imports.test.mts"
       ],
       "acceptance_criteria": [
         {
           "id": "PAOS-PMETH-11-AC01",
-          "ru": "Статическая проверка поддерживаемых JS/TS/TSX imports и public APIs привязана к source revision; aliases/reexports/type/literal dynamic imports не пропускаются молча.",
-          "en": "Bind supported JS/TS/TSX import/public-API checks to source revisions; do not silently skip aliases/reexports/type/literal dynamic imports."
+          "ru": "FSD rules используют наблюдаемые рёбра F14 для JS/TS/TSX и привязаны к source revision. Покрытие TSImportType, reexports, tsconfig aliases/extends и literal dynamic imports проверяется явно.",
+          "en": "Evaluate FSD rules over observed F14 edges for JS/TS/TSX and bind results to the source revision. Explicitly check coverage of TSImportType, re-exports, tsconfig aliases/extends and literal dynamic imports."
         },
         {
           "id": "PAOS-PMETH-11-AC02",
-          "ru": "Unsupported syntax/alias/symlink/out-of-scope source означает partial/unknown с coverage; graph и folder names не дают present_verified.",
-          "en": "Unsupported syntax/aliases/symlinks/out-of-scope sources produce partial/unknown coverage; graphs/folder names do not establish present_verified."
+          "ru": "Unsupported syntax/alias/symlink/out-of-scope source и CLI без доступного адаптера дают partial/unknown с coverage и объяснением. Частичный graph и folder signals не дают present_verified.",
+          "en": "Unsupported syntax, aliases, symlinks, out-of-scope source and CLI without an available adapter yield partial/unknown with coverage and an explanation. Partial graphs and folder signals cannot yield present_verified."
         },
         {
           "id": "PAOS-PMETH-11-AC03",
@@ -666,8 +722,8 @@
         },
         {
           "id": "PAOS-PMETH-11-AC04",
-          "ru": "RED/GREEN parser/boundary cases и no-source-mutation hashes проходят; существующие parser/adapters и F30 решение переиспользованы без обязательной установки.",
-          "en": "Pass RED/GREEN parser/boundary and no-source-mutation checks; reuse current parsers/adapters and the F30 decision without mandatory installation."
+          "ru": "Переиспользованы F14 code-index, parser/resolver и fixtures. F30 остаётся import-only reference. Проверены meaningful parser cases, циклы и no-source-mutation hashes без обязательной установки.",
+          "en": "Reuse F14 code-index, its parser/resolver and fixtures. Keep F30 as an import-only reference. Verify meaningful parser cases, cycles and no-source-mutation hashes without requiring installation."
         }
       ],
       "verification_profile": "PV-FSD",
@@ -681,25 +737,23 @@
       "status": "planned",
       "priority": "P2",
       "direction_id": "B",
-      "delivery_group_id": "B2",
+      "delivery_group_id": "B3",
       "methodologies": [
         "FSD",
         "Spec-DD"
       ],
       "depends_on": [
-        "PAOS-PMETH-06",
         "PAOS-PMETH-11"
       ],
-      "blocks": [
-        "PAOS-PMETH-16"
-      ],
+      "blocks": [],
       "external_refs": [],
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
       "proposed_owner": "architect + plugin-runtime-builder",
       "work_locations": [
         "plugins/product-agent-os/skills/implementation-planner/SKILL.md",
         "plugins/product-agent-os/scripts/product_agent_os/infrastructure.py",
-        "plugins/product-agent-os/assets/templates/artifact-templates/"
+        "plugins/product-agent-os/assets/templates/artifact-templates/",
+        "plugins/product-agent-os/scripts/product_agent_os/project_formation.py"
       ],
       "acceptance_criteria": [
         {
@@ -709,18 +763,18 @@
         },
         {
           "id": "PAOS-PMETH-12-AC02",
-          "ru": "Сначала public API/import ratchet, затем selected shared/entities и один screen; каждое следующее расширение зависит от принятого предыдущего checkpoint.",
-          "en": "Define public APIs/import ratchet before selected shared/entities and one screen; gate expansion on accepted checkpoints."
+          "ru": "Сначала граница и один page pilot с public API/import ratchet. Вынос в shared/entities оправдан подтверждённым повторным использованием. Следующие checkpoints зависят от принятия предыдущих; возможна остановка на пилоте.",
+          "en": "Start with a boundary and one page pilot with a public API/import ratchet. Extract to shared/entities where reuse is demonstrated. Later checkpoints require adoption of the previous one, and the pilot may be the stopping point."
         },
         {
           "id": "PAOS-PMETH-12-AC03",
-          "ru": "Existing architecture/user files/dirty changes сохранены; moved code не меняет business/API semantics и new code не импортирует legacy internals.",
-          "en": "Preserve existing architecture/user files/dirty changes; moved code retains business/API semantics and new code does not import legacy internals."
+          "ru": "Proposal описывает ожидаемое сохранение user files, dirty changes и business/API semantics и показывает, как проверить границы legacy imports. На этой стадии исходники сохраняются; фактический перенос проверяется в PMETH-23, если вошёл в scope пилота.",
+          "en": "Describe how the proposal preserves user files, dirty changes and business/API semantics, and how to check legacy import boundaries. Preserve target files in this task. PMETH-23 verifies actual code moves when included in the pilot scope."
         },
         {
           "id": "PAOS-PMETH-12-AC04",
-          "ru": "Read-only scan пишет только report/proposal в разрешённый stage; target apply и hook activation требуют своей authority и не выполняются рекомендацией.",
-          "en": "Read-only scanning writes reports/proposals only to authorized staging; target apply and hook activation require their own authority."
+          "ru": "Готовый read-only proposal доступен в памяти. Staged diff и apply по отдельно выбранному FSD пути используют PMETH-16 writer и проверяются в PMETH-23. Target write и hook activation требуют отдельной authority.",
+          "en": "Deliver the read-only proposal in memory. The separately selected FSD path uses the PMETH-16 writer for staged diff and apply, verified in PMETH-23. Target writes and hook activation require separate authority."
         }
       ],
       "verification_profile": "PV-STAGE",
@@ -734,19 +788,17 @@
       "status": "planned",
       "priority": "P1",
       "direction_id": "B",
-      "delivery_group_id": "B3",
+      "delivery_group_id": "B4",
       "methodologies": [
         "ADD",
         "Spec-DD"
       ],
       "depends_on": [
-        "PAOS-PMETH-04",
-        "PAOS-PMETH-22"
+        "PAOS-PMETH-04"
       ],
       "blocks": [
         "PAOS-PMETH-14",
-        "PAOS-PMETH-15",
-        "PAOS-PMETH-17"
+        "PAOS-PMETH-15"
       ],
       "external_refs": [
         "PAOS-FUNC-15",
@@ -793,16 +845,14 @@
       "status": "planned",
       "priority": "P2",
       "direction_id": "B",
-      "delivery_group_id": "B3",
+      "delivery_group_id": "B4",
       "methodologies": [
         "ADD"
       ],
       "depends_on": [
         "PAOS-PMETH-13"
       ],
-      "blocks": [
-        "PAOS-PMETH-16"
-      ],
+      "blocks": [],
       "external_refs": [
         "PAOS-FUNC-12"
       ],
@@ -847,7 +897,7 @@
       "status": "planned",
       "priority": "P1",
       "direction_id": "B",
-      "delivery_group_id": "B3",
+      "delivery_group_id": "B4",
       "methodologies": [
         "Spec-DD",
         "Design-DD",
@@ -856,15 +906,12 @@
         "FSD"
       ],
       "depends_on": [
-        "PAOS-PMETH-05",
         "PAOS-PMETH-07",
-        "PAOS-PMETH-08",
-        "PAOS-PMETH-10",
         "PAOS-PMETH-13"
       ],
       "blocks": [
         "PAOS-PMETH-16",
-        "PAOS-PMETH-18"
+        "PAOS-PMETH-17"
       ],
       "external_refs": [],
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
@@ -873,18 +920,19 @@
         "plugins/product-agent-os/scripts/product_agent_os/methodology_synthesis.py",
         "plugins/product-agent-os/scripts/product_agent_os/task_routing.py",
         "plugins/product-agent-os/scripts/codex_runtime_runner/routes.py",
-        "plugins/product-agent-os/skills/implementation-planner/SKILL.md"
+        "plugins/product-agent-os/skills/implementation-planner/SKILL.md",
+        "plugins/product-agent-os/scripts/product_agent_os/project_formation.py"
       ],
       "acceptance_criteria": [
         {
           "id": "PAOS-PMETH-15-AC01",
-          "ru": "Один DAG объединяет requirement/design/architecture/test/build/review; aliases артефактов сводятся к canonical owner, нет пяти независимых очередей.",
-          "en": "Use one DAG for requirements/design/architecture/test/build/review; resolve artifact aliases to canonical owners rather than five independent queues."
+          "ru": "Один DAG использует methodology_synthesis и formation_plan. Canonical name и alias одного существующего файла дают один артефакт и одного владельца с обоими основаниями.",
+          "en": "Build one DAG over methodology_synthesis and formation_plan. The canonical name and alias of one existing file produce one artifact and one owner with both reasons."
         },
         {
           "id": "PAOS-PMETH-15-AC02",
-          "ru": "Dependencies — реальные contract prerequisites; маленький bugfix не ждёт полного PRD, всех control-plane docs, team setup или FSD migration.",
-          "en": "Use actual contract prerequisites; small bugfixes do not wait for a full PRD, every control-plane document, team setup or FSD migration."
+          "ru": "Dependencies отражают фактические prerequisites. PMETH-08/09 и PMETH-10–12 входят только в Design/FSD ветки, PMETH-14 добавляет skills по потребности. Компактная bug/docs рекомендация доступна через PMETH-19/20 без delivery DAG.",
+          "en": "Record actual prerequisites. PMETH-08/09 and PMETH-10–12 apply only to Design/FSD branches and PMETH-14 adds skills as needed. Compact bug/docs advice is available through PMETH-19/20 without the delivery DAG."
         },
         {
           "id": "PAOS-PMETH-15-AC03",
@@ -908,7 +956,7 @@
       "status": "planned",
       "priority": "P1",
       "direction_id": "B",
-      "delivery_group_id": "B3",
+      "delivery_group_id": "B4",
       "methodologies": [
         "Spec-DD",
         "ADD",
@@ -916,38 +964,39 @@
       ],
       "depends_on": [
         "PAOS-PMETH-06",
-        "PAOS-PMETH-12",
-        "PAOS-PMETH-14",
         "PAOS-PMETH-15"
       ],
       "blocks": [
-        "PAOS-PMETH-17",
-        "PAOS-PMETH-19"
+        "PAOS-PMETH-21"
       ],
-      "external_refs": [],
+      "external_refs": [
+        "PAOS-FUNC-13"
+      ],
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
       "proposed_owner": "plugin-runtime-builder + tester",
       "work_locations": [
         "plugins/product-agent-os/scripts/product_agent_os/infrastructure.py",
         "plugins/product-agent-os/scripts/product_agent_os/stage_manifest.py",
         "plugins/product-agent-os/scripts/product_agent_os/merge_infrastructure.py",
-        "plugins/product-agent-os/scripts/merge_infrastructure.py"
+        "plugins/product-agent-os/scripts/merge_infrastructure.py",
+        "plugins/product-agent-os/scripts/product_agent_os/project_formation.py",
+        "packages/contracts/artifacts/document-apply.ts"
       ],
       "acceptance_criteria": [
         {
           "id": "PAOS-PMETH-16-AC01",
-          "ru": "Используется существующий dry-run/stage/manifest/merge pipeline; stage находится вне target, target write отсутствует до применимой точной authority.",
-          "en": "Reuse dry-run/stage/manifest/merge; keep staging outside the target and perform no target writes without applicable exact authority."
+          "ru": "Infrastructure bundle использует G9 formation/dry-run/stage/manifest/merge, допустимый single-document proposal использует F13 document apply. Вид операции выбирает одного writer; stage вне target, запись требует точную authority.",
+          "en": "Use G9 formation/dry-run/stage/manifest/merge for infrastructure bundles and F13 document apply for eligible single-document proposals. Each operation kind selects one writer, the stage stays outside the target and writes require exact authority."
         },
         {
           "id": "PAOS-PMETH-16-AC02",
-          "ru": "Preview показывает owned paths, user-file handling, method/AC links и side effects; existing unmarked AGENTS/config/hooks не перезаписываются.",
-          "en": "Preview owned paths, user-file handling, method/AC links and side effects; do not overwrite existing unmarked AGENTS/config/hooks."
+          "ru": "Существующий preview показывает owned paths, user-file handling, method/AC links, side effects и writer. Unmarked AGENTS/config/hooks сохраняются; apply доступен только у своего маршрута.",
+          "en": "Use the existing preview to show owned paths, user-file handling, method/AC links, side effects and writer. Preserve unmarked AGENTS/config/hooks and expose apply only through its own route."
         },
         {
           "id": "PAOS-PMETH-16-AC03",
-          "ru": "Drift, wrong root/project, traversal/symlink и stale approval отклоняются; partial apply recovery сохраняет пользовательские изменения.",
-          "en": "Reject drift, wrong root/project, traversal/symlinks and stale approvals; preserve user changes during partial-apply recovery."
+          "ru": "Preview/apply связаны точным digest, project/task, revision и operation ID. Drift, wrong root/project, traversal/symlink и stale approval отклоняются; recovery сохраняет edits и не повторяет эффект с unknown outcome.",
+          "en": "Bind preview/apply to an exact digest, project/task, revision and operation ID. Reject drift, wrong root/project, traversal/symlinks and stale approvals. Preserve edits in recovery and prevent replay of effects with unknown outcomes."
         },
         {
           "id": "PAOS-PMETH-16-AC04",
@@ -966,7 +1015,7 @@
       "status": "planned",
       "priority": "P1",
       "direction_id": "B",
-      "delivery_group_id": "B3",
+      "delivery_group_id": "B4",
       "methodologies": [
         "Spec-DD",
         "TDD",
@@ -975,36 +1024,36 @@
         "FSD"
       ],
       "depends_on": [
-        "PAOS-PMETH-09",
-        "PAOS-PMETH-11",
-        "PAOS-PMETH-13",
-        "PAOS-PMETH-16"
+        "PAOS-PMETH-06",
+        "PAOS-PMETH-15"
       ],
       "blocks": [
-        "PAOS-PMETH-18",
-        "PAOS-PMETH-19",
-        "PAOS-PMETH-21",
-        "PAOS-PMETH-23"
+        "PAOS-PMETH-18"
       ],
-      "external_refs": [],
+      "external_refs": [
+        "PAOS-FUNC-02"
+      ],
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
       "proposed_owner": "tester + plugin-runtime-builder",
       "work_locations": [
         "plugins/product-agent-os/scripts/product_agent_os/methodology_synthesis.py",
         "plugins/product-agent-os/scripts/codex_runtime_runner/contracts.py",
         "plugins/product-agent-os/skills/completion-skeptic/SKILL.md",
-        "plugins/product-agent-os/skills/risk-reviewer/SKILL.md"
+        "plugins/product-agent-os/skills/risk-reviewer/SKILL.md",
+        "plugins/product-agent-os/scripts/product_agent_os/task_routing.py",
+        "apps/local-service/src/tasks/user-commands.mts",
+        "apps/local-service/src/workflows/guards.mts"
       ],
       "acceptance_criteria": [
         {
           "id": "PAOS-PMETH-17-AC01",
-          "ru": "Requirement → scenario → check → receipt → verdict имеет owner, revision/environment и применимость; accepted gap отделён от passed.",
-          "en": "Link requirement → scenario → check → receipt → verdict with owners, revision/environment and applicability; accepted gaps are not passed checks."
+          "ru": "Requirement → stable AC ID → scenario/check → receipt → verdict имеет owner, revision/environment и применимость. В synthetic задаче manual acceptance сохраняется для двух AC, technical evidence засчитывается только у AC с привязанным receipt нужной revision. Accepted gap остаётся отдельным.",
+          "en": "Trace requirement through stable AC ID, scenario/check and receipt to a verdict with owner, revision/environment and applicability. Preserve manual acceptance for two ACs in a synthetic task. Technical evidence counts only for the AC with a bound receipt at the correct revision. Keep accepted gaps distinct."
         },
         {
           "id": "PAOS-PMETH-17-AC02",
-          "ru": "Detection, generated files, test count и report formatting не повышают readiness сами по себе; missing/stale/failed receipts остаются видимыми.",
-          "en": "Detection/generated files/test counts/report formatting cannot independently promote readiness; keep missing/stale/failed receipts visible."
+          "ru": "Переиспользованы task_routing input_digest/check_observations и существующие receipts/acceptTask. Caller-reported results, detection, generated files и test count не дают technical passed; missing/stale/failed/partial видны.",
+          "en": "Reuse task_routing input_digest/check_observations and existing receipts/acceptTask. Caller-reported results, detection, generated files and test counts cannot produce technical passed. Keep missing/stale/failed/partial visible."
         },
         {
           "id": "PAOS-PMETH-17-AC03",
@@ -1013,8 +1062,8 @@
         },
         {
           "id": "PAOS-PMETH-17-AC04",
-          "ru": "CLI core pilot связывает применимые методы с checks на одном fixture revision; technical, human и release acceptance остаются раздельными.",
-          "en": "The CLI core pilot links applicable methods/checks on one fixture revision; separate technical, human and release acceptance."
+          "ru": "CLI pilot связывает применимые методы с checks на одном fixture revision. Technical, manual/human и release acceptance различаются. Visual/FSD/target-apply evidence требуется для соответствующих claims PMETH-23.",
+          "en": "The CLI pilot links applicable methods to checks on one fixture revision, separating technical, manual/human and release acceptance. Visual, FSD and target-apply evidence supports corresponding PMETH-23 claims."
         }
       ],
       "verification_profile": "PV-EVIDENCE",
@@ -1034,16 +1083,18 @@
         "ADD"
       ],
       "depends_on": [
-        "PAOS-PMETH-04",
-        "PAOS-PMETH-15",
-        "PAOS-PMETH-17"
-      ],
-      "blocks": [
+        "PAOS-PMETH-17",
         "PAOS-PMETH-19"
       ],
+      "blocks": [
+        "PAOS-PMETH-21"
+      ],
       "external_refs": [
+        "PAOS-FUNC-02",
         "PAOS-FUNC-08",
-        "PAOS-FUNC-22"
+        "PAOS-FUNC-22",
+        "PAOS-FUNC-28",
+        "PAOS-FUNC-29"
       ],
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
       "proposed_owner": "architect + builder — storage/contracts",
@@ -1051,18 +1102,20 @@
         "packages/contracts/",
         "apps/local-service/src/storage/",
         "apps/local-service/src/task-manager/service.mts",
-        "apps/local-service/src/artifacts/service.mts"
+        "apps/local-service/src/artifacts/service.mts",
+        "apps/local-service/src/project-scans/service.mts",
+        "packages/contracts/issues/task-profile.ts"
       ],
       "acceptance_criteria": [
         {
           "id": "PAOS-PMETH-18-AC01",
-          "ru": "Определены project/task scope и canonical owners profile/decision/plan/evidence; SQLite и imported MD/JSON не становятся конкурирующими статусами.",
-          "en": "Define project/task scope and canonical profile/decision/plan/evidence owners; SQLite and imported MD/JSON do not become competing status authorities."
+          "ru": "Project facts, task advice, persisted decision и criterion evidence имеют canonical owners в scans, задачах/ссылках и evidence. Новый durable record оправдан только подтверждённым пробелом, чтение PMETH-19 не требует миграции.",
+          "en": "Use scans, tasks/links and evidence as canonical owners for project facts, task advice, persisted decisions and criterion evidence. Add durable records only for proven gaps. PMETH-19 reads require no migration."
         },
         {
           "id": "PAOS-PMETH-18-AC02",
-          "ru": "Version/revision/CAS, history, project isolation и explicit unknown поддержаны; older clients/newer schema не теряют данные.",
-          "en": "Support version/revision/CAS, history, project isolation and explicit unknowns; older clients/newer schemas do not lose data."
+          "ru": "Version/revision/CAS, history, project isolation и explicit unknown поддержаны. Override хранит причину, область, автора и revisions, сохраняя обязательные проверки. Older clients/newer schema не теряют данные.",
+          "en": "Support version/revision/CAS, history, project isolation and explicit unknown. Store override reason, scope, actor and revisions while retaining mandatory checks. Preserve data across older clients and newer schemas."
         },
         {
           "id": "PAOS-PMETH-18-AC03",
@@ -1086,23 +1139,22 @@
       "status": "planned",
       "priority": "P2",
       "direction_id": "B",
-      "delivery_group_id": "B4",
+      "delivery_group_id": "B2",
       "methodologies": [
         "ADD",
         "Spec-DD"
       ],
       "depends_on": [
-        "PAOS-PMETH-16",
-        "PAOS-PMETH-17",
-        "PAOS-PMETH-18"
+        "PAOS-PMETH-07"
       ],
       "blocks": [
-        "PAOS-PMETH-20",
-        "PAOS-PMETH-21"
+        "PAOS-PMETH-18",
+        "PAOS-PMETH-20"
       ],
       "external_refs": [
         "PAOS-FUNC-01",
-        "PAOS-FUNC-08"
+        "PAOS-FUNC-08",
+        "PAOS-FUNC-27"
       ],
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
       "proposed_owner": "builder — local-service + plugin-runtime-builder",
@@ -1110,23 +1162,28 @@
         "apps/local-service/src/http/application.mts",
         "apps/local-service/src/runtime/",
         "packages/contracts/",
-        "plugins/product-agent-os/scripts/product_agent_os/"
+        "plugins/product-agent-os/scripts/product_agent_os/",
+        "apps/local-service/src/project-analysis/bridge.py",
+        "apps/local-service/src/project-analysis/service.mts",
+        "apps/local-service/src/project-scans/service.mts",
+        "packages/contracts/project-analysis.ts",
+        "tests/web/project-analysis-api.test.mts"
       ],
       "acceptance_criteria": [
         {
           "id": "PAOS-PMETH-19-AC01",
-          "ru": "Выбранный PMETH-01 bridge использует versioned contract; HTTP/Python/runner parity проверена через реальные adapters, не mock-only echo.",
-          "en": "Use the PMETH-01 selected bridge and versioned contract; verify HTTP/Python/runner parity through actual adapters rather than mock-only echoes."
+          "ru": "Guarded Project Analysis HTTP → Python bridge возвращает task-scoped advice отдельно от project facts. Эквивалентные bug/docs запросы при одинаковых данных и coverage дают те же решения и причины в CLI. Если Web видит только metadata, а CLI прочитал исходники, различие объясняется coverage и partial/unknown. Ответ другого project/task/revision или неподдержанной версии отклоняется.",
+          "en": "The guarded Project Analysis HTTP path through its Python bridge returns task-scoped advice separately from project facts. Equivalent bug/docs requests with the same data and coverage yield the same decisions and reasons in CLI. When Web sees only metadata and CLI reads source, explain the difference through coverage and partial/unknown. Reject wrong project/task/revision and unsupported schema responses."
         },
         {
           "id": "PAOS-PMETH-19-AC02",
-          "ru": "Read-only recommendation и authorized apply различаются; session/origin/CSRF/project scope/input bounds/cancellation проверены отрицательными случаями.",
-          "en": "Separate read-only recommendations from authorized apply; negatively test session/origin/CSRF/project scope/input bounds/cancellation."
+          "ru": "Read-only запрос проверяет session/origin/project scope, input bounds и cancellation. CSRF применяется по HTTP-методу и действующему контракту. Target write и новый durable store не требуются. PMETH-16/21 владеют mutating route и проверками его полномочий.",
+          "en": "Check session/origin/project scope, input bounds and cancellation for read-only requests. Apply CSRF according to HTTP method and the existing contract. Reads require no target write or new durable store. PMETH-16/21 own the mutating route and its authority checks."
         },
         {
           "id": "PAOS-PMETH-19-AC03",
-          "ru": "Intended path и selector видны в diagnostic receipt; old path/fallback не маскируют сценарий, no silent fallback при bridge failure.",
-          "en": "Expose the intended path/selector in diagnostic receipts; prevent old paths/fallbacks masking the scenario and disallow silent bridge fallback."
+          "ru": "Receipt показывает intended path/selector, partial/ready/warnings и причину. После analysis → schema/code_database открытие advice сохраняет последнюю релевантную стадию analysis нужной revision либо объясняет следующий шаг. Bridge failure виден без маскировки fallback.",
+          "en": "Expose intended path/selector, partial/ready/warnings and the reason. After analysis then schema/code_database, opening advice retains the last relevant analysis stage for the required revision or explains the next step. Surface bridge failures without masking fallbacks."
         },
         {
           "id": "PAOS-PMETH-19-AC04",
@@ -1145,7 +1202,7 @@
       "status": "planned",
       "priority": "P2",
       "direction_id": "B",
-      "delivery_group_id": "B4",
+      "delivery_group_id": "B2",
       "methodologies": [
         "Design-DD",
         "Spec-DD"
@@ -1158,7 +1215,9 @@
         "PAOS-PMETH-26"
       ],
       "external_refs": [
+        "PAOS-FUNC-23",
         "PAOS-FUNC-24",
+        "PAOS-FUNC-27",
         "UI-12"
       ],
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
@@ -1168,28 +1227,30 @@
         "apps/web/src/features/tasks/",
         "apps/web/src/features/projects/",
         "apps/web/src/locales/",
-        "docs/frontend/"
+        "docs/frontend/",
+        "apps/web/src/features/projects/project-analysis.css",
+        "tests/web/project-analysis-api.test.mts"
       ],
       "acceptance_criteria": [
         {
           "id": "PAOS-PMETH-20-AC01",
-          "ru": "До build согласованы placement в существующем project/task flow, prototype и states; UI объясняет зачем метод, required/optional/not-applicable и следующий шаг.",
-          "en": "Agree placement in existing project/task flows, prototype and states before build; explain why a method applies, its required/optional/not-applicable status and the next step."
+          "ru": "Project facts видны в Sources, task advice и следующий проверяемый шаг — в существующем Teams & Tasks flow. Согласованы минимальные placement/states. Видны причина, глубина и required/optional/not_applicable.",
+          "en": "Show project facts in Sources and task advice and the next verifiable step in the existing Teams & Tasks flow. Agree on minimal placement and states, and show rationale, depth and required/optional/not_applicable."
         },
         {
           "id": "PAOS-PMETH-20-AC02",
-          "ru": "Пользователь видит source/coverage/unknown, scope/diff/permissions и причины остановки; выбор рекомендации не выглядит как apply или successful build.",
-          "en": "Show source/coverage/unknown, scope/diffs/permissions and stop reasons; choosing advice does not look like apply or a successful build."
+          "ru": "Показаны source/coverage/unknown, scope, permissions и причины остановки. Сценарий понимания проверяет, может ли человек без подсказки объяснить совет, назвать следующий шаг и отличить просмотр от применения. Результат или evidence gap записан по PMETH-22.",
+          "en": "Show source/coverage/unknown, scope, permissions and stop reasons. Check whether a person can explain the advice, identify the next step and distinguish viewing from applying without prompting. Record the observation or evidence gap under PMETH-22."
         },
         {
           "id": "PAOS-PMETH-20-AC03",
-          "ru": "Есть loading/empty/error/stale/conflict/permission-required, RU/EN, themes и keyboard/focus; backend unavailable не подменяется fixture success.",
-          "en": "Provide loading/empty/error/stale/conflict/permission-required states, RU/EN, themes and keyboard/focus; backend unavailability is not fixture success."
+          "ru": "Проверены loading/empty/error/stale/partial и applicable permission-required, RU/EN, themes и keyboard/focus. Partial показывает доступные факты и предупреждения, недоступный backend не подменяется fixture success. PMETH-21/23 проверяют конфликт и apply для записи.",
+          "en": "Verify loading/empty/error/stale/partial and applicable permission-required, RU/EN, themes and keyboard/focus. Partial shows available facts and warnings, and backend unavailability is never replaced by fixture success. PMETH-21/23 verify conflict and apply for writes."
         },
         {
           "id": "PAOS-PMETH-20-AC04",
-          "ru": "Synthetic browser journey проходит через PMETH-19 API; manual override/disposition/audit сохраняются, internal FSD migration не является prerequisite.",
-          "en": "A synthetic browser journey uses the PMETH-19 API; preserve manual overrides/dispositions/audit without requiring internal FSD migration."
+          "ru": "Synthetic browser проходит PMETH-19 API для backend bug и docs-only, включая wrong project/task, partial и смену latest scan stage. Target и durable methodology state не меняются. Persisted override/audit принадлежат PMETH-18/21.",
+          "en": "Exercise the PMETH-19 API from a synthetic browser for backend bug and docs-only, including wrong project/task, partial output and latest scan stage changes. Preserve the target and durable methodology state. PMETH-18/21 own persisted override and audit."
         }
       ],
       "verification_profile": "PV-UI",
@@ -1209,13 +1270,11 @@
         "Spec-DD"
       ],
       "depends_on": [
-        "PAOS-PMETH-17",
-        "PAOS-PMETH-19",
+        "PAOS-PMETH-16",
+        "PAOS-PMETH-18",
         "PAOS-PMETH-20"
       ],
-      "blocks": [
-        "PAOS-PMETH-23"
-      ],
+      "blocks": [],
       "external_refs": [
         "PAOS-FUNC-21"
       ],
@@ -1240,8 +1299,8 @@
         },
         {
           "id": "PAOS-PMETH-21-AC03",
-          "ru": "Audit хранит минимальные decisions/receipts/reasons с redaction, ownership и временем; partial/failed attempts не удаляются при следующем успехе.",
-          "en": "Audit minimal decisions/receipts/reasons with redaction, ownership and time; retain partial/failed attempts after later success."
+          "ru": "Audit сохраняет минимальные records с redaction, owner и временем. Manual override/disposition видимы в существующей задаче, partial/failed attempts сохранены. Preview/apply показывают digest/revision, diff, conflict и authority state.",
+          "en": "Preserve minimal audit records with redaction, owner and time. Show manual overrides/dispositions in the existing task and preserve partial/failed attempts. Preview/apply shows digest/revision, diff, conflict and authority state."
         },
         {
           "id": "PAOS-PMETH-21-AC04",
@@ -1260,7 +1319,7 @@
       "status": "planned",
       "priority": "P1",
       "direction_id": "B",
-      "delivery_group_id": "B0",
+      "delivery_group_id": "B1",
       "methodologies": [
         "Spec-DD",
         "Design-DD",
@@ -1269,42 +1328,39 @@
         "FSD"
       ],
       "depends_on": [
-        "PAOS-PMETH-01",
         "PAOS-PMETH-02"
       ],
       "blocks": [
-        "PAOS-PMETH-03",
-        "PAOS-PMETH-05",
-        "PAOS-PMETH-07",
-        "PAOS-PMETH-08",
-        "PAOS-PMETH-10",
-        "PAOS-PMETH-13",
-        "PAOS-PMETH-23"
+        "PAOS-PMETH-03"
       ],
-      "external_refs": [],
+      "external_refs": [
+        "PAOS-FUNC-23"
+      ],
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
       "proposed_owner": "tester",
       "work_locations": [
         "tests/product_agent_os/test_methodology_audit.py",
         "tests/product_agent_os/test_methodology_synthesis.py",
         "tests/product_agent_os/test_codex_runtime_runner_fixture_eval.py",
-        "plugins/product-agent-os/assets/fixtures/"
+        "plugins/product-agent-os/assets/fixtures/",
+        "tests/product_agent_os/test_codex_runtime_runner_cli.py",
+        "tests/web/project-analysis-api.test.mts"
       ],
       "acceptance_criteria": [
         {
           "id": "PAOS-PMETH-22-AC01",
-          "ru": "Набор включает tiny CLI/docs-only, backend/API bug, greenfield frontend, coupled legacy frontend, already-bounded frontend, native и AI/RAG; ожидаемый метод/глубина/gap заданы до candidate.",
-          "en": "Cover tiny CLI/docs-only, backend/API bugs, greenfield frontend, coupled legacy, already-bounded frontend, native and AI/RAG; specify methods/depth/gaps before candidates."
+          "ru": "PMETH-22 закрывает baseline до изменения policy на двух задачах в одном проекте: backend bug и docs-only. Для каждой заранее заданы AC, следующий тест или source link, основания и gaps. Native, AI/RAG и три frontend профиля остаются в общей матрице; baseline для них фиксируют владельцы соответствующих веток до candidate checks и включения.",
+          "en": "PMETH-22 completes its baseline before policy changes on two tasks in one project, backend bug and docs-only. Set AC, next test or source link, reasons and gaps in advance. Retain native, AI/RAG and three frontend profiles in the scenario matrix. Branch owners capture their baseline before candidate checks and enabling each profile."
         },
         {
           "id": "PAOS-PMETH-22-AC02",
-          "ru": "Негативы: misleading folders, alias unknown, stale spec, forged success, missing tests, prompt injection, dirty user files, denied write, wrong project/revision и unavailable tool.",
-          "en": "Include misleading folders, unknown aliases, stale specs, forged success, missing tests, prompt injection, dirty user files, denied writes, wrong project/revision and unavailable tools."
+          "ru": "Ранние негативы покрывают конфликтный/неполный intent, missing tests, stale/partial, wrong project/task/revision и отсутствие target writes. В общей матрице помечены дополнительные случаи misleading folders, alias unknown, stale spec, forged success, prompt injection, dirty files, denied writes и unavailable tools; соответствующая ветка проверяет их перед включением.",
+          "en": "Early negatives cover conflicting/incomplete intent, missing tests, stale/partial output, wrong project/task/revision and absence of target writes. Keep misleading folders, unknown aliases, stale specs, forged success, prompt injection, dirty files, denied writes and unavailable tools in the shared matrix. The owning branch checks them before enabling."
         },
         {
           "id": "PAOS-PMETH-22-AC03",
-          "ru": "Baseline actual results и известные failures сохранены; expected future capability не отмечена passed до implementation, setup failure не считается продуктовым RED.",
-          "en": "Retain actual baseline results/known failures; do not pass expected future capabilities before implementation or treat setup failure as product RED."
+          "ru": "Baseline results и failures сохранены; setup failure не продуктовый RED. Владелец до пилота задаёт sample, пороги верного самостоятельного выбора, времени до первого проверяемого шага, лишних шагов и отмен рекомендации.",
+          "en": "Preserve baseline results and failures; setup failure is not product RED. Before the pilot the owner sets sample and thresholds for independent correct choices, time to first verifiable step, unnecessary steps and recommendation cancellations."
         },
         {
           "id": "PAOS-PMETH-22-AC04",
@@ -1323,7 +1379,7 @@
       "status": "planned",
       "priority": "P1",
       "direction_id": "B",
-      "delivery_group_id": "B5",
+      "delivery_group_id": "B2",
       "methodologies": [
         "Spec-DD",
         "Design-DD",
@@ -1332,13 +1388,10 @@
         "FSD"
       ],
       "depends_on": [
-        "PAOS-PMETH-17",
-        "PAOS-PMETH-21",
-        "PAOS-PMETH-22"
+        "PAOS-PMETH-26"
       ],
       "blocks": [
-        "PAOS-PMETH-24",
-        "PAOS-PMETH-26"
+        "PAOS-PMETH-24"
       ],
       "external_refs": [
         "PAOS-FUNC-19",
@@ -1356,18 +1409,18 @@
       "acceptance_criteria": [
         {
           "id": "PAOS-PMETH-23-AC01",
-          "ru": "На current source проходят read-only scan → reasoned selection → staged plan → authorized fixture apply/build/check → evidence/verdict для применимых сценариев PMETH-22.",
-          "en": "On current sources verify read-only scan → reasoned selection → staged plan → authorized fixture apply/build/check → evidence/verdict for applicable PMETH-22 scenarios."
+          "ru": "Базовый профиль повторяет read-only CLI/Web на current source. Для каждого заявленного расширения выполнены задачи и проверки из profile_qualification, включая staged plan → authorized fixture apply/build/check → evidence/verdict для write и reload override, stale verdict после смены AC для соответствующих claims. Расширение профиля повторно проходит PMETH-23 с новой областью и revision.",
+          "en": "Repeat the read-only CLI/Web route on current source for the base profile. Meet the tasks and checks in profile_qualification for each claimed expansion, including staged plan, authorized fixture apply/build/check and evidence/verdict for writes, and override reload and stale verdict after AC changes for corresponding claims. Repeat PMETH-23 with the new scope and revision on expansion."
         },
         {
           "id": "PAOS-PMETH-23-AC02",
-          "ru": "Frontend pilot демонстрирует incremental FSD и design states; backend/CLI не получают FSD; AI quality остаётся eval/gap без скрытого provider call.",
-          "en": "Frontend pilots demonstrate incremental FSD/design states; backend/CLI receive no FSD and AI quality stays eval/gap without hidden provider calls."
+          "ru": "Для заявленного Design пути проверены journey и states. Для заявленного FSD пути отдельно проверены migration proposal, выбранный incremental pilot и сохранение достаточно модульной архитектуры. Если заявлен target apply, проверены staged diff PMETH-16, compatibility, rollback и сохранность user files. Backend/CLI обходятся без FSD gates, AI quality остаётся eval/gap без скрытого provider call.",
+          "en": "Verify journeys and states when Design is claimed. For claimed FSD coverage separately verify the migration proposal, selected incremental pilot and retention of sufficiently modular architecture. For claimed target apply verify PMETH-16 staged diff, compatibility, rollback and user-file preservation. Omit FSD gates for backend/CLI and keep AI quality as eval/gap without hidden provider calls."
         },
         {
           "id": "PAOS-PMETH-23-AC03",
-          "ru": "Все critical privacy/authority/user-file/isolation/false-ready negatives проходят; source/build/harness hashes и cleanup подтверждены, unresolved critical gap запрещает closure.",
-          "en": "Pass all critical privacy/authority/user-file/isolation/false-readiness negatives; verify source/build/harness hashes and cleanup, with critical unresolved gaps blocking closure."
+          "ru": "Проверены critical privacy/authority/user-file/isolation/false-ready cases, source/build/harness identity и cleanup по заявленному scope. Critical gap блокирует соответствующий профиль. Broad rollout проходит все ветки и отрицательные случаи, включая реальные approval/recovery/rollback на fixture.",
+          "en": "Verify critical privacy/authority/user-file/isolation/false-ready cases, source/build/harness identity and cleanup for the claimed scope. A critical gap blocks the affected profile. Broad rollout exercises all branches and negatives, including real approval/recovery/rollback on a fixture."
         },
         {
           "id": "PAOS-PMETH-23-AC04",
@@ -1386,7 +1439,7 @@
       "status": "planned",
       "priority": "P2",
       "direction_id": "B",
-      "delivery_group_id": "B5",
+      "delivery_group_id": "B2",
       "methodologies": [
         "ADD",
         "Spec-DD"
@@ -1416,8 +1469,8 @@
         },
         {
           "id": "PAOS-PMETH-24-AC02",
-          "ru": "Измерены accepted outcomes, defects/reopens, repair effort, owner interventions, elapsed и доступные token/cost данные; нет выдуманных нулей или productivity процентов.",
-          "en": "Measure accepted outcomes, defects/reopens, repair effort, owner interventions, elapsed and available token/cost data; invent no zeros or productivity percentages."
+          "ru": "По PMETH-22 порогам измерены самостоятельный верный выбор, время до первого проверяемого шага, лишние шаги, отмены и причины, accepted outcomes, defects/reopens, repair effort, owner interventions, elapsed и доступные token/cost. Отсутствующие метрики остаются unavailable.",
+          "en": "Use PMETH-22 thresholds to measure independent correct choices, time to first verifiable step, unnecessary steps, cancellations and reasons, accepted outcomes, defects/reopens, repair effort, owner interventions, elapsed and available token/cost. Mark missing measures unavailable."
         },
         {
           "id": "PAOS-PMETH-24-AC03",
@@ -1441,14 +1494,13 @@
       "status": "planned",
       "priority": "P2",
       "direction_id": "B",
-      "delivery_group_id": "B5",
+      "delivery_group_id": "B2",
       "methodologies": [
         "ADD",
         "Spec-DD"
       ],
       "depends_on": [
-        "PAOS-PMETH-24",
-        "PAOS-PMETH-26"
+        "PAOS-PMETH-24"
       ],
       "blocks": [],
       "external_refs": [
@@ -1465,8 +1517,8 @@
       "acceptance_criteria": [
         {
           "id": "PAOS-PMETH-25-AC01",
-          "ru": "Owner-reviewed go/bounded_go/hold/no-go привязан к поддержанным типам проектов, gates и evidence; не обещает autonomous production delivery.",
-          "en": "Bind owner-reviewed go/bounded_go/hold/no-go to supported project types/gates/evidence without promising autonomous production delivery."
+          "ru": "Owner-reviewed go/bounded_go/hold/no-go фиксирует scope/revision, evidence и residual gaps. Проверены статусы и evidence задач из profile_qualification для каждого заявленного профиля. Непроверенные профили остаются вне решения; при расширении нужен профильный PMETH-23. RU/EN обновляются только для подтверждённых путей.",
+          "en": "Record scope/revision, evidence and residual gaps in the owner-reviewed go/bounded_go/hold/no-go. Check status and evidence of the profile_qualification tasks for each claimed profile. Exclude unverified profiles and repeat profile-specific PMETH-23 before expansion. Update RU/EN guidance for confirmed paths only."
         },
         {
           "id": "PAOS-PMETH-25-AC02",
@@ -1495,17 +1547,16 @@
       "status": "planned",
       "priority": "P2",
       "direction_id": "B",
-      "delivery_group_id": "B5",
+      "delivery_group_id": "B2",
       "methodologies": [
         "Spec-DD",
         "Design-DD"
       ],
       "depends_on": [
-        "PAOS-PMETH-20",
-        "PAOS-PMETH-23"
+        "PAOS-PMETH-20"
       ],
       "blocks": [
-        "PAOS-PMETH-25"
+        "PAOS-PMETH-23"
       ],
       "external_refs": [
         "PAOS-FUNC-25"
@@ -1522,13 +1573,13 @@
       "acceptance_criteria": [
         {
           "id": "PAOS-PMETH-26-AC01",
-          "ru": "RU/EN объясняют входы, выбор, следующий artifact/action, проверки, permissions, gaps и остановку на подтверждённых примерах из PMETH-22/PMETH-23.",
-          "en": "RU/EN guidance explains inputs, selection, next artifacts/actions, checks, permissions, gaps and stopping through confirmed PMETH-22/PMETH-23 examples."
+          "ru": "RU/EN показывают проверенный ранний bug/docs CLI+Web путь, входы, основания, scope, source, следующий шаг и ограничения. Примеры подтверждены PMETH-22/19/20.",
+          "en": "RU/EN guidance shows the verified early bug/docs CLI+Web path, inputs, reasons, scope, sources, next step and limits. Support examples with PMETH-22/19/20."
         },
         {
           "id": "PAOS-PMETH-26-AC02",
-          "ru": "Есть small-task shortcut, legacy/FSD opt-in, design acceptance и TDD failure explanation; рекомендации не представлены как гарантия успешного проекта.",
-          "en": "Explain small-task shortcuts, legacy/FSD opt-in, design acceptance and TDD failures without guaranteeing project success."
+          "ru": "Есть short route, различие intended RED и setup failure, понятный partial/unknown и safe next action. Override/apply и Design/FSD помечены как будущие до PMETH-23 и PMETH-25.",
+          "en": "Explain the short route, intended RED versus setup failure, partial/unknown and a safe next action. Mark override/apply and Design/FSD as future until PMETH-23 and PMETH-25."
         },
         {
           "id": "PAOS-PMETH-26-AC03",
@@ -1545,5 +1596,167 @@
       "implementation_at": "pending_execution_timestamp",
       "execution_authority": "not_authorized_by_this_plan"
     }
-  ]
+  ],
+  "planning_revision": {
+    "date": "2026-11-18",
+    "review": "research/methodology-plan-review-2026-11-18.md",
+    "before": {
+      "edge_count": 54,
+      "changed_dependencies": {
+        "PAOS-PMETH-03": [
+          "PAOS-PMETH-02",
+          "PAOS-PMETH-22"
+        ],
+        "PAOS-PMETH-05": [
+          "PAOS-PMETH-04",
+          "PAOS-PMETH-22"
+        ],
+        "PAOS-PMETH-07": [
+          "PAOS-PMETH-05",
+          "PAOS-PMETH-22"
+        ],
+        "PAOS-PMETH-08": [
+          "PAOS-PMETH-05",
+          "PAOS-PMETH-22"
+        ],
+        "PAOS-PMETH-10": [
+          "PAOS-PMETH-04",
+          "PAOS-PMETH-22"
+        ],
+        "PAOS-PMETH-12": [
+          "PAOS-PMETH-06",
+          "PAOS-PMETH-11"
+        ],
+        "PAOS-PMETH-13": [
+          "PAOS-PMETH-04",
+          "PAOS-PMETH-22"
+        ],
+        "PAOS-PMETH-15": [
+          "PAOS-PMETH-05",
+          "PAOS-PMETH-07",
+          "PAOS-PMETH-08",
+          "PAOS-PMETH-10",
+          "PAOS-PMETH-13"
+        ],
+        "PAOS-PMETH-16": [
+          "PAOS-PMETH-06",
+          "PAOS-PMETH-12",
+          "PAOS-PMETH-14",
+          "PAOS-PMETH-15"
+        ],
+        "PAOS-PMETH-17": [
+          "PAOS-PMETH-09",
+          "PAOS-PMETH-11",
+          "PAOS-PMETH-13",
+          "PAOS-PMETH-16"
+        ],
+        "PAOS-PMETH-18": [
+          "PAOS-PMETH-04",
+          "PAOS-PMETH-15",
+          "PAOS-PMETH-17"
+        ],
+        "PAOS-PMETH-19": [
+          "PAOS-PMETH-16",
+          "PAOS-PMETH-17",
+          "PAOS-PMETH-18"
+        ],
+        "PAOS-PMETH-21": [
+          "PAOS-PMETH-17",
+          "PAOS-PMETH-19",
+          "PAOS-PMETH-20"
+        ],
+        "PAOS-PMETH-22": [
+          "PAOS-PMETH-01",
+          "PAOS-PMETH-02"
+        ],
+        "PAOS-PMETH-23": [
+          "PAOS-PMETH-17",
+          "PAOS-PMETH-21",
+          "PAOS-PMETH-22"
+        ],
+        "PAOS-PMETH-25": [
+          "PAOS-PMETH-24",
+          "PAOS-PMETH-26"
+        ],
+        "PAOS-PMETH-26": [
+          "PAOS-PMETH-20",
+          "PAOS-PMETH-23"
+        ],
+        "PAOS-PMETH-09": [
+          "PAOS-PMETH-07",
+          "PAOS-PMETH-08"
+        ]
+      },
+      "first_web_transitive_prerequisites": 20
+    },
+    "after": {
+      "edge_count": 31,
+      "first_web_transitive_prerequisites": 8
+    },
+    "read_only_milestone": {
+      "required_tasks": [
+        "PAOS-PMETH-01",
+        "PAOS-PMETH-02",
+        "PAOS-PMETH-03",
+        "PAOS-PMETH-04",
+        "PAOS-PMETH-05",
+        "PAOS-PMETH-07",
+        "PAOS-PMETH-19",
+        "PAOS-PMETH-20",
+        "PAOS-PMETH-22",
+        "PAOS-PMETH-26"
+      ],
+      "terminal_task": "PAOS-PMETH-26",
+      "scenarios": [
+        "backend_bug",
+        "docs_only"
+      ]
+    },
+    "responsibility_moves": {
+      "PMETH-03/20 persisted override": [
+        "PAOS-PMETH-18-AC02",
+        "PAOS-PMETH-21-AC03",
+        "PAOS-PMETH-23-AC01"
+      ],
+      "PMETH-05 staged requirements and PMETH-19 apply": [
+        "PAOS-PMETH-16-AC01",
+        "PAOS-PMETH-16-AC02",
+        "PAOS-PMETH-16-AC03"
+      ],
+      "PMETH-26 broad documentation": [
+        "PAOS-PMETH-25-AC01"
+      ]
+    }
+  },
+  "profile_qualification": {
+    "qualification_task": "PAOS-PMETH-23",
+    "rollout_decision_task": "PAOS-PMETH-25",
+    "base_profile": "read_only_bug_docs",
+    "required_tasks_by_claim": {
+      "read_only_bug_docs": [
+        "PAOS-PMETH-26"
+      ],
+      "design": [
+        "PAOS-PMETH-09"
+      ],
+      "fsd_migration": [
+        "PAOS-PMETH-12"
+      ],
+      "skill_tool_routing": [
+        "PAOS-PMETH-14"
+      ],
+      "target_write_apply": [
+        "PAOS-PMETH-16"
+      ],
+      "criterion_readiness": [
+        "PAOS-PMETH-17"
+      ],
+      "durable_override_recovery": [
+        "PAOS-PMETH-21"
+      ]
+    },
+    "broad_rollout_requires_all_claims": true,
+    "before_go": "All tasks required by the claimed profile and their hard prerequisites must have qualifying evidence and disposition. Any unverified claim is excluded and a critical gap blocks the affected profile.",
+    "on_profile_expansion": "Repeat PMETH-23 on the new claimed profile and record evidence revision and scope before PMETH-25 expands rollout."
+  }
 }

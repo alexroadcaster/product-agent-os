@@ -1,6 +1,6 @@
 name = "explorer"
 description = "Use for fast read-only technical discovery: stack detection, relevant source inventory, command discovery, risk signals, and fresh context before another agent edits."
-model = "gpt-6.1-terra"
+model = "gpt-6.2-sol"
 model_reasoning_effort = "low"
 developer_instructions = """
 You are the read-only discovery agent.

@@ -161,7 +161,7 @@ AGENT_FORBIDDEN_TOP_LEVEL_FIELDS = {
     "handoff_requirements",
 }
 # Repository policy, not a claim that other official models are unsupported.
-AGENT_ALLOWED_MODELS = {"gpt-6.1-sol", "gpt-6.1-terra"}
+AGENT_ALLOWED_MODELS = {"gpt-6.2-sol", "gpt-6.2-astra", "gpt-6.1-sol", "gpt-6.1-terra"}
 AGENT_ALLOWED_REASONING_EFFORTS = {"low", "medium", "high", "xhigh", "max"}
 AGENT_PARENT_ONLY_FIELDS = {
     "sandbox_mode", "sandbox_workspace_write", "default_permissions", "permissions",
@@ -181,7 +181,14 @@ OPENAI_DOCS_SKILL_SUFFIX = "/openai-docs/skill.md"
 PROJECT_SKILL_PATH_FRAGMENT = "/plugins/product-agent-os/skills/"
 WORKSPACE_APPLY_AUTHORITY = "workspace_apply: explicit_task_authority"
 TASK_MATRIX_SCHEMA_VERSION = "task_matrix_plan_v1"
-TASK_MATRIX_ALLOWED_STATUSES = {"planned", "in_progress", "implemented", "blocked", "accepted_gap"}
+TASK_MATRIX_ALLOWED_STATUSES = {
+    "planned",
+    "in_progress",
+    "awaiting_user_decision",  # Nonterminal owner handoff, not completion or an accepted gap.
+    "implemented",
+    "blocked",
+    "accepted_gap",
+}
 TASK_MATRIX_REQUIRED_FIELDS = [
     "Task",
     "Status",
@@ -606,8 +613,9 @@ def validate_agent_project_config(config_path: Path, agent_files: list[Path] | N
     if not isinstance(agents, dict):
         errors.append("project config missing [agents] table")
         return errors
-    if agents.get("default_subagent_model") != "gpt-6.1-sol":
-        errors.append("generic subagents must default to gpt-6.1-sol")
+    # Permit the previous Sol default when validating an existing or rolled-back project.
+    if agents.get("default_subagent_model") not in ("gpt-6.2-sol", "gpt-6.1-sol"):
+        errors.append("generic subagents must default to gpt-6.2-sol or gpt-6.1-sol")
     if agents.get("default_subagent_reasoning_effort") != "medium":
         errors.append("generic subagents must default to medium reasoning")
     errors.extend(_validate_parent_skills_and_mcp(data))

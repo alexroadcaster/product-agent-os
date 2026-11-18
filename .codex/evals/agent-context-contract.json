@@ -126,8 +126,8 @@
           "chat_visibility",
           "required",
           "[product_agent_os.model_migration]",
-          "gpt-6.1-sol",
-          "gpt-6.1-terra"
+          "gpt-6.2-sol",
+          "gpt-6.2-astra"
         ],
         "result": "The root agent must follow the lifecycle workflow through config and show scope-applicable Task Start Brief and Completion Ledger or concise reporting; delegated agents return only a compact Subagent Result Packet."
       }
@@ -268,11 +268,11 @@
     },
     {
       "id": "gpt-6-role-routing",
-      "input": "Review active custom-agent model pins after a GPT-6.1 migration.",
+      "input": "Review active custom-agent model pins for the GPT-6.2 configuration.",
       "expected": {
         "fields": [
-          "gpt-6.1-sol",
-          "gpt-6.1-terra",
+          "gpt-6.2-sol",
+          "gpt-6.2-astra",
           "preserve reasoning effort",
           "same effort",
           "one lower effort",
@@ -281,7 +281,7 @@
           "latency",
           "fresh session"
         ],
-        "result": "Complex planning, review, security, release, and eval roles route to Sol; engineering, plugin, and graph roles route to Sol; docs and bounded exploration route to Terra; behavioral promotion remains pending until a fresh-session same/lower-effort comparison passes."
+        "result": "Architecture, independent review and security/privacy/supply-chain review use Astra. Other roles use Sol. Preserve the previous role efforts and keep behavioral promotion pending until a fresh-session comparison passes."
       }
     },
     {

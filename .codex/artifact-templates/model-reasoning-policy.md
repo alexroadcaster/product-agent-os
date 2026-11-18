@@ -1,6 +1,6 @@
 # Model And Reasoning Policy
 
-Source status: project policy grounded in official OpenAI guidance checked 2026-11-03.
+Source status: project policy grounded in official OpenAI guidance checked 2026-11-18.
 
 ## Owner
 
@@ -8,15 +8,14 @@ Source status: project policy grounded in official OpenAI guidance checked 2026-
 - Review date:
 - Decision status: `draft | active_config | behavioral_promotion_pending | promoted | rolled_back`
 
-## Active GPT-6 Role Policy
+## GPT-6.2 Role Policy
 
 | Work class | Default model | Baseline effort | Escalation trigger | Downgrade trigger |
 | --- | --- | --- | --- | --- |
-| Engineering, planning, architecture, implementation, plugin/graph work, review, security, release and research | `gpt-6.1-sol` | preserve current role value | unresolved complexity; evaluate Astra separately | measured non-inferiority at lower effort |
-| Docs maintenance and bounded exploration | `gpt-6.1-terra` | preserve current role value | engineering or ambiguous multi-step decisions route to Sol | measured narrow-task benefit before Luna |
-| Highest-complexity or high-volume candidates | `gpt-6-astra` / `gpt-6-luna` candidate only | define separately | explicit measured need | no default activation |
+| Architecture, independent review and security/privacy/supply-chain review | `gpt-6.2-astra` | preserve current role value | cross-component ambiguity or unresolved risk warrants more effort within budget | measured non-inferiority at lower effort or with Sol |
+| Other roles, including implementation, planning, verification, docs and exploration | `gpt-6.2-sol` | preserve current role value | increase effort or evaluate Astra for the specific task | measured non-inferiority at lower effort |
 
-Generic subagents use Sol with medium effort. Custom profiles pin both model and effort; these override resolved spawn/default/parent values. Account access remains unverified until an authorized fresh session. Current local CLI compatibility alone does not prove App availability. No silent fallback to older models.
+Generic subagents use Sol with medium effort. Custom profiles pin both model and effort. Keep GPT-6.1 Sol and Terra as the dated baseline and rollback references. Local CLI compatibility alone does not prove App availability. Record the effective model in an authorized fresh session before claiming activation. No silent fallback to older models.
 
 ## Migration And Promotion Gate
 

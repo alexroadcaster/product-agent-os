@@ -1,5 +1,9 @@
 # Product-Agent OS Web — архитектура и план реализации
 
+**Текущий указатель, 16.11.2026.** Архитектурные решения и статусы ниже сохранены как датированные срезы; утверждения о будущей реализации относятся к дате соответствующего решения. Текущие функциональные статусы, источники и ограничения проверок принадлежат [матрице FUNC](../docs/planning/functional-remediation-2026-11-15.md) / [JSON](../docs/planning/functional-remediation-2026-11-15.json); статусы исходных 56 задач M1–M5 — [плану Task Manager](../docs/planning/product-agent-os-web-task-manager-plan-2026-11-09.md) и его JSON. Технические проверки и человеческая приёмка учитываются отдельно; F23 и F24 не считаются закрытыми только на основании этого указателя.
+
+Границы поверхностей: Settings регистрирует источник; Files показывает ограниченный политиками инвентарь; scan управляет анализом; Map представляет ограниченный граф кода; Database отдельно показывает выбранную схему и подтверждённые или неполные связи с кодом. Подробные контракты и пределы: [инвентаризация](../docs/code-intelligence/inventory.md), [граф](../docs/code-intelligence/graph-model.md), [схема и источники БД](../docs/db/erd.md). Результаты PoC F30–F32 и реализация F33–F34 имеют собственные evidence и статусы в матрице, без обещания полного runtime graph.
+
 Уточнение Settings UX,13.11.2026: native Explorer folder selection/New folder → explicit Add → bounded source/JS/TS scan; cancel не регистрирует проект. App-agent handoff открывает server-built Codex draft, требует явного Send и сохраняет waiting до actual worker attach; URI open не доказывает host/model entitlement. Existing BYOK/approval/commercial boundaries сохранены. [Source contracts, official links и evidence](product-agent-os-web-m1-execution-2026-11-11.md).
 
 

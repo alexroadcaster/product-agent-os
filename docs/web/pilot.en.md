@@ -7,6 +7,50 @@ Source status: project-authored / PAOS-0030 local delivery contract; technical r
 
 This package supports local engineering on the pinned Windows/x64 host tuple. It contains the launcher, service, contracts, built Web UI and bounded runtime parser. Node/Codex binaries, profiles, credentials and workspaces remain external. PAOS licensing, admission and commercial terms remain separate gates; a local build grants no external release approval.
 
+## FUNC-G07 / F23 — product acceptance protocol, revision 1 {#func-g07-pilot-protocol}
+
+Source status: project-authored protocol proposal, 2026-11-16; participants_not_defined; consent_not_observed; human_pilot_not_started. The owner reported that participants have not been identified. F23 is `awaiting_user_decision` (Awaiting user decision); F19/F24 technical checks do not substitute for this gate. [Tasks and current status](../planning/functional-remediation-2026-11-15.en.md#func-g07-results).
+
+This is a concrete proposal for agreement before observation. The owner selects five participants, an observer and a data owner. P01–P05 are prospective pseudonymous slots, not completed sessions. Voluntary opt-in, scenarios, a baseline and retention must be agreed first. Owner-only exploratory feedback cannot rescale the PRD targets of4/5 and3/5. Without participants, neither a started pilot nor product acceptance is claimed.
+
+Owner decision 2026-11-16: the user will check the result personally and provide feedback. Next action is the user’s feedback and decision. The original AC and protocol below remain a proposal for a later owner decision; this handoff does not record acceptance or completion.
+
+### Scope and data
+
+Proposed scope: local UI with pinned build/fixture revisions and synthetic projects, without credentials, production data or provider/model calls. Agree accessibility needs, language and device before the pilot. Record local service preparation/startup separately from task-solving time. Keep only participant IDs, timings, outcomes, assistance, errors and de-identified receipt references. Do not collect names, contacts, private task text, code, personal absolute paths, chat logs, pairing/session secrets, audio or video.
+
+Proposed retention: manually delete detailed local records30days after the owner decision; retain only agreed de-identified aggregates. No automation/TTL is active. Specify the data owner, actual deletion date, withdrawal procedure and consent scope before collection. Do not create a human-receipt directory before opt-in. On withdrawal stop collection and perform the agreed deletion; a missing observation stays missing. Publication or transfer to an external service needs a separate decision.
+
+### Baseline and neutral scenarios
+
+The PRD requires the baseline **before UI**. Proposed `md_readonly` baseline: the participant’s ordinary editor/search with equivalent synthetic MD/source data, without PAOS UI. This is not an actual chat/model baseline. An interactive chat baseline needs a separately agreed route and authority. Prepare equally difficult A/B tasks to reduce memorization: P01/P03/P05 use MD-A → UI-B; P02/P04 use MD-B → UI-A. Baseline→UI order, prior familiarity and task differences remain confounders. Do not presume product advantage. Keep observer answer keys separate and avoid UI-label hints.
+
+| Scenario | Neutral participant task | Observation |
+| --- | --- | --- |
+| First opening / return | “You returned after a break. Identify the current work, blocker, evidence and next action” | Correct task, blocker/next action and evidence level; unassisted time |
+| Ordinary file | “Add the selected folder and find the file that needs changing” | Folder selection/cancel, tree outside Control-plane; visibility ≠ indexing ≠ execution |
+| Map and data | “Find the change location for a stored field and explain your source choice” | Map → schema/table/ERD → usages → source line; confirmed/inferred/unresolved and unsupported semantics |
+| Limited coverage | “Is this evidence sufficient for the next action? Explain” | Empty, excluded, unsupported and partial; no false complete-analysis conclusion |
+| Conflict / stale source | “The source changed. Continue while preserving your work” | Stale revision, draft preservation and appropriate refresh/retry |
+| Stop / return | “Interrupt the action and return after restarting” | Cancel/retry/restart; unknown outcome never means completed |
+| Acceptance | “What can you accept from this evidence, and why?” | Check/run evidence distinct from owner acceptance; scope-aware verified interpretation |
+
+After the timed attempt, ask about **specific past behavior**: how they previously found this information, where help was needed and which source informed the decision. Avoid product-praise questions. Do not explain the correct answer before recording an error. Keep errors after debrief; retries are new diagnostic attempts.
+
+### Metrics and decision rules
+
+Primary hypothesis: at least4of5 participants correctly identify the task, blocker/next action and evidence level within180seconds on their first unassisted attempt. Errors, timeouts, assistance and missing observations stay in the denominator; a retry never replaces the first attempt. Report service startup separately. Compare baseline/UI success and time on comparable scenarios; technical benchmarks are not human measurements.
+
+Reuse hypothesis: at least3of5 **distinct** participants use the product for **another real task** within their individual `first_use_at + 14 days` window. Scheduled technical clicks or repeated fixtures do not count. Do not mark unelapsed windows complete. A de-identified receipt records distinct real work without private content; absent confirmation remains unobserved. No such observation exists currently.
+
+Guardrails: zero false interpretations of `verified` and zero data loss. Record errors, rejections and protocol deviations alongside successes. A changed UI/build requires a new revision while preserving previous outcomes. Do not overwrite failed attempts. Changes to cohort size, scenarios or duration require a separate owner decision while preserving the original AC; they do not automatically close mandatory F23.
+
+### Future receipt and owner decision form
+
+Receipt fields are **unfilled**: `protocol_revision`, `build_or_release_id`, `fixture_revision`, `participant_id`, `prior_familiarity`, `consent_scope`, `consent_observed_at`, `observer_id`, `data_owner`, `baseline_mode`, `baseline_variant`, `ui_variant`, `scenario_id`, `started_at`, `elapsed_seconds`, `current_task_correct`, `blocker_next_action_correct`, `evidence_level_correct`, `assistance`, `outcome`, `misinterpretation`, `data_loss_observed`, `protocol_deviation`, `first_use_at`, `reuse_window_end`, `distinct_real_task_reuse_observed_at`, `reuse_evidence_ref`, `retention_delete_at`. `null` means unobserved, never zero, consent or success.
+
+After consent, detailed local receipts may live in ignored `.docs-tools/reports/func-g07/human-pilot/`; canonical docs receive only agreed aggregates and the decision. Owner form: revision/build/fixture, actual cohort and consent, baseline comparison, numerator/denominator and missing data, errors/loss, actual reuse windows/evidence, `accept` / `reject` / `further_evidence_required`, owner/date. Current decision=`not_observed`, cohort=`not_defined`. Next: await the user’s own checks, feedback and decision; the original protocol is retained for that decision. This document starts no outreach, schedule or provider call.
+
 ## FUNC-G06 / F17 — managed local delivery
 
 The current addition is a private_local_pilot managed installer using setup/update/rollback and one managed-home. The CLI derives version/profile/backup paths, validates expected release/selection identities and preserves old versions and original profile bytes. Maintenance spans the transfer; managed-start shares the home→selection lock order, so an unresolved home operation fences launch. See [installation commands](../operations/install-start-stop.en.md) and [G06 decisions/evidence](../planning/functional-remediation-2026-11-15.en.md#func-g06-results).

@@ -1,74 +1,119 @@
 {
-  "task_id": "FUNC-G06",
+  "task_id": "PAOS-FUNC-23",
   "previous_closure": {
-    "task_id": "FUNC-G05",
+    "task_id": "FUNC-G07",
     "status": "ready_for_completion_ledger",
     "completion_ready": true,
-    "updated_at": "2026-11-16T04:35:32.296Z",
+    "updated_at": "2026-11-16T09:01:30.032529+00:00",
+    "started_at": "2026-11-16T06:53:23Z",
+    "closure_level": "needs_user_acceptance",
+    "closure_decision": "partial_only",
+    "report_elapsed_seconds": 7687.0,
+    "brief_digest": "sha256:17aa04703be227ee8c9cc67830dee0e846eae50597274887fc1af6b3940d0167",
+    "evidence_refs": [
+      "docs/planning/functional-remediation-2026-11-15.md#func-g07-results",
+      ".tmp/func-g07/final-review.json",
+      ".tmp/func-g07/closure-consistency.json"
+    ],
+    "completion_evidence": {
+      "group_status": "in_progress",
+      "technical_tasks": ["PAOS-FUNC-24", "PAOS-FUNC-19", "PAOS-FUNC-25"],
+      "required_open_child": "PAOS-FUNC-23",
+      "human_pilot": "not_started_participants_not_defined",
+      "task_counts": {"implemented": 33, "in_progress": 1, "planned": 0},
+      "web_passed": 697,
+      "browser_checks": 171,
+      "docs_site_tests_passed": 7,
+      "review_context": "separate_fresh_context",
+      "review_gate": "passed_technical_scope_only"
+    },
+    "previous_closure": {
+    "task_id": "FUNC-G06",
+    "status": "ready_for_completion_ledger",
+    "completion_ready": true,
+    "updated_at": "2026-11-16T05:48:32.333Z",
     "closure_level": "locally_verified_with_explicit_limits",
     "evidence_refs": [
-      "docs/planning/functional-remediation-2026-11-15.md#func-g05-results",
-      ".tmp/func-g05/final-review.json",
-      ".tmp/func-g05/closure-consistency.json",
-      ".tmp/func-g05/web-native-final.log",
-      ".tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json",
-      ".tmp/func-g05/native-candidate.json",
-      ".tmp/func-g05/native-default.json",
-      ".tmp/func-g05/docs-final.log"
+      "docs/planning/functional-remediation-2026-11-15.md#func-g06-results",
+      ".tmp/func-g06/final-review.json",
+      ".tmp/func-g06/closure-consistency.json"
     ],
     "previous_closure": {
-      "task_id": "FUNC-G04",
+      "task_id": "FUNC-G05",
       "status": "ready_for_completion_ledger",
       "completion_ready": true,
-      "updated_at": "2026-11-15T21:44:54.119Z",
-      "closure_level": "locally_verified_with_measured_limits",
-      "previous_task_id": "FUNC-G03"
+      "updated_at": "2026-11-16T04:35:32.296Z",
+      "closure_level": "locally_verified_with_explicit_limits",
+      "evidence_refs": [
+        "docs/planning/functional-remediation-2026-11-15.md#func-g05-results",
+        ".tmp/func-g05/final-review.json",
+        ".tmp/func-g05/closure-consistency.json",
+        ".tmp/func-g05/web-native-final.log",
+        ".tmp/func-g05/browser-acceptance/evidence-OPJn2D/result.json",
+        ".tmp/func-g05/native-candidate.json",
+        ".tmp/func-g05/native-default.json",
+        ".tmp/func-g05/docs-final.log"
+      ],
+      "previous_closure": {
+        "task_id": "FUNC-G04",
+        "status": "ready_for_completion_ledger",
+        "completion_ready": true,
+        "updated_at": "2026-11-15T21:44:54.119Z",
+        "closure_level": "locally_verified_with_measured_limits",
+        "previous_task_id": "FUNC-G03"
+      }
+    }
     }
   },
   "session_id": "01a1dfb9-d5d9-7712-85ca-8dad082552b7",
   "plan_path": "docs/planning/functional-remediation-2026-11-15.md",
-  "scope": "New user-authorized FUNC-G06: PAOS-FUNC-21,22,17 recovery, backup/restore and bounded local distribution. G05 remains closed in previous_closure; no old-task writes authorized",
-  "updated_at": "2026-11-16T05:48:32.333Z",
-  "approval_boundary": "User-authorized in-scope local implementation and bounded synthetic verification; preserve other groups and user files; no credentials/providers/models/live target writes/global installation or configuration/Git/publication",
+  "scope": "User-authorized bounded F23 status update to awaiting user decision and owner-led checking/feedback; synchronize owned task/docs/handoff and inspect non-FUNC plans read-only",
+  "updated_at": "2026-11-16T10:48:04Z",
+  "approval_boundary": "Local task metadata, necessary validator support/tests and documentation only; preserve other tasks and existing dirty work; no runtime/provider/Git/publication or invented human acceptance",
   "status": "ready_for_completion_ledger",
   "completion_ready": true,
   "completion_brief_shown": false,
-  "brief_digest": "sha256:ee25f423ebc7314fa481c57dc3620a9b6cfd6ed7431483bfd5d7160d944e1070",
-  "brief_schema_version": "task_start_brief_v2",
-  "brief_format": "bold_fields",
+  "brief_digest": "sha256:2b4fb3082e4c2bc8806523f09c5b4d4674850cf728240aac6ff19c37d7bc2570",
+  "brief_schema_version": "task_scope_note_v1",
+  "brief_format": "concise",
   "brief_fields_present": [
-    "Request",
-    "Goal",
-    "Context",
     "Scope",
-    "Value",
-    "Execution",
-    "Acceptance",
-    "Risks / approvals",
-    "Next step"
+    "Evidence",
+    "Limits"
   ],
-  "task_start_brief_shown": true,
+  "task_start_brief_shown": false,
+  "scope_note_shown": true,
   "lifecycle_scope": {
-    "work_type": "implementation",
-    "size": "large",
-    "risk": "high",
+    "work_type": "fix",
+    "size": "bounded",
+    "risk": "low",
     "financially_material": false,
     "release_or_readiness": false,
     "explicit_packet_request": false,
-    "reason": "New user-authorized G06 after closed G05: data preservation/recovery and design-gated local distribution using disposable profiles; no real installation/publication"
+    "reason": "Explicit owner request to change F23 status and take over checking/feedback; ordinary metadata change with narrowly necessary validator support"
   },
-  "closure_level": "locally_verified_with_explicit_limits",
+  "closure_level": "docs_static_verified",
+  "status_handoff_evidence": {
+    "task_status": "awaiting_user_decision",
+    "task_status_label": "Ожидание решения пользователя",
+    "group_status": "in_progress",
+    "owner_handoff": "owner_self_check_and_feedback",
+    "unit_tests_passed": 46,
+    "task_matrix_languages_passed": ["ru", "en"],
+    "changed_markdown_sources_checked": 11,
+    "preservation_receipt": ".tmp/f23-owner-decision/consistency.json",
+    "other_func_tasks_preserved": 33,
+    "m5_tasks_preserved": 56,
+    "application_checks_run": false,
+    "site_build_performed": false,
+    "human_acceptance": "not_observed",
+    "non_func_planned_tasks": 46,
+    "review_mode": "explicit_self_review",
+    "control_plane_sync": "updated_REQUIREMENTS_PLAN_TEST_RUNLOG_EVALS_prod_test_no_change_needed"
+  },
   "evidence_refs": [
-    "docs/planning/functional-remediation-2026-11-15.md#func-g06-results",
-    ".tmp/func-g06/final-review.json",
-    ".tmp/func-g06/closure-consistency.json",
-    ".tmp/func-g06/web-native-final.log",
-    ".tmp/func-g06/managed-acceptance/evidence-mJ8j5k/result.json",
-    ".tmp/func-g06/native-candidate.json",
-    ".tmp/func-g06/native-default.json",
-    ".tmp/func-g06/docs-final.log",
-    ".tmp/func-g06/matrix-ru.log",
-    ".tmp/func-g06/matrix-en.log"
+    "docs/planning/functional-remediation-2026-11-15.md",
+    ".tmp/func-g07/"
   ],
-  "started_at": "2026-11-16T05:00:11Z"
+  "started_at": "2026-11-16T10:33:59Z"
 }

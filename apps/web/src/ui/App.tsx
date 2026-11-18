@@ -251,7 +251,7 @@ export function App() {
       <a className="skip" href="#main">
         {uiLabel(preferences.locale, "action.skipToContent")}
       </a>
-      <Sidebar items={sections.map(id=>({id,label:label(id)}))} selected={section} onSelect={key=>{setSection(key);setMobileNav(false);if(mobileNav)requestAnimationFrame(()=>document.getElementById('main')?.focus());}} projects={projects} projectId={projectId} onProject={id=>{navigationEpoch.current++;setProjectId(id);if(section==='portfolio')setSection('overview');}} ready={ready} locale={preferences.locale} mobileNav={mobileNav} onEscape={()=>{if(mobileNav){setMobileNav(false);menuButton.current?.focus();}}} connection={{verified:connection?.verified??false,label:connection?.verified?t('verified'):t('unverified'),reason:connection?.reason}}/>
+      <Sidebar items={sections.map(id=>({id,label:label(id)}))} selected={section} onSelect={key=>{setSection(key);setMobileNav(false);if(mobileNav)requestAnimationFrame(()=>document.getElementById('main')?.focus());}} projects={projects} projectId={projectId} onProject={id=>{navigationEpoch.current++;setProjectId(id);if(section==='portfolio')setSection('overview');}} ready={ready} locale={preferences.locale} mobileNav={mobileNav} onEscape={()=>{if(mobileNav){setMobileNav(false);menuButton.current?.focus();}}} connection={{verified:connection?.verified??false,label:connection?.verified?t(connection.route==='codex_app_agent'?'appWorkerConnected':'verified'):t('unverified'),reason:connection?.reason}}/>
       <div className="workspace">
         <header>
           <button
@@ -272,7 +272,7 @@ export function App() {
             <span>/</span>
             {label(section)}
           </div>
-          <div className="top-actions"><button className="global-search" disabled={!ready} onClick={()=>setSection('search')}><Icon name="search"/>{t('search')}</button><span className="connection-chip"><span className={'connection-dot '+(connection?.verified?'verified':'')}/>{connection?.verified?t('verified'):t('unverified')}</span><button onClick={() => void initialise()} disabled={busy}>
+          <div className="top-actions"><button className="global-search" disabled={!ready} onClick={()=>setSection('search')}><Icon name="search"/>{t('search')}</button><span className="connection-chip"><span className={'connection-dot '+(connection?.verified?'verified':'')}/>{connection?.verified?t(connection.route==='codex_app_agent'?'appWorkerConnected':'verified'):t('unverified')}</span><button onClick={() => void initialise()} disabled={busy}>
             {t("reload")}
           </button></div>
         </header>
@@ -550,6 +550,7 @@ function Settings({
         api={api}
         connection={connection}
         onConnection={onConnection}
+        locale={preferences.locale}
         t={t}
       /></div>
       <div className="settings-local-panel" id="settings-panel-service" hidden={!visible('service')} aria-labelledby="settings-tab-service"><QuitService t={t}/></div>

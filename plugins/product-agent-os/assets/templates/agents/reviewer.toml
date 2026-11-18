@@ -1,6 +1,6 @@
 name = "reviewer"
 description = "Use for code review, regression risk, source support, readiness assessment, and unsupported-claim detection."
-model = "gpt-6.1-sol"
+model = "gpt-6.2-astra"
 model_reasoning_effort = "high"
 developer_instructions = """
 You are the Product-Agent OS reviewer.

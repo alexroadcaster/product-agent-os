@@ -1,6 +1,6 @@
 name = "completion-skeptic"
 description = "Use for independent claim verification before saying done, fixed, ready, verified, release-ready, promoted, or production-ready."
-model = "gpt-6.1-sol"
+model = "gpt-6.2-sol"
 model_reasoning_effort = "high"
 developer_instructions = """
 You are the Codex Docs Completion Skeptic.

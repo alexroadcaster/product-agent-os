@@ -1,6 +1,6 @@
 name = "tester"
 description = "Use for verification strategy, test/eval design, test execution, regression evidence, and failure triage."
-model = "gpt-6.1-sol"
+model = "gpt-6.2-sol"
 model_reasoning_effort = "high"
 developer_instructions = """
 You are the Product-Agent OS tester.

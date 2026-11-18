@@ -14,7 +14,7 @@ async function main(){
  const argv=process.argv.slice(2);
  if(![5,7].includes(argv.length)||argv[0]!=='--synthetic-browser')throw Error('EXPLICIT_SYNTHETIC_BROWSER_REQUIRED');
  const args=Object.fromEntries([argv.slice(1,3),argv.slice(3,5)]);
- const scenario=argv.length===7&&argv[5]==='--scenario'?argv[6]:'full';if(!['full','settings-cas','markdown','integration','task-overlay','settings-layout'].includes(scenario))throw Error('INVALID_SCENARIO');
+ const scenario=argv.length===7&&argv[5]==='--scenario'?argv[6]:'full';if(!['full','settings-cas','markdown','integration','task-overlay','settings-layout','func-g07'].includes(scenario))throw Error('INVALID_SCENARIO');
  if(!['--playwright-core','--chromium'].every(k=>isAbsolute(args[k]??'')))throw Error('INSTALLED_BROWSER_PATHS_REQUIRED');
  const scratch=resolve('.tmp/paos-m2');await mkdir(scratch,{recursive:true});
  const fixture=await mkdtemp(join(scratch,'browser-fixture-')),output=await mkdtemp(join(scratch,'browser-evidence-'));
@@ -41,7 +41,7 @@ async function main(){
   await page.getByRole('button',{name:appLabel('ru','connect'),exact:true}).click();csrf=(await(await paired).json()).csrfToken;
   async function api(path:string,payload?:unknown){return page.evaluate(async({path,payload,csrf}:any)=>{const r=await fetch('/api/v1'+path,{method:payload===undefined?'GET':'POST',headers:{'content-type':'application/json','x-paos-csrf':csrf},...(payload===undefined?{}:{body:JSON.stringify(payload)})});return {status:r.status,body:await r.json()};},{path,payload,csrf});}
   async function until(name:string,predicate:()=>Promise<boolean>){const deadline=Date.now()+15000;while(Date.now()<deadline){if(await predicate()){check(name,true);return;}await new Promise(r=>setTimeout(r,100));}check(name,false);}
-  async function nav(section:string){const menu=page.getByRole('button',{name:appLabel(locale,'menu'),exact:true});if(await menu.isVisible()&&await menu.getAttribute('aria-expanded')!=='true')await menu.click();await page.locator('nav').getByRole('button',{name:uiLabel(locale,('nav.'+section) as any),exact:true}).click();if(section==='settings'){await page.getByTestId('settings-navigation').locator('[data-settings-section=all]').click();const workflowNav=page.getByTestId('workflow-navigation');}}
+  async function nav(section:string){if(scenario==='func-g07'&&await page.locator('[data-testid=task-detail-surface][aria-modal=true]').count())await page.getByTestId('task-expand').click();const menu=page.getByRole('button',{name:appLabel(locale,'menu'),exact:true});if(await menu.isVisible()&&await menu.getAttribute('aria-expanded')!=='true')await menu.click();await page.locator('nav').getByRole('button',{name:uiLabel(locale,('nav.'+section) as any),exact:true}).click();if(section==='settings'){await page.getByTestId('settings-navigation').locator('[data-settings-section=all]').click();const workflowNav=page.getByTestId('workflow-navigation');}}
   const created=await api('/projects',{name:'Synthetic M2 acceptance',keyPrefix:'TEST',workspaceRoot:workspace});check('project_registered',created.status===201);const project=created.body;
   const snap=async()=>(await api('/projects/'+project.id+'/task-manager')).body;
   const task=async(id:string)=>(await snap()).tasks.find((t:any)=>t.id===id);
@@ -133,6 +133,34 @@ async function main(){
    check('markdown_safe_link',await comments.locator('.m2-comment-body a').getAttribute('href')==='https://example.test/proof');
    check('no_external_markdown_requests',report.blockedRequests.length===0);check('no_page_errors',report.pageErrors.length===0);
    await screenshot('markdown-safe.png');report.status='passed_markdown_browser';return;
+  }
+  if(scenario==='func-g07'){
+   step='g07-custom-workflow';
+   const existing=await create('G07 prior default task');
+   await nav('settings');await page.getByTestId('settings-navigation').locator('[data-settings-section=processes]').click();
+   const workflow=page.getByTestId('workflow-manager'),tabs=workflow.getByTestId('workflow-navigation');
+   await tabs.locator('[data-workflow-section=catalog]').click();await workflow.locator('[name=workflow-new-id]').fill('g07-custom');await workflow.locator('[name=workflow-new-name]').fill('G07 observed custom workflow');
+   await workflow.getByRole('button',{name:'Создать копию',exact:true}).click();await tabs.locator('[data-workflow-section=states]').click();
+   await workflow.locator('[name=workflow-state-name-0]').fill('G07 observed backlog');await workflow.getByTestId('workflow-editor').getByRole('button',{name:w('save'),exact:true}).click();
+   await until('g07_custom_draft_persisted',async()=>(await snap()).workflows.workflows.some((r:any)=>r.id==='g07-custom'&&r.draft?.states[0].name==='G07 observed backlog'));
+   await tabs.locator('[data-workflow-section=publication]').click();await workflow.getByRole('button',{name:'Предпросмотр публикации',exact:true}).click();await workflow.getByRole('button',{name:'Опубликовать проверенную версию',exact:true}).click();
+   await until('g07_custom_version_published',async()=>(await snap()).workflows.workflows.some((r:any)=>r.id==='g07-custom'&&r.activeVersion===1));
+   await tabs.locator('[data-workflow-section=assignments]').click();await workflow.locator('[name=workflow-type-bug]').selectOption('g07-custom');await workflow.getByRole('button',{name:'Сохранить назначения',exact:true}).click();
+   await until('g07_new_bug_mapping_saved',async()=>(await snap()).workflows.typeMapping.bug==='g07-custom');
+   await nav('tasks');const custom=await create('G07 mapped bug','bug');
+   check('g07_custom_task_pinned',(await task(custom.id)).data.workflow.id==='g07-custom');check('g07_prior_task_retains_default',(await task(existing.id)).data.workflow.id==='default');
+   const incomplete=await create('G07 incomplete task','task','',false);await lifecycle(incomplete.id,'ready');
+   await until('g07_incomplete_transition_reason_visible',async()=>(await page.getByTestId('task-transition').innerText()).includes('READY_FIELDS_REQUIRED'));check('g07_incomplete_task_stays_backlog',(await task(incomplete.id)).status==='backlog');
+   for(const [language,theme] of [['ru','light'],['ru','dark'],['en','light'],['en','dark']] as const){
+    step='g07-appearance-'+language+'-'+theme;await nav('settings');await page.getByLabel(uiLabel(locale,'preferences.language'),{exact:true}).selectOption(language);await page.getByLabel(uiLabel(locale,'preferences.theme'),{exact:true}).selectOption(theme);await page.getByRole('button',{name:uiLabel(locale,'preferences.save'),exact:true}).click();locale=language;
+    await page.waitForFunction(({language,theme}:any)=>document.documentElement.lang===language&&document.documentElement.dataset.theme===theme,{language,theme});
+    await page.getByTestId('settings-navigation').locator('[data-settings-section=processes]').click();await tabs.locator('[data-workflow-section=states]').click();const props=workflow.locator('.workflow-properties');if(!await props.evaluate((el:any)=>el.open))await props.locator('summary').click();
+    await workflow.locator('[name=workflow-name]').focus();await page.keyboard.press('Tab');check('g07_workflow_keyboard_'+language+'_'+theme,await page.evaluate(()=>document.activeElement?.tagName!=='BODY'));
+    await nav('tasks');await open(custom.id);await detail().getByTestId('task-expand').click();const editor=detail().getByTestId('task-editor');check('g07_fields_'+language+'_'+theme,await editor.locator('[name=priority]').isVisible()&&await editor.locator('[name=type]').isVisible());
+    await detail().getByRole('tab',{name:w('summary'),exact:true}).focus();await page.keyboard.press('ArrowRight');check('g07_keyboard_tabs_'+language+'_'+theme,await detail().getByRole('tab',{name:w('files'),exact:true}).getAttribute('aria-selected')==='true');await geometry('g07_geometry_'+language+'_'+theme);await screenshot('g07-'+language+'-'+theme+'.png');
+   }
+   check('g07_real_validation_errors_only',report.httpErrors.every((e:any)=>e.path.endsWith('/session')&&e.status===401||e.path.endsWith('/task-manager/commands')&&[400,409,422].includes(e.status)));
+   check('no_page_errors',report.pageErrors.length===0);check('no_provider_requests',report.blockedRequests.length===0);report.status='passed_func_g07_forms_workflow';return;
   }
   step='catalogs';const settings=page.getByTestId('manager-settings');await settings.locator('summary').first().click();
   check('eleven_initial_components',(await snap()).components.length===11);

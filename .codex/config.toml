@@ -2,7 +2,7 @@ default_permissions = ":workspace"
 
 [agents]
 max_concurrent_threads_per_session = 3
-default_subagent_model = "gpt-6.1-sol"
+default_subagent_model = "gpt-6.2-sol"
 default_subagent_reasoning_effort = "medium"
 
 [agents.explorer]
@@ -123,7 +123,7 @@ mechanical = "low"
 [product_agent_os.model_migration]
 family = "GPT-6"
 baseline_policy = "Preserve each role's current reasoning effort, then compare the same effort and one lower on representative tasks."
-role_policy = "Use GPT-6.1 Sol for engineering and complex decisions; GPT-6.1 Terra for docs and bounded exploration. Astra and Luna remain evaluation candidates."
+role_policy = "Use GPT-6.2 Astra for architect, reviewer and security-privacy-supply-chain-reviewer; use GPT-6.2 Sol for other roles."
 activation_status = "config_pinned_behavioral_promotion_pending"
 fresh_session_hook_verification_required = true
 quality_cost_latency_eval_required = true
@@ -136,6 +136,8 @@ read_only_roles = ["explorer", "reviewer", "release-operator", "completion-skept
 workspace_roles = ["product-manager", "architect", "builder", "tester", "docs-maintainer", "lifecycle-orchestrator", "plugin-runtime-builder", "graph-cockpit-engineer", "learning-loop-engineer"]
 
 [product_agent_os.approval_contract]
+# AGENTS.md, Approvals And Acceptance, defines bounded local synthetic acceptance.
+# The explicit gates below apply outside that standing authorization.
 authorization_reuse = "current_request_or_applicable_bounded_standing_authorization"
 host_boundary = "never_override_sandbox_managed_policy_or_host_rejection"
 external_writes = "explicit"

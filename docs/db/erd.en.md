@@ -8,6 +8,10 @@ The single editable Mermaid ERD is in the [diagram atlas](../diagrams/paos-sqlit
 
 Cardinalities reflect only nullable/unique schema constraints; business guards and actual data existence must be checked separately. This ERD does not establish an external F33 target DB, migration readiness, graph-to-table links or PostgreSQL M5.
 
+## FUNC-G07 / F19 — bounded UI pages
+
+Source status: current local implementation, 2026-11-16; locally_verified_bounded_UI_on_current_host; no reference-hardware qualification. Database UI requests25 objects per page; the API default remains50 and its maximum remains200. A200-table fixture must remain complete through eight pages, with actual Mermaid ERD rendering and the unchanged1500ms interaction budget. Initial50-object pages exceeded that budget in retained receipts; smaller UI batches trade more navigation for bounded rendering cost, without changing schema semantics or hiding objects. Search, list/ERD selection, source references and next-page controls share the pinned revision. Historical four-page/50-object results below describe the earlier build. No new dependency or server limit change.
+
 ## FUNC-32: tbls PoC and selected metadata adapter {#func-32-poc}
 
 [PAOS-FUNC-32](../planning/functional-remediation-2026-11-15.en.md#task-paos-func-32) checks a separate synthetic target schema; it does not extend the PAOS schema above. Engine PoC decision on 2026-11-15: **`reject` tbls 1.96.1 as the authoritative SQLite metadata adapter**. The explicitly selected alternative for later F33 design is **Node 26 `node:sqlite`, read-only `table_xinfo` / `foreign_key_list` / `index_list`**. This is a PoC decision, without production target-DB integration or silent fallback.
