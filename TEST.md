@@ -1,5 +1,9 @@
 # TEST.md
 
+## PAOS-PMETH-B1 — CLI, контракт и совместимость
+
+`python -B -m unittest tests.product_agent_os.test_pmeth_b1 -v` проверяет оба сценария, их baseline, недостающую и устаревшую проверку, целевые хеши и RED/GREEN с отдельной ошибкой импорта. `node --test tests/web/methodology-decision.test.mts tests/web/project-analysis-api.test.mts` проверяет чтение реального wire output и прежний Project Analysis. `npm run check:web-m1` проверяет типы контракта. Для изменений Python runner применяются также общий Python discovery, fixture/transcript eval и проверка совместимости. Для широких прогонов используйте process-local `TEMP` и `TMP` в отдельных подкаталогах `.tmp/`. [Сценарии и доказательства](docs/superpowers/specs/paos-pmeth-b1-evidence.md)
+
 ## PAOS-METH-15 — URL-якоря и границы экранов, 18.11.2026 {#meth-15-verification}
 
 `node --test tests/web/ui-app-anchor.test.mts tests/web/contracts-boundaries.test.mts tests/web/sessions-team.test.mts tests/web/project-files-ui-model.test.mts tests/web/graph-query-modes.test.mts tests/web/agent-capabilities-api.test.mts` проверяет грамматику URL, точные импорты и контракты экранов. Полный Web — `node --test --test-concurrency=1 tests/web/*.test.mts`. Пять браузерных маршрутов запускаются с `--synthetic-browser --playwright-core <installed-path> --chromium <installed-path>` и указанными вариантами. [RED/GREEN, маршруты и отчёты](docs/planning/methodology-improvement-2026-11-15.md#meth-15-results)

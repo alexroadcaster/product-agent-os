@@ -452,6 +452,16 @@ def validate_runner_result(payload: dict[str, Any]) -> list[str]:
 
 def validate_task_routing_packet(route: dict[str, Any]) -> list[str]:
     """Keep scoped guidance internally consistent; caller evidence cannot grant authority."""
+    if "methodology_decision" in route:
+        from product_agent_os.methodology_contract import read_methodology_decision
+
+        try:
+            advice = read_methodology_decision(route["methodology_decision"])
+        except ValueError as exc:
+            return [str(exc)]
+        scoped = route.get("task_routing")
+        if not isinstance(scoped, dict) or scoped.get("task_id") != advice["scope"]["task_id"]:
+            return ["methodology_decision:task_routing_mismatch"]
     if "task_routing" not in route:
         return []
     decision, trace = route.get("task_routing"), route.get("routing_trace")

@@ -10,7 +10,7 @@ The Russian catalog lists all 42 relocated files and the new 16-task documentati
 ## Current methodology directions
 
 - [A — Product-Agent OS internal quality](methodology-improvement-2026-11-15.en.md). All 17 executable tasks are implemented in the selected scope. Five previous exceptions retain their separate hold. Legacy METH-16 remains a reference. [JSON v2](methodology-improvement-2026-11-15.en.json)
-- [B — methodologies for user projects](user-project-methodologies-2026-11-15.en.md): 26 planned tasks, [JSON](user-project-methodologies-2026-11-15.json), [Russian](user-project-methodologies-2026-11-15.md). Independent directions; planning starts no implementation.
+- [B — methodologies for user projects](user-project-methodologies-2026-11-15.en.md). B1 is implemented, with 7 of 26 tasks complete. PAOS-PMETH-19 is next. [JSON](user-project-methodologies-2026-11-15.json) · [Russian](user-project-methodologies-2026-11-15.md)
 
 ## Working plans translated in DG01
 

@@ -30,6 +30,8 @@ F30/F31/F32 закрыты в разрешённом isolated synthetic PoC scop
 
 У внутреннего архитектурного пилота A есть самостоятельный результат на Dashboard. Для B пользователь должен получить первый совет по задаче в режиме чтения. Совет учитывает цель задачи, актуальные критерии и покрытие анализа проекта. Решение владельца, отдельная техническая проверка критерия и разрешение на запись имеют разные основания. Критерии, статусы и условия расширения принадлежат двум матрицам. Прежняя METH-16 сохранена как справочная запись. [17 внутренних задач A](docs/planning/methodology-improvement-2026-11-15.md) · [26 пользовательских задач B](docs/planning/user-project-methodologies-2026-11-15.md)
 
+Для B1 совет выдаёт существующий CLI через `route_packet.methodology_decision`. Сценарий backend-ошибки указывает тест и его источник, docs-only указывает исходник для проверки утверждения. Область задачи и ревизии проверяются в контракте v1, недостающие данные остаются явным пробелом. Запрос из Web и отображение того же совета принадлежат B2. [Контракт и проверки B1](docs/superpowers/specs/paos-pmeth-b1-evidence.md#b1-cli-and-contract)
+
 ## FUNC-G01 — выполненный scope, 15.11.2026
 
 Предыдущий запрос разрешил полное выполнение F01/F03/F04/F05/F06/F07/F08, необходимые локальные synthetic native/browser checks, обновление source-owned статусов и документации по каждой задаче. Все семь AC закрыты локальным техническим evidence; другие27 FUNC и3 M5 references сохранены. Scope: runtime qualification, task/workflow drafts, dashboard и независимые contracts. Provider/model/real credentials, production/publication/Git и human acceptance не входили. [Результаты и границы](docs/planning/functional-remediation-2026-11-15.md#func-g01-results).

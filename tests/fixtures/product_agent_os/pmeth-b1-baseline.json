@@ -1,0 +1,62 @@
+{
+  "source_revision": "01d8e43d806774bb1ea36510999bb446e1357688",
+  "normalization_source_sha256": {
+    "product_agent_os/task_routing.py": "230f938b395703d650a251e68b2725cdd7ceb63fe157b93ec066ca47e3f9b5a0",
+    "codex_runtime_runner/cli.py": "b91be71fc9a25a687c0e9ce0ce4e9335a7fbb17250c7368ca7937a03fbed31d3",
+    "product_agent_os/methodology_profile.py": "440d6ca3eb22ded5beed8acfed68c4ffafe65f635d6e7318ca6d5974571b41ac"
+  },
+  "fixture_sha256": "70a6597ae4d628de229f15b7a35e1f3f10449f1be4c1d2f5d862b64055da8b23",
+  "python": "3.13.5",
+  "repository_audit": {
+    "exit_code": 0,
+    "status": "ok",
+    "domain_count": 12,
+    "stderr": ""
+  },
+  "task_routes": {
+    "backend_bug": {
+      "exit_code": 0,
+      "status": "route_ready",
+      "errors": [],
+      "stderr": "",
+      "scope": "concise",
+      "checks": [
+        "python -B -m unittest test_counter.CounterTest.test_increment_by_one"
+      ],
+      "mode": "ordinary",
+      "gaps": [],
+      "decision_present": false,
+      "task_input_digest": "3adbb18182f0633b5896f99fc68b14b6995a8182ba3f5e8715d3d93777c13e08"
+    },
+    "docs_only": {
+      "exit_code": 0,
+      "status": "route_ready",
+      "errors": [],
+      "stderr": "",
+      "scope": "concise",
+      "checks": [
+        "python -B -m unittest test_counter.CounterTest.test_increment_by_one"
+      ],
+      "mode": "ordinary",
+      "gaps": [],
+      "decision_present": false,
+      "task_input_digest": "ba46d2da96f7722ec50d53c69451177846d679bc150c88d3e0e5698ca532b7b2"
+    }
+  },
+  "conflict": {
+    "exit_code": 2,
+    "output_present": false,
+    "stderr": "error: task_context:intent_hint_conflict"
+  },
+  "project_file_hashes": {
+    "AGENTS.md": "54e609b94bb8926e23a43cacef995664519a3f54284eb8af27fb5f0dc2387c54",
+    "backend_bug.json": "77ca64a8b822425069355d920534a9b7bc433d0f29ea6bd4ee8503ff79009468",
+    "counter.py": "f43bc7753958834e4a408e81529998b2e9e67f392e6878dee844f8ab990b121e",
+    "docs_only.json": "5c6b900252237b470fc527d8ee892546a72459af307ee9ddeab30bd7d333d5c6",
+    "guide.md": "c733ce74585541ebfa86b39558e1d9cf641cd8fc6b3874c995ec8cb3fc4cca9f",
+    "pyproject.toml": "4b7b913c428af9eccd7ce77a1a69ea2574c01795b2974f8130edd4dc356572bc",
+    "TEST.md": "6a5d49c817fb02aa98cbb0393fe27701dc6a67ea102682ab8ba78b94b4da0430",
+    "test_counter.py": "ad7057f56ef3dc92f74e548c968d59cede253a212e25d2fd0d1f6763734c233e"
+  },
+  "bytes_preserved": true
+}

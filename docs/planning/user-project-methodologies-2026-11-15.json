@@ -6,8 +6,8 @@
   "direction_id": "B",
   "source_plan": "docs/planning/user-project-methodologies-2026-11-15.md",
   "english_plan": "docs/planning/user-project-methodologies-2026-11-15.en.md",
-  "status": "planned",
-  "execution_authority": "planning_only_no_implementation_authorized",
+  "status": "in_progress",
+  "execution_authority": "owner_authorized_bounded_b1_local_implementation",
   "internal_plan_reference": "docs/planning/methodology-improvement-2026-11-15.json",
   "internal_plan_reference_semantics": "independent_direction_no_hard_dependency",
   "source_snapshot": {
@@ -118,7 +118,7 @@
       "id": "PAOS-PMETH-01",
       "title": "Проверить существующий путь методологий и назначить владельцев",
       "title_en": "Audit the existing methodology path and assign owners",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "direction_id": "B",
       "delivery_group_id": "B1",
@@ -166,14 +166,15 @@
         }
       ],
       "verification_profile": "PV-PLAN",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "implementation_at": "18-11-2026 20:43",
+      "execution_authority": "owner_authorized_b1_local_implementation",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b1-evidence.md"
     },
     {
       "id": "PAOS-PMETH-02",
       "title": "Нормализовать профиль проекта и намерение пользователя",
       "title_en": "Normalize project profiles and user intent",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "direction_id": "B",
       "delivery_group_id": "B1",
@@ -223,14 +224,15 @@
         }
       ],
       "verification_profile": "PV-ENGINE",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "implementation_at": "18-11-2026 20:43",
+      "execution_authority": "owner_authorized_b1_local_implementation",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b1-evidence.md"
     },
     {
       "id": "PAOS-PMETH-03",
       "title": "Выбирать методологии соразмерно задаче и объяснять выбор",
       "title_en": "Select proportionate methodologies and explain decisions",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "direction_id": "B",
       "delivery_group_id": "B1",
@@ -278,14 +280,15 @@
         }
       ],
       "verification_profile": "PV-ENGINE",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "implementation_at": "18-11-2026 20:43",
+      "execution_authority": "owner_authorized_b1_local_implementation",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b1-evidence.md"
     },
     {
       "id": "PAOS-PMETH-04",
       "title": "Согласовать версионированный methodology contract",
       "title_en": "Define a versioned methodology contract",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "direction_id": "B",
       "delivery_group_id": "B1",
@@ -337,14 +340,15 @@
         }
       ],
       "verification_profile": "PV-CONTRACT",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "implementation_at": "18-11-2026 20:43",
+      "execution_authority": "owner_authorized_b1_local_implementation",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b1-evidence.md"
     },
     {
       "id": "PAOS-PMETH-05",
       "title": "Встроить Spec-Driven маршрут от запроса к проверяемой спецификации",
       "title_en": "Integrate a Spec-Driven route from intent to verifiable specification",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "direction_id": "B",
       "delivery_group_id": "B1",
@@ -393,8 +397,9 @@
         }
       ],
       "verification_profile": "PV-ENGINE",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "implementation_at": "18-11-2026 20:43",
+      "execution_authority": "owner_authorized_b1_local_implementation",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b1-evidence.md"
     },
     {
       "id": "PAOS-PMETH-06",
@@ -457,7 +462,7 @@
       "id": "PAOS-PMETH-07",
       "title": "Встроить TDD и воспроизведение ошибок в выполнение slices",
       "title_en": "Integrate TDD and bug reproduction into slice execution",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "direction_id": "B",
       "delivery_group_id": "B1",
@@ -508,8 +513,9 @@
         }
       ],
       "verification_profile": "PV-TDD",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "implementation_at": "18-11-2026 20:43",
+      "execution_authority": "owner_authorized_b1_local_implementation",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b1-evidence.md"
     },
     {
       "id": "PAOS-PMETH-08",
@@ -1316,7 +1322,7 @@
       "id": "PAOS-PMETH-22",
       "title": "Подготовить baseline и acceptance eval matrix пользовательских проектов",
       "title_en": "Prepare user-project baseline and acceptance eval matrices",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "direction_id": "B",
       "delivery_group_id": "B1",
@@ -1369,8 +1375,9 @@
         }
       ],
       "verification_profile": "PV-EVAL",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "implementation_at": "18-11-2026 20:43",
+      "execution_authority": "owner_authorized_b1_local_implementation",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b1-evidence.md"
     },
     {
       "id": "PAOS-PMETH-23",

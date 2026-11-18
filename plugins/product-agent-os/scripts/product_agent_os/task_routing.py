@@ -192,6 +192,23 @@ def validate_task_context(root: Path, task: Any) -> dict[str, Any]:
     return task
 
 
+def normalize_task_intent(
+    root: Path, task: dict[str, Any] | None, intent_hint: str = "",
+) -> tuple[dict[str, Any] | None, str]:
+    """Use structured intent for audit and routing, or the legacy hint by itself."""
+    if not isinstance(intent_hint, str) or "\0" in intent_hint:
+        raise TaskContextError("task_context:intent_hint_invalid")
+    if task is None:
+        return None, intent_hint
+    validate_task_context(root, task)
+    intent = " ".join(task["intent"].split())
+    hint = " ".join(intent_hint.split())
+    if hint and hint != intent:
+        raise TaskContextError("task_context:intent_hint_conflict")
+    acceptance = list(dict.fromkeys(criterion.strip() for criterion in task["acceptance"]))
+    return {**task, "task_id": task["task_id"].strip(), "intent": intent, "acceptance": acceptance}, intent
+
+
 def _risk_inputs(task: dict[str, Any]) -> tuple[tuple[ChangeRisk, ...], tuple[CommentSignal, ...]]:
     expected = {"risk_id", "kind", "description", "protected_invariants", "languages"}
     if any(set(risk) != expected for risk in task["risks"]):
@@ -284,8 +301,8 @@ def _inventory(root: Path, audit: dict[str, Any], checks: list[dict[str, Any]]) 
     return ProjectInventory(paths, tuple(tools), commands)
 
 
-def _input_digest(root: Path, task: dict[str, Any], sources: dict[str, str],
-                  audit: dict[str, Any]) -> str:
+def _input_file_hashes(root: Path, task: dict[str, Any], sources: dict[str, str],
+                       audit: dict[str, Any]) -> dict[str, str]:
     hashes = dict(sources)
     relevant = {"pyproject.toml", "package.json", "go.mod", "Cargo.toml", "pom.xml", "uv.lock",
                 "poetry.lock", "requirements.txt", "package-lock.json", "pnpm-lock.yaml", "yarn.lock",
@@ -296,12 +313,18 @@ def _input_digest(root: Path, task: dict[str, Any], sources: dict[str, str],
     for name in sorted(names):
         path = workspace_path(root, name)
         try:
-            hashes[name] = hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else "missing"
+            if not path.is_file():
+                hashes[name] = "missing"
+                continue
+            with path.open("rb") as stream:
+                hashes[name] = hashlib.file_digest(stream, "sha256").hexdigest()
         except OSError as exc:
             raise TaskContextError("task_context:digest_input_unreadable") from exc
-    payload = {"task": {k: v for k, v in task.items() if k != "check_results"}, "files": hashes,
-               "inventory_paths": sorted(audit.get("detected_files", [])),
-               "interpreter": sys.version, "platform": sys.platform}
+    return hashes
+
+
+def fingerprint(payload: Any) -> str:
+    """Stable digest for the canonical Python JSON material used by routing."""
     return hashlib.sha256(json.dumps(payload, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
 
 
@@ -332,7 +355,10 @@ def _observations(task: dict[str, Any], checks: list[dict[str, Any]], digest: st
     return results
 
 
-def build_task_routing(workspace: str | Path, audit: dict[str, Any], task: dict[str, Any]) -> dict[str, Any]:
+def build_task_routing(
+    workspace: str | Path, audit: dict[str, Any], task: dict[str, Any], *,
+    include_revision_sources: bool = False,
+) -> dict[str, Any]:
     """Select task-scoped guidance; missing information stays a gap, never success."""
     root = Path(workspace).resolve()
     validate_task_context(root, task)
@@ -396,11 +422,17 @@ def build_task_routing(workspace: str | Path, audit: dict[str, Any], task: dict[
         gaps.append("Unsafe command proposal blocked; review the source without executing it")
     if not required_sources:
         gaps.append("No project instruction or verification source found; perform discovery before implementation")
-    digest = _input_digest(root, task, hashes, audit)
+    revision_sources = _input_file_hashes(root, task, hashes, audit)
+    digest = fingerprint({
+        "task": {key: value for key, value in task.items() if key != "check_results"},
+        "files": revision_sources,
+        "inventory_paths": sorted(audit.get("detected_files", [])),
+        "interpreter": sys.version, "platform": sys.platform,
+    })
     observations = _observations(task, checks, digest)
     gaps.extend("Stale verification receipt: " + r["command"] for r in observations if r["freshness"] == "stale")
     selected_mode = "full" if full_reasons else "needs_context" if gaps else "ordinary"
-    return {
+    decision = {
         "schema_version": 1, "task_id": task["task_id"], "mode": selected_mode,
         "full_reasons": full_reasons, "gaps": list(dict.fromkeys(gaps)),
         "change_mode": mode, "required_sources": required_sources,
@@ -416,3 +448,6 @@ def build_task_routing(workspace: str | Path, audit: dict[str, Any], task: dict[
         "selectors": ["select_code_quality_profile"] + (["select_test_strategy"] if strategy else []),
         "evidence_ceiling": "routing only; commands not executed; caller receipts do not prove completion",
     }
+    if include_revision_sources:
+        decision["revision_sources"] = revision_sources
+    return decision

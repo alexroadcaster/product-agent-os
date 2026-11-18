@@ -13,9 +13,10 @@ from codex_runtime_runner.redaction import redact_payload, validate_redaction
 from codex_runtime_runner.routes import apply_runner_status_to_route, plan_route
 from codex_runtime_runner.state import infer_lifecycle_state, resolve_task_state
 from product_agent_os.discovery import analyze_workspace
+from product_agent_os.methodology_decision import build_methodology_decision
 from product_agent_os.source_policy import validate_source_policy
 from product_agent_os.task_routing import (
-    TaskContextError, build_task_routing, validate_task_context,
+    TaskContextError, build_task_routing, normalize_task_intent,
     add_task_intake_arguments, task_context_from_args, intake_receipt,
 )
 
@@ -29,8 +30,7 @@ def run_contract(
     requested_state: str = "",
     task_context: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    if task_context is not None:
-        validate_task_context(Path(workspace).resolve(), task_context)
+    task_context, effective_intent = normalize_task_intent(Path(workspace).resolve(), task_context, intent_hint)
     context = load_control_plane_context(workspace)
     request = {
         "task": {"lifecycle_state": requested_state},
@@ -38,13 +38,11 @@ def run_contract(
         "approval": {"approval_status": approval_status},
     }
     state = infer_lifecycle_state(context, request) if task_context is None else "maintenance"
-    audit = analyze_workspace(workspace, intent_hint=intent_hint or (task_context or {}).get("intent", ""))
+    audit = analyze_workspace(workspace, intent_hint=effective_intent)
     task_routing = None
     if task_context is not None:
-        effective_task = dict(task_context)
-        if intent_hint:
-            effective_task["intent"] = task_context["intent"] + "\n" + intent_hint
-        task_routing = build_task_routing(workspace, audit, effective_task)
+        task_routing = build_task_routing(workspace, audit, task_context, include_revision_sources=True)
+        revision_sources = task_routing.pop("revision_sources")
         state_resolution = resolve_task_state(context, task_context)
         state = state_resolution["recommendation"]
         task_routing["state_resolution"] = state_resolution
@@ -62,6 +60,10 @@ def run_contract(
         methodology_intelligence=audit["methodology_intelligence"],
         task_routing=task_routing,
     )
+    if task_context is not None:
+        route["methodology_decision"] = build_methodology_decision(
+            workspace, audit, task_context, task_routing, revision_sources,
+        )
     errors: list[str] = []
     route["intake"] = intake_receipt(task_context)
     warnings: list[str] = []
@@ -110,11 +112,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--contract", action="store_true", help="Run deterministic offline contract mode.")
     parser.add_argument("--allow-subagents", action="store_true", help="Allow subagent route recommendations.")
     parser.add_argument("--approval-status", default="not_required")
-    parser.add_argument("--intent-hint", default="", help="Optional prompt-like routing hint for contract mode.")
+    parser.add_argument("--intent-hint", default="", help="Legacy audit hint; must agree with explicit task intent.")
     parser.add_argument("--requested-state", default="", choices=sorted(ALLOWED_LIFECYCLE_STATES),
                         help="Explicit route intent, not verified task readiness or write authority.")
     add_task_intake_arguments(parser)
-    parser.add_argument("--output", help="Optional JSON output file.")
+    parser.add_argument("--output", help="Optional JSON output file for repository-only contract mode.")
     args = parser.parse_args(argv)
     if not args.contract:
         print("error: choose --contract", file=sys.stderr)
@@ -122,6 +124,8 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         task_context = task_context_from_args(args.workspace, args)
+        if task_context is not None and args.output:
+            raise TaskContextError("task_context:read_only_stdout")
         result = run_contract(
             args.workspace,
             allow_subagents=args.allow_subagents,

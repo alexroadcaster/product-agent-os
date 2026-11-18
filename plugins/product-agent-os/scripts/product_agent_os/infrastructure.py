@@ -15,20 +15,18 @@ from product_agent_os.status_dashboard import render_status_dashboard_plan as _r
 from product_agent_os.status_dashboard import stage_status_dashboard as _stage_status_dashboard
 from product_agent_os.templates import TemplateSpec, render_template, required_templates, selected_templates
 from product_agent_os.task_routing import build_task_routing, intake_receipt
-from product_agent_os.validators import validate_agent_file, validate_agent_project_config, validate_hook_file
+from product_agent_os.validators import (
+    validate_agent_file,
+    validate_agent_project_config,
+    validate_hook_file,
+    validate_hook_json_text,
+)
 from product_agent_os.control_plane_documents import DOCUMENT_CONTRACTS, scoped_document, document_readiness
 
 
 OWNER = "product-agent-os"
 RENDERER_VERSION = "0.1.0"
 PLACEHOLDER_PATTERN = re.compile(r"\{[A-Za-z0-9_]+\}")
-REQUIRED_HOOK_EVENTS = [
-    "SessionStart",
-    "PreToolUse",
-    "PermissionRequest",
-    "PostToolUse",
-    "Stop",
-]
 CONTROL_PLANE_TARGETS = {
     "AGENTS.md",
     "REQUIREMENTS.md",
@@ -567,12 +565,7 @@ def _validate_file(
     if spec.validation_kind == "hook":
         return marker_errors + validate_hook_file(path)
     if spec.validation_kind == "hook_json":
-        try:
-            data = json.loads(text)
-        except json.JSONDecodeError as exc:
-            return marker_errors + [f"invalid json: {exc}"]
-        errors = _validate_hook_json(data)
-        return marker_errors + errors
+        return marker_errors + validate_hook_json_text(text)
     if spec.validation_kind == "eval_json":
         try:
             data = json.loads(text)
@@ -613,40 +606,6 @@ def _unresolved_marker_errors(text: str) -> list[str]:
         return [str(exc)]
     markers = sorted(set(PLACEHOLDER_PATTERN.findall(text)))
     return [f"unresolved substitution marker: {marker}" for marker in markers]
-
-
-def _validate_hook_json(data: Any) -> list[str]:
-    if not isinstance(data, dict):
-        return ["hook json must be an object"]
-    hook_events = data.get("hooks", data)
-    if not isinstance(hook_events, dict):
-        return ["hook json hooks must be an object"]
-    errors: list[str] = []
-    for event in REQUIRED_HOOK_EVENTS:
-        value = hook_events.get(event)
-        if value is None:
-            errors.append(f"missing hook event: {event}")
-        elif not isinstance(value, list):
-            errors.append(f"hook event must be a list: {event}")
-        else:
-            for index, group in enumerate(value):
-                if not isinstance(group, dict):
-                    errors.append(f"hook event group must be an object: {event}[{index}]")
-                    continue
-                commands = group.get("hooks")
-                if not isinstance(commands, list) or not commands:
-                    errors.append(f"hook event group hooks must be a non-empty list: {event}[{index}]")
-                    continue
-                for hook_index, hook in enumerate(commands):
-                    if not isinstance(hook, dict):
-                        errors.append(f"hook command must be an object: {event}[{index}].hooks[{hook_index}]")
-                        continue
-                    if hook.get("type") != "command":
-                        errors.append(f"hook command type must be command: {event}[{index}].hooks[{hook_index}]")
-                    command = hook.get("command")
-                    if not isinstance(command, str) or not command.strip():
-                        errors.append(f"hook command must be a non-empty string: {event}[{index}].hooks[{hook_index}]")
-    return errors
 
 
 def _unique(items: list[str]) -> list[str]:

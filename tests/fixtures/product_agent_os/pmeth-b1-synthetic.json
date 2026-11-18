@@ -1,0 +1,66 @@
+{
+  "files": {
+    "pyproject.toml": "[project]\nname = \"b1-synthetic\"\nversion = \"0.1.0\"\n",
+    "counter.py": "def increment(value):\n    return value + 2\n",
+    "test_counter.py": "import unittest\nfrom counter import increment\n\n\nclass CounterTest(unittest.TestCase):\n    def test_increment_by_one(self):\n        self.assertEqual(increment(3), 4)\n",
+    "guide.md": "# Local usage\n\nCall increment with an integer.\n",
+    "AGENTS.md": "# Local instructions\n\nUse TEST.md for checks.\n",
+    "TEST.md": "# Verification\n\n`python -B -m unittest test_counter.CounterTest.test_increment_by_one`\n"
+  },
+  "cases": {
+    "backend_bug": {
+      "task": {
+        "schema_version": 1,
+        "task_id": "b1-counter",
+        "intent": "Fix the counter increment",
+        "change_mode": "defect_fix",
+        "changed_paths": ["counter.py"],
+        "risk_level": "low",
+        "risks": [
+          {"risk_id": "counter", "kind": "pure_logic", "description": "Counter must advance exactly one", "protected_invariants": ["Increment by exactly one"], "languages": ["python"]}
+        ],
+        "acceptance": ["increment(3) returns 4"],
+        "executable_test_seam": true,
+        "verification_paths": ["test_counter.py"],
+        "checks": [
+          {"command": "python -B -m unittest test_counter.CounterTest.test_increment_by_one", "source": "TEST.md", "test_kinds": ["unit"]}
+        ]
+      },
+      "expected": {
+        "step_kind": "run_regression",
+        "target": "python -B -m unittest test_counter.CounterTest.test_increment_by_one",
+        "source": "TEST.md",
+        "reason": "Change to executable behavior with a source-backed test and observed test file",
+        "gaps": [],
+        "red": "AssertionError: 5 != 4"
+      }
+    },
+    "docs_only": {
+      "task": {
+        "schema_version": 1,
+        "task_id": "b1-guide",
+        "intent": "Clarify the local usage guide",
+        "change_mode": "docs_only",
+        "changed_paths": ["guide.md"],
+        "risk_level": "low",
+        "risks": [],
+        "acceptance": ["The guide describes the current increment behavior"],
+        "verification_paths": ["counter.py"]
+      },
+      "expected": {
+        "step_kind": "check_source",
+        "target": "counter.py",
+        "source": "counter.py",
+        "reason": "Documentation claim can be checked directly against the current source",
+        "gaps": []
+      }
+    }
+  },
+  "remaining_profiles": {
+    "frontend_localized_ui": "PAOS-PMETH-08/09",
+    "frontend_legacy_ux": "PAOS-PMETH-08/09",
+    "frontend_cross_feature": "PAOS-PMETH-10/11",
+    "native": "PAOS-PMETH-23 profile-specific acceptance",
+    "ai_rag": "PAOS-PMETH-23 profile-specific acceptance"
+  }
+}
