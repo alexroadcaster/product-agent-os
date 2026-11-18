@@ -161,6 +161,34 @@ The final `node --test --test-concurrency=1 tests/web/*.test.mts` passed **704/7
 
 A3 starts with `PAOS-METH-05`. A4 has one selected METH-11 scope. A2 delivers the decision and its documentation.
 
+## A3 results {#a3-results}
+
+The starting revision was `33244239664817f6dc950b4beed2e74df27e0e35`, with a clean worktree. METH-05 preceded the METH-06 structure comparison and METH-07 measurement.
+
+**METH-05.** `TEST.md` maps risks for draft conflict/lost ACK, import boundaries, Stop/recovery, backup/restore, and approval routing. The new characterization test clears a draft while the first write is pending. It verifies a single write before the ACK and an empty draft written against the next revision afterward. Existing tests protect retry keys, conflicts, reopening, and public import boundaries. The focused Web run passed 43/43 before the new scenario and 44/44 after. Product behavior stayed unchanged, so the characterization did not require deliberately breaking production code for RED. F21/F22 retain the full recovery qualification routes.
+
+**METH-06.** `tests/fixtures/product_agent_os/a3-handoff-candidate.json` pins the original Build Slice Handoff section and one candidate. The candidate references five already listed Outputs and retains Tester/Reviewer in Next agent. The changed text fell from 17 to 12 words. All eight Outputs, including Evidence, remain. Other Build Slice sections and the active Review Slice, Agent Task Packet, and approval rules retain the baseline. Goal, criteria, sources, file scope, checks and stop conditions keep their existing owners. The check rejects a candidate that references the wrong section or omits Evidence.
+
+| METH-06/07 case | Common baseline and candidate result |
+| --- | --- |
+| Bounded fix | `concise`, preserving the source-backed unit check. |
+| Docs-only | `concise`, with a docs check and no full code-change packet requirement. |
+| Missing context | `needs_context` when the required risk and invariant are missing. |
+| Overlapping ownership | `staged_only`, an empty agent role, and `fresh_context_handoff_required`. |
+| Premature success | The validator rejects successful closure with `tester_verdict = partial_only`. |
+| Unapproved external action | The `approved_write` route returns `approval:required_for_write`. |
+
+**METH-07.** `python -B -m tests.product_agent_os.test_a3_slice_eval` produced `.tmp/a3-handoff-comparison.json`. Both versions used the same synthetic tasks, criteria, input digests, and local selectors and validators. Python 3.13.5 on Windows. The check combines static text verification with replay of existing routing functions. Fixture commands remain data.
+
+| Evidence area | Observation and verdict |
+| --- | --- |
+| Structure and routing correctness | Both versions match 6/6 expected decisions. Both negative candidate tests passed. |
+| Local comparison time | One sequential `perf_counter_ns` observation measured 103.1 ms for baseline and 77.5 ms for candidate. This measures the harness. Comparative agent performance remains unmeasured. |
+| Agent output quality | `insufficient_evidence`. Actual accepted/reopened counts, repair cycles, and owner interventions are `unavailable` because no agents ran. |
+| Cost and promotion | Tokens and cost are `unavailable`. Decision `hold`. The candidate stays in the test fixture and active workflows and hooks retain the baseline. |
+
+Python routing, lifecycle, behavioral/transcript, and A3 checks passed 88/88. Repeating the same command records workflow and input digests in its own report. A4 starts with bounded METH-11 for TeamManager under the [A2 decision](../architecture/decisions/adr-dashboard-task-boundary.en.md#a2-rollout).
+
 ## Task index
 
 | ID | Priority | Group / methods | Task | Depends on |
@@ -370,15 +398,15 @@ A3 starts with `PAOS-METH-05`. A4 has one selected METH-11 scope. A2 delivers th
 
 - Task: PAOS-METH-05
 - Task name: Close TDD and regression-evidence gaps for critical contracts
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Delivery group: A3
 - Methodologies: TDD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Owner requested A3 implementation.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 18:08
 - Depends on: PAOS-METH-02
 - Blocks: PAOS-METH-06
 - External references: PAOS-FUNC-21, PAOS-FUNC-22
@@ -390,40 +418,40 @@ A3 starts with `PAOS-METH-05`. A4 has one selected METH-11 scope. A2 delivers th
 - Non-goals: New product features, provider/credentials, target/Git/publication/production; other FUNC/Web statuses; anything outside this slice.
 - Expected result: Compact risk/test mapping in TEST and existing task evidence; only meaningful missing tests.
 - Acceptance criteria: PAOS-METH-05-AC01: Map risk → invariant → lowest reliable check for draft conflict/lost ACK, import boundaries, Stop/recovery, backup/restore and approval routing; reuse existing tests. PAOS-METH-05-AC02: Define the expected RED reason and minimal GREEN before each new testable change. METH-09 owns its import fixtures and can start from the ADR independently of this map. Product Python routing belongs to B. PAOS-METH-05-AC03: Setup/import failures are not RED; behavior-preserving moves use characterization/regression without artificially broken production code; F21/F22 retain full recovery ownership.
-- Verification gates: V-TDD; profile above; current TEST routing takes precedence; execute during future implementation.
-- Risks / approval gates: Do not duplicate full recovery suites or require RED for docs or pure moves. The current request authorizes planning only.
+- Verification gates: V-TDD. Current routes are in TEST.md. Results are in the Completion Report.
+- Risks / approval gates: F21/F22 retain full integration qualification ownership.
 - Complexity: M
 - Estimated execution time: Estimate after current discovery and bounded-slice selection; no calendar commitment.
 - Agents: tester; proposed ownership; delegation=0 now.
 - Skills: documentation-and-adrs; select other skills for the actual change.
 - Output artifacts: Compact risk/test mapping in TEST and existing task evidence; only meaningful missing tests.
-- Next step: Check dependencies and current source owners; obtain a separately authorized implementation scope for the selected task.
+- Next step: Use the map and verified checks in METH-06.
 
 #### Completion Report
 
-- status: planned
-- what was done: Implementation not started; task card authored.
-- files touched / work locations: No implementation files changed now; future locations are listed in Scope.
-- technical value delivered: Not claimed before implementation.
-- product value delivered: Not claimed before implementation.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Only plan preparation is checked; this task's AC are not claimed as executed.
-- residual risks: Do not duplicate full recovery suites or require RED for docs or pure moves.
-- follow-up: Select the next authorized slice from the DAG; no automatic start.
+- status: implemented
+- what was done: Added the five-risk matrix in TEST.md and covered clearing a draft during an in-flight write.
+- files touched / work locations: TEST.md; tests/web/ui-draft-autosave.test.mts
+- technical value delivered: The new check verifies ACK serialization and the correct revision for the empty draft. Existing tests cover the other risks.
+- product value delivered: Save and recovery transitions have regression coverage for future changes.
+- actual implementation date and time: 18-11-2026 18:08
+- verification evidence: Web 43/43 before and 44/44 after. Python approval and lifecycle checks 60/60. The new case is characterization.
+- residual risks: F21/F22 retain full integration qualification ownership.
+- follow-up: Use the map and verified checks in METH-06.
 
 ### Task `PAOS-METH-06`
 
 - Task: PAOS-METH-06
 - Task name: Simplify agent-slice and handoff contracts using baseline evals
-- Status: planned
+- Status: implemented
 - Priority: P2
 - Delivery group: A3
 - Methodologies: ADD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Owner requested A3 implementation.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 18:13
 - Depends on: PAOS-METH-05
 - Blocks: PAOS-METH-07
 - External references: None; this plan owns the work.
@@ -435,40 +463,40 @@ A3 starts with `PAOS-METH-05`. A4 has one selected METH-11 scope. A2 delivers th
 - Non-goals: New product features, provider/credentials, target/Git/publication/production; other FUNC/Web statuses; anything outside this slice.
 - Expected result: Change only demonstrably redundant sections and record baseline/candidate evidence in the existing eval owner.
 - Acceptance criteria: PAOS-METH-06-AC01: Compare the baseline and one candidate on a bounded fix, docs-only work, missing context, overlapping ownership, premature success and unapproved external action. PAOS-METH-06-AC02: Preserve goal/AC, source revision, owned/forbidden files, checks, stop conditions and handoff; do not force the ordinary concise route into a full packet. PAOS-METH-06-AC03: Promote the candidate only with no new boundary/claim failures; static contract passes do not establish fresh-session activation or improved LLM quality.
-- Verification gates: V-ADD; profile above; current TEST routing takes precedence; execute during future implementation.
-- Risks / approval gates: These are future durable instruction changes: a separately authorized slice, baseline evals and before-images; do not change hooks/trust. The current request authorizes planning only.
+- Verification gates: V-ADD. Current routes are in TEST.md. Results are in the Completion Report.
+- Risks / approval gates: Static checks do not establish model quality. The candidate stays in the fixture.
 - Complexity: M
 - Estimated execution time: Estimate after current discovery and bounded-slice selection; no calendar commitment.
 - Agents: lifecycle-orchestrator + reviewer; proposed ownership; delegation=0 now.
 - Skills: documentation-and-adrs; select other skills for the actual change.
 - Output artifacts: Change only demonstrably redundant sections and record baseline/candidate evidence in the existing eval owner.
-- Next step: Check dependencies and current source owners; obtain a separately authorized implementation scope for the selected task.
+- Next step: Use the comparison report in METH-07.
 
 #### Completion Report
 
-- status: planned
-- what was done: Implementation not started; task card authored.
-- files touched / work locations: No implementation files changed now; future locations are listed in Scope.
-- technical value delivered: Not claimed before implementation.
-- product value delivered: Not claimed before implementation.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Only plan preparation is checked; this task's AC are not claimed as executed.
-- residual risks: These are future durable instruction changes: a separately authorized slice, baseline evals and before-images; do not change hooks/trust.
-- follow-up: Select the next authorized slice from the DAG; no automatic start.
+- status: implemented
+- what was done: Created one shorter Handoff candidate and compared it with the source workflow.
+- files touched / work locations: tests/fixtures/product_agent_os/a3-handoff-candidate.json; tests/product_agent_os/test_a3_slice_eval.py; EVALS.md; TEST.md
+- technical value delivered: The section fell from 17 to 12 words. All eight Outputs and Tester/Reviewer are preserved.
+- product value delivered: A future approved handoff can reuse the Outputs list.
+- actual implementation date and time: 18-11-2026 18:13
+- verification evidence: Six matching decisions in each version. Negative checks reject missing Evidence or an incorrect section reference.
+- residual risks: Static checks do not establish model quality. The candidate stays in the fixture.
+- follow-up: Use the comparison report in METH-07.
 
 ### Task `PAOS-METH-07`
 
 - Task: PAOS-METH-07
 - Task name: Measure agentic-pilot outcomes on comparable tasks
-- Status: planned
+- Status: implemented
 - Priority: P2
 - Delivery group: A3
 - Methodologies: ADD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Owner requested A3 implementation.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 18:13
 - Depends on: PAOS-METH-06
 - Blocks: None.
 - External references: PAOS-FUNC-11, PAOS-FUNC-23
@@ -480,26 +508,26 @@ A3 starts with `PAOS-METH-05`. A4 has one selected METH-11 scope. A2 delivers th
 - Non-goals: New product features, provider/credentials, target/Git/publication/production; other FUNC/Web statuses; anything outside this slice.
 - Expected result: Baseline/candidate evidence in this card; separate correctness/quality/cost verdicts.
 - Acceptance criteria: PAOS-METH-07-AC01: Record identical task inputs/AC/revision, permissions and tools, plus comparable model and reasoning effort for an actual-agent comparison. Record provenance for accepted/reopened, repair cycles, owner interventions and elapsed time. PAOS-METH-07-AC02: Report tokens/cost only with reliable provenance; unavailable is not zero and F11 telemetry is not implemented for this pilot. PAOS-METH-07-AC03: If actual-agent comparison requires unavailable authorization, limit results to deterministic routing; model-quality benefit remains insufficient_evidence and does not justify promotion.
-- Verification gates: V-ADD; profile above; current TEST routing takes precedence; execute during future implementation.
-- Risks / approval gates: No automatic provider calls, private raw chats or unsupported productivity claims; human acceptance remains separate. The current request authorizes planning only.
+- Verification gates: V-ADD. Current routes are in TEST.md. Results are in the Completion Report.
+- Risks / approval gates: Agent quality is insufficient_evidence. Tokens, cost, reopenings, and interventions are unavailable.
 - Complexity: M
 - Estimated execution time: Estimate after current discovery and bounded-slice selection; no calendar commitment.
 - Agents: tester + product-manager; proposed ownership; delegation=0 now.
 - Skills: documentation-and-adrs; select other skills for the actual change.
 - Output artifacts: Baseline/candidate evidence in this card; separate correctness/quality/cost verdicts.
-- Next step: With separate authorization and recorded comparable experiment conditions. A separate deterministic-only result is valid. Confirm the selected scope and obtain separate implementation authority.
+- Next step: A4 starts with bounded METH-11. Hold is the recorded A3 comparison decision.
 
 #### Completion Report
 
-- status: planned
-- what was done: Implementation not started; task card authored.
-- files touched / work locations: No implementation files changed now; future locations are listed in Scope.
-- technical value delivered: Not claimed before implementation.
-- product value delivered: Not claimed before implementation.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Only plan preparation is checked; this task's AC are not claimed as executed.
-- residual risks: No automatic provider calls, private raw chats or unsupported productivity claims; human acceptance remains separate.
-- follow-up: Select the next authorized slice from the DAG; no automatic start.
+- status: implemented
+- what was done: Recorded the same-input comparison with separate correctness, quality, and cost verdicts.
+- files touched / work locations: EVALS.md; docs/testing/index.md; docs/testing/index.en.md; docs/planning/methodology-improvement-2026-11-15.*
+- technical value delivered: The reproducible local report records the baseline revision, digests, and harness elapsed time.
+- product value delivered: The result informs the structure decision. Candidate promotion is on hold.
+- actual implementation date and time: 18-11-2026 18:13
+- verification evidence: Local routing 6/6 in both versions. Python 88/88. Receipt .tmp/a3-handoff-comparison.json.
+- residual risks: Agent quality is insufficient_evidence. Tokens, cost, reopenings, and interventions are unavailable.
+- follow-up: A4 starts with bounded METH-11. Hold is the recorded A3 comparison decision.
 
 ### Task `PAOS-METH-08`
 

@@ -12,3 +12,5 @@ Source status: repository_source / static_contract_review; DG06, 2026-11-15.
 4. Запишите реальные команды, результаты, revision, окружение, данные, сбои и residual risk в owning evidence artifact. Следуйте отдельным границам разрешений для выбранного действия.
 
 При пропущенной проверке укажите `not_verified` или `blocked` с причиной и следующим действием. Passing test проверяет только свои assertions и setup; он не устанавливает автономную работу на чужом проекте или готовность к выпуску. Связанные источники: [behavioral evals](../product-agent-os/behavioral-evals.md), [retrieval evaluation](../ai/rag/evaluation.md), [frontend accessibility](../frontend/accessibility.md). Общие product claims требуют соответствующих фактических проверок, owner review и, где применимо, человеческой приёмки.
+
+[Сравнение A3](../planning/methodology-improvement-2026-11-15.md#a3-results) показывает, как проверить сохранность полей передачи задачи и решений об ограничениях на одинаковых входах. В отчёте отдельно обозначены локальные результаты и недоступные метрики фактических агентов.

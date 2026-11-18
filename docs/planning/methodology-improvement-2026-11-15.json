@@ -6,7 +6,7 @@
   "source_plan": "docs/planning/methodology-improvement-2026-11-15.md",
   "english_plan": "docs/planning/methodology-improvement-2026-11-15.en.md",
   "status": "in_progress",
-  "execution_authority": "owner_authorized_a1_a2_local_implementation",
+  "execution_authority": "owner_authorized_a1_a2_a3_local_implementation",
   "scope": "Internal Product-Agent OS development quality and frontend architecture; user-project capabilities are owned by direction B.",
   "source_snapshot": {
     "git_head": "35458110145d928b9b14d9312b60d852f11f6e88",
@@ -303,7 +303,7 @@
       "id": "PAOS-METH-05",
       "title": "Закрыть пробелы TDD и regression evidence для критических контрактов",
       "title_en": "Close TDD and regression-evidence gaps for critical contracts",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "methodologies": [
         "TDD",
@@ -346,15 +346,15 @@
         }
       ],
       "verification_profile": "V-TDD",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan",
+      "implementation_at": "18-11-2026 18:08",
+      "execution_authority": "owner_authorized_a3_local_implementation",
       "direction_id": "A"
     },
     {
       "id": "PAOS-METH-06",
       "title": "Упростить контракты agent slice и handoff по baseline eval",
       "title_en": "Simplify agent-slice and handoff contracts using baseline evals",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "methodologies": [
         "ADD",
@@ -394,15 +394,15 @@
         }
       ],
       "verification_profile": "V-ADD",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan",
+      "implementation_at": "18-11-2026 18:13",
+      "execution_authority": "owner_authorized_a3_local_implementation",
       "direction_id": "A"
     },
     {
       "id": "PAOS-METH-07",
       "title": "Измерить результат agentic-пилота на сопоставимых задачах",
       "title_en": "Measure agentic-pilot outcomes on comparable tasks",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "methodologies": [
         "ADD"
@@ -441,8 +441,8 @@
         }
       ],
       "verification_profile": "V-ADD",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan",
+      "implementation_at": "18-11-2026 18:13",
+      "execution_authority": "owner_authorized_a3_local_implementation",
       "direction_id": "A",
       "activation_condition": {
         "ru": "По отдельному разрешению и при зафиксированных сопоставимых условиях эксперимента. Допустим отдельный deterministic-only результат.",

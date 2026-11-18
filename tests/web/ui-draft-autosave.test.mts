@@ -129,3 +129,49 @@ test("lost ACK retries the same intent and serializes newer text; conflicts neve
   assert.equal(errors.length, 2);
   draft.dispose();
 });
+
+test("clearing a draft during an in-flight Save waits for its ACK and uses the next revision", async () => {
+  let stored = { id: "draft", body: "base", revision: 4 };
+  const firstWriteStarted = Promise.withResolvers<void>();
+  const releaseFirstAck = Promise.withResolvers<void>();
+  const writes: { revision: number; body: string }[] = [];
+  const errors: unknown[] = [];
+  const draft = createDraftAutosave({
+    read: async () => stored,
+    write: async (record, body) => {
+      writes.push({ revision: record.revision, body });
+      assert.equal(record.revision, stored.revision);
+      stored = { ...stored, body, revision: stored.revision + 1 };
+      if (writes.length === 1) {
+        firstWriteStarted.resolve();
+        await releaseFirstAck.promise;
+      }
+      return stored;
+    },
+    restore() {},
+    error: (cause) => errors.push(cause),
+  });
+
+  const saving = draft.flush("first edit");
+  await firstWriteStarted.promise;
+  try {
+    draft.edit("");
+    const clearing = draft.flushPending();
+    await settle();
+    assert.deepEqual(writes, [{ revision: 4, body: "first edit" }]);
+    assert.equal(draft.isPending(), true);
+
+    releaseFirstAck.resolve();
+    assert.deepEqual(await Promise.all([saving, clearing]), [true, true]);
+    assert.deepEqual(writes, [
+      { revision: 4, body: "first edit" },
+      { revision: 5, body: "" },
+    ]);
+    assert.deepEqual(stored, { id: "draft", body: "", revision: 6 });
+    assert.equal(draft.isPending(), false);
+    assert.deepEqual(errors, []);
+  } finally {
+    releaseFirstAck.resolve();
+    draft.dispose();
+  }
+});

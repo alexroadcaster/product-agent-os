@@ -1,5 +1,9 @@
 # RUNLOG.md
 
+## PAOS-METH-A3 — регрессии и передача задачи, 18.11.2026
+
+Выполнены METH-05/06/07. Целевой Web-набор 44/44 и Python 88/88. Исходный и сокращённый handoff подтвердили 6/6 фиксированных решений каждый. Кандидат сохранён для сравнения со статусом `hold`. Следующая работа A4 — METH-11 для TeamManager. [Результаты A3](docs/planning/methodology-improvement-2026-11-15.md#a3-results)
+
 ## PAOS-METH-A2 — пилот Dashboard принят, 18.11.2026
 
 METH-12/17/18 выполнены. Три прямые связи Dashboard с внутренними модулями Tasks заменены публичным входом. Web 704/704 и браузер 52/52. Следующий шаг A3 — METH-05. В A4 выбран один потребитель TeamManager для METH-11. [Результаты и решение](docs/planning/methodology-improvement-2026-11-15.md#a2-results)

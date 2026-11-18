@@ -12,3 +12,5 @@ Owner: verification owner + docs-maintainer. Scope: Web, local service and packa
 4. Record actual commands, results, revision, environment, data, failures and residual risk in the owning evidence artifact. Follow the separate authority boundaries for the selected action.
 
 When a check is missing, use `not_verified` or `blocked` with its reason and next action. A passing test proves only its assertions and setup; it does not establish autonomous success on another project or release readiness. Related sources: [behavioral evals](../product-agent-os/behavioral-evals.md), [retrieval evaluation](../ai/rag/evaluation.md), [frontend accessibility](../frontend/accessibility.md). Wider product claims need relevant actual checks, owner review and, where applicable, human acceptance.
+
+The [A3 comparison](../planning/methodology-improvement-2026-11-15.en.md#a3-results) verifies handoff fields and boundary decisions on the same inputs. The report distinguishes local results from unavailable actual-agent metrics.

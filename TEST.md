@@ -1,5 +1,26 @@
 # TEST.md
 
+## PAOS-METH-05 — критические регрессии
+
+| Риск | Инвариант | Минимальная надёжная проверка |
+| --- | --- | --- |
+| Draft conflict или потерянный ACK | CAS сохраняет чужой текст. Retry повторяет тот же ключ и сначала подтверждает прежнее намерение. Очистка, сделанная во время сохранения, использует подтверждённую следующую ревизию. | `tests/web/ui-draft-autosave.test.mts` с управляемым ACK и записью реальных аргументов. `ui-draft-registry.test.mts` покрывает повторное открытие и восстановление намерения. |
+| Нарушение границ импортов | Shared contracts не зависят от приложений. Local service не импортирует UI. Dashboard использует публичный вход Tasks. | `node --test tests/web/contracts-boundaries.test.mts` проверяет реальный граф, разрешённые входы, исключения и отрицательные примеры. Владелец границы — METH-09/12. |
+| Stop и восстановление | Неопределённый или остановленный запуск удерживает необходимые ограничения до подтверждения. Повторный запуск не создаёт второй dispatch. | `recipe-recovery.test.mts` и `recovery.test.mts` проверяют Stop, поздний ACK, сохранённый checkpoint и отсутствие повтора. Интеграционную квалификацию ведёт F21. |
+| Backup/restore | Восстанавливается целостный снимок. Старые разрешения, dispatch и курсоры не переносятся как активные. Неполный снимок не затрагивает рабочую БД. | `storage-backup.test.mts` на одноразовом SQLite с проверкой целостности и simulated disk-full. Полную проверку launcher/restore ведёт F22. |
+| Маршрутизация одобрений | Действие с внешним эффектом требует подтверждения. Ветка App/API не подменяет отказ и не переносит credentials. | `tests.product_agent_os.test_codex_runtime_runner_guards`, `test_lifecycle_hooks` и `runtime-route-selector.test.mts` проверяют отказ, изоляцию и условия использования маршрута без обращений к провайдерам. |
+
+Для изменения поведения заранее описываем наблюдаемую причину RED и минимальную правку для GREEN. Ошибки запуска, импорта или подготовки fixture диагностируются отдельно. Документация и перемещения с сохранением поведения проверяются статически или через characterization/regression. [Результаты A3](docs/planning/methodology-improvement-2026-11-15.md#a3-results)
+
+Целевые команды запускаются из корня репозитория.
+
+```powershell
+node --test tests/web/ui-draft-autosave.test.mts tests/web/ui-draft-registry.test.mts tests/web/contracts-boundaries.test.mts tests/web/recipe-recovery.test.mts tests/web/storage-backup.test.mts tests/web/recovery.test.mts tests/web/runtime-route-selector.test.mts
+python -B -m unittest tests.product_agent_os.test_a3_slice_eval tests.product_agent_os.test_codex_runtime_runner_guards tests.product_agent_os.test_codex_runtime_runner_state_routes tests.product_agent_os.test_lifecycle_hooks tests.product_agent_os.test_task_plan_lifecycle tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_transcript_session_evals -q
+```
+
+Для METH-06/07 команда `python -B -m tests.product_agent_os.test_a3_slice_eval` выводит хеши, решения обеих версий и локальное время сравнения. Unittest также проверяет отклонение кандидата без Evidence или с неверной ссылкой. [Пороги и решение](EVALS.md#a3-handoff-eval)
+
 ## PAOS-METH-A2 — технический пилот Dashboard, 18.11.2026
 
 Проверки `contracts-boundaries.test.mts` подтверждают явный вход Tasks, идентичность реализаций и запрет прямых импортов. После `npm run check:web-m1` и `npm run build:web` сценарий Dashboard ниже проверяет F05–F07/F18, обе темы, Enter на последней задаче и возврат к Dashboard. Браузерный отчёт связывает результаты с хешами границы, исходников и сборки. [Матрица критериев и результаты](docs/planning/methodology-improvement-2026-11-15.md#a2-results)

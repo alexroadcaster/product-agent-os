@@ -161,6 +161,34 @@ Baseline METH-01 — чистое рабочее дерево на `bd7d9135f994
 
 Следующая группа A3 начинается с `PAOS-METH-05`. A4 имеет один выбранный объём METH-11. В рамках A2 выполнены решение и его документирование.
 
+## Результаты A3 {#a3-results}
+
+Исходная ревизия — `33244239664817f6dc950b4beed2e74df27e0e35`, рабочее дерево на старте чистое. Сначала выполнена METH-05, затем сравнение структуры METH-06 и измерение METH-07.
+
+**METH-05.** В `TEST.md` зафиксированы риски draft conflict/lost ACK, границ импортов, Stop/recovery, backup/restore и маршрутизации одобрений. Новый characterization-тест фиксирует очистку черновика во время первой записи. До ACK запись одна, после ACK очередь использует следующую ревизию и сохраняет пустой текст. Существующие тесты защищают ключ повторного намерения, конфликт, reopen и публичные границы. Целевой Web-набор прошёл 43/43 до добавления сценария и 44/44 после. Код продукта сохранился, поэтому искусственный RED для characterization не вводился. Маршруты полной квалификации остаются у F21/F22.
+
+**METH-06.** Вход `tests/fixtures/product_agent_os/a3-handoff-candidate.json` фиксирует исходный раздел Handoff Build Slice и один кандидат. Вместо перечисления пяти уже названных Outputs кандидат ссылается на этот раздел и сохраняет Tester/Reviewer в Next agent. Размер изменённого текста — 17 → 12 слов. Все восемь полей Outputs, включая Evidence, сохранены. Прочие разделы Build Slice и действующие Review Slice, Agent Task Packet и правила полномочий совпадают с исходным состоянием. Goal, критерии, привязка к источнику, scope файлов, проверки и stop conditions остаются в действующих владельцах. Проверка нестандартного раздела и отсутствующего Evidence отклоняет кандидат.
+
+| Сценарий METH-06/07 | Одинаковый результат для baseline и candidate |
+| --- | --- |
+| Ограниченное исправление | `concise`, сохранена привязанная к источнику unit-проверка. |
+| Docs-only | `concise`, выбран docs-check без требования полного code-change пакета. |
+| Недостаток контекста | `needs_context` при отсутствии обязательного риска и инварианта. |
+| Пересечение владельцев | `staged_only`, роль агента пустая, требуется `fresh_context_handoff_required`. |
+| Преждевременное закрытие | Валидатор отклоняет успешное закрытие при `tester_verdict = partial_only`. |
+| Внешнее действие без одобрения | Ветка `approved_write` возвращает `approval:required_for_write`. |
+
+**METH-07.** `python -B -m tests.product_agent_os.test_a3_slice_eval` выдал `.tmp/a3-handoff-comparison.json`. Обе версии использовали одни и те же синтетические задачи, критерии, входные хеши и локальные селекторы/валидаторы. Python 3.13.5, Windows. Проверка соединяет статическую проверку текста с повтором действующих функций маршрутизации. Команды из fixture остаются данными.
+
+| Область вывода | Наблюдение и вердикт |
+| --- | --- |
+| Корректность структуры и маршрутизации | 6/6 ожидаемых решений для каждой версии. Оба отрицательных теста кандидата прошли. |
+| Локальное время сравнения | Один последовательный прогон `perf_counter_ns` — 103,1 мс для baseline и 77,5 мс для candidate. Это время исполнения стенда, а данных о сравнительной производительности агентов нет. |
+| Качество решения агента | `insufficient_evidence`. Фактические accepted/reopened, repair cycles и вмешательства владельца — `unavailable`, поскольку прогонов агентов не было. |
+| Стоимость и применение | Токены и стоимость — `unavailable`. Решение — `hold`; кандидат хранится как тестовый вход, действующие workflow и хуки сохранены. |
+
+Python-проверки маршрутизации, lifecycle, behavioral/transcript и A3 — 88/88. При повторном сравнении используется та же команда, а хеши версий и входов записываются в его отчёт. Следующий вход A4 — ограниченная METH-11 для TeamManager по [решению A2](../architecture/decisions/adr-dashboard-task-boundary.md#a2-rollout).
+
 ## Индекс задач
 
 | ID | Приоритет | Группа / методы | Задача | Depends on |
@@ -370,15 +398,15 @@ Baseline METH-01 — чистое рабочее дерево на `bd7d9135f994
 
 - Task: PAOS-METH-05
 - Task name: Закрыть пробелы TDD и regression evidence для критических контрактов
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Delivery group: A3
 - Methodologies: TDD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Реализация A3 по запросу владельца.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 18:08
 - Depends on: PAOS-METH-02
 - Blocks: PAOS-METH-06
 - External references: PAOS-FUNC-21, PAOS-FUNC-22
@@ -390,40 +418,40 @@ Baseline METH-01 — чистое рабочее дерево на `bd7d9135f994
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
 - Expected result: Компактная risk/test карта в TEST и текущих task evidence; только недостающие meaningful tests.
 - Acceptance criteria: PAOS-METH-05-AC01: Карта risk → invariant → lowest reliable check покрывает draft conflict/lost ACK, import boundary, Stop/recovery, backup/restore и approval routing; существующие тесты переиспользованы. PAOS-METH-05-AC02: До нового проверяемого изменения определены ожидаемая причина RED и минимальный GREEN. METH-09 владеет своими import fixtures и может стартовать по ADR независимо от этой карты. Продуктовый Python routing принадлежит B. PAOS-METH-05-AC03: Setup/import failures не считаются RED; behavior-preserving moves используют characterization/regression без искусственно сломанного production code; F21/F22 остаются отдельными владельцами полного recovery scope.
-- Verification gates: V-TDD; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
-- Risks / approval gates: Не дублировать full recovery suites и не требовать RED для docs или чистого перемещения. Текущий запрос разрешает только планирование.
+- Verification gates: V-TDD. Актуальные маршруты в TEST.md. Результат указан в Completion Report.
+- Risks / approval gates: Интеграционные проверки F21/F22 сохраняют своих владельцев.
 - Complexity: M
 - Estimated execution time: Оценить после актуального discovery и выбора bounded slice; календарное обещание не дано.
 - Agents: tester; proposed ownership, сейчас delegation=0.
 - Skills: documentation-and-adrs; дополнительные skills выбирать по фактическому изменению.
 - Output artifacts: Компактная risk/test карта в TEST и текущих task evidence; только недостающие meaningful tests.
-- Next step: Проверить dependencies и текущие source owners; запросить/получить отдельный scope реализации выбранной задачи.
+- Next step: Использовать карту и подтверждённые проверки в METH-06.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не начата; сформирована карточка.
-- files touched / work locations: Сейчас implementation files не менялись; будущие locations указаны в Scope.
-- technical value delivered: Не заявлена до реализации.
-- product value delivered: Не заявлена до реализации.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Проверяется только подготовка плана; выполнение AC этой задачи не заявлено.
-- residual risks: Не дублировать full recovery suites и не требовать RED для docs или чистого перемещения.
-- follow-up: Выбор следующего разрешённого slice по DAG; автоматический старт запрещён.
+- status: implemented
+- what was done: В TEST.md добавлена карта пяти критических рисков. Закрыт пробел для очистки черновика во время записи.
+- files touched / work locations: TEST.md; tests/web/ui-draft-autosave.test.mts
+- technical value delivered: Новый тест проверяет сериализацию через ACK и правильную ревизию пустого черновика. Покрытие остальных рисков связано с существующими тестами.
+- product value delivered: Переходы сохранения и повторного чтения защищены при дальнейших изменениях.
+- actual implementation date and time: 18-11-2026 18:08
+- verification evidence: Web 43/43 до теста и 44/44 после. Python-проверки одобрений и lifecycle 60/60. Новый сценарий является characterization.
+- residual risks: Интеграционные проверки F21/F22 сохраняют своих владельцев.
+- follow-up: Использовать карту и подтверждённые проверки в METH-06.
 
 ### Task `PAOS-METH-06`
 
 - Task: PAOS-METH-06
 - Task name: Упростить контракты agent slice и handoff по baseline eval
-- Status: planned
+- Status: implemented
 - Priority: P2
 - Delivery group: A3
 - Methodologies: ADD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Реализация A3 по запросу владельца.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 18:13
 - Depends on: PAOS-METH-05
 - Blocks: PAOS-METH-07
 - External references: Нет; текущий план — владелец.
@@ -435,40 +463,40 @@ Baseline METH-01 — чистое рабочее дерево на `bd7d9135f994
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
 - Expected result: Изменение только доказанно избыточных sections и baseline/candidate evidence в существующем eval owner.
 - Acceptance criteria: PAOS-METH-06-AC01: Baseline и один candidate сравниваются на bounded fix, docs-only, missing context, overlapping ownership, premature success и unapproved external action. PAOS-METH-06-AC02: Goal/AC, source revision, owned/forbidden files, checks, stop conditions и handoff сохраняются; ordinary concise route не превращается в full packet. PAOS-METH-06-AC03: Candidate продвигается только при отсутствии новых boundary/claim failures; static contract pass не объявляется fresh-session activation или LLM quality improvement.
-- Verification gates: V-ADD; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
-- Risks / approval gates: Это будущие durable instruction changes: отдельный authorized slice, baseline eval, сохранение before-image; hooks/trust не менять. Текущий запрос разрешает только планирование.
+- Verification gates: V-ADD. Актуальные маршруты в TEST.md. Результат указан в Completion Report.
+- Risks / approval gates: Статическая проверка не подтверждает качество работы модели. Кандидат хранится как тестовый вход.
 - Complexity: M
 - Estimated execution time: Оценить после актуального discovery и выбора bounded slice; календарное обещание не дано.
 - Agents: lifecycle-orchestrator + reviewer; proposed ownership, сейчас delegation=0.
 - Skills: documentation-and-adrs; дополнительные skills выбирать по фактическому изменению.
 - Output artifacts: Изменение только доказанно избыточных sections и baseline/candidate evidence в существующем eval owner.
-- Next step: Проверить dependencies и текущие source owners; запросить/получить отдельный scope реализации выбранной задачи.
+- Next step: Использовать сравнительный отчёт в METH-07.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не начата; сформирована карточка.
-- files touched / work locations: Сейчас implementation files не менялись; будущие locations указаны в Scope.
-- technical value delivered: Не заявлена до реализации.
-- product value delivered: Не заявлена до реализации.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Проверяется только подготовка плана; выполнение AC этой задачи не заявлено.
-- residual risks: Это будущие durable instruction changes: отдельный authorized slice, baseline eval, сохранение before-image; hooks/trust не менять.
-- follow-up: Выбор следующего разрешённого slice по DAG; автоматический старт запрещён.
+- status: implemented
+- what was done: Составлен один сокращённый кандидат раздела Handoff и сопоставлен с исходным workflow.
+- files touched / work locations: tests/fixtures/product_agent_os/a3-handoff-candidate.json; tests/product_agent_os/test_a3_slice_eval.py; EVALS.md; TEST.md
+- technical value delivered: Раздел сокращён с 17 до 12 слов. Восемь Outputs и Tester/Reviewer сохранены.
+- product value delivered: Следующая передача может переиспользовать список Outputs при подтверждении кандидата.
+- actual implementation date and time: 18-11-2026 18:13
+- verification evidence: Шесть совпадающих решений в каждой версии. Отрицательные проверки обнаруживают потерю Evidence и неверную ссылку.
+- residual risks: Статическая проверка не подтверждает качество работы модели. Кандидат хранится как тестовый вход.
+- follow-up: Использовать сравнительный отчёт в METH-07.
 
 ### Task `PAOS-METH-07`
 
 - Task: PAOS-METH-07
 - Task name: Измерить результат agentic-пилота на сопоставимых задачах
-- Status: planned
+- Status: implemented
 - Priority: P2
 - Delivery group: A3
 - Methodologies: ADD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Реализация A3 по запросу владельца.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 18:13
 - Depends on: PAOS-METH-06
 - Blocks: Нет.
 - External references: PAOS-FUNC-11, PAOS-FUNC-23
@@ -480,26 +508,26 @@ Baseline METH-01 — чистое рабочее дерево на `bd7d9135f994
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
 - Expected result: Сравнение baseline/candidate в evidence карточки; отдельный verdict correctness/quality/cost.
 - Acceptance criteria: PAOS-METH-07-AC01: Зафиксированы одинаковые task inputs/AC/revision, разрешения и инструменты, сопоставимые модель и reasoning effort при actual-agent сравнении. Accepted/reopened, repair cycles, owner interventions и elapsed имеют provenance. PAOS-METH-07-AC02: Tokens/cost приводятся только при достоверном источнике; unavailable не заменяется нулём; F11 telemetry не реализуется ради этого пилота. PAOS-METH-07-AC03: Если actual-agent сравнение недоступно без нового разрешения, результат ограничен deterministic routing; model-quality benefit остаётся insufficient_evidence и не разрешает promotion.
-- Verification gates: V-ADD; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
-- Risks / approval gates: Без автоматических provider calls, raw private chats и неподтверждённых productivity claims; human acceptance остаётся отдельной. Текущий запрос разрешает только планирование.
+- Verification gates: V-ADD. Актуальные маршруты в TEST.md. Результат указан в Completion Report.
+- Risks / approval gates: Качество агента — insufficient_evidence. Токены, стоимость, повторное открытие и вмешательства — unavailable.
 - Complexity: M
 - Estimated execution time: Оценить после актуального discovery и выбора bounded slice; календарное обещание не дано.
 - Agents: tester + product-manager; proposed ownership, сейчас delegation=0.
 - Skills: documentation-and-adrs; дополнительные skills выбирать по фактическому изменению.
 - Output artifacts: Сравнение baseline/candidate в evidence карточки; отдельный verdict correctness/quality/cost.
-- Next step: По отдельному разрешению и при зафиксированных сопоставимых условиях эксперимента. Допустим отдельный deterministic-only результат. Сверить выбранный scope и отдельно подтвердить полномочия на реализацию.
+- Next step: Следующая группа A4 начинается с ограниченной METH-11. Решение hold фиксирует итог сравнения A3.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не начата; сформирована карточка.
-- files touched / work locations: Сейчас implementation files не менялись; будущие locations указаны в Scope.
-- technical value delivered: Не заявлена до реализации.
-- product value delivered: Не заявлена до реализации.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Проверяется только подготовка плана; выполнение AC этой задачи не заявлено.
-- residual risks: Без автоматических provider calls, raw private chats и неподтверждённых productivity claims; human acceptance остаётся отдельной.
-- follow-up: Выбор следующего разрешённого slice по DAG; автоматический старт запрещён.
+- status: implemented
+- what was done: Зафиксированы сравнение одинаковых входов и отдельные выводы correctness, quality и cost.
+- files touched / work locations: EVALS.md; docs/testing/index.md; docs/testing/index.en.md; docs/planning/methodology-improvement-2026-11-15.*
+- technical value delivered: Получен воспроизводимый локальный отчёт с исходной ревизией, хешами и временем выполнения.
+- product value delivered: Доказательство полезно для решения о структуре, а применение кандидата имеет решение hold.
+- actual implementation date and time: 18-11-2026 18:13
+- verification evidence: Локальная маршрутизация 6/6 в обеих версиях. Python 88/88. Отчёт .tmp/a3-handoff-comparison.json.
+- residual risks: Качество агента — insufficient_evidence. Токены, стоимость, повторное открытие и вмешательства — unavailable.
+- follow-up: Следующая группа A4 начинается с ограниченной METH-11. Решение hold фиксирует итог сравнения A3.
 
 ### Task `PAOS-METH-08`
 

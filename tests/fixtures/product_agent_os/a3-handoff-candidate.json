@@ -1,0 +1,8 @@
+{
+  "source_status": "synthetic_local_eval_candidate",
+  "baseline_revision": "33244239664817f6dc950b4beed2e74df27e0e35",
+  "workflow_path": ".codex/workflows/build-slice.md",
+  "section": "Handoff",
+  "baseline": "Return changed files, evidence, control-plane sync decision, open risks, rollback notes, and recommended Tester or Reviewer route.",
+  "candidate": "Use Outputs for the handoff. Set Next agent to Tester or Reviewer."
+}
