@@ -39,6 +39,16 @@ try{
  async function settled(){await dashboard().getByRole('button',{name:locale==='ru'?'Обновить дашборд':'Refresh dashboard',exact:true}).waitFor();await page.waitForFunction(()=>{const b=document.querySelector('[data-testid=project-dashboard] .dashboard-scope>button') as HTMLButtonElement|null;return b&&!b.disabled;});}
  async function refresh(){await dashboard().getByRole('button',{name:locale==='ru'?'Обновить дашборд':'Refresh dashboard',exact:true}).click();await settled();}
  async function shot(name:string){const path=join(output,name+'.png');await page.screenshot({path,animations:'disabled'});report.screenshots.push(path);}
+ // Ignore subpixel rounding, but require a full focusable control and separated columns.
+ async function desktopComposition(){
+  return dashboard().evaluate((root:Element)=>{
+   const main=root.querySelector('.dashboard-main')!.getBoundingClientRect();
+   const side=root.querySelector('.dashboard-side')!.getBoundingClientRect();
+   const refresh=root.querySelector('.dashboard-scope button')!.getBoundingClientRect();
+   return main.width>=280&&side.width>=240&&side.left>=main.right-1&&Math.abs(main.top-side.top)<=1
+    &&refresh.width>=24&&refresh.height>=24&&refresh.left>=0&&refresh.right<=innerWidth+1;
+  });
+ }
  const project=(await api('/projects',{name:'Dashboard synthetic',workspaceRoot:workspace,keyPrefix:'DASH'})).body;
  const other=(await api('/projects',{name:'Unavailable synthetic',workspaceRoot:otherRoot,keyPrefix:'OTHR'})).body;
  const ids=['11111111-1111-4111-8111-111111111111','22222222-2222-4222-8222-222222222222','33333333-3333-4333-8333-333333333333','44444444-4444-4444-8444-444444444444'];
@@ -53,22 +63,64 @@ try{
   const response=await route.fetch(),body=await response.json();body.tasks=body.tasks.toSorted((a:any,b:any)=>a.id.localeCompare(b.id)).map((t:any)=>({...t,updatedAt:times.get(t.id)}));await route.fulfill({response,json:body});
  });
  await context.route('**/api/v1/projects/*/scheduler',async(route:any)=>{
+  if(new URL(route.request().url()).pathname.split('/')[4]!==project.id){await route.continue();return;}
   const response=await route.fetch(),body=await response.json();
   const order=reordered?[1,0,2]:[0,1,2];body.items=order.map((i:number,index:number)=>({id:'queue-'+i,taskId:ids[i],taskKey:'DASH-'+(i+1),taskTitle:titles[i],revision:1,state:'queued',position:i===2?null:index+1,workflow:{id:'default',version:1},recipeId:'synthetic',sessionId:'fixture',steps:[],claims:[],ownershipScope:'entire_workspace',executionId:null,executionState:null,waitReasons:[],createdAt:1,updatedAt:1}));body.order=order.slice(0,2).map(i=>'queue-'+i);await route.fulfill({response,json:body});
  });
  await page.reload();await page.locator('.navigation select:enabled').waitFor();await page.locator('.navigation select').selectOption(project.id);
  for(const lang of ['ru','en'] as const){
   stage='portfolio_'+lang;
-  if(locale!==lang){await nav('settings');await page.locator('[data-settings-section=general]').click();await page.getByLabel(uiLabel(locale,'preferences.language'),{exact:true}).selectOption(lang);await page.getByRole('button',{name:uiLabel(locale,'preferences.save'),exact:true}).click();await page.waitForFunction((l:string)=>document.documentElement.lang===l,lang);locale=lang;}
+  const theme=lang==='ru'?'light':'dark';
+  await nav('settings');
+  await page.locator('[data-settings-section=general]').click();
+  await page.getByLabel(uiLabel(locale,'preferences.language'),{exact:true}).selectOption(lang);
+  await page.getByLabel(uiLabel(locale,'preferences.theme'),{exact:true}).selectOption(theme);
+  await page.getByRole('button',{name:uiLabel(locale,'preferences.save'),exact:true}).click();
+  await page.waitForFunction(({lang,theme}:{lang:string;theme:string})=>document.documentElement.lang===lang&&document.documentElement.dataset.theme===theme,{lang,theme});
+  locale=lang;
   failure='partial';await nav('portfolio');await settled();
   let summary=await dashboard().locator('.dashboard-progress-summary').innerText();
   check(lang+'_partial_coverage_next_to_totals',lang==='ru'?/1 из 2.*данные неполные/is.test(summary):/1 of 2.*incomplete/is.test(summary),summary);
   check(lang+'_progress_available_subset',lang==='ru'?summary.includes('доступным проектам'):summary.includes('available projects'),summary);
   check(lang+'_failed_project_unknown',await dashboard().locator('.ui-project-row').filter({hasText:'Unavailable synthetic'}).innerText().then((s:string)=>s.includes('—')));
+  check(theme+'_partial_composition',await desktopComposition());
   await shot(lang+'-partial');
+  const source=dashboard().locator('.dashboard-source-note summary');
+  await dashboard().locator('.dashboard-scope button').focus();
+  await page.keyboard.press('Tab');
+  check(theme+'_source_summary_keyboard_focus',await source.evaluate((element:Element)=>element.matches(':focus-visible')));
+  await page.keyboard.press('Enter');
+  check(theme+'_keyboard_expands_sources',await source.evaluate((element:Element)=>element.closest('details')?.open===true));
   failure='all';await refresh();summary=await dashboard().locator('.dashboard-progress-summary').innerText();check(lang+'_all_failed_unknown',summary.includes('—')&&!await dashboard().locator('progress').count()&&(lang==='ru'?summary.includes('0 из 2'):summary.includes('0 of 2')),summary);
+  check(theme+'_error_explains_both_failed_sources',await dashboard().locator('.dashboard-source-note').getByRole('alert').count()===2);
+  await shot(theme+'-error');
   failure='none';await refresh();summary=await dashboard().locator('.dashboard-progress-summary').innerText();check(lang+'_retry_restores_complete',lang==='ru'?summary.includes('2 из 2'):summary.includes('2 of 2'),summary);
   hold=new Promise<void>(r=>release=r);const refreshing=dashboard().getByRole('button',{name:lang==='ru'?'Обновить дашборд':'Refresh dashboard',exact:true});await refreshing.click();await page.waitForFunction(()=>!!(document.querySelector('.dashboard-scope>button') as HTMLButtonElement)?.disabled);summary=await dashboard().locator('.dashboard-progress-summary').innerText();check(lang+'_loading_expected_count',lang==='ru'?summary.includes('0 из 2'):summary.includes('0 of 2'),summary);release!();hold=undefined;await settled();
+  stage='project_'+theme;
+  await dashboard().locator('.dashboard-project-table').getByRole('button',{name:'Unavailable synthetic',exact:true}).click();
+  await settled();
+  const empty=dashboard().locator('.dashboard-chart .dashboard-empty');
+  check(theme+'_empty_observed_snapshot',await empty.innerText()===(lang==='ru'?'Задач пока нет':'No tasks yet'));
+  check(theme+'_empty_observed_queue',await dashboard().getByText(lang==='ru'?'Очередь пуста':'Queue is empty',{exact:true}).count()===1);
+  await shot(theme+'-empty');
+  await page.locator('.navigation select').selectOption(project.id);
+  await settled();
+  check(theme+'_default_composition',await desktopComposition());
+  const columns=dashboard().locator('.dashboard-columns');
+  await columns.evaluate((element:HTMLElement)=>element.style.setProperty('grid-template-columns','1fr','important'));
+  try{check(theme+'_composition_detects_stacked_desktop_fixture',!await desktopComposition());}
+  finally{await columns.evaluate((element:HTMLElement)=>element.style.removeProperty('grid-template-columns'));}
+  // Bump the actual project's snapshot from a separate write while the read-only view remains open.
+  const freshnessId=randomUUID();
+  times.set(freshnessId,'2026-10-01T12:00:00Z');
+  const write=await save(newM2Task(project.id,freshnessId,'A1 freshness fixture '+theme,'local-user'));
+  if(write.status!==200)throw Error('FRESHNESS_FIXTURE_WRITE_'+write.status);
+  await dashboard().locator('[data-testid=project-freshness][data-state=stale]').waitFor();
+  check(theme+'_stale_preserves_observed_tasks',await dashboard().locator('.dashboard-recent li strong').first().innerText()==='Newest');
+  await shot(theme+'-stale');
+  await refresh();
+  await dashboard().getByTestId('project-freshness').waitFor({state:'hidden'});
+  check(theme+'_refresh_clears_stale',await dashboard().getByTestId('project-freshness').count()===0);
  }
  stage='queue_recent';await nav('overview');await settled();
  let queueRows=await dashboard().locator('.dashboard-queue-row').allTextContents();check('queue_positions_one_based',queueRows[0].includes('#1')&&queueRows[1].includes('#2'),queueRows);check('null_position_omitted',!queueRows[2].includes('#'),queueRows[2]);

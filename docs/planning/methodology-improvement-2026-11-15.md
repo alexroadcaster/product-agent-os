@@ -1,11 +1,11 @@
 # Product-Agent OS — направление A: внутреннее качество и архитектура
 
-Source status: repository_source / owner_requested_planning / internal_quality_plan; user_project_work_split_to_direction_B; implementation_not_started.
+Source status: repository_source / owner_requested_internal_quality_plan / a1_local_verification.
 Создан 15.11.2026, редакция 18.11.2026. Schema version: task_matrix_plan_v1. Timezone: Europe/Moscow.
 
 ## Два направления — редакция 3, 18.11.2026
 
-A улучшает сам Product-Agent OS и процесс его сопровождения: **17 исполняемых planned задач**, 8 P1 / 7 P2 / 2 P3. B развивает применение методологий в проектах пользователей: [26 продуктовых задач](user-project-methodologies-2026-11-15.md), [JSON](user-project-methodologies-2026-11-15.json). Между направлениями нет hard dependencies.
+A улучшает сам Product-Agent OS и процесс его сопровождения. В A **17 исполняемых задач**, 8 P1 / 7 P2 / 2 P3. B развивает применение методологий в проектах пользователей: [26 продуктовых задач](user-project-methodologies-2026-11-15.md), [JSON](user-project-methodologies-2026-11-15.json). Между направлениями нет hard dependencies.
 
 Прежняя METH-16 сохранена с ID, названием и тремя legacy AC как **reference-only**, вне массива tasks в JSON v2; она не запускается и не владеет продуктовым status. Canonical owners: PMETH-03/07/10/11/16/17/22/23/26; точное соответствие AC и прежние edges сохранены в JSON. Для неё V-REFERENCE означает проверить ссылки/покрытие у B, без выполнения кода из A. METH-18 оценивает только варианты расширения A в METH-10/11/13–15. Направление B поставляется по своему плану.
 
@@ -13,9 +13,9 @@ A улучшает сам Product-Agent OS и процесс его сопров
 
 ## Цель, полномочия и владельцы
 
-Направление A развивает Spec-DD, Design-DD, TDD, ADD и границы frontend. Первый технический пилот ограничен Dashboard и доработкой проверки импортов. Все 17 исполняемых записей имеют status planned и `pending_execution_timestamp`.
+Направление A развивает Spec-DD, Design-DD, TDD, ADD и границы frontend. A1 задаёт проверяемый контракт Dashboard и границы импортов. A2 проверяет реальное изменение границы между Dashboard и Tasks.
 
-[JSON-состояние v2](methodology-improvement-2026-11-15.json) владеет status/priority/dependencies 17 задач A; cross_track_references отдельно хранит METH-16. RU/EN карточки согласуются с JSON; таблицы — индекс. English доступен через переключатель языка. B имеет отдельного владельца и [подробный план](user-project-methodologies-2026-11-15.md). Создание этой редакции не закрывает A/B/FUNC/Web/V3.
+[JSON-состояние v2](methodology-improvement-2026-11-15.json) владеет status/priority/dependencies 17 задач A. `cross_track_references` отдельно хранит METH-16. RU/EN карточки согласуются с JSON. B имеет отдельного владельца и [подробный план](user-project-methodologies-2026-11-15.md).
 
 ## Исходное состояние и доказательства
 
@@ -26,7 +26,7 @@ Source snapshot: git HEAD `35458110145d928b9b14d9312b60d852f11f6e88`; hashes с�
 - Design-DD имеет файл workspace `DESIGN.md`, V3 coverage и [план внедрения](2026-11-13-v3-ui-implementation-plan.md). Исторический V3 review выявил разрыв composition coverage; это не утверждение о новом дефекте текущего build.
 - TDD поддержан правилами и отдельными historical RED/GREEN receipts; готовый набор тестов не доказывает test-first для каждой задачи.
 - ADD имеет build/review/handoff contracts и разделение ownership. Улучшение качества/стоимости agentic работы требует сопоставимого baseline, а не подсчёта ролей.
-- Frontend сгруппирован по features, но dashboard/tasks/team/workflows используют внутренние соседние модули. Строгий FSD не доказан; тест workspace `tests/web/contracts-boundaries.test.mts` защищает application boundary, а не все FSD imports. METH-09 должен явно включить TSX и aliases, чтобы новая проверка не имела скрытого coverage gap.
+- До A1 frontend был сгруппирован по features и использовал внутренние импорты между Dashboard, Tasks и соседними модулями. Исходный `tests/web/contracts-boundaries.test.mts` покрывал application boundary. Проверка A1 добавляет TSX и правила разрешения импортов для пилота по [ADR](../architecture/decisions/adr-dashboard-task-boundary.md).
 
 Исходники: `apps/web/src/features/dashboard/model.ts`, `tasks/TaskManager.tsx`, `workflows/WorkflowManager.tsx`, `team/TeamManager.tsx`, `apps/web/src/ui/App.tsx`; Python owner `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`. Перед будущими edits перечитать их актуальное состояние.
 
@@ -64,11 +64,11 @@ P1 — защита контрактов и достоверность приё�
 
 Ссылки `external_refs` указывают владельцев и evidence. F08 защищает application-independent contracts, F18 владеет refresh semantics. Актуальность F01 проверяется при изменении pinned runtime sources. Общие файлы правятся последовательно.
 
-## Предлагаемые границы постепенного FSD
+## Граница Dashboard и Tasks
 
-В METH-08 сравнить сохранение текущих модулей, усиление их границ и локальный FSD. Предпочтителен минимальный вариант, который убирает обнаруженную проблему Dashboard и допускает простой откат.
+METH-08 сравнила сохранение текущих модулей, усиление их границ и локальный FSD. Для A2 выбрано усиление границы в текущих модулях. [Решение и условия отката](../architecture/decisions/adr-dashboard-task-boundary.md)
 
-- Сохранить `App.tsx` владельцем composition/session/project scope. Начать с явного API для востребованных селекторов Tasks (`semanticStatus`, `isBlocked`) и одного источника логики. При выборе FSD допустим pages-first.
+- `App.tsx` сохраняет владение композицией, сессией и активным проектом. A2 проверяет явный API для селекторов Tasks (`semanticStatus`, `isBlocked`) с одной реализацией.
 
 - Выделять widgets, entities/task и shared только при подтверждённой потребности. Пригодность API и регрессии проверяются до переноса других экранов. Общие business contracts остаются в `packages/contracts`.
 
@@ -78,7 +78,7 @@ P1 — защита контрактов и достоверность приё�
 
 ## Проверка будущих задач
 
-Эти профили — proposed task acceptance; текущий verification route остаётся у TEST.md и не изменён этим планом.
+Профили определяют ожидаемую проверку задач. Актуальные команды и маршруты находятся в `TEST.md`.
 
 | Профиль | Минимальное доказательство |
 | --- | --- |
@@ -115,6 +115,30 @@ Stop: потеря draft/data, scope/approval violation, непроверяем�
 
 Static split/parity/preservation evidence редакции 2 хранится в направлении B. Редакция 3 сохраняет прежние формулировки изменённых AC и снятые рёбра в `pilot_revision` JSON. Даты и результаты первоначальной проверки выше относятся к исходной редакции.
 
+## Результаты A1 {#a1-results}
+
+Baseline METH-01 — чистое рабочее дерево на `bd7d9135f994201170277171eb54e4040cef4fa8`. Композиция и навигация находятся в `apps/web/src/ui/App.tsx`, модель Dashboard импортирует `semanticStatus` и `isBlocked` у Tasks, а представления используют labels и UI-примитивы. Исходные 19 нарушений выбранной границы перечислены по файлам в `tests/web/fixtures/dashboard-import-baseline.json`. Проверки Web входят в `TEST.md`, исходный аудит методологий Python plugin — `tests.product_agent_os.test_methodology_audit`. Результаты FUNC G01 и F18 от 15 ноября остаются историческим baseline с собственными receipt.
+
+| Карточки | Владелец результата A | Переиспользование и ссылки |
+| --- | --- | --- |
+| 01 | Матрица A и зафиксированные импорты | State FUNC G07 и F23, Web и V3 как исходные владельцы. |
+| 02 | [Связь критериев с проверками](../testing/test-map.md#dashboard-a1-criteria) | Критерии и реализации F05–F07/F18 остаются в FUNC. |
+| 03 | [Состояния Dashboard](../frontend/state-management.md#dashboard-a1-states) | V3 задаёт композицию, FUNC задаёт семантику данных. |
+| 04 | Браузерный сценарий Dashboard и данные проверки V3 | Расширен сценарий F05–F07, переиспользованы fixtures local service. |
+| 08, 09 | [ADR](../architecture/decisions/adr-dashboard-task-boundary.md), тест границ и список исключений | Переиспользованы установленный Rolldown и resolver F14. F08 владеет независимостью contracts. |
+| 05, 06, 07 | TDD-покрытие критических контрактов, handoff и измерение ADD | FUNC/Web tests, существующие evals и их владельцы; F19 и F23 — ссылки на свои условия приёмки. |
+| 12, 17, 18 | Пилот границы, техническая приёмка и решение о расширении | Переиспользуют A1 и проверки FUNC/V3 в применимой области. F19 и UI-12/F23 сохраняют свои решения. |
+| 10, 11, 13, 14, 15 | Возможные работы по общему UI, API Tasks и экранам | Действующие контракты FUNC/Web/V3; начать выбранный участок после решения 18. |
+| 16 | Справочная запись | Продуктовые критерии и реализация принадлежат B. |
+
+Браузерный receipt текущей сборки — `.tmp/func-g01-dashboard/evidence-hrwQrx/result.json`, 50 проверок. Проверены RU/light и EN/dark, desktop 1440×1000 и EN/dark mobile 390×844. Проверка композиции отвергает искусственно сложенные в одну колонку основные панели. Сопоставлены снимки `light-stale.png` и `dark-error.png` с контрактом состояний. Динамические строки, такие как timestamp, проверяются по смыслу. Геометрия допускает погрешность округления в 1 px. Граница измеряет локальное поведение Dashboard; полномасштабная пользовательская приёмка V3 принадлежит UI-12.
+
+В RED старый парсер отклонил TSX, обход исходников выявил 19 незаписанных связей, а проверка Tasks выявила незапрещённые импорты App и соседнего экрана. GREEN проверяет публичный вход App, запреты upward, cross-feature и deep import, неизвестный alias, вычисляемый import и цикл через другой модуль. Итоговый целевой прогон прошёл 26 проверок, включая 8 тестов границ.
+
+Итоговые проверки 18.11.2026: `node --test --test-concurrency=1 tests/web/*.test.mts` — **702/702** в Windows, 0 пропусков. `npm run check:web-m1` и `npm run build:web` прошли. Аудит методологий Python — 57/57. Проверка документации, валидаторы RU/EN, согласованность статусов и изолированная сборка MkDocs прошли. Проверены 7 хешей браузерного receipt, 12 сохранённых карточек вне A1 на каждый язык и побайтовое совпадение JSON.
+
+Первый браузерный запуск в sandbox завершился кодом 1 с Windows access denied. Повторный запустился и выявил недопустимое поле в синтетической записи. После исправления fixture пройдены все 50 проверок. Первый полный Web-прогон остановлен после ошибок с Windows native fixtures. Финальный прогон с разрешённым запуском native fixtures завершился кодом 0. Раздельные логи сохранены в `.tmp/func-g01-dashboard/`, итоговый — `a1-web-suite-final.log`.
+
 ## Индекс задач
 
 | ID | Приоритет | Группа / методы | Задача | Depends on |
@@ -144,15 +168,15 @@ Static split/parity/preservation evidence редакции 2 хранится в
 
 - Task: PAOS-METH-01
 - Task name: Зафиксировать baseline и владельцев улучшений
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Delivery group: A1
 - Methodologies: Spec-DD, ADD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Реализация группы A1 по запросу владельца.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 17:35
 - Depends on: Нет.
 - Blocks: PAOS-METH-02, PAOS-METH-08
 - External references: PAOS-FUNC-01, PAOS-FUNC-02, PAOS-FUNC-03, PAOS-FUNC-04, PAOS-FUNC-05, PAOS-FUNC-06, PAOS-FUNC-07, PAOS-FUNC-08, PAOS-FUNC-14, PAOS-FUNC-19, PAOS-FUNC-23, PAOS-FUNC-24, PAOS-FUNC-25, PAOS-FUNC-30
@@ -164,40 +188,40 @@ Static split/parity/preservation evidence редакции 2 хранится в
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
 - Expected result: Baseline и карта ownership в этой карточке; без нового глобального реестра.
 - Acceptance criteria: PAOS-METH-01-AC01: Зафиксированы revision, локальные изменения, imports и действующие проверки web/plugin; прежние receipts помечены своей датой. PAOS-METH-01-AC02: Для каждой METH-карточки указано own/reuse/reference относительно FUNC/Web/V3; существующие AC и статусы не скопированы в новую владеющую очередь. PAOS-METH-01-AC03: Назначены владельцы файлов и очередность общих правок. Текущий FUNC JSON и раздел G07 задают baseline 33 implemented / 1 awaiting_user_decision (F23) на 18.11.2026. F01/F03–F08 и F14/F19/F24/F25 используются в пределах подтверждённого evidence.
-- Verification gates: V-PLAN; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
-- Risks / approval gates: Concurrent planning edits; перед записью сверить revision. Текущий запрос разрешает только планирование.
+- Verification gates: V-PLAN. Актуальные команды в TEST.md. Результат указан в Completion Report.
+- Risks / approval gates: Перед повторной фиксацией baseline сверять HEAD и локальные изменения. Владельцы данных FUNC, Web и V3 определены в карте.
 - Complexity: M
 - Estimated execution time: Оценить после актуального discovery и выбора bounded slice; календарное обещание не дано.
 - Agents: architect + product-manager; proposed ownership, сейчас delegation=0.
 - Skills: documentation-and-adrs; дополнительные skills выбирать по фактическому изменению.
 - Output artifacts: Baseline и карта ownership в этой карточке; без нового глобального реестра.
-- Next step: Проверить dependencies и текущие source owners; запросить/получить отдельный scope реализации выбранной задачи.
+- Next step: Использовать baseline в METH-02 и METH-08.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не начата; сформирована карточка.
-- files touched / work locations: Сейчас implementation files не менялись; будущие locations указаны в Scope.
-- technical value delivered: Не заявлена до реализации.
-- product value delivered: Не заявлена до реализации.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Проверяется только подготовка плана; выполнение AC этой задачи не заявлено.
-- residual risks: Concurrent planning edits; перед записью сверить revision.
-- follow-up: Выбор следующего разрешённого slice по DAG; автоматический старт запрещён.
+- status: implemented
+- what was done: Зафиксированы ревизия, стартовое состояние, карта владельцев и исходные импорты.
+- files touched / work locations: docs/planning/methodology-improvement-2026-11-15.*; tests/web/fixtures/dashboard-import-baseline.json
+- technical value delivered: Карточки A имеют собственных владельцев и ссылки на FUNC/Web/V3.
+- product value delivered: Действующие исправления и покрытие используются при подготовке Dashboard.
+- actual implementation date and time: 18-11-2026 17:35
+- verification evidence: Сверка HEAD/worktree, 19 рёбер в тесте границ, 57 проверок аудита методологий, согласованность RU/EN/JSON.
+- residual risks: Связи за пределами пилота имеют собственные задачи удаления.
+- follow-up: Использовать baseline в METH-02 и METH-08.
 
 ### Task `PAOS-METH-02`
 
 - Task: PAOS-METH-02
 - Task name: Связать критерии Dashboard с исходниками и проверками
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Delivery group: A1
 - Methodologies: Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Реализация группы A1 по запросу владельца.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 17:35
 - Depends on: PAOS-METH-01
 - Blocks: PAOS-METH-03, PAOS-METH-05
 - External references: PAOS-FUNC-05, PAOS-FUNC-06, PAOS-FUNC-07, PAOS-FUNC-19, PAOS-FUNC-25
@@ -209,40 +233,40 @@ Static split/parity/preservation evidence редакции 2 хранится в
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
 - Expected result: Одна таблица критериев Dashboard и указатели на существующие проверки и пробелы.
 - Acceptance criteria: PAOS-METH-02-AC01: Для применимых критериев Dashboard записана связь criterion → canonical owner → source → existing test/browser scenario → receipt или явный gap. Использованы F05–F07 и действующие TEST checks. PAOS-METH-02-AC02: Частичное portfolio явно помечено. Empty/error/stale покрыты по применимости. Если меняется общий путь навигации или состояния редактора, действующая проверка подтверждает сохранность и изоляцию draft. PAOS-METH-02-AC03: Одна изменённая предпосылка API/данных отражена в основном владельце, mirrors согласованы; traceability не реализует F02 и не ждёт её F28.
-- Verification gates: V-PLAN; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
-- Risks / approval gates: Не менять продуктовый scope и статусы FUNC; gaps не выдавать за passed. Текущий запрос разрешает только планирование.
+- Verification gates: V-PLAN. Актуальные команды в TEST.md. Результат указан в Completion Report.
+- Risks / approval gates: Источники, критерии и статусы FUNC остаются у их владельца. Пробел в проверке должен иметь явную запись.
 - Complexity: M
 - Estimated execution time: Оценить после актуального discovery и выбора bounded slice; календарное обещание не дано.
 - Agents: product-manager + tester; proposed ownership, сейчас delegation=0.
 - Skills: documentation-and-adrs; дополнительные skills выбирать по фактическому изменению.
 - Output artifacts: Одна таблица критериев Dashboard и указатели на существующие проверки и пробелы.
-- Next step: Проверить dependencies и текущие source owners; запросить/получить отдельный scope реализации выбранной задачи.
+- Next step: Переиспользовать карту в METH-12 и METH-17.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не начата; сформирована карточка.
-- files touched / work locations: Сейчас implementation files не менялись; будущие locations указаны в Scope.
-- technical value delivered: Не заявлена до реализации.
-- product value delivered: Не заявлена до реализации.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Проверяется только подготовка плана; выполнение AC этой задачи не заявлено.
-- residual risks: Не менять продуктовый scope и статусы FUNC; gaps не выдавать за passed.
-- follow-up: Выбор следующего разрешённого slice по DAG; автоматический старт запрещён.
+- status: implemented
+- what was done: Связаны критерии F05–F07/F18 и V3 с реализацией и проверками.
+- files touched / work locations: docs/testing/test-map.md; docs/testing/test-map.en.md
+- technical value delivered: У каждого применимого критерия есть актуальный маршрут и наблюдаемый результат.
+- product value delivered: Поведение Dashboard доступно для повторяемой проверки.
+- actual implementation date and time: 18-11-2026 17:35
+- verification evidence: Карта проверок, тесты модели и свежести, browser receipt evidence-hrwQrx.
+- residual risks: Черновики при изменении общей навигации проверяются в соответствующих сценариях FUNC.
+- follow-up: Переиспользовать карту в METH-12 и METH-17.
 
 ### Task `PAOS-METH-03`
 
 - Task: PAOS-METH-03
 - Task name: Уточнить design-контракт состояний пилота
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Delivery group: A1
 - Methodologies: Design-DD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Реализация группы A1 по запросу владельца.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 17:35
 - Depends on: PAOS-METH-02
 - Blocks: PAOS-METH-04
 - External references: PAOS-FUNC-05, PAOS-FUNC-19, PAOS-FUNC-24, UI-12
@@ -254,40 +278,40 @@ Static split/parity/preservation evidence редакции 2 хранится в
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
 - Expected result: Дополнение существующих state/coverage owners; новые макеты только для отсутствующего необходимого состояния.
 - Acceptance criteria: PAOS-METH-03-AC01: Для Dashboard отмечены применимые default/loading/empty/error/partial/stale и keyboard/focus в обеих темах. Dirty/validation/confirmation проверяются при затронутом контракте, остальные состояния имеют обоснованный not_applicable. PAOS-METH-03-AC02: Источник, единицы и unavailable для показателей явные; synthetic usage не становится данными приложения, F11 не реализуется этой задачей. PAOS-METH-03-AC03: Design differences получают disposition: исправить/предложить владельцу/принятый gap; согласование макета не закрывает UI-12 или human acceptance.
-- Verification gates: V-PLAN; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
-- Risks / approval gates: Новый пользовательский сценарий требует отдельного решения владельца; текущий V3 не переутверждается молча. Текущий запрос разрешает только планирование.
+- Verification gates: V-PLAN. Актуальные команды в TEST.md. Результат указан в Completion Report.
+- Risks / approval gates: Новый пользовательский сценарий и изменение утверждённого V3 требуют решения владельца.
 - Complexity: M
 - Estimated execution time: Оценить после актуального discovery и выбора bounded slice; календарное обещание не дано.
 - Agents: product-manager + frontend owner; proposed ownership, сейчас delegation=0.
 - Skills: documentation-and-adrs; дополнительные skills выбирать по фактическому изменению.
 - Output artifacts: Дополнение существующих state/coverage owners; новые макеты только для отсутствующего необходимого состояния.
-- Next step: Проверить dependencies и текущие source owners; запросить/получить отдельный scope реализации выбранной задачи.
+- Next step: Переиспользовать контракт в браузерном сценарии пилота.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не начата; сформирована карточка.
-- files touched / work locations: Сейчас implementation files не менялись; будущие locations указаны в Scope.
-- technical value delivered: Не заявлена до реализации.
-- product value delivered: Не заявлена до реализации.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Проверяется только подготовка плана; выполнение AC этой задачи не заявлено.
-- residual risks: Новый пользовательский сценарий требует отдельного решения владельца; текущий V3 не переутверждается молча.
-- follow-up: Выбор следующего разрешённого slice по DAG; автоматический старт запрещён.
+- status: implemented
+- what was done: Согласованы применимые состояния Dashboard и происхождение показателей с дизайном V3 и контрактами FUNC.
+- files touched / work locations: DESIGN.md; docs/frontend/state-management.md; docs/frontend/state-management.en.md
+- technical value delivered: Состояния и действия определены для обеих тем.
+- product value delivered: Загрузка, пустой результат, ошибки и частичное покрытие различимы; недоступный расход остаётся явно обозначен.
+- actual implementation date and time: 18-11-2026 17:35
+- verification evidence: Карта состояний, 50 browser checks, обзор light-stale.png и dark-error.png.
+- residual risks: Приёмка V3 пользователем принадлежит UI-12.
+- follow-up: Переиспользовать контракт в браузерном сценарии пилота.
 
 ### Task `PAOS-METH-04`
 
 - Task: PAOS-METH-04
 - Task name: Проверять композицию и поведение интерфейса по design-контракту
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Delivery group: A1
 - Methodologies: Design-DD, TDD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Реализация группы A1 по запросу владельца.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 17:35
 - Depends on: PAOS-METH-03
 - Blocks: PAOS-METH-12
 - External references: PAOS-FUNC-05, PAOS-FUNC-19, PAOS-FUNC-24, UI-12
@@ -299,26 +323,26 @@ Static split/parity/preservation evidence редакции 2 хранится в
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
 - Expected result: Пилотные проверки в существующем harness и evidence в прежнем владельце.
 - Acceptance criteria: PAOS-METH-04-AC01: На текущей сборке проверены обе темы, partial/error и применимые keyboard/focus-состояния Dashboard. Если пилот меняет общий overlay/navigation, действующий сценарий проверяет focus return и сохранение draft. PAOS-METH-04-AC02: Проверки обнаруживают намеренно изменённую fixture геометрию/состояние; thresholds и стабильные области обоснованы, обновление baseline явно reviewable. PAOS-METH-04-AC03: Расхождения сравниваются с design owner; automated technical pass отделён от human acceptance, receipt привязан к hashes build/harness.
-- Verification gates: V-WEB; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
-- Risks / approval gates: Synthetic profiles only; без provider/credentials, без снимков реальных пользовательских данных. Текущий запрос разрешает только планирование.
+- Verification gates: V-WEB. Актуальные команды в TEST.md. Результат указан в Completion Report.
+- Risks / approval gates: Браузер использует одноразовые профили и синтетические проекты. Снимки сделаны на локальной сборке.
 - Complexity: M
 - Estimated execution time: Оценить после актуального discovery и выбора bounded slice; календарное обещание не дано.
 - Agents: tester + frontend owner; proposed ownership, сейчас delegation=0.
 - Skills: build-web-apps:frontend-testing-debugging; только для будущей UI проверки; архитектурные решения по ADR.
 - Output artifacts: Пилотные проверки в существующем harness и evidence в прежнем владельце.
-- Next step: Проверить dependencies и текущие source owners; запросить/получить отдельный scope реализации выбранной задачи.
+- Next step: Повторить этот сценарий на изменении METH-12.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не начата; сформирована карточка.
-- files touched / work locations: Сейчас implementation files не менялись; будущие locations указаны в Scope.
-- technical value delivered: Не заявлена до реализации.
-- product value delivered: Не заявлена до реализации.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Проверяется только подготовка плана; выполнение AC этой задачи не заявлено.
-- residual risks: Synthetic profiles only; без provider/credentials, без снимков реальных пользовательских данных.
-- follow-up: Выбор следующего разрешённого slice по DAG; автоматический старт запрещён.
+- status: implemented
+- what was done: Расширен браузерный сценарий с проверкой геометрии, Tab/Enter и состояний в обеих темах.
+- files touched / work locations: tests/web/single-window/func-g01-dashboard-acceptance.mts; design/2026-11-13-v3/implementation-evidence.md
+- technical value delivered: Проверка обнаруживает искусственно сломанную сетку и различает устаревший снимок и его обновление.
+- product value delivered: Регрессии представления и навигации внутри Dashboard наблюдаемы в локальной сборке.
+- actual implementation date and time: 18-11-2026 17:35
+- verification evidence: 50/50 в Chromium на локальных Web/HTTP/SQLite; evidence-hrwQrx/result.json содержит хеши и снимки.
+- residual risks: Прогон выполнен на синтетических проектах. UI-12 владеет визуальной приёмкой V3.
+- follow-up: Повторить этот сценарий на изменении METH-12.
 
 ### Task `PAOS-METH-05`
 
@@ -459,15 +483,15 @@ Static split/parity/preservation evidence редакции 2 хранится в
 
 - Task: PAOS-METH-08
 - Task name: Спроектировать постепенные границы FSD и переходный ADR
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Delivery group: A1
 - Methodologies: FSD, Design-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Реализация группы A1 по запросу владельца.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 17:35
 - Depends on: PAOS-METH-01
 - Blocks: PAOS-METH-09
 - External references: PAOS-FUNC-08, PAOS-FUNC-14, PAOS-FUNC-30
@@ -479,40 +503,40 @@ Static split/parity/preservation evidence редакции 2 хранится в
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
 - Expected result: Один ADR с выбором scope проверки и границы Dashboard, стоимостью и условиями отката.
 - Acceptance criteria: PAOS-METH-08-AC01: ADR сравнивает оставить feature folders, улучшить только boundaries и частично внедрить FSD; решение опирается на coupling, тестируемость и стоимость переноса. PAOS-METH-08-AC02: Определены владелец текущей композиции Dashboard и минимальный публичный API. При выборе FSD допустим pages-first; widgets, entities и shared выделяются при доказанной потребности. Whole-screen TaskManager/Dashboard не становятся interaction features по имени. PAOS-METH-08-AC03: Зафиксированы public APIs, legacy exception list с owner/removal task, направление bridge legacy→new, fallback/rollback и критерий достаточности; FSD не распространяется на backend/Python.
-- Verification gates: V-PLAN; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
-- Risks / approval gates: ADR в этом плане — будущий deliverable, не уже принятое архитектурное решение; F30 не является обязательной зависимостью. Текущий запрос разрешает только планирование.
+- Verification gates: V-PLAN. Актуальные команды в TEST.md. Результат указан в Completion Report.
+- Risks / approval gates: Откат и выбор дальнейшего scope описаны в ADR. F30 остаётся справочной связью.
 - Complexity: M
 - Estimated execution time: Оценить после актуального discovery и выбора bounded slice; календарное обещание не дано.
 - Agents: architect; proposed ownership, сейчас delegation=0.
 - Skills: documentation-and-adrs; дополнительные skills выбирать по фактическому изменению.
 - Output artifacts: Один ADR с выбором scope проверки и границы Dashboard, стоимостью и условиями отката.
-- Next step: Проверить dependencies и текущие source owners; запросить/получить отдельный scope реализации выбранной задачи.
+- Next step: Проверить узкий API чтения в METH-12.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не начата; сформирована карточка.
-- files touched / work locations: Сейчас implementation files не менялись; будущие locations указаны в Scope.
-- technical value delivered: Не заявлена до реализации.
-- product value delivered: Не заявлена до реализации.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Проверяется только подготовка плана; выполнение AC этой задачи не заявлено.
-- residual risks: ADR в этом плане — будущий deliverable, не уже принятое архитектурное решение; F30 не является обязательной зависимостью.
-- follow-up: Выбор следующего разрешённого slice по DAG; автоматический старт запрещён.
+- status: implemented
+- what was done: Сравнены три варианта и выбрана проверяемая граница в текущей структуре.
+- files touched / work locations: docs/architecture/decisions/adr-dashboard-task-boundary.md; docs/architecture/decisions/adr-dashboard-task-boundary.en.md; docs/frontend/index*.md
+- technical value delivered: Указаны публичные входы, владельцы зависимостей, исключения и условия отката.
+- product value delivered: Пилот METH-12 может проверить один обратимый интерфейс между Dashboard и Tasks.
+- actual implementation date and time: 18-11-2026 17:35
+- verification evidence: ADR сверён с FSD через Context7 и с текущим графом импортов. Правила проверены METH-09.
+- residual risks: Выбор следующих переносов принадлежит METH-18.
+- follow-up: Проверить узкий API чтения в METH-12.
 
 ### Task `PAOS-METH-09`
 
 - Task: PAOS-METH-09
 - Task name: Добавить инкрементальную проверку frontend imports
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Delivery group: A1
 - Methodologies: FSD, TDD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Реализация группы A1 по запросу владельца.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 17:35
 - Depends on: PAOS-METH-08
 - Blocks: PAOS-METH-12
 - External references: PAOS-FUNC-08, PAOS-FUNC-14, PAOS-FUNC-30
@@ -524,26 +548,26 @@ Static split/parity/preservation evidence редакции 2 хранится в
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
 - Expected result: Существующая команда проверяет frontend scope и прежние backend/contracts границы. Примеры resolution переиспользуют действующие fixtures, где семантика совпадает.
 - Acceptance criteria: PAOS-METH-09-AC01: Расширенный tests/web/contracts-boundaries.test.mts проверяет .ts/.tsx/.mts, type imports/reexports/literal dynamic imports и поддерживаемые aliases. RED/GREEN отличает запрещённый edge от ошибки resolution. Неподдерживаемый alias или динамическая цель явно диагностируются. PAOS-METH-09-AC02: В пилотном scope соблюдаются public API и согласованные ADR правила upward/same-layer/deep imports и циклов. Entity cross-imports разрешаются через конкретный API, только если эта структура выбрана. PAOS-METH-09-AC03: Текущие legacy edges revision-pinned и не растут; перенесённый модуль удаляется из exceptions; действующие contracts→apps и backend→frontend запреты сохраняются.
-- Verification gates: V-BOUNDARY; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
-- Risks / approval gates: Не прятать реальные imports за exclusions; baseline обновлять reviewable. Не устанавливать dependency-cruiser автоматически. Текущий запрос разрешает только планирование.
+- Verification gates: V-BOUNDARY. Актуальные команды в TEST.md. Результат указан в Completion Report.
+- Risks / approval gates: Каждое исходное исключение привязано к ревизии и задаче удаления. Используется действующий парсер и resolver.
 - Complexity: M
 - Estimated execution time: Оценить после актуального discovery и выбора bounded slice; календарное обещание не дано.
 - Agents: tester + builder; proposed ownership, сейчас delegation=0.
 - Skills: documentation-and-adrs; дополнительные skills выбирать по фактическому изменению.
 - Output artifacts: Существующая команда проверяет frontend scope и прежние backend/contracts границы. Примеры resolution переиспользуют действующие fixtures, где семантика совпадает.
-- Next step: Проверить dependencies и текущие source owners; запросить/получить отдельный scope реализации выбранной задачи.
+- Next step: При переносе убрать соответствующие записи в том же изменении.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не начата; сформирована карточка.
-- files touched / work locations: Сейчас implementation files не менялись; будущие locations указаны в Scope.
-- technical value delivered: Не заявлена до реализации.
-- product value delivered: Не заявлена до реализации.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Проверяется только подготовка плана; выполнение AC этой задачи не заявлено.
-- residual risks: Не прятать реальные imports за exclusions; baseline обновлять reviewable. Не устанавливать dependency-cruiser автоматически.
-- follow-up: Выбор следующего разрешённого slice по DAG; автоматический старт запрещён.
+- status: implemented
+- what was done: Расширен AST-обход и добавлены разрешение импортов, правила и точные исключения для пилота.
+- files touched / work locations: tests/web/contracts-boundaries.test.mts; tests/web/fixtures/dashboard-import-baseline.json
+- technical value delivered: Отдельно выявляются нарушения границы, циклы, вычисляемые цели и ошибки разрешения.
+- product value delivered: Новые связи Dashboard и Tasks проверяются до переносов, действующие границы приложения сохранены.
+- actual implementation date and time: 18-11-2026 17:35
+- verification evidence: RED: TSX, исходные рёбра и импорты Tasks из App и соседнего экрана. GREEN: 8 тестов границ и 26 проверок затронутых контрактов.
+- residual risks: 19 исходных связей имеют владельцев и задачи удаления. Новые исключения в исходном коде не добавлены.
+- follow-up: При переносе убрать соответствующие записи в том же изменении.
 
 ### Task `PAOS-METH-10`
 

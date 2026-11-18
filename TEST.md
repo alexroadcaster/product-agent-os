@@ -1,5 +1,9 @@
 # TEST.md
 
+## PAOS-METH-A1 — Dashboard и границы импортов, 18.11.2026
+
+`node --test tests/web/contracts-boundaries.test.mts` проверяет TS/TSX/MTS, встроенный resolver, новые связи и циклы вокруг Dashboard/Tasks, а также исходную независимость contracts. Сценарий `tests/web/single-window/func-g01-dashboard-acceptance.mts --synthetic-browser --playwright-core <installed-path> --chromium <installed-path>` проверяет переход из списка всех проектов к Dashboard, состояния в двух темах, обновление и клавиатурное раскрытие источников. Используется актуальная сборка `npm run build:web` и одноразовый профиль. [Критерии и маршруты](docs/testing/test-map.md#dashboard-a1-criteria) · [Результаты и ограничения](docs/planning/methodology-improvement-2026-11-15.md#a1-results)
+
 ## F23 — проверка изменения статуса, 16.11.2026
 
 Для awaiting_user_decision: `python -B -m unittest tests.product_agent_os.test_validators -q`, RU/EN `validate_task_matrix.py`, scoped `tools/check_docs.py --paths`, проверка MD/JSON и сохранности остальных33FUNC/56M5, `git diff --check`. Статус незавершённый; несовпадение Completion Report отклоняется, implemented gates сохранены. Это metadata/validator route: прошлые Web/native/site receipts ниже не являются новым прогоном. Следующая human проверка и обратная связь — пользователь.

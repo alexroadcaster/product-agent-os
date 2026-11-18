@@ -61,3 +61,17 @@ Preview передаёт текущую revision и возвращает digest;
 Filesystem route — bounded explicit rescan/refresh, без watcher. Directory refresh заново получает текущую ветку; reader «Проверить свежесть файла» проверяет прежний metadata pin и скрывает body при stale/missing/forbidden. Graph/artifact/analysis revisions привязаны к root/policy/inventory; create/modify/rename/delete и смена policy/root инвалидируют предыдущие выводы при следующем наблюдении. Analysis GET также проверяет adapter/core revision. Общий `SourceProvenance` и `sameSourceRevision` заданы для будущих schema/code-table consumers; их UI внедряют F14/F33/F34.
 
 Проверки: `project-freshness.test.mts` + `project-freshness-poll.test.mts`5/5; final browser19/19 (`.tmp/func-g03/browser-final/evidence-IfLiEa/result.json`) проверяет second-channel change, доступный stale refresh, dirty/CAS409, остановку polling, file modify/rename и analysis stale. Полный Web594/594,0skip. Context7: [React effect cleanup](https://react.dev/learn/synchronizing-with-effects).
+## Dashboard — состояния пилота A1 {#dashboard-a1-states}
+
+Контракт действует для «Обзора» проекта и «Всех проектов» в светлой и тёмной темах. Владелец композиции — Dashboard. App выбирает проект и маршрут, local service владеет данными, а [дизайн V3](../planning/2026-11-13-v3-ui-implementation-plan.md) задаёт утверждённую композицию.
+
+| Состояние | Наблюдаемое поведение |
+| --- | --- |
+| Загружено | Итоги и прогресс строятся из доступных снимков Tasks. Отменённые задачи исключены из знаменателя прогресса. Очередь показывает позиции scheduler, а последние задачи отсортированы по `updatedAt`. |
+| Загрузка | Видно состояние загрузки и ожидаемое число проектов. Кнопка обновления недоступна до завершения чтений. |
+| Пусто | Успешный пустой снимок показывает «Задач пока нет». Успешный пустой ответ scheduler показывает «Очередь пуста». |
+| Ошибка и частичные данные | Недоступные значения показаны тире. Покрытие указано рядом с итогами. В разделе источников видны ошибки, повторное чтение доступно кнопкой обновления. |
+| Устарело | Изменение stamp показывает предупреждение и сохраняет видимый снимок до явного обновления. |
+| Клавиатура и фокус | Tab переходит с кнопки обновления на «Текущие данные · источники и покрытие». Фокус видим, Enter раскрывает источники. |
+
+Единицы: задачи, наблюдаемые запуски и позиции очереди. Назначения и наблюдаемые запуски за семь дней относятся к разным источникам. Токены, стоимость и `tool_use` без измерений остаются недоступными. Синтетические данные проверки изолированы от приложения пользователя. Изменение полей, валидация и подтверждение не применяются к read-only Dashboard. Сценарии черновиков принадлежат F03/F04 и F18. [Проверки A1](../testing/test-map.md#dashboard-a1-criteria)

@@ -1,11 +1,11 @@
 # Product-Agent OS — direction A: internal quality and architecture
 
-Source status: repository_source / owner_requested_planning / internal_quality_plan; user_project_work_split_to_direction_B; implementation_not_started.
+Source status: repository_source / owner_requested_internal_quality_plan / a1_local_verification.
 Created 2026-11-15, revised 2026-11-18. Schema version: task_matrix_plan_v1. Timezone: Europe/Moscow.
 
 ## Two directions — revision 3, 2026-11-18
 
-A improves Product-Agent OS and its maintenance process: **17 executable planned tasks**, 8 P1 / 7 P2 / 2 P3. B develops methodology application in user projects: [26 product tasks](user-project-methodologies-2026-11-15.en.md), [JSON](user-project-methodologies-2026-11-15.en.json). There are no cross-direction hard dependencies.
+A improves Product-Agent OS and its maintenance process. A contains **17 executable tasks**, 8 P1 / 7 P2 / 2 P3. B develops methodology application in user projects: [26 product tasks](user-project-methodologies-2026-11-15.en.md), [JSON](user-project-methodologies-2026-11-15.en.json). There are no cross-direction hard dependencies.
 
 Retain METH-16 with its ID, title and three legacy AC as a **reference-only** record outside JSON v2's tasks array; it is not scheduled and owns no product implementation status. Canonical owners: PMETH-03/07/10/11/16/17/22/23/26; JSON preserves exact AC mappings and former edges. V-REFERENCE checks B links/coverage without executing code from A. METH-18 considers internal expansion options METH-10/11/13–15. Direction B follows its own delivery plan.
 
@@ -13,9 +13,9 @@ Revision 2 used HEAD `5a9c87bea374accc953a8401fa1ac32678ff6e6e` and FUNC owner s
 
 ## Goal, authority and ownership
 
-Direction A covers Spec-DD, Design-DD, TDD, ADD and frontend boundaries. The first technical pilot covers Dashboard and an extension to the existing import check. All 17 executable records retain planned status and `pending_execution_timestamp`.
+Direction A covers Spec-DD, Design-DD, TDD, ADD, and frontend boundaries. A1 defines the testable Dashboard contract and import constraints. A2 tests an actual change at the Dashboard and Tasks boundary.
 
-[JSON state v2](methodology-improvement-2026-11-15.en.json) owns status/priority/dependencies for 17 A tasks; cross_track_references separately retains METH-16. Synchronize RU/EN cards with JSON; tables are indexes. Use the language switcher for Russian. B has its own [detailed plan](user-project-methodologies-2026-11-15.en.md) and owner. Authoring this revision completes no A/B/FUNC/Web/V3 task.
+[JSON state v2](methodology-improvement-2026-11-15.en.json) owns status, priority, and dependencies for 17 A tasks. `cross_track_references` retains METH-16 separately. The RU/EN cards match JSON. B has its own [detailed plan](user-project-methodologies-2026-11-15.en.md) and owner.
 
 ## Baseline and evidence
 
@@ -26,7 +26,7 @@ Source snapshot: git HEAD `35458110145d928b9b14d9312b60d852f11f6e88`; hashes of 
 - Design-DD has workspace file `DESIGN.md`, V3 coverage and the [implementation plan](2026-11-13-v3-ui-implementation-plan.md). Historical V3 review identified a composition-coverage gap; this does not assert a new defect in the current build.
 - TDD has rules and individual historical RED/GREEN receipts; completed tests cannot prove test-first ordering for every task.
 - ADD has build/review/handoff contracts and ownership separation. Better agentic quality/cost requires a comparable baseline rather than role counts.
-- The frontend has feature folders, but dashboard/tasks/team/workflows import sibling internals. Strict FSD is not established; workspace test `tests/web/contracts-boundaries.test.mts` protects application boundaries, not every FSD import. METH-09 must explicitly cover TSX and aliases to avoid hidden coverage gaps.
+- Before A1, the frontend used feature folders and internal imports between Dashboard, Tasks, and peer modules. The original `tests/web/contracts-boundaries.test.mts` covered application boundaries. A1 adds TSX and pilot resolution rules under the [ADR](../architecture/decisions/adr-dashboard-task-boundary.en.md).
 
 Sources: `apps/web/src/features/dashboard/model.ts`, `tasks/TaskManager.tsx`, `workflows/WorkflowManager.tsx`, `team/TeamManager.tsx`, `apps/web/src/ui/App.tsx`; Python owner `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`. Read their current state again before future edits.
 
@@ -64,11 +64,11 @@ Two branches follow METH-01. METH-02 → 03 → 04 defines Dashboard criteria an
 
 `external_refs` points to owners and evidence. F08 protects application-independent contracts, and F18 owns refresh semantics. Recheck F01 when touching pinned runtime sources. Sequence writes to shared files.
 
-## Proposed incremental FSD boundaries
+## Dashboard and Tasks boundary
 
-In METH-08 compare retaining current modules, strengthening their boundaries and adopting bounded FSD. Prefer the smallest reversible option that addresses the demonstrated Dashboard problem.
+METH-08 compared retaining the current modules, strengthening their boundaries, and adopting bounded FSD. A2 will strengthen the boundary in the existing modules. [Decision and rollback criteria](../architecture/decisions/adr-dashboard-task-boundary.en.md)
 
-- Keep `App.tsx` as the owner of composition/session/project scope. Start with an explicit API for the required Tasks selectors (`semanticStatus`, `isBlocked`) and a single implementation. A pages-first approach is valid if FSD is selected.
+- `App.tsx` retains composition, session, and active project ownership. A2 tests an explicit API for the Tasks selectors (`semanticStatus`, `isBlocked`) with a single implementation.
 
 - Extract widgets, entities/task and shared only for demonstrated needs. Verify API use and regressions before moving more screens. Shared business contracts remain in `packages/contracts`.
 
@@ -78,7 +78,7 @@ In METH-08 compare retaining current modules, strengthening their boundaries and
 
 ## Future task verification
 
-These profiles propose task acceptance. TEST.md retains the current verification route and is unchanged by this plan.
+These profiles describe expected verification for each task. `TEST.md` lists the current commands and routes.
 
 | Profile | Minimum evidence |
 | --- | --- |
@@ -115,6 +115,30 @@ This checks the planning artifact, not execution of METH tasks. Review mode: sel
 
 Revision 2 static split/parity/preservation evidence remains in direction B. Revision 3 retains the former wording of revised acceptance criteria and removed edges in JSON `pilot_revision`. The initial verification dates and results above belong to the original revision.
 
+## A1 results {#a1-results}
+
+The METH-01 baseline was a clean worktree at `bd7d9135f994201170277171eb54e4040cef4fa8`. Composition and navigation reside in `apps/web/src/ui/App.tsx`. The Dashboard model imports `semanticStatus` and `isBlocked` from Tasks, and its views use labels and UI primitives. The exact 19 existing edges are in `tests/web/fixtures/dashboard-import-baseline.json`. Current Web checks are in `TEST.md` and Python methodology checks in `tests.product_agent_os.test_methodology_audit`. FUNC G01 and F18 results from November 15 retain their original receipts.
+
+| Cards | Owner of the A result | Reuse and references |
+| --- | --- | --- |
+| 01 | Direction A matrix and pinned imports | FUNC G07 and F23, Web, and V3 retain their source ownership. |
+| 02 | [Criterion-to-check mapping](../testing/test-map.en.md#dashboard-a1-criteria) | FUNC owns F05–F07/F18 criteria and implementation. |
+| 03 | [Dashboard states](../frontend/state-management.en.md#dashboard-a1-states) | V3 supplies the composition and FUNC the data semantics. |
+| 04 | Dashboard browser scenario and V3 evidence | Extends the F05–F07 scenario with existing local-service fixtures. |
+| 08, 09 | [ADR](../architecture/decisions/adr-dashboard-task-boundary.en.md), boundary test, and exceptions | Reuse installed Rolldown and the F14 resolver. F08 owns contract independence. |
+| 05, 06, 07 | TDD coverage of critical contracts, handoff, and ADD measurement | Reuse existing FUNC/Web tests and eval owners. F19 and F23 retain their acceptance scope. |
+| 12, 17, 18 | Boundary pilot, technical acceptance, and expansion decision | Reuse A1 and applicable FUNC/V3 checks. F19 and UI-12/F23 retain their decisions. |
+| 10, 11, 13, 14, 15 | Possible work on shared UI, the Tasks API, and screens | Reuse current FUNC/Web/V3 contracts. Start a selected slice after 18. |
+| 16 | Reference entry | Direction B owns product criteria and implementation. |
+
+The current build's browser receipt is `.tmp/func-g01-dashboard/evidence-hrwQrx/result.json`, with 50 checks. It covers RU/light and EN/dark desktop at 1440×1000, plus EN/dark mobile at 390×844. The composition assertion rejects a fixture that stacks the principal columns. `light-stale.png` and `dark-error.png` were inspected against the state contract. Dynamic text such as timestamps is checked semantically. Geometry tolerates 1 px of rounding. The checks cover local Dashboard behavior. UI-12 owns full V3 user acceptance.
+
+In RED, the old parser rejected TSX, scanning source exposed 19 unrecorded edges, and the Tasks check exposed unguarded imports of App and a peer screen. GREEN covers an allowed App entry, forbidden upward, cross-feature, and deep imports, an unresolved alias, a computed import, and a cycle through another module. The final focused run passed 26 checks, including 8 boundary tests.
+
+Final verification on 2026-11-18: `node --test --test-concurrency=1 tests/web/*.test.mts` passed **702/702** on Windows with zero skips. `npm run check:web-m1` and `npm run build:web` passed. The Python methodology audit passed 57/57. Documentation checks, RU/EN matrix validators, task-state consistency, and an isolated MkDocs build passed. Verified 7 browser receipt hashes, 12 preserved cards outside A1 per language, and byte-exact JSON mirrors.
+
+The initial sandboxed browser run exited 1 with Windows access denied. A retry reached the scenario and exposed an invalid synthetic record field. The corrected fixture passed all 50 checks. The initial full Web run stopped after Windows native fixture failures. The final run with authorized native fixtures exited 0. Separate logs are in `.tmp/func-g01-dashboard/`. The final log is `a1-web-suite-final.log`.
+
 ## Task index
 
 | ID | Priority | Group / methods | Task | Depends on |
@@ -144,15 +168,15 @@ Revision 2 static split/parity/preservation evidence remains in direction B. Rev
 
 - Task: PAOS-METH-01
 - Task name: Record the baseline and improvement ownership
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Delivery group: A1
 - Methodologies: Spec-DD, ADD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Owner requested A1 implementation.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 17:35
 - Depends on: None.
 - Blocks: PAOS-METH-02, PAOS-METH-08
 - External references: PAOS-FUNC-01, PAOS-FUNC-02, PAOS-FUNC-03, PAOS-FUNC-04, PAOS-FUNC-05, PAOS-FUNC-06, PAOS-FUNC-07, PAOS-FUNC-08, PAOS-FUNC-14, PAOS-FUNC-19, PAOS-FUNC-23, PAOS-FUNC-24, PAOS-FUNC-25, PAOS-FUNC-30
@@ -164,40 +188,40 @@ Revision 2 static split/parity/preservation evidence remains in direction B. Rev
 - Non-goals: New product features, provider/credentials, target/Git/publication/production; other FUNC/Web statuses; anything outside this slice.
 - Expected result: Baseline and ownership map in this card; no new global registry.
 - Acceptance criteria: PAOS-METH-01-AC01: Record the revision, local changes, imports and current web/plugin checks; date historical receipts explicitly. PAOS-METH-01-AC02: Classify every METH card as own/reuse/reference against FUNC/Web/V3; do not create another owner for existing AC or status. PAOS-METH-01-AC03: Assign file owners and sequence shared edits. The current FUNC JSON and G07 results give the 2026-11-18 baseline of 33 implemented and one awaiting_user_decision (F23). Reuse F01/F03–F08 and F14/F19/F24/F25 within their verified limits.
-- Verification gates: V-PLAN; profile above; current TEST routing takes precedence; execute during future implementation.
-- Risks / approval gates: Concurrent planning edits; recheck revisions before writing. The current request authorizes planning only.
+- Verification gates: V-PLAN. Current commands are listed in TEST.md. Results are in the Completion Report.
+- Risks / approval gates: Recheck HEAD and local changes before recording a new baseline. The ownership map identifies the FUNC, Web, and V3 sources.
 - Complexity: M
 - Estimated execution time: Estimate after current discovery and bounded-slice selection; no calendar commitment.
 - Agents: architect + product-manager; proposed ownership; delegation=0 now.
 - Skills: documentation-and-adrs; select other skills for the actual change.
 - Output artifacts: Baseline and ownership map in this card; no new global registry.
-- Next step: Check dependencies and current source owners; obtain a separately authorized implementation scope for the selected task.
+- Next step: Use this baseline in METH-02 and METH-08.
 
 #### Completion Report
 
-- status: planned
-- what was done: Implementation not started; task card authored.
-- files touched / work locations: No implementation files changed now; future locations are listed in Scope.
-- technical value delivered: Not claimed before implementation.
-- product value delivered: Not claimed before implementation.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Only plan preparation is checked; this task's AC are not claimed as executed.
-- residual risks: Concurrent planning edits; recheck revisions before writing.
-- follow-up: Select the next authorized slice from the DAG; no automatic start.
+- status: implemented
+- what was done: Recorded the revision, starting state, ownership map, and original imports.
+- files touched / work locations: docs/planning/methodology-improvement-2026-11-15.*; tests/web/fixtures/dashboard-import-baseline.json
+- technical value delivered: Each A task has an owner and references to FUNC/Web/V3.
+- product value delivered: Existing fixes and coverage inform the Dashboard work.
+- actual implementation date and time: 18-11-2026 17:35
+- verification evidence: HEAD/worktree check, 19 edges in the boundary test, 57 methodology audit checks, and RU/EN/JSON consistency.
+- residual risks: Edges outside the pilot have assigned removal tasks.
+- follow-up: Use this baseline in METH-02 and METH-08.
 
 ### Task `PAOS-METH-02`
 
 - Task: PAOS-METH-02
 - Task name: Trace Dashboard criteria to source and checks
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Delivery group: A1
 - Methodologies: Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Owner requested A1 implementation.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 17:35
 - Depends on: PAOS-METH-01
 - Blocks: PAOS-METH-03, PAOS-METH-05
 - External references: PAOS-FUNC-05, PAOS-FUNC-06, PAOS-FUNC-07, PAOS-FUNC-19, PAOS-FUNC-25
@@ -209,40 +233,40 @@ Revision 2 static split/parity/preservation evidence remains in direction B. Rev
 - Non-goals: New product features, provider/credentials, target/Git/publication/production; other FUNC/Web statuses; anything outside this slice.
 - Expected result: One Dashboard criterion map with pointers to existing checks and gaps.
 - Acceptance criteria: PAOS-METH-02-AC01: For applicable Dashboard criteria, record criterion → canonical owner → source → existing test/browser scenario → receipt or explicit gap. Reuse F05–F07 and current TEST checks. PAOS-METH-02-AC02: Show partial portfolio explicitly and cover applicable empty/error/stale states. If shared navigation or editor state changes, an existing check verifies that drafts remain intact and isolated. PAOS-METH-02-AC03: Reflect changed API/data assumptions in their canonical owner and align mirrors; this traceability work neither implements F02 nor waits for F28.
-- Verification gates: V-PLAN; profile above; current TEST routing takes precedence; execute during future implementation.
-- Risks / approval gates: Do not change FUNC scope/status; gaps are not passed checks. The current request authorizes planning only.
+- Verification gates: V-PLAN. Current commands are listed in TEST.md. Results are in the Completion Report.
+- Risks / approval gates: FUNC retains its sources, criteria, and task statuses. Record any verification gap explicitly.
 - Complexity: M
 - Estimated execution time: Estimate after current discovery and bounded-slice selection; no calendar commitment.
 - Agents: product-manager + tester; proposed ownership; delegation=0 now.
 - Skills: documentation-and-adrs; select other skills for the actual change.
 - Output artifacts: One Dashboard criterion map with pointers to existing checks and gaps.
-- Next step: Check dependencies and current source owners; obtain a separately authorized implementation scope for the selected task.
+- Next step: Reuse the mapping in METH-12 and METH-17.
 
 #### Completion Report
 
-- status: planned
-- what was done: Implementation not started; task card authored.
-- files touched / work locations: No implementation files changed now; future locations are listed in Scope.
-- technical value delivered: Not claimed before implementation.
-- product value delivered: Not claimed before implementation.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Only plan preparation is checked; this task's AC are not claimed as executed.
-- residual risks: Do not change FUNC scope/status; gaps are not passed checks.
-- follow-up: Select the next authorized slice from the DAG; no automatic start.
+- status: implemented
+- what was done: Mapped F05–F07/F18 and V3 criteria to implementation and checks.
+- files touched / work locations: docs/testing/test-map.md; docs/testing/test-map.en.md
+- technical value delivered: Each applicable criterion has a current route and an observable result.
+- product value delivered: Dashboard behavior can be checked consistently.
+- actual implementation date and time: 18-11-2026 17:35
+- verification evidence: Test map, model and freshness tests, and browser receipt evidence-hrwQrx.
+- residual risks: If shared navigation changes, rerun the applicable FUNC draft scenarios.
+- follow-up: Reuse the mapping in METH-12 and METH-17.
 
 ### Task `PAOS-METH-03`
 
 - Task: PAOS-METH-03
 - Task name: Specify the pilot design-state contract
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Delivery group: A1
 - Methodologies: Design-DD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Owner requested A1 implementation.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 17:35
 - Depends on: PAOS-METH-02
 - Blocks: PAOS-METH-04
 - External references: PAOS-FUNC-05, PAOS-FUNC-19, PAOS-FUNC-24, UI-12
@@ -254,40 +278,40 @@ Revision 2 static split/parity/preservation evidence remains in direction B. Rev
 - Non-goals: New product features, provider/credentials, target/Git/publication/production; other FUNC/Web statuses; anything outside this slice.
 - Expected result: Updates to existing state/coverage owners; new mockups only for necessary missing states.
 - Acceptance criteria: PAOS-METH-03-AC01: Identify applicable Dashboard default/loading/empty/error/partial/stale and keyboard/focus states in both themes. Check dirty/validation/confirmation when the affected contract warrants it and record reasons for remaining not_applicable states. PAOS-METH-03-AC02: Make metric sources, units and unavailable states explicit; synthetic usage does not become application data and this task does not implement F11. PAOS-METH-03-AC03: Give design differences a disposition: repair/propose to owner/accepted gap; design agreement does not close UI-12 or human acceptance.
-- Verification gates: V-PLAN; profile above; current TEST routing takes precedence; execute during future implementation.
-- Risks / approval gates: A new user journey needs an owner decision; do not silently replace approved V3. The current request authorizes planning only.
+- Verification gates: V-PLAN. Current commands are listed in TEST.md. Results are in the Completion Report.
+- Risks / approval gates: A new user journey or a change to approved V3 requires the owner's decision.
 - Complexity: M
 - Estimated execution time: Estimate after current discovery and bounded-slice selection; no calendar commitment.
 - Agents: product-manager + frontend owner; proposed ownership; delegation=0 now.
 - Skills: documentation-and-adrs; select other skills for the actual change.
 - Output artifacts: Updates to existing state/coverage owners; new mockups only for necessary missing states.
-- Next step: Check dependencies and current source owners; obtain a separately authorized implementation scope for the selected task.
+- Next step: Reuse the contract in the pilot browser scenario.
 
 #### Completion Report
 
-- status: planned
-- what was done: Implementation not started; task card authored.
-- files touched / work locations: No implementation files changed now; future locations are listed in Scope.
-- technical value delivered: Not claimed before implementation.
-- product value delivered: Not claimed before implementation.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Only plan preparation is checked; this task's AC are not claimed as executed.
-- residual risks: A new user journey needs an owner decision; do not silently replace approved V3.
-- follow-up: Select the next authorized slice from the DAG; no automatic start.
+- status: implemented
+- what was done: Aligned applicable Dashboard states and metric provenance with V3 and FUNC contracts.
+- files touched / work locations: DESIGN.md; docs/frontend/state-management.md; docs/frontend/state-management.en.md
+- technical value delivered: States and actions are defined for both themes.
+- product value delivered: Loading, empty, errors, and partial coverage are distinguishable. Unavailable usage is explicit.
+- actual implementation date and time: 18-11-2026 17:35
+- verification evidence: State map, 50 browser checks, and review of light-stale.png and dark-error.png.
+- residual risks: V3 user acceptance belongs to UI-12.
+- follow-up: Reuse the contract in the pilot browser scenario.
 
 ### Task `PAOS-METH-04`
 
 - Task: PAOS-METH-04
 - Task name: Check UI composition and behavior against the design contract
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Delivery group: A1
 - Methodologies: Design-DD, TDD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Owner requested A1 implementation.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 17:35
 - Depends on: PAOS-METH-03
 - Blocks: PAOS-METH-12
 - External references: PAOS-FUNC-05, PAOS-FUNC-19, PAOS-FUNC-24, UI-12
@@ -299,26 +323,26 @@ Revision 2 static split/parity/preservation evidence remains in direction B. Rev
 - Non-goals: New product features, provider/credentials, target/Git/publication/production; other FUNC/Web statuses; anything outside this slice.
 - Expected result: Pilot checks in the existing harness and evidence in the existing owner.
 - Acceptance criteria: PAOS-METH-04-AC01: Check both themes, partial/error and applicable Dashboard keyboard/focus states on the current build. If the pilot changes shared overlay/navigation, reuse the existing scenario for focus return and draft preservation. PAOS-METH-04-AC02: Checks detect deliberately changed fixture geometry/state; justify thresholds and stable regions, and make baseline updates explicitly reviewable. PAOS-METH-04-AC03: Compare differences with the design owner; separate automated technical passes from human acceptance and bind receipts to build/harness hashes.
-- Verification gates: V-WEB; profile above; current TEST routing takes precedence; execute during future implementation.
-- Risks / approval gates: Synthetic profiles only; no providers/credentials or screenshots of actual user data. The current request authorizes planning only.
+- Verification gates: V-WEB. Current commands are listed in TEST.md. Results are in the Completion Report.
+- Risks / approval gates: The browser uses disposable profiles and synthetic projects. Screenshots come from the local build.
 - Complexity: M
 - Estimated execution time: Estimate after current discovery and bounded-slice selection; no calendar commitment.
 - Agents: tester + frontend owner; proposed ownership; delegation=0 now.
 - Skills: build-web-apps:frontend-testing-debugging; for future UI verification only; architecture follows the ADR.
 - Output artifacts: Pilot checks in the existing harness and evidence in the existing owner.
-- Next step: Check dependencies and current source owners; obtain a separately authorized implementation scope for the selected task.
+- Next step: Rerun this scenario after METH-12.
 
 #### Completion Report
 
-- status: planned
-- what was done: Implementation not started; task card authored.
-- files touched / work locations: No implementation files changed now; future locations are listed in Scope.
-- technical value delivered: Not claimed before implementation.
-- product value delivered: Not claimed before implementation.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Only plan preparation is checked; this task's AC are not claimed as executed.
-- residual risks: Synthetic profiles only; no providers/credentials or screenshots of actual user data.
-- follow-up: Select the next authorized slice from the DAG; no automatic start.
+- status: implemented
+- what was done: Extended the browser scenario to check geometry, Tab/Enter, and states in both themes.
+- files touched / work locations: tests/web/single-window/func-g01-dashboard-acceptance.mts; design/2026-11-13-v3/implementation-evidence.md
+- technical value delivered: The assertion catches a deliberately broken grid and distinguishes a stale snapshot from a refreshed one.
+- product value delivered: Dashboard rendering and local keyboard interaction regressions are observable on the local build.
+- actual implementation date and time: 18-11-2026 17:35
+- verification evidence: 50/50 in Chromium with local Web/HTTP/SQLite. evidence-hrwQrx/result.json records hashes and screenshots.
+- residual risks: The run used synthetic projects. UI-12 owns V3 visual acceptance.
+- follow-up: Rerun this scenario after METH-12.
 
 ### Task `PAOS-METH-05`
 
@@ -459,15 +483,15 @@ Revision 2 static split/parity/preservation evidence remains in direction B. Rev
 
 - Task: PAOS-METH-08
 - Task name: Design incremental FSD boundaries and a transition ADR
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Delivery group: A1
 - Methodologies: FSD, Design-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Owner requested A1 implementation.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 17:35
 - Depends on: PAOS-METH-01
 - Blocks: PAOS-METH-09
 - External references: PAOS-FUNC-08, PAOS-FUNC-14, PAOS-FUNC-30
@@ -479,40 +503,40 @@ Revision 2 static split/parity/preservation evidence remains in direction B. Rev
 - Non-goals: New product features, provider/credentials, target/Git/publication/production; other FUNC/Web statuses; anything outside this slice.
 - Expected result: One ADR selecting the check scope and Dashboard boundary and recording costs and rollback conditions.
 - Acceptance criteria: PAOS-METH-08-AC01: Compare retaining feature folders, boundaries-only improvements and partial FSD; base the ADR on coupling, testability and migration cost. PAOS-METH-08-AC02: Identify the current Dashboard composition owner and minimum public API. A pages-first design is valid if FSD is selected. Extract widgets, entities and shared only for demonstrated needs. Whole-screen TaskManager/Dashboard do not become interaction features by name. PAOS-METH-08-AC03: Specify public APIs, an owned legacy exception list with removal tasks, legacy→new bridges, fallback/rollback and sufficiency criteria; do not apply frontend FSD to backend/Python.
-- Verification gates: V-PLAN; profile above; current TEST routing takes precedence; execute during future implementation.
-- Risks / approval gates: The ADR is a future deliverable, not an accepted decision; F30 is not a mandatory dependency. The current request authorizes planning only.
+- Verification gates: V-PLAN. Current commands are listed in TEST.md. Results are in the Completion Report.
+- Risks / approval gates: The ADR records rollback and scope selection. F30 remains a reference.
 - Complexity: M
 - Estimated execution time: Estimate after current discovery and bounded-slice selection; no calendar commitment.
 - Agents: architect; proposed ownership; delegation=0 now.
 - Skills: documentation-and-adrs; select other skills for the actual change.
 - Output artifacts: One ADR selecting the check scope and Dashboard boundary and recording costs and rollback conditions.
-- Next step: Check dependencies and current source owners; obtain a separately authorized implementation scope for the selected task.
+- Next step: Test the narrow read API in METH-12.
 
 #### Completion Report
 
-- status: planned
-- what was done: Implementation not started; task card authored.
-- files touched / work locations: No implementation files changed now; future locations are listed in Scope.
-- technical value delivered: Not claimed before implementation.
-- product value delivered: Not claimed before implementation.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Only plan preparation is checked; this task's AC are not claimed as executed.
-- residual risks: The ADR is a future deliverable, not an accepted decision; F30 is not a mandatory dependency.
-- follow-up: Select the next authorized slice from the DAG; no automatic start.
+- status: implemented
+- what was done: Compared three alternatives and selected a testable boundary in the existing structure.
+- files touched / work locations: docs/architecture/decisions/adr-dashboard-task-boundary.md; docs/architecture/decisions/adr-dashboard-task-boundary.en.md; docs/frontend/index*.md
+- technical value delivered: Recorded public entry points, dependency owners, exceptions, and rollback conditions.
+- product value delivered: METH-12 can test a single reversible interface between Dashboard and Tasks.
+- actual implementation date and time: 18-11-2026 17:35
+- verification evidence: Checked the ADR against FSD via Context7 and the local import graph. METH-09 exercises the rules.
+- residual risks: METH-18 decides later migrations.
+- follow-up: Test the narrow read API in METH-12.
 
 ### Task `PAOS-METH-09`
 
 - Task: PAOS-METH-09
 - Task name: Add incremental frontend-import checks
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Delivery group: A1
 - Methodologies: FSD, TDD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Owner requested A1 implementation.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 17:35
 - Depends on: PAOS-METH-08
 - Blocks: PAOS-METH-12
 - External references: PAOS-FUNC-08, PAOS-FUNC-14, PAOS-FUNC-30
@@ -524,26 +548,26 @@ Revision 2 static split/parity/preservation evidence remains in direction B. Rev
 - Non-goals: New product features, provider/credentials, target/Git/publication/production; other FUNC/Web statuses; anything outside this slice.
 - Expected result: The existing command checks the frontend scope and prior backend/contracts boundaries. Resolution examples reuse current fixtures where semantics match.
 - Acceptance criteria: PAOS-METH-09-AC01: The extended tests/web/contracts-boundaries.test.mts checks .ts/.tsx/.mts, type imports/re-exports/literal dynamic imports and supported aliases. RED/GREEN distinguishes a denied edge from resolution failure. Report unsupported aliases or dynamic targets explicitly. PAOS-METH-09-AC02: Enforce public APIs and ADR-defined rules for upward/same-layer/deep imports and cycles in the pilot scope. Permit entity cross-imports through a specific API only if that structure is selected. PAOS-METH-09-AC03: Pin current legacy edges and prevent growth; remove migrated modules from exceptions; preserve contracts→apps and backend→frontend prohibitions.
-- Verification gates: V-BOUNDARY; profile above; current TEST routing takes precedence; execute during future implementation.
-- Risks / approval gates: Do not hide actual imports with exclusions; make baseline updates reviewable. Do not install dependency-cruiser automatically. The current request authorizes planning only.
+- Verification gates: V-BOUNDARY. Current commands are listed in TEST.md. Results are in the Completion Report.
+- Risks / approval gates: Each existing exception has a source revision and removal task. The check uses the installed parser and existing resolver.
 - Complexity: M
 - Estimated execution time: Estimate after current discovery and bounded-slice selection; no calendar commitment.
 - Agents: tester + builder; proposed ownership; delegation=0 now.
 - Skills: documentation-and-adrs; select other skills for the actual change.
 - Output artifacts: The existing command checks the frontend scope and prior backend/contracts boundaries. Resolution examples reuse current fixtures where semantics match.
-- Next step: Check dependencies and current source owners; obtain a separately authorized implementation scope for the selected task.
+- Next step: Remove an exception in the same change as its edge.
 
 #### Completion Report
 
-- status: planned
-- what was done: Implementation not started; task card authored.
-- files touched / work locations: No implementation files changed now; future locations are listed in Scope.
-- technical value delivered: Not claimed before implementation.
-- product value delivered: Not claimed before implementation.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Only plan preparation is checked; this task's AC are not claimed as executed.
-- residual risks: Do not hide actual imports with exclusions; make baseline updates reviewable. Do not install dependency-cruiser automatically.
-- follow-up: Select the next authorized slice from the DAG; no automatic start.
+- status: implemented
+- what was done: Extended the AST scan with import resolution, pilot rules, and exact exceptions.
+- files touched / work locations: tests/web/contracts-boundaries.test.mts; tests/web/fixtures/dashboard-import-baseline.json
+- technical value delivered: The check distinguishes boundary violations, cycles, computed targets, and resolution failures.
+- product value delivered: New Dashboard and Tasks edges are checked before migration, and existing application boundaries are preserved.
+- actual implementation date and time: 18-11-2026 17:35
+- verification evidence: RED: TSX, existing edges, and Tasks imports of App and a peer screen. GREEN: 8 boundary tests and 26 affected-contract checks.
+- residual risks: The 19 existing edges have owners and removal tasks. A1 introduced no new source-code edges.
+- follow-up: Remove an exception in the same change as its edge.
 
 ### Task `PAOS-METH-10`
 

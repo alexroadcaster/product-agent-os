@@ -28,6 +28,19 @@ Task/status evidence is owned by [FUNC-G01 results](../planning/functional-remed
 
 507 Web tests were checked with separate provenance:492 passed in the original full sandbox run;11 EPERM setup failures and4 skips were rerun as exactly15 cases on an authorized executor,15 pass0skip. This is not described as one green full run. Changed link/hardlink guards need real fixtures; skip is not pass. The later browser30/build checks cover the CSS delta; the earlier full receipt is not presented as rerun after CSS.
 
+## Dashboard A1 criteria {#dashboard-a1-criteria}
+
+The [FUNC matrix](../planning/functional-remediation-2026-11-15.en.md) owns F05–F07/F18 behavior. The [Dashboard state contract](../frontend/state-management.en.md#dashboard-a1-states) records applicability to V3. The current browser receipt for rows below is `.tmp/func-g01-dashboard/evidence-hrwQrx/result.json`, using the Web build, local HTTP/SQLite, and synthetic data.
+
+| Criterion and owner | Implementation | Verification |
+| --- | --- | --- |
+| F05, coverage next to totals | `Dashboard.tsx` and `aggregateSnapshots` in `features/dashboard/model.ts` | `ui-v3-dashboard.test.mts` and `func-g01-dashboard-acceptance.mts` cover loading, partial, all-failed, empty, and retry. |
+| F06, scheduler position | `Dashboard.tsx`, `features/workflows/recipes/QueueManager.tsx` | Browser verifies one-based positions, omitted null positions, reorder, and parity with Queue Manager. |
+| F07, ordered recent tasks | `recentTasks` and the list in `Dashboard.tsx` | Unit tests cover ties, invalid or unknown values, and immutability. Browser checks order after create and edit. |
+| F18, stale snapshot | `ui/ProjectFreshness.tsx`, `api/project-freshness.ts`, task manager stamp | Browser checks an independent write, a warning, preserved visible tasks, and explicit refresh. `project-freshness*.test.mts` covers the authority stamp, polling, and disposal. |
+| V3, composition and keyboard | `Dashboard.tsx`, `design/parity.css` | Browser checks geometry in both themes, Tab/Enter, a 390 px viewport, and a deliberately broken layout. |
+| F03/F04 and F18, drafts | Tasks/Workflows and draft registry | Existing FUNC routes apply. A1 exercises Dashboard reads and its local disclosure. If A2 changes shared navigation or the editor, rerun the relevant draft check. |
+
 ## FUNC-G02 — isolated PoC regression routes
 
 [Owning decisions/evidence](../planning/functional-remediation-2026-11-15.md#func-g02-results). `node --test tests/web/poc/func-g02/f30-model.test.mts tests/web/poc/func-g02/codebase-memory.test.mts tests/web/poc/func-g02/tbls-poc.test.mts tests/web/poc/func-g02/prototype-model.test.mts tests/web/poc/func-g02/prototype-preview.test.mts` —22/22,0skip. `node tests/web/poc/func-g02/prototype-build.mts` —TypeScript/Vite passed; `prototype-browser.mts --synthetic-browser --playwright-core ABSOLUTE_INSTALLED_PATH --chromium ABSOLUTE_INSTALLED_PATH` —22/22, RU/EN × light/dark,1440/390px. Build/harness/snapshot hashes bind the receipt. F31 post-admission cases remain unexecuted/null; F32 candidate has23 positive observations and3 retained failures. Node alternative nullable regression and baseline-only regeneration do not rewrite native findings. No production/full-product/site/provider/human qualification follows from these checks.

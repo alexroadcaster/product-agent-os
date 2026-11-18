@@ -28,6 +28,19 @@ Source status: repository_source / static_contract_review; DG06, 2026-11-15.; FU
 
 507 Web tests проверены с раздельным provenance:492 pass в исходном полном sandbox run;11 EPERM setup failures и4 skips повторены как ровно15 cases на разрешённом executor,15 pass0skip. Эти результаты не описываются как один green full run. Для изменённых links/hardlink guards нужны реальные fixtures, skip не считается pass. CSS delta проверен более поздним browser30/build, прежний full receipt не выдаётся за заново выполненный после CSS.
 
+## Dashboard — критерии A1 {#dashboard-a1-criteria}
+
+Владелец поведения F05–F07/F18 — [матрица FUNC](../planning/functional-remediation-2026-11-15.md). [Состояния Dashboard](../frontend/state-management.md#dashboard-a1-states) уточняют применимость к V3. Текущий receipt для строк с браузерной проверкой — `.tmp/func-g01-dashboard/evidence-hrwQrx/result.json`. Прогон использует локальные HTTP/SQLite и сборку Web с синтетическими данными.
+
+| Критерий и владелец | Реализация | Проверка |
+| --- | --- | --- |
+| F05, охват рядом с итогами | `Dashboard.tsx` и `aggregateSnapshots` в `features/dashboard/model.ts` | `ui-v3-dashboard.test.mts` и `func-g01-dashboard-acceptance.mts`: loading, partial, all-failed, empty и восстановление чтения. |
+| F06, позиция scheduler | `Dashboard.tsx`, `features/workflows/recipes/QueueManager.tsx` | Browser: нумерация с единицы, отсутствие позиции у null, смена порядка и совпадение с Queue Manager. |
+| F07, отсортированные последние задачи | `recentTasks` и список в `Dashboard.tsx` | Unit: ties, invalid/unknown, immutability; browser: порядок после добавления и изменения. |
+| F18, устаревший снимок | `ui/ProjectFreshness.tsx`, `api/project-freshness.ts`, stamp в task manager | Browser: отдельная запись, предупреждение, сохранение видимых задач, явное обновление. `project-freshness*.test.mts`: authority stamp, polling и disposal. |
+| V3, композиция и управление с клавиатуры | `Dashboard.tsx`, `design/parity.css` | Browser: геометрия обеих тем, Tab/Enter, экран 390 px, контрольное нарушение сетки. |
+| F03/F04 и F18, черновики | Tasks/Workflows и draft registry | Действующие маршруты FUNC. A1 упражняет чтение Dashboard и его локальный disclosure. При изменении общей навигации или редактора в A2 нужен повторный релевантный прогон. |
+
 ## FUNC-G02 — изолированные PoC regression routes
 
 [Владелец решений/evidence](../planning/functional-remediation-2026-11-15.md#func-g02-results). `node --test tests/web/poc/func-g02/f30-model.test.mts tests/web/poc/func-g02/codebase-memory.test.mts tests/web/poc/func-g02/tbls-poc.test.mts tests/web/poc/func-g02/prototype-model.test.mts tests/web/poc/func-g02/prototype-preview.test.mts` —22/22,0skip. `node tests/web/poc/func-g02/prototype-build.mts` —TypeScript/Vite passed; `prototype-browser.mts --synthetic-browser --playwright-core ABSOLUTE_INSTALLED_PATH --chromium ABSOLUTE_INSTALLED_PATH` —22/22, RU/EN × light/dark,1440/390px. Build/harness/snapshot hashes bind the receipt. F31 post-admission cases остаются unexecuted/null; у F32 candidate23 positive observations и3 сохранённых failures. Nullable regression Node alternative и baseline-only regeneration не переписывают native findings. Эти проверки не означают production/full-product/site/provider/human qualification.

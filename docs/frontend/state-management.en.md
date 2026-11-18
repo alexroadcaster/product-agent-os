@@ -61,3 +61,17 @@ The expanded task overlay contains its own accessible freshness notice and refre
 Filesystem freshness uses bounded explicit rescan/refresh, without a watcher. Directory refresh reloads the current branch; Check file freshness validates the old metadata pin and hides content for stale/missing/forbidden states. Graph/artifact/analysis revisions bind root/policy/inventory; create/modify/rename/delete and policy/root changes invalidate old observations on the next refresh. Analysis GET also checks adapter/core revision. Shared `SourceProvenance` and `sameSourceRevision` support future schema/code-table consumers; F14/F33/F34 own their UI implementation.
 
 Checks: project-freshness API/poll5/5; final browser19/19 (`.tmp/func-g03/browser-final/evidence-IfLiEa/result.json`) covers second-channel change, accessible stale refresh, dirty/CAS409, polling disposal, file modify/rename and stale analysis. Full Web594/594,0skip. Context7: [React effect cleanup](https://react.dev/learn/synchronizing-with-effects).
+## Dashboard — A1 pilot states {#dashboard-a1-states}
+
+The contract covers project Overview and All projects in light and dark themes. Dashboard owns its composition, App selects the project and route, and the local service owns the data. The [V3 design](../planning/2026-11-13-v3-ui-implementation-plan.md) supplies the approved composition.
+
+| State | Observable behavior |
+| --- | --- |
+| Loaded | Totals and progress use available Tasks snapshots. Cancelled tasks are excluded from the progress denominator. The queue uses scheduler positions and recent tasks are sorted by `updatedAt`. |
+| Loading | The loading state and expected project count are visible. Refresh stays disabled until reads settle. |
+| Empty | A successful empty snapshot shows “No tasks yet.” A successful empty scheduler response shows “Queue is empty.” |
+| Error and partial data | Unavailable values are shown as dashes. Coverage appears beside the totals. The source section shows errors and the refresh control retries the reads. |
+| Stale | A changed stamp displays a warning and preserves the visible snapshot until explicit refresh. |
+| Keyboard and focus | Tab moves from Refresh dashboard to Current data · sources and coverage. Focus is visible and Enter opens the sources. |
+
+Units are tasks, observed runs, and queue positions. Assignments and observed runs over seven days use different sources. Tokens, cost, and `tool_use` stay unavailable when measurements are missing. Synthetic test data is isolated from user application data. Editing, validation, and confirmation do not apply to this read-only Dashboard. F03/F04 and F18 own draft scenarios. [A1 checks](../testing/test-map.en.md#dashboard-a1-criteria)

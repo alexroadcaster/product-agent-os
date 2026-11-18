@@ -28,6 +28,8 @@ The current project Map, bounded Sources and project registration settings do no
 
 ## Verification and maintenance
 
+The [pilot boundary ADR](../architecture/decisions/adr-dashboard-task-boundary.en.md) covers Dashboard and Tasks. The [test map](../testing/test-map.en.md#dashboard-a1-criteria) lists criteria and verification routes.
+
 Find relevant source and tests through the pages above when changing behavior. [UI policy tests](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/ui-policy.test.mts), [draft tests](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/ui-draft-registry.test.mts), [theme/locale tests](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/theme-locale.test.mts) and [browser accessibility checks](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/accessibility/browser-acceptance.mts) are verification routes, not claims of a new run.
 
 DG04 checks source claims, RU/EN, links and documentation build. It does not establish live runtime/provider behavior, current manual screen-reader/WCAG assessment or human product acceptance. Status and evidence: [DOCS-06 / DG04](../planning/documentation-architecture-2026-11-15.md). A contract change updates both languages, the [section map](../product/index.md), navigation and [registry](../sources/registry.md).

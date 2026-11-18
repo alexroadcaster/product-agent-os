@@ -28,6 +28,8 @@ Source status: repository_source / current_source_inspection / documentation_imp
 
 ## Проверка и обновление
 
+Для Dashboard и Tasks действует [ADR о границе пилота](../architecture/decisions/adr-dashboard-task-boundary.md). Критерии и маршруты проверки перечислены в [карте тестов](../testing/test-map.md#dashboard-a1-criteria).
+
 Для изменения поведения найдите соответствующий source и тест по страницам раздела. [UI policy tests](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/ui-policy.test.mts), [draft tests](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/ui-draft-registry.test.mts), [theme/locale tests](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/theme-locale.test.mts) и [browser accessibility checks](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/accessibility/browser-acceptance.mts) — маршруты проверки, не утверждение о новом прогоне.
 
 DG04 проверяет исходные утверждения, RU/EN, ссылки и сборку документации. Live runtime/provider, текущая ручная screen-reader/WCAG оценка и human product acceptance этим не подтверждаются. Статус и evidence: [DOCS-06 / DG04](../planning/documentation-architecture-2026-11-15.md). При изменении контракта обновляются обе локализации, [карта разделов](../product/index.md), навигация и [registry](../sources/registry.md).

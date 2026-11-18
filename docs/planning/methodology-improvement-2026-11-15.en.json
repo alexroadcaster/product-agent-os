@@ -5,8 +5,8 @@
   "timezone": "Europe/Moscow",
   "source_plan": "docs/planning/methodology-improvement-2026-11-15.md",
   "english_plan": "docs/planning/methodology-improvement-2026-11-15.en.md",
-  "status": "planned",
-  "execution_authority": "planning_only_no_implementation_authorized",
+  "status": "in_progress",
+  "execution_authority": "owner_authorized_a1_local_implementation",
   "scope": "Internal Product-Agent OS development quality and frontend architecture; user-project capabilities are owned by direction B.",
   "source_snapshot": {
     "git_head": "35458110145d928b9b14d9312b60d852f11f6e88",
@@ -85,7 +85,7 @@
       "id": "PAOS-METH-01",
       "title": "Зафиксировать baseline и владельцев улучшений",
       "title_en": "Record the baseline and improvement ownership",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "methodologies": [
         "Spec-DD",
@@ -138,15 +138,15 @@
         }
       ],
       "verification_profile": "V-PLAN",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan",
+      "implementation_at": "18-11-2026 17:35",
+      "execution_authority": "owner_authorized_a1_local_implementation",
       "direction_id": "A"
     },
     {
       "id": "PAOS-METH-02",
       "title": "Связать критерии Dashboard с исходниками и проверками",
       "title_en": "Trace Dashboard criteria to source and checks",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "methodologies": [
         "Spec-DD"
@@ -190,15 +190,15 @@
         }
       ],
       "verification_profile": "V-PLAN",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan",
+      "implementation_at": "18-11-2026 17:35",
+      "execution_authority": "owner_authorized_a1_local_implementation",
       "direction_id": "A"
     },
     {
       "id": "PAOS-METH-03",
       "title": "Уточнить design-контракт состояний пилота",
       "title_en": "Specify the pilot design-state contract",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "methodologies": [
         "Design-DD",
@@ -242,15 +242,15 @@
         }
       ],
       "verification_profile": "V-PLAN",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan",
+      "implementation_at": "18-11-2026 17:35",
+      "execution_authority": "owner_authorized_a1_local_implementation",
       "direction_id": "A"
     },
     {
       "id": "PAOS-METH-04",
       "title": "Проверять композицию и поведение интерфейса по design-контракту",
       "title_en": "Check UI composition and behavior against the design contract",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "methodologies": [
         "Design-DD",
@@ -295,8 +295,8 @@
         }
       ],
       "verification_profile": "V-WEB",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan",
+      "implementation_at": "18-11-2026 17:35",
+      "execution_authority": "owner_authorized_a1_local_implementation",
       "direction_id": "A"
     },
     {
@@ -453,7 +453,7 @@
       "id": "PAOS-METH-08",
       "title": "Спроектировать постепенные границы FSD и переходный ADR",
       "title_en": "Design incremental FSD boundaries and a transition ADR",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "methodologies": [
         "FSD",
@@ -497,15 +497,15 @@
         }
       ],
       "verification_profile": "V-PLAN",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan",
+      "implementation_at": "18-11-2026 17:35",
+      "execution_authority": "owner_authorized_a1_local_implementation",
       "direction_id": "A"
     },
     {
       "id": "PAOS-METH-09",
       "title": "Добавить инкрементальную проверку frontend imports",
       "title_en": "Add incremental frontend-import checks",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "methodologies": [
         "FSD",
@@ -549,8 +549,8 @@
         }
       ],
       "verification_profile": "V-BOUNDARY",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan",
+      "implementation_at": "18-11-2026 17:35",
+      "execution_authority": "owner_authorized_a1_local_implementation",
       "direction_id": "A"
     },
     {
