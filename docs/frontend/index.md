@@ -28,7 +28,7 @@ Source status: repository_source / current_source_inspection / documentation_imp
 
 ## Проверка и обновление
 
-Для Dashboard и Tasks действует [ADR о границе пилота](../architecture/decisions/adr-dashboard-task-boundary.md). Критерии и маршруты проверки перечислены в [карте тестов](../testing/test-map.md#dashboard-a1-criteria).
+Dashboard обращается к Tasks через `features/tasks/read.ts`. Границу, откат и выбранное дальнейшее применение описывает [ADR](../architecture/decisions/adr-dashboard-task-boundary.md). [Критерии и маршруты проверки](../testing/test-map.md#dashboard-a1-criteria) · [Приёмка A2](../planning/methodology-improvement-2026-11-15.md#a2-results)
 
 Для изменения поведения найдите соответствующий source и тест по страницам раздела. [UI policy tests](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/ui-policy.test.mts), [draft tests](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/ui-draft-registry.test.mts), [theme/locale tests](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/theme-locale.test.mts) и [browser accessibility checks](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/accessibility/browser-acceptance.mts) — маршруты проверки, не утверждение о новом прогоне.
 

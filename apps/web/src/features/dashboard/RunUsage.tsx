@@ -1,8 +1,7 @@
 import {CapabilityNotice} from '../../ui/CapabilityNotice.tsx';
 import {useEffect,useState} from 'react';
 import type {M1Api} from '../../api/client.ts';
-import type {Locale} from '../tasks/labels.ts';
-import {errorText} from '../tasks/labels.ts';
+import {errorText,type Locale} from '../tasks/read.ts';
 import type {RunMetrics} from '../../../../../packages/contracts/telemetry/run-metrics.ts';
 
 /** Numeric receipts share one API projection across project, task, session and agent views. */

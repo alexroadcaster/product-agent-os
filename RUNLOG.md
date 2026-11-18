@@ -1,5 +1,9 @@
 # RUNLOG.md
 
+## PAOS-METH-A2 — пилот Dashboard принят, 18.11.2026
+
+METH-12/17/18 выполнены. Три прямые связи Dashboard с внутренними модулями Tasks заменены публичным входом. Web 704/704 и браузер 52/52. Следующий шаг A3 — METH-05. В A4 выбран один потребитель TeamManager для METH-11. [Результаты и решение](docs/planning/methodology-improvement-2026-11-15.md#a2-results)
+
 ## PAOS-METH-A1 — Dashboard, 18.11.2026
 
 Группа A1 выполнена. Закреплены контракт Dashboard, браузерная регрессия и правила импортов с 19 исходными исключениями. Финальные проверки: Web 702/702 и браузер 50/50. Следующий вход в A2 — METH-12 с узким API чтения Tasks. [Критерии, ADR и evidence](docs/planning/methodology-improvement-2026-11-15.md#a1-results)

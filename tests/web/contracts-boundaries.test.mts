@@ -72,6 +72,7 @@ test('shared contracts never import applications, and the local service never im
 const webRoot='apps/web/src/';
 const dashboard=webRoot+'features/dashboard/';
 const tasks=webRoot+'features/tasks/';
+const tasksReadApi=tasks+'read.ts';
 const app=webRoot+'ui/App.tsx';
 const sharedUi=['CapabilityNotice.tsx','Icon.tsx','Modal.tsx','ProjectFreshness.tsx'].map(name=>webRoot+'ui/'+name);
 const inPilot=(file:string)=>file.startsWith(dashboard)||file.startsWith(tasks);
@@ -84,6 +85,7 @@ function boundaryRule({from,to}:Edge){
  if(!inPilot(from)&&!inPilot(to))return;
  if(fromDashboard&&toDashboard||fromTasks&&toTasks)return;
  if(from===app&&(to===dashboard+'Dashboard.tsx'||to===tasks+'TaskManager.tsx'))return;
+ if(fromDashboard&&to===tasksReadApi)return;
  if(inPilot(from)&&to.startsWith(webRoot+'ui/')&&!sharedUi.includes(to))return 'upward import';
  if(fromTasks&&toDashboard)return 'upward import';
  if(inPilot(from)&&to.startsWith(webRoot+'features/')&&!toTasks)return 'cross-feature import';
@@ -162,6 +164,31 @@ test('Tasks cannot reach App composition or peer screen internals',()=>{
   manager+' -> '+team+' [cross-feature import]',
   manager+' -> '+app+' [upward import]',
  ]);
+});
+
+test('only Dashboard may use the public Tasks read entry during the pilot',()=>{
+ const view=dashboard+'Dashboard.tsx',team=webRoot+'features/team/TeamManager.tsx';
+ const files=new Map([
+  [view,"import '../tasks/read.ts'; import('../tasks/model.ts');"],
+  [team,"import '../tasks/read.ts';"],
+ ]);
+ const actual=inspectWebImports(files,[view,team,tasksReadApi,tasks+'model.ts'],{},()=>false);
+ assert.deepEqual(actual.diagnostics,[]);
+ assert.deepEqual(actual.rules,[
+  view+' -> '+tasks+'model.ts [deep Tasks import]',
+  team+' -> '+tasksReadApi+' [non-public consumer]',
+ ]);
+});
+
+test('the Tasks read entry exposes the existing selectors and labels through named exports',async()=>{
+ const entry=await import(pathToFileURL(join(root,tasksReadApi)).href);
+ const model=await import('../../apps/web/src/features/tasks/model.ts');
+ const labels=await import('../../apps/web/src/features/tasks/labels.ts');
+ assert.deepEqual(Object.keys(entry).sort(),['errorText','isBlocked','semanticStatus','statusText']);
+ assert.equal(entry.isBlocked,model.isBlocked);
+ assert.equal(entry.semanticStatus,model.semanticStatus);
+ assert.equal(entry.statusText,labels.statusText);
+ assert.equal(entry.errorText,labels.errorText);
 });
 
 test('Dashboard and Tasks boundaries admit only the revision-pinned legacy edges',async()=>{

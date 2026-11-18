@@ -30,7 +30,7 @@ Source status: repository_source / static_contract_review; DG06, 2026-11-15.; FU
 
 ## Dashboard — критерии A1 {#dashboard-a1-criteria}
 
-Владелец поведения F05–F07/F18 — [матрица FUNC](../planning/functional-remediation-2026-11-15.md). [Состояния Dashboard](../frontend/state-management.md#dashboard-a1-states) уточняют применимость к V3. Текущий receipt для строк с браузерной проверкой — `.tmp/func-g01-dashboard/evidence-hrwQrx/result.json`. Прогон использует локальные HTTP/SQLite и сборку Web с синтетическими данными.
+Владелец поведения F05–F07/F18 — [матрица FUNC](../planning/functional-remediation-2026-11-15.md). [Состояния Dashboard](../frontend/state-management.md#dashboard-a1-states) уточняют применимость к V3. Исходная проверка A1 — `.tmp/func-g01-dashboard/evidence-hrwQrx/result.json`. A2 повторила проверки на актуальной сборке и добавила клавиатурный переход к задаче. [Отчёты до и после A2](../planning/methodology-improvement-2026-11-15.md#a2-results)
 
 | Критерий и владелец | Реализация | Проверка |
 | --- | --- | --- |

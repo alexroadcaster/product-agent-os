@@ -30,7 +30,7 @@ Task/status evidence is owned by [FUNC-G01 results](../planning/functional-remed
 
 ## Dashboard A1 criteria {#dashboard-a1-criteria}
 
-The [FUNC matrix](../planning/functional-remediation-2026-11-15.en.md) owns F05–F07/F18 behavior. The [Dashboard state contract](../frontend/state-management.en.md#dashboard-a1-states) records applicability to V3. The current browser receipt for rows below is `.tmp/func-g01-dashboard/evidence-hrwQrx/result.json`, using the Web build, local HTTP/SQLite, and synthetic data.
+The [FUNC matrix](../planning/functional-remediation-2026-11-15.en.md) owns F05–F07/F18 behavior. The [Dashboard state contract](../frontend/state-management.en.md#dashboard-a1-states) records applicability to V3. The original A1 browser receipt is `.tmp/func-g01-dashboard/evidence-hrwQrx/result.json`. A2 reran the checks against the current build and added keyboard navigation to a task. [A2 before and after receipts](../planning/methodology-improvement-2026-11-15.en.md#a2-results)
 
 | Criterion and owner | Implementation | Verification |
 | --- | --- | --- |

@@ -1,6 +1,6 @@
 import type {ManagerSnapshot} from '../../../../../packages/contracts/issues/manager.ts';
 import type {StoredEntity} from '../../api/client.ts';
-import {semanticStatus,isBlocked} from '../tasks/model.ts';
+import {semanticStatus,isBlocked} from '../tasks/read.ts';
 /** Progress is Done / non-cancelled task objects, including parents; it is not effort completion. */
 export function summarizeTasks(snapshot:ManagerSnapshot<StoredEntity>){
  const counts:Record<string,number>=Object.create(null);for(const task of snapshot.tasks){const state=semanticStatus(task,snapshot.workflows)||'unknown';counts[state]=(counts[state]??0)+1;}

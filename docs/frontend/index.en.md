@@ -28,7 +28,7 @@ The current project Map, bounded Sources and project registration settings do no
 
 ## Verification and maintenance
 
-The [pilot boundary ADR](../architecture/decisions/adr-dashboard-task-boundary.en.md) covers Dashboard and Tasks. The [test map](../testing/test-map.en.md#dashboard-a1-criteria) lists criteria and verification routes.
+Dashboard accesses Tasks through `features/tasks/read.ts`. The [ADR](../architecture/decisions/adr-dashboard-task-boundary.en.md) covers the boundary, rollback, and selected expansion. [Criteria and verification routes](../testing/test-map.en.md#dashboard-a1-criteria) · [A2 acceptance](../planning/methodology-improvement-2026-11-15.en.md#a2-results)
 
 Find relevant source and tests through the pages above when changing behavior. [UI policy tests](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/ui-policy.test.mts), [draft tests](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/ui-draft-registry.test.mts), [theme/locale tests](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/theme-locale.test.mts) and [browser accessibility checks](https://github.com/alexroadcaster/product-agent-os/blob/ad78d5d15aced23febae90d319f2aba00bd64d0b/tests/web/accessibility/browser-acceptance.mts) are verification routes, not claims of a new run.
 

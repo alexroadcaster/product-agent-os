@@ -1,5 +1,9 @@
 # TEST.md
 
+## PAOS-METH-A2 — технический пилот Dashboard, 18.11.2026
+
+Проверки `contracts-boundaries.test.mts` подтверждают явный вход Tasks, идентичность реализаций и запрет прямых импортов. После `npm run check:web-m1` и `npm run build:web` сценарий Dashboard ниже проверяет F05–F07/F18, обе темы, Enter на последней задаче и возврат к Dashboard. Браузерный отчёт связывает результаты с хешами границы, исходников и сборки. [Матрица критериев и результаты](docs/planning/methodology-improvement-2026-11-15.md#a2-results)
+
 ## PAOS-METH-A1 — Dashboard и границы импортов, 18.11.2026
 
 `node --test tests/web/contracts-boundaries.test.mts` проверяет TS/TSX/MTS, встроенный resolver, новые связи и циклы вокруг Dashboard/Tasks, а также исходную независимость contracts. Сценарий `tests/web/single-window/func-g01-dashboard-acceptance.mts --synthetic-browser --playwright-core <installed-path> --chromium <installed-path>` проверяет переход из списка всех проектов к Dashboard, состояния в двух темах, обновление и клавиатурное раскрытие источников. Используется актуальная сборка `npm run build:web` и одноразовый профиль. [Критерии и маршруты](docs/testing/test-map.md#dashboard-a1-criteria) · [Результаты и ограничения](docs/planning/methodology-improvement-2026-11-15.md#a1-results)

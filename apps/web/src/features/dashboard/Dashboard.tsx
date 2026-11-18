@@ -4,7 +4,7 @@ import {scaleLinear} from 'd3';
 import type {M1Api,Project,StoredEntity} from '../../api/client.ts';
 import type {QueueSnapshot} from '../../../../../packages/contracts/scheduler/queue.ts';
 import {summarizeTasks,aggregateSnapshots,assignedWork,recentTasks,type TaskSummary} from './model.ts';
-import {statusText,type Locale} from '../tasks/labels.ts';
+import {statusText,type Locale} from '../tasks/read.ts';
 import {ProjectFreshnessNotice} from '../../ui/ProjectFreshness.tsx';
 import {Icon,type IconName} from '../../ui/Icon.tsx';
 

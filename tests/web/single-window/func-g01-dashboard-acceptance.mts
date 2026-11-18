@@ -131,6 +131,15 @@ try{
  const latestId='55555555-5555-4555-8555-555555555555';times.set(latestId,'2026-11-15T13:00:00Z');await save(newM2Task(project.id,latestId,'Created latest','local-user'));await refresh();recent=await dashboard().locator('.dashboard-recent li strong').allTextContents();check('recent_creation_after_refresh',recent[0]==='Created latest'&&recent[1]==='Newest',recent);
  const snap=(await api('/projects/'+project.id+'/task-manager')).body,old=snap.tasks.find((t:any)=>t.id===ids[3]);times.set(old.id,'2026-11-15T14:00:00Z');await save({...old.data,title:'Updated latest'},old.revision);await refresh();recent=await dashboard().locator('.dashboard-recent li strong').allTextContents();check('recent_edit_after_refresh',recent[0]==='Updated latest'&&recent[1]==='Created latest',recent);
  const note=await dashboard().locator('.dashboard-recent').innerText();check('recent_timestamp_semantics_label',note.includes('updatedAt'),note);await shot('en-dashboard');
+ stage='recent_task_navigation';
+ const recentTask=dashboard().locator('.dashboard-recent').getByRole('button',{name:/^Updated latest/});
+ await recentTask.press('Enter');
+ const detail=page.getByTestId('task-detail');
+ const taskTitle=detail.getByRole('heading',{name:'Updated latest',exact:true});
+ await taskTitle.waitFor();
+ check('keyboard_opens_recent_task_in_current_project',await taskTitle.isVisible()&&await page.locator('.navigation select').inputValue()===project.id);
+ await nav('overview');await settled();
+ check('return_to_dashboard_closes_task_details',await dashboard().isVisible()&&!await detail.count());
  check('desktop_no_page_overflow',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
  await page.setViewportSize({width:390,height:844});await shot('en-dashboard-mobile');check('mobile_no_page_overflow',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
  check('mobile_totals_remain_readable',await dashboard().locator('.dashboard-progress-summary>span').evaluateAll((items:Element[])=>items.every(el=>el.getBoundingClientRect().height<=48)));
@@ -141,6 +150,21 @@ try{
 finally{
  if(timer)clearTimeout(timer);await context?.close();await service?.quit();
  if(dirname(resolve(fixture))!==scratch)throw Error('CLEANUP_BOUNDARY');await rm(fixture,{recursive:true,force:true});report.fixtureCleaned=true;report.finishedAt=new Date().toISOString();report.sourceHashes={};
- for(const path of ['tests/web/single-window/func-g01-dashboard-acceptance.mts','apps/web/src/features/dashboard/Dashboard.tsx','apps/web/src/features/dashboard/model.ts','apps/web/dist/index.html',...(await readdir('apps/web/dist/assets')).map(n=>'apps/web/dist/assets/'+n)])report.sourceHashes[path]=createHash('sha256').update(await readFile(path)).digest('hex');
+ const sourcePaths=[
+  'tests/web/single-window/func-g01-dashboard-acceptance.mts',
+  'tests/web/contracts-boundaries.test.mts',
+  'tests/web/fixtures/dashboard-import-baseline.json',
+  'apps/web/src/features/dashboard/Dashboard.tsx',
+  'apps/web/src/features/dashboard/RunUsage.tsx',
+  'apps/web/src/features/dashboard/model.ts',
+  'apps/web/src/features/tasks/read.ts',
+  'apps/web/src/features/tasks/model.ts',
+  'apps/web/src/features/tasks/labels.ts',
+  'apps/web/src/ui/App.tsx',
+  'apps/web/src/ui/ProjectFreshness.tsx',
+  'apps/web/src/api/project-freshness.ts',
+ ];
+ const buildPaths=['apps/web/dist/index.html',...(await readdir('apps/web/dist/assets')).map(name=>'apps/web/dist/assets/'+name)];
+ for(const path of [...sourcePaths,...buildPaths])report.sourceHashes[path]=createHash('sha256').update(await readFile(path)).digest('hex');
  await writeFile(join(output,'result.json'),JSON.stringify(report,null,2));console.log(JSON.stringify({status:report.status,checks:report.checks.length,failed:report.checks.filter((c:any)=>!c.passed).map((c:any)=>c.name),error:report.error,report:join(output,'result.json')}));
 }

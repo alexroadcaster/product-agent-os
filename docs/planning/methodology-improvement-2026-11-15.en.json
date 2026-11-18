@@ -6,7 +6,7 @@
   "source_plan": "docs/planning/methodology-improvement-2026-11-15.md",
   "english_plan": "docs/planning/methodology-improvement-2026-11-15.en.md",
   "status": "in_progress",
-  "execution_authority": "owner_authorized_a1_local_implementation",
+  "execution_authority": "owner_authorized_a1_a2_local_implementation",
   "scope": "Internal Product-Agent OS development quality and frontend architecture; user-project capabilities are owned by direction B.",
   "source_snapshot": {
     "git_head": "35458110145d928b9b14d9312b60d852f11f6e88",
@@ -659,7 +659,7 @@
       "id": "PAOS-METH-12",
       "title": "Проверить архитектурные границы на Dashboard",
       "title_en": "Pilot the architecture boundaries on Dashboard",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "methodologies": [
         "FSD",
@@ -708,8 +708,8 @@
         }
       ],
       "verification_profile": "V-WEB",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan",
+      "implementation_at": "18-11-2026 17:52",
+      "execution_authority": "owner_authorized_a2_local_implementation",
       "direction_id": "A"
     },
     {
@@ -881,7 +881,7 @@
       "id": "PAOS-METH-17",
       "title": "Принять технический пилот Dashboard и проверить контракты",
       "title_en": "Accept the technical Dashboard pilot and verify its contracts",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "methodologies": [
         "Spec-DD",
@@ -930,15 +930,15 @@
         }
       ],
       "verification_profile": "V-INTEGRATED",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan",
+      "implementation_at": "18-11-2026 17:58",
+      "execution_authority": "owner_authorized_a2_local_implementation",
       "direction_id": "A"
     },
     {
       "id": "PAOS-METH-18",
       "title": "Принять решение о дальнейшем rollout и обновить владельцев документации",
       "title_en": "Decide on further rollout and update documentation owners",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "methodologies": [
         "ADD",
@@ -987,8 +987,8 @@
         }
       ],
       "verification_profile": "V-PLAN",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan",
+      "implementation_at": "18-11-2026 17:58",
+      "execution_authority": "owner_authorized_a2_local_implementation",
       "direction_id": "A"
     }
   ],

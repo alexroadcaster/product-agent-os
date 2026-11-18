@@ -66,9 +66,9 @@ P1 — защита контрактов и достоверность приё�
 
 ## Граница Dashboard и Tasks
 
-METH-08 сравнила сохранение текущих модулей, усиление их границ и локальный FSD. Для A2 выбрано усиление границы в текущих модулях. [Решение и условия отката](../architecture/decisions/adr-dashboard-task-boundary.md)
+METH-08 сравнила сохранение текущих модулей, усиление их границ и локальный FSD. Пилот A2 усилил границу в текущих модулях. [Решение и условия отката](../architecture/decisions/adr-dashboard-task-boundary.md)
 
-- `App.tsx` сохраняет владение композицией, сессией и активным проектом. A2 проверяет явный API для селекторов Tasks (`semanticStatus`, `isBlocked`) с одной реализацией.
+- `App.tsx` владеет композицией, сессией и активным проектом. Dashboard использует явный API `features/tasks/read.ts` для селекторов Tasks (`semanticStatus`, `isBlocked`) с одной реализацией.
 
 - Выделять widgets, entities/task и shared только при подтверждённой потребности. Пригодность API и регрессии проверяются до переноса других экранов. Общие business contracts остаются в `packages/contracts`.
 
@@ -117,7 +117,7 @@ Static split/parity/preservation evidence редакции 2 хранится в
 
 ## Результаты A1 {#a1-results}
 
-Baseline METH-01 — чистое рабочее дерево на `bd7d9135f994201170277171eb54e4040cef4fa8`. Композиция и навигация находятся в `apps/web/src/ui/App.tsx`, модель Dashboard импортирует `semanticStatus` и `isBlocked` у Tasks, а представления используют labels и UI-примитивы. Исходные 19 нарушений выбранной границы перечислены по файлам в `tests/web/fixtures/dashboard-import-baseline.json`. Проверки Web входят в `TEST.md`, исходный аудит методологий Python plugin — `tests.product_agent_os.test_methodology_audit`. Результаты FUNC G01 и F18 от 15 ноября остаются историческим baseline с собственными receipt.
+Baseline METH-01 — чистое рабочее дерево на `bd7d9135f994201170277171eb54e4040cef4fa8`. Композиция и навигация находились в `apps/web/src/ui/App.tsx`, модель Dashboard импортировала `semanticStatus` и `isBlocked` у Tasks, а представления использовали labels и UI-примитивы. Список 19 исходных нарушений сохранён в `tests/web/fixtures/dashboard-import-baseline.json` на ревизии `4d853089a0ffa8be4c47ba7ee3909a754f09a169`. Проверки Web входят в `TEST.md`, исходный аудит методологий Python plugin — `tests.product_agent_os.test_methodology_audit`. Результаты FUNC G01 и F18 от 15 ноября остаются историческим baseline с собственными receipt.
 
 | Карточки | Владелец результата A | Переиспользование и ссылки |
 | --- | --- | --- |
@@ -138,6 +138,28 @@ Baseline METH-01 — чистое рабочее дерево на `bd7d9135f994
 Итоговые проверки 18.11.2026: `node --test --test-concurrency=1 tests/web/*.test.mts` — **702/702** в Windows, 0 пропусков. `npm run check:web-m1` и `npm run build:web` прошли. Аудит методологий Python — 57/57. Проверка документации, валидаторы RU/EN, согласованность статусов и изолированная сборка MkDocs прошли. Проверены 7 хешей браузерного receipt, 12 сохранённых карточек вне A1 на каждый язык и побайтовое совпадение JSON.
 
 Первый браузерный запуск в sandbox завершился кодом 1 с Windows access denied. Повторный запустился и выявил недопустимое поле в синтетической записи. После исправления fixture пройдены все 50 проверок. Первый полный Web-прогон остановлен после ошибок с Windows native fixtures. Финальный прогон с разрешённым запуском native fixtures завершился кодом 0. Раздельные логи сохранены в `.tmp/func-g01-dashboard/`, итоговый — `a1-web-suite-final.log`.
+
+## Результаты A2 {#a2-results}
+
+Исходное состояние для METH-12 — чистое рабочее дерево `4d853089a0ffa8be4c47ba7ee3909a754f09a169`. До и после изменений собран Web и запущен один сценарий `func-g01-dashboard-acceptance.mts` на локальном сервисе/SQLite с синтетическими проектами. В итоговый сценарий добавлены две проверки перехода к задаче и обратно.
+
+| Сравнение | До | После |
+| --- | --- | --- |
+| Прямые связи Dashboard → внутренности Tasks | `Dashboard.tsx → labels.ts`, `RunUsage.tsx → labels.ts`, `model.ts → model.ts` | Те же три потребителя используют один публичный вход `tasks/read.ts`. Прямых связей с внутренними файлами нет. |
+| Нарушения и исключения вокруг Dashboard/Tasks | 19 исходных исключений, включая 3 исходящих из Dashboard | 16 исключений из той же исходной ревизии, 0 исходящих из Dashboard и 0 новых нарушений. |
+| Проверка браузера | 50/50, `evidence-2HAMGM/result.json` | 50/50 совпадающих по имени проверок плюс 2/2 проверки навигации, `evidence-1LoV2F/result.json`. Оба отчёта в `.tmp/func-g01-dashboard/`. |
+| Объём изменений и ревью | Внешний потребитель зависит от двух внутренних путей Tasks. | Добавлен один файл API из трёх строк и заменены импорты в трёх файлах Dashboard. При дальнейшем переносе реализации с сохранением API есть один внешний путь для проверки. Время работы ревьюеров и эффект ADD отдельно не измерялись. |
+
+| Критерий приёмки | Подтверждение |
+| --- | --- |
+| METH-12-AC01 и METH-17-AC01 | RED зафиксировал отсутствие публичного модуля и отклонение нового пути правилом A1. GREEN проверяет разрешённый путь Dashboard, запрет обхода и постороннего потребителя, точный набор публичных функций и идентичность их реализации. Используются исходные `model.ts` и `labels.ts` Tasks. |
+| METH-12-AC02 и METH-17-AC02 | F05 partial/empty/error, F06 позиции и смена порядка очереди, F07 `updatedAt` после создания и изменения, F18 stale/refresh, светлая и тёмная темы, Tab/Enter и корректная деталь задачи. Проверка границ подтверждает независимость contracts. В исходниках изменены только импорты и экспорты. Общие пути App, локального сервиса, черновиков и сессий в scope пилота не вошли. |
+| METH-12-AC03 и METH-17-AC03 | Отчёт сборки привязан к 16 хешам harness, исходников и ассетов. Визуально сопоставлены `light-stale.png` и `dark-error.png` до и после. Отличались отметки времени и порядок двух синтетических проектов в состоянии ошибки. Смысл ошибок, доступность управления и композиция сохранились. Критических регрессий в пилоте не выявлено. Вердикт `pilot_accepted` относится к локальному пилоту, приёмка UI-12/F23 и F19 остаётся у своих владельцев. [Откат](../architecture/decisions/adr-dashboard-task-boundary.md) |
+| METH-18-AC01–AC03 | По сравнению выше выбран `bounded_go` для METH-11 только в `TeamManager.tsx`. Остальные работы A4 получают `hold` до появления подтверждения по их собственным границам. Критерии для METH-11 и точный откат зафиксированы в ADR. [Решения A4](../architecture/decisions/adr-dashboard-task-boundary.md#a2-rollout) |
+
+Итоговый `node --test --test-concurrency=1 tests/web/*.test.mts` — **704/704**, без пропусков, `.tmp/func-g01-dashboard/a2-web-final.log`. Целевые проверки границ, модели Dashboard и F18 — 22/22. `npm run check:web-m1` и обе сборки `npm run build:web` прошли. Лог RED — `a2-boundary-red.log` в том же каталоге. Снимок исходной ревизии и проверенные хеши кандидата позволяют повторить сравнение. В проверке single-window шесть ожидаемых ответов 503 заданы fixture, вне loopback запросов не было.
+
+Следующая группа A3 начинается с `PAOS-METH-05`. A4 имеет один выбранный объём METH-11. В рамках A2 выполнены решение и его документирование.
 
 ## Индекс задач
 
@@ -663,15 +685,15 @@ Baseline METH-01 — чистое рабочее дерево на `bd7d9135f994
 
 - Task: PAOS-METH-12
 - Task name: Проверить архитектурные границы на Dashboard
-- Status: planned
+- Status: implemented
 - Priority: P2
 - Delivery group: A2
 - Methodologies: FSD, Design-DD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Реализация A2 по запросу владельца.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 17:52
 - Depends on: PAOS-METH-04, PAOS-METH-09
 - Blocks: PAOS-METH-17
 - External references: PAOS-FUNC-05, PAOS-FUNC-06, PAOS-FUNC-07, PAOS-FUNC-18
@@ -683,26 +705,26 @@ Baseline METH-01 — чистое рабочее дерево на `bd7d9135f994
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
 - Expected result: Dashboard checkpoint с результатом import ratchet, измеренным изменением границ и evidence в существующем владельце.
 - Acceptance criteria: PAOS-METH-12-AC01: Изменённая граница Dashboard использует минимальный явный API Tasks для востребованных селекторов, в том числе semanticStatus/isBlocked, с одной реализацией. Новые pages/widgets или entities/task появляются только по ADR и при доказанной необходимости. Services и F18 refresh semantics сохранены. PAOS-METH-12-AC02: F05 partial coverage, F06 queue numbering и F07 recent-task ordering сохранены на current source; обе themes и state matrix METH-03 проходят. PAOS-METH-12-AC03: Записаны before/after boundary edges, touched files, regression/visual results и rollback; отрицательный результат позволяет остановить rollout без переписывания остальных экранов.
-- Verification gates: V-WEB; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
-- Risks / approval gates: Никаких новых metrics/synthetic numbers, API requests или performance claims без измерений; native qualification только если затронуты pinned sources. Текущий запрос разрешает только планирование.
+- Verification gates: V-WEB. Актуальные маршруты в TEST.md. Результат указан в Completion Report.
+- Risks / approval gates: В области Dashboard открытых нарушений нет. Оставшиеся 16 исключений имеют собственных владельцев.
 - Complexity: M
 - Estimated execution time: Оценить после актуального discovery и выбора bounded slice; календарное обещание не дано.
 - Agents: builder — dashboard ownership; proposed ownership, сейчас delegation=0.
 - Skills: build-web-apps:frontend-testing-debugging; только для будущей UI проверки; архитектурные решения по ADR.
 - Output artifacts: Dashboard checkpoint с результатом import ratchet, измеренным изменением границ и evidence в существующем владельце.
-- Next step: Проверить dependencies и текущие source owners; запросить/получить отдельный scope реализации выбранной задачи.
+- Next step: Использовать сборку и отчёты для технической приёмки METH-17.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не начата; сформирована карточка.
-- files touched / work locations: Сейчас implementation files не менялись; будущие locations указаны в Scope.
-- technical value delivered: Не заявлена до реализации.
-- product value delivered: Не заявлена до реализации.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Проверяется только подготовка плана; выполнение AC этой задачи не заявлено.
-- residual risks: Никаких новых metrics/synthetic numbers, API requests или performance claims без измерений; native qualification только если затронуты pinned sources.
-- follow-up: Выбор следующего разрешённого slice по DAG; автоматический старт запрещён.
+- status: implemented
+- what was done: Dashboard переведён на явный API чтения Tasks. Удалены три соответствующих исключения.
+- files touched / work locations: apps/web/src/features/tasks/read.ts; apps/web/src/features/dashboard/{Dashboard.tsx,RunUsage.tsx,model.ts}; tests/web/contracts-boundaries.test.mts; tests/web/fixtures/dashboard-import-baseline.json
+- technical value delivered: Четыре функции и тип Locale доступны через один публичный вход. Используются исходные реализации.
+- product value delivered: F05–F07 и F18 сохранены на актуальной сборке.
+- actual implementation date and time: 18-11-2026 17:52
+- verification evidence: RED двух новых тестов границы, GREEN 22/22, Web 704/704, браузер 50/50 до и 52/52 после. Отчёты и откат в результатах A2.
+- residual risks: В области Dashboard открытых нарушений нет. Оставшиеся 16 исключений имеют собственных владельцев.
+- follow-up: Использовать сборку и отчёты для технической приёмки METH-17.
 
 ### Task `PAOS-METH-13`
 
@@ -890,15 +912,15 @@ Baseline METH-01 — чистое рабочее дерево на `bd7d9135f994
 
 - Task: PAOS-METH-17
 - Task name: Принять технический пилот Dashboard и проверить контракты
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Delivery group: A2
 - Methodologies: Spec-DD, Design-DD, TDD, ADD, FSD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Реализация A2 по запросу владельца.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 17:58
 - Depends on: PAOS-METH-12
 - Blocks: PAOS-METH-18
 - External references: PAOS-FUNC-19, PAOS-FUNC-21, PAOS-FUNC-22, PAOS-FUNC-23, UI-12
@@ -910,40 +932,40 @@ Baseline METH-01 — чистое рабочее дерево на `bd7d9135f994
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
 - Expected result: AC/evidence reconciliation и verdict pilot_accepted/partial/blocked с причинами.
 - Acceptance criteria: PAOS-METH-17-AC01: Каждый обязательный Dashboard AC и import rule имеет текущий check/receipt либо явный gap. Обязательные проверки затронутых контрактов проходят, findings имеют disposition. PAOS-METH-17-AC02: Проверены partial/error Dashboard, navigation/focus и contracts independence в затронутом scope. При изменении общих paths проверены scope/session и drafts. Recovery/backup receipts переиспользуются при неизменном релевантном состоянии. PAOS-METH-17-AC03: Review и решение ограничены техническим пилотом Dashboard. METH-07 и METH-10/11/13–15 не входят в условия приёмки. UI-12/F23 human acceptance и F19 full product E2E сохраняют своих владельцев.
-- Verification gates: V-INTEGRATED; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
-- Risks / approval gates: Без release-readiness или full product acceptance claims; unresolved critical pilot gap запрещает accepted verdict. Текущий запрос разрешает только планирование.
+- Verification gates: V-INTEGRATED. Актуальные маршруты в TEST.md. Результат указан в Completion Report.
+- Risks / approval gates: Вердикт относится к локальному техническому пилоту. Приёмка UI-12/F23 и F19 сохраняет своих владельцев.
 - Complexity: M
 - Estimated execution time: Оценить после актуального discovery и выбора bounded slice; календарное обещание не дано.
 - Agents: tester + reviewer; proposed ownership, сейчас delegation=0.
 - Skills: documentation-and-adrs; дополнительные skills выбирать по фактическому изменению.
 - Output artifacts: AC/evidence reconciliation и verdict pilot_accepted/partial/blocked с причинами.
-- Next step: Проверить dependencies и текущие source owners; запросить/получить отдельный scope реализации выбранной задачи.
+- Next step: Передать сравнение в METH-18.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не начата; сформирована карточка.
-- files touched / work locations: Сейчас implementation files не менялись; будущие locations указаны в Scope.
-- technical value delivered: Не заявлена до реализации.
-- product value delivered: Не заявлена до реализации.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Проверяется только подготовка плана; выполнение AC этой задачи не заявлено.
-- residual risks: Без release-readiness или full product acceptance claims; unresolved critical pilot gap запрещает accepted verdict.
-- follow-up: Выбор следующего разрешённого slice по DAG; автоматический старт запрещён.
+- status: implemented
+- what was done: Сверены критерии и результаты сборки, сценария, визуальной проверки и правил импортов. Вердикт pilot_accepted.
+- files touched / work locations: tests/web/single-window/func-g01-dashboard-acceptance.mts; docs/planning/methodology-improvement-2026-11-15.md; docs/planning/methodology-improvement-2026-11-15.en.md; design/2026-11-13-v3/implementation-evidence.md
+- technical value delivered: 16 хешей связывают исходники, тест и сборку. Проверены обе темы, ошибки и переход с клавиатуры к детали задачи.
+- product value delivered: Целостность пользовательского пути Dashboard подтверждена локально.
+- actual implementation date and time: 18-11-2026 17:58
+- verification evidence: Сопоставлены 50 совпадающих проверок и 2 проверки навигации. Web 704/704, 0 skip. Снимки и состояние службы сверены.
+- residual risks: Вердикт относится к локальному техническому пилоту. Приёмка UI-12/F23 и F19 сохраняет своих владельцев.
+- follow-up: Передать сравнение в METH-18.
 
 ### Task `PAOS-METH-18`
 
 - Task: PAOS-METH-18
 - Task name: Принять решение о дальнейшем rollout и обновить владельцев документации
-- Status: planned
+- Status: implemented
 - Priority: P2
 - Delivery group: A2
 - Methodologies: ADD, FSD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Реализация A2 по запросу владельца.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 17:58
 - Depends on: PAOS-METH-17
 - Blocks: PAOS-METH-10, PAOS-METH-11, PAOS-METH-13, PAOS-METH-14, PAOS-METH-15
 - External references: PAOS-FUNC-25
@@ -955,24 +977,24 @@ Baseline METH-01 — чистое рабочее дерево на `bd7d9135f994
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
 - Expected result: Reviewable rollout decision в существующем ADR/evidence owner и компактный handoff.
 - Acceptance criteria: PAOS-METH-18-AC01: Сравнены baseline и Dashboard pilot по unauthorized edges, regression findings и change/review effort. ADD outcome metrics учитываются отдельно только при доступном сопоставимом METH-07 evidence. PAOS-METH-18-AC02: Для выбранных METH-10/11/13–15 записаны собственные scope, owner, measurable benefit, go/bounded_go/hold/stop и rollback. Без измеренного основания расширение можно остановить на Dashboard. B принимает независимое решение. PAOS-METH-18-AC03: Обновлены только изменившиеся docs/registry/control-plane owners; active rules изменяются только отдельным разрешённым slice, existing FUNC/Web статусы и release gates сохранены.
-- Verification gates: V-PLAN; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
-- Risks / approval gates: Go-решение не является автоматической авторизацией implementation/provider/install/Git или deployment. Текущий запрос разрешает только планирование.
+- Verification gates: V-PLAN. Актуальные маршруты в TEST.md. Результат указан в Completion Report.
+- Risks / approval gates: Широкий перенос требует самостоятельного подтверждения. Показатели ADD принадлежат METH-07.
 - Complexity: M
 - Estimated execution time: Оценить после актуального discovery и выбора bounded slice; календарное обещание не дано.
 - Agents: product-manager + architect; owner decision; proposed ownership, сейчас delegation=0.
 - Skills: documentation-and-adrs; дополнительные skills выбирать по фактическому изменению.
 - Output artifacts: Reviewable rollout decision в существующем ADR/evidence owner и компактный handoff.
-- Next step: Проверить dependencies и текущие source owners; запросить/получить отдельный scope реализации выбранной задачи.
+- Next step: Следующий вход A3 — METH-05. Для METH-11 действует выбранный объём ADR.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не начата; сформирована карточка.
-- files touched / work locations: Сейчас implementation files не менялись; будущие locations указаны в Scope.
-- technical value delivered: Не заявлена до реализации.
-- product value delivered: Не заявлена до реализации.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Проверяется только подготовка плана; выполнение AC этой задачи не заявлено.
-- residual risks: Go-решение не является автоматической авторизацией implementation/provider/install/Git или deployment.
-- follow-up: Выбор следующего разрешённого slice по DAG; автоматический старт запрещён.
+- status: implemented
+- what was done: Принято решение сохранить пилот Dashboard и выбрать узкий объём METH-11 для TeamManager. Для METH-10/13/14/15 установлен hold.
+- files touched / work locations: docs/architecture/decisions/adr-dashboard-task-boundary.md; docs/architecture/decisions/adr-dashboard-task-boundary.en.md; PLAN.md; RUNLOG.md; docs/frontend/index*.md; docs/planning/methodology-improvement-2026-11-15.*
+- technical value delivered: Зафиксированы сравнение границ, объём изменения, целевой результат в два исключения и откат.
+- product value delivered: A3 может начинаться с METH-05. При расширении A4 сначала проверяется аналогичный одиночный потребитель.
+- actual implementation date and time: 18-11-2026 17:58
+- verification evidence: Сверены измерения 19 → 16 и 3 → 0, тесты и снимки, ADR и статусы RU/EN/JSON.
+- residual risks: Широкий перенос требует самостоятельного подтверждения. Показатели ADD принадлежат METH-07.
+- follow-up: Следующий вход A3 — METH-05. Для METH-11 действует выбранный объём ADR.
 

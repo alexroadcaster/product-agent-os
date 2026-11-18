@@ -2,15 +2,6 @@
   "revision": "bd7d9135f994201170277171eb54e4040cef4fa8",
   "groups": [
     {
-      "owner": "Dashboard and Tasks frontend maintainers",
-      "removal_task": "PAOS-METH-12",
-      "edges": [
-        "features/dashboard/Dashboard.tsx -> features/tasks/labels.ts [deep Tasks import]",
-        "features/dashboard/RunUsage.tsx -> features/tasks/labels.ts [deep Tasks import]",
-        "features/dashboard/model.ts -> features/tasks/model.ts [deep Tasks import]"
-      ]
-    },
-    {
       "owner": "Tasks frontend maintainers",
       "removal_task": "PAOS-METH-13",
       "edges": [
